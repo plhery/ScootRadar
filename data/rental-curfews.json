@@ -1,7 +1,7 @@
 {
   "verifiedOn": "2026-10-24",
   "about": "Night bans on renting shared scooters. A night belongs to the evening it starts on: \"fri\" with 00:00–05:00 is the early hours of Saturday. Bans on the eve of public holidays are left out.",
-  "areaSource": "Norwegian municipalities from Kartverket (CC BY 4.0), British local authority districts from the ONS (Open Government Licence v3.0), Portuguese municipalities from the CAOP (Informação geográfica cedida pela Direção-Geral do Território, CC BY 4.0), American incorporated places from the Census Bureau's TIGERweb (public domain) and Kyiv, Helsinki, Espoo, Vantaa, Turku, Lahti and Porvoo from OpenStreetMap (© OpenStreetMap contributors, ODbL), simplified to within 100 m by scripts/update-curfew-areas.mjs",
+  "areaSource": "Norwegian municipalities from Kartverket (CC BY 4.0), British local authority districts from the ONS (Open Government Licence v3.0), Portuguese municipalities from the CAOP (Informação geográfica cedida pela Direção-Geral do Território, CC BY 4.0), American incorporated places from the Census Bureau's TIGERweb (public domain) and Kyiv, Helsinki, Espoo, Vantaa, Turku, Lahti, Porvoo and Montréal's Parc Jean-Drapeau from OpenStreetMap (© OpenStreetMap contributors, ODbL), simplified to within 100 m by scripts/update-curfew-areas.mjs",
   "curfews": [
     {
       "id": "oslo",
@@ -7053,6 +7053,43 @@
           [33.5444, -86.9437],
           [33.5444, -86.9481],
           [33.5385, -86.9481]
+        ]
+      ]
+    },
+    {
+      "id": "parc-jean-drapeau",
+      "city": "Parc Jean-Drapeau",
+      "country": "CA",
+      "timeZone": "America/Toronto",
+      "nights": [
+        {
+          "from": "23:00",
+          "until": "06:00"
+        }
+      ],
+      "source": "https://www.parcjeandrapeau.com/fr/trottinettes-electriques-au-parc-jean-drapeau-montreal/",
+      "rule": "Trottinettes électriques au parc Jean-Drapeau, read on 26 October 2026",
+      "note": "The Société du parc Jean-Drapeau, not the City of Montréal, sets the hours: « Les trottinettes électriques peuvent être utilisées entre 6 h et 23 h, tous les jours », and not outside the park. Its pages gave the same hours in 2024 and 2025. Lime is its operator.",
+      "boundary": {
+        "source": "osm",
+        "id": "1607592",
+        "minAreaKm2": 0.1
+      },
+      "areas": [
+        [
+          [45.5215, -73.5391],
+          [45.5099, -73.5372],
+          [45.5064, -73.5333],
+          [45.5145, -73.5298],
+          [45.5212, -73.5314]
+        ],
+        [
+          [45.5053, -73.5302],
+          [45.4993, -73.5273],
+          [45.4957, -73.5194],
+          [45.5188, -73.5259],
+          [45.5185, -73.5287],
+          [45.5119, -73.5282]
         ]
       ]
     },

@@ -11,7 +11,8 @@ const sameGrid = (kept, grid) => kept && kept.cells === grid.cells &&
 
 /**
  * Reviewed service polygons own app groups; public GBFS entries remain untouched. Each market is
- * one entry, its grid of local views, which src/lib/limeGrid.ts splits into the refresh groups.
+ * one entry, its grid of local views, which src/lib/limeGrid.ts splits into the refresh groups,
+ * and its town's seasonal pause where a standing rule sets one, as Laval's by-law.
  */
 export function limeAppCatalogs(source, countries, readCatalog, geometry) {
   const catalogs = new Map(), kept = new Map();
@@ -36,6 +37,7 @@ export function limeAppCatalogs(source, countries, readCatalog, geometry) {
       provider: 'lime', city: market.city, ...(market.region ? { region: market.region } : {}), center: market.center,
       ...(market.aliases?.length ? { aliases: market.aliases } : {}),
       timeZone: market.timeZone, discoveryUrl: 'https://web-production.lime.bike/api/rider/v2/map/bike_pins',
+      ...(market.seasonal ? { seasonal: market.seasonal } : {}),
       limeAppMap: true, limeAppRegion: market.regionToken, limeMapGrid: grid });
     catalog.limeServiceAreaSources = [...new Set(catalog.limeServiceAreaSources)];
     catalogs.set(country.catalog, catalog);

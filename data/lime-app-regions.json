@@ -2584,6 +2584,164 @@
       "aliases": [
         "Guadalupe"
       ]
+    },
+    {
+      "country": "CA",
+      "city": "Ajax",
+      "center": [
+        43.85012,
+        -79.03288
+      ],
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "regionToken": "MPPBMFGPHP7KP",
+      "serviceAreas": [
+        {
+          "name": "Ajax[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wcojGn{`aNaCqGkDcLuEqK_HaOsDqEiAmAa@q@oJ|CoJpCsDrAyDhAoJxCqUvH{UlHsBp@wBl@iFhBkFdBmFdBnK`|@rMn|@nGdl@mZzJ_KhKkJvJyFrEwGzC{BeN|@}@nAkCb@sEc@{HgNmM}V{@mIdD{CaTyA`AqJ~L}EzCkLzC}AXe@{@{ByWaD_U_eAl]ev@nTgEm\\uv@fUrTzzAvFf_@`DhS|@lIzFxa@|T`{AhRrpA~Hbf@``Ag[bo@zoAfb@kQxc@sRxYgJvAe@ISSg@cC]MSUu@NmAhAgCXgD?oAm@mBCqA~oAib@gFmNaFoNqBuJuBsNtq@qTMcA~AeAf`@cL|GqBpR}F`l@wQPi@lCy@lNkEvBi@BkCGiCKaFWqAkAmBa@aAVaBF_C?_CTcMJuKL_Fd@mE^yDl@eE?cAGcA]}AsAoCi@y@k@oAs@kAUyAw@iBi@qBo@oCOu@Ew@k@{A]}@e@eAIa@AWQQE[]k@c@_Aw@kC_@aDa@cBOyADgCj@gCGuAHwBBkBOy@eBqCa@k@]w@iAwB}@}BcAeBiAiCQm@Mm@EkAQ[Q@OOWo@a@{@eAwB_A_Cg@qBq@iBYm@Em@UOc@o@i@_AUg@Ky@kAkCW_BKeB[_ASgAUEUMs@aAKm@u@eAs@cCi@gB_CkOUcFGmDBsCGaBDiBHk@S_ADoD@sEDuDn@oH@gAKkBCqBLiBEqByAoGy@kDEwC"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ajax,_ON_13_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Coquitlam",
+      "center": [
+        49.2846,
+        -122.78217
+      ],
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "regionToken": "PQM4Z4KZCQGTH",
+      "serviceAreas": [
+        {
+          "name": "[Coquitlam][SZ][Coquitlam Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cjvkHrqnlVz@sBhBgEl@sAt@eBd@iAx@iBXo@z@sB`AyBnAqCkWc@oEEoEAiJEgLABuLJmgAA?]?c@?c@?_@@c@@a@BQ@YDc@Ba@Dc@D_@F[@c@FW@c@Ha@Fc@Fg@?ICYEQG_@MYMYOc@SQM_@WQO[[c@g@]]QOa@]a@]c@a@c@a@a@]_Ay@c@_@_@_@QM[Uc@Wc@Y]QQM[YGGc@_@OSc@k@KOa@w@EMUi@Yo@CI]k@y@gASQa@Y_@MGA[?Q@a@LG@]Ta@b@c@j@WZc@\\_@NGD_@H]Jc@H{@V_@Fc@DI?c@@I?]AOC[Gc@IUCa@Ec@Ac@C_@AO?UD[JYPc@Xc@`@c@\\GFc@Vc@V]TIFc@\\a@^IFa@l@Sj@Md@Wh@_@j@[Pa@Ti@NWJBf@Bj@Df@Dh@Ft@P|@^vAb@nAv@rBdBtEtAxDb@hBc@ImBu@cBo@aDmAoDsA_C}@}Am@sDuAuAi@_Bm@Kl@Ix@OdAIp@En@Eb@C`@?b@@`@@d@Db@Fd@Nd@Th@T^j@j@bA~@hBfBl@r@Tb@N^H`@Df@Df@?~@?fBAbBEfAEt@It@Mj@ER[r@Q\\]n@_@f@_@f@aAhA_AhAw@~@]b@e@n@W\\UZOTKXIRQf@Oj@Kb@E\\Ed@Gz@GhAAf@IjDG|ACp@Er@El@Gf@Ib@QXYPWJw@DHvCLvHL|FDpCBzBBx@Dx@Hr@Jn@Lh@Nf@Tf@d@v@`@l@^d@RPXPVN?t@@x@@VDf@BVDVb@xBf@hCz@|D~@dE^lBl@xCf@nCPnALpAFv@D~@Bn@@l@BbABlABlAF`D@bC?hB@tA@fA?pAA`A@~@d@?ZIn@S\\ERIPKLKT]LQLWDSBQBQDi@Fq@Dq@Ba@D_@DOBKFMDGHKHKBCBCDCTIJAH?F?J@LDLHHHNXHTHXFVHd@Hb@D^Pj@LTTZTZKvAMlAMpAMr@Kz@M`A_@`BOp@Or@EPW`ACPIXERSr@Wx@Y`Aa@|AS`AMh@S`ASbAg@`Co@nCUpAMx@Ir@C~@AbAVAjL@?_IbB@dw@Ih]E?`OxK@hLV@Q?cC@gCDiE?eCBsA?kDBgE@oBHmHAyBAmABoBAgAJyDCoDBkC@yCAcDB}C@}EFkDFo@@O@Y@Y@K@K@K?K@O?G@E?GFc@Ba@BMBa@BQBUD_@Hg@He@PcALy@Jm@N{@D[Nc@Je@Vo@BKF[FSLa@Le@Na@Nk@Vg@y@]XiA?Az@VHWLYJUFOFMv@oBTq@Ni@h@wAv@iBbXDj@@d@@hADPA^?ZEfCGxAKfDKh@Ex@EtCKzGW`@?lDMM}FoAFm@DiBFwAFcABkDJaDH{@DoALcCDoAJyBF{GXuJ`@gDDe@CDKFSN]JWVk@Na@LUDKHQLWFSFOFKDKN_@Xm@Vi@Tm@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tri-Cities,_BC_183_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Laval",
+      "center": [
+        45.56995,
+        -73.692
+      ],
+      "region": "QC",
+      "timeZone": "America/Toronto",
+      "regionToken": "WZRWUZ3IHWZQT",
+      "serviceAreas": [
+        {
+          "name": "Laval Service Zone DK[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ch|tGxe_aM]c@OWIo@w@}@qBkAo@_@{AeCu@_Cc@uAa@_@w@SgBiCGc@q@m@y@{@k@Kc@LS_@A}@[c@Gw@J_@SmAy@cCy@iCiAwAq@uDOiDH}ADqDOkCi@sCeAoBaBmAgBeI_@iCY}@eC{CgA{A{AeCaCw@o@i@sAo@k@uAsC_Ec@_@}AaBqBw@sBgDSs@Ju@KSWEoBeIo@}E@gEUq@_@mAw@sAo@qDg@uBEu@Ue@MIg@Ya@AwAsAe@{@Y_AU}@m@wAc@]]y@]]o@aEVkB@_A@qBEcAGo@]qAMCY]Ss@Cs@z@}CEmAUo@IuCTm@Ha@CuAyA_KY{@Ki@Gi@[mBs@wCMYc@sAWc@_@[SAQm@Ge@Ak@Ge@_@_@MBOa@m@k@[{A?y@gByFWMy@}BuBkD}B{FiByCq@u@gBwA_As@QIiAc@G`@y@|AiD~AqCxA}CpDmFfI_BkFsCsHuA_CuAeBu@gAe@u@w@uAgA}AmAeB}AeA}A_Aw@a@sAu@UWo@i@s@s@cDyCiCcCoAo@kBk@i@SITs@xB_B|AgDhEyEjF{BpCkBlBmExEoPhRcJhK__@rb@cSxUqR|TxGvJdI~IbF|DfJnH~HxFzChDxB|DhAjD{AdCuJ`LaFzFgPvR_E|E_At@wAbAsA^_BrAgAnAcB`A[n@WnAb@pCbC`L`DvQFrC|GjYdCfKxBxGlBzFtBjFr@tArArBhA~A~@|@v@^dAH|@Iv@Wr@o@l@o@^bA~@nETpAItBMrCBtB\\zBz@dCz@fCtD~G~H|NjFrJzD~Fv@dAt@^|@NjJz@fCRx@K`BOhBbFc@tBWdBI~CKnDGlCEnBFdATpAb@rAdAjCpDxG|CxFrD|G~CbGxDtIb@_@h@`An@dAn@p@`AZv@Bx@Sh@e@h@HRh@f@jDZrAH~@AbAMx@W`AQdAUr@OpAGvA?`AFfCl@zCbC~LbC~LtDhJtBcB|AjBn@h@XZ~BcDrAqDrAmFrAyEx@gBdBcC~AkBjFeGfBmB|BoCxDeEfC_DbAoAvAiB`A_CbAaDj@wA^y@Zi@h@u@h@{@v@cAn@m@l@w@j@o@t@y@b@a@h@s@v@m@nAcAp@s@bAaAt@m@n@s@t@y@~@w@rDgEfI}IvHmJhI_JvL}L|OqQ~@kAr@iAx@oB|@gACwAR{CD_DOaDg@mCe@kCk@aDi@sC}@qFk@mE?eENeCj@oCb@mAt@}@tAmAnAcAv@e@\\YXe@l@_@z@q@jAaA|AoA~AwAjAgAdAqATg@MO"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Laval,_QC_156_exclude_new_type.json"
+      ],
+      "seasonal": {
+        "from": "11-16",
+        "until": "04-15",
+        "timeZone": "America/Toronto"
+      }
+    },
+    {
+      "country": "CA",
+      "city": "Montréal",
+      "center": [
+        45.5146,
+        -73.534
+      ],
+      "region": "QC",
+      "timeZone": "America/Toronto",
+      "regionToken": "CEW7FOKJMOSNJ",
+      "serviceAreas": [
+        {
+          "name": "St Helen's Island[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "odztGzpx_MC?qCP??kFJC?qDV??mBHeFTA?{AUQA{@HIBKFIHEHA????@A?qHNC@sCTA@iANI@GDGF_AdAGHEJCJCNKhBAJAfB@PBPZvAFNZp@FJHHbBdA??jCjB??v@l@@@|@j@??nA~@??fAbADBdAn@?@p@j@FB|@d@?@n@f@??v@n@DB~@h@@@h@j@HFHDbBd@??@@NP??\\f@HHHF^LHBXB?@??LHFDH@\\FB@Z@?@f@D??TJNBf@D@?p@J@???VRFDFBrA\\H@|@FD?~@A@???@@??BDHHHDJ@H?JCHE^[??`Ao@DCf@g@@?????@???@?HFHBn@LJ@JCJEp@a@?Af@Q@?TCJA^M??PAJA`A[??l@Q??|@QBA~@U?Af@A??@@PHHBJ@HAJCFGHI@E@A????@?l@G??bEP??vD^pBRD?rBD@?xB@BAjAG??t@ALAnD}@??|FoA@?`EcA@AtBm@@?zAg@HGxAeA??nBmA@AbBoA@AjAcA@?n@i@@Ar@o@??~AuAHGDK^y@DOBQN_C?OAOM}ACKCMEI}@yAIKKGkAe@CAsHiBg@McDcA??mDeAA?}Cs@AAyDk@C?yAG?mJsB??dIYIgDwAA?ICA?wBKA?E?A?E@??}A^uCd@iFf@????{C\\A?E@A?_ExAaB`@qRn@??"
+        },
+        {
+          "name": "Ile Notre-Dame 2024[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gpotGxyu_MmrCtAO{CCOCMGKGKIEIEKAK@_XvFC@eLvDA?{`@nIKD[PIDGHEJ?@A@???@A?{yAt[wK|BA???A????AA??CGIGIIGICWEGAI?cALKBKFYVGHGJCLCH?@A??@??A?wQpDC@iCv@KFIHGJELCNAN?l@@PBNBNFJHHh@^HDFBH@HA~Be@@?xCu@??dJuB@???@???@@???@?@TlC??FfC@PBLDLFJHFJDJ@`@@??@??@??@@???@?FtCOASb@CjEI??@???pES??@???vGg@hHg@zGYxDE?LrB??[d@?jDNzCf@tDnA??bIlCbHnBD@vFZD?jFID?lGo@JCjFmBDCdEgC@AnE{CHIxDqE?At@aABEfDwF@ElBgEBEtBiG@Cx@uC@Ir@}DBK`@kE???Ab@kA???A@???`TqFHCHIFKFMBM@O?QIoAlrC{A?G"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Montreal_186_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Parc Jean-Drapeau",
+        "Île Sainte-Hélène",
+        "Île Notre-Dame"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Port Moody",
+      "center": [
+        49.28124,
+        -122.82457
+      ],
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "regionToken": "PQM4Z4KZCQGTH",
+      "serviceAreas": [
+        {
+          "name": "Port Moody Service Area[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "i~}kHhjhmVdCvBtMeBnIlEbNSvHmFfCIhGmI|D?tD|DvBgBoCiKjGiR|KwB~EkDbB}LBue@gFe\\uCw[{Cse@`BeBfB_BlAcBdCgAtICdJ?dC_@nRGf`@UpaA}@?oqAkAALie@Ba{@@gK?oV@mA?yD?sA?aD?cB@sL?wCFwg@yJA?cP?iF?W?cD@e\\?]?sC_BEA_AKce@Ksb@mHBgFDI?}AJi@?q@@{DCK?qBEe@AsBAaB?kAA_@ASAWCKC???a@?gC@aA?GAiA?_A??@MDeA?u@UAo@A_B@s@?u@?eA?S?S?C?iG?uD?U?}K@kB?gb@@}J?A|EAzAmWFsDDqs@q@}x@Ie]C|R`L|D|BlUxMJba@lu@t@BhMfe@aAl@AM~c@?fBqSMcHEkAAsBAmBAUrYQdW}I|A?NIrd@vIdL@~JBt[Dbt@sl@XApZmL@p@acAg@A{k@GAcUyF?Cg^cNC?kPkTLa@~iCWzoBbE~GbBpB|B|Cp@r@hJhD`Aua@pCtChBtAd@Ih@OrA{@b@e@b@?Zb@v@Vf@?|Fw@hNgO|E}JlB{CdACzBZ|Af@`Al@vALh@dCO|Ah@rD\\dIbAzDbAjDB`B\\l@Ul@aAtAO|@aAbBAd@kBtCs@`@M`@Mf@KXSb@CZ@n@Hd@PXFpBHp@TnAz@lGh@|Da@Se@Ub@nC~AjGh@`Df@vCd@b@~@pAjA`BzAbBpAtBhAdCbAvD^`CPfAZfEHnE@hDH|A`@nEJpBAfNFzr@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tri-Cities,_BC_183_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Richmond",
+      "center": [
+        49.17003,
+        -123.13683
+      ],
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "regionToken": "QMXPTBNWTM7BG",
+      "serviceAreas": [
+        {
+          "name": "Richmond SZ and MPZ 2024[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cszjHry|nVFA~Aw@~C]bCk@OuC?????A@???|AGhBiGJuI?????A@?????@?f@^xHJnAQ?oCq@e@???A??DkT??????@A??v@@`@}DYO???????A???????Ad@AdBeTKoB??@????A??n@EVkDo@oC?A??bAmC|CsWF}A?A_AeA[oBUqA????V_A?A????@?fAL???????@l@nEj@qC@A??????@???n@VXyH??tAyEWQAA??????V_Bm@q@AA????ViAN_ADeACeASy@Ui@[e@???A??fAmF???ALI????@?\\H??PJ@??@??D\\fAl@FMDQx@yAP]??lBcK@???????@???hAh@RmA?A????@?????j@ZRUnBoJIwA????~@{BaCeAGR?@??A?????iBc@??uDmD???A????vByH????????@???nEjC?@@????@M\\b@\\??zC|@zAsD@???n@Wf@_DiAqA?????A??tCyE~AiJ??hAwA_@o@?????ArD_LqNMgMj_@??A??@??iuAQhAy_Jwr@e@KzhAkk@DuCAae@M??iuDWOieAguACsQ|oApCfe@nWlgAtvA|n@jGrG~FxIjDtIjNza@`FpPvBxLzCt]p@hZMd^ltBnA?PjuAS???@@??????fwCnLj@@????@????C|AfA?D_B????@?????~K^???????@???hKpE~@bBwA??fGeBjAeBEmI???????A@???`M`D??bH`G"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Richmond,_BC_154_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Vaughan",
+      "center": [
+        43.7955,
+        -79.5323
+      ],
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "regionToken": "ZOOUYXHNWQPH7",
+      "serviceAreas": [
+        {
+          "name": "Phase 2 Service Area[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "y}tjGt_xdNhsGq~@v\\yE|u@gLnd@mHxv@iMRlBtFkAMaB`|@sNidCqhOteA}OuAsJcA_Hf@u@aCwOgD}UwDiWmCsTuCgUqFmb@_Ec[gFe`@e@{CiAsJuAaJkH_j@e@_DmTkcBkx@hM{Fz@{P~BmQnC}LnAo_B~Ut`@f~CyPhB_OrBcLtByBn@iv@nLiYlDgVnDoUvCsh@jHwXhDqZzEqQlCkSrEkp@jKrGji@vCfNvH|m@lE|^pA`Pj]`gCxCnOhA|I|Eb_@`Ibo@pHto@dAbNrAvKjGtOt@pEzHfj@zAhQzBfXzCzXzExg@vEha@fLd_AjEnT"
+        },
+        {
+          "name": "Service Area[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "u}}jGrercNrLhmAtM{B{CaVzTuD}Kcu@k_@lG"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json"
+      ]
     }
   ]
 }

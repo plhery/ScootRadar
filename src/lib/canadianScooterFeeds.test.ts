@@ -39,12 +39,17 @@ function serveBird(id: string, status: () => object) {
 describe('Canada', () => {
   it('names every town with its province, in that province\'s time zone', () => {
     const canadian = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'CA');
-    expect(canadian.map(entry => entry.id).sort()).toEqual([
+    expect(canadian.filter(entry => !entry.limeAppMap).map(entry => entry.id).sort()).toEqual([
       'bird_ca_calgary', 'bird_ca_edmonton', 'bird_ca_halifax', 'bird_ca_hamilton', 'bird_ca_leduc', 'bird_ca_ottawa',
       'bird_ca_vaughan', 'bird_ca_windsor', 'lime_ca_calgary', 'lime_ca_edmonton', 'lime_ca_kelowna', 'lime_ca_mississauga',
       'lime_ca_ottawa', 'lime_ca_vancouver', 'move_ca_new_brunswick',
     ]);
-    const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', NS: 'America/Halifax', NB: 'America/Moncton' };
+    // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
+    expect([...new Set(canadian.filter(entry => entry.limeAppMap).map(entry => entry.city))]).toEqual([
+      'Ajax', 'Coquitlam', 'Laval', 'Montréal', 'Port Moody', 'Richmond', 'Vaughan',
+    ]);
+    const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', QC: 'America/Toronto', NS: 'America/Halifax',
+      NB: 'America/Moncton' };
     for (const entry of canadian) {
       for (const area of serviceAreas(entry)) {
         const region = (area.region ?? entry.region) as keyof typeof zones;
@@ -55,8 +60,9 @@ describe('Canada', () => {
     expect(serviceAreas(system('lime_ca_calgary')).map(area => area.city)).toEqual(['Calgary', 'Airdrie']);
     expect(serviceAreas(system('lime_ca_edmonton')).map(area => area.city)).toEqual(['Edmonton', 'St. Albert', 'Beaumont']);
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA').map(entry => entry.city).sort()).toEqual([
-      'Airdrie, AB', 'Beaumont, AB', 'Calgary, AB', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Hamilton, ON', 'Kelowna, BC', 'Leduc, AB',
-      'Mississauga, ON', 'Moncton, NB', 'Ottawa, ON', 'Saint John, NB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Windsor, ON',
+      'Airdrie, AB', 'Ajax, ON', 'Beaumont, AB', 'Calgary, AB', 'Coquitlam, BC', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Hamilton, ON',
+      'Kelowna, BC', 'Laval, QC', 'Leduc, AB', 'Mississauga, ON', 'Moncton, NB', 'Montréal, QC', 'Ottawa, ON', 'Port Moody, BC', 'Richmond, BC',
+      'Saint John, NB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Windsor, ON',
     ]);
     expect(city('ca:on:Ottawa')).toMatchObject({ city: 'Ottawa, ON', country: 'CA', region: 'ON' });
   });
@@ -66,6 +72,7 @@ describe('Canada', () => {
     ['Vancouver BC', 'Vancouver, BC'], ['Vancouver Colombie-Britannique', 'Vancouver, BC'], ['Halifax Nouvelle-Écosse', 'Halifax, NS'],
     ['Dartmouth', 'Halifax, NS'], ['Dartmouth NS', 'Halifax, NS'], ['Tecumseh', 'Windsor, ON'], ['St Albert', 'St. Albert, AB'],
     ['Saint-Albert', 'St. Albert, AB'], ['St. Albert AB', 'St. Albert, AB'], ['Airdrie', 'Airdrie, AB'], ['Edmonton Canada', 'Edmonton, AB'],
+    ['Laval Québec', 'Laval, QC'], ['Parc Jean-Drapeau', 'Montréal, QC'], ['Île Sainte-Hélène', 'Montréal, QC'], ['Richmond BC', 'Richmond, BC'],
   ])('finds "%s" as %s', (query, title) => {
     expect(namedCities(query)[0].city.title).toBe(title);
   });
@@ -165,7 +172,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April and Leduc\'s from 22 October until 1 May, by each town\'s clock', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April and Leduc\'s from 22 October until 1 May, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -183,13 +190,21 @@ describe('Canada', () => {
     expect(activeSeasonalPause(leduc, Date.UTC(2027, 3, 30, 18))).toEqual({ city: 'Leduc, AB', month: 5 });
     expect(activeSeasonalPause(leduc, Date.UTC(2027, 4, 1, 18))).toBeNull();
     expect(feedPaused('canada:bird_ca_leduc', winter)).toBe(true);
+    // Laval's by-law sets the season from 15 April to 15 November, for every group of Lime's map there.
+    const laval: [number, number] = [45.56995, -73.692];
+    expect(activeSeasonalPause(laval, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
+    expect(activeSeasonalPause(laval, Date.UTC(2026, 10, 16, 5, 30))).toEqual({ city: 'Laval, QC', month: 4 });
+    expect(activeSeasonalPause(laval, Date.UTC(2027, 3, 14, 12))).toEqual({ city: 'Laval, QC', month: 4 });
+    expect(activeSeasonalPause(laval, Date.UTC(2027, 3, 15, 12))).toBeNull();
+    expect(feedPaused('canada:lime_ca_app_laval_000', winter)).toBe(true);
     // The other towns' winters are announced each year, or are the operator's own.
     for (const [id, point] of [['ca:on:Mississauga', [43.589, -79.6441]], ['ca:ab:Calgary', [51.0447, -114.0719]],
-      ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]]] as const) {
+      ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]], ['ca:qc:Montréal', [45.5146, -73.534]],
+      ['ca:on:Ajax', [43.85012, -79.03288]]] as const) {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:nb:Moncton']);
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:nb:Moncton', 'ca:qc:Laval']);
   });
 
   it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {

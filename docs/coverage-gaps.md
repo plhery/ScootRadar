@@ -19,8 +19,9 @@ Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
 Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, in Antwerpen,
 in Porto, Faro and Oeiras, and since 26 October 2026 in Tokyo and Yokohama,
 in Port Phillip, in Auckland, Christchurch, Hamilton, Wellington and
-Palmerston North, and in Monterrey and Guadalupe.
-The other markets its rider map lists, 73 found so far, are added country by
+Palmerston North, in Monterrey and Guadalupe, and in Ajax, Coquitlam,
+Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and Vaughan.
+The other markets its rider map lists, 64 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -534,18 +535,22 @@ banned shared scooters, and feeds that were empty when checked.
 
 - **Canada** ([guide](canadian-scooter-feeds.md#known-gaps)): Bird and Lime
   in 14 towns of Alberta, British Columbia, Ontario and Nova Scotia are
-  covered.
+  covered, and Lime from its rider map since 26 October 2026 in Ajax,
+  Coquitlam, Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and
+  Vaughan.
   - **Banned or not allowed:** Toronto bans shared scooters, apart from
     private sites such as the Distillery District; Montréal doesn't allow
-    them; London, ON did not join the provincial pilot's scooter sharing.
-    Laval has a programme but no public feed.
+    them in its streets, only on Parc Jean-Drapeau's islands; London, ON did
+    not join the provincial pilot's scooter sharing. Lime rents only e-bikes
+    in New Westminster, which isn't in British Columbia's e-scooter pilot,
+    and in Victoria.
   - **Bird:** its Saskatoon, Ajax and Surrey feeds listed no vehicle on 14
     October 2026, and its Kelowna feed none either, as Lime is the town's
-    operator. Bird's other 2026 towns publish no feed: Lethbridge, Medicine
-    Hat, Red Deer, Chestermere, Okotoks, Cochrane, Spruce Grove, Stony Plain,
-    Penticton, Vernon, Kamloops, Cranbrook, Regina, Mississauga, Brampton,
-    Oshawa, Pickering and Laval answer 404 "Invalid organization slug" for 14
-    forms of each name. Its Airdrie and St. Albert scooters have no feed;
+    operator; Lime's Ajax scooters are covered. Bird's other 2026 towns
+    publish no feed: Lethbridge, Medicine Hat, Red Deer, Chestermere,
+    Okotoks, Cochrane, Spruce Grove, Stony Plain, Penticton, Vernon,
+    Kamloops, Cranbrook, Regina, Mississauga, Brampton, Oshawa, Pickering and
+    Laval answer 404 "Invalid organization slug" for 14 forms of each name. Its Airdrie and St. Albert scooters have no feed;
     Lime's are covered.
   - **Neuron:** its 12 Canadian feeds answer 404 since Lime bought it on 3
     July 2026. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
@@ -1126,7 +1131,10 @@ Bonaire had feeds to add. Survey files are in
 - **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
   Durham Region pilots run from April to October. Lime Grand Rapids too, and
   look for a Veo feed there, and Spin East Lansing (`east_lansing`), the
-  city's feed.
+  city's feed. Laval's season too: the catalog pauses Lime's Laval market
+  from 16 November until 15 April, from by-law L-13007; check the 2027
+  permit's dates and the amending by-law L-13130
+  ([Canada's winter section](canadian-scooter-feeds.md#winter)).
 - **20 April 2027:** Bird Saskatoon, empty on 14 October 2026. The city's
   [page](https://www.saskatoon.ca/moving-around/cycling/e-scooters) sets the
   season from 15 April to 31 October; if it still does, add Saskatoon with a

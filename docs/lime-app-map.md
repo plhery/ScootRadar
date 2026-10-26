@@ -146,7 +146,10 @@ region, on the morning of 26 October 2026, so they are left out. In
 Australia, neither did its Gold Coast region, where Lime rents e-bikes, nor
 its Sydney region, a single small zone in St Peters. In Mexico, neither did
 its Ciudad de México and León regions: SEMOVI's Mexico City scooter pilot
-ended on 31 August 2026.
+ended on 31 August 2026. In Canada, neither did its New Westminster and
+Victoria regions, on the evening of 25 October 2026, local time: Lime rents
+only e-bikes in both, and New Westminster isn't in British Columbia's e-scooter
+pilot.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -191,6 +194,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | Australia: Port Phillip | 18 | 5 | 239 | 16 |
 | 26 October 2026 | New Zealand: Auckland, Christchurch, Hamilton, Wellington, Palmerston North | 311 | 79 | 4,104 | 392 |
 | 26 October 2026 | Mexico: Monterrey and Guadalupe | 29 | 8 | 2,912 | 68 |
+| 26 October 2026 | Canada: Ajax, Coquitlam, Laval, Montréal (Parc Jean-Drapeau), Port Moody, Richmond, Vaughan | 190 | 50 | 1,876 | 345 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

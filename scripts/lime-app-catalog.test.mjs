@@ -42,6 +42,18 @@ it('gives a market its region, for a town whose name other states share', () => 
   expect('region' in result.systems[1]).toBe(false);
 });
 
+it('keeps a market\'s seasonal pause, for every one of its groups', () => {
+  const seasonal = { from: '11-16', until: '04-15', timeZone: 'America/Toronto' };
+  const market = { country: 'CA', city: 'Laval', region: 'QC', center: [.015, .015], timeZone: 'America/Toronto', regionToken: 'laval',
+    serviceAreas: [{ polygon: '???ozDozD??nzDnzD?' }], sourceDocuments: ['https://assets.lime.bike/zones_attributes/example.json'], seasonal };
+  const result = limeAppCatalogs({ verifiedOn: '2026-10-26', markets: [market, { ...market, city: 'Montréal', seasonal: undefined }] },
+    [{ code: 'CA', catalog: 'ca.json' }], () => ({ systems: [] }), { decodeLimeArea, limeAreaGrid }).get('ca.json');
+  expect(result.systems[0].seasonal).toEqual(seasonal);
+  expect(result.systems[0]).toHaveProperty('seasonal');
+  expect(limeGridGroups(result.systems[0]).every(group => group.seasonal === seasonal)).toBe(true);
+  expect('seasonal' in result.systems[1]).toBe(false);
+});
+
 it('keeps geometry audit evidence valid across label changes and invalidates it when a tile changes', () => {
   const market = { country: 'RO', city: 'Deva', regionToken: 'region', serviceAreas: [{ polygon: 'outline' }] };
   const systems = [{ limeMapTiles: [{ south: 0, north: 1, west: 0, east: 1 }] }];

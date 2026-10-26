@@ -545,9 +545,11 @@
       "anchorNote": "Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities from Vancouver to Halifax, and north of the United States' total.",
       "featuredCities": ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
       "credits": {
-        "attribution": "Canada: Bird, Lime GBFS; MoVe app",
+        "attribution": "Canada: Bird, Lime GBFS; MoVe app; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bird", "Lime"],
-        "links": [{ "label": "CA: MoVe rider map", "href": "https://move-mobility.app.link/" }]
+        "links": [{ "label": "CA: MoVe rider map", "href": "https://move-mobility.app.link/" },
+          { "label": "CA: Lime map", "href": "https://www.li.me/" },
+          { "label": "CA: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }]
       },
       "regions": {
         "showInCityNames": true,

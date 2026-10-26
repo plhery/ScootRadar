@@ -12,8 +12,8 @@ of 11 and 16 minutes, and three more times from 21:23 to 21:33, five minutes
 apart, before the commit. Alberta is two hours behind, British Columbia
 three. Every feed URL is https, on the discovery's origin and under its
 directory. No account credentials or private
-rider APIs are used by those GBFS feeds. The later MoVe supplement below
-uses its authorized rider map. The catalog is
+rider APIs are used by those GBFS feeds. The later MoVe and Lime supplements
+below use their authorized rider maps. The catalog is
 [`canadian-scooter-feeds.json`](../data/canadian-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
@@ -28,6 +28,21 @@ reviewed city areas. No MoVe scooters in Halifax or Dartmouth were observed;
 its store listing is not the live fleet's location. Credentials stay in
 the cache's private ATOM volume. See the
 [protocol and live evidence](move-app-map.md).
+
+## Lime supplement — 26 October 2026
+
+Lime publishes no feed for seven of its Canadian markets, so its
+authenticated rider map supplies them, each market whole after a clean
+full-area audit on the evening of 25 October 2026, local time: Laval (502
+scooters), Vaughan (415, beside Bird's), Ajax (322), Richmond (191),
+Coquitlam (181), Montréal's Parc Jean-Drapeau (147) and Port Moody (118),
+every stationary reference found. Montréal doesn't allow shared scooters in
+its streets; Lime's ride on Île Sainte-Hélène and Île Notre-Dame, under the
+[agreement the Société du parc Jean-Drapeau signed in 2024](https://www.newswire.ca/news-releases/media-advisory-sustainable-mobility-jean-drapeau-park-signs-agreement-with-lime-and-unveils-an-enhanced-electric-scooter-offer-for-summer-2024-877224244.html),
+and the map lists them under Montréal, which search also finds as Parc
+Jean-Drapeau. Lime's New Westminster and Victoria regions held no scooter:
+it rents only e-bikes in both. See
+[the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 The original GBFS audit follows.
 
@@ -160,7 +175,7 @@ no alert either.
 
 ## Winter
 
-Ottawa and Moncton set their seasons by a standing rule. Ottawa's seasonal window in the
+Ottawa, Moncton and Laval set their seasons by a standing rule. Ottawa's seasonal window in the
 catalog runs from 16 November until 30 April, Toronto time, for both Bird and
 Lime. Council's report ACS2025-PDB-TP-0002 of 16 April 2025
 ([eScribe](https://pub-ottawa.escribemeetings.com/filestream.ashx?DocumentId=232935))
@@ -181,6 +196,18 @@ from 15 November until 16 April, Moncton time, so the map says the scooters
 are back in April. The feed also covers Fredericton and Saint John, which set
 no season, so it is not paused and its alerts stay on. The by-law sets no
 hours.
+
+Laval's by-law L-13007 defines the season as "la période qui s'étend du 15
+avril au 15 novembre d'une année"; the city's link to it
+([PDF](https://www.laval.ca/wp-content/uploads/2024/12/reglement-l-13007.pdf))
+answered 404 on 26 October 2026, and the by-law was read from a search
+engine's copy. The catalog pauses Lime's Laval market from 16 November until
+15 April, Toronto time, so the map says the scooters are back in April. The
+city's 2026 permit form allows scooters "uniquement du 15 avril 2026 au 14
+novembre 2026"
+([PDF](https://www.laval.ca/wp-content/uploads/2026/04/permis-exploitation-trottinettes-formulaire-2026.pdf)),
+a day short of the by-law, and an amending by-law of 2025, L-13130, wasn't
+read: check both when the scooters come back in April 2027.
 
 Leduc publishes no season, but Bird took its scooters in on 20 and 21 October
 2026: the feed held 26 to 28 available scooters until the afternoon of the
@@ -207,8 +234,14 @@ above):
   back on 16 March 2026. The pilot runs to 30 November 2026 by the council
   report of 9 July 2024, or two years from 15 May 2025 by the
   [project page](https://www.halifax.ca/transportation/cycling-walking/shared-micromobility-project-bike-e-scooter-share).
-- **Vaughan:** back on 1 May 2026, by the city's pilot page; the pilot runs
-  from June 2025 to June 2027.
+- **Vaughan:** rentals paused from 1 November 2025 "until Spring 2026" and
+  were back on 1 May 2026, by the city's pilot page; the pilot runs from June
+  2025 to June 2027, with Bird and Lime.
+- **Parc Jean-Drapeau:** the park sets each season on its page. It ended on
+  15 November in 2023, 2024 and 2025, and the 2026 calendar runs from 15
+  April to 15 November.
+- **Ajax:** Lime's contract runs to 31 December 2027 and the by-law, 87-2024,
+  sets no season.
 - **Windsor:** the city's page says "between April and October"; its 2023
   report says Bird doesn't run in winter by its own choice, and the 2026
   contract reportedly runs from February to November.
@@ -217,13 +250,23 @@ above):
   ([town page](https://www.beaumont.ab.ca/recreation-activities/outdoor-spaces/e-scooters/)).
 - **Calgary** offers scooters "year-round"
   ([info sheet](https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf));
-  **Edmonton**, **Hamilton**, **St. Albert**, **Airdrie**, **Kelowna** and
-  **Vancouver** publish no season.
+  **Edmonton**, **Hamilton**, **St. Albert**, **Airdrie**, **Kelowna**,
+  **Vancouver**, **Richmond**, **Coquitlam** and **Port Moody** publish no
+  season.
 
 ## Night bans
 
-No covered Canadian town bans renting at night, so
-[`rental-curfews.json`](../data/rental-curfews.json) has no Canadian entry.
+No covered Canadian town bans renting at night. Parc Jean-Drapeau, whose
+rule is the park's own, is the one Canadian entry in
+[`rental-curfews.json`](../data/rental-curfews.json).
+
+- **Parc Jean-Drapeau:** "Les trottinettes électriques peuvent être utilisées
+  entre 6 h et 23 h, tous les jours", and not outside the park
+  ([park page](https://www.parcjeandrapeau.com/fr/trottinettes-electriques-au-parc-jean-drapeau-montreal/),
+  read on 26 October 2026, with the same hours in 2024 and 2025). The ban
+  covers both islands, from OpenStreetMap's outline of the park, each piece
+  under the square kilometre other towns' outlines keep, so the map says
+  renting there is closed from 23:00 until 06:00, Montréal time.
 
 - **Ottawa** rents scooters 24 hours a day since 2025. The 2025 season page
   said: "Making shared e-scooters available to rent 24 hours per day
@@ -242,8 +285,14 @@ No covered Canadian town bans renting at night, so
   lists Windsor among the cities open 24/7. Bird locked its Windsor scooters
   from 23:00 to 05:00 by its own choice in 2021, and nothing says it still
   does.
-- **Calgary, Edmonton, Hamilton, Halifax, Vancouver, Mississauga and
-  Vaughan** publish no night hours.
+- **Richmond:** no ban, but Lime planned in 2021 to collect its fleet each
+  night between 21:00 and midnight, leaving a tenth out
+  ([council report, 27 July 2021](https://www.richmond.ca/__shared/assets/10_E_Scooter_Pilot_Project_CNCL_09272159179.pdf)),
+  so its night counts may be lower.
+- **Laval** rented scooters "24 heures par jour, 7 jours par semaine" in 2024
+  ([Courrier Laval](https://courrierlaval.com/?p=114191)).
+- **Calgary, Edmonton, Hamilton, Halifax, Vancouver, Mississauga, Vaughan,
+  Ajax, Coquitlam and Port Moody** publish no night hours.
 
 ## Parking
 
@@ -290,8 +339,9 @@ Bays show from zoom 16, as elsewhere.
 
 ## Known gaps
 
-- **Toronto** and **Montréal** ban shared scooters; **London, ON** opted out
-  of the provincial pilot. **Laval** has scooters but no public feed.
+- **Toronto** bans shared scooters, and **Montréal** allows them only on
+  Parc Jean-Drapeau's islands (Lime's, above); **London, ON** opted out of
+  the provincial pilot.
 - **Bird** runs in Mississauga, Lethbridge, Red Deer, Kamloops, Vernon,
   Brampton and Oshawa with no feed found; its Kelowna, Saskatoon, Ajax and
   Surrey feeds were empty.
@@ -304,8 +354,9 @@ Bays show from zoom 16, as elsewhere.
 - Spin's feed host now answers with Bird's, Roll's doesn't answer, Link closed
   at the end of 2023, Hopr's certificate has expired and Zip's host doesn't
   resolve.
-- **Bikes only:** BIXI, Bike Share Toronto, Mobi, Hamilton's SoBi, Locomotion
-  and Lime Victoria.
+- **Bikes only:** BIXI, Bike Share Toronto, Mobi, Hamilton's SoBi, Locomotion,
+  Lime Victoria, and Lime in New Westminster, which isn't in British
+  Columbia's e-scooter pilot.
 
 ## Recheck
 

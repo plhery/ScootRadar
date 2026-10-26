@@ -1994,6 +1994,125 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Monterrey_340_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CA",
+      "city": "Ajax",
+      "regionToken": "MPPBMFGPHP7KP",
+      "fingerprint": "8d165634f24dfff3a8f311f2ecbdc1518dc9361e59165ddc7436a1dcb8018e9b",
+      "groups": 9,
+      "localCells": 35,
+      "coldMapRequests": 35,
+      "warmMapRequests": 35,
+      "scooters": 322,
+      "stationaryReferences": 14,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:36:09.973Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ajax,_ON_13_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Coquitlam",
+      "regionToken": "PQM4Z4KZCQGTH",
+      "fingerprint": "9c3a7208212ddb27c4ee402f8b569aceab7762a9e6c2a3ee9a0835beea61b24c",
+      "groups": 2,
+      "localCells": 8,
+      "coldMapRequests": 8,
+      "warmMapRequests": 8,
+      "scooters": 181,
+      "stationaryReferences": 32,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:37:20.049Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tri-Cities,_BC_183_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Laval",
+      "regionToken": "WZRWUZ3IHWZQT",
+      "fingerprint": "2181720abde7304116c1064d8629a6580793bb788f03a788fb51e70f8ca7a932",
+      "groups": 6,
+      "localCells": 23,
+      "coldMapRequests": 23,
+      "warmMapRequests": 23,
+      "scooters": 502,
+      "stationaryReferences": 36,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:40:15.165Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Laval,_QC_156_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Montréal",
+      "regionToken": "CEW7FOKJMOSNJ",
+      "fingerprint": "0796e1fdbb8cc25f9be046608d11aa202568045c014e5f9ef53c0b83aecf40d6",
+      "groups": 2,
+      "localCells": 6,
+      "coldMapRequests": 6,
+      "warmMapRequests": 6,
+      "scooters": 147,
+      "stationaryReferences": 115,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:41:11.002Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Montreal_186_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Port Moody",
+      "regionToken": "PQM4Z4KZCQGTH",
+      "fingerprint": "e561064612bbb04a1a17f1e6b55c74c6efc13ad74b808e61200a07481e560bce",
+      "groups": 7,
+      "localCells": 26,
+      "coldMapRequests": 26,
+      "warmMapRequests": 26,
+      "scooters": 118,
+      "stationaryReferences": 16,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:46:25.451Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tri-Cities,_BC_183_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Richmond",
+      "regionToken": "QMXPTBNWTM7BG",
+      "fingerprint": "bad5f104846abf9f9993cff749c2159081f29fd12f01391b6229b5eacc9feca6",
+      "groups": 7,
+      "localCells": 25,
+      "coldMapRequests": 25,
+      "warmMapRequests": 25,
+      "scooters": 191,
+      "stationaryReferences": 49,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:49:34.291Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Richmond,_BC_154_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Vaughan",
+      "regionToken": "ZOOUYXHNWQPH7",
+      "fingerprint": "40d2fd0a84e81a11cbe9fee2959e06a75efeda5f1e4749884abb652c10a3a806",
+      "groups": 17,
+      "localCells": 67,
+      "coldMapRequests": 67,
+      "warmMapRequests": 67,
+      "scooters": 415,
+      "stationaryReferences": 83,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:57:37.400Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {
