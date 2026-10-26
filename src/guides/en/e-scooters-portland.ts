@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Portland: Lime and Lyft, what a ride costs, the rules, and where to lock up',
   lede: 'E-scooters in Portland, Oregon come from two apps, Lime and Lyft (which runs BIKETOWN), the only companies in the City’s permanent programme since 2024. Lyft’s open data listed $1.00 to unlock and $0.41 a minute on 25 October 2026; Lime shows its price in its app. Ride in the street, in bike lanes or on multi-use paths, never on the sidewalk, wear a bicycle helmet, and lock the scooter to a bike rack or a signpost when you’re done.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'us:or:Portland',
   sections: [
     {
@@ -24,7 +24,7 @@ const guide: Guide = {
             '**The term.** The contracts run from 2024; PBOT’s pages give no end date.',
           ],
         },
-        'At 11:47 pm on Saturday 24 October 2026 the [map of Portland](map:us:or:Portland) showed about 1,130 scooters, all Lyft, and about 1,170 at 4:26 am that morning: late-night counts of what’s on the map, not the fleet. The map shows Lyft’s standing scooters only. Lime’s scooters are only in the Lime app, and BIKETOWN’s e-bikes aren’t on the map.',
+        'At 11:47 pm on Saturday 24 October 2026 the [map of Portland](map:us:or:Portland) showed about 1,130 scooters, all Lyft, and about 1,170 at 4:26 am that morning: late-night counts of what’s on the map, not the fleet. Since 26 October 2026 the map shows Lime’s scooters too, from the map in its app: about 2,160 across the city on the night of 25 to 26 October. BIKETOWN’s e-bikes aren’t on the map.',
         '**Visiting?** Get the app before you set out. Lyft’s riders must be 18 or over, and your first Lyft ride is held to 10 mph. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -119,7 +119,7 @@ const guide: Guide = {
             '**Helmets.** PBOT handed out free helmets with Plaid Pantry stores in summer 2026, and Lime gave away more than 1,000 in 2025.',
           ],
         },
-        'The [Portland map](map:us:or:Portland) shows the nearest Lyft scooter and the walk to it.',
+        'The [Portland map](map:us:or:Portland) shows the nearest Lime or Lyft scooter and the walk to it.',
       ],
     },
     {
