@@ -24,6 +24,18 @@
       "description": "The map shows no scooters anywhere and /ready answers 503. Look at the snapshot_feed_failed lines in Loki ({app=\"scootradar-cache\"}): the network, or every operator at once."
     },
     {
+      "uid": "scootradar-down-15m",
+      "title": "ScootRadar down for 15 minutes",
+      "expr": "clamp_max(((min(up{job=\"scootradar-cache\"}) < bool 1) or vector(0)) + ((sum(scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}) < bool 1) or vector(0)), 1)",
+      "for": "15m",
+      "severity": "critical",
+      "noDataState": "OK",
+      "execErrState": "KeepLast",
+      "notify": "user",
+      "summary": "ScootRadar has been down for its users for 15 minutes: the map shows no scooters.",
+      "description": "For 15 minutes Prometheus has not been able to scrape the feed cache, or every feed has been expired, so scootradar.com and the apps show no scooters anywhere. The Worker answers a request the cache fails with the last good answer it kept for that same request, at most 15 minutes old, so none is left by now. \"ScootRadar cache target down\" (3 minutes) and \"ScootRadar serves no scooters\" (5 minutes) say which, and fired first; start from their descriptions. Each term answers 0 when its series are missing, as the feed states are once the cache is down. No data leaves the rule normal and a query error leaves it as it was: a Prometheus outage is not a site outage, and \"target down\" reports it."
+    },
+    {
       "uid": "scootradar-collector-stalled",
       "title": "ScootRadar collector stalled",
       "expr": "time() - max(scootradar_snapshot_updated_timestamp_seconds{job=\"scootradar-cache\"}) > bool 300",
@@ -52,16 +64,8 @@
       "severity": "warning",
       "noDataState": "KeepLast",
       "perSeries": true,
-      "notificationSettings": {
-        "receiver": "telegram-paul",
-        "group_by": [
-          "grafana_folder",
-          "alertname"
-        ],
-        "repeat_interval": "1d"
-      },
       "summary": "{{ $labels.provider }} feed {{ $labels.feed }} in {{ $labels.country }} has listed no available scooter for 3 days.",
-      "description": "The feed answers but has listed no available standing scooter for 3 days, outside any seasonal pause: the map shows none of its scooters. A quiet night or a snow day does not last that long. The operator may have left the town, taken its scooters in for a season the catalog does not know, or its feed may be broken while still answering. Check the operator's site or app and the town's own pages, then: add a `seasonal` window to the catalog if the city or the operator publishes one; remove the feed and record it in docs/coverage-gaps.md if the scooters are gone; or silence the feed in Grafana while waiting. A catalog feed whose operator lists nothing at all (Bird's town with no scooter and no time, a Dott region it has paused) counts as empty; a Swiss system sharedmobility.ch lists after its operator stopped does not. Feeds followed for under 3 days, paused at any time in the last 3, or expired over half of the last day (the feed-stopped alert's) are not reported. Reminded once a day while it lasts. Its counts: scootradar_feed_vehicles{feed=\"{{ $labels.feed }}\"} in Prometheus."
+      "description": "The feed answers but has listed no available standing scooter for 3 days, outside any seasonal pause: the map shows none of its scooters. A quiet night or a snow day does not last that long. The operator may have left the town, taken its scooters in for a season the catalog does not know, or its feed may be broken while still answering. Check the operator's site or app and the town's own pages, then: add a `seasonal` window to the catalog if the city or the operator publishes one; remove the feed and record it in docs/coverage-gaps.md if the scooters are gone; or silence the feed in Grafana while waiting. A catalog feed whose operator lists nothing at all (Bird's town with no scooter and no time, a Dott region it has paused) counts as empty; a Swiss system sharedmobility.ch lists after its operator stopped does not. Feeds followed for under 3 days, paused at any time in the last 3, or expired over half of the last day (the feed-stopped alert's) are not reported. Its counts: scootradar_feed_vehicles{feed=\"{{ $labels.feed }}\"} in Prometheus."
     },
     {
       "uid": "scootradar-discovery-stale",

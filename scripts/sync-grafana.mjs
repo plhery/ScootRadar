@@ -68,13 +68,14 @@ function toProvisionedRule(rule) {
     condition: 'B',
     data: [query(rule), condition(rule)],
     noDataState: rule.noDataState,
-    execErrState: 'Error',
+    execErrState: rule.execErrState ?? 'Error',
     for: rule.for,
     annotations: { summary: rule.summary, description: rule.description },
-    labels: { service: 'scootradar', severity: rule.severity },
+    // notify=user is what the notification policies send to Telegram; every other rule stays in Grafana.
+    labels: { service: 'scootradar', severity: rule.severity, ...(rule.notify && { notify: rule.notify }) },
     isPaused: false,
     // A rule may send to its contact point directly, with its own grouping and reminders, rather
-    // than through the notification policies (a reminder every 4 hours by default).
+    // than through the notification policies. None does: Telegram is for notify=user alone.
     notification_settings: rule.notificationSettings ?? null,
   };
 }

@@ -4,7 +4,8 @@ The scooter feed cache on Netcup (see [DEPLOY.md](../DEPLOY.md)) reports in four
 places. None of them holds a map URL, coordinates or a visitor's address.
 
 - **Prometheus** scrapes its `/metrics` every 30 seconds. **Grafana** draws them on the
-  "ScootRadar — Scooter feeds" dashboard and alerts on them through Telegram.
+  "ScootRadar — Scooter feeds" dashboard and alerts on them; only the site being down
+  for its users reaches Telegram.
 - **Sentry** (project `scootradar-cache`) gets unexpected errors, plus one event
   each time a feed stops being served for 5 minutes.
 - **Loki** keeps its log lines for 30 days under `app="scootradar-cache"`.
@@ -215,9 +216,10 @@ The alert rules:
 | --- | --- |
 | ScootRadar cache target down | Prometheus cannot scrape the cache for 3 minutes |
 | ScootRadar serves no scooters | every feed has expired for 5 minutes |
+| ScootRadar down for 15 minutes | either of the two above has held for 15 minutes: users see no scooters. The one rule sent to Telegram (see below) |
 | ScootRadar collector stalled | no collection has finished for 5 minutes (Swiss feeds alone finish one every few seconds) |
-| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes (15 for Voi Switzerland, as Sentry), by its cadence's rule; one notification per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported; nor under a night ban at all its service areas, until 30 minutes after it, as Sentry (the ban holds the feed out for 20 minutes after it ends, then the rule waits its 10) |
-| ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning, repeated once a day |
+| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes (15 for Voi Switzerland, as Sentry), by its cadence's rule; one alert per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported; nor under a night ban at all its service areas, until 30 minutes after it, as Sentry (the ban holds the feed out for 20 minutes after it ends, then the rule waits its 10) |
+| ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 2.7 GB, or a V8 heap over 1.5 GB, for 15 minutes (the container's limit is 3072 MiB, of which Node gives the heap 1632 MiB, and the heap runs out first) |
@@ -238,9 +240,19 @@ Prometheus reads one, then the other. When the rule counted every change of the 
 time, one deploy made three, and the second deploy within an hour fired it: seven times
 from 11 to 13 October 2026, with no crash.
 
-The default notification policy sends them all to the `telegram-paul` contact point,
-reminding every 4 hours while they fire. "Feed empty" goes there through its own
-`notificationSettings` (Grafana's `notification_settings`), which remind once a day.
+Since 26 October 2026 Grafana's default notification policy sends them to
+`grafana-only`, a contact point with no integration: they fire in Grafana and notify
+no one. Only a rule labelled `notify=user` reaches the `telegram-paul` contact point,
+grouped by alert name; here that is "ScootRadar down for 15 minutes" alone. A rule
+takes the label from `"notify": "user"` in the source, and the sync puts it back if it
+goes missing live. "Feed stopped" went to Alerting 207 times in the 14 days before, once
+per feed; Grafana still shows it. "Down for 15 minutes" adds the two critical rules
+that say users see nothing: the cache cannot be scraped (`up`), or every feed has
+expired. Each term falls back to 0 when its series are missing, since the feed states
+go stale once the cache is down, and a query error keeps its last state, so a
+Prometheus outage does not reach Telegram. The Worker's last good answers (see
+[DEPLOY.md](../DEPLOY.md)) are at most 15 minutes old and only for a request made
+before, so by then no user has scooters: the wait is not lengthened for them.
 The dashboard's "Expired, rarely served" table lists the others: silence isn't
 success. A feed that dies stops alerting once it has been dead for half a week, and
 moves to that table. "Oldest positions held" shows feeds coming close
