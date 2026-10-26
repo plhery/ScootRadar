@@ -227,7 +227,7 @@ test('the landing page leads to the map, and to the map of a city', async ({ pag
   await expect(page.getByRole('link', { name: 'Open the map' })).toHaveCount(3);
 
   const cities = page.locator('#cities');
-  await expect(cities.getByRole('heading', { level: 2 })).toHaveText(/^\d+\u00a0cities\.$/);
+  await expect(cities.getByRole('heading', { level: 2 })).toHaveText(/^\d[\d'’,]*\u00a0cities\.$/);
   await expect(cities.locator('.lede')).toHaveText(/^Shared e-scooters from \d+\u00a0providers in \d+\u00a0countries\. Where no provider/);
   await expect(cities.getByRole('link', { name: 'Zürich', exact: true })).toHaveAttribute('href', /^\/map\?origin=47\.\d+,8\.\d+$/);
   await expect(cities.getByRole('link', { name: 'Roma', exact: true })).toHaveAttribute('href', /^\/map\?origin=41\.\d+,12\.\d+$/);

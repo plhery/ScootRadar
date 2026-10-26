@@ -627,7 +627,7 @@ test('an area without scooter data offers the closest cities and makes the one c
   await page.goto('/map?origin=46.7741,8.1558');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-  await expect(dock.getByText(/^ScootRadar covers \d+\u00a0cities in \d+\u00a0countries\.$/)).toBeVisible();
+  await expect(dock.getByText(/^ScootRadar covers \d[\d'’,]*\u00a0cities in \d+\u00a0countries\.$/)).toBeVisible();
   await expect(page.locator('.sheet-count')).toHaveCount(0);
   await expect(page.getByRole('group', { name: 'Filter scooters by provider' })).toHaveCount(0);
   const cities = dock.getByRole('group', { name: 'Closest cities' }).getByRole('button');
