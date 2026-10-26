@@ -14,10 +14,10 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 89 towns in 32 states and the District: Washington, DC (Hopp,
-Veo and Lime), 24 towns of Bird's, 21 of Lime's (4 from its rider map), 39
+The map covers 93 towns in 32 states and the District: Washington, DC (Hopp,
+Veo and Lime), 24 towns of Bird's, 26 of Lime's (9 from its rider map), 39
 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's Los
-Angeles, Arlington and Alexandria, Virginia. In 26 of them, from Tempe and
+Angeles, Arlington and Alexandria, Virginia. In 27 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Ten of the towns ban renting at
 night; see [Night bans](#night-bans).
@@ -29,11 +29,13 @@ state's centre of population (US Census Bureau, 2020).
 ## Lime supplement — 26 October 2026
 
 Lime publishes no feed for most of its American markets, so its authenticated
-rider map supplies them, each market whole after a clean full-area audit on
-the evening of 25 October 2026, local time: Raleigh (566 scooters, beside
-Spin's), Indianapolis (984, beside Bird's), Cincinnati (236) and Fairfax (75,
-beside Bird's, around George Mason University), every stationary reference
-found. Cincinnati rents Bird's and Lime's scooters only from 06:00
+rider map supplies them, each market whole after a clean full-area audit,
+every stationary reference found. On the evening of 25 October 2026, local
+time: Raleigh (566 scooters, beside Spin's), Indianapolis (984, beside
+Bird's), Cincinnati (236) and Fairfax (75, beside Bird's, around George Mason
+University). Just after midnight on 26 October: Tampa (1,393, beside Spin's),
+Orlando (765), St. Petersburg (586, downtown), Winston-Salem (241) and
+Lansing (173, with East Lansing and Michigan State's campus). Cincinnati rents Bird's and Lime's scooters only from 06:00
 to 23:00, so the map holds a night ban there (see [Night bans](#night-bans)).
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
@@ -784,7 +786,26 @@ Rules that read like bans but are not, or that no primary source confirms:
   licence agreement with Spin sets no hours.
 - **Fort Collins:** Spin stopped from 01:00 to 03:00 until the city's 2023
   annual report: "Spin expanded service hours to 24 hours per day."
-- **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Tampa,
+- **Orlando:** the city's
+  [Bike Share & Scooter Share page](https://www.orlando.gov/Initiatives/Bike-Share-Scooter-Share-Program)
+  makes the Orange Avenue corridor of the Downtown Entertainment District a
+  no-ride and no-park zone for shared bikes and scooters from 20:00 to 04:00
+  on Fridays, Saturdays and Sundays: a district rule. City Code § 10.05 lets
+  the director set hours when scooters may not be ridden; none is published.
+- **St. Petersburg:** a request for proposals of January 2025 (RFP 25-002,
+  since cancelled) says the program "has operational hours that are between
+  5am and midnight daily", while a staff packet for the city's
+  transportation committee of 8 May 2025 says the curfew moved to 02:00,
+  with a 05:00 start, in 2023. The agreements signed with Lime and Spin in
+  June 2025 aren't published, and the city's
+  [Scooter Safety page](https://www.stpete.org/visitors/scooter_safety.php)
+  gives no hours. Lime's map held 586 scooters there from 00:58 to 01:01 EDT
+  on 26 October 2026. Left out: no rule in force found.
+- **Winston-Salem:** [Ordinance 2024-4](https://www.cityofws.org/DocumentCenter/View/43552/Appendix-A---2024-4)
+  (4 March 2024) dropped the 2019 code's 21:00–06:00 hours, and the code's
+  micromobility article (Chapter 78, Article XIV, read on 26 October 2026)
+  sets none. New permits start on 5 November 2026.
+- **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Tampa, Lansing,
   Fayetteville, Wichita, Manhattan, Charlottesville, Hartford, New Haven,
   Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette and Carbondale:**
   no hours in what was read of their rules; SIU's page says Veo runs "24

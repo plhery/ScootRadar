@@ -213,7 +213,8 @@ describe('searchCoveredCities', () => {
       'St. Albert, AB, Canada', 'St. Gallen, Switzerland', 'St. George, UT, United States', 'St. Louis, MO, United States', 'St. Paul, MN, United States',
     ]);
     expect(searchRegionalScooterCities('St').map(city => city.display_name)).toEqual([
-      'St. Albert, AB, Canada', 'St. George, UT, United States', 'St. Louis, MO, United States', 'St. Paul, MN, United States', 'Starogard Gdański, Poland',
+      'St. Albert, AB, Canada', 'St. George, UT, United States', 'St. Louis, MO, United States', 'St. Paul, MN, United States',
+      'St. Petersburg, FL, United States',
     ]);
   });
 

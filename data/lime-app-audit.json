@@ -2181,6 +2181,91 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Raleigh_2802_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Lansing",
+      "regionToken": "RL6JXNLJ6USN6",
+      "fingerprint": "72f8002f053ea88260397fdd06e6ba1ed0128a8d0f578ed106d909cb05e9b29c",
+      "groups": 23,
+      "localCells": 90,
+      "coldMapRequests": 90,
+      "warmMapRequests": 90,
+      "scooters": 173,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T04:43:11.579Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Lansing_157_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Orlando",
+      "regionToken": "PYU2QWTRXCDAY",
+      "fingerprint": "982634e5bc88a9b0b232a7066b64dfc827c17ba64682beb9780987c75147ea24",
+      "groups": 32,
+      "localCells": 128,
+      "coldMapRequests": 128,
+      "warmMapRequests": 128,
+      "scooters": 765,
+      "stationaryReferences": 54,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T04:58:21.746Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Orlando_7346_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "St. Petersburg",
+      "regionToken": "IS6V6HOUMWVQ2",
+      "fingerprint": "816efab3f788d152044609e3bf2a2cd7058f36fa7ae0a9feec03cccca74d8443",
+      "groups": 4,
+      "localCells": 16,
+      "coldMapRequests": 24,
+      "warmMapRequests": 24,
+      "scooters": 586,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T05:01:23.562Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/St._Petersburg,_FL_473_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tampa",
+      "regionToken": "WI6QELL5YMAQ4",
+      "fingerprint": "dd5bd3176eb66230ca2d0399dd7341bd060a8c06c19c9e194046c49c94c29ba5",
+      "groups": 56,
+      "localCells": 223,
+      "coldMapRequests": 239,
+      "warmMapRequests": 239,
+      "scooters": 1393,
+      "stationaryReferences": 123,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T05:29:30.734Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tampa_2979_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Winston-Salem",
+      "regionToken": "U6IWTIPWYNXA4",
+      "fingerprint": "a6abd27fdd2975bee85a37f49063233e6184f0488c7d3a143fef35621b9ed007",
+      "groups": 12,
+      "localCells": 46,
+      "coldMapRequests": 46,
+      "warmMapRequests": 46,
+      "scooters": 241,
+      "stationaryReferences": 74,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T05:35:06.736Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Winston-Salem_247_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

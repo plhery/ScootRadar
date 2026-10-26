@@ -456,7 +456,7 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns, Lime in 21 (4 of them from its rider
+  in Washington, DC, Bird in 24 towns, Lime in 26 (9 of them from its rider
   map since 26 October 2026), Veo in 39 more, Spin in 29 and Lyft in Chicago
   and Portland are covered.
   - **No public feed:** a survey on 16 October 2026 found no unread US feed.
@@ -468,9 +468,10 @@ banned shared scooters, and feeds that were empty when checked.
       Veo on the map), Milwaukee (2,400), Portland, OR (2,300, beside Lyft),
       Dallas (up to 1,750, beside Bird), Charlotte, Spokane, Sacramento,
       Phoenix (beside Spin), Boise, Minneapolis (beside Spin), Alexandria,
-      St. Petersburg, Albuquerque, Tucson, Boulder, Oklahoma City, Los Angeles,
-      Long Beach, and smaller towns. Its rider map has supplied Raleigh,
-      Indianapolis, Cincinnati and Fairfax since 26 October 2026
+      Albuquerque, Tucson, Boulder, Oklahoma City, Los Angeles, Long Beach,
+      and smaller towns. Its rider map has supplied Raleigh, Indianapolis,
+      Cincinnati, Fairfax, Tampa, Orlando, St. Petersburg, Winston-Salem and
+      Lansing since 26 October 2026
       ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
     - **Bird and Lime** together in Austin (about 5,400).
     - **Bird** in Charlotte, Sacramento, Oklahoma City and Bloomington, IN

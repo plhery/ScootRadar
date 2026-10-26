@@ -199,6 +199,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | Mexico: Monterrey and Guadalupe | 29 | 8 | 2,912 | 68 |
 | 26 October 2026 | Canada: Ajax, Coquitlam, Laval, Montréal (Parc Jean-Drapeau), Port Moody, Richmond, Vaughan | 190 | 50 | 1,876 | 345 |
 | 26 October 2026 | United States: Indianapolis, Raleigh, Cincinnati, Fairfax | 756 | 190 | 1,861 | 213 |
+| 26 October 2026 | United States: Tampa, Orlando, St. Petersburg, Winston-Salem, Lansing | 503 | 127 | 3,158 | 253 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

@@ -50,12 +50,15 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Cincinnati', 'Fairfax', 'Indianapolis', 'Raleigh']);
-    for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati']) {
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Cincinnati', 'Fairfax', 'Indianapolis', 'Lansing', 'Orlando',
+      'Raleigh', 'St. Petersburg', 'Tampa', 'Winston-Salem']);
+    for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
+      'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
     expect(lime.find(entry => entry.city === 'Cincinnati')).toMatchObject({ region: 'OH', timeZone: 'America/New_York' });
+    expect(lime.find(entry => entry.city === 'Lansing')).toMatchObject({ region: 'MI', timeZone: 'America/Detroit' });
   });
 
   it('keeps Spin\'s University of Utah scooters, on the campus inside Salt Lake City\'s outline, under Salt Lake City', () => {

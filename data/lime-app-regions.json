@@ -2822,6 +2822,106 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Raleigh_2802_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Lansing",
+      "center": [
+        42.73253,
+        -84.55553
+      ],
+      "region": "MI",
+      "timeZone": "America/Detroit",
+      "regionToken": "RL6JXNLJ6USN6",
+      "serviceAreas": [
+        {
+          "name": "Lansing Service Zone [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "kgkcGrfdcO~g@C?cSAma@tSA@zUtWAAga@ol@BEwtBC{_Bm{@Ds\\@aXMbZaOxGw[CuS{B`AyVm{@sGM?|H`F??bKwD|BcD??~KpIA@zVwD??z\\aU@@`RpI??|Ksq@DAa~@CqyAye@@wfADAs^D?Ch^|O@fE@Hc~@_A?oSA?u\\}WEaBAei@g@??C}QAwNA}PAmTAgY?ib@q@Cs@A{@?mCBkN?wDBwLF]?uK@kH?yE?cA?i@@mEAc@AsCAuHByA?W?o@?ToAX{AJsAj@cAz@cAfAe@x@Y`AOXH|@dAb@dA?wQwKH{ZRkD??kIBsO@yA?kCwA?uD@mB@oA?eB?kC?W?MFORBkLcQBCqP_C@S@yM@}E@cC?eKF?}AAeLEmN@_@cEAAzG?h@W@e@EYCa@C]Wc@[aCcAe@w@K{Ac@Wg@e@UWeBwBQM[i@Qe@u@yAMs@Ei@@AOaDCcA?AgJI?B?~AqB?sGC?lA?tD?pFzDrDhArA|@jAv@fAn@`A~@~Az@dB`A`Cr@nBb@lAr@hChA|Ep@vDlA`HCrEFxZBjP?@F~HEbHO?G?qBDaLEyA?gHA??@xS?`E?`C@bBAbF@fG?~@?hB@vE@~B@dEClDAVEXCPGPKROPMJKDMBO@}FCgCCMz@C`HGhHoAAf@pJhPHAjEBFBN?TAtDApEiLAgKAp@{Lf@aIiFC@uB_E_AcHq@G@yUD@sC?]AePuTF?~@DxN?h@kUG?gDE?CkLCiQMo{@Duz@?w@_UC}a@d@sQHO?oLB{JBGn|@ce@V?TZlOdXULlTrUrD@xBHB@bK`@?@tGBbc@|_@Yz`@HnI?BhXbCApDC`F?dDAjB@D?~AAA~[?d@mIDItXAvD?@?@oCAYA[?BsDBaWkZJyB@gRDCcBBcFgCA@uS@k@w@??h@IfVi@d@MLkHpHgGlFc@gCGs@EwAAuA?wLyB??}GdB??SeB?@mBvB?@{C?IwCFK?@~CgA@AaDi@@?|CoC@@_DuFA}EBaLCmA?{B@_UFiB?{GA@dIwCC@oBaEBAnAKl@UxAWdAa@r@o@fAo@nAIVa@rAc@pA_@dAAv@pN@BoBtC?Dd[@|Ehk@]dNBnGDBfSIlHb@?zMWN@`@Pf@TTFZBZ?`@?L@Al]AdI?hCAvJ?pBuUQGn\\Pb@dU@D?pTMtMF~ZPnDObCQr@IvCc@~Bc@zBa@dAWpe@_PvFuCzBgCpAB~AAnGCl@?x@Bg@?@~t@@|e@tU?BldAmP@_D_GqaADQlmCErgAAt]C?aD?yH?kB?CWEWEUEUGUIUIUGSGWGWCWEWAYAW?Y?eMxCmBTKTMTITGTGVEPANAPAJFJD?MxE?vAA?e@Q??i@a@?e@@?qDyA??sFuD??vIe@?cIgL@sKaK??yE?q@?{E@{EAqGM?BeRyAHiNlA}Ff@uEb@Gzk@sUEAx]jI?AfLkIKgPMa[OAbRAn|@Cp|@{SDElw@nB@?dCpA?ApErD@@wEaAA@}VjJB?_EvLEhGAH?Bvc@rUCrUMzbAP?GpY?hQDjhAGAgSiS@O{CrE}Nh@Z`@uAq@]p@yCZcFJoBwAgQkA{My@eNzWCAeMtHA?sFjo@Kxh@Jzq@Ah@E?f@RVnAA?WvL?i@l^PdAAhCh@x@`BqA|C~IeBtAnGpTvOfUVaHxAuFmG}CsC_DuA_DeB}EaCgJKi@EuEmCkY|A?zAAnBhONjH~@`KtC|IzC`FvHzC|Dz@|DhC~C`Fr@xBjEzDdCxD?dB~XrZ|MA~KAdc@BAzCsPE?|Ak@?Jrg@bCfCzCnAtBc@hELvBlECzQpJaAvJ}ExC`A`BlBBlFlJpOrI`KTfDv@lDnODRsf@PwcA`M?Gzn@vt@GAw]f`@CAs^pXAJoWDmLdAoNfBqHhD}EnAuCn@eDGwK_DiZ?uGxMywA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Lansing_157_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Orlando",
+      "center": [
+        28.53834,
+        -81.37924
+      ],
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "regionToken": "PYU2QWTRXCDAY",
+      "serviceAreas": [
+        {
+          "name": "Orlando Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ammmDdmtoNkb@|LwH|JJ~t@qCbg@yElZFpTj}A~@z@nRw|@xJk`BmOk|@zbCpTlbCmZfDrQtNhqAbI|Xw^`MECaNzU_B~@~Ufl@tAhNgZlDus@~|Axr@_AyyCja@WpWir@f{@lBfh@liEzAlmEd`@G|DbMrb@rJl@tUpdA`Ppb@iNxjCmeBKms@vhA\\tjAnwAtGpC~FbA`S@nRElMI~`C{@~YI|Jb@kBkwBm\\CwMwD}JuF}MsE}ChIaBbT@|TgB|T{GjO}KpEeMFgKs@kQoDw^wCHw}AqeAPk@ap@h}@gB|CcDGwZsg@{}@ij@ek@c|Da_AEfl@{TrEmDrIeq@lAS{rBu`@NkBdXqRBgfAhXc@ypAfVkm@dx@wPlD}Fbo@u@OqZfv@eBvBsgCygDbLkA}XsTHi@mRlAgDhFCXw_@nIuAxBef@nJ{AFyXvSWDfX~_@Ga@}c@zj@oLNkmAjy@aBEmUlyGptBpIkySw~AjqHo_Bb|Auk@puAwl@mAiUuu@wk@{MynAtDaWjXgeBuc@i@frB_i@N_Ars@ml@|ECzl@yLU\\`OaHA?aOiAAw@wKsQCKgX_VPOge@qhBV{Ab@Hvx@`P@^hOf@VbFcAjBJtBvBlEb@LzV{IBMpGgIBLpj@naAQVlkAyLNP|c@of@iS_^lTLpB_Bj@aAf~A"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Orlando_7346_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "St. Petersburg",
+      "center": [
+        27.77086,
+        -82.67927
+      ],
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "regionToken": "IS6V6HOUMWVQ2",
+      "serviceAreas": [
+        {
+          "name": "25567.9832066074[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ajjhD|vrwNAug@QqtDFigAwHuUufAaWov@jEz@nQ@te@oJ?cNyBQ{CsC?c@~AaRoHoBqSqKm@?hKkCDgMuH_GoDUOKwAsCcBIxAyYcQ}@~AyDdSe@z@aC`@sCb@k@h@}@lIeAvIArARtvHv}DaArGkV`uAT"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/St._Petersburg,_FL_473_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tampa",
+      "center": [
+        27.9506,
+        -82.4572
+      ],
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "regionToken": "WI6QELL5YMAQ4",
+      "serviceAreas": [
+        {
+          "name": "[Tampa][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "swijD|_ovNsEgqVdxBjzBtaChCntGc@nb@qu@lIeuCbcEmb@fcAxbHfgBhCnvBha@jJzoIjnOiRj]ddOkoKddD{yQzqH{{AwmIwnBmdEk~DylDuaFk~@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tampa_2979_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Winston-Salem",
+      "center": [
+        36.09986,
+        -80.24422
+      ],
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "regionToken": "U6IWTIPWYNXA4",
+      "serviceAreas": [
+        {
+          "name": "[Winston-Salem][Winston][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "u`q{E|maiNdw@teBfnAtWpdC}Srk@}T`s@gn@f^{PxScm@xr@cuAqU}dBrAimAqHyh@iJgoAlRobDqo@ucAmiDvXs|A~gAwnAn_Bwt@dhB_x@~gB|Rf]pIno@I|j@vWfvB??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Winston-Salem_247_exclude_new_type.json"
+      ]
     }
   ]
 }
