@@ -114,17 +114,22 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
  * the map tells people the provider is not sharing data, or would as soon as
  * someone looked. Being idle is not enough: an idle feed expires only after its
  * interval and ten minutes (half an hour by default) without a successful collection.
- * One issue per feed, with at most one event an hour, so a feed that keeps
- * expiring between updates stays quiet.
+ * One issue per host the feed is collected from, as an outage there stops its feeds
+ * together: Voi's app map stopped ten German towns' within twelve minutes on
+ * 25 October 2026, each its own issue then. Each feed is an event of its host's,
+ * tagged with the feed, at most one an hour, so a feed that keeps expiring between
+ * updates stays quiet; `alsoExpired` lists the host's other feeds expired by then.
  */
-export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined, now = Date.now()) {
+export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined,
+  host: string, alsoExpired: string[], now = Date.now()) {
   if (!due(`expired:${feed.id}`, now)) return;
   Sentry.withScope(scope => {
     scope.setLevel('warning');
-    scope.setFingerprint(['snapshot-feed-expired', feed.id]);
-    scope.setTags({ feed: feed.id, source: feed.source, provider: feed.provider });
+    scope.setFingerprint(['snapshot-feed-expired', host]);
+    scope.setTags({ feed: feed.id, source: feed.source, provider: feed.provider, host });
     scope.setContext('feed', { ...change,
       lastError: feed.failed ? lastError ?? 'unknown' : 'none: the last collection succeeded, and its data has since passed the age limit' });
-    Sentry.captureMessage(`Feed stopped being served: ${feed.id}`);
+    scope.setContext('host', { host, alsoExpired: alsoExpired.length ? alsoExpired : 'none' });
+    Sentry.captureMessage(`Feeds stopped being served from ${host}`);
   });
 }

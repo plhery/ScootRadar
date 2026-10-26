@@ -313,7 +313,13 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
   report: (change, feed) => {
     // In its seasonal pause, or closed by its operator for the season, a feed is expected to stop;
     // the log still says it did.
-    if (!snapshotPaused(feed, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
+    const now = Date.now();
+    if (snapshotPaused(feed, now)) return;
+    const hostOf = new Map(collectable.map(definition => [definition.id, definition.host]));
+    const host = hostOf.get(feed.id) ?? 'unknown';
+    const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
+      !snapshotPaused(other, now) && feedState(other, now, cadence) === 'expired').map(other => other.id).sort();
+    reportFeedExpired(change, feed, lastErrors.get(feed.id), host, alsoExpired);
   } });
 const persistenceTimer = setInterval(() => {
   const now = Date.now();

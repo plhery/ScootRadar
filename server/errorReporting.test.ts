@@ -72,20 +72,29 @@ it('reports a repeating error once an hour per key', () => {
   expect(Sentry.captureException).toHaveBeenCalledTimes(3);
 });
 
-it('groups the expiries of a feed, one event an hour, and says why it expired', () => {
+it('groups the expiries of a host\'s feeds, one event an hour for each, and says why each expired', () => {
   const feed = { id: 'national:voiscooters.com', source: 'national' as const, provider: 'voi', coverage: [], vehicles: [],
     observedAt: 0, attemptedAt: 0, stale: false, failed: false, skipped: false };
   const change = { event: 'snapshot_feed_state' as const, feed: feed.id, state: 'expired' as const, previous: 'ok' as const,
     secondsInPrevious: 35, observationAgeSeconds: 905, attemptAgeSeconds: 35 };
-  reportFeedExpired(change, feed, undefined, 0);
+  const host = 'api.sharedmobility.ch';
+  reportFeedExpired(change, feed, undefined, host, [], 0);
   // A feed that keeps expiring between updates is one event an hour.
-  reportFeedExpired(change, feed, undefined, 600_000);
-  reportFeedExpired(change, { ...feed, failed: true }, 'GBFS request failed with HTTP 503', 3600_000);
+  reportFeedExpired(change, feed, undefined, host, [], 600_000);
+  // Another feed of the host is another event of the same issue.
+  reportFeedExpired({ ...change, feed: 'national:bolt_zurich' }, { ...feed, id: 'national:bolt_zurich', provider: 'bolt' }, undefined,
+    host, ['national:voiscooters.com'], 600_000);
+  reportFeedExpired(change, { ...feed, failed: true }, 'GBFS request failed with HTTP 503', host, ['national:bolt_zurich'], 3600_000);
   expect(scope.setLevel).toHaveBeenCalledWith('warning');
-  expect(scope.setFingerprint).toHaveBeenCalledWith(['snapshot-feed-expired', 'national:voiscooters.com']);
-  expect(scope.setContext.mock.calls.map(([, context]) => context.lastError)).toEqual([
+  expect(scope.setFingerprint.mock.calls).toEqual(Array(3).fill([['snapshot-feed-expired', host]]));
+  expect(scope.setTags.mock.calls.map(([tags]) => tags.feed)).toEqual(['national:voiscooters.com', 'national:bolt_zurich', 'national:voiscooters.com']);
+  const contexts = (name: string) => scope.setContext.mock.calls.filter(([key]) => key === name).map(([, context]) => context);
+  expect(contexts('feed').map(context => context.lastError)).toEqual([
+    'none: the last collection succeeded, and its data has since passed the age limit',
     'none: the last collection succeeded, and its data has since passed the age limit',
     'GBFS request failed with HTTP 503',
   ]);
-  expect(Sentry.captureMessage).toHaveBeenCalledWith('Feed stopped being served: national:voiscooters.com');
+  expect(contexts('host').map(context => context.alsoExpired)).toEqual(['none', ['national:voiscooters.com'], ['national:bolt_zurich']]);
+  expect(Sentry.captureMessage).toHaveBeenCalledWith('Feeds stopped being served from api.sharedmobility.ch');
+  expect(Sentry.captureMessage).toHaveBeenCalledTimes(3);
 });

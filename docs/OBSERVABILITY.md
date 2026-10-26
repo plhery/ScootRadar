@@ -323,10 +323,15 @@ Tracing is off, and no trace headers go to the operators' feeds.
   the state its first collections leave is a change (`previous: "warming"`), so one that
   never loads is reported. A shorter blip, as Voi
   Switzerland's 105 seconds on 16 October 2026, is only in the logs. One
-  issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
-  each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
-  `snapshot_feed_state` figures of its expiry and the last collection error, or says that
-  the last collection succeeded and its data then aged past the limit.
+  issue per host the feeds are collected from ("Feeds stopped being served from
+  api.voiapp.io"), as an outage there stops its feeds together: on 25 October 2026 Voi's
+  app map stopped ten German towns' feeds within twelve minutes, then ten issues. Each feed
+  is an event of its host's issue (tags `feed`, `source`, `provider`, `host`: the `feed`
+  tag lists the towns hit), at most one an hour for each, so a feed that keeps expiring
+  between updates stays quiet. Its `feed` context has the `snapshot_feed_state` figures of
+  its expiry and the last collection error, or says that the last collection succeeded and
+  its data then aged past the limit; its `host` context lists the host's other feeds
+  expired by then.
 - **Unexpected errors**: snapshot restore and persistence, feed discovery, a request
   answered 500, and a collection that threw outside the feed's own error handling. Each
   is reported at most once an hour, so a failure repeating every few seconds stays one
