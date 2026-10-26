@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Regels voor de elektrische step in België: leeftijd, helm, voetpad en boetes in 2026',
   lede: 'De regels voor de elektrische step in België, kort samengevat: je moet minstens 16 zijn, je step mag niet sneller kunnen dan 25 km/u, en je rijdt op het fietspad of de rijbaan, binnen de bebouwde kom nooit op het voetpad. Sinds 1 september 2026 is een helm verplicht op steps die sneller kunnen dan 20 km/u; de meeste deelsteps zijn op 20 km/u begrensd en vallen daar dus niet onder. Weegt je eigen step meer dan 25 kg, dan moet hij verzekerd zijn. In Brussel kan je nog tot en met 31 december 2026 een deelstep huren: de Brusselse regering heeft beslist dat deelsteps vanaf 1 januari 2027 verboden zijn, maar je eigen step blijft toegelaten.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'be:Bruxelles',
   sections: [
     {
@@ -124,7 +124,7 @@ const guide: Guide = {
       blocks: [
         'In **Antwerpen** is het hele gebied binnen de Leien sinds **1 juli 2025** een no park zone voor deelsteps. Je beëindigt je rit daar alleen in een van de **129 dropzones**: witte vakken op de grond met ‘dropzone’ erop en een infobord. In drukke winkelgebieden ligt er een binnen 150 meter, elders binnen 250 meter.',
         'Op de **Meir** en de **Grote Markt** rijdt een deelstep tussen 11 en 19 uur hooguit **8 km/u**. Aan Antwerpen-Centraal, op begraafplaatsen en in natuurgebieden remt de step zelf af tot hij stilstaat.',
-        'Bolt, Lime en Voi hebben er een vergunning. De stad houdt het op 16 jaar, zoals de wet, en ook Voi verhuurt vanaf 16; Lime en Bolt vragen 18. Op de [kaart van Antwerpen](map:be:Antwerpen) staan die van Voi en Bolt.',
+        'Bolt, Lime en Voi hebben er een vergunning. De stad houdt het op 16 jaar, zoals de wet, en ook Voi verhuurt vanaf 16; Lime en Bolt vragen 18. Op de [kaart van Antwerpen](map:be:Antwerpen) staan die van alle drie.',
         'In [Kortrijk](map:be:Kortrijk) rijden 200 deelsteps van Hoppy, verdeeld over ongeveer 200 parkeerzones, en je kan er een tot 30 minuten op voorhand reserveren. Op de Grote Markt en aan de Verlaagde Leieboorden rij je hooguit **6 km/u**. Hoppy laat je steppen vanaf 16 jaar en rekent € 50 extra aan als iemand jonger rijdt.',
         'In **Charleroi** vermeldt de stad drie aanbieders (Dott, Pony en Bolt) en in een eerste fase hooguit 1500 deelvoertuigen. Parkeer je er een deelstep, laat dan 1,50 meter van het voetpad vrij en blijf weg van opritten, haltes, zebrapaden en geleidetegels. De stadspagina heeft geen datum: kijk in de app wat vandaag geldt.',
         'Zoek je de dichtstbijzijnde deelstep, van welke aanbieder ook, dan toont [de kaart van ScootRadar](/map) ze allemaal samen. Ontgrendelen en betalen doe je in de app van de aanbieder.',

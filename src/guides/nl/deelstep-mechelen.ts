@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep Mechelen: Hoppy, wat een rit kost, waar je parkeert en waar je niet mag steppen',
   lede: 'Een deelstep in Mechelen huur je bij Hoppy: de stad vermeldt geen andere aanbieder, en het college verlengde de vergunning van Hoppy voor 2026-2027. Je betaalt € 1 om te ontgrendelen en € 0,18, € 0,27 of € 0,33 per minuut, naargelang de step (open data van 24 oktober 2026); de app toont de prijs. Je neemt en parkeert de step in een aangeduide parkeerzone; op de Grote Markt, de Vismarkt en aan het station kan dat niet. Rond de Bruul rijdt hij hooguit 15 km/u, en volgens de stad moet je minstens 18 jaar zijn.',
   published: '2026-10-24',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'be:Mechelen',
   sections: [
     {
@@ -116,7 +116,7 @@ const guide: Guide = {
       blocks: [
         'Aan het **station Mechelen** kan je geen deelstep nemen of achterlaten: het gebouw en de zone errond zijn een no-go zone. De dichtstbijzijnde parkeerzones liggen op zo’n 100 meter van het station, aan de kant van het Koning Albertplein en aan de oostkant. Aan het station **Mechelen-Nekkerspoel** ligt er een vlakbij.',
         'Op de bus van **De Lijn** mag een deelstep niet mee. Je eigen step wel als hij opvouwbaar is: gratis, volledig opgeplooid voor je opstapt en de hele rit lang.',
-        'Pendel je naar **Antwerpen**, dan neem je daar een andere deelstep: er rijden Voi, Lime en Bolt, en op [de kaart van Antwerpen](map:be:Antwerpen) zie je die van Voi en Bolt. Meer in [deelsteps in Antwerpen](guide:antwerp).',
+        'Pendel je naar **Antwerpen**, dan neem je daar een andere deelstep: er rijden Voi, Lime en Bolt, en op [de kaart van Antwerpen](map:be:Antwerpen) zie je die van alle drie. Meer in [deelsteps in Antwerpen](guide:antwerp).',
       ],
     },
     {

@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-scooters in Wellington, New Zealand: Flamingo and Lime, prices, the rules, the hills and the airport',
   lede: 'You can rent an e-scooter in Wellington, Te Whanganui-a-Tara, from Flamingo or Lime. Flamingo charges NZ$1 to unlock plus 55c a minute, 24 hours a day (published rate, 23 October 2026), so a 10-minute ride costs $6.50; Lime shows its price in its app. You need no driving licence, and no law requires a helmet, though Flamingo’s terms do. You may ride on the footpath with care, on shared paths, on the road and, since 1 October 2026, in cycle lanes; Flamingo keeps its riders on the road along the Golden Mile and out of Cuba Mall.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-10-26',
   city: 'nz:wgn:Wellington',
   sections: [
     {
       heading: 'Which e-scooter apps work in Wellington?',
       blocks: [
         'Two companies rent e-scooters on Wellington’s streets in 2026: **Flamingo** and **Lime**. On 20 January 2026 Wellington City Council awarded its shared micromobility tender to both, to follow licences due to expire on 1 March 2026. Flamingo has run here since 2019; Lime launched its e-scooters in March 2026.',
-        'Early on the morning of 23 October 2026 the [map of Wellington](map:nz:wgn:Wellington) showed about 430 Flamingo scooters: a snapshot of what was on the map, not the fleet. **Lime runs in Wellington too but isn’t on our map**, because it publishes no open data here; open the Lime app to find its scooters. Flamingo also rents e-bikes, and Lime planned to add its own from April 2026; our map shows e-scooters only.',
+        'Early on the morning of 23 October 2026 the [map of Wellington](map:nz:wgn:Wellington) showed about 430 Flamingo scooters: a snapshot of what was on the map, not the fleet. **Lime runs in Wellington too**, and since 26 October 2026 our map shows its scooters as well. Flamingo also rents e-bikes, and Lime planned to add its own from April 2026; our map shows e-scooters only.',
         '**How many are allowed?** The council has agreed to raise the number of shared e-scooters and e-bikes from 1,300 to up to 2,000, split evenly between Lime and Flamingo, RNZ reported on 2 July 2026, when 1,000 e-scooters and 300 e-bikes were in use. We couldn’t confirm when the increase takes effect or when the licences end.',
         '**Porirua and Tawa.** Flamingo runs a separate area to the north, “Porirua City (and Tawa)”, at the same price, so Tawa’s scooters belong to that area; the [Porirua map](map:nz:wgn:Porirua) showed about 50 early on 23 October.',
       ],
@@ -126,7 +126,7 @@ const guide: Guide = {
     },
     {
       question: 'Which e-scooter companies operate in Wellington?',
-      answer: 'Flamingo and Lime, both chosen by the council in January 2026. Our [Wellington map](map:nz:wgn:Wellington) shows Flamingo only, about 430 scooters early on 23 October 2026; find Lime’s in its app.',
+      answer: 'Flamingo and Lime, both chosen by the council in January 2026. Our [Wellington map](map:nz:wgn:Wellington) shows both: Flamingo’s, about 430 scooters early on 23 October 2026, and since 26 October Lime’s.',
     },
     {
       question: 'Can you ride an e-scooter on the footpath in Wellington?',

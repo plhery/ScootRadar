@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Cascais: a Bird, as estações, o paredão e a ciclovia do Guincho',
   lede: 'As trotinetes partilhadas em Cascais são da Bird, a única operadora no concelho em outubro de 2026, e apanham-se e deixam-se numa das 157 estações de mobilidade partilhada. A Bird não publica tarifas para Cascais: a app mostra o preço antes de desbloquear. O paredão, entre a Conceição e a Azarujinha, é para peões, e a app não deixa circular em cinco zonas do centro histórico, junto à baía. Para o Guincho, há ciclovia ao longo da costa.',
   published: '2026-10-16',
-  updated: '2026-10-24',
+  updated: '2026-10-26',
   city: 'pt:Cascais',
   sections: [
     {
@@ -23,7 +23,7 @@ const guide: Guide = {
             head: ['Quem', 'Em Cascais', 'Preço', 'No nosso mapa'],
             rows: [
               ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Não publicado: veja na app', 'Sim, só as trotinetes'],
-              ['Lime', 'Não: está em Lisboa e Almada', '–', 'Só em Lisboa e Almada'],
+              ['Lime', 'Não: está em Lisboa, Almada e Oeiras', '–', 'Em Lisboa, Almada e Oeiras'],
               ['Bolt', 'Não: está em Lisboa', '–', 'Não'],
               ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos', 'Não'],
             ],
@@ -155,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Lime ou Bolt em Cascais?',
-      answer: 'Não, em outubro de 2026. A Lime opera em Lisboa e em Almada (chegou a Oeiras em 2024, mas se ainda lá opera está por confirmar); a Bolt, em Lisboa. Em Cascais, as trotinetes partilhadas são da Bird.',
+      answer: 'Não, em outubro de 2026. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa. Em Cascais, as trotinetes partilhadas são da Bird.',
     },
   ],
   sources: [

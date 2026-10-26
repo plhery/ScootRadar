@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Vancouver: Lime’s stations, BC rules and fines, the seawall, SkyTrain and YVR',
   lede: 'You can rent an e-scooter in Vancouver from Lime, the City’s only operator; every ride starts and ends at one of its stations, and the app shows the fare before you unlock. Lime riders must be 18, a helmet is the law in BC and comes attached to each scooter, and scooters top out at 25 km/h. Ride on streets posted at 50 km/h or less, in bike lanes, on greenways and on the seawall where bikes go, never on the sidewalk: that’s a $109 ticket. Your own scooter is legal too, under a provincial pilot that runs until April 2028. Lime’s scooters don’t reach YVR airport.',
   published: '2026-10-17',
-  updated: '2026-10-23',
+  updated: '2026-10-26',
   city: 'ca:bc:Vancouver',
   sections: [
     {
@@ -119,7 +119,7 @@ const guide: Guide = {
         'Around Vancouver, Lime’s offer changes from town to town:',
         {
           list: [
-            '**Richmond, Coquitlam and Port Moody:** Lime runs e-scooters and e-bikes in central Richmond, where it started in May 2022, and in Coquitlam’s City Centre and Port Moody, whose areas join up. We found no open data for these towns, so they’re missing from our map.',
+            '**Richmond, Coquitlam and Port Moody:** Lime runs e-scooters and e-bikes in central Richmond, where it started in May 2022, and in Coquitlam’s City Centre and Port Moody, whose areas join up. Since 26 October 2026 our map shows its scooters in [Richmond](map:ca:bc:Richmond), [Coquitlam](map:ca:bc:Coquitlam) and [Port Moody](map:ca:bc:Port Moody).',
             '**Burnaby:** Lime e-bikes only, since 25 June 2026. In May 2026 the city banned e-scooters from major roads without a separated bike lane or path alongside, and from parks not designated for them.',
             '**North Vancouver and West Vancouver:** no shared scooters. Lime ran the North Shore’s e-bike share until 30 June 2025, when BCAA’s Evolve took over. Private scooters are allowed, and folding ones ride the SeaBus.',
             '**Kelowna:** about 750 Lime scooters, and no other operator’s, were on the [Kelowna map](map:ca:bc:Kelowna) at the same moment. Kelowna RCMP said in 2023 that you may not ride in City Park or along the downtown waterfront, or downtown after 10:30 pm.',

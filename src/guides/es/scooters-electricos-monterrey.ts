@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Scooters eléctricos Monterrey y San Pedro: Whoosh y JET',
   description: 'Scooters eléctricos en Monterrey y San Pedro Garza García: Whoosh, JET y Lime, dónde están, cuánto cuesta la renta y dónde puedes andar y estacionar.',
   headline: 'Scooters eléctricos en Monterrey y San Pedro: Whoosh, JET y Lime, dónde encontrarlos y las reglas para andar',
-  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. El domingo 25 de octubre de 2026 a las 14:09, el mapa mostraba unos 890 scooters en Monterrey, casi todos de Whoosh, y unos 800 en San Pedro, con casi todos los de JET; los Lime solo se ven en su app. En Monterrey, el reglamento de tránsito prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
+  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. El domingo 25 de octubre de 2026 a las 14:09, el mapa mostraba unos 890 scooters en Monterrey, casi todos de Whoosh, y unos 800 en San Pedro, con casi todos los de JET; desde el 26 de octubre muestra también los Lime. En Monterrey, el reglamento de tránsito prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'mx:Monterrey',
   sections: [
     {
@@ -37,8 +37,8 @@ const guide: Guide = {
             ],
           },
         },
-        'En el centro de Monterrey y cerca del Tec verás Whoosh; los JET están casi todos en San Pedro. Los Lime no salen en el mapa: búscalos en su app.',
-        'El mapa muestra GO JET y Whoosh: cada scooter estacionado, su batería y, en Whoosh, su autonomía; no precios, zonas ni horarios.',
+        'En el centro de Monterrey y cerca del Tec verás Whoosh; los JET están casi todos en San Pedro.',
+        'El mapa muestra GO JET, Whoosh y, desde el 26 de octubre de 2026, Lime: cada scooter estacionado, su batería y, en Whoosh, su autonomía; no precios, zonas ni horarios.',
         '**Bicis.** El mapa tampoco muestra las bicis eléctricas de Lime. En el Parque Fundidora, Rueda Verde renta bicis y scooters por hora en sus módulos desde abril de 2026 (Publimetro).',
       ],
     },
@@ -174,7 +174,7 @@ const guide: Guide = {
     },
     {
       question: '¿Hay scooters de renta en el centro de Monterrey?',
-      answer: 'Sí: el 25 de octubre de 2026 a las 14:09, el mapa mostraba unos 450 Whoosh en el centro, al norte del río Santa Catarina. Los de Lime solo salen en su app.',
+      answer: 'Sí: el 25 de octubre de 2026 a las 14:09, el mapa mostraba unos 450 Whoosh en el centro, al norte del río Santa Catarina. Desde el 26 de octubre, el mapa muestra también los de Lime.',
     },
     {
       question: '¿Los scooters de Monterrey tienen horario?',

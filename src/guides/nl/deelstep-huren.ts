@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep huren in België: van de app tot het einde van je rit',
   lede: 'Een deelstep huren gaat zo: je installeert de app van de aanbieder, maakt een account aan met je gsm-nummer en een betaalkaart, scant de QR-code op het stuur en rijdt weg. Op het einde zet je de step op een toegelaten plek, in Brussel en binnen de Antwerpse Leien in een dropzone, en neem je een foto. Bolt, Dott en Lime vragen 18 jaar, Voi in Antwerpen en Hoppy in Kortrijk 16, en in Brussel scan je één keer je identiteitsbewijs. Je betaalt om te ontgrendelen en per minuut: Voi publiceerde in Antwerpen op 12 oktober 2026 € 0,99 plus € 0,25 per minuut, dus € 3,49 voor tien minuten.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   sections: [
     {
       heading: 'Deelstep huren: hoe werkt het, stap voor stap?',
@@ -154,7 +154,7 @@ const guide: Guide = {
             '**Apps waarin je huurt.** In de Uber-app kan je in sommige steden een Lime huren; welke steden, vermeldt Lime niet.',
           ],
         },
-        'Op 12 oktober 2026 stonden op de kaart Bolt en Dott in [Brussel](map:be:Bruxelles), Dott in [Charleroi](map:be:Charleroi), Voi in Antwerpen en Hoppy in [Kortrijk](map:be:Kortrijk); sinds 25 oktober ook Bolt in Antwerpen, Lime niet. [Open de kaart](/map) en kijk wie er een step bij jou in de buurt heeft.',
+        'Op 12 oktober 2026 stonden op de kaart Bolt en Dott in [Brussel](map:be:Bruxelles), Dott in [Charleroi](map:be:Charleroi), Voi in Antwerpen en Hoppy in [Kortrijk](map:be:Kortrijk); sinds 25 oktober ook Bolt in Antwerpen en sinds 26 oktober Lime. [Open de kaart](/map) en kijk wie er een step bij jou in de buurt heeft.',
       ],
     },
   ],

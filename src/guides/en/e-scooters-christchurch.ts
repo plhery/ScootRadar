@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-scooters in Christchurch, New Zealand: Flamingo and Lime, prices, the rules, Hagley Park and the buses',
   lede: 'You can rent an e-scooter in Christchurch, New Zealand, from Flamingo or Lime. Flamingo charges NZ$1 to unlock plus 45c a minute (published rate, 23 October 2026), so a 7-minute ride, about the average shared trip in a December 2024 council report, costs around $4; Lime shows its price in its app. You need no driving licence, and no law requires a helmet, though Flamingo’s terms do. You may ride on the footpath with care, on shared paths and on the road, and since 1 October 2026 in cycle lanes, but not on Hagley Park’s grass or in the Botanic Gardens.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-10-26',
   city: 'nz:can:Christchurch',
   sections: [
     {
       heading: 'Which e-scooter apps work in Christchurch?',
       blocks: [
         'Two companies run shared e-scooters in Ōtautahi Christchurch in 2026: **Flamingo** and **Lime**. A scooter-share company needs Christchurch City Council’s permission to trade on the street, and the council sets the number of scooters and the conditions in each licence.',
-        'Early on the morning of 23 October 2026 the [map of Christchurch](map:nz:can:Christchurch) showed about 1,160 Flamingo scooters, from Hornby and Halswell to Belfast and east to New Brighton: a snapshot of what was on the map, not the fleet. **Lime runs in Christchurch too but isn’t on our map**, because it publishes no open data here; open the Lime app to find its scooters.',
+        'Early on the morning of 23 October 2026 the [map of Christchurch](map:nz:can:Christchurch) showed about 1,160 Flamingo scooters, from Hornby and Halswell to Belfast and east to New Brighton: a snapshot of what was on the map, not the fleet. **Lime runs in Christchurch too**, and since 26 October 2026 our map shows its scooters as well.',
         'In December 2024 the council picked Lime and a newcomer, Ario, for a five-year licensing period from 31 January 2025; Ario pulled out in August 2025, and Flamingo, which had run here in 2020–21, returned in mid-December 2025. We found no published terms for Flamingo’s licence: its start, its cap or its end date.',
         'North of the city, Flamingo has its own area in the Waimakariri District (Rangiora, Kaiapoi, Woodend and Pegasus), at $1 plus 55c a minute and for riders of 18 or over. The district council approved it in April 2024 for up to three years, to 30 April 2027, and Flamingo told councillors its licence allowed up to 200 scooters. That morning the map showed about 45 in [Rangiora](map:nz:can:Rangiora) and 20 in Kaiapoi, and about 20 Jolt scooters in [Rolleston](map:nz:can:Rolleston), in Selwyn.',
         '**Looking for Christchurch in Dorset, England?** Its Beryl e-scooters are in our [Bournemouth guide](guide:bournemouth).',
@@ -132,7 +132,7 @@ const guide: Guide = {
     },
     {
       question: 'Which e-scooter companies operate in Christchurch?',
-      answer: 'Flamingo and Lime. Our [Christchurch map](map:nz:can:Christchurch) shows Flamingo only, about 1,160 scooters early on 23 October 2026; find Lime’s in its app.',
+      answer: 'Flamingo and Lime. Our [Christchurch map](map:nz:can:Christchurch) shows both: Flamingo’s, about 1,160 scooters early on 23 October 2026, and since 26 October Lime’s.',
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in New Zealand?',

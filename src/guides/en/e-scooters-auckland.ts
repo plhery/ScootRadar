@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-scooters in Auckland: Flamingo and Lime, prices, New Zealand’s rules, parking and the ferries',
   lede: 'You can rent an e-scooter in Auckland from Flamingo or Lime, the two companies Auckland Council licensed in 2024. Flamingo charges NZ$1 to unlock plus NZ$0.45 a minute (published rate, 16 October 2026); Lime shows its price in the app. You need no driving licence, and no law requires a helmet, though Flamingo’s terms do. You may ride on the footpath with care, on shared paths and on the road, and since 1 October 2026 in cycle lanes.',
   published: '2026-10-16',
-  updated: '2026-10-23',
+  updated: '2026-10-26',
   city: 'nz:auk:Auckland',
   sections: [
     {
       heading: 'Which e-scooter apps work in Auckland?',
       blocks: [
         'Two companies run shared e-scooters in Auckland: **Flamingo** and **Lime**. A company needs a licence from Auckland Council to run one, [Auckland Transport (AT) says](https://at.govt.nz/about-us/working-with-at/bike-and-e-scooter-share-services); the licence includes a code of practice, and the council decides how many operators and scooters there are.',
-        'On 16 October 2026 the [map of Auckland](map:nz:auk:Auckland) showed about 1,300 Flamingo scooters, from Albany to Onehunga and from Avondale to St Heliers: a count of what’s on the map, not the fleet. **Lime runs in Auckland too but isn’t on our map**, because it publishes no open data there; open the Lime app to find its scooters.',
+        'On 16 October 2026 the [map of Auckland](map:nz:auk:Auckland) showed about 1,300 Flamingo scooters, from Albany to Onehunga and from Avondale to St Heliers: a count of what’s on the map, not the fleet. **Lime runs in Auckland too**, and since 26 October 2026 our map shows its scooters as well.',
         'In September 2024 the council chose Lime and Flamingo from seven applicants and licensed them for two years from 4 November 2024, keeping the cap at 3,000 scooters: 1,800 in and near the city centre and 1,200 in the suburbs. Lime may run up to 1,600 of them and Flamingo 1,400, the NZ Herald reported. Those licences run out in November 2026; on 23 October 2026 we found no published decision on what follows.',
         '**Visiting?** Get the apps before you land; you need no driving licence. Flamingo also runs in [Wellington](map:nz:wgn:Wellington) and [Christchurch](map:nz:can:Christchurch). New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -131,7 +131,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Auckland?',
-      answer: 'Flamingo and Lime, licensed by Auckland Council for two years from November 2024. Our [Auckland map](map:nz:auk:Auckland) shows Flamingo only, about 1,300 scooters on 16 October 2026; find Lime’s in its app.',
+      answer: 'Flamingo and Lime, licensed by Auckland Council for two years from November 2024. Our [Auckland map](map:nz:auk:Auckland) shows both: Flamingo’s, about 1,300 scooters on 16 October 2026, and since 26 October Lime’s.',
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in New Zealand?',
