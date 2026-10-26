@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Are e-scooters legal in the UK? What you can ride, where, and what it costs if you get it wrong',
   lede: 'E-scooters are legal in the UK only as rentals in an official trial area. A privately owned e-scooter is illegal on public roads, pavements and cycle lanes and in parks; you may ride it only on private land with the landowner’s permission. The rental trials run in 21 areas, all in England, until May 2028, and you need a full or provisional driving licence to ride. As of 12 October 2026 the government has promised a new law but has not put a bill before Parliament.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   sections: [
     {
       heading: 'Are e-scooters legal in the UK? Private vs rental',
@@ -60,7 +60,7 @@ const guide: Guide = {
               ['UK licence', 'Full or provisional, with category Q (included with AM, A or B)'],
               ['Foreign licence', 'A full EU or EEA licence works. A full licence from elsewhere works if it covers cars, mopeds or motorcycles and you entered the UK in the last 12 months. Foreign provisional licences and learner permits don’t'],
               ['Age', 'The legal minimum is 16, but Beryl and Dott require 18 or over, as do Lime and Voi in London'],
-              ['Top speed', '15.5 mph at most, and slower in go-slow zones. 12.5 mph in London, Brighton, Oxford and the West of England, and in Norwich and the BCP area (Bournemouth, Christchurch and Poole) according to Beryl’s help page. In Cornwall, Beryl’s page says 15.5 mph (October 2026), though the council’s page still says 12.5 mph'],
+              ['Top speed', '15.5 mph at most, and slower in go-slow zones. 12.5 mph in London, Brighton, Oxford and the West of England; in Gloucestershire, the county council said when Voi took over (June 2023); and in Norwich and the BCP area (Bournemouth, Christchurch and Poole) according to Beryl’s help page. In Cornwall, Beryl’s page says 15.5 mph (October 2026), though the council’s page still says 12.5 mph'],
               ['Helmet', 'Recommended, not required by law'],
               ['Passengers and loads', 'One person only. No towing, and no bags hanging from the handlebars'],
               ['Phone', 'Don’t use it while riding. A navigation screen is fine if you set it up before you set off'],
@@ -224,6 +224,7 @@ const guide: Guide = {
     { title: 'Beryl: E-scooters in Plymouth', url: 'https://beryl.cc/e-scooters-plymouth' },
     { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
+    { title: 'Gloucestershire County Council: New provider for e-scooters in Gloucester and Cheltenham (27 June 2023)', url: 'https://www.gloucestershire.gov.uk/gcc-news/2023-news-archive/news-june-2023/new-provider-for-e-scooters-in-gloucester-and-cheltenham/' },
   ],
 };
 

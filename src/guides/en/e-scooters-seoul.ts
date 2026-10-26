@@ -26,7 +26,7 @@ const guide: Guide = {
           ],
         },
         'That made about 15,700 on the [Seoul map](map:kr:Seoul) at 02:41 on Monday 26 October 2026, Seoul time: a snapshot, not a fleet size. Matched to Statistics Korea’s district boundaries between 04:00 and 04:15, most stood in Gangnam (about 3,900), Songpa (2,900), Mapo (2,400), Seocho (1,500) and Gangdong (1,200); the map showed next to none in Jongno, Jung, Yongsan and Seongdong, and few in the north-east.',
-        'The areas the map reads leave some scooters out: Beam’s north of about Gwanghwamun, in the far west and along the southern edge; Kickgoing’s in Gangdong and most of Songpa; Xingxing’s in most of Gangseo; and every company’s in the far north of Dobong and Nowon. Battery levels show for Beam, Kickgoing and Xingxing; Swing gives only a rough band.',
+        'The areas the map reads leave some scooters out: Beam’s north of about Gwanghwamun, in the far west and along the southern edge; Kickgoing’s in Gangdong, where the night’s count found about 1,000 Xingxing and 200 Beam scooters but no Kickgoing, and in most of Songpa; Xingxing’s in most of Gangseo; and every company’s in the far north of Dobong and Nowon. Battery levels show for Beam, Kickgoing and Xingxing; Swing gives only a rough band.',
         'ScootRadar shows standing e-scooters only, not Seoul’s Ttareungyi (따릉이) bikes or the e-bikes Swing and others rent. The newest official count we found is from June 2021: 14 companies and 55,499 shared e-scooters. Any other company’s scooters are only in its own app.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],

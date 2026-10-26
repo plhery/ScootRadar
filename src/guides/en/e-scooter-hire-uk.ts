@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -98,7 +98,6 @@ const guide: Guide = {
             caption: 'Pay-as-you-go e-scooter prices published on 12 October 2026, and what 15 minutes cost',
             head: ['Unlock + per minute', 'Operator and area', '15 minutes'],
             rows: [
-              ['£0 + 25p', 'Voi: Aylesbury, High Wycombe, Cheltenham, Gloucester', '£3.75'],
               ['99p + 20p', 'Voi: Braintree, Chelmsford, Corby', '£3.99'],
               ['£1 + 20p', 'Lime: West Midlands. Voi: Northampton, Kettering. Beryl: Brighton and Hove on weekdays', '£4.00'],
               ['£0 + 27p', 'Voi: London', '£4.05'],
@@ -107,7 +106,7 @@ const guide: Guide = {
               ['£0 + 29p', 'Dott: Nottingham', '£4.35'],
               ['£1 + 24p', 'Dott: Milton Keynes. Voi: Oxford', '£4.60'],
               ['£1 + 25p', 'Bolt: Liverpool. Dott: Bristol, Bath. Voi: Cambridge', '£4.75'],
-              ['In the app', 'Lime: London, Milton Keynes, Salford', '–'],
+              ['In the app', 'Lime: London, Milton Keynes, Salford. Voi: Aylesbury, High Wycombe, Cheltenham, Gloucester', '–'],
             ],
           },
         },
@@ -215,6 +214,7 @@ const guide: Guide = {
     { title: 'West Northamptonshire Council: Stay off the pavement if you’re riding an e-scooter (24 May 2024, archived)', url: 'https://web.archive.org/web/20251220001448/https://www.westnorthants.gov.uk/news/stay-pavement-if-youre-riding-e-scooter' },
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
     { title: 'Cambridgeshire County Council: Cycling', url: 'https://www.cambridgeshire.gov.uk/residents/travel-roads-and-parking/active-travel-in-cambridgeshire/getting-started/cycling' },
+    { title: 'Buckinghamshire Council: Buckinghamshire electric scooter trial', url: 'https://www.buckinghamshire.gov.uk/parking-roads-and-transport/bus-passes-and-travel/buckinghamshire-electric-scooter-trial/' },
   ],
 };
 
