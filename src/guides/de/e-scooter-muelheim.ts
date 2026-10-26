@@ -48,10 +48,10 @@ const guide: Guide = {
           list: [
             '**Innenstadt:** Rund um die Schlossstrasse liegt die Fussgängerzone der Innenstadt. Kraftfahrzeuge dürfen laut Stadt nur zu festen Zeiten für Lieferungen hinein, eine Freigabe für E-Scooter nennt sie nicht: Hier steigst du ab und schiebst. Bei Kontrollen am 17. September 2026, vor allem in den Fussgängerzonen von Essen und Mülheim, mussten E-Scooter-Fahrer laut Polizei in beiden Städten zusammen in 47 Fällen ein Verwarngeld zahlen, weil sie verbotenerweise durch die Fussgängerzone fuhren.',
             '**MüGa:** Mülheims Garten an der Ruhr ist laut Stadt eine Sperrzone, in der E-Scooter «gar nicht entmietet und abgestellt werden dürfen» (Stand 9. September 2025). Eine Regel zum Durchfahren des 66 Hektar grossen Parks nennt sie nicht.',
-            '**Ruhrufer und Witthausbusch:** Für die Wege an der Ruhr und den Witthausbusch haben wir keine eigene Regel zu E-Scootern gefunden (Stand 26. Oktober 2026); es gelten die allgemeinen Regeln.',
+            '**Ruhrufer und Witthausbusch:** Für die Wege an der Ruhr und den Witthausbusch nennt die Stadt keine eigene Regel zu E-Scootern (Stand 26. Oktober 2026); es gelten die allgemeinen Regeln.',
             '**Hochschule Ruhr West:** Ihre Hausordnung vom 1. Dezember 2021, zuletzt geändert am 21. Juli 2025, sagt: «Die Nutzung von Rollschuhen, Inline-Skates, Skateboards, Rollern u. Ä. ist in den Gebäuden und auf den Grundstücken der Hochschule untersagt.» E-Scooter nennt sie nicht ausdrücklich; nach unserer Lesart fährst du auch mit ihnen nicht über den Campus an der Duisburger Strasse.',
             '**Rhein-Ruhr-Zentrum:** Auf seiner Website nennt das Einkaufszentrum keine Regel zu E-Scootern (Stand 26. Oktober 2026).',
-            '**Nachts und im Winter:** Eine nächtliche Sperrzeit oder Winterpause für Mülheim haben wir in keiner Quelle gefunden (Stand 26. Oktober 2026).',
+            '**Nachts und im Winter:** Eine nächtliche Sperrzeit oder Winterpause für Mülheim nennen weder die Stadt noch Dott (Stand 26. Oktober 2026).',
           ],
         },
       ],

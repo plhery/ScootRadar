@@ -80,7 +80,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Bus und Bahn: Rheinbahn, Stadtwerke Neuss, VRR und DB',
       blocks: [
         'Die Rheinbahn fährt mit der U75 und der 709 ab dem Neusser Hauptbahnhof nach Düsseldorf. In ihren Fragen und Antworten schreibt sie: «E-Scooter / Elektro-Tretroller sind aus Brandschutzgründen ab 1. März 2024 von der Mitnahme in unseren Fahrzeugen ausgeschlossen.» Eine Ausnahme für zusammengeklappte Scooter nennt sie nicht.',
-        'Für ihre Busse veröffentlichen die Stadtwerke Neuss die Beförderungsbedingungen Nahverkehr NRW (gültig ab 1. Januar 2024): Danach zählt ein «vollständig im kleinstmöglichen Packmass» zusammengeklappter E-Tretroller als Handgepäck. Laut VRR-Handbuch (Stand 1. Juli 2026) darf ihn aber jedes Verkehrsunternehmen per Hausrecht ausschliessen, auch zusammengeklappt. Ein eigenes Verbot der Stadtwerke haben wir auf ihrer Website nicht gefunden (Stand 26. Oktober 2026).',
+        'In den Bussen der Stadtwerke Neuss gelten wie im ganzen VRR die Beförderungsbedingungen Nahverkehr NRW (gültig ab 1. Januar 2026): Danach zählt ein «vollständig im kleinstmöglichen Packmass» zusammengeklappter E-Tretroller als Handgepäck. Laut VRR-Handbuch (Stand 1. Juli 2026) darf ihn aber jedes Verkehrsunternehmen per Hausrecht ausschliessen, auch zusammengeklappt. Ein eigenes Verbot nennen die Stadtwerke auf ihrer Website nicht (Stand 26. Oktober 2026).',
         'In den Fernzügen der Deutschen Bahn fährt er zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden.',
         '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten später ab als geplant, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden laut VRR-Handbuch bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €; den Antrag stellst du binnen 14 Tagen.',
       ],
@@ -124,7 +124,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in Rheinbahn oder Bus mitnehmen?',
-      answer: 'In Bussen und Bahnen der Rheinbahn nicht, auch nicht in U75 und 709: Sie schliesst E-Scooter seit dem 1. März 2024 aus Brandschutzgründen aus. In den Bussen der Stadtwerke Neuss zählt ein vollständig zusammengeklappter Scooter laut deren Beförderungsbedingungen als Handgepäck, doch im VRR darf jedes Unternehmen ihn ausschliessen.',
+      answer: 'In Bussen und Bahnen der Rheinbahn nicht, auch nicht in U75 und 709: Sie schliesst E-Scooter seit dem 1. März 2024 aus Brandschutzgründen aus. In den Bussen der Stadtwerke Neuss zählt ein vollständig zusammengeklappter Scooter nach den Beförderungsbedingungen Nahverkehr NRW als Handgepäck, doch im VRR darf jedes Unternehmen ihn ausschliessen.',
     },
     {
       question: 'Kann ich mit dem Leih-Scooter von Neuss nach Düsseldorf fahren?',
@@ -149,7 +149,7 @@ const guide: Guide = {
     { title: 'Stadt Neuss: SB53 mit verkürztem Linienweg (4. August 2025)', url: 'https://www.neuss.de/presse/meldungen/2025/08/04/sb53-mit-verkuerztem-linienweg' },
     { title: 'Geobasis NRW: Gebäudereferenzen NW, amtliche Adressen (open.nrw)', url: 'https://open.nrw/dataset/172a0ba8-d470-47c1-ac89-b85f8190ac7e' },
     { title: 'Rheinbahn: Fragen und Antworten rund um die Fahrt', url: 'https://www.rheinbahn.de/service/faq/rund-um-die-fahrt' },
-    { title: 'Stadtwerke Neuss: Beförderungsbedingungen Nahverkehr NRW (gültig ab 1. Januar 2024, PDF)', url: 'https://www.stadtwerke-neuss.de/sites/default/files/downloads/pdfs/Nahverkehr/Fahrplanbuch-2025/Befoerderungsbedingungen.pdf' },
+    { title: 'Beförderungsbedingungen Nahverkehr NRW, gültig ab 1. Januar 2026 (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
     { title: 'VRR: Handbuch Tarif und Vertrieb (Stand 1. Juli 2026, PDF)', url: 'https://www.vrr.de/fileadmin/user_upload/pdf/service/downloads/Tarifhandbuch/VRR_Handbuch_2026.pdf' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'NRW.Mobidrom: Datensatz «Voi Düsseldorf» der Voi Technology Germany GmbH', url: 'https://www.mobilitaetsdaten.nrw/dataset/voi-duesseldorf' },
