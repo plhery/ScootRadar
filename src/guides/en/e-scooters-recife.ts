@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Recife: JET and Whoosh, how they charge, where to ride and where to park',
   lede: 'You can rent an e-scooter in Recife from JET, whose app in Brazil is Go Jet, or from Whoosh: the two firms in the Prefeitura’s 12-month pilot, which began on 22 March 2026. Each app shows its price before you ride, and you must be 18. Under the pilot’s rules, as the Diario de Pernambuco reported them, you ride on cycle lanes and on streets with a limit of 40 km/h or less at up to 20 km/h, slow to 6 km/h where people walk, and park only at the points your app shows.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'br:Recife',
   sections: [
     {
@@ -114,7 +114,7 @@ const guide: Guide = {
       heading: 'Where to find JET and Whoosh scooters in Recife',
       blocks: [
         'At 17:40 local time on Sunday 25 October 2026 the [map of Recife](map:br:Recife) showed about 900 standing scooters: 450 JET and 450 Whoosh. That is a snapshot, not the size of either fleet, and scooters on a ride don’t appear.',
-        'On the municipal boundaries of IBGE, Brazil’s statistics institute, about 855 stood inside Recife, every Whoosh scooter among them. The other 40 or so were JET scooters, 39 of them bunched at one spot on the southern boundary that IBGE’s line puts a few dozen metres inside Jaboatão dos Guararapes. About 600 stood north of the Pina basin, in the centre and the north of the city, and about 260 south of it, where the pilot’s bairros are Pina and Boa Viagem; Whoosh had more there, about 160 to JET’s 100. None stood in Olinda or Camaragibe, or as far west as the UFPE campus.',
+        'On the municipal boundaries of IBGE, Brazil’s statistics institute, about 855 stood inside Recife, every Whoosh scooter among them. The other 40 or so were JET scooters, 39 of them at one spot a few dozen metres inside Jaboatão dos Guararapes; since 26 October the map counts them there. About 600 stood north of the Pina basin, in the centre and the north of the city, and about 260 south of it, where the pilot’s bairros are Pina and Boa Viagem; Whoosh had more there, about 160 to JET’s 100. None stood in Olinda or Camaragibe, or as far west as the UFPE campus.',
         'The map shows JET separately in [Paulista](map:br:Paulista), north beyond Olinda (about 630 scooters), and in [Jaboatão dos Guararapes](map:br:Jaboatão dos Guararapes) to the south (about 560).',
         'The map shows Go Jet and Whoosh: each Whoosh scooter’s charge and range, and each JET scooter’s charge. It shows no prices, parking points, zones or hours; the apps do. Both operators run in Porto Alegre and Florianópolis too: see [e-scooters in Porto Alegre](guide:porto-alegre) and [e-scooters in Florianópolis](guide:florianopolis).',
       ],
