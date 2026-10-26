@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Duisburg: Anbieter, Preise, Parken, Sperrzonen und was bei der DVG gilt',
   lede: 'Einen E-Scooter in Duisburg leihst du ab 18 und ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde. Voi verlangt in Duisburg laut seinem veröffentlichten Tarif 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand 24. Oktober 2026); die anderen zeigen ihren Preis in der App. Die Stadt lässt Leih-Scooter wie Fahrräder abstellen, doch Voi sperrt die Rückgabe in der Fussgängerzone rund um die Königstrasse, am Innenhafen und im Landschaftspark. In Bussen und Bahnen der DVG sind E-Scooter laut ADAC seit dem 1. März 2024 verboten.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Duisburg',
   sections: [
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
         '**Landschaftspark Duisburg-Nord:** Der Park ist laut Betreiber das ganze Jahr rund um die Uhr offen, Eintritt frei; abends leuchtet die Lichtinstallation. Eine eigene Regel für E-Scooter nennt der Park nicht, einen Voi stellst du dort laut Karte aber nicht ab.',
         '**MSV-Spiele und Zoo:** Stadion und Zoo liegen ausserhalb des Voi-Gebiets. Mit Voi beendest du die Fahrt also vorher. Aufs Zoogelände darfst du laut Zooordnung keinen E-Scooter mitnehmen.',
         '**Universität Duisburg-Essen:** Die Gebäude an Lotharstrasse und Bismarckstrasse in Neudorf liegen laut Karte im Voi-Gebiet, ohne Abstellverbot (Stand 24. Oktober 2026).',
-        '**Oberhausen und Mülheim:** Voi hat für Duisburg und Oberhausen ein gemeinsames Gebiet: Von Meiderich oder Hamborn fährst du ohne neue Miete bis zum Centro. Mülheim liegt ausserhalb. Freie Voi-, Dott- und Lime-Scooter in Oberhausen zeigt die [Karte von Oberhausen](map:de:Oberhausen). Wie es in Essen läuft, steht in [E-Scooter in Essen](guide:essen).',
+        '**Oberhausen und Mülheim:** Voi hat für Duisburg und Oberhausen ein gemeinsames Gebiet: Von Meiderich oder Hamborn fährst du ohne neue Miete bis zum Centro. Mülheim liegt ausserhalb. Freie Voi-, Dott-, Bolt- und Lime-Scooter in Oberhausen zeigt die [Karte von Oberhausen](map:de:Oberhausen); was dort gilt, steht in [E-Scooter in Oberhausen](guide:oberhausen). Wie es in Essen läuft, steht in [E-Scooter in Essen](guide:essen).',
       ],
     },
     {

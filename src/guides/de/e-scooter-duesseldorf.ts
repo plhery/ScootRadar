@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Düsseldorf: Anbieter, Preise, Sharingstationen und was an Karneval und zur Kirmes gilt',
   lede: 'Einen E-Scooter in Düsseldorf leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 24. Oktober 2026) bei Voi 3 € und bei Dott 4,20 €, bei Lime und Bolt zeigt die App den Preis. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter. In Bussen und Bahnen der Rheinbahn sind E-Scooter seit dem 1. März 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Düsseldorf',
   sections: [
     {
@@ -49,7 +49,7 @@ const guide: Guide = {
         '**Rheinuferpromenade:** Fahr nur, wo ein Radweg ausgeschildert ist, sonst schieb.',
         '**Rheinbrücken:** Über die Oberkasseler Brücke, die Rheinkniebrücke und die Theodor-Heuss-Brücke fährst du auf dem Radweg. Auf den Brücken selbst beginnst und beendest du keine Fahrt.',
         '**Parks:** Im Hofgarten, im Volksgarten, im Südpark und im Nordpark darfst du keinen Scooter abstellen. Die Strassenordnung der Stadt verbietet zudem, mit Kraftfahrzeugen, also auch E-Scootern, durch Grünanlagen zu fahren.',
-        '**Stadtgrenze:** Mit Dott beendest du keine Fahrt in Neuss, Ratingen, Meerbusch oder Hilden: Die Nachbarstädte liegen ausserhalb seines Gebiets.',
+        '**Stadtgrenze:** Dotts Düsseldorfer Gebiet reicht nicht nach Neuss, Ratingen, Meerbusch oder Hilden. Neuss, Meerbusch und Hilden führt Dott aber als eigene Standorte (Stand 26. Oktober 2026); ob du eine Fahrt dort beenden darfst, zeigt die App. Was in Neuss gilt, steht in [E-Scooter in Neuss](guide:neuss).',
       ],
     },
     {
