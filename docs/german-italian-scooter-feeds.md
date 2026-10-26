@@ -451,7 +451,10 @@ Bolt and Lime publish no Italian feed; Lime's Catania scooters come from its
   one to two minutes old, and 1 to 2 % of a system's scooters changed from
   one poll to the next, five minutes apart. Bolt's and Lime's documents
   updated at 13:52 and 13:55 and then not again for at least 20 minutes, so
-  they are not on the map yet.
+  they are not on the map yet. NRW.Mobidrom sometimes stops updating Voi's
+  documents: on 25 October 2026 for about 20 minutes around 20:05 UTC, and
+  from about 21:50 to 00:10 UTC, when all twelve feeds expired and Sentry
+  reported each. They came back on their own.
 - **Scooters:** through the cache's own code at 14:12, Voi had 16,455
   available scooters: Köln 4,074, Düsseldorf / Neuss 2,192, Bonn / Siegburg /
   Sankt Augustin 1,803, Dortmund 1,393, Duisburg / Oberhausen 1,293, Essen
