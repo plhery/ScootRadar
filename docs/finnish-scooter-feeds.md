@@ -193,9 +193,10 @@ has none.
   scooters in 27 towns on Sunday 18 October 2026, Helsinki, Tampere, Lahti,
   Vantaa and Espoo first, with no Voi, Ryde or Bolt. None of them moved from
   04:55 to 09:00 Helsinki time, and 447 stood in Hanko, Raseborg, Kotka and
-  Hamina, which Dott reports as paused, so the data looks frozen. It waits on
-  a key and a test of our own (see
-  [Coverage gaps](coverage-gaps.md#waiting-on-a-decision)).
+  Hamina, which Dott reports as paused, so the data looks frozen. The two
+  keys ordered on 23 and 25 October 2026 were never activated (the feed
+  answered 403 to the end), and the user dropped it on 27 October 2026:
+  Finland stays on Dott's and Voi's rider maps and Hopp's feed.
 - **Hopp** answers for Mariehamn only: none of 26 other Finnish and Åland
   slugs tried at its address, for Helsinki, Tampere, Turku, Oulu and other
   towns, answered.

@@ -43,7 +43,6 @@ were added.
 | --- | --- |
 | **Dott official partner access** | The anonymous app map was authorized on 24 October 2026 and now covers 157 additional regions. Official GBFS credentials and redistribution permission can be requested through the [published GBFS contact](https://transportdata.be/fr/dataset/dott), dunya@ridedott.com (listing updated December 2024); support@ridedott.com can route a request to Partner Integrations. See [adapter evidence](dott-app-map.md) |
 | **Voi official GBFS access** | The user authorized an authenticated rider-map adapter on 24 October 2026; it adds 72 regions, including 17 in the UK ([evidence](voi-app-map.md)). Official access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
-| **Fintraffic** in Finland | Its national GBFS feed (`mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`) answers 403 without a free key, ordered with an account on the Mobility Database site, which answered 403 from Switzerland. Seen through Transitous, which has a key, it listed 10,570 Dott scooters in 27 towns on 18 October 2026 (Helsinki 1,720, Tampere 1,347, Lahti 894, Vantaa 826, Espoo 768), Donkey Republic's bikes, and no Voi, Ryde or Bolt. But no scooter moved from 04:55 to 09:00 on that Sunday morning, and it lists scooters in towns Dott reports as paused, so the data looks frozen. Test it with a key of our own before adding; Helsinki's season runs from 1 April to 30 November. Data under CC BY 4.0 ("Fintraffic / Digitraffic"), though some third parties' data may need a permit |
 | **Rider sign-in for JET** | JET's separate Central Asian app needs a rider account, with phone and SMS verification, for Almaty, Ulaanbaatar, Tashkent and Tbilisi. No guest session was found (24 October 2026). Beam's Google sign-in is complete, with a [54-region collector](beam-app-map.md) across Australia, Malaysia, South Korea and Türkiye. LUUP's [19-city collector](luup-app-map.md) and Whoosh's [25-region collector](whoosh-app-map.md) are integrated too. Go Jet's [signed-out adapter](gojet-app-map.md) supplies 54 regions in six countries without a rider sign-in. See [the evidence](jet-whoosh-beam-luup-app-maps.md) |
 | **Rider sign-ins for six ATOM apps** | IslaRide (Tenerife), wer2 (Doha), Reby (Dakar), IZZY (Tashkent), Silk Road Samarkand and e-moob (Tamarindo) answer their map only to a signed-in rider, and each needs its own phone and SMS sign-in, as MoVe's did. On 25 October 2026 the user chose to leave them for another day. Reby also refused a sign-in from a Swiss IP (error `11-6`), and e-moob's Aruba fleet stays out, since Aruba banned e-scooters from public roads in July 2026. See [the apps](atom-operator-apps.md) |
 | **Bird's rider app** | A guarded research reader is tested on 27 October 2026, but no app-map feed is integrated, at the user's choice. The same signed-in session recovered after the earlier synthetic replies, without renewal or a new account, and read real data across cities again. The earlier claim that location jumps permanently flagged it is withdrawn; the trigger remains unknown. The current app's cell endpoint works too, but silently caps replies at 1,000. A nine-request Indianapolis scan recovered all 301 stationary references; 332 of its 335 positions matched the public feed within 10 m. The reader rejects decoys, unverified empties and incomplete sweeps. Sustained quota, server compatibility, renewal and whole-city coverage still need validation. See [requests, limits and evidence](bird-app-map.md) |
@@ -425,9 +424,15 @@ banned shared scooters, and feeds that were empty when checked.
     answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
     paused, probably for the winter. Bird Helsinki's feed is empty and stamped
     `last_updated` 0.
-  - Fintraffic's separate national feed needs a key and looked frozen on
-    18 October 2026 (see
-    [Waiting on a decision](#waiting-on-a-decision)).
+  - Fintraffic's separate national feed
+    (`mobility-api.mobility-database.fintraffic.fi/gbfs`) is left out: the
+    user dropped it on 27 October 2026. It needs a key, ordered with an
+    account on the Mobility Database site; the two keys ordered on 23 and
+    25 October 2026 were never activated, so it answered 403 to the end. Seen
+    through Transitous on 18 October 2026, it listed 10,570 Dott scooters in
+    27 towns that didn't move from 04:55 to 09:00 that Sunday, some in towns
+    Dott reported as paused, so the data looked frozen. Finland stays on
+    Dott's and Voi's rider maps and Hopp's feed.
   - Joe Scooter's Rauma feed (ATOM Mobility) answers but listed no scooter at
     night or in 21 polls from 17:00 to 18:01 on a Tuesday. Its other towns'
     feeds answer "GBFS disabled". Check Rauma in spring, and add it as a new
@@ -800,7 +805,7 @@ Surveyed a third time on 18 October 2026: the national access points,
 Transitous's provider list, MobilityData's registry, Dott's country listings
 and name-based Lime and Bird addresses, with daytime polls of the leads.
 Nothing new, apart from Hopp's empty Bucharest feed (Romania, below) and
-Fintraffic's in Finland ([Waiting on a decision](#waiting-on-a-decision)).
+Fintraffic's in Finland, since dropped (see Finland, above).
 No access point held vehicle positions; see 1 December 2026 under
 [Dates to check again](#dates-to-check-again).
 
@@ -1138,9 +1143,7 @@ Bonaire had feeds to add. Survey files are in
   scooters that move; Australia then needs a list of its states, so
   addresses read "Sydney NSW 2000".
 - **1 April 2027:** Hopp Bucharest (`ro-bucharest`), empty on 18 October
-  2026, in case Hopp starts a season there; and Fintraffic's Finnish feed if
-  it hasn't been tested with a key of our own by then, as Helsinki's season
-  starts that day.
+  2026, in case Hopp starts a season there.
 - **1 April 2027:** Lichtensteig, out of the map's towns since 18 October
   2026. If Dott St. Gallen's scooters there move on a weekend, put
   `lichtensteig` back in `SYSTEM_EXTRA_AREAS` in `src/lib/feedCoverage.ts`
