@@ -1,7 +1,8 @@
 import { createWriteStream } from 'node:fs';
-import { open } from 'node:fs/promises';
+import { open, readFile, writeFile } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import type { FeedStateEntry } from './feedStateLog';
 
 // The snapshot is saved as one JSON document, so that any version of the cache can read it, but
 // written a feed at a time, one feed to a line, and read back the same way:
@@ -71,4 +72,46 @@ export async function readSnapshot(path: string): Promise<MobilitySnapshot | nul
   if (!head || !ended) throw new Error('Snapshot file is cut short');
   const snapshot = { ...head, feeds };
   return isSnapshot(snapshot) ? snapshot : null;
+}
+
+// The feed states (createFeedStateLog) are saved beside the snapshot, with it, as one JSON document
+// small enough to write whole:
+//
+//   {"version":1,"savedAt":…,"feeds":{"norway:dott_no_trondheim":{"state":"expired","since":…,"change":{…}},…}}
+
+/**
+ * How soon after they were saved the feed states are restored: a deploy stops the cache for a
+ * minute or two, and they are saved every minute and on shutdown. A feed collected on time expires
+ * ten minutes or more after its next collection is due (30 minutes after the last for one collected
+ * every 20), so a shorter outage expires none on its own. After a longer one, feeds that were ok
+ * would expire for the outage alone, and Sentry would hear of each not collected again within
+ * minutes of the restart: the cache starts as it did before it restored them, each feed's first
+ * state its baseline.
+ */
+export const FEED_STATES_MAX_AGE_MS = 10 * 60_000;
+
+const FEED_STATES = new Set(['ok', 'failing', 'expired', 'warming']);
+
+function isFeedStateEntry(value: unknown): value is FeedStateEntry {
+  const entry = value as Partial<FeedStateEntry> | null;
+  return typeof entry?.state === 'string' && FEED_STATES.has(entry.state) && Number.isFinite(entry.since) &&
+    (entry.change === undefined || entry.change?.event === 'snapshot_feed_state');
+}
+
+/** Writes the feed states, saved at `savedAt`, to the path. */
+export async function writeFeedStates(path: string, feeds: Readonly<Record<string, FeedStateEntry>>, savedAt: number): Promise<void> {
+  await writeFile(path, `${JSON.stringify({ version: 1, savedAt, feeds })}\n`);
+}
+
+/**
+ * Reads the feed states writeFeedStates wrote, with how long before `now`: none if saved
+ * FEED_STATES_MAX_AGE_MS or more before, and null if of another version. An entry of another shape
+ * is left out. Rejects a file cut short or not JSON.
+ */
+export async function readFeedStates(path: string, now: number): Promise<{ ageMs: number; feeds: Record<string, FeedStateEntry> } | null> {
+  const saved = JSON.parse(await readFile(path, 'utf8')) as { version?: unknown; savedAt?: unknown; feeds?: unknown } | null;
+  if (saved?.version !== 1 || typeof saved.savedAt !== 'number' || !saved.feeds || typeof saved.feeds !== 'object') return null;
+  const ageMs = now - saved.savedAt;
+  return { ageMs, feeds: ageMs < FEED_STATES_MAX_AGE_MS
+    ? Object.fromEntries(Object.entries(saved.feeds).filter(([, entry]) => isFeedStateEntry(entry))) : {} };
 }

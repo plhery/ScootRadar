@@ -3,7 +3,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { FeedSnapshot, MobilitySnapshot } from '../src/lib/scooterSnapshots';
-import { readSnapshot, writeSnapshot } from './snapshotFile';
+import type { FeedStateEntry } from './feedStateLog';
+import { FEED_STATES_MAX_AGE_MS, readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './snapshotFile';
 
 const feed = (id: string, name = 'Lyon'): FeedSnapshot => ({
   id, source: 'france', provider: 'dott', coverage: [{ south: 45.7, west: 4.8, north: 45.8, east: 4.9 }],
@@ -75,5 +76,45 @@ describe('the saved snapshot', () => {
   it('fails when the file cannot be written', async () => {
     await expect(writeSnapshot(join(directory, 'missing', 'scooters.json'), snapshot([feed('fr:a')])))
       .rejects.toMatchObject({ code: 'ENOENT' });
+  });
+});
+
+describe('the saved feed states', () => {
+  const now = 1_800_000_000_000;
+  const states = {
+    'norway:dott_no_trondheim': { state: 'expired', since: now - 3600_000, change: { event: 'snapshot_feed_state',
+      feed: 'norway:dott_no_trondheim', state: 'expired', previous: 'ok', secondsInPrevious: 900, observationAgeSeconds: 960,
+      attemptAgeSeconds: 0 } },
+    'national:dott_zurich': { state: 'ok', since: now - 60_000 },
+    'sweden:qick_se_orebro': { state: 'warming', since: now - 30_000 },
+  } satisfies Record<string, FeedStateEntry>;
+
+  it('are read back as they were, with their age', async () => {
+    const path = join(directory, 'feed-states.json');
+    await writeFeedStates(path, states, now - 90_000);
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 90_000, feeds: states });
+  });
+
+  it('are not restored once 10 minutes old, as after an outage', async () => {
+    const path = join(directory, 'feed-states.json');
+    await writeFeedStates(path, states, now - FEED_STATES_MAX_AGE_MS);
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: FEED_STATES_MAX_AGE_MS, feeds: {} });
+  });
+
+  it('are refused when missing, cut short or not JSON, left when of another version, and keep only entries of their shape', async () => {
+    const path = join(directory, 'feed-states.json');
+    await expect(readFeedStates(path, now)).rejects.toMatchObject({ code: 'ENOENT' });
+    await writeFeedStates(path, states, now);
+    await writeFile(path, (await readFile(path, 'utf8')).slice(0, 60));
+    await expect(readFeedStates(path, now)).rejects.toThrow(SyntaxError);
+    await writeFile(path, 'not JSON');
+    await expect(readFeedStates(path, now)).rejects.toThrow(SyntaxError);
+    await writeFile(path, JSON.stringify({ version: 2, savedAt: now, feeds: states }));
+    expect(await readFeedStates(path, now)).toBeNull();
+    await writeFile(path, JSON.stringify({ version: 1, feeds: states }));
+    expect(await readFeedStates(path, now)).toBeNull();
+    await writeFile(path, JSON.stringify({ version: 1, savedAt: now, feeds: { ...states, 'fr:a': { state: 'lost', since: now },
+      'fr:b': { state: 'ok' }, 'fr:c': { state: 'expired', since: now, change: 'expired' }, 'fr:d': null } }));
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
   });
 });

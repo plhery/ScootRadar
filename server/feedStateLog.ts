@@ -124,6 +124,13 @@ export function waitOutCurfew(curfewed: (feedId: string, now: number) => boolean
   return (feed: FeedSnapshot, now: number) => curfewed(feed.id, now) || curfewed(feed.id, now - CURFEW_RETURN_MS);
 }
 
+/** What the log holds of a feed: its state since `since`, and the change into it until an expiry is told. */
+export interface FeedStateEntry {
+  state: FeedState | 'warming';
+  since: number;
+  change?: FeedStateChange;
+}
+
 /**
  * Logs every feed whose state changed since the last call. A feed also expires
  * between two collections, without any error, when its time runs out: this
@@ -131,12 +138,16 @@ export function waitOutCurfew(curfewed: (feedId: string, now: number) => boolean
  * state seen for a feed is its baseline and is not logged. A feed not attempted
  * yet, as one a deploy adds, has 'warming' as its baseline: the state its first
  * collections leave is a change, so one that never loads is told like any other.
+ *
+ * `restored` holds the entries an earlier run saved (`saved()`), by feed: each is its feed's
+ * previous state, so an expiry still to be told keeps its wait and one already told stays quiet
+ * across a restart. An entry for a feed the first call is not handed goes, as any feed's that leaves.
  */
 export function createFeedStateLog(log: (line: string) => void = console.log,
   onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST,
-  stillExpired?: StillExpired) {
-  const known = new Map<string, { state: FeedState | 'warming'; since: number; change?: FeedStateChange }>();
-  return (feeds: readonly FeedSnapshot[], now = Date.now()) => {
+  stillExpired?: StillExpired, restored: Readonly<Record<string, FeedStateEntry>> = {}) {
+  const known = new Map(Object.entries(restored).map(([id, entry]) => [id, { ...entry }]));
+  const logStates = (feeds: readonly FeedSnapshot[], now = Date.now()) => {
     const seen = new Set<string>();
     for (const feed of feeds) {
       if (feed.skipped) continue;
@@ -169,4 +180,8 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
     }
     for (const id of known.keys()) if (!seen.has(id)) known.delete(id);
   };
+  /** The entries for a restart to restore, by feed: the change only with an expiry still to be told. */
+  const saved = (): Record<string, FeedStateEntry> => Object.fromEntries([...known].map(([id, { state, since, change }]) =>
+    [id, change?.state === 'expired' ? { state, since, change } : { state, since }]));
+  return Object.assign(logStates, { saved });
 }

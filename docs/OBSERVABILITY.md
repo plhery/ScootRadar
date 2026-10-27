@@ -338,9 +338,19 @@ Tracing is off, and no trace headers go to the operators' feeds.
   30 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
   Entur keeps serving as it last was, and brought it back 7.5 minutes after the ban on
   17 October 2026 and 16 minutes after it on the 18th, when a 10-minute wait in Grafana
-  had already told Telegram. A restart takes each feed's state as its baseline, so a feed
-  already expired when the cache deploys is not reported: hence no deploys during the
-  ban hours (AGENTS.md). A feed not collected yet, as one a deploy adds, is warming up:
+  had already told Telegram. A restart goes on from each feed's state as the cache last
+  saved it, with any report still to come and the time it has waited, from
+  `feed-states.json` beside the snapshot (saved with it, every minute and on shutdown): a
+  feed already expired when the cache deploys, as Dott's in Trondheim during the ban, is
+  still reported when its wait ends, and one already reported is not again. States saved
+  10 minutes or more before the restart are not restored (`FEED_STATES_MAX_AGE_MS` in
+  `server/snapshotFile.ts`): after a longer outage, feeds that were fine have expired for
+  the outage alone, and each not collected again within minutes would be reported. Then,
+  or when the file is missing or unreadable, each feed's state at the restart is its
+  baseline, as before the restore, and a feed already expired then is not reported. This
+  gap is why the cache is not deployed during the ban hours (AGENTS.md); the restore
+  closes it, but the hold stays until the restore has shipped and been checked in
+  production. A feed not collected yet, as one a deploy adds, is warming up:
   the state its first collections leave is a change (`previous: "warming"`), so one that
   never loads is reported. A shorter blip, as Voi
   Switzerland's 105 seconds on 16 October 2026, is only in the logs. One
@@ -353,7 +363,8 @@ Tracing is off, and no trace headers go to the operators' feeds.
   its expiry and the last collection error, or says that the last collection succeeded and
   its data then aged past the limit; its `host` context lists the host's other feeds
   expired by then.
-- **Unexpected errors**: snapshot restore and persistence, feed discovery, a request
+- **Unexpected errors**: the restore and persistence of the snapshot and of the feed
+  states (a missing file is not one), feed discovery, a request
   answered 500, and a collection that threw outside the feed's own error handling. Each
   is reported at most once an hour, so a failure repeating every few seconds stays one
   event an hour; the logs keep every occurrence. A failed discovery is tried once more
@@ -368,7 +379,9 @@ Routine feed failures are not sent; the metrics and logs cover them.
 `parking_feed_failed` (with the error), and `snapshot_health` (every minute, with the
 feeds on each cadence, `warmingFeeds` not collected yet and not counted as failed or
 expired, `unobservedFeeds` with no positions yet, and `oldestObservationAgeSeconds` over
-the feeds that have some, null when none has) are JSON lines.
+the feeds that have some, null when none has) are JSON lines, as is `feed_states_restored`
+(at start-up, with the number of `feeds` whose state was restored, 0 when the saved
+states are 10 minutes old or more, and the file's `ageSeconds`; see Sentry).
 `/ready` likewise lists the feeds not collected yet as `warmingFeeds`, apart from
 `failedFeeds`. So is `upstream_stale_fallback`, a request to an
 operator that failed while an earlier answer could still be served: its host and path,

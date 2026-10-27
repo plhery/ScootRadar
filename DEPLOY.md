@@ -345,7 +345,11 @@ Lime's, and its sweep publishes each part as it finishes (see
 Cached metadata is reported as degraded independently and does not prevent live
 vehicle timestamps advancing.
 Both clients honor response expiry times, including parking expiry, during outages. Snapshots
-are written atomically and restored after restarts. City totals are rebuilt
+are written atomically and restored after restarts. So are each feed's state and the
+Sentry reports still to come of the feeds that stopped, in `feed-states.json` beside
+the snapshot in `/data`, but only when saved under 10 minutes before the restart: a
+longer outage starts from each feed's state at the restart, as before (see
+[docs/OBSERVABILITY.md](docs/OBSERVABILITY.md#sentry)). City totals are rebuilt
 hourly, marked as an overview in the API, and rejected after three hours without
 a replacement. Those of Bird's, Spin's and Bolt's own feeds are built apart, in
 about a tenth of a second, and again on the five-second tick before the data

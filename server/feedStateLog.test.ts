@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ALWAYS_FAST, createFeedStateLog, expiredReportDelay, feedState, parkingUp, waitOutCurfew, type FeedCadence } from './feedStateLog';
+import { ALWAYS_FAST, createFeedStateLog, expiredReportDelay, feedState, parkingUp, waitOutCurfew, type FeedCadence,
+  type FeedStateEntry, type StillExpired } from './feedStateLog';
 import { feedCurfewed } from '../src/lib/seasonalPauses';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 
@@ -203,6 +204,87 @@ it('waits 30 minutes after Trondheim\'s night ban for Dott\'s feed, which came b
   logStates(dott(down, down), down);
   for (let at = down + minutes(20); at <= banEnd + minutes(40); at += minutes(1)) logStates(dott(down, at), at);
   expect(reported).toEqual([banEnd + minutes(30)]);
+});
+
+describe('a restart with the states saved before it', () => {
+  const minutes = (count: number) => count * 60_000;
+  const now = 1_000_000_000;
+  // Through JSON, as the file they are saved in.
+  const reread = (saved: Record<string, FeedStateEntry>): Record<string, FeedStateEntry> => JSON.parse(JSON.stringify(saved));
+  const zurich = (observedAt: number, attemptedAt: number) =>
+    [feed({ id: 'national:dott_zurich', provider: 'dott', observedAt, attemptedAt })];
+  const reporting = (reported: [string, number][], wait?: StillExpired['wait']): StillExpired => ({ afterMs: minutes(5), wait,
+    report: (change, current) => { reported.push([change.previous, current.attemptedAt]); } });
+
+  it('tells of Dott\'s feed in Trondheim, expired as the cache restarted in the night ban, 30 minutes after the ban', () => {
+    const reported: [string, number][] = [];
+    const stillExpired = reporting(reported, waitOutCurfew(feedCurfewed));
+    const dott = (observedAt: number, attemptedAt: number) =>
+      [feed({ id: 'norway:dott_no_trondheim', provider: 'dott', observedAt, attemptedAt })];
+    // Saturday 24 October 2026: down from 23:00, with a deploy at 01:00 taking two minutes.
+    const banEnd = Date.parse('2026-10-24T03:00:00Z');
+    const down = banEnd - minutes(6 * 60);
+    const restart = banEnd - minutes(4 * 60);
+    const before = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, stillExpired);
+    for (let at = down; at < restart; at += minutes(1)) before(dott(down, at), at);
+    const saved = reread(before.saved());
+    expect(saved['norway:dott_no_trondheim']).toMatchObject({ state: 'expired', since: down + minutes(16),
+      change: { state: 'expired', previous: 'ok' } });
+    const after = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, stillExpired, saved);
+    // Without them, as before, its state after the restart is its baseline: nobody hears of it.
+    const unsaved: [string, number][] = [];
+    const baseline = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(unsaved, waitOutCurfew(feedCurfewed)));
+    for (let at = restart + minutes(2); at <= banEnd + minutes(40); at += minutes(1)) {
+      after(dott(down, at), at);
+      baseline(dott(down, at), at);
+    }
+    expect(reported).toEqual([['ok', banEnd + minutes(30)]]);
+    expect(unsaved).toEqual([]);
+  });
+
+  it('does not tell again of an expiry told before it', () => {
+    const reported: [string, number][] = [];
+    const before = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(reported));
+    for (let minute = 0; minute <= 30; minute++) before(zurich(now, now + minutes(minute)), now + minutes(minute));
+    expect(reported).toEqual([['ok', now + minutes(21)]]);
+    const saved = reread(before.saved());
+    expect(saved).toEqual({ 'national:dott_zurich': { state: 'expired', since: now + minutes(16) } });
+    const after = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(reported), saved);
+    for (let minute = 32; minute <= 120; minute++) after(zurich(now, now + minutes(minute)), now + minutes(minute));
+    expect(reported).toEqual([['ok', now + minutes(21)]]);
+  });
+
+  it('tells of a feed ok before it and expired after it, and forgets a feed gone since', () => {
+    const lines: string[] = [];
+    const reported: [string, number][] = [];
+    // Its positions 14 minutes old when the cache last saves, and none newer after.
+    const before = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(reported));
+    before(zurich(now - minutes(14), now), now);
+    const saved: Record<string, FeedStateEntry> = { ...reread(before.saved()), 'italy:gone': { state: 'expired', since: now - minutes(60) } };
+    expect(saved['national:dott_zurich']).toEqual({ state: 'ok', since: now });
+    const after = createFeedStateLog(line => lines.push(line), undefined, ALWAYS_FAST, reporting(reported), saved);
+    const unsaved: [string, number][] = [];
+    const baseline = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(unsaved));
+    for (let minute = 2; minute <= 10; minute++) {
+      after(zurich(now - minutes(14), now + minutes(minute)), now + minutes(minute));
+      baseline(zurich(now - minutes(14), now + minutes(minute)), now + minutes(minute));
+    }
+    expect(lines.map(line => JSON.parse(line))).toEqual([{ event: 'snapshot_feed_state', feed: 'national:dott_zurich',
+      state: 'expired', previous: 'ok', secondsInPrevious: 120, observationAgeSeconds: 16 * 60, attemptAgeSeconds: 0 }]);
+    expect(reported).toEqual([['ok', now + minutes(7)]]);
+    expect(unsaved).toEqual([]);
+    expect(Object.keys(after.saved())).toEqual(['national:dott_zurich']);
+  });
+
+  it('keeps the wait of an expiry not told yet', () => {
+    const reported: [string, number][] = [];
+    // Expired at minute 16 and saved at 18: told at 21, as it would have been without the restart.
+    const before = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(reported));
+    for (let minute = 0; minute <= 18; minute++) before(zurich(now, now + minutes(minute)), now + minutes(minute));
+    const after = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, reporting(reported), reread(before.saved()));
+    for (let minute = 20; minute <= 30; minute++) after(zurich(now, now + minutes(minute)), now + minutes(minute));
+    expect(reported).toEqual([['ok', now + minutes(21)]]);
+  });
 });
 
 describe('cadence', () => {

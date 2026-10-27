@@ -12,9 +12,9 @@ import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler, type CollectionAttention } from './feedScheduler';
 import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
-import { readSnapshot, writeSnapshot } from './snapshotFile';
+import { readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
+import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
@@ -69,6 +69,9 @@ const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
 // its own folder beside the snapshot, on the same volume so the rename stays atomic, which lets the
 // host's backup skip it: one vanishing while restic read it failed the backup on 19 Oct 2026.
 const temporaryDirectory = join(dirname(snapshotPath), 'tmp');
+// Each feed's state, and any expiry Sentry is still to hear of, saved beside the snapshot with it
+// and restored after a restart (createFeedStateLog).
+const feedStatesPath = join(dirname(snapshotPath), 'feed-states.json');
 // The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
@@ -152,6 +155,23 @@ try {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
     console.error('Snapshot restore failed', error);
     reportError('restore', error);
+  }
+}
+// A feed expired before the restart, as Dott's in Trondheim taken down for the night ban, is still
+// reported when its wait ends, and one already reported is not again. States saved too long before
+// are left (FEED_STATES_MAX_AGE_MS): each feed's first state is then its baseline.
+let restoredFeedStates: Record<string, FeedStateEntry> = {};
+try {
+  const saved = await readFeedStates(feedStatesPath, Date.now());
+  if (saved) {
+    restoredFeedStates = saved.feeds;
+    console.log(JSON.stringify({ event: 'feed_states_restored', feeds: Object.keys(saved.feeds).length,
+      ageSeconds: Math.round(saved.ageMs / 1000) }));
+  }
+} catch (error) {
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+    console.error('Feed state restore failed', error);
+    reportError('restore:feed-states', error);
   }
 }
 
@@ -306,21 +326,35 @@ async function persist(final = false) {
   // which a restart builds again from what it holds.
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
+  const states = logFeedStates.saved();
   persisting = (async () => {
-    const temporaryPath = join(temporaryDirectory, `scooters.${randomUUID()}.json.tmp`);
     try {
-      await mkdir(temporaryDirectory, { recursive: true });
-      await writeSnapshot(temporaryPath, saved);
-      await rename(temporaryPath, snapshotPath);
+      await saveAtomically(snapshotPath, 'scooters', path => writeSnapshot(path, saved));
     } catch (error) {
       dirty = true;
       console.error('Snapshot persistence failed', error);
       reportError('persist', error);
-    } finally {
-      await rm(temporaryPath, { force: true }).catch(() => {});
+    }
+    try {
+      await saveAtomically(feedStatesPath, 'feed-states', path => writeFeedStates(path, states, now));
+    } catch (error) {
+      console.error('Feed state persistence failed', error);
+      reportError('persist:feed-states', error);
     }
   })();
   try { await persisting; } finally { persisting = undefined; }
+}
+
+/** Writes a file into temporaryDirectory, then renames it over `path`. */
+async function saveAtomically(path: string, name: string, write: (temporaryPath: string) => Promise<void>) {
+  const temporaryPath = join(temporaryDirectory, `${name}.${randomUUID()}.json.tmp`);
+  try {
+    await mkdir(temporaryDirectory, { recursive: true });
+    await write(temporaryPath);
+    await rename(temporaryPath, path);
+  } finally {
+    await rm(temporaryPath, { force: true }).catch(() => {});
+  }
 }
 
 let discoveryTimer: ReturnType<typeof setTimeout>;
@@ -342,10 +376,11 @@ setDefinitions(withAppCollectors(independentCollectableFeeds()), false);
 scheduler.start();
 void discover();
 // Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, or 30 for one
-// swept slowly on purpose, as the app maps (expiredReportDelay).
+// swept slowly on purpose, as the app maps (expiredReportDelay). A restart goes on from the states
+// saved before it (restoredFeedStates).
 const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: feed => expiredReportDelay(feed, ownIdleExpiry(feed.id)),
   // Under a night ban, an operator may take its feed down until morning, as Dott did in Trondheim
-  // on 16 October 2026: Sentry hears of it only if it is not back 15 minutes after the ban.
+  // on 16 October 2026: Sentry hears of it only if it is not back 30 minutes after the ban.
   wait: waitOutCurfew(feedCurfewed),
   report: (change, feed) => {
     // In its seasonal pause, or closed by its operator for the season, a feed is expected to stop;
@@ -357,7 +392,7 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
       !snapshotPaused(other, now) && feedState(other, now, cadence) === 'expired').map(other => other.id).sort();
     reportFeedExpired(change, feed, lastErrors.get(feed.id), host, alsoExpired);
-  } });
+  } }, restoredFeedStates);
 const persistenceTimer = setInterval(() => {
   const now = Date.now();
   if (dropExpiredData(now)) publish();
