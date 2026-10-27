@@ -236,6 +236,8 @@ import raleighEn from './en/e-scooters-raleigh';
 import camposDoJordaoEn from './en/e-scooters-campos-do-jordao';
 import durhamEn from './en/e-scooters-durham';
 import lexingtonEn from './en/e-scooters-lexington';
+import culverCityEn from './en/e-scooters-culver-city';
+import fairfaxEn from './en/e-scooters-fairfax';
 import bariIt from './it/monopattini-sharing-bari';
 import darmstadtDe from './de/e-scooter-darmstadt';
 import bochumDe from './de/e-scooter-bochum';
@@ -491,6 +493,8 @@ export const GUIDES: readonly Guide[] = [
   camposDoJordaoEn,
   durhamEn,
   lexingtonEn,
+  culverCityEn,
+  fairfaxEn,
   bariIt,
   darmstadtDe,
   bochumDe,
