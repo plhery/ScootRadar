@@ -75,7 +75,7 @@ class ScooterMapLinkTest {
         }
         // Numbers as Swift reads them: hexadecimal too, no suffix, spaces and tabs trimmed but not line breaks.
         assertEquals(GeoPoint(latitude = 47.0, longitude = 8.0), link("https://scootradar.com/map?origin=0x2F,0x1p3")?.origin)
-        assertEquals(listOf(0, 30, 30, null, null, 0, 30, 60), listOf("0x10", "47.", " 45", "5d", "1e400", "4.9e-400", "45.9", " 60\t").map(ScooterMapLink::battery))
+        assertEquals(listOf(0, 30, 30, null, null, 0, 30, 60), listOf("0x10", "47.", " 45", "5d", "1e400", "4.9e-400", "45.9", "\u00A060\t").map(ScooterMapLink::battery))
         assertEquals(GeoPoint(latitude = 47.3, longitude = 8.5), ScooterMapLink.coordinate("47.3,\t8.5"))
         assertNull(ScooterMapLink.coordinate("47.3,8.5\n"))
         assertEquals(GeoPoint(latitude = 0.5, longitude = -0.5), ScooterMapLink.coordinate(".5,-.5"))
@@ -94,5 +94,31 @@ class ScooterMapLinkTest {
                 linkedAt = GeoPoint(latitude = zurich.center.latitude + 0.01, longitude = zurich.center.longitude),
             ),
         )
+    }
+
+    @Test
+    fun aLinkIsRepairedAsFoundationRepairsIt() {
+        // What URL(string:) makes of each on the iPhone, checked with Foundation on a Mac.
+        assertEquals(
+            "https://scootradar.com/map?a=%25zz&origin=47%20,8",
+            ScooterMapLink.url("https://scootradar.com/map?a=%zz&origin=47 ,8").toString(),
+        )
+        assertEquals(GeoPoint(latitude = 47.0, longitude = 8.0), ScooterMapLink("https://scootradar.com/map?a=%zz&origin=47 ,8")?.origin)
+        assertEquals(
+            "https://scootradar.com/map?a=%5B1%5D%7C%7Bx%7D%5E%60%22%3C%3E%5Cb",
+            ScooterMapLink.url("https://scootradar.com/map?a=[1]|{x}^`\"<>\\b").toString(),
+        )
+        assertEquals(
+            "https://scootradar.com/map?origin=47.1,8#frag%232",
+            ScooterMapLink.url("https://scootradar.com/map?origin=47.1,8#frag#2").toString(),
+        )
+        assertEquals(
+            "https://scootradar.com/m%C3%A4p?origin=Z%C3%BCrich%20%C3%A9",
+            ScooterMapLink.url("https://scootradar.com/m\u00E4p?origin=Z\u00FCrich \u00E9").toString(),
+        )
+        assertEquals("https://scootradar.com/map?a=%254", ScooterMapLink.url("https://scootradar.com/map?a=%4").toString())
+        assertEquals("https://scootradar.com/map?x=%e2%82%ac", ScooterMapLink.url("https://scootradar.com/map?x=%e2%82%ac").toString())
+        assertNull(ScooterMapLink.url("https://scoot radar.com/map"))
+        assertNull(ScooterMapLink("https://scoot radar.com/map?origin=47,8"))
     }
 }

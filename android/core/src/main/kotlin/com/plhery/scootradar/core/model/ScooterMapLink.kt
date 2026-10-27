@@ -2,6 +2,7 @@ package com.plhery.scootradar.core.model
 
 import java.io.ByteArrayOutputStream
 import java.net.URI
+import java.net.URISyntaxException
 import java.nio.ByteBuffer
 import java.nio.charset.CharacterCodingException
 import java.nio.charset.CodingErrorAction
@@ -52,6 +53,47 @@ data class ScooterMapLink(
                 minimumBattery = value("minBattery")?.let(::battery),
             )
         }
+
+        /** Null for anything but a link to the map on the site, read as URL(string:) reads it. */
+        operator fun invoke(link: String): ScooterMapLink? = url(link)?.let { invoke(it) }
+
+        /**
+         * URL(string:): the link with the characters a URL cannot hold percent-encoded in its path, query
+         * and fragment, as Foundation encodes them ("47 ,8" → "47%20,8", a "%" before no two hex digits →
+         * "%25"); null where the host cannot be read. java.net.URI refuses such a link outright, and an
+         * Android intent hands the link over as the browser had it.
+         */
+        fun url(link: String): URI? {
+            val start = link.indexOf("://").takeIf { it >= 0 }?.plus(3) ?: return null
+            val pathStart = link.indexOfAny(charArrayOf('/', '?', '#'), start).takeIf { it >= 0 } ?: link.length
+            val encoded = StringBuilder(link.substring(0, pathStart))
+            var inFragment = false
+            var index = pathStart
+            while (index < link.length) {
+                val codePoint = link.codePointAt(index)
+                val character = link[index]
+                val kept = when {
+                    character == '#' -> !inFragment.also { inFragment = true }
+                    character == '%' -> link.getOrNull(index + 1)?.isHexDigit() == true &&
+                        link.getOrNull(index + 2)?.isHexDigit() == true
+                    codePoint < 0x80 -> character.isLetterOrDigit() || character in "-._~!$&'()*+,;=:@/?"
+                    else -> false
+                }
+                if (kept) {
+                    encoded.append(character)
+                } else {
+                    String(Character.toChars(codePoint)).toByteArray().forEach { encoded.append("%%%02X".format(it)) }
+                }
+                index += Character.charCount(codePoint)
+            }
+            return try {
+                URI(encoded.toString())
+            } catch (_: URISyntaxException) {
+                null
+            }
+        }
+
+        private fun Char.isHexDigit(): Boolean = digitToIntOrNull(16) != null
 
         /** "47.3769,8.5417" as the web reads it: two finite numbers in range. */
         fun coordinate(text: String): GeoPoint? {
