@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ScootRadar"
 include(":app")
+include(":core")
