@@ -1,15 +1,35 @@
 package com.plhery.scootradar.core.model
 
+import java.math.BigDecimal
 import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.util.Currency
 
-// RidePriceFormatter.listedDay and ScooterLinks from ios/ScootRadar/Views/ScooterControls.swift; the rest of
-// that file is views.
+// RidePriceFormatter and ScooterLinks from ios/ScootRadar/Views/ScooterControls.swift; the rest of that file
+// is views.
 
 object RidePriceFormatter {
     private val isoDay = Regex("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})")
+
+    /** "5.20": the amount without its currency, which the label under a figure names. */
+    fun amount(minorUnits: Int, currency: String): String =
+        ScooterNumberFormat.decimal(
+            BigDecimal.valueOf(minorUnits.toLong(), 2),
+            fractionDigits(currency),
+            ScooterLanguage.current.locale,
+        )
+
+    fun string(minorUnits: Int, currency: String): String {
+        val amount = BigDecimal.valueOf(minorUnits.toLong(), 2)
+        return ScooterNumberFormat.currency(
+            amount,
+            currency.uppercase(),
+            fractionDigits(currency),
+            ScooterLanguage.current.locale,
+        ) ?: "${currency.uppercase()} ${amount.withoutTrailingZeros().toPlainString()}"
+    }
 
     /**
      * "18 Oct", or "18 Oct 2026" when that is not this year: the day, "2026-10-18", a price copied from an
@@ -28,6 +48,20 @@ object RidePriceFormatter {
             ScooterLanguage.current.locale,
         )
     }
+
+    /** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272". */
+    fun fractionDigits(currency: String): Int {
+        val code = currency.uppercase()
+        if (code in wholeUnitCurrencies) return 0
+        val digits = runCatching { Currency.getInstance(code).defaultFractionDigits }.getOrDefault(2)
+        return if (digits == 0) 0 else 2
+    }
+
+    /**
+     * Forints are written whole: the fillér left circulation in 1999, yet ISO 4217 still gives HUF two
+     * decimals, and some systems follow it ("HUF 272.00"). src/lib/ridePrice.ts lists the same.
+     */
+    private val wholeUnitCurrencies = setOf("HUF")
 }
 
 object ScooterLinks {

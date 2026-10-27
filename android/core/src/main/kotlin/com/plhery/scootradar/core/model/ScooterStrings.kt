@@ -2,7 +2,10 @@ package com.plhery.scootradar.core.model
 
 import java.io.InputStream
 import java.io.StringReader
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.NumberFormat
+import java.util.Currency
 import java.util.Locale
 import javax.xml.parsers.DocumentBuilderFactory
 import org.w3c.dom.Element
@@ -60,13 +63,45 @@ class ScooterStrings internal constructor(
 }
 
 /**
- * Writes whole numbers as the locale does, with its grouping: 1,005 in English, 1’005 in Swiss German.
- * Foundation does so for a %lld of a sentence and for `.formatted(.number)`. The app sets one that
- * follows Android's own number data, as Foundation follows the iPhone's.
+ * Writes numbers as the locale does, with its grouping: 1,005 in English, 1’005 in Swiss German.
+ * Foundation does so for a %lld of a sentence and for `.formatted(.number)`, and for decimals and
+ * amounts of money. The app sets ones that follow Android's own number data, as Foundation follows the
+ * iPhone's.
  */
 object ScooterNumberFormat {
     @Volatile
     var integer: (Long, Locale) -> String = { number, locale -> NumberFormat.getIntegerInstance(locale).format(number) }
+
+    /**
+     * A decimal with that many digits after its point, as `.formatted(.number.precision(.fractionLength(digits)))`
+     * writes it in the locale: "1,032", "5.20", "5,20". Halves go to the even neighbour.
+     */
+    @Volatile
+    var decimal: (number: BigDecimal, fractionDigits: Int, locale: Locale) -> String = { number, digits, locale ->
+        NumberFormat.getNumberInstance(locale).apply {
+            minimumFractionDigits = digits
+            maximumFractionDigits = digits
+            roundingMode = RoundingMode.HALF_EVEN
+        }.format(number)
+    }
+
+    /**
+     * An amount of the currency of that ISO code, as NumberFormatter's currency style writes it in the locale
+     * with that many digits after its point: "CHF 1.00", "$0.42", "1,00 €"; null where the code names no
+     * currency. The JVM's writes no space between a code and its number ("CHF1.00" in American English), where
+     * Foundation and Android do.
+     */
+    @Volatile
+    var currency: (amount: BigDecimal, code: String, fractionDigits: Int, locale: Locale) -> String? = { amount, code, digits, locale ->
+        runCatching { Currency.getInstance(code) }.getOrNull()?.let { currency ->
+            NumberFormat.getCurrencyInstance(locale).apply {
+                this.currency = currency
+                minimumFractionDigits = digits
+                maximumFractionDigits = digits
+                roundingMode = RoundingMode.HALF_EVEN
+            }.format(amount)
+        }
+    }
 }
 
 /**
