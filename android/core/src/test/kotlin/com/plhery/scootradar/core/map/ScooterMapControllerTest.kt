@@ -3346,9 +3346,8 @@ class ScooterMapControllerTest {
         assertEquals(2_000.0, ScooterMapCameraPolicy.distance(1_000.0, zoomedBy = -1), 0.001)
     }
 
-    // Asking for a rating when the rider is back from a ride. The prompt counts the phone's days: the phone is in
-    // UTC, as on the iPhone's CI, so that the returns fall on the days the tests mean in any zone (in Adelaide,
-    // the next test's second return would be on the day after its first).
+    // Asking for a rating when the rider is back from a ride. The prompt counts the phone's days in its time zone,
+    // which these tests set to UTC, so that the days they mean don't hang on the zone of the machine that runs them.
 
     @Test
     fun aReturnFromARideIsTheMomentOnceTheMapIsCalmWithAFreshFeed() = inUTC {
