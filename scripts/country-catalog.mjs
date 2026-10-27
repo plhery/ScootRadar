@@ -564,6 +564,23 @@ function swiftRegionTotals(countries) {
     }latitude: ${region.anchor[0]}, longitude: ${region.anchor[1]}),\n`).join('')}        ],\n`).join('')}    `;
 }
 
+/** What swiftCountries gives the iPhone app, as data for the Android app's catalog.json. */
+export function kotlinCountries(countries) {
+  return {
+    anchors: Object.fromEntries(countries.map(country => [lower(country), country.anchor])),
+    credits: countryCreditLinks(countries).map(link => ({ title: link.label, url: link.href })),
+    regionTotals: Object.fromEntries(countries.filter(country => country.regions?.totals).map(country => [
+      lower(country),
+      Object.fromEntries(country.regions.list.map(region => [region.code.toLowerCase(), {
+        name: region.name,
+        ...(region.names ? { names: region.names } : {}),
+        latitude: region.anchor[0],
+        longitude: region.anchor[1],
+      }])),
+    ])),
+  };
+}
+
 export function swiftCountries(countries) {
   return `
 /// The countries of data/countries.json, as src/generated/countries.ts has them on the web.

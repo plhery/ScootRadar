@@ -5,7 +5,8 @@
 // ios/ScootRadar/Models/ScooterStartPlace.swift on iOS pick the covered city
 // nearest that point at run time, so the table does not change as cities or
 // countries are added. A zone it does not know, such as UTC, opens on
-// Switzerland, as every visitor did before. The catalog check reads it too:
+// Switzerland, as every visitor did before. The Android app has the same table
+// (android/core's TimeZonesParityTest). The catalog check reads it too:
 // a service area's timeZone must be one of its country's zones.
 //
 // Source: the IANA time zone database, https://www.iana.org/time-zones, which
@@ -105,6 +106,38 @@ ${sorted(aliases).map(([alias, zone]) => `        "${alias}": "${zone}",`).join(
 }
 `;
 
+// A whole number is written as a Double, as Kotlin wants it.
+const kotlinDouble = value => (Number.isInteger(value) ? `${value}.0` : `${value}`);
+
+const kotlin = `${header}
+
+package com.plhery.scootradar.core.generated
+
+import com.plhery.scootradar.core.model.GeoPoint
+
+data class ScooterTimeZonePlace(val countryCode: String, val point: GeoPoint)
+
+object ScooterTimeZones {
+    /** The release of the IANA time zone database the table comes from. */
+    const val version = "${version}"
+
+    /** Each zone of zone.tab: its country and its point. */
+    val places: Map<String, ScooterTimeZonePlace> by lazy {
+        mapOf(
+${sorted(zones).map(([name, { country, point }]) => `            "${name}" to ScooterTimeZonePlace("${country}", GeoPoint(${kotlinDouble(point[0])}, ${kotlinDouble(point[1])})),`).join('\n')}
+        )
+    }
+
+    /** Older names a device may report, and the zone each stands for. */
+    val aliases: Map<String, String> by lazy {
+        mapOf(
+${sorted(aliases).map(([alias, zone]) => `            "${alias}" to "${zone}",`).join('\n')}
+        )
+    }
+}
+`;
+
 writeFileSync(resolve(root, 'src/generated/timeZones.ts'), typescript);
 writeFileSync(resolve(root, 'ios/ScootRadar/Models/TimeZones.generated.swift'), swift);
+writeFileSync(resolve(root, 'android/core/src/main/kotlin/com/plhery/scootradar/core/generated/TimeZones.kt'), kotlin);
 console.log(`tzdata ${version}: ${zones.size} zones, ${aliases.size} older names`);
