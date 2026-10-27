@@ -712,7 +712,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         if case let .refreshFailed(failure, showing) = loadIssue {
             return failure == .offline ? .offline(showing: showing) : .refreshFailed(showing: showing)
         }
-        guard responseMetadata?.stale == true, let lastUpdated, !(isFilling && lastSeenAt != nil) else { return nil }
+        guard responseMetadata?.stale == true, let lastUpdated, !(isFilling && lastSeenAt != nil),
+              clock().timeIntervalSince(lastUpdated) >= ScooterDockStatus.delayedAfter else { return nil }
         return .delayed(showing: lastUpdated)
     }
 

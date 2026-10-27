@@ -1897,7 +1897,11 @@ extension ScooterMapModelTests {
         XCTAssertTrue(loaded)
         let lastUpdated = try XCTUnwrap(model.lastUpdated)
         guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
-        XCTAssertEqual(summary.status(at: lastUpdated), .delayed(showing: lastUpdated))
+        XCTAssertEqual(summary.status(at: lastUpdated), .live)
+        XCTAssertEqual(
+            summary.status(at: lastUpdated.addingTimeInterval(ScooterDockStatus.delayedAfter)),
+            .delayed(showing: lastUpdated)
+        )
         XCTAssertFalse(summary.showsTryAgain)
     }
 
@@ -2194,6 +2198,8 @@ extension ScooterMapModelTests {
         let delayed = await waitUntil { await api.snapshot().calls == 4 && model.loadIssue == nil && !model.isLoading }
         XCTAssertTrue(delayed)
         let delayedAt = try XCTUnwrap(model.lastUpdated)
+        XCTAssertNil(model.cardStatus, "Stale data is not called delayed while it is recent")
+        clock.advance(ScooterDockStatus.delayedAfter)
         XCTAssertEqual(model.cardStatus, .delayed(showing: delayedAt))
     }
 
@@ -2487,10 +2493,14 @@ extension ScooterMapModelTests {
         XCTAssertNil(model.cardStatus)
         model.clearSelection()
 
-        // With the faded ones hidden by the filters, the delay is said again.
+        // With the faded ones hidden by the filters, the delay is said again, once the data is late.
         model.showProviders([.lime])
         guard case let .summary(filtered) = model.dock else { return XCTFail("Expected the dock summary") }
-        XCTAssertEqual(filtered.status(at: clock.now), .delayed(showing: shownAt))
+        XCTAssertEqual(filtered.status(at: clock.now), .live)
+        XCTAssertEqual(
+            filtered.status(at: shownAt.addingTimeInterval(ScooterDockStatus.delayedAfter)),
+            .delayed(showing: shownAt)
+        )
         model.resetFilters()
 
         // A failed refresh is said before anything else.

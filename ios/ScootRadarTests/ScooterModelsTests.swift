@@ -1045,6 +1045,11 @@ extension ScooterModelsTests {
 
         let later = updated.addingTimeInterval(600)
         XCTAssertEqual(summary(delayed: true).status(at: later), .delayed(showing: updated))
+        // Delayed from five minutes: younger, it reads like any other data.
+        XCTAssertEqual(summary(delayed: true).status(at: updated.addingTimeInterval(60)), .live)
+        XCTAssertEqual(summary(delayed: true).status(at: updated.addingTimeInterval(299)), .updatedMinutesAgo(4))
+        XCTAssertEqual(summary(delayed: true).status(at: updated.addingTimeInterval(300)), .delayed(showing: updated))
+        XCTAssertEqual(summary(overview: true, delayed: true).status(at: updated.addingTimeInterval(60)), .cityTotals)
         XCTAssertEqual(summary(overview: true).status(at: later), .cityTotals)
         XCTAssertEqual(summary(overview: true, delayed: true).status(at: later), .delayed(showing: updated))
         XCTAssertEqual(

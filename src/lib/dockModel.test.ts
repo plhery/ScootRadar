@@ -190,9 +190,17 @@ describe('dock status', () => {
       .toEqual({ kind: 'updated', text: { key: 'dock.updatedAt', time: NOW - 3_600_000 } });
   });
 
-  it('says the data is delayed when the server serves old feeds', () => {
-    expect(summary({ meta: meta({ stale: true }) }).status)
-      .toEqual({ kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 30_000 } });
+  it('says the data is delayed when the server serves old feeds from five minutes', () => {
+    const stale = meta({ stale: true });
+    expect(summary({ meta: stale, lastUpdated: NOW - 5 * 60_000 }).status)
+      .toEqual({ kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 5 * 60_000 } });
+    // Younger, it reads like any other data: its age says enough.
+    expect(summary({ meta: stale }).status).toEqual({ kind: 'live', text: { key: 'dock.live' } });
+    expect(summary({ meta: stale, lastUpdated: NOW - 5 * 60_000 + 1 }).status)
+      .toEqual({ kind: 'updated', text: { key: 'dock.updatedMinutes', numbers: { count: 4 } } });
+    const overview = meta({ overview: true, mode: 'clusters', zoom: 8, stale: true });
+    expect(summary({ meta: overview, lastUpdated: NOW - 60_000 }).status)
+      .toEqual({ kind: 'overview', text: { key: 'dock.cityTotals' } });
   });
 
   it('says scooters are being updated while faded ones stand where they were last seen', () => {
@@ -205,9 +213,10 @@ describe('dock status', () => {
     const curfew = summary({ ...filling, count: 0, providerCounts: {}, viewportCenter: [59.91, 10.75], now: Date.parse('2026-10-03T23:30:00.000Z') });
     expect(curfew).toMatchObject({ phase: 'finding', count: { value: null, label: { key: 'dock.finding' } }, hint: null });
     expect(curfew.notices.map(notice => notice.kind)).toContain('curfew');
-    // Delayed once the server stops collecting them, or with nothing faded in view.
-    expect(summary({ ...filling, meta: meta({ stale: true }) }).status?.kind).toBe('delayed');
-    expect(summary({ ...filling, lastSeenCount: 0 }).status?.kind).toBe('delayed');
+    // Delayed once the server stops collecting them, or with nothing faded in view, when the data is late.
+    const late = NOW - 5 * 60_000;
+    expect(summary({ ...filling, meta: meta({ stale: true }), lastUpdated: late }).status?.kind).toBe('delayed');
+    expect(summary({ ...filling, lastSeenCount: 0, lastUpdated: late }).status?.kind).toBe('delayed');
     // Seen on another day, as a Lime group swept days ago: with the day of the week.
     const daysAgo = NOW - 50 * 3_600_000;
     expect(summary({ ...filling, count: 3, meta: meta({ refreshing: true, lastSeenAt: new Date(daysAgo).toISOString() }) }).status)
@@ -660,13 +669,15 @@ describe('dock issue, for the line above a card', () => {
   });
 
   it('repeats delayed data without a retry, also where a card has replaced the count', () => {
-    const hidden = input({ count: 0, minBattery: 30, unfilteredCount: 9, meta: meta({ stale: true }) });
+    const hidden = input({ count: 0, minBattery: 30, unfilteredCount: 9, meta: meta({ stale: true }), lastUpdated: NOW - 6 * 60_000 });
     expect(dockModel(hidden).kind).toBe('filtersHideAll');
     expect(dockIssue(hidden)).toEqual({
-      status: { kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 30_000 } },
+      status: { kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 6 * 60_000 } },
       retry: false,
       busy: false,
     });
+    // Before then the card's line stays empty, as for healthy data.
+    expect(dockIssue(input({ meta: meta({ stale: true }) }))).toBeNull();
   });
 
   it('leaves the explanation to the out-of-date card', () => {

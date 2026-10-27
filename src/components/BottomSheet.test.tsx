@@ -13,6 +13,9 @@ import { formatClockTime } from '@/lib/uiText';
 const NOW = Date.parse('2026-10-04T12:00:00Z');
 const UPDATED = NOW - 30_000;
 const SHOWING = formatClockTime(UPDATED, 'en');
+// Data the server could not renew reads as delayed from five minutes.
+const LATE = NOW - 6 * 60_000;
+const SHOWING_LATE = formatClockTime(LATE, 'en');
 const ZURICH = ['bolt', 'bird', 'dott', 'hopp', 'lime', 'voi', 'publibike'];
 
 const meta = (overrides: Partial<ScooterResponseMeta> = {}): ScooterResponseMeta => ({
@@ -227,9 +230,9 @@ describe('BottomSheet', () => {
   });
 
   it('says that data is delayed and which time it shows', () => {
-    renderSheet({ dock: dock({ meta: meta({ stale: true }) }) });
+    renderSheet({ dock: dock({ meta: meta({ stale: true }), lastUpdated: LATE }) });
 
-    expect(screen.getByText(`Data delayed · showing ${SHOWING}`)).toBeVisible();
+    expect(screen.getByText(`Data delayed · showing ${SHOWING_LATE}`)).toBeVisible();
     expect(screen.queryByRole('button', { name: 'Try again' })).not.toBeInTheDocument();
   });
 
@@ -474,11 +477,11 @@ describe('BottomSheet', () => {
 
   it('keeps delayed data in view above the card, without a button', () => {
     renderSheet({
-      ...data({ meta: meta({ stale: true }) }),
+      ...data({ meta: meta({ stale: true }), lastUpdated: LATE }),
       selectedVehicle: { vehicle: lime, walk: null },
     });
 
-    expect(cardIssue()).toHaveTextContent(`Data delayed · showing ${SHOWING}`);
+    expect(cardIssue()).toHaveTextContent(`Data delayed · showing ${SHOWING_LATE}`);
     expect(within(document.querySelector('.dock-issue') as HTMLElement).queryByRole('button')).not.toBeInTheDocument();
   });
 

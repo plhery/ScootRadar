@@ -1660,13 +1660,14 @@ struct ScooterDockSummary: Equatable, Sendable {
         }
         // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
         if let lastSeenAt { return .updating(seenAt: lastSeenAt) }
-        // Delayed data says so at every zoom, city totals included.
-        if isDelayed { return .delayed(showing: lastUpdated) }
+        let age = max(0, now.timeIntervalSince(lastUpdated))
+        // Delayed data says so at every zoom, city totals included, once it is late:
+        // before that its age or its time says enough.
+        if isDelayed, age >= ScooterDockStatus.delayedAfter { return .delayed(showing: lastUpdated) }
         if isOverview { return .cityTotals }
         // "Live", or an age, would be of no scooters at all.
         if everyProviderDown { return nil }
 
-        let age = max(0, now.timeIntervalSince(lastUpdated))
         if age < ScooterDockStatus.liveWindow { return .live }
         if age < 3_600 { return .updatedMinutesAgo(Int(age / 60)) }
         return .updatedAt(lastUpdated)
@@ -1733,6 +1734,9 @@ enum ScooterDockStatus: Equatable, Sendable {
 
     /// Data younger than this reads "Live".
     static let liveWindow: TimeInterval = 90
+
+    /// Data the server could not renew reads "Data delayed" from this age (DELAYED_MIN_AGE_MS on the web).
+    static let delayedAfter: TimeInterval = 5 * 60
 
     /// Failed refreshes use the warning style.
     var isWarning: Bool {

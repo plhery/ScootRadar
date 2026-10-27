@@ -15,6 +15,8 @@ import type { UiText, UiTextFormatter } from '@/lib/uiText';
 import { formatCityDistance, walkingMinutes } from '@/lib/walking';
 
 const LIVE_MAX_AGE_MS = 90_000;
+/** Data the server could not renew is called delayed from this age (ScooterDockStatus.delayedAfter on iOS). */
+const DELAYED_MIN_AGE_MS = 5 * 60_000;
 const MINUTE_MS = 60_000;
 const HOUR_MS = 3_600_000;
 
@@ -232,10 +234,13 @@ function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boo
     const weekday = new Date(seenAt).toDateString() !== new Date(now).toDateString();
     return { status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt, ...(weekday ? { weekday } : {}) } }, retry: false };
   }
-  // Delayed data says so at every zoom, city totals included.
-  if (meta?.stale) return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };
-  if (meta?.overview) return { status: { kind: 'overview', text: { key: 'dock.cityTotals' } }, retry: false };
   const age = Math.max(0, now - lastUpdated);
+  // Delayed data says so at every zoom, city totals included, once it is late:
+  // before that its age or its time says enough.
+  if (meta?.stale && age >= DELAYED_MIN_AGE_MS) {
+    return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };
+  }
+  if (meta?.overview) return { status: { kind: 'overview', text: { key: 'dock.cityTotals' } }, retry: false };
   if (age < LIVE_MAX_AGE_MS) return { status: { kind: 'live', text: { key: 'dock.live' } }, retry: false };
   return {
     status: {
