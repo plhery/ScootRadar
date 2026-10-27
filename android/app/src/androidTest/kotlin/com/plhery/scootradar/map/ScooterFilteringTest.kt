@@ -1,0 +1,135 @@
+package com.plhery.scootradar.map
+
+import androidx.compose.ui.platform.AndroidUiDispatcher
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.ScooterCityCatalog
+import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
+import com.plhery.scootradar.core.model.ScooterMapStart
+import com.plhery.scootradar.core.model.ScooterStartPlace
+import com.plhery.scootradar.core.model.ScreenRect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.maplibre.android.camera.CameraUpdateFactory
+import org.maplibre.android.geometry.LatLng
+
+// The map's part of ios/ScootRadarTests/ScooterFilteringTests.swift, on MapLibre's map of an iPhone's size.
+@RunWith(AndroidJUnit4::class)
+class ScooterFilteringTest {
+    private val scooter = GeoPoint(latitude = 47.3769, longitude = 8.5417)
+
+    @Test
+    fun mapStartsWithASizeSoItOpensOnSwitzerland() {
+        // A map created without a size drops the region it is given.
+        assertFalse(ScooterMapCameraPolicy.openingFrame.isEmpty)
+
+        withPhoneMap(camera = MapCamera.opening(ScooterMapStart.switzerland)) { phone ->
+            val center = phone.onMain { phone.map.cameraPosition.target!! }
+            assertEquals(ScooterMapStart.switzerlandCenter.latitude, center.latitude, 0.5)
+            assertEquals(ScooterMapStart.switzerlandCenter.longitude, center.longitude, 0.5)
+        }
+    }
+
+    @Test
+    fun mapOpensOnTheCityOfTheTimeZone() {
+        val start = ScooterStartPlace.start(forTimeZone = "Europe/Berlin")
+        val berlin = ScooterCityCatalog.cities.first { it.id == "de:Berlin" }
+        withPhoneMap(camera = MapCamera.opening(start)) { phone ->
+            val center = phone.onMain { phone.map.cameraPosition.target!! }
+            assertEquals(berlin.center.latitude, center.latitude, 0.02)
+            assertEquals(berlin.center.longitude, center.longitude, 0.02)
+        }
+        assertEquals(ScooterStartPlace.cityZoom, start.zoom)
+    }
+
+    @Test
+    fun centringAScooterShowsItInTheMapLeftVisibleAboveTheDock() = withPhoneMap { phone ->
+        phone.setRegion(MapRegion.around(scooter, 850.0, 850.0))
+        phone.onMain {
+            // The search bar ends at 110 pt and a tall card begins at 380 pt: the middle is at 245 pt.
+            val center = phone.centre(visible = ScreenRect(0.0, 110.0, 390.0, 270.0))
+            assertTrue(center.latitude < scooter.latitude)
+            assertEquals(scooter.longitude, center.longitude, 0.0001)
+
+            phone.map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(center.latitude, center.longitude)))
+            val shown = phone.projection.point(scooter)
+            assertEquals(245.0, shown.y, 3.0)
+            assertEquals(195.0, shown.x, 3.0)
+
+            // Nothing covers the map, or nearly all of it is covered: the scooter itself is the centre.
+            val uncovered = phone.centre(visible = ScreenRect(0.0, 0.0, 390.0, 844.0))
+            assertEquals(scooter.latitude, uncovered.latitude, 0.000_001)
+            val covered = phone.centre(visible = ScreenRect(0.0, 400.0, 390.0, 20.0))
+            assertEquals(scooter.latitude, covered.latitude, 0.000_001)
+        }
+    }
+
+    @Test
+    fun centringAScooterBesideAPanelShowsItInTheMiddleOfTheMapLeftVisible() = withPhoneMap { phone ->
+        phone.resize(1376, 1032)
+        settle()
+        phone.setRegion(MapRegion.around(scooter, 850.0, 850.0))
+        phone.onMain {
+            // A panel 380 pt wide 16 pt from the edge: the middle of the rest is at 886 pt.
+            val center = phone.centre(visible = ScreenRect(396.0, 0.0, 980.0, 1032.0))
+            phone.map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(center.latitude, center.longitude)))
+            val shown = phone.projection.point(scooter)
+            assertEquals(886.0, shown.x, 3.0)
+            assertEquals(516.0, shown.y, 3.0)
+        }
+    }
+
+    @Test
+    fun focusRequestWaitsUntilTheMapHasASize() = withPhoneMap { phone ->
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+        val memory = MapCameraMemory()
+        phone.resize(0, 0)
+        settle()
+        try {
+            val camera = phone.onMain {
+                val controller = testController(scope)
+                val address = MapDestination(
+                    title = "Bahnhofplatz",
+                    subtitle = "",
+                    point = scooter,
+                    kind = MapDestination.Kind.Address,
+                    isCovered = true,
+                )
+                controller.focusOnAddress(address)
+                MapCamera(phone.map, phone.view, controller, memory, frames).also {
+                    // Before the first layout the request is kept for later, not dropped.
+                    it.applyFocus(controller.focusRequest.value)
+                }
+            }
+            settle()
+            assertNull(memory.focusToken)
+
+            // The region change that follows the layout applies it.
+            phone.resize(390, 844)
+            settle()
+            phone.onMain {
+                assertEquals(1, memory.focusToken)
+                assertEquals(scooter.latitude, phone.map.cameraPosition.target!!.latitude, 1e-6)
+                camera.close()
+            }
+        } finally {
+            frames.cancel()
+            scope.cancel()
+        }
+    }
+
+    /** Where the map's centre goes for the scooter to show in the middle of the part of the map left visible. */
+    private fun PhoneMap.centre(visible: ScreenRect): GeoPoint =
+        ScooterMapCameraPolicy.center(showing = scooter, on = projection, visible = visible)
+}

@@ -109,7 +109,8 @@ class MapCameraTest {
         phone.drag(points = 200)
         settle()
         val stopped = phone.onMain { phone.map.cameraPosition }
-        assertTrue("the move was stopped short of Bern: ${stopped.zoom}, $reasons", stopped.zoom < MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 844.0) - 0.1)
+        val atBern = MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 844.0)
+        assertTrue("the move was stopped short of Bern: ${stopped.zoom}, $reasons", stopped.zoom < atBern - 0.1)
         assertTrue("the move had begun", stopped.zoom > zoom)
         // The focus went with it: a new size moves nothing.
         phone.resize(390, 300)

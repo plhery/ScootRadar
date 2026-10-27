@@ -19,6 +19,9 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import kotlinx.coroutines.CoroutineScope
 import org.junit.Assert.assertTrue
 import org.maplibre.android.MapLibre
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.camera.CameraUpdateFactory
+import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.maps.Style
@@ -64,9 +67,10 @@ class PhoneMap(val scenario: ActivityScenario<ComponentActivity>, val view: Scoo
 
 /**
  * A map of 390×844 points, laid out past the edges of the emulator's screen as it needs to be. Its pixel ratio is
- * 2, so that its points are whole at any density.
+ * 2, so that its points are whole at any density. A `camera` is given to the map before it has a size, as the app
+ * gives it its opening camera.
  */
-fun withPhoneMap(test: (PhoneMap) -> Unit) {
+fun withPhoneMap(camera: CameraPosition? = null, test: (PhoneMap) -> Unit) {
     ActivityScenario.launch(ComponentActivity::class.java).use { scenario ->
         val drawn = CountDownLatch(1)
         lateinit var view: ScooterMapView
@@ -74,6 +78,7 @@ fun withPhoneMap(test: (PhoneMap) -> Unit) {
         scenario.onActivity { activity ->
             MapLibre.getInstance(activity)
             val options = MapLibreMapOptions.createFromAttributes(activity).textureMode(true).pixelRatio(RATIO)
+            camera?.let { options.camera(it) }
             view = ScooterMapView(activity, options)
             view.onCreate(null)
             val frame = FrameLayout(activity)
@@ -118,6 +123,21 @@ fun testController(scope: CoroutineScope) = ScooterMapController(
     openInMaps = {},
     phoneLanguages = { listOf("en-US") },
 )
+
+/** Shows the region as MKMapView's setRegion does: fitted to the map, flat and north up. */
+fun PhoneMap.setRegion(region: MapRegion) = onMain {
+    val bounds = projection.bounds
+    map.moveCamera(
+        CameraUpdateFactory.newCameraPosition(
+            CameraPosition.Builder()
+                .target(LatLng(region.center.latitude, region.center.longitude))
+                .zoom(MapZoom.fitting(region, bounds.width, bounds.height))
+                .tilt(0.0)
+                .bearing(0.0)
+                .build(),
+        ),
+    )
+}
 
 /** Long enough for a move of MapKit's time to land. */
 fun settle() {
