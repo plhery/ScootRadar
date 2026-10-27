@@ -8,8 +8,9 @@ set -uo pipefail
 case "${1:-}" in
   # The app is built and tested from ios/ alone (no file of the Xcode project lies outside it).
   ios) tests='the iOS tests'; relevant() { grep -qE '^(ios/|\.github/workflows/ci\.yml$|scripts/ci-changed\.sh$)'; } ;;
-  # The website reads neither the app, docs/ nor the Markdown files at the top of the repository.
-  e2e) tests='the end-to-end tests'; relevant() { grep -qvE '^(ios/|docs/|[^/]+\.md$)'; } ;;
+  # The website reads neither the apps, docs/ nor the Markdown files at the top of the repository.
+  # (android.yml builds and tests the Android app.)
+  e2e) tests='the end-to-end tests'; relevant() { grep -qvE '^(ios/|android/|docs/|[^/]+\.md$)'; } ;;
   *) echo "Usage: $0 ios|e2e" >&2; exit 2 ;;
 esac
 
