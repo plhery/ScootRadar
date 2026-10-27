@@ -197,7 +197,7 @@ fun localizedCounting(key: String, vararg arguments: Any?): String {
  * app is, in every language it has.
  */
 val String.isolated: String
-    get() = if (codePoints().anyMatch(::isRightToLeft)) "⁨$this⁩" else this
+    get() = if (codePoints().anyMatch(::isRightToLeft)) "\u2068$this\u2069" else this
 
 /** A letter of Hebrew, Arabic, Syriac, Thaana or N'Ko, or one of their presentation forms. */
 private fun isRightToLeft(codePoint: Int): Boolean =

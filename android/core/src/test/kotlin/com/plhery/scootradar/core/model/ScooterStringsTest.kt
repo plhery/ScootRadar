@@ -71,7 +71,7 @@ class ScooterStringsTest {
             mapOf(
                 "a" to "b \"quoted\" \\ back",
                 "new\nline" to "tab\there",
-                "Hebrew א" to "⁨x⁩",
+                "Hebrew א" to "\u2068x\u2069",
                 "alone" to "alone",
                 "bare_key" to "bare value",
                 "after" to "it",
@@ -116,7 +116,7 @@ class ScooterStringsTest {
         assertEquals("no scooter in 1 city", format.format(listOf(0, 1), english))
         assertEquals("1 scooter in 2 cities", format.format(listOf(1, 2), english))
         assertEquals("1,000,000 scooters in 1,000,000 cities", format.format(listOf(1_000_000, 1_000_000), english))
-        assertEquals("1 000 000 scooters in 1 000 000 cities (many)", format.format(listOf(1_000_000, 1_000_000), Locale.FRANCE).replace(' ', ' '))
+        assertEquals("1 000 000 scooters in 1 000 000 cities (many)", format.format(listOf(1_000_000, 1_000_000), Locale.FRANCE).replace('\u202F', ' '))
 
         // Zero is singular in French and in Portuguese as Brazil writes it, not as Portugal does.
         assertEquals("one", ScooterPluralRules.category(0, Locale.FRANCE))
@@ -152,7 +152,7 @@ class ScooterStringsTest {
     @Test
     fun aStringWithRightToLeftLettersIsSetApart() {
         assertEquals("Zürich", "Zürich".isolated)
-        assertEquals("⁨תל אביב⁩", "תל אביב".isolated)
-        assertEquals("⁨Dubai دبي⁩", "Dubai دبي".isolated)
+        assertEquals("\u2068תל אביב\u2069", "תל אביב".isolated)
+        assertEquals("\u2068Dubai دبي\u2069", "Dubai دبي".isolated)
     }
 }

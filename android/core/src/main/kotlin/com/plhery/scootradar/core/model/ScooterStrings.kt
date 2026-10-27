@@ -207,7 +207,7 @@ internal object AppleFormat {
  */
 internal object AppleStringsFile {
     fun parse(text: String): Map<String, String> {
-        val reader = Reader(text.removePrefix("﻿"))
+        val reader = Reader(text.removePrefix("\uFEFF"))
         val strings = LinkedHashMap<String, String>()
         while (true) {
             reader.skipSpaceAndComments()

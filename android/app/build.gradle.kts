@@ -19,6 +19,11 @@ android {
         compose = true
     }
 
+    lint {
+        // :core too, with this minSdk.
+        checkDependencies = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21

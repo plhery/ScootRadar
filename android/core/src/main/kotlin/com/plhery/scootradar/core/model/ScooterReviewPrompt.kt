@@ -1,7 +1,6 @@
 package com.plhery.scootradar.core.model
 
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -83,7 +82,7 @@ class ScooterReviewPrompt(
     }
 
     /** The calendar day of the instant in the rider's time zone, as days since 1970. */
-    private fun day(of: Instant): Int = LocalDate.ofInstant(of, timeZone()).toEpochDay().toInt()
+    private fun day(of: Instant): Int = of.atZone(timeZone()).toLocalDate().toEpochDay().toInt()
 
     companion object {
         /** Days with a fresh feed before the first ask. */

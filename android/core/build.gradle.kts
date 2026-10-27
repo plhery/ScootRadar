@@ -1,6 +1,11 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
+    // Android Lint, run from :app (checkDependencies), reads :core's sources too.
+    alias(libs.plugins.android.lint)
+    // Lint's NewApi check skips a JVM module, so :core's classes are checked against Android 12's API
+    // (minSdk 31) by animal sniffer: the JVM has APIs Android 12 lacks, such as LocalDate.ofInstant (API 34).
+    alias(libs.plugins.animalsniffer)
 }
 
 kotlin {
@@ -60,8 +65,14 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
 
+    signature(variantOf(libs.gummy.bears.api31) { artifactType("signature") })
+
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+}
+
+animalsniffer {
+    sourceSets = listOf(project.sourceSets.main.get())
 }
 
 // CatalogParityTest and TimeZonesParityTest read the iPhone app's generated files to check the Android
