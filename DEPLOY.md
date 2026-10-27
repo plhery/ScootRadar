@@ -536,8 +536,10 @@ repository is public. Without it every Swing feed fails with "Swing one-time
 code secret is missing or invalid". GCOO's, Kickgoing's, Alpaca's and DART's
 maps need no credential: DART's sends the token "scootradar", which is no
 secret ([DART](docs/south-korean-scooter-feeds.md#dart)). See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
+Skyss's map, which shows Ryde's Bergen scooters, needs none either
+([Ryde](docs/ryde-app-map.md#the-production-reader)).
 A GCOO town nobody looks at is collected every two hours (`GCOO_IDLE_INTERVAL_MS`),
 not every 20 minutes, and expires after two hours and ten minutes without one: a
-feed that sets its own idle interval, as GCOO, Alpaca, DART, ATOM, Whoosh and BinBin do
+feed that sets its own idle interval, as GCOO, Alpaca, DART, Skyss, ATOM, Whoosh and BinBin do
 (`APP_MAP_IDLE_INTERVAL_MS`) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
 ten minutes after it, read from the feed itself.

@@ -87,6 +87,11 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    */
   dartAppMap?: true;
   /**
+   * The zone of Skyss's app map, BERGEN, which shows Ryde's scooters there signed out: the Node
+   * cache sweeps the system's bounds box by box.
+   */
+  skyssAppZone?: string;
+  /**
    * Bolt's rider-app market id, its operating areas' city_id: the Node cache reads the market whole
    * with its private Bolt session, in one request from the system's centre.
    */
@@ -130,7 +135,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSyste
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
     system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
-    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.boltAppCity);
+    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.skyssAppZone || system.boltAppCity);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

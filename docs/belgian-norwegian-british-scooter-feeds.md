@@ -27,7 +27,9 @@ of these markets whole; see
 Lime's scooters in Antwerpen, about 880, followed the same way that day;
 its Brussels market held no scooter. Its scooters in Bergen, about 2,100,
 followed on 27 October 2026: they are the first in Bergen on the map, as
-neither Ryde nor RideMovi publishes a feed there.
+neither Ryde nor RideMovi publishes a feed there. Ryde's there, about 4,700,
+followed on 28 October 2026, from the map Skyss's travel app shows signed
+out; see [Ryde's map readers](ryde-app-map.md#the-production-reader).
 The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
@@ -500,12 +502,9 @@ stays open at night.
     13 October 2026, and West-Vlaanderen 76 pedal bikes too. Hoppy's Genk
     system (1522) held 6 e-bikes.
 - **Norway:**
-  - Ryde in Bergen is reachable through Skyss's guest map, with a tested
-    [research reader](ryde-app-map.md#working-guest-reader-skyss--tet--ruter)
-    since 27 October 2026. A central scan returned 1,055 observations, but
-    whole-inventory coverage and freshness remain unverified; it is not
-    integrated. RideMovi in Bergen, Drammen (Ryde, Gogo) and Larvik (Ryde)
-    still have scooters without a working source. Entur's GBFS manifest
+  - RideMovi in Bergen, Drammen (Ryde, Gogo) and Larvik (Ryde) still have
+    scooters without a working source. Skyss's map, which shows Ryde's
+    Bergen scooters, lists none in Drammen or Larvik. Entur's GBFS manifest
     and checked GraphQL queries lack them; guessed system ids answer 404.
     Ryde's fleet in
     Kristiansand is missing too: of Ryde's towns that Entur lacked until
@@ -513,7 +512,9 @@ stays open at night.
     its manifest on 22 October 2026. Dott, Bodø's other permit holder in
     2025, publishes nothing for Bodø.
   - Lime's Bergen scooters, about 2,100, come from its rider map since 27
-    October 2026.
+    October 2026, and Ryde's, about 4,700, from
+    [Skyss's guest map](ryde-app-map.md#the-production-reader) since 28
+    October.
   - Dott Malvik, Melhus and Skaun hold fewer than twenty scooters each, and
     e-bikes, which the map leaves out. Malvik listed 15 to 17 available
     scooters in 27 polls on the evening of 13 October 2026 and 12 at midday

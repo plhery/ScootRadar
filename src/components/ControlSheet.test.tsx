@@ -440,6 +440,7 @@ describe('ControlSheet settings', () => {
       'BE: Pony · transportdata.be',
       'NO: Entur AS · NLOD',
       'NO: Kartverket boundaries · CC BY 4.0',
+      'NO: Skyss map',
       'UK: Beryl · CDLA-Permissive-2.0',
       'UK: ONS boundaries · OGL v3.0',
       'PT: DGT boundaries · CC BY 4.0',

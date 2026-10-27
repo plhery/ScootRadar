@@ -1,10 +1,11 @@
 # Ryde map readers and rider app investigation
 
-**A fresh automated Ryde map read now works for Bergen through Skyss's guest
-map API.** The standalone research reader is
-[`scripts/ryde-skyss-map.mjs`](../scripts/ryde-skyss-map.mjs). A six-request
-central Bergen scan on 27 October 2026 returned 1,055 distinct Ryde scooter
-observations. This is not a complete-city inventory or a deployed feed.
+**Ryde's scooters in Bergen are on the map since 28 October 2026**, from
+the map Skyss's travel app shows signed out. The scooter cache reads it with
+[`server/skyssApp.ts`](../server/skyssApp.ts), as the system
+`ryde_no_app_bergen`: a round of the whole city found 4,733 scooters in 30
+requests on 27 October, and 4,679 in 27 at midnight. See
+[the production reader](#the-production-reader).
 
 Ryde's own authenticated API remains a separate, unfinished path. Its
 Mac-compatible iPhone app opens its signed-in map, but exporting the keys
@@ -17,7 +18,8 @@ The user subsequently signed in with Apple on an iPhone and on this Mac.
 The official Mac-compatible iPhone app opens its map and has a successful
 authenticated map response in its local HTTP cache. Independent retrieval and
 decryption through that direct rider API remain unverified; Skyss's guest
-route below needs neither that session nor its keys.
+route below needs neither that session nor its keys, and the direct API is
+needed only for Ryde's towns Skyss does not show.
 
 ## Current status and how to resume
 
@@ -30,18 +32,18 @@ official app on this Apple silicon Mac and completed Apple sign-in there;
 its signed-in map was observed through native UI automation.
 No additional SMS was requested during the 27 October recheck.
 
-Use the tested Skyss reader for Bergen research. Before integrating it, verify
-coverage, freshness and availability semantics, and the intended server
-runtime. The direct rider route still requires independent proof generation,
-response decryption and session-renewal tests. A successful app login alone
-does not establish that its session can be used by a server.
+Bergen is covered through Skyss since 28 October 2026, at the user's request
+of 27 October. The direct rider route, for Drammen, Larvik, Kristiansand and
+Göteborg, still requires independent proof generation, response decryption
+and session-renewal tests. A successful app login alone does not establish
+that its session can be used by a server.
 
 The `ScootRadar_Ryde_Play` AVD is retained for reference. The fresh verified
 APK, decompiled sources and private diagnostics are under
 `~/.cache/scootradar/rider-auth/ryde/`, outside Git. Bolt's and Bird's saved
 rider sessions are separate.
 
-## Working guest reader: Skyss / Tet / Ruter
+## Skyss's guest map: Skyss / Tet / Ruter
 
 Skyss's [official travel information](https://www.skyss.no/reise/nyttig-reiseinformasjon/)
 and [app FAQ](https://www.skyss.no/en/tickets-and-prices/buying-tickets/appen-skyss/questions-and-answers-about-the-skyss-app/)
@@ -121,32 +123,58 @@ overview/detail identity relationship, rather than trusting HTTP 200 alone.
   cause, including possible differing cache ages, remains unverified.
 - The radius-based `nearbyVehicles_v3` returned only 150 rows despite a
   requested limit of 1,500. It is not an established completeness shortcut.
+- A sweep of the whole municipality, `60.17,5.14,60.54,5.60`, quartering
+  each box of 500, found 4,718 scooters in 29 requests just before midnight
+  on 27 October, between 60.284 and 60.489 north and 5.177 and 5.395 east.
+  The central view had held about a quarter of the fleet.
+- A box of fewer than 500 lists the whole box: three of 480, 481 and 495
+  rows, and a wide one of 246, were read again with their four quarters,
+  which together listed at most one scooter more, one that had moved.
+- The router pads a box: 31 of the wide box's 246 rows stood outside it,
+  and one of the 480's. The research reader rejected any such reply.
+- Of 16 scooters spread over one round, read one by one with
+  `vehicleDetails_v2`, all could be rented, with 33 to 93% charge and none
+  moved more than 4 m. The map seems to list only scooters that can be
+  rented.
+- The map's id is the scooter's IMEI: the detail read's rental link carries
+  it as `deviceIMEI`, as Ryde's Entur feeds' links do.
+- Neither the `RUTER` nor the `SKYSS` owner shows Ryde's Oslo scooters, which
+  Entur's feed lists: Skyss's map serves Bergen alone.
 - `RUTER` service metadata lists Oslo and its surrounding Ryde areas. The
   gateway rejects `AGDER` as an unsupported owner; it explicitly names only
   `RUTER` and `SKYSS`. Central map probes for Drammen, Larvik, Kristiansand
   and Göteborg returned empty arrays, with no GraphQL errors. Those markets
   remain gaps; nearby Entur data is not evidence of their coverage.
 
-The research reader restricts queries to Bergen bounds and the Ryde scooter
-type. It validates every identity, vendor, coordinate and required response
-field, rejects partial GraphQL errors, serializes requests two seconds apart,
-limits response bytes and scan cost, and honors rate-limit cooldowns without
-automatic retries. It splits capped and broad views and fails if it cannot
-finish the planned reads. Successful output is explicitly marked
-`coverage: "observations-only"`, with per-view counts and observation times;
-it makes no full-fleet guarantee.
+### The production reader
 
-```sh
-node scripts/ryde-skyss-map.mjs \
-  --bounds 60.375,5.29,60.405,5.355 \
-  --output /private/path/bergen-ryde.json
-```
+Since 28 October 2026 the scooter cache reads Bergen with
+[`server/skyssApp.ts`](../server/skyssApp.ts). Each round asks for the
+service list, and fails if Skyss lists no Ryde scooter service in `BERGEN`;
+a service it calls `TEMPORARILY_UNAVAILABLE` has no scooter to rent, and is
+not swept. It then cuts the system's bounds, `60.275,5.165,60.495,5.405`,
+into six boxes, quarters each box of 500 down to about 250 m, and fails past
+120 requests or on a reply with an error, another vendor or type, or a
+broken row. Rows outside their box are left out, as a neighbouring box
+lists them. Requests go one a second, those nearest where people look first,
+every two hours while nobody looks and every minute while someone does, as
+the other app maps' (`APP_MAP_IDLE_INTERVAL_MS`). A 429 holds the reader off
+for at least a minute.
 
-The output directory must already exist. The default scan budget is 32
-requests and 120 seconds; `--max-requests` accepts 2–64 but never extends the
-deadline. Output is written atomically with mode 0600 only after all planned
-reads succeed. Unit tests use synthetic vehicle IDs, not live payloads.
-No production collector imports the reader, and no catalog/feed was added.
+The map gives no battery, range or position time, so the scooters show no
+charge, and the observation time is the round's first request. The IMEI is
+neither stored nor shown: a scooter's id is a hash of it keyed by the process,
+`skyss:` and 16 characters, which changes when the cache restarts. Its card
+links to `new-web-platform.ryde.vip/app/ios.html` or `android.html`, Ryde's
+link without the IMEI, as its Entur feeds' are once their query is dropped
+([rentalLinks.ts](../src/lib/rentalLinks.ts)); both pages answer and open
+Ryde's app or its store. It replaces the research reader of 27 October.
+
+Skyss's [terms of use](https://www.skyss.no/en/help-and-contact/terms-and-privacy/terms-of-use-for-services/),
+updated 2 December 2024, say that tickets or data Skyss makes available must
+not be copied, transferred, traded or distributed in any way, and forbid
+reverse engineering its software. They name no scooter or vehicle position.
+The map's credits name Skyss.
 
 ## Apple sign-in and the Mac-compatible iPhone app
 

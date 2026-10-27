@@ -656,6 +656,20 @@ map adds Antwerpen, Liège, Charleroi, Namur and Dinant in Belgium; see
 Bergen, where no operator publishes a feed, come from its rider map, signed
 in, as in Europe (see [the Lime catalog](docs/lime-app-map.md)).
 
+Since 28 October 2026, Ryde's scooters in Bergen, about 4,700, come from the
+map that Skyss, Vestland's public transport authority, shows in its travel
+app to riders who have not signed in. The user asked for it on 27 October.
+No account, key or cookie is used. A reply lists at most 500 scooters of a
+box, so the Node cache sweeps Bergen box by box, quartering each full one:
+about 27 requests a round, one a second, every two hours while nobody looks.
+The map gives no battery, range or position time; 16 scooters of a round,
+read one by one, could all be rented. Each scooter's id is its IMEI, which is
+neither stored nor shown, only a hash of it keyed by the process. Skyss's
+[terms of use](https://www.skyss.no/en/help-and-contact/terms-and-privacy/terms-of-use-for-services/)
+say that data it makes available must not be copied or distributed in any
+way; ScootRadar reads its map signed out and charges nothing. The map's
+credits name Skyss. See [Ryde's map readers](docs/ryde-app-map.md#the-production-reader).
+
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
 rules: Lovdata for Norway, except Arendal, whose regulation and city page
 disagree, where the hours are those Voi's feed keeps; the council or the

@@ -140,7 +140,8 @@ async function appCollector(provider) {
 }
 const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount ||
   system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity ||
-  system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.boltAppCity;
+  system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.alpacaAppMap || system.dartAppMap ||
+  system.skyssAppZone || system.boltAppCity;
 
 // A system's feeds in the scooter cache: itself, or a Lime market's refresh groups, `${id}_000` and on
 // (limeGridGroups in src/lib/limeGrid.ts).
@@ -181,7 +182,7 @@ async function inspect(system) {
     if (behindToken(system) && apps === 'cache') return cachedFeed(system, result, 'gbfs (cache)');
     if (isAppMap(system)) {
       const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing'
-        : system.swingAppMap ? 'swing' : system.provider);
+        : system.swingAppMap ? 'swing' : system.skyssAppZone ? 'skyss' : system.provider);
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
         withBattery: snapshot.vehicles.filter(v => v.battery !== null).length, withRange: snapshot.vehicles.filter(v => typeof v.range_m === 'number').length, withRentalLink: 0,

@@ -1,6 +1,8 @@
 {
   "verifiedOn": "2026-10-24",
   "catalogSource": "https://api.entur.io/mobility/v2/gbfs/v3/manifest.json",
+  "skyssVerifiedOn": "2026-10-27",
+  "skyssCatalogSource": "https://www.skyss.no/reise/nyttig-reiseinformasjon/",
   "systems": [
     {
       "id": "bolt_no_oslo",
@@ -897,6 +899,25 @@
       "timeZone": "Europe/Oslo",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=415&include_suggestion=false",
       "voiAppZone": "415"
+    },
+    {
+      "id": "ryde_no_app_bergen",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Bergen",
+      "timeZone": "Europe/Oslo",
+      "center": [
+        60.39299,
+        5.32415
+      ],
+      "bounds": {
+        "south": 60.275,
+        "north": 60.495,
+        "west": 5.165,
+        "east": 5.405
+      },
+      "discoveryUrl": "https://cosmo-router.transhub.io/graphql",
+      "skyssAppZone": "BERGEN"
     },
     {
       "id": "lime_no_app_bergen",
