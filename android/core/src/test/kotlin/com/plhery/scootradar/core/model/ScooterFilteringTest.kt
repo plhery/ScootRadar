@@ -346,7 +346,7 @@ class ScooterFilteringTest {
         // boundaries of the night bans included: Switzerland's, France's, each country's
         // own from data/countries.json, then the search's and Lille's.
         assertEquals(5 + ScooterCountryCatalog.credits.size, sources.size)
-        assertEquals(32, ScooterCountryCatalog.credits.size)
+        assertEquals(34, ScooterCountryCatalog.credits.size)
         assertEquals(sources.size, sources.map { it.title }.toSet().size)
         assertEquals("DE/", sources[2].title.take(3))
         assertTrue(sources.any { it.title == "CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL" })
