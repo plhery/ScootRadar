@@ -112,6 +112,27 @@ collector asks for. Counted on the night of 24 to 25 October 2026:
   Grugliasco 24 and Borgaro Torinese 18 (18 again in a second count);
   Venaria Reale's 6 count under the nearest of these towns.
 
+### Widened boxes
+
+On 27 October 2026, Dott's map read over larger boxes held scooters of the
+Hamm and Chemnitz regions beyond the catalog's boxes, which were widened to
+take them:
+
+- **Hamm** (`NDsP0p9CJQvEohJVv9u3`): from 51.6517–51.7214 N, 7.7216–7.934 E
+  to 51.625–51.735 N, 7.68–7.98 E. Of 379 scooters, 7 stood outside the old
+  box: five to the south, about Pelkum and Herringen, one on its western edge
+  and one to the north. None stood east of 7.89° E, nor south of 51.639° N
+  between 7.67° and 7.87° E.
+- **Chemnitz** (`aweJXIje7a6tmeQ402CL`): from 50.7881–50.8627 N,
+  12.868–12.975 E to 50.76–50.89 N, 12.82–13.02 E. Of 34, 7 stood outside
+  the old box, on every side.
+
+Dott answered most other boxes asked for that morning from the audit machine
+with gRPC status 3 (invalid argument), the larger ones for these towns and
+then the boxes above too, so Solingen's and Budapest's boxes stand
+unchecked: Burg and Müngsten, and Budapest's districts XVI to XVIII, XXII
+and XXIII, lie outside them. No more boxes were asked for once it refused.
+
 ## Official access and email
 
 Dott documents authenticated partner GBFS through

@@ -1248,10 +1248,10 @@
         12.9138
       ],
       "bounds": {
-        "south": 50.7881,
-        "north": 50.8627,
-        "west": 12.868,
-        "east": 12.975
+        "south": 50.76,
+        "north": 50.89,
+        "west": 12.82,
+        "east": 13.02
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "aweJXIje7a6tmeQ402CL"
@@ -1500,10 +1500,10 @@
         7.7974
       ],
       "bounds": {
-        "south": 51.6517,
-        "north": 51.7214,
-        "west": 7.7216,
-        "east": 7.934
+        "south": 51.625,
+        "north": 51.735,
+        "west": 7.68,
+        "east": 7.98
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "NDsP0p9CJQvEohJVv9u3"
