@@ -9,9 +9,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-// Lengths, dates and times as Foundation writes them on the iPhone. Each goes through a hook the app sets
-// to Android's own ICU data, as ScooterNumberFormat does for whole numbers; the defaults read the JDK's
-// CLDR data, for the tests and the JVM.
+// Lengths, dates, times and lists as Foundation writes them on the iPhone. Each goes through a hook the app
+// sets to Android's own ICU data, as ScooterNumberFormat does for numbers; the defaults read the JDK's CLDR
+// data, for the tests and the JVM.
 
 /** Locale.MeasurementSystem */
 enum class ScooterMeasurementSystem {
@@ -112,6 +112,38 @@ object ScooterDateFormat {
         val text = DateTimeFormatter.ofLocalizedPattern(withoutZone).withLocale(locale).withZone(zone).format(instant)
         if (withoutZone == skeleton) return text
         return text + " " + DateTimeFormatter.ofPattern("O", locale).withZone(zone).format(instant)
+    }
+}
+
+object ScooterListFormat {
+    /**
+     * The items joined as `.formatted(.list(type: .and))` joins them in the locale: "Bird and Voi", "Bird,
+     * Voi, and Lime" in American English, "Bird, Voi und Lime" in German. The app sets one that reads
+     * Android's ICU (ListFormatter), as Foundation reads the iPhone's.
+     */
+    @Volatile
+    var and: (items: List<String>, locale: Locale) -> String = ::jvmAnd
+
+    /** The word for "and" in the app's languages; English writes a comma before it from three items on. */
+    private fun jvmAnd(items: List<String>, locale: Locale): String {
+        val word = when (locale.language) {
+            "de" -> "und"
+            "fr" -> "et"
+            "it", "pt" -> "e"
+            "nl" -> "en"
+            "nb", "no", "is" -> "og"
+            "es" -> "y"
+            else -> "and"
+        }
+        return when (items.size) {
+            0 -> ""
+            1 -> items[0]
+            2 -> "${items[0]} $word ${items[1]}"
+            else -> {
+                val comma = if (word == "and") "," else ""
+                items.dropLast(1).joinToString(", ") + "$comma $word " + items.last()
+            }
+        }
     }
 }
 
