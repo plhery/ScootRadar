@@ -11,7 +11,13 @@ data class MapFocusRequest(
     val latitudinalMeters: Double = 850.0,
     val longitudinalMeters: Double = 850.0,
 ) {
+    val keepsZoom: Boolean get() = latitudinalMeters <= 0 || longitudinalMeters <= 0
+
     companion object {
+        /** Moves the map to the point and keeps the zoom it has: there is no span to fit. */
+        fun center(point: GeoPoint, token: Int): MapFocusRequest =
+            MapFocusRequest(point = point, token = token, latitudinalMeters = 0.0, longitudinalMeters = 0.0)
+
         /** The span the map zooms to when a city total is tapped: 0.08° by 0.12°. */
         fun city(point: GeoPoint, token: Int): MapFocusRequest {
             val metersPerDegree = 111_320.0
