@@ -1,6 +1,7 @@
 package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.api.ScooterAPIJson
+import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.generated.ScooterAPIResponsePayload
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterResponseMetadataPayload
@@ -9,6 +10,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Locale
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
@@ -1025,6 +1027,391 @@ class ScooterModelsTest {
         assertNull(unknown.batteryLevel)
     }
 
+    @Test
+    fun refreshIsDueAfterTheIntervalOrFiveSecondsBeforeExpiry() {
+        val loaded = Instant.ofEpochSecond(1_790_000_000)
+
+        // A normal response: the interval comes first.
+        assertEquals(
+            loaded.addingTimeInterval(60.0),
+            ScooterRefreshPolicy.standard.refreshDue(
+                lastSuccess = loaded, refreshAfter = 60.0, expiresAt = loaded.addingTimeInterval(300.0),
+            ),
+        )
+        // A healthy response can arrive with seconds left: refresh before it expires.
+        assertEquals(
+            loaded.addingTimeInterval(15.0),
+            ScooterRefreshPolicy.standard.refreshDue(
+                lastSuccess = loaded, refreshAfter = 60.0, expiresAt = loaded.addingTimeInterval(20.0),
+            ),
+        )
+        // City totals refresh hourly.
+        assertEquals(
+            loaded.addingTimeInterval(3_600.0),
+            ScooterRefreshPolicy.standard.refreshDue(
+                lastSuccess = loaded, refreshAfter = 3_600.0, expiresAt = loaded.addingTimeInterval(3 * 3_600.0),
+            ),
+        )
+        // Nothing has loaded yet: a refresh is always due.
+        assertTrue(ScooterRefreshPolicy.standard.refreshDue(lastSuccess = null, refreshAfter = 60.0, expiresAt = null) < loaded)
+    }
+
+    @Test
+    fun automaticAttemptsAreNeverCloserThanTenSeconds() {
+        val loaded = Instant.ofEpochSecond(1_790_000_000)
+        fun nextAttempt(expiresIn: Double, lastAttemptAfter: Double): Double =
+            ScooterRefreshPolicy.standard.nextAttempt(
+                lastSuccess = loaded,
+                refreshAfter = 60.0,
+                expiresAt = loaded.addingTimeInterval(expiresIn),
+                lastAttempt = loaded.addingTimeInterval(lastAttemptAfter),
+            ).timeIntervalSince(loaded)
+
+        assertEquals(60.0, nextAttempt(expiresIn = 300.0, lastAttemptAfter = 0.0), 0.0)
+        // Seconds from expiry on arrival: still ten seconds after the attempt.
+        assertEquals(10.0, nextAttempt(expiresIn = 8.0, lastAttemptAfter = 0.0), 0.0)
+        // A refresh that failed at 60 s is tried again at 70 s.
+        assertEquals(70.0, nextAttempt(expiresIn = 300.0, lastAttemptAfter = 60.0), 0.0)
+        assertEquals(10.0, ScooterRefreshPolicy.standard.minimumAttemptGap, 0.0)
+        assertEquals(5.0, ScooterRefreshPolicy.standard.expiryLead, 0.0)
+        assertEquals(60.0, ScooterRefreshPolicy.standard.defaultRefreshAfter, 0.0)
+
+        val firstAttempt = loaded
+        assertEquals(
+            firstAttempt.addingTimeInterval(10.0),
+            ScooterRefreshPolicy.standard.nextAttempt(
+                lastSuccess = null, refreshAfter = 60.0, expiresAt = null, lastAttempt = firstAttempt,
+            ),
+        )
+    }
+
+    @Test
+    fun aRefreshingResponseGetsAQuickFollowUp() {
+        val loaded = Instant.ofEpochSecond(1_790_000_000)
+        val policy = ScooterRefreshPolicy.standard
+        assertEquals(2.0, policy.followUpGap, 0.0)
+        // The server suggests three seconds; the gap allows it once.
+        assertEquals(
+            loaded.addingTimeInterval(3.0),
+            policy.nextAttempt(
+                lastSuccess = loaded, refreshAfter = 3.0, expiresAt = loaded.addingTimeInterval(300.0),
+                lastAttempt = loaded, attemptGap = policy.followUpGap,
+            ),
+        )
+        // Without it, the usual ten seconds.
+        assertEquals(
+            loaded.addingTimeInterval(10.0),
+            policy.nextAttempt(
+                lastSuccess = loaded, refreshAfter = 3.0, expiresAt = loaded.addingTimeInterval(300.0), lastAttempt = loaded,
+            ),
+        )
+        val payload = runCatching {
+            ScooterAPIJson.decodeFromString<ScooterResponseMetadataPayload>(
+                """
+                {"partial":false,"stale":true,"failedSources":[],"sources":{},"generatedAt":"2026-10-14T10:00:00.000Z",
+                 "truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"refreshAfterSeconds":3,"refreshing":true}
+                """,
+            )
+        }.getOrNull()
+        assertEquals(true, payload?.model?.refreshing)
+        assertEquals(3, payload?.model?.refreshAfterSeconds)
+        assertNull(policy.askedFollowUp(payload?.model))
+    }
+
+    @Test
+    fun aRefreshingResponseIsAskedAgainWhenTheServerSays() {
+        val policy = ScooterRefreshPolicy.standard
+        fun decode(json: String): ScooterResponseMetadata =
+            ScooterAPIJson.decodeFromString<ScooterResponseMetadataPayload>(
+                """
+                {"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-10-26T02:00:00.000Z",
+                 "truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"refreshAfterSeconds":3,$json}
+                """,
+            ).model
+        // At once, after the shortest gap, while a quick feed is on its way; every three seconds while a sweep fills.
+        val coming = decode(""""refreshing":true,"followUpMs":0""")
+        assertEquals(0, coming.followUpMs)
+        assertEquals(policy.minimumFollowUp, policy.askedFollowUp(coming))
+        assertEquals(3.0, policy.askedFollowUp(decode(""""refreshing":true,"followUpMs":3000""")))
+        // Only while refreshing.
+        assertNull(policy.askedFollowUp(decode(""""followUpMs":0""")))
+        val loaded = Instant.ofEpochSecond(1_790_000_000)
+        val asked = policy.askedFollowUp(coming)!!
+        assertEquals(
+            loaded.addingTimeInterval(0.2),
+            policy.nextAttempt(
+                lastSuccess = loaded, refreshAfter = asked, expiresAt = loaded.addingTimeInterval(300.0),
+                lastAttempt = loaded, attemptGap = asked,
+            ),
+        )
+    }
+
+    @Test
+    fun failedSourcesBecomeDownProvidersOperatingInTheViewport() {
+        val failedSources = listOf("voi_zurich", "Bird_Basel", "velospot", "pony_fr_angers", "city-overview")
+        val operating = listOf(ScooterProvider.Bolt, ScooterProvider.Bird, ScooterProvider.Voi, ScooterProvider.Publibike)
+        val health = ScooterProviderHealth(
+            failedSources = failedSources,
+            operating = operating,
+            inView = emptySet(),
+        )
+
+        assertEquals(listOf(ScooterProvider.Bird, ScooterProvider.Voi, ScooterProvider.Publibike), health.downProviders)
+        assertTrue(health.hasUnknownFailures)
+
+        // A provider whose scooters are in view is sharing data, whatever feed of its failed.
+        val partlyInView = ScooterProviderHealth(
+            failedSources = failedSources,
+            operating = operating,
+            inView = setOf(ScooterProvider.Voi, ScooterProvider.Bolt),
+        )
+        assertEquals(listOf(ScooterProvider.Bird, ScooterProvider.Publibike), partlyInView.downProviders)
+
+        assertEquals(
+            ScooterProviderHealth.healthy,
+            ScooterProviderHealth(failedSources = emptyList(), operating = ScooterProvider.entries, inView = emptySet()),
+        )
+        // A source prefix does not hide the provider behind it.
+        assertEquals(ScooterProvider.Dott, ScooterProviderHealth.provider(forSource = "france:dott_fr_lyon"))
+        assertNull(ScooterProviderHealth.provider(forSource = "national"))
+    }
+
+    @Test
+    fun dockNoticesNameProvidersThenTruncationThenParking() {
+        val metadata = ScooterResponseMetadata(
+            partial = true, failedSources = listOf("bird_zurich"), truncated = true,
+            totalVehicles = 5_412, parkingStatus = "partial",
+        )
+        val oneDown = ScooterProviderHealth(downProviders = listOf(ScooterProvider.Bird), hasUnknownFailures = true)
+
+        assertEquals(
+            listOf(
+                ScooterDockNotice.ProvidersDown(listOf(ScooterProvider.Bird)),
+                ScooterDockNotice.Truncated(shown = 2_000, total = 5_412),
+                ScooterDockNotice.ParkingUnavailable,
+            ),
+            ScooterDockNotice.notices(health = oneDown, metadata = metadata, shownCount = 2_000),
+        )
+        assertEquals(
+            listOf(ScooterDockNotice.SomeProvidersDown, ScooterDockNotice.ParkingOutOfDate),
+            ScooterDockNotice.notices(
+                health = ScooterProviderHealth(downProviders = emptyList(), hasUnknownFailures = true),
+                metadata = ScooterResponseMetadata(partial = true, failedSources = listOf("city-overview"), parkingStatus = "stale"),
+                shownCount = 0,
+            ),
+        )
+        assertTrue(
+            ScooterDockNotice.notices(
+                health = ScooterProviderHealth.healthy,
+                metadata = ScooterResponseMetadata(partial = false, failedSources = emptyList(), parkingStatus = "fresh"),
+                shownCount = 12,
+            ).isEmpty(),
+        )
+
+        val one = ScooterDockNotice.ProvidersDown(listOf(ScooterProvider.Bird)).text
+        val two = ScooterDockNotice.ProvidersDown(listOf(ScooterProvider.Bird, ScooterProvider.Dott)).text
+        val many = ScooterDockNotice.ProvidersDown(listOf(ScooterProvider.Bird, ScooterProvider.Dott, ScooterProvider.Lime)).text
+        assertTrue(one.contains("Bird"))
+        assertTrue(two.contains("Bird") && two.contains("Dott"))
+        assertTrue(many.contains("3"))
+        assertFalse(many.contains("Bird"))
+        assertEquals(4, setOf(one, two, many, ScooterDockNotice.SomeProvidersDown.text).size)
+
+        val truncated = ScooterDockNotice.Truncated(shown = 2_000, total = 5_412).text
+        // Int.formatted(): in the phone's locale.
+        assertTrue(truncated.contains(2_000.formatted(ScooterLanguage.launchLocale())))
+        assertTrue(truncated.contains(5_412.formatted(ScooterLanguage.launchLocale())))
+        assertNotEquals(
+            ScooterDockNotice.ParkingUnavailable.text,
+            ScooterDockNotice.ParkingOutOfDate.text,
+        )
+    }
+
+    @Test
+    fun citiesBanRentingOnTheirNightsInLocalTime() {
+        val oslo = GeoPoint(latitude = 59.9139, longitude = 10.7522)
+        val osloTime = ZoneId.of("Europe/Oslo")
+        val sandvika = GeoPoint(latitude = 59.8913, longitude = 10.5236)
+
+        // 22:59 and 23:00 in Oslo, summer time.
+        assertNull(RentalCurfew.active(at = oslo, on = at("2026-10-12T20:59:00Z")))
+        assertEquals(
+            RentalCurfew.Active(city = "Oslo", until = at("2026-10-13T03:00:00Z"), timeZone = osloTime),
+            RentalCurfew.active(at = oslo, on = at("2026-10-12T21:00:00Z")),
+        )
+        assertNull(RentalCurfew.active(at = oslo, on = at("2026-10-13T03:00:00Z")))
+        assertNull(RentalCurfew.active(at = sandvika, on = at("2026-10-12T22:00:00Z")))
+        // The nights the clocks go back and forward end at 05:00 all the same.
+        assertEquals(at("2026-10-25T04:00:00Z"), RentalCurfew.active(at = oslo, on = at("2026-10-24T21:30:00Z"))?.until)
+        assertEquals(at("2027-03-28T03:00:00Z"), RentalCurfew.active(at = oslo, on = at("2027-03-27T22:30:00Z"))?.until)
+
+        // Trondheim bans only Friday and Saturday nights; Stavanger's start at midnight, after the evening.
+        val trondheim = GeoPoint(latitude = 63.4305, longitude = 10.3951)
+        val stavanger = GeoPoint(latitude = 58.97, longitude = 5.7331)
+        assertNull(RentalCurfew.active(at = trondheim, on = at("2026-10-12T21:30:00Z")))
+        assertEquals(at("2026-10-17T03:00:00Z"), RentalCurfew.active(at = trondheim, on = at("2026-10-16T21:30:00Z"))?.until)
+        assertEquals(at("2026-10-18T03:00:00Z"), RentalCurfew.active(at = trondheim, on = at("2026-10-17T22:30:00Z"))?.until)
+        assertNull(RentalCurfew.active(at = trondheim, on = at("2026-10-18T21:30:00Z")))
+        assertNull(RentalCurfew.active(at = stavanger, on = at("2026-10-16T21:30:00Z")))
+        assertEquals(at("2026-10-17T03:00:00Z"), RentalCurfew.active(at = stavanger, on = at("2026-10-16T22:30:00Z"))?.until)
+        assertNull(RentalCurfew.active(at = stavanger, on = at("2026-10-15T22:30:00Z")))
+
+        // Kyiv's martial-law curfew, 01:00 to 05:00 Kyiv time, stops at the city's edge.
+        val kyiv = GeoPoint(latitude = 50.4501, longitude = 30.5234)
+        val brovary = GeoPoint(latitude = 50.5113, longitude = 30.7903)
+        assertNull(RentalCurfew.active(at = kyiv, on = at("2026-10-14T21:59:00Z")))
+        assertEquals(
+            RentalCurfew.Active(city = "Kyiv", until = at("2026-10-15T02:00:00Z"), timeZone = ZoneId.of("Europe/Kyiv")),
+            RentalCurfew.active(at = kyiv, on = at("2026-10-14T22:00:00Z")),
+        )
+        assertNull(RentalCurfew.active(at = brovary, on = at("2026-10-14T23:00:00Z")))
+
+        // Dallas lets rides start until 20:45, Central time; Nashville's ban stops at Davidson County's line.
+        val dallas = GeoPoint(latitude = 32.7767, longitude = -96.797)
+        val nashville = GeoPoint(latitude = 36.1627, longitude = -86.7816)
+        val brentwood = GeoPoint(latitude = 36.0331, longitude = -86.7828)
+        assertNull(RentalCurfew.active(at = dallas, on = at("2026-10-15T01:44:00Z")))
+        assertEquals(
+            RentalCurfew.Active(city = "Dallas", until = at("2026-10-15T10:00:00Z"), timeZone = ZoneId.of("America/Chicago")),
+            RentalCurfew.active(at = dallas, on = at("2026-10-15T01:45:00Z")),
+        )
+        assertEquals(at("2026-10-15T10:00:00Z"), RentalCurfew.active(at = nashville, on = at("2026-10-15T05:30:00Z"))?.until)
+        assertNull(RentalCurfew.active(at = brentwood, on = at("2026-10-15T05:30:00Z")))
+
+        // Minneapolis from midnight, Central time; Raleigh from 23:00, Eastern time, on NC State's campus too; Birmingham from 23:00, Central time.
+        val minneapolis = GeoPoint(latitude = 44.9778, longitude = -93.265)
+        val ncState = GeoPoint(latitude = 35.7847, longitude = -78.6821)
+        val birmingham = GeoPoint(latitude = 33.5186, longitude = -86.8104)
+        assertNull(RentalCurfew.active(at = minneapolis, on = at("2026-10-15T04:59:00Z")))
+        assertEquals(at("2026-10-15T09:00:00Z"), RentalCurfew.active(at = minneapolis, on = at("2026-10-15T05:00:00Z"))?.until)
+        assertNull(RentalCurfew.active(at = ncState, on = at("2026-10-15T02:59:00Z")))
+        assertEquals(
+            RentalCurfew.Active(city = "Raleigh", until = at("2026-10-15T10:00:00Z"), timeZone = ZoneId.of("America/New_York")),
+            RentalCurfew.active(at = ncState, on = at("2026-10-15T03:00:00Z")),
+        )
+        assertEquals(at("2026-10-15T11:00:00Z"), RentalCurfew.active(at = birmingham, on = at("2026-10-15T04:00:00Z"))?.until)
+
+        // The ban comes before every other notice, with a moon.
+        val curfew = RentalCurfew.Active(city = "Oslo", until = at("2026-10-13T03:00:00Z"), timeZone = osloTime)
+        assertEquals(
+            listOf(ScooterDockNotice.Curfew(curfew), ScooterDockNotice.ProvidersDown(listOf(ScooterProvider.Bird))),
+            ScooterDockNotice.notices(
+                curfew = curfew,
+                health = ScooterProviderHealth(downProviders = listOf(ScooterProvider.Bird), hasUnknownFailures = false),
+                metadata = ScooterResponseMetadata(partial = true, failedSources = listOf("bird_oslo")),
+                shownCount = 12,
+            ),
+        )
+        assertEquals("moon.fill", ScooterDockNotice.Curfew(curfew).systemImage)
+        assertTrue(ScooterDockNotice.Curfew(curfew).text.contains("Oslo"))
+        assertTrue(ScooterDockNotice.Curfew(curfew).text.contains(ScooterDockStatus.clockTime(curfew.until, osloTime)))
+
+        // By the city's clock, named after its zone where the phone's reads otherwise.
+        val current = ScooterDateFormat.timeZone()
+        val farAway = ZoneId.of(
+            if (current.rules.getOffset(Instant.now()).totalSeconds == 14 * 3600) "Pacific/Pago_Pago" else "Pacific/Kiritimati",
+        )
+        val there = ScooterDockStatus.clockTime(curfew.until, farAway)
+        assertNotEquals(ScooterDockStatus.clockTime(curfew.until), there)
+        assertTrue(there, there.contains("GMT"))
+        assertEquals(ScooterDockStatus.clockTime(curfew.until), ScooterDockStatus.clockTime(curfew.until, current))
+        val farCurfew = RentalCurfew.Active(city = "Oslo", until = curfew.until, timeZone = farAway)
+        assertTrue(ScooterDockNotice.Curfew(farCurfew).text.contains(there))
+    }
+
+    @Test
+    fun dockStatusPrefersFailureThenDelayThenCityTotalsThenAge() {
+        val updated = Instant.ofEpochSecond(1_790_000_000)
+        fun summary(
+            failure: ScooterLoadFailure? = null,
+            overview: Boolean = false,
+            delayed: Boolean = false,
+        ): ScooterDockSummary = ScooterDockSummary(
+            count = 22, countContext = ScooterCountContext.Nearby, lastUpdated = updated, refreshFailure = failure,
+            isOverview = overview, isDelayed = delayed, notices = emptyList(), hint = null, chips = emptyList(),
+        )
+        fun status(after: Double): ScooterDockStatus? = summary().status(at = updated.addingTimeInterval(after))
+
+        assertEquals(ScooterDockStatus.Live, status(after = 0.0))
+        assertEquals(ScooterDockStatus.Live, status(after = 89.0))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(1), status(after = 90.0))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(2), status(after = 150.0))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(59), status(after = 3_599.0))
+        assertEquals(ScooterDockStatus.UpdatedAt(updated), status(after = 3_600.0))
+        // A clock that runs behind the server still reads as live.
+        assertEquals(ScooterDockStatus.Live, status(after = -30.0))
+
+        val later = updated.addingTimeInterval(600.0)
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(delayed = true).status(at = later))
+        assertEquals(ScooterDockStatus.CityTotals, summary(overview = true).status(at = later))
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(overview = true, delayed = true).status(at = later))
+        assertEquals(
+            ScooterDockStatus.Offline(showing = updated),
+            summary(failure = ScooterLoadFailure.Offline, overview = true, delayed = true).status(at = later),
+        )
+        for (failure in ScooterLoadFailure.entries.filter { it != ScooterLoadFailure.Offline }) {
+            assertEquals(ScooterDockStatus.RefreshFailed(showing = updated), summary(failure = failure).status(at = later))
+        }
+        assertTrue(summary(failure = ScooterLoadFailure.Busy).showsTryAgain)
+        assertFalse(summary().showsTryAgain)
+
+        // With every provider here down, there is no line, unless a refresh failed or the data is delayed.
+        val down = summary().copy(everyProviderDown = true)
+        assertNull(down.status(at = updated))
+        assertNull(down.status(at = later))
+        val downFailed = summary(failure = ScooterLoadFailure.Timeout).copy(everyProviderDown = true)
+        assertEquals(ScooterDockStatus.RefreshFailed(showing = updated), downFailed.status(at = later))
+        val downDelayed = summary(delayed = true).copy(everyProviderDown = true)
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), downDelayed.status(at = later))
+
+        // While scooters stand faded where they were last seen, an update rather than a delay; a failure first.
+        val seenAt = updated.addingTimeInterval(-900.0)
+        val updating = summary(overview = true, delayed = true).copy(lastSeenAt = seenAt)
+        assertEquals(ScooterDockStatus.Updating(seenAt = seenAt), updating.status(at = later))
+        assertEquals(true, updating.status(at = later)?.isUpdating)
+        assertEquals(false, updating.status(at = later)?.isWarning)
+        val updatingFailed = summary(failure = ScooterLoadFailure.Timeout).copy(lastSeenAt = seenAt)
+        assertEquals(ScooterDockStatus.RefreshFailed(showing = updated), updatingFailed.status(at = later))
+        assertEquals(false, ScooterDockStatus.Live.isUpdating)
+
+        // Seen on another day, as a Lime group swept days ago: with the day of the week.
+        val utc = ZoneOffset.UTC
+        assertEquals(ScooterDockStatus.clockTime(seenAt), ScooterDockStatus.seenTime(seenAt, now = later, zone = utc))
+        val daysAgo = updated.addingTimeInterval(-50 * 3_600.0)
+        val withDay = ScooterDockStatus.seenTime(daysAgo, now = updated, zone = utc)
+        assertNotEquals(ScooterDockStatus.clockTime(daysAgo), withDay)
+        assertTrue(withDay, withDay.endsWith(ScooterDockStatus.clockTime(daysAgo)))
+    }
+
+    @Test
+    fun dockStatusTextCarriesTheTimeOrTheMinutes() {
+        val updated = Instant.ofEpochSecond(1_790_000_000)
+        val time = ScooterDockStatus.clockTime(updated)
+
+        assertFalse(time.isEmpty())
+        for (status in listOf(
+            ScooterDockStatus.RefreshFailed(showing = updated),
+            ScooterDockStatus.Offline(showing = updated),
+            ScooterDockStatus.Delayed(showing = updated),
+            ScooterDockStatus.UpdatedAt(updated),
+        )) {
+            assertTrue(status.text, status.text.contains(time))
+        }
+        assertTrue(ScooterDockStatus.UpdatedMinutesAgo(7).text.contains("7"))
+        assertEquals(localized("Live"), ScooterDockStatus.Live.text)
+        assertEquals(localized("City totals · refreshed hourly"), ScooterDockStatus.CityTotals.text)
+
+        assertTrue(ScooterDockStatus.Live.isLive)
+        assertFalse(ScooterDockStatus.UpdatedMinutesAgo(2).isLive)
+        assertTrue(ScooterDockStatus.RefreshFailed(showing = updated).isWarning)
+        assertTrue(ScooterDockStatus.Offline(showing = updated).isWarning)
+        assertFalse(ScooterDockStatus.Delayed(showing = updated).isWarning)
+
+        val body = ScooterDockStatus.outOfDateBody(ScooterLoadFailure.Offline, lastUpdate = updated)
+        assertTrue(body.contains(time))
+        assertTrue(body.endsWith(ScooterLoadFailure.Offline.message))
+    }
+
     // Closest cities, parking bays, the search bar and city totals.
 
     @Test
@@ -1322,6 +1709,116 @@ class ScooterModelsTest {
     }
 
     @Test
+    fun theDockSaysWhenTheScootersOfACityInItsPauseAreBack() {
+        val montreal = GeoPoint(latitude = 45.5, longitude = -73.57)
+        val january = at("2027-01-20T17:00:00Z")
+
+        val season = ScooterSeasonalPause.active(at = montreal, on = january, among = quebec)!!
+        assertEquals(ScooterSeasonalPause.Active(city = "Montréal", back = ScooterSeasonalPause.Return.Month(4)), season)
+        // Lime runs until December, Laval all year, and Laval's bounds take in the north of Montréal.
+        assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-11-20T17:00:00Z"), among = quebec))
+        assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-07-20T16:00:00Z"), among = quebec))
+        assertNull(ScooterSeasonalPause.active(at = GeoPoint(latitude = 45.65, longitude = -73.6), on = january, among = quebec))
+        // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
+        // 2 December until 15 March, Porsgrunn and Skien from 15 December until the streets are
+        // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
+        // 1 March, Bodø from 1 December until 1 April, Dalvík from 21 October, Leduc from 22 October
+        // and Ólafsvík with Hellissandur from 23 October until 1 May, South Lake Tahoe from
+        // 1 November until 1 May, Ottawa from 16 November until 30 April, Moncton from 15 November
+        // until 16 April, and Laval from 16 November until 15 April, each by its own clock.
+        assertEquals(
+            listOf(
+                "fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
+                "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "us:ca:South Lake Tahoe",
+                "ca:ab:Leduc", "ca:on:Ottawa", "ca:nb:Moncton", "ca:qc:Laval",
+            ),
+            ScooterCityCatalog.cities.filter { it.pauses.isNotEmpty() }.map { it.id },
+        )
+        val tignes = GeoPoint(latitude = 45.4687, longitude = 6.9063)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Tignes", back = ScooterSeasonalPause.Return.Month(6)),
+            ScooterSeasonalPause.active(at = tignes, on = january),
+        )
+        assertNull(ScooterSeasonalPause.active(at = tignes, on = at("2026-09-07T21:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = tignes, on = at("2026-09-07T22:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = tignes, on = at("2027-06-22T12:00:00Z")))
+        // South Lake Tahoe's code takes the scooters away from 1 November through 30 April, Pacific time.
+        val tahoe = GeoPoint(latitude = 38.93324, longitude = -119.98435)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "South Lake Tahoe, CA", back = ScooterSeasonalPause.Return.Month(5)),
+            ScooterSeasonalPause.active(at = tahoe, on = january),
+        )
+        assertNull(ScooterSeasonalPause.active(at = tahoe, on = at("2026-11-01T06:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = tahoe, on = at("2026-11-01T07:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = tahoe, on = at("2027-05-01T12:00:00Z")))
+        val ottawa = GeoPoint(latitude = 45.4215, longitude = -75.6972)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Ottawa, ON", back = ScooterSeasonalPause.Return.Month(4)),
+            ScooterSeasonalPause.active(at = ottawa, on = january),
+        )
+        assertNull(ScooterSeasonalPause.active(at = ottawa, on = at("2026-11-16T04:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = ottawa, on = at("2026-11-16T05:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = ottawa, on = at("2027-04-30T12:00:00Z")))
+        // Iceland keeps UTC all year; Leduc is six hours behind it in October.
+        val dalvik = GeoPoint(latitude = 65.9711, longitude = -18.5304)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Dalvík", back = ScooterSeasonalPause.Return.Month(5)),
+            ScooterSeasonalPause.active(at = dalvik, on = january),
+        )
+        assertNull(ScooterSeasonalPause.active(at = dalvik, on = at("2026-10-20T23:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = dalvik, on = at("2026-10-21T00:30:00Z")))
+        val leduc = GeoPoint(latitude = 53.2645, longitude = -113.5593)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Leduc, AB", back = ScooterSeasonalPause.Return.Month(5)),
+            ScooterSeasonalPause.active(at = leduc, on = january),
+        )
+        assertNull(ScooterSeasonalPause.active(at = leduc, on = at("2026-10-22T05:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = leduc, on = at("2026-10-22T06:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = leduc, on = at("2027-05-01T18:00:00Z")))
+        // Bodø keeps Oslo's clock, one hour ahead of UTC in winter.
+        val bodo = GeoPoint(latitude = 67.2804, longitude = 14.4049)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Bodø", back = ScooterSeasonalPause.Return.Month(4)),
+            ScooterSeasonalPause.active(at = bodo, on = january),
+        )
+        assertNull(ScooterSeasonalPause.active(at = bodo, on = at("2026-11-30T22:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = bodo, on = at("2026-11-30T23:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = bodo, on = at("2027-04-01T12:00:00Z")))
+
+        // After a night ban, before providers down, with a calendar, calm.
+        assertEquals(
+            listOf(ScooterDockNotice.Season(season), ScooterDockNotice.ProvidersDown(listOf(ScooterProvider.Lime))),
+            ScooterDockNotice.notices(
+                season = season,
+                health = ScooterProviderHealth(downProviders = listOf(ScooterProvider.Lime), hasUnknownFailures = false),
+                metadata = ScooterResponseMetadata(partial = true, failedSources = listOf("canada:lime_quebec")),
+                shownCount = 0,
+            ),
+        )
+        assertEquals("calendar", ScooterDockNotice.Season(season).systemImage)
+        assertTrue(ScooterDockNotice.Season(season).isCalm)
+        assertFalse(ScooterDockNotice.ParkingUnavailable.isCalm)
+
+        val sentences = mapOf(
+            ScooterLanguage.En to "Off season in Montréal: scooters are back in April",
+            ScooterLanguage.De to "Saisonpause in Montréal: Scooter wieder im April",
+            ScooterLanguage.Fr to "Pause saisonnière à Montréal : retour des trottinettes en avril",
+            ScooterLanguage.It to "Pausa stagionale a Montréal: monopattini di nuovo in aprile",
+            ScooterLanguage.Nl to "Seizoenspauze in Montréal: deelsteps weer in april",
+            ScooterLanguage.Nb to "Sesongpause i Montréal: elsparkesykler igjen i april",
+            ScooterLanguage.Pt to "Pausa sazonal em Montréal: trotinetes de volta em abril",
+            ScooterLanguage.Es to "Pausa de temporada en Montréal: los patinetes vuelven en abril",
+            ScooterLanguage.Is to "Montréal: árstíðabundið hlé, rafskúturnar koma aftur í apríl",
+        )
+        assertEquals(ScooterLanguage.entries.toSet(), sentences.keys)
+        for ((language, sentence) in sentences) {
+            ScooterLanguage.current = language
+            // Spanish says scooter where the phone's region is in Latin America or the US.
+            assertEquals(language.rawValue, language.written(sentence, language.locale.country), ScooterDockNotice.Season(season).text)
+        }
+    }
+
+    @Test
     fun aPauseUntilTheStreetsAreClearHoldsUntilMayAtTheLatestAndComesBackEachWinter() {
         // Skien's: from 15 December, back once the streets are clear of snow and ice.
         val clear = ScooterSeasonalPause(from = "12-15", until = "clear", timeZone = "Europe/Oslo")
@@ -1356,6 +1853,52 @@ class ScooterModelsTest {
         assertNotNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T21:30:00Z")))
         assertNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T22:30:00Z")))
         assertNotNull(ScooterSeasonalPause.active(at = skien, on = at("2027-12-15T12:00:00Z")))
+    }
+
+    @Test
+    fun thePauseUntilTheStreetsAreClearGivesWayOnceScootersAreInView() {
+        val season = ScooterSeasonalPause.Active(city = "Skien", back = ScooterSeasonalPause.Return.Clear(from = "12-15"))
+        val metadata = ScooterResponseMetadata(partial = false, failedSources = emptyList())
+        assertEquals(
+            listOf(ScooterDockNotice.Season(season)),
+            ScooterDockNotice.notices(season = season, health = ScooterProviderHealth.healthy, metadata = metadata, shownCount = 0),
+        )
+        // Ryde back in March: the notice gives way.
+        assertEquals(
+            emptyList<ScooterDockNotice>(),
+            ScooterDockNotice.notices(
+                season = season, scootersInView = true, health = ScooterProviderHealth.healthy, metadata = metadata, shownCount = 12,
+            ),
+        )
+        // A pause with a set end stays, as the town's rule.
+        val montreal = ScooterSeasonalPause.Active(city = "Montréal", back = ScooterSeasonalPause.Return.Month(4))
+        assertEquals(
+            listOf(ScooterDockNotice.Season(montreal)),
+            ScooterDockNotice.notices(
+                season = montreal, scootersInView = true, health = ScooterProviderHealth.healthy, metadata = metadata, shownCount = 1,
+            ),
+        )
+
+        // The day as the language and the region write it.
+        assertEquals("15 December", ScooterSeasonalPause.dayName("12-15", locale = Locale.forLanguageTag("en-GB")))
+        assertEquals("December 15", ScooterSeasonalPause.dayName("12-15", locale = Locale.forLanguageTag("en-US")))
+        val english = ScooterSeasonalPause.dayName("12-15", locale = ScooterLanguage.En.locale)
+        val sentences = mapOf(
+            ScooterLanguage.En to "Off season in Skien: from $english until the streets are clear",
+            ScooterLanguage.De to "Saisonpause in Skien: ab 15. Dezember, bis die Strassen schnee- und eisfrei sind",
+            ScooterLanguage.Fr to "Pause saisonnière à Skien : dès le 15 décembre, jusqu’à ce que les rues soient dégagées",
+            ScooterLanguage.It to "Pausa stagionale a Skien: dal 15 dicembre finché le strade non saranno libere da neve e ghiaccio",
+            ScooterLanguage.Nl to "Seizoenspauze in Skien: vanaf 15 december tot de straten sneeuw- en ijsvrij zijn",
+            ScooterLanguage.Nb to "Sesongpause i Skien: fra 15. desember til det er snø- og isfritt",
+            ScooterLanguage.Pt to "Pausa sazonal em Skien: a partir de 15 de dezembro, até as ruas estarem livres de neve e gelo",
+            ScooterLanguage.Es to "Pausa de temporada en Skien: desde el 15 de diciembre hasta que las calles estén libres de nieve y hielo",
+            ScooterLanguage.Is to "Skien: árstíðabundið hlé frá 15. desember þar til göturnar verða auðar",
+        )
+        assertEquals(ScooterLanguage.entries.toSet(), sentences.keys)
+        for ((language, sentence) in sentences) {
+            ScooterLanguage.current = language
+            assertEquals(language.rawValue, sentence, ScooterDockNotice.Season(season).text)
+        }
     }
 
     @Test
@@ -1423,6 +1966,44 @@ class ScooterModelsTest {
         )
         assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-11-10T17:00:00Z"), among = quebec, seasonOver = closed))
         assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2027-01-20T17:00:00Z"), among = quebec))
+    }
+
+    @Test
+    fun theClosedSeasonGivesWayOnceScootersAreInView() {
+        val season = ScooterSeasonalPause.Active(city = "Zapopan", back = ScooterSeasonalPause.Return.SeasonOver)
+        val metadata = ScooterResponseMetadata(partial = false, failedSources = emptyList(), seasonOver = setOf("mexico:whoosh_mx_zap"))
+        assertEquals(
+            listOf(ScooterDockNotice.Season(season)),
+            ScooterDockNotice.notices(season = season, health = ScooterProviderHealth.healthy, metadata = metadata, shownCount = 0),
+        )
+        assertEquals(
+            emptyList<ScooterDockNotice>(),
+            ScooterDockNotice.notices(
+                season = season, scootersInView = true, health = ScooterProviderHealth.healthy, metadata = metadata, shownCount = 3,
+            ),
+        )
+
+        val sentences = mapOf(
+            ScooterLanguage.En to "Off season in Zapopan: scooters are back when the operator reopens",
+            ScooterLanguage.De to "Saisonpause in Zapopan: Scooter wieder, sobald der Anbieter die Saison eröffnet",
+            ScooterLanguage.Fr to "Pause saisonnière à Zapopan : retour des trottinettes à la réouverture par l’opérateur",
+            ScooterLanguage.It to "Pausa stagionale a Zapopan: monopattini di nuovo alla riapertura dell’operatore",
+            ScooterLanguage.Nl to "Seizoenspauze in Zapopan: deelsteps weer zodra de aanbieder heropent",
+            ScooterLanguage.Nb to "Sesongpause i Zapopan: elsparkesykler igjen når operatøren åpner",
+            ScooterLanguage.Pt to "Pausa sazonal em Zapopan: trotinetes de volta quando o operador reabrir",
+            ScooterLanguage.Es to "Pausa de temporada en Zapopan: los patinetes vuelven cuando el operador reabra",
+            ScooterLanguage.Is to "Zapopan: árstíðabundið hlé, rafskúturnar koma aftur þegar rekstraraðilinn opnar",
+        )
+        assertEquals(ScooterLanguage.entries.toSet(), sentences.keys)
+        for ((language, sentence) in sentences) {
+            ScooterLanguage.current = language
+            // Spanish says scooter where the phone's region is in Latin America or the US.
+            assertEquals(language.rawValue, language.written(sentence, language.locale.country), ScooterDockNotice.Season(season).text)
+        }
+        assertEquals(
+            "Pausa de temporada en Zapopan: los scooters vuelven cuando el operador reabra",
+            ScooterLanguage.Es.written(sentences.getValue(ScooterLanguage.Es), "MX"),
+        )
     }
 
     // Settings › About › Send feedback.
