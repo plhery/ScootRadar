@@ -10,9 +10,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-// ios/ScootRadarTests/ScooterZonesTests.swift: ScooterZonesTests and CityRuleZoneTests. Its
-// ScooterZoneOverlayTests draw with MapKit and its ScooterZonesModelTests build a ScooterMapModel: they
-// come with the map's overlay and with the map model.
+// ios/ScootRadarTests/ScooterZonesTests.swift: ScooterZonesTests, ScooterZoneOverlayTests and
+// CityRuleZoneTests. Its ScooterZonesModelTests run the map's model: they are with the map's controller.
 
 private fun <T : Any> unwrap(value: T?): T {
     assertNotNull(value)
@@ -96,6 +95,106 @@ class ScooterZonesTest {
     }
 }
 
+class ScooterZoneOverlayTest {
+    @Test
+    fun theSameRuleOfSeveralOperatorsIsOneShapeWithinOneEdge() {
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(
+                zone("lime:0", ScooterZoneKind.NoParking, square(47.37, 8.54)),
+                // The same street, a little further east, and the very same square again.
+                zone("voi:0", ScooterZoneKind.NoParking, square(47.37, 8.5405)),
+                zone("bird:0", ScooterZoneKind.NoParking, square(47.37, 8.54)),
+            ),
+            isDark = false,
+        )
+        assertEquals(listOf(ScooterZoneKind.NoParking), overlay.shapes.map { it.kind })
+        assertExtent(unwrap(overlay.shapes.firstOrNull()), listOf(47.37, 8.54, 47.371, 8.5415))
+    }
+
+    @Test
+    fun eachKindIsKeptItsOwnZonesApartApartAndHolesOpen() {
+        val frame = listOf(
+            square(47.37, 8.54, size = 0.003)[0],
+            listOf(
+                GeoPoint(latitude = 47.371, longitude = 8.541), GeoPoint(latitude = 47.372, longitude = 8.541),
+                GeoPoint(latitude = 47.372, longitude = 8.542), GeoPoint(latitude = 47.371, longitude = 8.542),
+                GeoPoint(latitude = 47.371, longitude = 8.541),
+            ),
+        )
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(
+                zone("dott:0", ScooterZoneKind.NoRide, square(47.37, 8.54)),
+                zone("bolt:0", ScooterZoneKind.NoParking, square(47.37, 8.54)),
+                zone("bolt:1", ScooterZoneKind.Slow, square(47.37, 8.54), square(47.38, 8.55)),
+                zone("voi:0", ScooterZoneKind.NoRide, frame),
+            ),
+            isDark = false,
+        )
+        assertEquals(
+            listOf(ScooterZoneKind.NoRide, ScooterZoneKind.NoParking, ScooterZoneKind.Slow, ScooterZoneKind.Slow),
+            overlay.shapes.map { it.kind },
+        )
+        // Dott's square lies within the frame of Voi's, whose hole stays open.
+        val noRide = overlay.shapes[0]
+        assertExtent(noRide, listOf(47.37, 8.54, 47.373, 8.543))
+        assertTrue(covers(noRide, overlay, 47.3705, 8.5405))
+        assertTrue(covers(noRide, overlay, 47.3725, 8.5425))
+        assertFalse(covers(noRide, overlay, 47.3715, 8.5415))
+    }
+
+    @Test
+    fun onlyTheZonesHandedInAreMergedSoOneProviderShownShowsItsOwn() {
+        val zones = listOf(zone("lime:0", ScooterZoneKind.NoRide, square(47.37, 8.54)), zone("voi:0", ScooterZoneKind.NoRide, square(47.37, 8.5405)))
+        assertExtent(unwrap(ScooterZoneOverlay(zones = zones, isDark = false).shapes.firstOrNull()), listOf(47.37, 8.54, 47.371, 8.5415))
+        val lime = ScooterZoneOverlay(zones = zones.filter { it.provider == "lime" }, isDark = false)
+        assertExtent(unwrap(lime.shapes.firstOrNull()), listOf(47.37, 8.54, 47.371, 8.541))
+        assertTrue(ScooterZoneOverlay(zones = emptyList(), isDark = false).shapes.isEmpty())
+    }
+
+    /** A square of about 110 m by 110 m in Zürich, from its south-west corner. */
+    private fun square(south: Double, west: Double, size: Double = 0.001): List<List<GeoPoint>> = listOf(
+        listOf(
+            GeoPoint(latitude = south, longitude = west), GeoPoint(latitude = south, longitude = west + size),
+            GeoPoint(latitude = south + size, longitude = west + size), GeoPoint(latitude = south + size, longitude = west),
+            GeoPoint(latitude = south, longitude = west),
+        ),
+    )
+
+    private fun zone(id: String, kind: ScooterZoneKind, vararg polygons: List<List<GeoPoint>>): ScooterZone =
+        ScooterZone(id = id, provider = id.takeWhile { it != ':' }, kind = kind, maxSpeedKph = null, polygons = polygons.toList())
+
+    /** South, west, north and east, to the centimetre or so. */
+    private fun assertExtent(shape: ScooterZoneOverlay.Shape, expected: List<Double>) {
+        val southWest = MapPoint(x = shape.bounds.minX, y = shape.bounds.maxY).coordinate
+        val northEast = MapPoint(x = shape.bounds.maxX, y = shape.bounds.minY).coordinate
+        val extent = listOf(southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude)
+        for ((value, wanted) in extent.zip(expected)) {
+            assertEquals("$extent", wanted, value, 1e-7)
+        }
+    }
+
+    /** Even-odd, as Core Graphics fills a path: across every ring of the shape, its outline and its holes alike. */
+    private fun covers(shape: ScooterZoneOverlay.Shape, overlay: ScooterZoneOverlay, latitude: Double, longitude: Double): Boolean {
+        val point = MapPoint(GeoPoint(latitude = latitude, longitude = longitude))
+        val corner = unwrap(overlay.boundingMapRect)
+        val x = point.x - corner.x
+        val y = point.y - corner.y
+        val polygon = shape.polygon
+        var inside = false
+        for (ring in listOf(polygon.exteriorRing) + (0 until polygon.numInteriorRing).map { polygon.getInteriorRingN(it) }) {
+            val corners = ring.coordinates
+            for (index in 1 until corners.size) {
+                val start = corners[index - 1]
+                val end = corners[index]
+                if ((end.y > y) != (start.y > y) && x < (start.x - end.x) * (y - end.y) / (start.y - end.y) + end.x) {
+                    inside = !inside
+                }
+            }
+        }
+        return inside
+    }
+}
+
 class CityRuleZoneTest {
     // Seoul is UTC+9 all year: noon there on 26 October 2026.
     private val seoulNoon = Instant.ofEpochSecond(1_792_983_600)
@@ -150,21 +249,19 @@ class CityRuleZoneTest {
         assertTrue(covers(37.50045, 127.00226))
     }
 
-    // The overlay that keeps the two apart, one shape for each strength, draws with MapKit
-    // (ScooterZoneOverlay) and comes with the map: this checks the zones it is handed.
     @Test
     fun aRuleOutsideItsHoursIsDrawnApartAndDimmer() {
         val rule = unwrap(CityRuleZone.all.firstOrNull { it.id == "seoul-hongdae-red-road" })
         val ring = rule.band[0][0]
-        val zones = listOf(
-            CityRuleZone.Shown(rule = rule, inForce = false).mapZone,
-            ScooterZone(id = "lime:0", provider = "lime", kind = ScooterZoneKind.NoRide, maxSpeedKph = null, polygons = listOf(listOf(ring))),
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(
+                CityRuleZone.Shown(rule = rule, inForce = false).mapZone,
+                ScooterZone(id = "lime:0", provider = "lime", kind = ScooterZoneKind.NoRide, maxSpeedKph = null, polygons = listOf(listOf(ring))),
+            ),
+            isDark = false,
         )
-        assertEquals(setOf(CityRuleZone.dimmed, 1.0), zones.map { it.strength }.toSet())
-        assertTrue(zones.all { it.kind == ScooterZoneKind.NoRide })
-        assertEquals("rule:seoul-hongdae-red-road", zones[0].id)
-        assertEquals(rule.band, zones[0].polygons)
-        assertEquals(1.0, CityRuleZone.Shown(rule = rule, inForce = true).mapZone.strength, 0.0)
+        assertEquals(setOf(CityRuleZone.dimmed, 1.0), overlay.shapes.map { it.strength }.toSet())
+        assertTrue(overlay.shapes.all { it.kind == ScooterZoneKind.NoRide })
     }
 
     /** Ray casting. */
