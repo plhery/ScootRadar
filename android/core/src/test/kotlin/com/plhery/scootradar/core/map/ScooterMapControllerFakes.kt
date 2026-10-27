@@ -5,7 +5,9 @@ import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.addingTimeInterval
 import java.time.Instant
@@ -178,6 +180,35 @@ internal class FakeLocationManager(
 
     override fun stopUpdatingHeading() {
         headingStops += 1
+    }
+}
+
+/**
+ * A store that keeps what is written to it, as a test reads a UserDefaults suite's persistent domain: every
+ * value set, as text, under its key.
+ */
+internal class RecordingDefaults(
+    private val store: InMemoryScooterDefaults = InMemoryScooterDefaults(),
+) : ScooterDefaults by store {
+    private val written = mutableListOf<String>()
+
+    val writes: List<String> get() = written.toList()
+
+    override fun set(value: Boolean, forKey: String) = record(forKey, value) { store.set(value, forKey) }
+
+    override fun set(value: Int, forKey: String) = record(forKey, value) { store.set(value, forKey) }
+
+    override fun set(value: String, forKey: String) = record(forKey, value) { store.set(value, forKey) }
+
+    override fun set(value: List<String>, forKey: String) = record(forKey, value) { store.set(value, forKey) }
+
+    override fun set(value: ByteArray, forKey: String) = record(forKey, value.decodeToString()) { store.set(value, forKey) }
+
+    override fun set(value: Instant, forKey: String) = record(forKey, value) { store.set(value, forKey) }
+
+    private fun record(key: String, value: Any, write: () -> Unit) {
+        written += "$key = $value"
+        write()
     }
 }
 

@@ -1,7 +1,9 @@
 package com.plhery.scootradar.core.map
 
+import com.plhery.scootradar.core.api.AddressSearchResult
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
+import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterProvider.Bird
@@ -9,6 +11,7 @@ import com.plhery.scootradar.core.generated.ScooterProvider.Bolt
 import com.plhery.scootradar.core.generated.ScooterProvider.Dott
 import com.plhery.scootradar.core.generated.ScooterProvider.Hopp
 import com.plhery.scootradar.core.generated.ScooterProvider.Lime
+import com.plhery.scootradar.core.generated.ScooterProvider.Pony
 import com.plhery.scootradar.core.generated.ScooterProvider.Publibike
 import com.plhery.scootradar.core.generated.ScooterProvider.Ryde
 import com.plhery.scootradar.core.generated.ScooterProvider.Voi
@@ -21,9 +24,11 @@ import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.MapFocusRequest
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ProviderRidePass
+import com.plhery.scootradar.core.model.RentalCurfew
 import com.plhery.scootradar.core.model.RideEstimateDuration
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterCountContext
@@ -40,12 +45,14 @@ import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterParking
+import com.plhery.scootradar.core.model.ScooterProviderCoverage
 import com.plhery.scootradar.core.model.ScooterProviderHealth
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterRidePricing
+import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.core.model.ScooterSeasonalPause
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.addingTimeInterval
@@ -59,11 +66,15 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 import kotlin.math.roundToInt
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.builtins.ListSerializer
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -2145,7 +2156,535 @@ class ScooterMapControllerTest {
         assertNull(model.lastSeenAt.value)
     }
 
-    private val zurichRegion = MapRegion(GeoPoint(47.3769, 8.5417), latitudeDelta = 0.01, longitudeDelta = 0.01)
+    @Test
+    fun groupsLastSeenKeepTheProvidersShownAndGoWithTheGroupsWhenTheMinimumChanges() = runTest {
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = emptyList(),
+                clusters = listOf(
+                    ScooterCluster(
+                        id = "13:4290:2868", latitude = 47.3769, longitude = 8.5417,
+                        count = 4, providers = mapOf("lime" to 4),
+                    ),
+                ),
+                lastSeenClusters = listOf(
+                    ScooterCluster(
+                        id = "seen:13:4290:2869", latitude = 47.377, longitude = 8.542,
+                        count = 12, providers = mapOf("lime" to 5, "bird" to 7),
+                    ),
+                ),
+                meta = ScooterResponseMetadata(
+                    partial = false, failedSources = emptyList(), mode = "clusters", zoom = 13,
+                    refreshAfterSeconds = 3, refreshing = true, lastSeenAt = "2026-10-12T10:00:00Z",
+                ),
+            ),
+        )
+        val model = makeController(api)
+        model.updateViewport(zurichRegion, zoom = 13)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+
+        assertEquals(listOf(12), model.mapLastSeenClusters.value.map { it.count })
+        assertEquals(4, model.visibleCount)
+        assertEquals(12, model.visibleLastSeenCount.value)
+
+        model.showProviders(setOf(Lime))
+        assertEquals(listOf(mapOf("lime" to 5)), model.mapLastSeenClusters.value.map { it.providers })
+        assertEquals(5, model.visibleLastSeenCount.value)
+
+        // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again.
+        model.setMinimumBattery(60.0)
+        assertTrue(model.mapLastSeenClusters.value.isEmpty())
+        assertEquals(0, model.visibleLastSeenCount.value)
+        val asked = waitUntil { api.calls == 2 && !model.isLoading.value }
+        assertTrue(asked)
+        assertEquals(60, api.lastMinimumBattery)
+    }
+
+    @Test
+    fun aMapStillBeingCollectedIsAskedForSoonAfterEveryAnswerWithFadedScooters() = runTest {
+        val clock = TestClock()
+        val api = StubScooterAPI(
+            fillingResponse(
+                lastSeen = listOf(scooter(id = "seen", provider = "lime")),
+                seenAt = clock.now,
+                generatedAt = clock.now,
+            ),
+        )
+        val model = makeController(api, clock = clock)
+        model.refresh()
+        var answered = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(answered)
+
+        // After the three seconds the server suggests, every time: its sweep replaces them as it goes.
+        for (call in 2..3) {
+            if (call == 3) {
+                // Still being collected, with nothing faded left.
+                api.setResponse(fillingResponse(lastSeen = emptyList(), seenAt = null, generatedAt = clock.now))
+            }
+            clock.advance(2.0)
+            model.autoRefreshIfNeeded()
+            settle()
+            assertEquals("Not before three seconds", call - 1, api.calls)
+            clock.advance(1.0)
+            model.autoRefreshIfNeeded()
+            answered = waitUntil { api.calls == call && !model.isLoading.value }
+            assertTrue("Call $call three seconds after the one before", answered)
+        }
+
+        // Once more soon was the follow-up already: the usual ten seconds now.
+        clock.advance(3.0)
+        model.autoRefreshIfNeeded()
+        settle()
+        assertEquals(3, api.calls)
+        clock.advance(7.0)
+        model.autoRefreshIfNeeded()
+        answered = waitUntil { api.calls == 4 && !model.isLoading.value }
+        assertTrue(answered)
+        assertEquals(4, api.calls)
+    }
+
+    @Test
+    fun onlyFadedScootersInViewReadFindingScootersWithTheNightBanRatherThanAnEmptyMap() = runTest {
+        val clock = TestClock()
+        // 23:30 in Oslo, during its night ban.
+        clock.now = date("2026-10-12T21:30:00Z")
+        val oslo = GeoPoint(59.9139, 10.7522)
+        val osloRegion = MapRegion(oslo, latitudeDelta = 0.01, longitudeDelta = 0.01)
+        val api = StubScooterAPI(
+            fillingResponse(
+                lastSeen = listOf(scooter(id = "seen", provider = "voi", latitude = oslo.latitude, longitude = oslo.longitude)),
+                seenAt = clock.now.addingTimeInterval(-900.0),
+                generatedAt = clock.now,
+            ),
+        )
+        val model = makeController(api, clock = clock)
+        model.updateViewport(osloRegion, zoom = 16)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+
+        val curfew = unwrap(RentalCurfew.active(at = model.viewport.value.center, on = clock.now))
+        val finding = model.dock as? ScooterDockContent.Finding
+            ?: throw AssertionError("Expected Finding scooters…, got ${model.dock}")
+        assertEquals(model.dockChips, finding.chips)
+        assertFalse(finding.chips.isEmpty())
+        assertEquals(ScooterDockNotice.Curfew(curfew), finding.notices.firstOrNull())
+        assertEquals(localized("Finding scooters…"), model.dockLine(at = clock.now).title)
+
+        // The sweep reached it: a count, without the status of an update.
+        api.setResponse(
+            ScooterResponse(
+                vehicles = listOf(scooter(id = "found", provider = "voi", latitude = oslo.latitude, longitude = oslo.longitude)),
+                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), generatedAt = iso(clock.now)),
+            ),
+        )
+        clock.advance(3.0)
+        model.autoRefreshIfNeeded()
+        val found = waitUntil { api.calls == 2 && !model.isLoading.value }
+        assertTrue(found)
+        val summary = summaryOf(model.dock)
+        assertEquals(1, summary.count)
+        assertNull(summary.lastSeenAt)
+        assertEquals(ScooterDockStatus.Live, summary.status(at = clock.now))
+    }
+
+    @Test
+    fun fadedScootersBesideFoundOnesReadUpdatingRatherThanDelayedAndAFailureFirst() = runTest {
+        val clock = TestClock()
+        val seenAt = clock.now.addingTimeInterval(-600.0)
+        val api = StubScooterAPI(
+            fillingResponse(
+                vehicles = listOf(scooter(id = "found", provider = "lime")),
+                lastSeen = listOf(scooter(id = "seen", provider = "bird")),
+                seenAt = seenAt,
+                generatedAt = clock.now,
+                stale = true,
+            ),
+        )
+        val model = makeController(api, clock = clock)
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        val shownAt = unwrap(model.lastUpdated.value)
+
+        val summary = summaryOf(model.dock)
+        assertEquals(1, summary.count)
+        assertEquals(ScooterDockStatus.Updating(seenAt = seenAt), summary.status(at = clock.now))
+        assertEquals(true, summary.status(at = clock.now)?.isUpdating)
+        // A card says nothing of a delay that the dock reports as an update.
+        model.selectScooter("lime:found")
+        assertNull(model.cardStatus)
+        model.clearSelection()
+
+        // With the faded ones hidden by the filters, the delay is said again.
+        model.showProviders(setOf(Lime))
+        val filtered = summaryOf(model.dock)
+        assertEquals(ScooterDockStatus.Delayed(showing = shownAt), filtered.status(at = clock.now))
+        model.resetFilters()
+
+        // A failed refresh is said before anything else.
+        api.setFailure(ScooterAPIError.Offline())
+        clock.advance(3.0)
+        model.autoRefreshIfNeeded()
+        val failed = waitUntil { api.calls == 2 && model.loadIssue.value != null && !model.isLoading.value }
+        assertTrue(failed)
+        val offline = summaryOf(model.dock)
+        assertEquals(ScooterDockStatus.Offline(showing = shownAt), offline.status(at = clock.now))
+        assertEquals(ScooterDockStatus.Offline(showing = shownAt), model.cardStatus)
+    }
+
+    // Location, search, filters and settings.
+
+    @Test
+    fun answeringTheLocationPromptSlowlyStillKeepsTheMapAndTheCard() = runTest {
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.NotDetermined)
+        val parked = scooter(id = "one", provider = "lime")
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(parked)))
+        val model = makeController(api, locationManager = manager, locationTimeout = 50.milliseconds)
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        model.selectScooter(parked.id)
+
+        // The prompt stays open three times longer than a fix may take.
+        model.locateForWalkingTime()
+        advanceTimeBy(150)
+        runCurrent()
+        assertTrue(model.isLocating.value)
+        assertNull(model.locationIssue.value)
+
+        manager.status = ScooterAuthorizationStatus.AuthorizedWhenInUse
+        model.authorizationChanged()
+        assertTrue(model.isLocating.value)
+        model.locationsUpdated(listOf(zurichFix))
+
+        assertFalse(model.isLocating.value)
+        assertNull("The map stays where it is", model.focusRequest.value)
+        assertEquals(parked.id, model.selectedScooterID.value)
+        assertNotNull(model.walkingSummary(parked))
+
+        // Once allowed, a fix that does not come in time is still reported.
+        val slowManager = FakeLocationManager(status = ScooterAuthorizationStatus.NotDetermined)
+        val slow = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            locationManager = slowManager,
+            locationTimeout = 50.milliseconds,
+        )
+        slow.focusOnUser()
+        slowManager.status = ScooterAuthorizationStatus.AuthorizedWhenInUse
+        slow.authorizationChanged()
+        val timedOut = waitUntil { slow.locationIssue.value == ScooterLocationIssue.NotFound }
+        assertTrue(timedOut)
+        assertFalse(slow.isLocating.value)
+    }
+
+    @Test
+    fun locatingWithoutAFixInTimeReportsNotFoundUntilDismissedOrRetried() = runTest {
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+        val defaults = InMemoryScooterDefaults()
+        val model = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            defaults = defaults,
+            locationManager = manager,
+            locationTimeout = 50.milliseconds,
+        )
+        assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+        assertFalse(model.hasLocatedOnce.value)
+
+        model.focusOnUser()
+        assertTrue(model.isLocating.value)
+        assertEquals(ScooterSearchBarState.Locating, model.searchBarState)
+        assertNull(model.locationIssue.value)
+
+        val timedOut = waitUntil { model.locationIssue.value == ScooterLocationIssue.NotFound }
+        assertTrue(timedOut)
+        assertFalse(model.isLocating.value)
+        assertFalse(model.hasLocatedOnce.value)
+
+        model.dismissLocationIssue()
+        assertNull(model.locationIssue.value)
+
+        // The next attempt starts clean and brings the card back if it fails again.
+        model.focusOnUser()
+        assertNull(model.locationIssue.value)
+        val timedOutAgain = waitUntil { model.locationIssue.value == ScooterLocationIssue.NotFound }
+        assertTrue(timedOutAgain)
+
+        model.locationsUpdated(
+            listOf(ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 25.0, timestamp = Instant.now())),
+        )
+
+        assertNull(model.locationIssue.value)
+        assertTrue(model.hasLocatedOnce.value)
+        assertTrue(defaults.bool(forKey = "has-located-once"))
+        assertEquals(350.0, model.focusRequest.value?.latitudinalMeters)
+        assertEquals(350.0, model.focusRequest.value?.longitudinalMeters)
+        // Located: the bar is a search field again, and the map has the dot.
+        assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+        assertNotNull(model.userLocation.value)
+
+        val restored = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            defaults = defaults,
+            locationManager = FakeLocationManager(status = ScooterAuthorizationStatus.Denied),
+        )
+        assertTrue(restored.hasLocatedOnce.value)
+    }
+
+    @Test
+    fun aPlaceChosenWhileTheFixWasOnItsWayKeepsTheMap() = runTest {
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = manager)
+        val place = MapDestination(title = "Bern", point = GeoPoint(46.948, 7.4474))
+        val viewport = model.viewport.value
+
+        model.focusOnUser()
+        assertTrue(model.isLocating.value)
+        model.focusOnAddress(place)
+        val placeFocus = unwrap(model.focusRequest.value)
+        model.locationsUpdated(listOf(zurichFix))
+
+        // The position is known from now on, and nothing moved.
+        assertEquals(placeFocus, model.focusRequest.value)
+        assertEquals(viewport, model.viewport.value)
+        assertEquals(ScooterSearchBarState.Place(place), model.searchBarState)
+        assertEquals(NearbyOrigin.SearchedDestination(place), model.activeOrigin)
+        assertFalse(model.isLocating.value)
+        assertTrue(model.hasLocatedOnce.value)
+        assertEquals(zurichFix.coordinate, model.userLocation.value)
+
+        model.clearAddressSearch()
+        assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+
+        // Near me is a new wish and moves the map again.
+        model.focusOnUser()
+        assertEquals(zurichFix.coordinate, model.focusRequest.value?.point)
+    }
+
+    @Test
+    fun aFixThatArrivesAfterNotFoundLeavesAPlaceOrCityChosenMeanwhile() = runTest {
+        for (choosesCity in listOf(false, true)) {
+            val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+            val model = makeController(
+                StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+                locationManager = manager,
+                locationTimeout = 50.milliseconds,
+            )
+            val bern = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:bern" })
+            val place = MapDestination(title = "Bundesplatz", point = GeoPoint(46.9471, 7.4441))
+
+            model.focusOnUser()
+            val timedOut = waitUntil { model.locationIssue.value == ScooterLocationIssue.NotFound }
+            assertTrue(timedOut)
+
+            // A searched place, or a chip under "Closest cities".
+            if (choosesCity) {
+                model.focusOnCity(bern)
+            } else {
+                model.focusOnAddress(place)
+            }
+            val chosenFocus = unwrap(model.focusRequest.value)
+            val viewport = model.viewport.value
+            model.locationsUpdated(listOf(zurichFix))
+
+            assertEquals("city: $choosesCity", chosenFocus, model.focusRequest.value)
+            assertEquals(viewport, model.viewport.value)
+            assertEquals(ScooterSearchBarState.Place(if (choosesCity) bern.destination else place), model.searchBarState)
+            assertNull(model.locationIssue.value)
+            assertTrue(model.hasLocatedOnce.value)
+
+            model.clearAddressSearch()
+            assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+        }
+    }
+
+    @Test
+    fun refusedLocationShowsADismissibleCardUntilTheNextAttempt() = runTest {
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.Denied)
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = manager)
+
+        // Opening the app is not a locate attempt, so nothing is shown.
+        model.start()
+        model.authorizationChanged()
+        assertNull(model.locationIssue.value)
+
+        model.focusOnUser()
+        assertEquals(ScooterLocationIssue.Denied, model.locationIssue.value)
+        assertFalse(model.isLocating.value)
+        assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+
+        model.dismissLocationIssue()
+        assertNull(model.locationIssue.value)
+        model.authorizationChanged()
+        assertNull("An unchanged status is not a new attempt", model.locationIssue.value)
+
+        model.focusOnUser()
+        assertEquals(ScooterLocationIssue.Denied, model.locationIssue.value)
+
+        val restricted = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            locationManager = FakeLocationManager(status = ScooterAuthorizationStatus.Restricted),
+        )
+        restricted.focusOnUser()
+        assertEquals(ScooterLocationIssue.Restricted, restricted.locationIssue.value)
+    }
+
+    @Test
+    fun recentPlacesKeepTheLastThreeForThisSessionOnly() = runTest {
+        val defaults = RecordingDefaults()
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        val places = listOf("Zürich HB", "Bellevue", "Paradeplatz", "Stauffacher").mapIndexed { index, title ->
+            MapDestination(
+                title = title,
+                subtitle = "Zürich",
+                point = GeoPoint(latitude = 47.37 + index.toDouble() / 1_000, longitude = 8.54),
+            )
+        }
+        assertTrue(model.recentPlaces.value.isEmpty())
+
+        for (place in places) {
+            model.focusOnAddress(place)
+        }
+        assertEquals(listOf(places[3], places[2], places[1]), model.recentPlaces.value)
+        assertEquals(ScooterSearchBarState.Place(places[3]), model.searchBarState)
+
+        // Choosing a recent place again moves it to the front without repeating it.
+        model.focusOnAddress(places[2])
+        assertEquals(listOf(places[2], places[3], places[1]), model.recentPlaces.value)
+
+        // Clearing the place keeps the list for the rest of the session.
+        model.clearAddressSearch()
+        assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+        assertEquals(3, model.recentPlaces.value.size)
+
+        val stored = defaults.writes.joinToString("\n")
+        assertFalse(stored.contains("Paradeplatz"))
+        assertFalse(stored.contains("47.37"))
+        val nextSession = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        assertTrue(nextSession.recentPlaces.value.isEmpty())
+    }
+
+    @Test
+    fun citiesWithScootersAreTheSixNearestToTheMapCentre() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+
+        val cities = model.nearbyCities
+        assertEquals(
+            listOf("Wädenswil", "Bern", "Zürich", "Uster", "Opfikon", "Kloten"),
+            cities.map { it.city.name },
+        )
+        assertEquals(cities.map { it.distanceMeters }.sorted(), cities.map { it.distanceMeters })
+
+        // A chip behaves like choosing that city as a place, and shows the whole city.
+        val bern = cities[1].city
+        model.chooseCity(bern)
+
+        val place = unwrap(model.searchedDestination.value)
+        assertEquals(bern.destination, place)
+        assertEquals("Bern", place.title)
+        assertEquals(MapDestination.Kind.City, place.kind)
+        assertEquals(NearbyOrigin.SearchedDestination(place), model.activeOrigin)
+        assertEquals(listOf(place), model.recentPlaces.value)
+        val focus = unwrap(model.focusRequest.value)
+        assertEquals(MapFocusRequest.city(bern.center, token = focus.token), focus)
+        assertTrue(focus.latitudinalMeters > 8_000)
+
+        // The list follows the map.
+        model.setViewport(GeoBounds(south = 47.37, west = 8.53, north = 47.38, east = 8.55))
+        assertEquals("Zürich", model.nearbyCities.firstOrNull()?.city?.name)
+        assertEquals(6, model.nearbyCities.size)
+    }
+
+    @Test
+    fun theAddressSearchGetsTheMapCentreRoundedOnlyWhenACityOrLessIsShown() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        val paris = MapRegion(GeoPoint(48.85837, 2.29448), latitudeDelta = 0.05, longitudeDelta = 0.05)
+
+        // Zoomed out to a region or a country, the map centre says little about what is meant.
+        model.updateViewport(paris, zoom = 10, zoomLevel = 9.9)
+        assertNull(model.searchNear)
+
+        // A city or less: the centre, rounded to about a kilometre.
+        model.updateViewport(paris, zoom = 10, zoomLevel = 10.0)
+        assertEquals(GeoPoint(48.86, 2.29), model.searchNear)
+        model.updateViewport(paris, zoom = 17, zoomLevel = 16.4)
+        assertEquals(GeoPoint(48.86, 2.29), model.searchNear)
+    }
+
+    @Test
+    fun aTypedCoveredCityShowsTheWholeCityLikeItsChip() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        val locarno = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:locarno" })
+
+        // What the address search answers for "Locarno": the catalogue's centre.
+        val answer = """
+        [{"lat": ${locarno.center.latitude}, "lng": ${locarno.center.longitude},
+          "display_name": "Locarno, Switzerland", "title": "Locarno", "subtitle": "Svizzera", "covered": true}]
+        """
+        val typed = unwrap(ScooterAPIJson.decodeFromString(ListSerializer(AddressSearchResult.serializer()), answer).firstOrNull())
+        assertEquals(MapDestination.Kind.City, typed.destination.kind)
+        assertEquals("Svizzera", typed.destination.subtitle)
+
+        model.focusOnAddress(typed.destination)
+        val typedFocus = unwrap(model.focusRequest.value)
+        assertEquals("Locarno", model.searchedDestination.value?.title)
+
+        // The same span as the "Cities with scooters" chip.
+        model.chooseCity(locarno)
+        val chipFocus = unwrap(model.focusRequest.value)
+        assertEquals(MapFocusRequest.city(locarno.center, token = typedFocus.token), typedFocus)
+        assertEquals(chipFocus.latitudinalMeters, typedFocus.latitudinalMeters, 0.0)
+        assertEquals(chipFocus.longitudinalMeters, typedFocus.longitudinalMeters, 0.0)
+
+        // An address, a station or a place in the city keeps the street-level view.
+        val station = AddressSearchResult(
+            latitude = locarno.center.latitude + 0.002, longitude = locarno.center.longitude,
+            displayName = "Locarno, stazione", title = "Locarno, stazione", subtitle = "Treno", isCovered = true,
+        )
+        assertEquals(MapDestination.Kind.Address, station.destination.kind)
+        model.focusOnAddress(station.destination)
+        assertEquals(850.0, model.focusRequest.value?.latitudinalMeters)
+        assertNull(ScooterCityCatalog.city(centredAt = GeoPoint(46.7741, 8.1558)))
+    }
+
+    @Test
+    fun storedBatteryValuesSnapDownToAPreset() = runTest {
+        for ((stored, expected) in listOf(45 to 30.0, 95 to 80.0, 60 to 60.0, 10 to 0.0, -5 to 0.0)) {
+            val defaults = InMemoryScooterDefaults()
+            defaults.set(stored, forKey = "minimum-battery")
+
+            val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+
+            assertEquals("Stored $stored", expected, model.minimumBattery.value, 0.0)
+        }
+    }
+
+    @Test
+    fun passesListProvidersHereOrWithAPassAndEveryProviderOtherwise() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        model.setViewport(GeoBounds(zurichRegion))
+        assertEquals(ScooterProviderCoverage.swissProviders, model.passProviders)
+
+        model.setRidePass(ProviderRidePass(enabled = true, freeMinutes = 10), Pony)
+        assertEquals(
+            ScooterProvider.entries.filter { it in ScooterProviderCoverage.swissProviders || it == Pony },
+            model.passProviders,
+        )
+
+        // Nobody operates here and no pass is set: every provider is offered.
+        model.setRidePass(ProviderRidePass(), Pony)
+        model.setViewport(GeoBounds(lungernRegion))
+        assertEquals(ScooterProvider.entries, model.passProviders)
+
+        model.setRidePass(ProviderRidePass(enabled = true, freeUnlock = true), Voi)
+        assertEquals(listOf(Voi), model.passProviders)
+    }
+
+    private val zurichRegion =MapRegion(GeoPoint(47.3769, 8.5417), latitudeDelta = 0.01, longitudeDelta = 0.01)
+
+    /** A good first fix in Zürich. */
+    private val zurichFix: ScooterLocationFix
+        get() = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 25.0, timestamp = Instant.now())
 
     /** Lungern has no scooter operator; Bern, Wädenswil and Zürich are the closest covered cities. */
     private val lungernRegion = MapRegion(GeoPoint(46.7741, 8.1558), latitudeDelta = 0.02, longitudeDelta = 0.02)
@@ -2163,6 +2702,7 @@ class ScooterMapControllerTest {
         defaults: ScooterDefaults = InMemoryScooterDefaults(),
         locationManager: ScooterLocationManager = FakeLocationManager(),
         refreshPolicy: ScooterRefreshPolicy = ScooterRefreshPolicy.standard,
+        locationTimeout: Duration = 5.seconds,
         phoneLanguages: () -> List<String> = { listOf("en-US") },
         keepAppLanguages: (List<String>) -> Unit = {},
     ): ScooterMapController {
@@ -2180,6 +2720,7 @@ class ScooterMapControllerTest {
             scope = backgroundScope,
             directions = NoWalkingDirections,
             openInMaps = {},
+            locationTimeout = locationTimeout,
             refreshPolicy = refreshPolicy,
             now = now,
             phoneLanguages = phoneLanguages,
