@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                         tiles = model.groundTiles,
                         dark = dark,
                         screenshot = model.screenshotCamera,
+                        analytics = model.analytics,
                     )
                 },
             )

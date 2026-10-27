@@ -34,7 +34,8 @@ class ScooterMapViewModel(
     // asked for it returns, as a Swift Task does.
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
-    private val analytics = container.analytics
+    /** The app's analytics, which the map also tracks with: a tap on a bay or a cluster. */
+    val analytics = container.analytics
 
     /** Where the map opens, by the phone's time zone. */
     val start: ScooterMapStart = container.start

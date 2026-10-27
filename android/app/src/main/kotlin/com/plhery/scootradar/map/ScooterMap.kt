@@ -29,6 +29,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
@@ -59,7 +60,7 @@ class MapCameraMemory {
  * what is under it, without its attribution, logo or compass, which the app draws itself. The composition's
  * lifecycle drives the view by hand, and a phone short of memory has it drop its caches. It moves to the places
  * the controller asks for, and tells it where it comes to rest. Its ground is the controller's map style, dark
- * or light as the app is, with names in the app's language.
+ * or light as the app is, with names in the app's language; over it, the controller's scooters and bays.
  */
 @Composable
 fun ScooterMap(
@@ -73,6 +74,8 @@ fun ScooterMap(
     imagery: SatelliteSource? = null,
     /** A debug build's camera for screenshots, in place of the start place. */
     screenshot: ScooterScreenshotCamera.Camera? = null,
+    /** Where the taps on bays go, as the iPhone's map tracks parking_select. */
+    analytics: ScooterAnalytics? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -96,21 +99,27 @@ fun ScooterMap(
     val currentLook by rememberUpdatedState(look)
     var camera by remember { mutableStateOf<MapCamera?>(null) }
     var ground by remember { mutableStateOf<MapGround?>(null) }
+    var markers by remember { mutableStateOf<ScooterMarkers?>(null) }
     DisposableEffect(view) {
         var made: MapCamera? = null
         var drawn: MapGround? = null
+        var marked: ScooterMarkers? = null
         view.getMapAsync { map ->
             drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
             made = MapCamera(map, view, controller, memory, scope).also { camera = it }
+            marked = ScooterMarkers(map, view, controller, analytics, scope).also { markers = it }
         }
         onDispose {
             made?.close()
             drawn?.close()
+            marked?.close()
             camera = null
             ground = null
+            markers = null
         }
     }
     LaunchedEffect(ground, look) { ground?.show(look) }
+    LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
     val safe = WindowInsets.safeDrawing
@@ -124,6 +133,7 @@ fun ScooterMap(
     val focus by controller.focusRequest.collectAsStateWithLifecycle()
     val zoom by controller.zoomRequest.collectAsStateWithLifecycle()
     LaunchedEffect(camera, safeArea) { camera?.safeAreaDidChange(safeArea) }
+    LaunchedEffect(markers, safeArea) { markers?.safeAreaDidChange(safeArea) }
     LaunchedEffect(camera, focus) { camera?.applyFocus(focus) }
     LaunchedEffect(camera, zoom) { camera?.applyZoom(zoom) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
