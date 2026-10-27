@@ -159,7 +159,12 @@ Charleston, with MUSC Health, and Grand Rapids made Veo its only operator from
 away on 3 June 2024. Nor did Carthage, Missouri, and Norman, Oklahoma, on
 26 October, Central time: Carthage's city council voted on 26 May 2026 not to
 bring Lime's scooters back for the summer, and Norman lists only Veo among the
-companies licensed to rent e-scooters there. In the United Arab Emirates, neither did Al Mirfa and
+companies licensed to rent e-scooters there. Nor did Cleveland, Cleveland
+Heights, Columbus, West Palm Beach and Wilmington, North Carolina, on the
+evening of 26 October, Eastern time: Cleveland names Bird and Veo as its
+permit holders, Columbus made Veo and Spin its only scooter operators under
+a five-year agreement (Axios, 26 August 2026), West Palm Beach names no
+operator, and Wilmington runs no scooter program. In the United Arab Emirates, neither did Al Mirfa and
 Madinat Zayed, in Al Dhafra, the two far zones of its Abu Dhabi region, in the
 afternoon of 26 October 2026, Gulf time.
 
@@ -181,8 +186,9 @@ afternoon of 26 October 2026, Gulf time.
   scooters from its streets.
 - No public Lime scooter lies inside the markets' polygons: Lime's public
   feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737),
-  Frankfurt (3,630), Wuppertal (947) and MobiData BW's, outside Stuttgart's
-  zone, were checked against them. One edge is shared: Montgomery County's
+  Frankfurt (3,630), Wuppertal (947), Arlington's and Washington's near
+  Alexandria (35) and MobiData BW's, outside Stuttgart's zone, were checked
+  against them. One edge is shared: Montgomery County's
   region meets Washington's at the District line, and Lime's public
   Washington feed reaches 39.0046° N, so a scooter of its Washington fleet
   parked just over the line, as one was in Silver Spring, 53 m north of it,
@@ -222,6 +228,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | United States: Austin, Milwaukee, Tulsa, Oklahoma City, Mobile, Corpus Christi, Lubbock, Little Rock, Rochester, Edmond, Jenks | 1,830 | 462 | 9,235 | 725 |
 | 26 October 2026 | United States: Long Beach, Albuquerque, Grand Junction, Knoxville, Clearfield, North Salt Lake | 619 | 158 | 3,150 | 208 |
 | 27 October 2026 | Australia: Canberra | 112 | 28 | 1,374 | 104 |
+| 27 October 2026 | United States: Alexandria | 30 | 8 | 350 | 22 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

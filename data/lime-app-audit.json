@@ -3082,6 +3082,23 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Canberra_249_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Alexandria",
+      "regionToken": "TFCMDRPTZWL5D",
+      "fingerprint": "fd945b96863f408a258d44e23f5e0ca8ed8aa1bc240111a432e4b2bd9f1ff0fd",
+      "groups": 8,
+      "localCells": 30,
+      "coldMapRequests": 30,
+      "warmMapRequests": 30,
+      "scooters": 350,
+      "stationaryReferences": 22,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T22:47:18.965Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

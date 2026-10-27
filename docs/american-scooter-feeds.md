@@ -15,9 +15,9 @@ other account credentials are used. The catalog is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
 The map covers 126 towns in 34 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 68 of Lime's (51 from its rider
+(Hopp, Veo and Lime), 24 towns of Bird's, 69 of Lime's (52 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
-Los Angeles, Arlington and Alexandria, Virginia. In 32 of them, from Tempe and
+Los Angeles, Arlington and Alexandria, Virginia. In 33 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Fourteen of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
@@ -114,6 +114,17 @@ night; its 2020 pilot let scooters run from 07:00 to 21:00, and guides give
 so the map holds no night ban there. Farmington, Utah, showed 2 scooters and
 none stationary to check against, and waits for another audit.
 
+On the evening of 26 October, Eastern time: Alexandria, Virginia (350,
+beside GCOO's). Its program sets no riding hours. Its zone stops at the
+Arlington line: of the 35 scooters of Lime's public Arlington and Washington
+feeds in its box at about 20:00, none stood inside it. Lime's Cleveland,
+Cleveland Heights, Columbus, West Palm Beach and Wilmington, North Carolina,
+regions held no scooter that evening, from about 19:00 to 20:00: Cleveland
+names Bird and Veo as its permit holders, a five-year agreement made Veo and
+Spin Columbus's only scooter operators (Axios, 26 August 2026), West Palm
+Beach, audited before its 21:00 riding ban, names no operator, and
+Wilmington runs no scooter program.
+
 ## Washington, DC
 
 | Operator | Feed | Available scooters in Washington | Polled |
@@ -180,8 +191,9 @@ Their outer box is the one above. Left out, in the poll of 16 October 2026:
 - Veo: 11 scooters in Alexandria, 8 of them standing within 30 m of one another
   at 38.808° N 77.097° W, by Eisenhower Avenue, as at a depot. Too few, and too
   still, for an Alexandria area of their own; Alexandria's riders see Bird's and
-  Lime's Arlington scooters near the county line, and since 24 October 2026
-  GCOO's own (see [GCOO](#gcoo)). Earlier also one at 39.030° N
+  Lime's Arlington scooters near the county line, since 24 October 2026
+  GCOO's own (see [GCOO](#gcoo)), and since 27 October Lime's (see
+  [Lime supplement](#lime-supplement--26-october-2026)). Earlier also one at 39.030° N
   77.105° W, in North Bethesda, Maryland, which moved less than a metre in 20
   minutes, and one at 22.79° N 113.93° E, in Shenzhen, where Veo's test system
   (`xds`) has its scooters.
@@ -673,9 +685,10 @@ counts each once. Each would have counted under Arlington, whose feed is read
 first, 46 of them inside Alexandria. Alexandria now has its incorporated
 place's outline in [`town-outlines.json`](../data/town-outlines.json), as
 above, so those count under Alexandria: 254 of the 513 that poll, and 259
-under Arlington, which has none. Bird and Lime have no area in Alexandria,
-so their Arlington feeds keep no scooter inside the outline; at 11:59 EDT none
-of Bird's 284 stood there, nor any of Lime's 495.
+under Arlington, which has none. Bird has no area in Alexandria, and Lime's
+Alexandria zone, read from its rider map since 27 October 2026, is another
+fleet, so their Arlington feeds keep no scooter inside the outline; at 11:59
+EDT none of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 

@@ -3863,6 +3863,29 @@
         "lngStep": 0.01780631789942095,
         "cells": "0-4,6-22"
       }
+    },
+    {
+      "id": "lime_us_app_alexandria",
+      "provider": "lime",
+      "city": "Alexandria",
+      "region": "VA",
+      "center": [
+        38.8048,
+        -77.0469
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "TFCMDRPTZWL5D",
+      "limeMapGrid": {
+        "south": 38.78617,
+        "west": -77.14424,
+        "north": 38.84453,
+        "east": -77.03787,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01728653556216237,
+        "cells": "0,4-27,29-33"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -3908,6 +3931,7 @@
     "https://assets.lime.bike/zones_attributes/Rochester_1233_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Albuquerque_597_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Grand_Junction_768_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Knoxville_1467_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Knoxville_1467_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json"
   ]
 }

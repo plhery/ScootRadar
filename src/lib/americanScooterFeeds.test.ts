@@ -51,7 +51,7 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Albuquerque', 'Arvada', 'Austin', 'Boise', 'Boulder', 'Charlotte',
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Albuquerque', 'Alexandria', 'Arvada', 'Austin', 'Boise', 'Boulder', 'Charlotte',
       'Cincinnati', 'Clearfield', 'Corpus Christi', 'Dallas', 'Edmond', 'Fairfax', 'Grand Junction', 'Indianapolis', 'Isla Vista',
       'Jacksonville', 'Jenks', 'Knoxville', 'Lansing', 'Little Rock', 'Long Beach', 'Los Angeles', 'Lubbock', 'Milwaukee', 'Minneapolis',
       'Mobile', 'Montgomery County', 'Nashville', 'North Salt Lake', 'Oklahoma City', 'Omaha', 'Orlando', 'Phoenix', 'Portland', 'Raleigh',
@@ -64,7 +64,8 @@ describe('the United States', () => {
       'us:fl:Jacksonville', 'us:mn:Minneapolis', 'us:md:Montgomery County', 'us:tn:Nashville', 'us:ne:Omaha', 'us:va:Richmond',
       'us:mn:St. Louis Park', 'us:mn:St. Paul', 'us:nc:Charlotte', 'us:tx:Austin', 'us:tx:Corpus Christi', 'us:ok:Edmond', 'us:ok:Jenks',
       'us:ar:Little Rock', 'us:tx:Lubbock', 'us:wi:Milwaukee', 'us:al:Mobile', 'us:ok:Oklahoma City', 'us:mn:Rochester', 'us:ok:Tulsa',
-      'us:nm:Albuquerque', 'us:ut:Clearfield', 'us:co:Grand Junction', 'us:tn:Knoxville', 'us:ca:Long Beach', 'us:ut:North Salt Lake']) {
+      'us:nm:Albuquerque', 'us:ut:Clearfield', 'us:co:Grand Junction', 'us:tn:Knoxville', 'us:ca:Long Beach', 'us:ut:North Salt Lake',
+      'us:va:Alexandria']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');

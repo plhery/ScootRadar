@@ -4036,6 +4036,26 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Canberra_249_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Alexandria",
+      "center": [
+        38.8048,
+        -77.0469
+      ],
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "regionToken": "TFCMDRPTZWL5D",
+      "serviceAreas": [
+        {
+          "name": "City of Alexandria[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ilalFzesuMsD|LjSfcAgFz@hBnPuAb@bBbD`AaATh@jC{Ah@fDxAg@dGiEjCzRrKlIjItJnE|UhGw@xSx]|AxE`Ch@vCtCzC_@vDbBIcU`NkGbKtMbD}EzApBjFxC]jAPLgAfDhSrNROL^bVd@RxAd[kFSsCta@mOkBwK`Ok@cMkcBcE{XwHmYjBqB~@w@sEa\\oAig@tDmu@nKgjB|Huc@dP}g@jAUzD_EjA}@`@mLvIeNrEwLjb@muAw[MCuDy{@w@a{@gI}JRiPHiJbDcOxByCjCgQxEmEw@sAuIkW{C}Iy@oDj@cFzDoHjOt@|@rJwBfAbC@zDaLjEcLpEyQ|@eK~FsChBz@tVvAlJuBlOwMj_@wGpLP|FhC~Jh@tGi@nM@zKhA`SSnG_@bEIrA^vBbC`CsE`g@|Z_DjBk@pFYdGT`C^`EfA|LGxLVtIjDJd@|BbB|AvCX|Akh@du@sMnXo@Gw@cAGq@aA]KdBaFnIoAjAqBd@y@p@cCvGARyAlBbCbDgGxG{@eBkCv@r@xD{@dA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json"
+      ]
     }
   ]
 }
