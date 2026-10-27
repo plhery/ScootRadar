@@ -489,7 +489,7 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   DK: ["dk:Aarhus", "dk:Odense", "dk:Aalborg"],
   SE: ["se:Stockholm", "se:Uppsala", "se:Malmö", "se:Lund", "se:Kiruna"],
   LV: ["lv:Rīga", "lv:Liepāja", "lv:Daugavpils", "lv:Jelgava", "lv:Valmiera", "lv:Jūrmala"],
-  PL: ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Sosnowiec"],
+  PL: ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Katowice / Chorzów"],
   HU: ["hu:Pécs", "hu:Békéscsaba"],
   GR: ["gr:Rhodes", "gr:Faliraki", "gr:Kos", "gr:Piraeus", "gr:Argostoli", "gr:Ioannina"],
   CY: ["cy:Nicosia", "cy:Limassol", "cy:Paphos"],

@@ -9,6 +9,16 @@ Wrocław and the Tricity, about 14,800, come from its
 [authenticated rider map](lime-app-map.md), each market after a clean
 full-area audit. Its 15 other Polish markets held no scooter that day.
 
+Update, 27 October 2026: Dott has left Sosnowiec, and its feed is retired.
+The cache counted 197 scooters there on 24 October, 77 on the 26th and none
+from 03:00 UTC on the 27th. From about 08:05 UTC the region's address answers
+404 (`ERR_REGION_NOT_FOUND`), not the 403 (`ERR_REGION_OFFLINE`) of a region
+Dott pauses, and
+[Dott's Polish listing](https://gbfs.api.ridedott.com/public/v2/countries/pl/gbfs.json)
+names Oświęcim and Wołomin only. No other feed covers the town. The weekly
+catalog check names a listed region the catalog lacks, so a return would be
+reported. The audit below records Sosnowiec as it stood in October.
+
 
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),

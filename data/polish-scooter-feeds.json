@@ -23,23 +23,6 @@
       ]
     },
     {
-      "id": "dott_pl_sosnowiec",
-      "country": "PL",
-      "provider": "dott",
-      "city": "Sosnowiec",
-      "center": [
-        50.2781,
-        19.1343
-      ],
-      "bounds": {
-        "south": 50.2488,
-        "north": 50.3188,
-        "west": 19.0917,
-        "east": 19.2153
-      },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/sosnowiec/gbfs.json"
-    },
-    {
       "id": "dott_pl_wolomin",
       "country": "PL",
       "provider": "dott",

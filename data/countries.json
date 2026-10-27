@@ -338,7 +338,7 @@
       "searchWords": ["poland", "polen", "pologne", "polonia", "polland", "polska"],
       "anchor": [52.1, 19.4],
       "anchorNote": "About the middle of the country, near Łódź.",
-      "featuredCities": ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Sosnowiec"],
+      "featuredCities": ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Katowice / Chorzów"],
       "credits": {
         "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
         "gbfs": ["Dott", "Hopp"],

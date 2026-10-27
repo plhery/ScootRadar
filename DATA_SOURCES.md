@@ -743,10 +743,12 @@ Since 25 October 2026 Bolt's rider map adds 12 markets, Rīga and 11 other towns
 
 ## Poland
 
-The reviewed catalog lives in `data/polish-scooter-feeds.json`: 6 feeds across
-8 towns. Dott covers Sosnowiec, Oświęcim, and Wołomin with Kobyłka and
-Radzymin, which one Dott region spans; Hopp covers Knurów, Złotów and
-Września. All are the operators' own public GBFS feeds. Dott's are named in
+The reviewed catalog lives in `data/polish-scooter-feeds.json`: 5 feeds across
+7 towns. Dott covers Oświęcim, and Wołomin with Kobyłka and Radzymin, which
+one Dott region spans; Hopp covers Knurów, Złotów and Września. Dott left
+Sosnowiec on 27 October 2026, and its feed was retired
+([Polish feeds](docs/polish-scooter-feeds.md)). All are the operators' own
+public GBFS feeds. Dott's are named in
 [Dott's Polish listing](https://gbfs.api.ridedott.com/public/v2/countries/pl/gbfs.json)
 and in [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv);
 Hopp's are not in the registry, and answer at the address Hopp uses for its
