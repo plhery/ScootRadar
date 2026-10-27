@@ -106,8 +106,8 @@ fun ScooterMap(
         var marked: ScooterMarkers? = null
         view.getMapAsync { map ->
             drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
-            made = MapCamera(map, view, controller, memory, scope).also { camera = it }
-            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { made?.show(it) }).also { markers = it }
+            val moving = MapCamera(map, view, controller, memory, scope).also { made = it; camera = it }
+            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also { markers = it }
         }
         onDispose {
             made?.close()

@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.os.SystemClock
 import android.view.Choreographer
 import android.view.View
+import androidx.core.view.ViewCompat
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.isWalking
@@ -32,7 +33,8 @@ import org.maplibre.android.style.sources.GeoJsonSource
 /**
  * The scooters, the bays and the faded markers on MapLibre's map. Once the ground's style is loaded it adds their
  * layers above it; then, whenever the controller's scooters, bays, selection or origin change, and as the map
- * moves, the scene works out the look and the layers draw it. A tap on the map is the scene's to answer. The few
+ * moves, the scene works out the look and the layers draw it. A tap on the map is the scene's to answer, and
+ * TalkBack reads the markers through virtual views over the map (ScooterMarkerAccessibility). The few
  * things that move on their own, the dots lighting up, a name coming, the faded markers breathing, are drawn a
  * frame at a time by changing a layer's strength, never by writing the scooters again (MAP-319).
  */
@@ -83,6 +85,9 @@ class ScooterMarkers(
         override val safeTop: Double get() = safeArea.top
     }
 
+    /** TalkBack's virtual views of the markers. */
+    private val accessibility = ScooterMarkerAccessibility(view, scene, markerMap, view.pixelRatio) { flush() }
+
     /** The visible region changing, a frame at a time while the map moves: mapViewDidChangeVisibleRegion. */
     private val moved = MapLibreMap.OnCameraMoveListener {
         // The clusters are made again as the map's whole zoom changes, as the web's are.
@@ -98,7 +103,10 @@ class ScooterMarkers(
         scene.updateClusteringMode(level, markerMap)
         scene.updateClusters(level)
         scene.updateLook(markerMap)
+        val written = writtenMarkers
         flush()
+        // TalkBack finds the markers where the map came to rest.
+        if (writtenMarkers == written) accessibility.refresh()
     }
 
     private val frame = Choreographer.FrameCallback { onFrame() }
@@ -113,6 +121,8 @@ class ScooterMarkers(
         map.addOnCameraMoveListener(moved)
         map.addOnCameraIdleListener(idle)
         view.tap = { x, y -> tap(x, y) }
+        ViewCompat.setAccessibilityDelegate(view, accessibility)
+        view.hover = { accessibility.dispatchHoverEvent(it) }
         updates = scope.launch {
             merge(
                 controller.mapScootersRevision,
@@ -140,6 +150,8 @@ class ScooterMarkers(
         map.removeOnCameraMoveListener(moved)
         map.removeOnCameraIdleListener(idle)
         view.tap = null
+        view.hover = null
+        ViewCompat.setAccessibilityDelegate(view, null)
         style = null
     }
 
@@ -199,6 +211,8 @@ class ScooterMarkers(
         if (scene.markersVersion != writtenMarkers) {
             writtenMarkers = scene.markersVersion
             write(style, ScooterMarkerLayers.MARKERS_SOURCE, MarkerFeatures.markers(scene, art))
+            // What TalkBack reads of them, and where, may have changed with them.
+            accessibility.refresh()
         }
         if (scene.pillsVersion != writtenPills) {
             writtenPills = scene.pillsVersion

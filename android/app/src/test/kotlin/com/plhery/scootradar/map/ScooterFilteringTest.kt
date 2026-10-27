@@ -1,5 +1,7 @@
 package com.plhery.scootradar.map
 
+import android.view.View
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.generated.ScooterProvider
@@ -10,7 +12,9 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterPillSide
+import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.stringFormat
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -123,6 +127,8 @@ class ScooterFilteringTest {
         scene.applySelection("voi:far", map)
         scene.tap(map.point(seen), map)
         assertEquals(listOf<String?>(null), selections)
+        // TalkBack finds only the scooter that is there.
+        assertEquals(listOf("v:voi:far"), MarkerElements.of(scene, map).map { it.key })
 
         // It breathes, one way in 1.6 s and back, in step with every other, and stands still with Remove animations.
         assertEquals(0.35f, LastSeenBreath.FAINTEST)
@@ -287,5 +293,67 @@ class ScooterFilteringTest {
         scene.tap(com.plhery.scootradar.core.model.ScreenPoint(balloon.midX, balloon.midY), map)
         assertEquals(listOf<String?>(bay.id), parkingChanges)
         assertEquals(listOf("parking_select" to "dott"), events)
+    }
+
+    @Test
+    fun annotationAccessibilityDescribesAvailabilityAndSelection() {
+        val scooter = scooter("accessible", "lime", battery = 82, rangeMeters = 12_500)
+        val map = FlatMarkerMap()
+        val scene = scene()
+        scene.reconcile(listOf(scooter), revision = 1)
+        val host = View(ApplicationProvider.getApplicationContext())
+        val accessibility = ScooterMarkerAccessibility(host, scene, map, density) {}
+        val id = accessibility.virtualViews().single()
+        fun node() = accessibility.getAccessibilityNodeProvider(host)!!.createAccessibilityNodeInfo(id)!!
+
+        val description = MarkerDescriptions.of(scene.mark(scooter.id)!!)
+        assertEquals(stringFormat(localized("%@ scooter"), "Lime"), description.label)
+        val value = description.value!!
+        assertTrue(value.contains(localized("Battery")))
+        assertTrue(value.contains(stringFormat(localized("%lld percent"), 82L)))
+        // "Estimated" alone left open what the figure is, right after a distance.
+        val range = scooter.formattedRange!!
+        assertTrue(value, value.contains("${localized("Estimated range")}: $range"))
+        // TalkBack reads the value after the label.
+        assertEquals("${description.label}, $value", node().contentDescription)
+        assertFalse(node().isSelected)
+
+        scene.applySelection(scooter.id, map)
+
+        assertEquals("android.widget.Button", node().className)
+        assertTrue(node().actionList.any { it.id == AccessibilityNodeInfoCompat.ACTION_CLICK })
+        assertTrue(node().isSelected)
+
+        scene.applySelection(null, map)
+
+        assertFalse(node().isSelected)
+    }
+
+    @Test
+    fun cityTotalsAreAnnouncedWithTheNameOfTheCity() {
+        val zurich = ScooterCluster("city:ch:zurich", 47.38, 8.54, count = 1_288, providers = mapOf("lime" to 1_288), city = "Zürich")
+        val map = FlatMarkerMap(centre = GeoPoint(47.38, 8.54), mapLibreZoom = 10.0)
+        val scene = scene()
+        val host = View(ApplicationProvider.getApplicationContext())
+        val accessibility = ScooterMarkerAccessibility(host, scene, map, density) {}
+        fun node() = accessibility.getAccessibilityNodeProvider(host)!!.createAccessibilityNodeInfo(accessibility.virtualViews().single())!!
+        scene.reconcileClusters(listOf(zurich), revision = 1)
+
+        val label = node().contentDescription.toString()
+        assertTrue(label, label.startsWith("Zürich, "))
+        assertEquals(MarkerDescriptions.clusterLabel(count = 1_288, city = "Zürich"), label)
+        assertEquals("android.widget.Button", node().className)
+
+        // A marker given a city with the same numbers takes the new name.
+        scene.reconcileClusters(listOf(ScooterCluster("city:ch:bern", 47.38, 8.54, count = 1_288, providers = mapOf("lime" to 1_288), city = "Bern")), revision = 2)
+        accessibility.refresh()
+        assertTrue(node().contentDescription.startsWith("Bern, "))
+
+        // A cluster inside a city has no name and keeps its count alone.
+        scene.reconcileClusters(listOf(ScooterCluster("13:4290:2868", 47.38, 8.54, count = 1_288, providers = mapOf("lime" to 1_288))), revision = 3)
+        accessibility.refresh()
+        assertEquals(stringFormat(localized("%@ scooters"), 1_288.formatted(Locale.getDefault())), node().contentDescription)
+
+        assertEquals(stringFormat(localized("%@, one scooter"), "Uster"), MarkerDescriptions.clusterLabel(count = 1, city = "Uster"))
     }
 }

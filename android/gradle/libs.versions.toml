@@ -11,6 +11,7 @@ androidx-test = "1.7.0"
 androidx-test-junit = "1.3.0"
 espresso = "3.7.0"
 core-ktx = "1.19.1"
+customview = "1.2.0"
 junit = "4.13.2"
 serialization = "1.12.0"
 coroutines = "1.11.0"
@@ -22,6 +23,7 @@ jts = "1.20.0"
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+customview = { module = "androidx.customview:customview", version.ref = "customview" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }

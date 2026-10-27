@@ -725,21 +725,31 @@ class ScooterMarkerScene(
         // tap does, so a tap on a cluster with a dot in reach selects the dot and zooms in (MAP-209).
         val cluster = topCluster(at = point, map = map)
         val scooter = scooterMark(at = point, map = map)
-        // A bay under the touch is meant, unless the touch is on a dot itself.
-        val isOnDot = scooter?.let { it.second <= it.first.look.footprint / 2 + 4 } ?: false
-        val bay = if (isOnDot) null else parking(at = point, map = map)
+        val bay = bay(at = point, beside = scooter, map = map)
         val mark = scooter?.first
         when {
-            bay != null -> publishParkingSelection(bay)
-            mark != null -> {
-                publishSelection(mark)
-                updateLook(map)
-            }
+            bay != null -> select(bay)
+            mark != null -> select(mark, map)
             // During a walk the card stays open: the map is for looking around.
             !parent.isWalking -> clearSelection(map)
         }
         cluster?.let { open(it, map) }
     }
+
+    /** A bay under the touch is meant, unless the touch is on the dot of the scooter it means. */
+    fun bay(at: ScreenPoint, beside: Pair<ScooterMark, Double>?, map: MarkerMap): ScooterParking? {
+        val isOnDot = beside?.let { it.second <= it.first.look.footprint / 2 + 4 } ?: false
+        return if (isOnDot) null else parking(at = at, map = map)
+    }
+
+    /** A scooter chosen, by a tap or by TalkBack: its card opens and its dot takes the ring. */
+    fun select(mark: ScooterMark, map: MarkerMap) {
+        publishSelection(mark)
+        updateLook(map)
+    }
+
+    /** A bay chosen: it opens in the dock. */
+    fun select(bay: ScooterParking) = publishParkingSelection(bay)
 
     /**
      * The cluster MapKit would select under a point: the one whose 48 pt frame holds it, if no dot's 44 pt square
