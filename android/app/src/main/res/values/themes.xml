@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppCompat's, so that it applies a language chosen for the app on Android 12 as the activity starts.
+         Light or dark follows the window's night mode, which the app's appearance sets. -->
+    <style name="Theme.ScootRadar" parent="Theme.AppCompat.DayNight.NoActionBar" />
+</resources>
