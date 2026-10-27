@@ -292,6 +292,12 @@ paused on 22 October, before their alerts were due, and Hopp Ólafsvík, emptied
   skipped as inactive and left out.
 - **Not a feed that does not answer.** One expired over half of the last day is
   "feed stopped"'s, then the "Expired, rarely served" table's.
+- **Not one part of a Lime town.** Lime's rider map is read in groups of map cells
+  (`lime_…_app_<town>_000` and on, src/lib/limeGrid.ts), each once in 72 hours, and a
+  group over cells where no scooter stands lists none for good: on 27 October 2026, 23
+  of Doha's 32 groups, 4 of Brisbane's, one of Santiago's and one of Naha's, while each
+  town held its usual fleet. A group is reported only if every group of its town has
+  listed none for 3 days.
 - **Followed for 3 days.** A feed is reported only if Prometheus held it 3 days ago, so
   a new feed, or one skipped before its vehicles were exported (15 October 2026), waits.
 
