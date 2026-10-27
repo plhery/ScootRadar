@@ -1,17 +1,19 @@
 # Ryde rider map investigation
 
-Checked 24 October 2026 against the official Android `com.ryde_android`
+Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
 6.1.0, build 718. APK signatures match the publisher's
 [app-link association](https://www.ryde-technology.com/.well-known/assetlinks.json).
 No authenticated map retrieval, collector, catalog addition or deployment
 has been completed.
 
-## Deferred and how to resume
+## Current status and how to resume
 
-Deferred at the user's request on 24 October 2026. The emulator is rejected
-before phone verification; further SMS attempts on that setup have no new
-evidence to justify them. Request signing has been reproduced, but a working
-rider session and authenticated response decryption remain unverified.
+Deferred at the user's request on 24 October 2026 and resumed at their
+request on 27 October. The emulator is still rejected before phone
+verification. Request signing has been reproduced, but a working rider
+session and authenticated response decryption remain unverified. The user
+can test a physical iPhone and may also have access to an Android phone.
+No additional SMS was requested during the 27 October recheck.
 
 Resume with the official app on a physical Android phone that meets Ryde's
 device-integrity requirements, using a number available at that time. First
@@ -20,9 +22,94 @@ map retrieval, response decryption and session renewal before considering a
 collector. A successful phone login alone does not establish that its session
 can be used by a server.
 
-The `ScootRadar_Ryde_Play` AVD is retained for reference. Verified APKs and
-private diagnostics are kept outside Git; the local provider-auth progress
-note records their locations. Bolt's saved rider session is separate.
+The `ScootRadar_Ryde_Play` AVD is retained for reference. The fresh verified
+APK, decompiled sources and private diagnostics are under
+`~/.cache/scootradar/rider-auth/ryde/`, outside Git. Bolt's and Bird's saved
+rider sessions are separate.
+
+## Recheck: model spoofing, attestation and session keys
+
+The 27 October APK download is still 6.1.0 / 718. `apksigner verify`
+succeeded; its SHA-256 certificate fingerprint,
+`2F:A2:63:91:05:5F:24:B6:0D:94:8A:03:23:A2:93:83:0A:C6:0F:45:38:DE:F1:E8:BC:2B:FA:7E:42:88:13:D9`,
+matches the publisher's app-link association. This recheck found additional
+requirements in that same build; it does not establish a new server rollout.
+
+A controlled replay of the public time request changed only `MobileType`:
+
+| MobileType | HTTP result |
+| --- | --- |
+| `Android/Google/sdk_gphone64_arm64/google` | 403, non-JSON |
+| `Android/Google/Pixel 7/google` | 200, JSON status 200 |
+
+This reproduces the simple model-header blocker. It was a host-side
+diagnostic replay, not a modified emulator, a successful login or a device
+integrity verdict. No emulator properties, app signature, Google verdict
+or account identity were changed.
+
+The successful time response still advertises `deviceBlacklistMode: 1`,
+`playVerdictRequire: "DEVICE"`, `attestFailPolicy: 1`,
+`playIntegrityDegraded: 0`, `secUpgradeMode: 2` and a
+`dpopMigrationDeadline` of `2026-09-21 00:00:00`.
+Changing the model header does not establish that these subsequent checks
+will pass. Google's [integrity-verdict documentation](https://developer.android.com/google/play/integrity/verdicts)
+describes `MEETS_DEVICE_INTEGRITY` as a certified physical-device verdict,
+with hardware-backed boot evidence on Android 13 and newer. Its separate
+virtual-device verdict is for Google Play Games on PC. A model string does
+not supply that signed evidence.
+
+The app also offers Google sign-in. In the unmodified retained emulator,
+tapping it reached the same failed `getTimeService` prerequisite before
+the Google credential picker. Static tracing shows that Google login and
+SMS both request `/appRyde/getAttestChallenge`. When a nonempty challenge is
+returned, the client obtains a Play Integrity token and passes it to the
+login request. Google sign-in is therefore not evidence of a route around
+the configured device requirement.
+
+There is also a session-portability requirement beyond obtaining an SMS:
+
+- The Android client creates a P-256 signing key in `AndroidKeyStore`, under
+  the alias `com.ryde_android.dpop.signing.v1`. It signs an ES256 DPoP proof
+  for each token-bearing first-party request. Proof claims bind the HTTP
+  method, URL and token hash, with issuance time and a unique request ID.
+  Copying the token does not copy that non-exportable signing key.
+- Map reads are in the encrypted-response set. They add an encryption-key
+  identifier (`ekt`); the parser handles an ECDH/HKDF/AES-GCM envelope and
+  the older AES fallback. On Android 12 and newer the key manager prefers
+  an AndroidKeyStore decryption key, with a software-key fallback in code.
+- Session registration and rotation have their own endpoints,
+  `/appRyde/registerDpopKey` and `/appRyde/rotateSessionKey`. Registration
+  also obtains an attestation challenge. Successful login does not prove
+  registration, rotation or off-device map decryption.
+
+These are verified client paths and observed server configuration, not a
+live test of an authenticated session's enforcement. The iOS key handling,
+actual server rejection conditions and any supported off-device session
+remain to be checked. A real-device map read is the next compatibility
+test, followed by key binding and renewal; do not promise that one phone
+login will produce a portable bearer token.
+
+## Public sources rechecked on 27 October
+
+Entur's GBFS 3 manifest still lists the same sixteen Ryde systems. The
+discovery URLs for `rydebergen`, `rydedrammen`, `rydelarvik` and
+`rydekristiansand` return 404. Entur GraphQL recognizes
+`YRY:Operator:Ryde`: a control in Oslo returned vehicles from `rydeoslo`,
+while a 15 km Bergen query returned none. Queries around Drammen and
+Larvik returned vehicles from existing Asker and Sandefjord feeds,
+respectively, rather than new systems; a nearby result is not evidence of
+coverage of the requested town.
+
+The old anonymous route in [WoBike's Ryde notes](https://github.com/ubahnverleih/WoBike/blob/master/Ryde.md),
+`qw-test.ryde.vip/appRyde/getNearScooters`, returned JSON status 407 to the
+published unsigned request. The current production map route did the same
+without signing. This supplies no working anonymous read; it does not
+replace the earlier signed-request authentication result below.
+
+Ruter's [published operator coverage](https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/operatorer)
+lists Ryde around Oslo and Asker/Bærum/Lillestrøm/Lørenskog/Rælingen, not the
+missing Bergen, Drammen, Larvik or Kristiansand markets. No new public
+source or production feed was added in this recheck.
 
 ## Map protocol and the earlier signing blocker
 
