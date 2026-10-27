@@ -553,9 +553,9 @@ evening's polls:
 
 Veo's Los Angeles feed has about 2 scooters in Culver City, inside the
 Los Angeles box. Culver City is Bird's town, and since 15 October 2026 its
-outline leaves them out (see **Town outlines** above). Spin Minneapolis's one
-scooter in St. Paul and Spin Providence's in Pawtucket stand inside their own
-boxes, and show.
+outline leaves them out (see **Town outlines** above). Spin Minneapolis's odd
+scooter in St. Paul (one on 14 October 2026, none on 26 October) and Spin
+Providence's in Pawtucket stand inside their own boxes, and show.
 
 **Thin evidence.** The survey saw few rides at Spin Phoenix, San Diego,
 Meridian, Gainesville and Tampa, and at Veo's Bronx, San Antonio, Salt Lake
@@ -621,8 +621,11 @@ minutes old.
 
 **No seasons.** St. Paul's operating season is "typically from mid-April to
 mid-November each year"
-([city](https://www.stpaul.gov/departments/public-works/transportation-and-transit/scooters)),
-and Cedar Rapids' runs from 1 April to 31 October but "could extend through
+([city](https://www.stpaul.gov/departments/public-works/transportation-and-transit/shared-scooters-bikes)),
+and its 2026 agreements with Lime and Spin
+([RES 26-676](https://stpaul.legistar.com/LegislationDetail.aspx?ID=7991127&GUID=786A6CED-7BA6-4E53-A74B-971980C199DE),
+6 May 2026) estimate the end "on or around November 15th", which the City may
+extend to 31 December. Cedar Rapids' runs from 1 April to 31 October but "could extend through
 November, depending on weather conditions" (KWWL, 12 March 2026). Rochester's
 Veo fleet goes into storage "in mid-December" and comes back about mid-March
 (city release, November 2025), the University of Toledo's from mid-November,

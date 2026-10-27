@@ -1048,8 +1048,9 @@ Bonaire had feeds to add. Survey files are in
 - **Early December 2026:** Ryde Bodø, paused from 1 December to 1 April by
   the season Bodø kommune gave for 2025. If its scooters are still ridden
   after 1 December, the 2026 terms changed: drop the pause.
-- **Late November 2026:** Spin St. Paul's season is "typically" mid-April to
-  mid-November, Veo Cedar Rapids' may run through November, the University of
+- **Late November 2026:** Lime's and Spin's St. Paul season is "typically"
+  mid-April to mid-November (the 2026 agreements estimate "on or around November
+  15th", and the City may extend it to 31 December), Veo Cedar Rapids' may run through November, the University of
   Toledo's Veo fleet goes from mid-November, and Veo Rochester's in
   mid-December. None has a fixed date, so the catalog pauses none. Check that
   the feeds empty when the fleets go; if one keeps listing available scooters
