@@ -3,6 +3,18 @@ package com.plhery.scootradar.map
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.test.core.app.ActivityScenario
+import androidx.test.platform.app.InstrumentationRegistry
+import com.plhery.scootradar.app.NotDeterminedLocationManager
+import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.api.WalkingDirectionsClient
+import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.model.GeoBounds
+import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.ScooterMapStart
+import com.plhery.scootradar.core.model.ScooterResponse
+import kotlinx.coroutines.CoroutineScope
 import org.junit.Assert.assertTrue
 import org.maplibre.android.MapLibre
 import org.maplibre.android.maps.MapLibreMap
@@ -61,6 +73,30 @@ fun withPhoneMap(test: (PhoneMap) -> Unit) {
             }
         }
     }
+}
+
+/** The app's opening on Zürich. */
+val zurichStart = ScooterMapStart(MapRegion.around(GeoPoint(47.3769, 8.5417), 8_906.0, 9_052.0), zoom = 12)
+
+/** A controller with no scooters, no walks and no location. */
+fun testController(scope: CoroutineScope) = ScooterMapController(
+    api = object : ScooterAPIClient {
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = emptyList())
+    },
+    locationManager = NotDeterminedLocationManager(),
+    defaults = InMemoryScooterDefaults(),
+    scope = scope,
+    directions = object : WalkingDirectionsClient {
+        override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = emptyList()
+    },
+    openInMaps = {},
+    phoneLanguages = { listOf("en-US") },
+)
+
+/** Long enough for a move of MapKit's time to land. */
+fun settle() {
+    Thread.sleep(1_000)
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 }
 
 private const val RATIO = 2f
