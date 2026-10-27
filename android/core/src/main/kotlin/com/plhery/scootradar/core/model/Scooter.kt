@@ -27,6 +27,9 @@ data class Scooter(
 
     val providerInfo: ScooterProvider? get() = ScooterProvider.fromRawValue(provider)
 
+    /** The provider's name as its card writes it: the catalog's, or the feed's word for it capitalized. */
+    val providerName: String get() = providerInfo?.displayName ?: provider.capitalized
+
     val batteryLevel: ScooterBatteryLevel? get() = battery?.let(ScooterBatteryLevel::of)
 
     /** In metres, along the ellipsoid as CLLocation measures it. */

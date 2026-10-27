@@ -35,6 +35,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.addOutline
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -132,7 +136,7 @@ fun ScooterControlDock(
         ) { shown ->
             val scroll = rememberScrollState()
             Box(
-                (if (shown is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(shown.scooter.providerInfo)) else Modifier)
+                (if (shown is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(shown.scooter.providerInfo), shape) else Modifier)
                     .fillMaxWidth()
                     .padding(16.dp)
                     // HeightLimit: as tall as the content, up to the limit, and scrolling past it. Without a limit
@@ -160,9 +164,9 @@ internal val ScooterDockContent.kind: String
 
 /**
  * A soft light in the provider's colour from the top left corner of a scooter's card: an ellipse 0.9 of the card
- * wide and 0.7 high, fading out at 0.7 of the way to its edge.
+ * wide and 0.7 high, fading out at 0.7 of the way to its edge, inside the card's [shape].
  */
-private fun Modifier.cardGlow(tint: Color): Modifier = drawBehind {
+private fun Modifier.cardGlow(tint: Color, shape: Shape): Modifier = drawBehind {
     val width = size.width * 0.9f
     val height = size.height * 0.7f
     if (width <= 0f || height <= 0f) return@drawBehind
@@ -172,9 +176,12 @@ private fun Modifier.cardGlow(tint: Color): Modifier = drawBehind {
         center = Offset.Zero,
         radius = width,
     )
-    // A circle of the frame's width, squeezed to the frame's height.
-    scale(scaleX = 1f, scaleY = height / width, pivot = Offset.Zero) {
-        drawRect(brush, size = Size(width, width))
+    val card = Path().apply { addOutline(shape.createOutline(size, layoutDirection, this@drawBehind)) }
+    clipPath(card) {
+        // A circle of the frame's width, squeezed to the frame's height.
+        scale(scaleX = 1f, scaleY = height / width, pivot = Offset.Zero) {
+            drawRect(brush, size = Size(width, width))
+        }
     }
 }
 
@@ -184,9 +191,8 @@ private val headerHeight = 38.dp
 @Composable
 private fun DockContent(controller: ScooterMapController, content: ScooterDockContent, onEditFilters: () -> Unit) {
     when (content) {
-        // The cards of stage 4 come here; until then the summary's place holds them.
-        is ScooterDockContent.Scooter -> ScooterCardPlaceholder(content.scooter.providerInfo?.displayName ?: content.scooter.provider)
-        is ScooterDockContent.Parking -> ScooterCardPlaceholder(content.parking.name)
+        is ScooterDockContent.Scooter -> ScooterCard(controller, content.scooter)
+        is ScooterDockContent.Parking -> ParkingBayCard(controller, content.parking)
         is ScooterDockContent.OutOfDate -> OutOfDateCard(controller, content.failure, content.lastUpdate)
         is ScooterDockContent.Finding -> Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(
@@ -206,13 +212,6 @@ private fun DockContent(controller: ScooterMapController, content: ScooterDockCo
         is ScooterDockContent.OutsideCoverage -> OutsideCoverageCard(controller, content.cities)
         is ScooterDockContent.FiltersHideEverything -> HiddenByFiltersCard(controller, content.summary, onEditFilters)
         is ScooterDockContent.Summary -> SummaryContent(controller, content.summary)
-    }
-}
-
-@Composable
-private fun ScooterCardPlaceholder(title: String) {
-    Box(Modifier.fillMaxWidth().heightIn(min = headerHeight), contentAlignment = Alignment.CenterStart) {
-        Text(title, style = ScootType.headline, color = scootColors.dockText)
     }
 }
 

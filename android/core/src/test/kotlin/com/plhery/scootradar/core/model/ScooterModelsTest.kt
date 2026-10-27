@@ -53,6 +53,14 @@ class ScooterModelsTest {
         ScooterDateFormat.timeZone = timeZone
     }
 
+    /** The card's name: the catalog's for a provider it knows, the feed's word capitalized for one it doesn't. */
+    @Test
+    fun aScootersProviderNameIsTheCatalogsOrTheFeedsCapitalized() {
+        assertEquals("Lime", Scooter(provider = "lime", latitude = 47.0, longitude = 8.0).providerName)
+        assertEquals("PubliBike / Velospot", Scooter(provider = "publibike", latitude = 47.0, longitude = 8.0).providerName)
+        assertEquals("Zoom_Scoot", Scooter(provider = "zoom_SCOOT", latitude = 47.0, longitude = 8.0).providerName)
+    }
+
     @Test
     fun everyLanguageSaysWhenTheFadedScootersWereSeen() {
         for (language in languages) {

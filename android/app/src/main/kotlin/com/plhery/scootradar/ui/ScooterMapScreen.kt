@@ -34,6 +34,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
@@ -75,6 +77,8 @@ fun ScooterMapScreen(
     map: @Composable (dark: Boolean) -> Unit,
     /** Whether the glass may blur the map; tests choose. */
     glassBlurs: Boolean = glassMayBlur(),
+    /** Where the chrome's own events go, as ScooterAnalytics.shared on the iPhone; none in tests. */
+    analytics: ScooterAnalytics? = null,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -94,7 +98,7 @@ fun ScooterMapScreen(
     val backdrop = remember { MapBackdrop(context) }
 
     ScootTheme(dark = dark) {
-        CompositionLocalProvider(LocalGlass provides Glass(backdrop, glassBlurs)) {
+        CompositionLocalProvider(LocalGlass provides Glass(backdrop, glassBlurs), LocalAnalytics provides analytics) {
             Box(Modifier.fillMaxSize()) {
                 map(dark)
                 DockChrome(controller)
@@ -235,6 +239,9 @@ private fun TopStack(
         }
     }
 }
+
+/** The analytics the chrome tracks its taps with, such as "rental_open"; none where the screen was given none. */
+val LocalAnalytics = staticCompositionLocalOf<ScooterAnalytics?> { null }
 
 /** The last value that was not null. */
 @Composable

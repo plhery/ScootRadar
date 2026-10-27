@@ -22,7 +22,9 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
+import com.plhery.scootradar.core.model.ScooterRidePricing
 import com.plhery.scootradar.core.model.addingTimeInterval
 import com.plhery.scootradar.lungernRegion
 import com.plhery.scootradar.scooter
@@ -173,6 +175,31 @@ enum class DockState {
             return model
         }
     },
+    /** Lime's scooter 110 m away, with its range and its price: the card's three figures side by side. */
+    ScooterCard {
+        override fun make(controllers: TestControllers, clock: TestClock): ScooterMapController {
+            val zurich = zurich(clock)
+            val priced = scooter(
+                id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421, battery = 82, rangeMeters = 24_000,
+                rentalURIs = ScooterRentalURIs(ios = "https://li.me/ride", android = null, web = null),
+                pricing = ScooterRidePricing(currency = "CHF", unlockFeeMinorUnits = 100, minuteFeeMinorUnits = 35),
+            )
+            val api = StubScooterAPI(zurich.copy(vehicles = listOf(priced) + zurich.vehicles.drop(1)))
+            val model = controllers.make(api, clock)
+            model.setUserLocation(GeoPoint(47.3779, 8.5417))
+            load(model, api, controllers)
+            model.selectScooter("lime:a")
+            check(model.dock is ScooterDockContent.Scooter) { "$this: ${model.dock}" }
+            return model
+        }
+    },
+    ParkingBay {
+        override fun reach(model: ScooterMapController, api: StubScooterAPI, controllers: TestControllers, clock: TestClock) {
+            model.setUserLocation(GeoPoint(47.3779, 8.5417))
+            load(model, api, controllers)
+            model.selectParking("dott:bay")
+        }
+    },
     Waiting {
         override fun make(controllers: TestControllers, clock: TestClock): ScooterMapController {
             val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
@@ -206,6 +233,8 @@ enum class DockState {
             OutOfDate -> "outOfDate"
             OutsideCoverage -> "outsideCoverage"
             Waiting -> "waiting"
+            ScooterCard -> "scooter:lime:a"
+            ParkingBay -> "parking:dott:bay"
         }
 }
 

@@ -4,6 +4,7 @@ import com.plhery.scootradar.app.NotDeterminedLocationManager
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
+import com.plhery.scootradar.core.map.ScooterLocationManager
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
@@ -13,6 +14,8 @@ import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterRidePricing
+import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.addingTimeInterval
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -93,13 +96,19 @@ class TestControllers {
      * A controller of `api`'s map, with nothing kept from before. Without a clock of its own it reads the
      * scheduler's, which [waitUntil] moves as real time moves under the iPhone's tests.
      */
-    fun make(api: ScooterAPIClient, clock: TestClock? = null): ScooterMapController = ScooterMapController(
+    fun make(
+        api: ScooterAPIClient,
+        clock: TestClock? = null,
+        locationManager: ScooterLocationManager = NotDeterminedLocationManager(),
+        directions: WalkingDirectionsClient = NoWalkingDirections,
+        openInMaps: (ScooterWalkTarget) -> Unit = {},
+    ): ScooterMapController = ScooterMapController(
         api = api,
-        locationManager = NotDeterminedLocationManager(),
+        locationManager = locationManager,
         defaults = InMemoryScooterDefaults(),
         scope = scope,
-        directions = NoWalkingDirections,
-        openInMaps = {},
+        directions = directions,
+        openInMaps = openInMaps,
         now = now(clock),
         phoneLanguages = { listOf("en-US") },
         keepAppLanguages = {},
@@ -141,6 +150,7 @@ fun scooter(
     battery: Int? = 80,
     rangeMeters: Int? = null,
     rentalURIs: ScooterRentalURIs? = null,
+    pricing: ScooterRidePricing? = null,
 ): Scooter = Scooter(
     provider = provider,
     latitude = latitude,
@@ -151,4 +161,5 @@ fun scooter(
     deepLink = null,
     rentalURIs = rentalURIs,
     distanceMeters = 0.0,
+    pricing = pricing,
 )

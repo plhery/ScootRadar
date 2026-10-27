@@ -1,7 +1,14 @@
 package com.plhery.scootradar.ui
 
 import android.app.UiModeManager
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -35,6 +42,8 @@ import com.plhery.scootradar.testController
 import com.plhery.scootradar.ui.chrome.FloatingMapControls
 import com.plhery.scootradar.ui.chrome.LocationIssueCard
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
+import com.plhery.scootradar.ui.dock.CardFigureRow
+import com.plhery.scootradar.ui.dock.CardFigures
 import com.plhery.scootradar.ui.dock.ScooterControlDock
 import com.plhery.scootradar.zurichRegion
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +52,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
@@ -275,6 +285,35 @@ class ScooterMapModelTest {
         // Nothing caps the lines: twice the text is taller at every size.
         for (size in DynamicTypeSize.entries) {
             assertTrue("$size", height("$sentence $sentence", size) > height(sentence, size))
+        }
+    }
+
+    /**
+     * A 375-point phone's card gives its figures 321 points and keeps them side by side; a 320-point window's gives
+     * them 266 and puts the third under the other two, so that the price keeps its ride length.
+     */
+    @Test
+    fun theCardsFiguresGoTwoOverOneOnlyInAWindowNarrowerThanAPhone() {
+        assertFalse(CardFigures.wraps(3, 321.dp))
+        assertTrue(CardFigures.wraps(3, 266.dp))
+        assertFalse(CardFigures.wraps(2, 266.dp))
+        assertFalse(CardFigures.wraps(3, null))
+
+        val renderer = Renderer(compose)
+        fun size(width: Dp): IntSize {
+            var size = IntSize.Zero
+            renderer.height(RenderPass(dark = false, DynamicTypeSize.Large, width)) {
+                CardFigureRow(Modifier.onSizeChanged { size = it }) {
+                    Box(Modifier.fillMaxWidth().height(50.dp))
+                    Box(Modifier.fillMaxWidth().height(60.dp))
+                    Box(Modifier.fillMaxWidth().height(40.dp))
+                }
+            }
+            return size
+        }
+        with(compose.density) {
+            assertEquals(IntSize(321.dp.roundToPx(), 60.dp.roundToPx()), size(321.dp))
+            assertEquals(IntSize(266.dp.roundToPx(), 60.dp.roundToPx() + 8.dp.roundToPx() + 40.dp.roundToPx()), size(266.dp))
         }
     }
 

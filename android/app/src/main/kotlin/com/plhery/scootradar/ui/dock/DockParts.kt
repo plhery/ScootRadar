@@ -43,6 +43,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -72,18 +74,30 @@ import kotlin.math.roundToInt
 
 /**
  * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple. Its
- * semantics are a button's, which TalkBack names from the label unless [label] says otherwise.
+ * semantics are a button's, which TalkBack names from the label unless [label] says otherwise; [hint] is iOS's
+ * accessibility hint, which TalkBack says as what a double tap does.
  */
 internal fun Modifier.plainButton(
     enabled: Boolean = true,
     label: String? = null,
+    hint: String? = null,
     onClick: () -> Unit,
 ): Modifier = composed {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else 1f }
-        .clickable(interaction, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
-        .then(if (label != null) Modifier.clearAndSetSemantics { contentDescription = label } else Modifier)
+        .clickable(interaction, indication = null, enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
+        .then(
+            if (label != null) {
+                Modifier.clearAndSetSemantics {
+                    contentDescription = label
+                    role = Role.Button
+                    if (enabled) onClick(label = hint) { onClick(); true }
+                }
+            } else {
+                Modifier
+            },
+        )
 }
 
 /** How far a plain button dims under the finger, as UIKit's highlighted label does. */
