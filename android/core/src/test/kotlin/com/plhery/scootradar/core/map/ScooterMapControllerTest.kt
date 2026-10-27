@@ -37,6 +37,7 @@ import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterCountContext
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterDockHint
+import com.plhery.scootradar.core.model.ScooterDockLine
 import com.plhery.scootradar.core.model.ScooterDockNotice
 import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDockSummary
@@ -2832,6 +2833,160 @@ class ScooterMapControllerTest {
         assertEquals(0.0, model.minimumBattery.value, 0.0)
     }
 
+    @Test
+    fun theFoldedPanelSaysInOneLineWhatTheDockShows() = runTest {
+        val origin = GeoPoint(47.3779, 8.5417)
+        val bay = ScooterParking(
+            id = "dott:bay", provider = "dott", name = "Rue Faidherbe",
+            latitude = 47.3769, longitude = 8.5417, mandatory = true,
+        )
+        val clock = TestClock()
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(scooter("near", provider = "bird"), scooter("far", provider = "lime", latitude = 47.3795)),
+                meta = ScooterResponseMetadata(
+                    partial = false,
+                    failedSources = emptyList(),
+                    generatedAt = iso(clock.now),
+                    expiresAt = iso(clock.now.addingTimeInterval(300.0)),
+                ),
+                parking = listOf(bay),
+            ),
+        )
+        val model = makeController(api, clock = clock)
+
+        assertEquals(
+            ScooterDockLine(mark = ScooterDockLine.Mark.Progress, title = localized("Finding scooters…")),
+            model.dockLine(at = clock.now),
+        )
+
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+
+        // With no one to walk from, the count, and how fresh it is. The map is beside the line: it doesn't say
+        // "on this map".
+        val counted = (model.dock as? ScooterDockContent.Summary)?.summary
+            ?: throw AssertionError("Expected the summary, got ${model.dock}")
+        assertNull(counted.lead)
+        assertEquals(
+            ScooterDockLine(
+                mark = ScooterDockLine.Mark.Symbol("scooter"),
+                title = "2 ${localized("scooters")}",
+                status = ScooterDockStatus.Live,
+            ),
+            model.dockLine(at = clock.now),
+        )
+
+        // From the rider, the nearest scooter: how far, whose, the walk, and "Live", which the dock leaves out
+        // beside it.
+        model.setUserLocation(origin)
+        val nearest = (model.dock as? ScooterDockContent.Summary)?.summary?.lead
+            ?: throw AssertionError("Expected the nearest scooter, got ${model.dock}")
+        assertEquals("bird:near", nearest.scooter.id)
+        val minutes = stringFormat(localized("%lld min"), nearest.minutes.toLong())
+        val lead = model.dockLine(at = clock.now)
+        assertEquals(
+            ScooterDockLine(
+                mark = ScooterDockLine.Mark.Provider(Bird),
+                title = nearest.distance,
+                details = listOf("Bird", minutes),
+                status = ScooterDockStatus.Live,
+            ),
+            lead,
+        )
+        assertEquals(listOf(nearest.distance, "Bird", minutes, localized("Live")), lead.parts)
+        assertEquals("${nearest.distance}, Bird, $minutes, ${localized("Live")}", lead.accessibilityLabel)
+
+        // The status ages with the data, and says so in fewer words than the dock.
+        val later = model.dockLine(at = clock.now.addingTimeInterval(180.0))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(3), later.status)
+        assertEquals(stringFormat(localized("%lld min ago"), 3L), later.parts.lastOrNull())
+
+        // A scooter's card: whose it is, the walk to it and how far it is, each a part of its own.
+        model.selectScooter("bird:near")
+        val selected = (model.dock as? ScooterDockContent.Scooter)?.scooter
+            ?: throw AssertionError("Expected the scooter card, got ${model.dock}")
+        val walk = stringFormat(localized("≈%lld min walk"), unwrap(model.approximateWalkingMinutes(selected)).toLong())
+        assertEquals(
+            ScooterDockLine(
+                mark = ScooterDockLine.Mark.Provider(Bird),
+                title = "Bird",
+                details = listOf(walk, unwrap(model.formattedDistance(selected))),
+            ),
+            model.dockLine(at = clock.now),
+        )
+
+        // A bay's card: the bay, where it is and the walk to it.
+        model.selectParking(bay.id)
+        val bayWalk = stringFormat(localized("≈%lld min walk"), unwrap(model.approximateWalkingMinutes(bay)).toLong())
+        assertEquals(
+            ScooterDockLine(mark = ScooterDockLine.Mark.Provider(Dott), title = bay.bayTitle, details = listOf(bay.name, bayWalk)),
+            model.dockLine(at = clock.now),
+        )
+
+        // Filters that hide everything: how many, and which filters.
+        model.clearSelection()
+        model.showProviders(setOf(Pony))
+        val filters = (model.dock as? ScooterDockContent.FiltersHideEverything)?.summary
+            ?: throw AssertionError("Expected the filters card, got ${model.dock}")
+        assertEquals(
+            ScooterDockLine(
+                mark = ScooterDockLine.Mark.Symbol("line.3.horizontal.decrease"),
+                title = filters.title,
+                details = listOf(filters.body),
+            ),
+            model.dockLine(at = clock.now),
+        )
+        model.resetFilters()
+
+        // A failed refresh is said in the warning colour, at the end of the line.
+        api.setFailure(ScooterAPIError.Offline())
+        model.retryLoad()
+        val refreshFailed = waitUntil { api.calls == 2 && model.loadIssue.value != null && !model.isLoading.value }
+        assertTrue(refreshFailed)
+        val offline = model.dockLine(at = clock.now)
+        assertEquals(nearest.distance, offline.title)
+        assertEquals(true, offline.status?.isWarning)
+
+        // Out of date: the data expired and the refresh after that failed.
+        clock.advance(400.0)
+        model.retryLoad()
+        val expired = waitUntil {
+            api.calls == 3 && model.loadIssue.value is ScooterLoadIssue.OutOfDate && !model.isLoading.value
+        }
+        assertTrue(expired)
+        assertEquals(
+            ScooterDockLine(
+                mark = ScooterDockLine.Mark.Symbol("clock"),
+                title = localized("These positions are out of date"),
+                isWarning = true,
+            ),
+            model.dockLine(at = clock.now),
+        )
+
+        val outsideAPI = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+        val outside = makeController(outsideAPI)
+        outside.updateViewport(lungernRegion, zoom = 14)
+        val outsideLoaded = waitUntil { outsideAPI.calls == 1 && outside.lastUpdated.value != null && !outside.isLoading.value }
+        assertTrue(outsideLoaded)
+        assertEquals(
+            ScooterDockLine(mark = ScooterDockLine.Mark.Symbol("map"), title = localized("No scooter data here yet")),
+            outside.dockLine(at = Instant.now()),
+        )
+
+        val failing = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+        failing.setFailure(ScooterAPIError.HttpStatus(503))
+        val waiting = makeController(failing)
+        waiting.refresh()
+        val failed = waitUntil { failing.calls == 1 && waiting.loadIssue.value != null && !waiting.isLoading.value }
+        assertTrue(failed)
+        assertEquals(
+            ScooterDockLine(mark = ScooterDockLine.Mark.Symbol("hourglass"), title = localized("Waiting for scooter data")),
+            waiting.dockLine(at = Instant.now()),
+        )
+    }
+
     /**
      * The card of what is chosen on the map opens in the panel, so choosing opens a folded panel. Nothing else
      * does: the rider folded it.
@@ -3107,6 +3262,33 @@ class ScooterMapControllerTest {
         assertFalse(ScooterKeyCommand.Close in ScooterKeyCommand.available(situation(panel)))
         assertTrue(ScooterKeyCommand.Close in ScooterKeyCommand.available(situation(dock, hasCard = true)))
         assertTrue(ScooterKeyCommand.Close in ScooterKeyCommand.available(situation(dock, isSearching = true)))
+    }
+
+    @Test
+    fun foldingStandsBesideAPanelAndLocatingNotWhileLocating() {
+        val panel = ScooterKeyCommand.Situation(layout = ScooterChromeLayout.Panel)
+        assertTrue(ScooterKeyCommand.Fold in ScooterKeyCommand.available(panel))
+        assertFalse(
+            ScooterKeyCommand.Fold in ScooterKeyCommand.available(ScooterKeyCommand.Situation(layout = ScooterChromeLayout.Dock)),
+        )
+        assertEquals(localized("Collapse panel"), ScooterKeyCommand.Fold.title(panel))
+        assertEquals(localized("Expand panel"), ScooterKeyCommand.Fold.title(panel.copy(isFolded = true)))
+        assertFalse(ScooterKeyCommand.NearMe in ScooterKeyCommand.available(panel.copy(isLocating = true)))
+    }
+
+    @Test
+    fun theShortcutsAreNamedInEveryLanguage() {
+        for (language in listOf("en", "de", "fr", "it", "nl", "nb", "pt", "es", "is")) {
+            val strings = unwrap(ScooterLanguage.fromRawValue(language)).strings
+            for (key in listOf(
+                "Search", "Zoom in", "Zoom out", "Close", "Near me", "Filters", "Settings", "Collapse panel",
+                "Expand panel", "Map",
+            )) {
+                val name = strings[key]
+                assertNotNull("$language: $key", name)
+                assertFalse("$language: $key", name!!.isEmpty())
+            }
+        }
     }
 
     /** The menu bar lists each shortcut once, with Settings in the app's menu; "/", ⌘= and Esc stand in for others or close, and stay off it. */
