@@ -13,6 +13,9 @@ data class ScreenPoint(val x: Double, val y: Double) {
     }
 }
 
+/** A width and a height in points. */
+data class ScreenSize(val width: Double, val height: Double)
+
 /**
  * A rectangle in points from its origin, which is its top left corner while its size is positive. Where
  * CoreGraphics answers CGRect.null, the rectangle of nothing, these functions answer null.
@@ -22,9 +25,15 @@ data class ScreenRect(val x: Double, val y: Double, val width: Double, val heigh
     val maxX: Double get() = max(x, x + width)
     val minY: Double get() = min(y, y + height)
     val maxY: Double get() = max(y, y + height)
+    val midX: Double get() = x + width / 2
+    val midY: Double get() = y + height / 2
 
     /** No width or no height. */
     val isEmpty: Boolean get() = width == 0.0 || height == 0.0
+
+    /** Whether the point is in it: on its left or top edge, and not on its right or bottom one. */
+    fun contains(point: ScreenPoint): Boolean =
+        point.x >= minX && point.x < maxX && point.y >= minY && point.y < maxY
 
     /** The same rectangle with its origin at its top left corner, and its size positive. */
     val standardized: ScreenRect

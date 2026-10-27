@@ -6,8 +6,8 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
-// RidePriceFormatter and ScooterLinks from ios/ScootRadar/Views/ScooterControls.swift; the rest of that file
-// is views.
+// RidePriceFormatter, ScooterCreditsList's sources and ScooterLinks from ios/ScootRadar/Views/ScooterControls.swift;
+// the rest of that file is views.
 
 object RidePriceFormatter {
     private val isoDay = Regex("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})")
@@ -65,6 +65,48 @@ object RidePriceFormatter {
         "RWF", "SLL", "SOS", "STD", "SYP", "TMM", "TRL", "UGX", "UYI", "VND", "VUV", "XAF", "XOF", "XPF", "YER",
         "ZMK", "ZWD",
     )
+}
+
+/** Settings › About › Map & data credits: where the map and the data come from. */
+object ScooterCreditsList {
+    data class Source(val title: String, val url: URI) {
+        /** Two sources may share a licence's address, never a title. */
+        val id: String get() = title
+    }
+
+    /** The same sources as the credits list on the web. Names of feeds and operators are not translated. */
+    val sources: List<Source>
+        get() {
+            // Each country's own, from data/countries.json.
+            val countries = ScooterCountryCatalog.credits.map { (title, url) -> Source(title = title, url = URI(url)) }
+            return listOf(
+                Source(
+                    title = localized("Mobility data sources"),
+                    url = URI("https://opentransportdata.swiss/en/cookbook/shared-mobility/"),
+                ),
+                Source(
+                    title = localized("French mobility data"),
+                    url = URI("https://transport.data.gouv.fr/datasets?type=vehicles-sharing"),
+                ),
+            ) + countries + listOf(
+                Source(
+                    title = localized("Address search by Geoapify"),
+                    url = URI("https://www.geoapify.com/"),
+                ),
+                Source(
+                    title = localized("Address data © OpenStreetMap contributors"),
+                    url = URI("https://www.openstreetmap.org/copyright"),
+                ),
+                Source(
+                    title = stringFormat(
+                        localized("%1\$@ · %2\$@"),
+                        localized("Parking"),
+                        "Métropole Européenne de Lille",
+                    ),
+                    url = URI("https://data.lillemetropole.fr/"),
+                ),
+            )
+        }
 }
 
 object ScooterLinks {

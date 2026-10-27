@@ -9,8 +9,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-// ios/ScootRadarTests/WalkRouteTests.swift. The trail's look and the camera's fit (WalkTrailLook,
-// ScooterMapCameraPolicy) are the map view's, and come with it.
+// ios/ScootRadarTests/WalkRouteTests.swift.
 
 class WalkRouteTest {
     private val start = GeoPoint(latitude = 47.3769, longitude = 8.5417)
@@ -187,6 +186,121 @@ class WalkRouteTest {
         assertEquals(ScooterWalkNote.Gone, walk.note)
         assertTrue(walk.holdsCard)
         assertFalse(walk.isUnderway)
+    }
+
+    // Look
+
+    @Test
+    fun theTrailDrawsItselfQuicklyAtFirstAndSettles() {
+        assertEquals(0.0, WalkTrailLook.easeOut(0.0), 0.0)
+        assertEquals(1.0, WalkTrailLook.easeOut(1.0), 0.0)
+        assertEquals(0.875, WalkTrailLook.easeOut(0.5), 0.0001)
+        assertEquals(1.0, WalkTrailLook.easeOut(2.0), 0.0)
+        var previous = -1.0
+        for (step in 0..20) {
+            val value = WalkTrailLook.easeOut(step.toDouble() / 20)
+            assertTrue(value > previous)
+            previous = value
+        }
+    }
+
+    @Test
+    fun theCasingIsTheGroundOfTheMap() {
+        assertEquals(0xFFFFFFFF, WalkTrailLook.casingColor(isDark = false))
+        assertEquals(ScooterMapLook.darkGround, WalkTrailLook.casingColor(isDark = true))
+        assertEquals(ScooterMapLook.selectionRing, WalkTrailLook.dotColor)
+        assertEquals(11.0, WalkTrailLook.dotSpacing, 0.0)
+        assertTrue(WalkTrailLook.casingWidth > WalkTrailLook.dotWidth)
+    }
+
+    @Test
+    fun theDotsAreSpacedAlongTheRouteFromItsStart() {
+        val points = listOf(MapPoint(x = 0.0, y = 0.0), MapPoint(x = 10.0, y = 0.0), MapPoint(x = 10.0, y = 10.0))
+
+        val dots = WalkTrailLook.dots(along = points, spacing = 5.0)
+
+        assertEquals(listOf(0.0, 5.0, 10.0, 10.0, 10.0), dots.map { it.x })
+        assertEquals(listOf(0.0, 0.0, 0.0, 5.0, 10.0), dots.map { it.y })
+    }
+
+    @Test
+    fun theDotsStayInPlaceAsTheTrailDrawsItselfAndIsWalked() {
+        val points = listOf(MapPoint(x = 0.0, y = 0.0), MapPoint(x = 100.0, y = 0.0))
+
+        assertEquals(
+            listOf(0.0, 10.0, 20.0, 30.0, 40.0, 50.0),
+            WalkTrailLook.dots(along = points, spacing = 10.0, to = 0.5).map { it.x },
+        )
+        assertEquals(
+            listOf(30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0),
+            WalkTrailLook.dots(along = points, spacing = 10.0, from = 0.25).map { it.x },
+        )
+        assertTrue(WalkTrailLook.dots(along = points, spacing = 10.0, to = 0.0).isEmpty())
+        assertTrue(WalkTrailLook.dots(along = points, spacing = 0.0).isEmpty())
+        assertTrue(WalkTrailLook.dots(along = listOf(points[0]), spacing = 10.0).isEmpty())
+    }
+
+    @Test
+    fun aLongRouteSeenUpCloseHasItsDotsFurtherApart() {
+        val points = listOf(MapPoint(x = 0.0, y = 0.0), MapPoint(x = 1_000_000.0, y = 0.0))
+
+        val dots = WalkTrailLook.dots(along = points, spacing = 1.0)
+
+        assertTrue(dots.size <= WalkTrailLook.maximumDots + 1)
+        assertEquals(1_000_000.0, dots.lastOrNull()?.x ?: 0.0, 0.001)
+    }
+
+    // Camera
+
+    @Test
+    fun theRouteIsFittedInTheVisiblePartOfTheMap() {
+        val size = ScreenSize(width = 400.0, height = 800.0)
+        val visible = ScreenRect(x = 0.0, y = 100.0, width = 400.0, height = 400.0)
+        val points = listOf(MapPoint(x = 1_000.0, y = 2_000.0), MapPoint(x = 2_000.0, y = 2_200.0))
+
+        val rect = unwrap(
+            ScooterMapCameraPolicy.rect(fitting = points, heading = 0.0, size = size, visible = visible, minimumScale = 0.1),
+        )
+
+        // 1 000 map points across 400 points.
+        assertEquals(1_000.0, rect.width, 0.001)
+        assertEquals(2_000.0, rect.height, 0.001)
+        // The middle of the route is the middle of the visible part, which is
+        // 100 points above the middle of the map.
+        assertEquals(1_500.0, rect.midX, 0.001)
+        assertEquals(2_100 + 100 * 2.5, rect.midY, 0.001)
+    }
+
+    @Test
+    fun aMapTurnedSidewaysFitsTheRouteAcrossItsHeight() {
+        val size = ScreenSize(width = 400.0, height = 800.0)
+        val visible = ScreenRect(x = 0.0, y = 0.0, width = size.width, height = size.height)
+        // West to east: on a map turned to face east, from bottom to top.
+        val points = listOf(MapPoint(x = 0.0, y = 0.0), MapPoint(x = 1_600.0, y = 0.0))
+
+        val rect = unwrap(
+            ScooterMapCameraPolicy.rect(fitting = points, heading = 90.0, size = size, visible = visible, minimumScale = 0.1),
+        )
+
+        assertEquals(400.0 * 2, rect.width, 0.001)
+        assertEquals(800.0, rect.midX, 0.001)
+        assertEquals(0.0, rect.midY, 0.001)
+    }
+
+    @Test
+    fun aShortRouteIsShownNoCloserThanStreetLevel() {
+        val size = ScreenSize(width = 400.0, height = 800.0)
+        val points = listOf(MapPoint(x = 0.0, y = 0.0), MapPoint(x = 10.0, y = 0.0))
+        val whole = ScreenRect(x = 0.0, y = 0.0, width = size.width, height = size.height)
+
+        val rect = unwrap(
+            ScooterMapCameraPolicy.rect(fitting = points, heading = 0.0, size = size, visible = whole, minimumScale = 3.0),
+        )
+
+        assertEquals(1_200.0, rect.width, 0.001)
+        assertNull(
+            ScooterMapCameraPolicy.rect(fitting = emptyList(), heading = 0.0, size = size, visible = whole, minimumScale = 3.0),
+        )
     }
 
     private fun point(east: Double, north: Double): GeoPoint {

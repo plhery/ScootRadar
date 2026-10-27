@@ -118,6 +118,101 @@ class ScooterFilteringTest {
     }
 
     @Test
+    fun centringAScooterShowsItInTheMapLeftVisibleAboveTheDock() {
+        val scooter = GeoPoint(latitude = 47.3769, longitude = 8.5417)
+        val mapView = FlatMapView(
+            frame = ScreenRect(x = 0.0, y = 0.0, width = 390.0, height = 844.0),
+            region = MapRegion.around(scooter, latitudinalMeters = 850.0, longitudinalMeters = 850.0),
+        )
+
+        // The search bar ends at 110 pt and a tall card begins at 380 pt: the middle is at 245 pt.
+        val center = ScooterMapCameraPolicy.center(
+            showing = scooter, on = mapView, visible = ScreenRect(x = 0.0, y = 110.0, width = 390.0, height = 270.0),
+        )
+        assertTrue(center.latitude < scooter.latitude)
+        assertEquals(scooter.longitude, center.longitude, 0.0001)
+
+        mapView.centerCoordinate = center
+        val shown = mapView.point(scooter)
+        assertEquals(245.0, shown.y, 3.0)
+        assertEquals(195.0, shown.x, 3.0)
+
+        // Nothing covers the map, or nearly all of it is covered: the scooter itself is the centre.
+        val uncovered = ScooterMapCameraPolicy.center(
+            showing = scooter, on = mapView, visible = ScreenRect(x = 0.0, y = 0.0, width = 390.0, height = 844.0),
+        )
+        assertEquals(scooter.latitude, uncovered.latitude, 0.000_001)
+        val covered = ScooterMapCameraPolicy.center(
+            showing = scooter, on = mapView, visible = ScreenRect(x = 0.0, y = 400.0, width = 390.0, height = 20.0),
+        )
+        assertEquals(scooter.latitude, covered.latitude, 0.000_001)
+    }
+
+    @Test
+    fun withoutAPanelTheMapLeftVisibleIsTheBandBetweenTheSearchBarAndTheDock() {
+        val phone = ScreenRect(x = 0.0, y = 0.0, width = 390.0, height = 844.0)
+        val band = ScreenRect(x = 0.0, y = 110.0, width = 390.0, height = 270.0)
+        assertEquals(band, ScooterMapCameraPolicy.visibleRectIn(phone, top = 110.0, bottom = 380.0, beside = null))
+        // CGRect.null, the rectangle of nothing, is null here too.
+        assertEquals(band, ScooterMapCameraPolicy.visibleRectIn(phone, top = 110.0, bottom = 380.0, beside = null))
+        assertEquals(
+            band,
+            ScooterMapCameraPolicy.visibleRectIn(phone, top = 110.0, bottom = 380.0, beside = ScreenRect(0.0, 0.0, 0.0, 0.0)),
+        )
+    }
+
+    @Test
+    fun besideAPanelTheMapLeftVisibleStartsWhereThePanelEnds() {
+        val window = ScreenRect(x = 0.0, y = 0.0, width = 1376.0, height = 1032.0)
+        // A short panel still takes its side of the map from top to bottom:
+        // a card opened in it may grow down.
+        val leading = ScooterMapCameraPolicy.visibleRectIn(
+            window, top = 24.0, bottom = 1032.0, beside = ScreenRect(x = 16.0, y = 40.0, width = 380.0, height = 300.0),
+        )
+        assertEquals(ScreenRect(x = 396.0, y = 24.0, width = 980.0, height = 1008.0), leading)
+
+        // Right to left the panel is on the right.
+        val trailing = ScooterMapCameraPolicy.visibleRectIn(
+            window, top = 24.0, bottom = 1032.0, beside = ScreenRect(x = 980.0, y = 40.0, width = 380.0, height = 300.0),
+        )
+        assertEquals(ScreenRect(x = 0.0, y = 24.0, width = 980.0, height = 1008.0), trailing)
+    }
+
+    @Test
+    fun spansChosenOnAPhoneAreUnchangedOnEveryPhone() {
+        // Every iPhone's shorter side, the widest the Pro Max's.
+        for (width in listOf(320.0, 375.0, 390.0, 393.0, 402.0, 414.0, 428.0, 430.0, 440.0)) {
+            assertEquals("$width", 1.0, ScooterMapCameraPolicy.spanScale(across = width), 0.0)
+        }
+    }
+
+    @Test
+    fun aLargerMapShowsMoreGroundAroundTheSameStreets() {
+        assertEquals(466.0 / 440, ScooterMapCameraPolicy.spanScale(across = 466.0), 0.000_1)
+        assertEquals(744.0 / 440, ScooterMapCameraPolicy.spanScale(across = 744.0), 0.000_1)
+        assertEquals(1032.0 / 440, ScooterMapCameraPolicy.spanScale(across = 1032.0), 0.000_1)
+        assertTrue(ScooterMapCameraPolicy.spanScale(across = 669.0) < ScooterMapCameraPolicy.spanScale(across = 1032.0))
+    }
+
+    @Test
+    fun centringAScooterBesideAPanelShowsItInTheMiddleOfTheMapLeftVisible() {
+        val scooter = GeoPoint(latitude = 47.3769, longitude = 8.5417)
+        val mapView = FlatMapView(
+            frame = ScreenRect(x = 0.0, y = 0.0, width = 1376.0, height = 1032.0),
+            region = MapRegion.around(scooter, latitudinalMeters = 850.0, longitudinalMeters = 850.0),
+        )
+
+        // A panel 380 pt wide 16 pt from the edge: the middle of the rest is at 886 pt.
+        val center = ScooterMapCameraPolicy.center(
+            showing = scooter, on = mapView, visible = ScreenRect(x = 396.0, y = 0.0, width = 980.0, height = 1032.0),
+        )
+        mapView.centerCoordinate = center
+        val shown = mapView.point(scooter)
+        assertEquals(886.0, shown.x, 3.0)
+        assertEquals(516.0, shown.y, 3.0)
+    }
+
+    @Test
     fun providerInitialsAreWrittenInTheInkOfTheirColour() {
         val white = 0xFFFFFFFF
         val nearBlack = listOf(ScooterProvider.Bird, ScooterProvider.Swing)
@@ -144,6 +239,94 @@ class ScooterFilteringTest {
 
         assertTrue(originalContrast < 3.5)
         assertTrue(ScooterMapLook.contrastRatio(between = dot, and = ground) >= 3.5)
+    }
+
+    @Test
+    fun delayedMapKitSelectionCannotReplaceTheDirectTapTarget() {
+        val deadline = 11.0
+
+        assertTrue(
+            ScooterMapCoordinator.shouldSuppressMapKitSelection(
+                candidateID = "voi:underneath",
+                intendedID = "lime:tapped",
+                until = deadline,
+                now = 10.5,
+            ),
+        )
+        assertFalse(
+            ScooterMapCoordinator.shouldSuppressMapKitSelection(
+                candidateID = "lime:tapped",
+                intendedID = "lime:tapped",
+                until = deadline,
+                now = 10.5,
+            ),
+        )
+        assertFalse(
+            ScooterMapCoordinator.shouldSuppressMapKitSelection(
+                candidateID = "voi:underneath",
+                intendedID = "lime:tapped",
+                until = deadline,
+                now = deadline,
+            ),
+        )
+        assertTrue(
+            ScooterMapCoordinator.shouldSuppressMapKitSelection(
+                candidateID = "voi:late",
+                intendedID = null,
+                until = deadline,
+                now = 10.5,
+            ),
+        )
+    }
+
+    @Test
+    fun topChromeFrameExcludesUnderlyingMapInteractions() {
+        val chromeFrame = ScreenRect(x = 12.0, y = 62.0, width = 369.0, height = 62.0)
+
+        assertTrue(ScooterMapCoordinator.point(ScreenPoint(x = 200.0, y = 90.0), isInside = chromeFrame))
+        assertFalse(ScooterMapCoordinator.point(ScreenPoint(x = 200.0, y = 140.0), isInside = chromeFrame))
+        // CGRect.null, the rectangle of nothing, is null here.
+        assertFalse(ScooterMapCoordinator.point(ScreenPoint(x = 0.0, y = 0.0), isInside = null))
+
+        assertTrue(ScooterMapCoordinator.shouldSuppressAllMapKitSelections(until = 10.0, now = 9.99))
+        assertFalse(ScooterMapCoordinator.shouldSuppressAllMapKitSelections(until = 10.0, now = 10.0))
+    }
+
+    @Test
+    fun creditsNameEverySourceOnceAndAboutLinksAreSecure() {
+        val sources = ScooterCreditsList.sources
+
+        // The sources of the credits list on the web, Lille's parking bays and the
+        // boundaries of the night bans included: Switzerland's, France's, each country's
+        // own from data/countries.json, then the search's and Lille's.
+        assertEquals(5 + ScooterCountryCatalog.credits.size, sources.size)
+        assertEquals(32, ScooterCountryCatalog.credits.size)
+        assertEquals(sources.size, sources.map { it.title }.toSet().size)
+        assertEquals("DE/", sources[2].title.take(3))
+        assertTrue(sources.any { it.title == "CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL" })
+        assertTrue(sources.any { it.title == "DE/AT/IT/ES/PL/HU/GR/FI: Dott map" })
+        assertTrue(sources.any { it.title == "DE/SE: Qick map" })
+        assertTrue(sources.any { it.title == "JP: LUUP map" })
+        assertTrue(sources.any { it.title == "BR: IBGE boundaries" })
+        assertTrue(sources.any { it.title == "KR: Alpaca map" })
+        assertTrue(sources.any { it.title == "AE/SA/IL: Dott, SAHAM, Bird, Lime" })
+        assertTrue(sources.any { it.title == "NZ: Flamingo · CC BY 4.0" })
+        assertTrue(sources.any { it.title == "BR/CL/MX/KZ/AZ/GE: JET map" })
+        assertTrue(sources.any { it.title == "BR/CL/MX/KZ/CO/BY: Whoosh map" })
+        assertTrue(sources.any { it.title == "TR/MK/BA/XK: BinBin map" })
+        assertTrue(sources.any { it.title == "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified" })
+        // MobiData BW's licence, dl-de/by-2-0, asks for the dataset and the licence to be named.
+        assertTrue(sources.any { it.title == "DE: MobiData BW · dl-de/by-2-0, modified" && it.url.host == "www.govdata.de" })
+        assertTrue(sources.any { it.url.toString() == "https://mobidata-bw.de/dataset/escootch" })
+        assertTrue(sources.all { it.url.scheme == "https" && it.title.isNotEmpty() })
+        assertTrue(sources.any { it.url.host == "data.lillemetropole.fr" })
+        // Searched places come from Geoapify, whose free plan asks for its name to be shown,
+        // and are OpenStreetMap data, whose licence asks for this credit.
+        assertTrue(sources.any { it.url.toString() == "https://www.geoapify.com/" })
+        assertTrue(sources.any { it.url.toString() == "https://www.openstreetmap.org/copyright" })
+
+        assertEquals("https://scootradar.com/privacy", ScooterLinks.privacyNotice.toString())
+        assertEquals("https://github.com/plhery/ScootRadar", ScooterLinks.sourceCode.toString())
     }
 
     private fun scooter(
@@ -238,5 +421,44 @@ class ScooterFilteringTest {
         assertEquals(unknown.parts[0].take(1).uppercase(ScooterLanguage.launchLocale()), unknown.body.take(1))
         assertEquals(unknown.parts[0].drop(1), unknown.body.drop(1))
         assertNotEquals(unknown.parts[0], unknown.body)
+    }
+
+    /**
+     * MKMapView seen from straight above, facing north: a region set on it fills the map as MapKit fits it,
+     * with its centre in the middle, and a point on the map is so many map points from the centre.
+     */
+    private class FlatMapView(frame: ScreenRect, region: MapRegion) : ScooterMapProjection {
+        override val bounds: ScreenRect = ScreenRect(0.0, 0.0, frame.width, frame.height)
+        override var centerCoordinate: GeoPoint = region.center
+
+        /** Map points a point of the screen spans. */
+        private val scale: Double = run {
+            val southWest = MapPoint(
+                GeoPoint(region.center.latitude - region.latitudeDelta / 2, region.center.longitude - region.longitudeDelta / 2),
+            )
+            val northEast = MapPoint(
+                GeoPoint(region.center.latitude + region.latitudeDelta / 2, region.center.longitude + region.longitudeDelta / 2),
+            )
+            maxOf((northEast.x - southWest.x) / bounds.width, (southWest.y - northEast.y) / bounds.height)
+        }
+
+        override val visibleMapRect: MapRect
+            get() {
+                val centre = MapPoint(centerCoordinate)
+                val width = bounds.width * scale
+                val height = bounds.height * scale
+                return MapRect(centre.x - width / 2, centre.y - height / 2, width, height)
+            }
+
+        override fun point(coordinate: GeoPoint): ScreenPoint {
+            val point = MapPoint(coordinate)
+            val centre = MapPoint(centerCoordinate)
+            return ScreenPoint(bounds.midX + (point.x - centre.x) / scale, bounds.midY + (point.y - centre.y) / scale)
+        }
+
+        override fun coordinate(point: ScreenPoint): GeoPoint {
+            val centre = MapPoint(centerCoordinate)
+            return MapPoint(centre.x + (point.x - bounds.midX) * scale, centre.y + (point.y - bounds.midY) * scale).coordinate
+        }
     }
 }
