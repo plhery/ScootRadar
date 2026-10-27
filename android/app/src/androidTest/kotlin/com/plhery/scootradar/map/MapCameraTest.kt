@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraUpdateFactory
@@ -81,6 +82,81 @@ class MapCameraTest {
         }
     }
 
+    @Test
+    fun aMoveIsMadeAgainWhenTheMapChangesSize() = withCamera { phone, camera ->
+        phone.onMain { camera.applyFocus(MapFocusRequest(bern, token = 1)) }
+        settle()
+        // A fold or a window leaves the map 300 points high: the span is fitted to it again (MAP-046).
+        phone.resize(390, 300)
+        settle()
+        phone.onMain {
+            val position = phone.map.cameraPosition
+            assertEquals(MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 300.0), position.zoom, 1e-6)
+            assertEquals(bern.latitude, position.target!!.latitude, 1e-6)
+        }
+    }
+
+    @Test
+    fun aHandOnTheMapEndsTheMoveAndItsFocus() = withCamera { phone, camera ->
+        val reasons = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val zoom = phone.onMain {
+            phone.map.addOnCameraMoveStartedListener { reasons += it }
+            camera.applyFocus(MapFocusRequest(bern, token = 1))
+            phone.map.cameraPosition.zoom
+        }
+        // Within the move's 0.35 s, a hand pans the map (MAP-047).
+        Thread.sleep(100)
+        phone.drag(points = 200)
+        settle()
+        val stopped = phone.onMain { phone.map.cameraPosition }
+        assertTrue("the move was stopped short of Bern: ${stopped.zoom}, $reasons", stopped.zoom < MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 844.0) - 0.1)
+        assertTrue("the move had begun", stopped.zoom > zoom)
+        // The focus went with it: a new size moves nothing.
+        phone.resize(390, 300)
+        settle()
+        phone.onMain { assertEquals(stopped.zoom, phone.map.cameraPosition.zoom, 1e-9) }
+    }
+
+    @Test
+    fun aMapMadeAgainDoesNotTakeTheLastRequestsAgain() = withPhoneMap { phone ->
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+        val memory = MapCameraMemory()
+        try {
+            val first = phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
+                MapCamera(phone.map, phone.view, testController(scope), memory, frames).also {
+                    it.applyFocus(MapFocusRequest(bern, token = 1))
+                }
+            }
+            settle()
+            phone.onMain {
+                first.applyZoom(MapZoomRequest(steps = 1, token = 1))
+            }
+            settle()
+            // A font size changed: the activity and its map are made again, after the hand moved the map.
+            val (zoom, second) = phone.onMain {
+                first.close()
+                phone.map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(zurich.latitude, zurich.longitude)))
+                phone.map.cameraPosition.zoom to MapCamera(phone.map, phone.view, testController(scope), memory, frames)
+            }
+            phone.onMain {
+                second.applyFocus(MapFocusRequest(bern, token = 1))
+                second.applyZoom(MapZoomRequest(steps = 1, token = 1))
+            }
+            settle()
+            phone.onMain {
+                val position = phone.map.cameraPosition
+                assertEquals(zurich.latitude, position.target!!.latitude, 1e-6)
+                assertEquals(zoom, position.zoom, 1e-9)
+                second.close()
+            }
+        } finally {
+            frames.cancel()
+            scope.cancel()
+        }
+    }
+
     /** The camera of a phone's map opened on Zürich, tilted as the app opens it. */
     private fun withCamera(test: (PhoneMap, MapCamera) -> Unit) = withPhoneMap { phone ->
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -98,6 +174,4 @@ class MapCameraTest {
             scope.cancel()
         }
     }
-
-
 }

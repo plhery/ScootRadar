@@ -39,11 +39,19 @@ import org.maplibre.android.maps.MapLibreMapOptions
 // ScooterMapView's makeUIView, from ios/ScootRadar/Views/ScooterMapView.swift.
 
 /**
- * The camera the map last came to rest on, which a recreated activity opens on. The view model keeps it, so it
- * goes with the process: a new launch opens at the start place, as the iPhone's does (X-AD18).
+ * The camera the map last came to rest on, which a recreated activity opens on, and the requests it has taken. The
+ * view model keeps it, so it goes with the process: a new launch opens at the start place, as the iPhone's does
+ * (X-AD18).
  */
 class MapCameraMemory {
     var position: CameraPosition? = null
+
+    /**
+     * The last focus and zoom step taken. The iPhone's map lives as long as its screen and takes each token once;
+     * a recreated map must not take the controller's last request again.
+     */
+    var focusToken: Int? = null
+    var zoomToken: Int? = null
 }
 
 /**
@@ -134,8 +142,15 @@ fun ScooterMap(
         }
         val memoryCallbacks = object : ComponentCallbacks2 {
             override fun onTrimMemory(level: Int) {
+                // The iPhone's memory warning: the phone short of memory, the app running or not. Going to the
+                // background (UI_HIDDEN, BACKGROUND) is not one, and keeps the tiles for the return.
                 @Suppress("DEPRECATION")
-                if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) view.onLowMemory()
+                if (level == ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW ||
+                    level == ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL ||
+                    level >= ComponentCallbacks2.TRIM_MEMORY_MODERATE
+                ) {
+                    view.onLowMemory()
+                }
             }
 
             override fun onConfigurationChanged(newConfig: Configuration) = Unit

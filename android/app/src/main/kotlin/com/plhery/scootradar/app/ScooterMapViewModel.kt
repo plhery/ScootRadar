@@ -1,5 +1,6 @@
 package com.plhery.scootradar.app
 
+import android.app.Activity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -65,6 +66,12 @@ class ScooterMapViewModel(
 
     private var hasStarted = false
 
+    /**
+     * The activity is being made again for a new configuration: a font size, a language, a density. The iPhone's
+     * scene keeps its phase through such a change, so it is neither a leave nor a return.
+     */
+    private var recreating = false
+
     /** The screen's first appearance starts the controller; each later one is a return to the foreground. */
     override fun onStart(owner: LifecycleOwner) {
         if (!hasStarted) {
@@ -72,6 +79,8 @@ class ScooterMapViewModel(
             analytics.track()
             analytics.track("app_open")
             controller.start()
+        } else if (recreating) {
+            recreating = false
         } else {
             analytics.track("app_foreground")
             controller.becameActive()
@@ -79,6 +88,10 @@ class ScooterMapViewModel(
     }
 
     override fun onStop(owner: LifecycleOwner) {
+        if ((owner as? Activity)?.isChangingConfigurations == true) {
+            recreating = true
+            return
+        }
         controller.becameInactive()
     }
 

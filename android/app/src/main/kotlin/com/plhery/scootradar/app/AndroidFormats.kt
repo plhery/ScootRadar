@@ -8,6 +8,7 @@ import android.icu.text.ListFormatter
 import android.icu.util.Currency
 import android.icu.util.MeasureUnit
 import android.icu.util.TimeZone
+import android.provider.Settings
 import com.plhery.scootradar.core.model.ScooterLengthUnit
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -72,11 +73,18 @@ class AndroidFormats(private val context: Context) {
 
     /**
      * The instant by the locale's pattern for the ICU skeleton, in the zone. The hour of "j" follows the phone's
-     * 12- or 24-hour setting, as the iPhone's follows its own (UI-401).
+     * 12- or 24-hour setting where one is chosen, as the iPhone's follows its own (UI-401), and otherwise the
+     * locale's, which carries the phone's region: an English app in Switzerland writes 16:13. Android's
+     * is24HourFormat would ask the app's own locale, "en", without the region.
      */
     fun skeleton(skeleton: String, instant: Instant, zone: ZoneId, locale: Locale): String {
-        val hour = if (android.text.format.DateFormat.is24HourFormat(context)) "H" else "h"
-        return DateFormat.getInstanceForSkeleton(skeleton.replace("j", hour), locale)
+        val hour = when (Settings.System.getString(context.contentResolver, Settings.System.TIME_12_24)) {
+            "24" -> "H"
+            "12" -> "h"
+            else -> null
+        }
+        val pattern = if (hour == null) skeleton else skeleton.replace("j", hour)
+        return DateFormat.getInstanceForSkeleton(pattern, locale)
             .apply { timeZone = TimeZone.getTimeZone(zone.id) }
             .format(Date.from(instant))
     }

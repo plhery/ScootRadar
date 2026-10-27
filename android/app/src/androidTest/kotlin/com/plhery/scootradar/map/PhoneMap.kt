@@ -1,5 +1,7 @@
 package com.plhery.scootradar.map
 
+import android.os.SystemClock
+import android.view.MotionEvent
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.test.core.app.ActivityScenario
@@ -26,6 +28,30 @@ import java.util.concurrent.TimeUnit
 /** An iPhone's map of 390×844 points, as a test has it. */
 class PhoneMap(val scenario: ActivityScenario<ComponentActivity>, val view: ScooterMapView, val map: MapLibreMap) {
     val projection = MapLibreProjection(map, view)
+
+    /** Gives the map another size, in points, as a window or a fold gives it one. */
+    fun resize(width: Int, height: Int) = onMain {
+        view.layoutParams = view.layoutParams.apply {
+            this.width = (width * RATIO).toInt()
+            this.height = (height * RATIO).toInt()
+        }
+    }
+
+    /** A finger drawn down the map by that many points, as a hand pans it. */
+    fun drag(points: Int) = onMain {
+        val start = SystemClock.uptimeMillis()
+        // Clear of the screen's edges, where the gesture detector takes no touch: the map runs past them.
+        val x = view.width / 4f
+        val y = view.height / 8f
+        fun event(action: Int, step: Int) =
+            MotionEvent.obtain(start, start + step * 16L, action, x, y + points * RATIO * step / STEPS, 0).also {
+                view.dispatchTouchEvent(it)
+                it.recycle()
+            }
+        event(MotionEvent.ACTION_DOWN, 0)
+        for (step in 1..STEPS) event(MotionEvent.ACTION_MOVE, step)
+        event(MotionEvent.ACTION_UP, STEPS)
+    }
 
     /** Runs on the main thread, as the map must be used. */
     fun <T> onMain(block: () -> T): T {
@@ -100,4 +126,5 @@ fun settle() {
 }
 
 private const val RATIO = 2f
+private const val STEPS = 20
 private const val BLANK = """{"version":8,"sources":{},"layers":[{"id":"land","type":"background","paint":{"background-color":"#eef0f4"}}]}"""

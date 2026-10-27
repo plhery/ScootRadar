@@ -118,5 +118,10 @@ class AppContainerTest {
         assertEquals("4:13\u202FPM", ScooterDateFormat.skeleton("jm", time, zurich, us))
         Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, "24")
         assertEquals("16:13", ScooterDateFormat.skeleton("jm", time, zurich, us))
+        // Left to the locale, the hour is the launch locale's, which carries the phone's region, and not the
+        // app's own "en": English in Switzerland writes 24-hour times.
+        Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, null)
+        assertEquals("16:13", ScooterDateFormat.skeleton("jm", time, zurich, Locale.forLanguageTag("en-CH")))
+        assertEquals("4:13\u202FPM", ScooterDateFormat.skeleton("jm", time, zurich, us))
     }
 }

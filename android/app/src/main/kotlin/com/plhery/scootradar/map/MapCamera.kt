@@ -60,8 +60,6 @@ class MapCamera(
     /** The safe area, which a focus on a place keeps the place out from under at the top. */
     private var safeArea = MapInsets.zero
 
-    private var lastFocusToken: Int? = null
-    private var lastZoomToken: Int? = null
     private var focusUnderWay: FocusUnderWay? = null
     private var moveForNewSizeWaiting: Job? = null
 
@@ -70,6 +68,12 @@ class MapCamera(
 
     /** The camera is being moved by this class: MapLibre's idle after each step isn't the map at rest. */
     private var moving = false
+
+    /**
+     * The viewport last told to the controller. MapLibre's idle for a move's last step comes after the move has
+     * told it, and tells it the same again: the iPhone's regionDidChange comes once a move (MAP-053).
+     */
+    private var lastViewport: Triple<MapRegion, Int, Double>? = null
 
     private val idle = MapLibreMap.OnCameraIdleListener { if (!moving) regionDidChange() }
     private val moveStarted = MapLibreMap.OnCameraMoveStartedListener { reason ->
@@ -113,10 +117,10 @@ class MapCamera(
 
     /** Moves the map to the place asked for, once per token, as soon as the map has a size (MAP-039–041). */
     fun applyFocus(request: MapFocusRequest?) {
-        if (request == null || request.token == lastFocusToken) return
+        if (request == null || request.token == memory.focusToken) return
         // The request waits for the layout; the first region change then applies it (MAP-040).
         if (view.width == 0 || view.height == 0) return
-        lastFocusToken = request.token
+        memory.focusToken = request.token
         focusUnderWay = FocusUnderWay(request)
         move(request)
     }
@@ -126,8 +130,8 @@ class MapCamera(
      * its turn, and what is shown where a move to a place shows it stays there.
      */
     fun applyZoom(request: MapZoomRequest?) {
-        if (request == null || request.token == lastZoomToken) return
-        lastZoomToken = request.token
+        if (request == null || request.token == memory.zoomToken) return
+        memory.zoomToken = request.token
         if (view.width == 0 || view.height == 0) return
         // A step from the keyboard moves the map as the person's hand does.
         focusUnderWay = null
@@ -227,6 +231,9 @@ class MapCamera(
         val region = MapZoom.region(of = projection.visibleMapRect)
         val zoomLevel = MapZoom.level(on = projection)
         val zoom = MapZoom.apiZoom(zoomLevel)
+        val viewport = Triple(region, zoom, zoomLevel)
+        if (viewport == lastViewport) return
+        lastViewport = viewport
         // After the map's own work, as the iPhone's Task on the main actor.
         view.post { controller.updateViewport(region, zoom, zoomLevel) }
     }
