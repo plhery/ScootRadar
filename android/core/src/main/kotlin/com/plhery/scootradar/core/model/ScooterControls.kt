@@ -6,8 +6,8 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 
-// RidePriceFormatter, ScooterCreditsList's sources and ScooterLinks from ios/ScootRadar/Views/ScooterControls.swift;
-// the rest of that file is views.
+// RidePriceFormatter, ScooterCreditsList's sources, ScooterLinks and PartsFlow's frames from
+// ios/ScootRadar/Views/ScooterControls.swift; the rest of that file is views.
 
 object RidePriceFormatter {
     private val isoDay = Regex("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})")
@@ -131,5 +131,45 @@ object ScooterLinks {
                 append('%').append("%02X".format(byte.toInt() and 0xFF))
             }
         }
+    }
+}
+
+/**
+ * Lays out its parts as the words of a paragraph: side by side while they fit, and the next on a new row when it
+ * doesn't. A part is never broken, unless it is wider than a row on its own; it then takes a row of its own and
+ * wraps inside it. The folded panel's line lays out its parts so.
+ */
+object PartsFlow {
+    /**
+     * Where each part goes, row after row, in a `width`, from the size each takes on one line and the size
+     * `wrapped` gives one wrapped to a width.
+     */
+    fun frames(
+        of: List<ScreenSize>,
+        width: Double,
+        spacing: Double,
+        wrapped: (Int, Double) -> ScreenSize,
+    ): List<ScreenRect> {
+        val frames = mutableListOf<ScreenRect>()
+        var x = 0.0
+        var y = 0.0
+        var rowHeight = 0.0
+        for ((index, oneLine) in of.withIndex()) {
+            var size = oneLine
+            if (x > 0 && x + spacing + size.width > width) {
+                y += rowHeight
+                x = 0.0
+                rowHeight = 0.0
+            }
+            if (size.width > width) {
+                // Wider than a row: it wraps, in a row of its own.
+                size = wrapped(index, width)
+            }
+            val originX = if (x > 0) x + spacing else 0.0
+            frames += ScreenRect(originX, y, size.width, size.height)
+            x = originX + size.width
+            rowHeight = swiftMax(rowHeight, size.height)
+        }
+        return frames
     }
 }

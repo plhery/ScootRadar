@@ -25,11 +25,13 @@ import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.MapFocusRequest
 import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.PartsFlow
 import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.RentalCurfew
 import com.plhery.scootradar.core.model.RideEstimateDuration
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
@@ -42,10 +44,17 @@ import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDockSummary
 import com.plhery.scootradar.core.model.ScooterFilterSummary
 import com.plhery.scootradar.core.model.ScooterFiltering
+import com.plhery.scootradar.core.model.ScooterFold
+import com.plhery.scootradar.core.model.ScooterKeyCommand
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterLinks
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
+import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
+import com.plhery.scootradar.core.model.ScooterMapCameraPolicy.FoldSide
+import com.plhery.scootradar.core.model.ScooterMapLink
+import com.plhery.scootradar.core.model.ScooterMenuBar
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterProviderCoverage
 import com.plhery.scootradar.core.model.ScooterProviderHealth
@@ -53,21 +62,27 @@ import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
+import com.plhery.scootradar.core.model.ScooterReviewPrompt
 import com.plhery.scootradar.core.model.ScooterRidePricing
 import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.core.model.ScooterSeasonalPause
 import com.plhery.scootradar.core.model.ScooterWalkTarget
+import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.ScreenSize
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.addingTimeInterval
 import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.core.search.KeyboardOverlap
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import java.util.TimeZone
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -2682,6 +2697,575 @@ class ScooterMapControllerTest {
         model.setRidePass(ProviderRidePass(enabled = true, freeUnlock = true), Voi)
         assertEquals(listOf(Voi), model.passProviders)
     }
+
+    /** The layout of a window `width` points across, from either layout. */
+    private fun layouts(
+        width: Double,
+        regularWidth: Boolean = true,
+        regularHeight: Boolean = true,
+        largeText: Boolean = false,
+    ): List<ScooterChromeLayout> = listOf(ScooterChromeLayout.Dock, ScooterChromeLayout.Panel).map {
+        ScooterChromeLayout.resolve(
+            width = width,
+            regularWidth = regularWidth,
+            regularHeight = regularHeight,
+            largeText = largeText,
+            current = it,
+        )
+    }
+
+    private val dockBoth = listOf(ScooterChromeLayout.Dock, ScooterChromeLayout.Dock)
+    private val panelBoth = listOf(ScooterChromeLayout.Panel, ScooterChromeLayout.Panel)
+    private val asItWas = listOf(ScooterChromeLayout.Dock, ScooterChromeLayout.Panel)
+
+    @Test
+    fun everyPhoneKeepsItsDockUprightAndSideways() {
+        for (largeText in listOf(false, true)) {
+            // Upright an iPhone is compact across; the widest is 440 pt.
+            for (width in listOf(320.0, 375.0, 390.0, 393.0, 402.0, 414.0, 428.0, 430.0, 440.0)) {
+                assertEquals("$width", dockBoth, layouts(width, regularWidth = false, largeText = largeText))
+                // However it is described, it is narrower than a panel and a map.
+                assertEquals("$width", dockBoth, layouts(width, largeText = largeText))
+            }
+            // Sideways it is compact up and down, the larger ones regular across.
+            for (width in listOf(568.0, 667.0, 736.0, 812.0, 844.0, 852.0, 874.0, 896.0, 926.0, 932.0, 956.0)) {
+                assertEquals(
+                    "$width",
+                    dockBoth,
+                    layouts(width, regularWidth = false, regularHeight = false, largeText = largeText),
+                )
+                assertEquals("$width", dockBoth, layouts(width, regularHeight = false, largeText = largeText))
+            }
+        }
+    }
+
+    @Test
+    fun theDuoKeepsItsDockOnItsCoverAndUprightInside() {
+        // The cover upright and sideways, the inner display upright, and with
+        // its bar down the side: too narrow whatever the size classes say.
+        for (width in listOf(466.0, 678.0, 330.0, 669.0)) {
+            for (largeText in listOf(false, true)) {
+                assertEquals("$width", dockBoth, layouts(width, largeText = largeText))
+                assertEquals("$width", dockBoth, layouts(width, regularWidth = false, largeText = largeText))
+            }
+        }
+    }
+
+    @Test
+    fun theOpenDuoShowsThePanel() {
+        // 951 pt across, less its 60 pt bar down the side.
+        assertEquals(panelBoth, layouts(891.0))
+        assertEquals(panelBoth, layouts(891.0, largeText = true))
+    }
+
+    @Test
+    fun anIPadShowsThePanelWhenTheMapStillHasRoomBesideIt() {
+        // iPad mini upright keeps the dock, even turned from sideways.
+        assertEquals(dockBoth, layouts(744.0))
+        assertEquals(dockBoth, layouts(744.0, largeText = true))
+        for (width in listOf(820.0, 1032.0, 1180.0, 1376.0)) {
+            assertEquals("$width", panelBoth, layouts(width))
+            assertEquals("$width", panelBoth, layouts(width, largeText = true))
+        }
+        // A window compact one way or the other has the dock, however wide.
+        assertEquals(dockBoth, layouts(1376.0, regularWidth = false))
+        assertEquals(dockBoth, layouts(1376.0, regularHeight = false))
+    }
+
+    @Test
+    fun aWindowResizedAcrossTheThresholdDoesNotFlipBackAndForth() {
+        // A 380 pt panel and 380 pt of map: the panel opens with 20 pt to
+        // spare, and stays until the map would get less than 380.
+        assertEquals(asItWas, layouts(779.0))
+        assertEquals(panelBoth, layouts(780.0))
+        assertEquals(asItWas, layouts(760.0))
+        assertEquals(dockBoth, layouts(759.0))
+
+        // With very large text the panel is 420 pt.
+        assertEquals(380.0, ScooterChromeLayout.panelWidth(largeText = false), 0.0)
+        assertEquals(420.0, ScooterChromeLayout.panelWidth(largeText = true), 0.0)
+        assertEquals(asItWas, layouts(819.0, largeText = true))
+        assertEquals(panelBoth, layouts(820.0, largeText = true))
+        assertEquals(asItWas, layouts(800.0, largeText = true))
+        assertEquals(dockBoth, layouts(799.0, largeText = true))
+    }
+
+    @Test
+    fun aLinkToACityOpensItLikeTheSearchAndTheFirstFixLeavesTheMapThere() = runTest {
+        val bern = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:bern" })
+        val link = ScooterMapLink(origin = GeoPoint(latitude = bern.center.latitude, longitude = bern.center.longitude))
+        // The link may open the app before it starts locating, or after.
+        for (linkFirst in listOf(true, false)) {
+            val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse)
+            val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = manager)
+            if (linkFirst) {
+                model.open(link)
+                model.start()
+            } else {
+                model.start()
+                model.open(link)
+            }
+            val linkedFocus = unwrap(model.focusRequest.value)
+            assertEquals("link first: $linkFirst", bern.center, linkedFocus.point)
+            assertEquals("link first: $linkFirst", ScooterSearchBarState.Place(bern.destination), model.searchBarState)
+
+            model.locationsUpdated(listOf(zurichFix))
+            assertEquals("link first: $linkFirst", linkedFocus, model.focusRequest.value)
+            assertEquals(zurichFix.coordinate, model.userLocation.value)
+            assertEquals(NearbyOrigin.SearchedDestination(bern.destination), model.activeOrigin)
+        }
+    }
+
+    @Test
+    fun aLinkToAnyOtherPointMovesTheMapWithoutChoosingAPlace() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        val point = GeoPoint(latitude = 46.2, longitude = 6.15)
+        model.open(ScooterMapLink(origin = point, minimumBattery = 60))
+        val focus = unwrap(model.focusRequest.value)
+        assertEquals(point, focus.point)
+        assertFalse(focus.keepsZoom)
+        assertNull(model.searchedDestination.value)
+        assertEquals(60.0, model.minimumBattery.value, 0.0)
+    }
+
+    @Test
+    fun aLinkWithoutAPlaceKeepsTheMapWhereItIs() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        model.open(ScooterMapLink())
+        assertNull(model.focusRequest.value)
+        assertEquals(0.0, model.minimumBattery.value, 0.0)
+    }
+
+    /**
+     * The card of what is chosen on the map opens in the panel, so choosing opens a folded panel. Nothing else
+     * does: the rider folded it.
+     */
+    @Test
+    fun choosingAScooterOrABayUnfoldsThePanelAndNothingElseDoes() = runTest {
+        val bay = ScooterParking(
+            id = "dott:bay", provider = "dott", name = "Rue Faidherbe",
+            latitude = 47.3769, longitude = 8.5417, mandatory = true,
+        )
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(scooter(id = "one", provider = "lime"), scooter(id = "two", provider = "bird")),
+                parking = listOf(bay),
+            ),
+        )
+        val model = makeController(api)
+        assertFalse(model.isPanelCollapsed.value)
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+
+        model.setPanelCollapsed(true)
+        model.showProviders(setOf(Lime))
+        model.showAllProviders()
+        model.refresh()
+        val refreshed = waitUntil { api.calls == 2 && !model.isLoading.value }
+        assertTrue(refreshed)
+        model.clearSelection()
+        assertTrue(model.isPanelCollapsed.value)
+
+        model.selectScooter("lime:one")
+        assertFalse(model.isPanelCollapsed.value)
+
+        // Folded with a card open, the panel stays folded as the card closes,
+        // and opens for the next scooter.
+        model.setPanelCollapsed(true)
+        model.selectScooter(null)
+        assertTrue(model.isPanelCollapsed.value)
+        model.selectScooter("bird:two")
+        assertFalse(model.isPanelCollapsed.value)
+
+        model.setPanelCollapsed(true)
+        model.selectParking(bay.id)
+        assertFalse(model.isPanelCollapsed.value)
+        model.setPanelCollapsed(true)
+        model.clearSelection()
+        assertTrue(model.isPanelCollapsed.value)
+    }
+
+    /**
+     * The line wraps as a paragraph does, but between its parts: "6 min ago" goes whole to the next row rather
+     * than leave "6" at the end of the first.
+     */
+    @Test
+    fun theFoldedLineWrapsBetweenItsPartsAndNeverInsideOne() {
+        val row = 20.0
+        fun frames(widths: List<Double>, width: Double): List<ScreenRect> = PartsFlow.frames(
+            of = widths.map { ScreenSize(it, row) },
+            width = width,
+            spacing = 4.0,
+            wrapped = { index, across -> ScreenSize(across, row * ceil(widths[index] / across)) },
+        )
+
+        // Side by side while they fit, with a space between.
+        assertEquals(
+            listOf(rect(0, 0, 100, row), rect(104, 0, 50, row), rect(158, 0, 80, row)),
+            frames(listOf(100.0, 50.0, 80.0), 300.0),
+        )
+        // The part that doesn't fit the rest of the row starts the next one, whole.
+        assertEquals(
+            listOf(rect(0, 0, 100, row), rect(104, 0, 50, row), rect(0, row, 150, row)),
+            frames(listOf(100.0, 50.0, 150.0), 300.0),
+        )
+        // Only a part wider than a row wraps, in rows of its own.
+        assertEquals(
+            listOf(rect(0, 0, 100, row), rect(0, row, 300, 2 * row), rect(0, 3 * row, 50, row)),
+            frames(listOf(100.0, 450.0, 50.0), 300.0),
+        )
+        // Nothing to lay out takes no room.
+        assertEquals(emptyList<ScreenRect>(), frames(emptyList(), 300.0))
+    }
+
+    // The fold of a partly open iPhone Duo.
+
+    @Test
+    fun theFoldIsTheActiveDivisionMovedIntoWindowCoordinates() {
+        val screen = rect(0, 24, 669, 927)
+        assertEquals(rect(0, 465, 669, 20), ScooterFold.frame(among = listOf(rect(0, 441, 669, 20)), container = screen))
+        assertNull(ScooterFold.frame(among = emptyList(), container = screen))
+        // Flat, a fold has no width.
+        assertNull(ScooterFold.frame(among = listOf(rect(465, 0, 0, 669)), container = screen))
+        assertTrue(ScooterFold.isAcross(rect(0, 465, 669, 20)))
+        assertFalse(ScooterFold.isAcross(rect(465, 0, 20, 669)))
+    }
+
+    @Test
+    fun standingLikeALaptopTheSearchBarStartsUnderTheFold() {
+        val upright = rect(0, 30, 669, 921)
+        assertEquals(455.0, ScooterFold.chromeTop(below = rect(0, 465, 669, 20), container = upright), 0.0)
+        assertEquals(0.0, ScooterFold.chromeTop(below = null, container = upright), 0.0)
+        assertEquals(0.0, ScooterFold.chromeTop(below = rect(465, 0, 20, 669), container = upright), 0.0)
+    }
+
+    @Test
+    fun openLikeABookThePanelKeepsToItsHalf() {
+        val fold = rect(465, 0, 20, 669)
+        // The status bar on the trailing side: the panel has room to spare.
+        assertEquals(
+            380.0,
+            ScooterFold.panelWidth(380.0, beside = fold, container = rect(0, 0, 891, 669), inset = 16.0, rightToLeft = false),
+            0.0,
+        )
+        // On the leading side, with a wider fold, the panel stops short of it.
+        assertEquals(
+            379.0,
+            ScooterFold.panelWidth(
+                380.0, beside = rect(455, 0, 40, 669),
+                container = rect(60, 0, 891, 669), inset = 16.0, rightToLeft = false,
+            ),
+            0.0,
+        )
+        // Right to left the panel is on the right.
+        assertEquals(
+            379.0,
+            ScooterFold.panelWidth(
+                380.0, beside = rect(456, 0, 40, 669),
+                container = rect(0, 0, 891, 669), inset = 16.0, rightToLeft = true,
+            ),
+            0.0,
+        )
+        assertEquals(
+            ScooterFold.minimumPanelWidth,
+            ScooterFold.panelWidth(380.0, beside = rect(200, 0, 20, 669), container = rect(0, 0, 891, 669), inset = 16.0, rightToLeft = false),
+            0.0,
+        )
+        assertEquals(
+            380.0,
+            ScooterFold.panelWidth(380.0, beside = rect(0, 300, 891, 20), container = rect(0, 0, 891, 669), inset = 16.0, rightToLeft = false),
+            0.0,
+        )
+        assertEquals(
+            380.0,
+            ScooterFold.panelWidth(380.0, beside = null, container = rect(0, 0, 891, 669), inset = 16.0, rightToLeft = false),
+            0.0,
+        )
+    }
+
+    @Test
+    fun theMapShowsOnTheFarSideOfAFoldFromThePanelAndAboveOneAcrossIt() {
+        val book = rect(465, 0, 20, 669)
+        val panel = rect(16, 16, 380, 300)
+        assertEquals(FoldSide.Right, ScooterMapCameraPolicy.side(of = book, panel = panel, rightToLeft = false))
+        assertEquals(
+            FoldSide.Left,
+            ScooterMapCameraPolicy.side(of = book, panel = panel.offsetBy(dx = 539.0, dy = 0.0), rightToLeft = true),
+        )
+        assertEquals(FoldSide.Right, ScooterMapCameraPolicy.side(of = book, panel = null, rightToLeft = false))
+        assertEquals(FoldSide.Left, ScooterMapCameraPolicy.side(of = book, panel = null, rightToLeft = true))
+        assertEquals(FoldSide.Above, ScooterMapCameraPolicy.side(of = rect(0, 465, 669, 20), panel = null, rightToLeft = false))
+    }
+
+    @Test
+    fun besideAFoldTheMapCentresInTheHalfItShowsOn() {
+        // Open like a book: beside the panel, then past the fold.
+        val besidePanel = rect(396, 0, 555, 669)
+        val book = rect(465, 0, 20, 669)
+        assertEquals(
+            rect(485, 0, 466, 669),
+            ScooterMapCameraPolicy.visibleRect(besidePanel, safeTop = 0.0, beside = book, on = FoldSide.Right),
+        )
+        assertEquals(
+            rect(0, 0, 465, 669),
+            ScooterMapCameraPolicy.visibleRect(rect(0, 0, 555, 669), safeTop = 0.0, beside = book, on = FoldSide.Left),
+        )
+
+        // Standing like a laptop: the search bar and the dock lie under the
+        // fold and cover nothing above it.
+        val laptop = rect(0, 465, 669, 20)
+        val betweenSearchAndDock = rect(0, 560, 669, 200)
+        assertEquals(
+            rect(0, 30, 669, 435),
+            ScooterMapCameraPolicy.visibleRect(betweenSearchAndDock, safeTop = 30.0, beside = laptop, on = FoldSide.Above),
+        )
+        // A search bar above the fold still covers the map.
+        assertEquals(
+            rect(0, 110, 669, 355),
+            ScooterMapCameraPolicy.visibleRect(rect(0, 110, 669, 650), safeTop = 30.0, beside = laptop, on = FoldSide.Above),
+        )
+
+        // With hardly any room left beside it, the fold is let be.
+        assertEquals(
+            besidePanel,
+            ScooterMapCameraPolicy.visibleRect(besidePanel, safeTop = 0.0, beside = rect(920, 0, 20, 669), on = FoldSide.Right),
+        )
+    }
+
+    // The keyboard's shortcuts.
+
+    @Test
+    fun theKeyboardsShortcutsEachHaveTheirOwnKeys() {
+        val keys = ScooterKeyCommand.entries.map { "${it.modifiers} ${it.key.character}" }
+        assertEquals("$keys", keys.size, keys.toSet().size)
+        assertEquals(setOf(ScooterKeyCommand.Modifier.Command), ScooterKeyCommand.Search.modifiers)
+        assertEquals(ScooterKeyCommand.Search.key, ScooterKeyCommand.Filters.key)
+        assertEquals(
+            setOf(ScooterKeyCommand.Modifier.Command, ScooterKeyCommand.Modifier.Option),
+            ScooterKeyCommand.Filters.modifiers,
+        )
+        assertEquals(ScooterKeyCommand.Key.escape, ScooterKeyCommand.Close.key)
+        assertEquals('\\', ScooterKeyCommand.Fold.key.character)
+        // Only "/" and Esc go without ⌘.
+        assertEquals(
+            setOf(ScooterKeyCommand.SearchWithSlash, ScooterKeyCommand.Close),
+            ScooterKeyCommand.entries.filter { ScooterKeyCommand.Modifier.Command !in it.modifiers }.toSet(),
+        )
+    }
+
+    /**
+     * The keys a sheet or a popover doesn't take go on to the screen that presented it: while the filters or
+     * Settings are open the screen makes none, so that a "/" typed there, or an Esc meant for it, stays there.
+     */
+    @Test
+    fun theShortcutsStandDownWhileTheFiltersOrSettingsAreOpen() {
+        for (layout in listOf(ScooterChromeLayout.Dock, ScooterChromeLayout.Panel)) {
+            for (isSearching in listOf(false, true)) {
+                for (hasCard in listOf(false, true)) {
+                    val situation = ScooterKeyCommand.Situation(
+                        layout = layout,
+                        isSearching = isSearching,
+                        isPresenting = true,
+                        hasCard = hasCard,
+                    )
+                    assertEquals("$situation", emptyList<ScooterKeyCommand>(), ScooterKeyCommand.available(situation))
+                }
+            }
+        }
+    }
+
+    @Test
+    fun slashSearchesOnlyWhileTheSearchsFieldIsntThereToTakeIt() {
+        val atRest = ScooterKeyCommand.available(ScooterKeyCommand.Situation(layout = ScooterChromeLayout.Panel))
+        assertTrue(ScooterKeyCommand.SearchWithSlash in atRest)
+        assertTrue(ScooterKeyCommand.Search in atRest)
+
+        val searching = ScooterKeyCommand.available(
+            ScooterKeyCommand.Situation(layout = ScooterChromeLayout.Panel, isSearching = true),
+        )
+        assertFalse(ScooterKeyCommand.SearchWithSlash in searching)
+        // ⌘ keys aren't typed into the field: they still go.
+        assertTrue(ScooterKeyCommand.Search in searching)
+        assertTrue(ScooterKeyCommand.NearMe in searching)
+    }
+
+    @Test
+    fun escClosesTheSearchFirstThenTheCardAndIsLeftAloneWithNothingToClose() {
+        val panel = ScooterChromeLayout.Panel
+        val dock = ScooterChromeLayout.Dock
+        fun situation(layout: ScooterChromeLayout, isSearching: Boolean = false, hasCard: Boolean = false) =
+            ScooterKeyCommand.Situation(layout = layout, isSearching = isSearching, hasCard = hasCard)
+        assertEquals(
+            ScooterKeyCommand.Closing.Search,
+            ScooterKeyCommand.closing(situation(panel, isSearching = true, hasCard = true)),
+        )
+        assertEquals(
+            ScooterKeyCommand.Closing.Search,
+            ScooterKeyCommand.closing(situation(dock, isSearching = true, hasCard = true)),
+        )
+        assertEquals(ScooterKeyCommand.Closing.Card, ScooterKeyCommand.closing(situation(panel, hasCard = true)))
+        assertEquals(ScooterKeyCommand.Closing.Search, ScooterKeyCommand.closing(situation(dock, isSearching = true)))
+        assertNull(ScooterKeyCommand.closing(situation(panel)))
+
+        assertFalse(ScooterKeyCommand.Close in ScooterKeyCommand.available(situation(panel)))
+        assertTrue(ScooterKeyCommand.Close in ScooterKeyCommand.available(situation(dock, hasCard = true)))
+        assertTrue(ScooterKeyCommand.Close in ScooterKeyCommand.available(situation(dock, isSearching = true)))
+    }
+
+    /** The menu bar lists each shortcut once, with Settings in the app's menu; "/", ⌘= and Esc stand in for others or close, and stay off it. */
+    @Test
+    fun theMenuBarListsEveryShortcutButTheOnesThatStandInOnce() {
+        val listed = (ScooterMenuBar.map + ScooterMenuBar.view).flatten() + ScooterKeyCommand.Settings
+        assertEquals("$listed", listed.size, listed.toSet().size)
+        assertEquals(
+            setOf(ScooterKeyCommand.SearchWithSlash, ScooterKeyCommand.ZoomInWithoutShift, ScooterKeyCommand.Close),
+            ScooterKeyCommand.entries.toSet() - listed.toSet(),
+        )
+        assertEquals(AppleMapStyle.entries, ScooterMenuBar.view.first().mapNotNull { it.mapStyle })
+        // The iPhone's check that a phone shows no menu bar is the app's: Android has none of its own.
+    }
+
+    /**
+     * The keyboard's frame, turned into the window's coordinates, limits the search only when it covers the
+     * window's bottom.
+     */
+    @Test
+    fun theSearchEndsAboveOnlyAKeyboardThatCoversTheWindowsBottom() {
+        // A phone: the window is the screen, and the keyboard's top is where it was.
+        assertEquals(596.0, KeyboardOverlap.top(of = rect(0, 596, 402, 278), windowHeight = 874.0), 0.0)
+        // Its shortcuts bar alone, with a hardware keyboard.
+        assertEquals(1_312.0, KeyboardOverlap.top(of = rect(0, 1_312, 1_032, 64), windowHeight = 1_376.0), 0.0)
+        // Gone: below the window.
+        assertEquals(Double.POSITIVE_INFINITY, KeyboardOverlap.top(of = rect(0, 874, 402, 278), windowHeight = 874.0), 0.0)
+        // A Stage Manager window 200 pt down the screen, 700 tall, over a keyboard
+        // whose top is 820 down the screen: 620 into the window.
+        assertEquals(620.0, KeyboardOverlap.top(of = rect(-100, 620, 1_376, 300), windowHeight = 700.0), 0.0)
+        // The same window ending above the keyboard.
+        assertEquals(Double.POSITIVE_INFINITY, KeyboardOverlap.top(of = rect(-100, 760, 1_376, 300), windowHeight = 700.0), 0.0)
+        // A floating keyboard: an empty frame, or one over the middle of the window.
+        assertEquals(Double.POSITIVE_INFINITY, KeyboardOverlap.top(of = rect(0, 0, 0, 0), windowHeight = 874.0), 0.0)
+        assertEquals(Double.POSITIVE_INFINITY, KeyboardOverlap.top(of = rect(300, 400, 320, 250), windowHeight = 1_000.0), 0.0)
+    }
+
+    @Test
+    fun zoomingFromTheKeyboardAsksTheMapForAStepEachTime() = runTest {
+        val model = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            locationManager = FakeLocationManager(status = ScooterAuthorizationStatus.Denied),
+        )
+        assertNull(model.zoomRequest.value)
+        model.zoom(by = 1)
+        val first = model.zoomRequest.value
+        assertEquals(1, first?.steps)
+        model.zoom(by = 1)
+        assertEquals(1, model.zoomRequest.value?.steps)
+        assertNotEquals(first?.token, model.zoomRequest.value?.token)
+        model.zoom(by = -1)
+        assertEquals(-1, model.zoomRequest.value?.steps)
+
+        assertEquals(500.0, ScooterMapCameraPolicy.distance(1_000.0, zoomedBy = 1), 0.001)
+        assertEquals(2_000.0, ScooterMapCameraPolicy.distance(1_000.0, zoomedBy = -1), 0.001)
+    }
+
+    // Asking for a rating when the rider is back from a ride. The prompt counts the phone's days: the phone is in
+    // UTC, as on the iPhone's CI, so that the returns fall on the days the tests mean in any zone (in Adelaide,
+    // the next test's second return would be on the day after its first).
+
+    @Test
+    fun aReturnFromARideIsTheMomentOnceTheMapIsCalmWithAFreshFeed() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+
+            // Back within minutes: the rental mostly did not happen.
+            returnFromRide(model, api, after = 2.0 * 60, clock = clock)
+            assertEquals(0, model.reviewMoments.value)
+
+            // Back to the card of a scooter still on the map: the rider is choosing.
+            val id = unwrap(model.mapScooters.value.firstOrNull()?.id)
+            model.selectScooter(id)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertEquals(0, model.reviewMoments.value)
+
+            // That return was its one try; the next ride's return, to the map at rest, is the moment.
+            model.clearSelection()
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertEquals(1, model.reviewMoments.value)
+            assertTrue(model.reviewDue)
+            assertTrue(model.takeReviewMoment())
+            assertFalse(model.takeReviewMoment())
+
+            // This version asked.
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertEquals(1, model.reviewMoments.value)
+        }
+    }
+
+    @Test
+    fun aFailedRefreshKeepsTheRestOfTheDayFromAsking() = inUTC {
+        runTest {
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+
+            api.setFailure(ScooterAPIError.Offline())
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertNotNull(model.loadIssue.value)
+            assertEquals(0, model.reviewMoments.value)
+
+            // Back online later that day: still no ask.
+            api.setFailure(null)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertNull(model.loadIssue.value)
+            assertEquals(0, model.reviewMoments.value)
+
+            // The next day, a calm return asks.
+            clock.advance(86_400.0)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertEquals(1, model.reviewMoments.value)
+        }
+    }
+
+    /** A controller with a fresh feed on the map and two earlier days with one: the third day. */
+    private fun TestScope.reviewController(clock: TestClock): Pair<ScooterMapController, StubScooterAPI> {
+        val defaults = InMemoryScooterDefaults()
+        val earlier = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
+        earlier.noteUse(at = clock.now.addingTimeInterval(-2.0 * 86_400))
+        earlier.noteUse(at = clock.now.addingTimeInterval(-86_400.0))
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "one", provider = "lime"))))
+        val model = makeController(api, clock = clock, defaults = defaults)
+        model.refresh()
+        val loaded = waitUntil { model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        assertEquals("Not without a ride", 0, model.reviewMoments.value)
+        return model to api
+    }
+
+    /** "Open in", the app in the background for `after` seconds, then in front again until the refresh is in. */
+    private fun TestScope.returnFromRide(model: ScooterMapController, api: StubScooterAPI, after: Double, clock: TestClock) {
+        model.rentalOpened()
+        model.becameInactive()
+        clock.advance(after)
+        val calls = api.calls
+        model.becameActive()
+        val refreshed = waitUntil { api.calls == calls + 1 && !model.isLoading.value }
+        assertTrue(refreshed)
+    }
+
+    /** Runs `body` with the JVM's time zone, which ZoneId.systemDefault reads, set to UTC. */
+    private fun inUTC(body: () -> Unit) {
+        val zone = TimeZone.getDefault()
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+        try {
+            body()
+        } finally {
+            TimeZone.setDefault(zone)
+        }
+    }
+
+    /** A CGRect of whole points. */
+    private fun rect(x: Number, y: Number, width: Number, height: Number): ScreenRect =
+        ScreenRect(x.toDouble(), y.toDouble(), width.toDouble(), height.toDouble())
 
     private val zurichRegion =MapRegion(GeoPoint(47.3769, 8.5417), latitudeDelta = 0.01, longitudeDelta = 0.01)
 
