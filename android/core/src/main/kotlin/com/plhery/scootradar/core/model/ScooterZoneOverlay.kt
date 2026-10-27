@@ -11,9 +11,9 @@ import org.locationtech.jts.geom.LineString
 import org.locationtech.jts.geom.LinearRing
 import org.locationtech.jts.geom.MultiLineString
 import org.locationtech.jts.geom.Polygon
+import org.locationtech.jts.geom.TopologyException
 import org.locationtech.jts.geom.prep.PreparedGeometry
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory
-import org.locationtech.jts.geom.TopologyException
 import org.locationtech.jts.geom.util.GeometryFixer
 import org.locationtech.jts.index.strtree.STRtree
 import org.locationtech.jts.operation.overlayng.OverlayNG
@@ -65,7 +65,7 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
             x = corner.x, y = corner.y,
             width = (points.maxOfOrNull { it.x } ?: 0.0) - corner.x, height = (points.maxOfOrNull { it.y } ?: 0.0) - corner.y,
         )
-        // Near the corner, where a double has its centimetres to spare.
+        // Near the corner, as on the iPhone, where the union's round-off is the least.
         shapes = ScooterZoneKind.entries.flatMap { kind ->
             val ofKind = polygons.filter { it.kind == kind }
             ofKind.map { it.strength }.distinct().sorted().flatMap { strength ->

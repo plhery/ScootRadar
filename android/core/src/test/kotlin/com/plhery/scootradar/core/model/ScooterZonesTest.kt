@@ -168,6 +168,30 @@ class ScooterZoneOverlayTest {
     // What the renderer decides, which the map draws (Android only).
 
     @Test
+    fun aShapeAndItsEdgesGoBackToTheMapAsCoordinates() {
+        val frame = listOf(square(47.37, 8.54, size = 0.003)[0], square(47.371, 8.541)[0])
+        val overlay = ScooterZoneOverlay(zones = listOf(zone("voi:0", ScooterZoneKind.NoRide, frame)), isDark = false)
+        val shape = overlay.shapes.single()
+        fun extent(ring: List<GeoPoint>) =
+            listOf(ring.minOf { it.latitude }, ring.minOf { it.longitude }, ring.maxOf { it.latitude }, ring.maxOf { it.longitude })
+
+        // Its outline and then its hole, each closed.
+        val rings = overlay.rings(of = shape)
+        assertEquals(2, rings.size)
+        for ((ring, wanted) in rings.zip(listOf(listOf(47.37, 8.54, 47.373, 8.543), listOf(47.371, 8.541, 47.372, 8.542)))) {
+            assertEquals(5, ring.size)
+            assertEquals(ring.first(), ring.last())
+            for ((value, expected) in extent(ring).zip(wanted)) assertEquals(expected, value, 1e-9)
+        }
+        // Its edge, lines of the outline and of the hole.
+        val lines = overlay.lines(of = ScooterZoneRenderer(overlay).strokes(overlay.shapes, scale = 1.0).single().lines)
+        assertEquals(2, lines.size)
+        for ((line, ring) in lines.zip(rings)) {
+            for ((value, expected) in extent(line).zip(extent(ring))) assertEquals(expected, value, 1e-9)
+        }
+    }
+
+    @Test
     fun theColoursAreTheIPhonesOwn() {
         // ScooterZoneLook.color's components (ScooterZones.swift), red, green and blue, each to the nearest of
         // 255 steps.
