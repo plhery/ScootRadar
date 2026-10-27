@@ -110,7 +110,7 @@ const guide: Guide = {
             '**Raleigh-Durham International Airport (RDU)** lies outside the city, in unincorporated Wake County, by the Census Bureau’s boundaries. At 10:33 p.m. on 26 October the nearest available Spin scooter stood about 7 miles away. GoTriangle’s RDU Shuttle runs from the Regional Transit Center, Monday to Saturday from 6 a.m. to 6 p.m.; its Route 100 runs direct from downtown Raleigh after 6:30 p.m. on those days and all day on Sunday.',
           ],
         },
-        'Durham has scooters of its own: see the [Durham map](map:us:nc:Durham). Further north, [e-scooters in Richmond](guide:richmond) covers another city with Spin and Lime and a night stop.',
+        'Durham has scooters of its own: see [e-scooters in Durham](guide:durham) and the [Durham map](map:us:nc:Durham). Further north, [e-scooters in Richmond](guide:richmond) covers another city with Spin and Lime and a night stop.',
       ],
     },
     {
