@@ -15,6 +15,13 @@ export interface ScheduledFeed {
   paced?: boolean;
   /** An independently paced account within the host has its own collection slots. */
   concurrencyKey?: string;
+  /** Where in its idle interval it is collected, in [0, 1), when not where its id puts it (idPhase). */
+  idlePhase?: number;
+  /**
+   * Whether a collection started then is of its town's night, when the operator may hide its scooters:
+   * the next is then at its phase's hour the next day, not a whole idle interval on.
+   */
+  nightAt?: (time: number) => boolean;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -53,7 +60,7 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
   alwaysFast: (feed: T) => boolean;
   /** When a restored feed last started a successful collection, so a restart does not collect everything at once. */
   lastCollectedAt?: (feed: T) => number | undefined;
-  /** Where in the idle interval the feed's collections fall, in [0, 1): it spreads them out. */
+  /** Where in the idle interval the feed's collections fall, in [0, 1): its idlePhase, or idPhase by default. */
   phase?: (feed: T) => number;
   onStart?: (feed: T, reason: CollectionReason) => void;
 }
@@ -67,6 +74,7 @@ const WARM_UP_STAGE_MS = 15_000;
 // An idle feed on a paced host this long past its interval is woken: five minutes later, its interval
 // plus ten, it would expire (cadence.ts).
 const LATE_MS = 5 * 60_000;
+const DAY_MS = 24 * 60 * 60_000;
 
 /** A stable fraction in [0, 1) from the feed id (FNV-1a). */
 export function idPhase(id: string): number {
@@ -246,10 +254,11 @@ export class FeedScheduler<T extends ScheduledFeed> {
       const failures = this.failures.get(feed.id) ?? 1;
       return finishedAt + Math.min(retryMs * 2 ** (failures - 1), Math.max(retryMs, idleIntervalMs / 2));
     }
-    // The next time of the feed's phase at least an active interval away.
-    const phase = (this.options.phase ?? (candidate => idPhase(candidate.id)))(feed) * idleIntervalMs;
+    // The next time of the feed's phase at least an active interval away, or of its hour after a night.
+    const phase = (this.options.phase ?? (candidate => candidate.idlePhase ?? idPhase(candidate.id)))(feed) * idleIntervalMs;
     const earliest = startedAt + activeIntervalMs;
-    return earliest + ((((phase - earliest) % idleIntervalMs) + idleIntervalMs) % idleIntervalMs);
+    const period = feed.nightAt?.(startedAt) ? Math.min(idleIntervalMs, DAY_MS) : idleIntervalMs;
+    return earliest + ((((phase - earliest) % period) + period) % period);
   }
 
   private pump(): void {

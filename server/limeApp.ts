@@ -4,6 +4,8 @@ import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { request } from 'node:https';
 import { dirname, join, resolve } from 'node:path';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
+import { localClock } from '../src/lib/rentalCurfews';
+import { idPhase } from './feedScheduler';
 import { decodeLimeArea, limeAreaTiles, LIME_QUERY_INTERVAL_MS, LIME_IDLE_INTERVAL_MS, LIME_WATCH_MS } from './limeAreas';
 export { LIME_IDLE_INTERVAL_MS } from './limeAreas';
 import limeRegions from '../data/lime-app-regions.json';
@@ -341,6 +343,30 @@ let productionPool: LimeAccountPool | undefined;
 const pool = () => productionPool ??= new LimeAccountPool(readLimeAccounts());
 export const limeAccountRequests = () => productionPool?.requests ?? [];
 export const collectLimeRegion = (system: RegionalScooterSystem) => pool().collect(system);
+const DAY_MS = 24 * 60 * 60_000;
+// A Lime town's idle sweeps fall between 08:00 and 21:00 there.
+const SWEEP_DAY_FROM = 8 * 60;
+const SWEEP_DAY_UNTIL = 21 * 60;
+
+/**
+ * When a Lime group's idle sweeps fall (FeedScheduler): in its town's daytime, at the hour its id puts it
+ * or twelve hours on when that is between 21:00 and 08:00 there, and within a day after a sweep by night.
+ * The interval is three whole days, so a group keeps its hour, and a night's count stood for up to three
+ * days: Raleigh's and Cincinnati's groups, first swept on the deploy just after 00:30 there on 26 October
+ * 2026, and Knoxville's a day later, held 3 of Lime's 566, none of 236 and none of 208. Lime hides its
+ * scooters in Raleigh's and Cincinnati's night bans, and Knoxville's map is empty at night without one.
+ */
+export function limeDaytime(feedId: string, timeZone: string, now = Date.now()): { idlePhase: number; nightAt: (time: number) => boolean } {
+  const nightAt = (time: number) => {
+    const { minutes } = localClock(time, timeZone);
+    return minutes < SWEEP_DAY_FROM || minutes >= SWEEP_DAY_UNTIL;
+  };
+  // The scheduler counts phases from midnight UTC, so the turn falls at this time of a UTC day.
+  const at = idPhase(feedId) * LIME_IDLE_INTERVAL_MS;
+  const moved = nightAt(now - now % DAY_MS + at % DAY_MS) ? (at + DAY_MS / 2) % LIME_IDLE_INTERVAL_MS : at;
+  return { idlePhase: moved / LIME_IDLE_INTERVAL_MS, nightAt };
+}
+
 export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[], accounts?: LimeAccountPool) {
   const regions = new Map(systems.filter(s => s.limeAppMap).map(s => [s.id, s]));
   return feeds.map(feed => {
@@ -348,6 +374,7 @@ export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: 
     if (!s) return feed;
     const selected = accounts ?? pool();
     return { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, watchMs: LIME_WATCH_MS, paced: true,
+      ...s.timeZone ? limeDaytime(feed.id, s.timeZone) : {},
       concurrencyKey: `lime-account:${selected.accountFor(s.id).id}`, collect: () => selected.collect(s) };
   });
 }

@@ -124,7 +124,8 @@ looks:
   ([guide](binbin-app-map.md#pace-and-failures)), GCOO's, ATOM's and Whoosh's. Lime's
   are every three days, so that sweeping all its markets takes at most half of the
   requests a single account may send, even with several configured production
-  accounts ([guide](lime-app-map.md#cache-behaviour)). Each
+  accounts, in each town's daytime, and within a day after a sweep by night
+  ([guide](lime-app-map.md#cache-behaviour)). Each
   expires 10 minutes after its own interval and waits up to half of it between
   retries. The app maps read in a few requests keep the 20 minutes, so that one that
   stops answering is reported within half an hour. Bird's, Spin's and Bolt's own feeds

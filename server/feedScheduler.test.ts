@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; watchMs?: number }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; watchMs?: number; idleIntervalMs?: number; idlePhase?: number; nightAt?: (time: number) => boolean }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -171,6 +171,27 @@ it('spreads idle feeds over the interval by their phase', async () => {
     expect(idPhase('france:dott_fr_lyon')).toBeLessThan(1);
     expect(idPhase('france:dott_fr_lyon')).toBe(idPhase('france:dott_fr_lyon'));
   } finally { scheduler.stop(); }
+});
+
+it('collects an idle feed at the phase it gives, by default', async () => {
+  const { scheduler, times } = schedule([{ id: 'a', host: 'a', idlePhase: 0.5 }], { phase: undefined });
+  try {
+    await vi.advanceTimersByTimeAsync(31 * MINUTE);
+    expect(times('a')).toEqual([0, 10, 30]);
+  } finally { scheduler.stop(); }
+});
+
+it('collects an idle feed at its hour the next day after a collection by night, not a whole interval on', async () => {
+  const HOUR = 60 * MINUTE;
+  // T0 is 08:00 UTC, 32 hours into a three-day interval; a phase of 8 hours falls at 08:00 two days on.
+  const feed = { id: 'raleigh', host: 'lime', idleIntervalMs: 72 * HOUR, idlePhase: 8 / 72 };
+  const night = schedule([{ ...feed, nightAt: time => time === T0 }], { phase: undefined });
+  const day = schedule([{ ...feed, id: 'durham' }], { phase: undefined });
+  try {
+    await vi.advanceTimersByTimeAsync(50 * HOUR);
+    expect(night.times('raleigh')).toEqual([0, 24 * 60, 48 * 60]);
+    expect(day.times('durham')).toEqual([0, 48 * 60]);
+  } finally { night.scheduler.stop(); day.scheduler.stop(); }
 });
 
 it('collects a watched feed at once when its data is over a minute old, then every minute while watched', async () => {

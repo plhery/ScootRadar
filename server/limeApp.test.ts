@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
-import { LimeClient, LimeAccountPool, readLimeAccounts, withLimeAppCollectors, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { idPhase } from './feedScheduler';
+import { LimeClient, LimeAccountPool, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { withinCollection } from './sweeps';
 
@@ -187,6 +188,30 @@ describe('independent Lime production accounts', () => {
       expect(feed).toMatchObject({ host: 'web-production.lime.bike', paced: true, watchMs: 3 * 60_000,
         concurrencyKey: `lime-account:${pool.accountFor(systems[index].id).id}` });
     }
+  });
+
+  it('sweeps an idle town in its daytime: a turn at night there moves twelve hours on', () => {
+    const now = Date.UTC(2026, 9, 27, 12);
+    const local = (phase: number, offset: number) =>
+      ((Math.floor(phase * LIME_IDLE_INTERVAL_MS / 60_000 + 1e-6) + offset) % 1440 + 1440) % 1440;
+    const day = (minutes: number) => minutes >= 8 * 60 && minutes < 21 * 60;
+    for (const [timeZone, offset] of [['America/New_York', -240], ['Australia/Brisbane', 600]] as const) {
+      for (let i = 0; i < 200; i++) {
+        const id = `us:lime_test_${i}`;
+        const { idlePhase } = limeDaytime(id, timeZone, now);
+        expect(day(local(idlePhase, offset))).toBe(true);
+        if (day(local(idPhase(id), offset))) expect(idlePhase).toBe(idPhase(id));
+        else expect((idlePhase - idPhase(id) + 1) % 1).toBeCloseTo(1 / 6, 9);
+      }
+    }
+    // Raleigh's first sweep, at 00:46 there on 26 October 2026, was by night; the town total at 12:29 was not.
+    const { nightAt } = limeDaytime('us:lime_us_app_raleigh_003', 'America/New_York', now);
+    expect(nightAt(Date.UTC(2026, 9, 26, 4, 46))).toBe(true);
+    expect(nightAt(Date.UTC(2026, 9, 26, 16, 29))).toBe(false);
+    const feeds = withLimeAppCollectors([{ id: `test:${system.id}`, host: 'web-production.lime.bike' } as CollectableScooterFeed],
+      [{ ...system, timeZone: 'Europe/Prague' }], new LimeAccountPool([{ id: 'a', sessionPath: '/private/a.json' }]));
+    expect(feeds[0].idlePhase).toBeGreaterThanOrEqual(0);
+    expect(feeds[0].nightAt?.(Date.UTC(2026, 9, 27, 1))).toBe(true);
   });
 
   it('isolates a 429 and its Retry-After without moving the feed onto another account', async () => {

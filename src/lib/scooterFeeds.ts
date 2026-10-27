@@ -268,6 +268,10 @@ export interface CollectableScooterFeed {
   paced?: boolean;
   /** Independent Node scheduler slots for an account whose client enforces its own pace. */
   concurrencyKey?: string;
+  /** Where in its idle interval it is collected, when not where its id puts it (FeedScheduler). */
+  idlePhase?: number;
+  /** Whether a collection started then is of its town's night (FeedScheduler). */
+  nightAt?: (time: number) => boolean;
   /** Its GBFS documents, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
 }

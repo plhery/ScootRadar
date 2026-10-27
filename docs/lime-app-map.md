@@ -282,7 +282,15 @@ collections stalled, some past their 15-minute budget. Idle groups are swept eve
 (`LIME_IDLE_INTERVAL_MS`), not every two hours as the other app maps: every
 market Lime's rider map lists takes about 17,500 requests, a day at that pace,
 so the idle sweeps take about a third of the requests, and may take half
-(`npm run check:providers`): the rest is for the towns people look at. The seven reference windows select 13 groups with this cell
+(`npm run check:providers`): the rest is for the towns people look at. An idle
+sweep falls between 08:00 and 21:00 in its town, and a sweep by night there, as a
+new town's first or one someone asked for, is followed by one within a day, at the
+group's hour, not three days on (`limeDaytime` in `server/limeApp.ts`). Three days
+being whole days, a group keeps its hour, and a night's count stood: on 26 and 27
+October 2026, Raleigh's, Cincinnati's and Knoxville's first sweeps, on the deploys
+just after 00:30 there, held 3 of the 566 scooters Lime had in Raleigh the evening
+before, none of Cincinnati's 236 and none of Knoxville's 208. Lime hides its scooters in
+Raleigh's and Cincinnati's night bans, and Knoxville's map is empty at night without one. The seven reference windows select 13 groups with this cell
 coverage, compared with 23 using enclosing rectangles (see the public audit).
 Restored snapshots adopt these current coverage cells immediately while
 keeping their scooter observations and timestamps. Monitoring uses that idle
