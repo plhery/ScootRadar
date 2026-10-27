@@ -87,11 +87,15 @@ private fun continuousRect(width: Float, height: Float, r: Float): Path = Path()
 }
 
 /**
- * `.shadow(color:radius:x:y:)`. Core Animation's radius is the blur's standard deviation, about half of what Compose's
- * shadow (CSS's blur radius) takes.
+ * `.shadow(color:radius:x:y:)`. Core Animation blurs a shadow of radius r as Core Graphics' blur 2r, a bell 0.94 r
+ * wide; Compose's shadow is a BlurMaskFilter, whose radius R is 0.57735 R + 0.5 wide (app-b's measures, made on
+ * the Mac for the markers' shadows).
  */
 fun Modifier.iosShadow(shape: Shape, color: Color, radius: Dp, y: Dp = 0.dp, x: Dp = 0.dp): Modifier =
-    dropShadow(shape, Shadow(radius = radius * 2, color = color, offset = DpOffset(x, y)))
+    dropShadow(shape, Shadow(radius = radius * SHADOW_RADIUS, color = color, offset = DpOffset(x, y)))
+
+/** Compose's shadow radius for one of Core Animation's. */
+private const val SHADOW_RADIUS = 0.94f / 0.57735f
 
 /** A 1 pt `strokeBorder` in the hairline colour. */
 fun Modifier.hairline(shape: Shape, color: Color, width: Dp = 1.dp): Modifier = border(width, color, shape)

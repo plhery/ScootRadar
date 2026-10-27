@@ -58,10 +58,13 @@ data class ScootColors(
     val zoneSlow: Color,
     /** What the chrome's glass is tinted with, so small text stays readable over the map. */
     val glassTint: Color,
-    /** The glass where there is no blur: the translucent fill under the same tint. */
+    /** The frost of Liquid Glass itself, under the tint: how much lighter the blurred map is made. */
+    val glassFrost: Color,
+    /**
+     * The glass where there is no blur: a translucent fill, tuned to the App Store screenshots' dock (about
+     * #FBFEF8 over a cream map by day, #1A1C29 over a dark one by night).
+     */
     val glassFill: Color,
-    /** The fill's lit inner edge. */
-    val glassEdge: Color,
 ) {
     /** A provider's colour, or blue for none (ScooterControls.swift's providerAccent). */
     fun providerAccent(provider: ScooterProvider?): Color =
@@ -109,8 +112,8 @@ data class ScootColors(
             zoneNoParking = Color(0xFFC05600),
             zoneSlow = Color(0xFF3E63DD),
             glassTint = Color.White.copy(alpha = 0.15f),
-            glassFill = Color.White.copy(alpha = 0.85f),
-            glassEdge = Color.White.copy(alpha = 0.5f),
+            glassFrost = Color.White.copy(alpha = 0.7f),
+            glassFill = Color.White.copy(alpha = 0.9f),
         )
 
         val Dark = ScootColors(
@@ -148,8 +151,8 @@ data class ScootColors(
             zoneNoParking = Color(0xFFFFB340),
             zoneSlow = Color(0xFF7C9CFF),
             glassTint = Color.Black.copy(alpha = 0.62f),
-            glassFill = Color(0xFF14171E).copy(alpha = 0.88f),
-            glassEdge = Color.White.copy(alpha = 0.08f),
+            glassFrost = Color.White.copy(alpha = 0.14f),
+            glassFill = Color(0xFF1A1C29).copy(alpha = 0.94f),
         )
     }
 }

@@ -4,12 +4,19 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.UserInterfaceStyle
+import com.plhery.scootradar.ui.glass.Glass
+import com.plhery.scootradar.ui.glass.LocalGlass
+import com.plhery.scootradar.ui.glass.MapBackdrop
+import com.plhery.scootradar.ui.glass.glassMayBlur
+import com.plhery.scootradar.ui.theme.ScootTheme
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map. The chrome comes in milestone 4.
 
@@ -19,6 +26,8 @@ fun ScooterMapScreen(
     controller: ScooterMapController,
     /** The map itself, dark or light; tests put something plain in its place. */
     map: @Composable (dark: Boolean) -> Unit,
+    /** Whether the glass may blur the map; tests choose. */
+    glassBlurs: Boolean = glassMayBlur(),
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -33,7 +42,15 @@ fun ScooterMapScreen(
         UserInterfaceStyle.Unspecified -> isSystemInDarkTheme()
     }
 
-    Box(Modifier.fillMaxSize()) {
-        map(dark)
+    val context = LocalContext.current
+    // The frame the map draws into, which the glass blurs.
+    val backdrop = remember { MapBackdrop(context) }
+
+    ScootTheme(dark = dark) {
+        CompositionLocalProvider(LocalGlass provides Glass(backdrop, glassBlurs)) {
+            Box(Modifier.fillMaxSize()) {
+                map(dark)
+            }
+        }
     }
 }

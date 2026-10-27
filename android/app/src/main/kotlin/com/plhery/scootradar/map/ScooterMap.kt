@@ -33,6 +33,7 @@ import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
+import com.plhery.scootradar.ui.glass.LocalGlass
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.maps.MapLibreMapOptions
@@ -178,8 +179,10 @@ fun ScooterMap(
             view.onDestroy()
         }
     }
+    // The chrome's glass blurs what the map draws (ui/glass).
+    val backdrop = LocalGlass.current.backdrop
     Box(modifier.fillMaxSize()) {
-        AndroidView(factory = { view }, modifier = Modifier.fillMaxSize())
+        AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
