@@ -51,7 +51,7 @@ class ScooterStrings internal constructor(
         internal fun load(language: String): ScooterStrings {
             val folder = "/com/plhery/scootradar/core/strings/$language.lproj"
             val sentences = resource("$folder/Localizable.strings")
-                ?.use { AppleStringsFile.parse(it.readBytes().decodeToString()) }
+                ?.use { AppleStringsFile.parse(AppleStringsFile.decode(it.readBytes())) }
                 .orEmpty()
             val counting = resource("$folder/Localizable.stringsdict")
                 ?.use(AppleStringsdictFile::parse)
@@ -254,6 +254,13 @@ internal object AppleFormat {
  * text format of a strings file. A key alone, `"key";`, is its own value.
  */
 internal object AppleStringsFile {
+    /** The file's text: UTF-16 after its byte order mark, as Xcode once saved strings files, otherwise UTF-8. */
+    fun decode(bytes: ByteArray): String {
+        val utf16 = bytes.size >= 2 && (bytes[0] == 0xFE.toByte() && bytes[1] == 0xFF.toByte() ||
+            bytes[0] == 0xFF.toByte() && bytes[1] == 0xFE.toByte())
+        return if (utf16) String(bytes, Charsets.UTF_16) else bytes.decodeToString()
+    }
+
     fun parse(text: String): Map<String, String> {
         val reader = Reader(text.removePrefix("\uFEFF"))
         val strings = LinkedHashMap<String, String>()
@@ -289,10 +296,8 @@ internal object AppleStringsFile {
                         check(end >= 0) { "Unfinished comment at $index" }
                         index = end + 2
                     }
-                    text.startsWith("//", index) -> {
-                        val end = text.indexOf('\n', index)
-                        index = if (end < 0) text.length else end + 1
-                    }
+                    // A line ends at a carriage return and a line or paragraph separator too.
+                    text.startsWith("//", index) -> while (!atEnd && text[index] !in "\n\r\u2028\u2029") index++
                     else -> return
                 }
             }
@@ -334,7 +339,8 @@ internal object AppleStringsFile {
                 'b' -> "\b"
                 'f' -> "\u000C"
                 'v' -> "\u000B"
-                'U', 'u' -> {
+                // Only a capital U: Foundation reads \u as a plain u.
+                'U' -> {
                     val hex = text.drop(index).take(4).takeWhile { it.isDigit() || it.lowercaseChar() in 'a'..'f' }
                     check(hex.isNotEmpty()) { "Expected a code after \\U at $index" }
                     index += hex.length

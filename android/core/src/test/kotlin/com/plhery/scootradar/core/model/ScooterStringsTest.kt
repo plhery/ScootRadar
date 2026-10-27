@@ -84,6 +84,21 @@ class ScooterStringsTest {
     }
 
     @Test
+    fun aStringsFileEndsItsCommentsAndReadsUtf16AsFoundationDoes() {
+        // Foundation reads \u as a plain u.
+        assertEquals(mapOf("a" to "u00e9"), AppleStringsFile.parse("\"a\" = \"\\u00e9\";"))
+        assertEquals(
+            mapOf("a" to "b", "c" to "d", "e" to "f"),
+            AppleStringsFile.parse("// x\r\"a\" = \"b\";\r\r// y\u2029\"c\" = \"d\";// z\u2028\"e\" = \"f\";"),
+        )
+        val text = "\"a\" = \"é\";"
+        fun mark(vararg bytes: Int) = ByteArray(bytes.size) { bytes[it].toByte() }
+        assertEquals(text, AppleStringsFile.decode(mark(0xFF, 0xFE) + text.toByteArray(Charsets.UTF_16LE)))
+        assertEquals(text, AppleStringsFile.decode(mark(0xFE, 0xFF) + text.toByteArray(Charsets.UTF_16BE)))
+        assertEquals(text, AppleStringsFile.decode(text.toByteArray()))
+    }
+
+    @Test
     fun formatsAsFoundationDoes() {
         val swiss = Locale.forLanguageTag("de-CH")
         assertEquals("12345 · x", stringFormat("%lld · %@", 12_345, "x"))
