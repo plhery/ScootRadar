@@ -57,8 +57,8 @@ data class MapRect(val x: Double, val y: Double, val width: Double, val height: 
 
     /**
      * Whether the two rects overlap, as MKMapRect.intersects: along each axis, the one that starts later, this
-     * one on a tie, starts before the other ends. So rects that only touch do not, and a rect of no size at
-     * another's corner meets it while the other does not meet it.
+     * one on a tie, starts before the other ends. So rects that only touch do not, and a rect of no size on
+     * another's top or left edge meets it while the other does not meet it.
      */
     fun intersects(other: MapRect): Boolean =
         (if (minX >= other.minX) minX < other.maxX else other.minX < maxX) &&

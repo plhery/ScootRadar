@@ -11,7 +11,6 @@ import org.locationtech.jts.geom.LineString
 import org.locationtech.jts.geom.LinearRing
 import org.locationtech.jts.geom.MultiLineString
 import org.locationtech.jts.geom.Polygon
-import org.locationtech.jts.geom.TopologyException
 import org.locationtech.jts.geom.prep.PreparedGeometry
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory
 import org.locationtech.jts.geom.util.GeometryFixer
@@ -121,18 +120,19 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
             return try {
                 rings.map { GeometryFixer.fix(factory.createPolygon(it)) }
                     .reduce { area, ring -> OverlayNGRobust.overlay(area, ring, OverlayNG.SYMDIFFERENCE) }
-            } catch (_: TopologyException) {
+            } catch (_: RuntimeException) {
                 GeometryFixer.fix(whole)
             }
         }
 
         /**
          * One shape of them all. A union that floating-point round-off defeats, which Core Graphics' never is,
-         * leaves the zones as they came, as on the web.
+         * leaves the zones as they came, as on the web. JTS rethrows what its first try met when its retries
+         * fail too, so any failure is caught, not only a TopologyException.
          */
         private fun union(areas: List<Geometry>): Geometry = try {
             OverlayNGRobust.union(areas)
-        } catch (_: TopologyException) {
+        } catch (_: RuntimeException) {
             factory.buildGeometry(areas.flatMap { area -> (0 until area.numGeometries).map { area.getGeometryN(it) } })
         }
     }
@@ -200,7 +200,8 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
      * the metre. MapKit erases them there with a clear blend, which MapLibre has not: their lines are cut
      * instead, less each piece of no riding grown by ScooterZoneLook.edgeClearance points, with the round
      * corners of the stroke that erases them. That takes a while on a large set of zones: run it off the main
-     * thread, again as the scale changes.
+     * thread, again as the scale changes, and on every move too when `near` holds only the view's pieces
+     * rather than all the overlay's shapes.
      */
     fun strokes(near: List<ScooterZoneOverlay.Shape>, scale: Double): List<Stroke> {
         val noRide = near.filter { it.kind == ScooterZoneKind.NoRide }
@@ -219,8 +220,8 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
      * No riding's hatching over a piece in a tile of the map: lines across it at 45°, laid on the overlay's own
      * grid so that they run on from one tile to the next. They are the lines x + y = c,
      * ScooterZoneLook.hatchSpacing points apart across them, over the piece's bounds within the tile grown by a
-     * point; they are drawn clipped to the piece, on a ground of its colour. The map's fill pattern draws the
-     * same lines.
+     * point; they are drawn clipped to the piece, on a ground of its colour. The map's fill pattern draws lines
+     * of the same spacing and angle, laid on the world's grid instead.
      */
     fun hatch(shape: ScooterZoneOverlay.Shape, tile: MapRect, scale: Double): MultiLineString {
         val unit = scale
@@ -263,7 +264,7 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
         return try {
             val area = reaching.singleOrNull()?.geometry ?: OverlayNGRobust.union(reaching.map { it.geometry })
             OverlayNGRobust.overlay(lines, area, OverlayNG.DIFFERENCE)
-        } catch (_: TopologyException) {
+        } catch (_: RuntimeException) {
             lines
         }
     }
