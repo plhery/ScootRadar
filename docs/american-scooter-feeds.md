@@ -940,7 +940,10 @@ Rules that read like bans but are not, or that no primary source confirms:
   "Nighttime operation prohibited", as amended by Ord. 3743-20 in 2020), but
   the city's [scooter sharing page](https://www.everettwa.gov/2461/Scooter-sharing-program)
   and its agreement with Lime of June 2025 let scooters run 24 hours a day.
-  Left out until Lime's map there shows which holds.
+  Lime's map listed 368 to 375 scooters there at each reading from 00:26 to
+  04:46 on 27 October 2026, Pacific time, so Lime rents through those
+  hours. Left out: the code governs riding, and neither the program nor
+  Lime stops renting then.
 - **Baltimore:** the Director's regulations, effective 18 June 2025, set no
   hours. A 23:00–04:00 window in summaries of the 2019 rules isn't in them.
 - **Louisville:** only scooters without working lights stop after dark.
