@@ -4056,6 +4056,126 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Bellevue",
+      "center": [
+        47.61038,
+        -122.20068
+      ],
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "CC34XDCRHJJWU",
+      "serviceAreas": [
+        {
+          "name": "[Bellevue Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cfeaHtnyhVA_a@lTB@e_@b@mAvAwGnAmPLeZPsSBkKJyA^kBhA}C@i]uRqFgMpA@}aAlUUHcaA`NJlIqp@lGaOhD[|C{Ly@{TgMiZgC_JDwRfJeKNaYsSRHeQsE??~IwGY_CLDdDiAE?nEmIf@ZoNaDADs^FuWaVSGpDQ~BgDADsANkA`@sAbB?B{@k|@G_AmAAgBDkHkGrC}JaBmK`BkK`AuK|CiAuEcB`AHZ_BfAYg@Wq@Zo@H?@wEcJoAg@~Km@lIeArJIn@aApLaBhJyF`HiGdKqDtEm@PgB?s@HaD}@gClBqFYiGoEmN}CcHQ}El@qM|@aQZ}AgAgEL_QwBwIwBeBoAwEC_FfGu\\nJ{C}AeKyKsIyBsGcCoE}H{BiKoKsRmPaU}EiNcFuPmUeVwLoEqIeBAxXAnB?vA?|Q?lRChR@~REze@{qBuB@pSjAF`DpBzCvC|NtRnNbSo@`AbC`D~FdLtIrRTlGAjQvRSlb@paAssEnAMlbChyAxAa@bdEvEzCnDz\\`C`@PtAlAn@n@|DeA`RC|ENxCl@vFddASzcAx@BhlArAAt@yAjBzC`CiEtBcAf@rCxEBpBb@jFmEUkEj@mBpMiYvRsf@rAcBrAy@H{AxBqAnBiB`Dw@rBh@Rf@AjAqAhHcBbF]fC_CjC@zAsAvO|@jAjJzCpI_ApJkBhEiD~BwEnEeI@qALg@TSB[POxCl@xEy@fBc@~\\iDEi@lLeJlAcBxMgCbDaAA{x@tTGBdj@RKvGwBb@qKrDuGxFeE|BeFlAmJbAsJc@mOScMEmJrLe@jFiBDpPvGvB`EzA|EtHvBlLBxBj@@lJyD|PaMZg@f@RjAD`@aQzNlA~I|DbFpGzHnD|HnFxJbAbGvF~BhFm@hEvEtAfKcA|PKzI}@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Berkeley",
+      "center": [
+        37.8715,
+        -122.273
+      ],
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "MO4XV72DELRWD",
+      "serviceAreas": [
+        {
+          "name": "Berkeley SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sa_fF~aniVF{DQc@??oQgyAIi@dAUEa@YeCYgCLCGa@KB????]{C????fCk@????@DxBe@CU????PCZIVIIq@????B?CWE@E[????`Dw@Ge@??pBY????Dd@xC]wCub@??@?rJmAmDqh@qJhA????a@}E_QtBA???kAgQw@iL??XEW}@WF??QIa@mG????\\EaAmN[F???Aa@_HXC[}EWB????k@eIk@eI????VEIaBYD????C[????XCAI?A??h@C????DNxOoAKmAAg@g@yBe@_C??Te@OMk@{CXKa@kB????NEGWLEESKB??????wDk{AWWUMo_@lBxAhk@??}AjD??oDx@HvD????o}CvPSN??y@Km@HaDJkIhM??{J|@uAJy@jBWf@????cGcFs@L}HdCq@Jq@P[l@eA`D????E?Kx@nApC??c@vA??c@v@A?_@G??YSIMYQaBWUDe@N_Ah@}AvAGV??QX_@xB?`@YvB@hAFHn@zA??Gh@??MZURc@P??c@JqCMeDo@i@Ck@J]Ni@Ti@d@??k@RML[NIXG`@@T?FBTXZ?@J\\r@lA??Z~@cCvHAN@XBNFT`@fADV?NGT??OZSTQH??m@B{BAu@HS?_@AKBEBIJETIbBGf@Wp@??Wf@MPIHKF??}CnAgAh@[Vu@z@MRMXENCN@`AEVEVKT??GHa@ZWXGLITIf@OnAE|BGhA?V@NHf@HTVb@`@t@NZ??FTDV?V?`@CVAX??g@lAUl@CN@X??OPEN????Y???KSKMKCOCwIb@a@RPbJt@E????J~DrDO????z@~Ej@h@v@z@lAlA|@`A??@DXjBf@jDJv@TrAN`AJt@Lx@xAOf@SpAi@??h@S\\O????x@tA???B^j@R\\PXd@x@^p@??ClCAj@A~@Ff@PjANnAb@zCFl@??????ACJp@?A@???JbAFf@XpBJx@bA\\??l@l@XZ??Nv@h@lCDZZxAHh@TpA^bAzU`@rHJdMVq@_[??@?~NeDXG^?bIrBb@DpCt@hBf@`ASI_@E[AYA_@@]Da@????`@LhAT?C????tAV??dBv@vCnAzAl@??????S\\DTFf@PV??Aj@KZC`@?`@@HLv@Ad@????KCMh@@hBNB????StAAJf@N????UbBRH????UrAEX????QGCTUnA??EDG^Kp@JD????QfA??MXm@lDZl@N\\??ObAEb@??_@`@DND^E`@NZ??F^?V??g@ZAP^X??FRO`@L\\XH????FVEh@Jh@??MPWn@Xh@??[vA\\z@p@j@??Ph@??ORGd@ATYx@UfD??{@lAi@j@FfAXlA??????@D????A@ZrA@?????f@|BJf@?l@BdAErAAvAHf@tAzJJt@PxDNf@?DBJAPBd@Bv@@`@AJHpB?ZDl@@V@?????DhAJ~BFp@VrCAJ??????Ed@fCn^vPeI??zi@uN????xBhY??ud@|[hKzw@lh@w_@??xbAeXwHsfA????~fAuW"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Berkeley_45_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Bothell",
+      "center": [
+        47.76232,
+        -122.2054
+      ],
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "CC34XDCRHJJWU",
+      "serviceAreas": [
+        {
+          "name": "Bothell[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yzibHv`xhVmfAaOf^ucAon@gBoDMAk@qIg@cCCyEYElBwJPo@S?dDmBF}GmDoArDwFIKiDT_AiFEf@yFd@gBf@{IP_DHsG?eDKkDa@}F]mC_AoFoImAkIXA|OqU@BiO{T|Oio@rBs`A_LWxqB_dDa@oEjb@~Pd_@cAvXxIjSaDf_Ftk@`@nrDa@TkSm@oaAb}EhDzIsHx[ia@dA_oD"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Everett",
+      "center": [
+        47.97898,
+        -122.20208
+      ],
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "CC34XDCRHJJWU",
+      "serviceAreas": [
+        {
+          "name": "Everett[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "inadHrzzhVxrAzsC|_Bps@rwBnr@|cB|dHvM\\XoZrk@jEDtZpxAn@f@}[zZDtBma@xmA@IoaAaX@Lo]jHo@@eNpg@tBNjGlJCGzXlcBkgAyg@sj@MyLIsJq@a@gh@w^}BkwA|UO@tXvTGVbHtUUNckAjChCBNLNFRd@XNJ^{@Ng@`FcNl@e\\tBcHrXuF`l@NJca@kP?Fg`@uo@KeBaTei@nDmLvSu@dS}r@d@z@gWbPg@Xy_@ha@m@WaP_LuAtAuLml@}F?bi@cSOaBzOhHD{C`r@qD?@cPoXiFaFeBs@rKsGxDsWwDJq}Do~AR?eQaSg@yP~F_OnUeKvO_D|hAoUEua@wUuNoCyRnJwSbEe]sGkXeBqUm]yQmc@wTaIoUq@c{Bad@yv@|xE"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Redmond",
+      "center": [
+        47.67399,
+        -122.12151
+      ],
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "CC34XDCRHJJWU",
+      "serviceAreas": [
+        {
+          "name": "[Seattle][SZ][Redmond][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ov{aH~eshVu~HpCIucAxXoFWe}@jUPCaz@uQlCyXcMcFe}AfG}jB|l@NpDyt@~YwE]fPvu@gGjD}J`UHL_{@hcCcDfaAplAkYhVa@bZ}WdAUx`@}Ic@Wha@oTMIvbBvIuAxEbCvQ_Fpd@ij@qFsV|JcLpNc]|DyDjFkBlCMvBc@bAf@fAJtAwCnCy@fDqBz@B^C`@M\\[PA`@Yt@y@LYF{@A_@T[PO`@i@LQLUHS@KAICKPGD@JKFMFQFGXQFGFO\\q@JK|@}@LSVk@NOHGL@`Aj@`AXv@Bx@Ql@i@d@u@tAoEv@kDpAgDr@sCxB}EpBkCbC}Ev@{Ab@aDzAiCxAeA|E_CfB{BLsAdUsTfYXAvXAnB?vA?|Q?lRCjR?~RCxe@}qBuBBpSjAF`DpBzCxC|NrRnNbSo@`AbC`D~FdLrIrRVlGAjQvRSlb@paAssEnAMlbC"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tucson",
+      "center": [
+        32.22174,
+        -110.92648
+      ],
+      "region": "AZ",
+      "timeZone": "America/Phoenix",
+      "regionToken": "REX6GA33XPUS3",
+      "serviceAreas": [
+        {
+          "name": "[Tucson][Tucson Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "krhdEzvxdTl}DdB`jBsoBfF`@x@nUpo@dBvAoFhYhCsBzK|\\hR|jCyUfFwXtAurAbcAkDuB}uAlN?nWrVx@~Mz]`@x@rGjEgBjLhKvM`UhwBt@?wXjjA?sBmE?kStUdB\\yh@|R?x@pd@d[bA]ia@plAhSdQnTrLlE\\wIh|B?\\en@~\\yJrBxYxTdBf@coHs{AzKaCcaFofE|IfbB{gDlVaYjtAeh@rnMwyUgkJ?qCmiCcVqNqWwXsVcjAamCjVwr@mTqWlTceMJ\\fjBqeBrGvKdzAeGr`Byj@dpAfFfgCnMjS{SpUwTvv@_HvtB{IxYlDjb@mNxeAx@bdA}\\hjBzIzcBqC`l@_p@zKcQ`ObAdv@_Ija@iYfCu@pL{SzKwNjc@vAbPgPvXyJdAsgDbAqEdgP"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json"
+      ]
     }
   ]
 }

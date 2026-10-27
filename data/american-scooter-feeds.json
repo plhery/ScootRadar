@@ -3886,6 +3886,144 @@
         "lngStep": 0.01728653556216237,
         "cells": "0,4-27,29-33"
       }
+    },
+    {
+      "id": "lime_us_app_bellevue",
+      "provider": "lime",
+      "city": "Bellevue",
+      "region": "WA",
+      "center": [
+        47.61038,
+        -122.20068
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CC34XDCRHJJWU",
+      "limeMapGrid": {
+        "south": 47.53494,
+        "west": -122.22271,
+        "north": 47.66072,
+        "east": -122.08744,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019958316948585776,
+        "cells": "1-6,8-13,15-26,28-33,35-54,56-59,61,65-66"
+      }
+    },
+    {
+      "id": "lime_us_app_berkeley",
+      "provider": "lime",
+      "city": "Berkeley",
+      "region": "CA",
+      "center": [
+        37.8715,
+        -122.273
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "MO4XV72DELRWD",
+      "limeMapGrid": {
+        "south": 37.84587,
+        "west": -122.3266,
+        "north": 37.90669,
+        "east": -122.23421,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017063797157959002,
+        "cells": "0-10,12-16,20-22,26-28"
+      }
+    },
+    {
+      "id": "lime_us_app_bothell",
+      "provider": "lime",
+      "city": "Bothell",
+      "region": "WA",
+      "center": [
+        47.76232,
+        -122.2054
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CC34XDCRHJJWU",
+      "limeMapGrid": {
+        "south": 47.73309,
+        "west": -122.23749,
+        "north": 47.81454,
+        "east": -122.1636,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020034141060926883,
+        "cells": "0-22,26"
+      }
+    },
+    {
+      "id": "lime_us_app_everett",
+      "provider": "lime",
+      "city": "Everett",
+      "region": "WA",
+      "center": [
+        47.97898,
+        -122.20208
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CC34XDCRHJJWU",
+      "limeMapGrid": {
+        "south": 47.87812,
+        "west": -122.2924,
+        "north": 48.01781,
+        "east": -122.16859,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020090157214944393,
+        "cells": "1,3-4,8-12,14-19,21-26,28-40,42-47,51-54,58-62,66-69,73-75"
+      }
+    },
+    {
+      "id": "lime_us_app_redmond",
+      "provider": "lime",
+      "city": "Redmond",
+      "region": "WA",
+      "center": [
+        47.67399,
+        -122.12151
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CC34XDCRHJJWU",
+      "limeMapGrid": {
+        "south": 47.62663,
+        "west": -122.16505,
+        "north": 47.71261,
+        "east": -122.07921,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019993301867183063,
+        "cells": "1-3,6-8,10-28,30-33"
+      }
+    },
+    {
+      "id": "lime_us_app_tucson",
+      "provider": "lime",
+      "city": "Tucson",
+      "region": "AZ",
+      "center": [
+        32.22174,
+        -110.92648
+      ],
+      "timeZone": "America/Phoenix",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "REX6GA33XPUS3",
+      "limeMapGrid": {
+        "south": 32.05891,
+        "west": -111.05201,
+        "north": 32.32566,
+        "east": -110.73108,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01589926032052809,
+        "cells": "16-17,35-38,55-59,75-80,86-89,94-103,107-113,115-125,128-133,135-146,149-167,170-187,191-208,212-229,233-250,253-271,273-292,294-312,315-328,336-343,357-363,378-383,399-404"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -3932,6 +4070,9 @@
     "https://assets.lime.bike/zones_attributes/Albuquerque_597_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Grand_Junction_768_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Knoxville_1467_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Berkeley_45_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json"
   ]
 }

@@ -14,10 +14,10 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 126 towns in 34 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 69 of Lime's (52 from its rider
+The map covers 131 towns in 34 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 75 of Lime's (58 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
-Los Angeles, Arlington and Alexandria, Virginia. In 33 of them, from Tempe and
+Los Angeles, Arlington and Alexandria, Virginia. In 34 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Fourteen of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
@@ -124,6 +124,24 @@ names Bird and Veo as its permit holders, a five-year agreement made Veo and
 Spin Columbus's only scooter operators (Axios, 26 August 2026), West Palm
 Beach, audited before its 21:00 riding ban, names no operator, and
 Wilmington runs no scooter program.
+
+The same evening, local time: Tucson (668), Bellevue (533), Redmond (370),
+Everett (352), Bothell (197) and Berkeley (146, beside Veo's). Tucson's
+permit, under which Lime is the only operator, and Bellevue's, Redmond's,
+Bothell's and Berkeley's rules set no riding hours; Everett's code reads
+like a ban but its program lets Lime rent around the clock (see
+[Night bans](#night-bans)). Lime's public Oakland feed reaches into
+Berkeley's box, but none of its 11 scooters there stood in Lime's Berkeley
+zone. Lime's Birmingham, St. Louis, New Haven, Missouri, Overland Park,
+Plano and Denver regions held no scooter that evening, from about 19:00 to
+19:45 local time. Birmingham's council permitted Lime through 30 June 2024
+(BirminghamWatch, 15 November 2022), and the audit there came before the
+city's 23:00 ban. Lime paused its Overland Park pilot indefinitely (Johnson
+County Post), Plano lists no current operator, and Denver's transportation
+department says Lime's and Bird's scooters could no longer be rented after
+16 May 2026, which leaves Veo. In St. Louis, Bird's feed held about 190
+scooters at the time. New Haven is a far zone of Lime's St. Louis region,
+about 90 km west of the city.
 
 ## Washington, DC
 
@@ -917,6 +935,12 @@ Rules that read like bans but are not, or that no primary source confirms:
   county's [program page](https://www.montgomerycountymd.gov/dot-dir/commuter/bikesharingCSS.html)
   sets no hours and names no operator, and the agreement in force isn't
   published. Left out: unconfirmed.
+- **Everett:** the city code bars operating a motorized foot scooter from
+  midnight to 05:00 ([§ 46.80.040(B)](https://everett.municipal.codes/EMC/46.80.040),
+  "Nighttime operation prohibited", as amended by Ord. 3743-20 in 2020), but
+  the city's [scooter sharing page](https://www.everettwa.gov/2461/Scooter-sharing-program)
+  and its agreement with Lime of June 2025 let scooters run 24 hours a day.
+  Left out until Lime's map there shows which holds.
 - **Baltimore:** the Director's regulations, effective 18 June 2025, set no
   hours. A 23:00–04:00 window in summaries of the 2019 rules isn't in them.
 - **Louisville:** only scooters without working lights stop after dark.

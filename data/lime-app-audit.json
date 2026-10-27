@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-26",
+  "verifiedOn": "2026-10-27",
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
@@ -3098,6 +3098,108 @@
       "finishedAt": "2026-10-26T22:47:18.965Z",
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Bellevue",
+      "regionToken": "CC34XDCRHJJWU",
+      "fingerprint": "19f5aaae86144b03df2c020d91a176ef15d0d552e567d4f3f6a8964f23be1583",
+      "groups": 15,
+      "localCells": 57,
+      "coldMapRequests": 57,
+      "warmMapRequests": 57,
+      "scooters": 533,
+      "stationaryReferences": 50,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T00:53:34.097Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Berkeley",
+      "regionToken": "MO4XV72DELRWD",
+      "fingerprint": "4b0212e612228ce507ae561faf772c2ed9e62ea396111ce0df1569c14e2e56e3",
+      "groups": 6,
+      "localCells": 22,
+      "coldMapRequests": 22,
+      "warmMapRequests": 22,
+      "scooters": 146,
+      "stationaryReferences": 12,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T00:56:22.124Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Berkeley_45_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Bothell",
+      "regionToken": "CC34XDCRHJJWU",
+      "fingerprint": "04547622010155f62cce7cbec8c3971fc0a73eeace08f7059b29e5ef8b013d95",
+      "groups": 6,
+      "localCells": 24,
+      "coldMapRequests": 24,
+      "warmMapRequests": 24,
+      "scooters": 197,
+      "stationaryReferences": 85,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T00:59:24.068Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Everett",
+      "regionToken": "CC34XDCRHJJWU",
+      "fingerprint": "59277dff30c9b20157579abe435e9c0b090c5770abdbaf128ce4042923a041e1",
+      "groups": 14,
+      "localCells": 55,
+      "coldMapRequests": 55,
+      "warmMapRequests": 55,
+      "scooters": 352,
+      "stationaryReferences": 51,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T01:28:47.988Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Redmond",
+      "regionToken": "CC34XDCRHJJWU",
+      "fingerprint": "e480d6552b943599fbd95883b70e207164c20d525e4195d8d19e48ed85c95b65",
+      "groups": 8,
+      "localCells": 29,
+      "coldMapRequests": 29,
+      "warmMapRequests": 29,
+      "scooters": 370,
+      "stationaryReferences": 139,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T01:32:25.128Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tucson",
+      "regionToken": "REX6GA33XPUS3",
+      "fingerprint": "55bb22986fbd7066b85238e7e9e8286ea9060761bb7eea5563188e1bb4defa16",
+      "groups": 65,
+      "localCells": 257,
+      "coldMapRequests": 261,
+      "warmMapRequests": 261,
+      "scooters": 668,
+      "stationaryReferences": 9,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T02:03:05.995Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json"
       ]
     }
   ],
