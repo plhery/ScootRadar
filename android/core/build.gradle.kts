@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     // The clients of the app's server and of analytics take an OkHttpClient and an HttpUrl.
     api(libs.okhttp)
+    // The zones' shapes, merged and clipped as the iPhone does with Core Graphics' paths
+    // (ScooterZoneOverlay.kt); the map draws them from JTS's polygons and lines.
+    api(libs.jts.core)
 
     signature(variantOf(libs.gummy.bears.api31) { artifactType("signature") })
 
