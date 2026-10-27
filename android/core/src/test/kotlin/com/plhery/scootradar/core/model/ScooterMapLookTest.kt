@@ -35,6 +35,16 @@ class ScooterMapLookTest {
     // Heads
 
     @Test
+    fun aDotsViewDrawsTheDiameterOfItsLook() {
+        // The parts of T060 and T061 (ScooterFilteringTests.swift:387, :421) that are not the MapKit view.
+        assertEquals(16.0, ScooterMapLook.look(metres = 400.0, state = ScooterDotState.Selected, metresPerPoint = 1.07).diameter, 0.0)
+        assertEquals(8.0, ScooterMapLook.look(metres = 400.0, state = ScooterDotState.Plain, metresPerPoint = 1.07).diameter, 0.0)
+        val closeUp = ScooterMapLook.look(metres = null, state = ScooterDotState.Plain, metresPerPoint = 0.4)
+        assertTrue(closeUp.showsInitials)
+        assertEquals(20.0, closeUp.diameter, 0.0)
+    }
+
+    @Test
     fun theNearestScooterOfEachProviderIsItsHeadNearestFirst() {
         val heads = ScooterMapLook.heads(
             among = listOf(

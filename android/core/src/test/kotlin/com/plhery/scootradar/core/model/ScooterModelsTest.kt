@@ -890,6 +890,27 @@ class ScooterModelsTest {
     }
 
     @Test
+    fun pricesHaveTheDecimalsFoundationGivesTheirCurrency() {
+        // Foundation writes these whole where the JVM's ISO data and Android's CLDR data give some decimals.
+        for (code in listOf("COP", "IDR", "IQD", "HUF", "ISK", "JPY", "huf")) {
+            assertEquals(code, 0, RidePriceFormatter.fractionDigits(code))
+        }
+        for (code in listOf("CHF", "EUR", "USD", "NOK", "BRL", "CZK", "XYZ", "")) {
+            assertEquals(code, 2, RidePriceFormatter.fractionDigits(code))
+        }
+    }
+
+    @Test
+    fun anAmountIsWrittenEvenForACodeThatNamesNoCurrency() {
+        ScooterLanguage.current = ScooterLanguage.En
+        // As Foundation writes "XYZ 272.50" and "HUF 272": the JVM's stand-in puts no space after a code.
+        assertTrue(RidePriceFormatter.string(minorUnits = 27_250, currency = "xyz").replace("\u00A0", " ").matches(Regex("XYZ ?272\\.50")))
+        assertEquals("HUF", RidePriceFormatter.string(minorUnits = 27_250, currency = "HUF").filter(Char::isLetter))
+        assertTrue(RidePriceFormatter.string(minorUnits = 27_250, currency = "HUF").endsWith("272"))
+        assertTrue(RidePriceFormatter.string(minorUnits = 27_350, currency = "HUF").endsWith("274"))
+    }
+
+    @Test
     fun passExpiryEndsADayAfterTheExpiryDayStartedWhereItsMidnightIsSkipped() {
         // Santiago skips from 00:00 to 01:00 on 6 September 2026: that day starts at 01:00, and Calendar's
         // day after it at 01:00 too, as Foundation answers.

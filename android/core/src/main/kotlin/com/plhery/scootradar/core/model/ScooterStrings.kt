@@ -4,6 +4,7 @@ import java.io.InputStream
 import java.io.StringReader
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
@@ -87,20 +88,32 @@ object ScooterNumberFormat {
 
     /**
      * An amount of the currency of that ISO code, as NumberFormatter's currency style writes it in the locale
-     * with that many digits after its point: "CHF 1.00", "$0.42", "1,00 €"; null where the code names no
-     * currency. The JVM's writes no space between a code and its number ("CHF1.00" in American English), where
-     * Foundation and Android do.
+     * with that many digits after its point, halves going to the even neighbour: "CHF 1.00", "$0.42",
+     * "1,00 €". As Foundation does, a code of three capital letters that names no currency is written as
+     * itself ("XYZ 1.00"), and any other code gives the locale's own currency ("$1.00" in American English);
+     * null only where the platform cannot write the amount at all, which Foundation never does. The JVM's
+     * writes no space between a code and its number ("CHF1.00" in American English), where Foundation and
+     * Android do.
      */
     @Volatile
     var currency: (amount: BigDecimal, code: String, fractionDigits: Int, locale: Locale) -> String? = { amount, code, digits, locale ->
-        runCatching { Currency.getInstance(code) }.getOrNull()?.let { currency ->
-            NumberFormat.getCurrencyInstance(locale).apply {
-                this.currency = currency
-                minimumFractionDigits = digits
-                maximumFractionDigits = digits
-                roundingMode = RoundingMode.HALF_EVEN
-            }.format(amount)
+        val format = NumberFormat.getCurrencyInstance(locale)
+        if (Regex("[A-Z]{3}").matches(code)) {
+            val known = runCatching { Currency.getInstance(code) }.getOrNull()
+            if (known != null) {
+                format.currency = known
+            } else if (format is DecimalFormat) {
+                format.decimalFormatSymbols = format.decimalFormatSymbols.apply {
+                    currencySymbol = code
+                    internationalCurrencySymbol = code
+                }
+            }
         }
+        format.apply {
+            minimumFractionDigits = digits
+            maximumFractionDigits = digits
+            roundingMode = RoundingMode.HALF_EVEN
+        }.format(amount)
     }
 }
 

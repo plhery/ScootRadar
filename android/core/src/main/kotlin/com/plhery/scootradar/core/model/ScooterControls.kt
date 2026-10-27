@@ -5,7 +5,6 @@ import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
-import java.util.Currency
 
 // RidePriceFormatter and ScooterLinks from ios/ScootRadar/Views/ScooterControls.swift; the rest of that file
 // is views.
@@ -50,18 +49,22 @@ object RidePriceFormatter {
     }
 
     /** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272". */
-    fun fractionDigits(currency: String): Int {
-        val code = currency.uppercase()
-        if (code in wholeUnitCurrencies) return 0
-        val digits = runCatching { Currency.getInstance(code).defaultFractionDigits }.getOrDefault(2)
-        return if (digits == 0) 0 else 2
-    }
+    fun fractionDigits(currency: String): Int = if (currency.uppercase() in wholeUnitCurrencies) 0 else 2
 
     /**
-     * Forints are written whole: the fillér left circulation in 1999, yet ISO 4217 still gives HUF two
-     * decimals, and some systems follow it ("HUF 272.00"). src/lib/ridePrice.ts lists the same.
+     * The currencies Foundation's currency style writes without decimals (NumberFormatter, probed for every
+     * ISO code on macOS 27 / iOS 26), as the iPhone asks it. Neither the JVM's ISO 4217 data nor Android's
+     * CLDR data gives the same set (both give COP and IDR two decimals), so it is written out here.
+     * Forints are among them, as the iPhone also lists them itself: the fillér left circulation in 1999, yet
+     * ISO 4217 still gives HUF two decimals, and some systems follow it ("HUF 272.00"). src/lib/ridePrice.ts
+     * lists the same.
      */
-    private val wholeUnitCurrencies = setOf("HUF")
+    private val wholeUnitCurrencies = setOf(
+        "ADP", "AFN", "ALL", "BIF", "BYR", "CLP", "COP", "DJF", "ESP", "GNF", "HUF", "IDR", "IQD", "IRR", "ISK",
+        "ITL", "JPY", "KMF", "KPW", "KRW", "LAK", "LBP", "LUF", "MGA", "MGF", "MMK", "MRO", "PKR", "PYG", "RSD",
+        "RWF", "SLL", "SOS", "STD", "SYP", "TMM", "TRL", "UGX", "UYI", "VND", "VUV", "XAF", "XOF", "XPF", "YER",
+        "ZMK", "ZWD",
+    )
 }
 
 object ScooterLinks {
