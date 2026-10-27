@@ -1,6 +1,6 @@
 package com.plhery.scootradar.core.model
 
-import com.plhery.scootradar.core.api.ScooterAPIJson
+import com.plhery.scootradar.core.api.ScooterAPI
 import java.net.URI
 import java.time.Instant
 import java.util.Locale
@@ -11,6 +11,9 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
+import kotlinx.coroutines.runBlocking
+import mockwebserver3.MockResponse
+import mockwebserver3.MockWebServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -58,10 +61,9 @@ class ScooterZonesTest {
         assertNull(ScooterZoneArea(covering = GeoBounds(south = 47.0, west = 8.0, north = 48.5, east = 8.5)))
     }
 
-    // The request itself goes through ScooterAPI, which is not here yet: this reads the answer and checks the
-    // query the area asks with.
+    // The app's server is one on this machine: the address asked is its path and query.
     @Test
-    fun zonesAreAskedForAndReadWithoutKindsOrRingsThisVersionCannotDraw() {
+    fun zonesAreAskedForAndReadWithoutKindsOrRingsThisVersionCannotDraw() = runBlocking<Unit> {
         val body = """
             {"zones":[
               {"id":"lime:0","provider":"lime","kind":"noRide","polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]],[[47.371,8.541],[47.372,8.541],[47.372,8.542],[47.371,8.541]]]]},
@@ -70,21 +72,24 @@ class ScooterZonesTest {
               {"id":"dott:2","provider":"dott","kind":"noParking","polygons":[[[[47.37,8.54],[47.38,8.54],[47.37,8.54]]]]}
             ],"meta":{"generatedAt":"2026-10-24T10:00:00.000Z","pending":true,"truncated":false}}
         """.trimIndent()
-        val area = unwrap(ScooterZoneArea(covering = GeoBounds(south = 47.361, west = 8.521, north = 47.399, east = 8.559)))
+        MockWebServer().use { server ->
+            server.start()
+            server.enqueue(MockResponse.Builder().code(200).addHeader("Content-Type", "application/json").body(body).build())
+            val api = ScooterAPI(baseURL = server.url("/"))
+            val area = unwrap(ScooterZoneArea(covering = GeoBounds(south = 47.361, west = 8.521, north = 47.399, east = 8.559)))
 
-        val response = ScooterAPIJson.decodeFromString(ScooterZoneResponse.serializer(), body)
+            val response = api.zonesIn(area = area)
 
-        assertEquals(
-            "south=47.36&west=8.52&north=47.4&east=8.56&zoom=14",
-            area.queryItems.joinToString("&") { (name, value) -> "$name=$value" },
-        )
-        assertTrue(response.pending)
-        assertFalse(response.truncated)
-        assertEquals(listOf("lime:0", "bird:3"), response.zones.map { it.id })
-        assertEquals(listOf(ScooterZoneKind.NoRide, ScooterZoneKind.Slow), response.zones.map { it.kind })
-        assertEquals("The outer ring and its hole", 2, response.zones[0].polygons[0].size)
-        assertEquals(GeoPoint(latitude = 47.38, longitude = 8.54), response.zones[0].polygons[0][0][1])
-        assertEquals(15.0, response.zones[1].maxSpeedKph)
+            val url = server.takeRequest().url
+            assertEquals("/api/zones?south=47.36&west=8.52&north=47.4&east=8.56&zoom=14", "${url.encodedPath}?${url.encodedQuery}")
+            assertTrue(response.pending)
+            assertFalse(response.truncated)
+            assertEquals(listOf("lime:0", "bird:3"), response.zones.map { it.id })
+            assertEquals(listOf(ScooterZoneKind.NoRide, ScooterZoneKind.Slow), response.zones.map { it.kind })
+            assertEquals("The outer ring and its hole", 2, response.zones[0].polygons[0].size)
+            assertEquals(GeoPoint(latitude = 47.38, longitude = 8.54), response.zones[0].polygons[0][0][1])
+            assertEquals(15.0, response.zones[1].maxSpeedKph)
+        }
     }
 
     @Test
