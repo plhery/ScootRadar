@@ -56,8 +56,11 @@ class ScooterAPI(
      */
     private val isOffline: () -> Boolean = { false },
 ) : ScooterAPIClient {
-    // A request waits 20 seconds at most for the server: to connect, and between bytes.
-    private val http: OkHttpClient = client.newBuilder()
+    // A request waits 20 seconds at most for the server: to connect, and between bytes. Nothing is kept, whatever
+    // client the app hands over (privateClient).
+    internal val http: OkHttpClient = client.newBuilder()
+        .cache(null)
+        .cookieJar(CookieJar.NO_COOKIES)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
         .writeTimeout(20, TimeUnit.SECONDS)
@@ -158,12 +161,17 @@ class ScooterAPI(
             "EST" to -5, "EDT" to -4, "CST" to -6, "CDT" to -5, "MST" to -7, "MDT" to -6, "PST" to -8, "PDT" to -7,
             "AKST" to -9, "AKDT" to -8, "HST" to -10, "AST" to -4,
         )
-        private val offsetPattern = Regex("""(GMT|UTC|UT)?([+-])(\d{1,2})(:?)(\d{2})?""")
+        /**
+         * An offset as en_US_POSIX reads it, after GMT, UTC or UT in any case or alone (probed with DateFormatter):
+         * hours of one or two digits, then minutes and seconds after colons ("+2", "GMT+2:30", "+02:00:30"), or
+         * digits run together ("+0200", "+023" for 23 minutes, "+020000"), which GMT does not take.
+         */
+        private val offsetPattern = Regex("""(GMT|UTC|UT)?([+-])(\d{1,2}(?::\d{2}){0,2}|\d{3,6})""", RegexOption.IGNORE_CASE)
 
         /**
          * A date as Foundation reads "EEE, dd MMM yyyy HH:mm:ss zzz" in en_US_POSIX: the weekday in full or cut to
          * three letters or fewer, not checked against the date; the month in full or short; either in any case;
-         * the zone by name, or as an offset, after GMT only with a colon. Null for anything else.
+         * the zone by name, or as an offset (offsetPattern). Null for anything else.
          */
         private fun httpDate(text: String): Instant? {
             val match = httpDatePattern.matchEntire(text) ?: return null
@@ -174,12 +182,23 @@ class ScooterAPI(
             val month = months.indexOfFirst { it.equals(monthName, ignoreCase = true) || it.take(3).equals(monthName, ignoreCase = true) }
             if (month < 0) return null
             val offsetSeconds = namedZones[zone.uppercase()]?.let { it * 3_600 } ?: run {
-                val (prefix, sign, hours, colon, minutes) = offsetPattern.matchEntire(zone)?.destructured ?: return null
-                if (prefix == "GMT" && minutes.isNotEmpty() && colon.isEmpty()) return null
-                val h = hours.toInt()
-                val m = minutes.ifEmpty { "0" }.toInt()
-                if (h > 23 || m > 59) return null
-                (if (sign == "-") -1 else 1) * (h * 3_600 + m * 60)
+                val (prefix, sign, digits) = offsetPattern.matchEntire(zone)?.destructured ?: return null
+                val fields = if (':' in digits) {
+                    val parts = digits.split(':')
+                    // Alone, an offset takes two digits of hours before a colon: "+2:00" is not read.
+                    if (prefix.isEmpty() && parts[0].length < 2) return null
+                    parts
+                } else if (digits.length <= 2) {
+                    listOf(digits)
+                } else {
+                    if (prefix.equals("GMT", ignoreCase = true)) return null
+                    // One digit of hours where the count is odd: "+023" is 0 hours 23.
+                    val hourDigits = 2 - digits.length % 2
+                    listOf(digits.take(hourDigits)) + digits.drop(hourDigits).chunked(2)
+                }
+                val (h, m, s) = fields.map(String::toInt) + List(3 - fields.size) { 0 }
+                if (h > 23 || m > 59 || s > 59) return null
+                (if (sign == "-") -1 else 1) * (h * 3_600 + m * 60 + s)
             }
             val numbers = listOf(year, day, hour, minute, second).map { it.toIntOrNull() ?: return null }
             if (numbers[0] < 1) return null

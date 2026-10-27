@@ -147,6 +147,12 @@ object ScooterListFormat {
     }
 }
 
+/** Swift's max(x, y), which is y when y >= x and x otherwise: max(0, .nan) is 0, where kotlin.math.max gives NaN. */
+internal fun swiftMax(x: Double, y: Double): Double = if (y >= x) y else x
+
+/** Swift's min(x, y), which is y when y < x and x otherwise: min(1, .nan) is 1. */
+internal fun swiftMin(x: Double, y: Double): Double = if (y < x) y else x
+
 /** Double.rounded(): to the nearest whole number, halves away from zero. */
 internal fun Double.roundedAwayFromZero(): Double =
     if (isFinite()) BigDecimal(this).setScale(0, RoundingMode.HALF_UP).toDouble() else this

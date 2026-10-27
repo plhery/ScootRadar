@@ -126,6 +126,15 @@ class WalkRouteTest {
         assertFalse(WalkRoute.isOffRoute(59.0, accuracy = 40.0))
         assertTrue(WalkRoute.isOffRoute(61.0, accuracy = 40.0))
         assertTrue(WalkRoute.isOffRoute(41.0, accuracy = -1.0))
+        // As Swift's max(0, .nan), an accuracy that is not a number counts as none.
+        assertTrue(WalkRoute.isOffRoute(41.0, accuracy = Double.NaN))
+    }
+
+    @Test
+    fun aProgressThatIsNotANumberFindsNoPlaceOnThePath() {
+        // As Swift's `where distances[segment + 1] >= earliest`, which no segment passes.
+        val route = WalkRoute(points = listOf(start, point(east = 200.0, north = 0.0)))
+        assertNull(route.position(of = point(east = 10.0, north = 0.0), after = Double.NaN))
     }
 
     @Test

@@ -43,10 +43,12 @@ class ScooterAnalytics(
     private var pending = 0
     private var previous: Job? = null
 
-    // No cookies, no cache, and five seconds for the whole of each event.
+    // No cookies, no cache, five seconds for the whole of each event, and an event is not sent again on a dropped
+    // connection, where it could be counted twice.
     private val http: OkHttpClient = client.newBuilder()
         .cache(null)
         .cookieJar(CookieJar.NO_COOKIES)
+        .retryOnConnectionFailure(false)
         .callTimeout(5, TimeUnit.SECONDS)
         .connectTimeout(5, TimeUnit.SECONDS)
         .readTimeout(5, TimeUnit.SECONDS)
@@ -91,7 +93,11 @@ class ScooterAnalytics(
             .url(endpoint)
             .post(body.toRequestBody(jsonMediaType))
             .header("User-Agent", userAgent)
-            .apply { cache?.let { header("x-umami-cache", it) } }
+            .apply {
+                // OkHttp refuses a value with a line break or beyond ASCII, which the server could send and
+                // URLSession would send back: the value is left out, not the event.
+                cache?.let { runCatching { header("x-umami-cache", it) } }
+            }
             .build()
         val response = try {
             http.fetch(request)

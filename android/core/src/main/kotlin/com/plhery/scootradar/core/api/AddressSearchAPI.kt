@@ -23,6 +23,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
+import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -181,8 +182,13 @@ class AddressSearchAPI(
         val country: String? = null,
     )
 
-    // A search waits 12 seconds at most for the server: to connect, and between bytes.
-    private val http: OkHttpClient = client.newBuilder()
+    // A search waits 12 seconds at most for the server: to connect, and between bytes. Nothing is kept, and a
+    // search is not sent again on a dropped connection: URLSession replays no POST, and each counts against the
+    // server's limit.
+    internal val http: OkHttpClient = client.newBuilder()
+        .cache(null)
+        .cookieJar(CookieJar.NO_COOKIES)
+        .retryOnConnectionFailure(false)
         .connectTimeout(12, TimeUnit.SECONDS)
         .readTimeout(12, TimeUnit.SECONDS)
         .writeTimeout(12, TimeUnit.SECONDS)
@@ -208,7 +214,8 @@ class AddressSearchAPI(
         if (response.code == 429) {
             val seconds = response.headers["Retry-After"]?.let(::swiftDouble)
             throw AddressSearchAPIError.RateLimited(
-                retryAfter = seconds?.let { if (it >= 0) it.seconds else null },
+                // Swift's Duration.seconds traps on an infinite wait ("1e400"); here it is no wait.
+                retryAfter = seconds?.let { if (it >= 0 && it.isFinite()) it.seconds else null },
             )
         }
         if (response.code !in 200..299) throw AddressSearchAPIError.InvalidResponse()

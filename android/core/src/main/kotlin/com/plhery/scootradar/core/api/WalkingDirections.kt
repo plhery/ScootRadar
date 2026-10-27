@@ -9,6 +9,8 @@ import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -18,6 +20,7 @@ import kotlinx.serialization.json.add
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.putJsonArray
+import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -60,7 +63,12 @@ class ScootRadarWalkingDirections(
     /** The longest wait for the whole answer. */
     val timeout: Duration = 12.seconds,
 ) : WalkingDirectionsClient {
-    private val http: OkHttpClient = client.newBuilder()
+    // Nothing is kept, and a request is not sent again on a dropped connection: URLSession replays no POST, and
+    // each counts against the server's limit.
+    internal val http: OkHttpClient = client.newBuilder()
+        .cache(null)
+        .cookieJar(CookieJar.NO_COOKIES)
+        .retryOnConnectionFailure(false)
         .callTimeout(timeout.inWholeMilliseconds, TimeUnit.MILLISECONDS)
         .build()
 
@@ -83,14 +91,21 @@ class ScootRadarWalkingDirections(
         } catch (error: IOException) {
             throw WalkingDirectionsError(WalkingDirectionsError.Reason.Failed)
         }
-        val answer = json(response.body)
-        if (response.code !in 200..299) {
+        // A long walk has thousands of points: they are read off the caller's thread, as the other clients read
+        // their answers.
+        return withContext(Dispatchers.Default) { route(response.body, response.code) }
+    }
+
+    /** The route of an answer, or the error it says. */
+    private fun route(body: ByteArray, code: Int): List<GeoPoint> {
+        val answer = json(body)
+        if (code !in 200..299) {
             val reason = ((answer as? JsonObject)?.get("reason") as? JsonPrimitive)?.takeIf { it.isString }?.content
             throw WalkingDirectionsError(
                 when {
                     reason == "too_far" -> WalkingDirectionsError.Reason.TooFar
                     reason == "no_route" -> WalkingDirectionsError.Reason.NoRoute
-                    response.code == 429 || response.code == 503 -> WalkingDirectionsError.Reason.Busy
+                    code == 429 || code == 503 -> WalkingDirectionsError.Reason.Busy
                     else -> WalkingDirectionsError.Reason.Failed
                 },
             )

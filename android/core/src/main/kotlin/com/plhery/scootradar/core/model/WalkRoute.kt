@@ -6,8 +6,6 @@ import kotlin.math.abs
 import kotlin.math.atan
 import kotlin.math.atan2
 import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
@@ -119,7 +117,7 @@ class WalkRoute(points: List<GeoPoint>) {
     val end: GeoPoint? get() = points.lastOrNull()
 
     /** What is left of the path from a place along it. */
-    fun remainingDistance(from: Double): Double = max(0.0, length - from)
+    fun remainingDistance(from: Double): Double = swiftMax(0.0, length - from)
 
     /** The path still to walk: from the place on it, through the points after it. */
     fun remainingPath(from: Position): List<GeoPoint> {
@@ -139,21 +137,22 @@ class WalkRoute(points: List<GeoPoint>) {
         var bestScore = 0.0
         var best: Position? = null
         for (segment in 0 until points.size - 1) {
-            if (distances[segment + 1] < earliest) continue
+            // As Swift's `where distances[segment + 1] >= earliest`, which keeps no segment after a NaN.
+            if (!(distances[segment + 1] >= earliest)) continue
             val start = planar[segment]
             val direction = planar[segment + 1] - start
             val segmentLength = distances[segment + 1] - distances[segment]
             val squared = direction.dot(direction)
             var share = if (squared > 0) (target - start).dot(direction) / squared else 0.0
-            share = min(1.0, max(0.0, share))
+            share = swiftMin(1.0, swiftMax(0.0, share))
             // The piece that holds the earliest place allowed starts there.
             if (segmentLength > 0 && distances[segment] + share * segmentLength < earliest) {
-                share = min(1.0, (earliest - distances[segment]) / segmentLength)
+                share = swiftMin(1.0, (earliest - distances[segment]) / segmentLength)
             }
             val nearest = start + direction * share
             val offset = (target - nearest).length
             val along = distances[segment] + share * segmentLength
-            val score = offset + aheadPenalty * max(0.0, along - after)
+            val score = offset + aheadPenalty * swiftMax(0.0, along - after)
             if (best != null && bestScore <= score) continue
             bestScore = score
             best = Position(along = along, offset = offset, point = frame.unproject(nearest), segment = segment)
@@ -223,7 +222,7 @@ class WalkRoute(points: List<GeoPoint>) {
 
         /** Whether a location this far from the path has left it. */
         fun isOffRoute(offset: Double, accuracy: Double): Boolean =
-            offset > max(offRouteDistance, offRouteAccuracyFactor * max(0.0, accuracy))
+            offset > swiftMax(offRouteDistance, offRouteAccuracyFactor * swiftMax(0.0, accuracy))
 
         /** Whether the rider is at the scooter or the bay. */
         fun hasArrived(location: GeoPoint, at: GeoPoint): Boolean = location.distance(to = at) <= arrivalDistance
@@ -243,7 +242,7 @@ class WalkRoute(points: List<GeoPoint>) {
 
     /** Metres east and north of a reference point. */
     private class LocalFrame(val reference: GeoPoint) {
-        val metresPerDegreeLongitude: Double = metresPerDegreeLatitude * max(0.01, cos(reference.latitude * PI / 180))
+        val metresPerDegreeLongitude: Double = metresPerDegreeLatitude * swiftMax(0.01, cos(reference.latitude * PI / 180))
 
         fun project(point: GeoPoint): Planar = Planar(
             (point.longitude - reference.longitude) * metresPerDegreeLongitude,
@@ -454,7 +453,7 @@ data class ScooterWalk(
             return WalkTrail(
                 revision = routeRevision,
                 points = route.points,
-                walked = if (route.length > 0) min(1.0, max(0.0, progress / route.length)) else 0.0,
+                walked = if (route.length > 0) swiftMin(1.0, swiftMax(0.0, progress / route.length)) else 0.0,
                 reveals = reveals,
             )
         }

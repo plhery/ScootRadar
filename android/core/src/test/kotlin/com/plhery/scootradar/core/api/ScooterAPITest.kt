@@ -18,6 +18,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.io.path.createTempDirectory
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +33,10 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.doubleOrNull
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
+import okhttp3.Cache
+import okhttp3.Cookie
 import okhttp3.CookieJar
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -126,6 +130,22 @@ class ScooterAPITest {
             assertNull(client.cache)
             assertSame(CookieJar.NO_COOKIES, client.cookieJar)
         }
+        // Nor with a client the app hands over that keeps both; and a search or a walk is not sent twice.
+        val keeping = OkHttpClient.Builder()
+            .cache(Cache(createTempDirectory("scootradar-cache").toFile(), 1_024))
+            .cookieJar(object : CookieJar {
+                override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) = Unit
+                override fun loadForRequest(url: HttpUrl): List<Cookie> = emptyList()
+            })
+            .build()
+        val search = AddressSearchAPI(client = keeping).http
+        val walk = ScootRadarWalkingDirections(client = keeping).http
+        for (http in listOf(ScooterAPI(client = keeping).http, search, walk)) {
+            assertNull(http.cache)
+            assertSame(CookieJar.NO_COOKIES, http.cookieJar)
+        }
+        assertFalse(search.retryOnConnectionFailure)
+        assertFalse(walk.retryOnConnectionFailure)
     }
 
     @Test
@@ -224,6 +244,9 @@ class ScooterAPITest {
         for ((api, expected) in listOf(
             makeAPI(failure = UnknownHostException("scootradar.com"), offline = true) to ScooterLoadFailure.Offline,
             makeAPI(failure = IOException("unexpected end of stream"), offline = true) to ScooterLoadFailure.Offline,
+            // On a network that reaches the internet, a request that could not reach the server has failed.
+            makeAPI(failure = IOException("unexpected end of stream")) to ScooterLoadFailure.Failed,
+            makeAPI(failure = UnknownHostException("scootradar.com")) to ScooterLoadFailure.Failed,
             makeAPI(failure = SocketTimeoutException("timeout")) to ScooterLoadFailure.Timeout,
             makeAPI(responseStatus = 429) to ScooterLoadFailure.Busy,
             makeAPI(responseStatus = 502) to ScooterLoadFailure.Unavailable,
@@ -303,6 +326,31 @@ class ScooterAPITest {
     }
 
     @Test
+    fun aZoneIsReadAsFoundationReadsIt() {
+        // What DateFormatter (en_US_POSIX, "zzz") answers for "Mon, 12 Oct 2026 10:00:00 <zone>", received at
+        // 10:01 GMT: the zone's offset from GMT plus the minute, or 0 where it reads nothing.
+        val receivedAt = Instant.parse("2026-10-12T10:01:00Z")
+        val foundation = mapOf(
+            "GMT" to 0, "gmt" to 0, "utc" to 0, "ut" to 0, "z" to 0, "est" to -18_000, "UTC" to 0,
+            "GMT+2" to 7_200, "gmt+2" to 7_200, "utc+2" to 7_200, "UT+2" to 7_200, "GMT+02" to 7_200, "UT+02" to 7_200,
+            "GMT+02:00" to 7_200, "GMT+2:00" to 7_200, "GMT-02:30" to -9_000, "utc+2:00" to 7_200, "UT+2:00" to 7_200,
+            "GMT+02:00:00" to 7_200, "utc+02:00:00" to 7_200, "GMT+2:00:30" to 7_230, "UTC+02:00:30" to 7_230,
+            "UT+2:00:00" to 7_200, "UTC+0200" to 7_200, "ut+0200" to 7_200, "UTC+020000" to 7_200, "UTC+023" to 1_380,
+            "UTC+02000" to 1_200, "+2" to 7_200, "+02" to 7_200, "+0200" to 7_200, "+02:00" to 7_200,
+            "+02:00:00" to 7_200, "+020000" to 7_200, "+02:00:30" to 7_230, "-0530" to -19_800, "+23:59" to 86_340,
+            "+023" to 1_380, "+02000" to 1_200, "-00:00" to 0, "GMT-0" to 0, "+0" to 0, "+00" to 0,
+            "GMT+0200" to null, "GMT+2:0" to null, "GMT+02:0" to null, "GMT+020000" to null, "GMT+023" to null,
+            "GMT+24:00" to null, "GMT+00:60" to null, "+2:00" to null, "+2:0" to null, "+02:0" to null,
+            "+2:00:00" to null, "+2:00:30" to null, "+24" to null, "+2400" to null, "+0060" to null, "+00:60" to null,
+            "+0260" to null, "GMT+" to null, "+" to null,
+        )
+        for ((zone, offset) in foundation) {
+            val read = ScooterAPI.clockOffset(dateHeader = "Mon, 12 Oct 2026 10:00:00 $zone", receivedAt = receivedAt)
+            assertEquals(zone, offset?.let { it + 60.0 } ?: 0.0, read, 0.0)
+        }
+    }
+
+    @Test
     fun theEdgesAreWrittenAsPrintfWritesThem() {
         // Five decimals of the exact value, a tie to the even digit, a point whatever the language.
         val defaultLocale = Locale.getDefault()
@@ -371,7 +419,7 @@ class ScooterAPITest {
         assertEquals("/api/geocode", request.url.encodedPath)
         assertNull(request.url.query)
         assertEquals("POST", request.method)
-        assertNull(api.client.cache)
+        assertNull(api.http.cache)
         assertEquals("application/json", request.headers["Content-Type"])
         val json = Json.parseToJsonElement(request.body!!.utf8()) as JsonObject
         assertEquals(mapOf("q" to JsonPrimitive("Ankerstrasse 114"), "lang" to JsonPrimitive("de")), json)
@@ -414,6 +462,8 @@ class ScooterAPITest {
             Triple(429, mapOf("Retry-After" to "60"), AddressSearchAPIError.RateLimited(retryAfter = 60.seconds)),
             Triple(429, emptyMap(), AddressSearchAPIError.RateLimited(retryAfter = null)),
             Triple(429, mapOf("Retry-After" to "Wed, 21 Oct 2026 07:28:00 GMT"), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            // Swift traps on a wait too long to count; here there is no wait.
+            Triple(429, mapOf("Retry-After" to "1e400"), AddressSearchAPIError.RateLimited(retryAfter = null)),
             Triple(503, mapOf("Retry-After" to "30"), AddressSearchAPIError.InvalidResponse()),
         )
         for ((statusCode, headers, expected) in expectations) {
@@ -585,6 +635,22 @@ class ScooterAPITest {
         assertEquals("first-cache", second.headers["x-umami-cache"])
         val payload = (Json.parseToJsonElement(second.body!!.utf8()) as JsonObject)["payload"] as JsonObject
         assertEquals("rental_open", payload.string("name"))
+    }
+
+    @Test
+    fun aCacheTheServerSendsThatCannotBeAHeaderIsLeftOutNotTheEvent() = runBlocking<Unit> {
+        server.enqueue(answer(200, """{"cache":"first\nline"}"""))
+        server.enqueue(answer(200, "{}"))
+        val job = SupervisorJob()
+        val analytics = makeAnalytics(website = testWebsite, sends = true, client = client, job = job)
+
+        analytics.track()
+        analytics.track("filters_apply")
+        job.children.toList().joinAll()
+
+        assertEquals(2, server.requestCount)
+        server.takeRequest()
+        assertNull(server.takeRequest().headers["x-umami-cache"])
     }
 
     private val client = OkHttpClient()
