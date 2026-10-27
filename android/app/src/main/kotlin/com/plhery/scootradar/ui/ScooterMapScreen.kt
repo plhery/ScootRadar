@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.model.UserInterfaceStyle
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map. The chrome comes in milestone 4.
 
@@ -15,8 +17,8 @@ import com.plhery.scootradar.core.map.ScooterMapController
 @Composable
 fun ScooterMapScreen(
     controller: ScooterMapController,
-    /** The map itself; tests put something plain in its place. */
-    map: @Composable () -> Unit,
+    /** The map itself, dark or light; tests put something plain in its place. */
+    map: @Composable (dark: Boolean) -> Unit,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -24,8 +26,14 @@ fun ScooterMapScreen(
     // Automatic turns dark or light within the minute the sun has it.
     val style = remember(appearance, userLocation, minute) { controller.interfaceStyle }
     WindowAppearance(style)
+    // The app's own appearance at once, rather than the window's once Android has applied it (MAP-291).
+    val dark = when (style) {
+        UserInterfaceStyle.Dark -> true
+        UserInterfaceStyle.Light -> false
+        UserInterfaceStyle.Unspecified -> isSystemInDarkTheme()
+    }
 
     Box(Modifier.fillMaxSize()) {
-        map()
+        map(dark)
     }
 }

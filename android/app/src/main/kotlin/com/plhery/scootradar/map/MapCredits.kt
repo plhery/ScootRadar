@@ -2,7 +2,6 @@ package com.plhery.scootradar.map
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,11 +21,16 @@ import androidx.compose.ui.unit.dp
 /**
  * Where the map comes from, as OpenStreetMap's licence and OpenFreeMap's ask (MAP-318): the map's own credits in a
  * corner of the part of it in view, as the iPhone shows Apple's logo and its Legal link there. Its text keeps its
- * size, as Apple's does, and each name opens its page.
+ * size, as Apple's does, and each name opens its page. Over imagery, the imagery's credit comes first.
  */
 @Composable
-fun MapCredits(modifier: Modifier = Modifier) {
-    val dark = isSystemInDarkTheme()
+fun MapCredits(
+    /** Whether the ground under the credits is dark. */
+    dark: Boolean,
+    modifier: Modifier = Modifier,
+    /** The imagery's name and page, while it is shown. */
+    imagery: Pair<String, String>? = null,
+) {
     // The ground's own land and label colours (src/lib/quietGround.ts).
     val ground = if (dark) Color(0xCC0B0E14) else Color(0xCCEEF0F4)
     val label = if (dark) Color(0xFF9AA4B8) else Color(0xFF5F6878)
@@ -34,7 +38,7 @@ fun MapCredits(modifier: Modifier = Modifier) {
     val style = TextStyle(color = label, fontSize = size)
     val uri = LocalUriHandler.current
     Row(modifier.clip(RoundedCornerShape(6.dp)).background(ground)) {
-        for ((name, page) in SOURCES) {
+        for ((name, page) in listOfNotNull(imagery) + SOURCES) {
             BasicText(
                 text = name,
                 style = style,

@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
+import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,9 @@ class ScooterMapViewModel(
 
     /** The camera a recreated activity opens on. */
     val camera = MapCameraMemory()
+
+    /** Where the ground's tiles are, asked for once for the screen. */
+    val groundTiles = GroundTiles.openFreeMap(container.api.client)
 
     /** A debug build's camera for screenshots, from the launch's ScreenshotCamera extra (MAP-005). */
     val screenshotCamera: ScooterScreenshotCamera.Camera? =

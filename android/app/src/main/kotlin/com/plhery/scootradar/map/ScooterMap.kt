@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.graphics.toColorInt
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -33,7 +35,6 @@ import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.maps.MapLibreMapOptions
-import org.maplibre.android.maps.Style
 
 // ScooterMapView's makeUIView, from ios/ScootRadar/Views/ScooterMapView.swift.
 
@@ -49,19 +50,27 @@ class MapCameraMemory {
  * The map, under everything else on the screen: MapLibre's view in TextureView mode, so that the chrome can blur
  * what is under it, without its attribution, logo or compass, which the app draws itself. The composition's
  * lifecycle drives the view by hand, and a phone short of memory has it drop its caches. It moves to the places
- * the controller asks for, and tells it where it comes to rest.
+ * the controller asks for, and tells it where it comes to rest. Its ground is the controller's map style, dark
+ * or light as the app is, with names in the app's language.
  */
 @Composable
 fun ScooterMap(
     controller: ScooterMapController,
     start: ScooterMapStart,
     memory: MapCameraMemory,
+    tiles: GroundTiles,
+    dark: Boolean,
     modifier: Modifier = Modifier,
+    /** Imagery for the Satellite style; none yet (NEEDS-USER #3). */
+    imagery: SatelliteSource? = null,
     /** A debug build's camera for screenshots, in place of the start place. */
     screenshot: ScooterScreenshotCamera.Camera? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val mapStyle by controller.mapStyle.collectAsStateWithLifecycle()
+    val language by controller.language.collectAsStateWithLifecycle()
+    val look = GroundLook.of(mapStyle, dark, language.rawValue, hasImagery = imagery != null)
     val view = remember {
         MapLibre.getInstance(context)
         val options = MapLibreMapOptions.createFromAttributes(context)
@@ -69,23 +78,31 @@ fun ScooterMap(
             .attributionEnabled(false)
             .logoEnabled(false)
             .compassEnabled(false)
+            // The land, until the style is drawn.
+            .foregroundLoadColor(GroundPalettes.of(look.theme).land.toColorInt())
             .minZoomPreference(MapZoom.minimum)
             .maxZoomPreference(MapZoom.maximum)
             .camera(memory.position ?: MapCamera.opening(start, screenshot))
         ScooterMapView(context, options).also { it.onCreate(null) }
     }
+    val currentLook by rememberUpdatedState(look)
     var camera by remember { mutableStateOf<MapCamera?>(null) }
+    var ground by remember { mutableStateOf<MapGround?>(null) }
     DisposableEffect(view) {
         var made: MapCamera? = null
+        var drawn: MapGround? = null
         view.getMapAsync { map ->
-            map.setStyle(Style.Builder().fromJson(BLANK_STYLE))
+            drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
             made = MapCamera(map, view, controller, memory, scope).also { camera = it }
         }
         onDispose {
             made?.close()
+            drawn?.close()
             camera = null
+            ground = null
         }
     }
+    LaunchedEffect(ground, look) { ground?.show(look) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
     val safe = WindowInsets.safeDrawing
@@ -138,9 +155,10 @@ fun ScooterMap(
     }
     Box(modifier.fillMaxSize()) {
         AndroidView(factory = { view }, modifier = Modifier.fillMaxSize())
-        MapCredits(Modifier.align(Alignment.BottomStart).windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp))
+        MapCredits(
+            dark = dark || look.satellite,
+            imagery = imagery?.credit?.takeIf { look.satellite },
+            modifier = Modifier.align(Alignment.BottomStart).windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp),
+        )
     }
 }
-
-/** The land alone, until the ground styles come. */
-private const val BLANK_STYLE = """{"version":8,"sources":{},"layers":[{"id":"land","type":"background","paint":{"background-color":"#eef0f4"}}]}"""

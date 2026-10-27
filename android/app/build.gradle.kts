@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     // The OpenGL ES build of MapLibre Native; `android-sdk` is the Vulkan one (PLAN §4).
     implementation(libs.maplibre.android)
+    // The ground's style is written as JSON, and OpenFreeMap's index read from it.
+    implementation(libs.kotlinx.serialization.json)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
