@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -36,8 +37,17 @@ android {
         // Robolectric reads the app's manifest and resources.
         unitTests.isIncludeAndroidResources = true
         // Robolectric's newest Android sets up its shared memory through FileDescriptor's internals.
-        unitTests.all { it.jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED", "--add-opens=java.base/java.io=ALL-UNNAMED") }
+        unitTests.all {
+            it.jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED", "--add-opens=java.base/java.io=ALL-UNNAMED")
+            // Screenshots draw through Android's own renderer, so the glass's blur and the shadows show (Roborazzi).
+            it.systemProperty("robolectric.pixelCopyRenderMode", "hardware")
+        }
     }
+}
+
+roborazzi {
+    // The baselines, recorded on the Mac with recordRoborazziDebug and checked on CI with verifyRoborazziDebug.
+    outputDir.set(file("src/test/screenshots"))
 }
 
 dependencies {
@@ -70,6 +80,9 @@ dependencies {
     testImplementation(libs.compose.ui.test.junit4)
     // Compose's test rule idles through Espresso; the one it brings looks for an InputManager newer Androids lack.
     testImplementation(libs.espresso.core)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.core)

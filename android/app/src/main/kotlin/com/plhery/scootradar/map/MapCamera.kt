@@ -3,8 +3,8 @@ package com.plhery.scootradar.map
 import android.animation.ValueAnimator
 import android.view.View
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.tween
+import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapFocusRequest
@@ -20,6 +20,7 @@ import com.plhery.scootradar.core.model.ScreenSize
 import com.plhery.scootradar.core.model.WalkTrailLook
 import com.plhery.scootradar.core.model.distance
 import com.plhery.scootradar.core.model.rect
+import com.plhery.scootradar.ui.theme.easing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -372,7 +373,7 @@ class MapCamera(
         private const val MOST_MOVES_AGAIN = 6
 
         /** UIKit's ease in, ease out. */
-        private val easeInEaseOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
+        private val easeInEaseOut = IosMotion.easeInOut.easing
 
         /**
          * Where the map opens: the start region fitted in the iPhone's opening frame, as MapKit fits it before the
