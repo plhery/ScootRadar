@@ -1,0 +1,68 @@
+name: Android
+
+# The Android app (android/), built and tested apart from ci.yml: the Deploy job there waits on none of
+# this, so an Android run can neither hold back nor block a deploy of the website or the scooter cache.
+on:
+  pull_request:
+    paths:
+      - 'android/**'
+      - 'data/**'
+      - 'ios/ScootRadar/*.lproj/**'
+      - 'scripts/generate-*.mjs'
+      - 'scripts/country-catalog.mjs'
+      - 'src/lib/limeGrid.ts'
+      - 'src/generated/timeZones.ts'
+      - 'ios/ScootRadar/Models/*.generated.swift'
+      - 'package-lock.json'
+      - '.github/workflows/android.yml'
+  push:
+    branches:
+      - main
+      - 'lane/android-*'
+    paths:
+      - 'android/**'
+      - 'data/**'
+      - 'ios/ScootRadar/*.lproj/**'
+      - 'scripts/generate-*.mjs'
+      - 'scripts/country-catalog.mjs'
+      - 'src/lib/limeGrid.ts'
+      - 'src/generated/timeZones.ts'
+      - 'ios/ScootRadar/Models/*.generated.swift'
+      - 'package-lock.json'
+      - '.github/workflows/android.yml'
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: Android app
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: android
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # The build runs the website's generators for the catalog and the API contract (android/core).
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 26
+          cache: npm
+
+      - run: npm ci
+        working-directory: .
+
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+
+      - run: ./gradlew --console=plain :core:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
