@@ -15,7 +15,7 @@ LA APP CORRECTA, CON UN TOQUE
 «Abrir en» te lleva a la app del propio operador, donde desbloqueas y pagas como siempre. ScootRadar no alquila ni reserva patinetes.
 
 DÓNDE FUNCIONA
-Los patinetes de 37 operadores, en más de 1000 ciudades y pueblos de 56 países: España, Francia, Suiza, Alemania, Italia, el Reino Unido, Bélgica, Polonia, Noruega, Suecia, Finlandia y otros países de Europa; Estados Unidos y Canadá; Brasil, Chile y México; Japón, Corea del Sur y Australia; Israel, Turquía, Nueva Zelanda y otros. Entre ellas están Berlín, Oslo, Tokio, Chicago, Santiago de Chile, Roma, São Paulo, Estocolmo, Seúl y Zúrich. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen.
+Los patinetes de 38 operadores, en más de 1000 ciudades y pueblos de 56 países: España, Francia, Suiza, Alemania, Italia, el Reino Unido, Bélgica, Polonia, Noruega, Suecia, Finlandia y otros países de Europa; Estados Unidos y Canadá; Brasil, Chile y México; Japón, Corea del Sur y Australia; Israel, Turquía, Nueva Zelanda y otros. Entre ellas están Berlín, Oslo, Tokio, Chicago, Santiago de Chile, Roma, São Paulo, Estocolmo, Seúl y Zúrich. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen.
 
 PRIVACIDAD DE SERIE
 Sin registro y sin anuncios. Tu ubicación se usa en tu iPhone, para centrar el mapa y calcular los tiempos a pie; el servidor solo recibe la parte del mapa que estás mirando. Las estadísticas de uso anónimas se pueden desactivar en Ajustes.
@@ -26,6 +26,6 @@ ADEMÁS
 • Dynamic Type, VoiceOver y Reducir movimiento
 • Español, inglés, alemán, francés, italiano, neerlandés, noruego, portugués e islandés
 
-Las posiciones proceden de los operadores y las administraciones, y pueden tener unos minutos de retraso. En el mapa están, entre otros, Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Alpaca, DART, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe y Zippy, según la ciudad.
+Las posiciones proceden de los operadores y las administraciones, y pueden tener unos minutos de retraso. En el mapa están, entre otros, Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe y Zippy, según la ciudad.
 
 ScootRadar es independiente y no está vinculado a los operadores; sus nombres son marcas de sus respectivos titulares. ScootRadar es de código abierto.

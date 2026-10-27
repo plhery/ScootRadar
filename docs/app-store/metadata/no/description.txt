@@ -15,7 +15,7 @@ ETT TRYKK TIL RIKTIG APP
 «Åpne i» tar deg til operatørens egen app, der du låser opp og betaler som vanlig. ScootRadar leier ikke ut og reserverer ikke elsparkesykler.
 
 HVOR DET FUNGERER
-Sparkesyklene til 37 operatører, i over 1000 byer og tettsteder i 56 land: Norge, Sveits, Frankrike, Tyskland, Italia, Storbritannia, Belgia, Spania, Polen, Sverige, Finland og flere land i Europa; USA og Canada; Brasil, Chile og Mexico; Japan, Sør-Korea og Australia; Israel, Tyrkia, New Zealand og flere. Blant dem er Oslo, Berlin, Tokyo, Chicago, Santiago, Roma, São Paulo, Stockholm, Seoul og Zürich. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
+Sparkesyklene til 38 operatører, i over 1000 byer og tettsteder i 56 land: Norge, Sveits, Frankrike, Tyskland, Italia, Storbritannia, Belgia, Spania, Polen, Sverige, Finland og flere land i Europa; USA og Canada; Brasil, Chile og Mexico; Japan, Sør-Korea og Australia; Israel, Tyrkia, New Zealand og flere. Blant dem er Oslo, Berlin, Tokyo, Chicago, Santiago, Roma, São Paulo, Stockholm, Seoul og Zürich. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
 
 INNEBYGD PERSONVERN
 Ingen konto og ingen reklame. Posisjonen din brukes på iPhonen din, for å sentrere kartet og regne ut gangtider; serveren får bare den delen av kartet du ser på. Anonym bruksstatistikk kan slås av i Innstillinger.
@@ -26,6 +26,6 @@ OGSÅ
 • Dynamic Type, VoiceOver og Reduser bevegelse
 • Norsk, engelsk, tysk, fransk, italiensk, nederlandsk, portugisisk, spansk og islandsk
 
-Posisjonene kommer fra operatørene og myndighetene, og kan være noen minutter gamle. På kartet finner du blant annet Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Alpaca, DART, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe og Zippy, avhengig av byen.
+Posisjonene kommer fra operatørene og myndighetene, og kan være noen minutter gamle. På kartet finner du blant annet Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe og Zippy, avhengig av byen.
 
 ScootRadar er uavhengig og ikke tilknyttet operatørene; navnene deres er varemerker som tilhører eierne. ScootRadar har åpen kildekode.
