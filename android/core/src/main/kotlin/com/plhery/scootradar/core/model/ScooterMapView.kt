@@ -2,8 +2,6 @@ package com.plhery.scootradar.core.model
 
 import java.util.Locale
 import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.pow
 
 // ScooterMapScalePolicy, ScooterMapCameraPolicy, ScooterScreenshotCamera and the coordinator's static rules
@@ -65,10 +63,10 @@ object ScooterMapCameraPolicy {
     ): GeoPoint {
         val mapView = on
         val bounds = mapView.bounds
-        val top = max(bounds.minY, visible.minY)
-        val bottom = min(bounds.maxY, visible.maxY)
-        val leading = max(bounds.minX, visible.minX)
-        val trailing = min(bounds.maxX, visible.maxX)
+        val top = swiftMax(bounds.minY, visible.minY)
+        val bottom = swiftMin(bounds.maxY, visible.maxY)
+        val leading = swiftMax(bounds.minX, visible.minX)
+        val trailing = swiftMin(bounds.maxX, visible.maxX)
         // MapKit shows the centre in the middle of the map's layout margins, which a panel or a fold moves
         // past it: then the offset is measured from where the centre is shown, not from the middle of the map.
         val middle = if (marginsMoved || trailing - leading < abs(bounds.width)) {
@@ -122,8 +120,8 @@ object ScooterMapCameraPolicy {
         val band = ScreenRect(bounds.minX, top, abs(bounds.width), bottom - top)
         if (beside == null || beside.isEmpty) return band
         val panel = beside
-        val minX = if (panel.midX < bounds.midX) min(max(panel.maxX, bounds.minX), bounds.maxX) else bounds.minX
-        val maxX = if (panel.midX < bounds.midX) bounds.maxX else max(min(panel.minX, bounds.maxX), bounds.minX)
+        val minX = if (panel.midX < bounds.midX) swiftMin(swiftMax(panel.maxX, bounds.minX), bounds.maxX) else bounds.minX
+        val maxX = if (panel.midX < bounds.midX) bounds.maxX else swiftMax(swiftMin(panel.minX, bounds.maxX), bounds.minX)
         return ScreenRect(minX, band.minY, maxX - minX, abs(band.height))
     }
 
@@ -160,14 +158,14 @@ object ScooterMapCameraPolicy {
         val rect = when (on) {
             FoldSide.Above -> {
                 val top = if (visible.minY < fold.minY) visible.minY else safeTop
-                ScreenRect(visible.minX, top, abs(visible.width), min(visible.maxY, fold.minY) - top)
+                ScreenRect(visible.minX, top, abs(visible.width), swiftMin(visible.maxY, fold.minY) - top)
             }
             FoldSide.Right -> {
-                val minX = max(visible.minX, fold.maxX)
+                val minX = swiftMax(visible.minX, fold.maxX)
                 ScreenRect(minX, visible.minY, visible.maxX - minX, abs(visible.height))
             }
             FoldSide.Left -> {
-                val maxX = min(visible.maxX, fold.minX)
+                val maxX = swiftMin(visible.maxX, fold.minX)
                 ScreenRect(visible.minX, visible.minY, maxX - visible.minX, abs(visible.height))
             }
         }
@@ -188,7 +186,7 @@ object ScooterMapCameraPolicy {
      * looks there as it does on a phone instead of closer in: locating shows the same streets, larger
      * windows more of them around. 1 up to the widest phone, so phones are as they were.
      */
-    fun spanScale(across: Double): Double = max(1.0, across / phoneWidth)
+    fun spanScale(across: Double): Double = swiftMax(1.0, across / phoneWidth)
 }
 
 /**

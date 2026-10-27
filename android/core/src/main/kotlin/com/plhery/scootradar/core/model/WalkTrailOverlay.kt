@@ -5,8 +5,6 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.hypot
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.sin
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -61,7 +59,7 @@ object WalkTrailLook {
 
     /** Quick at first, settling as it reaches the scooter: a cubic ease-out. */
     fun easeOut(progress: Double): Double {
-        val remaining = 1 - min(1.0, max(0.0, progress))
+        val remaining = 1 - swiftMin(1.0, swiftMax(0.0, progress))
         return 1 - remaining * remaining * remaining
     }
 
@@ -79,9 +77,9 @@ object WalkTrailLook {
         }
         val total = lengths.last()
         if (!(total > 0)) return emptyList()
-        val step = max(spacing, total / maximumDots)
-        val first = max(0.0, from) * total
-        val last = min(1.0, to) * total
+        val step = swiftMax(spacing, total / maximumDots)
+        val first = swiftMax(0.0, from) * total
+        val last = swiftMin(1.0, to) * total
         val dots = mutableListOf<MapPoint>()
         var segment = 0
         var index = ceil(first / step)
@@ -91,7 +89,7 @@ object WalkTrailLook {
             val start = points[segment]
             val end = points[segment + 1]
             val length = lengths[segment + 1] - lengths[segment]
-            val share = if (length > 0) min(1.0, (distance - lengths[segment]) / length) else 0.0
+            val share = if (length > 0) swiftMin(1.0, (distance - lengths[segment]) / length) else 0.0
             dots += MapPoint(x = start.x + (end.x - start.x) * share, y = start.y + (end.y - start.y) * share)
             index += 1
         }
@@ -142,14 +140,14 @@ fun ScooterMapCameraPolicy.rect(
         val y = point.y - reference.y
         val u = x * cosine + y * sine
         val v = -x * sine + y * cosine
-        minimumU = min(minimumU, u)
-        maximumU = max(maximumU, u)
-        minimumV = min(minimumV, v)
-        maximumV = max(maximumV, v)
+        minimumU = swiftMin(minimumU, u)
+        maximumU = swiftMax(maximumU, u)
+        minimumV = swiftMin(minimumV, v)
+        maximumV = swiftMax(maximumV, v)
     }
-    val scale = maxOf(
-        minimumScale,
-        (maximumU - minimumU) / abs(visible.width),
+    // Swift's max of three, max(max(a, b), c).
+    val scale = swiftMax(
+        swiftMax(minimumScale, (maximumU - minimumU) / abs(visible.width)),
         (maximumV - minimumV) / abs(visible.height),
     )
     if (!(scale.isFinite() && scale > 0)) return null

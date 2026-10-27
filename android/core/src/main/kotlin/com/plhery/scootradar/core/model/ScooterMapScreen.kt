@@ -1,7 +1,5 @@
 package com.plhery.scootradar.core.model
 
-import kotlin.math.max
-
 // ScooterFold from ios/ScootRadar/Views/ScooterMapScreen.swift; the rest of that file is the screen.
 
 /**
@@ -45,6 +43,6 @@ object ScooterFold {
         if (fold == null || isAcross(fold)) return width
         val room = if (rightToLeft) container.maxX - inset - fold.maxX else fold.minX - container.minX - inset
         if (!(room > 0 && room < width)) return width
-        return max(minimumPanelWidth, room)
+        return swiftMax(minimumPanelWidth, room)
     }
 }
