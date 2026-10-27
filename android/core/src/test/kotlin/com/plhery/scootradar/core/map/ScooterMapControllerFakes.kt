@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.api.ScooterAPIClient
@@ -8,16 +10,27 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterDefaults
+import com.plhery.scootradar.core.model.ScooterRefreshPolicy
+import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.addingTimeInterval
 import java.time.Instant
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 
-// The stubs of ios/ScootRadarTests/ScooterMapModelTests.swift: its APIs, its clock and its location manager.
+// The stubs and helpers of ios/ScootRadarTests/ScooterMapModelTests.swift: its APIs, its clock, its location manager
+// and the model it makes, which the walk's and the zones' tests share.
 
 internal class StubScooterAPI(
     private var response: ScooterResponse,
@@ -215,4 +228,97 @@ internal class RecordingDefaults(
 /** Directions a test does not ask for: no path, and nothing goes out to the network. */
 internal object NoWalkingDirections : WalkingDirectionsClient {
     override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = emptyList()
+}
+
+/**
+ * The controller on the test's background scope. Without a clock of its own it reads the test's, which the
+ * test's waits move as real time moves under the iPhone's tests, from where TestClock starts.
+ */
+internal fun TestScope.makeController(
+    api: ScooterAPIClient,
+    clock: TestClock? = null,
+    defaults: ScooterDefaults = InMemoryScooterDefaults(),
+    locationManager: ScooterLocationManager = FakeLocationManager(),
+    refreshPolicy: ScooterRefreshPolicy = ScooterRefreshPolicy.standard,
+    locationTimeout: Duration = 5.seconds,
+    phoneLanguages: () -> List<String> = { listOf("en-US") },
+    keepAppLanguages: (List<String>) -> Unit = {},
+    directions: WalkingDirectionsClient = NoWalkingDirections,
+    openInMaps: (ScooterWalkTarget) -> Unit = {},
+): ScooterMapController {
+    val scheduler = testScheduler
+    val start = TestClock().now
+    val now: () -> Instant = if (clock != null) {
+        { clock.now }
+    } else {
+        { start.plusMillis(scheduler.currentTime) }
+    }
+    return ScooterMapController(
+        api = api,
+        locationManager = locationManager,
+        defaults = defaults,
+        scope = backgroundScope,
+        directions = directions,
+        openInMaps = openInMaps,
+        locationTimeout = locationTimeout,
+        refreshPolicy = refreshPolicy,
+        now = now,
+        phoneLanguages = phoneLanguages,
+        keepAppLanguages = keepAppLanguages,
+    )
+}
+
+internal fun TestScope.loadedController(vehicles: List<Scooter>, origin: GeoPoint): ScooterMapController {
+    val api = StubScooterAPI(ScooterResponse(vehicles = vehicles))
+    val model = makeController(api)
+    model.setUserLocation(origin)
+    model.refresh()
+    val loadingFinished = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+    assertTrue(loadingFinished)
+    return model
+}
+
+internal fun scooter(
+    id: String,
+    provider: String,
+    latitude: Double = 47.3769,
+    longitude: Double = 8.5417,
+    battery: Int? = 80,
+    rangeMeters: Int? = null,
+    rentalURIs: ScooterRentalURIs? = null,
+): Scooter = Scooter(
+    provider = provider,
+    latitude = latitude,
+    longitude = longitude,
+    battery = battery,
+    rangeMeters = rangeMeters,
+    vehicleID = id,
+    deepLink = null,
+    rentalURIs = rentalURIs,
+    distanceMeters = 0.0,
+)
+
+/**
+ * Lets the controller's work run, 10 ms of the test's time at a time, until the condition holds: false if it
+ * never does in `attempts` steps.
+ */
+internal fun TestScope.waitUntil(attempts: Int = 200, condition: () -> Boolean): Boolean {
+    repeat(attempts) {
+        if (condition()) return true
+        advanceTimeBy(10)
+        runCurrent()
+    }
+    return false
+}
+
+/** Long enough for a refresh that was going to start to have reached the API. */
+internal fun TestScope.settle() {
+    advanceTimeBy(60)
+    runCurrent()
+}
+
+/** XCTUnwrap: the value, or the test fails. */
+internal fun <T : Any> unwrap(value: T?): T {
+    assertNotNull(value)
+    return value!!
 }

@@ -1,7 +1,6 @@
 package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.api.AddressSearchResult
-import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.api.ScooterLoadFailure
@@ -36,7 +35,6 @@ import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterCountContext
-import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterDockHint
 import com.plhery.scootradar.core.model.ScooterDockNotice
@@ -59,7 +57,6 @@ import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterProviderCoverage
 import com.plhery.scootradar.core.model.ScooterProviderHealth
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
-import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterReviewPrompt
@@ -84,7 +81,6 @@ import java.util.Locale
 import java.util.TimeZone
 import kotlin.math.ceil
 import kotlin.math.roundToInt
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -3305,93 +3301,6 @@ class ScooterMapControllerTest {
         assertEquals(listOf<ScooterWalkTarget>(target), opened)
     }
 
-    /**
-     * The controller on the test's background scope. Without a clock of its own it reads the test's, which the
-     * test's waits move as real time moves under the iPhone's tests, from where TestClock starts.
-     */
-    private fun TestScope.makeController(
-        api: ScooterAPIClient,
-        clock: TestClock? = null,
-        defaults: ScooterDefaults = InMemoryScooterDefaults(),
-        locationManager: ScooterLocationManager = FakeLocationManager(),
-        refreshPolicy: ScooterRefreshPolicy = ScooterRefreshPolicy.standard,
-        locationTimeout: Duration = 5.seconds,
-        phoneLanguages: () -> List<String> = { listOf("en-US") },
-        keepAppLanguages: (List<String>) -> Unit = {},
-        directions: WalkingDirectionsClient = NoWalkingDirections,
-        openInMaps: (ScooterWalkTarget) -> Unit = {},
-    ): ScooterMapController {
-        val scheduler = testScheduler
-        val start = TestClock().now
-        val now: () -> Instant = if (clock != null) {
-            { clock.now }
-        } else {
-            { start.plusMillis(scheduler.currentTime) }
-        }
-        return ScooterMapController(
-            api = api,
-            locationManager = locationManager,
-            defaults = defaults,
-            scope = backgroundScope,
-            directions = directions,
-            openInMaps = openInMaps,
-            locationTimeout = locationTimeout,
-            refreshPolicy = refreshPolicy,
-            now = now,
-            phoneLanguages = phoneLanguages,
-            keepAppLanguages = keepAppLanguages,
-        )
-    }
-
-    private fun TestScope.loadedController(vehicles: List<Scooter>, origin: GeoPoint): ScooterMapController {
-        val api = StubScooterAPI(ScooterResponse(vehicles = vehicles))
-        val model = makeController(api)
-        model.setUserLocation(origin)
-        model.refresh()
-        val loadingFinished = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
-        assertTrue(loadingFinished)
-        return model
-    }
-
-    private fun scooter(
-        id: String,
-        provider: String,
-        latitude: Double = 47.3769,
-        longitude: Double = 8.5417,
-        battery: Int? = 80,
-        rangeMeters: Int? = null,
-        rentalURIs: ScooterRentalURIs? = null,
-    ): Scooter = Scooter(
-        provider = provider,
-        latitude = latitude,
-        longitude = longitude,
-        battery = battery,
-        rangeMeters = rangeMeters,
-        vehicleID = id,
-        deepLink = null,
-        rentalURIs = rentalURIs,
-        distanceMeters = 0.0,
-    )
-
-    /**
-     * Lets the controller's work run, 10 ms of the test's time at a time, until the condition holds: false if it
-     * never does in `attempts` steps.
-     */
-    private fun TestScope.waitUntil(attempts: Int = 200, condition: () -> Boolean): Boolean {
-        repeat(attempts) {
-            if (condition()) return true
-            advanceTimeBy(10)
-            runCurrent()
-        }
-        return false
-    }
-
-    /** Long enough for a refresh that was going to start to have reached the API. */
-    private fun TestScope.settle() {
-        advanceTimeBy(60)
-        runCurrent()
-    }
-
     private fun timedResponse(
         generatedAt: Instant,
         expiresIn: Double,
@@ -3441,12 +3350,6 @@ class ScooterMapControllerTest {
     private fun iso(date: Instant): String = DateTimeFormatter.ISO_INSTANT.format(date.truncatedTo(ChronoUnit.SECONDS))
 
     private fun date(text: String): Instant = OffsetDateTime.parse(text).toInstant()
-
-    /** XCTUnwrap: the value, or the test fails. */
-    private fun <T : Any> unwrap(value: T?): T {
-        assertNotNull(value)
-        return value!!
-    }
 
     /** The dock's summary, or the test fails. */
     private fun summaryOf(dock: ScooterDockContent): ScooterDockSummary =

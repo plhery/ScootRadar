@@ -9,7 +9,8 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-// ios/ScootRadar/ViewModels/ScooterMapModel.swift's location policy, and ios/ScootRadar/Views/ScooterUserLocationView.swift's heading.
+// ios/ScootRadar/ViewModels/ScooterMapModel.swift's location policy, ios/ScootRadar/Views/ScooterUserLocationView.swift's
+// heading, and ios/ScootRadar/Views/ScooterMapScreen.swift's heading policy.
 
 /** A position the phone reported, as CLLocation gives what the map reads of it. */
 data class ScooterLocationFix(
@@ -76,6 +77,35 @@ enum class ScooterDeviceOrientation {
     LandscapeRight,
     FaceUp,
     FaceDown,
+}
+
+/**
+ * Which way up the window shows, as UIInterfaceOrientation says. The interface turns the other way from the
+ * phone: Android's Surface.ROTATION_90, the phone turned a quarter anticlockwise, is LandscapeRight, and
+ * ROTATION_270 is LandscapeLeft.
+ */
+enum class ScooterInterfaceOrientation {
+    Unknown,
+    Portrait,
+    PortraitUpsideDown,
+    LandscapeLeft,
+    LandscapeRight,
+}
+
+/**
+ * The compass reads the heading from the top of the phone held upright. The direction someone faces is the top
+ * of the screen as it shows, so a screen shown sideways, as an open folding phone shows the map, turns it with
+ * it.
+ */
+object ScooterHeadingPolicy {
+    fun deviceOrientation(interfaceOrientation: ScooterInterfaceOrientation): ScooterDeviceOrientation =
+        when (interfaceOrientation) {
+            ScooterInterfaceOrientation.PortraitUpsideDown -> ScooterDeviceOrientation.PortraitUpsideDown
+            // The interface turns the other way from the device.
+            ScooterInterfaceOrientation.LandscapeLeft -> ScooterDeviceOrientation.LandscapeRight
+            ScooterInterfaceOrientation.LandscapeRight -> ScooterDeviceOrientation.LandscapeLeft
+            else -> ScooterDeviceOrientation.Portrait
+        }
 }
 
 /** Why locating failed, as the CLError codes the map tells apart. */

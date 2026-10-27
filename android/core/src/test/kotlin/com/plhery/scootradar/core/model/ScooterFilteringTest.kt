@@ -1,15 +1,18 @@
 package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.generated.ScooterProvider
+import com.plhery.scootradar.core.map.ScooterUserHeading
+import java.util.Locale
+import kotlin.math.PI
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.util.Locale
 
 // ios/ScootRadarTests/ScooterFilteringTests.swift.
 class ScooterFilteringTest {
@@ -258,6 +261,30 @@ class ScooterFilteringTest {
 
         assertTrue(originalContrast < 3.5)
         assertTrue(ScooterMapLook.contrastRatio(between = dot, and = ground) >= 3.5)
+    }
+
+    @Test
+    fun compassUsesTrueNorthAndFallsBackToMagneticNorth() {
+        val north = ScooterUserHeading(trueHeading = 0.0, magneticHeading = 8.0, accuracy = 5.0)
+        val fallback = ScooterUserHeading(trueHeading = -1.0, magneticHeading = 358.0, accuracy = 12.0)
+        assertNotNull(north)
+        assertNotNull(fallback)
+        assertEquals(0.0, north!!.direction, 0.0)
+        assertEquals(358.0, fallback!!.direction, 0.0)
+        assertNull(ScooterUserHeading(trueHeading = 20.0, magneticHeading = 25.0, accuracy = -1.0))
+        assertNull(ScooterUserHeading(trueHeading = 20.0, magneticHeading = 25.0, accuracy = 90.0))
+        assertNull(ScooterUserHeading(trueHeading = -1.0, magneticHeading = -1.0, accuracy = 5.0))
+        assertNull(ScooterUserHeading(trueHeading = Double.NaN, magneticHeading = Double.NaN, accuracy = 5.0))
+    }
+
+    @Test
+    fun compassBeamWidensWithUncertainty() {
+        val precise = ScooterUserHeading(trueHeading = 45.0, magneticHeading = 45.0, accuracy = 5.0)!!
+        val uncertain = ScooterUserHeading(trueHeading = 45.0, magneticHeading = 45.0, accuracy = 50.0)!!
+        val veryUncertain = ScooterUserHeading(trueHeading = 45.0, magneticHeading = 45.0, accuracy = 85.0)!!
+        assertEquals(22 * PI / 180, precise.halfAngle, 0.001)
+        assertTrue(uncertain.halfAngle > precise.halfAngle)
+        assertEquals(60 * PI / 180, veryUncertain.halfAngle, 0.001)
     }
 
     @Test

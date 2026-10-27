@@ -6,6 +6,11 @@ import com.plhery.scootradar.core.generated.ScooterAPIResponsePayload
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterResponseMetadataPayload
 import com.plhery.scootradar.core.generated.ScooterVehiclePayload
+import com.plhery.scootradar.core.map.ScooterDeviceOrientation
+import com.plhery.scootradar.core.map.ScooterHeadingPolicy
+import com.plhery.scootradar.core.map.ScooterInterfaceOrientation
+import com.plhery.scootradar.core.map.StubScooterAPI
+import com.plhery.scootradar.core.map.makeController
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -212,6 +217,29 @@ class ScooterModelsTest {
             ScooterLanguageChoice.Language(ScooterLanguage.Fr),
             ScooterLanguageChoice.of(listOf("fr"), shown = ScooterLanguage.Fr),
         )
+    }
+
+    @Test
+    fun theIPhonesLanguagesStayTheIPhonesOnceTheAppHasOneOfItsOwn() = runTest {
+        // Automatic says "English, the language of your phone" after French
+        // was chosen for the app, not "Français": Locale.getDefault() would
+        // give the app's. The phone's languages are the system's, which a
+        // language kept for the app, in its own locales, leaves as they are.
+        val systemLanguages = listOf("en-GB", "de-CH")
+        var appLanguages = emptyList<String>()
+        // What Locale.getDefault() and LocaleList.getDefault() follow.
+        fun preferredLanguages(): List<String> = appLanguages.ifEmpty { systemLanguages }
+        val model = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            phoneLanguages = { systemLanguages },
+            keepAppLanguages = { appLanguages = it },
+        )
+        val phone = model.phoneLanguage
+        val chosen = if (systemLanguages.first().startsWith("is")) ScooterLanguage.Nl else ScooterLanguage.Is
+        model.setLanguageChoice(ScooterLanguageChoice.Language(chosen))
+
+        assertEquals(chosen.rawValue, preferredLanguages().first())
+        assertEquals(phone, model.phoneLanguage)
     }
 
     @Test
@@ -611,6 +639,18 @@ class ScooterModelsTest {
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("en-CH")))
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("fr-CA")))
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("es-MX")))
+    }
+
+    @Test
+    fun theHeadingIsTakenFromTheTopOfTheScreenAsItShows() {
+        fun device(interfaceOrientation: ScooterInterfaceOrientation) =
+            ScooterHeadingPolicy.deviceOrientation(interfaceOrientation)
+        assertEquals(ScooterDeviceOrientation.Portrait, device(ScooterInterfaceOrientation.Portrait))
+        assertEquals(ScooterDeviceOrientation.PortraitUpsideDown, device(ScooterInterfaceOrientation.PortraitUpsideDown))
+        // A screen turned left shows on a device turned right.
+        assertEquals(ScooterDeviceOrientation.LandscapeRight, device(ScooterInterfaceOrientation.LandscapeLeft))
+        assertEquals(ScooterDeviceOrientation.LandscapeLeft, device(ScooterInterfaceOrientation.LandscapeRight))
+        assertEquals(ScooterDeviceOrientation.Portrait, device(ScooterInterfaceOrientation.Unknown))
     }
 
     private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
