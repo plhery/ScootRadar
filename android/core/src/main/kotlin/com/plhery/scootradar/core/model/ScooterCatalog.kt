@@ -75,7 +75,7 @@ object ScooterCityCatalog {
     fun contains(point: GeoPoint): Boolean = contains(point.latitude, point.longitude)
 
     // haversineM from src/lib/geo.ts, so both apps show the same distances.
-    private fun distanceMeters(origin: GeoPoint, destination: GeoPoint): Double {
+    internal fun distanceMeters(origin: GeoPoint, destination: GeoPoint): Double {
         val radians = PI / 180
         val latitudeDelta = (destination.latitude - origin.latitude) * radians
         val longitudeDelta = (destination.longitude - origin.longitude) * radians
@@ -131,35 +131,6 @@ data class RentalCurfew(
 
     companion object {
         val all: List<RentalCurfew> get() = CatalogData.value.curfews
-    }
-}
-
-/**
- * A street where a city or its police forbids riding, from data/rule-zones.json, as on the web
- * (src/lib/ruleZones.ts). CityRuleZone.all is generated.
- */
-data class CityRuleZone(
-    val id: String,
-    val authority: String,
-    val timeZone: String,
-    /** "YYYY-MM-DD": the first day it holds. */
-    val firstDay: String,
-    val hours: List<Hours>,
-    val source: String,
-    val lines: List<List<GeoPoint>>,
-) {
-    data class Hours(
-        /** Local minutes since midnight; hours past midnight start after they end. */
-        val fromMinute: Int,
-        val untilMinute: Int,
-    ) {
-        fun holds(atMinute: Int): Boolean =
-            if (fromMinute <= untilMinute) atMinute >= fromMinute && atMinute < untilMinute
-            else atMinute >= fromMinute || atMinute < untilMinute
-    }
-
-    companion object {
-        val all: List<CityRuleZone> get() = CatalogData.value.ruleZones
     }
 }
 

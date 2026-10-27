@@ -1,7 +1,12 @@
 package com.plhery.scootradar.core.model
 
+import kotlin.math.PI
+import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 // Equality here is Swift's: 0.0 and -0.0 are the same coordinate, which a data class's equals would
 // tell apart.
@@ -16,7 +21,31 @@ class GeoPoint(val latitude: Double, val longitude: Double) {
 }
 
 /** What the map shows, as MapKit's MKCoordinateRegion gives it: a centre and spans in degrees. */
-data class MapRegion(val center: GeoPoint, val latitudeDelta: Double, val longitudeDelta: Double)
+data class MapRegion(val center: GeoPoint, val latitudeDelta: Double, val longitudeDelta: Double) {
+    companion object {
+        /**
+         * MKCoordinateRegion(center:latitudinalMeters:longitudinalMeters:): the spans that cover so many
+         * metres north to south and east to west at the centre, on the WGS 84 ellipsoid as MapKit
+         * measures them, to a millionth.
+         */
+        fun around(center: GeoPoint, latitudinalMeters: Double, longitudinalMeters: Double): MapRegion {
+            val latitude = center.latitude * PI / 180
+            val squaredEccentricity = FLATTENING * (2 - FLATTENING)
+            val curve = 1 - squaredEccentricity * sin(latitude).pow(2)
+            // The radii of the ellipsoid's curve along the meridian and along the parallel.
+            val meridian = EQUATORIAL_RADIUS * (1 - squaredEccentricity) / curve.pow(1.5)
+            val parallel = EQUATORIAL_RADIUS / sqrt(curve) * cos(latitude)
+            return MapRegion(
+                center = center,
+                latitudeDelta = latitudinalMeters / (meridian * PI / 180),
+                longitudeDelta = longitudinalMeters / (parallel * PI / 180),
+            )
+        }
+
+        private const val EQUATORIAL_RADIUS = 6_378_137.0
+        private const val FLATTENING = 1 / 298.257223563
+    }
+}
 
 /**
  * A box of the map, like `MapBounds` in src/lib/types.ts. A west greater than the east crosses the 180°
