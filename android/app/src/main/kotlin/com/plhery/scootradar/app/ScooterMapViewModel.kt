@@ -9,6 +9,7 @@ import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterMapStart
+import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import com.plhery.scootradar.map.MapCameraMemory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,10 @@ class ScooterMapViewModel(
 
     /** The camera a recreated activity opens on. */
     val camera = MapCameraMemory()
+
+    /** A debug build's camera for screenshots, from the launch's ScreenshotCamera extra (MAP-005). */
+    val screenshotCamera: ScooterScreenshotCamera.Camera? =
+        if (BuildConfig.DEBUG) ScooterScreenshotCamera.fromLaunchArguments(defaults) else null
 
     val controller = ScooterMapController(
         api = container.api,

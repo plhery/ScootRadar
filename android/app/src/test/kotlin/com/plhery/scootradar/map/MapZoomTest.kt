@@ -4,10 +4,14 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.MapRect
 import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterMapProjection
+import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.math.log2
 import kotlin.math.pow
@@ -21,6 +25,37 @@ class MapZoomTest {
         assertEquals(8.5, MapZoom.level(on = FlatMap(mapLibreZoom = 7.5, width = 1280.0, height = 800.0)), 1e-9)
         assertEquals(16.0, MapZoom.level(mapLibreZoom = 15.0), 0.0)
         assertEquals(15.0, MapZoom.mapLibreZoom(level = 16.0), 0.0)
+    }
+
+    /** Each threshold of :core and the server, on both sides of it, from MapLibre's zoom (MAP-062–066, MAP-313). */
+    @Test
+    fun eachThresholdFallsAtTheIPhonesZoom() {
+        val below = 1e-6
+        // Scooters are grouped up to the iPhone's 15, on the zoom between levels: MapLibre's 14.
+        assertTrue(ScooterClusteringPolicy.shouldCluster(MapZoom.level(mapLibreZoom = 14.0)))
+        assertFalse(ScooterClusteringPolicy.shouldCluster(MapZoom.level(mapLibreZoom = 14.0 + below)))
+        // The zoom asked for is the level's ceiling: bays from 16 (the controller's mapParking), past MapLibre's 14.
+        assertEquals(15, MapZoom.apiZoom(MapZoom.level(mapLibreZoom = 14.0)))
+        assertEquals(16, MapZoom.apiZoom(MapZoom.level(mapLibreZoom = 14.0 + below)))
+        // Zones from 14, past MapLibre's 12.
+        assertTrue(MapZoom.apiZoom(MapZoom.level(mapLibreZoom = 12.0)) < ScooterZoneArea.minimumZoom)
+        assertEquals(ScooterZoneArea.minimumZoom, MapZoom.apiZoom(MapZoom.level(mapLibreZoom = 12.0 + below)))
+        // The overview up to 10: MapLibre's 9 and below.
+        assertEquals(ScooterClusteringPolicy.maximumOverviewZoom, MapZoom.apiZoom(MapZoom.level(mapLibreZoom = 9.0)))
+        assertEquals(ScooterClusteringPolicy.maximumOverviewZoom + 1, MapZoom.apiZoom(MapZoom.level(mapLibreZoom = 9.0 + below)))
+        // The closest the map goes is the server's 22, the furthest 1.
+        assertEquals(22, MapZoom.apiZoom(MapZoom.level(MapZoom.maximum)))
+        assertEquals(1, MapZoom.apiZoom(MapZoom.level(MapZoom.minimum)))
+    }
+
+    @Test
+    fun aCameraDistanceIsMapLibresOwnCamerasScale() {
+        // MapLibre's camera stands 1.5 heights of the map away: 1266 m over an 844 dp map is 1 m a dp.
+        val zoom = MapZoom.atDistance(1266.0, latitude = 0.0, height = 844.0)
+        assertEquals(2 * Math.PI * 6_378_137.0 / (512 * 2.0.pow(zoom)), 1.0, 1e-9)
+        // Further north a metre is more of the flat map.
+        assertEquals(zoom + log2(0.5), MapZoom.atDistance(1266.0, latitude = 60.0, height = 844.0), 1e-9)
+        assertEquals(MapZoom.maximum, MapZoom.atDistance(0.01, latitude = 47.0, height = 844.0), 0.0)
     }
 
     @Test

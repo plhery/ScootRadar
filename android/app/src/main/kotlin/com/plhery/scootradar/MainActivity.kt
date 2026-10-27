@@ -43,7 +43,14 @@ class MainActivity : AppCompatActivity() {
         setContent {
             ScooterMapScreen(
                 controller = model.controller,
-                map = { ScooterMap(controller = model.controller, start = model.start, memory = model.camera) },
+                map = {
+                    ScooterMap(
+                        controller = model.controller,
+                        start = model.start,
+                        memory = model.camera,
+                        screenshot = model.screenshotCamera,
+                    )
+                },
             )
         }
     }

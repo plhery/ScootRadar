@@ -6,6 +6,8 @@ import com.plhery.scootradar.core.model.MapRect
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterMapProjection
+import kotlin.math.PI
+import kotlin.math.cos
 import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
@@ -73,5 +75,16 @@ object MapZoom {
         val across = region.longitudeDelta / 360 * MapPoint.worldSize
         val perPoint = max(across / width, (south.y - north.y) / height)
         return min(maximum, max(minimum, log2(MapPoint.worldSize / (512 * perPoint))))
+    }
+
+    /**
+     * MapLibre's zoom at which its own camera stands `distance` metres from what it looks at, on a map `height`
+     * dp tall (MAP-005). It sees 36.87° from top to bottom, so it stands 1.5 heights of the map from that
+     * point. MapKit doesn't say what its camera sees, so the same distance may not show the same scale.
+     */
+    fun atDistance(distance: Double, latitude: Double, height: Double): Double {
+        val metresPerPoint = distance / (1.5 * height)
+        val circumference = 2 * PI * 6_378_137.0 * cos(latitude * PI / 180)
+        return min(maximum, max(minimum, log2(circumference / (512 * metresPerPoint))))
     }
 }
