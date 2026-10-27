@@ -39,10 +39,21 @@ val generateCatalog by tasks.registering(Exec::class) {
     commandLine(node.get(), "scripts/generate-provider-catalog.mjs", "--android=${catalogSources.get().asFile}")
 }
 
+// The app's strings are the iPhone app's, read as they are when the app runs (ScooterStrings.kt): a
+// translation changed for the iPhone is changed here too.
+val iosStrings = layout.buildDirectory.dir("generated/iosStrings")
+val copyIosStrings by tasks.registering(Sync::class) {
+    from(repo.resolve("ios/ScootRadar")) {
+        include("*.lproj/Localizable.strings", "*.lproj/Localizable.stringsdict")
+    }
+    into(iosStrings.map { it.dir("com/plhery/scootradar/core/strings") })
+}
+
 sourceSets.main {
     kotlin.srcDir(files(apiContractKotlin).builtBy(generateApiContract))
     kotlin.srcDir(files(catalogSources.map { it.dir("kotlin") }).builtBy(generateCatalog))
     resources.srcDir(files(catalogSources.map { it.dir("resources") }).builtBy(generateCatalog))
+    resources.srcDir(files(iosStrings).builtBy(copyIosStrings))
 }
 
 dependencies {
