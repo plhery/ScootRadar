@@ -49,13 +49,37 @@ class MapZoomTest {
     }
 
     @Test
-    fun aCameraDistanceIsMapLibresOwnCamerasScale() {
-        // MapLibre's camera stands 1.5 heights of the map away: 1266 m over an 844 dp map is 1 m a dp.
-        val zoom = MapZoom.atDistance(1266.0, latitude = 0.0, height = 844.0)
-        assertEquals(2 * Math.PI * 6_378_137.0 / (512 * 2.0.pow(zoom)), 1.0, 1e-9)
+    fun aCameraDistanceShowsWhatMapKitsCameraShowsFromThere() {
+        // MapKit's camera 350, 1200 and 3000 m above Zürich showed these zooms on the iPhone's 440×956 map.
+        assertEquals(18.179, MapZoom.atDistance(350.0, latitude = 47.3769, height = 956.0), 0.001)
+        assertEquals(16.401, MapZoom.atDistance(1200.0, latitude = 47.3769, height = 956.0), 0.001)
+        assertEquals(15.079, MapZoom.atDistance(3000.0, latitude = 47.3769, height = 956.0), 0.001)
+        assertEquals(1200.0, MapZoom.mapKitDistance(16.401, latitude = 47.3769, height = 956.0), 1.0)
+        // 2.0494 heights of the map: 1729.7 m over an 844 dp map is 1 m a dp.
+        val zoom = MapZoom.atDistance(1729.6936, latitude = 0.0, height = 844.0)
+        assertEquals(1.0, MapZoom.metresPerPoint(zoom, latitude = 0.0), 1e-9)
         // Further north a metre is more of the flat map.
-        assertEquals(zoom + log2(0.5), MapZoom.atDistance(1266.0, latitude = 60.0, height = 844.0), 1e-9)
+        assertEquals(zoom + log2(0.5), MapZoom.atDistance(1729.6936, latitude = 60.0, height = 844.0), 1e-9)
         assertEquals(MapZoom.maximum, MapZoom.atDistance(0.01, latitude = 47.0, height = 844.0), 0.0)
+    }
+
+    @Test
+    fun theCameraTiltsNoMoreThanMapKitsDoesAtItsHeight() {
+        // Either side of each edge MapKit's camera met over Zürich on the iPhone: 360/361 m, 1440/1441 m and
+        // 2881/2882 m above it.
+        assertEquals(75.0, MapZoom.mapKitMostTilt(18.138, latitude = 47.3769), 0.0)
+        assertEquals(70.0, MapZoom.mapKitMostTilt(18.134, latitude = 47.3769), 0.0)
+        assertEquals(70.0, MapZoom.mapKitMostTilt(16.138, latitude = 47.3769), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(16.134, latitude = 47.3769), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(15.138, latitude = 47.3769), 0.0)
+        assertEquals(35.0, MapZoom.mapKitMostTilt(15.134, latitude = 47.3769), 0.0)
+        assertEquals(35.0, MapZoom.mapKitMostTilt(MapZoom.minimum, latitude = 47.3769), 0.0)
+        assertEquals(75.0, MapZoom.mapKitMostTilt(MapZoom.maximum, latitude = 47.3769), 0.0)
+        // The camera's height follows the ground's scale: in Oslo the same zoom is closer to the ground.
+        assertEquals(60.0, MapZoom.mapKitMostTilt(15.0, latitude = 59.9139), 0.0)
+        // MapLibre goes no further than 60°.
+        assertEquals(60.0, MapZoom.mostTilt(MapZoom.maximum, latitude = 47.3769), 0.0)
+        assertEquals(35.0, MapZoom.mostTilt(12.0, latitude = 47.3769), 0.0)
     }
 
     @Test

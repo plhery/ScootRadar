@@ -16,6 +16,7 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.distance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -24,10 +25,16 @@ import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
+import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.cos
+import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.round
+import kotlin.math.roundToInt
 
 // The camera of ScooterMapView's coordinator, from ios/ScootRadar/Views/ScooterMapView.swift.
 
@@ -76,6 +83,12 @@ class MapCamera(
     private var lastViewport: Triple<MapRegion, Int, Double>? = null
 
     private val idle = MapLibreMap.OnCameraIdleListener { if (!moving) regionDidChange() }
+
+    /** The tilt the map was last held to. */
+    private var tiltHeldTo = -1.0
+
+    /** The map tilts no more than MapKit's camera would at the height it stands (MAP-322). */
+    private val tiltCap = MapLibreMap.OnCameraMoveListener { holdTilt() }
     private val moveStarted = MapLibreMap.OnCameraMoveStartedListener { reason ->
         // A hand on the map ends a move under way and the focus with it (MAP-047).
         if (reason == MapLibreMap.OnCameraMoveStartedListener.REASON_API_GESTURE) {
@@ -90,7 +103,9 @@ class MapCamera(
     init {
         map.addOnCameraIdleListener(idle)
         map.addOnCameraMoveStartedListener(moveStarted)
+        map.addOnCameraMoveListener(tiltCap)
         view.addOnLayoutChangeListener(resized)
+        holdTilt()
         // MapKit reports the region it opens on; MapLibre may already be at rest.
         view.post { regionDidChange() }
     }
@@ -100,7 +115,16 @@ class MapCamera(
         moveForNewSizeWaiting?.cancel()
         map.removeOnCameraIdleListener(idle)
         map.removeOnCameraMoveStartedListener(moveStarted)
+        map.removeOnCameraMoveListener(tiltCap)
         view.removeOnLayoutChangeListener(resized)
+    }
+
+    private fun holdTilt() {
+        val camera = map.cameraPosition
+        val most = MapZoom.mostTilt(camera.zoom, camera.target?.latitude ?: return)
+        if (most == tiltHeldTo) return
+        tiltHeldTo = most
+        map.setMaxPitchPreference(most)
     }
 
     /**
@@ -241,15 +265,18 @@ class MapCamera(
     /** Moves the camera, in MapKit's time and curve, or at once where the phone has animations off. */
     private fun animate(to: CameraPosition) {
         stopMotion()
+        // A tilt the camera can't keep where it lands is the most it can (MAP-322).
+        val target = CameraPosition.Builder(to).tilt(min(to.tilt, MapZoom.mostTilt(to.zoom, to.target!!.latitude))).build()
         if (!ValueAnimator.areAnimatorsEnabled()) {
-            jump(to)
+            jump(target)
             regionDidChange()
             return
         }
         val from = map.cameraPosition
+        val millis = moveMillis(from, target, projection.bounds.height)
         moving = true
         motion = scope.launch {
-            Animatable(0f).animateTo(1f, tween(MOVE_MILLIS, easing = easeInEaseOut)) { jump(between(from, to, value.toDouble())) }
+            Animatable(0f).animateTo(1f, tween(millis, easing = easeInEaseOut)) { jump(between(from, target, value.toDouble())) }
             moving = false
             motion = null
             regionDidChange()
@@ -288,12 +315,6 @@ class MapCamera(
         /** The most times a move is made again for a new size. */
         private const val MOST_MOVES_AGAIN = 6
 
-        /**
-         * How long a move to a place takes. MapKit doesn't say, and none was measured: the lane's spike settled on
-         * 0.35 s, within the 0.35–0.7 s MapKit's moves seem to take (MAP-277).
-         */
-        private const val MOVE_MILLIS = 350
-
         /** UIKit's ease in, ease out. */
         private val easeInEaseOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
 
@@ -321,8 +342,24 @@ class MapCamera(
         }
 
         /**
+         * How long MapKit takes to move its camera, in milliseconds (MAP-277): a quarter of a second for each zoom
+         * level begun, or for each height of the camera above the ground, as it stands at the end, that the move
+         * crosses, whichever is longer; from a quarter of a second to two seconds. MapKit doesn't say; this was
+         * measured on the iOS 27 simulator, on the iPhone and the iPad. The map is `height` dp tall.
+         */
+        internal fun moveMillis(from: CameraPosition, to: CameraPosition, height: Double): Int {
+            val levels = max(1.0, ceil(abs(to.zoom - from.zoom) - 1e-6))
+            val start = from.target!!
+            val end = to.target!!
+            val ground = GeoPoint(start.latitude, start.longitude).distance(to = GeoPoint(end.latitude, end.longitude))
+            val altitude = MapZoom.mapKitDistance(to.zoom, end.latitude, height) * cos(to.tilt * PI / 180)
+            val heights = if (altitude > 0) ground / altitude else 0.0
+            return (min(2.0, max(0.25, 0.25 * max(levels, heights))) * 1000).roundToInt()
+        }
+
+        /**
          * The camera a `fraction` of the way from one to another: across the flat map in a straight line, the
-         * zoom evenly, and the turn the short way round.
+         * camera's distance from the ground evenly, as MapKit's comes closer, and the turn the short way round.
          */
         internal fun between(from: CameraPosition, to: CameraPosition, fraction: Double): CameraPosition {
             val start = MapPoint(GeoPoint(from.target!!.latitude, from.target!!.longitude))
@@ -331,9 +368,12 @@ class MapCamera(
             val endX = end.x + MapPoint.worldSize * round((start.x - end.x) / MapPoint.worldSize)
             val centre = MapPoint(start.x + (endX - start.x) * fraction, start.y + (end.y - start.y) * fraction).coordinate
             val turn = ((to.bearing - from.bearing) % 360 + 540) % 360 - 180
+            // A metre's share of the flat map at either end, which the camera's distance follows.
+            val near = cos(from.target!!.latitude * PI / 180) / 2.0.pow(from.zoom)
+            val far = cos(to.target!!.latitude * PI / 180) / 2.0.pow(to.zoom)
             return CameraPosition.Builder()
                 .target(LatLng(centre.latitude, centre.longitude))
-                .zoom(from.zoom + (to.zoom - from.zoom) * fraction)
+                .zoom(log2(cos(centre.latitude * PI / 180) / (near + (far - near) * fraction)))
                 .tilt(from.tilt + (to.tilt - from.tilt) * fraction)
                 .bearing(from.bearing + turn * fraction)
                 .build()

@@ -139,9 +139,9 @@ fun PhoneMap.setRegion(region: MapRegion) = onMain {
     )
 }
 
-/** Long enough for a move of MapKit's time to land. */
+/** Long enough for a move of MapKit's time to land: two seconds at most. */
 fun settle() {
-    Thread.sleep(1_000)
+    Thread.sleep(2_200)
     InstrumentationRegistry.getInstrumentation().waitForIdleSync()
 }
 

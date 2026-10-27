@@ -104,7 +104,7 @@ class MapCameraTest {
             camera.applyFocus(MapFocusRequest(bern, token = 1))
             phone.map.cameraPosition.zoom
         }
-        // Within the move's 0.35 s, a hand pans the map (MAP-047).
+        // Early in the move's second, a hand pans the map (MAP-047).
         Thread.sleep(100)
         phone.drag(points = 200)
         settle()
@@ -116,6 +116,44 @@ class MapCameraTest {
         phone.resize(390, 300)
         settle()
         phone.onMain { assertEquals(stopped.zoom, phone.map.cameraPosition.zoom, 1e-9) }
+    }
+
+    @Test
+    fun theMapTiltsNoMoreThanMapKitsCameraWouldAtItsHeight() = withCamera { phone, camera ->
+        phone.onMain { phone.map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(bern.latitude, bern.longitude), 17.0)) }
+        settle()
+        phone.onMain {
+            // Close over Bern a hand tilts the map as far as it goes: MapKit's 70° there, MapLibre's 60°.
+            phone.map.moveCamera(CameraUpdateFactory.tiltTo(85.0))
+            assertEquals(60.0, phone.map.cameraPosition.tilt, 1e-6)
+            // Out where MapKit's camera stands more than 3 m a point above the ground, 35°.
+            phone.map.moveCamera(CameraUpdateFactory.zoomTo(13.0))
+        }
+        settle()
+        phone.onMain {
+            assertEquals(35.0, phone.map.cameraPosition.tilt, 1e-6)
+            phone.map.moveCamera(CameraUpdateFactory.tiltTo(30.0))
+            // A place asked for keeps a tilt the camera can have there. A street's span on a phone is some 3.8 km
+            // of MapKit's camera above it, where it can have 35°.
+            camera.applyFocus(MapFocusRequest(bern, token = 1))
+        }
+        settle()
+        phone.onMain {
+            assertEquals(30.0, phone.map.cameraPosition.tilt, 1e-6)
+            phone.map.moveCamera(CameraUpdateFactory.zoomTo(17.0))
+        }
+        settle()
+        phone.onMain {
+            // Tilted again as far as it goes, then two steps out past the edge: the tilt comes down with the move.
+            phone.map.moveCamera(CameraUpdateFactory.tiltTo(85.0))
+            assertEquals(60.0, phone.map.cameraPosition.tilt, 1e-6)
+            camera.applyZoom(MapZoomRequest(steps = -2, token = 1))
+        }
+        settle()
+        phone.onMain {
+            assertEquals(15.0, phone.map.cameraPosition.zoom, 1e-6)
+            assertEquals(35.0, phone.map.cameraPosition.tilt, 1e-6)
+        }
     }
 
     @Test

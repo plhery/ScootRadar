@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import okhttp3.OkHttpClient
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,18 +36,22 @@ class MapMoveTest {
         Thread.sleep(4_000)
         val steps = CopyOnWriteArrayList<Long>()
         try {
-            phone.onMain {
+            val from = phone.onMain {
                 phone.map.addOnCameraMoveListener { steps += SystemClock.uptimeMillis() }
                 // Langstrasse, in from the city's span to a street's.
                 camera.applyFocus(MapFocusRequest(GeoPoint(47.3786, 8.5274), token = 1))
+                phone.map.cameraPosition
             }
             settle()
-            Thread.sleep(1_000)
+            val to = phone.onMain { phone.map.cameraPosition }
+            // Some 3.4 levels in, which MapKit takes a second over; 1.1 km is less than a height of its camera.
+            val mapKit = MapCamera.moveMillis(from, to, 844.0)
+            assertEquals(1_000, mapKit)
             // From the first frame's step to the last's: the first frame of the move is drawn before its step.
             val took = steps.last() - steps.first()
             Log.i("MapMoveTest", "The move took $took ms over ${steps.size} steps")
-            assertTrue("took $took ms", took in 280L..450L)
-            assertTrue("${steps.size} steps", steps.size >= 10)
+            assertTrue("took $took ms", took in (mapKit - 70L)..(mapKit + 100L))
+            assertTrue("${steps.size} steps", steps.size >= 30)
         } finally {
             phone.onMain {
                 camera.close()
