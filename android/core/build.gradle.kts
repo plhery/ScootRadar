@@ -64,11 +64,14 @@ sourceSets.main {
 dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
+    // The clients of the app's server and of analytics take an OkHttpClient and an HttpUrl.
+    api(libs.okhttp)
 
     signature(variantOf(libs.gummy.bears.api31) { artifactType("signature") })
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockwebserver3)
 }
 
 animalsniffer {

@@ -1,0 +1,645 @@
+package com.plhery.scootradar.core.api
+
+import com.plhery.scootradar.core.model.GeoBounds
+import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.ScooterDateFormat
+import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterStartPlace
+import com.plhery.scootradar.core.model.ScooterZoneArea
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.doubleOrNull
+import mockwebserver3.MockResponse
+import mockwebserver3.MockWebServer
+import okhttp3.CookieJar
+import okhttp3.OkHttpClient
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
+import org.junit.Before
+import org.junit.Test
+
+// ios/ScootRadarTests/ScooterAPITests.swift. AddressSearchModelTests test the search field's model
+// (Views/SwissAddressSearch.swift), which comes with the screens.
+
+class ScooterAPITest {
+    private val server = MockWebServer()
+    private val launchLocale = ScooterLanguage.launchLocale
+    private val timeZone = ScooterDateFormat.timeZone
+
+    /** The phone's locale and zone, the same whatever the host's; a server on this machine only. */
+    @Before
+    fun setUp() {
+        ScooterLanguage.launchLocale = { Locale.US }
+        ScooterDateFormat.timeZone = { ZoneId.of("Europe/Zurich") }
+        server.start()
+    }
+
+    @After
+    fun tearDown() {
+        server.close()
+        ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterLanguage.launchLocale = launchLocale
+        ScooterDateFormat.timeZone = timeZone
+    }
+
+    // ScooterAPITests
+
+    @Test
+    fun parkingIsDecodedSeparatelyFromVehiclesAndLegacyResponsesStillWork() = runBlocking<Unit> {
+        val data = """{"vehicles":[],"clusters":[],"providers":{},"parking":[{"id":"dott:bay","provider":"dott","name":"Place test","lat":45.75,"lng":4.85,"mandatory":true}],"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-09-08T12:00:00Z","truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"parkingStatus":"fresh"}}"""
+        val response = makeAPI(responseStatus = 200, data = data).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        assertEquals(1, response.parking.size)
+        assertTrue(response.parking[0].mandatory)
+        assertEquals(45.75, response.parking[0].coordinate.latitude, 0.0)
+        assertEquals("fresh", response.meta?.parkingStatus)
+        assertTrue(response.vehicles.isEmpty())
+        val legacy = makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        assertTrue(legacy.parking.isEmpty())
+    }
+
+    @Test
+    fun successfulResponseIsDecoded() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 200, data = emptyResponseData)
+
+        val response = api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+
+        assertTrue(response.vehicles.isEmpty())
+    }
+
+    @Test
+    fun requestSendsBoundsZoomAndFilterWithoutASeparateUserLocation() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 200, data = emptyResponseData)
+
+        api.scooters(bounds = bounds, zoom = 12, minimumBattery = 55)
+
+        val url = server.takeRequest().url
+        assertEquals(setOf("south", "west", "north", "east", "zoom", "minBattery"), url.queryParameterNames)
+        assertEquals("12", url.queryParameter("zoom"))
+        assertEquals("55", url.queryParameter("minBattery"))
+    }
+
+    @Test
+    fun aViewAcrossTheDateLineIsAskedForWithItsWestGreaterThanItsEast() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 200, data = emptyResponseData)
+        val view = GeoBounds(
+            region = MapRegion(center = GeoPoint(latitude = -36.52, longitude = -178.6), latitudeDelta = 21.08, longitudeDelta = 43.0),
+        )
+
+        api.scooters(bounds = view, zoom = 6, minimumBattery = 0)
+
+        val url = server.takeRequest().url
+        assertEquals("159.90000", url.queryParameter("west"))
+        assertEquals("-157.10000", url.queryParameter("east"))
+    }
+
+    @Test
+    fun requestsToTheServerLeaveNothingOnDisk() {
+        // Left to themselves, both clients use a session without a URL cache:
+        // the bounds in a request are the rider's position after Near me.
+        for (client in listOf(ScooterAPI().client, AddressSearchAPI().client)) {
+            assertNull(client.cache)
+            assertSame(CookieJar.NO_COOKIES, client.cookieJar)
+        }
+    }
+
+    @Test
+    fun responseHealthMetadataIsDecoded() = runBlocking<Unit> {
+        val data = """{"vehicles":[],"clusters":[],"providers":{},"meta":{"partial":true,"stale":true,"failedSources":["national"],"sources":{"national":"failed","hopp":"fresh"},"generatedAt":"2026-08-05T12:00:00.000Z","truncated":true,"totalVehicles":6200,"mode":"vehicles","zoom":null}}"""
+        val api = makeAPI(responseStatus = 200, data = data)
+
+        val response = api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+
+        assertTrue(response.meta?.partial == true)
+        assertTrue(response.meta?.stale == true)
+        assertEquals(listOf("national"), response.meta?.failedSources)
+        assertTrue(response.meta?.truncated == true)
+        assertEquals(6_200, response.meta?.totalVehicles)
+    }
+
+    @Test
+    fun httpStatusIsPreserved() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 503)
+
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+            null -> fail("Expected an HTTP status error")
+            is ScooterAPIError -> {
+                if (error !is ScooterAPIError.HttpStatus || error.statusCode != 503) fail("Expected HTTP 503, got $error")
+                assertEquals(ScooterLoadFailure.Unavailable, error.loadFailure)
+            }
+            else -> fail("Unexpected error: $error")
+        }
+    }
+
+    @Test
+    fun offlineErrorIsToldApart() = runBlocking<Unit> {
+        val api = makeAPI(failure = UnknownHostException("scootradar.com"), offline = true)
+
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+            null -> fail("Expected an offline error")
+            is ScooterAPIError -> {
+                if (error !is ScooterAPIError.Offline) fail("Expected offline, got $error")
+                assertEquals(ScooterLoadFailure.Offline, error.loadFailure)
+            }
+            else -> fail("Unexpected error: $error")
+        }
+    }
+
+    @Test
+    fun timeoutIsToldApart() = runBlocking<Unit> {
+        val api = makeAPI(failure = SocketTimeoutException("timeout"))
+
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+            null -> fail("Expected a timeout error")
+            is ScooterAPIError -> {
+                if (error !is ScooterAPIError.TimedOut) fail("Expected timedOut, got $error")
+                assertEquals(ScooterLoadFailure.Timeout, error.loadFailure)
+            }
+            else -> fail("Unexpected error: $error")
+        }
+    }
+
+    @Test
+    fun invalidJSONIsToldApart() = runBlocking<Unit> {
+        val api = makeAPI(responseStatus = 200, data = "{}")
+
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+            null -> fail("Expected a decoding error")
+            is ScooterAPIError -> {
+                if (error !is ScooterAPIError.InvalidData) fail("Expected invalidData, got $error")
+                assertEquals(ScooterLoadFailure.Failed, error.loadFailure)
+            }
+            else -> fail("Unexpected error: $error")
+        }
+    }
+
+    @Test
+    fun loadFailureReasonIsDerivedFromTheAPIError() = runBlocking<Unit> {
+        val expectations: List<Pair<ScooterAPIError, ScooterLoadFailure>> = listOf(
+            ScooterAPIError.Offline() to ScooterLoadFailure.Offline,
+            ScooterAPIError.TimedOut() to ScooterLoadFailure.Timeout,
+            ScooterAPIError.HttpStatus(429) to ScooterLoadFailure.Busy,
+            ScooterAPIError.HttpStatus(500) to ScooterLoadFailure.Unavailable,
+            ScooterAPIError.HttpStatus(503) to ScooterLoadFailure.Unavailable,
+            ScooterAPIError.HttpStatus(599) to ScooterLoadFailure.Unavailable,
+            ScooterAPIError.HttpStatus(404) to ScooterLoadFailure.Failed,
+            ScooterAPIError.InvalidURL() to ScooterLoadFailure.Failed,
+            ScooterAPIError.InvalidResponse() to ScooterLoadFailure.Failed,
+            ScooterAPIError.InvalidData(IOException("cannotParseResponse")) to ScooterLoadFailure.Failed,
+            ScooterAPIError.Network(UnknownHostException("cannotFindHost")) to ScooterLoadFailure.Failed,
+        )
+        for ((error, expected) in expectations) {
+            assertEquals("$error", expected, error.loadFailure)
+            assertEquals("$error", expected, ScooterLoadFailure(error))
+        }
+        assertEquals(ScooterLoadFailure.Failed, ScooterLoadFailure(MalformedURLException("badURL")))
+        assertEquals(5, ScooterLoadFailure.entries.map { it.message }.toSet().size)
+
+        // The reason survives the trip through the real client.
+        for ((api, expected) in listOf(
+            makeAPI(failure = UnknownHostException("scootradar.com"), offline = true) to ScooterLoadFailure.Offline,
+            makeAPI(failure = IOException("unexpected end of stream"), offline = true) to ScooterLoadFailure.Offline,
+            makeAPI(failure = SocketTimeoutException("timeout")) to ScooterLoadFailure.Timeout,
+            makeAPI(responseStatus = 429) to ScooterLoadFailure.Busy,
+            makeAPI(responseStatus = 502) to ScooterLoadFailure.Unavailable,
+            makeAPI(responseStatus = 200, data = "{}") to ScooterLoadFailure.Failed,
+        )) {
+            val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }
+            if (error == null) fail("Expected a $expected failure") else assertEquals(expected, ScooterLoadFailure(error))
+        }
+    }
+
+    @Test
+    fun theClockOffsetComesFromTheDateHeaderOfTheResponse() = runBlocking<Unit> {
+        val sentAt = Instant.parse("2026-10-12T10:00:00Z")
+        val header = "Mon, 12 Oct 2026 10:00:00 GMT"
+        // Twenty minutes fast, twenty minutes slow, and right.
+        assertEquals(1_200.0, ScooterAPI.clockOffset(dateHeader = header, receivedAt = sentAt.plusSeconds(1_200)), 0.0)
+        assertEquals(-1_200.0, ScooterAPI.clockOffset(dateHeader = header, receivedAt = sentAt.minusSeconds(1_200)), 0.0)
+        assertEquals(0.0, ScooterAPI.clockOffset(dateHeader = header, receivedAt = sentAt), 0.0)
+        // Without a header that can be read, nothing is moved.
+        assertEquals(0.0, ScooterAPI.clockOffset(dateHeader = null, receivedAt = sentAt), 0.0)
+        assertEquals(0.0, ScooterAPI.clockOffset(dateHeader = "yesterday", receivedAt = sentAt), 0.0)
+
+        // The client reads it from the response it received: the server's clock
+        // says twenty minutes less than this one.
+        val formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US).withZone(ZoneOffset.UTC)
+        val fast = makeAPI(
+            responseStatus = 200,
+            data = emptyResponseData,
+            headers = mapOf("Date" to formatter.format(Instant.now().minusSeconds(1_200))),
+        ).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        assertEquals(1_200.0, fast.clockOffset, 5.0)
+        val withoutHeader = makeAPI(responseStatus = 200, data = emptyResponseData)
+            .scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        assertEquals(0.0, withoutHeader.clockOffset, 0.0)
+    }
+
+    @Test
+    fun aDateHeaderIsReadAsFoundationReadsIt() {
+        // A minute after 10:00 GMT: 60 for a header read as 10:00 GMT, 0 for one that is not read.
+        val receivedAt = Instant.parse("2026-10-12T10:01:00Z")
+        val read = listOf(
+            "Tue, 12 Oct 2026 10:00:00 GMT",
+            "mo, 12 october 2026 10:00:00 gmt",
+            "Monday, 12 OCT 2026 10:00:00 UTC",
+            "M , 12 Oct 2026 10:00:00 UT",
+            " Mon,\t12 Oct 2026 10 :00: 00  Z ",
+            "Mon, 012 Oct 02026 010:00:00 -00:00",
+            "Mon, 12 Oct 2026 12:00:00 +0200",
+            "Mon, 12 Oct 2026 12:00:00 +2",
+            "Mon, 12 Oct 2026 12:30:00 GMT+2:30",
+            "Mon, 12 Oct 2026 12:00:00 UTC+0200",
+            "Mon, 12 Oct 2026 08:30:00 -01:30",
+            "Mon, 12 Oct 2026 03:00:00 PDT",
+            "Mon, 12 Oct 2026 05:00:00 EST",
+        )
+        for (header in read) assertEquals(header, 60.0, ScooterAPI.clockOffset(dateHeader = header, receivedAt = receivedAt), 0.0)
+        val unread = listOf(
+            "Mon, 12 Oct 2026 12:00:00 GMT+0200",
+            "Mon, 12 Oct 2026 12:00:00 CEST",
+            "Mon, 12 Oct 2026 10:00:00 Europe/Zurich",
+            "Thur, 12 Oct 2026 10:00:00 GMT",
+            "Mon, 12 Sept 2026 10:00:00 GMT",
+            "Mon,12 Oct 2026 10:00:00 GMT",
+            "12 Oct 2026 10:00:00 GMT",
+            "Mon, 12 Oct 2026 10:00:00",
+            "Mon, 12 Oct 2026 10:00:00GMT",
+            "Mon, 12 Oct 2026 10:00:00 GMT\n",
+            "Mon, 12 Oct 2026 10:00:00.5 GMT",
+            "Mon, 12 Oct 2026 10:00 GMT",
+            "Mon, 31 Feb 2026 10:00:00 GMT",
+            "Mon, 12 Oct 2026 24:00:00 GMT",
+            "Mon, 12 Oct 0 10:00:00 GMT",
+            "Mon, 12 Oct 2026 10:00:00 +0260",
+            "Mon, 12 Oct 2026 10:00:00 +2400",
+        )
+        for (header in unread) assertEquals(header, 0.0, ScooterAPI.clockOffset(dateHeader = header, receivedAt = receivedAt), 0.0)
+    }
+
+    @Test
+    fun theEdgesAreWrittenAsPrintfWritesThem() {
+        // Five decimals of the exact value, a tie to the even digit, a point whatever the language.
+        val defaultLocale = Locale.getDefault()
+        Locale.setDefault(Locale.GERMANY)
+        try {
+            for ((value, text) in listOf(
+                47.3769 to "47.37690",
+                0.015625 to "0.01562",
+                -0.015625 to "-0.01562",
+                0.046875 to "0.04688",
+                179.999995 to "180.00000",
+                -0.0000049 to "-0.00000",
+                -0.0 to "-0.00000",
+            )) {
+                assertEquals("$value", text, ScooterAPI.fiveDecimals(value))
+            }
+        } finally {
+            Locale.setDefault(defaultLocale)
+        }
+    }
+
+    @Test
+    fun theSiteIsAskedForJSONAtItsOwnAddresses() = runBlocking<Unit> {
+        makeAPI(responseStatus = 200, data = emptyResponseData).scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+        server.enqueue(answer(200, """{"zones":[]}"""))
+        ScooterAPI(baseURL = server.url("/"), client = client).zonesIn(area = ScooterZoneArea(covering = bounds)!!)
+        server.enqueue(answer(200, "[]"))
+        AddressSearchAPI(baseURL = server.url("/"), client = client, homeCountry = null).search(query = "Zürich", language = "en", near = null)
+
+        val scooters = server.takeRequest()
+        assertEquals("GET", scooters.method)
+        assertEquals("/api/scooters", scooters.url.encodedPath)
+        assertEquals("application/json", scooters.headers["Accept"])
+        val zones = server.takeRequest()
+        assertEquals("GET", zones.method)
+        assertEquals("/api/zones", zones.url.encodedPath)
+        assertEquals(ScooterZoneArea(covering = bounds)!!.queryItems, zones.url.queryParameterNames.map { it to zones.url.queryParameter(it) })
+        assertEquals("application/json", zones.headers["Accept"])
+        val search = server.takeRequest()
+        assertEquals("/api/geocode", search.url.encodedPath)
+        assertEquals("application/json", search.headers["Accept"])
+    }
+
+    // AddressSearchAPITests
+
+    @Test
+    fun swissGeocoderResponseIsDecodedAndRequestIsLocalized() = runBlocking<Unit> {
+        val data = """[{"lat":47.3762772,"lng":8.5280816,"display_name":"114, Ankerstrasse, Zurich, Switzerland"}]"""
+        server.enqueue(answer(200, data))
+        val api = AddressSearchAPI(baseURL = server.url("/"), client = client, homeCountry = null)
+
+        val results = api.search(query = "Ankerstrasse 114", language = "de", near = null)
+
+        assertEquals(
+            listOf(
+                AddressSearchResult(
+                    latitude = 47.3762772,
+                    longitude = 8.5280816,
+                    displayName = "114, Ankerstrasse, Zurich, Switzerland",
+                ),
+            ),
+            results,
+        )
+
+        val request = server.takeRequest()
+        assertEquals("/api/geocode", request.url.encodedPath)
+        assertNull(request.url.query)
+        assertEquals("POST", request.method)
+        assertNull(api.client.cache)
+        assertEquals("application/json", request.headers["Content-Type"])
+        val json = Json.parseToJsonElement(request.body!!.utf8()) as JsonObject
+        assertEquals(mapOf("q" to JsonPrimitive("Ankerstrasse 114"), "lang" to JsonPrimitive("de")), json)
+    }
+
+    @Test
+    fun theMapCentreIsSentWhenThereIsOne() = runBlocking<Unit> {
+        server.enqueue(answer(200, "[]"))
+        val api = AddressSearchAPI(baseURL = server.url("/"), client = client, homeCountry = "FR")
+
+        api.search(query = "Rue de Rivoli 10", language = "fr", near = GeoPoint(latitude = 48.86, longitude = 2.35))
+
+        val request = server.takeRequest()
+        val json = Json.parseToJsonElement(request.body!!.utf8()) as JsonObject
+        assertEquals(JsonPrimitive("Rue de Rivoli 10"), json["q"])
+        assertEquals(JsonPrimitive("fr"), json["lang"])
+        assertEquals(listOf(48.86, 2.35), (json["near"] as? JsonArray)?.map { (it as JsonPrimitive).doubleOrNull })
+        // The centre says more than the time zone's country, which then stays on the iPhone.
+        assertNull(json["country"])
+    }
+
+    @Test
+    fun theTimeZoneCountryIsSentWithoutACentre() = runBlocking<Unit> {
+        server.enqueue(answer(200, "[]"))
+        val api = AddressSearchAPI(baseURL = server.url("/"), client = client, homeCountry = "US")
+
+        api.search(query = "Congress Ave", language = "en", near = null)
+
+        val request = server.takeRequest()
+        val json = Json.parseToJsonElement(request.body!!.utf8()) as JsonObject
+        assertEquals(mapOf("q" to JsonPrimitive("Congress Ave"), "lang" to JsonPrimitive("en"), "country" to JsonPrimitive("US")), json)
+        assertEquals("US", ScooterStartPlace.country(forTimeZone = "America/Chicago"))
+        assertEquals("CA", ScooterStartPlace.country(forTimeZone = "America/Montreal"))
+        assertNull(ScooterStartPlace.country(forTimeZone = "UTC"))
+    }
+
+    @Test
+    fun tooManySearchesAreToldApartFromOtherFailures() = runBlocking<Unit> {
+        val expectations: List<Triple<Int, Map<String, String>, AddressSearchAPIError>> = listOf(
+            Triple(429, mapOf("Retry-After" to "60"), AddressSearchAPIError.RateLimited(retryAfter = 60.seconds)),
+            Triple(429, emptyMap(), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            Triple(429, mapOf("Retry-After" to "Wed, 21 Oct 2026 07:28:00 GMT"), AddressSearchAPIError.RateLimited(retryAfter = null)),
+            Triple(503, mapOf("Retry-After" to "30"), AddressSearchAPIError.InvalidResponse()),
+        )
+        for ((statusCode, headers, expected) in expectations) {
+            server.enqueue(answer(statusCode, "", headers))
+            val api = AddressSearchAPI(baseURL = server.url("/"), client = client)
+            val error = failure { api.search(query = "Bahnhofstrasse", language = "de", near = null) }
+            if (error == null) fail("Expected an error for $statusCode")
+            assertEquals("$statusCode $headers", expected, error)
+        }
+    }
+
+    @Test
+    fun titleSubtitleAndCoverageAreDecodedWhenTheAPISendsThem() {
+        val data = """
+        [
+          {"lat": 47.3695, "lng": 8.5389, "display_name": "Paradeplatz 2 8001 Zürich",
+           "title": "Paradeplatz 2", "subtitle": "8001 Zürich", "covered": true},
+          {"lat": 46.7741, "lng": 8.1558, "display_name": "Paradeplatz (OW) - Lungern",
+           "title": "Paradeplatz", "subtitle": "Lungern OW", "covered": false},
+          {"lat": 47.3782, "lng": 8.5402, "display_name": "Zürich HB",
+           "title": "Zürich HB", "subtitle": "", "covered": true}
+        ]
+        """
+
+        val results = ScooterAPIJson.decodeFromString(ListSerializer(AddressSearchResult.serializer()), data)
+
+        assertEquals(listOf("Paradeplatz 2", "Paradeplatz", "Zürich HB"), results.map { it.title })
+        assertEquals(listOf("8001 Zürich", "Lungern OW", ""), results.map { it.subtitle })
+        assertEquals(listOf(true, false, true), results.map { it.isCovered })
+        assertEquals("Paradeplatz (OW) - Lungern", results[1].displayName)
+        assertEquals(
+            MapDestination(
+                title = "Paradeplatz",
+                subtitle = "Lungern OW",
+                point = GeoPoint(latitude = 46.7741, longitude = 8.1558),
+            ),
+            results[1].destination,
+        )
+        // A chosen place keeps the search's answer about scooter data.
+        assertEquals(listOf(true, false, true), results.map { it.destination.isCovered })
+        assertEquals(3, results.map { it.id }.toSet().size)
+    }
+
+    @Test
+    fun olderResponsesFallBackToLabelSplittingAndBundledCoverage() {
+        val data = """
+        [
+          {"lat": 47.3695, "lng": 8.5389, "display_name": "Paradeplatz 2 8001 Zürich"},
+          {"lat": 46.7741, "lng": 8.1558, "display_name": "Lungern", "title": "", "covered": null},
+          {"lat": 47.3762772, "lng": 8.5280816, "display_name": "114, Ankerstrasse, Zurich, Switzerland",
+           "title": 12, "subtitle": "ignored without a title"}
+        ]
+        """
+
+        val results = ScooterAPIJson.decodeFromString(ListSerializer(AddressSearchResult.serializer()), data)
+
+        assertEquals(listOf("Paradeplatz 2", "Lungern", "Ankerstrasse 114"), results.map { it.title })
+        assertEquals(listOf("8001 Zürich", "", "Zurich, Switzerland"), results.map { it.subtitle })
+        // Without `covered`, the service areas bundled with the app decide.
+        assertEquals(listOf(true, false, true), results.map { it.isCovered })
+
+        val examples = listOf(
+            Triple("Bahnhofstrasse 1 8001 Zürich", "Bahnhofstrasse 1", "8001 Zürich"),
+            Triple("Rue du Rhône 10 1204 Genève", "Rue du Rhône 10", "1204 Genève"),
+            Triple("Via Nassa 5, 6900 Lugano", "Via Nassa 5", "6900 Lugano"),
+            Triple("114, Ankerstrasse, Zurich, Switzerland", "Ankerstrasse 114", "Zurich, Switzerland"),
+            Triple("Zürich HB", "Zürich HB", ""),
+            Triple("8001 Zürich", "8001 Zürich", ""),
+            Triple("  Bahnhofstrasse 1, CH-8001 Zürich  ", "Bahnhofstrasse 1", "CH-8001 Zürich"),
+        )
+        for ((label, title, subtitle) in examples) {
+            val lines = AddressSearchResult.lines(fromDisplayName = label)
+            assertEquals(label, title, lines.title)
+            assertEquals(label, subtitle, lines.subtitle)
+
+            // A search result without its own title shows the same two lines.
+            val result = AddressSearchResult(latitude = 47.3769, longitude = 8.5417, displayName = label)
+            assertEquals(label, title, result.title)
+            assertEquals(label, subtitle, result.subtitle)
+        }
+    }
+
+    // ScooterAnalyticsTests
+
+    @Test
+    fun payloadExcludesSensitiveValuesAndPersistentIdentity() {
+        val payload = ScooterAnalytics.payload(
+            "rental_open", provider = "lime", value = 10,
+            result = "47.123,8.456", target = "private address", screen = "/?lat=47.123", website = testWebsite,
+        )
+        assertEquals("/", payload.string("url"))
+        assertEquals("", payload.string("referrer"))
+        assertEquals("android", payload.string("tag"))
+        assertNull(payload["id"])
+        val data = payload["data"] as? JsonObject
+        assertEquals("lime", data.string("provider"))
+        assertEquals("android", data.string("platform"))
+        assertNull(data?.get("result"))
+        assertNull(data?.get("target"))
+    }
+
+    @Test
+    fun screenViewDoesNotBecomeNamedEvent() {
+        val payload = ScooterAnalytics.payload(null, screen = "/settings", website = testWebsite)
+        assertEquals("/settings", payload.string("url"))
+        assertNull(payload["name"])
+        assertNull(payload["data"])
+    }
+
+    @Test
+    fun userAgentIsAWebViewsWithoutTheAppsName() {
+        val userAgent = ScooterAnalytics.userAgent(androidVersion = "16", chromeMajor = 141)
+        assertEquals("Mozilla/5.0 (Linux; Android 16; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36", userAgent)
+        assertFalse(userAgent.contains("radar", ignoreCase = true))
+    }
+
+    @Test
+    fun payloadGoesToTheAppsOwnWebsite() {
+        // "ScootRadar Android" has no website in Umami yet: until it has, nothing is sent.
+        assertNull(ScooterAnalytics.website)
+        assertEquals(testWebsite, ScooterAnalytics.payload(null, website = testWebsite).string("website"))
+    }
+
+    @Test
+    fun nothingIsSentWithoutAWebsiteInABuildThatDoesNotSendOrWhenTurnedOff() = runBlocking<Unit> {
+        var requests = 0
+        val refusing = OkHttpClient.Builder().addInterceptor {
+            requests += 1
+            throw IOException("Nothing may be sent")
+        }.build()
+        val turnedOff = InMemoryScooterDefaults().apply { set(true, forKey = ScooterAnalytics.disabledKey) }
+        val job = SupervisorJob()
+        for (analytics in listOf(
+            makeAnalytics(website = null, sends = true, client = refusing, job = job),
+            makeAnalytics(website = testWebsite, sends = false, client = refusing, job = job),
+            makeAnalytics(website = testWebsite, sends = true, defaults = turnedOff, client = refusing, job = job),
+        )) {
+            analytics.track()
+            analytics.track("rental_open", provider = "lime")
+        }
+        job.children.toList().joinAll()
+        assertEquals(0, requests)
+    }
+
+    @Test
+    fun eventsGoOneAfterAnotherWithTheServersCacheUntilItSaysStop() = runBlocking<Unit> {
+        server.enqueue(answer(200, """{"cache":"first-cache"}"""))
+        server.enqueue(answer(200, """{"cache":"second-cache","disabled":1}"""))
+        val job = SupervisorJob()
+        val analytics = makeAnalytics(website = testWebsite, sends = true, client = client, job = job)
+
+        analytics.track()
+        analytics.track("rental_open", provider = "lime", value = 3)
+        analytics.track("filters_apply")
+        job.children.toList().joinAll()
+
+        assertEquals(2, server.requestCount)
+        val first = server.takeRequest()
+        assertEquals("POST", first.method)
+        assertEquals("/api/send", first.url.encodedPath)
+        assertEquals("application/json", first.headers["Content-Type"])
+        assertEquals(userAgent, first.headers["User-Agent"])
+        assertNull(first.headers["x-umami-cache"])
+        assertNull(first.headers["Cookie"])
+        val event = Json.parseToJsonElement(first.body!!.utf8()) as JsonObject
+        assertEquals("event", event.string("type"))
+        assertEquals(ScooterAnalytics.payload(null, website = testWebsite), event["payload"])
+        val second = server.takeRequest()
+        assertEquals("first-cache", second.headers["x-umami-cache"])
+        val payload = (Json.parseToJsonElement(second.body!!.utf8()) as JsonObject)["payload"] as JsonObject
+        assertEquals("rental_open", payload.string("name"))
+    }
+
+    private val client = OkHttpClient()
+    private val testWebsite = "test-website"
+    private val userAgent = ScooterAnalytics.userAgent(androidVersion = "16", chromeMajor = 141)
+
+    private val origin: GeoPoint
+        get() = GeoPoint(latitude = 47.3769, longitude = 8.5417)
+
+    private val bounds: GeoBounds
+        get() = GeoBounds(region = MapRegion.around(center = origin, latitudinalMeters = 1_000.0, longitudinalMeters = 1_000.0))
+
+    private val emptyResponseData: String
+        get() = """{"vehicles":[],"clusters":[],"providers":{},"meta":{"partial":false,"stale":false,"failedSources":[],"sources":{"national":"fresh","hopp":"fresh"},"generatedAt":"2026-08-05T12:00:00.000Z","truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":null}}"""
+
+    private fun answer(statusCode: Int, data: String, headers: Map<String, String> = emptyMap()): MockResponse =
+        MockResponse.Builder().code(statusCode).apply {
+            for ((name, value) in mapOf("Content-Type" to "application/json") + headers) addHeader(name, value)
+        }.body(data).build()
+
+    /** The API, with the server's next answer. */
+    private fun makeAPI(responseStatus: Int, data: String = "", headers: Map<String, String> = emptyMap()): ScooterAPI {
+        server.enqueue(answer(responseStatus, data, headers))
+        return ScooterAPI(baseURL = server.url("/"), client = client)
+    }
+
+    /** The API, with a request that never leaves the phone and fails as it is told. */
+    private fun makeAPI(failure: IOException, offline: Boolean = false): ScooterAPI = ScooterAPI(
+        baseURL = server.url("/"),
+        client = OkHttpClient.Builder().addInterceptor { throw failure }.build(),
+        isOffline = { offline },
+    )
+
+    private fun makeAnalytics(
+        website: String?,
+        sends: Boolean,
+        client: OkHttpClient,
+        job: kotlinx.coroutines.Job,
+        defaults: InMemoryScooterDefaults = InMemoryScooterDefaults(),
+    ): ScooterAnalytics = ScooterAnalytics(
+        website = website,
+        sends = sends,
+        userAgent = userAgent,
+        defaults = defaults,
+        scope = CoroutineScope(job + Dispatchers.IO),
+        endpoint = server.url("/api/send"),
+        client = client,
+    )
+
+    private suspend fun failure(block: suspend () -> Any?): Throwable? = try {
+        block()
+        null
+    } catch (error: Exception) {
+        error
+    }
+
+    private fun JsonObject?.string(key: String): String? = (this?.get(key) as? JsonPrimitive)?.takeIf { it.isString }?.content
+}
