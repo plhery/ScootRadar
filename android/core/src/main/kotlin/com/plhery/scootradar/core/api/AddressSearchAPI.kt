@@ -123,7 +123,7 @@ data class AddressSearchResult private constructor(
         /** CharacterSet.whitespacesAndNewlines: those and the line and paragraph breaks. */
         private fun isWhitespaceOrNewline(character: Char): Boolean =
             isWhitespace(character) || character in '\n'..'\r' || character == '\u0085' ||
-                character == ' ' || character == ' '
+                character == '\u2028' || character == '\u2029'
     }
 
     /**
