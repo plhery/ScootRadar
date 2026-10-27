@@ -109,11 +109,14 @@ fun withPhoneMap(camera: CameraPosition? = null, test: (PhoneMap) -> Unit) {
 /** The app's opening on Zürich. */
 val zurichStart = ScooterMapStart(MapRegion.around(GeoPoint(47.3769, 8.5417), 8_906.0, 9_052.0), zoom = 12)
 
-/** A controller with no scooters, no walks and no location. */
-fun testController(scope: CoroutineScope) = ScooterMapController(
-    api = object : ScooterAPIClient {
-        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = emptyList())
-    },
+/** A server with no scooters anywhere. */
+val noScooters = object : ScooterAPIClient {
+    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = emptyList())
+}
+
+/** A controller with the scooters of a fake server, none unless it is given one, and no walks and no location. */
+fun testController(scope: CoroutineScope, api: ScooterAPIClient = noScooters) = ScooterMapController(
+    api = api,
     locationManager = NotDeterminedLocationManager(),
     defaults = InMemoryScooterDefaults(),
     scope = scope,
