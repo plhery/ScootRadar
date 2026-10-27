@@ -1,11 +1,16 @@
 package com.plhery.scootradar.ui.dock
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -141,13 +146,14 @@ internal fun ScooterCard(controller: ScooterMapController, scooter: Scooter) {
         WalkNote(controller.walkNote(target), Modifier.padding(top = 12.dp))
 
         // A scooter gone from the map can be neither rented nor walked to.
-        if (controller.directionsControl(target) != ScooterDirectionsControl.None) {
+        val directions = controller.directionsControl(target)
+        if (directions != ScooterDirectionsControl.None) {
             // "Open in …" is the wider of the two. Where the feed links no scooter, as Lime's and Bird's never do,
             // it opens the operator's app, or else its page.
             val opens = scooter.rentalURL != null || scooter.operatorApp != null
             DockActionRow(Modifier.padding(top = 12.dp), weights = if (opens) listOf(1.5f, 1f) else emptyList()) {
                 if (opens) OpenInButton(controller, scooter)
-                DirectionsButton(controller, target, prominent = false)
+                DirectionsButton(controller, target, directions, prominent = false)
             }
         }
     }
@@ -438,24 +444,21 @@ private fun OpenInButton(controller: ScooterMapController, scooter: Scooter) {
 }
 
 /**
- * Directions, Hide route or Open in Maps, as the walk stands; while the rider is located or the way found, a
- * spinner in place of its symbol, and a tap waits as the rider does.
+ * Directions, Hide route or Open in Maps, as the walk stands ([control], which the card reads: given the same
+ * controller and target, the button would be skipped as the walk changes); while the rider is located or the way
+ * found, a spinner in place of its symbol, and a tap waits as the rider does.
  */
 @Composable
-internal fun DirectionsButton(controller: ScooterMapController, target: ScooterWalkTarget, prominent: Boolean) {
+internal fun DirectionsButton(
+    controller: ScooterMapController,
+    target: ScooterWalkTarget,
+    control: ScooterDirectionsControl,
+    prominent: Boolean,
+) {
     val colors = scootColors
-    val control = controller.directionsControl(target)
     val isFinding = control == ScooterDirectionsControl.Finding
-    val title = when (control) {
-        ScooterDirectionsControl.Directions, ScooterDirectionsControl.Finding, ScooterDirectionsControl.None -> localized("Directions")
-        ScooterDirectionsControl.HideRoute -> localized("Hide route")
-        ScooterDirectionsControl.OpenInMaps -> localized("Open in Maps")
-    }
-    val symbol = when (control) {
-        ScooterDirectionsControl.Directions, ScooterDirectionsControl.Finding, ScooterDirectionsControl.None -> Symbols.walk
-        ScooterDirectionsControl.HideRoute -> Symbols.close
-        ScooterDirectionsControl.OpenInMaps -> Symbols.map
-    }
+    val spring = IosMotion.snappy(duration = 0.24)
+    val reduceMotion = LocalReduceMotion.current
     DockActionButton(
         prominent = prominent,
         onClick = {
@@ -467,16 +470,44 @@ internal fun DirectionsButton(controller: ScooterMapController, target: ScooterW
                 ScooterDirectionsControl.Finding, ScooterDirectionsControl.None -> Unit
             }
         },
-        label = if (isFinding) localized("Finding the way…") else title,
+        label = if (isFinding) localized("Finding the way…") else directionsTitle(control),
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(contentAlignment = Alignment.Center) {
-                SymbolIcon(symbol, textSymbolSize(14f), LocalContentColor.current, Modifier.alpha(if (isFinding) 0f else 1f))
-                if (isFinding) Spinner(SpinnerSize.Mini, if (prominent) Color.White else colors.dockText)
+        // The label changes with the walk's phase, in its animation: the old one fades out as the new fades in.
+        AnimatedContent(
+            targetState = control,
+            transitionSpec = {
+                if (reduceMotion) {
+                    EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
+                } else {
+                    fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                        SizeTransform(clip = false) { _, _ -> spring.animation() }
+                }
+            },
+            contentAlignment = Alignment.Center,
+            label = "directions",
+        ) { shown ->
+            val finding = shown == ScooterDirectionsControl.Finding
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(contentAlignment = Alignment.Center) {
+                    SymbolIcon(directionsSymbol(shown), textSymbolSize(14f), LocalContentColor.current, Modifier.alpha(if (finding) 0f else 1f))
+                    if (finding) Spinner(SpinnerSize.Mini, if (prominent) Color.White else colors.dockText)
+                }
+                Text(directionsTitle(shown), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
+}
+
+private fun directionsTitle(control: ScooterDirectionsControl): String = when (control) {
+    ScooterDirectionsControl.Directions, ScooterDirectionsControl.Finding, ScooterDirectionsControl.None -> localized("Directions")
+    ScooterDirectionsControl.HideRoute -> localized("Hide route")
+    ScooterDirectionsControl.OpenInMaps -> localized("Open in Maps")
+}
+
+private fun directionsSymbol(control: ScooterDirectionsControl): ImageVector = when (control) {
+    ScooterDirectionsControl.Directions, ScooterDirectionsControl.Finding, ScooterDirectionsControl.None -> Symbols.walk
+    ScooterDirectionsControl.HideRoute -> Symbols.close
+    ScooterDirectionsControl.OpenInMaps -> Symbols.map
 }
 
 /**

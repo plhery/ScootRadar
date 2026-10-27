@@ -218,23 +218,30 @@ private fun TopStack(
         ) {
             AnimatedVisibility(failure != null, enter = enter, exit = exit) {
                 val shown = lastFailure ?: return@AnimatedVisibility
-                MapStatusBanner(
-                    message = shown.message,
-                    actionTitle = localized("Try again"),
-                    onAction = controller::retryLoad,
-                    isBusy = isLoading,
-                )
+                Box {
+                    MapStatusBanner(
+                        message = shown.message,
+                        actionTitle = localized("Try again"),
+                        onAction = controller::retryLoad,
+                        isBusy = isLoading,
+                    )
+                    // Said as it appears and each time its message changes.
+                    Announcer(Announcement(shown.message))
+                }
             }
             AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
                 val issue = lastIssue ?: return@AnimatedVisibility
-                LocationIssueCard(
-                    issue = issue,
-                    onOpenSettings = { context.startActivity(appSettings(context.packageName)) },
-                    // Searching is the answer to the card, so it goes away; the search opens with app-d's island.
-                    onSearchPlace = controller::dismissLocationIssue,
-                    onRetry = controller::focusOnUser,
-                    onDismiss = controller::dismissLocationIssue,
-                )
+                Box {
+                    LocationIssueCard(
+                        issue = issue,
+                        onOpenSettings = { context.startActivity(appSettings(context.packageName)) },
+                        // Searching is the answer to the card, so it goes away; the search opens with app-d's island.
+                        onSearchPlace = controller::dismissLocationIssue,
+                        onRetry = controller::focusOnUser,
+                        onDismiss = controller::dismissLocationIssue,
+                    )
+                    Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
+                }
             }
         }
     }

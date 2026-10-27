@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.buildAnnotatedString
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.isFinite
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dock
+import com.plhery.scootradar.core.map.dockAnnouncement
 import com.plhery.scootradar.core.model.ScooterCityDistance
 import com.plhery.scootradar.core.model.ScooterCoverageSummary
 import com.plhery.scootradar.core.model.ScooterDockContent
@@ -66,8 +68,10 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.Announcer
 import com.plhery.scootradar.ui.chrome.overTheMap
 import com.plhery.scootradar.ui.glass.chromeGlass
+import com.plhery.scootradar.ui.rememberAnnouncementOnChange
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.rememberNow
 import com.plhery.scootradar.ui.theme.CapsuleShape
@@ -118,7 +122,8 @@ fun ScooterControlDock(
             .chromeGlass(shape, live = true)
             .hairline(shape, colors.dockHairline)
             .overTheMap()
-            .onSizeChanged { onHeightChange(it.height) },
+            .onSizeChanged { onHeightChange(it.height) }
+            .testTag(DOCK_TAG),
     ) {
         AnimatedContent(
             targetState = content,
@@ -146,8 +151,17 @@ fun ScooterControlDock(
                 DockContent(controller, shown, onEditFilters)
             }
         }
+        // A card opens down here while TalkBack is still on the marker, and the out-of-date card replaces the count
+        // unasked. The walking route is drawn on the map, away from the button that asked for it, and the walk can
+        // end on its own.
+        Announcer(rememberAnnouncementOnChange(content.kind) { controller.dockAnnouncement })
+        val walkAnnouncement = controller.walkAnnouncement.collectAsState().value
+        Announcer(rememberAnnouncementOnChange(walkAnnouncement) { walkAnnouncement?.text })
     }
 }
+
+/** The dock's tag, by which the tests over the live map find it. */
+const val DOCK_TAG = "dock"
 
 /** What the dock shows, without its details: a change of kind animates. */
 internal val ScooterDockContent.kind: String

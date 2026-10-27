@@ -26,6 +26,8 @@ import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterDockContent
+import com.plhery.scootradar.core.model.ScooterDockLine
+import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
@@ -35,7 +37,9 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterRidePricing
 import com.plhery.scootradar.core.model.addingTimeInterval
+import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.lungernRegion
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.testController
@@ -44,6 +48,7 @@ import com.plhery.scootradar.ui.chrome.LocationIssueCard
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
 import com.plhery.scootradar.ui.dock.CardFigureRow
 import com.plhery.scootradar.ui.dock.CardFigures
+import com.plhery.scootradar.ui.dock.FoldedDockLine
 import com.plhery.scootradar.ui.dock.ScooterControlDock
 import com.plhery.scootradar.zurichRegion
 import kotlinx.coroutines.CoroutineScope
@@ -314,6 +319,46 @@ class ScooterMapModelTest {
         with(compose.density) {
             assertEquals(IntSize(321.dp.roundToPx(), 60.dp.roundToPx()), size(321.dp))
             assertEquals(IntSize(266.dp.roundToPx(), 60.dp.roundToPx() + 8.dp.roundToPx() + 40.dp.roundToPx()), size(266.dp))
+        }
+    }
+
+    @Test
+    fun theUsualFoldedLinesFitOneLineOfThePanelInEveryLanguage() {
+        val renderer = Renderer(compose)
+        fun height(line: ScooterDockLine, width: Dp, size: DynamicTypeSize = DynamicTypeSize.Large): Float =
+            renderer.height(RenderPass(dark = false, size, width)) { FoldedDockLine(line) } / compose.density.density
+
+        // The panel inside the card's padding.
+        val width = (380 - 32).dp
+        val oneLine = height(ScooterDockLine(mark = ScooterDockLine.Mark.Symbol("scooter"), title = "1"), width)
+        assertTrue(oneLine > 0)
+        // A line too long for the panel is drawn taller.
+        val tooLong = ScooterDockLine(mark = ScooterDockLine.Mark.Symbol("scooter"), title = "1", details = List(5) { "≈12 min walk" })
+        assertTrue(height(tooLong, width) > oneLine)
+
+        for (language in ScooterLanguage.entries) {
+            ScooterLanguage.current = language
+            val count = 3_784.formatted(language.locale)
+            val minutes = stringFormat(localized("%lld min"), 12L)
+            val walk = stringFormat(localized("≈%lld min walk"), 12L)
+            val lines = listOf(
+                ScooterDockLine(
+                    mark = ScooterDockLine.Mark.Symbol("scooter"),
+                    title = "$count ${localized("scooters")}",
+                    status = ScooterDockStatus.UpdatedMinutesAgo(59),
+                ),
+                ScooterDockLine(
+                    mark = ScooterDockLine.Mark.Provider(ScooterProvider.Publibike),
+                    title = "950 m",
+                    details = listOf("PubliBike", minutes),
+                    status = ScooterDockStatus.UpdatedMinutesAgo(59),
+                ),
+                ScooterDockLine(mark = ScooterDockLine.Mark.Provider(ScooterProvider.Publibike), title = "PubliBike", details = listOf(walk, "950 m")),
+            )
+            for (line in lines) {
+                assertEquals("$language: ${line.parts}", oneLine, height(line, width), 1f)
+                assertTrue("$language: ${line.parts}", height(line, (420 - 32).dp, DynamicTypeSize.Accessibility5) > oneLine)
+            }
         }
     }
 

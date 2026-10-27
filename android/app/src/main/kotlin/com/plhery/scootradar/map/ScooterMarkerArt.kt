@@ -14,6 +14,8 @@ import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
+import android.graphics.fonts.Font
+import android.graphics.fonts.FontFamily
 import android.util.DisplayMetrics
 import androidx.core.graphics.createBitmap
 import com.plhery.scootradar.R
@@ -30,15 +32,23 @@ import kotlin.math.sqrt
 
 /**
  * The faces of the markers' text: Inter (NEEDS-USER #2), in the weights the iPhone takes of its system font:
- * semibold, bold and heavy.
+ * semibold, bold and heavy, each an instance of the chrome's variable Inter at its text optical size.
  */
 class MarkerFonts(val semibold: Typeface, val bold: Typeface, val heavy: Typeface) {
     companion object {
         fun of(context: Context) = MarkerFonts(
-            semibold = context.resources.getFont(R.font.inter_semibold),
-            bold = context.resources.getFont(R.font.inter_bold),
-            heavy = context.resources.getFont(R.font.inter_extrabold),
+            semibold = inter(context, 600),
+            bold = inter(context, 700),
+            heavy = inter(context, 800),
         )
+
+        private fun inter(context: Context, weight: Int): Typeface {
+            val font = Font.Builder(context.resources, R.font.inter_variable)
+                .setWeight(weight)
+                .setFontVariationSettings("'wght' $weight")
+                .build()
+            return Typeface.CustomFallbackBuilder(FontFamily.Builder(font).build()).build()
+        }
     }
 }
 

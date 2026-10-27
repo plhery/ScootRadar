@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.cardStatus
+import com.plhery.scootradar.core.map.directionsControl
 import com.plhery.scootradar.core.map.parkingSubtitle
 import com.plhery.scootradar.core.map.walkNote
 import com.plhery.scootradar.core.model.ScooterParking
@@ -51,6 +52,8 @@ internal fun ParkingBayCard(controller: ScooterMapController, parking: ScooterPa
     val status = remember(changes) { controller.cardStatus }
     val subtitle = remember(changes, parking) { controller.parkingSubtitle(parking) }
     val target = remember(parking) { ScooterWalkTarget.Parking(parking) }
+    // Read here, so that the action row is drawn again as the walk changes.
+    val directions = controller.directionsControl(target)
     val colors = scootColors
     val noticeShape = SquircleShape(14.dp)
 
@@ -97,7 +100,7 @@ internal fun ParkingBayCard(controller: ScooterMapController, parking: ScooterPa
         WalkNote(controller.walkNote(target))
 
         DockActionRow {
-            DirectionsButton(controller, target, prominent = true)
+            DirectionsButton(controller, target, directions, prominent = true)
         }
 
         Text(

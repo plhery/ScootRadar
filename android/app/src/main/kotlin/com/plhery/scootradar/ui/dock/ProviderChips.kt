@@ -1,5 +1,15 @@
 package com.plhery.scootradar.ui.dock
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,6 +25,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -34,6 +45,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
@@ -70,6 +82,11 @@ internal fun ProviderChips(controller: ScooterMapController, chips: List<Scooter
     // "All" and the hints read these through the controller.
     controller.enabledProviders.collectAsState().value
     controller.visibleProviderCounts.collectAsState().value
+    // The counts roll only in the animation of a new order, as `.numericText()` inside `.animation(value: order)`.
+    val order = chips.map { it.provider }
+    val lastOrder = remember { arrayOf(order) }
+    val rolls = motion != null && order != lastOrder[0]
+    SideEffect { lastOrder[0] = order }
     LazyRow(
         Modifier.layout { measurable, constraints ->
             // padding(.horizontal, -16) and padding(.vertical, -2).
@@ -90,6 +107,7 @@ internal fun ProviderChips(controller: ScooterMapController, chips: List<Scooter
                 isSelected = controller.allProvidersSelected,
                 accessibilityIsShown = controller.allProvidersSelected,
                 onClick = controller::showAllProviders,
+                countRolls = rolls,
             )
         }
         items(chips, key = { it.provider.id }) { entry ->
@@ -103,6 +121,7 @@ internal fun ProviderChips(controller: ScooterMapController, chips: List<Scooter
                 accessibilityIsShown = entry.isEnabled,
                 hint = quickProviderHint(controller, entry.provider),
                 onClick = { controller.toggleQuickProvider(entry.provider) },
+                countRolls = rolls,
                 modifier = if (motion == null) {
                     Modifier.animateItem(fadeInSpec = null, placementSpec = null, fadeOutSpec = null)
                 } else {
@@ -141,6 +160,8 @@ internal fun QuickProviderFilterChip(
     modifier: Modifier = Modifier,
     isDown: Boolean = false,
     hint: String? = null,
+    /** A new count rolls to its place rather than taking the old one's. */
+    countRolls: Boolean = false,
 ) {
     val colors = scootColors
     val shape = SquircleShape(14.dp)
@@ -200,11 +221,11 @@ internal fun QuickProviderFilterChip(
         if (isDown) {
             SymbolIcon(Symbols.warning, textSymbolSize(12f), colors.warning)
         } else {
-            Text(
-                ScooterNumberFormat.integer(count.toLong(), ScooterLanguage.current.locale),
+            RollingCount(
+                count,
+                rolls = countRolls,
                 style = designFont(11.5f, FontWeight.Bold, tabular = true),
                 color = if (isSelected) foreground.copy(alpha = 0.6f) else colors.dockQuiet,
-                maxLines = 1,
             )
         }
     }
@@ -215,4 +236,30 @@ internal fun chipAccessibilityLabel(title: String, count: Int, isDown: Boolean):
     isDown -> title
     count == 1 -> stringFormat(localized("%@, one scooter"), title)
     else -> stringFormat(localized("%@, %lld scooters"), title, count.toLong())
+}
+
+/**
+ * A count as `.contentTransition(.numericText())` draws it: when [rolls], the new number comes up from below as
+ * the old goes up and out when it grows, and the other way when it shrinks; otherwise it takes the old one's
+ * place. The whole number rolls, where the iPhone rolls only the digits that change.
+ */
+@Composable
+private fun RollingCount(count: Int, rolls: Boolean, style: TextStyle, color: Color) {
+    val spring = IosMotion.snappy(duration = 0.25)
+    AnimatedContent(
+        targetState = count,
+        transitionSpec = {
+            if (!rolls) {
+                EnterTransition.None togetherWith ExitTransition.None using SizeTransform { _, _ -> snap() }
+            } else {
+                val direction = if (targetState > initialState) 1 else -1
+                (slideInVertically(spring.animation()) { it * direction } + fadeIn(spring.animation())) togetherWith
+                    (slideOutVertically(spring.animation()) { -it * direction } + fadeOut(spring.animation())) using
+                    SizeTransform(clip = true) { _, _ -> spring.animation() }
+            }
+        },
+        label = "count",
+    ) { shown ->
+        Text(ScooterNumberFormat.integer(shown.toLong(), ScooterLanguage.current.locale), style = style, color = color, maxLines = 1)
+    }
 }
