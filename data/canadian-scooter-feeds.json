@@ -370,7 +370,12 @@
         "east": -119.53717
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "ce2c32ac-e822-487d-8b79-a9dbe8d4b2a4"
+      "birdAppArea": "ce2c32ac-e822-487d-8b79-a9dbe8d4b2a4",
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-01",
+        "timeZone": "America/Vancouver"
+      }
     },
     {
       "id": "bird_ca_app_spruce_grove",

@@ -186,7 +186,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October until 1 May, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October until 1 May, Penticton\'s from 1 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -204,6 +204,14 @@ describe('Canada', () => {
     expect(activeSeasonalPause(leduc, Date.UTC(2027, 3, 30, 18))).toEqual({ city: 'Leduc, AB', month: 5 });
     expect(activeSeasonalPause(leduc, Date.UTC(2027, 4, 1, 18))).toBeNull();
     expect(feedPaused('canada:bird_ca_leduc', winter)).toBe(true);
+    // Penticton's first season ended on 31 October 2026, by the city's notice; the window is that winter's.
+    const penticton: [number, number] = [49.4991, -119.5937];
+    // 23:30 on 31 October in Penticton is still in season; 00:30 on 1 November is not.
+    expect(activeSeasonalPause(penticton, Date.UTC(2026, 10, 1, 6, 30))).toBeNull();
+    expect(activeSeasonalPause(penticton, Date.UTC(2026, 10, 1, 7, 30))).toEqual({ city: 'Penticton, BC', month: 4 });
+    expect(activeSeasonalPause(penticton, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Penticton, BC', month: 4 });
+    expect(activeSeasonalPause(penticton, Date.UTC(2027, 3, 1, 18))).toBeNull();
+    expect(feedPaused('canada:bird_ca_app_penticton', winter)).toBe(true);
     // Laval's by-law sets the season from 15 April to 15 November, for every group of Lime's map there.
     const laval: [number, number] = [45.56995, -73.692];
     expect(activeSeasonalPause(laval, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -233,7 +241,7 @@ describe('Canada', () => {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:bc:Penticton', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
   });
 
   it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {

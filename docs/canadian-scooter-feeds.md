@@ -70,7 +70,9 @@ Penticton (26) and Cranbrook (19). Spruce Grove's area also covers Stony
 Plain, so the map lists it once, under Spruce Grove, and search finds it by
 Stony Plain too. Cranbrook keeps Alberta's time, as the East Kootenay does.
 Bird's areas in Airdrie, Chestermere and Pickering held no scooter, and its
-map showed no area in Laval, Red Deer or Regina.
+map showed no area in Laval, Red Deer or Regina. Penticton's first season
+ends on 31 October, by the city's notice, so its area pauses from 1 November
+([Winter](#winter)).
 
 The original GBFS audit follows.
 
@@ -250,6 +252,16 @@ had Leduc "kicking off the scooting season in the coming weeks"; the window's
 dates are 2026's, so check in late April 2027 when the scooters come back
 ([coverage gaps](coverage-gaps.md)).
 
+Penticton publishes no season either, but the city's
+[notice of 23 October 2026](https://www.penticton.ca/city-hall/news-alerts/seasonal-shutdown-citys-e-scooter-and-e-bike-service)
+says its "shared e-scooter and e-bike service will conclude its first season
+on October 31, 2026", every Bird scooter gone by 2 November. So that "feed
+empty" doesn't report it, the catalog pauses Bird's Penticton area from 1
+November until 1 April, Vancouver time: the scooters came out on 30 March
+2026, and the city's agreement with Bird runs from 1 April 2026 to April 2028
+(council report of 20 January 2026). The window's dates are this winter's,
+so check in March 2027.
+
 Red Deer's Business Licence Bylaw 3609/2018 has operators "Remove E-scooters
 from the City between November 1 and March 15 each year" (Schedule J, 2(f),
 [consolidated 5 September 2025](https://www.reddeer.ca/media/reddeerca/city-government/bylaws/Business-Licence-Bylaw-3609-2018.pdf)),
@@ -310,6 +322,30 @@ above):
 - **Beaumont:** the scooters were removed on 15 November 2025; the pilot runs
   "until the end of October 2026", and Lime's licence to the end of 2026
   ([town page](https://www.beaumont.ab.ca/recreation-activities/outdoor-spaces/e-scooters/)).
+- **Kamloops:** "The program will operate annually from March to November,
+  weather and safe riding conditions permitting", the scooters stored by 1
+  December ([city FAQ](https://www.kamloops.ca/node/11434)); the city's
+  manager told a committee on 11 May 2026 that its agreement with Bird, which
+  isn't published, runs until 1 November.
+- **Cranbrook:** "2026 Scooter season begins April 1, 2026, and will run
+  through the fall of 2026"
+  ([city page](https://cranbrook.ca/our-city/city-departments/public-works/e-scooter-pilot-program/));
+  the 2024 and 2025 seasons ended on 1 November.
+- **Okotoks:** "A typical e-Scooter season runs from April to October,
+  weather permitting", and on 14 October 2026 the town's
+  [page](https://www.okotoks.ca/your-community/living-okotoks/shared-e-scooters)
+  said the scooters "will soon be removed for the season".
+- **Medicine Hat:** Bird stores its scooters for the winter and brings them
+  back in April, by its own choice; they left on 1 November in 2024. The
+  bylaws set no dates.
+- **Brampton** set its seasons each year: 1 May to 30 November in 2024, 1
+  April to 16 November in 2025; the 2026 season opened on 1 April with no
+  end date. **Oshawa**'s ran from April to 1 December in 2023 and 2024, and
+  Bird "paused for the cold, snowy months" in 2025.
+- **Cochrane** runs "through the warmer months, weather permitting";
+  **Vernon** ran from March to October in 2025; **Lethbridge**'s pilot had an
+  "Option for year-round operation"; **Spruce Grove** and **Stony Plain**
+  publish no season.
 - **Calgary** offers scooters "year-round"
   ([info sheet](https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf));
   **Edmonton**, **Hamilton**, **St. Albert**, **Airdrie**, **Kelowna**,
@@ -353,8 +389,17 @@ rule is the park's own, is the one Canadian entry in
   so its night counts may be lower.
 - **Laval** rented scooters "24 heures par jour, 7 jours par semaine" in 2024
   ([Courrier Laval](https://courrierlaval.com/?p=114191)).
+- **Kamloops:** "Devices will be available for a minimum of 16 hours per day,
+  with typical operating hours between 6:00 am and 10:00 pm"
+  ([city FAQ](https://www.kamloops.ca/node/11434)): a floor, not a ban.
+- **Cranbrook** has scooters "available 24/7" (council update of 24 March
+  2025), and **Lethbridge** "24-hour operations" (committee slides of 1
+  February 2024).
+- **St. Albert:** Bird's and Lime's licence conditions keep scooters off the
+  Farmers' Market area on Saturdays, a zone, not a ban.
 - **Calgary, Edmonton, Hamilton, Halifax, Vancouver, Mississauga, Vaughan,
-  Ajax, Coquitlam and Port Moody** publish no night hours.
+  Ajax, Coquitlam, Port Moody, Brampton, Oshawa, Medicine Hat, Cochrane,
+  Okotoks, Spruce Grove, Vernon and Penticton** publish no night hours.
 
 ## Parking
 

@@ -1013,6 +1013,13 @@ Bonaire had feeds to add. Survey files are in
   publishes a season ([Canada's winter section](canadian-scooter-feeds.md#winter)):
   if Lime takes its scooters in, pause each from the day it empties until
   spring, as Leduc.
+- **November 2026:** Bird's rider-map towns, from its map since 28 October
+  2026. Only Penticton announced its end (below); Kamloops's agreement with
+  Bird runs to 1 November, Cranbrook's last two seasons ended that day,
+  Okotoks's scooters "will soon be removed", and Medicine Hat, Brampton,
+  Oshawa, Cochrane, Vernon, Mankato and Bloomington have emptied for the
+  winter before, by Bird's or the town's choice ([Canada's winter section](canadian-scooter-feeds.md#winter)). Pause
+  each from the day its area empties until spring, as Leduc.
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));
@@ -1148,6 +1155,10 @@ Bonaire had feeds to add. Survey files are in
   Australia if New South Wales approves operators and Flamingo's feed lists
   scooters that move; Australia then needs a list of its states, so
   addresses read "Sydney NSW 2000".
+- **Late March 2027:** Bird Penticton, paused from 1 November until 1
+  April by the city's notice that its first season ended on 31 October 2026.
+  The scooters came out on 30 March in 2026: if they are back before 1 April,
+  move `until` to that day; in October 2027, set `from` by the city's notice.
 - **1 April 2027:** Hopp Bucharest (`ro-bucharest`), empty on 18 October
   2026, in case Hopp starts a season there.
 - **1 April 2027:** Lichtensteig, out of the map's towns since 18 October

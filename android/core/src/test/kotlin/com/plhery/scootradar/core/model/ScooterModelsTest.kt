@@ -1797,14 +1797,15 @@ class ScooterModelsTest {
         // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
         // 1 March, Bodø from 1 December until 1 April, Dalvík from 21 October, Leduc from 22 October
         // and Ólafsvík with Hellissandur from 23 October until 1 May, South Lake Tahoe from
-        // 1 November until 1 May, Ottawa from 16 November until 30 April, Moncton from 15 November
-        // until 16 April, Laval from 16 November until 15 April, Red Deer from 1 November until
-        // 16 March, and Saskatoon from 1 November until 15 April, each by its own clock.
+        // 1 November until 1 May, Ottawa from 16 November until 30 April, Penticton from 1 November
+        // until 1 April, Moncton from 15 November until 16 April, Laval from 16 November until
+        // 15 April, Red Deer from 1 November until 16 March, and Saskatoon from 1 November until
+        // 15 April, each by its own clock.
         assertEquals(
             listOf(
                 "fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
                 "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "us:ca:South Lake Tahoe",
-                "ca:ab:Leduc", "ca:on:Ottawa", "ca:nb:Moncton", "ca:qc:Laval", "ca:ab:Red Deer", "ca:sk:Saskatoon",
+                "ca:ab:Leduc", "ca:on:Ottawa", "ca:bc:Penticton", "ca:nb:Moncton", "ca:qc:Laval", "ca:ab:Red Deer", "ca:sk:Saskatoon",
             ),
             ScooterCityCatalog.cities.filter { it.pauses.isNotEmpty() }.map { it.id },
         )

@@ -166,6 +166,14 @@ public feed 586 inside the same outline, 582 of them within 50 m of one the
 sweep found. Spin's scooters, which Bird's app also shows, are left to
 Spin's public feeds.
 
+None of the eight towns sets a season by rule. Bird kept Bloomington's
+scooters in from 24 November 2025 to 18 March 2026 by its own choice
+([B Square Bulletin](https://bsquarebulletin.com/bloomington-electric-scooter-ridership-drops-82-city-prepares-new-licensing-round/),
+18 July 2026), and Mankato's have been stored each November, so either
+area may empty this winter: pause it then, as Leduc's was
+([Canada](canadian-scooter-feeds.md#winter)). Bloomington's night hours
+are under [Night bans](#night-bans).
+
 ## Washington, DC
 
 | Operator | Feed | Available scooters in Washington | Polled |
@@ -958,6 +966,16 @@ Rules that read like bans but are not, or that no primary source confirms:
   county's [program page](https://www.montgomerycountymd.gov/dot-dir/commuter/bikesharingCSS.html)
   sets no hours and names no operator, and the agreement in force isn't
   published. Left out: unconfirmed.
+- **Bloomington:** the Board of Public Works passed the city's
+  "Micro-Mobility Renewal Recommendations" (Resolution 2023-20) on 11 April
+  2023, which by
+  [Indiana Public Media](https://www.ipm.org/2023-03-30/city-recommends-additional-e-scooter-regulations)
+  keep stand-up scooters off the streets from 23:00 to 05:00, April to
+  October, and from 20:00 to 05:00, November to March. The city code
+  (ch. 15.58) sets no hours, the city's site refused this machine on 27
+  October 2026, so the resolution wasn't read, and nothing says whether
+  Bird's licence of September 2025, which ran out a year later, keeps the
+  hours. Left out: unconfirmed.
 - **Everett:** the city code bars operating a motorized foot scooter from
   midnight to 05:00 ([§ 46.80.040(B)](https://everett.municipal.codes/EMC/46.80.040),
   "Nighttime operation prohibited", as amended by Ord. 3743-20 in 2020), but
@@ -973,9 +991,9 @@ Rules that read like bans but are not, or that no primary source confirms:
 - **Washington, DC, Los Angeles, Santa Monica, Culver City, San Francisco,
   Oakland, San Jose, Seattle, Colorado Springs, Tempe, Indianapolis, Kansas
   City, Lexington, San Antonio, Arlington, Fairfax, Norfolk, Eau Claire,
-  Sacramento and Spokane Valley:** no hours in their rules. San Antonio's
-  2019 curfew is gone. Los Angeles' 07:00–22:00 is when operators must fix
-  badly parked scooters, not when they may rent them.
+  Sacramento, Mankato, Wilmington and Spokane Valley:** no hours in their
+  rules. San Antonio's 2019 curfew is gone. Los Angeles' 07:00–22:00 is when
+  operators must fix badly parked scooters, not when they may rent them.
 - **Greensboro:** since 1 March 2026 a ride started after 22:00 needs
   a "Safe Start Cognitive test", and "the device will remain locked for
   riders who are unable to pass the test"; downtown, speed drops to 10 mph
