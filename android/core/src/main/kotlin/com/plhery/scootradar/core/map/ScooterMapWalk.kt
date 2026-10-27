@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.map
 
+import com.plhery.scootradar.core.api.WalkingDirectionsError
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterDirectionsControl
@@ -117,9 +118,13 @@ private fun ScooterMapController.requestRoute(origin: GeoPoint, reveals: Boolean
     setWalk(walk.copy(lastRequestAt = clock()))
     val directions = directions
     routeTask = scope.launch {
+        var tooFar = false
         val path = try {
             directions.walkingPath(from = origin, to = target.point)
         } catch (_: CancellationException) {
+            null
+        } catch (error: WalkingDirectionsError) {
+            tooFar = error.reason == WalkingDirectionsError.Reason.TooFar
             null
         } catch (_: Exception) {
             null
@@ -127,7 +132,27 @@ private fun ScooterMapController.requestRoute(origin: GeoPoint, reveals: Boolean
         // A request that was replaced or cancelled answers nothing.
         if (!isActive || request != routeRequests) return@launch
         routeTask = null
-        routeFound(path, origin = origin, target = target, reveals = reveals, reports = reports)
+        if (tooFar) {
+            routeTooFar(target, reports = reports)
+        } else {
+            routeFound(path, origin = origin, target = target, reveals = reveals, reports = reports)
+        }
+    }
+}
+
+/**
+ * The site measures its ten kilometres on a sphere, a little longer than the map does on the Earth's own shape,
+ * so it can refuse a walk the map let through: such a walk is too long, as the iPhone, whose maps route it,
+ * never says no route for it.
+ */
+private fun ScooterMapController.routeTooFar(target: ScooterWalkTarget, reports: Boolean) {
+    val walk = walk.value ?: return
+    // A route asked for again on the way keeps the one on the map.
+    if (walk.phase != ScooterWalkPhase.Finding) return
+    setWalk(null)
+    if (reports) {
+        trackRouteResult("too_far", target)
+        openInMaps(target)
     }
 }
 

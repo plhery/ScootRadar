@@ -5,6 +5,8 @@ import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.api.WalkingDirectionsClient
+import com.plhery.scootradar.core.api.WalkingDirectionsError
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterProvider.Bird
 import com.plhery.scootradar.core.generated.ScooterProvider.Bolt
@@ -54,6 +56,7 @@ import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterRidePricing
 import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.core.model.ScooterSeasonalPause
+import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.addingTimeInterval
 import com.plhery.scootradar.core.model.formatted
@@ -2692,6 +2695,32 @@ class ScooterMapControllerTest {
     /** Date.distantFuture: the first day of the year 4001. */
     private val distantFuture = Instant.ofEpochSecond(64_092_211_200)
 
+    // No iOS test: the iPhone routes with its own maps, which never refuse a walk the map let through.
+    @Test
+    fun aWalkTheSiteFindsTooLongOpensInMapsAsOneTheMapFindsTooLong() = runTest {
+        // 9,963 m on the Earth's own shape, under the map's ten kilometres; 10,008 m on the site's sphere.
+        val origin = GeoPoint(19.43, -99.13)
+        val target = ScooterWalkTarget.Scooter(scooter("far", "lime", latitude = 19.52, longitude = -99.13))
+        val opened = mutableListOf<ScooterWalkTarget>()
+        var asked = 0
+        val tooFar = object : WalkingDirectionsClient {
+            override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> {
+                asked += 1
+                throw WalkingDirectionsError(WalkingDirectionsError.Reason.TooFar)
+            }
+        }
+        val api = StubScooterAPI(ScooterResponse(vehicles = emptyList()))
+        val model = makeController(api, directions = tooFar, openInMaps = { opened += it })
+        model.setUserLocation(origin)
+
+        model.showWalkingRoute(target)
+        runCurrent()
+
+        assertEquals("The map lets the walk through and asks the site", 1, asked)
+        assertNull("No \"Couldn't find a walking route.\" note", model.walk.value)
+        assertEquals(listOf<ScooterWalkTarget>(target), opened)
+    }
+
     /**
      * The controller on the test's background scope. Without a clock of its own it reads the test's, which the
      * test's waits move as real time moves under the iPhone's tests, from where TestClock starts.
@@ -2705,6 +2734,8 @@ class ScooterMapControllerTest {
         locationTimeout: Duration = 5.seconds,
         phoneLanguages: () -> List<String> = { listOf("en-US") },
         keepAppLanguages: (List<String>) -> Unit = {},
+        directions: WalkingDirectionsClient = NoWalkingDirections,
+        openInMaps: (ScooterWalkTarget) -> Unit = {},
     ): ScooterMapController {
         val scheduler = testScheduler
         val start = TestClock().now
@@ -2718,8 +2749,8 @@ class ScooterMapControllerTest {
             locationManager = locationManager,
             defaults = defaults,
             scope = backgroundScope,
-            directions = NoWalkingDirections,
-            openInMaps = {},
+            directions = directions,
+            openInMaps = openInMaps,
             locationTimeout = locationTimeout,
             refreshPolicy = refreshPolicy,
             now = now,
