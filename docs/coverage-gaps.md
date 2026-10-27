@@ -23,8 +23,8 @@ Hamilton, Wellington and Palmerston North, in Monterrey and Guadalupe, in
 Ajax, Coquitlam, Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond
 and Vaughan, in 58 American towns, from Los Angeles and Austin to Milwaukee
 and Tampa, in Ashdod and Eilat, and in Dubai, Abu Dhabi and Al Ain.
-One other market its rider map lists, Farmington, Utah, is added once its
-full-area audit is clean; until then it remains a gap. See
+One other market its rider map lists, Farmington, Utah, showed 2 scooters in
+each of three audits and none to check them against, so it remains a gap. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 ## Found, not added yet
@@ -481,8 +481,8 @@ banned shared scooters, and feeds that were empty when checked.
       Spokane Valley, West Sacramento, Richmond (beside Bird and Spin), Edmond,
       Clearfield, Fairfax, St. Louis Park, Jenks, North Salt Lake and Tualatin
       ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
-      Still without one: Farmington, Utah, which waits for another audit, and
-      smaller towns.
+      Still without one: Farmington, Utah, where three audits found 2
+      scooters and none to check them against, and smaller towns.
     - **Bird** in Austin, beside Lime's 3,282 scooters (the two had about
       5,400 together), and in Charlotte, Sacramento, Oklahoma City and Bloomington, IN
       (about 220).

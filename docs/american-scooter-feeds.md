@@ -112,7 +112,8 @@ stationary scooter. In Knoxville, Lime's map held no scooter at 00:30 that
 night; its 2020 pilot let scooters run from 07:00 to 21:00, and guides give
 07:00 to 23:00, but the city's scooter pages are gone from its new website,
 so the map holds no night ban there. Farmington, Utah, showed 2 scooters and
-none stationary to check against, and waits for another audit.
+none stationary to check against, and the same on the morning of 27 October,
+so it is left out.
 
 On the evening of 26 October, Eastern time: Alexandria, Virginia (350,
 beside GCOO's). Its program sets no riding hours. Its zone stops at the

@@ -169,7 +169,11 @@ Louis, New Haven, Missouri, Overland Park, Plano and Denver, that evening,
 local time: Birmingham's council permitted Lime through 30 June 2024, Lime
 paused its Overland Park pilot indefinitely, Plano lists no current
 operator, Denver's scooters are Veo's alone since 16 May 2026, and Bird's
-St. Louis feed held its fleet while Lime's zone was empty. In the United Arab Emirates, neither did Al Mirfa and
+St. Louis feed held its fleet while Lime's zone was empty. Farmington, Utah,
+held 2 scooters in each of three audits, on 26 October by night and in the
+afternoon and on the morning of 27 October, Mountain time, and never a
+stationary one to check them against, so it is left out too. In the United
+Arab Emirates, neither did Al Mirfa and
 Madinat Zayed, in Al Dhafra, the two far zones of its Abu Dhabi region, in the
 afternoon of 26 October 2026, Gulf time.
 
