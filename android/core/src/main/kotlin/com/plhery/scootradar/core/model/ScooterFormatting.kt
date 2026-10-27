@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.model
 
+import com.plhery.scootradar.core.JvmOnly
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -62,8 +63,8 @@ object ScooterMeasureFormat {
             roundingMode = RoundingMode.HALF_EVEN
         }.format(value)
         val separator = when {
-            locale.language == "fr" && locale.country == "CA" -> " "
-            locale.language == "fr" -> " "
+            locale.language == "fr" && locale.country == "CA" -> "\u00A0"
+            locale.language == "fr" -> "\u202F"
             else -> " "
         }
         val name = when (unit) {
@@ -105,6 +106,7 @@ object ScooterDateFormat {
     @Volatile
     var skeleton: (skeleton: String, instant: Instant, zone: ZoneId, locale: Locale) -> String = ::jvmSkeleton
 
+    @JvmOnly
     private fun jvmSkeleton(skeleton: String, instant: Instant, zone: ZoneId, locale: Locale): String {
         val withoutZone = skeleton.trimEnd('z')
         val text = DateTimeFormatter.ofLocalizedPattern(withoutZone).withLocale(locale).withZone(zone).format(instant)

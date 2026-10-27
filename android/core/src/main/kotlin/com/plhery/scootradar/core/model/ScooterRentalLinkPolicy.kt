@@ -168,7 +168,7 @@ object ScooterRentalLinkPolicy {
 
     /** CharacterSet.whitespacesAndNewlines: Unicode's White_Space. */
     private fun isWhitespaceOrNewline(character: Char): Boolean =
-        character in "\t\n\u000B\u000C\r \u0085      　" || character in ' '..' '
+        character in "\t\n\u000B\u000C\r \u0085\u00A0\u1680  \u202F\u205F\u3000" || character in '\u2000'..'\u200A'
 
     /** CharacterSet.controlCharacters: the control and format characters, Cc and Cf. */
     private fun isControlCharacter(codePoint: Int): Boolean {

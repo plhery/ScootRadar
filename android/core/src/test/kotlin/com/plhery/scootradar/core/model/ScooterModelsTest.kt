@@ -612,7 +612,7 @@ class ScooterModelsTest {
         assertFalse(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("es-MX")))
     }
 
-    private fun plainSpaces(text: String): String = text.replace(' ', ' ').replace(' ', ' ')
+    private fun plainSpaces(text: String): String = text.replace('\u00A0', ' ').replace('\u202F', ' ')
 
     @Test
     fun mapZoomRoundsUpAtTheServerClusteringBoundary() {

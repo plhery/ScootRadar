@@ -73,6 +73,8 @@ dependencies {
 
 animalsniffer {
     sourceSets = listOf(project.sourceSets.main.get())
+    // The JVM's defaults of what the app sets from Android at launch.
+    annotation = "com.plhery.scootradar.core.JvmOnly"
 }
 
 // CatalogParityTest and TimeZonesParityTest read the iPhone app's generated files to check the Android

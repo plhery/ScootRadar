@@ -90,7 +90,7 @@ data class Scooter(
                 roadLength(meters, system, locale)
             }
             // A line never breaks between the number and its unit.
-            return formatted.replace(' ', ' ')
+            return formatted.replace(' ', '\u00A0')
         }
 
         /**
@@ -115,7 +115,7 @@ data class Scooter(
         /** The same length with its number and its unit apart, for a figure whose unit is set smaller than its number. */
         fun lengthParts(meters: Double, locale: Locale = ScooterLanguage.current.locale): Pair<String, String?> {
             val length = formattedLength(meters, locale)
-            val space = length.indexOf(' ')
+            val space = length.indexOf('\u00A0')
             if (space <= 0 || space == length.lastIndex) return length to null
             return length.substring(0, space) to length.substring(space + 1)
         }
