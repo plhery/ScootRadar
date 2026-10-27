@@ -1,6 +1,8 @@
 package com.plhery.scootradar.core.model
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 // MKMapPoint's values, as MapKit gave them on macOS 27 (MKMapPoint(coordinate) and .coordinate), for the walk
@@ -34,6 +36,27 @@ class MapPointTest {
         assertCoordinate(41.648031768182285, -179.99999329447746, MapPoint(2 * MapPoint.worldSize + 5, 1.0e8))
         assertCoordinate(85.16548289565795, -45.889549255371094, MapPoint(1.0e8, -1.0e6))
         assertCoordinate(-87.63490542535585, -45.889549255371094, MapPoint(1.0e8, 3.0e8))
+    }
+
+    // MKMapRect's intersects and insetBy, for the zones near a tile.
+    @Test
+    fun rectsMeetAndGrowAsMapKitHasThem() {
+        val rect = MapRect(0.0, 0.0, 10.0, 10.0)
+        assertTrue(rect.intersects(MapRect(9.5, 0.0, 10.0, 10.0)))
+        assertTrue(rect.intersects(MapRect(5.0, 5.0, 0.0, 0.0)))
+        // Rects that only touch do not meet.
+        assertFalse(rect.intersects(MapRect(10.0, 0.0, 10.0, 10.0)))
+        assertFalse(rect.intersects(MapRect(10.0, 5.0, 0.0, 3.0)))
+        assertFalse(rect.intersects(MapRect(-5.0, -5.0, 5.0, 20.0)))
+        assertTrue(rect.intersects(MapRect(-5.0, -5.0, 5.0001, 20.0)))
+        // A rect of no size on another's edge meets it, but the other does not meet it.
+        assertFalse(rect.intersects(MapRect(0.0, 0.0, 0.0, 0.0)))
+        assertTrue(MapRect(0.0, 0.0, 0.0, 0.0).intersects(rect))
+        assertFalse(rect.intersects(MapRect(0.0, 5.0, 0.0, 0.0)))
+        assertTrue(MapRect(0.0, 5.0, 0.0, 0.0).intersects(rect))
+
+        assertEquals(MapRect(-4.0, -4.0, 18.0, 18.0), rect.insetBy(dx = -4.0, dy = -4.0))
+        assertEquals(MapRect(6.0, 6.0, -2.0, -2.0), rect.insetBy(dx = 6.0, dy = 6.0))
     }
 
     private fun assertPoint(x: Double, y: Double, coordinate: GeoPoint) {

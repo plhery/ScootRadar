@@ -51,4 +51,16 @@ data class MapRect(val x: Double, val y: Double, val width: Double, val height: 
     val minY: Double get() = y
     val midY: Double get() = y + height / 2
     val maxY: Double get() = y + height
+
+    /** The rect grown or shrunk by dx on its left and right and dy on its top and bottom, as MKMapRectInset. */
+    fun insetBy(dx: Double, dy: Double): MapRect = MapRect(x = x + dx, y = y + dy, width = width - 2 * dx, height = height - 2 * dy)
+
+    /**
+     * Whether the two rects overlap, as MKMapRect.intersects: along each axis, the one that starts later, this
+     * one on a tie, starts before the other ends. So rects that only touch do not, and a rect of no size at
+     * another's corner meets it while the other does not meet it.
+     */
+    fun intersects(other: MapRect): Boolean =
+        (if (minX >= other.minX) minX < other.maxX else other.minX < maxX) &&
+            (if (minY >= other.minY) minY < other.maxY else other.minY < maxY)
 }

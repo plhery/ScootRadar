@@ -1,12 +1,21 @@
 package com.plhery.scootradar.core.model
 
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.sqrt
 import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.geom.GeometryFactory
+import org.locationtech.jts.geom.LineString
 import org.locationtech.jts.geom.LinearRing
+import org.locationtech.jts.geom.MultiLineString
 import org.locationtech.jts.geom.Polygon
+import org.locationtech.jts.geom.prep.PreparedGeometry
+import org.locationtech.jts.geom.prep.PreparedGeometryFactory
 import org.locationtech.jts.geom.TopologyException
 import org.locationtech.jts.geom.util.GeometryFixer
+import org.locationtech.jts.index.strtree.STRtree
 import org.locationtech.jts.operation.overlayng.OverlayNG
 import org.locationtech.jts.operation.overlayng.OverlayNGRobust
 
@@ -125,6 +134,137 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
             OverlayNGRobust.union(areas)
         } catch (_: TopologyException) {
             factory.buildGeometry(areas.flatMap { area -> (0 until area.numGeometries).map { area.getGeometryN(it) } })
+        }
+    }
+}
+
+/**
+ * The zones as the map draws them, as the web does (MapComponent.tsx): each kind's fills as one translucent
+ * layer, the strongest rule on top, those drawn dimmer in a fainter layer of their own; then every edge. This
+ * decides what the map draws, without drawing, in the overlay's map points from its corner. A scale is how
+ * many map points one point spans, MapKit's 1 / zoomScale.
+ */
+class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
+    /** A kind's fills of one strength, laid down as one translucent layer, so that its zones are no darker where they meet. */
+    data class Fill(
+        val kind: ScooterZoneKind,
+        val strength: Double,
+        val color: Long,
+        /** The whole layer's opacity. */
+        val opacity: Double,
+        /** No riding is not filled flat: a ground and lines across it (hatch). */
+        val hatched: Boolean,
+        val shapes: List<ScooterZoneOverlay.Shape>,
+    )
+
+    /** A piece's edge as it is stroked, its lines in map points from the corner of the overlay. */
+    data class Stroke(
+        val shape: ScooterZoneOverlay.Shape,
+        val color: Long,
+        val opacity: Double,
+        val edge: ScooterZoneLook.Edge,
+        val lines: Geometry,
+    )
+
+    private val overlay = zones
+    private val shapes: List<ScooterZoneOverlay.Shape> = zones.shapes
+    val colors: Map<ScooterZoneKind, Long> =
+        ScooterZoneKind.entries.associateWith { ScooterZoneLook.color(it, isDark = zones.isDark) }
+
+    /** The pieces a tile of the map draws, its map rect: those whose bounds meet it grown by 4 points. */
+    fun near(mapRect: MapRect, scale: Double): List<ScooterZoneOverlay.Shape> {
+        // A screen point, in map points.
+        val unit = scale
+        val reach = mapRect.insetBy(dx = -4 * unit, dy = -4 * unit)
+        return shapes.filter { it.bounds.intersects(reach) }
+    }
+
+    /** The fills in the order they are laid down: the kinds below first, and within a kind the dimmer first. */
+    fun fills(near: List<ScooterZoneOverlay.Shape>): List<Fill> = ScooterZoneKind.belowFirst.flatMap { kind ->
+        val ofKind = near.filter { it.kind == kind }
+        val color = colors[kind] ?: return@flatMap emptyList()
+        ofKind.map { it.strength }.distinct().sorted().map { strength ->
+            Fill(
+                kind = kind, strength = strength, color = color,
+                opacity = ScooterZoneLook.fillOpacity(kind) * strength, hatched = kind == ScooterZoneKind.NoRide,
+                shapes = ofKind.filter { it.strength == strength },
+            )
+        }
+    }
+
+    /**
+     * The edges in the order they are stroked: no parking's and slow zones', then no riding's over them.
+     *
+     * Where riding is forbidden, nothing more needs saying: no parking's and slow zones' edges give way within
+     * no riding's zones and along their edge, which other operators' zones of the same street often follow to
+     * the metre. MapKit erases them there with a clear blend, which MapLibre has not: their lines are cut
+     * instead, less each piece of no riding grown by ScooterZoneLook.edgeClearance points, with the round
+     * corners of the stroke that erases them. That takes a while on a large set of zones: run it off the main
+     * thread, again as the scale changes.
+     */
+    fun strokes(near: List<ScooterZoneOverlay.Shape>, scale: Double): List<Stroke> {
+        val noRide = near.filter { it.kind == ScooterZoneKind.NoRide }
+        val giving = near.filter { it.kind != ScooterZoneKind.NoRide }
+        val clearance = ScooterZoneLook.edgeClearance * scale
+        val cleared = STRtree()
+        for (shape in noRide) {
+            val area = shape.polygon.buffer(clearance)
+            cleared.insert(area.envelopeInternal, PreparedGeometryFactory.prepare(area))
+        }
+        return giving.map { stroke(it, lines = givingWay(it.polygon.boundary, cleared)) } +
+            noRide.map { stroke(it, lines = it.polygon.boundary) }
+    }
+
+    /**
+     * No riding's hatching over a piece in a tile of the map: lines across it at 45°, laid on the overlay's own
+     * grid so that they run on from one tile to the next. They are the lines x + y = c,
+     * ScooterZoneLook.hatchSpacing points apart across them, over the piece's bounds within the tile grown by a
+     * point; they are drawn clipped to the piece, on a ground of its colour. The map's fill pattern draws the
+     * same lines.
+     */
+    fun hatch(shape: ScooterZoneOverlay.Shape, tile: MapRect, scale: Double): MultiLineString {
+        val unit = scale
+        val corner = overlay.boundingMapRect ?: return ScooterZoneOverlay.factory.createMultiLineString()
+        val reach = MapRect(x = tile.x - corner.x, y = tile.y - corner.y, width = tile.width, height = tile.height)
+            .insetBy(dx = -unit, dy = -unit)
+        val bounds = shape.polygon.envelopeInternal
+        val minX = max(bounds.minX, reach.minX)
+        val minY = max(bounds.minY, reach.minY)
+        val maxX = min(bounds.maxX, reach.maxX)
+        val maxY = min(bounds.maxY, reach.maxY)
+        // Core Graphics' intersection, neither null nor empty.
+        if (!(maxX > minX && maxY > minY)) return ScooterZoneOverlay.factory.createMultiLineString()
+        // Lines x + y = c, ScooterZoneLook.hatchSpacing apart across them.
+        val step = ScooterZoneLook.hatchSpacing * unit * sqrt(2.0)
+        if (!(step > 0)) return ScooterZoneOverlay.factory.createMultiLineString()
+        val lines = mutableListOf<LineString>()
+        var c = floor((minX + minY) / step) * step
+        while (c <= maxX + maxY) {
+            lines += ScooterZoneOverlay.factory.createLineString(arrayOf(Coordinate(c - minY, minY), Coordinate(c - maxY, maxY)))
+            c += step
+        }
+        return ScooterZoneOverlay.factory.createMultiLineString(lines.toTypedArray())
+    }
+
+    private fun stroke(shape: ScooterZoneOverlay.Shape, lines: Geometry): Stroke = Stroke(
+        shape = shape, color = colors.getValue(shape.kind),
+        opacity = ScooterZoneLook.edgeOpacity * shape.strength, edge = ScooterZoneLook.edge(shape.kind), lines = lines,
+    )
+
+    /**
+     * A piece's edge less no riding's grown pieces that reach it. One that round-off defeats is kept whole,
+     * and drawn over no riding's edge.
+     */
+    private fun givingWay(lines: Geometry, cleared: STRtree): Geometry {
+        // Most pieces near an edge, by their bounds, do not reach it; one may hide it all.
+        val reaching = cleared.query(lines.envelopeInternal).filterIsInstance<PreparedGeometry>().filter { it.intersects(lines) }
+        if (reaching.isEmpty()) return lines
+        if (reaching.any { it.covers(lines) }) return ScooterZoneOverlay.factory.createMultiLineString()
+        return try {
+            val area = reaching.singleOrNull()?.geometry ?: OverlayNGRobust.union(reaching.map { it.geometry })
+            OverlayNGRobust.overlay(lines, area, OverlayNG.DIFFERENCE)
+        } catch (_: TopologyException) {
+            lines
         }
     }
 }

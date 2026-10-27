@@ -3,12 +3,21 @@ package com.plhery.scootradar.core.model
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import java.net.URI
 import java.time.Instant
+import java.util.Locale
+import java.util.Random
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.locationtech.jts.geom.LineString
 
 // ios/ScootRadarTests/ScooterZonesTests.swift: ScooterZonesTests, ScooterZoneOverlayTests and
 // CityRuleZoneTests. Its ScooterZonesModelTests run the map's model: they are with the map's controller.
@@ -149,6 +158,202 @@ class ScooterZoneOverlayTest {
         val lime = ScooterZoneOverlay(zones = zones.filter { it.provider == "lime" }, isDark = false)
         assertExtent(unwrap(lime.shapes.firstOrNull()), listOf(47.37, 8.54, 47.371, 8.541))
         assertTrue(ScooterZoneOverlay(zones = emptyList(), isDark = false).shapes.isEmpty())
+    }
+
+    // What the renderer decides, which the map draws (Android only).
+
+    @Test
+    fun theColoursAreTheIPhonesOwn() {
+        // ScooterZoneLook.color's components (ScooterZones.swift), red, green and blue, each to the nearest of
+        // 255 steps.
+        val iPhone = mapOf(
+            (ScooterZoneKind.NoRide to false) to listOf(0.851, 0.176, 0.125),
+            (ScooterZoneKind.NoParking to false) to listOf(0.753, 0.337, 0.0),
+            (ScooterZoneKind.Slow to false) to listOf(0.243, 0.388, 0.867),
+            (ScooterZoneKind.NoRide to true) to listOf(1.0, 0.412, 0.38),
+            (ScooterZoneKind.NoParking to true) to listOf(1.0, 0.702, 0.251),
+            (ScooterZoneKind.Slow to true) to listOf(0.486, 0.612, 1.0),
+        )
+        for ((key, components) in iPhone) {
+            val (kind, isDark) = key
+            val color = ScooterZoneLook.color(kind, isDark = isDark)
+            assertEquals("$key", 0xFFL, color shr 24 and 0xFF)
+            for ((index, component) in components.withIndex()) {
+                assertEquals("$key $index", component * 255, (color shr (16 - 8 * index) and 0xFF).toDouble(), 0.5)
+            }
+        }
+        for (isDark in listOf(false, true)) {
+            val renderer = ScooterZoneRenderer(ScooterZoneOverlay(zones = emptyList(), isDark = isDark))
+            assertEquals(ScooterZoneKind.entries.associateWith { ScooterZoneLook.color(it, isDark = isDark) }, renderer.colors)
+        }
+    }
+
+    @Test
+    fun theKindsAreLaidDownTheStrongestOnTopAndTheEdgesOverTheFills() {
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(
+                zone("lime:0", ScooterZoneKind.NoRide, rect(0.0, 0.0, 100.0, 100.0)),
+                zone("bolt:0", ScooterZoneKind.Slow, rect(200.0, 0.0, 300.0, 100.0)),
+                zone("voi:0", ScooterZoneKind.NoParking, rect(400.0, 0.0, 500.0, 100.0)),
+                ScooterZone(
+                    id = "rule:street", provider = "city", kind = ScooterZoneKind.NoRide, polygons = listOf(rect(600.0, 0.0, 700.0, 100.0)),
+                    strength = CityRuleZone.dimmed,
+                ),
+            ),
+            isDark = false,
+        )
+        val renderer = ScooterZoneRenderer(overlay)
+
+        val fills = renderer.fills(overlay.shapes)
+        assertEquals(
+            listOf(ScooterZoneKind.Slow, ScooterZoneKind.NoParking, ScooterZoneKind.NoRide, ScooterZoneKind.NoRide),
+            fills.map { it.kind },
+        )
+        assertEquals(listOf(1.0, 1.0, CityRuleZone.dimmed, 1.0), fills.map { it.strength })
+        assertEquals(listOf(0.12, 0.16, 0.4 * CityRuleZone.dimmed, 0.4), fills.map { it.opacity })
+        assertEquals(listOf(false, false, true, true), fills.map { it.hatched })
+        assertEquals(listOf(0xFF3E63DD, 0xFFC05600, 0xFFD92D20, 0xFFD92D20), fills.map { it.color })
+
+        // No parking's and slow zones' edges first, in the overlay's order, then no riding's over them.
+        val strokes = renderer.strokes(overlay.shapes, scale = 1.0)
+        assertEquals(
+            listOf(ScooterZoneKind.NoParking, ScooterZoneKind.Slow, ScooterZoneKind.NoRide, ScooterZoneKind.NoRide),
+            strokes.map { it.shape.kind },
+        )
+        assertEquals(listOf(0.9, 0.9, 0.9 * CityRuleZone.dimmed, 0.9), strokes.map { it.opacity })
+        assertEquals(strokes.map { ScooterZoneLook.edge(it.shape.kind) }, strokes.map { it.edge })
+        // Too far apart to give way: each edge is its whole outline.
+        for (stroke in strokes) assertEquals(400.0, stroke.lines.length, 1e-6)
+    }
+
+    @Test
+    fun aTileDrawsThePiecesWithinFourPointsOfIt() {
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(zone("lime:0", ScooterZoneKind.NoRide, rect(0.0, 0.0, 1000.0, 1000.0)), zone("voi:0", ScooterZoneKind.Slow, rect(5000.0, 0.0, 6000.0, 1000.0))),
+            isDark = false,
+        )
+        val renderer = ScooterZoneRenderer(overlay)
+        // At 10 map points a point, 4 points are 40 map points.
+        fun near(minX: Double) = renderer.near(MapRect(origin.x + minX, origin.y, 1000.0, 1000.0), scale = 10.0).map { it.kind }
+        assertEquals(listOf(ScooterZoneKind.NoRide), near(1039.0))
+        assertEquals(emptyList<ScooterZoneKind>(), near(1041.0))
+        assertEquals(listOf(ScooterZoneKind.Slow), near(3961.0))
+        assertEquals(emptyList<ScooterZoneKind>(), near(3959.0))
+    }
+
+    @Test
+    fun noParkingsAndSlowZonesEdgesGiveWayToNoRidingWithinThreePoints() {
+        // No riding's frame, its hole open, over the east of a no parking zone; a slow zone in the frame's hole,
+        // and another within the frame itself. At 10 map points a point, the edges give way within 30 map
+        // points of no riding, and within it.
+        val frame = listOf(rect(600.0, 200.0, 1600.0, 800.0)[0], rect(1100.0, 300.0, 1500.0, 700.0)[0])
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(
+                zone("lime:0", ScooterZoneKind.NoParking, rect(0.0, 0.0, 1000.0, 1000.0)),
+                zone("dott:0", ScooterZoneKind.NoRide, frame),
+                zone("voi:0", ScooterZoneKind.Slow, rect(1200.0, 400.0, 1400.0, 600.0)),
+                zone("bolt:0", ScooterZoneKind.Slow, rect(650.0, 250.0, 700.0, 300.0)),
+            ),
+            isDark = false,
+        )
+        val strokes = ScooterZoneRenderer(overlay).strokes(overlay.shapes, scale = 10.0)
+        val corner = unwrap(overlay.boundingMapRect)
+        assertEquals(0.0, corner.x - origin.x, 1e-6)
+        assertEquals(0.0, corner.y - origin.y, 1e-6)
+
+        // No parking's west, north and south edges stay whole; its east edge, at x = 1000, is cut from 30 map
+        // points north of the frame to 30 south of it: 1000 × 3 + 170 + 170.
+        val noParking = strokes.single { it.shape.kind == ScooterZoneKind.NoParking }
+        assertEquals(3340.0, noParking.lines.length, 1e-6)
+        val ends = (0 until noParking.lines.numGeometries).flatMap { index ->
+            val line = noParking.lines.getGeometryN(index) as LineString
+            listOf(line.startPoint.coordinate, line.endPoint.coordinate)
+        }.filter { abs(it.x - 1000) < 1e-6 && (abs(it.y - 170) < 1e-6 || abs(it.y - 830) < 1e-6) }
+        assertEquals(2, ends.size)
+        // The slow zone in the hole is 100 map points from its edge, and keeps its edge; the other is gone.
+        val slow = strokes.filter { it.shape.kind == ScooterZoneKind.Slow }
+        assertEquals(800.0, slow.sumOf { it.lines.length }, 1e-6)
+        assertEquals(listOf(true), slow.filter { it.lines.isEmpty }.map { it.shape.bounds.width < 100 })
+        // No riding's own edge, its outline and its hole's, is all drawn.
+        assertEquals(3200.0 + 1600.0, strokes.single { it.shape.kind == ScooterZoneKind.NoRide }.lines.length, 1e-6)
+        // Nothing of the edges that give way comes within 30 map points of no riding.
+        val noRide = overlay.shapes.single { it.kind == ScooterZoneKind.NoRide }.polygon
+        for (stroke in strokes.filter { it.shape.kind != ScooterZoneKind.NoRide && !it.lines.isEmpty }) {
+            assertTrue(stroke.lines.distance(noRide) > 30 - 1e-6)
+        }
+    }
+
+    @Test
+    fun noRidingIsHatchedAcrossAtFortyFiveDegreesOnTheOverlaysGrid() {
+        val overlay = ScooterZoneOverlay(zones = listOf(zone("lime:0", ScooterZoneKind.NoRide, rect(0.0, 0.0, 100.0, 100.0))), isDark = false)
+        val renderer = ScooterZoneRenderer(overlay)
+        // A tile over the middle of the piece, grown by a point, 2 map points at this scale: x and y from 18 to 62.
+        val lines = renderer.hatch(overlay.shapes[0], tile = MapRect(origin.x + 20, origin.y + 20, 40.0, 40.0), scale = 2.0)
+        // Lines x + y = c, 8 points, here 16 map points, apart across them: c steps by 16√2 from the multiple
+        // below 18 + 18 to the last within 62 + 62.
+        val step = 16 * sqrt(2.0)
+        assertEquals(5, lines.numGeometries)
+        for (index in 0 until lines.numGeometries) {
+            val (start, end) = lines.getGeometryN(index).coordinates
+            assertEquals((index + 1) * step, start.x + start.y, 1e-6)
+            assertEquals((index + 1) * step, end.x + end.y, 1e-6)
+            assertEquals(18.0, start.y, 1e-6)
+            assertEquals(62.0, end.y, 1e-6)
+        }
+        // A tile more than a point off the piece hatches nothing.
+        assertTrue(renderer.hatch(overlay.shapes[0], tile = MapRect(origin.x + 103, origin.y, 40.0, 40.0), scale = 2.0).isEmpty)
+    }
+
+    /**
+     * What MapLibre's layer would do when the scale changes: no parking's and slow zones' edges giving way to
+     * no riding, on a few hundred zones of a city. It only logs how long that takes.
+     */
+    @Test
+    fun theEdgesGiveWayOnAFewHundredZones() {
+        val random = Random(7)
+        val kinds = List(120) { ScooterZoneKind.NoRide } + List(120) { ScooterZoneKind.NoParking } + List(60) { ScooterZoneKind.Slow }
+        // Wobbly discs of 30 to 250 m, 16 to 64 corners, over 4 km by 4 km of Zürich, many of them overlapping.
+        val zones = kinds.mapIndexed { index, kind ->
+            val centre = GeoPoint(latitude = 47.36 + random.nextDouble() * 0.036, longitude = 8.51 + random.nextDouble() * 0.053)
+            val radius = 30 + random.nextDouble() * 220
+            val corners = 16 + random.nextInt(49)
+            val ring = (0..corners).map { corner ->
+                val angle = (corner % corners).toDouble() / corners * 2 * PI
+                val reach = radius * (0.75 + 0.25 * sin(angle * 3 + index))
+                GeoPoint(
+                    latitude = centre.latitude + reach * sin(angle) / 110_540,
+                    longitude = centre.longitude + reach * cos(angle) / (111_320 * cos(centre.latitude * PI / 180)),
+                )
+            }
+            zone("op:$index", kind, listOf(ring))
+        }
+        fun millis(block: () -> Unit): Double {
+            val start = System.nanoTime()
+            block()
+            return (System.nanoTime() - start) / 1e6
+        }
+        lateinit var overlay: ScooterZoneOverlay
+        val merging = List(3) { millis { overlay = ScooterZoneOverlay(zones = zones, isDark = false) } }
+        val renderer = ScooterZoneRenderer(overlay)
+        val log = StringBuilder("${zones.size} zones (${zones.sumOf { it.polygons[0][0].size }} points) merged into ${overlay.shapes.size} pieces in ${merging.map { "%.1f".format(Locale.ROOT, it) }} ms\n")
+        // One of MapLibre's points, 512 to a tile, spans 2^(19 - zoom) map points.
+        for (zoom in listOf(14, 16, 18)) {
+            val scale = 2.0.pow(19 - zoom)
+            lateinit var strokes: List<ScooterZoneRenderer.Stroke>
+            val giving = List(3) { millis { strokes = renderer.strokes(overlay.shapes, scale = scale) } }
+            assertEquals(overlay.shapes.size, strokes.size)
+            log.append("zoom $zoom: edges give way in ${giving.map { "%.1f".format(Locale.ROOT, it) }} ms\n")
+        }
+        println(log)
+    }
+
+    /** Where the hand-worked shapes start, south-west of Zürich's main station. */
+    private val origin = MapPoint(GeoPoint(latitude = 47.37, longitude = 8.54))
+
+    /** A rectangle of the flat map, in map points east and south of `origin`, as a zone's polygon. */
+    private fun rect(minX: Double, minY: Double, maxX: Double, maxY: Double): List<List<GeoPoint>> {
+        fun point(x: Double, y: Double) = MapPoint(origin.x + x, origin.y + y).coordinate
+        return listOf(listOf(point(minX, maxY), point(maxX, maxY), point(maxX, minY), point(minX, minY), point(minX, maxY)))
     }
 
     /** A square of about 110 m by 110 m in Zürich, from its south-west corner. */
