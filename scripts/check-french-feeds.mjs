@@ -139,7 +139,7 @@ async function appCollector(provider) {
   return adapter[`collect${provider[0].toUpperCase() + provider.slice(1)}Region`];
 }
 const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount ||
-  system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity ||
+  system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity ||
   system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.alpacaAppMap || system.dartAppMap ||
   system.skyssAppZone || system.boltAppCity;
 
@@ -182,7 +182,7 @@ async function inspect(system) {
     if (behindToken(system) && apps === 'cache') return cachedFeed(system, result, 'gbfs (cache)');
     if (isAppMap(system)) {
       const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing'
-        : system.swingAppMap ? 'swing' : system.skyssAppZone ? 'skyss' : system.provider);
+        : system.swingAppMap ? 'swing' : system.skyssAppZone ? 'skyss' : system.birdAppArea ? 'bird' : system.provider);
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
         withBattery: snapshot.vehicles.filter(v => v.battery !== null).length, withRange: snapshot.vehicles.filter(v => typeof v.range_m === 'number').length, withRentalLink: 0,

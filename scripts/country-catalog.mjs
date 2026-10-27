@@ -416,6 +416,35 @@ export function binbinAreasProblem(systems, { areas }) {
 }
 
 /**
+ * Why Bird's app map areas are wrong, or null. The cache sweeps an area's outline from
+ * data/bird-app-areas.json for the Bird or Spin system naming it as its birdAppArea, and keeps that
+ * brand's scooters inside. Most Bird and Spin systems are public feeds and name none; an area is
+ * named once per brand, and its outline lies within the system's bounds, around its centre.
+ */
+export function birdAreasProblem(systems, { areas }) {
+  const byId = new Map(areas.map(area => [area.id, area]));
+  const named = new Set();
+  for (const system of systems) {
+    if (system.birdAppArea === undefined) continue;
+    if (system.provider !== 'bird' && system.provider !== 'spin') return `${system.id}: only a Bird or Spin system names a birdAppArea`;
+    const area = byId.get(system.birdAppArea);
+    if (!area) return `${system.id}: data/bird-app-areas.json has no area ${system.birdAppArea}`;
+    if (named.has(`${system.provider}:${area.id}`)) return `${system.id}: another system sweeps Bird's area ${area.id}`;
+    named.add(`${system.provider}:${area.id}`);
+    named.add(area.id);
+    const { south, west, north, east } = system.bounds;
+    if (!area.rings.flat().every(([lat, lng]) => lat >= south && lat <= north && lng >= west && lng <= east)) {
+      return `${system.id}: the outline of Bird's area ${area.id} reaches beyond its bounds`;
+    }
+    if (!area.rings.some(ring => ringHolds(ring, system.center))) {
+      return `${system.id}: its centre is outside the outline of Bird's area ${area.id}`;
+    }
+  }
+  const unnamed = areas.filter(area => !named.has(area.id)).map(area => area.id);
+  return unnamed.length ? `data/bird-app-areas.json: no system sweeps ${unnamed.join(', ')}` : null;
+}
+
+/**
  * One line per continent for the GBFS feeds credited together, "DE/IT/…/UA: Dott, Bolt, …",
  * then each country's own links, in the order of data/countries.json. Links that countries
  * share are credited once, where the last gives it: "FR/…/IL: OpenStreetMap boundaries · ODbL".

@@ -785,6 +785,166 @@
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/eau-claire-wisconsin/gbfs.json"
     },
     {
+      "id": "bird_us_app_austin",
+      "country": "US",
+      "provider": "bird",
+      "city": "Austin",
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "center": [
+        30.26715,
+        -97.74306
+      ],
+      "bounds": {
+        "south": 30.14821,
+        "north": 30.38065,
+        "west": -97.884,
+        "east": -97.66325
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "f88d3f97-dd22-4cbc-8d17-1fc39b0cf370"
+    },
+    {
+      "id": "bird_us_app_bloomington",
+      "country": "US",
+      "provider": "bird",
+      "city": "Bloomington",
+      "region": "IN",
+      "timeZone": "America/Indiana/Indianapolis",
+      "center": [
+        39.16708,
+        -86.53424
+      ],
+      "bounds": {
+        "south": 39.1213,
+        "north": 39.22136,
+        "west": -86.59189,
+        "east": -86.47113
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "7ca35935-1f12-4f67-a83d-e1579da3652b"
+    },
+    {
+      "id": "bird_us_app_charlotte",
+      "country": "US",
+      "provider": "bird",
+      "city": "Charlotte",
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "center": [
+        35.22709,
+        -80.84313
+      ],
+      "bounds": {
+        "south": 35.13535,
+        "north": 35.35406,
+        "west": -80.92398,
+        "east": -80.69733
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "dd881fcd-5c53-4555-ade0-73bcaf012ab0"
+    },
+    {
+      "id": "bird_us_app_jacksonville",
+      "country": "US",
+      "provider": "bird",
+      "city": "Jacksonville",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        30.33218,
+        -81.65565
+      ],
+      "bounds": {
+        "south": 30.31116,
+        "north": 30.3397,
+        "west": -81.6832,
+        "east": -81.61913
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "cd24d948-382f-43de-9edd-5612db43d207"
+    },
+    {
+      "id": "bird_us_app_mankato",
+      "country": "US",
+      "provider": "bird",
+      "city": "Mankato",
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "center": [
+        44.14563,
+        -93.99913
+      ],
+      "bounds": {
+        "south": 44.13575,
+        "north": 44.15462,
+        "west": -94.0047,
+        "east": -93.97434
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "b96664dd-8003-4947-bb74-6b10e98af3a9"
+    },
+    {
+      "id": "bird_us_app_sacramento",
+      "country": "US",
+      "provider": "bird",
+      "city": "Sacramento",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        38.58157,
+        -121.4944
+      ],
+      "bounds": {
+        "south": 38.53491,
+        "north": 38.61566,
+        "west": -121.51999,
+        "east": -121.42284
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "74518038-d8f6-40b7-a40a-2a02124a5131"
+    },
+    {
+      "id": "bird_us_app_wilmington",
+      "country": "US",
+      "provider": "bird",
+      "city": "Wilmington",
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "center": [
+        34.22436,
+        -77.87104
+      ],
+      "bounds": {
+        "south": 34.21587,
+        "north": 34.23244,
+        "west": -77.88329,
+        "east": -77.85305
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "7953758a-b61b-4dff-869f-22a88dd17f62"
+    },
+    {
+      "id": "bird_us_app_yonkers",
+      "country": "US",
+      "provider": "bird",
+      "city": "Yonkers",
+      "region": "NY",
+      "timeZone": "America/New_York",
+      "center": [
+        40.93121,
+        -73.89875
+      ],
+      "bounds": {
+        "south": 40.90109,
+        "north": 40.99025,
+        "west": -73.9131,
+        "east": -73.80286
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "9e4343cd-bc33-40be-85f6-9f7f5f68b2f3"
+    },
+    {
       "id": "lime_us_tempe",
       "country": "US",
       "provider": "lime",

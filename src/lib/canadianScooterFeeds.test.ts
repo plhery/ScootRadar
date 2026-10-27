@@ -39,7 +39,7 @@ function serveBird(id: string, status: () => object) {
 describe('Canada', () => {
   it('names every town with its province, in that province\'s time zone', () => {
     const canadian = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'CA');
-    expect(canadian.filter(entry => !entry.limeAppMap).map(entry => entry.id).sort()).toEqual([
+    expect(canadian.filter(entry => !entry.limeAppMap && !entry.birdAppArea).map(entry => entry.id).sort()).toEqual([
       'bird_ca_calgary', 'bird_ca_edmonton', 'bird_ca_halifax', 'bird_ca_hamilton', 'bird_ca_leduc', 'bird_ca_ottawa',
       'bird_ca_vaughan', 'bird_ca_windsor', 'lime_ca_calgary', 'lime_ca_edmonton', 'lime_ca_kelowna', 'lime_ca_mississauga',
       'lime_ca_ottawa', 'lime_ca_vancouver', 'move_ca_new_brunswick',
@@ -50,23 +50,30 @@ describe('Canada', () => {
       'Ajax', 'Coquitlam', 'Laval', 'Montréal', 'Port Moody', 'Richmond', 'Vaughan', 'Blackfalds', 'Waterloo Region', 'Lacombe', 'Red Deer',
       'Regina', 'Saskatoon',
     ]);
-    // Saskatchewan keeps standard time all year.
+    // Bird's towns with no public feed: its rider map, each operating area swept whole, since 28 October 2026.
+    expect(canadian.filter(entry => entry.birdAppArea).map(entry => entry.city)).toEqual([
+      'Brampton', 'Cochrane', 'Cranbrook', 'Kamloops', 'Lethbridge', 'Medicine Hat', 'Mississauga', 'Okotoks', 'Oshawa', 'Penticton',
+      'Spruce Grove', 'St. Albert', 'Vernon',
+    ]);
+    // Saskatchewan keeps standard time all year, and Cranbrook, in the East Kootenay, Alberta's time.
     const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', QC: 'America/Toronto', NS: 'America/Halifax',
       NB: 'America/Moncton', SK: 'America/Regina' };
     for (const entry of canadian) {
       for (const area of serviceAreas(entry)) {
         const region = (area.region ?? entry.region) as keyof typeof zones;
-        expect(zones[region], `${entry.id} in ${area.city}`).toBe(area.timeZone ?? entry.timeZone);
+        const zone = area.city === 'Cranbrook' ? 'America/Edmonton' : zones[region];
+        expect(zone, `${entry.id} in ${area.city}`).toBe(area.timeZone ?? entry.timeZone);
       }
     }
     // Lime's Calgary and Edmonton feeds hold their neighbours' scooters too: each counts under its own town.
     expect(serviceAreas(system('lime_ca_calgary')).map(area => area.city)).toEqual(['Calgary', 'Airdrie']);
     expect(serviceAreas(system('lime_ca_edmonton')).map(area => area.city)).toEqual(['Edmonton', 'St. Albert', 'Beaumont']);
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA').map(entry => entry.city).sort()).toEqual([
-      'Airdrie, AB', 'Ajax, ON', 'Beaumont, AB', 'Blackfalds, AB', 'Calgary, AB', 'Coquitlam, BC', 'Edmonton, AB', 'Fredericton, NB',
-      'Halifax, NS', 'Hamilton, ON', 'Kelowna, BC', 'Lacombe, AB', 'Laval, QC', 'Leduc, AB', 'Mississauga, ON', 'Moncton, NB', 'Montréal, QC',
-      'Ottawa, ON', 'Port Moody, BC', 'Red Deer, AB', 'Regina, SK', 'Richmond, BC', 'Saint John, NB', 'Saskatoon, SK', 'St. Albert, AB',
-      'Vancouver, BC', 'Vaughan, ON', 'Waterloo Region, ON', 'Windsor, ON',
+      'Airdrie, AB', 'Ajax, ON', 'Beaumont, AB', 'Blackfalds, AB', 'Brampton, ON', 'Calgary, AB', 'Cochrane, AB', 'Coquitlam, BC',
+      'Cranbrook, BC', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Hamilton, ON', 'Kamloops, BC', 'Kelowna, BC', 'Lacombe, AB',
+      'Laval, QC', 'Leduc, AB', 'Lethbridge, AB', 'Medicine Hat, AB', 'Mississauga, ON', 'Moncton, NB', 'Montréal, QC', 'Okotoks, AB',
+      'Oshawa, ON', 'Ottawa, ON', 'Penticton, BC', 'Port Moody, BC', 'Red Deer, AB', 'Regina, SK', 'Richmond, BC', 'Saint John, NB',
+      'Saskatoon, SK', 'Spruce Grove, AB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Vernon, BC', 'Waterloo Region, ON', 'Windsor, ON',
     ]);
     expect(city('ca:on:Ottawa')).toMatchObject({ city: 'Ottawa, ON', country: 'CA', region: 'ON' });
   });
@@ -75,7 +82,7 @@ describe('Canada', () => {
     ['Ottawa', 'Ottawa, ON'], ['Ottawa ON', 'Ottawa, ON'], ['Ottawa, Ontario', 'Ottawa, ON'], ['Calgary Alberta', 'Calgary, AB'],
     ['Vancouver BC', 'Vancouver, BC'], ['Vancouver Colombie-Britannique', 'Vancouver, BC'], ['Halifax Nouvelle-Écosse', 'Halifax, NS'],
     ['Dartmouth', 'Halifax, NS'], ['Dartmouth NS', 'Halifax, NS'], ['Tecumseh', 'Windsor, ON'], ['St Albert', 'St. Albert, AB'],
-    ['Saint-Albert', 'St. Albert, AB'], ['St. Albert AB', 'St. Albert, AB'], ['Airdrie', 'Airdrie, AB'], ['Edmonton Canada', 'Edmonton, AB'],
+    ['Saint-Albert', 'St. Albert, AB'], ['St. Albert AB', 'St. Albert, AB'], ['Stony Plain', 'Spruce Grove, AB'], ['Airdrie', 'Airdrie, AB'], ['Edmonton Canada', 'Edmonton, AB'],
     ['Laval Québec', 'Laval, QC'], ['Parc Jean-Drapeau', 'Montréal, QC'], ['Île Sainte-Hélène', 'Montréal, QC'], ['Richmond BC', 'Richmond, BC'],
     // Lime's Waterloo Region zone covers its three cities.
     ['Kitchener', 'Waterloo Region, ON'], ['Waterloo', 'Waterloo Region, ON'], ['Cambridge ON', 'Waterloo Region, ON'],

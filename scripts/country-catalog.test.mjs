@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  binbinAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityFeeds, swiftCityPauses,
+  binbinAreasProblem, birdAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityFeeds, swiftCityPauses,
   swiftCountries, timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 import { limeGridGroups } from '../src/lib/limeGrid';
@@ -367,6 +367,25 @@ describe('the countries of data/countries.json', () => {
       .toBe('binbin_tr_a: its centre is outside the outline of BinBin\'s area 1');
     expect(binbinAreasProblem([], areas)).toBe('data/binbin-areas.json: no system sweeps 1');
     expect(binbinAreasProblem(catalogSystems(countries.countries, readCatalog), readJson('data/binbin-areas.json'))).toBeNull();
+  });
+
+  it('sweeps each Bird area for a Bird or Spin system, once a brand, within its bounds and around its centre', () => {
+    const ring = [[30, -97], [30.1, -97], [30.1, -96.9], [30, -96.9]];
+    const system = { id: 'bird_us_app_a', provider: 'bird', birdAppArea: 'x', center: [30.05, -96.95],
+      bounds: { south: 30, west: -97, north: 30.1, east: -96.9 } };
+    const areas = { areas: [{ id: 'x', title: 'A', rings: [ring] }] };
+    expect(birdAreasProblem([system, { ...system, id: 'bird_us_a', birdAppArea: undefined }], areas)).toBeNull();
+    expect(birdAreasProblem([system, { ...system, id: 'spin_us_app_a', provider: 'spin' }], areas)).toBeNull();
+    expect(birdAreasProblem([{ ...system, provider: 'lime' }], areas)).toBe('bird_us_app_a: only a Bird or Spin system names a birdAppArea');
+    expect(birdAreasProblem([{ ...system, birdAppArea: 'y' }], areas)).toBe('bird_us_app_a: data/bird-app-areas.json has no area y');
+    expect(birdAreasProblem([system, { ...system, id: 'bird_us_app_b' }], areas))
+      .toBe('bird_us_app_b: another system sweeps Bird\'s area x');
+    expect(birdAreasProblem([{ ...system, bounds: { ...system.bounds, north: 30.09 } }], areas))
+      .toBe('bird_us_app_a: the outline of Bird\'s area x reaches beyond its bounds');
+    expect(birdAreasProblem([{ ...system, center: [30.05, -96.8] }], areas))
+      .toBe('bird_us_app_a: its centre is outside the outline of Bird\'s area x');
+    expect(birdAreasProblem([], areas)).toBe('data/bird-app-areas.json: no system sweeps x');
+    expect(birdAreasProblem(catalogSystems(countries.countries, readCatalog), readJson('data/bird-app-areas.json'))).toBeNull();
   });
 
   it('keeps each system in the country of its catalog', () => {

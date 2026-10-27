@@ -32,6 +32,7 @@ import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { limeAccountRequests, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
+import { birdMapRequests, withBirdAppCollectors } from './birdApp';
 import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
 import { swingMapRequests, withSwingAppCollectors } from './swingApp';
@@ -43,9 +44,11 @@ import { skyssMapRequests, withSkyssAppCollectors } from './skyssApp';
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
   withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
-  // BinBin's sweeps start from where its scooters stood at the last one.
+  // BinBin's and Bird's sweeps start from where their scooters stood at the last one.
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
+  (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
+    withBirdAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
   withSkyssAppCollectors, withBoltAppCollectors,
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
@@ -116,9 +119,9 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
       binbinMapRequests.status + beamMapRequests.status + gcooMapRequests.status + kickgoingMapRequests.status + swingMapRequests.status +
-      alpacaMapRequests.status + dartMapRequests.status + skyssMapRequests.status + boltMapRequests.status,
+      alpacaMapRequests.status + dartMapRequests.status + skyssMapRequests.status + boltMapRequests.status + birdMapRequests.status,
     metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata +
-      boltMapRequests.metadata,
+      boltMapRequests.metadata + birdMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   limeAccountRequests,

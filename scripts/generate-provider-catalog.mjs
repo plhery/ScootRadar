@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { transform } from 'esbuild';
 import {
-  binbinAreasProblem, catalogSystems, coverageAreas, curfewZoneProblem, kotlinCountries, scooterCities, swiftCityFeeds, swiftCityPauses, swiftCountries,
+  binbinAreasProblem, birdAreasProblem, catalogSystems, coverageAreas, curfewZoneProblem, kotlinCountries, scooterCities, swiftCityFeeds, swiftCityPauses, swiftCountries,
   townOutlinesProblem,
   typescriptCatalogs, typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
@@ -588,6 +588,9 @@ if (outlineProblem) throw new Error(outlineProblem);
 // Read by server/binbinApp.ts as it is.
 const binbinProblem = binbinAreasProblem(regionalSystems, readJson('data/binbin-areas.json'));
 if (binbinProblem) throw new Error(binbinProblem);
+// Read by server/birdApp.ts as it is.
+const birdProblem = birdAreasProblem(regionalSystems, readJson('data/bird-app-areas.json'));
+if (birdProblem) throw new Error(birdProblem);
 // Written in every case: writing it checks the curfews and rule zones.
 const swift = swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftRuleZones() + swiftCountries(countries);
 if (androidDirectory) {

@@ -5,7 +5,8 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ORIGIN = 'https://api-bird.prod.birdapp.com';
-const BRAND = 'df76d602-dd1a-4ce4-a64f-2e5dd8c6f845';
+// Bird's, and Spin's, whose fleet Bird's app maps too (as in Phoenix and Columbus).
+const BRANDS = new Set(['df76d602-dd1a-4ce4-a64f-2e5dd8c6f845', '37f4f15f-d73b-4f1e-8f52-5de2782bd447']);
 const COOLDOWN_MS = 15 * 60_000;
 const CAP = 250;
 const CELL_CAP = 1000;
@@ -65,7 +66,7 @@ export function parseBirdMap(payload, requestedCells) {
   if (expected && payload.cell_ids.some(id => !expected.has(id))) throw new BirdUntrustedMapError();
   const ids = new Set();
   const vehicles = payload.birds.map(bird => {
-    if (!object(bird) || !uuid(bird.id) || ids.has(bird.id) || bird.brand_id !== BRAND ||
+    if (!object(bird) || !uuid(bird.id) || ids.has(bird.id) || !BRANDS.has(bird.brand_id) ||
       !['scooter', 'bicycle', 'moped'].includes(bird.vehicle_class) || typeof bird.captive !== 'boolean' ||
       typeof bird.area_key !== 'string' || !/^[\dA-F]{32}$/.test(bird.area_key)) throw new BirdUntrustedMapError();
     ids.add(bird.id);

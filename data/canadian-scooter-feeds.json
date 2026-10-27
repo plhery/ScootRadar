@@ -173,6 +173,272 @@
       ]
     },
     {
+      "id": "bird_ca_app_brampton",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Brampton",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.68505,
+        -79.75996
+      ],
+      "bounds": {
+        "south": 43.61752,
+        "north": 43.82161,
+        "west": -79.86607,
+        "east": -79.65081
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "674ea69f-cc3a-47d2-b22e-1c6de0ee2f57"
+    },
+    {
+      "id": "bird_ca_app_cochrane",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Cochrane",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        51.1894,
+        -114.4676
+      ],
+      "bounds": {
+        "south": 51.15385,
+        "north": 51.22063,
+        "west": -114.51991,
+        "east": -114.41933
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "e02643b3-04f5-4802-a779-7e1d903bf34f"
+    },
+    {
+      "id": "bird_ca_app_cranbrook",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Cranbrook",
+      "region": "BC",
+      "timeZone": "America/Edmonton",
+      "center": [
+        49.5097,
+        -115.7688
+      ],
+      "bounds": {
+        "south": 49.48504,
+        "north": 49.54757,
+        "west": -115.78931,
+        "east": -115.72808
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "7ef3864a-8c09-4835-b86b-f93e15b93390"
+    },
+    {
+      "id": "bird_ca_app_kamloops",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Kamloops",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "center": [
+        50.6745,
+        -120.3273
+      ],
+      "bounds": {
+        "south": 50.63093,
+        "north": 50.7818,
+        "west": -120.4318,
+        "east": -120.22117
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "922a90c2-82c5-4d7c-b39b-3067647f15b7"
+    },
+    {
+      "id": "bird_ca_app_lethbridge",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Lethbridge",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        49.6942,
+        -112.8328
+      ],
+      "bounds": {
+        "south": 49.64774,
+        "north": 49.7434,
+        "west": -112.9258,
+        "east": -112.77001
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "5fcc5ef4-1aa6-470a-98b9-fde41d1bd28a"
+    },
+    {
+      "id": "bird_ca_app_medicine_hat",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Medicine Hat",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        50.0405,
+        -110.6766
+      ],
+      "bounds": {
+        "south": 49.97395,
+        "north": 50.06958,
+        "west": -110.73035,
+        "east": -110.62192
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "e3d0e392-83c5-4f46-84fe-7b9ea9094c66"
+    },
+    {
+      "id": "bird_ca_app_mississauga",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Mississauga",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.5797,
+        -79.6556
+      ],
+      "bounds": {
+        "south": 43.48067,
+        "north": 43.73715,
+        "west": -79.80674,
+        "east": -79.53569
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "ff18e1ee-7b23-439f-94ee-54b3c0f6055d"
+    },
+    {
+      "id": "bird_ca_app_okotoks",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Okotoks",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        50.7256,
+        -113.9749
+      ],
+      "bounds": {
+        "south": 50.703,
+        "north": 50.7445,
+        "west": -114.00214,
+        "east": -113.92864
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "46071490-cdde-4573-810e-93ff5a0d2c03"
+    },
+    {
+      "id": "bird_ca_app_oshawa",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Oshawa",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.8975,
+        -78.8658
+      ],
+      "bounds": {
+        "south": 43.85042,
+        "north": 43.96663,
+        "west": -78.91829,
+        "east": -78.79867
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "f8e51758-3590-483c-b526-0634008bb3b2"
+    },
+    {
+      "id": "bird_ca_app_penticton",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Penticton",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "center": [
+        49.4991,
+        -119.5937
+      ],
+      "bounds": {
+        "south": 49.45096,
+        "north": 49.50655,
+        "west": -119.61634,
+        "east": -119.53717
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "ce2c32ac-e822-487d-8b79-a9dbe8d4b2a4"
+    },
+    {
+      "id": "bird_ca_app_spruce_grove",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Spruce Grove",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        53.545,
+        -113.9008
+      ],
+      "aliases": [
+        "Stony Plain"
+      ],
+      "bounds": {
+        "south": 53.50429,
+        "north": 53.57037,
+        "west": -114.02144,
+        "east": -113.85028
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "8a982f01-819a-44f2-a963-27765a185f61"
+    },
+    {
+      "id": "bird_ca_app_st_albert",
+      "country": "CA",
+      "provider": "bird",
+      "city": "St. Albert",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        53.6369,
+        -113.6255
+      ],
+      "aliases": [
+        "Saint-Albert"
+      ],
+      "bounds": {
+        "south": 53.60464,
+        "north": 53.67772,
+        "west": -113.67717,
+        "east": -113.56562
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "9cbebd00-a262-415f-b815-3fce98a028c3"
+    },
+    {
+      "id": "bird_ca_app_vernon",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Vernon",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "center": [
+        50.2671,
+        -119.272
+      ],
+      "bounds": {
+        "south": 50.21196,
+        "north": 50.29104,
+        "west": -119.39083,
+        "east": -119.23704
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "5216c16c-0827-4185-bf9f-799774656928"
+    },
+    {
       "id": "lime_ca_calgary",
       "country": "CA",
       "provider": "lime",

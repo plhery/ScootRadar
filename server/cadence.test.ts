@@ -6,6 +6,7 @@ import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../sr
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, joinCityOverviews, refreshedOverview, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { withBinbinAppCollectors } from './binbinApp';
+import { withBirdAppCollectors } from './birdApp';
 import { alwaysFastSources, cadenceFromEnv, ownIdleExpiries, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { feedState, type FeedCadence } from './feedStateLog';
 import { withGcooAppCollectors } from './gcooApp';
@@ -32,18 +33,18 @@ it('reads intervals in seconds and refuses nonsense', () => {
   expect(() => cadenceFromEnv({ SCOOTER_IDLE_INTERVAL_SECONDS: '30' })).toThrow('at least 60');
 });
 
-it('tells a feed collected less often on purpose, as a GCOO town every hour, as stopped only ten minutes after its interval', () => {
+it('tells a feed collected less often on purpose, as a GCOO town every hour or a Bird area once a day, as stopped only ten minutes after its interval', () => {
   const MINUTE = 60_000;
   const now = 1_800_000_000_000;
   // One town of each collector that sets its own interval, as the cache wraps them, and one feed of the default 20 minutes.
-  const ids = ['gcooAppMap', 'limeAppMap', 'binbinAppArea'].map(flag => {
+  const ids = ['gcooAppMap', 'limeAppMap', 'binbinAppArea', 'birdAppArea'].map(flag => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => (candidate as unknown as Record<string, unknown>)[flag]);
     if (!system) throw new Error(`no ${flag} system`);
     return `${regionalSource(system)}:${system.id}`;
   });
   const bare = [...ids, 'germany:dott_de_bonn'].map(id => ({ id, host: id }) as CollectableScooterFeed);
-  const feeds = withBinbinAppCollectors(withLimeAppCollectors(withGcooAppCollectors(bare, REGIONAL_SCOOTER_SYSTEMS),
-    REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS, () => undefined);
+  const feeds = withBirdAppCollectors(withBinbinAppCollectors(withLimeAppCollectors(withGcooAppCollectors(bare, REGIONAL_SCOOTER_SYSTEMS),
+    REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS, () => undefined), REGIONAL_SCOOTER_SYSTEMS, () => undefined);
   const cadence: FeedCadence = { fastSince: () => undefined, idleExpiryMs: 30 * MINUTE, idleExpiryMsForFeed: ownIdleExpiries(feeds) };
   const collected = (id: string, minutesAgo: number) => {
     const at = now - minutesAgo * MINUTE;

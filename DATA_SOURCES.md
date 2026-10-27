@@ -207,12 +207,12 @@ usable for at most fifteen minutes from their source timestamp, including when a
 refresh fails; missing timestamps and older data are rejected. The operators'
 app maps read in slow paced sweeps differ in three ways since 25 October 2026.
 Those of Whoosh, GCOO, ATOM and BinBin are collected every two hours while
-nobody looks, and Lime's many markets every three days. A sweep
+nobody looks, Bird's once a day, and Lime's many markets every three days. A sweep
 starts where the request looked and publishes each part of its area as it
 finishes it, so the map fills in as it goes. And since 26 October, any feed whose
 collection takes over three seconds, timed on each, is not waited for: while it
-is collected again, its positions up to three hours old, or three days for
-Lime's, stand faded where they were last seen, counted nowhere, until the sweep
+is collected again, its positions up to three hours old, a day for Bird's, or three
+days for Lime's, stand faded where they were last seen, counted nowhere, until the sweep
 reaches them. The national
 platform publishes Voi every eight to nine minutes, about ninety seconds after
 the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
@@ -911,7 +911,11 @@ come from its app's signed-out map, read as in South Korea (below). GCOO
 publishes no licence for it; the credits link to gcoo.io. Since 26 October
 2026, Lime's scooters in 58 towns where it publishes no feed, from Los Angeles
 and Austin to Milwaukee and Tampa, come from its rider map, signed in, as in
-Europe (see [the Lime catalog](docs/lime-app-map.md)). Fourteen towns ban renting at
+Europe (see [the Lime catalog](docs/lime-app-map.md)). Since 28 October 2026,
+Bird's scooters in eight towns where it publishes no feed, from Austin and
+Sacramento to Yonkers, come from its rider map, signed in, each operating area
+swept whole, one request every 30 seconds for all of them; Bird publishes no
+licence for it (see [Bird's rider map](docs/bird-app-map.md)). Fourteen towns ban renting at
 night, by their codes, permit rules or program pages, and South Lake Tahoe's
 code takes shared scooters off its streets from 1 November through 30 April,
 so the map pauses Lime's market there until 1 May. See the
@@ -937,7 +941,10 @@ council report and season page. Since 26 October 2026, Lime's scooters in
 13 towns where it publishes no feed, from Laval and Vaughan to Saskatoon and
 Waterloo Region, come from its rider map, signed in, as in Europe (see
 [the Lime catalog](docs/lime-app-map.md)); Red Deer's and Saskatoon's winter
-pauses come from their by-laws. See the
+pauses come from their by-laws. Since 28 October 2026, Bird's scooters in
+13 towns where it publishes no feed, from Lethbridge and Kamloops to
+Brampton and Mississauga, come from its rider map, signed in, as in the
+United States (see [Bird's rider map](docs/bird-app-map.md)). See the
 [coverage audit](docs/canadian-scooter-feeds.md) for the systems, the bounds,
 the empty feeds, the winter, the night rules, the parking, the gaps and the
 recheck command.

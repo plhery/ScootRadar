@@ -8,16 +8,19 @@ and from the addresses the operators use for their other towns: Bird
 (`mds.bolt.eu`). 215 systems were surveyed. Every feed URL is https, on the
 discovery's origin and under its directory. Two rider apps' maps add the
 towns that publish nothing: GCOO's, signed out, in three towns since 24
-October 2026 (see [GCOO](#gcoo)), and Lime's, signed in, in more since 26
-October 2026 (see [Lime supplement](#lime-supplement--26-october-2026)). No
-other account credentials are used. The catalog is
+October 2026 (see [GCOO](#gcoo)), Lime's, signed in, in more since 26
+October 2026 (see [Lime supplement](#lime-supplement--26-october-2026)), and
+Bird's, signed in, in eight since 28 October 2026 (see
+[Bird supplement](#bird-supplement--28-october-2026)). No other account
+credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 131 towns in 34 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 75 of Lime's (58 from its rider
-map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
-Los Angeles, Arlington and Alexandria, Virginia. In 34 of them, from Tempe and
+The map covers 136 towns in 34 states and the District: Washington, DC
+(Hopp, Veo and Lime), 32 towns of Bird's (8 from its rider map), 75 of
+Lime's (58 from its rider map), 39 more of Veo's, 29 of Spin's, Lyft's
+Chicago and Portland, and GCOO's Los Angeles, Arlington and Alexandria,
+Virginia. In 38 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Fourteen of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
@@ -143,6 +146,25 @@ department says Lime's and Bird's scooters could no longer be rented after
 16 May 2026, which leaves Veo. In St. Louis, Bird's feed held about 190
 scooters at the time. New Haven is a far zone of Lime's St. Louis region,
 about 90 km west of the city.
+
+## Bird supplement — 28 October 2026
+
+Bird publishes no feed for Austin, Bloomington, Indiana, Charlotte,
+Jacksonville, Mankato, Sacramento, Wilmington, North Carolina, or Yonkers, so
+its rider map, signed in, supplies them: each of Bird's operating areas there
+is swept whole, a request every 30 seconds for all of Bird's areas, and once a
+day while nobody looks ([Bird's rider app](bird-app-map.md)). On the evening
+of 27 October 2026, local time: Yonkers 811 scooters, a town of its own beside
+the Bronx, Charlotte 802 and Jacksonville 271, downtown, each beside Lime's,
+Bloomington 267, Sacramento 72, beside Lime's, Wilmington 87, all on UNC
+Wilmington's campus, as the city runs no scooter program (above), and
+Mankato 46, on Minnesota State University's, so each of those two towns
+stands at its campus on the map. Austin's area held 3,222 scooters, swept
+from 17:09 to 17:31 Central time, beside Lime's 3,282 the afternoon before.
+Indianapolis, swept the same way as a check, held 580 scooters, and Bird's
+public feed 586 inside the same outline, 582 of them within 50 m of one the
+sweep found. Spin's scooters, which Bird's app also shows, are left to
+Spin's public feeds.
 
 ## Washington, DC
 

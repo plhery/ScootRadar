@@ -12,8 +12,8 @@ of 11 and 16 minutes, and three more times from 21:23 to 21:33, five minutes
 apart, before the commit. Alberta is two hours behind, British Columbia
 three. Every feed URL is https, on the discovery's origin and under its
 directory. No account credentials or private
-rider APIs are used by those GBFS feeds. The later MoVe and Lime supplements
-below use their authorized rider maps. The catalog is
+rider APIs are used by those GBFS feeds. The later MoVe, Lime and Bird
+supplements below use their authorized rider maps. The catalog is
 [`canadian-scooter-feeds.json`](../data/canadian-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
@@ -55,6 +55,22 @@ Saskatoon's by-laws set their winters ([below](#winter)); no town sets
 hours. Lime's Toronto region holds only a dogfooding zone and a feature
 test, as Toronto bans shared scooters, and its Oshawa zone held no scooter
 near its centre.
+
+## Bird supplement — 28 October 2026
+
+Bird publishes no feed for thirteen of its Canadian towns, so its rider map,
+signed in, supplies them: each of Bird's operating areas is swept whole, a
+request every 30 seconds for all of Bird's areas, and once a day while
+nobody looks ([Bird's rider app](bird-app-map.md)). Swept on 27 October 2026,
+from the afternoon in British Columbia and Alberta to the evening in
+Ontario: Lethbridge (212 scooters), Kamloops (158), Brampton (135), Oshawa
+(117), Mississauga (103, beside Lime's), Vernon (101), Cochrane (69), Spruce
+Grove (50), Okotoks (47), Medicine Hat (44), St. Albert (38, beside Lime's),
+Penticton (26) and Cranbrook (19). Spruce Grove's area also covers Stony
+Plain, so the map lists it once, under Spruce Grove, and search finds it by
+Stony Plain too. Cranbrook keeps Alberta's time, as the East Kootenay does.
+Bird's areas in Airdrie, Chestermere and Pickering held no scooter, and its
+map showed no area in Laval, Red Deer or Regina.
 
 The original GBFS audit follows.
 
@@ -388,9 +404,9 @@ Bays show from zoom 16, as elsewhere.
 - **Toronto** bans shared scooters, and **Montréal** allows them only on
   Parc Jean-Drapeau's islands (Lime's, above); **London, ON** opted out of
   the provincial pilot.
-- **Bird** runs in Mississauga, Lethbridge, Red Deer, Kamloops, Vernon,
-  Brampton and Oshawa with no feed found; its Kelowna, Saskatoon, Ajax and
-  Surrey feeds were empty.
+- **Bird**'s Kelowna, Saskatoon, Ajax and Surrey feeds were empty. Its rider
+  map supplies thirteen towns with no feed since 28 October 2026 (above); its
+  Airdrie, Chestermere and Pickering areas held no scooter on 27 October.
 - **Neuron**'s twelve Canadian feeds answer 404 since Lime bought it; Lime has
   no public feed yet for its other former Neuron towns, which its rider map
   supplies since 27 October 2026 (Saskatoon, Regina, Red Deer, Lacombe,

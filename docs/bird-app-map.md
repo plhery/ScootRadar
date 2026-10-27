@@ -1,9 +1,134 @@
-# Bird rider map: research reader
+# Bird rider map
 
-Verified on 27 October 2026 with the user's signed-in Bird session. The user
-chose to finish the tested reader and findings, without adding live coverage.
-[The research client](../scripts/bird-app-map.mjs) is not imported by the
-production collector. No catalog, feed, production session or cadence changed.
+Since 28 October 2026 the Node cache reads Bird's rider map, signed in, in 21
+towns where Bird publishes no feed ([`server/birdApp.ts`](../server/birdApp.ts)):
+in the United States Austin, Bloomington, IN, Charlotte, Jacksonville,
+Mankato, Sacramento, Wilmington, NC, and Yonkers, and in Canada Brampton,
+Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat, Mississauga,
+Okotoks, Oshawa, Penticton, Spruce Grove (with Stony Plain), St. Albert and
+Vernon. The user asked for it on 27
+October 2026, after [the research reader](../scripts/bird-app-map.mjs) had
+shown the map's decoys could be told from real replies. Everything Bird
+publishes stays read from its public feeds at `mds.bird.co`.
+
+## What the cache reads
+
+Each market is one of Bird's operating areas, its `OPERATIONAL_AREA` outline
+from `GET /area/nearby`, stored in
+[`data/bird-app-areas.json`](../data/bird-app-areas.json) and named by its
+system's `birdAppArea`. `GET /bird/nearby` lists the 250 rentable vehicles
+nearest a point within 5 km, nearest first, so the cache sweeps an area as
+BinBin's ([`server/nearestSweep.ts`](../server/nearestSweep.ts)): until every
+point of its outline lies within a reply that listed every vehicle that near.
+A sweep is planned from the positions the last one published. Only the
+system's own brand is kept, inside the outline: Bird's app shows Spin's fleet
+too, which Spin's public feeds already supply. Each scooter keeps its battery
+charge and range. The map gives no position time, so the observation time is
+the sweep's start.
+
+Every reply is checked as the research reader checks it, and Spin's brand is
+accepted beside Bird's: the cells it answers for, and for each vehicle a UUID
+seen once, a known brand, a 32-character area key, a position within the
+radius, nearest first. A reply that fails any check stops the sweep and every
+Bird request for 15 minutes; the area keeps its last sweep under the usual
+expiry rules. HTTP 403 or 429 holds requests for at least as long, or for
+the `Retry-After` Bird asks, up to six hours.
+
+## Pace and budget
+
+One client serves every area: one request every 30 seconds, 120 an hour at
+most. On 27 October 2026 the map made up its scooters twice, both times after
+about 200 requests: in eleven minutes 2.5 to 3 seconds apart, and in 23
+minutes six seconds apart (20:52 and 21:48 UTC). Its limit counts requests
+over some period, not their pace, and it is not published; 120 an hour is
+about half what it took. An area nobody looks at is swept once a day
+(`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
+ten minutes after a day without a sweep. A request keeps an area watched for
+three minutes, and a watched area is swept again as soon as its sweep ends.
+The 21 areas took 160 requests on 27 October, so a day's round of them all
+takes about 80 of the client's 1,440 minutes.
+While it is, its last positions, up to a day old, stand faded. A starting
+cache waits two minutes, while the cache it replaces may still be sweeping.
+
+Production and research share the account's limit. Once the cache holds the
+session, run no Bird research on that account.
+
+| Area | Scooters | Requests | Time | Swept |
+| --- | ---: | ---: | ---: | --- |
+| Indianapolis (check against the public feed) | 580 | 21 | 121 s | 21:41 UTC |
+| Yonkers | 811 | 13 | 73 s | 21:44 UTC |
+| Jacksonville | 271 | 6 | 36 s | 21:45 UTC |
+| Charlotte | 802 | 20 | 120 s | 21:46 UTC |
+| Austin | 3,222 | 46 | 1,351 s | 22:09 UTC |
+| Wilmington, NC (UNC Wilmington) | 87 | 1 | 0 s | 22:53 UTC |
+| Mankato (Minnesota State University) | 46 | 1 | 30 s | 22:53 UTC |
+| Okotoks | 47 | 1 | 30 s | 22:54 UTC |
+| Cranbrook | 19 | 1 | 30 s | 22:54 UTC |
+| Penticton | 26 | 1 | 30 s | 22:55 UTC |
+| St. Albert | 38 | 4 | 120 s | 22:55 UTC |
+| Spruce Grove and Stony Plain | 50 | 3 | 90 s | 22:57 UTC |
+| Medicine Hat | 44 | 4 | 120 s | 22:59 UTC |
+| Cochrane | 69 | 4 | 120 s | 23:01 UTC |
+| Oshawa | 117 | 4 | 120 s | 23:03 UTC |
+| Vernon | 101 | 4 | 120 s | 23:05 UTC |
+| Sacramento | 72 | 4 | 120 s | 23:07 UTC |
+| Lethbridge | 212 | 4 | 120 s | 23:09 UTC |
+| Kamloops | 158 | 7 | 210 s | 23:11 UTC |
+| Bloomington, IN | 267 | 4 | 120 s | 23:14 UTC |
+| Brampton | 135 | 11 | 300 s | 23:17 UTC |
+| Mississauga | 103 | 17 | 510 s | 23:22 UTC |
+
+These were swept with the production code on 27 October 2026, the first four a
+request every six seconds, the others at the production pace after Bird's map
+had answered real scooters again at 22:04 UTC: 165 requests in 87 minutes
+from then, the town search below included, and every reply checked. In Indianapolis, which Bird also publishes, its public feed
+listed 586 available scooters inside the same outline two minutes later; 582
+of them stood within 50 m of one the sweep found, 568 within 10 m. Only one
+scooter of Bird's public New York feed stood inside Yonkers' outline.
+
+## Session
+
+The cache reads mode-0600 `/data/bird-session.json`, owned by its Node UID
+(1000); `BIRD_SESSION_PATH` overrides the path for local checks. Its format:
+
+```json
+{"version":1,"deviceId":"<app device UUID>","accessToken":"<JWT>","refreshToken":"<JWT>"}
+```
+
+Keep it in that private volume, never in Git, catalogs, build variables, logs
+or fixtures. An access token lasts a day; an hour before it expires the cache
+renews it with `POST https://api-auth.prod.birdapp.com/api/v1/auth/refresh/token`
+and its refresh token, which lasts about six months, and saves the result
+atomically, unless a new login was seeded meanwhile. Seed a new login before
+the refresh token expires. A missing or broken session fails every Bird feed
+with "Bird session credentials are missing or unreadable".
+
+## Finding the markets
+
+On 27 October 2026, `GET /area/nearby` within 25 km of US and Canadian towns,
+largest first, listed each town's operating areas, and a nearby read at each
+new area's centre counted its scooters. The towns already in Bird's or Spin's
+public feeds were left aside: Los Angeles, the Bronx and Queens, Dallas, San
+Antonio, Phoenix (Spin's), Columbus (Spin's), San Francisco (Spin's),
+Indianapolis, Calgary, Edmonton and Ottawa. Areas with `hide_birds`, as
+Ottawa's "Collection Nest" warehouses, and areas a few metres wide, as
+Indianapolis' fleet managers' homes, are no markets. Toronto, Montréal,
+Houston, San Jose, Chula Vista and Seattle had operating areas without a
+scooter near their centres; Seattle revoked Bird's permit in March 2026.
+That evening, from 22:32 to 22:53 UTC, the same search, an area read every 30
+seconds and a scooter read within 5 km of each new area's centre, went
+through 25 towns where Bird was said to run without a feed: the Canadian
+towns of [Coverage gaps](coverage-gaps.md) and the American ones a search
+of the web had named. Fifteen had an operating area with scooters, all in the
+table above with Brampton and Mississauga, found by the first search. Airdrie
+and Chestermere had areas but no scooter, nor had one in Pickering, and Laval, Red Deer, Regina, Springfield, MO, Pocatello, Athens,
+OH, Abilene and Amarillo with Canyon no area at all. Oklahoma City's area,
+found by the first search, held no scooter within 3 km of its centre.
+Wilmington's and Mankato's areas are their universities' campuses, so each
+town's centre on the map is its campus.
+
+[`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
+the stored outlines, a request per area, with a private session.
 
 ## The earlier rejection was too strong
 

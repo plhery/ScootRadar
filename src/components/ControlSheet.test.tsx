@@ -448,6 +448,7 @@ describe('ControlSheet settings', () => {
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
       'CA: MoVe rider map',
+      'US/CA: Bird map',
       'NZ: Flamingo · CC BY 4.0',
       'JP: LUUP map',
       'BR: IBGE boundaries',

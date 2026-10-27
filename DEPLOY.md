@@ -529,6 +529,17 @@ keeps what failed sweeps saw for the next.
 HTTP 429 stops every BinBin request for its `Retry-After`. See [pace and
 failures](docs/binbin-app-map.md#pace-and-failures).
 
+Bird's rider map reads mode-0600 `/data/bird-session.json`, owned by Node UID
+1000 (`BIRD_SESSION_PATH` overrides it): the app's device id and a rider's
+access and refresh tokens, never in Git or build variables. The access token
+is renewed a day at a time and saved atomically in the same file. Every Bird
+area shares one request every 30 seconds, 120 an hour, about half the count
+after which Bird's map made up its scooters on 27 October 2026; a made-up or
+refused reply holds every Bird request for 15 minutes. An idle area is swept
+once a day, by day in its town. Production and research share the account's
+limit: run no Bird research on it while the cache holds it. See [the session
+format and the budget](docs/bird-app-map.md).
+
 Swing's Korean app map reads `SWING_TOTP_SECRET`, the Base32 key of the app's
 one-time code, from a private, runtime-only Coolify environment secret on the
 Node cache. It is never a Worker or build variable, and never in Git: the
@@ -541,5 +552,5 @@ Skyss's map, which shows Ryde's Bergen scooters, needs none either
 A GCOO town nobody looks at is collected every two hours (`GCOO_IDLE_INTERVAL_MS`),
 not every 20 minutes, and expires after two hours and ten minutes without one: a
 feed that sets its own idle interval, as GCOO, Alpaca, DART, Skyss, ATOM, Whoosh and BinBin do
-(`APP_MAP_IDLE_INTERVAL_MS`) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
+(`APP_MAP_IDLE_INTERVAL_MS`), Bird (`BIRD_IDLE_INTERVAL_MS`, a day) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
 ten minutes after it, read from the feed itself.
