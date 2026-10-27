@@ -47,7 +47,7 @@ class AddressSearchModelTest {
     @Test
     fun searchStartsAtTwoCharactersAndReturnChoosesTheFirstPlace() = runTest {
         val api = StubAddressSearchClient(answers = listOf(Answer.Places(listOf(zurich, lungern))))
-        val model = SwissAddressSearchModel(scope = backgroundScope, api = api, debounce = Duration.ZERO)
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO)
         assertEquals(Idle, model.status.value)
         assertNull(model.firstResult)
 
@@ -74,7 +74,7 @@ class AddressSearchModelTest {
     @Test
     fun nothingFoundAndAFailedSearchAreToldApartAndTryAgainSearchesAgain() = runTest {
         val api = StubAddressSearchClient(answers = listOf(Answer.Places(emptyList()), Answer.Failure, Answer.Places(listOf(zurich))))
-        val model = SwissAddressSearchModel(scope = backgroundScope, api = api, debounce = Duration.ZERO)
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO)
 
         model.query = "Xyzzy"
         var settled = waitUntil { model.status.value != Searching }
@@ -102,7 +102,7 @@ class AddressSearchModelTest {
         val clock = testScheduler.timeSource
         val api = RateLimitedAddressSearchClient(retryAfter = 3.seconds, places = listOf(zurich), clock = clock)
         val model = SwissAddressSearchModel(
-            scope = backgroundScope, api = api, debounce = Duration.ZERO, rateLimitPause = 20.milliseconds, clock = clock,
+            scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO, rateLimitPause = 20.milliseconds, clock = clock,
         )
 
         // Refused, the search waits.
@@ -132,7 +132,7 @@ class AddressSearchModelTest {
         val clock = testScheduler.timeSource
         val api = RateLimitedAddressSearchClient(retryAfter = 1.seconds, places = listOf(zurich), clock = clock)
         val model = SwissAddressSearchModel(
-            scope = backgroundScope, api = api, debounce = Duration.ZERO, rateLimitPause = 20.milliseconds, clock = clock,
+            scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO, rateLimitPause = 20.milliseconds, clock = clock,
         )
 
         // Refused, the search waits for the moment the server named.
@@ -162,7 +162,7 @@ class AddressSearchModelTest {
     @Test
     fun clearingTheFieldBringsTheSuggestionsBackAndDropsALateAnswer() = runTest {
         val api = StubAddressSearchClient(answers = listOf(Answer.Places(listOf(zurich))), delay = 60.milliseconds)
-        val model = SwissAddressSearchModel(scope = backgroundScope, api = api, debounce = Duration.ZERO)
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO)
 
         model.query = "Paradeplatz"
         assertEquals(Searching, model.status.value)
@@ -179,7 +179,7 @@ class AddressSearchModelTest {
     @Test
     fun everySearchAsksForPlacesInTheLanguageOnScreen() = runTest {
         val api = StubAddressSearchClient(answers = listOf(Answer.Failure, Answer.Places(listOf(zurich)), Answer.Places(listOf(lungern))))
-        val model = SwissAddressSearchModel(scope = backgroundScope, api = api, debounce = Duration.ZERO, language = "fr")
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO, language = "fr")
 
         model.query = "Paradeplatz"
         var settled = waitUntil { model.status.value != Searching }
@@ -198,7 +198,7 @@ class AddressSearchModelTest {
     @Test
     fun everySearchSendsTheMapCentreItIsGiven() = runTest {
         val api = StubAddressSearchClient(answers = listOf(Answer.Places(listOf(zurich)), Answer.Places(listOf(zurich))))
-        val model = SwissAddressSearchModel(scope = backgroundScope, api = api, debounce = Duration.ZERO)
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO)
 
         model.query = "Paradeplatz"
         var settled = waitUntil { model.status.value != Searching }
@@ -233,7 +233,7 @@ class AddressSearchModelTest {
         val shownIn = ScooterLanguage.atLaunch.rawValue
         assertTrue(shownIn, shownIn in listOf("en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"))
         val api = StubAddressSearchClient(answers = listOf(Answer.Places(listOf(zurich)), Answer.Places(listOf(zurich))))
-        val model = SwissAddressSearchModel(scope = backgroundScope, api = api, debounce = Duration.ZERO)
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO)
         model.query = "Paradeplatz"
         var settled = waitUntil { model.status.value != Searching }
         assertTrue(settled)

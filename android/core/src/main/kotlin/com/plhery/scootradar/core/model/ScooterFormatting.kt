@@ -153,6 +153,23 @@ internal fun swiftMax(x: Double, y: Double): Double = if (y >= x) y else x
 /** Swift's min(x, y), which is y when y < x and x otherwise: min(1, .nan) is 1. */
 internal fun swiftMin(x: Double, y: Double): Double = if (y < x) y else x
 
+private val swiftDecimal = Regex("""[+-]?(?:[0-9]+\.?[0-9]*|\.[0-9]+)(?:[eE][+-]?[0-9]+)?""")
+private val swiftHexadecimal = Regex("""([+-]?0x(?:[0-9a-fA-F]+\.?[0-9a-fA-F]*|\.[0-9a-fA-F]+))([pP][+-]?[0-9]+)?""")
+private val swiftInfinity = Regex("""(?i)([+-]?)inf(?:inity)?""")
+private val swiftNaN = Regex("""(?i:[+-]?s?nan)(?:\((?:[0-9]*|0x[0-9a-fA-F]*)\))?""")
+
+/**
+ * Swift's Double(String): a decimal or hexadecimal number ("0x1.8p1", "0x10", but not "0X10"), "inf" or
+ * "infinity" and "nan" in any case, with no space around them; null for anything else. Too large is infinite.
+ */
+internal fun swiftDouble(text: String): Double? = when {
+    swiftDecimal.matches(text) -> text.toDouble()
+    // The JVM reads a hexadecimal number only with its exponent.
+    else -> swiftHexadecimal.matchEntire(text)?.destructured?.let { (number, exponent) -> (number + exponent.ifEmpty { "p0" }).toDouble() }
+        ?: swiftInfinity.matchEntire(text)?.let { if (it.groupValues[1] == "-") Double.NEGATIVE_INFINITY else Double.POSITIVE_INFINITY }
+        ?: if (swiftNaN.matches(text)) Double.NaN else null
+}
+
 /** Double.rounded(): to the nearest whole number, halves away from zero. */
 internal fun Double.roundedAwayFromZero(): Double =
     if (isFinite()) BigDecimal(this).setScale(0, RoundingMode.HALF_UP).toDouble() else this

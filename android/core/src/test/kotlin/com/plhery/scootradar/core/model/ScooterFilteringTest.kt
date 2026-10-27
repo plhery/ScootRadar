@@ -179,6 +179,25 @@ class ScooterFilteringTest {
     }
 
     @Test
+    fun aFoldPastAnEdgeOfTheMapLeavesTheMapAsItWas() {
+        fun visible(rect: ScreenRect, fold: ScreenRect, side: ScooterMapCameraPolicy.FoldSide) =
+            ScooterMapCameraPolicy.visibleRect(rect, safeTop = 59.0, beside = fold, on = side)
+
+        val phone = ScreenRect(x = 0.0, y = 100.0, width = 400.0, height = 600.0)
+        // Across the map, above the safe area's top: 59 points from the fold down to that top.
+        assertEquals(phone, visible(phone, ScreenRect(0.0, 0.0, 400.0, 0.0), ScooterMapCameraPolicy.FoldSide.Above))
+        // Down the map, right of it and left of it.
+        assertEquals(phone, visible(phone, ScreenRect(450.0, 0.0, 10.0, 800.0), ScooterMapCameraPolicy.FoldSide.Right))
+        val shifted = ScreenRect(x = 100.0, y = 0.0, width = 500.0, height = 800.0)
+        assertEquals(shifted, visible(shifted, ScreenRect(20.0, 0.0, 10.0, 800.0), ScooterMapCameraPolicy.FoldSide.Left))
+        // A fold inside the map still leaves the side past it.
+        assertEquals(
+            ScreenRect(x = 410.0, y = 0.0, width = 190.0, height = 800.0),
+            visible(shifted, ScreenRect(400.0, 0.0, 10.0, 800.0), ScooterMapCameraPolicy.FoldSide.Right),
+        )
+    }
+
+    @Test
     fun spansChosenOnAPhoneAreUnchangedOnEveryPhone() {
         // Every iPhone's shorter side, the widest the Pro Max's.
         for (width in listOf(320.0, 375.0, 390.0, 393.0, 402.0, 414.0, 428.0, 430.0, 440.0)) {

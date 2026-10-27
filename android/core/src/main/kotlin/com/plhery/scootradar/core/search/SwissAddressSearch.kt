@@ -71,6 +71,8 @@ sealed interface SwissAddressSearchStatus {
 class SwissAddressSearchModel(
     /** Where the searches and their waits run: the screen's, on the main thread. */
     private val scope: CoroutineScope,
+    /** Where searches are counted: the app's, as on the iPhone, which always counts them; null in tests. */
+    private val analytics: ScooterAnalytics?,
     private val api: AddressSearchAPIClient = AddressSearchAPI(),
     private val debounce: Duration = 350.milliseconds,
     /** The wait after a search refused as one too many, when the server does not say how long. */
@@ -82,8 +84,6 @@ class SwissAddressSearchModel(
     private val language: String? = null,
     /** What the search's waits are timed by: the device's clock in the app, the scope's virtual time in tests. */
     private val clock: TimeSource.WithComparableMarks = TimeSource.Monotonic,
-    /** Where searches are counted; the app's, and none in tests. */
-    private val analytics: ScooterAnalytics? = null,
 ) {
     private val _query = MutableStateFlow("")
 

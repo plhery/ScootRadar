@@ -6,6 +6,7 @@ import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterStartPlace
 import com.plhery.scootradar.core.model.swiftDescription
+import com.plhery.scootradar.core.model.swiftDouble
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -214,7 +215,7 @@ class AddressSearchAPI(
         if (response.code == 429) {
             val seconds = response.headers["Retry-After"]?.let(::swiftDouble)
             throw AddressSearchAPIError.RateLimited(
-                // Swift's Duration.seconds traps on an infinite wait ("1e400"); here it is no wait.
+                // Swift's Duration.seconds traps on an infinite wait ("1e400", "inf"); here it is no wait.
                 retryAfter = seconds?.let { if (it >= 0 && it.isFinite()) it.seconds else null },
             )
         }
@@ -229,13 +230,6 @@ class AddressSearchAPI(
         } catch (error: IllegalArgumentException) {
             throw AddressSearchAPIError.InvalidResponse()
         }
-    }
-
-    private companion object {
-        private val decimal = Regex("""[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?""")
-
-        /** Double(String) for a number written in decimals; null for anything else. */
-        fun swiftDouble(text: String): Double? = if (decimal.matches(text)) text.toDouble() else null
     }
 }
 

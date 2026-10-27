@@ -17,7 +17,8 @@ object ScooterMapScalePolicy {
 
 /**
  * What the camera's rules read from the map view: its bounds, the coordinate it centres on, and where it
- * shows a place at its camera, tilted and turned as it is.
+ * shows a place at its camera, tilted and turned as it is. Its points are MapKit's: dp, which is MapLibre's
+ * pixels over the screen's density, and every rule of 44 or 1 point counts in them.
  */
 interface ScooterMapProjection {
     /** The map view's own bounds, in points. */
@@ -26,13 +27,20 @@ interface ScooterMapProjection {
     /** The coordinate the map centres on, shown in the middle of the map's margins. */
     val centerCoordinate: GeoPoint
 
-    /** The part of the flat map the view shows, without its turn. */
+    /**
+     * The part of the flat map the view shows, as MapKit gives it: the box, north up, around the view's
+     * corners. Turned 90°, a phone shows a box wider than tall, with as many map points across as it had
+     * down; turned 45°, a square.
+     */
     val visibleMapRect: MapRect
 
     /** Where the map shows a coordinate, in its own points. */
     fun point(coordinate: GeoPoint): ScreenPoint
 
-    /** The coordinate the map shows at a point of its own. */
+    /**
+     * The coordinate the map shows at a point of its own, its longitude from -180 to 180 as MapKit gives it
+     * past the antimeridian: MapLibre's is wrapped first.
+     */
     fun coordinate(point: ScreenPoint): GeoPoint
 }
 
@@ -169,7 +177,9 @@ object ScooterMapCameraPolicy {
                 ScreenRect(visible.minX, visible.minY, maxX - visible.minX, abs(visible.height))
             }
         }
-        return if (abs(rect.width) >= 44 && abs(rect.height) >= 44) rect else visible
+        // A side that ends before it starts, past an edge of the map, leaves no room either. The iPhone reads its
+        // size alone and keeps it (STATE.md, small fixes noticed).
+        return if (rect.width >= 44 && rect.height >= 44) rect else visible
     }
 
     /**
@@ -214,11 +224,6 @@ object ScooterScreenshotCamera {
     }
 
     fun drawsTerrain(defaults: ScooterDefaults): Boolean = defaults.string(forKey = "ScreenshotTerrain") == "realistic"
-
-    private val decimal = Regex("""[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?""")
-
-    /** Double(String) for a number written in decimals; null for anything else. */
-    private fun swiftDouble(text: String): Double? = if (decimal.matches(text)) text.toDouble() else null
 }
 
 /** The map coordinator's rules for which touches and selections it keeps. */

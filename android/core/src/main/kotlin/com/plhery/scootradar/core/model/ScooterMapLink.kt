@@ -115,22 +115,8 @@ data class ScooterMapLink(
         private fun isWhitespace(character: Char): Boolean =
             character == '\t' || character.category == CharCategory.SPACE_SEPARATOR
 
-        private val decimal = Regex("[+-]?([0-9]+\\.?[0-9]*|\\.[0-9]+)([eE][+-]?[0-9]+)?")
-        private val hexadecimal = Regex("([+-]?0[xX](?:[0-9a-fA-F]+\\.?[0-9a-fA-F]*|\\.[0-9a-fA-F]+))([pP][+-]?[0-9]+)?")
-
-        /**
-         * Double(text) when it is finite. Swift reads decimal and hexadecimal numbers ("0x10" too), with no
-         * space around them; its "nan" and "inf" are never finite.
-         */
-        private fun finiteNumber(text: String): Double? {
-            val value = if (decimal.matches(text)) {
-                text.toDouble()
-            } else {
-                // The JVM reads a hexadecimal number only with its exponent.
-                hexadecimal.matchEntire(text)?.destructured?.let { (number, exponent) -> (number + exponent.ifEmpty { "p0" }).toDouble() }
-            }
-            return value?.takeIf { it.isFinite() }
-        }
+        /** Double(text) when it is finite: "0x10" is 16, "inf" and "nan" are none. */
+        private fun finiteNumber(text: String): Double? = swiftDouble(text)?.takeIf { it.isFinite() }
 
         /**
          * URLComponents.queryItems: each item's name and value, percent-decoded, "+" kept as it is; no value
