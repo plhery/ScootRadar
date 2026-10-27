@@ -98,15 +98,23 @@ class ScooterMapController(
     internal val api: ScooterAPIClient,
     internal val locationManager: ScooterLocationManager,
     private val defaults: ScooterDefaults,
-    /** Where the controller's requests, timers and waits run: the screen's, on the main thread. */
+    /**
+     * Where the controller's requests, timers and waits run: the screen's, on the main thread. Its dispatcher is
+     * Dispatchers.Main, not Main.immediate, so that work starts after the call that asked for it returns, as a
+     * Swift Task does.
+     */
     internal val scope: CoroutineScope,
     internal val directions: WalkingDirectionsClient,
     internal val openInMaps: (ScooterWalkTarget) -> Unit,
     private val locationTimeout: Duration = 5.seconds,
     private val refreshPolicy: ScooterRefreshPolicy = ScooterRefreshPolicy.standard,
     now: () -> Instant = Instant::now,
-    /** The phone's languages, most preferred first, as BCP 47 tags. */
-    private val phoneLanguages: () -> List<String> = { listOf(Locale.getDefault().toLanguageTag()) },
+    /**
+     * The phone's languages, most preferred first, as BCP 47 tags: the system's, as the iPhone's AppleLanguages
+     * of any application are, not the app's. A language chosen for the app becomes Locale.getDefault() and
+     * LocaleList.getDefault(), so the app reads LocaleManagerCompat.getSystemLocales.
+     */
+    private val phoneLanguages: () -> List<String>,
     /** What the language followed as the app started: a language chosen for the app, or the phone's. */
     languageAtLaunch: ScooterLanguageChoice = ScooterLanguageChoice.Automatic,
     /**

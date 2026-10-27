@@ -22,7 +22,7 @@ object ScooterStartPlace {
      */
     fun city(forTimeZone: String, cities: List<ScooterCity> = ScooterCityCatalog.cities): ScooterCity? {
         val zone = zone(forTimeZone) ?: return null
-        val distances = cities.map { city -> city to ScooterCityCatalog.distanceMeters(zone.point, city.center) }
+        val distances = cities.map { city -> city to zone.point.distance(to = city.center) }
         distances.filter { it.first.countryCode == zone.countryCode }.minByOrNull { it.second }?.let { home ->
             return home.first
         }

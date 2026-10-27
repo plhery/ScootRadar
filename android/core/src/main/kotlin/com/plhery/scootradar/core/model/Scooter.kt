@@ -29,8 +29,8 @@ data class Scooter(
 
     val batteryLevel: ScooterBatteryLevel? get() = battery?.let(ScooterBatteryLevel::of)
 
-    /** In metres, along the great circle the web measures (haversineM), where the iPhone's CLLocation follows the ellipsoid. */
-    fun distance(from: GeoPoint): Double = ScooterCityCatalog.distanceMeters(from, coordinate)
+    /** In metres, along the ellipsoid as CLLocation measures it. */
+    fun distance(from: GeoPoint): Double = from.distance(to = coordinate)
 
     fun formattedDistance(from: GeoPoint): String = formattedLength(distance(from))
 
