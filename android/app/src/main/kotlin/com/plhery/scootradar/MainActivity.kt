@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.plhery.scootradar.app.LaunchArgumentDefaults
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
+import com.plhery.scootradar.map.ScooterMap
 import com.plhery.scootradar.ui.ScooterMapScreen
 
 /**
@@ -40,7 +41,10 @@ class MainActivity : AppCompatActivity() {
         (application as ScooterApplication).container.languages.launched(resources.configuration)
         lifecycle.addObserver(model)
         setContent {
-            ScooterMapScreen(controller = model.controller, map = {})
+            ScooterMapScreen(
+                controller = model.controller,
+                map = { ScooterMap(controller = model.controller, start = model.start, memory = model.camera) },
+            )
         }
     }
 

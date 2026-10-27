@@ -8,6 +8,8 @@ import com.plhery.scootradar.core.map.ScooterLocationManager
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterMapStart
+import com.plhery.scootradar.map.MapCameraMemory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -30,6 +32,12 @@ class ScooterMapViewModel(
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private val analytics = container.analytics
+
+    /** Where the map opens, by the phone's time zone. */
+    val start: ScooterMapStart = container.start
+
+    /** The camera a recreated activity opens on. */
+    val camera = MapCameraMemory()
 
     val controller = ScooterMapController(
         api = container.api,
