@@ -3,29 +3,68 @@
 Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
 6.1.0, build 718. APK signatures match the publisher's
 [app-link association](https://www.ryde-technology.com/.well-known/assetlinks.json).
-No authenticated map retrieval, collector, catalog addition or deployment
-has been completed.
+The user subsequently signed in with Apple on an iPhone and on this Mac.
+The official Mac-compatible iPhone app opens its map and has a successful
+authenticated map response in its local HTTP cache. Independent response
+decryption, fresh automated retrieval, collection and deployment remain
+unverified.
 
 ## Current status and how to resume
 
 Deferred at the user's request on 24 October 2026 and resumed at their
 request on 27 October. The emulator is still rejected before phone
 verification. Request signing has been reproduced, but a working rider
-session and authenticated response decryption remain unverified. The user
-can test a physical iPhone and may also have access to an Android phone.
+session could not be obtained there. The user completed Apple sign-in on a
+physical iPhone and reported that its map opens. They then installed the
+official app on this Apple silicon Mac and completed Apple sign-in there;
+its signed-in map was observed through native UI automation.
 No additional SMS was requested during the 27 October recheck.
 
-Resume with the official app on a physical Android phone that meets Ryde's
-device-integrity requirements, using a number available at that time. First
-confirm that login reaches code entry and completes. Then verify read-only
-map retrieval, response decryption and session renewal before considering a
-collector. A successful phone login alone does not establish that its session
-can be used by a server.
+Continue with the signed-in Mac app and its own Ryde keychain entries.
+Verify fresh read-only map retrieval, response decryption and session renewal
+before considering a collector. A successful app login alone does not
+establish that its session can be used by a server.
 
 The `ScootRadar_Ryde_Play` AVD is retained for reference. The fresh verified
 APK, decompiled sources and private diagnostics are under
 `~/.cache/scootradar/rider-auth/ryde/`, outside Git. Bolt's and Bird's saved
 rider sessions are separate.
+
+## Apple sign-in and the Mac-compatible iPhone app
+
+[Ryde's App Store listing](https://apps.apple.com/no/app/ryde-always-nearby/id1495605028)
+supports Apple silicon Macs. The installed official app is
+`com.ryde.NewRyde` 6.1.0, build 260983. This is the App Store iPhone app
+running directly on macOS, rather than an iOS Simulator build.
+
+A private snapshot of the app's HTTP cache contains
+`POST https://api.ryde.vip/appRyde/getNearScootersNew`, HTTP 200 and JSON
+status 200. The form contains `token`, `cityId`, `iotLa`, `iotLo`,
+`nearRadius`, `userDevice`, `timestamp`, `timeSign` and `ekt`. Its headers
+include `Authorization: DPoP …`, an ES256 `DPoP` JWT and
+`Ryde-API-Security-Version: 2`. The proof carries `ath`, `htm`, `htu`,
+`iat` and `jti`. The response's `key` is an ECIES envelope with
+`alg: ECDH-ES+A256GCM`, `epk`, `iv`, `data` and `ekt`.
+The app log records successful decryption of `key`.
+
+The initial map was around Zürich, outside the investigated Ryde markets;
+this cached successful response does not establish a nonempty fleet in a
+missing city or a fresh independent retrieval. Replaying its older proof
+from this Mac returned HTTP 403 / `DPOP_PROOF_INVALID`; removing the proof
+returned HTTP 403 / `DPOP_REQUIRED`. The first test does not isolate proof
+expiry from replay rejection. These tests establish live proof enforcement
+for this session, rather than merely the presence of client code.
+
+Keychain Access exposes two Ryde application-password entries under the
+app's own service: `Ryde.apiSecurity.dpopSigningKey.production.v1` and
+`Ryde.apiSecurity.eciesKeyAgreementKey.production.v1`. Their contents and
+off-device usability remain unverified. Do not apply the Android
+non-exportable-key conclusion to these iOS entries. Local macOS
+authentication is needed to continue the scoped key export.
+
+Raw cache snapshots, session headers and diagnostics are private under
+`~/.cache/scootradar/rider-auth/ryde/mac-session/`, outside Git. No proxy
+certificate, network proxy or global security setting was changed.
 
 ## Recheck: model spoofing, attestation and session keys
 
@@ -197,7 +236,8 @@ complete list of countries supported for SMS verification. Do not describe
 all country codes as verified or repeat requests indefinitely without new
 evidence.
 
-No OTP has been accepted and no rider session has been obtained. No ride,
-reservation, payment or support message was initiated. Signing was a solved
-part of this investigation; current authentication and response decryption
-remain open work.
+No OTP was accepted during the emulator attempts. Apple sign-in subsequently
+established the app session described above. No ride, reservation, payment or
+support message was initiated. Request signing and app login are solved
+parts of this investigation; independent proofs, response decryption and
+renewal remain open work.
