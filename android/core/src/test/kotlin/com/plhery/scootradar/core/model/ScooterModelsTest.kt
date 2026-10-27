@@ -3,6 +3,7 @@ package com.plhery.scootradar.core.model
 import com.plhery.scootradar.core.api.ScooterAPIJson
 import com.plhery.scootradar.core.generated.ScooterAPIResponsePayload
 import com.plhery.scootradar.core.generated.ScooterProvider
+import com.plhery.scootradar.core.generated.ScooterResponseMetadataPayload
 import com.plhery.scootradar.core.generated.ScooterVehiclePayload
 import java.time.Instant
 import java.time.LocalDate
@@ -1027,6 +1028,29 @@ class ScooterModelsTest {
     // Closest cities, parking bays, the search bar and city totals.
 
     @Test
+    fun closestCityLabelsShowWholeKilometres() {
+        val lungern = GeoPoint(latitude = 46.7741, longitude = 8.1558)
+        val closest = ScooterCityCatalog.nearest(to = lungern, count = 3)
+
+        assertEquals(listOf("Bern", "Wädenswil", "Zürich"), closest.map { it.city.name })
+        val bern = closest.first()
+        val swiss = bern.formattedDistance(locale = Locale.forLanguageTag("en-CH"))
+        assertEquals("57 km", plainSpaces(swiss))
+        assertEquals("36 mi", plainSpaces(bern.formattedDistance(locale = Locale.forLanguageTag("en-US"))))
+        assertEquals(bern.formattedDistance(locale = ScooterLanguage.current.locale), bern.formattedDistance)
+        assertTrue(bern.label.startsWith("Bern"))
+        assertTrue(bern.label.endsWith(bern.formattedDistance))
+        assertFalse(ScooterCityCatalog.contains(lungern))
+
+        val place = bern.city.destination
+        assertEquals("Bern", place.title)
+        assertEquals(bern.city.center, place.point)
+        assertEquals(MapDestination.Kind.City, place.kind)
+        assertFalse(place.subtitle.isEmpty())
+        assertNotEquals("CH", place.subtitle)
+    }
+
+    @Test
     fun parkingBayCardNamesTheProviderAndTheRule() {
         val mandatory = ScooterParking(
             id = "dott:bay", provider = "dott", name = "Rue Faidherbe",
@@ -1043,6 +1067,68 @@ class ScooterModelsTest {
         assertNotEquals(mandatory.bayTitle, mandatory.footnote)
         assertEquals(localized("You must park in a bay in this zone."), mandatory.notice)
         assertEquals(localized("Designated scooter parking."), optional.notice)
+    }
+
+    @Test
+    fun locationCardsOfferTheActionsThatCanHelp() {
+        assertNotNull(ScooterLocationIssue.Denied.title)
+        assertTrue(ScooterLocationIssue.Denied.canOpenSettings)
+        assertTrue(ScooterLocationIssue.Denied.canSearchPlace)
+        assertFalse(ScooterLocationIssue.Denied.canRetry)
+
+        assertNull(ScooterLocationIssue.Restricted.title)
+        assertFalse(ScooterLocationIssue.Restricted.canOpenSettings)
+        assertTrue(ScooterLocationIssue.Restricted.canSearchPlace)
+
+        assertNull(ScooterLocationIssue.NotFound.title)
+        assertTrue(ScooterLocationIssue.NotFound.canRetry)
+        assertFalse(ScooterLocationIssue.NotFound.canSearchPlace)
+
+        val messages = listOf(ScooterLocationIssue.Denied, ScooterLocationIssue.Restricted, ScooterLocationIssue.NotFound).map { it.message }
+        assertEquals(3, messages.toSet().size)
+    }
+
+    @Test
+    fun searchBarStatesHaveTheirOwnLines() {
+        val place = MapDestination(title = "Zürich HB", point = GeoPoint(latitude = 47.3782, longitude = 8.5402))
+
+        assertNull(ScooterSearchBarState.Empty.subtitle)
+        assertNull(ScooterSearchBarState.Locating.subtitle)
+        assertEquals("Zürich HB", ScooterSearchBarState.Place(place).title)
+        assertNotNull(ScooterSearchBarState.Place(place).subtitle)
+        assertTrue(ScooterSearchBarState.Place(place).accessibilityLabel.contains("Zürich HB"))
+        assertEquals("", place.subtitle)
+        assertEquals(MapDestination.Kind.Address, place.kind)
+    }
+
+    @Test
+    fun searchBarPromisesScootersOnlyWhereThereIsScooterData() {
+        val zurich = MapDestination(title = "Zürich HB", point = GeoPoint(latitude = 47.3782, longitude = 8.5402))
+        val lungern = MapDestination(title = "Paradeplatz", point = GeoPoint(latitude = 46.7741, longitude = 8.1558))
+        val neutral = localized("Tap to search a city or address")
+
+        // The service areas bundled with the app decide when the search did not say.
+        assertTrue(zurich.isCovered)
+        assertFalse(lungern.isCovered)
+
+        val served = ScooterSearchBarState.Place(zurich)
+        assertEquals(localized("Scooters near this place"), served.subtitle)
+        assertNotEquals(neutral, served.subtitle)
+
+        // Where no operator shares data the bar keeps to the neutral line, also for TalkBack.
+        val unserved = ScooterSearchBarState.Place(lungern)
+        assertEquals(neutral, unserved.subtitle)
+        assertEquals("Paradeplatz. $neutral", unserved.accessibilityLabel)
+        assertEquals(
+            stringFormat(localized("Showing scooters near %@. Search another place."), "Zürich HB"),
+            served.accessibilityLabel,
+        )
+
+        // The search's own answer wins over the bundled areas, and a covered city is always served.
+        val reportedUnserved = MapDestination(title = "Zürich HB", point = zurich.point, isCovered = false)
+        assertEquals(neutral, ScooterSearchBarState.Place(reportedUnserved).subtitle)
+        val city = ScooterCityCatalog.cities.first()
+        assertTrue(city.destination.isCovered)
     }
 
     @Test
@@ -1187,6 +1273,156 @@ class ScooterModelsTest {
         )
         assertNull(ScooterCityGrouping.region(of = cities[4], regions = regions))
         assertEquals("or", ScooterCityGrouping.region(of = cities[0], regions = regions)?.first)
+    }
+
+    // Cities whose scooters stop for the winter, as the catalogs' `seasonal` windows say.
+
+    private val winter = ScooterSeasonalPause(from = "11-16", until = "04-15", timeZone = "America/Toronto")
+    private val early = ScooterSeasonalPause(from = "12-01", until = "04-01", timeZone = "America/Toronto")
+
+    // Bird stops in Montréal on 16 November, Lime on 1 December; Lime runs in Laval all year.
+    private val quebec = listOf(
+        ScooterCity(
+            id = "ca:Montréal", name = "Montréal", countryCode = "CA", center = GeoPoint(latitude = 45.5, longitude = -73.57),
+            bounds = GeoBounds(south = 45.41, west = -73.98, north = 45.7, east = -73.47), pauses = listOf(winter, early),
+        ),
+        ScooterCity(
+            id = "ca:Laval", name = "Laval", countryCode = "CA", center = GeoPoint(latitude = 45.58, longitude = -73.75),
+            bounds = GeoBounds(south = 45.52, west = -73.89, north = 45.7, east = -73.52),
+        ),
+    )
+
+    private fun at(text: String): Instant = Instant.parse(text)
+
+    @Test
+    fun aSeasonalPauseHoldsInItsTimeZoneAcrossTheNewYear() {
+        // Midnight in Montréal is 05:00 UTC in November, 04:00 in April.
+        assertFalse(winter.holds(on = at("2026-11-16T04:59:00Z")))
+        assertTrue(winter.holds(on = at("2026-11-16T05:00:00Z")))
+        assertTrue(winter.holds(on = at("2027-01-20T17:00:00Z")))
+        assertTrue(winter.holds(on = at("2027-04-15T03:59:00Z")))
+        assertFalse(winter.holds(on = at("2027-04-15T04:00:00Z")))
+        assertFalse(winter.holds(on = at("2026-07-20T16:00:00Z")))
+        val summer = ScooterSeasonalPause(from = "06-01", until = "09-01", timeZone = "Europe/Oslo")
+        assertTrue(summer.holds(on = at("2026-07-20T16:00:00Z")))
+        assertFalse(summer.holds(on = at("2027-01-20T17:00:00Z")))
+
+        // Back with the soonest of the pauses, once every one holds.
+        val january = at("2027-01-20T17:00:00Z")
+        assertEquals(ScooterSeasonalPause.Return.Month(4), ScooterSeasonalPause.back(listOf(winter, early), on = january))
+        assertEquals(
+            ScooterSeasonalPause.Return.Month(3),
+            ScooterSeasonalPause.back(
+                listOf(winter, ScooterSeasonalPause(from = "12-01", until = "03-10", timeZone = "America/Toronto")),
+                on = january,
+            ),
+        )
+        assertNull(ScooterSeasonalPause.back(listOf(winter, early), on = at("2026-11-20T17:00:00Z")))
+        assertNull(ScooterSeasonalPause.back(emptyList(), on = january))
+    }
+
+    @Test
+    fun aPauseUntilTheStreetsAreClearHoldsUntilMayAtTheLatestAndComesBackEachWinter() {
+        // Skien's: from 15 December, back once the streets are clear of snow and ice.
+        val clear = ScooterSeasonalPause(from = "12-15", until = "clear", timeZone = "Europe/Oslo")
+        // Midnight in Oslo is 23:00 UTC in December, 22:00 in April.
+        assertFalse(clear.holds(on = at("2026-12-14T22:59:00Z")))
+        assertTrue(clear.holds(on = at("2026-12-14T23:00:00Z")))
+        assertTrue(clear.holds(on = at("2027-03-20T12:00:00Z")))
+        assertTrue(clear.holds(on = at("2027-04-30T21:59:00Z")))
+        assertFalse(clear.holds(on = at("2027-04-30T22:00:00Z")))
+        assertFalse(clear.holds(on = at("2027-10-18T12:00:00Z")))
+        assertTrue(clear.holds(on = at("2027-12-15T12:00:00Z")))
+
+        // It says since when rather than a month, and goes first, as it may end any day.
+        val january = at("2027-01-20T12:00:00Z")
+        val trondheim = ScooterSeasonalPause(from = "12-02", until = "03-15", timeZone = "Europe/Oslo")
+        assertEquals(ScooterSeasonalPause.Return.Clear(from = "12-15"), ScooterSeasonalPause.back(listOf(clear), on = january))
+        assertEquals(ScooterSeasonalPause.Return.Clear(from = "12-15"), ScooterSeasonalPause.back(listOf(trondheim, clear), on = january))
+        assertNull(ScooterSeasonalPause.back(listOf(trondheim, clear), on = at("2026-12-10T12:00:00Z")))
+
+        // Skien and Porsgrunn in the catalog, the latter reached by both of Ryde's feeds.
+        val skien = GeoPoint(latitude = 59.2075, longitude = 9.6107)
+        val porsgrunn = GeoPoint(latitude = 59.1411, longitude = 9.6555)
+        assertNull(ScooterSeasonalPause.active(at = skien, on = at("2026-12-14T22:30:00Z")))
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Skien", back = ScooterSeasonalPause.Return.Clear(from = "12-15")),
+            ScooterSeasonalPause.active(at = skien, on = at("2026-12-14T23:30:00Z")),
+        )
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Porsgrunn", back = ScooterSeasonalPause.Return.Clear(from = "12-15")),
+            ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-03-20T12:00:00Z")),
+        )
+        assertNotNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T21:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T22:30:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = skien, on = at("2027-12-15T12:00:00Z")))
+    }
+
+    @Test
+    fun aTownWhoseOperatorsHaveAllClosedItsSeasonIsOffSeasonUntilTheyReopen() {
+        val now = at("2026-10-28T09:00:00Z")
+        // The answers name the feeds in view whose operator says their season is over.
+        val payload = ScooterAPIJson.decodeFromString<ScooterResponseMetadataPayload>(
+            """
+            {"partial": false, "stale": false, "failedSources": [], "sources": {"kazakhstan": "fresh"},
+             "generatedAt": "2026-10-28T09:00:00.000Z", "seasonOver": ["kazakhstan:whoosh_kz_nqz"],
+             "truncated": false, "totalVehicles": 0, "mode": "vehicles"}
+            """,
+        )
+        assertEquals(setOf("kazakhstan:whoosh_kz_nqz"), payload.model.seasonOver)
+        assertEquals(emptySet<String>(), ScooterResponseMetadata(partial = false, failedSources = emptyList()).seasonOver)
+
+        // Whoosh closed these three on 24 October 2026; Jet and Bolt still run in Almaty.
+        val almaty = GeoPoint(latitude = 43.298812, longitude = 76.939435)
+        val astana = GeoPoint(latitude = 51.143975, longitude = 71.43581)
+        val zapopan = GeoPoint(latitude = 20.721331, longitude = -103.391882)
+        assertEquals(
+            listOf("kazakhstan:jet_kz_almaty", "kazakhstan:whoosh_kz_ala", "kazakhstan:bolt_kz_app_122"),
+            ScooterCityCatalog.cities.firstOrNull { it.id == "kz:Almaty" }?.feeds?.map { it.id },
+        )
+        assertNull(ScooterSeasonalPause.active(at = almaty, on = now, seasonOver = setOf("kazakhstan:whoosh_kz_ala")))
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Astana", back = ScooterSeasonalPause.Return.SeasonOver),
+            ScooterSeasonalPause.active(at = astana, on = now, seasonOver = setOf("kazakhstan:whoosh_kz_nqz")),
+        )
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Zapopan", back = ScooterSeasonalPause.Return.SeasonOver),
+            ScooterSeasonalPause.active(at = zapopan, on = now, seasonOver = setOf("mexico:whoosh_mx_zap")),
+        )
+        // Open again, or another town's feed closed: no pause.
+        assertNull(ScooterSeasonalPause.active(at = astana, on = now))
+        assertNull(ScooterSeasonalPause.active(at = astana, on = now, seasonOver = setOf("mexico:whoosh_mx_zap")))
+        // Almaty too once Jet and Bolt close as well, and not while Bolt runs.
+        assertNull(
+            ScooterSeasonalPause.active(
+                at = almaty, on = now, seasonOver = setOf("kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty"),
+            ),
+        )
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Almaty", back = ScooterSeasonalPause.Return.SeasonOver),
+            ScooterSeasonalPause.active(
+                at = almaty,
+                on = now,
+                seasonOver = setOf("kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty", "kazakhstan:bolt_kz_app_122"),
+            ),
+        )
+
+        // An operator in its own pause counts as closed; one with scooters does not.
+        val montreal = GeoPoint(latitude = 45.5, longitude = -73.57)
+        val quebec = listOf(
+            ScooterCity(
+                id = "ca:Montréal", name = "Montréal", countryCode = "CA", center = montreal,
+                bounds = GeoBounds(south = 45.41, west = -73.98, north = 45.7, east = -73.47),
+                feeds = listOf(ScooterCityFeed(id = "canada:bird_montreal", pause = winter), ScooterCityFeed(id = "canada:whoosh_montreal")),
+            ),
+        )
+        val closed = setOf("canada:whoosh_montreal")
+        assertEquals(
+            ScooterSeasonalPause.Active(city = "Montréal", back = ScooterSeasonalPause.Return.SeasonOver),
+            ScooterSeasonalPause.active(at = montreal, on = at("2027-01-20T17:00:00Z"), among = quebec, seasonOver = closed),
+        )
+        assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-11-10T17:00:00Z"), among = quebec, seasonOver = closed))
+        assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2027-01-20T17:00:00Z"), among = quebec))
     }
 
     // Settings › About › Send feedback.
