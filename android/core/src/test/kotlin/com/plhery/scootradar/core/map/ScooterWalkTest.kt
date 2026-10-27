@@ -337,8 +337,8 @@ class ScooterWalkTest {
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
         // A Swift task cancelled before it starts still runs, so on the iPhone the first request reaches the
-        // directions anyway; a coroutine cancelled before it starts never does. It starts here, as it would on
-        // the app's main dispatcher, which runs it at once.
+        // directions anyway; a coroutine cancelled before it starts never does. It starts here, as it does in the
+        // app, where a show and a hide are separate taps.
         runCurrent()
         h.model.hideWalkingRoute()
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))

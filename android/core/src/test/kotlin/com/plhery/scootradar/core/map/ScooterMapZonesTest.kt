@@ -47,6 +47,9 @@ class ScooterMapZonesTest {
         val model = makeController(api)
         model.updateViewport(zurich, zoom = 16)
         assertEquals(ScooterZoneState.Off, model.zoneState.value)
+        // Past the debounce, so that a request would have gone out by now.
+        advanceTimeBy(400)
+        runCurrent()
         val none = waitUntil { api.zoneAreas.isEmpty() }
         assertTrue("Nothing is asked for while the zones are off", none)
 
