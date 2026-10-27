@@ -83,10 +83,25 @@ animalsniffer {
     annotation = "com.plhery.scootradar.core.JvmOnly"
 }
 
+// ScooterGridClusteringTest holds the port to the web's clusterVehicles, run with node on the same scooters
+// (src/test/web/clustering.mjs, which bundles it with the repository's esbuild).
+val webClusteringScript = file("src/test/web/clustering.mjs")
+val webClustering = layout.buildDirectory.file("generated/webClustering/clustering.json")
+val runWebClustering by tasks.registering(Exec::class) {
+    inputs.files(repo.resolve("src/lib/clustering.ts"), repo.resolve("src/generated/countries.ts"), webClusteringScript)
+        .withPropertyName("sources")
+    outputs.file(webClustering)
+    workingDir(repo)
+    commandLine(node.get(), webClusteringScript.absolutePath, webClustering.get().asFile.absolutePath)
+}
+
 // CatalogParityTest and TimeZonesParityTest read the iPhone app's generated files to check the Android
 // ones hold the same; RentalLinkPolicyParityTest reads its rental link table.
 val iosModels = repo.resolve("ios/ScootRadar/Models")
 tasks.test {
+    dependsOn(runWebClustering)
+    inputs.file(webClustering).withPropertyName("webClustering")
+    systemProperty("scootradar.webClustering", webClustering.get().asFile.absolutePath)
     inputs.files(
         iosModels.resolve("ProviderCatalog.generated.swift"),
         iosModels.resolve("TimeZones.generated.swift"),

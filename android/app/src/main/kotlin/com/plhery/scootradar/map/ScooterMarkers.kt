@@ -43,6 +43,8 @@ class ScooterMarkers(
     analytics: ScooterAnalytics?,
     /** The composition's scope. */
     private val scope: CoroutineScope,
+    /** The camera's move to what an opened cluster holds. */
+    move: (CameraMove) -> Unit,
 ) {
     private val projection = MapLibreProjection(map, view)
     val art = ScooterMarkerArt(view.pixelRatio, MarkerFonts.of(view.context))
@@ -51,6 +53,7 @@ class ScooterMarkers(
         onSelectionChange = controller::selectScooter,
         onParkingSelectionChange = controller::selectParking,
         track = { name, provider -> analytics?.track(name, provider = provider) },
+        move = move,
     )
 
     private var style: Style? = null
@@ -82,6 +85,8 @@ class ScooterMarkers(
 
     /** The visible region changing, a frame at a time while the map moves: mapViewDidChangeVisibleRegion. */
     private val moved = MapLibreMap.OnCameraMoveListener {
+        // The clusters are made again as the map's whole zoom changes, as the web's are.
+        scene.updateClusters(MapZoom.level(on = projection))
         scene.updateLook(markerMap)
         scene.movePills(markerMap)
         flush()
@@ -89,7 +94,9 @@ class ScooterMarkers(
 
     /** The map at rest: regionDidChange's part for the markers. */
     private val idle = MapLibreMap.OnCameraIdleListener {
-        scene.updateClusteringMode(MapZoom.level(on = projection), markerMap)
+        val level = MapZoom.level(on = projection)
+        scene.updateClusteringMode(level, markerMap)
+        scene.updateClusters(level)
         scene.updateLook(markerMap)
         flush()
     }
@@ -109,6 +116,7 @@ class ScooterMarkers(
         updates = scope.launch {
             merge(
                 controller.mapScootersRevision,
+                controller.mapClustersRevision,
                 controller.mapLastSeenRevision,
                 controller.parking,
                 controller.viewport,
@@ -161,12 +169,15 @@ class ScooterMarkers(
             language = controller.language.value,
             userLocation = controller.userLocation.value,
         )
-        scene.updateClusteringMode(MapZoom.level(on = projection), markerMap)
+        val level = MapZoom.level(on = projection)
+        scene.updateClusteringMode(level, markerMap)
         val added = scene.reconcile(controller.mapScooters.value, controller.mapScootersRevision.value)
+        scene.reconcileClusters(controller.mapClusters.value, controller.mapClustersRevision.value)
         scene.reconcileLastSeen(controller.mapLastSeenScooters.value, controller.mapLastSeenClusters.value, controller.mapLastSeenRevision.value)
         scene.reconcileParking(controller.mapParking)
         scene.applySelection(controller.selectedScooterID.value, markerMap)
         scene.applyParkingSelection(controller.selectedParkingID.value)
+        scene.updateClusters(level)
         scene.updateLook(markerMap)
         // MapKit hands the new views over once they are added.
         scene.lightUp(added, markerMap)

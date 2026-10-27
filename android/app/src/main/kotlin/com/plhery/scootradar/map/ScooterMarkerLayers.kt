@@ -30,9 +30,10 @@ class MarkerFeature(
 
 /** What each layer draws, from the scene's marks: the iPhone's annotation views, drawn by MapLibre. */
 object MarkerFeatures {
-    /** The dots and the bays. */
+    /** The dots, the bays and the clusters. */
     fun markers(scene: ScooterMarkerScene, art: ScooterMarkerArt): List<MarkerFeature> {
-        val features = ArrayList<MarkerFeature>(scene.marks.size + scene.parking.size)
+        val clusters = scene.clusters()
+        val features = ArrayList<MarkerFeature>(scene.marks.size + scene.parking.size + clusters.size)
         for (mark in scene.drawnMarks()) features += dot(mark, art)
         for (bay in scene.parking) {
             val isSelected = bay.id == scene.appliedParkingID
@@ -47,7 +48,20 @@ object MarkerFeatures {
                 isRaised = isSelected,
             )
         }
+        for (cluster in clusters) features += cluster(cluster, scene.isDark, art)
         return features
+    }
+
+    /** A cluster's disc, glowing in its leading provider's colour, with its number written in it. */
+    fun cluster(cluster: ClusterMark, isDark: Boolean, art: ScooterMarkerArt): MarkerFeature {
+        val key = ScooterMarkerArt.ClusterKey(cluster.provider, cluster.diameter, isDark, "${cluster.cluster.count}")
+        return MarkerFeature(
+            id = (if (cluster.isServer) "g:" else "c:") + cluster.id,
+            coordinate = cluster.cluster.coordinate,
+            image = key.id,
+            picture = { art.clusterImage(key) },
+            sortKey = cluster.sortKey,
+        )
     }
 
     /** The dot of a scooter, with its ring and its glow, where its spread puts it. */

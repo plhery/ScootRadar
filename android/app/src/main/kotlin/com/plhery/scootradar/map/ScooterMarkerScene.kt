@@ -1,5 +1,5 @@
 // The markers of ScooterMapView's coordinator, from ios/ScootRadar/Views/ScooterMapView.swift: its annotations,
-// reconcile, updateLook, placePills and handleMapTap.
+// reconcile, updateLook, placePills, handleMapTap and the clusters' didSelect.
 
 package com.plhery.scootradar.map
 
@@ -8,12 +8,14 @@ import android.os.SystemClock
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapPoint
+import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterDistance
 import com.plhery.scootradar.core.model.ScooterDotLook
 import com.plhery.scootradar.core.model.ScooterDotState
+import com.plhery.scootradar.core.model.ScooterGridClustering
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
 import com.plhery.scootradar.core.model.ScooterMapLook
@@ -35,6 +37,7 @@ import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.floor
 import kotlin.math.ln
+import kotlin.math.log10
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
@@ -123,6 +126,46 @@ class LastSeenMark(
     }
 }
 
+/**
+ * A group of scooters drawn as one disc with its number (ScooterClusterAnnotationView): the server's, city totals
+ * among them (ScooterServerClusterAnnotation), or the app's own while zoomed out, in place of MapKit's
+ * MKClusterAnnotation, which keeps its scooters.
+ */
+class ClusterMark(cluster: ScooterCluster, members: List<Scooter>?) {
+    var cluster: ScooterCluster = cluster
+        private set
+
+    /** The scooters in it, for the app's own; null for the server's. */
+    var members: List<Scooter>? = members
+        private set
+
+    val id: String get() = cluster.id
+    val isServer: Boolean get() = members == null
+
+    /** The provider with the most scooters in it lends its colour to the glow. */
+    val provider: ScooterProvider? get() = ScooterMarkerScene.leadingProvider(cluster.providers)
+    val diameter: Double get() = ScooterMarkerScene.clusterDiameter(cluster.count)
+
+    /** Where totals touch, as neighbouring countries do zoomed out, the larger is drawn over the smaller. */
+    val sortKey: Float get() = (500 + log10(cluster.count + 1.0) * 60).toFloat()
+
+    fun update(with: ScooterCluster, members: List<Scooter>?): Boolean {
+        if (cluster == with && this.members == members) return false
+        cluster = with
+        this.members = members
+        return true
+    }
+}
+
+/** Where a cluster that is opened takes the camera. */
+sealed interface CameraMove {
+    /** A region shown whole, tilted and turned as the map is: setRegionPreservingPerspective. */
+    data class Region(val region: MapRegion) : CameraMove
+
+    /** Places fitted in the part of the map left visible, as a route is fitted (MAP-052, MAP-302). */
+    data class Fit(val coordinates: List<GeoPoint>) : CameraMove
+}
+
 /** A marker coming up from nothing: from a moment of the uptime clock, in seconds, over a length, along a curve. */
 data class MarkerFade(val from: Double, val length: Double, val curve: Curve) {
     enum class Curve {
@@ -187,6 +230,8 @@ class ScooterMarkerScene(
     private val onParkingSelectionChange: (String?) -> Unit = {},
     /** The app's analytics: an event's name, and its provider. */
     private val track: (name: String, provider: String?) -> Unit = { _, _ -> },
+    /** The camera's move to what a cluster holds. */
+    private val move: (CameraMove) -> Unit = {},
     /** The uptime clock, in seconds. */
     private val now: () -> Double = { SystemClock.uptimeMillis() / 1000.0 },
     /** Whether the phone draws animations: off with Remove animations, the iPhone's Reduce Motion. */
@@ -198,6 +243,9 @@ class ScooterMarkerScene(
     var isDark = false
 
     private val marksByID = HashMap<String, ScooterMark>()
+    private var reconciledScooters: List<Scooter> = emptyList()
+    private val serverClustersByID = LinkedHashMap<String, ClusterMark>()
+    private var reconciledClusterRevision: Int? = null
     private val parkingByID = LinkedHashMap<String, ScooterParking>()
     private var reconciledParking: List<ScooterParking> = emptyList()
     private val lastSeenByID = HashMap<String, LastSeenMark>()
@@ -212,6 +260,13 @@ class ScooterMarkerScene(
     /** Zoomed out, the scooters gather into clusters; null until the map has a size. */
     var clusteringEnabled: Boolean? = null
         private set
+
+    /** The app's own clusters, and the scooters in them, which are not drawn on their own. */
+    private var clientClusters: List<ClusterMark> = emptyList()
+    private var clusteredIDs: Set<String> = emptySet()
+    private var clusterInputs: ClusterInputs? = null
+
+    private data class ClusterInputs(val revision: Int?, val zoom: Int?, val heldID: String?)
 
     private var appliedLook: LookInputs? = null
 
@@ -243,6 +298,13 @@ class ScooterMarkerScene(
 
     fun mark(id: String): ScooterMark? = marksByID[id]
 
+    /** The server's clusters and city totals, then the app's own clusters. */
+    fun clusters(): List<ClusterMark> =
+        if (clientClusters.isEmpty()) serverClustersByID.values.toList() else serverClustersByID.values + clientClusters
+
+    /** The scooter walked to stands on its own, outside the clusters (applyWalking). */
+    private val heldScooterID: String? get() = if (parent.isWalking) appliedSelectionID else null
+
     /** Everything the look of the dots depends on. */
     private data class LookInputs(
         val revision: Int?,
@@ -262,6 +324,7 @@ class ScooterMarkerScene(
     fun reconcile(scooters: List<Scooter>, revision: Int): List<ScooterMark> {
         if (revision == reconciledScooterRevision) return emptyList()
         reconciledScooterRevision = revision
+        reconciledScooters = scooters
         val incomingIDs = scooters.mapTo(HashSet()) { it.id }
         val removed = marksByID.keys.filter { it !in incomingIDs }
         for (id in removed) marksByID.remove(id)
@@ -282,6 +345,52 @@ class ScooterMarkerScene(
             pillsVersion += 1
         }
         return additions
+    }
+
+    /** The server's clusters and city totals of a revision: a mark kept for each that stays, drawn again if it changed. */
+    fun reconcileClusters(clusters: List<ScooterCluster>, revision: Int) {
+        if (revision == reconciledClusterRevision) return
+        reconciledClusterRevision = revision
+        val incomingIDs = clusters.mapTo(HashSet()) { it.id }
+        var changed = serverClustersByID.keys.retainAll(incomingIDs)
+        for (cluster in clusters) {
+            val mark = serverClustersByID[cluster.id]
+            if (mark != null) {
+                if (mark.update(with = cluster, members = null)) changed = true
+            } else {
+                serverClustersByID[cluster.id] = ClusterMark(cluster, members = null)
+                changed = true
+            }
+        }
+        if (changed) markersVersion += 1
+    }
+
+    /**
+     * The app's own clusters, while the map clusters: the web's grid at the map's whole zoom, made again when the
+     * scooters, that zoom or the scooter walked to change (MAP-139). The scooter walked to is left out of them.
+     */
+    fun updateClusters(zoomLevel: Double) {
+        val heldID = heldScooterID
+        val zoom = if (clusteringEnabled == true && zoomLevel.isFinite()) floor(zoomLevel).toInt() else null
+        val inputs = ClusterInputs(reconciledScooterRevision, zoom, heldID)
+        if (inputs == clusterInputs) return
+        clusterInputs = inputs
+        if (zoom == null) {
+            if (clientClusters.isEmpty()) return
+            clientClusters = emptyList()
+            clusteredIDs = emptySet()
+            markersVersion += 1
+            return
+        }
+        val gathered = ScooterGridClustering.cluster(reconciledScooters.filter { it.id != heldID }, zoom.toDouble())
+        val previous = clientClusters.associateBy { it.id }
+        clientClusters = gathered.clusters.map { cluster ->
+            val members = gathered.members.getValue(cluster.id)
+            previous[cluster.id]?.also { it.update(with = cluster, members = members) } ?: ClusterMark(cluster, members)
+        }
+        clusteredIDs = gathered.members.values.flatMapTo(HashSet()) { members -> members.map { it.id } }
+        markersVersion += 1
+        pillsVersion += 1
     }
 
     /** The bays drawn now. A bay that changes is taken off and put back, and selected again if it still is. */
@@ -381,7 +490,8 @@ class ScooterMarkerScene(
             }
         }
         if (previous?.isDark != inputs.isDark) {
-            // The bays keep their colours; the faded markers take the dark art.
+            // The bays keep their colours; the clusters and the faded markers take the dark art.
+            markersVersion += 1
             lastSeenVersion += 1
         }
 
@@ -611,24 +721,92 @@ class ScooterMarkerScene(
      */
     fun tap(point: ScreenPoint, map: MarkerMap) {
         if (isExcludedFromMapInteraction(point)) return
+        // MapKit selects the topmost marker under the finger as well: a cluster there opens, whatever the app's own
+        // tap does, so a tap on a cluster with a dot in reach selects the dot and zooms in (MAP-209).
+        val cluster = topCluster(at = point, map = map)
         val scooter = scooterMark(at = point, map = map)
         // A bay under the touch is meant, unless the touch is on a dot itself.
         val isOnDot = scooter?.let { it.second <= it.first.look.footprint / 2 + 4 } ?: false
-        if (!isOnDot) {
-            val bay = parking(at = point, map = map)
-            if (bay != null) {
-                publishParkingSelection(bay)
-                return
-            }
-        }
+        val bay = if (isOnDot) null else parking(at = point, map = map)
         val mark = scooter?.first
-        if (mark != null) {
-            publishSelection(mark)
-            updateLook(map)
-        } else if (!parent.isWalking) {
+        when {
+            bay != null -> publishParkingSelection(bay)
+            mark != null -> {
+                publishSelection(mark)
+                updateLook(map)
+            }
             // During a walk the card stays open: the map is for looking around.
-            clearSelection(map)
+            !parent.isWalking -> clearSelection(map)
         }
+        cluster?.let { open(it, map) }
+    }
+
+    /**
+     * The cluster MapKit would select under a point: the one whose 48 pt frame holds it, if no dot's 44 pt square
+     * or bay's balloon there is drawn above it. The selected dot and bay are above everything.
+     */
+    fun topCluster(at: ScreenPoint, map: MarkerMap): ClusterMark? {
+        val projection = map.projection
+        var top: ClusterMark? = null
+        var topRank = Float.NEGATIVE_INFINITY
+        fun consider(frame: ScreenRect, rank: Float, cluster: ClusterMark?) {
+            if (!frame.contains(at) || rank < topRank) return
+            topRank = rank
+            top = cluster
+        }
+        for (mark in drawnMarks()) {
+            val centre = dotCentre(mark, projection)
+            val half = MARKER_SIZE / 2
+            val rank = mark.look.zPriority + if (mark.look.state == ScooterDotState.Selected) RAISED else 0f
+            consider(ScreenRect(centre.x - half, centre.y - half, MARKER_SIZE, MARKER_SIZE), rank, null)
+        }
+        for (bay in parkingByID.values) {
+            val isSelected = bay.id == appliedParkingID
+            consider(bayFrame(bay, projection), if (isSelected) 1000f + RAISED else 500f, null)
+        }
+        // Drawn after the dots and the bays, a cluster is above those of the same rank.
+        for (cluster in clusters()) {
+            val point = projection.point(cluster.cluster.coordinate)
+            val half = CLUSTER_SIZE / 2
+            consider(ScreenRect(point.x - half, point.y - half, CLUSTER_SIZE, CLUSTER_SIZE), cluster.sortKey, cluster)
+        }
+        return top
+    }
+
+    /**
+     * A cluster opens onto what it holds. A group of the server's opens onto its cities, each a total of its own
+     * again; a city total or a cluster of the server's two zoom levels closer, or to a city's span; the app's own
+     * onto its scooters (MAP-050–052).
+     */
+    fun open(cluster: ClusterMark, map: MarkerMap) {
+        track("cluster_select", null)
+        val members = cluster.members
+        if (members != null) {
+            move(CameraMove.Fit(members.map { it.coordinate }))
+            return
+        }
+        val projection = map.projection
+        val bounds = projection.bounds
+        if (!(bounds.width > 0 && bounds.height > 0)) return
+        // A city's span is a phone's, as when a city is chosen.
+        val city = ScooterMapCameraPolicy.spanScale(across = min(bounds.width, bounds.height))
+        val group = cluster.cluster.bounds
+        val region = if (group != null) {
+            MapRegion(
+                center = group.center,
+                latitudeDelta = max((group.north - group.south) * 1.6, 0.08 * city),
+                longitudeDelta = max(group.longitudeSpan * 1.6, 0.12 * city),
+            )
+        } else {
+            val span = MapZoom.region(of = projection.visibleMapRect)
+            val isCity = cluster.cluster.city != null
+            MapRegion(
+                center = cluster.cluster.coordinate,
+                latitudeDelta = if (isCity) 0.08 * city else span.latitudeDelta / 4,
+                longitudeDelta = if (isCity) 0.12 * city else span.longitudeDelta / 4,
+            )
+        }
+        move(CameraMove.Region(region))
     }
 
     private fun isExcludedFromMapInteraction(point: ScreenPoint): Boolean =
@@ -664,8 +842,9 @@ class ScooterMarkerScene(
         return null
     }
 
-    /** The scooters drawn as dots of their own. */
-    fun drawnMarks(): Collection<ScooterMark> = marksByID.values
+    /** The scooters drawn as dots of their own: all but those in the app's own clusters. */
+    fun drawnMarks(): Collection<ScooterMark> =
+        if (clusteredIDs.isEmpty()) marksByID.values else marksByID.values.filter { it.scooter.id !in clusteredIDs }
 
     /** Where a dot is drawn on the map: at its scooter, moved by its spread. */
     fun dotCentre(mark: ScooterMark, projection: ScooterMapProjection): ScreenPoint {
@@ -748,6 +927,12 @@ class ScooterMarkerScene(
 
         /** The side of the marker of a scooter, MapKit's annotation view: far larger than its dot. */
         const val MARKER_SIZE = 44.0
+
+        /** The side of a cluster's view, larger than its disc. */
+        const val CLUSTER_SIZE = 48.0
+
+        /** What lifts the selected dot or bay above every other marker. */
+        private const val RAISED = 10_000f
 
         /** A cluster's disc grows with the digits of its number. */
         fun clusterDiameter(count: Int): Double = if (count < 100) 36.0 else if (count < 1_000) 40.0 else 44.0

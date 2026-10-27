@@ -16,7 +16,10 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.ScreenSize
+import com.plhery.scootradar.core.model.WalkTrailLook
 import com.plhery.scootradar.core.model.distance
+import com.plhery.scootradar.core.model.rect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -173,6 +176,59 @@ class MapCamera(
         target = CameraPosition.Builder(target).target(LatLng(centre.latitude, centre.longitude)).build()
         jump(starting)
         animate(target)
+    }
+
+    /**
+     * Takes the camera to what an opened cluster holds: a region shown whole, as setRegionPreservingPerspective
+     * shows it, or places fitted as a route is (MAP-050–052). The move to a place under way ends.
+     */
+    fun show(move: CameraMove) {
+        val bounds = projection.bounds
+        if (!(bounds.width > 0 && bounds.height > 0)) return
+        focusUnderWay = null
+        when (move) {
+            is CameraMove.Region -> animate(
+                CameraPosition.Builder(map.cameraPosition)
+                    .target(LatLng(move.region.center.latitude, move.region.center.longitude))
+                    .zoom(MapZoom.fitting(move.region, bounds.width, bounds.height))
+                    .build(),
+            )
+            is CameraMove.Fit -> fit(move.coordinates)
+        }
+    }
+
+    /**
+     * Fits places in the part of the map left visible, 40 dp in from its edges, never closer than 350 m across
+     * the map, tilted and turned as the map is: the iPhone's fit of a route, which a phone's cluster takes here in
+     * place of MapKit's showAnnotations, whose insets are its own (MAP-176, MAP-177, MAP-302).
+     */
+    private fun fit(coordinates: List<GeoPoint>) {
+        val first = coordinates.firstOrNull() ?: return
+        val bounds = projection.bounds
+        val band = visibleRect()
+        var visible = band.insetBy(WalkTrailLook.fitMargin, WalkTrailLook.fitMargin) ?: band
+        // With very little room left, the margin goes first.
+        if (visible.width < 88 || visible.height < 88) visible = band
+        if (visible.width < 44 || visible.height < 44) visible = bounds
+        // Street level is a phone's: measured across the map's width.
+        val minimumScale = WalkTrailLook.closestFitWidth / ScooterMarkerScene.metresPerMapPoint(first.latitude) *
+            ScooterMapCameraPolicy.spanScale(across = bounds.width) / bounds.width
+        val rect = ScooterMapCameraPolicy.rect(
+            fitting = coordinates.map { MapPoint(it) },
+            heading = map.cameraPosition.bearing,
+            size = ScreenSize(bounds.width, bounds.height),
+            visible = visible,
+            minimumScale = minimumScale,
+        ) ?: return
+        // The rect has the map's shape, so the map shows it whole: rect.width / bounds.width map points a point.
+        val centre = MapPoint(rect.midX, rect.midY).coordinate
+        val zoom = log2(MapPoint.worldSize / (512 * rect.width / bounds.width))
+        animate(
+            CameraPosition.Builder(map.cameraPosition)
+                .target(LatLng(centre.latitude, centre.longitude))
+                .zoom(min(MapZoom.maximum, max(MapZoom.minimum, zoom)))
+                .build(),
+        )
     }
 
     /** Moves the map to show the place asked for in the middle of the part of it left in view. */
