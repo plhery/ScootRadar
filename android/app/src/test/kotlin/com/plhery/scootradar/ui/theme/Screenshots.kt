@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui.theme
 
+import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onRoot
 import com.github.takahirom.roborazzi.RoborazziOptions
@@ -33,7 +34,17 @@ fun useFontScale(scale: Float) = RuntimeEnvironment.setFontScale(scale)
 
 fun resetFontScale() = RuntimeEnvironment.setFontScale(1f)
 
-/** The screen as it is now, saved under src/test/screenshots/[name].png. */
+/**
+ * The screen as it is now, saved under src/test/screenshots/[name].png. The window is drawn again first: after the
+ * first test of a run, Robolectric's capture can reuse the window's drawing from before the content was set, which
+ * shows only the window's background.
+ */
 fun ComposeContentTestRule.screenshot(name: String) {
+    val view = (onRoot().fetchSemanticsNode().root as ViewRootForTest).view
+    runOnUiThread {
+        view.rootView.invalidate()
+        view.invalidate()
+    }
+    waitForIdle()
     onRoot().captureRoboImage("src/test/screenshots/$name.png", roborazziOptions = screenshotOptions)
 }

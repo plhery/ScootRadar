@@ -25,7 +25,9 @@ object ScootType {
 
     /**
      * Inter at a size: its optical size follows the text's, from the text cut at 14 to the display cut at 32, as
-     * SF Pro goes from Text to Display.
+     * SF Pro goes from Text to Display. It is the style's size before the phone's font size scales it: Compose keeps
+     * a typeface for the whole process under its family, so a size scaled when it was first drawn would stay with
+     * the family at every other font size.
      */
     fun family(size: TextUnit): FontFamily = synchronized(families) {
         families.getOrPut(size.value) {
@@ -36,7 +38,7 @@ object ScootType {
                         weight = FontWeight(weight),
                         variationSettings = FontVariation.Settings(
                             FontVariation.weight(weight),
-                            FontVariation.opticalSizing(size),
+                            FontVariation.Setting("opsz", size.value),
                         ),
                     )
                 },
