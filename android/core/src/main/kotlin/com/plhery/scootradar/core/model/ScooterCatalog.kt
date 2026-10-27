@@ -14,7 +14,6 @@ import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.asin
 import kotlin.math.cos
-import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -242,7 +241,7 @@ object ScooterCityCatalog {
         val longitudeDelta = (destination.longitude - origin.longitude) * radians
         val a = sin(latitudeDelta / 2).pow(2) +
             cos(origin.latitude * radians) * cos(destination.latitude * radians) * sin(longitudeDelta / 2).pow(2)
-        return 2 * 6_371_000 * asin(min(1.0, sqrt(a)))
+        return 2 * 6_371_000 * asin(swiftMin(1.0, sqrt(a)))
     }
 }
 

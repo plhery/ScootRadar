@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.model
 
+import kotlin.math.PI
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -159,5 +160,18 @@ class GeoBoundsTest {
         assertEquals(GeoBounds(0.0, 0.0, 1.0, 1.0), GeoBounds(-0.0, -0.0, 1.0, 1.0))
         assertEquals(GeoBounds(0.0, 0.0, 1.0, 1.0).hashCode(), GeoBounds(-0.0, -0.0, 1.0, 1.0).hashCode())
         assertEquals(GeoPoint(0.0, 0.0), GeoPoint(-0.0, 0.0))
+    }
+
+    @Test
+    fun anUnclearSpanOrPointKeepsToTheBoundsAsSwiftsMinAndMaxDo() {
+        // Swift's max(-90, .nan) is -90, where kotlin.math.max gives NaN.
+        val view = GeoBounds(MapRegion(GeoPoint(47.0, 8.0), latitudeDelta = Double.NaN, longitudeDelta = 1.0))
+        assertEquals(GeoBounds(south = -90.0, west = 7.5, north = 90.0, east = 8.5), view)
+        assertTrue(view.contains(GeoPoint(47.0, 8.0)))
+        val padded = GeoBounds(south = 1.0, west = 1.0, north = 2.0, east = 2.0).expanded(by = Double.NaN)
+        assertEquals(listOf(-90.0, 90.0), listOf(padded.south, padded.north))
+        // Half the world round, as asin(min(1, .nan)) is asin(1).
+        val unclear = ScooterCityCatalog.distanceMeters(GeoPoint(Double.NaN, 8.0), GeoPoint(47.0, 8.0))
+        assertEquals(PI * 6_371_000, unclear, 1e-6)
     }
 }

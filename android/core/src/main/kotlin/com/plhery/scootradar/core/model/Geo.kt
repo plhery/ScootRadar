@@ -2,8 +2,6 @@ package com.plhery.scootradar.core.model
 
 import kotlin.math.PI
 import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -26,7 +24,7 @@ data class MapRegion(val center: GeoPoint, val latitudeDelta: Double, val longit
         /**
          * MKCoordinateRegion(center:latitudinalMeters:longitudinalMeters:): the spans that cover so many
          * metres north to south and east to west at the centre, on the WGS 84 ellipsoid as MapKit
-         * measures them, to a millionth.
+         * measures them: to a millionth of a degree over a city, and within a metre up to 2,000 km.
          */
         fun around(center: GeoPoint, latitudinalMeters: Double, longitudinalMeters: Double): MapRegion {
             val latitude = center.latitude * PI / 180
@@ -61,7 +59,11 @@ class GeoBounds(val south: Double, val west: Double, val north: Double, val east
 
     /** The box's longitudes as one or two ranges that keep to -180...180. */
     private val longitudeRanges: List<ClosedFloatingPointRange<Double>>
-        get() = if (crossesDateLine) listOf(min(west, 180.0)..180.0, -180.0..max(east, -180.0)) else listOf(west..east)
+        get() = if (crossesDateLine) {
+            listOf(swiftMin(west, 180.0)..180.0, -180.0..swiftMax(east, -180.0))
+        } else {
+            listOf(west..east)
+        }
 
     fun intersects(other: GeoBounds): Boolean {
         if (!(south <= other.north && north >= other.south)) return false
@@ -102,9 +104,9 @@ class GeoBounds(val south: Double, val west: Double, val north: Double, val east
         val longitudePadding = longitudeSpan * by
         val round = longitudeSpan + 2 * longitudePadding >= 360
         return GeoBounds(
-            south = max(-90.0, south - latitudePadding),
+            south = swiftMax(-90.0, south - latitudePadding),
             west = if (round) -180.0 else wrapped(west - longitudePadding),
-            north = min(90.0, north + latitudePadding),
+            north = swiftMin(90.0, north + latitudePadding),
             east = if (round) 180.0 else wrapped(east + longitudePadding),
         )
     }
@@ -130,9 +132,9 @@ class GeoBounds(val south: Double, val west: Double, val north: Double, val east
                 east = region.center.longitude + halfLongitude,
             )
             return GeoBounds(
-                south = max(-90.0, region.center.latitude - halfLatitude),
+                south = swiftMax(-90.0, region.center.latitude - halfLatitude),
                 west = west,
-                north = min(90.0, region.center.latitude + halfLatitude),
+                north = swiftMin(90.0, region.center.latitude + halfLatitude),
                 east = east,
             )
         }
