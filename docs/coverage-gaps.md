@@ -46,6 +46,7 @@ were added.
 | **Rider sign-in for JET** | JET's separate Central Asian app needs a rider account, with phone and SMS verification, for Almaty, Ulaanbaatar, Tashkent and Tbilisi. No guest session was found (24 October 2026). Beam's Google sign-in is complete, with a [54-region collector](beam-app-map.md) across Australia, Malaysia, South Korea and Türkiye. LUUP's [19-city collector](luup-app-map.md) and Whoosh's [25-region collector](whoosh-app-map.md) are integrated too. Go Jet's [signed-out adapter](gojet-app-map.md) supplies 54 regions in six countries without a rider sign-in. See [the evidence](jet-whoosh-beam-luup-app-maps.md) |
 | **Rider sign-ins for six ATOM apps** | IslaRide (Tenerife), wer2 (Doha), Reby (Dakar), IZZY (Tashkent), Silk Road Samarkand and e-moob (Tamarindo) answer their map only to a signed-in rider, and each needs its own phone and SMS sign-in, as MoVe's did. On 25 October 2026 the user chose to leave them for another day. Reby also refused a sign-in from a Swiss IP (error `11-6`), and e-moob's Aruba fleet stays out, since Aruba banned e-scooters from public roads in July 2026. See [the apps](atom-operator-apps.md) |
 | **Bird's rider app** | A guarded research reader is tested on 27 October 2026, but no app-map feed is integrated, at the user's choice. The same signed-in session recovered after the earlier synthetic replies, without renewal or a new account, and read real data across cities again. The earlier claim that location jumps permanently flagged it is withdrawn; the trigger remains unknown. The current app's cell endpoint works too, but silently caps replies at 1,000. A nine-request Indianapolis scan recovered all 301 stationary references; 332 of its 335 positions matched the public feed within 10 m. The reader rejects decoys, unverified empties and incomplete sweeps. Sustained quota, server compatibility, renewal and whole-city coverage still need validation. See [requests, limits and evidence](bird-app-map.md) |
+| **Ryde in Bergen through Skyss** | A tested [guest-map research reader](ryde-app-map.md#working-guest-reader-skyss--tet--ruter) returned 1,055 central Bergen scooter observations in six requests on 27 October 2026, without a rider session or API key. The 500-row cap can be handled by splitting views, but smaller uncapped views can still omit references, so output is explicitly observations only. Full coverage, freshness, availability semantics and server compatibility need validation before integration. Ryde's own Mac app is signed in, but its key export was denied by macOS; that session is not needed for the Skyss reader |
 | **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Both operators' scooters there come from their rider maps since 25 October 2026, [Bolt's](bolt-app-map.md) and [Lime's](lime-app-map.md), so their NRW.Mobidrom feeds are not needed |
 
 It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
@@ -218,9 +219,11 @@ banned shared scooters, and feeds that were empty when checked.
     scooters in Antwerpen come from its rider map since 25 October 2026; the
     map's Brussels market held no scooter that day.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
-  - Ryde and RideMovi in Bergen, Drammen and Larvik have no public source.
-    Lime's Bergen scooters, about 2,100, come from its rider map since 27
-    October 2026.
+  - Ryde in Bergen has a working Skyss guest-map research reader since 27
+    October 2026; it is not integrated and makes no full-inventory guarantee
+    (see the validation work above). RideMovi in Bergen and Ryde in Drammen
+    and Larvik still have no working source. Lime's Bergen scooters, about
+    2,100, come from its rider map since 27 October 2026.
   - Ryde's fleet in Kristiansand is missing from Entur. Its fleets in Asker,
     Bærum, Bodø, Lillestrøm and Lørenskog are on the map since 22 October
     2026. Dott publishes nothing for Bodø.

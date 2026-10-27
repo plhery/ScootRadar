@@ -1,13 +1,23 @@
-# Ryde rider map investigation
+# Ryde map readers and rider app investigation
+
+**A fresh automated Ryde map read now works for Bergen through Skyss's guest
+map API.** The standalone research reader is
+[`scripts/ryde-skyss-map.mjs`](../scripts/ryde-skyss-map.mjs). A six-request
+central Bergen scan on 27 October 2026 returned 1,055 distinct Ryde scooter
+observations. This is not a complete-city inventory or a deployed feed.
+
+Ryde's own authenticated API remains a separate, unfinished path. Its
+Mac-compatible iPhone app opens its signed-in map, but exporting the keys
+needed for independent proofs and decryption has not succeeded.
 
 Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
 6.1.0, build 718. APK signatures match the publisher's
 [app-link association](https://www.ryde-technology.com/.well-known/assetlinks.json).
 The user subsequently signed in with Apple on an iPhone and on this Mac.
 The official Mac-compatible iPhone app opens its map and has a successful
-authenticated map response in its local HTTP cache. Independent response
-decryption, fresh automated retrieval, collection and deployment remain
-unverified.
+authenticated map response in its local HTTP cache. Independent retrieval and
+decryption through that direct rider API remain unverified; Skyss's guest
+route below needs neither that session nor its keys.
 
 ## Current status and how to resume
 
@@ -20,15 +30,123 @@ official app on this Apple silicon Mac and completed Apple sign-in there;
 its signed-in map was observed through native UI automation.
 No additional SMS was requested during the 27 October recheck.
 
-Continue with the signed-in Mac app and its own Ryde keychain entries.
-Verify fresh read-only map retrieval, response decryption and session renewal
-before considering a collector. A successful app login alone does not
-establish that its session can be used by a server.
+Use the tested Skyss reader for Bergen research. Before integrating it, verify
+coverage, freshness and availability semantics, and the intended server
+runtime. The direct rider route still requires independent proof generation,
+response decryption and session-renewal tests. A successful app login alone
+does not establish that its session can be used by a server.
 
 The `ScootRadar_Ryde_Play` AVD is retained for reference. The fresh verified
 APK, decompiled sources and private diagnostics are under
 `~/.cache/scootradar/rider-auth/ryde/`, outside Git. Bolt's and Bird's saved
 rider sessions are separate.
+
+## Working guest reader: Skyss / Tet / Ruter
+
+Skyss's [official travel information](https://www.skyss.no/reise/nyttig-reiseinformasjon/)
+and [app FAQ](https://www.skyss.no/en/tickets-and-prices/buying-tickets/appen-skyss/questions-and-answers-about-the-skyss-app/)
+describe its Bergen scooter map. Its [Google Play listing](https://play.google.com/store/apps/details?id=no.skyss.planner)
+lists finding e-scooters separately from signed-in functions. The inspected
+Android package, `no.skyss.planner` 7.102.0 / 40013, contains the current
+query and client headers. `apksigner verify` succeeds and reports a Skyss
+signer; an independent publisher fingerprint from `skyss.no` could not be
+obtained because its app-link association returned 403. The APK was inspected
+statically and was not installed or executed.
+
+`POST https://cosmo-router.transhub.io/graphql` accepts these ordinary client
+headers without a cookie, API key, rider token, DPoP proof or attestation:
+
+| Header | Inspected value |
+| --- | --- |
+| `client-platform` | `android` |
+| `client-version` | `7.102.0` |
+| `client-build-date` | `1790928393` |
+| `owner-id` | `SKYSS` |
+| `accept-language` | `en` |
+| `Content-Type` | `application/json` |
+
+The initial request without client metadata returned HTTP 400 with
+`Missing required header: client-platform`. Adding the app's observed
+metadata returned real service and map data. No private runtime key from the
+app is used or committed.
+
+`mobilityServices_v2` with the Skyss owner confirms `BERGEN`, `RYDE`,
+`ESCOOTER`, `NORMAL_SERVICE` and `DEEP_LINK`. The map query is:
+
+```graphql
+query nearbyEVehicles(
+  $northWest: LocationInput!, $southEast: LocationInput!,
+  $vendors: [Vendor_v2!]!, $rentalProductTypes: [RentalProductType!]!
+) {
+  nearbyVehicles_v4(
+    vendors: $vendors, northwest: $northWest, southeast: $southEast,
+    rentalProductTypes: $rentalProductTypes
+  ) { __typename id vendor lat lon type }
+}
+```
+
+Inputs use `{ latitude, longitude }`, vendors `["RYDE"]`, and product types
+`["ESCOOTER"]`. The result has `VehicleDetailsLite` rows with 15-digit IDs.
+Map rows lack battery, range, rentability and a provider position timestamp.
+The reader preserves those unknowns; its scan times are observation times.
+
+A separate `vehicleDetails_v2(vehicle: { id, vendor: RYDE })` read matched a
+map ID and coordinates exactly, reported the Bergen Ryde service and a
+rental link on `new-web-platform.ryde.vip`, and returned `isRentable: true`,
+battery and range. A same-shape unknown ID returned null with a
+`BAD_USER_INPUT` / `No vehicle found with ID` error. This verifies an actual
+overview/detail identity relationship, rather than trusting HTTP 200 alone.
+
+### Limits and the live audit
+
+- One central view, south/west/north/east
+  `60.375,5.29,60.405,5.355`, returned exactly 500 scooters. Treat 500 as
+  capped even though the reply supplies no truncation flag or total.
+- At 23:25 local time on 27 October, the reader confirmed the service, read
+  that parent view and four smaller views, and returned 1,055 distinct
+  observations in six requests / 10.1 seconds. It retains valid parent
+  observations when smaller views omit them.
+- A fresh run at 23:32 returned 1,053 observations in six requests / 10.1
+  seconds. Its map pages held 500, 292, 324, 155 and 282 rows. Between scans,
+  1,046 IDs persisted, nine disappeared and seven appeared; three persistent
+  scooters changed position by more than 50 m, one by about 1.05 km. Thus
+  the source is updating, although no per-position timestamp or guaranteed
+  freshness is available.
+- Of 500 earlier parent-view references, 497 appeared in that scan, 494
+  within 10 m. All three missing references still had unchanged positions
+  and `isRentable: true` in separate detail reads. A tiny local map read
+  recovered one; the other two remained absent from map reads. Therefore
+  an uncapped reply is **not proof of inventory completeness**, and detail
+  rentability is not sufficient to explain current map membership. The
+  cause, including possible differing cache ages, remains unverified.
+- The radius-based `nearbyVehicles_v3` returned only 150 rows despite a
+  requested limit of 1,500. It is not an established completeness shortcut.
+- `RUTER` service metadata lists Oslo and its surrounding Ryde areas. The
+  gateway rejects `AGDER` as an unsupported owner; it explicitly names only
+  `RUTER` and `SKYSS`. Central map probes for Drammen, Larvik, Kristiansand
+  and Göteborg returned empty arrays, with no GraphQL errors. Those markets
+  remain gaps; nearby Entur data is not evidence of their coverage.
+
+The research reader restricts queries to Bergen bounds and the Ryde scooter
+type. It validates every identity, vendor, coordinate and required response
+field, rejects partial GraphQL errors, serializes requests two seconds apart,
+limits response bytes and scan cost, and honors rate-limit cooldowns without
+automatic retries. It splits capped and broad views and fails if it cannot
+finish the planned reads. Successful output is explicitly marked
+`coverage: "observations-only"`, with per-view counts and observation times;
+it makes no full-fleet guarantee.
+
+```sh
+node scripts/ryde-skyss-map.mjs \
+  --bounds 60.375,5.29,60.405,5.355 \
+  --output /private/path/bergen-ryde.json
+```
+
+The output directory must already exist. The default scan budget is 32
+requests and 120 seconds; `--max-requests` accepts 2–64 but never extends the
+deadline. Output is written atomically with mode 0600 only after all planned
+reads succeed. Unit tests use synthetic vehicle IDs, not live payloads.
+No production collector imports the reader, and no catalog/feed was added.
 
 ## Apple sign-in and the Mac-compatible iPhone app
 
@@ -59,8 +177,12 @@ Keychain Access exposes two Ryde application-password entries under the
 app's own service: `Ryde.apiSecurity.dpopSigningKey.production.v1` and
 `Ryde.apiSecurity.eciesKeyAgreementKey.production.v1`. Their contents and
 off-device usability remain unverified. Do not apply the Android
-non-exportable-key conclusion to these iOS entries. Local macOS
-authentication is needed to continue the scoped key export.
+non-exportable-key conclusion to these iOS entries. Key export failed:
+macOS logs show `CSSMERR_DL_OPERATION_AUTH_DENIED` during the attempts.
+The user reported that Local Items reveals or copies no value despite its
+password dialog closing without a visible error. They are using screen
+sharing; whether that explains the denial remains unverified. No key was
+exported, and no keychain password or security setting was changed.
 
 Raw cache snapshots, session headers and diagnostics are private under
 `~/.cache/scootradar/rider-auth/ryde/mac-session/`, outside Git. No proxy
@@ -121,12 +243,11 @@ There is also a session-portability requirement beyond obtaining an SMS:
   also obtains an attestation challenge. Successful login does not prove
   registration, rotation or off-device map decryption.
 
-These are verified client paths and observed server configuration, not a
-live test of an authenticated session's enforcement. The iOS key handling,
-actual server rejection conditions and any supported off-device session
-remain to be checked. A real-device map read is the next compatibility
-test, followed by key binding and renewal; do not promise that one phone
-login will produce a portable bearer token.
+These Android checks establish client paths and server configuration, rather
+than authenticated Android enforcement. The subsequent Mac session confirms
+live DPoP enforcement for its iOS token, as described above. Access to its
+keys, independent decryption and renewal remain unverified; do not promise
+that one phone login will produce a portable bearer token.
 
 ## Public sources rechecked on 27 October
 
@@ -147,8 +268,9 @@ replace the earlier signed-request authentication result below.
 
 Ruter's [published operator coverage](https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/operatorer)
 lists Ryde around Oslo and Asker/Bærum/Lillestrøm/Lørenskog/Rælingen, not the
-missing Bergen, Drammen, Larvik or Kristiansand markets. No new public
-source or production feed was added in this recheck.
+missing Bergen, Drammen, Larvik or Kristiansand markets. This Ruter/Entur
+recheck did not reveal them. The separate Skyss owner later supplied the
+Bergen guest map described above; no production feed was added.
 
 ## Map protocol and the earlier signing blocker
 
