@@ -59,7 +59,9 @@ data class ProviderRidePass private constructor(
     fun isActive(on: Instant = Instant.now(), zone: ZoneId = ScooterDateFormat.timeZone()): Boolean {
         if (!enabled) return false
         val expiryDate = expiryDate ?: return true
-        val firstMomentAfterExpiryDay = expiryDate.atZone(zone).toLocalDate().plusDays(1).atStartOfDay(zone).toInstant()
+        // A day later than the start of the expiry day, at the same time of day as Calendar adds one: 01:00
+        // where the expiry day started at 01:00, its midnight skipped.
+        val firstMomentAfterExpiryDay = expiryDate.atZone(zone).toLocalDate().atStartOfDay(zone).plusDays(1).toInstant()
         return on < firstMomentAfterExpiryDay
     }
 

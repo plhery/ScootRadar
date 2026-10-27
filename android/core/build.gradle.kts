@@ -78,10 +78,16 @@ animalsniffer {
 }
 
 // CatalogParityTest and TimeZonesParityTest read the iPhone app's generated files to check the Android
-// ones hold the same.
-val iosGenerated = repo.resolve("ios/ScootRadar/Models")
+// ones hold the same; RentalLinkPolicyParityTest reads its rental link table.
+val iosModels = repo.resolve("ios/ScootRadar/Models")
 tasks.test {
-    inputs.files(iosGenerated.resolve("ProviderCatalog.generated.swift"), iosGenerated.resolve("TimeZones.generated.swift"))
-        .withPropertyName("iosGenerated")
+    inputs.files(
+        iosModels.resolve("ProviderCatalog.generated.swift"),
+        iosModels.resolve("TimeZones.generated.swift"),
+        iosModels.resolve("ScooterModels.swift"),
+    ).withPropertyName("iosModels")
+    // SourceCharactersTest reads every module's sources.
+    inputs.files(fileTree(rootDir) { include("*.kts", "gradle/*.toml", "*/*.kts", "*/src/**") })
+        .withPropertyName("androidSources")
     systemProperty("scootradar.repo", repo.absolutePath)
 }

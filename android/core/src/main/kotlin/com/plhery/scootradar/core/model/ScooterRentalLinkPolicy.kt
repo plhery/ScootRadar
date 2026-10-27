@@ -7,9 +7,10 @@ import java.net.URISyntaxException
 // ScooterRentalLinkPolicy from ios/ScootRadar/Models/ScooterModels.swift.
 
 object ScooterRentalLinkPolicy {
-    private class ProviderPolicy(val schemes: Set<String>, val httpsHosts: Set<String>)
+    internal class ProviderPolicy(val schemes: Set<String>, val httpsHosts: Set<String>)
 
-    private val policies: Map<String, ProviderPolicy> = mapOf(
+    // RentalLinkPolicyParityTest checks both tables are the Swift ones.
+    internal val policies: Map<String, ProviderPolicy> = mapOf(
         "bolt" to ProviderPolicy(
             schemes = setOf("bolt"),
             httpsHosts = setOf("bolt.eu", "bolt.com"),
@@ -124,7 +125,7 @@ object ScooterRentalLinkPolicy {
     )
 
     /** Links that open an operator's app elsewhere than on a scooter, as rentalLinks.ts has them. */
-    private val notRentalLinks: List<Pair<String, String>> = listOf("bird" to "charger-onboarding")
+    internal val notRentalLinks: List<Pair<String, String>> = listOf("bird" to "charger-onboarding")
 
     fun rentalURL(provider: String, rentalURIs: ScooterRentalURIs?, legacyLink: String?): URI? =
         rentalURLs(provider, rentalURIs, legacyLink).firstOrNull()
@@ -168,7 +169,7 @@ object ScooterRentalLinkPolicy {
 
     /** CharacterSet.whitespacesAndNewlines: Unicode's White_Space. */
     private fun isWhitespaceOrNewline(character: Char): Boolean =
-        character in "\t\n\u000B\u000C\r \u0085\u00A0\u1680  \u202F\u205F\u3000" || character in '\u2000'..'\u200A'
+        character in "\t\n\u000B\u000C\r \u0085\u00A0\u1680\u2028\u2029\u202F\u205F\u3000" || character in '\u2000'..'\u200A'
 
     /** CharacterSet.controlCharacters: the control and format characters, Cc and Cf. */
     private fun isControlCharacter(codePoint: Int): Boolean {

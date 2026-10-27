@@ -65,6 +65,7 @@ class ScooterModelsTest {
         assertEquals(localized("scooters nearby"), ScooterCountContext.Nearby.label(0))
         assertEquals(localized("scooter on this map"), ScooterCountContext.OnThisMap.label(1))
         assertEquals(localized("scooters on this map"), ScooterCountContext.OnThisMap.label(2))
+        assertNotEquals(ScooterDockHint.TapCity.text, ScooterDockHint.EmptyArea.text)
 
         // French counts nothing in the singular: "0 trottinette à proximité".
         assertEquals(listOf(true, true, false), listOf(0, 1, 2).map { ScooterPlural.isSingular(it, "fr") })
@@ -886,6 +887,17 @@ class ScooterModelsTest {
         assertEquals(520, quote.totalMinorUnits)
         assertEquals(10, quote.billedMinutes)
         assertFalse(quote.passApplied)
+    }
+
+    @Test
+    fun passExpiryEndsADayAfterTheExpiryDayStartedWhereItsMidnightIsSkipped() {
+        // Santiago skips from 00:00 to 01:00 on 6 September 2026: that day starts at 01:00, and Calendar's
+        // day after it at 01:00 too, as Foundation answers.
+        val zone = ZoneId.of("America/Santiago")
+        val pass = ProviderRidePass(enabled = true, expiryDate = Instant.parse("2026-09-06T15:00:00Z"))
+
+        assertTrue(pass.isActive(on = Instant.parse("2026-09-07T03:59:59Z"), zone = zone))
+        assertFalse(pass.isActive(on = Instant.parse("2026-09-07T04:00:00Z"), zone = zone))
     }
 
     @Test

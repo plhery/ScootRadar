@@ -66,8 +66,8 @@ data class ScooterRefreshPolicy(
     companion object {
         val standard: ScooterRefreshPolicy = ScooterRefreshPolicy()
 
-        /** Date.distantPast: the first day of the year 1. */
-        val distantPast: Instant = Instant.parse("0001-01-01T00:00:00Z")
+        /** Date.distantPast: the first day of the year 1, which Foundation counts in the Julian calendar. */
+        val distantPast: Instant = Instant.ofEpochSecond(-62_135_769_600)
     }
 }
 

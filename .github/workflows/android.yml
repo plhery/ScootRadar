@@ -13,6 +13,7 @@ on:
       - 'src/lib/limeGrid.ts'
       - 'src/generated/timeZones.ts'
       - 'ios/ScootRadar/Models/*.generated.swift'
+      - 'ios/ScootRadar/Models/ScooterModels.swift'
       - 'package-lock.json'
       - '.github/workflows/android.yml'
   push:
@@ -28,6 +29,7 @@ on:
       - 'src/lib/limeGrid.ts'
       - 'src/generated/timeZones.ts'
       - 'ios/ScootRadar/Models/*.generated.swift'
+      - 'ios/ScootRadar/Models/ScooterModels.swift'
       - 'package-lock.json'
       - '.github/workflows/android.yml'
 
