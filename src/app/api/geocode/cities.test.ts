@@ -37,7 +37,7 @@ describe('searchCoveredCities', () => {
   });
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
-    expect(names('Ber')).toEqual(['Bergamo, Italy', 'Berkeley, CA, United States', 'Berlin, Germany', 'Bern, Switzerland', 'Bertioga, Brazil']);
+    expect(names('Ber')).toEqual(['Bergamo, Italy', 'Bergen, Norway', 'Berkeley, CA, United States', 'Berlin, Germany', 'Bern, Switzerland']);
     // La Roche-sur-Yon, Le Chesnay-Rocquencourt, Little Rock, Marly-le-Roi and New Rochelle by a later word; five at
     // most, so Roanoke, Rochester, Roma and Romanshorn wait for a third letter, and Portimão, found by its beach, Praia
     // da Rocha, and Rhodes, by its Greek name, Rodos, come after the cities found by their own names.
@@ -93,11 +93,11 @@ describe('searchCoveredCities', () => {
   it('writes the country in the language asked for, and English when none is', () => {
     const lines = (query: string, language?: 'en' | 'de' | 'fr' | 'it') =>
       searchCoveredCities(query, language).map(city => `${city.title} / ${city.subtitle}`);
-    expect(lines('Ber')).toEqual(['Bergamo / Italy', 'Berkeley, CA / United States', 'Berlin / Germany', 'Bern / Switzerland', 'Bertioga / Brazil']);
-    expect(lines('Ber', 'en')).toEqual(['Bergamo / Italy', 'Berkeley, CA / United States', 'Berlin / Germany', 'Bern / Switzerland', 'Bertioga / Brazil']);
-    expect(lines('Ber', 'de')).toEqual(['Bergamo / Italien', 'Berkeley, CA / Vereinigte Staaten', 'Berlin / Deutschland', 'Bern / Schweiz', 'Bertioga / Brasilien']);
-    expect(lines('Ber', 'fr')).toEqual(['Bergamo / Italie', 'Berkeley, CA / États-Unis', 'Berlin / Allemagne', 'Bern / Suisse', 'Bertioga / Brésil']);
-    expect(lines('Ber', 'it')).toEqual(['Bergamo / Italia', 'Berkeley, CA / Stati Uniti', 'Berlin / Germania', 'Bern / Svizzera', 'Bertioga / Brasile']);
+    expect(lines('Ber')).toEqual(['Bergamo / Italy', 'Bergen / Norway', 'Berkeley, CA / United States', 'Berlin / Germany', 'Bern / Switzerland']);
+    expect(lines('Ber', 'en')).toEqual(['Bergamo / Italy', 'Bergen / Norway', 'Berkeley, CA / United States', 'Berlin / Germany', 'Bern / Switzerland']);
+    expect(lines('Ber', 'de')).toEqual(['Bergamo / Italien', 'Bergen / Norwegen', 'Berkeley, CA / Vereinigte Staaten', 'Berlin / Deutschland', 'Bern / Schweiz']);
+    expect(lines('Ber', 'fr')).toEqual(['Bergamo / Italie', 'Bergen / Norvège', 'Berkeley, CA / États-Unis', 'Berlin / Allemagne', 'Bern / Suisse']);
+    expect(lines('Ber', 'it')).toEqual(['Bergamo / Italia', 'Bergen / Norvegia', 'Berkeley, CA / Stati Uniti', 'Berlin / Germania', 'Bern / Svizzera']);
     expect(lines('Lyon', 'de')).toEqual(['Lyon / Frankreich']);
     expect(lines('Lyon', 'fr')).toEqual(['Lyon / France']);
     expect(lines('Lyon', 'it')).toEqual(['Lyon / Francia']);
@@ -241,7 +241,7 @@ describe('searchCoveredCities', () => {
 describe('namedCities', () => {
   it('says of each city whether it was typed in full, and in which country it is', () => {
     expect(namedCities('Ber').map(({ city, exact, country }) => [city.title, exact, country])).toEqual([
-      ['Bergamo', false, 'IT'], ['Berkeley, CA', false, 'US'], ['Berlin', false, 'DE'], ['Bern', false, 'CH'], ['Bertioga', false, 'BR'],
+      ['Bergamo', false, 'IT'], ['Bergen', false, 'NO'], ['Berkeley, CA', false, 'US'], ['Berlin', false, 'DE'], ['Bern', false, 'CH'],
     ]);
     expect(namedCities('Bienne').map(({ city, exact }) => [city.title, exact])).toEqual([['Biel/Bienne', true]]);
     // By its short name.

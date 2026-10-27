@@ -25,7 +25,9 @@ the University of Warwick), Milton Keynes and Salford were added on
 of these markets whole; see
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 Lime's scooters in Antwerpen, about 880, followed the same way that day;
-its Brussels market held no scooter.
+its Brussels market held no scooter. Its scooters in Bergen, about 2,100,
+followed on 27 October 2026: they are the first in Bergen on the map, as
+neither Ryde nor RideMovi publishes a feed there.
 The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
@@ -322,7 +324,7 @@ directory.
 
 Each Norwegian municipality sets its own hours in its *forskrift* on renting
 small electric vehicles, and British trial areas set theirs in the trial's
-conditions. Sixteen Norwegian towns and three British areas covered ban renting
+conditions. Seventeen Norwegian towns and three British areas covered ban renting
 at night. While a ban holds, the dock tells of it, with a moon, for the town in
 view, and a scooter's card says when it can be rented again. Web and iOS read
 the same [`rental-curfews.json`](../data/rental-curfews.json). It holds each
@@ -335,6 +337,7 @@ stays open at night.
 | Town | Nights | Source |
 | --- | --- | --- |
 | Oslo | Every night, 23:00–05:00 | [FOR-2024-11-20-2821](https://lovdata.no/dokument/LF/forskrift/2024-11-20-2821) § 12 |
+| Bergen | Friday and Saturday, 23:00–05:00 | [FOR-2022-03-30-521](https://lovdata.no/dokument/LF/forskrift/2022-03-30-521) § 11 |
 | Trondheim | Friday and Saturday, 23:00–05:00 | [FOR-2022-02-08-192](https://lovdata.no/dokument/LF/forskrift/2022-02-08-192) § 7 f |
 | Stavanger | Friday and Saturday, 00:00–05:00 | [FOR-2022-09-05-2643](https://lovdata.no/dokument/LF/forskrift/2022-09-05-2643) § 10 |
 | Kristiansand | Friday and Saturday, 00:00–05:00 | [FOR-2024-01-24-148](https://lovdata.no/dokument/LF/forskrift/2024-01-24-148) § 6 c |
@@ -357,6 +360,14 @@ stays open at night.
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Trondheim's** rule bans every night, but lets the city trial weekday
   nights, and Voi and Ryde open them. Only Friday and Saturday are sure.
+- **Bergen's** rule, as amended on 17 December 2025, bans renting from 01:00
+  to 05:00 on other nights too, but lets the city lift its ban, and the
+  [city's page](https://www.bergen.kommune.no/innbyggerhjelpen/vann-vei-og-trafikk/vei-transport-og-parkering/sykkel/elsparkesykler-i-bergen),
+  updated 7 October 2026, closes renting on Friday and Saturday nights only.
+  Its next rule, [FOR-2026-06-17-1345](https://lovdata.no/dokument/LF/forskrift/2026-06-17-1345),
+  applies from the permits after the current ones (Ryde, Lime and RideMovi,
+  1 April 2026 to 31 March 2027), by 31 March 2028 at the latest, and
+  closes the eves of public holidays too.
 - **Arendal's** hours are those Voi, the only operator, enforces: its feed
   listed no scooters from 23:00 (23:20 on two nights) to 05:00 every night
   from 16 to 23 October 2026. The rule,
@@ -441,8 +452,8 @@ stays open at night.
   ([NRK](https://www.nrk.no/stor-oslo/bystyret-stemte-ned-innstramminger-for-elsparkesykler-i-oslo-1.17746568)).
 - Beryl drops its scooters from the BCP and Brighton feeds during the ban, so
   the moon explains an empty map there.
-- Bergen, Drammen and Larvik in Norway ban some nights too, but have no
-  public feed.
+- Drammen and Larvik in Norway ban some nights too, but have no public
+  feed.
 - No other city checked in the covered countries bans renting at night,
   except on event nights: Munich's Oktoberfest, Cologne's carnival and
   Brussels on New Year's Eve.
@@ -489,14 +500,16 @@ stays open at night.
     13 October 2026, and West-Vlaanderen 76 pedal bikes too. Hoppy's Genk
     system (1522) held 6 e-bikes.
 - **Norway:**
-  - Bergen (Ryde, Lime and RideMovi, about 9,000 scooters), Drammen (Ryde,
-    Gogo) and Larvik (Ryde) have scooters but no public source. Entur,
-    Norway's only public aggregator, has none of them: its GraphQL API sees no
-    scooter its manifest lacks, and guessed system ids answer 404. Ryde's
-    fleet in Kristiansand is missing too: of Ryde's towns that Entur lacked
-    until October 2026, only Asker, Bærum, Bodø, Lillestrøm and Lørenskog were
-    in its manifest on 22 October 2026. Dott, Bodø's other permit holder in
+  - Ryde and RideMovi in Bergen, Drammen (Ryde, Gogo) and Larvik (Ryde)
+    have scooters but no public source. Entur, Norway's only public
+    aggregator, has none of them: its GraphQL API sees no scooter its
+    manifest lacks, and guessed system ids answer 404. Ryde's fleet in
+    Kristiansand is missing too: of Ryde's towns that Entur lacked until
+    October 2026, only Asker, Bærum, Bodø, Lillestrøm and Lørenskog were in
+    its manifest on 22 October 2026. Dott, Bodø's other permit holder in
     2025, publishes nothing for Bodø.
+  - Lime's Bergen scooters, about 2,100, come from its rider map since 27
+    October 2026.
   - Dott Malvik, Melhus and Skaun hold fewer than twenty scooters each, and
     e-bikes, which the map leaves out. Malvik listed 15 to 17 available
     scooters in 27 polls on the evening of 13 October 2026 and 12 at midday

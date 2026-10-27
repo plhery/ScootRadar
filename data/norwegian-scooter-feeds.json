@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-11",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://api.entur.io/mobility/v2/gbfs/v3/manifest.json",
   "systems": [
     {
@@ -644,7 +644,7 @@
           "bounds": {
             "south": 59.8947,
             "north": 60.0214,
-            "west": 11.0,
+            "west": 11,
             "east": 11.106
           }
         },
@@ -897,6 +897,32 @@
       "timeZone": "Europe/Oslo",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=415&include_suggestion=false",
       "voiAppZone": "415"
+    },
+    {
+      "id": "lime_no_app_bergen",
+      "provider": "lime",
+      "city": "Bergen",
+      "center": [
+        60.39299,
+        5.32415
+      ],
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PFWSFTLROZNWZ",
+      "limeMapGrid": {
+        "south": 60.27888,
+        "west": 5.17212,
+        "north": 60.49396,
+        "east": 5.3903,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.027178788140686055,
+        "cells": "2-6,11-16,21-25,29-34,38-44,46-61,63-70,73-78,85-86,94-95,102-104,111-113,120-124,129-133,138-139"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Bergen_1930_exclude_new_type.json"
   ]
 }

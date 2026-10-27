@@ -104,6 +104,24 @@ York have scooter zones but no scooter near their centres, and none is a
 trial area. Nottingham's and Oxford's, on the locations page, held no scooter
 in their whole scooter zones: Lime rents e-bikes in both.
 
+On 27 October 2026, 278 more towns that no known polygon or public Lime feed
+covered were read the same way, most of them in Canada, the United Kingdom,
+Chile, France, Mexico and Japan. They found 50 new regions. 27 have no
+scooter zone, Oslo, Cambridge, Toulouse, Bordeaux, Osaka, Kyoto, Bogotá and
+Medellín among them. Of the 23 with scooter zones, Bergen's, Viña del Mar's,
+Saskatoon's, Regina's, Red Deer's, which also serves Lacombe and Blackfalds,
+and Waterloo Region's held scooters and are registered below. Waterloo
+Region's one zone covers Kitchener, Waterloo and Cambridge, so its market is
+named after the region, and search finds it by each town. Dublin's, Be'er
+Sheva's and Puebla's only scooter zones are demos, and Toronto's, which bans
+shared scooters, are a dogfooding programme and an offline-pause feature.
+Lime's public feeds already cover its Marseille, Paris West, Mississauga,
+Ottawa and Tel Aviv regions, which Aix-en-Provence, Argenteuil, Brampton,
+Gatineau and Jerusalem led to. Sharjah's, Oshawa's, Le Havre's, Lyon's,
+Tours's, Tauranga's and Guadalajara's, in Zapopan, held no scooter near their
+centres, and Sapporo's one zone is a trial at Es Con Field, in Kitahiroshima,
+with none near it.
+
 In Germany, 49 large cities were read: 12, Leipzig among them, found no
 region, 20 regions without a scooter zone, as Mannheim's, Karlsruhe's and
 Kassel's, and 11 a region already known. Of the six new regions with scooter
@@ -239,6 +257,9 @@ stationary reference scooter, country by country:
 | 27 October 2026 | Australia: Canberra | 112 | 28 | 1,374 | 104 |
 | 27 October 2026 | United States: Alexandria | 30 | 8 | 350 | 22 |
 | 27 October 2026 | United States: Tucson, Bellevue, Redmond, Everett, Bothell, Berkeley | 444 | 114 | 2,266 | 346 |
+| 27 October 2026 | Norway: Bergen | 81 | 21 | 2,107 | 104 |
+| 27 October 2026 | Chile: Viña del Mar | 7 | 2 | 295 | 29 |
+| 27 October 2026 | Canada: Waterloo Region, Red Deer, Saskatoon, Regina, Blackfalds, Lacombe | 265 | 67 | 1,105 | 46 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

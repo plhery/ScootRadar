@@ -44,12 +44,15 @@ describe('Canada', () => {
       'bird_ca_vaughan', 'bird_ca_windsor', 'lime_ca_calgary', 'lime_ca_edmonton', 'lime_ca_kelowna', 'lime_ca_mississauga',
       'lime_ca_ottawa', 'lime_ca_vancouver', 'move_ca_new_brunswick',
     ]);
-    // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
+    // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026, and since
+    // 27 October its former Neuron towns.
     expect([...new Set(canadian.filter(entry => entry.limeAppMap).map(entry => entry.city))]).toEqual([
-      'Ajax', 'Coquitlam', 'Laval', 'Montréal', 'Port Moody', 'Richmond', 'Vaughan',
+      'Ajax', 'Coquitlam', 'Laval', 'Montréal', 'Port Moody', 'Richmond', 'Vaughan', 'Blackfalds', 'Waterloo Region', 'Lacombe', 'Red Deer',
+      'Regina', 'Saskatoon',
     ]);
+    // Saskatchewan keeps standard time all year.
     const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', QC: 'America/Toronto', NS: 'America/Halifax',
-      NB: 'America/Moncton' };
+      NB: 'America/Moncton', SK: 'America/Regina' };
     for (const entry of canadian) {
       for (const area of serviceAreas(entry)) {
         const region = (area.region ?? entry.region) as keyof typeof zones;
@@ -60,9 +63,10 @@ describe('Canada', () => {
     expect(serviceAreas(system('lime_ca_calgary')).map(area => area.city)).toEqual(['Calgary', 'Airdrie']);
     expect(serviceAreas(system('lime_ca_edmonton')).map(area => area.city)).toEqual(['Edmonton', 'St. Albert', 'Beaumont']);
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA').map(entry => entry.city).sort()).toEqual([
-      'Airdrie, AB', 'Ajax, ON', 'Beaumont, AB', 'Calgary, AB', 'Coquitlam, BC', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Hamilton, ON',
-      'Kelowna, BC', 'Laval, QC', 'Leduc, AB', 'Mississauga, ON', 'Moncton, NB', 'Montréal, QC', 'Ottawa, ON', 'Port Moody, BC', 'Richmond, BC',
-      'Saint John, NB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Windsor, ON',
+      'Airdrie, AB', 'Ajax, ON', 'Beaumont, AB', 'Blackfalds, AB', 'Calgary, AB', 'Coquitlam, BC', 'Edmonton, AB', 'Fredericton, NB',
+      'Halifax, NS', 'Hamilton, ON', 'Kelowna, BC', 'Lacombe, AB', 'Laval, QC', 'Leduc, AB', 'Mississauga, ON', 'Moncton, NB', 'Montréal, QC',
+      'Ottawa, ON', 'Port Moody, BC', 'Red Deer, AB', 'Regina, SK', 'Richmond, BC', 'Saint John, NB', 'Saskatoon, SK', 'St. Albert, AB',
+      'Vancouver, BC', 'Vaughan, ON', 'Waterloo Region, ON', 'Windsor, ON',
     ]);
     expect(city('ca:on:Ottawa')).toMatchObject({ city: 'Ottawa, ON', country: 'CA', region: 'ON' });
   });
@@ -73,6 +77,9 @@ describe('Canada', () => {
     ['Dartmouth', 'Halifax, NS'], ['Dartmouth NS', 'Halifax, NS'], ['Tecumseh', 'Windsor, ON'], ['St Albert', 'St. Albert, AB'],
     ['Saint-Albert', 'St. Albert, AB'], ['St. Albert AB', 'St. Albert, AB'], ['Airdrie', 'Airdrie, AB'], ['Edmonton Canada', 'Edmonton, AB'],
     ['Laval Québec', 'Laval, QC'], ['Parc Jean-Drapeau', 'Montréal, QC'], ['Île Sainte-Hélène', 'Montréal, QC'], ['Richmond BC', 'Richmond, BC'],
+    // Lime's Waterloo Region zone covers its three cities.
+    ['Kitchener', 'Waterloo Region, ON'], ['Waterloo', 'Waterloo Region, ON'], ['Cambridge ON', 'Waterloo Region, ON'],
+    ['Saskatoon', 'Saskatoon, SK'], ['Regina Saskatchewan', 'Regina, SK'], ['Red Deer', 'Red Deer, AB'],
   ])('finds "%s" as %s', (query, title) => {
     expect(namedCities(query)[0].city.title).toBe(title);
   });
@@ -172,7 +179,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April and Leduc\'s from 22 October until 1 May, by each town\'s clock', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October until 1 May, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -197,14 +204,29 @@ describe('Canada', () => {
     expect(activeSeasonalPause(laval, Date.UTC(2027, 3, 14, 12))).toEqual({ city: 'Laval, QC', month: 4 });
     expect(activeSeasonalPause(laval, Date.UTC(2027, 3, 15, 12))).toBeNull();
     expect(feedPaused('canada:lime_ca_app_laval_000', winter)).toBe(true);
+    // Red Deer's by-law has the scooters removed from 1 November to 15 March.
+    const redDeer: [number, number] = [52.26682, -113.802];
+    expect(activeSeasonalPause(redDeer, Date.UTC(2026, 10, 1, 5, 30))).toBeNull();
+    expect(activeSeasonalPause(redDeer, Date.UTC(2026, 10, 1, 6, 30))).toEqual({ city: 'Red Deer, AB', month: 3 });
+    expect(activeSeasonalPause(redDeer, Date.UTC(2027, 2, 15, 18))).toEqual({ city: 'Red Deer, AB', month: 3 });
+    expect(activeSeasonalPause(redDeer, Date.UTC(2027, 2, 16, 18))).toBeNull();
+    // Saskatoon's by-law prices the permits on a season from 15 April to 31 October, on Saskatchewan's clock, which keeps
+    // standard time: 23:30 on 31 October is 05:30 UTC.
+    const saskatoon: [number, number] = [52.13238, -106.66892];
+    expect(activeSeasonalPause(saskatoon, Date.UTC(2026, 10, 1, 5, 30))).toBeNull();
+    expect(activeSeasonalPause(saskatoon, Date.UTC(2026, 10, 1, 6, 30))).toEqual({ city: 'Saskatoon, SK', month: 4 });
+    expect(activeSeasonalPause(saskatoon, Date.UTC(2027, 3, 14, 18))).toEqual({ city: 'Saskatoon, SK', month: 4 });
+    expect(activeSeasonalPause(saskatoon, Date.UTC(2027, 3, 15, 18))).toBeNull();
+    expect(feedPaused('canada:lime_ca_app_saskatoon_000', winter)).toBe(true);
     // The other towns' winters are announced each year, or are the operator's own.
     for (const [id, point] of [['ca:on:Mississauga', [43.589, -79.6441]], ['ca:ab:Calgary', [51.0447, -114.0719]],
       ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]], ['ca:qc:Montréal', [45.5146, -73.534]],
-      ['ca:on:Ajax', [43.85012, -79.03288]]] as const) {
+      ['ca:on:Ajax', [43.85012, -79.03288]], ['ca:sk:Regina', [50.45008, -104.6178]], ['ca:on:Waterloo Region', [43.45161, -80.49253]],
+      ['ca:ab:Lacombe', [52.46681, -113.7353]], ['ca:ab:Blackfalds', [52.38342, -113.7853]]] as const) {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:nb:Moncton', 'ca:qc:Laval']);
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
   });
 
   it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {

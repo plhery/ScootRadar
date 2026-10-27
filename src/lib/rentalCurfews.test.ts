@@ -137,11 +137,15 @@ describe('activeCurfew', () => {
     expect(activeCurfew(LILLESAND, at('2026-10-14T21:30:00Z'))).toEqual({ city: 'Lillesand', until: at('2026-10-15T03:00:00Z'), timeZone: 'Europe/Oslo' });
     expect(activeCurfew(GRIMSTAD, at('2026-10-14T21:30:00Z'))).toBeNull();
     expect(activeCurfew(GRIMSTAD, at('2026-10-14T22:30:00Z'))).toEqual({ city: 'Grimstad', until: at('2026-10-15T02:00:00Z'), timeZone: 'Europe/Oslo' });
-    // 00:30: Øygarden closes every night, Askøy only after Friday and Saturday, Bergen never.
+    // 00:30: Øygarden closes every night, Askøy and Bergen only after Friday and Saturday.
     expect(activeCurfew(STRAUME, at('2026-10-14T22:30:00Z'))).toEqual({ city: 'Øygarden', until: at('2026-10-15T03:00:00Z'), timeZone: 'Europe/Oslo' });
     expect(activeCurfew(KLEPPESTO, at('2026-10-14T22:30:00Z'))).toBeNull();
+    expect(activeCurfew(BERGEN, at('2026-10-14T22:30:00Z'))).toBeNull();
     expect(activeCurfew(KLEPPESTO, at('2026-10-16T22:30:00Z'))).toEqual({ city: 'Askøy', until: at('2026-10-17T03:00:00Z'), timeZone: 'Europe/Oslo' });
-    expect(activeCurfew(BERGEN, at('2026-10-16T22:30:00Z'))).toBeNull();
+    expect(activeCurfew(BERGEN, at('2026-10-16T22:30:00Z'))).toEqual({ city: 'Bergen', until: at('2026-10-17T03:00:00Z'), timeZone: 'Europe/Oslo' });
+    // Friday at 23:30: Bergen closes from 23:00, Askøy from midnight.
+    expect(activeCurfew(BERGEN, at('2026-10-16T21:30:00Z'))?.city).toBe('Bergen');
+    expect(activeCurfew(KLEPPESTO, at('2026-10-16T21:30:00Z'))).toBeNull();
   });
 
   it('takes the window of the night it is when a city has several', () => {

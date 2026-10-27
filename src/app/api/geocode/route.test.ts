@@ -166,10 +166,10 @@ describe('GET /api/geocode', () => {
     const expected = [
       { lat: 46.948, lng: 7.4474, display_name: 'Bern, Switzerland', title: 'Bern', subtitle: switzerland, covered: true },
       { lat: 45.6952, lng: 9.6742, display_name: 'Bergamo, Italy', title: 'Bergamo', subtitle: italy, covered: true },
+      { lat: 60.39299, lng: 5.32415, display_name: 'Bergen, Norway', title: 'Bergen',
+        subtitle: ({ de: 'Norwegen', DE: 'Norwegen', fr: 'Norvège', it: 'Norvegia', es: 'Noruega', is: 'Noregur' } as Record<string, string>)[language ?? 'en'] ?? 'Norway', covered: true },
       { lat: 37.8715, lng: -122.273, display_name: 'Berkeley, CA, United States', title: 'Berkeley, CA', subtitle: unitedStates, covered: true },
       { lat: 52.52, lng: 13.405, display_name: 'Berlin, Germany', title: 'Berlin', subtitle: germany, covered: true },
-      { lat: -23.817937, lng: -46.077225, display_name: 'Bertioga, Brazil', title: 'Bertioga',
-        subtitle: ({ de: 'Brasilien', DE: 'Brasilien', fr: 'Brésil', it: 'Brasile', es: 'Brasil', is: 'Brasilía' } as Record<string, string>)[language ?? 'en'] ?? 'Brazil', covered: true },
     ];
 
     await expect((await GET(request('Ber', language))).json()).resolves.toEqual(expected);
@@ -359,13 +359,13 @@ describe('address search results', () => {
 
     expect(await titles('Lausanne', LAUSANNE, [lausannegasse, leMont, lausanne])).toEqual(['Lausanne', 'Le Mont-sur-Lausanne', 'Lausannegasse']);
     expect(await titles('Laus', LAUSANNE, [lausannegasse, lausen, lausanne, leMont])).toEqual(['Lausanne', 'Le Mont-sur-Lausanne', 'Lausen', 'Lausannegasse']);
-    // Bergamo, Berkeley, Berlin and Bern from our list first. Burgdorf is in the canton of Bern, not on the way to
+    // Bergamo, Bergen, Berkeley, Berlin and Bern from our list first. Burgdorf is in the canton of Bern, not on the way to
     // it: it would come after Bernerstrasse, past the five shown.
     expect(await titles('Ber', ZURICH, [
       [{ type: 'city', name: 'Burgdorf', state: 'Bern', country: 'Schweiz', countrycode: 'CH' }, 47.0559, 7.6271],
       [{ type: 'city', name: 'Bergdietikon', state: 'Aargau', country: 'Schweiz', countrycode: 'CH' }, 47.3898, 8.3865],
       [{ type: 'street', name: 'Bernerstrasse', city: 'Zürich', countrycode: 'CH' }, 47.3889, 8.4986],
-    ])).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bertioga']);
+    ])).toEqual(['Bergamo', 'Bergen', 'Berkeley, CA', 'Berlin', 'Bern']);
   });
 });
 
@@ -477,7 +477,7 @@ describe('cities and towns', () => {
 
     expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns', 'nearby']);
     // Five at most, so Bernerstrasse, a place, is left out.
-    expect(await titles(response)).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bertioga']);
+    expect(await titles(response)).toEqual(['Bergamo', 'Bergen', 'Berkeley, CA', 'Berlin', 'Bern']);
   });
 
   it('takes a town of the name typed close to a city of our list for that city, ranked as that town', async () => {
@@ -543,7 +543,7 @@ describe('cities and towns', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('x-geocoding-data-source')).toBe('Verified scooter city catalog');
-    expect(await titles(response)).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bertioga']);
+    expect(await titles(response)).toEqual(['Bergamo', 'Bergen', 'Berkeley, CA', 'Berlin', 'Bern']);
   });
 });
 
@@ -1341,10 +1341,10 @@ describe('recorded Geoapify answers', () => {
     // The cities of our list it may become, then the towns it starts close by.
     ['Ber', 'de', [47.37, 8.54], ['towns', 'nearby'], [
       ['Bergamo', 'Italien', DATA],
+      ['Bergen', 'Norwegen', DATA],
       ['Berkeley, CA', 'Vereinigte Staaten', DATA],
       ['Berlin', 'Deutschland', DATA],
       ['Bern', 'Schweiz', DATA],
-      ['Bertioga', 'Brasilien', DATA],
     ]],
     // Rome, which "Rom" names in German, before Romanshorn, whose name it starts.
     ['Rom', 'de', [47.37, 8.54], ['towns', 'nearby'], [

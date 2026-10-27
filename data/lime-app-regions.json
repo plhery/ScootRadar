@@ -4176,6 +4176,180 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CA",
+      "city": "Blackfalds",
+      "center": [
+        52.38342,
+        -113.7853
+      ],
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "regionToken": "7IZQK3STJGCRQ",
+      "serviceAreas": [
+        {
+          "name": "Blackfalds SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mhz~H`wpuTxc@`@FlC`FvLKvYxSXfK`KDjKn@DiA`QCdTbL@`HaBrMpGXpUjLgBxEcJjU]h@{K`UtA?xYzEj@bKsi@{L}WMmm@lYX?wYyo@i\\p@aFxDdE|E|CCaDmBo@v@}Ev@wIIsWbD{GDoWoL}CxAcFhAsGZwW`GMAul@gJwBgHxEtApM}EtAqJ|]mCnDoChBgE_Ci@gMsc@GOhmAnNfIe@~FfQ`KX~BPdDe@h^_a@@Nge@y^sEu@lNxAtGdHN?zYlLAyAzUqEFoJxKqAeB{FtHwCA?}XgBuCOuC}AuA]sFef@JA`B"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Waterloo Region",
+      "center": [
+        43.45161,
+        -80.49253
+      ],
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "regionToken": "5FSQ62WQBOSGF",
+      "serviceAreas": [
+        {
+          "name": "Service Area [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gbjhGjkxjNrJxX|B|LBpFs@`FmCzJs@lJTzG|AdItGvM}VzXCTtIlu@lIqLlArCdAGpGkGtBkCd@bAt@m@qDuHnRmTqBmEuAd@cEgAmCgFyBe@|GaHbBaCqF}KsJvKqH_QeAgJnFq]nB|A`CxF|C{BjAgIt@iC~O`I~GhIhEbQh@hH~BjDdCbB`@r@g@|@A`An@p@fAsAlErJ\\@RtDFnF`CjFcE\\qH~HjNj[xTiXjf@al@zBeGt@mGBkGy@gJCsAeA[oV|WuD~DoCNsC`Dh@nAfAdF_Bx@qAzEoA`A@dALxAiC^oCzBoErE_BWKsBgCuEMmFWoE_AAgDcI\\m@?eAk@[o@Vi@wAqEiEU}ADaCmAeFaEmNeDcFpOaQzDnFjBtApBZdVv@`AJ~GpFxCLxN}@bCXlAzAhD`Gp@s@}BmGgAgB_BiAgAYmAEeJh@cFTsAUyBcBaCaCoBk@mMMqHM_CcA{AyCiEyIsA_GqFoTcLkd@{CkNeEaQaK_a@|D}JzAuHLyGg@yIAqEb@yCz@uChIiIdDwElCwHzEsO~A}HnAgBnBiB`EsAtEiBjFsDfImHhBuC`A{Df@sFP}H`@oDxBmErTsThLaIxJoDdG?xc@eE`O}IzCkDnBcDpIs^lEyPxBoB~IeB|HaEhj@ac@lHsDrL_AuBaRwJqhAji@an@yA{CgA_E}AsK}@m@xIoEe@}A{AoIMwD~FkIdAl@xCsAvCBpAp@hAWhGwQfBz@xJfCjSmGrC_PqD}^rV}GhF_BtGeFzFsRIqE}Be[fHcA~GuBzB_AQeBIsA@sBfBgCxBiD^kE~A{WEaBu@cPhAeAfAKpAT~@\\hAFlAg@v@?pAmAN{BtA}Be@iEXiExAmHZ_Ht@mCpD_@p@mW^cMK_DzCsKr\\}Fe@os@qEcEaEs@lIuh@n@kK{@wIgJ_f@gB_GsCcR~Ae@fCyBn@{D`@{EuBiMaJkScD{Sy@ej@|@u@rCiAdAaArAuCfA{Cz@mErAaLh@mORoQqAuLiD_UcBaMDcI}@oC~AsNwBwGRiMiDk\\gEya@g@uB}AyG}AaN_AuIbU_Er@~H~JwBlAnMhE_@r@t@lBnRnAXhEyJtEcFzNuZvIP~EbFnHwDhAB|Fk@|FoAdIkI|AfLvDrJlF`p@|NbChSeDhM{GnAgKvd@nAgIa}@IiNySmyBwc@pMua@|LmOdEmHhB{PzE}DpG_SvF{Eog@uB{CgOrF`@fDkBxA^fD_AfA~@xEsDyBeAiAcCz@_LrC_BlA{AjFw@hAgP~EzAbMz@vBjG~HcErIuDdDiMnKsLxEgMyrAyr@lPgb@dIdFpd@tX~qC|KjqAtCnZ|AtUTrCuCiBmDcB}@h@PfGTbBfE|Fe@jLl@dFnBrFOpSOtO~ItY|Ar@pDs@v@fB{@tDl@vGnM|b@f`@dDd^fBtBjUwUpUoNpN_NdAElIy@|EcBjFm@xEHrFfAxFbFvN`CxGzB~MbAjDKbHq@bFeCdGoEzCyBLwF\\{G`CwDlD{AzDaA`Hm@zJ?pPh@bGLnDQnIe@`EqBvEiB|@eCdDkCrG]`FeCfFmRfR{LdL_BsTwAaIcC}DiFmCgHqBuI`@kEz@oV`GkF|AoBxBkCrD{DkI{BqD_A|BmA|BgAl@mD\\qCnAcFjFgH~GaCtCeCbFuAhDkAbEsEfSyHr]{BzKeCvMqDrE}C~M_D{@eB}APqCkIsBeEYeELoDfAiD|AcEjF}HtLdDvKuB`A_C`@qDk@gC\\iFbDsHjFgLnMuK|LgFnFgFdBsVrWxLpj@iMtCrMbk@wElCiEjHaCbAcGjBwCkHqQtT{HbFcGvD_RrVd@|RqL~BiFCcPtPeViMaGrJcFiRoIfH_DjMcApL}`@pKeBdCyGbAwFjHyGjHkAnGj@xI`BzNq@xDmDpEsXvV{GjB`WrfAfO~i@jMwHxCYhHh@rZzElIpEfECdEfSzGrXFnF_EpTqCbSfCbSpLxWbO|HlD`DdWrOtAhE"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Waterloo,_ON_111_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Kitchener",
+        "Waterloo",
+        "Cambridge",
+        "Region of Waterloo"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Lacombe",
+      "center": [
+        52.46681,
+        -113.7353
+      ],
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "regionToken": "7IZQK3STJGCRQ",
+      "serviceAreas": [
+        {
+          "name": "Lacombe SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_cg_Ib{}tTHzkAoKiB_EbFwAhJmKuIw@fEvAdAo@`DtKdIeAzEmo@_d@YtUye@B}AvEaHwFkCjFMlGxDrAu@zEmAbCtCxBQzDaRuAmD~NrDbJNrCr@|BdDfTvB`CaE`HiBf@wA|t@xN]bEnJ`F`BhIs@fQjPvCcUbKzAf@wHb^~AIrDj@nNw@vO?dNqJb@yCzGtGtIiCfOqLA{@~CH|HdBdHzJ~ElC}@EoIbIf@lH|EnIaBlM\\cAw|@r@{EzSKhAjDvCvBAzCzOSAzy@z\\[FsUrOMP}y@qSgRCoc@nAcEcBgEnDExFtKhFaHfMNTqs@tN_SrAkFhJIJi_@}@gMySa@qTdFOjb@me@a@AwDeD@G}nAWm{@um@E"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Red Deer",
+      "center": [
+        52.26682,
+        -113.802
+      ],
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "regionToken": "7IZQK3STJGCRQ",
+      "serviceAreas": [
+        {
+          "name": "Red Deer Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}uj~Hn|suTvYLNjKbDbIxOb@hBf`G|KdRbxCd@`KwVji@~WrFhGxId@xGwD|GbJjOb@bI`Jdc@ud@n@sD~FuCxjAgrAxIuPdA{HzOwErN}}@cC_x@zQxCoEnRrAtDjBsIbM~Bd@nFtMtS`HuFvFkY|HfElIwObFy[`CaKeAkE~EqAvd@W@o_Akj@d@@wRfRUKev@cRVSeg@AibBL}@s@}qCwTwI}T}AoMbBmCCmGcDaOxAcyD?gJmAqNbAeHa@qXLaG`@mRGgCJe@zeBaELkFjXfGvRic@qACkLkKYgFaJsKyD_C_GsGbAJfn@vrAvBb@|s@cDfByJzNJv`@dU~^m]_AuJZaJUgIaDoBmLjFoVe@cCnAgAr@wIsBiH{JsKsI}DiTvA_FrOiL`m@yJzJwQfAwHo@aAuELiUuNyCmIKsBnqA@b|@s`@qHNnr@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json"
+      ],
+      "seasonal": {
+        "from": "11-01",
+        "until": "03-16",
+        "timeZone": "America/Edmonton"
+      }
+    },
+    {
+      "country": "CA",
+      "city": "Regina",
+      "center": [
+        50.45008,
+        -104.6178
+      ],
+      "region": "SK",
+      "timeZone": "America/Regina",
+      "regionToken": "JEDGSTVIC6WOQ",
+      "serviceAreas": [
+        {
+          "name": "Regina SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sywrH|mg}Rz@gzAfXmErVaOmBoQxCi[bF{QrIkFhErFpXiNSsNwCmL?yHjDwLlKmR`Emf@eAkGaHwTcT{`@sLLmJkVwA}QuPcZeMm@o`@h@}SNK|SwZd@UbeBad@Yk@xWgXCoNyB?KyAO?FaDg@cWm@{zAn@re@dnFu@BqUjOaC|B?Wq@|@?Je]j\\qJ|Sgb@toAkYje@kEeBuD`A?`E__Au@eEPeFn@qHvH_EbMHn_@aK\\KpfA|K`I_FCK|CrLA`BjAmGtSmChk@OreA{e@JA^sB@@jBnB?Y`c@k@jFqAlEyFlKmBbHM|lCpOPZ`cA~]`@|LF|k@H|SpDdXFRjfCf_@h@Ies@vg@`@kBsmAxg@{DnGk^nRf\\rh@}@AceC?oF`MyCzC}Ea@mNiFwGFqC`BmB^gEhLiGjJdJfE_Bh@gPmCwGv@yHxDnAlEfM|JTfKwMtR_QfM}TfEBbEKAkAzb@cKhQsEtPq@?Ktf@lA}ApJgFz~BzeCP?seGL@@_q@OE?qbA{FuSyz@k}@BG{@{@CD?Ac@hA{YiZuf@ug@qEaCCa@iF_EH_@w\\sV"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Regina_110_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Saskatoon",
+      "center": [
+        52.13238,
+        -106.66892
+      ],
+      "region": "SK",
+      "timeZone": "America/Regina",
+      "regionToken": "OJIPIAOPBIAIE",
+      "serviceAreas": [
+        {
+          "name": "SASK SZ 2026[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ajk}HlsdjSr\\m@dCzVF~u@tEZkAhcA_AfzBrKYhPlLdN[Ntw@~G]`Ktv@{H`FyBfHpQdKHfJ~BNEcMnIa@d@qHbFWOtl@tDbSfn@`Ap_@yJ|\\lCzPaBlQ~@bHwdCfOJTnPzZg@v[ePvAcqAe@wJCwk@uCaY`J{OzF}Y`Jwf@tPkWtNia@nRis@n@ws@cF_a@zFyAEm[vMex@r@s`@[sWpq@Uff@}kCzUatAXq`@qwAt@cVqc@hAa|CsGiD`AaHfLhC|Imn@j@cqFaa@JmjCtcEb@mm@kZy|@eq@oBor@l{@iHfT}c@qbAmNmHkBby@ogA`Im@pjAmT^cUqpAoq@aJw@{fCwL[{l@zcBuNsC{N`[|Tr_@hs@p_APxWf^`eBDb_@zE|Si@v~AeJe@{T_AyWoL{MkBgDp|@ok@iDo_@vGmFdGeApo@`ExE`Iz|@jFlUv~A`^lRiFGzvC`BlKpKp@`LvZ~J`CS|c@mGRaCr\\lBZp@cHlWNDh`@O~@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Saskatoon_91_exclude_new_type.json"
+      ],
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-15",
+        "timeZone": "America/Regina"
+      }
+    },
+    {
+      "country": "CL",
+      "city": "Viña del Mar",
+      "center": [
+        -33.0153009,
+        -71.5500508
+      ],
+      "timeZone": "America/Santiago",
+      "regionToken": "NOTIMGUXPSX4H",
+      "serviceAreas": [
+        {
+          "name": "Vina del Mar SZ  V1.1[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "l|phEbkysL~@gAl@gF`EaZzDki@rDmf@fSyiAh]}g@yNuNiXx`@q]`l@eh@oMiErOqTwFsV`@oAjSsOYkI`C\\nYylAaSmVmAc]rD[xEpBdCdC_C|JsBnDwAtFCnDFzBh@hBl@lGjD|LGjCbAxCBfStCp@[hi@tKtKhDf@gBdDvAKzA|B|@bWtNjFjFJxAvMhO|IfMxBXzFuF|ClByGtHgClMrEpChBl@bAlCGjH`Cv@~CMjCpBhBlB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Vina_del_Mar_32_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NO",
+      "city": "Bergen",
+      "center": [
+        60.39299,
+        5.32415
+      ],
+      "timeZone": "Europe/Oslo",
+      "regionToken": "PFWSFTLROZNWZ",
+      "serviceAreas": [
+        {
+          "name": "3 - Ytre urban sone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_nhoJm~o_@iFwGwG_GkCzFCAgf@~cAej@jg@yl@cFqQvNkRlOyFwBqEi@cEZ}Az@{E|BmAvD{@lCyC@gBDyA?iBgB{AW}@RmBHw@m@McDt@uCxAu@LaJ@qDjAqCvAcCfB{FrAyHt@mLxAkG|AiBv@qHv@{G`A_EpBeHv@iDzAoFrCcFpAaApB`AzEaF`DgHzBaBjBcBhFkCjFqCnCaB`@uBzAgApLy@`HsDt@uD?}@hBg@x@|CpBEr@i@jGrB|AnApAfC{@hElAzFtAzFzBK~@oFnCcAlBp@eBvExCbEnBpBxElAvB|B~Am@`FxAjBx@rC}BMuGhCaAb@eDb]tLtCwFmEsFiCoNhCqGtFfBdFvHzHlAvFsEpd@wL`K}OnNlKrHRfBeAZxEk@rH?~Fk@`LAfMf@nHpH}AbOnGjDiCvDpHq@uJLiLvGiD|J_AzJh@hD~BjFfF~DnF~EAbBvCfBfEbClDL|EwAvMcAhH_AxFA`GrBpArA`LhD|BCjGc@bHzBhNjBz@bDrDXxIfAtKfBJ|DtKdEfEbFu@nE|GHdGuE_@uDzBcD|AwAa@aCkD_I^gAXoAf@}AzLr@rFgAvFqAfHYcFsDgO_FUkF`AuFzHmA}D}DqOeGsATp]fBbK|AzCh@rDa@~GhBvGxBpDaEtW{@jBu@rF{ANuAvFNzCJjBi@NuBoGwC?qD_AkEfI_FhFpBlNbB`RzAbHYnGVnNx@hIdBrPzChLlJ{CzH{RsA}JnAwGp@mHxB`I`H|AhGzKbHwBhAdJvMc@`MyI{@~P`M|CbKuDlQyHnDnRq@hi@fHb\\vJjJxKrKnD{BtBzAbG_f@b@{AnGcx@xDdJxA`W_Azb@jHdKmDrQmDxVjB|GtIoE~Df@x@l]`Dd`@hGbA|DyFsA_S\\sGnDcDTcImHya@zQqe@eAuL}D_E[yIqQzWgAkSkAyJYaGtHiLtImO\\oHmJ_KeCsFnAeOaBiOuC}J{Gm@_B{IUoRlF{t@yJ}W|ON|Dwg@Vsm@lD_UuEcWoBoe@iLwKvI_`@uLq@kVxJzBwINeI_Fw@N}M_C{LnKyUkEqZpTaYYwMeGN}TfDwAaTfBsa@mEeA_JxVoBhOxBpO_KzF{D{GdCsd@wf@cBePcQhC}VzCgOhFcH|A|DX}E^c[vHsQjBqTlIc[g^}JsMpY?nUmM|L}C`@wCcGwKmKG}HdGqHcAsPuF{G_GlMuAx@wF_AoEqJeB|TcIbMyCyFeJtBeEaFgG}CuUb@sKuJeAhD~@fR{MwHoLjkAYtj@wN{Cg@}m@S{[mMiTaF_UwFjCsHiKJ_PsIsKyL}WuNi@gBzQ`EfOkKzK^b_@jFxQ`@rS_FrIgEuFuAgAYiA{C_AcDKoAyAaCo@iBu@{AJcAB{B_BuCWiB@oBqDgEuBoCg@u@r@sE@mB_DmHcAy@_CiDs@}De@_Bk@uB}@y@`@uAFg@`AS_B}B~@O`AqBl@gB|@_B`De@|COlHcCGkDxJQvCJpC}BjDeDpEcF~R{Gf@}Ih@yCp@mOWN}IeC_BwHGaBHgBlB{@rEsAnEiAbBTnE^jBWrAmDd@qAlAq@BoCGy@\\aA`@w@pGc@dEkA`AaBrFeBvGgA`CTnBeBfCWhB_BhF_BrF?`CN~DbBn@cCjPyAlEb@`Fm@dH}@fDoBhHcBkBeCaEmCzE_An@{AnBYhF{A~CvEvCsDlH{ErHiF~HiBaBcEfDoGfHaA_CgDz@cC{Ej@eGnAiDCuEGeAaDj@u@lAE|@kCIuAu@o@hGeByCkBBwAxAy@pBRxMaBgE}IvCsDhC{CtEyCvEwBhAe@yAgBr@mBfASdAeDtCmDpEGlNClHqDjGyBxDwA|BwITsIzOCpE~C~IgAtGcAbBsBdCoB\\aFi[mSdP_IlFiPhk@iGlXwI~QwBlKwCpLkEdGoFsHoFfCsGxJkBmEsAaEfDwOpF{Te@uSvG}FhJc[jFuUtBwCsN{Wc@wKoBkGyCiS{I{IsGkFeJsEwDAkTsEkPsCqJyKiSfg@sFrM}LdGaJgHhFyBtPsK_CuJP{SbFeQwG}HsXe@_H`AuDc@ZmW`E_WfCeFi@_MkDgPeCmEdCwWtCgWvEaNnA{CfGkZnEkSg@iRcG}b@yT|G}Pn`@oBtGpA~L_QlLuIdMbEn]sHxt@mJdV_CmF`BqY~Dg[IgJiIkM_N`R}MljAa@hUdA~NeEnGbJfh@bS_FlHpJc@fL_Nl\\}LlXuI|UmIr\\sN~{@_Mjq@mBtWm@bScGp_@wCxKiEdIoE}HyJlp@kJd\\QtMjWfOnOpEfMi@zBvEpIxEbOdCpKyBhHeBnGaNvLaa@hSkk@hH_ZnFuD|FfEhIeDbCJuA`SfCGxFrP|HdKjGgGzJuR`E}\\R}T`HeXrBki@xEwXJmM}GcD\\mKuFuGtByr@x@cN`KgItHeAzHmHdFmGz@yDS}HhAwD|FaExEaIhFiEKtHXlLnBXf@wDpBvEnDaBrIeC`CtA]rGKhLgAhLOpF_DtOnGIzCsBMwKhCaHhCyDvE`Ic@rSq@`H_FhHmCfKyFpSk@fLuGhLgDGI|L{DzLwKle@oD|}@rFxEzR}VzJdCjLwR|LoAxCbN~@zP~QcUxPwf@jNgL|MiNdDuKvCQ]zDbDYrDaDJkDlAqC~CsD[_BmGoAQoIz@aBrCiAlBoClCItDvCnCgD|BmDvARdB_@t@cAzA}DQ_FoDnAqDs@kDi@e@oGxBwFnAaHfAo@_@eAn@oEd@[x@eKj@sGJsDdBy@VhBpCkFfGJfCyUvFuDzGCjBl\\`LoW|GqAzEjG~Hu@hDhH_DvOpAvLvE~CeB~^t@`@lEwe@`LgSjBeGKsFvJ{Wv@zBPeJtA~DEhB`AuFr@rBVTeAxIoBjKhAjAWdCcAaCyDzLb@~@Ox@kAiAk@lDdBv@_@vCcCyAc@xBpCn@w@rCiAv@qBoAo@lGpCfAUhCm@cA}BpG}AqIyBvFyAvGnA`D{D`Xm@rNpBbMpFsEzEkKtPo\\dF}KnBfDf@wEm@yFbDkKPvLAhRhE`OnQkb@dBiCaDtP|B|FxGcS`BuVrDxJnAdQcEpVqIbu@kQdRkIhY}AtPnAxHlB[nCdKmBbJ}F~AyCfI`@lSUv@kC~Am@tG|A|JfBpa@uEfJs@~IpBhCt@wBbDrA~AtHnGhDvJtAlLmFHdEyTfOsBbNdS}AhNT`K{FtGqIvs@wBng@qMvDwIin@kf@_{@ac@a[gBiH}Em@sGrAyAzCwA~@cEz@cDp@oPhBkErAyAnA_Aj@yFcCsDcAwAhBgGhCyEz@}AfCcBz@cJpAsCrBY`DdBtAwB`BgIvGuH|A`BhB_Eh@kGtAaChBpB`DqG|B_@t@~ElCj@xC_At@^OpEfDpChDgD~CcCjNr@zSlSwAzX`PpInH}Bc@ja@hWtSbWaEnHf_@wEz`@d@nLdS_OhMb@dK|YgB|XzFdJ~InWxIhIdY__@lMnMtHo@}AtOoOvf@_WpSm^jM}R_XaXzDuZpWuUqTkG`PzDlJzDtS{Fp\\yOtFke@nOc]aJu_@vBaWrWwFiBsQaLqDkNkFvEcBvOlCvElI`Ga@lELpB_Ul\\vE|Oh[x^zKuB{Ih_@q@d]hMi@dFja@dQT`BnQrTiDpCpd@lA~SeEbMInQ~FlLfCtHp@zK|E~ZrPlCv[qYrMu|@}\\yaFlv@cBnSgJhKqGP~VxPzM~NyNfGav@t_@yq@`O}Fh]eRzPyYrRaPqPc|A_IaOuLq\\u@iFsDJoG@iAn@oA[OoBHoBjAwDnFcW_EyCVqHxKcGzC_FxAhC|GnDI`F{AhG~@vBfJSnA{B|ByFpDwB|OnM_@jTfDbAtEbCf@lIlDNnGsGu@aTmD}H`DyJeAum@qHqhA{Hkr@gGm[{FwZj@KzGjMrHeEaAmGsImGGsD_Bs@k@vAyAiAsAqEaDiCsAqBmATRdCdAfFwEgD{AaF}@kBiA{A_R}Q_V}FoCqD"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Bergen_1930_exclude_new_type.json"
+      ]
     }
   ]
 }

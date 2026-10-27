@@ -652,7 +652,9 @@ NLOD, Beryl's licence and Pony's dataset. See the
 [coverage audit](docs/belgian-norwegian-british-scooter-feeds.md) for the
 systems, the gaps and the recheck command. Since 25 October 2026 Bolt's rider
 map adds Antwerpen, Liège, Charleroi, Namur and Dinant in Belgium; see
-[Bolt rider app](#bolt-rider-app).
+[Bolt rider app](#bolt-rider-app). Since 27 October 2026, Lime's scooters in
+Bergen, where no operator publishes a feed, come from its rider map, signed
+in, as in Europe (see [the Lime catalog](docs/lime-app-map.md)).
 
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
 rules: Lovdata for Norway, except Arendal, whose regulation and city page
@@ -917,7 +919,11 @@ Bird's feeds point to its 2018 GBFS Data License Agreement, whose PDF answers
 404; the archived copy of its licence page allows display. Lime's point to its
 [GBFS terms](https://www.li.me/legal/public-gbfs-terms). The map's credits
 name both under the GBFS line. Ottawa's winter pause comes from the city's
-council report and season page. See the
+council report and season page. Since 26 October 2026, Lime's scooters in
+13 towns where it publishes no feed, from Laval and Vaughan to Saskatoon and
+Waterloo Region, come from its rider map, signed in, as in Europe (see
+[the Lime catalog](docs/lime-app-map.md)); Red Deer's and Saskatoon's winter
+pauses come from their by-laws. See the
 [coverage audit](docs/canadian-scooter-feeds.md) for the systems, the bounds,
 the empty feeds, the winter, the night rules, the parking, the gaps and the
 recheck command.

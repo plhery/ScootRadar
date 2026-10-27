@@ -3201,6 +3201,142 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CA",
+      "city": "Blackfalds",
+      "regionToken": "7IZQK3STJGCRQ",
+      "fingerprint": "0b04f8e467e16106392737a6c45056b208e6baea7b6c63568cf10cdcdce7e390",
+      "groups": 2,
+      "localCells": 8,
+      "coldMapRequests": 8,
+      "warmMapRequests": 8,
+      "scooters": 12,
+      "stationaryReferences": 6,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:02:51.628Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Waterloo Region",
+      "regionToken": "5FSQ62WQBOSGF",
+      "fingerprint": "accf7718c3ab258f562bb8bab842bf31b141b01d0e96506a2948a8ded57a5dcd",
+      "groups": 17,
+      "localCells": 67,
+      "coldMapRequests": 67,
+      "warmMapRequests": 67,
+      "scooters": 461,
+      "stationaryReferences": 25,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:10:54.644Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Waterloo,_ON_111_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Lacombe",
+      "regionToken": "7IZQK3STJGCRQ",
+      "fingerprint": "bb148b2c9d934fe451c044325b0cd7dbcae63f1448f5b5f3cd47688bc01848ba",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 10,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:12:32.640Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Red Deer",
+      "regionToken": "7IZQK3STJGCRQ",
+      "fingerprint": "7985e7365e3688b97951674d1a533d097e6a6793cdfe315731b01f8949a180c7",
+      "groups": 10,
+      "localCells": 40,
+      "coldMapRequests": 40,
+      "warmMapRequests": 40,
+      "scooters": 246,
+      "stationaryReferences": 8,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:17:26.665Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Regina",
+      "regionToken": "JEDGSTVIC6WOQ",
+      "fingerprint": "4b3180d7f38ff19b73a505796042bb5292547877eb4137803aec4fac5d85c7fe",
+      "groups": 15,
+      "localCells": 60,
+      "coldMapRequests": 60,
+      "warmMapRequests": 60,
+      "scooters": 177,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:24:47.662Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Regina_110_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CA",
+      "city": "Saskatoon",
+      "regionToken": "OJIPIAOPBIAIE",
+      "fingerprint": "d97cc15129199c491a8f834fa8ffed6e7d252a5756dec5d015b5c4a57488c791",
+      "groups": 20,
+      "localCells": 78,
+      "coldMapRequests": 78,
+      "warmMapRequests": 78,
+      "scooters": 199,
+      "stationaryReferences": 4,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:34:07.770Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Saskatoon_91_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CL",
+      "city": "Viña del Mar",
+      "regionToken": "NOTIMGUXPSX4H",
+      "fingerprint": "803d78d449b74cce738b3fa0eeaa7c92677b1361622dc511bc2125e9a3b2ede8",
+      "groups": 2,
+      "localCells": 7,
+      "coldMapRequests": 7,
+      "warmMapRequests": 7,
+      "scooters": 295,
+      "stationaryReferences": 29,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:01:41.790Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Vina_del_Mar_32_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NO",
+      "city": "Bergen",
+      "regionToken": "PFWSFTLROZNWZ",
+      "fingerprint": "e10265851783d08321f2beaeedca735246a2052129a23f42850242241f7859b2",
+      "groups": 21,
+      "localCells": 81,
+      "coldMapRequests": 113,
+      "warmMapRequests": 113,
+      "scooters": 2107,
+      "stationaryReferences": 104,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T20:00:38.824Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bergen_1930_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

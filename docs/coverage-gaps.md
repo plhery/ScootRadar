@@ -22,7 +22,9 @@ in Port Phillip and, since 27 October, Canberra, in Auckland, Christchurch,
 Hamilton, Wellington and Palmerston North, in Monterrey and Guadalupe, in
 Ajax, Coquitlam, Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond
 and Vaughan, in 58 American towns, from Los Angeles and Austin to Milwaukee
-and Tampa, in Ashdod and Eilat, and in Dubai, Abu Dhabi and Al Ain.
+and Tampa, in Ashdod and Eilat, in Dubai, Abu Dhabi and Al Ain, and since
+27 October in Bergen, Viña del Mar, Saskatoon, Regina, Red Deer, Lacombe,
+Blackfalds and Waterloo Region.
 One other market its rider map lists, Farmington, Utah, showed 2 scooters in
 each of three audits and none to check them against, so it remains a gap. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
@@ -216,8 +218,9 @@ banned shared scooters, and feeds that were empty when checked.
     scooters in Antwerpen come from its rider map since 25 October 2026; the
     map's Brussels market held no scooter that day.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
-  - Bergen (~9,000 scooters: Ryde, Lime, RideMovi), Drammen and Larvik have
-    no public source.
+  - Ryde and RideMovi in Bergen, Drammen and Larvik have no public source.
+    Lime's Bergen scooters, about 2,100, come from its rider map since 27
+    October 2026.
   - Ryde's fleet in Kristiansand is missing from Entur. Its fleets in Asker,
     Bærum, Bodø, Lillestrøm and Lørenskog are on the map since 22 October
     2026. Dott publishes nothing for Bodø.
@@ -559,7 +562,9 @@ banned shared scooters, and feeds that were empty when checked.
   in 14 towns of Alberta, British Columbia, Ontario and Nova Scotia are
   covered, and Lime from its rider map since 26 October 2026 in Ajax,
   Coquitlam, Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and
-  Vaughan.
+  Vaughan, and since 27 October in its former Neuron towns: Saskatoon,
+  Regina, Red Deer, Lacombe, Blackfalds and Waterloo Region (Kitchener,
+  Waterloo and Cambridge).
   - **Banned or not allowed:** Toronto bans shared scooters, apart from
     private sites such as the Distillery District; Montréal doesn't allow
     them in its streets, only on Parc Jean-Drapeau's islands; London, ON did
@@ -576,8 +581,8 @@ banned shared scooters, and feeds that were empty when checked.
     Lime's are covered.
   - **Neuron:** its 12 Canadian feeds answer 404 since Lime bought it on 3
     July 2026. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
-    but none answers yet for Red Deer, Lacombe, Blackfalds, Sylvan Lake,
-    Saskatoon, Regina or Waterloo Region.
+    and its rider map the other towns since 27 October 2026, but for Sylvan
+    Lake, where its Red Deer region has no zone.
   - **MoVe:** its [authorized app map](move-app-map.md) now supplies
     Fredericton, Moncton and Saint John in New Brunswick. No MoVe scooters
     in Halifax or Dartmouth were observed, despite the store listing.
@@ -989,6 +994,11 @@ Bonaire had feeds to add. Survey files are in
   still holds scooters in Beaumont, and whether the town goes on in 2027;
   remove its area from `lime_ca_edmonton` if it doesn't. Check again in April
   2027.
+- **November 2026:** Lime's Regina, Waterloo Region, Lacombe and Blackfalds
+  markets, from its rider map since 27 October 2026. None of the four
+  publishes a season ([Canada's winter section](canadian-scooter-feeds.md#winter)):
+  if Lime takes its scooters in, pause each from the day it empties until
+  spring, as Leduc.
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));
@@ -1165,11 +1175,13 @@ Bonaire had feeds to add. Survey files are in
   from 16 November until 15 April, from by-law L-13007; check the 2027
   permit's dates and the amending by-law L-13130
   ([Canada's winter section](canadian-scooter-feeds.md#winter)).
-- **20 April 2027:** Bird Saskatoon, empty on 14 October 2026. The city's
-  [page](https://www.saskatoon.ca/moving-around/cycling/e-scooters) sets the
-  season from 15 April to 31 October; if it still does, add Saskatoon with a
-  window from `11-01` until `04-15` in `America/Regina` (its feed says
-  `Canada/Central`, which keeps daylight saving time; Saskatchewan doesn't).
+- **20 April 2027:** Bird Saskatoon, empty on 14 October 2026; the city's
+  [page](https://www.saskatoon.ca/moving-around/cycling/e-scooters) names
+  only Lime. Lime's Saskatoon market, from its rider map, is paused from
+  `11-01` until `04-15` in `America/Regina`, from Traffic Bylaw 7200's fee
+  season; in 2026 the scooters came back on 5 May, so if the city announces
+  a later start, move `until` to it
+  ([Canada's winter section](canadian-scooter-feeds.md#winter)).
 - **Late April 2027:** Ottawa's 2027 season. The catalog pauses Ottawa from
   16 November until 30 April, from council's "approximately April 30 to
   November 15"; if the city announces another start, change `until` for Bird
@@ -1212,7 +1224,7 @@ Bonaire had feeds to add. Survey files are in
 - **1 May 2027:** Bird's other Canadian towns (Lethbridge, Red Deer, Kamloops,
   Vernon, Brampton, Oshawa, Laval and the rest listed above) and Lime's
   former Neuron towns (Red Deer, Saskatoon, Regina, Waterloo Region): probe
-  the slugs again. Windsor's one-year contract with Bird, from May 2026, ends
+  the slugs again, as a public feed would replace Lime's rider map there. Windsor's one-year contract with Bird, from May 2026, ends
   then too: check that `windsor-on` still answers.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp

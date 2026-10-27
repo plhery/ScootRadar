@@ -601,6 +601,160 @@
         "lngStep": 0.01866105887982563,
         "cells": "0-3,5-6,11-20,22-31,33-41,44-52,55-62,66-72,79-83,94,108-109"
       }
+    },
+    {
+      "id": "lime_ca_app_blackfalds",
+      "provider": "lime",
+      "city": "Blackfalds",
+      "region": "AB",
+      "center": [
+        52.38342,
+        -113.7853
+      ],
+      "timeZone": "America/Edmonton",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "7IZQK3STJGCRQ",
+      "limeMapGrid": {
+        "south": 52.37099,
+        "west": -113.81849,
+        "north": 52.40471,
+        "east": -113.76365,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022069856123995216,
+        "cells": "0-7"
+      }
+    },
+    {
+      "id": "lime_ca_app_waterloo_region",
+      "provider": "lime",
+      "city": "Waterloo Region",
+      "region": "ON",
+      "center": [
+        43.45161,
+        -80.49253
+      ],
+      "aliases": [
+        "Kitchener",
+        "Waterloo",
+        "Cambridge",
+        "Region of Waterloo"
+      ],
+      "timeZone": "America/Toronto",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "5FSQ62WQBOSGF",
+      "limeMapGrid": {
+        "south": 43.3516,
+        "west": -80.60622,
+        "north": 43.5039,
+        "east": -80.29608,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.018530672184146134,
+        "cells": "14-16,31-33,43-50,58-67,74-77,82-84,90-94,106-110,119-120,122-126,136-143,153-158,173-175,190-191"
+      }
+    },
+    {
+      "id": "lime_ca_app_lacombe",
+      "provider": "lime",
+      "city": "Lacombe",
+      "region": "AB",
+      "center": [
+        52.46681,
+        -113.7353
+      ],
+      "timeZone": "America/Edmonton",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "7IZQK3STJGCRQ",
+      "limeMapGrid": {
+        "south": 52.44861,
+        "west": -113.76047,
+        "north": 52.49391,
+        "east": -113.69922,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022108728165296243,
+        "cells": "0-11"
+      }
+    },
+    {
+      "id": "lime_ca_app_red_deer",
+      "provider": "lime",
+      "city": "Red Deer",
+      "region": "AB",
+      "center": [
+        52.26682,
+        -113.802
+      ],
+      "timeZone": "America/Edmonton",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "seasonal": {
+        "from": "11-01",
+        "until": "03-16",
+        "timeZone": "America/Edmonton"
+      },
+      "limeAppMap": true,
+      "limeAppRegion": "7IZQK3STJGCRQ",
+      "limeMapGrid": {
+        "south": 52.22288,
+        "west": -113.86488,
+        "north": 52.32503,
+        "east": -113.74145,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02199617242438284,
+        "cells": "1-5,7-34,36-40,44-45"
+      }
+    },
+    {
+      "id": "lime_ca_app_regina",
+      "provider": "lime",
+      "city": "Regina",
+      "region": "SK",
+      "center": [
+        50.45008,
+        -104.6178
+      ],
+      "timeZone": "America/Regina",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JEDGSTVIC6WOQ",
+      "limeMapGrid": {
+        "south": 50.39703,
+        "west": -104.70965,
+        "north": 50.50865,
+        "east": -104.5028,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021137929540391506,
+        "cells": "2-5,7-9,12-19,23-29,32-38,41-48,50-58,60-65,71-75,81-83"
+      }
+    },
+    {
+      "id": "lime_ca_app_saskatoon",
+      "provider": "lime",
+      "city": "Saskatoon",
+      "region": "SK",
+      "center": [
+        52.13238,
+        -106.66892
+      ],
+      "timeZone": "America/Regina",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-15",
+        "timeZone": "America/Regina"
+      },
+      "limeAppMap": true,
+      "limeAppRegion": "OJIPIAOPBIAIE",
+      "limeMapGrid": {
+        "south": 52.07225,
+        "west": -106.76482,
+        "north": 52.19555,
+        "east": -106.52686,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02192188771385011,
+        "cells": "5-7,14-65,67-75,80-87,93-95,97-98,105"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -610,6 +764,10 @@
     "https://assets.lime.bike/zones_attributes/Laval,_QC_156_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Montreal_186_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Richmond,_BC_154_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Red_Deer_94_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Waterloo,_ON_111_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Regina_110_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Saskatoon_91_exclude_new_type.json"
   ]
 }

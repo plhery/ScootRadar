@@ -282,11 +282,34 @@
         "lngStep": 0.01613347875276028,
         "cells": "3-4,18-19,24-26,28-32,36-38,40-45,48-56,60-67,73-76,85-88,97-99,115-118,126-129,137-141,148-155,160-167,173-179,185-191,198-200,202-203"
       }
+    },
+    {
+      "id": "lime_cl_app_vina_del_mar",
+      "provider": "lime",
+      "city": "Viña del Mar",
+      "center": [
+        -33.0153009,
+        -71.5500508
+      ],
+      "timeZone": "America/Santiago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "NOTIMGUXPSX4H",
+      "limeMapGrid": {
+        "south": -33.03504,
+        "west": -71.5693,
+        "north": -32.98301,
+        "east": -71.52933,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.0160636064003742,
+        "cells": "0-4,7,10"
+      }
     }
   ],
   "verifiedOn": "2026-10-24",
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
-    "https://assets.lime.bike/zones_attributes/Santiago_379_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Santiago_379_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Vina_del_Mar_32_exclude_new_type.json"
   ]
 }

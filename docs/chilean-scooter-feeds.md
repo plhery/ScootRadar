@@ -20,3 +20,15 @@ Lime's reference point is inside the main northeastern operating area. Its
 polygons also cover the separately recorded southern districts; downtown
 Santiago is outside those polygons. The shared city shortcut keeps its
 existing centre for the other operators.
+
+## Viña del Mar, October 2026
+
+Lime's map lists a second Chilean region, Viña del Mar's, which its
+locations page doesn't name: it was found on 27 October 2026 by reading the
+map's static elements at Viña del Mar's centre. Its one scooter zone,
+"Vina del Mar SZ V1.1", covers central Viña del Mar, about 6 km by 4 km,
+and held 295 scooters in its full-area audit that afternoon, every stationary
+reference found. It is registered as its own market, beside Whoosh's
+scooters there, from its
+[outline document](https://assets.lime.bike/zones_attributes/Vina_del_Mar_32_exclude_new_type.json).
+No night ban or season was found for Viña del Mar.

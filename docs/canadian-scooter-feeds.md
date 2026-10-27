@@ -44,6 +44,18 @@ Jean-Drapeau. Lime's New Westminster and Victoria regions held no scooter:
 it rents only e-bikes in both. See
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 
+Its former Neuron towns followed on 27 October 2026, each after a clean
+full-area audit that afternoon, local time: Waterloo Region (461 scooters),
+Red Deer (246), Saskatoon (199), Regina (177), Blackfalds (12) and Lacombe
+(10). Lime's locations page names none of them: reading its map at each
+town's centre found their regions. Waterloo Region's one zone covers
+Kitchener, Waterloo and Cambridge, so the map lists it once, under the
+region's name, and search finds it by each city's. Red Deer's and
+Saskatoon's by-laws set their winters ([below](#winter)); no town sets
+hours. Lime's Toronto region holds only a dogfooding zone and a feature
+test, as Toronto bans shared scooters, and its Oshawa zone held no scooter
+near its centre.
+
 The original GBFS audit follows.
 
 | Operator | Town | Province | Available scooters, last poll (lowest–highest) |
@@ -175,7 +187,7 @@ no alert either.
 
 ## Winter
 
-Ottawa, Moncton and Laval set their seasons by a standing rule. Ottawa's seasonal window in the
+Ottawa, Moncton, Laval, Red Deer and Saskatoon set their seasons by a standing rule. Ottawa's seasonal window in the
 catalog runs from 16 November until 30 April, Toronto time, for both Bird and
 Lime. Council's report ACS2025-PDB-TP-0002 of 16 April 2025
 ([eScribe](https://pub-ottawa.escribemeetings.com/filestream.ashx?DocumentId=232935))
@@ -222,6 +234,29 @@ had Leduc "kicking off the scooting season in the coming weeks"; the window's
 dates are 2026's, so check in late April 2027 when the scooters come back
 ([coverage gaps](coverage-gaps.md)).
 
+Red Deer's Business Licence Bylaw 3609/2018 has operators "Remove E-scooters
+from the City between November 1 and March 15 each year" (Schedule J, 2(f),
+[consolidated 5 September 2025](https://www.reddeer.ca/media/reddeerca/city-government/bylaws/Business-Licence-Bylaw-3609-2018.pdf)),
+and the city's 2026
+[licence agreement](https://www.reddeer.ca/media/reddeerca/city-government/plans-and-projects/E-scooter-Licensing-Agreement.pdf)
+sets the season "from March 16 to October 31". The catalog pauses Lime's Red
+Deer market from 1 November until 16 March, Edmonton time, so the map says
+the scooters are back in March. Lime only took over in October 2026: the
+city's [program page](https://www.reddeer.ca/escooter), changed 21 October,
+says it "has finalized an agreement with Lime e-mobility". Lacombe and
+Blackfalds, in the same Lime region, publish no season, so their markets are
+not paused.
+
+Saskatoon's Traffic Bylaw 7200 sets each permit's fee by the scooters "able
+to operate within the City between April 15 and October 31" (Schedule 19,
+[consolidated to 17 December 2025](https://www.saskatoon.ca/sites/default/files/media/documents/7200.pdf)),
+and leaves the season to the permit, which isn't published. The catalog
+pauses Lime's Saskatoon market from 1 November until 15 April, Regina time,
+which keeps standard time all year. In 2026 the scooters came back on 5 May
+([city news](https://www.saskatoon.ca/news-releases/shared-e-scooters-return-2026-season)),
+so "feed empty" may report the market in late April 2027: move `until` then
+if the city announces a later start.
+
 Elsewhere the winter stop is announced each year, or is the operator's own,
 so the catalog sets no window, and an empty feed shows as an empty town (see
 above):
@@ -242,6 +277,17 @@ above):
   April to 15 November.
 - **Ajax:** Lime's contract runs to 31 December 2027 and the by-law, 87-2024,
   sets no season.
+- **Regina:** the city's
+  [page](https://regina.ca/transportation-roads-parking/walking-cycling/e-scooters)
+  says the program "runs seasonally, usually between May and October, weather
+  permitting".
+- **Waterloo Region:** the Region's
+  [program page](https://www.engagewr.ca/shared-micromobility-program) says
+  "between April and October" each year, with no dates. Lime took over
+  Neuron's agreement, which ran "through to October 2026"
+  ([Region and cities, 3 July 2026](https://www.waterloo.ca/news/posts/region-and-cities-will-work-with-lime-on-deployment-of-lime-vehicles/)),
+  and the program renews each year until November 2029.
+- **Lacombe** and **Blackfalds** publish no season.
 - **Windsor:** the city's page says "between April and October"; its 2023
   report says Bird doesn't run in winter by its own choice, and the 2026
   contract reportedly runs from February to November.
@@ -346,8 +392,10 @@ Bays show from zoom 16, as elsewhere.
   Brampton and Oshawa with no feed found; its Kelowna, Saskatoon, Ajax and
   Surrey feeds were empty.
 - **Neuron**'s twelve Canadian feeds answer 404 since Lime bought it; Lime has
-  no public feed yet for its other former Neuron towns (Red Deer, Saskatoon,
-  Regina, Waterloo Region and others).
+  no public feed yet for its other former Neuron towns, which its rider map
+  supplies since 27 October 2026 (Saskatoon, Regina, Red Deer, Lacombe,
+  Blackfalds, Waterloo Region). Its Red Deer region has no zone in Sylvan
+  Lake.
 - **MoVe** runs scooters in Halifax and Dartmouth (and has announced Moncton)
   on ATOM Mobility, `move-mobility.rideatom.com`, but its system id isn't
   public, so no feed was found (18 October 2026).

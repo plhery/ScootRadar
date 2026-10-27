@@ -149,11 +149,13 @@
       "anchor": [61, 9.5],
       "featuredCities": ["no:Oslo", "no:Trondheim", "no:Stavanger", "no:Kristiansand", "no:Bærum", "no:Tromsø"],
       "credits": {
-        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map",
+        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [
           { "label": "NO: Entur AS · NLOD", "href": "https://data.norge.no/nlod/en/2.0" },
           { "label": "NO: Kartverket boundaries · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" },
-          { "label": "NO: Voi map", "href": "https://www.voi.com/" }
+          { "label": "NO: Voi map", "href": "https://www.voi.com/" },
+          { "label": "NO: Lime map", "href": "https://www.li.me/" },
+          { "label": "NO: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
