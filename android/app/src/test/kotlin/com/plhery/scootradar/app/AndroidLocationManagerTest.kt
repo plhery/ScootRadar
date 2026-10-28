@@ -151,6 +151,28 @@ class AndroidLocationManagerTest {
     }
 
     @Test
+    fun aRefusalEndsWithAGrantMadeInSettingsSoThatTakenBackItIsAskedForAgain() {
+        val manager = manager()
+        manager.cameToForeground()
+        manager.requestWhenInUseAuthorization()
+        manager.permissionsAnswered()
+        assertEquals(ScooterAuthorizationStatus.Denied, manager.authorizationStatus)
+
+        // Allowed in Settings, the app away, and seen as it comes back.
+        manager.leftForeground()
+        grant(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        manager.cameToForeground()
+        assertEquals(ScooterAuthorizationStatus.AuthorizedWhenInUse, manager.authorizationStatus)
+
+        // Then "Ask every time", or Android resetting an unused app: a question to ask again, as iOS has it.
+        manager.leftForeground()
+        revoke(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        manager.cameToForeground()
+        assertEquals(ScooterAuthorizationStatus.NotDetermined, manager.authorizationStatus)
+        assertEquals("on the next launch too", ScooterAuthorizationStatus.NotDetermined, manager().authorizationStatus)
+    }
+
+    @Test
     fun restrictedWhenThePhonesOwnerKeepsLocationFromTheRider() {
         grant(Manifest.permission.ACCESS_FINE_LOCATION)
         restrict(UserManager.DISALLOW_CONFIG_LOCATION)
