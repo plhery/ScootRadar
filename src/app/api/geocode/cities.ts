@@ -21,6 +21,7 @@ const SWISS_ALIASES: Record<string, string[]> = {
   'ch:biel': ['Biel', 'Bienne', 'Bienna'],
   'ch:gossau': ['Gossau SG'],
   'ch:schaffhausen': ['Schaffhouse', 'Sciaffusa'],
+  'ch:sion': ['Sitten'],
   'ch:st-gallen': ['Sankt Gallen', 'Saint-Gall', 'San Gallo'],
   'ch:wadenswil': ['Waedenswil', 'Richterswil'],
   'ch:wil': ['Wil SG', 'Bronschhofen'],

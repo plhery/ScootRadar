@@ -463,7 +463,7 @@ describe('ControlSheet settings', () => {
       'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL',
       'DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map',
       'TR/MK/BA/XK: BinBin map',
-      'DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0',
+      'CH/DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

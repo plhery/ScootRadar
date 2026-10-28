@@ -130,11 +130,13 @@ license questions to PubliBike. Responses advertise a 500-request limit without
 documenting the time window, so the app caches each for 30 seconds.
 
 Lime's Kloten zone, a region apart from its Zürich and Opfikon zones, is in no
-feed either. Since 28 October 2026 the cache reads it from Lime's rider map,
-signed in, as in Europe (see [the Lime catalog](docs/lime-app-map.md)), from
-Switzerland's catalog, `data/swiss-scooter-feeds.json`, which holds only such
-app maps, reported as `switzerland` in `meta.sources`. Their scooters count
-under the town's area, Kloten's, with the dataset's, and
+feed either, nor is its Sion zone. Since 28 October 2026 the cache reads both
+from Lime's rider map, signed in, as in Europe (see
+[the Lime catalog](docs/lime-app-map.md)), from Switzerland's catalog,
+`data/swiss-scooter-feeds.json`, which holds only such app maps, reported as
+`switzerland` in `meta.sources`. Their scooters count under the towns' areas
+with the dataset's: Kloten's, and Sion's, which only Lime serves, its zone and
+1 km around it, centred on GeoNames' coordinates for the town (CC BY 4.0).
 `SCOOTER_ALWAYS_FAST=CH`, which stands for the dataset, Hopp and PubliBike,
 leaves them at Lime's own pace.
 

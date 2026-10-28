@@ -30,6 +30,7 @@ describe('searchCoveredCities', () => {
     ['Sankt Gallen', 'St. Gallen'], ['Saint-Gall', 'St. Gallen'], ['San Gallo', 'St. Gallen'],
     ['Winterthour', 'Winterthur'], ['Schaffhouse', 'Schaffhausen'], ['Effretikon', 'Illnau-Effretikon'],
     ['Waedenswil', 'Wädenswil'], ['Richterswil', 'Wädenswil'], ['Wil SG', 'Wil'], ['Gossau SG', 'Gossau'],
+    ['Sion', 'Sion'], ['Sitten', 'Sion'],
     ['Munich', 'München'], ['Muenchen', 'München'], ['Rome', 'Roma'], ['Cologne', 'Köln'], ['koln', 'Köln'],
     ['Hanover', 'Hannover'], ['Tuebingen', 'Tübingen'], ['Muenster', 'Münster'], ['Ludwigshafen', 'Ludwigshafen am Rhein'],
   ])('finds "%s" as %s', (query, title) => {

@@ -143,16 +143,20 @@ di Ragusa, 16 km apart in one region; Ishigaki and North Ishigaki, Lime's
 South and North Ishigaki regions; San Marcos, Texas; and UNC Charlotte, the
 university's campus, a region apart from Charlotte's. Kortrijk's, Mechelen's,
 Lucca's and Keszthely's, on Lake Balaton, and Volos's, found by a town probe,
-held no scooter near their centres at midnight, to be read again by day. Of
-the Swiss regions, Basel's, Opfikon's, Uster's and Zurich's are in the
-national feed; Sion's and Kloten's are not. Kloten's is registered in
-Switzerland's own catalog, `data/swiss-scooter-feeds.json`, which holds only
-app maps, each in the town of one of the open data's areas
-(`swissCatalogProblem` in `scripts/country-catalog.mjs`), so its scooters
-count under Kloten's area with the other operators'. Its zone is apart from
-Lime's Zürich and Opfikon zones, which the national feed lists. Sion's 95
+held no scooter near their centres at midnight, nor anywhere in their zones in
+full-area audits at midday on 28 October: dormant regions, left out. Of the
+Swiss regions, Basel's, Opfikon's, Uster's and Zurich's are in the national
+feed; Sion's and Kloten's are not. Both are registered in Switzerland's own
+catalog, `data/swiss-scooter-feeds.json`, which holds only app maps, each in
+the town of one of the open data's areas (`swissCatalogProblem` in
+`scripts/country-catalog.mjs`), so their scooters count under the towns' areas
+with the other operators'. Kloten's zone is apart from Lime's Zürich and
+Opfikon zones, which the national feed lists. No feed lists a scooter in Sion,
+so it has an area of its own, Lime's zone and 1 km around it, centred on the
+town's GeoNames coordinates, and its German name, Sitten, finds it. Sion's 95
 scooters all moved between its two reference views that night, leaving none to
-check the scan against, so it is to be audited again by day.
+check the scan against; audited again at midday, 43 of its 97 stood still, and
+the scan found all of them.
 
 In Germany, 49 large cities were read: 12, Leipzig among them, found no
 region, 20 regions without a scooter zone, as Mannheim's, Karlsruhe's and
@@ -299,6 +303,7 @@ stationary reference scooter, country by country:
 | 28 October 2026 | Japan: Ishigaki, North Ishigaki | 173 | 44 | 264 | 48 |
 | 28 October 2026 | United States: San Marcos, UNC Charlotte | 36 | 9 | 214 | 20 |
 | 28 October 2026 | Switzerland: Kloten | 8 | 2 | 49 | 1 |
+| 28 October 2026 | Switzerland: Sion | 45 | 12 | 97 | 43 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

@@ -273,6 +273,7 @@ enum ScooterProviderCoverage {
         GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58),
         GeoBounds(south: 47.36, west: 9.3, north: 47.58, east: 9.68),
         GeoBounds(south: 47.6, west: 8.42, north: 47.83, east: 8.88),
+        GeoBounds(south: 46.1601, west: 7.2794, north: 46.2738, east: 7.4512),
         GeoBounds(south: 47.28, west: 9.1, north: 47.6, east: 9.65),
         GeoBounds(south: 47.25, west: 8.58, north: 47.43, east: 8.86),
         GeoBounds(south: 47.4149, west: 9.0528, north: 47.4735, east: 9.1565),
@@ -289,6 +290,14 @@ enum ScooterProviderCoverage {
         systems.append((.lime, GeoBounds(south: 47.43948, west: 8.55693, north: 47.45295467, east: 8.60554)))
         systems.append((.lime, GeoBounds(south: 47.45295467, west: 8.55693, north: 47.46642934, east: 8.60554)))
         systems.append((.lime, GeoBounds(south: 47.46642934, west: 8.55693, north: 47.47397, east: 8.59677416)))
+        systems.append((.lime, GeoBounds(south: 46.16906, west: 7.33130416, north: 46.18253467, east: 7.38967541)))
+        systems.append((.lime, GeoBounds(south: 46.18253467, west: 7.31184708, north: 46.19600934, east: 7.40913249)))
+        systems.append((.lime, GeoBounds(south: 46.19600934, west: 7.29239, north: 46.209484, east: 7.40913249)))
+        systems.append((.lime, GeoBounds(south: 46.209484, west: 7.29239, north: 46.22295867, east: 7.42858957)))
+        systems.append((.lime, GeoBounds(south: 46.22295867, west: 7.29239, north: 46.23643334, east: 7.43823)))
+        systems.append((.lime, GeoBounds(south: 46.23643334, west: 7.29239, north: 46.24990801, east: 7.43823)))
+        systems.append((.lime, GeoBounds(south: 46.24990801, west: 7.33130416, north: 46.26338267, east: 7.43823)))
+        systems.append((.lime, GeoBounds(south: 46.26338267, west: 7.38967541, north: 46.26484, east: 7.42858957)))
         systems.append((.bird, GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66)))
         systems.append((.bird, GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953)))
         systems.append((.bird, GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711)))
@@ -3860,7 +3869,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1074)
+        cities.reserveCapacity(1075)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -3875,6 +3884,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "ch:romanshorn", name: "Romanshorn", countryCode: "CH", center: GeoPoint(latitude: 47.555, longitude: 9.39), bounds: GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58)))
         cities.append(ScooterCity(id: "ch:rorschach", name: "Rorschach", countryCode: "CH", center: GeoPoint(latitude: 47.478, longitude: 9.493), bounds: GeoBounds(south: 47.36, west: 9.3, north: 47.58, east: 9.68)))
         cities.append(ScooterCity(id: "ch:schaffhausen", name: "Schaffhausen", countryCode: "CH", center: GeoPoint(latitude: 47.715, longitude: 8.65), bounds: GeoBounds(south: 47.6, west: 8.42, north: 47.83, east: 8.88)))
+        cities.append(ScooterCity(id: "ch:sion", name: "Sion", countryCode: "CH", center: GeoPoint(latitude: 46.2274, longitude: 7.3556), bounds: GeoBounds(south: 46.1601, west: 7.2794, north: 46.2738, east: 7.4512)))
         cities.append(ScooterCity(id: "ch:st-gallen", name: "St. Gallen", countryCode: "CH", center: GeoPoint(latitude: 47.4245, longitude: 9.3767), bounds: GeoBounds(south: 47.28, west: 9.1, north: 47.6, east: 9.65)))
         cities.append(ScooterCity(id: "ch:uster", name: "Uster", countryCode: "CH", center: GeoPoint(latitude: 47.34, longitude: 8.719999999999999), bounds: GeoBounds(south: 47.25, west: 8.58, north: 47.43, east: 8.86)))
         cities.append(ScooterCity(id: "ch:uzwil", name: "Uzwil", countryCode: "CH", center: GeoPoint(latitude: 47.4365, longitude: 9.1342), bounds: GeoBounds(south: 47.4149, west: 9.0528, north: 47.4735, east: 9.1565)))
@@ -4940,7 +4950,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1074
+    static let cityCount = 1075
     static let countryCount = 56
 
     /// Cities by distance from the point to their centre, nearest first.
@@ -5432,7 +5442,7 @@ enum ScooterCountryCatalog {
         ("CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
         ("DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map", "https://bolt.eu/"),
         ("TR/MK/BA/XK: BinBin map", "https://www.binbin.tech/"),
-        ("DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
+        ("CH/DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

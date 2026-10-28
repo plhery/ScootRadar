@@ -4647,6 +4647,28 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Kloten_5536_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CH",
+      "city": "Sion",
+      "center": [
+        46.216944999999996,
+        7.36581
+      ],
+      "timeZone": "Europe/Zurich",
+      "regionToken": "PICIHW6L4QWUB",
+      "serviceAreas": [
+        {
+          "name": "[Sion][SZ][[Service Zone]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "oaayGwnok@fDuA~CkBvCcCnCwCbCkDvB}DVm@XYdAeAdFeFfFeFFG`DaDtAsAdBcBnC{CdA{AdAiAXY@AdDoB|CgCrC}CbAyA`@[fCmC|B{CrBmDfB}DXs@zAkElAwE~@_FF]p@qF`@uFPyF?{FOyF_@uFq@qFaAgFw@oD{BcIi@{ACMqAgF{AiFKa@ESiA_FEQ\\@hDKfDa@dDy@~CoAPI~@e@fFsCNKLGx@GdDk@bDaA|CuAvCmBnC_CdCsC|BeDnBuDp@uAZs@Zs@~@oBb@aAx@kBJUpBcF~AuFlAaGx@mGJiAfA]bD{AzCsBrCgChC}C~BmD`FyI`FwI`FwIlCuF@CjCiANGdDaBjCkBj@[tC{BjCoCbCaDtBqDjBcEzAoEnA{E~@gFn@mF^sFNuF?wFAs@Q{Fa@wFs@qFaAgFsA_F_BqEoBcE{BqDgCaDoCkCeFgEm@g@eBoBuCeCqCgB{AqA}@w@_CgBmCiBuCwA}DaBmGkCA?gFgDoFkCqFmC{CoAaDy@cDe@}J{@cFu@EAqDg@eAMq@I{GaEwDiB{DmAoFmAmFkAaCc@aC[yJyBsDk@wDQi@?{BBG?{D@yD^kAPg@L[AyDTeAPEAaEk@mE]yCKwABSc@yBmEmBgDsBsCg@kFqAwJyAmIcBsHMg@GUj@{BbAoFn@uF`@}FL_GAaGU_Ge@yFu@uFgAiFwAaFeBqEmDaIuBcE_@q@aCoDkC}CuCgC_CgB}B}AcCmAgF{BgF{BaKaGq@aAkFiHwCmDsHuHsCsDKM{C}D}EgJyBuDeCaDoCoCyCyB_DcBgDmAkDu@mD[mDEoDTkDj@gDbAcDzA{CpBgK`IqBj@_CbAs@ZyBnAC@cHpCcHnCCBuEhBsEhBC@yElBC@wIlDyInDwDzA_D|AyCpBqCfCgCzC{BlDqB|DaBjEuAxEeAbFg@hDADkAbE_AjEQ~@{@vFi@`GWdGCrEOlEAfGPhGb@bGt@|FfArFxAhFfBxE`@|@Vh@FNVz@~AnElB~Db@n@Hh@hA`FvAtEFNDZVfB|@rEEz@KzFFzFTxFf@tFb@rCBr@f@nFBR?@NtFDt@B`@JzAF~@BJRlCNjABd@T|BD`@j@rFL~@zArIH^XbADVR|@Lf@@B@D~@vDDLr@rBHTBH^bARd@n@dBvBfEdCvD\\^Hd@n@tBNx@tAtFbAxC??FPTlEf@xE[fBCVIj@In@g@fBKb@aArEs@xEe@`FE~@??E`@GfBCX?LGhAG|ED|E@XR|E^xEj@tE\\lBBRhA`Gb@`BNv@Rn@z@dDRn@`BxEpBhEj@`Av@zA~BnDhCzCxArA|@tDpAhERf@t@lBFPtA|C~ApCJN^r@jBjCXnAJ`@lAlEzA`EHN?BDJhAfDHr@d@dCv@zElAdF@BF\\cApDiAnFu@vFe@~FSbG?dG?\\@t@@ZTjGB`@AxD@|@Ab@BfDCdA@jFPjF@Vd@`GH|@f@|Dn@vDLl@?LDz@TtEb@pEFj@Hz@|@xFh@bC@HNx@lAbG?@Jb@BJBNRr@??n@bCxAhEdBzDJPrBnDt@tCzAnEVn@hB~DtBpD~B`DFFz@dApCrC|CzBbDdBjDlAlDt@pDXrD@bEK|CSzCg@lIkBBFlG|JrAnBlA~AjAxAX\\jAnAj@j@pAjAVTdAz@d@ZnA|@ZRfAn@\\Pp@^ZLtAn@n@V~Ah@xAd@vCp@xC`@`BLzAH`@@~AB`@?jAA`@ApAG^CvAO`@EpAS`@GvA[d@K~Ae@fCy@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Sion_98_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Sitten"
+      ]
     }
   ]
 }

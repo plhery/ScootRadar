@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-27",
+  "verifiedOn": "2026-10-28",
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
@@ -3574,6 +3574,23 @@
       "finishedAt": "2026-10-27T23:58:58.308Z",
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Kloten_5536_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CH",
+      "city": "Sion",
+      "regionToken": "PICIHW6L4QWUB",
+      "fingerprint": "48382daecf2a9a59c22d10af63f320f1ef19e743d68fb3b35b07b5ebad20b5b7",
+      "groups": 12,
+      "localCells": 45,
+      "coldMapRequests": 45,
+      "warmMapRequests": 45,
+      "scooters": 97,
+      "stationaryReferences": 43,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-28T11:13:31.360Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Sion_98_exclude_new_type.json"
       ]
     }
   ],

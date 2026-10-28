@@ -196,6 +196,20 @@
     }
   },
   {
+    "id": "ch:sion",
+    "city": "Sion",
+    "center": [
+      46.2274,
+      7.3556
+    ],
+    "bounds": {
+      "south": 46.1601,
+      "west": 7.2794,
+      "north": 46.2738,
+      "east": 7.4512
+    }
+  },
+  {
     "id": "ch:st-gallen",
     "city": "St. Gallen",
     "center": [

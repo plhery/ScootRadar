@@ -11,10 +11,11 @@
       "anchor": [46.8, 8.2],
       "featuredCities": ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:biel"],
       "credits": {
-        "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; Lime authenticated rider map",
+        "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [
           { "label": "CH: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
-          { "label": "CH: Lime map", "href": "https://www.li.me/" }
+          { "label": "CH: Lime map", "href": "https://www.li.me/" },
+          { "label": "CH: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
