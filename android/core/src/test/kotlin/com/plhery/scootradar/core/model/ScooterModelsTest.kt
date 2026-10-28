@@ -487,7 +487,10 @@ class ScooterModelsTest {
           "clusters": [],
           "lastSeen": {
             "vehicles": [{"provider": "lime", "lat": 47.3769, "lng": 8.5417, "battery": 64, "vehicle_id": "seen-1"}],
-            "clusters": [{"id": "seen:13:4290:2868", "lat": 47.38, "lng": 8.54, "count": 9, "providers": {"lime": 9}}]
+            "clusters": [
+              {"id": "seen:13:4290:2868", "lat": 47.38, "lng": 8.54, "count": 9, "providers": {"lime": 9}},
+              {"id": "seen:13:4291:2868", "lat": 47.39, "lng": 8.56, "count": 3, "city": "Zürich", "providers": {"bird": 2, "voi": 1}}
+            ]
           },
           "providers": {},
           "meta": {
@@ -504,7 +507,16 @@ class ScooterModelsTest {
         assertTrue(response.clusters.isEmpty())
         assertEquals(listOf("lime:seen-1"), response.lastSeenVehicles.map { it.id })
         assertEquals(64, response.lastSeenVehicles.firstOrNull()?.battery)
-        assertEquals(listOf("seen:13:4290:2868"), response.lastSeenClusters.map { it.id })
+        assertEquals(
+            listOf(
+                ScooterCluster(id = "seen:13:4290:2868", latitude = 47.38, longitude = 8.54, count = 9, providers = mapOf("lime" to 9)),
+                ScooterCluster(
+                    id = "seen:13:4291:2868", latitude = 47.39, longitude = 8.56, count = 3,
+                    providers = mapOf("bird" to 2, "voi" to 1), city = "Zürich",
+                ),
+            ),
+            response.lastSeenClusters,
+        )
         assertEquals("2026-10-25T09:40:00.000Z", response.meta?.lastSeenAt)
 
         // Without them, as from a server that sends none.
@@ -518,6 +530,11 @@ class ScooterModelsTest {
         assertTrue(plain.lastSeenVehicles.isEmpty())
         assertTrue(plain.lastSeenClusters.isEmpty())
         assertNull(plain.meta?.lastSeenAt)
+        // Nor an overview, a refresh under way or a season over.
+        val meta = checkNotNull(plain.meta)
+        assertFalse(meta.overview)
+        assertFalse(meta.refreshing)
+        assertTrue(meta.seasonOver.isEmpty())
     }
 
     @Test

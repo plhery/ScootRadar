@@ -31,6 +31,7 @@ import com.plhery.scootradar.core.model.RideEstimateDuration
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterChromeLayout
+import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
@@ -206,6 +207,35 @@ class ScooterMapControllerTest {
         assertEquals(100, model.allProviderCount)
         assertTrue(ScooterClusteringPolicy.representationsMatch(6, 10))
         assertFalse(ScooterClusteringPolicy.representationsMatch(10, 11))
+    }
+
+    @Test
+    fun countryTotalsAreNamedInTheLanguageShownAndACodeWithoutANameInCapitals() = runTest {
+        fun city(id: String, latitude: Double, longitude: Double, count: Int) = ScooterCluster(
+            id = id, latitude = latitude, longitude = longitude, count = count, providers = mapOf("lime" to count), city = id,
+        )
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = emptyList(),
+                clusters = listOf(city("city:de:Berlin", 52.52, 13.405, 40), city("city:c1:Somewhere", 10.0, 10.0, 5)),
+                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 2, overview = true),
+            ),
+        )
+        val model = makeController(api)
+        model.updateViewport(MapRegion(GeoPoint(40.0, 10.0), latitudeDelta = 60.0, longitudeDelta = 90.0), zoom = 2, zoomLevel = 2.0)
+        val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        assertEquals(listOf("Germany", "C1"), model.mapClusters.value.map { it.city })
+
+        // At once in the language chosen, without asking the server again.
+        model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.Fr))
+        assertEquals(listOf("Allemagne", "C1"), model.mapClusters.value.map { it.city })
+        assertEquals(1, api.calls)
+
+        // A city's country, as its subtitle: the code as it is where it has no name.
+        val bounds = GeoBounds(south = 9.9, west = 9.9, north = 10.1, east = 10.1)
+        assertEquals("Suisse", ScooterCity(id = "ch:x", name = "X", countryCode = "CH", center = GeoPoint(10.0, 10.0), bounds = bounds).countryName)
+        assertEquals("c1", ScooterCity(id = "c1:x", name = "X", countryCode = "c1", center = GeoPoint(10.0, 10.0), bounds = bounds).countryName)
     }
 
     @Test
@@ -744,6 +774,23 @@ class ScooterMapControllerTest {
         // A value the app no longer knows goes by the sun.
         defaults.set("sepia", forKey = "appearance")
         assertEquals(ScooterAppearance.Sun, newModel().appearance.value)
+    }
+
+    @Test
+    fun theMapStyleIsKeptAndOneTheAppDoesNotKnowIsTheQuietGround() = runTest {
+        val defaults = InMemoryScooterDefaults()
+        fun newModel(): ScooterMapController = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+        val firstModel = newModel()
+        assertEquals(AppleMapStyle.Quiet, firstModel.mapStyle.value)
+
+        firstModel.setMapStyle(AppleMapStyle.Satellite)
+        assertEquals("satellite", defaults.string(forKey = "apple-map-style"))
+        assertEquals(AppleMapStyle.Satellite, newModel().mapStyle.value)
+        newModel().setMapStyle(AppleMapStyle.Standard)
+        assertEquals(AppleMapStyle.Standard, newModel().mapStyle.value)
+
+        defaults.set("hybrid", forKey = "apple-map-style")
+        assertEquals(AppleMapStyle.Quiet, newModel().mapStyle.value)
     }
 
     @Test
@@ -2653,6 +2700,59 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun onlyTheSettingsTheFirstFixAndTheRatingsBookkeepingAreStored() = runTest {
+        val defaults = RecordingDefaults()
+        val parked = scooter(id = "s1", provider = "lime")
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(parked)))
+        val kept = mutableListOf<List<String>>()
+        val model = makeController(
+            api,
+            defaults = defaults,
+            locationManager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse),
+            keepAppLanguages = { kept += it },
+        )
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = waitUntil { api.calls == 1 && !model.isLoading.value }
+        assertTrue(loaded)
+
+        // What a rider does in a session: every setting, a fix, a place, a scooter, a ride.
+        model.setMinimumBattery(40.0)
+        model.setMapStyle(AppleMapStyle.Satellite)
+        model.setShowsZones(true)
+        model.setAppearance(ScooterAppearance.Dark)
+        model.toggle(Bird)
+        model.setRideEstimateMinutes(20)
+        model.setRidePass(ProviderRidePass(enabled = true, freeUnlock = true, freeMinutes = 5), provider = Lime)
+        model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.Fr))
+        model.focusOnUser()
+        model.locationsUpdated(listOf(zurichFix))
+        model.focusOnAddress(MapDestination(title = "Paradeplatz", subtitle = "Zürich", point = GeoPoint(47.3697, 8.5392)))
+        model.selectScooter(parked.id)
+        model.rentalOpened()
+        model.becameInactive()
+        model.becameActive()
+        model.refresh()
+        settle()
+
+        // iOS's keys (ScooterMapModel.swift:370-377, ScooterReviewPrompt.swift:29-34), with the providers turned
+        // off where iOS keeps those turned on; the language goes to Android's application locales, where iOS
+        // keeps AppleLanguages.
+        val allowed = setOf(
+            "minimum-battery", "apple-map-style", "map-zones", "appearance", "disabled-providers",
+            "ride-estimate-minutes-v1", "provider-ride-passes-v1", "has-located-once",
+            "review-use-days", "review-last-use-day", "review-bad-day", "review-asked-version", "review-asked-day",
+            "review-rental-opened-at",
+        )
+        val keys = defaults.writes.map { it.substringBefore(" = ") }.toSet()
+        assertTrue("Stored: $keys", allowed.containsAll(keys))
+        assertTrue(keys.containsAll(allowed.take(8) + "review-rental-opened-at"))
+        assertEquals(listOf(listOf("fr")), kept)
+        // No position, place or scooter among the values.
+        val stored = defaults.writes.joinToString("\n")
+        for (secret in listOf("47.3", "8.5", "Paradeplatz", "s1")) assertFalse(secret, stored.contains(secret))
+    }
+
+    @Test
     fun citiesWithScootersAreTheSixNearestToTheMapCentre() = runTest {
         val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
 
@@ -3473,6 +3573,36 @@ class ScooterMapControllerTest {
             clock.advance(86_400.0)
             returnFromRide(model, api, after = 20.0 * 60, clock = clock)
             assertEquals(1, model.reviewMoments.value)
+        }
+    }
+
+    @Test
+    fun leavingEndsTheMomentToAskForARating() = inUTC {
+        runTest {
+            // The moment came, and the rider left before the screen asked.
+            val clock = TestClock()
+            val (model, api) = reviewController(clock)
+            returnFromRide(model, api, after = 20.0 * 60, clock = clock)
+            assertTrue(model.reviewDue)
+            model.becameInactive()
+            assertFalse(model.reviewDue)
+            assertFalse(model.takeReviewMoment())
+
+            // Back from a ride and gone again before the refresh came in: the load asks nothing.
+            val otherClock = TestClock()
+            val (other, otherAPI) = reviewController(otherClock)
+            other.rentalOpened()
+            other.becameInactive()
+            otherClock.advance(20.0 * 60)
+            val calls = otherAPI.calls
+            other.becameActive()
+            assertTrue(other.awaitsReviewLoad)
+            other.becameInactive()
+            assertFalse(other.awaitsReviewLoad)
+            val refreshed = waitUntil { otherAPI.calls == calls + 1 && !other.isLoading.value }
+            assertTrue(refreshed)
+            assertEquals(0, other.reviewMoments.value)
+            assertFalse(other.reviewDue)
         }
     }
 
