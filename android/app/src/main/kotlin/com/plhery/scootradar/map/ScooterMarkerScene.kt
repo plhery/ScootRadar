@@ -163,8 +163,11 @@ sealed interface CameraMove {
     /** A region shown whole, tilted and turned as the map is: setRegionPreservingPerspective. */
     data class Region(val region: MapRegion) : CameraMove
 
-    /** Places fitted in the part of the map left visible, as a route is fitted (MAP-052, MAP-302). */
-    data class Fit(val coordinates: List<GeoPoint>) : CameraMove
+    /**
+     * Places fitted in the part of the map left visible, as a route is fitted (MAP-052, MAP-302, MAP-176); at once
+     * where it is not [animated], as a route fitted while the map is off the screen is.
+     */
+    data class Fit(val coordinates: List<GeoPoint>, val animated: Boolean = true) : CameraMove
 }
 
 /** A marker coming up from nothing: from a moment of the uptime clock, in seconds, over a length, along a curve. */
