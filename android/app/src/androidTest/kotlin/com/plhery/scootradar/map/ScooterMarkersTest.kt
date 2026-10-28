@@ -648,18 +648,28 @@ class ScooterMarkersTest {
         }
         val vsync = object : Choreographer.FrameCallback {
             override fun doFrame(frameTimeNanos: Long) {
+                // A measurement that failed is left running: it ends with its window, rather than read another test's.
+                if (!window.decorView.isAttachedToWindow) {
+                    reading.quitSafely()
+                    return
+                }
                 vsyncs += frameTimeNanos / 1_000_000
                 if (reads) {
                     if (vsyncs.size % NAMES_EVERY == 0) underNames()
                     reader.post {
                         val at = SystemClock.uptimeMillis()
                         val pixels = Bitmap.createBitmap(1, column.height(), Bitmap.Config.ARGB_8888)
-                        PixelCopy.request(window, column, pixels, { result ->
-                            if (result != PixelCopy.SUCCESS) return@request
-                            synchronized(probes) {
-                                for (probe in probes) probe.colours += at to pixels.getPixel(0, probe.y - column.top)
-                            }
-                        }, reader)
+                        // The window's surface can go between the frame and the copy, which then throws.
+                        if (!window.decorView.isAttachedToWindow) return@post
+                        try {
+                            PixelCopy.request(window, column, pixels, { result ->
+                                if (result != PixelCopy.SUCCESS) return@request
+                                synchronized(probes) {
+                                    for (probe in probes) probe.colours += at to pixels.getPixel(0, probe.y - column.top)
+                                }
+                            }, reader)
+                        } catch (_: IllegalArgumentException) {
+                        }
                     }
                 }
                 if (measuring) Choreographer.getInstance().postFrameCallback(this)

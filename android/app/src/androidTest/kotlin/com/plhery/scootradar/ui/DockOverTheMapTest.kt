@@ -212,6 +212,8 @@ class DockOverTheMapTest {
     private fun screenshot(name: String): Bitmap {
         val bitmap = screen()
         InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let { dir ->
+            // The app's data cleared since the run began (pm clear) takes the folder with it.
+            File(dir).mkdirs()
             File(dir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
         }
         return bitmap
