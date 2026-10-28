@@ -582,8 +582,8 @@ class ScooterAPITest {
 
     @Test
     fun payloadGoesToTheAppsOwnWebsite() {
-        // "ScootRadar Android" has no website in Umami yet: until it has, nothing is sent.
-        assertNull(ScooterAnalytics.website)
+        // "ScootRadar Android", apart from the iPhone's "ScootRadar iOS" and the website's "ScootRadar" (docs/analytics.md).
+        assertEquals("2bba24f8-8180-4616-ae0e-4bc528957c85", ScooterAnalytics.website)
         assertEquals(testWebsite, ScooterAnalytics.payload(null, website = testWebsite).string("website"))
     }
 

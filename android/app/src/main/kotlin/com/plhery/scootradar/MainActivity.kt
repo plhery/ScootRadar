@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             initializer {
                 val container = (application as ScooterApplication).container
                 val arguments = if (BuildConfig.DEBUG) LaunchArgumentDefaults.arguments(intent.extras) else emptyMap()
+                container.analyticsSmokeTest = arguments[LaunchArgumentDefaults.ANALYTICS_SMOKE_TEST] == true
                 ScooterMapViewModel(
                     container = container,
                     defaults = if (arguments.isEmpty()) container.defaults else LaunchArgumentDefaults(arguments, container.defaults),
