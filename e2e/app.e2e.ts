@@ -740,7 +740,8 @@ test('scooters being collected again stand faded where they were last seen until
   stage = 'some';
   await expect(page.locator('.scooter-marker')).toHaveCount(3, { timeout: 10_000 });
   await expect(page.locator('.last-seen-light')).toHaveCount(1);
-  await expect(page.locator('.sheet .sheet-sub')).toHaveText(/^Updating · faded ones seen at \d\d:\d\d$/);
+  // 40 minutes ago is yesterday just after midnight, and then names its day: "Tue 23:28".
+  await expect(page.locator('.sheet .sheet-sub')).toHaveText(/^Updating · faded ones seen at (?:[A-Z][a-z]{2} )?\d\d:\d\d$/);
   stage = 'all';
   await expect(page.locator('.last-seen-light')).toHaveCount(0, { timeout: 10_000 });
   await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters on this map$/);
