@@ -75,7 +75,10 @@ class PanelScreenshotTest(private val state: PanelState, private val look: Look)
     @Config(qualifiers = "w1280dp-h800dp-mdpi")
     fun across() = panel("across")
 
-    /** The same tablet upright. */
+    /**
+     * The same tablet upright. At the accessibility sizes the panel's 420 dp leaves the map too little of the 800,
+     * and the dock takes its place: a card folded or not shows the same, which pins that choice.
+     */
     @Test
     @Config(qualifiers = "w800dp-h1280dp-mdpi")
     fun upright() = panel("upright")

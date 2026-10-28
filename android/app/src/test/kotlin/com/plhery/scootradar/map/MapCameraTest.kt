@@ -158,6 +158,23 @@ class MapCameraTest {
         assertEquals(MapInsets(0.0, 380.0 + 16, 0.0, 0.0), MapCamera.beside(panel, ScreenRect(16.0, 0.0, 1264.0, 800.0), false))
     }
 
+    /**
+     * A route or a region beside the panel is fitted inside the safe area too, as iOS fits it within the map's layout
+     * margins, which UIKit reads back with the safe area added: above a tablet's taskbar, under its status bar.
+     */
+    @Test
+    fun besideAPanelAFitKeepsInsideTheSafeArea() {
+        val bounds = ScreenRect(0.0, 0.0, 1280.0, 800.0)
+        val margins = MapCamera.beside(ScreenRect(16.0, 40.0, 380.0, 500.0), bounds, rightToLeft = false)
+        val safeArea = MapInsets(top = 24.0, left = 0.0, bottom = 48.0, right = 0.0)
+        assertEquals(ScreenRect(412.0, 24.0, 868.0, 728.0), MapCamera.within(bounds, margins, safeArea))
+        // A side bar for navigation: the panel's margin is past it already, and the other side keeps clear of it.
+        val sides = MapInsets(top = 24.0, left = 48.0, bottom = 0.0, right = 48.0)
+        assertEquals(ScreenRect(412.0, 24.0, 820.0, 776.0), MapCamera.within(bounds, margins, sides))
+        // Without a safe area it is the map inside its margins.
+        assertEquals(ScreenRect(412.0, 0.0, 868.0, 800.0), MapCamera.within(bounds, margins, MapInsets.zero))
+    }
+
     @Test
     fun marginsMeasuredApartInTheirLastDigitsAreTheSame() {
         val margins = MapInsets(0.0, 412.0, 0.0, 0.0)

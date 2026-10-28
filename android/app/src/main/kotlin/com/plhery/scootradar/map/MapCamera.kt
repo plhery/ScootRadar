@@ -242,8 +242,9 @@ class MapCamera(
         val bounds = projection.bounds
         if (!(bounds.width > 0 && bounds.height > 0)) return
         focusUnderWay = null
-        // MapKit frames a region within the map's margins, which a panel moves past it.
-        val frame = frame()
+        // MapKit frames a region within the map's margins, which a panel moves past it, and which hold the safe
+        // area then.
+        val frame = if (movedMargins != null) withinSafeArea() else frame()
         when (move) {
             is CameraMove.Region -> animate(
                 CameraPosition.Builder(map.cameraPosition)
@@ -264,14 +265,15 @@ class MapCamera(
         val first = coordinates.firstOrNull() ?: return
         val bounds = projection.bounds
         // The map shows its centre in the middle of its margins, which a panel moves past it: the rect is fitted
-        // to the part of the map inside them.
+        // to the part of the map inside them, and the places kept inside the safe area, which iOS's margins hold.
         val frame = frame()
+        val within = if (movedMargins != null) withinSafeArea() else frame
         var band = visibleRect()
-        if (movedMargins != null) band = band.intersection(frame) ?: frame
+        if (movedMargins != null) band = band.intersection(within) ?: within
         var visible = band.insetBy(WalkTrailLook.fitMargin, WalkTrailLook.fitMargin) ?: band
         // With very little room left, the margin goes first.
         if (visible.width < 88 || visible.height < 88) visible = band
-        if (visible.width < 44 || visible.height < 44) visible = frame
+        if (visible.width < 44 || visible.height < 44) visible = within
         // Street level is a phone's: measured across the map's width.
         val minimumScale = WalkTrailLook.closestFitWidth / ScooterMarkerScene.metresPerMapPoint(first.latitude) *
             ScooterMapCameraPolicy.spanScale(across = bounds.width) / bounds.width
@@ -364,6 +366,13 @@ class MapCamera(
             max(0.0, bounds.height - margins.top - margins.bottom),
         )
     }
+
+    /**
+     * The frame inside the safe area too. UIKit reads a map's margins back with its safe area added, and iOS fits a
+     * route or a region beside a panel within them: a side the panel moves is past the safe area already, and the
+     * others are the safe area's.
+     */
+    private fun withinSafeArea(): ScreenRect = within(projection.bounds, margins, safeArea)
 
     /** The chrome over the map: the search bar above, and the locate button with the dock under it, or the panel. */
     fun chromeDidChange(chrome: MapChrome) {
@@ -582,6 +591,21 @@ class MapCamera(
             } else {
                 MapInsets(0.0, max(0.0, panel.maxX - bounds.minX + PANEL_GAP), 0.0, 0.0)
             }
+
+        /**
+         * The part of a map of `bounds` inside both its `margins` and its `safeArea`, each measured from its edges,
+         * as UIKit reads a map's layout margins back.
+         */
+        fun within(bounds: ScreenRect, margins: MapInsets, safeArea: MapInsets): ScreenRect {
+            val left = max(margins.left, safeArea.left)
+            val top = max(margins.top, safeArea.top)
+            return ScreenRect(
+                bounds.x + left,
+                bounds.y + top,
+                max(0.0, bounds.width - left - max(margins.right, safeArea.right)),
+                max(0.0, bounds.height - top - max(margins.bottom, safeArea.bottom)),
+            )
+        }
 
         /** UIKit's ease in, ease out. */
         private val easeInEaseOut = IosMotion.easeInOut.easing
