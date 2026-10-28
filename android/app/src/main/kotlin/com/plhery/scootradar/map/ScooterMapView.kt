@@ -26,6 +26,10 @@ class ScooterMapView(context: Context, options: MapLibreMapOptions) : MapView(co
     /** The window shown again, for the rider's dot to breathe again: ViewTreeObserver's own listener is API 34's. */
     var windowShown: (() -> Unit)? = null
 
+    /** The map's camera, once the map is ready: what the tests read, as the iPhone's read its map's coordinator. */
+    var camera: MapCamera? = null
+        internal set
+
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var downX = 0f
     private var downY = 0f

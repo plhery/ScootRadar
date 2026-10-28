@@ -56,7 +56,12 @@ reset; run locationOffShowsTheCardWhoseSettingsAreTheLocationSwitch
 reset; run theDialogAllowedMovesTheMapToTheRiderWithAFix
 # The same app, started again: what it stored stays.
 run theRiderLocatedOnceIsRememberedAfterARestartWithAFix
-reset; run aTurnOfThePhoneKeepsTheDotAndItsBeamWithAFix
+# A phone keeps the app upright as it asks; a resizable emulator's screen ignores every app's orientation, as a
+# large screen does, until told not to.
+ignored=$(device shell wm get-ignore-orientation-request | grep -c true)
+device shell wm set-ignore-orientation-request false
+reset; run aTurnOfThePhoneKeepsTheScreenUprightAndTheDotAndItsBeamWithAFix
+[[ $ignored == 1 ]] && device shell wm set-ignore-orientation-request true
 reset; run theBeamPointsTheWayTheRiderFacesOnATurnedAndTiltedMapWithAFix
 reset
 

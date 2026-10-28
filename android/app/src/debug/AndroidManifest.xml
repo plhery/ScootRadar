@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The instrumented tests' own activity, from ui-test-manifest, keeps itself through a turn of the screen and a
+  resized window, as MainActivity does (X-AD17): a test turns the tablet with the map on it, as the rider does.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
+            tools:node="merge" />
+    </application>
+</manifest>

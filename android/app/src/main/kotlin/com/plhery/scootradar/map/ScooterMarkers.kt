@@ -285,7 +285,7 @@ class ScooterMarkers(
         update()
     }
 
-    /** The chrome over the map: names keep clear of it, and wait while their dot is under it. */
+    /** The chrome over the map, the panel's too: names keep clear of it, and wait while their dot is under it. */
     fun chromeDidChange(chrome: MapChrome) {
         if (chrome == this.chrome) return
         this.chrome = chrome
@@ -294,6 +294,7 @@ class ScooterMarkers(
             interactionExclusionFrame = chrome.top,
             bottomChromeTop = chrome.bottomTop,
             bottomChromeFrames = chrome.bottomFrames,
+            panelFrame = chrome.panel,
         )
         scene.movePills(markerMap)
         flush()
@@ -320,6 +321,7 @@ class ScooterMarkers(
             interactionExclusionFrame = chrome.top,
             bottomChromeTop = chrome.bottomTop,
             bottomChromeFrames = chrome.bottomFrames,
+            panelFrame = chrome.panel,
         )
         scene.applyDestination(controller.searchedDestination.value)
         val level = MapZoom.level(on = projection)

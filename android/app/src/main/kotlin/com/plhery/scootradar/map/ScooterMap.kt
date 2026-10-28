@@ -2,15 +2,18 @@ package com.plhery.scootradar.map
 
 import android.content.ComponentCallbacks2
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +27,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.toColorInt
@@ -34,13 +38,16 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
+import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.glass.LocalGlass
 import com.plhery.scootradar.ui.windowSizeClasses
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.maps.MapLibreMapOptions
+import kotlin.math.max
 
 // ScooterMapView's makeUIView, from ios/ScootRadar/Views/ScooterMapView.swift.
 
@@ -125,6 +132,7 @@ fun ScooterMap(
                 it.mapKit = currentMapKit
                 made = it
                 camera = it
+                view.camera = it
             }
             // On the ground, under the markers' layers, whichever comes first.
             val zoning = ScooterZoneLayer(map, view, controller, scope).also { zoned = it; zones = it }
@@ -140,6 +148,7 @@ fun ScooterMap(
         }
         onDispose {
             made?.close()
+            view.camera = null
             drawn?.close()
             marked?.close()
             shown?.close()
@@ -179,6 +188,8 @@ fun ScooterMap(
     val chrome = LocalMapChrome.current
     LaunchedEffect(camera, markers, chrome) {
         if (chrome == null) return@LaunchedEffect
+        // The camera reads it as the map takes a new size, which comes before the flow hears of the new chrome.
+        camera?.currentChrome = { chrome.chrome }
         snapshotFlow { chrome.chrome }.collect {
             camera?.chromeDidChange(it)
             markers?.chromeDidChange(it)
@@ -186,6 +197,17 @@ fun ScooterMap(
     }
     LaunchedEffect(camera, focus) { camera?.applyFocus(focus) }
     LaunchedEffect(camera, zoom) { camera?.applyZoom(zoom) }
+    // A scooter or bay chosen beside a panel is brought out from under it.
+    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
+    val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
+    LaunchedEffect(camera, selectedScooter, selectedParking) { camera?.keepSelectionClearOfPanel() }
+    // Beside a panel the credits sit past it, in the map's leading margin, as Apple's logo does: read only as the
+    // panel's sides move, not as its card grows.
+    val panelSides by remember(chrome) {
+        derivedStateOf {
+            chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.panel?.takeIf { !it.isEmpty }?.let { it.minX to it.maxX }
+        }
+    }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, view) {
         // A new observer is brought up to the lifecycle's state at once: ON_CREATE, ON_START, ON_RESUME.
@@ -230,12 +252,27 @@ fun ScooterMap(
     }
     // The chrome's glass blurs what the map draws (ui/glass).
     val backdrop = LocalGlass.current.backdrop
-    Box(modifier.fillMaxSize()) {
+    BoxWithConstraints(modifier.fillMaxSize()) {
         AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
+        val margins = panelSides?.let { (minX, maxX) ->
+            MapCamera.beside(
+                panel = ScreenRect(minX, 0.0, maxX - minX, 1.0),
+                bounds = ScreenRect(0.0, 0.0, maxWidth.value.toDouble(), maxHeight.value.toDouble()),
+                rightToLeft = direction == LayoutDirection.Rtl,
+            )
+        }
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
-            modifier = Modifier.align(Alignment.BottomStart).windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp),
+            modifier = Modifier.align(Alignment.BottomStart).then(
+                if (margins == null) {
+                    Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
+                } else {
+                    Modifier
+                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                        .padding(start = max(margins.left, margins.right).dp, bottom = 8.dp)
+                },
+            ),
         )
     }
 }

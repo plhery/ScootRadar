@@ -1,6 +1,7 @@
 package com.plhery.scootradar.map
 
 import android.animation.ValueAnimator
+import android.os.SystemClock
 import android.view.View
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -44,6 +45,11 @@ import kotlin.math.roundToInt
 
 /** The room the system's bars and cut-outs take at the map's edges, in points. */
 data class MapInsets(val top: Double, val left: Double, val bottom: Double, val right: Double) {
+    /** Each side within `within` points of the other's. */
+    fun nearlyEquals(other: MapInsets, within: Double): Boolean =
+        abs(top - other.top) < within && abs(left - other.left) < within &&
+            abs(bottom - other.bottom) < within && abs(right - other.right) < within
+
     companion object {
         val zero = MapInsets(0.0, 0.0, 0.0, 0.0)
     }
@@ -56,7 +62,9 @@ data class MapInsets(val top: Double, val left: Double, val bottom: Double, val 
  * zoom the iPhone measures.
  *
  * On a phone the map keeps no margins: MapKit shows the centre in the middle of the whole map until a panel or a
- * fold moves its margins, and :core's camera rules measure from there. Those margins come with large windows.
+ * fold moves its margins, and :core's camera rules measure from there. Beside a large window's panel the map's
+ * leading margin reaches past the panel, and MapLibre's padding stands in for it: the map shows its centre in the
+ * middle of the part beside the panel, and fits a place there.
  */
 class MapCamera(
     private val map: MapLibreMap,
@@ -82,6 +90,22 @@ class MapCamera(
     /** The safe area, which a focus on a place keeps the place out from under at the top. */
     private var safeArea = MapInsets.zero
     private var chrome = MapChrome()
+
+    /** The chrome over the map as the screen has it at this moment, read as the map takes a new size. */
+    var currentChrome: (() -> MapChrome)? = null
+
+    /** The margins set beside a panel, in points from the map's edges; none while nothing moves them. */
+    private var movedMargins: MapInsets? = null
+
+    /** The map's margins: those set beside a panel, or none. */
+    val margins: MapInsets get() = movedMargins ?: MapInsets.zero
+
+    /** How many moves to a place were made, again or not: what the tests count, as the iPhone's coordinator's. */
+    var movesToPlaces = 0
+        private set
+
+    /** The scooter or bay chosen last, and until when, in the uptime's milliseconds, the map keeps it clear of the panel. */
+    private var watchedSelection: Pair<String, Long>? = null
 
     private var focusUnderWay: FocusUnderWay? = null
     private var moveForNewSizeWaiting: Job? = null
@@ -119,7 +143,15 @@ class MapCamera(
         }
     }
     private val resized = View.OnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-        if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) regionDidChange(animated = false)
+        if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) {
+            // The screen has laid out its chrome for the new size by now, a panel gone or not yet placed, which the
+            // camera would hear of only after the frame: a panel's margin left on a phone's width would show the
+            // map's centre past its edge, and the scooter chosen there would count as out of view.
+            currentChrome?.invoke()?.let { chromeDidChange(it) }
+            // A panel's margin on the right of a right-to-left map is measured from the map's right edge.
+            updateMargins()
+            regionDidChange(animated = false)
+        }
     }
 
     init {
@@ -127,6 +159,11 @@ class MapCamera(
         map.addOnCameraMoveStartedListener(moveStarted)
         map.addOnCameraMoveListener(tiltCap)
         view.addOnLayoutChangeListener(resized)
+        // A camera remembered from before the activity was made again comes with the margins of its chrome, which
+        // the chrome now gives again.
+        if (map.cameraPosition.padding?.any { it != 0.0 } == true) {
+            jump(CameraPosition.Builder(map.cameraPosition).padding(0.0, 0.0, 0.0, 0.0).build())
+        }
         holdTilt()
         // MapKit reports the region it opens on; MapLibre may already be at rest.
         view.post { regionDidChange(animated = false) }
@@ -167,7 +204,7 @@ class MapCamera(
         // The request waits for the layout; the first region change then applies it (MAP-040).
         if (view.width == 0 || view.height == 0) return
         memory.focusToken = request.token
-        focusUnderWay = FocusUnderWay(request)
+        focusUnderWay = FocusUnderWay(request, margins)
         move(request)
     }
 
@@ -205,11 +242,13 @@ class MapCamera(
         val bounds = projection.bounds
         if (!(bounds.width > 0 && bounds.height > 0)) return
         focusUnderWay = null
+        // MapKit frames a region within the map's margins, which a panel moves past it.
+        val frame = frame()
         when (move) {
             is CameraMove.Region -> animate(
                 CameraPosition.Builder(map.cameraPosition)
                     .target(LatLng(move.region.center.latitude, move.region.center.longitude))
-                    .zoom(MapZoom.fitting(move.region, bounds.width, bounds.height))
+                    .zoom(MapZoom.fitting(move.region, frame.width, frame.height))
                     .build(),
             )
             is CameraMove.Fit -> fit(move.coordinates, move.animated)
@@ -224,24 +263,28 @@ class MapCamera(
     private fun fit(coordinates: List<GeoPoint>, animated: Boolean) {
         val first = coordinates.firstOrNull() ?: return
         val bounds = projection.bounds
-        val band = visibleRect()
+        // The map shows its centre in the middle of its margins, which a panel moves past it: the rect is fitted
+        // to the part of the map inside them.
+        val frame = frame()
+        var band = visibleRect()
+        if (movedMargins != null) band = band.intersection(frame) ?: frame
         var visible = band.insetBy(WalkTrailLook.fitMargin, WalkTrailLook.fitMargin) ?: band
         // With very little room left, the margin goes first.
         if (visible.width < 88 || visible.height < 88) visible = band
-        if (visible.width < 44 || visible.height < 44) visible = bounds
+        if (visible.width < 44 || visible.height < 44) visible = frame
         // Street level is a phone's: measured across the map's width.
         val minimumScale = WalkTrailLook.closestFitWidth / ScooterMarkerScene.metresPerMapPoint(first.latitude) *
             ScooterMapCameraPolicy.spanScale(across = bounds.width) / bounds.width
         val rect = ScooterMapCameraPolicy.rect(
             fitting = coordinates.map { MapPoint(it) },
             heading = map.cameraPosition.bearing,
-            size = ScreenSize(bounds.width, bounds.height),
-            visible = visible,
+            size = ScreenSize(frame.width, frame.height),
+            visible = ScreenRect(visible.x - frame.x, visible.y - frame.y, visible.width, visible.height),
             minimumScale = minimumScale,
         ) ?: return
-        // The rect has the map's shape, so the map shows it whole: rect.width / bounds.width map points a point.
+        // The rect has the frame's shape, so the frame shows it whole: rect.width / frame.width map points a point.
         val centre = MapPoint(rect.midX, rect.midY).coordinate
-        val zoom = log2(MapPoint.worldSize / (512 * rect.width / bounds.width))
+        val zoom = log2(MapPoint.worldSize / (512 * rect.width / frame.width))
         animate(
             CameraPosition.Builder(map.cameraPosition)
                 .target(LatLng(centre.latitude, centre.longitude))
@@ -253,6 +296,7 @@ class MapCamera(
 
     /** Moves the map to show the place asked for in the middle of the part of it left in view. */
     private fun move(request: MapFocusRequest) {
+        movesToPlaces += 1
         val bounds = projection.bounds
         focusUnderWay?.let {
             it.width = bounds.width
@@ -260,40 +304,164 @@ class MapCamera(
             it.safeArea = safeArea
         }
         val current = map.cameraPosition
+        val visible = visibleRect()
         if (request.keepsZoom) {
-            val centre = ScooterMapCameraPolicy.center(showing = request.point, on = projection, visible = visibleRect())
+            val centre = ScooterMapCameraPolicy.center(
+                showing = request.point,
+                on = projection,
+                visible = visible,
+                marginsMoved = movedMargins != null,
+            )
             animate(CameraPosition.Builder(current).target(LatLng(centre.latitude, centre.longitude)).build())
             return
         }
-        // A span fits the map's shorter side; the region keeps to the middle of the whole map, tilted and turned
-        // as it is.
+        // A span fits the map's shorter side; the region keeps to the middle of the map's margins, tilted and
+        // turned as it is.
         val scale = ScooterMapCameraPolicy.spanScale(across = min(bounds.width, bounds.height))
         val region = MapRegion.around(
             center = request.point,
             latitudinalMeters = request.latitudinalMeters * scale,
             longitudinalMeters = request.longitudinalMeters * scale,
         )
-        animate(
-            CameraPosition.Builder(current)
-                .target(LatLng(request.point.latitude, request.point.longitude))
-                .zoom(MapZoom.fitting(region, bounds.width, bounds.height))
-                .build(),
-        )
+        val frame = frame()
+        var target = CameraPosition.Builder(current)
+            .target(LatLng(request.point.latitude, request.point.longitude))
+            .zoom(MapZoom.fitting(region, frame.width, frame.height))
+            .build()
+        // Beside a panel the place goes to the middle of the part of the map beside it, across, and of the whole
+        // map up and down: where the centre goes is measured on the map as the camera will show it.
+        val beside = ScooterMapCameraPolicy.aside(visible, bounds)
+        if (beside != null) {
+            jump(target)
+            val centre = ScooterMapCameraPolicy.center(showing = request.point, on = projection, visible = beside)
+            target = CameraPosition.Builder(target).target(LatLng(centre.latitude, centre.longitude)).build()
+            jump(current)
+        }
+        animate(target)
     }
 
     /**
-     * The part of the map between the search bar and the locate button over the dock; until the chrome is there,
-     * between the status bar and the map's bottom edge.
+     * The part of the map between the search bar and the locate button over the dock, and beside the panel of a
+     * large window; until the chrome is there, between the status bar and the map's bottom edge.
      */
     private fun visibleRect(): ScreenRect {
         val bounds = projection.bounds
         val top = chrome.top?.takeIf { !it.isEmpty }?.maxY ?: safeArea.top
-        return ScooterMapCameraPolicy.visibleRectIn(bounds, top = top, bottom = chrome.bottomTop ?: bounds.maxY, beside = null)
+        return ScooterMapCameraPolicy.visibleRectIn(bounds, top = top, bottom = chrome.bottomTop ?: bounds.maxY, beside = panel())
     }
 
-    /** The chrome over the map: the search bar above, and the locate button with the dock under it. */
+    /** The panel of a large window, in the map's points; none on a phone. */
+    private fun panel(): ScreenRect? = chrome.panel?.takeIf { !it.isEmpty }
+
+    /** The part of the map inside its margins, where it shows its centre and fits a region. */
+    private fun frame(): ScreenRect {
+        val bounds = projection.bounds
+        val margins = margins
+        return ScreenRect(
+            bounds.x + margins.left,
+            bounds.y + margins.top,
+            max(0.0, bounds.width - margins.left - margins.right),
+            max(0.0, bounds.height - margins.top - margins.bottom),
+        )
+    }
+
+    /** The chrome over the map: the search bar above, and the locate button with the dock under it, or the panel. */
     fun chromeDidChange(chrome: MapChrome) {
+        if (chrome == this.chrome) return
         this.chrome = chrome
+        // The margins first: a move is measured with the margins it is shown with.
+        updateMargins()
+        keepSelectionClearOfPanel()
+    }
+
+    /**
+     * The map's leading margin reaches past a panel, 16 dp past it, so that the credits stay in view beside it and
+     * the map shows its centre in the middle of the part beside it. Without a panel the margins go.
+     */
+    private fun updateMargins() {
+        val panel = panel()
+        if (panel == null) {
+            if (movedMargins != null) {
+                movedMargins = null
+                setMargins(MapInsets.zero)
+            }
+            return
+        }
+        val margins = beside(panel, projection.bounds, rightToLeft = view.layoutDirection == View.LAYOUT_DIRECTION_RTL)
+        // A frame measured again may differ in its last digits: that is no move of the panel.
+        movedMargins?.let { if (it.nearlyEquals(margins, within = 0.5)) return }
+        movedMargins = margins
+        setMargins(margins)
+    }
+
+    /**
+     * MapLibre shows the map's centre in the middle of its padding and leaves the centre where it is when the
+     * padding changes: what was in the middle of the part left in view goes to the middle of the part left in view
+     * now, as a panel comes or goes.
+     *
+     * A move to a place may still be under way: the rider's first fix can come before the panel has its place.
+     * Until the person moves the map or chooses something else, the map goes on to the place, measured beside the
+     * panel; keeping the centre would stop it short. It is made again only when the leading margin really moves,
+     * once for each time, and six times at most: nothing the camera shows, such as the dock or a card, moves it.
+     * A map without a size yet only takes the margins, and the move waits for its first region change.
+     */
+    private fun setMargins(margins: MapInsets) {
+        val ratio = view.pixelRatio.toDouble()
+        jump(
+            CameraPosition.Builder(map.cameraPosition)
+                .padding(margins.left * ratio, margins.top * ratio, margins.right * ratio, margins.bottom * ratio)
+                .build(),
+        )
+        if (view.width == 0 || view.height == 0) {
+            if (focusUnderWay != null) {
+                memory.focusToken = null
+                focusUnderWay = null
+            }
+            return
+        }
+        val focus = focusUnderWay ?: return
+        // Margins much as the move had them leave it on its way.
+        if (margins.nearlyEquals(focus.margins, within = 1.0)) return
+        val leadingMoved = abs(margins.left - focus.margins.left) >= 1 || abs(margins.right - focus.margins.right) >= 1
+        if (!leadingMoved || focus.madeAgain >= MOST_MOVES_AGAIN) {
+            focusUnderWay = null
+            return
+        }
+        focus.margins = margins
+        focus.madeAgain += 1
+        move(focus.request)
+    }
+
+    /**
+     * A scooter or bay doesn't move the map when it is chosen. Beside a panel, though, its card opens in the
+     * panel, which may then grow over it: the map brings it out once, in the second after it was chosen. A choice
+     * ends a move to a place under way, as the map now shows what was chosen.
+     */
+    fun keepSelectionClearOfPanel() {
+        val scooterID = controller.selectedScooterID.value
+        val parkingID = controller.selectedParkingID.value
+        val key = scooterID?.let { "scooter:$it" } ?: parkingID?.let { "parking:$it" }
+        val now = SystemClock.uptimeMillis()
+        if (key != watchedSelection?.first) {
+            watchedSelection = key?.let { it to now + 1_000 }
+            if (key != null) focusUnderWay = null
+        }
+        val watched = watchedSelection ?: return
+        if (now >= watched.second) return
+        val panel = panel() ?: return
+        if (view.width == 0 || view.height == 0) return
+        val coordinate = scooterID?.let { id -> controller.mapScooters.value.firstOrNull { it.id == id }?.coordinate }
+            ?: parkingID?.let { id -> controller.mapParking.firstOrNull { it.id == id }?.coordinate }
+            ?: return
+        if (!panel.contains(projection.point(coordinate))) return
+        watchedSelection = watched.first to 0L
+        val centre = ScooterMapCameraPolicy.center(
+            showing = coordinate,
+            on = projection,
+            visible = visibleRect(),
+            marginsMoved = movedMargins != null,
+        )
+        animate(CameraPosition.Builder(map.cameraPosition).target(LatLng(centre.latitude, centre.longitude)).build())
     }
 
     /**
@@ -384,7 +552,7 @@ class MapCamera(
     }
 
     /** A move to a place asked for, made on a map with a size, with what it was measured with. */
-    private class FocusUnderWay(val request: MapFocusRequest) {
+    private class FocusUnderWay(val request: MapFocusRequest, /** The margins the move was last made with. */ var margins: MapInsets) {
         /** The map's size and safe area the move was last made at. */
         var width = 0.0
         var height = 0.0
@@ -395,8 +563,25 @@ class MapCamera(
     }
 
     companion object {
-        /** The most times a move is made again for a new size. */
+        /**
+         * The most times a move is made again: each is a real change of the leading margin, or of the map's size
+         * or safe area, which a move of the camera doesn't change. Past this the move is over.
+         */
         private const val MOST_MOVES_AGAIN = 6
+
+        /** Between the panel and the credits beside it. */
+        private const val PANEL_GAP = 16.0
+
+        /**
+         * The map's margins beside a `panel` down one side of a map of `bounds`, in points from its edges: the
+         * leading one 16 past the panel, the others none, as on a phone.
+         */
+        fun beside(panel: ScreenRect, bounds: ScreenRect, rightToLeft: Boolean): MapInsets =
+            if (rightToLeft) {
+                MapInsets(0.0, 0.0, 0.0, max(0.0, bounds.maxX - panel.minX + PANEL_GAP))
+            } else {
+                MapInsets(0.0, max(0.0, panel.maxX - bounds.minX + PANEL_GAP), 0.0, 0.0)
+            }
 
         /** UIKit's ease in, ease out. */
         private val easeInEaseOut = IosMotion.easeInOut.easing

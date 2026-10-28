@@ -4,7 +4,10 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
+import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.geometry.LatLng
@@ -138,6 +141,29 @@ class MapCameraTest {
         val halfway = MapCamera.between(position(0.0, 179.0), position(0.0, -179.0), 0.5)
 
         assertEquals(180.0, abs(halfway.target!!.longitude), 1e-9)
+    }
+
+    /** T221's margin: 16 dp from the edge, 380 of panel and 16 to spare, on the panel's side only. */
+    @Test
+    fun besideAPanelOnlyTheLeadingMarginReachesPastIt() {
+        val bounds = ScreenRect(0.0, 0.0, 1280.0, 800.0)
+        val panel = ScreenRect(16.0, 40.0, 380.0, 500.0)
+        assertEquals(MapInsets(0.0, 16.0 + 380 + 16, 0.0, 0.0), MapCamera.beside(panel, bounds, rightToLeft = false))
+        // Right to left the panel is down the right side, and the margin with it.
+        val right = ScreenRect(1280.0 - 16 - 380, 40.0, 380.0, 500.0)
+        assertEquals(MapInsets(0.0, 0.0, 0.0, 16.0 + 380 + 16), MapCamera.beside(right, bounds, rightToLeft = true))
+        // The panel's height, which its fold changes, moves nothing (T229).
+        assertEquals(MapCamera.beside(panel, bounds, false), MapCamera.beside(ScreenRect(16.0, 40.0, 380.0, 120.0), bounds, false))
+        // Measured from the map's own edge.
+        assertEquals(MapInsets(0.0, 380.0 + 16, 0.0, 0.0), MapCamera.beside(panel, ScreenRect(16.0, 0.0, 1264.0, 800.0), false))
+    }
+
+    @Test
+    fun marginsMeasuredApartInTheirLastDigitsAreTheSame() {
+        val margins = MapInsets(0.0, 412.0, 0.0, 0.0)
+        assertTrue(margins.nearlyEquals(MapInsets(0.0, 412.4, 0.0, 0.0), within = 0.5))
+        assertFalse(margins.nearlyEquals(MapInsets(0.0, 412.5, 0.0, 0.0), within = 0.5))
+        assertFalse(margins.nearlyEquals(MapInsets(0.0, 412.0, 1.0, 0.0), within = 0.5))
     }
 
     private fun position(latitude: Double, longitude: Double, zoom: Double = 10.0, tilt: Double = 0.0, bearing: Double = 0.0) =
