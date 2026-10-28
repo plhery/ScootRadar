@@ -17,6 +17,7 @@ import com.plhery.scootradar.core.model.ScooterZoneState
 import java.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.currentTime
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -141,6 +142,90 @@ class ScooterMapZonesTest {
     }
 
     @Test
+    fun zonesWaitAQuarterSecondAndAPendingAnswerIsAskedForAgainEveryThreeSecondsThreeTimes() = runTest {
+        val api = ZoneStubAPI()
+        api.pending = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+
+        // The moves of one gesture make one request, 250 ms after the last.
+        advanceTimeBy(249)
+        runCurrent()
+        assertTrue(api.zoneAreas.isEmpty())
+        advanceTimeBy(1)
+        runCurrent()
+        assertEquals(1, api.zoneAreas.size)
+        // What came is drawn while the rest is on its way.
+        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        assertEquals(2, model.mapZones.value.size)
+
+        for (asked in 2..4) {
+            advanceTimeBy(2_999)
+            runCurrent()
+            assertEquals(asked - 1, api.zoneAreas.size)
+            advanceTimeBy(1)
+            runCurrent()
+            assertEquals(asked, api.zoneAreas.size)
+        }
+        advanceTimeBy(30_000)
+        runCurrent()
+        assertEquals("Three times more, then the answer stands", 4, api.zoneAreas.size)
+        assertEquals(1, api.zoneAreas.toSet().size)
+        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+    }
+
+    @Test
+    fun theLastEightWholeAnswersServeForFiveMinutes() = runTest {
+        val api = ZoneStubAPI()
+        val model = makeController(api)
+        model.setShowsZones(true)
+        // Nine areas a tenth of a degree apart, each answered in turn.
+        val areas = (0 until 9).map { zurich.copy(center = GeoPoint(latitude = 47.3769, longitude = 8.5417 + it * 0.1)) }
+        for ((index, area) in areas.withIndex()) {
+            model.updateViewport(area, zoom = 16)
+            advanceTimeBy(250)
+            runCurrent()
+            assertEquals(index + 1, api.zoneAreas.size)
+        }
+
+        // The eighth answer back is at hand; the ninth is asked for again.
+        model.updateViewport(areas[1], zoom = 16)
+        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
+        model.updateViewport(areas[0], zoom = 16)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+        advanceTimeBy(250)
+        runCurrent()
+        assertEquals(10, api.zoneAreas.size)
+
+        // An answer serves for 300 s from its arrival, not a moment longer.
+        val fresh = ZoneStubAPI()
+        val later = makeController(fresh)
+        later.setShowsZones(true)
+        later.updateViewport(areas[0], zoom = 16)
+        advanceTimeBy(250)
+        runCurrent()
+        val answeredAt = currentTime
+        later.updateViewport(areas[1], zoom = 16)
+        advanceTimeBy(250)
+        runCurrent()
+        assertEquals(2, fresh.zoneAreas.size)
+
+        advanceTimeBy(answeredAt + 300_000 - currentTime)
+        later.updateViewport(areas[0], zoom = 16)
+        assertEquals(ScooterZoneState.Shown, later.zoneState.value)
+        later.updateViewport(areas[1], zoom = 16)
+        advanceTimeBy(1)
+        later.updateViewport(areas[0], zoom = 16)
+        assertEquals(ScooterZoneState.Loading, later.zoneState.value)
+        advanceTimeBy(250)
+        runCurrent()
+        assertEquals(3, fresh.zoneAreas.size)
+        assertEquals(fresh.zoneAreas[0], fresh.zoneAreas[2])
+    }
+
+    @Test
     fun aCitysRulesAreDrawnFromZoom14WithTheZonesOffAndDimmerOutsideTheirHours() = runTest {
         val hongdae = MapRegion(center = GeoPoint(latitude = 37.5545, longitude = 126.9245), latitudeDelta = 0.008, longitudeDelta = 0.008)
         // Noon in Seoul, then 23:00.
@@ -168,6 +253,8 @@ class ScooterMapZonesTest {
 
 private class ZoneStubAPI : ScooterAPIClient {
     private var failure: ScooterAPIError? = null
+    /** Whether some feeds' zones are still on their way. */
+    var pending = false
     private val areas = mutableListOf<ScooterZoneArea>()
 
     val zoneAreas: List<ScooterZoneArea> get() = areas.toList()
@@ -187,7 +274,7 @@ private class ZoneStubAPI : ScooterAPIClient {
                 ScooterZone(id = "lime:0", provider = "lime", kind = ScooterZoneKind.NoRide, maxSpeedKph = null, polygons = listOf(listOf(ring))),
                 ScooterZone(id = "bird:0", provider = "bird", kind = ScooterZoneKind.NoParking, maxSpeedKph = null, polygons = listOf(listOf(ring))),
             ),
-            pending = false,
+            pending = pending,
             truncated = false,
         )
     }
