@@ -163,7 +163,7 @@ private fun BatteryFilters(minimum: Int, onChoose: (Int) -> Unit) {
             .fillMaxWidth()
             .background(scootColors.tertiarySystemFill, SquircleShape(16.dp))
             .padding(4.dp)
-            .semantics { contentDescription = localized("Battery") }
+            // A group under the "Battery" heading, as iOS's `.accessibilityElement(children: .contain)`: no stop of its own.
             .selectableGroup()
         // Side by side; one above the other when the text is very large.
         if (isAccessibility) {
@@ -320,6 +320,8 @@ private fun ProviderRow(entry: ScooterProviderEntry, onClick: () -> Unit) {
         // Spacer(minLength: 8), between the row's own spacing.
         Spacer(Modifier.width(8.dp))
         if (!entry.isDown) {
+            // `.contentTransition(.numericText())` rolls a number only when it changes inside an animation, and
+            // nothing in the iPhone's sheet animates the counts: they change in place there, as here.
             Text(
                 ScooterNumberFormat.integer(entry.count.toLong(), ScooterLanguage.current.locale),
                 style = ScootType.subheadline.monospacedDigit(),
