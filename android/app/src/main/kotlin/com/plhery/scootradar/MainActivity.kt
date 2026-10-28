@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -54,7 +55,8 @@ class MainActivity : AppCompatActivity() {
     private val headingOrientation = HeadingOrientationWatcher(this) { model.controller.setHeadingOrientation(it) }
 
     /** The links to the map the phone opened in the app, the last one kept until the screen shows it. */
-    private val links = Channel<ScooterMapLink>(Channel.CONFLATED)
+    @VisibleForTesting
+    internal val links = Channel<ScooterMapLink>(Channel.CONFLATED)
     private val openedLinks = links.receiveAsFlow()
 
     override fun onCreate(savedInstanceState: Bundle?) {
