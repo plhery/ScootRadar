@@ -4,24 +4,32 @@ import android.app.Activity
 import android.app.Application
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsNotFocused
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ActivityScenario
@@ -32,11 +40,14 @@ import com.plhery.scootradar.MainActivity
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.AddressSearchResult
+import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
 import com.plhery.scootradar.map.ScooterMap
@@ -45,6 +56,9 @@ import com.plhery.scootradar.map.zurichStart
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
+import java.io.File
+import java.util.Locale
+import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -60,13 +74,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
-import java.util.Locale
-import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * The search and the language page on a phone (ui.md UI-009 to UI-012, UI-074): a place searched for and chosen
- * moves the map there; the keyboard lifts the open search and leaves the dock where it was; and a language chosen
+ * moves the map there; the keyboard lifts the open search and leaves the dock where it was; Return with no place
+ * found puts the keyboard away; and a language chosen
  * in Settings shows the app in it at once, in the same activity, over the same map, with no scooters asked for
  * again. The screens are kept in the run's additional output, as search-*.png and language-*.png.
  */
@@ -115,23 +127,67 @@ class SearchAndLanguageTest {
         screenshot("search-chosen")
     }
 
+    /**
+     * The keyboard limits the open search: places that reach it scroll above it. The dock, made way for the search,
+     * stays where it was (`.ignoresSafeArea(.keyboard, edges: .bottom)`). Back puts the keyboard away, then closes the
+     * search, then the scooter's card.
+     */
     @Test
     fun theKeyboardLiftsTheOpenSearchAndLeavesTheDockWhereItWas() {
-        show()
+        val controller = show(scooters, streets)
+        compose.runOnIdle { controller.selectScooter("lime:a") }
+        compose.waitForIdle()
         val dock = bounds(DOCK_TAG)
         compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
-        compose.waitUntil(10_000) { imeBottom() > 0 }
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahnhofstrasse")
+        compose.waitUntil(10_000) { imeBottom() > 0 && compose.onAllNodes(hasText("Bahnhofstrasse 1")).fetchSemanticsNodes().isNotEmpty() }
         compose.waitForIdle()
         val screen = screenshot("search-keyboard")
         val island = bounds(SEARCH_ISLAND_TAG)
         val keyboardTop = screen.height - imeBottom()
+        val places = compose.onNode(hasAnyAncestor(hasTestTag(SEARCH_ISLAND_TAG)) and SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
+        assertTrue("the places scroll", places.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].maxValue() > 0)
         assertTrue("$island over a keyboard from $keyboardTop", island.bottom <= keyboardTop + 1)
 
-        // Back closes the keyboard, then the search; the dock comes back where it was.
-        scenario?.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-        compose.waitUntil(10_000) { imeBottom() == 0 && compose.onAllNodesWithTag(DOCK_TAG).fetchSemanticsNodes().isNotEmpty() }
+        // The keyboard put away with the search still open: the dock hasn't moved.
+        val madeWay = bounds(DOCK_TAG)
+        scenario?.onActivity { WindowCompat.getInsetsController(it.window, it.window.decorView).hide(WindowInsetsCompat.Type.ime()) }
+        compose.waitUntil(10_000) { imeBottom() == 0 }
         compose.waitForIdle()
+        compose.onNodeWithText("Cancel").assertExists()
+        assertEquals(madeWay, bounds(DOCK_TAG))
+
+        // Back, as the phone's own key: the keyboard first, then the search, then the card.
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performClick()
+        compose.waitUntil(10_000) { imeBottom() > 0 }
+        compose.waitForIdle()
+        back()
+        compose.waitUntil(10_000) { imeBottom() == 0 }
+        compose.waitForIdle()
+        compose.onNodeWithText("Cancel").assertExists()
+        back()
+        compose.waitUntil(10_000) { compose.onAllNodesWithText("Cancel").fetchSemanticsNodes().isEmpty() }
+        compose.waitForIdle()
+        assertEquals("lime:a", controller.selectedScooterID.value)
         assertEquals(dock, bounds(DOCK_TAG))
+        back()
+        compose.waitUntil(10_000) { controller.selectedScooterID.value == null }
+    }
+
+    /** Return with no place found puts the keyboard away and leaves the search open, as the iOS 27 simulator does. */
+    @Test
+    fun returnWithNoPlaceFoundPutsTheKeyboardAway() {
+        show(addressSearch = streets)
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Nowhere")
+        compose.waitUntil(10_000) { imeBottom() > 0 && compose.onAllNodes(hasText("No places found.")).fetchSemanticsNodes().isNotEmpty() }
+        compose.waitForIdle()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performImeAction()
+        compose.waitUntil(10_000) { imeBottom() == 0 }
+        compose.waitForIdle()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertIsNotFocused()
+        compose.onNodeWithText("Cancel").assertExists()
+        compose.onNodeWithText("No places found.").assertExists()
     }
 
     @Test
@@ -175,14 +231,14 @@ class SearchAndLanguageTest {
         }
     }
 
-    /** The screen over the live map, with a controller of an empty map and a search of three places. */
-    private fun show(): ScooterMapController {
-        val controller = testController(scope)
+    /** The screen over the live map, with a controller of [api]'s scooters, or none, and [addressSearch]'s places. */
+    private fun show(api: ScooterAPIClient? = null, addressSearch: AddressSearchAPIClient = places): ScooterMapController {
+        val controller = if (api == null) testController(scope) else testController(scope, api)
         setContent {
             ScooterMapScreen(
                 controller = controller,
                 map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) },
-                addressSearch = places,
+                addressSearch = addressSearch,
             )
         }
         compose.waitUntil(60_000) { controller.lastUpdated.value != null && !controller.isLoading.value }
@@ -191,10 +247,15 @@ class SearchAndLanguageTest {
     }
 
     private fun setContent(content: @Composable () -> Unit) {
-        // As in DockOverTheMapTest: an activity remade just after launch shows the screen too.
+        // Edge to edge, as MainActivity is: otherwise the window takes the keyboard's insets and the screen never
+        // hears of it. As in DockOverTheMapTest, an activity remade just after launch shows the screen too.
+        fun ComponentActivity.present() {
+            enableEdgeToEdge()
+            setContent(content = content)
+        }
         val recreated = object : Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                if (savedInstanceState != null) (activity as? ComponentActivity)?.setContent(content = content)
+                if (savedInstanceState != null) (activity as? ComponentActivity)?.present()
             }
             override fun onActivityStarted(activity: Activity) = Unit
             override fun onActivityResumed(activity: Activity) = Unit
@@ -205,10 +266,13 @@ class SearchAndLanguageTest {
         }
         application.registerActivityLifecycleCallbacks(recreated)
         recreations = recreated
-        scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity { it.setContent(content = content) }
+        scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity { it.present() }
     }
 
     private fun title(text: String) = SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading) and hasText(text)
+
+    /** The phone's Back key, which goes to the keyboard first while there is one. */
+    private fun back() = InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK)
 
     /** How far the keyboard reaches up the window, in pixels: 0 without one. */
     private fun imeBottom(): Int {
@@ -243,6 +307,28 @@ class SearchAndLanguageTest {
                 AddressSearchResult(47.3779, 8.5403, "Bahnhofplatz, 8001 Zürich, Switzerland", "Bahnhofplatz", "8001 Zürich, Switzerland", true),
                 AddressSearchResult(bern.latitude, bern.longitude, "Bahnhofplatz, 3011 Bern, Switzerland", "Bahnhofplatz", "3011 Bern, Switzerland", true),
                 AddressSearchResult(69.5779, 20.2198, "Bahnhof, Lyngen, Norway", "Bahnhof", "Lyngen, Norway", false),
+            )
+        }
+
+        /** Fifteen streets for anything typed but "Nowhere": more than fit above the keyboard. */
+        val streets = object : AddressSearchAPIClient {
+            override suspend fun search(query: String, language: String, near: GeoPoint?): List<AddressSearchResult> =
+                if (query == "Nowhere") {
+                    emptyList()
+                } else {
+                    (1..15).map { AddressSearchResult(47.3779, 8.5403, "Bahnhofstrasse $it, 8001 Zürich, Switzerland", "Bahnhofstrasse $it", "8001 Zürich, Switzerland", true) }
+                }
+        }
+
+        /** One of Lime's scooters at the start of the map, to have a card open. */
+        val scooters = object : ScooterAPIClient {
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(
+                vehicles = listOf(
+                    Scooter(
+                        provider = "lime", latitude = 47.3772, longitude = 8.5421, battery = 70, rangeMeters = null,
+                        vehicleID = "a", deepLink = null, rentalURIs = null, distanceMeters = 0.0,
+                    ),
+                ),
             )
         }
 

@@ -20,13 +20,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -277,8 +277,9 @@ private fun DockChrome(
     val locateButtonHeight = remember { mutableIntStateOf(with(density) { 52.dp.roundToPx() }) }
     // Measured only while the search is closed, as on the iPhone.
     val searchBarHeight = remember { mutableIntStateOf(with(density) { 62.dp.roundToPx() }) }
-    // The keyboard doesn't move the dock or the locate row (`.ignoresSafeArea(.keyboard, edges: .bottom)`).
-    val safe = WindowInsets.safeDrawing.exclude(WindowInsets.ime).asPaddingValues()
+    // The keyboard doesn't move the dock or the locate row (`.ignoresSafeArea(.keyboard, edges: .bottom)`): the safe
+    // area without it. Not safeDrawing.exclude(ime), which takes the keyboard's height off the navigation bar's too.
+    val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
     val safeTop = safe.calculateTopPadding()
     val safeBottom = safe.calculateBottomPadding()
     // The room under the home indicator, or 8 where there is none.
