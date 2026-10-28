@@ -65,6 +65,9 @@ class AppContainer(private val context: Context) {
         )
     }
 
+    /** The phone's location service for a screen, which its controller asks and hears from. */
+    fun locationManager(): AndroidLocationManager = AndroidLocationManager(context, defaults)
+
     /** Where the map opens: the covered city nearest the phone's time zone, as this run starts. */
     val start: ScooterMapStart by lazy { ScooterStartPlace.start(forTimeZone = java.util.TimeZone.getDefault().id) }
 

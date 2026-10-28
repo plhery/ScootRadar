@@ -4,10 +4,12 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.LaunchArgumentDefaults
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
@@ -34,11 +36,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Android's location dialog, whose answer goes to the location service, as iOS's prompt does (LOG-242). */
+    private val locationPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        model.location.permissionsAnswered()
+    }
+    private val permissionRequester = AndroidLocationManager.PermissionRequester { locationPermissions.launch(it) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         // AppCompat has put a language chosen for the app in the activity's configuration by now.
         (application as ScooterApplication).container.languages.launched(resources.configuration)
+        // Only this activity asks the rider, and only while it exists: the location service outlives it.
+        model.location.permissionRequester = permissionRequester
         lifecycle.addObserver(model)
         setContent {
             ScooterMapScreen(
@@ -57,8 +67,14 @@ class MainActivity : AppCompatActivity() {
                 analytics = model.analytics,
                 addressSearch = model.addressSearch,
                 defaults = (application as ScooterApplication).container.defaults,
+                locationSettings = model.location,
             )
         }
+    }
+
+    override fun onDestroy() {
+        if (model.location.permissionRequester === permissionRequester) model.location.permissionRequester = null
+        super.onDestroy()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
