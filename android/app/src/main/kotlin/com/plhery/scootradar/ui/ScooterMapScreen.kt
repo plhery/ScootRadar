@@ -75,7 +75,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import com.plhery.scootradar.core.IosMotion
-import com.plhery.scootradar.core.SpringSpec
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScooterLoadFailure
@@ -313,7 +312,8 @@ private fun DockChrome(
             // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
             // so that a card keeps where it was scrolled to and the dock what it last announced.
             val trailing = if (LocalLayoutDirection.current == LayoutDirection.Ltr) 1f else 0f
-            Box(Modifier.fillMaxSize().makingWay(isSearching, IosMotion.snappy(duration = 0.28), scale = 0.92f, TransformOrigin(trailing, 1f))) {
+            val locateGone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.28)), label = "locate")
+            Box(Modifier.fillMaxSize().makingWay(isSearching, { locateGone }, scale = 0.92f, TransformOrigin(trailing, 1f))) {
                 Row(
                     Modifier
                         .align(Alignment.BottomCenter)
@@ -338,7 +338,8 @@ private fun DockChrome(
             }
 
             val isAccessibility = TextSize.isAccessibility
-            Box(Modifier.fillMaxSize().makingWay(isSearching, IosMotion.snappy(duration = 0.24), scale = 0.96f, TransformOrigin(0.5f, 1f))) {
+            val dockGone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
+            Box(Modifier.fillMaxSize().makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, 1f))) {
                 ScooterControlDock(
                     controller,
                     onEditFilters = onShowFilters,
@@ -363,26 +364,23 @@ private fun DockChrome(
 
 /**
  * `.opacity` and `.scaleEffect(_:anchor:)` on what makes way for the search: it fades and shrinks a little toward
- * [origin] of the screen as the search opens, and comes back as it closes; at once under Reduce Motion. With
- * `.accessibilityHidden`, TalkBack leaves it as soon as it starts to go, and once it is gone taps go through it to
- * the map.
+ * [origin] of the screen as [gone] goes from 0 to 1, and comes back as it returns to 0. With `.accessibilityHidden`,
+ * TalkBack leaves it as soon as it starts to go, and once it is gone taps go through it to the map.
  */
-@Composable
-private fun Modifier.makingWay(hidden: Boolean, spring: SpringSpec, scale: Float, origin: TransformOrigin): Modifier {
-    val gone by animateFloatAsState(if (hidden) 1f else 0f, motion(spring), label = "making way")
-    return graphicsLayer {
-        alpha = 1 - gone
-        val scaled = 1 - (1 - scale) * gone
+private fun Modifier.makingWay(hidden: Boolean, gone: () -> Float, scale: Float, origin: TransformOrigin): Modifier =
+    graphicsLayer {
+        val progress = gone()
+        alpha = 1 - progress
+        val scaled = 1 - (1 - scale) * progress
         scaleX = scaled
         scaleY = scaled
         transformOrigin = origin
         // Clipped to nothing, it is no longer in the way of a finger: Compose hit-tests inside a layer's clip.
-        if (hidden && gone == 1f) {
+        if (hidden && progress == 1f) {
             clip = true
             shape = EmptyShape
         }
     }.then(if (hidden) Modifier.semantics { hideFromAccessibility() } else Modifier)
-}
 
 /** `.allowsHitTesting(false)` while it goes: its buttons and its scroll take no touch. */
 private fun Modifier.inert(hidden: Boolean): Modifier =
