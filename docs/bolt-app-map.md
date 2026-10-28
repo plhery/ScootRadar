@@ -32,7 +32,10 @@ The answer is `{code: 0, data: {categories: [{id, markers_on_map:
 Types are `scooter_<n>`, `ebike_<n>` and `mechanical_bike_<n>`; only
 scooters are kept. Charge is a percentage, hidden when
 `hide_battery_charge` is set. There is no range, price or position
-timestamp, and no rental link is made.
+timestamp, and no rental link is made. Since 29 October 2026 the card's
+**Open in Bolt** opens Bolt's app on the store link Bolt's feeds publish,
+`https://bolt.sng.link/Epy3j/o9sr`, which the app claims; without the app, a
+phone goes on to its store (`data/providers.json`).
 
 The viewport selects a market, and the answer is the whole market, however
 small the viewport: a box of a few hundred metres in Riga returned the

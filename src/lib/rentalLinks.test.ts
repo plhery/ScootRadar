@@ -210,12 +210,20 @@ describe('rental links', () => {
     expect(operatorAppLink('spin', 'ios')).toBe('https://www.spin.app/');
     // A computer has no app to open, and other operators' feeds link their scooters.
     expect(operatorAppLink('bird', 'web')).toBeNull();
-    expect(operatorAppLink('dott', 'ios')).toBeNull();
+    expect(operatorAppLink('hopp', 'ios')).toBeNull();
     expect(operatorAppLink('unknown', 'android')).toBeNull();
   });
 
+  it('opens Voi’s, Dott’s and Bolt’s apps where their rider maps link no scooter', () => {
+    // Voi's is the link its feeds give every scooter, Bolt's the store link its feeds publish.
+    expect(operatorAppLink('voi', 'ios')).toBe('https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest');
+    expect(operatorAppLink('dott', 'android')).toBe('https://v.ridedott.com/');
+    expect(operatorAppLink('bolt', 'ios')).toBe('https://bolt.sng.link/Epy3j/o9sr');
+    expect(operatorAppLink('dott', 'web')).toBeNull();
+  });
+
   it('keeps each operator’s app link among the links allowed for that operator', () => {
-    for (const provider of ['lime', 'bird', 'publibike', 'spin']) {
+    for (const provider of ['lime', 'bird', 'publibike', 'spin', 'voi', 'dott', 'bolt']) {
       const link = operatorAppLink(provider, 'ios');
       expect(safeRentalUri(provider, link, { httpsOnly: true })).toBe(link);
     }

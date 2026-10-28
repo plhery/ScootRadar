@@ -9,12 +9,12 @@ export interface ProviderConfig {
 }
 
 const PROVIDER_DEFINITIONS = {
-  bolt: { name: "Bolt", color: "#00cc44", initial: "B" },
+  bolt: { name: "Bolt", color: "#00cc44", initial: "B", app: { link: "https://bolt.sng.link/Epy3j/o9sr", appStoreId: 675033630 } },
   bird: { name: "Bird", color: "#222222", initial: "Bi", app: { link: "https://ride.bird.co/", appStoreId: 1260842311 } },
-  dott: { name: "Dott", color: "#ff6600", initial: "D" },
+  dott: { name: "Dott", color: "#ff6600", initial: "D", app: { link: "https://v.ridedott.com/", appStoreId: 1440301673 } },
   hopp: { name: "Hopp", color: "#00bcd4", initial: "H" },
   lime: { name: "Lime", color: "#32cd32", initial: "L", app: { link: "https://lime.bike/", appStoreId: 1199780189 } },
-  voi: { name: "Voi", color: "#ff1493", initial: "V" },
+  voi: { name: "Voi", color: "#ff1493", initial: "V", app: { link: "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest", appStoreId: 1395921017 } },
   pony: { name: "Pony", color: "#00a7a0", initial: "P" },
   publibike: { name: "PubliBike / Velospot", color: "#9b59b6", initial: "PB", app: { link: "https://app.publibike.ch/", appStoreId: 6739938966 } },
   zeus: { name: "Zeus", color: "#f82519", initial: "Z" },

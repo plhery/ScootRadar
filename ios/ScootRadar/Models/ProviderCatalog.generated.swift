@@ -143,8 +143,11 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
 
     var app: OperatorApp? {
         switch self {
+        case .bolt: OperatorApp(link: URL(string: "https://bolt.sng.link/Epy3j/o9sr")!, appStore: URL(string: "https://apps.apple.com/app/id675033630")!)
         case .bird: OperatorApp(link: URL(string: "https://ride.bird.co/")!, appStore: URL(string: "https://apps.apple.com/app/id1260842311")!)
+        case .dott: OperatorApp(link: URL(string: "https://v.ridedott.com/")!, appStore: URL(string: "https://apps.apple.com/app/id1440301673")!)
         case .lime: OperatorApp(link: URL(string: "https://lime.bike/")!, appStore: URL(string: "https://apps.apple.com/app/id1199780189")!)
+        case .voi: OperatorApp(link: URL(string: "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest")!, appStore: URL(string: "https://apps.apple.com/app/id1395921017")!)
         case .publibike: OperatorApp(link: URL(string: "https://app.publibike.ch/")!, appStore: URL(string: "https://apps.apple.com/app/id6739938966")!)
         case .spin: OperatorApp(link: URL(string: "https://www.spin.app/")!, appStore: URL(string: "https://apps.apple.com/app/id1241808993")!)
         case .qick: OperatorApp(link: URL(string: "https://qickscooters.app.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1480390337")!)

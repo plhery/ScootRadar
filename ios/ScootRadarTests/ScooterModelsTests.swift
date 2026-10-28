@@ -485,6 +485,17 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertEqual(scooter("publibike").operatorApp?.link.absoluteString, "https://app.publibike.ch/")
         XCTAssertEqual(scooter("spin").operatorApp?.link.absoluteString, "https://www.spin.app/")
         XCTAssertEqual(scooter("spin").operatorApp?.appStore.absoluteString, "https://apps.apple.com/app/id1241808993")
+        // Voi's, Dott's and Bolt's rider maps link no scooter: Voi's link is the one its feeds give
+        // every scooter, Bolt's the store link its feeds publish.
+        XCTAssertEqual(
+            scooter("voi").operatorApp?.link.absoluteString,
+            "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest"
+        )
+        XCTAssertEqual(scooter("dott").operatorApp?.link.absoluteString, "https://v.ridedott.com/")
+        XCTAssertEqual(scooter("bolt").operatorApp?.link.absoluteString, "https://bolt.sng.link/Epy3j/o9sr")
+        XCTAssertEqual(scooter("voi").operatorApp?.appStore.absoluteString, "https://apps.apple.com/app/id1395921017")
+        XCTAssertEqual(scooter("dott").operatorApp?.appStore.absoluteString, "https://apps.apple.com/app/id1440301673")
+        XCTAssertEqual(scooter("bolt").operatorApp?.appStore.absoluteString, "https://apps.apple.com/app/id675033630")
 
         // With Lime installed, its universal link opens it; only an app may take that link.
         var tried: [String] = []
@@ -507,7 +518,7 @@ final class ScooterModelsTests: XCTestCase {
         // A scooter its feed links keeps that link, and other operators have no app to fall back on.
         let linked = scooter("lime", rentalURIs: ScooterRentalURIs(ios: "https://lime.bike/vehicle/1", android: nil, web: nil))
         XCTAssertNil(linked.operatorApp)
-        XCTAssertNil(scooter("dott").operatorApp)
+        XCTAssertNil(scooter("hopp").operatorApp)
     }
 
     func testRideEstimateDurationPolicyAcceptsOnlyMenuDurations() {

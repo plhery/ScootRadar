@@ -68,7 +68,10 @@ zone id and valid coordinates, and deduplicates by vehicle id. `locked: true`
 is normal for a parked scooter and does not mean it is unavailable.
 
 Battery is a percentage. Range, fares, vehicle-specific rental links, parking
-and zones remain unknown. A completed response is its observation time;
+and zones remain unknown. Since 29 October 2026 the card's **Open in Voi**
+opens Voi's app on the link Voi's public feeds give every scooter,
+`https://lqfa.adj.st/closest_vehicle?…`, which the app claims; without the
+app, a phone goes on to its store (`data/providers.json`). A completed response is its observation time;
 the source supplies no independent position timestamp. The map's usual
 expiry and municipal night-ban rules still apply. Calls start no more than
 twice per second, with the scheduler's two concurrent slots per host; requests

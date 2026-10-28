@@ -82,7 +82,10 @@ bounds are published. Bikes and vehicles in adjacent regions are excluded.
 The source reports no charge, range, pricing, vehicle-specific rental links,
 parking, zones or position timestamp. Charge and range remain unknown; the
 completed sync is the observation time, so upstream position age cannot be
-independently established. The existing app-level Dott link remains available.
+independently established. Since 29 October 2026 the card's **Open in Dott**
+opens Dott's app on `https://v.ridedott.com/`, which the app claims on iOS and
+Android; without the app, a phone goes on to ridedott.com, whose page links
+both stores (`data/providers.json`).
 The usual 15-minute snapshot expiry still applies after errors.
 
 The adapter is limited to the Node cache. It is not imported into the

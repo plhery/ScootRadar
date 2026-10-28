@@ -430,6 +430,39 @@ test('a price in forints is in whole forints, in Safari too', async ({ page }) =
   await expect(card.getByText(/for 10 min/)).toHaveText(/^≈ HUF\s1['’]032 for 10 min$/);
 });
 
+test('a phone opens Voi’s, Dott’s and Bolt’s apps where their rider maps link no scooter', async ({ page, isMobile }) => {
+  // Each opens on a link its app claims (data/providers.json); a computer has no app to open.
+  const apps = [
+    ['voi', 'Voi', 'https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest'],
+    ['dott', 'Dott', 'https://v.ridedott.com/'],
+    ['bolt', 'Bolt', 'https://bolt.sng.link/Epy3j/o9sr'],
+  ];
+  const vehicles = apps.map(([provider], index) => ({ ...scooterResponse.vehicles[1], provider,
+    vehicle_id: `${provider}-1`, lat: 47.3759 + index * 0.001, lng: 8.5417, rental_uris: undefined }));
+  await page.route('**/api/scooters?**', route => {
+    const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+    if (zoom <= 15) return route.fallback();
+    return route.fulfill({ json: {
+      ...scooterResponse, vehicles, providers: { voi: 1, dott: 1, bolt: 1 },
+      meta: { ...scooterResponse.meta, totalVehicles: 3, mode: 'vehicles', zoom },
+    } });
+  });
+  await page.goto('/map');
+  await focusFixtureArea(page);
+  await zoomTo(page, 16);
+
+  const card = page.locator('.dock-card');
+  for (const [, name, link] of apps) {
+    await page.getByRole('button', { name: `${name} scooter`, exact: true }).click();
+    await expect(card.getByRole('heading', { name })).toBeVisible();
+    if (isMobile) await expect(card.getByRole('link')).toHaveText([`Open in ${name}`]);
+    if (isMobile) await expect(card.getByRole('link')).toHaveAttribute('href', link);
+    else await expect(card.getByRole('link')).toHaveCount(0);
+    await card.getByRole('button', { name: 'Close scooter details' }).click();
+    await expect(card).toHaveCount(0);
+  }
+});
+
 test.describe('in a browser that asks for US English', () => {
   test.use({ locale: 'en-US' });
 

@@ -11,9 +11,10 @@ interface ProviderRentalLinkPolicy {
 }
 
 const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
+  // bolt.sng.link carries the store link Bolt's feeds publish, which its app claims.
   bolt: {
     schemes: ['bolt'],
-    httpsHosts: ['bolt.eu', 'bolt.com'],
+    httpsHosts: ['bolt.eu', 'bolt.com', 'bolt.sng.link'],
   },
   bird: {
     schemes: ['bird'],

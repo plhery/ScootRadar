@@ -178,10 +178,11 @@ for.
 - **No link.** The city's feed links every scooter to
   `https://micromob.naolib.fr//#/trip/start`. Links are kept only on their
   provider's own hosts, and Naolib Micromob' has none listed, so its scooters
-  have no "Open in" button on the web or on iOS. Only Lime, Bird, PubliBike and
-  Spin have a link of their own app to fall back on (`app` in
-  `data/providers.json`, since 16 October 2026, 22 October for PubliBike, 23
-  October for Spin). Each is a universal link the operator's app claims,
+  have no "Open in" button on the web or on iOS. Lime, Bird, PubliBike, Spin,
+  Voi, Dott, Bolt and a few others have a link of their own app to fall back
+  on (`app` in `data/providers.json`, since 16 October 2026 for Lime and Bird,
+  22 October for PubliBike, 23 October for Spin and 29 October for Voi, Dott
+  and Bolt). Each is a universal link the operator's app claims,
   except Spin's: no Spin host is claimed, so by the user's choice its button
   opens `https://www.spin.app/`, whose page links both stores, and the iPhone
   app opens Spin's App Store page. Otherwise iOS only tries a scooter's next

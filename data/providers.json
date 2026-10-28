@@ -5,7 +5,8 @@
     "color": "#00cc44",
     "initial": "B",
     "switzerland": true,
-    "systemIds": { "prefixes": ["bolt"] }
+    "systemIds": { "prefixes": ["bolt"] },
+    "app": { "link": "https://bolt.sng.link/Epy3j/o9sr", "appStoreId": 675033630 }
   },
   {
     "key": "bird",
@@ -22,7 +23,8 @@
     "color": "#ff6600",
     "initial": "D",
     "switzerland": true,
-    "systemIds": { "prefixes": ["dott"] }
+    "systemIds": { "prefixes": ["dott"] },
+    "app": { "link": "https://v.ridedott.com/", "appStoreId": 1440301673 }
   },
   {
     "key": "hopp",
@@ -47,7 +49,8 @@
     "color": "#ff1493",
     "initial": "V",
     "switzerland": true,
-    "systemIds": { "prefixes": ["voi"] }
+    "systemIds": { "prefixes": ["voi"] },
+    "app": { "link": "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest", "appStoreId": 1395921017 }
   },
   {
     "key": "pony",
