@@ -190,6 +190,15 @@ scooters in Brighton and Hove on Saturdays and Sundays, by its Brighton pricing
 guide and the council's trial page, and 20p on weekdays, which is all its feed
 gives; so at weekends the card shows 22p, "published price, checked 23 Oct".
 
+The rider maps of Voi, Lime, Dott and Bolt carry no price either, and since 28
+October 2026 their scooters get a listed price in the same way, where there is
+one; a Lime market's price covers all its refresh groups. In Germany and the
+UK these four show their city prices only in their apps, and voi.com and
+li.me refuse automated reads, so the prices come from the city: moBiel's page
+for Dott in Bielefeld, Transport for West Midlands' for Lime in Birmingham and
+on the University of Warwick's campus, and Slough Borough Council's for Voi in
+Slough.
+
 The weekly
 [catalog check](.github/workflows/catalog-check.yml) runs
 `npm run check:listed-prices`, which fails once a price was read more than 90

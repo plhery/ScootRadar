@@ -1,7 +1,7 @@
 import catalog from '../../data/listed-prices.json';
 import { boundsContainPoint } from '@/lib/geo';
 import { WEEKDAYS, localClock } from '@/lib/rentalCurfews';
-import type { MapBounds, RidePricing } from '@/lib/types';
+import type { MapBounds, RidePricing, Vehicle } from '@/lib/types';
 
 // Prices for the systems whose feeds publish none, such as Lime's, Bird's and
 // Spin's, copied by hand from each operator's public price list into
@@ -87,3 +87,28 @@ export function listedPriceLookup(entries: ListedPrice[], staleAfterDays: number
 
 /** The price for a scooter of that system at that point, given the feed's, as listedPriceLookup says. */
 export const listedPricing = listedPriceLookup(LISTED_PRICES, STALE_AFTER_DAYS);
+
+/**
+ * The system a listed price names for a system: itself, or for one of a Lime market's refresh
+ * groups, "lime_gb_app_birmingham_003" (limeGrid.ts), the market, "lime_gb_app_birmingham".
+ */
+export function listedPriceSystem(system: { id: string; limeMapTiles?: unknown }): string {
+  return system.limeMapTiles ? system.id.replace(/_\d{3}$/, '') : system.id;
+}
+
+const LISTED_SYSTEMS = new Set(LISTED_PRICES.flatMap(entry => entry.systems));
+
+/**
+ * A collection's scooters with their system's listed price, where they have none: the app maps,
+ * Voi's, Lime's, Dott's or Bolt's, carry no price, so their scooters get the one the operator or
+ * the city publishes, as a feed's do in scooterFeeds.ts.
+ */
+export function withListedPricing(system: { id: string; limeMapTiles?: unknown }, vehicles: Vehicle[], now: number): Vehicle[] {
+  const id = listedPriceSystem(system);
+  if (!LISTED_SYSTEMS.has(id)) return vehicles;
+  return vehicles.map(vehicle => {
+    if (vehicle.pricing) return vehicle;
+    const pricing = listedPricing(id, vehicle.lat, vehicle.lng, now);
+    return pricing ? { ...vehicle, pricing } : vehicle;
+  });
+}

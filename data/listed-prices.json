@@ -197,6 +197,46 @@
       "url": "https://help-bikes.beryl.cc/en/articles/11654747-brighton-pricing-guide",
       "quote": "On the Weekend: £1 unlock fee … 22p per minute - e-Scooter",
       "checked": "2026-10-23"
+    },
+    {
+      "systems": [
+        "dott_de_bielefeld"
+      ],
+      "currency": "EUR",
+      "unlock_fee_minor_units": 120,
+      "minute_fee_minor_units": 29,
+      "plus_tax": false,
+      "source": "city",
+      "url": "https://www.mobiel.de/sharing/dott-e-tretroller/",
+      "quote": "Preise Entsperrung des E-Tretrollers 1,20 Euro pro Entsperrung Fahrpreis 0,29 Euro pro Minute",
+      "checked": "2026-10-28"
+    },
+    {
+      "systems": [
+        "lime_gb_app_birmingham",
+        "lime_gb_app_coventry"
+      ],
+      "currency": "GBP",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 20,
+      "plus_tax": false,
+      "source": "city",
+      "url": "https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/e-scooters-in-the-west-midlands/",
+      "quote": "E-scooters are currently available in: Birmingham University of Warwick … Pay as you go £1 unlock fee 20p per minute Prices are frozen for the first two years of the service.",
+      "checked": "2026-10-28"
+    },
+    {
+      "systems": [
+        "voi_gb_app_348"
+      ],
+      "currency": "GBP",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 22,
+      "plus_tax": false,
+      "source": "city",
+      "url": "https://www.slough.gov.uk/parking-roads-travel/e-scooter-trial/4",
+      "quote": "The June 2026 costs are: Pay as you go: £1 to unlock + £0.22 per minute",
+      "checked": "2026-10-28"
     }
   ]
 }

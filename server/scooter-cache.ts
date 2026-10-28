@@ -7,6 +7,7 @@ import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
+import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler, type CollectionAttention } from './feedScheduler';
@@ -247,12 +248,14 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   let failed = false;
   let running = true;
   const startedAt = Date.now();
+  // An app map's scooters carry no price: they get the one listed for their system, if any.
+  const priced = (vehicles: Vehicle[]) => system ? withListedPricing(system, vehicles, Date.now()) : vehicles;
   // What an app map's sweep has found so far, shown until it ends (sweeps.ts): the record it ends
   // with has no sweep.
   const progress = (vehicles: Vehicle[], swept: MapBounds[]) => {
     const record = records.get(definition.id);
     if (!running || stopping || !record) return;
-    records.set(definition.id, { ...record, sweep: { startedAt, vehicles, swept } });
+    records.set(definition.id, { ...record, sweep: { startedAt, vehicles: priced(vehicles), swept } });
     publish();
   };
   const timed = async () => {
@@ -261,7 +264,7 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
       const result = await withinCollection({ ...attention, progress }, () => definition.collect()).finally(() => { running = false; });
       metrics.recordCollection(definition, false, (performance.now() - started) / 1000);
       lastErrors.delete(definition.id);
-      return holdStrays(definition.id, result, records.get(definition.id), Date.now());
+      return holdStrays(definition.id, { ...result, vehicles: priced(result.vehicles) }, records.get(definition.id), Date.now());
     } catch (error) {
       failed = true;
       metrics.recordCollection(definition, true, (performance.now() - started) / 1000);

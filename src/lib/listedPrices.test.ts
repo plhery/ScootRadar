@@ -1,9 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { PRICES_BEFORE_TAX } from '@/generated/countries';
 import { providerKeyForSystemId } from '@/generated/providers';
-import { LISTED_PRICES, RECHECK_AFTER_DAYS, STALE_AFTER_DAYS, listedPriceAge, listedPriceLookup, type ListedPrice } from './listedPrices';
+import {
+  LISTED_PRICES, RECHECK_AFTER_DAYS, STALE_AFTER_DAYS, listedPriceAge, listedPriceLookup, listedPriceSystem, withListedPricing,
+  type ListedPrice,
+} from './listedPrices';
 import { REGIONAL_SCOOTER_SYSTEMS } from './regionalScooterSystems';
 import { WEEKDAYS } from './rentalCurfews';
+import type { Vehicle } from './types';
 
 const at = (iso: string) => Date.parse(iso);
 
@@ -85,8 +89,36 @@ describe('listedPriceLookup', () => {
   });
 });
 
+describe('withListedPricing', () => {
+  const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(candidate => candidate.id === id)!;
+  const scooter = (lat: number, lng: number, pricing?: Vehicle['pricing']): Vehicle => ({
+    provider: 'lime', lat, lng, battery: null, range_m: null, vehicle_id: 'a', deep_link: null, distance_m: null,
+    ...(pricing ? { pricing } : {}),
+  });
+  const now = at('2026-10-28T18:00:00Z');
+
+  it("gives an app map's scooters the price listed for its system", () => {
+    expect(withListedPricing(system('voi_gb_app_348'), [scooter(51.51, -0.59)], now)[0].pricing).toEqual({
+      currency: 'GBP', unlock_fee_minor_units: 100, minute_fee_minor_units: 22, listed_on: '2026-10-28',
+    });
+  });
+
+  it("gives a Lime market's refresh groups the market's price", () => {
+    const group = system('lime_gb_app_birmingham_000');
+    expect(listedPriceSystem(group)).toBe('lime_gb_app_birmingham');
+    expect(withListedPricing(group, [scooter(52.48, -1.9)], now)[0].pricing?.minute_fee_minor_units).toBe(20);
+  });
+
+  it('leaves a price the scooter has, and a system with none listed', () => {
+    const own = { currency: 'GBP', unlock_fee_minor_units: 0, minute_fee_minor_units: 25 };
+    expect(withListedPricing(system('voi_gb_app_348'), [scooter(51.51, -0.59, own)], now)[0].pricing).toBe(own);
+    const london = [scooter(51.5, -0.12)];
+    expect(withListedPricing(system('voi_gb_app_327'), london, now)).toBe(london);
+  });
+});
+
 describe('data/listed-prices.json', () => {
-  const systems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [system.id, system]));
+  const systems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [listedPriceSystem(system), system]));
 
   it('asks for a recheck well before a price is dropped', () => {
     expect(RECHECK_AFTER_DAYS).toBeGreaterThan(0);
