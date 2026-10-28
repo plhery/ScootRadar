@@ -27,13 +27,16 @@ data class MapChrome(
 class MapChromeFrames {
     var top by mutableStateOf<ScreenRect?>(null)
     var locateButton by mutableStateOf<ScreenRect?>(null)
+
+    /** The zones' legend beside the locate button, while it shows. */
+    var zoneLegend by mutableStateOf<ScreenRect?>(null)
     var dock by mutableStateOf<ScreenRect?>(null)
 
     val chrome: MapChrome
         get() = MapChrome(
             top = top,
             bottomTop = locateButton?.minY,
-            bottomFrames = listOfNotNull(locateButton, dock),
+            bottomFrames = listOfNotNull(locateButton, zoneLegend, dock),
         )
 }
 

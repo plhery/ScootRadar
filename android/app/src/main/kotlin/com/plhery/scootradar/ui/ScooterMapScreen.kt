@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.displayCutout
@@ -29,6 +28,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -83,6 +83,7 @@ import com.plhery.scootradar.core.map.searchNear
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
+import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.localized
@@ -92,6 +93,7 @@ import com.plhery.scootradar.ui.chrome.FloatingMapControls
 import com.plhery.scootradar.ui.chrome.LocationIssueCard
 import com.plhery.scootradar.ui.chrome.LocationSettings
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
+import com.plhery.scootradar.ui.chrome.ZoneLegend
 import com.plhery.scootradar.ui.dock.ScooterControlDock
 import com.plhery.scootradar.ui.filters.ScooterFilterSheet
 import com.plhery.scootradar.ui.glass.Glass
@@ -328,7 +330,10 @@ private fun DockChrome(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {
-                    Spacer(Modifier.weight(1f))
+                    // The legend at the leading edge, a spacer's 10 short of the button.
+                    Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
+                        ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp))
+                    }
                     FloatingMapControls(
                         controller,
                         Modifier
@@ -402,6 +407,26 @@ private val EmptyShape = object : Shape {
 }
 
 /** Where a piece of the chrome is in the window, in points, which are the map's. */
+/**
+ * What the zones' colours mean, while they are on, and a city's rules over the map; the names on the map keep clear
+ * of it.
+ */
+@Composable
+private fun ZoneLegendOverTheMap(controller: ScooterMapController, chrome: MapChromeFrames, modifier: Modifier = Modifier) {
+    val state by controller.zoneState.collectAsStateWithLifecycle()
+    val zones by controller.mapZones.collectAsStateWithLifecycle()
+    val rules by controller.mapRuleZones.collectAsStateWithLifecycle()
+    if (state == ScooterZoneState.Off && rules.isEmpty()) return
+    val density = LocalDensity.current.density
+    ZoneLegend(
+        state = state,
+        count = zones.size - rules.size,
+        rules = rules,
+        modifier = modifier.onGloballyPositioned { chrome.zoneLegend = it.windowFrame(density) },
+    )
+    DisposableEffect(Unit) { onDispose { chrome.zoneLegend = null } }
+}
+
 private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
     val bounds = boundsInWindow()
     return ScreenRect(
