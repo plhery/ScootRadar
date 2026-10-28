@@ -57,6 +57,16 @@ its night counts can't show a ban; from midnight to 5:00 local on the night of
 Marília (São Paulo) limits its scooter service to 6:00–22:00 by Decree 15.120
 of 21 October 2026, but none of the scooters we show runs there.
 
+Rechecked on 28 October 2026 for the biggest Brazilian towns, with the same
+result. Fortaleza's press said in 2025 that JET's scooters ran from 6:00 to
+22:00 and were collected overnight
+([O Povo, 15 June 2025](https://www.opovo.com.br/noticias/fortaleza/2025/06/15/patinete-eletrico-em-fortaleza-como-alugar-qual-o-valor-veja-como-usar.html)),
+but the city's Decree 16.261 of 8 May 2025 sets no hours in the summaries
+found, and in October 2026 the region's scooters stay out all night (about
+900 every hour from 22:00 to 6:00 local on 27 to 28 October), so no ban is
+added. Belo Horizonte's, Porto Alegre's, Curitiba's and Salvador's rules, seen
+in the cities' own summaries or the press, set no hours either.
+
 ## App provenance and protocol
 
 The [Google Play listing](https://play.google.com/store/apps/details?id=com.gojet.app)

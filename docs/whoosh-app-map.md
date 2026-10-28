@@ -104,7 +104,13 @@ on renting that we could find, in a municipal rule or a published permit, so
 none is in `data/rental-curfews.json`. The map leaves out scooters that can't
 be hired, and every region's sweeps from midnight to 5:00 local on the night of
 24 to 25 October found at least 82% of the day's scooters (Minsk 4,466,
-Santiago 4,564). San Pedro Garza García's service runs 24 hours
+Santiago 4,564). Rechecked on 28 October 2026: Whoosh's terms for Brazil
+([21 March 2025](https://whoosh.bike/terms_br/pt)) and Chile
+([29 December 2025](https://whoosh.bike/terms_cl/es)) set no hours, and Rio de
+Janeiro's Decree 57.657 (D.O.RIO, 10 March 2026) sets none but has each
+operator state its own days and hours in the plan it files, which isn't
+published. Limache's runs "24/7" (see the [Chilean guide](chilean-scooter-feeds.md#night-bans-october-2026)).
+San Pedro Garza García's service runs 24 hours
 ([Players of Life, April 2026](https://playersoflife.com/monterrey/san-pedro-acelera-hacia-el-mundial-2026-asi-funciona-su-innovador-sistema-con-scooters-electricos/)).
 Minsk rents scooters from mid-March to mid-November, as agreed with the city
 ([Myfin, 12 January 2024](https://myfin.by/article/zhizn/v-minske-ustanovili-sroki-prokata-elektrosamokatov-spojler-zimy-tam-net)),
