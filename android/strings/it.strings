@@ -1,0 +1,7 @@
+/* The Android app's own wording, where the iPhone's names the iPhone or iOS, and what iOS writes itself, such as
+   Back (ui.md UI-326): read over the iPhone app's Localizable.strings by :core's ScooterStrings. */
+"Your pass details stay on this phone." = "I dettagli del pass restano su questo telefono.";
+"%@, the language of your phone" = "%@, la lingua del tuo telefono";
+"Follows your phone’s language, if you change it there." = "Segue la lingua del tuo telefono, anche se la cambi.";
+"Open-source licences" = "Licenze open source";
+"Back" = "Indietro";

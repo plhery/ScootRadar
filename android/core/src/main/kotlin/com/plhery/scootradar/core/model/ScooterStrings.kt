@@ -20,15 +20,20 @@ import org.xml.sax.InputSource
 class ScooterStrings internal constructor(
     private val sentences: Map<String, String>,
     private val counting: Map<String, ScooterCountingFormat>,
+    /** Android's own wording, from android/strings: where the iPhone's sentence names the iPhone. */
+    private val android: Map<String, String> = emptyMap(),
 ) {
     /**
      * The string for the key, as Bundle.localizedString(forKey:value:table:) gives it, unformatted; null
      * where the language has none. A sentence about counts gives its format, with its %#@variables@.
      */
-    operator fun get(key: String): String? = sentences[key] ?: counting[key]?.format
+    operator fun get(key: String): String? = android[key] ?: sentences[key] ?: counting[key]?.format
 
     /** The keys of Localizable.strings. */
     val keys: Set<String> get() = sentences.keys
+
+    /** The keys of Android's own strings file. */
+    val androidKeys: Set<String> get() = android.keys
 
     /** The keys of Localizable.stringsdict. */
     val countingKeys: Set<String> get() = counting.keys
@@ -42,7 +47,7 @@ class ScooterStrings internal constructor(
      */
     fun format(key: String, arguments: List<Any?>, locale: Locale): String {
         counting[key]?.let { return it.format(arguments, locale) }
-        val sentence = sentences[key] ?: key
+        val sentence = android[key] ?: sentences[key] ?: key
         return if (arguments.isEmpty()) sentence else AppleFormat.format(sentence, arguments, locale)
     }
 
@@ -56,7 +61,10 @@ class ScooterStrings internal constructor(
             val counting = resource("$folder/Localizable.stringsdict")
                 ?.use(AppleStringsdictFile::parse)
                 .orEmpty()
-            return ScooterStrings(sentences, counting)
+            val android = resource("$folder/Android.strings")
+                ?.use { AppleStringsFile.parse(AppleStringsFile.decode(it.readBytes())) }
+                .orEmpty()
+            return ScooterStrings(sentences, counting, android)
         }
 
         private fun resource(path: String): InputStream? = ScooterStrings::class.java.getResourceAsStream(path)

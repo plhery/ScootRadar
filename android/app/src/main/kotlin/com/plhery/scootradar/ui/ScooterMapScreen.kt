@@ -74,6 +74,7 @@ import com.plhery.scootradar.core.map.hasActiveFilters
 import com.plhery.scootradar.core.map.nearbyCities
 import com.plhery.scootradar.core.map.searchBarState
 import com.plhery.scootradar.core.map.searchNear
+import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScreenRect
@@ -92,6 +93,7 @@ import com.plhery.scootradar.ui.glass.MapBackdrop
 import com.plhery.scootradar.ui.glass.glassMayBlur
 import com.plhery.scootradar.ui.search.LocalAddressSearch
 import com.plhery.scootradar.ui.search.ScooterSearchIsland
+import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
@@ -117,6 +119,8 @@ fun ScooterMapScreen(
     analytics: ScooterAnalytics? = null,
     /** Where the search asks for places: the server's, or the tests' stand-in for it. */
     addressSearch: AddressSearchAPIClient? = null,
+    /** Where Settings keeps the rider's choice about usage data, for ScooterAnalytics to read; none in tests. */
+    defaults: ScooterDefaults? = null,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -178,6 +182,14 @@ fun ScooterMapScreen(
                     title = localized("Filters"),
                 ) { bottomInset ->
                     ScooterFilterSheet(controller, bottomInset, onDone = { filtersPresented = false })
+                }
+                IosSheet(
+                    isPresented = settingsPresented,
+                    onDismiss = { settingsPresented = false },
+                    detents = listOf(SheetDetent.Medium, SheetDetent.Large),
+                    title = localized("Settings"),
+                ) { bottomInset ->
+                    ScooterSettingsSheet(controller, bottomInset, defaults, onDone = { settingsPresented = false })
                 }
             }
         }

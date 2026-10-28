@@ -45,11 +45,16 @@ val generateCatalog by tasks.registering(Exec::class) {
 }
 
 // The app's strings are the iPhone app's, read as they are when the app runs (ScooterStrings.kt): a
-// translation changed for the iPhone is changed here too.
+// translation changed for the iPhone is changed here too. Android's own wording, where the iPhone's names the
+// iPhone, goes beside them from android/strings.
 val iosStrings = layout.buildDirectory.dir("generated/iosStrings")
 val copyIosStrings by tasks.registering(Sync::class) {
     from(repo.resolve("ios/ScootRadar")) {
         include("*.lproj/Localizable.strings", "*.lproj/Localizable.stringsdict")
+    }
+    from(repo.resolve("android/strings")) {
+        include("*.strings")
+        eachFile { path = "${name.removeSuffix(".strings")}.lproj/Android.strings" }
     }
     into(iosStrings.map { it.dir("com/plhery/scootradar/core/strings") })
 }

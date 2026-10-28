@@ -33,6 +33,26 @@ class ScooterStringsTest {
     }
 
     @Test
+    fun everyLanguageHasAndroidsOwnSentencesWithTheArgumentsOfTheirKeys() {
+        val english = ScooterLanguage.En.strings.androidKeys
+        assertTrue(english.isNotEmpty())
+        for (language in ScooterLanguage.entries) {
+            val file = repo.resolve("android/strings/${language.rawValue}.strings").readText()
+            val lines = file.lines().filter { it.startsWith("\"") }
+            assertEquals(language.rawValue, english, language.strings.androidKeys)
+            assertEquals(language.rawValue, lines.size, english.size)
+            ScooterLanguage.current = language
+            for (line in lines) {
+                val (key, value) = Regex("^\"(.*)\" = \"(.*)\";$").find(line)!!.destructured
+                assertEquals(line, value, language.strings[key])
+                // The iPhone's wording is never shown in its place.
+                assertTrue(line, !value.contains("iPhone"))
+                if (key.contains("%@")) assertTrue(line, localized(key, "‹1›").contains("‹1›"))
+            }
+        }
+    }
+
+    @Test
     fun everySentenceOfEveryLanguageTakesTheArgumentsOfItsKey() {
         // %@ takes a string and %lld a whole number, as Swift's interpolations make them.
         val specifier = Regex("%(?:(\\d+)\\$)?(@|lld)")
