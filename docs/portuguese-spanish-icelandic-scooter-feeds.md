@@ -192,7 +192,7 @@ under its directory.
   kroner that no scooter used.
 - **Time zone:** both feeds give `UTC`, which is Iceland's time all year.
 
-## Hopp Dalvík's and Ólafsvík's winter, October 2026
+## Hopp's winter in Dalvík, Ólafsvík and Stykkishólmur, October 2026
 
 Hopp took its Dalvík scooters in on 19 and 20 October 2026: the feed held 7 or
 8 available scooters on the 19th, 4 that evening, 2 at 18:30 on the 20th and
@@ -213,6 +213,12 @@ the 18th, 2 from the afternoon of the 21st and none from 11:00 on the 22nd
 (UTC, the scooter cache's counts), when it listed no vehicle at all. Neither
 Hopp nor Snæfellsbær publishes a season, so the catalog pauses both towns from
 23 October until 1 May, as Dalvík; check in late April 2027.
+
+Stykkishólmur, across the peninsula, followed on 25 October 2026: its feed held
+the same 19 scooters all week, 1 at 15:00 on the 25th and none from 17:00 (UTC,
+the scooter cache's counts), and on 28 October, still updated every minute, it
+listed no vehicle at all. No season is published for it either, so the catalog
+pauses Stykkishólmur from 26 October until 1 May; check in late April 2027.
 
 ## Data handling
 

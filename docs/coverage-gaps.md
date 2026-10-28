@@ -1219,10 +1219,10 @@ Bonaire had feeds to add. Survey files are in
   16 November until 30 April, from council's "approximately April 30 to
   November 15"; if the city announces another start, change `until` for Bird
   and Lime.
-- **Late April 2027:** Hopp Dalvík, Hopp Ólafsvík (with Hellissandur) and
-  Bird Leduc. None of these towns publishes a season, so the catalog pauses
-  Dalvík from 21 October, Leduc from 22 October and Ólafsvík from 23 October
-  until 1 May, from the days their feeds emptied in 2026. Check each
+- **Late April 2027:** Hopp Dalvík, Hopp Ólafsvík (with Hellissandur), Hopp
+  Stykkishólmur and Bird Leduc. None of these towns publishes a season, so the
+  catalog pauses Dalvík from 21 October, Leduc from 22 October, Ólafsvík from
+  23 October and Stykkishólmur from 26 October until 1 May, from the days their feeds emptied in 2026. Check each
   from mid-April: if its scooters come back before 1 May, move `until` to that
   day, as the map says they are back in May even while they stand on it; if
   they are not back by 1 May, "feed empty" reports the feed about 4 May. In

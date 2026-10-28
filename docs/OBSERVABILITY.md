@@ -288,7 +288,8 @@ Winterthur, Zug and Wetzikon systems were the first, empty since at least 11 Oct
 Dott Tignes (now paused out of season) and Dott Bourgoin-Jallieu were settled the same
 day. Hopp Dalvík and Bird Leduc, emptied for the winter on 20 and 21 October 2026, were
 paused on 22 October, before their alerts were due, and Hopp Ólafsvík, emptied on the
-22nd, from the 23rd. Bird Penticton is paused from 1 November 2026, when the
+22nd, from the 23rd. Hopp Stykkishólmur, emptied on 25 October, is paused from the 26th,
+after its alert fired on the 28th. Bird Penticton is paused from 1 November 2026, when the
 city's notice ends its season.
 
 - **Not a quiet night or a snow day.** Beryl empties Bournemouth and Brighton every

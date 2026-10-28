@@ -375,6 +375,11 @@
         "east": -22.7041
       },
       "discoveryUrl": "https://api.hopp.bike/gbfs/is-stykkisholmur/gbfs.json",
+      "seasonal": {
+        "from": "10-26",
+        "until": "05-01",
+        "timeZone": "Atlantic/Reykjavik"
+      },
       "aliases": [
         "Stykkisholmur"
       ]
