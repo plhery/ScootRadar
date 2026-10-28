@@ -96,6 +96,12 @@ describe('the town a scooter counts under', () => {
       .toEqual({ 'ch:zurich': { bolt: 1 }, 'ch:kloten': { dott: 1 } });
   });
 
+  it('is the Swiss area of an app map’s town, as Lime’s in Kloten, there nearer Opfikon’s centre', () => {
+    const feed = regional('lime_ch_app_kloten_000', [[47.442, 8.572]]);
+    expect(countsOf([feed, national('dott_zurich', 'dott', [[47.44487, 8.57939]])])).toEqual({ 'ch:kloten': { lime: 1, dott: 1 } });
+    expect(buildCityOverview([feed], now).cities.find(city => city.id === 'ch:kloten')?.sources.switzerland).toBe('fresh');
+  });
+
   it('is Lisbon for scooters in west Lisbon, nearer Almada’s centre across the river', () => {
     expect(countsOf([
       regional('lime_pt_lisboa', [[38.712425, -9.201434], [38.704111, -9.174261]]),

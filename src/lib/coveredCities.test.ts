@@ -126,7 +126,8 @@ describe('the count of covered cities and countries', () => {
   // Read from the catalogs themselves, so a catalog the app does not read, or a
   // town it drops, changes one count and not the other.
   function fromCatalogs() {
-    const cities = new Set<string>(JSON.parse(readFileSync('data/swiss-scooter-areas.json', 'utf8')).map(({ id }: { id: string }) => id));
+    const swissAreas: { id: string; city: string }[] = JSON.parse(readFileSync('data/swiss-scooter-areas.json', 'utf8'));
+    const cities = new Set<string>(swissAreas.map(({ id }) => id));
     const countries = new Set(['CH']);
     // A catalog data/countries.json does not list counts as a country of its own.
     const listed = new Map((JSON.parse(readFileSync('data/countries.json', 'utf8')).countries as { code: string; catalog?: string }[])
@@ -136,7 +137,9 @@ describe('the count of covered cities and countries', () => {
         const country: string = listed.get(`data/${file}`) ?? `unlisted ${file}`;
         countries.add(country);
         for (const { city, region = system.region } of system.areas ?? [system]) {
-          cities.add([country, region, city].filter(Boolean).map((part, index, parts) =>
+          // Switzerland's catalog adds app maps to its areas, by their town.
+          const swiss = country === 'CH' ? swissAreas.find(area => area.city === city)?.id : undefined;
+          cities.add(swiss ?? [country, region, city].filter(Boolean).map((part, index, parts) =>
             index < parts.length - 1 ? part.toLowerCase() : part).join(':'));
         }
       }
@@ -209,7 +212,8 @@ describe('iOS city catalogue', () => {
     const same = (a: Feed, b: Feed) => a.id === b.id && a.pause?.from === b.pause?.from
       && a.pause?.until === b.pause?.until && a.pause?.timeZone === b.pause?.timeZone;
     const expected = new Map<string, Feed[]>();
-    for (const system of REGIONAL_SCOOTER_SYSTEMS) {
+    // A Swiss area lists no feeds: there is no season to close in Switzerland (activeSeasonalPause).
+    for (const system of REGIONAL_SCOOTER_SYSTEMS.filter(candidate => candidate.country !== 'CH')) {
       for (const area of serviceAreas(system)) {
         const id = regionalCityId(system, area);
         const pause = area.seasonal ?? system.seasonal;

@@ -5,6 +5,7 @@ import { limeGridGroups, type LimeMapGrid } from '@/lib/limeGrid';
 import { searchText, searchWords } from '@/lib/searchText';
 import type { SeasonalPause } from '@/lib/seasonalPauses';
 import type { MapBounds } from '@/lib/types';
+import swissAreas from '../../data/swiss-scooter-areas.json';
 
 // The countries, their catalogs and their sources come from data/countries.json:
 // scripts/generate-provider-catalog.mjs writes src/generated/countries.ts.
@@ -162,11 +163,16 @@ export function collectsParking(feed: { id: string; source: string }) {
   return isRegionalSource(feed.source) && !APP_MAP_FEEDS.has(feed.id);
 }
 
+// Switzerland's towns are the areas of its open data; its catalog's app maps count in them.
+const SWISS_AREA_IDS = new Map(swissAreas.map(area => [area.city, area.id]));
+
 /**
  * The id of the city a system's service area is in: "no:Oslo", or, where the country has
- * regions, "us:or:Portland", so that Portland, Maine is another city.
+ * regions, "us:or:Portland", so that Portland, Maine is another city. A Swiss one is its
+ * town's area, "ch:kloten" (swissCatalogProblem in scripts/country-catalog.mjs).
  */
 export function regionalCityId(system: RegionalScooterSystem, area: ScooterServiceArea) {
+  if (system.country === 'CH') return SWISS_AREA_IDS.get(area.city) ?? `ch:${area.city}`;
   const region = area.region ?? system.region;
   return region
     ? `${system.country.toLowerCase()}:${region.toLowerCase()}:${area.city}`
@@ -218,7 +224,8 @@ export function mergeCities(systems: readonly RegionalScooterSystem[], regions: 
   }
   return [...cities.values()];
 }
-export const REGIONAL_SCOOTER_CITIES = mergeCities(REGIONAL_SCOOTER_SYSTEMS);
+// Switzerland's towns are its areas, SWISS_SCOOTER_AREAS in feedCoverage.ts, and not the catalog's.
+export const REGIONAL_SCOOTER_CITIES = mergeCities(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.country !== 'CH'));
 
 /** The country whose search words a query ends with, the longest such words, and the words before them: "Lindau Deutschland", "Portland United States". */
 function countryAtEnd(words: readonly string[]): { country?: ScooterCountry; cityWords: readonly string[] } {

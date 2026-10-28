@@ -129,6 +129,15 @@ PubliBike does not publish a redistribution license for these endpoints; its
 license questions to PubliBike. Responses advertise a 500-request limit without
 documenting the time window, so the app caches each for 30 seconds.
 
+Lime's Kloten zone, a region apart from its Zürich and Opfikon zones, is in no
+feed either. Since 28 October 2026 the cache reads it from Lime's rider map,
+signed in, as in Europe (see [the Lime catalog](docs/lime-app-map.md)), from
+Switzerland's catalog, `data/swiss-scooter-feeds.json`, which holds only such
+app maps, reported as `switzerland` in `meta.sources`. Their scooters count
+under the town's area, Kloten's, with the dataset's, and
+`SCOOTER_ALWAYS_FAST=CH`, which stands for the dataset, Hopp and PubliBike,
+leaves them at Lime's own pace.
+
 ### Listed prices
 
 Lime, Bird and Spin publish no prices in their feeds, nor do PubliBike and a

@@ -249,6 +249,9 @@ function townsHolding<T extends OverviewTown>(towns: readonly T[], lat: number, 
   return candidates.filter(town => boundsContainPoint(town.bounds, lat, lng));
 }
 
+// Switzerland's open data and its catalog's app maps, which count in the same towns, its areas.
+const isSwissSource = (source: string) => !isRegionalSource(source) || source === COUNTRY_SOURCES.CH;
+
 // Each catalog source's towns, the same list each time, so its grid is built once.
 const TOWNS_OF_SOURCE = new Map<string, typeof regionalCities>();
 const townsOfSource = (source: string) => TOWNS_OF_SOURCE.get(source) ?? TOWNS_OF_SOURCE.set(source,
@@ -294,7 +297,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, counts: (
   for (const city of [...regionalCities, ...SWISS_SCOOTER_AREAS]) {
     const country = regionalCities.find(candidate => candidate.id === city.id)?.country;
     const countrySource = country ? COUNTRY_SOURCES[country] : null;
-    const relevant = feeds.filter(feed => (countrySource ? feed.source === countrySource : !isRegionalSource(feed.source)) && coverageIntersects(feed.coverage, city.bounds));
+    const relevant = feeds.filter(feed => (countrySource ? feed.source === countrySource : isSwissSource(feed.source)) && coverageIntersects(feed.coverage, city.bounds));
     const health = healthFor(relevant, now, counts);
     totals.set(city.id, { id: city.id, city: city.city, lat: city.center[0], lng: city.center[1],
       batteries: {}, sources: health.sources, failedSources: health.failedSources });
@@ -304,7 +307,7 @@ export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, counts: (
   let keepUntil = Infinity;
   for (const feed of feeds) {
     if (feed.skipped || !counts(feed)) continue;
-    const cities = isRegionalSource(feed.source) ? townsOfSource(feed.source) : SWISS_SCOOTER_AREAS;
+    const cities = isSwissSource(feed.source) ? SWISS_SCOOTER_AREAS : townsOfSource(feed.source);
     if (!cities.length) continue;
     const cap = feed.vehicles.length ? retention?.(feed.id) : undefined;
     if (cap !== undefined) keepUntil = Math.min(keepUntil, feed.observedAt + cap);

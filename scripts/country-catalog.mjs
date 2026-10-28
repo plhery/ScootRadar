@@ -178,6 +178,8 @@ export function scooterCities(swissAreas, systems, countries) {
   const sources = new Map(countries.map(country => [country.code, country.source]));
   const samePause = (a, b) => a === b || (!!a && !!b && a.from === b.from && a.until === b.until && a.timeZone === b.timeZone);
   for (const system of systems) {
+    // A Swiss app map counts in its town's area, which is already one (swissCatalogProblem).
+    if (system.country === 'CH') continue;
     for (const area of system.areas ?? [system]) {
       const region = areaRegion(system, area);
       const id = cityId(system.country, region, area.city);
@@ -282,10 +284,11 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
     if (!/^[A-Z]{2}$/.test(code) || codes.has(code)) throw new Error(`Invalid or repeated country code: ${code}`);
     codes.add(code);
     if (!CONTINENTS.includes(country.continent)) throw new Error(`${code}: continent is one of ${CONTINENTS.join(', ')}`);
-    // Switzerland's cities are its open data's areas, data/swiss-scooter-areas.json; every other
-    // country has a catalog of its own, data/<adjective>-scooter-feeds.json, and a source in meta.sources.
-    if (code === 'CH' ? country.catalog || country.source : !country.catalog || !country.source) {
-      throw new Error(`${code}: every country but CH needs a catalog and a source`);
+    // Switzerland's cities are its open data's areas, data/swiss-scooter-areas.json, and its catalog,
+    // if any, adds only app maps to them (swissCatalogProblem); every other country has a catalog of
+    // its own, data/<adjective>-scooter-feeds.json, and a source in meta.sources.
+    if (!country.catalog !== !country.source || (code !== 'CH' && !country.catalog)) {
+      throw new Error(`${code}: every country but CH needs a catalog and a source, and CH both or neither`);
     }
     if (country.catalog && !/^data\/[a-z-]+-scooter-feeds\.json$/.test(country.catalog)) {
       throw new Error(`${code}: catalog is data/<adjective>-scooter-feeds.json`);
@@ -445,6 +448,27 @@ export function birdAreasProblem(systems, { areas }) {
 }
 
 /**
+ * Why Switzerland's catalog is wrong, or null. Its towns are the areas of
+ * data/swiss-scooter-areas.json, which the open data covers; the catalog adds the Lime app maps of
+ * the towns where it lists no Lime, as Kloten. Each names an area's town, its centre within that
+ * area's bounds, and its scooters count there (regionalCityId in src/lib/regionalScooterSystems.ts).
+ */
+export function swissCatalogProblem(systems, swissAreas) {
+  for (const system of systems) {
+    if (system.country !== 'CH') continue;
+    if (!system.limeAppMap) return `${system.id}: Switzerland's catalog lists only Lime app maps`;
+    for (const area of system.areas ?? [system]) {
+      const town = swissAreas.find(swiss => swiss.city === area.city);
+      if (!town) return `${system.id}: data/swiss-scooter-areas.json has no town ${area.city}`;
+      const { south, west, north, east } = town.bounds;
+      const [lat, lng] = area.center;
+      if (lat < south || lat > north || lng < west || lng > east) return `${system.id}: its centre is outside the bounds of ${town.id}`;
+    }
+  }
+  return null;
+}
+
+/**
  * One line per continent for the GBFS feeds credited together, "DE/IT/…/UA: Dott, Bolt, …",
  * then each country's own links, in the order of data/countries.json. Links that countries
  * share are credited once, where the last gives it: "FR/…/IL: OpenStreetMap boundaries · ODbL".
@@ -496,7 +520,7 @@ export function typescriptCountries({ countries, landingFirst }) {
 export const COUNTRY_CODES = ${list(countries.map(country => country.code))} as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
-/** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
+/** The countries with a catalog, data/<adjective>-scooter-feeds.json: all, Switzerland's only for its app maps. */
 export type CatalogCountry = ${catalogs.map(country => `'${country.code}'`).join(' | ')};
 
 export type CountryNameLanguage = ${LANGUAGES.map(language => `'${language}'`).join(' | ')};

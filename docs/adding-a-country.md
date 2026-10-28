@@ -97,3 +97,6 @@ in `data/lime-app-regions.json`. Add markets there and retain their source
 documents; `npm run generate:providers` creates the complete local tile groups
 and preserves any public GBFS systems in those catalogs. See
 [Lime collection](lime-app-map.md) before registering new groups.
+Switzerland's catalog, `data/swiss-scooter-feeds.json`, holds only such app
+maps: its towns are the areas of `data/swiss-scooter-areas.json`, and each
+of its markets names one of them (`swissCatalogProblem`).

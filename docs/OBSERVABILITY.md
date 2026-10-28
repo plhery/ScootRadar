@@ -113,7 +113,8 @@ restarts.
 Few people use the map, so the cache collects a feed every minute only where someone
 looks:
 
-- **Always**: the sources in `SCOOTER_ALWAYS_FAST` (Switzerland by default) every minute.
+- **Always**: the sources in `SCOOTER_ALWAYS_FAST` (Switzerland by default) every minute. `CH`
+  means its open data, `national`, `hopp` and `publibike`, and not `switzerland`, Lime's Kloten map.
 - **Watched**: a map request covering a feed keeps it on the minute for 10 minutes. If
   its last collection is over a minute old, the request starts one at once.
 - **Idle**: every other feed every 20 minutes, each at its own time in the interval

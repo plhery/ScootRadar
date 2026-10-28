@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  binbinAreasProblem, birdAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityFeeds, swiftCityPauses,
+  binbinAreasProblem, birdAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swissCatalogProblem, swiftCityFeeds, swiftCityPauses,
   swiftCountries, timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 import { limeGridGroups } from '../src/lib/limeGrid';
@@ -98,7 +98,7 @@ describe('the countries of data/countries.json', () => {
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
-      'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/RO/CZ: Lime map', 'TR: Beam map',
+      'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'CH/DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/RO/CZ: Lime map', 'TR: Beam map',
       'DE/BE/PT/IS/SE/LV/PL/CY/UA/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map', 'TR/MK/BA/XK: BinBin map',
       'DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/RO/CZ/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0',
       'CA: City of Toronto · OGL Toronto',
@@ -114,6 +114,10 @@ describe('the countries of data/countries.json', () => {
     expect(() => generate(withCanada({ code: 'GB' }), inLondon)).toThrow('Invalid or repeated country code: GB');
     expect(() => generate(withCanada({ continent: 'america' }))).toThrow('CA: continent is one of');
     expect(() => generate(withCanada({ catalog: undefined }))).toThrow('every country but CH needs a catalog');
+    // Switzerland has a catalog of app maps and its source, or neither.
+    const withSwitzerland = changes => ({ ...europe, countries: europe.countries.map(country => country.code === 'CH' ? { ...country, ...changes } : country) });
+    expect(() => generate(withSwitzerland({ source: undefined }))).toThrow('CH: every country but CH needs a catalog and a source, and CH both or neither');
+    expect(() => generate(withSwitzerland({ catalog: undefined, source: undefined }))).not.toThrow();
     for (const word of ['Canadá', 'canadá', 'nouveau-brunswick', 'new  brunswick', ' canada', 'canada ']) {
       expect(() => generate(withCanada({ searchWords: [word] })), word).toThrow('lower case words without accents, one space between two');
     }
@@ -386,6 +390,22 @@ describe('the countries of data/countries.json', () => {
       .toBe('bird_us_app_a: its centre is outside the outline of Bird\'s area x');
     expect(birdAreasProblem([], areas)).toBe('data/bird-app-areas.json: no system sweeps x');
     expect(birdAreasProblem(catalogSystems(countries.countries, readCatalog), readJson('data/bird-app-areas.json'))).toBeNull();
+  });
+
+  it('adds only Lime app maps to Switzerland, each in the town of a Swiss area, and no town of its own', () => {
+    const system = { id: 'lime_ch_app_kloten', provider: 'lime', country: 'CH', city: 'Kloten', center: [47.4659, 8.5887], limeAppMap: true };
+    expect(swissCatalogProblem([system], swissAreas)).toBeNull();
+    expect(swissCatalogProblem([{ ...system, limeAppMap: undefined }], swissAreas))
+      .toBe('lime_ch_app_kloten: Switzerland\'s catalog lists only Lime app maps');
+    expect(swissCatalogProblem([{ ...system, city: 'Atlantis' }], swissAreas))
+      .toBe('lime_ch_app_kloten: data/swiss-scooter-areas.json has no town Atlantis');
+    expect(swissCatalogProblem([{ ...system, center: [47.37, 8.54] }], swissAreas))
+      .toBe('lime_ch_app_kloten: its centre is outside the bounds of ch:kloten');
+    expect(swissCatalogProblem([{ ...system, country: 'DE', limeAppMap: undefined }], swissAreas)).toBeNull();
+    const systems = catalogSystems(countries.countries, readCatalog);
+    expect(swissCatalogProblem(systems, swissAreas)).toBeNull();
+    expect(scooterCities(swissAreas, systems, countries.countries).filter(city => city.country === 'CH'))
+      .toEqual(scooterCities(swissAreas, [], countries.countries));
   });
 
   it('keeps each system in the country of its catalog', () => {

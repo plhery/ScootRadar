@@ -4628,6 +4628,25 @@
       "aliases": [
         "University City"
       ]
+    },
+    {
+      "country": "CH",
+      "city": "Kloten",
+      "center": [
+        47.465865,
+        8.58868
+      ],
+      "timeZone": "Europe/Zurich",
+      "regionToken": "XYPNRA6XSNAUZ",
+      "serviceAreas": [
+        {
+          "name": "[Kloten][SZ][Kloten]",
+          "polygon": "aps`Hygfs@vM_B?Af[uDxBgh@np@m[}JkkBYue@es@imAaq@z~@ca@tI}Ztm@a\\mImHzi@vTzRlR~IhQkOpZxNp]xMr@~gB??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Kloten_5536_exclude_new_type.json"
+      ]
     }
   ]
 }

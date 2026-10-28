@@ -26,7 +26,7 @@ export interface CollectionCadence {
 /**
  * `SCOOTER_ALWAYS_FAST`: comma-separated country codes (CH, FR, DE…) or
  * source keys (national, hopp, publibike, france…), or "all". CH stands for
- * the three Swiss sources.
+ * the three Swiss open sources, not its catalog's app maps (switzerland).
  */
 export function alwaysFastSources(value: string): Set<string> {
   const sources = new Set<string>();

@@ -455,7 +455,7 @@ describe('ControlSheet settings', () => {
       'BR/CL/MX/KZ/AZ/GE: JET map',
       'BR/CL/MX/KZ/CO/BY: Whoosh map',
       'ZA: Zippy rider map',
-      'DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU: Lime map',
+      'CH/DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU: Lime map',
       'AU/TR/MY/KR: Beam map',
       'US/KR: GCOO map',
       'KR: Kickgoing map',

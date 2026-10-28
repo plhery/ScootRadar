@@ -286,6 +286,9 @@ enum ScooterProviderCoverage {
     // A statement an area, as ScooterCityCatalog's cities: one literal of them all is costly to type-check.
     private static func makeRegionalSystems() -> [(ScooterProvider, GeoBounds)] {
         var systems: [(ScooterProvider, GeoBounds)] = []
+        systems.append((.lime, GeoBounds(south: 47.43948, west: 8.55693, north: 47.45295467, east: 8.60554)))
+        systems.append((.lime, GeoBounds(south: 47.45295467, west: 8.55693, north: 47.46642934, east: 8.60554)))
+        systems.append((.lime, GeoBounds(south: 47.46642934, west: 8.55693, north: 47.47397, east: 8.59677416)))
         systems.append((.bird, GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66)))
         systems.append((.bird, GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953)))
         systems.append((.bird, GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711)))
@@ -5421,7 +5424,7 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
-        ("DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
+        ("CH/DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),

@@ -20,6 +20,8 @@ it('collects Switzerland every minute by default, every other feed every 20 minu
 
 it('reads countries and sources to collect every minute', () => {
   expect(alwaysFastSources('CH, fr,germany')).toEqual(new Set(['national', 'hopp', 'publibike', 'france', 'germany']));
+  // Switzerland's open data, but not its catalog's Lime map, which keeps Lime's pace.
+  expect(alwaysFastSources('CH').has(COUNTRY_SOURCES.CH)).toBe(false);
   expect(alwaysFastSources('')).toEqual(new Set());
   expect(alwaysFastSources('all')).toEqual(new Set(['national', 'hopp', 'publibike', ...Object.values(COUNTRY_SOURCES)]));
   expect(() => alwaysFastSources('XX')).toThrow('SCOOTER_ALWAYS_FAST');

@@ -15,7 +15,7 @@ import {
 } from '@/lib/scooterFeeds';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
 import { listedPricing } from '@/lib/listedPrices';
-import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '@/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource, serviceAreas } from '@/lib/regionalScooterSystems';
 
 const query: FeedQuery = {
   origin: [47.3769, 8.5417],
@@ -1289,7 +1289,7 @@ describe('a plan the scooters name before the cache has it', () => {
   });
 
   it('does the same for an operator\'s own GBFS feed', async () => {
-    const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => candidate.provider === 'lime' && !candidate.feedOperator)!;
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => candidate.provider === 'lime' && !candidate.feedOperator && !isAppMapSystem(candidate))!;
     const feed = independentCollectableFeeds().find(candidate => candidate.id === `${regionalSource(system)}:${system.id}`)!;
     const area = serviceAreas(system)[0].bounds;
     const base = new URL('.', system.discoveryUrl).toString();

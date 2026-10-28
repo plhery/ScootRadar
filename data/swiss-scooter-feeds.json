@@ -1,0 +1,32 @@
+{
+  "catalogSource": "https://www.li.me/locations",
+  "verifiedOn": "2026-10-24",
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Kloten_5536_exclude_new_type.json"
+  ],
+  "systems": [
+    {
+      "id": "lime_ch_app_kloten",
+      "provider": "lime",
+      "city": "Kloten",
+      "center": [
+        47.465865,
+        8.58868
+      ],
+      "timeZone": "Europe/Zurich",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "XYPNRA6XSNAUZ",
+      "limeMapGrid": {
+        "south": 47.43948,
+        "west": 8.55693,
+        "north": 47.47397,
+        "east": 8.60554,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019922077527086603,
+        "cells": "0-7"
+      }
+    }
+  ]
+}

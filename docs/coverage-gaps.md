@@ -26,11 +26,11 @@ and Tampa, in Ashdod and Eilat, in Dubai, Abu Dhabi and Al Ain, and since
 27 October in Bergen, Viña del Mar, Saskatoon, Regina, Red Deer, Lacombe,
 Blackfalds and Waterloo Region, and since 28 October in Feldkirchen bei Graz,
 Klosterneuburg, Korneuburg, Chania, Érd, Százhalombatta, Diósd, Ragusa,
-Marina di Ragusa, Ishigaki, North Ishigaki, San Marcos and UNC Charlotte.
-Lime's Sion and Kloten regions hold scooters that no feed lists, but
-Switzerland has no country catalog to take them yet; Kortrijk, Mechelen,
-Lucca, Volos and Keszthely held none near their centres at midnight on 28
-October, to be read again by day.
+Marina di Ragusa, Ishigaki, North Ishigaki, San Marcos, UNC Charlotte and
+Kloten, the first Swiss town read from it. Lime's Sion region holds scooters
+that no feed lists, but none stood still long enough to check its audit that
+night; Kortrijk, Mechelen, Lucca, Volos and Keszthely held none near their
+centres at midnight on 28 October. All six are to be read again by day.
 One other market its rider map lists, Farmington, Utah, showed 2 scooters in
 each of three audits and none to check them against, so it remains a gap. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
@@ -79,7 +79,8 @@ Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.
 
 - **Switzerland:** everything comes from sharedmobility.ch, apart from Hopp
-  (Zürich, Basel and Kloten) and PubliBike, read from their own feeds. Hopp
+  (Zürich, Basel and Kloten) and PubliBike, read from their own feeds, and
+  Lime in Kloten, from its rider map. Hopp
   stamps each response with the time it was asked for, so the fifteen-minute
   age limit can't tell how old its positions are.
   - Lime Winterthur, Zug and Wetzikon list no vehicles, with fresh

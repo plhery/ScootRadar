@@ -4,14 +4,17 @@
     {
       "code": "CH",
       "continent": "europe",
+      "catalog": "data/swiss-scooter-feeds.json",
+      "source": "switzerland",
       "names": { "en": "Switzerland", "de": "Schweiz", "fr": "Suisse", "it": "Svizzera", "nl": "Zwitserland", "nb": "Sveits", "pt": "Suíça", "es": "Suiza", "is": "Sviss" },
       "searchWords": ["switzerland", "schweiz", "suisse", "svizzera", "zwitserland", "sveits", "suica", "suiza", "sviss"],
       "anchor": [46.8, 8.2],
       "featuredCities": ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:biel"],
       "credits": {
-        "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed",
+        "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; Lime authenticated rider map",
         "links": [
-          { "label": "CH: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "CH: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "CH: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },
