@@ -4,37 +4,20 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { cacheDeployment, inNightBanHours } from './deploy-after-ci.mjs';
-
-// 14:00 in Paris on 20 October 2026 (summer time, UTC+2).
-const afternoon = new Date('2026-10-20T12:00:00Z');
+import { cacheDeployment } from './deploy-after-ci.mjs';
 
 describe('the cache deploy after CI', () => {
   it('deploys a change to a file of the cache, and only that', () => {
-    expect(cacheDeployment({ files: ['README.md', 'server/collectFeed.ts', 'src/lib/landingCopy.ts'], messages: ['Collect'], now: afternoon }))
+    expect(cacheDeployment({ files: ['README.md', 'server/collectFeed.ts', 'src/lib/landingCopy.ts'], messages: ['Collect'] }))
       .toEqual({ deploy: true, changed: ['server/collectFeed.ts'] });
-    expect(cacheDeployment({ files: ['src/app/page.tsx', 'server/collectFeed.test.ts'], messages: ['Copy'], now: afternoon }))
+    expect(cacheDeployment({ files: ['src/app/page.tsx', 'server/collectFeed.test.ts'], messages: ['Copy'] }))
       .toEqual({ deploy: false, reason: 'no file of the cache changed' });
   });
 
   it('leaves the cache alone when every commit says [skip cd], until one that does not', () => {
     const files = ['data/providers.json'];
-    expect(cacheDeployment({ files, messages: ['Add a feed [skip cd]', 'Fix it [SKIP CI]'], now: afternoon }).deploy).toBe(false);
-    expect(cacheDeployment({ files, messages: ['Add a feed [skip cd]', 'Fix the copy'], now: afternoon }).deploy).toBe(true);
-  });
-
-  it('holds the cache back from 23:00 to 05:30 in Paris', () => {
-    const at = (/** @type {string} */ utc) => cacheDeployment({ files: ['server/scooter-cache.ts'], messages: ['Change'], now: new Date(utc) }).deploy;
-    // Summer time: Paris is UTC+2 until 25 October 2026.
-    expect(at('2026-10-20T20:59:00Z')).toBe(true);
-    expect(at('2026-10-20T21:00:00Z')).toBe(false);
-    expect(at('2026-10-21T03:29:00Z')).toBe(false);
-    expect(at('2026-10-21T03:30:00Z')).toBe(true);
-    // Winter time: UTC+1.
-    expect(inNightBanHours(new Date('2026-12-01T21:59:00Z'))).toBe(false);
-    expect(inNightBanHours(new Date('2026-12-01T22:00:00Z'))).toBe(true);
-    expect(inNightBanHours(new Date('2026-12-02T04:29:00Z'))).toBe(true);
-    expect(inNightBanHours(new Date('2026-12-02T04:30:00Z'))).toBe(false);
+    expect(cacheDeployment({ files, messages: ['Add a feed [skip cd]', 'Fix it [SKIP CI]'] }).deploy).toBe(false);
+    expect(cacheDeployment({ files, messages: ['Add a feed [skip cd]', 'Fix the copy'] }).deploy).toBe(true);
   });
 });
 
@@ -83,7 +66,7 @@ describe('the branches CI moves', () => {
       const later = repo.commit('README.md', 'Docs');
       repo.deploy(later);
       expect(repo.tip('production')).toBe(later);
-      expect(repo.tip('production-cache')).toBe(inNightBanHours(new Date()) ? repo.first : later);
+      expect(repo.tip('production-cache')).toBe(later);
       // A commit whose CI ends after a later one's moves nothing back, and the job waits for the
       // later one, which carries it; so does a re-run.
       expect(repo.deploy(cache)).toBe(`website=${later}\n`);

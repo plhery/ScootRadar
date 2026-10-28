@@ -11,34 +11,20 @@ import { cacheDeploys } from './deploy-watch-paths.mjs';
 export const WEBSITE_BRANCH = 'production';
 export const CACHE_BRANCH = 'production-cache';
 
-const parisTime = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-
-/**
- * Whether it is 23:00–05:30 in Paris: Norway's night bans and the 30 minutes Sentry watches after
- * them, when the cache is not restarted (AGENTS.md).
- * @param {Date} date
- */
-export function inNightBanHours(date) {
-  const [hour, minute] = parisTime.format(date).split(':').map(Number);
-  const minutes = hour * 60 + minute;
-  return minutes >= 23 * 60 || minutes < 5 * 60 + 30;
-}
-
 /**
  * Whether the cache deploys a commit, from the files changed and the commit messages since the
- * commit it runs: only for a file of its own, not when every commit says `[skip cd]` (or
- * `[skip ci]`), and not in the night-ban hours. A change left out goes with the next commit that
- * passes and may deploy.
- * @param {{ files: string[], messages: string[], now: Date }} since
+ * commit it runs: only for a file of its own, and not when every commit says `[skip cd]` (or
+ * `[skip ci]`). A change left out goes with the next commit that passes and may deploy. Any hour
+ * will do: the cache keeps the feed states Sentry waits on across a restart, a night ban's too.
+ * @param {{ files: string[], messages: string[] }} since
  * @returns {{ deploy: true, changed: string[] } | { deploy: false, reason: string }}
  */
-export function cacheDeployment({ files, messages, now }) {
+export function cacheDeployment({ files, messages }) {
   const changed = files.filter(cacheDeploys);
   if (changed.length === 0) return { deploy: false, reason: 'no file of the cache changed' };
   if (messages.every(message => /\[skip c[di]\]/i.test(message))) {
     return { deploy: false, reason: 'every commit since says [skip cd]' };
   }
-  if (inNightBanHours(now)) return { deploy: false, reason: 'it is 23:00–05:30 in Paris, the night-ban hours' };
   return { deploy: true, changed };
 }
 
@@ -88,7 +74,6 @@ function advance(/** @type {string} */ branch, /** @type {string} */ commit) {
     const decision = cacheDeployment({
       files: git('diff', '--name-only', '--no-renames', tip, commit).split('\n').filter(Boolean),
       messages: git('log', '--format=%B%x00', `${tip}..${commit}`).split('\0').map(message => message.trim()).filter(Boolean),
-      now: new Date(),
     });
     if (!decision.deploy) {
       console.log(`::notice title=Cache not deployed::${branch} stays at ${short(tip)}: ${decision.reason}.`);

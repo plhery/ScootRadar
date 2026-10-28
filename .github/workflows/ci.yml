@@ -5,12 +5,6 @@ on:
   push:
     branches:
       - main
-  # A cache change whose CI passed in the night-ban hours deploys at 04:47 UTC, after they end (05:30
-  # Paris is 04:30 UTC in winter, 03:30 in summer), not with the next push: on 28 Oct 2026 six cache
-  # commits that passed overnight waited until a Deploy job was re-run at 07:43 UTC. Only the release
-  # job runs then (below).
-  schedule:
-    - cron: '47 4 * * *'
 
 # A newer push to a pull request cancels its run. On main a run that has started ends, as only that
 # deploys (DEPLOY.md), and runs go one at a time: of the pushes made meanwhile only the newest waits,
@@ -18,8 +12,7 @@ on:
 # commit ran, the 15 pushed in 40 minutes on 24 Oct 2026 kept iOS jobs waiting up to 15 minutes for one
 # of the account's five Macs.
 concurrency:
-  # The release runs apart, so it never cancels a push's run waiting for its turn.
-  group: ci-${{ github.workflow }}-${{ github.event_name == 'schedule' && 'release' || github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
@@ -28,7 +21,6 @@ permissions:
 jobs:
   web:
     name: Web and backend
-    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     # 1.5 to 2 minutes since the end-to-end tests have jobs of their own; 9 to 13 while it ran them
     # too (24 Oct 2026).
@@ -56,7 +48,6 @@ jobs:
   # Apart, Chromium's take about 5 and mobile WebKit's 6.5 to 7.
   e2e:
     name: End-to-end (${{ matrix.project }})
-    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     # 20 left no room for a slow package mirror (see below), which ran three runs out of time on
     # 22 Oct 2026.
@@ -111,7 +102,6 @@ jobs:
 
   ios:
     name: iOS
-    if: github.event_name != 'schedule'
     runs-on: macos-26
     # 10.5 to 13 minutes as a rule since the tests run without clones (24 Oct 2026). On clones they
     # took up to 23 on a slow runner, and three runs ran out of 20 on 22 Oct 2026.
@@ -269,48 +259,3 @@ jobs:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: node scripts/indexnow.mjs --since=refs/indexnow/submitted "$SITE"
-
-  # The newest commit of main whose push run passed every test job goes to production-cache, as its own
-  # Deploy job would have moved it outside the night-ban hours (scripts/deploy-after-ci.mjs, which also
-  # moves production if that job never did). Nothing moves when production-cache carries it already.
-  release:
-    name: Release the cache held overnight
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: write
-      actions: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          filter: blob:none
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 26
-          package-manager-cache: false
-
-      - name: Find the newest commit CI passed
-        id: passed
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          for run in $(gh run list --workflow CI --branch main --event push --status completed --limit 20 --json databaseId --jq '.[].databaseId'); do
-            if [[ $(gh run view "$run" --json jobs --jq '[.jobs[] | select(.name != "Deploy") | .conclusion] | length > 0 and all(. == "success")') == true ]]; then
-              commit=$(gh run view "$run" --json headSha --jq .headSha)
-              echo "CI run $run passed on ${commit::7}."
-              echo "commit=$commit" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          done
-          echo "::notice title=Nothing to release::No push run of the last 20 on main passed every test job."
-
-      - name: Move the production branches
-        if: steps.passed.outputs.commit != ''
-        env:
-          COMMIT: ${{ steps.passed.outputs.commit }}
-        run: |
-          git checkout --quiet --detach "$COMMIT"
-          node scripts/deploy-after-ci.mjs
