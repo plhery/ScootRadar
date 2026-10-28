@@ -590,7 +590,8 @@ class ScooterMapController(
 
     private fun setEnabledProviders(value: Set<ScooterProvider>) {
         _enabledProviders.value = value
-        defaults.set(value.map { it.rawValue }.sorted(), forKey = ENABLED_PROVIDERS_KEY)
+        // The providers turned off, not those on as iOS keeps them, so that one a later catalog adds shows.
+        defaults.set((ScooterProvider.entries - value).map { it.rawValue }.sorted(), forKey = DISABLED_PROVIDERS_KEY)
         rebuildMapScooters()
         rebuildMapClusters()
         rebuildMapLastSeen()
@@ -1559,7 +1560,7 @@ class ScooterMapController(
         private const val MAP_STYLE_KEY = "apple-map-style"
         private const val SHOWS_ZONES_KEY = "map-zones"
         private const val APPEARANCE_KEY = "appearance"
-        private const val ENABLED_PROVIDERS_KEY = "enabled-providers"
+        private const val DISABLED_PROVIDERS_KEY = "disabled-providers"
         private const val RIDE_ESTIMATE_MINUTES_KEY = "ride-estimate-minutes-v1"
         private const val RIDE_PASSES_KEY = "provider-ride-passes-v1"
         private const val HAS_LOCATED_ONCE_KEY = "has-located-once"
@@ -1570,11 +1571,10 @@ class ScooterMapController(
 
         private val ridePassesSerializer = MapSerializer(String.serializer(), ProviderRidePass.serializer())
 
-        /** The saved provider choice, unless it names a provider this version does not know. */
+        /** The saved provider choice: every provider but those turned off, of which one this version doesn't know is passed over. */
         private fun savedProviders(defaults: ScooterDefaults): Set<ScooterProvider>? {
-            val savedProviderIDs = defaults.stringArray(forKey = ENABLED_PROVIDERS_KEY) ?: return null
-            val savedProviders = savedProviderIDs.mapNotNull { ScooterProvider.fromRawValue(it) }.toSet()
-            return savedProviders.takeIf { it.size == savedProviderIDs.size }
+            val disabledIDs = defaults.stringArray(forKey = DISABLED_PROVIDERS_KEY) ?: return null
+            return ScooterProvider.entries.toSet() - disabledIDs.mapNotNull { ScooterProvider.fromRawValue(it) }.toSet()
         }
 
         private fun loadRidePasses(defaults: ScooterDefaults): Map<ScooterProvider, ProviderRidePass> {

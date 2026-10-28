@@ -638,6 +638,23 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun aProviderNeverTurnedOffShowsWhenItComesLater() = runTest {
+        // Saved by an older version, which had no Hopp: the rider turned off Bird and a provider since dropped. iOS
+        // keeps the providers turned on, so it would hide Hopp (PLAN §0, LOG-288).
+        val defaults = InMemoryScooterDefaults()
+        defaults.set(listOf("bird", "gone-since"), forKey = "disabled-providers")
+
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
+
+        assertEquals(ScooterProvider.entries.toSet() - Bird, model.enabledProviders.value)
+        assertTrue(Hopp in model.enabledProviders.value)
+        model.toggle(Lime)
+        assertEquals(listOf("bird", "lime"), defaults.stringArray(forKey = "disabled-providers"))
+        model.showAllProviders()
+        assertEquals(emptyList<String>(), defaults.stringArray(forKey = "disabled-providers"))
+    }
+
+    @Test
     fun appearanceGoesByTheSunUntilOneIsChosenAndIsKept() = runTest {
         val defaults = InMemoryScooterDefaults()
         val clock = TestClock()
