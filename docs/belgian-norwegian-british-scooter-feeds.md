@@ -365,7 +365,7 @@ stays open at night.
 - **Bergen's** rule, as amended on 17 December 2025, bans renting from 01:00
   to 05:00 on other nights too, but lets the city lift its ban, and the
   [city's page](https://www.bergen.kommune.no/innbyggerhjelpen/vann-vei-og-trafikk/vei-transport-og-parkering/sykkel/elsparkesykler-i-bergen),
-  updated 7 October 2026, closes renting on Friday and Saturday nights only.
+  updated 7 October 2026, names only the Friday and Saturday nights.
   Its next rule, [FOR-2026-06-17-1345](https://lovdata.no/dokument/LF/forskrift/2026-06-17-1345),
   applies from the permits after the current ones (Ryde, Lime and RideMovi,
   1 April 2026 to 31 March 2027), by 31 March 2028 at the latest, and

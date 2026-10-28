@@ -152,7 +152,7 @@ const guide: Guide = {
             '**Apper du kan leie i.** I Ruter-appen kan du leie Bolt, Ryde og Voi i Oslo, Bærum, Asker, Lørenskog, Lillestrøm og Rælingen. Ruter sjekker alderen din før du kan leie, du betaler enkeltturer med kort til samme pris som i operatørens app, og passene dine hos operatøren gjelder ikke der.',
           ],
         },
-        'Den 12. oktober 2026 viste kartet Voi, Bolt og Ryde rundt Oslo, og Ryde, Voi eller Dott i blant annet [Trondheim](map:no:Trondheim), [Stavanger](map:no:Stavanger), Kristiansand og Tromsø. Bergen er ikke med på kartet, selv om Ryde leier ut der. [Åpne kartet](/map) og se hvem som har en sparkesykkel nær deg.',
+        'Den 12. oktober 2026 viste kartet Voi, Bolt og Ryde rundt Oslo, og Ryde, Voi eller Dott i blant annet [Trondheim](map:no:Trondheim), [Stavanger](map:no:Stavanger), Kristiansand og Tromsø. I [Bergen](map:no:Bergen) viser kartet Ryde og Lime, men ikke RideMovi. [Åpne kartet](/map) og se hvem som har en sparkesykkel nær deg.',
       ],
     },
   ],

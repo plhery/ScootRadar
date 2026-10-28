@@ -136,7 +136,7 @@ const guide: Guide = {
               ['Være to på samme sparkesykkel', '3000 kr'],
               ['Kjøre på rødt lys', '1950 kr'],
               ['Kjøre uten påbudt lys i mørket', '1950 kr'],
-              ['Kjøre der skilt forbyr det, eller i en sone med bruksforbud', '1950 kr'],
+              ['Kjøre der skilt forbyr det, også i en skiltet sone med bruksforbud', '1950 kr'],
               ['Parkere til hinder eller der det er forbudt', '900 kr'],
               ['Avslutte turen utenfor Rydes område', 'Opptil 500 kr fra Ryde'],
               ['Kjøre med rundt 0,8 promille, tilstått', 'Utgangspunkt 15 000 kr i bot'],
