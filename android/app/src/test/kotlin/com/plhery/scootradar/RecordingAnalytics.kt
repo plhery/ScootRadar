@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonObject
 import okhttp3.Dispatcher
 import okhttp3.MediaType.Companion.toMediaType
@@ -18,8 +19,15 @@ import okio.Buffer
 import java.util.concurrent.AbstractExecutorService
 import java.util.concurrent.TimeUnit
 
-/** An event as Umami got it: its name, none for a page view, the fields the app sets, and the screen it was on. */
-data class TrackedEvent(val name: String?, val provider: String? = null, val result: String? = null, val url: String = "/")
+/** An event as Umami got it: its name, none for a page view, its data but the platform, and the screen it was on. */
+data class TrackedEvent(
+    val name: String?,
+    val provider: String? = null,
+    val value: Int? = null,
+    val result: String? = null,
+    val target: String? = null,
+    val url: String = "/",
+)
 
 /**
  * The app's analytics as :core's tests have them (ScooterMapControllerFakes.kt): a ScooterAnalytics that sends
@@ -37,7 +45,9 @@ class RecordingAnalytics {
             TrackedEvent(
                 name = (payload["name"] as? JsonPrimitive)?.content,
                 provider = string("provider"),
+                value = (data?.get("value") as? JsonPrimitive)?.int,
                 result = string("result"),
+                target = string("target"),
                 url = (payload["url"] as? JsonPrimitive)?.content ?: "/",
             )
         }

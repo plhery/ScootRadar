@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.RecordingAnalytics
+import com.plhery.scootradar.TrackedEvent
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -59,7 +60,7 @@ class ScooterMapViewModelTest {
     }
 
     @Test
-    fun theFirstStartOpensTheAppEachReturnComesToTheForegroundAndARotationIsNeither() {
+    fun theFirstStartOpensTheAppEachReturnComesToTheForegroundAndARecreationIsNeither() {
         // Two days of use before this one: a return from a ride is the moment to ask for a rating.
         val prompt = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
         prompt.noteUse(at = Instant.now().minusSeconds(2 * 86_400))
@@ -67,11 +68,15 @@ class ScooterMapViewModelTest {
         val model = model()
         val activity = Robolectric.buildActivity(ComponentActivity::class.java).create()
         activity.get().lifecycle.addObserver(model)
+        // With no data: iOS sends none with these.
+        val pageView = TrackedEvent(null)
+        val open = TrackedEvent("app_open")
+        val foreground = TrackedEvent("app_foreground")
 
         // The page view and app_open, then the controller starts: its first load.
         activity.start().resume()
         idle()
-        assertEquals(listOf(null, "app_open"), analytics.names)
+        assertEquals(listOf(pageView, open), analytics.events)
         assertEquals(1, api.calls)
         assertNotNull(model.controller.lastUpdated.value)
 
@@ -80,14 +85,15 @@ class ScooterMapViewModelTest {
         prompt.noteRentalOpened(at = Instant.now().minusSeconds(20 * 60))
         activity.restart().resume()
         idle()
-        assertEquals(listOf(null, "app_open", "app_foreground"), analytics.names)
+        assertEquals(listOf(pageView, open, foreground), analytics.events)
         assertTrue(model.controller.reviewDue)
 
-        // A rotation keeps the scene's phase: it neither leaves nor returns.
+        // The activity made again, as a change of font size or display size does (the manifest keeps it through a
+        // rotation), keeps the scene's phase: it neither leaves nor returns.
         activity.recreate()
         activity.get().lifecycle.addObserver(model)
         idle()
-        assertEquals(listOf(null, "app_open", "app_foreground"), analytics.names)
+        assertEquals(listOf(pageView, open, foreground), analytics.events)
         assertTrue(model.controller.reviewDue)
         assertEquals(1, api.calls)
 
@@ -96,7 +102,7 @@ class ScooterMapViewModelTest {
         assertFalse(model.controller.reviewDue)
         activity.restart().resume()
         idle()
-        assertEquals(listOf(null, "app_open", "app_foreground", "app_foreground"), analytics.names)
+        assertEquals(listOf(pageView, open, foreground, foreground), analytics.events)
     }
 
     /** On the main thread, after the call that asked returns, as a Swift Task on the main actor. */

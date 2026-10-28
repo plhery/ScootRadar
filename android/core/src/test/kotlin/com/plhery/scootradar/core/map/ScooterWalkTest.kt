@@ -124,6 +124,7 @@ class ScooterWalkTest {
         val h = harness(vehicles = listOf(target), rider = null)
         h.model.selectScooter(target.id)
         val focus = h.model.focusRequest.value
+        h.analytics.clear()
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
 
@@ -139,6 +140,16 @@ class ScooterWalkTest {
         assertEquals(rider, h.directions.requests.firstOrNull()?.origin)
         assertEquals(focus, h.model.focusRequest.value)
         assertEquals(target.id, h.model.selectedScooterID.value)
+        // The route the rider waited for is reported, as one they asked for.
+        assertEquals(
+            listOf(
+                TrackedEvent("directions_open", provider = "lime", target = "vehicle"),
+                TrackedEvent("locate"),
+                TrackedEvent("location_result", result = "success"),
+                TrackedEvent("route_result", provider = "lime", result = "success", target = "vehicle"),
+            ),
+            h.analytics.events,
+        )
     }
 
     @Test
@@ -403,6 +414,7 @@ class ScooterWalkTest {
         val revision = unwrap(h.model.walkTrail?.revision)
         val focus = h.model.focusRequest.value
         val place = MapDestination(title = "Paradeplatz", point = point(east = 100, north = -150))
+        h.analytics.clear()
 
         h.model.focusOnAddress(place)
 
@@ -422,6 +434,8 @@ class ScooterWalkTest {
         assertTrue(fromRider)
         assertEquals(rider, h.directions.requests.lastOrNull()?.origin)
         assertEquals(true, h.model.walkTrail?.reveals)
+        // Neither route found again was asked for: no route_result.
+        assertEquals(listOf(TrackedEvent("search_select")), h.analytics.events)
     }
 
     @Test

@@ -635,13 +635,19 @@ class ScooterMapLookTest {
     fun aScooterInANightBanSaysWhenItCanBeRentedAgain() {
         ScooterLanguage.current = ScooterLanguage.En
         val oslo = ZoneId.of("Europe/Oslo")
-        // 05:00 in Oslo.
+        // 05:00 in Oslo, for a phone on UTC, where it is 03:00: the time is the city's.
         val until = Instant.parse("2026-10-13T03:00:00Z")
-        val banned = ScooterCardContent(
-            scooter = scooter(), metres = 60.0, quote = null, curfew = RentalCurfew.Active(city = "Oslo", until = until, timeZone = oslo),
-        )
-        assertEquals("Night ban in Oslo: you can rent it from ${ScooterDockStatus.clockTime(until, oslo)}", banned.curfew)
-        assertTrue(ScooterDockStatus.clockTime(until, oslo).contains("5:00"))
+        val phoneZone = ScooterDateFormat.timeZone
+        ScooterDateFormat.timeZone = { ZoneId.of("UTC") }
+        try {
+            val banned = ScooterCardContent(
+                scooter = scooter(), metres = 60.0, quote = null, curfew = RentalCurfew.Active(city = "Oslo", until = until, timeZone = oslo),
+            )
+            assertEquals("Night ban in Oslo: you can rent it from ${ScooterDockStatus.clockTime(until, oslo)}", banned.curfew)
+            assertTrue(banned.curfew, banned.curfew.orEmpty().contains("5:00"))
+        } finally {
+            ScooterDateFormat.timeZone = phoneZone
+        }
         assertNull(ScooterCardContent(scooter = scooter(), metres = 60.0, quote = null).curfew)
     }
 

@@ -17,9 +17,11 @@ import org.junit.runner.RunWith
 class LaunchArgumentDefaultsTest {
     @Test
     fun onlyTheArgumentsTheAppReadsAreTakenFromTheLaunch() {
-        // am start -e ScreenshotCamera "47.37,8.54,900,20,0" --ez ReviewPromptDue true --ez analytics-smoke-test true
+        // am start -e ScreenshotCamera "47.37,8.54,900,20,0" -e ScreenshotTerrain realistic --ez ReviewPromptDue true
+        // --ez analytics-smoke-test true
         val extras = Bundle().apply {
             putString("ScreenshotCamera", "47.37,8.54,900,20,0")
+            putString("ScreenshotTerrain", "realistic")
             putBoolean("ReviewPromptDue", true)
             putBoolean(LaunchArgumentDefaults.ANALYTICS_SMOKE_TEST, true)
             putString("Other", "x")
@@ -27,6 +29,7 @@ class LaunchArgumentDefaultsTest {
         assertEquals(
             mapOf(
                 "ScreenshotCamera" to "47.37,8.54,900,20,0",
+                "ScreenshotTerrain" to "realistic",
                 "ReviewPromptDue" to true,
                 LaunchArgumentDefaults.ANALYTICS_SMOKE_TEST to true,
             ),

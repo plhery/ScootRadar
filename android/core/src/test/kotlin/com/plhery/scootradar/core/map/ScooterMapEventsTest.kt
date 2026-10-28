@@ -293,9 +293,10 @@ class ScooterMapEventsTest {
         // The middle of the Atlantic, where no city is.
         model.open(ScooterMapLink(origin = GeoPoint(latitude = 30.0, longitude = -40.0)))
 
+        // And nothing else: none carries a battery, and a place a link opens sends no search_select.
         assertEquals(
             listOf(TrackedEvent("link_open", result = "map"), TrackedEvent("link_open", result = "city"), TrackedEvent("link_open", result = "place")),
-            analytics.events.filter { it.name == "link_open" },
+            analytics.events,
         )
     }
 }

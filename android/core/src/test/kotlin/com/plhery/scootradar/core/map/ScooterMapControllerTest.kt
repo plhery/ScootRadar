@@ -396,16 +396,20 @@ class ScooterMapControllerTest {
             count = 100,
             providers = mapOf("lime" to 100),
         )
+        // A group seen a while ago, which the map shows faded.
+        val faded = group.copy(id = "8:135:89", count = 12)
         val api = StubScooterAPI(
             ScooterResponse(
                 vehicles = emptyList(),
                 clusters = listOf(group),
+                lastSeenClusters = listOf(faded),
                 meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 8),
             ),
         )
         val model = makeController(api)
         model.refresh()
         assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertEquals(listOf(faded), model.lastSeenClusters.value)
         // Providers alone are filtered on the phone: the groups stay, and nothing is asked for.
         model.toggle(Lime)
         model.resetFilters()
@@ -417,12 +421,17 @@ class ScooterMapControllerTest {
         assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
         assertEquals(60, api.lastMinimumBattery)
 
-        // The server left out the groups' low batteries: they go at once, and are asked for again with all.
+        // The server left out the groups' low batteries: they go at once, the faded ones too, and are asked for
+        // again with all, 180 ms later, as after a move.
         model.resetFilters()
         assertTrue(model.clusters.value.isEmpty())
+        assertTrue(model.lastSeenClusters.value.isEmpty())
+        advanceTimeBy(179)
+        assertEquals(2, api.calls)
         assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
         assertEquals(0, api.lastMinimumBattery)
         assertEquals(listOf(group), model.clusters.value)
+        assertEquals(listOf(faded), model.lastSeenClusters.value)
     }
 
     @Test
@@ -2705,17 +2714,20 @@ class ScooterMapControllerTest {
         val parked = scooter(id = "s1", provider = "lime")
         val api = StubScooterAPI(ScooterResponse(vehicles = listOf(parked)))
         val kept = mutableListOf<List<String>>()
+        // Umami's answer carries the token it wants back with the next event: the session keeps it in memory.
+        val analytics = RecordingAnalytics(answer = { 200 to """{"cache":"umami-session-token"}""" }, defaults = defaults)
         val model = makeController(
             api,
             defaults = defaults,
             locationManager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse),
             keepAppLanguages = { kept += it },
+            analytics = analytics,
         )
         model.updateViewport(zurichRegion, zoom = 16)
         val loaded = waitUntil { api.calls == 1 && !model.isLoading.value }
         assertTrue(loaded)
 
-        // What a rider does in a session: every setting, a fix, a place, a scooter, a ride.
+        // What a rider does in a session: every setting, a fix, a place, a scooter and the way to it, a ride.
         model.setMinimumBattery(40.0)
         model.setMapStyle(AppleMapStyle.Satellite)
         model.setShowsZones(true)
@@ -2728,6 +2740,7 @@ class ScooterMapControllerTest {
         model.locationsUpdated(listOf(zurichFix))
         model.focusOnAddress(MapDestination(title = "Paradeplatz", subtitle = "Zürich", point = GeoPoint(47.3697, 8.5392)))
         model.selectScooter(parked.id)
+        model.showWalkingRoute(ScooterWalkTarget.Scooter(parked))
         model.rentalOpened()
         model.becameInactive()
         model.becameActive()
@@ -2749,7 +2762,9 @@ class ScooterMapControllerTest {
         assertEquals(listOf(listOf("fr")), kept)
         // No position, place or scooter among the values.
         val stored = defaults.writes.joinToString("\n")
-        for (secret in listOf("47.3", "8.5", "Paradeplatz", "s1")) assertFalse(secret, stored.contains(secret))
+        for (secret in listOf("47.3", "8.5", "Paradeplatz", "s1", "umami-session-token")) assertFalse(secret, stored.contains(secret))
+        assertTrue(analytics.requests.size > 1)
+        assertEquals("umami-session-token", analytics.requests.last().header("x-umami-cache"))
     }
 
     @Test

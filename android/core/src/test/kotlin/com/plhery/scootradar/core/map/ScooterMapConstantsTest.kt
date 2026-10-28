@@ -8,6 +8,7 @@ import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.UserInterfaceStyle
 import java.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
@@ -77,6 +78,15 @@ class ScooterMapConstantsTest {
         runCurrent()
         assertEquals(listOf(GeoBounds(berlin.region).expanded(by = 0.25)), api.askedBounds)
         assertEquals(11, api.lastZoom)
+
+        // The sun is the start place's until the rider is located: at the test's 14:13 UTC, day in Switzerland and
+        // night in Tokyo.
+        val tokyo = ScooterMapStart(
+            region = MapRegion(center = GeoPoint(latitude = 35.6812, longitude = 139.7671), latitudeDelta = 0.2, longitudeDelta = 0.3),
+            zoom = 11,
+        )
+        assertEquals(UserInterfaceStyle.Light, swiss.interfaceStyle)
+        assertEquals(UserInterfaceStyle.Dark, makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), start = tokyo).interfaceStyle)
     }
 
     @Test

@@ -264,6 +264,8 @@ internal class RecordingAnalytics(
     private val answer: (index: Int) -> Pair<Int, String> = { 200 to "{}" },
     /** Where the events are sent from: at once, unless the test holds them on its own dispatcher. */
     scope: CoroutineScope = CoroutineScope(Dispatchers.Unconfined),
+    /** The app's defaults, which the analytics reads its switch from. */
+    defaults: ScooterDefaults = InMemoryScooterDefaults(),
 ) {
     private val sent = mutableListOf<okhttp3.Request>()
     private val bodies = mutableListOf<JsonObject>()
@@ -294,7 +296,7 @@ internal class RecordingAnalytics(
         website = "test-website",
         sends = true,
         userAgent = ScooterAnalytics.userAgent(androidVersion = "16", chromeMajor = 141),
-        defaults = InMemoryScooterDefaults(),
+        defaults = defaults,
         scope = scope,
         client = OkHttpClient.Builder()
             // A call runs on the thread that makes it, so an event is sent before track returns.
