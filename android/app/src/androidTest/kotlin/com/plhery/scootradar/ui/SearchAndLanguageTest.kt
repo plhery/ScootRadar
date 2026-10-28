@@ -48,6 +48,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
@@ -217,11 +218,19 @@ class SearchAndLanguageTest {
             }
             compose.waitUntil(10_000) { !controller.isLoading.value }
             compose.waitForIdle()
-            // When each load began (true) and ended (false).
-            val loads = CopyOnWriteArrayList<Pair<Long, Boolean>>()
-            scope.launch { controller.isLoading.drop(1).collect { loads += SystemClock.uptimeMillis() to it } }
+            // When each load began (true) and ended (false), and how long its answer asked the next to wait, if it
+            // asked again: followUpMs, or 2 s at least without it.
+            val loads = CopyOnWriteArrayList<Triple<Long, Boolean, Long?>>()
+            scope.launch {
+                controller.isLoading.drop(1).collect { loading ->
+                    val meta = controller.responseMetadata.value
+                    val asked = ScooterRefreshPolicy.standard.let { policy ->
+                        policy.askedFollowUp(meta) ?: policy.followUpGap.takeIf { meta?.refreshing == true }
+                    }
+                    loads += Triple(SystemClock.uptimeMillis(), loading, asked?.takeUnless { loading }?.let { (it * 1000).toLong() })
+                }
+            }
             val serverAsksAgain = controller.responseMetadata.value?.refreshing == true
-            val followUp = controller.responseMetadata.value?.followUpMs?.toLong() ?: 2_000L
             if (serverAsksAgain) {
                 // Its next question then comes a whole followUpMs after an answer, after the choice.
                 val since = SystemClock.uptimeMillis()
@@ -245,12 +254,14 @@ class SearchAndLanguageTest {
             scenario.onActivity { assertSame("the same activity", activity, it) }
             assertTrue("${viewport.describe()} then ${controller.viewport.value.describe()}", viewport.isNear(controller.viewport.value))
             // None began as the language changed: none at all, unless the server was still asking again, and then
-            // each when it asked, followUpMs after the load before it ended.
+            // each when the answer before it asked, as long after it as it asked.
             val began = loads.filter { (_, loading) -> loading }.map { it.first }
             if (serverAsksAgain) {
                 for (at in began.filter { it >= chosen }) {
-                    val ended = loads.last { (end, loading) -> !loading && end < at }.first
-                    assertTrue("a load ${at - chosen} ms after the choice, ${at - ended} ms after the last ended", at - ended >= followUp - 500)
+                    val (ended, _, asked) = loads.last { (end, loading) -> !loading && end < at }
+                    val load = "a load ${at - chosen} ms after the choice, ${at - ended} ms after the last ended"
+                    assertTrue("$load, which asked for none", asked != null)
+                    assertTrue("$load, which asked for $asked ms", at - ended >= asked!! - 500)
                 }
             } else {
                 assertEquals("loads at ${began.map { it - chosen }} ms", 0, began.size)
