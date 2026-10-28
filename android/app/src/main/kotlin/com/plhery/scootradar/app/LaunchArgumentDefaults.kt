@@ -28,8 +28,14 @@ class LaunchArgumentDefaults(
     }
 
     companion object {
-        /** The launch arguments the debug build reads (ScooterScreenshotCamera, the review prompt). */
-        val keys: List<String> = listOf("ScreenshotCamera", "ScreenshotTerrain", "ReviewPromptDue")
+        /**
+         * Whether events go to Umami from this debug build (`--ez analytics-smoke-test true`), for an intentional
+         * check that they reach ScootRadar Android (docs/analytics.md).
+         */
+        const val ANALYTICS_SMOKE_TEST = "analytics-smoke-test"
+
+        /** The launch arguments the debug build reads (ScooterScreenshotCamera, the review prompt, the smoke test). */
+        val keys: List<String> = listOf("ScreenshotCamera", "ScreenshotTerrain", "ReviewPromptDue", ANALYTICS_SMOKE_TEST)
 
         /** Those of [keys] among an intent's extras. */
         fun arguments(extras: Bundle?): Map<String, Any> {

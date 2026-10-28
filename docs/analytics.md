@@ -6,10 +6,13 @@ Dashboards, one website each in Umami:
   the website and the web app installed on a home screen.
 - [ScootRadar iOS](https://umami.plhery.com/websites/72c49567-e00d-4a92-bfaf-d1ae7b083fd8):
   the iPhone and iPad app.
+- [ScootRadar Android](https://umami.plhery.com/websites/2bba24f8-8180-4616-ae0e-4bc528957c85):
+  the Android app (created 28 October 2026, before its first release), tag `android`.
 
-Both clients POST to `https://u.plhery.com/api/send`, each with its public website ID:
+All three clients POST to `https://u.plhery.com/api/send`, each with its public website ID:
 `6e60b4ab-b4ee-4785-9699-a7f32127b358` from the web (`src/lib/analytics.ts`),
-`72c49567-e00d-4a92-bfaf-d1ae7b083fd8` from the app (`ScooterAnalytics.swift`). No
+`72c49567-e00d-4a92-bfaf-d1ae7b083fd8` from the iOS app (`ScooterAnalytics.swift`),
+`2bba24f8-8180-4616-ae0e-4bc528957c85` from the Android app (`ScooterAnalytics.kt`). No
 API/admin secret is shipped. The Umami admin dashboard remains protected
 independently of its existing public collector. In ScootRadar, filter by **Tag**
 (`web`, `pwa`) to tell a browser from the installed web app; everything in ScootRadar
@@ -115,7 +118,8 @@ Web collection runs only on `scootradar.com`, honors DNT/GPC and
 `localStorage['umami.disabled']`, and has an opt-out on `/privacy`.
 iOS has an opt-out under Settings › About › Privacy. Simulators, previews and XCTest are disabled;
 launch a simulator with `-analytics-smoke-test` only for an intentional production
-collection check. Physical-device installations collect after rebuilding/installing
+collection check. Android sends from release builds only: a debug build sends when
+started with `--ez analytics-smoke-test true`, and never under its tests. Physical-device installations collect after rebuilding/installing
 this revision. Existing installed binaries cannot gain tracking through a web deploy.
 
 ## Deployment/verification

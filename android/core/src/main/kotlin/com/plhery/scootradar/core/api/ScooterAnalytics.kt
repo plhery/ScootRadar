@@ -120,8 +120,8 @@ class ScooterAnalytics(
     companion object {
         const val disabledKey = "analytics-disabled"
 
-        /** "ScootRadar Android" in Umami, apart from the iPhone's and the website's: none yet, so nothing is sent. */
-        val website: String? = null
+        /** "ScootRadar Android" in Umami, apart from the iPhone's "ScootRadar iOS" and the website's "ScootRadar". */
+        val website: String? = "2bba24f8-8180-4616-ae0e-4bc528957c85"
         val endpoint: HttpUrl = "https://u.plhery.com/api/send".toHttpUrl()
 
         private val allowedValue = Regex("[a-zA-Z0-9_-]{1,40}")

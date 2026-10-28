@@ -52,13 +52,15 @@ class AppContainer(private val context: Context) {
     val addressSearch: AddressSearchAPIClient by lazy { AddressSearchAPI(client = api.client) }
 
     /**
-     * A stand-in that sends nothing until ScootRadar Android has a website of its own in Umami (NEEDS-USER #4):
-     * without one, ScooterAnalytics sends no event.
+     * Whether a debug build was started for the analytics smoke test, as the iPhone app's simulator is with
+     * `-analytics-smoke-test`: set from the launch before [analytics] is first read.
      */
+    var analyticsSmokeTest = false
+
+    /** "ScootRadar Android" in Umami: a release sends, a debug build only when started for the smoke test. */
     val analytics: ScooterAnalytics by lazy {
         ScooterAnalytics(
-            website = null,
-            sends = false,
+            sends = !BuildConfig.DEBUG || analyticsSmokeTest,
             userAgent = ScooterAnalytics.userAgent(Build.VERSION.RELEASE, chromeMajor()),
             defaults = defaults,
             scope = scope,
