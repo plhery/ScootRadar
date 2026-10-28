@@ -1,10 +1,13 @@
 package com.plhery.scootradar.ui
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +26,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.plhery.scootradar.core.api.ScooterAPIClient
@@ -69,6 +73,8 @@ class DockOverTheMapTest {
     val compose = createEmptyComposeRule()
 
     private var scenario: ActivityScenario<ComponentActivity>? = null
+    private val application = ApplicationProvider.getApplicationContext<Application>()
+    private var recreations: Application.ActivityLifecycleCallbacks? = null
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val locale = Locale.getDefault()
     private val language = ScooterLanguage.current
@@ -83,6 +89,7 @@ class DockOverTheMapTest {
     @After
     fun tearDown() {
         scenario?.close()
+        recreations?.let(application::unregisterActivityLifecycleCallbacks)
         scope.cancel()
         ScooterLanguage.current = language
         Locale.setDefault(locale)
@@ -169,6 +176,21 @@ class DockOverTheMapTest {
     }
 
     private fun setContent(content: @Composable () -> Unit) {
+        // The test's activity takes no configuration change itself. One just after launch (seen once, 0.5 s in, in a
+        // full run) makes a new activity, which shows the screen too.
+        val recreated = object : Application.ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                if (savedInstanceState != null) (activity as? ComponentActivity)?.setContent(content = content)
+            }
+            override fun onActivityStarted(activity: Activity) = Unit
+            override fun onActivityResumed(activity: Activity) = Unit
+            override fun onActivityPaused(activity: Activity) = Unit
+            override fun onActivityStopped(activity: Activity) = Unit
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+            override fun onActivityDestroyed(activity: Activity) = Unit
+        }
+        application.registerActivityLifecycleCallbacks(recreated)
+        recreations = recreated
         scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity { it.setContent(content = content) }
     }
 
