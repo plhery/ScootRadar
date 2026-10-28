@@ -86,7 +86,8 @@ export const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
  * Longer for a feed that stalls upstream and comes back on its own. Voi's Swiss feed moves every
  * 8 minutes and reaches us 3 to 5 minutes later, so it runs 2 or 3 minutes short of expiring; on
  * 16 and 17 October 2026 Voi stopped it for up to 21 minutes three times, and it was back within
- * 10 minutes of expiring each time.
+ * 10 minutes of expiring each time. Since 28 October its scooters come from Voi's rider map, and it
+ * stalls so only while that fails (swissAppMaps.ts).
  */
 const EXPIRED_REPORT_DELAYS_MS: Readonly<Record<string, number>> = { 'national:voiscooters.com': 15 * 60_000 };
 

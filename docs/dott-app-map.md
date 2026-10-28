@@ -11,7 +11,12 @@ The app exposed 248 region outlines. A single bounded check of each of the
 167 nonempty scooter regions and 72,276 scooters. The rough initial
 classification used bounding-box centres; Abu Dhabi and Dubai were actually
 already covered and were removed from the candidates after checking the
-vehicle positions. Switzerland continues to use its existing national feeds.
+vehicle positions. Switzerland continues to use its existing national feeds,
+whose scooters stand since 28 October 2026 where the rider map puts them
+(`server/swissAppMaps.ts`, DATA_SOURCES.md): Zürich, Basel, St. Gallen,
+Romanshorn and Rorschach, whose regions held as many scooters as the national
+feeds. The rider map gives no battery; a scooter takes the national feed's
+where one stands on it.
 
 The catalog adds 157 app-backed regions and 69,570 scooters from that sweep:
 

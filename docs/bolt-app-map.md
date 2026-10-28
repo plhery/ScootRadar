@@ -135,7 +135,11 @@ and Mülheim an der Ruhr (6) are kept for that reason.
 Left out because another source already shows them: Stuttgart, Karlsruhe and
 Reutlingen/Tübingen (MobiData BW), Brussels and Liverpool (Bolt's GBFS), Oslo
 (Entur), and Zürich and Basel (the Swiss national platform, which also
-carries Basel's scooters into MobiData BW).
+carries Basel's scooters into MobiData BW). Since 28 October 2026 Zürich's and
+Basel's markets are read for the national platform's feeds instead, which keep
+their towns, prices and rental links (`server/swissAppMaps.ts`, DATA_SOURCES.md):
+Zürich's categories 735, 1166 and 1212, the last two with 115 and 840 scooters
+that day, and Basel's 899, with 154.
 
 Markets with operating areas but no scooter on 25 October 2026, left out:
 Marijampolė, Prague (and the other Czech towns Bolt lists), Baku, Braga,

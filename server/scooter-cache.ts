@@ -40,6 +40,7 @@ import { boltMapRequests, withBoltAppCollectors } from './boltApp';
 import { alpacaMapRequests, withAlpacaAppCollectors } from './alpacaApp';
 import { dartMapRequests, withDartAppCollectors } from './dartApp';
 import { skyssMapRequests, withSkyssAppCollectors } from './skyssApp';
+import { readsSwissAppMap, withSwissAppMaps } from './swissAppMaps';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
@@ -50,7 +51,7 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBirdAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
-  withSkyssAppCollectors, withBoltAppCollectors,
+  withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
 initErrorReporting();
@@ -98,8 +99,9 @@ const stalls = watchStalls(console.warn);
 // Validate configuration before doing any network collection.
 const schedule = cadenceFromEnv();
 // Always-fast sources every minute; the others every idle interval, and every minute while someone looks.
+// The national feeds read from rider maps are collected as the app maps are (swissAppMaps.ts).
 const scheduler = new FeedScheduler(collect, { ...schedule,
-  alwaysFast: feed => schedule.alwaysFastSources.has(feed.source),
+  alwaysFast: feed => schedule.alwaysFastSources.has(feed.source) && !readsSwissAppMap(feed),
   // After a restart, a feed collected recently waits for its turn rather than everyone at once.
   lastCollectedAt: feed => {
     const record = records.get(feed.id);

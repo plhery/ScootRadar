@@ -48,8 +48,8 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   the others, judged by the feed's cadence (see [Collection cadence](#collection-cadence)).
   `ok` is served, or would be as soon as someone looked; `failing` means the last
   collection failed and the previous positions are kept; `expired` means the feed is
-  late for its cadence and the map says the provider is not sharing data. A Swiss or
-  watched feed expires when its positions are over 15 minutes old; an idle feed only
+  late for its cadence and the map says the provider is not sharing data. A Swiss feed
+  collected every minute, or a watched feed, expires when its positions are over 15 minutes old; an idle feed only
   after 30 minutes without a successful collection.
 - `scootradar_feed_paused`: 1 while every service area of the feed is in its seasonal
   pause (`seasonal` in its catalog, as Montréal each winter), or while its operator says
@@ -273,8 +273,8 @@ before, so by then no user has scooters: the wait is not lengthened for them.
 The dashboard's "Expired, rarely served" table lists the others: silence isn't
 success. A feed that dies stops alerting once it has been dead for half a week, and
 moves to that table. "Oldest positions held" shows feeds coming close
-to the 15-minute limit, as Swiss Voi does with its 8-minute updates published 90
-seconds late; idle feeds pass it between collections, which is expected. The
+to the 15-minute limit, as Swiss Voi did with its 8-minute updates published 90
+seconds late, until its rider map was read on 28 October 2026; idle feeds pass it between collections, which is expected. The
 "Cadence" row shows the feeds on each cadence, the collections started and the
 requests sent to operators.
 
@@ -385,13 +385,17 @@ Tracing is off, and no trace headers go to the operators' feeds.
   event an hour; the logs keep every occurrence. A failed discovery is tried once more
   5 seconds later and reported only if that fails too: sharedmobility.ch's registry
   answered a single 504 as the cache started on 25 October 2026.
+- **A Swiss rider map failing**: Bolt's, Voi's or Dott's rider map read for a Swiss
+  national feed (DATA_SOURCES.md) that has failed for ten minutes, at most once an hour
+  for each feed (`swiss-app-map:<feed>`). The national feed alone stands meanwhile, so
+  the feed neither fails nor expires; each failure is logged as `swiss_app_map_failed`.
 
 Routine feed failures are not sent; the metrics and logs cover them.
 
 ## Logs
 
-`snapshot_feed_state` (a feed changing state), `snapshot_feed_failed` and
-`parking_feed_failed` (with the error), and `snapshot_health` (every minute, with the
+`snapshot_feed_state` (a feed changing state), `snapshot_feed_failed`,
+`parking_feed_failed` and `swiss_app_map_failed` (with the error), and `snapshot_health` (every minute, with the
 feeds on each cadence, `warmingFeeds` not collected yet and not counted as failed or
 expired, `unobservedFeeds` with no positions yet, and `oldestObservationAgeSeconds` over
 the feeds that have some, null when none has) are JSON lines, as is `feed_states_restored`

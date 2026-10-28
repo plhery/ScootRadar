@@ -109,6 +109,28 @@ the production API, no operator showed a scooter in any of them:
 Bird Grenchen and Bird's Bulle system (`bird-platform-partner-jmfleets-bulle`)
 are in `LEFT_OUT_SWISS_SYSTEMS`.
 
+Since 28 October 2026 Bolt's scooters in Zürich and Basel, Voi's in its eight
+Swiss zones and Dott's in Zürich, Basel, St. Gallen, Romanshorn and Rorschach
+stand where the operators' rider maps put them (`server/swissAppMaps.ts`, and
+[Bolt's](docs/bolt-app-map.md), [Voi's](docs/voi-app-map.md) and
+[Dott's](docs/dott-app-map.md) rider maps). The national platform publishes
+them about every six minutes, and Voi's every eight, so a map of Zürich could
+be seven minutes old; the rider maps answer with each scooter's last report.
+Each collection reads both. A scooter of the rider map takes the price, range
+and rental links of the national scooter standing within 15 m of it, the
+nearest pairs first, and its battery where the rider map has none (Dott's): on
+28 October 933 of Bolt's 955 Zürich scooters had one within 5 m, 731 of Dott's
+756 within 15 m, and 85 to 95% of Voi's in each zone. One the national feed
+has yet to see where it stands takes the price of the nearest that it has, and
+neither range nor rental link: the map opens the operator's app. The national
+feeds keep their towns, zones, metrics and alerts; the scooters' ids are the
+rider maps'. While a rider map fails the national feed alone stands, and
+Sentry hears of it after ten minutes; while sharedmobility.ch fails, or answers
+over two seconds after the rider map, the scooters keep the attributes it gave
+last. These feeds are collected as the app maps are, every minute while someone
+looks and every twenty minutes while nobody does; Switzerland's other feeds
+stay on the minute.
+
 Hopp is not in the dataset. Its scooters in Zürich, Basel and Kloten come from
 Hopp's own GBFS feeds at `api.hopp.bike/gbfs/ch-<town>`, which link Hopp's
 privacy policy, not a licence.
@@ -200,8 +222,8 @@ feed west of Paris, in eight towns of Saint Germain Boucles de Seine, is listed
 only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 
 Production collects each system independently on Netcup, with at most six
-systems in flight: Switzerland every minute, the others every twenty minutes, or
-every minute for ten minutes after someone looks at them. Bird's, Spin's and
+systems in flight: Switzerland every minute, but for its rider maps' feeds, the
+others every twenty minutes, or every minute for ten minutes after someone looks at them. Bird's, Spin's and
 Bolt's own feeds, whose licences let their data be kept fifteen minutes, are
 collected every thirteen minutes while nobody looks: the cache drops their
 positions, in memory and in its saved copy, the documents it read them from and
@@ -372,8 +394,8 @@ scooter categories, with stable ids, positions and percentage charge unless
 Bolt hides it. There is no range, price, rental link or position timestamp;
 the observation time is the read. Markets other sources already cover
 (MobiData BW's Stuttgart, Karlsruhe and Reutlingen/Tübingen, Bolt's GBFS in
-Brussels and Liverpool, Entur's Oslo, the Swiss platform's Zürich and Basel)
-are left out. Town centres new to the catalogs are GeoNames' (CC BY 4.0), credited
+Brussels and Liverpool, Entur's Oslo) are left out; Zürich's and Basel's are
+read for the Swiss platform's feeds, which keep their prices and rental links. Town centres new to the catalogs are GeoNames' (CC BY 4.0), credited
 with the map. See [the requests, the session, the completeness checks and the
 markets left out](docs/bolt-app-map.md).
 

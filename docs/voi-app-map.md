@@ -4,8 +4,12 @@ Verified 24 October 2026 using the publisher-signed Android app 3.360.0
 (build 4000), after the user signed into their rider account and authorized
 using its map. The APK's signer matches Voi's
 [app-link association](https://open.voi.com/.well-known/assetlinks.json).
-This is an unofficial rider API integration. Existing public GBFS feeds and
-the Swiss national feed remain the sources wherever they already cover Voi.
+This is an unofficial rider API integration. Existing public GBFS feeds remain
+the sources wherever they already cover Voi. In Switzerland, since 28 October
+2026, the national feed's scooters stand where the rider map puts them in its
+eight zones (`server/swissAppMaps.ts`, DATA_SOURCES.md): Zürich 194, Winterthur
+128, Basel 206, Bern 222, Biel/Bienne 418, Frauenfeld 201, Schaffhausen 427 and
+Illnau-Effretikon 319, 2,376 scooters that day against the national feed's 2,438.
 
 The live audit checked 148 app regions by their exact zone id, then fetched
 117 active, scooter-capable regions after removing test/demo regions and
