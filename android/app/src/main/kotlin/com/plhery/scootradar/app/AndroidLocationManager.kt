@@ -460,10 +460,11 @@ class AndroidLocationManager(
         }
 
         /**
-         * How far off the reading may be, in degrees: the sensor's own estimate where it gives one, else by its
-         * status, and not valid (negative) while it needs calibrating.
+         * How far off the reading may be, in degrees: not valid (negative) while the sensor needs calibrating, as
+         * iOS's headingAccuracy, whatever it estimates; else its own estimate where it gives one, else by its status.
          */
         internal fun headingAccuracy(rotationVector: FloatArray, status: Int): Double {
+            if (status == SensorManager.SENSOR_STATUS_UNRELIABLE || status == SensorManager.SENSOR_STATUS_NO_CONTACT) return -1.0
             val estimate = rotationVector.getOrNull(4)?.toDouble()
             if (estimate != null && estimate.isFinite() && estimate >= 0) return Math.toDegrees(estimate)
             return when (status) {
