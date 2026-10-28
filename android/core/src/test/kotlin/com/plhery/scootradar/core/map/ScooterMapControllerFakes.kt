@@ -4,6 +4,7 @@ package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
+import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
@@ -16,16 +17,32 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.addingTimeInterval
 import java.time.Instant
+import java.util.concurrent.AbstractExecutorService
+import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonObject
+import okhttp3.Dispatcher
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 
@@ -225,6 +242,98 @@ internal class RecordingDefaults(
     }
 }
 
+/** An event as ScooterAnalytics sends it: its name and its data, but the platform, which every event carries. */
+internal data class TrackedEvent(
+    val name: String?,
+    val provider: String? = null,
+    val value: Int? = null,
+    val result: String? = null,
+    val target: String? = null,
+)
+
+/**
+ * The app's analytics as a test has them: a ScooterAnalytics that sends each event as it is tracked, on the
+ * caller's thread, to a client that keeps it and answers it itself. Nothing reaches the network.
+ */
+internal class RecordingAnalytics(
+    /** What the client answers each event with: Umami's answer, its status and its body. */
+    private val answer: (index: Int) -> Pair<Int, String> = { 200 to "{}" },
+    /** Where the events are sent from: at once, unless the test holds them on its own dispatcher. */
+    scope: CoroutineScope = CoroutineScope(Dispatchers.Unconfined),
+) {
+    private val sent = mutableListOf<okhttp3.Request>()
+    private val bodies = mutableListOf<JsonObject>()
+
+    /** Each request, as it reached the client, in order. */
+    val requests: List<okhttp3.Request> get() = sent.toList()
+
+    /** The payload of each event sent, in order. */
+    val payloads: List<JsonObject> get() = bodies.map { it.getValue("payload").jsonObject }
+
+    val events: List<TrackedEvent>
+        get() = payloads.map { payload ->
+            val data = payload["data"]?.jsonObject
+            fun string(key: String): String? = (data?.get(key) as? JsonPrimitive)?.takeIf { it.isString }?.content
+            TrackedEvent(
+                name = (payload["name"] as? JsonPrimitive)?.content,
+                provider = string("provider"),
+                value = (data?.get("value") as? JsonPrimitive)?.int,
+                result = string("result"),
+                target = string("target"),
+            )
+        }
+
+    /** The names of the events, in order. */
+    val names: List<String?> get() = events.map { it.name }
+
+    val analytics = ScooterAnalytics(
+        website = "test-website",
+        sends = true,
+        userAgent = ScooterAnalytics.userAgent(androidVersion = "16", chromeMajor = 141),
+        defaults = InMemoryScooterDefaults(),
+        scope = scope,
+        client = OkHttpClient.Builder()
+            // A call runs on the thread that makes it, so an event is sent before track returns.
+            .dispatcher(Dispatcher(DirectExecutorService()))
+            .addInterceptor { chain ->
+                val request = chain.request()
+                val body = Buffer().also { request.body?.writeTo(it) }.readUtf8()
+                val index = sent.size
+                sent += request
+                bodies += Json.parseToJsonElement(body).jsonObject
+                val (code, text) = answer(index)
+                Response.Builder()
+                    .request(request)
+                    .protocol(Protocol.HTTP_1_1)
+                    .code(code)
+                    .message("")
+                    .body(text.toResponseBody("application/json".toMediaType()))
+                    .build()
+            }
+            .build(),
+    )
+
+    /** Forgets the events sent so far. */
+    fun clear() {
+        sent.clear()
+        bodies.clear()
+    }
+
+    private class DirectExecutorService : AbstractExecutorService() {
+        override fun execute(command: Runnable) = command.run()
+
+        override fun shutdown() = Unit
+
+        override fun shutdownNow(): List<Runnable> = emptyList()
+
+        override fun isShutdown(): Boolean = false
+
+        override fun isTerminated(): Boolean = false
+
+        override fun awaitTermination(timeout: Long, unit: TimeUnit): Boolean = true
+    }
+}
+
 /** Directions a test does not ask for: no path, and nothing goes out to the network. */
 internal object NoWalkingDirections : WalkingDirectionsClient {
     override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = emptyList()
@@ -245,6 +354,7 @@ internal fun TestScope.makeController(
     keepAppLanguages: (List<String>) -> Unit = {},
     directions: WalkingDirectionsClient = NoWalkingDirections,
     openInMaps: (ScooterWalkTarget) -> Unit = {},
+    analytics: RecordingAnalytics? = null,
 ): ScooterMapController {
     val scheduler = testScheduler
     val start = TestClock().now
@@ -265,6 +375,7 @@ internal fun TestScope.makeController(
         now = now,
         phoneLanguages = phoneLanguages,
         keepAppLanguages = keepAppLanguages,
+        analytics = analytics?.analytics,
     )
 }
 

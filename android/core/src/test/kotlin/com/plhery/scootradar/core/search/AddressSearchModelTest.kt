@@ -3,6 +3,8 @@ package com.plhery.scootradar.core.search
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.AddressSearchAPIError
 import com.plhery.scootradar.core.api.AddressSearchResult
+import com.plhery.scootradar.core.map.RecordingAnalytics
+import com.plhery.scootradar.core.map.TrackedEvent
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.search.SwissAddressSearchStatus.Failed
@@ -74,7 +76,8 @@ class AddressSearchModelTest {
     @Test
     fun nothingFoundAndAFailedSearchAreToldApartAndTryAgainSearchesAgain() = runTest {
         val api = StubAddressSearchClient(answers = listOf(Answer.Places(emptyList()), Answer.Failure, Answer.Places(listOf(zurich))))
-        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, debounce = Duration.ZERO)
+        val analytics = RecordingAnalytics()
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = analytics.analytics, api = api, debounce = Duration.ZERO)
 
         model.query = "Xyzzy"
         var settled = waitUntil { model.status.value != Searching }
@@ -94,6 +97,15 @@ class AddressSearchModelTest {
         assertTrue(settled)
         assertEquals(Results(listOf(zurich)), model.status.value)
         assertEquals(listOf("Xyzzy", "Zürich", "Zürich"), api.queries)
+        // How many places each answer had, and the failure, never the text.
+        assertEquals(
+            listOf(
+                TrackedEvent("search_results", value = 0),
+                TrackedEvent("search_error"),
+                TrackedEvent("search_results", value = 1),
+            ),
+            analytics.events,
+        )
     }
 
     @Test
