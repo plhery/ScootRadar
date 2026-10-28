@@ -344,9 +344,9 @@ private fun DockChrome(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {
-                    // The legend at the leading edge, a spacer's 10 short of the button.
-                    Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
-                        ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp))
+                    // The legend against the button, 10 from it, after a spacer's 10 at least from the leading edge.
+                    Box(Modifier.weight(1f).padding(start = 10.dp), contentAlignment = Alignment.BottomEnd) {
+                        ZoneLegendOverTheMap(controller, chrome)
                     }
                     FloatingMapControls(
                         controller,
@@ -420,7 +420,6 @@ private val EmptyShape = object : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density) = Outline.Rectangle(Rect.Zero)
 }
 
-/** Where a piece of the chrome is in the window, in points, which are the map's. */
 /**
  * What the zones' colours mean, while they are on, and a city's rules over the map; the names on the map keep clear
  * of it.
@@ -441,6 +440,7 @@ private fun ZoneLegendOverTheMap(controller: ScooterMapController, chrome: MapCh
     DisposableEffect(Unit) { onDispose { chrome.zoneLegend = null } }
 }
 
+/** Where a piece of the chrome is in the window, in points, which are the map's. */
 private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
     val bounds = boundsInWindow()
     return ScreenRect(
