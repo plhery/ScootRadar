@@ -63,7 +63,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.currentStateAsState
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.SpringSpec
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
@@ -121,6 +124,8 @@ fun ScooterMapScreen(
     addressSearch: AddressSearchAPIClient? = null,
     /** Where Settings keeps the rider's choice about usage data, for ScooterAnalytics to read; none in tests. */
     defaults: ScooterDefaults? = null,
+    /** What asks for a rating once the map has rested after a ride. */
+    reviewRequester: ReviewRequester = ReviewRequester.none,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -212,6 +217,18 @@ fun ScooterMapScreen(
     BackHandler(enabled = !sheetOpen && (searchIsExpanded || selectedScooter != null || selectedParking != null)) {
         if (searchIsExpanded) searchIsExpanded = false else controller.clearSelection()
     }
+
+    // The app in front, with no search, sheet or location being found or gone wrong over the map.
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+    val isLocating by controller.isLocating.collectAsStateWithLifecycle()
+    val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
+    ReviewWhenTheMapRests(
+        controller,
+        nothingOverTheMap = lifecycleState.isAtLeast(Lifecycle.State.RESUMED) && !searchIsExpanded && !sheetOpen &&
+            !isLocating && locationIssue == null,
+        requester = reviewRequester,
+        analytics = analytics,
+    )
 }
 
 /** `.onChange(of:)`: [action] each time [value] changes, not for the value first shown. */

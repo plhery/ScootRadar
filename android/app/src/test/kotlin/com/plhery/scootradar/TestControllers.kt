@@ -93,8 +93,8 @@ class TestControllers {
     private val start = TestClock().now
 
     /**
-     * A controller of `api`'s map, with nothing kept from before. Without a clock of its own it reads the
-     * scheduler's, which [waitUntil] moves as real time moves under the iPhone's tests.
+     * A controller of `api`'s map, with nothing kept from before but `defaults`. Without a clock of its own it
+     * reads the scheduler's, which [waitUntil] moves as real time moves under the iPhone's tests.
      */
     fun make(
         api: ScooterAPIClient,
@@ -102,10 +102,11 @@ class TestControllers {
         locationManager: ScooterLocationManager = NotDeterminedLocationManager(),
         directions: WalkingDirectionsClient = NoWalkingDirections,
         openInMaps: (ScooterWalkTarget) -> Unit = {},
+        defaults: ScooterDefaults = InMemoryScooterDefaults(),
     ): ScooterMapController = ScooterMapController(
         api = api,
         locationManager = locationManager,
-        defaults = InMemoryScooterDefaults(),
+        defaults = defaults,
         scope = scope,
         directions = directions,
         openInMaps = openInMaps,
