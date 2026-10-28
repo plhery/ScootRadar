@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,7 +59,7 @@ import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import java.io.File
 import java.util.Locale
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.CopyOnWriteArrayList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -204,15 +205,27 @@ class SearchAndLanguageTest {
             compose.waitUntil(60_000) {
                 (controller.lastUpdated.value != null || controller.loadIssue.value != null) && !controller.isLoading.value
             }
+            // The live server may still be collecting its feeds: its answer then asks to be asked again in a moment,
+            // a load of the server's own. Other loads keep 10 s from the last one (minimumAttemptGap), longer than
+            // what follows, so the language is chosen once the server asks for nothing more, or after half a minute.
+            val calm = SystemClock.uptimeMillis() + 30_000
+            while (SystemClock.uptimeMillis() < calm &&
+                (controller.isLoading.value || controller.responseMetadata.value?.refreshing == true)
+            ) {
+                Thread.sleep(200)
+            }
+            compose.waitUntil(10_000) { !controller.isLoading.value }
             compose.waitForIdle()
+            val serverAsksAgain = controller.responseMetadata.value?.refreshing == true
             val viewport = controller.viewport.value
             val lastUpdated = controller.lastUpdated.value
-            val loads = AtomicInteger()
-            scope.launch { controller.isLoading.drop(1).collect { if (it) loads.incrementAndGet() } }
+            val loads = CopyOnWriteArrayList<Long>()
+            scope.launch { controller.isLoading.drop(1).collect { if (it) loads += SystemClock.uptimeMillis() } }
 
             compose.onNodeWithContentDescription("Settings").performClick()
             // At its first height the sheet shows the top of each page: the rows are reached as TalkBack reaches them.
             compose.onNodeWithText("English").performSemanticsAction(SemanticsActions.OnClick)
+            val chosen = SystemClock.uptimeMillis()
             compose.onNodeWithText("Français").performSemanticsAction(SemanticsActions.OnClick)
             compose.waitUntil(10_000) { compose.onAllNodes(title("Langue")).fetchSemanticsNodes().isNotEmpty() }
             Thread.sleep(2_000)
@@ -223,8 +236,12 @@ class SearchAndLanguageTest {
             assertEquals(ScooterLanguage.Fr, controller.language.value)
             scenario.onActivity { assertSame("the same activity", activity, it) }
             assertTrue("${viewport.describe()} then ${controller.viewport.value.describe()}", viewport.isNear(controller.viewport.value))
-            assertEquals(0, loads.get())
-            assertEquals(lastUpdated, controller.lastUpdated.value)
+            // None began as the language changed; and none at all unless the server was still asking again.
+            assertTrue("loads at ${loads.map { it - chosen }} ms", loads.none { it - chosen in 0..1_000 })
+            if (!serverAsksAgain) {
+                assertEquals("loads at ${loads.map { it - chosen }} ms", 0, loads.size)
+                assertEquals(lastUpdated, controller.lastUpdated.value)
+            }
         } finally {
             scenario.onActivity { ViewModelProvider(it)[ScooterMapViewModel::class.java].controller.setLanguageChoice(ScooterLanguageChoice.Automatic) }
             scenario.close()
