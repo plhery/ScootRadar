@@ -110,6 +110,8 @@ import com.plhery.scootradar.ui.glass.glassMayBlur
 import com.plhery.scootradar.ui.search.LocalAddressSearch
 import com.plhery.scootradar.ui.search.ScooterSearchIsland
 import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
+import com.plhery.scootradar.ui.sheet.IosFormSheet
+import com.plhery.scootradar.ui.sheet.IosPopover
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
@@ -169,6 +171,8 @@ fun ScooterMapScreen(
     var filtersPresented by remember { mutableStateOf(false) }
     var settingsPresented by remember { mutableStateOf(false) }
     val sheetOpen = filtersPresented || settingsPresented
+    // Where a large window's Filters popover points: the panel's Filters button, in the window.
+    var filtersButton by remember { mutableStateOf<Rect?>(null) }
 
     ScootTheme(dark = dark) {
         CompositionLocalProvider(
@@ -178,12 +182,13 @@ fun ScooterMapScreen(
             LocalMapChrome provides chrome,
             LocalLocationSettings provides locationSettings,
         ) {
-            Box(Modifier.fillMaxSize()) {
-                // A sheet is modal: TalkBack reads it alone, as VoiceOver does.
-                BoxWithConstraints(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
-                    // Chosen again at every size of the window, which turns and is resized without a new activity.
-                    val layout = rememberChromeLayout(maxWidth)
-                    SideEffect { chrome.layout = layout }
+            BoxWithConstraints(Modifier.fillMaxSize()) {
+                // Chosen again at every size of the window, which turns and is resized without a new activity. Filters
+                // and Settings, open, move to the new layout's presenters.
+                val layout = rememberChromeLayout(maxWidth)
+                SideEffect { chrome.layout = layout }
+                // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
+                Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
                     map(dark)
                     val onShowFilters = {
                         searchIsExpanded = false
@@ -209,6 +214,7 @@ fun ScooterMapScreen(
                             onSearchingChange = { searchIsExpanded = it },
                             onShowFilters = onShowFilters,
                             onShowSettings = onShowSettings,
+                            onFiltersButtonFrame = { filtersButton = it },
                         )
                     }
                 }
@@ -216,21 +222,36 @@ fun ScooterMapScreen(
                 // Half of a short window shows the first settings only, so there Filters opens at full height, its
                 // providers in view.
                 val windowHeight = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.height.toDp() }
+                val dock = layout == ScooterChromeLayout.Dock
                 IosSheet(
-                    isPresented = filtersPresented,
+                    isPresented = filtersPresented && dock,
                     onDismiss = { filtersPresented = false },
                     detents = if (windowHeight < 700.dp) listOf(SheetDetent.Large) else listOf(SheetDetent.Medium, SheetDetent.Large),
                     title = localized("Filters"),
                 ) { bottomInset ->
                     ScooterFilterSheet(controller, bottomInset, onDone = { filtersPresented = false })
                 }
+                // Beside a panel, a popover under its search bar, with the map beside the panel in view, where what
+                // the filters change shows as they change.
+                IosPopover(
+                    isPresented = filtersPresented && !dock,
+                    onDismiss = { filtersPresented = false },
+                    anchor = filtersButton,
+                    title = localized("Filters"),
+                ) {
+                    ScooterFilterSheet(controller, bottomInset = 0.dp, onDone = { filtersPresented = false }, inPopover = true)
+                }
                 IosSheet(
-                    isPresented = settingsPresented,
+                    isPresented = settingsPresented && dock,
                     onDismiss = { settingsPresented = false },
                     detents = listOf(SheetDetent.Medium, SheetDetent.Large),
                     title = localized("Settings"),
                 ) { bottomInset ->
                     ScooterSettingsSheet(controller, bottomInset, defaults, onDone = { settingsPresented = false })
+                }
+                // Beside a panel, a form at the trailing side, clear of the panel and of most of the map.
+                IosFormSheet(isPresented = settingsPresented && !dock, onDismiss = { settingsPresented = false }, title = localized("Settings")) {
+                    ScooterSettingsSheet(controller, bottomInset = 0.dp, defaults, onDone = { settingsPresented = false })
                 }
             }
         }
@@ -427,6 +448,8 @@ private fun PanelChrome(
     onSearchingChange: (Boolean) -> Unit,
     onShowFilters: () -> Unit,
     onShowSettings: () -> Unit,
+    /** The search bar's Filters button's frame in the window, in pixels, which the Filters popover points at. */
+    onFiltersButtonFrame: (Rect) -> Unit,
 ) {
     val language by controller.language.collectAsStateWithLifecycle()
     val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
@@ -512,6 +535,7 @@ private fun PanelChrome(
                         // The window's bottom, inside its safe area.
                         bottomLimit = windowHeight - safeBottom,
                         onCollapsedHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
+                        onFiltersFrameChange = onFiltersButtonFrame,
                     )
                 }
 
@@ -758,6 +782,7 @@ private fun SearchIsland(
     onShowSettings: () -> Unit,
     bottomLimit: Dp,
     onCollapsedHeightChange: (Int) -> Unit,
+    onFiltersFrameChange: (Rect) -> Unit = {},
 ) {
     val changes = rememberControllerChanges(controller)
     val state = remember(controller, changes) { controller.searchBarState }
@@ -783,6 +808,7 @@ private fun SearchIsland(
         onShowFilters = onShowFilters,
         onShowSettings = onShowSettings,
         onCollapsedHeightChange = onCollapsedHeightChange,
+        onFiltersFrameChange = onFiltersFrameChange,
     )
 }
 

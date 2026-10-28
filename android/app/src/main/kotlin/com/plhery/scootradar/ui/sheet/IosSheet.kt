@@ -399,7 +399,7 @@ private val LARGE_GAP = 10.dp
 /** How far inside the screen's edges a sheet at the medium height floats. */
 private val FLOATING_INSET = 8.dp
 
-private val CORNER_RADIUS = 38.dp
+internal val CORNER_RADIUS = 38.dp
 
 /** How fast a finger lets go for the sheet to go on to the next detent its way: Compose's default for anchors. */
 private val FLING_SPEED = 125.dp
@@ -411,8 +411,8 @@ private const val RUBBER_BAND = 0.55f
 private val GRABBER_TARGET = DpSize(48.dp, 20.dp)
 
 /** The dimming over the map, at its darkest: UIKit's dimming view. */
-private const val DIM_LIGHT = 0.2f
-private const val DIM_DARK = 0.48f
+internal const val DIM_LIGHT = 0.2f
+internal const val DIM_DARK = 0.48f
 
 /** How much a predictive Back shrinks the sheet, all the way out. */
-private const val BACK_SHRINK = 0.06f
+internal const val BACK_SHRINK = 0.06f

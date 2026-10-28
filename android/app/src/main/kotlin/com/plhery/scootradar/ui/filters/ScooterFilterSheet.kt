@@ -82,7 +82,13 @@ import com.plhery.scootradar.ui.theme.weight
  * the button that closes the sheet on what the map now shows.
  */
 @Composable
-fun ScooterFilterSheet(controller: ScooterMapController, bottomInset: Dp, onDone: () -> Unit) {
+fun ScooterFilterSheet(
+    controller: ScooterMapController,
+    bottomInset: Dp,
+    onDone: () -> Unit,
+    /** In a popover, which is as tall as the filters, not a sheet's height: ScooterFilterSheet's `inPopover`. */
+    inPopover: Boolean = false,
+) {
     val changes = rememberControllerChanges(controller)
     val minimumBattery by controller.minimumBattery.collectAsState()
     val hasActiveFilters = remember(controller, changes) { controller.hasActiveFilters }
@@ -103,6 +109,7 @@ fun ScooterFilterSheet(controller: ScooterMapController, bottomInset: Dp, onDone
         onToggle = { controller.toggle(it.provider) },
         onReset = controller::resetFilters,
         onDone = onDone,
+        inPopover = inPopover,
     )
 }
 
@@ -119,16 +126,18 @@ internal fun FilterSheetContent(
     onToggle: (ScooterProviderEntry) -> Unit,
     onReset: () -> Unit,
     onDone: () -> Unit,
+    /** As tall as the filters, up to the room it is given, rather than all of it: the list scrolls only past that. */
+    inPopover: Boolean = false,
 ) {
     val colors = scootColors
-    Column(Modifier.fillMaxSize()) {
+    Column(if (inPopover) Modifier.fillMaxWidth() else Modifier.fillMaxSize()) {
         SheetTitleBar(
             title = localized("Filters"),
             trailing = { SheetBarButton(localized("Reset"), onClick = onReset, enabled = hasActiveFilters) },
         )
         Column(
             Modifier
-                .weight(1f)
+                .weight(1f, fill = !inPopover)
                 .verticalScroll(rememberScrollState())
                 .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(22.dp),

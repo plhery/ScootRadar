@@ -51,6 +51,8 @@ internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modif
         modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
+            // Before the semantics it sets, which would clear it.
+            .testTag(PANEL_GRABBER_TAG)
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = value
@@ -88,8 +90,7 @@ internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modif
                         pressed = false
                     }
                 }
-            }
-            .testTag(PANEL_GRABBER_TAG),
+            },
         contentAlignment = Alignment.Center,
     ) {
         Box(

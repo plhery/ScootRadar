@@ -31,7 +31,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -105,6 +108,8 @@ fun ScooterSearchIsland(
     onChooseCity: (ScooterCity) -> Unit = {},
     /** The collapsed bar's height in pixels, as it is measured: the room the island takes over the map. */
     onCollapsedHeightChange: (Int) -> Unit = {},
+    /** The Filters button's frame in the window, in pixels, as it is placed: where a large window's popover points. */
+    onFiltersFrameChange: (Rect) -> Unit = {},
 ) {
     val shape = SquircleShape(24.dp)
     val spring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
@@ -174,6 +179,7 @@ fun ScooterSearchIsland(
                     onClear = onClear,
                     onShowFilters = onShowFilters,
                     onShowSettings = onShowSettings,
+                    onFiltersFrameChange = onFiltersFrameChange,
                     modifier = Modifier.onSizeChanged { onCollapsedHeightChange(it.height) },
                 )
             }
@@ -192,6 +198,7 @@ private fun CollapsedBar(
     onClear: () -> Unit,
     onShowFilters: () -> Unit,
     onShowSettings: () -> Unit,
+    onFiltersFrameChange: (Rect) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = scootColors
@@ -226,7 +233,11 @@ private fun CollapsedBar(
             }
         }
 
-        BarButton(label = localized(if (hasActiveFilters) "Filters, active" else "Filters"), onClick = onShowFilters) {
+        BarButton(
+            label = localized(if (hasActiveFilters) "Filters, active" else "Filters"),
+            onClick = onShowFilters,
+            modifier = Modifier.onGloballyPositioned { onFiltersFrameChange(it.boundsInWindow()) },
+        ) {
             // Idle, it is as dark as the Settings icon beside it; the layered blue is kept for filters that are
             // active. `.contentTransition(.symbolEffect(.replace))`: one goes down as the other comes up.
             val replace = IosMotion.snappy(duration = 0.3)
@@ -259,9 +270,9 @@ private fun CollapsedBar(
 
 /** A symbol's button in the bar: 44 points square, reaching the glass's edges above and under it. */
 @Composable
-private fun BarButton(label: String, onClick: () -> Unit, content: @Composable () -> Unit) {
+private fun BarButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Box(
-        Modifier
+        modifier
             .plainButton(label = label, onClick = onClick)
             .padding(vertical = COLLAPSED_PADDING)
             .size(44.dp),
