@@ -205,9 +205,10 @@ class SearchAndLanguageTest {
             compose.waitUntil(60_000) {
                 (controller.lastUpdated.value != null || controller.loadIssue.value != null) && !controller.isLoading.value
             }
-            // The live server may still be collecting its feeds: its answer then asks to be asked again in a moment,
-            // a load of the server's own. Other loads keep 10 s from the last one (minimumAttemptGap), longer than
-            // what follows, so the language is chosen once the server asks for nothing more, or after half a minute.
+            // The live server may still be collecting its feeds: its answer then asks to be asked again in a moment
+            // (followUpMs), a load of the server's own. Other loads keep 10 s from the last one (minimumAttemptGap),
+            // longer than what follows, so the language is chosen once the server asks for nothing more, or after
+            // half a minute. A feed stale for longer keeps it asking every few seconds.
             val calm = SystemClock.uptimeMillis() + 30_000
             while (SystemClock.uptimeMillis() < calm &&
                 (controller.isLoading.value || controller.responseMetadata.value?.refreshing == true)
@@ -216,11 +217,18 @@ class SearchAndLanguageTest {
             }
             compose.waitUntil(10_000) { !controller.isLoading.value }
             compose.waitForIdle()
+            // When each load began (true) and ended (false).
+            val loads = CopyOnWriteArrayList<Pair<Long, Boolean>>()
+            scope.launch { controller.isLoading.drop(1).collect { loads += SystemClock.uptimeMillis() to it } }
             val serverAsksAgain = controller.responseMetadata.value?.refreshing == true
+            val followUp = controller.responseMetadata.value?.followUpMs?.toLong() ?: 2_000L
+            if (serverAsksAgain) {
+                // Its next question then comes a whole followUpMs after an answer, after the choice.
+                val since = SystemClock.uptimeMillis()
+                compose.waitUntil(30_000) { loads.any { (at, loading) -> !loading && at > since } }
+            }
             val viewport = controller.viewport.value
             val lastUpdated = controller.lastUpdated.value
-            val loads = CopyOnWriteArrayList<Long>()
-            scope.launch { controller.isLoading.drop(1).collect { if (it) loads += SystemClock.uptimeMillis() } }
 
             compose.onNodeWithContentDescription("Settings").performClick()
             // At its first height the sheet shows the top of each page: the rows are reached as TalkBack reaches them.
@@ -236,10 +244,16 @@ class SearchAndLanguageTest {
             assertEquals(ScooterLanguage.Fr, controller.language.value)
             scenario.onActivity { assertSame("the same activity", activity, it) }
             assertTrue("${viewport.describe()} then ${controller.viewport.value.describe()}", viewport.isNear(controller.viewport.value))
-            // None began as the language changed; and none at all unless the server was still asking again.
-            assertTrue("loads at ${loads.map { it - chosen }} ms", loads.none { it - chosen in 0..1_000 })
-            if (!serverAsksAgain) {
-                assertEquals("loads at ${loads.map { it - chosen }} ms", 0, loads.size)
+            // None began as the language changed: none at all, unless the server was still asking again, and then
+            // each when it asked, followUpMs after the load before it ended.
+            val began = loads.filter { (_, loading) -> loading }.map { it.first }
+            if (serverAsksAgain) {
+                for (at in began.filter { it >= chosen }) {
+                    val ended = loads.last { (end, loading) -> !loading && end < at }.first
+                    assertTrue("a load ${at - chosen} ms after the choice, ${at - ended} ms after the last ended", at - ended >= followUp - 500)
+                }
+            } else {
+                assertEquals("loads at ${began.map { it - chosen }} ms", 0, began.size)
                 assertEquals(lastUpdated, controller.lastUpdated.value)
             }
         } finally {
