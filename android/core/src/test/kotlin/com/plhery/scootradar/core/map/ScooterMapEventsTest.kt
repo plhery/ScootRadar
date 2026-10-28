@@ -13,6 +13,7 @@ import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterResponse
 import java.time.Instant
 import java.util.Locale
@@ -278,5 +279,23 @@ class ScooterMapEventsTest {
         advanceTimeBy(5_001)
         runCurrent()
         assertEquals(listOf(TrackedEvent("locate"), TrackedEvent("location_result", result = "unavailable")), unanswered.events)
+    }
+
+    /** LOG-324 and LOG-267: a link to the map says whether it opened the map as it was, a city or another place. */
+    @Test
+    fun aLinkSaysWhetherItOpenedTheMapACityOrAPlace() = runTest {
+        val analytics = RecordingAnalytics()
+        val model = makeController(empty(), analytics = analytics)
+        val city = ScooterCityCatalog.cities.first()
+
+        model.open(ScooterMapLink())
+        model.open(ScooterMapLink(origin = city.center))
+        // The middle of the Atlantic, where no city is.
+        model.open(ScooterMapLink(origin = GeoPoint(latitude = 30.0, longitude = -40.0)))
+
+        assertEquals(
+            listOf(TrackedEvent("link_open", result = "map"), TrackedEvent("link_open", result = "city"), TrackedEvent("link_open", result = "place")),
+            analytics.events.filter { it.name == "link_open" },
+        )
     }
 }

@@ -1,6 +1,8 @@
 package com.plhery.scootradar.app
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.provider.Settings
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -10,20 +12,27 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLengthUnit
 import com.plhery.scootradar.core.model.ScooterLinks
 import com.plhery.scootradar.core.model.ScooterListFormat
+import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterMeasureFormat
 import com.plhery.scootradar.core.model.ScooterNumberFormat
+import com.plhery.scootradar.core.model.ScooterStartPlace
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowNetworkCapabilities
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
+import java.util.TimeZone
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "en-rUS")
@@ -39,6 +48,7 @@ class AppContainerTest {
     private val and = ScooterListFormat.and
     private val launchLocale = ScooterLanguage.launchLocale
     private val appVersion = ScooterLinks.appVersion
+    private val zone = TimeZone.getDefault()
 
     // Hooks that are not the container's, which it must replace.
     private val noInteger: (Long, Locale) -> String = { _, _ -> "" }
@@ -75,6 +85,7 @@ class AppContainerTest {
         ScooterLanguage.launchLocale = launchLocale
         ScooterLinks.appVersion = appVersion
         Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, null)
+        TimeZone.setDefault(zone)
     }
 
     @Test
@@ -123,5 +134,54 @@ class AppContainerTest {
         Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, null)
         assertEquals("16:13", ScooterDateFormat.skeleton("jm", time, zurich, Locale.forLanguageTag("en-CH")))
         assertEquals("4:13\u202FPM", ScooterDateFormat.skeleton("jm", time, zurich, us))
+    }
+
+    /**
+     * LOG-009: Android's errors don't say "offline" as URLError's codes do, so a failed request is offline when
+     * no network Android has validated as reaching the internet is up (ScooterAPI.swift:110-114).
+     */
+    @Test
+    fun onlyANetworkAndroidValidatedIsOnline() {
+        val container = AppContainer(context)
+        val connectivity = context.getSystemService(ConnectivityManager::class.java)
+        val network = checkNotNull(connectivity.activeNetwork)
+
+        shadowOf(connectivity).setNetworkCapabilities(
+            network,
+            ShadowNetworkCapabilities.newInstance().also { shadowOf(it).addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) },
+        )
+        assertFalse(container.isOffline())
+
+        // Connected, as to a hotel's Wi-Fi before its login page: not validated.
+        shadowOf(connectivity).setNetworkCapabilities(
+            network,
+            ShadowNetworkCapabilities.newInstance().also { shadowOf(it).addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) },
+        )
+        assertTrue(container.isOffline())
+
+        // No network at all.
+        shadowOf(connectivity).setDefaultNetworkActive(false)
+        assertTrue(container.isOffline())
+    }
+
+    /** LOG-345: the zone is read once, as the iPhone's static let is, the first time the start is asked for. */
+    @Test
+    fun theMapOpensWhereTheZoneSaidWhenTheStartWasFirstAskedFor() {
+        val container = AppContainer(context)
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"))
+        val start = container.start
+        assertEquals(ScooterStartPlace.start(forTimeZone = "Europe/Berlin"), start)
+
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"))
+        assumeTrue(ScooterStartPlace.start(forTimeZone = "Asia/Tokyo") != start)
+        assertEquals(start, container.start)
+    }
+
+    /** A phone set to an offset rather than a place has a zone the catalog doesn't know: the map opens on Switzerland. */
+    @Test
+    fun aZoneThatIsOnlyAnOffsetOpensOnSwitzerland() {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"))
+        assertEquals("GMT+01:00", TimeZone.getDefault().id)
+        assertEquals(ScooterMapStart.switzerland, AppContainer(context).start)
     }
 }

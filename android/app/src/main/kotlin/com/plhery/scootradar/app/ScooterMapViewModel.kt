@@ -5,6 +5,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.plhery.scootradar.BuildConfig
+import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterHeadingReading
 import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterLocationFix
@@ -32,13 +34,14 @@ class ScooterMapViewModel(
     languageAtLaunch: ScooterLanguageChoice,
     /** The phone's location service, which the activity lets ask the rider, and the controller hears from. */
     val location: AndroidLocationManager = container.locationManager(),
+    /** The app's analytics, which the map also tracks with: a tap on a bay or a cluster. */
+    val analytics: ScooterAnalytics = container.analytics,
+    /** Where the map's scooters come from: the server, or a test's own answers. */
+    api: ScooterAPIClient = container.api,
 ) : ViewModel(), DefaultLifecycleObserver {
     // Dispatchers.Main, not viewModelScope's Main.immediate: the controller's work starts after the call that
     // asked for it returns, as a Swift Task does.
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-
-    /** The app's analytics, which the map also tracks with: a tap on a bay or a cluster. */
-    val analytics = container.analytics
 
     /** Where the search bar asks for places. */
     val addressSearch = container.addressSearch
@@ -57,7 +60,7 @@ class ScooterMapViewModel(
         if (BuildConfig.DEBUG) ScooterScreenshotCamera.fromLaunchArguments(defaults) else null
 
     val controller = ScooterMapController(
-        api = container.api,
+        api = api,
         locationManager = location,
         defaults = defaults,
         scope = scope,
