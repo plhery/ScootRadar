@@ -2,12 +2,18 @@ package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.MapPoint
+import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.timeIntervalSince
 import java.time.Instant
 import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.sin
 
 // ios/ScootRadar/ViewModels/ScooterMapModel.swift's location policy, ios/ScootRadar/Views/ScooterUserLocationView.swift's
 // heading, and ios/ScootRadar/Views/ScooterMapScreen.swift's heading policy.
@@ -173,7 +179,35 @@ data class ScooterUserHeading private constructor(
     /** Half the beam's angle, in radians: between 22° and 60° each way. */
     val halfAngle: Double get() = min(60.0, max(22.0, accuracy)) * PI / 180
 
+    /**
+     * The place 30 m ahead of `coordinate` this way, on the flat map: projected through the map, it points the
+     * beam the way the map shows north turned and tilted.
+     */
+    fun coordinateAhead(of: GeoPoint): GeoPoint {
+        val point = MapPoint(of)
+        val distance = 30 * MapPoint.worldSize / (EARTH_CIRCUMFERENCE * cos(of.latitude * PI / 180))
+        val radians = direction * PI / 180
+        return MapPoint(x = point.x + sin(radians) * distance, y = point.y - cos(radians) * distance).coordinate
+    }
+
+    /**
+     * How far the beam turns on the screen from straight up, clockwise, in radians, for the rider at
+     * `coordinate` on `map`: as ScooterUserLocationView turns its beam view. Null where the map cannot show the
+     * way, and then the beam hides.
+     */
+    fun screenAngle(at: GeoPoint, on: ScooterMapProjection): Double? {
+        val origin = on.point(at)
+        val ahead = on.point(coordinateAhead(of = at))
+        val dx = ahead.x - origin.x
+        val dy = ahead.y - origin.y
+        if (!dx.isFinite() || !dy.isFinite() || hypot(dx, dy) <= 0.001) return null
+        return atan2(dx, -dy)
+    }
+
     companion object {
+        /** The equator's length in metres as MapKit counts map points to the metre (MKMapPointsPerMeterAtLatitude). */
+        private const val EARTH_CIRCUMFERENCE = 40_075_016.68557849
+
         /**
          * Null for a reading too vague to draw, 90° or more each way, or with no direction: true north when it
          * is known, else magnetic north.

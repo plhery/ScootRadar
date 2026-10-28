@@ -342,8 +342,12 @@ class ScooterMapController(
     internal var routeRevisions = 0
     internal var walkAnnouncements = 0
 
-    /** How precise the last location was: a location this vague may lie that far from the path without the rider having left it. */
-    internal var locationAccuracy: Double = 0.0
+    /**
+     * How precise the last location was, in metres: the halo round the rider's dot, as MKUserLocationView draws
+     * it; and a location this vague may lie that far from the path without the rider having left it.
+     */
+    private val _locationAccuracy = MutableStateFlow(0.0)
+    val locationAccuracy: StateFlow<Double> = _locationAccuracy.asStateFlow()
 
     /** Says when to ask for a rating (ScooterReviewPrompt). */
     internal val reviewPrompt: ScooterReviewPrompt = ScooterReviewPrompt(defaults = defaults, version = ScooterLinks.appVersion)
@@ -1422,7 +1426,7 @@ class ScooterMapController(
         val nextLocation = location.coordinate
         val hadLocation = userLocation.value != null
         if (!hadLocation) analytics?.track("location_result", result = "success")
-        locationAccuracy = location.horizontalAccuracy
+        _locationAccuracy.value = location.horizontalAccuracy
         setUserLocation(nextLocation)
         _isLocating.value = false
         setLocationProblem(null)
