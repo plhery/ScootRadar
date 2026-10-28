@@ -1,6 +1,5 @@
 package com.plhery.scootradar.map
 
-import android.os.SystemClock
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
@@ -18,6 +17,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 // The moves of ScooterMapView's coordinator (MAP-039–049), on MapLibre's map of an iPhone's size.
 @RunWith(AndroidJUnit4::class)
@@ -100,18 +101,23 @@ class MapCameraTest {
     @Test
     fun aHandOnTheMapEndsTheMoveAndItsFocus() = withCamera { phone, camera ->
         val reasons = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val dragged = CountDownLatch(1)
         val zoom = phone.onMain {
+            val start = phone.map.cameraPosition.zoom
             phone.map.addOnCameraMoveStartedListener { reasons += it }
+            // Early in the move's two seconds, once it has taken a step, a hand pans the map (MAP-047). The main
+            // thread does it, as it takes the move's steps: a test thread kept waiting by a just-booted phone's work
+            // would let the move land first.
+            phone.map.addOnCameraMoveListener {
+                if (dragged.count > 0 && phone.map.cameraPosition.zoom > start) {
+                    dragged.countDown()
+                    phone.view.post { phone.drag(points = 200) }
+                }
+            }
             camera.applyFocus(MapFocusRequest(bern, token = 1))
-            phone.map.cameraPosition.zoom
+            start
         }
-        // Early in the move's two seconds, once it has taken a step, a hand pans the map (MAP-047).
-        val begun = SystemClock.uptimeMillis() + 1_000
-        while (phone.meanwhile { phone.map.cameraPosition.zoom } <= zoom) {
-            assertTrue("the move had begun within a second", SystemClock.uptimeMillis() < begun)
-            Thread.sleep(10)
-        }
-        phone.drag(points = 200)
+        assertTrue("the move had begun within a second", dragged.await(1, TimeUnit.SECONDS))
         settle()
         val stopped = phone.onMain { phone.map.cameraPosition }
         val atBern = MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 844.0)

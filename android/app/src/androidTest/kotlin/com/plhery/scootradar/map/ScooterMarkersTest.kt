@@ -56,6 +56,7 @@ import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
@@ -527,6 +528,8 @@ class ScooterMarkersTest {
 
         val renderGaps: List<Double> get() = lit.zipWithNext { first, second -> (second.at - first.at).toDouble() }
 
+        val renderGapP50: Double get() = percentile(renderGaps, 0.5)
+
         val renderGapP90: Double get() = percentile(renderGaps, 0.9)
 
         /** The gaps between the main thread's frames over the same time, in ms. */
@@ -727,8 +730,11 @@ class ScooterMarkersTest {
         if (panning) return
         val checked = lightUp.probes.filter { !it.isUnderName }
         assertTrue("$lightUp", checked.size >= 3)
+        // A fading dot shows a new shade on each frame MapLibre draws: ten at 60 frames a second, fewer in
+        // proportion when the Mac's other work slows the emulator's drawing, which the gaps above already bound.
+        val shades = floor(10 * min(1.0, 1_000.0 / 60 / lightUp.renderGapP50)).toInt()
         for (probe in checked) {
-            inTime(probe.shades() >= 10, lightUp)
+            inTime(probe.shades() >= shades, lightUp)
             inTime(probe.firstShown()!!.second < 0.45, lightUp)
             inTime(probe.wavers() < 0.15, lightUp)
         }

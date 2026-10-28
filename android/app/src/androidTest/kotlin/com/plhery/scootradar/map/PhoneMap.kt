@@ -40,8 +40,8 @@ class PhoneMap(val scenario: ActivityScenario<ComponentActivity>, val view: Scoo
         }
     }
 
-    /** A finger drawn down the map by that many points, as a hand pans it, while a move may be under way. */
-    fun drag(points: Int) = meanwhile {
+    /** A finger drawn down the map by that many points, as a hand pans it: on the main thread, as touches come. */
+    fun drag(points: Int) {
         val start = SystemClock.uptimeMillis()
         // Clear of the screen's edges, where the gesture detector takes no touch: the map runs past them.
         val x = view.width / 4f
@@ -60,18 +60,6 @@ class PhoneMap(val scenario: ActivityScenario<ComponentActivity>, val view: Scoo
     fun <T> onMain(block: () -> T): T {
         var result: T? = null
         scenario.onActivity { result = block() }
-        @Suppress("UNCHECKED_CAST")
-        return result as T
-    }
-
-    /**
-     * Runs on the main thread between two of its frames. [onMain] first waits for the thread to be idle, which a
-     * move under way can keep it from being until the move lands: on a loaded machine each of its frames takes
-     * more than a vsync.
-     */
-    fun <T> meanwhile(block: () -> T): T {
-        var result: T? = null
-        InstrumentationRegistry.getInstrumentation().runOnMainSync { result = block() }
         @Suppress("UNCHECKED_CAST")
         return result as T
     }
