@@ -4,6 +4,8 @@
 package com.plhery.scootradar.map
 
 import android.animation.ValueAnimator
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.view.Choreographer
 import android.view.View
@@ -15,11 +17,14 @@ import com.plhery.scootradar.core.map.mapOrigin
 import com.plhery.scootradar.core.map.walkRemainingMetres
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScreenPoint
+import kotlin.math.max
+import kotlin.math.roundToLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.expressions.Expression
 import org.maplibre.android.style.layers.LayoutPropertyValue
@@ -36,7 +41,8 @@ import org.maplibre.android.style.sources.GeoJsonSource
  * moves, the scene works out the look and the layers draw it. A tap on the map is the scene's to answer, and
  * TalkBack reads the markers through virtual views over the map (ScooterMarkerAccessibility). The few
  * things that move on their own, the dots lighting up, a name coming, the faded markers breathing, are drawn a
- * frame at a time by changing a layer's strength, never by writing the scooters again (MAP-319).
+ * frame at a time by changing a layer's strength, never by writing the scooters again (MAP-319): those fading
+ * alike are drawn meanwhile by a layer of their own, a band, whose strength is one number (MAP-119).
  */
 class ScooterMarkers(
     private val map: MapLibreMap,
@@ -61,7 +67,7 @@ class ScooterMarkers(
     private var style: Style? = null
     private var safeArea = MapInsets.zero
 
-    /** The uptime the features' fades are counted from, in seconds: small numbers for the style's floats. */
+    /** The uptime the bands are counted from, in seconds: small numbers. */
     private val epoch = SystemClock.uptimeMillis() / 1000.0
 
     /** The versions of the scene last written to each source. */
@@ -75,8 +81,62 @@ class ScooterMarkers(
 
     private var updates: Job? = null
     private var framesWanted = false
-    private val fadingLayers = HashSet<String>()
     private var breathing: Float? = null
+
+    /** The sources whose markers fade, with the layers drawing them otherwise. */
+    private val fadings = listOf(
+        Fading(ScooterMarkerLayers.MARKERS_SOURCE, ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED),
+        Fading(ScooterMarkerLayers.PILLS_SOURCE, ScooterMarkerLayers.PILLS, raised = null),
+    ).associateBy { it.source }
+    private var nextBand = 0
+
+    /**
+     * The fades' clock. While the first scooters of a light-up wait for MapLibre to draw them, it stands at the
+     * moment they were written; then it runs behind the scene's by as long as they waited, so that every dot
+     * lights up from nothing, as the iPhone's views do once they are on screen.
+     */
+    private var held: Double? = null
+    private var holds = 0
+    private var late = 0.0
+
+    /** How long the last light-up waited for its scooters to be drawn, in seconds. */
+    internal var lightUpLate = 0.0
+        private set
+
+    /**
+     * What waits for MapLibre to take in what the style has been told: past the main thread's queue, then a frame
+     * begun since, and some a frame drawn whole after it.
+     */
+    private val main = Handler(Looper.getMainLooper())
+    private val queued = ArrayList<Pair<Boolean, () -> Unit>>()
+    private val begun = ArrayList<() -> Unit>()
+    private val frameStarts = MapView.OnWillStartRenderingFrameListener {
+        val started = queued.toList()
+        queued.clear()
+        for ((drawn, action) in started) if (drawn) begun += action else action()
+    }
+    private val frameEnds = MapView.OnDidFinishRenderingFrameListener { fully, _, _ ->
+        if (fully && begun.isNotEmpty()) {
+            val drawn = begun.toList()
+            begun.clear()
+            for (action in drawn) action()
+        }
+    }
+
+    /**
+     * The scooters MapLibre has taken in, on the main thread, laid out from the next frame. Once drawn, they come
+     * up from nothing over MapLibre's fade of new symbols, the style's 0.3 s, unseen: the light-up starts then.
+     */
+    private val sourceChanged = MapView.OnSourceChangedListener { id ->
+        if (id != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnSourceChangedListener
+        val hold = holds
+        whenDrawn {
+            main.postDelayed({
+                if (holds == hold) release()
+                wantFrames()
+            }, PLACEMENT_FADE)
+        }
+    }
 
     private val markerMap = object : MarkerMap {
         override val projection: ScooterMapProjection get() = this@ScooterMarkers.projection
@@ -123,6 +183,9 @@ class ScooterMarkers(
         view.tap = { x, y -> tap(x, y) }
         ViewCompat.setAccessibilityDelegate(view, accessibility)
         view.hover = { accessibility.dispatchHoverEvent(it) }
+        view.addOnWillStartRenderingFrameListener(frameStarts)
+        view.addOnDidFinishRenderingFrameListener(frameEnds)
+        view.addOnSourceChangedListener(sourceChanged)
         updates = scope.launch {
             merge(
                 controller.mapScootersRevision,
@@ -152,6 +215,12 @@ class ScooterMarkers(
         view.tap = null
         view.hover = null
         ViewCompat.setAccessibilityDelegate(view, null)
+        view.removeOnWillStartRenderingFrameListener(frameStarts)
+        view.removeOnDidFinishRenderingFrameListener(frameEnds)
+        view.removeOnSourceChangedListener(sourceChanged)
+        main.removeCallbacksAndMessages(null)
+        queued.clear()
+        begun.clear()
         style = null
     }
 
@@ -244,7 +313,18 @@ class ScooterMarkers(
             for (name in unused) style.removeImage(name)
             images.removeAll(unused.toSet())
         }
-        style.getSourceAs<GeoJsonSource>(source)?.setGeoJson(MarkerFeatures.json(features, epoch))
+        val bands = fadings[source]?.let { fading ->
+            val now = SystemClock.uptimeMillis() / 1000.0
+            // The first dots of a light-up are held until they are drawn.
+            if (source == ScooterMarkerLayers.MARKERS_SOURCE && held == null && fadings.values.none { it.isFading }) {
+                late = 0.0
+                if (features.any { MarkerBand.of(it, epoch, now - epoch) != null }) hold(now)
+            }
+            fading.assign(style, features, fadeTime(now))
+        }
+        // A band's layer draws its markers in the order they are written in.
+        val written = if (bands.isNullOrEmpty()) features else features.sortedBy { it.sortKey }
+        style.getSourceAs<GeoJsonSource>(source)?.setGeoJson(MarkerFeatures.json(written, bands.orEmpty()))
     }
 
     private fun addLayers(style: Style) {
@@ -253,16 +333,18 @@ class ScooterMarkers(
         // The names are few and move with their dots: written at once, they are never a frame behind them.
         style.addSource(GeoJsonSource(ScooterMarkerLayers.PILLS_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
         style.addSource(GeoJsonSource(ScooterMarkerLayers.RIDER_SOURCE))
-        for (spec in ScooterMarkerLayers.specs) {
-            val layer = SymbolLayer(spec.id, spec.source)
-            spec.filter?.let { layer.setFilter(Expression.raw(it)) }
-            val properties = spec.layout.map { (name, value) -> LayoutPropertyValue(name, value(value)) } +
-                spec.paint.map { (name, value) -> PaintPropertyValue(name, value(value)) }
-            layer.setProperties(*properties.toTypedArray<PropertyValue<*>>())
-            // A strength set each frame is shown at once, not eased over the style's 0.3 s.
-            layer.iconOpacityTransition = TransitionOptions(0, 0)
-            style.addLayer(layer)
-        }
+        for (spec in ScooterMarkerLayers.specs) addLayer(style, spec)
+    }
+
+    private fun addLayer(style: Style, spec: SymbolLayerSpec, below: String? = null) {
+        val layer = SymbolLayer(spec.id, spec.source)
+        spec.filter?.let { layer.setFilter(Expression.raw(it)) }
+        val properties = spec.layout.map { (name, value) -> LayoutPropertyValue(name, value(value)) } +
+            spec.paint.map { (name, value) -> PaintPropertyValue(name, value(value)) }
+        layer.setProperties(*properties.toTypedArray<PropertyValue<*>>())
+        // A strength set each frame is shown at once, not eased over the style's 0.3 s.
+        layer.iconOpacityTransition = TransitionOptions(0, 0)
+        if (below == null) style.addLayer(layer) else style.addLayerBelow(layer, below)
     }
 
     private fun value(value: Any): Any = when (value) {
@@ -295,35 +377,147 @@ class ScooterMarkers(
 
     /** A frame of the fades and of the breath. Returns whether anything still moves. */
     private fun drawFrame(style: Style): Boolean {
-        val time = SystemClock.uptimeMillis() / 1000.0
-        val dotsFade = scene.marks.any { it.dotFade?.isOver(time) == false }
-        val pillsFade = scene.marks.any { it.pillFade?.isOver(time) == false }
-        fade(style, ScooterMarkerLayers.MARKERS, dotsFade, time)
-        fade(style, ScooterMarkerLayers.RAISED, dotsFade, time)
-        fade(style, ScooterMarkerLayers.PILLS, pillsFade, time)
+        val now = SystemClock.uptimeMillis() / 1000.0
+        held?.let { if (now - it > MOST_HELD) release() }
+        val time = fadeTime(now)
+        var fades = false
+        for (fading in fadings.values) fades = fading.frame(style, time) || fades
+        if (!fades && held == null) late = 0.0
         val breathes = breathes()
-        val strength = LastSeenBreath.strength(at = time, animates = breathes)
+        val strength = LastSeenBreath.strength(at = now, animates = breathes)
         if (strength != breathing) {
             breathing = strength
             style.getLayer(ScooterMarkerLayers.LAST_SEEN)?.setProperties(PaintPropertyValue("icon-opacity", strength))
         }
-        return dotsFade || pillsFade || breathes
+        return fades || breathes
     }
 
-    private fun fade(style: Style, layer: String, fading: Boolean, time: Double) {
-        if (!fading && layer !in fadingLayers) return
-        val opacity = if (fading) {
-            fadingLayers += layer
-            ScooterMarkerLayers.fadingStrength(time - epoch)
-        } else {
-            fadingLayers -= layer
-            ScooterMarkerLayers.STRENGTH
+    /** The fades' clock, in seconds from the epoch. */
+    private fun fadeTime(now: Double): Double = (held ?: (now - late)) - epoch
+
+    private fun hold(now: Double) {
+        held = now
+        holds += 1
+    }
+
+    /** The light-up's scooters are drawn, or have been waited for long enough: their fades start. */
+    private fun release() {
+        val since = held ?: return
+        late = SystemClock.uptimeMillis() / 1000.0 - since
+        lightUpLate = late
+        held = null
+        val style = style ?: return
+        for (fading in fadings.values) fading.release(style)
+    }
+
+    /** Runs an action once MapLibre has begun a frame after it was asked for. */
+    private fun whenBegun(action: () -> Unit) {
+        main.post { queued += false to action }
+    }
+
+    /** Runs an action once MapLibre has drawn, with every tile laid out, a frame begun after it was asked for. */
+    private fun whenDrawn(action: () -> Unit) {
+        main.post { queued += true to action }
+    }
+
+    /**
+     * A source's fading markers: each band's layer, over the source's own layers, which leave its markers to it
+     * meanwhile. Once every band's fade is over, the markers are handed back to the source's layers, which kept
+     * them in their places all along; the bands' layers, drawing nothing, are taken out once MapLibre has drawn
+     * them back.
+     */
+    private inner class Fading(val source: String, val layer: String, val raised: String?) {
+        private val bands = HashMap<MarkerBand, Band>()
+        private var besideBands = false
+
+        val isFading: Boolean get() = bands.isNotEmpty()
+
+        /** Puts each marker fading at [time] in its band, adding the bands' layers it needs. */
+        fun assign(style: Style, features: List<MarkerFeature>, time: Double): Map<MarkerFeature, Int> {
+            val keys = HashMap<MarkerFeature, MarkerBand>()
+            for (feature in features) MarkerBand.of(feature, epoch, time)?.let { keys[feature] = it }
+            if (keys.isEmpty()) return emptyMap()
+            if (!besideBands) {
+                besideBands = true
+                beside(style, ScooterMarkerLayers.STRENGTH_BESIDE_BANDS, ScooterMarkerLayers.SORT_BESIDE_BANDS)
+            }
+            val added = keys.entries.filter { it.value !in bands }.groupBy({ it.value }, { it.key })
+            for ((key, members) in added) {
+                val base = if (key.isRaised && raised != null) raised else layer
+                val index = nextBand++
+                val spec = ScooterMarkerLayers.band(base, index)
+                val sortKey = members.map { it.sortKey.toDouble() }.average().toFloat()
+                addLayer(style, spec, below = ScooterMarkerLayers.below(base, sortKey, bands.values.map { it.layer }))
+                val band = Band(index, MarkerBand.Layer(spec.id, base, sortKey))
+                bands[key] = band
+                // MapLibre eases a band from nothing once it has taken it in at nothing.
+                if (key.eased != null && held == null) whenBegun { ease(style, key, band) }
+            }
+            return keys.mapValues { bands.getValue(it.value).index }
         }
-        style.getLayer(layer)?.setProperties(PaintPropertyValue("icon-opacity", Expression.raw(opacity)))
+
+        /** The light-up's scooters are drawn: MapLibre eases their bands from now. */
+        fun release(style: Style) {
+            for ((key, band) in bands) if (key.eased != null) ease(style, key, band)
+        }
+
+        /** Has MapLibre ease a band to its strength from its start, in one change of its layer. */
+        private fun ease(style: Style, key: MarkerBand, band: Band) {
+            if (band.eased || bands[key] !== band || this@ScooterMarkers.style !== style) return
+            band.eased = true
+            val eased = key.eased ?: return
+            val delay = max(0.0, key.start * MarkerBand.STEP - fadeTime(SystemClock.uptimeMillis() / 1000.0))
+            val layer = style.getLayer(band.layer.id) as? SymbolLayer ?: return
+            layer.iconOpacityTransition = TransitionOptions((eased * 1000).roundToLong(), (delay * 1000).roundToLong())
+            layer.setProperties(PaintPropertyValue("icon-opacity", key.opacity))
+        }
+
+        /** Sets each band's strength at [time], and hands the markers back once all are over. Returns whether any fades. */
+        fun frame(style: Style, time: Double): Boolean {
+            if (bands.isEmpty()) return false
+            for ((key, band) in bands) {
+                if (key.eased != null) continue
+                val opacity = key.opacity(time)
+                if (opacity == band.opacity) continue
+                band.opacity = opacity
+                style.getLayer(band.layer.id)?.setProperties(PaintPropertyValue("icon-opacity", opacity))
+            }
+            if (bands.keys.any { !it.isOver(time) }) return true
+            // In the same layout, the markers come back to the source's layers and leave the bands'.
+            beside(style, ScooterMarkerLayers.STRENGTH, ScooterMarkerLayers.SORT)
+            besideBands = false
+            val emptied = bands.values.map { it.layer.id }
+            for (id in emptied) (style.getLayer(id) as? SymbolLayer)?.setFilter(Expression.raw(ScooterMarkerLayers.NOTHING))
+            bands.clear()
+            whenDrawn { if (this@ScooterMarkers.style === style) for (id in emptied) style.removeLayer(id) }
+            return false
+        }
+
+        /** The strength and the order of the source's own layers. */
+        private fun beside(style: Style, strength: String, sort: String) {
+            for (id in listOfNotNull(layer, raised)) {
+                style.getLayer(id)?.setProperties(
+                    PaintPropertyValue("icon-opacity", Expression.raw(strength)),
+                    LayoutPropertyValue("symbol-sort-key", Expression.raw(sort)),
+                )
+            }
+        }
+    }
+
+    /** A band's layer, and the strength it was last given, or whether MapLibre was given its ease. */
+    private class Band(val index: Int, val layer: MarkerBand.Layer) {
+        var opacity = MarkerBand.FAINTEST
+        var eased = false
     }
 
     companion object {
         /** The pictures the style keeps before those no layer draws are taken out. */
         private const val MOST_IMAGES = 600
+
+        /** The longest the light-up waits for its scooters to be drawn and faded in by MapLibre, in seconds. */
+        private const val MOST_HELD = 1.5
+
+        /** MapLibre's fade of new symbols, the style's default transition, in ms. */
+        private const val PLACEMENT_FADE = 300L
     }
 }

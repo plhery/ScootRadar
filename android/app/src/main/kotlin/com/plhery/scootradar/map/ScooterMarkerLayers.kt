@@ -9,6 +9,9 @@ import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterDotState
 import com.plhery.scootradar.core.model.ScreenPoint
+import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * What a layer draws of a marker: a picture at a coordinate, moved on screen by an offset in points, drawn above
@@ -120,9 +123,9 @@ object MarkerFeatures {
 
     /**
      * The features as GeoJSON, written by hand: thousands of scooters go to MapLibre as one string rather than as
-     * thousands of objects. Fades are counted from [epoch] on the uptime clock.
+     * thousands of objects. Those fading carry the index of their band, whose layer draws them meanwhile.
      */
-    fun json(features: List<MarkerFeature>, epoch: Double): String = buildString(features.size * 200 + 40) {
+    fun json(features: List<MarkerFeature>, bands: Map<MarkerFeature, Int> = emptyMap()): String = buildString(features.size * 200 + 40) {
         append("{\"type\":\"FeatureCollection\",\"features\":[")
         for ((index, feature) in features.withIndex()) {
             if (index > 0) append(',')
@@ -143,14 +146,7 @@ object MarkerFeatures {
             append(",\"opacity\":")
             number(feature.opacity)
             if (feature.isRaised) append(",\"raised\":true")
-            feature.fade?.let { fade ->
-                append(",\"from\":")
-                number(fade.from - epoch)
-                append(",\"length\":")
-                number(fade.length)
-                append(",\"curve\":")
-                append(fade.curve.ordinal)
-            }
+            bands[feature]?.let { append(",\"band\":").append(it) }
             append("}}")
         }
         append("]}")
@@ -208,8 +204,21 @@ object ScooterMarkerLayers {
     /** A stand-in until the location lane draws the rider (MAP-186): an empty layer, above every marker. */
     const val RIDER_SOURCE = "rider"
 
-    /** The dots' strength; the time-driven fades are written over it while they run. */
+    /** The dots' strength. */
     const val STRENGTH = "[\"get\",\"opacity\"]"
+
+    /** The order they are drawn in: MapLibre draws each sort key on its own. */
+    const val SORT = "[\"get\",\"sort\"]"
+
+    /**
+     * Their strength and their order while bands fade: those of a band are drawn by its layer, and kept here in
+     * their places, unseen, drawn together.
+     */
+    const val STRENGTH_BESIDE_BANDS = "[\"case\",[\"has\",\"band\"],0,$STRENGTH]"
+    const val SORT_BESIDE_BANDS = "[\"case\",[\"has\",\"band\"],-1,$SORT]"
+
+    /** A band's filter once its markers are handed back to their layer, until its own is taken out. */
+    const val NOTHING = "[\"boolean\",false]"
 
     val order = listOf(LAST_SEEN, MARKERS, RAISED, PILLS, RIDER)
 
@@ -222,7 +231,7 @@ object ScooterMarkerLayers {
         "icon-ignore-placement" to true,
         "icon-rotation-alignment" to "viewport",
         "icon-pitch-alignment" to "viewport",
-        "symbol-sort-key" to SymbolLayerSpec.Json("[\"get\",\"sort\"]"),
+        "symbol-sort-key" to SymbolLayerSpec.Json(SORT),
     )
 
     val specs: List<SymbolLayerSpec> = listOf(
@@ -246,17 +255,104 @@ object ScooterMarkerLayers {
     )
 
     /**
-     * The strength of each marker while fades run, at [time] seconds from the epoch the features count from: it
-     * comes up from nothing along its curve from its start, and is whole once its fade is over or without one.
+     * The layer drawing a band of [base]'s markers while they fade: the same pictures, those of the band alone, at
+     * one strength for all of them. They are drawn in the order they are written in, all together, not each on its
+     * own by its sort key.
      */
-    fun fadingStrength(time: Double): String {
-        val progress = "[\"/\",[\"-\",$time,[\"get\",\"from\"]],[\"get\",\"length\"]]"
-        fun along(curve: String) = "[\"interpolate\",$curve,$progress,0,0,1,1]"
-        val lightUp = along("[\"cubic-bezier\",0.22,1,0.36,1]")
-        val eased = along("[\"cubic-bezier\",0.42,0,0.58,1]")
-        val linear = along("[\"linear\"]")
-        return "[\"*\",$STRENGTH,[\"case\",[\"has\",\"from\"],[\"match\",[\"get\",\"curve\"]," +
-            "${MarkerFade.Curve.LightUp.ordinal},$lightUp,${MarkerFade.Curve.EaseInEaseOut.ordinal},$eased,$linear],1]]"
+    fun band(base: String, index: Int): SymbolLayerSpec {
+        val layer = specs.first { it.id == base }
+        return SymbolLayerSpec(
+            id = "$base-band-$index",
+            source = layer.source,
+            filter = "[\"==\",[\"get\",\"band\"],$index]",
+            layout = layer.layout - "symbol-sort-key" + ("symbol-z-order" to "source"),
+            paint = mapOf("icon-opacity" to MarkerBand.FAINTEST),
+        )
+    }
+
+    /**
+     * The layer a band's goes under: the lowest of its base's bands whose markers sort above its own, else the
+     * base layer above its base. A band's markers are drawn over its base's, and in the order of their sort keys
+     * among the other bands.
+     */
+    fun below(base: String, sortKey: Float, bands: List<MarkerBand.Layer>): String =
+        bands.filter { it.base == base && it.sortKey > sortKey }.minByOrNull { it.sortKey }?.id
+            ?: order[order.indexOf(base) + 1]
+}
+
+/**
+ * The markers that fade alike: their fades start within the same [STEP] and run alike, and their strengths are the
+ * same to [STRENGTH_STEP]. A band is drawn by a layer of its own whose strength is one number, so that a fade never
+ * asks MapLibre to lay the scooters out again, as a strength read off each marker and changing with time would at
+ * every frame (MAP-119). The dots' bands are eased by MapLibre itself, their layers changed once.
+ */
+data class MarkerBand(
+    /** Its start, in steps from the epoch the bands are counted from: no marker's fade starts after it. */
+    val start: Int,
+    /** Its strength once faded in, in steps. */
+    val strength: Int,
+    val length: Double,
+    val curve: MarkerFade.Curve,
+    val isRaised: Boolean,
+) {
+    /** A band's layer, under its base layer's next, among the bands of its base by its markers' sort keys. */
+    data class Layer(val id: String, val base: String, val sortKey: Float)
+
+    /** Its strength at [time] seconds from the epoch: from nothing at its start to its own at its end. */
+    fun opacity(time: Double): Float {
+        val progress = ((time - start * STEP) / length).coerceIn(0.0, 1.0).toFloat()
+        val easing = when (curve) {
+            MarkerFade.Curve.LightUp -> lightUp
+            MarkerFade.Curve.EaseInEaseOut -> easeInEaseOut
+            MarkerFade.Curve.Linear -> null
+        }
+        return max(FAINTEST, opacity * (easing?.transform(progress) ?: progress))
+    }
+
+    fun isOver(time: Double): Boolean = time >= start * STEP + length
+
+    /** Its strength once faded in. */
+    val opacity: Float get() = (strength * STRENGTH_STEP).toFloat()
+
+    /**
+     * How long MapLibre's own ease takes to follow its curve, when it can: then MapLibre eases the band from
+     * nothing to its strength, and its layer is changed once, not at every frame, which would have MapLibre make
+     * its pictures again each time.
+     */
+    val eased: Double? get() = if (curve == MarkerFade.Curve.LightUp) length * EASED_LIGHT_UP else null
+
+    companion object {
+        /** A twentieth of a second: three frames of a phone's sixty a second. */
+        const val STEP = 0.05
+        const val STRENGTH_STEP = 0.05
+
+        /**
+         * A band's least strength, unseen: at none, MapLibre would stop drawing its layer, and lay it out again to
+         * draw it once more.
+         */
+        const val FAINTEST = 0.001f
+
+        /**
+         * MapLibre's transitions ease along (0, 0, 0.25, 1): over 0.37 s, the iPhone's light-up, (0.22, 1, 0.36, 1)
+         * over 0.62 s, to within 2.5 %.
+         */
+        const val EASED_LIGHT_UP = 0.37 / 0.62
+
+        private val lightUp = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
+        private val easeInEaseOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
+
+        /** The band of a marker fading at [time] seconds from the epoch, or none once its fade is over. */
+        fun of(feature: MarkerFeature, epoch: Double, time: Double): MarkerBand? {
+            val fade = feature.fade ?: return null
+            if (fade.from + fade.length - epoch <= time) return null
+            return MarkerBand(
+                start = ceil((fade.from - epoch) / STEP - 1e-6).toInt(),
+                strength = (feature.opacity / STRENGTH_STEP).roundToInt(),
+                length = fade.length,
+                curve = fade.curve,
+                isRaised = feature.isRaised,
+            )
+        }
     }
 }
 

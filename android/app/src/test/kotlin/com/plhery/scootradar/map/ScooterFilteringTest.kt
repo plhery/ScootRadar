@@ -238,6 +238,24 @@ class ScooterFilteringTest {
         val rider = ScooterMarkerLayers.specs.last()
         assertEquals(true, rider.layout["icon-allow-overlap"])
         assertEquals(true, rider.layout["icon-ignore-placement"])
+
+        // While they light up, the dots are drawn by bands over their layer, in the order of their priorities,
+        // under the selected one; the names' bands are over the names, and under the rider.
+        val near = MarkerBand.Layer("scooters-band-1", ScooterMarkerLayers.MARKERS, sortKey = 690f)
+        val far = MarkerBand.Layer("scooters-band-2", ScooterMarkerLayers.MARKERS, sortKey = 520f)
+        val name = MarkerBand.Layer("scooter-names-band-3", ScooterMarkerLayers.PILLS, sortKey = 690f)
+        val bands = listOf(near, far, name)
+        assertEquals(ScooterMarkerLayers.RAISED, ScooterMarkerLayers.below(ScooterMarkerLayers.MARKERS, 700f, bands))
+        assertEquals(near.id, ScooterMarkerLayers.below(ScooterMarkerLayers.MARKERS, 600f, bands))
+        assertEquals(far.id, ScooterMarkerLayers.below(ScooterMarkerLayers.MARKERS, 500f, bands))
+        assertEquals(ScooterMarkerLayers.PILLS, ScooterMarkerLayers.below(ScooterMarkerLayers.RAISED, 900f, bands))
+        assertEquals(ScooterMarkerLayers.RIDER, ScooterMarkerLayers.below(ScooterMarkerLayers.PILLS, 700f, bands))
+        assertEquals(name.id, ScooterMarkerLayers.below(ScooterMarkerLayers.PILLS, 600f, bands))
+        for (base in listOf(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED, ScooterMarkerLayers.PILLS)) {
+            val band = ScooterMarkerLayers.band(base, 9)
+            assertEquals(true, band.layout["icon-allow-overlap"])
+            assertEquals(true, band.layout["icon-ignore-placement"])
+        }
     }
 
     @Test

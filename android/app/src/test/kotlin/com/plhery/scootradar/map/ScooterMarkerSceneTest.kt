@@ -1,5 +1,6 @@
 package com.plhery.scootradar.map
 
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
@@ -11,6 +12,7 @@ import org.json.JSONObject
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -19,6 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
+import kotlin.math.min
 
 /** What a tap means on the markers, how they light up, and how they go to MapLibre: the scene's own tests. */
 @RunWith(AndroidJUnit4::class)
@@ -169,7 +172,7 @@ class ScooterMarkerSceneTest {
             fade = MarkerFade(from = 103.0, length = 0.2, curve = MarkerFade.Curve.EaseInEaseOut),
         )
 
-        val json = JSONObject(MarkerFeatures.json(listOf(plain, raised), epoch = 100.0))
+        val json = JSONObject(MarkerFeatures.json(listOf(plain, raised), bands = mapOf(raised to 7)))
         val features = json.getJSONArray("features")
         assertEquals("FeatureCollection", json.getString("type"))
         assertEquals(2, features.length())
@@ -187,12 +190,63 @@ class ScooterMarkerSceneTest {
         assertEquals(0.6, properties.getDouble("opacity"), 0.0)
         // The layers tell the raised and the fading markers by what they have.
         assertFalse(properties.has("raised"))
-        assertFalse(properties.has("from"))
+        assertFalse(properties.has("band"))
 
         val second = features.getJSONObject(1).getJSONObject("properties")
         assertTrue(second.getBoolean("raised"))
-        assertEquals(3.0, second.getDouble("from"), 1e-9)
-        assertEquals(0.2, second.getDouble("length"), 0.0)
-        assertEquals(MarkerFade.Curve.EaseInEaseOut.ordinal, second.getInt("curve"))
+        assertEquals(7, second.getInt("band"))
+    }
+
+    @Test
+    fun fadingMarkersGoInBandsOfOneStrengthAFrame() {
+        fun fading(from: Double, strength: Double, raised: Boolean = false) = MarkerFeature(
+            "v:lime:$from", map.at(195.0, 400.0), "dot/lime", { error("not drawn") }, opacity = strength, isRaised = raised,
+            fade = MarkerFade(from, ScooterMarkerScene.LIGHT_UP, MarkerFade.Curve.LightUp),
+        )
+        val epoch = 100.0
+        // Fades starting within a twentieth of a second, at strengths within a twentieth, go together, and the
+        // band starts with the last of them, so that none lights up before its time.
+        val band = MarkerBand.of(fading(100.12, 0.87), epoch, time = 0.0)!!
+        assertEquals(band, MarkerBand.of(fading(100.149, 0.86), epoch, time = 0.0))
+        assertEquals(3, band.start)
+        assertEquals(17, band.strength)
+        assertNotEquals(band, MarkerBand.of(fading(100.151, 0.87), epoch, time = 0.0))
+        assertNotEquals(band, MarkerBand.of(fading(100.12, 0.42), epoch, time = 0.0))
+        assertNotEquals(band, MarkerBand.of(fading(100.12, 0.87, raised = true), epoch, time = 0.0))
+        // A fade written once it is over has no band; one not fading has none either.
+        assertNull(MarkerBand.of(fading(100.12, 0.87), epoch, time = 0.12 + ScooterMarkerScene.LIGHT_UP + 1e-6))
+        assertNull(MarkerBand.of(MarkerFeature("v:lime:still", map.at(195.0, 400.0), "dot/lime", { error("not drawn") }), epoch, time = 0.0))
+
+        // Unseen until its start, but still drawn; its own strength at its end, along the light-up's curve between.
+        assertEquals(MarkerBand.FAINTEST, band.opacity(0.0), 0f)
+        assertEquals(MarkerBand.FAINTEST, band.opacity(0.15), 0f)
+        assertEquals(0.85f, band.opacity(0.15 + ScooterMarkerScene.LIGHT_UP), 1e-4f)
+        assertEquals(0.85f, band.opacity(5.0), 1e-6f)
+        assertTrue(band.opacity(0.15 + 0.1) > 0.85f * 0.4f)
+        assertTrue(band.opacity(0.15 + 0.1) < band.opacity(0.15 + 0.2))
+        assertFalse(band.isOver(0.15 + ScooterMarkerScene.LIGHT_UP - 0.01))
+        assertTrue(band.isOver(0.15 + ScooterMarkerScene.LIGHT_UP + 1e-6))
+
+        // MapLibre eases the dots' bands itself: its own curve, over less time, is the iPhone's light-up.
+        val eased = band.eased!!
+        val mapLibre = CubicBezierEasing(0f, 0f, 0.25f, 1f)
+        val iPhone = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
+        for (step in 0..100) {
+            val time = ScooterMarkerScene.LIGHT_UP * step / 100
+            assertEquals("$time s", iPhone.transform((time / ScooterMarkerScene.LIGHT_UP).toFloat()), mapLibre.transform(min(1.0, time / eased).toFloat()), 0.025f)
+        }
+        // A name's linear fade is not: its band's strength is set at each frame.
+        val name = MarkerFeature("n:lime:a", map.at(195.0, 400.0), "pill", { error("not drawn") }, fade = MarkerFade(100.9, ScooterMarkerScene.NAME_IN, MarkerFade.Curve.Linear))
+        assertNull(MarkerBand.of(name, epoch, time = 0.0)!!.eased)
+
+        // A band's layer draws its markers alone, as its base layer draws them but all together, in the order they
+        // are written in; unseen until its first frame.
+        val markers = ScooterMarkerLayers.specs.first { it.id == ScooterMarkerLayers.MARKERS }
+        val layer = ScooterMarkerLayers.band(ScooterMarkerLayers.MARKERS, 4)
+        assertEquals("scooters-band-4", layer.id)
+        assertEquals(markers.source, layer.source)
+        assertEquals("[\"==\",[\"get\",\"band\"],4]", layer.filter)
+        assertEquals(markers.layout - "symbol-sort-key" + ("symbol-z-order" to "source"), layer.layout)
+        assertEquals(MarkerBand.FAINTEST, layer.paint["icon-opacity"])
     }
 }
