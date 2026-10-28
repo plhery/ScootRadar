@@ -426,11 +426,13 @@ banned shared scooters, and feeds that were empty when checked.
     town tried. nextbike Cyprus is bikes and e-bikes only.
 - **Finland** ([guide](finnish-scooter-feeds.md#known-gaps)): Hopp in
   Mariehamn, on Åland, is covered.
-  - Dott now covers 20 mainland regions through its anonymous app map,
-    including Helsinki, Espoo, Vantaa and Tampere. Voi, Ryde and Dott run in
-    Helsinki, Espoo, Vantaa, Tampere and Turku with no public feed. Bolt
-    publishes none, and its Helsinki market had no scooter on 25 October
-    2026. Dott's 40 Finnish regions in the registry don't answer: 34
+  - No mainland operator publishes a feed. Since 24 October 2026 the map
+    shows Dott's scooters from its anonymous app map, in 20 regions including
+    Helsinki, Espoo, Vantaa and Tampere, and Voi's from its rider map, in
+    Helsinki, Turku, Tampere and Jyväskylä ([Dott](dott-app-map.md),
+    [Voi](voi-app-map.md)). Ryde, which also runs in Helsinki, Espoo, Vantaa,
+    Tampere and Turku, has no feed and isn't on the map. Bolt publishes none,
+    and its Helsinki market had no scooter on 25 October 2026. Dott's 40 Finnish regions in the registry don't answer: 34
     answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
     paused, probably for the winter. Bird Helsinki's feed is empty and stamped
     `last_updated` 0.
