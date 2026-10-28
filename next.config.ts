@@ -33,6 +33,10 @@ const nextConfig: NextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains',
           },
+          // The commit whose build answered, for a deploy check that shouldn't read pages' data.
+          ...(process.env.WORKERS_CI_COMMIT_SHA
+            ? [{ key: 'X-ScootRadar-Build', value: process.env.WORKERS_CI_COMMIT_SHA }]
+            : []),
         ],
       },
       {

@@ -205,7 +205,10 @@ about the pages added to the sitemap or redated since it last took them
 for the website to serve the commit `production` is at, which is this one or a
 later one that carries it (a re-run, or a later commit's job that ended first).
 Workers Builds names the build after its commit (`WORKERS_CI_COMMIT_SHA`, in
-`next.config.ts`), and every page carries the name. If the website still does
+`next.config.ts`), and every page carries the name. Every answer also names it
+in an `X-ScootRadar-Build` header, the one to read by hand
+(`curl -sI https://scootradar.com/ | grep -i x-scootradar-build`); the job reads
+the landing page. If the website still does
 not serve it then, the job fails: the Workers build failed or hangs, the site
 keeps the build before, and the log is only in Cloudflare's dashboard (Workers
 & Pages › swiss-scooters › Deployments). It then compares the live
