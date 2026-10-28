@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -43,6 +44,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -158,6 +160,39 @@ internal fun FormNavigationRow(onClick: () -> Unit, label: @Composable RowScope.
     FormRow(onClick = onClick) {
         label()
         FixedSymbol(Symbols.chevronRight, 13f, scootColors.tertiaryLabel, Modifier.clearAndSetSemantics { })
+    }
+}
+
+/**
+ * LabeledContent's row, as UIKit's value cell lays it out: [label] at the start and [value] at the end where both
+ * fit on one line whole, else the value under the label, as at the largest text sizes.
+ */
+@Composable
+internal fun FormValueRow(label: @Composable () -> Unit, onClick: (() -> Unit)? = null, value: @Composable () -> Unit) {
+    FormRow(onClick = onClick) {
+        Layout(content = { Box { label() }; Box { value() } }, modifier = Modifier.weight(1f)) { (start, end), constraints ->
+            val width = constraints.maxWidth
+            val gap = 8.dp.roundToPx()
+            val loose = constraints.copy(minWidth = 0, minHeight = 0)
+            val inLine = start.maxIntrinsicWidth(Constraints.Infinity) + gap + end.maxIntrinsicWidth(Constraints.Infinity) <= width
+            if (inLine) {
+                val valuePlaceable = end.measure(loose)
+                val labelPlaceable = start.measure(loose.copy(maxWidth = width - gap - valuePlaceable.width))
+                val height = maxOf(labelPlaceable.height, valuePlaceable.height)
+                layout(width, height) {
+                    labelPlaceable.place(0, (height - labelPlaceable.height) / 2)
+                    valuePlaceable.place(width - valuePlaceable.width, (height - valuePlaceable.height) / 2)
+                }
+            } else {
+                val labelPlaceable = start.measure(loose)
+                val valuePlaceable = end.measure(loose)
+                val below = labelPlaceable.height + 4.dp.roundToPx()
+                layout(width, below + valuePlaceable.height) {
+                    labelPlaceable.place(0, 0)
+                    valuePlaceable.place(0, below)
+                }
+            }
+        }
     }
 }
 

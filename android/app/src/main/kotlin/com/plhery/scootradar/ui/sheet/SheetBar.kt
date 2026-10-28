@@ -40,7 +40,7 @@ import kotlin.math.max
 
 /**
  * The bar at the top of a sheet: [title] in the middle of the sheet, whatever is at its ends, which are given the
- * room they need first. Its text grows no further than AX1, as UIKit's bar.
+ * room they need first, as UIKit's inline bar lays them out. Its text grows no further than AX1, as UIKit's bar.
  */
 @Composable
 internal fun SheetTitleBar(
@@ -72,14 +72,18 @@ internal fun SheetTitleBar(
             val loose = constraints.copy(minWidth = 0, minHeight = 0)
             val start = measurables[0].measure(loose)
             val end = measurables[2].measure(loose.copy(maxWidth = max(0, loose.maxWidth - start.width)))
-            // The title stays in the middle: as far from both ends as the wider item reaches, and 8 more.
-            val side = max(start.width, end.width) + if (start.width + end.width > 0) 8.dp.roundToPx() else 0
-            val titlePlaceable = measurables[1].measure(loose.copy(maxWidth = max(0, constraints.maxWidth - 2 * side)))
+            // The title has the room between the items, 8 from each, and stays in the middle where it fits there.
+            // Where one item is wide, as "Zurücksetzen" at the largest sizes, UIKit moves the title aside instead.
+            val gap = 8.dp.roundToPx()
+            val from = if (start.width > 0) start.width + gap else 0
+            val to = constraints.maxWidth - if (end.width > 0) end.width + gap else 0
+            val titlePlaceable = measurables[1].measure(loose.copy(maxWidth = max(0, to - from)))
             val height = maxOf(constraints.minHeight, start.height, end.height, titlePlaceable.height)
             layout(constraints.maxWidth, height) {
                 start.place(0, (height - start.height) / 2)
                 end.place(constraints.maxWidth - end.width, (height - end.height) / 2)
-                titlePlaceable.place((constraints.maxWidth - titlePlaceable.width) / 2, (height - titlePlaceable.height) / 2)
+                val middle = (constraints.maxWidth - titlePlaceable.width) / 2
+                titlePlaceable.place(middle.coerceIn(from, max(from, to - titlePlaceable.width)), (height - titlePlaceable.height) / 2)
             }
         }
     }

@@ -493,8 +493,7 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
     var picking by remember { mutableStateOf(false) }
     val zone = ScooterDateFormat.timeZone()
     val day = ScooterDateFormat.skeleton("yMMMd", date, zone, ScooterLanguage.current.locale)
-    FormRow(onClick = { picking = true }) {
-        Text(title, style = ScootType.body, color = scootColors.label, modifier = Modifier.weight(1f))
+    FormValueRow(label = { Text(title, style = ScootType.body, color = scootColors.label) }, onClick = { picking = true }) {
         Box(Modifier.background(scootColors.tertiarySystemFill, CapsuleShape).padding(horizontal = 12.dp, vertical = 6.dp)) {
             Text(day, style = ScootType.body, color = scootColors.label)
         }
@@ -568,8 +567,7 @@ private fun CreditsList(
     FormSection(
         rows = listOf {
             // The map's own credits are on the map, as on the web.
-            FormRow {
-                Text(localized("Map"), style = ScootType.body, color = scootColors.label, modifier = Modifier.weight(1f))
+            FormValueRow(label = { Text(localized("Map"), style = ScootType.body, color = scootColors.label) }) {
                 Text("OpenFreeMap · OpenStreetMap", style = ScootType.body, color = scootColors.secondaryLabel)
             }
         },
