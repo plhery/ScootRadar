@@ -18,8 +18,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
+import kotlin.math.floor
 import kotlin.math.hypot
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // MAP-152 to MAP-161: ScooterZoneRenderer's fills, hatch and edges as MapLibre's layers draw them.
@@ -68,16 +70,16 @@ class ScooterZoneLayersTest {
     fun strokesTheEdgesInPointsWithTheirDashesInWidths() {
         val specs = ZoneLayers.specs(isDark = false).associateBy { it.id }
         val noRide = specs.getValue("zone-edges-noRide")
-        assertEquals(1.5, noRide.paint["line-width"])
+        assertEquals(ZoneLayers.width(1.5), noRide.paint["line-width"])
         assertEquals(null, noRide.paint["line-dasharray"])
         assertEquals(mapOf("line-join" to "round", "line-cap" to "butt"), noRide.layout)
         val noParking = specs.getValue("zone-edges-noParking")
-        assertEquals(1.5, noParking.paint["line-width"])
+        assertEquals(ZoneLayers.width(1.5), noParking.paint["line-width"])
         // [6, 4] points.
         assertEquals(listOf(4.0, 4.0 / 1.5), noParking.paint["line-dasharray"])
         assertEquals("butt", noParking.layout["line-cap"])
         val slow = specs.getValue("zone-edges-slow")
-        assertEquals(2.0, slow.paint["line-width"])
+        assertEquals(ZoneLayers.width(2.0), slow.paint["line-width"])
         // [0.1, 4] points between round caps: dots 4 points apart.
         assertEquals(listOf(0.05, 2.0), slow.paint["line-dasharray"])
         assertEquals("round", slow.layout["line-cap"])
@@ -85,6 +87,32 @@ class ScooterZoneLayersTest {
             val opacity = spec.paint[if (spec.type == OverlayLayerSpec.Type.Line) "line-opacity" else "fill-opacity"]
             assertEquals(SymbolLayerSpec.Json("[\"get\",\"opacity\"]"), opacity)
         }
+    }
+
+    @Test
+    fun widthsAndTheCutAreAsMapKitShowsThemHalfAtAWholeZoomGrowingToTheWholeBeforeTheNext() {
+        val stops = Json.parseToJsonElement(ZoneLayers.width(1.5).text).jsonArray
+        assertEquals(listOf("interpolate", "[\"exponential\",2]", "[\"zoom\"]"), stops.take(3).map { it.toString().trim('"') })
+        val pairs = stops.drop(3).map { it.jsonPrimitive.double }.chunked(2) { (zoom, width) -> zoom to width }
+        // MapLibre's exponential interpolation between the stops about a zoom.
+        fun width(zoom: Double): Double {
+            val upper = pairs.indexOfFirst { it.first > zoom }
+            if (upper <= 0) return if (upper == 0) pairs.first().second else pairs.last().second
+            val (z0, w0) = pairs[upper - 1]
+            val (z1, w1) = pairs[upper]
+            return w0 + (w1 - w0) * (2.0.pow(zoom - z0) - 1) / (2.0.pow(z1 - z0) - 1)
+        }
+        for (zoom in listOf(0.0, 12.0, 15.0, 15.3, 15.5, 15.9, 16.0, 16.999, 21.0, 21.5)) {
+            val expected = 1.5 * 2.0.pow(zoom - floor(zoom) - 1)
+            assertEquals("at $zoom", expected, width(zoom), 1e-9)
+            // The clearance's scale grows with the map as the width does: a point drawn is so many map points.
+            assertEquals("at $zoom", MapPoint.worldSize / (512 * 2.0.pow(zoom)) * expected / 1.5, ZoneLayers.scale(zoom), 1e-9)
+        }
+        assertEquals(0.75, width(17.0), 1e-9)
+        assertEquals(1.5 * 2.0.pow(-ZoneLayers.DROP), width(17.0 - ZoneLayers.DROP), 1e-9)
+        assertEquals(pairs.map { it.first }.sorted(), pairs.map { it.first })
+        assertEquals(pairs.size, pairs.map { it.first }.toSet().size)
+        assertEquals(MapZoom.maximum, pairs.last().first, 1.0)
     }
 
     @Test
@@ -138,19 +166,20 @@ class ScooterZoneLayersTest {
     }
 
     @Test
-    fun hatchesNoRidingEightPointsApartTwoWideAt45Degrees() {
+    fun hatchesNoRidingEightPointsApartTwoWideAt45DegreesLaidAtHalfThat() {
         assertEquals(8 * sqrt(2.0), ZoneHatch.period, 1e-12)
+        assertEquals(4 * sqrt(2.0), ZoneHatch.laid, 1e-12)
         for (ratio in listOf(1f, 2f, 2.625f, 3f, 3.5f)) {
             val side = ZoneHatch.side(ratio)
-            // MapLibre draws it side / (density / 160) points across: one period, within the whole density's
-            // rounding, a third of a percent at 1x.
+            // MapLibre lays the picture's pixels as the screen's: half a period, within a whole pixel's rounding.
+            assertEquals("at $ratio", ZoneHatch.laid, side / ratio.toDouble(), 0.5 / ratio + 1e-9)
+            // Its density says as much, within the whole density's rounding.
             val density = ZoneHatch.density(side)
-            val points = side / (density / 160.0)
-            assertEquals("at $ratio", ZoneHatch.period, points, ZoneHatch.period * 0.5 / density + 1e-9)
+            assertEquals("at $ratio", ZoneHatch.laid, side / (density / 160.0), ZoneHatch.laid * 0.5 / density + 1e-9)
         }
         val image = ZoneHatch.image(isDark = false, pixelRatio = 4f)
         val side = image.width
-        assertEquals(45, side)
+        assertEquals(23, side)
         assertEquals(side, image.height)
         assertEquals(ZoneHatch.density(side), image.density)
         // On the line from corner to corner, and at the corners, the colour; halfway between lines, its ground at 0.4.
@@ -163,9 +192,9 @@ class ScooterZoneLayersTest {
             assertEquals(102.0, Color.alpha(pixel).toDouble(), 1.0)
             assertEquals(0xD9.toDouble(), Color.red(pixel).toDouble(), 2.0)
         }
-        // The lines are 2 points wide across them, so 2√2 along a row: 4 pixels a point here.
+        // The lines are laid 1 point wide across them, half the iPhone's 2, so √2 along a row: 4 pixels a point here.
         val across = (0 until side).count { x -> Color.alpha(image.getPixel(x, side / 2)) > (102 + 255) / 2 }
-        assertEquals(2 * sqrt(2.0) * 4, across.toDouble(), 1.0)
+        assertEquals(sqrt(2.0) * 4, across.toDouble(), 1.0)
         // Rising to the right: the line meets the top row at its right end.
         assertEquals(red, image.getPixel(side - 1, 0))
         assertTrue(Color.alpha(image.getPixel(0, side / 4)) < 200)

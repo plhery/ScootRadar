@@ -55,7 +55,6 @@ import org.maplibre.android.style.sources.GeoJsonSource
 import org.maplibre.geojson.Point
 import java.io.File
 import java.util.concurrent.CountDownLatch
-import kotlin.math.pow
 
 // The zones and the walk's trail on MapLibre's map (map.md MAP-151 to MAP-185): the zones of a fake server read back
 // from the map and off its pixels, their edges cut where no riding lies over them; a route fitted, drawn frame by
@@ -214,7 +213,7 @@ class GroundOverlaysTest {
             save(pixels, "zones-clipped")
 
             // The pair: the same edges uncut, as they would be without giving way.
-            val scale = ground.phone.onMain { MapPoint.worldSize / (512 * 2.0.pow(ground.phone.map.cameraPosition.zoom)) }
+            val scale = ground.phone.onMain { ZoneLayers.scale(ground.phone.map.cameraPosition.zoom) }
             val uncut = merged(ZoneDrawing(listOf(parking, slow)).edges(scale), ZoneDrawing(listOf(riding)).edges(scale))
             ground.phone.onMain { ground.phone.map.style!!.getSourceAs<GeoJsonSource>(GroundOverlays.ZONE_EDGES_SOURCE)!!.setGeoJson(uncut) }
             waitFor("the uncut edge is drawn") { ground.drawn(slowEdgeUnder, ZoneLayers.edgeID(ScooterZoneKind.Slow)) == 1 }

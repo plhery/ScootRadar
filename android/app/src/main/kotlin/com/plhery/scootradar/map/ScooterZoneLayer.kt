@@ -27,7 +27,7 @@ import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.sources.GeoJsonSource
 import java.util.Locale
-import kotlin.math.abs
+import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -41,9 +41,9 @@ import kotlin.math.sqrt
  * the layers' colours, as MapKit draws them again in the other ones.
  *
  * No parking's and slow zones' edges give way to no riding (MAP-161). MapKit erases them with a clear blend,
- * which MapLibre has not: :core's renderer cuts their lines 3 points from no riding at the scale the map rests
- * at, and cuts them again, off the main thread, where it comes to rest a tenth closer or further. Between rests
- * the cut keeps the scale it was made at.
+ * which MapLibre has not: :core's renderer cuts their lines 3 points from no riding at the scale MapKit would
+ * draw them at (ZoneLayers.scale), and cuts them again, off the main thread, where the map comes to rest at
+ * another whole zoom. Between rests the cut keeps the scale it was made at.
  *
  * The zones take no tap (MAP-164): the map's tap and its TalkBack nodes pass them by, and the legend tells
  * them apart.
@@ -99,12 +99,12 @@ class ScooterZoneLayer(
         shownDark = dark
     }
 
-    /** The map at rest: the edges are cut again for a scale a tenth away from theirs. */
+    /** The map at rest: the edges are cut again at another whole zoom. */
     fun mapDidRest() {
         val drawing = drawing ?: return
         if (!drawing.hasEdgesToCut) return
         val scale = scale()
-        if (!(scale > 0) || abs(scale / cutAt - 1) <= RECUT) return
+        if (!(scale > 0) || scale == cutAt) return
         cutAt = scale
         cutting?.cancel()
         cutting = scope.launch {
@@ -137,8 +137,7 @@ class ScooterZoneLayer(
         }
     }
 
-    /** Map points a point at the middle of the map, MapKit's 1 / zoomScale: MapLibre's world is 512 points at zoom 0. */
-    private fun scale(): Double = MapPoint.worldSize / (512 * 2.0.pow(map.cameraPosition.zoom))
+    private fun scale(): Double = ZoneLayers.scale(map.cameraPosition.zoom)
 
     private fun addLayers(style: Style) {
         style.addSource(GeoJsonSource(GroundOverlays.ZONES_SOURCE))
@@ -147,11 +146,6 @@ class ScooterZoneLayer(
         shownDark = isDark
         for (spec in ZoneLayers.specs(isDark)) GroundOverlays.add(style, spec)
     }
-
-    companion object {
-        /** The change of scale, a share of it, that has the edges cut again (MAP-161: about a tenth). */
-        const val RECUT = 0.1
-    }
 }
 
 /**
@@ -159,6 +153,12 @@ class ScooterZoneLayer(
  * each kind's of one strength at the opacity of its whole layer (MAP-154, MAP-155); then the edges, no parking's
  * and slow zones' first and no riding's over them (MAP-159, MAP-160). Each feature carries its kind and its
  * opacity, which a zone drawn dimmer lowers.
+ *
+ * What the iPhone draws in points on them, the hatch, the edges' widths and dashes and their clearance, is drawn
+ * as MapKit shows it: MapKit draws the overlay on tiles a whole zoom deeper than the map's and shows them at half
+ * their size, growing with the map to the whole of it at the next whole zoom, where it draws them again. MapLibre
+ * lays a pattern and a dash on a tile at the map's whole zoom and grows them with it to twice their size, so they
+ * are laid at half the iPhone's; a line's width it keeps, so the width grows with the map itself.
  */
 object ZoneLayers {
     /** The edges in the order they are stroked. */
@@ -170,6 +170,26 @@ object ZoneLayers {
     fun fillID(kind: ScooterZoneKind) = "zones-${kind.rawValue}"
 
     fun edgeID(kind: ScooterZoneKind) = "zone-edges-${kind.rawValue}"
+
+    /** Map points a point as MapKit draws the zones at a zoom of the map: those of the next whole zoom. MapLibre's world is 512 points at zoom 0. */
+    fun scale(zoom: Double): Double = MapPoint.worldSize / (512 * 2.0.pow(floor(zoom) + 1))
+
+    /**
+     * A width in points as MapKit shows it: half of it at a whole zoom, growing with the map to the whole of it
+     * just before the next, where it drops back to half.
+     */
+    fun width(points: Double) = SymbolLayerSpec.Json(
+        buildString {
+            append("[\"interpolate\",[\"exponential\",2],[\"zoom\"]")
+            for (zoom in MapZoom.minimum.toInt()..MapZoom.maximum.toInt()) {
+                append(String.format(Locale.ROOT, ",%d,%s,%s,%s", zoom, points / 2, zoom + 1 - DROP, points * 2.0.pow(-DROP)))
+            }
+            append("]")
+        },
+    )
+
+    /** How little before a whole zoom a width drops back to half: MapLibre's stops must rise. */
+    const val DROP = 1.0 / 1024
 
     /** The layers in a look, in the order they are drawn. */
     fun specs(isDark: Boolean): List<OverlayLayerSpec> =
@@ -193,7 +213,10 @@ object ZoneLayers {
         },
     )
 
-    /** MapLibre measures dashes in widths of the line, where Core Graphics measures them in points. */
+    /**
+     * MapLibre measures dashes in widths of the line, where Core Graphics measures them in points: in its width at
+     * the whole zoom, half the iPhone's, so that they are laid at half its points too.
+     */
     fun edge(kind: ScooterZoneKind, isDark: Boolean): OverlayLayerSpec {
         val edge = ScooterZoneLook.edge(kind)
         return OverlayLayerSpec(
@@ -204,7 +227,7 @@ object ZoneLayers {
             layout = mapOf("line-join" to "round", "line-cap" to if (edge.roundCaps) "round" else "butt"),
             paint = buildMap {
                 put("line-color", color(kind, isDark))
-                put("line-width", edge.width)
+                put("line-width", width(edge.width))
                 put("line-opacity", opacity)
                 if (edge.dashes.isNotEmpty()) put("line-dasharray", edge.dashes.map { it / edge.width })
             },
@@ -314,22 +337,27 @@ class ZoneDrawing(zones: List<ScooterZone>) {
  * of it across at 45°, rising to the right, 8 points apart across them and 2 wide. One turn of the pattern is a
  * square 8√2 points across with a line from corner to corner and the corners of the next two, so that it runs on
  * from one square to the next. MapLibre lays it on the world's grid, as MapKit lays the iPhone's on the
- * overlay's, turned and tilted with the map (MAP-158).
+ * overlay's, turned and tilted with the map (MAP-158). The picture is the iPhone's turn at half its points,
+ * since MapLibre lays a pattern's pixels as the screen's whatever the picture's density, as MapKit shows its own
+ * (ZoneLayers): the lines show 4 to 8 points apart and 1 to 2 wide on both.
  */
 object ZoneHatch {
     const val LIGHT = "zone-hatch-light"
     const val DARK = "zone-hatch-dark"
 
-    /** How far the lines repeat along either axis, in points. */
+    /** How far the lines repeat along either axis, in the iPhone's points. */
     val period: Double = ScooterZoneLook.hatchSpacing * sqrt(2.0)
+
+    /** The same as MapLibre lays it on a tile at the map's whole zoom: half of it. */
+    val laid: Double = period / 2
 
     fun name(isDark: Boolean) = if (isDark) DARK else LIGHT
 
     /** The picture's side in pixels at a pixel ratio. */
-    fun side(pixelRatio: Float): Int = max(2, (period * pixelRatio).roundToInt())
+    fun side(pixelRatio: Float): Int = max(2, (laid * pixelRatio).roundToInt())
 
-    /** The picture's density, which MapLibre reads its pixel ratio from: the side in pixels spans one period in points. */
-    fun density(side: Int): Int = (side * DisplayMetrics.DENSITY_DEFAULT / period).roundToInt()
+    /** The picture's density, which MapLibre reads its pixel ratio from: the side in pixels spans what is laid in points. */
+    fun density(side: Int): Int = (side * DisplayMetrics.DENSITY_DEFAULT / laid).roundToInt()
 
     /** One turn of the pattern in no riding's colour for an appearance. */
     fun image(isDark: Boolean, pixelRatio: Float): Bitmap {
@@ -342,8 +370,8 @@ object ZoneHatch {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.color = color
             style = Paint.Style.STROKE
-            // The width across the lines, in this picture's pixels.
-            strokeWidth = (ScooterZoneLook.hatchWidth * side / period).toFloat()
+            // The width across the lines, in this picture's pixels: halved with the period.
+            strokeWidth = (ScooterZoneLook.hatchWidth / 2 * side / laid).toFloat()
         }
         // x + y = 0, side and twice the side, run past the picture's edges, where it is cut.
         val s = side.toFloat()
