@@ -194,6 +194,7 @@ const guide: Guide = {
     { title: 'Svipper: Sykkel på buss og båt', url: 'https://svipper.no/meny/reise/nyttig-informasjon/sykkel/' },
     { title: 'Svipper: Busspriser', url: 'https://svipper.no/meny/billetter-og-priser/busspriser/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
     { title: 'Ryde: Åpne data for Tromsø (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs' },
     { title: 'NRK: Forbudt med elsparkesykler i Tromsø sentrum 17. mai (2026)', url: 'https://www.nrk.no/tromsogfinnmark/forbudt-med-elsparkesykler-i-tromso-sentrum-17.-mai-1.17884855' },
     { title: 'Fjellheisen: Om oss', url: 'https://fjellheisen.no/om-oss' },

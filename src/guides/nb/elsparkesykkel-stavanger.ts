@@ -192,6 +192,7 @@ const guide: Guide = {
     { title: 'Kolumbus: Bysykkel', url: 'https://www.kolumbus.no/sykkel/' },
     { title: 'Statens vegvesen: Sykkelstamveien mellom Stavanger og Sandnes (juni 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/06/dyre-men-lonnsomme-sykkelveier/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
   ],
 };
 
