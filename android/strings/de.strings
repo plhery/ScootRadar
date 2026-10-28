@@ -12,7 +12,7 @@
    its own sentence, "Zum %2$s %1$s", %1$s its words for a double tap, %2$s this: a nominalised infinitive. */
 "show parking details" = "Anzeigen der Parkplatz-Details";
 "show scooter details" = "Anzeigen der Scooter-Details";
-"zoom in to show individual scooters" = "Vergrössern auf einzelne Scooter";
+"zoom in to show individual scooters" = "Vergrössern der Karte bis zu den einzelnen Scootern";
 "expand the panel" = "Ausklappen des Bereichs";
 "show only this provider" = "Anzeigen nur dieses Anbieters";
 "show all providers" = "Anzeigen aller Anbieter";
