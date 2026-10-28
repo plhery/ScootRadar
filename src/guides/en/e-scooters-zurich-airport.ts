@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters at Zurich Airport: the no-ride zone, the nearest scooters in Kloten and Glattbrugg, prices and rules',
   lede: 'You can’t ride a rental e-scooter at Zurich Airport, or end a ride there: at the airport company’s request, the station, the Airport Center, Check-in 1 and 2 and The Circle are a no-ride and no-parking zone. The nearest scooters, from Bolt, Bird, Dott, Voi, Lime and Hopp, are a short bus ride away in Kloten or a short tram ride away in Glattbrugg and Glattpark, both part of Opfikon. Most cost CHF 1.00 to unlock plus CHF 0.41 or 0.42 a minute (published rates on 22 October 2026), and into Zürich itself the train is quicker and cheaper.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-10-28',
   city: 'ch:kloten',
   sections: [
     {
@@ -36,11 +36,11 @@ const guide: Guide = {
         'In the two towns next door: Kloten, whose centre lies east of the terminals, and Opfikon to the south, which takes in Glattbrugg and the Glattpark district.',
         {
           table: {
-            caption: 'From the airport to the nearest e-scooters (timetable for 23 October 2026; map on the evening of 22 October 2026)',
+            caption: 'From the airport to the nearest e-scooters (timetable for 23 October 2026; map at midday on 28 October 2026)',
             head: ['Where', 'From the airport', 'On the map'],
             rows: [
-              ['Kloten station', 'Bus, about 6 minutes; 1.6 km as the crow flies', 'About 180 in Kloten: Bolt and Bird about 50 each, Hopp 40, Dott about 35, Voi 6'],
-              ['Glattbrugg station, Opfikon', 'Tram 10 or 12, 5 to 6 minutes; 2.2 km as the crow flies', 'About 160 in Opfikon: Dott, Voi and Bolt about 40 each, Lime about 30, plus 4 from Hopp and 1 PubliBike e-scooter'],
+              ['Kloten station', 'Bus, about 6 minutes; 1.6 km as the crow flies', 'About 220 in Kloten: Bolt and Lime about 50 each, Bird, Hopp and Dott about 40 each, Voi 8'],
+              ['Glattbrugg station, Opfikon', 'Tram 10 or 12, 5 to 6 minutes; 2.2 km as the crow flies', 'About 150 in Opfikon: Dott about 45, Bolt, Voi and Lime about 35 each, plus 1 PubliBike e-scooter'],
               ['Glattpark, Opfikon', 'Tram 10 or 12, 8 to 9 minutes', 'Counted with Opfikon'],
             ],
           },
@@ -54,11 +54,11 @@ const guide: Guide = {
         'Each town decides who may rent out scooters, so the apps differ on either side of the airport:',
         {
           list: [
-            '**Kloten** licenses its operators, and in March 2025 it named Voi, Bird, Bolt, Lime and Dott. Hopp wasn’t on that list, and on 22 October 2026 the map showed no Lime in Kloten.',
+            '**Kloten** licenses its operators, and in March 2025 it named Voi, Bird, Bolt, Lime and Dott. Hopp wasn’t on that list. Lime’s Kloten scooters are in no open data feed; since 28 October 2026 ScootRadar has read them from the map in Lime’s app.',
             '**Opfikon** has allowed at most four operators and 160 scooters in all since 1 January 2025. The town says all four places are taken but doesn’t name the firms; Dott, Voi, Bolt and Lime carry Opfikon’s zones in their data.',
           ],
         },
-        'ScootRadar shows only operators that publish open data, and only e-scooters, no e-bikes. Bolt, Bird, Dott, Lime and Voi rent from 18; check Hopp’s age limit in its app. Install an app and add a card before you set off; every step is in [how to rent an e-scooter](guide:how-to-rent).',
+        'Every other operator on ScootRadar’s map comes from its open data, and the map shows only e-scooters, no e-bikes. Bolt, Bird, Dott, Lime and Voi rent from 18; check Hopp’s age limit in its app. Install an app and add a card before you set off; every step is in [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -75,6 +75,7 @@ const guide: Guide = {
               ['Voi', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
               ['Hopp (Kloten)', 'CHF 1.00', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
               ['Lime (Opfikon)', 'CHF 1.00', 'Mostly CHF 0.49, some CHF 0.42, before tax', 'In the app', 'In the app'],
+              ['Lime (Kloten)', 'Not published', 'Not published', 'In the app', 'In the app'],
               ['Bird (Kloten)', 'Not published', 'Not published', 'In the app', 'In the app'],
             ],
           },
@@ -120,6 +121,7 @@ const guide: Guide = {
             '**Bolt and Dott:** Kloten, Opfikon and the city of Zürich form one area.',
             '**Voi:** its data contradicts itself here, so check the app before you cross a town line.',
             '**Bird and Hopp:** their area here is Kloten alone, so you end the ride in Kloten.',
+            '**Lime:** Kloten and Opfikon are separate zones in its data, so check the app before you cross the town line.',
             '**Rümlang, Bassersdorf and Wallisellen** lie outside the areas of Bird, Bolt, Dott and Hopp. Voi marks all three as no-parking, and Lime marks Bassersdorf and Wallisellen as no-ride.',
           ],
         },

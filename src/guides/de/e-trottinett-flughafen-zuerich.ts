@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Trottinett Flughafen Zürich 2026: Kloten, Opfikon, Zonen',
   description: 'E-Trottinett Flughafen Zürich: warum Miet-Trottis dort gesperrt sind, wer in Kloten und Opfikon fährt, was zehn Minuten kosten und wo du parkierst.',
   headline: 'E-Trottinett am Flughafen Zürich, in Kloten und Opfikon: Sperrzone, Anbieter, Preise und Parkieren',
-  lede: 'Mit einem gemieteten E-Trottinett kommst du nicht bis an den Flughafen Zürich: Auf Verlangen der Flughafen Zürich AG ist er für Sharing-Trottis gesperrt, vom Bahnhof über Airport Center und Check-in bis The Circle. Rundherum fährst du: Am Abend des 22. Oktober 2026 zeigte die Karte in Kloten rund 180 Trottis von Bolt, Bird, Hopp, Dott und Voi, in Opfikon-Glattbrugg rund 150 von Dott, Voi, Bolt und Lime. Meist zahlst du CHF 1.– fürs Entsperren und 41 oder 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.10 bis 5.20 (veröffentlichte Tarife vom 22. Oktober 2026).',
+  lede: 'Mit einem gemieteten E-Trottinett kommst du nicht bis an den Flughafen Zürich: Auf Verlangen der Flughafen Zürich AG ist er für Sharing-Trottis gesperrt, vom Bahnhof über Airport Center und Check-in bis The Circle. Rundherum fährst du: Am Mittag des 28. Oktober 2026 zeigte die Karte in Kloten rund 220 Trottis von Bolt, Lime, Bird, Hopp, Dott und Voi, in Opfikon-Glattbrugg rund 150 von Dott, Bolt, Voi und Lime. Meist zahlst du CHF 1.– fürs Entsperren und 41 oder 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.10 bis 5.20 (veröffentlichte Tarife vom 22. Oktober 2026).',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-10-28',
   city: 'ch:kloten',
   sections: [
     {
@@ -25,19 +25,19 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Kloten und Opfikon: Anbieter und Regeln der Städte',
       blocks: [
-        'Kloten und Opfikon entscheiden selbst, wer bei ihnen Trottis vermieten darf. Die Tabelle zeigt, was die [Karte von Kloten](map:ch:kloten) und die [Karte von Opfikon](map:ch:opfikon) am Abend des 22. Oktober 2026 zeigten; die Zahlen sind eine Momentaufnahme, keine Flottengrössen.',
+        'Kloten und Opfikon entscheiden selbst, wer bei ihnen Trottis vermieten darf. Die Tabelle zeigt, was die [Karte von Kloten](map:ch:kloten) und die [Karte von Opfikon](map:ch:opfikon) am Mittag des 28. Oktober 2026 zeigten; die Zahlen sind eine Momentaufnahme, keine Flottengrössen.',
         {
           table: {
-            caption: 'Wer in Kloten und Opfikon fährt und was die Städte vorschreiben (Karte vom Abend des 22. Oktober 2026)',
+            caption: 'Wer in Kloten und Opfikon fährt und was die Städte vorschreiben (Karte vom Mittag des 28. Oktober 2026)',
             head: ['Stadt', 'Auf der Karte', 'Regeln der Stadt'],
             rows: [
-              ['Kloten', 'Rund 180 Trottis: Bolt und Bird je rund 50, Hopp 40, Dott rund 35, Voi 6', 'Betriebsbewilligung der Stadt (im März 2025 für CHF 300.–), höchstens 50 Trottis pro Anbieter, seit dem 1. September 2025 eine Gebühr von 20 Rappen pro Trotti und Tag'],
-              ['Opfikon mit Glattbrugg und Glattpark', 'Rund 160 Trottis: Dott, Voi und Bolt je rund 40, Lime rund 30, dazu 4 von Hopp und ein E-Trottinett aus dem Zürcher Angebot von PubliBike', 'Seit dem 1. Januar 2025 eine Vereinbarung mit der Stadt für drei Jahre, höchstens vier Anbieter und 160 Trottis insgesamt, keine Gebühr für den öffentlichen Grund'],
+              ['Kloten', 'Rund 220 Trottis: Bolt und Lime je rund 50, Bird, Hopp und Dott je rund 40, Voi 8', 'Betriebsbewilligung der Stadt (im März 2025 für CHF 300.–), höchstens 50 Trottis pro Anbieter, seit dem 1. September 2025 eine Gebühr von 20 Rappen pro Trotti und Tag'],
+              ['Opfikon mit Glattbrugg und Glattpark', 'Rund 150 Trottis: Dott rund 45, Bolt, Voi und Lime je rund 35, dazu ein E-Trottinett aus dem Zürcher Angebot von PubliBike', 'Seit dem 1. Januar 2025 eine Vereinbarung mit der Stadt für drei Jahre, höchstens vier Anbieter und 160 Trottis insgesamt, keine Gebühr für den öffentlichen Grund'],
             ],
           },
         },
         'Opfikon hat alle vier Plätze vergeben, nennt die Anbieter aber nicht. Opfikons Zonen stehen in den Daten von Dott, Voi, Bolt und Lime; Hopp führt Opfikon in seinen Daten nicht als Gebiet.',
-        'In Kloten nannte die Stadt im März 2025 Voi, Bird, Bolt, Lime und Dott. Hopp fehlt in dieser Liste, und Lime zeigte die Karte am 22. Oktober in Kloten nicht. ScootRadar zeigt nur Anbieter mit offenen Daten und nur Trottis, keine E-Bikes. Bolt, Bird, Dott, Lime und Voi vermieten ab 18; gemietet wird in der App des Anbieters, jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
+        'In Kloten nannte die Stadt im März 2025 Voi, Bird, Bolt, Lime und Dott. Hopp fehlt in dieser Liste. Limes Trottis in Kloten stehen in keinem offenen Datenfeed; seit dem 28. Oktober 2026 liest ScootRadar sie aus der Karte in Limes App. Alle anderen Anbieter liest ScootRadar aus ihren offenen Daten, und die Karte zeigt nur Trottis, keine E-Bikes. Bolt, Bird, Dott, Lime und Voi vermieten ab 18; gemietet wird in der App des Anbieters, jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
       ],
     },
     {
@@ -54,6 +54,7 @@ const guide: Guide = {
               ['Voi', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
               ['Hopp (Kloten)', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
               ['Lime (Opfikon)', 'CHF 1.–', 'Meist 49 Rappen, einzelne Trottis 42, ohne Steuern', 'in der App', 'in der App'],
+              ['Lime (Kloten)', 'nicht veröffentlicht', 'in der App', 'in der App', 'in der App'],
               ['Bird (Kloten)', 'nicht veröffentlicht', 'in der App', 'in der App', 'in der App'],
             ],
           },
@@ -113,6 +114,7 @@ const guide: Guide = {
             '**Nach Oerlikon:** Bolt und Dott führen Kloten, Opfikon und die Stadt Zürich als ein Gebiet. Du kannst also von Glattbrugg (Luftlinie 2,4 km) oder vom Glattpark (1,4 km) nach Oerlikon fahren und die Fahrt dort beenden, nur nicht am Bahnhof Oerlikon: Dort gilt ein Parkverbot.',
             '**Weiter nach Zürich:** In der Stadt gelten Zürichs eigene Zonen; die stehen unter [E-Trottinett in Zürich](guide:zurich), die Trottis zeigt die [Karte von Zürich](map:ch:zurich). Vom Bahnhof Kloten bis Oerlikon sind es Luftlinie rund 5 km, die S7 braucht 7 Minuten.',
             '**Bird und Hopp** führen in ihren Daten nur Kloten als Gebiet: Mit ihnen beendest du die Fahrt wieder in Kloten.',
+            '**Lime** führt Kloten und Opfikon in seinen Daten als getrennte Zonen: Prüfe in der App, bevor du über die Stadtgrenze fährst.',
           ],
         },
       ],
@@ -158,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter gibt es in Kloten?',
-      answer: 'Am Abend des 22. Oktober 2026 zeigte die Karte in Kloten Trottis von Bolt, Bird, Hopp, Dott und Voi. Jeder Anbieter braucht eine Bewilligung der Stadt und darf höchstens 50 Trottis aufstellen.',
+      answer: 'Am Mittag des 28. Oktober 2026 zeigte die Karte in Kloten Trottis von Bolt, Lime, Bird, Hopp, Dott und Voi. Jeder Anbieter braucht eine Bewilligung der Stadt und darf höchstens 50 Trottis aufstellen.',
     },
     {
       question: 'Welche Anbieter dürfen in Opfikon und Glattbrugg vermieten?',
