@@ -193,7 +193,7 @@ class AndroidLocationManager(
      * as iOS keeps "Don't Allow": the app asks no more, and the card offers Settings (PLAN §10).
      */
     fun permissionsAnswered() {
-        if (hasLocationPermission) defaults.removeObject(forKey = REFUSED_KEY) else defaults.set(true, forKey = REFUSED_KEY)
+        if (!hasLocationPermission) defaults.set(true, forKey = REFUSED_KEY)
         reportAuthorization()
         afterPreciseAnswer?.let { locate ->
             afterPreciseAnswer = null
@@ -261,8 +261,12 @@ class AndroidLocationManager(
     /**
      * Tells the controller when the answer is no longer the one it last heard: its status, or precise location
      * given or taken back, which iOS reports alike. Updates under way are asked for again at the new level.
+     *
+     * A grant seen here, from the dialog or made in Settings, ends a refusal kept: taken back later, for "Ask every
+     * time" or by Android for an app unused, it is a question not asked again, as iOS has it (LOG-251).
      */
     private fun reportAuthorization() {
+        if (hasLocationPermission) defaults.removeObject(forKey = REFUSED_KEY)
         val status = authorizationStatus
         val precise = hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         if (status == reportedStatus && precise == reportedPrecise) return
