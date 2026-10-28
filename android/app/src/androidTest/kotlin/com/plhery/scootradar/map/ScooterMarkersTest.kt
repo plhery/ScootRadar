@@ -36,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -47,6 +48,10 @@ import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapView
+import org.maplibre.android.offline.OfflineManager
+import org.maplibre.android.tile.TileOperation
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.math.floor
@@ -90,17 +95,39 @@ class ScooterMarkersTest {
         fun point(of: GeoPoint): ScreenPoint = phone.onMain { phone.projection.point(of) }
     }
 
-    private fun withMarkers(centre: GeoPoint, mapLibreZoom: Double, test: (Marked) -> Unit) {
+    /**
+     * The test on a phone's map with the app's markers. With [ground], the app's own ground is under them, set as
+     * ScooterMap sets it, its tiles coming from OpenFreeMap with nothing of them kept from before, as on a first
+     * start.
+     */
+    private fun withMarkers(centre: GeoPoint, mapLibreZoom: Double, ground: Boolean = false, test: (Marked) -> Unit) {
         val camera = CameraPosition.Builder().target(LatLng(centre.latitude, centre.longitude)).zoom(mapLibreZoom).build()
+        // A new map's server has nothing yet: the scooters a test gives it come as one answer.
+        served = ScooterResponse(vehicles = emptyList())
         withPhoneMap(camera) { phone ->
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+            if (ground) forgetTiles(phone)
+            val day = GroundLook(GroundTheme.Day, GroundDetail.Calm, "en")
+            val shown = if (ground) {
+                phone.onMain { MapGround(phone.map, day, GroundTiles.openFreeMap(OkHttpClient()), imagery = null, scope) }
+            } else {
+                null
+            }
             try {
                 val marked = phone.onMain {
                     val controller = testController(scope, api)
                     val moving = MapCamera(phone.map, phone.view, controller, MapCameraMemory(), frames)
                     val markers = ScooterMarkers(phone.map, phone.view, controller, analytics = null, scope = scope, move = { moving.show(it) })
                     Marked(phone, controller, markers, moving)
+                }
+                if (ground) {
+                    waitFor("the markers are on the ground") {
+                        phone.onMain {
+                            val style = phone.map.style
+                            style?.getLayer(ScooterMarkerLayers.MARKERS) != null && GroundStyle.layers(day).all { style.getLayer(it.id) != null }
+                        }
+                    }
                 }
                 try {
                     test(marked)
@@ -111,10 +138,24 @@ class ScooterMarkersTest {
                     }
                 }
             } finally {
+                phone.onMain { shown?.close() }
                 frames.cancel()
                 scope.cancel()
             }
         }
+    }
+
+    /** Empties MapLibre's cache of tiles, glyphs and styles. */
+    private fun forgetTiles(phone: PhoneMap) {
+        val forgotten = CountDownLatch(1)
+        phone.onMain {
+            OfflineManager.getInstance(phone.view.context).clearAmbientCache(object : OfflineManager.FileSourceCallback {
+                override fun onSuccess() = forgotten.countDown()
+
+                override fun onError(message: String) = forgotten.countDown()
+            })
+        }
+        assertTrue("the cache is emptied", forgotten.await(10, TimeUnit.SECONDS))
     }
 
     /** Has the fake server send this, and waits for the markers to have it. */
@@ -420,7 +461,8 @@ class ScooterMarkersTest {
         /** How long the light-up waited for MapLibre to draw the scooters, in ms: its fades run that much later. */
         var late = 0L
 
-        /** Under a name once the names have come, the dot is not what its middle shows then. */
+        /** Under a name at some moment of the light-up: the dot is not what its middle shows then. */
+        @Volatile
         var isUnderName = false
 
         /** Its middle in the window, in pixels. */
@@ -475,6 +517,10 @@ class ScooterMarkersTest {
         val rewritten: Int,
         val late: Long,
         val bands: Int,
+        /** When MapLibre laid out each of the scooters' tiles, in ms from the first fade's moment. */
+        val laidOut: List<Long>,
+        /** How many of those it laid out once the light-up had started. */
+        val laidOutLit: Int,
     ) {
         /** MapLibre's frames from the first dot's fade to the last's, once the light-up waited. */
         val lit: List<RenderedFrame> get() = rendered.filter { it.at in start + late..end + late }
@@ -506,7 +552,8 @@ class ScooterMarkersTest {
                 }
             }
             val main = mainGaps
-            return ("$count scooters, %d ms waiting to be drawn, %.2f s lighting up in %d bands: MapLibre drew %d frames (%d whole), " +
+            val parsed = if (laidOut.isEmpty()) "none" else "+${laidOut.first()} to +${laidOut.last()} ms (${laidOut.size}, $laidOutLit once lit)"
+            return ("$count scooters, %d ms waiting to be drawn, their tiles laid out $parsed, %.2f s lighting up in %d bands: MapLibre drew %d frames (%d whole), " +
                 "gaps p50 %.0f, p90 %.0f, max %.0f ms, its thread's work p50 %.1f, p90 %.1f, max %.1f ms; " +
                 "main thread %d frames, longest gap %d ms, %d vsyncs missed, %.0f ms at work in all; source written %d times; ").format(
                 late,
@@ -533,10 +580,10 @@ class ScooterMarkersTest {
      * The first scooters sent with the rider on the map, so that they light up from the rider outwards, as the app
      * gets them: MapLibre's frames and the main thread's are recorded from then to the end of the last fade, and,
      * unless the map pans meanwhile, the middles of a few dots kept clear of the others are read off the window at
-     * every frame. The fades start once MapLibre has drawn the scooters, up to a second later. With the
+     * every frame. The fades start once MapLibre has laid the scooters out, at most 1.5 s later. With the
      * instrumentation argument `screenrecord`, the screen is recorded to /data/local/tmp/app-b2-<name>.mp4.
      */
-    private fun Marked.lightUp(count: Int, panning: Boolean, name: String): LightUp {
+    private fun Marked.lightUp(count: Int, pans: Boolean, name: String, reads: Boolean = !pans): LightUp {
         val rider = zurich
         phone.onMain { controller.setUserLocation(rider) }
         val probes = PROBE_METRES.map { metres ->
@@ -573,15 +620,34 @@ class ScooterMarkersTest {
         val renderListener = MapView.OnDidFinishRenderingFrameWithStatsListener { fully, stats ->
             rendered += RenderedFrame(SystemClock.uptimeMillis(), fully, stats.encodingTime * 1000, stats.renderingTime * 1000)
         }
+        // When MapLibre has laid out each of the scooters' tiles.
+        val parsed = mutableListOf<Pair<Long, Boolean>>()
+        val parseListener = MapView.OnTileActionListener { operation, _, _, _, _, _, source ->
+            if (operation == TileOperation.EndParse && source == ScooterMarkerLayers.MARKERS_SOURCE) parsed += SystemClock.uptimeMillis() to (markers.lightUpLate > 0)
+        }
         // The main thread's frames, and at each the probes' middles, read off the window on a thread of their own.
         val reading = HandlerThread("pixels").apply { start() }
         val reader = Handler(reading.looper)
         val vsyncs = mutableListOf<Long>()
         var measuring = true
+
+        // The names that cover a probe, wherever the scene puts them during the light-up; a name's shadow reaches a
+        // few points beyond its frame.
+        fun underNames() {
+            val names = markers.scene.shownPillFrames(phone.projection)
+            if (names.isEmpty()) return
+            for (probe in probes) {
+                val point = phone.projection.point(probe.scooter.coordinate)
+                if (names.any { (_, frame) -> ScreenRect(frame.x - 4, frame.y - 4, frame.width + 8, frame.height + 8).contains(point) }) {
+                    probe.isUnderName = true
+                }
+            }
+        }
         val vsync = object : Choreographer.FrameCallback {
             override fun doFrame(frameTimeNanos: Long) {
                 vsyncs += frameTimeNanos / 1_000_000
-                if (!panning) {
+                if (reads) {
+                    if (vsyncs.size % NAMES_EVERY == 0) underNames()
                     reader.post {
                         val at = SystemClock.uptimeMillis()
                         val pixels = Bitmap.createBitmap(1, column.height(), Bitmap.Config.ARGB_8888)
@@ -598,6 +664,7 @@ class ScooterMarkersTest {
         }
         phone.onMain {
             phone.view.addOnDidFinishRenderingFrameListener(renderListener)
+            phone.view.addOnTileActionListener(parseListener)
             Choreographer.getInstance().postFrameCallback(vsync)
         }
         val working = phone.onMain { Debug.threadCpuTimeNanos() }
@@ -621,11 +688,12 @@ class ScooterMarkersTest {
         assertTrue("the probes light up", probes.all { it.fade != null })
         val bands = phone.onMain { phone.map.style!!.layers.count { "-band-" in it.id } }
         val over = end + HELD_AT_MOST + SHOWN_LATE
-        if (panning) swipe(until = over) else SystemClock.sleep(max(0L, over - SystemClock.uptimeMillis()))
+        if (pans) swipe(until = over) else SystemClock.sleep(max(0L, over - SystemClock.uptimeMillis()))
 
         phone.onMain {
             measuring = false
             phone.view.removeOnDidFinishRenderingFrameListener(renderListener)
+            phone.view.removeOnTileActionListener(parseListener)
         }
         val work = (phone.onMain { Debug.threadCpuTimeNanos() } - working) / 1e6
         reading.quitSafely()
@@ -634,19 +702,14 @@ class ScooterMarkersTest {
         val rewritten = phone.onMain { markers.scene.markersVersion } - written
         val late = (phone.onMain { markers.lightUpLate } * 1000).roundToLong()
         for (probe in probes) probe.late = late
-        phone.onMain {
-            val names = markers.scene.shownPillFrames(phone.projection)
-            for (probe in probes) {
-                val point = phone.projection.point(probe.scooter.coordinate)
-                // A name's shadow reaches a few points beyond its frame.
-                probe.isUnderName = names.any { (_, frame) ->
-                    ScreenRect(frame.x - 4, frame.y - 4, frame.width + 8, frame.height + 8).contains(point)
-                }
-            }
-        }
+        if (reads) phone.onMain { underNames() }
         // The bands' layers are taken out once the dots are drawn by their own again.
         waitFor("the bands are taken out") { phone.onMain { phone.map.style!!.layers.none { "-band-" in it.id } } }
-        return LightUp(count, start, end, phone.onMain { rendered.toList() }, phone.onMain { vsyncs.toList() }, work, probes, rewritten, late, bands)
+        val laidOut = phone.onMain { parsed.filter { it.first in start..end + late } }
+        return LightUp(
+            count, start, end, phone.onMain { rendered.toList() }, phone.onMain { vsyncs.toList() }, work, probes, rewritten, late, bands,
+            laidOut.map { it.first - start }, laidOut.count { it.second },
+        )
     }
 
     /** Whether the instrumentation argument `screenrecord` asks for the screen to be recorded. */
@@ -662,7 +725,9 @@ class ScooterMarkersTest {
         assertTrue("$lightUp", lightUp.renderGapP90 <= 34)
         assertTrue("$lightUp", (lightUp.mainGaps.maxOrNull() ?: 0L) <= 50)
         if (panning) return
-        for (probe in lightUp.probes.filter { !it.isUnderName }) {
+        val checked = lightUp.probes.filter { !it.isUnderName }
+        assertTrue("$lightUp", checked.size >= 3)
+        for (probe in checked) {
             assertTrue("$lightUp", probe.shades() >= 10)
             assertTrue("$lightUp", probe.firstShown()!!.second < 0.45)
             assertTrue("$lightUp", probe.wavers() < 0.15)
@@ -682,10 +747,12 @@ class ScooterMarkersTest {
     fun theScootersLightUpFromTheRiderFrameByFrameOver2000And5000() {
         for (count in listOf(2_000, 5_000)) {
             withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
-                val lightUp = marked.lightUp(count, panning = false, name = "lightup-$count")
+                val lightUp = marked.lightUp(count, pans = false, name = "lightup-$count")
                 Log.i(TAG, "Light-up: $lightUp")
                 // The dots fade as the strength of a layer, never by writing the scooters again (MAP-319).
                 assertEquals(0, lightUp.rewritten)
+                // They start once MapLibre has laid them out, from nothing.
+                assertEquals("$lightUp", 0, lightUp.laidOutLit)
                 assertDrawnInTime(lightUp, panning = false)
             }
         }
@@ -695,10 +762,27 @@ class ScooterMarkersTest {
     fun theMapPansWhileTheScootersLightUpOver2000And5000() {
         for (count in listOf(2_000, 5_000)) {
             withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
-                val lightUp = marked.lightUp(count, panning = true, name = "lightup-pan-$count")
+                val lightUp = marked.lightUp(count, pans = true, name = "lightup-pan-$count")
                 Log.i(TAG, "Light-up while panning: $lightUp")
                 assertEquals(0, lightUp.rewritten)
                 assertDrawnInTime(lightUp, panning = true)
+            }
+        }
+    }
+
+    @Test
+    fun theScootersLightUpOverTheAppsOwnGroundAsItsTilesCome() {
+        for (count in listOf(2_000, 5_000)) {
+            for (panning in listOf(false, true)) {
+                withMarkers(zurich, mapLibreZoom = 15.0, ground = true) { marked ->
+                    // The ground's tiles come as the dots light up, under the probes: their colours say nothing.
+                    val lightUp = marked.lightUp(count, pans = panning, name = "lightup-ground-$count${if (panning) "-pan" else ""}", reads = false)
+                    Log.i(TAG, "Light-up over the ground${if (panning) " while panning" else ""}: $lightUp")
+                    assertEquals(0, lightUp.rewritten)
+                    // The light-up waits for the scooters' tiles, not for the ground's; those the map pans to come later.
+                    if (!panning) assertEquals("$lightUp", 0, lightUp.laidOutLit)
+                    if (!recordsScreen) assertTrue("$lightUp", lightUp.late <= HELD_ON_THE_GROUND)
+                }
             }
         }
     }
@@ -751,10 +835,16 @@ class ScooterMarkersTest {
         /** How long after its moment a frame may reach the screen, in ms. */
         const val SHOWN_LATE = 300L
 
-        /** The longest the light-up waits for MapLibre to draw the scooters and fade them in, in ms. */
+        /** The longest the light-up waits for MapLibre to draw the scooters, in ms. */
         const val HELD_AT_MOST = 1_500L
+
+        /** The longest it waits on the app's ground, whose tiles come meanwhile: some 0.2 s on an emulator, in ms. */
+        const val HELD_ON_THE_GROUND = 500L
 
         /** A vsync of a 60 Hz screen, in ms. */
         const val VSYNC = 1000.0 / 60
+
+        /** The main thread's frames between two looks at where the names are. */
+        const val NAMES_EVERY = 6
     }
 }

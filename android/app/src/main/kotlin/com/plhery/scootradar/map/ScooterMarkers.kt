@@ -32,6 +32,7 @@ import org.maplibre.android.style.layers.SymbolLayer
 import org.maplibre.android.style.layers.TransitionOptions
 import org.maplibre.android.style.sources.GeoJsonOptions
 import org.maplibre.android.style.sources.GeoJsonSource
+import org.maplibre.android.tile.TileOperation
 
 /**
  * The scooters, the bays and the faded markers on MapLibre's map. Once the ground's style is loaded it adds their
@@ -111,6 +112,7 @@ class ScooterMarkers(
         val started = queued.toList()
         queued.clear()
         for ((drawn, action) in started) if (drawn) begun += action else action()
+        listen()
     }
     private val frameEnds = MapView.OnDidFinishRenderingFrameListener { fully, _, _ ->
         if (fully && begun.isNotEmpty()) {
@@ -118,20 +120,71 @@ class ScooterMarkers(
             begun.clear()
             for (action in drawn) action()
         }
+        listen()
+    }
+
+    /** Whether MapLibre's frames are listened to: only while something waits for them, never at rest. */
+    private var listening = false
+
+    /**
+     * The scooters' tiles MapLibre is laying out while a light-up is held. MapLibre shows a source's new symbols at
+     * once, with no fade of their own, so the light-up starts once their tiles are laid out: drawn from the next
+     * frame. A frame drawn whole does not say so: the tiles take the new scooters in a while after the source has
+     * changed, each on its own, after a layout of the old ones for the new bands, and the frames between are
+     * whole. The tiles say when each starts and ends a layout: the light-up waits for those laid out for the
+     * bands to start on the new scooters, then for none to be left.
+     */
+    private val laying = HashSet<String>()
+
+    /** The tiles that started a layout before the scooters changed, and have not started on them since. */
+    private val behind = HashSet<String>()
+    private var changed = false
+    private var takenIn = false
+
+    /** Whether the scooters have had long enough to be taken in: the layouts under way, if any, are the last. */
+    private var overdue = false
+
+    private val tiles = MapView.OnTileActionListener { operation, x, y, z, wrap, overscaledZ, source ->
+        if (source != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnTileActionListener
+        val tile = "$overscaledZ/$wrap/$z/$x/$y"
+        when (operation) {
+            TileOperation.StartParse -> {
+                laying += tile
+                if (changed) {
+                    behind -= tile
+                    takenIn = true
+                } else {
+                    behind += tile
+                }
+            }
+            TileOperation.EndParse, TileOperation.Error, TileOperation.Cancelled -> {
+                laying -= tile
+                if (laying.isEmpty() && (overdue || (takenIn && behind.isEmpty()))) {
+                    release()
+                    wantFrames()
+                }
+            }
+            else -> Unit
+        }
     }
 
     /**
-     * The scooters MapLibre has taken in, on the main thread, laid out from the next frame. Once drawn, they come
-     * up from nothing over MapLibre's fade of new symbols, the style's 0.3 s, unseen: the light-up starts then.
+     * The scooters MapLibre has taken in, on the main thread. Should a tile take them in with a layout under way,
+     * it says nothing of them: they are given [LAID_OUT] from the next frame, then the layouts under way.
      */
     private val sourceChanged = MapView.OnSourceChangedListener { id ->
         if (id != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnSourceChangedListener
+        changed = true
         val hold = holds
-        whenDrawn {
+        whenBegun {
             main.postDelayed({
-                if (holds == hold) release()
-                wantFrames()
-            }, PLACEMENT_FADE)
+                if (holds != hold || held == null) return@postDelayed
+                overdue = true
+                if (laying.isEmpty()) {
+                    release()
+                    wantFrames()
+                }
+            }, LAID_OUT)
         }
     }
 
@@ -180,8 +233,6 @@ class ScooterMarkers(
         view.tap = { x, y -> tap(x, y) }
         ViewCompat.setAccessibilityDelegate(view, accessibility)
         view.hover = { accessibility.dispatchHoverEvent(it) }
-        view.addOnWillStartRenderingFrameListener(frameStarts)
-        view.addOnDidFinishRenderingFrameListener(frameEnds)
         view.addOnSourceChangedListener(sourceChanged)
         updates = scope.launch {
             merge(
@@ -212,12 +263,12 @@ class ScooterMarkers(
         view.tap = null
         view.hover = null
         ViewCompat.setAccessibilityDelegate(view, null)
-        view.removeOnWillStartRenderingFrameListener(frameStarts)
-        view.removeOnDidFinishRenderingFrameListener(frameEnds)
         view.removeOnSourceChangedListener(sourceChanged)
+        view.removeOnTileActionListener(tiles)
         main.removeCallbacksAndMessages(null)
         queued.clear()
         begun.clear()
+        listen()
         style = null
     }
 
@@ -395,26 +446,53 @@ class ScooterMarkers(
     private fun hold(now: Double) {
         held = now
         holds += 1
+        laying.clear()
+        behind.clear()
+        changed = false
+        takenIn = false
+        overdue = false
+        view.addOnTileActionListener(tiles)
     }
 
-    /** The light-up's scooters are drawn, or have been waited for long enough: their fades start. */
+    /** The light-up's scooters are laid out, or have been waited for long enough: their fades start. */
     private fun release() {
         val since = held ?: return
         late = SystemClock.uptimeMillis() / 1000.0 - since
         lightUpLate = late
         held = null
+        view.removeOnTileActionListener(tiles)
         val style = style ?: return
         for (fading in fadings.values) fading.release(style)
     }
 
     /** Runs an action once MapLibre has begun a frame after it was asked for. */
     private fun whenBegun(action: () -> Unit) {
-        main.post { queued += false to action }
+        main.post {
+            queued += false to action
+            listen()
+        }
     }
 
     /** Runs an action once MapLibre has drawn, with every tile laid out, a frame begun after it was asked for. */
     private fun whenDrawn(action: () -> Unit) {
-        main.post { queued += true to action }
+        main.post {
+            queued += true to action
+            listen()
+        }
+    }
+
+    /** Listens to MapLibre's frames while an action waits for one, and stops once none does. */
+    private fun listen() {
+        val wanted = queued.isNotEmpty() || begun.isNotEmpty()
+        if (wanted == listening) return
+        listening = wanted
+        if (wanted) {
+            view.addOnWillStartRenderingFrameListener(frameStarts)
+            view.addOnDidFinishRenderingFrameListener(frameEnds)
+        } else {
+            view.removeOnWillStartRenderingFrameListener(frameStarts)
+            view.removeOnDidFinishRenderingFrameListener(frameEnds)
+        }
     }
 
     /**
@@ -442,7 +520,7 @@ class ScooterMarkers(
             return members.mapValues { it.value.index }
         }
 
-        /** The light-up's scooters are drawn: MapLibre eases their bands from now. */
+        /** The light-up's scooters are laid out: MapLibre eases their bands from now. */
         fun release(style: Style) {
             for (band in bands.all.toList()) ease(style, band)
         }
@@ -484,10 +562,13 @@ class ScooterMarkers(
         /** The pictures the style keeps before those no layer draws are taken out. */
         private const val MOST_IMAGES = 600
 
-        /** The longest the light-up waits for its scooters to be drawn and faded in by MapLibre, in seconds. */
+        /** The longest the light-up waits for its scooters to be drawn, in seconds. */
         private const val MOST_HELD = 1.5
 
-        /** MapLibre's fade of new symbols, the style's default transition, in ms. */
-        private const val PLACEMENT_FADE = 300L
+        /**
+         * How long MapLibre's tiles are given to start on new scooters, from a frame begun after it took them in, in
+         * ms. An emulator's start on 5,000 within some 55 ms, and have them laid out within 115.
+         */
+        private const val LAID_OUT = 200L
     }
 }
