@@ -186,8 +186,11 @@ private fun BatteryFilters(minimum: Int, onChoose: (Int) -> Unit) {
     }
 }
 
-/** How far the label of a battery preset may shrink to stay on one line. */
-internal const val PRESET_MINIMUM_SCALE = 0.75f
+/**
+ * How far the label of a battery preset may shrink to stay on one line. 0.75 on the iPhone, whose narrowest is 375
+ * points wide: on a 360 dp phone, in the sheet at its medium height, "Indifférent" at 1.3 needs 0.7.
+ */
+internal const val PRESET_MINIMUM_SCALE = 0.7f
 
 /** A battery preset's label: "Any" in the language shown, "30%+" the same in every one. */
 internal fun batteryPresetLabel(preset: Int): String = ScooterBatteryFilter.label(preset)
