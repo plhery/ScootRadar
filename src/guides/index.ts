@@ -257,6 +257,8 @@ import hammDe from './de/e-scooter-hamm';
 import chemnitzDe from './de/e-scooter-chemnitz';
 import solingenDe from './de/e-scooter-solingen';
 import fuerthDe from './de/e-scooter-fuerth';
+import bergenNb from './nb/elsparkesykkel-bergen';
+import innsbruckDe from './de/e-scooter-innsbruck';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -514,4 +516,6 @@ export const GUIDES: readonly Guide[] = [
   chemnitzDe,
   solingenDe,
   fuerthDe,
+  bergenNb,
+  innsbruckDe,
 ];
