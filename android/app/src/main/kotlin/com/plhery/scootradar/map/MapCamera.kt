@@ -87,7 +87,13 @@ class MapCamera(
      */
     private var lastViewport: Triple<MapRegion, Int, Double>? = null
 
-    private val idle = MapLibreMap.OnCameraIdleListener { if (!moving) regionDidChange() }
+    private val idle = MapLibreMap.OnCameraIdleListener { if (!moving) regionDidChange(animated = false) }
+
+    /**
+     * What else the map's rest moves, first, as regionDidChange begins (MAP-053): the walk's trail, and the zones'
+     * edges. It is told whether the camera came there in a move of its own, MapKit's `animated`.
+     */
+    var rested: ((animated: Boolean) -> Unit)? = null
 
     /** The tilt the map was last held to. */
     private var tiltHeldTo = -1.0
@@ -102,7 +108,7 @@ class MapCamera(
         }
     }
     private val resized = View.OnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-        if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) regionDidChange()
+        if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) regionDidChange(animated = false)
     }
 
     init {
@@ -112,7 +118,7 @@ class MapCamera(
         view.addOnLayoutChangeListener(resized)
         holdTilt()
         // MapKit reports the region it opens on; MapLibre may already be at rest.
-        view.post { regionDidChange() }
+        view.post { regionDidChange(animated = false) }
     }
 
     fun close() {
@@ -195,7 +201,7 @@ class MapCamera(
                     .zoom(MapZoom.fitting(move.region, bounds.width, bounds.height))
                     .build(),
             )
-            is CameraMove.Fit -> fit(move.coordinates)
+            is CameraMove.Fit -> fit(move.coordinates, move.animated)
         }
     }
 
@@ -204,7 +210,7 @@ class MapCamera(
      * the map, tilted and turned as the map is: the iPhone's fit of a route, which a phone's cluster takes here in
      * place of MapKit's showAnnotations, whose insets are its own (MAP-176, MAP-177, MAP-302).
      */
-    private fun fit(coordinates: List<GeoPoint>) {
+    private fun fit(coordinates: List<GeoPoint>, animated: Boolean) {
         val first = coordinates.firstOrNull() ?: return
         val bounds = projection.bounds
         val band = visibleRect()
@@ -230,6 +236,7 @@ class MapCamera(
                 .target(LatLng(centre.latitude, centre.longitude))
                 .zoom(min(MapZoom.maximum, max(MapZoom.minimum, zoom)))
                 .build(),
+            animated,
         )
     }
 
@@ -311,9 +318,10 @@ class MapCamera(
     }
 
     /** The map at rest, in the order the iPhone's regionDidChange keeps (MAP-053). */
-    private fun regionDidChange() {
+    private fun regionDidChange(animated: Boolean) {
         if (view.width == 0 || view.height == 0) return
         memory.position = map.cameraPosition
+        rested?.invoke(animated)
         moveAgainForNewSize()
         applyFocus(controller.focusRequest.value)
         val region = MapZoom.region(of = projection.visibleMapRect)
@@ -326,14 +334,14 @@ class MapCamera(
         view.post { controller.updateViewport(region, zoom, zoomLevel) }
     }
 
-    /** Moves the camera, in MapKit's time and curve, or at once where the phone has animations off. */
-    private fun animate(to: CameraPosition) {
+    /** Moves the camera, in MapKit's time and curve, or at once where the phone has animations off or it is asked to. */
+    private fun animate(to: CameraPosition, animated: Boolean = true) {
         stopMotion()
         // A tilt the camera can't keep where it lands is the most it can (MAP-322).
         val target = CameraPosition.Builder(to).tilt(min(to.tilt, MapZoom.mostTilt(to.zoom, to.target!!.latitude))).build()
-        if (!ValueAnimator.areAnimatorsEnabled()) {
+        if (!animated || !ValueAnimator.areAnimatorsEnabled()) {
             jump(target)
-            regionDidChange()
+            regionDidChange(animated = false)
             return
         }
         val from = map.cameraPosition
@@ -343,7 +351,7 @@ class MapCamera(
             Animatable(0f).animateTo(1f, tween(millis, easing = easeInEaseOut)) { jump(between(from, target, value.toDouble())) }
             moving = false
             motion = null
-            regionDidChange()
+            regionDidChange(animated = true)
         }
     }
 

@@ -64,7 +64,8 @@ class MapCameraMemory {
  * what is under it, without its attribution, logo or compass, which the app draws itself. The composition's
  * lifecycle drives the view by hand, and a phone short of memory has it drop its caches. It moves to the places
  * the controller asks for, and tells it where it comes to rest. Its ground is the controller's map style, dark
- * or light as the app is, with names in the app's language; over it, the controller's scooters and bays.
+ * or light as the app is, with names in the app's language; on it, the controller's zones; over it, the
+ * controller's scooters and bays.
  */
 @Composable
 fun ScooterMap(
@@ -105,14 +106,19 @@ fun ScooterMap(
     var ground by remember { mutableStateOf<MapGround?>(null) }
     var markers by remember { mutableStateOf<ScooterMarkers?>(null) }
     var rider by remember { mutableStateOf<ScooterRider?>(null) }
+    var zones by remember { mutableStateOf<ScooterZoneLayer?>(null) }
     DisposableEffect(view) {
         var made: MapCamera? = null
         var drawn: MapGround? = null
         var marked: ScooterMarkers? = null
         var shown: ScooterRider? = null
+        var zoned: ScooterZoneLayer? = null
         view.getMapAsync { map ->
             drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
             val moving = MapCamera(map, view, controller, memory, scope).also { made = it; camera = it }
+            // On the ground, under the markers' layers, whichever comes first.
+            val zoning = ScooterZoneLayer(map, view, controller, scope).also { zoned = it; zones = it }
+            moving.rested = { zoning.mapDidRest() }
             marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also { markers = it }
             // After the markers, whose layers it goes above.
             shown = ScooterRider(map, view, controller, scope).also { rider = it }
@@ -122,14 +128,17 @@ fun ScooterMap(
             drawn?.close()
             marked?.close()
             shown?.close()
+            zoned?.close()
             camera = null
             ground = null
             markers = null
             rider = null
+            zones = null
         }
     }
     LaunchedEffect(ground, look) { ground?.show(look) }
     LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
+    LaunchedEffect(zones, dark, look.satellite) { zones?.setDark(dark || look.satellite) }
     // The dot is the app's blue, whatever the ground.
     val highContrast = rememberHighContrast()
     LaunchedEffect(rider, dark, highContrast) { rider?.setLook(RiderArt.Look(dark = dark, highContrast = highContrast)) }
