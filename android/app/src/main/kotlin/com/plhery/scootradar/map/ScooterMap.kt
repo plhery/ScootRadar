@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -102,26 +103,37 @@ fun ScooterMap(
     var camera by remember { mutableStateOf<MapCamera?>(null) }
     var ground by remember { mutableStateOf<MapGround?>(null) }
     var markers by remember { mutableStateOf<ScooterMarkers?>(null) }
+    var rider by remember { mutableStateOf<ScooterRider?>(null) }
     DisposableEffect(view) {
         var made: MapCamera? = null
         var drawn: MapGround? = null
         var marked: ScooterMarkers? = null
+        var shown: ScooterRider? = null
         view.getMapAsync { map ->
             drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
             val moving = MapCamera(map, view, controller, memory, scope).also { made = it; camera = it }
             marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also { markers = it }
+            // After the markers, whose layers it goes above.
+            shown = ScooterRider(map, view, controller, scope).also { rider = it }
         }
         onDispose {
             made?.close()
             drawn?.close()
             marked?.close()
+            shown?.close()
             camera = null
             ground = null
             markers = null
+            rider = null
         }
     }
     LaunchedEffect(ground, look) { ground?.show(look) }
     LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
+    // The dot is the app's blue, whatever the ground; Increase Contrast is read again as the configuration changes.
+    val configuration = LocalConfiguration.current
+    LaunchedEffect(rider, dark, configuration) {
+        rider?.setLook(RiderArt.Look(dark = dark, highContrast = RiderArt.isHighContrast(context)))
+    }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
     val safe = WindowInsets.safeDrawing

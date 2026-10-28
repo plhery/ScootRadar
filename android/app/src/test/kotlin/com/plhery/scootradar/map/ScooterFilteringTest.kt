@@ -234,13 +234,15 @@ class ScooterFilteringTest {
         for (layer in listOf(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED, ScooterMarkerLayers.PILLS)) {
             assertTrue(layer, order.indexOf(ScooterMarkerLayers.RIDER) > order.indexOf(layer))
         }
-        assertEquals(order, ScooterMarkerLayers.specs.map { it.id })
-        val rider = ScooterMarkerLayers.specs.last()
-        assertEquals(true, rider.layout["icon-allow-overlap"])
-        assertEquals(true, rider.layout["icon-ignore-placement"])
+        assertEquals(order, ScooterMarkerLayers.specs.map { it.id } + ScooterMarkerLayers.riderLayers)
+        // The rider's halo, beam and ring under its dot, all above the names (ScooterRider).
+        assertEquals(
+            listOf(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.RIDER_BEAM, ScooterMarkerLayers.RIDER_RING, ScooterMarkerLayers.RIDER),
+            order.takeLast(4),
+        )
 
         // While they light up, the dots are drawn by bands over their layer, in the order of their priorities,
-        // under the selected one; the names' bands are over the names, and under the rider.
+        // under the selected one; the names' bands are over the names, and under the whole rider, its halo too.
         val near = MarkerBand.Layer("scooters-band-1", ScooterMarkerLayers.MARKERS, sortKey = 690f)
         val far = MarkerBand.Layer("scooters-band-2", ScooterMarkerLayers.MARKERS, sortKey = 520f)
         val name = MarkerBand.Layer("scooter-names-band-3", ScooterMarkerLayers.PILLS, sortKey = 690f)
@@ -249,7 +251,7 @@ class ScooterFilteringTest {
         assertEquals(near.id, ScooterMarkerLayers.below(ScooterMarkerLayers.MARKERS, 600f, bands))
         assertEquals(far.id, ScooterMarkerLayers.below(ScooterMarkerLayers.MARKERS, 500f, bands))
         assertEquals(ScooterMarkerLayers.PILLS, ScooterMarkerLayers.below(ScooterMarkerLayers.RAISED, 900f, bands))
-        assertEquals(ScooterMarkerLayers.RIDER, ScooterMarkerLayers.below(ScooterMarkerLayers.PILLS, 700f, bands))
+        assertEquals(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.below(ScooterMarkerLayers.PILLS, 700f, bands))
         assertEquals(name.id, ScooterMarkerLayers.below(ScooterMarkerLayers.PILLS, 600f, bands))
         for (base in listOf(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED, ScooterMarkerLayers.PILLS)) {
             val band = ScooterMarkerLayers.band(base, 9)

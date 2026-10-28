@@ -207,13 +207,18 @@ object ScooterMarkerLayers {
     const val MARKERS = "scooters"
     const val RAISED = "scooters-selected"
     const val PILLS = "scooter-names"
+
+    /** The rider's accuracy halo, compass beam and white ring, under its blue dot, [RIDER] (ScooterRider). */
+    const val RIDER_HALO = "rider-halo"
+    const val RIDER_BEAM = "rider-beam"
+    const val RIDER_RING = "rider-ring"
     const val RIDER = "rider"
 
     const val LAST_SEEN_SOURCE = "scooters-last-seen"
     const val MARKERS_SOURCE = "scooters"
     const val PILLS_SOURCE = "scooter-names"
 
-    /** A stand-in until the location lane draws the rider (MAP-186): an empty layer, above every marker. */
+    /** Where the rider is, while the controller knows (MAP-186): one point, or none. */
     const val RIDER_SOURCE = "rider"
 
     /** The dots' strength. */
@@ -232,7 +237,10 @@ object ScooterMarkerLayers {
     /** A band's filter once its markers are handed back to their layer, until its own is taken out. */
     const val NOTHING = "[\"boolean\",false]"
 
-    val order = listOf(LAST_SEEN, MARKERS, RAISED, PILLS, RIDER)
+    /** The rider's layers, bottom to top, which ScooterRider adds above the markers'. */
+    val riderLayers = listOf(RIDER_HALO, RIDER_BEAM, RIDER_RING, RIDER)
+
+    val order = listOf(LAST_SEEN, MARKERS, RAISED, PILLS) + riderLayers
 
     /** What every marker layer shares: a picture of its own at its place, never hidden, never turned or tilted. */
     private fun pictures(anchor: String) = mapOf(
@@ -263,7 +271,6 @@ object ScooterMarkerLayers {
             paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH)),
         ),
         SymbolLayerSpec(PILLS, PILLS_SOURCE, layout = pictures("top-left"), paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH))),
-        SymbolLayerSpec(RIDER, RIDER_SOURCE, layout = pictures("center"), paint = emptyMap()),
     )
 
     /**

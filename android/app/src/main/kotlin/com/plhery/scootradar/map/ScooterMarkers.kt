@@ -404,8 +404,9 @@ class ScooterMarkers(
         style.addSource(GeoJsonSource(ScooterMarkerLayers.MARKERS_SOURCE))
         // The names are few and move with their dots: written at once, they are never a frame behind them.
         style.addSource(GeoJsonSource(ScooterMarkerLayers.PILLS_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
-        style.addSource(GeoJsonSource(ScooterMarkerLayers.RIDER_SOURCE))
         for (spec in ScooterMarkerLayers.specs) addLayer(style, spec)
+        // The rider above them all.
+        ScooterRider.addLayers(style)
     }
 
     private fun addLayer(style: Style, spec: SymbolLayerSpec, below: String? = null) {

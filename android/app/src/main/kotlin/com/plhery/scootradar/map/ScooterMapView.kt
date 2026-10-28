@@ -23,10 +23,18 @@ class ScooterMapView(context: Context, options: MapLibreMapOptions) : MapView(co
     /** TalkBack's hover events, which the markers' accessibility helper takes first. */
     var hover: ((MotionEvent) -> Boolean)? = null
 
+    /** The window shown again, for the rider's dot to breathe again: ViewTreeObserver's own listener is API 34's. */
+    var windowShown: (() -> Unit)? = null
+
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var downX = 0f
     private var downY = 0f
     private var fingers = 0
+
+    override fun onWindowVisibilityChanged(visibility: Int) {
+        super.onWindowVisibilityChanged(visibility)
+        if (visibility == VISIBLE) windowShown?.invoke()
+    }
 
     override fun dispatchHoverEvent(event: MotionEvent): Boolean =
         hover?.invoke(event) == true || super.dispatchHoverEvent(event)
