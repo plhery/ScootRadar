@@ -221,7 +221,8 @@ function kotlinType(node) {
   switch (node.type) {
     case 'string': return 'String';
     case 'number': return 'Double';
-    case 'integer': return 'Int';
+    // Swift's Int is 64 bits: an answer with a larger number is still read.
+    case 'integer': return 'Long';
     case 'boolean': return 'Boolean';
     case 'array': return `List<${kotlinType(node.items)}>`;
     case 'object':

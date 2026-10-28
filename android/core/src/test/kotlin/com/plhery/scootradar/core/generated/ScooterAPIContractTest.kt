@@ -1,6 +1,7 @@
 package com.plhery.scootradar.core.generated
 
 import com.plhery.scootradar.core.api.ScooterAPIJson
+import com.plhery.scootradar.core.model.model
 import kotlinx.serialization.SerializationException
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -58,19 +59,40 @@ class ScooterAPIContractTest {
         assertEquals("lime", vehicle.provider)
         assertEquals(47.3769, vehicle.latitude, 0.0)
         assertEquals(8.5417, vehicle.longitude, 0.0)
-        assertEquals(82, vehicle.battery)
-        assertEquals(12_345, vehicle.rangeMeters)
+        assertEquals(82L, vehicle.battery)
+        assertEquals(12_345L, vehicle.rangeMeters)
         assertEquals("abc-123", vehicle.vehicleID)
         assertEquals("limebike://vehicle/abc-123", vehicle.rentalURIs?.ios)
         assertEquals("https://lime.bike/vehicle/abc-123?platform=android", vehicle.rentalURIs?.android)
         assertEquals(ScooterRidePricingPayload(currency = "CHF", unlockFeeMinorUnits = 100, minuteFeeMinorUnits = 42), vehicle.pricing)
         assertEquals(250.5, vehicle.distanceMeters!!, 0.0)
-        assertEquals(mapOf("lime" to 1), response.providers)
+        assertEquals(mapOf("lime" to 1L), response.providers)
         assertEquals(ScooterFeedSourceStatusPayload.Fresh, response.meta.sources["hopp"])
         assertEquals(ScooterResponseModePayload.Vehicles, response.meta.mode)
         assertNull(response.meta.zoom)
         assertNull(response.lastSeen)
         assertNull(response.parking)
+    }
+
+    @Test
+    fun readsNumbersPastThirtyTwoBitsAsSwiftsIntDoes() {
+        val response = decode(
+            """
+            {"vehicles": [{"provider": "lime", "lat": 47.3769, "lng": 8.5417,
+              "pricing": {"currency": "CHF", "unlock_fee_minor_units": 100, "minute_fee_minor_units": 3000000000}}],
+             "clusters": [], "providers": {"lime": 5000000000}, "meta": {"partial": false, "stale": false,
+             "failedSources": [], "sources": {}, "generatedAt": "2026-10-25T10:02:00.000Z", "truncated": false,
+             "totalVehicles": 5000000000, "mode": "vehicles", "zoom": null}}
+            """,
+        )
+
+        assertEquals(3_000_000_000L, response.vehicles.single().pricing?.minuteFeeMinorUnits)
+        assertEquals(5_000_000_000L, response.meta.totalVehicles)
+        // Held as Int past the answer, at its end.
+        val model = response.model
+        assertEquals(Int.MAX_VALUE, model.vehicles.single().pricing?.minuteFeeMinorUnits)
+        assertEquals(Int.MAX_VALUE, model.providers["lime"])
+        assertEquals(Int.MAX_VALUE, model.meta?.totalVehicles)
     }
 
     @Test
@@ -85,7 +107,7 @@ class ScooterAPIContractTest {
 
         assertTrue(response.vehicles.isEmpty())
         assertEquals(ScooterResponseModePayload.Clusters, response.meta.mode)
-        assertEquals(13, response.meta.zoom)
+        assertEquals(13L, response.meta.zoom)
     }
 
     @Test

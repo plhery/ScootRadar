@@ -87,13 +87,21 @@ data class ScooterResponseMetadata(
 /** A day as the price lists give it, "2026-10-18", in digits of any script, as Swift's \d reads them. */
 private val listedDay = Regex("\\p{Nd}{4}-\\p{Nd}{2}-\\p{Nd}{2}")
 
+/**
+ * The answer's whole numbers, read as Swift's 64-bit Int reads them, held as Int: one past Int's range (no real count,
+ * price or delay) is taken at its end, as the price sums saturate, rather than failing the whole answer.
+ */
+private val Long.saturated: Int get() = coerceIn(Int.MIN_VALUE.toLong(), Int.MAX_VALUE.toLong()).toInt()
+
+private val Map<String, Long>.saturated: Map<String, Int> get() = mapValues { it.value.saturated }
+
 val ScooterVehiclePayload.model: Scooter
     get() = Scooter(
         provider = provider,
         latitude = latitude,
         longitude = longitude,
-        battery = battery,
-        rangeMeters = rangeMeters,
+        battery = battery?.saturated,
+        rangeMeters = rangeMeters?.saturated,
         vehicleID = vehicleID,
         deepLink = deepLink,
         rentalURIs = rentalURIs?.let { ScooterRentalURIs(ios = it.ios, android = it.android, web = it.web) },
@@ -107,8 +115,8 @@ val ScooterVehiclePayload.model: Scooter
             } else {
                 ScooterRidePricing(
                     currency = currency,
-                    unlockFeeMinorUnits = payload.unlockFeeMinorUnits,
-                    minuteFeeMinorUnits = payload.minuteFeeMinorUnits,
+                    unlockFeeMinorUnits = payload.unlockFeeMinorUnits.saturated,
+                    minuteFeeMinorUnits = payload.minuteFeeMinorUnits.saturated,
                     minuteFeeFrom = payload.minuteFeeFrom == true,
                     plusTax = payload.plusTax == true,
                     listedOn = payload.listedOn?.takeIf { listedDay.matches(it) },
@@ -118,7 +126,7 @@ val ScooterVehiclePayload.model: Scooter
     )
 
 val ScooterClusterPayload.model: ScooterCluster
-    get() = ScooterCluster(id = id, latitude = latitude, longitude = longitude, count = count, providers = providers, city = city)
+    get() = ScooterCluster(id = id, latitude = latitude, longitude = longitude, count = count.saturated, providers = providers.saturated, city = city)
 
 val ScooterResponseMetadataPayload.model: ScooterResponseMetadata
     get() = ScooterResponseMetadata(
@@ -128,13 +136,13 @@ val ScooterResponseMetadataPayload.model: ScooterResponseMetadata
         sources = sources.mapValues { it.value.rawValue },
         generatedAt = generatedAt,
         truncated = truncated,
-        totalVehicles = totalVehicles,
+        totalVehicles = totalVehicles?.saturated,
         mode = mode.rawValue,
-        zoom = zoom,
+        zoom = zoom?.saturated,
         overview = overview ?: false,
-        refreshAfterSeconds = refreshAfterSeconds,
+        refreshAfterSeconds = refreshAfterSeconds?.saturated,
         refreshing = refreshing ?: false,
-        followUpMs = followUpMs,
+        followUpMs = followUpMs?.saturated,
         lastSeenAt = lastSeenAt,
         parkingStatus = parkingStatus?.rawValue,
         expiresAt = expiresAt,
@@ -148,7 +156,7 @@ val ScooterAPIResponsePayload.model: ScooterResponse
         clusters = clusters.map { it.model },
         lastSeenVehicles = lastSeen?.vehicles.orEmpty().map { it.model },
         lastSeenClusters = lastSeen?.clusters.orEmpty().map { it.model },
-        providers = providers,
+        providers = providers.saturated,
         meta = meta.model,
         parking = parking.orEmpty().map {
             ScooterParking(id = it.id, provider = it.provider, name = it.name, latitude = it.lat, longitude = it.lng, mandatory = it.mandatory)
