@@ -73,7 +73,7 @@ class IosSheetTest {
 
     /** A list taller than the sheet. */
     @Composable
-    private fun longList() {
+    private fun LongList() {
         Column(Modifier.fillMaxSize().testTag("list").verticalScroll(rememberScrollState())) {
             repeat(40) { Box(Modifier.fillMaxWidth().height(60.dp)) }
         }
@@ -137,7 +137,7 @@ class IosSheetTest {
 
     @Test
     fun aListInTheSheetIsScrolledAndLetGo() {
-        show(listOf(SheetDetent.Medium, SheetDetent.Large)) { longList() }
+        show(listOf(SheetDetent.Medium, SheetDetent.Large)) { LongList() }
         // Pushed up, the list raises the sheet before it scrolls; pulled down, it scrolls back and lowers the sheet.
         compose.onNodeWithTag("list").performTouchInput { swipeUp() }
         compose.waitForIdle()
