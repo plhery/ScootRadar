@@ -123,7 +123,7 @@ internal fun ScooterMapController.rebuildMapZones() {
             ScooterProvider.fromRawValue(zone.provider)?.let { it in enabledProviders.value } ?: false
         }
     }
-    val rules = CityRuleZone.shown(over = viewport.value, zoom = viewportZoom.value, at = clock())
+    val rules = CityRuleZone.shown(over = viewport.value, zoom = viewportZoom.value, at = clock(), among = catalog.ruleZones)
     if (rules != mapRuleZones.value) _mapRuleZones.value = rules
     val drawn = rules.map { it.mapZone } + shown
     if (drawn == mapZones.value) return

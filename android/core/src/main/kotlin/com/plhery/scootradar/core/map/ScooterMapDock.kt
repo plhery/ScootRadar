@@ -24,7 +24,6 @@ import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterPlural
-import com.plhery.scootradar.core.model.ScooterProviderCoverage
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.ScooterProviderHealth
 import com.plhery.scootradar.core.model.ScooterSearchBarState
@@ -71,7 +70,8 @@ val ScooterMapController.searchBarState: ScooterSearchBarState
     }
 
 /** The six covered cities nearest to the map centre, for "Cities with scooters". */
-val ScooterMapController.nearbyCities: List<ScooterCityDistance> get() = ScooterCityCatalog.nearest(to = viewport.value.center, count = 6)
+val ScooterMapController.nearbyCities: List<ScooterCityDistance>
+    get() = ScooterCityCatalog.nearest(to = viewport.value.center, count = 6, among = catalog.cities)
 
 /**
  * The map centre for the address search, which finds places near it first: only when the map shows a
@@ -88,7 +88,8 @@ val ScooterMapController.searchNear: GeoPoint?
     }
 
 /** The three covered cities nearest to the map centre, for the outside-coverage card. */
-val ScooterMapController.closestCities: List<ScooterCityDistance> get() = ScooterCityCatalog.nearest(to = viewport.value.center, count = 3)
+val ScooterMapController.closestCities: List<ScooterCityDistance>
+    get() = ScooterCityCatalog.nearest(to = viewport.value.center, count = 3, among = catalog.cities)
 
 val ScooterMapController.activeOrigin: NearbyOrigin?
     get() {
@@ -125,7 +126,11 @@ fun ScooterMapController.cardContent(scooter: Scooter): ScooterCardContent = Sco
     metres = walkingDistance(scooter),
     placeTitle = searchedDestination.value?.title,
     quote = ridePriceQuote(scooter),
-    curfew = RentalCurfew.active(at = GeoPoint(latitude = scooter.latitude, longitude = scooter.longitude), on = clock()),
+    curfew = RentalCurfew.active(
+        at = GeoPoint(latitude = scooter.latitude, longitude = scooter.longitude),
+        on = clock(),
+        among = catalog.curfews,
+    ),
 )
 
 val ScooterMapController.visibleCount: Int get() = visibleScooterCount.value
@@ -134,7 +139,7 @@ val ScooterMapController.allProvidersSelected: Boolean get() = enabledProviders.
 
 val ScooterMapController.availableProviders: List<ScooterProvider>
     get() {
-        val providers = ScooterProviderCoverage.providers(viewport.value).toSet() + visibleProviderCounts.value.keys
+        val providers = catalog.providers(viewport.value).toSet() + visibleProviderCounts.value.keys
         return ScooterProvider.entries.filter { it in providers }
     }
 
@@ -154,7 +159,7 @@ val ScooterMapController.providerHealth: ScooterProviderHealth
         }
         return ScooterProviderHealth(
             failedSources = responseMetadata.failedSources,
-            operating = ScooterProviderCoverage.providers(viewport.value),
+            operating = catalog.providers(viewport.value),
             inView = unfilteredVisibleProviders,
         )
     }
@@ -164,8 +169,13 @@ val ScooterMapController.dockNotices: List<ScooterDockNotice>
     get() {
         val responseMetadata = responseMetadata.value ?: return emptyList()
         return ScooterDockNotice.notices(
-            curfew = RentalCurfew.active(at = viewport.value.center, on = clock()),
-            season = ScooterSeasonalPause.active(at = viewport.value.center, on = clock(), seasonOver = responseMetadata.seasonOver),
+            curfew = RentalCurfew.active(at = viewport.value.center, on = clock(), among = catalog.curfews),
+            season = ScooterSeasonalPause.active(
+                at = viewport.value.center,
+                on = clock(),
+                among = catalog.cities,
+                seasonOver = responseMetadata.seasonOver,
+            ),
             scootersInView = unfilteredVisibleCount > 0,
             health = providerHealth,
             metadata = responseMetadata,

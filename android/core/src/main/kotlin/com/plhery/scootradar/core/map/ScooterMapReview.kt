@@ -1,7 +1,6 @@
 package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.model.ScooterDockContent
-import com.plhery.scootradar.core.model.ScooterProviderCoverage
 
 // The rating of ios/ScootRadar/ViewModels/ScooterMapModel.swift.
 
@@ -71,5 +70,5 @@ private val ScooterMapController.reviewTrouble: Boolean
         val down = providerHealth.downProviders.toSet()
         if (down.isNotEmpty() && down.containsAll(availableProviders)) return true
         val userLocation = userLocation.value ?: return false
-        return !ScooterProviderCoverage.contains(latitude = userLocation.latitude, longitude = userLocation.longitude)
+        return !catalog.contains(userLocation)
     }

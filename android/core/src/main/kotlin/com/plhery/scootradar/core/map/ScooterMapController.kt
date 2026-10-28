@@ -20,6 +20,7 @@ import com.plhery.scootradar.core.model.RidePriceQuote
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterBatteryFilter
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCityGrouping
@@ -127,6 +128,8 @@ class ScooterMapController(
     start: ScooterMapStart = ScooterMapStart.switzerland,
     /** A debug build: a screenshot's camera and a review prompt can be asked for in the defaults. */
     debug: Boolean = false,
+    /** The cities, service areas, night bans and street rules the map reads: the generated catalog, or a test's own. */
+    internal val catalog: ScooterCatalog = ScooterCatalog.Generated,
 ) {
     internal val clock: () -> Instant = now
 
@@ -964,7 +967,7 @@ class ScooterMapController(
             return
         }
         keepsMapOnFirstFix = true
-        val city = ScooterCityCatalog.city(linkedAt = origin)
+        val city = ScooterCityCatalog.city(linkedAt = origin, among = catalog.cities)
         if (city != null) {
             analytics?.track("link_open", result = "city")
             choosePlace(city.destination)

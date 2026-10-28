@@ -215,8 +215,8 @@ object ScooterCityCatalog {
     val countryCount: Int get() = CatalogData.value.countryCount
 
     /** Cities by distance from the point to their centre, nearest first. */
-    fun nearest(to: GeoPoint, count: Int): List<ScooterCityDistance> =
-        cities.map { ScooterCityDistance(it, distanceMeters(to, it.center)) }
+    fun nearest(to: GeoPoint, count: Int, among: List<ScooterCity> = cities): List<ScooterCityDistance> =
+        among.map { ScooterCityDistance(it, distanceMeters(to, it.center)) }
             .sortedBy { it.distanceMeters }
             .take(maxOf(0, count))
 
@@ -263,6 +263,56 @@ object ScooterProviderCoverage {
         val data = CatalogData.value
         return data.swissAreas.any { it.contains(latitude, longitude) } ||
             data.regionalSystems.any { it.second.contains(latitude, longitude) }
+    }
+}
+
+/**
+ * The catalog as the map controller reads it: the cities, where each provider operates, the night bans and the
+ * cities' rules for streets. The app's is the one generated from data/ ([Generated]). A test hands the controller
+ * one of its own ([Listed]), which a city added or paused in data/, or a provider's area moved, leaves as it is.
+ * Not in the iPhone app, whose tests read its generated catalog.
+ */
+interface ScooterCatalog {
+    /** Every city with scooter data. */
+    val cities: List<ScooterCity>
+
+    /** The cities' bans on renting at night. */
+    val curfews: List<RentalCurfew>
+
+    /** The cities' own rules for streets. */
+    val ruleZones: List<CityRuleZone>
+
+    /** The providers operating in the viewport, in catalogue order. */
+    fun providers(viewport: GeoBounds): List<ScooterProvider>
+
+    /** Whether the point is inside an operator's service area. */
+    fun contains(point: GeoPoint): Boolean
+
+    /** The catalog generated from data/: ScooterCityCatalog, ScooterProviderCoverage, RentalCurfew.all, CityRuleZone.all. */
+    data object Generated : ScooterCatalog {
+        override val cities: List<ScooterCity> get() = ScooterCityCatalog.cities
+        override val curfews: List<RentalCurfew> get() = RentalCurfew.all
+        override val ruleZones: List<CityRuleZone> get() = CityRuleZone.all
+
+        override fun providers(viewport: GeoBounds): List<ScooterProvider> = ScooterProviderCoverage.providers(viewport)
+
+        override fun contains(point: GeoPoint): Boolean = ScooterProviderCoverage.contains(point.latitude, point.longitude)
+    }
+
+    /** A catalog of what it lists, for tests and previews: a provider operates wherever one of its areas reaches. */
+    data class Listed(
+        override val cities: List<ScooterCity> = emptyList(),
+        /** Each provider's service areas, one box a piece. */
+        val areas: List<Pair<ScooterProvider, GeoBounds>> = emptyList(),
+        override val curfews: List<RentalCurfew> = emptyList(),
+        override val ruleZones: List<CityRuleZone> = emptyList(),
+    ) : ScooterCatalog {
+        override fun providers(viewport: GeoBounds): List<ScooterProvider> {
+            val available = areas.filter { it.second.intersects(viewport) }.mapTo(HashSet()) { it.first }
+            return ScooterProvider.entries.filter { it in available }
+        }
+
+        override fun contains(point: GeoPoint): Boolean = areas.any { it.second.contains(point.latitude, point.longitude) }
     }
 }
 

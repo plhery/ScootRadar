@@ -167,8 +167,8 @@ data class ScooterMapLink(
  * The city whose centre a link names. The site writes the centre as JavaScript prints the number, so a
  * hair's difference is allowed.
  */
-fun ScooterCityCatalog.city(linkedAt: GeoPoint): ScooterCity? =
-    cities
+fun ScooterCityCatalog.city(linkedAt: GeoPoint, among: List<ScooterCity> = cities): ScooterCity? =
+    among
         .filter {
             abs(it.center.latitude - linkedAt.latitude) < 0.000_5 &&
                 abs(it.center.longitude - linkedAt.longitude) < 0.000_5
