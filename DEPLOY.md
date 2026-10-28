@@ -191,8 +191,13 @@ so. The web job's checks, lint and unit tests run on every commit.
 
 The job leaves `production-cache` where it is from 23:00 to 05:30 Paris time
 (AGENTS.md), and when every commit since says `[skip cd]` (or `[skip ci]`): the
-change goes with the next commit that passes outside those hours. The job's
-notices in the run's summary say what moved and why not.
+change goes with the next commit that passes outside those hours. A change held
+by the night goes out at 04:47 UTC (05:47 Paris in winter, 06:47 in summer):
+CI runs on a schedule then, with only its "Release the cache held overnight"
+job, which moves `production-cache` to the newest commit of `main` whose push
+run passed every test job, as that run's Deploy job would have done. To deploy
+sooner, re-run the Deploy job of a run that passed in the night after 05:30.
+The job's notices in the run's summary say what moved and why not.
 
 Then the job tells IndexNow, which Bing and the engines that read its index use,
 about the pages added to the sitemap or redated since it last took them
