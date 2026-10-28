@@ -22,11 +22,11 @@ enum class Look(val dark: Boolean, val fontScale: Float) {
 }
 
 /**
- * The comparison CI makes against the baselines recorded on the Mac: a few pixels may differ where text is drawn
- * at the edge of a pixel.
+ * The comparison CI makes against the baselines recorded on the Mac: no pixel may differ beyond Roborazzi's colour
+ * tolerance. Linux draws them the same, and a share of 0.2% let a changed digit at font scale 1.0 through.
  */
 val screenshotOptions = RoborazziOptions(
-    compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0.002f),
+    compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f),
 )
 
 /** Sets the font scale for what is composed next, as the phone's Settings does; [resetFontScale] after. */

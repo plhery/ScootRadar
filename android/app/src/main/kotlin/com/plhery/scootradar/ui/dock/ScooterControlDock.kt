@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -55,6 +56,7 @@ import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dock
 import com.plhery.scootradar.core.map.dockAnnouncement
+import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCityDistance
 import com.plhery.scootradar.core.model.ScooterCoverageSummary
 import com.plhery.scootradar.core.model.ScooterDockContent
@@ -421,12 +423,21 @@ private fun OutOfDateCard(controller: ScooterMapController, failure: ScooterLoad
     }
 }
 
+/** The cities and countries the coverage card counts: the catalog's, or a screenshot test's, which a new city doesn't move. */
+val LocalCoverageCounts = staticCompositionLocalOf { ScooterCityCatalog.cityCount to ScooterCityCatalog.countryCount }
+
 /** A place no operator serves: how far ScootRadar reaches, and the closest cities it covers. */
 @Composable
 private fun OutsideCoverageCard(controller: ScooterMapController, cities: List<ScooterCityDistance>) {
     val colors = scootColors
+    val (cityCount, countryCount) = LocalCoverageCounts.current
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        DockCardHeader(Symbols.map, colors.actionText, localized("No scooter data here yet"), ScooterCoverageSummary.text())
+        DockCardHeader(
+            Symbols.map,
+            colors.actionText,
+            localized("No scooter data here yet"),
+            ScooterCoverageSummary.text(cityCount, countryCount),
+        )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(
                 localized("Closest cities"),
