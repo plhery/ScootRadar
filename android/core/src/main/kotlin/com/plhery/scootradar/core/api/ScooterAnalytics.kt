@@ -28,7 +28,7 @@ class ScooterAnalytics(
     /** The Umami website the events go to; without one nothing is sent. */
     private val website: String? = Companion.website,
     /** Whether this build sends at all: a release does, a debug build only when started for the smoke test. */
-    private val sends: Boolean,
+    val sends: Boolean,
     /** A phone browser's user agent, from userAgent(androidVersion, chromeMajor). */
     private val userAgent: String,
     private val defaults: ScooterDefaults,
