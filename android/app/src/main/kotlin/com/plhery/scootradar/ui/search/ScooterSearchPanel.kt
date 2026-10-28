@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
@@ -138,7 +139,8 @@ internal fun ScooterSearchPanel(
     Box {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val field = @Composable { fieldModifier: Modifier ->
-                SearchField(model, focus, onSubmit = { model.firstResult?.let(::choose) }, modifier = fieldModifier)
+                // Return chooses the first place; with none, it puts the keyboard away and leaves the search open.
+                SearchField(model, focus, onSubmit = { model.firstResult?.let(::choose) ?: focusManager.clearFocus() }, modifier = fieldModifier)
             }
             if (TextSize.isAccessibility) {
                 // Large text leaves no room for the field beside Cancel.
@@ -251,10 +253,11 @@ private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, o
                 .weight(1f)
                 .focusRequester(focus)
                 .semantics { contentType = ContentType.AddressStreet }
-                // A hardware keyboard's Tab goes on to the next button, as on the iPhone; Enter searches.
+                // A hardware keyboard's Tab goes on to the next button and Shift+Tab back, as on the iPhone; Enter
+                // searches.
                 .onPreviewKeyEvent { event ->
                     if (event.type == KeyEventType.KeyDown && event.key == Key.Tab) {
-                        focusManager.moveFocus(FocusDirection.Next)
+                        focusManager.moveFocus(if (event.isShiftPressed) FocusDirection.Previous else FocusDirection.Next)
                     } else {
                         false
                     }
@@ -272,7 +275,13 @@ private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, o
             decorationBox = { field ->
                 Box(contentAlignment = Alignment.CenterStart) {
                     if (query.isEmpty()) {
-                        Text(localized("City or address"), style = textStyle, color = colors.tertiaryLabel, maxLines = 1)
+                        Text(
+                            localized("City or address"),
+                            style = textStyle,
+                            color = colors.tertiaryLabel,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                     field()
                 }
@@ -398,7 +407,8 @@ private fun ResultRows(results: List<AddressSearchResult>, onChoose: (AddressSea
                 showsNoData = !result.isCovered,
                 modifier = Modifier
                     .plainButton { onChoose(result) }
-                    .semantics { selected = isFirst }
+                    // Selected on the first only: Compose would read the others as "Not selected".
+                    .then(if (isFirst) Modifier.semantics { selected = true } else Modifier)
                     .then(if (isFirst) Modifier.background(actionText.copy(alpha = 0.08f), SquircleShape(14.dp)) else Modifier),
             )
             if (index < results.lastIndex) RowDivider()
