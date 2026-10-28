@@ -1,5 +1,6 @@
 import catalog from '../../data/rental-curfews.json';
-import { polygonContainsPoint } from '@/lib/geo';
+import { boundsContainPoint, polygonContainsPoint } from '@/lib/geo';
+import type { MapBounds } from '@/lib/types';
 
 // Cities that ban renting shared scooters at night, from data/rental-curfews.json.
 // Some operators still list their scooters as available then, so the dock and
@@ -35,6 +36,16 @@ export interface ActiveCurfew {
 }
 
 const CURFEWS = catalog.curfews as unknown as RentalCurfew[];
+// Each area's box: a point outside it is outside the area, whose edges then go uncounted. The cache's
+// metrics ask about every service area of its 5,000 feeds on each scrape (feedCurfewed): counting the
+// 8,200 edges of the 59 areas for each took most of the render, and held the cache's event loop a
+// second or more at its scrapes on 27 October 2026 (stallLog.ts).
+const BOXES = new Map(CURFEWS.flatMap(curfew => curfew.areas).map((ring): [[number, number][], MapBounds] => [ring, {
+  south: Math.min(...ring.map(([lat]) => lat)), north: Math.max(...ring.map(([lat]) => lat)),
+  west: Math.min(...ring.map(([, lng]) => lng)), east: Math.max(...ring.map(([, lng]) => lng)),
+}]));
+const inArea = (area: [number, number][], [lat, lng]: [number, number]) =>
+  boundsContainPoint(BOXES.get(area)!, lat, lng) && polygonContainsPoint(area, lat, lng);
 const DAY_MINUTES = 24 * 60;
 const NOON = 12 * 60;
 const MINUTE_MS = 60_000;
@@ -83,7 +94,7 @@ function nightHolds(night: CurfewNight, minutes: number, weekday: number): boole
 export function activeCurfew(point: [number, number] | null, now: number): ActiveCurfew | null {
   if (!point) return null;
   for (const curfew of CURFEWS) {
-    if (!curfew.areas.some(area => polygonContainsPoint(area, point[0], point[1]))) continue;
+    if (!curfew.areas.some(area => inArea(area, point))) continue;
     const { minutes, weekday } = localClock(now, curfew.timeZone);
     const night = curfew.nights.find(candidate => nightHolds(candidate, minutes, weekday));
     if (!night) continue;
