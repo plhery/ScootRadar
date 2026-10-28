@@ -145,11 +145,23 @@ banned shared scooters, and feeds that were empty when checked.
     platform, NRW.Mobidrom, offers Voi's, Bolt's and Lime's feeds after a
     free registration: Voi's are on the map since 24 October 2026, and Bolt's
     and Lime's scooters come from their rider maps since 25 October.
-  - Lime's public Hamburg feed answers 404, and its Dresden, Oberhausen and
-    Solingen feeds (6 scooters) were too small or empty. Hamburg's and
-    Oberhausen's Lime scooters come from Lime's rider map since 25 October
-    2026; there Lime's Dresden region lists only e-bikes, and its Solingen
+  - Lime's public Hamburg feed answers 404, and its Oberhausen and Solingen
+    feeds were too small or empty. Hamburg's and Oberhausen's Lime scooters
+    come from Lime's rider map since 25 October 2026; there its Solingen
     region has no scooter zone.
+  - Dresden shows Bolt only. The city lists RideMovi (since August 2025),
+    Bolt (since March 2026) and Voi ("from autumn 2026") for e-scooters, and
+    Lime and Voi for e-bikes only. Checked again on 28 October 2026, after an
+    app user missed the other three:
+    - Lime's public Dresden feed lists 1,288 e-bikes and no scooter, and its
+      rider map's Dresden region has no scooter zone (25 October).
+    - RideMovi publishes no feed: it is in neither MobilityData's list nor
+      Transitous's, and the operators send their MDS data to the city only.
+    - Voi has no public Dresden feed either. Its rider map would carry
+      Dresden's scooters, but a region's zone id comes only from the app's
+      zone list, behind the session the cache keeps, so its owner looks it
+      up once Voi's scooters are out. Voi announced scooters and e-bikes from
+      1 April 2026; the city still dates its scooters "from autumn 2026".
   - Duisburg: Bolt's scooters there are on the map since 25 October 2026,
     from its rider map. Ryde's and Lime's Duisburg feeds are only on the
     closed NRW hub (Ryde's answers 401), and Lime's own `duisburg` answers
