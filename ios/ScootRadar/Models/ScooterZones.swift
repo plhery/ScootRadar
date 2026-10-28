@@ -2,20 +2,27 @@ import Foundation
 import UIKit
 
 /// What a zone forbids a scooter: riding in it at all, ending a ride in it,
-/// or going fast (src/lib/zones.ts).
+/// or going fast (src/lib/zones.ts); or, where a city sets it, where a ride
+/// is to end (CityRuleZone).
 enum ScooterZoneKind: String, CaseIterable, Sendable {
     case noRide
     case noParking
     case slow
+    case parking
+
+    /// The kinds of the operators' zones, as their legend names them: no
+    /// operator publishes where to park.
+    static let operatorKinds: [ScooterZoneKind] = [.noRide, .noParking, .slow]
 
     /// The fills are laid down in this order, the strongest rule on top, as on the web.
-    static let belowFirst: [ScooterZoneKind] = [.slow, .noParking, .noRide]
+    static let belowFirst: [ScooterZoneKind] = [.parking, .slow, .noParking, .noRide]
 
     var label: String {
         switch self {
         case .noRide: String(localized: "No riding")
         case .noParking: String(localized: "No parking")
         case .slow: String(localized: "Slow")
+        case .parking: String(localized: "Parking")
         }
     }
 }
@@ -62,9 +69,12 @@ extension ScooterZoneResponse: Decodable {
         let meta = try container.decodeIfPresent(Meta.self, forKey: .meta)
         pending = meta?.pending ?? false
         truncated = meta?.truncated ?? false
-        // A kind added later is left out, as is a ring with too few points.
+        // A kind added later is left out, and parking, which only cities set and the
+        // operators' legend does not name, as is a ring with too few points.
         zones = try container.decode([Payload].self, forKey: .zones).compactMap { payload in
-            guard let kind = ScooterZoneKind(rawValue: payload.kind) else { return nil }
+            guard let kind = ScooterZoneKind(rawValue: payload.kind), ScooterZoneKind.operatorKinds.contains(kind) else {
+                return nil
+            }
             let polygons = payload.polygons.compactMap { polygon -> [[GeoPoint]]? in
                 let rings = polygon.map { ring in
                     ring.compactMap { point in
@@ -155,7 +165,9 @@ enum ScooterZoneState: Equatable, Sendable {
 /// How each kind of zone is drawn, as on the web (ZoneLegend.tsx, map.css):
 /// how strongly it is filled, the stronger the rule the stronger the fill,
 /// and its edge, solid, dashed or dotted, so that the kinds tell apart
-/// without their colours. No riding is hatched too.
+/// without their colours. No riding is hatched too. A city's parking places,
+/// some only a few metres across, are filled more strongly still than no
+/// parking, in green, so that they show.
 enum ScooterZoneLook {
     struct Edge: Sendable {
         let width: CGFloat
@@ -180,6 +192,7 @@ enum ScooterZoneLook {
         case .noRide: 0.4
         case .noParking: 0.16
         case .slow: 0.12
+        case .parking: 0.25
         }
     }
 
@@ -188,6 +201,7 @@ enum ScooterZoneLook {
         case .noRide: Edge(width: 1.5, dashes: [], roundCaps: false)
         case .noParking: Edge(width: 1.5, dashes: [6, 4], roundCaps: false)
         case .slow: Edge(width: 2, dashes: [0.1, 4], roundCaps: true)
+        case .parking: Edge(width: 1.5, dashes: [], roundCaps: false)
         }
     }
 
@@ -198,18 +212,22 @@ enum ScooterZoneLook {
         case (.noRide, false): UIColor(red: 0.851, green: 0.176, blue: 0.125, alpha: 1)
         case (.noParking, false): UIColor(red: 0.753, green: 0.337, blue: 0, alpha: 1)
         case (.slow, false): UIColor(red: 0.243, green: 0.388, blue: 0.867, alpha: 1)
+        case (.parking, false): UIColor(red: 0.102, green: 0.498, blue: 0.216, alpha: 1)
         case (.noRide, true): UIColor(red: 1, green: 0.412, blue: 0.38, alpha: 1)
         case (.noParking, true): UIColor(red: 1, green: 0.702, blue: 0.251, alpha: 1)
         case (.slow, true): UIColor(red: 0.486, green: 0.612, blue: 1, alpha: 1)
+        case (.parking, true): UIColor(red: 0.298, green: 0.851, blue: 0.482, alpha: 1)
         }
     }
 }
 
-/// A street where a city or its police forbids riding, from data/rule-zones.json, as on the
-/// web (src/lib/ruleZones.ts): Seoul's kickboard-free streets so far. Unlike the operators'
-/// zones they are the law, so the map draws them from zoom 14 whether or not the zones are on,
-/// as no riding's zones are and dimmer outside their hours, and the legend gives their hours
-/// and who forbids it, linked to where they say so. CityRuleZone.all is generated.
+/// A street where a city or its police forbids riding, from data/rule-zones.json, or a zone a
+/// city sets for shared scooters, from data/city-zones.json, as on the web (src/lib/ruleZones.ts):
+/// Seoul's kickboard-free streets, and Bergen's and Porto's zones, credited to the city. Unlike
+/// the operators' zones they are the law, so the map draws them from zoom 14 whether or not the
+/// zones are on, each as its kind's zones are and dimmer outside its hours, and the legend gives
+/// their kind, their hours and who sets them, linked to where they say so. CityRuleZone.all,
+/// Seoul's streets, and CityRuleZone.cityZones are generated.
 struct CityRuleZone: Equatable, Sendable, Identifiable {
     struct Hours: Equatable, Sendable {
         /// Local minutes since midnight; hours past midnight start after they end.
@@ -228,15 +246,17 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         let rule: CityRuleZone
         let inForce: Bool
 
-        /// As the map draws it: a zone of no riding, dimmer outside its hours.
+        /// As the map draws it: a zone of its kind, dimmer outside its hours.
         var mapZone: ScooterZone {
             ScooterZone(
-                id: "rule:\(rule.id)", provider: "city", kind: .noRide, maxSpeedKph: nil, polygons: rule.band,
+                id: "rule:\(rule.id)", provider: "city", kind: rule.kind, maxSpeedKph: nil, polygons: rule.polygons,
                 strength: inForce ? 1 : CityRuleZone.dimmed
             )
         }
     }
 
+    /// Seoul's streets and the cities' zones, put together once, as the map shows them.
+    static let onMap: [CityRuleZone] = all + cityZones
     /// How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14.
     static let bandWidthMeters = 14.0
     /// How strongly a rule is drawn outside its hours, of how strongly within them.
@@ -245,40 +265,63 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     private static let roundCorners = 12
 
     let id: String
-    /// Who forbids it, as the legend names them: "Seoul", "Gangnam-gu".
+    /// Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune".
     let authority: String
     let timeZone: String
-    /// The local day it starts, "YYYY-MM-DD".
+    /// What it asks of a scooter: no riding, on Seoul's streets.
+    let kind: ScooterZoneKind
+    /// The local day it starts, "YYYY-MM-DD"; empty for a city's zone, which has always held.
     let firstDay: String
     /// Every day; all day when empty.
     let hours: [Hours]
     /// Where they say so.
     let source: URL
-    /// The street's centrelines.
+    /// A street's centrelines; none for a city's zone.
     let lines: [[GeoPoint]]
     let bounds: GeoBounds
-    /// The street as pieces of its band, a disc at each corner and a strip along each piece,
-    /// which the zones' overlay merges into one shape.
-    let band: [[[GeoPoint]]]
+    /// As the map draws it. A street is the pieces of its band, a disc at each corner and a strip
+    /// along each piece, which the zones' overlay merges into one shape; a city's zone is its ring.
+    let polygons: [[[GeoPoint]]]
 
+    /// One of Seoul's streets, where riding is forbidden.
     init(id: String, authority: String, timeZone: String, firstDay: String, hours: [Hours], source: URL, lines: [[GeoPoint]]) {
         self.id = id
         self.authority = authority
         self.timeZone = timeZone
+        kind = .noRide
         self.firstDay = firstDay
         self.hours = hours
         self.source = source
         self.lines = lines
-        let points = lines.flatMap { $0 }
-        bounds = GeoBounds(
+        bounds = Self.bounds(of: lines.flatMap { $0 })
+        polygons = Self.band(of: lines, widthMeters: Self.bandWidthMeters)
+    }
+
+    /// One of a city's zones: one ring, which holds all day, every day.
+    init(id: String, authority: String, timeZone: String, kind: ScooterZoneKind, source: URL, ring: [GeoPoint]) {
+        self.id = id
+        self.authority = authority
+        self.timeZone = timeZone
+        self.kind = kind
+        firstDay = ""
+        hours = []
+        self.source = source
+        lines = []
+        bounds = Self.bounds(of: ring)
+        polygons = [[ring]]
+    }
+
+    private static func bounds(of points: [GeoPoint]) -> GeoBounds {
+        GeoBounds(
             south: points.map(\.latitude).min() ?? 0, west: points.map(\.longitude).min() ?? 0,
             north: points.map(\.latitude).max() ?? 0, east: points.map(\.longitude).max() ?? 0
         )
-        band = Self.band(of: lines, widthMeters: Self.bandWidthMeters)
     }
 
     /// Whether it holds at that instant: from its first day there, within its hours.
     func inForce(at date: Date) -> Bool {
+        // A city's zone holds at any time: hundreds may be in view, and need no clock read.
+        if firstDay.isEmpty && hours.isEmpty { return true }
         guard let zone = TimeZone(identifier: timeZone) else { return false }
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = zone
@@ -290,9 +333,9 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     }
 
     /// The rules over the view, from zoom 14 in, each with whether it holds at that instant.
-    static func shown(over view: GeoBounds, zoom: Int, at date: Date, among rules: [CityRuleZone] = all) -> [Shown] {
+    static func shown(over view: GeoBounds, zoom: Int, at date: Date, among rules: [CityRuleZone] = onMap) -> [Shown] {
         guard zoom >= ScooterZoneArea.minimumZoom else { return [] }
-        return rules.filter { $0.bounds.intersects(view) }.map { Shown(rule: $0, inForce: $0.inForce(at: date)) }
+        return rules.compactMap { $0.bounds.intersects(view) ? Shown(rule: $0, inForce: $0.inForce(at: date)) : nil }
     }
 
     /// bandPolygons in src/lib/ruleZones.ts.

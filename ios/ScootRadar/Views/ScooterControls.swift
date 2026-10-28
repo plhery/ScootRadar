@@ -2842,9 +2842,9 @@ struct ZoneLegend: View {
     let state: ScooterZoneState
     /// The operators' zones drawn.
     let count: Int
-    /// The streets over the map where a city forbids riding, each a line of
-    /// its own whether or not the zones are on: its hours, and who forbids it,
-    /// linked to where they say so (as on the web, ZoneLegend.tsx).
+    /// The cities' rules and zones over the map, whether or not the zones are
+    /// on: a line for each kind, hours and who sets them, linked to where they
+    /// say so (as on the web, ZoneLegend.tsx).
     var rules: [CityRuleZone.Shown] = []
 
     var body: some View {
@@ -2858,7 +2858,7 @@ struct ZoneLegend: View {
                     .accessibilityValue(note)
             } else if showsKinds {
                 FlowLayout(spacing: 12, lineSpacing: 4) {
-                    ForEach(ScooterZoneKind.allCases, id: \.self) { kind in
+                    ForEach(ScooterZoneKind.operatorKinds, id: \.self) { kind in
                         HStack(spacing: 6) {
                             ZoneSwatch(kind: kind)
                             Text(kind.label)
@@ -2869,11 +2869,11 @@ struct ZoneLegend: View {
                 .foregroundStyle(ScooterPalette.dockText)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(String(localized: "Zones"))
-                .accessibilityValue(ScooterZoneKind.allCases.map(\.label).joined(separator: ", "))
+                .accessibilityValue(ScooterZoneKind.operatorKinds.map(\.label).joined(separator: ", "))
             }
             ForEach(lines, id: \.key) { line in
                 HStack(spacing: 6) {
-                    ZoneSwatch(kind: .noRide)
+                    ZoneSwatch(kind: line.kind)
                         .opacity(line.inForce ? 1 : CityRuleZone.dimmed)
                     Text(line.text)
                         .fixedSize(horizontal: false, vertical: true)
@@ -2887,7 +2887,7 @@ struct ZoneLegend: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 7)
         .chromeGlass(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        // Only a city's line has anything to tap: who forbids it.
+        // Only a city's line has anything to tap: who sets it.
         .allowsHitTesting(!lines.isEmpty)
     }
 
@@ -2904,21 +2904,26 @@ struct ZoneLegend: View {
         }
     }
 
-    /// One line for each authority, hours and whether they hold now.
-    private var ruleLines: [(key: String, inForce: Bool, text: AttributedString)] {
-        var lines: [(key: String, inForce: Bool, text: AttributedString)] = []
-        for shown in rules {
-            let hours = shown.rule.hours.map { "\(Self.wallTime($0.fromMinute))–\(Self.wallTime($0.untilMinute))" }
-                .joined(separator: ", ")
-            let key = "\(shown.rule.authority) \(hours) \(shown.inForce)"
-            guard !lines.contains(where: { $0.key == key }) else { continue }
-            var text = AttributedString("\(ScooterZoneKind.noRide.label) \(hours) · ")
-            var authority = AttributedString(shown.rule.authority)
-            authority.link = shown.rule.source
-            authority.underlineStyle = .single
-            text += authority
-            if !shown.inForce { text += AttributedString(" (\(String(localized: "not now")))") }
-            lines.append((key, shown.inForce, text))
+    /// One line for each kind, authority, hours and whether they hold now,
+    /// the strongest rule first: "No riding 12:00–23:00 · Seoul", "Parking · Porto".
+    var ruleLines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: AttributedString)] {
+        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: AttributedString)] = []
+        // Hundreds of a city's zones may be in view, and make a few lines.
+        var keys = Set<String>()
+        for kind in ScooterZoneKind.allCases {
+            for shown in rules where shown.rule.kind == kind {
+                let hours = shown.rule.hours.map { "\(Self.wallTime($0.fromMinute))–\(Self.wallTime($0.untilMinute))" }
+                    .joined(separator: ", ")
+                let key = "\(kind.rawValue) \(shown.rule.authority) \(hours) \(shown.inForce)"
+                guard keys.insert(key).inserted else { continue }
+                var text = AttributedString(hours.isEmpty ? "\(kind.label) · " : "\(kind.label) \(hours) · ")
+                var authority = AttributedString(shown.rule.authority)
+                authority.link = shown.rule.source
+                authority.underlineStyle = .single
+                text += authority
+                if !shown.inForce { text += AttributedString(" (\(String(localized: "not now")))") }
+                lines.append((key, kind, shown.inForce, text))
+            }
         }
         return lines
     }
@@ -2941,7 +2946,7 @@ private struct ZoneSwatch: View {
         let color = Color(uiColor: ScooterZoneLook.color(kind, isDark: colorScheme == .dark))
         let shape = RoundedRectangle(cornerRadius: 3, style: .continuous)
         ZStack {
-            shape.fill(color.opacity(kind == .slow ? 0.1 : 0.16))
+            shape.fill(color.opacity(fillOpacity))
             if kind == .noRide {
                 Canvas { context, size in
                     var lines = Path()
@@ -2959,9 +2964,17 @@ private struct ZoneSwatch: View {
         .accessibilityHidden(true)
     }
 
+    private var fillOpacity: Double {
+        switch kind {
+        case .noRide, .noParking: 0.16
+        case .slow: 0.1
+        case .parking: 0.25
+        }
+    }
+
     private var edge: StrokeStyle {
         switch kind {
-        case .noRide: StrokeStyle(lineWidth: 2)
+        case .noRide, .parking: StrokeStyle(lineWidth: 2)
         case .noParking: StrokeStyle(lineWidth: 2, dash: [4, 2.5])
         case .slow: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [0.1, 3.5])
         }

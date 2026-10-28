@@ -413,13 +413,13 @@ struct ScooterMapScreen: View {
         .id(model.language)
     }
 
-    /// What the zones' colours mean, while they are on, and a city's rules over the map;
-    /// the names on the map keep clear of it.
+    /// What the zones' colours mean, while they are on, and the cities' rules and zones over
+    /// the map; the names on the map keep clear of it.
     @ViewBuilder
     private var zoneLegend: some View {
         if model.zoneState != .off || !model.mapRuleZones.isEmpty {
             ZoneLegend(
-                state: model.zoneState, count: model.mapZones.count - model.mapRuleZones.count, rules: model.mapRuleZones
+                state: model.zoneState, count: model.mapOperatorZoneCount, rules: model.mapRuleZones
             )
                 .onGeometryChange(for: CGRect.self) { geometry in
                     geometry.frame(in: .global)

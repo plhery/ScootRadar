@@ -334,7 +334,12 @@ the dock and each scooter's card state the ban and when renting resumes.
     (`broker.fiware.urbanplatform.portodigital.pt`) holds about 1,000 Bolt
     scooters, but it is unlicensed and hadn't been updated since 8 October
     2026 when polled on the 16th, nor on the 25th (927 Bolt, 494 Bird and 20
-    Circ scooters). Since 25 October 2026 Bolt's scooters in Lisboa with
+    Circ scooters), nor on the 29th (last change 8 October, 19:34 UTC). Its
+    230 sharing points (`OnStreetParking`, `dataProvider` `cmp`, 2,941 spots),
+    which list the scooters parked at each and were updated on 28 October, are
+    drawn as Porto's parking places since 29 October 2026, credited to the
+    city: such public city layers are drawn without a stated licence since
+    the 28th (DATA_SOURCES.md). Since 25 October 2026 Bolt's scooters in Lisboa with
     Oeiras, Porto with Matosinhos, Coimbra, Faro and Santarém come from its
     authenticated [rider map](bolt-app-map.md). Lime has no public feed for
     Porto or Faro (404); its scooters there and in Oeiras come from its rider

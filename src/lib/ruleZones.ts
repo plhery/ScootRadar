@@ -3,12 +3,18 @@ import catalog from '../../data/rule-zones.json';
 import { boundsIntersect } from './geo';
 import { localClock } from './rentalCurfews';
 import type { MapBounds } from './types';
-import { ZONES_MIN_ZOOM } from './zones';
+import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 
 // Streets where a city or its police forbids riding, from data/rule-zones.json: Seoul's
-// "kickboard-free streets" so far. Unlike the operators' zones they are the law, so the map
-// draws them from zoom 14 whether or not the zones are turned on, dimmer outside their hours,
-// and the legend says who forbids it, linked to where they say so.
+// "kickboard-free streets" so far. And the zones cities set for shared e-scooters, Bergen's
+// and Porto's, from data/city-zones.json (cityZones.ts loads each city's as a view reaches
+// it): where to park, where not to, where to ride slowly and where not to ride. Unlike the
+// operators' zones they are the law, so the map draws them from zoom 14 whether or not the
+// zones are turned on, dimmer outside their hours, and the legend says who sets them, linked
+// to where they say so.
+
+/** What a rule asks: what the operators' zones ask, or that scooters are parked there, which only cities say. */
+export type RuleKind = ZoneKind | 'parking';
 
 /** Local "HH:MM", from and until. */
 export interface RuleHours {
@@ -16,31 +22,45 @@ export interface RuleHours {
   until: string;
 }
 
-export interface RuleZone {
+interface RuleZoneCommon {
   id: string;
   place: string;
-  /** Who forbids it, as the legend names them: "Seoul", "Gangnam-gu". */
+  /** Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune". */
   authority: string;
-  rule: 'noRide';
-  /** The local day it starts, "YYYY-MM-DD". */
-  from: string;
+  rule: RuleKind;
+  /** The local day it starts, "YYYY-MM-DD"; since always when left out. */
+  from?: string;
   timeZone: string;
   /** Every day; all day when left out. */
   hours?: RuleHours[];
   source: { title: string; url: string };
-  /** The street's centrelines, each of [lat, lng] points. */
-  lines: [number, number][][];
 }
 
+/** A street, drawn as a band round its centrelines. */
+export interface RuleStreet extends RuleZoneCommon {
+  /** The street's centrelines, each of [lat, lng] points. */
+  lines: [number, number][][];
+  ring?: undefined;
+}
+
+/** An area, drawn as it is. */
+export interface RuleArea extends RuleZoneCommon {
+  /** Its edge, [lat, lng] points, the first not repeated at the end. */
+  ring: [number, number][];
+  lines?: undefined;
+}
+
+export type RuleZone = RuleStreet | RuleArea;
+
 /** A rule zone as the map draws it. */
-export interface RuleZoneShape extends RuleZone {
+export type RuleZoneShape = RuleZone & {
   /** Polygons, each its outer ring and then its holes, each ring of [lat, lng] points. */
   polygons: [number, number][][][];
   /** Whether its hours hold now. */
   inForce: boolean;
-}
+};
 
-export const RULE_ZONES = catalog.zones as unknown as RuleZone[];
+export const RULE_ZONES = catalog.zones as unknown as RuleStreet[];
 
 /** How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14. */
 const BAND_WIDTH_M = 14;
@@ -56,14 +76,16 @@ function minutesOfDay(time: string): number {
 
 const dates = new Map<string, Intl.DateTimeFormat>();
 
-/** Whether the zone's rule holds at that instant: from its first day, within its hours. */
+/** Whether the zone's rule holds at that instant: from its first day, if it has one, within its hours. */
 export function ruleInForce(zone: Pick<RuleZone, 'from' | 'timeZone' | 'hours'>, now: number): boolean {
-  let date = dates.get(zone.timeZone);
-  if (!date) {
-    date = new Intl.DateTimeFormat('en-CA', { timeZone: zone.timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
-    dates.set(zone.timeZone, date);
+  if (zone.from) {
+    let date = dates.get(zone.timeZone);
+    if (!date) {
+      date = new Intl.DateTimeFormat('en-CA', { timeZone: zone.timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+      dates.set(zone.timeZone, date);
+    }
+    if (date.format(now) < zone.from) return false;
   }
-  if (date.format(now) < zone.from) return false;
   if (!zone.hours) return true;
   const { minutes } = localClock(now, zone.timeZone);
   return zone.hours.some(({ from, until }) => {
@@ -118,12 +140,29 @@ function linesBounds(lines: [number, number][][]): MapBounds {
   };
 }
 
+/**
+ * The ring turned the way the union turns a band's outer rings, its points read as [x, y]:
+ * the map fills each kind's zones as one shape, which only covers where two of them overlap
+ * if they all turn the same way.
+ */
+function outerRing(ring: [number, number][]): [number, number][] {
+  let twiceArea = 0;
+  for (let index = 0; index < ring.length; index++) {
+    const [x0, y0] = ring[index];
+    const [x1, y1] = ring[(index + 1) % ring.length];
+    twiceArea += x0 * y1 - x1 * y0;
+  }
+  return twiceArea < 0 ? [...ring].reverse() : ring;
+}
+
 const shapes = new Map<string, { bounds: MapBounds; polygons: [number, number][][][] }>();
 
 function shapeOf(zone: RuleZone) {
   let shape = shapes.get(zone.id);
   if (!shape) {
-    shape = { bounds: linesBounds(zone.lines), polygons: bandPolygons(zone.lines) };
+    shape = zone.ring
+      ? { bounds: linesBounds([zone.ring]), polygons: [[outerRing(zone.ring)]] }
+      : { bounds: linesBounds(zone.lines), polygons: bandPolygons(zone.lines) };
     shapes.set(zone.id, shape);
   }
   return shape;

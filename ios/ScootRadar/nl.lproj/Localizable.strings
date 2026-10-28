@@ -80,9 +80,9 @@
 
 "City totals · refreshed hourly" = "Totalen per stad · elk uur bijgewerkt";
 
-/* Scooter parking */
+/* Scooter parking: Lille's bays. "Parking" also names, in the zones' legend, the places a city sets for scooters to be left at */
 "Designated scooter parking." = "Aangewezen parkeerplek voor deelsteps.";
-"Parking" = "Parkeren";
+"Parking" = "Parkeerplek";
 
 // Self-hosted usage analytics
 "Share anonymous usage" = "Anoniem gebruik delen";

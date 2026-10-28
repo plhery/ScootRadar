@@ -28,10 +28,11 @@
   --ground-water: #c2d8f2;
   --ground-street: #ffffff;
   --ground-name: #7c8596;
-  /* The operators' zones: edges of 3:1 at least on the land, the parks and the streets. */
+  /* The operators' zones, and the cities' parking: edges of 3:1 at least on the land, the parks and the streets. */
   --zone-no-ride: #d92d20;
   --zone-no-parking: #c05600;
   --zone-slow: #3e63dd;
+  --zone-parking: #1a7f37;
   --attribution-bg: rgba(255, 255, 255, 0.85);
   --attribution-ink: #555c64;
   --map-control-bg: rgba(255, 255, 255, 0.58);
@@ -121,6 +122,7 @@ body {
   --zone-no-ride: #ff6961;
   --zone-no-parking: #ffb340;
   --zone-slow: #7c9cff;
+  --zone-parking: #4cd97b;
   --attribution-bg: rgba(11, 14, 20, 0.85);
   --attribution-ink: #c0c5cf;
   --map-control-bg: rgba(16, 19, 26, 0.86);
@@ -175,6 +177,7 @@ body {
     --zone-no-ride: #ff6961;
     --zone-no-parking: #ffb340;
     --zone-slow: #7c9cff;
+    --zone-parking: #4cd97b;
     --attribution-bg: rgba(11, 14, 20, 0.85);
     --attribution-ink: #c0c5cf;
     --map-control-bg: rgba(16, 19, 26, 0.86);
@@ -2081,6 +2084,10 @@ svg {
   --zone-color: var(--zone-slow);
   border-style: dotted;
   background: color-mix(in srgb, var(--zone-color) 10%, transparent);
+}
+.zone-swatch-parking {
+  --zone-color: var(--zone-parking);
+  background: color-mix(in srgb, var(--zone-color) 25%, transparent);
 }
 /* The switch of the zones, under the map styles. */
 .zone-toggle {

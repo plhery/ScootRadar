@@ -1312,6 +1312,50 @@ test('the operators\' zones are drawn once turned on, for the providers shown, w
   await expect(edges).toHaveCount(0);
 });
 
+test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an edge for each rule, and who sets it', async ({ page }) => {
+  const scripts: Promise<string>[] = [];
+  page.on('response', response => {
+    if (response.request().resourceType() === 'script') scripts.push(response.text().catch(() => ''));
+  });
+  const bergenLoaded = async () => (await Promise.all(scripts)).some(body => body.includes('bergen-no-parking-'));
+  // Away from Bergen, its zones are not loaded: they are no part of the map page.
+  await page.goto('/map?origin=47.3769,8.5417');
+  await expect(page.locator('.scooter-marker')).toHaveCount(3);
+  expect(await bergenLoaded()).toBe(false);
+
+  // Bergen's Torget, at street level.
+  await page.goto('/map?origin=60.3955,5.3245');
+  const legend = page.getByRole('group', { name: 'Zones' });
+  await expect(legend).toHaveText(
+    'No riding · Bergen kommuneNo parking · Bergen kommuneSlow · Bergen kommuneParking · Bergen kommune');
+  await expect(legend.getByRole('link', { name: 'Bergen kommune' }).last())
+    .toHaveAttribute('href', /^https:\/\/www\.bergen\.kommune\.no\//);
+  expect(await bergenLoaded()).toBe(true);
+  // However many zones, one fill and one edge for each rule, parking at the bottom.
+  const paths = page.locator('.leaflet-rule-zones-pane path');
+  await expect(paths).toHaveCount(8);
+  expect(await paths.evaluateAll(elements => elements.map(element => element.getAttribute('class')))).toEqual(
+    ['parking', 'slow', 'noParking', 'noRide'].flatMap(kind => [`zone-fill-${kind}`, `zone-edge-${kind}`]));
+  // Parking in its green, filled as one shape within a solid edge, as its swatch is.
+  const parking = await page.evaluate(() => {
+    const fill = document.querySelector('.leaflet-rule-zones-pane .zone-fill-parking')!;
+    const edge = document.querySelector('.leaflet-rule-zones-pane .zone-edge-parking')!;
+    return {
+      fill: getComputedStyle(fill).fill, fillRule: fill.getAttribute('fill-rule'), fillOpacity: fill.getAttribute('fill-opacity'),
+      stroke: getComputedStyle(edge).stroke, dashes: edge.getAttribute('stroke-dasharray'),
+      swatch: getComputedStyle(document.querySelector('.zone-swatch-parking')!).borderTopStyle,
+    };
+  });
+  expect(parking).toEqual({
+    fill: 'rgb(26, 127, 55)', fillRule: 'nonzero', fillOpacity: '0.25', stroke: 'rgb(26, 127, 55)', dashes: null, swatch: 'solid',
+  });
+
+  // Further out than zoom 14, neither drawn nor told.
+  await zoomTo(page, 13);
+  await expect(paths).toHaveCount(0);
+  await expect(legend).toHaveCount(0);
+});
+
 test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map?origin=47.3769,8.5417');

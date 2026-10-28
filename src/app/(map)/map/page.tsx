@@ -33,7 +33,7 @@ import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCitie
 import { providerForFailedSource, providerHealth, providersInView } from '@/lib/dataHealth';
 import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/dockModel';
 import { activeCurfew } from '@/lib/rentalCurfews';
-import { ruleZonesInView } from '@/lib/ruleZones';
+import { RULE_ZONES, ruleZonesInView } from '@/lib/ruleZones';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
@@ -41,6 +41,7 @@ import { placeForCity, recentPlaces, searchNear, type Place } from '@/lib/places
 import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlaces } from '@/lib/useRecentPlaces';
+import { useCityZones } from '@/lib/useCityZones';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { useZoneData } from '@/lib/useZoneData';
 import { groupCityTotals } from '@/lib/clustering';
@@ -376,8 +377,13 @@ export default function Home() {
     () => zoneData.zones.filter(zone => enabledProviders.has(zone.provider)),
     [enabledProviders, zoneData.zones]
   );
-  // Streets a city forbids riding on: the law, so drawn whether or not the zones are on.
-  const ruleZones = useMemo(() => ruleZonesInView(mapQuery, now), [mapQuery, now]);
+  // Streets a city forbids riding on, and the zones a city sets: the law, so drawn whether or
+  // not the zones are on.
+  const cityZones = useCityZones(mapQuery);
+  const ruleZones = useMemo(
+    () => ruleZonesInView(mapQuery, now, [...RULE_ZONES, ...cityZones]),
+    [cityZones, mapQuery, now]
+  );
 
   const handleProviderToggle = (provider: string) => {
     track('provider_filter', { provider, enabled: !enabledProviders.has(provider), source: 'filters' });

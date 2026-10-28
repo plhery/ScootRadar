@@ -53,7 +53,6 @@ were added.
 | **Rider sign-ins for six ATOM apps** | IslaRide (Tenerife), wer2 (Doha), Reby (Dakar), IZZY (Tashkent), Silk Road Samarkand and e-moob (Tamarindo) answer their map only to a signed-in rider, and each needs its own phone and SMS sign-in, as MoVe's did. On 25 October 2026 the user chose to leave them for another day. Reby also refused a sign-in from a Swiss IP (error `11-6`), and e-moob's Aruba fleet stays out, since Aruba banned e-scooters from public roads in July 2026. See [the apps](atom-operator-apps.md) |
 | **Bird's rider app** | Since 28 October 2026 it supplies 21 towns where Bird publishes no feed, signed in, each area swept whole, at one request every 30 seconds for all of them: eight American ones, from Austin to Yonkers, and thirteen Canadian ones, from Lethbridge to Mississauga. Its map made up scooters twice on 27 October 2026, both times after about 200 requests, so the request limit, not published, is the constraint: the cache stays near half of it. Beyond the 33 largest US and Canadian towns, only the 25 where Bird was said to run were searched, and each area was read only near its centre: Pickering's, Oklahoma City's, Washington's, Chula Vista's, San Jose's, Vancouver's and Houston's, which held no scooter there, are still to be swept whole. See [requests, limits and evidence](bird-app-map.md) |
 | **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Both operators' scooters there come from their rider maps since 25 October 2026, [Bolt's](bolt-app-map.md) and [Lime's](lime-app-map.md), so their NRW.Mobidrom feeds are not needed |
-| **Bergen kommune's e-scooter zones** | The city's [map](https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e) draws 772 zones from public ArcGIS layers under `kart.bergen.kommune.no/arcgis/rest/services/Bymiljoetaten/` (read 28 October 2026): `Parkeringsplass_for_elsparkesykkel` (176 parking places), `Parkering_forbudt` (149 no-parking zones), `Saktesone` (74 slow zones) and `Sone_med_kjøreforbud` (373 no-riding zones), besides `Reguleringssone`, the regulation's three zones. Neither the layers nor the map's portal items state a licence, and data.norge.no lists no such dataset. The operators get the zones through the city's MDS Policy API, which isn't public; Nivel, which runs the city's platform, publishes no open feed of zones or vehicles either (28 October 2026). Drawing them needs a decision that an unlicensed city map may be drawn. It also needs polygons and parking, no-parking and slow kinds in `data/rule-zones.json`, which holds only no-riding streets |
 
 It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
 licence, so their terms block nothing and their feeds stay on the map. For the
@@ -246,6 +245,10 @@ banned shared scooters, and feeds that were empty when checked.
     since 27 October 2026, and Ryde's, about 4,700, from
     [Skyss's guest map](ryde-app-map.md#the-production-reader) since 28
     October.
+  - Bergen kommune's 772 e-scooter zones (parking places, no-parking, slow
+    and no-riding zones) are drawn since 29 October 2026, from the public
+    layers of the city's map, which state no licence: since 28 October 2026
+    such city layers are drawn, credited to the city (DATA_SOURCES.md).
   - Ryde's fleet in Kristiansand is missing from Entur. Its fleets in Asker,
     Bærum, Bodø, Lillestrøm and Lørenskog are on the map since 22 October
     2026. Dott publishes nothing for Bodø.
@@ -275,6 +278,13 @@ banned shared scooters, and feeds that were empty when checked.
     Santarém come from its [rider map](bolt-app-map.md) since 25 October
     2026. Lime has no public feed for Porto or Faro; its scooters there and
     in Oeiras come from its rider map since the same day.
+  - Porto's FIWARE broker, which states no licence, still holds its shared
+    scooters as they were on 8 October 2026 (checked 29 October), so they stay
+    off the map. The city's 230 sharing points on it, last updated on 28
+    October, are drawn as parking places since 29 October 2026
+    (DATA_SOURCES.md). Porto's own
+    mobility map server (`servergeo.cm-porto.pt`, `Portal_da_Mobilidade_ext`)
+    answered "Serviço indisponível" (HTTP 500) that night.
   - Lisboa is ending shared scooters: its council approved on 21 October 2026
     ending its agreement with the operators and banning their scooters from
     the municipality, with 60 days to remove them, by the end of 2026. Bird and

@@ -1,13 +1,14 @@
 import MapKit
 import UIKit
 
-/// The operators' zones as one overlay on the map, drawn above the roads
-/// and under their names, the walking route and the scooters. Each kind's
-/// zones are merged into one shape, as on the web (zoneShapes.ts): where
-/// several operators forbid the same over a street, it is drawn once, within
-/// one edge. Only the zones handed in are merged, those of the providers
-/// shown, so a filter on one provider leaves its own. Zones drawn dimmer, a
-/// city's rules outside their hours, are merged apart from the others.
+/// The operators' zones and the cities' as one overlay on the map, drawn
+/// above the roads and under their names, the walking route and the scooters.
+/// Each kind's zones are merged into one shape, as on the web (zoneShapes.ts):
+/// where several operators, or an operator and the city, forbid the same over
+/// a street, it is drawn once, within one edge. Only the zones handed in are
+/// merged, those of the providers shown, so a filter on one provider leaves its
+/// own. Zones drawn dimmer, a city's rules outside their hours, are merged
+/// apart from the others.
 final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
     /// One piece of a kind's merged zones, its outline and its holes, in map
     /// points from the corner of the overlay.
@@ -146,9 +147,10 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
         // Where riding is forbidden, nothing more needs saying: no parking's
         // and slow zones' edges give way within no riding's zones and along
         // their edge, which other operators' zones of the same street often
-        // follow to the metre.
+        // follow to the metre. A city's parking place there still says where
+        // to leave the scooter once walked in, so its edge is kept whole.
         let noRide = near.filter { $0.kind == .noRide }
-        let giving = near.filter { $0.kind != .noRide }
+        let giving = near.filter { $0.kind == .noParking || $0.kind == .slow }
         if !giving.isEmpty {
             context.saveGState()
             context.beginTransparencyLayer(auxiliaryInfo: nil)
@@ -165,6 +167,7 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
             context.endTransparencyLayer()
             context.restoreGState()
         }
+        for shape in near where shape.kind == .parking { stroke(shape, unit: unit, context: context) }
         for shape in noRide { stroke(shape, unit: unit, context: context) }
     }
 

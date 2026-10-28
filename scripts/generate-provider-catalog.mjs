@@ -35,6 +35,7 @@ const { landingFirst, countries } = readJson('data/countries.json');
 const regionalSystems = catalogSystems(countries, readCatalog);
 const curfews = readJson('data/rental-curfews.json').curfews;
 const ruleZones = readJson('data/rule-zones.json').zones;
+const cityZones = readJson('data/city-zones.json').cities.map(city => ({ ...city, ...readJson(`data/city-zones/${city.id}.json`) }));
 
 function validateCatalog() {
   if (!Array.isArray(providers) || providers.length === 0) {
@@ -464,6 +465,60 @@ ${lines.join('\n')}
 `;
 }
 
+function swiftCityZones() {
+  const kinds = new Set(['parking', 'noParking', 'slow', 'noRide']);
+  const ids = new Set(ruleZones.map(zone => zone.id));
+  const name = (id, what) => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Zone${what}`;
+  const properties = [];
+  const entries = cityZones.map(city => {
+    if (!/^[a-z]+$/.test(city.id) || !city.authority || !/^https:\/\//.test(city.source?.url)) {
+      throw new Error(`City zones without a source: ${city.id}`);
+    }
+    if (city.zones.length === 0) throw new Error(`City without zones: ${city.id}`);
+    for (const zone of city.zones) {
+      if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(zone.id) || !zone.id.startsWith(`${city.id}-`) || ids.has(zone.id)) {
+        throw new Error(`Invalid city zone id: ${zone.id}`);
+      }
+      ids.add(zone.id);
+      if (!kinds.has(zone.kind)) throw new Error(`Unknown city zone kind: ${zone.kind} (${zone.id})`);
+      if (zone.ring.length < 3 || !zone.ring.every(point => point.length === 2 && point.every(Number.isFinite))) {
+        throw new Error(`Invalid city zone ring: ${zone.id}`);
+      }
+    }
+    properties.push(
+      `    private static let ${name(city.id, 'Ids')}: [String] = [${city.zones.map(zone => JSON.stringify(zone.id)).join(', ')}]`,
+      `    private static let ${name(city.id, 'Kinds')}: [ScooterZoneKind] = [${city.zones.map(zone => `.${zone.kind}`).join(', ')}]`,
+      `    private static let ${name(city.id, 'Rings')}: [[Double]] = [${city.zones.map(zone => `[${zone.ring.flat().join(', ')}]`).join(', ')}]`,
+    );
+    return `        zones(\n            authority: ${JSON.stringify(city.authority)}, timeZone: ${JSON.stringify(city.timeZone)},\n` +
+      `            source: URL(string: ${JSON.stringify(city.source.url)})!,\n` +
+      `            ids: ${name(city.id, 'Ids')}, kinds: ${name(city.id, 'Kinds')}, rings: ${name(city.id, 'Rings')}\n        )`;
+  });
+
+  return `
+/// The zones cities set for shared scooters, as src/lib/ruleZones.ts reads data/city-zones.json: where to
+/// park, where not to, where to ride slowly and where not to ride, each one ring.
+extension CityRuleZone {
+    static let cityZones: [CityRuleZone] =
+${entries.join(' +\n')}
+
+    /// Each zone of a city, its ring as latitude, longitude, latitude, longitude…
+    private static func zones(
+        authority: String, timeZone: String, source: URL, ids: [String], kinds: [ScooterZoneKind], rings: [[Double]]
+    ) -> [CityRuleZone] {
+        zip(ids, zip(kinds, rings)).map { id, zone in
+            CityRuleZone(
+                id: id, authority: authority, timeZone: timeZone, kind: zone.0, source: source,
+                ring: stride(from: 0, to: zone.1.count, by: 2).map { GeoPoint(latitude: zone.1[$0], longitude: zone.1[$0 + 1]) }
+            )
+        }
+    }
+
+${properties.join('\n')}
+}
+`;
+}
+
 // The Android app names the providers as the iPhone app does, in Kotlin's casing (BoltHopp), and reads
 // the rest of the catalog from catalog.json: as Kotlin code, its thousands of areas and cities would pass
 // the JVM's limit of 64 KB of code a method. android/core's CatalogParityTest checks both apps hold the
@@ -595,8 +650,9 @@ const birdProblem = birdAreasProblem(regionalSystems, readJson('data/bird-app-ar
 if (birdProblem) throw new Error(birdProblem);
 const swissProblem = swissCatalogProblem(regionalSystems, swissAreas);
 if (swissProblem) throw new Error(swissProblem);
-// Written in every case: writing it checks the curfews and rule zones.
-const swift = swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftRuleZones() + swiftCountries(countries);
+// Written in every case: writing it checks the curfews, rule zones and city zones.
+const swift = swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftRuleZones() + swiftCityZones() +
+  swiftCountries(countries);
 if (androidDirectory) {
   const generated = 'com/plhery/scootradar/core/generated';
   for (const [path, contents] of [

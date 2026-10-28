@@ -219,12 +219,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// What the zones' legend says.
     private(set) var zoneState = ScooterZoneState.off
     /// The zones drawn on the map: those of the providers shown, from zoom 14,
-    /// and the streets where a city forbids riding, which show whether or not
-    /// the zones are on.
+    /// and the cities' rules and zones, which show whether or not the zones
+    /// are on.
     private(set) var mapZones: [ScooterZone] = []
     private(set) var mapZonesRevision = 0
-    /// The streets where a city forbids riding over the map, for the legend.
+    /// The cities' rules and zones over the map, for the legend; each is one of mapZones,
+    /// which may draw more of them, just off the map.
     private(set) var mapRuleZones: [CityRuleZone.Shown] = []
+    /// How many of mapZones are the operators'.
+    private(set) var mapOperatorZoneCount = 0
 
     var appearance: ScooterAppearance {
         didSet {
@@ -352,6 +355,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var recentZoneAnswers: [ScooterZoneAnswer] = []
     @ObservationIgnored private var zoneTask: Task<Void, Never>?
     @ObservationIgnored private var zoneTaskArea: ScooterZoneArea?
+    /// Where the cities' zones drawn were picked, the map and half of it again on
+    /// each side: where hundreds are near, as in Bergen, nearly any pan brings one
+    /// in or takes one out, and the overlay, the operators' zones with them, would
+    /// be merged again each time. Within it, the same are drawn.
+    @ObservationIgnored private var ruleZoneArea: GeoBounds?
     private(set) var mapScooters: [Scooter] = []
     private(set) var mapScootersRevision = 0
     private(set) var mapClusters: [ScooterCluster] = []
@@ -2254,11 +2262,16 @@ extension ScooterMapModel {
             return
         }
         if let answer = zoneAnswer, answer.area.contains(area) {
-            // Unless a pending answer is being asked for again, it stands.
-            if zoneTaskArea == nil { setZones(state: answer.failed ? .failed : .shown) }
+            // Unless a pending answer is being asked for again, it stands; the
+            // cities' zones follow the map either way.
+            if zoneTaskArea == nil { setZones(state: answer.failed ? .failed : .shown) } else { rebuildMapZones() }
             return
         }
-        if let taskArea = zoneTaskArea, taskArea.contains(area) { return }
+        if let taskArea = zoneTaskArea, taskArea.contains(area) {
+            // The cities' zones follow the map meanwhile.
+            rebuildMapZones()
+            return
+        }
         let now = clock()
         recentZoneAnswers.removeAll { now.timeIntervalSince($0.receivedAt) > Self.zoneAnswerLifetime }
         if let recent = recentZoneAnswers.first(where: { $0.area.contains(area) }) {
@@ -2319,13 +2332,20 @@ extension ScooterMapModel {
     }
 
     /// Like the scooters: only the zones of the providers switched on, and
-    /// none further out than zoom 14; and the city's rules over the map.
+    /// none further out than zoom 14; and the cities' rules and zones over the map.
     fileprivate func rebuildMapZones() {
         let shown = zoneState == .off || zoneState == .zoomIn ? [] : (zoneAnswer?.zones ?? []).filter { zone in
             ScooterProvider(rawValue: zone.provider).map { enabledProviders.contains($0) } ?? false
         }
-        let rules = CityRuleZone.shown(over: viewport, zoom: viewportZoom, at: clock())
-        if rules != mapRuleZones { mapRuleZones = rules }
+        if viewportZoom < ScooterZoneArea.minimumZoom {
+            ruleZoneArea = nil
+        } else if ruleZoneArea?.contains(viewport) != true {
+            ruleZoneArea = viewport.expanded(by: 0.5)
+        }
+        let rules = ruleZoneArea.map { CityRuleZone.shown(over: $0, zoom: viewportZoom, at: clock()) } ?? []
+        let rulesInView = rules.filter { $0.rule.bounds.intersects(viewport) }
+        if rulesInView != mapRuleZones { mapRuleZones = rulesInView }
+        if shown.count != mapOperatorZoneCount { mapOperatorZoneCount = shown.count }
         let drawn = rules.map(\.mapZone) + shown
         guard drawn != mapZones else { return }
         mapZones = drawn

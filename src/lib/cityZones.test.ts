@@ -1,0 +1,100 @@
+import { readdirSync } from 'node:fs';
+import { describe, expect, it, vi } from 'vitest';
+import index from '../../data/city-zones.json';
+import { boundsContainPoint } from './geo';
+import { ruleInForce, ruleZonesInView } from './ruleZones';
+
+// Around Bergen's Torget and Bryggen, at zoom 14 on a phone.
+const BERGEN_CENTRE = { south: 60.388, west: 5.305, north: 60.405, east: 5.345 };
+const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
+const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
+const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
+
+/** The module as the page first has it, nothing loaded. */
+async function fresh() {
+  vi.resetModules();
+  return import('./cityZones');
+}
+
+describe('the cities\' zones', () => {
+  it('has a loader for every city of the index and its file, and a city for every loader', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
+    const cities = ZONE_CITIES.map(city => city.id).sort();
+    expect(cities).toEqual(['bergen', 'porto']);
+    expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
+    expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
+  });
+
+  it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
+    const { CITY_ZONE_FILES } = await fresh();
+    for (const city of index.cities) {
+      const { default: file } = await CITY_ZONE_FILES[city.id]();
+      expect(file.zones).toHaveLength(city.zones);
+      expect(new Set(file.zones.map(zone => zone.id)).size).toBe(city.zones);
+      for (const zone of file.zones) {
+        expect(KINDS).toContain(zone.kind);
+        expect(zone.id.startsWith(`${city.id}-`)).toBe(true);
+        expect(zone.ring.length).toBeGreaterThanOrEqual(3);
+        expect(zone.ring.every(([lat, lng]) => boundsContainPoint(city.bounds, lat, lng))).toBe(true);
+      }
+      expect(city.source.url).toMatch(/^https:\/\//);
+    }
+  });
+
+  it('makes a city\'s zones rule zones of the city, in force always', async () => {
+    const { cityRuleZones, ZONE_CITIES } = await fresh();
+    const bergen = ZONE_CITIES.find(city => city.id === 'bergen')!;
+    const ring: [number, number][] = [[60.395, 5.324], [60.395, 5.326], [60.396, 5.326]];
+    const [zone] = cityRuleZones(bergen, { zones: [{ id: 'bergen-slow-1', kind: 'slow', name: 'Saktesone - Torget', ring }] });
+    expect(zone).toEqual({
+      id: 'bergen-slow-1', place: 'Saktesone - Torget', authority: 'Bergen kommune', rule: 'slow',
+      timeZone: 'Europe/Oslo', source: bergen.source, ring,
+    });
+    expect(ruleInForce(zone, Date.parse('2026-10-29T23:30:00Z'))).toBe(true);
+  });
+
+  it('finds the cities a view reaches, from zoom 14 in', async () => {
+    const { zoneCitiesInView } = await fresh();
+    expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 14 }).map(city => city.id)).toEqual(['bergen']);
+    expect(zoneCitiesInView({ bounds: PORTO_CENTRE, zoom: 17 }).map(city => city.id)).toEqual(['porto']);
+    expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
+    expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
+    expect(zoneCitiesInView(null)).toEqual([]);
+  });
+
+  it('loads a city\'s zones once, and tells those listening', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const load = vi.spyOn(CITY_ZONE_FILES, 'bergen');
+    const listener = vi.fn();
+    const stop = cityZones.subscribe(listener);
+    const bergen = ZONE_CITIES.find(city => city.id === 'bergen')!;
+    const empty = cityZones.get();
+    expect(empty).toEqual([]);
+    await Promise.all([loadCityZones(bergen), loadCityZones(bergen)]);
+    expect(load).toHaveBeenCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(1);
+    const zones = cityZones.get();
+    expect(zones).toHaveLength(772);
+    await loadCityZones(bergen);
+    expect(cityZones.get()).toBe(zones);
+    stop();
+
+    // Drawn as the map draws them: a few hundred at zoom 14, of all four kinds, in force.
+    const shown = ruleZonesInView({ bounds: BERGEN_CENTRE, zoom: 14 }, Date.now(), zones);
+    expect(shown.length).toBeGreaterThan(100);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
+    expect(shown.every(zone => zone.inForce && zone.authority === 'Bergen kommune')).toBe(true);
+  });
+
+  it('draws nothing of a city whose zones failed to load, and asks for them again the next time', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const load = vi.spyOn(CITY_ZONE_FILES, 'porto').mockRejectedValueOnce(new Error('offline'));
+    const porto = ZONE_CITIES.find(city => city.id === 'porto')!;
+    await loadCityZones(porto);
+    expect(cityZones.get()).toEqual([]);
+    await loadCityZones(porto);
+    expect(load).toHaveBeenCalledTimes(2);
+    expect(cityZones.get()).toHaveLength(230);
+    expect(cityZones.get().every(zone => zone.rule === 'parking' && zone.authority === 'Porto')).toBe(true);
+  });
+});

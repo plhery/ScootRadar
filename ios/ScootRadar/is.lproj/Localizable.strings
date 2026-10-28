@@ -80,7 +80,7 @@
 
 "City totals · refreshed hourly" = "Fjöldi eftir stöðum · uppfært á klukkutíma fresti";
 
-/* Scooter parking */
+/* Scooter parking: Lille's bays. "Parking" also names, in the zones' legend, the places a city sets for scooters to be left at */
 "Designated scooter parking." = "Merkt stæði fyrir rafskútur.";
 "Parking" = "Stæði";
 

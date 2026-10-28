@@ -595,6 +595,36 @@ which the press reports from 30 September 2026, wait for an official page, and
 Antalya's ban on Yaşar Sobutay Bulvarı (UKOME decision 374) for an official
 line of which road it means.
 
+The zones cities set for shared e-scooters, in `data/city-zones.json`, are
+drawn the same way, from zoom 14 whether the layer is on or not, each kind as
+the operators' (no riding, no parking, slow) and the places to park in green;
+the legend names the city, linked to where it says so. The web loads a city's
+zones, `data/city-zones/<id>.json`, only once a view reaches it; the iOS app
+has them as built. `scripts/update-city-zones.mjs` reads them again. Neither
+city states a licence for its layers; since 28 October 2026 a city's public
+zone layers are drawn regardless, credited to the city.
+
+- **Bergen** (read 29 October 2026): Bergen kommune's 176 parking places, 149
+  no-parking zones, 74 slow zones and 373 no-riding zones, the layers its
+  [e-scooter map](https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e)
+  draws from `kart.bergen.kommune.no/arcgis/rest/services/Bymiljoetaten/`
+  (`Parkeringsplass_for_elsparkesykkel`, `Parkering_forbudt`, `Saktesone`,
+  `Sone_med_kjøreforbud`). Their query answers no shapes, so they are read
+  with identify, as the map reads a zone clicked. The legend links the city's
+  [rules](https://www.bergen.kommune.no/innbyggerhjelpen/vann-vei-og-trafikk/vei-transport-og-parkering/sykkel/elsparkesykler-i-bergen):
+  in the inner city centre a scooter is left only on a marked place, and a
+  ride cannot end in a no-parking zone. The regulation's three zones
+  (`Reguleringssone`) are not drawn: they set how many scooters each operator
+  may place, not where to ride or park.
+- **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
+  sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
+  [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),
+  each a point, drawn as a disc 5 m round it. Shared scooters are left there,
+  and the operators are fined for those left elsewhere
+  ([echoboomer, 6 December 2022](https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas)).
+  The broker's scooters themselves are not used: they have not moved since
+  8 October 2026.
+
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and

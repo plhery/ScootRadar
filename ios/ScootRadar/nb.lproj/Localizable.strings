@@ -80,7 +80,7 @@
 
 "City totals · refreshed hourly" = "Antall per by · oppdateres hver time";
 
-/* Scooter parking */
+/* Scooter parking: Lille's bays. "Parking" also names, in the zones' legend, the places a city sets for scooters to be left at */
 "Designated scooter parking." = "Anvist parkering for elsparkesykler.";
 "Parking" = "Parkering";
 

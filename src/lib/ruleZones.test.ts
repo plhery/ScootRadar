@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { polygonContainsPoint } from './geo';
-import { bandPolygons, RULE_ZONES, ruleInForce, ruleZonesInView } from './ruleZones';
+import { bandPolygons, RULE_ZONES, ruleInForce, ruleZonesInView, type RuleArea } from './ruleZones';
 
 // Seoul is UTC+9 all year.
 const SEOUL_NOON = Date.parse('2026-10-26T03:00:00Z');
@@ -23,6 +23,11 @@ describe('ruleInForce', () => {
     expect(ruleInForce(zone, Date.parse('2026-09-29T14:59:00Z'))).toBe(false);
     expect(ruleInForce(zone, Date.parse('2026-09-30T03:00:00Z'))).toBe(true);
     expect(ruleInForce({ from: '2026-06-30', timeZone: 'Europe/Istanbul' }, Date.parse('2026-10-26T01:00:00Z'))).toBe(true);
+  });
+
+  it('holds always without a first day or hours, as a city\'s zones do', () => {
+    expect(ruleInForce({ timeZone: 'Europe/Oslo' }, Date.parse('1999-01-01T03:00:00Z'))).toBe(true);
+    expect(ruleInForce({ timeZone: 'Europe/Oslo' }, SEOUL_23H)).toBe(true);
   });
 
   it('holds over midnight when its hours end the next day', () => {
@@ -66,5 +71,47 @@ describe('ruleZonesInView', () => {
       expect(zone.lines.every(line => line.length >= 2)).toBe(true);
       expect(zone.hours?.every(({ from, until }) => /^\d\d:\d\d$/.test(from) && /^\d\d:\d\d$/.test(until)) ?? true).toBe(true);
     }
+  });
+});
+
+describe('ruleZonesInView, with the areas a city sets', () => {
+  /** Twice the ring's area, its points read as [x, y]: positive one way round, negative the other. */
+  const turn = (ring: [number, number][]) =>
+    ring.reduce((sum, [x0, y0], index) => {
+      const [x1, y1] = ring[(index + 1) % ring.length];
+      return sum + x0 * y1 - x1 * y0;
+    }, 0);
+  // Bergen's Torget, about 110 m by 110 m, and an area a kilometre north of it.
+  const TORGET = { south: 60.394, west: 5.32, north: 60.397, east: 5.33 };
+  const ring: [number, number][] = [[60.395, 5.324], [60.395, 5.326], [60.396, 5.326], [60.396, 5.324]];
+  const parking: RuleArea = {
+    id: 'test-parking', place: 'Torget', authority: 'Bergen kommune', rule: 'parking', timeZone: 'Europe/Oslo',
+    source: { title: 'Bergen kommune', url: 'https://www.bergen.kommune.no/' }, ring,
+  };
+  const north: RuleArea = { ...parking, id: 'test-no-ride', rule: 'noRide', ring: ring.map(([lat, lng]) => [lat + 0.01, lng]) };
+  const slow: RuleArea = { ...parking, id: 'test-slow', rule: 'slow', ring: [...ring].reverse() };
+
+  it('gives the areas over the view from zoom 14 only, always in force, of their kind', () => {
+    const shown = ruleZonesInView({ bounds: TORGET, zoom: 14 }, SEOUL_23H, [...RULE_ZONES, parking, north, slow]);
+    expect(shown.map(({ id, rule, inForce, authority }) => ({ id, rule, inForce, authority }))).toEqual([
+      { id: 'test-parking', rule: 'parking', inForce: true, authority: 'Bergen kommune' },
+      { id: 'test-slow', rule: 'slow', inForce: true, authority: 'Bergen kommune' },
+    ]);
+    expect(ruleZonesInView({ bounds: TORGET, zoom: 13 }, SEOUL_23H, [parking, north, slow])).toEqual([]);
+    expect(ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, SEOUL_23H, [parking, north, slow])).toEqual([]);
+  });
+
+  it('draws each area as its ring, every ring turned the way a band\'s outer edge turns', () => {
+    const [drawnParking, drawnSlow] = ruleZonesInView({ bounds: TORGET, zoom: 16 }, SEOUL_NOON, [parking, slow]);
+    const bandTurn = Math.sign(turn(bandPolygons([[[37.5, 127], [37.5, 127.00226]]])[0][0]));
+    for (const { polygons } of [drawnParking, drawnSlow]) {
+      expect(polygons).toHaveLength(1);
+      expect(polygons[0]).toHaveLength(1);
+      expect(Math.sign(turn(polygons[0][0]))).toBe(bandTurn);
+      expect(polygonContainsPoint(polygons[0][0], 60.3955, 5.325)).toBe(true);
+      expect(polygonContainsPoint(polygons[0][0], 60.3965, 5.325)).toBe(false);
+    }
+    // Only turned, not changed.
+    expect([...drawnParking.polygons[0][0]].sort()).toEqual([...ring].sort());
   });
 });

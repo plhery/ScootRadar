@@ -49,7 +49,7 @@ import { scooterTip } from '@/lib/scooterTip';
 import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
-import type { RuleZoneShape } from '@/lib/ruleZones';
+import type { RuleKind, RuleZoneShape } from '@/lib/ruleZones';
 import type { MapZone } from '@/lib/zones';
 import { mergeZones } from '@/lib/zoneShapes';
 import { ZONE_EDGE_CLEARANCE, ZONE_STYLES } from './ZoneLegend';
@@ -57,6 +57,8 @@ import './map.css';
 
 /** The panes of the zones' fills are made in this order, the strongest rule on top. */
 const ZONE_KINDS_BELOW_FIRST: MapZone['kind'][] = ['slow', 'noParking', 'noRide'];
+/** The cities' zones are drawn in this order: parking at the bottom, the strongest rule on top. */
+const RULE_KINDS_BELOW_FIRST: RuleKind[] = ['parking', 'slow', 'noParking', 'noRide'];
 /** How strongly a street a city forbids riding on is drawn outside its hours, of how strongly within them. */
 const RULE_ZONE_DIMMED = 0.35;
 
@@ -816,8 +818,11 @@ export default function MapComponent({
     return () => { layer.remove(); for (const renderer of [...Object.values(fills), edges]) renderer.remove(); };
   }, [frameLng, readyMap, zoneShapes]);
 
-  // The streets a city forbids riding on, with no riding's hatching and edge, in a pane of
-  // their own; outside their hours, dimmer.
+  // The zones a city sets and the streets it forbids riding on, each kind as the operators'
+  // are, in a pane of their own; outside their hours, dimmer. All of a kind that hold now, or
+  // all that don't, are one fill and one edge, so that a few hundred zones are a few paths
+  // and those over each other are no darker. The fill goes by winding: rings that turn the
+  // same way (ruleZones.ts) fill where they overlap, a band's holes stay open.
   useEffect(() => {
     const map = mapRef.current;
     if (!readyMap || !map || !ruleZones.length) return;
@@ -825,14 +830,18 @@ export default function MapComponent({
     element.style.zIndex = '-1';
     const renderer = L.svg({ pane: 'rule-zones', padding: 0.5 });
     const layer = L.layerGroup();
-    for (const zone of ruleZones) {
-      const shape = polygonsNear(zone.polygons, frameLng);
-      const { fillOpacity, edge } = ZONE_STYLES[zone.rule];
-      const strength = zone.inForce ? 1 : RULE_ZONE_DIMMED;
-      L.polygon(shape, { renderer, className: `zone-fill-${zone.rule}`, interactive: false, stroke: false,
-        fillOpacity: fillOpacity * strength }).addTo(layer);
-      L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${zone.rule}`,
-        interactive: false, fill: false }).addTo(layer);
+    for (const kind of RULE_KINDS_BELOW_FIRST) {
+      for (const inForce of [false, true]) {
+        const shape = ruleZones.filter(zone => zone.rule === kind && zone.inForce === inForce)
+          .flatMap(zone => polygonsNear(zone.polygons, frameLng));
+        if (!shape.length) continue;
+        const { fillOpacity, edge } = ZONE_STYLES[kind];
+        const strength = inForce ? 1 : RULE_ZONE_DIMMED;
+        L.polygon(shape, { renderer, className: `zone-fill-${kind}`, interactive: false, stroke: false,
+          fillRule: 'nonzero', fillOpacity: fillOpacity * strength }).addTo(layer);
+        L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${kind}`,
+          interactive: false, fill: false }).addTo(layer);
+      }
     }
     layer.addTo(map);
     return () => { layer.remove(); renderer.remove(); };

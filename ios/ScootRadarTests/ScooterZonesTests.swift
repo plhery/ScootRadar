@@ -37,6 +37,7 @@ final class ScooterZonesTests: XCTestCase {
           {"id":"lime:0","provider":"lime","kind":"noRide","polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]],[[47.371,8.541],[47.372,8.541],[47.372,8.542],[47.371,8.541]]]]},
           {"id":"bird:3","provider":"bird","kind":"slow","maxSpeedKph":15,"polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]]]]},
           {"id":"voi:1","provider":"voi","kind":"parkingRequired","polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]]]]},
+          {"id":"voi:3","provider":"voi","kind":"parking","polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]]]]},
           {"id":"dott:2","provider":"dott","kind":"noParking","polygons":[[[[47.37,8.54],[47.38,8.54],[47.37,8.54]]]]}
         ],"meta":{"generatedAt":"2026-10-24T10:00:00.000Z","pending":true,"truncated":false}}
         """#
@@ -51,7 +52,7 @@ final class ScooterZonesTests: XCTestCase {
         XCTAssertEqual(url.absoluteString, "https://scootradar.com/api/zones?south=47.36&west=8.52&north=47.4&east=8.56&zoom=14")
         XCTAssertTrue(response.pending)
         XCTAssertFalse(response.truncated)
-        XCTAssertEqual(response.zones.map(\.id), ["lime:0", "bird:3"])
+        XCTAssertEqual(response.zones.map(\.id), ["lime:0", "bird:3"], "Parking is only a city's, which the operators' legend does not name")
         XCTAssertEqual(response.zones.map(\.kind), [.noRide, .slow])
         XCTAssertEqual(response.zones[0].polygons[0].count, 2, "The outer ring and its hole")
         XCTAssertEqual(response.zones[0].polygons[0][0][1], GeoPoint(latitude: 47.38, longitude: 8.54))
@@ -60,7 +61,7 @@ final class ScooterZonesTests: XCTestCase {
 
     func testEveryLanguageNamesTheZones() throws {
         let keys = [
-            "Ride and parking zones", "Zones", "No riding", "No parking", "Slow",
+            "Ride and parking zones", "Zones", "No riding", "No parking", "Slow", "Parking",
             "Zoom in to see the zones", "No zones published here", "Zones unavailable right now", "not now"
         ]
         for language in ["de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
@@ -72,6 +73,29 @@ final class ScooterZonesTests: XCTestCase {
         }
         let german = try XCTUnwrap(Bundle.main.path(forResource: "de", ofType: "lproj").flatMap(Bundle.init(path:)))
         XCTAssertEqual(german.localizedString(forKey: "No riding", value: nil, table: nil), "Fahrverbot")
+    }
+
+    func testTheOperatorsLegendLeavesOutParkingWhichOnlyCitiesSet() {
+        XCTAssertEqual(ScooterZoneKind.operatorKinds, [.noRide, .noParking, .slow])
+        // The cities' lines in the legend go in this order, the strongest rule first,
+        XCTAssertEqual(ScooterZoneKind.allCases, [.noRide, .noParking, .slow, .parking])
+        // and their fills are laid down the other way, parking at the bottom.
+        XCTAssertEqual(ScooterZoneKind.belowFirst, [.parking, .slow, .noParking, .noRide])
+    }
+
+    func testParkingIsAPlainGreenFillWithinASolidEdge() {
+        XCTAssertEqual(ScooterZoneLook.fillOpacity(.parking), 0.25)
+        let edge = ScooterZoneLook.edge(.parking)
+        XCTAssertEqual(edge.width, 1.5)
+        XCTAssertTrue(edge.dashes.isEmpty)
+        XCTAssertEqual(hex(ScooterZoneLook.color(.parking, isDark: false)), "#1a7f37")
+        XCTAssertEqual(hex(ScooterZoneLook.color(.parking, isDark: true)), "#4cd97b")
+    }
+
+    private func hex(_ color: UIColor) -> String {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return String(format: "#%02x%02x%02x", Int((red * 255).rounded()), Int((green * 255).rounded()), Int((blue * 255).rounded()))
     }
 }
 
@@ -109,6 +133,16 @@ final class ScooterZoneOverlayTests: XCTestCase {
         XCTAssertTrue(covers(noRide, in: overlay, 47.3705, 8.5405))
         XCTAssertTrue(covers(noRide, in: overlay, 47.3725, 8.5425))
         XCTAssertFalse(covers(noRide, in: overlay, 47.3715, 8.5415))
+    }
+
+    func testACitysParkingPlacesAreMergedApartFromNoParking() throws {
+        let overlay = ScooterZoneOverlay(zones: [
+            zone("city:0", .parking, square(47.37, 8.54)),
+            zone("lime:0", .noParking, square(47.37, 8.54)),
+            zone("city:1", .parking, square(47.37, 8.5405))
+        ], isDark: false)
+        XCTAssertEqual(overlay.shapes.map(\.kind), [.noParking, .parking])
+        assertExtent(overlay.shapes[1], [47.37, 8.54, 47.371, 8.5415])
     }
 
     func testOnlyTheZonesHandedInAreMergedSoOneProviderShownShowsItsOwn() throws {
@@ -286,6 +320,61 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertTrue(model.mapZones.isEmpty)
     }
 
+    func testACitysZonesAreDrawnFromZoom14WithTheZonesOffAndTheSameOnesOverAShortPan() {
+        let porto = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 41.147, longitude: -8.611),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+        let model = makeModel(api: ZoneStubAPI())
+        model.updateViewport(porto, zoom: 16)
+
+        XCTAssertEqual(model.zoneState, .off)
+        XCTAssertFalse(model.mapRuleZones.isEmpty)
+        XCTAssertTrue(model.mapRuleZones.allSatisfy { $0.rule.kind == .parking && $0.rule.authority == "Porto" && $0.inForce })
+        XCTAssertTrue(model.mapZones.allSatisfy { $0.provider == "city" && $0.kind == .parking && $0.strength == 1 })
+        XCTAssertTrue(Set(model.mapRuleZones.map { "rule:\($0.rule.id)" }).isSubset(of: model.mapZones.map(\.id)))
+        XCTAssertEqual(model.mapOperatorZoneCount, 0)
+        let revision = model.mapZonesRevision
+        let inView = model.mapRuleZones
+
+        // A third of the map on, other places are in view and the same are drawn.
+        var nearby = porto
+        nearby.center.longitude += 0.0033
+        model.updateViewport(nearby, zoom: 16)
+        XCTAssertNotEqual(model.mapRuleZones, inView)
+        XCTAssertEqual(model.mapZonesRevision, revision)
+        XCTAssertTrue(Set(model.mapRuleZones.map { "rule:\($0.rule.id)" }).isSubset(of: model.mapZones.map(\.id)))
+
+        // Past the half of the map around it, they are picked again.
+        nearby.center.longitude += 0.01
+        model.updateViewport(nearby, zoom: 16)
+        XCTAssertGreaterThan(model.mapZonesRevision, revision)
+        XCTAssertTrue(Set(model.mapRuleZones.map { "rule:\($0.rule.id)" }).isSubset(of: model.mapZones.map(\.id)))
+
+        model.updateViewport(MKCoordinateRegion(center: porto.center, span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)), zoom: 13)
+        XCTAssertTrue(model.mapRuleZones.isEmpty)
+        XCTAssertTrue(model.mapZones.isEmpty)
+    }
+
+    func testTheLegendCountsTheOperatorsZonesApartFromTheCitys() async {
+        let porto = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 41.147, longitude: -8.611),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+        let api = ZoneStubAPI()
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(porto, zoom: 16)
+        let shown = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+
+        XCTAssertEqual(model.mapOperatorZoneCount, 2)
+        XCTAssertEqual(model.mapZones.filter { $0.provider != "city" }.map(\.id), ["lime:0", "bird:0"])
+        XCTAssertFalse(model.mapRuleZones.isEmpty)
+        model.showProviders([.lime])
+        XCTAssertEqual(model.mapOperatorZoneCount, 1)
+    }
+
     private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil, now: @escaping () -> Date = Date.init) -> ScooterMapModel {
         ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(), now: now)
     }
@@ -382,7 +471,7 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(CityRuleZone.shown(over: daechi, zoom: 16, at: seoulNoon).map(\.rule.authority), ["Gangnam-gu"])
         for rule in CityRuleZone.all {
             XCTAssertEqual(rule.source.scheme, "https")
-            XCTAssertFalse(rule.band.isEmpty)
+            XCTAssertFalse(rule.polygons.isEmpty)
         }
     }
 
@@ -401,9 +490,100 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertTrue(covers(37.50045, 127.00226))
     }
 
+    func testSeoulsStreetsAloneAreAllAndForbidRiding() {
+        // Android's CatalogParityTest reads the generated list of these.
+        XCTAssertEqual(
+            CityRuleZone.all.map(\.id),
+            ["seoul-hongdae-red-road", "seoul-banpo-academy-street", "seoul-daechi-academy-street"]
+        )
+        XCTAssertTrue(CityRuleZone.all.allSatisfy { $0.kind == .noRide && !$0.lines.isEmpty })
+        XCTAssertEqual(CityRuleZone.onMap.map(\.id), (CityRuleZone.all + CityRuleZone.cityZones).map(\.id))
+        XCTAssertEqual(Set(CityRuleZone.onMap.map(\.id)).count, CityRuleZone.onMap.count)
+    }
+
+    func testBergensAndPortosZonesAreThereByKind() {
+        func kinds(_ authority: String) -> [ScooterZoneKind: Int] {
+            Dictionary(grouping: CityRuleZone.cityZones.filter { $0.authority == authority }, by: \.kind).mapValues(\.count)
+        }
+        XCTAssertEqual(kinds("Bergen kommune"), [.parking: 176, .noParking: 149, .slow: 74, .noRide: 373])
+        XCTAssertEqual(kinds("Porto"), [.parking: 230])
+        XCTAssertEqual(CityRuleZone.cityZones.count, 772 + 230)
+    }
+
+    func testACitysZoneIsOneRingWithinItsBoundsThatAlwaysHolds() throws {
+        for zone in CityRuleZone.cityZones {
+            XCTAssertTrue(zone.lines.isEmpty && zone.hours.isEmpty && zone.firstDay.isEmpty, zone.id)
+            XCTAssertEqual(zone.polygons.map(\.count), [1], zone.id)
+            let ring = try XCTUnwrap(zone.polygons.first?.first)
+            XCTAssertGreaterThanOrEqual(ring.count, 3, zone.id)
+            XCTAssertTrue(ring.allSatisfy { zone.bounds.contains($0) }, zone.id)
+            XCTAssertEqual(zone.source.scheme, "https")
+            XCTAssertNotNil(TimeZone(identifier: zone.timeZone), zone.id)
+            XCTAssertTrue(zone.inForce(at: seoulNoon), zone.id)
+        }
+
+        let ring = [
+            GeoPoint(latitude: 41.15, longitude: -8.61), GeoPoint(latitude: 41.1501, longitude: -8.6098),
+            GeoPoint(latitude: 41.1499, longitude: -8.6099)
+        ]
+        let zone = CityRuleZone(
+            id: "porto-parking-test", authority: "Porto", timeZone: "Europe/Lisbon", kind: .parking,
+            source: try XCTUnwrap(URL(string: "https://example.com")), ring: ring
+        )
+        XCTAssertEqual(zone.bounds, GeoBounds(south: 41.1499, west: -8.61, north: 41.1501, east: -8.6098))
+        XCTAssertEqual(zone.polygons, [[ring]])
+        // At any hour, from the first day there was.
+        for date in [Date(timeIntervalSince1970: 0), seoulNoon, seoulNoon.addingTimeInterval(11 * 3600)] {
+            XCTAssertTrue(zone.inForce(at: date))
+        }
+        let drawn = CityRuleZone.Shown(rule: zone, inForce: true).mapZone
+        XCTAssertEqual(drawn.id, "rule:porto-parking-test")
+        XCTAssertEqual(drawn.provider, "city")
+        XCTAssertEqual(drawn.kind, .parking)
+        XCTAssertEqual(drawn.polygons, [[ring]])
+        XCTAssertEqual(drawn.strength, 1)
+    }
+
+    func testACitysZonesAreShownFromZoom14() {
+        let porto = GeoBounds(south: 41.14, west: -8.62, north: 41.16, east: -8.6)
+        let shown = CityRuleZone.shown(over: porto, zoom: 14, at: seoulNoon)
+        XCTAssertFalse(shown.isEmpty)
+        XCTAssertTrue(shown.allSatisfy { $0.rule.authority == "Porto" && $0.rule.kind == .parking && $0.inForce })
+        XCTAssertTrue(CityRuleZone.shown(over: porto, zoom: 13, at: seoulNoon).isEmpty)
+        let bergen = GeoBounds(south: 60.372, west: 5.305, north: 60.412, east: 5.343)
+        XCTAssertEqual(Set(CityRuleZone.shown(over: bergen, zoom: 14, at: seoulNoon).map(\.rule.kind)), Set(ScooterZoneKind.allCases))
+    }
+
+    @MainActor
+    func testTheLegendHasALineForEachKindAndWhoSetsItTheStrongestRuleFirst() throws {
+        let hongdae = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
+        let porto = try XCTUnwrap(CityRuleZone.cityZones.first { $0.authority == "Porto" })
+        let bergen = CityRuleZone.cityZones.filter { $0.authority == "Bergen kommune" }
+        let first = { (kind: ScooterZoneKind) in try XCTUnwrap(bergen.first { $0.kind == kind }) }
+        let rules = [porto] + bergen.filter { $0.kind == .parking }.prefix(2)
+            + [try first(.slow), try first(.noRide), try first(.noParking), hongdae]
+        let legend = ZoneLegend(state: .off, count: 0, rules: rules.map { CityRuleZone.Shown(rule: $0, inForce: true) })
+
+        let lines = legend.ruleLines
+        XCTAssertEqual(lines.map(\.kind), [.noRide, .noRide, .noParking, .slow, .parking, .parking])
+        let texts = lines.map { String($0.text.characters) }
+        XCTAssertEqual(texts[0], "\(ScooterZoneKind.noRide.label) · Bergen kommune")
+        // "No riding 12:00–23:00 · Seoul", in the user's format.
+        XCTAssertTrue(texts[1].hasPrefix("\(ScooterZoneKind.noRide.label) "), texts[1])
+        XCTAssertTrue(texts[1].contains("–"), texts[1])
+        XCTAssertTrue(texts[1].hasSuffix(" · Seoul"), texts[1])
+        XCTAssertEqual(texts[2], "\(ScooterZoneKind.noParking.label) · Bergen kommune")
+        XCTAssertEqual(texts[3], "\(ScooterZoneKind.slow.label) · Bergen kommune")
+        XCTAssertEqual(texts[4], "\(ScooterZoneKind.parking.label) · Porto")
+        XCTAssertEqual(texts[5], "\(ScooterZoneKind.parking.label) · Bergen kommune")
+        // Who sets it, linked to where they say so.
+        XCTAssertEqual(lines[4].text.runs.compactMap { $0.link }, [porto.source])
+        XCTAssertEqual(lines[5].text.runs.compactMap { $0.link }, [bergen[0].source])
+    }
+
     func testARuleOutsideItsHoursIsDrawnApartAndDimmer() throws {
         let rule = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
-        let ring = rule.band[0][0]
+        let ring = rule.polygons[0][0]
         let overlay = ScooterZoneOverlay(zones: [
             CityRuleZone.Shown(rule: rule, inForce: false).mapZone,
             ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]])

@@ -1,0 +1,78 @@
+{
+  "verifiedOn": "2026-10-29",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Neither city states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "cities": [
+    {
+      "id": "bergen",
+      "place": "Bergen",
+      "country": "NO",
+      "authority": "Bergen kommune",
+      "timeZone": "Europe/Oslo",
+      "source": {
+        "title": "Bergen kommune, \"Elsparkesykler i Bergen\": in the inner city centre, park only on the marked places; in no-parking zones a ride cannot end",
+        "url": "https://www.bergen.kommune.no/innbyggerhjelpen/vann-vei-og-trafikk/vei-transport-og-parkering/sykkel/elsparkesykler-i-bergen"
+      },
+      "map": {
+        "title": "Bergen kommune, \"Elsparkesykkel i Bergen\" (map)",
+        "url": "https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Bymiljoetaten/Parkeringsplass_for_elsparkesykkel/MapServer",
+          "layer": 5
+        },
+        {
+          "kind": "noParking",
+          "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Bymiljoetaten/Parkering_forbudt/MapServer",
+          "layer": 1
+        },
+        {
+          "kind": "slow",
+          "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Bymiljoetaten/Saktesone/MapServer",
+          "layer": 3
+        },
+        {
+          "kind": "noRide",
+          "url": "https://kart.bergen.kommune.no/arcgis/rest/services/Bymiljoetaten/Sone_med_kjøreforbud/MapServer",
+          "layer": 2
+        }
+      ],
+      "bounds": {
+        "south": 60.231518,
+        "west": 5.185657,
+        "north": 60.520589,
+        "east": 5.479433
+      },
+      "zones": 772
+    },
+    {
+      "id": "porto",
+      "place": "Porto",
+      "country": "PT",
+      "authority": "Porto",
+      "timeZone": "Europe/Lisbon",
+      "source": {
+        "title": "echoboomer, \"Polícia Municipal do Porto começou a aplicar multas por trotinetes mal estacionadas\" (6 December 2022): shared scooters are parked at the city's sharing points (pontos de partilha), and the operators are fined for those left elsewhere",
+        "url": "https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas"
+      },
+      "map": {
+        "title": "Câmara Municipal do Porto's sharing points, on Porto Digital's urban platform (FIWARE)",
+        "url": "https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&attrs=location,description,totalSpotNumber&options=keyValues&limit=1000"
+        }
+      ],
+      "bounds": {
+        "south": 41.140853,
+        "west": -8.688445,
+        "north": 41.181287,
+        "east": -8.574143
+      },
+      "zones": 230
+    }
+  ]
+}
