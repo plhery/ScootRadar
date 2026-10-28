@@ -263,7 +263,7 @@ class RiderLocationTest {
      * encode and render, and the app's CPU time: the map still with the rider off it, with the beam hidden, and with
      * the compass turning as in a hand; the map turning with the beam hidden, showing still, and with the compass
      * turning; tilted 20°, as the map opens, then flat and tilted 50°; and last the dot's breath with the style's
-     * label fades off. An emulator draws as often as MapLibre asks, not at the screen's rate. Written to
+     * own transitions back on, its paint transitions, its name fades and both. An emulator draws as often as MapLibre asks, not at the screen's rate. Written to
      * rider-frame-times.txt in the run's additional output. With the app allowed and a fix every 2 s, as
      * rider-location-pass.sh gives them:
      *
@@ -316,11 +316,18 @@ class RiderLocationTest {
         look(bearing = 0.0, tilt = 20.0)
         face(null)
         val map = map!!
-        instrumentation.runOnMainSync {
-            lines += "style transition ${map.style?.transition}"
-            map.style?.transition = TransitionOptions(0, 0, false)
+        // The style's own transitions, off in the app: either alone has the map drawn every frame while the dot shows.
+        val off = map.style!!.transition
+        lines += "style transition $off"
+        for ((name, transition) in listOf(
+            "the style's paint transitions" to TransitionOptions(300, 0, false),
+            "the style's name fades" to TransitionOptions(0, 0, true),
+            "both, MapLibre's default" to TransitionOptions(300, 0, true),
+        )) {
+            instrumentation.runOnMainSync { map.style?.transition = transition }
+            lines += measure("tilt 20, map still, no beam, with $name", turnMap = false) {}
         }
-        lines += measure("tilt 20, map still, no beam, no fades", turnMap = false) {}
+        instrumentation.runOnMainSync { map.style?.transition = off }
         val report = lines.joinToString("\n")
         Log.i("RiderFrameTimes", report)
         InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let { dir ->

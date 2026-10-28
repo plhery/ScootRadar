@@ -17,6 +17,7 @@ import org.maplibre.android.style.layers.LayoutPropertyValue
 import org.maplibre.android.style.layers.LineLayer
 import org.maplibre.android.style.layers.PaintPropertyValue
 import org.maplibre.android.style.layers.SymbolLayer
+import org.maplibre.android.style.layers.TransitionOptions
 import org.maplibre.android.style.sources.TileSet
 import org.maplibre.android.style.sources.VectorSource
 
@@ -50,6 +51,11 @@ class MapGround(
     init {
         val url = tiles.known
         map.setStyle(Style.Builder().fromJson(GroundStyle.json(look, url, imagery))) { loaded ->
+            // Nothing eased by the style itself; what eases says so, as the markers' light-up does. MapLibre draws
+            // every frame while anything eases, and a write to a layer eases all its paint properties again, if only
+            // to the same value, and fades in the names placed anew: the rider's breath, a write every 66 ms, would
+            // have the map drawn every frame for as long as the dot shows. The ground's names appear at once.
+            loaded.transition = TransitionOptions(0, 0, false)
             style = loaded
             restyle()
             if (url == null) waitForTiles()
