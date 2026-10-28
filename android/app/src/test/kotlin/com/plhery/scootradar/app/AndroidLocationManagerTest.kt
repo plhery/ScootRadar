@@ -227,6 +227,15 @@ class AndroidLocationManagerTest {
         val noAccuracy = manager.fix(Location(LocationManager.FUSED_PROVIDER).apply { time = 5_000 })
         assertEquals("no accuracy is an invalid fix", -1.0, noAccuracy.horizontalAccuracy, 0.0)
         assertEquals("no time since boot falls back on its date", Instant.ofEpochMilli(5_000), noAccuracy.timestamp)
+
+        // The emulator's GPS puts the date where the time since boot goes: a fix from after now has its date.
+        val emulated = manager.fix(
+            Location(LocationManager.GPS_PROVIDER).apply {
+                time = now.toEpochMilli() - 1_000
+                elapsedRealtimeNanos = now.toEpochMilli() * 1_000_000
+            },
+        )
+        assertEquals(Instant.ofEpochMilli(now.toEpochMilli() - 1_000), emulated.timestamp)
     }
 
     @Test

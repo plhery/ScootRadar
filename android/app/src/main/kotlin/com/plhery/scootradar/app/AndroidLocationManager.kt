@@ -342,11 +342,13 @@ class AndroidLocationManager(
 
     /**
      * A fix as the controller reads it. Its time is when the phone took it by the clock that runs since boot, not
-     * by its own date, which a phone sets from the network and GPS (LOG-252).
+     * by its own date, which a phone sets from the network and GPS (LOG-252); but by its date when that clock says
+     * it was taken after now, as the emulator's GPS stamps its fixes with the date in that clock's place.
      */
     internal fun fix(location: Location): ScooterLocationFix {
-        val timestamp = if (location.elapsedRealtimeNanos > 0) {
-            now().minusNanos(elapsedRealtimeNanos() - location.elapsedRealtimeNanos)
+        val sinceBoot = elapsedRealtimeNanos()
+        val timestamp = if (location.elapsedRealtimeNanos in 1..sinceBoot) {
+            now().minusNanos(sinceBoot - location.elapsedRealtimeNanos)
         } else {
             Instant.ofEpochMilli(location.time)
         }
