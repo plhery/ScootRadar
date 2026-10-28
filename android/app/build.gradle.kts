@@ -92,4 +92,6 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.espresso.core)
+    // Android's own permission dialog and Settings, in the rider's location tests (map/RiderLocationTest).
+    androidTestImplementation(libs.uiautomator)
 }
