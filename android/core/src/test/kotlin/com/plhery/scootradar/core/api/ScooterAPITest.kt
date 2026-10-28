@@ -18,6 +18,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 import kotlin.io.path.createTempDirectory
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
@@ -38,6 +39,9 @@ import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -146,6 +150,27 @@ class ScooterAPITest {
         }
         assertFalse(search.retryOnConnectionFailure)
         assertFalse(walk.retryOnConnectionFailure)
+    }
+
+    @Test
+    fun theSiteIsScootRadarComAndItsWaitsAreBetweenBytes() = runBlocking<Unit> {
+        assertEquals("https://scootradar.com/", ScooterAPI.productionBaseURL.toString())
+        val asked = mutableListOf<String>()
+        val waits = mutableListOf<List<Long>>()
+        val answering = answeringClient(asked, waits)
+
+        failure { ScooterAPI(client = answering).scooters(bounds, zoom = 15, minimumBattery = 0) }
+        failure { ScooterAPI(client = answering).zonesIn(ScooterZoneArea(covering = bounds)!!) }
+        failure { AddressSearchAPI(client = answering).search("Paradeplatz", language = "de", near = null) }
+
+        assertEquals(
+            listOf("GET https://scootradar.com/api/scooters", "GET https://scootradar.com/api/zones", "POST https://scootradar.com/api/geocode"),
+            asked,
+        )
+        // URLSession's timeoutInterval is the longest wait to connect or between bytes, with no limit on the
+        // whole request: 20 s for the site's maps, 12 s for a search.
+        val site = listOf(20_000L, 20_000L, 20_000L, 0L)
+        assertEquals(listOf(site, site, listOf(12_000L, 12_000L, 12_000L, 0L)), waits)
     }
 
     @Test
@@ -638,6 +663,28 @@ class ScooterAPITest {
     }
 
     @Test
+    fun eventsGoToTheCollectorAndWaitFiveSecondsAtMostInAll() = runBlocking<Unit> {
+        val asked = mutableListOf<String>()
+        val waits = mutableListOf<List<Long>>()
+        val job = SupervisorJob()
+        val analytics = ScooterAnalytics(
+            website = testWebsite,
+            sends = true,
+            userAgent = userAgent,
+            defaults = InMemoryScooterDefaults(),
+            scope = CoroutineScope(job + Dispatchers.IO),
+            client = answeringClient(asked, waits),
+        )
+
+        analytics.track("refresh")
+        job.children.toList().joinAll()
+
+        assertEquals(listOf("POST https://u.plhery.com/api/send"), asked)
+        // Five seconds to connect, between bytes, and for the whole event.
+        assertEquals(listOf(listOf(5_000L, 5_000L, 5_000L, 5_000L)), waits)
+    }
+
+    @Test
     fun aCacheTheServerSendsThatCannotBeAHeaderIsLeftOutNotTheEvent() = runBlocking<Unit> {
         server.enqueue(answer(200, """{"cache":"first\nline"}"""))
         server.enqueue(answer(200, "{}"))
@@ -683,6 +730,25 @@ class ScooterAPITest {
         client = OkHttpClient.Builder().addInterceptor { throw failure }.build(),
         isOffline = { offline },
     )
+
+    /**
+     * Answers every request at once with a 503, so nothing leaves the test, and notes where each went and the
+     * client's waits in milliseconds: to connect, to read, to write, and for the whole call (0 for none).
+     */
+    private fun answeringClient(asked: MutableList<String>, waits: MutableList<List<Long>>): OkHttpClient =
+        OkHttpClient.Builder().addInterceptor { chain ->
+            val request = chain.request()
+            synchronized(asked) {
+                asked += "${request.method} ${request.url.newBuilder().query(null).build()}"
+                waits += listOf(
+                    chain.connectTimeoutMillis().toLong(),
+                    chain.readTimeoutMillis().toLong(),
+                    chain.writeTimeoutMillis().toLong(),
+                    TimeUnit.NANOSECONDS.toMillis(chain.call().timeout().timeoutNanos()),
+                )
+            }
+            Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(503).message("").body("".toResponseBody()).build()
+        }.build()
 
     private fun makeAnalytics(
         website: String?,

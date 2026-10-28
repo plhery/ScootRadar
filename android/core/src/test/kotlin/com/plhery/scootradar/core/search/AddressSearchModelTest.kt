@@ -140,6 +140,33 @@ class AddressSearchModelTest {
     }
 
     @Test
+    fun typingIsSearchedAfter350MsAndARefusalWithoutAWaitPausesTenSeconds() = runTest {
+        val clock = testScheduler.timeSource
+        // The server refuses for ten seconds and does not say so.
+        val api = RateLimitedAddressSearchClient(retryAfter = 10.seconds, places = listOf(zurich), clock = clock, saysHowLong = false)
+        val model = SwissAddressSearchModel(scope = backgroundScope, analytics = null, api = api, clock = clock)
+
+        model.query = "Paradeplatz"
+        advanceTimeBy(349.milliseconds)
+        runCurrent()
+        assertTrue(api.queries.isEmpty())
+        advanceTimeBy(1.milliseconds)
+        runCurrent()
+        assertEquals(listOf("Paradeplatz"), api.queries)
+
+        advanceTimeBy(10.seconds - 1.milliseconds)
+        runCurrent()
+        assertEquals(1, api.queries.size)
+        assertEquals(Searching, model.status.value)
+        advanceTimeBy(1.milliseconds)
+        runCurrent()
+        val settled = waitUntil { model.status.value != Searching }
+        assertTrue(settled)
+        assertEquals(Results(listOf(zurich)), model.status.value)
+        assertEquals(listOf(350.milliseconds, 10.seconds + 350.milliseconds), api.times)
+    }
+
+    @Test
     fun textTypedDuringTheWaitIsAskedForOnlyOnceTheServerAllowsIt() = runTest {
         val clock = testScheduler.timeSource
         val api = RateLimitedAddressSearchClient(retryAfter = 1.seconds, places = listOf(zurich), clock = clock)
@@ -306,6 +333,8 @@ class AddressSearchModelTest {
         private val retryAfter: Duration,
         private val places: List<AddressSearchResult>,
         private val clock: TimeSource.WithComparableMarks,
+        /** Whether the refusal names the wait, as Retry-After. */
+        private val saysHowLong: Boolean = true,
     ) : AddressSearchAPIClient {
         private val start = clock.markNow()
         private var allowedFrom: Duration? = null
@@ -323,7 +352,7 @@ class AddressSearchModelTest {
             this.allowedFrom = allowedFrom
             if (now < allowedFrom) {
                 refusals += 1
-                throw AddressSearchAPIError.RateLimited(retryAfter = retryAfter)
+                throw AddressSearchAPIError.RateLimited(retryAfter = retryAfter.takeIf { saysHowLong })
             }
             return places
         }

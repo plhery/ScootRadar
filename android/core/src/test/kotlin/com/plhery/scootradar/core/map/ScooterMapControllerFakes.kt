@@ -11,6 +11,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterDefaults
+import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -62,9 +63,12 @@ internal class StubScooterAPI(
         private set
     var lastMinimumBattery: Int? = null
         private set
+    /** The area of each request, in order. */
+    val askedBounds = mutableListOf<GeoBounds>()
 
     override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
         calls += 1
+        askedBounds += bounds
         lastZoom = zoom
         lastMinimumBattery = minimumBattery
         if (delaysFirstRequest && calls == 1) {
@@ -355,13 +359,14 @@ internal fun TestScope.makeController(
     directions: WalkingDirectionsClient = NoWalkingDirections,
     openInMaps: (ScooterWalkTarget) -> Unit = {},
     analytics: RecordingAnalytics? = null,
+    start: ScooterMapStart = ScooterMapStart.switzerland,
 ): ScooterMapController {
     val scheduler = testScheduler
-    val start = TestClock().now
+    val startedAt = TestClock().now
     val now: () -> Instant = if (clock != null) {
         { clock.now }
     } else {
-        { start.plusMillis(scheduler.currentTime) }
+        { startedAt.plusMillis(scheduler.currentTime) }
     }
     return ScooterMapController(
         api = api,
@@ -376,6 +381,7 @@ internal fun TestScope.makeController(
         phoneLanguages = phoneLanguages,
         keepAppLanguages = keepAppLanguages,
         analytics = analytics?.analytics,
+        start = start,
     )
 }
 
