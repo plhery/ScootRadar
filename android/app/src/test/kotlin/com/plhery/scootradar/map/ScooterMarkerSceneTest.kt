@@ -249,4 +249,64 @@ class ScooterMarkerSceneTest {
         assertEquals(markers.layout - "symbol-sort-key" + ("symbol-z-order" to "source"), layer.layout)
         assertEquals(MarkerBand.FAINTEST, layer.paint["icon-opacity"])
     }
+
+    @Test
+    fun aDotChangedMidFadeGoesOnFromWhereItsFadeHasGot() {
+        val epoch = 100.0
+        val fade = MarkerFade(100.2, ScooterMarkerScene.LIGHT_UP, MarkerFade.Curve.LightUp)
+        fun dot(strength: Double, raised: Boolean = false) = MarkerFeature(
+            "v:lime:a", map.at(195.0, 400.0), "dot/lime", { error("not drawn") }, opacity = strength, fade = fade, isRaised = raised,
+        )
+        val iPhone = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
+        val bands = MarkerBands(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED)
+
+        // The light-up: the dot's band starts unseen, and MapLibre eases it from its start, 0.1 s on, once.
+        val (lit, added) = bands.assign(listOf(dot(0.42)), epoch, time = 0.1)
+        val first = lit.values.single()
+        assertEquals(listOf(first), added)
+        assertEquals(MarkerBand.FAINTEST, first.spec.paint["icon-opacity"])
+        assertEquals(MarkerBands.Ease(370, 100, 0.4f), bands.ease(first, time = 0.1))
+        assertNull(bands.ease(first, time = 0.2))
+
+        // Selected 0.15 s into its fade: raised, at its whole strength. Its new band starts where the iPhone's
+        // curve has got to at that strength, and MapLibre eases it the rest of the way, by the end of the curve.
+        val (selected, raisedAdded) = bands.assign(listOf(dot(1.0, raised = true)), epoch, time = 0.35)
+        val raised = selected.values.single()
+        assertEquals(listOf(raised), raisedAdded)
+        assertEquals(ScooterMarkerLayers.RAISED, raised.layer.base)
+        assertEquals(ScooterMarkerLayers.PILLS, raised.below)
+        val got = iPhone.transform((0.15 / ScooterMarkerScene.LIGHT_UP).toFloat())
+        assertTrue(got > 0.7f)
+        assertEquals(got, raised.spec.paint["icon-opacity"] as Float, 1e-4f)
+        assertEquals(MarkerBands.Ease(220, 0, 1f), bands.ease(raised, time = 0.35))
+
+        // A rider come closer, its strength a step up: the same, at its new strength.
+        val (closer, _) = bands.assign(listOf(dot(0.6)), epoch, time = 0.35)
+        val stronger = closer.values.single()
+        assertEquals(ScooterMarkerLayers.MARKERS, stronger.layer.base)
+        assertEquals(0.6f * got, stronger.opacity, 1e-4f)
+        // Changed once its curve is run, it is at its strength at once.
+        val (late, _) = bands.assign(listOf(dot(0.8)), epoch, time = 0.6)
+        assertEquals(MarkerBands.Ease(0, 0, 0.8f), bands.ease(late.values.single(), time = 0.6))
+
+        // The bands it left draw nothing more of it, and are handed back with the rest once every fade is over.
+        assertEquals(4, bands.all.size)
+        assertFalse(bands.isOver(0.2 + ScooterMarkerScene.LIGHT_UP - 0.01))
+        assertTrue(bands.isOver(0.2 + ScooterMarkerScene.LIGHT_UP))
+        assertEquals(4, bands.clear().size)
+        assertFalse(bands.isFading)
+
+        // A name's band is given its strength at each frame, from where its fade has got to when it is added.
+        val names = MarkerBands(ScooterMarkerLayers.PILLS, raised = null)
+        val name = MarkerFeature(
+            "n:lime:a", map.at(195.0, 400.0), "pill", { error("not drawn") },
+            fade = MarkerFade(100.9, ScooterMarkerScene.NAME_IN, MarkerFade.Curve.Linear),
+        )
+        val pill = names.assign(listOf(name), epoch, time = 1.16).first.values.single()
+        assertEquals(0.5f, pill.opacity, 1e-4f)
+        assertNull(names.ease(pill, time = 1.16))
+        assertEquals(emptyList<MarkerBands.Band>(), names.frame(1.16))
+        assertEquals(listOf(pill), names.frame(1.29))
+        assertEquals(0.75f, pill.opacity, 1e-4f)
+    }
 }

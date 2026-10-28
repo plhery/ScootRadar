@@ -17,8 +17,6 @@ import com.plhery.scootradar.core.map.mapOrigin
 import com.plhery.scootradar.core.map.walkRemainingMetres
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScreenPoint
-import kotlin.math.max
-import kotlin.math.roundToLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.merge
@@ -88,7 +86,6 @@ class ScooterMarkers(
         Fading(ScooterMarkerLayers.MARKERS_SOURCE, ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED),
         Fading(ScooterMarkerLayers.PILLS_SOURCE, ScooterMarkerLayers.PILLS, raised = null),
     ).associateBy { it.source }
-    private var nextBand = 0
 
     /**
      * The fades' clock. While the first scooters of a light-up wait for MapLibre to draw them, it stands at the
@@ -427,68 +424,47 @@ class ScooterMarkers(
      * them back.
      */
     private inner class Fading(val source: String, val layer: String, val raised: String?) {
-        private val bands = HashMap<MarkerBand, Band>()
-        private var besideBands = false
+        private val bands = MarkerBands(layer, raised)
 
-        val isFading: Boolean get() = bands.isNotEmpty()
+        val isFading: Boolean get() = bands.isFading
 
         /** Puts each marker fading at [time] in its band, adding the bands' layers it needs. */
         fun assign(style: Style, features: List<MarkerFeature>, time: Double): Map<MarkerFeature, Int> {
-            val keys = HashMap<MarkerFeature, MarkerBand>()
-            for (feature in features) MarkerBand.of(feature, epoch, time)?.let { keys[feature] = it }
-            if (keys.isEmpty()) return emptyMap()
-            if (!besideBands) {
-                besideBands = true
-                beside(style, ScooterMarkerLayers.STRENGTH_BESIDE_BANDS, ScooterMarkerLayers.SORT_BESIDE_BANDS)
+            val wasFading = bands.isFading
+            val (members, added) = bands.assign(features, epoch, time)
+            if (members.isEmpty()) return emptyMap()
+            if (!wasFading) beside(style, ScooterMarkerLayers.STRENGTH_BESIDE_BANDS, ScooterMarkerLayers.SORT_BESIDE_BANDS)
+            for (band in added) {
+                addLayer(style, band.spec, below = band.below)
+                // MapLibre eases a band from where it starts once it has taken it in there.
+                if (band.key.eased != null && held == null) whenBegun { ease(style, band) }
             }
-            val added = keys.entries.filter { it.value !in bands }.groupBy({ it.value }, { it.key })
-            for ((key, members) in added) {
-                val base = if (key.isRaised && raised != null) raised else layer
-                val index = nextBand++
-                val spec = ScooterMarkerLayers.band(base, index)
-                val sortKey = members.map { it.sortKey.toDouble() }.average().toFloat()
-                addLayer(style, spec, below = ScooterMarkerLayers.below(base, sortKey, bands.values.map { it.layer }))
-                val band = Band(index, MarkerBand.Layer(spec.id, base, sortKey))
-                bands[key] = band
-                // MapLibre eases a band from nothing once it has taken it in at nothing.
-                if (key.eased != null && held == null) whenBegun { ease(style, key, band) }
-            }
-            return keys.mapValues { bands.getValue(it.value).index }
+            return members.mapValues { it.value.index }
         }
 
         /** The light-up's scooters are drawn: MapLibre eases their bands from now. */
         fun release(style: Style) {
-            for ((key, band) in bands) if (key.eased != null) ease(style, key, band)
+            for (band in bands.all.toList()) ease(style, band)
         }
 
-        /** Has MapLibre ease a band to its strength from its start, in one change of its layer. */
-        private fun ease(style: Style, key: MarkerBand, band: Band) {
-            if (band.eased || bands[key] !== band || this@ScooterMarkers.style !== style) return
-            band.eased = true
-            val eased = key.eased ?: return
-            val delay = max(0.0, key.start * MarkerBand.STEP - fadeTime(SystemClock.uptimeMillis() / 1000.0))
+        /** Has MapLibre ease a band to its strength, in one change of its layer. */
+        private fun ease(style: Style, band: MarkerBands.Band) {
+            if (this@ScooterMarkers.style !== style) return
+            val ease = bands.ease(band, fadeTime(SystemClock.uptimeMillis() / 1000.0)) ?: return
             val layer = style.getLayer(band.layer.id) as? SymbolLayer ?: return
-            layer.iconOpacityTransition = TransitionOptions((eased * 1000).roundToLong(), (delay * 1000).roundToLong())
-            layer.setProperties(PaintPropertyValue("icon-opacity", key.opacity))
+            layer.iconOpacityTransition = TransitionOptions(ease.length, ease.delay)
+            layer.setProperties(PaintPropertyValue("icon-opacity", ease.opacity))
         }
 
         /** Sets each band's strength at [time], and hands the markers back once all are over. Returns whether any fades. */
         fun frame(style: Style, time: Double): Boolean {
-            if (bands.isEmpty()) return false
-            for ((key, band) in bands) {
-                if (key.eased != null) continue
-                val opacity = key.opacity(time)
-                if (opacity == band.opacity) continue
-                band.opacity = opacity
-                style.getLayer(band.layer.id)?.setProperties(PaintPropertyValue("icon-opacity", opacity))
-            }
-            if (bands.keys.any { !it.isOver(time) }) return true
+            if (!bands.isFading) return false
+            for (band in bands.frame(time)) style.getLayer(band.layer.id)?.setProperties(PaintPropertyValue("icon-opacity", band.opacity))
+            if (!bands.isOver(time)) return true
             // In the same layout, the markers come back to the source's layers and leave the bands'.
             beside(style, ScooterMarkerLayers.STRENGTH, ScooterMarkerLayers.SORT)
-            besideBands = false
-            val emptied = bands.values.map { it.layer.id }
+            val emptied = bands.clear().map { it.layer.id }
             for (id in emptied) (style.getLayer(id) as? SymbolLayer)?.setFilter(Expression.raw(ScooterMarkerLayers.NOTHING))
-            bands.clear()
             whenDrawn { if (this@ScooterMarkers.style === style) for (id in emptied) style.removeLayer(id) }
             return false
         }
@@ -502,12 +478,6 @@ class ScooterMarkers(
                 )
             }
         }
-    }
-
-    /** A band's layer, and the strength it was last given, or whether MapLibre was given its ease. */
-    private class Band(val index: Int, val layer: MarkerBand.Layer) {
-        var opacity = MarkerBand.FAINTEST
-        var eased = false
     }
 
     companion object {

@@ -12,6 +12,7 @@ import com.plhery.scootradar.core.model.ScreenPoint
 import kotlin.math.ceil
 import kotlin.math.max
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 /**
  * What a layer draws of a marker: a picture at a coordinate, moved on screen by an offset in points, drawn above
@@ -256,17 +257,17 @@ object ScooterMarkerLayers {
 
     /**
      * The layer drawing a band of [base]'s markers while they fade: the same pictures, those of the band alone, at
-     * one strength for all of them. They are drawn in the order they are written in, all together, not each on its
-     * own by its sort key.
+     * one strength for all of them, [opacity] to start with. They are drawn in the order they are written in, all
+     * together, not each on its own by its sort key.
      */
-    fun band(base: String, index: Int): SymbolLayerSpec {
+    fun band(base: String, index: Int, opacity: Float = MarkerBand.FAINTEST): SymbolLayerSpec {
         val layer = specs.first { it.id == base }
         return SymbolLayerSpec(
             id = "$base-band-$index",
             source = layer.source,
             filter = "[\"==\",[\"get\",\"band\"],$index]",
             layout = layer.layout - "symbol-sort-key" + ("symbol-z-order" to "source"),
-            paint = mapOf("icon-opacity" to MarkerBand.FAINTEST),
+            paint = mapOf("icon-opacity" to opacity),
         )
     }
 
@@ -375,4 +376,80 @@ object LastSeenBreath {
         val way = if (phase < BREATH) phase / BREATH else (2 * BREATH - phase) / BREATH
         return FAINTEST + (STRONGEST - FAINTEST) * easeInEaseOut.transform(way.toFloat())
     }
+}
+
+/**
+ * A source's markers while they fade: the band drawing each, and the bands' layers, over the source's own [layer]
+ * and, for the selected, its [raised] one. Kept apart from the style, so that what MapLibre is told can be checked
+ * off the phone.
+ */
+class MarkerBands(private val layer: String, private val raised: String?) {
+    /** A band and its layer, under [below]: the strength it was last given, and whether MapLibre has its ease. */
+    class Band(val key: MarkerBand, val index: Int, val spec: SymbolLayerSpec, val layer: MarkerBand.Layer, val below: String, opacity: Float) {
+        var opacity = opacity
+            internal set
+        var isEased = false
+            internal set
+    }
+
+    /** MapLibre's ease of a band's layer, from what it shows to [opacity]: after a delay, over a length, in ms. */
+    data class Ease(val length: Long, val delay: Long, val opacity: Float)
+
+    private val bands = HashMap<MarkerBand, Band>()
+    private var next = 0
+
+    val all: Collection<Band> get() = bands.values
+
+    val isFading: Boolean get() = bands.isNotEmpty()
+
+    /**
+     * Puts each marker fading at [time] seconds from [epoch] in its band, adding the bands it needs: returns the band
+     * of each, and those added. A band starts where its curve has got to. One added after its start is for markers
+     * whose strength or layer changed mid-fade, a dot selected or a rider come closer, and they go on from there, as
+     * the iPhone's animation goes on to a view's new strength rather than starting again (MAP-119).
+     */
+    fun assign(features: List<MarkerFeature>, epoch: Double, time: Double): Pair<Map<MarkerFeature, Band>, List<Band>> {
+        val keys = HashMap<MarkerFeature, MarkerBand>()
+        for (feature in features) MarkerBand.of(feature, epoch, time)?.let { keys[feature] = it }
+        val added = ArrayList<Band>()
+        for ((key, members) in keys.entries.filter { it.value !in bands }.groupBy({ it.value }, { it.key })) {
+            val base = if (key.isRaised && raised != null) raised else layer
+            val index = next++
+            val opacity = key.opacity(time)
+            val spec = ScooterMarkerLayers.band(base, index, opacity)
+            val sortKey = members.map { it.sortKey.toDouble() }.average().toFloat()
+            val below = ScooterMarkerLayers.below(base, sortKey, bands.values.map { it.layer })
+            val band = Band(key, index, spec, MarkerBand.Layer(spec.id, base, sortKey), below, opacity)
+            bands[key] = band
+            added += band
+        }
+        return keys.mapValues { bands.getValue(it.value) } to added
+    }
+
+    /**
+     * MapLibre's ease of a band, seen at [time]: from what its layer shows, from its start or from now if that has
+     * passed, to its strength by the end of its curve. None for a band set at each frame, eased already, or gone.
+     */
+    fun ease(band: Band, time: Double): Ease? {
+        val length = band.key.eased ?: return null
+        if (band.isEased || bands[band.key] !== band) return null
+        band.isEased = true
+        val start = band.key.start * MarkerBand.STEP
+        val left = max(0.0, start + length - max(start, time))
+        return Ease((left * 1000).roundToLong(), (max(0.0, start - time) * 1000).roundToLong(), band.key.opacity)
+    }
+
+    /** Gives each band set at each frame its strength at [time]: returns those whose strength changed. */
+    fun frame(time: Double): List<Band> = bands.values.filter { band ->
+        if (band.key.eased != null) return@filter false
+        val opacity = band.key.opacity(time)
+        if (opacity == band.opacity) return@filter false
+        band.opacity = opacity
+        true
+    }
+
+    fun isOver(time: Double): Boolean = bands.keys.all { it.isOver(time) }
+
+    /** Hands every band's markers back to the source's layers: returns the bands, whose layers draw nothing now. */
+    fun clear(): List<Band> = bands.values.toList().also { bands.clear() }
 }
