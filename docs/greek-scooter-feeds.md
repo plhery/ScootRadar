@@ -16,6 +16,15 @@ The regions and their public outline documents:
 - Thessaloniki, `GONJN7YHVDWTK`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json)
 - Heraklion, `7BBVLLV5P4HUQ`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Heraklion_90_exclude_new_type.json)
 
+Update, 28 October 2026: **Chania**, a region Lime's map lists only zoomed
+out, held 169 scooters in its full-area audit that night, every stationary
+reference found, and is registered the same way. Its zones are an operations
+zone around the centre, a slow zone and four no-parking zones, all inside it.
+Volos's region held no scooter near its centre at midnight; read it again by
+day.
+
+- Chania, `4EKS47F2OVFPF`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Chania_94_exclude_new_type.json)
+
 
 Verified 13 October 2026. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)

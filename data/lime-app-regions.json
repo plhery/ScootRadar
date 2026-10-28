@@ -4350,6 +4350,284 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Bergen_1930_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AT",
+      "city": "Feldkirchen bei Graz",
+      "center": [
+        46.994434999999996,
+        15.46188
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "JIMAI6ODVQZPX",
+      "serviceAreas": [
+        {
+          "name": "[Graz South][[SZ]Feldkirchen][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mp_~Gqse}Ab@SbCuAtE}BpDsBzCaBpHaEzF_DjEaCtDnDdGjFbEnFxJ|LKdDOjGQtGnJnBrEbDlCfAlUhIhMlEjDj@~@NrB\\|BBxB@pH@lDie@~Z{@lnC}uAzOuu@a]mzBio@hCimEhyB}j@bm@i\\hiA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Graz_South_11_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Graz South"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Klosterneuburg",
+      "center": [
+        48.309200000000004,
+        16.289189999999998
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "CT5ZFBF5R46UF",
+      "serviceAreas": [
+        {
+          "name": "SZ Klosterneuburg[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}yweH_jobBb@fCRtAZp@r@ZlAt@pArCLj@qKjMRp@vD{D~AgAn@w@`BaDx@_AhCuCdA~Gm@hAE|Cp@fECpA_AnBBr@ZtAa@bAwD`F}@|E[~F]xDw@`Cl@f@~AsFPwFr@uFdEkG`DgEtAlQrCzLzAn@nBaT~FpMb@`JiEzd@oE~@Xz@tEo@a@pa@uBpG^^vCyB|@pj@v@GJoFCiFCoFYoFDqEn@kEc@aHw@wFe@mMp@}MzAwNx@iUa@uEy@yDyFkOiEsD{@eGqEyYtCqQbC[nBeGbAQlCdQnAy@bFjCt@o@b@fERdKm@dKQbRl@zIt@fDb@vBlZfg@hJvRnMfd@dYdPnGs@`]bPrCU}@`VbCp@JqEl@oYeFnBo]}OgHhAkWoRaHg[cGmKeEqIkGsOcCiGcAeCaAcCv@yG{D}Ew@aIOoIUkOWaOcCaNuDwBWu@y@yBmAmBqC]_D}Eg@kCKcCG}Ac@wBa@yBxAs@lAtATnBb@pBjAtBnAv@fBfArDI~@pD\\|AjAbFf@lC^jB\\fBrA~BHQqAaDqBaMxD@G_@mEoAq@}ARgC~ByFxA{BzAgCrBoBr@c@Nm@k@wIyBcFuAs@g@_IgFj@_@k@YGu@_BT}DxEuBbCuBr@cAPUMu@gDpDKMUa@qA[o@O]i@gDmJV{Ee@aH@mBDk@_@Yy@GY_@e@aKRoD|ESdPnFvGFG{AqI_BaEiEyBeA}@a@]Q_@QsB[w@M]E]GbBwFbA^`@N^LnBhBf@d@f@^jDE`@}Bd@}BpBsEwBcC{@cAy@aA_@s@_AIOHCZRTRTOTa@j@HzC[JYFm@m@{BE}@A_ACl@cDrG_FhDqBzBcDMu@yFnEuBjBsBn@m@{BYiAw@Rs@aApBcDlC{AjF}@jA`DdCoAPkBmN}K}BcJaAG_Bj@oBjDs@bBRTt@{AjAuBh@a@nAShA|FnDtI]d@kCjAiCfA_GrI_B|BqHyJkItGoK|Aa@oAHkAj@q@fWuPjGyGCaBtB}BcCyQmQbFuGr@qUpOaLzHmFhH]~CIxNyEz@wBw@wKqLmDq@mChAMpADJFR\\Nd@^Pn@TpALt@qPtBcLlMaJ`Om\\va@aLaO{SyNkEcAqBYI?yKwAcAL_H~Db@vAbFsCb@QdJ|AbJtBrI|FjIbHlJpLpL~RuBxAuDdOU|CeIzHkI~HkLtJmLbJsx@xo@}GjFiFlDUi@c@sBwCyLgG{KgB{CEk@JcBAkCe@s@Yj@JpC]lCE`ApBjE|AdApElKbAzIsKlG_LfIwQxPj@zCiKrIeAt@cB`Ao@fBaArCyF~McB~EsApFi@zB[|Ba@lCYnBWxCWrCY|CUvCIfAYfHQpIIrIIhIGvB?d]Uz]NpC@rBvC?H{Kx@C`@mIK_MJgFrAN?ZC`@@h@@j@\\?XWb@qFBkGHoDOyDdEfDv@wEoEsGYmB@kFL}DrAuGtAsIl@{KVqF^wCtBdAtAqGqBkBdGwPbGzY`DwY`@aMzEwB|GaEtImGjFFv@pIzCjD`AvA`CuHzCcBz@l@a@pG{@lOMdJuNr_@FhB~Qs^rBzGBjH[bCpBbBpBsEG}PlBtKP~Gw@xVzE{@]aSCsKqDkSfIiOcGuEyAoEaEiKoEsNjEcG~GjOhBcAwA}RdJeALnAz@x@xCI_A_GEeBxAWb@I`BAbFiClBbLbEs@mAyGvHkD|@o@fEdPpCcDwBiGf@OxCnHrD_C?}DsCeVlCrFhB?pGgH{AqEtEqGI}Dz@y@tBhIhDeDaBbVkBpLvAhI`D~EtHvJpAvC?zHkCi@oBdMhCtAoAbJoFfHuD~GjAvDpDhC~J|AhAhGhCCrAQrBcAxBeDi@_JtDn@c@pFdGrEGtBeC`A_DxC}HrBYdA|Hs@lEwBdGfCyA~EDdFf@zAuBrExA~BoCvGqKdDwCeCsHwB_FwDaMR_EpCRtBpNz@vHx@hD`Bb@jChKxB|HiArGuLd@td@sDm@uDbHeEdMX|DrHmEtFg@rBhBcClPyCnQeO}K{BnJB~FsCbBuAfErCP|AfA~CdJpFuD}EnXaCyBqBpCk@hKyDx@s@bF|BAlBn@m@pL_AtKiBfBv@fC~B|DeBpFoCRmHpVeAx@uAcD}C{F_B^j@|DbBdC`BdCv@x@aB`HTvFhAqBtBYb@sBnBoGvFrGv@bAvBeCfEcb@dHub@xEyQtGmZzCuL`AgBv@h@rAlD|A~G\\lM~Clg@xD|T~BgAsFacAvAcDbDpAReGkNasA\\iUrKvHlGjGxAiI{AoIlRqEwBaWeIw@kJxEd@yIsBAgK_Ia@gRa@qAvBuEl@aFrD`EjFfFv@bAx@oA~CoBxApCdBpE}@xHnDxCbC{IhA{@fAp@zBFo@cLu@oL{JsL{DaMq@mOsK{FgDmV`GkCfBdAxAhAbAOfDwAbHwDyAmBaErBqDnAeFyCgA_Mh@_EEqEGgCoBCYaw@`H~@vFjE}@jC`BrChAaEuAaJ\\sAyByCjFuSfDrFHa@sDyI^}CJm@f@cAh@sApAvB\\jAn@Xh@Nd@CCIkBk@S{@[o@e@u@S_@DSt@{BfAeC|B{F`BlCz@hAhBn@|Bv@Ja@wBkAn@oAb@a@YaFbCExBU~Ag@`@Ud@Kf@r@j@fAnA|B~AhD`@`ATnAL~@V`AJrEXhE`@`LNtBFpDT~DXvCP|BJbAcGfFaA@qB^U`Bj@@`@Oj@MjABxBiA~CsDxK~PcFfEEwBe@sDgB}@}@YIv@vAx@r@nAPvDKhBqBxAs@pA]rBKfBiCpF_AxCkCjC_AO}@kDm@T"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Klosterneuburg_46_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Korneuburg",
+      "center": [
+        48.35,
+        16.33333
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "ON42EJFZSMOVF",
+      "serviceAreas": [
+        {
+          "name": "[Korneuburg][[SZ] Korneuburg][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}`dfHwspbB~Wma@dPmKx_@sQdFfSpMl_@vOwEhYyx@bPu^~Y}SxIwIlFaErGmDtbAcm@fa@yKtWEfi@y^mCeCm`@|X_]`D_c@vGskAvt@eBeF`@gQyY{l@mTvT_HqIcK|L}GaGmCYkCc@mAnBi_@WeTsFq@eGoLe_@_HaPsGfWqFpQiLeIyLbb@}LnEGl_@wBr`@cCxYgEbt@VxH|BdU|HfY|KdMbMiS"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Korneuburg_9_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Chania",
+      "center": [
+        35.511885,
+        24.020855
+      ],
+      "timeZone": "Europe/Athens",
+      "regionToken": "4EKS47F2OVFPF",
+      "serviceAreas": [
+        {
+          "name": "SLZ 1Chania[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "igwwE}{qqCfAYlCG?m@yCJaAVDj@"
+        },
+        {
+          "name": "NPZ Friendship Park[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "o}vwE_nsqCzCzAdB{@d@cDiBy@oAgAmBdG"
+        },
+        {
+          "name": "NPZ Painter Park[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wpvwEagqqCvACAcEaBDJ`E"
+        },
+        {
+          "name": "NPZ National Stadium Chania[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mjwwEgfsqCnEA|B_HWw@PuCoIjALhEExE"
+        },
+        {
+          "name": "NPZ Middle Schools Chania[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "s`vwE}zrqClGWCuNqGlDF~I"
+        },
+        {
+          "name": "Chania Ops[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_dwwEmooqChAjBBfH`CtJhViHjJdRjD@_C_YkCsKqAcTTkVvQg[u@_v@hAgo@kNgBhAqPj@gUqRsE_IjBkFpn@ge@cH~B`D?lGlArDlATp@~@k@xGtArBrAlJEpDa@tBs@tB_B`CsDpEk@\\qI|@dAfBxKzNvD{A~D{BmAwIr@EzBtI`BnOBdFt@hKgLjCsKxGIhBn@l@hCzVd@lBnCDzAMzBnBnLnR"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Chania_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Diósd",
+      "center": [
+        47.406985000000006,
+        18.93939
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "T37UIEKPRSRDK",
+      "serviceAreas": [
+        {
+          "name": "[Budapest][SZ][[Pest South][SZ][Diosd_j]]",
+          "polygon": "mxi`HynvrBso@`Oeb@zKkSfiBvlArmCb_@jH`iAmxCii@ujCmd@|D??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Érd",
+      "center": [
+        47.391125,
+        18.882925
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "T37UIEKPRSRDK",
+      "serviceAreas": [
+        {
+          "name": "[Pest South][SZ][[Budapest][SZ][[Pest South][SZ][[Pest South][SZ][Erd_j]]]]",
+          "polygon": "whg`H_irrBaiAlxCa_@mHa~@d}Asw@tmCwHpp@xf@psAzvAd|CgRvaEzjAk|AtzB}nAziD}yDooAgpDn]s}B~Bs_Ats@ci@uOs_Aug@}WaiBuI{\\uzBa_@}Cir@uMtYnrC??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Százhalombatta",
+      "center": [
+        47.319125,
+        18.918235
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "T37UIEKPRSRDK",
+      "serviceAreas": [
+        {
+          "name": "[Budapest][SZ][[Pest South][SZ][Szazhalombatta_j]]",
+          "polygon": "s`|_HoamrBf^|SfBrl@bd@hfAfz@hKd]ih@_[iYjSe_@qYse@xdAvQnLahAi[yKkU}U}[eW}u@ae@sj@oc@gf@a]wGloAtk@lE`Ph~@wl@|w@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Marina di Ragusa",
+      "center": [
+        36.78465,
+        14.5496
+      ],
+      "timeZone": "Europe/Rome",
+      "regionToken": "VM7HEPEWP4ITF",
+      "serviceAreas": [
+        {
+          "name": "SZ_ Marina di Ragusa1[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qyo_FcltwAhVl@nK}Rx@gQ?we@sF}O`@mCJsi@zJk`Cef@iGqD~a@}CbQcMbZy@dm@l[|_BkFdd@f@rO"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ragusa_61_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Ragusa",
+      "center": [
+        36.91961,
+        14.717175000000001
+      ],
+      "timeZone": "Europe/Rome",
+      "regionToken": "VM7HEPEWP4ITF",
+      "serviceAreas": [
+        {
+          "name": "SZ_ Ragusa Centro e Ibla2[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "u{l`Fy`zxAp@h]vMh@xA|N{AtMhKne@Uhh@aEnIZbBhCjCiRzWKtE}DtFbLbE|B~S`MvDtM\\`EgRgBwIj@wFxEdArC_Fw@iCqG?CiD}@mGkDeH~FsJdG]f@tM`G[xAmAbN_DvBiBbFiGrYqTdHsF}DyEeVaJkFsFaH}G|@sDo@]nEgJpE_J|OeZl_@riA|a@}|@xE}YwR}SaOwE@uDyBqAa@qSw]aQbAoYyWk@uFi@cD]}Ew@oF}G{GuCjHgw@gKo\\_TvItAdmAaNnbAoSlQiFhR"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ragusa_61_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "Ishigaki",
+      "center": [
+        24.34478,
+        124.15717
+      ],
+      "timeZone": "Asia/Tokyo",
+      "regionToken": "PUD7UR42RGNHO",
+      "serviceAreas": [
+        {
+          "name": "[Ishigaki][Ishigaki SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "udvsCmxntVpnAmbBr_@kzBhn@eZ~EbSbWmEcHkn@hSn@hQnlA|[yDmEie@mMlC}AeN`BcEy@mL`CmKoBqa@}GaQpJ}RlBuToEeJhA{z@sBiP}JoUiCoI_DoOcd@q^}Wa`@yV~Qqa@iD_FimB|^kKt]ofAoLwcAo|@{j@m_Aj|Bqz@vaMwhAyP}~H`LohA_pI{]vr@qNde@g@xyBrLn~Bo}AvXeoBddGjpC`{@t~@hcEriDx^`zEutC|gDsuB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/South_Ishigaki_34_exclude_new_type.json"
+      ],
+      "aliases": [
+        "South Ishigaki"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "North Ishigaki",
+      "center": [
+        24.52819,
+        124.28939
+      ],
+      "timeZone": "Asia/Tokyo",
+      "regionToken": "UOY53ANFQVWMH",
+      "serviceAreas": [
+        {
+          "name": "[North Ishigaki][SZ_North Ishigaki][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "axguCkgvuVtm^|pTzbEebJo|`@usRatB|dH"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/North_Ishigaki_4_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "San Marcos",
+      "center": [
+        29.885550000000002,
+        -97.924155
+      ],
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "regionToken": "AYYUDWJ6FBMEZ",
+      "serviceAreas": [
+        {
+          "name": "Service Area (Combined)[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wuhuDf{wtQsh@it@fB}@xNwAxARn@Ab@M`B_AlCOtBgB[gFCQ[y@Yk@MOfDiDL[Ha@@Q?WCUI_@Q]wYm]lCeDgSeW@_A_AaAuDvDkTiVlB{FyQoTWOw@ZeK`Lh@pFtBpE?RpBrCqAdChBjDu@G]jA?|HKrDMbCQfArHhGvBdCsAdCxAzA`BqAx@n@nAHjE`GhGhJdIzLbFlIDz@hCtDsAhAgh@ys@yA{Ao|@uy@lHyH`JgV_DwNkDuKaDgFeEsDgGdC_F`S{C|M]fQkg@{d@cGfDtJvIsQ`]qJsIwJ{DyFzPp\\xb@nm@~h@gLxF`Qbq@wOzK{FtMbK~OkDrElEfH}QhSgOsMqFtHhUjYaHrHdGdH_`@`b@hUf{@`c@p\\dfAlm@pCqBlC}B~JkNnF{KpH}MzJmIhS_MtDmClHgDpFo@vKObHWnEoBjG}G|ObDxJzCnRiYkM{PbHqJx@|AlNgSyiA}sA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/San_Marcos_44_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "UNC Charlotte",
+      "center": [
+        35.316095000000004,
+        -80.73759
+      ],
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "regionToken": "A3ZBZTP2PATG6",
+      "serviceAreas": [
+        {
+          "name": "UNCC Service Zone a[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uilvEl_vkNmu@mYoG}AiW}WmHcZgBwJoDqGaEsOMwL_s@hYif@zH_RfMiUnB}X~SfDhl@cdAtr@fZfUv^zXdOhFxM`A|x@j[~U`Y~\\xYbiB|p@jn@`a@fVoz@|IeU~IeUg[akAoBiLg@iFgF_ZI}KKuIkHiCeG}BwEcB??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/UNC_Charlotte_31_exclude_new_type.json"
+      ],
+      "aliases": [
+        "University City"
+      ]
     }
   ]
 }

@@ -24,7 +24,13 @@ Ajax, Coquitlam, Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond
 and Vaughan, in 58 American towns, from Los Angeles and Austin to Milwaukee
 and Tampa, in Ashdod and Eilat, in Dubai, Abu Dhabi and Al Ain, and since
 27 October in Bergen, Viña del Mar, Saskatoon, Regina, Red Deer, Lacombe,
-Blackfalds and Waterloo Region.
+Blackfalds and Waterloo Region, and since 28 October in Feldkirchen bei Graz,
+Klosterneuburg, Korneuburg, Chania, Érd, Százhalombatta, Diósd, Ragusa,
+Marina di Ragusa, Ishigaki, North Ishigaki, San Marcos and UNC Charlotte.
+Lime's Sion and Kloten regions hold scooters that no feed lists, but
+Switzerland has no country catalog to take them yet; Kortrijk, Mechelen,
+Lucca, Volos and Keszthely held none near their centres at midnight on 28
+October, to be read again by day.
 One other market its rider map lists, Farmington, Utah, showed 2 scooters in
 each of three audits and none to check them against, so it remains a gap. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
@@ -66,7 +72,8 @@ Dott's anonymous app map supplements GBFS in eight countries since 24 October
 2026 ([evidence and limitations](dott-app-map.md)). Austria now covers 11 Dott
 regions. The [Voi rider map](voi-app-map.md) now supplies Vienna and Innsbruck without a public feed,
 and Lime's [rider map](lime-app-map.md) Vienna, Linz, Innsbruck, Klagenfurt and Wels
-since 25 October 2026; Lime's Salzburg region held no scooter that day.
+since 25 October 2026, and Feldkirchen bei Graz, Klosterneuburg and Korneuburg
+since 28 October; Lime's Salzburg region held no scooter on 25 October.
 
 Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.

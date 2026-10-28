@@ -3337,6 +3337,227 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Bergen_1930_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AT",
+      "city": "Feldkirchen bei Graz",
+      "regionToken": "JIMAI6ODVQZPX",
+      "fingerprint": "7b113b6b850674567adb098b0923daccc3bd0ba13b76779aad267d84d82ac529",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 52,
+      "stationaryReferences": 9,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:18:20.005Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Graz_South_11_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Klosterneuburg",
+      "regionToken": "CT5ZFBF5R46UF",
+      "fingerprint": "db9f9ea0fdfd17ff8f3effbe1751fcc5c685de1dc8ff7067664fa9087ca3875f",
+      "groups": 7,
+      "localCells": 25,
+      "coldMapRequests": 25,
+      "warmMapRequests": 25,
+      "scooters": 79,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:21:28.992Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Klosterneuburg_46_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Korneuburg",
+      "regionToken": "ON42EJFZSMOVF",
+      "fingerprint": "57f380e7d6e89d68897a0292ba4783899cd9405e3491e9ceaf1251c91d74e8e1",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 98,
+      "stationaryReferences": 17,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:23:07.098Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Korneuburg_9_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Chania",
+      "regionToken": "4EKS47F2OVFPF",
+      "fingerprint": "be5cb62e0dd872bd41de58a6b1e1810d09ea3fbaba4a1921cdaf9fc77858e74b",
+      "groups": 2,
+      "localCells": 6,
+      "coldMapRequests": 6,
+      "warmMapRequests": 6,
+      "scooters": 169,
+      "stationaryReferences": 46,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:31:38.156Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Chania_94_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Diósd",
+      "regionToken": "T37UIEKPRSRDK",
+      "fingerprint": "53094fa65842799fc7392463e3f9e411829986895cd4af298e152ef1f2cb404f",
+      "groups": 2,
+      "localCells": 8,
+      "coldMapRequests": 8,
+      "warmMapRequests": 8,
+      "scooters": 64,
+      "stationaryReferences": 13,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:24:17.020Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Érd",
+      "regionToken": "T37UIEKPRSRDK",
+      "fingerprint": "2446592b93283942f3561c28b0c2eb4cb5bc5e0ce857090ad8d30f564f885f19",
+      "groups": 10,
+      "localCells": 39,
+      "coldMapRequests": 39,
+      "warmMapRequests": 39,
+      "scooters": 128,
+      "stationaryReferences": 18,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:29:25.011Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Százhalombatta",
+      "regionToken": "T37UIEKPRSRDK",
+      "fingerprint": "88cd30dc5c3c3a0647c31d0fb5746b9dfee4214d1d6b906718977bccdc7f7cac",
+      "groups": 3,
+      "localCells": 9,
+      "coldMapRequests": 9,
+      "warmMapRequests": 9,
+      "scooters": 29,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:30:42.331Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Marina di Ragusa",
+      "regionToken": "VM7HEPEWP4ITF",
+      "fingerprint": "5c4be0aaa2469da50e8f9a76f005de4b2bc5ce7e4eacd5d0c0271d9ba543baa8",
+      "groups": 1,
+      "localCells": 3,
+      "coldMapRequests": 3,
+      "warmMapRequests": 3,
+      "scooters": 40,
+      "stationaryReferences": 9,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:15:04.166Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ragusa_61_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Ragusa",
+      "regionToken": "VM7HEPEWP4ITF",
+      "fingerprint": "ee51560fd09097e137cf849b0802d49df6574145822f0a0f03af7511b033b041",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 82,
+      "stationaryReferences": 12,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:16:42.040Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ragusa_61_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "Ishigaki",
+      "regionToken": "PUD7UR42RGNHO",
+      "fingerprint": "ebce0c83550f36b9865534d0805c63ea1e3b73c363046939e72c00f6cbc4e5e7",
+      "groups": 23,
+      "localCells": 91,
+      "coldMapRequests": 91,
+      "warmMapRequests": 91,
+      "scooters": 245,
+      "stationaryReferences": 38,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:42:29.129Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/South_Ishigaki_34_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "North Ishigaki",
+      "regionToken": "UOY53ANFQVWMH",
+      "fingerprint": "0e95f4ebff6afb282f680f2e5105dddbe091874b87409c1b2c1185f532d7986d",
+      "groups": 21,
+      "localCells": 82,
+      "coldMapRequests": 82,
+      "warmMapRequests": 82,
+      "scooters": 19,
+      "stationaryReferences": 10,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:52:37.981Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/North_Ishigaki_4_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "San Marcos",
+      "regionToken": "AYYUDWJ6FBMEZ",
+      "fingerprint": "9c7c3fb6050e5b2b05f479309da4a7f0624c7bf0d83fcf904450a4869f74267c",
+      "groups": 5,
+      "localCells": 20,
+      "coldMapRequests": 20,
+      "warmMapRequests": 20,
+      "scooters": 127,
+      "stationaryReferences": 15,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:55:12.029Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/San_Marcos_44_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "UNC Charlotte",
+      "regionToken": "A3ZBZTP2PATG6",
+      "fingerprint": "8c256b5599bcec1fef01439fbebdde9542720455eab40154520abcb4e227a176",
+      "groups": 4,
+      "localCells": 16,
+      "coldMapRequests": 16,
+      "warmMapRequests": 16,
+      "scooters": 87,
+      "stationaryReferences": 5,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-27T23:57:18.031Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/UNC_Charlotte_31_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

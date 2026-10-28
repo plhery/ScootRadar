@@ -510,11 +510,60 @@
         "lngStep": 0.016538467201617463,
         "cells": "1-7"
       }
+    },
+    {
+      "id": "lime_jp_app_ishigaki",
+      "provider": "lime",
+      "city": "Ishigaki",
+      "center": [
+        24.34478,
+        124.15717
+      ],
+      "aliases": [
+        "South Ishigaki"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PUD7UR42RGNHO",
+      "limeMapGrid": {
+        "south": 24.32714,
+        "west": 124.06482,
+        "north": 24.48982,
+        "east": 124.24878,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.014787692785655013,
+        "cells": "5-8,17-25,28-38,41-49,53-58,65-71,78-84,91-97,104-113,117-126,131-136,145-148,159"
+      }
+    },
+    {
+      "id": "lime_jp_app_north_ishigaki",
+      "provider": "lime",
+      "city": "North Ishigaki",
+      "center": [
+        24.52819,
+        124.28939
+      ],
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "UOY53ANFQVWMH",
+      "limeMapGrid": {
+        "south": 24.42856,
+        "west": 124.19943,
+        "north": 24.62097,
+        "east": 124.35685,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01479955925709971,
+        "cells": "2-4,11-15,22-27,33-38,45-50,56-62,68-73,79-85,91-96,103-108,114-119,126-131,138-142,149-153,161-162"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Naha_188_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/South_Ishigaki_34_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/North_Ishigaki_4_exclude_new_type.json"
   ]
 }

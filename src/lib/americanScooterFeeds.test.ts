@@ -55,8 +55,9 @@ describe('the United States', () => {
       'Cincinnati', 'Clearfield', 'Corpus Christi', 'Dallas', 'Edmond', 'Everett', 'Fairfax', 'Grand Junction', 'Indianapolis', 'Isla Vista',
       'Jacksonville', 'Jenks', 'Knoxville', 'Lansing', 'Little Rock', 'Long Beach', 'Los Angeles', 'Lubbock', 'Milwaukee', 'Minneapolis',
       'Mobile', 'Montgomery County', 'Nashville', 'North Salt Lake', 'Oklahoma City', 'Omaha', 'Orlando', 'Phoenix', 'Portland', 'Raleigh',
-      'Redmond', 'Richmond', 'Rochester', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane', 'Spokane Valley',
-      'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'Tucson', 'Tulsa', 'West Sacramento', 'Winston-Salem']);
+      'Redmond', 'Richmond', 'Rochester', 'Sacramento', 'Salt Lake City', 'San Marcos', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
+      'Spokane Valley', 'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'Tucson', 'Tulsa', 'UNC Charlotte', 'West Sacramento',
+      'Winston-Salem']);
     for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
       'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing', 'us:ca:Los Angeles', 'us:or:Portland', 'us:ca:Sacramento',
       'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe',

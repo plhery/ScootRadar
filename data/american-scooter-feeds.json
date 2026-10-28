@@ -4184,6 +4184,55 @@
         "lngStep": 0.01589926032052809,
         "cells": "16-17,35-38,55-59,75-80,86-89,94-103,107-113,115-125,128-133,135-146,149-167,170-187,191-208,212-229,233-250,253-271,273-292,294-312,315-328,336-343,357-363,378-383,399-404"
       }
+    },
+    {
+      "id": "lime_us_app_san_marcos",
+      "provider": "lime",
+      "city": "San Marcos",
+      "region": "TX",
+      "center": [
+        29.885550000000002,
+        -97.924155
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "AYYUDWJ6FBMEZ",
+      "limeMapGrid": {
+        "south": 29.85663,
+        "west": -97.97956,
+        "north": 29.91017,
+        "east": -97.90035,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.015536808734627068,
+        "cells": "0-3,6-10,12-22"
+      }
+    },
+    {
+      "id": "lime_us_app_unc_charlotte",
+      "provider": "lime",
+      "city": "UNC Charlotte",
+      "region": "NC",
+      "center": [
+        35.316095000000004,
+        -80.73759
+      ],
+      "aliases": [
+        "University City"
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "A3ZBZTP2PATG6",
+      "limeMapGrid": {
+        "south": 35.28343,
+        "west": -80.76912,
+        "north": 35.34737,
+        "east": -80.70597,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01650690982278792,
+        "cells": "0-2,4-11,13-15,17-18"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -4233,6 +4282,8 @@
     "https://assets.lime.bike/zones_attributes/Alexandria_8793_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Seattle_3248_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Berkeley_45_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Tucson_625_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/San_Marcos_44_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/UNC_Charlotte_31_exclude_new_type.json"
   ]
 }

@@ -10,6 +10,15 @@ after a clean full-area audit. Its Balaton region, 17 zones on the lake's south
 shore from Siófok to Balatonberény, held no scooter that day, nor did Fót, Göd
 or Zalaegerszeg; check the Balaton resorts again in summer.
 
+Update, 28 October 2026: Lime's map, zoomed out, lists two more Hungarian
+regions. Pest South's three zones are Érd, Százhalombatta and Diósd, each a
+market of its own, with 128, 29 and 64 scooters in their full-area audits
+that night, every stationary reference found
+([outline document](https://assets.lime.bike/zones_attributes/Pest_South_2236_exclude_new_type.json)).
+Szigetszentmiklós, across the Danube, is another region. Balaton North's one
+zone, Keszthely's, held no scooter near its centre at midnight; read it again
+by day.
+
 
 Verified 13 October 2026. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
@@ -121,7 +130,7 @@ Neither Pécs nor Békéscsaba bans renting at night, so
 
 ## Known gaps
 
-- **Lime** (Budapest and 16 other places, Szeged, Eger, Sopron and Veszprém
+- **Lime** (Budapest and 19 other places, Szeged, Eger, Sopron and Veszprém
   among them) and **Dott** (Budapest, Győr, Miskolc, Siófok and four other
   towns) publish no public feed; both are now on the map from their apps (see
   the updates above): Dott's 8 Hungarian regions in the registry answer 404, its Hungarian

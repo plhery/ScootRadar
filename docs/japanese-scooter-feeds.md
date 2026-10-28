@@ -19,6 +19,16 @@ left out, as is a test zone. Its public outline document is:
 
 - [Tokyo region service polygons](https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json)
 
+Lime's map, zoomed out, lists two regions on Ishigaki island, South Ishigaki
+and North Ishigaki, each a market since 28 October 2026 after a clean
+full-area audit that morning: 245 scooters in Ishigaki, the town and the
+island's south, and 19 in North Ishigaki, the north of the island, which is
+also Ishigaki's. Their zones are wide, 19 and 21 km, so they take 91 and 82
+local views. Their public outline documents are:
+
+- [South Ishigaki service polygons](https://assets.lime.bike/zones_attributes/South_Ishigaki_34_exclude_new_type.json)
+- [North Ishigaki service polygons](https://assets.lime.bike/zones_attributes/North_Ishigaki_4_exclude_new_type.json)
+
 The market uses `Asia/Tokyo`. Only scooter pins inside the recorded
 service polygons are included. Bikes, fares and vehicle-specific rental links
 are excluded. Public feeds remain preferred wherever available.

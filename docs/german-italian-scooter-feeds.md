@@ -560,7 +560,12 @@ an hour, so no interval was changed for ATOM.
   contained no city feeds, and Dott's API now needs authentication. Dott still
   runs in Roma, Milano, Palermo and other cities.
 - Lime's Italian endpoints all returned 404, though Lime runs in Roma, Milano
-  and Palermo. Lime's rider map supplies them since 25 October 2026.
+  and Palermo. Lime's rider map supplies them since 25 October 2026, and
+  Ragusa and Marina di Ragusa since 28 October: 82 and 40 scooters in their
+  full-area audits that night, two zones 16 km apart in one region
+  ([outline document](https://assets.lime.bike/zones_attributes/Ragusa_61_exclude_new_type.json)).
+  Lime's Lucca region held no scooter near its centre at midnight; read it
+  again by day.
 - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
   Sesto Fiorentino were empty, with a timestamp of 0, and so were Bird München
   and Ulm on 16 October 2026. Bird left Ulm and Neu-Ulm around 2022

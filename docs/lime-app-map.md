@@ -122,6 +122,32 @@ Tours's, Tauranga's and Guadalajara's, in Zapopan, held no scooter near their
 centres, and Sapporo's one zone is a trial at Es Con Field, in Kitahiroshima,
 with none near it.
 
+Zoomed out, the map lists the regions themselves. `static_elements` at zoom 5
+answers with `regions`, each a region token, its name and its bounds: every
+region whose bounds meet the view, at most 50 a reply, ordered by their
+southern edge, so moving the view's southern edge up to the last one's pages
+through them. On 28 October 2026 seven requests read the whole world: 270
+regions. They include all 158 regions registered before, and leave out the
+dormant ones the town probes had found, as Sharjah's, Oshawa's and North
+Vancouver's, so the list is what the app shows as live. 46 were not known,
+two of them test regions, and 36 of those have scooter zones. Lime's public
+feeds already cover 14, from Calgary, Edmonton and Vancouver to Washington,
+Lille and Uppsala; Harrisburg's only zone is a demo and the Mayo Clinic's, in
+Florida, one empty campus; and six are Swiss. Thirteen markets of ten regions
+held scooters in their full-area audits that night and are registered below:
+Feldkirchen bei Graz
+(Lime's Graz South region, around Graz's airport), Klosterneuburg and
+Korneuburg, near Vienna; Chania; Érd, Százhalombatta and Diósd, the three
+zones of Lime's Pest South region, each a town of its own; Ragusa and Marina
+di Ragusa, 16 km apart in one region; Ishigaki and North Ishigaki, Lime's
+South and North Ishigaki regions; San Marcos, Texas; and UNC Charlotte, the
+university's campus, a region apart from Charlotte's. Kortrijk's, Mechelen's,
+Lucca's and Keszthely's, on Lake Balaton, and Volos's, found by a town probe,
+held no scooter near their centres at midnight, to be read again by day. Of
+the Swiss regions, Basel's, Opfikon's, Uster's and Zurich's are in the
+national feed; Sion's and Kloten's are not, and no country catalog takes them
+yet.
+
 In Germany, 49 large cities were read: 12, Leipzig among them, found no
 region, 20 regions without a scooter zone, as Mannheim's, Karlsruhe's and
 Kassel's, and 11 a region already known. Of the six new regions with scooter
@@ -260,6 +286,12 @@ stationary reference scooter, country by country:
 | 27 October 2026 | Norway: Bergen | 81 | 21 | 2,107 | 104 |
 | 27 October 2026 | Chile: Viña del Mar | 7 | 2 | 295 | 29 |
 | 27 October 2026 | Canada: Waterloo Region, Red Deer, Saskatoon, Regina, Blackfalds, Lacombe | 265 | 67 | 1,105 | 46 |
+| 28 October 2026 | Austria: Feldkirchen bei Graz, Klosterneuburg, Korneuburg | 49 | 13 | 229 | 29 |
+| 28 October 2026 | Greece: Chania | 6 | 2 | 169 | 46 |
+| 28 October 2026 | Hungary: Érd, Százhalombatta, Diósd | 56 | 15 | 221 | 34 |
+| 28 October 2026 | Italy: Ragusa, Marina di Ragusa | 15 | 4 | 122 | 21 |
+| 28 October 2026 | Japan: Ishigaki, North Ishigaki | 173 | 44 | 264 | 48 |
+| 28 October 2026 | United States: San Marcos, UNC Charlotte | 36 | 9 | 214 | 20 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

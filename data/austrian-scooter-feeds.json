@@ -348,6 +348,75 @@
         "lngStep": 0.020177810823040186,
         "cells": "4-5,20,22-24,37-47,56-67,74-85,92-102,110-119,121,126-142,144-161,164-178,183-196,201-214,222-230,241-249,259-263,265-266,279-280"
       }
+    },
+    {
+      "id": "lime_at_app_feldkirchen_bei_graz",
+      "provider": "lime",
+      "city": "Feldkirchen bei Graz",
+      "center": [
+        46.994434999999996,
+        15.46188
+      ],
+      "aliases": [
+        "Graz South"
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JIMAI6ODVQZPX",
+      "limeMapGrid": {
+        "south": 46.9676,
+        "west": 15.42566,
+        "north": 47.02487,
+        "east": 15.4745,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019745653863190816,
+        "cells": "0-10,12"
+      }
+    },
+    {
+      "id": "lime_at_app_klosterneuburg",
+      "provider": "lime",
+      "city": "Klosterneuburg",
+      "center": [
+        48.309200000000004,
+        16.289189999999998
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CT5ZFBF5R46UF",
+      "limeMapGrid": {
+        "south": 48.26663,
+        "west": 16.23356,
+        "north": 48.35177,
+        "east": 16.34482,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02024241274436151,
+        "cells": "1-2,7-22,26-28,32-33,37-38"
+      }
+    },
+    {
+      "id": "lime_at_app_korneuburg",
+      "provider": "lime",
+      "city": "Korneuburg",
+      "center": [
+        48.35,
+        16.33333
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ON42EJFZSMOVF",
+      "limeMapGrid": {
+        "south": 48.29796,
+        "west": 16.30727,
+        "north": 48.36538,
+        "east": 16.3541,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020254832161363655,
+        "cells": "1-2,4,6-7,9-15"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -356,6 +425,9 @@
     "https://assets.lime.bike/zones_attributes/Klagenfurt_181_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Linz_242_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Wels_1792_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Graz_South_11_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Klosterneuburg_46_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Korneuburg_9_exclude_new_type.json"
   ]
 }

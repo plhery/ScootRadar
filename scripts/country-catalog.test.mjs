@@ -100,7 +100,7 @@ describe('the countries of data/countries.json', () => {
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
       'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/RO/CZ: Lime map', 'TR: Beam map',
       'DE/BE/PT/IS/SE/LV/PL/CY/UA/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map', 'TR/MK/BA/XK: BinBin map',
-      'DE/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/RO/CZ/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0',
+      'DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/RO/CZ/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0',
       'CA: City of Toronto · OGL Toronto',
     ]);
   });

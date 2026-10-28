@@ -910,8 +910,9 @@ Since 24 October 2026, GCOO's fleets in Los Angeles, Alexandria and Arlington
 come from its app's signed-out map, read as in South Korea (below). GCOO
 publishes no licence for it; the credits link to gcoo.io. Since 26 October
 2026, Lime's scooters in 58 towns where it publishes no feed, from Los Angeles
-and Austin to Milwaukee and Tampa, come from its rider map, signed in, as in
-Europe (see [the Lime catalog](docs/lime-app-map.md)). Since 28 October 2026,
+and Austin to Milwaukee and Tampa, and since 28 October in San Marcos and on
+UNC Charlotte's campus, come from its rider map, signed in, as in Europe (see
+[the Lime catalog](docs/lime-app-map.md)). Since 28 October 2026,
 Bird's scooters in eight towns where it publishes no feed, from Austin and
 Sacramento to Yonkers, come from its rider map, signed in, each operating area
 swept whole, one request every 30 seconds for all of them; Bird publishes no

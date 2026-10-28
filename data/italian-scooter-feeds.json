@@ -753,6 +753,50 @@
         "lngStep": 0.019187205497801757,
         "cells": "2-5,8-12,16-20,22-38,41-43,48-49,57"
       }
+    },
+    {
+      "id": "lime_it_app_marina_di_ragusa",
+      "provider": "lime",
+      "city": "Marina di Ragusa",
+      "center": [
+        36.78465,
+        14.5496
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "VM7HEPEWP4ITF",
+      "limeMapGrid": {
+        "south": 36.7794,
+        "west": 14.52731,
+        "north": 36.7899,
+        "east": 14.57189,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01682342630177558,
+        "cells": "0-2"
+      }
+    },
+    {
+      "id": "lime_it_app_ragusa",
+      "provider": "lime",
+      "city": "Ragusa",
+      "center": [
+        36.91961,
+        14.717175000000001
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "VM7HEPEWP4ITF",
+      "limeMapGrid": {
+        "south": 36.90407,
+        "west": 14.68299,
+        "north": 36.93515,
+        "east": 14.75136,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016850875178113282,
+        "cells": "0-3,5-12"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -764,6 +808,7 @@
     "https://assets.lime.bike/zones_attributes/Palermo_4036_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Rimini_2288_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Turin_2625_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Verona_820_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Verona_820_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Ragusa_61_exclude_new_type.json"
   ]
 }

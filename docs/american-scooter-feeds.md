@@ -147,6 +147,15 @@ department says Lime's and Bird's scooters could no longer be rented after
 scooters at the time. New Haven is a far zone of Lime's St. Louis region,
 about 90 km west of the city.
 
+On the evening of 27 October, local time, two regions that Lime's map lists
+only zoomed out: San Marcos, Texas (127), whose Lime contract, approved on 18
+August 2026 with Texas State University, brought scooters back to downtown,
+the campus and east of Interstate 35 around the clock (Fox 7 Austin), and UNC
+Charlotte (87), the university's campus, a region apart from Charlotte's. The
+campus is inside Charlotte's city limits, so the city's night ban, 01:30 to
+05:00, holds there too, though the university's transportation page says
+Lime rents on campus at all hours; check which applies.
+
 ## Bird supplement — 28 October 2026
 
 Bird publishes no feed for Austin, Bloomington, Indiana, Charlotte,

@@ -407,12 +407,35 @@
         "lngStep": 0.01773683188764513,
         "cells": "2-4,7-9,12-14,17-19,22-28,30-33,35-38,40-42"
       }
+    },
+    {
+      "id": "lime_gr_app_chania",
+      "provider": "lime",
+      "city": "Chania",
+      "center": [
+        35.511885,
+        24.020855
+      ],
+      "timeZone": "Europe/Athens",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "4EKS47F2OVFPF",
+      "limeMapGrid": {
+        "south": 35.50421,
+        "west": 23.99971,
+        "north": 35.51956,
+        "east": 24.042,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016552164432924735,
+        "cells": "0-5"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Heraklion_90_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Chania_94_exclude_new_type.json"
   ]
 }
