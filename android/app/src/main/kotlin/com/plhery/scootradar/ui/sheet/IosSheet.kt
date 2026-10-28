@@ -1,14 +1,17 @@
 package com.plhery.scootradar.ui.sheet
 
 import androidx.activity.compose.PredictiveBackHandler
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.animate
+import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
 import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DragScope
 import androidx.compose.foundation.gestures.DraggableAnchors
+import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.anchoredDraggable
-import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,11 +26,11 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,11 +48,15 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
@@ -59,7 +66,9 @@ import com.plhery.scootradar.ui.theme.LocalScootColors
 import com.plhery.scootradar.ui.theme.animation
 import com.plhery.scootradar.ui.theme.scootColors
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -80,6 +89,7 @@ private enum class SheetValue { Hidden, Medium, Large }
 @Composable
 fun IosSheet(
     isPresented: Boolean,
+    /** Called as a finger, a tap or Back sends the sheet away, before it is down: the presenter sets [isPresented] false. */
     onDismiss: () -> Unit,
     detents: List<SheetDetent>,
     /** What TalkBack says as the sheet opens, as VoiceOver reads the navigation title. */
@@ -103,29 +113,32 @@ fun IosSheet(
         }
     }
     val state = remember { AnchoredDraggableState(SheetValue.Hidden, anchors) }
-    SideEffect { state.updateAnchors(anchors, state.targetValue) }
-
-    // The system's sheet springs without a bounce. Reduce Motion leaves it be on iOS; Android's "Remove
-    // animations" makes it jump, as every animation.
-    val spring = remember { IosMotion.smooth(duration = 0.5).animation<Float>() }
-    val first = if (hasMedium) SheetValue.Medium else SheetValue.Large
-    LaunchedEffect(isPresented) {
-        state.animateTo(if (isPresented) first else SheetValue.Hidden, spring)
+    SideEffect {
+        // A detent the window no longer has, after a rotation: the sheet goes to the large one, as UIKit's does.
+        state.updateAnchors(anchors, state.targetValue.takeIf { anchors.hasPositionFor(it) } ?: SheetValue.Large)
     }
 
-    // Dragged, flung or tapped away: the sheet tells its presenter once it is down.
+    // Dragged or flung down, the dimmed map tapped, or Back: the sheet tells its presenter at once, as it starts to
+    // go, as `.sheet(isPresented:)` sets its binding.
     val presented by rememberUpdatedState(isPresented)
     val dismiss by rememberUpdatedState(onDismiss)
-    LaunchedEffect(state) {
-        var shown = false
-        snapshotFlow { state.settledValue }.collect { value ->
-            if (value != SheetValue.Hidden) {
-                shown = true
-            } else if (shown) {
-                shown = false
-                if (presented) dismiss()
-            }
-        }
+    val close: () -> Unit = { if (presented) dismiss() }
+    // The system's sheet springs without a bounce. Reduce Motion leaves it be on iOS; Android's "Remove
+    // animations" makes it jump, as every animation.
+    val motion = remember(state) {
+        SheetMotion(
+            state = state,
+            spring = IosMotion.smooth(duration = 0.5).animation(),
+            flingSpeed = with(density) { FLING_SPEED.toPx() },
+            mayStay = { presented },
+            goes = { close() },
+        )
+    }
+    SideEffect { motion.room = largeTop }
+    val first = if (hasMedium) SheetValue.Medium else SheetValue.Large
+    LaunchedEffect(isPresented) {
+        // A sheet flung away is on its way down already, and keeps the finger's speed.
+        if (isPresented || motion.heading != SheetValue.Hidden) motion.go(if (isPresented) first else SheetValue.Hidden)
     }
 
     // The offset changes with every frame of a drag, so it is read while the sheet is laid out and drawn, not here.
@@ -133,7 +146,6 @@ fun IosSheet(
     if (!isPresented && isDown) return
 
     val scope = rememberCoroutineScope()
-    val close: () -> Unit = { scope.launch { state.animateTo(SheetValue.Hidden, spring) } }
     var backProgress by remember { mutableFloatStateOf(0f) }
     PredictiveBackHandler(enabled = isPresented) { progress ->
         try {
@@ -146,12 +158,12 @@ fun IosSheet(
         }
     }
 
-    val scroll = remember(state) { SheetScrollConnection(state) { velocity -> state.settle(velocity) } }
+    val scroll = remember(motion) { SheetScrollConnection(motion) }
     val sheetColors = scootColors.elevated()
-    val fling = AnchoredDraggableDefaults.flingBehavior(state, positionalThreshold = { it / 2 }, animationSpec = spring)
     val inset = with(density) { FLOATING_INSET.toPx() }
     val radius = with(density) { CORNER_RADIUS.toPx() }
-    fun top(): Float = state.offset.let { if (it.isNaN()) full else it }
+    // Pulled up past the large height, the sheet stretches a little toward the status bar.
+    fun top(): Float = state.offset.let { if (it.isNaN()) full else it } - motion.stretch
     // How far inside the screen's edges the sheet is: it floats at the medium height and meets them at the large one.
     fun gap(): Float =
         if (hasMedium) inset * (1 - ((mediumTop - top()) / (mediumTop - largeTop)).coerceIn(0f, 1f)) else 0f
@@ -163,12 +175,20 @@ fun IosSheet(
                 .fillMaxSize()
                 .graphicsLayer { alpha = ((full - top()) / (full - lowestTop)).coerceIn(0f, 1f) }
                 .background(Color.Black.copy(alpha = if (scootColors.isDark) DIM_DARK else DIM_LIGHT))
-                .pointerInput(Unit) { detectTapGestures { close() } }
-                .semantics {
-                    traversalIndex = 1f
-                    contentDescription = localized("Close")
-                    onClick { close(); true }
-                },
+                // Once closed it lets taps through to the map, while the sheet is still going down.
+                .then(
+                    if (isPresented) {
+                        Modifier
+                            .pointerInput(Unit) { detectTapGestures { close() } }
+                            .semantics {
+                                traversalIndex = 1f
+                                contentDescription = localized("Close")
+                                onClick { close(); true }
+                            }
+                    } else {
+                        Modifier
+                    },
+                ),
         )
 
         Box(
@@ -195,7 +215,13 @@ fun IosSheet(
                 }
                 .background(sheetColors.systemGroupedBackground)
                 .nestedScroll(scroll)
-                .anchoredDraggable(state, Orientation.Vertical, flingBehavior = fling)
+                .draggable(
+                    motion,
+                    Orientation.Vertical,
+                    // A sheet on its way is caught by the finger that touches it.
+                    startDragImmediately = state.isAnimationRunning,
+                    onDragStopped = { velocity -> motion.settle(velocity) },
+                )
                 .semantics {
                     paneTitle = title
                     isTraversalGroup = true
@@ -208,15 +234,122 @@ fun IosSheet(
             CompositionLocalProvider(LocalScootColors provides sheetColors) {
                 content(with(density) { bottom.toDp() })
             }
-            // The drag indicator.
+            // The drag indicator. For VoiceOver UIKit's is a button that takes the sheet to its other height, or
+            // away when it has one; TalkBack reads it the same.
+            val expanded = state.targetValue == SheetValue.Large
             Box(
                 Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 5.dp)
-                    .size(36.dp, 5.dp)
-                    .clip(CapsuleShape)
-                    .background(sheetColors.tertiaryLabel),
-            )
+                    .size(GRABBER_TARGET.width, GRABBER_TARGET.height)
+                    .semantics {
+                        contentDescription = localized("Sheet Grabber")
+                        stateDescription = localized(if (expanded) "Sheet expanded" else "Sheet at half screen")
+                        role = Role.Button
+                        onClick {
+                            when {
+                                !hasMedium -> close()
+                                expanded -> scope.launch { motion.go(SheetValue.Medium) }
+                                else -> scope.launch { motion.go(SheetValue.Large) }
+                            }
+                            true
+                        }
+                    },
+            ) {
+                Box(
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 5.dp)
+                        .size(36.dp, 5.dp)
+                        .clip(CapsuleShape)
+                        .background(sheetColors.tertiaryLabel),
+                )
+            }
+        }
+    }
+}
+
+/**
+ * How the sheet follows a finger and where it goes when let go: to the next detent its way when flung, else to the
+ * closest, on the sheet's spring from the finger's speed. Pulled up past the large detent it stretches, more and
+ * more stiffly, and springs back.
+ */
+private class SheetMotion(
+    val state: AnchoredDraggableState<SheetValue>,
+    private val spring: AnimationSpec<Float>,
+    private val flingSpeed: Float,
+    /** Whether the sheet may rest at a detent: not once its presenter has closed it. */
+    private val mayStay: () -> Boolean,
+    /** Tells the presenter, as a finger sends the sheet down. */
+    private val goes: () -> Unit,
+) : DraggableState {
+    /** The detent the sheet is on its way to, while it springs there. */
+    var heading: SheetValue? by mutableStateOf(null)
+        private set
+
+    /** How far the sheet is stretched above the large detent. */
+    var stretch by mutableFloatStateOf(0f)
+        private set
+
+    /** The room above the sheet at the large detent, which a stretch nears and never fills. */
+    var room = 1f
+
+    private var pull = 0f
+
+    private val scope = object : DragScope {
+        override fun dragBy(pixels: Float) {
+            dispatchRawDelta(pixels)
+        }
+    }
+
+    override suspend fun drag(dragPriority: MutatePriority, block: suspend DragScope.() -> Unit) {
+        state.anchoredDrag(dragPriority) { scope.block() }
+    }
+
+    override fun dispatchRawDelta(delta: Float) {
+        // Down, the stretch gives first; up at the large detent, the rest of the finger's travel stretches.
+        var left = delta
+        if (pull > 0 && left > 0) {
+            val given = minOf(pull, left)
+            pull -= given
+            left -= given
+        }
+        left -= state.dispatchRawDelta(left)
+        if (left < 0) pull -= left
+        stretch = rubberBand(pull)
+    }
+
+    /** UIScrollView's rubber band: the first points follow the finger at about half its speed, then less and less. */
+    private fun rubberBand(distance: Float): Float =
+        if (distance <= 0f) 0f else (1 - 1 / (distance * RUBBER_BAND / room + 1)) * room
+
+    /** Lets the sheet go at [velocity], positive down. */
+    suspend fun settle(velocity: Float) {
+        val offset = state.requireOffset()
+        val target = when {
+            !mayStay() -> SheetValue.Hidden
+            abs(velocity) > flingSpeed -> state.anchors.closestAnchor(offset, searchUpwards = velocity > 0)
+            else -> state.anchors.closestAnchor(offset)
+        } ?: SheetValue.Hidden
+        if (target == SheetValue.Hidden) goes()
+        // The finger's speed carries the sheet only toward where it goes: one let go at its detent stays there.
+        go(target, if ((state.anchors.positionOf(target) - offset) * velocity > 0) velocity else 0f)
+    }
+
+    /** Springs the sheet to [target], and its stretch back. */
+    suspend fun go(target: SheetValue, velocity: Float = 0f) = coroutineScope {
+        if (stretch > 0) {
+            launch {
+                pull = 0f
+                animate(stretch, 0f, animationSpec = spring) { value, _ -> stretch = value }
+            }
+        }
+        heading = target
+        try {
+            state.anchoredDrag(target) { anchors, latest ->
+                animate(state.requireOffset(), anchors.positionOf(latest), velocity, spring) { value, speed -> dragTo(value, speed) }
+            }
+        } finally {
+            if (heading == target) heading = null
         }
     }
 }
@@ -225,26 +358,37 @@ fun IosSheet(
  * A list inside the sheet: pushed up, it raises the sheet to the large height before it scrolls; pulled down
  * from its top, it brings the sheet down with it; flung, it lets the sheet settle at a detent.
  */
-private class SheetScrollConnection(
-    private val state: AnchoredDraggableState<SheetValue>,
-    private val settle: suspend (velocity: Float) -> Unit,
-) : NestedScrollConnection {
+private class SheetScrollConnection(private val motion: SheetMotion) : NestedScrollConnection {
+    private val state get() = motion.state
+
+    /** Whether the finger on the list has moved the sheet: a list that only scrolled leaves the sheet be. */
+    private var moved = false
+
+    private fun move(delta: Float): Offset {
+        val consumed = state.dispatchRawDelta(delta)
+        if (consumed != 0f) moved = true
+        return Offset(0f, consumed)
+    }
+
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset =
-        if (available.y < 0 && source == NestedScrollSource.UserInput) Offset(0f, state.dispatchRawDelta(available.y)) else Offset.Zero
+        if (available.y < 0 && source == NestedScrollSource.UserInput) move(available.y) else Offset.Zero
 
     override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset =
-        if (source == NestedScrollSource.UserInput) Offset(0f, state.dispatchRawDelta(available.y)) else Offset.Zero
+        if (source == NestedScrollSource.UserInput) move(available.y) else Offset.Zero
 
     override suspend fun onPreFling(available: Velocity): Velocity =
-        if (available.y < 0 && state.requireOffset() > state.anchors.minPosition()) {
-            settle(available.y)
+        if (moved && available.y < 0 && state.requireOffset() > state.anchors.minPosition()) {
+            moved = false
+            motion.settle(available.y)
             available
         } else {
             Velocity.Zero
         }
 
     override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-        settle(available.y)
+        if (!moved) return Velocity.Zero
+        moved = false
+        motion.settle(available.y)
         return available
     }
 }
@@ -256,6 +400,15 @@ private val LARGE_GAP = 10.dp
 private val FLOATING_INSET = 8.dp
 
 private val CORNER_RADIUS = 38.dp
+
+/** How fast a finger lets go for the sheet to go on to the next detent its way: Compose's default for anchors. */
+private val FLING_SPEED = 125.dp
+
+/** UIScrollView's rubber-band constant. */
+private const val RUBBER_BAND = 0.55f
+
+/** The room TalkBack finds the drag indicator in, at the sheet's top. */
+private val GRABBER_TARGET = DpSize(48.dp, 20.dp)
 
 /** The dimming over the map, at its darkest: UIKit's dimming view. */
 private const val DIM_LIGHT = 0.2f
