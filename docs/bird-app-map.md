@@ -113,17 +113,27 @@ Antonio, Phoenix (Spin's), Columbus (Spin's), San Francisco (Spin's),
 Indianapolis, Calgary, Edmonton and Ottawa. Areas with `hide_birds`, as
 Ottawa's "Collection Nest" warehouses, and areas a few metres wide, as
 Indianapolis' fleet managers' homes, are no markets. Toronto, Montréal,
-Houston, San Jose, Chula Vista and Seattle had operating areas without a
-scooter near their centres; Seattle revoked Bird's permit in March 2026.
+Houston, San Jose, Chula Vista, Washington, Vancouver, Oklahoma City and
+Seattle had operating areas without a scooter within 3 km of their centres;
+Seattle revoked Bird's permit in March 2026. That search was stopped after
+the 33 largest of the 1,189 towns it had queued, and a read at a centre
+clears a small area only: Washington's area is 28 km across, Oklahoma
+City's 26, Chula Vista's 22 and San Jose's 16, so those are unchecked, not
+empty.
 That evening, from 22:32 to 22:53 UTC, the same search, an area read every 30
 seconds and a scooter read within 5 km of each new area's centre, went
 through 25 towns where Bird was said to run without a feed: the Canadian
 towns of [Coverage gaps](coverage-gaps.md) and the American ones a search
 of the web had named. Fifteen had an operating area with scooters, all in the
-table above with Brampton and Mississauga, found by the first search. Airdrie
-and Chestermere had areas but no scooter, nor had one in Pickering, and Laval, Red Deer, Regina, Springfield, MO, Pocatello, Athens,
-OH, Abilene and Amarillo with Canyon no area at all. Oklahoma City's area,
-found by the first search, held no scooter within 3 km of its centre.
+table above with Brampton and Mississauga, found by the first search.
+Airdrie's and Chestermere's areas, 9 and 7 km across, had no scooter within
+5 km of their centres. Pickering's had none either, but it is 29 km across
+and its centre 8 km north of the town's, and Bird Canada's site lists
+Pickering among its towns: unchecked. Laval, Red Deer, Regina, Springfield,
+MO, Pocatello, Athens, OH, Abilene and Amarillo with Canyon had no area at
+all. Laval's read listed nothing though Montréal's areas are 14 km away, so
+an empty read proves little alone; Bird Canada's list names none of Laval,
+Red Deer, Regina, Airdrie or Chestermere.
 Wilmington's and Mankato's areas are their universities' campuses, so each
 town's centre on the map is its campus.
 

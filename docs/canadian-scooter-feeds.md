@@ -69,8 +69,11 @@ Grove (50), Okotoks (47), Medicine Hat (44), St. Albert (38, beside Lime's),
 Penticton (26) and Cranbrook (19). Spruce Grove's area also covers Stony
 Plain, so the map lists it once, under Spruce Grove, and search finds it by
 Stony Plain too. Cranbrook keeps Alberta's time, as the East Kootenay does.
-Bird's areas in Airdrie, Chestermere and Pickering held no scooter, and its
-map showed no area in Laval, Red Deer or Regina. Penticton's first season
+Bird's areas in Airdrie and Chestermere held no scooter within 5 km of their
+centres, and its map showed no area in Laval, Red Deer or Regina; Bird
+Canada's list of its towns names none of them. Pickering, which it names,
+is still to be swept: its area, 29 km across, was read only near its centre,
+8 km north of the town's. Penticton's first season
 ends on 31 October, by the city's notice, so its area pauses from 1 November
 ([Winter](#winter)).
 
@@ -451,7 +454,8 @@ Bays show from zoom 16, as elsewhere.
   the provincial pilot.
 - **Bird**'s Kelowna, Saskatoon, Ajax and Surrey feeds were empty. Its rider
   map supplies thirteen towns with no feed since 28 October 2026 (above); its
-  Airdrie, Chestermere and Pickering areas held no scooter on 27 October.
+  Airdrie and Chestermere areas held no scooter near their centres on 27
+  October, and its Pickering area is still to be swept whole.
 - **Neuron**'s twelve Canadian feeds answer 404 since Lime bought it; Lime has
   no public feed yet for its other former Neuron towns, which its rider map
   supplies since 27 October 2026 (Saskatoon, Regina, Red Deer, Lacombe,
