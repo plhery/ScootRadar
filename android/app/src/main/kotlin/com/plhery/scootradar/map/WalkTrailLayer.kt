@@ -68,6 +68,13 @@ class WalkTrailLayer(
     private var reveal: Job? = null
     private var fade: Job? = null
 
+    /** The route hidden fades itself, or its layers keep the fade's last opacity, until a route is shown again. */
+    private var routeFaded = false
+
+    /** The route hidden is still in its source, and its copy waits under it unseen; which hide it was. */
+    private var retiring = false
+    private var hides = 0
+
     /** The route fitted, which draws itself once the camera is there. */
     private var pendingReveal: PendingReveal? = null
     private var revealFallback: Job? = null
@@ -170,6 +177,11 @@ class WalkTrailLayer(
         revision = trail.revision
         walked = trail.walked
         this.drawn = drawn
+        if (routeFaded) {
+            routeFaded = false
+            retiring = false
+            style?.let { opacity(it, ROUTE, 1f) }
+        }
         measure()
         redraw()
     }
@@ -226,14 +238,18 @@ class WalkTrailLayer(
         }
         // A fade under way gives way to this one.
         fade?.cancel()
-        // The copy first, and the route taken off a frame later, unless shown again by then: MapLibre takes each
-        // source's new data in apart, and the dots could be gone for a frame before the copy shows, which iOS
-        // avoids by keeping the old lines 100 ms.
+        // The copy first, and the route taken off 100 ms later, as iOS keeps its old lines, unless shown again by
+        // then: MapLibre takes each source's new data in apart, a tile's layout after it, and the dots could be
+        // gone before the copy shows. Meanwhile the route fades itself over its copy, which shows only then.
         write(style, GroundOverlays.FADING_TRAIL_SOURCE, leaving.json)
-        view.postOnAnimation {
-            val now = this.style
-            if (now === style && revision == null) write(style, GroundOverlays.TRAIL_SOURCE, GroundOverlays.NOTHING)
-        }
+        routeFaded = true
+        retiring = true
+        val hide = ++hides
+        view.postDelayed({
+            if (hide != hides) return@postDelayed
+            retiring = false
+            if (this.style === style && revision == null) write(style, GroundOverlays.TRAIL_SOURCE, GroundOverlays.NOTHING)
+        }, RETIRE_MILLIS)
         val filter = Expression.raw(TrailLayers.filter(range))
         for (id in listOf(GroundOverlays.FADING_TRAIL_CASING, GroundOverlays.FADING_TRAIL)) {
             (style.getLayer(id) as? CircleLayer)?.setFilter(filter)
@@ -241,8 +257,9 @@ class WalkTrailLayer(
         style.getLayer(GroundOverlays.FADING_TRAIL_CASING)
             ?.setProperties(PropertyFactory.circleColor(TrailLayers.color(WalkTrailLook.casingColor(isDark))))
         fade = animate(WalkTrailLook.fadeDuration.inWholeNanoseconds, step = { progress ->
-            val opacity = PropertyFactory.circleOpacity((1 - progress).toFloat())
-            for (id in listOf(GroundOverlays.FADING_TRAIL_CASING, GroundOverlays.FADING_TRAIL)) style.getLayer(id)?.setProperties(opacity)
+            val shown = (1 - progress).toFloat()
+            opacity(style, FADING, if (retiring) 0f else shown)
+            if (routeFaded) opacity(style, ROUTE, shown)
         }) {
             fade = null
             this.style?.let { write(it, GroundOverlays.FADING_TRAIL_SOURCE, GroundOverlays.NOTHING) }
@@ -268,6 +285,10 @@ class WalkTrailLayer(
         shown = range
         val filter = Expression.raw(TrailLayers.filter(range))
         for (id in listOf(GroundOverlays.TRAIL_CASING, GroundOverlays.TRAIL)) (style.getLayer(id) as? CircleLayer)?.setFilter(filter)
+    }
+
+    private fun opacity(style: Style, layers: List<String>, value: Float) {
+        for (id in layers) style.getLayer(id)?.setProperties(PropertyFactory.circleOpacity(value))
     }
 
     private fun write(style: Style, source: String, json: String) {
@@ -313,6 +334,12 @@ class WalkTrailLayer(
     private companion object {
         /** A rest this soon after the fit is the fit's own, before its move. */
         const val REVEAL_AFTER_MILLIS = 100
+
+        /** How long the route hidden stays under way, as iOS's retired lines (WalkTrailOverlay's retire). */
+        const val RETIRE_MILLIS = 100L
+
+        val ROUTE = listOf(GroundOverlays.TRAIL_CASING, GroundOverlays.TRAIL)
+        val FADING = listOf(GroundOverlays.FADING_TRAIL_CASING, GroundOverlays.FADING_TRAIL)
     }
 }
 

@@ -290,12 +290,15 @@ class GroundOverlaysTest {
             assertTrue("the casing's white: ${Integer.toHexString(rim)}", Color.red(rim) > 200 && Color.green(rim) > 200)
             save(pixels, "trail-walked")
 
-            // Hidden: the source emptied at once, and the dots that showed fade in a quarter of a second.
-            val opacities = mutableListOf<Pair<Long, Float>>()
+            // Hidden: the dots that showed fade in a quarter of a second, the route itself until it is taken off
+            // 100 ms on, as iOS keeps its old lines, and then its copy, unseen under it till then.
+            val opacities = mutableListOf<Triple<Long, Float, Float>>()
             val fading = object : Choreographer.FrameCallback {
                 override fun doFrame(frameTimeNanos: Long) {
-                    val layer = ground.phone.map.style?.getLayer(GroundOverlays.FADING_TRAIL) as? CircleLayer ?: return
-                    opacities += frameTimeNanos to layer.circleOpacity.value!!
+                    val style = ground.phone.map.style ?: return
+                    val route = (style.getLayer(GroundOverlays.TRAIL) as CircleLayer).circleOpacity.value!!
+                    val copy = (style.getLayer(GroundOverlays.FADING_TRAIL) as CircleLayer).circleOpacity.value!!
+                    opacities += Triple(frameTimeNanos, route, copy)
                     if (opacities.size < 60) Choreographer.getInstance().postFrameCallback(this)
                 }
             }
@@ -308,9 +311,13 @@ class GroundOverlaysTest {
             val fade = opacities.dropWhile { it.second >= 1f }
             assertTrue("${opacities.map { it.second }}", fade.size >= 5)
             assertTrue(fade.zipWithNext().all { (a, b) -> b.second <= a.second })
+            val start = opacities.first().first
             val gone = fade.first { it.second <= 0f }.first
-            val took = (gone - opacities.first().first) / 1e9
+            val took = (gone - start) / 1e9
             assertTrue("faded in $took s", took in 0.2..0.4)
+            assertTrue("${opacities.map { it.second to it.third }}", opacities.all { it.third == 0f || it.third == it.second })
+            val copied = (opacities.first { it.third > 0f }.first - start) / 1e9
+            assertTrue("the copy shown after $copied s", copied in 0.08..0.25)
             assertEquals(0, ground.drawn(last, GroundOverlays.FADING_TRAIL))
             assertEquals(0, ground.drawn(last, GroundOverlays.TRAIL))
         }
