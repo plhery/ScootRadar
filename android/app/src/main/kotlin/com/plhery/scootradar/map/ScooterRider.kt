@@ -25,7 +25,9 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.createBitmap
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.map.ScooterUserHeading
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.ScooterMapProjection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.merge
@@ -41,7 +43,6 @@ import org.maplibre.android.style.layers.TransitionOptions
 import org.maplibre.android.style.sources.GeoJsonSource
 import java.util.Locale
 import kotlin.math.PI
-import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.max
@@ -54,10 +55,12 @@ import kotlin.math.roundToInt
  * accuracy, in metres on the ground (MAP-197), with the compass's beam behind it (MAP-191 to MAP-196); above every
  * marker and name (MAP-188). It follows each fix the controller takes.
  *
- * The beam is a symbol of the map's, turned on the screen by its `icon-rotate`, not a view over the map: MapLibre
- * draws it in the frame it draws the dot in, so it stays on the dot as the map pans, where a view moved after each
- * frame would trail it. Its angle is the one on the screen of the place 30 m ahead, as ScooterUserLocationView turns
- * its view, set again as the map turns or tilts, as the compass turns, eased over 0.18 s, and as the rider moves.
+ * The beam is a symbol of the map's, not a view over it: MapLibre draws it in the frame it draws the dot in, so it
+ * stays on the dot as the map pans, where a view moved after each frame would trail it. It is turned with the map,
+ * which turns it on the screen as the camera turns, on the GPU; its own rotation, a layout of the rider's layers
+ * each time it is written, is written as the compass turns, eased over 0.18 s in a few steps, and on a tilted map
+ * once the camera has moved it off the way the rider faces ([RiderMotion]). Its way on the screen is the place 30 m
+ * ahead's, as ScooterUserLocationView turns its view.
  *
  * None of it takes a tap (MAP-198) or a TalkBack node: the map's tap and its virtual views pass it by.
  */
@@ -79,20 +82,12 @@ class ScooterRider(
     /** What the rider's source and layers say now. */
     private var writtenPlace: GeoPoint? = null
     private var writtenHalo: Pair<Double, Double>? = null
-    private var writtenRadius = RiderArt.DOT_RADIUS
 
-    /** The beam's angle on the screen as drawn, in degrees clockwise from straight up; null while it is hidden. */
-    private var shownAngle: Double? = null
-    private var setAngle: Double? = null
-
-    /** The beam's turn under way, in degrees, from its start's uptime in milliseconds. */
-    private var turn: Turn? = null
     private val easeOut = IosMotion.easeOut.let { PathInterpolator(it.x1, it.y1, it.x2, it.y2) }
-
-    private var framesWanted = false
-    private var lastBreath = 0L
-    private val frame = Choreographer.FrameCallback { onFrame() }
-    private val moved = MapLibreMap.OnCameraMoveListener { updateBeam(animated = false) }
+    private val motion = RiderMotion(Layers(), SystemClock::uptimeMillis, easeOut::getInterpolation)
+    private val frame = Choreographer.FrameCallback { motion.onFrame() }
+    private val moved = MapLibreMap.OnCameraMoveListener { motion.cameraMoved() }
+    private val stopped = MapLibreMap.OnCameraIdleListener { motion.cameraStopped() }
     private val updates: Job
 
     init {
@@ -102,7 +97,8 @@ class ScooterRider(
             update(headingChanged = false)
         }
         map.addOnCameraMoveListener(moved)
-        view.windowShown = { wantFrames() }
+        map.addOnCameraIdleListener(stopped)
+        view.windowShown = { motion.wake() }
         updates = scope.launch {
             launch { merge(controller.userLocation, controller.locationAccuracy).collect { update(headingChanged = false) } }
             launch { controller.userHeading.collect { update(headingChanged = true) } }
@@ -112,8 +108,9 @@ class ScooterRider(
     fun close() {
         updates.cancel()
         Choreographer.getInstance().removeFrameCallback(frame)
-        framesWanted = false
+        motion.close()
         map.removeOnCameraMoveListener(moved)
+        map.removeOnCameraIdleListener(stopped)
         view.windowShown = null
         style = null
     }
@@ -125,7 +122,10 @@ class ScooterRider(
         update(headingChanged = false)
     }
 
-    /** The rider where the controller has them, with the halo of the fix, and the beam as the compass says. */
+    /**
+     * The rider where the controller has them, with the halo of the fix, and the beam as the compass says: over
+     * 0.18 s as it turns, unless motion is reduced; at once as the rider moves.
+     */
     private fun update(headingChanged: Boolean) {
         val style = style ?: return
         val place = controller.userLocation.value
@@ -146,95 +146,45 @@ class ScooterRider(
             writtenHalo = halo
             style.getLayer(ScooterMarkerLayers.RIDER_HALO)?.setProperties(PropertyFactory.circleRadius(haloRadius(halo.first, halo.second)))
         }
-        updateBeam(animated = headingChanged)
-        wantFrames()
+        controller.userHeading.value?.let { heading ->
+            val half = Math.toDegrees(heading.halfAngle).roundToInt()
+            if (beamPicture != half to look) {
+                beamPicture = half to look
+                style.addImage(BEAM_IMAGE, art.beam(half.toDouble(), look))
+            }
+        }
+        motion.beamChanged(animated = headingChanged && ValueAnimator.areAnimatorsEnabled())
+        motion.wake()
     }
 
-    /**
-     * Points the beam the way the rider faces as the map shows it now: at once as the map or the rider moves, and
-     * over 0.18 s as the compass turns, from wherever it is, unless motion is reduced or it was hidden.
-     */
-    private fun updateBeam(animated: Boolean) {
-        val style = style ?: return
-        val place = controller.userLocation.value
-        val heading = controller.userHeading.value
-        val angle = if (place != null && heading != null) heading.screenAngle(at = place, on = projection) else null
-        if (heading == null || angle == null) {
-            if (shownAngle != null) style.getLayer(ScooterMarkerLayers.RIDER_BEAM)?.setProperties(PropertyFactory.iconOpacity(0f))
-            shownAngle = null
-            turn = null
-            return
+    /** The rider's layers as [RiderMotion] moves them, and the frames it asks for. */
+    private inner class Layers : RiderMotion.Rider {
+        override fun beamRotation(): Double? {
+            val place = controller.userLocation.value ?: return null
+            val heading = controller.userHeading.value ?: return null
+            return beamRotation(heading, place, projection)
         }
-        val half = Math.toDegrees(heading.halfAngle).roundToInt()
-        if (beamPicture != half to look) {
-            beamPicture = half to look
-            style.addImage(BEAM_IMAGE, art.beam(half.toDouble(), look))
+
+        override fun rotateBeam(degrees: Double) {
+            style?.getLayer(ScooterMarkerLayers.RIDER_BEAM)?.setProperties(PropertyFactory.iconRotate(degrees.toFloat()))
         }
-        val target = Math.toDegrees(angle)
-        val from = shownAngle
-        if (from == null) {
-            turn = null
-            setBeamAngle(style, target)
-            style.getLayer(ScooterMarkerLayers.RIDER_BEAM)?.setProperties(PropertyFactory.iconOpacity(1f))
-        } else if (animated && ValueAnimator.areAnimatorsEnabled()) {
-            // The short way round, from where it is now.
-            val to = from + ((target - from) % 360 + 540) % 360 - 180
-            turn = Turn(from, to, SystemClock.uptimeMillis())
-            wantFrames()
-        } else {
-            turn = null
-            setBeamAngle(style, target)
+
+        override fun showBeam(shown: Boolean) {
+            style?.getLayer(ScooterMarkerLayers.RIDER_BEAM)?.setProperties(PropertyFactory.iconOpacity(if (shown) 1f else 0f))
+        }
+
+        override fun setRadius(radius: Double) {
+            style?.getLayer(ScooterMarkerLayers.RIDER)?.setProperties(PropertyFactory.circleRadius(radius.toFloat()))
+        }
+
+        /** The dot breathes while it is on the screen, the map shown, with animations on, as MapKit's does. */
+        override fun breathes(): Boolean = style != null && ValueAnimator.areAnimatorsEnabled() &&
+            view.isAttachedToWindow && view.windowVisibility == View.VISIBLE && isOnScreen()
+
+        override fun frameAfter(delayMillis: Long) {
+            Choreographer.getInstance().postFrameCallbackDelayed(frame, delayMillis)
         }
     }
-
-    private fun setBeamAngle(style: Style, degrees: Double) {
-        shownAngle = degrees
-        // A turn too small to see would only have MapLibre lay the beam out again.
-        val set = setAngle
-        if (set != null && abs(((degrees - set) % 360 + 540) % 360 - 180) < MIN_TURN) return
-        setAngle = degrees
-        style.getLayer(ScooterMarkerLayers.RIDER_BEAM)?.setProperties(PropertyFactory.iconRotate(((degrees % 360 + 360) % 360).toFloat()))
-    }
-
-    // Frames
-
-    private fun wantFrames() {
-        if (framesWanted || style == null) return
-        if (turn == null && !breathes()) {
-            // At rest: the dot full size.
-            setRadius(RiderArt.DOT_RADIUS)
-            return
-        }
-        framesWanted = true
-        Choreographer.getInstance().postFrameCallback(frame)
-    }
-
-    private fun onFrame() {
-        framesWanted = false
-        val style = style ?: return
-        val now = SystemClock.uptimeMillis()
-        turn?.let { turn ->
-            val progress = ((now - turn.start) / TURN_MILLIS).coerceIn(0.0, 1.0)
-            setBeamAngle(style, turn.from + (turn.to - turn.from) * easeOut.getInterpolation(progress.toFloat()))
-            if (progress >= 1) this.turn = null
-        }
-        // A few times a second is enough for a change this slow, and spares the map being drawn again each frame.
-        if (breathes() && now - lastBreath >= BREATH_STEP_MILLIS && isOnScreen()) {
-            lastBreath = now
-            setRadius(RiderArt.breathingRadius(now / 1000.0))
-        }
-        wantFrames()
-    }
-
-    private fun setRadius(radius: Double) {
-        if (abs(radius - writtenRadius) < 0.01) return
-        writtenRadius = radius
-        style?.getLayer(ScooterMarkerLayers.RIDER)?.setProperties(PropertyFactory.circleRadius(radius.toFloat()))
-    }
-
-    /** The dot breathes while it is on the map, the map on screen, with animations on, as MapKit's does. */
-    private fun breathes(): Boolean = controller.userLocation.value != null && ValueAnimator.areAnimatorsEnabled() &&
-        view.isAttachedToWindow && view.windowVisibility == View.VISIBLE
 
     private fun isOnScreen(): Boolean {
         val place = controller.userLocation.value ?: return false
@@ -244,23 +194,28 @@ class ScooterRider(
             point.x <= bounds.maxX + RiderArt.RING_SIZE && point.y <= bounds.maxY + RiderArt.RING_SIZE
     }
 
-    private data class Turn(val from: Double, val to: Double, val start: Long)
-
     companion object {
         private const val RING_IMAGE = "rider-ring"
         private const val BEAM_IMAGE = "rider-beam"
         private const val NOWHERE = "{\"type\":\"FeatureCollection\",\"features\":[]}"
 
-        /** The beam's turn as the compass turns, in milliseconds: ScooterUserLocationView's 0.18 s ease-out. */
-        private const val TURN_MILLIS = 180.0
-
-        /** The least turn of the beam drawn, in degrees. */
-        private const val MIN_TURN = 0.5
-
-        private const val BREATH_STEP_MILLIS = 66L
-
         /** The equator's length in metres, as MapLibre's Web Mercator measures it. */
         private const val EARTH_CIRCUMFERENCE = 40_075_016.68557849
+
+        /** The way east, whose way on the screen is the one MapLibre turns a symbol turned with the map by. */
+        private val EAST = ScooterUserHeading(trueHeading = 90.0, magneticHeading = 90.0, accuracy = 0.0)!!
+
+        /**
+         * The beam's rotation for [heading] at [place] on [map], in degrees: its way on the screen (MAP-193) less
+         * the way the map's east shows there, by which MapLibre turns a symbol turned with the map, and its up a
+         * quarter turn from that east. On a flat map that is the compass's own, however the map is turned; on a
+         * tilted one, a few degrees from it. Null where the map cannot show the way.
+         */
+        internal fun beamRotation(heading: ScooterUserHeading, place: GeoPoint, map: ScooterMapProjection): Double? {
+            val ahead = heading.screenAngle(at = place, on = map) ?: return null
+            val east = EAST.screenAngle(at = place, on = map) ?: return null
+            return (Math.toDegrees(ahead - east) + 90 + 360) % 360
+        }
 
         private fun point(place: GeoPoint) =
             String.format(Locale.ROOT, "{\"type\":\"Point\",\"coordinates\":[%.7f,%.7f]}", place.longitude, place.latitude)
@@ -287,8 +242,8 @@ class ScooterRider(
 
         /**
          * The rider's source and layers, above every marker and name, bottom to top: the halo, the beam, the ring
-         * and the dot. Each is drawn whatever is near, and none is turned or tilted with the map but the halo,
-         * which lies on the ground.
+         * and the dot. Each is drawn whatever is near, and none is tilted with the map but the halo, which lies on
+         * the ground; the beam is turned with it.
          */
         fun addLayers(style: Style) {
             style.addSource(GeoJsonSource(ScooterMarkerLayers.RIDER_SOURCE))
@@ -303,7 +258,8 @@ class ScooterRider(
                 SymbolLayer(ScooterMarkerLayers.RIDER_BEAM, ScooterMarkerLayers.RIDER_SOURCE).withProperties(
                     PropertyFactory.iconImage(BEAM_IMAGE),
                     PropertyFactory.iconOpacity(0f),
-                    *pictureProperties(),
+                    // Turned on the screen by the map as it turns, with no layout of its own.
+                    *pictureProperties(rotationAlignment = Property.ICON_ROTATION_ALIGNMENT_MAP),
                 ),
             )
             style.addLayer(
@@ -319,18 +275,18 @@ class ScooterRider(
                     PropertyFactory.circlePitchScale(Property.CIRCLE_PITCH_SCALE_VIEWPORT),
                 ),
             )
-            // A breath or a turn set a frame at a time is shown at once, not eased over the style's 0.3 s.
+            // A breath or a beam shown or hidden is drawn at once, not eased over the style's 0.3 s.
             for (id in listOf(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.RIDER)) {
                 (style.getLayer(id) as? CircleLayer)?.circleRadiusTransition = TransitionOptions(0, 0)
             }
             (style.getLayer(ScooterMarkerLayers.RIDER_BEAM) as? SymbolLayer)?.iconOpacityTransition = TransitionOptions(0, 0)
         }
 
-        private fun pictureProperties() = arrayOf(
+        private fun pictureProperties(rotationAlignment: String = Property.ICON_ROTATION_ALIGNMENT_VIEWPORT) = arrayOf(
             PropertyFactory.iconAnchor(Property.ICON_ANCHOR_CENTER),
             PropertyFactory.iconAllowOverlap(true),
             PropertyFactory.iconIgnorePlacement(true),
-            PropertyFactory.iconRotationAlignment(Property.ICON_ROTATION_ALIGNMENT_VIEWPORT),
+            PropertyFactory.iconRotationAlignment(rotationAlignment),
             PropertyFactory.iconPitchAlignment(Property.ICON_PITCH_ALIGNMENT_VIEWPORT),
         )
     }

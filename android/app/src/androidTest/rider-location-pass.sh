@@ -56,6 +56,7 @@ reset; run theDialogAllowedMovesTheMapToTheRiderWithAFix
 # The same app, started again: what it stored stays.
 run theRiderLocatedOnceIsRememberedAfterARestartWithAFix
 reset; run aTurnOfThePhoneKeepsTheDotAndItsBeamWithAFix
+reset; run theBeamPointsTheWayTheRiderFacesOnATurnedAndTiltedMapWithAFix
 reset
 
 echo "$failures failed"
