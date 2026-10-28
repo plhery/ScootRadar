@@ -26,7 +26,11 @@ alias, in two jobs; the token is in its `prometheus.yml`.
 - Job `scootradar-cache-containers` finds each container behind the alias through
   Docker's DNS (its `instance` is the container's address, port 3001) and keeps only
   the counters and the durations' `_sum` and `_count`, relabelled
-  `job="scootradar-cache"`. Its own `up` keeps the job's name.
+  `job="scootradar-cache"`. Its own `up` keeps the job's name. It asks for
+  `/metrics?only=counters` (`params: {only: [counters]}`), which renders the counters
+  alone: no per-feed gauges, which took most of a render, and no reading of the event
+  loop's delay, whose histogram each full render resets. Since 28 October 2026 at
+  09:31 UTC.
 
 During a deploy the alias answers from the old and the new container in turn. A gauge
 survives that, but a counter read through it falls each time the new container answers
