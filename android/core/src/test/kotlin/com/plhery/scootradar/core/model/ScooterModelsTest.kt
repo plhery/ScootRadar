@@ -6,6 +6,7 @@ import com.plhery.scootradar.core.generated.ScooterAPIResponsePayload
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.generated.ScooterResponseMetadataPayload
 import com.plhery.scootradar.core.generated.ScooterVehiclePayload
+import com.plhery.scootradar.core.map.TestCatalog
 import com.plhery.scootradar.core.map.ScooterDeviceOrientation
 import com.plhery.scootradar.core.map.ScooterHeadingPolicy
 import com.plhery.scootradar.core.map.ScooterInterfaceOrientation
@@ -26,6 +27,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -103,11 +105,14 @@ class ScooterModelsTest {
         assertEquals(cities.size, ScooterCityCatalog.cityCount)
         assertEquals(cities.size, cities.map { it.id }.toSet().size)
         assertEquals(cities.map { it.countryCode }.toSet().size, ScooterCityCatalog.countryCount)
+        // Switzerland's open data, where ScootRadar began, is in the catalog for good.
         assertTrue(cities.any { it.countryCode == "CH" })
-        // Dott's one feed for Wołomin, Kobyłka and Radzymin counts three towns.
-        for (id in listOf("pl:Wołomin", "pl:Kobyłka", "pl:Radzymin")) {
-            assertEquals(id, 1, cities.count { it.id == id })
-        }
+        // A feed run over several towns counts each of them, as Dott's one for Wołomin, Kobyłka and Radzymin counts
+        // three. Which feeds do is data/'s to change (LOG-370); that some do is not, with 97 on 28 October 2026.
+        val towns = cities.flatMap { city -> city.feeds.map { it.id to city.id } }
+            .groupBy({ it.first }, { it.second }).values.map { it.distinct() }.filter { it.size > 1 }
+        assertTrue(towns.isNotEmpty())
+        for (ids in towns) for (id in ids) assertEquals(id, 1, cities.count { it.id == id })
 
         ScooterLanguage.current = ScooterLanguage.En
         // Over a thousand, the count takes the region's grouping: 1,005 or 1'005.
@@ -1327,67 +1332,107 @@ class ScooterModelsTest {
 
     @Test
     fun citiesBanRentingOnTheirNightsInLocalTime() {
+        // The bans as data/ had them on 28 October 2026, each area a box but Nashville's, whose county line goes round
+        // Brentwood: data/ changes the nights, the areas and the cities (LOG-370). The catalog's own follow.
+        fun box(south: Double, west: Double, north: Double, east: Double) =
+            listOf(GeoPoint(south, west), GeoPoint(south, east), GeoPoint(north, east), GeoPoint(north, west))
+        fun ban(city: String, timeZone: String, from: Int, until: Int, vararg areas: List<GeoPoint>, evenings: Set<Int>? = null) =
+            RentalCurfew(city = city, timeZone = timeZone, nights = listOf(RentalCurfew.Night(evenings, from, until)), areas = areas.toList())
+        val nashvilleCounty = listOf(
+            GeoPoint(36.41, -87.05), GeoPoint(36.41, -86.52), GeoPoint(35.97, -86.52),
+            GeoPoint(35.97, -86.7), GeoPoint(36.1, -86.7), GeoPoint(36.1, -87.05),
+        )
+        val bans = listOf(
+            ban("Oslo", "Europe/Oslo", 23 * 60, 5 * 60, box(59.81, 10.62, 60.14, 10.95)),
+            ban("Trondheim", "Europe/Oslo", 23 * 60, 5 * 60, box(63.16, 10.0, 63.52, 10.73), evenings = setOf(6, 7)),
+            ban("Stavanger", "Europe/Oslo", 0, 5 * 60, box(58.88, 5.5, 59.31, 6.13), evenings = setOf(6, 7)),
+            ban("Kyiv", "Europe/Kyiv", 60, 5 * 60, box(50.21, 30.24, 50.59, 30.7)),
+            ban("Dallas", "America/Chicago", 20 * 60 + 45, 5 * 60, box(32.61, -97.0, 33.02, -96.56)),
+            ban("Nashville", "America/Chicago", 0, 5 * 60, nashvilleCounty),
+            ban("Minneapolis", "America/Chicago", 0, 4 * 60, box(44.89, -93.33, 45.05, -93.19)),
+            ban("Raleigh", "America/New_York", 23 * 60, 6 * 60, box(35.8, -78.82, 35.97, -78.49), box(35.77, -78.7, 35.8, -78.66)),
+            ban("Birmingham", "America/Chicago", 23 * 60, 6 * 60, box(33.38, -86.96, 33.67, -86.58)),
+        )
         val oslo = GeoPoint(latitude = 59.9139, longitude = 10.7522)
         val osloTime = ZoneId.of("Europe/Oslo")
         val sandvika = GeoPoint(latitude = 59.8913, longitude = 10.5236)
 
         // 22:59 and 23:00 in Oslo, summer time.
-        assertNull(RentalCurfew.active(at = oslo, on = at("2026-10-12T20:59:00Z")))
+        assertNull(RentalCurfew.active(at = oslo, on = at("2026-10-12T20:59:00Z"), among = bans))
         assertEquals(
             RentalCurfew.Active(city = "Oslo", until = at("2026-10-13T03:00:00Z"), timeZone = osloTime),
-            RentalCurfew.active(at = oslo, on = at("2026-10-12T21:00:00Z")),
+            RentalCurfew.active(at = oslo, on = at("2026-10-12T21:00:00Z"), among = bans),
         )
-        assertNull(RentalCurfew.active(at = oslo, on = at("2026-10-13T03:00:00Z")))
-        assertNull(RentalCurfew.active(at = sandvika, on = at("2026-10-12T22:00:00Z")))
+        assertNull(RentalCurfew.active(at = oslo, on = at("2026-10-13T03:00:00Z"), among = bans))
+        assertNull(RentalCurfew.active(at = sandvika, on = at("2026-10-12T22:00:00Z"), among = bans))
         // The nights the clocks go back and forward end at 05:00 all the same.
-        assertEquals(at("2026-10-25T04:00:00Z"), RentalCurfew.active(at = oslo, on = at("2026-10-24T21:30:00Z"))?.until)
-        assertEquals(at("2027-03-28T03:00:00Z"), RentalCurfew.active(at = oslo, on = at("2027-03-27T22:30:00Z"))?.until)
+        assertEquals(at("2026-10-25T04:00:00Z"), RentalCurfew.active(at = oslo, on = at("2026-10-24T21:30:00Z"), among = bans)?.until)
+        assertEquals(at("2027-03-28T03:00:00Z"), RentalCurfew.active(at = oslo, on = at("2027-03-27T22:30:00Z"), among = bans)?.until)
 
         // Trondheim bans only Friday and Saturday nights; Stavanger's start at midnight, after the evening.
         val trondheim = GeoPoint(latitude = 63.4305, longitude = 10.3951)
         val stavanger = GeoPoint(latitude = 58.97, longitude = 5.7331)
-        assertNull(RentalCurfew.active(at = trondheim, on = at("2026-10-12T21:30:00Z")))
-        assertEquals(at("2026-10-17T03:00:00Z"), RentalCurfew.active(at = trondheim, on = at("2026-10-16T21:30:00Z"))?.until)
-        assertEquals(at("2026-10-18T03:00:00Z"), RentalCurfew.active(at = trondheim, on = at("2026-10-17T22:30:00Z"))?.until)
-        assertNull(RentalCurfew.active(at = trondheim, on = at("2026-10-18T21:30:00Z")))
-        assertNull(RentalCurfew.active(at = stavanger, on = at("2026-10-16T21:30:00Z")))
-        assertEquals(at("2026-10-17T03:00:00Z"), RentalCurfew.active(at = stavanger, on = at("2026-10-16T22:30:00Z"))?.until)
-        assertNull(RentalCurfew.active(at = stavanger, on = at("2026-10-15T22:30:00Z")))
+        assertNull(RentalCurfew.active(at = trondheim, on = at("2026-10-12T21:30:00Z"), among = bans))
+        assertEquals(at("2026-10-17T03:00:00Z"), RentalCurfew.active(at = trondheim, on = at("2026-10-16T21:30:00Z"), among = bans)?.until)
+        assertEquals(at("2026-10-18T03:00:00Z"), RentalCurfew.active(at = trondheim, on = at("2026-10-17T22:30:00Z"), among = bans)?.until)
+        assertNull(RentalCurfew.active(at = trondheim, on = at("2026-10-18T21:30:00Z"), among = bans))
+        assertNull(RentalCurfew.active(at = stavanger, on = at("2026-10-16T21:30:00Z"), among = bans))
+        assertEquals(at("2026-10-17T03:00:00Z"), RentalCurfew.active(at = stavanger, on = at("2026-10-16T22:30:00Z"), among = bans)?.until)
+        assertNull(RentalCurfew.active(at = stavanger, on = at("2026-10-15T22:30:00Z"), among = bans))
 
         // Kyiv's martial-law curfew, 01:00 to 05:00 Kyiv time, stops at the city's edge.
         val kyiv = GeoPoint(latitude = 50.4501, longitude = 30.5234)
         val brovary = GeoPoint(latitude = 50.5113, longitude = 30.7903)
-        assertNull(RentalCurfew.active(at = kyiv, on = at("2026-10-14T21:59:00Z")))
+        assertNull(RentalCurfew.active(at = kyiv, on = at("2026-10-14T21:59:00Z"), among = bans))
         assertEquals(
             RentalCurfew.Active(city = "Kyiv", until = at("2026-10-15T02:00:00Z"), timeZone = ZoneId.of("Europe/Kyiv")),
-            RentalCurfew.active(at = kyiv, on = at("2026-10-14T22:00:00Z")),
+            RentalCurfew.active(at = kyiv, on = at("2026-10-14T22:00:00Z"), among = bans),
         )
-        assertNull(RentalCurfew.active(at = brovary, on = at("2026-10-14T23:00:00Z")))
+        assertNull(RentalCurfew.active(at = brovary, on = at("2026-10-14T23:00:00Z"), among = bans))
 
         // Dallas lets rides start until 20:45, Central time; Nashville's ban stops at Davidson County's line.
         val dallas = GeoPoint(latitude = 32.7767, longitude = -96.797)
         val nashville = GeoPoint(latitude = 36.1627, longitude = -86.7816)
         val brentwood = GeoPoint(latitude = 36.0331, longitude = -86.7828)
-        assertNull(RentalCurfew.active(at = dallas, on = at("2026-10-15T01:44:00Z")))
+        assertNull(RentalCurfew.active(at = dallas, on = at("2026-10-15T01:44:00Z"), among = bans))
         assertEquals(
             RentalCurfew.Active(city = "Dallas", until = at("2026-10-15T10:00:00Z"), timeZone = ZoneId.of("America/Chicago")),
-            RentalCurfew.active(at = dallas, on = at("2026-10-15T01:45:00Z")),
+            RentalCurfew.active(at = dallas, on = at("2026-10-15T01:45:00Z"), among = bans),
         )
-        assertEquals(at("2026-10-15T10:00:00Z"), RentalCurfew.active(at = nashville, on = at("2026-10-15T05:30:00Z"))?.until)
-        assertNull(RentalCurfew.active(at = brentwood, on = at("2026-10-15T05:30:00Z")))
+        assertEquals(at("2026-10-15T10:00:00Z"), RentalCurfew.active(at = nashville, on = at("2026-10-15T05:30:00Z"), among = bans)?.until)
+        assertNull(RentalCurfew.active(at = brentwood, on = at("2026-10-15T05:30:00Z"), among = bans))
 
         // Minneapolis from midnight, Central time; Raleigh from 23:00, Eastern time, on NC State's campus too; Birmingham from 23:00, Central time.
         val minneapolis = GeoPoint(latitude = 44.9778, longitude = -93.265)
         val ncState = GeoPoint(latitude = 35.7847, longitude = -78.6821)
         val birmingham = GeoPoint(latitude = 33.5186, longitude = -86.8104)
-        assertNull(RentalCurfew.active(at = minneapolis, on = at("2026-10-15T04:59:00Z")))
-        assertEquals(at("2026-10-15T09:00:00Z"), RentalCurfew.active(at = minneapolis, on = at("2026-10-15T05:00:00Z"))?.until)
-        assertNull(RentalCurfew.active(at = ncState, on = at("2026-10-15T02:59:00Z")))
+        assertNull(RentalCurfew.active(at = minneapolis, on = at("2026-10-15T04:59:00Z"), among = bans))
+        assertEquals(at("2026-10-15T09:00:00Z"), RentalCurfew.active(at = minneapolis, on = at("2026-10-15T05:00:00Z"), among = bans)?.until)
+        assertNull(RentalCurfew.active(at = ncState, on = at("2026-10-15T02:59:00Z"), among = bans))
         assertEquals(
             RentalCurfew.Active(city = "Raleigh", until = at("2026-10-15T10:00:00Z"), timeZone = ZoneId.of("America/New_York")),
-            RentalCurfew.active(at = ncState, on = at("2026-10-15T03:00:00Z")),
+            RentalCurfew.active(at = ncState, on = at("2026-10-15T03:00:00Z"), among = bans),
         )
-        assertEquals(at("2026-10-15T11:00:00Z"), RentalCurfew.active(at = birmingham, on = at("2026-10-15T04:00:00Z"))?.until)
+        assertEquals(at("2026-10-15T11:00:00Z"), RentalCurfew.active(at = birmingham, on = at("2026-10-15T04:00:00Z"), among = bans)?.until)
+
+        // The catalog's own, read as the app reads them: each holds inside one of its areas on one of its nights.
+        for (ban in RentalCurfew.all) {
+            val inside = ban.areas.asSequence().flatMap { area ->
+                val south = area.minOf { it.latitude }
+                val north = area.maxOf { it.latitude }
+                val west = area.minOf { it.longitude }
+                val east = area.maxOf { it.longitude }
+                (1..31).asSequence().flatMap { i ->
+                    (1..31).asSequence().map { j -> GeoPoint(south + (north - south) * i / 32, west + (east - west) * j / 32) }
+                }
+            }.firstOrNull { ban.contains(it) } ?: throw AssertionError("No point inside ${ban.city}'s areas")
+            val zone = ZoneId.of(ban.timeZone)
+            val night = ban.nights.first()
+            val starts = (0L..6L).map {
+                LocalDate.of(2026, 10, 12).plusDays(it).atTime(night.fromMinute / 60, night.fromMinute % 60).atZone(zone).toInstant()
+            }
+            assertTrue(ban.city, starts.any { RentalCurfew.active(at = inside, on = it) != null })
+        }
 
         // The ban comes before every other notice, with a moon.
         val curfew = RentalCurfew.Active(city = "Oslo", until = at("2026-10-13T03:00:00Z"), timeZone = osloTime)
@@ -1514,8 +1559,9 @@ class ScooterModelsTest {
 
     @Test
     fun closestCityLabelsShowWholeKilometres() {
+        // Among the tests' own cities (TestCatalog), where no operator serves Lungern: data/ adds towns nearer it (LOG-370).
         val lungern = GeoPoint(latitude = 46.7741, longitude = 8.1558)
-        val closest = ScooterCityCatalog.nearest(to = lungern, count = 3)
+        val closest = ScooterCityCatalog.nearest(to = lungern, count = 3, among = TestCatalog.catalog.cities)
 
         assertEquals(listOf("Bern", "Wädenswil", "Zürich"), closest.map { it.city.name })
         val bern = closest.first()
@@ -1525,7 +1571,10 @@ class ScooterModelsTest {
         assertEquals(bern.formattedDistance(locale = ScooterLanguage.current.locale), bern.formattedDistance)
         assertTrue(bern.label.startsWith("Bern"))
         assertTrue(bern.label.endsWith(bern.formattedDistance))
-        assertFalse(ScooterCityCatalog.contains(lungern))
+        assertFalse(TestCatalog.catalog.contains(lungern))
+        // Without cities of its own it reads the generated catalog's, where each city is nearest its own centre.
+        val city = ScooterCityCatalog.cities.first()
+        assertEquals(0.0, ScooterCityCatalog.nearest(to = city.center, count = 1).single().distanceMeters, 0.0)
 
         val place = bern.city.destination
         assertEquals("Bern", place.title)
@@ -1589,21 +1638,22 @@ class ScooterModelsTest {
     @Test
     fun searchBarPromisesScootersOnlyWhereThereIsScooterData() {
         val zurich = MapDestination(title = "Zürich HB", point = GeoPoint(latitude = 47.3782, longitude = 8.5402))
-        val lungern = MapDestination(title = "Paradeplatz", point = GeoPoint(latitude = 46.7741, longitude = 8.1558))
+        val atlantic = MapDestination(title = "Atlantic", point = GeoPoint(latitude = 30.0, longitude = -40.0))
         val neutral = localized("Tap to search a city or address")
 
-        // The service areas bundled with the app decide when the search did not say.
+        // The service areas bundled with the app decide when the search did not say: Zürich's, which Switzerland's
+        // open data has had from the start and data/ will not drop, and none in the middle of the Atlantic (LOG-370).
         assertTrue(zurich.isCovered)
-        assertFalse(lungern.isCovered)
+        assertFalse(atlantic.isCovered)
 
         val served = ScooterSearchBarState.Place(zurich)
         assertEquals(localized("Scooters near this place"), served.subtitle)
         assertNotEquals(neutral, served.subtitle)
 
         // Where no operator shares data the bar keeps to the neutral line, also for TalkBack.
-        val unserved = ScooterSearchBarState.Place(lungern)
+        val unserved = ScooterSearchBarState.Place(atlantic)
         assertEquals(neutral, unserved.subtitle)
-        assertEquals("Paradeplatz. $neutral", unserved.accessibilityLabel)
+        assertEquals("Atlantic. $neutral", unserved.accessibilityLabel)
         assertEquals(
             stringFormat(localized("Showing scooters near %@. Search another place."), "Zürich HB"),
             served.accessibilityLabel,
@@ -1748,6 +1798,7 @@ class ScooterModelsTest {
         assertEquals(listOf("country:us", "country:fr"), world.map { it.id })
         assertEquals(3050, world[0].count)
         // The generated catalog gives the United States its states' totals; without them, as Mexico, one for the country.
+        // The states are every one of the country's (data/countries.json), which no change to its cities takes away.
         assertEquals(
             listOf("region:us:ca", "region:us:or", "country:fr", "region:us:me"),
             ScooterCityGrouping.group(cities, zoomLevel = 4.0).map { it.id },
@@ -1817,73 +1868,89 @@ class ScooterModelsTest {
         assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-11-20T17:00:00Z"), among = quebec))
         assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-07-20T16:00:00Z"), among = quebec))
         assertNull(ScooterSeasonalPause.active(at = GeoPoint(latitude = 45.65, longitude = -73.6), on = january, among = quebec))
-        // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
-        // 2 December until 15 March, Porsgrunn and Skien from 15 December until the streets are
-        // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
-        // 1 March, Bodø from 1 December until 1 April, Dalvík from 21 October, Leduc from 22 October
-        // and Ólafsvík with Hellissandur from 23 October and Stykkishólmur from 26 October until 1 May,
-        // South Lake Tahoe from 1 November until 1 May, Ottawa from 16 November until 30 April,
-        // Penticton from 1 November until 1 April, Moncton from 15 November until 16 April, Laval
-        // from 16 November until 15 April, Red Deer from 1 November until 16 March, and Saskatoon
-        // from 1 November until 15 April, each by its own clock.
-        assertEquals(
-            listOf(
-                "fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
-                "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "is:Stykkishólmur", "us:ca:South Lake Tahoe",
-                "ca:ab:Leduc", "ca:on:Ottawa", "ca:bc:Penticton", "ca:nb:Moncton", "ca:qc:Laval", "ca:ab:Red Deer", "ca:sk:Saskatoon",
-            ),
-            ScooterCityCatalog.cities.filter { it.pauses.isNotEmpty() }.map { it.id },
+        // Tignes pauses from 8 September until 22 June, South Lake Tahoe from 1 November until 1 May, Ottawa from
+        // 16 November until 30 April, Dalvík from 21 October and Leduc from 22 October until 1 May, and Bodø from
+        // 1 December until 1 April, each by its own clock: as data/ had them on 28 October 2026, whose towns' pauses
+        // come and go (LOG-370). The catalog's own follow.
+        fun town(id: String, name: String, latitude: Double, longitude: Double, from: String, until: String, timeZone: String) =
+            ScooterCity(
+                id = id, name = name, countryCode = id.take(2).uppercase(), center = GeoPoint(latitude, longitude),
+                bounds = GeoBounds(south = latitude - 0.05, west = longitude - 0.05, north = latitude + 0.05, east = longitude + 0.05),
+                pauses = listOf(ScooterSeasonalPause(from = from, until = until, timeZone = timeZone)),
+            )
+        val pausedTowns = listOf(
+            town("fr:Tignes", "Tignes", 45.4687, 6.9063, "09-08", "06-22", "Europe/Paris"),
+            town("us:ca:South Lake Tahoe", "South Lake Tahoe, CA", 38.93324, -119.98435, "11-01", "05-01", "America/Los_Angeles"),
+            town("ca:on:Ottawa", "Ottawa, ON", 45.4215, -75.6972, "11-16", "04-30", "America/Toronto"),
+            town("is:Dalvík", "Dalvík", 65.9711, -18.5304, "10-21", "05-01", "Atlantic/Reykjavik"),
+            town("ca:ab:Leduc", "Leduc, AB", 53.2645, -113.5593, "10-22", "05-01", "America/Edmonton"),
+            town("no:Bodø", "Bodø", 67.2804, 14.4049, "12-01", "04-01", "Europe/Oslo"),
         )
         val tignes = GeoPoint(latitude = 45.4687, longitude = 6.9063)
         assertEquals(
             ScooterSeasonalPause.Active(city = "Tignes", back = ScooterSeasonalPause.Return.Month(6)),
-            ScooterSeasonalPause.active(at = tignes, on = january),
+            ScooterSeasonalPause.active(at = tignes, on = january, among = pausedTowns),
         )
-        assertNull(ScooterSeasonalPause.active(at = tignes, on = at("2026-09-07T21:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = tignes, on = at("2026-09-07T22:30:00Z")))
-        assertNull(ScooterSeasonalPause.active(at = tignes, on = at("2027-06-22T12:00:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = tignes, on = at("2026-09-07T21:30:00Z"), among = pausedTowns))
+        assertNotNull(ScooterSeasonalPause.active(at = tignes, on = at("2026-09-07T22:30:00Z"), among = pausedTowns))
+        assertNull(ScooterSeasonalPause.active(at = tignes, on = at("2027-06-22T12:00:00Z"), among = pausedTowns))
         // South Lake Tahoe's code takes the scooters away from 1 November through 30 April, Pacific time.
         val tahoe = GeoPoint(latitude = 38.93324, longitude = -119.98435)
         assertEquals(
             ScooterSeasonalPause.Active(city = "South Lake Tahoe, CA", back = ScooterSeasonalPause.Return.Month(5)),
-            ScooterSeasonalPause.active(at = tahoe, on = january),
+            ScooterSeasonalPause.active(at = tahoe, on = january, among = pausedTowns),
         )
-        assertNull(ScooterSeasonalPause.active(at = tahoe, on = at("2026-11-01T06:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = tahoe, on = at("2026-11-01T07:30:00Z")))
-        assertNull(ScooterSeasonalPause.active(at = tahoe, on = at("2027-05-01T12:00:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = tahoe, on = at("2026-11-01T06:30:00Z"), among = pausedTowns))
+        assertNotNull(ScooterSeasonalPause.active(at = tahoe, on = at("2026-11-01T07:30:00Z"), among = pausedTowns))
+        assertNull(ScooterSeasonalPause.active(at = tahoe, on = at("2027-05-01T12:00:00Z"), among = pausedTowns))
         val ottawa = GeoPoint(latitude = 45.4215, longitude = -75.6972)
         assertEquals(
             ScooterSeasonalPause.Active(city = "Ottawa, ON", back = ScooterSeasonalPause.Return.Month(4)),
-            ScooterSeasonalPause.active(at = ottawa, on = january),
+            ScooterSeasonalPause.active(at = ottawa, on = january, among = pausedTowns),
         )
-        assertNull(ScooterSeasonalPause.active(at = ottawa, on = at("2026-11-16T04:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = ottawa, on = at("2026-11-16T05:30:00Z")))
-        assertNull(ScooterSeasonalPause.active(at = ottawa, on = at("2027-04-30T12:00:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = ottawa, on = at("2026-11-16T04:30:00Z"), among = pausedTowns))
+        assertNotNull(ScooterSeasonalPause.active(at = ottawa, on = at("2026-11-16T05:30:00Z"), among = pausedTowns))
+        assertNull(ScooterSeasonalPause.active(at = ottawa, on = at("2027-04-30T12:00:00Z"), among = pausedTowns))
         // Iceland keeps UTC all year; Leduc is six hours behind it in October.
         val dalvik = GeoPoint(latitude = 65.9711, longitude = -18.5304)
         assertEquals(
             ScooterSeasonalPause.Active(city = "Dalvík", back = ScooterSeasonalPause.Return.Month(5)),
-            ScooterSeasonalPause.active(at = dalvik, on = january),
+            ScooterSeasonalPause.active(at = dalvik, on = january, among = pausedTowns),
         )
-        assertNull(ScooterSeasonalPause.active(at = dalvik, on = at("2026-10-20T23:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = dalvik, on = at("2026-10-21T00:30:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = dalvik, on = at("2026-10-20T23:30:00Z"), among = pausedTowns))
+        assertNotNull(ScooterSeasonalPause.active(at = dalvik, on = at("2026-10-21T00:30:00Z"), among = pausedTowns))
         val leduc = GeoPoint(latitude = 53.2645, longitude = -113.5593)
         assertEquals(
             ScooterSeasonalPause.Active(city = "Leduc, AB", back = ScooterSeasonalPause.Return.Month(5)),
-            ScooterSeasonalPause.active(at = leduc, on = january),
+            ScooterSeasonalPause.active(at = leduc, on = january, among = pausedTowns),
         )
-        assertNull(ScooterSeasonalPause.active(at = leduc, on = at("2026-10-22T05:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = leduc, on = at("2026-10-22T06:30:00Z")))
-        assertNull(ScooterSeasonalPause.active(at = leduc, on = at("2027-05-01T18:00:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = leduc, on = at("2026-10-22T05:30:00Z"), among = pausedTowns))
+        assertNotNull(ScooterSeasonalPause.active(at = leduc, on = at("2026-10-22T06:30:00Z"), among = pausedTowns))
+        assertNull(ScooterSeasonalPause.active(at = leduc, on = at("2027-05-01T18:00:00Z"), among = pausedTowns))
         // Bodø keeps Oslo's clock, one hour ahead of UTC in winter.
         val bodo = GeoPoint(latitude = 67.2804, longitude = 14.4049)
         assertEquals(
             ScooterSeasonalPause.Active(city = "Bodø", back = ScooterSeasonalPause.Return.Month(4)),
-            ScooterSeasonalPause.active(at = bodo, on = january),
+            ScooterSeasonalPause.active(at = bodo, on = january, among = pausedTowns),
         )
-        assertNull(ScooterSeasonalPause.active(at = bodo, on = at("2026-11-30T22:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = bodo, on = at("2026-11-30T23:30:00Z")))
-        assertNull(ScooterSeasonalPause.active(at = bodo, on = at("2027-04-01T12:00:00Z")))
+        assertNull(ScooterSeasonalPause.active(at = bodo, on = at("2026-11-30T22:30:00Z"), among = pausedTowns))
+        assertNotNull(ScooterSeasonalPause.active(at = bodo, on = at("2026-11-30T23:30:00Z"), among = pausedTowns))
+        assertNull(ScooterSeasonalPause.active(at = bodo, on = at("2027-04-01T12:00:00Z"), among = pausedTowns))
+
+        // The catalog's own, which data/ pauses and lets go: each is away for the season on a day of the year, and the
+        // app finds it there unless another city's bounds reach the spot.
+        val cities = ScooterCityCatalog.cities
+        val days = (0L until 366L).map { at("2026-07-01T12:00:00Z").plusSeconds(it * 86_400) }
+        for (city in cities.filter { it.pauses.isNotEmpty() }) {
+            val day = days.firstOrNull { ScooterSeasonalPause.back(city.pauses, on = it) != null }
+                ?: throw AssertionError("${city.id} is never away")
+            val spot = city.bounds.center
+            val away = ScooterSeasonalPause.active(at = spot, on = day, among = listOf(city))
+            assertEquals(city.id, city.name, away?.city)
+            if (cities.none { it !== city && it.bounds.contains(spot) }) {
+                assertEquals(city.id, away, ScooterSeasonalPause.active(at = spot, on = day))
+            }
+        }
 
         // After a night ban, before providers down, with a calendar, calm.
         assertEquals(
@@ -1938,21 +2005,31 @@ class ScooterModelsTest {
         assertEquals(ScooterSeasonalPause.Return.Clear(from = "12-15"), ScooterSeasonalPause.back(listOf(trondheim, clear), on = january))
         assertNull(ScooterSeasonalPause.back(listOf(trondheim, clear), on = at("2026-12-10T12:00:00Z")))
 
-        // Skien and Porsgrunn in the catalog, the latter reached by both of Ryde's feeds.
+        // Porsgrunn and Skien, whose bounds take in Porsgrunn, as data/ had them on 28 October 2026 (LOG-370).
         val skien = GeoPoint(latitude = 59.2075, longitude = 9.6107)
         val porsgrunn = GeoPoint(latitude = 59.1411, longitude = 9.6555)
-        assertNull(ScooterSeasonalPause.active(at = skien, on = at("2026-12-14T22:30:00Z")))
+        val telemark = listOf(
+            ScooterCity(
+                id = "no:Porsgrunn", name = "Porsgrunn", countryCode = "NO", center = porsgrunn,
+                bounds = GeoBounds(south = 59.1153, west = 9.6191, north = 59.1616, east = 9.6952), pauses = listOf(clear),
+            ),
+            ScooterCity(
+                id = "no:Skien", name = "Skien", countryCode = "NO", center = skien,
+                bounds = GeoBounds(south = 59.1385, west = 9.52, north = 59.2656, east = 9.6801), pauses = listOf(clear),
+            ),
+        )
+        assertNull(ScooterSeasonalPause.active(at = skien, on = at("2026-12-14T22:30:00Z"), among = telemark))
         assertEquals(
             ScooterSeasonalPause.Active(city = "Skien", back = ScooterSeasonalPause.Return.Clear(from = "12-15")),
-            ScooterSeasonalPause.active(at = skien, on = at("2026-12-14T23:30:00Z")),
+            ScooterSeasonalPause.active(at = skien, on = at("2026-12-14T23:30:00Z"), among = telemark),
         )
         assertEquals(
             ScooterSeasonalPause.Active(city = "Porsgrunn", back = ScooterSeasonalPause.Return.Clear(from = "12-15")),
-            ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-03-20T12:00:00Z")),
+            ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-03-20T12:00:00Z"), among = telemark),
         )
-        assertNotNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T21:30:00Z")))
-        assertNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T22:30:00Z")))
-        assertNotNull(ScooterSeasonalPause.active(at = skien, on = at("2027-12-15T12:00:00Z")))
+        assertNotNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T21:30:00Z"), among = telemark))
+        assertNull(ScooterSeasonalPause.active(at = porsgrunn, on = at("2027-04-30T22:30:00Z"), among = telemark))
+        assertNotNull(ScooterSeasonalPause.active(at = skien, on = at("2027-12-15T12:00:00Z"), among = telemark))
     }
 
     @Test
@@ -2015,30 +2092,32 @@ class ScooterModelsTest {
         assertEquals(setOf("kazakhstan:whoosh_kz_nqz"), payload.model.seasonOver)
         assertEquals(emptySet<String>(), ScooterResponseMetadata(partial = false, failedSources = emptyList()).seasonOver)
 
-        // Whoosh closed these three on 24 October 2026; Jet and Bolt still run in Almaty.
+        // Whoosh closed these three on 24 October 2026; Jet and Bolt still run in Almaty. The tests' own towns
+        // (TestCatalog), as data/, which adds and ends feeds, had them that day (LOG-370).
+        val whooshTowns = TestCatalog.catalog.cities
         val almaty = GeoPoint(latitude = 43.298812, longitude = 76.939435)
         val astana = GeoPoint(latitude = 51.143975, longitude = 71.43581)
         val zapopan = GeoPoint(latitude = 20.721331, longitude = -103.391882)
         assertEquals(
             listOf("kazakhstan:jet_kz_almaty", "kazakhstan:whoosh_kz_ala", "kazakhstan:bolt_kz_app_122"),
-            ScooterCityCatalog.cities.firstOrNull { it.id == "kz:Almaty" }?.feeds?.map { it.id },
+            whooshTowns.firstOrNull { it.id == "kz:Almaty" }?.feeds?.map { it.id },
         )
-        assertNull(ScooterSeasonalPause.active(at = almaty, on = now, seasonOver = setOf("kazakhstan:whoosh_kz_ala")))
+        assertNull(ScooterSeasonalPause.active(at = almaty, on = now, among = whooshTowns, seasonOver = setOf("kazakhstan:whoosh_kz_ala")))
         assertEquals(
             ScooterSeasonalPause.Active(city = "Astana", back = ScooterSeasonalPause.Return.SeasonOver),
-            ScooterSeasonalPause.active(at = astana, on = now, seasonOver = setOf("kazakhstan:whoosh_kz_nqz")),
+            ScooterSeasonalPause.active(at = astana, on = now, among = whooshTowns, seasonOver = setOf("kazakhstan:whoosh_kz_nqz")),
         )
         assertEquals(
             ScooterSeasonalPause.Active(city = "Zapopan", back = ScooterSeasonalPause.Return.SeasonOver),
-            ScooterSeasonalPause.active(at = zapopan, on = now, seasonOver = setOf("mexico:whoosh_mx_zap")),
+            ScooterSeasonalPause.active(at = zapopan, on = now, among = whooshTowns, seasonOver = setOf("mexico:whoosh_mx_zap")),
         )
         // Open again, or another town's feed closed: no pause.
-        assertNull(ScooterSeasonalPause.active(at = astana, on = now))
-        assertNull(ScooterSeasonalPause.active(at = astana, on = now, seasonOver = setOf("mexico:whoosh_mx_zap")))
+        assertNull(ScooterSeasonalPause.active(at = astana, on = now, among = whooshTowns))
+        assertNull(ScooterSeasonalPause.active(at = astana, on = now, among = whooshTowns, seasonOver = setOf("mexico:whoosh_mx_zap")))
         // Almaty too once Jet and Bolt close as well, and not while Bolt runs.
         assertNull(
             ScooterSeasonalPause.active(
-                at = almaty, on = now, seasonOver = setOf("kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty"),
+                at = almaty, on = now, among = whooshTowns, seasonOver = setOf("kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty"),
             ),
         )
         assertEquals(
@@ -2046,6 +2125,7 @@ class ScooterModelsTest {
             ScooterSeasonalPause.active(
                 at = almaty,
                 on = now,
+                among = whooshTowns,
                 seasonOver = setOf("kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty", "kazakhstan:bolt_kz_app_122"),
             ),
         )
@@ -2066,6 +2146,19 @@ class ScooterModelsTest {
         )
         assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2026-11-10T17:00:00Z"), among = quebec, seasonOver = closed))
         assertNull(ScooterSeasonalPause.active(at = montreal, on = at("2027-01-20T17:00:00Z"), among = quebec))
+
+        // The catalog's own towns and feeds, read as the app reads them: one alone in its spot is off season once
+        // every one of its feeds has closed.
+        val cities = ScooterCityCatalog.cities
+        val town = cities.firstOrNull { city ->
+            city.feeds.isNotEmpty() && city.pauses.isEmpty() && city.feeds.all { it.pause == null } &&
+                cities.none { it !== city && it.bounds.contains(city.bounds.center) }
+        }
+        assumeTrue("No town of the catalog stands alone with feeds of its own", town != null)
+        assertEquals(
+            ScooterSeasonalPause.Active(city = town!!.name, back = ScooterSeasonalPause.Return.SeasonOver),
+            ScooterSeasonalPause.active(at = town.bounds.center, on = now, seasonOver = town.feeds.mapTo(HashSet()) { it.id }),
+        )
     }
 
     @Test

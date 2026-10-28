@@ -2,6 +2,8 @@ package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterUserHeading
+import com.plhery.scootradar.core.map.TestCatalog
+import java.net.URI
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos
@@ -112,14 +114,21 @@ class ScooterFilteringTest {
 
     @Test
     fun mapOpensOnTheCityOfTheTimeZone() {
-        val start = ScooterStartPlace.start(forTimeZone = "Europe/Berlin")
-        val berlin = ScooterCityCatalog.cities.firstOrNull { it.id == "de:Berlin" }
+        // Among the tests' own cities (TestCatalog): data/ may add a German city nearer Berlin's main place (LOG-370).
+        val cities = TestCatalog.catalog.cities
+        val start = ScooterStartPlace.start(forTimeZone = "Europe/Berlin", cities = cities)
+        val berlin = cities.firstOrNull { it.id == "de:Berlin" }
         assertNotNull(berlin)
 
         val center = start.region.center
         assertEquals(berlin!!.center.latitude, center.latitude, 0.02)
         assertEquals(berlin.center.longitude, center.longitude, 0.02)
         assertEquals(ScooterStartPlace.cityZoom, start.zoom)
+        // The app's reads the generated catalog's.
+        assertEquals(
+            ScooterStartPlace.start(forTimeZone = "Europe/Berlin", cities = ScooterCityCatalog.cities),
+            ScooterStartPlace.start(forTimeZone = "Europe/Berlin"),
+        )
     }
 
     @Test
@@ -387,26 +396,15 @@ class ScooterFilteringTest {
 
         // The sources of the credits list on the web, Lille's parking bays and the
         // boundaries of the night bans included: Switzerland's, France's, each country's
-        // own from data/countries.json, then the search's and Lille's.
-        assertEquals(5 + ScooterCountryCatalog.credits.size, sources.size)
-        assertEquals(34, ScooterCountryCatalog.credits.size)
+        // own from data/countries.json, then the search's and Lille's. Which countries' and
+        // their titles are data/'s, which names more as markets open: read, not named (LOG-370).
+        val countries = ScooterCountryCatalog.credits
+        assertEquals(5 + countries.size, sources.size)
+        assertEquals(
+            countries.map { (title, url) -> ScooterCreditsList.Source(title = title, url = URI(url)) },
+            sources.subList(2, 2 + countries.size),
+        )
         assertEquals(sources.size, sources.map { it.title }.toSet().size)
-        assertEquals("DE/", sources[2].title.take(3))
-        assertTrue(sources.any { it.title == "CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL" })
-        assertTrue(sources.any { it.title == "DE/AT/IT/ES/PL/HU/GR/FI: Dott map" })
-        assertTrue(sources.any { it.title == "DE/SE: Qick map" })
-        assertTrue(sources.any { it.title == "JP: LUUP map" })
-        assertTrue(sources.any { it.title == "BR: IBGE boundaries" })
-        assertTrue(sources.any { it.title == "KR: Alpaca map" })
-        assertTrue(sources.any { it.title == "AE/SA/IL: Dott, SAHAM, Bird, Lime" })
-        assertTrue(sources.any { it.title == "NZ: Flamingo · CC BY 4.0" })
-        assertTrue(sources.any { it.title == "BR/CL/MX/KZ/AZ/GE: JET map" })
-        assertTrue(sources.any { it.title == "BR/CL/MX/KZ/CO/BY: Whoosh map" })
-        assertTrue(sources.any { it.title == "TR/MK/BA/XK: BinBin map" })
-        assertTrue(sources.any { it.title == "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified" })
-        // MobiData BW's licence, dl-de/by-2-0, asks for the dataset and the licence to be named.
-        assertTrue(sources.any { it.title == "DE: MobiData BW · dl-de/by-2-0, modified" && it.url.host == "www.govdata.de" })
-        assertTrue(sources.any { it.url.toString() == "https://mobidata-bw.de/dataset/escootch" })
         assertTrue(sources.all { it.url.scheme == "https" && it.title.isNotEmpty() })
         assertTrue(sources.any { it.url.host == "data.lillemetropole.fr" })
         // Searched places come from Geoapify, whose free plan asks for its name to be shown,

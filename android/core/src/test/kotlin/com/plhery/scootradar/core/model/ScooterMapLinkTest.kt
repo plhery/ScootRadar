@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.model
 
+import com.plhery.scootradar.core.map.TestCatalog
 import java.net.URI
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -86,14 +87,20 @@ class ScooterMapLinkTest {
 
     @Test
     fun findsTheCityWhoseCentreALinkNames() {
-        val zurich = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:zurich" })
+        // Among the tests' own cities (TestCatalog): data/ moves the catalog's centres and adds cities (LOG-370).
+        val cities = TestCatalog.catalog.cities
+        val zurich = TestCatalog.zurich
         val near = GeoPoint(latitude = zurich.center.latitude + 0.0001, longitude = zurich.center.longitude - 0.0001)
-        assertEquals("ch:zurich", ScooterCityCatalog.city(linkedAt = near)?.id)
+        assertEquals("ch:zurich", ScooterCityCatalog.city(linkedAt = near, among = cities)?.id)
         assertNull(
             ScooterCityCatalog.city(
                 linkedAt = GeoPoint(latitude = zurich.center.latitude + 0.01, longitude = zurich.center.longitude),
+                among = cities,
             ),
         )
+        // The app's reads the generated catalog's.
+        val city = ScooterCityCatalog.cities.first()
+        assertEquals(city.center, ScooterCityCatalog.city(linkedAt = city.center)?.center)
     }
 
     @Test

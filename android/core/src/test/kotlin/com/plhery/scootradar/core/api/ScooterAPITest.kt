@@ -536,6 +536,7 @@ class ScooterAPITest {
                 title = "Paradeplatz",
                 subtitle = "Lungern OW",
                 point = GeoPoint(latitude = 46.7741, longitude = 8.1558),
+                isCovered = false,
             ),
             results[1].destination,
         )
@@ -549,7 +550,7 @@ class ScooterAPITest {
         val data = """
         [
           {"lat": 47.3695, "lng": 8.5389, "display_name": "Paradeplatz 2 8001 Zürich"},
-          {"lat": 46.7741, "lng": 8.1558, "display_name": "Lungern", "title": "", "covered": null},
+          {"lat": 30.0, "lng": -40.0, "display_name": "Atlantic", "title": "", "covered": null},
           {"lat": 47.3762772, "lng": 8.5280816, "display_name": "114, Ankerstrasse, Zurich, Switzerland",
            "title": 12, "subtitle": "ignored without a title"}
         ]
@@ -557,9 +558,10 @@ class ScooterAPITest {
 
         val results = ScooterAPIJson.decodeFromString(ListSerializer(AddressSearchResult.serializer()), data)
 
-        assertEquals(listOf("Paradeplatz 2", "Lungern", "Ankerstrasse 114"), results.map { it.title })
+        assertEquals(listOf("Paradeplatz 2", "Atlantic", "Ankerstrasse 114"), results.map { it.title })
         assertEquals(listOf("8001 Zürich", "", "Zurich, Switzerland"), results.map { it.subtitle })
-        // Without `covered`, the service areas bundled with the app decide.
+        // Without `covered`, the service areas bundled with the app decide: Zürich's, which Switzerland's open data has
+        // had from the start and data/ will not drop, and none in the middle of the Atlantic (LOG-370).
         assertEquals(listOf(true, false, true), results.map { it.isCovered })
 
         val examples = listOf(

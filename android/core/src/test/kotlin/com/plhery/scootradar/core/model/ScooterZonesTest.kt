@@ -435,9 +435,41 @@ class CityRuleZoneTest {
     private val hongdae = GeoBounds(south = 37.55, west = 126.918, north = 37.558, east = 126.93)
     private val daechi = GeoBounds(south = 37.493, west = 127.05, north = 37.5, east = 127.058)
 
+    // Two of Seoul's streets closed to scooters from noon until 23:00, as data/ had them on 28 October 2026, a stretch
+    // of each: data/ adds rules and changes them (LOG-370). The catalog's own are checked as they come.
+    private val hongdaeRedRoad = CityRuleZone(
+        id = "seoul-hongdae-red-road",
+        authority = "Seoul",
+        timeZone = "Asia/Seoul",
+        firstDay = "2025-05-16",
+        hours = listOf(CityRuleZone.Hours(fromMinute = 12 * 60, untilMinute = 23 * 60)),
+        source = "https://news.seoul.go.kr/traffic/archives/514266",
+        lines = listOf(
+            listOf(
+                GeoPoint(37.555766, 126.927544), GeoPoint(37.555763, 126.927014), GeoPoint(37.555734, 126.926735),
+                GeoPoint(37.55554, 126.925521),
+            ),
+        ),
+    )
+    private val daechiAcademyStreet = CityRuleZone(
+        id = "seoul-daechi-academy-street",
+        authority = "Gangnam-gu",
+        timeZone = "Asia/Seoul",
+        firstDay = "2026-09-30",
+        hours = listOf(CityRuleZone.Hours(fromMinute = 12 * 60, untilMinute = 23 * 60)),
+        source = "https://www.gangnam.go.kr/board/B_000031/1075336/view.do?mid=ID01_0313",
+        lines = listOf(
+            listOf(
+                GeoPoint(37.498804, 127.051628), GeoPoint(37.499543, 127.054321), GeoPoint(37.49975, 127.055092),
+                GeoPoint(37.499761, 127.055173),
+            ),
+        ),
+    )
+    private val rules = listOf(hongdaeRedRoad, daechiAcademyStreet)
+
     @Test
     fun aRuleHoldsWithinItsHoursByThePlacesClockFromItsFirstDay() {
-        val rule = unwrap(CityRuleZone.all.firstOrNull { it.id == "seoul-daechi-academy-street" })
+        val rule = daechiAcademyStreet
         assertTrue(rule.inForce(seoulNoon))
         assertTrue(rule.inForce(seoulNoon.plusSeconds(11 * 3600 - 60)))
         assertFalse(rule.inForce(seoulNoon.plusSeconds(11 * 3600)))
@@ -457,14 +489,19 @@ class CityRuleZoneTest {
 
     @Test
     fun theRulesOverTheViewAreShownFromZoom14() {
-        val shown = CityRuleZone.shown(over = hongdae, zoom = 15, at = seoulNoon)
+        val shown = CityRuleZone.shown(over = hongdae, zoom = 15, at = seoulNoon, among = rules)
         assertEquals(listOf("seoul-hongdae-red-road"), shown.map { it.rule.id })
         assertEquals(listOf(true), shown.map { it.inForce })
-        assertTrue(CityRuleZone.shown(over = hongdae, zoom = 13, at = seoulNoon).isEmpty())
-        assertEquals(listOf("Gangnam-gu"), CityRuleZone.shown(over = daechi, zoom = 16, at = seoulNoon).map { it.rule.authority })
+        assertTrue(CityRuleZone.shown(over = hongdae, zoom = 13, at = seoulNoon, among = rules).isEmpty())
+        assertEquals(
+            listOf("Gangnam-gu"),
+            CityRuleZone.shown(over = daechi, zoom = 16, at = seoulNoon, among = rules).map { it.rule.authority },
+        )
+        // The catalog's own, as the app reads them: each over its own streets.
         for (rule in CityRuleZone.all) {
             assertEquals("https", URI(rule.source).scheme)
             assertFalse(rule.band.isEmpty())
+            assertTrue(rule.id, CityRuleZone.shown(over = rule.bounds, zoom = 16, at = seoulNoon).any { it.rule == rule })
         }
     }
 
@@ -485,7 +522,7 @@ class CityRuleZoneTest {
 
     @Test
     fun aRuleOutsideItsHoursIsDrawnApartAndDimmer() {
-        val rule = unwrap(CityRuleZone.all.firstOrNull { it.id == "seoul-hongdae-red-road" })
+        val rule = hongdaeRedRoad
         val ring = rule.band[0][0]
         val overlay = ScooterZoneOverlay(
             zones = listOf(
