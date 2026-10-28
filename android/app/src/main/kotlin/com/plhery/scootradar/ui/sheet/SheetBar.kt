@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -101,7 +103,7 @@ internal fun SheetBarButton(
     Box(
         modifier
             .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
-            .chromeGlass(CapsuleShape)
+            .sheetGlass(CapsuleShape, scootColors.isDark)
             .plainButton(enabled = enabled, onClick = onClick)
             .heightIn(min = 44.dp)
             .widthIn(min = 44.dp)
@@ -141,7 +143,7 @@ internal fun SheetBackButton(onClick: () -> Unit, modifier: Modifier = Modifier)
     Box(
         modifier
             .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
-            .chromeGlass(CircleShape)
+            .sheetGlass(CircleShape, scootColors.isDark)
             .plainButton(label = localized("Back"), onClick = onClick)
             .size(44.dp),
         contentAlignment = Alignment.Center,
@@ -150,3 +152,12 @@ internal fun SheetBackButton(onClick: () -> Unit, modifier: Modifier = Modifier)
         FixedSymbol(Symbols.chevronRight, 17f, scootColors.label, Modifier.scale(scaleX = -1f, scaleY = 1f))
     }
 }
+
+/**
+ * The glass of a button over the sheet. Over a dark sheet iOS draws it lighter than the sheet, a grey of #3A3A3C over
+ * #1C1C1E (on the iOS 27 simulator); the map's dark glass would be darker than the sheet. In light, the map's glass.
+ */
+private fun Modifier.sheetGlass(shape: Shape, dark: Boolean): Modifier =
+    if (dark) clip(shape).background(DARK_SHEET_GLASS) else chromeGlass(shape)
+
+private val DARK_SHEET_GLASS = Color(0xFF3A3A3C)
