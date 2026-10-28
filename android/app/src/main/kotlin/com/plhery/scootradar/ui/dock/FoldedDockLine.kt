@@ -57,7 +57,7 @@ internal fun FoldedPanelLine(controller: ScooterMapController, modifier: Modifie
         modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
-            .plainButton(label = line.accessibilityLabel, hint = localized("Expands the panel")) {
+            .plainButton(label = line.accessibilityLabel, hint = localized("expand the panel")) {
                 controller.setPanelCollapsed(false)
             },
         contentAlignment = Alignment.CenterStart,

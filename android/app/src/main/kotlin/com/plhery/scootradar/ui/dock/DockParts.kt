@@ -75,8 +75,8 @@ import kotlin.math.roundToInt
 
 /**
  * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple. Its
- * semantics are a button's, which TalkBack names from the label unless [label] says otherwise; [hint] is iOS's
- * accessibility hint, which TalkBack says as what a double tap does.
+ * semantics are a button's, which TalkBack names from the label unless [label] says otherwise; [hint] is what a
+ * double tap does, which TalkBack says in a sentence of its own where iOS reads its accessibility hint (UI-327).
  */
 internal fun Modifier.plainButton(
     enabled: Boolean = true,

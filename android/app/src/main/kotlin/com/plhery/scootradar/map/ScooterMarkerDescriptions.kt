@@ -35,7 +35,7 @@ object MarkerDescriptions {
         return MarkerDescription(
             label = stringFormat(localized("%@ scooter"), scooter.providerInfo?.displayName ?: ScooterMarkerScene.capitalized(scooter.provider)),
             value = if (details.isEmpty()) null else details.joinToString(", "),
-            hint = localized("Shows scooter details"),
+            hint = localized("show scooter details"),
         )
     }
 
@@ -45,7 +45,7 @@ object MarkerDescriptions {
     fun of(cluster: ScooterCluster) = MarkerDescription(
         label = clusterLabel(cluster.count, cluster.city),
         value = null,
-        hint = localized("Zooms in to show individual scooters"),
+        hint = localized("zoom in to show individual scooters"),
     )
 
     /**
@@ -64,6 +64,6 @@ object MarkerDescriptions {
         label = listOf(parking.bayTitle, parking.name).filter { it.isNotEmpty() }.joinToString(", "),
         // Whether parking here is mandatory is heard at the marker already.
         value = parking.notice,
-        hint = localized("Shows parking details"),
+        hint = localized("show parking details"),
     )
 }

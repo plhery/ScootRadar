@@ -167,7 +167,7 @@ internal fun ScooterCard(controller: ScooterMapController, scooter: Scooter) {
 private fun CardHeader(controller: ScooterMapController, scooter: Scooter, content: ScooterCardContent) {
     val colors = scootColors
     val isLocating = controller.isLocating.collectAsState().value
-    val hint = localized("Centers this scooter on the map")
+    val hint = localized("center this scooter on the map")
     val focus = { controller.focusOnScooter(scooter) }
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(11.dp), verticalAlignment = Alignment.CenterVertically) {

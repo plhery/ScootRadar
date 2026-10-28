@@ -8,3 +8,15 @@
 "Sheet Grabber" = "Handgreep voor werkblad";
 "Sheet at half screen" = "Half scherm";
 "Sheet expanded" = "Uitgevouwen";
+/* What a double tap does, where the iPhone has an accessibility hint (ui.md UI-327): TalkBack reads it in
+   its own sentence, "%1$s om te %2$s", %1$s its words for a double tap, %2$s this: a verb first, and no object,
+   which Dutch puts before "te". */
+"show parking details" = "kijken naar de details van de parkeerplek";
+"show scooter details" = "kijken naar de details van de deelstep";
+"zoom in to show individual scooters" = "zoomen naar afzonderlijke deelsteps";
+"expand the panel" = "schakelen naar het volledige paneel";
+"show only this provider" = "filteren op deze aanbieder";
+"show all providers" = "schakelen naar alle aanbieders";
+"hide this provider" = "verbergen";
+"add this provider" = "tonen";
+"center this scooter on the map" = "centreren op de kaart";
