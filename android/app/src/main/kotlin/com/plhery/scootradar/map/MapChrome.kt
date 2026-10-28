@@ -6,10 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScreenRect
 
-// The chrome's frames that ios/ScootRadar/Views/ScooterMapScreen.swift hands its ScooterMapView in the dock's
-// layout: interactionExclusionFrame, bottomChromeTop and bottomChromeFrames (ui.md UI-003, MAP-112).
+// The chrome's frames that ios/ScootRadar/Views/ScooterMapScreen.swift hands its ScooterMapView: in the dock's
+// layout interactionExclusionFrame, bottomChromeTop and bottomChromeFrames, and in the panel's its panelFrame and
+// the frames of the locate button and the legend in the corner (ui.md UI-003, MAP-112).
 
 /** Where the chrome over the map is, in the map's points, which are the window's: what the map keeps clear of. */
 @Immutable
@@ -20,11 +22,14 @@ data class MapChrome(
     val bottomTop: Double? = null,
     /** The locate button, the zone legend and the dock: what floats over the bottom of the map. */
     val bottomFrames: List<ScreenRect> = emptyList(),
+    /** A large window's panel down the leading side: the map shows what it is asked to beside it. */
+    val panel: ScreenRect? = null,
 )
 
-/** The chrome's frames as the screen measures them, for the map under it to read. */
+/** The chrome's frames as the screen measures them, for the map under it to read, in the layout the screen has. */
 @Stable
 class MapChromeFrames {
+    var layout by mutableStateOf(ScooterChromeLayout.Dock)
     var top by mutableStateOf<ScreenRect?>(null)
     var locateButton by mutableStateOf<ScreenRect?>(null)
 
@@ -32,12 +37,22 @@ class MapChromeFrames {
     var zoneLegend by mutableStateOf<ScreenRect?>(null)
     var dock by mutableStateOf<ScreenRect?>(null)
 
+    /** The panel, search bar, notices and card, in the panel's layout. */
+    var panel by mutableStateOf<ScreenRect?>(null)
+
     val chrome: MapChrome
-        get() = MapChrome(
-            top = top,
-            bottomTop = locateButton?.minY,
-            bottomFrames = listOfNotNull(locateButton, zoneLegend, dock),
-        )
+        get() = when (layout) {
+            ScooterChromeLayout.Dock -> MapChrome(
+                top = top,
+                bottomTop = locateButton?.minY,
+                bottomFrames = listOfNotNull(locateButton, zoneLegend, dock),
+            )
+            // Beside the panel the map's top is the window's, and only the corner's controls are over its bottom.
+            ScooterChromeLayout.Panel -> MapChrome(
+                bottomFrames = listOfNotNull(locateButton, zoneLegend),
+                panel = panel,
+            )
+        }
 }
 
 /** The frames of the chrome drawn over the map; none where nothing is drawn over it, as in the map's own tests. */

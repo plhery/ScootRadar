@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.plhery.scootradar.app.AndroidLocationManager
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                     container = container,
                     defaults = if (arguments.isEmpty()) container.defaults else LaunchArgumentDefaults(arguments, container.defaults),
                     languageAtLaunch = container.languages.choiceAtLaunch(),
+                    savedState = createSavedStateHandle(),
                 )
             }
         }

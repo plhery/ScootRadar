@@ -3,6 +3,7 @@ package com.plhery.scootradar.app
 import android.content.Context
 import android.os.Looper
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewmodel.initializer
@@ -129,7 +130,28 @@ class ScooterMapViewModelTest {
         assertEquals(1, api.cancelled)
     }
 
-    private fun model(): ScooterMapViewModel {
+    @Test
+    fun aPanelLeftFoldedOpensFoldedAfterTheProcessEndsAndNothingElseIsKept() {
+        // X-AD18: `@SceneStorage("panelCollapsed")`, and nothing else of the screen.
+        val saved = SavedStateHandle()
+        val model = model(saved)
+        idle()
+        assertFalse(model.controller.isPanelCollapsed.value)
+        model.controller.setPanelCollapsed(true)
+        idle()
+        assertEquals(setOf(ScooterMapViewModel.PANEL_COLLAPSED), saved.keys())
+        assertEquals(true, saved.get<Boolean>(ScooterMapViewModel.PANEL_COLLAPSED))
+
+        // The system makes the screen again in a new process, from what was kept: folded from the start.
+        store.clear()
+        val again = model(SavedStateHandle(mapOf(ScooterMapViewModel.PANEL_COLLAPSED to true)))
+        assertTrue(again.controller.isPanelCollapsed.value)
+        store.clear()
+        val open = SavedStateHandle(mapOf(ScooterMapViewModel.PANEL_COLLAPSED to false))
+        assertFalse(model(open).controller.isPanelCollapsed.value)
+    }
+
+    private fun model(savedState: SavedStateHandle = SavedStateHandle()): ScooterMapViewModel {
         val container = AppContainer(context)
         val factory = viewModelFactory {
             initializer {
@@ -139,6 +161,7 @@ class ScooterMapViewModelTest {
                     languageAtLaunch = ScooterLanguageChoice.Automatic,
                     analytics = analytics.analytics,
                     api = api,
+                    savedState = savedState,
                 )
             }
         }

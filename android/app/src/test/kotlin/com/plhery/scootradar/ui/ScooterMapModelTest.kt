@@ -24,6 +24,7 @@ import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterDockLine
@@ -320,6 +321,88 @@ class ScooterMapModelTest {
             assertEquals(IntSize(321.dp.roundToPx(), 60.dp.roundToPx()), size(321.dp))
             assertEquals(IntSize(266.dp.roundToPx(), 60.dp.roundToPx() + 8.dp.roundToPx() + 40.dp.roundToPx()), size(266.dp))
         }
+    }
+
+    @Test
+    fun thePanelsProviderListAndItsFoldRenderWithoutCrashing() {
+        val origin = GeoPoint(47.3779, 8.5417)
+        val clock = TestClock()
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = listOf(scooter(id = "near", provider = "bird"), scooter(id = "far", provider = "lime", latitude = 47.3795)),
+                // Voi operates in Zürich and its feed failed: its row is drawn as down.
+                meta = ScooterResponseMetadata(
+                    partial = true,
+                    failedSources = listOf("national:voi_zurich"),
+                    generatedAt = iso(clock.now),
+                    expiresAt = iso(clock.now.addingTimeInterval(300.0)),
+                ),
+            ),
+        )
+        val model = controllers.make(api, clock)
+        val renderer = Renderer(compose) { clock.now }
+        // The panel's widths: 380, and 420 at the accessibility sizes.
+        val passes = listOf(
+            RenderPass(dark = false, DynamicTypeSize.Large, 380.dp),
+            RenderPass(dark = true, DynamicTypeSize.XXXLarge, 380.dp),
+            RenderPass(dark = true, DynamicTypeSize.Accessibility3, 420.dp),
+            RenderPass(dark = false, DynamicTypeSize.Accessibility5, 420.dp),
+        )
+        fun assertPanelRenders(name: String): List<Float> = passes.map { pass ->
+            val height = renderer.height(pass) { ScooterControlDock(model, layout = ScooterChromeLayout.Panel) }
+            assertTrue("$name, $pass", height > 0)
+            height / compose.density.density
+        }
+        assertPanelRenders("finding")
+
+        model.updateViewport(zurichRegion, zoom = 16)
+        val loaded = controllers.waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
+        assertTrue(loaded)
+        val summary = (model.dock as? ScooterDockContent.Summary)?.summary ?: return fail("Expected the summary")
+        assertTrue(summary.chips.any { it.provider == ScooterProvider.Voi && it.isDown })
+        val open = assertPanelRenders("summary with its list of providers")
+
+        // A row of 44 dp at least for "All providers" and for each provider, where the chips of a phone's dock make
+        // one row.
+        val rows = summary.chips.size + 1f
+        assertTrue("${summary.chips.size} providers: ${open[0]}", open[0] >= rows * 44)
+        val phone = renderer.height(passes[0]) { ScooterControlDock(model) } / compose.density.density
+        assertTrue("${open[0]} against $phone", open[0] > phone + (rows - 2) * 44)
+
+        // Folded, the card keeps one line and its grabber.
+        model.setPanelCollapsed(true)
+        val folded = assertPanelRenders("folded summary")
+        assertTrue("${folded[0]}", folded[0] <= 80)
+        for ((foldedHeight, openHeight) in folded.zip(open)) {
+            assertTrue("$foldedHeight against $openHeight", foldedHeight < openHeight)
+        }
+
+        model.setUserLocation(origin)
+        assertPanelRenders("folded nearest scooter")
+        model.showProviders(setOf(ScooterProvider.Lime))
+        model.setPanelCollapsed(false)
+        assertPanelRenders("summary with a provider chosen")
+        model.showAllProviders()
+
+        model.selectScooter("bird:near")
+        assertFalse(model.isPanelCollapsed.value)
+        assertPanelRenders("scooter card")
+        model.setPanelCollapsed(true)
+        assertPanelRenders("folded scooter card")
+        model.clearSelection()
+
+        model.showProviders(setOf(ScooterProvider.Pony))
+        assertPanelRenders("folded, filters hide everything")
+        model.resetFilters()
+
+        clock.advance(400.0)
+        api.setFailure(ScooterAPIError.Offline())
+        model.retryLoad()
+        val expired = controllers.waitUntil {
+            api.calls == 2 && model.loadIssue.value is ScooterLoadIssue.OutOfDate && !model.isLoading.value
+        }
+        assertTrue(expired)
+        assertPanelRenders("folded, out of date")
     }
 
     @Test

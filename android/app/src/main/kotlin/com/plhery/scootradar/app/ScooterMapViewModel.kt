@@ -3,6 +3,7 @@ package com.plhery.scootradar.app
 import android.app.Activity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.plhery.scootradar.BuildConfig
 import com.plhery.scootradar.core.api.ScooterAPIClient
@@ -21,11 +22,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 /**
  * Holds the map's controller for as long as the screen lives, through a rotation or a resized window, as the
  * iPhone's ScooterMapModel lives with its scene. Observing the activity, it tells the controller when the app
- * comes to the foreground and leaves it, as the scene's phase does on the iPhone.
+ * comes to the foreground and leaves it, as the scene's phase does on the iPhone. Whether the panel was folded is
+ * all it keeps for a screen the system makes again after ending the app's process, as the scene's storage keeps it
+ * (X-AD18).
  */
 class ScooterMapViewModel(
     container: AppContainer,
@@ -38,6 +42,8 @@ class ScooterMapViewModel(
     val analytics: ScooterAnalytics = container.analytics,
     /** Where the map's scooters come from: the server, or a test's own answers. */
     api: ScooterAPIClient = container.api,
+    /** What the screen keeps through the end of the process: `@SceneStorage("panelCollapsed")`. */
+    savedState: SavedStateHandle,
 ) : ViewModel(), DefaultLifecycleObserver {
     // Dispatchers.Main, not viewModelScope's Main.immediate: the controller's work starts after the call that
     // asked for it returns, as a Swift Task does.
@@ -85,6 +91,9 @@ class ScooterMapViewModel(
 
             override fun locationFailed(error: ScooterLocationError) = controller.locationFailed(error)
         }
+        // The panel opens folded if it was left so, before the screen is drawn: it doesn't fold before the eyes.
+        if (savedState.get<Boolean>(PANEL_COLLAPSED) == true) controller.setPanelCollapsed(true)
+        scope.launch { controller.isPanelCollapsed.collect { savedState[PANEL_COLLAPSED] = it } }
     }
 
     private var hasStarted = false
@@ -127,5 +136,10 @@ class ScooterMapViewModel(
     override fun onCleared() {
         location.close()
         scope.cancel()
+    }
+
+    companion object {
+        /** The key the panel's fold is kept under, the iPhone's scene storage key. */
+        const val PANEL_COLLAPSED = "panelCollapsed"
     }
 }

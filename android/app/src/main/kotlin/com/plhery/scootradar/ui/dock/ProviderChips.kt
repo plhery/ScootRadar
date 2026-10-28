@@ -133,7 +133,7 @@ internal fun ProviderChips(controller: ScooterMapController, chips: List<Scooter
 }
 
 /** What a chip does when tapped, said after its name. */
-private fun quickProviderHint(controller: ScooterMapController, provider: ScooterProvider): String {
+internal fun quickProviderHint(controller: ScooterMapController, provider: ScooterProvider): String {
     val enabled = controller.enabledProviders.value
     return when {
         controller.allProvidersSelected -> localized("show only this provider")
@@ -244,7 +244,7 @@ internal fun chipAccessibilityLabel(title: String, count: Int, isDown: Boolean):
  * place. The whole number rolls, where the iPhone rolls only the digits that change.
  */
 @Composable
-private fun RollingCount(count: Int, rolls: Boolean, style: TextStyle, color: Color) {
+internal fun RollingCount(count: Int, rolls: Boolean, style: TextStyle, color: Color) {
     val spring = IosMotion.snappy(duration = 0.25)
     AnimatedContent(
         targetState = count,

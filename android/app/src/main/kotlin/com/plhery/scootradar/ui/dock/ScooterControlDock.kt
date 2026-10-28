@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -56,6 +58,7 @@ import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dock
 import com.plhery.scootradar.core.map.dockAnnouncement
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCityDistance
 import com.plhery.scootradar.core.model.ScooterCoverageSummary
@@ -69,6 +72,7 @@ import com.plhery.scootradar.core.model.ScooterFilterSummary
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.model.ScooterNumberFormat
+import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.Announcer
 import com.plhery.scootradar.ui.chrome.overTheMap
@@ -92,19 +96,23 @@ import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.weight
 import java.time.Instant
 
-// ScooterControlDock in ios/ScootRadar/Views/ScooterControls.swift: the card at the bottom of a phone's screen
-// (ui.md UI-026 to UI-049, UI-100).
+// ScooterControlDock in ios/ScootRadar/Views/ScooterControls.swift: the card at the bottom of a phone's screen, and
+// the card of a large window's panel (ui.md UI-026 to UI-049, UI-097, UI-100, UI-108, UI-109, UI-228).
 
 /**
  * The dock: one glass card at the bottom of the screen, which says what the map shows. Its content is the
  * controller's [dock]: scooters being found, the count and its status, a scooter's or a bay's card, or why there is
  * nothing to show. A change of kind springs the card to its new height while the old content fades out and the new
  * fades in. Content taller than [maximumContentHeight] scrolls inside the card.
+ *
+ * In the [layout] of a large window's panel it is the panel's card, which lists the providers one under the other
+ * and folds: a grabber at its foot folds it down to one line, or opens it again.
  */
 @Composable
 fun ScooterControlDock(
     controller: ScooterMapController,
     modifier: Modifier = Modifier,
+    layout: ScooterChromeLayout = ScooterChromeLayout.Dock,
     maximumContentHeight: Dp = Dp.Infinity,
     onEditFilters: () -> Unit = {},
     onHeightChange: (Int) -> Unit = {},
@@ -113,52 +121,124 @@ fun ScooterControlDock(
     val content = remember(controller, changes) { controller.dock }
     val colors = scootColors
     val shape = SquircleShape(28.dp)
-    val spring = IosMotion.snappy(duration = 0.28, extraBounce = 0.06)
     val reduceMotion = LocalReduceMotion.current
     SelectionFeedback(controller.enabledProviders.collectAsState().value)
+    // Only the panel folds; a phone's dock always shows all it has.
+    val isFolded = layout == ScooterChromeLayout.Panel && controller.isPanelCollapsed.collectAsState().value
 
-    Box(
-        modifier
-            .widthIn(max = 560.dp)
-            .iosShadow(shape, Color.Black.copy(alpha = if (colors.isDark) 0.3f else 0.1f), radius = 16.dp, y = 10.dp)
-            .chromeGlass(shape, live = true)
-            .hairline(shape, colors.dockHairline)
-            .overTheMap()
-            .onSizeChanged { onHeightChange(it.height) }
-            .testTag(DOCK_TAG),
-    ) {
-        AnimatedContent(
-            targetState = content,
-            contentKey = { it.kind },
-            contentAlignment = Alignment.TopStart,
-            transitionSpec = {
-                if (reduceMotion) {
-                    EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-                } else {
-                    fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                        SizeTransform(clip = false) { _, _ -> spring.animation() }
+    Box(modifier.widthIn(max = 560.dp)) {
+        Box(
+            Modifier
+                .iosShadow(shape, Color.Black.copy(alpha = if (colors.isDark) 0.3f else 0.1f), radius = 16.dp, y = 10.dp)
+                .chromeGlass(shape, live = true)
+                .hairline(shape, colors.dockHairline)
+                .overTheMap()
+                .onSizeChanged { onHeightChange(it.height) }
+                .testTag(DOCK_TAG),
+        ) {
+            when (layout) {
+                ScooterChromeLayout.Dock -> DockCards(controller, content, layout, PaddingValues(16.dp), maximumContentHeight, onEditFilters)
+                ScooterChromeLayout.Panel -> {
+                    // The card folds to its line, and opens again, as the one fades into the other.
+                    val fold = IosMotion.snappy(duration = 0.3)
+                    AnimatedContent(
+                        targetState = isFolded,
+                        contentAlignment = Alignment.TopStart,
+                        transitionSpec = {
+                            if (reduceMotion) {
+                                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
+                            } else {
+                                fadeIn(fold.animation()) togetherWith fadeOut(fold.animation()) using
+                                    SizeTransform(clip = false) { _, _ -> fold.animation() }
+                            }
+                        },
+                        label = "fold",
+                    ) { folded ->
+                        if (folded) {
+                            FoldedPanelLine(controller, Modifier.padding(start = 16.dp, top = 4.dp, end = 16.dp, bottom = FOLDED_FOOT))
+                        } else {
+                            DockCards(
+                                controller,
+                                content,
+                                layout,
+                                PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = PANEL_FOOT),
+                                maximumContentHeight,
+                                onEditFilters,
+                            )
+                        }
+                    }
                 }
-            },
-            label = "dock",
-        ) { shown ->
-            val scroll = rememberScrollState()
-            Box(
-                (if (shown is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(shown.scooter.providerInfo), shape) else Modifier)
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    // HeightLimit: as tall as the content, up to the limit, and scrolling past it. Without a limit
-                    // nothing scrolls, as a scroll needs a height to fit in.
-                    .then(if (maximumContentHeight.isFinite) Modifier.heightIn(max = maximumContentHeight).verticalScroll(scroll) else Modifier),
-            ) {
-                DockContent(controller, shown, onEditFilters)
             }
+            // A card opens down here while TalkBack is still on the marker, and the out-of-date card replaces the
+            // count unasked. The walking route is drawn on the map, away from the button that asked for it, and the
+            // walk can end on its own.
+            Announcer(rememberAnnouncementOnChange(content.kind) { controller.dockAnnouncement })
+            val walkAnnouncement = controller.walkAnnouncement.collectAsState().value
+            Announcer(rememberAnnouncementOnChange(walkAnnouncement) { walkAnnouncement?.text })
         }
-        // A card opens down here while TalkBack is still on the marker, and the out-of-date card replaces the count
-        // unasked. The walking route is drawn on the map, away from the button that asked for it, and the walk can
-        // end on its own.
-        Announcer(rememberAnnouncementOnChange(content.kind) { controller.dockAnnouncement })
-        val walkAnnouncement = controller.walkAnnouncement.collectAsState().value
-        Announcer(rememberAnnouncementOnChange(walkAnnouncement) { walkAnnouncement?.text })
+        if (layout == ScooterChromeLayout.Panel) {
+            PanelGrabber(
+                isFolded,
+                controller::setPanelCollapsed,
+                // Its 44 point reach from the foot of the card to just past its edge, and the handle shows 12
+                // points above the edge.
+                Modifier.align(Alignment.BottomCenter).offset(y = GRABBER_OVERHANG),
+            )
+        }
+    }
+}
+
+/** Under the content of the panel's card, the room its grabber takes. */
+val PANEL_FOOT = 34.dp
+
+/** Under the line of a folded card, where the grabber reaches up over the line's own foot: both open the card. */
+private val FOLDED_FOOT = 22.dp
+
+/** How far the grabber's reach goes past the card's edge. */
+private val GRABBER_OVERHANG = 10.dp
+
+/**
+ * What the card holds, inside [padding]: all of the content, which scrolls when taller than [maximumContentHeight].
+ * A change of kind springs the card to its new height while the old content fades out and the new fades in.
+ */
+@Composable
+private fun DockCards(
+    controller: ScooterMapController,
+    content: ScooterDockContent,
+    layout: ScooterChromeLayout,
+    padding: PaddingValues,
+    maximumContentHeight: Dp,
+    onEditFilters: () -> Unit,
+) {
+    val colors = scootColors
+    val shape = SquircleShape(28.dp)
+    val spring = IosMotion.snappy(duration = 0.28, extraBounce = 0.06)
+    val reduceMotion = LocalReduceMotion.current
+    AnimatedContent(
+        targetState = content,
+        contentKey = { it.kind },
+        contentAlignment = Alignment.TopStart,
+        transitionSpec = {
+            if (reduceMotion) {
+                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
+            } else {
+                fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                    SizeTransform(clip = false) { _, _ -> spring.animation() }
+            }
+        },
+        label = "dock",
+    ) { shown ->
+        val scroll = rememberScrollState()
+        Box(
+            (if (shown is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(shown.scooter.providerInfo), shape) else Modifier)
+                .fillMaxWidth()
+                .padding(padding)
+                // HeightLimit: as tall as the content, up to the limit, and scrolling past it. Without a limit
+                // nothing scrolls, as a scroll needs a height to fit in.
+                .then(if (maximumContentHeight.isFinite) Modifier.heightIn(max = maximumContentHeight).verticalScroll(scroll) else Modifier),
+        ) {
+            DockContent(controller, shown, layout, onEditFilters)
+        }
     }
 }
 
@@ -205,7 +285,7 @@ private fun Modifier.cardGlow(tint: Color, shape: Shape): Modifier = drawBehind 
 private val headerHeight = 38.dp
 
 @Composable
-private fun DockContent(controller: ScooterMapController, content: ScooterDockContent, onEditFilters: () -> Unit) {
+private fun DockContent(controller: ScooterMapController, content: ScooterDockContent, layout: ScooterChromeLayout, onEditFilters: () -> Unit) {
     when (content) {
         is ScooterDockContent.Scooter -> ScooterCard(controller, content.scooter)
         is ScooterDockContent.Parking -> ParkingBayCard(controller, content.parking)
@@ -220,14 +300,23 @@ private fun DockContent(controller: ScooterMapController, content: ScooterDockCo
                 Text(localized("Finding scooters…"), style = ScootType.subheadline.weight(FontWeight.SemiBold), color = scootColors.dockText)
             }
             if (content.notices.isNotEmpty()) NoticeRows(content.notices)
-            if (content.chips.isNotEmpty()) ProviderChips(controller, content.chips)
+            if (content.chips.isNotEmpty()) ProviderFilters(controller, content.chips, layout)
         }
         ScooterDockContent.Waiting -> Box(Modifier.fillMaxWidth().heightIn(min = headerHeight), contentAlignment = Alignment.CenterStart) {
             Text(localized("Waiting for scooter data"), style = ScootType.subheadline.weight(FontWeight.SemiBold), color = scootColors.dockText)
         }
         is ScooterDockContent.OutsideCoverage -> OutsideCoverageCard(controller, content.cities)
         is ScooterDockContent.FiltersHideEverything -> HiddenByFiltersCard(controller, content.summary, onEditFilters)
-        is ScooterDockContent.Summary -> SummaryContent(controller, content.summary)
+        is ScooterDockContent.Summary -> SummaryContent(controller, content.summary, layout)
+    }
+}
+
+/** The providers: chips side by side in a phone's dock, and in the panel of a large window a list. */
+@Composable
+private fun ProviderFilters(controller: ScooterMapController, chips: List<ScooterProviderEntry>, layout: ScooterChromeLayout) {
+    when (layout) {
+        ScooterChromeLayout.Dock -> ProviderChips(controller, chips)
+        ScooterChromeLayout.Panel -> ProviderList(controller, chips)
     }
 }
 
@@ -236,7 +325,7 @@ private fun DockContent(controller: ScooterMapController, content: ScooterDockCo
  * large text Try again goes under the count and the status.
  */
 @Composable
-private fun SummaryContent(controller: ScooterMapController, summary: ScooterDockSummary) {
+private fun SummaryContent(controller: ScooterMapController, summary: ScooterDockSummary, layout: ScooterChromeLayout) {
     val colors = scootColors
     val isLoading = controller.isLoading.collectAsState().value
     val now = rememberNow()
@@ -272,7 +361,7 @@ private fun SummaryContent(controller: ScooterMapController, summary: ScooterDoc
 
         if (summary.notices.isNotEmpty()) NoticeRows(summary.notices)
 
-        ProviderChips(controller, summary.chips)
+        ProviderFilters(controller, summary.chips, layout)
 
         summary.hint?.let { hint ->
             DockNoteRow(if (hint == ScooterDockHint.TapCity) Symbols.mapPin else Symbols.scooter, hint.text)

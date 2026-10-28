@@ -4,8 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -23,6 +25,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -64,6 +67,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
@@ -80,6 +84,7 @@ import com.plhery.scootradar.core.map.hasActiveFilters
 import com.plhery.scootradar.core.map.nearbyCities
 import com.plhery.scootradar.core.map.searchBarState
 import com.plhery.scootradar.core.map.searchNear
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
@@ -95,6 +100,7 @@ import com.plhery.scootradar.ui.chrome.LocationIssueCard
 import com.plhery.scootradar.ui.chrome.LocationSettings
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
 import com.plhery.scootradar.ui.chrome.ZoneLegend
+import com.plhery.scootradar.ui.dock.PANEL_FOOT
 import com.plhery.scootradar.ui.dock.ScooterControlDock
 import com.plhery.scootradar.ui.filters.ScooterFilterSheet
 import com.plhery.scootradar.ui.glass.Glass
@@ -116,8 +122,9 @@ import kotlin.math.min
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-// ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map, and a phone's chrome over it (dockChrome,
-// ui.md UI-004 to UI-006), with the search bar at its top (searchIsland, UI-009).
+// ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map, and the chrome over it: a phone's
+// (dockChrome, ui.md UI-004 to UI-006), or a large window's panel (panelChrome, UI-007, UI-008, UI-113, UI-124),
+// with the search bar at its top (searchIsland, UI-009).
 
 /** The app's one screen: the map, edge to edge, the chrome over it, and the window's appearance. */
 @Composable
@@ -173,22 +180,37 @@ fun ScooterMapScreen(
         ) {
             Box(Modifier.fillMaxSize()) {
                 // A sheet is modal: TalkBack reads it alone, as VoiceOver does.
-                Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
+                BoxWithConstraints(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
+                    // Chosen again at every size of the window, which turns and is resized without a new activity.
+                    val layout = rememberChromeLayout(maxWidth)
+                    SideEffect { chrome.layout = layout }
                     map(dark)
-                    DockChrome(
-                        controller,
-                        chrome = chrome,
-                        isSearching = searchIsExpanded,
-                        onSearchingChange = { searchIsExpanded = it },
-                        onShowFilters = {
-                            searchIsExpanded = false
-                            filtersPresented = true
-                        },
-                        onShowSettings = {
-                            searchIsExpanded = false
-                            settingsPresented = true
-                        },
-                    )
+                    val onShowFilters = {
+                        searchIsExpanded = false
+                        filtersPresented = true
+                    }
+                    val onShowSettings = {
+                        searchIsExpanded = false
+                        settingsPresented = true
+                    }
+                    when (layout) {
+                        ScooterChromeLayout.Dock -> DockChrome(
+                            controller,
+                            chrome = chrome,
+                            isSearching = searchIsExpanded,
+                            onSearchingChange = { searchIsExpanded = it },
+                            onShowFilters = onShowFilters,
+                            onShowSettings = onShowSettings,
+                        )
+                        ScooterChromeLayout.Panel -> PanelChrome(
+                            controller,
+                            chrome = chrome,
+                            isSearching = searchIsExpanded,
+                            onSearchingChange = { searchIsExpanded = it },
+                            onShowFilters = onShowFilters,
+                            onShowSettings = onShowSettings,
+                        )
+                    }
                 }
 
                 // Half of a short window shows the first settings only, so there Filters opens at full height, its
@@ -301,6 +323,13 @@ private fun DockChrome(
     val safeBottom = safe.calculateBottomPadding()
     // The room under the home indicator, or 8 where there is none.
     val bottom = max(safeBottom, 8.dp)
+    // The panel's layout has frames of its own.
+    DisposableEffect(chrome) {
+        onDispose {
+            chrome.top = null
+            chrome.dock = null
+        }
+    }
 
     key(language) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
@@ -379,6 +408,125 @@ private fun DockChrome(
                     ),
                     onHeightChange = { dockHeight.intValue = it },
                 )
+            }
+        }
+    }
+}
+
+/**
+ * A large window's chrome, as the website's on a computer: the search bar, the notices and the dock's card one under
+ * the other in a panel down the leading side, over the map, and the locate button in the map's trailing corner. The
+ * open search covers the panel, and nothing else. The card folds down to one line, and the map then shows, and takes
+ * taps, under the panel; the notices stay. Made anew in another language, as the phone's is.
+ */
+@Composable
+private fun PanelChrome(
+    controller: ScooterMapController,
+    chrome: MapChromeFrames,
+    isSearching: Boolean,
+    onSearchingChange: (Boolean) -> Unit,
+    onShowFilters: () -> Unit,
+    onShowSettings: () -> Unit,
+) {
+    val language by controller.language.collectAsStateWithLifecycle()
+    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
+    val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
+    val loadIssue by controller.loadIssue.collectAsStateWithLifecycle()
+    val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
+    val firstLoadFailure = (loadIssue as? ScooterLoadIssue.FirstLoadFailed)?.failure
+    SelectionFeedback(selectedScooter)
+    SelectionFeedback(selectedParking)
+
+    val density = LocalDensity.current
+    // Measured only while the search is closed, as on the iPhone.
+    val searchBarHeight = remember { mutableIntStateOf(with(density) { 62.dp.roundToPx() }) }
+    val noticesHeight = remember { mutableIntStateOf(0) }
+    val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
+    val safeTop = safe.calculateTopPadding()
+    val safeBottom = safe.calculateBottomPadding()
+    val largeText = TextSize.isAccessibility
+    DisposableEffect(chrome) { onDispose { chrome.panel = null } }
+
+    key(language) {
+        BoxWithConstraints(Modifier.fillMaxSize()) {
+            val windowHeight = maxHeight
+            // Inside the safe area, as the iPhone's GeometryReader is.
+            Box(Modifier.fillMaxSize().padding(safe)) {
+                val height = windowHeight - safeTop - safeBottom
+                val searchBar = with(density) { searchBarHeight.intValue.toDp() }
+                val notices = firstLoadFailure != null || locationIssue != null
+                // The room in the panel under the search bar, which the notices and the dock share: notices take
+                // half of it at most, and the dock's content the rest, inside its own padding and above its grabber.
+                val room = height - 16.dp - searchBar - 8.dp - 16.dp
+                val noticesLimit = max(64.dp, room / 2)
+                val noticesTaken = if (notices) with(density) { noticesHeight.intValue.toDp() } else 0.dp
+                val dockLimit = max(160.dp, room - noticesTaken - 16.dp - PANEL_FOOT)
+                val gone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.24)), label = "panel")
+                Box(
+                    Modifier
+                        .padding(16.dp)
+                        // Beside an open foldable's fold the panel will keep to its half (UI-116 on, not here yet).
+                        .width(ScooterChromeLayout.panelWidth(largeText).dp)
+                        // The map shows a scooter beside the panel, and keeps its names and its taps off it.
+                        .onGloballyPositioned { chrome.panel = it.windowFrame(density.density) },
+                ) {
+                    Column(
+                        Modifier
+                            .makingWay(isSearching, { gone }, scale = 0.96f, TransformOrigin(0.5f, 0f))
+                            .padding(top = searchBar + 8.dp)
+                            .inert(isSearching),
+                    ) {
+                        // The dock moves down for the notices, and back up as they go, as they slide.
+                        val noticesSpring = motion<IntSize>(IosMotion.snappy(duration = 0.28))
+                        AnimatedVisibility(
+                            notices,
+                            enter = expandVertically(noticesSpring, Alignment.Top, clip = false),
+                            exit = shrinkVertically(noticesSpring, Alignment.Top, clip = false),
+                            label = "notices",
+                        ) {
+                            TopNotices(
+                                controller,
+                                failure = firstLoadFailure,
+                                locationIssue = locationIssue,
+                                limit = noticesLimit,
+                                onSearchingChange = onSearchingChange,
+                                modifier = Modifier
+                                    .onSizeChanged { noticesHeight.intValue = it.height }
+                                    .padding(bottom = 8.dp),
+                            )
+                        }
+                        ScooterControlDock(
+                            controller,
+                            layout = ScooterChromeLayout.Panel,
+                            maximumContentHeight = dockLimit,
+                            onEditFilters = onShowFilters,
+                        )
+                    }
+                    // Over the panel, which the open search covers.
+                    SearchIsland(
+                        controller,
+                        isSearching = isSearching,
+                        onSearchingChange = onSearchingChange,
+                        onShowFilters = onShowFilters,
+                        onShowSettings = onShowSettings,
+                        // The window's bottom, inside its safe area.
+                        bottomLimit = windowHeight - safeBottom,
+                        onCollapsedHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
+                    )
+                }
+
+                // The legend against the locate button, in the map's trailing corner.
+                Row(
+                    Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.Bottom,
+                ) {
+                    ZoneLegendOverTheMap(controller, chrome)
+                    FloatingMapControls(
+                        controller,
+                        Modifier.onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
+                    )
+                }
             }
         }
     }
@@ -471,17 +619,6 @@ private fun TopStack(
     onSearchBarHeightChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isLoading by controller.isLoading.collectAsStateWithLifecycle()
-    // What a banner or a card said stays on it while it goes.
-    val lastFailure = rememberLast(failure)
-    val lastIssue = rememberLast(locationIssue)
-    val context = LocalContext.current
-    val locationSettings = LocalLocationSettings.current
-    val spring = IosMotion.snappy(duration = 0.28)
-    val reduceMotion = LocalReduceMotion.current
-    val enter = if (reduceMotion) fadeIn(snap()) else slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation())
-    val exit = if (reduceMotion) fadeOut(snap()) else slideOutVertically(spring.animation()) { -it } + fadeOut(spring.animation())
-
     val density = LocalDensity.current
     // The search bar and the notices under it, closed: what the map keeps its names under, and centres a place
     // below. The open search covers the map, and leaves the map's frame as it was.
@@ -515,61 +652,94 @@ private fun TopStack(
             },
         )
 
-        // As ViewThatFits: a plain stack while the notices fit, which leaves their shadows and slides whole, and a
-        // scroll, which clips them, only when they don't. They go while the search is open.
+        // The notices go while the search is open.
         val searchSpring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
         val searchMotion = motion<Float>(searchSpring)
-        var contentHeight by remember { mutableIntStateOf(0) }
-        val scrolls = contentHeight > with(density) { noticesLimit.roundToPx() }
         AnimatedVisibility(
             visible = !isSearching,
             enter = fadeIn(searchMotion),
             exit = fadeOut(searchMotion),
             label = "notices",
         ) {
-            Column(
-                Modifier
-                    .onSizeChanged { noticesHeight = it.height }
-                    .heightIn(max = noticesLimit)
-                    .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
-                    .layout { measurable, constraints ->
-                        val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
-                        contentHeight = placeable.height
-                        layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
+            TopNotices(
+                controller,
+                failure = failure,
+                locationIssue = locationIssue,
+                limit = noticesLimit,
+                onSearchingChange = onSearchingChange,
+                modifier = Modifier.onSizeChanged { noticesHeight = it.height },
+            )
+        }
+    }
+}
+
+/**
+ * What sits under the search bar: the banner of a first load that failed, and the card of a location that could not
+ * be found, as tall as [limit] at most. As ViewThatFits: a plain stack while the notices fit, which leaves their
+ * shadows and slides whole, and a scroll, which clips them, only when they don't.
+ */
+@Composable
+private fun TopNotices(
+    controller: ScooterMapController,
+    failure: ScooterLoadFailure?,
+    locationIssue: ScooterLocationIssue?,
+    limit: Dp,
+    onSearchingChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val isLoading by controller.isLoading.collectAsStateWithLifecycle()
+    // What a banner or a card said stays on it while it goes.
+    val lastFailure = rememberLast(failure)
+    val lastIssue = rememberLast(locationIssue)
+    val context = LocalContext.current
+    val locationSettings = LocalLocationSettings.current
+    val spring = IosMotion.snappy(duration = 0.28)
+    val reduceMotion = LocalReduceMotion.current
+    val enter = if (reduceMotion) fadeIn(snap()) else slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation())
+    val exit = if (reduceMotion) fadeOut(snap()) else slideOutVertically(spring.animation()) { -it } + fadeOut(spring.animation())
+    val density = LocalDensity.current
+    var contentHeight by remember { mutableIntStateOf(0) }
+    val scrolls = contentHeight > with(density) { limit.roundToPx() }
+    Column(
+        modifier
+            .heightIn(max = limit)
+            .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+            .layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
+                contentHeight = placeable.height
+                layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
+            },
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        AnimatedVisibility(failure != null, enter = enter, exit = exit) {
+            val shown = lastFailure ?: return@AnimatedVisibility
+            Box {
+                MapStatusBanner(
+                    message = shown.message,
+                    actionTitle = localized("Try again"),
+                    onAction = controller::retryLoad,
+                    isBusy = isLoading,
+                )
+                // Said as it appears and each time its message changes.
+                Announcer(Announcement(shown.message))
+            }
+        }
+        AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
+            val issue = lastIssue ?: return@AnimatedVisibility
+            Box {
+                LocationIssueCard(
+                    issue = issue,
+                    onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
+                    onSearchPlace = {
+                        // Searching is the answer to the card, so it goes away.
+                        controller.dismissLocationIssue()
+                        onSearchingChange(true)
                     },
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                AnimatedVisibility(failure != null, enter = enter, exit = exit) {
-                    val shown = lastFailure ?: return@AnimatedVisibility
-                    Box {
-                        MapStatusBanner(
-                            message = shown.message,
-                            actionTitle = localized("Try again"),
-                            onAction = controller::retryLoad,
-                            isBusy = isLoading,
-                        )
-                        // Said as it appears and each time its message changes.
-                        Announcer(Announcement(shown.message))
-                    }
-                }
-                AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
-                    val issue = lastIssue ?: return@AnimatedVisibility
-                    Box {
-                        LocationIssueCard(
-                            issue = issue,
-                            onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
-                            onSearchPlace = {
-                                // Searching is the answer to the card, so it goes away.
-                                controller.dismissLocationIssue()
-                                onSearchingChange(true)
-                            },
-                            onRetry = { locationSettings.retry(controller::focusOnUser) },
-                            onDismiss = controller::dismissLocationIssue,
-                        )
-                        Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
-                    }
-                }
+                    onRetry = { locationSettings.retry(controller::focusOnUser) },
+                    onDismiss = controller::dismissLocationIssue,
+                )
+                Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
             }
         }
     }
