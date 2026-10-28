@@ -9,9 +9,9 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
+import android.os.SystemClock
 import android.view.FrameMetrics
 import android.view.Window
-import android.view.WindowManager
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -29,7 +29,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.plhery.scootradar.ui.theme.scootColors
-import java.util.function.Consumer
 
 // ChromeGlass in ios/ScootRadar/Views/ScooterControls.swift, and the fills that stand in for it (PLAN §4 "Glass",
 // ui.md UI-351 and UI-185).
@@ -64,20 +63,17 @@ fun Modifier.chromeGlass(shape: Shape, live: Boolean = false): Modifier = compos
 }
 
 /**
- * Whether the glass may blur: not under power saver, not where Android turns its own blurs off (the phone can't,
- * or its "Allow window-level blurs" is off: the nearest to iOS's Reduce Transparency, UI-185), and not once the
- * window has dropped frames while blurring.
+ * Whether the glass may blur: not under power saver, and not once the blur has dropped frames (UI-185). Android has
+ * no Reduce Transparency, and Liquid Glass blurs on every iPhone, so a phone whose compositor can't blur other
+ * windows still blurs the map in the app (RenderEffect needs no compositor).
  */
 @Composable
 fun glassMayBlur(): Boolean {
     val context = LocalContext.current
-    var windowBlurs by remember { mutableStateOf(context.getSystemService(WindowManager::class.java)?.isCrossWindowBlurEnabled ?: false) }
     var powerSave by remember { mutableStateOf(context.getSystemService(PowerManager::class.java)?.isPowerSaveMode ?: false) }
     var keepsUp by remember { mutableStateOf(FrameWatch.keepsUp) }
+    val blurs = !powerSave && keepsUp
     DisposableEffect(context) {
-        val windows = context.getSystemService(WindowManager::class.java)
-        val blurListener = Consumer<Boolean> { windowBlurs = it }
-        windows?.addCrossWindowBlurEnabledListener(ContextCompat.getMainExecutor(context), blurListener)
         val power = context.getSystemService(PowerManager::class.java)
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -90,22 +86,23 @@ fun glassMayBlur(): Boolean {
             IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
             ContextCompat.RECEIVER_NOT_EXPORTED,
         )
-        val window = context.activity()?.window
-        val watch = window?.let { FrameWatch(it) { keepsUp = false } }
-        onDispose {
-            windows?.removeCrossWindowBlurEnabledListener(blurListener)
-            context.unregisterReceiver(receiver)
-            watch?.stop()
-        }
+        onDispose { context.unregisterReceiver(receiver) }
     }
-    return windowBlurs && !powerSave && keepsUp
+    // Only the frames drawn while the glass blurs are counted.
+    DisposableEffect(context, blurs) {
+        val watch = if (blurs) context.activity()?.window?.let { FrameWatch(it) { keepsUp = false } } else null
+        onDispose { watch?.stop() }
+    }
+    return blurs
 }
 
 /**
- * Counts the window's slow frames: if a tenth of them or more are slow in two windows of 120 frames running, the
- * blur can't keep up, and the fill takes its place until the app is started again.
+ * Counts the window's slow frames while the glass blurs: if a tenth of them or more are slow in two windows of 120
+ * frames running, the blur can't keep up, and the fill takes its place until the app is started again. The first
+ * [WARM_UP_MILLIS] aren't counted: a cold start's first load is slow with or without the blur.
  */
 private class FrameWatch(private val window: Window, private val onSlow: () -> Unit) {
+    private val start = SystemClock.uptimeMillis()
     private var frames = 0
     private var slow = 0
     private var slowWindows = 0
@@ -116,7 +113,7 @@ private class FrameWatch(private val window: Window, private val onSlow: () -> U
     }
 
     private fun count(metrics: FrameMetrics) {
-        if (!keepsUp) return
+        if (!keepsUp || SystemClock.uptimeMillis() - start < WARM_UP_MILLIS) return
         val interval = metrics.getMetric(FrameMetrics.DEADLINE).takeIf { it > 0 } ?: 16_666_667L
         frames += 1
         if (metrics.getMetric(FrameMetrics.TOTAL_DURATION) > interval * 3 / 2) slow += 1
@@ -134,6 +131,7 @@ private class FrameWatch(private val window: Window, private val onSlow: () -> U
 
     companion object {
         private const val WINDOW = 120
+        private const val WARM_UP_MILLIS = 5_000L
 
         /** False once the blur has failed to keep up, for the rest of the app's run. */
         var keepsUp = true

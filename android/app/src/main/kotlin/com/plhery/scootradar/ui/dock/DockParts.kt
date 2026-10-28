@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.offset
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.ScooterDockStatus
@@ -118,9 +119,16 @@ internal fun SymbolIcon(symbol: ImageVector, size: Dp, color: Color, modifier: M
     Icon(symbol, contentDescription = null, tint = color, modifier = modifier.size(size))
 }
 
-/** The size of a symbol set in a text style of that many points: it grows with the text, as the text does. */
+/**
+ * The size of a symbol set in a text style of that many points: it grows with the text, as the text does, along
+ * Android 14's curve for large text, not in a straight line.
+ */
 @Composable
-internal fun textSymbolSize(points: Float): Dp = (points * SYMBOL_FRAME * LocalDensity.current.fontScale).dp
+internal fun textSymbolSize(points: Float): Dp = with(LocalDensity.current) { points.sp.toDp() } * SYMBOL_FRAME
+
+/** `@ScaledMetric(relativeTo:)`: [value] grown as a text style of [points] grows with the font scale. */
+@Composable
+internal fun scaledMetric(value: Float, points: Float): Dp = with(LocalDensity.current) { points.sp.toDp() } * (value / points)
 
 /**
  * The status line under the count, and at the top of a card while data is failing. It wraps rather than lose the

@@ -368,7 +368,8 @@ private fun PriceCell(controller: ScooterMapController, figure: ScooterCardFigur
     var isOpen by remember { mutableStateOf(false) }
     val label = stringFormat(localized("Ride estimate, %lld minutes. Change duration."), minutes.toLong())
     val value = priceLabel(quote)
-    Box {
+    // The row measures each cell at its tallest neighbour's height: the cell under the menu takes it too.
+    Box(propagateMinConstraints = true) {
         CardFigureCell(
             figure,
             Modifier

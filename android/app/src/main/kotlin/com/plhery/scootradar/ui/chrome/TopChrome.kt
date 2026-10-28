@@ -78,7 +78,6 @@ fun MapStatusBanner(message: String, actionTitle: String, onAction: () -> Unit, 
         ) {
             Box(
                 Modifier
-                    .then(if (stacks) Modifier.fillMaxWidth() else Modifier)
                     .clip(CapsuleShape)
                     .background(colors.criticalFill)
                     .heightIn(min = 34.dp)
@@ -111,7 +110,7 @@ fun MapStatusBanner(message: String, actionTitle: String, onAction: () -> Unit, 
                     indicator()
                     text(Modifier.weight(1f))
                 }
-                action(Modifier.fillMaxWidth())
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { action(Modifier) }
             }
         } else {
             Row(horizontalArrangement = Arrangement.spacedBy(9.dp), verticalAlignment = Alignment.CenterVertically) {

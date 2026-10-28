@@ -294,7 +294,7 @@ private fun SummaryHeader(
     if (TextSize.isAccessibility) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             main(Modifier.fillMaxWidth())
-            if (showsTryAgain) TryAgainPill(isLoading, onRetry, Modifier.fillMaxWidth())
+            if (showsTryAgain) TryAgainPill(isLoading, onRetry, Modifier)
         }
     } else {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -462,8 +462,9 @@ private fun OutsideCoverageCard(controller: ScooterMapController, cities: List<S
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        SymbolIcon(Symbols.mapPin, textSymbolSize(15f), colors.label)
-                        Text(entry.label, style = ScootType.subheadline.weight(FontWeight.SemiBold).monospacedDigit(), color = colors.label)
+                        // A plain button: the dock's text colour.
+                        SymbolIcon(Symbols.mapPin, textSymbolSize(15f), colors.dockText)
+                        Text(entry.label, style = ScootType.subheadline.weight(FontWeight.SemiBold).monospacedDigit(), color = colors.dockText)
                     }
                 }
             }

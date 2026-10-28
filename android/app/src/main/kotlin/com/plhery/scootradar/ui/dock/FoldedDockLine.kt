@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -75,12 +74,11 @@ internal fun FoldedPanelLine(controller: ScooterMapController, modifier: Modifie
 @Composable
 internal fun FoldedDockLine(line: ScooterDockLine, modifier: Modifier = Modifier) {
     val colors = scootColors
-    val scale = LocalDensity.current.fontScale
-    // ScaledMetric(relativeTo: .subheadline).
-    val markWidth = (18 * scale).dp
-    val lineHeight = (20 * scale).dp
-    val dotSize = (10 * scale).dp
-    val gap = (4 * scale).dp
+    // ScaledMetric(relativeTo: .subheadline), whose text is 15 points.
+    val markWidth = scaledMetric(18f, 15f)
+    val lineHeight = scaledMetric(20f, 15f)
+    val dotSize = scaledMetric(10f, 15f)
+    val gap = scaledMetric(4f, 15f)
     val parts = line.parts
 
     Row(modifier, horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.Top) {
@@ -98,7 +96,7 @@ internal fun FoldedDockLine(line: ScooterDockLine, modifier: Modifier = Modifier
                 val isStatus = line.status != null && index == parts.lastIndex
                 val text = buildAnnotatedString {
                     append(part)
-                    if (index < parts.lastIndex) withStyle(SpanStyle(color = colors.dockQuiet)) { append("\u00A0·") }
+                    if (index < parts.lastIndex) withStyle(SpanStyle(color = colors.dockQuiet, fontWeight = FontWeight.Normal)) { append("\u00A0·") }
                 }
                 Text(
                     text,

@@ -81,9 +81,9 @@ class ScooterWalkTest {
         model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
         renderer.assertRenders("finding") { ScooterControlDock(model) }
 
-        controllers.waitUntil { directions.requests.size == 1 }
+        assertTrue(controllers.waitUntil { directions.requests.size == 1 })
         directions.releaseAll(with = Result.success(detour))
-        controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Shown }
+        assertTrue(controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Shown })
         renderer.assertRenders("shown") { ScooterControlDock(model) }
 
         model.setUserLocation(rider.offset(east = 300, north = 10))
@@ -93,7 +93,7 @@ class ScooterWalkTest {
         directions.holds = false
         model.setUserLocation(rider)
         model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
-        controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Failed(ScooterWalkFailure.NoRoute) }
+        assertTrue(controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Failed(ScooterWalkFailure.NoRoute) })
         renderer.assertRenders("failed") { ScooterControlDock(model) }
     }
 
@@ -128,9 +128,9 @@ class ScooterWalkTest {
         model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
         compose.onNodeWithContentDescription(localized("Finding the way…")).assertExists()
 
-        controllers.waitUntil { directions.requests.size == 1 }
+        assertTrue(controllers.waitUntil { directions.requests.size == 1 })
         directions.releaseAll(with = Result.success(detour))
-        controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Shown }
+        assertTrue(controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Shown })
         compose.onNodeWithContentDescription(localized("Hide route")).assertExists()
 
         model.hideWalkingRoute()

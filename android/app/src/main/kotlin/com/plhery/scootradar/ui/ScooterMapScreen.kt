@@ -18,10 +18,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
@@ -34,20 +36,23 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.IosMotion
-import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScooterLoadFailure
+import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.UserInterfaceStyle
@@ -65,6 +70,7 @@ import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.SelectionFeedback
 import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
+import kotlin.math.min
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map, and a phone's chrome over it (dockChrome,
 // ui.md UI-004 to UI-006). The search bar is app-d's; its place is kept.
@@ -126,7 +132,8 @@ private fun DockChrome(controller: ScooterMapController) {
     val density = LocalDensity.current
     val dockHeight = remember { mutableIntStateOf(with(density) { 128.dp.roundToPx() }) }
     val locateButtonHeight = remember { mutableIntStateOf(with(density) { 52.dp.roundToPx() }) }
-    val safe = WindowInsets.safeDrawing.asPaddingValues()
+    // The keyboard doesn't move the dock or the locate row (`.ignoresSafeArea(.keyboard, edges: .bottom)`).
+    val safe = WindowInsets.safeDrawing.exclude(WindowInsets.ime).asPaddingValues()
     val safeTop = safe.calculateTopPadding()
     val safeBottom = safe.calculateBottomPadding()
     // The room under the home indicator, or 8 where there is none.
@@ -211,8 +218,19 @@ private fun TopStack(
         // The search island's place (app-d).
         Spacer(Modifier.height(SEARCH_BAR_HEIGHT))
 
+        // As ViewThatFits: a plain stack while the notices fit, which leaves their shadows and slides whole, and a
+        // scroll, which clips them, only when they don't.
+        var contentHeight by remember { mutableIntStateOf(0) }
+        val scrolls = contentHeight > with(LocalDensity.current) { noticesLimit.roundToPx() }
         Column(
-            Modifier.heightIn(max = noticesLimit).verticalScroll(rememberScrollState()),
+            Modifier
+                .heightIn(max = noticesLimit)
+                .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
+                    contentHeight = placeable.height
+                    layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
+                },
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

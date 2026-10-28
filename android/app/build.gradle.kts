@@ -82,7 +82,6 @@ dependencies {
     testImplementation(libs.espresso.core)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
-    testImplementation(libs.roborazzi.junit.rule)
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.core)

@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.nativeCanvas
@@ -70,36 +72,50 @@ class MapBackdrop(context: Context) : FrameLayout(context) {
 
 /**
  * Draws behind the element the map under it, blurred by [radius]: the map's frame from [backdrop], moved to where
- * the element is. Clip to the element's shape first.
+ * the element is. Clip to the element's shape first. The modifier is kept across compositions, so that a change in
+ * the element's content doesn't blur the map again: only a frame of the map's does.
  */
-fun Modifier.mapBlur(backdrop: MapBackdrop, radius: Dp): Modifier {
-    val glass = RenderNode("glass")
-    val at = floatArrayOf(0f, 0f)
-    return onGloballyPositioned { coordinates ->
-        val position = coordinates.positionInWindow()
-        at[0] = position.x
-        at[1] = position.y
-    }.drawBehind {
-        // Read so that each frame of the map's draws the glass again.
-        backdrop.frames.intValue
-        drawBlurred(backdrop, glass, at, radius)
+fun Modifier.mapBlur(backdrop: MapBackdrop, radius: Dp): Modifier = composed {
+    remember(backdrop, radius) {
+        val glass = BlurredMap()
+        Modifier.onGloballyPositioned { coordinates ->
+            val position = coordinates.positionInWindow()
+            glass.at[0] = position.x
+            glass.at[1] = position.y
+        }.drawBehind {
+            // Read so that each frame of the map's draws the glass again.
+            backdrop.frames.intValue
+            drawBlurred(backdrop, glass, radius)
+        }
     }
 }
 
-private fun DrawScope.drawBlurred(backdrop: MapBackdrop, glass: RenderNode, at: FloatArray, radius: Dp) {
-    val px = radius.toPx()
+/** The blurred copy of the map behind one element, where it is, and the blur last set on it. */
+private class BlurredMap {
+    val node = RenderNode("glass")
+    val at = floatArrayOf(0f, 0f)
+    private var blurredBy = Float.NaN
+
+    fun blur(px: Float) {
+        if (px == blurredBy) return
+        node.setRenderEffect(RenderEffect.createBlurEffect(px, px, Shader.TileMode.CLAMP))
+        blurredBy = px
+    }
+}
+
+private fun DrawScope.drawBlurred(backdrop: MapBackdrop, glass: BlurredMap, radius: Dp) {
     val origin = backdrop.positionInWindow()
-    glass.setPosition(0, 0, size.width.toInt(), size.height.toInt())
-    glass.setRenderEffect(RenderEffect.createBlurEffect(px, px, Shader.TileMode.CLAMP))
-    val recording = glass.beginRecording()
+    glass.node.setPosition(0, 0, size.width.toInt(), size.height.toInt())
+    glass.blur(radius.toPx())
+    val recording = glass.node.beginRecording()
     try {
-        recording.translate(origin[0] - at[0], origin[1] - at[1])
+        recording.translate(origin[0] - glass.at[0], origin[1] - glass.at[1])
         recording.drawRenderNode(backdrop.node)
     } finally {
-        glass.endRecording()
+        glass.node.endRecording()
     }
     drawIntoCanvas { canvas ->
         val native = canvas.nativeCanvas
-        if (native.isHardwareAccelerated) native.drawRenderNode(glass)
+        if (native.isHardwareAccelerated) native.drawRenderNode(glass.node)
     }
 }
