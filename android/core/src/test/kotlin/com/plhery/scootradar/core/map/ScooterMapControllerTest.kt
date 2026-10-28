@@ -1226,6 +1226,29 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun leavingStopsTheCompassAndReturningStartsItAgainOnlyOnceStarted() = runTest {
+        val manager = FakeLocationManager(status = ScooterAuthorizationStatus.AuthorizedWhenInUse).apply { isHeadingAvailable = true }
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = manager)
+
+        // Before the screen first shows, a return asks nothing of the compass.
+        model.becameInactive()
+        model.becameActive()
+        assertEquals(0, manager.headingStarts)
+
+        model.start()
+        assertEquals(1, manager.headingStarts)
+        val stops = manager.headingStops
+        model.becameInactive()
+        assertEquals(stops + 1, manager.headingStops)
+        model.becameActive()
+        assertEquals(2, manager.headingStarts)
+        // Already on, it is not asked for again.
+        model.becameActive()
+        assertEquals(2, manager.headingStarts)
+        settle()
+    }
+
+    @Test
     fun returningToTheForegroundRefreshesAtOnceWhenARefreshIsDue() = runTest {
         val clock = TestClock()
         val api = StubScooterAPI(timedResponse(generatedAt = clock.now, expiresIn = 300.0))
