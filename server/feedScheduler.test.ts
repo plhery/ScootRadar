@@ -199,11 +199,13 @@ it('collects a watched feed at once when its data is over a minute old, then eve
   try {
     await vi.advanceTimersByTimeAsync(5 * MINUTE);
     expect(times('lyon')).toEqual([0]);
-    scheduler.demand(['lyon']);
+    expect(scheduler.demand(['lyon'])).toEqual(['lyon']);
     // Started without waiting for its idle turn, and the request can tell.
     expect(times('lyon')).toEqual([0, 5]);
     expect(calls.at(-1)?.reason).toBe('wake');
     expect(scheduler.refreshing('lyon')).toBe(true);
+    // Under way already: another request sets off nothing more.
+    expect(scheduler.demand(['lyon'])).toEqual([]);
     expect(scheduler.fastSince('lyon')).toBe(T0 + 5 * MINUTE);
     await vi.advanceTimersByTimeAsync(0);
     expect(scheduler.refreshing('lyon')).toBe(false);

@@ -6,7 +6,7 @@ import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySna
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
-import { collectsParking } from '../src/lib/regionalScooterSystems';
+import { collectsParking, isAppMapFeed } from '../src/lib/regionalScooterSystems';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
@@ -18,9 +18,9 @@ import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedState
 export interface FeedRefresher {
   /**
    * Marks the feeds as watched, and collects at once those last collected over an active interval
-   * ago; their sweeps start where `focus`, the area asked for, is.
+   * ago; their sweeps start where `focus`, the area asked for, is. Returns the feeds it collects at once.
    */
-  demand(ids: string[], now: number, focus?: MapBounds): void;
+  demand(ids: string[], now: number, focus?: MapBounds): string[];
   /** A collection a request asked for is queued or under way. */
   refreshing(id: string): boolean;
   /**
@@ -185,7 +185,10 @@ export function createSnapshotServer(options: ServerOptions) {
       const watched = demandedFeeds(inView, parsed.query.bounds);
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
-      refresher.demand([...demanded], now, parsed.query.bounds);
+      const started = new Set(refresher.demand([...demanded], now, parsed.query.bounds));
+      // Lime's rider-map accounts are shared by every visitor: how many of their refreshes each one sets off.
+      options.metrics?.recordLimeWakes(key,
+        watched.filter(feed => feed.provider === 'lime' && isAppMapFeed(feed) && started.has(feed.id)).length, now);
       // Positions too old to show would leave the map empty of a feed quick to collect: the answer waits
       // for the first such feed to come back, and the others that come with it. A slow feed's sweep is
       // not waited for: its last positions stand faded, and its sweep's finds come in on the next requests.

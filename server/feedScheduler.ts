@@ -169,8 +169,10 @@ export class FeedScheduler<T extends ScheduledFeed> {
    * ago are collected at once, or their collection under way now counts as
    * asked for; the others are collected an active interval after their last.
    * `focus` is where the request looked, which their sweeps collect first.
+   * Returns the feeds it collects at once: not those whose collection was under way.
    */
-  demand(ids: Iterable<string>, now = Date.now(), focus?: MapBounds): void {
+  demand(ids: Iterable<string>, now = Date.now(), focus?: MapBounds): string[] {
+    const started: string[] = [];
     let changed = false;
     for (const id of ids) {
       const feed = this.byId.get(id);
@@ -185,6 +187,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       if (target <= now) {
         this.woken.add(id);
         this.due.set(id, now);
+        started.push(id);
         changed = true;
       } else if (target < (this.due.get(id) ?? Infinity)) {
         this.due.set(id, target);
@@ -192,6 +195,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       }
     }
     if (changed) this.pump();
+    return started;
   }
 
   /** A collection a request asked for is queued or under way. */

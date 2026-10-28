@@ -98,6 +98,26 @@ it('renders just the counters for the scrape of each container, computing no gau
   expect(new Set(types)).toEqual(new Set(['counter', 'summary']));
 });
 
+it('buckets visitors by the Lime refreshes they set off in each quarter hour', () => {
+  const metrics = createSnapshotMetrics();
+  const quarter = 15 * 60_000;
+  const start = Math.floor(now / quarter) * quarter;
+  metrics.recordLimeWakes('a', 2, start);
+  metrics.recordLimeWakes('a', 1, start + quarter - 1);
+  metrics.recordLimeWakes('b', 1, start + 60_000);
+  metrics.recordLimeWakes('c', 0, start + 60_000);
+  // The next quarter starts afresh: a's 20 refreshes there are counted when it closes.
+  metrics.recordLimeWakes('a', 20, start + quarter);
+  const text = metrics.render(undefined, start + quarter);
+  expect(sample(text, 'scootradar_lime_wake_clients_total{refreshes="1"}')).toBe('1');
+  expect(sample(text, 'scootradar_lime_wake_clients_total{refreshes="2-3"}')).toBe('1');
+  expect(sample(text, 'scootradar_lime_wakes_total{refreshes="2-3"}')).toBe('3');
+  expect(sample(text, 'scootradar_lime_wake_clients_total{refreshes="16+"}')).toBe('0');
+  const later = metrics.render(undefined, start + 2 * quarter, true);
+  expect(sample(later, 'scootradar_lime_wake_clients_total{refreshes="16+"}')).toBe('1');
+  expect(sample(later, 'scootradar_lime_wakes_total{refreshes="16+"}')).toBe('20');
+});
+
 it('counts collections from zero by outcome, and requests by route and status', () => {
   const metrics = createSnapshotMetrics();
   const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };

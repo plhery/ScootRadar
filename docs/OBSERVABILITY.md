@@ -88,6 +88,16 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_lime_account_requests_total{account,kind="status|metadata"}`:
   requests per independently paced Lime production account, including each
   account's renewals. The account label is its non-secret manifest id.
+- `scootradar_lime_wake_clients_total{refreshes="1|2-3|4-7|8-15|16+"}` and
+  `scootradar_lime_wakes_total{refreshes}`: visitors whose requests set off refreshes of
+  Lime rider-map feeds, by how many they set off in a quarter hour (UTC), and those
+  refreshes. Each counts when its quarter hour closes. A visitor is told apart by a
+  hash of their address salted afresh by each process, held only until the quarter
+  hour closes; no address is kept. Since 28 October 2026, to tell whether a few
+  visitors take most of the accounts' requests (a cap on each visitor would spare
+  them) or everyone does (a fourth account would): e.g. the share of refreshes from
+  visitors with more than 7 is
+  `sum(increase(scootradar_lime_wakes_total{refreshes=~"8-15|16\\+"}[7d])) / sum(increase(scootradar_lime_wakes_total[7d]))`.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the

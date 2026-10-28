@@ -1,3 +1,4 @@
+import { createHash, randomBytes } from 'node:crypto';
 import { monitorEventLoopDelay } from 'node:perf_hooks';
 import { COUNTRY_NAMES } from '../src/generated/countries';
 import { COUNTRY_SOURCES, collectsParking } from '../src/lib/regionalScooterSystems';
@@ -15,6 +16,10 @@ const COUNTRY_OF_SOURCE = new Map<string, string>(Object.entries(COUNTRY_SOURCES
   .map(([country, source]) => [source, COUNTRY_NAMES[country as keyof typeof COUNTRY_SOURCES].en]));
 const countryOf = (source: string) => COUNTRY_OF_SOURCE.get(source) ?? COUNTRY_NAMES.CH.en;
 const EVENT_LOOP_RESOLUTION_MS = 20;
+const LIME_WAKE_WINDOW_MS = 15 * 60_000;
+// The visitors of a window by the Lime refreshes they set off in it: up to 1, 3, 7, 15, and more.
+const LIME_WAKE_BUCKETS: [string, number][] = [['1', 1], ['2-3', 3], ['4-7', 7], ['8-15', 15], ['16+', Infinity]];
+const LIME_WAKE_MAX_CLIENTS = 10_000;
 
 interface MetricsSources {
   /** How often each feed is meant to be collected, which its state is judged by. */
@@ -55,6 +60,26 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
   let discoveredAt = 0;
   const eventLoop = monitorEventLoopDelay({ resolution: EVENT_LOOP_RESOLUTION_MS });
   eventLoop.enable();
+  // The Lime refreshes each visitor set off in the current 15 minutes (UTC quarter hours), by a hash of
+  // their address salted afresh by each process: no address is kept, and the hashes go when the window
+  // closes, into the buckets' counts. They tell whether a few visitors take most of Lime's accounts'
+  // requests, for a cap on each visitor, or everyone, for a fourth account.
+  const salt = randomBytes(16);
+  let limeWindow = 0;
+  const limeWakesOf = new Map<string, number>();
+  const limeWakeClients = new Map(LIME_WAKE_BUCKETS.map(([bucket]) => [bucket, 0]));
+  const limeWakes = new Map(LIME_WAKE_BUCKETS.map(([bucket]) => [bucket, 0]));
+  const closeLimeWindow = (now: number) => {
+    const window = Math.floor(now / LIME_WAKE_WINDOW_MS);
+    if (window === limeWindow) return;
+    for (const count of limeWakesOf.values()) {
+      const [bucket] = LIME_WAKE_BUCKETS.find(([, most]) => count <= most)!;
+      limeWakeClients.set(bucket, limeWakeClients.get(bucket)! + 1);
+      limeWakes.set(bucket, limeWakes.get(bucket)! + count);
+    }
+    limeWakesOf.clear();
+    limeWindow = window;
+  };
 
   return {
     recordCollection(feed: FeedLabels, failed: boolean, seconds: number) {
@@ -80,6 +105,14 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     recordWait(collected: boolean) { waits[collected ? 'collected' : 'timeout']++; },
     /** Requests an address search on the Worker sent to Geoapify. */
     recordGeoapifyRequests(count: number) { geoapifyRequests += count; },
+    /** A visitor's request (`client`, its address) set off the refresh of `count` Lime rider-map feeds. */
+    recordLimeWakes(client: string, count: number, now = Date.now()) {
+      if (!count) return;
+      closeLimeWindow(now);
+      const id = createHash('sha256').update(salt).update(client).digest('base64url');
+      if (!limeWakesOf.has(id) && limeWakesOf.size >= LIME_WAKE_MAX_CLIENTS) return;
+      limeWakesOf.set(id, (limeWakesOf.get(id) ?? 0) + count);
+    },
     /**
      * countersOnly: the counters alone, for Prometheus's scrape of each container by its address, whose
      * job keeps only them (summed across the two containers of a deploy); the scrape by name reads the
@@ -179,6 +212,13 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           'Documents dropped, least recently used first, to make room while they could still be served.',
           [[{}, cache.evictions]]);
       }
+      closeLimeWindow(now);
+      metric('scootradar_lime_wake_clients_total', 'counter',
+        'Visitors whose requests set off refreshes of Lime rider-map feeds, counted as each 15-minute window closes, by how many they set off in it (refreshes: 1, 2-3, 4-7, 8-15, 16+).',
+        [...limeWakeClients].map(([refreshes, count]) => [{ refreshes }, count]));
+      metric('scootradar_lime_wakes_total', 'counter',
+        'The Lime rider-map refreshes those visitors set off, by the same buckets.',
+        [...limeWakes].map(([refreshes, count]) => [{ refreshes }, count]));
       // By build: during a deploy the old and the new container both answer for a minute,
       // and one count read from each in turn would look reset again and again.
       metric('scootradar_geoapify_requests_total', 'counter',
