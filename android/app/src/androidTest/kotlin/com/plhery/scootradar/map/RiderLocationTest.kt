@@ -37,6 +37,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -68,6 +70,13 @@ class RiderLocationTest {
     private lateinit var activity: MainActivity
     private lateinit var controller: ScooterMapController
     private lateinit var location: AndroidLocationManager
+
+    @Before
+    fun setUp() {
+        // In a run of every test, these would find the app as the test before left it, and leave it located for
+        // the tests after: only rider-location-pass.sh runs them.
+        assumeTrue("run by rider-location-pass.sh", InstrumentationRegistry.getArguments().getString("riderLocationPass") == "true")
+    }
 
     @After
     fun tearDown() {
