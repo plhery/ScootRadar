@@ -136,10 +136,10 @@ internal fun ProviderChips(controller: ScooterMapController, chips: List<Scooter
 private fun quickProviderHint(controller: ScooterMapController, provider: ScooterProvider): String {
     val enabled = controller.enabledProviders.value
     return when {
-        controller.allProvidersSelected -> localized("Shows only this provider")
-        enabled == setOf(provider) -> localized("Shows all providers")
-        provider in enabled -> localized("Hides this provider")
-        else -> localized("Adds this provider")
+        controller.allProvidersSelected -> localized("show only this provider")
+        enabled == setOf(provider) -> localized("show all providers")
+        provider in enabled -> localized("hide this provider")
+        else -> localized("add this provider")
     }
 }
 

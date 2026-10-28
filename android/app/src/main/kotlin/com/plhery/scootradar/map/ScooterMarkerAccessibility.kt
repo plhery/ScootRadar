@@ -198,7 +198,7 @@ class ScooterMarkerAccessibility(
         node.className = BUTTON
         node.isSelected = MarkerElements.isSelected(element, scene)
         node.isClickable = true
-        // TalkBack reads the hint as "double-tap to …" (MAP-218).
+        // TalkBack reads the hint as "double-tap to …" (MAP-218, UI-327).
         node.addAction(AccessibilityActionCompat(AccessibilityNodeInfoCompat.ACTION_CLICK, description.hint))
     }
 

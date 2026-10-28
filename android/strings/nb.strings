@@ -8,3 +8,14 @@
 "Sheet Grabber" = "Arkhåndtak";
 "Sheet at half screen" = "Halv skjerm";
 "Sheet expanded" = "Utvidet";
+/* What a double tap does, where the iPhone has an accessibility hint (ui.md UI-327): TalkBack reads it in
+   its own sentence, "%1$s til %2$s", %1$s its words for a double tap, %2$s this: "å" and a verb. */
+"show parking details" = "å vise parkeringsdetaljer";
+"show scooter details" = "å vise detaljer om elsparkesykkelen";
+"zoom in to show individual scooters" = "å zoome inn og vise hver enkelt elsparkesykkel";
+"expand the panel" = "å utvide panelet";
+"show only this provider" = "å vise bare denne operatøren";
+"show all providers" = "å vise alle operatører";
+"hide this provider" = "å skjule denne operatøren";
+"add this provider" = "å legge til denne operatøren";
+"center this scooter on the map" = "å sentrere kartet på denne elsparkesykkelen";

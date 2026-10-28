@@ -8,3 +8,14 @@
 "Sheet Grabber" = "Sheet Grabber";
 "Sheet at half screen" = "Half screen";
 "Sheet expanded" = "Expanded";
+/* What a double tap does, where the iPhone has an accessibility hint (ui.md UI-327): TalkBack reads it in
+   its own sentence, "%1$s to %2$s", %1$s its words for a double tap, %2$s this. */
+"show parking details" = "show parking details";
+"show scooter details" = "show scooter details";
+"zoom in to show individual scooters" = "zoom in to show individual scooters";
+"expand the panel" = "expand the panel";
+"show only this provider" = "show only this provider";
+"show all providers" = "show all providers";
+"hide this provider" = "hide this provider";
+"add this provider" = "add this provider";
+"center this scooter on the map" = "center this scooter on the map";

@@ -300,7 +300,7 @@ class ScooterFilteringTest {
 
         assertEquals("${bay.bayTitle}, Rue Faidherbe", description.label)
         // Without the callout, the marker itself says what it does and what the rule is.
-        assertEquals(localized("Shows parking details"), description.hint)
+        assertEquals(localized("show parking details"), description.hint)
         assertEquals(localized("You must park in a bay in this zone."), description.value)
 
         // A tap on the balloon opens the bay in the dock, as a scooter's card opens.

@@ -113,7 +113,7 @@ class ScooterMarkerAccessibilityTest {
         assertEquals("android.widget.Button", low.className)
         assertTrue(low.isClickable)
         assertFalse(low.isSelected)
-        assertEquals("Shows scooter details", low.clickLabel())
+        assertEquals("show scooter details", low.clickLabel())
         // Its 44 pt square, in pixels.
         val centre = scene.dotCentre(scene.mark("lime:low")!!, map)
         val expected = Rect(((centre.x - 22) * 3).roundToInt(), ((centre.y - 22) * 3).roundToInt(), ((centre.x + 22) * 3).roundToInt(), ((centre.y + 22) * 3).roundToInt())
@@ -122,7 +122,7 @@ class ScooterMarkerAccessibilityTest {
         // The bay reads what it is, its rule and its hint, in its balloon.
         val balloon = accessibility.node(ids[3])
         assertEquals("${MarkerDescriptions.of(bay).label}, ${bay.notice}", balloon.contentDescription)
-        assertEquals("Shows parking details", balloon.clickLabel())
+        assertEquals("show parking details", balloon.clickLabel())
         assertEquals(((450 - 36.3) * 3).roundToInt(), balloon.bounds().top)
 
         // A double tap selects, as a tap does.
@@ -199,7 +199,7 @@ class ScooterMarkerAccessibilityTest {
 
         val city = accessibility.node(total)
         assertEquals("Zürich, 1,288 scooters", city.contentDescription)
-        assertEquals("Zooms in to show individual scooters", city.clickLabel())
+        assertEquals("zoom in to show individual scooters", city.clickLabel())
         assertEquals("android.widget.Button", city.className)
         assertEquals("12 scooters", accessibility.node(group).contentDescription)
         // Its 48 pt view.
@@ -225,6 +225,7 @@ class ScooterMarkerAccessibilityTest {
         accessibility.refresh()
         val node = accessibility.node(id)
         assertEquals("Lime-Scooter, Akku: 82 Prozent", node.contentDescription)
-        assertEquals("Zeigt Scooter-Details", node.clickLabel())
+        // TalkBack says it as "Zum Anzeigen der Scooter-Details doppeltippen" (UI-327).
+        assertEquals("Anzeigen der Scooter-Details", node.clickLabel())
     }
 }

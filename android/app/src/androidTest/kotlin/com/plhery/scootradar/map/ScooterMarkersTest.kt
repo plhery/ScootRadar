@@ -333,7 +333,7 @@ class ScooterMarkersTest {
         Log.i(TAG, "TalkBack reads a cluster: ${group.read()}")
         assertEquals("Zürich, 1,288 scooters", total.contentDescription)
         assertEquals("12 scooters", group.contentDescription)
-        assertEquals("Zooms in to show individual scooters", total.actionList.first { it.id == AccessibilityNodeInfo.ACTION_CLICK }.label)
+        assertEquals("zoom in to show individual scooters", total.actionList.first { it.id == AccessibilityNodeInfo.ACTION_CLICK }.label)
 
         // A double tap opens the city: the map zooms in on it.
         val zoom = marked.phone.onMain { marked.phone.map.cameraPosition.zoom }
