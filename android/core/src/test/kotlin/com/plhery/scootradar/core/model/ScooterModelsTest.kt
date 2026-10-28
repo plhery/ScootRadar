@@ -840,6 +840,14 @@ class ScooterModelsTest {
         assertEquals("https://lime.bike/", lime.operatorApp?.link)
         assertEquals("https://app.publibike.ch/", scooter("publibike").operatorApp?.link)
         assertEquals("https://www.spin.app/", scooter("spin").operatorApp?.link)
+        // Voi's, Dott's and Bolt's rider maps link no scooter: Voi's link is the one its feeds give every scooter,
+        // Bolt's the store link its feeds publish.
+        assertEquals(
+            "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest",
+            scooter("voi").operatorApp?.link,
+        )
+        assertEquals("https://v.ridedott.com/", scooter("dott").operatorApp?.link)
+        assertEquals("https://bolt.sng.link/Epy3j/o9sr", scooter("bolt").operatorApp?.link)
 
         // With Lime installed, its link opens it; only an app may take that link.
         val tried = mutableListOf<String>()
@@ -862,7 +870,7 @@ class ScooterModelsTest {
         // A scooter its feed links keeps that link, and other operators have no app to fall back on.
         val linked = scooter("lime", rentalURIs = ScooterRentalURIs(ios = null, android = "https://lime.bike/vehicle/1", web = null))
         assertNull(linked.operatorApp)
-        assertNull(scooter("dott").operatorApp)
+        assertNull(scooter("hopp").operatorApp)
     }
 
     // Ride prices and passes.

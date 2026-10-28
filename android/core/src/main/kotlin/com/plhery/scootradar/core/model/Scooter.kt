@@ -56,7 +56,10 @@ data class Scooter(
         return null
     }
 
-    /** The operator's app, where the feed links no scooter: Lime's, Bird's, PubliBike's and Spin's never do. */
+    /**
+     * The operator's app, where the feed links no scooter: Lime's, Bird's, PubliBike's and Spin's never do, nor Voi's,
+     * Dott's and Bolt's rider maps.
+     */
     val operatorApp: ScooterProvider.OperatorApp? get() = if (rentalURLs.isEmpty()) providerInfo?.app else null
 
     /**
