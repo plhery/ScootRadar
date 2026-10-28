@@ -29,6 +29,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- scootradar.com's links to the map open in the app, as the iPhone's universal links do (UI-377, X-AD08):
+                 /map, and "/", where the map was before the landing page. MainActivity hands a "/" without an origin
+                 on to the browser, as the iPhone's apple-app-site-association leaves it on the web. Verified once the
+                 site has the app's assetlinks.json (NEEDS-USER #9). -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="scootradar.com" />
+                <data android:host="www.scootradar.com" />
+                <data android:path="/map" />
+                <data android:path="/map/" />
+                <data android:path="/" />
+            </intent-filter>
         </activity>
 
         <!-- AppCompat keeps a language chosen for the app itself on Android 12, which has no LocaleManager (X-AD14). -->
