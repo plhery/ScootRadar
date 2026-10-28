@@ -344,9 +344,10 @@ private fun DockChrome(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {
-                    // The legend against the button, 10 from it, after a spacer's 10 at least from the leading edge.
-                    Box(Modifier.weight(1f).padding(start = 10.dp), contentAlignment = Alignment.BottomEnd) {
-                        ZoneLegendOverTheMap(controller, chrome)
+                    // The legend at the leading edge, a spacer's 10 short of the button: the iPhone's HStack. The
+                    // iPad's puts it against the button, after the spacer.
+                    Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
+                        ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp))
                     }
                     FloatingMapControls(
                         controller,
