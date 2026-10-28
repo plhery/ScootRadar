@@ -5,13 +5,10 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -47,7 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
@@ -58,7 +62,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.hideFromAccessibility
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -303,82 +310,96 @@ private fun DockChrome(
                 modifier = Modifier.padding(top = safeTop + 8.dp, start = 12.dp, end = 12.dp),
             )
 
-            // The locate button and the dock make way for the search, and come back as it closes.
-            val reduceMotion = LocalReduceMotion.current
+            // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
+            // so that a card keeps where it was scrolled to and the dock what it last announced.
             val trailing = if (LocalLayoutDirection.current == LayoutDirection.Ltr) 1f else 0f
-            val locateSpring = IosMotion.snappy(duration = 0.28)
-            AnimatedVisibility(
-                visible = !isSearching,
-                enter = makingWay(reduceMotion, locateSpring, scale = 0.92f, TransformOrigin(trailing, 1f)).first,
-                exit = makingWay(reduceMotion, locateSpring, scale = 0.92f, TransformOrigin(trailing, 1f)).second,
-                label = "locate",
-            ) {
-                Box(Modifier.fillMaxSize()) {
-                    Row(
+            Box(Modifier.fillMaxSize().makingWay(isSearching, IosMotion.snappy(duration = 0.28), scale = 0.92f, TransformOrigin(trailing, 1f))) {
+                Row(
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 10.dp)
+                        .widthIn(max = 560.dp)
+                        .fillMaxWidth()
+                        .padding(end = 2.dp)
+                        .padding(bottom = dock + bottom + 10.dp)
+                        .inert(isSearching),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.Bottom,
+                ) {
+                    Spacer(Modifier.weight(1f))
+                    FloatingMapControls(
+                        controller,
                         Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(horizontal = 10.dp)
-                            .widthIn(max = 560.dp)
-                            .fillMaxWidth()
-                            .padding(end = 2.dp)
-                            .padding(bottom = dock + bottom + 10.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        verticalAlignment = Alignment.Bottom,
-                    ) {
-                        Spacer(Modifier.weight(1f))
-                        FloatingMapControls(
-                            controller,
-                            Modifier
-                                .onSizeChanged { locateButtonHeight.intValue = it.height }
-                                // The map centres a scooter in what this button and the dock leave visible.
-                                .onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
-                        )
-                    }
+                            .onSizeChanged { locateButtonHeight.intValue = it.height }
+                            // The map centres a scooter in what this button and the dock leave visible.
+                            .onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
+                    )
                 }
             }
 
             val isAccessibility = TextSize.isAccessibility
-            val dockSpring = IosMotion.snappy(duration = 0.24)
-            AnimatedVisibility(
-                visible = !isSearching,
-                enter = makingWay(reduceMotion, dockSpring, scale = 0.96f, TransformOrigin(0.5f, 1f)).first,
-                exit = makingWay(reduceMotion, dockSpring, scale = 0.96f, TransformOrigin(0.5f, 1f)).second,
-                label = "dock",
-            ) {
-                Box(Modifier.fillMaxSize()) {
-                    ScooterControlDock(
-                        controller,
-                        onEditFilters = onShowFilters,
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(horizontal = 10.dp)
-                            .padding(bottom = bottom)
-                            .onGloballyPositioned { chrome.dock = it.windowFrame(density.density) },
-                        maximumContentHeight = max(
-                            160.dp,
-                            height - (if (isAccessibility) 300.dp else 220.dp) -
-                                // With large text a notice under the search bar needs room too.
-                                (if (isAccessibility && notices) 120.dp else 0.dp),
-                        ),
-                        onHeightChange = { dockHeight.intValue = it },
-                    )
-                }
+            Box(Modifier.fillMaxSize().makingWay(isSearching, IosMotion.snappy(duration = 0.24), scale = 0.96f, TransformOrigin(0.5f, 1f))) {
+                ScooterControlDock(
+                    controller,
+                    onEditFilters = onShowFilters,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(horizontal = 10.dp)
+                        .padding(bottom = bottom)
+                        .onGloballyPositioned { chrome.dock = it.windowFrame(density.density) }
+                        .inert(isSearching),
+                    maximumContentHeight = max(
+                        160.dp,
+                        height - (if (isAccessibility) 300.dp else 220.dp) -
+                            // With large text a notice under the search bar needs room too.
+                            (if (isAccessibility && notices) 120.dp else 0.dp),
+                    ),
+                    onHeightChange = { dockHeight.intValue = it },
+                )
             }
         }
     }
 }
 
 /**
- * `.opacity` with `.scaleEffect(_:anchor:)` on what makes way for the search: it fades and shrinks a little toward
- * [origin] of the screen as the search opens, and comes back as it closes; at once under Reduce Motion.
+ * `.opacity` and `.scaleEffect(_:anchor:)` on what makes way for the search: it fades and shrinks a little toward
+ * [origin] of the screen as the search opens, and comes back as it closes; at once under Reduce Motion. With
+ * `.accessibilityHidden`, TalkBack leaves it as soon as it starts to go, and once it is gone taps go through it to
+ * the map.
  */
-private fun makingWay(reduceMotion: Boolean, spring: SpringSpec, scale: Float, origin: TransformOrigin): Pair<EnterTransition, ExitTransition> =
-    if (reduceMotion) {
-        EnterTransition.None to ExitTransition.None
+@Composable
+private fun Modifier.makingWay(hidden: Boolean, spring: SpringSpec, scale: Float, origin: TransformOrigin): Modifier {
+    val gone by animateFloatAsState(if (hidden) 1f else 0f, motion(spring), label = "making way")
+    return graphicsLayer {
+        alpha = 1 - gone
+        val scaled = 1 - (1 - scale) * gone
+        scaleX = scaled
+        scaleY = scaled
+        transformOrigin = origin
+        // Clipped to nothing, it is no longer in the way of a finger: Compose hit-tests inside a layer's clip.
+        if (hidden && gone == 1f) {
+            clip = true
+            shape = EmptyShape
+        }
+    }.then(if (hidden) Modifier.semantics { hideFromAccessibility() } else Modifier)
+}
+
+/** `.allowsHitTesting(false)` while it goes: its buttons and its scroll take no touch. */
+private fun Modifier.inert(hidden: Boolean): Modifier =
+    if (!hidden) {
+        this
     } else {
-        (fadeIn(spring.animation()) + scaleIn(spring.animation(), initialScale = scale, transformOrigin = origin)) to
-            (fadeOut(spring.animation()) + scaleOut(spring.animation(), targetScale = scale, transformOrigin = origin))
+        pointerInput(Unit) {
+            awaitPointerEventScope {
+                while (true) awaitPointerEvent(PointerEventPass.Initial).changes.forEach { it.consume() }
+            }
+        }
     }
+
+/** A shape with no inside. */
+private val EmptyShape = object : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density) = Outline.Rectangle(Rect.Zero)
+}
 
 /** Where a piece of the chrome is in the window, in points, which are the map's. */
 private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
