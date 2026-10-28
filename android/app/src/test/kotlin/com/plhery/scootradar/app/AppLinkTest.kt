@@ -67,7 +67,17 @@ class AppLinkTest {
     fun theLauncherOpensNoLink() {
         assertNull(AppLink.of(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)))
         assertNull(AppLink.of(Intent(Intent.ACTION_VIEW)))
-        // A recent's or the launcher's intent may carry the link's data without its action.
         assertNull(AppLink.of(Intent(Intent.ACTION_MAIN, Uri.parse("https://scootradar.com/map"))))
+    }
+
+    @Test
+    fun aLinkBroughtBackFromRecentsIsNotOpenedAgain() {
+        // A task kept across a reboot starts again from its first intent, the link's, with this flag.
+        val link = Intent(Intent.ACTION_VIEW, Uri.parse("https://scootradar.com/map?minBattery=30"))
+        assertTrue(AppLink.of(link) is AppLink.Map)
+        assertNull(AppLink.of(Intent(link).addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)))
+        val page = Intent(Intent.ACTION_VIEW, Uri.parse("https://scootradar.com/"))
+        assertTrue(AppLink.of(page) is AppLink.Page)
+        assertNull(AppLink.of(Intent(page).addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY)))
     }
 }

@@ -16,9 +16,14 @@ sealed interface AppLink {
     data class Page(val uri: Uri) : AppLink
 
     companion object {
-        /** Null for an intent that opens no link: the launcher's. */
+        /**
+         * Null for an intent that opens no link: the launcher's, and a link's own brought back from Recents. A task
+         * kept across a reboot or an update starts again from the intent it began with, the link's; iOS opens a
+         * link once, as it is delivered.
+         */
         fun of(intent: Intent): AppLink? {
             if (intent.action != Intent.ACTION_VIEW) return null
+            if (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0) return null
             val uri = intent.data ?: return null
             val link = ScooterMapLink(uri.toString()) ?: return Page(uri)
             // The site's apple-app-site-association sends the iPhone "/" only with an origin; the map's other
