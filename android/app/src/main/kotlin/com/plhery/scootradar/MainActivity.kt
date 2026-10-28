@@ -1,5 +1,7 @@
 package com.plhery.scootradar
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -10,17 +12,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.plhery.scootradar.app.AndroidLocationManager
+import com.plhery.scootradar.app.AppLink
 import com.plhery.scootradar.app.HeadingOrientationWatcher
 import com.plhery.scootradar.app.LaunchArgumentDefaults
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
+import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.map.ScooterMap
 import com.plhery.scootradar.ui.ScooterMapScreen
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
  * The app's one activity, edge to edge. It is AppCompat's so that a language chosen for the app applies from
  * its start on Android 12 (X-AD14); rotation, a resized window, dark mode and a language change reach it as
- * they are, without a new activity.
+ * they are, without a new activity. A scootradar.com link to the map opens in it, or comes to it while it runs.
  */
 class MainActivity : AppCompatActivity() {
     private val model: ScooterMapViewModel by viewModels {
@@ -45,6 +51,10 @@ class MainActivity : AppCompatActivity() {
 
     /** The compass reads the way the rider faces from the top of the window as it shows. */
     private val headingOrientation = HeadingOrientationWatcher(this) { model.controller.setHeadingOrientation(it) }
+
+    /** The links to the map the phone opened in the app, the last one kept until the screen shows it. */
+    private val links = Channel<ScooterMapLink>(Channel.CONFLATED)
+    private val openedLinks = links.receiveAsFlow()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -73,7 +83,35 @@ class MainActivity : AppCompatActivity() {
                 addressSearch = model.addressSearch,
                 defaults = (application as ScooterApplication).container.defaults,
                 locationSettings = model.location,
+                links = openedLinks,
             )
+        }
+        // The link that opened the app; an activity made again has it already.
+        if (savedInstanceState == null) open(intent, launched = true)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        open(intent, launched = false)
+    }
+
+    /**
+     * A link the phone opened in the app: one to the map shows its place; a page of the site goes on to the
+     * browser, and an app opened only for it closes again.
+     */
+    private fun open(intent: Intent, launched: Boolean) {
+        when (val link = AppLink.of(intent)) {
+            null -> Unit
+            is AppLink.Map -> links.trySend(link.link)
+            is AppLink.Page -> {
+                try {
+                    startActivity(AppLink.browser(link.uri))
+                } catch (_: ActivityNotFoundException) {
+                    return
+                }
+                if (launched && isTaskRoot) finish()
+            }
         }
     }
 

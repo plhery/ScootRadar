@@ -83,6 +83,7 @@ import com.plhery.scootradar.core.map.searchNear
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
+import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.UserInterfaceStyle
@@ -112,6 +113,8 @@ import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
 import com.plhery.scootradar.ui.theme.motion
 import kotlin.math.min
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map, and a phone's chrome over it (dockChrome,
 // ui.md UI-004 to UI-006), with the search bar at its top (searchIsland, UI-009).
@@ -134,6 +137,8 @@ fun ScooterMapScreen(
     reviewRequester: ReviewRequester = ReviewRequester.none,
     /** Where the location card's Open Settings goes, and what its Try again asks first: the phone's location service. */
     locationSettings: LocationSettings = LocationSettings.appPage,
+    /** The scootradar.com links to the map the phone opens in the app, as they come. */
+    links: Flow<ScooterMapLink> = emptyFlow(),
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -209,6 +214,15 @@ fun ScooterMapScreen(
         }
     }
 
+    // A scootradar.com link to the map: its place shows on the map, not under a sheet or the search.
+    LaunchedEffect(links) {
+        links.collect { link ->
+            searchIsExpanded = false
+            filtersPresented = false
+            settingsPresented = false
+            controller.open(link)
+        }
+    }
     OnChange(searchIsExpanded) { expanded -> analytics?.track(if (expanded) "search_open" else "search_close") }
     OnChange(filtersPresented) { open ->
         analytics?.track(if (open) "filters_open" else "panel_close")
