@@ -3,7 +3,12 @@ package com.plhery.scootradar.map
 import android.Manifest
 import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.PointF
 import android.os.ParcelFileDescriptor
+import android.os.Process
+import android.os.SystemClock
+import android.util.Log
 import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +32,9 @@ import com.plhery.scootradar.MainActivity
 import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
+import com.plhery.scootradar.core.map.ScooterHeadingReading
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.map.ScooterUserHeading
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.distance
@@ -42,11 +49,24 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapView
 import org.maplibre.android.style.layers.SymbolLayer
+import org.maplibre.android.style.layers.TransitionOptions
 import java.io.File
+import java.time.Instant
+import java.util.Locale
+import java.util.Random
 import java.util.regex.Pattern
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.max
+import kotlin.math.sin
 
 /**
  * The rider's location on a phone, as the app runs it (logic.md LOG-241 to LOG-260, map.md MAP-186 to MAP-198,
@@ -209,6 +229,245 @@ class RiderLocationTest {
         screenshot("rider-landscape")
     }
 
+    @Test
+    fun theBeamPointsTheWayTheRiderFacesOnATurnedAndTiltedMapWithAFix() {
+        grant()
+        launch()
+        waitFor(FIX_WAIT) { controller.userLocation.value != null }
+        takeTheCompass()
+        // North on a map turned to face east, which shows it to the left; then turned and tilted, where the way on
+        // the screen is furthest from the compass's (MAP-193).
+        for ((bearing, tilt, heading) in listOf(Triple(90.0, 0.0, 0.0), Triple(0.0, 50.0, 45.0), Triple(300.0, 50.0, 200.0))) {
+            look(bearing = bearing, tilt = tilt)
+            face(null)
+            waitFor(5_000) { beamOpacity() == 0f }
+            Thread.sleep(SETTLE)
+            val without = instrumentation.uiAutomation.takeScreenshot()
+            face(heading)
+            waitFor(5_000) { beamShown() }
+            Thread.sleep(SETTLE)
+            val with = instrumentation.uiAutomation.takeScreenshot()
+            screenshot("rider-beam-bearing${bearing.toInt()}-tilt${tilt.toInt()}-heading${heading.toInt()}", with)
+            val expected = Math.toDegrees(screenAngle(heading))
+            val drawn = beamAxis(without, with)
+            assertTrue(
+                "Bearing $bearing°, tilt $tilt°, heading $heading°: the beam points $drawn°, the way $expected° on the screen",
+                angleBetween(drawn, expected) <= 5,
+            )
+        }
+    }
+
+    /**
+     * Not a check but a measure, run by hand (the review of app-e, finding 3: each turn of the beam lays the rider's
+     * layers out again). Over 10 s each, the frames MapLibre draws, how many of them whole, how long each took to
+     * encode and render, and the app's CPU time: the map still with the rider off it, with the beam hidden, and with
+     * the compass turning as in a hand; the map turning with the beam hidden, showing still, and with the compass
+     * turning; tilted 20°, as the map opens, then flat and tilted 50°; and last the dot's breath with the style's
+     * label fades off. An emulator draws as often as MapLibre asks, not at the screen's rate. Written to
+     * rider-frame-times.txt in the run's additional output. With the app allowed and a fix every 2 s, as
+     * rider-location-pass.sh gives them:
+     *
+     *     adb -s emulator-5660 shell am instrument -w -e riderLocationPass true -e riderFrameTimes true \
+     *         -e class com.plhery.scootradar.map.RiderLocationTest#theBeamsFrameTimesWithAFix \
+     *         -e additionalTestOutputDir /sdcard/Android/media/com.plhery.scootradar/additional_test_output \
+     *         com.plhery.scootradar.test/androidx.test.runner.AndroidJUnitRunner
+     */
+    @Test
+    fun theBeamsFrameTimesWithAFix() {
+        assumeTrue("run by hand", InstrumentationRegistry.getArguments().getString("riderFrameTimes") == "true")
+        grant()
+        launch()
+        waitFor(FIX_WAIT) { controller.userLocation.value != null }
+        takeTheCompass()
+        // A hand's compass: 2° to 8° either way, ten times a second.
+        val random = Random(66)
+        var heading = 0.0
+        val hand = {
+            heading = (heading + (2 + random.nextDouble() * 6) * (if (random.nextBoolean()) 1 else -1) + 360) % 360
+            face(heading)
+        }
+        val still = { face(heading) }
+        val lines = mutableListOf<String>()
+        for (tilt in listOf(20.0, 0.0, 50.0)) {
+            if (tilt == 20.0) {
+                look(bearing = 0.0, tilt = tilt)
+                face(null)
+                // The map with the rider 2 km off it: nothing of the rider's written.
+                val rider = controller.userLocation.value!!
+                val map = map!!
+                instrumentation.runOnMainSync {
+                    map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(rider.latitude + 0.02, rider.longitude)))
+                }
+                Thread.sleep(3_000)
+                lines += measure("tilt 20, map still, rider off it", turnMap = false) {}
+                look(bearing = 0.0, tilt = tilt)
+                lines += measure("tilt 20, map still, no beam", turnMap = false) {}
+                face(heading)
+                lines += measure("tilt 20, map still, compass turning", turnMap = false, hand)
+                face(null)
+                lines += measure("tilt 20, map turning, no beam", turnMap = true) {}
+            }
+            look(bearing = 0.0, tilt = tilt)
+            face(heading)
+            lines += measure("tilt ${tilt.toInt()}, map turning, beam still", turnMap = true, still)
+            if (tilt == 20.0) lines += measure("tilt 20, map turning, compass turning", turnMap = true, hand)
+        }
+        // The dot's breath with the map's labels placed at once, not faded in over the style's transition.
+        look(bearing = 0.0, tilt = 20.0)
+        face(null)
+        val map = map!!
+        instrumentation.runOnMainSync {
+            lines += "style transition ${map.style?.transition}"
+            map.style?.transition = TransitionOptions(0, 0, false)
+        }
+        lines += measure("tilt 20, map still, no beam, no fades", turnMap = false) {}
+        val report = lines.joinToString("\n")
+        Log.i("RiderFrameTimes", report)
+        InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let { dir ->
+            File(dir).mkdirs()
+            File(dir, "rider-frame-times.txt").writeText(report + "\n")
+        }
+    }
+
+    /** The compass is the test's from here: the emulator's, lying still, would only say the same, or nothing. */
+    private fun takeTheCompass() {
+        instrumentation.runOnMainSync { location.stopUpdatingHeading() }
+        // The map's own move to the rider, started by the app's collectors, which run as the test idles, and done.
+        compose.waitForIdle()
+        Thread.sleep(3_000)
+        compose.waitForIdle()
+    }
+
+    /** The compass says the rider faces [degrees] from true north, or nothing it can be sure of. */
+    private fun face(degrees: Double?) {
+        val reading = ScooterHeadingReading(
+            trueHeading = degrees ?: -1.0,
+            magneticHeading = degrees ?: 0.0,
+            headingAccuracy = if (degrees == null) -1.0 else 10.0,
+            timestamp = Instant.now(),
+        )
+        instrumentation.runOnMainSync { controller.headingUpdated(reading) }
+    }
+
+    /** The map on the rider, close up, turned and tilted so. */
+    private fun look(bearing: Double, tilt: Double) {
+        val map = map!!
+        val rider = controller.userLocation.value!!
+        val camera = CameraPosition.Builder().target(LatLng(rider.latitude, rider.longitude)).zoom(17.0).bearing(bearing).tilt(tilt).build()
+        instrumentation.runOnMainSync { map.moveCamera(CameraUpdateFactory.newCameraPosition(camera)) }
+        waitFor(5_000) { drawn(ScooterMarkerLayers.RIDER) }
+    }
+
+    /** The way the rider faces, [heading], on the screen, in radians clockwise from up, as MAP-193 has it. */
+    private fun screenAngle(heading: Double): Double {
+        val map = map!!
+        val view = mapView!!
+        val rider = controller.userLocation.value!!
+        var angle = Double.NaN
+        instrumentation.runOnMainSync {
+            val facing = ScooterUserHeading(trueHeading = heading, magneticHeading = heading, accuracy = 10.0)!!
+            angle = facing.screenAngle(at = rider, on = MapLibreProjection(map, view))!!
+        }
+        return angle
+    }
+
+    /**
+     * The way the beam points from the dot, in degrees clockwise from up: the mean of the ways the screen turned
+     * bluer from [without] to [with], 20 dp to 60 dp out (past the breathing dot and its ring), weighted by how much.
+     */
+    private fun beamAxis(without: Bitmap, with: Bitmap): Double {
+        val map = map!!
+        val view = mapView!!
+        val rider = controller.userLocation.value!!
+        var centre = PointF()
+        val origin = IntArray(2)
+        instrumentation.runOnMainSync {
+            centre = map.projection.toScreenLocation(LatLng(rider.latitude, rider.longitude))
+            view.getLocationOnScreen(origin)
+        }
+        val density = instrumentation.targetContext.resources.displayMetrics.density
+        var east = 0.0
+        var north = 0.0
+        for (step in 0 until 180) {
+            val angle = step * 2 * PI / 180
+            var gain = 0.0
+            for (distance in 20..60 step 2) {
+                val x = (origin[0] + centre.x + distance * density * sin(angle)).toInt()
+                val y = (origin[1] + centre.y - distance * density * cos(angle)).toInt()
+                if (x !in 0 until with.width || y !in 0 until with.height) continue
+                val before = without.getPixel(x, y)
+                val after = with.getPixel(x, y)
+                gain += max(0, (Color.blue(after) - Color.blue(before)) + (Color.red(before) - Color.red(after)))
+            }
+            east += gain * sin(angle)
+            north += gain * cos(angle)
+        }
+        return (Math.toDegrees(atan2(east, north)) + 360) % 360
+    }
+
+    private fun angleBetween(first: Double, second: Double): Double {
+        val difference = abs(first - second) % 360
+        return if (difference > 180) 360 - difference else difference
+    }
+
+    /**
+     * MapLibre's frames over 10 s, those drawn whole (with no layout or tile still on its way), their draw calls and
+     * times, and the app's CPU time, with the map turning by 170° each 5 s if [turnMap], and [compass] ten times a
+     * second; and whether the beam showed halfway, kept as a screenshot.
+     */
+    private fun measure(name: String, turnMap: Boolean, compass: () -> Unit): String {
+        val map = map!!
+        val view = mapView!!
+        val times = mutableListOf<Double>()
+        var full = 0
+        var drawCalls = 0L
+        val frames = MapView.OnDidFinishRenderingFrameWithStatsListener { fully, stats ->
+            synchronized(times) {
+                times += (stats.encodingTime + stats.renderingTime) * 1000
+                if (fully) full += 1
+                drawCalls += stats.numDrawCalls
+            }
+        }
+        val turn = { instrumentation.runOnMainSync { map.easeCamera(CameraUpdateFactory.bearingTo(map.cameraPosition.bearing + 170), 5_000, false) } }
+        instrumentation.runOnMainSync { view.addOnDidFinishRenderingFrameListener(frames) }
+        val cpu = Process.getElapsedCpuTime()
+        val start = SystemClock.uptimeMillis()
+        if (turnMap) turn()
+        var halfway = false
+        var beam = false
+        while (SystemClock.uptimeMillis() - start < 10_000) {
+            if (!halfway && SystemClock.uptimeMillis() - start >= 5_000) {
+                halfway = true
+                beam = beamOpacity() == 1f
+                screenshot("rider-frame-times-" + name.replace(Regex("[^a-z0-9]+"), "-"))
+                if (turnMap) turn()
+            }
+            compass()
+            // The app's collectors, which the test's dispatcher runs only as it idles, take the reading.
+            compose.waitForIdle()
+            Thread.sleep(100)
+        }
+        val used = Process.getElapsedCpuTime() - cpu
+        instrumentation.runOnMainSync {
+            view.removeOnDidFinishRenderingFrameListener(frames)
+            map.cancelTransitions()
+        }
+        val sorted = synchronized(times) { times.sorted() }
+        return String.format(
+            Locale.ROOT,
+            "%-40s beam %-5s %4d frames (%4d whole)  draw calls %5.1f  draw mean %5.2f ms  p95 %5.2f ms  max %6.2f ms  app CPU %5d ms",
+            name,
+            beam,
+            sorted.size,
+            full,
+            drawCalls.toDouble() / max(1, sorted.size),
+            if (sorted.isEmpty()) 0.0 else sorted.average(),
+            sorted.getOrElse((sorted.size * 0.95).toInt()) { sorted.lastOrNull() ?: 0.0 },
+            sorted.lastOrNull() ?: 0.0,
+            used,
+        )
+    }
+
     /** Waits for [condition], or fails saying where the rider's location stands. */
     private fun waitFor(timeoutMillis: Long, condition: () -> Boolean) {
         try {
@@ -240,6 +499,13 @@ class RiderLocationTest {
             var map: MapLibreMap? = null
             instrumentation.runOnMainSync { activity.window.decorView.findMap()?.getMapAsync { map = it } }
             return map
+        }
+
+    private val mapView: ScooterMapView?
+        get() {
+            var view: ScooterMapView? = null
+            instrumentation.runOnMainSync { view = activity.window.decorView.findMap() }
+            return view
         }
 
     private fun View.findMap(): ScooterMapView? =
@@ -288,9 +554,8 @@ class RiderLocationTest {
         ParcelFileDescriptor.AutoCloseInputStream(instrumentation.uiAutomation.executeShellCommand(command)).use { it.readBytes() }
     }
 
-    /** The screen now, kept as [name].png in the run's additional output. */
-    private fun screenshot(name: String) {
-        val bitmap = instrumentation.uiAutomation.takeScreenshot()
+    /** The screen now, or [bitmap], kept as [name].png in the run's additional output. */
+    private fun screenshot(name: String, bitmap: Bitmap = instrumentation.uiAutomation.takeScreenshot()) {
         InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let { dir ->
             File(dir).mkdirs()
             File(dir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
@@ -302,6 +567,9 @@ class RiderLocationTest {
         val zurichHB = GeoPoint(47.3782, 8.5402)
         const val DIALOG_WAIT = 10_000L
         const val FIX_WAIT = 30_000L
+
+        /** Long enough for MapLibre to lay out and draw a change. */
+        const val SETTLE = 600L
         val providers = listOf("fused", "gps", "network")
     }
 }
