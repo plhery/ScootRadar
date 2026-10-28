@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.plhery.scootradar.app.AndroidLocationManager
+import com.plhery.scootradar.app.HeadingOrientationWatcher
 import com.plhery.scootradar.app.LaunchArgumentDefaults
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
@@ -42,6 +43,9 @@ class MainActivity : AppCompatActivity() {
     }
     private val permissionRequester = AndroidLocationManager.PermissionRequester { locationPermissions.launch(it) }
 
+    /** The compass reads the way the rider faces from the top of the window as it shows. */
+    private val headingOrientation = HeadingOrientationWatcher(this) { model.controller.setHeadingOrientation(it) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -50,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         // Only this activity asks the rider, and only while it exists: the location service outlives it.
         model.location.permissionRequester = permissionRequester
         lifecycle.addObserver(model)
+        lifecycle.addObserver(headingOrientation)
         setContent {
             ScooterMapScreen(
                 controller = model.controller,
@@ -81,5 +86,6 @@ class MainActivity : AppCompatActivity() {
         super.onConfigurationChanged(newConfig)
         // The system bars' icons follow the window's light or dark.
         enableEdgeToEdge()
+        headingOrientation.displayChanged()
     }
 }

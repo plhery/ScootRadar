@@ -4,6 +4,8 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterUserHeading
 import java.util.Locale
 import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -288,6 +290,47 @@ class ScooterFilteringTest {
     }
 
     @Test
+    fun compassProjectionFollowsMapRotationAndPitch() {
+        // T066.
+        val coordinate = GeoPoint(47.3769, 8.5417)
+        val map = CameraMapView(center = coordinate, distance = 500.0)
+
+        fun projectedAngle(direction: Double): Double {
+            val heading = ScooterUserHeading(trueHeading = direction, magneticHeading = direction, accuracy = 5.0)!!
+            return heading.screenAngle(at = coordinate, on = map)!! * 180 / PI
+        }
+
+        assertEquals(0.0, projectedAngle(0.0), 1.0)
+        assertEquals(90.0, projectedAngle(90.0), 1.0)
+        assertEquals(-1.0, projectedAngle(359.0), 1.0)
+        assertEquals(1.0, projectedAngle(1.0), 1.0)
+
+        map.heading = 90.0
+        assertEquals(0.0, projectedAngle(90.0), 1.0)
+        assertEquals(-90.0, projectedAngle(0.0), 1.0)
+
+        map.heading = 0.0
+        map.pitch = 45.0
+        assertTrue(projectedAngle(45.0) > 45)
+        assertTrue(projectedAngle(45.0) < 90)
+    }
+
+    @Test
+    fun theBeamPointsAtAPlaceThirtyMetresAheadAndHidesWhereTheMapCannotShowIt() {
+        val coordinate = GeoPoint(47.3769, 8.5417)
+        val east = ScooterUserHeading(trueHeading = 90.0, magneticHeading = 90.0, accuracy = 5.0)!!
+        val ahead = east.coordinateAhead(of = coordinate)
+        assertEquals(30.0, coordinate.distance(to = ahead), 0.2)
+        assertEquals(coordinate.latitude, ahead.latitude, 1e-9)
+        assertTrue(ahead.longitude > coordinate.longitude)
+
+        val nowhere = object : ScooterMapProjection by CameraMapView(center = coordinate, distance = 500.0) {
+            override fun point(coordinate: GeoPoint): ScreenPoint = ScreenPoint(Double.NaN, Double.NaN)
+        }
+        assertNull(east.screenAngle(at = coordinate, on = nowhere))
+    }
+
+    @Test
     fun delayedMapKitSelectionCannotReplaceTheDirectTapTarget() {
         val deadline = 11.0
 
@@ -467,6 +510,59 @@ class ScooterFilteringTest {
         assertEquals(unknown.parts[0].take(1).uppercase(ScooterLanguage.launchLocale()), unknown.body.take(1))
         assertEquals(unknown.parts[0].drop(1), unknown.body.drop(1))
         assertNotEquals(unknown.parts[0], unknown.body)
+    }
+
+    /**
+     * MKMapView under an MKMapCamera `distance` metres from its centre, facing `heading` degrees from north and
+     * tilted `pitch` degrees from straight down, as a camera sees the ground: further is smaller.
+     */
+    private class CameraMapView(val center: GeoPoint, val distance: Double) : ScooterMapProjection {
+        var heading = 0.0
+        var pitch = 0.0
+        override val bounds = ScreenRect(0.0, 0.0, 390.0, 844.0)
+        override val centerCoordinate: GeoPoint get() = center
+
+        /** The distance to the screen, in points, of a camera that sees as far across as a phone's. */
+        private val focalLength = bounds.height
+        private val mapPointsPerMeter = MapPoint.worldSize / (40_075_016.68557849 * cos(center.latitude * PI / 180))
+
+        override val visibleMapRect: MapRect
+            get() {
+                val corners = listOf(
+                    ScreenPoint(bounds.minX, bounds.minY),
+                    ScreenPoint(bounds.maxX, bounds.minY),
+                    ScreenPoint(bounds.minX, bounds.maxY),
+                    ScreenPoint(bounds.maxX, bounds.maxY),
+                ).map { MapPoint(coordinate(it)) }
+                val minX = corners.minOf { it.x }
+                val minY = corners.minOf { it.y }
+                return MapRect(minX, minY, corners.maxOf { it.x } - minX, corners.maxOf { it.y } - minY)
+            }
+
+        override fun point(coordinate: GeoPoint): ScreenPoint {
+            val point = MapPoint(coordinate)
+            val middle = MapPoint(center)
+            val east = (point.x - middle.x) / mapPointsPerMeter
+            val north = (middle.y - point.y) / mapPointsPerMeter
+            val turn = heading * PI / 180
+            val tilt = pitch * PI / 180
+            val across = east * cos(turn) - north * sin(turn)
+            val ahead = east * sin(turn) + north * cos(turn)
+            val depth = distance + ahead * sin(tilt)
+            return ScreenPoint(bounds.midX + across * focalLength / depth, bounds.midY - ahead * cos(tilt) * focalLength / depth)
+        }
+
+        override fun coordinate(point: ScreenPoint): GeoPoint {
+            val turn = heading * PI / 180
+            val tilt = pitch * PI / 180
+            val up = bounds.midY - point.y
+            val ahead = up * distance / (focalLength * cos(tilt) - up * sin(tilt))
+            val across = (point.x - bounds.midX) * (distance + ahead * sin(tilt)) / focalLength
+            val east = across * cos(turn) + ahead * sin(turn)
+            val north = -across * sin(turn) + ahead * cos(turn)
+            val middle = MapPoint(center)
+            return MapPoint(middle.x + east * mapPointsPerMeter, middle.y - north * mapPointsPerMeter).coordinate
+        }
     }
 
     /**

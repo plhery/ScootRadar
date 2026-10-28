@@ -237,7 +237,7 @@ private fun ScooterMapController.riderMoved(point: GeoPoint) {
     val route = walk.route
     if (walk.phase != ScooterWalkPhase.Shown || route == null) return
     val position = route.position(of = point, after = walk.progress) ?: return
-    if (WalkRoute.isOffRoute(position.offset, accuracy = locationAccuracy)) {
+    if (WalkRoute.isOffRoute(position.offset, accuracy = locationAccuracy.value)) {
         rerouteIfAllowed(point)
         return
     }

@@ -493,6 +493,21 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun theDotsHaloIsTheAcceptedFixsAccuracy() = runTest {
+        // MAP-197: the halo round the dot is as wide as the fix is vague, as MKUserLocationView draws it.
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), locationManager = FakeLocationManager())
+        val point = GeoPoint(47.3769, 8.5417)
+        model.locationsUpdated(listOf(ScooterLocationFix(point, horizontalAccuracy = 25.0, timestamp = Instant.now())))
+        assertEquals(25.0, model.locationAccuracy.value, 0.0)
+
+        // A fix too vague to take changes nothing.
+        model.locationsUpdated(listOf(ScooterLocationFix(point, horizontalAccuracy = 600.0, timestamp = Instant.now())))
+        assertEquals(25.0, model.locationAccuracy.value, 0.0)
+        model.locationsUpdated(listOf(ScooterLocationFix(point, horizontalAccuracy = 8.0, timestamp = Instant.now())))
+        assertEquals(8.0, model.locationAccuracy.value, 0.0)
+    }
+
+    @Test
     fun onlyDeniedLocationAccessOffersASettingsShortcut() {
         assertTrue(ScooterLocationIssue.Denied.canOpenSettings)
         assertFalse(ScooterLocationIssue.Restricted.canOpenSettings)
