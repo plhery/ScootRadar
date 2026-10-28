@@ -196,8 +196,9 @@ one; a Lime market's price covers all its refresh groups. In Germany and the
 UK these four show their city prices only in their apps, and voi.com and
 li.me refuse automated reads, so the prices come from the city: moBiel's page
 for Dott in Bielefeld, Transport for West Midlands' for Lime in Birmingham and
-on the University of Warwick's campus, and Slough Borough Council's for Voi in
-Slough.
+on the University of Warwick's campus, Slough Borough Council's for Voi in
+Slough, and Miskolc's for Lime there. Italy, Sweden and Austria had none on
+28 October: their cities name the operators but leave the price to the apps.
 
 The weekly
 [catalog check](.github/workflows/catalog-check.yml) runs

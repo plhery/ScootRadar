@@ -237,6 +237,19 @@
       "url": "https://www.slough.gov.uk/parking-roads-travel/e-scooter-trial/4",
       "quote": "The June 2026 costs are: Pay as you go: £1 to unlock + £0.22 per minute",
       "checked": "2026-10-28"
+    },
+    {
+      "systems": [
+        "lime_hu_app_miskolc"
+      ],
+      "currency": "HUF",
+      "unlock_fee_minor_units": 24900,
+      "minute_fee_minor_units": 6900,
+      "plus_tax": false,
+      "source": "city",
+      "url": "https://www.miskolc.hu/elet-a-varosban/varosinformacio/kozossegi-kozlekedes/kozossegi-roller-lime",
+      "quote": "Díjszabás Az utasoknak 249 forintos feloldási díjjal, valamint 69 forintos percdíjjal kell számolniuk.",
+      "checked": "2026-10-28"
     }
   ]
 }
