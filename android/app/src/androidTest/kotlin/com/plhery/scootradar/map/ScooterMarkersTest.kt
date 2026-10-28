@@ -1,14 +1,18 @@
 package com.plhery.scootradar.map
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Rect
 import android.os.Debug
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.util.Log
 import android.view.Choreographer
 import android.view.FrameMetrics
 import android.view.MotionEvent
+import android.view.PixelCopy
 import android.view.Window
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.compose.ui.platform.AndroidUiDispatcher
@@ -26,6 +30,8 @@ import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScreenPoint
+import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.distance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -40,12 +46,17 @@ import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.maps.MapView
+import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.math.floor
+import kotlin.math.max
 import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 // The scooters' markers on MapLibre's map, fed by a fake ScooterAPI: a tap on a dot, a bay and a cluster, the dot
-// taken where dots overlap, TalkBack's virtual views, and the frames of a pan over 2000 and 5000 scooters (MAP-329).
+// taken where dots overlap, TalkBack's virtual views, the frames of a pan over 2000 and 5000 scooters (MAP-329), and
+// their light-up from the rider (MAP-119).
 @RunWith(AndroidJUnit4::class)
 class ScooterMarkersTest {
     private val zurich = GeoPoint(47.3769, 8.5417)
@@ -331,10 +342,20 @@ class ScooterMarkersTest {
         phone.onMain { Choreographer.getInstance().postFrameCallback(vsync) }
         val working = phone.onMain { Debug.threadCpuTimeNanos() }
 
+        swipe(until = SystemClock.uptimeMillis() + 10_000)
+
+        phone.onMain { measuring = false }
+        val work = (phone.onMain { Debug.threadCpuTimeNanos() } - working) / 1e6
+        phone.scenario.onActivity { it.window.removeOnFrameMetricsAvailableListener(listener) }
+        thread.quitSafely()
+        return synchronized(window) { FrameTimes(window.toList(), late, phone.onMain { gaps.toList() }, work) }
+    }
+
+    /** A finger panning the map up and down, 800 ms a swipe, as the spike's `input swipe` did, until a moment of the uptime clock. */
+    private fun Marked.swipe(until: Long) {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val end = SystemClock.uptimeMillis() + 10_000
         var up = true
-        while (SystemClock.uptimeMillis() < end) {
+        while (SystemClock.uptimeMillis() < until) {
             val down = SystemClock.uptimeMillis()
             val from = if (up) 600f else 250f
             val to = if (up) 250f else 600f
@@ -351,12 +372,6 @@ class ScooterMarkersTest {
             send(MotionEvent.ACTION_UP, to)
             up = !up
         }
-
-        phone.onMain { measuring = false }
-        val work = (phone.onMain { Debug.threadCpuTimeNanos() } - working) / 1e6
-        phone.scenario.onActivity { it.window.removeOnFrameMetricsAvailableListener(listener) }
-        thread.quitSafely()
-        return synchronized(window) { FrameTimes(window.toList(), late, phone.onMain { gaps.toList() }, work) }
     }
 
     @Test
@@ -368,7 +383,7 @@ class ScooterMarkersTest {
             // What one revision of them costs the main thread: the features and their GeoJSON.
             val writing = marked.phone.onMain {
                 val start = System.nanoTime()
-                MarkerFeatures.json(MarkerFeatures.markers(marked.markers.scene, marked.markers.art), epoch = 0.0)
+                MarkerFeatures.json(MarkerFeatures.markers(marked.markers.scene, marked.markers.art))
                 (System.nanoTime() - start) / 1e6
             }
             val written = marked.phone.onMain { marked.markers.scene.markersVersion }
@@ -390,6 +405,301 @@ class ScooterMarkersTest {
         for (count in listOf(2_000, 5_000)) {
             val frames = measured.getValue(count)
             assertTrue("$count scooters: $frames; none: $empty", frames.mainWork < 2 * empty.mainWork + 1_000)
+        }
+    }
+
+    // The light-up
+
+    /** A frame MapLibre's thread drew: when the main thread heard of it, whether every tile was laid out, and that thread's time on it, in ms. */
+    private class RenderedFrame(val at: Long, val fully: Boolean, val encoding: Double, val rendering: Double)
+
+    /** A scooter kept clear of the others, whose dot's middle is read off the window at each frame while it lights up. */
+    private class Probe(val metres: Double, val scooter: Scooter) {
+        var fade: MarkerFade? = null
+
+        /** How long the light-up waited for MapLibre to draw the scooters, in ms: its fades run that much later. */
+        var late = 0L
+
+        /** Under a name once the names have come, the dot is not what its middle shows then. */
+        var isUnderName = false
+
+        /** Its middle in the window, in pixels. */
+        var x = 0
+        var y = 0
+
+        /** The colour shown there, by the uptime it was read at, in ms. */
+        val colours = mutableListOf<Pair<Long, Int>>()
+
+        /** The colours shown from the start of its fade to its end. */
+        fun shades(): Int {
+            val fade = fade ?: return 0
+            val from = (fade.from * 1000).toLong() + late
+            val to = ((fade.from + fade.length) * 1000).toLong() + late + SHOWN_LATE
+            return colours.filter { it.first in from..to }.map { it.second }.distinct().size
+        }
+
+        /** How long after its fade's start, once the light-up waited, the dot was first shown, in ms, and how far along it already was then. */
+        fun firstShown(): Pair<Long, Double>? {
+            val fade = fade ?: return null
+            val ground = colours.firstOrNull()?.second ?: return null
+            val whole = colours.last().second
+            val first = colours.firstOrNull { it.second != ground } ?: return null
+            return first.first - (fade.from * 1000).toLong() - late to contrast(first.second, ground) / contrast(whole, ground)
+        }
+
+        /**
+         * How far the dot strays from its last strength once its fade is over, through the hand-back of its band
+         * to its layer, as a part of its last strength.
+         */
+        fun wavers(): Double {
+            val fade = fade ?: return Double.NaN
+            val ground = colours.firstOrNull()?.second ?: return Double.NaN
+            val whole = contrast(colours.last().second, ground)
+            val over = ((fade.from + fade.length) * 1000).toLong() + late + SHOWN_LATE
+            return colours.filter { it.first >= over }.maxOfOrNull { abs(contrast(it.second, ground) - whole) / whole } ?: Double.NaN
+        }
+
+        private fun contrast(colour: Int, ground: Int): Double =
+            (abs(Color.red(colour) - Color.red(ground)) + abs(Color.green(colour) - Color.green(ground)) + abs(Color.blue(colour) - Color.blue(ground))).toDouble()
+    }
+
+    /** What a light-up drew, from the moment the scooters were sent to the end of the last fade. */
+    private class LightUp(
+        val count: Int,
+        val start: Long,
+        val end: Long,
+        val rendered: List<RenderedFrame>,
+        val vsyncs: List<Long>,
+        val mainWork: Double,
+        val probes: List<Probe>,
+        val rewritten: Int,
+        val late: Long,
+        val bands: Int,
+    ) {
+        /** MapLibre's frames from the first dot's fade to the last's, once the light-up waited. */
+        val lit: List<RenderedFrame> get() = rendered.filter { it.at in start + late..end + late }
+
+        val renderGaps: List<Double> get() = lit.zipWithNext { first, second -> (second.at - first.at).toDouble() }
+
+        val renderGapP90: Double get() = percentile(renderGaps, 0.9)
+
+        /** The gaps between the main thread's frames over the same time, in ms. */
+        val mainGaps: List<Long> get() = vsyncs.filter { it in start + late..end + late }.zipWithNext { first, second -> second - first }
+
+        private fun percentile(values: List<Double>, fraction: Double) =
+            values.sorted().let { if (it.isEmpty()) Double.NaN else it[((it.size - 1) * fraction).roundToInt()] }
+
+        override fun toString(): String {
+            val gaps = renderGaps
+            val encoding = lit.map { it.encoding }
+            val probes = if (probes.all { it.colours.isEmpty() }) "dots not read while the map moves" else probes.joinToString("; ") { probe ->
+                val shown = probe.firstShown()
+                if (probe.isUnderName) {
+                    "%.0f m: %d shades, under a name".format(probe.metres, probe.shades())
+                } else {
+                    "%.0f m: %d shades, first shown %s, then within %.0f%%".format(
+                        probe.metres,
+                        probe.shades(),
+                        shown?.let { "%+d ms at %.0f%%".format(it.first, it.second * 100) } ?: "never",
+                        probe.wavers() * 100,
+                    )
+                }
+            }
+            val main = mainGaps
+            return ("$count scooters, %d ms waiting to be drawn, %.2f s lighting up in %d bands: MapLibre drew %d frames (%d whole), " +
+                "gaps p50 %.0f, p90 %.0f, max %.0f ms, its thread's work p50 %.1f, p90 %.1f, max %.1f ms; " +
+                "main thread %d frames, longest gap %d ms, %d vsyncs missed, %.0f ms at work in all; source written %d times; ").format(
+                late,
+                (end - start) / 1000.0,
+                bands,
+                lit.size,
+                lit.count { it.fully },
+                percentile(gaps, 0.5),
+                percentile(gaps, 0.9),
+                gaps.maxOrNull() ?: Double.NaN,
+                percentile(encoding, 0.5),
+                percentile(encoding, 0.9),
+                encoding.maxOrNull() ?: Double.NaN,
+                main.size + 1,
+                main.maxOrNull() ?: 0L,
+                main.sumOf { max(0L, (it / VSYNC).roundToLong() - 1) },
+                mainWork,
+                rewritten,
+            ) + probes
+        }
+    }
+
+    /**
+     * The first scooters sent with the rider on the map, so that they light up from the rider outwards, as the app
+     * gets them: MapLibre's frames and the main thread's are recorded from then to the end of the last fade, and,
+     * unless the map pans meanwhile, the middles of a few dots kept clear of the others are read off the window at
+     * every frame. The fades start once MapLibre has drawn the scooters, up to a second later. With the
+     * instrumentation argument `screenrecord`, the screen is recorded to /data/local/tmp/app-b2-<name>.mp4.
+     */
+    private fun Marked.lightUp(count: Int, panning: Boolean, name: String): LightUp {
+        val rider = zurich
+        phone.onMain { controller.setUserLocation(rider) }
+        val probes = PROBE_METRES.map { metres ->
+            Probe(metres, scooter("probe-${metres.toInt()}", "voi", GeoPoint(rider.latitude + metres / 111_320.0, rider.longitude)))
+        }
+        val scooters = spread(count + 400, around = rider)
+            .filter { scooter -> probes.none { it.scooter.coordinate.distance(to = scooter.coordinate) < PROBE_CLEARING } }
+            .take(count - probes.size) + probes.map { it.scooter }
+        assertEquals(count, scooters.size)
+
+        // Where each probe's middle is in the window, which must show it.
+        lateinit var window: Window
+        phone.scenario.onActivity { window = it.window }
+        phone.onMain {
+            val inWindow = IntArray(2).also { phone.view.getLocationInWindow(it) }
+            val onScreen = IntArray(2).also { phone.view.getLocationOnScreen(it) }
+            val visible = Rect().also { phone.view.getWindowVisibleDisplayFrame(it) }
+            for (probe in probes) {
+                val point = phone.projection.point(probe.scooter.coordinate)
+                probe.x = inWindow[0] + (point.x * ratio).roundToInt()
+                probe.y = inWindow[1] + (point.y * ratio).roundToInt()
+                val screenX = onScreen[0] + (point.x * ratio).roundToInt()
+                val screenY = onScreen[1] + (point.y * ratio).roundToInt()
+                assertTrue("${probe.metres} m is on the screen", visible.contains(screenX, screenY))
+            }
+        }
+        val column = Rect(probes.first().x, probes.minOf { it.y }, probes.first().x + 1, probes.maxOf { it.y } + 1)
+        assertTrue(probes.all { it.x == column.left })
+
+        val recording = if (recordsScreen) record(name) else null
+
+        // MapLibre's frames, heard on the main thread.
+        val rendered = mutableListOf<RenderedFrame>()
+        val renderListener = MapView.OnDidFinishRenderingFrameWithStatsListener { fully, stats ->
+            rendered += RenderedFrame(SystemClock.uptimeMillis(), fully, stats.encodingTime * 1000, stats.renderingTime * 1000)
+        }
+        // The main thread's frames, and at each the probes' middles, read off the window on a thread of their own.
+        val reading = HandlerThread("pixels").apply { start() }
+        val reader = Handler(reading.looper)
+        val vsyncs = mutableListOf<Long>()
+        var measuring = true
+        val vsync = object : Choreographer.FrameCallback {
+            override fun doFrame(frameTimeNanos: Long) {
+                vsyncs += frameTimeNanos / 1_000_000
+                if (!panning) {
+                    reader.post {
+                        val at = SystemClock.uptimeMillis()
+                        val pixels = Bitmap.createBitmap(1, column.height(), Bitmap.Config.ARGB_8888)
+                        PixelCopy.request(window, column, pixels, { result ->
+                            if (result != PixelCopy.SUCCESS) return@request
+                            synchronized(probes) {
+                                for (probe in probes) probe.colours += at to pixels.getPixel(0, probe.y - column.top)
+                            }
+                        }, reader)
+                    }
+                }
+                if (measuring) Choreographer.getInstance().postFrameCallback(this)
+            }
+        }
+        phone.onMain {
+            phone.view.addOnDidFinishRenderingFrameListener(renderListener)
+            Choreographer.getInstance().postFrameCallback(vsync)
+        }
+        val working = phone.onMain { Debug.threadCpuTimeNanos() }
+        // The ground alone, before the scooters come.
+        SystemClock.sleep(300)
+
+        served = ScooterResponse(vehicles = scooters)
+        phone.onMain {
+            val projection = phone.projection
+            val level = MapZoom.level(on = projection)
+            controller.updateViewport(MapZoom.region(of = projection.visibleMapRect), MapZoom.apiZoom(level), level)
+            controller.refresh()
+        }
+        waitFor("the markers have what the server sent") { phone.onMain { markers.scene.marks.size == count } }
+        val (written, start, end) = phone.onMain {
+            val scene = markers.scene
+            for (probe in probes) probe.fade = scene.mark(probe.scooter.id)?.dotFade
+            val fades = scene.marks.flatMap { listOfNotNull(it.dotFade, it.pillFade) }
+            Triple(scene.markersVersion, (fades.minOf { it.from } * 1000).toLong(), (fades.maxOf { it.from + it.length } * 1000).toLong())
+        }
+        assertTrue("the probes light up", probes.all { it.fade != null })
+        val bands = phone.onMain { phone.map.style!!.layers.count { "-band-" in it.id } }
+        val over = end + HELD_AT_MOST + SHOWN_LATE
+        if (panning) swipe(until = over) else SystemClock.sleep(max(0L, over - SystemClock.uptimeMillis()))
+
+        phone.onMain {
+            measuring = false
+            phone.view.removeOnDidFinishRenderingFrameListener(renderListener)
+        }
+        val work = (phone.onMain { Debug.threadCpuTimeNanos() } - working) / 1e6
+        reading.quitSafely()
+        reading.join()
+        recording?.join()
+        val rewritten = phone.onMain { markers.scene.markersVersion } - written
+        val late = (phone.onMain { markers.lightUpLate } * 1000).roundToLong()
+        for (probe in probes) probe.late = late
+        phone.onMain {
+            val names = markers.scene.shownPillFrames(phone.projection)
+            for (probe in probes) {
+                val point = phone.projection.point(probe.scooter.coordinate)
+                // A name's shadow reaches a few points beyond its frame.
+                probe.isUnderName = names.any { (_, frame) ->
+                    ScreenRect(frame.x - 4, frame.y - 4, frame.width + 8, frame.height + 8).contains(point)
+                }
+            }
+        }
+        // The bands' layers are taken out once the dots are drawn by their own again.
+        waitFor("the bands are taken out") { phone.onMain { phone.map.style!!.layers.none { "-band-" in it.id } } }
+        return LightUp(count, start, end, phone.onMain { rendered.toList() }, phone.onMain { vsyncs.toList() }, work, probes, rewritten, late, bands)
+    }
+
+    /** Whether the instrumentation argument `screenrecord` asks for the screen to be recorded. */
+    private val recordsScreen: Boolean get() = InstrumentationRegistry.getArguments().getString("screenrecord") == "true"
+
+    /**
+     * MapLibre draws a light-up as the main thread's frames come, a dot at a time from the rider outwards: each
+     * comes up from nothing, through many strengths, and stays once it is up. A screen being recorded slows the
+     * emulator down: its numbers are not held then.
+     */
+    private fun assertDrawnInTime(lightUp: LightUp, panning: Boolean) {
+        if (recordsScreen) return
+        assertTrue("$lightUp", lightUp.renderGapP90 <= 34)
+        assertTrue("$lightUp", (lightUp.mainGaps.maxOrNull() ?: 0L) <= 50)
+        if (panning) return
+        for (probe in lightUp.probes.filter { !it.isUnderName }) {
+            assertTrue("$lightUp", probe.shades() >= 10)
+            assertTrue("$lightUp", probe.firstShown()!!.second < 0.45)
+            assertTrue("$lightUp", probe.wavers() < 0.15)
+        }
+    }
+
+    /** Records the screen for five seconds from a second from now, as `adb shell screenrecord` does. */
+    private fun record(name: String): Thread {
+        val output = InstrumentationRegistry.getInstrumentation().uiAutomation
+            .executeShellCommand("screenrecord --time-limit 5 /data/local/tmp/app-b2-$name.mp4")
+        val recording = thread { ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() } }
+        SystemClock.sleep(1_000)
+        return recording
+    }
+
+    @Test
+    fun theScootersLightUpFromTheRiderFrameByFrameOver2000And5000() {
+        for (count in listOf(2_000, 5_000)) {
+            withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
+                val lightUp = marked.lightUp(count, panning = false, name = "lightup-$count")
+                Log.i(TAG, "Light-up: $lightUp")
+                // The dots fade as the strength of a layer, never by writing the scooters again (MAP-319).
+                assertEquals(0, lightUp.rewritten)
+                assertDrawnInTime(lightUp, panning = false)
+            }
+        }
+    }
+
+    @Test
+    fun theMapPansWhileTheScootersLightUpOver2000And5000() {
+        for (count in listOf(2_000, 5_000)) {
+            withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
+                val lightUp = marked.lightUp(count, panning = true, name = "lightup-pan-$count")
+                Log.i(TAG, "Light-up while panning: $lightUp")
+                assertEquals(0, lightUp.rewritten)
+                assertDrawnInTime(lightUp, panning = true)
+            }
         }
     }
 
@@ -431,5 +741,20 @@ class ScooterMarkersTest {
     private companion object {
         const val TAG = "ScooterMarkersTest"
         const val SWIPE_STEPS = 50
+
+        /** The probes' distances north of the rider: their fades start from 0.12 s to 0.93 s. */
+        val PROBE_METRES = listOf(80.0, 200.0, 330.0, 470.0, 620.0)
+
+        /** The metres around a probe kept clear of other scooters. */
+        const val PROBE_CLEARING = 45.0
+
+        /** How long after its moment a frame may reach the screen, in ms. */
+        const val SHOWN_LATE = 300L
+
+        /** The longest the light-up waits for MapLibre to draw the scooters and fade them in, in ms. */
+        const val HELD_AT_MOST = 1_500L
+
+        /** A vsync of a 60 Hz screen, in ms. */
+        const val VSYNC = 1000.0 / 60
     }
 }
