@@ -1,5 +1,6 @@
 package com.plhery.scootradar.core.api
 
+import com.plhery.scootradar.core.map.RecordingAnalytics
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -26,6 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -104,12 +107,21 @@ class ScooterAPITest {
     fun requestSendsBoundsZoomAndFilterWithoutASeparateUserLocation() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 200, data = emptyResponseData)
 
-        api.scooters(bounds = bounds, zoom = 12, minimumBattery = 55)
+        // A point for the decimals whatever the phone's language.
+        val defaultLocale = Locale.getDefault()
+        Locale.setDefault(Locale.GERMANY)
+        try {
+            api.scooters(bounds = GeoBounds(south = 47.36789, west = 8.5, north = 47.4, east = 8.61234), zoom = 12, minimumBattery = 55)
+        } finally {
+            Locale.setDefault(defaultLocale)
+        }
 
+        // In the iPhone's order.
         val url = server.takeRequest().url
-        assertEquals(setOf("south", "west", "north", "east", "zoom", "minBattery"), url.queryParameterNames)
-        assertEquals("12", url.queryParameter("zoom"))
-        assertEquals("55", url.queryParameter("minBattery"))
+        assertEquals(
+            listOf("south" to "47.36789", "west" to "8.50000", "north" to "47.40000", "east" to "8.61234", "zoom" to "12", "minBattery" to "55"),
+            (0 until url.querySize).map { url.queryParameterName(it) to url.queryParameterValue(it) },
+        )
     }
 
     @Test
@@ -588,6 +600,65 @@ class ScooterAPITest {
         assertEquals("android", data.string("platform"))
         assertNull(data?.get("result"))
         assertNull(data?.get("target"))
+    }
+
+    @Test
+    fun aPayloadSaysTheSiteTheAppAndTheLanguageShownInTheRegionOfThePhone() {
+        ScooterLanguage.launchLocale = { Locale.forLanguageTag("de-CH") }
+        ScooterLanguage.current = ScooterLanguage.Fr
+        val payload = ScooterAnalytics.payload("refresh", website = testWebsite)
+        assertEquals("scootradar.com", payload.string("hostname"))
+        assertEquals("ScootRadar", payload.string("title"))
+        assertEquals("/", payload.string("url"))
+        // The locale's identifier, where a search sends only the language (AddressSearchModelTest).
+        assertEquals("fr-CH", payload.string("language"))
+    }
+
+    @Test
+    fun aValueIsKeptUpToFortyCharactersAndACountAsANumber() {
+        val forty = "a".repeat(40)
+        val payload = ScooterAnalytics.payload(
+            "provider_filter", provider = forty, result = "b".repeat(41), target = "vehicle", value = 7, website = testWebsite,
+        )
+        val data = payload["data"] as JsonObject
+        assertEquals(forty, data.string("provider"))
+        assertNull(data["result"])
+        assertEquals("vehicle", data.string("target"))
+        val value = data["value"] as JsonPrimitive
+        assertFalse(value.isString)
+        assertEquals(7, value.content.toInt())
+        assertEquals("provider_filter", payload.string("name"))
+    }
+
+    @Test
+    fun atMostThirtyEventsWaitAndAFailedOneIsNotSentAgain() = runTest {
+        // Held on the test's dispatcher until it runs: the 31st and later are dropped.
+        val held = RecordingAnalytics(answer = { index -> if (index == 0) throw IOException("offline") else 503 to "" }, scope = backgroundScope)
+        for (index in 1..35) held.analytics.track("event_$index")
+        runCurrent()
+        assertEquals((1..30).map { "event_$it" }, held.names)
+
+        // What failed is not sent again, nor kept for later.
+        held.analytics.track("later")
+        runCurrent()
+        assertEquals((1..30).map { "event_$it" } + "later", held.names)
+    }
+
+    @Test
+    fun onlyAWholeAnswerChangesTheCacheSentBack() {
+        val answers = listOf(
+            200 to """{"cache":"first"}""",
+            500 to """{"cache":"refused","disabled":true}""",
+            200 to "not JSON",
+            200 to "{}",
+            200 to "{}",
+        )
+        val recording = RecordingAnalytics(answer = { answers[it] })
+        repeat(answers.size) { recording.analytics.track("refresh") }
+
+        assertEquals(5, recording.requests.size)
+        // A refusal or an answer that is not JSON changes nothing; a whole answer without a cache clears it.
+        assertEquals(listOf(null, "first", "first", "first", null), recording.requests.map { it.header("x-umami-cache") })
     }
 
     @Test

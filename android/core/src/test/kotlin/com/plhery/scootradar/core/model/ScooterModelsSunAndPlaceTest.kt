@@ -72,11 +72,15 @@ class ScooterModelsSunAndPlaceTest {
         )
 
     // North America, Oceania and the Middle East as country agents may add them, beside a few cities of Europe.
+    // The tests build their own catalog: one a data/ change cannot break.
     private val startCities: List<ScooterCity>
         get() = listOf(
             city("ch:zurich", "CH", 47.3769, 8.5417),
             city("ch:st-gallen", "CH", 47.4245, 9.3767),
+            city("de:Berlin", "DE", 52.52, 13.405),
             city("fr:Nice", "FR", 43.7031, 7.2661),
+            city("fr:Houilles", "FR", 48.9261, 2.1892),
+            city("ua:Kyiv", "UA", 50.4501, 30.5234),
             city("ca:on:toronto", "CA", 43.6532, -79.3832),
             city("ca:qc:montreal", "CA", 45.5019, -73.5674),
             city("us:tx:austin", "US", 30.2672, -97.7431),
@@ -92,12 +96,12 @@ class ScooterModelsSunAndPlaceTest {
 
     @Test
     fun mapOpensOnTheCoveredCityNearestTheTimeZone() {
-        assertEquals("de:Berlin", ScooterStartPlace.city("Europe/Berlin")?.id)
-        assertEquals("ch:zurich", ScooterStartPlace.city("Europe/Zurich")?.id)
-        // Paris itself has no shared scooters: the nearest town that has them.
-        assertEquals("fr:Houilles", ScooterStartPlace.city("Europe/Paris")?.id)
+        assertEquals("de:Berlin", startID("Europe/Berlin"))
+        assertEquals("ch:zurich", startID("Europe/Zurich"))
+        // Without Paris among the cities: the nearest town that has scooters.
+        assertEquals("fr:Houilles", startID("Europe/Paris"))
         // An older name the phone may still report.
-        assertEquals("ua:Kyiv", ScooterStartPlace.city("Europe/Kiev")?.id)
+        assertEquals("ua:Kyiv", startID("Europe/Kiev"))
 
         assertEquals("ca:on:toronto", startID("America/Toronto"))
         assertEquals("mx:cdmx", startID("America/Mexico_City"))
@@ -126,8 +130,8 @@ class ScooterModelsSunAndPlaceTest {
     fun mapKeepsSwitzerlandForZonesWithNothingNear() {
         // Zones that are no place, and Antarctica's Troll station, far from any covered city.
         for (zone in listOf("UTC", "GMT", "Etc/UTC", "Factory", "Etc/GMT+5", "Antarctica/Troll", "")) {
-            assertNull(zone, ScooterStartPlace.city(zone))
-            val start = ScooterStartPlace.start(zone)
+            assertNull(zone, ScooterStartPlace.city(zone, startCities))
+            val start = ScooterStartPlace.start(zone, startCities)
             assertEquals(zone, ScooterMapStart.switzerland.zoom, start.zoom)
             assertEquals(zone, ScooterMapStart.switzerlandCenter, start.center)
         }
@@ -148,11 +152,11 @@ class ScooterModelsSunAndPlaceTest {
         assertEquals(2.698636262619094, switzerland.latitudeDelta, 2.698636262619094 * 1e-6)
         assertEquals(6.551915073958902, switzerland.longitudeDelta, 6.551915073958902 * 1e-6)
 
-        val zurich = ScooterStartPlace.start("Europe/Zurich").region
+        val zurich = ScooterStartPlace.start("Europe/Zurich", startCities).region
         assertEquals(GeoPoint(latitude = 47.3769, longitude = 8.5417), zurich.center)
         assertEquals(0.08010206662222637, zurich.latitudeDelta, 0.08010206662222637 * 1e-6)
         assertEquals(0.11978292057806572, zurich.longitudeDelta, 0.11978292057806572 * 1e-6)
-        assertEquals(ScooterStartPlace.cityZoom, ScooterStartPlace.start("Europe/Zurich").zoom)
+        assertEquals(ScooterStartPlace.cityZoom, ScooterStartPlace.start("Europe/Zurich", startCities).zoom)
     }
 
     @Test

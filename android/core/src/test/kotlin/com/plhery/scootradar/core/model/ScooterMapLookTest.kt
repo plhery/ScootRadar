@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import java.text.DecimalFormatSymbols
 import java.time.Instant
+import java.time.ZoneId
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.hypot
@@ -628,6 +629,20 @@ class ScooterMapLookTest {
         assertEquals(RidePriceFormatter.amount(minorUnits = 210, currency = "CHF"), withPass.figures[2].value)
         // The note keeps the provider's tariff and says a pass lowers the figure.
         assertEquals("${price(100)} to unlock, then ${price(42)} a minute · Pass applied", withPass.note)
+    }
+
+    @Test
+    fun aScooterInANightBanSaysWhenItCanBeRentedAgain() {
+        ScooterLanguage.current = ScooterLanguage.En
+        val oslo = ZoneId.of("Europe/Oslo")
+        // 05:00 in Oslo.
+        val until = Instant.parse("2026-10-13T03:00:00Z")
+        val banned = ScooterCardContent(
+            scooter = scooter(), metres = 60.0, quote = null, curfew = RentalCurfew.Active(city = "Oslo", until = until, timeZone = oslo),
+        )
+        assertEquals("Night ban in Oslo: you can rent it from ${ScooterDockStatus.clockTime(until, oslo)}", banned.curfew)
+        assertTrue(ScooterDockStatus.clockTime(until, oslo).contains("5:00"))
+        assertNull(ScooterCardContent(scooter = scooter(), metres = 60.0, quote = null).curfew)
     }
 
     @Test
