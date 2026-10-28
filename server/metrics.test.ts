@@ -84,6 +84,20 @@ it('counts a catalog feed whose operator lists nothing as empty, but not an inac
   expect(text).not.toContain('national:bird-biel');
 });
 
+it('renders just the counters for the scrape of each container, computing no gauge', () => {
+  const metrics = createSnapshotMetrics('abc123', { curfewed: () => { throw new Error('a gauge was computed'); },
+    upstreamCache: () => ({ entries: 3, capacity: 10, evictions: 1 }) });
+  metrics.recordCollection({ id: 'national:voiscooters.com', source: 'national', provider: 'voi' }, false, 0.25);
+  metrics.recordRequest('/api/scooters', 200, 0.01);
+  const text = metrics.render(snapshot([feed({})]), now, true);
+  expect(sample(text, 'scootradar_feed_collections_total{feed="national:voiscooters.com",source="national",provider="voi",outcome="ok"}')).toBe('1');
+  expect(sample(text, 'scootradar_http_requests_total{route="/api/scooters",status="200"}')).toBe('1');
+  expect(sample(text, 'scootradar_upstream_cache_evictions_total')).toBe('1');
+  expect(text).toContain('process_cpu_seconds_total ');
+  const types = text.split('\n').filter(line => line.startsWith('# TYPE ')).map(line => line.split(' ')[3]);
+  expect(new Set(types)).toEqual(new Set(['counter', 'summary']));
+});
+
 it('counts collections from zero by outcome, and requests by route and status', () => {
   const metrics = createSnapshotMetrics();
   const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };

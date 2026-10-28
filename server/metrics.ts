@@ -80,7 +80,14 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     recordWait(collected: boolean) { waits[collected ? 'collected' : 'timeout']++; },
     /** Requests an address search on the Worker sent to Geoapify. */
     recordGeoapifyRequests(count: number) { geoapifyRequests += count; },
-    render(snapshot: MobilitySnapshot | undefined, now = Date.now()): string {
+    /**
+     * countersOnly: the counters alone, for Prometheus's scrape of each container by its address, whose
+     * job keeps only them (summed across the two containers of a deploy); the scrape by name reads the
+     * gauges. It skips the per-feed gauges, most of a render's work, and leaves the event loop's delay
+     * to the scrape by name, which then reads it over the 30 s since its own previous scrape rather
+     * than the 15 s since the other job's.
+     */
+    render(snapshot: MobilitySnapshot | undefined, now = Date.now(), countersOnly = false): string {
       const out: string[] = [];
       const metric = (name: string, type: string, help: string, samples: [Labels, number][]) => {
         out.push(`# HELP ${name} ${help}`, `# TYPE ${name} ${type}`);
@@ -101,42 +108,44 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         for (const id of collections.keys()) if (!catalog.has(id)) collections.delete(id);
       }
 
-      metric('scootradar_build_info', 'gauge', 'The running commit.', [[{ version }, 1]]);
-      metric('scootradar_snapshot_updated_timestamp_seconds', 'gauge', 'When a collection last changed the snapshot.',
-        snapshot ? [[{}, seconds(snapshot.updatedAt)]] : []);
-      metric('scootradar_overview_generated_timestamp_seconds', 'gauge', 'When the city totals were last rebuilt.',
-        snapshot ? [[{}, seconds(snapshot.overview.generatedAt)]] : []);
-      metric('scootradar_discovery_success_timestamp_seconds', 'gauge', 'When the feed catalog was last discovered.',
-        discoveredAt ? [[{}, seconds(discoveredAt)]] : []);
-      metric('scootradar_feed_state', 'gauge',
-        'ok: served. failing: the last collection failed, the previous positions are still served. expired: nothing is served and the map says the provider is not sharing data.',
-        feeds.flatMap(feed => {
-          const state = feedState(feed, now, cadence);
-          return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
-        }));
-      metric('scootradar_feed_paused', 'gauge',
-        'Whether every service area of the feed is in its seasonal pause, as Montréal each winter, or its operator says its season is over, as Whoosh in Almaty: it may serve nothing, the map says the town is paused for the season, and the feed-stopped and feed-empty alerts ignore it.',
-        counted.map(feed => [labelsOf(feed), feed.seasonOver || paused(feed.id, now) ? 1 : 0]));
-      metric('scootradar_feed_curfewed', 'gauge',
-        'Whether a night ban holds at every service area of the feed, as in Trondheim on Friday and Saturday nights: its operator may take the feed down until morning, and the feed-stopped alert waits for the ban to end.',
-        counted.map(feed => [labelsOf(feed), curfewed(feed.id, now) ? 1 : 0]));
-      metric('scootradar_feed_vehicles', 'gauge', 'Available standing scooters held for the feed, 0 once it has expired or while its operator lists none.',
-        counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
-      metric('scootradar_feed_priced_vehicles', 'gauge', 'Of those, the scooters with a price: the rest name no plan, a plan the feed does not list, or one the app cannot show.',
-        counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0
-          : feed.vehicles.reduce((count, vehicle) => vehicle.pricing ? count + 1 : count, 0)]));
-      metric('scootradar_feed_info', 'gauge', 'The country of the feed, in English, for the alerts to name.',
-        counted.map(feed => [{ ...labelsOf(feed), country: countryOf(feed.source) }, 1]));
-      metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',
-        feeds.filter(feed => feed.observedAt > 0).map(feed => [labelsOf(feed), seconds(feed.observedAt)]));
-      metric('scootradar_feed_attempt_timestamp_seconds', 'gauge', 'When the feed was last collected, successfully or not.',
-        feeds.map(feed => [labelsOf(feed), seconds(feed.attemptedAt)]));
-      metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is as fresh as its cadence promises, for the regional feeds that collect parking (not the app maps).',
-        feeds.filter(collectsParking).map(feed => [labelsOf(feed), parkingUp(feed, now, cadence) ? 1 : 0]));
-      if (sources.cadenceModes) {
-        metric('scootradar_feeds_by_cadence', 'gauge',
-          'Feeds by cadence: always (collected every minute), watched (someone looked recently, every minute), idle.',
-          Object.entries(sources.cadenceModes(now)).map(([mode, count]) => [{ cadence: mode }, count]));
+      if (!countersOnly) {
+        metric('scootradar_build_info', 'gauge', 'The running commit.', [[{ version }, 1]]);
+        metric('scootradar_snapshot_updated_timestamp_seconds', 'gauge', 'When a collection last changed the snapshot.',
+          snapshot ? [[{}, seconds(snapshot.updatedAt)]] : []);
+        metric('scootradar_overview_generated_timestamp_seconds', 'gauge', 'When the city totals were last rebuilt.',
+          snapshot ? [[{}, seconds(snapshot.overview.generatedAt)]] : []);
+        metric('scootradar_discovery_success_timestamp_seconds', 'gauge', 'When the feed catalog was last discovered.',
+          discoveredAt ? [[{}, seconds(discoveredAt)]] : []);
+        metric('scootradar_feed_state', 'gauge',
+          'ok: served. failing: the last collection failed, the previous positions are still served. expired: nothing is served and the map says the provider is not sharing data.',
+          feeds.flatMap(feed => {
+            const state = feedState(feed, now, cadence);
+            return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
+          }));
+        metric('scootradar_feed_paused', 'gauge',
+          'Whether every service area of the feed is in its seasonal pause, as Montréal each winter, or its operator says its season is over, as Whoosh in Almaty: it may serve nothing, the map says the town is paused for the season, and the feed-stopped and feed-empty alerts ignore it.',
+          counted.map(feed => [labelsOf(feed), feed.seasonOver || paused(feed.id, now) ? 1 : 0]));
+        metric('scootradar_feed_curfewed', 'gauge',
+          'Whether a night ban holds at every service area of the feed, as in Trondheim on Friday and Saturday nights: its operator may take the feed down until morning, and the feed-stopped alert waits for the ban to end.',
+          counted.map(feed => [labelsOf(feed), curfewed(feed.id, now) ? 1 : 0]));
+        metric('scootradar_feed_vehicles', 'gauge', 'Available standing scooters held for the feed, 0 once it has expired or while its operator lists none.',
+          counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
+        metric('scootradar_feed_priced_vehicles', 'gauge', 'Of those, the scooters with a price: the rest name no plan, a plan the feed does not list, or one the app cannot show.',
+          counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0
+            : feed.vehicles.reduce((count, vehicle) => vehicle.pricing ? count + 1 : count, 0)]));
+        metric('scootradar_feed_info', 'gauge', 'The country of the feed, in English, for the alerts to name.',
+          counted.map(feed => [{ ...labelsOf(feed), country: countryOf(feed.source) }, 1]));
+        metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',
+          feeds.filter(feed => feed.observedAt > 0).map(feed => [labelsOf(feed), seconds(feed.observedAt)]));
+        metric('scootradar_feed_attempt_timestamp_seconds', 'gauge', 'When the feed was last collected, successfully or not.',
+          feeds.map(feed => [labelsOf(feed), seconds(feed.attemptedAt)]));
+        metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is as fresh as its cadence promises, for the regional feeds that collect parking (not the app maps).',
+          feeds.filter(collectsParking).map(feed => [labelsOf(feed), parkingUp(feed, now, cadence) ? 1 : 0]));
+        if (sources.cadenceModes) {
+          metric('scootradar_feeds_by_cadence', 'gauge',
+            'Feeds by cadence: always (collected every minute), watched (someone looked recently, every minute), idle.',
+            Object.entries(sources.cadenceModes(now)).map(([mode, count]) => [{ cadence: mode }, count]));
+        }
       }
       metric('scootradar_collections_started_total', 'counter',
         'Collections started, by reason: always, watched, wake (a request found the data over a minute old), idle, retry (an idle feed that failed).',
@@ -161,9 +170,11 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       }
       if (sources.upstreamCache) {
         const cache = sources.upstreamCache();
-        metric('scootradar_upstream_cache_entries', 'gauge',
-          'Operators\' documents held in memory (used) and the most the cache holds (capacity), sized from the feed count.',
-          [[{ kind: 'used' }, cache.entries], [{ kind: 'capacity' }, cache.capacity]]);
+        if (!countersOnly) {
+          metric('scootradar_upstream_cache_entries', 'gauge',
+            'Operators\' documents held in memory (used) and the most the cache holds (capacity), sized from the feed count.',
+            [[{ kind: 'used' }, cache.entries], [{ kind: 'capacity' }, cache.capacity]]);
+        }
         metric('scootradar_upstream_cache_evictions_total', 'counter',
           'Documents dropped, least recently used first, to make room while they could still be served.',
           [[{}, cache.evictions]]);
@@ -190,11 +201,12 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           `scootradar_http_request_duration_seconds_count${formatLabels({ route })} ${timing.count}`);
       }
 
-      const memory = process.memoryUsage();
       const cpu = process.cpuUsage();
+      metric('process_cpu_seconds_total', 'counter', 'User and system CPU time spent.', [[{}, round((cpu.user + cpu.system) / 1e6)]]);
+      if (countersOnly) return `${out.join('\n')}\n`;
+      const memory = process.memoryUsage();
       metric('process_start_time_seconds', 'gauge', 'When the process started.',
         [[{}, Math.round(performance.timeOrigin / 1000)]]);
-      metric('process_cpu_seconds_total', 'counter', 'User and system CPU time spent.', [[{}, round((cpu.user + cpu.system) / 1e6)]]);
       metric('process_resident_memory_bytes', 'gauge', 'Resident memory size.', [[{}, memory.rss]]);
       metric('nodejs_heap_used_bytes', 'gauge', 'V8 heap in use.', [[{}, memory.heapUsed]]);
       // Over the time since the previous scrape. Each sample spans the sampling interval too.

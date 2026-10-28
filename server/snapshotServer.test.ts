@@ -179,6 +179,10 @@ describe('snapshot origin boundary', () => {
     expect(text).toContain('scootradar_http_requests_total{route="other",status="404"} 1');
     expect(text).toContain('scootradar_http_requests_total{route="/metrics",status="401"} 1');
     expect(text).not.toContain('47.3');
+    const counters = await (await fetch(`http://127.0.0.1:${port}/metrics?only=counters`,
+      { headers: { Authorization: `Bearer ${metricsToken}` } })).text();
+    expect(counters).toContain('scootradar_http_requests_total{route="/metrics",status="200"} 1');
+    expect(counters).not.toContain('scootradar_build_info');
   });
 
   it('counts the requests the Worker\'s address searches sent to Geoapify, from the Worker only', async () => {

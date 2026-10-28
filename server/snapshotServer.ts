@@ -143,7 +143,7 @@ export function createSnapshotServer(options: ServerOptions) {
         response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return;
       }
       response.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4; charset=utf-8' });
-      response.end(options.metrics.render(snapshot, now));
+      response.end(options.metrics.render(snapshot, now, url.searchParams.get('only') === 'counters'));
       return;
     }
     const zones = url.pathname === ZONES_PATH && options.zones;
