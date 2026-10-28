@@ -35,8 +35,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -56,6 +56,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -83,12 +85,15 @@ import com.plhery.scootradar.ui.chrome.FloatingMapControls
 import com.plhery.scootradar.ui.chrome.LocationIssueCard
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
 import com.plhery.scootradar.ui.dock.ScooterControlDock
+import com.plhery.scootradar.ui.filters.ScooterFilterSheet
 import com.plhery.scootradar.ui.glass.Glass
 import com.plhery.scootradar.ui.glass.LocalGlass
 import com.plhery.scootradar.ui.glass.MapBackdrop
 import com.plhery.scootradar.ui.glass.glassMayBlur
 import com.plhery.scootradar.ui.search.LocalAddressSearch
 import com.plhery.scootradar.ui.search.ScooterSearchIsland
+import com.plhery.scootradar.ui.sheet.IosSheet
+import com.plhery.scootradar.ui.sheet.SheetDetent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.SelectionFeedback
@@ -132,6 +137,9 @@ fun ScooterMapScreen(
     // Where the chrome is over the map, for the map to keep clear of it.
     val chrome = remember { MapChromeFrames() }
     var searchIsExpanded by remember { mutableStateOf(false) }
+    var filtersPresented by remember { mutableStateOf(false) }
+    var settingsPresented by remember { mutableStateOf(false) }
+    val sheetOpen = filtersPresented || settingsPresented
 
     ScootTheme(dark = dark) {
         CompositionLocalProvider(
@@ -141,25 +149,55 @@ fun ScooterMapScreen(
             LocalMapChrome provides chrome,
         ) {
             Box(Modifier.fillMaxSize()) {
-                map(dark)
-                DockChrome(
-                    controller,
-                    chrome = chrome,
-                    isSearching = searchIsExpanded,
-                    onSearchingChange = { searchIsExpanded = it },
-                    onShowFilters = { searchIsExpanded = false },
-                    onShowSettings = { searchIsExpanded = false },
-                )
+                // A sheet is modal: TalkBack reads it alone, as VoiceOver does.
+                Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
+                    map(dark)
+                    DockChrome(
+                        controller,
+                        chrome = chrome,
+                        isSearching = searchIsExpanded,
+                        onSearchingChange = { searchIsExpanded = it },
+                        onShowFilters = {
+                            searchIsExpanded = false
+                            filtersPresented = true
+                        },
+                        onShowSettings = {
+                            searchIsExpanded = false
+                            settingsPresented = true
+                        },
+                    )
+                }
+
+                // Half of a short window shows the first settings only, so there Filters opens at full height, its
+                // providers in view.
+                val windowHeight = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.height.toDp() }
+                IosSheet(
+                    isPresented = filtersPresented,
+                    onDismiss = { filtersPresented = false },
+                    detents = if (windowHeight < 700.dp) listOf(SheetDetent.Large) else listOf(SheetDetent.Medium, SheetDetent.Large),
+                    title = localized("Filters"),
+                ) { bottomInset ->
+                    ScooterFilterSheet(controller, bottomInset, onDone = { filtersPresented = false })
+                }
             }
         }
     }
 
     OnChange(searchIsExpanded) { expanded -> analytics?.track(if (expanded) "search_open" else "search_close") }
+    OnChange(filtersPresented) { open ->
+        analytics?.track(if (open) "filters_open" else "panel_close")
+        if (open) analytics?.track(screen = "/filters")
+    }
+    OnChange(settingsPresented) { open ->
+        analytics?.track(if (open) "settings_open" else "panel_close")
+        if (open) analytics?.track(screen = "/settings")
+    }
 
     // Back closes the search, else the card of the scooter or bay chosen (UI-250), as Escape does on the iPad.
     val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
-    BackHandler(enabled = searchIsExpanded || selectedScooter != null || selectedParking != null) {
+    // A sheet over the map takes Back first.
+    BackHandler(enabled = !sheetOpen && (searchIsExpanded || selectedScooter != null || selectedParking != null)) {
         if (searchIsExpanded) searchIsExpanded = false else controller.clearSelection()
     }
 }
@@ -281,6 +319,7 @@ private fun DockChrome(
                 Box(Modifier.fillMaxSize()) {
                     ScooterControlDock(
                         controller,
+                        onEditFilters = onShowFilters,
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(horizontal = 10.dp)

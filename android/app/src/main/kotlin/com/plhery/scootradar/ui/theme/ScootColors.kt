@@ -76,6 +76,20 @@ data class ScootColors(
     /** The colour of what is written on a provider's colour. */
     fun ink(on: ScooterProvider?): Color = Color(ScooterMapLook.ink(on, isDark))
 
+    /**
+     * The colours inside a sheet, which UIKit draws at the elevated level: in the dark the backgrounds are lighter,
+     * so the sheet stands out from the dimmed map. Light has one level.
+     */
+    fun elevated(): ScootColors = if (!isDark) {
+        this
+    } else {
+        copy(
+            systemBackground = Color(0xFF1C1C1E),
+            systemGroupedBackground = Color(0xFF1C1C1E),
+            secondarySystemGroupedBackground = Color(0xFF2C2C2E),
+        )
+    }
+
     companion object {
         val Light = ScootColors(
             isDark = false,
