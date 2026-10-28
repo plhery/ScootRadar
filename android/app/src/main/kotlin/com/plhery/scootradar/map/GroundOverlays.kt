@@ -18,7 +18,7 @@ import org.maplibre.android.style.layers.PropertyValue
  * What the app draws on the ground, MapKit's overlays at the level above the roads: over the streets and under
  * their names, and so under every marker. Bottom to top: the zones' fills, the strongest rule on top; their
  * edges, no riding's over the others'; then the walk's trail, its casing under its dots, a trail fading as it is
- * hidden above both, as MapKit keeps it until it has gone.
+ * hidden under the one shown, which MapKit adds on top of it.
  */
 object GroundOverlays {
     const val ZONES_SOURCE = "zones"
@@ -31,7 +31,7 @@ object GroundOverlays {
     const val FADING_TRAIL_CASING = "walk-trail-fading-casing"
     const val FADING_TRAIL = "walk-trail-fading"
 
-    val order: List<String> = ZoneLayers.fills + ZoneLayers.edges + listOf(TRAIL_CASING, TRAIL, FADING_TRAIL_CASING, FADING_TRAIL)
+    val order: List<String> = ZoneLayers.fills + ZoneLayers.edges + listOf(FADING_TRAIL_CASING, FADING_TRAIL, TRAIL_CASING, TRAIL)
 
     /**
      * Adds one of the layers in its place, whichever of them came first: under the next of them already there,

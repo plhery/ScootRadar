@@ -33,7 +33,7 @@ class ScooterZoneLayersTest {
             listOf(
                 "zones-slow", "zones-noParking", "zones-noRide",
                 "zone-edges-noParking", "zone-edges-slow", "zone-edges-noRide",
-                "walk-trail-casing", "walk-trail", "walk-trail-fading-casing", "walk-trail-fading",
+                "walk-trail-fading-casing", "walk-trail-fading", "walk-trail-casing", "walk-trail",
             ),
             GroundOverlays.order,
         )
