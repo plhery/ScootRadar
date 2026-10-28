@@ -17,10 +17,10 @@ import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.hideWalkingRoute
 import com.plhery.scootradar.core.map.showWalkingRoute
+import com.plhery.scootradar.core.map.walkTrail
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
-import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -337,31 +337,36 @@ class GroundOverlaysTest {
             waitFor("the scooter is on the map") { ground.phone.onMain { ground.controller.mapScooters.value.any { it.id == target.id } } }
             ground.phone.onMain {
                 val controller = ground.controller
-                controller.setSearchedDestination(
-                    MapDestination("Start", "", points.first(), MapDestination.Kind.Address, isCovered = true),
-                )
+                controller.setUserLocation(points.first())
                 controller.selectScooter(target.id)
                 controller.showWalkingRoute(ScooterWalkTarget.Scooter(target))
             }
             waitFor("the route is shown") { ground.phone.onMain { ground.controller.walk.value?.phase == ScooterWalkPhase.Shown } }
             waitFor("the whole route is drawn") { drawnWhole(ground) }
             settle()
-            // The dots and their casing, at the spacing of the map the fit settled on, from the start of the walk.
+            // A fifth of the way walked, as iOS's test starts (ScooterWalkTests.swift:474).
+            ground.phone.onMain { ground.controller.setUserLocation(along(points, share = 0.2)) }
+            val walked = ground.phone.onMain { ground.controller.walkTrail?.walked ?: 0.0 }
+            assertEquals(0.2, walked, 0.01)
+            // The dots and their casing, at the spacing of the map the fit settled on, but those of the part walked.
             ground.phone.onMain {
                 val style = ground.phone.map.style!!
                 assertEquals(WalkTrailLook.dotWidth / 2, (style.getLayer(GroundOverlays.TRAIL) as CircleLayer).circleRadius.value!!.toDouble(), 0.0)
                 assertEquals(WalkTrailLook.casingWidth / 2, (style.getLayer(GroundOverlays.TRAIL_CASING) as CircleLayer).circleRadius.value!!.toDouble(), 0.0)
             }
             val spacing = ground.phone.onMain { WalkTrailLook.mapPointsPerPoint(ground.phone.projection)!! * WalkTrailLook.dotSpacing }
-            val expected = WalkTrailLook.dots(along = points.map { MapPoint(it) }, spacing = spacing)
+            val expected = WalkTrailLook.dots(along = points.map { MapPoint(it) }, spacing = spacing, from = walked)
             assertTrue(expected.size > 5)
-            assertEquals(expected.size, ground.shownDots().size)
+            waitFor("the walked part goes") { ground.shownDots().size == expected.size }
             assertEquals(expected.size, ground.shownDots(GroundOverlays.TRAIL_CASING).size)
+            val first = MapPoint(ground.dot(ground.shownDots().first()))
+            assertEquals(expected.first().x, first.x, spacing / 100)
+            assertEquals(expected.first().y, first.y, spacing / 100)
 
-            // A tap on the empty map: the walk keeps its scooter.
+            // A tap on the empty map: the walk keeps its scooter. The map takes a tap on the main thread, and the
+            // selection is settled when it returns.
             val empty = ground.phone.onMain { ground.phone.projection.bounds }.let { ScreenPoint(it.width / 2, 60.0) }
             tap(ground, empty)
-            Thread.sleep(500)
             assertEquals(target.id, ground.phone.onMain { ground.controller.selectedScooterID.value })
 
             // Hide route: the trail goes, and the next tap closes the card.
@@ -379,6 +384,24 @@ class GroundOverlaysTest {
         at(east = -200.0, north = -150.0), at(east = 0.0, north = -120.0), at(east = 60.0, north = 40.0),
         at(east = 30.0, north = 60.0), at(east = 200.0, north = 260.0),
     )
+
+    /** The point a share of the way along a route, measured in metres on the ground. */
+    private fun along(points: List<GeoPoint>, share: Double): GeoPoint {
+        val metresPerDegree = 111_195.0
+        val cosine = kotlin.math.cos(Math.toRadians(zurich.latitude))
+        fun length(a: GeoPoint, b: GeoPoint) =
+            kotlin.math.hypot((b.longitude - a.longitude) * metresPerDegree * cosine, (b.latitude - a.latitude) * metresPerDegree)
+        var left = share * points.zipWithNext().sumOf { (a, b) -> length(a, b) }
+        for ((a, b) in points.zipWithNext()) {
+            val segment = length(a, b)
+            if (left <= segment) {
+                val t = left / segment
+                return GeoPoint(a.latitude + (b.latitude - a.latitude) * t, a.longitude + (b.longitude - a.longitude) * t)
+            }
+            left -= segment
+        }
+        return points.last()
+    }
 
     /** The whole route drawn: the filter lets through every dot of the source. */
     private fun drawnWhole(ground: Ground): Boolean {
