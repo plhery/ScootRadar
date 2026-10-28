@@ -18,8 +18,8 @@ import okio.Buffer
 import java.util.concurrent.AbstractExecutorService
 import java.util.concurrent.TimeUnit
 
-/** An event as Umami got it: its name, none for a page view, and the fields the app sets. */
-data class TrackedEvent(val name: String?, val provider: String? = null, val result: String? = null)
+/** An event as Umami got it: its name, none for a page view, the fields the app sets, and the screen it was on. */
+data class TrackedEvent(val name: String?, val provider: String? = null, val result: String? = null, val url: String = "/")
 
 /**
  * The app's analytics as :core's tests have them (ScooterMapControllerFakes.kt): a ScooterAnalytics that sends
@@ -38,6 +38,7 @@ class RecordingAnalytics {
                 name = (payload["name"] as? JsonPrimitive)?.content,
                 provider = string("provider"),
                 result = string("result"),
+                url = (payload["url"] as? JsonPrimitive)?.content ?: "/",
             )
         }
 
