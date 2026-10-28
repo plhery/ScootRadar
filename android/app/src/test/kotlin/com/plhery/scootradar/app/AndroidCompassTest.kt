@@ -160,6 +160,16 @@ class AndroidCompassTest {
         assertEquals(30.0, AndroidLocationManager.headingAccuracy(withoutEstimate, SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM), 0.0)
         assertEquals(60.0, AndroidLocationManager.headingAccuracy(withoutEstimate, SensorManager.SENSOR_STATUS_ACCURACY_LOW), 0.0)
         assertEquals("needs calibrating", -1.0, AndroidLocationManager.headingAccuracy(withoutEstimate, SensorManager.SENSOR_STATUS_UNRELIABLE), 0.0)
+        // An estimate of 0 while calibrating, as the emulator's: no beam, as iOS's negative headingAccuracy.
+        val calibrating = rotationVector(0.0, accuracy = 0f)
+        assertEquals(-1.0, AndroidLocationManager.headingAccuracy(calibrating, SensorManager.SENSOR_STATUS_UNRELIABLE), 0.0)
+        assertEquals(-1.0, AndroidLocationManager.headingAccuracy(calibrating, SensorManager.SENSOR_STATUS_NO_CONTACT), 0.0)
+        assertEquals(
+            "a sure sensor's 0 is its estimate",
+            0.0,
+            AndroidLocationManager.headingAccuracy(calibrating, SensorManager.SENSOR_STATUS_ACCURACY_HIGH),
+            0.0,
+        )
         assertEquals(
             "an estimate of -1 is none",
             30.0,
