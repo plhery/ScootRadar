@@ -51,35 +51,76 @@ class MapZoomTest {
     @Test
     fun aCameraDistanceShowsWhatMapKitsCameraShowsFromThere() {
         // MapKit's camera 350, 1200 and 3000 m above Zürich showed these zooms on the iPhone's 440×956 map.
-        assertEquals(18.179, MapZoom.atDistance(350.0, latitude = 47.3769, height = 956.0), 0.001)
-        assertEquals(16.401, MapZoom.atDistance(1200.0, latitude = 47.3769, height = 956.0), 0.001)
-        assertEquals(15.079, MapZoom.atDistance(3000.0, latitude = 47.3769, height = 956.0), 0.001)
-        assertEquals(1200.0, MapZoom.mapKitDistance(16.401, latitude = 47.3769, height = 956.0), 1.0)
+        val iPhone = MapKitCamera.IPhone
+        assertEquals(18.179, MapZoom.atDistance(350.0, latitude = 47.3769, height = 956.0, iPhone), 0.001)
+        assertEquals(16.401, MapZoom.atDistance(1200.0, latitude = 47.3769, height = 956.0, iPhone), 0.001)
+        assertEquals(15.079, MapZoom.atDistance(3000.0, latitude = 47.3769, height = 956.0, iPhone), 0.001)
+        assertEquals(1200.0, MapZoom.mapKitDistance(16.401, latitude = 47.3769, height = 956.0, iPhone), 1.0)
         // 2.0494 heights of the map: 1729.7 m over an 844 dp map is 1 m a dp.
-        val zoom = MapZoom.atDistance(1729.6936, latitude = 0.0, height = 844.0)
+        val zoom = MapZoom.atDistance(1729.6936, latitude = 0.0, height = 844.0, iPhone)
         assertEquals(1.0, MapZoom.metresPerPoint(zoom, latitude = 0.0), 1e-9)
         // Further north a metre is more of the flat map.
-        assertEquals(zoom + log2(0.5), MapZoom.atDistance(1729.6936, latitude = 60.0, height = 844.0), 1e-9)
-        assertEquals(MapZoom.maximum, MapZoom.atDistance(0.01, latitude = 47.0, height = 844.0), 0.0)
+        assertEquals(zoom + log2(0.5), MapZoom.atDistance(1729.6936, latitude = 60.0, height = 844.0, iPhone), 1e-9)
+        assertEquals(MapZoom.maximum, MapZoom.atDistance(0.01, latitude = 47.0, height = 844.0, iPhone), 0.0)
+    }
+
+    @Test
+    fun onTheIPadMapKitsCameraStandsCloserForTheSameMap() {
+        // MapKit's camera 350, 1200 and 3000 m above Zürich showed these zooms on the iPad's 1032×1376 map.
+        val iPad = MapKitCamera.IPad
+        assertEquals(18.62, MapZoom.atDistance(350.0, latitude = 47.3769, height = 1376.0, iPad), 0.01)
+        assertEquals(16.85, MapZoom.atDistance(1200.0, latitude = 47.3769, height = 1376.0, iPad), 0.01)
+        assertEquals(15.52, MapZoom.atDistance(3000.0, latitude = 47.3769, height = 1376.0, iPad), 0.01)
+        assertEquals(1200.0, MapZoom.mapKitDistance(16.846, latitude = 47.3769, height = 1376.0, iPad), 1.0)
+        // 1.9384 heights of the map, against the iPhone's 2.0494: from the same distance a map as tall shows more,
+        // about 0.08 of a zoom level further out.
+        for (distance in listOf(350.0, 1200.0, 3000.0)) {
+            val onTheIPhone = MapZoom.atDistance(distance, latitude = 47.3769, height = 1000.0, MapKitCamera.IPhone)
+            assertEquals(log2(2.0494 / 1.9384), onTheIPhone - MapZoom.atDistance(distance, latitude = 47.3769, height = 1000.0, iPad), 1e-9)
+        }
+        // A window regular both ways is an iPad's.
+        assertEquals(MapKitCamera.IPad, MapKitCamera.of(regular = true))
+        assertEquals(MapKitCamera.IPhone, MapKitCamera.of(regular = false))
     }
 
     @Test
     fun theCameraTiltsNoMoreThanMapKitsDoesAtItsHeight() {
         // Either side of each edge MapKit's camera met over Zürich on the iPhone: 360/361 m, 1440/1441 m and
         // 2881/2882 m above it.
-        assertEquals(75.0, MapZoom.mapKitMostTilt(18.138, latitude = 47.3769), 0.0)
-        assertEquals(70.0, MapZoom.mapKitMostTilt(18.134, latitude = 47.3769), 0.0)
-        assertEquals(70.0, MapZoom.mapKitMostTilt(16.138, latitude = 47.3769), 0.0)
-        assertEquals(60.0, MapZoom.mapKitMostTilt(16.134, latitude = 47.3769), 0.0)
-        assertEquals(60.0, MapZoom.mapKitMostTilt(15.138, latitude = 47.3769), 0.0)
-        assertEquals(35.0, MapZoom.mapKitMostTilt(15.134, latitude = 47.3769), 0.0)
-        assertEquals(35.0, MapZoom.mapKitMostTilt(MapZoom.minimum, latitude = 47.3769), 0.0)
-        assertEquals(75.0, MapZoom.mapKitMostTilt(MapZoom.maximum, latitude = 47.3769), 0.0)
+        val iPhone = MapKitCamera.IPhone
+        assertEquals(75.0, MapZoom.mapKitMostTilt(18.138, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(70.0, MapZoom.mapKitMostTilt(18.134, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(70.0, MapZoom.mapKitMostTilt(16.138, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(16.134, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(15.138, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(35.0, MapZoom.mapKitMostTilt(15.134, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(35.0, MapZoom.mapKitMostTilt(MapZoom.minimum, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(75.0, MapZoom.mapKitMostTilt(MapZoom.maximum, latitude = 47.3769, iPhone), 0.0)
         // The camera's height follows the ground's scale: in Oslo the same zoom is closer to the ground.
-        assertEquals(60.0, MapZoom.mapKitMostTilt(15.0, latitude = 59.9139), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(15.0, latitude = 59.9139, iPhone), 0.0)
         // MapLibre goes no further than 60°.
-        assertEquals(60.0, MapZoom.mostTilt(MapZoom.maximum, latitude = 47.3769), 0.0)
-        assertEquals(35.0, MapZoom.mostTilt(12.0, latitude = 47.3769), 0.0)
+        assertEquals(60.0, MapZoom.mostTilt(MapZoom.maximum, latitude = 47.3769, iPhone), 0.0)
+        assertEquals(35.0, MapZoom.mostTilt(12.0, latitude = 47.3769, iPhone), 0.0)
+    }
+
+    @Test
+    fun onTheIPadTheTiltsEdgesComeAtLowerZooms() {
+        // The same edges in camera distance a point of the map's height, met 0.08 of a level further out over
+        // Zürich: 18.056, 16.056 and 15.056.
+        val iPad = MapKitCamera.IPad
+        assertEquals(75.0, MapZoom.mapKitMostTilt(18.058, latitude = 47.3769, iPad), 0.0)
+        assertEquals(70.0, MapZoom.mapKitMostTilt(18.054, latitude = 47.3769, iPad), 0.0)
+        assertEquals(70.0, MapZoom.mapKitMostTilt(16.058, latitude = 47.3769, iPad), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(16.054, latitude = 47.3769, iPad), 0.0)
+        assertEquals(60.0, MapZoom.mapKitMostTilt(15.058, latitude = 47.3769, iPad), 0.0)
+        assertEquals(35.0, MapZoom.mapKitMostTilt(15.054, latitude = 47.3769, iPad), 0.0)
+        // Between the two, the iPhone's camera is past the edge where the iPad's isn't.
+        assertEquals(70.0, MapZoom.mapKitMostTilt(18.1, latitude = 47.3769, MapKitCamera.IPhone), 0.0)
+        assertEquals(75.0, MapZoom.mapKitMostTilt(18.1, latitude = 47.3769, iPad), 0.0)
+        // MapKit's caps on the iPad at 400, 1400, 1500, 2800 and 3000 m above Zürich, on its 1376-point map.
+        fun capAt(distance: Double) =
+            MapZoom.mapKitMostTilt(MapZoom.atDistance(distance, latitude = 47.3769, height = 1376.0, iPad), latitude = 47.3769, iPad)
+        assertEquals(listOf(75.0, 70.0, 70.0, 60.0, 60.0), listOf(400.0, 1400.0, 1500.0, 2800.0, 3000.0).map(::capAt))
     }
 
     @Test

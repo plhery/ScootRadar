@@ -19,7 +19,7 @@ class ScooterMapModelTest {
     private val zurich = GeoPoint(latitude = 47.3769, longitude = 8.5417)
 
     @Test
-    fun mapOpensSlightlyTiltedAndKeepsItsTiltWhenTheAppMovesIt() = withPhoneMap(MapCamera.opening(zurichStart)) { phone ->
+    fun mapOpensSlightlyTiltedAndKeepsItsTiltWhenTheAppMovesIt() = withPhoneMap(MapCamera.opening(zurichStart, MapKitCamera.IPhone)) { phone ->
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val camera = phone.onMain { MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames) }

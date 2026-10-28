@@ -68,6 +68,17 @@ class MapCamera(
 ) {
     private val projection = MapLibreProjection(map, view)
 
+    /**
+     * How MapKit's camera would stand on this map, which sets the zoom its distances give, the tilt it allows and
+     * the time its moves take: the iPad's in a window regular both ways, the iPhone's in any other (MAP-005).
+     */
+    var mapKit: MapKitCamera = MapKitCamera.IPhone
+        set(value) {
+            if (value == field) return
+            field = value
+            holdTilt()
+        }
+
     /** The safe area, which a focus on a place keeps the place out from under at the top. */
     private var safeArea = MapInsets.zero
     private var chrome = MapChrome()
@@ -132,7 +143,7 @@ class MapCamera(
 
     private fun holdTilt() {
         val camera = map.cameraPosition
-        val most = MapZoom.mostTilt(camera.zoom, camera.target?.latitude ?: return)
+        val most = MapZoom.mostTilt(camera.zoom, camera.target?.latitude ?: return, mapKit)
         if (most == tiltHeldTo) return
         tiltHeldTo = most
         map.setMaxPitchPreference(most)
@@ -338,14 +349,14 @@ class MapCamera(
     private fun animate(to: CameraPosition, animated: Boolean = true) {
         stopMotion()
         // A tilt the camera can't keep where it lands is the most it can (MAP-322).
-        val target = CameraPosition.Builder(to).tilt(min(to.tilt, MapZoom.mostTilt(to.zoom, to.target!!.latitude))).build()
+        val target = CameraPosition.Builder(to).tilt(min(to.tilt, MapZoom.mostTilt(to.zoom, to.target!!.latitude, mapKit))).build()
         if (!animated || !ValueAnimator.areAnimatorsEnabled()) {
             jump(target)
             regionDidChange(animated = false)
             return
         }
         val from = map.cameraPosition
-        val millis = moveMillis(from, target, projection.bounds.height)
+        val millis = moveMillis(from, target, projection.bounds.height, mapKit)
         moving = true
         motion = scope.launch {
             Animatable(0f).animateTo(1f, tween(millis, easing = easeInEaseOut)) { jump(between(from, target, value.toDouble())) }
@@ -393,14 +404,15 @@ class MapCamera(
         /**
          * Where the map opens: the start region fitted in the iPhone's opening frame, as MapKit fits it before the
          * map has a size of its own, then tilted to the opening pitch, north up (MAP-002–004). A debug build's
-         * screenshot camera takes its place (MAP-005).
+         * screenshot camera takes its place, at the distance MapKit's camera would stand from it as `mapKit` stands
+         * (MAP-005).
          */
-        fun opening(start: ScooterMapStart, screenshot: ScooterScreenshotCamera.Camera? = null): CameraPosition {
+        fun opening(start: ScooterMapStart, mapKit: MapKitCamera, screenshot: ScooterScreenshotCamera.Camera? = null): CameraPosition {
             val frame = ScooterMapCameraPolicy.openingFrame
             if (screenshot != null) {
                 return CameraPosition.Builder()
                     .target(LatLng(screenshot.center.latitude, screenshot.center.longitude))
-                    .zoom(MapZoom.atDistance(screenshot.distance, screenshot.center.latitude, frame.height))
+                    .zoom(MapZoom.atDistance(screenshot.distance, screenshot.center.latitude, frame.height, mapKit))
                     .tilt(screenshot.pitch)
                     .bearing(screenshot.heading)
                     .build()
@@ -417,14 +429,15 @@ class MapCamera(
          * How long MapKit takes to move its camera, in milliseconds (MAP-277): a quarter of a second for each zoom
          * level begun, or for each height of the camera above the ground, as it stands at the end, that the move
          * crosses, whichever is longer; from a quarter of a second to two seconds. MapKit doesn't say; this was
-         * measured on the iOS 27 simulator, on the iPhone and the iPad. The map is `height` dp tall.
+         * measured on the iOS 27 simulator, on the iPhone and the iPad. The map is `height` dp tall, and MapKit's
+         * camera would stand over it as `mapKit` stands.
          */
-        internal fun moveMillis(from: CameraPosition, to: CameraPosition, height: Double): Int {
+        internal fun moveMillis(from: CameraPosition, to: CameraPosition, height: Double, mapKit: MapKitCamera): Int {
             val levels = max(1.0, ceil(abs(to.zoom - from.zoom) - 1e-6))
             val start = from.target!!
             val end = to.target!!
             val ground = GeoPoint(start.latitude, start.longitude).distance(to = GeoPoint(end.latitude, end.longitude))
-            val altitude = MapZoom.mapKitDistance(to.zoom, end.latitude, height) * cos(to.tilt * PI / 180)
+            val altitude = MapZoom.mapKitDistance(to.zoom, end.latitude, height, mapKit) * cos(to.tilt * PI / 180)
             val heights = if (altitude > 0) ground / altitude else 0.0
             return (min(2.0, max(0.25, 0.25 * max(levels, heights))) * 1000).roundToInt()
         }

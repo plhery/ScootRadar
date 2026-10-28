@@ -14,7 +14,7 @@ class MapCameraTest {
     @Test
     fun theMapOpensOnTheStartRegionAsMapKitFitsItTilted() {
         val start = ScooterMapStart.switzerland
-        val opening = MapCamera.opening(start)
+        val opening = MapCamera.opening(start, MapKitCamera.IPhone)
 
         assertEquals(start.region.center.latitude, opening.target!!.latitude, 0.0)
         assertEquals(start.region.center.longitude, opening.target!!.longitude, 0.0)
@@ -26,13 +26,17 @@ class MapCameraTest {
     @Test
     fun aScreenshotCameraTakesThePlaceOfTheStart() {
         val camera = ScooterScreenshotCamera.Camera(GeoPoint(47.3769, 8.5417), distance = 900.0, pitch = 45.0, heading = 30.0)
-        val opening = MapCamera.opening(ScooterMapStart.switzerland, camera)
+        val opening = MapCamera.opening(ScooterMapStart.switzerland, MapKitCamera.IPhone, camera)
 
         assertEquals(47.3769, opening.target!!.latitude, 0.0)
         assertEquals(8.5417, opening.target!!.longitude, 0.0)
-        assertEquals(MapZoom.atDistance(900.0, latitude = 47.3769, height = 844.0), opening.zoom, 0.0)
+        assertEquals(MapZoom.atDistance(900.0, latitude = 47.3769, height = 844.0, MapKitCamera.IPhone), opening.zoom, 0.0)
         assertEquals(45.0, opening.tilt, 0.0)
         assertEquals(30.0, opening.bearing, 0.0)
+        // In an iPad's window MapKit's camera stands closer for the same map, so the same distance shows more.
+        val onTheIPad = MapCamera.opening(ScooterMapStart.switzerland, MapKitCamera.IPad, camera)
+        assertEquals(MapZoom.atDistance(900.0, latitude = 47.3769, height = 844.0, MapKitCamera.IPad), onTheIPad.zoom, 0.0)
+        assertEquals(0.0803, opening.zoom - onTheIPad.zoom, 0.0001)
     }
 
     @Test
@@ -48,8 +52,8 @@ class MapCameraTest {
         assertEquals(middle.latitude, halfway.target!!.latitude, 1e-9)
         assertEquals(middle.longitude, halfway.target!!.longitude, 1e-9)
         // The camera's distance halfway, not the zoom: past 13, as MapKit's comes in.
-        val distance = (MapZoom.mapKitDistance(12.0, 47.0, 844.0) + MapZoom.mapKitDistance(14.0, 48.0, 844.0)) / 2
-        assertEquals(MapZoom.atDistance(distance, middle.latitude, 844.0), halfway.zoom, 1e-9)
+        val distance = (MapZoom.mapKitDistance(12.0, 47.0, 844.0, MapKitCamera.IPhone) + MapZoom.mapKitDistance(14.0, 48.0, 844.0, MapKitCamera.IPhone)) / 2
+        assertEquals(MapZoom.atDistance(distance, middle.latitude, 844.0, MapKitCamera.IPhone), halfway.zoom, 1e-9)
         assertEquals(12.67, halfway.zoom, 0.01)
         assertEquals(30.0, halfway.tilt, 1e-9)
         assertEquals(0.0, halfway.bearing % 360, 1e-9)
@@ -64,7 +68,7 @@ class MapCameraTest {
     fun aMoveTakesAQuarterOfASecondForEachZoomLevelBegun() {
         // As MapKit's moves in and out took on the iOS 27 simulator.
         val from = position(47.3769, 8.5417, zoom = 15.0, tilt = 20.0)
-        fun zoomedBy(levels: Double) = MapCamera.moveMillis(from, position(47.3769, 8.5417, zoom = 15.0 + levels, tilt = 20.0), 956.0)
+        fun zoomedBy(levels: Double) = MapCamera.moveMillis(from, position(47.3769, 8.5417, zoom = 15.0 + levels, tilt = 20.0), 956.0, MapKitCamera.IPhone)
         assertEquals(250, zoomedBy(0.0))
         assertEquals(250, zoomedBy(0.9))
         assertEquals(250, zoomedBy(1.0))
@@ -80,13 +84,14 @@ class MapCameraTest {
     fun aMoveTakesAQuarterOfASecondForEachHeightOfTheCameraItCrosses() {
         // MapKit's camera 1200 m above Zürich on the iPhone, moved east: 3.23 km took 0.70 s flat, 0.75 s at 20°
         // and 0.98 s at 45°, and 9 km 1.90 s, each with some 30 ms before the first frame.
-        val zoom = MapZoom.atDistance(1200.0, latitude = 47.3769, height = 956.0)
+        val zoom = MapZoom.atDistance(1200.0, latitude = 47.3769, height = 956.0, MapKitCamera.IPhone)
         fun east(km: Double, tilt: Double): Int {
             val longitude = 8.5417 + km / (111.32 * kotlin.math.cos(47.3769 * Math.PI / 180))
             return MapCamera.moveMillis(
                 position(47.3769, 8.5417, zoom = zoom, tilt = tilt),
                 position(47.3769, longitude, zoom = zoom, tilt = tilt),
                 956.0,
+                MapKitCamera.IPhone,
             )
         }
         assertEquals(670.0, east(3.228, tilt = 0.0).toDouble(), 10.0)
@@ -101,8 +106,31 @@ class MapCameraTest {
             position(47.3769, 8.5417, zoom = zoom - 1, tilt = 0.0),
             position(47.3769, 8.5417 + 3.228 / (111.32 * kotlin.math.cos(47.3769 * Math.PI / 180)), zoom = zoom, tilt = 0.0),
             956.0,
+            MapKitCamera.IPhone,
         )
         assertEquals(670.0, closer.toDouble(), 10.0)
+    }
+
+    @Test
+    fun onTheIPadAMoveTakesTheSameTimeForTheSameCameraHeight() {
+        // MapKit's camera 1200 m above Zürich on the iPad, a map 1376 points tall, moved east: 3 km took 0.67 s,
+        // 6 km 1.29 s and 9 km 1.90 s, each with some 30 ms before the first frame, as on the iPhone.
+        val height = 1376.0
+        val zoom = MapZoom.atDistance(1200.0, latitude = 47.3769, height = height, MapKitCamera.IPad)
+        fun east(km: Double, camera: MapKitCamera): Int {
+            val longitude = 8.5417 + km / (111.32 * kotlin.math.cos(47.3769 * Math.PI / 180))
+            return MapCamera.moveMillis(
+                position(47.3769, 8.5417, zoom = zoom, tilt = 0.0),
+                position(47.3769, longitude, zoom = zoom, tilt = 0.0),
+                height,
+                camera,
+            )
+        }
+        assertEquals(640.0, east(3.0, MapKitCamera.IPad).toDouble(), 20.0)
+        assertEquals(1260.0, east(6.0, MapKitCamera.IPad).toDouble(), 20.0)
+        assertEquals(1870.0, east(9.0, MapKitCamera.IPad).toDouble(), 20.0)
+        // The iPhone's camera would stand 6% higher over that map, and cross the same ground sooner.
+        assertEquals(592, east(3.0, MapKitCamera.IPhone))
     }
 
     @Test

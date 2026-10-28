@@ -210,7 +210,7 @@ class RiderLocationTest {
     }
 
     @Test
-    fun aTurnOfThePhoneKeepsTheDotAndItsBeamWithAFix() {
+    fun aTurnOfThePhoneKeepsTheScreenUprightAndTheDotAndItsBeamWithAFix() {
         grant()
         launch()
         waitFor(FIX_WAIT) { controller.userLocation.value != null }
@@ -219,14 +219,16 @@ class RiderLocationTest {
         waitFor(10_000) { drawn(ScooterMarkerLayers.RIDER) && beamShown() }
         screenshot("rider-portrait")
 
+        // A phone's screen stays upright, as the iPhone's app does (UI-375).
         device.setOrientationLandscape()
-        compose.waitUntil(10_000) { rotation() == Surface.ROTATION_90 || rotation() == Surface.ROTATION_270 }
-        // The same activity, the rider and the beam still drawn where the turned map shows them.
+        Thread.sleep(2_000)
+        assertEquals(Surface.ROTATION_0, rotation())
+        // The same activity, the rider and the beam still drawn.
         waitFor(10_000) { drawn(ScooterMarkerLayers.RIDER) && drawn(ScooterMarkerLayers.RIDER_RING) && beamShown() }
         assertTrue(scenario!!.state.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED))
         activity.let { turned -> scenario!!.onActivity { assertTrue(it === turned) } }
         compose.waitForIdle()
-        screenshot("rider-landscape")
+        screenshot("rider-turned")
     }
 
     @Test

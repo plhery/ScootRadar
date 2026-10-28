@@ -18,6 +18,7 @@ import com.plhery.scootradar.app.HeadingOrientationWatcher
 import com.plhery.scootradar.app.LaunchArgumentDefaults
 import com.plhery.scootradar.app.ScooterApplication
 import com.plhery.scootradar.app.ScooterMapViewModel
+import com.plhery.scootradar.app.ScreenOrientation
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.map.ScooterMap
 import com.plhery.scootradar.ui.ScooterMapScreen
@@ -27,7 +28,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 /**
  * The app's one activity, edge to edge. It is AppCompat's so that a language chosen for the app applies from
  * its start on Android 12 (X-AD14); rotation, a resized window, dark mode and a language change reach it as
- * they are, without a new activity. A scootradar.com link to the map opens in it, or comes to it while it runs.
+ * they are, without a new activity. On a phone it stays upright, as the iPhone's app does; on a larger screen it
+ * turns every way, as the iPad's does. A scootradar.com link to the map opens in it, or comes to it while it runs.
  */
 class MainActivity : AppCompatActivity() {
     private val model: ScooterMapViewModel by viewModels {
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        ScreenOrientation.apply(this)
         // AppCompat has put a language chosen for the app in the activity's configuration by now.
         (application as ScooterApplication).container.languages.launched(resources.configuration)
         // Only this activity asks the rider, and only while it exists: the location service outlives it.
@@ -127,6 +130,8 @@ class MainActivity : AppCompatActivity() {
         super.onConfigurationChanged(newConfig)
         // The system bars' icons follow the window's light or dark.
         enableEdgeToEdge()
+        // A foldable unfolded or folded is on another screen.
+        ScreenOrientation.apply(this)
         headingOrientation.displayChanged()
     }
 }

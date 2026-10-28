@@ -79,37 +79,34 @@ object MapZoom {
         return min(maximum, max(minimum, log2(MapPoint.worldSize / (512 * perPoint))))
     }
 
-    /**
-     * How many heights of the flat map it shows MapKit's camera stands from the point it looks at, its
-     * centerCoordinateDistance. MapKit doesn't say; it was measured on the iOS 27 simulator's iPhone 17 Pro Max,
-     * a map 440×956 points. The iPad's, 1032×1376, stands 1.9384 heights away.
-     */
-    const val mapKitHeights: Double = 2.0494
-
     /** The metres a dp of the flat map covers at MapLibre's `zoom`, where the map looks at `latitude`. */
     fun metresPerPoint(zoom: Double, latitude: Double): Double =
         2 * PI * 6_378_137.0 * cos(latitude * PI / 180) / (512 * 2.0.pow(zoom))
 
-    /** How far MapKit's camera would stand from what it looks at, in metres, to show a map `height` dp tall at `zoom`. */
-    fun mapKitDistance(zoom: Double, latitude: Double, height: Double): Double =
-        mapKitHeights * height * metresPerPoint(zoom, latitude)
+    /**
+     * How far MapKit's camera would stand from what it looks at, in metres, to show a map `height` dp tall at `zoom`,
+     * as `camera` stands.
+     */
+    fun mapKitDistance(zoom: Double, latitude: Double, height: Double, camera: MapKitCamera): Double =
+        camera.heights * height * metresPerPoint(zoom, latitude)
 
     /**
      * MapLibre's zoom at which the map shows what MapKit's camera shows from `distance` metres away, on a map
-     * `height` dp tall (MAP-005).
+     * `height` dp tall, as `camera` stands (MAP-005).
      */
-    fun atDistance(distance: Double, latitude: Double, height: Double): Double {
-        val metresPerPoint = distance / (mapKitHeights * height)
+    fun atDistance(distance: Double, latitude: Double, height: Double, camera: MapKitCamera): Double {
+        val metresPerPoint = distance / (camera.heights * height)
         val circumference = 2 * PI * 6_378_137.0 * cos(latitude * PI / 180)
         return min(maximum, max(minimum, log2(circumference / (512 * metresPerPoint))))
     }
 
     /**
      * The most MapKit tilts its camera at `zoom` (MAP-322): 75° close up, then 70°, 60° and 35° past camera distances
-     * of 0.377, 1.508 and 3.017 m for each point of the map's height, the same on the iPhone and the iPad.
+     * of 0.377, 1.508 and 3.017 m for each point of the map's height, the same on the iPhone and the iPad. The iPad's
+     * camera stands closer to show the same map, so its edges come at zooms about 0.08 lower.
      */
-    fun mapKitMostTilt(zoom: Double, latitude: Double): Double {
-        val perPoint = mapKitHeights * metresPerPoint(zoom, latitude)
+    fun mapKitMostTilt(zoom: Double, latitude: Double, camera: MapKitCamera): Double {
+        val perPoint = camera.heights * metresPerPoint(zoom, latitude)
         return when {
             perPoint <= 0.3771 -> 75.0
             perPoint <= 1.5084 -> 70.0
@@ -119,5 +116,25 @@ object MapZoom {
     }
 
     /** The most the map tilts at `zoom`: MapKit's, where MapLibre goes that far, which is 60° at most. */
-    fun mostTilt(zoom: Double, latitude: Double): Double = min(mapKitMostTilt(zoom, latitude), MapLibreConstants.MAXIMUM_TILT)
+    fun mostTilt(zoom: Double, latitude: Double, camera: MapKitCamera): Double =
+        min(mapKitMostTilt(zoom, latitude, camera), MapLibreConstants.MAXIMUM_TILT)
+}
+
+/**
+ * How far MapKit's camera stands from the point it looks at, its centerCoordinateDistance, in heights of the flat
+ * map it shows. MapKit doesn't say, and it is not the same on every map; it was measured on the iOS 27 simulator
+ * (tools/mapkit-probe/FINDINGS.md). A window regular both ways, an iPad's, takes the iPad's; any other the iPhone's.
+ */
+enum class MapKitCamera(val heights: Double) {
+    /** The iPhone 17 Pro Max's, a map 440×956 points. */
+    IPhone(2.0494),
+
+    /** The iPad's, a map 1032×1376 points. */
+    IPad(1.9384),
+    ;
+
+    companion object {
+        /** The camera of a window regular both ways, or not. */
+        fun of(regular: Boolean): MapKitCamera = if (regular) IPad else IPhone
+    }
 }

@@ -34,7 +34,7 @@ class ScooterFilteringTest {
         // A map created without a size drops the region it is given.
         assertFalse(ScooterMapCameraPolicy.openingFrame.isEmpty)
 
-        withPhoneMap(camera = MapCamera.opening(ScooterMapStart.switzerland)) { phone ->
+        withPhoneMap(camera = MapCamera.opening(ScooterMapStart.switzerland, MapKitCamera.IPhone)) { phone ->
             val center = phone.onMain { phone.map.cameraPosition.target!! }
             assertEquals(ScooterMapStart.switzerlandCenter.latitude, center.latitude, 0.5)
             assertEquals(ScooterMapStart.switzerlandCenter.longitude, center.longitude, 0.5)
@@ -50,7 +50,7 @@ class ScooterFilteringTest {
             bounds = GeoBounds(south = 52.1367, west = 12.6012, north = 52.9019, east = 13.9059),
         )
         val start = ScooterStartPlace.start(forTimeZone = "Europe/Berlin", cities = listOf(berlin))
-        withPhoneMap(camera = MapCamera.opening(start)) { phone ->
+        withPhoneMap(camera = MapCamera.opening(start, MapKitCamera.IPhone)) { phone ->
             val center = phone.onMain { phone.map.cameraPosition.target!! }
             assertEquals(berlin.center.latitude, center.latitude, 0.02)
             assertEquals(berlin.center.longitude, center.longitude, 0.02)

@@ -174,7 +174,7 @@ class MapCameraTest {
         val memory = MapCameraMemory()
         try {
             val first = phone.onMain {
-                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
+                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
                 MapCamera(phone.map, phone.view, testController(scope), memory, frames).also {
                     it.applyFocus(MapFocusRequest(bern, token = 1))
                 }
@@ -212,7 +212,7 @@ class MapCameraTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val camera = phone.onMain {
-            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart)))
+            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
             MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames)
         }
         settle()
