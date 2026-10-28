@@ -11,7 +11,7 @@ import androidx.core.graphics.toColorInt
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
-import com.plhery.scootradar.ui.theme.screenshotOptions
+import com.plhery.scootradar.ui.theme.drawnArtOptions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -108,8 +108,8 @@ class RiderArtTest {
         )
         for ((name, look) in looks) {
             // A sure compass to the north-east, and a vaguer one to the south-south-west, in a wider halo.
-            rider(look, beam = 30.0, halfAngle = 22.0, halo = 40.0).captureRoboImage("src/test/screenshots/rider/northEast_$name.png", screenshotOptions)
-            rider(look, beam = 200.0, halfAngle = 45.0, halo = 70.0).captureRoboImage("src/test/screenshots/rider/southSouthWest_$name.png", screenshotOptions)
+            rider(look, beam = 30.0, halfAngle = 22.0, halo = 40.0).captureRoboImage("src/test/screenshots/rider/northEast_$name.png", drawnArtOptions)
+            rider(look, beam = 200.0, halfAngle = 45.0, halo = 70.0).captureRoboImage("src/test/screenshots/rider/southSouthWest_$name.png", drawnArtOptions)
         }
     }
 

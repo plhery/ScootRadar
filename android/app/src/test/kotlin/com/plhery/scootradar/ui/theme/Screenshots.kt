@@ -3,6 +3,7 @@ package com.plhery.scootradar.ui.theme
 import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onRoot
+import com.dropbox.differ.SimpleImageComparator
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
 import org.robolectric.RuntimeEnvironment
@@ -27,6 +28,15 @@ enum class Look(val dark: Boolean, val fontScale: Float) {
  */
 val screenshotOptions = RoborazziOptions(
     compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f),
+)
+
+/**
+ * The comparison for art drawn straight into a bitmap, as the rider's: Linux's Skia lays an edge's and a gradient's
+ * coverage a level or two apart from the Mac's (1,561 pixels of 160,000 off by 2/255 at most, on CI). A pixel may be
+ * that much off in each channel, 0.02 of the colour distance; a changed colour or a beam turned a degree is far more.
+ */
+val drawnArtOptions = RoborazziOptions(
+    compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f, imageComparator = SimpleImageComparator(maxDistance = 0.02f)),
 )
 
 /** Sets the font scale for what is composed next, as the phone's Settings does; [resetFontScale] after. */
