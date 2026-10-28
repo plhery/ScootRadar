@@ -10,7 +10,6 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.ScooterAppearance
-import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterMapLink
@@ -168,7 +167,7 @@ class ScooterMapEventsTest {
         val analytics = RecordingAnalytics()
         val model = makeController(empty(), analytics = analytics)
         val place = MapDestination(title = "Paradeplatz", subtitle = "Zürich", point = GeoPoint(latitude = 47.3698, longitude = 8.5392))
-        val city = ScooterCityCatalog.cities.first()
+        val city = TestCatalog.zurich
 
         model.focusOnAddress(place)
         // A "Cities with scooters" chip, as the city chosen in the search.
@@ -286,7 +285,7 @@ class ScooterMapEventsTest {
     fun aLinkSaysWhetherItOpenedTheMapACityOrAPlace() = runTest {
         val analytics = RecordingAnalytics()
         val model = makeController(empty(), analytics = analytics)
-        val city = ScooterCityCatalog.cities.first()
+        val city = TestCatalog.zurich
 
         model.open(ScooterMapLink())
         model.open(ScooterMapLink(origin = city.center))

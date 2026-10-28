@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
@@ -347,7 +348,8 @@ internal object NoWalkingDirections : WalkingDirectionsClient {
 
 /**
  * The controller on the test's background scope. Without a clock of its own it reads the test's, which the
- * test's waits move as real time moves under the iPhone's tests, from where TestClock starts.
+ * test's waits move as real time moves under the iPhone's tests, from where TestClock starts. It reads the tests'
+ * own catalog unless given another.
  */
 internal fun TestScope.makeController(
     api: ScooterAPIClient,
@@ -362,6 +364,7 @@ internal fun TestScope.makeController(
     openInMaps: (ScooterWalkTarget) -> Unit = {},
     analytics: RecordingAnalytics? = null,
     start: ScooterMapStart = ScooterMapStart.switzerland,
+    catalog: ScooterCatalog = TestCatalog.catalog,
 ): ScooterMapController {
     val scheduler = testScheduler
     val startedAt = TestClock().now
@@ -384,6 +387,7 @@ internal fun TestScope.makeController(
         keepAppLanguages = keepAppLanguages,
         analytics = analytics?.analytics,
         start = start,
+        catalog = catalog,
     )
 }
 

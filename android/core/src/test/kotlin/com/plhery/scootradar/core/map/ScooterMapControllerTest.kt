@@ -18,6 +18,7 @@ import com.plhery.scootradar.core.generated.ScooterProvider.Ryde
 import com.plhery.scootradar.core.generated.ScooterProvider.Voi
 import com.plhery.scootradar.core.generated.ScooterProvider.Whoosh
 import com.plhery.scootradar.core.model.AppleMapStyle
+import com.plhery.scootradar.core.model.CatalogData
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -30,6 +31,7 @@ import com.plhery.scootradar.core.model.RentalCurfew
 import com.plhery.scootradar.core.model.RideEstimateDuration
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterCityCatalog
@@ -56,7 +58,6 @@ import com.plhery.scootradar.core.model.ScooterMapCameraPolicy.FoldSide
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.core.model.ScooterMenuBar
 import com.plhery.scootradar.core.model.ScooterParking
-import com.plhery.scootradar.core.model.ScooterProviderCoverage
 import com.plhery.scootradar.core.model.ScooterProviderHealth
 import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -99,6 +100,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -158,14 +160,13 @@ class ScooterMapControllerTest {
 
     @Test
     fun limeCoverageReachesTheCompleteMarketsIncludingBrisbanesOuterServiceAreas() = runTest {
-        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
-        // The provider's Wynnum/Manly and Sandgate/Shorncliffe zone icons, beyond central Brisbane.
-        val points = listOf(
-            45.88333 to 22.9, 48.97447 to 14.47434, 20.58806 to -100.38806,
-            26.213 to 127.67851, 25.28545 to 51.53096, -33.3976605 to -70.5505662,
-            -27.47658 to 153.0306725, -27.44796 to 153.17945, -27.33526 to 153.06117,
-        )
-        for ((lat, lng) in points) {
+        // Every one of Lime's areas in the generated catalog, Brisbane's outer ones beyond its centre among them: data/
+        // adds and moves them, so the test reads where they are rather than naming places (LOG-370).
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), catalog = ScooterCatalog.Generated)
+        val areas = CatalogData.value.regionalSystems.filter { it.first == Lime }.map { it.second }
+        assumeTrue("The catalog has no Lime area outside Switzerland", areas.isNotEmpty())
+        for (area in areas) {
+            val (lat, lng) = area.center.let { it.latitude to it.longitude }
             model.setViewport(GeoBounds(south = lat - 0.0002, west = lng - 0.0002, north = lat + 0.0002, east = lng + 0.0002))
             assertTrue("Lime coverage at $lat, $lng", Lime in model.availableProviders)
         }
@@ -2427,7 +2428,7 @@ class ScooterMapControllerTest {
         val loaded = waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value }
         assertTrue(loaded)
 
-        val curfew = unwrap(RentalCurfew.active(at = model.viewport.value.center, on = clock.now))
+        val curfew = unwrap(RentalCurfew.active(at = model.viewport.value.center, on = clock.now, among = TestCatalog.catalog.curfews))
         val finding = model.dock as? ScooterDockContent.Finding
             ?: throw AssertionError("Expected Finding scooters…, got ${model.dock}")
         assertEquals(model.dockChips, finding.chips)
@@ -2634,7 +2635,7 @@ class ScooterMapControllerTest {
                 locationManager = manager,
                 locationTimeout = 50.milliseconds,
             )
-            val bern = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:bern" })
+            val bern = TestCatalog.bern
             val place = MapDestination(title = "Bundesplatz", point = GeoPoint(46.9471, 7.4441))
 
             model.focusOnUser()
@@ -2840,12 +2841,14 @@ class ScooterMapControllerTest {
     @Test
     fun aTypedCoveredCityShowsTheWholeCityLikeItsChip() = runTest {
         val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
-        val locarno = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:locarno" })
+        // A city of the generated catalog, which the address search reads to tell a city's centre from an address. It
+        // was Locarno; any will do, as data/ adds and moves them (LOG-370).
+        val city = unwrap(ScooterCityCatalog.cities.firstOrNull())
 
-        // What the address search answers for "Locarno": the catalogue's centre.
+        // What the address search answers for the city's name: the catalogue's centre.
         val answer = """
-        [{"lat": ${locarno.center.latitude}, "lng": ${locarno.center.longitude},
-          "display_name": "Locarno, Switzerland", "title": "Locarno", "subtitle": "Svizzera", "covered": true}]
+        [{"lat": ${city.center.latitude}, "lng": ${city.center.longitude},
+          "display_name": "${city.name}, Switzerland", "title": "${city.name}", "subtitle": "Svizzera", "covered": true}]
         """
         val typed = unwrap(ScooterAPIJson.decodeFromString(ListSerializer(AddressSearchResult.serializer()), answer).firstOrNull())
         assertEquals(MapDestination.Kind.City, typed.destination.kind)
@@ -2853,24 +2856,25 @@ class ScooterMapControllerTest {
 
         model.focusOnAddress(typed.destination)
         val typedFocus = unwrap(model.focusRequest.value)
-        assertEquals("Locarno", model.searchedDestination.value?.title)
+        assertEquals(city.name, model.searchedDestination.value?.title)
 
         // The same span as the "Cities with scooters" chip.
-        model.chooseCity(locarno)
+        model.chooseCity(city)
         val chipFocus = unwrap(model.focusRequest.value)
-        assertEquals(MapFocusRequest.city(locarno.center, token = typedFocus.token), typedFocus)
+        assertEquals(MapFocusRequest.city(city.center, token = typedFocus.token), typedFocus)
         assertEquals(chipFocus.latitudinalMeters, typedFocus.latitudinalMeters, 0.0)
         assertEquals(chipFocus.longitudinalMeters, typedFocus.longitudinalMeters, 0.0)
 
         // An address, a station or a place in the city keeps the street-level view.
         val station = AddressSearchResult(
-            latitude = locarno.center.latitude + 0.002, longitude = locarno.center.longitude,
-            displayName = "Locarno, stazione", title = "Locarno, stazione", subtitle = "Treno", isCovered = true,
+            latitude = city.center.latitude + 0.002, longitude = city.center.longitude,
+            displayName = "${city.name}, stazione", title = "${city.name}, stazione", subtitle = "Treno", isCovered = true,
         )
         assertEquals(MapDestination.Kind.Address, station.destination.kind)
         model.focusOnAddress(station.destination)
         assertEquals(850.0, model.focusRequest.value?.latitudinalMeters)
-        assertNull(ScooterCityCatalog.city(centredAt = GeoPoint(46.7741, 8.1558)))
+        // The middle of the Atlantic is no city's centre.
+        assertNull(ScooterCityCatalog.city(centredAt = GeoPoint(latitude = 30.0, longitude = -40.0)))
     }
 
     @Test
@@ -2889,11 +2893,11 @@ class ScooterMapControllerTest {
     fun passesListProvidersHereOrWithAPassAndEveryProviderOtherwise() = runTest {
         val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
         model.setViewport(GeoBounds(zurichRegion))
-        assertEquals(ScooterProviderCoverage.swissProviders, model.passProviders)
+        assertEquals(ScooterProvider.entries.filter { it in TestCatalog.swissProviders }, model.passProviders)
 
         model.setRidePass(ProviderRidePass(enabled = true, freeMinutes = 10), Pony)
         assertEquals(
-            ScooterProvider.entries.filter { it in ScooterProviderCoverage.swissProviders || it == Pony },
+            ScooterProvider.entries.filter { it in TestCatalog.swissProviders || it == Pony },
             model.passProviders,
         )
 
@@ -3000,7 +3004,7 @@ class ScooterMapControllerTest {
 
     @Test
     fun aLinkToACityOpensItLikeTheSearchAndTheFirstFixLeavesTheMapThere() = runTest {
-        val bern = unwrap(ScooterCityCatalog.cities.firstOrNull { it.id == "ch:bern" })
+        val bern = TestCatalog.bern
         val link = ScooterMapLink(origin = GeoPoint(latitude = bern.center.latitude, longitude = bern.center.longitude))
         // The link may open the app before it starts locating, or after.
         for (linkFirst in listOf(true, false)) {
@@ -3691,7 +3695,7 @@ class ScooterMapControllerTest {
     private val zurichFix: ScooterLocationFix
         get() = ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 25.0, timestamp = Instant.now())
 
-    /** Lungern has no scooter operator; Bern, Wädenswil and Zürich are the closest covered cities. */
+    /** No operator serves Lungern in the tests' catalog (TestCatalog), whose closest cities to it are Bern, Wädenswil and Zürich. */
     private val lungernRegion = MapRegion(GeoPoint(46.7741, 8.1558), latitudeDelta = 0.02, longitudeDelta = 0.02)
 
     /** Date.distantFuture: the first day of the year 4001. */
