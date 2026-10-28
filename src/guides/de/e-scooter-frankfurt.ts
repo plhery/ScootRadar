@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Frankfurt 2026: Anbieter, Preise, Parkzonen',
   description: 'E-Scooter Frankfurt: die drei Anbieter seit Juli 2026, was eine Fahrt kostet, wo du parkst und was auf Mainbrücken, Zeil, Messe und in der U-Bahn gilt.',
   headline: 'E-Scooter Frankfurt: Anbieter, Preise, Parkzonen und Verbote',
-  lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ab 18 und ohne Führerschein. Voi verlangt nichts fürs Entsperren und 0,27 € pro Minute, zehn Minuten kosten also 2,70 € (Stand 13. Oktober 2026); bei Lime und Bolt zeigt die App den Preis. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
+  lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ab 18 und ohne Führerschein. Was eine Fahrt kostet, zeigt bei allen dreien die App. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:Frankfurt',
@@ -25,13 +25,13 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Frankfurt?',
       blocks: [
-        'Einen Frankfurter Tarif veröffentlicht nur Voi; Lime nennt keinen, Bolt nur einen Ab-Preis für ganz Deutschland.',
+        'Den Frankfurter Tarif zeigen Voi und Lime in ihrer App; Bolt nennt nur einen Ab-Preis für ganz Deutschland.',
         {
           table: {
             caption: 'E-Scooter-Preise in Frankfurt (veröffentlichte Tarife, Stand 13. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi', '0,00 €', '0,27 €', '2,70 €', '5,40 €'],
+              ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
               ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
               ['Bolt', 'kleine Gebühr, Betrag nicht genannt', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
             ],

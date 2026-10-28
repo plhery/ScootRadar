@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Hannover 2026: Anbieter, Preise, Parken, ÜSTRA',
   description: 'E-Scooter Hannover: die fünf Anbieter, was zehn Minuten kosten, wo du in der City parkst, warum die ÜSTRA keine Scooter mitnimmt und was der Rat neu regelt.',
   headline: 'E-Scooter Hannover: Anbieter, Preise, Parkzonen und was die neuen Regeln ändern',
-  lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde. Zehn Minuten kosten im Standardtarif bei Voi 2,20 € und bei Dott 3,90 € (Stand Oktober 2026); verbindlich ist der Preis in der App. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
+  lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde. Zehn Minuten kosten im Standardtarif bei Dott 3,90 € (Stand Oktober 2026); Voi zeigt seinen Preis in der App, und verbindlich ist bei allen der Preis in der App. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:Hannover',
@@ -25,21 +25,21 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Hannover?',
       blocks: [
-        'Einen Tarif für Hannover veröffentlichen Voi auf seiner Website und Dott in seinem offenen Datenfeed. Lime, Ryde und Bolt zeigen ihn nur in der App; ihre Preise stammen aus einem Test der HAZ (Stand 25. September 2026).',
+        'Einen Tarif für Hannover veröffentlicht Dott in seinem offenen Datenfeed. Voi, Lime, Ryde und Bolt zeigen ihn in der App; die Preise von Lime, Ryde und Bolt stammen aus einem Test der HAZ (Stand 25. September 2026).',
         {
           table: {
-            caption: 'E-Scooter-Preise in Hannover im Standardtarif (Voi und Dott: Stand 14. Oktober 2026; Lime, Ryde und Bolt laut HAZ: Stand 25. September 2026)',
+            caption: 'E-Scooter-Preise in Hannover im Standardtarif (Dott: Stand 14. Oktober 2026; Lime, Ryde und Bolt laut HAZ: Stand 25. September 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
               ['Lime (laut HAZ)', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
               ['Ryde (laut HAZ)', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
               ['Bolt (laut HAZ)', '0,25 €', '0,25 €', '2,75 €', '5,25 €'],
               ['Dott', '1,00 €', '0,29 €', '3,90 €', '6,80 €'],
+              ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Dott ist damit im Standardtarif der teuerste.',
+        'Dott ist damit im Standardtarif teurer als Lime, Ryde und Bolt.',
         'Die Preise von Abos und Pässen zeigen alle Anbieter nur in der App. Laut HAZ spart, wer oft fährt: Mit Dotts 30-Tage-Abo «Flex» für 0,99 € kostet jede Fahrt bis 30 Minuten 1,60 €. Voi und Ryde verkaufen Monatspässe mit bis zu 300 Minuten für 24,99 €, Bolt einen 30-Tage-Pass mit 150 Minuten für 12,99 €.',
         'Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Den nächsten Dott und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Hannover](map:de:Hannover).',
       ],
@@ -138,7 +138,7 @@ const guide: Guide = {
             '**Mit ÜSTRA-Abo, Deutschlandticket, Jobticket oder Deutschland-Semesterticket:** die ersten 30 Minuten jeder Fahrt gratis, so oft du willst.',
           ],
         },
-        'Eine Viertelstunde kostet damit 1 € oder nichts, mit dem E-Scooter von Voi 3,30 €.',
+        'Eine Viertelstunde kostet damit 1 € oder nichts, mit einem E-Scooter von Lime oder Ryde laut HAZ 3,30 €.',
       ],
     },
     {
@@ -176,7 +176,7 @@ const guide: Guide = {
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Hannover am günstigsten?',
-      answer: 'Im Standardtarif Voi, Lime und Ryde: keine Entsperrgebühr und 0,22 € pro Minute, zehn Minuten also 2,20 € (Voi Stand Oktober, Lime und Ryde laut HAZ Ende September 2026). Am teuersten ist Dott mit 1 € plus 0,29 € pro Minute; mit Dotts Abo «Flex» kostet laut HAZ aber jede Fahrt bis 30 Minuten 1,60 €.',
+      answer: 'Im Standardtarif laut HAZ (Ende September 2026) Lime und Ryde: keine Entsperrgebühr und 0,22 € pro Minute, zehn Minuten also 2,20 €. Voi zeigt seinen Preis in der App. Dott verlangt 1 € plus 0,29 € pro Minute; mit Dotts Abo «Flex» kostet laut HAZ aber jede Fahrt bis 30 Minuten 1,60 €.',
     },
     {
       question: 'Darf ich meinen E-Scooter in der ÜSTRA mitnehmen?',

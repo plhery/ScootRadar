@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'munich',
   name: 'E-Scooter München: Anbieter, Preise, Parken',
   title: 'E-Scooter mieten in München 2026: Anbieter und Preise',
-  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, ab 18 ohne Führerschein. Zehn Minuten kosten bei Voi 3,59 €, bei Dott 4 €. Tabu: Englischer Garten, U-Bahn.',
+  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, ab 18 ohne Führerschein. Zehn Minuten kosten bei Dott 4 €. Tabu: Englischer Garten, U-Bahn.',
   headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
-  lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 12. Oktober 2026) bei Dott 4 € und bei Voi 3,59 €; bei Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
+  lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten nach Dotts veröffentlichtem Tarif (Stand 12. Oktober 2026) 4 €; bei Voi, Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'de:München',
@@ -24,14 +24,14 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in München?',
       blocks: [
-        'Du zahlst fürs Entsperren und pro Minute. Dott veröffentlicht seinen Münchner Tarif in einem offenen Datenfeed, Voi auf seiner München-Seite. Lime und Bolt nennen für München keinen Preis; den zeigt dir ihre App.',
+        'Du zahlst fürs Entsperren und pro Minute. Dott veröffentlicht seinen Münchner Tarif in einem offenen Datenfeed. Bei Voi, Lime und Bolt zeigt dir die App den Preis für München.',
         {
           table: {
             caption: 'E-Scooter-Preise in München (veröffentlichte Tarife, Stand 12. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
-              ['Voi', '0,99 €', '0,26 €', '3,59 €', '6,19 €'],
+              ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
               ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
               ['Bolt', 'kleine Gebühr, Betrag nicht genannt', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
             ],

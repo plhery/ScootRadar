@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-munich',
   topic: 'munich',
   name: 'Renting an e-scooter in Munich',
-  title: 'E-scooter hire Munich 2026: Voi and Dott prices, Lime, Bolt',
-  description: 'Rent a Voi, Lime, Dott or Bolt e-scooter in Munich: 18+, no licence. Ten minutes cost €3.59 on Voi, €4.00 on Dott. Old-town bays, no English Garden or U-Bahn.',
+  title: 'E-scooter hire Munich 2026: Dott, Voi, Lime, Bolt prices',
+  description: 'Rent a Voi, Lime, Dott or Bolt e-scooter in Munich: 18+, no licence. Ten minutes cost €4.00 on Dott. Old-town bays, no English Garden or U-Bahn.',
   headline: 'E-scooters in Munich: apps, prices, parking and the Oktoberfest rules',
-  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €4.00 with Dott and €3.59 with Voi (published rates, 12 October 2026); Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
+  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €4.00 with Dott (its published rate, 12 October 2026); Voi, Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:München',
@@ -25,14 +25,14 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Munich?',
       blocks: [
-        'You pay to unlock, then by the minute. Dott publishes its Munich rate in its public data feed and Voi on its Munich page; Lime and Bolt publish no Munich rate, so check their apps.',
+        'You pay to unlock, then by the minute. Dott publishes its Munich rate in its public data feed; Voi, Lime and Bolt show theirs in the app.',
         {
           table: {
             caption: 'E-scooter prices in Munich (published rates, 12 October 2026)',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Dott', '€1.00', '€0.30', '€4.00', '€7.00'],
-              ['Voi', '€0.99', '€0.26', '€3.59', '€6.19'],
+              ['Voi', 'In the app', 'In the app', 'In the app', 'In the app'],
               ['Lime', 'In the app', 'In the app', 'In the app', 'In the app'],
               ['Bolt', 'Small fee, amount not given', 'From €0.15 (for all of Germany)', 'In the app', 'In the app'],
             ],
