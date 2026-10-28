@@ -120,7 +120,8 @@ fun ScooterSearchIsland(
             .iosShadow(shape, Color.Black.copy(alpha = 0.08f), radius = 10.dp, y = 4.dp)
             .chromeGlass(shape, live = true)
             .overTheMap()
-            .padding(horizontal = 10.dp, vertical = vertical)
+            // The spring overshoots 0 by a hair as the search closes, where padding may not go.
+            .padding(horizontal = 10.dp, vertical = vertical.coerceAtLeast(0.dp))
             .testTag(SEARCH_ISLAND_TAG),
     ) {
         AnimatedContent(
