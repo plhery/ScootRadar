@@ -37,6 +37,9 @@ class ScooterMapViewModel(
     /** The app's analytics, which the map also tracks with: a tap on a bay or a cluster. */
     val analytics = container.analytics
 
+    /** Where the search bar asks for places. */
+    val addressSearch = container.addressSearch
+
     /** Where the map opens, by the phone's time zone. */
     val start: ScooterMapStart = container.start
 

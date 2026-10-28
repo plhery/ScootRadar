@@ -70,6 +70,7 @@ class MapCamera(
 
     /** The safe area, which a focus on a place keeps the place out from under at the top. */
     private var safeArea = MapInsets.zero
+    private var chrome = MapChrome()
 
     private var focusUnderWay: FocusUnderWay? = null
     private var moveForNewSizeWaiting: Job? = null
@@ -263,12 +264,18 @@ class MapCamera(
     }
 
     /**
-     * The part of the map between the search bar and the dock; until the chrome is there, between the status
-     * bar and the map's bottom edge.
+     * The part of the map between the search bar and the locate button over the dock; until the chrome is there,
+     * between the status bar and the map's bottom edge.
      */
     private fun visibleRect(): ScreenRect {
         val bounds = projection.bounds
-        return ScooterMapCameraPolicy.visibleRectIn(bounds, top = safeArea.top, bottom = bounds.maxY, beside = null)
+        val top = chrome.top?.takeIf { !it.isEmpty }?.maxY ?: safeArea.top
+        return ScooterMapCameraPolicy.visibleRectIn(bounds, top = top, bottom = chrome.bottomTop ?: bounds.maxY, beside = null)
+    }
+
+    /** The chrome over the map: the search bar above, and the locate button with the dock under it. */
+    fun chromeDidChange(chrome: MapChrome) {
+        this.chrome = chrome
     }
 
     /**

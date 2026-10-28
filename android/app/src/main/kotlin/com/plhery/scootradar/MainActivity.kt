@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                     )
                 },
                 analytics = model.analytics,
+                addressSearch = model.addressSearch,
             )
         }
     }

@@ -10,6 +10,7 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat
 import androidx.customview.widget.ExploreByTouchHelper
+import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
@@ -40,6 +41,12 @@ sealed interface MarkerElement {
         override val description: MarkerDescription get() = MarkerDescriptions.of(bay)
     }
 
+    /** The searched place's pin, read by its title (MAP-222). */
+    class Pin(val destination: MapDestination, override val frame: ScreenRect) : MarkerElement {
+        override val key: String get() = "a:search"
+        override val description: MarkerDescription get() = MarkerDescription(destination.title, value = null, hint = null)
+    }
+
     /** A cluster or a city total, in its view of 48 pt. */
     class Cluster(val cluster: ClusterMark, override val frame: ScreenRect) : MarkerElement {
         override val key: String get() = (if (cluster.isServer) "g:" else "c:") + cluster.id
@@ -65,6 +72,9 @@ object MarkerElements {
         for (cluster in scene.clusters()) {
             elements += MarkerElement.Cluster(cluster, square(projection.point(cluster.cluster.coordinate), ScooterMarkerScene.CLUSTER_SIZE))
         }
+        val destination = scene.destination
+        val pin = scene.destinationFrame(projection)
+        if (destination != null && pin != null) elements += MarkerElement.Pin(destination, pin)
         // Views whose tops are a fraction of a point apart are on one line.
         return elements
             .filter { it.frame.intersection(bounds) != null }
@@ -97,6 +107,8 @@ object MarkerElements {
             is MarkerElement.Dot -> scene.select(element.mark, map)
             is MarkerElement.Bay -> scene.select(element.bay)
             is MarkerElement.Cluster -> scene.open(element.cluster, map)
+            // MapKit's callout with the title is not drawn on Android (MAP-033).
+            is MarkerElement.Pin -> Unit
         }
     }
 
@@ -180,12 +192,14 @@ class ScooterMarkerAccessibility(
         val description = element.description
         // TalkBack has no value of its own; read after the label, it keeps VoiceOver's order (MAP-217).
         node.contentDescription = listOfNotNull(description.label, description.value).joinToString(", ")
+        node.setBoundsInParent(pixels(element.frame))
+        // The pin has its label only, as MapKit gives VoiceOver.
+        if (element is MarkerElement.Pin) return
         node.className = BUTTON
         node.isSelected = MarkerElements.isSelected(element, scene)
         node.isClickable = true
         // TalkBack reads the hint as "double-tap to …" (MAP-218).
         node.addAction(AccessibilityActionCompat(AccessibilityNodeInfoCompat.ACTION_CLICK, description.hint))
-        node.setBoundsInParent(pixels(element.frame))
     }
 
     override fun onPerformActionForVirtualView(virtualViewId: Int, action: Int, arguments: Bundle?): Boolean {

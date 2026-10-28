@@ -9,6 +9,8 @@ import android.os.Build
 import android.webkit.WebView
 import androidx.core.net.toUri
 import com.plhery.scootradar.BuildConfig
+import com.plhery.scootradar.core.api.AddressSearchAPI
+import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.ScooterAPI
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScootRadarWalkingDirections
@@ -45,6 +47,9 @@ class AppContainer(private val context: Context) {
     val api = ScooterAPI(isOffline = ::isOffline)
 
     val directions = ScootRadarWalkingDirections()
+
+    /** The server's address search, which the search bar asks for places. */
+    val addressSearch: AddressSearchAPIClient by lazy { AddressSearchAPI(client = api.client) }
 
     /**
      * A stand-in that sends nothing until ScootRadar Android has a website of its own in Umami (NEEDS-USER #4):

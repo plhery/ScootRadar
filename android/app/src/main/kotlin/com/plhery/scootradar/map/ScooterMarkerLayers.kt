@@ -53,6 +53,17 @@ object MarkerFeatures {
             )
         }
         for (cluster in clusters) features += cluster(cluster, scene.isDark, art)
+        scene.destination?.let { place ->
+            val isDark = scene.isDark
+            features += MarkerFeature(
+                id = "a:${place.point.latitude}:${place.point.longitude}",
+                coordinate = place.point,
+                image = "address/${if (isDark) 1 else 0}",
+                picture = { art.addressImage(isDark) },
+                // MKAnnotationViewZPriority's defaultUnselected (MAP-124, MAP-125).
+                sortKey = 500f,
+            )
+        }
         return features
     }
 

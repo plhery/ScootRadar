@@ -65,6 +65,7 @@ class ScooterMarkers(
 
     private var style: Style? = null
     private var safeArea = MapInsets.zero
+    private var chrome = MapChrome()
 
     /** The uptime the bands are counted from, in seconds: small numbers. */
     private val epoch = SystemClock.uptimeMillis() / 1000.0
@@ -279,6 +280,20 @@ class ScooterMarkers(
         update()
     }
 
+    /** The chrome over the map: names keep clear of it, and wait while their dot is under it. */
+    fun chromeDidChange(chrome: MapChrome) {
+        if (chrome == this.chrome) return
+        this.chrome = chrome
+        // The dock springs to a new height a frame at a time: only the names move with it.
+        scene.parent = scene.parent.copy(
+            interactionExclusionFrame = chrome.top,
+            bottomChromeTop = chrome.bottomTop,
+            bottomChromeFrames = chrome.bottomFrames,
+        )
+        scene.movePills(markerMap)
+        flush()
+    }
+
     /** The safe area, whose top the names stay below. */
     fun safeAreaDidChange(insets: MapInsets) {
         if (insets == safeArea) return
@@ -297,7 +312,11 @@ class ScooterMarkers(
             usesServerClusters = controller.responseMetadata.value?.mode == "clusters",
             language = controller.language.value,
             userLocation = controller.userLocation.value,
+            interactionExclusionFrame = chrome.top,
+            bottomChromeTop = chrome.bottomTop,
+            bottomChromeFrames = chrome.bottomFrames,
         )
+        scene.applyDestination(controller.searchedDestination.value)
         val level = MapZoom.level(on = projection)
         scene.updateClusteringMode(level, markerMap)
         val added = scene.reconcile(controller.mapScooters.value, controller.mapScootersRevision.value)

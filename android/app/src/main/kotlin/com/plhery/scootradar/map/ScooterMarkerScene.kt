@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.os.SystemClock
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
@@ -291,6 +292,23 @@ class ScooterMarkerScene(
         private set
     var lastSeenVersion = 0
         private set
+
+    /** The searched place's pin (SearchedAddressAnnotation): one at most, replaced when the place changes. */
+    var destination: MapDestination? = null
+        private set
+
+    fun applyDestination(destination: MapDestination?) {
+        if (destination == this.destination) return
+        this.destination = destination
+        markersVersion += 1
+    }
+
+    /** Where the pin is, from its place: what names keep off, and what TalkBack outlines. */
+    fun destinationFrame(projection: ScooterMapProjection): ScreenRect? {
+        val place = destination ?: return null
+        val point = projection.point(place.point)
+        return ScreenRect(point.x - 16, point.y - 44, 32.0, 46.0)
+    }
 
     val marks: Collection<ScooterMark> get() = marksByID.values
     val parking: Collection<ScooterParking> get() = parkingByID.values
@@ -662,6 +680,8 @@ class ScooterMarkerScene(
             val point = projection.point(rider)
             obstacles += ScreenRect(point.x - 15, point.y - 15, 30.0, 30.0)
         }
+        // The pin stands on its place.
+        destinationFrame(projection)?.let { obstacles += it }
 
         val moved = LinkedHashSet<ScooterMark>()
         val placements = ScooterMapLook.placePills(requests, avoiding = obstacles, sparing = neighbours, inside = visible)

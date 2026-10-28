@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -135,6 +136,15 @@ fun ScooterMap(
     val zoom by controller.zoomRequest.collectAsStateWithLifecycle()
     LaunchedEffect(camera, safeArea) { camera?.safeAreaDidChange(safeArea) }
     LaunchedEffect(markers, safeArea) { markers?.safeAreaDidChange(safeArea) }
+    // The chrome over the map, as the screen measures it: the map keeps its names and the places it shows clear of it.
+    val chrome = LocalMapChrome.current
+    LaunchedEffect(camera, markers, chrome) {
+        if (chrome == null) return@LaunchedEffect
+        snapshotFlow { chrome.chrome }.collect {
+            camera?.chromeDidChange(it)
+            markers?.chromeDidChange(it)
+        }
+    }
     LaunchedEffect(camera, focus) { camera?.applyFocus(focus) }
     LaunchedEffect(camera, zoom) { camera?.applyZoom(zoom) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle

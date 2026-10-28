@@ -17,12 +17,15 @@ import android.graphics.Typeface
 import android.graphics.fonts.Font
 import android.graphics.fonts.FontFamily
 import android.util.DisplayMetrics
+import androidx.core.graphics.PathParser
 import androidx.core.graphics.createBitmap
+import androidx.core.graphics.withSave
 import com.plhery.scootradar.R
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterDotState
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.ui.theme.SEARCH_PATH
 import kotlin.math.acos
 import kotlin.math.ceil
 import kotlin.math.exp
@@ -120,6 +123,7 @@ class ScooterMarkerArt(
     private val lastSeenDots = HashMap<LastSeenKey, Bitmap>()
     private val lastSeenClusters = HashMap<ClusterKey, Bitmap>()
     private val bays = HashMap<BayKey, Bitmap>()
+    private val addresses = HashMap<Boolean, Bitmap>()
     private val pills = HashMap<PillContent, Bitmap>()
     private val pillWidths = HashMap<PillContent, Double>()
 
@@ -352,8 +356,34 @@ class ScooterMarkerArt(
      * dot where the bay is. The picture is as tall above the bay as below it, so that it hangs from its middle.
      */
     private fun draw(key: BayKey): Bitmap {
-        val tint = key.provider?.color ?: SYSTEM_BLUE
         val shape = BayShape.of(key.isSelected)
+        return balloon(key.provider?.color ?: SYSTEM_BLUE, shape) { x, centre ->
+            val paint = textPaint(TextFace(fonts.bold, shape.glyph.toFloat()), Color.WHITE)
+            text("P", paint, x - paint.measureText("P") / 2.0, centre - lineHeight(paint) / 2)
+        }
+    }
+
+    /**
+     * The searched place's pin (MAP-033): MapKit's balloon at rest in the system's blue, with a magnifying glass
+     * for its glyph.
+     */
+    fun addressImage(isDark: Boolean): Bitmap = addresses.getOrPut(isDark) {
+        val shape = BayShape.rest
+        balloon(if (isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE, shape) { x, centre ->
+            // A Material symbol fills 20 of its 24 units, as an SF Symbol fills its point size (SYMBOL_FRAME).
+            val side = (shape.glyph * 24 / 20).toFloat()
+            val glyph = PathParser.createPathFromPathData(SEARCH_PATH)
+            withSave {
+                translate(x - side / 2, centre - side / 2)
+                scale(side / 960f, side / 960f)
+                translate(0f, 960f)
+                drawPath(glyph, Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE })
+            }
+        }
+    }
+
+    /** The balloon of [shape] in [tint], with its [glyph] drawn about the disc's centre. */
+    private fun balloon(tint: Long, shape: BayShape, glyph: Canvas.(x: Float, centre: Float) -> Unit): Bitmap {
         val outer = shape.radius + shape.rim
         val side = 2 * (outer + BAY_MARGIN)
         val height = 2 * shape.above + 2 * BAY_MARGIN
@@ -380,8 +410,7 @@ class ScooterMarkerArt(
                 }
                 drawCircle(x, anchor, BAY_DOT_RADIUS.toFloat(), dot)
             }
-            val paint = textPaint(TextFace(fonts.bold, shape.glyph.toFloat()), Color.WHITE)
-            text("P", paint, x - paint.measureText("P") / 2.0, centre - lineHeight(paint) / 2)
+            glyph(x, centre)
         }
     }
 
@@ -499,6 +528,9 @@ class ScooterMarkerArt(
 
         /** UIColor.systemBlue, the balloon's tint without a provider. */
         private const val SYSTEM_BLUE: Long = 0xFF007AFF
+
+        /** UIColor.systemBlue in the dark. */
+        private const val SYSTEM_BLUE_DARK: Long = 0xFF0A84FF
 
         private val RAISED_DARK = Color.argb(1f, 0.086f, 0.102f, 0.141f)
         private val COUNT_ON_DARK = Color.argb(1f, 0.957f, 0.961f, 0.969f)

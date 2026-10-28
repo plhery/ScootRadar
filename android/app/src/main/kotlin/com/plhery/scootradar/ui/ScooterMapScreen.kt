@@ -3,10 +3,15 @@ package com.plhery.scootradar.ui
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,7 +26,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
@@ -31,32 +35,50 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.IosMotion
+import com.plhery.scootradar.core.SpringSpec
+import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.map.hasActiveFilters
+import com.plhery.scootradar.core.map.nearbyCities
+import com.plhery.scootradar.core.map.searchBarState
+import com.plhery.scootradar.core.map.searchNear
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
+import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.map.LocalMapChrome
+import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.ui.chrome.FloatingMapControls
 import com.plhery.scootradar.ui.chrome.LocationIssueCard
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
@@ -65,15 +87,18 @@ import com.plhery.scootradar.ui.glass.Glass
 import com.plhery.scootradar.ui.glass.LocalGlass
 import com.plhery.scootradar.ui.glass.MapBackdrop
 import com.plhery.scootradar.ui.glass.glassMayBlur
+import com.plhery.scootradar.ui.search.LocalAddressSearch
+import com.plhery.scootradar.ui.search.ScooterSearchIsland
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.SelectionFeedback
 import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
+import com.plhery.scootradar.ui.theme.motion
 import kotlin.math.min
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map, and a phone's chrome over it (dockChrome,
-// ui.md UI-004 to UI-006). The search bar is app-d's; its place is kept.
+// ui.md UI-004 to UI-006), with the search bar at its top (searchIsland, UI-009).
 
 /** The app's one screen: the map, edge to edge, the chrome over it, and the window's appearance. */
 @Composable
@@ -85,6 +110,8 @@ fun ScooterMapScreen(
     glassBlurs: Boolean = glassMayBlur(),
     /** Where the chrome's own events go, as ScooterAnalytics.shared on the iPhone; none in tests. */
     analytics: ScooterAnalytics? = null,
+    /** Where the search asks for places: the server's, or the tests' stand-in for it. */
+    addressSearch: AddressSearchAPIClient? = null,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -102,14 +129,50 @@ fun ScooterMapScreen(
     val context = LocalContext.current
     // The frame the map draws into, which the glass blurs.
     val backdrop = remember { MapBackdrop(context) }
+    // Where the chrome is over the map, for the map to keep clear of it.
+    val chrome = remember { MapChromeFrames() }
+    var searchIsExpanded by remember { mutableStateOf(false) }
 
     ScootTheme(dark = dark) {
-        CompositionLocalProvider(LocalGlass provides Glass(backdrop, glassBlurs), LocalAnalytics provides analytics) {
+        CompositionLocalProvider(
+            LocalGlass provides Glass(backdrop, glassBlurs),
+            LocalAnalytics provides analytics,
+            LocalAddressSearch provides addressSearch,
+            LocalMapChrome provides chrome,
+        ) {
             Box(Modifier.fillMaxSize()) {
                 map(dark)
-                DockChrome(controller)
+                DockChrome(
+                    controller,
+                    chrome = chrome,
+                    isSearching = searchIsExpanded,
+                    onSearchingChange = { searchIsExpanded = it },
+                    onShowFilters = { searchIsExpanded = false },
+                    onShowSettings = { searchIsExpanded = false },
+                )
             }
         }
+    }
+
+    OnChange(searchIsExpanded) { expanded -> analytics?.track(if (expanded) "search_open" else "search_close") }
+
+    // Back closes the search, else the card of the scooter or bay chosen (UI-250), as Escape does on the iPad.
+    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
+    val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
+    BackHandler(enabled = searchIsExpanded || selectedScooter != null || selectedParking != null) {
+        if (searchIsExpanded) searchIsExpanded = false else controller.clearSelection()
+    }
+}
+
+/** `.onChange(of:)`: [action] each time [value] changes, not for the value first shown. */
+@Composable
+private fun <T> OnChange(value: T, action: (T) -> Unit) {
+    val current by rememberUpdatedState(action)
+    var last by remember { mutableStateOf(value) }
+    LaunchedEffect(value) {
+        if (value == last) return@LaunchedEffect
+        last = value
+        current(value)
     }
 }
 
@@ -118,7 +181,14 @@ fun ScooterMapScreen(
  * the dock. Made anew in another language, as much of it is text written when it was drawn.
  */
 @Composable
-private fun DockChrome(controller: ScooterMapController) {
+private fun DockChrome(
+    controller: ScooterMapController,
+    chrome: MapChromeFrames,
+    isSearching: Boolean,
+    onSearchingChange: (Boolean) -> Unit,
+    onShowFilters: () -> Unit,
+    onShowSettings: () -> Unit,
+) {
     val language by controller.language.collectAsStateWithLifecycle()
     val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
@@ -132,6 +202,8 @@ private fun DockChrome(controller: ScooterMapController) {
     val density = LocalDensity.current
     val dockHeight = remember { mutableIntStateOf(with(density) { 128.dp.roundToPx() }) }
     val locateButtonHeight = remember { mutableIntStateOf(with(density) { 52.dp.roundToPx() }) }
+    // Measured only while the search is closed, as on the iPhone.
+    val searchBarHeight = remember { mutableIntStateOf(with(density) { 62.dp.roundToPx() }) }
     // The keyboard doesn't move the dock or the locate row (`.ignoresSafeArea(.keyboard, edges: .bottom)`).
     val safe = WindowInsets.safeDrawing.exclude(WindowInsets.ime).asPaddingValues()
     val safeTop = safe.calculateTopPadding()
@@ -145,52 +217,111 @@ private fun DockChrome(controller: ScooterMapController) {
             val height = maxHeight - safeTop - safeBottom
             val dock = with(density) { dockHeight.intValue.toDp() }
             val locate = with(density) { locateButtonHeight.intValue.toDp() }
+            val searchBar = with(density) { searchBarHeight.intValue.toDp() }
             val notices = firstLoadFailure != null || locationIssue != null
 
             TopStack(
                 controller,
                 failure = firstLoadFailure,
                 locationIssue = locationIssue,
-                noticesLimit = max(64.dp, height - 8.dp - SEARCH_BAR_HEIGHT - 8.dp - 8.dp - locate - (dock + bottom + 10.dp)),
+                noticesLimit = max(64.dp, height - 8.dp - searchBar - 8.dp - 8.dp - locate - (dock + bottom + 10.dp)),
+                isSearching = isSearching,
+                onSearchingChange = onSearchingChange,
+                onShowFilters = onShowFilters,
+                onShowSettings = onShowSettings,
+                // The window's bottom, inside its safe area.
+                bottomLimit = maxHeight - safeBottom,
+                chrome = chrome,
+                onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
                 modifier = Modifier.padding(top = safeTop + 8.dp, start = 12.dp, end = 12.dp),
             )
 
-            Row(
-                Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 10.dp)
-                    .widthIn(max = 560.dp)
-                    .fillMaxWidth()
-                    .padding(end = 2.dp)
-                    .padding(bottom = dock + bottom + 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.Bottom,
+            // The locate button and the dock make way for the search, and come back as it closes.
+            val reduceMotion = LocalReduceMotion.current
+            val trailing = if (LocalLayoutDirection.current == LayoutDirection.Ltr) 1f else 0f
+            val locateSpring = IosMotion.snappy(duration = 0.28)
+            AnimatedVisibility(
+                visible = !isSearching,
+                enter = makingWay(reduceMotion, locateSpring, scale = 0.92f, TransformOrigin(trailing, 1f)).first,
+                exit = makingWay(reduceMotion, locateSpring, scale = 0.92f, TransformOrigin(trailing, 1f)).second,
+                label = "locate",
             ) {
-                Spacer(Modifier.weight(1f))
-                FloatingMapControls(controller, Modifier.onSizeChanged { locateButtonHeight.intValue = it.height })
+                Box(Modifier.fillMaxSize()) {
+                    Row(
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(horizontal = 10.dp)
+                            .widthIn(max = 560.dp)
+                            .fillMaxWidth()
+                            .padding(end = 2.dp)
+                            .padding(bottom = dock + bottom + 10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.Bottom,
+                    ) {
+                        Spacer(Modifier.weight(1f))
+                        FloatingMapControls(
+                            controller,
+                            Modifier
+                                .onSizeChanged { locateButtonHeight.intValue = it.height }
+                                // The map centres a scooter in what this button and the dock leave visible.
+                                .onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
+                        )
+                    }
+                }
             }
 
             val isAccessibility = TextSize.isAccessibility
-            ScooterControlDock(
-                controller,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(horizontal = 10.dp)
-                    .padding(bottom = bottom),
-                maximumContentHeight = max(
-                    160.dp,
-                    height - (if (isAccessibility) 300.dp else 220.dp) -
-                        // With large text a notice under the search bar needs room too.
-                        (if (isAccessibility && notices) 120.dp else 0.dp),
-                ),
-                onHeightChange = { dockHeight.intValue = it },
-            )
+            val dockSpring = IosMotion.snappy(duration = 0.24)
+            AnimatedVisibility(
+                visible = !isSearching,
+                enter = makingWay(reduceMotion, dockSpring, scale = 0.96f, TransformOrigin(0.5f, 1f)).first,
+                exit = makingWay(reduceMotion, dockSpring, scale = 0.96f, TransformOrigin(0.5f, 1f)).second,
+                label = "dock",
+            ) {
+                Box(Modifier.fillMaxSize()) {
+                    ScooterControlDock(
+                        controller,
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(horizontal = 10.dp)
+                            .padding(bottom = bottom)
+                            .onGloballyPositioned { chrome.dock = it.windowFrame(density.density) },
+                        maximumContentHeight = max(
+                            160.dp,
+                            height - (if (isAccessibility) 300.dp else 220.dp) -
+                                // With large text a notice under the search bar needs room too.
+                                (if (isAccessibility && notices) 120.dp else 0.dp),
+                        ),
+                        onHeightChange = { dockHeight.intValue = it },
+                    )
+                }
+            }
         }
     }
 }
 
-/** The collapsed search bar's height before it is measured, as on the iPhone; the bar itself is app-d's. */
-private val SEARCH_BAR_HEIGHT: Dp = 62.dp
+/**
+ * `.opacity` with `.scaleEffect(_:anchor:)` on what makes way for the search: it fades and shrinks a little toward
+ * [origin] of the screen as the search opens, and comes back as it closes; at once under Reduce Motion.
+ */
+private fun makingWay(reduceMotion: Boolean, spring: SpringSpec, scale: Float, origin: TransformOrigin): Pair<EnterTransition, ExitTransition> =
+    if (reduceMotion) {
+        EnterTransition.None to ExitTransition.None
+    } else {
+        (fadeIn(spring.animation()) + scaleIn(spring.animation(), initialScale = scale, transformOrigin = origin)) to
+            (fadeOut(spring.animation()) + scaleOut(spring.animation(), targetScale = scale, transformOrigin = origin))
+    }
+
+/** Where a piece of the chrome is in the window, in points, which are the map's. */
+private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
+    val bounds = boundsInWindow()
+    return ScreenRect(
+        (bounds.left / density).toDouble(),
+        (bounds.top / density).toDouble(),
+        (bounds.width / density).toDouble(),
+        (bounds.height / density).toDouble(),
+    )
+}
 
 /**
  * The search bar and what sits under it: the banner of a first load that failed, and the card of a location that
@@ -202,6 +333,13 @@ private fun TopStack(
     failure: ScooterLoadFailure?,
     locationIssue: ScooterLocationIssue?,
     noticesLimit: Dp,
+    isSearching: Boolean,
+    onSearchingChange: (Boolean) -> Unit,
+    onShowFilters: () -> Unit,
+    onShowSettings: () -> Unit,
+    bottomLimit: Dp,
+    chrome: MapChromeFrames,
+    onSearchBarHeightChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isLoading by controller.isLoading.collectAsStateWithLifecycle()
@@ -214,55 +352,138 @@ private fun TopStack(
     val enter = if (reduceMotion) fadeIn(snap()) else slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation())
     val exit = if (reduceMotion) fadeOut(snap()) else slideOutVertically(spring.animation()) { -it } + fadeOut(spring.animation())
 
-    Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        // The search island's place (app-d).
-        Spacer(Modifier.height(SEARCH_BAR_HEIGHT))
+    val density = LocalDensity.current
+    // The search bar and the notices under it, closed: what the map keeps its names under, and centres a place
+    // below. The open search covers the map, and leaves the map's frame as it was.
+    var stackFrame by remember { mutableStateOf<ScreenRect?>(null) }
+    var barHeight by remember { mutableIntStateOf(0) }
+    var noticesHeight by remember { mutableIntStateOf(0) }
+    SideEffect {
+        val frame = stackFrame ?: return@SideEffect
+        if (barHeight == 0 || isSearching) return@SideEffect
+        val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
+        chrome.top = ScreenRect(frame.x, frame.y, frame.width, ((barHeight + notices) / density.density).toDouble())
+    }
+
+    Column(
+        modifier
+            .fillMaxWidth()
+            .onGloballyPositioned { stackFrame = it.windowFrame(density.density) },
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        SearchIsland(
+            controller,
+            isSearching = isSearching,
+            onSearchingChange = onSearchingChange,
+            onShowFilters = onShowFilters,
+            onShowSettings = onShowSettings,
+            bottomLimit = bottomLimit,
+            onCollapsedHeightChange = {
+                barHeight = it
+                onSearchBarHeightChange(it)
+            },
+        )
 
         // As ViewThatFits: a plain stack while the notices fit, which leaves their shadows and slides whole, and a
-        // scroll, which clips them, only when they don't.
+        // scroll, which clips them, only when they don't. They go while the search is open.
+        val searchSpring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
+        val searchMotion = motion<Float>(searchSpring)
         var contentHeight by remember { mutableIntStateOf(0) }
-        val scrolls = contentHeight > with(LocalDensity.current) { noticesLimit.roundToPx() }
-        Column(
-            Modifier
-                .heightIn(max = noticesLimit)
-                .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
-                    contentHeight = placeable.height
-                    layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
-                },
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        val scrolls = contentHeight > with(density) { noticesLimit.roundToPx() }
+        AnimatedVisibility(
+            visible = !isSearching,
+            enter = fadeIn(searchMotion),
+            exit = fadeOut(searchMotion),
+            label = "notices",
         ) {
-            AnimatedVisibility(failure != null, enter = enter, exit = exit) {
-                val shown = lastFailure ?: return@AnimatedVisibility
-                Box {
-                    MapStatusBanner(
-                        message = shown.message,
-                        actionTitle = localized("Try again"),
-                        onAction = controller::retryLoad,
-                        isBusy = isLoading,
-                    )
-                    // Said as it appears and each time its message changes.
-                    Announcer(Announcement(shown.message))
+            Column(
+                Modifier
+                    .onSizeChanged { noticesHeight = it.height }
+                    .heightIn(max = noticesLimit)
+                    .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+                    .layout { measurable, constraints ->
+                        val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
+                        contentHeight = placeable.height
+                        layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
+                    },
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                AnimatedVisibility(failure != null, enter = enter, exit = exit) {
+                    val shown = lastFailure ?: return@AnimatedVisibility
+                    Box {
+                        MapStatusBanner(
+                            message = shown.message,
+                            actionTitle = localized("Try again"),
+                            onAction = controller::retryLoad,
+                            isBusy = isLoading,
+                        )
+                        // Said as it appears and each time its message changes.
+                        Announcer(Announcement(shown.message))
+                    }
                 }
-            }
-            AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
-                val issue = lastIssue ?: return@AnimatedVisibility
-                Box {
-                    LocationIssueCard(
-                        issue = issue,
-                        onOpenSettings = { context.startActivity(appSettings(context.packageName)) },
-                        // Searching is the answer to the card, so it goes away; the search opens with app-d's island.
-                        onSearchPlace = controller::dismissLocationIssue,
-                        onRetry = controller::focusOnUser,
-                        onDismiss = controller::dismissLocationIssue,
-                    )
-                    Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
+                AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
+                    val issue = lastIssue ?: return@AnimatedVisibility
+                    Box {
+                        LocationIssueCard(
+                            issue = issue,
+                            onOpenSettings = { context.startActivity(appSettings(context.packageName)) },
+                            onSearchPlace = {
+                                // Searching is the answer to the card, so it goes away.
+                                controller.dismissLocationIssue()
+                                onSearchingChange(true)
+                            },
+                            onRetry = controller::focusOnUser,
+                            onDismiss = controller::dismissLocationIssue,
+                        )
+                        Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
+                    }
                 }
             }
         }
     }
+}
+
+/**
+ * The search bar, with what it reads from the controller: the cities near the map and the place to search near
+ * are worked out only while it is open.
+ */
+@Composable
+private fun SearchIsland(
+    controller: ScooterMapController,
+    isSearching: Boolean,
+    onSearchingChange: (Boolean) -> Unit,
+    onShowFilters: () -> Unit,
+    onShowSettings: () -> Unit,
+    bottomLimit: Dp,
+    onCollapsedHeightChange: (Int) -> Unit,
+) {
+    val changes = rememberControllerChanges(controller)
+    val state = remember(controller, changes) { controller.searchBarState }
+    val hasActiveFilters = remember(controller, changes) { controller.hasActiveFilters }
+    val recentPlaces by controller.recentPlaces.collectAsStateWithLifecycle()
+    val nearbyCities = remember(controller, changes, isSearching) {
+        if (isSearching) controller.nearbyCities.map { it.city } else emptyList()
+    }
+    val near = remember(controller, changes, isSearching) { if (isSearching) controller.searchNear else null }
+    ScooterSearchIsland(
+        state = state,
+        isSearching = isSearching,
+        onSearchingChange = onSearchingChange,
+        hasActiveFilters = hasActiveFilters,
+        recentPlaces = recentPlaces,
+        nearbyCities = nearbyCities,
+        near = near,
+        bottomLimit = bottomLimit,
+        onSelect = controller::focusOnAddress,
+        onChooseCity = controller::chooseCity,
+        onClear = controller::clearAddressSearch,
+        onUseCurrentLocation = controller::focusOnUser,
+        onShowFilters = onShowFilters,
+        onShowSettings = onShowSettings,
+        onCollapsedHeightChange = onCollapsedHeightChange,
+    )
 }
 
 /** The analytics the chrome tracks its taps with, such as "rental_open"; none where the screen was given none. */
