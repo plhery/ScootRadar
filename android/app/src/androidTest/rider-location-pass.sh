@@ -34,7 +34,7 @@ run() {
         fixer=$!
     fi
     echo "== $test"
-    result=$(device shell am instrument -w -e class "$app.map.RiderLocationTest#$test" -e additionalTestOutputDir "$output" "$runner")
+    result=$(device shell am instrument -w -e class "$app.map.RiderLocationTest#$test" -e riderLocationPass true -e additionalTestOutputDir "$output" "$runner")
     if [[ $result == *"OK (1 test)"* ]]; then
         echo "$result" | grep -E "^OK|^Time"
     else
