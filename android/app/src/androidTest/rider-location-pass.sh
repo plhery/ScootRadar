@@ -34,12 +34,13 @@ run() {
         fixer=$!
     fi
     echo "== $test"
-    result=$(device shell am instrument -w -e class "$app.map.RiderLocationTest#$test" -e riderLocationPass true -e additionalTestOutputDir "$output" "$runner")
-    if [[ $result == *"OK (1 test)"* ]]; then
+    # Raw, each test's code: 0 when it passed, and -3 or -4 when it was skipped, which "OK (1 test)" says as well.
+    result=$(device shell am instrument -r -w -e class "$app.map.RiderLocationTest#$test" -e riderLocationPass true -e additionalTestOutputDir "$output" "$runner")
+    if [[ $result == *"INSTRUMENTATION_STATUS_CODE: 0"* && $result != *"INSTRUMENTATION_STATUS_CODE: -"* ]]; then
         echo "$result" | grep -E "^OK|^Time"
     else
         failures=$((failures + 1))
-        echo "$result" | grep -m 3 -E "Error|Exception|RiderLocationTest.kt"
+        echo "$result" | grep -m 3 -E "INSTRUMENTATION_STATUS_CODE: -|Error|Exception|RiderLocationTest.kt"
     fi
     [[ -n $fixer ]] && kill "$fixer"
     device pull "$output/." "$screens" > /dev/null 2>&1
