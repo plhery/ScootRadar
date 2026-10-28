@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
@@ -40,6 +41,11 @@ class MapGroundTest {
                 // The land and the ground's layers, without their tiles yet.
                 assertNull(style.getSource(GroundStyle.SOURCE))
                 assertEquals("#eef0f4".toColorInt(), (style.getLayer("land") as BackgroundLayer).backgroundColorAsInt)
+                // Nothing eased by the style, nor its names faded in: either has the map drawn every frame while
+                // the rider's dot breathes (RiderLocationTest's frame times).
+                val transition = style.transition
+                assertEquals(0L, transition.duration)
+                assertFalse(transition.isEnablePlacementTransitions)
             }
             waitFor(phone) { style.getSource(GroundStyle.SOURCE) }
             assertEquals(2, tries)
