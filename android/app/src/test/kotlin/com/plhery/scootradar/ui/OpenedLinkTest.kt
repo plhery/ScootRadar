@@ -9,8 +9,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.TestCatalog
 import com.plhery.scootradar.core.model.GeoPoint
-import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.testController
@@ -76,7 +76,7 @@ class OpenedLinkTest {
 
         compose.onNodeWithContentDescription("Filters").performClick()
         compose.waitUntil { !searchBarShows() }
-        val bern = ScooterCityCatalog.cities.first { it.id == "ch:bern" }
+        val bern = TestCatalog.bern
         links.trySend(ScooterMapLink(origin = bern.center, minimumBattery = 30))
         compose.waitUntil { searchBarShows() }
         assertEquals(bern.destination, controller.searchedDestination.value)

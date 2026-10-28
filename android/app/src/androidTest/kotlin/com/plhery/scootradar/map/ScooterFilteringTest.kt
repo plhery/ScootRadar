@@ -2,10 +2,11 @@ package com.plhery.scootradar.map
 
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.MapRegion
-import com.plhery.scootradar.core.model.ScooterCityCatalog
+import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterStartPlace
@@ -42,8 +43,13 @@ class ScooterFilteringTest {
 
     @Test
     fun mapOpensOnTheCityOfTheTimeZone() {
-        val start = ScooterStartPlace.start(forTimeZone = "Europe/Berlin")
-        val berlin = ScooterCityCatalog.cities.first { it.id == "de:Berlin" }
+        // Berlin as data/ had it on 28 October 2026, on its own: data/ may add a German city nearer Berlin's main
+        // place (LOG-370). Which city a zone opens on is :core's to test; the map opening on it is this one's.
+        val berlin = ScooterCity(
+            id = "de:Berlin", name = "Berlin", countryCode = "DE", center = GeoPoint(latitude = 52.52, longitude = 13.405),
+            bounds = GeoBounds(south = 52.1367, west = 12.6012, north = 52.9019, east = 13.9059),
+        )
+        val start = ScooterStartPlace.start(forTimeZone = "Europe/Berlin", cities = listOf(berlin))
         withPhoneMap(camera = MapCamera.opening(start)) { phone ->
             val center = phone.onMain { phone.map.cameraPosition.target!! }
             assertEquals(berlin.center.latitude, center.latitude, 0.02)

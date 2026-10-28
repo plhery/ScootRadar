@@ -97,8 +97,8 @@ class DockScreenshotTest(private val state: DockState, private val look: Look) {
         model.setAppearance(if (look.dark) ScooterAppearance.Dark else ScooterAppearance.Light)
         useFontScale(look.fontScale)
         compose.setContent {
-            // The coverage card's counts as when the baselines were recorded, so that a city added to data/ doesn't
-            // change its picture. (A new city nearer Lungern than Bern still would: record its four again.)
+            // The coverage card's counts as when the baselines were recorded, and Lungern's closest cities from the
+            // tests' own catalog (TestCatalog), so that a city added to data/ doesn't change its picture (LOG-370).
             CompositionLocalProvider(LocalClock provides { clock.now }, LocalCoverageCounts provides (1_061 to 56)) {
                 ScooterMapScreen(controller = model, map = { dark -> MapStandIn(dark) }, glassBlurs = false)
             }

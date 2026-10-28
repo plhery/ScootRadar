@@ -11,6 +11,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -38,13 +39,14 @@ object NoWalkingDirections : WalkingDirectionsClient {
     override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = emptyList()
 }
 
-/** A controller of an empty map, on `scope`, with nothing kept from before. */
+/** A controller of an empty map, on `scope`, with nothing kept from before, reading the tests' own catalog. */
 fun testController(
     scope: CoroutineScope,
     now: () -> Instant = Instant::now,
     defaults: ScooterDefaults = InMemoryScooterDefaults(),
     phoneLanguages: () -> List<String> = { listOf("en-US") },
     keepAppLanguages: (List<String>) -> Unit = {},
+    catalog: ScooterCatalog = TestCatalog.catalog,
 ): ScooterMapController = ScooterMapController(
     api = EmptyScooterAPI,
     locationManager = NotDeterminedLocationManager(),
@@ -55,6 +57,7 @@ fun testController(
     now = now,
     phoneLanguages = phoneLanguages,
     keepAppLanguages = keepAppLanguages,
+    catalog = catalog,
 )
 
 /** A server that gives the same answer every time, or fails as the test says; it counts the requests. */
@@ -94,7 +97,8 @@ class TestControllers {
 
     /**
      * A controller of `api`'s map, with nothing kept from before but `defaults`. Without a clock of its own it
-     * reads the scheduler's, which [waitUntil] moves as real time moves under the iPhone's tests.
+     * reads the scheduler's, which [waitUntil] moves as real time moves under the iPhone's tests. It reads the
+     * tests' own catalog unless given another.
      */
     fun make(
         api: ScooterAPIClient,
@@ -103,6 +107,7 @@ class TestControllers {
         directions: WalkingDirectionsClient = NoWalkingDirections,
         openInMaps: (ScooterWalkTarget) -> Unit = {},
         defaults: ScooterDefaults = InMemoryScooterDefaults(),
+        catalog: ScooterCatalog = TestCatalog.catalog,
     ): ScooterMapController = ScooterMapController(
         api = api,
         locationManager = locationManager,
@@ -113,6 +118,7 @@ class TestControllers {
         now = now(clock),
         phoneLanguages = { listOf("en-US") },
         keepAppLanguages = {},
+        catalog = catalog,
     )
 
     /** What the controllers made with `clock` read as the time: the clock, or the scheduler's. */
@@ -140,7 +146,7 @@ class TestControllers {
 /** Zürich's centre, at a street's zoom. */
 val zurichRegion = MapRegion(GeoPoint(47.3769, 8.5417), latitudeDelta = 0.01, longitudeDelta = 0.01)
 
-/** Lungern, where no operator serves. */
+/** Lungern, where no operator serves in the tests' catalog (TestCatalog). */
 val lungernRegion = MapRegion(GeoPoint(46.7741, 8.1558), latitudeDelta = 0.02, longitudeDelta = 0.02)
 
 fun scooter(
