@@ -29,6 +29,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.api.ScooterAnalytics
@@ -129,11 +130,9 @@ fun ScooterMap(
     }
     LaunchedEffect(ground, look) { ground?.show(look) }
     LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
-    // The dot is the app's blue, whatever the ground; Increase Contrast is read again as the configuration changes.
-    val configuration = LocalConfiguration.current
-    LaunchedEffect(rider, dark, configuration) {
-        rider?.setLook(RiderArt.Look(dark = dark, highContrast = RiderArt.isHighContrast(context)))
-    }
+    // The dot is the app's blue, whatever the ground.
+    val highContrast = rememberHighContrast()
+    LaunchedEffect(rider, dark, highContrast) { rider?.setLook(RiderArt.Look(dark = dark, highContrast = highContrast)) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
     val safe = WindowInsets.safeDrawing
@@ -211,4 +210,21 @@ fun ScooterMap(
             modifier = Modifier.align(Alignment.BottomStart).windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp),
         )
     }
+}
+
+/**
+ * Whether the phone asks for more contrast, as iOS's Increase Contrast (RiderArt.isHighContrast): read again each
+ * time the app comes to the front, as Settings changes it without a new configuration, and as the configuration
+ * changes.
+ */
+@Composable
+internal fun rememberHighContrast(): Boolean {
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    var highContrast by remember { mutableStateOf(RiderArt.isHighContrast(context)) }
+    LifecycleStartEffect(configuration) {
+        highContrast = RiderArt.isHighContrast(context)
+        onStopOrDispose {}
+    }
+    return highContrast
 }

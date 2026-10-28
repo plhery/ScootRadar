@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.location.LocationRequest
@@ -19,6 +20,7 @@ import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterHeadingReading
 import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterLocationFix
+import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import org.junit.After
@@ -88,6 +90,28 @@ class AndroidLocationManagerTest {
 
     private fun idle() = shadowOf(Looper.getMainLooper()).idle()
 
+    /** Android's dialog answered: each permission as it stands now. */
+    private fun AndroidLocationManager.answered() = permissionsAnswered(
+        AndroidLocationManager.PERMISSIONS.associateWith { context.checkSelfPermission(it) == PackageManager.PERMISSION_GRANTED },
+    )
+
+    /** A location service whose reports go to a controller, as the view model has it. */
+    private fun controlled(controllers: TestControllers): Pair<AndroidLocationManager, ScooterMapController> {
+        val manager = AndroidLocationManager(context, defaults, elapsedRealtimeNanos = { uptime })
+        val controller = controllers.make(EmptyScooterAPI, locationManager = manager)
+        manager.delegate = object : AndroidLocationManager.Delegate {
+            override fun authorizationChanged() = controller.authorizationChanged()
+
+            override fun locationsUpdated(locations: List<ScooterLocationFix>) = controller.locationsUpdated(locations)
+
+            override fun headingUpdated(heading: ScooterHeadingReading) = controller.headingUpdated(heading)
+
+            override fun locationFailed(error: ScooterLocationError) = controller.locationFailed(error)
+        }
+        manager.permissionRequester = AndroidLocationManager.PermissionRequester { permissions -> asked += permissions.toList() }
+        return manager to controller
+    }
+
     private fun grant(vararg permissions: String) = shadowOf(context).grantPermissions(*permissions)
 
     private fun revoke(vararg permissions: String) = shadowOf(context).denyPermissions(*permissions)
@@ -113,7 +137,7 @@ class AndroidLocationManagerTest {
         assertEquals("both, so that Android 12 offers precise and approximate", listOf(AndroidLocationManager.PERMISSIONS.toList()), asked)
 
         // Refused, or refused by Android itself after two refusals: the same.
-        manager.permissionsAnswered()
+        manager.answered()
         idle()
         assertEquals(ScooterAuthorizationStatus.Denied, manager.authorizationStatus)
         assertEquals(listOf("authorizationChanged"), events)
@@ -142,7 +166,7 @@ class AndroidLocationManagerTest {
         val manager = manager()
         manager.requestWhenInUseAuthorization()
         grant(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        manager.permissionsAnswered()
+        manager.answered()
         assertEquals(ScooterAuthorizationStatus.AuthorizedWhenInUse, manager.authorizationStatus)
 
         // Android takes a grant for this time only back some time after the app has left the screen (LOG-251).
@@ -155,7 +179,7 @@ class AndroidLocationManagerTest {
         val manager = manager()
         manager.cameToForeground()
         manager.requestWhenInUseAuthorization()
-        manager.permissionsAnswered()
+        manager.answered()
         assertEquals(ScooterAuthorizationStatus.Denied, manager.authorizationStatus)
 
         // Allowed in Settings, the app away, and seen as it comes back.
@@ -170,6 +194,31 @@ class AndroidLocationManagerTest {
         manager.cameToForeground()
         assertEquals(ScooterAuthorizationStatus.NotDetermined, manager.authorizationStatus)
         assertEquals("on the next launch too", ScooterAuthorizationStatus.NotDetermined, manager().authorizationStatus)
+    }
+
+    @Test
+    fun aRequestAndroidCancelsWhileItsDialogIsUpIsNoAnswer() {
+        val controllers = TestControllers()
+        val (manager, controller) = controlled(controllers)
+        manager.cameToForeground()
+        controller.start()
+        controller.focusOnUser()
+        assertEquals(1, asked.size)
+
+        // A second request while the dialog is up, answered at once with nothing (an empty result).
+        manager.permissionsAnswered(emptyMap())
+        idle()
+        assertEquals(ScooterAuthorizationStatus.NotDetermined, manager.authorizationStatus)
+        assertNull("no card behind the dialog", controller.locationIssue.value)
+        assertTrue("still waiting for the rider", controller.isLocating.value)
+
+        // The dialog's own answer.
+        grant(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        manager.answered()
+        idle()
+        assertEquals(ScooterAuthorizationStatus.AuthorizedWhenInUse, manager.authorizationStatus)
+        assertNull(controller.locationIssue.value)
+        controllers.close()
     }
 
     @Test
@@ -210,21 +259,26 @@ class AndroidLocationManagerTest {
     }
 
     @Test
-    fun elseGpsAndTheNetworkTogetherKeepTheBetterFixByTheControllersRules() {
+    fun elseGpsAndTheNetworkTogetherEachReportingOnlyItsNewFix() {
         grant(Manifest.permission.ACCESS_FINE_LOCATION)
-        val manager = manager()
+        val controllers = TestControllers()
+        val (manager, controller) = controlled(controllers)
         manager.cameToForeground()
-        manager.startUpdatingLocation()
+        controller.start()
+        controller.focusOnUser()
         assertEquals(listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER), manager.providers)
 
-        shadowLocations.simulateLocation(location(LocationManager.GPS_PROVIDER, 47.0, accuracy = 5f, ageSeconds = 3))
-        shadowLocations.simulateLocation(location(LocationManager.NETWORK_PROVIDER, 47.1, accuracy = 40f, ageSeconds = 1))
+        // Walking: the network's fix, then GPS's newer one, a little wider but 50 m on.
+        shadowLocations.simulateLocation(location(LocationManager.NETWORK_PROVIDER, 47.3769, accuracy = 20f, ageSeconds = 15))
+        idle()
+        assertEquals(47.3769, controller.userLocation.value?.latitude)
+        shadowLocations.simulateLocation(location(LocationManager.GPS_PROVIDER, 47.37735, accuracy = 25f, ageSeconds = 0))
         idle()
 
-        // Each report has every provider's newest fix, oldest first, for :core to pick the best (X-AD13).
-        assertEquals(listOf(47.0), fixes[0].map { it.coordinate.latitude })
-        assertEquals(listOf(47.0, 47.1), fixes[1].map { it.coordinate.latitude })
-        assertEquals(listOf(5.0, 40.0), fixes[1].map { it.horizontalAccuracy })
+        // The dot goes on with the new fix, and does not go back to the network's, sent again (X-AD13).
+        assertEquals(47.37735, controller.userLocation.value?.latitude)
+        assertEquals(25.0, controller.locationAccuracy.value, 0.0)
+        controllers.close()
     }
 
     @Test
@@ -375,7 +429,7 @@ class AndroidLocationManagerTest {
         assertEquals("Android's dialog to change to precise", listOf(AndroidLocationManager.PERMISSIONS.toList()), asked)
         assertEquals(1, locates)
         grant(Manifest.permission.ACCESS_FINE_LOCATION)
-        manager.permissionsAnswered()
+        manager.answered()
         idle()
         assertEquals(2, locates)
         assertEquals(listOf("authorizationChanged"), events)
@@ -386,25 +440,14 @@ class AndroidLocationManagerTest {
     fun aRefusalShowsTheCardAndAGrantLocatesWithTheController() {
         shadowLocations.setProviderEnabled(LocationManager.FUSED_PROVIDER, true)
         val controllers = TestControllers()
-        val manager = AndroidLocationManager(context, defaults, elapsedRealtimeNanos = { uptime })
-        val controller = controllers.make(EmptyScooterAPI, locationManager = manager)
-        manager.delegate = object : AndroidLocationManager.Delegate {
-            override fun authorizationChanged() = controller.authorizationChanged()
-
-            override fun locationsUpdated(locations: List<ScooterLocationFix>) = controller.locationsUpdated(locations)
-
-            override fun headingUpdated(heading: ScooterHeadingReading) = controller.headingUpdated(heading)
-
-            override fun locationFailed(error: ScooterLocationError) = controller.locationFailed(error)
-        }
-        manager.permissionRequester = AndroidLocationManager.PermissionRequester { permissions -> asked += permissions.toList() }
+        val (manager, controller) = controlled(controllers)
         manager.cameToForeground()
         controller.start()
         assertTrue("never asked at launch (LOG-242)", asked.isEmpty())
 
         controller.focusOnUser()
         assertEquals(1, asked.size)
-        manager.permissionsAnswered()
+        manager.answered()
         idle()
         assertEquals(ScooterLocationIssue.Denied, controller.locationIssue.value)
         assertFalse(controller.isLocating.value)

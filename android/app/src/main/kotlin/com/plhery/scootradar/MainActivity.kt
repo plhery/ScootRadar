@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** Android's location dialog, whose answer goes to the location service, as iOS's prompt does (LOG-242). */
-    private val locationPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-        model.location.permissionsAnswered()
+    private val locationPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { answers ->
+        model.location.permissionsAnswered(answers)
     }
     private val permissionRequester = AndroidLocationManager.PermissionRequester { locationPermissions.launch(it) }
 

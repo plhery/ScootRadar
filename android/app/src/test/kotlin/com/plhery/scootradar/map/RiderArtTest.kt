@@ -71,6 +71,8 @@ class RiderArtTest {
         assertFalse(RiderArt.isHighContrast(context))
         Settings.Secure.putInt(context.contentResolver, "high_text_contrast_enabled", 1)
         assertTrue("high contrast text", RiderArt.isHighContrast(context))
+        // A hidden setting, which a later Android may keep from the app: no more contrast, and no crash.
+        assertFalse(RiderArt.isHighContrast(context) { throw SecurityException("not readable") })
     }
 
     @Test
