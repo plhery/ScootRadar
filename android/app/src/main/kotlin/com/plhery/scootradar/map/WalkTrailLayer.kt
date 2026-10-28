@@ -220,11 +220,20 @@ class WalkTrailLayer(
         dots = null
         shown = null
         val style = style ?: return
-        write(style, GroundOverlays.TRAIL_SOURCE, GroundOverlays.NOTHING)
-        if (leaving == null || range == null || !view.isAttachedToWindow) return
+        if (leaving == null || range == null || !view.isAttachedToWindow) {
+            write(style, GroundOverlays.TRAIL_SOURCE, GroundOverlays.NOTHING)
+            return
+        }
         // A fade under way gives way to this one.
         fade?.cancel()
+        // The copy first, and the route taken off a frame later, unless shown again by then: MapLibre takes each
+        // source's new data in apart, and the dots could be gone for a frame before the copy shows, which iOS
+        // avoids by keeping the old lines 100 ms.
         write(style, GroundOverlays.FADING_TRAIL_SOURCE, leaving.json)
+        view.postOnAnimation {
+            val now = this.style
+            if (now === style && revision == null) write(style, GroundOverlays.TRAIL_SOURCE, GroundOverlays.NOTHING)
+        }
         val filter = Expression.raw(TrailLayers.filter(range))
         for (id in listOf(GroundOverlays.FADING_TRAIL_CASING, GroundOverlays.FADING_TRAIL)) {
             (style.getLayer(id) as? CircleLayer)?.setFilter(filter)
