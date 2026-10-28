@@ -358,6 +358,44 @@ class ScooterMapControllerTest {
     }
 
     @Test
+    fun resettingTheFiltersAsksAgainForTheGroupsTheMinimumHid() = runTest {
+        val group = ScooterCluster(
+            id = "8:134:89",
+            latitude = ScooterMapController.switzerlandCenter.latitude,
+            longitude = ScooterMapController.switzerlandCenter.longitude,
+            count = 100,
+            providers = mapOf("lime" to 100),
+        )
+        val api = StubScooterAPI(
+            ScooterResponse(
+                vehicles = emptyList(),
+                clusters = listOf(group),
+                meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", zoom = 8),
+            ),
+        )
+        val model = makeController(api)
+        model.refresh()
+        assertTrue(waitUntil { api.calls == 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        // Providers alone are filtered on the phone: the groups stay, and nothing is asked for.
+        model.toggle(Lime)
+        model.resetFilters()
+        settle()
+        assertEquals(1, api.calls)
+        assertEquals(listOf(group), model.clusters.value)
+
+        model.setMinimumBattery(60.0)
+        assertTrue(waitUntil { api.calls == 2 && !model.isLoading.value })
+        assertEquals(60, api.lastMinimumBattery)
+
+        // The server left out the groups' low batteries: they go at once, and are asked for again with all.
+        model.resetFilters()
+        assertTrue(model.clusters.value.isEmpty())
+        assertTrue(waitUntil { api.calls == 3 && !model.isLoading.value })
+        assertEquals(0, api.lastMinimumBattery)
+        assertEquals(listOf(group), model.clusters.value)
+    }
+
+    @Test
     fun batteryFilterSnapsDownToAPresetPersistsItAndClearsHiddenSelection() = runTest {
         val scooter = Scooter(
             provider = "lime",
@@ -2609,6 +2647,9 @@ class ScooterMapControllerTest {
         assertFalse(stored.contains("47.37"))
         val nextSession = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults)
         assertTrue(nextSession.recentPlaces.value.isEmpty())
+        // Nor the place searched: a new session starts without one.
+        model.focusOnAddress(places[0])
+        assertNull(makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())), defaults = defaults).searchedDestination.value)
     }
 
     @Test

@@ -69,6 +69,7 @@ class ScooterWalkTest {
         val h = harness(vehicles = listOf(target), rider = rider)
         h.model.selectScooter(target.id)
         val straight = unwrap(h.model.straightLineDistance(target))
+        h.analytics.clear()
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
 
@@ -107,6 +108,14 @@ class ScooterWalkTest {
             ),
             h.model.walkAnnouncement.value?.text,
         )
+        // The tap, then the route it asked for.
+        assertEquals(
+            listOf(
+                TrackedEvent("directions_open", provider = "lime", target = "vehicle"),
+                TrackedEvent("route_result", provider = "lime", result = "success", target = "vehicle"),
+            ),
+            h.analytics.events,
+        )
     }
 
     @Test
@@ -137,6 +146,7 @@ class ScooterWalkTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val h = harness(vehicles = listOf(target), rider = null, status = ScooterAuthorizationStatus.Denied)
         h.model.selectScooter(target.id)
+        h.analytics.clear()
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
 
@@ -149,6 +159,12 @@ class ScooterWalkTest {
         h.model.openWalkInMaps(ScooterWalkTarget.Scooter(target))
 
         assertEquals(listOf(ScooterWalkTarget.Scooter(target)), h.opened)
+        // Open in Maps is counted as Directions is, with no result: the maps app finds the way.
+        val directionsOpen = TrackedEvent("directions_open", provider = "lime", target = "vehicle")
+        assertEquals(
+            listOf(directionsOpen, TrackedEvent("locate"), TrackedEvent("location_result", result = "denied"), directionsOpen),
+            h.analytics.events,
+        )
     }
 
     @Test
@@ -156,9 +172,17 @@ class ScooterWalkTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val h = harness(vehicles = listOf(target), rider = point(east = 0, north = 12_000))
         h.model.selectScooter(target.id)
+        h.analytics.clear()
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
 
+        assertEquals(
+            listOf(
+                TrackedEvent("directions_open", provider = "lime", target = "vehicle"),
+                TrackedEvent("route_result", provider = "lime", result = "too_far", target = "vehicle"),
+            ),
+            h.analytics.events,
+        )
         assertNull(h.model.walk.value)
         assertEquals(listOf(ScooterWalkTarget.Scooter(target)), h.opened)
         assertTrue(h.directions.requests.isEmpty())
@@ -171,6 +195,7 @@ class ScooterWalkTest {
         val h = harness(vehicles = listOf(target), rider = rider)
         h.directions.result = Result.failure(WalkingDirectionsError(WalkingDirectionsError.Reason.NoRoute))
         h.model.selectScooter(target.id)
+        h.analytics.clear()
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
 
@@ -183,6 +208,10 @@ class ScooterWalkTest {
         assertEquals(localized("Couldn’t find a walking route."), h.model.walkAnnouncement.value?.text)
         assertEquals(h.model.straightLineDistance(target), h.model.walkingDistance(target))
         assertEquals(20.0, h.manager.distanceFilter, 0.0)
+        assertEquals(
+            TrackedEvent("route_result", provider = "lime", result = "error", target = "vehicle"),
+            h.analytics.events.lastOrNull(),
+        )
     }
 
     @Test
@@ -190,6 +219,7 @@ class ScooterWalkTest {
         val target = scooter("s1", at = point(east = 10, north = 0))
         val h = harness(vehicles = listOf(target), rider = rider)
         h.model.selectScooter(target.id)
+        h.analytics.clear()
 
         h.model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
 
@@ -198,6 +228,13 @@ class ScooterWalkTest {
         assertEquals(ScooterWalkNote.Arrived, h.model.walkNote(ScooterWalkTarget.Scooter(target)))
         assertEquals(ScooterDirectionsControl.Directions, h.model.directionsControl(ScooterWalkTarget.Scooter(target)))
         assertEquals(localized("You’re there."), h.model.walkAnnouncement.value?.text)
+        assertEquals(
+            listOf(
+                TrackedEvent("directions_open", provider = "lime", target = "vehicle"),
+                TrackedEvent("route_arrived", provider = "lime", target = "vehicle"),
+            ),
+            h.analytics.events,
+        )
     }
 
     // Walking
@@ -207,6 +244,7 @@ class ScooterWalkTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val h = shownWalk(to = target)
         val revision = unwrap(h.model.walkTrail?.revision)
+        h.analytics.clear()
 
         h.model.setUserLocation(point(east = 3, north = 60))
 
@@ -229,6 +267,7 @@ class ScooterWalkTest {
         assertEquals(1, h.directions.requests.size)
         // The card stays open on the scooter.
         assertEquals(ScooterDockContent.Scooter(target), h.model.dock)
+        assertEquals(listOf(TrackedEvent("route_arrived", provider = "lime", target = "vehicle")), h.analytics.events)
     }
 
     @Test
@@ -277,6 +316,8 @@ class ScooterWalkTest {
         }
         assertEquals(11, h.directions.requests.size)
         assertEquals(WalkRoute.maximumReroutes, h.model.walk.value?.reroutes)
+        // Only the route the rider asked for is reported, not those found again on the way.
+        assertEquals(1, h.analytics.events.count { it.name == "route_result" })
     }
 
     @Test
@@ -446,6 +487,8 @@ class ScooterWalkTest {
         h.directions.result = null
         h.model.selectParking(bay.id)
         assertEquals(bay, h.model.selectedParking)
+        // The map counts the bay's tap itself (parking_select); choosing it here sends nothing.
+        assertEquals(emptyList<TrackedEvent>(), h.analytics.events)
 
         h.model.showWalkingRoute(ScooterWalkTarget.Parking(bay))
         val shown = waitUntil { h.model.walk.value?.phase == ScooterWalkPhase.Shown }
@@ -459,6 +502,13 @@ class ScooterWalkTest {
         assertEquals(bay, h.model.selectedParking)
         assertEquals(ScooterDockContent.Parking(bay), h.model.dock)
         assertEquals(ScooterDirectionsControl.HideRoute, h.model.directionsControl(ScooterWalkTarget.Parking(bay)))
+        assertEquals(
+            listOf(
+                TrackedEvent("directions_open", provider = "dott", target = "parking"),
+                TrackedEvent("route_result", provider = "dott", result = "success", target = "parking"),
+            ),
+            h.analytics.events,
+        )
     }
 
     // Taken scooters
@@ -554,6 +604,7 @@ class ScooterWalkTest {
         val manager: FakeLocationManager,
         val clock: TestClock,
         val opened: List<ScooterWalkTarget>,
+        val analytics: RecordingAnalytics,
     )
 
     /** The site's path from the rider to a scooter 300 m east: 100 m north, 300 m east and 100 m back south, 500 m in all. */
@@ -573,18 +624,20 @@ class ScooterWalkTest {
         val manager = FakeLocationManager(status)
         val clock = TestClock()
         val opened = mutableListOf<ScooterWalkTarget>()
+        val analytics = RecordingAnalytics()
         val model = makeController(
             api,
             clock = clock,
             locationManager = manager,
             directions = directions,
             openInMaps = { opened += it },
+            analytics = analytics,
         )
         model.setUserLocation(rider)
         model.updateViewport(region, zoom = 17)
         val loaded = waitUntil { model.lastUpdated.value != null && !model.isLoading.value }
         assertTrue(loaded)
-        return Harness(model, api, directions, manager, clock, opened)
+        return Harness(model, api, directions, manager, clock, opened, analytics)
     }
 
     /** A walk from the rider to `target`, with its route on the map. */
