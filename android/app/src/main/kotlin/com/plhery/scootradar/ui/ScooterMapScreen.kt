@@ -1,8 +1,5 @@
 package com.plhery.scootradar.ui
 
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -93,6 +90,7 @@ import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.ui.chrome.FloatingMapControls
 import com.plhery.scootradar.ui.chrome.LocationIssueCard
+import com.plhery.scootradar.ui.chrome.LocationSettings
 import com.plhery.scootradar.ui.chrome.MapStatusBanner
 import com.plhery.scootradar.ui.dock.ScooterControlDock
 import com.plhery.scootradar.ui.filters.ScooterFilterSheet
@@ -132,6 +130,8 @@ fun ScooterMapScreen(
     defaults: ScooterDefaults? = null,
     /** What asks for a rating once the map has rested after a ride. */
     reviewRequester: ReviewRequester = ReviewRequester.none,
+    /** Where the location card's Open Settings goes, and what its Try again asks first: the phone's location service. */
+    locationSettings: LocationSettings = LocationSettings.appPage,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -162,6 +162,7 @@ fun ScooterMapScreen(
             LocalAnalytics provides analytics,
             LocalAddressSearch provides addressSearch,
             LocalMapChrome provides chrome,
+            LocalLocationSettings provides locationSettings,
         ) {
             Box(Modifier.fillMaxSize()) {
                 // A sheet is modal: TalkBack reads it alone, as VoiceOver does.
@@ -435,6 +436,7 @@ private fun TopStack(
     val lastFailure = rememberLast(failure)
     val lastIssue = rememberLast(locationIssue)
     val context = LocalContext.current
+    val locationSettings = LocalLocationSettings.current
     val spring = IosMotion.snappy(duration = 0.28)
     val reduceMotion = LocalReduceMotion.current
     val enter = if (reduceMotion) fadeIn(snap()) else slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation())
@@ -516,13 +518,13 @@ private fun TopStack(
                     Box {
                         LocationIssueCard(
                             issue = issue,
-                            onOpenSettings = { context.startActivity(appSettings(context.packageName)) },
+                            onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
                             onSearchPlace = {
                                 // Searching is the answer to the card, so it goes away.
                                 controller.dismissLocationIssue()
                                 onSearchingChange(true)
                             },
-                            onRetry = controller::focusOnUser,
+                            onRetry = { locationSettings.retry(controller::focusOnUser) },
                             onDismiss = controller::dismissLocationIssue,
                         )
                         Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
@@ -577,6 +579,9 @@ private fun SearchIsland(
 /** The analytics the chrome tracks its taps with, such as "rental_open"; none where the screen was given none. */
 val LocalAnalytics = staticCompositionLocalOf<ScooterAnalytics?> { null }
 
+/** What the location card's Open Settings and Try again ask of the phone. */
+val LocalLocationSettings = staticCompositionLocalOf { LocationSettings.appPage }
+
 /** The last value that was not null. */
 @Composable
 private fun <T : Any> rememberLast(value: T?): T? {
@@ -584,9 +589,3 @@ private fun <T : Any> rememberLast(value: T?): T? {
     if (value != null) last.value = value
     return last.value
 }
-
-/** The app's page in Android's Settings, where its location permission is. */
-private fun appSettings(packageName: String) = Intent(
-    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-    Uri.fromParts("package", packageName, null),
-).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

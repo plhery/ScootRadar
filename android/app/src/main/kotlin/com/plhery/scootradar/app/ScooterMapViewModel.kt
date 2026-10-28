@@ -5,7 +5,9 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.plhery.scootradar.BuildConfig
-import com.plhery.scootradar.core.map.ScooterLocationManager
+import com.plhery.scootradar.core.map.ScooterHeadingReading
+import com.plhery.scootradar.core.map.ScooterLocationError
+import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
@@ -28,7 +30,8 @@ class ScooterMapViewModel(
     /** The app's defaults, with a debug launch's arguments in front. */
     defaults: ScooterDefaults = container.defaults,
     languageAtLaunch: ScooterLanguageChoice,
-    locationManager: ScooterLocationManager = NotDeterminedLocationManager(),
+    /** The phone's location service, which the activity lets ask the rider, and the controller hears from. */
+    val location: AndroidLocationManager = container.locationManager(),
 ) : ViewModel(), DefaultLifecycleObserver {
     // Dispatchers.Main, not viewModelScope's Main.immediate: the controller's work starts after the call that
     // asked for it returns, as a Swift Task does.
@@ -55,7 +58,7 @@ class ScooterMapViewModel(
 
     val controller = ScooterMapController(
         api = container.api,
-        locationManager = locationManager,
+        locationManager = location,
         defaults = defaults,
         scope = scope,
         directions = container.directions,
@@ -68,6 +71,19 @@ class ScooterMapViewModel(
         debug = BuildConfig.DEBUG,
     )
 
+    init {
+        // On the main thread, as CLLocationManager's delegate calls the iPhone's model.
+        location.delegate = object : AndroidLocationManager.Delegate {
+            override fun authorizationChanged() = controller.authorizationChanged()
+
+            override fun locationsUpdated(locations: List<ScooterLocationFix>) = controller.locationsUpdated(locations)
+
+            override fun headingUpdated(heading: ScooterHeadingReading) = controller.headingUpdated(heading)
+
+            override fun locationFailed(error: ScooterLocationError) = controller.locationFailed(error)
+        }
+    }
+
     private var hasStarted = false
 
     /**
@@ -76,16 +92,21 @@ class ScooterMapViewModel(
      */
     private var recreating = false
 
-    /** The screen's first appearance starts the controller; each later one is a return to the foreground. */
+    /**
+     * The screen's first appearance starts the controller; each later one is a return to the foreground. The
+     * location service hears of it first, so that the controller finds the permission as the rider left it.
+     */
     override fun onStart(owner: LifecycleOwner) {
         if (!hasStarted) {
             hasStarted = true
+            location.cameToForeground()
             analytics.track()
             analytics.track("app_open")
             controller.start()
         } else if (recreating) {
             recreating = false
         } else {
+            location.cameToForeground()
             analytics.track("app_foreground")
             controller.becameActive()
         }
@@ -97,9 +118,11 @@ class ScooterMapViewModel(
             return
         }
         controller.becameInactive()
+        location.leftForeground()
     }
 
     override fun onCleared() {
+        location.close()
         scope.cancel()
     }
 }

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Whether a request that failed was offline (ScooterAPI's isOffline). -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- The rider's place while the app is in use, asked only when the rider asks to be located (LOG-241, LOG-242):
+         both, so that Android 12 offers precise and approximate. Nothing in the background. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- Android 12 has no App languages setting to read localeConfig: AppCompat keeps the app's language there. -->
     <application
