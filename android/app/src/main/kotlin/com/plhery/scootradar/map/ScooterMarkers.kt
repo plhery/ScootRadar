@@ -137,7 +137,10 @@ class ScooterMarkers(
      */
     private val laying = HashSet<String>()
 
-    /** The tiles that started a layout before the scooters changed, and have not started on them since. */
+    /** The tiles that have started a layout while the light-up is held. */
+    private val seen = HashSet<String>()
+
+    /** The tiles laid out for the bands that have not started on the new scooters since. */
     private val behind = HashSet<String>()
     private var changed = false
     private var takenIn = false
@@ -151,11 +154,13 @@ class ScooterMarkers(
         when (operation) {
             TileOperation.StartParse -> {
                 laying += tile
-                if (changed) {
-                    behind -= tile
-                    takenIn = true
-                } else {
+                // A tile's first layout in the hold is of the old scooters for the new bands, even one begun after
+                // the source changed: a busy frame can start it that late. Its next, once the source has changed,
+                // takes the new scooters in. A tile that takes both in one layout is waited for until overdue.
+                if (seen.add(tile)) {
                     behind += tile
+                } else if (changed && behind.remove(tile)) {
+                    takenIn = true
                 }
             }
             TileOperation.EndParse, TileOperation.Error, TileOperation.Cancelled -> {
@@ -466,6 +471,7 @@ class ScooterMarkers(
         held = now
         holds += 1
         laying.clear()
+        seen.clear()
         behind.clear()
         changed = false
         takenIn = false
