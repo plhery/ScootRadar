@@ -165,11 +165,12 @@ internal fun FormNavigationRow(onClick: () -> Unit, label: @Composable RowScope.
 
 /**
  * LabeledContent's row, as UIKit's value cell lays it out: [label] at the start and [value] at the end where both
- * fit on one line whole, else the value under the label, as at the largest text sizes.
+ * fit on one line whole, else the value under the label, as at the largest text sizes. TalkBack reads the two as
+ * one, as VoiceOver does.
  */
 @Composable
-internal fun FormValueRow(label: @Composable () -> Unit, onClick: (() -> Unit)? = null, value: @Composable () -> Unit) {
-    FormRow(onClick = onClick) {
+internal fun FormValueRow(label: @Composable () -> Unit, modifier: Modifier = Modifier, value: @Composable () -> Unit) {
+    FormRow(modifier.semantics(mergeDescendants = true) { }) {
         Layout(content = { Box { label() }; Box { value() } }, modifier = Modifier.weight(1f)) { (start, end), constraints ->
             val width = constraints.maxWidth
             val gap = 8.dp.roundToPx()
@@ -238,7 +239,8 @@ internal enum class Detail { Footnote, Subheadline }
 internal fun ExternalLinkRow(title: String, onOpen: () -> Unit, detail: String? = null, symbol: ImageVector? = null) {
     FormRow(onClick = onOpen) {
         if (symbol != null) FormLabel(title, symbol, detail) else FormText(title, Modifier.weight(1f), detail)
-        FixedSymbol(Symbols.arrowUpRight, 13f, scootColors.tertiaryLabel, Modifier.clearAndSetSemantics { })
+        // `.footnote.semibold`, which grows with the text.
+        SymbolIcon(Symbols.arrowUpRight, textSymbolSize(13f), scootColors.tertiaryLabel, Modifier.clearAndSetSemantics { })
     }
 }
 

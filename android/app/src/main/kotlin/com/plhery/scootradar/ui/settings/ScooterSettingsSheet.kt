@@ -12,7 +12,9 @@ import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +22,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
@@ -38,13 +38,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -67,7 +73,6 @@ import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalClock
-import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.rememberControllerChanges
@@ -122,7 +127,13 @@ fun ScooterSettingsSheet(
     pages: List<SettingsPage> = listOf(SettingsPage.Root),
 ) {
     val stack = remember { mutableStateListOf<SettingsPage>().apply { addAll(pages) } }
-    val push: (SettingsPage) -> Unit = { stack.add(it) }
+    // Each page keeps where it is scrolled to while pages above it come and go, as in a NavigationStack; a page
+    // pushed again starts at its top.
+    val scrolls = remember { mutableMapOf<Int, ScrollState>() }
+    val push: (SettingsPage) -> Unit = {
+        scrolls.remove(stack.size + 1)
+        stack.add(it)
+    }
     val pop: () -> Unit = { if (stack.size > 1) stack.removeAt(stack.lastIndex) }
     // Back takes a page away before it closes the sheet.
     BackHandler(enabled = stack.size > 1, onBack = pop)
@@ -159,7 +170,7 @@ fun ScooterSettingsSheet(
                 Modifier
                     .fillMaxSize()
                     .background(colors.systemGroupedBackground)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrolls.getOrPut(shown.size) { ScrollState(0) })
                     .padding(bottom = bottomInset + 20.dp),
             ) {
                 when (val page = shown.last()) {
@@ -313,8 +324,8 @@ private fun SettingsRoot(
         rows = providers.map { provider ->
             @Composable {
                 FormNavigationRow(onClick = { push(SettingsPage.Pass(provider)) }) {
-                    Box(Modifier.size(PASS_DOT).background(scootColors.providerAccent(provider), CircleShape))
-                    Spacer(Modifier.width(PASS_GAP - 8.dp))
+                    // HStack(spacing: 10): the row's own gap, and the rest after the dot.
+                    Box(Modifier.padding(end = PASS_GAP - 8.dp).size(PASS_DOT).background(scootColors.providerAccent(provider), CircleShape))
                     val status = passStatus(ridePasses[provider] ?: ProviderRidePass(), now)
                     if (TextSize.isAccessibility) {
                         // Very large text: the status goes under the name, so neither is cut off.
@@ -328,6 +339,7 @@ private fun SettingsRoot(
                             color = scootColors.secondaryLabel,
                             textAlign = TextAlign.End,
                             maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.weight(1f),
                         )
                     }
@@ -391,7 +403,8 @@ private fun LanguageSettings(controller: ScooterMapController, language: Scooter
         FormRow(onClick = { controller.setLanguageChoice(value) }, selected = choice == value) {
             FormText(name, Modifier.weight(1f), detail, Detail.Subheadline)
             Box(Modifier.clearAndSetSemantics { }) {
-                FixedSymbol(Symbols.check, 17f, if (choice == value) scootColors.accent else Color.Transparent)
+                // `.body.semibold`, which grows with the text.
+                SymbolIcon(Symbols.check, textSymbolSize(17f), if (choice == value) scootColors.accent else Color.Transparent)
             }
         }
     }
@@ -493,8 +506,32 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
     var picking by remember { mutableStateOf(false) }
     val zone = ScooterDateFormat.timeZone()
     val day = ScooterDateFormat.skeleton("yMMMd", date, zone, ScooterLanguage.current.locale)
-    FormValueRow(label = { Text(title, style = ScootType.body, color = scootColors.label) }, onClick = { picking = true }) {
-        Box(Modifier.background(scootColors.tertiarySystemFill, CapsuleShape).padding(horizontal = 12.dp, vertical = 6.dp)) {
+    // Only the capsule opens the calendar, and greys under the finger; TalkBack reads the row as the picker, one
+    // button that opens it.
+    var pressed by remember { mutableStateOf(false) }
+    FormValueRow(
+        label = { Text(title, style = ScootType.body, color = scootColors.label) },
+        modifier = Modifier.semantics {
+            role = Role.Button
+            onClick { picking = true; true }
+        },
+    ) {
+        Box(
+            Modifier
+                .background(scootColors.tertiarySystemFill, CapsuleShape)
+                .then(if (pressed) Modifier.background(scootColors.tertiarySystemFill, CapsuleShape) else Modifier)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress = {
+                            pressed = true
+                            tryAwaitRelease()
+                            pressed = false
+                        },
+                        onTap = { picking = true },
+                    )
+                }
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+        ) {
             Text(day, style = ScootType.body, color = scootColors.label)
         }
     }
