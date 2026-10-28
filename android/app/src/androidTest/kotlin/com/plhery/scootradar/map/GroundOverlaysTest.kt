@@ -4,7 +4,11 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PointF
 import android.view.Choreographer
+import android.view.TextureView
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.ui.platform.AndroidUiDispatcher
+import androidx.core.view.children
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.plhery.scootradar.app.NotDeterminedLocationManager
@@ -38,6 +42,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -50,7 +55,6 @@ import org.maplibre.android.style.sources.GeoJsonSource
 import org.maplibre.geojson.Point
 import java.io.File
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 import kotlin.math.pow
 
 // The zones and the walk's trail on MapLibre's map (map.md MAP-151 to MAP-185): the zones of a fake server read back
@@ -412,18 +416,20 @@ class GroundOverlaysTest {
         ground.phone.view.tap?.invoke((at.x * ground.ratio).toFloat(), (at.y * ground.ratio).toFloat())
     }
 
-    /** What the map draws now. */
-    private fun snapshot(ground: Ground): Bitmap {
-        val ready = CountDownLatch(1)
-        var taken: Bitmap? = null
-        ground.phone.onMain {
-            ground.phone.map.snapshot { bitmap ->
-                taken = bitmap
-                ready.countDown()
-            }
-        }
-        assertTrue("the map's snapshot", ready.await(10, TimeUnit.SECONDS))
-        return taken!!
+    /**
+     * What the map draws now, all of it, past the screen's edges too: its texture's last frame. MapLibre's own
+     * snapshot waits for a frame that a map at rest doesn't draw.
+     */
+    private fun snapshot(ground: Ground): Bitmap = ground.phone.onMain {
+        val frame = ground.phone.view.texture()?.bitmap
+        assertNotNull("the map's frame", frame)
+        frame!!
+    }
+
+    private fun View.texture(): TextureView? = when (this) {
+        is TextureView -> this
+        is ViewGroup -> children.firstNotNullOfOrNull { it.texture() }
+        else -> null
     }
 
     private fun Bitmap.at(ground: Ground, point: ScreenPoint): Int =
