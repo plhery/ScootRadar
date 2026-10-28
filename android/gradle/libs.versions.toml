@@ -21,6 +21,7 @@ gummy-bears = "0.16.0"
 okhttp = "5.5.1"
 jts = "1.20.0"
 roborazzi = "1.77.0"
+window = "1.5.1"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -55,6 +56,8 @@ mockwebserver3 = { module = "com.squareup.okhttp3:mockwebserver3", version.ref =
 jts-core = { module = "org.locationtech.jts:jts-core", version.ref = "jts" }
 roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
 roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+androidx-window = { module = "androidx.window:window", version.ref = "window" }
+androidx-window-testing = { module = "androidx.window:window-testing", version.ref = "window" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

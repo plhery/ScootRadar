@@ -47,7 +47,6 @@ import com.plhery.scootradar.ui.windowSizeClasses
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.maps.MapLibreMapOptions
-import kotlin.math.max
 
 // ScooterMapView's makeUIView, from ios/ScootRadar/Views/ScooterMapView.swift.
 
@@ -201,13 +200,14 @@ fun ScooterMap(
     val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
     LaunchedEffect(camera, selectedScooter, selectedParking) { camera?.keepSelectionClearOfPanel() }
-    // Beside a panel the credits sit past it, in the map's leading margin, as Apple's logo does: read only as the
-    // panel's sides move, not as its card grows.
+    // Beside a panel or a fold the credits sit past it, in the map's margins, as Apple's logo does: read only as the
+    // panel's sides and the fold move, not as its card grows.
     val panelSides by remember(chrome) {
         derivedStateOf {
             chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.panel?.takeIf { !it.isEmpty }?.let { it.minX to it.maxX }
         }
     }
+    val fold by remember(chrome) { derivedStateOf { chrome?.fold?.takeIf { !it.isEmpty } } }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, view) {
         // A new observer is brought up to the lifecycle's state at once: ON_CREATE, ON_START, ON_RESUME.
@@ -254,23 +254,36 @@ fun ScooterMap(
     val backdrop = LocalGlass.current.backdrop
     BoxWithConstraints(modifier.fillMaxSize()) {
         AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
-        val margins = panelSides?.let { (minX, maxX) ->
+        val margins = if (panelSides == null && fold == null) {
+            null
+        } else {
             MapCamera.beside(
-                panel = ScreenRect(minX, 0.0, maxX - minX, 1.0),
+                panel = panelSides?.let { (minX, maxX) -> ScreenRect(minX, 0.0, maxX - minX, 1.0) },
+                fold = fold,
                 bounds = ScreenRect(0.0, 0.0, maxWidth.value.toDouble(), maxHeight.value.toDouble()),
+                safeTop = 0.0,
                 rightToLeft = direction == LayoutDirection.Rtl,
             )
+        }
+        val leading = margins?.let { if (direction == LayoutDirection.Rtl) it.right else it.left } ?: 0.0
+        // Past a panel or a fold down the map by the map's leading margin, or where a phone has them.
+        val sideways = if (leading > 0) {
+            Modifier.padding(start = leading.dp)
+        } else {
+            Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)).padding(start = 8.dp)
         }
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
             modifier = Modifier.align(Alignment.BottomStart).then(
-                if (margins == null) {
-                    Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
-                } else {
-                    Modifier
+                when {
+                    margins == null -> Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
+                    // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
+                    margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)
+                    else -> Modifier
                         .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
-                        .padding(start = max(margins.left, margins.right).dp, bottom = 8.dp)
+                        .then(sideways)
+                        .padding(bottom = 8.dp)
                 },
             ),
         )

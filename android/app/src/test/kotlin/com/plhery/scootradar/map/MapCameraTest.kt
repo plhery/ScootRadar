@@ -175,6 +175,32 @@ class MapCameraTest {
         assertEquals(ScreenRect(412.0, 0.0, 868.0, 800.0), MapCamera.within(bounds, margins, MapInsets.zero))
     }
 
+    /**
+     * MAP-044's margins beside the fold of a partly open foldable (ScooterMapView.swift:913-951): past a fold down the
+     * map on the side away from the panel, or the trailing one, and above a fold across it, from under the status bar.
+     */
+    @Test
+    fun besideAFoldTheMarginsReachPastItOnTheSideTheMapShowsOn() {
+        val book = ScreenRect(465.0, 0.0, 20.0, 669.0)
+        val window = ScreenRect(0.0, 0.0, 951.0, 669.0)
+        // T244: no panel, and the map shows in the trailing half.
+        assertEquals(MapInsets(0.0, 485.0 + 16, 0.0, 0.0), MapCamera.beside(null, book, window, safeTop = 24.0, rightToLeft = false))
+        assertEquals(MapInsets(0.0, 0.0, 0.0, 951.0 - 465 + 16), MapCamera.beside(null, book, window, safeTop = 24.0, rightToLeft = true))
+        // Beside the panel, the half away from it, whichever side it is on.
+        val panel = ScreenRect(16.0, 24.0, 380.0, 400.0)
+        assertEquals(MapInsets(0.0, 485.0 + 16, 0.0, 0.0), MapCamera.beside(panel, book, window, safeTop = 24.0, rightToLeft = false))
+        val right = ScreenRect(951.0 - 16 - 380, 24.0, 380.0, 400.0)
+        assertEquals(MapInsets(0.0, 0.0, 0.0, 951.0 - 465 + 16), MapCamera.beside(right, book, window, safeTop = 24.0, rightToLeft = true))
+        // A fold the panel reaches past leaves the panel's margin.
+        val near = ScreenRect(300.0, 0.0, 20.0, 669.0)
+        assertEquals(MapInsets(0.0, 16.0 + 380 + 16, 0.0, 0.0), MapCamera.beside(panel, near, window, safeTop = 24.0, rightToLeft = false))
+
+        // T245: standing like a laptop, the upright half between the status bar and the fold.
+        val laptop = ScreenRect(0.0, 465.0, 669.0, 20.0)
+        val upright = ScreenRect(0.0, 0.0, 669.0, 951.0)
+        assertEquals(MapInsets(24.0, 0.0, 951.0 - 465 + 16, 0.0), MapCamera.beside(null, laptop, upright, safeTop = 24.0, rightToLeft = false))
+    }
+
     @Test
     fun marginsMeasuredApartInTheirLastDigitsAreTheSame() {
         val margins = MapInsets(0.0, 412.0, 0.0, 0.0)

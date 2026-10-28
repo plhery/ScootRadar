@@ -218,6 +218,8 @@ data class MarkerParent(
     val bottomChromeFrames: List<ScreenRect> = emptyList(),
     /** The panel of a large window. */
     val panelFrame: ScreenRect? = null,
+    /** The fold of a partly open foldable. */
+    val foldFrame: ScreenRect? = null,
 )
 
 /**
@@ -650,10 +652,18 @@ class ScooterMarkerScene(
         val projection = map.projection
         val bounds = projection.bounds
         // A panel covers only as far down as it reaches: below it the names show as anywhere else.
-        val chrome = (parent.bottomChromeFrames + listOfNotNull(parent.panelFrame)).filter { !it.isEmpty }
+        val chrome = (parent.bottomChromeFrames + listOfNotNull(parent.panelFrame)).filter { !it.isEmpty }.toMutableList()
         // Beside the locate button the map is free down to the dock.
         var visible = visibleRect(map)
         if (chrome.isNotEmpty()) visible = ScreenRect(visible.x, visible.y, visible.width, bounds.maxY - visible.minY)
+        // Beside the fold of a partly open foldable the names show on both halves, off the fold and what covers
+        // either of them.
+        parent.foldFrame?.takeIf { !it.isEmpty && it.intersects(bounds) }?.let { fold ->
+            val top = map.safeTop
+            visible = ScreenRect(bounds.minX, top, bounds.width, bounds.maxY - top)
+            chrome += fold
+            parent.interactionExclusionFrame?.takeIf { !it.isEmpty }?.let { chrome += it }
+        }
 
         val requests = mutableListOf<ScooterPillRequest>()
         val neighbours = mutableListOf<ScreenRect>()

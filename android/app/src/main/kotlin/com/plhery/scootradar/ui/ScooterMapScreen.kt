@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.expandVertically
@@ -44,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
@@ -57,6 +59,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -86,6 +89,7 @@ import com.plhery.scootradar.core.map.searchBarState
 import com.plhery.scootradar.core.map.searchNear
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDefaults
+import com.plhery.scootradar.core.model.ScooterFold
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterMapLink
@@ -126,7 +130,7 @@ import kotlinx.coroutines.flow.emptyFlow
 
 // ios/ScootRadar/Views/ScooterMapScreen.swift: the screen around the map, and the chrome over it: a phone's
 // (dockChrome, ui.md UI-004 to UI-006), or a large window's panel (panelChrome, UI-007, UI-008, UI-113, UI-124),
-// with the search bar at its top (searchIsland, UI-009).
+// with the search bar at its top (searchIsland, UI-009), both kept clear of a foldable's fold (UI-116 to UI-118).
 
 /** The app's one screen: the map, edge to edge, the chrome over it, and the window's appearance. */
 @Composable
@@ -173,6 +177,8 @@ fun ScooterMapScreen(
     val sheetOpen = filtersPresented || settingsPresented
     // Where a large window's Filters popover points: the panel's Filters button, in the window.
     var filtersButton by remember { mutableStateOf<Rect?>(null) }
+    // Where the screen is in the window, in pixels, which a fold is measured from.
+    var origin by remember { mutableStateOf(Offset.Zero) }
 
     ScootTheme(dark = dark) {
         CompositionLocalProvider(
@@ -182,11 +188,32 @@ fun ScooterMapScreen(
             LocalMapChrome provides chrome,
             LocalLocationSettings provides locationSettings,
         ) {
-            BoxWithConstraints(Modifier.fillMaxSize()) {
+            BoxWithConstraints(Modifier.fillMaxSize().onGloballyPositioned { origin = it.positionInWindow() }) {
                 // Chosen again at every size of the window, which turns and is resized without a new activity. Filters
-                // and Settings, open, move to the new layout's presenters.
+                // and Settings, open, move to the new layout's presenters. A fold doesn't choose it: the size classes
+                // and the width do (UI-119).
                 val layout = rememberChromeLayout(maxWidth)
-                SideEffect { chrome.layout = layout }
+                val density = LocalDensity.current
+                val screen = ScreenRect(
+                    (origin.x / density.density).toDouble(),
+                    (origin.y / density.density).toDouble(),
+                    maxWidth.value.toDouble(),
+                    maxHeight.value.toDouble(),
+                )
+                val fold = rememberWindowFold(screen)
+                // The screen inside its safe area, in the window, which the iPhone's GeometryReader measures.
+                val direction = LocalLayoutDirection.current
+                val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
+                val inside = ScreenRect(
+                    screen.x + safe.calculateLeftPadding(direction).value,
+                    screen.y + safe.calculateTopPadding().value,
+                    screen.width - (safe.calculateLeftPadding(direction) + safe.calculateRightPadding(direction)).value,
+                    screen.height - (safe.calculateTopPadding() + safe.calculateBottomPadding()).value,
+                )
+                SideEffect {
+                    chrome.layout = layout
+                    chrome.fold = fold
+                }
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
                     map(dark)
@@ -202,6 +229,7 @@ fun ScooterMapScreen(
                         ScooterChromeLayout.Dock -> DockChrome(
                             controller,
                             chrome = chrome,
+                            chromeTop = ScooterFold.chromeTop(below = fold, container = inside).dp,
                             isSearching = searchIsExpanded,
                             onSearchingChange = { searchIsExpanded = it },
                             onShowFilters = onShowFilters,
@@ -210,6 +238,13 @@ fun ScooterMapScreen(
                         ScooterChromeLayout.Panel -> PanelChrome(
                             controller,
                             chrome = chrome,
+                            width = ScooterFold.panelWidth(
+                                ScooterChromeLayout.panelWidth(TextSize.isAccessibility),
+                                beside = fold,
+                                container = inside,
+                                inset = 16.0,
+                                rightToLeft = direction == LayoutDirection.Rtl,
+                            ).dp,
                             isSearching = searchIsExpanded,
                             onSearchingChange = { searchIsExpanded = it },
                             onShowFilters = onShowFilters,
@@ -311,12 +346,15 @@ private fun <T> OnChange(value: T, action: (T) -> Unit) {
 
 /**
  * A phone's chrome: the search bar and its notices at the top, the dock at the bottom, and the locate button above
- * the dock. Made anew in another language, as much of it is text written when it was drawn.
+ * the dock. The search bar starts [chromeTop] down: under the fold of a foldable standing like a laptop, so that all
+ * of them are on the half lying flat, within reach. Made anew in another language, as much of it is text written
+ * when it was drawn.
  */
 @Composable
 private fun DockChrome(
     controller: ScooterMapController,
     chrome: MapChromeFrames,
+    chromeTop: Dp,
     isSearching: Boolean,
     onSearchingChange: (Boolean) -> Unit,
     onShowFilters: () -> Unit,
@@ -344,6 +382,7 @@ private fun DockChrome(
     val safeBottom = safe.calculateBottomPadding()
     // The room under the home indicator, or 8 where there is none.
     val bottom = max(safeBottom, 8.dp)
+    val below by animateDpAsState(chromeTop, motion(IosMotion.snappy(duration = 0.28)), label = "chromeTop")
     // The panel's layout has frames of its own.
     DisposableEffect(chrome) {
         onDispose {
@@ -365,7 +404,7 @@ private fun DockChrome(
                 controller,
                 failure = firstLoadFailure,
                 locationIssue = locationIssue,
-                noticesLimit = max(64.dp, height - 8.dp - searchBar - 8.dp - 8.dp - locate - (dock + bottom + 10.dp)),
+                noticesLimit = max(64.dp, height - chromeTop - 8.dp - searchBar - 8.dp - 8.dp - locate - (dock + bottom + 10.dp)),
                 isSearching = isSearching,
                 onSearchingChange = onSearchingChange,
                 onShowFilters = onShowFilters,
@@ -374,7 +413,7 @@ private fun DockChrome(
                 bottomLimit = maxHeight - safeBottom,
                 chrome = chrome,
                 onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
-                modifier = Modifier.padding(top = safeTop + 8.dp, start = 12.dp, end = 12.dp),
+                modifier = Modifier.padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
             )
 
             // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
@@ -423,7 +462,7 @@ private fun DockChrome(
                         .inert(isSearching),
                     maximumContentHeight = max(
                         160.dp,
-                        height - (if (isAccessibility) 300.dp else 220.dp) -
+                        height - chromeTop - (if (isAccessibility) 300.dp else 220.dp) -
                             // With large text a notice under the search bar needs room too.
                             (if (isAccessibility && notices) 120.dp else 0.dp),
                     ),
@@ -438,12 +477,14 @@ private fun DockChrome(
  * A large window's chrome, as the website's on a computer: the search bar, the notices and the dock's card one under
  * the other in a panel down the leading side, over the map, and the locate button in the map's trailing corner. The
  * open search covers the panel, and nothing else. The card folds down to one line, and the map then shows, and takes
- * taps, under the panel; the notices stay. Made anew in another language, as the phone's is.
+ * taps, under the panel; the notices stay. Beside the fold of a foldable open like a book the panel keeps to its
+ * half, [width] wide. Made anew in another language, as the phone's is.
  */
 @Composable
 private fun PanelChrome(
     controller: ScooterMapController,
     chrome: MapChromeFrames,
+    width: Dp,
     isSearching: Boolean,
     onSearchingChange: (Boolean) -> Unit,
     onShowFilters: () -> Unit,
@@ -467,7 +508,6 @@ private fun PanelChrome(
     val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
     val safeTop = safe.calculateTopPadding()
     val safeBottom = safe.calculateBottomPadding()
-    val largeText = TextSize.isAccessibility
     DisposableEffect(chrome) { onDispose { chrome.panel = null } }
 
     key(language) {
@@ -488,8 +528,7 @@ private fun PanelChrome(
                 Box(
                     Modifier
                         .padding(16.dp)
-                        // Beside an open foldable's fold the panel will keep to its half (UI-116 on, not here yet).
-                        .width(ScooterChromeLayout.panelWidth(largeText).dp)
+                        .width(width)
                         // The map shows a scooter beside the panel, and keeps its names and its taps off it.
                         .onGloballyPositioned { chrome.panel = it.windowFrame(density.density) },
                 ) {

@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.customview)
     // The ground's style is written as JSON, and OpenFreeMap's index read from it.
     implementation(libs.kotlinx.serialization.json)
+    // The fold of a partly open foldable, which the chrome and the map keep clear of (UI-116). Apache 2.0.
+    implementation(libs.androidx.window)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 
@@ -82,6 +84,8 @@ dependencies {
     testImplementation(libs.espresso.core)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
+    // A fold given to the screen as WindowManager would give it.
+    testImplementation(libs.androidx.window.testing)
 
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.core)
@@ -94,4 +98,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     // Android's own permission dialog and Settings, in the rider's location tests (map/RiderLocationTest).
     androidTestImplementation(libs.uiautomator)
+    // The fold of the foldable's tests (ui/FoldTest).
+    androidTestImplementation(libs.androidx.window.testing)
 }

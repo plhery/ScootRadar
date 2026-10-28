@@ -64,7 +64,8 @@ data class MapInsets(val top: Double, val left: Double, val bottom: Double, val 
  * On a phone the map keeps no margins: MapKit shows the centre in the middle of the whole map until a panel or a
  * fold moves its margins, and :core's camera rules measure from there. Beside a large window's panel the map's
  * leading margin reaches past the panel, and MapLibre's padding stands in for it: the map shows its centre in the
- * middle of the part beside the panel, and fits a place there.
+ * middle of the part beside the panel, and fits a place there. Beside the fold of a partly open foldable the
+ * margin on its far side from the map reaches past it too, and the map shows its centre in the half it shows on.
  */
 class MapCamera(
     private val map: MapLibreMap,
@@ -94,10 +95,10 @@ class MapCamera(
     /** The chrome over the map as the screen has it at this moment, read as the map takes a new size. */
     var currentChrome: (() -> MapChrome)? = null
 
-    /** The margins set beside a panel, in points from the map's edges; none while nothing moves them. */
+    /** The margins set beside a panel or a fold, in points from the map's edges; none while nothing moves them. */
     private var movedMargins: MapInsets? = null
 
-    /** The map's margins: those set beside a panel, or none. */
+    /** The map's margins: those set beside a panel or a fold, or none. */
     val margins: MapInsets get() = movedMargins ?: MapInsets.zero
 
     /** How many moves to a place were made, again or not: what the tests count, as the iPhone's coordinator's. */
@@ -344,16 +345,25 @@ class MapCamera(
 
     /**
      * The part of the map between the search bar and the locate button over the dock, and beside the panel of a
-     * large window; until the chrome is there, between the status bar and the map's bottom edge.
+     * large window; until the chrome is there, between the status bar and the map's bottom edge. Beside the fold of a
+     * partly open foldable, only the part on the side where the map shows.
      */
     private fun visibleRect(): ScreenRect {
         val bounds = projection.bounds
         val top = chrome.top?.takeIf { !it.isEmpty }?.maxY ?: safeArea.top
-        return ScooterMapCameraPolicy.visibleRectIn(bounds, top = top, bottom = chrome.bottomTop ?: bounds.maxY, beside = panel())
+        val visible = ScooterMapCameraPolicy.visibleRectIn(bounds, top = top, bottom = chrome.bottomTop ?: bounds.maxY, beside = panel())
+        val fold = fold() ?: return visible
+        return ScooterMapCameraPolicy.visibleRect(visible, safeTop = safeArea.top, beside = fold, on = foldSide(fold))
     }
 
     /** The panel of a large window, in the map's points; none on a phone. */
     private fun panel(): ScreenRect? = chrome.panel?.takeIf { !it.isEmpty }
+
+    /** The fold of a partly open foldable, in the map's points; none where it misses the map. */
+    private fun fold(): ScreenRect? = chrome.fold?.takeIf { !it.isEmpty && it.intersects(projection.bounds) }
+
+    private fun foldSide(fold: ScreenRect): ScooterMapCameraPolicy.FoldSide =
+        ScooterMapCameraPolicy.side(of = fold, panel = panel(), rightToLeft = view.layoutDirection == View.LAYOUT_DIRECTION_RTL)
 
     /** The part of the map inside its margins, where it shows its centre and fits a region. */
     private fun frame(): ScreenRect {
@@ -374,7 +384,10 @@ class MapCamera(
      */
     private fun withinSafeArea(): ScreenRect = within(projection.bounds, margins, safeArea)
 
-    /** The chrome over the map: the search bar above, and the locate button with the dock under it, or the panel. */
+    /**
+     * The chrome over the map: the search bar above, and the locate button with the dock under it, or the panel; and
+     * the fold of a partly open foldable.
+     */
     fun chromeDidChange(chrome: MapChrome) {
         if (chrome == this.chrome) return
         this.chrome = chrome
@@ -385,19 +398,28 @@ class MapCamera(
 
     /**
      * The map's leading margin reaches past a panel, 16 dp past it, so that the credits stay in view beside it and
-     * the map shows its centre in the middle of the part beside it. Without a panel the margins go.
+     * the map shows its centre in the middle of the part beside it. Beside the fold of a partly open foldable the
+     * margin on its far side from the map reaches past it too: the bottom one above a fold across the map, so that the
+     * map centres what it shows in the upright half, a side one beside a fold down it. Without either the margins go.
      */
     private fun updateMargins() {
         val panel = panel()
-        if (panel == null) {
+        val fold = fold()
+        if (panel == null && fold == null) {
             if (movedMargins != null) {
                 movedMargins = null
                 setMargins(MapInsets.zero)
             }
             return
         }
-        val margins = beside(panel, projection.bounds, rightToLeft = view.layoutDirection == View.LAYOUT_DIRECTION_RTL)
-        // A frame measured again may differ in its last digits: that is no move of the panel.
+        val margins = beside(
+            panel,
+            fold,
+            projection.bounds,
+            safeTop = safeArea.top,
+            rightToLeft = view.layoutDirection == View.LAYOUT_DIRECTION_RTL,
+        )
+        // A frame measured again may differ in its last digits: that is no move of the panel or the fold.
         movedMargins?.let { if (it.nearlyEquals(margins, within = 0.5)) return }
         movedMargins = margins
         setMargins(margins)
@@ -578,7 +600,7 @@ class MapCamera(
          */
         private const val MOST_MOVES_AGAIN = 6
 
-        /** Between the panel and the credits beside it. */
+        /** Between the panel or the fold and the credits beside it. */
         private const val PANEL_GAP = 16.0
 
         /**
@@ -586,11 +608,35 @@ class MapCamera(
          * leading one 16 past the panel, the others none, as on a phone.
          */
         fun beside(panel: ScreenRect, bounds: ScreenRect, rightToLeft: Boolean): MapInsets =
-            if (rightToLeft) {
-                MapInsets(0.0, 0.0, 0.0, max(0.0, bounds.maxX - panel.minX + PANEL_GAP))
-            } else {
-                MapInsets(0.0, max(0.0, panel.maxX - bounds.minX + PANEL_GAP), 0.0, 0.0)
+            beside(panel, fold = null, bounds, safeTop = 0.0, rightToLeft)
+
+        /**
+         * The map's margins beside a `panel` down one side of a map of `bounds`, and the `fold` of a partly open
+         * foldable, in points from its edges: the leading one 16 past the panel, and the one on the fold's far side
+         * from where the map shows 16 past the fold. Above a fold across the map the top one is the safe area's,
+         * `safeTop`, which UIKit's margins hold: MapKit centres a region in the upright half, between the status bar
+         * and the fold. The others are none, as on a phone.
+         */
+        fun beside(panel: ScreenRect?, fold: ScreenRect?, bounds: ScreenRect, safeTop: Double, rightToLeft: Boolean): MapInsets {
+            var top = 0.0
+            var left = 0.0
+            var bottom = 0.0
+            var right = 0.0
+            if (panel != null) {
+                if (rightToLeft) right = max(0.0, bounds.maxX - panel.minX + PANEL_GAP) else left = max(0.0, panel.maxX - bounds.minX + PANEL_GAP)
             }
+            if (fold != null) {
+                when (ScooterMapCameraPolicy.side(of = fold, panel = panel, rightToLeft = rightToLeft)) {
+                    ScooterMapCameraPolicy.FoldSide.Above -> {
+                        top = safeTop
+                        bottom = max(0.0, bounds.maxY - fold.minY + PANEL_GAP)
+                    }
+                    ScooterMapCameraPolicy.FoldSide.Right -> left = max(left, fold.maxX - bounds.minX + PANEL_GAP)
+                    ScooterMapCameraPolicy.FoldSide.Left -> right = max(right, bounds.maxX - fold.minX + PANEL_GAP)
+                }
+            }
+            return MapInsets(top, left, bottom, right)
+        }
 
         /**
          * The part of a map of `bounds` inside both its `margins` and its `safeArea`, each measured from its edges,

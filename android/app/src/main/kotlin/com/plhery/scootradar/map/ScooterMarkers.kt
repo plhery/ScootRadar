@@ -295,6 +295,7 @@ class ScooterMarkers(
             bottomChromeTop = chrome.bottomTop,
             bottomChromeFrames = chrome.bottomFrames,
             panelFrame = chrome.panel,
+            foldFrame = chrome.fold,
         )
         scene.movePills(markerMap)
         flush()
@@ -322,6 +323,7 @@ class ScooterMarkers(
             bottomChromeTop = chrome.bottomTop,
             bottomChromeFrames = chrome.bottomFrames,
             panelFrame = chrome.panel,
+            foldFrame = chrome.fold,
         )
         scene.applyDestination(controller.searchedDestination.value)
         val level = MapZoom.level(on = projection)

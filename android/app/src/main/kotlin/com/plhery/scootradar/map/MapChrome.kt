@@ -11,7 +11,7 @@ import com.plhery.scootradar.core.model.ScreenRect
 
 // The chrome's frames that ios/ScootRadar/Views/ScooterMapScreen.swift hands its ScooterMapView: in the dock's
 // layout interactionExclusionFrame, bottomChromeTop and bottomChromeFrames, and in the panel's its panelFrame and
-// the frames of the locate button and the legend in the corner (ui.md UI-003, MAP-112).
+// the frames of the locate button and the legend in the corner; in both, the foldFrame (ui.md UI-003, MAP-112).
 
 /** Where the chrome over the map is, in the map's points, which are the window's: what the map keeps clear of. */
 @Immutable
@@ -24,6 +24,8 @@ data class MapChrome(
     val bottomFrames: List<ScreenRect> = emptyList(),
     /** A large window's panel down the leading side: the map shows what it is asked to beside it. */
     val panel: ScreenRect? = null,
+    /** The fold of a partly open foldable: the map shows what it is asked to on the side of it away from the chrome. */
+    val fold: ScreenRect? = null,
 )
 
 /** The chrome's frames as the screen measures them, for the map under it to read, in the layout the screen has. */
@@ -40,17 +42,22 @@ class MapChromeFrames {
     /** The panel, search bar, notices and card, in the panel's layout. */
     var panel by mutableStateOf<ScreenRect?>(null)
 
+    /** The fold of a partly open foldable, in either layout. */
+    var fold by mutableStateOf<ScreenRect?>(null)
+
     val chrome: MapChrome
         get() = when (layout) {
             ScooterChromeLayout.Dock -> MapChrome(
                 top = top,
                 bottomTop = locateButton?.minY,
                 bottomFrames = listOfNotNull(locateButton, zoneLegend, dock),
+                fold = fold,
             )
             // Beside the panel the map's top is the window's, and only the corner's controls are over its bottom.
             ScooterChromeLayout.Panel -> MapChrome(
                 bottomFrames = listOfNotNull(locateButton, zoneLegend),
                 panel = panel,
+                fold = fold,
             )
         }
 }
