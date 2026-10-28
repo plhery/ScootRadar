@@ -1,5 +1,6 @@
 package com.plhery.scootradar.map
 
+import android.os.SystemClock
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
@@ -104,8 +105,12 @@ class MapCameraTest {
             camera.applyFocus(MapFocusRequest(bern, token = 1))
             phone.map.cameraPosition.zoom
         }
-        // Early in the move's second, a hand pans the map (MAP-047).
-        Thread.sleep(100)
+        // Early in the move's two seconds, once it has taken a step, a hand pans the map (MAP-047).
+        val begun = SystemClock.uptimeMillis() + 1_000
+        while (phone.meanwhile { phone.map.cameraPosition.zoom } <= zoom) {
+            assertTrue("the move had begun within a second", SystemClock.uptimeMillis() < begun)
+            Thread.sleep(10)
+        }
         phone.drag(points = 200)
         settle()
         val stopped = phone.onMain { phone.map.cameraPosition }
