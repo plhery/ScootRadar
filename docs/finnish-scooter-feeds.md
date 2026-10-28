@@ -165,6 +165,15 @@ has none.
   map shows Dott's and Voi's scooters there from their app maps
   ([Dott](dott-app-map.md), [Voi](voi-app-map.md)); Ryde's and Bolt's are not
   on it. Bolt's only public scooter feeds in Europe are Brussels and Liverpool.
+- **Ryde** (Helsinki, Espoo, Vantaa, Tampere, Turku), rechecked on 28 October
+  2026: it publishes GBFS only through Entur, for its sixteen Norwegian
+  systems, and through NRW's closed data hub (factsheet 465, ten German
+  zones). MobilityData's registry lists no Finnish system, Transitous's
+  Finnish sources are Fintraffic's two national feeds alone, and those listed
+  2,727 Dott scooters and nothing else in Helsinki, Espoo and Vantaa at 16:31
+  UTC. No Finnish transit app is known to show Ryde's map, as Skyss's does in
+  Bergen ([Ryde's map readers](ryde-app-map.md)), and Ryde's own app needs a
+  rider session.
 - **Dott:** the registry's 40 Finnish regions don't answer. 34 answer 404.
   Six answer 403 `ERR_REGION_OFFLINE`, which means paused, probably for the
   winter: Ekenäs (`tammisaari`), Hamina, Hanko, Imatra, Kalajoki and Kotka.
