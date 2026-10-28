@@ -101,8 +101,6 @@ class AndroidLocationManager(
     /** What Try again does once the rider has answered the request for precise location. */
     private var afterPreciseAnswer: (() -> Unit)? = null
 
-    /** Each provider's newest fix, which together are reported as one batch. */
-    private val latestFixes = mutableMapOf<String, ScooterLocationFix>()
     private val listeners = mutableMapOf<String, LocationListener>()
 
     /** Location turned on or off for the whole phone from the quick settings, the app still in front. */
@@ -189,10 +187,13 @@ class AndroidLocationManager(
     }
 
     /**
-     * The rider answered Android's dialog. Any refusal, Android's own after two (no dialog shown) included, is kept
-     * as iOS keeps "Don't Allow": the app asks no more, and the card offers Settings (PLAN §10).
+     * The rider answered Android's dialog, [answers] by permission. Any refusal, Android's own after two (no dialog
+     * shown) included, is kept as iOS keeps "Don't Allow": the app asks no more, and the card offers Settings
+     * (PLAN §10). No answers is no answer: Android cancels a request made while its dialog is up, which goes on
+     * waiting for the rider, as iOS's prompt does.
      */
-    fun permissionsAnswered() {
+    fun permissionsAnswered(answers: Map<String, Boolean>) {
+        if (answers.isEmpty()) return
         if (!hasLocationPermission) defaults.set(true, forKey = REFUSED_KEY)
         reportAuthorization()
         afterPreciseAnswer?.let { locate ->
@@ -299,7 +300,7 @@ class AndroidLocationManager(
         try {
             for (provider in providers) {
                 // Asked again with the same listener, a provider takes the new request in place of the old.
-                val listener = listeners.getOrPut(provider) { ProviderListener(provider) }
+                val listener = listeners.getOrPut(provider) { ProviderListener() }
                 locationManager.requestLocationUpdates(provider, request, main, listener)
             }
         } catch (_: SecurityException) {
@@ -315,12 +316,13 @@ class AndroidLocationManager(
         listeners.clear()
     }
 
-    private inner class ProviderListener(private val provider: String) : LocationListener {
+    private inner class ProviderListener : LocationListener {
         override fun onLocationChanged(location: Location) {
-            latestFixes[provider] = fix(location)
             declination = declinationAt(location.latitude, location.longitude, location.altitude)
-            // With GPS and the network both, :core keeps the better of their latest fixes (X-AD13).
-            delegate?.locationsUpdated(latestFixes.values.sortedBy { it.timestamp })
+            // Only the fix just taken, as didUpdateLocations has only new ones: with GPS and the network both, :core
+            // keeps the better while it waits for one good enough (X-AD13), and the other's older fix, sent again,
+            // would take the dot back to it.
+            delegate?.locationsUpdated(listOf(fix(location)))
         }
 
         override fun onProviderEnabled(enabled: String) {

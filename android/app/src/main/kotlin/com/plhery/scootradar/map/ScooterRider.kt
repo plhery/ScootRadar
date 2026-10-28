@@ -420,6 +420,8 @@ class RiderArt(private val density: Float) {
         private const val SHADOW_RADIUS = 4f
         private const val SHADOW_OFFSET = 1f
 
+        private const val HIGH_TEXT_CONTRAST = "high_text_contrast_enabled"
+
         /** The dot's breath: in to 0.85 of its size and out again every 3 s, as MapKit's breathes. */
         private const val BREATH_PERIOD = 3.0
         private const val BREATH_DEPTH = 0.15
@@ -432,8 +434,17 @@ class RiderArt(private val density: Float) {
          * Whether the phone asks for more contrast, as iOS's Increase Contrast: high contrast text, or, from Android
          * 14, the contrast set to medium or high.
          */
-        fun isHighContrast(context: Context): Boolean {
-            val highTextContrast = Settings.Secure.getInt(context.contentResolver, "high_text_contrast_enabled", 0) == 1
+        fun isHighContrast(context: Context): Boolean =
+            isHighContrast(context) { Settings.Secure.getInt(context.contentResolver, it, 0) }
+
+        /** As [isHighContrast], with the phone's secure settings read by [secureSetting]. */
+        internal fun isHighContrast(context: Context, secureSetting: (String) -> Int): Boolean {
+            // A hidden setting, which a later Android may keep from apps.
+            val highTextContrast = try {
+                secureSetting(HIGH_TEXT_CONTRAST) == 1
+            } catch (_: SecurityException) {
+                false
+            }
             val contrast = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 context.getSystemService(UiModeManager::class.java)?.contrast ?: 0f
             } else {
