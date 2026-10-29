@@ -20,7 +20,7 @@ const guide: Guide = {
         'The City’s list of permitted companies (updated 1 October 2026) names two: **Bird**, allowed up to 3,000 stand-up scooters, and **Lime**, up to 3,700 stand-up scooters and 180 e-bikes. Its Shared Mobility page splits Lime’s 3,880 differently, as 3,205 scooters and 675 seated “gliders”. These are maximums, not what stands on the street. In May 2024 the City stopped licensing new companies, keeping two, and cut the citywide limit from 8,700 to 6,700 scooters, and the downtown limit from 4,500 to 2,250.',
         'At 3:50 p.m. on Wednesday 28 October 2026 the [Austin map](map:us:tx:Austin) showed about 5,800 scooters: roughly 3,300 Lime and 2,500 Bird, both as last counted, so some may have moved since. A snapshot, not the fleets. The map has no outline for Austin: its total is what the two companies’ Austin areas hold, and those also take in Sunset Valley and, for Lime, Rollingwood, small cities of their own where Austin’s City Code doesn’t apply.',
         'For Bird the map shows each scooter’s position, charge and range; for Lime, position and charge. Scooters on a ride aren’t shown, and the map draws no zones in Austin: the apps have the final word. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Not everything is on the map.** ScootRadar shows standing e-scooters only: Lime’s e-bikes aren’t on it, and its seated gliders may not be either. Nor is CapMetro Bikeshare (see below).',
+        '**Not everything is on the map.** ScootRadar shows e-scooters only, Lime’s seated gliders among them: Lime’s e-bikes aren’t on it, nor is CapMetro Bikeshare (see below).',
       ],
     },
     {

@@ -142,7 +142,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a scooter on the sidewalk in San Diego?',
-      answer: 'No. The City’s code bans riding any vehicle on a sidewalk except across a driveway, and state law agrees. On Port land round the bay, promenades and multi-use paths are off limits too.',
+      answer: 'No. The City’s code bans riding any vehicle on a sidewalk except across a driveway, and state law bans it too, except to enter or leave an adjacent property. On Port land round the bay, promenades and multi-use paths are off limits too.',
     },
     {
       question: 'Do you need a licence or a helmet to ride an e-scooter in San Diego?',
