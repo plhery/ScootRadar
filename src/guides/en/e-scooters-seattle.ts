@@ -60,7 +60,7 @@ const guide: Guide = {
               ['Lights', 'Reflectors from half an hour after sunset; Lime’s scooters must carry a white front light and a red taillight', 'RCW 46.20.500; SDOT permit'],
               ['Passengers', 'One rider only', 'SDOT'],
               ['Alcohol', 'Don’t ride intoxicated; at night the app asks “safe to ride” questions', 'SDOT'],
-              ['Fines', 'Breaking a state or City traffic rule is an infraction, not a crime: up to $250 per offence', 'RCW 46.63.020, 46.63.110'],
+              ['Fines', 'Breaking a state or City traffic rule is an infraction, not a crime: up to $250 per offence, plus state fees', 'RCW 46.63.020, 46.63.110'],
             ],
           },
         },
