@@ -6,6 +6,7 @@ import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -141,6 +142,7 @@ internal fun ProviderListRow(
     val colors = scootColors
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
+    val hovered by interaction.collectIsHoveredAsState()
     val label = chipAccessibilityLabel(accessibilityTitle, count, isDown)
     val shown = if (isShown) localized("Shown") else localized("Hidden")
     // @ScaledMetric(relativeTo: .subheadline), whose text is 15 points.
@@ -158,7 +160,7 @@ internal fun ProviderListRow(
             }
             .drawBehind { drawRect(colors.dockHairline, size = Size(size.width, 1.dp.toPx())) }
             .heightIn(min = 44.dp)
-            .graphicsLayer { alpha = if (pressed) 0.4f else 1f }
+            .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
             .padding(horizontal = 16.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,

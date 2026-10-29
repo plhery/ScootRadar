@@ -13,6 +13,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -145,7 +146,8 @@ internal fun quickProviderHint(controller: ScooterMapController, provider: Scoot
 
 /**
  * A provider's chip, or "All": its dot, its name and its count. A chosen chip is filled with the text colour and
- * written in the ground's; a provider not sharing data is dashed, with a warning in place of its count.
+ * written in the ground's; a provider not sharing data is dashed, with a warning in place of its count. It dims
+ * under the finger, and a little under a mouse's pointer.
  */
 @Composable
 internal fun QuickProviderFilterChip(
@@ -177,11 +179,12 @@ internal fun QuickProviderFilterChip(
     }
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
+    val hovered by interaction.collectIsHoveredAsState()
     val label = chipAccessibilityLabel(accessibilityTitle, count, isDown)
     val shown = if (accessibilityIsShown) localized("Shown") else localized("Hidden")
     Row(
         modifier
-            .graphicsLayer { alpha = if (pressed) 0.4f else 1f }
+            .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
             .clickable(interaction, indication = null, role = Role.Button, onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = label

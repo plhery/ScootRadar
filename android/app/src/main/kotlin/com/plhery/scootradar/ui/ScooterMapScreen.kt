@@ -19,11 +19,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
@@ -169,6 +172,7 @@ fun ScooterMapScreen(
         UserInterfaceStyle.Light -> false
         UserInterfaceStyle.Unspecified -> isSystemInDarkTheme()
     }
+    SeeThroughCaption(light = !dark)
 
     val context = LocalContext.current
     // The frame the map draws into, which the glass blurs.
@@ -264,6 +268,7 @@ fun ScooterMapScreen(
                     maxHeight.value.toDouble(),
                 )
                 val fold = rememberWindowFold(screen)
+                val captionButtons = rememberCaptionButtons(origin)
                 // The screen inside its safe area, in the window, which the iPhone's GeometryReader measures.
                 val direction = LocalLayoutDirection.current
                 val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
@@ -293,6 +298,7 @@ fun ScooterMapScreen(
                             controller,
                             chrome = chrome,
                             chromeTop = ScooterFold.chromeTop(below = fold, container = inside).dp,
+                            captionButtons = captionButtons,
                             isSearching = searchIsExpanded,
                             onSearchingChange = { searchIsExpanded = it },
                             onShowFilters = onShowFilters,
@@ -308,6 +314,7 @@ fun ScooterMapScreen(
                                 inset = 16.0,
                                 rightToLeft = direction == LayoutDirection.Rtl,
                             ).dp,
+                            captionButtons = captionButtons,
                             isSearching = searchIsExpanded,
                             onSearchingChange = { searchIsExpanded = it },
                             onShowFilters = onShowFilters,
@@ -407,14 +414,16 @@ private fun <T> OnChange(value: T, action: (T) -> Unit) {
 /**
  * A phone's chrome: the search bar and its notices at the top, the dock at the bottom, and the locate button above
  * the dock. The search bar starts [chromeTop] down: under the fold of a foldable standing like a laptop, so that all
- * of them are on the half lying flat, within reach. Made anew in another language, as much of it is text written
- * when it was drawn.
+ * of them are on the half lying flat, within reach. In a window whose caption bar the map runs under, the search bar
+ * keeps to the top beside the caption's [captionButtons], and goes under the caption where it can't. Made anew in
+ * another language, as much of it is text written when it was drawn.
  */
 @Composable
 private fun DockChrome(
     controller: ScooterMapController,
     chrome: MapChromeFrames,
     chromeTop: Dp,
+    captionButtons: List<ScreenRect>,
     isSearching: Boolean,
     onSearchingChange: (Boolean) -> Unit,
     onShowFilters: () -> Unit,
@@ -438,8 +447,9 @@ private fun DockChrome(
     // The keyboard doesn't move the dock or the locate row (`.ignoresSafeArea(.keyboard, edges: .bottom)`): the safe
     // area without it. Not safeDrawing.exclude(ime), which takes the keyboard's height off the navigation bar's too.
     val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
-    val safeTop = safe.calculateTopPadding()
     val safeBottom = safe.calculateBottomPadding()
+    // The safe area's top with the caption bar left out, which the map shows through.
+    val captionTop = WindowInsets.statusBars.union(WindowInsets.displayCutout).asPaddingValues().calculateTopPadding()
     // The room under the home indicator, or 8 where there is none.
     val bottom = max(safeBottom, 8.dp)
     val below by animateDpAsState(chromeTop, motion(IosMotion.snappy(duration = 0.28)), label = "chromeTop")
@@ -453,12 +463,25 @@ private fun DockChrome(
 
     key(language) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
-            // Measured inside the safe area, as the iPhone's GeometryReader is.
-            val height = maxHeight - safeTop - safeBottom
             val dock = with(density) { dockHeight.intValue.toDp() }
             val locate = with(density) { locateButtonHeight.intValue.toDp() }
             val searchBar = with(density) { searchBarHeight.intValue.toDp() }
             val notices = firstLoadFailure != null || locationIssue != null
+            // The search bar across the top, at most 560 wide; beside the caption's buttons if it fits there. Under a
+            // fold it is well under the caption.
+            val slot = ScreenRect(12.0, 0.0, (maxWidth - 24.dp).value.toDouble(), 0.0)
+            val barWidth = minOf(slot.width, 560.0)
+            val beside = if (chromeTop > 0.dp) {
+                null
+            } else {
+                besideCaption(
+                    ScreenRect(slot.midX - barWidth / 2, (captionTop + 8.dp).value.toDouble(), barWidth, searchBar.value.toDouble()),
+                    captionButtons,
+                )
+            }
+            val safeTop = if (beside != null) captionTop else safe.calculateTopPadding()
+            // Measured inside the safe area, as the iPhone's GeometryReader is.
+            val height = maxHeight - safeTop - safeBottom
 
             TopStack(
                 controller,
@@ -474,6 +497,7 @@ private fun DockChrome(
                 chrome = chrome,
                 onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
                 modifier = Modifier.padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
+                searchBarModifier = beside?.let { Modifier.besideCaption(it, slot) } ?: Modifier,
             )
 
             // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
@@ -538,13 +562,16 @@ private fun DockChrome(
  * the other in a panel down the leading side, over the map, and the locate button in the map's trailing corner. The
  * open search covers the panel, and nothing else. The card folds down to one line, and the map then shows, and takes
  * taps, under the panel; the notices stay. Beside the fold of a foldable open like a book the panel keeps to its
- * half, [width] wide. Made anew in another language, as the phone's is.
+ * half, [width] wide. In a window whose caption bar the map runs under, the panel keeps to the top, its search bar
+ * beside the caption's [captionButtons], and goes under the caption where the bar can't. Made anew in another
+ * language, as the phone's is.
  */
 @Composable
 private fun PanelChrome(
     controller: ScooterMapController,
     chrome: MapChromeFrames,
     width: Dp,
+    captionButtons: List<ScreenRect>,
     isSearching: Boolean,
     onSearchingChange: (Boolean) -> Unit,
     onShowFilters: () -> Unit,
@@ -566,17 +593,35 @@ private fun PanelChrome(
     val searchBarHeight = remember { mutableIntStateOf(with(density) { 62.dp.roundToPx() }) }
     val noticesHeight = remember { mutableIntStateOf(0) }
     val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
-    val safeTop = safe.calculateTopPadding()
     val safeBottom = safe.calculateBottomPadding()
+    // The safe area's top with the caption bar left out, which the map shows through.
+    val captionTop = WindowInsets.statusBars.union(WindowInsets.displayCutout).asPaddingValues().calculateTopPadding()
+    val direction = LocalLayoutDirection.current
     DisposableEffect(chrome) { onDispose { chrome.panel = null } }
 
     key(language) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val windowHeight = maxHeight
+            val searchBar = with(density) { searchBarHeight.intValue.toDp() }
+            // The panel's search bar at the top of its leading side, beside the caption's buttons if it fits there.
+            val left = if (direction == LayoutDirection.Ltr) {
+                safe.calculateLeftPadding(direction) + 16.dp
+            } else {
+                maxWidth - safe.calculateRightPadding(direction) - 16.dp - width
+            }
+            val bar = ScreenRect(left.value.toDouble(), (captionTop + 16.dp).value.toDouble(), width.value.toDouble(), searchBar.value.toDouble())
+            val beside = besideCaption(bar, captionButtons)
+            val safeTop = if (beside != null) captionTop else safe.calculateTopPadding()
             // Inside the safe area, as the iPhone's GeometryReader is.
-            Box(Modifier.fillMaxSize().padding(safe)) {
+            Box(
+                Modifier.fillMaxSize().padding(
+                    start = safe.calculateStartPadding(direction),
+                    top = safeTop,
+                    end = safe.calculateEndPadding(direction),
+                    bottom = safeBottom,
+                ),
+            ) {
                 val height = windowHeight - safeTop - safeBottom
-                val searchBar = with(density) { searchBarHeight.intValue.toDp() }
                 val notices = firstLoadFailure != null || locationIssue != null
                 // The room in the panel under the search bar, which the notices and the dock share: notices take
                 // half of it at most, and the dock's content the rest, inside its own padding and above its grabber.
@@ -634,6 +679,7 @@ private fun PanelChrome(
                         // The window's bottom, inside its safe area.
                         bottomLimit = windowHeight - safeBottom,
                         onCollapsedHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
+                        modifier = beside?.let { Modifier.besideCaption(it, bar) } ?: Modifier,
                         onFiltersFrameChange = onFiltersButtonFrame,
                     )
                 }
@@ -741,6 +787,7 @@ private fun TopStack(
     chrome: MapChromeFrames,
     onSearchBarHeightChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    searchBarModifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
     // The search bar and the notices under it, closed: what the map keeps its names under, and centres a place
@@ -773,6 +820,7 @@ private fun TopStack(
                 barHeight = it
                 onSearchBarHeightChange(it)
             },
+            modifier = searchBarModifier,
         )
 
         // The notices go while the search is open.
@@ -881,6 +929,7 @@ private fun SearchIsland(
     onShowSettings: () -> Unit,
     bottomLimit: Dp,
     onCollapsedHeightChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
     onFiltersFrameChange: (Rect) -> Unit = {},
 ) {
     val changes = rememberControllerChanges(controller)
@@ -908,6 +957,7 @@ private fun SearchIsland(
         onShowSettings = onShowSettings,
         onCollapsedHeightChange = onCollapsedHeightChange,
         onFiltersFrameChange = onFiltersFrameChange,
+        modifier = modifier,
     )
 }
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -80,9 +81,10 @@ import kotlin.math.roundToInt
 // DockCardHeader, DockSymbolTile, DockActionRow and its style, LiveIndicator, and SwiftUI's ProgressView.
 
 /**
- * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple. Its
- * semantics are a button's, which TalkBack names from the label unless [label] says otherwise; [hint] is what a
- * double tap does, which TalkBack says in a sentence of its own where iOS reads its accessibility hint (UI-327).
+ * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple, and a little
+ * under a mouse's pointer. Its semantics are a button's, which TalkBack names from the label unless [label] says
+ * otherwise; [hint] is what a double tap does, which TalkBack says in a sentence of its own where iOS reads its
+ * accessibility hint (UI-327).
  */
 internal fun Modifier.plainButton(
     enabled: Boolean = true,
@@ -92,7 +94,8 @@ internal fun Modifier.plainButton(
 ): Modifier = composed {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
-    graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else 1f }
+    val hovered by interaction.collectIsHoveredAsState()
+    graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else if (hovered) hoveredAlpha(PLAIN_PRESSED_ALPHA) else 1f }
         .clickable(interaction, indication = null, enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
         .then(
             if (label != null) {
@@ -109,6 +112,12 @@ internal fun Modifier.plainButton(
 
 /** How far a plain button dims under the finger, as UIKit's highlighted label does. */
 private const val PLAIN_PRESSED_ALPHA = 0.4f
+
+/**
+ * A control under the pointer of a mouse or a trackpad, which iPadOS's pointer highlights (ui.md UI-233): dimmed half
+ * as far as it is under the finger, to [pressed].
+ */
+internal fun hoveredAlpha(pressed: Float): Float = 1f - (1f - pressed) / 2
 
 /**
  * A control that takes its touches itself, reached with Tab as Full Keyboard Access reaches it, and pressed with Enter
@@ -252,7 +261,7 @@ internal fun FixedSymbol(symbol: ImageVector, points: Float, color: Color, modif
 
 /**
  * A button of a dock card, 48 points high: filled with the app's blue, or quiet beside it. Its label stays on one
- * line; it dims to 0.78 under the finger and to 0.6 while it can't be used.
+ * line; it dims to 0.78 under the finger, a little under a mouse's pointer, and to 0.6 while it can't be used.
  */
 @Composable
 internal fun DockActionButton(
@@ -266,10 +275,18 @@ internal fun DockActionButton(
     val colors = scootColors
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
+    val hovered by interaction.collectIsHoveredAsState()
     val shape = SquircleShape(16.dp)
     Box(
         modifier
-            .graphicsLayer { alpha = if (pressed) 0.78f else if (enabled) 1f else 0.6f }
+            .graphicsLayer {
+                alpha = when {
+                    pressed -> 0.78f
+                    !enabled -> 0.6f
+                    hovered -> hoveredAlpha(0.78f)
+                    else -> 1f
+                }
+            }
             .clip(shape)
             .background(if (prominent) colors.cardActionFill else colors.dockQuietFill)
             .clickable(interaction, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)

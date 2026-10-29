@@ -3,6 +3,9 @@ package com.plhery.scootradar.ui.dock
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -37,7 +40,7 @@ import kotlin.math.abs
  * The handle at the foot of the panel's card, as on the card of Maps: a tap folds the card down to one line under
  * the search bar or opens it again, and so does a swipe on it, up to fold and down to open. A move of 10 points is a
  * swipe rather than a tap, and a swipe of less than 16 up or down does nothing. The width of the card and 44 points
- * high take the touch.
+ * high take the touch. The handle dims under the finger, and a little under a mouse's pointer.
  */
 @Composable
 internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modifier: Modifier = Modifier) {
@@ -47,13 +50,16 @@ internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modif
     val folded by rememberUpdatedState(isFolded)
     val set by rememberUpdatedState(setFolded)
     var pressed by remember { mutableStateOf(false) }
+    val interaction = remember { MutableInteractionSource() }
+    val hovered by interaction.collectIsHoveredAsState()
     Box(
         modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
             // Before the semantics it sets, which would clear them.
             .testTag(PANEL_GRABBER_TAG)
-            .focusableControl { set(!folded) }
+            .hoverable(interaction)
+            .focusableControl(interaction) { set(!folded) }
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = value
@@ -96,7 +102,7 @@ internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modif
     ) {
         Box(
             Modifier
-                .graphicsLayer { alpha = if (pressed) 0.4f else 1f }
+                .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
                 .size(36.dp, 5.dp)
                 .clip(CapsuleShape)
                 .background(colors.dockQuiet.copy(alpha = colors.dockQuiet.alpha * 0.55f)),

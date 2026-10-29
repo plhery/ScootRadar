@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -124,7 +125,8 @@ private fun FormSeparator(inset: Dp) {
 
 /**
  * A row of the list, at least as tall as iOS 26's. A tap acts on [onClick], and the row greys under the finger as
- * a list's cell does; [selected] makes it one of a group of choices for TalkBack.
+ * a list's cell does, and a little under a mouse's pointer; [selected] makes it one of a group of choices for
+ * TalkBack.
  */
 @Composable
 internal fun FormRow(
@@ -135,6 +137,7 @@ internal fun FormRow(
 ) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
+    val hovered by interaction.collectIsHoveredAsState()
     val highlight = if (scootColors.isDark) CELL_HIGHLIGHT_DARK else CELL_HIGHLIGHT_LIGHT
     val press = when {
         onClick == null -> Modifier
@@ -144,7 +147,9 @@ internal fun FormRow(
     Row(
         modifier
             .fillMaxWidth()
-            .drawBehind { if (pressed) drawRect(highlight) }
+            .drawBehind {
+                if (pressed) drawRect(highlight) else if (hovered) drawRect(highlight.copy(alpha = highlight.alpha / 2))
+            }
             .then(press)
             .heightIn(min = ROW_HEIGHT)
             .padding(horizontal = ROW_PADDING, vertical = 10.dp),

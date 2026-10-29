@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ import com.plhery.scootradar.core.model.AppleMapStyle
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.map.GroundPalette
 import com.plhery.scootradar.map.GroundPalettes
+import com.plhery.scootradar.ui.dock.hoveredAlpha
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -82,7 +84,8 @@ internal fun SettingsTileRow(title: String, count: Int, tile: @Composable (index
 
 /**
  * A choice as a tile: its picture over its name, in a hairline frame around a faint fill, blue once chosen. It dims
- * under the finger, as a plain button; TalkBack reads it as one of the group's choices.
+ * under the finger, as a plain button, and a little under a mouse's pointer; TalkBack reads it as one of the group's
+ * choices.
  */
 @Composable
 internal fun SettingsTile(
@@ -96,9 +99,10 @@ internal fun SettingsTile(
     val shape = SquircleShape(17.dp)
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
+    val hovered by interaction.collectIsHoveredAsState()
     Column(
         modifier
-            .graphicsLayer { alpha = if (pressed) 0.4f else 1f }
+            .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
             .background(if (isSelected) colors.accent.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
             .border(1.5.dp, if (isSelected) colors.accent else colors.dockHairline, shape)
             .selectable(isSelected, interaction, indication = null, role = Role.RadioButton, onClick = onClick)
