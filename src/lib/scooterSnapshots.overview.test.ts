@@ -86,6 +86,8 @@ describe('the town a scooter counts under', () => {
     ['Liège in Wandre, though nearer Herstal’s centre', 'dott_be_liege', [50.66935, 5.652248], 'be:Liège'],
     // A position of 24 October 2026, in both of GCOO's Virginia feeds: Arlington's is read first.
     ['Alexandria, though GCOO’s Arlington feed has it', 'gcoo_us_arlington', [38.840523, -77.121596], 'us:va:Alexandria'],
+    // A position of 29 October 2026, in GCOO's Alexandria feed and inside Arlington's outline.
+    ['Arlington, from GCOO’s Alexandria feed', 'gcoo_us_alexandria', [38.856164, -77.064317], 'us:va:Arlington'],
   ] as const)('is %s', (_case, systemId, [lat, lng], town) => {
     const feed = regional(systemId, [[lat, lng]]);
     expect(countsOf([feed])).toEqual({ [town]: { [feed.provider]: 1 } });

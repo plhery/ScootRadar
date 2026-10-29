@@ -784,7 +784,13 @@ counts each once. Each would have counted under Arlington, whose feed is read
 first, 46 of them inside Alexandria. Alexandria now has its incorporated
 place's outline in [`town-outlines.json`](../data/town-outlines.json), as
 above, so those count under Alexandria: 254 of the 513 that poll, and 259
-under Arlington, which has none. Bird has no area in Alexandria, and Lime's
+under Arlington. Arlington, a county with no incorporated place, has had an
+outline since 29 October 2026: its census designated place's from TIGERweb,
+which is the county's. At 07:32 EDT that day it changed no count: the 57
+scooters of GCOO's Alexandria feed inside it were all in its Arlington feed
+too, and none of Hopp's, Veo's or Lime's Washington scooters stood in it. One
+the Arlington feed misses now counts under Arlington, not Alexandria. Bird has
+no area in Alexandria, and Lime's
 Alexandria zone, read from its rider map since 27 October 2026, is another
 fleet, so their Arlington feeds keep no scooter inside the outline; at 11:59
 EDT none of Bird's 284 stood there, nor any of Lime's 495.

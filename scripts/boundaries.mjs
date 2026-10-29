@@ -80,8 +80,10 @@ export function outerRings(polygons, { minAreaKm2, tolerance, digits, holes = fa
 // December 2018 districts: Bournemouth, Christchurch and Poole merged the year after.
 const ONS_DISTRICTS = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LAD_December_2018_Boundaries_UK_BGC_2022/FeatureServer/0/query';
 
-// Incorporated places as TIGERweb's current layer draws them.
+// Incorporated places as TIGERweb's current layer draws them, and its census designated places:
+// Arlington, Virginia, a county with no incorporated place, is one.
 const TIGERWEB_PLACES = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/4/query';
+const TIGERWEB_CDPS = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/5/query';
 
 // Brazil's municipalities from IBGE's municipal mesh, as the Geological Survey of Brazil (SGB) serves it.
 const SGB_MUNICIPALITIES = 'https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer/0/query';
@@ -105,6 +107,11 @@ const BOUNDARIES = {
   // reprojected by the server to lon/lat.
   census: {
     url: id => `${TIGERWEB_PLACES}?where=${encodeURIComponent(`GEOID='${id}'`)}&returnGeometry=true&outSR=4326&f=geojson`,
+    geometry: body => body.features?.[0]?.geometry,
+  },
+  // A census designated place by GEOID, the same way.
+  censusCdp: {
+    url: id => `${TIGERWEB_CDPS}?where=${encodeURIComponent(`GEOID='${id}'`)}&returnGeometry=true&outSR=4326&f=geojson`,
     geometry: body => body.features?.[0]?.geometry,
   },
   // A municipality by its IBGE code, reprojected by the server to lon/lat.
