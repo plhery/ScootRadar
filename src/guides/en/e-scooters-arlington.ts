@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Arlington, VA?',
       blocks: [
         'Arlington is a county, not a city, and its Board adopted its shared scooter and e-bike rules on 16 November 2019. In September 2025 the staff of neighbouring Falls Church counted **three permitted operators** in the County, **Lime**, **Bird** and **Spin**, with up to 2,000 e-scooters and 1,000 e-bikes allowed and 1,600 scooters out. Operators paid $1,000 to apply for each kind of device, plus $80 a device. ARLnow still counted three operators in March 2026, without naming them.',
-        '**Spin**, which Bird bought in 2023, has no scooters on our map: its open data listed none in Arlington in late October 2026. **GCOO**, a South Korean brand with a permit next door in Alexandria until 31 March 2027, publishes a service area covering most of Arlington, and the map has shown its scooters there since 24 October 2026. Falls Church’s 2025 summary listed GCOO in Alexandria only, and we couldn’t read the County’s website to check this year’s permit holders. Veo and LINK left early in 2024, ARLnow reported.',
+        '**Spin**, which Bird bought in 2023, has no scooters on our map: its open data listed none in Arlington in late October 2026. **GCOO**, a South Korean brand with a permit next door in Alexandria until 31 March 2027, publishes a service area covering most of Arlington, and the map has shown its scooters there since 24 October 2026. Falls Church’s staff deck of 11 February 2026 still listed Lime, Bird and Spin in Arlington and GCOO in Alexandria only, and BikeArlington, the County’s cycling programme, names Lime, Bird and Spin; we couldn’t read the County’s own website to check for later changes. Veo and LINK left early in 2024, ARLnow reported.',
         'At 4:56 a.m. on Thursday 29 October 2026 the [Arlington map](map:us:va:Arlington) showed about 1,010 scooters: some 520 Lime and 230 Bird at that moment, and 260 GCOO as last counted. That is what the map holds, not the fleets. The total is what the three companies list for Arlington, less any in Alexandria, not a count within the County’s boundary: a few may stand just over the line in Falls Church or Fairfax County.',
         'For Bird and GCOO the map shows each scooter’s position, charge and range, and Bird’s zones; for Lime, position and range. Scooters on a ride aren’t shown, nor are e-bikes or Capital Bikeshare. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -121,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'Which scooter companies operate in Arlington?',
-      answer: 'The map shows Lime, Bird and GCOO. Falls Church’s 2025 summary counted three County permit holders: Lime, Bird and Spin, whose scooters aren’t on the map. GCOO has a permit in Alexandria until 31 March 2027; we couldn’t check for one in Arlington.',
+      answer: 'The map shows Lime, Bird and GCOO. Falls Church’s February 2026 deck listed Lime, Bird and Spin in Arlington, and Spin’s scooters aren’t on the map. GCOO has a permit in Alexandria until 31 March 2027; we couldn’t check for one in Arlington.',
     },
     {
       question: 'Can you ride a scooter on the Mount Vernon Trail?',
@@ -138,6 +138,8 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of Falls Church: Shared Mobility Devices, staff presentation, September 2025 (PDF)', url: 'https://fallschurchva.gov/DocumentCenter/View/23507/Micromobility-Presentation' },
+    { title: 'City of Falls Church: Shared Mobility Devices, staff presentation, 11 February 2026 (PDF)', url: 'https://fallschurchva.gov/DocumentCenter/View/30939/2026-Shared-Mobility-Devices-Presentation' },
+    { title: 'BikeArlington, a programme of Arlington County: shared micro-mobility', url: 'https://www.bikearlington.com/' },
     { title: 'Arlington Connection: Arlington to Regulate e-Scooters, 22 November 2019', url: 'https://www.connectionnewspapers.com/news/2019/nov/22/arlington-regulate-e-scooters/' },
     { title: 'Arlington Connection: New Rules for Shared e-Scooters and e-Bikes in Arlington, 14 February 2020', url: 'https://www.connectionnewspapers.com/news/2020/feb/14/new-rules-shared-e-scooters-and-e-bikes-arlington/' },
     { title: 'ARLnow: Arlington Reveals ‘No Scooter’ Zones, 10 February 2020', url: 'https://www.arlnow.com/2020/02/10/arlington-reveals-no-scooter-zones/' },
