@@ -125,9 +125,9 @@ class MapInTheWindowTest {
     }
 
     /**
-     * Located, the rider shows in the middle of the part of the map beside a panel or a fold, across, and of the map
-     * inside its margins up and down; the span is locating's 350 m, grown by the window's shorter side past a
-     * phone's 440 points.
+     * Located, the rider shows in the middle of the part of the map beside a panel or a fold, across, and of the whole
+     * map up and down, even where a tabletop's fold crosses it there (MAP-041); elsewhere in the middle of the map
+     * inside its margins. The span is locating's 350 m, grown by the window's shorter side past a phone's 440 points.
      */
     @Test
     fun locatingPutsTheRiderInTheMiddleOfThePartOfTheMapInView() {
@@ -139,13 +139,19 @@ class MapInTheWindowTest {
         val chrome = chrome()
         val part = partInView(chrome, bounds)
         val frame = frame(bounds)
-        // Across, the middle of the part beside the panel or fold, where it is not the map's; up and down, the frame's.
-        val expected = ScreenPoint(if (abs(part.midX - bounds.midX) >= 1) part.midX else frame.midX, frame.midY)
+        // Beside a panel or a fold down the map, the middle of the part beside it across and of the whole map up and
+        // down (setRegionPreservingPerspective's aside); elsewhere the middle of the map's margins.
+        val aside = abs(part.midX - bounds.midX) >= 1
+        val expected = if (aside) ScreenPoint(part.midX, bounds.midY) else ScreenPoint(frame.midX, frame.midY)
+        // The move is measured once on the map tilted as it will be, as iOS's is: a place shown far from where the
+        // margins put the centre lands past it, the ground nearer the eye being drawn larger (in a tabletop's margins
+        // with a panel, 193 points off, 24 past at the opening tilt).
+        val past = 0.15 * abs(expected.y - frame.midY)
         screenshot("located")
         val shown = onMain { projection.point(rider) }
         Log.i(TAG, "${size()}: chrome $chrome, part $part, frame $frame, rider at $shown for $expected")
         assertEquals("across: $shown for $expected", expected.x, shown.x, 4.0)
-        assertEquals("up and down: $shown for $expected", expected.y, shown.y, 4.0)
+        assertEquals("up and down: $shown for $expected", expected.y, shown.y, 4.0 + past)
         // Locating's span over the window's shorter side, as phones up to 440 points show it.
         val scale = max(1.0, min(bounds.width, bounds.height) / 440)
         val region = MapRegion.around(rider, 350 * scale, 350 * scale)
