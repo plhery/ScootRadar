@@ -77,7 +77,7 @@ No covered Swedish town bans renting at night, so
   ([city page](https://www.uppsala.se/gator-trafik-och-resor/trafiksakerhet-och-regler/trafiksakerhet-for-dig-som-cyklar/elsparkcyklar)).
   The [proposal](https://www.uppsala.se/contentassets/b61c2f7c8377425da0a81693e1e5749a/5.-nya-villkor-vid-markupplatelse-for-elsparkcyklar.pdf)
   of 31 March 2026 had 10 km/h and a cap of 2,500. The minutes give no start
-  date; the local press gives 1 July 2026. A speed limit is not a ban, so the
+  date; Upsala Nya Tidning (27 April 2026) gives 1 July 2026. A speed limit is not a ban, so the
   map shows the scooters as at any other hour.
 - **Kiruna** publishes no conditions for renting scooters, and its land-use
   guidelines of 16 February 2026 don't mention them. Hopp runs there only

@@ -800,9 +800,10 @@ in Portugal, and Reykjavík in Iceland; see [Bolt rider app](#bolt-rider-app).
 
 ## Sweden
 
-The reviewed catalog lives in `data/swedish-scooter-feeds.json`: 2 feeds in 2
-towns, Lime in Uppsala and Hopp in Kiruna. Both are the operators' own public
-GBFS feeds. Lime Uppsala is listed in
+The reviewed catalog lives in `data/swedish-scooter-feeds.json`: 29 systems.
+Two are the operators' own public GBFS feeds, Lime in Uppsala and Hopp in
+Kiruna; the other 27 come from app maps (Voi 15, Qick 7, Bolt 3 and Lime's
+Göteborg and Malmö). Lime Uppsala is listed in
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv);
 Hopp Kiruna is not, and answers at the address Hopp uses for its other towns.
 Sweden's national access point, [trafficdata.se](https://trafficdata.se),

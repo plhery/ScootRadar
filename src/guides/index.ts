@@ -267,6 +267,8 @@ import tampereEn from './en/e-scooters-tampere';
 import linkopingEn from './en/e-scooters-linkoping';
 import osakaEn from './en/e-scooters-osaka';
 import milwaukeeEn from './en/e-scooters-milwaukee';
+import turkuEn from './en/e-scooters-turku';
+import uppsalaEn from './en/e-scooters-uppsala';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -534,4 +536,6 @@ export const GUIDES: readonly Guide[] = [
   linkopingEn,
   osakaEn,
   milwaukeeEn,
+  turkuEn,
+  uppsalaEn,
 ];

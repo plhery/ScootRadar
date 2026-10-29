@@ -131,10 +131,14 @@ has none.
   ([permit terms](https://www.vantaa.fi/sites/default/files/document/Vantaa-mikroliikennelupa-ehdot-2026.pdf),
   1 January 2026 to 28 February 2027).
 - **Turku:** no riding on weekend nights, Friday to Saturday and Saturday to
-  Sunday, from 00:00 to 05:00, nor on the nights of Vappu, Midsummer and New
-  Year's Eve when they fall on a weekday
+  Sunday, from 00:00 to 05:00, nor on public holidays falling on a weekday,
+  such as Vappu Eve, May Day, Midsummer Eve, Midsummer Day and New Year's Eve
   ([permit terms](https://www.turku.fi/sites/default/files/document/turun-kaupungin-mikroliikenneluvan-lupaehdot_2026.pdf),
-  2026).
+  clause 2.5, adopted 11 November 2025; the City's page says "at least"
+  these). The map gives Turku no season (`seasonal`): the licence's basic
+  season, 1 April to 31 October, gives way to the City's written consent,
+  which let the 2026 season start on 18 March (Yle); the City had announced no
+  time past 31 October by 29 October 2026.
 - **Lahti:** no renting from Friday to Saturday and from Saturday to Sunday,
   00:00 to 05:00, across the whole city, nor on the nights that start on
   Maundy Thursday, 30 April and the day before Midsummer Eve
