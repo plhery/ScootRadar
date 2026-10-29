@@ -539,7 +539,7 @@ class MarkerEasesTest {
             action()
             Choreographer.getInstance().postFrameCallback(frame)
         }
-        done.await(5, TimeUnit.SECONDS)
+        assertTrue("the frames came for $millis ms", done.await(millis + 5_000, TimeUnit.MILLISECONDS))
         return places
     }
 

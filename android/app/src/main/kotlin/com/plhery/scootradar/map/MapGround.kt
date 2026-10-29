@@ -12,10 +12,12 @@ import kotlinx.serialization.json.doubleOrNull
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.expressions.Expression
+import org.maplibre.android.style.layers.FillExtrusionLayer
 import org.maplibre.android.style.layers.FillLayer
 import org.maplibre.android.style.layers.LayoutPropertyValue
 import org.maplibre.android.style.layers.LineLayer
 import org.maplibre.android.style.layers.PaintPropertyValue
+import org.maplibre.android.style.layers.PropertyValue
 import org.maplibre.android.style.layers.SymbolLayer
 import org.maplibre.android.style.layers.TransitionOptions
 import org.maplibre.android.style.sources.TileSet
@@ -28,7 +30,8 @@ import org.maplibre.android.style.sources.VectorSource
  * The ground on MapLibre's map. Its style is loaded once, with the land and the ground's layers; the tiles come
  * when their address does, asked for again until it can be had, and until then the map is the plain colour of
  * the land. Another look, from the appearance, the map style or the language, is set on the layers in place, as
- * the iPhone keeps its annotations and overlays through a new configuration (MAP-008, MAP-009).
+ * the iPhone keeps its annotations and overlays through a new configuration (MAP-008, MAP-009). The buildings stand
+ * while the map is tilted and lie flat once it rests seen from straight above, as MapKit's do (MAP-254).
  */
 class MapGround(
     private val map: MapLibreMap,
@@ -48,7 +51,18 @@ class MapGround(
 
     private var waiting: Job? = null
 
+    /** Whether the buildings stand at their heights, as the style has them, or lie flat. */
+    private var raised = true
+
+    /** The map tilting: the buildings rise with it, from the first move. */
+    private val tilting = MapLibreMap.OnCameraMoveListener { if (!raised) stand() }
+
+    /** The map at rest: seen from straight above, the buildings lie flat. */
+    private val rested = MapLibreMap.OnCameraIdleListener { stand() }
+
     init {
+        map.addOnCameraMoveListener(tilting)
+        map.addOnCameraIdleListener(rested)
         val url = tiles.known
         map.setStyle(Style.Builder().fromJson(GroundStyle.json(look, url, imagery))) { loaded ->
             // Nothing eased by the style itself; what eases says so, as the markers' light-up does. MapLibre draws
@@ -56,8 +70,14 @@ class MapGround(
             // to the same value, and fades in the names placed anew: the rider's breath, a write every 66 ms, would
             // have the map drawn every frame for as long as the dot shows. The ground's names appear at once.
             loaded.transition = TransitionOptions(0, 0, false)
+            // But the buildings, which rise as the map tilts and sink as it rests flat.
+            (loaded.getLayer(GroundStyle.BUILDINGS) as? FillExtrusionLayer)?.apply {
+                fillExtrusionHeightTransition = TransitionOptions(GroundStyle.BUILDINGS_RISE, 0, false)
+                fillExtrusionBaseTransition = TransitionOptions(GroundStyle.BUILDINGS_RISE, 0, false)
+            }
             style = loaded
             restyle()
+            stand()
             if (url == null) waitForTiles()
         }
     }
@@ -69,7 +89,24 @@ class MapGround(
 
     fun close() {
         waiting?.cancel()
+        map.removeOnCameraMoveListener(tilting)
+        map.removeOnCameraIdleListener(rested)
         style = null
+    }
+
+    /**
+     * The buildings raised while the map is tilted and flat while it is seen from straight above, MapLibre easing
+     * them between the two; the zones and the walk's trail under them while they stand, as MapKit's overlays are
+     * under its 3D buildings, and over them while they lie flat, as over the roads (GroundOverlays).
+     */
+    private fun stand() {
+        val style = style ?: return
+        val tilted = map.cameraPosition.tilt >= GroundStyle.LEAST_RAISED_TILT
+        if (tilted == raised) return
+        raised = tilted
+        val heights = GroundStyle.buildingHeights(raised).map { (name, value) -> PaintPropertyValue(name, value(value)) }
+        style.getLayer(GroundStyle.BUILDINGS)?.setProperties(*heights.toTypedArray<PropertyValue<*>>())
+        GroundOverlays.stack(style)
     }
 
     private fun waitForTiles() {

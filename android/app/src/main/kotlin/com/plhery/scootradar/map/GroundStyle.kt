@@ -133,6 +133,18 @@ object GroundStyle {
      */
     const val FIRST_LABEL_LAYER = "housenumber"
 
+    /** The buildings, raised on a tilted map close up (MAP-254). */
+    const val BUILDINGS = "building"
+
+    /**
+     * The least tilt, in degrees, at which the buildings stand: below it the map is seen from straight above, where
+     * MapKit's buildings are flat.
+     */
+    const val LEAST_RAISED_TILT = 1.0
+
+    /** How long MapLibre takes to raise the buildings or lay them flat, in ms: its own default for a change. */
+    const val BUILDINGS_RISE = 300L
+
     /**
      * The style for a look. Without the tiles' address the ground is the plain colour of the land, as on the web,
      * until the source is added (source).
@@ -279,18 +291,25 @@ object GroundStyle {
      * The buildings, raised to their heights as MapKit raises them when the map is tilted close up (MAP-254), as
      * OpenFreeMap's Liberty does: from above, their roofs are the web's flat buildings in its colour. They come after the
      * streets, which they hide where they stand in front of them; an outline whose parts have their own heights is
-     * left to its parts.
+     * left to its parts. The map lays them flat when it comes to rest seen from straight above (MapGround).
      */
     private fun buildings(c: GroundPalette, visible: Boolean) = layer(
-        "building", "fill-extrusion", "building", minzoom = web(15), visible = visible,
+        BUILDINGS, "fill-extrusion", "building", minzoom = web(15), visible = visible,
         filter = listOf("!", listOf("has", "hide_3d")),
         paint = mapOf(
             "fill-extrusion-color" to c.buildingRaised,
-            "fill-extrusion-height" to get("render_height"),
-            "fill-extrusion-base" to get("render_min_height"),
             "fill-extrusion-opacity" to 0.8,
             "fill-extrusion-vertical-gradient" to true,
-        ),
+        ) + buildingHeights(raised = true),
+    )
+
+    /**
+     * The buildings' heights: raised, or flat as MapKit's are on a map seen from straight above (ios/README.md: "a
+     * smaller tilt is flat again"). Paint properties, which MapLibre changes without laying the buildings out again.
+     */
+    fun buildingHeights(raised: Boolean): Map<String, JsonElement> = mapOf(
+        "fill-extrusion-height" to if (raised) element(get("render_height")) else JsonPrimitive(0),
+        "fill-extrusion-base" to if (raised) element(get("render_min_height")) else JsonPrimitive(0),
     )
 
     private fun railPaint(c: GroundPalette) =

@@ -7,6 +7,7 @@ import com.plhery.scootradar.core.model.GeoPoint
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.expressions.Expression
 import org.maplibre.android.style.layers.CircleLayer
+import org.maplibre.android.style.layers.FillExtrusionLayer
 import org.maplibre.android.style.layers.FillLayer
 import org.maplibre.android.style.layers.Layer
 import org.maplibre.android.style.layers.LayoutPropertyValue
@@ -16,7 +17,8 @@ import org.maplibre.android.style.layers.PropertyValue
 
 /**
  * What the app draws on the ground, MapKit's overlays at the level above the roads: over the streets and under
- * their names, and so under every marker. Bottom to top: the zones' fills, the strongest rule on top; their
+ * their names, and so under every marker; under the buildings while they stand, as MapKit's are under its 3D
+ * buildings, and over them while they lie flat. Bottom to top: the zones' fills, the strongest rule on top; their
  * edges, no riding's over the others'; then the walk's trail, its casing under its dots, a trail fading as it is
  * hidden under the one shown, which MapKit adds on top of it.
  */
@@ -35,17 +37,34 @@ object GroundOverlays {
 
     /**
      * Adds one of the layers in its place, whichever of them came first: under the next of them already there,
-     * else under the ground's names, else under the markers, else on top, on a style that has neither, as a
-     * test's has.
+     * else under the buildings while they stand, else under the ground's names, else under the markers, else on
+     * top, on a style that has neither, as a test's has.
      */
-    fun add(style: Style, spec: OverlayLayerSpec) {
-        val layer = spec.layer()
-        val index = order.indexOf(spec.id)
+    fun add(style: Style, spec: OverlayLayerSpec) = place(style, spec.layer())
+
+    /**
+     * Puts the layers there are back in their places, once the buildings have risen or been laid flat. MapLibre
+     * lays out again only what they draw, from their own small sources.
+     */
+    fun stack(style: Style) {
+        val layers = order.mapNotNull { style.getLayer(it) }
+        for (layer in layers) style.removeLayer(layer)
+        // From the top, each under the one above it.
+        for (layer in layers.asReversed()) place(style, layer)
+    }
+
+    private fun place(style: Style, layer: Layer) {
+        val index = order.indexOf(layer.id)
         val above = order.drop(index + 1).firstOrNull { style.getLayer(it) != null }
+            ?: GroundStyle.BUILDINGS.takeIf { areRaised(style) }
             ?: GroundStyle.FIRST_LABEL_LAYER.takeIf { style.getLayer(it) != null }
             ?: ScooterMarkerLayers.order.firstOrNull { style.getLayer(it) != null }
         if (above == null) style.addLayer(layer) else style.addLayerBelow(layer, above)
     }
+
+    /** Whether the ground's buildings stand at their heights, not laid flat by MapGround. */
+    private fun areRaised(style: Style): Boolean =
+        (style.getLayer(GroundStyle.BUILDINGS) as? FillExtrusionLayer)?.fillExtrusionHeight?.isExpression == true
 
     /** Sets on the style's layers what changes from one look of them to another. */
     fun restyle(style: Style, from: List<OverlayLayerSpec>, to: List<OverlayLayerSpec>) {

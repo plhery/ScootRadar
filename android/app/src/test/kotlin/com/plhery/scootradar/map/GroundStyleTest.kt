@@ -160,6 +160,43 @@ class GroundStyleTest {
         // its roofs as (MapBuildingsTest).
         val night = GroundStyle.changes(calmDay, calmDay.copy(theme = GroundTheme.Night)).filter { it.layer == "building" }
         assertEquals(listOf(GroundStyle.Change("building", GroundStyle.Change.Kind.Paint, "fill-extrusion-color", JsonPrimitive("#04070e"))), night)
+        // Seen from straight above, they lie flat, as MapKit's do: their heights only, paint properties.
+        assertEquals(
+            mapOf("fill-extrusion-height" to JsonPrimitive(0), "fill-extrusion-base" to JsonPrimitive(0)),
+            GroundStyle.buildingHeights(raised = false),
+        )
+        assertEquals(GroundStyle.buildingHeights(raised = true), building.paint.filterKeys { it in GroundStyle.buildingHeights(raised = false) })
+    }
+
+    /**
+     * The colours the buildings are raised in are those whose roofs MapLibre's light shows as the palette's flat
+     * buildings, over its land (GroundPalette.buildingRaised): a palette changed without them fails here, not only on
+     * an emulator (MapBuildingsTest).
+     */
+    @Test
+    fun theRaisedBuildingsRoofsAreThePalettesBuildings() {
+        for ((name, palette) in listOf("day" to GroundPalettes.day, "night" to GroundPalettes.night)) {
+            val roof = roof(rgb(palette.buildingRaised), over = rgb(palette.land))
+            val flat = rgb(palette.building)
+            for (channel in 0..2) assertEquals("$name, channel $channel: ${roof.toList()}", flat[channel], roof[channel], 1.0)
+        }
+    }
+
+    /** A colour's channels, 0 to 255. */
+    private fun rgb(hex: String): DoubleArray = DoubleArray(3) { hex.substring(1 + it * 2, 3 + it * 2).toInt(16).toDouble() }
+
+    /**
+     * The roof of a building raised in [colour], seen from above, as MapLibre's fill_extrusion shader lights it
+     * with the style's default light (intensity 0.5, white, 1.15 from the polar 30°) and the layer lays it at 0.8
+     * over the land: 0.03 added, lit by mix(1 − intensity, max(1 − luminance + intensity, 1), 1.15·cos 30°).
+     */
+    private fun roof(colour: DoubleArray, over: DoubleArray): DoubleArray {
+        val intensity = 0.5
+        val c = colour.map { it / 255 }
+        val luminance = c[0] * 0.2126 + c[1] * 0.7152 + c[2] * 0.0722
+        val facing = 1.15 * kotlin.math.cos(Math.toRadians(30.0))
+        val lit = (1 - intensity) + (maxOf(1 - luminance + intensity, 1.0) - (1 - intensity)) * facing
+        return DoubleArray(3) { ((c[it] + 0.03) * lit).coerceIn(0.0, 1.0) * 255 * 0.8 + over[it] * 0.2 }
     }
 
     @Test
