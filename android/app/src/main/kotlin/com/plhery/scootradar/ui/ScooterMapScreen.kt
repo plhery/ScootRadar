@@ -795,20 +795,25 @@ private fun TopStack(
     // The search bar and the notices under it, closed: what the map keeps its names and its taps out of, and centres
     // a place below. As wide as they are, as the iPhone's VStack is, not the room they are centred in: in a window
     // more than 584 dp wide the bar's 560 leave the map's sides to it. The open search covers the map, and leaves the
-    // map's frame as it was.
+    // map's frame as it was. Worked out as the stack is drawn, where its frames are read, so that it follows each move
+    // of the stack, as iOS's onGeometryChange does: under Reduce Motion the stack goes under a fold in one step, which
+    // nothing else draws again (UI-194).
     var stackFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barHeight by remember { mutableIntStateOf(0) }
     var noticesHeight by remember { mutableIntStateOf(0) }
-    SideEffect {
-        val frame = stackFrame ?: return@SideEffect
-        val bar = barFrame ?: return@SideEffect
-        if (barHeight == 0 || isSearching) return@SideEffect
+    val top = run {
+        val frame = stackFrame ?: return@run null
+        val bar = barFrame ?: return@run null
+        if (barHeight == 0 || isSearching) return@run null
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
         val sides = listOfNotNull(bar, noticesFrame?.takeIf { noticesHeight > 0 })
         val left = sides.minOf { it.minX }
-        chrome.top = ScreenRect(left, frame.y, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
+        ScreenRect(left, frame.y, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
+    }
+    SideEffect {
+        if (top != null) chrome.top = top
     }
 
     Column(
