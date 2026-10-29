@@ -81,6 +81,12 @@ class ScooterMarkers(
     /** The versions of the scene last written to each source. */
     private var writtenMarkers = -1
     private var writtenPills = -1
+
+    /** A name moved at the last frame: it is written once more where it stopped. */
+    private var pillsSlid = false
+
+    /** Where the names were last written, from their scooters. */
+    private var writtenPillPlaces = emptyList<ScreenPoint>()
     private var writtenLastSeen = -1
 
     /** The pictures in the style, and those each source draws now. */
@@ -422,10 +428,6 @@ class ScooterMarkers(
         calloutTitle = callout?.title
         callout?.let { calloutAnchor = it.anchor }
         writeMarkers(style)
-        if (scene.pillsVersion != writtenPills) {
-            writtenPills = scene.pillsVersion
-            write(style, ScooterMarkerLayers.PILLS_SOURCE, MarkerFeatures.pills(scene, art))
-        }
         if (scene.lastSeenVersion != writtenLastSeen) {
             writtenLastSeen = scene.lastSeenVersion
             write(style, ScooterMarkerLayers.LAST_SEEN_SOURCE, MarkerFeatures.lastSeen(scene, art))
@@ -535,9 +537,10 @@ class ScooterMarkers(
     /** The faded markers breathe while there are some, on screen, with animations on. */
     private fun breathes(): Boolean = scene.lastSeen.isNotEmpty() && ValueAnimator.areAnimatorsEnabled() && markerMap.isShown
 
-    /** A frame of the fades and of the breath. Returns whether anything still moves. */
+    /** A frame of the names, of the fades and of the breath. Returns whether anything still moves. */
     private fun drawFrame(style: Style): Boolean {
         val now = SystemClock.uptimeMillis() / 1000.0
+        val slides = writePills(style, now)
         held?.let { if (now - it > MOST_HELD) release() }
         val time = fadeTime(now)
         var fades = false
@@ -550,7 +553,27 @@ class ScooterMarkers(
             style.getLayer(ScooterMarkerLayers.LAST_SEEN)?.setProperties(PaintPropertyValue("icon-opacity", strength))
         }
         val moves = moveDots(style, now)
-        return fades || breathes || moves
+        return fades || breathes || moves || slides
+    }
+
+    /**
+     * Writes the names if they changed, and at every frame while one slides to another side or goes with its dot
+     * to a new place in a spread, until it gets there (MAP-116). Returns whether one still moves.
+     */
+    private fun writePills(style: Style, now: Double): Boolean {
+        val slides = scene.pillsMove(now)
+        if (scene.pillsVersion != writtenPills || slides || pillsSlid) {
+            val pills = MarkerFeatures.pills(scene, art, now)
+            // A name waiting for its dot to change hands stays where it is: MapLibre is not asked to place it again.
+            val places = pills.map { it.offset }
+            if (scene.pillsVersion != writtenPills || places != writtenPillPlaces) {
+                writtenPills = scene.pillsVersion
+                writtenPillPlaces = places
+                write(style, ScooterMarkerLayers.PILLS_SOURCE, pills)
+            }
+        }
+        pillsSlid = slides
+        return slides
     }
 
     /**

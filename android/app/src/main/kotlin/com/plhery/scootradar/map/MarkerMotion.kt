@@ -30,6 +30,12 @@ class MarkerEase<T>(val from: T, val to: T, val length: Double, val curve: Easin
     fun isOver(at: Double): Boolean = start?.let { at >= it + length } ?: false
 }
 
+/** The point an ease of points has got to at [at]. */
+fun MarkerEase<ScreenPoint>.point(at: Double): ScreenPoint {
+    val progress = progress(at)
+    return ScreenPoint(from.x + (to.x - from.x) * progress, from.y + (to.y - from.y) * progress)
+}
+
 /**
  * A dot's look and place easing to what the scene gives it, as the iPhone's marker view eases them when its look is
  * drawn again, animated (MAP-097, MAP-098, MAP-309):
@@ -92,14 +98,10 @@ class DotMotion(drawing: DotDrawing, offset: ScreenPoint) {
     }
 
     /** Where the dot is drawn from its scooter at [at]. */
-    fun offset(at: Double): ScreenPoint {
-        val place = place ?: return offset
-        val progress = place.progress(at)
-        return ScreenPoint(
-            place.from.x + (place.to.x - place.from.x) * progress,
-            place.from.y + (place.to.y - place.from.y) * progress,
-        )
-    }
+    fun offset(at: Double): ScreenPoint = place?.point(at) ?: offset
+
+    /** Whether the dot's place still eases at [at], or waits to: a name beside it goes with it. */
+    fun moves(at: Double): Boolean = place?.isOver(at) == false
 
     /** Whether nothing eases any more at [at]: the dot can go back to its source's layers. */
     fun isOver(at: Double): Boolean = begun != null && look?.isOver(at) != false && place?.isOver(at) != false

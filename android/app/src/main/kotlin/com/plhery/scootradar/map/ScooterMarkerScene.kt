@@ -5,6 +5,7 @@ package com.plhery.scootradar.map
 
 import android.animation.ValueAnimator
 import android.os.SystemClock
+import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
@@ -31,6 +32,7 @@ import com.plhery.scootradar.core.model.briefName
 import com.plhery.scootradar.core.model.distance
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.ui.theme.easing
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -75,6 +77,10 @@ class ScooterMark(scooter: Scooter) {
     /** The name was shown when the look was last drawn: one that comes eases in. */
     internal var wasPillShown = false
 
+    /** Where the name sat from the dot when the look was last drawn, and its slide from there to a new side (MAP-116). */
+    internal var drawnPillOrigin = ScreenPoint.zero
+    internal var pillSlide: MarkerEase<ScreenPoint>? = null
+
     /** The dot easing to its look and its place, which the movers' layers draw meanwhile (MAP-097, MAP-098). */
     var motion: DotMotion? = null
         internal set
@@ -98,6 +104,12 @@ class ScooterMark(scooter: Scooter) {
 
     /** The name as it is shown now: none while covered. */
     val shownPill: ScooterMarkerArt.PillContent? get() = if (pillIsCovered) null else pill
+
+    /** Where the name is drawn from the dot at [at], as it slides to its new side. */
+    fun pillOrigin(at: Double): ScreenPoint = pillSlide?.point(at) ?: pillOrigin
+
+    /** Whether the name moves at [at]: sliding to a new side, or with its dot to a new place in a spread. */
+    fun pillMoves(at: Double): Boolean = shownPill != null && (pillSlide?.isOver(at) == false || motion?.moves(at) == true)
 }
 
 /**
@@ -668,8 +680,9 @@ class ScooterMarkerScene(
 
     /**
      * What the iPhone's marker view does when its look is drawn again: the dot eases to its picture, its strength
-     * and its place where it [moves], and a name that comes eases in where [animated]. At most [MOST_MOVING] dots
-     * ease at once; any more take their look at once.
+     * and its place where it [moves], and where [animated] a name that comes eases in and one that moves to another
+     * side slides there, from where it is drawn, over [PILL_FADE] in and out. At most [MOST_MOVING] dots ease at
+     * once; any more take their look at once. A name that goes, goes at once.
      */
     private fun refreshLook(mark: ScooterMark, animated: Boolean, moves: Boolean = animated) {
         val drawing = DotDrawing(mark.art, mark.look.diameter, mark.look.strength)
@@ -693,12 +706,20 @@ class ScooterMarkerScene(
         val shown = mark.shownPill != null
         if (!shown) {
             mark.pillFade = null
+            mark.pillSlide = null
             mark.wasPillShown = false
             return
         }
-        if (!mark.wasPillShown && animated) {
-            mark.pillFade = MarkerFade(now(), PILL_FADE, MarkerFade.Curve.EaseInEaseOut)
+        if (!mark.wasPillShown) {
+            mark.pillSlide = null
+            if (animated) mark.pillFade = MarkerFade(now(), PILL_FADE, MarkerFade.Curve.EaseInEaseOut)
+        } else if (mark.pillOrigin != mark.drawnPillOrigin) {
+            // From where it is drawn: its new side is already set.
+            val time = now()
+            val from = mark.pillSlide?.point(time) ?: mark.drawnPillOrigin
+            mark.pillSlide = if (animated) MarkerEase(from, mark.pillOrigin, PILL_FADE, slide, time) else null
         }
+        mark.drawnPillOrigin = mark.pillOrigin
         mark.wasPillShown = true
     }
 
@@ -710,6 +731,9 @@ class ScooterMarkerScene(
         val animated = animates()
         for (mark in placePills(map)) refreshLook(mark, animated, moves = false)
     }
+
+    /** Whether a name moves at [at], to be drawn again at every frame until it stops. */
+    fun pillsMove(at: Double): Boolean = namedIDs.any { id -> marksByID[id]?.pillMoves(at) == true }
 
     /** The dots easing, drawn by the movers' layers: none of those in the app's own clusters. */
     fun moving(): List<ScooterMark> = movingIDs.mapNotNull { id -> marksByID[id]?.takeIf { id !in clusteredIDs } }
@@ -1059,10 +1083,13 @@ class ScooterMarkerScene(
         /** Half of the 44 pt a target needs. */
         const val TAP_REACH = 22.0
 
-        /** The dots' light-up, the names' fade after it, and a name's fade as it comes. */
+        /** The dots' light-up, the names' fade after it, and a name's fade as it comes or its slide to another side. */
         const val LIGHT_UP = 0.62
         const val NAME_IN = 0.52
         const val PILL_FADE = 0.2
+
+        /** UIView.animate's ease in, ease out, which slides a name. */
+        private val slide = IosMotion.easeInOut.easing
 
         /** The side of the marker of a scooter, MapKit's annotation view: far larger than its dot. */
         const val MARKER_SIZE = 44.0

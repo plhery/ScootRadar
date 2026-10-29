@@ -23,11 +23,13 @@ import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScreenPoint
+import com.plhery.scootradar.core.model.ScreenRect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -36,12 +38,15 @@ import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.style.sources.GeoJsonSource
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.math.max
 
-// The markers' eases on MapLibre's map (MAP-097, MAP-098): a dot easing changes hands between the scooters' layers
-// and the movers' with no frame of nothing, and hundreds of dots easing at once keep the frames, as gfxinfo counts
-// them, against the same changes drawn at once.
+// The markers' eases on MapLibre's map (MAP-097, MAP-098, MAP-116): a dot easing changes hands between the scooters'
+// layers and the movers' with no frame of nothing, hundreds of dots easing at once keep the frames, as gfxinfo counts
+// them, against the same changes drawn at once, and a name slides to its new side and goes along with its dot.
 @RunWith(AndroidJUnit4::class)
 class MarkerEasesTest {
     private val zurich = GeoPoint(47.3769, 8.5417)
@@ -269,6 +274,94 @@ class MarkerEasesTest {
         override fun toString() = "${if (eased) "eased" else "at once"}, $change: $moving dots easing; window frames $frames, janky $janky %, " +
             "$percentiles ms; map frames $mapFrames in 0.8 s, longest gap $longestGap ms" +
             (easing?.let { "; easing ${it.first} map frames in 0.25 s, longest gap ${it.second} ms" } ?: "")
+    }
+
+    @Test
+    fun aNameSlidesToItsNewSideAndGoesAlongWithItsDot() = withMarkers(zurich, mapLibreZoom = 17.0) { marked ->
+        val phone = marked.phone
+        phone.onMain { marked.controller.setUserLocation(marked.at(195.0, 422.0)) }
+        val spot = marked.at(195.0, 340.0)
+        val named = scooter("named", "voi", spot)
+        marked.serve(listOf(named))
+        waitFor("its name is shown") { phone.onMain { marked.markers.scene.mark("voi:named")?.shownPill != null } }
+        val mark = phone.onMain { marked.markers.scene.mark("voi:named")!! }
+        val image = phone.onMain { mark.shownPill!!.id }
+        val recording = if (recordsScreen) record("pill-slide") else null
+
+        // A panel comes over the side the name is on: it slides to the other over 0.2 s, a place at each frame.
+        val before = phone.onMain { mark.pillOrigin }
+        val panel = if (before.x > 0) ScreenRect(200.0, 0.0, 190.0, 844.0) else ScreenRect(0.0, 0.0, 190.0, 844.0)
+        val slid = pillPlaces(marked, image) { marked.markers.chromeDidChange(MapChrome(panel = panel)) }
+        val after = phone.onMain { mark.pillOrigin }
+        Log.i(TAG, "Slid from $before to $after: $slid")
+        assertSlid(slid, from = before.x, to = after.x)
+
+        // The panel goes, and the name stays on its side. Another comes to the same spot and its name takes that
+        // side: the dot moves aside over 0.22 s, and its name goes with it to the other side.
+        SystemClock.sleep(500)
+        phone.onMain { marked.markers.chromeDidChange(MapChrome()) }
+        SystemClock.sleep(500)
+        assertEquals(after, phone.onMain { mark.pillOrigin })
+        // The server answers a while after it is asked.
+        val spread = pillPlaces(marked, image, millis = 1_500) {
+            served = ScooterResponse(vehicles = listOf(named, scooter("other", "lime", spot)))
+            marked.controller.refresh()
+        }
+        val aside = phone.onMain { mark.look.offset.x + mark.pillOrigin.x }
+        Log.i(TAG, "Went along with its dot from ${after.x} to $aside: $spread")
+        assertSlid(spread, from = after.x, to = aside)
+        recording?.join()
+    }
+
+    /** A name went from [from] to [to] through places between, frame by frame, and stopped there. */
+    private fun assertSlid(places: List<Double>, from: Double, to: Double) {
+        val margin = ScooterMarkerArt.PILL_MARGIN
+        assertEquals("$places", from - margin, places.first(), 0.01)
+        assertEquals("$places", to - margin, places.last(), 0.01)
+        val between = places.distinct().filter { abs(it - from + margin) > 0.5 && abs(it - to + margin) > 0.5 }
+        assertTrue("$places", between.size >= 4)
+        assertTrue("$places", between.all { (it - from + margin) * (to - margin - it) > 0 })
+    }
+
+    /**
+     * Where MapLibre's names' source has the name with [image] across from its scooter, at each frame for [millis]
+     * from before something done on the main thread.
+     */
+    private fun pillPlaces(marked: Marked, image: String, millis: Long = 600, action: () -> Unit): List<Double> {
+        val places = mutableListOf<Double>()
+        val end = SystemClock.uptimeMillis() + millis
+        fun read() {
+            val features = marked.phone.map.style?.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.PILLS_SOURCE)?.querySourceFeatures(null).orEmpty()
+            val feature = features.firstOrNull { it.getStringProperty("image") == image } ?: return
+            val x = feature.getProperty("offset").asJsonArray[0].asDouble
+            if (places.lastOrNull() != x) places += x
+        }
+        val done = CountDownLatch(1)
+        val frame = object : Choreographer.FrameCallback {
+            override fun doFrame(frameTimeNanos: Long) {
+                read()
+                if (SystemClock.uptimeMillis() < end) Choreographer.getInstance().postFrameCallback(this) else done.countDown()
+            }
+        }
+        marked.phone.onMain {
+            read()
+            action()
+            Choreographer.getInstance().postFrameCallback(frame)
+        }
+        done.await(5, TimeUnit.SECONDS)
+        return places
+    }
+
+    /** Whether the instrumentation argument `screenrecord` asks for the screen to be recorded. */
+    private val recordsScreen: Boolean get() = InstrumentationRegistry.getArguments().getString("screenrecord") == "true"
+
+    /** Records the screen for five seconds from a second from now, to /data/local/tmp/app-l-[name].mp4. */
+    private fun record(name: String): Thread {
+        val output = InstrumentationRegistry.getInstrumentation().uiAutomation
+            .executeShellCommand("screenrecord --time-limit 5 /data/local/tmp/app-l-$name.mp4")
+        val recording = thread { ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() } }
+        SystemClock.sleep(1_000)
+        return recording
     }
 
     private fun gfxinfo(argument: String): String {

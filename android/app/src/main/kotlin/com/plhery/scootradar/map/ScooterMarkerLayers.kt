@@ -123,24 +123,26 @@ object MarkerFeatures {
         )
     }
 
-    /** The names shown, in the order they are placed. */
-    fun pills(scene: ScooterMarkerScene, art: ScooterMarkerArt): List<MarkerFeature> =
-        scene.namedIDs.mapNotNull { id -> scene.mark(id)?.let { pill(it, art) } }
+    /** The names shown, in the order they are placed, as they are drawn at [at]. */
+    fun pills(scene: ScooterMarkerScene, art: ScooterMarkerArt, at: Double): List<MarkerFeature> =
+        scene.namedIDs.mapNotNull { id -> scene.mark(id)?.let { pill(it, art, at) } }
 
     /**
-     * The name beside a dot, while it is shown, where its side puts it from the dot: the picture's frame is
-     * [ScooterMarkerArt.PILL_MARGIN] in from its edges, for the shadow.
+     * The name beside a dot, while it is shown, where its side puts it from the dot as both are drawn at [at]: the
+     * picture's frame is [ScooterMarkerArt.PILL_MARGIN] in from its edges, for the shadow.
      */
-    fun pill(mark: ScooterMark, art: ScooterMarkerArt): MarkerFeature? {
+    fun pill(mark: ScooterMark, art: ScooterMarkerArt, at: Double): MarkerFeature? {
         val content = mark.shownPill ?: return null
+        val dot = mark.motion?.offset(at) ?: mark.look.offset
+        val origin = mark.pillOrigin(at)
         return MarkerFeature(
             id = "n:${mark.scooter.id}",
             coordinate = mark.scooter.coordinate,
             image = content.id,
             picture = { art.pillImage(content) },
             offset = ScreenPoint(
-                mark.look.offset.x + mark.pillOrigin.x - ScooterMarkerArt.PILL_MARGIN,
-                mark.look.offset.y + mark.pillOrigin.y - ScooterMarkerArt.PILL_MARGIN,
+                dot.x + origin.x - ScooterMarkerArt.PILL_MARGIN,
+                dot.y + origin.y - ScooterMarkerArt.PILL_MARGIN,
             ),
             sortKey = mark.look.zPriority,
             fade = mark.pillFade,

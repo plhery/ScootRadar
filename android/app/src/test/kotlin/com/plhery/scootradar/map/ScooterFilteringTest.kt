@@ -193,7 +193,7 @@ class ScooterFilteringTest {
         assertEquals(900f, dot.sortKey)
         assertTrue(dot.isRaised)
         // The name stands beside the dot, clear of its ring.
-        val name = MarkerFeatures.pill(mark, art)
+        val name = MarkerFeatures.pill(mark, art, at = 0.0)
         assertNotNull(name)
         val picture = name!!.picture()
         assertEquals(ScooterMapLook.pillHeight, picture.height / density - 2 * ScooterMarkerArt.PILL_MARGIN, 0.5)
@@ -205,7 +205,7 @@ class ScooterFilteringTest {
         assertEquals(ScooterDotState.Plain, mark.art.state)
         assertEquals(8.0, mark.art.diameter, 0.0)
         assertFalse(MarkerFeatures.dot(mark, art).isRaised)
-        assertNull(MarkerFeatures.pill(mark, art))
+        assertNull(MarkerFeatures.pill(mark, art, at = 0.0))
     }
 
     @Test

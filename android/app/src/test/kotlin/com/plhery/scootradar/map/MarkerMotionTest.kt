@@ -6,11 +6,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.ScooterDotState
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScreenPoint
+import com.plhery.scootradar.core.model.ScreenRect
 import org.json.JSONObject
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -21,7 +23,8 @@ import java.util.Locale
 
 /**
  * How a dot eases to a new look and place, as the iPhone's marker view does when its look is drawn again, animated
- * (MAP-097, MAP-098, MAP-309): on a fake clock, at the start, the middle and the end of each ease.
+ * (MAP-097, MAP-098, MAP-309), and how a name slides to another side (MAP-116): on a fake clock, at the start, the
+ * middle and the end of each ease.
  */
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -234,6 +237,83 @@ class MarkerMotionTest {
         scene.updateLook(map)
         assertEquals(ScooterMarkerScene.MOST_MOVING, scene.moving().size)
         assertEquals(300, ScooterMarkerScene.MOST_MOVING)
+    }
+
+    /** A name beside its dot, and the panel that comes over the side it is on. */
+    private fun named(): Pair<ScooterMark, ScreenPoint> {
+        scene.reconcile(listOf(scooter("named", "voi", at = map.at(195.0, 380.0))), revision = 1)
+        scene.updateLook(map)
+        val mark = scene.mark("voi:named")!!
+        assertNotNull(mark.shownPill)
+        val before = mark.pillOrigin
+        cover(mark)
+        return mark to before
+    }
+
+    /** A panel comes over the side of its dot the name is on. */
+    private fun cover(mark: ScooterMark) {
+        val panel = if (mark.pillOrigin.x > 0) ScreenRect(200.0, 0.0, 190.0, 844.0) else ScreenRect(0.0, 0.0, 190.0, 844.0)
+        scene.parent = scene.parent.copy(panelFrame = panel)
+    }
+
+    /** Where the name is drawn from its scooter at [at], its picture's margin aside. */
+    private fun drawnPill(mark: ScooterMark, at: Double): ScreenPoint =
+        MarkerFeatures.pill(mark, art, at)!!.offset.let { ScreenPoint(it.x + ScooterMarkerArt.PILL_MARGIN, it.y + ScooterMarkerArt.PILL_MARGIN) }
+
+    @Test
+    fun aNameSlidesToItsNewSideInAndOutOverAFifthOfASecond() {
+        val (mark, before) = named()
+        assertFalse(scene.pillsMove(clock))
+        scene.movePills(map)
+        val after = mark.pillOrigin
+        assertNotEquals(before, after)
+        assertNotNull(mark.shownPill)
+        assertTrue(scene.pillsMove(100.0))
+
+        fun expect(at: Double, progress: Float) {
+            val drawn = drawnPill(mark, at)
+            assertEquals("$at", before.x + (after.x - before.x) * progress, drawn.x, 1e-6)
+            assertEquals("$at", before.y + (after.y - before.y) * progress, drawn.y, 1e-6)
+        }
+        // At its start, where it was; half the time, half the way; at its end, on its new side.
+        expect(100.0, 0f)
+        expect(100.05, easeInOut.transform(0.25f))
+        expect(100.1, easeInOut.transform(0.5f))
+        assertTrue(scene.pillsMove(100.199))
+        expect(100.2, 1f)
+        assertFalse(scene.pillsMove(100.2))
+        // The dot stays where it was: only the name moves.
+        assertNull(mark.motion)
+
+        // Moved again half way, it slides on from where it has got to.
+        clock = 100.1
+        val got = drawnPill(mark, 100.1)
+        cover(mark)
+        scene.movePills(map)
+        assertEquals(before, mark.pillOrigin)
+        assertEquals(got.x, drawnPill(mark, 100.1).x, 1e-6)
+        assertEquals(before.x, drawnPill(mark, 100.3).x, 1e-6)
+        assertTrue(scene.pillsMove(100.299))
+    }
+
+    @Test
+    fun aNameThatGoesGoesAtOnceAndWithRemoveAnimationsOneMovesAtOnce() {
+        val (mark, _) = named()
+        animates = false
+        scene.movePills(map)
+        assertEquals(mark.pillOrigin, drawnPill(mark, 100.0))
+        assertFalse(scene.pillsMove(100.0))
+
+        // Covered, it goes at once, even sliding.
+        animates = true
+        cover(mark)
+        scene.movePills(map)
+        assertTrue(scene.pillsMove(100.0))
+        scene.parent = scene.parent.copy(panelFrame = ScreenRect(0.0, 0.0, 390.0, 844.0))
+        scene.movePills(map)
+        assertNull(mark.shownPill)
+        assertNull(MarkerFeatures.pill(mark, art, 100.0))
+        assertFalse(scene.pillsMove(100.0))
     }
 
     @Test

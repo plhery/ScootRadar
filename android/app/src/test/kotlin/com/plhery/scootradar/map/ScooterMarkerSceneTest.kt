@@ -124,7 +124,7 @@ class ScooterMarkerSceneTest {
 
         val (mark, frame) = scene.shownPillFrames(map).single()
         assertEquals("voi:named", mark.scooter.id)
-        assertNotNull(MarkerFeatures.pill(mark, art))
+        assertNotNull(MarkerFeatures.pill(mark, art, at = 0.0))
         // Its far end is out of the dot's reach, and still means the dot.
         val end = ScreenPoint(frame.maxX - 2, frame.midY)
         assertTrue(scene.dotCentre(mark, map).let { kotlin.math.hypot(it.x - end.x, it.y - end.y) } > ScooterMarkerScene.TAP_REACH)
