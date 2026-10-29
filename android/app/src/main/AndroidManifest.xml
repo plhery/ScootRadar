@@ -10,9 +10,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <!-- Android 12 has no App languages setting to read localeConfig: AppCompat keeps the app's language there. -->
+    <!-- Android 12 has no App languages setting to read localeConfig: AppCompat keeps the app's language there.
+         Backups take the settings and that language only (LOG-298). -->
     <application
         android:name=".app.ScooterApplication"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:localeConfig="@xml/locales_config"

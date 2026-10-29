@@ -1,3 +1,8 @@
+import com.android.build.api.artifact.SingleArtifact
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -100,4 +105,62 @@ dependencies {
     androidTestImplementation(libs.uiautomator)
     // The fold of the foldable's tests (ui/FoldTest).
     androidTestImplementation(libs.androidx.window.testing)
+}
+
+/**
+ * LOG-331 (ScooterAnalytics.swift:4): the app reads no advertising id, as the iPhone's reads none. A build's merged
+ * manifest asks for no AD_ID permission, which Play services' ads libraries merge in, and the libraries it ships hold
+ * nothing of Play services or Firebase. The unit tests run once the debug and the release builds are checked.
+ */
+abstract class AdvertisingIdCheck : DefaultTask() {
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val manifest: RegularFileProperty
+
+    /** The libraries the build ships, as group:name. */
+    @get:Input
+    abstract val libraries: SetProperty<String>
+
+    @get:OutputFile
+    abstract val checked: RegularFileProperty
+
+    @TaskAction
+    fun check() {
+        val merged = manifest.get().asFile
+        if (merged.readText().contains(PERMISSION)) throw GradleException("$merged asks for $PERMISSION (LOG-331)")
+        val found = libraries.get().filter { library -> GROUPS.any { library.startsWith("$it:") } }.sorted()
+        if (found.isNotEmpty()) throw GradleException("The build ships ${found.joinToString()} (LOG-331)")
+        checked.get().asFile.writeText("No $PERMISSION and none of ${GROUPS.joinToString()} among ${libraries.get().size} libraries.\n")
+    }
+
+    companion object {
+        const val PERMISSION = "com.google.android.gms.permission.AD_ID"
+        val GROUPS = listOf("com.google.android.gms", "com.google.firebase")
+
+        /** Every library the dependency graph under [root] selects. */
+        fun libraries(root: ResolvedComponentResult): Set<String> {
+            val seen = mutableSetOf<ResolvedComponentResult>()
+            val next = ArrayDeque(listOf(root))
+            while (next.isNotEmpty()) {
+                val component = next.removeFirst()
+                if (seen.add(component)) next += component.dependencies.filterIsInstance<ResolvedDependencyResult>().map { it.selected }
+            }
+            return seen.mapNotNullTo(sortedSetOf()) { (it.id as? ModuleComponentIdentifier)?.let { id -> "${id.group}:${id.module}" } }
+        }
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        val name = variant.name.replaceFirstChar { it.uppercase() }
+        tasks.register<AdvertisingIdCheck>("check${name}AdvertisingId") {
+            manifest.set(variant.artifacts.get(SingleArtifact.MERGED_MANIFEST))
+            libraries.set(variant.runtimeConfiguration.incoming.resolutionResult.rootComponent.map { AdvertisingIdCheck.libraries(it) })
+            checked.set(layout.buildDirectory.file("advertising-id/${variant.name}.txt"))
+        }
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    if (name == "testDebugUnitTest") dependsOn("checkDebugAdvertisingId", "checkReleaseAdvertisingId")
 }

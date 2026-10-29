@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What a backup and a move to a new phone take (LOG-298): the settings, as the iPhone's UserDefaults go into its
+     backups, and the app's own language, which AppCompat keeps in a file on Android 12. Nothing else: no tiles or
+     glyphs MapLibre kept, which are fetched again. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="ScooterDefaults.xml" />
+        <include domain="file" path="androidx.appcompat.app.AppCompatDelegate.application_locales_record_file" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="ScooterDefaults.xml" />
+        <include domain="file" path="androidx.appcompat.app.AppCompatDelegate.application_locales_record_file" />
+    </device-transfer>
+</data-extraction-rules>

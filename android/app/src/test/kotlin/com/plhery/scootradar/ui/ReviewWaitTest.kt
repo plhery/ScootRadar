@@ -7,9 +7,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.RecordingAnalytics
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
+import com.plhery.scootradar.TrackedEvent
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.rentalOpened
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -58,24 +60,29 @@ class ReviewWaitTest {
     @Test
     fun theRatingIsAskedOnceTheMapHasRestedFiveSeconds() {
         val model = backFromARide()
+        val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = null)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = true, requester = { asked += 1 }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(4_000)
         assertEquals(0, asked)
+        assertEquals(emptyList<TrackedEvent>(), analytics.events)
         compose.mainClock.advanceTimeBy(1_500)
         assertEquals(1, asked)
         assertFalse(model.reviewDue)
+        // LOG-330 (ScooterMapScreen.swift:177): the ask is counted, with what it came after.
+        assertEquals(listOf(TrackedEvent("review_ask", result = "rental_return")), analytics.events)
     }
 
     @Test
     fun somethingOverTheMapBeforeThenEndsThisTry() {
         val model = backFromARide()
         var nothingOver by mutableStateOf(true)
+        val analytics = RecordingAnalytics()
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { asked += 1 }, analytics = null)
+            ReviewWhenTheMapRests(model, nothingOverTheMap = nothingOver, requester = { asked += 1 }, analytics = analytics.analytics)
         }
         compose.mainClock.advanceTimeBy(3_000)
         // The search opened and closed again: each a frame of its own.
@@ -89,6 +96,7 @@ class ReviewWaitTest {
         compose.mainClock.advanceTimeBy(10_000)
         assertEquals(0, asked)
         assertFalse(model.reviewDue)
+        assertEquals(emptyList<TrackedEvent>(), analytics.events)
     }
 
     /**

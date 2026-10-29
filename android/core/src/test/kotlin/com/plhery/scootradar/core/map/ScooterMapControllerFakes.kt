@@ -365,6 +365,7 @@ internal fun TestScope.makeController(
     analytics: RecordingAnalytics? = null,
     start: ScooterMapStart = ScooterMapStart.switzerland,
     catalog: ScooterCatalog = TestCatalog.catalog,
+    debug: Boolean = false,
 ): ScooterMapController {
     val scheduler = testScheduler
     val startedAt = TestClock().now
@@ -388,6 +389,7 @@ internal fun TestScope.makeController(
         analytics = analytics?.analytics,
         start = start,
         catalog = catalog,
+        debug = debug,
     )
 }
 
