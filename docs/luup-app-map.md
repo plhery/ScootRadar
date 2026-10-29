@@ -42,6 +42,12 @@ The normal scheduler collects idle cities every 20 minutes and watched cities
 every minute. Starts on LUUP's host are at least one second apart, including
 renewals. HTTP 429 respects `Retry-After`; failed authentication backs off for
 a minute, and a rejected ID token gets one renewal and retry.
+A port read may take 90 seconds, a renewal 30. Tokyo's read, the whole city
+in one circle, takes 25 to 30 seconds from Netcup, and Kawasaki's and
+Yokohama's over 20. With a 30-second limit, 21 of Tokyo's 28 reads in the
+three hours to 04:30 Japan time on 30 October 2026 were cut off, and its
+scooters left the map for 37 minutes (SCOOTRADAR-CACHE-5Y). LUUP rents all
+night; it was not a pause.
 
 The zone reader returned 200 zones, whose completeness has not been established.
 Zones and parking guidance are therefore not published by this collector.

@@ -8,13 +8,16 @@ import type { MapBounds, Vehicle } from '../src/lib/types';
 
 const ORIGIN = 'https://asia-northeast1-luup-prod.cloudfunctions.net';
 const RETRY_MS = 60_000;
+// Tokyo's port read, the whole city in one circle, takes 25 to 30 s from Netcup: in the three hours to 04:30
+// Japan time on 30 October 2026, 21 of its 28 ran past a 30 s limit and Shibuya expired (SCOOTRADAR-CACHE-5Y).
+const READ_TIMEOUT_MS = 90_000;
 export const luupMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
 const credential = (value: unknown): value is string => typeof value === 'string' &&
   value.length > 0 && value.length < 8192 && !/\s/.test(value);
 interface Options { apiKey?: string; refreshToken?: string; sessionPath?: string; fetch?: typeof fetch;
-  now?: () => number; intervalMs?: number; timeoutMs?: number }
+  now?: () => number; intervalMs?: number; timeoutMs?: number; readTimeoutMs?: number }
 interface Lease { token: string; expiresAt: number }
 
 async function jsonBody(response: Response, maxBytes: number): Promise<unknown> {
@@ -47,6 +50,7 @@ export class LuupClient {
   private readonly now: () => number;
   private readonly intervalMs: number;
   private readonly timeoutMs: number;
+  private readonly readTimeoutMs: number;
   private refreshToken?: string;
   private lease?: Lease;
   private renewing?: Promise<Lease>;
@@ -63,6 +67,7 @@ export class LuupClient {
     this.now = options.now ?? Date.now;
     this.intervalMs = options.intervalMs ?? 1000;
     this.timeoutMs = options.timeoutMs ?? 30_000;
+    this.readTimeoutMs = options.readTimeoutMs ?? READ_TIMEOUT_MS;
   }
 
   private async savedToken(): Promise<string> {
@@ -97,7 +102,7 @@ export class LuupClient {
     finally { await rm(temporary, { force: true }).catch(() => undefined); }
   }
 
-  private async request(url: string, init: RequestInit, kind: 'status' | 'metadata') {
+  private async request(url: string, init: RequestInit, kind: 'status' | 'metadata', timeoutMs = this.timeoutMs) {
     if (this.now() < this.blockedUntil) throw new Error('LUUP is temporarily rate limited');
     const wait = Math.max(0, this.nextStart - this.now());
     this.nextStart = this.now() + wait + this.intervalMs;
@@ -105,7 +110,7 @@ export class LuupClient {
     if (this.now() < this.blockedUntil) throw new Error('LUUP is temporarily rate limited');
     luupMapRequests[kind]++;
     let response: Response;
-    try { response = await this.fetch(url, { ...init, redirect: 'error', signal: AbortSignal.timeout(this.timeoutMs) }); }
+    try { response = await this.fetch(url, { ...init, redirect: 'error', signal: AbortSignal.timeout(timeoutMs) }); }
     catch { throw new Error('LUUP request failed or timed out'); }
     if (response.status === 429) {
       const retry = response.headers.get('retry-after');
@@ -153,7 +158,7 @@ export class LuupClient {
     const query = luupMapQuery(bounds);
     const url = `${ORIGIN}/mobileApiDBReader-ports/by-location?${query}`;
     let lease = await this.current();
-    const read = () => this.request(url, { headers: { Authorization: `Bearer ${lease.token}` } }, 'status');
+    const read = () => this.request(url, { headers: { Authorization: `Bearer ${lease.token}` } }, 'status', this.readTimeoutMs);
     let response = await read();
     if (response.status === 401 || response.status === 403) {
       await response.body?.cancel();

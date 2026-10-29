@@ -161,6 +161,17 @@ describe('LUUP private session and transport', () => {
     await expect(f.client.ports(region.bounds)).resolves.toEqual([]);
   });
 
+  it('gives a port read longer than a renewal before it times out', async () => {
+    const f = await fixture();
+    const slow = (signal?: AbortSignal | null) => new Promise<Response>((resolve, reject) => {
+      const timer = setTimeout(() => resolve(Response.json([port()])), 60);
+      signal?.addEventListener('abort', () => { clearTimeout(timer); reject(signal.reason); });
+    });
+    f.fetch.mockImplementation(async (url, init) => String(url).startsWith('https://securetoken.') ? f.session() : slow(init?.signal));
+    await expect(new LuupClient({ ...f.options, readTimeoutMs: 1000 }).ports(region.bounds)).resolves.toHaveLength(1);
+    await expect(new LuupClient({ ...f.options, readTimeoutMs: 30 }).ports(region.bounds)).rejects.toThrow('LUUP request failed or timed out');
+  });
+
   it('bounds response bodies and sanitizes malformed JSON', async () => {
     const f = await fixture();
     f.fetch.mockImplementation(async url => String(url).startsWith('https://securetoken.') ? f.session() : new Response('not json'));
