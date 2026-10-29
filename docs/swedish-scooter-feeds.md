@@ -11,6 +11,11 @@ clean full-area audit. Its Stockholm region, with Bromma and Solna and
 Sundbyberg, held no scooter that day: Stockholm's permits went to Voi and
 Bolt alone from 1 July 2026.
 
+Update, 24 and 25 October 2026: Voi's scooters in 15 towns (Stockholm,
+Göteborg, Malmö, Uppsala and eleven others) come from its
+[app map](voi-app-map.md) since 24 October, and Bolt's in Stockholm, Malmö
+and Lund from its [app map](bolt-app-map.md) since 25 October.
+
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and Dott's Swedish listing, then probed the URL patterns of Lime, Hopp and Bolt
@@ -102,19 +107,20 @@ No covered Swedish town bans renting at night, so
 
 ## Known gaps
 
-- **Stockholm** has no scooter on the map. The city allows up to 12,000
+- **Stockholm** has no public feed. The city allows up to 12,000
   shared scooters, and its traffic committee cut the operators to two from
   1 July 2026 (11 December 2025, § 31): Voi and Bolt, which
   [has up to 6,000](https://bolt.eu/sv-se/blog/elsparkcykel-tillstand-stockholm/).
   Neither publishes a feed: Bolt's only public
   feeds in Europe are Brussels and Liverpool, and its others answer 401.
+  Their scooters come from their app maps instead (see the update above).
   Lime's Stockholm feed answers 404.
-- **Uppsala** has Voi and Ryde besides Lime, and neither publishes a feed,
-  so the map shows Lime's part of the up to 4,500 scooters only.
+- **Uppsala** has Voi and Ryde besides Lime, and neither publishes a feed.
+  Voi's scooters come from its app map; Ryde's are not on the map.
 - **Voi** (Göteborg, Malmö and other towns) and **Ryde** (Göteborg, Malmö,
   Linköping, Norrköping and other towns, per its
   [locations page](https://www.ryde-technology.com/Locations), 29 October
-  2026) publish no public feed either. Ryde has the largest share of Malmö's cap,
+  2026) publish no public feed either; only Voi has an app map we read. Ryde has the largest share of Malmö's cap,
   1,000 of 2,800 scooters from 1 October 2026 to 31 March 2027
   ([traffic committee, 8 September 2026](https://motenmedborgarportal.malmo.se/committees/tekniska-namndens-trafikutskott/mote-2026-09-08/protocol/protokoll-tru-2026-09-08pdf?downloadMode=open)),
   and [Göteborg](https://goteborg.se/wps/portal/start/trafik-och-resor/trafik-och-gator/cykling-och-cykelvagar/delade-elsparkcyklar-och-elcyklar)
