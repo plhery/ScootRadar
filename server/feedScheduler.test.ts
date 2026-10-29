@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; watchMs?: number; idleIntervalMs?: number; idlePhase?: number; nightAt?: (time: number) => boolean }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; watchMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -181,17 +181,34 @@ it('collects an idle feed at the phase it gives, by default', async () => {
   } finally { scheduler.stop(); }
 });
 
-it('collects an idle feed at its hour the next day after a collection by night, not a whole interval on', async () => {
+it('collects an idle feed when the night it was collected in ends, then at its phase, not a whole interval on', async () => {
   const HOUR = 60 * MINUTE;
   // T0 is 08:00 UTC, 32 hours into a three-day interval; a phase of 8 hours falls at 08:00 two days on.
   const feed = { id: 'raleigh', host: 'lime', idleIntervalMs: 72 * HOUR, idlePhase: 8 / 72 };
-  const night = schedule([{ ...feed, nightAt: time => time === T0 }], { phase: undefined });
+  const night = schedule([{ ...feed, nightEnds: time => time === T0 ? T0 + 4 * HOUR : undefined }], { phase: undefined });
   const day = schedule([{ ...feed, id: 'durham' }], { phase: undefined });
   try {
     await vi.advanceTimersByTimeAsync(50 * HOUR);
-    expect(night.times('raleigh')).toEqual([0, 24 * 60, 48 * 60]);
+    // At the night's end, after its phase's share of a quarter of an hour: 100 seconds.
+    expect(night.calls.map(call => call.at)).toEqual([0, 4 * HOUR + 100_000, 48 * HOUR]);
     expect(day.times('durham')).toEqual([0, 48 * 60]);
   } finally { night.scheduler.stop(); day.scheduler.stop(); }
+});
+
+it('collects an idle feed again when the night ban it was collected in ends, sooner than its phase', async () => {
+  const HOUR = 60 * MINUTE;
+  // Oslo's ban ends half an hour after T0, a whole number of two-hour intervals; Bergen has none that night.
+  const end = T0 + 30 * MINUTE;
+  const { scheduler, times } = schedule([
+    { id: 'oslo', host: 'voi', idleIntervalMs: 2 * HOUR, idlePhase: 0.4 },
+    { id: 'bergen', host: 'voi', idleIntervalMs: 2 * HOUR, idlePhase: 0.4 },
+  ], { phase: undefined, curfewEnds: (feed, time) => feed.id === 'oslo' && time < end ? end : undefined });
+  try {
+    await vi.advanceTimersByTimeAsync(3 * HOUR);
+    // Six minutes after the ban, its phase's share of a quarter of an hour, then at its phase.
+    expect(times('oslo')).toEqual([0, 36, 48, 168]);
+    expect(times('bergen')).toEqual([0, 48, 168]);
+  } finally { scheduler.stop(); }
 });
 
 it('collects a watched feed at once when its data is over a minute old, then every minute while watched', async () => {

@@ -136,6 +136,16 @@ export function feedCurfewed(feedId: string, now: number, systems: ReadonlyMap<s
   return !!system && serviceAreas(system).every(area => activeCurfew(area.center, now) !== null);
 }
 
+/**
+ * When the first night ban in force then at one of the feed's service areas ends, if one is: an
+ * operator hides its scooters in the ban, so a collection then finds none where they stand by morning.
+ */
+export function feedCurfewEnds(feedId: string, now: number, systems: ReadonlyMap<string, RegionalScooterSystem> = SYSTEMS_BY_FEED): number | undefined {
+  const system = systems.get(feedId);
+  const ends = system ? serviceAreas(system).flatMap(area => activeCurfew(area.center, now)?.until ?? []) : [];
+  return ends.length ? Math.min(...ends) : undefined;
+}
+
 // The feed and pause of each service area, by city id.
 let cityAreas: Map<string, { feed: string; pause: SeasonalPause | undefined }[]> | undefined;
 

@@ -18,10 +18,10 @@ export interface ScheduledFeed {
   /** Where in its idle interval it is collected, in [0, 1), when not where its id puts it (idPhase). */
   idlePhase?: number;
   /**
-   * Whether a collection started then is of its town's night, when the operator may hide its scooters:
-   * the next is then at its phase's hour the next day, not a whole idle interval on.
+   * If a collection started then is of its town's night, when the operator may hide its scooters, when
+   * the night ends: the next is then, not a whole idle interval on.
    */
-  nightAt?: (time: number) => boolean;
+  nightEnds?: (time: number) => number | undefined;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -62,6 +62,8 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
   lastCollectedAt?: (feed: T) => number | undefined;
   /** Where in the idle interval the feed's collections fall, in [0, 1): its idlePhase, or idPhase by default. */
   phase?: (feed: T) => number;
+  /** If a night ban holds then where the feed's scooters are, when it ends (feedCurfewEnds). */
+  curfewEnds?: (feed: T, time: number) => number | undefined;
   onStart?: (feed: T, reason: CollectionReason) => void;
 }
 
@@ -74,7 +76,9 @@ const WARM_UP_STAGE_MS = 15_000;
 // An idle feed on a paced host this long past its interval is woken: five minutes later, its interval
 // plus ten, it would expire (cadence.ts).
 const LATE_MS = 5 * 60_000;
-const DAY_MS = 24 * 60 * 60_000;
+// The collections due when a night ends fall over this long after it, each at its phase's share, as a
+// night's views of a town leave many of its groups due then.
+const NIGHT_END_SPREAD_MS = 15 * 60_000;
 
 /** A stable fraction in [0, 1) from the feed id (FNV-1a). */
 export function idPhase(id: string): number {
@@ -258,11 +262,14 @@ export class FeedScheduler<T extends ScheduledFeed> {
       const failures = this.failures.get(feed.id) ?? 1;
       return finishedAt + Math.min(retryMs * 2 ** (failures - 1), Math.max(retryMs, idleIntervalMs / 2));
     }
-    // The next time of the feed's phase at least an active interval away, or of its hour after a night.
-    const phase = (this.options.phase ?? (candidate => candidate.idlePhase ?? idPhase(candidate.id)))(feed) * idleIntervalMs;
+    // The next time of the feed's phase at least an active interval away, or sooner the end of the night
+    // or the night ban it was collected in, when its scooters show again.
+    const share = (this.options.phase ?? (candidate => candidate.idlePhase ?? idPhase(candidate.id)))(feed);
+    const phase = share * idleIntervalMs;
     const earliest = startedAt + activeIntervalMs;
-    const period = feed.nightAt?.(startedAt) ? Math.min(idleIntervalMs, DAY_MS) : idleIntervalMs;
-    return earliest + ((((phase - earliest) % period) + period) % period);
+    const next = earliest + ((((phase - earliest) % idleIntervalMs) + idleIntervalMs) % idleIntervalMs);
+    const ends = [feed.nightEnds?.(startedAt), this.options.curfewEnds?.(feed, startedAt)].filter(end => end !== undefined);
+    return ends.length ? Math.max(earliest, Math.min(next, Math.min(...ends) + share * NIGHT_END_SPREAD_MS)) : next;
   }
 
   private pump(): void {

@@ -41,7 +41,7 @@ vi.mock('@/generated/countries', async importOriginal => {
 });
 
 const { REGIONAL_SCOOTER_CITIES } = await import('@/lib/regionalScooterSystems');
-const { activeSeasonalPause, feedCurfewed, feedPaused, pauseHolds, pausesReturn } = await import('@/lib/seasonalPauses');
+const { activeSeasonalPause, feedCurfewEnds, feedCurfewed, feedPaused, pauseHolds, pausesReturn } = await import('@/lib/seasonalPauses');
 const { querySnapshot } = await import('@/lib/scooterSnapshots');
 const { dockModel } = await import('@/lib/dockModel');
 const { translate } = await import('@/lib/i18n');
@@ -250,5 +250,16 @@ describe('a night ban', () => {
     // Sandnes bans none, though Stavanger does.
     expect(feedCurfewed('norway:voi_no_stavanger_sandnes', Date.parse('2026-10-16T22:30:00Z'))).toBe(false);
     expect(feedCurfewed('national:voiscooters.com', Date.parse('2026-10-16T22:30:00Z'))).toBe(false);
+  });
+
+  it('ends for a feed when the first ban in force at one of its areas ends', () => {
+    // Bergen's central Lime group: its ban holds after Friday, until 05:00, but not after Wednesday.
+    expect(feedCurfewEnds('norway:lime_no_app_bergen_014', Date.parse('2026-10-31T00:00:00Z'))).toBe(Date.parse('2026-10-31T04:00:00Z'));
+    expect(feedCurfewEnds('norway:lime_no_app_bergen_014', Date.parse('2026-10-29T00:24:00Z'))).toBeUndefined();
+    // Vennesla's ends at 04:00 every night, Kristiansand's at 05:00 after Friday: the first, then the other.
+    expect(feedCurfewEnds('norway:voi_no_kristiansand_vennesla', Date.parse('2026-10-16T22:30:00Z'))).toBe(Date.parse('2026-10-17T02:00:00Z'));
+    expect(feedCurfewEnds('norway:voi_no_kristiansand_vennesla', Date.parse('2026-10-17T02:30:00Z'))).toBe(Date.parse('2026-10-17T03:00:00Z'));
+    expect(feedCurfewEnds('norway:voi_no_kristiansand_vennesla', Date.parse('2026-10-13T22:30:00Z'))).toBe(Date.parse('2026-10-14T02:00:00Z'));
+    expect(feedCurfewEnds('national:voiscooters.com', Date.parse('2026-10-16T22:30:00Z'))).toBeUndefined();
   });
 });

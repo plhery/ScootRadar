@@ -204,14 +204,21 @@ describe('independent Lime production accounts', () => {
         else expect((idlePhase - idPhase(id) + 1) % 1).toBeCloseTo(1 / 6, 9);
       }
     }
-    // Raleigh's first sweep, at 00:46 there on 26 October 2026, was by night; the town total at 12:29 was not.
-    const { nightAt } = limeDaytime('us:lime_us_app_raleigh_003', 'America/New_York', now);
-    expect(nightAt(Date.UTC(2026, 9, 26, 4, 46))).toBe(true);
-    expect(nightAt(Date.UTC(2026, 9, 26, 16, 29))).toBe(false);
+    // Raleigh's first sweep, at 00:46 there on 26 October 2026, was by night, which ends at 08:00 there;
+    // the town total at 12:29 was not.
+    const { nightEnds } = limeDaytime('us:lime_us_app_raleigh_003', 'America/New_York', now);
+    expect(nightEnds(Date.UTC(2026, 9, 26, 4, 46))).toBe(Date.UTC(2026, 9, 26, 12));
+    expect(nightEnds(Date.UTC(2026, 9, 26, 16, 29))).toBeUndefined();
+    expect(nightEnds(Date.UTC(2026, 9, 27, 1, 30))).toBe(Date.UTC(2026, 9, 27, 12));
+    // Bergen's central groups, read at 01:24 there on 29 October 2026, a night without its ban, showed none of
+    // their scooters; the night the clocks went back, one read at 01:24 still waits for 08:00 on the new clock.
+    const bergen = limeDaytime('norway:lime_no_app_bergen_014', 'Europe/Oslo', now);
+    expect(bergen.nightEnds(Date.UTC(2026, 9, 29, 0, 24))).toBe(Date.UTC(2026, 9, 29, 7));
+    expect(bergen.nightEnds(Date.UTC(2026, 9, 24, 23, 24))).toBe(Date.UTC(2026, 9, 25, 7));
     const feeds = withLimeAppCollectors([{ id: `test:${system.id}`, host: 'web-production.lime.bike' } as CollectableScooterFeed],
       [{ ...system, timeZone: 'Europe/Prague' }], new LimeAccountPool([{ id: 'a', sessionPath: '/private/a.json' }]));
     expect(feeds[0].idlePhase).toBeGreaterThanOrEqual(0);
-    expect(feeds[0].nightAt?.(Date.UTC(2026, 9, 27, 1))).toBe(true);
+    expect(feeds[0].nightEnds?.(Date.UTC(2026, 9, 27, 1))).toBe(Date.UTC(2026, 9, 27, 7));
   });
 
   it('isolates a 429 and its Retry-After without moving the feed onto another account', async () => {

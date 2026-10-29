@@ -74,6 +74,17 @@ export function localClock(time: number, timeZone: string): { minutes: number; w
   };
 }
 
+/**
+ * The first instant from then, on the minute, at which the zone's clock reads that time of day
+ * (minutes since midnight). The clock then is passed when already known.
+ */
+export function nextWallClock(time: number, timeZone: string, target: number, clock = localClock(time, timeZone)): number {
+  const end = Math.floor(time / MINUTE_MS) * MINUTE_MS + ((target - clock.minutes + DAY_MINUTES) % DAY_MINUTES) * MINUTE_MS;
+  // The night the clocks change is an hour longer or shorter than the wall clock says.
+  const drift = ((target - localClock(end, timeZone).minutes + DAY_MINUTES * 1.5) % DAY_MINUTES) - DAY_MINUTES / 2;
+  return end + drift * MINUTE_MS;
+}
+
 /** Whether the window holds at that wall-clock time, given the day it is. */
 function nightHolds(night: CurfewNight, minutes: number, weekday: number): boolean {
   const from = minutesOfDay(night.from);
@@ -95,15 +106,10 @@ export function activeCurfew(point: [number, number] | null, now: number): Activ
   if (!point) return null;
   for (const curfew of CURFEWS) {
     if (!curfew.areas.some(area => inArea(area, point))) continue;
-    const { minutes, weekday } = localClock(now, curfew.timeZone);
-    const night = curfew.nights.find(candidate => nightHolds(candidate, minutes, weekday));
+    const clock = localClock(now, curfew.timeZone);
+    const night = curfew.nights.find(candidate => nightHolds(candidate, clock.minutes, clock.weekday));
     if (!night) continue;
-    const until = minutesOfDay(night.until);
-    let end = Math.floor(now / MINUTE_MS) * MINUTE_MS + ((until - minutes + DAY_MINUTES) % DAY_MINUTES) * MINUTE_MS;
-    // The night the clocks change is an hour longer or shorter than the wall clock says.
-    const drift = ((until - localClock(end, curfew.timeZone).minutes + DAY_MINUTES * 1.5) % DAY_MINUTES) - DAY_MINUTES / 2;
-    end += drift * MINUTE_MS;
-    return { city: curfew.city, until: end, timeZone: curfew.timeZone };
+    return { city: curfew.city, until: nextWallClock(now, curfew.timeZone, minutesOfDay(night.until), clock), timeZone: curfew.timeZone };
   }
   return null;
 }

@@ -271,7 +271,7 @@ describe('Bird areas in the cache', () => {
     for (const candidate of wrapped.filter((entry, i) => entry !== feeds[i])) {
       expect(candidate).toMatchObject({ idleIntervalMs: BIRD_IDLE_INTERVAL_MS, watchMs: BIRD_WATCH_MS, paced: true });
       // Swept between 08:00 and 21:00 in its town.
-      expect(candidate.nightAt).toBeTypeOf('function');
+      expect(candidate.nightEnds).toBeTypeOf('function');
     }
   });
 

@@ -1,4 +1,4 @@
-import { localClock } from '../src/lib/rentalCurfews';
+import { localClock, nextWallClock } from '../src/lib/rentalCurfews';
 import { idPhase } from './feedScheduler';
 
 /**
@@ -17,17 +17,18 @@ const SWEEP_DAY_UNTIL = 21 * 60;
 
 /**
  * When an app map's idle sweeps fall (FeedScheduler), for an interval of whole days: in its town's daytime,
- * at the hour its id puts it or twelve hours on when that is between 21:00 and 08:00 there, and within a day
+ * at the hour its id puts it or twelve hours on when that is between 21:00 and 08:00 there, and at 08:00
  * after a sweep by night. Operators hide their scooters in night bans, and some maps are empty at night
- * without one (limeDaytime).
+ * without one (limeDaytime): two of Bergen's central Lime groups, read at 01:24 on Thursday 29 October 2026,
+ * a night without its ban, held none of their 436 scooters, and would have until their turn that day.
  */
-export function daytimeSweeps(feedId: string, timeZone: string, intervalMs: number, now = Date.now()): { idlePhase: number; nightAt: (time: number) => boolean } {
-  const nightAt = (time: number) => {
-    const { minutes } = localClock(time, timeZone);
-    return minutes < SWEEP_DAY_FROM || minutes >= SWEEP_DAY_UNTIL;
+export function daytimeSweeps(feedId: string, timeZone: string, intervalMs: number, now = Date.now()): { idlePhase: number; nightEnds: (time: number) => number | undefined } {
+  const nightEnds = (time: number) => {
+    const clock = localClock(time, timeZone);
+    return clock.minutes < SWEEP_DAY_FROM || clock.minutes >= SWEEP_DAY_UNTIL ? nextWallClock(time, timeZone, SWEEP_DAY_FROM, clock) : undefined;
   };
   // The scheduler counts phases from midnight UTC, so the turn falls at this time of a UTC day.
   const at = idPhase(feedId) * intervalMs;
-  const moved = nightAt(now - now % DAY_MS + at % DAY_MS) ? (at + DAY_MS / 2) % intervalMs : at;
-  return { idlePhase: moved / intervalMs, nightAt };
+  const moved = nightEnds(now - now % DAY_MS + at % DAY_MS) !== undefined ? (at + DAY_MS / 2) % intervalMs : at;
+  return { idlePhase: moved / intervalMs, nightEnds };
 }

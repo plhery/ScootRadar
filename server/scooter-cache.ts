@@ -6,7 +6,7 @@ import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '../src/lib/types';
-import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
+import { feedCurfewEnds, feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
 import { withListedPricing } from '../src/lib/listedPrices';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
@@ -108,6 +108,8 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
     const record = records.get(feed.id);
     return record && !record.failed ? record.collectedAt ?? (record.attemptedAt || undefined) : undefined;
   },
+  // A feed collected in a night ban, when its operator may hide its scooters, is collected again when it ends.
+  curfewEnds: (feed, time) => feedCurfewEnds(feed.id, time),
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
 // The expiry of the feeds collected less often on purpose (Lime, BinBin, GCOO), from their definitions.
 let ownIdleExpiry = ownIdleExpiries([]);
