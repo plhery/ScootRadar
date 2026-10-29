@@ -46,6 +46,22 @@ a minute, and a rejected ID token gets one renewal and retry.
 The zone reader returned 200 zones, whose completeness has not been established.
 Zones and parking guidance are therefore not published by this collector.
 
+**Kyoto's Kamo River.** The banks of the Kamo and Takano rivers are closed to
+rented scooters by the prefecture, not by LUUP, so the map shows no zone
+there. Kyoto Prefecture's Kamo River Ordinance (京都府鴨川条例) bars
+motorised vehicles from them (article 16), with a fine of up to ¥50,000
+(article 32), and the prefecture's
+[page on its rules](https://www.pref.kyoto.jp/kamogawa/1200551321365.html)
+says: "電動キックボードは原動機付自転車に分類されますので、乗り入れは禁止です"
+(e-scooters count as motorised bicycles, so riding them in is banned). The
+area, bridges and roads aside, is the Kamo from below Takahashi bridge to
+the Hiiragino weir and from below Tsūgaku bridge to its confluence with the
+Katsura, and the Takano from below Uma bridge to the Kamo. Public zones may be drawn, credited to their publisher, but the
+prefecture publishes no geometry: its page has schematic PDFs only, and the
+maps of record are kept for inspection at its River Division and the Kyoto
+Civil Engineering Office (read on 29 October 2026). So the map doesn't draw
+the area; the prefecture's page names it.
+
 ## Private configuration
 
 Configure these as **runtime-only Coolify secrets on the Node cache**:

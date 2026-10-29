@@ -113,7 +113,11 @@ Albuquerque (919), Grand Junction (251), Knoxville (208), Clearfield (76) and
 North Salt Lake (20). Long Beach's program regulations (August 2026) and
 Albuquerque's permit (revised 9 August 2024) set no riding hours, and none
 was found for the others. Long Beach's first audit, by night, missed one
-stationary scooter. In Knoxville, Lime's map held no scooter at 00:30 that
+stationary scooter. Bird, the City's other permitted operator, is not on the
+map there ([coverage gaps](coverage-gaps.md)). The only zone the map draws in
+Long Beach is a no-ride area of Bird's Los Angeles service over Terminal
+Island and the Port; the City's regulations keep shared scooters out of the
+Port too, so it misleads no one, and Lime's Long Beach map has no zones. In Knoxville, Lime's map held no scooter at 00:30 that
 night; its 2020 pilot let scooters run from 07:00 to 21:00, and guides give
 07:00 to 23:00, but the city's scooter pages are gone from its new website,
 so the map holds no night ban there. Farmington, Utah, showed 2 scooters and

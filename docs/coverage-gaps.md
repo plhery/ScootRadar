@@ -556,7 +556,12 @@ banned shared scooters, and feeds that were empty when checked.
       is still to be swept whole. Its rider map has supplied
       Austin, Bloomington, IN, Charlotte, Jacksonville, Mankato, Sacramento,
       Wilmington, NC, and Yonkers since 28 October 2026
-      ([Bird's rider app](bird-app-map.md)).
+      ([Bird's rider app](bird-app-map.md)). Bird in **Long Beach** is one
+      of the City's two permitted operators, with Lime (Public Works memo of
+      5 March 2026; the
+      [program page](https://longbeach.gov/goactivelb/programs/micro-mobility-program/)
+      on 29 October 2026), but publishes no feed there and its rider map is
+      not read there, so only Lime's Long Beach scooters are on the map.
     - **GCOO** in Memphis, 10 scooters in four areas on 24 October 2026. Its
       Los Angeles, Alexandria and Arlington fleets are on the map since that
       day, read from its app's signed-out map
