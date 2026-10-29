@@ -510,11 +510,12 @@ class ScooterMarkerArt(
         /**
          * A picture with what it shows grown to [scale] of its size about its middle, as a layer's transform.scale
          * grows it about its anchor, in a picture of the same size and pixel ratio (MAP-119). Whole, it is the
-         * picture itself.
+         * picture itself. Drawn [into] a bitmap of the picture's size if given one, cleared first.
          */
-        fun grown(picture: Bitmap, scale: Double): Bitmap {
+        fun grown(picture: Bitmap, scale: Double, into: Bitmap? = null): Bitmap {
             if (scale >= 1.0) return picture
-            val bitmap = createBitmap(picture.width, picture.height)
+            val bitmap = into?.apply { eraseColor(Color.TRANSPARENT) } ?: createBitmap(picture.width, picture.height)
+            require(bitmap.width == picture.width && bitmap.height == picture.height) { "a ${bitmap.width}x${bitmap.height} bitmap for a ${picture.width}x${picture.height} picture" }
             bitmap.density = picture.density
             Canvas(bitmap).apply {
                 scale(scale.toFloat(), scale.toFloat(), picture.width / 2f, picture.height / 2f)

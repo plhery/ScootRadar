@@ -202,8 +202,21 @@ class ScooterMarkers(
     internal var picturesGrown = 0
         private set
 
-    /** The names of those copies, which the style keeps. */
+    /** The pictures the grow has drawn for those copies, and the new bitmaps it drew them in. */
+    internal var grownDrawn = 0
+        private set
+    internal var grownBitmaps = 0
+        private set
+
+    /**
+     * The names of those copies, which the style keeps through the light-up, and after it until the next time it is
+     * rid of the pictures no layer draws (MAP-247): taking a picture out of the style has MapLibre lay every source out
+     * again, the ground's too, which that does anyway.
+     */
     private val grownNames = HashSet<String>()
+
+    /** The copies the style keeps. */
+    internal val copiesKept: Set<String> get() = HashSet(grownNames)
 
     /** How many copies the style keeps. */
     internal val picturesKept: Int get() = grownNames.size
@@ -495,6 +508,11 @@ class ScooterMarkers(
             val unused = images.filter { it !in inUse }
             for (name in unused) style.removeImage(name)
             images.removeAll(unused.toSet())
+            // The light-up's copies with them, once no light-up draws any.
+            if (held == null && fadings.values.none { it.isFading }) {
+                for (name in grownNames) style.removeImage(name)
+                grownNames.clear()
+            }
         }
     }
 
@@ -717,8 +735,8 @@ class ScooterMarkers(
     ) {
         private val bands = MarkerBands(layer, raised)
 
-        /** The pictures grown, by name and step, while bands grow: each band takes the same steps. */
-        private val grown = HashMap<Pair<String, Int>, Bitmap>()
+        /** The bitmaps the grow draws its copies in, free for the next ones, by size, while bands grow. */
+        private val spare = HashMap<Pair<Int, Int>, ArrayDeque<Bitmap>>()
 
         val isFading: Boolean get() = bands.isFading
 
@@ -760,7 +778,8 @@ class ScooterMarkers(
             if (!bands.isOver(time)) return true
             // In the same layout, the markers come back to the source's layers and leave the bands'.
             beside(style, strength, ScooterMarkerLayers.SORT)
-            grown.clear()
+            for (bitmaps in spare.values) for (bitmap in bitmaps) bitmap.recycle()
+            spare.clear()
             val emptied = bands.clear().map { it.layer.id }
             for (id in emptied) (style.getLayer(id) as? SymbolLayer)?.setFilter(Expression.raw(ScooterMarkerLayers.NOTHING))
             whenDrawn { if (this@ScooterMarkers.style === style) for (id in emptied) style.removeLayer(id) }
@@ -770,16 +789,31 @@ class ScooterMarkers(
         /**
          * Puts the bands' copies of their pictures in the style, grown as far as each band has: each a picture of
          * the same size as the one it had, which MapLibre draws from its next frame without laying anything out
-         * again. They stay in the style once the light-up is over, as MapLibre would lay out every source again,
-         * the ground's too, for a picture taken out.
+         * again. Those of bands at the same step are drawn once. MapLibre takes their pixels as it is given them:
+         * the bitmaps they are drawn in are drawn in again for the next ones. The copies stay in the style once the
+         * light-up is over ([grownNames]).
          */
         private fun grow(style: Style, copies: List<MarkerBands.Grown>) {
             if (copies.isEmpty()) return
             val drawn = HashMap<String, Bitmap>(copies.size)
+            val steps = HashMap<Pair<String, Int>, Bitmap>()
+            val lent = ArrayList<Bitmap>()
             for (copy in copies) {
-                drawn[copy.name] = grown.getOrPut(copy.image to copy.growth) { ScooterMarkerArt.grown(copy.picture(), MarkerBand.scale(copy.growth)) }
+                drawn[copy.name] = steps.getOrPut(copy.image to copy.growth) {
+                    val picture = copy.picture()
+                    val scale = MarkerBand.scale(copy.growth)
+                    if (scale >= 1.0) {
+                        picture
+                    } else {
+                        val into = spare[picture.width to picture.height]?.removeLastOrNull()
+                        if (into == null) grownBitmaps += 1
+                        grownDrawn += 1
+                        ScooterMarkerArt.grown(picture, scale, into).also { lent += it }
+                    }
+                }
             }
             style.addImages(drawn)
+            for (bitmap in lent) spare.getOrPut(bitmap.width to bitmap.height) { ArrayDeque() }.addLast(bitmap)
             picturesGrown += drawn.size
             grownNames += drawn.keys
         }

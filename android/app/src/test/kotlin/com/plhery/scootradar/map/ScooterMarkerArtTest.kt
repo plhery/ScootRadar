@@ -84,6 +84,17 @@ class ScooterMarkerArtTest {
     }
 
     @Test
+    fun aDotGrownInABitmapDrawnInBeforeIsTheSameAsInANewOne() {
+        // Finding 5: the grow draws its copies in the bitmaps of the last ones, which MapLibre has taken the pixels
+        // of; nothing of what was drawn there before stays.
+        val voi = art().image(ScooterMarkerArt.Key(ScooterProvider.Voi, diameter = 16.0, state = ScooterDotState.Head, showsInitials = false, isDark = false))
+        val bitmap = ScooterMarkerArt.grown(voi, 0.9)
+        assertSame(bitmap, ScooterMarkerArt.grown(voi, 0.2, into = bitmap))
+        assertTrue(bitmap.sameAs(ScooterMarkerArt.grown(voi, 0.2)))
+        assertEquals(voi.density, bitmap.density)
+    }
+
+    @Test
     fun namesAndCountsStayTwelveAndThirteenPointsAtTheLargestTextSize() {
         // MAP-312 (ScooterMarkerArt.swift:298-300): the pills' and the counts' text is of a fixed size, as the
         // iPhone's, whatever text size the person chose; the dock and the cards grow instead.

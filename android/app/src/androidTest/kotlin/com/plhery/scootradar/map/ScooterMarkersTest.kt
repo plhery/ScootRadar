@@ -603,6 +603,7 @@ class ScooterMarkersTest {
         /** The copies of the dots' pictures sent to the style as their bands grew (MAP-119), and those it keeps. */
         val grown: Int,
         val kept: Int,
+        val memory: Memory,
     ) {
         /** MapLibre's frames from the first dot's fade to the last's, once the light-up waited. */
         val lit: List<RenderedFrame> get() = rendered.filter { it.at in start + late..end + late }
@@ -658,9 +659,38 @@ class ScooterMarkersTest {
                 rewritten,
                 grown,
                 kept,
-            ) + probes
+            ) + "$memory; " + probes
         }
     }
+
+    /**
+     * The process's heaps through a light-up, in MB: Java's and the native one, which holds the bitmaps' pixels and
+     * MapLibre's, before the scooters are sent, at most at a frame of the main thread's, and once the bands are taken
+     * out; the bytes Java allocated meanwhile and its collections; and the pictures the grow drew, and in how many
+     * new bitmaps.
+     */
+    private class Memory(
+        val javaBefore: Long,
+        val javaMost: Long,
+        val javaAfter: Long,
+        val allocated: Long,
+        val collections: Long,
+        val nativeBefore: Long,
+        val nativeMost: Long,
+        val nativeAfter: Long,
+        val drawn: Int,
+        val bitmaps: Int,
+    ) {
+        private fun mb(bytes: Long) = "%.1f".format(bytes / 1_048_576.0)
+
+        override fun toString() = "Java heap ${mb(javaBefore)} MB before, ${mb(javaMost)} at most, ${mb(javaAfter)} after, " +
+            "${mb(allocated)} MB allocated, $collections collections; native heap ${mb(nativeBefore)} MB before, " +
+            "${mb(nativeMost)} at most, ${mb(nativeAfter)} after; the grow drew $drawn pictures in $bitmaps new bitmaps"
+    }
+
+    private fun javaHeap(): Long = Runtime.getRuntime().let { it.totalMemory() - it.freeMemory() }
+
+    private fun runtimeStat(name: String): Long = Debug.getRuntimeStat(name)?.toLongOrNull() ?: 0L
 
     /**
      * The first scooters sent with the rider on the map, so that they light up from the rider outwards, as the app
@@ -716,6 +746,8 @@ class ScooterMarkersTest {
         val reader = Handler(reading.looper)
         val vsyncs = mutableListOf<Long>()
         var measuring = true
+        var javaMost = 0L
+        var nativeMost = 0L
 
         // The names that cover a probe, wherever the scene puts them during the light-up; a name's shadow reaches a
         // few points beyond its frame.
@@ -737,6 +769,8 @@ class ScooterMarkersTest {
                     return
                 }
                 vsyncs += frameTimeNanos / 1_000_000
+                javaMost = max(javaMost, javaHeap())
+                nativeMost = max(nativeMost, Debug.getNativeHeapAllocatedSize())
                 if (reads) {
                     if (vsyncs.size % NAMES_EVERY == 0) underNames()
                     reader.post {
@@ -767,6 +801,10 @@ class ScooterMarkersTest {
         // The ground alone, before the scooters come.
         SystemClock.sleep(300)
 
+        val (javaBefore, nativeBefore) = phone.onMain { javaHeap() to Debug.getNativeHeapAllocatedSize() }
+        val allocatedBefore = runtimeStat("art.gc.bytes-allocated")
+        val collectionsBefore = runtimeStat("art.gc.gc-count")
+        val (drawnBefore, bitmapsBefore) = phone.onMain { markers.grownDrawn to markers.grownBitmaps }
         served = ScooterResponse(vehicles = scooters)
         phone.onMain {
             val projection = phone.projection
@@ -803,10 +841,16 @@ class ScooterMarkersTest {
         if (reads) phone.onMain { underNames() }
         // The bands' layers are taken out once the dots are drawn by their own again.
         waitFor("the bands are taken out") { phone.onMain { phone.map.style!!.layers.none { "-band-" in it.id } } }
+        val memory = phone.onMain {
+            Memory(
+                javaBefore, javaMost, javaHeap(), runtimeStat("art.gc.bytes-allocated") - allocatedBefore, runtimeStat("art.gc.gc-count") - collectionsBefore,
+                nativeBefore, nativeMost, Debug.getNativeHeapAllocatedSize(), markers.grownDrawn - drawnBefore, markers.grownBitmaps - bitmapsBefore,
+            )
+        }
         val laidOut = phone.onMain { parsed.filter { it.first in start..end + late } }
         return LightUp(
             count, start, end, phone.onMain { rendered.toList() }, phone.onMain { vsyncs.toList() }, work, probes, rewritten, late, bands,
-            laidOut.map { it.first - start }, laidOut.count { it.second }, grown, phone.onMain { markers.picturesKept },
+            laidOut.map { it.first - start }, laidOut.count { it.second }, grown, phone.onMain { markers.picturesKept }, memory,
         )
     }
 
@@ -875,6 +919,8 @@ class ScooterMarkersTest {
                     // grow as their bands' own pictures, drawn again (MAP-119).
                     assertEquals(0, lightUp.rewritten)
                     assertTrue("$lightUp", lightUp.grown > 0)
+                    // The grow draws its pictures in the bitmaps of those MapLibre has taken in already.
+                    assertTrue("$lightUp", lightUp.memory.bitmaps * 10 < lightUp.memory.drawn)
                     // They start once MapLibre has laid them out, from nothing.
                     assertEquals("$lightUp", 0, lightUp.laidOutLit)
                     assertDrawnInTime(lightUp, panning = false)

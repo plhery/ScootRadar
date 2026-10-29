@@ -29,7 +29,8 @@ import org.maplibre.android.geometry.LatLng
 /**
  * The pictures the style keeps for the markers (MAP-247, ScooterMarkerArt.swift:37-46): zooming through every
  * scale and switching to dark draws many, and once more than 600 are kept those no layer draws are taken out of
- * the style, while those drawn stay in it.
+ * the style, while those drawn stay in it. The copies the dots' bands grew as they lit up stay in it until then, and
+ * go with them.
  */
 @RunWith(AndroidJUnit4::class)
 class ScooterMarkerImagesTest {
@@ -67,15 +68,17 @@ class ScooterMarkerImagesTest {
         withPhoneMap(start) { phone ->
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
-            val (camera, markers) = phone.onMain {
+            val (camera, markers, controller) = phone.onMain {
                 val controller = testController(scope, api)
                 val camera = MapCamera(phone.map, phone.view, controller, MapCameraMemory(), frames)
                 val markers = ScooterMarkers(phone.map, phone.view, controller, analytics = null, scope = scope, move = { camera.show(it) })
+                // The rider is on the map: the first scooters light up from there.
+                controller.setUserLocation(zurich)
                 val projection = phone.projection
                 val level = MapZoom.level(on = projection)
                 controller.updateViewport(MapZoom.region(of = projection.visibleMapRect), MapZoom.apiZoom(level), level)
                 controller.refresh()
-                camera to markers
+                Triple(camera, markers, controller)
             }
             try {
                 waitFor("every provider's dot") { phone.onMain { markers.scene.marks.size == scooters.size } }
@@ -101,11 +104,21 @@ class ScooterMarkerImagesTest {
                     names.filterTo(HashSet()) { style.getImage(it) != null }
                 }
 
+                // The dots lit up, grown in their bands' own copies of their pictures, which stay once it is over.
+                // The rider goes, and the names of the walks to the scooters with it.
+                waitFor("the light-up is over") { phone.onMain { phone.map.style!!.layers.none { "-band-" in it.id } } }
+                val copies = phone.onMain { markers.copiesKept }
+                assertTrue("no copies", copies.isNotEmpty())
+                assertEquals(copies, inStyle(copies))
+                val lit = drawn()
+                phone.onMain { controller.setUserLocation(null) }
+
                 // Every tenth of a zoom from 15 to 16.6 draws the dots at one size of the next, light and then dark,
                 // until more than 600 have been drawn. The switch to dark draws them dark where the map is.
                 val first = drawn()
                 assertTrue(first.joinToString(), first.any { it.startsWith("dot/") })
-                val kept = HashSet(first)
+                // The style has those drawn with the rider too.
+                val kept = HashSet(lit + first)
                 var crossed: Set<String>? = null
 
                 /** Whether what is drawn now takes the pictures drawn past 600; up to 600 the first ones are kept. */
@@ -113,7 +126,10 @@ class ScooterMarkerImagesTest {
                     val names = drawn()
                     if ((kept + names).size > 600) crossed = names
                     kept += names
-                    if (crossed == null) assertEquals("the first pictures $at", first, inStyle(first))
+                    if (crossed == null) {
+                        assertEquals("the first pictures $at", first, inStyle(first))
+                        assertEquals("the copies $at", copies, inStyle(copies))
+                    }
                     return crossed != null
                 }
                 loop@ for (dark in listOf(false, true)) {
@@ -132,6 +148,9 @@ class ScooterMarkerImagesTest {
                 assertEquals(now, inStyle(now))
                 assertEquals(emptySet<String>(), inStyle(first - now))
                 assertTrue("${inStyle(kept).size} of ${kept.size} kept", inStyle(kept).size <= 600)
+                // The copies are gone with them.
+                assertEquals(emptySet<String>(), inStyle(copies))
+                assertEquals(emptySet<String>(), phone.onMain { markers.copiesKept })
             } finally {
                 phone.onMain {
                     markers.close()
