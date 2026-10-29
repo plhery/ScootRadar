@@ -387,7 +387,7 @@ stays open at night.
   from 4am to 11pm daily. No ban was found for Kettering, Corby, Wellingborough
   or Rushden.
 - Stavanger, Tromsø and Tønsberg also close on the eve of public holidays,
-  which the map leaves out.
+  which the map leaves out ([plan](curfew-holiday-nights.md)).
 - **Rælingen** has no town outline, so the map counts its scooters, from Voi's
   Lillestrøm feed, under Lillestrøm; its night ban has its own boundary.
 - **Porsgrunn's** hours come from the yearly announcement the four Grenland

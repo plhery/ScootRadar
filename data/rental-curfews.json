@@ -380,7 +380,7 @@
         }
       ],
       "source": "https://lovdata.no/dokument/LF/forskrift/2022-09-05-2643",
-      "rule": "§ 10",
+      "rule": "§ 10; Friday and Saturday nights. Holiday eves omitted as elsewhere in this catalog.",
       "boundary": {
         "source": "kartverket",
         "id": "1103"
@@ -794,7 +794,7 @@
         }
       ],
       "source": "https://lovdata.no/dokument/LF/forskrift/2025-09-03-1800",
-      "rule": "§ 12",
+      "rule": "§ 12; Friday and Saturday nights. Holiday eves omitted as elsewhere in this catalog.",
       "boundary": {
         "source": "kartverket",
         "id": "5501"
@@ -981,7 +981,7 @@
         }
       ],
       "source": "https://lovdata.no/dokument/LF/forskrift/2024-09-04-2115",
-      "rule": "§ 6 d",
+      "rule": "§ 6 d; from 23:00 on Friday and Saturday nights, from 01:00 on others. The 23:00 start on the eves of movable public holidays is omitted, as holiday eves elsewhere in this catalog.",
       "boundary": {
         "source": "kartverket",
         "id": "3905"
