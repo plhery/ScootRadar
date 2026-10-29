@@ -261,6 +261,8 @@ import bergenNb from './nb/elsparkesykkel-bergen';
 import innsbruckDe from './de/e-scooter-innsbruck';
 import malmoEn from './en/e-scooters-malmo';
 import austinEn from './en/e-scooters-austin';
+import gothenburgEn from './en/e-scooters-gothenburg';
+import sindelfingenDe from './de/e-scooter-sindelfingen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -522,4 +524,6 @@ export const GUIDES: readonly Guide[] = [
   innsbruckDe,
   malmoEn,
   austinEn,
+  gothenburgEn,
+  sindelfingenDe,
 ];
