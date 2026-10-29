@@ -68,6 +68,15 @@ maps of record are kept for inspection at its River Division and the Kyoto
 Civil Engineering Office (read on 29 October 2026). So the map doesn't draw
 the area; the prefecture's page names it.
 
+**Nagoya's no-parking zones.** The City removes e-scooters left in its
+no-parking zones (自転車等放置禁止区域), standing ones among them, and
+charges ¥5,000 to give one back. Sakae is one whole area; others run along
+the streets around Nagoya Station and other stations. The City publishes them
+only as a picture (Sakae's) and as a PDF map for each ward, with no
+coordinates, and its site asks for the City's leave before its content is
+reused. Its open-data catalogue (CC BY 4.0) holds no parking or scooter
+dataset (read on 29 October 2026). So the map doesn't draw them.
+
 ## Private configuration
 
 Configure these as **runtime-only Coolify secrets on the Node cache**:

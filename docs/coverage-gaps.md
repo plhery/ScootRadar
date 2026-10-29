@@ -599,6 +599,13 @@ banned shared scooters, and feeds that were empty when checked.
     and Veo Berkeley's 1 in Oakland are left out. Bird Cleveland's in
     Cleveland Heights, University Heights, South Euclid and East Cleveland
     count there since 26 October 2026, where its zones let rides end.
+  - **Hartford's zones:** the City's plan of August 2024 made highway ramps,
+    the CTfastrak busway, Pratt Street, parking garages, Heaven Skate Park and
+    the Riverwalk no-ride zones, and parks and Constitution Plaza slow-ride
+    zones, but none is published as data: Open Data Hartford has no scooter or
+    micromobility layer, ArcGIS Online none for Hartford or its regional
+    council (CRCOG), and Veo's Hartford feed no geofencing file (29 October
+    2026). So the map draws no Hartford zone.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)),
     and Lime's rider map held none there in a full-area audit on the evening
