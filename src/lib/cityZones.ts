@@ -36,6 +36,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
   porto: () => import('../../data/city-zones/porto.json'),
+  vasteras: () => import('../../data/city-zones/vasteras.json'),
 };
 
 /** The city's zones as rule zones: in force always, set by the city, linked to where it says so. */

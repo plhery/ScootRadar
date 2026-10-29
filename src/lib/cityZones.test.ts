@@ -12,7 +12,22 @@ const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -11
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
+// Västerås's Stora Torget and Stora gatan, where riding is forbidden.
+const VASTERAS_CENTRE = { south: 59.607, west: 16.535, north: 59.614, east: 16.555 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
+
+/** How many times the ring winds round the point: the map fills where it is not 0, the iOS map where it is odd. */
+function winding(ring: number[][], lat: number, lng: number): number {
+  let turns = 0;
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index++) {
+    const [lat0, lng0] = ring[previous];
+    const [lat1, lng1] = ring[index];
+    const side = (lng1 - lng0) * (lat - lat0) - (lng - lng0) * (lat1 - lat0);
+    if (lat0 <= lat && lat1 > lat && side > 0) turns++;
+    else if (lat0 > lat && lat1 <= lat && side < 0) turns--;
+  }
+  return turns;
+}
 
 /** The module as the page first has it, nothing loaded. */
 async function fresh() {
@@ -24,7 +39,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'porto']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'porto', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -63,6 +78,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: PORTO_CENTRE, zoom: 17 }).map(city => city.id)).toEqual(['porto']);
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
+    expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -136,5 +152,23 @@ describe('the cities\' zones', () => {
     expect(file.zones.map(({ id, kind }) => [id, kind])).toEqual([['arlingtoncemetery-no-ride-1', 'noRide']]);
     const shown = ruleZonesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }, Date.parse('2026-10-29T23:30:00Z'), [zone]);
     expect(shown.map(({ id, inForce }) => [id, inForce])).toEqual([['arlingtoncemetery-no-ride-1', true]]);
+  });
+
+  it('draws Västerås\'s zones, each part of one a zone, and leaves the holes in them open', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'vasteras')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Västerås stad' && zone.timeZone === 'Europe/Stockholm')).toBe(true);
+    const shown = ruleZonesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
+    // A no-parking area of the City's goes round a block it leaves out: the ring goes round the
+    // block too, the other way, so the block stays open.
+    const { default: file } = await CITY_ZONE_FILES.vasteras();
+    const { ring } = file.zones.find(zone => zone.id === 'vasteras-no-parking-356')!;
+    expect(winding(ring, 59.6265, 16.59928)).toBe(0);
+    expect(Math.abs(winding(ring, 59.62697, 16.5983))).toBe(1);
+    // An area of two parts is two zones.
+    expect(file.zones.filter(zone => zone.id.startsWith('vasteras-no-parking-588-')).map(zone => zone.id))
+      .toEqual(['vasteras-no-parking-588-1', 'vasteras-no-parking-588-2']);
   });
 });

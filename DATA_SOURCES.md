@@ -669,6 +669,26 @@ public zone layers are drawn regardless, credited to the city.
   ([echoboomer, 6 December 2022](https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas)).
   The broker's scooters themselves are not used: they have not moved since
   8 October 2026.
+- **Västerås** (read 29 October 2026): Västerås stad's 298 places to park
+  (293 parking places and 5 sharing points, `Delningspunkter`), 502 no-parking
+  areas, 45 slow zones and 17 no-riding zones, from layer 2 of the City's
+  `Elsparkcyklar` feature service, which its
+  [e-scooter map](https://gisportal.vasteras.se/portal/apps/webappviewer/index.html?id=27c54fbfdc5c47f8b827dca65914920a)
+  draws (last edited 26 October 2026). The legend links the City's
+  [page](https://www.vasteras.se/trafik-och-gator/hallbara-resor/res-med-elsparkcykel.html),
+  whose map shows where e-scooters may not be parked and where their speed
+  is limited. Each area's `typ` gives its kind: the three slow zones where
+  parking is forbidden too are drawn as both, and the 17 areas where neither
+  riding nor parking is allowed as no-riding zones. Left out: Voi's and Ryde's
+  29 staging places (`Utställningsplats`), each an operator's own, and one
+  no-parking area marked not introduced (`EJ införda`). Eight no-parking areas
+  of two or three parts are a zone for each part, numbered, without the 101
+  slivers under 5 m² that 34 areas' drawing left. Five keep their holes, each
+  ring going round its hole and back: four no-parking areas leave out a block
+  each, of 2,200 to 14,600 m², and a slow zone where parking is forbidden too
+  leaves out two parking places. The City's summer no-riding zone on the
+  Vasagatan pedestrian street (15 June to 16 August) is not in the layer. The
+  service accepts edits; ScootRadar only queries it.
 
 ## Germany and Italy
 

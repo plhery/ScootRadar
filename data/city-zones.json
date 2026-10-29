@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-29",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -150,6 +150,54 @@
         "east": -8.574143
       },
       "zones": 230
+    },
+    {
+      "id": "vasteras",
+      "place": "Västerås",
+      "country": "SE",
+      "authority": "Västerås stad",
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Västerås stad, \"Res med elsparkcykel\": the City's map shows where e-scooters may not be parked and where their speed is limited; park first at a designated place or in bicycle parking",
+        "url": "https://www.vasteras.se/trafik-och-gator/hallbara-resor/res-med-elsparkcykel.html"
+      },
+      "map": {
+        "title": "Västerås stad, \"Elsparkcykelförbud\" (digital map, ArcGIS)",
+        "url": "https://gisportal.vasteras.se/portal/apps/webappviewer/index.html?id=27c54fbfdc5c47f8b827dca65914920a"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://gisportal.vasteras.se/server/rest/services/Hosted/Elsparkcyklar/FeatureServer",
+          "layer": 2,
+          "where": "typ IN ('Parkeringsplatser', 'Delningspunkter') AND (status IS NULL OR status <> 'EJ införda')"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://gisportal.vasteras.se/server/rest/services/Hosted/Elsparkcyklar/FeatureServer",
+          "layer": 2,
+          "where": "typ IN ('Parkeringsförbud', 'Lågfartsområde och parkeringsförbud') AND (status IS NULL OR status <> 'EJ införda')"
+        },
+        {
+          "kind": "slow",
+          "url": "https://gisportal.vasteras.se/server/rest/services/Hosted/Elsparkcyklar/FeatureServer",
+          "layer": 2,
+          "where": "typ IN ('Lågfartsområde', 'Lågfartsområde och parkeringsförbud') AND (status IS NULL OR status <> 'EJ införda')"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://gisportal.vasteras.se/server/rest/services/Hosted/Elsparkcyklar/FeatureServer",
+          "layer": 2,
+          "where": "typ IN ('Körförbud', 'Kör- och parkeringsförbud') AND (status IS NULL OR status <> 'EJ införda')"
+        }
+      ],
+      "bounds": {
+        "south": 59.561627,
+        "west": 16.438849,
+        "north": 59.657023,
+        "east": 16.645035
+      },
+      "zones": 871
     }
   ]
 }

@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { boundary, outerRings, simplifyRing, writeCatalog } from './boundaries.mjs';
+import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } from './boundaries.mjs';
 
 // Writes data/city-zones/<id>.json, each city's zones from the layers data/city-zones.json lists,
 // and fills in each city's bounds and number of zones there. Bergen kommune's are ArcGIS layers,
 // whose query answers each zone's name but not its shape: identify, which the city's map calls on
 // a click, answers both, for every zone within an envelope. Porto's sharing points are entities of
 // Porto Digital's FIWARE broker, each a point with its number of spots. The City of Boise's are an
-// ArcGIS feature service, whose query answers every zone's shape, and its parking corrals points.
+// ArcGIS feature service, whose query answers every zone's shape, and its parking corrals points;
+// so are the City of Västerås's, some zones of several parts and a few with holes.
 // A layer may instead name a boundary (scripts/boundaries.mjs): Arlington National Cemetery's,
 // where federal rules forbid riding, is its OpenStreetMap outline.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
@@ -18,6 +19,8 @@ const DIGITS = 6;
 /** Porto's sharing points and Boise's corrals are drawn as discs this wide around their point, of this many corners. */
 const DISC_RADIUS_M = 5;
 const DISC_CORNERS = 8;
+/** A zone's holes, and the parts of a zone of several, smaller than this are slivers its drawing left: Västerås's 101 are 3 m² at most. */
+const SLIVER_M2 = 5;
 const USER_AGENT = 'scootradar (+https://scootradar.com)';
 const KINDS = new Set(['parking', 'noParking', 'slow', 'noRide']);
 
@@ -57,21 +60,60 @@ function disc(lat, lng) {
   });
 }
 
+/** Whether the point lies within the ring, both of [lng, lat]. */
+function within([x, y], ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
 /**
- * A feature service layer's zones, those `where` picks: each polygon one ring, each point a disc,
- * named by its `Name`, a point by its `CorralType`, or else after the city.
+ * A feature's rings as polygons, each its outer ring and then its holes. ArcGIS turns outer rings
+ * clockwise and holes the other way; a ring turned the other way within no outer ring, as three
+ * of Västerås's are, is a part of its own.
+ */
+function featurePolygons(rings) {
+  const clockwise = ring => ring.reduce((sum, [x0, y0], i) => {
+    const [x1, y1] = ring[(i + 1) % ring.length];
+    return sum + x0 * y1 - x1 * y0;
+  }, 0) < 0;
+  const polygons = rings.filter(clockwise).map(ring => [ring]);
+  for (const ring of rings.filter(ring => !clockwise(ring))) {
+    const polygon = polygons.find(([outer]) => within(ring[0], outer));
+    if (polygon) polygon.push(ring);
+    else polygons.push([ring]);
+  }
+  return polygons;
+}
+
+/**
+ * A feature service layer's zones, those `where` picks: each part of a polygon one ring, its holes
+ * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, a point by its
+ * `CorralType`, or else after the city. A zone of several parts is a zone for each, numbered,
+ * but for its slivers.
  */
 async function featureServerZones(city, { kind, url, layer, where = '1=1' }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
-  return body.features.map(({ attributes, geometry }) => {
-    const id = `${city.id}-${slug(kind)}-${attributes.OBJECTID}`;
+  return body.features.flatMap(({ attributes, geometry }) => {
+    const objectId = attributes.OBJECTID ?? attributes.objectid;
+    const id = `${city.id}-${slug(kind)}-${objectId}`;
     if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
-      return { id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) };
+      return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];
     }
-    if (geometry?.rings?.length !== 1) throw new Error(`${url}/${layer}: zone ${attributes.OBJECTID} is not one ring`);
-    return { id, kind, name: attributes.Name?.trim() || city.place, ring: simplifyRing(geometry.rings[0], TOLERANCE_M, DIGITS) };
+    if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
+    const name = attributes.Name?.trim() || city.place;
+    const area = ring => planeArea(toPlane(ring));
+    const polygons = featurePolygons(geometry.rings).map(([outer, ...holes]) => [outer, ...holes.filter(hole => area(hole) >= SLIVER_M2)]);
+    const parts = polygons.length > 1 ? polygons.filter(([outer]) => area(outer) >= SLIVER_M2) : polygons;
+    const rings = outerRings(parts, { minAreaKm2: 0, tolerance: TOLERANCE_M, digits: DIGITS, holes: true })
+      .filter(ring => ring.length >= 3);
+    return rings.map((ring, index) => ({ id: rings.length > 1 ? `${id}-${index + 1}` : id, kind, name, ring }));
   });
 }
 

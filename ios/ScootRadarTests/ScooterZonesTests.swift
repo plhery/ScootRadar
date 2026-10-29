@@ -135,6 +135,21 @@ final class ScooterZoneOverlayTests: XCTestCase {
         XCTAssertFalse(covers(noRide, in: overlay, 47.3715, 8.5415))
     }
 
+    func testARingThatGoesRoundAHoleAndBackLeavesTheHoleOpen() throws {
+        // A city's zone with a hole is one ring (data/city-zones.json, as some of Västerås's): round its outline, then
+        // from its first corner round the hole the other way and back.
+        let outline = Array(square(47.37, 8.54, size: 0.003)[0].dropLast())
+        let hole = Array(square(47.371, 8.541)[0].dropLast().reversed())
+        let ring = [outline[0]] + hole + [hole[0], outline[0]] + outline.dropFirst()
+        let overlay = ScooterZoneOverlay(zones: [zone("city:0", .noParking, [ring])], isDark: false)
+        let shape = try XCTUnwrap(overlay.shapes.first)
+        XCTAssertEqual(overlay.shapes.count, 1)
+        assertExtent(shape, [47.37, 8.54, 47.373, 8.543])
+        XCTAssertTrue(covers(shape, in: overlay, 47.3705, 8.5405))
+        XCTAssertTrue(covers(shape, in: overlay, 47.3725, 8.5425))
+        XCTAssertFalse(covers(shape, in: overlay, 47.3715, 8.5415))
+    }
+
     func testACitysParkingPlacesAreMergedApartFromNoParking() throws {
         let overlay = ScooterZoneOverlay(zones: [
             zone("city:0", .parking, square(47.37, 8.54)),
