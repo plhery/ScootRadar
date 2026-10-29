@@ -126,7 +126,9 @@ class WindowResizeTest {
 
         // Unfolded: the panel, 16 from the edge and 380 wide, with the card in it, and the map's margin past it.
         resize(UNFOLDED)
-        assertTrue("${margins(shown)}", waitFor(10_000) { margins(shown).left >= 16 + 380 + 16 })
+        // To the pixel: the margin is a whole number of them, 1004 for 412 dp at ScootRadar_Fold's 2.4375 to the dp.
+        val pixel = 1.0 / instrumentation.targetContext.resources.displayMetrics.density
+        assertTrue("${margins(shown)}", waitFor(10_000) { margins(shown).left >= 16 + 380 + 16 - pixel })
         Thread.sleep(1_000)
         scenario.onActivity { assertSame("the same activity", shown, it) }
         assertEquals(scooter.id, controller.selectedScooterID.value)

@@ -33,6 +33,7 @@ import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterRidePricing
@@ -51,6 +52,7 @@ import kotlinx.coroutines.cancel
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -97,6 +99,8 @@ class DockOverTheMapTest {
 
     @Test
     fun theDockStandsOverTheLiveMap() {
+        // Beside the panel, in a tablet's or an open foldable's window, the dock is in it, at its side.
+        assumeTrue("the panel in a window ${windowDp()}", windowHasTheDock(largeText = false))
         val controller = show()
         val screen = screenshot("dock-summary")
         allChip().assertIsDisplayed()
@@ -280,4 +284,19 @@ class DockOverTheMapTest {
             vehicleID = id, deepLink = null, rentalURIs = null, distanceMeters = 0.0,
         )
     }
+}
+
+/** The device's window, in dp, as its configuration has it: system bars aside. */
+internal fun windowDp(): Pair<Int, Int> =
+    InstrumentationRegistry.getInstrumentation().targetContext.resources.configuration.let { it.screenWidthDp to it.screenHeightDp }
+
+/**
+ * Whether the device's window has the dock (UI-108 to UI-115): a phone's, a folded foldable's, a narrow window's; a
+ * window regular both ways with room for the panel and the map beside it has the panel instead. At the accessibility
+ * text sizes when `largeText`, which widen the panel.
+ */
+internal fun windowHasTheDock(largeText: Boolean): Boolean {
+    val (width, height) = windowDp()
+    val classes = SizeClasses.of(width.toDouble(), height.toDouble())
+    return chromeLayout(width.toDouble(), classes, largeText, current = ScooterChromeLayout.Dock) == ScooterChromeLayout.Dock
 }

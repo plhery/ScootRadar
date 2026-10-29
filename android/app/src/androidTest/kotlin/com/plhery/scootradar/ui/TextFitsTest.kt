@@ -75,6 +75,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -151,6 +152,9 @@ class TextFitsTest {
      */
     @Test
     fun theDocksLongestTextsAreNotCutOffInAnyLanguageAtTheLargestTextSize() {
+        // The panel lists the providers, with no row of chips to scroll through: its texts are
+        // PanelPresentationsTest's and the JVM's DeviceMatrixTest's.
+        assumeTrue("the panel in a window ${windowDp()}", windowHasTheDock(largeText = true))
         var shown by mutableStateOf<Shown.Dock?>(null)
         var languageShown by mutableStateOf(ScooterLanguage.En)
         scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity { activity ->
