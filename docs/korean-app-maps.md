@@ -89,7 +89,8 @@ Service areas are public: `https://region.gbike.io/kr/all_polygons.json.gz`
 (791 service areas with bounds, plus no-parking, geofence, discount and
 penalty-parking areas) and `https://region.gbike.io/us/all_polygons.json.gz`
 (seven areas in Los Angeles, four in Memphis, Alexandria and Arlington, and
-maintenance and lost-vehicle entries with no outline). The Korean areas'
+maintenance and lost-vehicle entries with no outline, plus no-parking areas
+and no-ride and slow zones in Los Angeles and Virginia). The Korean areas'
 bounds add up to about 8,000 km², about 5,600 cells of 1.2 km, so collection
 has to start from bigger boxes and split only where clusters come back.
 

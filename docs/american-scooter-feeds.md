@@ -778,6 +778,16 @@ Memphis, with 10 scooters in its four areas that day, is left out (see
 of its scooters stood there. The map keeps GCOO's scooter models only, with
 their battery and range; none of the three towns bans renting at night.
 
+The same file holds GCOO's zones: on 29 October 2026, 88 no-ride and 8 slow
+zones and 272 no-parking areas around Arlington and Alexandria, 47 no-ride and
+4 slow zones and 39 no-parking areas in Los Angeles. The map draws none of
+them: it draws operators' zones only from GBFS feeds, and GCOO publishes none.
+Like Bird's feed, the file marks Arlington National Cemetery and the Pentagon
+as places to ride through but not to park, and the map draws Bird's as Bird
+publishes them. Federal rules ban riding "a bicycle or similar conveyance" in
+the cemetery without a pass to visit a grave (32 CFR 553.33(c)(8)); the
+Pentagon Reservation's leave its traffic to Virginia law (32 CFR 234.17).
+
 **Alexandria.** Arlington's and Alexandria's boxes overlap around Four Mile
 Run: at 12:05 EDT 116 scooters stood in both feeds, and the map shows and
 counts each once. Each would have counted under Arlington, whose feed is read
