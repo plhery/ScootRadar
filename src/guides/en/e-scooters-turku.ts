@@ -56,7 +56,7 @@ const guide: Guide = {
             ],
           },
         },
-        'From midnight on Friday and Saturday nights the [map](map:fi:Turku) marks the night ban in Turku and says when renting starts again. It doesn’t mark the holiday nights, so check the app then. The ban is Turku’s own: Raisio’s infrastructure committee voted 9–2 against one on 18 November 2025.',
+        'From midnight on Friday and Saturday nights the [map](map:fi:Turku) marks the night ban in Turku and says when renting starts again. It marks the nights that start on 30 April, 1 May and 31 December too; the licence names its holidays “such as”, so on other holiday nights check the app. The ban is Turku’s own: Raisio’s infrastructure committee voted 9–2 against one on 18 November 2025.',
         '**The season.** From 1 November to 31 March the licence keeps the scooters off the streets, in storage. Running outside the season needs the City’s written consent, which let Voi and Ryde start on 18 March 2026, Yle reported. In such extra time the City can order the scooters off on 72 hours’ notice if the weather turns for good, and the service must stop once frost makes riding dangerous. Whether any scooter runs after 31 October is the City’s decision; it had announced no extra time by 29 October 2026.',
         'When the scooters are gone, Föli’s 700 city bikes (föllärit) run until 22 December 2026 from more than 200 stations, rented in the Donkey Republic app for €2.00 an hour or €46 for the season. Our map shows standing e-scooters only, not bikes.',
       ],

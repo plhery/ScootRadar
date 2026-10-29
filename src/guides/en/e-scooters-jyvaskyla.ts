@@ -94,7 +94,7 @@ const guide: Guide = {
     {
       heading: 'Finland’s e-scooter rules in Jyväskylä',
       blocks: [
-        'A rental e-scooter, built for at most 25 km/h, counts as a light electric vehicle (kevyt sähköajoneuvo) under the Road Traffic Act (Tieliikennelaki 729/2018), and its rider follows the rules for cyclists. Act 304/2025, in force since 17 June 2025, added a minimum age and a drink limit. In Finnish, search “sähköpotkulauta Jyväskylä”. The same national rules apply as in [Helsinki](guide:helsinki) and [Tampere](guide:tampere).',
+        'A rental e-scooter, built for at most 25 km/h, counts as a light electric vehicle (kevyt sähköajoneuvo), and the Road Traffic Act (Tieliikennelaki 729/2018) sets its rules: its rider follows the rules for cyclists. Act 304/2025, in force since 17 June 2025, added a minimum age and a drink limit. In Finnish, search “sähköpotkulauta Jyväskylä”. The same national rules apply as in [Helsinki](guide:helsinki) and [Tampere](guide:tampere).',
         {
           table: {
             caption: 'E-scooter rules in Jyväskylä on 29 October 2026, and who sets them',
