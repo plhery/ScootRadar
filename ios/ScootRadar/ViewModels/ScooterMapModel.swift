@@ -207,7 +207,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
-    /// The operators' zones over the map, a preview that is off unless turned on in Settings.
+    /// The operators' zones over the map, on unless turned off in Settings.
     var showsZones: Bool {
         didSet {
             guard oldValue != showsZones else { return }
@@ -436,7 +436,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         // The quiet ground is what the dots are made for; a style chosen in
         // Settings is kept.
         mapStyle = AppleMapStyle(rawValue: savedStyle ?? "") ?? .quiet
-        showsZones = defaults.bool(forKey: Self.showsZonesKey)
+        showsZones = defaults.object(forKey: Self.showsZonesKey) as? Bool ?? true
         // Day and night until one is chosen in Settings.
         appearance = ScooterAppearance(rawValue: defaults.string(forKey: Self.appearanceKey) ?? "") ?? .sun
 

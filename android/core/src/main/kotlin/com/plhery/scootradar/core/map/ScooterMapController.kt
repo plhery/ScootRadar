@@ -287,8 +287,8 @@ class ScooterMapController(
     )
     val mapStyle: StateFlow<AppleMapStyle> = _mapStyle.asStateFlow()
 
-    /** The operators' zones over the map, a preview that is off unless turned on in Settings. */
-    private val _showsZones = MutableStateFlow(defaults.bool(forKey = SHOWS_ZONES_KEY))
+    /** The operators' zones over the map, on unless turned off in Settings. */
+    private val _showsZones = MutableStateFlow(defaults.boolean(forKey = SHOWS_ZONES_KEY) ?: true)
     val showsZones: StateFlow<Boolean> = _showsZones.asStateFlow()
 
     /** What the zones' legend says. */

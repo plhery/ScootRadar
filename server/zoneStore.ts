@@ -28,8 +28,8 @@ interface ZoneStoreOptions {
 
 /**
  * The zones of the feeds someone looks at with zones on, read when first
- * asked for and again an hour later while asked for: they are off by
- * default, so most feeds' zones are never read at all.
+ * asked for and again an hour later while asked for: the zones of a feed
+ * nobody looks at from zoom 14 are never read.
  */
 export function createZoneStore(options: ZoneStoreOptions = {}) {
   const refreshMs = options.refreshMs ?? 3600_000;

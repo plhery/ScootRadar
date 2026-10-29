@@ -551,8 +551,8 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 
 ## Ride and parking zones
 
-A preview, off unless turned on (Settings → Map → Ride and parking zones, on
-the website and in the iOS app, or `/map?zones=1`), draws from zoom 14 the zones that the Swiss national systems,
+A preview, on unless turned off (Settings → Map → Ride and parking zones, on
+the website and in the iOS app, or `/map?zones=0`), draws from zoom 14 the zones that the Swiss national systems,
 Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
 
 - No riding (`ride_through_allowed=false`, or a limit of 0 km/h), no parking

@@ -255,6 +255,11 @@ test.beforeEach(async ({ page }) => {
     body: '',
   }));
 
+  // The zones are on unless turned off: none are published here, and no operator's feed is read.
+  await page.route('**/api/zones?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+    zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, truncated: false },
+  }) }));
+
   await page.route('**/api/scooters?**', async route => {
     const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
     const response = zoom <= 15

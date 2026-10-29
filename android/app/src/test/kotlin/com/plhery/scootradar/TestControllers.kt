@@ -39,11 +39,17 @@ object NoWalkingDirections : WalkingDirectionsClient {
     override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = emptyList()
 }
 
-/** A controller of an empty map, on `scope`, with nothing kept from before, reading the tests' own catalog. */
+/**
+ * Nothing kept from before but the operators' zones turned off, as they were before they were on unless turned
+ * off: the screens are drawn without the zones' legend, which ZoneLegendScreenshotTest draws.
+ */
+fun zonesOffDefaults(): ScooterDefaults = InMemoryScooterDefaults().apply { set(false, forKey = "map-zones") }
+
+/** A controller of an empty map, on `scope`, with the zones off, reading the tests' own catalog. */
 fun testController(
     scope: CoroutineScope,
     now: () -> Instant = Instant::now,
-    defaults: ScooterDefaults = InMemoryScooterDefaults(),
+    defaults: ScooterDefaults = zonesOffDefaults(),
     phoneLanguages: () -> List<String> = { listOf("en-US") },
     keepAppLanguages: (List<String>) -> Unit = {},
     catalog: ScooterCatalog = TestCatalog.catalog,
@@ -96,7 +102,8 @@ class TestControllers {
     private val start = TestClock().now
 
     /**
-     * A controller of `api`'s map, with nothing kept from before but `defaults`. Without a clock of its own it
+     * A controller of `api`'s map, with nothing kept from before but `defaults`, the zones off unless they say
+     * otherwise. Without a clock of its own it
      * reads the scheduler's, which [waitUntil] moves as real time moves under the iPhone's tests. It reads the
      * tests' own catalog unless given another.
      */
@@ -106,7 +113,7 @@ class TestControllers {
         locationManager: ScooterLocationManager = NotDeterminedLocationManager(),
         directions: WalkingDirectionsClient = NoWalkingDirections,
         openInMaps: (ScooterWalkTarget) -> Unit = {},
-        defaults: ScooterDefaults = InMemoryScooterDefaults(),
+        defaults: ScooterDefaults = zonesOffDefaults(),
         catalog: ScooterCatalog = TestCatalog.catalog,
     ): ScooterMapController = ScooterMapController(
         api = api,

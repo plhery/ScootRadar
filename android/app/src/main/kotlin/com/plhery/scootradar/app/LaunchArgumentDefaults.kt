@@ -21,6 +21,13 @@ class LaunchArgumentDefaults(
         else -> stored.bool(forKey)
     }
 
+    // As `object(forKey:) as? Bool` reads `-ReviewPromptDue YES`: text, not a truth value.
+    override fun boolean(forKey: String): Boolean? = when (val value = arguments[forKey]) {
+        is Boolean -> value
+        null -> stored.boolean(forKey)
+        else -> null
+    }
+
     override fun string(forKey: String): String? = when (val value = arguments[forKey]) {
         is String -> value
         null -> stored.string(forKey)

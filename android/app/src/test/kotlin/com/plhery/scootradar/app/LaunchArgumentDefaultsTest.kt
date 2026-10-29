@@ -49,10 +49,12 @@ class LaunchArgumentDefaultsTest {
 
         assertEquals("47.37,8.54,900,20,0", defaults.string("ScreenshotCamera"))
         assertTrue(defaults.bool("ReviewPromptDue"))
+        assertEquals(true, defaults.boolean("ReviewPromptDue"))
         // What the launch does not name is the app's.
         assertEquals("dark", defaults.string("appearance"))
         assertNull(defaults.string("ScreenshotTerrain"))
         assertFalse(defaults.bool("other"))
+        assertNull(defaults.boolean("other"))
 
         defaults.set(false, forKey = "ReviewPromptDue")
         defaults.set("light", forKey = "appearance")

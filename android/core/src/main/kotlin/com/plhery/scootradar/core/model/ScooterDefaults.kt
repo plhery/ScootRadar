@@ -12,7 +12,10 @@ import java.time.Instant
  */
 interface ScooterDefaults {
     /** `bool(forKey:)`: false when nothing is set. */
-    fun bool(forKey: String): Boolean
+    fun bool(forKey: String): Boolean = boolean(forKey) ?: false
+
+    /** `object(forKey:) as? Bool` */
+    fun boolean(forKey: String): Boolean?
 
     /** `integer(forKey:)`: 0 when nothing is set. */
     fun integer(forKey: String): Int = int(forKey) ?: 0
@@ -58,7 +61,7 @@ interface ScooterDefaults {
 class InMemoryScooterDefaults : ScooterDefaults {
     private val values = mutableMapOf<String, Any>()
 
-    @Synchronized override fun bool(forKey: String): Boolean = values[forKey] as? Boolean ?: false
+    @Synchronized override fun boolean(forKey: String): Boolean? = values[forKey] as? Boolean
 
     @Synchronized override fun int(forKey: String): Int? = values[forKey] as? Int
 

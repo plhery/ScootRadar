@@ -90,10 +90,10 @@ class ScooterMapEventsTest {
         val analytics = RecordingAnalytics()
         val model = makeController(empty(), analytics = analytics)
 
-        // The quiet ground, Automatic, no zones and ten minutes are already set.
+        // The quiet ground, Automatic, the zones and ten minutes are already set.
         model.setMapStyle(AppleMapStyle.Quiet)
         model.setAppearance(ScooterAppearance.Sun)
-        model.setShowsZones(false)
+        model.setShowsZones(true)
         model.setRideEstimateMinutes(10)
         assertEquals(emptyList<TrackedEvent>(), analytics.events)
 
@@ -105,9 +105,9 @@ class ScooterMapEventsTest {
         model.setAppearance(ScooterAppearance.Light)
         model.setAppearance(ScooterAppearance.Dark)
         model.setAppearance(ScooterAppearance.Sun)
-        model.setShowsZones(true)
-        model.setShowsZones(true)
         model.setShowsZones(false)
+        model.setShowsZones(false)
+        model.setShowsZones(true)
         model.setRideEstimateMinutes(20)
         // Seven minutes is not offered: ten.
         model.setRideEstimateMinutes(7)
@@ -124,8 +124,8 @@ class ScooterMapEventsTest {
                 TrackedEvent("map_style", result = "light"),
                 TrackedEvent("map_style", result = "dark"),
                 TrackedEvent("map_style", result = "sun"),
-                TrackedEvent("zones_toggle", result = "enabled"),
                 TrackedEvent("zones_toggle", result = "disabled"),
+                TrackedEvent("zones_toggle", result = "enabled"),
                 TrackedEvent("ride_duration", value = 20),
                 TrackedEvent("ride_duration", value = 10),
                 // Never the pass's expiry or its amounts.

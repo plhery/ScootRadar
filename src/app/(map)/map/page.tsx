@@ -200,8 +200,8 @@ export default function Home() {
   const [minBattery, setMinBattery] = useState(0);
   const [theme, setTheme] = useState<ThemeName>('auto');
   const [mapStyle, setMapStyle] = useState<MapStyleName>('calm');
-  // The operators' zones, a preview: off unless turned on in the settings or by a link.
-  const [zonesOn, setZonesOn] = useState(false);
+  // The operators' zones: on unless turned off in the settings or by a link.
+  const [zonesOn, setZonesOn] = useState(true);
   const [enabledProviders, setEnabledProviders] = useState<Set<string>>(
     new Set(Object.keys(PROVIDERS))
   );
@@ -274,7 +274,7 @@ export default function Home() {
     if (params.minBattery !== undefined) setMinBattery(params.minBattery);
     if (params.theme) setTheme(params.theme);
     if (params.map) setMapStyle(params.map);
-    if (params.zones) setZonesOn(true);
+    if (params.zones !== undefined) setZonesOn(params.zones);
 
     // Preserve old shared links without persisting their coordinates again.
     if (params.origin) {

@@ -190,20 +190,21 @@ final class ScooterZonesModelTests: XCTestCase {
         span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
     )
 
-    func testZonesAreOffUntilTurnedOnAndTheChoiceIsKept() {
+    func testZonesAreOnUntilTurnedOffAndTheChoiceIsKept() {
         let defaults = isolatedDefaults()
         let model = makeModel(api: ZoneStubAPI(), defaults: defaults)
-        XCTAssertFalse(model.showsZones)
+        XCTAssertTrue(model.showsZones)
+
+        model.showsZones = false
         XCTAssertEqual(model.zoneState, .off)
 
-        model.showsZones = true
-
-        XCTAssertTrue(makeModel(api: ZoneStubAPI(), defaults: defaults).showsZones)
+        XCTAssertFalse(makeModel(api: ZoneStubAPI(), defaults: defaults).showsZones)
     }
 
     func testTheZonesOfTheMapsAreaAreDrawnForTheProvidersShown() async throws {
         let api = ZoneStubAPI()
         let model = makeModel(api: api)
+        model.showsZones = false
         model.updateViewport(zurich, zoom: 16)
         XCTAssertEqual(model.zoneState, .off)
         let none = await waitUntil { await api.zoneAreas().isEmpty }
@@ -301,6 +302,7 @@ final class ScooterZonesModelTests: XCTestCase {
         // Noon in Seoul, then 23:00.
         var now = Date(timeIntervalSince1970: 1_792_983_600)
         let model = makeModel(api: ZoneStubAPI(), now: { now })
+        model.showsZones = false
         model.updateViewport(hongdae, zoom: 16)
 
         XCTAssertEqual(model.zoneState, .off)
@@ -326,6 +328,7 @@ final class ScooterZonesModelTests: XCTestCase {
             span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         )
         let model = makeModel(api: ZoneStubAPI())
+        model.showsZones = false
         model.updateViewport(porto, zoom: 16)
 
         XCTAssertEqual(model.zoneState, .off)

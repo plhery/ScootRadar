@@ -36,21 +36,22 @@ class ScooterMapZonesTest {
     private val porto = MapRegion(center = GeoPoint(latitude = 41.147, longitude = -8.611), latitudeDelta = 0.01, longitudeDelta = 0.01)
 
     @Test
-    fun zonesAreOffUntilTurnedOnAndTheChoiceIsKept() = runTest {
+    fun zonesAreOnUntilTurnedOffAndTheChoiceIsKept() = runTest {
         val defaults = InMemoryScooterDefaults()
         val model = makeController(ZoneStubAPI(), defaults = defaults)
-        assertFalse(model.showsZones.value)
+        assertTrue(model.showsZones.value)
+
+        model.setShowsZones(false)
         assertEquals(ScooterZoneState.Off, model.zoneState.value)
 
-        model.setShowsZones(true)
-
-        assertTrue(makeController(ZoneStubAPI(), defaults = defaults).showsZones.value)
+        assertFalse(makeController(ZoneStubAPI(), defaults = defaults).showsZones.value)
     }
 
     @Test
     fun theZonesOfTheMapsAreaAreDrawnForTheProvidersShown() = runTest {
         val api = ZoneStubAPI()
         val model = makeController(api)
+        model.setShowsZones(false)
         model.updateViewport(zurich, zoom = 16)
         assertEquals(ScooterZoneState.Off, model.zoneState.value)
         // Past the debounce, so that a request would have gone out by now.
@@ -236,6 +237,7 @@ class ScooterMapZonesTest {
         // Noon in Seoul, then 23:00.
         val clock = TestClock().apply { now = Instant.ofEpochSecond(1_792_983_600) }
         val model = makeController(ZoneStubAPI(), clock = clock)
+        model.setShowsZones(false)
         model.updateViewport(hongdae, zoom = 16)
 
         assertEquals(ScooterZoneState.Off, model.zoneState.value)
@@ -259,6 +261,7 @@ class ScooterMapZonesTest {
     @Test
     fun aCitysZonesAreDrawnFromZoom14WithTheZonesOffAndTheSameOnesOverAShortPan() = runTest {
         val model = makeController(ZoneStubAPI())
+        model.setShowsZones(false)
         model.updateViewport(porto, zoom = 16)
 
         assertEquals(ScooterZoneState.Off, model.zoneState.value)
@@ -317,6 +320,7 @@ class ScooterMapZonesTest {
         val within = place("within", -8.60115)
         val past = place("past", -8.60095)
         val model = makeController(ZoneStubAPI(), catalog = ScooterCatalog.Listed(ruleZones = listOf(within, past)))
+        model.setShowsZones(false)
         model.updateViewport(porto, zoom = 16)
         assertEquals(GeoBounds(porto).expanded(by = 0.5), model.ruleZoneArea)
         assertEquals(listOf("rule:porto-parking-within"), model.mapZones.value.map { it.id })
@@ -340,6 +344,7 @@ class ScooterMapZonesTest {
     @Test
     fun aCitysZonesArePickedFromZoom14AsTheMapsLevelRoundsUpTo() = runTest {
         val model = makeController(ZoneStubAPI())
+        model.setShowsZones(false)
         // The map's zoom level is rounded up to the API's zoom: 13.01 and 13.9 are 14, as 14 is.
         for ((level, drawn) in listOf(13.0 to false, 13.01 to true, 13.9 to true, 14.0 to true)) {
             model.updateViewport(porto, zoom = ScooterClusteringPolicy.apiZoom(level), zoomLevel = level)

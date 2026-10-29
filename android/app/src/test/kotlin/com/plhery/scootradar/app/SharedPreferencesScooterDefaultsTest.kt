@@ -21,6 +21,7 @@ class SharedPreferencesScooterDefaultsTest {
     @Test
     fun eachKindReadsBackAsItWasSet() {
         defaults.set(true, forKey = "bool")
+        defaults.set(false, forKey = "false")
         defaults.set(42, forKey = "int")
         defaults.set("quiet", forKey = "string")
         defaults.set(listOf("lime", "", "a:b"), forKey = "array")
@@ -29,6 +30,7 @@ class SharedPreferencesScooterDefaultsTest {
         defaults.set(date, forKey = "date")
 
         assertTrue(defaults.bool(forKey = "bool"))
+        assertEquals(false, defaults.boolean(forKey = "false"))
         assertEquals(42, defaults.int(forKey = "int"))
         assertEquals(42, defaults.integer(forKey = "int"))
         assertEquals("quiet", defaults.string(forKey = "string"))
@@ -50,6 +52,8 @@ class SharedPreferencesScooterDefaultsTest {
         assertNull(defaults.string(forKey = "array"))
         assertNull(defaults.string(forKey = "int"))
         assertFalse(defaults.bool(forKey = "int"))
+        assertNull(defaults.boolean(forKey = "int"))
+        assertNull(defaults.boolean(forKey = "missing"))
         assertEquals(0, defaults.integer(forKey = "missing"))
         assertNull(defaults.string(forKey = "missing"))
 

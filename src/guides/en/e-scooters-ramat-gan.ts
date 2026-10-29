@@ -78,7 +78,7 @@ const guide: Guide = {
       blocks: [
         'Ride on a bike path; where a street has none, ride on the road, never on the sidewalk, dpa reported in 2019, and Ice repeated in 2024 that riding on the sidewalk is banned.',
         '**Parking.** In June 2021 Globes reported that in some areas of Ramat Gan, as in Tel Aviv, shared scooters could be left only in clearly defined spots under the city’s by-laws, and that Lime’s app would warn riders who parked elsewhere and fine them if the scooter stayed there. We found nothing newer from the city on which areas these are, so end your ride where the app accepts it.',
-        '**Zones on the map.** Turn on **Ride and parking zones** in the map’s settings and zoom in, and the map draws Bird’s zones: about 50 small spots across Ramat Gan where you can’t end a ride, and three where its scooters won’t run (the Safari and two small spots in the centre). Walk the scooter through those. Lime’s zones aren’t on the map, and for both companies the app has the final word.',
+        '**Zones on the map.** Zoom in on the map and it draws Bird’s zones: about 50 small spots across Ramat Gan where you can’t end a ride, and three where its scooters won’t run (the Safari and two small spots in the centre). Walk the scooter through those. Lime’s zones aren’t on the map, and for both companies the app has the final word.',
         '**Hours.** We found no night or Shabbat ban on renting in Ramat Gan.',
       ],
     },
@@ -104,7 +104,7 @@ const guide: Guide = {
       blocks: [
         'Ramat Gan runs into its neighbours without a break, and Lime and Bird ride on into them. The national rules stay the same, but parking and zones change at the city line.',
         '**Tel Aviv-Yafo** began requiring marked bays for shared scooters in its centre in August 2019, between Ibn Gabirol Street and the sea, Maariv reported. See the [Tel Aviv guide](guide:tel-aviv) and the [Tel Aviv map](map:il:Tel Aviv).',
-        '**Givatayim**, to the south-west, has about 40 small spots where Bird’s scooters won’t run (turn on the map’s zones to see them), so watch the app as you cross.',
+        '**Givatayim**, to the south-west, has about 40 small spots where Bird’s scooters won’t run (zoom in on the map to see them), so watch the app as you cross.',
         '**Bnei Brak** lies to the east. When Ramat Gan’s council approved its Saturday buses in 2019, they were to keep to main roads such as Jabotinsky Road, which crosses Bnei Brak, and stay out of religious neighbourhoods, Globes reported: on Shabbat, it’s considerate to do the same on a scooter.',
       ],
     },

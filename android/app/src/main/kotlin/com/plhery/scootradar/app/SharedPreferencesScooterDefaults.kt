@@ -15,7 +15,7 @@ import java.util.Base64
  * kind, so that reading one kind where another was set gives nothing, as UserDefaults does.
  */
 class SharedPreferencesScooterDefaults(private val preferences: SharedPreferences) : ScooterDefaults {
-    override fun bool(forKey: String): Boolean = read(forKey) { getBoolean(it, false) } ?: false
+    override fun boolean(forKey: String): Boolean? = read(forKey) { getBoolean(it, false) }
 
     override fun int(forKey: String): Int? = read(forKey) { getInt(it, 0) }
 

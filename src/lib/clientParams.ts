@@ -10,7 +10,7 @@ export interface ClientParams {
   theme: ThemeName | undefined;
   /** Undefined when nothing was chosen, which means calm. */
   map: MapStyleName | undefined;
-  /** The operators' zones over the map, a preview that is off unless turned on. */
+  /** Undefined when nothing was chosen, which means the operators' zones are shown. */
   zones: boolean | undefined;
 }
 
@@ -63,7 +63,7 @@ export function parseClientParams(params: URLSearchParams): ClientParams {
     minBattery: parseMinimumBattery(params.get('minBattery')),
     theme: parseTheme(params.get('theme'), legacyTile),
     map: parseMapStyle(params.get('map'), legacyTile),
-    zones: params.get('zones') === '1' ? true : undefined,
+    zones: params.get('zones') === '0' ? false : params.get('zones') === '1' ? true : undefined,
   };
 }
 
@@ -83,7 +83,7 @@ export function parseStoredClientParams(raw: string | null): ClientParams | null
     }
 
     const parsed = parseClientParams(params);
-    return parsed.minBattery !== undefined || parsed.theme || parsed.map || parsed.zones
+    return parsed.minBattery !== undefined || parsed.theme || parsed.map || parsed.zones !== undefined
       ? parsed
       : null;
   } catch {
@@ -95,7 +95,7 @@ export function serializeClientParams({
   minBattery,
   theme,
   map,
-  zones = false,
+  zones = true,
 }: {
   minBattery: number;
   theme: ThemeName;
@@ -106,6 +106,6 @@ export function serializeClientParams({
   if (minBattery !== 0) params.set('minBattery', String(minBattery));
   if (theme !== 'auto') params.set('theme', theme);
   if (map !== 'calm') params.set('map', map);
-  if (zones) params.set('zones', '1');
+  if (!zones) params.set('zones', '0');
   return params;
 }

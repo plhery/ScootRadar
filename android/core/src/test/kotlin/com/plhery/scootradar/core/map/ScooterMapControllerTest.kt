@@ -2757,7 +2757,7 @@ class ScooterMapControllerTest {
         // What a rider does in a session: every setting, a fix, a place, a scooter and the way to it, a ride.
         model.setMinimumBattery(40.0)
         model.setMapStyle(AppleMapStyle.Satellite)
-        model.setShowsZones(true)
+        model.setShowsZones(false)
         model.setAppearance(ScooterAppearance.Dark)
         model.toggle(Bird)
         model.setRideEstimateMinutes(20)

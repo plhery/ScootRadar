@@ -193,6 +193,11 @@ test.beforeEach(async ({ page }) => {
     body: '',
   }));
 
+  // The zones are on unless turned off: none are published here, and no operator's feed is read.
+  await page.route('**/api/zones?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+    zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, truncated: false },
+  }) }));
+
   await page.route('**/api/scooters?**', async (route) => {
     const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
     const response = zoom <= 15
@@ -1244,7 +1249,7 @@ test('combines provider filters and resets them together', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
 });
 
-test('the operators\' zones are drawn once turned on, for the providers shown, with what they mean', async ({ page }) => {
+test('the operators\' zones are drawn unless turned off, for the providers shown, with what they mean', async ({ page }) => {
   const square = (south: number, west: number) =>
     [[[[south, west], [south, west + 0.003], [south + 0.002, west + 0.003], [south + 0.002, west], [south, west]]]];
   const edges = page.locator('.leaflet-zones-edges-pane g path');
@@ -1265,27 +1270,17 @@ test('the operators\' zones are drawn once turned on, for the providers shown, w
   });
   await page.goto('/map');
   await focusFixtureArea(page);
-  await zoomTo(page, 16);
-  await expect(page.locator('.scooter-marker')).toHaveCount(3);
-  // Off until turned on: nothing is asked for and nothing is said.
-  await expect(page.locator('.zone-legend')).toHaveCount(0);
+  // Further out than zoom 14, nothing is asked for, and a word says why there are none.
+  const legend = page.getByRole('group', { name: 'Zones' });
+  await expect(legend).toHaveText('Zoom in to see the zones');
   expect(asked).toEqual([]);
 
-  await page.getByRole('button', { name: 'Settings', exact: true }).click();
-  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
-  const zones = settings.getByRole('switch', { name: 'Ride and parking zones' });
-  await expect(zones).not.toBeChecked();
-  await zones.click();
-  await expect(zones).toBeChecked();
-  await page.keyboard.press('Escape');
-  await expect(settings).not.toBeVisible();
-  await expect.poll(() => new URL(page.url()).search).toBe('?zones=1');
-
-  const legend = page.getByRole('group', { name: 'Zones' });
+  await zoomTo(page, 16);
+  await expect(page.locator('.scooter-marker')).toHaveCount(3);
   await expect(legend).toHaveText('No ridingNo parkingSlow');
   // One shape and one edge for each kind, the operators' zones merged, under the scooters.
   await expect(edges).toHaveCount(3);
-  expect(asked).toHaveLength(1);
+  expect(asked.length).toBeGreaterThan(0);
   const merged = await noRideWidth();
   // No parking's and slow zones' edges keep clear of no riding's.
   for (const kind of ['noParking', 'slow']) {
@@ -1306,10 +1301,23 @@ test('the operators\' zones are drawn once turned on, for the providers shown, w
   await expect(edges).toHaveCount(1);
   expect((await noRideWidth()) / merged).toBeCloseTo(2 / 3, 1);
 
-  // Further out, the zones make way for a word on why there are none.
-  await zoomTo(page, 13);
-  await expect(legend).toHaveText('Zoom in to see the zones');
+  // Turned off: nothing is drawn or said, and the choice is kept.
+  await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
+  const zones = settings.getByRole('switch', { name: 'Ride and parking zones' });
+  await expect(zones).toBeChecked();
+  await zones.click();
+  await expect(zones).not.toBeChecked();
+  await page.keyboard.press('Escape');
+  await expect(settings).not.toBeVisible();
+  await expect.poll(() => new URL(page.url()).search).toBe('?zones=0');
+  await expect(legend).toHaveCount(0);
   await expect(edges).toHaveCount(0);
+
+  // On the next visit too: further out, not even the word to zoom in.
+  await page.goto('/map');
+  await expect.poll(() => new URL(page.url()).search).toBe('?zones=0');
+  await expect(legend).toHaveCount(0);
 });
 
 test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an edge for each rule, and who sets it', async ({ page }) => {
@@ -1323,8 +1331,8 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   expect(await bergenLoaded()).toBe(false);
 
-  // Bergen's Torget, at street level.
-  await page.goto('/map?origin=60.3955,5.3245');
+  // Bergen's Torget, at street level, with the operators' zones off.
+  await page.goto('/map?origin=60.3955,5.3245&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
   await expect(legend).toHaveText(
     'No riding · Bergen kommuneNo parking · Bergen kommuneSlow · Bergen kommuneParking · Bergen kommune');

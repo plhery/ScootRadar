@@ -1231,7 +1231,8 @@ it('times out a stalled request, says so, and recovers with the next automatic r
   await act(async () => vi.advanceTimersByTimeAsync(20_180));
   expect(screen.getByRole('alert')).toHaveTextContent('ScootRadar took too long to respond.');
   await act(async () => vi.advanceTimersByTimeAsync(40_000));
-  expect(fetcher).toHaveBeenCalledTimes(2);
+  // The scooters twice; the zones are asked for beside them.
+  expect(fetcher.mock.calls.filter(([input]) => String(input).startsWith('/api/scooters'))).toHaveLength(2);
   expect(screen.queryByRole('alert')).toBeNull();
   expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
 });

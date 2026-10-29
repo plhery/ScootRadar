@@ -105,11 +105,14 @@ describe('client params', () => {
     expect(serializeClientParams({ minBattery: 0, theme: 'light', map: 'calm' }).toString()).toBe('theme=light');
   });
 
-  it('keeps the zones layer on in the URL only while it is on', () => {
+  it('keeps the zones layer in the URL only while it is off', () => {
+    expect(parse('zones=0').zones).toBe(false);
+    // Links from when the zones were off unless turned on.
     expect(parse('zones=1').zones).toBe(true);
-    expect(parse('zones=0').zones).toBeUndefined();
-    expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm', zones: true }).toString()).toBe('zones=1');
-    expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm', zones: false }).toString()).toBe('');
+    expect(parse('zones=no').zones).toBeUndefined();
+    expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm', zones: false }).toString()).toBe('zones=0');
+    expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm', zones: true }).toString()).toBe('');
+    expect(parseStoredClientParams(JSON.stringify({ zones: '0' }))).toMatchObject({ zones: false });
     expect(parseStoredClientParams(JSON.stringify({ zones: '1' }))).toMatchObject({ zones: true });
   });
 
