@@ -792,16 +792,23 @@ private fun TopStack(
     searchBarModifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
-    // The search bar and the notices under it, closed: what the map keeps its names under, and centres a place
-    // below. The open search covers the map, and leaves the map's frame as it was.
+    // The search bar and the notices under it, closed: what the map keeps its names and its taps out of, and centres
+    // a place below. As wide as they are, as the iPhone's VStack is, not the room they are centred in: in a window
+    // more than 584 dp wide the bar's 560 leave the map's sides to it. The open search covers the map, and leaves the
+    // map's frame as it was.
     var stackFrame by remember { mutableStateOf<ScreenRect?>(null) }
+    var barFrame by remember { mutableStateOf<ScreenRect?>(null) }
+    var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barHeight by remember { mutableIntStateOf(0) }
     var noticesHeight by remember { mutableIntStateOf(0) }
     SideEffect {
         val frame = stackFrame ?: return@SideEffect
+        val bar = barFrame ?: return@SideEffect
         if (barHeight == 0 || isSearching) return@SideEffect
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
-        chrome.top = ScreenRect(frame.x, frame.y, frame.width, ((barHeight + notices) / density.density).toDouble())
+        val sides = listOfNotNull(bar, noticesFrame?.takeIf { noticesHeight > 0 })
+        val left = sides.minOf { it.minX }
+        chrome.top = ScreenRect(left, frame.y, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
     }
 
     Column(
@@ -822,7 +829,7 @@ private fun TopStack(
                 barHeight = it
                 onSearchBarHeightChange(it)
             },
-            modifier = searchBarModifier,
+            modifier = searchBarModifier.onGloballyPositioned { if (!isSearching) barFrame = it.windowFrame(density.density) },
         )
 
         // The notices go while the search is open.
@@ -840,7 +847,9 @@ private fun TopStack(
                 locationIssue = locationIssue,
                 limit = noticesLimit,
                 onSearchingChange = onSearchingChange,
-                modifier = Modifier.onSizeChanged { noticesHeight = it.height },
+                modifier = Modifier
+                    .onSizeChanged { noticesHeight = it.height }
+                    .onGloballyPositioned { noticesFrame = it.windowFrame(density.density) },
             )
         }
     }
