@@ -261,6 +261,6 @@ class SettingsSheetTest {
 
         assertEquals(listOf("Walking routes · Valhalla, FOSSGIS", "Fix the map · OpenStreetMap"), androidCredits.map { it.title })
         ScooterLanguage.current = ScooterLanguage.De
-        assertEquals(listOf("Fusswege · Valhalla, FOSSGIS", "Die Karte korrigieren · OpenStreetMap"), androidCredits.map { it.title })
+        assertEquals(listOf("Routen zu Fuss · Valhalla, FOSSGIS", "Die Karte korrigieren · OpenStreetMap"), androidCredits.map { it.title })
     }
 }

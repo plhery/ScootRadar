@@ -38,14 +38,18 @@ import org.robolectric.annotation.GraphicsMode
 // MAP-270: the callout MapKit shows over the searched place's pin once it is tapped, with the place's title.
 
 @RunWith(AndroidJUnit4::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(qualifiers = PHONE)
 class PinCalloutTest {
     @get:Rule
     val compose = createComposeRule()
 
-    /** Its arrow on the top of the pin, the bubble over it; it follows the pin as the map moves, inside the map. */
+    /**
+     * Its arrow on the top of the pin, the bubble over it; it follows the pin as the map moves, inside the map as far
+     * as its arrow stays under its straight edge, and out of it with the pin, as MapKit's callout hangs from its pin.
+     */
     @Test
-    fun itPointsAtThePinAndStaysInsideTheMap() {
+    fun itPointsAtThePinAndFollowsIt() {
         var anchor by mutableStateOf(ScreenPoint(150.0, 200.0))
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = true) {
@@ -60,10 +64,25 @@ class PinCalloutTest {
         assertEquals(150f, (bubble.left + bubble.right).value / 2, 1f)
         assertEquals(200f - 2 - 10 + 1, bubble.bottom.value, 1f)
 
-        // At the map's side it keeps 8 inside.
-        anchor = ScreenPoint(4.0, 200.0)
+        // Near the map's side it keeps 8 inside.
+        anchor = ScreenPoint(30.0, 200.0)
         compose.waitForIdle()
         assertEquals(8f, compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot().left.value, 0.5f)
+        // At the side, only as far as the arrow, 10 either side of the pin, stays clear of the 12 corner.
+        anchor = ScreenPoint(4.0, 200.0)
+        compose.waitForIdle()
+        assertEquals(4f - 10 - 12, compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot().left.value, 0.5f)
+        // The pin out of the map, either side, the bubble goes with it.
+        anchor = ScreenPoint(-150.0, 200.0)
+        compose.waitForIdle()
+        val leftOut = compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot()
+        assertEquals(-150f - 10 - 12, leftOut.left.value, 0.5f)
+        assertTrue("$leftOut", leftOut.right.value < 0)
+        anchor = ScreenPoint(450.0, 200.0)
+        compose.waitForIdle()
+        val rightOut = compose.onNodeWithTag(CALLOUT_TAG).getBoundsInRoot()
+        assertEquals(450f + 10 + 12, rightOut.right.value, 0.5f)
+        assertTrue("$rightOut", rightOut.left.value > 300)
     }
 
     /** A long title on one line, cut short inside the map. */

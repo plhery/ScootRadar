@@ -54,7 +54,7 @@ sealed interface MarkerElement {
      */
     class Rider(override val frame: ScreenRect) : MarkerElement {
         override val key: String get() = "u:rider"
-        override val description: MarkerDescription get() = MarkerDescription(localized("Your location"), value = null, hint = null)
+        override val description: MarkerDescription get() = MarkerDescription(localized("My Location"), value = null, hint = null)
     }
 
     /** A cluster or a city total, in its view of 48 pt. */
@@ -119,7 +119,7 @@ object MarkerElements {
             is MarkerElement.Bay -> scene.select(element.bay)
             is MarkerElement.Cluster -> scene.open(element.cluster, map)
             // Selected, its callout shows the title (MAP-270).
-            is MarkerElement.Pin -> scene.selectPin()
+            is MarkerElement.Pin -> scene.selectPin(map)
             is MarkerElement.Rider -> Unit
         }
     }
@@ -205,8 +205,14 @@ class ScooterMarkerAccessibility(
         // TalkBack has no value of its own; read after the label, it keeps VoiceOver's order (MAP-217).
         node.contentDescription = listOfNotNull(description.label, description.value).joinToString(", ")
         node.setBoundsInParent(pixels(element.frame))
-        // The pin and the rider have their labels only, as MapKit gives VoiceOver.
-        if (element is MarkerElement.Pin || element is MarkerElement.Rider) return
+        // The pin and the rider have their labels only, as MapKit gives VoiceOver. The pin is selected by a double
+        // tap all the same, which TalkBack sends only to a node that offers a click.
+        if (element is MarkerElement.Rider) return
+        if (element is MarkerElement.Pin) {
+            node.isClickable = true
+            node.addAction(AccessibilityActionCompat.ACTION_CLICK)
+            return
+        }
         node.className = BUTTON
         node.isSelected = MarkerElements.isSelected(element, scene)
         node.isClickable = true

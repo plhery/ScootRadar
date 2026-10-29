@@ -325,9 +325,14 @@ class ScooterMarkerScene(
         return PinCalloutPlace(place.title, ScreenPoint(pin.midX, pin.minY))
     }
 
-    /** The pin selected by TalkBack, as a double tap selects it in VoiceOver. */
-    fun selectPin() {
-        if (destination != null) showsCallout = true
+    /**
+     * The pin selected by TalkBack, as a double tap selects it in VoiceOver. MapKit selects one marker at a time, so
+     * the scooter's or bay's card closes, unless a walk is under way.
+     */
+    fun selectPin(map: MarkerMap) {
+        if (destination == null) return
+        showsCallout = true
+        if (!parent.isWalking) clearSelection(map)
     }
 
     /** Where the pin is, from its place: what names keep off, and what TalkBack outlines. */
@@ -478,6 +483,8 @@ class ScooterMarkerScene(
     fun applySelection(selectedID: String?, map: MarkerMap) {
         if (selectedID == appliedSelectionID) return
         appliedSelectionID = selectedID
+        // MapKit selects the scooter's marker, which deselects the pin; none selected leaves the pin as it is.
+        if (selectedID != null && selectedID in marksByID) showsCallout = false
         updateLook(map)
     }
 
@@ -485,6 +492,7 @@ class ScooterMarkerScene(
     fun applyParkingSelection(selectedID: String?) {
         if (selectedID == appliedParkingID) return
         appliedParkingID = selectedID
+        if (selectedID != null && selectedID in parkingByID) showsCallout = false
         markersVersion += 1
     }
 
@@ -800,14 +808,18 @@ class ScooterMarkerScene(
         return if (isOnDot) null else parking(at = at, map = map)
     }
 
-    /** A scooter chosen, by a tap or by TalkBack: its card opens and its dot takes the ring. */
+    /** A scooter chosen, by a tap or by TalkBack: its card opens and its dot takes the ring, and the pin's callout closes. */
     fun select(mark: ScooterMark, map: MarkerMap) {
+        showsCallout = false
         publishSelection(mark)
         updateLook(map)
     }
 
-    /** A bay chosen: it opens in the dock. */
-    fun select(bay: ScooterParking) = publishParkingSelection(bay)
+    /** A bay chosen: it opens in the dock, and the pin's callout closes. */
+    fun select(bay: ScooterParking) {
+        showsCallout = false
+        publishParkingSelection(bay)
+    }
 
     /**
      * The cluster MapKit would select under a point: the one whose 48 pt frame holds it, if no dot's 44 pt square
@@ -847,6 +859,8 @@ class ScooterMarkerScene(
      * onto its scooters (MAP-050–052).
      */
     fun open(cluster: ClusterMark, map: MarkerMap) {
+        // Selected in MapKit as any marker is, it deselects the pin.
+        showsCallout = false
         track("cluster_select", null)
         val members = cluster.members
         if (members != null) {

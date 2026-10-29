@@ -15,6 +15,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -231,12 +232,12 @@ class ScooterMarkerAccessibilityTest {
     }
 
     /**
-     * The rider is read as "Your location" where MapKit gives VoiceOver its element for the user's location
-     * (MAP-224), in the app's language, with its label only; the pin is read by its title, and a double tap selects
-     * it, as VoiceOver's does, showing its callout (MAP-270).
+     * The rider is read as "My Location", MapKit's words for VoiceOver's element for the user's location (MAP-224),
+     * in the app's language, with its label only; the pin is read by its title, and a double tap selects it, as
+     * VoiceOver's does, showing its callout (MAP-270): TalkBack sends it only to a node that offers a click.
      */
     @Test
-    fun theRiderIsReadAsYourLocationAndThePinByItsTitle() {
+    fun theRiderIsReadAsMyLocationAndThePinByItsTitle() {
         val map = FlatMarkerMap()
         scene.parent = MarkerParent(userLocation = map.at(195.0, 500.0))
         scene.applyDestination(MapDestination("Bahnhofplatz", "3011 Bern", map.at(195.0, 300.0), MapDestination.Kind.Address, isCovered = true))
@@ -246,21 +247,26 @@ class ScooterMarkerAccessibilityTest {
         val accessibility = helper(map)
         val (pin, rider) = accessibility.virtualViews()
         val you = accessibility.node(rider)
-        assertEquals("Your location", you.contentDescription)
+        assertEquals("My Location", you.contentDescription)
         assertFalse(you.isClickable)
         assertTrue(you.actionList.none { it.id == AccessibilityNodeInfoCompat.ACTION_CLICK })
         // A square of 44 pt around the dot, as a scooter's.
         assertEquals(Rect((173 * 3), (478 * 3), (217 * 3), (522 * 3)), you.bounds())
         assertEquals(rider, accessibility.virtualViewAt(195f * 3, 500f * 3))
 
-        assertEquals("Bahnhofplatz", accessibility.node(pin).contentDescription)
+        val place = accessibility.node(pin)
+        assertEquals("Bahnhofplatz", place.contentDescription)
+        // A click with no hint, and not a button: MapKit gives the pin its title alone.
+        assertTrue(place.isClickable)
+        assertNull(place.actionList.single { it.id == AccessibilityNodeInfoCompat.ACTION_CLICK }.label)
+        assertNotEquals("android.widget.Button", place.className)
         assertTrue(accessibility.click(pin))
         assertTrue(scene.showsCallout)
         assertEquals(1, changes)
 
         ScooterLanguage.current = ScooterLanguage.De
         accessibility.refresh()
-        assertEquals("Dein Standort", accessibility.node(rider).contentDescription)
+        assertEquals("Mein Standort", accessibility.node(rider).contentDescription)
 
         // No rider shown, no element.
         scene.parent = MarkerParent()

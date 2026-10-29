@@ -23,8 +23,8 @@
 "center this scooter on the map" = "centrar o mapa nesta trotinete";
 /* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
 "Compass" = "Bússola";
-/* The rider's dot on the map, read by TalkBack where MapKit gives VoiceOver its own element (map.md MAP-224). */
-"Your location" = "A sua localização";
+/* The rider's dot on the map, read by TalkBack by MapKit's own words for VoiceOver's element (map.md MAP-224). */
+"My Location" = "Localização atual";
 /* Settings › Map & data credits, Android's own credits: the walking routes' source, joined to its name, "Valhalla, FOSSGIS" (map.md MAP-034). */
 "Walking routes" = "Itinerários a pé";
 /* Settings › Map & data credits: OpenStreetMap's page for reporting a mistake in the map, joined to its name, "OpenStreetMap" (map.md MAP-034). */

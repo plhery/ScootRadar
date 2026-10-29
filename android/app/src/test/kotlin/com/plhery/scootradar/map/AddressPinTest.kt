@@ -3,6 +3,7 @@ package com.plhery.scootradar.map
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -89,7 +90,54 @@ class AddressPinTest {
         assertFalse(scene.showsCallout)
 
         // TalkBack's double tap selects it too.
-        scene.selectPin()
+        scene.selectPin(map)
         assertEquals("Bärenplatz", scene.callout(map)?.title)
+    }
+
+    /**
+     * MapKit selects one marker at a time: a scooter or a bay chosen elsewhere, in the dock or by TalkBack, closes the
+     * callout, and none chosen leaves it; the pin chosen by TalkBack closes the scooter's or bay's card, unless a walk
+     * is under way.
+     */
+    @Test
+    fun anotherMarkerChosenClosesTheCalloutAndThePinChosenClosesTheCard() {
+        scene.parent = MarkerParent(origin = map.at(195.0, 422.0))
+        scene.reconcile(listOf(scooter("near", "voi", at = map.at(300.0, 300.0))), revision = 1)
+        val bay = map.at(100.0, 500.0)
+        scene.reconcileParking(listOf(ScooterParking("dott:bay", "dott", "Rue Faidherbe", bay.latitude, bay.longitude, mandatory = false)))
+        scene.updateLook(map)
+        scene.applyDestination(MapDestination("Bahnhofplatz", "3011 Bern", map.at(195.0, 300.0), MapDestination.Kind.Address, isCovered = true))
+        val near = scene.mark("voi:near")!!
+
+        // The dock's nearest scooter.
+        scene.tap(ScreenPoint(195.0, 280.0), map)
+        scene.applySelection("voi:near", map)
+        assertFalse(scene.showsCallout)
+        // The pin again, which closes the card; the card's closing leaves the callout.
+        scene.tap(ScreenPoint(195.0, 280.0), map)
+        assertNull(scene.appliedSelectionID)
+        scene.applySelection(null, map)
+        assertTrue(scene.showsCallout)
+        // A bay chosen in the dock.
+        scene.applyParkingSelection("dott:bay")
+        assertFalse(scene.showsCallout)
+
+        // TalkBack: the pin closes the bay's card, then a scooter closes the callout.
+        scene.selectPin(map)
+        assertTrue(scene.showsCallout)
+        assertNull(scene.appliedParkingID)
+        scene.select(near, map)
+        assertFalse(scene.showsCallout)
+        // The pin closes the scooter's card.
+        scene.selectPin(map)
+        assertTrue(scene.showsCallout)
+        assertNull(scene.appliedSelectionID)
+
+        // During a walk the card stays.
+        scene.parent = MarkerParent(origin = map.at(195.0, 422.0), isWalking = true)
+        scene.select(near, map)
+        scene.selectPin(map)
+        assertTrue(scene.showsCallout)
+        assertEquals("voi:near", scene.appliedSelectionID)
     }
 }

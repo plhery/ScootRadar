@@ -36,9 +36,10 @@ import com.plhery.scootradar.ui.theme.iosShadow
 
 /**
  * MapKit's callout over the searched place's pin, once a tap has selected the pin: a bubble with the place's [title]
- * on one line, its arrow on the top of the pin at [anchor] (in the map's points, read as the map moves), kept inside
- * the map. It pops in, at once under Remove animations. It takes the taps on it, as MapKit's does, so that they don't
- * close it.
+ * on one line, its arrow on the top of the pin at [anchor] (in the map's points, read as the map moves). It keeps
+ * inside the map as far as its arrow can stay under its straight edge, and leaves the map with the pin. It pops in, at
+ * once under Remove animations. It takes the taps on it, the arrow's too, as MapKit's does, so that they don't close
+ * it.
  */
 @Composable
 fun PinCallout(title: String, anchor: () -> ScreenPoint, dark: Boolean, modifier: Modifier = Modifier) {
@@ -51,7 +52,7 @@ fun PinCallout(title: String, anchor: () -> ScreenPoint, dark: Boolean, modifier
     LaunchedEffect(shown) { shown.animateTo(1f, tween(POP_MILLIS, easing = IosMotion.easeInOut.easing)) }
     Layout(
         content = {
-            Canvas(Modifier.size(ARROW_WIDTH.dp, ARROW_HEIGHT.dp)) {
+            Canvas(Modifier.size(ARROW_WIDTH.dp, ARROW_HEIGHT.dp).pointerInput(Unit) { detectTapGestures {} }) {
                 val arrow = Path().apply {
                     moveTo(0f, 0f)
                     lineTo(size.width, 0f)
@@ -90,10 +91,15 @@ fun PinCallout(title: String, anchor: () -> ScreenPoint, dark: Boolean, modifier
             val point = anchor()
             val x = point.x.dp.roundToPx()
             val tip = (point.y - GAP).dp.roundToPx()
-            val left = (x - bubble.width / 2).coerceIn(margin, maxOf(margin, constraints.maxWidth - margin - bubble.width))
-            arrow.place(x - arrow.width / 2, tip - arrow.height)
-            // The bubble over the arrow's top, so that no seam shows between them.
+            val inside = (x - bubble.width / 2).coerceIn(margin, maxOf(margin, constraints.maxWidth - margin - bubble.width))
+            // The arrow under the bubble's straight edge, clear of its rounded corners, wherever the pin is; a bubble
+            // too narrow for that is centred on it.
+            val reach = arrow.width / 2 + CORNER.dp.roundToPx()
+            val lowest = x + reach - bubble.width
+            val left = if (lowest <= x - reach) inside.coerceIn(lowest, x - reach) else x - bubble.width / 2
             bubble.place(left, tip - arrow.height - bubble.height + 1)
+            // The arrow over the bubble's shadow, and over its bottom edge, so that no seam shows between them.
+            arrow.place(x - arrow.width / 2, tip - arrow.height)
         }
     }
 }
