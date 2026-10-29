@@ -32,24 +32,28 @@ import org.maplibre.android.style.layers.CircleLayer
 import org.maplibre.android.style.layers.FillExtrusionLayer
 import org.maplibre.android.style.layers.FillLayer
 import org.maplibre.android.style.layers.LineLayer
+import org.maplibre.android.style.layers.PaintPropertyValue
 import org.maplibre.android.style.layers.Property
 import org.maplibre.android.style.layers.PropertyFactory
 import org.maplibre.android.style.sources.GeoJsonSource
+import org.maplibre.android.tile.TileOperation
 import java.io.File
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.math.cos
 
-// The ground's buildings raised (MAP-254, MAP-249), at Zürich Hauptbahnhof close up, by day and by night: seen from
-// straight above, laid flat, their roofs against the flat buildings they replace and the streets drawn over those;
-// tilted as the iPhone's map tilts, raised, with the zones and the walk's trail under them; and the frames of a pan.
+// The ground's buildings (MAP-254, MAP-249) at Zürich Hauptbahnhof close up, by day and by night. Seen from straight
+// above, the flat map as the web draws it, with nothing of the raised buildings drawn once the map rests; tilted, the
+// buildings raised, their walls standing; from one to the other their strengths alone change, and no tile of the
+// ground is laid out again. The zones and the walk's trail lie over the flat buildings and under the raised ones. And
+// the frames of a pan.
 @RunWith(AndroidJUnit4::class)
 class MapBuildingsTest {
     private val station = LatLng(47.3779, 8.5403)
 
     @Test
-    fun theBuildingsRiseAtZurichHauptbahnhofAndTheirRoofsAreTheFlatBuildings() {
+    fun theBuildingsRiseAtZurichHauptbahnhofAndLieFlatAgainWithNothingLaidOutAgain() {
         // The web's zoom 17, a street close up.
         val camera = CameraPosition.Builder().target(station).zoom(16.0).build()
         withPhoneMap(camera) { phone ->
@@ -59,33 +63,70 @@ class MapBuildingsTest {
             try {
                 waitFor(phone) { phone.map.style?.takeIf { it.getSource(GroundStyle.SOURCE) != null } }
                 for (theme in GroundTheme.entries) {
-                    val look = day.copy(theme = theme)
-                    phone.onMain { ground.show(look) }
+                    val palette = GroundPalettes.of(theme)
+                    phone.onMain { ground.show(day.copy(theme = theme)) }
                     val name = theme.name.lowercase()
                     tilt(phone, 0.0)
-                    // Seen from straight above, they lie flat, as MapKit's do.
-                    assertEquals(false, phone.onMain { areRaised(phone) })
-                    val roofs = roofs(phone, GroundPalettes.of(theme), name)
+                    // Seen from straight above, the flat buildings, as the web draws them.
+                    assertStrengths(phone, raised = false)
+                    val flat = shot("buildings-$name-0")
+                    val fills = count(flat) { it == palette.building.toColorInt() }
+                    assertTrue("$name: $fills pixels of flat building", fills > 10_000)
+                    val roofs = roofs(phone, flat, palette, name)
                     Log.i(TAG, "$name: $roofs")
-                    // From above, the roofs are the flat buildings they replace.
+                    // From above, the raised roofs are the flat buildings they take the place of.
                     assertTrue("$name: $roofs", roofs.pixels > 10_000 && roofs.distance <= ROOF_SHADE)
 
+                    // Tilted, they stand: their walls, and their roofs off the ground.
                     for (pitch in listOf(45.0, 60.0)) {
                         tilt(phone, pitch)
-                        assertEquals(true, phone.onMain { areRaised(phone) })
+                        assertStrengths(phone, raised = true)
                         screenshot("buildings-$name-${pitch.toInt()}")
                     }
+                    val standing = standing(phone, name)
+                    Log.i(TAG, "$name at 60°: $standing")
+                    assertTrue("$name at 60°: $standing", standing.stood > 20_000)
+                    // By night, their walls are as dark as the land.
+                    if (theme == GroundTheme.Day) assertTrue("$name at 60°: $standing", standing.walls > 5_000)
+
+                    // Flat again, the map is what it is without the raised buildings at all.
+                    tilt(phone, 0.0)
+                    val bare = bare(phone, "buildings-$name-0-bare")
+                    // The buildings rise at the least tilt and lie flat again, once for the tiles the tilt shows, then
+                    // twice over: no tile of the ground is laid out again, where a change to what they draw would lay
+                    // out every tile shown.
+                    val least = 2 * GroundStyle.LEAST_RAISED_TILT
+                    for (pitch in listOf(least, 0.0)) tilt(phone, pitch)
+                    val parses = parses(phone) {
+                        repeat(2) {
+                            tilt(phone, least)
+                            assertStrengths(phone, raised = true)
+                            tilt(phone, 0.0)
+                            assertStrengths(phone, raised = false)
+                        }
+                    }
+                    Log.i(TAG, "$name: the ground's tiles laid out through the switches: $parses")
+                    assertEquals("$name: $parses", emptyList<String>(), parses)
+                    // Raised as far as the map tilts and laid flat again: at rest, nothing raised is drawn, no wall,
+                    // no roof.
+                    tilt(phone, 60.0)
+                    tilt(phone, 0.0)
+                    assertStrengths(phone, raised = false)
+                    val rested = shot("buildings-$name-0-rested")
+                    val walls = count(phone, rested, bare) { a, b -> distance(a, b) > 8 }
+                    Log.i(TAG, "$name: $walls pixels at rest unlike the map without the raised buildings")
+                    assertEquals(name, 0, walls)
+
                     // Panning tilted, raised and without buildings, by turns, so that what else the computer running
                     // the emulator does weighs on both alike: the map draws the raised ones nearly as often (MAP-249).
                     // The gaps themselves are the computer's as much as the map's; they are logged, not held to.
+                    tilt(phone, 60.0)
                     val panned = (1..PANS).flatMap { listOf(true, false) }.map { raised ->
-                        phone.onMain {
-                            phone.map.style!!.getLayer(GroundStyle.BUILDINGS)!!.setProperties(PropertyFactory.visibility(if (raised) Property.VISIBLE else Property.NONE))
-                        }
+                        phone.onMain { raisedLayer(phone).setProperties(PropertyFactory.visibility(if (raised) Property.VISIBLE else Property.NONE)) }
                         drawn(phone)
                         raised to pan(phone).also { Log.i(TAG, "$name, ${if (raised) "raised" else "no buildings"}, panning at 60°: $it") }
                     }
-                    phone.onMain { phone.map.style!!.getLayer(GroundStyle.BUILDINGS)!!.setProperties(PropertyFactory.visibility(Property.VISIBLE)) }
+                    phone.onMain { raisedLayer(phone).setProperties(PropertyFactory.visibility(Property.VISIBLE)) }
                     val raised = panned.filter { it.first }.sumOf { it.second.mapFrames }
                     val none = panned.filter { !it.first }.sumOf { it.second.mapFrames }
                     Log.i(TAG, "$name: map frames panning, raised $raised, no buildings $none")
@@ -99,10 +140,11 @@ class MapBuildingsTest {
     }
 
     /**
-     * A no-parking zone whose edge crosses the station, and a walk through it and the buildings beside it. Tilted,
-     * they go under the raised buildings, which hide what is behind them, as MapKit's 3D buildings hide its
-     * overlays; seen from straight above, over the flat ones, as MapKit's overlays lie over the roads. Each way, the
-     * trail shows less as it was before: over the raised buildings, more; under the flat ones' roofs, less.
+     * A no-parking zone whose edge crosses the station, and a walk through it and the buildings beside it. They lie
+     * between the streets and the raised buildings, whichever are shown: tilted, under the raised buildings, which
+     * hide what is behind them, as MapKit's 3D buildings hide its overlays; seen from straight above, over the flat
+     * ones, as MapKit's overlays lie over the roads. Each way, the trail shows less as it would the other way round:
+     * over the raised buildings, more; under the flat ones, less.
      */
     @Test
     fun theZonesAndTheWalkGoUnderTheRaisedBuildingsAndOverTheFlatOnes() {
@@ -128,19 +170,18 @@ class MapBuildingsTest {
                     for (pitch in listOf(45.0, 0.0)) {
                         tilt(phone, pitch)
                         val raised = pitch > 0
-                        assertEquals(raised, phone.onMain { areRaised(phone) })
+                        assertStrengths(phone, raised)
+                        // In their order, after the streets and before the raised buildings.
                         val order = phone.onMain { phone.map.style!!.layers.map { it.id } }
-                        val building = order.indexOf(GroundStyle.BUILDINGS)
                         val overlays = GroundOverlays.order.map(order::indexOf)
-                        assertEquals("$order", GroundOverlays.order, order.filter { it in GroundOverlays.order })
-                        assertTrue("$name at $pitch°: $order", if (raised) overlays.all { it in 0 until building } else overlays.all { it > building })
+                        assertEquals("$order", (order.indexOf("street-major") + 1 until order.indexOf(GroundStyle.RAISED_BUILDINGS)).toList(), overlays)
                         val shown = trailPixels(shot("overlays-$name-${pitch.toInt()}"))
 
-                        // The other way round: over the raised buildings, as before; under the flat ones' roofs.
-                        phone.onMain { restack(phone, underBuildings = !raised) }
+                        // The other way round: over the raised buildings; under the flat ones.
+                        phone.onMain { restack(phone, under = if (raised) GroundStyle.FIRST_LABEL_LAYER else GroundStyle.BUILDINGS) }
                         drawn(phone)
                         val other = trailPixels(shot("overlays-$name-${pitch.toInt()}-${if (raised) "over" else "under"}-buildings"))
-                        phone.onMain { GroundOverlays.stack(phone.map.style!!) }
+                        phone.onMain { restack(phone, under = GroundStyle.RAISED_BUILDINGS) }
                         drawn(phone)
                         Log.i(TAG, "$name at ${pitch.toInt()}°: the trail's blue in $shown pixels, $other the other way round")
                         if (raised) {
@@ -157,9 +198,89 @@ class MapBuildingsTest {
         }
     }
 
-    /** Whether the buildings stand at their heights, not laid flat. */
-    private fun areRaised(phone: PhoneMap): Boolean =
-        (phone.map.style!!.getLayer(GroundStyle.BUILDINGS) as FillExtrusionLayer).fillExtrusionHeight.isExpression
+    private fun raisedLayer(phone: PhoneMap) = phone.map.style!!.getLayer(GroundStyle.RAISED_BUILDINGS)!!
+
+    /** The buildings' layers at the strengths MapGround gives them, raised or flat. */
+    private fun assertStrengths(phone: PhoneMap, raised: Boolean) {
+        val strengths = phone.onMain {
+            GroundStyle.buildingStrengths(raised).map { strength ->
+                strength to when (val layer = phone.map.style!!.getLayer(strength.layer)) {
+                    is FillLayer -> layer.fillOpacity.value
+                    is LineLayer -> layer.lineOpacity.value
+                    is FillExtrusionLayer -> layer.fillExtrusionOpacity.value
+                    else -> null
+                }
+            }
+        }
+        for ((strength, value) in strengths) assertEquals("$strength", strength.opacity.toFloat(), value)
+    }
+
+    /** The buildings' layers set at their strengths, raised or flat, as MapGround sets them. */
+    private fun strengthen(phone: PhoneMap, raised: Boolean) {
+        val style = phone.map.style!!
+        for (strength in GroundStyle.buildingStrengths(raised)) {
+            style.getLayer(strength.layer)!!.setProperties(PaintPropertyValue(strength.property, strength.opacity.toFloat()))
+        }
+    }
+
+    /** The ground's tiles MapLibre begins to lay out while [action] runs, as overscaled z/wrap/z/x/y. */
+    private fun parses(phone: PhoneMap, action: () -> Unit): List<String> {
+        val all = mutableListOf<String>()
+        val listener = MapView.OnTileActionListener { operation, x, y, z, wrap, overscaledZ, source ->
+            if (source == GroundStyle.SOURCE && operation == TileOperation.StartParse) all += "$overscaledZ/$wrap/$z/$x/$y"
+        }
+        phone.onMain { phone.view.addOnTileActionListener(listener) }
+        try {
+            action()
+        } finally {
+            phone.onMain { phone.view.removeOnTileActionListener(listener) }
+        }
+        return phone.onMain { all.toList() }
+    }
+
+    /**
+     * How the raised buildings stand: the pixels drawn otherwise than with the same buildings laid flat on the ground
+     * at the same strength, their walls and their roofs lifted off their footprints; and of those, the walls darker
+     * than any roof by day.
+     */
+    private data class Standing(val stood: Int, val walls: Int)
+
+    private fun standing(phone: PhoneMap, name: String): Standing {
+        val raised = shot("buildings-$name-60-raised")
+        val laid = laidFlat(phone) { shot("buildings-$name-60-laid-flat") }
+        val stood = count(phone, raised, laid) { a, b -> distance(a, b) > 12 }
+        // A roof lies at 0.8 over the ground, at least #b4b7bc by day; a wall is lit less, from the side.
+        val walls = count(phone, raised, laid) { a, b -> distance(a, b) > 24 && maxOf(Color.red(a), Color.green(a), Color.blue(a)) < 0xb0 }
+        return Standing(stood, walls)
+    }
+
+    /**
+     * The raised buildings laid flat on the ground while [look] looks at them, then at their heights again as the
+     * style has them.
+     */
+    private fun <T> laidFlat(phone: PhoneMap, look: () -> T): T {
+        val (height, base) = phone.onMain {
+            (raisedLayer(phone) as FillExtrusionLayer).let { it.fillExtrusionHeight.expression!! to it.fillExtrusionBase.expression!! }
+        }
+        phone.onMain { raisedLayer(phone).setProperties(PropertyFactory.fillExtrusionHeight(0f), PropertyFactory.fillExtrusionBase(0f)) }
+        try {
+            drawn(phone)
+            return look()
+        } finally {
+            phone.onMain { raisedLayer(phone).setProperties(PropertyFactory.fillExtrusionHeight(height), PropertyFactory.fillExtrusionBase(base)) }
+            drawn(phone)
+        }
+    }
+
+    /** The screen without the raised buildings at all, kept as [name].png. */
+    private fun bare(phone: PhoneMap, name: String): Bitmap {
+        phone.onMain { raisedLayer(phone).setProperties(PropertyFactory.visibility(Property.NONE)) }
+        drawn(phone)
+        val bare = shot(name)
+        phone.onMain { raisedLayer(phone).setProperties(PropertyFactory.visibility(Property.VISIBLE)) }
+        drawn(phone)
+        return bare
+    }
 
     /** A point some metres east and north of the station. */
     private fun at(east: Double, north: Double): GeoPoint = GeoPoint(
@@ -185,12 +306,12 @@ class MapBuildingsTest {
         }
     }
 
-    /** The zones and the trail moved under the buildings or over them, in their order. */
-    private fun restack(phone: PhoneMap, underBuildings: Boolean) {
+    /** The zones and the trail moved under another layer, in their order. */
+    private fun restack(phone: PhoneMap, under: String) {
         val style = phone.map.style!!
         val layers = GroundOverlays.order.mapNotNull { style.getLayer(it) }
         for (layer in layers) style.removeLayer(layer)
-        var above = if (underBuildings) GroundStyle.BUILDINGS else GroundStyle.FIRST_LABEL_LAYER
+        var above = under
         for (layer in layers.asReversed()) {
             style.addLayerBelow(layer, above)
             above = layer.id
@@ -200,93 +321,77 @@ class MapBuildingsTest {
     /** How many pixels of a screen are the trail's blue. */
     private fun trailPixels(screen: Bitmap): Int {
         val blue = (WalkTrailLook.dotColor and 0xFFFFFF).toInt()
+        return count(screen) { distance(it, blue) <= 24 }
+    }
+
+    /** How many pixels of a screen are as asked. */
+    private fun count(screen: Bitmap, which: (Int) -> Boolean): Int {
         val pixels = IntArray(screen.width * screen.height)
         screen.getPixels(pixels, 0, screen.width, 0, 0, screen.width, screen.height)
-        return pixels.count { distance(it, blue) <= 24 }
+        return pixels.count(which)
+    }
+
+    /** How many of the map's pixels on one screen are as asked, against the same pixel of another. */
+    private fun count(phone: PhoneMap, screen: Bitmap, other: Bitmap, which: (Int, Int) -> Boolean): Int {
+        // The map's own pixels, without the status bar, whose clock may have turned between the two.
+        val (left, top) = phone.onMain { IntArray(2).also(phone.view::getLocationOnScreen).toList() }
+        val width = minOf(phone.view.width, screen.width - left)
+        val height = minOf(phone.view.height, screen.height - top)
+        val pixels = IntArray(width * height)
+        val others = IntArray(width * height)
+        screen.getPixels(pixels, 0, width, left, top, width, height)
+        other.getPixels(others, 0, width, left, top, width, height)
+        return pixels.indices.count { which(pixels[it], others[it]) }
     }
 
     /** The most two colours are apart in a channel of 255. */
     private fun distance(a: Int, b: Int): Int =
         maxOf(abs(Color.red(a) - Color.red(b)), abs(Color.green(a) - Color.green(b)), abs(Color.blue(a) - Color.blue(b)))
 
-    /**
-     * How far the roofs seen from above are from the flat buildings of before, where those are drawn; and the
-     * pixels drawn otherwise than before, the outline left aside: where a street, a path, a rail or a square was
-     * drawn over a building.
-     */
-    private data class Roofs(val pixels: Int, val flat: Int, val raised: Int, val changed: Int) {
+    /** How far the raised roofs seen from above are from the flat buildings, where the flat map shows a building's fill. */
+    private data class Roofs(val pixels: Int, val flat: Int, val raised: Int) {
         val distance: Int
             get() = maxOf(abs(Color.red(flat) - Color.red(raised)), abs(Color.green(flat) - Color.green(raised)), abs(Color.blue(flat) - Color.blue(raised)))
 
-        override fun toString() = "$pixels pixels of building: flat #%06x, roofs #%06x on average, %d apart; %d pixels drawn otherwise than before"
-            .format(flat and 0xffffff, raised and 0xffffff, distance, changed)
+        override fun toString() = "$pixels pixels of building: flat #%06x, raised roofs from above #%06x on average, %d apart"
+            .format(flat and 0xffffff, raised and 0xffffff, distance)
     }
 
     /**
-     * The buildings drawn flat as before, a fill in the building colour under the squares, the rails, the paths and
-     * the streets, with its outline; then laid flat as now: the mean colour of the roofs where the flat map shows a
-     * building's fill, and the pixels that differ from the flat map without its outline, kept as
-     * buildings-*-changed.png.
+     * The raised buildings shown in place of the flat ones on a map seen from straight above, at the ground, so that
+     * no wall shows at the edges MapLibre draws in perspective: the mean colour of their roofs where the [flat] map
+     * shows a building's fill. Then the flat buildings again, as MapGround has them.
      */
-    private fun roofs(phone: PhoneMap, palette: GroundPalette, name: String): Roofs {
-        phone.onMain {
-            // The web's: a fill, stroked 1 point wide.
-            val flat = FillLayer("flat-building", GroundStyle.SOURCE).withSourceLayer("building")
-                .withProperties(PropertyFactory.fillColor(palette.building))
-            val outline = LineLayer("flat-building-line", GroundStyle.SOURCE).withSourceLayer("building")
-                .withProperties(PropertyFactory.lineColor(if (palette === GroundPalettes.day) "#d6dae2" else "#171d2a"), PropertyFactory.lineWidth(1f))
-            val style = phone.map.style!!
-            style.addLayerBelow(flat, "square")
-            style.addLayerAbove(outline, flat.id)
-            style.getLayer(GroundStyle.BUILDINGS)!!.setProperties(PropertyFactory.visibility(Property.NONE))
-        }
+    private fun roofs(phone: PhoneMap, flat: Bitmap, palette: GroundPalette, name: String): Roofs {
+        phone.onMain { strengthen(phone, raised = true) }
+        val roofs = laidFlat(phone) { shot("buildings-$name-0-roofs") }
+        phone.onMain { strengthen(phone, raised = false) }
         drawn(phone)
-        screenshot("buildings-$name-flat-before")
-        phone.onMain { phone.map.style!!.getLayer("flat-building-line")!!.setProperties(PropertyFactory.visibility(Property.NONE)) }
-        drawn(phone)
-        val before = shot("buildings-$name-flat-before-unstroked")
-        phone.onMain {
-            val style = phone.map.style!!
-            style.removeLayer("flat-building-line")
-            style.removeLayer("flat-building")
-            style.getLayer(GroundStyle.BUILDINGS)!!.setProperties(PropertyFactory.visibility(Property.VISIBLE))
-        }
-        drawn(phone)
-        val after = shot("buildings-$name-0")
         val fill = palette.building.toColorInt()
-        val changes = after.copy(Bitmap.Config.ARGB_8888, true)
         var count = 0
-        var changed = 0
         var red = 0L
         var green = 0L
         var blue = 0L
-        for (y in 0 until before.height) {
-            for (x in 0 until before.width) {
-                val was = before.getPixel(x, y)
-                val pixel = after.getPixel(x, y)
-                if (distance(was, pixel) > 8) {
-                    changed += 1
-                    changes.setPixel(x, y, Color.RED)
-                }
-                if (was != fill) continue
+        for (y in 0 until flat.height) {
+            for (x in 0 until flat.width) {
+                if (flat.getPixel(x, y) != fill) continue
+                val pixel = roofs.getPixel(x, y)
                 count += 1
                 red += Color.red(pixel)
                 green += Color.green(pixel)
                 blue += Color.blue(pixel)
             }
         }
-        save(changes, "buildings-$name-changed")
         val mean = if (count == 0) 0 else Color.rgb((red / count).toInt(), (green / count).toInt(), (blue / count).toInt())
-        return Roofs(count, fill, mean, changed)
+        return Roofs(count, fill, mean)
     }
 
+    /** The camera turned to [pitch] at once, and the map drawn whole after, the buildings' strengths eased. */
     private fun tilt(phone: PhoneMap, pitch: Double) {
         phone.onMain {
             val position = CameraPosition.Builder(phone.map.cameraPosition).target(station).tilt(pitch).build()
             phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(position))
         }
-        // MapLibre's ease of the buildings' heights.
-        SystemClock.sleep(GroundStyle.BUILDINGS_RISE)
         drawn(phone)
     }
 
@@ -296,7 +401,7 @@ class MapBuildingsTest {
      * map was partly drawn.
      */
     private fun drawn(phone: PhoneMap) {
-        SystemClock.sleep(300)
+        SystemClock.sleep(GroundStyle.BUILDINGS_RISE)
         val idle = CountDownLatch(1)
         val listener = MapView.OnDidBecomeIdleListener { idle.countDown() }
         phone.onMain {
@@ -312,15 +417,11 @@ class MapBuildingsTest {
     /** The screen now, kept as [name].png as [screenshot] keeps it. */
     private fun shot(name: String): Bitmap {
         val bitmap = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
-        save(bitmap, name)
-        return bitmap
-    }
-
-    private fun save(bitmap: Bitmap, name: String) {
         InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let { dir ->
             File(dir).mkdirs()
             File(dir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
         }
+        return bitmap
     }
 
     /** A pan's frames: gfxinfo's count of the window's, and the map's own with the gaps between them. */
@@ -389,11 +490,7 @@ class MapBuildingsTest {
         /** A degree of latitude, in metres. */
         const val METRES_PER_DEGREE = 111_195.0
 
-        /**
-         * How far apart, in any channel of 255, the roofs seen from above may be from the flat buildings they
-         * replace, on average: the walls of the tallest show at the edges of the map, which MapLibre draws in
-         * perspective.
-         */
-        const val ROOF_SHADE = 6
+        /** How far apart, in any channel of 255, the raised roofs seen from above may be from the flat buildings, on average. */
+        const val ROOF_SHADE = 3
     }
 }

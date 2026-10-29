@@ -17,7 +17,6 @@ import org.maplibre.android.style.layers.FillLayer
 import org.maplibre.android.style.layers.LayoutPropertyValue
 import org.maplibre.android.style.layers.LineLayer
 import org.maplibre.android.style.layers.PaintPropertyValue
-import org.maplibre.android.style.layers.PropertyValue
 import org.maplibre.android.style.layers.SymbolLayer
 import org.maplibre.android.style.layers.TransitionOptions
 import org.maplibre.android.style.sources.TileSet
@@ -51,8 +50,8 @@ class MapGround(
 
     private var waiting: Job? = null
 
-    /** Whether the buildings stand at their heights, as the style has them, or lie flat. */
-    private var raised = true
+    /** Whether the raised buildings are shown, or the flat ones, as the style has them. */
+    private var raised = false
 
     /** The map tilting: the buildings rise with it, from the first move. */
     private val tilting = MapLibreMap.OnCameraMoveListener { if (!raised) stand() }
@@ -70,11 +69,11 @@ class MapGround(
             // to the same value, and fades in the names placed anew: the rider's breath, a write every 66 ms, would
             // have the map drawn every frame for as long as the dot shows. The ground's names appear at once.
             loaded.transition = TransitionOptions(0, 0, false)
-            // But the buildings, which rise as the map tilts and sink as it rests flat.
-            (loaded.getLayer(GroundStyle.BUILDINGS) as? FillExtrusionLayer)?.apply {
-                fillExtrusionHeightTransition = TransitionOptions(GroundStyle.BUILDINGS_RISE, 0, false)
-                fillExtrusionBaseTransition = TransitionOptions(GroundStyle.BUILDINGS_RISE, 0, false)
-            }
+            // But the buildings, which rise as the map tilts and lie flat again as it rests seen from above.
+            val rise = TransitionOptions(GroundStyle.BUILDINGS_RISE, 0, false)
+            (loaded.getLayer(GroundStyle.BUILDINGS) as? FillLayer)?.fillOpacityTransition = rise
+            (loaded.getLayer(GroundStyle.BUILDING_LINES) as? LineLayer)?.lineOpacityTransition = rise
+            (loaded.getLayer(GroundStyle.RAISED_BUILDINGS) as? FillExtrusionLayer)?.fillExtrusionOpacityTransition = rise
             style = loaded
             restyle()
             stand()
@@ -95,18 +94,18 @@ class MapGround(
     }
 
     /**
-     * The buildings raised while the map is tilted and flat while it is seen from straight above, MapLibre easing
-     * them between the two; the zones and the walk's trail under them while they stand, as MapKit's overlays are
-     * under its 3D buildings, and over them while they lie flat, as over the roads (GroundOverlays).
+     * The raised buildings shown while the map is tilted, and the flat ones while it is seen from straight above,
+     * MapLibre easing each into the other. Their strengths alone change: nothing is laid out again, and the zones
+     * and the walk's trail stay where they are, over the flat buildings and under the raised ones (GroundOverlays).
      */
     private fun stand() {
         val style = style ?: return
         val tilted = map.cameraPosition.tilt >= GroundStyle.LEAST_RAISED_TILT
         if (tilted == raised) return
         raised = tilted
-        val heights = GroundStyle.buildingHeights(raised).map { (name, value) -> PaintPropertyValue(name, value(value)) }
-        style.getLayer(GroundStyle.BUILDINGS)?.setProperties(*heights.toTypedArray<PropertyValue<*>>())
-        GroundOverlays.stack(style)
+        for (strength in GroundStyle.buildingStrengths(raised)) {
+            style.getLayer(strength.layer)?.setProperties(PaintPropertyValue(strength.property, strength.opacity.toFloat()))
+        }
     }
 
     private fun waitForTiles() {

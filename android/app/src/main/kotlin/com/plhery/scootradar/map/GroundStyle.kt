@@ -24,6 +24,7 @@ class GroundPalette(
     val green: String,
     val water: String,
     val building: String,
+    val buildingLine: String,
     /**
      * The colour the buildings are raised in, whose roofs MapLibre's light shows as [building] from above: it
      * adds 0.03 to a roof, lights it by 1.15·cos 30° between 0.5 and max(1.5 − luminance, 1), and lays it at 0.8
@@ -46,13 +47,15 @@ class GroundPalette(
 
 object GroundPalettes {
     val night = GroundPalette(
-        land = "#0b0e14", green = "#0d1d1b", water = "#0b2244", building = "#10141d", buildingRaised = "#04070e",
+        land = "#0b0e14", green = "#0d1d1b", water = "#0b2244", building = "#10141d", buildingLine = "#171d2a",
+        buildingRaised = "#04070e",
         rail = "#2a3246", path = "#1a2030", casing = null, minor = "#222a3b", mid = "#2b354a", major = "#35415a",
         border = "#3a4560", label = "#76819a", labelStrong = "#9aa4b8", halo = "#0b0e14", waterLabel = "#4670aa",
     )
 
     val day = GroundPalette(
-        land = "#eef0f4", green = "#dbe8da", water = "#c2d8f2", building = "#e2e5eb", buildingRaised = "#d8dbe2",
+        land = "#eef0f4", green = "#dbe8da", water = "#c2d8f2", building = "#e2e5eb", buildingLine = "#d6dae2",
+        buildingRaised = "#d8dbe2",
         rail = "#cfd4dd", path = "#f7f8fa", casing = "#dde1e8", minor = "#ffffff", mid = "#ffffff", major = "#ffffff",
         border = "#b9c0cc", label = "#7c8596", labelStrong = "#5f6878", halo = "#eef0f4", waterLabel = "#6d93c4",
     )
@@ -133,8 +136,17 @@ object GroundStyle {
      */
     const val FIRST_LABEL_LAYER = "housenumber"
 
-    /** The buildings, raised on a tilted map close up (MAP-254). */
+    /** The buildings, flat, as the web draws them: a fill under the squares, the rails, the paths and the streets. */
     const val BUILDINGS = "building"
+
+    /** Their outline, flat. */
+    const val BUILDING_LINES = "building-line"
+
+    /**
+     * The buildings raised to their heights, as MapKit raises them on a tilted map close up (MAP-254): the last of
+     * the ground's shapes, over the streets.
+     */
+    const val RAISED_BUILDINGS = "building-raised"
 
     /**
      * The least tilt, in degrees, at which the buildings stand: below it the map is seen from straight above, where
@@ -144,6 +156,9 @@ object GroundStyle {
 
     /** How long MapLibre takes to raise the buildings or lay them flat, in ms: its own default for a change. */
     const val BUILDINGS_RISE = 300L
+
+    /** The raised buildings' strength while they stand, OpenFreeMap's Liberty's. */
+    const val RAISED_OPACITY = 0.8
 
     /**
      * The style for a look. Without the tiles' address the ground is the plain colour of the land, as on the web,
@@ -254,6 +269,16 @@ object GroundStyle {
                 filter = all(listOf("==", get("admin_level"), 2), listOf("!=", get("maritime"), 1)),
                 paint = mapOf("line-color" to c.border, "line-width" to grows(4 to 0.6, 10 to 1.4)),
             ),
+            // Flat, as the web draws them; they give way to the raised ones as the map tilts (buildingStrengths).
+            layer(
+                BUILDINGS, "fill", "building", minzoom = web(15), visible = shapes,
+                paint = mapOf("fill-color" to c.building) + strength(BUILDINGS, raised = false),
+            ),
+            // The web strokes each building 1 point wide; MapLibre's own outline of a fill is a single pixel.
+            layer(
+                BUILDING_LINES, "line", "building", minzoom = web(15), visible = shapes,
+                paint = mapOf("line-color" to c.buildingLine, "line-width" to 1) + strength(BUILDING_LINES, raised = false),
+            ),
             // A square or a street closed to cars, mapped as an area.
             layer(
                 "square", "fill", "transportation", minzoom = web(15), visible = shapes,
@@ -288,29 +313,38 @@ object GroundStyle {
     }
 
     /**
-     * The buildings, raised to their heights as MapKit raises them when the map is tilted close up (MAP-254), as
-     * OpenFreeMap's Liberty does: from above, their roofs are the web's flat buildings in its colour. They come after the
+     * The buildings raised to their heights, as MapKit raises them when the map is tilted close up (MAP-254), as
+     * OpenFreeMap's Liberty does: from above, their roofs are the flat buildings in their colour. They come after the
      * streets, which they hide where they stand in front of them; an outline whose parts have their own heights is
-     * left to its parts. The map lays them flat when it comes to rest seen from straight above (MapGround).
+     * left to its parts. Unseen until the map tilts (buildingStrengths).
      */
     private fun buildings(c: GroundPalette, visible: Boolean) = layer(
-        BUILDINGS, "fill-extrusion", "building", minzoom = web(15), visible = visible,
+        RAISED_BUILDINGS, "fill-extrusion", "building", minzoom = web(15), visible = visible,
         filter = listOf("!", listOf("has", "hide_3d")),
         paint = mapOf(
             "fill-extrusion-color" to c.buildingRaised,
-            "fill-extrusion-opacity" to 0.8,
+            "fill-extrusion-height" to get("render_height"),
+            "fill-extrusion-base" to get("render_min_height"),
             "fill-extrusion-vertical-gradient" to true,
-        ) + buildingHeights(raised = true),
+        ) + strength(RAISED_BUILDINGS, raised = false),
     )
 
+    /** One of the buildings' layers and its strength's paint property, flat or raised. */
+    data class Strength(val layer: String, val property: String, val opacity: Double)
+
     /**
-     * The buildings' heights: raised, or flat as MapKit's are on a map seen from straight above (ios/README.md: "a
-     * smaller tilt is flat again"). Paint properties, which MapLibre changes without laying the buildings out again.
+     * How strongly each of the buildings' layers draws them: the flat ones while the map is seen from straight above,
+     * as MapKit's are (ios/README.md: "a smaller tilt is flat again"), the raised ones while it is tilted. Constants,
+     * which MapLibre eases from one to the other without laying anything out again; a layer at none is not drawn.
      */
-    fun buildingHeights(raised: Boolean): Map<String, JsonElement> = mapOf(
-        "fill-extrusion-height" to if (raised) element(get("render_height")) else JsonPrimitive(0),
-        "fill-extrusion-base" to if (raised) element(get("render_min_height")) else JsonPrimitive(0),
+    fun buildingStrengths(raised: Boolean): List<Strength> = listOf(
+        Strength(BUILDINGS, "fill-opacity", if (raised) 0.0 else 1.0),
+        Strength(BUILDING_LINES, "line-opacity", if (raised) 0.0 else 1.0),
+        Strength(RAISED_BUILDINGS, "fill-extrusion-opacity", if (raised) RAISED_OPACITY else 0.0),
     )
+
+    private fun strength(layer: String, raised: Boolean): Map<String, Any> =
+        buildingStrengths(raised).filter { it.layer == layer }.associate { it.property to it.opacity }
 
     private fun railPaint(c: GroundPalette) =
         mapOf("line-color" to c.rail, "line-width" to grows(12 to 0.4, 17 to 1.0, 19 to 2.0))

@@ -131,41 +131,66 @@ class GroundStyleTest {
             .all { it.value == JsonPrimitive("visible") })
     }
 
-    /** MapKit's buildings rise when the map is tilted close up, as OpenFreeMap's Liberty raises them (MAP-254). */
+    /**
+     * MapKit's buildings rise when the map is tilted close up, as OpenFreeMap's Liberty raises them, and lie flat
+     * seen from straight above, as the web draws them (MAP-254): two ways of drawing them, one shown at a time.
+     */
     @Test
     fun theBuildingsRiseToTheirHeightsFromTheWebsZoom15InTheirOwnColours() {
         val layers = GroundStyle.layers(calmDay)
         val buildings = layers.filter { (it.json["source-layer"] as? JsonPrimitive)?.content == "building" }
-        // One layer, raised, in place of the flat fill and its outline.
-        assertEquals(listOf("building"), buildings.map { it.id })
-        val building = buildings.single()
-        assertEquals("fill-extrusion", building.type)
-        assertEquals(14.0, building.json["minzoom"]!!.jsonPrimitive.double, 0.0)
+        assertEquals(listOf(GroundStyle.BUILDINGS, GroundStyle.BUILDING_LINES, GroundStyle.RAISED_BUILDINGS), buildings.map { it.id })
+        assertTrue(buildings.all { it.visible && it.json["minzoom"]!!.jsonPrimitive.double == 14.0 })
+        val (flat, outline, raised) = buildings
+        // Flat, the web's: a fill stroked a pixel wide, shown to start with.
+        assertEquals("fill", flat.type)
+        assertEquals(Json.parseToJsonElement("""{"fill-color":"#e2e5eb","fill-opacity":1.0}"""), flat.paint)
+        assertEquals("line", outline.type)
+        assertEquals(Json.parseToJsonElement("""{"line-color":"#d6dae2","line-width":1,"line-opacity":1.0}"""), outline.paint)
+        // Raised: at their heights, unseen to start with.
+        assertEquals("fill-extrusion", raised.type)
         assertEquals(
             Json.parseToJsonElement(
                 """{"fill-extrusion-color":"#d8dbe2","fill-extrusion-height":["get","render_height"],""" +
-                    """"fill-extrusion-base":["get","render_min_height"],"fill-extrusion-opacity":0.8,""" +
-                    """"fill-extrusion-vertical-gradient":true}""",
+                    """"fill-extrusion-base":["get","render_min_height"],"fill-extrusion-vertical-gradient":true,""" +
+                    """"fill-extrusion-opacity":0.0}""",
             ),
-            building.paint,
+            raised.paint,
         )
         // A building's outline whose parts have their own heights is left to its parts.
-        assertEquals(Json.parseToJsonElement("""["!",["has","hide_3d"]]"""), building.filter)
-        assertTrue(building.visible)
-        // Drawn after the streets, which the buildings hide where they stand in front, and under the names.
+        assertEquals(Json.parseToJsonElement("""["!",["has","hide_3d"]]"""), raised.filter)
+        // Flat, under the squares, the rails, the paths and the streets, as on the web; raised, after the streets,
+        // which they hide where they stand in front, and under the names.
         val ids = layers.map { it.id }
-        assertTrue(ids.indexOf("building") > ids.indexOf("street-major"))
-        assertTrue(ids.indexOf("building") < ids.indexOf(GroundStyle.FIRST_LABEL_LAYER))
-        // By night, only its colour changes: darker than the night's flat buildings, which MapLibre's light shows
-        // its roofs as (MapBuildingsTest).
-        val night = GroundStyle.changes(calmDay, calmDay.copy(theme = GroundTheme.Night)).filter { it.layer == "building" }
-        assertEquals(listOf(GroundStyle.Change("building", GroundStyle.Change.Kind.Paint, "fill-extrusion-color", JsonPrimitive("#04070e"))), night)
-        // Seen from straight above, they lie flat, as MapKit's do: their heights only, paint properties.
+        assertEquals(ids.indexOf("boundary") + 1, ids.indexOf(GroundStyle.BUILDINGS))
+        assertEquals(ids.indexOf(GroundStyle.BUILDINGS) + 1, ids.indexOf(GroundStyle.BUILDING_LINES))
+        assertEquals(ids.indexOf(GroundStyle.BUILDING_LINES) + 1, ids.indexOf("square"))
+        assertEquals(ids.indexOf("street-major") + 1, ids.indexOf(GroundStyle.RAISED_BUILDINGS))
+        assertEquals(ids.indexOf(GroundStyle.RAISED_BUILDINGS) + 1, ids.indexOf(layers.first { it.type == "symbol" }.id))
+        // By night, only their colours change: the raised ones darker than the night's flat buildings, which
+        // MapLibre's light shows their roofs as (MapBuildingsTest).
+        val night = GroundStyle.changes(calmDay, calmDay.copy(theme = GroundTheme.Night)).filter { change -> buildings.any { it.id == change.layer } }
         assertEquals(
-            mapOf("fill-extrusion-height" to JsonPrimitive(0), "fill-extrusion-base" to JsonPrimitive(0)),
-            GroundStyle.buildingHeights(raised = false),
+            listOf(
+                GroundStyle.Change(GroundStyle.BUILDINGS, GroundStyle.Change.Kind.Paint, "fill-color", JsonPrimitive("#10141d")),
+                GroundStyle.Change(GroundStyle.BUILDING_LINES, GroundStyle.Change.Kind.Paint, "line-color", JsonPrimitive("#171d2a")),
+                GroundStyle.Change(GroundStyle.RAISED_BUILDINGS, GroundStyle.Change.Kind.Paint, "fill-extrusion-color", JsonPrimitive("#04070e")),
+            ),
+            night,
         )
-        assertEquals(GroundStyle.buildingHeights(raised = true), building.paint.filterKeys { it in GroundStyle.buildingHeights(raised = false) })
+        // Tilted, the raised ones are shown and the flat ones not: by their strengths alone, constants, which MapLibre
+        // eases from one to the other without laying anything out again.
+        assertEquals(
+            listOf(
+                GroundStyle.Strength(GroundStyle.BUILDINGS, "fill-opacity", 0.0),
+                GroundStyle.Strength(GroundStyle.BUILDING_LINES, "line-opacity", 0.0),
+                GroundStyle.Strength(GroundStyle.RAISED_BUILDINGS, "fill-extrusion-opacity", 0.8),
+            ),
+            GroundStyle.buildingStrengths(raised = true),
+        )
+        for (strength in GroundStyle.buildingStrengths(raised = false)) {
+            assertEquals(JsonPrimitive(strength.opacity), layers.first { it.id == strength.layer }.paint[strength.property])
+        }
     }
 
     /**
@@ -240,7 +265,7 @@ class GroundStyleTest {
         assertEquals(GroundLook(GroundTheme.Night, GroundDetail.Detailed, "en", satellite = true), look)
         val layers = GroundStyle.layers(look, hasImagery = true).associateBy { it.id }
         assertTrue(layers.getValue(GroundStyle.SATELLITE).visible)
-        for (shape in listOf("landcover", "park", "water", "building", "square")) assertFalse(shape, layers.getValue(shape).visible)
+        for (shape in listOf("landcover", "park", "water", GroundStyle.BUILDINGS, GroundStyle.BUILDING_LINES, "square", GroundStyle.RAISED_BUILDINGS)) assertFalse(shape, layers.getValue(shape).visible)
         assertTrue(layers.getValue("street-major").visible)
         assertTrue(layers.getValue("city").visible)
         // Without imagery there is no layer for it.
