@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tel-aviv',
   name: 'Renting an e-scooter in Tel Aviv',
   title: 'E-scooter Tel Aviv 2026: Lime, Bird, Dott, rules and prices',
-  description: 'E-scooter Tel Aviv guide: Lime, Bird and Dott, what a ride costs, the licence or riding test, helmet and sidewalk fines, parking bays, Shabbat and the airport.',
-  headline: 'E-scooters in Tel Aviv: Lime, Bird and Dott, what a ride costs, the licence rule, parking bays and Shabbat',
-  lede: 'You can rent an e-scooter in Tel Aviv with Lime, Bird or Dott. Dott charges ₪5 to unlock plus ₪1.25 a minute (published rate, 16 October 2026); Lime and Bird show their prices in the app. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. In the city centre you can end a ride only in a marked bay.',
+  description: 'E-scooter Tel Aviv guide: Lime, Bird and Dott, prices in the app, the licence or riding test, helmet and sidewalk fines, parking bays, Shabbat and the airport.',
+  headline: 'E-scooters in Tel Aviv: Lime, Bird and Dott, the licence rule, fines, parking bays and Shabbat',
+  lede: 'You can rent an e-scooter in Tel Aviv with Lime or Bird, both on our map, and each app shows its price before you unlock. Dott was renting here too in late October 2026, but its scooters left our map on 28 October: check its app. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. In the city centre you can end a ride only in a marked bay.',
   published: '2026-10-16',
   updated: '2026-10-23',
   city: 'il:Tel Aviv',
@@ -16,8 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Tel Aviv?',
       blocks: [
-        'Three apps put stand-up e-scooters on our map of Tel Aviv-Yafo, Jaffa included: **Lime**, **Bird** and **Dott**.',
-        'On the evening of 16 October 2026 the [map of Tel Aviv](map:il:Tel Aviv) showed about 7,400 scooters: some 3,000 Lime, 2,400 Bird and 2,000 Dott. That’s a count of what’s on the map, not the fleets, and the map’s area reaches into Ramat Gan, Givatayim, Holon and Bat Yam. The suburbs have scooters of their own: the [Ramat Gan map](map:il:Ramat Gan) showed about 3,600 the same evening.',
+        'Two apps put stand-up e-scooters on our map of Tel Aviv-Yafo, Jaffa included: **Lime** and **Bird**.',
+        'At 11:55 Israel time on Thursday 29 October 2026 the [map of Tel Aviv](map:il:Tel Aviv) showed 2,967 scooters inside Tel Aviv-Yafo’s municipal boundary: 1,302 Lime and 1,665 Bird. That’s a count of what was on the map at that moment, not the fleets. The suburbs have scooters of their own, counted apart: at the same moment the [Ramat Gan map](map:il:Ramat Gan) showed 1,017.',
+        '**Dott** rented here too: on 25 October 2026 the news site Kipa listed Tel Aviv-Yafo among the seven towns where it runs shared scooters. Its scooters dropped off our map on 28 October 2026. We found no news of Dott leaving, so it may still rent here: check its app.',
         'Tel Aviv-Yafo began regulating the companies in August 2019, with parking bays in the centre and city inspectors, Maariv reported, and in January 2020 it made them fit ID plates, Globes reported. ScootRadar doesn’t show bike share or e-bikes.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -25,19 +26,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Tel Aviv?',
       blocks: [
-        'Dott publishes its Tel Aviv rate: ₪5 to unlock, then ₪1.25 a minute. Lime and Bird publish no price in their open data, so compare them in their apps.',
-        {
-          table: {
-            caption: 'Dott in Tel Aviv (published rate, 16 October 2026)',
-            head: ['Ride', 'Price'],
-            rows: [
-              ['5 minutes', '₪11.25'],
-              ['10 minutes', '₪17.50'],
-              ['20 minutes', '₪30'],
-              ['30 minutes', '₪42.50'],
-            ],
-          },
-        },
+        'We found no current Tel Aviv price published by Lime, Bird or Dott, so compare them in their apps: each shows the unlock fee and the rate before you start.',
         'Fines cost far more than rides, and a scooter is easy to trace: since 1 August 2024 e-scooters in Israel have had to be registered and carry an ID plate, Maariv reported in 2026.',
       ],
     },
@@ -61,8 +50,8 @@ const guide: Guide = {
             rows: [
               ['Minimum age', '16', '₪1,000', 'Srugim 2022; Ice 2024'],
               ['Licence or test', 'A driving licence or, without one, a passed test', '₪750', 'Srugim 2022; Ice 2024'],
-              ['Helmet', 'Required', 'A fine; reports differ on the amount', 'Srugim 2022; Ice 2024'],
-              ['Speed', '25 km/h at most; Dott’s scooters slow to 15 km/h in its slow zones', '–', 'Ice 2024; Dott open data'],
+              ['Helmet', 'Required', '₪1,000', 'Srugim 2022; Ice 2024'],
+              ['Speed', '25 km/h at most', '–', 'Ice 2024'],
               ['Where to ride', 'Bike path, or the road where there is none; never the sidewalk', '₪250 on the sidewalk', 'dpa 2019; Ice 2023'],
               ['Passengers', 'One rider only', '₪250', 'Srugim 2022; Ice 2023'],
               ['Alcohol', 'No riding drunk, as for any vehicle', 'A court case; you can lose your driving licence', 'Calcalist 2019'],
@@ -70,7 +59,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The Knesset’s Economy Committee approved the ₪1,000 fine for riding under 16 and the ₪750 one for riding without a licence or test in June 2022, Srugim reported. Tel Aviv-Yafo’s 2023 reminder to riders put the sidewalk and passenger fines at ₪250 each, Ice reported.',
+        'The Knesset’s Economy Committee approved ₪1,000 fines for riding without a helmet and for riding under 16, and the ₪750 one for riding without a licence or test, in June 2022, Srugim reported. Tel Aviv-Yafo’s 2023 reminder to riders put the sidewalk and passenger fines at ₪250 each, Ice reported.',
         '**Alcohol.** E-scooters are “subject to the same traffic laws as any other vehicle”, a police spokesman told Calcalist in 2019, when Tel Aviv police began breath-testing riders. The paper said a conviction could cost you your driving licence for 24 months.',
         'The city’s inspectors enforce alongside the police. In 2019, 21,000 tickets were written for riding on the sidewalk, Globes reported, and in June 2022 the Knesset’s Economy Committee approved letting municipal inspectors also fine riders for a missing helmet, riding under 16 or without a licence or course, and carrying a passenger, Srugim reported. In January 2020 the city opened its 106 app to reports of shared scooters on the sidewalk; the company then sanctions the rider, from a warning to a ban.',
       ],
@@ -79,17 +68,17 @@ const guide: Guide = {
       heading: 'Where to ride and park in Tel Aviv and Jaffa',
       blocks: [
         'Ride on a bike path; where a street has none, ride on the road, never on the sidewalk, dpa reported in 2019. Tel Aviv-Yafo repeated the rule in 2023, asking riders to keep to marked paths and the right-hand side of the road, Ice reported.',
-        '**Parking in the city centre: bays only.** Tel Aviv-Yafo began requiring marked bays for shared scooters in August 2019, in district 3, between Ibn Gabirol Street and the sea, Maariv reported. Dott’s open data now show its bays-only zone covering the centre, Florentin, Neve Tzedek, the seafront and the area around the Jaffa clock tower; there its app won’t let you end a ride outside a bay.',
-        '**Elsewhere**, check the app before you stop: Bird’s and Dott’s open data mark hundreds of spots where you can’t end a ride. City inspectors target scooters left blocking public space, Maariv reported when the rules began.',
-        '**No-ride zones.** Dott’s open data mark zones where its scooters won’t run at Habima Square, the deck at Tel Aviv Port, Rabin Square and Sarona; walk the scooter through. The city announced bans on busy areas such as the port from February 2020, Globes reported.',
-        '**Slow zones at 15 km/h.** Dott’s open data mark more than 100 small zones around Tel Aviv where its scooters slow to 15 km/h, Nahalat Binyamin among them. The city announced its first such zones for February 2020, Globes reported.',
-        '**The promenade (tayelet) and Jaffa.** The seafront down to Jaffa, with the clock tower, the flea market and the port, lies inside Bird’s and Dott’s areas. Give way to people on foot, and walk the scooter where it’s crowded.',
+        '**Parking in the city centre: bays only.** Tel Aviv-Yafo began requiring marked bays for shared scooters in August 2019, in district 3, between Ibn Gabirol Street and the sea, Maariv reported. We found no current list of the bays-only streets, so end your ride where the app accepts it.',
+        '**Elsewhere**, check the app before you stop. Turn on **Ride and parking zones** in the map’s settings and zoom in, and the map draws Bird’s zones: about 470 small spots across Tel Aviv-Yafo where you can’t end a ride. Lime’s zones aren’t on the map, and for both companies the app has the final word. City inspectors target scooters left blocking public space, Maariv reported when the rules began.',
+        '**No-ride zones.** The city announced bans on busy areas such as the port from February 2020, Globes reported. The map draws only one small Bird no-ride spot in Tel Aviv-Yafo, so watch the app, and walk the scooter through any zone where it won’t run.',
+        '**Slow zones at 15 km/h.** The city announced its first zones where scooters slow to 15 km/h for February 2020, Globes reported. The map draws none in Tel Aviv-Yafo, so check the app.',
+        '**The promenade (tayelet) and Jaffa.** The seafront runs down to Jaffa, with the clock tower, the flea market and the port. Give way to people on foot, and walk the scooter where it’s crowded.',
       ],
     },
     {
       heading: 'Ben Gurion airport, the Red Line and Rav-Kav',
       blocks: [
-        '**The airport.** Ben Gurion lies about 15 km from Tel Aviv, outside Bird’s and Dott’s areas; on 16 October 2026 Lime’s open data put its nearest scooter more than 2.5 km from either terminal. Take the train from the lower level of Terminal 3 to Tel Aviv’s HaHagana, HaShalom and Savidor Center stations, 15 to 20 minutes away. Trains don’t run on Shabbat or Jewish holidays; check the Israel Railways app.',
+        '**The airport.** Ben Gurion lies about 15 km from Tel Aviv; on 16 October 2026 the nearest Lime scooter on our map stood more than 2.5 km from either terminal. Take the train from the lower level of Terminal 3 to Tel Aviv’s HaHagana, HaShalom and Savidor Center stations, 15 to 20 minutes away. Trains don’t run on Shabbat or Jewish holidays; check the Israel Railways app.',
         '**The Red Line.** Tel Aviv’s light rail runs from Petah Tikva through central Tel Aviv to [Bat Yam](map:il:Bat Yam), with 34 stations. When it opened in August 2023, scooters and bikes could board only if they fold and are folded, Walla reported. A shared scooter can’t go on board: end your ride near the station, in a bay if you’re in the centre, and walk in.',
         '**Rav-Kav and apps.** On the Red Line you validate a Rav-Kav card at the station, not on board, or pay with a payment app.',
       ],
@@ -97,7 +86,7 @@ const guide: Guide = {
     {
       heading: 'Shabbat, holidays and the heat',
       blocks: [
-        '**Shabbat.** Israel’s trains and the Red Line stop from Friday afternoon to Saturday evening. Shared scooters were still on our map: on Friday evening, 16 October 2026, a few hours after Shabbat began, it showed about 7,400 in and around Tel Aviv. That’s one evening, not a company policy, and we found none published, so check the app.',
+        '**Shabbat.** Israel’s trains and the Red Line stop from Friday afternoon to Saturday evening. Lime’s and Bird’s scooters were still on our map: on Friday evening, 16 October 2026, a few hours after Shabbat began, it showed about 5,400 of them in and around Tel Aviv. That’s one evening, not a company policy, and we found none published, so check the app.',
         '**Free weekend buses.** Naim BeSofash, a free bus network paid for by Tel Aviv and its neighbours, runs on Friday nights and Saturdays, when regular public transport doesn’t; in February 2026 it linked 14 towns, Walla reported. Since then its line 711 has stopped at Ben Gurion’s Terminal 1 a few times a day on its way to Dizengoff Center.',
         '**The heat.** From July to September daytime highs are usually around 30 °C, in humid sea air, so ride early or late and carry water. Most rain falls from November to March, often in heavy bursts.',
       ],
@@ -119,7 +108,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Tel Aviv?',
-      answer: 'Lime, Bird and Dott are the three on our [Tel Aviv map](map:il:Tel Aviv), across Tel Aviv-Yafo, Jaffa included, and in the suburbs. Dott charges ₪5 to unlock plus ₪1.25 a minute; Lime and Bird show their prices in the app.',
+      answer: 'Lime and Bird are on our [Tel Aviv map](map:il:Tel Aviv): 2,967 scooters inside Tel Aviv-Yafo, Jaffa included, at 11:55 on 29 October 2026. Dott was renting here too in late October 2026, Kipa reported, but its scooters left the map on 28 October, so check its app. Each app shows its price before you unlock.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Tel Aviv as a tourist?',
@@ -139,7 +128,7 @@ const guide: Guide = {
     },
     {
       question: 'Do e-scooters run on Shabbat in Tel Aviv?',
-      answer: 'Trains and the Red Line stop from Friday afternoon to Saturday evening. Shared scooters were still on our map on Friday evening, 16 October 2026, a few hours after Shabbat began: about 7,400 in and around Tel Aviv. That’s one evening, not a published policy, so check the app.',
+      answer: 'Trains and the Red Line stop from Friday afternoon to Saturday evening. Lime’s and Bird’s scooters were still on our map on Friday evening, 16 October 2026, a few hours after Shabbat began: about 5,400 in and around Tel Aviv. That’s one evening, not a published policy, so check the app.',
     },
   ],
   sources: [
@@ -160,8 +149,7 @@ const guide: Guide = {
     { title: 'Walla: the Red Line’s hours, stations and rules on opening day (17 August 2023), Hebrew', url: 'https://news.walla.co.il/item/3602625' },
     { title: 'Walla: free weekend bus from Ben Gurion to Tel Aviv (12 February 2026), Hebrew', url: 'https://cars.walla.co.il/item/3816317' },
     { title: 'IAS: Naim BeSofash line 711 to Ben Gurion, free (12 February 2026), Hebrew', url: 'https://www.ias.co.il/?p=184936' },
-    { title: 'Dott: open data for Tel Aviv (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/tel-aviv/gbfs.json' },
-    { title: 'Bird: open data for Tel Aviv (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/tel-aviv/gbfs.json' },
+    { title: 'Kipa: Dott offers free rides on election day in the towns where it runs scooters (25 October 2026), Hebrew', url: 'https://www.kipa.co.il/%D7%97%D7%93%D7%A9%D7%95%D7%AA/1234569-0/' },
   ],
 };
 

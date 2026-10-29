@@ -60,7 +60,7 @@ const guide: Guide = {
             rows: [
               ['Minimum age', '16', '₪1,000', 'Srugim 2022; Ice 2024'],
               ['Licence or test', 'A driving licence or, without one, a passed test', '₪750', 'Srugim 2022; Ice 2024'],
-              ['Helmet', 'Required', 'A fine; reports differ on the amount', 'Srugim 2022; Ice 2024'],
+              ['Helmet', 'Required', '₪1,000', 'Srugim 2022; Ice 2024'],
               ['Speed', '25 km/h at most', '–', 'Ice 2024'],
               ['Where to ride', 'Bike path, or the road where there is none; never the sidewalk', '₪250 on the sidewalk', 'dpa 2019; Ice 2023 and 2024'],
               ['Passengers', 'One rider only', '₪250', 'Srugim 2022; Ice 2023'],
