@@ -24,7 +24,7 @@ const guide: Guide = {
             '**Lime** llegó en 2018 y en junio de 2026 operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, según Forbes Chile.',
           ],
         },
-        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 10.200 scooters estacionados. Unos 980, todos de JET, estaban en Buin, en la provincia de Maipo, fuera de la ciudad. En las comunas de Santiago había unos 9.300: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET. Es una foto de ese momento, no el tamaño de las flotas. Por comuna (límites de la Biblioteca del Congreso Nacional):',
+        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 10.200 scooters estacionados. Unos 980, todos de JET, estaban en Buin, en la provincia de Maipo, fuera de la ciudad. En las comunas de Santiago había unos 9.300: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET. Cada cifra es la de su último recuento, no el tamaño de las flotas. Por comuna (límites de la Biblioteca del Congreso Nacional):',
         {
           table: {
             caption: 'Scooters en el mapa por comuna, el 25 de octubre de 2026, de 11:47 a 11:56',
@@ -135,7 +135,7 @@ const guide: Guide = {
             '**EFE y Red.** No hemos encontrado reglas publicadas sobre scooters en los trenes de EFE ni en las micros de Red.',
           ],
         },
-        'Fuera de la capital, el mapa también muestra los Whoosh de [Viña del Mar](map:cl:Viña del Mar) y [Rancagua](map:cl:Rancagua), y los JET de [Temuco](map:cl:Temuco).',
+        'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](map:cl:Viña del Mar), que tiene [su propia guía](guide:vina-del-mar), los Whoosh de [Rancagua](map:cl:Rancagua) y los JET de [Temuco](map:cl:Temuco).',
       ],
     },
     {

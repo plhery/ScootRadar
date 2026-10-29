@@ -24,7 +24,7 @@ const guide: Guide = {
             '**Lime** llegó a Monterrey en septiembre de 2025 por un convenio con el municipio, con scooters y bicis eléctricas; se renta con su app o con la de Uber. Ese mes empezó también en Guadalupe (Publimetro). En diciembre de 2025 amplió su zona de Monterrey hacia el Distrito Tec (Notiviral).',
           ],
         },
-        'El domingo 25 de octubre de 2026, entre las 14:09 y las 14:11, el [mapa de Monterrey](map:mx:Monterrey) mostraba unos 1,700 scooters estacionados: unos 1,210 de Whoosh y 490 de JET. Es una foto de ese momento, no el tamaño de las flotas. Por municipio (límites del Marco Geoestadístico del INEGI):',
+        'El domingo 25 de octubre de 2026, entre las 14:09 y las 14:11, el [mapa de Monterrey](map:mx:Monterrey) mostraba unos 1,700 scooters estacionados: unos 1,210 de Whoosh y 490 de JET. Cada cifra es la de su último recuento, no el tamaño de las flotas. Por municipio (límites del Marco Geoestadístico del INEGI):',
         {
           table: {
             caption: 'Scooters en el mapa por municipio, el 25 de octubre de 2026, de 14:09 a 14:11',
