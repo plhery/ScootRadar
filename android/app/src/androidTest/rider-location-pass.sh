@@ -4,12 +4,15 @@
 # Revoking a permission ends the app's process, and the test's with it, so the app is reset here after each test
 # rather than in the test: its data cleared, which on Android 12 also forgets the rider's answers to the dialog,
 # its location permissions revoked, and location on. The fixes come from the emulator's GPS, which only the host can feed: a fix at
-# Zürich's main station every 2 s, for the tests named "…WithAFix".
+# Zürich's main station every 2 s, for the tests named "…WithAFix". An emulator without GPS (ScootRadar_Tablet,
+# hw.gps=no, as a Wi-Fi tablet) takes no fix from the host: with `providers` after the folder, the fixes go to test
+# providers in place of its own, as the shell may set them.
 #
 # Usage, from android/ after `./gradlew :app:assembleDebug :app:assembleDebugAndroidTest`:
-#   app/src/androidTest/rider-location-pass.sh <folder for the screens>
+#   app/src/androidTest/rider-location-pass.sh <folder for the screens> [providers]
 set -u
 screens=${1:?the folder for the screens}
+fixes=${2:-gps}
 serial=emulator-5660
 app=com.plhery.scootradar
 runner=$app.test/androidx.test.runner.AndroidJUnitRunner
@@ -29,7 +32,20 @@ reset() {
 failures=0
 run() {
     local test=$1 fixer=
-    if [[ $test == *WithAFix ]]; then
+    if [[ $test == *WithAFix && $fixes == providers ]]; then
+        device shell appops set 2000 android:mock_location allow
+        for provider in fused gps network; do
+            device shell cmd location providers add-test-provider $provider
+            device shell cmd location providers set-test-provider-enabled $provider true
+        done
+        (while true; do
+            for provider in fused gps network; do
+                device shell cmd location providers set-test-provider-location $provider --location 47.3782,8.5402 --accuracy 5 > /dev/null
+            done
+            sleep 2
+        done) &
+        fixer=$!
+    elif [[ $test == *WithAFix ]]; then
         (while true; do device emu geo fix 8.5402 47.3782 > /dev/null; sleep 2; done) &
         fixer=$!
     fi

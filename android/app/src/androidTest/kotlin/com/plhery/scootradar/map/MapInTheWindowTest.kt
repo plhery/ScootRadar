@@ -366,7 +366,12 @@ class MapInTheWindowTest {
         assertEquals("around the finger: $stayed for $empty", empty.x, stayed.x, 8.0)
         assertEquals("around the finger: $stayed for $empty", empty.y, stayed.y, 8.0)
 
+        // The step in took the scooter away from the finger, under the dock in a short window: it comes back to where
+        // the map shows its centre, in the part in view.
+        onMain { map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(scooter.latitude, scooter.longitude))) }
+        Thread.sleep(1_000)
         val dot = onMain { projection.point(scooter.point) }
+        assertTrue("the scooter at $dot in $part", part.contains(dot))
         val tapped = System.nanoTime()
         fingers(dot to dot, millis = 40, steps = 1)
         assertTrue("the scooter chosen", waitFor(1_000) { onMain { controller.selectedScooterID.value } == scooter.id })
