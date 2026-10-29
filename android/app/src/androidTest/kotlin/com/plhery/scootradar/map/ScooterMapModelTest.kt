@@ -61,7 +61,8 @@ class ScooterMapModelTest {
     /**
      * T213. With very large text a card can be taller than the room above the dock and scrolls. A screen that kept
      * updating itself would freeze the app: the card updates the map a few times as it opens, and then nothing
-     * moves (MAP-246). The updates are ScooterMap's, as SwiftUI's updateUIView; the region changes the camera's.
+     * moves (MAP-246). The updates are ScooterMap's and the markers', as SwiftUI's updateUIView's; the region changes
+     * the camera's.
      */
     @Test
     fun aTallCardOpensOnTheMapScreenWithVeryLargeText() {
@@ -90,7 +91,9 @@ class ScooterMapModelTest {
                 settle()
                 assertTrue("${onMain { controller.dock }}", onMain { controller.dock } is ScooterDockContent.Summary)
                 val camera = phone.onMain { phone.view.camera!! }
+                val markers = phone.onMain { phone.view.markers!! }
                 fun counts() = phone.onMain { Triple(camera.updates, camera.regionChanges, camera.movesToPlaces) }
+                fun markerUpdates() = phone.onMain { markers.updatesMade }
 
                 val before = counts()
                 phone.onMain { controller.selectScooter("publibike:tall") }
@@ -99,6 +102,7 @@ class ScooterMapModelTest {
 
                 // A few updates as the card opens, none of them moving the map more than once.
                 val opened = counts()
+                val markersOpened = markerUpdates()
                 assertTrue("updates of the map as the card opened: ${opened.first - before.first}", opened.first - before.first <= 10)
                 assertTrue("moves of the map as the card opened: ${opened.second - before.second}", opened.second - before.second <= 1)
 
@@ -109,8 +113,10 @@ class ScooterMapModelTest {
                     dockTops += phone.onMain { camera.currentChrome?.invoke()?.bottomTop }
                 }
                 val rested = counts()
-                Log.i("ScooterMapModelTest", "Updates, region changes and moves to places: $before, opened $opened, rested $rested")
+                val markersRested = markerUpdates()
+                Log.i("ScooterMapModelTest", "Updates, region changes and moves to places: $before, opened $opened, rested $rested; markers $markersOpened, $markersRested")
                 assertTrue("updates of the map once the card was open: ${rested.first - opened.first}", rested.first - opened.first <= 2)
+                assertTrue("updates of the markers once the card was open: ${markersRested - markersOpened}", markersRested - markersOpened <= 2)
                 assertEquals("moves of the map once the card was open", opened.second, rested.second)
                 assertEquals("moves to places once the card was open", opened.third, rested.third)
                 assertTrue("heights of the dock once the card was open: $dockTops", dockTops.size <= 1)

@@ -115,11 +115,15 @@ class ScooterFilteringTest {
         try {
             settle()
             val request = MapFocusRequest(point = scooter, token = 1)
+            // Each move starts far from the place, as the iPhone's test starts each on a new map: one that kept the
+            // camera, or measured before it moved, would not fit the place again.
+            fun elsewhere() = phone.map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(0.0, 0.0), 3.0))
 
             // As on a phone: the band between the search bar and the dock leaves the sides alone, and the region is
             // the map's own.
             val alone = phone.onMain {
                 assertEquals(1376.0, phone.projection.bounds.width, 0.0)
+                elsewhere()
                 camera.move(request, visible = ScreenRect(0.0, 110.0, 1376.0, 700.0))
                 val centred = phone.projection.point(scooter)
                 assertEquals(688.0, centred.x, 3.0)
@@ -128,6 +132,7 @@ class ScooterFilteringTest {
             }
 
             phone.onMain {
+                elsewhere()
                 camera.move(request, visible = ScreenRect(396.0, 24.0, 980.0, 1008.0))
                 val shown = phone.projection.point(scooter)
                 assertEquals(886.0, shown.x, 3.0)
@@ -139,10 +144,12 @@ class ScooterFilteringTest {
             // Beside a real panel, 380 points wide 16 in from the edge: in the middle of the part beside it too.
             phone.onMain {
                 camera.chromeDidChange(MapChrome(panel = ScreenRect(16.0, 16.0, 380.0, 1000.0)))
+                elsewhere()
                 camera.applyFocus(request.copy(token = 2))
                 val shown = phone.projection.point(scooter)
                 assertEquals(886.0, shown.x, 3.0)
                 assertEquals(516.0, shown.y, 3.0)
+                assertEquals(alone, phone.map.cameraPosition.zoom, log2(1.01))
             }
         } finally {
             phone.onMain { camera.close() }

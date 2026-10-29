@@ -112,6 +112,10 @@ class ScooterMarkers(
     private var holds = 0
     private var late = 0.0
 
+    /** The markers' updates, as updateUIView's work on the iPhone's annotations: none at rest (MAP-246). */
+    internal var updatesMade = 0
+        private set
+
     /** How long the last light-up waited for its scooters to be drawn, in seconds. */
     internal var lightUpLate = 0.0
         private set
@@ -380,6 +384,7 @@ class ScooterMarkers(
     /** What updateUIView does for the markers, in its order. */
     private fun update() {
         if (style == null) return
+        updatesMade += 1
         val riderMoved = scene.parent.userLocation != controller.userLocation.value
         scene.parent = MarkerParent(
             origin = controller.mapOrigin,

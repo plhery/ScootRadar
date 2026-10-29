@@ -135,7 +135,7 @@ class ScooterMarkerLookWorkTest {
 
     /** The names of the pictures every layer draws now. */
     private fun images(): List<String> =
-        (MarkerFeatures.markers(scene, art) + MarkerFeatures.pills(scene, art) + MarkerFeatures.lastSeen(scene, art)).map { it.image }
+        (MarkerFeatures.markers(scene, art) + MarkerFeatures.pills(scene, art, at = 100.0) + MarkerFeatures.lastSeen(scene, art)).map { it.image }
 
     /** Whether a picture's name is of its dark version: the part of the name each kind keeps for it. */
     private fun isDark(image: String): Boolean {

@@ -145,7 +145,10 @@ fun ScooterMap(
                 walking.mapDidRest(animated)
                 zoning.mapDidRest()
             }
-            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also { markers = it }
+            marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also {
+                markers = it
+                view.markers = it
+            }
             // After the markers, whose layers it goes above.
             shown = ScooterRider(map, view, controller, scope).also { rider = it }
             watching = MapCameraWatch(map).also { watch = it }
@@ -153,6 +156,7 @@ fun ScooterMap(
         onDispose {
             made?.close()
             view.camera = null
+            view.markers = null
             drawn?.close()
             marked?.close()
             shown?.close()

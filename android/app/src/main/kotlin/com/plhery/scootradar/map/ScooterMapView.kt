@@ -30,6 +30,10 @@ class ScooterMapView(context: Context, options: MapLibreMapOptions) : MapView(co
     var camera: MapCamera? = null
         internal set
 
+    /** The map's markers, once the map is ready: what the tests read of the markers' updates (MAP-246). */
+    var markers: ScooterMarkers? = null
+        internal set
+
     private val slop = ViewConfiguration.get(context).scaledTouchSlop
     private var downX = 0f
     private var downY = 0f

@@ -87,7 +87,7 @@ class ScooterMarkerImagesTest {
                     waitFor("the style has the pictures drawn") {
                         phone.onMain {
                             val scene = markers.scene
-                            names = (MarkerFeatures.markers(scene, markers.art) + MarkerFeatures.pills(scene, markers.art) +
+                            names = (MarkerFeatures.markers(scene, markers.art) + MarkerFeatures.pills(scene, markers.art, at = SystemClock.uptimeMillis() / 1000.0) +
                                 MarkerFeatures.lastSeen(scene, markers.art)).mapTo(HashSet()) { it.image }
                             val style = phone.map.style!!
                             names.all { style.getImage(it) != null }
