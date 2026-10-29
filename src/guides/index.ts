@@ -273,6 +273,8 @@ import orebroEn from './en/e-scooters-orebro';
 import spokaneEn from './en/e-scooters-spokane';
 import charlotteEn from './en/e-scooters-charlotte';
 import sacramentoEn from './en/e-scooters-sacramento';
+import longBeachEn from './en/e-scooters-long-beach';
+import kyotoEn from './en/e-scooters-kyoto';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -546,4 +548,6 @@ export const GUIDES: readonly Guide[] = [
   spokaneEn,
   charlotteEn,
   sacramentoEn,
+  longBeachEn,
+  kyotoEn,
 ];
