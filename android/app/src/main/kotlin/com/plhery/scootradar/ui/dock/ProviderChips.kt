@@ -186,7 +186,7 @@ internal fun QuickProviderFilterChip(
     Row(
         modifier
             .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
-            .clickable(interaction, FocusRing(), role = Role.Button, onClick = onClick)
+            .clickable(interaction, FocusRing(shape), role = Role.Button, onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = shown

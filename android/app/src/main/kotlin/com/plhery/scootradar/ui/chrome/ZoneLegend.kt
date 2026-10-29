@@ -73,7 +73,7 @@ fun ZoneLegend(
     modifier: Modifier = Modifier,
 ) {
     val colors = scootColors
-    val lines = ruleLines(rules, link = colors.dockText)
+    val lines = ruleLines(rules, link = colors.dockText, focus = colors.accent)
     val note = note(state, count, rules = lines.isNotEmpty())
     val zones = localized("Zones")
     val style = ScootType.caption.weight(FontWeight.Medium)
@@ -139,8 +139,11 @@ private fun note(state: ScooterZoneState, count: Int, rules: Boolean): String? =
 /** A city's line: one for each kind, authority, hours and whether they hold now. */
 internal class RuleLine(val key: String, val kind: ScooterZoneKind, val inForce: Boolean, val text: AnnotatedString)
 
-/** The lines, the strongest rule first: "No riding 12:00–23:00 · Seoul", "Parking · Porto". */
-internal fun ruleLines(rules: List<CityRuleZone.Shown>, link: Color): List<RuleLine> {
+/**
+ * The lines, the strongest rule first: "No riding 12:00–23:00 · Seoul", "Parking · Porto". The city's name is a link,
+ * white on the [focus] colour while a keyboard is on it, as iPadOS rings a link in the tint (UI-251).
+ */
+internal fun ruleLines(rules: List<CityRuleZone.Shown>, link: Color, focus: Color = link): List<RuleLine> {
     val lines = mutableListOf<RuleLine>()
     // Hundreds of a city's zones may be in view, and make a few lines.
     val keys = mutableSetOf<String>()
@@ -155,7 +158,10 @@ internal fun ruleLines(rules: List<CityRuleZone.Shown>, link: Color): List<RuleL
                 withLink(
                     LinkAnnotation.Url(
                         shown.rule.source,
-                        TextLinkStyles(SpanStyle(color = link, textDecoration = TextDecoration.Underline)),
+                        TextLinkStyles(
+                            style = SpanStyle(color = link, textDecoration = TextDecoration.Underline),
+                            focusedStyle = SpanStyle(color = Color.White, background = focus),
+                        ),
                     ),
                 ) { append(shown.rule.authority) }
                 if (!shown.inForce) append(" (${localized("not now")})")

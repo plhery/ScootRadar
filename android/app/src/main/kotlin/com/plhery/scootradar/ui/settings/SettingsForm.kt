@@ -26,13 +26,23 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -46,8 +56,10 @@ import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.ui.dock.FixedSymbol
@@ -103,7 +115,8 @@ internal fun FormSection(
             }
             Column(Modifier.fillMaxWidth().clip(shape).background(colors.secondarySystemGroupedBackground)) {
                 rows.forEachIndexed { index, row ->
-                    row()
+                    val part = SectionRowShape(shape, first = index == 0, last = index == rows.lastIndex)
+                    CompositionLocalProvider(LocalRowShape provides part) { row() }
                     if (index < rows.lastIndex) FormSeparator(separatorInset)
                 }
             }
@@ -117,6 +130,34 @@ internal fun FormSection(
             )
         }
     }
+}
+
+/** The shape of the row being composed in a section, which its focus ring takes; none outside a section. */
+private val LocalRowShape = staticCompositionLocalOf<Shape?> { null }
+
+/**
+ * A row's part of its [section]'s shape: the section's corners where the row ends it, square where another row
+ * follows, so that its focus ring keeps inside the section's clip.
+ */
+private class SectionRowShape(private val section: Shape, private val first: Boolean, private val last: Boolean) : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+        val row = Rect(Offset.Zero, size)
+        if (!first && !last) return Outline.Rectangle(row)
+        // The section, run on past the row's square ends as far as a corner reaches, and cut back to the row.
+        val reach = with(density) { SECTION_RADIUS.toPx() } * 2
+        val above = if (first) 0f else reach
+        val below = if (last) 0f else reach
+        val run = Path().apply {
+            addOutline(section.createOutline(Size(size.width, size.height + above + below), layoutDirection, density))
+            translate(Offset(0f, -above))
+        }
+        return Outline.Generic(Path.combine(PathOperation.Intersect, run, Path().apply { addRect(row) }))
+    }
+
+    override fun equals(other: Any?) =
+        other is SectionRowShape && other.section == section && other.first == first && other.last == last
+
+    override fun hashCode() = (section.hashCode() * 31 + first.hashCode()) * 31 + last.hashCode()
 }
 
 @Composable
@@ -142,8 +183,8 @@ internal fun FormRow(
     val highlight = if (scootColors.isDark) CELL_HIGHLIGHT_DARK else CELL_HIGHLIGHT_LIGHT
     val press = when {
         onClick == null -> Modifier
-        selected != null -> Modifier.selectable(selected, interaction, FocusRing(), role = Role.RadioButton, onClick = onClick)
-        else -> Modifier.clickable(interaction, FocusRing(), role = Role.Button, onClick = onClick)
+        selected != null -> Modifier.selectable(selected, interaction, FocusRing(LocalRowShape.current), role = Role.RadioButton, onClick = onClick)
+        else -> Modifier.clickable(interaction, FocusRing(LocalRowShape.current), role = Role.Button, onClick = onClick)
     }
     Row(
         modifier
@@ -256,7 +297,7 @@ internal fun FormToggleRow(title: String, isOn: Boolean, onChange: (Boolean) -> 
     Row(
         Modifier
             .fillMaxWidth()
-            .toggleable(value = isOn, interactionSource = null, indication = FocusRing(), role = Role.Switch, onValueChange = onChange)
+            .toggleable(value = isOn, interactionSource = null, indication = FocusRing(LocalRowShape.current), role = Role.Switch, onValueChange = onChange)
             .heightIn(min = ROW_HEIGHT)
             .padding(horizontal = ROW_PADDING, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,

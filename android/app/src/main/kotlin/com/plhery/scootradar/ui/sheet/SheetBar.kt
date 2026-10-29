@@ -27,6 +27,7 @@ import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.Symbols
@@ -129,7 +130,7 @@ internal fun SheetDoneButton(title: String, onClick: () -> Unit, modifier: Modif
         modifier
             .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
             .background(scootColors.accent, CircleShape)
-            .plainButton(label = title, onClick = onClick)
+            .plainButton(label = title, focusRing = FocusRing(CircleShape, onTint = true), onClick = onClick)
             .size(44.dp),
         contentAlignment = Alignment.Center,
     ) {

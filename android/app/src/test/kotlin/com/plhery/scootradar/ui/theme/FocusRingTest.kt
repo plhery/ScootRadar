@@ -28,8 +28,12 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.ui.dock.DockActionButton
+import com.plhery.scootradar.ui.dock.focusableControl
 import com.plhery.scootradar.ui.dock.plainButton
+import com.plhery.scootradar.ui.settings.FormRow
+import com.plhery.scootradar.ui.settings.FormSection
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -92,6 +96,50 @@ class FocusRingTest {
         assertColor(fill, at = 36 to 70)
     }
 
+    /** On the tint, where a ring in the tint couldn't be seen, the prominent button's ring is white, as its label is. */
+    @Test
+    fun aProminentButtonIsRingedInWhite() {
+        show(dark = false) {
+            DockActionButton(prominent = true, onClick = {}, modifier = Modifier.offset(30.dp, 30.dp).width(200.dp).height(80.dp).testTag(BUTTON)) {
+                Text("Open in Lime")
+            }
+        }
+        reachWithKeyboard()
+        assertColor(Color.White, at = 31 to 70)
+        assertColor(ScootColors.Light.cardActionFill, at = 36 to 70)
+    }
+
+    /** A control that takes its own touches, as the panel's grabber does, is ringed too. */
+    @Test
+    fun aFocusableControlIsRinged() {
+        show(dark = false) {
+            Box(Modifier.offset(30.dp, 30.dp).size(40.dp).testTag(BUTTON).focusableControl {}.background(Color.White))
+        }
+        reachWithKeyboard()
+        assertColor(ScootColors.Light.accent, at = 31 to 50)
+    }
+
+    /**
+     * A section's first row is ringed round its top corners as the section rounds them, inside its clip: a ring
+     * cornered as a lone row would be is cut there.
+     */
+    @Test
+    fun aSectionsFirstRowIsRingedRoundTheSectionsCorner() {
+        show(dark = false) {
+            FormSection(
+                rows = listOf<@androidx.compose.runtime.Composable () -> Unit>(
+                    { FormRow(Modifier.testTag(BUTTON), onClick = {}) { Text("Language") } },
+                    { FormRow(onClick = {}) { Text("Appearance") } },
+                ),
+            )
+        }
+        reachWithKeyboard()
+        // The section stands 16 in from the ground's sides and 20 below its top.
+        assertColor(ScootColors.Light.accent, at = 150 to 21)
+        val diagonal = (0..24).map { color(at = 16 + it to 20 + it) }
+        assertTrue(diagonal.toString(), diagonal.any { close(it, ScootColors.Light.accent, within = 24) })
+    }
+
     private lateinit var inputMode: InputModeManager
 
     private fun show(dark: Boolean, content: @androidx.compose.runtime.Composable () -> Unit) {
@@ -120,8 +168,8 @@ class FocusRingTest {
         assertEquals("$actual at $at", true, close(actual, expected))
     }
 
-    private fun close(a: Color, b: Color): Boolean =
-        abs(a.red - b.red) * 255 <= 2 && abs(a.green - b.green) * 255 <= 2 && abs(a.blue - b.blue) * 255 <= 2
+    private fun close(a: Color, b: Color, within: Int = 2): Boolean =
+        abs(a.red - b.red) * 255 <= within && abs(a.green - b.green) * 255 <= within && abs(a.blue - b.blue) * 255 <= within
 
     /** The ground's pixel at [at], in pixels from its top left, with the window drawn again first. */
     private fun color(at: Pair<Int, Int>): Color {

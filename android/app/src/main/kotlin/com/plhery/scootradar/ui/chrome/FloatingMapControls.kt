@@ -43,6 +43,7 @@ import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.Symbols
@@ -133,7 +134,7 @@ private fun NearMe(isLocating: Boolean, onClick: () -> Unit) {
             .clip(CapsuleShape)
             .background(if (isLocating) colors.tertiarySystemFill else colors.actionFill)
             .overTheMap()
-            .plainButton(enabled = !isLocating, onClick = onClick)
+            .plainButton(enabled = !isLocating, focusRing = FocusRing(CapsuleShape, onTint = true), onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = title
                 if (value.isNotEmpty()) stateDescription = value

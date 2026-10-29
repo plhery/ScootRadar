@@ -378,7 +378,7 @@ private fun ShowResultsButton(title: String, onClick: () -> Unit) {
                 .fillMaxWidth()
                 .heightIn(min = 50.dp)
                 .background(scootColors.actionFill, CapsuleShape)
-                .plainButton(onClick = onClick)
+                .plainButton(focusRing = FocusRing(CapsuleShape, onTint = true), onClick = onClick)
                 .padding(horizontal = 20.dp, vertical = 14.dp),
             contentAlignment = Alignment.Center,
         ) {

@@ -86,19 +86,20 @@ import kotlin.math.roundToInt
  * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple, and a little
  * under a mouse's pointer, ringed while a keyboard has its focus (UI-251). Its semantics are a button's, which TalkBack names from the label unless [label] says
  * otherwise; [hint] is what a double tap does, which TalkBack says in a sentence of its own where iOS reads its
- * accessibility hint (UI-327).
+ * accessibility hint (UI-327). [focusRing] is the ring's shape, and white on the tint.
  */
 internal fun Modifier.plainButton(
     enabled: Boolean = true,
     label: String? = null,
     hint: String? = null,
+    focusRing: FocusRing = FocusRing(),
     onClick: () -> Unit,
 ): Modifier = composed {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val hovered by interaction.collectIsHoveredAsState()
     graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else if (hovered) hoveredAlpha(PLAIN_PRESSED_ALPHA) else 1f }
-        .clickable(interaction, FocusRing(), enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
+        .clickable(interaction, focusRing, enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
         .then(
             if (label != null) {
                 Modifier.clearAndSetSemantics {
@@ -294,7 +295,7 @@ internal fun DockActionButton(
             }
             .clip(shape)
             .background(if (prominent) colors.cardActionFill else colors.dockQuietFill)
-            .clickable(interaction, FocusRing(shape), enabled = enabled, role = Role.Button, onClick = onClick)
+            .clickable(interaction, FocusRing(shape, onTint = prominent), enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (label != null) Modifier.clearAndSetSemantics { contentDescription = label } else Modifier)
             .fillMaxWidth()
             .heightIn(min = 48.dp)

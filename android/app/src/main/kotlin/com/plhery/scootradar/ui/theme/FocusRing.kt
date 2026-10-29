@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.FocusInteraction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
@@ -27,15 +28,16 @@ import kotlin.math.min
  * the control's own. Touch, press and hover leave it as it is, so a control with `indication = null` can take this
  * in its place. With no shape, a round or short control is ringed as a capsule and a longer one, such as a row, as
  * a rounded rectangle. Clickables take focus only from a keyboard, so a finger never shows it. The halo stands just
- * outside the control; the ring keeps just inside its edge, where the grouped rows' sections and the glass, which
- * clip, leave it whole.
+ * outside the control; the ring keeps just inside its edge, where the glass, which clips, leaves it whole, and a
+ * grouped row's section too where the row's [shape] is its part of the section's. Inside a control filled with the
+ * tint ([onTint]), where the tint couldn't be seen, the ring is white, as the control's label is.
  */
-class FocusRing(private val shape: Shape? = null) : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode = FocusRingNode(interactionSource, shape)
+class FocusRing(private val shape: Shape? = null, private val onTint: Boolean = false) : IndicationNodeFactory {
+    override fun create(interactionSource: InteractionSource): DelegatableNode = FocusRingNode(interactionSource, shape, onTint)
 
-    override fun equals(other: Any?) = other is FocusRing && other.shape == shape
+    override fun equals(other: Any?) = other is FocusRing && other.shape == shape && other.onTint == onTint
 
-    override fun hashCode() = shape.hashCode()
+    override fun hashCode() = 31 * shape.hashCode() + onTint.hashCode()
 
     companion object {
         /** The ring's width, about the halo's. */
@@ -49,6 +51,7 @@ class FocusRing(private val shape: Shape? = null) : IndicationNodeFactory {
 private class FocusRingNode(
     private val interactionSource: InteractionSource,
     private val shape: Shape?,
+    private val onTint: Boolean,
 ) : Modifier.Node(), DrawModifierNode, CompositionLocalConsumerModifierNode {
     private var focused = false
 
@@ -78,7 +81,7 @@ private class FocusRingNode(
         if (ring.width <= 0f || ring.height <= 0f) return
         val outline = (shape ?: shapeFor(size)).createOutline(ring, layoutDirection, this)
         translate(width / 2, width / 2) {
-            drawOutline(outline, currentValueOf(LocalScootColors).accent, style = Stroke(width))
+            drawOutline(outline, if (onTint) Color.White else currentValueOf(LocalScootColors).accent, style = Stroke(width))
         }
     }
 
