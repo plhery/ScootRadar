@@ -18,7 +18,7 @@ import {
 } from '@/lib/guides';
 import { DEFAULT_LANDING_LOCALE, LANDING_COPY, LANDING_LOCALES, SOURCE_URL, landingPath, type LandingLocale } from '@/lib/landingCopy';
 import { MAP_PATH, mapAt } from '@/lib/mapAddress';
-import { OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
+import { OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, guideOpenGraphLocale, shareImage } from '@/lib/site';
 import { AppLink, SiteBar, SiteFooter } from './chrome';
 
 // The guides, src/lib/guides.ts: one page each, and the list of a language's
@@ -66,7 +66,7 @@ export function guideMetadata(guide: Guide): Metadata {
       siteName: SITE_NAME,
       title: guide.title,
       description: guide.description,
-      locale: OPEN_GRAPH_LOCALES[guide.locale],
+      locale: guideOpenGraphLocale(guide),
       publishedTime: guide.published,
       modifiedTime: guide.updated,
       images: [image],

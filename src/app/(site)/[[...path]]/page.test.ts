@@ -102,3 +102,34 @@ describe('the links between a page and its translations', () => {
     for (const { url, alternates } of entries) expect(alternates?.languages, url).toEqual(byAddress.get(url)?.languages);
   });
 });
+
+// The language and country a link to each page names where it is shared.
+const shared = await Promise.all(sitePaths().map(async path => {
+  const page = sitePageOf(path)!;
+  const { openGraph } = await generateMetadata({ params: Promise.resolve({ path }) });
+  return { page, locale: (openGraph as { locale?: string } | undefined)?.locale };
+}));
+const sharedOn = (topic: string, locale: SitePage['locale']) =>
+  shared.find(({ page }) => page.kind === 'guide' && page.guide.topic === topic && page.locale === locale)?.locale;
+
+describe('the language and country a shared link to a guide names', () => {
+  it('are the guide\'s language and the country of the city it is about', () => {
+    for (const { page, locale } of shared) {
+      if (page.kind !== 'guide') continue;
+      expect(locale, page.guide.slug).toMatch(new RegExp(`^${page.guide.locale}_[A-Z]{2}$`));
+      if (page.guide.city) expect(locale, page.guide.slug).toBe(`${page.guide.locale}_${page.guide.city.split(':')[0].toUpperCase()}`);
+    }
+    expect(sharedOn('chicago', 'en')).toBe('en_US');
+    expect(sharedOn('bristol', 'en')).toBe('en_GB');
+    expect(sharedOn('cologne', 'de')).toBe('de_DE');
+    expect(sharedOn('oslo', 'nb')).toBe('nb_NO');
+  });
+
+  it('name the country of a guide with no city by its topic, and a guide about no country by its language', () => {
+    expect(sharedOn('uk-law', 'en')).toBe('en_GB');
+    expect(sharedOn('german-rules', 'de')).toBe('de_DE');
+    expect(sharedOn('swiss-rules', 'fr')).toBe('fr_CH');
+    expect(sharedOn('french-rules', 'fr')).toBe('fr_FR');
+    expect(sharedOn('how-to-rent', 'en')).toBe('en_CH');
+  });
+});
