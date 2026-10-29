@@ -26,9 +26,13 @@ Takamatsu, Hamamatsu, Sapporo, Kitakyushu, Tsu, Naha, Onojo and Okazaki.
 Tokyo combines the app's `shibuya` and `tokyo-east` regions; Osaka combines
 `osaka` and `yodogawa`. Bounds enclose the app's service-area polygons, with a
 small margin. A circumscribed circle covers each complete city in one read.
+Tokyo, Kawasaki and Yokohama share one: a circle 42 km in radius around the
+three, collected for all of them at once and shared out by city id. Read
+apart, their circles overlapped and each read took over 20 seconds, of
+largely the same ports (29 October 2026).
 The reader returns an oversized geohash neighborhood: an 800 m Shibuya read
 reached 2,476 m, so results are filtered by reviewed LUUP city ids and bounds,
-and deduplicated by port id. Responses are bounded to 32 MiB; malformed data
+and deduplicated by port id. Responses are bounded to 64 MiB; malformed data
 fails the collection instead of replacing a good snapshot with an empty map.
 
 Ports marked unavailable are excluded. Opening and closing hours are evaluated

@@ -5,6 +5,7 @@ import { boundsContainPoint, haversineM } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { idPhase } from './feedScheduler';
 
 const ORIGIN = 'https://asia-northeast1-luup-prod.cloudfunctions.net';
 const RETRY_MS = 60_000;
@@ -168,7 +169,8 @@ export class LuupClient {
       if (response.status === 401 || response.status === 403) { this.lease = undefined; this.retryAt = this.now() + RETRY_MS; }
     }
     if (!response.ok) { await response.body?.cancel(); throw new Error(`LUUP port reader HTTP ${response.status}`); }
-    return jsonBody(response, 32 * 1024 * 1024);
+    // The Tokyo area's shared read is the largest, with room to spare.
+    return jsonBody(response, 64 * 1024 * 1024);
   }
 }
 
@@ -230,18 +232,55 @@ export function parseLuupPorts(payload: unknown, system: RegionalScooterSystem, 
   return [...ports.values()].flat();
 }
 
+// Tokyo's, Kawasaki's and Yokohama's circles overlap, and each of their reads took over 20 seconds, of largely
+// the same ports (29 October 2026). They are read as one circle around the three, come due together, and share
+// it out by city id.
+const SHARED_READS = [['luup_jp_shibuya', 'luup_jp_kawasaki', 'luup_jp_yokohama']];
+// A region of the group collected this soon after the read ends, waiting for one of the host's two slots, takes it.
+const SHARED_READ_REUSE_MS = 10_000;
+
+export interface LuupPortRead { observedAt: number; payload: unknown }
+
 const client = new LuupClient();
-export async function collectLuupRegion(system: RegionalScooterSystem, api: Pick<LuupClient, 'ports'> = client): Promise<SourceVehicles> {
+
+/** One read of the bounds for the regions collected while it runs, or just after it ends. */
+export function sharedPortRead(bounds: MapBounds, api: Pick<LuupClient, 'ports'> = client, now = Date.now) {
+  let last: { read: Promise<LuupPortRead>; endedAt?: number } | undefined;
+  return (): Promise<LuupPortRead> => {
+    if (!last || last.endedAt !== undefined && now() - last.endedAt >= SHARED_READ_REUSE_MS) {
+      const entry: { read: Promise<LuupPortRead>; endedAt?: number } = {
+        read: api.ports(bounds).then(payload => ({ observedAt: entry.endedAt = now(), payload })),
+      };
+      // A failed read isn't kept: the next collection asks again.
+      entry.read.catch(() => { if (last === entry) last = undefined; });
+      last = entry;
+    }
+    return last.read;
+  };
+}
+
+export async function collectLuupRegion(system: RegionalScooterSystem, read = sharedPortRead(system.bounds)): Promise<SourceVehicles> {
   if (!system.luupAppCities?.length) throw new Error('Not a LUUP app map region');
-  const payload = await api.ports(system.bounds);
-  const observedAt = Date.now();
+  const { observedAt, payload } = await read();
   return { observedAt, stale: false, vehicles: parseLuupPorts(payload, system, observedAt) };
 }
 
 export function withLuupAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.luupAppCities).map(system => [system.id, system]));
+  const shared = new Map<string, { read: () => Promise<LuupPortRead>; idlePhase: number }>();
+  for (const ids of SHARED_READS) {
+    const group = ids.flatMap(id => regions.get(id) ?? []);
+    if (group.length < 2) continue;
+    const bounds = { south: Math.min(...group.map(system => system.bounds.south)), north: Math.max(...group.map(system => system.bounds.north)),
+      west: Math.min(...group.map(system => system.bounds.west)), east: Math.max(...group.map(system => system.bounds.east)) };
+    const entry = { read: sharedPortRead(bounds), idlePhase: idPhase(feeds.find(feed => feed.id.endsWith(`:${group[0].id}`))?.id ?? group[0].id) };
+    for (const system of group) shared.set(system.id, entry);
+  }
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, collect: () => collectLuupRegion(system) } : feed;
+    if (!system) return feed;
+    const group = shared.get(system.id);
+    const read = group?.read ?? sharedPortRead(system.bounds);
+    return { ...feed, ...group && { idlePhase: group.idlePhase }, collect: () => collectLuupRegion(system, read) };
   });
 }

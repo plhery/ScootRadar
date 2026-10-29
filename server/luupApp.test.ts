@@ -5,7 +5,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
 import { haversineM } from '../src/lib/geo';
-import { collectLuupRegion, LuupClient, luupMapQuery, parseLuupPorts, withLuupAppCollectors } from './luupApp';
+import { idPhase } from './feedScheduler';
+import { collectLuupRegion, LuupClient, luupMapQuery, parseLuupPorts, sharedPortRead, withLuupAppCollectors } from './luupApp';
 
 const directories: string[] = [];
 afterEach(async () => { await Promise.all(directories.splice(0).map(path => rm(path, { recursive: true, force: true }))); });
@@ -91,9 +92,51 @@ describe('LUUP station counts', () => {
     const luup = configured.find(f => f.id === `japan:${region.id}`)!;
     expect(luup.zoneSource).toBeUndefined();
     expect(luup.collect).not.toBe(feeds.find(f => f.id === luup.id)!.collect);
-    const snapshot = await collectLuupRegion(region, { ports: vi.fn(async () => [port()]) });
-    expect(snapshot).toMatchObject({ stale: false, vehicles: expect.any(Array), observedAt: expect.any(Number) });
+    const snapshot = await collectLuupRegion(region, async () => ({ observedAt: now, payload: [port()] }));
+    expect(snapshot).toMatchObject({ stale: false, vehicles: expect.any(Array), observedAt: now });
     expect(snapshot.vehicles).toHaveLength(2);
+  });
+
+  it('reads Tokyo, Kawasaki and Yokohama as one circle, due together, and shares it out by city', async () => {
+    const ids = ['luup_jp_shibuya', 'luup_jp_kawasaki', 'luup_jp_yokohama'];
+    const configured = withLuupAppCollectors(independentCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS);
+    expect(ids.map(id => configured.find(f => f.id === `japan:${id}`)!.idlePhase)).toEqual(ids.map(() => idPhase('japan:luup_jp_shibuya')));
+    expect(configured.find(f => f.id === 'japan:luup_jp_osaka')!.idlePhase).toBeUndefined();
+    const systems = ids.map(id => REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === id)!);
+    const union = { south: Math.min(...systems.map(s => s.bounds.south)), north: Math.max(...systems.map(s => s.bounds.north)),
+      west: Math.min(...systems.map(s => s.bounds.west)), east: Math.max(...systems.map(s => s.bounds.east)) };
+    expect(Number(luupMapQuery(union).get('radiusInMeter'))).toBeLessThan(50_000);
+    const ports = vi.fn(async () => [port('1'), port('2', { cityId: 'kawasaki', location: { latitude: 35.531, longitude: 139.697 } }),
+      port('3', { cityId: 'yokohama', location: { latitude: 35.466, longitude: 139.622 }, availableKickboardCount: 3 })]);
+    const read = sharedPortRead(union, { ports });
+    const counts = await Promise.all(systems.map(async system => (await collectLuupRegion(system, read)).vehicles.length));
+    expect(counts).toEqual([2, 2, 3]);
+    expect(ports).toHaveBeenCalledTimes(1);
+    expect(ports).toHaveBeenCalledWith(union);
+  });
+
+  it('shares a read with collections while it runs or just after, and reads again later or after a failure', async () => {
+    let clock = now;
+    const replies: ((value: unknown) => void)[] = [];
+    const ports = vi.fn(() => new Promise<unknown>((resolve, reject) => {
+      replies.push(value => value instanceof Error ? reject(value) : resolve(value));
+    }));
+    const read = sharedPortRead(region.bounds, { ports }, () => clock);
+    const first = read(), joined = read();
+    clock += 30_000;
+    replies[0]([port()]);
+    expect(await joined).toEqual({ observedAt: now + 30_000, payload: [port()] });
+    clock += 9_999;
+    expect(await read()).toBe(await first);
+    clock += 1;
+    const later = read();
+    expect(ports).toHaveBeenCalledTimes(2);
+    replies[1](new Error('LUUP request failed or timed out'));
+    await expect(later).rejects.toThrow('timed out');
+    const retried = read();
+    expect(ports).toHaveBeenCalledTimes(3);
+    replies[2]([]);
+    expect(await retried).toEqual({ observedAt: clock, payload: [] });
   });
 });
 
@@ -177,7 +220,7 @@ describe('LUUP private session and transport', () => {
     f.fetch.mockImplementation(async url => String(url).startsWith('https://securetoken.') ? f.session() : new Response('not json'));
     await expect(f.client.ports(region.bounds)).rejects.toThrow('LUUP returned invalid JSON');
     f.fetch.mockResolvedValue(new Response(new ReadableStream({ start(controller) {
-      controller.enqueue(new Uint8Array(32 * 1024 * 1024 + 1)); controller.close();
+      controller.enqueue(new Uint8Array(64 * 1024 * 1024 + 1)); controller.close();
     } })));
     await expect(f.client.ports(region.bounds)).rejects.toThrow('LUUP response exceeds the size limit');
   });
