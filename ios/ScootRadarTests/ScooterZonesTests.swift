@@ -491,23 +491,24 @@ final class CityRuleZoneTests: XCTestCase {
     }
 
     func testSeoulsStreetsAloneAreAllAndForbidRiding() {
-        // Android's CatalogParityTest reads the generated list of these.
-        XCTAssertEqual(
-            CityRuleZone.all.map(\.id),
-            ["seoul-hongdae-red-road", "seoul-banpo-academy-street", "seoul-daechi-academy-street"]
-        )
+        // Which streets they are is data/'s, which Android's CatalogParityTest holds to this catalog: here, what each is.
+        XCTAssertFalse(CityRuleZone.all.isEmpty)
         XCTAssertTrue(CityRuleZone.all.allSatisfy { $0.kind == .noRide && !$0.lines.isEmpty })
+        XCTAssertTrue(CityRuleZone.cityZones.allSatisfy { $0.lines.isEmpty })
         XCTAssertEqual(CityRuleZone.onMap.map(\.id), (CityRuleZone.all + CityRuleZone.cityZones).map(\.id))
         XCTAssertEqual(Set(CityRuleZone.onMap.map(\.id)).count, CityRuleZone.onMap.count)
     }
 
     func testBergensAndPortosZonesAreThereByKind() {
-        func kinds(_ authority: String) -> [ScooterZoneKind: Int] {
-            Dictionary(grouping: CityRuleZone.cityZones.filter { $0.authority == authority }, by: \.kind).mapValues(\.count)
+        // Which cities have zones, of which kinds and how many, is data/'s, read again from the cities, and Android's
+        // CatalogParityTest holds it to this catalog: here, what holds of every city's. Each zone is its city's, which
+        // names it and its rules once, and none is in two places.
+        let cities = Dictionary(grouping: CityRuleZone.cityZones) { String($0.id.prefix { $0 != "-" }) }
+        for (city, zones) in cities {
+            XCTAssertTrue(zones.allSatisfy { $0.id.hasPrefix("\(city)-") }, city)
+            XCTAssertEqual(Set(zones.map { [$0.authority, $0.timeZone, $0.source.absoluteString] }).count, 1, city)
         }
-        XCTAssertEqual(kinds("Bergen kommune"), [.parking: 176, .noParking: 149, .slow: 74, .noRide: 373])
-        XCTAssertEqual(kinds("Porto"), [.parking: 230])
-        XCTAssertEqual(CityRuleZone.cityZones.count, 772 + 230)
+        XCTAssertEqual(Set(CityRuleZone.cityZones.map(\.id)).count, CityRuleZone.cityZones.count)
     }
 
     func testACitysZoneIsOneRingWithinItsBoundsThatAlwaysHolds() throws {
@@ -544,21 +545,65 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(drawn.strength, 1)
     }
 
-    func testACitysZonesAreShownFromZoom14() {
+    func testACitysZonesAreShownFromZoom14() throws {
+        let zones = try bergensAndPortosZones()
         let porto = GeoBounds(south: 41.14, west: -8.62, north: 41.16, east: -8.6)
-        let shown = CityRuleZone.shown(over: porto, zoom: 14, at: seoulNoon)
-        XCTAssertFalse(shown.isEmpty)
+        let shown = CityRuleZone.shown(over: porto, zoom: 14, at: seoulNoon, among: zones)
+        XCTAssertEqual(shown.map(\.rule.id), ["porto-parking-1abcfc08"])
         XCTAssertTrue(shown.allSatisfy { $0.rule.authority == "Porto" && $0.rule.kind == .parking && $0.inForce })
-        XCTAssertTrue(CityRuleZone.shown(over: porto, zoom: 13, at: seoulNoon).isEmpty)
+        XCTAssertTrue(CityRuleZone.shown(over: porto, zoom: 13, at: seoulNoon, among: zones).isEmpty)
         let bergen = GeoBounds(south: 60.372, west: 5.305, north: 60.412, east: 5.343)
-        XCTAssertEqual(Set(CityRuleZone.shown(over: bergen, zoom: 14, at: seoulNoon).map(\.rule.kind)), Set(ScooterZoneKind.allCases))
+        XCTAssertEqual(
+            Set(CityRuleZone.shown(over: bergen, zoom: 14, at: seoulNoon, among: zones).map(\.rule.kind)),
+            Set(ScooterZoneKind.allCases)
+        )
+        // The catalog's own, as the app reads them: each over its own place.
+        for zone in CityRuleZone.cityZones {
+            XCTAssertTrue(CityRuleZone.shown(over: zone.bounds, zoom: 14, at: seoulNoon).contains { $0.rule == zone }, zone.id)
+        }
+    }
+
+    /// Bergen's zones, one of each kind in the view of its centre above, and four corners of two of Porto's discs, one in
+    /// its view and one far off, as data/ had them on 29 October 2026: data/ is read again from the cities, so the tests
+    /// make them.
+    private func bergensAndPortosZones() throws -> [CityRuleZone] {
+        let bergen = "https://www.bergen.kommune.no/innbyggerhjelpen/vann-vei-og-trafikk/vei-transport-og-parkering/sykkel/elsparkesykler-i-bergen"
+        let porto = "https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas"
+        return [
+            try cityZone("bergen-no-ride-173", "Bergen kommune", "Europe/Oslo", .noRide, source: bergen,
+                         ring: [60.406298, 5.329251, 60.406236, 5.329943, 60.405699, 5.329686, 60.405785, 5.328995]),
+            try cityZone("bergen-no-parking-42", "Bergen kommune", "Europe/Oslo", .noParking, source: bergen,
+                         ring: [60.375404, 5.334097, 60.375545, 5.333442, 60.375618, 5.333514, 60.375477, 5.334164]),
+            try cityZone("bergen-slow-6", "Bergen kommune", "Europe/Oslo", .slow, source: bergen,
+                         ring: [60.393893, 5.317572, 60.393747, 5.317297, 60.394023, 5.316497, 60.394219, 5.316875]),
+            try cityZone("bergen-parking-61", "Bergen kommune", "Europe/Oslo", .parking, source: bergen,
+                         ring: [60.388009, 5.331895, 60.38795, 5.331834, 60.387962, 5.331793]),
+            try cityZone("porto-parking-1abcfc08", "Porto", "Europe/Lisbon", .parking, source: porto,
+                         ring: [41.144129, -8.609594, 41.144174, -8.609654, 41.144129, -8.609714, 41.144084, -8.609654]),
+            try cityZone("porto-parking-0e66c7e0", "Porto", "Europe/Lisbon", .parking, source: porto,
+                         ring: [41.172801, -8.646859, 41.172846, -8.646918, 41.172801, -8.646978, 41.172755, -8.646918])
+        ]
+    }
+
+    /// A city's zone of one ring, its corners given latitude first.
+    private func cityZone(
+        _ id: String, _ authority: String, _ timeZone: String, _ kind: ScooterZoneKind, source: String, ring: [Double]
+    ) throws -> CityRuleZone {
+        CityRuleZone(
+            id: id, authority: authority, timeZone: timeZone, kind: kind, source: try XCTUnwrap(URL(string: source)),
+            ring: stride(from: 0, to: ring.count, by: 2).map { GeoPoint(latitude: ring[$0], longitude: ring[$0 + 1]) }
+        )
     }
 
     @MainActor
     func testTheLegendHasALineForEachKindAndWhoSetsItTheStrongestRuleFirst() throws {
         let hongdae = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
-        let porto = try XCTUnwrap(CityRuleZone.cityZones.first { $0.authority == "Porto" })
-        let bergen = CityRuleZone.cityZones.filter { $0.authority == "Bergen kommune" }
+        // Porto's and Bergen's zones, made here as data/ changes them: where they are is not the legend's.
+        let ring = [60.39, 5.32, 60.3901, 5.32, 60.3901, 5.3201]
+        let porto = try cityZone("porto-parking-1", "Porto", "Europe/Lisbon", .parking, source: "https://example.com/porto", ring: ring)
+        let bergen = try [ScooterZoneKind.parking, .parking, .slow, .noRide, .noParking].enumerated().map { index, kind in
+            try cityZone("bergen-\(index)", "Bergen kommune", "Europe/Oslo", kind, source: "https://example.com/bergen", ring: ring)
+        }
         let first = { (kind: ScooterZoneKind) in try XCTUnwrap(bergen.first { $0.kind == kind }) }
         let rules = [porto] + bergen.filter { $0.kind == .parking }.prefix(2)
             + [try first(.slow), try first(.noRide), try first(.noParking), hongdae]
