@@ -31,6 +31,7 @@ import androidx.test.uiautomator.Until
 import com.plhery.scootradar.MainActivity
 import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.ScooterMapViewModel
+import com.plhery.scootradar.app.ScreenOrientation
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterHeadingReading
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -219,10 +220,13 @@ class RiderLocationTest {
         waitFor(10_000) { drawn(ScooterMarkerLayers.RIDER) && beamShown() }
         screenshot("rider-portrait")
 
-        // A phone's screen stays upright, as the iPhone's app does (UI-375).
-        device.setOrientationLandscape()
+        // A phone's screen stays upright, as the iPhone's app does; a tablet's or an unfolded foldable's turns, as the
+        // iPad's does (UI-375).
+        val phone = ScreenOrientation.smallestWidth(activity) < ScreenOrientation.PHONE_UNDER
+        val wasWide = wide()
+        if (wasWide) device.setOrientationPortrait() else device.setOrientationLandscape()
         Thread.sleep(2_000)
-        assertEquals(Surface.ROTATION_0, rotation())
+        if (phone) assertEquals(Surface.ROTATION_0, rotation()) else assertTrue("the screen turned", wide() != wasWide)
         // The same activity, the rider and the beam still drawn.
         waitFor(10_000) { drawn(ScooterMarkerLayers.RIDER) && drawn(ScooterMarkerLayers.RIDER_RING) && beamShown() }
         assertTrue(scenario!!.state.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED))
@@ -542,6 +546,13 @@ class RiderLocationTest {
             opacity = (map.style?.getLayer(ScooterMarkerLayers.RIDER_BEAM) as? SymbolLayer)?.iconOpacity?.value
         }
         return opacity
+    }
+
+    /** Whether the activity's window is wider than it is tall. */
+    private fun wide(): Boolean {
+        var wide = false
+        instrumentation.runOnMainSync { activity.window.decorView.let { wide = it.width > it.height } }
+        return wide
     }
 
     private fun rotation(): Int {
