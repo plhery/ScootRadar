@@ -23,6 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
+import kotlin.math.log2
 
 // The map's part of ios/ScootRadarTests/ScooterFilteringTests.swift, on MapLibre's map of an iPhone's size.
 @RunWith(AndroidJUnit4::class)
@@ -92,6 +93,42 @@ class ScooterFilteringTest {
             val shown = phone.projection.point(scooter)
             assertEquals(886.0, shown.x, 3.0)
             assertEquals(516.0, shown.y, 3.0)
+        }
+    }
+
+    /**
+     * T055. setRegionPreservingPerspective is MapCamera's move to a place here, which beside a panel also frames the
+     * region within the map's margins, as MapKit does; its steps are taken on the map as the iPhone's test takes them
+     * on a map without margins: the region set, then beside a panel its centre moved to the middle of the part left.
+     */
+    @Test
+    fun aRegionBesideAPanelIsShownInTheMiddleOfTheMapLeftVisibleAtTheSameZoom() = withPhoneMap { phone ->
+        phone.resize(1376, 1032)
+        settle()
+        val region = MapRegion.around(scooter, 850.0, 850.0)
+
+        // As on a phone: the band between the search bar and the dock leaves the sides alone, and the region is the
+        // map's own.
+        val bounds = phone.onMain { phone.projection.bounds }
+        assertNull(ScooterMapCameraPolicy.aside(ScreenRect(0.0, 110.0, 1376.0, 700.0), bounds))
+        phone.setRegion(region)
+        val alone = phone.onMain {
+            val centred = phone.projection.point(scooter)
+            assertEquals(688.0, centred.x, 3.0)
+            assertEquals(516.0, centred.y, 3.0)
+            phone.map.cameraPosition.zoom
+        }
+
+        phone.setRegion(region)
+        phone.onMain {
+            val beside = ScooterMapCameraPolicy.aside(ScreenRect(396.0, 24.0, 980.0, 1008.0), bounds)!!
+            val center = ScooterMapCameraPolicy.center(showing = scooter, on = phone.projection, visible = beside)
+            phone.map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(center.latitude, center.longitude)))
+            val shown = phone.projection.point(scooter)
+            assertEquals(886.0, shown.x, 3.0)
+            assertEquals(516.0, shown.y, 3.0)
+            // MapKit's camera distance within 1%: the zoom within log2(1.01).
+            assertEquals(alone, phone.map.cameraPosition.zoom, log2(1.01))
         }
     }
 
