@@ -16,6 +16,19 @@ Göteborg, Malmö, Uppsala and eleven others) come from its
 [app map](voi-app-map.md) since 24 October, and Bolt's in Stockholm, Malmö
 and Lund from its [app map](bolt-app-map.md) since 25 October.
 
+Voi's Gävle region (`voi_se_app_296`) is a box about 27 km by 32 km, and not
+all of it is Gävle kommun. By OpenStreetMap's municipal borders, it takes in
+51 km² of Sandvikens kommun in the west, 39 km² of Älvkarleby kommun in the
+south-east, reaching the western edge of Skutskär, and 9 km² of Ockelbo kommun
+in the north-west: 11.5% of the box. On 29 October 2026 all 948 of its scooters
+stood in Gävle kommun, all but 16 of them within 5 km of the centre. A
+scooter Voi left in those parts would still count as Gävle's. The count, 910
+to 1,010 since 24 October, is above the 700 e-scooters Voi announced for 2026
+(18 March 2026), which the kommun said would be put out gradually (5 May
+2026). The map keeps Voi's scooters only, not its e-bikes, and each vehicle
+id once; no two of the 948 stood at the same point. So the difference is not
+e-bikes or duplicates that the map can see.
+
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and Dott's Swedish listing, then probed the URL patterns of Lime, Hopp and Bolt
