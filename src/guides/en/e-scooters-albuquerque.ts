@@ -100,7 +100,7 @@ const guide: Guide = {
           list: [
             '**ABQ RIDE and ART.** You can’t take a rental scooter on a City bus: ABQ RIDE carries your own stand-up e-scooter, but not one that is rented or part of a dockless system. ART, the free bus rapid transit line along Central Avenue (old Route 66), runs through downtown and Nob Hill: end your ride clear of its stations.',
             '**The Rail Runner.** Rio Metro welcomes bikes and scooters on New Mexico Rail Runner Express trains, electric ones with sealed lithium-ion batteries included, boarding at doors marked with a bicycle. Its page says nothing about rental scooters: end your Lime ride before you board.',
-            '**The University of New Mexico.** We found no campus rule we could check, so on campus follow the university’s signs and any no-ride or no-parking areas the Lime app shows.',
+            '**The University of New Mexico.** Its parking office says UNM Policy 2260 bars mopeds and scooters from pedestrian walkways, and bars parking them at bike racks or on sidewalks. The page doesn’t name rental scooters, but keep off campus walkways and follow the Lime app.',
             '**The Sunport.** The airport’s ground transportation page names ABQ RIDE Route 50 as the shuttle between the Sunport and the Rail Runner (Route 250 is suspended), and says nothing about scooters.',
             '**Balloon Fiesta.** Scooters, skateboards and hoverboards are on the list of items you can’t bring into Balloon Fiesta Park during the Fiesta; the next one runs from 2 to 10 October 2027.',
             '**Riding elsewhere in the West?** See [e-scooters in Phoenix](guide:phoenix) and [Denver](guide:denver), or find the nearest Lime on the [Albuquerque map](map:us:nm:Albuquerque).',
@@ -165,6 +165,7 @@ const guide: Guide = {
     { title: 'Albuquerque International Balloon Fiesta: Know before you go', url: 'https://www.balloonfiesta.com/plan-your-visit/know-before-you-go/' },
     { title: 'Albuquerque International Balloon Fiesta: home page (2027 dates)', url: 'https://www.balloonfiesta.com/' },
     { title: 'Albuquerque International Sunport: Ground transportation', url: 'https://www.abqsunport.com/ground-transportation/' },
+    { title: 'University of New Mexico, Parking and Transportation Services: Motorcycle, moped and scooter parking (2026–27 rates)', url: 'https://pats.unm.edu/parking/permit-parking/motorcycle-moped-scooter-parking.html' },
     { title: 'Beam: Operating cities', url: 'https://partner.ridebeam.com/cities' },
   ],
 };
