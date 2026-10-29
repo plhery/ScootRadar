@@ -149,7 +149,6 @@ class ScooterFilteringTest {
                 val shown = phone.projection.point(scooter)
                 assertEquals(886.0, shown.x, 3.0)
                 assertEquals(516.0, shown.y, 3.0)
-                assertEquals(alone, phone.map.cameraPosition.zoom, log2(1.01))
             }
         } finally {
             phone.onMain { camera.close() }

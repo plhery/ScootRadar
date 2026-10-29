@@ -122,9 +122,10 @@ class MarkerEasesTest {
 
     @Test
     fun aDotEasesAndChangesHandsWithNoFrameOfNothing() = withMarkers(zurich, mapLibreZoom = 16.0) { marked ->
-        // A dot in the middle, among 2000 others kept 80 pt from it: the scooters' source takes a while to lay out.
+        // A dot in the middle, among others kept 80 pt from it, as many as a map eases: the scooters' source takes a
+        // while to lay out.
         val middle = ScreenPoint(195.0, 422.0)
-        val others = spread(2_000, around = zurich).filter { scooter ->
+        val others = spread(ScooterMarkerScene.MOST_DOTS_EASED - 20, around = zurich).filter { scooter ->
             val point = marked.point(scooter.coordinate)
             abs(point.x - middle.x) > 80 || abs(point.y - middle.y) > 80
         }
@@ -182,15 +183,15 @@ class MarkerEasesTest {
     }
 
     /**
-     * The rider walks 250 m: the dots within some 360 m of where it was or is take a new strength, hundreds of
-     * them eased. A filter narrowed and widened again changes the places of the dots in a spread. The frames of
-     * the second after, as gfxinfo counts the window's and as MapLibre draws the map's, eased and at once, over
-     * 5000 scooters.
+     * The rider walks 250 m: the dots within some 360 m of where it was or is take a new strength, dozens of them
+     * eased. A filter narrowed and widened again changes the places of the dots in a spread. The frames of the
+     * second after, as gfxinfo counts the window's and as MapLibre draws the map's, eased and at once, over as many
+     * scooters as a map eases; over 5000, the dots change at once.
      */
     @Test
-    fun hundredsOfDotsEasingAtOnceKeepTheFrames() = withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
+    fun dotsEasingAtOnceKeepTheFrames() = withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
         marked.phone.onMain { marked.controller.setUserLocation(zurich) }
-        marked.serve(spread(5_000, around = zurich))
+        marked.serve(spread(ScooterMarkerScene.MOST_DOTS_EASED, around = zurich))
         // The light-up is over.
         settle()
         val results = mutableListOf<Measured>()
@@ -252,11 +253,25 @@ class MarkerEasesTest {
                 settle()
             }
         }
-        Log.i(TAG, "Hundreds of dots: ${results.joinToString(" | ")}")
-        // Hundreds of dots ease as the rider walks, and the window's frames are as many on time as at once.
-        assertTrue("$results", results.filter { it.eased && it.change == "rider" }.all { it.moving >= 200 })
+        Log.i(TAG, "Dots easing: ${results.joinToString(" | ")}")
+        // Dozens of dots ease as the rider walks, and the window's frames are as many on time as at once.
+        assertTrue("$results", results.filter { it.eased && it.change == "rider" }.all { it.moving >= 30 })
         val atOnce = results.filter { !it.eased }.maxOf { it.janky }
         assertTrue("$results", results.filter { it.eased }.all { it.janky <= atOnce + 10 })
+        // MapLibre draws the map through the ease, not a write's 140 ms at a time as over 5000 (MAP-319).
+        assertTrue("$results", results.mapNotNull { it.easing }.all { it.second <= 100 })
+
+        // Over 5000 scooters, the rider walking changes the dots at once.
+        marked.serve(spread(5_000, around = zurich))
+        settle()
+        animates = true
+        marked.phone.onMain { marked.controller.setUserLocation(GeoPoint(zurich.latitude + 0.00225, zurich.longitude)) }
+        var moving = 0
+        repeat(12) {
+            SystemClock.sleep(50)
+            moving = max(moving, marked.phone.onMain { marked.markers.scene.moving().size })
+        }
+        assertEquals(0, moving)
     }
 
     private data class Measured(
