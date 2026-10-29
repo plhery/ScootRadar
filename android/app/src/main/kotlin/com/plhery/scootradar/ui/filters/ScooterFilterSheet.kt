@@ -61,6 +61,7 @@ import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.SheetBarButton
 import com.plhery.scootradar.ui.sheet.SheetTitleBar
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SelectionFeedback
@@ -227,7 +228,7 @@ private fun BatteryPreset(preset: Int, selected: Boolean, modifier: Modifier, on
             .selectable(
                 selected = selected,
                 interactionSource = null,
-                indication = null,
+                indication = FocusRing(segment),
                 role = Role.RadioButton,
                 onClick = { onChoose(preset) },
             )

@@ -49,6 +49,7 @@ import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.map.GroundPalette
 import com.plhery.scootradar.map.GroundPalettes
 import com.plhery.scootradar.ui.dock.hoveredAlpha
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -105,7 +106,7 @@ internal fun SettingsTile(
             .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
             .background(if (isSelected) colors.accent.copy(alpha = 0.08f) else colors.quaternarySystemFill, shape)
             .border(1.5.dp, if (isSelected) colors.accent else colors.dockHairline, shape)
-            .selectable(isSelected, interaction, indication = null, role = Role.RadioButton, onClick = onClick)
+            .selectable(isSelected, interaction, FocusRing(shape), role = Role.RadioButton, onClick = onClick)
             .padding(start = 4.dp, top = 4.dp, end = 4.dp, bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {

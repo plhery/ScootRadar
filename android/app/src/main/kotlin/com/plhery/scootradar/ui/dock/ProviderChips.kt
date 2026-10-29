@@ -60,6 +60,7 @@ import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.Symbols
@@ -185,7 +186,7 @@ internal fun QuickProviderFilterChip(
     Row(
         modifier
             .graphicsLayer { alpha = if (pressed) 0.4f else if (hovered) hoveredAlpha(0.4f) else 1f }
-            .clickable(interaction, indication = null, role = Role.Button, onClick = onClick)
+            .clickable(interaction, FocusRing(), role = Role.Button, onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = shown

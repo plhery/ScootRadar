@@ -10,6 +10,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -64,6 +65,7 @@ import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -82,7 +84,7 @@ import kotlin.math.roundToInt
 
 /**
  * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple, and a little
- * under a mouse's pointer. Its semantics are a button's, which TalkBack names from the label unless [label] says
+ * under a mouse's pointer, ringed while a keyboard has its focus (UI-251). Its semantics are a button's, which TalkBack names from the label unless [label] says
  * otherwise; [hint] is what a double tap does, which TalkBack says in a sentence of its own where iOS reads its
  * accessibility hint (UI-327).
  */
@@ -96,7 +98,7 @@ internal fun Modifier.plainButton(
     val pressed by interaction.collectIsPressedAsState()
     val hovered by interaction.collectIsHoveredAsState()
     graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else if (hovered) hoveredAlpha(PLAIN_PRESSED_ALPHA) else 1f }
-        .clickable(interaction, indication = null, enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
+        .clickable(interaction, FocusRing(), enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
         .then(
             if (label != null) {
                 Modifier.clearAndSetSemantics {
@@ -120,16 +122,19 @@ private const val PLAIN_PRESSED_ALPHA = 0.4f
 internal fun hoveredAlpha(pressed: Float): Float = 1f - (1f - pressed) / 2
 
 /**
- * A control that takes its touches itself, reached with Tab as Full Keyboard Access reaches it, and pressed with Enter
- * or Space as a button is (ui.md UI-251): [onPress] as the key comes up. Before its semantics, which would clear the
- * focus's.
+ * A control that takes its touches itself, reached with Tab as Full Keyboard Access reaches it, ringed while it has
+ * the focus, and pressed with Enter or Space as a button is (ui.md UI-251): [onPress] as the key comes up. Before its
+ * semantics, which would clear the focus's.
  */
-internal fun Modifier.focusableControl(interaction: MutableInteractionSource? = null, onPress: () -> Unit): Modifier =
+internal fun Modifier.focusableControl(interaction: MutableInteractionSource? = null, onPress: () -> Unit): Modifier = composed {
+    val own = remember { MutableInteractionSource() }
+    val source = interaction ?: own
     onKeyEvent { event ->
         if (event.key !in PRESS_KEYS) return@onKeyEvent false
         if (event.type == KeyEventType.KeyUp) onPress()
         true
-    }.focusable(interactionSource = interaction)
+    }.indication(source, FocusRing()).focusable(interactionSource = source)
+}
 
 /** The keys that press a focused button, as Compose's clickable takes them. */
 private val PRESS_KEYS = setOf(Key.Enter, Key.NumPadEnter, Key.Spacebar, Key.DirectionCenter)
@@ -289,7 +294,7 @@ internal fun DockActionButton(
             }
             .clip(shape)
             .background(if (prominent) colors.cardActionFill else colors.dockQuietFill)
-            .clickable(interaction, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
+            .clickable(interaction, FocusRing(shape), enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (label != null) Modifier.clearAndSetSemantics { contentDescription = label } else Modifier)
             .fillMaxWidth()
             .heightIn(min = 48.dp)

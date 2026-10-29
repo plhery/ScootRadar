@@ -55,6 +55,7 @@ import com.plhery.scootradar.core.map.allProviderCount
 import com.plhery.scootradar.core.map.allProvidersSelected
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.animation
@@ -150,7 +151,7 @@ internal fun ProviderListRow(
     Row(
         modifier
             .fillMaxWidth()
-            .clickable(interaction, indication = null, role = Role.Button, onClick = onClick)
+            .clickable(interaction, FocusRing(), role = Role.Button, onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = shown

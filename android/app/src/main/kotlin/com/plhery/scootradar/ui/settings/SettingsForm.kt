@@ -55,6 +55,7 @@ import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -141,8 +142,8 @@ internal fun FormRow(
     val highlight = if (scootColors.isDark) CELL_HIGHLIGHT_DARK else CELL_HIGHLIGHT_LIGHT
     val press = when {
         onClick == null -> Modifier
-        selected != null -> Modifier.selectable(selected, interaction, indication = null, role = Role.RadioButton, onClick = onClick)
-        else -> Modifier.clickable(interaction, indication = null, role = Role.Button, onClick = onClick)
+        selected != null -> Modifier.selectable(selected, interaction, FocusRing(), role = Role.RadioButton, onClick = onClick)
+        else -> Modifier.clickable(interaction, FocusRing(), role = Role.Button, onClick = onClick)
     }
     Row(
         modifier
@@ -255,7 +256,7 @@ internal fun FormToggleRow(title: String, isOn: Boolean, onChange: (Boolean) -> 
     Row(
         Modifier
             .fillMaxWidth()
-            .toggleable(value = isOn, interactionSource = null, indication = null, role = Role.Switch, onValueChange = onChange)
+            .toggleable(value = isOn, interactionSource = null, indication = FocusRing(), role = Role.Switch, onValueChange = onChange)
             .heightIn(min = ROW_HEIGHT)
             .padding(horizontal = ROW_PADDING, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
