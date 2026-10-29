@@ -148,9 +148,9 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Lexington-Fayette Urban County Council: Ordinance 42-2019, dockless vehicles, passed 20 June 2019 (PDF)', url: 'https://legistar1.granicus.com/Lexington/attachments/26dce173-1ff7-4740-a007-0a4211711250.pdf' },
-    { title: 'Lexington-Fayette Urban County Council: Memorandum of Understanding with the University of Kentucky, R-531-2019 (PDF)', url: 'https://legistar1.granicus.com/Lexington/attachments/1be3deff-e604-413c-97b3-4025c4e76cae.pdf' },
-    { title: 'Urban County Division of Planning: shared mobility data contract memo, 30 January 2025', url: 'https://legistar1.granicus.com/Lexington/attachments/04baf843-24ab-40bf-8f16-58b9586214c2.docx' },
+    { title: 'Lexington-Fayette Urban County Council: Ordinance 42-2019, dockless vehicles, passed 20 June 2019 (PDF)', url: 'https://lexington.legistar.com/View.ashx?M=F&ID=9494779&GUID=A5F0C985-9C7D-44DE-8F5D-77A87B3C37F3' },
+    { title: 'Lexington-Fayette Urban County Council: Memorandum of Understanding with the University of Kentucky, R-531-2019 (PDF)', url: 'https://lexington.legistar.com/View.ashx?M=F&ID=7677570&GUID=23768700-DF03-45AE-92CA-575E0D7C9225' },
+    { title: 'Urban County Division of Planning: shared mobility data contract memo, 30 January 2025 (PDF)', url: 'https://lexington.legistar.com/View.ashx?M=F&ID=13741517&GUID=27DEE0D0-CB89-46CC-B293-D8DA665E4C7F' },
     { title: 'Urban County GIS: parks', url: 'https://services1.arcgis.com/Mg7DLdfYcSWIaDnu/arcgis/rest/services/Park/FeatureServer/0' },
     { title: 'Urban County GIS: parcels', url: 'https://services1.arcgis.com/Mg7DLdfYcSWIaDnu/arcgis/rest/services/Parcel/FeatureServer/0' },
     { title: 'Urban County GIS: Town Branch Commons', url: 'https://services1.arcgis.com/Mg7DLdfYcSWIaDnu/arcgis/rest/services/ROW_Town_Branch_Commons_read_only_view/FeatureServer/0' },

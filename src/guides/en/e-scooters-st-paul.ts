@@ -150,8 +150,8 @@ const guide: Guide = {
   sources: [
     { title: 'City of Saint Paul: Shared Scooters & Bikes', url: 'https://www.stpaul.gov/departments/public-works/transportation-and-transit/shared-scooters-bikes' },
     { title: 'Saint Paul City Council: RES 26-676, agreements with Lime and Spin, 6 May 2026', url: 'https://stpaul.legistar.com/LegislationDetail.aspx?ID=7991127&GUID=786A6CED-7BA6-4E53-A74B-971980C199DE' },
-    { title: 'City of Saint Paul: 2026 operating agreement with Lime (PDF)', url: 'https://legistar1.granicus.com/StPaul/attachments/cca74936-0331-44d1-8d87-e826038c6784.pdf' },
-    { title: 'City of Saint Paul: 2026 operating agreement with Spin (PDF)', url: 'https://legistar1.granicus.com/StPaul/attachments/86d46190-4ef4-49c0-b615-8d45cc50dd95.pdf' },
+    { title: 'City of Saint Paul: 2026 operating agreement with Lime (PDF)', url: 'https://stpaul.legistar.com/View.ashx?M=F&ID=15408823&GUID=652853A0-CFA1-400B-8883-2F409C7327D3' },
+    { title: 'City of Saint Paul: 2026 operating agreement with Spin (PDF)', url: 'https://stpaul.legistar.com/View.ashx?M=F&ID=15408824&GUID=6E298435-846F-4C4D-B10C-DC96BEEA6DCB' },
     { title: 'City of Saint Paul: Shared Micromobility Report 2024 (PDF)', url: 'https://www.stpaul.gov/sites/default/files/2025-04/St_Paul_Shared_Micromobility_Rpt_2024_Final.pdf' },
     { title: 'Saint Paul City Council: RES 18-1282, scooter pilot, 1 August 2018', url: 'https://stpaul.legistar.com/LegislationDetail.aspx?ID=3584849&GUID=2B509FD5-8492-4C25-8D35-1FD3333D5A04' },
     { title: 'City of Saint Paul: Saint Paul asks Bird to remove scooters, 10 July 2018', url: 'https://www.stpaul.gov/news/saint-paul-asks-bird-remove-scooters-now' },
