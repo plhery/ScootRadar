@@ -12,6 +12,7 @@ import com.plhery.scootradar.core.map.ScooterHeadingPolicy
 import com.plhery.scootradar.core.map.ScooterInterfaceOrientation
 import com.plhery.scootradar.core.map.StubScooterAPI
 import com.plhery.scootradar.core.map.makeController
+import java.net.URI
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -835,42 +836,46 @@ class ScooterModelsTest {
             rentalURIs = rentalURIs,
             distanceMeters = null,
         )
-        // The catalog has no Play Store pages yet: the operator's link is all there is.
-        val lime = scooter("lime")
-        assertEquals("https://lime.bike/", lime.operatorApp?.link)
-        assertEquals("https://app.publibike.ch/", scooter("publibike").operatorApp?.link)
-        assertEquals("https://www.spin.app/", scooter("spin").operatorApp?.link)
-        // Voi's, Dott's and Bolt's rider maps link no scooter: Voi's link is the one its feeds give every scooter,
-        // Bolt's the store link its feeds publish.
-        assertEquals(
-            "https://lqfa.adj.st/closest_vehicle?adj_t=b2hnabv&adj_deep_link=voiapp%3A%2F%2Fnearest",
-            scooter("voi").operatorApp?.link,
-        )
-        assertEquals("https://v.ridedott.com/", scooter("dott").operatorApp?.link)
-        assertEquals("https://bolt.sng.link/Epy3j/o9sr", scooter("bolt").operatorApp?.link)
+        // The catalog has no Play Store pages yet: the operator's link is all there is, for every operator the
+        // catalog gives an app, and none for the others. Which operators have one, and their links, are data/'s
+        // (CatalogParityTest holds them to the Swift catalog's), so they are read from it (LOG-370).
+        for (provider in ScooterProvider.entries) {
+            assertEquals(provider.rawValue, provider.app, scooter(provider.rawValue).operatorApp)
+        }
+        // One whose feed may link a scooter too, on a host its policy allows (code, held to Swift's).
+        val withApp = ScooterProvider.entries.first { provider ->
+            provider.app != null && ScooterRentalLinkPolicy.policies[provider.rawValue]?.httpsHosts.orEmpty().isNotEmpty()
+        }
+        val link = withApp.app!!.link
+        val operator = scooter(withApp.rawValue)
 
-        // With Lime installed, its link opens it; only an app may take that link.
+        // With the app installed, its link opens it; only an app may take that link.
         val tried = mutableListOf<String>()
-        val opened = lime.openOperatorApp { url, appOnly ->
+        val opened = operator.openOperatorApp { url, appOnly ->
             tried += "$url $appOnly"
             true
         }
-        assertEquals(listOf("https://lime.bike/ true"), tried)
-        assertEquals("https://lime.bike/", opened?.toString())
+        assertEquals(listOf("$link true"), tried)
+        assertEquals(link, opened?.toString())
 
         // Without it, the same link opens in the browser, whose page sends the phone to the store.
         tried.clear()
-        val store = lime.openOperatorApp { url, appOnly ->
+        val store = operator.openOperatorApp { url, appOnly ->
             tried += "$url $appOnly"
             !appOnly
         }
-        assertEquals(listOf("https://lime.bike/ true", "https://lime.bike/ false"), tried)
-        assertEquals("https://lime.bike/", store?.toString())
+        assertEquals(listOf("$link true", "$link false"), tried)
+        assertEquals(link, store?.toString())
 
-        // A scooter its feed links keeps that link, and other operators have no app to fall back on.
-        val linked = scooter("lime", rentalURIs = ScooterRentalURIs(ios = null, android = "https://lime.bike/vehicle/1", web = null))
+        // A scooter its feed links keeps that link, and an operator with no app has nothing to fall back on.
+        val host = ScooterRentalLinkPolicy.policies.getValue(withApp.rawValue).httpsHosts.first()
+        val linked = scooter(withApp.rawValue, rentalURIs = ScooterRentalURIs(ios = null, android = "https://$host/vehicle/1", web = null))
+        assertEquals(listOf("https://$host/vehicle/1"), linked.rentalURLs.map(URI::toString))
         assertNull(linked.operatorApp)
-        assertNull(scooter("hopp").operatorApp)
+        assertNull(linked.openOperatorApp { _, _ -> true })
+        val withoutApp = ScooterProvider.entries.firstOrNull { it.app == null }
+        assumeTrue("every operator has an app", withoutApp != null)
+        assertNull(scooter(withoutApp!!.rawValue).openOperatorApp { _, _ -> true })
     }
 
     // Ride prices and passes.
