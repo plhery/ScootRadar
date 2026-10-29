@@ -58,7 +58,7 @@ import java.time.ZoneOffset
 /**
  * What the colours of the zones mean while they are on, or why none are drawn, at the foot of the map beside the
  * locate button, as on the web (ZoneLegend.tsx). Taps go through it to the map, but for a city's line, whose
- * authority is a link: then it takes them all.
+ * authority, who sets it, is a link: then it takes them all.
  */
 @Composable
 fun ZoneLegend(
@@ -66,8 +66,8 @@ fun ZoneLegend(
     /** The operators' zones drawn. */
     count: Int,
     /**
-     * The streets over the map where a city forbids riding, each a line of its own whether or not the zones are on:
-     * its hours, and who forbids it, linked to where they say so (as on the web, ZoneLegend.tsx).
+     * The cities' rules and zones over the map, whether or not the zones are on: a line for each kind, hours and
+     * who sets them, linked to where they say so (as on the web, ZoneLegend.tsx).
      */
     rules: List<CityRuleZone.Shown>,
     modifier: Modifier = Modifier,
@@ -118,7 +118,7 @@ fun ZoneLegend(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                ZoneSwatch(ScooterZoneKind.NoRide, Modifier.alpha(if (line.inForce) 1f else CityRuleZone.dimmed.toFloat()))
+                ZoneSwatch(line.kind, Modifier.alpha(if (line.inForce) 1f else CityRuleZone.dimmed.toFloat()))
                 Text(line.text, style = style, color = colors.dockText)
             }
         }
@@ -136,26 +136,32 @@ private fun note(state: ScooterZoneState, count: Int, rules: Boolean): String? =
     else -> null
 }
 
-/** A city's line: one for each authority, hours and whether they hold now. */
-private class RuleLine(val key: String, val inForce: Boolean, val text: AnnotatedString)
+/** A city's line: one for each kind, authority, hours and whether they hold now. */
+internal class RuleLine(val key: String, val kind: ScooterZoneKind, val inForce: Boolean, val text: AnnotatedString)
 
-private fun ruleLines(rules: List<CityRuleZone.Shown>, link: Color): List<RuleLine> {
+/** The lines, the strongest rule first: "No riding 12:00–23:00 · Seoul", "Parking · Porto". */
+internal fun ruleLines(rules: List<CityRuleZone.Shown>, link: Color): List<RuleLine> {
     val lines = mutableListOf<RuleLine>()
-    for (shown in rules) {
-        val hours = shown.rule.hours.joinToString(", ") { "${wallTime(it.fromMinute)}–${wallTime(it.untilMinute)}" }
-        val key = "${shown.rule.authority} $hours ${shown.inForce}"
-        if (lines.any { it.key == key }) continue
-        val text = buildAnnotatedString {
-            append("${ScooterZoneKind.NoRide.label} $hours · ")
-            withLink(
-                LinkAnnotation.Url(
-                    shown.rule.source,
-                    TextLinkStyles(SpanStyle(color = link, textDecoration = TextDecoration.Underline)),
-                ),
-            ) { append(shown.rule.authority) }
-            if (!shown.inForce) append(" (${localized("not now")})")
+    // Hundreds of a city's zones may be in view, and make a few lines.
+    val keys = mutableSetOf<String>()
+    for (kind in ScooterZoneKind.entries) {
+        for (shown in rules) {
+            if (shown.rule.kind != kind) continue
+            val hours = shown.rule.hours.joinToString(", ") { "${wallTime(it.fromMinute)}–${wallTime(it.untilMinute)}" }
+            val key = "${kind.rawValue} ${shown.rule.authority} $hours ${shown.inForce}"
+            if (!keys.add(key)) continue
+            val text = buildAnnotatedString {
+                append(if (hours.isEmpty()) "${kind.label} · " else "${kind.label} $hours · ")
+                withLink(
+                    LinkAnnotation.Url(
+                        shown.rule.source,
+                        TextLinkStyles(SpanStyle(color = link, textDecoration = TextDecoration.Underline)),
+                    ),
+                ) { append(shown.rule.authority) }
+                if (!shown.inForce) append(" (${localized("not now")})")
+            }
+            lines += RuleLine(key, kind, shown.inForce, text)
         }
-        lines += RuleLine(key, shown.inForce, text)
     }
     return lines
 }

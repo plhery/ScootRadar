@@ -151,8 +151,8 @@ class ScooterZoneLayer(
 /**
  * The zones' layers, bottom to top: the fills of a city's parking places, slow zones, no parking and no riding, the
  * strongest rule on top, each kind's of one strength at the opacity of its whole layer (MAP-154, MAP-155, MAP-330);
- * then the edges, no parking's and slow zones' first, parking's, and no riding's over them (MAP-159, MAP-160). Each feature carries its kind and its
- * opacity, which a zone drawn dimmer lowers.
+ * then the edges, no parking's and slow zones' first, then parking's and no riding's over them (MAP-159, MAP-160).
+ * Each feature carries its kind and its opacity, which a zone drawn dimmer lowers.
  *
  * What the iPhone draws in points on them, the hatch, the edges' widths and dashes and their clearance, is drawn
  * as MapKit shows it: MapKit draws the overlay on tiles a whole zoom deeper than the map's and shows them at half
@@ -268,8 +268,8 @@ class ZoneDrawing(zones: List<ScooterZone>) {
 
     /**
      * Each piece's edge as it is stroked at a scale, map points a point: no parking's and slow zones' cut where no
-     * riding's reach, parking's and no riding's whole. A ring left whole is a polygon, which MapLibre's line joins all round as
-     * Core Graphics does a closed path; what is left of a cut one is a line.
+     * riding's reach, parking's and no riding's whole. A ring left whole is a polygon, which MapLibre's line joins
+     * all round as Core Graphics does a closed path; what is left of a cut one is a line.
      */
     fun edges(scale: Double): String = buildString {
         append("{\"type\":\"FeatureCollection\",\"features\":[")

@@ -2,6 +2,7 @@ package com.plhery.scootradar.map
 
 import android.graphics.Color
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.ScooterZone
@@ -24,7 +25,7 @@ import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-// MAP-152 to MAP-161: ScooterZoneRenderer's fills, hatch and edges as MapLibre's layers draw them.
+// MAP-152 to MAP-161 and MAP-330: ScooterZoneRenderer's fills, hatch and edges as MapLibre's layers draw them.
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -163,6 +164,68 @@ class ScooterZoneLayersTest {
         }
         val alone = ZoneDrawing(listOf(zone(ScooterZoneKind.NoParking, noRide), zone(ScooterZoneKind.Slow, noRide)))
         assertTrue("nothing to give way to", !alone.hasEdgesToCut)
+    }
+
+    @Test
+    fun drawsACitysParkingGreenAndPlainWithinASolidEdgeKeptWholeOverNoRiding() {
+        val light = ZoneLayers.specs(isDark = false).associateBy { it.id }
+        val dark = ZoneLayers.specs(isDark = true).associateBy { it.id }
+        assertEquals("#1A7F37", light.getValue("zones-parking").paint["fill-color"])
+        assertEquals("#1A7F37", light.getValue("zone-edges-parking").paint["line-color"])
+        assertEquals("#4CD97B", dark.getValue("zones-parking").paint["fill-color"])
+        assertEquals("#4CD97B", dark.getValue("zone-edges-parking").paint["line-color"])
+        val edge = light.getValue("zone-edges-parking")
+        assertEquals(ZoneLayers.width(1.5), edge.paint["line-width"])
+        assertEquals(null, edge.paint["line-dasharray"])
+        assertEquals(mapOf("line-join" to "round", "line-cap" to "butt"), edge.layout)
+
+        val noRide = square(0.0, 0.0, 1_000.0)
+        val parking = ZoneDrawing(
+            listOf(
+                zone(ScooterZoneKind.NoRide, noRide),
+                // Half over no riding.
+                zone(ScooterZoneKind.Parking, square(500.0, 200.0, 1_000.0, 600.0)),
+            ),
+        )
+        assertTrue("parking gives no way", !parking.hasEdgesToCut)
+        val fills = features(parking.fills)
+        assertEquals(listOf("parking", "noRide"), fills.map { it.kind })
+        assertEquals(0.25, fills.first().opacity, 0.0)
+        val edges = features(parking.edges(scale = 1.0))
+        assertEquals(listOf("parking", "noRide"), edges.map { it.kind })
+        assertEquals("parking's edge is whole", "MultiPolygon", edges.first().type)
+        assertEquals(0.9, edges.first().opacity, 0.0)
+        // With no parking there too, only no parking's edge gives way.
+        val both = ZoneDrawing(
+            listOf(
+                zone(ScooterZoneKind.NoRide, noRide),
+                zone(ScooterZoneKind.Parking, square(500.0, 200.0, 1_000.0, 600.0)),
+                zone(ScooterZoneKind.NoParking, square(500.0, 0.0, 1_000.0, 100.0)),
+            ),
+        )
+        assertTrue(both.hasEdgesToCut)
+        val cut = features(both.edges(scale = 1.0))
+        assertEquals(listOf("noParking", "parking", "noRide"), cut.map { it.kind })
+        assertEquals(listOf("MultiLineString", "MultiPolygon", "MultiPolygon"), cut.map { it.type })
+    }
+
+    /** MAP-330: all of Bergen's zones, as the map draws them from zoom 14, merged and stroked off the main thread. */
+    @Test
+    fun drawsAllOfBergensZonesInOneBuild() {
+        val zones = CityRuleZone.cityZones.filter { it.authority == "Bergen kommune" }
+            .map { CityRuleZone.Shown(rule = it, inForce = true).mapZone }
+        val scale = ZoneLayers.scale(15.0)
+        val times = (1..5).map {
+            val start = System.nanoTime()
+            val drawing = ZoneDrawing(zones)
+            val edges = drawing.edges(scale)
+            val took = (System.nanoTime() - start) / 1_000_000
+            assertEquals(ScooterZoneKind.entries.map { it.rawValue }.toSet(), features(drawing.fills).map { it.kind }.toSet())
+            assertEquals(ScooterZoneKind.entries.map { it.rawValue }.toSet(), features(edges).map { it.kind }.toSet())
+            took
+        }
+        // The first is cold, as the map's first build is; the others as later ones.
+        println("Bergen's ${zones.size} zones built in ${times.first()} ms cold, then ${times.drop(1).joinToString(", ")} ms")
     }
 
     @Test

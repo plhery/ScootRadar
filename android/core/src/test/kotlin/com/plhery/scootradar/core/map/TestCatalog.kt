@@ -21,9 +21,9 @@ import com.plhery.scootradar.core.model.ScooterSeasonalPause
 import com.plhery.scootradar.core.model.ScooterZoneKind
 
 // The catalog the controller's tests read: a few of the generated catalog's cities, service areas, night bans and
-// street rules, as data/ had them on 28 October 2026, and a few of Porto's parking places as it had them on the 29th. The Markets lane changes data/ every day; this stays as it
-// is, so that a city added near Zürich, a town paused or an area moved leaves the tests' cities, providers and
-// distances what they say (LOG-370).
+// street rules, as data/ had them on 28 October 2026, and a few of Porto's parking places, as it had them on the
+// 29th. The Markets lane changes data/ every day; this stays as it is, so that a city added near Zürich, a town
+// paused or an area moved leaves the tests' cities, providers and distances what they say (LOG-370).
 
 internal object TestCatalog {
     /** Bern, Wädenswil and Zürich are the closest to Lungern, which no operator serves; the six around Switzerland's centre follow. */

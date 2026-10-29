@@ -55,8 +55,8 @@ import java.util.Locale
 
 /**
  * The zones' legend (ui.md UI-092, UI-093, UI-174, UI-285, UI-348) in each of its states, light and dark, at font
- * scale 1.0 and 2.0, over a plain stand-in for the map, as wide as the room beside the locate button; a city's
- * rules are made here rather than read from data/.
+ * scale 1.0 and 2.0, over a plain stand-in for the map, as wide as the room beside the locate button; the cities'
+ * rules and zones are made here rather than read from data/ (logic.md LOG-370).
  */
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -79,6 +79,12 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
         /** The zones off, and a city's rules drawn all the same. */
         RulesOnly(ScooterZoneState.Off, 0, seoulRules),
         KindsAndRules(ScooterZoneState.Shown, 12, seoulRules),
+
+        /** The zones off, and a line for each kind a city sets, the strongest first. */
+        BergenOnly(ScooterZoneState.Off, 0, bergenZones),
+
+        /** A city's parking places beside the operators' kinds. */
+        KindsAndPorto(ScooterZoneState.Shown, 12, portoZones),
         ;
 
         val suffix: String get() = name.replaceFirstChar { it.lowercase() }
@@ -131,6 +137,31 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
         private val seoulRules = listOf(
             CityRuleZone.Shown(rule("seoul", "Seoul", listOf(CityRuleZone.Hours(fromMinute = 22 * 60, untilMinute = 6 * 60))), inForce = true),
             CityRuleZone.Shown(rule("gangnam", "Gangnam-gu", listOf(CityRuleZone.Hours(fromMinute = 9 * 60, untilMinute = 18 * 60 + 30))), inForce = false),
+        )
+
+        /** Bergen's zones, one of each kind and a second parking place, which shares its line. */
+        private val bergenZones = listOf(
+            ScooterZoneKind.Parking, ScooterZoneKind.Slow, ScooterZoneKind.NoParking, ScooterZoneKind.NoRide, ScooterZoneKind.Parking,
+        ).mapIndexed { index, kind ->
+            CityRuleZone.Shown(zone("bergen-$index", "Bergen kommune", "Europe/Oslo", kind, GeoPoint(60.39, 5.32)), inForce = true)
+        }
+
+        /** Two of Porto's parking places, one line. */
+        private val portoZones = (0..1).map { index ->
+            CityRuleZone.Shown(zone("porto-$index", "Porto", "Europe/Lisbon", ScooterZoneKind.Parking, GeoPoint(41.147, -8.611)), inForce = true)
+        }
+
+        /** A square of 0.0001° a side at [at]. */
+        private fun zone(id: String, authority: String, timeZone: String, kind: ScooterZoneKind, at: GeoPoint) = CityRuleZone(
+            id = id,
+            authority = authority,
+            timeZone = timeZone,
+            kind = kind,
+            source = "https://example.com/${id.substringBefore('-')}",
+            ring = listOf(
+                at, GeoPoint(at.latitude, at.longitude + 0.0001), GeoPoint(at.latitude + 0.0001, at.longitude + 0.0001),
+                GeoPoint(at.latitude + 0.0001, at.longitude), at,
+            ),
         )
 
         private fun rule(id: String, authority: String, hours: List<CityRuleZone.Hours>) = CityRuleZone(
