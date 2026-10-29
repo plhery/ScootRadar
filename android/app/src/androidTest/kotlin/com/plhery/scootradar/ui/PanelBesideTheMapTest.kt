@@ -147,7 +147,7 @@ class PanelBesideTheMapTest {
 
         show(controller())
         // 16 from the edge, 380 of panel, and 16 to spare: the map shows its centre beside the panel.
-        val moved = waitFor(10_000) { margins().left >= 16 + 380 + 16 && padding().left >= 16 + 380 + 16 }
+        val moved = waitFor(10_000) { margins().left >= BESIDE_THE_PANEL && padding().left >= BESIDE_THE_PANEL }
         assertTrue("${margins()}, padding ${padding()}", moved)
         screenshot("panel-t221-panel")
     }
@@ -156,7 +156,7 @@ class PanelBesideTheMapTest {
     @Test
     fun foldingThePanelLeavesTheMapWhereItIs() {
         show(controller())
-        val besidePanel = waitFor(10_000) { margins().left >= 16 + 380 + 16 }
+        val besidePanel = waitFor(10_000) { margins().left >= BESIDE_THE_PANEL }
         assertTrue("${margins()}", besidePanel)
         Thread.sleep(300)
         val margins = margins()
@@ -180,7 +180,7 @@ class PanelBesideTheMapTest {
     @Test
     fun locatingBesideThePanelPutsTheRiderInTheMiddleOfTheMapBesideIt() {
         show(controller())
-        val besidePanel = waitFor(10_000) { margins().left >= 16 + 380 + 16 }
+        val besidePanel = waitFor(10_000) { margins().left >= BESIDE_THE_PANEL }
         assertTrue("${margins()}", besidePanel)
         Thread.sleep(500)
 
@@ -279,7 +279,7 @@ class PanelBesideTheMapTest {
     @Test
     fun aMoveUnderWayIsMadeAgainAFewTimesAtMostAsThePanelKeepsMoving() {
         show(controller())
-        val besidePanel = waitFor(10_000) { margins().left >= 16 + 380 + 16 }
+        val besidePanel = waitFor(10_000) { margins().left >= BESIDE_THE_PANEL }
         assertTrue("${margins()}", besidePanel)
         Thread.sleep(500)
 
@@ -607,6 +607,12 @@ class PanelBesideTheMapTest {
 
         /** Long enough for a move to the rider on a slow emulator. */
         const val LOCATING = 20_000L
+
+        /**
+         * 16 from the edge, 380 of panel and 16 to spare, less half a point: the panel's edge is measured in whole
+         * pixels, which a foldable's 2.4375 to the point leave 0.1 short of it.
+         */
+        const val BESIDE_THE_PANEL = 16 + 380 + 16 - 0.5
 
         /** iOS's accessibility1 and accessibility3 over its large: 28 and 40 points of body text over 17. */
         const val ACCESSIBILITY_1 = 28f / 17
