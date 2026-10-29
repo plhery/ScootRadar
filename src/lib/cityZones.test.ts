@@ -12,6 +12,8 @@ const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -11
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
+// Norrköping's Drottninggatan, from the station to the Gamla torget.
+const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
 // Västerås's Stora Torget and Stora gatan, where riding is forbidden.
 const VASTERAS_CENTRE = { south: 59.607, west: 16.535, north: 59.614, east: 16.555 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
@@ -39,7 +41,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'porto', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'norrkoping', 'porto', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -79,6 +81,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
+    expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -152,6 +155,23 @@ describe('the cities\' zones', () => {
     expect(file.zones.map(({ id, kind }) => [id, kind])).toEqual([['arlingtoncemetery-no-ride-1', 'noRide']]);
     const shown = ruleZonesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }, Date.parse('2026-10-29T23:30:00Z'), [zone]);
     expect(shown.map(({ id, inForce }) => [id, inForce])).toEqual([['arlingtoncemetery-no-ride-1', true]]);
+  });
+
+  it('draws Norrköping\'s zones, read back from its map\'s drawing, where its map draws them', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'norrkoping')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Norrköpings kommun' && zone.timeZone === 'Europe/Stockholm')).toBe(true);
+    const shown = ruleZonesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
+    // Its parking places are painted bays, 17 m long at most, drawn so: no ring round a square.
+    const { default: file } = await CITY_ZONE_FILES.norrkoping();
+    for (const zone of file.zones.filter(({ kind }) => kind === 'parking')) {
+      const lats = zone.ring.map(([lat]) => lat);
+      const lngs = zone.ring.map(([, lng]) => lng);
+      expect((Math.max(...lats) - Math.min(...lats)) * 110_540, zone.id).toBeLessThan(25);
+      expect((Math.max(...lngs) - Math.min(...lngs)) * 57_900, zone.id).toBeLessThan(25);
+    }
   });
 
   it('draws Västerås\'s zones, each part of one a zone, and leaves the holes in them open', async () => {

@@ -661,6 +661,30 @@ public zone layers are drawn regardless, credited to the city.
   maps in PDF (28 October 2025, on its
   [Greenbelt page](https://gardencityidaho.org/e-vehicles-on-the-greenbelt/)),
   with no shapes to draw.
+- **Norrköping** (read 29 October 2026): Norrköpings kommun's 57 parking
+  places for e-scooters, 29 areas where a scooter may not be returned
+  (`NoParking (Återlämning förbjuden)`), 14 slow zones (`Slow
+  (hastighetsbegränsning max 6 km/h)`) and 11 `NoGo` areas, where riding and
+  parking are both forbidden, drawn as no-riding zones: the themes "P-plats
+  elsparkcyklar" and "Elsparkcyklar, begränsningar" of the municipality's
+  [map](https://kartor.norrkoping.se/spatialmap), from its WMS
+  (`kartor.norrkoping.se/wms?SERVICENAME=kartor`, layers `p_elsparkscykel`,
+  `markuppl_elspark_begr_aterlamning` and `markuppl_elspark_begr_hastighet`,
+  whose slow and `NoGo` areas differ only by colour). The legend links the
+  municipality's
+  [page](https://norrkoping.se/boende-trafik-och-miljo/resa-och-parkera/elsparkcyklar):
+  park in a bicycle stand or at the marked e-scooter places in the inner city.
+  Its land-use guideline,
+  [Markupplåtelse på allmän platsmark](https://norrkoping.se/download/18.5ff942e1184b3f255e218bdc/1770911999429/Markuppl%C3%A5telse%20p%C3%A5%20allm%C3%A4n%20platsmark.pdf)
+  (12 February 2026, "Friflytande mobilitetstjänster"), has the operators
+  geofence scooters to 6 km/h in places and keep them from being returned in
+  the areas this map shows. The layers are not queryable: the WMS answers
+  only pictures, in SWEREF 99 16 30 (EPSG:3010). Drawn as SVG, each zone is a
+  path in the picture's pixels, read back from each pixel's centre to the grid
+  and so to latitude and longitude: to within 0.5 m for the parking places,
+  which the map draws only from 0.7 m a pixel, and 2.75 m for the other zones,
+  in tiles that overlap by 50 m. Twelve of the 14 slow zones are no-return
+  areas too.
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),

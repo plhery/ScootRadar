@@ -8,7 +8,9 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // a click, answers both, for every zone within an envelope. Porto's sharing points are entities of
 // Porto Digital's FIWARE broker, each a point with its number of spots. The City of Boise's are an
 // ArcGIS feature service, whose query answers every zone's shape, and its parking corrals points;
-// so are the City of Västerås's, some zones of several parts and a few with holes.
+// so are the City of Västerås's, some zones of several parts and a few with holes. Norrköpings
+// kommun's are WMS layers, served as pictures only: drawn as SVG, each zone is a path in the
+// picture's pixels, read back to its SWEREF 99 grid and so to latitude and longitude.
 // A layer may instead name a boundary (scripts/boundaries.mjs): Arlington National Cemetery's,
 // where federal rules forbid riding, is its OpenStreetMap outline.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
@@ -77,10 +79,7 @@ function within([x, y], ring) {
  * of Västerås's are, is a part of its own.
  */
 function featurePolygons(rings) {
-  const clockwise = ring => ring.reduce((sum, [x0, y0], i) => {
-    const [x1, y1] = ring[(i + 1) % ring.length];
-    return sum + x0 * y1 - x1 * y0;
-  }, 0) < 0;
+  const clockwise = ring => twiceArea(ring) < 0;
   const polygons = rings.filter(clockwise).map(ring => [ring]);
   for (const ring of rings.filter(ring => !clockwise(ring))) {
     const polygon = polygons.find(([outer]) => within(ring[0], outer));
@@ -126,6 +125,133 @@ async function boundaryZones(city, { kind, boundary: source }) {
     .map((ring, index) => ({ id: `${city.id}-${slug(kind)}-${index + 1}`, kind, name: city.place, ring }));
 }
 
+/** Twice the ring's signed area, its points read as [x, y]: below 0 when it turns clockwise. */
+function twiceArea(ring) {
+  return ring.reduce((sum, [x0, y0], i) => {
+    const [x1, y1] = ring[(i + 1) % ring.length];
+    return sum + x0 * y1 - x1 * y0;
+  }, 0);
+}
+
+/** A path's rings as polygons, each its outer ring and then its holes, turned the other way. */
+function nestedPolygons(rings) {
+  const polygons = [];
+  for (const ring of [...rings].sort((a, b) => Math.abs(twiceArea(b)) - Math.abs(twiceArea(a)))) {
+    const polygon = polygons.find(([outer]) => within(ring[0], outer));
+    if (!polygon) polygons.push([ring]);
+    else polygon.push(Math.sign(twiceArea(ring)) === Math.sign(twiceArea(polygon[0])) ? [...ring].reverse() : ring);
+  }
+  return polygons;
+}
+
+/** Grids a city's map may draw in: SWEREF 99 16 30, Norrköping's, a transverse Mercator projection of GRS 80. */
+const GRIDS = { 'EPSG:3010': { meridian: 16.5, scale: 1, falseEasting: 150000 } };
+
+/** A grid's easting and northing as [lng, lat], by Lantmäteriet's Gauss–Krüger formulas. */
+function gridToLngLat(easting, northing, { meridian, scale, falseEasting }) {
+  const f = 1 / 298.257222101;
+  const e2 = f * (2 - f);
+  const n = f / (2 - f);
+  const radius = (6378137 / (1 + n)) * (1 + n ** 2 / 4 + n ** 4 / 64);
+  const deltas = [n / 2 - (2 * n ** 2) / 3 + (37 * n ** 3) / 96 - n ** 4 / 360, n ** 2 / 48 + n ** 3 / 15 - (437 * n ** 4) / 1440,
+    (17 * n ** 3) / 480 - (37 * n ** 4) / 840, (4397 * n ** 4) / 161280];
+  const xi = northing / (scale * radius);
+  const eta = (easting - falseEasting) / (scale * radius);
+  let xiPrime = xi;
+  let etaPrime = eta;
+  deltas.forEach((delta, index) => {
+    const k = 2 * (index + 1);
+    xiPrime -= delta * Math.sin(k * xi) * Math.cosh(k * eta);
+    etaPrime -= delta * Math.cos(k * xi) * Math.sinh(k * eta);
+  });
+  const conformal = Math.asin(Math.sin(xiPrime) / Math.cosh(etaPrime));
+  const s = Math.sin(conformal) ** 2;
+  const lat = conformal + Math.sin(conformal) * Math.cos(conformal) * (e2 + e2 ** 2 + e2 ** 3 + e2 ** 4
+    - ((7 * e2 ** 2 + 17 * e2 ** 3 + 30 * e2 ** 4) / 6) * s + ((224 * e2 ** 3 + 889 * e2 ** 4) / 120) * s ** 2
+    - ((4279 * e2 ** 4) / 1260) * s ** 3);
+  return [meridian + (Math.atan(Math.sinh(etaPrime) / Math.cos(xiPrime)) * 180) / Math.PI, (lat * 180) / Math.PI];
+}
+
+/** The most pixels a side of one map asks for, under MapServer's limit. */
+const WMS_MAX_PX = 2000;
+/** How far a map's tiles overlap, so that a zone cut at one's edge, a parking place, is whole in the next. */
+const WMS_OVERLAP_M = 50;
+/** Within this many pixels of a tile's edge, a zone may have been cut there. */
+const WMS_EDGE_PX = 2;
+
+/**
+ * A WMS layer's zones, as its map draws them in SVG: each filled path, or each of the colour `fill`,
+ * a polygon of the grid `srs`, read back from pixels `metresPerPixel` wide from the corner of `box`.
+ * Norrköping kommun's map serves its zones only so, its layers neither queryable nor drawn in KML.
+ * MapServer draws a point half a pixel on from where the box's edges put it: so read, the same
+ * zones drawn half a metre and two metres a pixel meet within 4 mm. A box wider than WMS_MAX_PX
+ * pixels is drawn in overlapping tiles, each zone taken from a tile it lies whole in; none may
+ * reach the box's own edge.
+ */
+async function wmsZones(city, { kind, url, layer, fill, srs, box, metresPerPixel }) {
+  const grid = GRIDS[srs];
+  if (!grid) throw new Error(`${city.id}: no grid ${srs}`);
+  const [west, south, east, north] = box;
+  const step = WMS_MAX_PX * metresPerPixel;
+  const starts = (from, to) => {
+    const list = [from];
+    while (list.at(-1) + step < to) list.push(list.at(-1) + step - WMS_OVERLAP_M);
+    return list;
+  };
+  const whole = [];
+  const cut = [];
+  for (const tileWest of starts(west, east)) {
+    for (const tileSouth of starts(south, north)) {
+      const tile = [tileWest, tileSouth, Math.min(tileWest + step, east), Math.min(tileSouth + step, north)];
+      const width = Math.round((tile[2] - tile[0]) / metresPerPixel);
+      const height = Math.round((tile[3] - tile[1]) / metresPerPixel);
+      const request = new URL(url);
+      const query = { SERVICE: 'WMS', VERSION: '1.1.1', REQUEST: 'GetMap', LAYERS: layer, STYLES: '', SRS: srs,
+        BBOX: tile.join(','), WIDTH: width, HEIGHT: height, FORMAT: 'image/svg+xml', TRANSPARENT: 'TRUE' };
+      for (const [key, value] of Object.entries(query)) request.searchParams.set(key, String(value));
+      const response = await fetch(request, { headers: { 'User-Agent': USER_AGENT } });
+      const svg = response.ok ? await response.text() : '';
+      if (!svg.includes('<svg')) throw new Error(`${url} ${layer} answered ${response.status} and no drawing`);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      for (const [, style, d] of svg.replace(/<defs>[\s\S]*?<\/defs>/g, '').matchAll(/<path style="([^"]*)" d="([^"]*)"/g)) {
+        if (!style.includes('stroke:none') || (fill && !style.includes(`fill:${fill};`))) continue;
+        if (/[^MLZ\d\s.e-]/.test(d)) throw new Error(`${url} ${layer}: a path not of straight lines`);
+        const rings = d.split('M').map(part => part.match(/-?\d+(?:\.\d+)?(?:e-?\d+)?/g)?.map(Number) ?? [])
+          .filter(numbers => numbers.length >= 6)
+          .map(numbers => Array.from({ length: numbers.length / 2 }, (_, i) => [numbers[2 * i], numbers[2 * i + 1]]))
+          // Closed, as simplifyRing has rings: a path's Z closes its ring without repeating the first point.
+          .map(ring => (ring.at(-1).join() === ring[0].join() ? ring : [...ring, ring[0]]));
+        if (!rings.length) continue;
+        const pixels = rings.flat();
+        const reaches = {
+          west: pixels.some(([x]) => x < WMS_EDGE_PX), east: pixels.some(([x]) => x > width - WMS_EDGE_PX),
+          north: pixels.some(([, y]) => y < WMS_EDGE_PX), south: pixels.some(([, y]) => y > height - WMS_EDGE_PX),
+        };
+        if ((reaches.west && tile[0] === west) || (reaches.east && tile[2] === east)
+          || (reaches.south && tile[1] === south) || (reaches.north && tile[3] === north)) {
+          throw new Error(`${city.id} ${kind}: a zone reaches the edge of the box`);
+        }
+        const lngLats = rings.map(ring => ring.map(([x, y]) => gridToLngLat(
+          tile[0] + ((x + 0.5) * (tile[2] - tile[0])) / width, tile[3] - ((y + 0.5) * (tile[3] - tile[1])) / height, grid)));
+        (Object.values(reaches).some(Boolean) ? cut : whole).push(...nestedPolygons(lngLats));
+      }
+    }
+  }
+  // A zone whole in two tiles is taken once; each piece of one cut is within one taken whole.
+  const centre = ring => [ring.reduce((sum, [lng]) => sum + lng, 0) / ring.length, ring.reduce((sum, [, lat]) => sum + lat, 0) / ring.length];
+  const near = ([lng0, lat0], [lng1, lat1]) => Math.abs(lat1 - lat0) * 110_540 < 0.5
+    && Math.abs(lng1 - lng0) * 111_320 * Math.cos((lat0 * Math.PI) / 180) < 0.5;
+  const polygons = [];
+  for (const polygon of whole) if (!polygons.some(([outer]) => near(centre(outer), centre(polygon[0])))) polygons.push(polygon);
+  for (const [piece] of cut) {
+    if (!polygons.some(([outer]) => within(centre(piece), outer))) throw new Error(`${city.id} ${kind}: a zone wider than the tiles overlap`);
+  }
+  // Numbered from the north-west, so that a zone keeps its number as long as the layer keeps its zones.
+  polygons.sort((a, b) => centre(b[0])[1] - centre(a[0])[1] || centre(a[0])[0] - centre(b[0])[0]);
+  return outerRings(polygons, { minAreaKm2: 0, tolerance: TOLERANCE_M, digits: DIGITS, holes: true })
+    .map((ring, index) => ({ id: `${city.id}-${slug(kind)}-${index + 1}`, kind, name: city.place, ring }));
+}
+
 /** Porto's sharing points, each a disc around its point. */
 async function fiwareZones(city, { kind, url }) {
   const places = await getJson(url);
@@ -150,7 +276,8 @@ for (const city of catalog.cities) {
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
       : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
-        : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
+        : pathname.endsWith('/wms') ? await wmsZones(city, layer)
+          : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + zone.ring.length, 0)} points`);
     zones.push(...found);
   }

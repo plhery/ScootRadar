@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-29",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -122,6 +122,84 @@
         "east": -116.13164
       },
       "zones": 167
+    },
+    {
+      "id": "norrkoping",
+      "place": "Norrköping",
+      "country": "SE",
+      "authority": "Norrköpings kommun",
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Norrköpings kommun, \"Elsparkcyklar\": park in a bicycle stand or at the marked e-scooter places in the inner city; its land-use guideline has the operators keep scooters to 6 km/h in places and from being returned in the areas its map shows",
+        "url": "https://norrkoping.se/boende-trafik-och-miljo/resa-och-parkera/elsparkcyklar"
+      },
+      "map": {
+        "title": "Norrköpings kommun, map themes \"Elsparkcyklar, begränsningar\" and \"P-plats elsparkcyklar\" (kartor.norrkoping.se)",
+        "url": "https://kartor.norrkoping.se/spatialmap"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://kartor.norrkoping.se/wms?SERVICENAME=kartor",
+          "layer": "p_elsparkscykel",
+          "srs": "EPSG:3010",
+          "box": [
+            128500,
+            6494500,
+            134000,
+            6499000
+          ],
+          "metresPerPixel": 0.5
+        },
+        {
+          "kind": "noParking",
+          "url": "https://kartor.norrkoping.se/wms?SERVICENAME=kartor",
+          "layer": "markuppl_elspark_begr_aterlamning",
+          "srs": "EPSG:3010",
+          "box": [
+            128500,
+            6494500,
+            134000,
+            6499000
+          ],
+          "metresPerPixel": 2.75
+        },
+        {
+          "kind": "slow",
+          "url": "https://kartor.norrkoping.se/wms?SERVICENAME=kartor",
+          "layer": "markuppl_elspark_begr_hastighet",
+          "fill": "rgb(100%,58.039216%,30.196078%)",
+          "srs": "EPSG:3010",
+          "box": [
+            128500,
+            6494500,
+            134000,
+            6499000
+          ],
+          "metresPerPixel": 2.75
+        },
+        {
+          "kind": "noRide",
+          "url": "https://kartor.norrkoping.se/wms?SERVICENAME=kartor",
+          "layer": "markuppl_elspark_begr_hastighet",
+          "fill": "rgb(80%,0%,0%)",
+          "srs": "EPSG:3010",
+          "box": [
+            128500,
+            6494500,
+            134000,
+            6499000
+          ],
+          "metresPerPixel": 2.75
+        }
+      ],
+      "bounds": {
+        "south": 58.575741,
+        "west": 16.144662,
+        "north": 58.59668,
+        "east": 16.20556
+      },
+      "zones": 111
     },
     {
       "id": "porto",
