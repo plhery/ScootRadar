@@ -37,6 +37,7 @@ const guide: Guide = {
       heading: 'Casque, feux et passager : ce qui est obligatoire',
       blocks: [
         '**Le casque n’est pas obligatoire** (art. 3b OCR), mais le BPA le recommande vivement. Dans ses conditions, Voi range pourtant le casque parmi les mesures de sécurité exigées, et Dott prévient qu’une blessure à la tête subie sans casque pourrait ne pas être couverte.',
+        'En France, la règle n’est pas la même : de nombreux préfets y imposent le casque en trottinette. Tout est expliqué dans notre guide sur [la réglementation de la trottinette électrique en France](guide:french-rules).',
         {
           list: [
             '**Feux allumés en permanence**, de jour comme de nuit, depuis le 1er avril 2022 : blanc fixe à l’avant, rouge fixe à l’arrière. Sans feux de jour, l’amende est de CHF 20.',
@@ -129,6 +130,7 @@ const guide: Guide = {
     {
       heading: 'Nouvelle loi 2026 ? Ce qui a changé et ce qui se prépare',
       blocks: [
+        'Cette partie porte sur la loi suisse. Si vous cherchez les nouvelles règles françaises, lisez [ce qui a changé en France depuis 2023](guide:french-rules).',
         'Le dernier grand changement date du **1er juillet 2025** :',
         {
           list: [
