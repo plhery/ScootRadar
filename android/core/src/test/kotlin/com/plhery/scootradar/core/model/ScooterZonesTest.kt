@@ -1,7 +1,6 @@
 package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.api.ScooterAPI
-import java.io.File
 import java.net.URI
 import java.time.Instant
 import java.util.Locale
@@ -13,10 +12,6 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
 import org.junit.Assert.assertEquals
@@ -551,6 +546,32 @@ class CityRuleZoneTest {
     )
     private val rules = listOf(hongdaeRedRoad, daechiAcademyStreet)
 
+    // Bergen's zones, one of each kind in iOS's view of the centre, and two of Porto's sharing points, four corners
+    // of each disc, one in its view and one far off, as data/ had them on 29 October 2026: data/ is read again from
+    // the cities (LOG-370).
+    private val bergenZones = listOf(
+        Triple("bergen-no-ride-173", ScooterZoneKind.NoRide, listOf(60.406298, 5.329251, 60.406236, 5.329943, 60.405699, 5.329686, 60.405785, 5.328995)),
+        Triple("bergen-no-parking-42", ScooterZoneKind.NoParking, listOf(60.375404, 5.334097, 60.375545, 5.333442, 60.375618, 5.333514, 60.375477, 5.334164)),
+        Triple("bergen-slow-6", ScooterZoneKind.Slow, listOf(60.393893, 5.317572, 60.393747, 5.317297, 60.394023, 5.316497, 60.394219, 5.316875)),
+        Triple("bergen-parking-61", ScooterZoneKind.Parking, listOf(60.388009, 5.331895, 60.38795, 5.331834, 60.387962, 5.331793)),
+    ).map { (id, kind, ring) ->
+        CityRuleZone(
+            id = id, authority = "Bergen kommune", timeZone = "Europe/Oslo", kind = kind,
+            source = "https://www.bergen.kommune.no/innbyggerhjelpen/vann-vei-og-trafikk/vei-transport-og-parkering/sykkel/elsparkesykler-i-bergen",
+            ring = ring.chunked(2) { (latitude, longitude) -> GeoPoint(latitude, longitude) },
+        )
+    }
+    private val portoZones = listOf(
+        "porto-parking-1abcfc08" to listOf(41.144129, -8.609594, 41.144174, -8.609654, 41.144129, -8.609714, 41.144084, -8.609654),
+        "porto-parking-0e66c7e0" to listOf(41.172801, -8.646859, 41.172846, -8.646918, 41.172801, -8.646978, 41.172755, -8.646918),
+    ).map { (id, ring) ->
+        CityRuleZone(
+            id = id, authority = "Porto", timeZone = "Europe/Lisbon", kind = ScooterZoneKind.Parking,
+            source = "https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas",
+            ring = ring.chunked(2) { (latitude, longitude) -> GeoPoint(latitude, longitude) },
+        )
+    }
+
     @Test
     fun aRuleHoldsWithinItsHoursByThePlacesClockFromItsFirstDay() {
         val rule = daechiAcademyStreet
@@ -621,26 +642,28 @@ class CityRuleZoneTest {
 
     @Test
     fun seoulsStreetsAloneAreAllAndForbidRiding() {
-        // CatalogParityTest reads the generated list of these; data/rule-zones.json names them.
-        assertEquals(dataRuleZoneIDs(), CityRuleZone.all.map { it.id })
+        // CatalogParityTest reads the generated list of these, and holds them to the iPhone's; here, what each is.
+        assertFalse(CityRuleZone.all.isEmpty())
         assertTrue(CityRuleZone.all.all { it.kind == ScooterZoneKind.NoRide && it.lines.isNotEmpty() })
+        assertTrue(CityRuleZone.cityZones.all { it.lines.isEmpty() })
         assertEquals((CityRuleZone.all + CityRuleZone.cityZones).map { it.id }, CityRuleZone.onMap.map { it.id })
         assertEquals(CityRuleZone.onMap.size, CityRuleZone.onMap.map { it.id }.toSet().size)
     }
 
     @Test
     fun bergensAndPortosZonesAreThereByKind() {
-        fun kinds(authority: String) =
-            CityRuleZone.cityZones.filter { it.authority == authority }.groupingBy { it.kind.rawValue }.eachCount()
-        // As update-city-zones.mjs wrote them in data/, rather than the numbers of 29 October 2026 (LOG-370).
-        val bergen = kinds("Bergen kommune")
-        assertEquals(dataCityZoneKinds("bergen"), bergen)
-        assertEquals(ScooterZoneKind.entries.map { it.rawValue }.toSet(), bergen.keys)
-        val porto = kinds("Porto")
-        assertEquals(dataCityZoneKinds("porto"), porto)
-        assertEquals(setOf("parking"), porto.keys)
-        assertEquals(dataCityZoneCounts().values.sum(), CityRuleZone.cityZones.size)
-        assertEquals(dataCityZoneCounts(), mapOf("bergen" to bergen.values.sum(), "porto" to porto.values.sum()))
+        // The numbers of each are data/'s, which CatalogParityTest holds to the iPhone's: here, that each zone is
+        // its city's and each city sets the kinds the iPhone draws for it (LOG-370).
+        val cities = CityRuleZone.cityZones.groupBy { it.id.substringBefore('-') }
+        for ((city, zones) in cities) {
+            assertTrue(city, zones.all { it.id.startsWith("$city-") })
+            assertEquals(city, 1, zones.map { listOf(it.authority, it.timeZone, it.source) }.toSet().size)
+        }
+        assertEquals(ScooterZoneKind.entries.toSet(), cities["bergen"].orEmpty().map { it.kind }.toSet())
+        assertEquals(setOf("Bergen kommune"), cities["bergen"].orEmpty().map { it.authority }.toSet())
+        assertTrue(cities["porto"].orEmpty().any { it.kind == ScooterZoneKind.Parking })
+        assertEquals(setOf("Porto"), cities["porto"].orEmpty().map { it.authority }.toSet())
+        assertEquals(CityRuleZone.cityZones.size, CityRuleZone.cityZones.map { it.id }.toSet().size)
     }
 
     @Test
@@ -680,32 +703,22 @@ class CityRuleZoneTest {
 
     @Test
     fun aCitysZonesAreShownFromZoom14() {
+        val zones = rules + bergenZones + portoZones
         val porto = GeoBounds(south = 41.14, west = -8.62, north = 41.16, east = -8.6)
-        val shown = CityRuleZone.shown(over = porto, zoom = 14, at = seoulNoon)
-        assertFalse(shown.isEmpty())
+        val shown = CityRuleZone.shown(over = porto, zoom = 14, at = seoulNoon, among = zones)
+        assertEquals(listOf("porto-parking-1abcfc08"), shown.map { it.rule.id })
         assertTrue(shown.all { it.rule.authority == "Porto" && it.rule.kind == ScooterZoneKind.Parking && it.inForce })
-        assertTrue(CityRuleZone.shown(over = porto, zoom = 13, at = seoulNoon).isEmpty())
+        assertTrue(CityRuleZone.shown(over = porto, zoom = 13, at = seoulNoon, among = zones).isEmpty())
         val bergen = GeoBounds(south = 60.372, west = 5.305, north = 60.412, east = 5.343)
-        assertEquals(ScooterZoneKind.entries.toSet(), CityRuleZone.shown(over = bergen, zoom = 14, at = seoulNoon).map { it.rule.kind }.toSet())
-    }
-
-    private val repo = File(System.getProperty("scootradar.repo"))
-
-    private fun json(path: String) = Json.parseToJsonElement(File(repo, path).readText()).jsonObject
-
-    private fun dataRuleZoneIDs(): List<String> =
-        json("data/rule-zones.json").getValue("zones").jsonArray.map { it.jsonObject.getValue("id").jsonPrimitive.content }
-
-    /** Each city's zones by kind, as data/city-zones/<id>.json has them. */
-    private fun dataCityZoneKinds(city: String): Map<String, Int> =
-        json("data/city-zones/$city.json").getValue("zones").jsonArray
-            .groupingBy { it.jsonObject.getValue("kind").jsonPrimitive.content }.eachCount()
-
-    /** How many zones data/city-zones.json says each city has. */
-    private fun dataCityZoneCounts(): Map<String, Int> =
-        json("data/city-zones.json").getValue("cities").jsonArray.associate {
-            it.jsonObject.getValue("id").jsonPrimitive.content to it.jsonObject.getValue("zones").jsonPrimitive.content.toInt()
+        assertEquals(
+            ScooterZoneKind.entries.toSet(),
+            CityRuleZone.shown(over = bergen, zoom = 14, at = seoulNoon, among = zones).map { it.rule.kind }.toSet(),
+        )
+        // The catalog's own, as the app reads them: each over its own place.
+        for (zone in CityRuleZone.cityZones) {
+            assertTrue(zone.id, CityRuleZone.shown(over = zone.bounds, zoom = 14, at = seoulNoon).any { it.rule == zone })
         }
+    }
 
     /** Ray casting. */
     private fun ring(ring: List<GeoPoint>, contains: GeoPoint): Boolean {

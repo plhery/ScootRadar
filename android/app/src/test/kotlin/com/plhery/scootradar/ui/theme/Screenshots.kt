@@ -44,17 +44,22 @@ fun useFontScale(scale: Float) = RuntimeEnvironment.setFontScale(scale)
 
 fun resetFontScale() = RuntimeEnvironment.setFontScale(1f)
 
-/**
- * The screen as it is now, saved under src/test/screenshots/[name].png. The window is drawn again first: after the
- * first test of a run, Robolectric's capture can reuse the window's drawing from before the content was set, which
- * shows only the window's background.
- */
+/** The screen as it is now, saved under src/test/screenshots/[name].png, the window drawn again first. */
 fun ComposeContentTestRule.screenshot(name: String) {
+    drawWindowAgain()
+    onRoot().captureRoboImage("src/test/screenshots/$name.png", roborazziOptions = screenshotOptions)
+}
+
+/**
+ * Draws the window again before a capture: after the first test of a run, Robolectric's capture can reuse the
+ * window's drawing from before the content was set, which shows only the window's background. The Compose view is
+ * drawn again with the root, which would otherwise keep the view's old drawing within its new one.
+ */
+fun ComposeContentTestRule.drawWindowAgain() {
     val view = (onRoot().fetchSemanticsNode().root as ViewRootForTest).view
     runOnUiThread {
         view.rootView.invalidate()
         view.invalidate()
     }
     waitForIdle()
-    onRoot().captureRoboImage("src/test/screenshots/$name.png", roborazziOptions = screenshotOptions)
 }

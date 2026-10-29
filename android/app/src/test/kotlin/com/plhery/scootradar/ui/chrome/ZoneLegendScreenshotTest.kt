@@ -9,11 +9,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.dp
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.plhery.scootradar.StubScooterAPI
@@ -36,6 +34,7 @@ import com.plhery.scootradar.ui.ScooterMapScreen
 import com.plhery.scootradar.ui.theme.Look
 import com.plhery.scootradar.ui.theme.PHONE
 import com.plhery.scootradar.ui.theme.ScootTheme
+import com.plhery.scootradar.ui.theme.drawWindowAgain
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.screenshot
 import com.plhery.scootradar.ui.theme.screenshotOptions
@@ -120,9 +119,7 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
             }
         }
         compose.waitForIdle()
-        val view = (compose.onRoot().fetchSemanticsNode().root as ViewRootForTest).view
-        compose.runOnUiThread { view.rootView.invalidate() }
-        compose.waitForIdle()
+        compose.drawWindowAgain()
         compose.onNodeWithTag(LEGEND)
             .captureRoboImage("src/test/screenshots/zones/${case.suffix}_${look.suffix}.png", roborazziOptions = screenshotOptions)
     }

@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.CityRuleZone
+import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import org.junit.After
@@ -15,7 +16,7 @@ import java.util.Locale
 
 // The legend's test of ios/ScootRadarTests/ScooterZonesTests.swift (T421).
 
-/** The cities' lines in the zones' legend (ui.md UI-408), from the catalog's own rules and zones. */
+/** The cities' lines in the zones' legend (ui.md UI-408). */
 @RunWith(AndroidJUnit4::class)
 class CityRuleZoneTest {
     private val locale = Locale.getDefault()
@@ -26,10 +27,35 @@ class CityRuleZoneTest {
         Locale.setDefault(locale)
     }
 
-    private val hongdae = CityRuleZone.all.single { it.id == "seoul-hongdae-red-road" }
-    private val porto = CityRuleZone.cityZones.first { it.authority == "Porto" }
-    private val bergen = CityRuleZone.cityZones.filter { it.authority == "Bergen kommune" }
+    // A street of Seoul, a parking place of Porto's and Bergen's zones, made here rather than read from data/, which
+    // changes them (LOG-370); CatalogParityTest holds the catalog's own to the iPhone's.
+    private val hongdae = CityRuleZone(
+        id = "seoul-hongdae-red-road",
+        authority = "Seoul",
+        timeZone = "Asia/Seoul",
+        firstDay = "2025-05-16",
+        hours = listOf(CityRuleZone.Hours(fromMinute = 12 * 60, untilMinute = 23 * 60)),
+        source = "https://news.seoul.go.kr/traffic/archives/514266",
+        lines = listOf(listOf(GeoPoint(37.555766, 126.927544), GeoPoint(37.55554, 126.925521))),
+    )
+    private val porto = zone("porto-parking-1", "Porto", "Europe/Lisbon", ScooterZoneKind.Parking, GeoPoint(41.144129, -8.609594))
+    private val bergen = listOf(
+        ScooterZoneKind.Parking, ScooterZoneKind.Parking, ScooterZoneKind.Slow, ScooterZoneKind.NoRide, ScooterZoneKind.NoParking,
+    ).mapIndexed { index, kind -> zone("bergen-$index", "Bergen kommune", "Europe/Oslo", kind, GeoPoint(60.39, 5.32 + index * 0.001)) }
     private fun first(kind: ScooterZoneKind) = bergen.first { it.kind == kind }
+
+    /** A square of 0.0001° a side at [at], its source its city's, named by the start of its id. */
+    private fun zone(id: String, authority: String, timeZone: String, kind: ScooterZoneKind, at: GeoPoint) = CityRuleZone(
+        id = id,
+        authority = authority,
+        timeZone = timeZone,
+        kind = kind,
+        source = "https://example.com/${id.substringBefore('-')}",
+        ring = listOf(
+            at, GeoPoint(at.latitude, at.longitude + 0.0001), GeoPoint(at.latitude + 0.0001, at.longitude + 0.0001),
+            GeoPoint(at.latitude + 0.0001, at.longitude),
+        ),
+    )
 
     /** Porto's parking place, two of Bergen's and one of each of its other kinds, and Seoul's street, all in force. */
     private fun lines(): List<RuleLine> {

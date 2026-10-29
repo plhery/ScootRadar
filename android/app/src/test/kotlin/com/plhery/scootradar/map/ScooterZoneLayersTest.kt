@@ -209,19 +209,24 @@ class ScooterZoneLayersTest {
         assertEquals(listOf("MultiLineString", "MultiPolygon", "MultiPolygon"), cut.map { it.type })
     }
 
-    /** MAP-330: all of Bergen's zones, as the map draws them from zoom 14, merged and stroked off the main thread. */
+    /**
+     * MAP-330: all of Bergen's zones in the catalog, as many as data/ has, as the map draws them from zoom 14,
+     * merged and stroked off the main thread; each of their kinds is drawn (LOG-370).
+     */
     @Test
     fun drawsAllOfBergensZonesInOneBuild() {
-        val zones = CityRuleZone.cityZones.filter { it.authority == "Bergen kommune" }
+        val zones = CityRuleZone.cityZones.filter { it.id.startsWith("bergen-") }
             .map { CityRuleZone.Shown(rule = it, inForce = true).mapZone }
+        assertTrue(zones.isNotEmpty())
+        val kinds = zones.map { it.kind.rawValue }.toSet()
         val scale = ZoneLayers.scale(15.0)
         val times = (1..5).map {
             val start = System.nanoTime()
             val drawing = ZoneDrawing(zones)
             val edges = drawing.edges(scale)
             val took = (System.nanoTime() - start) / 1_000_000
-            assertEquals(ScooterZoneKind.entries.map { it.rawValue }.toSet(), features(drawing.fills).map { it.kind }.toSet())
-            assertEquals(ScooterZoneKind.entries.map { it.rawValue }.toSet(), features(edges).map { it.kind }.toSet())
+            assertEquals(kinds, features(drawing.fills).map { it.kind }.toSet())
+            assertEquals(kinds, features(edges).map { it.kind }.toSet())
             took
         }
         // The first is cold, as the map's first build is; the others as later ones.
