@@ -115,11 +115,12 @@ Ottawa's "Collection Nest" warehouses, and areas a few metres wide, as
 Indianapolis' fleet managers' homes, are no markets. Toronto, Montréal,
 Houston, San Jose, Chula Vista, Washington, Vancouver, Oklahoma City and
 Seattle had operating areas without a scooter within 3 km of their centres;
-Seattle revoked Bird's permit in March 2026. That search was stopped after
-the 33 largest of the 1,189 towns it had queued, and a read at a centre
-clears a small area only: Washington's area is 28 km across, Oklahoma
-City's 26, Chula Vista's 22 and San Jose's 16, so those are unchecked, not
-empty.
+Seattle revoked Bird's permit in March 2026, and we found no 2026 Bird
+permit in San Jose, where the City permitted Lime in March 2026. That
+search was stopped after the 33 largest of the 1,189 towns it had queued,
+and a read at a centre clears a small area only: Washington's area is 28
+km across, Oklahoma City's 26, Chula Vista's 22 and San Jose's 16, so
+those are unchecked, not empty.
 That evening, from 22:32 to 22:53 UTC, the same search, an area read every 30
 seconds and a scooter read within 5 km of each new area's centre, went
 through 25 towns where Bird was said to run without a feed: the Canadian

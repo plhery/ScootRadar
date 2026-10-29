@@ -564,7 +564,12 @@ banned shared scooters, and feeds that were empty when checked.
       5 March 2026; the
       [program page](https://longbeach.gov/goactivelb/programs/micro-mobility-program/)
       on 29 October 2026), but publishes no feed there and its rider map is
-      not read there, so only Lime's Long Beach scooters are on the map.
+      not read there, so only Lime's Long Beach scooters are on the map. In
+      **San Jose** the City permitted Lime, its Department of Transportation
+      said on 10 March 2026
+      ([Spartan Daily](https://spartanmediagroup.net/9517/spartan-daily/lime-e-scooters-make-comeback-to-downtown-sj/),
+      26 March 2026), and we found no other 2026 permit there, Bird's
+      included.
     - **GCOO** in Memphis, 10 scooters in four areas on 24 October 2026. Its
       Los Angeles, Alexandria and Arlington fleets are on the map since that
       day, read from its app's signed-out map
@@ -616,7 +621,11 @@ banned shared scooters, and feeds that were empty when checked.
     Redding, Roanoke, Saint Paul, San Francisco, San Juan, San Marcos, Santa
     Clara, South San Francisco, St. George, St. Petersburg, Stillwater,
     Tallahassee, Tampa, Thornton, Tucson, the University of Akron and the
-    University of Utah. Bird Phoenix lists 8 scooters in town.
+    University of Utah. Bird Phoenix lists 8 scooters in town. In
+    Albuquerque, Spin and Beam held City permits in 2024–25, but on 29
+    October 2026 the City's
+    [program page](https://www.cabq.gov/planning/shared-active-transportation)
+    listed only Lime.
   - **Stale:** Bird Chicago's feed was 4 days old, Bird Seattle's 7 days, and
     Bird Salt Lake City's scooters last reported 15 days before; Lyft Denver's
     feed was 667 days old.

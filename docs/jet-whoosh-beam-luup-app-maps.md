@@ -218,7 +218,9 @@ were fine.
 
 Beam's site lists Australia (12 towns, Darwin and Adelaide among them),
 Malaysia (13 states), South Korea (about 37 cities), Türkiye (Ankara,
-Antalya, Muğla), Indonesia (9) and the US (Albuquerque, Tulsa). Bangkok,
+Antalya, Muğla), Indonesia (9) and the US (Albuquerque, Tulsa), though the
+City of Albuquerque's [program page](https://www.cabq.gov/planning/shared-active-transportation)
+lists only Lime as of 29 October 2026. Bangkok,
 Queenstown, Taupō and Whangārei are in its region list. Brisbane's entry is
 tagged `neuron`, and Neuron's Canadian towns and Newcastle (UK) are now Beam
 regions, though Newcastle's 270 spots and Calgary's one held no scooter.
