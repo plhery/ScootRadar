@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { activeCurfew } from './rentalCurfews';
+import catalog from '../../data/rental-curfews.json';
+import { activeCurfew, easterSunday, holidayEvening } from './rentalCurfews';
 import { polygonContainsPoint } from './geo';
 
 const OSLO: [number, number] = [59.9139, 10.7522];
@@ -248,6 +249,56 @@ describe('activeCurfew', () => {
   it('stops at the edge of Oslo, and needs a place', () => {
     expect(activeCurfew(SANDVIKA, at('2026-10-12T22:00:00Z'))).toBeNull();
     expect(activeCurfew(null, at('2026-10-12T22:00:00Z'))).toBeNull();
+  });
+});
+
+describe('holiday nights', () => {
+  const day = (days: number) => new Date(days * 86_400_000).toISOString().slice(0, 10);
+  const HELSINKI: [number, number] = [60.1699, 24.9384];
+  const ESPOO: [number, number] = [60.2055, 24.6559];
+  const TURKU: [number, number] = [60.4518, 22.2666];
+  const LAHTI: [number, number] = [60.9827, 25.6612];
+
+  it('finds Easter Sunday and Finland\'s Midsummer Eve', () => {
+    expect([2026, 2027, 2028].map(year => day(easterSunday(year)))).toEqual(['2026-04-05', '2027-03-28', '2028-04-16']);
+    expect(day(holidayEvening('easter+38', 2027))).toBe('2027-05-05');
+    expect([2026, 2027].map(year => day(holidayEvening('midsummerEve', year)))).toEqual(['2026-06-19', '2027-06-25']);
+    expect(day(holidayEvening('12-24', 2026))).toBe('2026-12-24');
+    expect(holidayEvening('christmas', 2026)).toBeNaN();
+  });
+
+  it('reads every holiday date in the catalog', () => {
+    const dates = catalog.curfews.flatMap(curfew => curfew.nights.flatMap(night => (night as { dates?: string[] }).dates ?? []));
+    expect(dates.length).toBeGreaterThan(0);
+    for (const date of dates) expect(holidayEvening(date, 2027)).not.toBeNaN();
+  });
+
+  it('closes Stavanger and Tromsø the nights before public holidays, and not a week earlier', () => {
+    // Thursday 6 May 2027 is Ascension Day: 00:30 that morning in Stavanger.
+    expect(activeCurfew(STAVANGER, at('2027-05-05T22:30:00Z'))).toEqual({ city: 'Stavanger', until: at('2027-05-06T03:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(STAVANGER, at('2027-04-28T22:30:00Z'))).toBeNull();
+    // Christmas Eve, Thursday 24 December 2026, 23:30 in Tromsø.
+    expect(activeCurfew(TROMSO, at('2026-12-24T22:30:00Z'))).toEqual({ city: 'Tromsø', until: at('2026-12-25T05:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(TROMSO, at('2026-12-17T22:30:00Z'))).toBeNull();
+  });
+
+  it('closes Tønsberg from 23:00 the night before Maundy Thursday, from 01:00 a week earlier', () => {
+    expect(activeCurfew(TONSBERG, at('2027-03-24T22:30:00Z'))).toEqual({ city: 'Tønsberg', until: at('2027-03-25T04:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(TONSBERG, at('2027-03-17T22:30:00Z'))).toBeNull();
+  });
+
+  it('closes the Finnish towns on the nights their licences name', () => {
+    // Vappu night, Thursday 30 April 2026: Helsinki from 23:00, Espoo from midnight.
+    expect(activeCurfew(HELSINKI, at('2026-04-30T20:30:00Z'))).toEqual({ city: 'Helsinki', until: at('2026-05-01T02:00:00Z'), timeZone: 'Europe/Helsinki' });
+    expect(activeCurfew(ESPOO, at('2026-04-30T20:30:00Z'))).toBeNull();
+    expect(activeCurfew(ESPOO, at('2026-04-30T21:30:00Z'))?.city).toBe('Espoo');
+    expect(activeCurfew(HELSINKI, at('2026-04-23T20:30:00Z'))).toBeNull();
+    // Lahti, 00:30 on Midsummer Eve, Friday 19 June 2026, and a week earlier.
+    expect(activeCurfew(LAHTI, at('2026-06-18T21:30:00Z'))).toEqual({ city: 'Lahti', until: at('2026-06-19T02:00:00Z'), timeZone: 'Europe/Helsinki' });
+    expect(activeCurfew(LAHTI, at('2026-06-11T21:30:00Z'))).toBeNull();
+    // Turku, 00:30 on New Year's Day 2027, a Friday: the night of New Year's Eve, a Thursday.
+    expect(activeCurfew(TURKU, at('2026-12-31T22:30:00Z'))).toEqual({ city: 'Turku', until: at('2027-01-01T03:00:00Z'), timeZone: 'Europe/Helsinki' });
+    expect(activeCurfew(TURKU, at('2026-12-24T22:30:00Z'))).toBeNull();
   });
 });
 

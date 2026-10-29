@@ -386,8 +386,9 @@ stays open at night.
 - **Northampton's** hours are the council's: Voi's scooters are available
   from 4am to 11pm daily. No ban was found for Kettering, Corby, Wellingborough
   or Rushden.
-- Stavanger, Tromsø and Tønsberg also close on the eve of public holidays,
-  which the map leaves out ([plan](curfew-holiday-nights.md)).
+- Stavanger, Tromsø and Tønsberg also close on the eve of public holidays
+  (Tønsberg those of the movable ones, from 23:00), which the map closes too
+  since 29 October 2026 ([holiday nights](curfew-holiday-nights.md)).
 - **Rælingen** has no town outline, so the map counts its scooters, from Voi's
   Lillestrøm feed, under Lillestrøm; its night ban has its own boundary.
 - **Porsgrunn's** hours come from the yearly announcement the four Grenland

@@ -116,8 +116,9 @@ No law of Åland and no rule of Mariehamn bans renting at night, so
 
 Seven mainland towns ban renting at night, in the terms of the micromobility
 permits each gives its operators. Helsinki, Espoo, Vantaa, Turku, Lahti and
-Porvoo have curfew entries since 24 October; Oulu, with no scooter on the map,
-has none.
+Porvoo have curfew entries since 24 October, and the holiday nights below
+since 29 October ([holiday nights](curfew-holiday-nights.md)); Oulu, with no
+scooter on the map, has none.
 
 - **Helsinki:** operators must switch their scooters off on the nights from
   Friday to Saturday and from Saturday to Sunday, 23:00 to 05:00, and on Vappu

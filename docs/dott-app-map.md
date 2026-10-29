@@ -96,7 +96,7 @@ for app-backed entries, so the catalog audit checks their actual protocol.
 Helsinki, Espoo and Vantaa use the existing weekend-night notice system:
 Helsinki Friday/Saturday 23:00–05:00; Espoo and Vantaa 00:00–05:00.
 Their municipal boundaries are OpenStreetMap's, simplified to within 100 m
-and credited under ODbL. As elsewhere, holiday eves are not modeled ([plan](curfew-holiday-nights.md)).
+and credited under ODbL. Helsinki, Espoo and Vantaa also close on Vappu night, since 29 October 2026 on the map too ([holiday nights](curfew-holiday-nights.md)).
 Sources: [Helsinki](https://www.hel.fi/en/urban-environment-and-traffic/cycling/electric-scooters),
 [Espoo](https://www.espoo.fi/en/transport-and-streets/sustainable-forms-transport),
 [Vantaa's 2026 permit terms, §6.1](https://www.vantaa.fi/sites/default/files/document/Vantaa-mikroliikennelupa-ehdot-2026.pdf).
