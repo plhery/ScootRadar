@@ -330,8 +330,8 @@ of the request, so it tells nothing.
 
 Bird's feeds are at `mds.bird.co/gbfs/v2/public/<town>/gbfs.json`, GBFS 2.3;
 Lime's at `data.lime.bike/api/partners/v2/gbfs/<town>/gbfs.json`, GBFS 2.2.
-Neither publishes a price, so none is shown. Bird gives each scooter's charge,
-Lime only its range.
+Neither publishes a price, so none is shown. Bird gives each scooter's charge
+and range, Lime only its range.
 
 **Towns.** Each scooter of six polls, 17:09 to 17:34 EDT, was placed in its
 town by the US Census Bureau's 2024 boundaries of places (cities, towns and census-

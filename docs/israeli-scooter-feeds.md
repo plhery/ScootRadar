@@ -17,7 +17,12 @@ Update, 29 October 2026: Dott's feed is retired. Its `tel-aviv` region
 listed about 2,900 scooters on the morning of 28 October; from about 11:00
 UTC that day it answers 404 (`ERR_REGION_NOT_FOUND`), not the 403
 (`ERR_REGION_OFFLINE`) of a region Dott pauses, and Dott's Israeli listing
-names no region, renamed or new. No news of Dott leaving Israel was found.
+names no region, renamed or new. No news of Dott leaving Israel was found:
+on 25 October 2026
+[Kipa](https://www.kipa.co.il/%D7%97%D7%93%D7%A9%D7%95%D7%AA/1234569-0/)
+(Hebrew) listed seven towns where Dott ran shared scooters: Tel Aviv-Yafo,
+Ramat Gan, Givatayim, Bat Yam, Lod, Holon and Petah Tikva. Lod was never in
+its feed.
 Bird and Lime still cover every town of the table. The listing is re-checked
 monthly (see [Known gaps](#known-gaps)); the audit below describes the three
 feeds as they were on 15 October.
@@ -151,7 +156,10 @@ even from Eilat the two would overlap.
   Lime's was made at the request.
 - **Vehicle types.** Bird declares one electric scooter type and one e-bike
   type, Lime two scooter types, with 24,140 m and 40,233 m of range, and two
-  bicycle types, Dott only scooters. The map shows the scooters only. Lime's
+  bicycle types, Dott only scooters. Lime has rented e-bikes in Ramat Gan
+  since August 2025, 200 at the launch
+  ([RGG News](https://www.rgg-news.co.il/home-page-ramat-gan/%D7%94%D7%9E%D7%94%D7%A4%D7%9B%D7%94-%D7%94%D7%99%D7%A8%D7%95%D7%A7%D7%94-%D7%9E%D7%AA%D7%A8%D7%97%D7%91%D7%AA-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%9E%D7%A9%D7%99%D7%A7%D7%94-%D7%A9%D7%99%D7%A8%D7%95/),
+  27 August 2025, Hebrew). The map shows the scooters only. Lime's
   feed lists one station, named Tel Aviv, which the map leaves out.
 - **Prices.** Dott's plan is ₪5 to unlock and ₪1.25 a minute, with
   `is_taxable` false: Israel's prices include VAT, so nothing is added. The
