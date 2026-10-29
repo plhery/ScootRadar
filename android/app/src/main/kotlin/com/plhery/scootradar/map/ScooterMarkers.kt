@@ -756,7 +756,7 @@ class ScooterMarkers(
         private const val MOST_IMAGES = 600
 
         /** The longest the light-up waits for its scooters to be drawn, in seconds. */
-        private const val MOST_HELD = 1.5
+        internal const val MOST_HELD = 1.5
 
         /** The longest a dot waits to change hands between the scooters' layers and the movers', in seconds. */
         private const val MOST_HANDING = 0.5

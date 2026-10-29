@@ -463,6 +463,10 @@ class ScooterMarkerScene(
             previous[cluster.id]?.also { it.update(with = cluster, members = members) } ?: ClusterMark(cluster, members)
         }
         clusteredIDs = gathered.members.values.flatMapTo(HashSet()) { members -> members.map { it.id } }
+        // A dot gathered into a cluster has no view to ease, as on the iPhone: it stops where it was going.
+        val gatheredMoving = movingIDs.filter { it in clusteredIDs }
+        for (id in gatheredMoving) marksByID[id]?.motion = null
+        movingIDs.removeAll(gatheredMoving.toSet())
         markersVersion += 1
         pillsVersion += 1
     }
@@ -673,8 +677,10 @@ class ScooterMarkerScene(
         val bounds = map.projection.bounds
         for (mark in changed.distinct()) {
             val eased = animated && mark.scooter.id !in fresh
-            // Only the dots on the map ease, as only theirs have views; the others take their look at once.
-            refreshLook(mark, eased, moves = eased && isNear(dotCentre(mark, map.projection), bounds))
+            // Only the dots on the map ease, as only theirs have views; the others, and those in the app's own
+            // clusters, take their look at once.
+            val shown = mark.scooter.id !in clusteredIDs && isNear(dotCentre(mark, map.projection), bounds)
+            refreshLook(mark, eased, moves = eased && shown)
         }
     }
 
@@ -682,18 +688,20 @@ class ScooterMarkerScene(
      * What the iPhone's marker view does when its look is drawn again: the dot eases to its picture, its strength
      * and its place where it [moves], and where [animated] a name that comes eases in and one that moves to another
      * side slides there, from where it is drawn, over [PILL_FADE] in and out. At most [MOST_MOVING] dots ease at
-     * once; any more take their look at once. A name that goes, goes at once.
+     * once; any more take their look at once, as do all on a map of more than [MOST_DOTS_EASED]. A name that goes,
+     * goes at once.
      */
     private fun refreshLook(mark: ScooterMark, animated: Boolean, moves: Boolean = animated) {
         val drawing = DotDrawing(mark.art, mark.look.diameter, mark.look.strength)
         val offset = mark.look.offset
         val drawn = mark.drawnDot
         val motion = mark.motion
+        val few = marksByID.size - clusteredIDs.size <= MOST_DOTS_EASED
         if (motion != null) {
             // Easing already, it goes on from where it has got to, or takes the change at once.
             motion.go(drawing, offset, now(), moves)
-        } else if (moves && drawn != null && movingIDs.size < MOST_MOVING && mark.dotFade?.isOver(now()) != false &&
-            (DotMotion.eases(drawn, drawing) || offset != mark.drawnOffset)
+        } else if (moves && few && drawn != null && movingIDs.size < MOST_MOVING && !isLightingUp(mark) &&
+            (DotMotion.shows(drawn, drawing) || offset != mark.drawnOffset)
         ) {
             mark.motion = DotMotion(drawn, mark.drawnOffset).also { it.go(drawing, offset, now(), animated = true) }
             movingIDs += mark.scooter.id
@@ -717,7 +725,7 @@ class ScooterMarkerScene(
             // From where it is drawn: its new side is already set.
             val time = now()
             val from = mark.pillSlide?.point(time) ?: mark.drawnPillOrigin
-            mark.pillSlide = if (animated) MarkerEase(from, mark.pillOrigin, PILL_FADE, slide, time) else null
+            mark.pillSlide = if (animated && few) MarkerEase(from, mark.pillOrigin, PILL_FADE, slide, time) else null
         }
         mark.drawnPillOrigin = mark.pillOrigin
         mark.wasPillShown = true
@@ -731,6 +739,13 @@ class ScooterMarkerScene(
         val animated = animates()
         for (mark in placePills(map)) refreshLook(mark, animated, moves = false)
     }
+
+    /**
+     * Whether a dot may still be lighting up: the fades' clock runs behind the scene's by as long as the light-up
+     * waited for MapLibre, and a band starts up to a step late.
+     */
+    private fun isLightingUp(mark: ScooterMark): Boolean =
+        mark.dotFade?.isOver(now() - ScooterMarkers.MOST_HELD - MarkerBand.STEP) == false
 
     /** Whether a name moves at [at], to be drawn again at every frame until it stops. */
     fun pillsMove(at: Double): Boolean = namedIDs.any { id -> marksByID[id]?.pillMoves(at) == true }
@@ -1099,6 +1114,13 @@ class ScooterMarkerScene(
          * small phone keeps up with for 300.
          */
         const val MOST_MOVING = 300
+
+        /**
+         * The most dots on the map for a look or a name's side to ease. Each frame of an ease writes a source, and
+         * MapLibre places every dot again for it: about 15 ms for 500 on Phone_Min, a frame at 60 Hz, and 140 ms for
+         * 5,000 (MAP-319). Above it, they change at once.
+         */
+        const val MOST_DOTS_EASED = 500
 
         /** The side of a cluster's view, larger than its disc. */
         const val CLUSTER_SIZE = 48.0

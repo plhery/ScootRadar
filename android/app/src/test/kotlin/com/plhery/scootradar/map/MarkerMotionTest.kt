@@ -20,6 +20,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
+import kotlin.math.abs
 
 /**
  * How a dot eases to a new look and place, as the iPhone's marker view does when its look is drawn again, animated
@@ -229,14 +230,96 @@ class MarkerMotionTest {
         scene.applySelection("voi:off", map)
         assertNull(scene.mark("voi:off")!!.motion)
 
-        // The rider walking away changes every dot's size and strength: 300 ease, the rest change at once.
-        val scooters = (0 until 320).map { index -> scooter("$index", "lime", at = map.at(20.0 + (index % 20) * 18, 100.0 + (index / 20) * 40)) }
+        // The rider walking away changes the dots' sizes and strengths, most enough to see: 300 ease, the rest
+        // change at once.
+        val scooters = (0 until 480).map { index -> scooter("$index", "lime", at = map.at(20.0 + (index % 20) * 18, 100.0 + (index / 20) * 28)) }
         scene.reconcile(scooters, revision = 2)
         scene.updateLook(map)
         scene.parent = MarkerParent(origin = map.at(195.0, 820.0))
         scene.updateLook(map)
         assertEquals(ScooterMarkerScene.MOST_MOVING, scene.moving().size)
         assertEquals(300, ScooterMarkerScene.MOST_MOVING)
+    }
+
+    /**
+     * A dot in the app's own clusters has no view, as on the iPhone: it doesn't ease, and one easing as it is gathered
+     * stops where it was going, leaving the others room to ease.
+     */
+    @Test
+    fun aDotInTheAppsOwnClustersDoesNotEase() {
+        val spot = map.at(195.0, 150.0)
+        val scooters = (0 until 6).map { scooter("$it", "lime", at = spot) }
+        scene.reconcile(scooters, revision = 1)
+        scene.updateLook(map)
+        scene.parent = MarkerParent(origin = map.at(195.0, 820.0))
+        scene.updateLook(map)
+        assertTrue(scene.moving().isNotEmpty())
+
+        scene.updateClusteringMode(zoomLevel = 13.0, map = map)
+        scene.updateClusters(13.0)
+        assertTrue(scene.clusters().isNotEmpty())
+        val marks = scooters.map { scene.mark("lime:${it.vehicleID}")!! }
+        assertTrue(marks.all { it.motion == null })
+        assertTrue(scene.settleMotions(clock).isEmpty())
+
+        // The rider walking back changes their looks, which they take at once.
+        scene.parent = MarkerParent(origin = map.at(195.0, 422.0))
+        scene.updateLook(map)
+        assertTrue(marks.all { it.motion == null })
+        assertTrue(scene.moving().isEmpty())
+    }
+
+    /** A change too small to see, as the rider's few steps make, is drawn at once. */
+    @Test
+    fun aChangeTooSmallToSeeIsDrawnAtOnce() {
+        val mark = twoDots()
+        val before = drawing(mark)
+        scene.parent = MarkerParent(origin = map.at(195.0, 430.0))
+        scene.updateLook(map)
+        val after = drawing(mark)
+        assertNotEquals(before, after)
+        assertTrue("$before against $after", abs(after.strength - before.strength) < DotMotion.LEAST_STRENGTH)
+        assertTrue("$before against $after", abs(after.diameter - before.diameter) < DotMotion.LEAST_DIAMETER)
+        assertNull(mark.motion)
+        assertTrue(scene.moving().isEmpty())
+    }
+
+    /** On a map of more than 500 dots, each frame of an ease would cost more than a frame: looks change at once. */
+    @Test
+    fun onAMapOfMoreThanFiveHundredDotsLooksChangeAtOnce() {
+        val scooters = (0 until 501).map { index -> scooter("$index", "lime", at = map.at(20.0 + (index % 20) * 18, 100.0 + (index / 20) * 28)) }
+        scene.reconcile(scooters, revision = 1)
+        scene.updateLook(map)
+        scene.parent = MarkerParent(origin = map.at(195.0, 820.0))
+        scene.updateLook(map)
+        assertTrue(scene.moving().isEmpty())
+        assertEquals(500, ScooterMarkerScene.MOST_DOTS_EASED)
+
+        // One fewer, and they ease.
+        scene.reconcile(scooters.drop(1), revision = 2)
+        scene.updateLook(map)
+        scene.parent = MarkerParent(origin = map.at(195.0, 422.0))
+        scene.updateLook(map)
+        assertTrue(scene.moving().isNotEmpty())
+    }
+
+    /**
+     * A dot still lighting up keeps lighting up: the fades' clock may run behind the scene's by as long as the
+     * light-up waited for MapLibre, and a step more.
+     */
+    @Test
+    fun aDotLightingUpDoesNotEase() {
+        val mark = twoDots()
+        scene.lightUp(listOf(mark), map)
+        val fade = mark.dotFade!!
+        clock = fade.from + fade.length + 1.0
+        scene.applySelection("voi:far", map)
+        assertNull(mark.motion)
+
+        scene.applySelection(null, map)
+        clock = fade.from + fade.length + ScooterMarkers.MOST_HELD + MarkerBand.STEP + 0.01
+        scene.applySelection("voi:far", map)
+        assertNotNull(mark.motion)
     }
 
     /** A name beside its dot, and the panel that comes over the side it is on. */

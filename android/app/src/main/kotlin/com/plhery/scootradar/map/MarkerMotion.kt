@@ -6,6 +6,7 @@ import androidx.compose.animation.core.Easing
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.ui.theme.easing
+import kotlin.math.abs
 
 /**
  * How a dot is drawn at a moment: its picture, how wide its dot is drawn, which while it eases is between two of
@@ -115,5 +116,16 @@ class DotMotion(drawing: DotDrawing, offset: ScreenPoint) {
 
         /** Whether a look changes in a way MapLibre can ease: a picture changed alone is changed at once. */
         fun eases(from: DotDrawing, to: DotDrawing): Boolean = from.diameter != to.diameter || from.strength != to.strength
+
+        /**
+         * Whether a dot at rest starts to ease to a new look: a change too small to see, as the rider's few metres
+         * make in the dots around, is drawn at once, without its two hand-overs.
+         */
+        fun shows(from: DotDrawing, to: DotDrawing): Boolean =
+            abs(from.diameter - to.diameter) >= LEAST_DIAMETER || abs(from.strength - to.strength) >= LEAST_STRENGTH
+
+        /** A change of a dot's width, in points, and of its strength, that shows. */
+        const val LEAST_DIAMETER = 1.0
+        const val LEAST_STRENGTH = 0.1
     }
 }
