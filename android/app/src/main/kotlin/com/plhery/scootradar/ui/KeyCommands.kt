@@ -54,6 +54,13 @@ internal val ScooterKeyCommand.keyCodes: List<Int>
         ScooterKeyCommand.Fold -> listOf(AndroidKeyEvent.KEYCODE_BACKSLASH)
     }
 
+/**
+ * The commands that stand in [situation], as :core has them, but Satellite: the app has no imagery to lay under it
+ * yet, so its key is left alone and the helper doesn't list it, as Settings leaves it out (NEEDS-USER #3).
+ */
+internal fun offered(situation: ScooterKeyCommand.Situation): List<ScooterKeyCommand> =
+    ScooterKeyCommand.available(situation) - ScooterKeyCommand.SatelliteMap
+
 /** The keys held with the command, as KeyboardShortcutInfo has them: Ctrl for ⌘, Alt for ⌥. */
 private val ScooterKeyCommand.metaState: Int
     get() = (if (ScooterKeyCommand.Modifier.Command in modifiers) AndroidKeyEvent.META_CTRL_ON else 0) or
@@ -67,7 +74,7 @@ private val ScooterKeyCommand.metaState: Int
  */
 fun keyboardShortcutGroups(situation: ScooterKeyCommand.Situation?, appName: CharSequence): List<KeyboardShortcutGroup> {
     situation ?: return emptyList()
-    val available = ScooterKeyCommand.available(situation)
+    val available = offered(situation)
     return listOf(
         appName to listOf(ScooterKeyCommand.Settings),
         localized("View") to ScooterMenuBar.view.flatten(),
@@ -95,7 +102,7 @@ class ScreenShortcuts {
     fun handle(event: KeyEvent): Boolean {
         val situation = situation ?: return false
         val perform = perform ?: return false
-        val command = keyCommand(event, ScooterKeyCommand.available(situation)) ?: return false
+        val command = keyCommand(event, offered(situation)) ?: return false
         perform(command)
         return true
     }

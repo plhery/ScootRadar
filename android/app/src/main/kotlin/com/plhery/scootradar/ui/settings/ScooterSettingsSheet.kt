@@ -15,6 +15,9 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -507,9 +510,11 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
     var picking by remember { mutableStateOf(false) }
     val zone = ScooterDateFormat.timeZone()
     val day = ScooterDateFormat.skeleton("yMMMd", date, zone, ScooterLanguage.current.locale)
-    // Only the capsule opens the calendar, and greys under the finger; TalkBack reads the row as the picker, one
-    // button that opens it.
+    // Only the capsule opens the calendar, and greys under the finger, half as far under a pointer (UI-233);
+    // TalkBack reads the row as the picker, one button that opens it.
     var pressed by remember { mutableStateOf(false) }
+    val pointer = remember { MutableInteractionSource() }
+    val hovered by pointer.collectIsHoveredAsState()
     FormValueRow(
         label = { Text(title, style = ScootType.body, color = scootColors.label) },
         modifier = Modifier.semantics {
@@ -520,7 +525,17 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
         Box(
             Modifier
                 .background(scootColors.tertiarySystemFill, CapsuleShape)
-                .then(if (pressed) Modifier.background(scootColors.tertiarySystemFill, CapsuleShape) else Modifier)
+                .then(
+                    when {
+                        pressed -> Modifier.background(scootColors.tertiarySystemFill, CapsuleShape)
+                        hovered -> Modifier.background(
+                            scootColors.tertiarySystemFill.copy(alpha = scootColors.tertiarySystemFill.alpha / 2),
+                            CapsuleShape,
+                        )
+                        else -> Modifier
+                    },
+                )
+                .hoverable(pointer)
                 .focusableControl { picking = true }
                 .pointerInput(Unit) {
                     detectTapGestures(

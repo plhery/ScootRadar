@@ -135,14 +135,22 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * A key that nothing in the screen took, as when nothing has the focus, which Compose then gives no key: the
-     * screen's shortcuts answer it, as an iPad's window answers its key commands whatever has the focus.
+     * screen's shortcuts answer it, as an iPad's window answers its key commands whatever has the focus. Esc on the
+     * screen with nothing to close does nothing, as UIKit drops it (UI-245), where Android would take it for Back
+     * and leave the app; over a sheet it is still Back, which closes it, and the Back key itself still goes back.
      */
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean =
-        shortcuts.handle(androidx.compose.ui.input.key.KeyEvent(event)) || super.onKeyDown(keyCode, event)
+        shortcuts.handle(androidx.compose.ui.input.key.KeyEvent(event)) ||
+            (keyCode == KeyEvent.KEYCODE_ESCAPE && shortcuts.situation?.isPresenting == false) ||
+            super.onKeyDown(keyCode, event)
 
-    /** The screen's shortcuts in the helper Meta + / shows, as the iPad lists them in its menu bar (UI-102). */
+    /**
+     * The screen's shortcuts in the helper Meta + / shows, as the iPad lists them in its menu bar (UI-102). A phone
+     * lists none, as an iPhone has no menu bar; its keys work all the same.
+     */
     override fun onProvideKeyboardShortcuts(data: MutableList<KeyboardShortcutGroup>, menu: Menu?, deviceId: Int) {
         super.onProvideKeyboardShortcuts(data, menu, deviceId)
+        if (ScreenOrientation.smallestWidth(this) < ScreenOrientation.PHONE_UNDER) return
         data += keyboardShortcutGroups(shortcuts.situation, applicationInfo.loadLabel(packageManager))
     }
 

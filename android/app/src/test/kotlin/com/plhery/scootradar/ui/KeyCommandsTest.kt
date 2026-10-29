@@ -93,8 +93,11 @@ class KeyCommandsTest {
 
         // A keyboard's focus on the panel, where the screen takes the keys before what has the focus.
         compose.onNodeWithTag(PANEL_GRABBER_TAG).requestFocus()
+        press(Key.Two, listOf(Key.CtrlLeft))
+        assertEquals(AppleMapStyle.Quiet, model.mapStyle.value)
+        // Satellite has no imagery on Android, so its key is left alone, as Settings leaves it out (NEEDS-USER #3).
         press(Key.Three, listOf(Key.CtrlLeft))
-        assertEquals(AppleMapStyle.Satellite, model.mapStyle.value)
+        assertEquals(AppleMapStyle.Quiet, model.mapStyle.value)
 
         press(Key.Backslash, listOf(Key.CtrlLeft))
         assertTrue(model.isPanelCollapsed.value)
@@ -132,7 +135,7 @@ class KeyCommandsTest {
         compose.onNodeWithTag(POPOVER_TAG).assertExists()
         assertEquals(emptyList<ScooterKeyCommand>(), available())
         press(Key.One, listOf(Key.CtrlLeft))
-        assertEquals(AppleMapStyle.Satellite, model.mapStyle.value)
+        assertEquals(AppleMapStyle.Quiet, model.mapStyle.value)
     }
 
     /** UI-251: the panel's grabber, which takes its touches itself, is reached with Tab and pressed with Enter or Space. */
@@ -205,7 +208,7 @@ class KeyCommandsTest {
         assertEquals(
             listOf(
                 "ScootRadar" to listOf("Settings Ctrl ,"),
-                "View" to listOf("Standard Ctrl 1", "Quiet Ctrl 2", "Satellite Ctrl 3", "Collapse panel Ctrl \\"),
+                "View" to listOf("Standard Ctrl 1", "Quiet Ctrl 2", "Collapse panel Ctrl \\"),
                 "Map" to listOf("Search Ctrl F", "Near me Ctrl L", "Zoom in Ctrl +", "Zoom out Ctrl -", "Filters Ctrl Alt F"),
             ),
             keyboardShortcutGroups(panel, "ScootRadar").described(),
@@ -216,7 +219,7 @@ class KeyCommandsTest {
         assertEquals(
             listOf(
                 "ScootRadar" to listOf("Einstellungen Ctrl ,"),
-                "Darstellung" to listOf("Standard Ctrl 1", "Ruhig Ctrl 2", "Satellit Ctrl 3", "Bereich ausklappen Ctrl \\"),
+                "Darstellung" to listOf("Standard Ctrl 1", "Ruhig Ctrl 2", "Bereich ausklappen Ctrl \\"),
                 "Karte" to listOf("Suchen Ctrl F", "Vergrössern Ctrl +", "Verkleinern Ctrl -", "Filter Ctrl Alt F"),
             ),
             keyboardShortcutGroups(folded, "ScootRadar").described(),
@@ -235,6 +238,7 @@ class KeyCommandsTest {
      * key that nothing focused took.
      */
     @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
     fun theActivityListsTheScreensShortcutsAndHandsItTheKeysNothingTook() {
         val activity = Robolectric.buildActivity(MainActivity::class.java).create().get()
         val none = mutableListOf<KeyboardShortcutGroup>()
@@ -251,9 +255,32 @@ class KeyCommandsTest {
         val ctrl = AndroidKeyEvent.META_CTRL_ON or AndroidKeyEvent.META_CTRL_LEFT_ON
         val ctrlL = AndroidKeyEvent(0, 0, AndroidKeyEvent.ACTION_DOWN, AndroidKeyEvent.KEYCODE_L, 0, ctrl)
         assertTrue(activity.onKeyDown(ctrlL.keyCode, ctrlL))
-        // Esc with nothing to close is left alone.
+        assertEquals(listOf(ScooterKeyCommand.NearMe), performed)
+        // Esc with nothing to close does nothing, and is taken so that Android doesn't make it Back and leave the
+        // app (UI-245); over a sheet it is left to be Back, which closes the sheet.
         val escape = AndroidKeyEvent(AndroidKeyEvent.ACTION_DOWN, AndroidKeyEvent.KEYCODE_ESCAPE)
+        assertTrue(activity.onKeyDown(escape.keyCode, escape))
+        assertEquals(listOf(ScooterKeyCommand.NearMe), performed)
+        assertFalse(activity.isFinishing)
+        activity.shortcuts.situation = ScooterKeyCommand.Situation(layout = ScooterChromeLayout.Dock, isPresenting = true)
         assertFalse(activity.onKeyDown(escape.keyCode, escape))
+    }
+
+    /** A phone's helper lists none of the screen's shortcuts, as an iPhone has no menu bar, but its keys still act. */
+    @Test
+    @Config(qualifiers = "w402dp-h874dp-mdpi")
+    fun aPhoneListsNoShortcutsButItsKeysStillAct() {
+        val activity = Robolectric.buildActivity(MainActivity::class.java).create().get()
+        val performed = mutableListOf<ScooterKeyCommand>()
+        activity.shortcuts.situation = ScooterKeyCommand.Situation(layout = ScooterChromeLayout.Dock)
+        activity.shortcuts.perform = { performed += it }
+        val groups = mutableListOf<KeyboardShortcutGroup>()
+        activity.onProvideKeyboardShortcuts(groups, null, 0)
+        assertEquals(emptyList<String>(), groups.map { it.label.toString() })
+
+        val ctrl = AndroidKeyEvent.META_CTRL_ON or AndroidKeyEvent.META_CTRL_LEFT_ON
+        val ctrlL = AndroidKeyEvent(0, 0, AndroidKeyEvent.ACTION_DOWN, AndroidKeyEvent.KEYCODE_L, 0, ctrl)
+        assertTrue(activity.onKeyDown(ctrlL.keyCode, ctrlL))
         assertEquals(listOf(ScooterKeyCommand.NearMe), performed)
     }
 

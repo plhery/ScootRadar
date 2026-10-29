@@ -82,17 +82,22 @@ class FoldChromeTest {
         show()
         assertEquals(ScooterChromeLayout.Dock, frames.layout)
         val searchBar = frames.top!!
+        val bottom = listOfNotNull(frames.locateButton, frames.dock)
         val fold = ScreenRect(0.0, 465.0, 669.0, 20.0)
 
         fold(FoldingFeature(Rect(0, 0, 669, 951), center = 475, size = 20, state = FoldingFeature.State.HALF_OPENED))
         assertEquals(fold, frames.chrome.fold)
-        // The search bar is 8 points under the fold, as it is under the top of the safe area, and the bottom's
-        // chrome under it too.
+        // The search bar is 8 points under the fold, as it is under the top of the safe area; the locate button and
+        // the dock stay where they were, at the bottom of the half lying flat.
         assertEquals(fold.maxY + 8, frames.top!!.minY, 0.5)
-        assertTrue(
-            "${frames.locateButton}, ${frames.dock}",
-            listOfNotNull(frames.locateButton, frames.dock).all { it.minY >= fold.maxY },
-        )
+        val folded = listOfNotNull(frames.locateButton, frames.dock)
+        assertEquals(2, bottom.size)
+        assertEquals("$bottom, $folded", bottom.size, folded.size)
+        bottom.zip(folded).forEach { (before, after) ->
+            assertEquals(before.minY, after.minY, 0.5)
+            assertEquals(before.height, after.height, 0.5)
+            assertTrue(after.minY >= fold.maxY)
+        }
 
         // Laid flat, the fold is gone and the search bar back at the top.
         fold(FoldingFeature(Rect(0, 0, 669, 951), center = 475, size = 20, state = FoldingFeature.State.FLAT))
