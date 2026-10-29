@@ -39,6 +39,7 @@ import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterRentalURIs
@@ -63,6 +64,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -308,11 +310,15 @@ class PanelBesideTheMapTest {
     /**
      * Upright and located, then turned across: the rider lands beside the panel where locating would, at
      * locating's zoom. Upright the tablet's 800 dp leave too little map beside the panel at the largest text
-     * sizes, and the window has the dock: the panel takes its place as the tablet turns, as the Duo's does.
+     * sizes, and the window has the dock: the panel takes its place as the tablet turns, as the Duo's does. A
+     * window wide enough for both upright, as ScootRadar_Fold's 852 dp, keeps the panel, and has no turn to show.
      */
     @Test
     fun turnedSidewaysWhileLocatingTheRiderLandsBesideThePanel() {
         turn(upright = true)
+        val upright = device.displaySizeDp.x.toDouble()
+        val layout = ScooterChromeLayout.resolve(upright, regularWidth = true, regularHeight = true, largeText = true, current = ScooterChromeLayout.Dock)
+        assumeTrue("$upright dp upright keep the panel", layout == ScooterChromeLayout.Dock)
         onMain { textScale.value = ACCESSIBILITY_1 }
         show(controller())
         Thread.sleep(500)
