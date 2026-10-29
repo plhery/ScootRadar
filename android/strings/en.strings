@@ -21,3 +21,5 @@
 "hide this provider" = "hide this provider";
 "add this provider" = "add this provider";
 "center this scooter on the map" = "center this scooter on the map";
+/* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
+"Compass" = "Compass";

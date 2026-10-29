@@ -21,3 +21,5 @@
 "hide this provider" = "fela þetta fyrirtæki";
 "add this provider" = "bæta þessu fyrirtæki við";
 "center this scooter on the map" = "færa rafskútuna á mitt kortið";
+/* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
+"Compass" = "Áttaviti";

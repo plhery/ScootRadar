@@ -281,6 +281,8 @@ fun ScooterMapScreen(
                 SideEffect {
                     chrome.layout = layout
                     chrome.fold = fold
+                    chrome.isSearching = searchIsExpanded
+                    chrome.captionButtons = captionButtons
                 }
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {

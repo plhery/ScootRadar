@@ -45,6 +45,12 @@ class MapChromeFrames {
     /** The fold of a partly open foldable, in either layout. */
     var fold by mutableStateOf<ScreenRect?>(null)
 
+    /** The search is open: on a phone the compass makes way for it (`showsMapCompass`). */
+    var isSearching by mutableStateOf(false)
+
+    /** The buttons of a desktop window's caption bar, which the compass keeps under. */
+    var captionButtons by mutableStateOf(emptyList<ScreenRect>())
+
     val chrome: MapChrome
         get() = when (layout) {
             ScooterChromeLayout.Dock -> MapChrome(

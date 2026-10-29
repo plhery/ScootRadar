@@ -263,6 +263,16 @@ class MapCamera(
     }
 
     /**
+     * The compass's tap: MKCompassButton turns the map north about its centre, in MapKit's time and curve, at once
+     * under Remove animations (MAP-211). A rider's tap, as a hand on the map, ends the move to a place under way.
+     */
+    fun turnNorth() {
+        if (!(projection.bounds.width > 0 && projection.bounds.height > 0)) return
+        focusUnderWay = null
+        animate(CameraPosition.Builder(map.cameraPosition).bearing(0.0).build())
+    }
+
+    /**
      * Fits places in the part of the map left visible, 40 dp in from its edges, never closer than 350 m across
      * the map, tilted and turned as the map is: the iPhone's fit of a route, which a phone's cluster takes here in
      * place of MapKit's showAnnotations, whose insets are its own (MAP-176, MAP-177, MAP-302).

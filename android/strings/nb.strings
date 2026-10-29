@@ -21,3 +21,5 @@
 "hide this provider" = "å skjule denne operatøren";
 "add this provider" = "å legge til denne operatøren";
 "center this scooter on the map" = "å sentrere kartet på denne elsparkesykkelen";
+/* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
+"Compass" = "Kompass";

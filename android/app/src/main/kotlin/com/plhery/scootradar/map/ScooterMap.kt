@@ -120,6 +120,7 @@ fun ScooterMap(
     var rider by remember { mutableStateOf<ScooterRider?>(null) }
     var zones by remember { mutableStateOf<ScooterZoneLayer?>(null) }
     var trail by remember { mutableStateOf<WalkTrailLayer?>(null) }
+    var watch by remember { mutableStateOf<MapCameraWatch?>(null) }
     DisposableEffect(view) {
         var made: MapCamera? = null
         var drawn: MapGround? = null
@@ -127,6 +128,7 @@ fun ScooterMap(
         var shown: ScooterRider? = null
         var zoned: ScooterZoneLayer? = null
         var trailed: WalkTrailLayer? = null
+        var watching: MapCameraWatch? = null
         view.getMapAsync { map ->
             drawn = MapGround(map, currentLook, tiles, imagery, scope).also { ground = it }
             val moving = MapCamera(map, view, controller, memory, scope).also {
@@ -146,6 +148,7 @@ fun ScooterMap(
             marked = ScooterMarkers(map, view, controller, analytics, scope, move = { moving.show(it) }).also { markers = it }
             // After the markers, whose layers it goes above.
             shown = ScooterRider(map, view, controller, scope).also { rider = it }
+            watching = MapCameraWatch(map).also { watch = it }
         }
         onDispose {
             made?.close()
@@ -155,12 +158,14 @@ fun ScooterMap(
             shown?.close()
             zoned?.close()
             trailed?.close()
+            watching?.close()
             camera = null
             ground = null
             markers = null
             rider = null
             zones = null
             trail = null
+            watch = null
         }
     }
     LaunchedEffect(ground, look) { ground?.show(look) }
@@ -261,6 +266,42 @@ fun ScooterMap(
     val backdrop = LocalGlass.current.backdrop
     BoxWithConstraints(modifier.fillMaxSize()) {
         AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
+        // MapKit's compass, which the app adds itself, at the top of the trailing side (MAP-021, MAP-022).
+        val mapBounds = ScreenRect(0.0, 0.0, maxWidth.value.toDouble(), maxHeight.value.toDouble())
+        val compassTop by remember(chrome, safeArea, mapBounds, direction) {
+            derivedStateOf {
+                val top = MapOrnaments.top(
+                    panel = chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.panel,
+                    fold = chrome?.fold,
+                    search = chrome?.takeIf { it.layout == ScooterChromeLayout.Dock }?.top,
+                    safeTop = safeArea.top,
+                    bounds = mapBounds,
+                )
+                MapOrnaments.compassTop(
+                    top,
+                    width = mapBounds.width,
+                    safeLeft = safeArea.left,
+                    safeRight = safeArea.right,
+                    rightToLeft = direction == LayoutDirection.Rtl,
+                    captionButtons = chrome?.captionButtons.orEmpty(),
+                )
+            }
+        }
+        val showsMapCompass by remember(chrome) {
+            derivedStateOf {
+                MapOrnaments.showsMapCompass(panelLayout = chrome?.layout == ScooterChromeLayout.Panel, isSearching = chrome?.isSearching == true)
+            }
+        }
+        MapCompass(
+            bearing = { watch?.bearing ?: 0.0 },
+            showsMapCompass = showsMapCompass,
+            dark = dark,
+            onTap = { camera?.turnNorth() },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.End))
+                .padding(top = compassTop.dp, end = MapOrnaments.EDGE_GAP.dp),
+        )
         val margins = if (panelSides == null && fold == null) {
             null
         } else {
