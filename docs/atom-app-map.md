@@ -170,6 +170,20 @@ slots of ATOM's host and none of the collector's six shared ones. A city
 nobody looks at is collected every two hours (`APP_MAP_IDLE_INTERVAL_MS`),
 not every 20 minutes.
 
+A city someone looks at takes the queue's turns first, but not all of
+them: while a city nobody looks at waits for its sweep, every third turn
+is kept for it, the sweep that began first (`ATOM_ROUTINE_EVERY`, the
+`Pacer` in `server/sweeps.ts`). On 28 October 2026 a watched Münster was
+swept again every 1.6 minutes for a quarter of an hour, twice, and took
+nearly every turn: Linköping's sweep of 18 views, a minute's work, took
+932 and 456 seconds. Its collection is stamped when the sweep ends, so
+the feed passed the 10 minutes it has after its interval and expired
+for one to five minutes. With the kept turns, a
+sweep of 18 views ends within about 216 seconds however busy the watched
+city, and the watched city keeps two turns in three. The grace is
+unchanged, and so is when a collection counts as done: a sweep that
+truly stalls still lets its feed expire and alert.
+
 A deploy runs the new cache beside the old one for about a minute (53 to
 64 seconds on 24 October 2026), and both swept Qick on the same schedule:
 ATOM answered 429 after each of three deploys that day, and Qick's cities

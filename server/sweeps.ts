@@ -26,22 +26,35 @@ export const currentCollection = (): CollectionScope | undefined => scope.getSto
  * collection someone is looking at goes first, and an idle sweep of another town waits for the
  * turns it leaves. Until 25 October 2026 the turns went in the order asked, so a town opened while
  * idle sweeps ran shared Lime's one request every five seconds with them.
+ *
+ * Given `routineEvery`, one turn in that many, while an idle sweep waits, goes to the idle sweep that
+ * began first, so that a town watched for long cannot hold back the others' sweeps past their feeds'
+ * expiry: on 28 October 2026 a watched Münster took nearly every turn of ATOM's client for a
+ * quarter of an hour, and Linköping's sweep of 18 views, a minute's work, took 932 seconds.
  */
 export class Pacer {
   private next: number;
-  private readonly waiting: { urgent: boolean; go: () => void }[] = [];
+  private readonly waiting: { urgent: boolean; began: number; go: () => void }[] = [];
+  /** When each collection first asked for a turn. */
+  private readonly began = new WeakMap<CollectionScope, number>();
+  /** The turns given in a row to collections someone is looking at while an idle sweep waited. */
+  private urgentTurns = 0;
   private timer?: ReturnType<typeof setTimeout>;
-  constructor(private readonly intervalMs: number, private readonly now: () => number = Date.now, startAt = 0) {
+  constructor(private readonly intervalMs: number, private readonly now: () => number = Date.now, startAt = 0,
+    private readonly routineEvery = Infinity) {
     this.next = startAt;
   }
 
   /** Resolves when the next request may start. */
   turn(): Promise<void> {
-    const urgent = currentCollection()?.urgent() ?? false;
+    const collection = currentCollection();
+    const urgent = collection?.urgent() ?? false;
+    const began = (collection && this.began.get(collection)) ?? this.now();
+    if (collection) this.began.set(collection, began);
     return new Promise(go => {
       const after = urgent ? this.waiting.findIndex(other => !other.urgent) : -1;
-      if (after < 0) this.waiting.push({ urgent, go });
-      else this.waiting.splice(after, 0, { urgent, go });
+      if (after < 0) this.waiting.push({ urgent, began, go });
+      else this.waiting.splice(after, 0, { urgent, began, go });
       this.release();
     });
   }
@@ -61,11 +74,22 @@ export class Pacer {
     const go = () => {
       this.timer = undefined;
       this.next = start + this.intervalMs;
-      this.waiting.shift()?.go();
+      this.take()?.go();
       this.release();
     };
     if (start <= this.now()) go();
     else this.timer = setTimeout(go, start - this.now());
+  }
+
+  /** The first in line, but the idle sweep that began first when its turn is kept for it. */
+  private take() {
+    let oldest = -1;
+    this.waiting.forEach((waiter, index) => {
+      if (!waiter.urgent && (oldest < 0 || waiter.began < this.waiting[oldest].began)) oldest = index;
+    });
+    const index = oldest >= 0 && this.urgentTurns >= this.routineEvery - 1 ? oldest : 0;
+    this.urgentTurns = oldest >= 0 && this.waiting[index]?.urgent ? this.urgentTurns + 1 : 0;
+    return this.waiting.splice(index, 1)[0];
   }
 }
 

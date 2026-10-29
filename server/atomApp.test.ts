@@ -2,7 +2,9 @@ import { mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promise
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { AtomClient, atomMapCenters, collectAtomRegion, parseAtomVehicles, withAtomAppCollectors } from './atomApp';
+import { ATOM_INTERVAL_MS, ATOM_ROUTINE_EVERY, AtomClient, atomMapCenters, collectAtomRegion, parseAtomVehicles,
+  withAtomAppCollectors } from './atomApp';
+import { Pacer, withinCollection } from './sweeps';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
 
@@ -87,6 +89,42 @@ describe('ATOM map coverage and availability', () => {
     const result = await collectAtomRegion(full, api);
     expect(api.vehicles).toHaveBeenCalledExactlyOnceWith(full.atomAppAccount, full.center);
     expect(result.vehicles.map(v => v.vehicle_id)).toEqual([1, 2, 3].map(id => `${full.id}:${id}`));
+  });
+
+  it('lets Linköping\'s idle sweep end within its feed\'s grace while a watched Münster sweeps without a pause', async () => {
+    // On 28 October 2026 a watched Münster swept again every 1.6 minutes, and Linköping's idle sweep
+    // of 18 views took 932 seconds: past the 10 minutes its feed has after its interval (cadence.ts).
+    const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === id)!;
+    const [munster, linkoping] = [system('qick_de_munster'), system('qick_se_linkoping')];
+    expect(atomMapCenters(linkoping.bounds)).toHaveLength(18);
+    const scope = (urgent: boolean) => ({ urgent: () => urgent, focus: () => undefined, progress: () => {} });
+    /** How long Linköping's sweep takes, started 10 s into Münster's, as the client paces them with `routineEvery`. */
+    async function sweep(routineEvery: number): Promise<number | undefined> {
+      const pacer = new Pacer(ATOM_INTERVAL_MS, Date.now, Date.now(), routineEvery);
+      const api = { vehicles: async () => { await pacer.turn(); return map(); } };
+      let watched = true;
+      const looking = (async () => {
+        while (watched) await withinCollection(scope(true), () => collectAtomRegion(munster, api));
+      })();
+      await vi.advanceTimersByTimeAsync(10_000);
+      const started = Date.now();
+      let took: number | undefined;
+      const idle = withinCollection(scope(false), () => collectAtomRegion(linkoping, api)).then(() => { took = Date.now() - started; });
+      await vi.advanceTimersByTimeAsync(10 * 60_000);
+      watched = false;
+      await vi.advanceTimersByTimeAsync(10 * 60_000);
+      await Promise.all([looking, idle]);
+      return took;
+    }
+    vi.useFakeTimers();
+    try {
+      // One turn in three, every 4 seconds: 18 views in about 216 seconds, Münster keeping the other two.
+      expect(await sweep(ATOM_ROUTINE_EVERY)).toBeLessThanOrEqual(18 * 3 * ATOM_INTERVAL_MS);
+      // Without them, Münster's sweeps take every turn and Linköping's waits until nobody looks.
+      expect(await sweep(Infinity)).toBeGreaterThan(10 * 60_000);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('registers ATOM through the Node collector without treating its endpoint as GBFS', () => {

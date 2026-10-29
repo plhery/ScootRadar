@@ -29,6 +29,27 @@ describe('Pacer', () => {
     expect(turns).toEqual([['idle1', 0], ['looked1', 5_000], ['looked2', 10_000], ['idle2', 15_000], ['idle3', 20_000]]);
   });
 
+  it('keeps every third turn, while idle sweeps wait, for the one that began first', async () => {
+    const pacer = new Pacer(1_000, Date.now, 0, 3);
+    const turns: string[] = [];
+    const sweep = (name: string, count: number, scope: CollectionScope) => withinCollection(scope, async () => {
+      for (let i = 1; i <= count; i++) {
+        await pacer.turn();
+        turns.push(`${name}${i}`);
+      }
+    });
+    const first = sweep('first', 3, collection());
+    await vi.advanceTimersByTimeAsync(500);
+    const second = sweep('second', 2, collection());
+    await vi.advanceTimersByTimeAsync(1_000);
+    const looked = sweep('looked', 8, collection({ urgent: () => true }));
+    await vi.advanceTimersByTimeAsync(20_000);
+    await Promise.all([first, second, looked]);
+    // The first sweep's third view waits behind the second sweep's first, but its sweep began first.
+    expect(turns).toEqual(['first1', 'first2', 'looked1', 'looked2', 'first3', 'looked3', 'looked4', 'second1', 'looked5', 'looked6',
+      'second2', 'looked7', 'looked8']);
+  });
+
   it('holds the next turn while the host asks to wait, and starts when told', async () => {
     const pacer = new Pacer(1_000, Date.now, T0 + 200);
     const at: number[] = [];

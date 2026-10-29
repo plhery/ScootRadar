@@ -17,6 +17,13 @@ const RETRY_MS = 60_000;
  * after this, when the old one has stopped and its requests have left ATOM's minute.
  */
 export const ATOM_START_HOLD_MS = 90_000;
+/**
+ * The rider API rejected a 21st view even with starts 1.1 s apart. All accounts together stay
+ * below 20 requests a minute, cold starts and refreshes included.
+ */
+export const ATOM_INTERVAL_MS = 4000;
+/** Every third turn, while a region's idle sweep waits, is kept for it (Pacer in sweeps.ts). */
+export const ATOM_ROUTINE_EVERY = 3;
 export const atomMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
@@ -69,9 +76,7 @@ export class AtomClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'atom-sessions.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    // The rider API rejected a 21st view even with starts 1.1 s apart. Keep all
-    // accounts together below 20 requests/minute, including cold starts and refreshes.
-    this.pace = new Pacer(options.intervalMs ?? 4000, this.now, this.now() + (options.startHoldMs ?? 0));
+    this.pace = new Pacer(options.intervalMs ?? ATOM_INTERVAL_MS, this.now, this.now() + (options.startHoldMs ?? 0), ATOM_ROUTINE_EVERY);
     this.timeoutMs = options.timeoutMs ?? 10_000;
   }
 
