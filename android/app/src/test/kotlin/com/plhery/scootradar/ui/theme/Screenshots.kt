@@ -31,9 +31,11 @@ val screenshotOptions = RoborazziOptions(
 )
 
 /**
- * The comparison for art drawn straight into a bitmap, as the rider's: Linux's Skia lays an edge's and a gradient's
- * coverage a level or two apart from the Mac's (1,561 pixels of 160,000 off by 2/255 at most, on CI). A pixel may be
- * that much off in each channel, 0.02 of the colour distance; a changed colour or a beam turned a degree is far more.
+ * The comparison for art drawn straight into a bitmap, as the rider's, and for screens with Increase Contrast's
+ * edges or the price menu's shadow: Linux's Skia lays an edge's and a gradient's coverage a level or two apart from
+ * the Mac's (1,561 pixels of 160,000 off by 2/255 at most, on CI; the contrast edges' some 900 and the menu's shadow
+ * 43,590 pixels, 2/255 at most). A pixel may be that much off in each channel, 0.02 of the colour distance; a
+ * changed colour or a beam turned a degree is far more.
  */
 val drawnArtOptions = RoborazziOptions(
     compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f, imageComparator = SimpleImageComparator(maxDistance = 0.02f)),
@@ -45,9 +47,9 @@ fun useFontScale(scale: Float) = RuntimeEnvironment.setFontScale(scale)
 fun resetFontScale() = RuntimeEnvironment.setFontScale(1f)
 
 /** The screen as it is now, saved under src/test/screenshots/[name].png, the window drawn again first. */
-fun ComposeContentTestRule.screenshot(name: String) {
+fun ComposeContentTestRule.screenshot(name: String, options: RoborazziOptions = screenshotOptions) {
     drawWindowAgain()
-    onRoot().captureRoboImage("src/test/screenshots/$name.png", roborazziOptions = screenshotOptions)
+    onRoot().captureRoboImage("src/test/screenshots/$name.png", roborazziOptions = options)
 }
 
 /**
