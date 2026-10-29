@@ -50,7 +50,8 @@ import kotlin.math.cos
 /**
  * ScooterMap's updates, as ios/ScootRadar/Views/ScooterMapView.swift's updateUIView makes them, on MapLibre's map
  * with the app's ground: a switch to dark and back drawing each thing over the map in the other appearance
- * (MAP-025, MAP-133), and the margins set before a move asked for in the same update (MAP-026).
+ * (MAP-025, MAP-133), the margins set before a move asked for in the same update (MAP-026), and the rider taking
+ * the theme's contrast as it changes (MAP-192).
  */
 @RunWith(AndroidJUnit4::class)
 class ScooterMapUpdatesTest {
@@ -165,6 +166,31 @@ class ScooterMapUpdatesTest {
                 assertEquals(516.0, at.y, 3.0)
                 assertEquals(1, shown.camera.movesToPlaces - before)
             }
+        }
+    }
+
+    @Test
+    fun theRiderTakesTheThemesContrastWhileTheMapIsShown() {
+        // MAP-192: the rider's blue is Increase Contrast's in either appearance once the theme asks for more
+        // contrast, without the map made again.
+        val controller = onMain { testController(scope) }
+        withScooterMap(controller, streetStart) { shown ->
+            shown.phone.onMain { controller.setUserLocation(zurich) }
+            settle()
+            val art = RiderArt(2f)
+            fun blue(): Int = shown.phone.onMain { (shown.style().getLayer(ScooterMarkerLayers.RIDER) as CircleLayer).circleColorAsInt }
+            assertEquals(art.blue(RiderArt.Look(dark = false, highContrast = false)), blue())
+            val view = shown.phone.view
+            for ((dark, contrast) in listOf(false to true, true to true, true to false, false to false)) {
+                shown.phone.onMain {
+                    shown.dark.value = dark
+                    shown.contrast.value = contrast
+                }
+                waitFor("the rider's blue for dark $dark, contrast $contrast") {
+                    blue() == art.blue(RiderArt.Look(dark = dark, highContrast = contrast))
+                }
+            }
+            assertTrue("the same map", shown.phone.view === view)
         }
     }
 

@@ -321,8 +321,11 @@ class MapCamera(
         )
     }
 
-    /** Moves the map to show the place asked for in the middle of the part of it left in view. */
-    private fun move(request: MapFocusRequest) {
+    /**
+     * Moves the map to show the place asked for in the middle of the part of it left in view: the part a test gives,
+     * as the iPhone's gives setRegionPreservingPerspective its own (T055).
+     */
+    internal fun move(request: MapFocusRequest, visible: ScreenRect = visibleRect()) {
         movesToPlaces += 1
         val bounds = projection.bounds
         focusUnderWay?.let {
@@ -331,7 +334,6 @@ class MapCamera(
             it.safeArea = safeArea
         }
         val current = map.cameraPosition
-        val visible = visibleRect()
         if (request.keepsZoom) {
             val centre = ScooterMapCameraPolicy.center(
                 showing = request.point,

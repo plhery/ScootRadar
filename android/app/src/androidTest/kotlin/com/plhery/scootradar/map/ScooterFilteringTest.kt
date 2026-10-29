@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.MapFocusRequest
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
@@ -97,38 +98,56 @@ class ScooterFilteringTest {
     }
 
     /**
-     * T055. setRegionPreservingPerspective is MapCamera's move to a place here, which beside a panel also frames the
-     * region within the map's margins, as MapKit does; its steps are taken on the map as the iPhone's test takes them
-     * on a map without margins: the region set, then beside a panel its centre moved to the middle of the part left.
+     * T055. setRegionPreservingPerspective is MapCamera's move to a place here: the move itself, on a map without
+     * margins as the iPhone's test has it, given the part of the map left visible as the iPhone's test gives it. Beside
+     * a panel the region's centre goes to the middle of the part left, at the zoom it has alone; then the same beside
+     * a real panel's chrome, which moves the map's margins too.
      */
     @Test
     fun aRegionBesideAPanelIsShownInTheMiddleOfTheMapLeftVisibleAtTheSameZoom() = withPhoneMap { phone ->
         phone.resize(1376, 1032)
         settle()
-        val region = MapRegion.around(scooter, 850.0, 850.0)
-
-        // As on a phone: the band between the search bar and the dock leaves the sides alone, and the region is the
-        // map's own.
-        val bounds = phone.onMain { phone.projection.bounds }
-        assertNull(ScooterMapCameraPolicy.aside(ScreenRect(0.0, 110.0, 1376.0, 700.0), bounds))
-        phone.setRegion(region)
-        val alone = phone.onMain {
-            val centred = phone.projection.point(scooter)
-            assertEquals(688.0, centred.x, 3.0)
-            assertEquals(516.0, centred.y, 3.0)
-            phone.map.cameraPosition.zoom
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+        val camera = phone.onMain {
+            MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames, animationsOn = { false })
         }
+        try {
+            settle()
+            val request = MapFocusRequest(point = scooter, token = 1)
 
-        phone.setRegion(region)
-        phone.onMain {
-            val beside = ScooterMapCameraPolicy.aside(ScreenRect(396.0, 24.0, 980.0, 1008.0), bounds)!!
-            val center = ScooterMapCameraPolicy.center(showing = scooter, on = phone.projection, visible = beside)
-            phone.map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(center.latitude, center.longitude)))
-            val shown = phone.projection.point(scooter)
-            assertEquals(886.0, shown.x, 3.0)
-            assertEquals(516.0, shown.y, 3.0)
-            // MapKit's camera distance within 1%: the zoom within log2(1.01).
-            assertEquals(alone, phone.map.cameraPosition.zoom, log2(1.01))
+            // As on a phone: the band between the search bar and the dock leaves the sides alone, and the region is
+            // the map's own.
+            val alone = phone.onMain {
+                assertEquals(1376.0, phone.projection.bounds.width, 0.0)
+                camera.move(request, visible = ScreenRect(0.0, 110.0, 1376.0, 700.0))
+                val centred = phone.projection.point(scooter)
+                assertEquals(688.0, centred.x, 3.0)
+                assertEquals(516.0, centred.y, 3.0)
+                phone.map.cameraPosition.zoom
+            }
+
+            phone.onMain {
+                camera.move(request, visible = ScreenRect(396.0, 24.0, 980.0, 1008.0))
+                val shown = phone.projection.point(scooter)
+                assertEquals(886.0, shown.x, 3.0)
+                assertEquals(516.0, shown.y, 3.0)
+                // MapKit's camera distance within 1%: the zoom within log2(1.01).
+                assertEquals(alone, phone.map.cameraPosition.zoom, log2(1.01))
+            }
+
+            // Beside a real panel, 380 points wide 16 in from the edge: in the middle of the part beside it too.
+            phone.onMain {
+                camera.chromeDidChange(MapChrome(panel = ScreenRect(16.0, 16.0, 380.0, 1000.0)))
+                camera.applyFocus(request.copy(token = 2))
+                val shown = phone.projection.point(scooter)
+                assertEquals(886.0, shown.x, 3.0)
+                assertEquals(516.0, shown.y, 3.0)
+            }
+        } finally {
+            phone.onMain { camera.close() }
+            frames.cancel()
+            scope.cancel()
         }
     }
 
