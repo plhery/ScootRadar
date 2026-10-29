@@ -615,7 +615,12 @@ zone layers are drawn regardless, credited to the city.
   in the inner city centre a scooter is left only on a marked place, and a
   ride cannot end in a no-parking zone. The regulation's three zones
   (`Reguleringssone`) are not drawn: they set how many scooters each operator
-  may place, not where to ride or park.
+  may place, not where to ride or park. Three parking places lie within
+  no-riding zones: Festplassen and Steinerskolen Paradis wholly, Torgallmenningen
+  nord three quarters. The city's map draws them so, its no-riding zones over
+  them, as ScootRadar's does, and lists all three as active (`Status` "Aktiv";
+  Festplassen's repainted in May 2023, Steinerskolen's set out with the school),
+  so they stay (checked 29 October 2026).
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),
