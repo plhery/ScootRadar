@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-tel-aviv',
   topic: 'tel-aviv',
   name: 'Renting an e-scooter in Tel Aviv',
-  title: 'E-scooter Tel Aviv 2026: Lime, Bird, Dott, rules and prices',
-  description: 'E-scooter Tel Aviv guide: Lime, Bird and Dott, prices in the app, the licence or riding test, helmet and sidewalk fines, parking bays, Shabbat and the airport.',
-  headline: 'E-scooters in Tel Aviv: Lime, Bird and Dott, the licence rule, fines, parking bays and Shabbat',
-  lede: 'You can rent an e-scooter in Tel Aviv with Lime or Bird, both on our map, and each app shows its price before you unlock. Dott was renting here too in late October 2026, but its scooters left our map on 28 October: check its app. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. In the city centre you can end a ride only in a marked bay.',
+  title: 'E-scooter Tel Aviv 2026: Lime and Bird, rules and prices',
+  description: 'E-scooter Tel Aviv guide: Lime and Bird, prices in the app, the licence or riding test, helmet and sidewalk fines, parking bays, Shabbat and the airport.',
+  headline: 'E-scooters in Tel Aviv: Lime and Bird, the licence rule, fines, parking bays and Shabbat',
+  lede: 'You can rent an e-scooter in Tel Aviv with Lime or Bird, both on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. In the city centre you can end a ride only in a marked bay.',
   published: '2026-10-16',
   updated: '2026-10-23',
   city: 'il:Tel Aviv',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Two apps put stand-up e-scooters on our map of Tel Aviv-Yafo, Jaffa included: **Lime** and **Bird**.',
         'At 11:55 Israel time on Thursday 29 October 2026 the [map of Tel Aviv](map:il:Tel Aviv) showed 2,967 scooters inside Tel Aviv-Yafo’s municipal boundary: 1,302 Lime and 1,665 Bird. That’s a count of what was on the map at that moment, not the fleets. The suburbs have scooters of their own, counted apart: at the same moment the [Ramat Gan map](map:il:Ramat Gan) showed 1,017.',
-        '**Dott** rented here too: on 25 October 2026 the news site Kipa listed Tel Aviv-Yafo among the seven towns where it runs shared scooters. Its scooters dropped off our map on 28 October 2026. We found no news of Dott leaving, so it may still rent here: check its app.',
+        'Dott’s scooters left our map on 28 October 2026. On 25 October the news site Kipa had listed Tel Aviv-Yafo among the seven towns where Dott ran shared scooters, and we found no news of it leaving, so if you use Dott, check its app.',
         'Tel Aviv-Yafo began regulating the companies in August 2019, with parking bays in the centre and city inspectors, Maariv reported, and in January 2020 it made them fit ID plates, Globes reported. ScootRadar doesn’t show bike share or e-bikes.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -26,7 +26,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Tel Aviv?',
       blocks: [
-        'We found no current Tel Aviv price published by Lime, Bird or Dott, so compare them in their apps: each shows the unlock fee and the rate before you start.',
+        'We found no current Tel Aviv price published by Lime or Bird, so compare them in their apps: each shows the unlock fee and the rate before you start.',
         'Fines cost far more than rides, and a scooter is easy to trace: since 1 August 2024 e-scooters in Israel have had to be registered and carry an ID plate, Maariv reported in 2026.',
       ],
     },
@@ -34,7 +34,7 @@ const guide: Guide = {
       heading: 'Do you need a licence for an e-scooter in Tel Aviv as a tourist?',
       blocks: [
         'Yes. Israel’s rules ask every rider for a driving licence or, without one, a passed riding or theory test, Ice reported in 2024. Riding without either has carried a ₪750 fine since 2022, Srugim reported.',
-        'We found no news report on whether a foreign licence counts, and no page from Lime, Bird or Dott on how they check one, so carry your licence and follow what your app asks for.',
+        'We found no news report on whether a foreign licence counts, and no page from Lime or Bird on how they check one, so carry your licence and follow what your app asks for.',
         { note: '**Carry your driving licence and wear a helmet.** Since 2022 city inspectors, not only the police, can fine you for riding without either, Srugim reported.' },
         'The minimum age is 16; riding younger costs ₪1,000, Srugim reported in 2022.',
       ],
@@ -98,7 +98,6 @@ const guide: Guide = {
           list: [
             '**Tel Aviv catches sidewalk riders on camera**: in 2023 it put up dozens of cameras around the city, and riders who slip past the inspectors get the ticket by post, Ice reported.',
             '**Bird’s second city outside the US was Tel Aviv**, in mid-August 2018, after Paris.',
-            '**Dott’s first city outside Europe was Tel Aviv**, where it launched with 1,800 scooters in May 2022.',
             '**No fine for a helmet without a reflector**: in 2022 the Knesset’s Economy Committee left that rule out of the fines because it wasn’t clear enough and could trip people up, Srugim reported.',
           ],
         },
@@ -108,7 +107,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Tel Aviv?',
-      answer: 'Lime and Bird are on our [Tel Aviv map](map:il:Tel Aviv): 2,967 scooters inside Tel Aviv-Yafo, Jaffa included, at 11:55 on 29 October 2026. Dott was renting here too in late October 2026, Kipa reported, but its scooters left the map on 28 October, so check its app. Each app shows its price before you unlock.',
+      answer: 'Lime and Bird are on our [Tel Aviv map](map:il:Tel Aviv): 2,967 scooters inside Tel Aviv-Yafo, Jaffa included, at 11:55 on 29 October 2026. Each app shows its price before you unlock.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Tel Aviv as a tourist?',
