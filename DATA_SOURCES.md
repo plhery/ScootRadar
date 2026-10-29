@@ -605,12 +605,14 @@ line of which road it means.
 
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as
-the operators' (no riding, no parking, slow) and the places to park in green;
-the legend names the city, linked to where it says so. The web loads a city's
-zones, `data/city-zones/<id>.json`, only once a view reaches it; the iOS app
-has them as built. `scripts/update-city-zones.mjs` reads them again. None of
-the cities states a licence for its layers; since 28 October 2026 a city's
-public zone layers are drawn regardless, credited to the city.
+the operators' (no riding, no parking, slow), the places to park in green and
+Nagoya's pavements as teal lines; the legend names the city, linked to where it
+says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
+view reaches it; the iOS app has them as built, all but Nagoya's pavements,
+which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
+catalogs. `scripts/update-city-zones.mjs` reads them again. None of the cities
+states a licence for its layers; since 28 October 2026 a city's public zone
+layers are drawn regardless, credited to the city.
 
 - **Arlington National Cemetery** (read 29 October 2026): no city's, but a
   federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
@@ -681,6 +683,37 @@ public zone layers are drawn regardless, credited to the city.
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **Nagoya** (read 29 October 2026): the pavements where an e-scooter in its
+  6 km/h mode may ride, 1,801 lines, about 1,508 km: rule 81 (普通自転車歩道通行可)
+  of the Aichi police's traffic rules, from the open data
+  [「交通規制情報」](https://www.jartic.or.jp/service/opendata/) of the Japan Road
+  Traffic Information Center (JARTIC), the file of 1 October 2026
+  (`typeD_aichi.zip`, one CSV of the whole prefecture in its spec 拡張版標準フォーマット
+  k_2.1), the rules as of August 2026. Credit: 出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成.
+  Where the sign 325の3 「普通自転車等及び歩行者等専用」 lets bicycles on the
+  pavement, a scooter whose speed lamp flashes and which cannot then go over
+  6 km/h may ride there too, on the half nearer the road or the part marked for
+  bicycles, slowly, stopping rather than get in a pedestrian's way
+  ([道路交通法](https://laws.e-gov.go.jp/law/335AC0000000105) 第17条の2 第1項 and
+  第2項; the mode, [施行規則](https://laws.e-gov.go.jp/law/335M50000002060)
+  第5条の6の2); elsewhere it rides on the road. The legend links the National
+  Police Agency's
+  [rules](https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html), its
+  hover text saying so and giving the credit. Of the prefecture's 17,572 rule-81
+  records, the sections whose point halfway along lies within Nagoya's outline
+  on [OpenStreetMap](https://www.openstreetmap.org/relation/4576938) are kept,
+  1,804, three of them twice, kept once; 11 sections of a single point in the
+  prefecture are left out. Each is simplified to within a metre, 32,028 points
+  to 13,587 (773 kB, 103 kB gzipped, loaded only once a view reaches Nagoya).
+  The file is converted from the police's older format: its record keys change
+  each month, so a line's id is the old key within it and a hash of its points,
+  and every one of its rule-81 records is for bicycles at all hours, sparing no
+  vehicle, so the update stops on one that is not. What the data cannot show: a
+  「特例特定原付を除く」 plate under the sign, which keeps scooters off that
+  pavement; which side of the street a line is for, one side (片側, code 2) or
+  both (両側, 3), each drawn once along the line given; and whether it is
+  complete, which JARTIC does not warrant. The signs on the street take
+  precedence, as the legend's hover text says. Only the website draws them.
 - **Norrköping** (read 29 October 2026): Norrköpings kommun's 57 parking
   places for e-scooters, 29 areas where a scooter may not be returned
   (`NoParking (Återlämning förbjuden)`), 14 slow zones (`Slow

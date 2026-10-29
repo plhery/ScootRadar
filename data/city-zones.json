@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-29",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -162,6 +162,38 @@
         "east": -105.19852
       },
       "zones": 101
+    },
+    {
+      "id": "nagoya",
+      "place": "Nagoya",
+      "country": "JP",
+      "authority": "Aichi police, data JARTIC",
+      "timeZone": "Asia/Tokyo",
+      "source": {
+        "title": "National Police Agency, \"特定小型原動機付自転車に関する交通ルール等について\": on the pavements drawn, signs let bicycles ride, and so e-scooters in their 6 km/h mode (speed lamp flashing): keep to the part marked for bicycles, or else to the half nearer the road, go slowly, and stop rather than get in a pedestrian's way. Off them, ride on the road. The signs on the street take precedence over this map, such as a 特例特定原付を除く plate, which keeps scooters off (police data, August 2026). 出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成",
+        "url": "https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html"
+      },
+      "map": {
+        "title": "JARTIC (公益財団法人日本道路交通情報センター), open data 「交通規制情報」: the Aichi police's traffic rules, rule 81 普通自転車歩道通行可",
+        "url": "https://www.jartic.or.jp/service/opendata/"
+      },
+      "layers": [
+        {
+          "kind": "pavement",
+          "url": "https://www.jartic.or.jp/d/opendata/202610010000/typeD_aichi.zip",
+          "within": {
+            "source": "osm",
+            "id": "4576938"
+          }
+        }
+      ],
+      "bounds": {
+        "south": 35.04398,
+        "west": 136.79183,
+        "north": 35.25026,
+        "east": 137.05969
+      },
+      "zones": 1801
     },
     {
       "id": "norrkoping",

@@ -3,11 +3,13 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, expect, it } from 'vitest';
 import ZoneLegend from '@/components/ZoneLegend';
+import { CITY_ZONE_FILES, cityRuleZones, ZONE_CITIES } from '@/lib/cityZones';
 import { I18nProvider } from '@/lib/i18n';
 import { ruleZonesInView, type RuleKind, type RuleZoneShape } from '@/lib/ruleZones';
 
 const SEOUL_NOON = Date.parse('2026-10-26T03:00:00Z');
 const HONGDAE = { south: 37.55, west: 126.918, north: 37.558, east: 126.93 };
+const SAKAE = { south: 35.165, west: 136.903, north: 35.173, east: 136.915 };
 const SOURCE = { title: 'Bergen kommune, "Elsparkesykler i Bergen"', url: 'https://www.bergen.kommune.no/elsparkesykler' };
 
 function bergen(id: string, rule: RuleKind): RuleZoneShape {
@@ -41,4 +43,18 @@ it('keeps a street\'s line with its hours, and the operators\' kinds before the 
   expect([...container.querySelectorAll('.zone-legend-item')].map(item => item.textContent)).toEqual([
     'No riding', 'No parking', 'Slow', 'No riding 12:00–23:00 · Seoul', 'Parking · Bergen kommune',
   ]);
+});
+
+it('gives Nagoya\'s pavements one line, a line for a swatch, linked to the rules with JARTIC\'s credit', async () => {
+  const nagoya = ZONE_CITIES.find(city => city.id === 'nagoya')!;
+  const { default: file } = await CITY_ZONE_FILES.nagoya();
+  const rules = ruleZonesInView({ bounds: SAKAE, zoom: 16 }, Date.now(), cityRuleZones(nagoya, file));
+  expect(rules.length).toBeGreaterThan(10);
+  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  const lines = [...container.querySelectorAll('.zone-legend-rule')];
+  expect(lines.map(line => line.textContent)).toEqual(['Pavement riding at 6 km/h · Aichi police, data JARTIC']);
+  expect(lines[0].querySelector('.zone-swatch')!.className).toBe('zone-swatch zone-swatch-pavement');
+  const link = screen.getByRole('link', { name: 'Aichi police, data JARTIC' });
+  expect(link.getAttribute('href')).toBe('https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html');
+  expect(link.getAttribute('title')).toMatch(/6 km\/h.*出典：「交通規制情報」（https:\/\/www\.jartic\.or\.jp\/service\/opendata\/）（公益財団法人日本道路交通情報センター）を加工して作成$/);
 });

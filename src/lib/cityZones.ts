@@ -1,12 +1,13 @@
 import index from '../../data/city-zones.json';
 import { boundsIntersect } from './geo';
-import type { RuleArea, RuleKind } from './ruleZones';
+import type { RuleKind, RuleZone } from './ruleZones';
 import type { MapBounds } from './types';
 import { ZONES_MIN_ZOOM } from './zones';
 
 // The zones cities set for shared e-scooters, from data/city-zones.json: each city's are a
 // file of their own, Bergen's about 150 KB, which the map page loads only once a view from
-// zoom 14 reaches the city, and keeps.
+// zoom 14 reaches the city, and keeps. Nagoya's are the pavements a scooter may ride on, lines
+// rather than rings.
 
 /** A city of data/city-zones.json. */
 export interface ZoneCity {
@@ -20,9 +21,10 @@ export interface ZoneCity {
   bounds: MapBounds;
 }
 
-/** A city's file of zones, data/city-zones/<id>.json. */
+/** A city's file of zones, data/city-zones/<id>.json: each zone one ring, or lines, as a pavement is. */
 export interface ZoneFile {
-  zones: { id: string; kind: string; name: string; ring: number[][] }[];
+  zones: ({ id: string; kind: string; name: string }
+    & ({ ring: number[][]; lines?: undefined } | { lines: number[][][]; ring?: undefined }))[];
 }
 
 export const ZONE_CITIES: ZoneCity[] = index.cities;
@@ -36,22 +38,21 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
   boulder: () => import('../../data/city-zones/boulder.json'),
+  nagoya: () => import('../../data/city-zones/nagoya.json'),
   norrkoping: () => import('../../data/city-zones/norrkoping.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   vasteras: () => import('../../data/city-zones/vasteras.json'),
 };
 
 /** The city's zones as rule zones: in force always, set by the city, linked to where it says so. */
-export function cityRuleZones(city: ZoneCity, file: ZoneFile): RuleArea[] {
-  return file.zones.map(zone => ({
-    id: zone.id,
-    place: zone.name,
-    authority: city.authority,
-    rule: zone.kind as RuleKind,
-    timeZone: city.timeZone,
-    source: city.source,
-    ring: zone.ring as [number, number][],
-  }));
+export function cityRuleZones(city: ZoneCity, file: ZoneFile): RuleZone[] {
+  return file.zones.map(zone => {
+    const common = {
+      id: zone.id, place: zone.name, authority: city.authority, rule: zone.kind as RuleKind,
+      timeZone: city.timeZone, source: city.source,
+    };
+    return zone.lines ? { ...common, lines: zone.lines as [number, number][][] } : { ...common, ring: zone.ring as [number, number][] };
+  });
 }
 
 /** The cities whose zones the view reaches, from zoom 14 in. */
@@ -60,7 +61,7 @@ export function zoneCitiesInView(view: { bounds: MapBounds; zoom: number } | nul
   return ZONE_CITIES.filter(city => boundsIntersect(view.bounds, city.bounds));
 }
 
-const NONE: RuleArea[] = [];
+const NONE: RuleZone[] = [];
 /** Every city's zones loaded so far, one list, a new one each time a city's arrive. */
 let loaded = NONE;
 /** The cities loaded or on their way. */

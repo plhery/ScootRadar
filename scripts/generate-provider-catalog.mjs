@@ -35,7 +35,15 @@ const { landingFirst, countries } = readJson('data/countries.json');
 const regionalSystems = catalogSystems(countries, readCatalog);
 const curfews = readJson('data/rental-curfews.json').curfews;
 const ruleZones = readJson('data/rule-zones.json').zones;
-const cityZones = readJson('data/city-zones.json').cities.map(city => ({ ...city, ...readJson(`data/city-zones/${city.id}.json`) }));
+// The apps draw a city's zones, each one ring, but not yet the pavements a scooter may ride on,
+// lines that only the website draws (src/lib/ruleZones.ts): they are left out here, and so is a
+// city with nothing else, Nagoya, so that neither app's catalog lists them.
+const cityZones = readJson('data/city-zones.json').cities
+  .map(city => {
+    const { zones, ...file } = readJson(`data/city-zones/${city.id}.json`);
+    return { ...city, ...file, zones: zones.filter(zone => zone.kind !== 'pavement') };
+  })
+  .filter(city => city.zones.length);
 
 function validateCatalog() {
   if (!Array.isArray(providers) || providers.length === 0) {

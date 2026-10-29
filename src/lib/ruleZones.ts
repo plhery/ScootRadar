@@ -9,13 +9,17 @@ import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 // "kickboard-free streets" so far. And the zones cities set for shared e-scooters, Bergen's,
 // Porto's and Boise's, and Arlington National Cemetery, where federal rules forbid riding, from
 // data/city-zones.json (cityZones.ts loads each city's as a view reaches it): where to park,
-// where not to, where to ride slowly and where not to ride. Unlike the
-// operators' zones they are the law, so the map draws them from zoom 14 whether or not the
-// zones are turned on, dimmer outside their hours, and the legend says who sets them, linked
-// to where they say so.
+// where not to, where to ride slowly and where not to ride. And Nagoya's pavements where a
+// scooter in its 6 km/h mode may ride, by the Aichi police's rules, which are lines, not areas.
+// Unlike the operators' zones they are the law, so the map draws them from zoom 14 whether or
+// not the zones are turned on, dimmer outside their hours, and the legend says who sets them,
+// linked to where they say so.
 
-/** What a rule asks: what the operators' zones ask, or that scooters are parked there, which only cities say. */
-export type RuleKind = ZoneKind | 'parking';
+/**
+ * What a rule asks: what the operators' zones ask; or, which only cities say, that scooters are
+ * parked there, or that they may ride on the pavement there.
+ */
+export type RuleKind = ZoneKind | 'parking' | 'pavement';
 
 /** Local "HH:MM", from and until. */
 export interface RuleHours {
@@ -37,9 +41,9 @@ interface RuleZoneCommon {
   source: { title: string; url: string };
 }
 
-/** A street, drawn as a band round its centrelines. */
+/** A street, drawn as a band round its centrelines; or a pavement, drawn as its line. */
 export interface RuleStreet extends RuleZoneCommon {
-  /** The street's centrelines, each of [lat, lng] points. */
+  /** The street's centrelines, or the pavement's line, each of [lat, lng] points. */
   lines: [number, number][][];
   ring?: undefined;
 }
@@ -55,7 +59,7 @@ export type RuleZone = RuleStreet | RuleArea;
 
 /** A rule zone as the map draws it. */
 export type RuleZoneShape = RuleZone & {
-  /** Polygons, each its outer ring and then its holes, each ring of [lat, lng] points. */
+  /** Polygons, each its outer ring and then its holes, each ring of [lat, lng] points; none for a pavement, drawn as its lines. */
   polygons: [number, number][][][];
   /** Whether its hours hold now. */
   inForce: boolean;
@@ -161,9 +165,10 @@ const shapes = new Map<string, { bounds: MapBounds; polygons: [number, number][]
 function shapeOf(zone: RuleZone) {
   let shape = shapes.get(zone.id);
   if (!shape) {
-    shape = zone.ring
-      ? { bounds: linesBounds([zone.ring]), polygons: [[outerRing(zone.ring)]] }
-      : { bounds: linesBounds(zone.lines), polygons: bandPolygons(zone.lines) };
+    shape = zone.ring ? { bounds: linesBounds([zone.ring]), polygons: [[outerRing(zone.ring)]] }
+      // A pavement is drawn as its line: a band as wide as a street's would cover the street beside it.
+      : zone.rule === 'pavement' ? { bounds: linesBounds(zone.lines), polygons: [] }
+        : { bounds: linesBounds(zone.lines), polygons: bandPolygons(zone.lines) };
     shapes.set(zone.id, shape);
   }
   return shape;

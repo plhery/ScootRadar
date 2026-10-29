@@ -1364,6 +1364,70 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   await expect(legend).toHaveCount(0);
 });
 
+test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lines, credited to the Aichi police and JARTIC', async ({ page }) => {
+  test.slow();
+  // Sakae, at street level, with the operators' zones off.
+  await page.goto('/map?origin=35.1688,136.9086&zones=0');
+  const legend = page.getByRole('group', { name: 'Zones' });
+  await expect(legend).toHaveText('Pavement riding at 6 km/h · Aichi police, data JARTIC');
+  const link = legend.getByRole('link', { name: 'Aichi police, data JARTIC' });
+  await expect(link).toHaveAttribute('href', 'https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html');
+  await expect(link).toHaveAttribute('title',
+    /6 km\/h.*出典：「交通規制情報」（https:\/\/www\.jartic\.or\.jp\/service\/opendata\/）（公益財団法人日本道路交通情報センター）を加工して作成$/);
+  // Every pavement in view is one path of lines, in its teal, a few pixels wide and not filled,
+  // which takes no tap or click from the scooters; its swatch is a line too.
+  const paths = page.locator('.leaflet-rule-zones-pane path');
+  await expect(paths).toHaveCount(1);
+  const pavement = () => page.evaluate(() => {
+    const edge = document.querySelector('.leaflet-rule-zones-pane .zone-edge-pavement')!;
+    return {
+      className: edge.getAttribute('class'), stroke: getComputedStyle(edge).stroke, width: edge.getAttribute('stroke-width'),
+      cap: edge.getAttribute('stroke-linecap'), fill: edge.getAttribute('fill'), pointerEvents: getComputedStyle(edge).pointerEvents,
+      lines: edge.getAttribute('d')!.split('M').length - 1,
+      swatch: getComputedStyle(document.querySelector('.zone-swatch-pavement')!).height,
+    };
+  });
+  const light = await pavement();
+  expect(light).toEqual({
+    className: 'zone-edge-pavement', stroke: 'rgb(11, 114, 133)', width: '3', cap: 'round', fill: 'none',
+    pointerEvents: 'none', lines: expect.any(Number), swatch: '4px',
+  });
+  expect(light.lines).toBeGreaterThan(10);
+  await page.goto('/map?origin=35.1688,136.9086&zones=0&theme=dark');
+  await expect(paths).toHaveCount(1);
+  expect((await pavement()).stroke).toBe('rgb(59, 201, 219)');
+
+  // On the narrowest phone, in every language, the legend's line fits: who says so whole, on a
+  // second or third line if need be (CI's fonts set it wider), and nothing out of the legend.
+  await page.setViewportSize({ width: 320, height: 568 });
+  for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en']) {
+    await page.evaluate(language => localStorage.setItem('scooters-locale', language), locale);
+    await page.goto('/map?origin=35.1688,136.9086&zones=0');
+    await expect(page.locator('.zone-legend a')).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const fit = await page.locator('.zone-legend').evaluate(element => {
+      const box = element.getBoundingClientRect();
+      const link = element.querySelector('a')!;
+      return {
+        inside: [...element.querySelectorAll('*')].every(child => {
+          const { left, right } = child.getBoundingClientRect();
+          return left >= box.left - 0.5 && right <= box.right + 0.5;
+        }),
+        onScreen: box.right <= innerWidth,
+        linkWhole: link.getClientRects().length === 1,
+        lines: Math.round(element.querySelector('.zone-legend-rule')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
+      };
+    });
+    expect(fit, locale).toEqual({ inside: true, onScreen: true, linkWhole: true, lines: expect.any(Number) });
+    expect(fit.lines, locale).toBeLessThanOrEqual(3);
+  }
+
+  // Further out than zoom 14, neither drawn nor told.
+  await zoomTo(page, 13);
+  await expect(paths).toHaveCount(0);
+  await expect(legend).toHaveCount(0);
+});
+
 test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map?origin=47.3769,8.5417');

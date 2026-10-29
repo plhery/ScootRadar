@@ -32,7 +32,7 @@ it('loads a city\'s zones once a view from zoom 14 reaches it, once, and keeps t
   const { useCityZones, bergen, porto } = await fresh();
   const { result, rerender } = renderHook(({ view }: { view: View }) => useCityZones(view), { initialProps: { view: BERGEN } });
   await waitFor(() => expect(result.current).toHaveLength(772));
-  expect(result.current.every(zone => zone.authority === 'Bergen kommune' && zone.ring.length >= 3)).toBe(true);
+  expect(result.current.every(zone => zone.authority === 'Bergen kommune' && (zone.ring?.length ?? 0) >= 3)).toBe(true);
   const zones = result.current;
   rerender({ view: { ...BERGEN, zoom: 16 } });
   rerender({ view: ZURICH });

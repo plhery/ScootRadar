@@ -18,7 +18,11 @@ const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -
 const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
 // Västerås's Stora Torget and Stora gatan, where riding is forbidden.
 const VASTERAS_CENTRE = { south: 59.607, west: 16.535, north: 59.614, east: 16.555 };
+// Nagoya's Sakae, round the Hisaya-ōdōri park, at zoom 14 on a phone.
+const SAKAE = { south: 35.16, west: 136.895, north: 35.178, east: 136.922 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
+/** The credit JARTIC's terms ask for, of its data processed. */
+const JARTIC_CREDIT = '出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成';
 
 /** How many times the ring winds round the point: the map fills where it is not 0, the iOS map where it is odd. */
 function winding(ring: number[][], lat: number, lng: number): number {
@@ -43,7 +47,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'norrkoping', 'porto', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'porto', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -55,10 +59,16 @@ describe('the cities\' zones', () => {
       expect(file.zones).toHaveLength(city.zones);
       expect(new Set(file.zones.map(zone => zone.id)).size).toBe(city.zones);
       for (const zone of file.zones) {
-        expect(KINDS).toContain(zone.kind);
         expect(zone.id.startsWith(`${city.id}-`)).toBe(true);
-        expect(zone.ring.length).toBeGreaterThanOrEqual(3);
-        expect(zone.ring.every(([lat, lng]) => boundsContainPoint(city.bounds, lat, lng))).toBe(true);
+        // A zone is one ring; a pavement, lines.
+        if (zone.lines) {
+          expect(zone.kind).toBe('pavement');
+          expect(zone.lines.every(line => line.length >= 2)).toBe(true);
+        } else {
+          expect(KINDS).toContain(zone.kind);
+          expect(zone.ring.length).toBeGreaterThanOrEqual(3);
+        }
+        expect((zone.ring ?? zone.lines.flat()).every(([lat, lng]) => boundsContainPoint(city.bounds, lat, lng))).toBe(true);
       }
       expect(city.source.url).toMatch(/^https:\/\//);
     }
@@ -74,6 +84,15 @@ describe('the cities\' zones', () => {
       timeZone: 'Europe/Oslo', source: bergen.source, ring,
     });
     expect(ruleInForce(zone, Date.parse('2026-10-29T23:30:00Z'))).toBe(true);
+
+    // A pavement, of lines, is a rule zone of lines.
+    const nagoya = ZONE_CITIES.find(city => city.id === 'nagoya')!;
+    const lines: [number, number][][] = [[[35.1688, 136.9086], [35.1699, 136.9087]]];
+    const [pavement] = cityRuleZones(nagoya, { zones: [{ id: 'nagoya-pavement-23-1-0', kind: 'pavement', name: '普通自転車歩道通行可', lines }] });
+    expect(pavement).toEqual({
+      id: 'nagoya-pavement-23-1-0', place: '普通自転車歩道通行可', authority: 'Aichi police, data JARTIC', rule: 'pavement',
+      timeZone: 'Asia/Tokyo', source: nagoya.source, lines,
+    });
   });
 
   it('finds the cities a view reaches, from zoom 14 in', async () => {
@@ -85,6 +104,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
+    expect(zoneCitiesInView({ bounds: SAKAE, zoom: 14 }).map(city => city.id)).toEqual(['nagoya']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -135,7 +155,7 @@ describe('the cities\' zones', () => {
     // Nampa: where Lime's service area ends, which Lime's own zones draw. The others are under a square kilometre.
     const { default: file } = await CITY_ZONE_FILES.boise();
     for (const zone of file.zones) {
-      const lats = zone.ring.map(([lat]) => lat);
+      const lats = zone.ring!.map(([lat]) => lat);
       expect(Math.max(...lats) - Math.min(...lats), zone.id).toBeLessThan(0.02);
     }
     // Lime's own "Grove Center LSZ" is the City's slow zone over the Grove Plaza, drawn here.
@@ -153,7 +173,7 @@ describe('the cities\' zones', () => {
     // ends; the others are the size of a park or a campus at most.
     const { default: file } = await CITY_ZONE_FILES.boulder();
     for (const zone of file.zones) {
-      const lats = zone.ring.map(([lat]) => lat);
+      const lats = zone.ring!.map(([lat]) => lat);
       expect(Math.max(...lats) - Math.min(...lats), zone.id).toBeLessThan(0.02);
     }
     // Its mandatory parking zone, where a ride ends at a corral the file does not hold, is not drawn as a place to park.
@@ -189,8 +209,8 @@ describe('the cities\' zones', () => {
     // Its parking places are painted bays, 17 m long at most, drawn so: no ring round a square.
     const { default: file } = await CITY_ZONE_FILES.norrkoping();
     for (const zone of file.zones.filter(({ kind }) => kind === 'parking')) {
-      const lats = zone.ring.map(([lat]) => lat);
-      const lngs = zone.ring.map(([, lng]) => lng);
+      const lats = zone.ring!.map(([lat]) => lat);
+      const lngs = zone.ring!.map(([, lng]) => lng);
       expect((Math.max(...lats) - Math.min(...lats)) * 110_540, zone.id).toBeLessThan(25);
       expect((Math.max(...lngs) - Math.min(...lngs)) * 57_900, zone.id).toBeLessThan(25);
     }
@@ -206,11 +226,31 @@ describe('the cities\' zones', () => {
     // A no-parking area of the City's goes round a block it leaves out: the ring goes round the
     // block too, the other way, so the block stays open.
     const { default: file } = await CITY_ZONE_FILES.vasteras();
-    const { ring } = file.zones.find(zone => zone.id === 'vasteras-no-parking-356')!;
+    const ring = file.zones.find(zone => zone.id === 'vasteras-no-parking-356')!.ring!;
     expect(winding(ring, 59.6265, 16.59928)).toBe(0);
     expect(Math.abs(winding(ring, 59.62697, 16.5983))).toBe(1);
     // An area of two parts is two zones.
     expect(file.zones.filter(zone => zone.id.startsWith('vasteras-no-parking-588-')).map(zone => zone.id))
       .toEqual(['vasteras-no-parking-588-1', 'vasteras-no-parking-588-2']);
+  });
+
+  it('draws Nagoya\'s pavements where a scooter may ride as lines, credited to the Aichi police and JARTIC', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const nagoya = ZONE_CITIES.find(city => city.id === 'nagoya')!;
+    await loadCityZones(nagoya);
+    const zones = cityZones.get();
+    expect(zones).toHaveLength(1801);
+    expect(zones.every(zone => zone.rule === 'pavement' && zone.lines && !zone.ring
+      && zone.authority === 'Aichi police, data JARTIC' && zone.timeZone === 'Asia/Tokyo')).toBe(true);
+    // The legend's link says what the lines mean for a rider, and gives the credit JARTIC's terms ask for.
+    expect(nagoya.source).toEqual({ url: 'https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html', title: expect.stringContaining('6 km/h') });
+    expect(nagoya.source.title.endsWith(JARTIC_CREDIT)).toBe(true);
+    // Each id holds from month to month: the old key of the line's record and its points, not the month's key.
+    expect(zones.every(zone => /^nagoya-pavement-23-[0-9a-z]+-[0-9a-f]{8}$/.test(zone.id))).toBe(true);
+    // Sakae at zoom 14: over a hundred lines, drawn as lines, with no band round them.
+    const shown = ruleZonesInView({ bounds: SAKAE, zoom: 14 }, Date.now(), zones);
+    expect(shown.length).toBeGreaterThan(100);
+    expect(shown.every(zone => zone.inForce && zone.polygons.length === 0)).toBe(true);
+    expect(ruleZonesInView({ bounds: SAKAE, zoom: 13 }, Date.now(), zones)).toEqual([]);
   });
 });

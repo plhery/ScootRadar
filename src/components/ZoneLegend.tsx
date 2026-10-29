@@ -11,14 +11,17 @@ import type { ZoneKind } from '@/lib/zones';
  * How each kind of zone is drawn: how strongly it is filled (the stronger the rule, the
  * stronger the fill) and its edge, solid, dashed or dotted. Each kind's zones are merged
  * into one shape (zoneShapes.ts) and filled at once, so that the same rule of five
- * operators over a street looks like one. Parking is only ever a city's (ruleZones.ts). The
- * colours, and no riding's hatching, are the appearance's (map.css).
+ * operators over a street looks like one. Parking is only ever a city's (ruleZones.ts), and
+ * so is the pavement a scooter may ride on, a line rather than an area: its edge is the line
+ * itself, a few pixels wide at every zoom, and it has no fill. The colours, and no riding's
+ * hatching, are the appearance's (map.css).
  */
 export const ZONE_STYLES: Record<RuleKind, { fillOpacity: number; edge: PathOptions }> = {
   noRide: { fillOpacity: 0.4, edge: { opacity: 0.9, weight: 1.5 } },
   noParking: { fillOpacity: 0.16, edge: { opacity: 0.9, weight: 1.5, dashArray: '6 4' } },
   slow: { fillOpacity: 0.12, edge: { opacity: 0.9, weight: 2, dashArray: '0.1 4', lineCap: 'round' } },
   parking: { fillOpacity: 0.25, edge: { opacity: 0.9, weight: 1.5 } },
+  pavement: { fillOpacity: 0, edge: { opacity: 0.85, weight: 3, lineCap: 'round', lineJoin: 'round' } },
 };
 
 /** How far, in pixels, no parking's and slow zones' edges keep from no riding's edge, and out of its zones. */
@@ -29,12 +32,13 @@ const LABELS: Record<RuleKind, TranslationKey> = {
   noParking: 'zones.noParking',
   slow: 'zones.slow',
   parking: 'zones.parking',
+  pavement: 'zones.pavement',
 };
 
 /** The operators' kinds, the strongest rule first. */
 const KINDS: ZoneKind[] = ['noRide', 'noParking', 'slow'];
-/** A city's, in the same order, parking last. */
-const RULE_KINDS: RuleKind[] = [...KINDS, 'parking'];
+/** A city's, in the same order, then where scooters may park, and where they may ride on the pavement. */
+const RULE_KINDS: RuleKind[] = [...KINDS, 'parking', 'pavement'];
 
 const NOTES: Partial<Record<ZoneDataState, TranslationKey>> = {
   zoomIn: 'zones.zoomIn',

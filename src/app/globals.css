@@ -33,6 +33,8 @@
   --zone-no-parking: #c05600;
   --zone-slow: #3e63dd;
   --zone-parking: #1a7f37;
+  /* The pavements a scooter may ride on: lines, in a teal apart from slow's blue and parking's green. */
+  --zone-pavement: #0b7285;
   --attribution-bg: rgba(255, 255, 255, 0.85);
   --attribution-ink: #555c64;
   --map-control-bg: rgba(255, 255, 255, 0.58);
@@ -123,6 +125,7 @@ body {
   --zone-no-parking: #ffb340;
   --zone-slow: #7c9cff;
   --zone-parking: #4cd97b;
+  --zone-pavement: #3bc9db;
   --attribution-bg: rgba(11, 14, 20, 0.85);
   --attribution-ink: #c0c5cf;
   --map-control-bg: rgba(16, 19, 26, 0.86);
@@ -178,6 +181,7 @@ body {
     --zone-no-parking: #ffb340;
     --zone-slow: #7c9cff;
     --zone-parking: #4cd97b;
+    --zone-pavement: #3bc9db;
     --attribution-bg: rgba(11, 14, 20, 0.85);
     --attribution-ink: #c0c5cf;
     --map-control-bg: rgba(16, 19, 26, 0.86);
@@ -2053,10 +2057,18 @@ svg {
 .zone-legend-note {
   color: var(--ink-2);
 }
-/* A city's rule: who says so can be opened, and outside its hours its swatch is dimmer, as on the map. */
+/* A city's rule: who says so can be opened, and outside its hours its swatch is dimmer, as on the map.
+   On a narrow phone a rule may take two lines, who says so kept whole. */
+.zone-legend-rule {
+  white-space: normal;
+}
+.zone-legend-rule .zone-swatch {
+  flex: none;
+}
 .zone-legend-rule a {
   color: inherit;
   pointer-events: auto;
+  white-space: nowrap;
 }
 .zone-legend-rule[data-in-force='false'] .zone-swatch {
   opacity: 0.35;
@@ -2088,6 +2100,14 @@ svg {
 .zone-swatch-parking {
   --zone-color: var(--zone-parking);
   background: color-mix(in srgb, var(--zone-color) 25%, transparent);
+}
+/* The pavements a scooter may ride on are lines, as on the map. */
+.zone-swatch-pavement {
+  --zone-color: var(--zone-pavement);
+  height: 4px;
+  border: none;
+  border-radius: 2px;
+  background: var(--zone-color);
 }
 /* The switch of the zones, under the map styles. */
 .zone-toggle {

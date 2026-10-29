@@ -1,5 +1,10 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { execFileSync, spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { createWriteStream, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } from './boundaries.mjs';
 
 // Writes data/city-zones/<id>.json, each city's zones from the layers data/city-zones.json lists,
@@ -13,7 +18,9 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // picture's pixels, read back to its SWEREF 99 grid and so to latitude and longitude.
 // A layer may instead name a boundary (scripts/boundaries.mjs): Arlington National Cemetery's,
 // where federal rules forbid riding, is its OpenStreetMap outline. Boulder's are Lime's, from the
-// public zone file its rider app draws them from, each zone an encoded polyline.
+// public zone file its rider app draws them from, each zone an encoded polyline. Nagoya's are no
+// zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
+// police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
 
@@ -25,7 +32,7 @@ const DISC_CORNERS = 8;
 /** A zone's holes, and the parts of a zone of several, smaller than this are slivers its drawing left: Västerås's 101 are 3 m² at most. */
 const SLIVER_M2 = 5;
 const USER_AGENT = 'scootradar (+https://scootradar.com)';
-const KINDS = new Set(['parking', 'noParking', 'slow', 'noRide']);
+const KINDS = new Set(['parking', 'noParking', 'slow', 'noRide', 'pavement']);
 
 const path = resolve(process.cwd(), 'data/city-zones.json');
 const catalog = JSON.parse(readFileSync(path, 'utf8'));
@@ -317,6 +324,250 @@ async function fiwareZones(city, { kind, url }) {
   });
 }
 
+/**
+ * The columns of JARTIC's traffic rules read here, by their number in its spec (拡張版標準フォーマット
+ * k_2.1, table 2 and 3.5), out of 170: a file whose header names them otherwise is not read.
+ */
+const JARTIC_COLUMNS = 170;
+const JARTIC = {
+  version: [1, '拡張版標準フォーマット種別・バージョン'],
+  rule: [12, '共通規制種別コード'],
+  shape: [13, '点・線・面コード'],
+  key: [21, 'ユニークキー'],
+  points: [24, '規制場所の経度緯度'],
+  leftOut: [30, '除外区間及び区域の経度緯度'],
+  condition: [131, '規制条件'],
+};
+// Five sets of whom and when a rule is for, from column 41, then five of whom and when it spares, from 86.
+for (const [first, period, time, days, vehicles] of [[41, '対象期間', '規制時間', '規制曜日コード', '対象車両コード'],
+  [86, '除外期間', '除外時間', '除外曜日コード', '除外車両コード']]) {
+  for (let set = 1; set <= 5; set++) {
+    const at = first + (set - 1) * 9;
+    const names = [`${period}${set}_開始`, `${period}${set}_終了`, `${time}${set}_開始`, `${time}${set}_終了`, `${days}${set}`,
+      ...['A', 'B', 'C', 'D'].map(category => `${vehicles}${set}_${category}`)];
+    names.forEach((name, index) => { JARTIC[name] = [at + index, name]; });
+  }
+}
+/** Rule 81, 普通自転車歩道通行可: bicycles, and since July 2023 e-scooters in their 6 km/h mode, may ride on the pavement. A line. */
+const JARTIC_PAVEMENT = '81';
+/**
+ * What the Aichi file, converted from the police's older format (its versions marked 注), puts in the
+ * columns of whom and when for every one of its rule-81 records: all day (0 to 2400, or 0 to 0 in the
+ * sets after the first), weekday code 9, which the spec's table of days does not have, bicycles as the
+ * vehicles it is for (D 100, 普通自転車) and "other" (D 100000000000000, その他) as those it spares.
+ * A record with anything else, an hour, a day or a vehicle spared, as a plate 特例特定原付を除く would
+ * be, stops the update: the map would draw it as holding always, for scooters too.
+ */
+const JARTIC_ALWAYS = { time: ['/', '0/2400', '0/0'], days: ['', '9'], for: ['', '100'], spared: ['', '100000000000000'] };
+
+/** Whether the record's columns of whom and when are those of a rule for all, always (JARTIC_ALWAYS). */
+function jarticAlways(values, column) {
+  const value = name => values[column[name]];
+  return [1, 2, 3, 4, 5].every(set => [
+    ['対象期間', '規制時間', '規制曜日コード', '対象車両コード', JARTIC_ALWAYS.for],
+    ['除外期間', '除外時間', '除外曜日コード', '除外車両コード', JARTIC_ALWAYS.spared],
+  ].every(([period, time, days, vehicles, others]) => !value(`${period}${set}_開始`) && !value(`${period}${set}_終了`)
+    && JARTIC_ALWAYS.time.includes(`${value(`${time}${set}_開始`)}/${value(`${time}${set}_終了`)}`)
+    && JARTIC_ALWAYS.days.includes(value(`${days}${set}`))
+    && ['A', 'B', 'C'].every(category => !value(`${vehicles}${set}_${category}`))
+    && others.includes(value(`${vehicles}${set}_D`))));
+}
+
+/** A JARTIC record's values: each in double quotes, as its spec has them all, a quote within one doubled. */
+function csvValues(record) {
+  const values = [];
+  let at = 0;
+  for (;;) {
+    if (record[at] !== '"') throw new Error(`A value not in quotes: ${record.slice(0, 80)}`);
+    let value = '';
+    for (at++; ;) {
+      const quote = record.indexOf('"', at);
+      if (quote < 0) throw new Error(`A value not closed: ${record.slice(0, 80)}`);
+      value += record.slice(at, quote);
+      at = quote + 1;
+      if (record[at] !== '"') break;
+      value += '"';
+      at++;
+    }
+    values.push(value);
+    if (at === record.length) return values;
+    if (record[at++] !== ',') throw new Error(`Values not parted by commas: ${record.slice(0, 80)}`);
+  }
+}
+
+/** Whether the point lies within the polygons, each its outer ring and then its holes, all of [lng, lat]. */
+function withinPolygons(point, polygons) {
+  return polygons.some(([outer, ...holes]) => within(point, outer) && !holes.some(hole => within(point, hole)));
+}
+
+/** The point halfway along the line, both of [lng, lat]. */
+function halfway(line) {
+  const plane = toPlane(line);
+  const lengths = plane.slice(1).map(([x, y], index) => Math.hypot(x - plane[index][0], y - plane[index][1]));
+  let left = lengths.reduce((sum, length) => sum + length, 0) / 2;
+  for (const [index, length] of lengths.entries()) {
+    if (left <= length) {
+      const share = length ? left / length : 0;
+      const [[lng0, lat0], [lng1, lat1]] = [line[index], line[index + 1]];
+      return [lng0 + (lng1 - lng0) * share, lat0 + (lat1 - lat0) * share];
+    }
+    left -= length;
+  }
+  return line.at(-1);
+}
+
+/** How far, in metres of the plane, the point is from the segment. */
+function segmentDistance([x, y], [x0, y0], [x1, y1]) {
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  const share = dx || dy ? Math.max(0, Math.min(1, ((x - x0) * dx + (y - y0) * dy) / (dx * dx + dy * dy))) : 0;
+  return Math.hypot(x - x0 - share * dx, y - y0 - share * dy);
+}
+
+/**
+ * The line, of [lng, lat] points, simplified by Douglas–Peucker to within `tolerance` metres of
+ * each point it leaves out, measured to the piece that replaces it, so that a line which turns
+ * back on itself keeps its far end: [lat, lng] points rounded to `digits` decimals, and how far
+ * from them, at most, a point left out lies.
+ */
+function simplifyPath(line, tolerance, digits) {
+  const plane = toPlane(line);
+  const keep = new Uint8Array(line.length);
+  keep[0] = keep[line.length - 1] = 1;
+  let strays = 0;
+  const stack = [[0, line.length - 1]];
+  while (stack.length) {
+    const [a, b] = stack.pop();
+    let farthest = -1;
+    let distance = 0;
+    for (let i = a + 1; i < b; i++) {
+      const d = segmentDistance(plane[i], plane[a], plane[b]);
+      if (d > distance) [farthest, distance] = [i, d];
+    }
+    if (distance > tolerance) {
+      keep[farthest] = 1;
+      stack.push([a, farthest], [farthest, b]);
+    } else strays = Math.max(strays, distance);
+  }
+  const points = line.filter((_, i) => keep[i]).map(([lng, lat]) => [Number(lat.toFixed(digits)), Number(lng.toFixed(digits))]);
+  return { points, strays };
+}
+
+/**
+ * The pavements where a scooter may ride, from JARTIC's open data of a prefecture's traffic
+ * rules (「交通規制情報」): a zip of one CSV in Shift_JIS, as its spec (拡張版標準フォーマット k_2.1)
+ * lays it out, read line by line as unzip gives it. Each record of rule 81 is a line along a
+ * pavement, its points "lng lat" parted by ";", its sections by "/"; a section is kept if the
+ * point halfway along it lies within the boundary `within` names, simplified to within a metre,
+ * to the source's 5 decimals. The same line twice, either way round, is kept once. The records'
+ * keys in a converted file (仮ユニークキー) change each month: a line's id is the old key within
+ * it, which up to 404 of Aichi's records share, and the first 8 hex digits of the SHA-1 of its
+ * points as the file gives them. The data names no street.
+ */
+async function jarticZones(city, { kind, url, within: area }) {
+  const outline = await boundary(area);
+  const directory = mkdtempSync(join(tmpdir(), 'jartic-'));
+  try {
+    const zip = join(directory, 'rules.zip');
+    const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+    if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+    await pipeline(Readable.fromWeb(response.body), createWriteStream(zip));
+    // Its name is the police's, in Shift_JIS, then the month the data is of and the spec's version.
+    const names = execFileSync('unzip', ['-Z1', zip]).toString('latin1').split('\n').filter(name => /_k_2\.1\.csv$/.test(name));
+    if (names.length !== 1) throw new Error(`${url} holds ${names.length} files of the k_2.1 spec`);
+    const month = names[0].match(/_(\d{6})_k_2\.1\.csv$/)?.[1];
+    if (!month) throw new Error(`${url}: no month in ${names[0]}`);
+
+    const unzip = spawn('unzip', ['-p', zip, `*_${month}_k_2.1.csv`], { stdio: ['ignore', 'pipe', 'inherit'] });
+    const exit = new Promise(resolve => unzip.on('close', resolve));
+    const decoder = new TextDecoder('shift_jis', { fatal: true });
+    const column = {};
+    const found = [];
+    let records = 0;
+    let rest = '';
+    let open = '';
+    let short = 0;
+    const read = line => {
+      // A record runs on to the next line while one of its values is open: an odd number of quotes.
+      const record = open ? `${open}\r\n${line}` : line;
+      let quotes = 0;
+      for (let at = record.indexOf('"'); at >= 0; at = record.indexOf('"', at + 1)) quotes++;
+      if (quotes % 2) { open = record; return; }
+      open = '';
+      if (!records++) {
+        const header = csvValues(record);
+        if (header.length !== JARTIC_COLUMNS) throw new Error(`${url}: ${header.length} columns, not ${JARTIC_COLUMNS}`);
+        for (const [key, [number, name]] of Object.entries(JARTIC)) {
+          if (header[number - 1] !== name) throw new Error(`${url}: column ${number} is ${header[number - 1]}, not ${name}`);
+          column[key] = number - 1;
+        }
+        return;
+      }
+      if (!record.includes(`"${JARTIC_PAVEMENT}"`)) return;
+      const values = csvValues(record);
+      if (values.length !== JARTIC_COLUMNS) throw new Error(`${url}: a record of ${values.length} values`);
+      if (values[column.rule] !== JARTIC_PAVEMENT) return;
+      const key = values[column.key];
+      if (!values[column.version].startsWith('k_2.1')) throw new Error(`${key}: version ${values[column.version]}`);
+      if (values[column.shape] !== '2') throw new Error(`${key}: rule ${JARTIC_PAVEMENT} not a line`);
+      // A converted file's key: the prefecture, the month, a number of the month's and the old key, 17 digits.
+      const parts = key.match(/^(\d\d)(\d{6})\d{7}([0-9a-z]{17})$/);
+      if (parts?.[2] !== month) throw new Error(`${key}: not a key of a converted file of ${month}`);
+      for (const section of values[column.points].split('/')) {
+        const line = [];
+        for (const point of section.split(';').filter(text => text.trim())) {
+          const [lng, lat] = point.trim().match(/^(\d+(?:\.\d+)?) (\d+(?:\.\d+)?)$/)?.slice(1).map(Number) ?? [];
+          if (!(lng > 122 && lng < 154 && lat > 20 && lat < 46)) throw new Error(`${key}: point ${point} is not one in Japan`);
+          if (line.at(-1)?.[0] !== lng || line.at(-1)?.[1] !== lat) line.push([lng, lat]);
+        }
+        if (line.length < 2) { short++; continue; }
+        if (!withinPolygons(halfway(line), outline)) continue;
+        if (values[column.leftOut] || values[column.condition] || !jarticAlways(values, column)) {
+          throw new Error(`${key}: a part left out (除外区間), a condition (規制条件), an hour, a day or a vehicle not read here`);
+        }
+        const hash = createHash('sha1').update(section).digest('hex').slice(0, 8);
+        found.push({ id: `${city.id}-${slug(kind)}-${parts[1]}-${parts[3].replace(/^0+/, '') || '0'}-${hash}`, line });
+      }
+    };
+    for await (const chunk of unzip.stdout) {
+      const lines = (rest + decoder.decode(chunk, { stream: true })).split('\r\n');
+      rest = lines.pop();
+      lines.forEach(read);
+    }
+    rest += decoder.decode();
+    if (rest) read(rest);
+    if (open) throw new Error(`${url}: the last record is not closed`);
+    if ((await exit) !== 0) throw new Error(`${url}: unzip failed`);
+
+    // Each line once, either way round, under the first of its ids.
+    found.sort((a, b) => a.id.localeCompare(b.id));
+    const seen = new Set();
+    const zones = [];
+    let strays = 0;
+    let metres = 0;
+    for (const { id, line } of found) {
+      const forth = line.join(';');
+      const back = [...line].reverse().join(';');
+      if (seen.has(forth) || seen.has(back)) continue;
+      seen.add(forth);
+      const simple = simplifyPath(line, 1, 5);
+      strays = Math.max(strays, simple.strays);
+      const plane = toPlane(line);
+      metres += plane.slice(1).reduce((sum, [x, y], index) => sum + Math.hypot(x - plane[index][0], y - plane[index][1]), 0);
+      zones.push({ id, kind, name: '普通自転車歩道通行可', lines: [simple.points] });
+    }
+    console.log(`${city.id} ${kind}: ${records - 1} records of ${month}, ${found.length} lines of rule ${JARTIC_PAVEMENT} within,`
+      + ` ${found.length - zones.length} of them twice, ${short} sections of one point left out; ${(metres / 1000).toFixed(1)} km,`
+      + ` ${found.reduce((sum, { line }) => sum + line.length, 0)} points, kept within ${strays.toFixed(2)} m of the line`);
+    return zones;
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+}
+
+/** A zone's points: its ring, or its lines, as Nagoya's pavements are. */
+const pointsOf = zone => zone.ring ?? zone.lines.flat();
+
 for (const city of catalog.cities) {
   if (only.length && !only.includes(city.id)) continue;
   const zones = [];
@@ -325,16 +576,17 @@ for (const city of catalog.cities) {
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
       : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
-        : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
-          : pathname.endsWith('/wms') ? await wmsZones(city, layer)
-            : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
-    console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + zone.ring.length, 0)} points`);
+        : pathname.endsWith('.zip') ? await jarticZones(city, layer)
+          : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
+            : pathname.endsWith('/wms') ? await wmsZones(city, layer)
+              : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
+    console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + pointsOf(zone).length, 0)} points`);
     zones.push(...found);
   }
   const ids = new Set(zones.map(zone => zone.id));
   if (ids.size !== zones.length) throw new Error(`${city.id}: two zones share an id`);
   zones.sort((a, b) => a.kind.localeCompare(b.kind) || a.id.localeCompare(b.id, 'en', { numeric: true }));
-  const points = zones.flatMap(zone => zone.ring);
+  const points = zones.flatMap(pointsOf);
   city.bounds = {
     south: Math.min(...points.map(([lat]) => lat)), west: Math.min(...points.map(([, lng]) => lng)),
     north: Math.max(...points.map(([lat]) => lat)), east: Math.max(...points.map(([, lng]) => lng)),

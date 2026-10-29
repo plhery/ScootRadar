@@ -822,7 +822,8 @@ export default function MapComponent({
   // are, in a pane of their own; outside their hours, dimmer. All of a kind that hold now, or
   // all that don't, are one fill and one edge, so that a few hundred zones are a few paths
   // and those over each other are no darker. The fill goes by winding: rings that turn the
-  // same way (ruleZones.ts) fill where they overlap, a band's holes stay open.
+  // same way (ruleZones.ts) fill where they overlap, a band's holes stay open. None of them
+  // takes a tap or a click from the scooters, whose pane is over this one.
   useEffect(() => {
     const map = mapRef.current;
     if (!readyMap || !map || !ruleZones.length) return;
@@ -842,6 +843,17 @@ export default function MapComponent({
         L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${kind}`,
           interactive: false, fill: false }).addTo(layer);
       }
+    }
+    // The pavements a scooter may ride on are lines along the kerb, over the fills: all of
+    // them one line of a few pixels, and no band round them, which would cover the street.
+    // Each zone's lines are moved to the map's copy of the world as a polygon's rings are.
+    for (const inForce of [false, true]) {
+      const lines = ruleZones.filter(zone => zone.rule === 'pavement' && zone.inForce === inForce)
+        .flatMap(zone => polygonsNear([zone.lines ?? []], frameLng)[0]);
+      if (!lines.length) continue;
+      const { edge } = ZONE_STYLES.pavement;
+      L.polyline(lines, { ...edge, opacity: (edge.opacity ?? 1) * (inForce ? 1 : RULE_ZONE_DIMMED), renderer,
+        className: 'zone-edge-pavement', interactive: false }).addTo(layer);
     }
     layer.addTo(map);
     return () => { layer.remove(); renderer.remove(); };
