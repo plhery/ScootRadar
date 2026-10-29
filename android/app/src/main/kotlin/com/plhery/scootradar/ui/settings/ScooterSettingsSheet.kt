@@ -28,7 +28,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerColors
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -556,6 +559,7 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
         val state = rememberDatePickerState(
             initialSelectedDateMillis = date.atZone(zone).toLocalDate().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli(),
         )
+        val colors = calendarColors()
         DatePickerDialog(
             onDismissRequest = { picking = false },
             confirmButton = {
@@ -568,11 +572,58 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
                 }) { Text(localized("Done")) }
             },
             dismissButton = { TextButton(onClick = { picking = false }) { Text(localized("Cancel")) } },
+            colors = colors,
         ) {
-            DatePicker(state)
+            DatePicker(state, colors = colors)
         }
     }
 }
+
+/**
+ * Material's calendar in the app's colours, as close as its parts allow to the calendar of the iPhone's compact
+ * DatePicker (UI-404): the sheet's raised background, labels in the system's label colours, the month's arrows in
+ * the app's blue, today in blue with no ring, and the chosen day in blue on a pale blue disc.
+ */
+@Composable
+private fun calendarColors(): DatePickerColors {
+    val colors = scootColors.elevated()
+    return DatePickerDefaults.colors(
+        containerColor = colors.secondarySystemGroupedBackground,
+        titleContentColor = colors.secondaryLabel,
+        headlineContentColor = colors.label,
+        weekdayContentColor = colors.secondaryLabel,
+        subheadContentColor = colors.secondaryLabel,
+        navigationContentColor = colors.accent,
+        yearContentColor = colors.label,
+        disabledYearContentColor = colors.tertiaryLabel,
+        currentYearContentColor = colors.accent,
+        selectedYearContentColor = Color.White,
+        disabledSelectedYearContentColor = colors.tertiaryLabel,
+        selectedYearContainerColor = colors.accent,
+        disabledSelectedYearContainerColor = colors.quaternarySystemFill,
+        dayContentColor = colors.label,
+        disabledDayContentColor = colors.tertiaryLabel,
+        selectedDayContentColor = colors.accent,
+        disabledSelectedDayContentColor = colors.tertiaryLabel,
+        selectedDayContainerColor = colors.accent.copy(alpha = CHOSEN_DAY_ALPHA),
+        disabledSelectedDayContainerColor = colors.quaternarySystemFill,
+        todayContentColor = colors.accent,
+        todayDateBorderColor = Color.Transparent,
+        dividerColor = colors.separator,
+        dateTextFieldColors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = colors.label,
+            unfocusedTextColor = colors.label,
+            focusedBorderColor = colors.accent,
+            unfocusedBorderColor = colors.systemGray2,
+            focusedLabelColor = colors.accent,
+            unfocusedLabelColor = colors.secondaryLabel,
+            cursorColor = colors.accent,
+        ),
+    )
+}
+
+/** How strongly the chosen day's disc is tinted with the blue. */
+private const val CHOSEN_DAY_ALPHA = 0.14f
 
 /** `Label("This pass has expired", systemImage: "exclamationmark.circle.fill")` in the warning's colour. */
 @Composable

@@ -23,8 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -84,6 +82,7 @@ import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalAnalytics
 import com.plhery.scootradar.ui.rememberControllerChanges
+import com.plhery.scootradar.ui.sheet.IosMenu
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -384,22 +383,16 @@ private fun PriceCell(controller: ScooterMapController, figure: ScooterCardFigur
             symbol = if (quote.passApplied) Symbols.ticketFill else null,
             opensMenu = true,
         )
-        DropdownMenu(expanded = isOpen, onDismissRequest = { isOpen = false }) {
-            for (choice in RideEstimateDuration.allowedMinutes) {
-                DropdownMenuItem(
-                    text = { Text(stringFormat(localized("%lld min"), choice.toLong())) },
-                    onClick = {
-                        controller.setRideEstimateMinutes(choice)
-                        isOpen = false
-                    },
-                    trailingIcon = if (choice == minutes) {
-                        { SymbolIcon(Symbols.check, 20.dp, LocalContentColor.current) }
-                    } else {
-                        null
-                    },
-                )
-            }
-        }
+        IosMenu(
+            expanded = isOpen,
+            onDismiss = { isOpen = false },
+            choices = RideEstimateDuration.allowedMinutes.map { stringFormat(localized("%lld min"), it.toLong()) },
+            chosen = RideEstimateDuration.allowedMinutes.indexOf(minutes),
+            onChoose = {
+                controller.setRideEstimateMinutes(RideEstimateDuration.allowedMinutes[it])
+                isOpen = false
+            },
+        )
     }
 }
 

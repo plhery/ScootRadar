@@ -65,6 +65,8 @@ data class ScootColors(
      * #FBFEF8 over a cream map by day, #1A1C29 over a dark one by night).
      */
     val glassFill: Color,
+    /** Whether these are [withIncreasedContrast]'s colours. */
+    val isContrastIncreased: Boolean = false,
 ) {
     /** A provider's colour, or blue for none (ScooterControls.swift's providerAccent). */
     fun providerAccent(provider: ScooterProvider?): Color =
@@ -80,13 +82,53 @@ data class ScootColors(
      * The colours inside a sheet, which UIKit draws at the elevated level: in the dark the backgrounds are lighter,
      * so the sheet stands out from the dimmed map. Light has one level.
      */
-    fun elevated(): ScootColors = if (!isDark) {
-        this
-    } else {
-        copy(
+    fun elevated(): ScootColors = when {
+        !isDark -> this
+        isContrastIncreased -> copy(
+            systemBackground = Color(0xFF242426),
+            systemGroupedBackground = Color(0xFF242426),
+            secondarySystemGroupedBackground = Color(0xFF363638),
+        )
+        else -> copy(
             systemBackground = Color(0xFF1C1C1E),
             systemGroupedBackground = Color(0xFF1C1C1E),
             secondarySystemGroupedBackground = Color(0xFF2C2C2E),
+        )
+    }
+
+    /**
+     * The colours with Increase Contrast on (ui.md UI-186): the system colours take UIKit's high-contrast variants,
+     * as UIKit resolves them for `accessibilityContrast == .high` (the fills as Mac Catalyst's UIKit gives them on
+     * macOS 27; the labels, separators, backgrounds, blue and green as Flutter's CupertinoColors copies them from
+     * iOS), and the glass gains an edge (chromeGlass). ScooterPalette's own colours stay as they are.
+     */
+    fun withIncreasedContrast(): ScootColors = when {
+        isContrastIncreased -> this
+        isDark -> copy(
+            isContrastIncreased = true,
+            accent = Color(0xFF409CFF),
+            secondarySystemGroupedBackground = Color(0xFF242426),
+            secondaryLabel = Color(0xADEBEBF5),
+            tertiaryLabel = Color(0x60EBEBF5),
+            quaternaryLabel = Color(0x3DEBEBF5),
+            tertiarySystemFill = Color(0x52767680),
+            quaternarySystemFill = Color(0x42767680),
+            systemGray2 = Color(0xFF7C7C80),
+            separator = Color(0xAD545458),
+            systemGreen = Color(0xFF30DB5B),
+        )
+        else -> copy(
+            isContrastIncreased = true,
+            accent = Color(0xFF0040DD),
+            systemGroupedBackground = Color(0xFFEBEBF0),
+            secondaryLabel = Color(0xAD3C3C43),
+            tertiaryLabel = Color(0x603C3C43),
+            quaternaryLabel = Color(0x423C3C43),
+            tertiarySystemFill = Color(0x33767680),
+            quaternarySystemFill = Color(0x29747480),
+            systemGray2 = Color(0xFF8E8E93),
+            separator = Color(0x5E3C3C43),
+            systemGreen = Color(0xFF248A3D),
         )
     }
 

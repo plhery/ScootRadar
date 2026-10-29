@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
@@ -64,6 +65,7 @@ import androidx.compose.ui.unit.offset
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.glass.pressedGlass
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
@@ -86,20 +88,28 @@ import kotlin.math.roundToInt
  * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple, and a little
  * under a mouse's pointer, ringed while a keyboard has its focus (UI-251). Its semantics are a button's, which TalkBack names from the label unless [label] says
  * otherwise; [hint] is what a double tap does, which TalkBack says in a sentence of its own where iOS reads its
- * accessibility hint (UI-327). [focusRing] is the ring's shape, and white on the tint.
+ * accessibility hint (UI-327). [focusRing] is the ring's shape, and white on the tint. A button that answers the
+ * finger otherwise doesn't [dim], and gives the [interaction] it watches.
  */
 internal fun Modifier.plainButton(
     enabled: Boolean = true,
     label: String? = null,
     hint: String? = null,
     focusRing: FocusRing = FocusRing(),
+    interaction: MutableInteractionSource? = null,
+    dim: Boolean = true,
     onClick: () -> Unit,
 ): Modifier = composed {
-    val interaction = remember { MutableInteractionSource() }
-    val pressed by interaction.collectIsPressedAsState()
-    val hovered by interaction.collectIsHoveredAsState()
-    graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else if (hovered) hoveredAlpha(PLAIN_PRESSED_ALPHA) else 1f }
-        .clickable(interaction, focusRing, enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
+    val source = remember(interaction) { interaction ?: MutableInteractionSource() }
+    val pressed by source.collectIsPressedAsState()
+    val hovered by source.collectIsHoveredAsState()
+    val dims = if (dim) {
+        Modifier.graphicsLayer { alpha = if (pressed) PLAIN_PRESSED_ALPHA else if (hovered) hoveredAlpha(PLAIN_PRESSED_ALPHA) else 1f }
+    } else {
+        Modifier
+    }
+    dims
+        .clickable(source, focusRing, enabled = enabled, onClickLabel = hint, role = Role.Button, onClick = onClick)
         .then(
             if (label != null) {
                 Modifier.clearAndSetSemantics {
@@ -111,6 +121,26 @@ internal fun Modifier.plainButton(
                 Modifier
             },
         )
+}
+
+/**
+ * `.buttonStyle(.glass)` and `.glassProminent`: a button of glass, which swells and lights up under the finger where a
+ * plain one dims, its focus ring swelling with it (pressedGlass, ui.md UI-211). [glass] is the glass; the rest is
+ * [plainButton]'s.
+ */
+internal fun Modifier.glassButton(
+    shape: Shape,
+    glass: Modifier,
+    enabled: Boolean = true,
+    label: String? = null,
+    focusRing: FocusRing = FocusRing(shape),
+    onClick: () -> Unit,
+): Modifier = composed {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    val hovered by interaction.collectIsHoveredAsState()
+    pressedGlass(pressed && enabled, shape, glass, hovered = hovered && enabled)
+        .plainButton(enabled, label, focusRing = focusRing, interaction = interaction, dim = false, onClick = onClick)
 }
 
 /** How far a plain button dims under the finger, as UIKit's highlighted label does. */

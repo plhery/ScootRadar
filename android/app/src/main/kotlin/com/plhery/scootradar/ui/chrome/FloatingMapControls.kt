@@ -39,7 +39,7 @@ import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.SymbolIcon
-import com.plhery.scootradar.ui.dock.plainButton
+import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.theme.CapsuleShape
@@ -100,9 +100,7 @@ private fun GoToMyLocation(isLocating: Boolean, onClick: () -> Unit) {
     val value = if (isLocating) localized("Finding your location…") else ""
     Box(
         Modifier
-            .chromeGlass(CapsuleShape)
-            .overTheMap()
-            .plainButton(enabled = !isLocating, onClick = onClick)
+            .glassButton(CapsuleShape, glass = Modifier.chromeGlass(CapsuleShape).overTheMap(), enabled = !isLocating, onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = label
                 if (value.isNotEmpty()) stateDescription = value
@@ -130,11 +128,17 @@ private fun NearMe(isLocating: Boolean, onClick: () -> Unit) {
     val foreground = if (isLocating) colors.label else Color.White
     Row(
         Modifier
-            .iosShadow(CapsuleShape, colors.actionFill.copy(alpha = 0.28f), radius = 7.dp, y = 6.dp)
-            .clip(CapsuleShape)
-            .background(if (isLocating) colors.tertiarySystemFill else colors.actionFill)
-            .overTheMap()
-            .plainButton(enabled = !isLocating, focusRing = FocusRing(CapsuleShape, onTint = true), onClick = onClick)
+            .glassButton(
+                CapsuleShape,
+                glass = Modifier
+                    .iosShadow(CapsuleShape, colors.actionFill.copy(alpha = 0.28f), radius = 7.dp, y = 6.dp)
+                    .clip(CapsuleShape)
+                    .background(if (isLocating) colors.tertiarySystemFill else colors.actionFill)
+                    .overTheMap(),
+                enabled = !isLocating,
+                focusRing = FocusRing(CapsuleShape, onTint = true),
+                onClick = onClick,
+            )
             .clearAndSetSemantics {
                 contentDescription = title
                 if (value.isNotEmpty()) stateDescription = value

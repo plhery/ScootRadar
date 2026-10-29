@@ -11,6 +11,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +28,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
@@ -56,6 +62,7 @@ import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.glass.chromeGlass
+import com.plhery.scootradar.ui.glass.pressedGlass
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -117,13 +124,32 @@ fun ScooterSearchIsland(
     // The collapsed bar keeps its own room above and under it, inside its buttons, so that they reach the glass's
     // edges; the open panel has 10 of the island's.
     val vertical by animateDpAsState(if (isSearching) 10.dp else 0.dp, motion(spring), label = "islandPadding")
+    // The closed island is interactive glass (UI-211): a finger anywhere on it, its buttons' too, swells it.
+    var touched by remember { mutableStateOf(false) }
 
     Box(
         modifier
             .widthIn(max = 560.dp)
             .fillMaxWidth()
-            .iosShadow(shape, Color.Black.copy(alpha = 0.08f), radius = 10.dp, y = 4.dp)
-            .chromeGlass(shape, live = true)
+            .pressedGlass(
+                touched && !isSearching,
+                shape,
+                glass = Modifier.iosShadow(shape, Color.Black.copy(alpha = 0.08f), radius = 10.dp, y = 4.dp).chromeGlass(shape, live = true),
+            )
+            .pointerInput(Unit) {
+                // Seen on its way down, before a button in the island takes it.
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    touched = true
+                    try {
+                        do {
+                            val event = awaitPointerEvent(PointerEventPass.Initial)
+                        } while (event.changes.any { it.pressed })
+                    } finally {
+                        touched = false
+                    }
+                }
+            }
             .overTheMap()
             // The spring overshoots 0 by a hair as the search closes, where padding may not go.
             .padding(horizontal = 10.dp, vertical = vertical.coerceAtLeast(0.dp))

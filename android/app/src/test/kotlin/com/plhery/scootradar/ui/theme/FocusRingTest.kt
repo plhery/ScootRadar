@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.input.InputModeManager
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.platform.testTag
@@ -23,12 +25,14 @@ import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.ui.dock.DockActionButton
 import com.plhery.scootradar.ui.dock.focusableControl
+import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.settings.FormRow
 import com.plhery.scootradar.ui.settings.FormSection
@@ -107,6 +111,29 @@ class FocusRingTest {
         reachWithKeyboard()
         assertColor(Color.White, at = 31 to 70)
         assertColor(ScootColors.Light.cardActionFill, at = 36 to 70)
+    }
+
+    /**
+     * A glass button pressed from the keyboard swells to 1.04 under its ring, which swells with it and stays on its
+     * edge (UI-211), and comes back as the key is let go.
+     */
+    @Test
+    fun aPressedGlassButtonsRingSwellsWithIt() {
+        show(dark = false) {
+            Box(Modifier.offset(50.dp, 50.dp).testTag(BUTTON).glassButton(CircleShape, glass = Modifier.background(Color.White, CircleShape)) {}.size(100.dp))
+        }
+        reachWithKeyboard()
+        // At rest the ring runs 3 points in from the edge at 50; outside it, the ground.
+        assertColor(ScootColors.Light.accent, at = 51 to 100)
+        assertColor(Color.White, at = 49 to 100)
+
+        compose.onNodeWithTag(BUTTON).performKeyInput { keyDown(Key.Enter) }
+        // Swollen to 104 points across, its edge at 48: the ring is on it, over the point outside it at rest.
+        assertColor(ScootColors.Light.accent, at = 49 to 100)
+
+        compose.onNodeWithTag(BUTTON).performKeyInput { keyUp(Key.Enter) }
+        assertColor(Color.White, at = 49 to 100)
+        assertColor(ScootColors.Light.accent, at = 51 to 100)
     }
 
     /** A control that takes its own touches, as the panel's grabber does, is ringed too. */

@@ -14,12 +14,19 @@ import androidx.compose.ui.unit.dp
 // The app's look, as ScootRadarApp.swift's root and ScooterControls.swift's palette set it.
 
 /**
- * The app's colours, type and motion for one appearance. Material's few controls take the app's blue (UI-346) and
- * iOS's 44 pt touch size (UI-361, UI-405).
+ * The app's colours, type and motion for one appearance, with Increase Contrast's colours where the phone asks for
+ * more contrast (UI-186). Material's few controls take the app's blue (UI-346) and iOS's 44 pt touch size (UI-361,
+ * UI-405).
  */
 @Composable
-fun ScootTheme(dark: Boolean, reduceMotion: Boolean = reduceMotionSetting(), content: @Composable () -> Unit) {
-    val colors = if (dark) ScootColors.Dark else ScootColors.Light
+fun ScootTheme(
+    dark: Boolean,
+    reduceMotion: Boolean = reduceMotionSetting(),
+    increasedContrast: Boolean = increasedContrastSetting(),
+    content: @Composable () -> Unit,
+) {
+    val appearance = if (dark) ScootColors.Dark else ScootColors.Light
+    val colors = if (increasedContrast) appearance.withIncreasedContrast() else appearance
     val scheme = if (dark) {
         darkColorScheme(primary = colors.accent, background = colors.systemBackground, surface = colors.systemBackground)
     } else {

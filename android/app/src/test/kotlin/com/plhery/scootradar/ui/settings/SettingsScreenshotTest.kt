@@ -97,7 +97,7 @@ class SettingsScreenshotTest(private val state: SettingsState, private val look:
         useFontScale(look.fontScale)
         compose.setContent {
             CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScootTheme(dark = look.dark, reduceMotion = true) {
+                ScootTheme(dark = look.dark, reduceMotion = true, increasedContrast = state.increasedContrast) {
                     Box(Modifier.fillMaxSize().background(if (look.dark) Color(0xFF2B2D30) else Color(0xFFF1EFEA)))
                     IosSheet(isPresented = true, onDismiss = {}, detents = state.detents, title = "Settings") { bottomInset ->
                         ScooterSettingsSheet(
@@ -128,13 +128,18 @@ class SettingsScreenshotTest(private val state: SettingsState, private val look:
     }
 }
 
-/** The sheet at its first height and taller, and each of its pages, as a rider reaches them. */
+/**
+ * The sheet at its first height and taller, and each of its pages, as a rider reaches them; its first page with
+ * Increase Contrast's colours too (UI-186).
+ */
 enum class SettingsState(
     val detents: List<SheetDetent> = listOf(SheetDetent.Large),
     val pages: List<SettingsPage> = listOf(SettingsPage.Root),
+    val increasedContrast: Boolean = false,
 ) {
     Medium(detents = listOf(SheetDetent.Medium, SheetDetent.Large)),
     Root,
+    RootIncreasedContrast(increasedContrast = true),
     About {
         override fun scrolledTo() = localized("Source code on GitHub")
     },

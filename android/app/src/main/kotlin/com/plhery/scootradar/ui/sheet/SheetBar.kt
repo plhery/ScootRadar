@@ -24,8 +24,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.dock.FixedSymbol
-import com.plhery.scootradar.ui.dock.plainButton
+import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.glass.chromeGlass
+import com.plhery.scootradar.ui.glass.glassEdge
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
@@ -103,9 +104,14 @@ internal fun SheetBarButton(
 ) {
     Box(
         modifier
-            .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
-            .sheetGlass(CapsuleShape, scootColors.isDark)
-            .plainButton(enabled = enabled, onClick = onClick)
+            .glassButton(
+                CapsuleShape,
+                glass = Modifier
+                    .iosShadow(CapsuleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
+                    .sheetGlass(CapsuleShape, scootColors.isDark),
+                enabled = enabled,
+                onClick = onClick,
+            )
             .heightIn(min = 44.dp)
             .widthIn(min = 44.dp)
             .padding(horizontal = 16.dp),
@@ -128,9 +134,15 @@ internal fun SheetBarButton(
 internal fun SheetDoneButton(title: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier
-            .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
-            .background(scootColors.accent, CircleShape)
-            .plainButton(label = title, focusRing = FocusRing(CircleShape, onTint = true), onClick = onClick)
+            .glassButton(
+                CircleShape,
+                glass = Modifier
+                    .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
+                    .background(scootColors.accent, CircleShape),
+                label = title,
+                focusRing = FocusRing(CircleShape, onTint = true),
+                onClick = onClick,
+            )
             .size(44.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -143,9 +155,14 @@ internal fun SheetDoneButton(title: String, onClick: () -> Unit, modifier: Modif
 internal fun SheetBackButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier
-            .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
-            .sheetGlass(CircleShape, scootColors.isDark)
-            .plainButton(label = localized("Back"), onClick = onClick)
+            .glassButton(
+                CircleShape,
+                glass = Modifier
+                    .iosShadow(CircleShape, Color.Black.copy(alpha = 0.08f), radius = 8.dp, y = 2.dp)
+                    .sheetGlass(CircleShape, scootColors.isDark),
+                label = localized("Back"),
+                onClick = onClick,
+            )
             .size(44.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -159,6 +176,6 @@ internal fun SheetBackButton(onClick: () -> Unit, modifier: Modifier = Modifier)
  * #1C1C1E (on the iOS 27 simulator); the map's dark glass would be darker than the sheet. In light, the map's glass.
  */
 private fun Modifier.sheetGlass(shape: Shape, dark: Boolean): Modifier =
-    if (dark) clip(shape).background(DARK_SHEET_GLASS) else chromeGlass(shape)
+    if (dark) clip(shape).background(DARK_SHEET_GLASS).glassEdge(shape) else chromeGlass(shape)
 
 private val DARK_SHEET_GLASS = Color(0xFF3A3A3C)

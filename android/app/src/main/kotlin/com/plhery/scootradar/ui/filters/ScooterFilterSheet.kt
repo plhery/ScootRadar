@@ -56,6 +56,7 @@ import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.chipAccessibilityLabel
+import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.SheetBarButton
@@ -377,8 +378,12 @@ private fun ShowResultsButton(title: String, onClick: () -> Unit) {
                 .padding(horizontal = 20.dp, vertical = 8.dp)
                 .fillMaxWidth()
                 .heightIn(min = 50.dp)
-                .background(scootColors.actionFill, CapsuleShape)
-                .plainButton(focusRing = FocusRing(CapsuleShape, onTint = true), onClick = onClick)
+                .glassButton(
+                    CapsuleShape,
+                    glass = Modifier.background(scootColors.actionFill, CapsuleShape),
+                    focusRing = FocusRing(CapsuleShape, onTint = true),
+                    onClick = onClick,
+                )
                 .padding(horizontal = 20.dp, vertical = 14.dp),
             contentAlignment = Alignment.Center,
         ) {
