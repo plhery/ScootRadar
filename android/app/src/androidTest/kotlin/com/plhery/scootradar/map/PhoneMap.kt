@@ -2,8 +2,11 @@ package com.plhery.scootradar.map
 
 import android.os.SystemClock
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import com.plhery.scootradar.app.NotDeterminedLocationManager
@@ -16,7 +19,10 @@ import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.ui.ScooterMapScreen
 import kotlinx.coroutines.CoroutineScope
+import okhttp3.OkHttpClient
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
@@ -104,6 +110,42 @@ fun withPhoneMap(camera: CameraPosition? = null, test: (PhoneMap) -> Unit) {
             }
         }
     }
+}
+
+/**
+ * The app's map screen in an activity, with the [controller] a test gives it, opening on Zürich: the [test] has its
+ * map once its camera is made.
+ */
+fun withAppMap(controller: ScooterMapController, test: (PhoneMap) -> Unit) {
+    ActivityScenario.launch(ComponentActivity::class.java).use { scenario ->
+        val tiles = GroundTiles.openFreeMap(OkHttpClient())
+        scenario.onActivity { activity ->
+            activity.setContent {
+                ScooterMapScreen(controller = controller, map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) })
+            }
+        }
+        val start = SystemClock.uptimeMillis()
+        var view: ScooterMapView? = null
+        while (SystemClock.uptimeMillis() - start < 30_000) {
+            scenario.onActivity { activity -> view = mapView(activity.window.decorView)?.takeIf { it.camera != null } }
+            if (view != null) break
+            Thread.sleep(200)
+        }
+        val ready = CountDownLatch(1)
+        lateinit var map: MapLibreMap
+        scenario.onActivity {
+            assertNotNull("the map's camera", view)
+            view!!.getMapAsync { map = it; ready.countDown() }
+        }
+        assertTrue(ready.await(10, TimeUnit.SECONDS))
+        test(PhoneMap(scenario, view!!, map))
+    }
+}
+
+private fun mapView(view: View): ScooterMapView? = when (view) {
+    is ScooterMapView -> view
+    is ViewGroup -> (0 until view.childCount).firstNotNullOfOrNull { mapView(view.getChildAt(it)) }
+    else -> null
 }
 
 /** The app's opening on Zürich. */

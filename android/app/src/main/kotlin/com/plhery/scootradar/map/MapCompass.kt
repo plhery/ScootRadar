@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -108,12 +109,25 @@ internal object MapOrnaments {
 }
 
 /**
- * The map's camera as the compass reads it: its bearing, followed as the camera moves, a gesture's or the app's own.
- * [close] it with the map.
+ * The map's camera as the compass and the scale read it: its bearing, zoom and latitude, followed as the camera
+ * moves, a gesture's or the app's own. [close] it with the map.
  */
 internal class MapCameraWatch(private val map: MapLibreMap) {
     /** The map's bearing, in degrees clockwise from north. */
     var bearing by mutableDoubleStateOf(map.cameraPosition.bearing)
+        private set
+
+    /** The map's zoom, and the latitude of its centre: how long a point of it is. */
+    var zoom by mutableDoubleStateOf(map.cameraPosition.zoom)
+        private set
+    var latitude by mutableDoubleStateOf(map.cameraPosition.target?.latitude ?: 0.0)
+        private set
+
+    /**
+     * How many times the zoom has changed: the scale shows as it changes. MapLibre calls the map idle after each
+     * frame of the app's own moves, so the scale counts changes rather than waits for a move to end.
+     */
+    var zoomChanges by mutableIntStateOf(0)
         private set
 
     private val moved = MapLibreMap.OnCameraMoveListener { read() }
@@ -127,11 +141,21 @@ internal class MapCameraWatch(private val map: MapLibreMap) {
     private fun read() {
         val camera = map.cameraPosition
         if (abs(camera.bearing - bearing) > 0) bearing = camera.bearing
+        camera.target?.latitude?.let { if (abs(it - latitude) > 0) latitude = it }
+        if (abs(camera.zoom - zoom) > ZOOM_TOLERANCE) {
+            zoom = camera.zoom
+            zoomChanges += 1
+        }
     }
 
     fun close() {
         map.removeOnCameraMoveListener(moved)
         map.removeOnCameraIdleListener(idle)
+    }
+
+    private companion object {
+        /** A zoom closer than this to the last is the same: a pan or a turn leaves it a hair off in floating point. */
+        const val ZOOM_TOLERANCE = 1e-6
     }
 }
 

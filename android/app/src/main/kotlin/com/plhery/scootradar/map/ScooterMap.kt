@@ -266,19 +266,23 @@ fun ScooterMap(
     val backdrop = LocalGlass.current.backdrop
     BoxWithConstraints(modifier.fillMaxSize()) {
         AndroidView(factory = { backdrop?.hold(view) ?: view }, modifier = Modifier.fillMaxSize())
-        // MapKit's compass, which the app adds itself, at the top of the trailing side (MAP-021, MAP-022).
+        // MapKit's compass and scale, which the app adds itself, at the top of the map's sides (MAP-021, MAP-022).
         val mapBounds = ScreenRect(0.0, 0.0, maxWidth.value.toDouble(), maxHeight.value.toDouble())
-        val compassTop by remember(chrome, safeArea, mapBounds, direction) {
+        val ornamentsTop by remember(chrome, safeArea, mapBounds) {
             derivedStateOf {
-                val top = MapOrnaments.top(
+                MapOrnaments.top(
                     panel = chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.panel,
                     fold = chrome?.fold,
                     search = chrome?.takeIf { it.layout == ScooterChromeLayout.Dock }?.top,
                     safeTop = safeArea.top,
                     bounds = mapBounds,
                 )
+            }
+        }
+        val compassTop by remember(chrome, safeArea, mapBounds, direction) {
+            derivedStateOf {
                 MapOrnaments.compassTop(
-                    top,
+                    ornamentsTop,
                     width = mapBounds.width,
                     safeLeft = safeArea.left,
                     safeRight = safeArea.right,
@@ -320,6 +324,24 @@ fun ScooterMap(
         } else {
             Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)).padding(start = 8.dp)
         }
+        // The scale, in a region that measures in miles, on the leading side: past a panel by the map's leading margin,
+        // as the iPhone's layout margins put it, else 16 inside the safe area (MAP-023).
+        MapScaleBar(
+            metresPerPoint = { watch?.let { MapScale.metresPerPoint(it.zoom, it.latitude) } ?: 0.0 },
+            zoomChanges = { watch?.zoomChanges ?: 0 },
+            locale = language.locale,
+            dark = dark || look.satellite,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .then(
+                    if (panelSides != null && leading > 0) {
+                        Modifier.padding(start = leading.dp)
+                    } else {
+                        Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)).padding(start = MapOrnaments.EDGE_GAP.dp)
+                    },
+                )
+                .padding(top = ornamentsTop.dp),
+        )
         val overLegend = creditsOverLegend(creditsSides, legend, maxHeight.value.toDouble())
         val density = LocalDensity.current.density
         MapCredits(
