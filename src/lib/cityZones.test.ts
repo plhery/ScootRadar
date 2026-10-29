@@ -10,6 +10,8 @@ const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
 // Downtown Boise, round the Grove Plaza.
 const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -116.196 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
+// Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
+const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 
 /** The module as the page first has it, nothing loaded. */
@@ -22,7 +24,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['bergen', 'boise', 'porto']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'porto']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -60,6 +62,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 14 }).map(city => city.id)).toEqual(['bergen']);
     expect(zoneCitiesInView({ bounds: PORTO_CENTRE, zoom: 17 }).map(city => city.id)).toEqual(['porto']);
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
+    expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -117,5 +120,21 @@ describe('the cities\' zones', () => {
     const shown = ruleZonesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
     expect(shown.filter(zone => zone.rule === 'slow').map(zone => zone.id)).toContain('boise-slow-12');
+  });
+
+  it('draws Arlington National Cemetery as one no-ride zone, credited to the federal rule and OpenStreetMap', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'arlingtoncemetery')!);
+    const [zone, ...others] = cityZones.get();
+    expect(others).toEqual([]);
+    expect(zone).toMatchObject({
+      rule: 'noRide', place: 'Arlington National Cemetery', authority: '32 CFR 553.33(c)(8), outline © OpenStreetMap',
+      timeZone: 'America/New_York', source: { url: 'https://www.ecfr.gov/current/title-32/section-553.33' },
+    });
+    // Its OpenStreetMap outline's one hole is bleachers within the cemetery, so the zone has none.
+    const { default: file } = await CITY_ZONE_FILES.arlingtoncemetery();
+    expect(file.zones.map(({ id, kind }) => [id, kind])).toEqual([['arlingtoncemetery-no-ride-1', 'noRide']]);
+    const shown = ruleZonesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }, Date.parse('2026-10-29T23:30:00Z'), [zone]);
+    expect(shown.map(({ id, inForce }) => [id, inForce])).toEqual([['arlingtoncemetery-no-ride-1', true]]);
   });
 });

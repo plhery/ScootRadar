@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { simplifyRing, writeCatalog } from './boundaries.mjs';
+import { boundary, outerRings, simplifyRing, writeCatalog } from './boundaries.mjs';
 
 // Writes data/city-zones/<id>.json, each city's zones from the layers data/city-zones.json lists,
 // and fills in each city's bounds and number of zones there. Bergen kommune's are ArcGIS layers,
@@ -8,6 +8,8 @@ import { simplifyRing, writeCatalog } from './boundaries.mjs';
 // a click, answers both, for every zone within an envelope. Porto's sharing points are entities of
 // Porto Digital's FIWARE broker, each a point with its number of spots. The City of Boise's are an
 // ArcGIS feature service, whose query answers every zone's shape, and its parking corrals points.
+// A layer may instead name a boundary (scripts/boundaries.mjs): Arlington National Cemetery's,
+// where federal rules forbid riding, is its OpenStreetMap outline.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
 
@@ -73,6 +75,15 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1' }) {
   });
 }
 
+/**
+ * A boundary's outer rings, each a zone named after the place. The one hole in Arlington National
+ * Cemetery's outline, about 60 m across, is bleachers within the cemetery, so it is left closed.
+ */
+async function boundaryZones(city, { kind, boundary: source }) {
+  return outerRings(await boundary(source), { minAreaKm2: 0, tolerance: TOLERANCE_M, digits: DIGITS })
+    .map((ring, index) => ({ id: `${city.id}-${slug(kind)}-${index + 1}`, kind, name: city.place, ring }));
+}
+
 /** Porto's sharing points, each a disc around its point. */
 async function fiwareZones(city, { kind, url }) {
   const places = await getJson(url);
@@ -94,9 +105,10 @@ for (const city of catalog.cities) {
   const zones = [];
   for (const layer of city.layers) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
-    const { pathname } = new URL(layer.url);
-    const found = pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
-      : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
+    const pathname = layer.boundary ? null : new URL(layer.url).pathname;
+    const found = layer.boundary ? await boundaryZones(city, layer)
+      : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
+        : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + zone.ring.length, 0)} points`);
     zones.push(...found);
   }

@@ -1,7 +1,38 @@
 {
   "verifiedOn": "2026-10-29",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
+    {
+      "id": "arlingtoncemetery",
+      "place": "Arlington National Cemetery",
+      "country": "US",
+      "authority": "32 CFR 553.33(c)(8), outline © OpenStreetMap",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "32 CFR 553.33(c)(8): no one may ride a bicycle or similar conveyance in an Army National Military Cemetery, except with a pass issued to visit a gravesite or niche",
+        "url": "https://www.ecfr.gov/current/title-32/section-553.33"
+      },
+      "map": {
+        "title": "Arlington National Cemetery on OpenStreetMap (relation 2475077, © OpenStreetMap contributors, ODbL)",
+        "url": "https://www.openstreetmap.org/relation/2475077"
+      },
+      "layers": [
+        {
+          "kind": "noRide",
+          "boundary": {
+            "source": "osm",
+            "id": "2475077"
+          }
+        }
+      ],
+      "bounds": {
+        "south": 38.869179,
+        "west": -77.079094,
+        "north": 38.887917,
+        "east": -77.05812
+      },
+      "zones": 1
+    },
     {
       "id": "bergen",
       "place": "Bergen",

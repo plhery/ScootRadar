@@ -6,9 +6,10 @@ import type { MapBounds } from './types';
 import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 
 // Streets where a city or its police forbids riding, from data/rule-zones.json: Seoul's
-// "kickboard-free streets" so far. And the zones cities set for shared e-scooters, Bergen's
-// and Porto's, from data/city-zones.json (cityZones.ts loads each city's as a view reaches
-// it): where to park, where not to, where to ride slowly and where not to ride. Unlike the
+// "kickboard-free streets" so far. And the zones cities set for shared e-scooters, Bergen's,
+// Porto's and Boise's, and Arlington National Cemetery, where federal rules forbid riding, from
+// data/city-zones.json (cityZones.ts loads each city's as a view reaches it): where to park,
+// where not to, where to ride slowly and where not to ride. Unlike the
 // operators' zones they are the law, so the map draws them from zoom 14 whether or not the
 // zones are turned on, dimmer outside their hours, and the legend says who sets them, linked
 // to where they say so.

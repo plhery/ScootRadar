@@ -604,6 +604,16 @@ has them as built. `scripts/update-city-zones.mjs` reads them again. None of
 the cities states a licence for its layers; since 28 October 2026 a city's
 public zone layers are drawn regardless, credited to the city.
 
+- **Arlington National Cemetery** (read 29 October 2026): no city's, but a
+  federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
+  National Military Cemetery without a pass to visit a grave
+  ([32 CFR 553.33(c)(8)](https://www.ecfr.gov/current/title-32/section-553.33)),
+  while Bird's zones and GCOO's let scooters ride through it, parking only
+  barred. It is one no-riding zone, the cemetery's outline from
+  [OpenStreetMap](https://www.openstreetmap.org/relation/2475077) (© OpenStreetMap
+  contributors, ODbL), and the legend credits the rule and OpenStreetMap. The
+  outline's one hole, about 60 m across, is bleachers within the cemetery, so
+  the zone has none.
 - **Bergen** (read 29 October 2026): Bergen kommune's 176 parking places, 149
   no-parking zones, 74 slow zones and 373 no-riding zones, the layers its
   [e-scooter map](https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e)

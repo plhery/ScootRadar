@@ -32,6 +32,7 @@ export const ZONE_CITIES: ZoneCity[] = index.cities;
  * file a piece of its own and leaves them all out of the map page.
  */
 export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }>> = {
+  arlingtoncemetery: () => import('../../data/city-zones/arlingtoncemetery.json'),
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
   porto: () => import('../../data/city-zones/porto.json'),
