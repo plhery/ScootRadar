@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "cloudflare-env.d.ts",
     "next-env.d.ts",
+    // Gradle's outputs, such as the scripts of Roborazzi's and the tests' reports:
+    "android/**/build/**",
   ]),
 ]);
 
