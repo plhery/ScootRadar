@@ -14,6 +14,7 @@ import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.localized
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -47,6 +48,15 @@ sealed interface MarkerElement {
         override val description: MarkerDescription get() = MarkerDescription(destination.title, value = null, hint = null)
     }
 
+    /**
+     * The rider, where MapKit gives VoiceOver its own element for the user's location (MAP-224), in a square of
+     * 44 pt around the dot, as a scooter's.
+     */
+    class Rider(override val frame: ScreenRect) : MarkerElement {
+        override val key: String get() = "u:rider"
+        override val description: MarkerDescription get() = MarkerDescription(localized("Your location"), value = null, hint = null)
+    }
+
     /** A cluster or a city total, in its view of 48 pt. */
     class Cluster(val cluster: ClusterMark, override val frame: ScreenRect) : MarkerElement {
         override val key: String get() = (if (cluster.isServer) "g:" else "c:") + cluster.id
@@ -75,6 +85,7 @@ object MarkerElements {
         val destination = scene.destination
         val pin = scene.destinationFrame(projection)
         if (destination != null && pin != null) elements += MarkerElement.Pin(destination, pin)
+        scene.parent.userLocation?.let { elements += MarkerElement.Rider(square(projection.point(it), ScooterMarkerScene.MARKER_SIZE)) }
         // Views whose tops are a fraction of a point apart are on one line.
         return elements
             .filter { it.frame.intersection(bounds) != null }
@@ -107,8 +118,9 @@ object MarkerElements {
             is MarkerElement.Dot -> scene.select(element.mark, map)
             is MarkerElement.Bay -> scene.select(element.bay)
             is MarkerElement.Cluster -> scene.open(element.cluster, map)
-            // MapKit's callout with the title is not drawn on Android (MAP-033).
-            is MarkerElement.Pin -> Unit
+            // Selected, its callout shows the title (MAP-270).
+            is MarkerElement.Pin -> scene.selectPin()
+            is MarkerElement.Rider -> Unit
         }
     }
 
@@ -193,8 +205,8 @@ class ScooterMarkerAccessibility(
         // TalkBack has no value of its own; read after the label, it keeps VoiceOver's order (MAP-217).
         node.contentDescription = listOfNotNull(description.label, description.value).joinToString(", ")
         node.setBoundsInParent(pixels(element.frame))
-        // The pin has its label only, as MapKit gives VoiceOver.
-        if (element is MarkerElement.Pin) return
+        // The pin and the rider have their labels only, as MapKit gives VoiceOver.
+        if (element is MarkerElement.Pin || element is MarkerElement.Rider) return
         node.className = BUTTON
         node.isSelected = MarkerElements.isSelected(element, scene)
         node.isClickable = true

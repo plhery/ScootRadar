@@ -627,6 +627,7 @@ private fun CreditsList(
         },
     )
     FormSection(rows = sources.map { source -> @Composable { ExternalLinkRow(source.title, onOpen = { links.open(source.url) }) } })
+    FormSection(rows = androidCredits.map { source -> @Composable { ExternalLinkRow(source.title, onOpen = { links.open(source.url) }) } })
     FormSection(
         rows = listOf {
             FormNavigationRow(onClick = { push(SettingsPage.Notices) }) {
@@ -635,6 +636,24 @@ private fun CreditsList(
         },
     )
 }
+
+/**
+ * Android's own credits, after the sources: the walking routes, which the iPhone has from Apple and Android from
+ * FOSSGIS's Valhalla, and OpenStreetMap's page for fixing the map, as the web lists them
+ * (src/components/MapCredits.tsx:11-12). The labels are translated and joined to the names as Lille's credit is; the
+ * names are not translated (MAP-034).
+ */
+internal val androidCredits: List<ScooterCreditsList.Source>
+    get() = listOf(
+        ScooterCreditsList.Source(
+            title = stringFormat(localized("%1\$@ · %2\$@"), localized("Walking routes"), "Valhalla, FOSSGIS"),
+            url = URI("https://routing.openstreetmap.de/about.html"),
+        ),
+        ScooterCreditsList.Source(
+            title = stringFormat(localized("%1\$@ · %2\$@"), localized("Fix the map"), "OpenStreetMap"),
+            url = URI("https://www.openstreetmap.org/fixthemap"),
+        ),
+    )
 
 /** The libraries and fonts the app ships, each with its licence, written again in the [language] chosen. */
 @Suppress("UNUSED_PARAMETER")

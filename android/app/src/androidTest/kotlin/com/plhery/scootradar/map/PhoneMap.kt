@@ -1,5 +1,6 @@
 package com.plhery.scootradar.map
 
+import android.graphics.Bitmap
 import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
@@ -31,6 +32,7 @@ import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapLibreMapOptions
 import org.maplibre.android.maps.Style
+import java.io.File
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -182,6 +184,15 @@ fun PhoneMap.setRegion(region: MapRegion) = onMain {
                 .build(),
         ),
     )
+}
+
+/** The screen now, kept as [name].png in the run's additional output. */
+fun screenshot(name: String) {
+    val bitmap = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot() ?: return
+    InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")?.let { dir ->
+        File(dir).mkdirs()
+        File(dir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+    }
 }
 
 /** Long enough for a move of MapKit's time to land: two seconds at most. */

@@ -54,6 +54,7 @@ class MapCompassTest {
         phone.onMain { map.moveCamera(CameraUpdateFactory.bearingTo(30.0)) }
         val compass = device.wait(Until.findObject(By.desc("Compass")), 5_000)
         assertNotNull("the compass", compass)
+        screenshot("compass-turned")
         val steps = CopyOnWriteArrayList<Pair<Long, Double>>()
         phone.onMain { map.addOnCameraMoveListener { steps += SystemClock.uptimeMillis() to map.cameraPosition.bearing } }
 

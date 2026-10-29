@@ -6,6 +6,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapProjection
@@ -227,5 +228,42 @@ class ScooterMarkerAccessibilityTest {
         assertEquals("Lime-Scooter, Akku: 82 Prozent", node.contentDescription)
         // TalkBack says it as "Zum Anzeigen der Scooter-Details doppeltippen" (UI-327).
         assertEquals("Anzeigen der Scooter-Details", node.clickLabel())
+    }
+
+    /**
+     * The rider is read as "Your location" where MapKit gives VoiceOver its element for the user's location
+     * (MAP-224), in the app's language, with its label only; the pin is read by its title, and a double tap selects
+     * it, as VoiceOver's does, showing its callout (MAP-270).
+     */
+    @Test
+    fun theRiderIsReadAsYourLocationAndThePinByItsTitle() {
+        val map = FlatMarkerMap()
+        scene.parent = MarkerParent(userLocation = map.at(195.0, 500.0))
+        scene.applyDestination(MapDestination("Bahnhofplatz", "3011 Bern", map.at(195.0, 300.0), MapDestination.Kind.Address, isCovered = true))
+        val elements = MarkerElements.of(scene, map)
+        assertEquals(listOf("a:search", "u:rider"), elements.map { it.key })
+
+        val accessibility = helper(map)
+        val (pin, rider) = accessibility.virtualViews()
+        val you = accessibility.node(rider)
+        assertEquals("Your location", you.contentDescription)
+        assertFalse(you.isClickable)
+        assertTrue(you.actionList.none { it.id == AccessibilityNodeInfoCompat.ACTION_CLICK })
+        // A square of 44 pt around the dot, as a scooter's.
+        assertEquals(Rect((173 * 3), (478 * 3), (217 * 3), (522 * 3)), you.bounds())
+        assertEquals(rider, accessibility.virtualViewAt(195f * 3, 500f * 3))
+
+        assertEquals("Bahnhofplatz", accessibility.node(pin).contentDescription)
+        assertTrue(accessibility.click(pin))
+        assertTrue(scene.showsCallout)
+        assertEquals(1, changes)
+
+        ScooterLanguage.current = ScooterLanguage.De
+        accessibility.refresh()
+        assertEquals("Dein Standort", accessibility.node(rider).contentDescription)
+
+        // No rider shown, no element.
+        scene.parent = MarkerParent()
+        assertEquals(listOf("a:search"), MarkerElements.of(scene, map).map { it.key })
     }
 }

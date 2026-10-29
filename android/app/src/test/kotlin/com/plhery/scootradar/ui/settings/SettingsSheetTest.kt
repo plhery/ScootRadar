@@ -3,6 +3,8 @@ package com.plhery.scootradar.ui.settings
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -76,9 +78,17 @@ class SettingsSheetTest {
         ScooterDateFormat.timeZone = ZoneId::systemDefault
     }
 
+    /** The web pages a row opened. */
+    private val opened = mutableListOf<String>()
+    private val uriHandler = object : UriHandler {
+        override fun openUri(uri: String) {
+            opened += uri
+        }
+    }
+
     private fun show(pages: List<SettingsPage> = listOf(SettingsPage.Root), inSheet: Boolean = false) {
         compose.setContent {
-            CompositionLocalProvider(LocalClock provides { clock.now }) {
+            CompositionLocalProvider(LocalClock provides { clock.now }, LocalUriHandler provides uriHandler) {
                 ScootTheme(dark = false, reduceMotion = true) {
                     val settings = @Composable {
                         ScooterSettingsSheet(
@@ -236,5 +246,21 @@ class SettingsSheetTest {
     fun theCreditsMapRowIsOneStopForTalkBack() {
         show(listOf(SettingsPage.Root, SettingsPage.Credits))
         compose.onNode(hasText("Map") and hasText("OpenFreeMap · OpenStreetMap")).assertExists()
+    }
+
+    /**
+     * Android's own credits, after the sources: the walking routes and OpenStreetMap's page for fixing the map, each
+     * opening its page (MAP-034). Their labels are the app's language's, their names are not translated.
+     */
+    @Test
+    fun theWalkingRoutesAndFixingTheMapAreCredited() {
+        show(listOf(SettingsPage.Root, SettingsPage.Credits))
+        compose.onNodeWithText("Walking routes · Valhalla, FOSSGIS").performScrollTo().performClick()
+        compose.onNodeWithText("Fix the map · OpenStreetMap").performScrollTo().performClick()
+        assertEquals(listOf("https://routing.openstreetmap.de/about.html", "https://www.openstreetmap.org/fixthemap"), opened)
+
+        assertEquals(listOf("Walking routes · Valhalla, FOSSGIS", "Fix the map · OpenStreetMap"), androidCredits.map { it.title })
+        ScooterLanguage.current = ScooterLanguage.De
+        assertEquals(listOf("Fusswege · Valhalla, FOSSGIS", "Die Karte korrigieren · OpenStreetMap"), androidCredits.map { it.title })
     }
 }

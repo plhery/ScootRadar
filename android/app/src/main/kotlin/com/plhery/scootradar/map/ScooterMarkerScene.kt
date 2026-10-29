@@ -223,6 +223,9 @@ data class MarkerParent(
     val foldFrame: ScreenRect? = null,
 )
 
+/** The pin's callout: the searched place's [title], and the top of the pin it points at, in the map's points. */
+data class PinCalloutPlace(val title: String, val anchor: ScreenPoint)
+
 /**
  * The scooters, the bays and the faded markers of the iPhone's map coordinator, without a map of their own: it
  * keeps a mark for each, sizes the dots for their distance and the map's scale, names the nearest of each
@@ -306,7 +309,25 @@ class ScooterMarkerScene(
     fun applyDestination(destination: MapDestination?) {
         if (destination == this.destination) return
         this.destination = destination
+        // MapKit adds a new pin unselected: its callout waits for a tap.
+        showsCallout = false
         markersVersion += 1
+    }
+
+    /** Whether the pin is selected, as a tap on it selects it in MapKit: its callout shows its title (MAP-270). */
+    var showsCallout = false
+        private set
+
+    /** The pin's callout while it shows: the place's title, pointing at the top of the pin. */
+    fun callout(projection: ScooterMapProjection): PinCalloutPlace? {
+        val place = destination?.takeIf { showsCallout } ?: return null
+        val pin = destinationFrame(projection) ?: return null
+        return PinCalloutPlace(place.title, ScreenPoint(pin.midX, pin.minY))
+    }
+
+    /** The pin selected by TalkBack, as a double tap selects it in VoiceOver. */
+    fun selectPin() {
+        if (destination != null) showsCallout = true
     }
 
     /** Where the pin is, from its place: what names keep off, and what TalkBack outlines. */
@@ -761,6 +782,9 @@ class ScooterMarkerScene(
         val scooter = scooterMark(at = point, map = map)
         val bay = bay(at = point, beside = scooter, map = map)
         val mark = scooter?.first
+        // MapKit selects one marker at a time. The pin, under the clusters and the dots MapKit raises above it, is
+        // selected where nothing else is meant; any other tap deselects it, and its callout closes.
+        showsCallout = bay == null && mark == null && cluster == null && destinationFrame(map.projection)?.contains(point) == true
         when {
             bay != null -> select(bay)
             mark != null -> select(mark, map)

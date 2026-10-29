@@ -72,6 +72,7 @@ class MapScaleTest {
         val shown = device.wait(Until.findObject(scale), 1_000)
         assertNotNull("the scale while the map zooms", shown)
         Log.i("MapScaleTest", "The scale read \"${shown.contentDescription}\"")
+        screenshot("scale-zooming")
         assertTrue("the scale gone", device.wait(Until.gone(scale), 5_000))
         val gone = SystemClock.uptimeMillis()
         // A second after the zoom stopped, and a quarter of a second's fade.

@@ -3,6 +3,7 @@ package com.plhery.scootradar.map
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.MapDestination
+import com.plhery.scootradar.core.model.ScreenPoint
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -47,5 +48,48 @@ class AddressPinTest {
         val (banded, _) = MarkerBands(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED).assign(features, epoch = 100.0, time = 0.0)
         assertTrue(banded.keys.any { it.id.endsWith("voi:near") })
         assertFalse(pin in banded)
+    }
+
+    /**
+     * A tap on the pin selects it, as MapKit selects it, and its callout shows the place's title over the pin's top
+     * (MAP-270); a tap elsewhere, on a scooter or on the map, or a new destination closes it.
+     */
+    @Test
+    fun aTapOnThePinShowsItsCalloutAndATapElsewhereOrANewPlaceClosesIt() {
+        val bahnhofplatz = MapDestination("Bahnhofplatz", "3011 Bern", map.at(195.0, 300.0), MapDestination.Kind.Address, isCovered = true)
+        scene.parent = MarkerParent(origin = map.at(195.0, 422.0))
+        scene.reconcile(listOf(scooter("near", "voi", at = map.at(300.0, 300.0))), revision = 1)
+        scene.updateLook(map)
+        scene.applyDestination(bahnhofplatz)
+        assertNull(scene.callout(map))
+
+        // On the balloon, over its foot.
+        scene.tap(ScreenPoint(195.0, 280.0), map)
+        assertTrue(scene.showsCallout)
+        assertEquals(PinCalloutPlace("Bahnhofplatz", ScreenPoint(195.0, 256.0)), scene.callout(map))
+        // A tap on it again keeps it, and the same place given again leaves it.
+        scene.tap(ScreenPoint(190.0, 260.0), map)
+        scene.applyDestination(bahnhofplatz)
+        assertTrue(scene.showsCallout)
+
+        // On the map beside it.
+        scene.tap(ScreenPoint(60.0, 600.0), map)
+        assertNull(scene.callout(map))
+
+        // On a scooter: it is selected, and the callout closes.
+        scene.tap(ScreenPoint(195.0, 280.0), map)
+        scene.tap(ScreenPoint(300.0, 300.0), map)
+        assertFalse(scene.showsCallout)
+        assertEquals("voi:near", scene.appliedSelectionID)
+
+        // Another place: a new pin, not selected.
+        scene.tap(ScreenPoint(195.0, 280.0), map)
+        assertTrue(scene.showsCallout)
+        scene.applyDestination(bahnhofplatz.copy(title = "Bärenplatz", point = map.at(100.0, 300.0)))
+        assertFalse(scene.showsCallout)
+
+        // TalkBack's double tap selects it too.
+        scene.selectPin()
+        assertEquals("Bärenplatz", scene.callout(map)?.title)
     }
 }

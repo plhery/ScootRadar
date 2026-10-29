@@ -9,6 +9,9 @@ import android.os.Looper
 import android.os.SystemClock
 import android.view.Choreographer
 import android.view.View
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.view.ViewCompat
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -204,6 +207,14 @@ class ScooterMarkers(
     /** TalkBack's virtual views of the markers. */
     private val accessibility = ScooterMarkerAccessibility(view, scene, markerMap, view.pixelRatio) { flush() }
 
+    /** The pin's title while its callout shows, a tap having selected the pin (MAP-270). */
+    var calloutTitle by mutableStateOf<String?>(null)
+        private set
+
+    /** Where the callout points, the top of the pin, in the map's points: it follows the map as it moves. */
+    var calloutAnchor by mutableStateOf(ScreenPoint(0.0, 0.0))
+        private set
+
     /** The visible region changing, a frame at a time while the map moves: mapViewDidChangeVisibleRegion. */
     private val moved = MapLibreMap.OnCameraMoveListener {
         // The clusters are made again as the map's whole zoom changes, as the web's are.
@@ -312,6 +323,7 @@ class ScooterMarkers(
     /** What updateUIView does for the markers, in its order. */
     private fun update() {
         if (style == null) return
+        val riderMoved = scene.parent.userLocation != controller.userLocation.value
         scene.parent = MarkerParent(
             origin = controller.mapOrigin,
             walkRemainingMetres = controller.walkRemainingMetres,
@@ -341,6 +353,8 @@ class ScooterMarkers(
         // The dock may have grown over a name.
         scene.movePills(markerMap)
         flush()
+        // TalkBack finds the rider where it is now.
+        if (riderMoved) accessibility.refresh()
     }
 
     /** A tap answered as the finger lifts, at a point of the view in pixels. */
@@ -353,6 +367,9 @@ class ScooterMarkers(
     /** Writes each source whose marks changed, with the pictures it needs, and starts what moves on its own. */
     private fun flush() {
         val style = style ?: return
+        val callout = scene.callout(projection)
+        calloutTitle = callout?.title
+        callout?.let { calloutAnchor = it.anchor }
         if (scene.markersVersion != writtenMarkers) {
             writtenMarkers = scene.markersVersion
             write(style, ScooterMarkerLayers.MARKERS_SOURCE, MarkerFeatures.markers(scene, art))
