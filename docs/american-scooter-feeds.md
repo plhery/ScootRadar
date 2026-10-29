@@ -100,8 +100,10 @@ From the morning to the early afternoon of 26 October, Central time: Austin
 (592), Oklahoma City (585), Mobile (498), Corpus Christi (405), Lubbock
 (393), Little Rock (374), Rochester, Minnesota (263), Edmond (99) and Jenks
 (27). None of these towns' rules sets riding hours: Mobile's franchise lets
-Lime run 24 hours a day, seven days a week, Milwaukee's ordinance lets an
-operator offer its scooters 24 hours a day, and Austin's director rules,
+Lime run 24 hours a day, seven days a week, Milwaukee's agreement terms (DPW,
+§ 9.3) let an operator offer its scooters 24 hours a day, all year (DPW showed
+a committee night no-ride zones downtown for spring 2026, which no record
+shows in force), and Austin's director rules,
 Oklahoma City's, Tulsa's, Jenks's and Little Rock's codes, Corpus Christi's
 licence agreements and Lubbock's ordinance set no hours. Rochester's season
 runs from spring until the snow; Lime came back on 13 April 2026.
