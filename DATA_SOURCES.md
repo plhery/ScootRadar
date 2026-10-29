@@ -600,9 +600,9 @@ drawn the same way, from zoom 14 whether the layer is on or not, each kind as
 the operators' (no riding, no parking, slow) and the places to park in green;
 the legend names the city, linked to where it says so. The web loads a city's
 zones, `data/city-zones/<id>.json`, only once a view reaches it; the iOS app
-has them as built. `scripts/update-city-zones.mjs` reads them again. Neither
-city states a licence for its layers; since 28 October 2026 a city's public
-zone layers are drawn regardless, credited to the city.
+has them as built. `scripts/update-city-zones.mjs` reads them again. None of
+the cities states a licence for its layers; since 28 October 2026 a city's
+public zone layers are drawn regardless, credited to the city.
 
 - **Bergen** (read 29 October 2026): Bergen kommune's 176 parking places, 149
   no-parking zones, 74 slow zones and 373 no-riding zones, the layers its
@@ -621,6 +621,28 @@ zone layers are drawn regardless, credited to the city.
   them, as ScootRadar's does, and lists all three as active (`Status` "Aktiv";
   Festplassen's repainted in May 2023, Steinerskolen's set out with the school),
   so they stay (checked 29 October 2026).
+- **Boise** (read 29 October 2026): the City of Boise's 43 parking corrals,
+  44 no-parking zones, 9 slow zones and 71 no-riding zones, from the
+  `Boise_Micromobility` feature service its
+  [micromobility map](https://boise.maps.arcgis.com/apps/instant/basic/index.html?appid=178b5eb1b16b48989624aa28ae6a4506)
+  draws (zones last edited 22 May 2026, corrals 10 June 2026). The legend
+  links the City's
+  [rules](https://www.cityofboise.org/departments/finance/how-to-use-e-scooters-and-e-bikes/):
+  obey the geofenced no-ride and slow zones its map shows, and end a trip
+  downtown or on Boise State's campus at a mandatory parking pin. The corrals
+  are points, drawn as discs 5 m round them; the 23 marked not installed are
+  left out. Left out too: the two mandatory parking zones (Downtown and BSU),
+  which ScootRadar has no kind for, the pins being Lime's; and the no-operation
+  layer's ring of 5,259 km² round the whole service area, over Meridian, Eagle
+  and Nampa, which marks where Lime's service area ends, as Lime's own zones
+  do, and which is no rule of the City's there. Lime's own region data has a
+  "Grove Center LSZ" over the Grove Plaza: it is the City's slow zone there, the
+  same 37 points. Of Lime's 1,405 scooters in Boise on the night of 28 October,
+  13 stood in a no-riding zone and 147 in a slow zone. Garden City, whose
+  scooters are Lime's Boise fleet, publishes its slow zones only as Lime's
+  maps in PDF (28 October 2025, on its
+  [Greenbelt page](https://gardencityidaho.org/e-vehicles-on-the-greenbelt/)),
+  with no shapes to draw.
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),

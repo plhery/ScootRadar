@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-29",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Neither city states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "bergen",
@@ -45,6 +45,52 @@
         "east": 5.479433
       },
       "zones": 772
+    },
+    {
+      "id": "boise",
+      "place": "Boise",
+      "country": "US",
+      "authority": "City of Boise",
+      "timeZone": "America/Boise",
+      "source": {
+        "title": "City of Boise, \"How to Use E-Scooters and E-Bikes\": obey the geofence no-ride and slow zones shown on the City's map; downtown and on Boise State's campus, end the trip at a mandatory parking pin; designated parking corrals are marked \"Park Here\"",
+        "url": "https://www.cityofboise.org/departments/finance/how-to-use-e-scooters-and-e-bikes/"
+      },
+      "map": {
+        "title": "City of Boise, micromobility map (ArcGIS)",
+        "url": "https://boise.maps.arcgis.com/apps/instant/basic/index.html?appid=178b5eb1b16b48989624aa28ae6a4506"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services1.arcgis.com/WHM6qC35aMtyAAlN/arcgis/rest/services/Boise_Micromobility/FeatureServer",
+          "layer": 0,
+          "where": "Installed = 'Yes'"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services1.arcgis.com/WHM6qC35aMtyAAlN/arcgis/rest/services/Boise_Micromobility/FeatureServer",
+          "layer": 3
+        },
+        {
+          "kind": "slow",
+          "url": "https://services1.arcgis.com/WHM6qC35aMtyAAlN/arcgis/rest/services/Boise_Micromobility/FeatureServer",
+          "layer": 1
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services1.arcgis.com/WHM6qC35aMtyAAlN/arcgis/rest/services/Boise_Micromobility/FeatureServer",
+          "layer": 4,
+          "where": "Shape__Area < 100000000"
+        }
+      ],
+      "bounds": {
+        "south": 43.56534,
+        "west": -116.35566,
+        "north": 43.662044,
+        "east": -116.13164
+      },
+      "zones": 167
     },
     {
       "id": "porto",

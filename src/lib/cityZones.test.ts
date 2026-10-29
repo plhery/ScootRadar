@@ -7,6 +7,8 @@ import { ruleInForce, ruleZonesInView } from './ruleZones';
 // Around Bergen's Torget and Bryggen, at zoom 14 on a phone.
 const BERGEN_CENTRE = { south: 60.388, west: 5.305, north: 60.405, east: 5.345 };
 const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
+// Downtown Boise, round the Grove Plaza.
+const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -116.196 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 
@@ -20,7 +22,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['bergen', 'porto']);
+    expect(cities).toEqual(['bergen', 'boise', 'porto']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -57,6 +59,7 @@ describe('the cities\' zones', () => {
     const { zoneCitiesInView } = await fresh();
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 14 }).map(city => city.id)).toEqual(['bergen']);
     expect(zoneCitiesInView({ bounds: PORTO_CENTRE, zoom: 17 }).map(city => city.id)).toEqual(['porto']);
+    expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -96,5 +99,23 @@ describe('the cities\' zones', () => {
     expect(load).toHaveBeenCalledTimes(2);
     expect(cityZones.get()).toHaveLength(230);
     expect(cityZones.get().every(zone => zone.rule === 'parking' && zone.authority === 'Porto')).toBe(true);
+  });
+
+  it('draws Boise\'s zones but not the ring round its whole service area', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'boise')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'City of Boise' && zone.timeZone === 'America/Boise')).toBe(true);
+    // The City's no-operation layer holds a ring of 5,259 km² round the service area, over Meridian, Eagle and
+    // Nampa: where Lime's service area ends, which Lime's own zones draw. The others are under a square kilometre.
+    const { default: file } = await CITY_ZONE_FILES.boise();
+    for (const zone of file.zones) {
+      const lats = zone.ring.map(([lat]) => lat);
+      expect(Math.max(...lats) - Math.min(...lats), zone.id).toBeLessThan(0.02);
+    }
+    // Lime's own "Grove Center LSZ" is the City's slow zone over the Grove Plaza, drawn here.
+    const shown = ruleZonesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
+    expect(shown.filter(zone => zone.rule === 'slow').map(zone => zone.id)).toContain('boise-slow-12');
   });
 });
