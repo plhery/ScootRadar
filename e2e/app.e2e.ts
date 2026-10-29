@@ -2104,7 +2104,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await expect(credits.getByRole('link', { name: 'Search · Photon, komoot' })).toHaveAttribute('href', 'https://photon.komoot.io/');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   // Kyiv's curfew area and the towns' outlines are OpenStreetMap's boundaries, whose licence asks for its credit.
-  await expect(credits.getByRole('link', { name: 'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL' })).toHaveAttribute('href', 'https://opendatacommons.org/licenses/odbl/');
+  await expect(credits.getByRole('link', { name: 'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/US/IL/NZ/KR: OpenStreetMap boundaries · ODbL' })).toHaveAttribute('href', 'https://opendatacommons.org/licenses/odbl/');
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
     expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }
