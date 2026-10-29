@@ -28,7 +28,7 @@ const guide: Guide = {
           },
         },
         'At 15:55 on Thursday 29 October 2026 the [map of Gävle](map:se:Gävle) showed about 940 Voi scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones, parking places or Voi’s e-bikes.',
-        'That total takes in the whole town, Valbo and Furuvik, in an area that also reaches into Skutskär, in neighbouring Älvkarleby municipality, and to the eastern edge of Sandviken.',
+        'That total takes in the whole town, Valbo and Furuvik, in an area that also reaches into Skutskär, in neighbouring Älvkarleby municipality, and into the east of Sandviken municipality, short of Sandviken town.',
       ],
     },
     {

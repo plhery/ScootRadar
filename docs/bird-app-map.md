@@ -84,7 +84,7 @@ had answered real scooters again at 22:04 UTC: 165 requests in 87 minutes
 from then, the town search below included, and every reply checked. In Indianapolis, which Bird also publishes, its public feed
 listed 586 available scooters inside the same outline two minutes later; 582
 of them stood within 50 m of one the sweep found, 568 within 10 m. Only one
-scooter of Bird's public New York feed stood inside Yonkers' outline.
+scooter of Bird's public New York feed stood inside the Census Bureau's Yonkers line.
 
 ## Session
 
