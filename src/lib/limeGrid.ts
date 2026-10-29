@@ -57,6 +57,8 @@ export function limeGridTiles(grid: LimeMapGrid): MapBounds[] {
 /** A town within a Lime market's service area that counts its scooters on its own, by its outline. */
 export interface LimeMarketTown {
   city: string;
+  /** Its own state where it is not the market's, as Council Bluffs, Iowa, in Omaha's. */
+  region?: string;
   center: [number, number];
   bounds: MapBounds;
 }
@@ -98,7 +100,7 @@ export function limeGridGroups<T extends LimeMarketEntry>(system: T): T[] {
         ...(market.aliases?.length ? { aliases: market.aliases } : {}), bounds },
       ...towns.flatMap(town => {
         const met = overlap(bounds, town.bounds);
-        return met ? [{ city: town.city, center: town.center, bounds: met }] : [];
+        return met ? [{ city: town.city, ...(town.region ? { region: town.region } : {}), center: town.center, bounds: met }] : [];
       })]),
       limeMapTiles: group } as unknown as T);
   }

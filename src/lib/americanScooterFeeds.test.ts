@@ -133,6 +133,32 @@ describe('the United States', () => {
     expect(counted).toEqual({ 'us:id:Boise': 4, 'us:id:Garden City': 2 });
   });
 
+  it('counts Lime\'s Omaha scooters in Council Bluffs and Carter Lake under those Iowa towns, by the three towns\' census outlines', () => {
+    // Lime's Omaha market reaches across the Missouri: its scooters in Iowa count under their own towns and state.
+    const groups = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.id.startsWith('lime_us_app_omaha_'));
+    expect(REGIONAL_SCOOTER_CITIES.find(city => city.id === 'us:ia:Council Bluffs')).toMatchObject({ city: 'Council Bluffs, IA', region: 'IA' });
+    expect(REGIONAL_SCOOTER_CITIES.find(city => city.id === 'us:ia:Carter Lake')).toMatchObject({ city: 'Carter Lake, IA', region: 'IA' });
+    // Positions at 18:51 CDT on 29 October 2026: two in River's Edge Park, two in Carter Lake, and two
+    // of downtown Omaha's inside Council Bluffs' box, which reaches across the river.
+    const now = Date.now();
+    const standing = [
+      ['us:ia:Council Bluffs', 41.263308, -95.917313], ['us:ia:Council Bluffs', 41.261603, -95.917993],
+      ['us:ia:Carter Lake', 41.280641, -95.917461], ['us:ia:Carter Lake', 41.279205, -95.914184],
+      ['us:ne:Omaha', 41.261234, -95.924476], ['us:ne:Omaha', 41.258452, -95.927082], ['us:ne:Omaha', 41.25626, -95.94043],
+    ] as const;
+    const feeds = standing.map(([town, lat, lng], index): FeedSnapshot => {
+      const group = groups.find(entry => entry.limeMapTiles!.some(tile => boundsContainPoint(tile, lat, lng)))!;
+      expect(systemServesPoint(group, lat, lng), `${town} ${lat}, ${lng}`).toBe(true);
+      return { id: `us:${group.id}:${index}`, source: 'us', provider: 'lime', coverage: serviceAreas(group).map(area => area.bounds),
+        vehicles: [{ provider: 'lime', vehicle_id: `${index}`, lat, lng, battery: 80, range_m: null, deep_link: null, distance_m: 0 }],
+        observedAt: now, attemptedAt: now, collectedAt: now, stale: false, failed: false, skipped: false };
+    });
+    const counted = Object.fromEntries(buildCityOverview(feeds, now).cities
+      .filter(city => ['us:ne:Omaha', 'us:ia:Council Bluffs', 'us:ia:Carter Lake'].includes(city.id))
+      .map(city => [city.id, city.batteries.lime?.reduce((sum, count) => sum + count, 0) ?? 0]));
+    expect(counted).toEqual({ 'us:ne:Omaha': 3, 'us:ia:Council Bluffs': 2, 'us:ia:Carter Lake': 2 });
+  });
+
   it('opens Hopp, Bolt\'s brand in Washington, DC, and reads its GBFS 3.0 feed: USD 1 to start and USD 0.16 a minute', async () => {
     const hopp = system('bolt_hopp_us_washington');
     expect(hopp).toMatchObject({ country: 'US', city: 'Washington', region: 'DC', timeZone: 'America/New_York' });

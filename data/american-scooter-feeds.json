@@ -3539,6 +3539,36 @@
         41.25626,
         -95.94043
       ],
+      "towns": [
+        {
+          "city": "Council Bluffs",
+          "region": "IA",
+          "center": [
+            41.2361,
+            -95.8534
+          ],
+          "bounds": {
+            "south": 41.1668,
+            "west": -95.9281,
+            "north": 41.2908,
+            "east": -95.751
+          }
+        },
+        {
+          "city": "Carter Lake",
+          "region": "IA",
+          "center": [
+            41.2885,
+            -95.9169
+          ],
+          "bounds": {
+            "south": 41.2724,
+            "west": -95.9297,
+            "north": 41.3013,
+            "east": -95.9028
+          }
+        }
+      ],
       "timeZone": "America/Chicago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

@@ -617,6 +617,19 @@ outline's outer ring: 78 count under Garden City and 1,327 under Boise. Boise's
 outline matters as much as Garden City's: 106 of Boise's stood inside Garden
 City's box.
 
+**Omaha, Council Bluffs and Carter Lake.** Lime's Omaha service zone reaches
+across the Missouri into Council Bluffs, Iowa, and takes in Carter Lake, the
+Iowa town on Omaha's bank, so their scooters counted under Omaha. Since 30
+October both are towns of Lime's Omaha market, in Iowa (`region` IA), and the
+three towns have their TIGERweb outlines. In views read at 18:50 CDT on 29
+October, 7 of Lime's scooters stood in Council Bluffs, all in Tom Hanafan
+River's Edge Park across the river from downtown, and 7 in Carter Lake. Four
+of Carter Lake's stood 34 to 57 m inside its census outline, where
+OpenStreetMap draws the line on their other side, in Omaha: they count under
+Carter Lake, as the census has it. Omaha's outline matters as much: downtown
+Omaha's scooters stand inside Council Bluffs' box, which reaches across the
+river to 95.928° W.
+
 Campus feeds take their town's name: Spin's UC Davis feed is Davis, its
 Michigan State one East Lansing, its NC State one Raleigh, its University of
 Utah one Salt Lake City, and its San Diego feed is the UC San Diego campus,

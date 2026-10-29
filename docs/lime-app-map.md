@@ -253,7 +253,9 @@ afternoon of 26 October 2026, Gulf time.
   both. It is one of the market's `towns`, with its centre and box: each
   refresh group gives it an area where its box meets a view, and its scooters
   count under it by its outline in `data/town-outlines.json`. Garden City is
-  one in Boise's market since 29 October 2026.
+  one in Boise's market since 29 October 2026, and Council Bluffs and Carter
+  Lake, Iowa, in Omaha's since 30 October, each with its `region`, the state
+  it is in where that is not the market's.
 - No public Lime scooter lies inside the markets' polygons: Lime's public
   feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737),
   Frankfurt (3,630), Wuppertal (947), Arlington's and Washington's near
