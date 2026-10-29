@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
@@ -90,6 +91,7 @@ import com.plhery.scootradar.core.map.searchNear
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterFold
+import com.plhery.scootradar.core.model.ScooterKeyCommand
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterMapLink
@@ -152,6 +154,8 @@ fun ScooterMapScreen(
     locationSettings: LocationSettings = LocationSettings.appPage,
     /** The scootradar.com links to the map the phone opens in the app, as they come. */
     links: Flow<ScooterMapLink> = emptyFlow(),
+    /** Where the screen says what its keys stand for, for the activity to list them in Android's helper. */
+    shortcuts: ScreenShortcuts? = null,
 ) {
     val appearance by controller.appearance.collectAsStateWithLifecycle()
     val userLocation by controller.userLocation.collectAsStateWithLifecycle()
@@ -179,6 +183,58 @@ fun ScooterMapScreen(
     var filtersButton by remember { mutableStateOf<Rect?>(null) }
     // Where the screen is in the window, in pixels, which a fold is measured from.
     var origin by remember { mutableStateOf(Offset.Zero) }
+    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
+    val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
+    val isLocating by controller.isLocating.collectAsStateWithLifecycle()
+    val isPanelCollapsed by controller.isPanelCollapsed.collectAsStateWithLifecycle()
+
+    // The screen as the keyboard finds it, and what a key does: what the button or the gesture it stands for does.
+    val keySituation = ScooterKeyCommand.Situation(
+        layout = chrome.layout,
+        isSearching = searchIsExpanded,
+        isPresenting = sheetOpen,
+        hasCard = selectedScooter != null || selectedParking != null,
+        isFolded = isPanelCollapsed,
+        isLocating = isLocating,
+    )
+    fun perform(command: ScooterKeyCommand) {
+        when (command) {
+            ScooterKeyCommand.Search, ScooterKeyCommand.SearchWithSlash -> searchIsExpanded = true
+            ScooterKeyCommand.NearMe -> {
+                searchIsExpanded = false
+                controller.focusOnUser()
+            }
+            ScooterKeyCommand.ZoomIn, ScooterKeyCommand.ZoomInWithoutShift -> controller.zoom(by = 1)
+            ScooterKeyCommand.ZoomOut -> controller.zoom(by = -1)
+            ScooterKeyCommand.Filters -> {
+                searchIsExpanded = false
+                filtersPresented = true
+            }
+            ScooterKeyCommand.StandardMap, ScooterKeyCommand.QuietMap, ScooterKeyCommand.SatelliteMap ->
+                command.mapStyle?.let(controller::setMapStyle)
+            ScooterKeyCommand.Settings -> {
+                searchIsExpanded = false
+                settingsPresented = true
+            }
+            ScooterKeyCommand.Close -> when (ScooterKeyCommand.closing(keySituation)) {
+                ScooterKeyCommand.Closing.Card -> controller.clearSelection()
+                ScooterKeyCommand.Closing.Search -> searchIsExpanded = false
+                null -> Unit
+            }
+            ScooterKeyCommand.Fold -> controller.setPanelCollapsed(!isPanelCollapsed)
+        }
+    }
+    val keys = shortcuts ?: remember { ScreenShortcuts() }
+    SideEffect {
+        keys.situation = keySituation
+        keys.perform = ::perform
+    }
+    DisposableEffect(keys) {
+        onDispose {
+            keys.situation = null
+            keys.perform = null
+        }
+    }
 
     ScootTheme(dark = dark) {
         CompositionLocalProvider(
@@ -188,7 +244,14 @@ fun ScooterMapScreen(
             LocalMapChrome provides chrome,
             LocalLocationSettings provides locationSettings,
         ) {
-            BoxWithConstraints(Modifier.fillMaxSize().onGloballyPositioned { origin = it.positionInWindow() }) {
+            // The keys reach the screen before what has the focus in it, as a key command reaches the window before
+            // the field being typed in; with nothing focused, the activity hands them over.
+            BoxWithConstraints(
+                Modifier
+                    .fillMaxSize()
+                    .onGloballyPositioned { origin = it.positionInWindow() }
+                    .onPreviewKeyEvent(keys::handle),
+            ) {
                 // Chosen again at every size of the window, which turns and is resized without a new activity. Filters
                 // and Settings, open, move to the new layout's presenters. A fold doesn't choose it: the size classes
                 // and the width do (UI-119).
@@ -312,8 +375,6 @@ fun ScooterMapScreen(
     }
 
     // Back closes the search, else the card of the scooter or bay chosen (UI-250), as Escape does on the iPad.
-    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
-    val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
     // A sheet over the map takes Back first.
     BackHandler(enabled = !sheetOpen && (searchIsExpanded || selectedScooter != null || selectedParking != null)) {
         if (searchIsExpanded) searchIsExpanded = false else controller.clearSelection()
@@ -321,7 +382,6 @@ fun ScooterMapScreen(
 
     // The app in front, with no search, sheet or location being found or gone wrong over the map.
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
-    val isLocating by controller.isLocating.collectAsStateWithLifecycle()
     val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
     ReviewWhenTheMapRests(
         controller,

@@ -74,6 +74,7 @@ import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalClock
 import com.plhery.scootradar.ui.dock.SymbolIcon
+import com.plhery.scootradar.ui.dock.focusableControl
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.SheetBackButton
@@ -520,6 +521,7 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
             Modifier
                 .background(scootColors.tertiarySystemFill, CapsuleShape)
                 .then(if (pressed) Modifier.background(scootColors.tertiarySystemFill, CapsuleShape) else Modifier)
+                .focusableControl { picking = true }
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onPress = {

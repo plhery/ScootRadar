@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,11 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measured
 import androidx.compose.ui.layout.layout
@@ -103,6 +109,21 @@ internal fun Modifier.plainButton(
 
 /** How far a plain button dims under the finger, as UIKit's highlighted label does. */
 private const val PLAIN_PRESSED_ALPHA = 0.4f
+
+/**
+ * A control that takes its touches itself, reached with Tab as Full Keyboard Access reaches it, and pressed with Enter
+ * or Space as a button is (ui.md UI-251): [onPress] as the key comes up. Before its semantics, which would clear the
+ * focus's.
+ */
+internal fun Modifier.focusableControl(interaction: MutableInteractionSource? = null, onPress: () -> Unit): Modifier =
+    onKeyEvent { event ->
+        if (event.key !in PRESS_KEYS) return@onKeyEvent false
+        if (event.type == KeyEventType.KeyUp) onPress()
+        true
+    }.focusable(interactionSource = interaction)
+
+/** The keys that press a focused button, as Compose's clickable takes them. */
+private val PRESS_KEYS = setOf(Key.Enter, Key.NumPadEnter, Key.Spacebar, Key.DirectionCenter)
 
 /**
  * `HStack(alignment: .firstTextBaseline)` for a symbol: SF Symbols stand on the text's baseline, and Material's

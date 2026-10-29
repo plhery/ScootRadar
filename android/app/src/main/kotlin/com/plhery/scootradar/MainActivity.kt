@@ -4,6 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.KeyboardShortcutGroup
+import android.view.Menu
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +26,8 @@ import com.plhery.scootradar.app.ScreenOrientation
 import com.plhery.scootradar.core.model.ScooterMapLink
 import com.plhery.scootradar.map.ScooterMap
 import com.plhery.scootradar.ui.ScooterMapScreen
+import com.plhery.scootradar.ui.ScreenShortcuts
+import com.plhery.scootradar.ui.keyboardShortcutGroups
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -63,6 +68,10 @@ class MainActivity : AppCompatActivity() {
     internal val links = Channel<ScooterMapLink>(Channel.CONFLATED)
     private val openedLinks = links.receiveAsFlow()
 
+    /** What the screen's keys stand for now, which Android's keyboard shortcut helper lists. */
+    @VisibleForTesting
+    internal val shortcuts = ScreenShortcuts()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -92,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                 defaults = (application as ScooterApplication).container.defaults,
                 locationSettings = model.location,
                 links = openedLinks,
+                shortcuts = shortcuts,
             )
         }
         // The link that opened the app; an activity made again has it already.
@@ -121,6 +131,19 @@ class MainActivity : AppCompatActivity() {
                 if (launched && isTaskRoot) finish()
             }
         }
+    }
+
+    /**
+     * A key that nothing in the screen took, as when nothing has the focus, which Compose then gives no key: the
+     * screen's shortcuts answer it, as an iPad's window answers its key commands whatever has the focus.
+     */
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean =
+        shortcuts.handle(androidx.compose.ui.input.key.KeyEvent(event)) || super.onKeyDown(keyCode, event)
+
+    /** The screen's shortcuts in the helper Meta + / shows, as the iPad lists them in its menu bar (UI-102). */
+    override fun onProvideKeyboardShortcuts(data: MutableList<KeyboardShortcutGroup>, menu: Menu?, deviceId: Int) {
+        super.onProvideKeyboardShortcuts(data, menu, deviceId)
+        data += keyboardShortcutGroups(shortcuts.situation, applicationInfo.loadLabel(packageManager))
     }
 
     override fun onDestroy() {

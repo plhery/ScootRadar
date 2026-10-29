@@ -51,8 +51,9 @@ internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modif
         modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
-            // Before the semantics it sets, which would clear it.
+            // Before the semantics it sets, which would clear them.
             .testTag(PANEL_GRABBER_TAG)
+            .focusableControl { set(!folded) }
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = value

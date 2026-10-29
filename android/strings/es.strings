@@ -8,6 +8,8 @@
 "Sheet Grabber" = "Tirador de la hoja";
 "Sheet at half screen" = "Media pantalla";
 "Sheet expanded" = "Expandida";
+/* The iPad menu bar's View menu, which iPadOS names: a group of Android's keyboard shortcut helper (ui.md UI-102). */
+"View" = "Visualización";
 /* What a double tap does, where the iPhone has an accessibility hint (ui.md UI-327): TalkBack reads it in
    its own sentence, "%1$s para %2$s", %1$s its words for a double tap, %2$s this. */
 "show parking details" = "mostrar los detalles del aparcamiento";
