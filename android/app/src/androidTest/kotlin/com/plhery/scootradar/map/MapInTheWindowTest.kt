@@ -113,6 +113,9 @@ class MapInTheWindowTest {
 
     @After
     fun tearDown() {
+        // The map gone first: the rider's breath draws frames back to back on a busy emulator, and the scenario
+        // closes only once the main thread is idle.
+        if (scenario != null) onMain { activity.setContent { } }
         scenario?.close()
         recreations?.let(application::unregisterActivityLifecycleCallbacks)
         scope.cancel()
