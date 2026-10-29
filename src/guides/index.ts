@@ -293,6 +293,8 @@ import orlandoEn from './en/e-scooters-orlando';
 import lahtiEn from './en/e-scooters-lahti';
 import hamiltonEn from './en/e-scooters-hamilton';
 import omahaEn from './en/e-scooters-omaha';
+import tucsonEn from './en/e-scooters-tucson';
+import petahTikvaEn from './en/e-scooters-petah-tikva';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -586,4 +588,6 @@ export const GUIDES: readonly Guide[] = [
   lahtiEn,
   hamiltonEn,
   omahaEn,
+  tucsonEn,
+  petahTikvaEn,
 ];
