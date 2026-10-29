@@ -628,7 +628,7 @@
       "anchorNote": "In Ramat Gan, east of Tel Aviv: in Gush Dan, where nearly all of Israel's scooters are, inside its pre-1967 lines.",
       "featuredCities": ["il:Tel Aviv", "il:Ramat Gan", "il:Petah Tikva", "il:Ashdod", "il:Holon", "il:Herzliya"],
       "credits": {
-        "attribution": "Israel: Bird, Dott, Lime GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "Israel: Bird, Lime GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bird", "Dott", "Lime"],
         "links": [
           { "label": "IL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },

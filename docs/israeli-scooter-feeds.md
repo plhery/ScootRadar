@@ -13,6 +13,15 @@ credentials or private rider APIs are used for them. The catalog is
 [`israeli-scooter-feeds.json`](../data/israeli-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
+Update, 29 October 2026: Dott's feed is retired. Its `tel-aviv` region
+listed about 2,900 scooters on the morning of 28 October; from about 11:00
+UTC that day it answers 404 (`ERR_REGION_NOT_FOUND`), not the 403
+(`ERR_REGION_OFFLINE`) of a region Dott pauses, and Dott's Israeli listing
+names no region, renamed or new. No news of Dott leaving Israel was found.
+Bird and Lime still cover every town of the table. The listing is re-checked
+monthly (see [Known gaps](#known-gaps)); the audit below describes the three
+feeds as they were on 15 October.
+
 Lime's scooters in Ashdod, about 390, beside Bird's, and in Eilat, about
 320, were added on 26 October 2026 from its authenticated rider map, each
 market whole after a clean full-area audit at midday, Israel time; see
@@ -218,10 +227,17 @@ bay, and their apps show their own rules.
 - **OpenStreetMap:** the town outlines are © OpenStreetMap contributors,
   under the [ODbL](https://opendatacommons.org/licenses/odbl/), and the
   credits link it.
-- The map's credits name the three operators on the GBFS line for Asia,
-  with the Emirates' and Saudi Arabia's.
+- The map's credits name the operators on the GBFS line for Asia, with the
+  Emirates' and Saudi Arabia's: Bird and Lime since Dott's feed was retired
+  on 29 October 2026.
 
 ## Known gaps
+
+- **Dott** (retired 29 October 2026): its `tel-aviv` region answers 404 and
+  Dott's Israeli listing names no region. Once a month, next on 29 November
+  2026, read `https://gbfs.api.ridedott.com/public/v2/countries/il/gbfs.json`
+  from the cache's host, and restore the `dott_il_tel_aviv` entry from git if
+  a region comes back.
 
 - **Left out:** Bird in Caesarea, about 50 scooters with 5 new positions in
   9 hours; Dott in Givat Shmuel (6 to 11 scooters, one arrival in the day),
