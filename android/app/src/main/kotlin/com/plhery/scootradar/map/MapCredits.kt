@@ -63,6 +63,8 @@ fun MapCredits(
 internal fun creditsOverLegend(credits: Pair<Double, Double>?, legend: ScreenRect?, mapHeight: Double): Double? {
     if (credits == null || legend == null || legend.isEmpty) return null
     if (credits.first >= legend.maxX || credits.second <= legend.minX) return null
+    // A legend laid out for the map before it turned can lie below its foot for a frame.
+    if (legend.minY >= mapHeight) return null
     return mapHeight - legend.minY + LEGEND_GAP
 }
 
