@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -35,7 +34,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plhery.scootradar.core.api.ScooterAnalytics
@@ -45,6 +43,7 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.glass.LocalGlass
+import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.windowSizeClasses
 import org.maplibre.android.MapLibre
 import org.maplibre.android.camera.CameraPosition
@@ -174,7 +173,8 @@ fun ScooterMap(
     LaunchedEffect(zones, dark, look.satellite) { zones?.setDark(dark || look.satellite) }
     LaunchedEffect(trail, dark, look.satellite) { trail?.setDark(dark || look.satellite) }
     // The dot is the app's blue, whatever the ground.
-    val highContrast = rememberHighContrast()
+    // With Increase Contrast, as the rest of the app follows it (ui.md UI-186, MAP-192).
+    val highContrast = scootColors.isContrastIncreased
     LaunchedEffect(rider, dark, highContrast) { rider?.setLook(RiderArt.Look(dark = dark, highContrast = highContrast)) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
@@ -366,21 +366,4 @@ fun ScooterMap(
             },
         )
     }
-}
-
-/**
- * Whether the phone asks for more contrast, as iOS's Increase Contrast (RiderArt.isHighContrast): read again each
- * time the app comes to the front, as Settings changes it without a new configuration, and as the configuration
- * changes.
- */
-@Composable
-internal fun rememberHighContrast(): Boolean {
-    val context = LocalContext.current
-    val configuration = LocalConfiguration.current
-    var highContrast by remember { mutableStateOf(RiderArt.isHighContrast(context)) }
-    LifecycleStartEffect(configuration) {
-        highContrast = RiderArt.isHighContrast(context)
-        onStopOrDispose {}
-    }
-    return highContrast
 }

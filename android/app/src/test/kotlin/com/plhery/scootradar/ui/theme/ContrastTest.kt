@@ -49,7 +49,16 @@ class ContrastTest {
                 "separator" to (colors.separator to raised.separator),
                 "accent" to (colors.accent to raised.accent),
                 "systemGreen" to (colors.systemGreen to raised.systemGreen),
-            )
+            ) + if (colors.isDark) {
+                // The palette's dark halves that are UIKit's orange, green and red.
+                mapOf(
+                    "warning" to (colors.warning to raised.warning),
+                    "good" to (colors.good to raised.good),
+                    "critical" to (colors.critical to raised.critical),
+                )
+            } else {
+                emptyMap()
+            }
             for ((name, pair) in pairs) {
                 val (before, after) = pair
                 assertTrue(
@@ -76,9 +85,20 @@ class ContrastTest {
                 systemGray2 = colors.systemGray2,
                 separator = colors.separator,
                 systemGreen = colors.systemGreen,
+                warning = colors.warning,
+                good = colors.good,
+                critical = colors.critical,
             )
             assertEquals(colors, restored)
         }
+        // In the dark, UIKit's high-contrast orange, green and red; in the light, the palette's own, which stay.
+        val dark = ScootColors.Dark.withIncreasedContrast()
+        assertEquals(listOf(Color(0xFFFFB340), Color(0xFF30DB5B), Color(0xFFFF6961)), listOf(dark.warning, dark.good, dark.critical))
+        val light = ScootColors.Light.withIncreasedContrast()
+        assertEquals(
+            listOf(ScootColors.Light.warning, ScootColors.Light.good, ScootColors.Light.critical),
+            listOf(light.warning, light.good, light.critical),
+        )
         // UIKit's high-contrast systemBlue, which the rider on the map takes too (RiderArt).
         assertEquals(Color(0xFF0040DD), ScootColors.Light.withIncreasedContrast().accent)
         assertEquals(Color(0xFF409CFF), ScootColors.Dark.withIncreasedContrast().accent)

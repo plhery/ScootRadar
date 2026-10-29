@@ -100,7 +100,8 @@ data class ScootColors(
      * The colours with Increase Contrast on (ui.md UI-186): the system colours take UIKit's high-contrast variants,
      * as UIKit resolves them for `accessibilityContrast == .high` (the fills as Mac Catalyst's UIKit gives them on
      * macOS 27; the labels, separators, backgrounds, blue and green as Flutter's CupertinoColors copies them from
-     * iOS), and the glass gains an edge (chromeGlass). ScooterPalette's own colours stay as they are.
+     * iOS), and the glass gains an edge (chromeGlass). ScooterPalette's own colours stay as they are, but for the
+     * dark halves of warning, good and critical, which are UIKit's orange, green and red and take theirs.
      */
     fun withIncreasedContrast(): ScootColors = when {
         isContrastIncreased -> this
@@ -116,6 +117,9 @@ data class ScootColors(
             systemGray2 = Color(0xFF7C7C80),
             separator = Color(0xAD545458),
             systemGreen = Color(0xFF30DB5B),
+            warning = Color(0xFFFFB340),
+            good = Color(0xFF30DB5B),
+            critical = Color(0xFFFF6961),
         )
         else -> copy(
             isContrastIncreased = true,

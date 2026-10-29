@@ -96,7 +96,8 @@ class PriceMenuTest {
         for (row in rows) {
             val title = row.config[SemanticsProperties.Text].joinToString()
             assertEquals(title, Role.Button, row.config.getOrNull(SemanticsProperties.Role))
-            assertEquals(title, title == "10 min", row.config.getOrNull(SemanticsProperties.Selected))
+            // Not "Not selected" on the others: VoiceOver gives no row a selected trait.
+            assertEquals(title, if (title == "10 min") true else null, row.config.getOrNull(SemanticsProperties.Selected))
             assertTrue("$title is ${row.size.height / density} high", row.size.height >= 44 * density)
         }
     }

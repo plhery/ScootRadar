@@ -4,8 +4,6 @@
 package com.plhery.scootradar.map
 
 import android.animation.ValueAnimator
-import android.app.UiModeManager
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -14,9 +12,7 @@ import android.graphics.Path
 import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
-import android.os.Build
 import android.os.SystemClock
-import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.Choreographer
 import android.view.View
@@ -297,7 +293,7 @@ class ScooterRider(
  * map's pixel ratio, in points.
  */
 class RiderArt(private val density: Float) {
-    /** The app's appearance, and whether Increase Contrast is on: high contrast text, or Android 14's contrast. */
+    /** The app's appearance, and whether Increase Contrast is on, as the app's colours follow it (ScootColors). */
     data class Look(val dark: Boolean, val highContrast: Boolean)
 
     /** UIColor.systemBlue in each appearance, its accessible variants with Increase Contrast. */
@@ -376,8 +372,6 @@ class RiderArt(private val density: Float) {
         private const val SHADOW_RADIUS = 4f
         private const val SHADOW_OFFSET = 1f
 
-        private const val HIGH_TEXT_CONTRAST = "high_text_contrast_enabled"
-
         /** The dot's breath: in to 0.85 of its size and out again every 3 s, as MapKit's breathes. */
         private const val BREATH_PERIOD = 3.0
         private const val BREATH_DEPTH = 0.15
@@ -385,28 +379,5 @@ class RiderArt(private val density: Float) {
         /** The dot's radius [time] seconds into its breath. */
         fun breathingRadius(time: Double): Double =
             DOT_RADIUS * (1 - BREATH_DEPTH * (1 - cos(2 * PI * time / BREATH_PERIOD)) / 2)
-
-        /**
-         * Whether the phone asks for more contrast, as iOS's Increase Contrast: high contrast text, or, from Android
-         * 14, the contrast set to medium or high.
-         */
-        fun isHighContrast(context: Context): Boolean =
-            isHighContrast(context) { Settings.Secure.getInt(context.contentResolver, it, 0) }
-
-        /** As [isHighContrast], with the phone's secure settings read by [secureSetting]. */
-        internal fun isHighContrast(context: Context, secureSetting: (String) -> Int): Boolean {
-            // A hidden setting, which a later Android may keep from apps.
-            val highTextContrast = try {
-                secureSetting(HIGH_TEXT_CONTRAST) == 1
-            } catch (_: SecurityException) {
-                false
-            }
-            val contrast = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                context.getSystemService(UiModeManager::class.java)?.contrast ?: 0f
-            } else {
-                0f
-            }
-            return highTextContrast || contrast >= 0.5f
-        }
     }
 }

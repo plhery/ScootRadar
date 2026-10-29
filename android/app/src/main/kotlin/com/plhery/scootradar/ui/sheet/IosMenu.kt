@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +42,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -118,11 +121,13 @@ fun IosMenu(expanded: Boolean, onDismiss: () -> Unit, choices: List<String>, cho
 private fun MenuPanel(choices: List<String>, chosen: Int?, onChoose: (Int) -> Unit, onEscape: () -> Unit) {
     val colors = scootColors
     val shape = SquircleShape(MENU_CORNER_RADIUS)
-    val window = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.width.toDp() }
+    val window = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.let { DpSize(it.width.toDp(), it.height.toDp()) } }
     Column(
         Modifier
-            .widthIn(min = MENU_WIDTH, max = (window - MENU_MARGIN * 2).coerceAtLeast(MENU_WIDTH))
+            .widthIn(min = MENU_WIDTH, max = (window.width - MENU_MARGIN * 2).coerceAtLeast(MENU_WIDTH))
             .width(IntrinsicSize.Max)
+            // Taller than the window, as large text in a split screen makes it, its rows scroll, as SwiftUI's menu's do.
+            .heightIn(max = (window.height - MENU_MARGIN * 2).coerceAtLeast(44.dp))
             .iosShadow(shape, Color.Black.copy(alpha = SHADOW_ALPHA), radius = SHADOW_RADIUS, y = SHADOW_Y)
             // A window of its own can't blur what is under it, as the iPhone's menu does: the glass is laid on the
             // ground, so that the card's text doesn't show through between the rows.
@@ -131,7 +136,8 @@ private fun MenuPanel(choices: List<String>, chosen: Int?, onChoose: (Int) -> Un
             // A tap between the rows stays in the menu, rather than reaching the room around it, which would close it.
             .pointerInput(Unit) { awaitPointerEventScope { while (true) awaitPointerEvent() } }
             .testTag(MENU_TAG)
-            .closedByEscape(onEscape),
+            .closedByEscape(onEscape)
+            .verticalScroll(rememberScrollState()),
     ) {
         choices.forEachIndexed { index, title ->
             if (index > 0) Box(Modifier.fillMaxWidth().height(0.5.dp).background(colors.separator))
@@ -152,7 +158,8 @@ private fun MenuRow(title: String, checked: Boolean, onClick: () -> Unit) {
             .heightIn(min = 44.dp)
             .background(if (pressed) colors.tertiarySystemFill else Color.Transparent)
             .clickable(source, FocusRing(), role = Role.Button, onClick = onClick)
-            .semantics { selected = checked }
+            // Selected on the chosen row only: on the others TalkBack would say "Not selected", which VoiceOver doesn't.
+            .semantics { if (checked) selected = true }
             .padding(horizontal = 16.dp, vertical = 11.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,

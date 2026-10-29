@@ -4,16 +4,13 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.provider.Settings
 import android.util.DisplayMetrics
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.toColorInt
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.plhery.scootradar.ui.theme.drawnArtOptions
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -66,13 +63,6 @@ class RiderArtTest {
         assertEquals(0xFF0A84FF.toInt(), art.blue(dark))
         assertEquals(0xFF0040DD.toInt(), art.blue(contrast))
         assertEquals(0xFF409CFF.toInt(), art.blue(RiderArt.Look(dark = true, highContrast = true)))
-
-        val context = ApplicationProvider.getApplicationContext<android.content.Context>()
-        assertFalse(RiderArt.isHighContrast(context))
-        Settings.Secure.putInt(context.contentResolver, "high_text_contrast_enabled", 1)
-        assertTrue("high contrast text", RiderArt.isHighContrast(context))
-        // A hidden setting, which a later Android may keep from the app: no more contrast, and no crash.
-        assertFalse(RiderArt.isHighContrast(context) { throw SecurityException("not readable") })
     }
 
     @Test
