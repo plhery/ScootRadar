@@ -156,6 +156,13 @@ has none.
   Friday to Sunday
   ([city of Tampere](https://www.tampere.fi/ajankohtaista/2026/06/24/sahkopotkulautailun-tapaturmat-vahentyneet-vakavia-onnettomuuksia)).
   The city's English page still gives the test as Thursday to Saturday.
+  The map gives Tampere no season (`seasonal`): the licence's basic season,
+  15 April to 14 November, gives way each year to the City's consent, which
+  let the 2026 season start on 16 March for the mild weather and can order
+  the scooters off on 72 hours' notice
+  ([city of Tampere](https://www.tampere.fi/ajankohtaista/2026/03/16/sahkopotkulautakausi-kaynnistyy-kaupunki-muistuttaa-rajoituksista-ja)),
+  so neither end can be read ahead; the City had announced no end to the
+  2026 season by 29 October 2026.
 
 ## Licences
 

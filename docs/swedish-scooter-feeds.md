@@ -117,10 +117,12 @@ No covered Swedish town bans renting at night, so
   Lime's Stockholm feed answers 404.
 - **Uppsala** has Voi and Ryde besides Lime, and neither publishes a feed.
   Voi's scooters come from its app map; Ryde's are not on the map.
-- **Voi** (Göteborg, Malmö and other towns) and **Ryde** (Göteborg, Malmö,
-  Linköping, Norrköping and other towns, per its
+- **Voi** (Göteborg, Malmö and other towns) and **Ryde** (25 towns, Göteborg,
+  Malmö, Linköping, Norrköping and others, per its
   [locations page](https://www.ryde-technology.com/Locations), 29 October
-  2026) publish no public feed either; only Voi has an app map we read. Ryde has the largest share of Malmö's cap,
+  2026, listed in [coverage gaps](coverage-gaps.md)) publish no public feed
+  either; only Voi has an app map we read, so none of Ryde's Swedish scooters
+  is on the map. Ryde has the largest share of Malmö's cap,
   1,000 of 2,800 scooters from 1 October 2026 to 31 March 2027
   ([traffic committee, 8 September 2026](https://motenmedborgarportal.malmo.se/committees/tekniska-namndens-trafikutskott/mote-2026-09-08/protocol/protokoll-tru-2026-09-08pdf?downloadMode=open)),
   and [Göteborg](https://goteborg.se/wps/portal/start/trafik-och-resor/trafik-och-gator/cykling-och-cykelvagar/delade-elsparkcyklar-och-elcyklar)
