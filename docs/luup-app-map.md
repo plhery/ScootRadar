@@ -77,9 +77,20 @@ no-parking zones (自転車等放置禁止区域), standing ones among them, and
 charges ¥5,000 to give one back. Sakae is one whole area; others run along
 the streets around Nagoya Station and other stations. The City publishes them
 only as a picture (Sakae's) and as a PDF map for each ward, with no
-coordinates, and its site asks for the City's leave before its content is
-reused. Its open-data catalogue (CC BY 4.0) holds no parking or scooter
+coordinates. Its open-data catalogue (CC BY 4.0) holds no parking or scooter
 dataset (read on 29 October 2026). So the map doesn't draw them.
+
+The City's [site policy](https://www.city.nagoya.jp/about/1017984.html)
+(updated 24 October 2025) says that copying or reusing (二次利用) its data
+for anything but private use needs, unless the page says otherwise, the leave
+of the City department responsible: only content marked with a Creative
+Commons licence is free to reuse, and the zone maps are not. Zones traced
+from those maps onto OpenStreetMap streets would be such a reuse, even with
+none of the City's drawing in them. So the trace of Sakae's zone made on
+29 October 2026 is held, not drawn, until the user decides. The zones are set
+by the City's public notices (告示), which Article 13 of the Copyright Act
+leaves without copyright, each "as the attached map shows"; that is a reading
+of the law, not the City's leave.
 
 ## Private configuration
 
