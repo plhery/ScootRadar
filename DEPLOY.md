@@ -201,7 +201,7 @@ moved and why not.
 
 Then the job tells IndexNow, which Bing and the engines that read its index use,
 about the pages added to the sitemap or redated since it last took them
-([`scripts/indexnow.mjs`](scripts/indexnow.mjs)). It waits up to eight minutes
+([`scripts/indexnow.mjs`](scripts/indexnow.mjs)). It waits up to 15 minutes
 for the website to serve the commit `production` is at, which is this one or a
 later one that carries it (a re-run, or a later commit's job that ended first).
 Workers Builds names the build after its commit (`WORKERS_CI_COMMIT_SHA`, in

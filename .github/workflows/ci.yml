@@ -194,7 +194,7 @@ jobs:
     needs: [web, e2e, ios]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 22
     concurrency:
       group: deploy
       cancel-in-progress: false
@@ -225,15 +225,16 @@ jobs:
       # production is at once the landing page holds it: this one, or a later one that carries it
       # (a re-run, or a later commit's job that ended first). Deploy jobs run one at a time. When it
       # never does, the Workers build failed or hangs, and only Cloudflare's dashboard shows it, so
-      # the job fails rather than warns.
+      # the job fails rather than warns. A build is live 2 to 5 minutes after the move as a rule, but
+      # on 28 Oct 2026 17e4fc29's took 10 and failed the 8-minute wait of then, so it waits 15.
       - name: Wait for the website to serve production
         id: live
         if: steps.deploy.outputs.website != ''
-        timeout-minutes: 9
+        timeout-minutes: 16
         env:
           BUILD: ${{ steps.deploy.outputs.website }}
         run: |
-          deadline=$((SECONDS + 480))
+          deadline=$((SECONDS + 900))
           while (( SECONDS < deadline )); do
             page=$(curl --silent --max-time 20 -H 'Cache-Control: no-cache' "$SITE/" || true)
             if [[ "$page" == *"$BUILD"* ]]; then
@@ -242,7 +243,7 @@ jobs:
             fi
             sleep 15
           done
-          echo "::error title=Website not deployed::$SITE did not serve ${BUILD::7} within 8 minutes: see its Workers build in Cloudflare's dashboard (Workers & Pages › swiss-scooters › Deployments). IndexNow was not told; the next deploy tells it of the pages, or once the site serves it, run: node scripts/indexnow.mjs --since=refs/indexnow/submitted $SITE"
+          echo "::error title=Website not deployed::$SITE did not serve ${BUILD::7} within 15 minutes: see its Workers build in Cloudflare's dashboard (Workers & Pages › swiss-scooters › Deployments). IndexNow was not told; the next deploy tells it of the pages, or once the site serves it, run: node scripts/indexnow.mjs --since=refs/indexnow/submitted $SITE"
           exit 1
 
       # The pages new or redated in the sitemap since IndexNow last took them go to it, which Bing
