@@ -34,6 +34,10 @@ market whole after a clean full-area audit at midday, Israel time; see
 Lime's public `tel_aviv` feed has neither town. The table lists the public
 feeds.
 
+Bird's scooters in Caesarea, left out on 15 October, were added on 29
+October 2026, after polls that evening found 20 or 21 available and two
+rides; see [Caesarea](#caesarea).
+
 | Operator | Town | Available scooters, last poll (lowest–highest) |
 | --- | --- | ---: |
 | Bird | Tel Aviv | 1,886 (1,735–1,905) |
@@ -118,8 +122,9 @@ Replayed over every poll, against the municipal boundaries:
   Tikva's boundary). The scooters of the towns left out are dropped by
   design: Dott's in Givat Shmuel (about 9 a poll), Kiryat Ono (about 3) and
   Ramat HaSharon; Lime's in Bat Yam and Ramat HaSharon (1 to 1.5 each); Bird's
-  in Petah Tikva (under 1) and Pardes Hanna-Karkur (about 1), and Caesarea's
-  about 50, outside every box.
+  in Petah Tikva (under 1), and in Pardes Hanna-Karkur (about 1) and
+  Caesarea (about 50), outside every box until Caesarea was added on 29
+  October 2026.
 - **Outside every town:** a few scooters a poll stand in a box but in no
   covered town, and count under the nearest: Bird's in Hof HaSharon's strip
   by Ramat HaSharon (about 2.5) under Ramat HaSharon; Lime's in
@@ -135,7 +140,9 @@ widened to take in the town's centre). Lime's rider map does draw its zones,
 and the map keeps its Ashdod and Eilat scooters inside them. Every box is inside Israel's pre-1967 lines: the
 edge nearest the West Bank, Dott's Petah Tikva at 34.9304° E, is about 5 km
 west of its nearest point, at Oranit; no feed had a scooter in the
-West Bank or in East Jerusalem.
+West Bank or in East Jerusalem. Caesarea's box, added on 29 October 2026,
+ends at 34.9678° E, about 9 km north-west of the West Bank's nearest point,
+by Baqa al-Sharqiyya.
 
 **Search** finds Tel Aviv as Tel Aviv-Yafo, Tel Aviv-Jaffa, Jaffa, Yafo, TLV,
 תל אביב, תל אביב-יפו, יפו, تل أبيب and يافا, and every town in Hebrew,
@@ -148,6 +155,45 @@ where nearly all its scooters are. Cyprus's stands 360 km to the
 north-west: at zoom 4 the two totals touch, and at zoom 3 Israel's, the
 larger, covers half of Cyprus's. No place in Israel avoids that at zoom 3:
 even from Eilat the two would overlap.
+
+## Caesarea
+
+Bird's `israel` feed has scooters in Caesarea, about 45 km north of Tel
+Aviv: in its business park, east of Highway 2, and at Caesarea–Pardes Hanna
+station, at the park's east end. Bird's ride zones there cover the park and
+the station only, not the town by the sea. On 15 October 2026 it held 49 to
+52 scooters with 5 new positions in 9 hours, and on the morning of Sunday
+18 October 41, 40 then 37, three leaving and none arriving in 20 minutes, so
+it was left out.
+
+On Thursday 29 October 2026 it was polled 17 times, five minutes apart, from
+16:19 to 17:39 Israel time, as the park empties:
+
+- **Scooters:** 20 or 21 available in every poll, and 4 disabled. 6 to 8 of
+  them stood at the station.
+- **Rides:** two, both to the station. One went about 600 m between 16:54
+  and 17:04, its charge two steps lower soon after. The other went 1.7 km
+  between 17:24 and 17:39, out of the feed for two polls and 6 points of
+  charge lower at the end.
+- **Moves by place:** Bird renews its ids, so a scooter within 10 m of a
+  position of the poll before counted as the same. That gave 0 to 3
+  departures and arrivals a poll. Beyond the two rides, all were three
+  scooters whose reported position wandered 11 to 85 m between polls, their
+  charge unchanged or a step lower.
+
+About 20 scooters, with riders on them, meet the bar for a small town, so
+Caesarea has its own area. Its bounds are Bird's zones there, plus 1 km.
+OpenStreetMap's boundary of Pardes Hanna-Karkur runs along the park's east
+edge and through the station: 2 or 3 of the scooters a poll stand on its
+side. They are in the same Bird zone, and count under Caesarea.
+
+Caesarea has no outline in
+[`town-outlines.json`](../data/town-outlines.json). No other town's box
+reaches it, so its box alone decides, as for Ashdod and Eilat. And no
+OpenStreetMap boundary fits it. The Caesarea Development Corporation runs
+the town, within Hof HaCarmel Regional Council (relation 1391710). Neither
+the council's boundary nor the town's own area (relation 21252408, the
+houses by the sea) holds the park or any of its scooters.
 
 ## Data handling
 
@@ -203,8 +249,17 @@ even from Eilat the two would overlap.
   On the operators' petition, the court froze the ban until the city decides
   again, after a review due by 15 October
   ([ice, 10 September 2026](https://www.ice.co.il/law/news/article/1129448)).
+  If the city decides again to stop the service, the operators get at least
+  two weeks' notice, so they can go back to court
+  ([Globes, 10 September 2026](https://www.globes.co.il/news/article.aspx?did=1001555199)).
   Holon's scooters still ride (119 Bird arrivals on 15 October, 39 Dott, 162
-  Lime), so Holon is covered; it is to be checked again in November 2026.
+  Lime). On 29 October 2026 no new decision and no ruling had been
+  reported: the Hebrew and English press searched that day has nothing on
+  it after 10 September, and the city's site doesn't answer outside Israel.
+  That afternoon, from 16:19 to 17:39 Israel time, Bird's feed held 131 to
+  137 available scooters inside Holon's boundary, with 19 arrivals and 23
+  departures, and the map showed 135 of Bird's and 310 of Lime's there at
+  17:44. So Holon is covered; it is to be checked again in November 2026.
 
 ## Parking
 
@@ -247,11 +302,12 @@ bay, and their apps show their own rules.
   from the cache's host, and restore the `dott_il_tel_aviv` entry from git if
   a region comes back.
 
-- **Left out:** Bird in Caesarea, about 50 scooters with 5 new positions in
-  9 hours; Dott in Givat Shmuel (6 to 11 scooters, one arrival in the day),
-  Kiryat Ono (2 or 3) and Ramat HaSharon; Lime in Bat Yam and Ramat HaSharon;
-  Bird in Petah Tikva and Pardes Hanna-Karkur, each with about one scooter a
-  poll.
+- **Left out:** Dott in Givat Shmuel (6 to 11 scooters, one arrival in the
+  day), Kiryat Ono (2 or 3) and Ramat HaSharon; Lime in Bat Yam and Ramat
+  HaSharon; Bird in Petah Tikva, with about one scooter a poll. Bird's zone
+  in Caesarea takes in the edge of Pardes Hanna-Karkur, along the business
+  park and at the station, so Bird's scooters there, about one a poll on 15
+  October, count under Caesarea since 29 October 2026.
 - **Bird `tel-aviv`:** a second Bird feed, in the registry, whose scooters
   are nearly all in `israel` under other ids (1,502 of 1,517 positions);
   reading both would count about 1,550 twice.

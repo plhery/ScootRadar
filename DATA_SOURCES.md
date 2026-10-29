@@ -1114,8 +1114,9 @@ the rides, the rules, the gaps and the recheck command.
 ## Israel
 
 The reviewed catalog lives in `data/israeli-scooter-feeds.json`: 2 public
-feeds in 14 towns, 13 of them in Gush Dan, around Tel Aviv, and Ashdod. Bird's
-`israel` feed at `mds.bird.co` and Lime's `tel_aviv` at `data.lime.bike` are
+feeds in 15 towns, 13 of them in Gush Dan, around Tel Aviv, then Ashdod and,
+for Bird alone, Caesarea. Bird's `israel` feed at `mds.bird.co` and Lime's
+`tel_aviv` at `data.lime.bike` are
 each the operator's own public GBFS feed, both in
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
 Bird's `tel-aviv` feed, also in the registry, repeats most of `israel`'s

@@ -6,7 +6,7 @@
       "id": "bird_il_israel",
       "country": "IL",
       "provider": "bird",
-      "city": "Gush Dan / Ashdod",
+      "city": "Gush Dan / Ashdod / Caesarea",
       "timeZone": "Asia/Jerusalem",
       "center": [
         32.0853,
@@ -14,9 +14,9 @@
       ],
       "bounds": {
         "south": 31.7561,
-        "north": 32.2119,
+        "north": 32.504,
         "west": 34.603,
-        "east": 34.8758
+        "east": 34.9678
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/israel/gbfs.json",
       "areas": [
@@ -193,6 +193,24 @@
           "aliases": [
             "Ramat ha-Sharon",
             "רמת השרון"
+          ]
+        },
+        {
+          "city": "Caesarea",
+          "center": [
+            32.4812,
+            34.9458
+          ],
+          "bounds": {
+            "south": 32.4584,
+            "north": 32.504,
+            "west": 34.9238,
+            "east": 34.9678
+          },
+          "aliases": [
+            "Qesarya",
+            "Kesaria",
+            "קיסריה"
           ]
         }
       ]

@@ -9,7 +9,7 @@ import { namedCities } from '@/app/api/geocode/cities';
 const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === id)!;
 
 describe('Israel', () => {
-  it('reads Bird and Lime around Tel Aviv, one area per town, all in Israel\'s time zone', () => {
+  it('reads Bird and Lime around Tel Aviv, and Bird in Caesarea, one area per town, all in Israel\'s time zone', () => {
     const israeli = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'IL');
     const feeds = israeli.filter(entry => !entry.limeAppMap);
     // Not Bird's tel-aviv feed: the same scooters as its israel feed, under other ids.
@@ -18,7 +18,7 @@ describe('Israel', () => {
       ['lime_il_tel_aviv', 'https://data.lime.bike/api/partners/v2/gbfs/tel_aviv/gbfs.json'],
     ]);
     expect(Object.fromEntries(feeds.map(entry => [entry.provider, serviceAreas(entry).map(area => area.city)]))).toEqual({
-      bird: ['Tel Aviv', 'Ramat Gan', 'Holon', 'Bat Yam', 'Givatayim', 'Herzliya', 'Rishon LeZion', 'Ashdod', 'Bnei Brak', 'Ramat HaSharon'],
+      bird: ['Tel Aviv', 'Ramat Gan', 'Holon', 'Bat Yam', 'Givatayim', 'Herzliya', 'Rishon LeZion', 'Ashdod', 'Bnei Brak', 'Ramat HaSharon', 'Caesarea'],
       lime: ['Tel Aviv', 'Ramat Gan', 'Petah Tikva', 'Holon', 'Givatayim', 'Herzliya', 'Kiryat Ono', 'Bnei Brak', 'Givat Shmuel', 'Or Yehuda'],
     });
     // Lime's tel_aviv feed has neither town: its rider map, read in small groups, since 26 October 2026.
@@ -28,7 +28,7 @@ describe('Israel', () => {
       for (const area of serviceAreas(entry)) expect(area.timeZone ?? entry.timeZone, `${entry.id} in ${area.city}`).toBe('Asia/Jerusalem');
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'IL').map(entry => entry.id).sort()).toEqual([
-      'il:Ashdod', 'il:Bat Yam', 'il:Bnei Brak', 'il:Eilat', 'il:Givat Shmuel', 'il:Givatayim', 'il:Herzliya', 'il:Holon', 'il:Kiryat Ono',
+      'il:Ashdod', 'il:Bat Yam', 'il:Bnei Brak', 'il:Caesarea', 'il:Eilat', 'il:Givat Shmuel', 'il:Givatayim', 'il:Herzliya', 'il:Holon', 'il:Kiryat Ono',
       'il:Or Yehuda', 'il:Petah Tikva', 'il:Ramat Gan', 'il:Ramat HaSharon', 'il:Rishon LeZion', 'il:Tel Aviv',
     ]);
   });
@@ -39,7 +39,7 @@ describe('Israel', () => {
     ['Rishon LeZion', 'Rishon LeZion'], ['Rishon Lezion', 'Rishon LeZion'], ['Rishon le-Zion', 'Rishon LeZion'], ['ראשון לציון', 'Rishon LeZion'],
     ['Petach Tikva', 'Petah Tikva'], ['פתח תקוה', 'Petah Tikva'], ['Herzlia', 'Herzliya'], ['Givataim', 'Givatayim'],
     ['Ramat Hasharon', 'Ramat HaSharon'], ['רמת השרון', 'Ramat HaSharon'], ['בני ברק', 'Bnei Brak'], ['קרית אונו', 'Kiryat Ono'],
-    ['Eilat', 'Eilat'], ['אילת', 'Eilat'],
+    ['Eilat', 'Eilat'], ['אילת', 'Eilat'], ['Caesarea', 'Caesarea'], ['Qesarya', 'Caesarea'], ['קיסריה', 'Caesarea'],
   ])('finds "%s" as %s', (query, title) => {
     expect(namedCities(query)[0]).toMatchObject({ city: { title, subtitle: 'Israel' } });
   });
@@ -93,18 +93,37 @@ describe('Israel', () => {
       ...expected });
   });
 
-  it('keeps no scooter in a town its feed does not serve, nor beyond Gush Dan, Ashdod and Eilat', () => {
+  it('counts Bird\'s scooters in Caesarea\'s business park and at Caesarea–Pardes Hanna station under Caesarea', () => {
+    // Positions from the polls of 29 October 2026: the park's south-west, its middle and the station, where both rides
+    // seen that evening ended. Caesarea stands apart, so its box alone decides, as Ashdod's does.
+    const positions = [[32.47091, 34.94273], [32.48243, 34.94555], [32.48519, 34.95403]] as const;
+    const bird = system('bird_il_israel');
+    for (const [lat, lng] of positions) expect(systemServesPoint(bird, lat, lng), `${lat}, ${lng}`).toBe(true);
+    const now = Date.now();
+    const overview = buildCityOverview([{
+      id: 'israel:bird_il_israel', source: 'israel', provider: 'bird', coverage: serviceAreas(bird).map(area => area.bounds),
+      vehicles: positions.map(([lat, lng], index) => ({ provider: 'bird', vehicle_id: `caesarea-${index}`, lat, lng, battery: 80,
+        range_m: null, deep_link: null, distance_m: 0 })),
+      observedAt: now, attemptedAt: now, collectedAt: now, stale: false, failed: false, skipped: false,
+    }], now);
+    const caesarea = overview.cities.find(city => city.id === 'il:Caesarea');
+    expect(caesarea?.batteries.bird?.reduce((sum, count) => sum + count, 0)).toBe(3);
+  });
+
+  it('keeps no scooter in a town its feed does not serve, nor beyond Gush Dan, Ashdod, Caesarea and Eilat', () => {
     for (const [provider, town, lat, lng] of [
       ['lime', 'Bat Yam', 32.01535, 34.76161], ['lime', 'Ramat HaSharon', 32.15479, 34.8135], ['bird', 'Petah Tikva', 32.09284, 34.8502],
-      // One of Bird's 50 by Caesarea, left out.
-      ['bird', 'Caesarea', 32.48542, 34.95371],
+      // Caesarea's own town, west of Highway 2: Bird's zones there are only its business park.
+      ['bird', 'Caesarea', 32.50013, 34.90365],
     ] as const) {
       expect(systemServesPoint(system(ids[provider]), lat, lng), `${provider} in ${town}`).toBe(false);
     }
-    // No town reaches the West Bank: its nearest point to any of them, by Oranit, is about 5 km east of Petah Tikva's.
-    // Eilat, on the Red Sea, is far south of it.
+    // No town reaches the West Bank: its nearest point to Gush Dan, by Oranit, is about 5 km east of Petah Tikva's,
+    // and to Caesarea, by Baqa al-Sharqiyya, about 9 km south-east of its box. Eilat, on the Red Sea, is far south of it.
     for (const entry of REGIONAL_SCOOTER_SYSTEMS.filter(candidate => candidate.country === 'IL' && candidate.city !== 'Eilat')) {
-      expect(entry.bounds.east).toBeLessThan(34.94);
+      for (const area of serviceAreas(entry)) {
+        expect(area.bounds.east, `${entry.id} in ${area.city}`).toBeLessThan(area.city === 'Caesarea' ? 34.97 : 34.94);
+      }
     }
   });
 });

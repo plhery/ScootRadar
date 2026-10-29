@@ -725,19 +725,19 @@ banned shared scooters, and feeds that were empty when checked.
   - **open.data.gov.sa** did not answer.
 - **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird and Lime
   in 13 towns of Gush Dan, Bird and Lime in Ashdod, and Lime in Eilat,
-  Lime's two from its rider map since 26 October 2026, are covered.
+  Lime's two from its rider map since 26 October 2026, and Bird in Caesarea
+  since 29 October 2026, are covered.
   - **Dott** is retired since 29 October 2026: its `tel-aviv` region, about
     2,900 scooters that morning, answers 404 (`ERR_REGION_NOT_FOUND`) from
     about 11:00 UTC on 28 October, and Dott's Israeli listing
     (`/public/v2/countries/il/gbfs.json`) names no region. Re-check the
     listing monthly, next on 29 November 2026, and restore the entry from
     git if a region comes back.
-  - **Left out:** Bird in Caesarea, 49 to 52 scooters with only 5 new
-    positions in 9 hours on 15 October 2026, and 41, 40 then 37 on the
-    morning of Sunday 18 October, three leaving and none arriving in 20
-    minutes; Lime in Bat Yam and Ramat HaSharon; Bird in Petah Tikva and
-    Pardes Hanna-Karkur, about one scooter a poll each. The map drops their
-    scooters rather than count them under a neighbour.
+  - **Left out:** Lime in Bat Yam and Ramat HaSharon, and Bird in Petah
+    Tikva, about one scooter a poll each. The map drops their scooters
+    rather than count them under a neighbour. Bird's scooters in Pardes
+    Hanna-Karkur stand along Caesarea's business park and at Caesarea–Pardes
+    Hanna station, in Bird's Caesarea zone, and count under Caesarea.
   - **Bird's zones** outline service areas in Hadera, Afula, Beit She'an,
     Rosh HaAyin, Eilat and Jerusalem's Har Hotzvim, none of which held a
     scooter on 18 October 2026.
@@ -746,7 +746,10 @@ banned shared scooters, and feeds that were empty when checked.
     count about 1,550 scooters twice.
   - **Holon** decided to ban shared scooters from 17 September 2026; the
     court froze the ban until the city decides again, after a review due by
-    15 October. Its scooters still ride, so Holon is covered.
+    15 October, with at least two weeks' notice before any stop. By 29
+    October 2026 no new decision or ruling had been reported, and Bird's
+    feed held 131 to 137 available scooters there that afternoon, with 19
+    arrivals in 80 minutes, so Holon is covered.
   - **Open data:** data.gov.il has cycle networks only; tel-aviv.gov.il
     answers HTTP 571 outside Israel, and gov.il 403 to scripts.
   - **No shared scooters found** in Jerusalem, Haifa or Be'er Sheva on 16
@@ -1063,9 +1066,6 @@ Bonaire had feeds to add. Survey files are in
   [Saudi guide](saudi-scooter-feeds.md#rides) does, and add it to
   `data/saudi-scooter-feeds.json` if it is ridden. Poll Dott Jeddah too, in
   the catalog on about 23 rides that evening: if it shows none, take it out.
-- **29 October 2026, in the afternoon:** Bird in Caesarea, Israel: 49 to 52
-  scooters in Bird's `israel` feed on 15 October 2026, but only 5 new
-  positions in 9 hours. Add an area for Caesarea if they are ridden.
 - **After 4 November 2026:** Auckland's two-year e-scooter licences, for
   Flamingo and Lime, expire in November 2026, and the council holds no new
   round
@@ -1107,8 +1107,16 @@ Bonaire had feeds to add. Survey files are in
   the court froze the ban until the city decides again, after a review due by
   15 October
   ([ice, 10 September 2026](https://www.ice.co.il/law/news/article/1129448)).
-  If the ban goes ahead and the feeds empty there, remove Holon's areas from
-  the three Israeli feeds and its outline from `data/town-outlines.json`.
+  If the city decides again to stop the service, the operators get at least
+  two weeks' notice
+  ([Globes, 10 September 2026](https://www.globes.co.il/news/article.aspx?did=1001555199)).
+  On 29 October 2026 no new decision or ruling had been reported in the
+  press, and Bird's feed held 131 to 137 available scooters in Holon that
+  afternoon, with 19 arrivals in 80 minutes. Search the Hebrew press again
+  (ice, Globes, Walla, Israel Hayom; Holon's site doesn't answer outside
+  Israel). If the ban goes ahead and the feeds empty there, remove Holon's
+  areas from Bird's and Lime's feeds and its outline from
+  `data/town-outlines.json`.
 - **Saturday 21 November 2026, or a Saturday after:** Hatta, in Dott's Dubai
   feed, by day: 12 or 13 scooters, which none rode on 15 October 2026. If they
   are ridden, add Hatta as an area of `dott_ae_dubai`, with bounds of Dott's

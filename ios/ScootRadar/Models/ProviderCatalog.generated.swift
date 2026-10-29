@@ -3028,6 +3028,7 @@ enum ScooterProviderCoverage {
         systems.append((.bird, GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683)))
         systems.append((.bird, GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588)))
         systems.append((.bird, GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758)))
+        systems.append((.bird, GeoBounds(south: 32.4584, west: 34.9238, north: 32.504, east: 34.9678)))
         systems.append((.lime, GeoBounds(south: 32.0251, west: 34.7391, north: 32.1489, east: 34.8491)))
         systems.append((.lime, GeoBounds(south: 32.0329, west: 34.7943, north: 32.1069, east: 34.8577)))
         systems.append((.lime, GeoBounds(south: 32.0624, west: 34.8414, north: 32.1172, east: 34.9241)))
@@ -3871,7 +3872,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1077)
+        cities.reserveCapacity(1078)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -4633,6 +4634,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "il:Ashdod", name: "Ashdod", countryCode: "IL", center: GeoPoint(latitude: 31.7977, longitude: 34.653), bounds: GeoBounds(south: 31.7561, west: 34.60202, north: 31.8442, east: 34.683), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_000"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_001"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_002"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_003"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_004"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_005"), ScooterCityFeed(id: "israel:lime_il_app_ashdod_006")]))
         cities.append(ScooterCity(id: "il:Bnei Brak", name: "Bnei Brak", countryCode: "IL", center: GeoPoint(latitude: 32.0874, longitude: 34.8324), bounds: GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
         cities.append(ScooterCity(id: "il:Ramat HaSharon", name: "Ramat HaSharon", countryCode: "IL", center: GeoPoint(latitude: 32.1431, longitude: 34.8381), bounds: GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]))
+        cities.append(ScooterCity(id: "il:Caesarea", name: "Caesarea", countryCode: "IL", center: GeoPoint(latitude: 32.4812, longitude: 34.9458), bounds: GeoBounds(south: 32.4584, west: 34.9238, north: 32.504, east: 34.9678), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]))
         cities.append(ScooterCity(id: "il:Petah Tikva", name: "Petah Tikva", countryCode: "IL", center: GeoPoint(latitude: 32.0878, longitude: 34.886), bounds: GeoBounds(south: 32.0624, west: 34.8414, north: 32.1172, east: 34.9241), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
         cities.append(ScooterCity(id: "il:Kiryat Ono", name: "Kiryat Ono", countryCode: "IL", center: GeoPoint(latitude: 32.0592, longitude: 34.8594), bounds: GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
         cities.append(ScooterCity(id: "il:Givat Shmuel", name: "Givat Shmuel", countryCode: "IL", center: GeoPoint(latitude: 32.0769, longitude: 34.8525), bounds: GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
@@ -4954,7 +4956,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1077
+    static let cityCount = 1078
     static let countryCount = 56
 
     /// Cities by distance from the point to their centre, nearest first.
