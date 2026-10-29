@@ -382,7 +382,12 @@ finishes, the requested one first, replaces them as it goes. The groups a wide
 view leaves idle stand faded the same way, and count in the answer's state
 neither as served nor as failed. Country totals fill as the background scan completes;
 they describe the latest completed inventory, up to three days old where
-nobody looks, not simultaneous fleet counts.
+nobody looks, not simultaneous fleet counts. Hamilton's 707 at 12:49 NZDT on
+30 October 2026 summed its twelve groups read at different times: the six
+nearest the middle of the city within the hour, for a view of it, one three
+hours before, and five round its edges 41 to 53 hours before, by day on 28
+October, which nobody had looked at since and whose sweeps were due on 31
+October. Lime's map was not stale: it answered the view's six at once.
 
 Calls start at most once every five seconds per configured account across its
 Lime feeds. HTTP 429 pauses that account's client for Retry-After, with a minimum one-minute cooldown. The
