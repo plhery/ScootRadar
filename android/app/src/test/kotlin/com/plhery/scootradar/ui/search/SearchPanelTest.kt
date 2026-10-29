@@ -10,8 +10,11 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotFocused
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -33,6 +36,7 @@ import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.ui.theme.ScootTheme
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -41,7 +45,10 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import java.util.Locale
 
-/** What the open search does with Return and a hardware keyboard's Tab, and what TalkBack hears of its results. */
+/**
+ * What the open search does with Return and a hardware keyboard's Tab, and what TalkBack hears of its field and its
+ * results.
+ */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w390dp-h844dp-xhdpi")
 class SearchPanelTest {
@@ -101,6 +108,32 @@ class SearchPanelTest {
         assertEquals(1, selected.size)
         assertEquals(true, selected.single().config[SemanticsProperties.Selected])
         assertTrue(hasText("Bahnhofstrasse", substring = true).matches(selected.single()))
+    }
+
+    /**
+     * UI-256: the field is labelled "City or address" whatever is typed, as VoiceOver reads the field's title: the
+     * label is read with the text, as a text of the field's own, and the field has no description, which TalkBack
+     * would read instead of the text. ui/SearchFieldLabelTest checks the node TalkBack is given.
+     */
+    @Test
+    fun theFieldKeepsItsLabelOnceSomethingIsTyped() {
+        show("")
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).fetchSemanticsNode().config.let { field ->
+            assertEquals("", field[SemanticsProperties.EditableText].text)
+            assertEquals(listOf("City or address"), field[SemanticsProperties.Text].map { it.text })
+            assertFalse(SemanticsProperties.ContentDescription in field)
+        }
+
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahnhof")
+        compose.waitForIdle()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).fetchSemanticsNode().config.let { field ->
+            assertEquals("Bahnhof", field[SemanticsProperties.EditableText].text)
+            assertEquals(listOf("City or address"), field[SemanticsProperties.Text].map { it.text })
+            assertFalse(SemanticsProperties.ContentDescription in field)
+        }
+        // A part of the field TalkBack reads, not hidden from it.
+        compose.onNode(hasText("City or address") and hasAnyAncestor(hasTestTag(SEARCH_FIELD_TAG)), useUnmergedTree = true)
+            .assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.HideFromAccessibility))
     }
 
     @Test

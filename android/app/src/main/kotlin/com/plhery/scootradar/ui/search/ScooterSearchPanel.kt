@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -274,15 +275,17 @@ private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, o
             keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
             decorationBox = { field ->
                 Box(contentAlignment = Alignment.CenterStart) {
-                    if (query.isEmpty()) {
-                        Text(
-                            localized("City or address"),
-                            style = textStyle,
-                            color = colors.tertiaryLabel,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                    // The placeholder, drawn while nothing is typed, stays the field's label after: TalkBack reads it
+                    // with the text, as VoiceOver reads the field's title (UI-256). A contentDescription would be read
+                    // instead of the text.
+                    Text(
+                        localized("City or address"),
+                        style = textStyle,
+                        color = colors.tertiaryLabel,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = if (query.isEmpty()) Modifier else Modifier.drawWithContent {},
+                    )
                     field()
                 }
             },
