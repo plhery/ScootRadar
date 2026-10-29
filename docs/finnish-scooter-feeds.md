@@ -168,6 +168,17 @@ scooter on the map, has none.
   ([city of Tampere](https://www.tampere.fi/ajankohtaista/2026/03/16/sahkopotkulautakausi-kaynnistyy-kaupunki-muistuttaa-rajoituksista-ja)),
   so neither end can be read ahead; the City had announced no end to the
   2026 season by 29 October 2026.
+- **Jyväskylä** bans nothing: since 1 May 2026 its licence terms make the
+  companies slow their scooters to 15 km/h every night from 22:00 to 06:00,
+  and give riders a reaction test from 22:00 to 06:00 on Friday and Saturday
+  nights and on the Vappu and Midsummer nights
+  ([licence terms](https://www.jyvaskyla.fi/sites/default/files/2026-03/Mikroliikenneluvan_lupaehdot_01052026_alkaen.pdf),
+  §§ 8 and 10). Voi and Ryde run there; Ryde isn't on the map
+  ([City of Jyväskylä](https://www.jyvaskyla.fi/ajankohtaista/sahkoskuuttailijan-muistilista),
+  4 May 2026). The map gives Jyväskylä no season (`seasonal`): the terms let
+  scooters run on snow-free ground, at least to 15 October and then while
+  the weather allows, cleared on 48 hours' notice; the 2026 season began on
+  19 March, and no end was announced by 29 October 2026.
 
 ## Licences
 
@@ -182,7 +193,7 @@ scooter on the map, has none.
   map shows Dott's and Voi's scooters there from their app maps
   ([Dott](dott-app-map.md), [Voi](voi-app-map.md)); Ryde's and Bolt's are not
   on it. Bolt's only public scooter feeds in Europe are Brussels and Liverpool.
-- **Ryde** (Helsinki, Espoo, Vantaa, Tampere, Turku), rechecked on 28 October
+- **Ryde** (Helsinki, Espoo, Vantaa, Tampere, Turku, Jyväskylä), rechecked on 28 October
   2026: it publishes GBFS only through Entur, for its sixteen Norwegian
   systems, and through NRW's closed data hub (factsheet 465, ten German
   zones). MobilityData's registry lists no Finnish system, Transitous's

@@ -1087,9 +1087,10 @@ Rules that read like bans but are not, or that no primary source confirms:
   [Shared Micromobility Program page](https://bouldercolorado.gov/services/shared-micromobility-program)
   gives no hours now, and Lime's map held 800 scooters there at 03:18 MDT on
   26 October 2026.
-- **Boise:** scooters slow to 10 mph downtown from 18:00 to 03:00
-  ([city news, October 2025](https://www.cityofboise.org/news/planning-and-development-services/2025/october/city-of-boise-strengthens-greenbelt-downtown-pedestrian-and-rider-safety-efforts/)):
-  a speed limit, not a ban.
+- **Boise:** Lime's scooters and e-bikes are capped at 10 mph downtown from
+  18:00 to 03:00 and at 12 mph on the Greenbelt at all hours
+  ([city news, 23 October 2025](https://www.cityofboise.org/news/planning-and-development-services/2025/october/city-of-boise-strengthens-greenbelt-downtown-pedestrian-and-rider-safety-efforts/)):
+  speed limits, not a ban.
 - **Scottsdale:** the city's
   [bikes and scooters page](https://www.scottsdaleaz.gov/codes-and-ordinances/bikes-scooters)
   sets no hours; an Old Town rule for 23:30 to 05:00 was only proposed.

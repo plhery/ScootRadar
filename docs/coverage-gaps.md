@@ -478,7 +478,7 @@ banned shared scooters, and feeds that were empty when checked.
     Helsinki, Espoo, Vantaa and Tampere, and Voi's from its rider map, in
     Helsinki, Turku, Tampere and Jyväskylä ([Dott](dott-app-map.md),
     [Voi](voi-app-map.md)). Ryde, which also runs in Helsinki, Espoo, Vantaa,
-    Tampere and Turku, has no feed and isn't on the map. Bolt publishes none,
+    Tampere, Turku and Jyväskylä, has no feed and isn't on the map. Bolt publishes none,
     and its Helsinki market had no scooter on 25 October 2026. Dott's 40 Finnish regions in the registry don't answer: 34
     answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
     paused, probably for the winter. Bird Helsinki's feed is empty and stamped
