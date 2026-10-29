@@ -109,6 +109,14 @@ class MapCamera(
     var movesToPlaces = 0
         private set
 
+    /**
+     * How many times the screen updated the map, which ScooterMap counts, and how many times the map came to rest
+     * somewhere new: a screen at rest adds to neither, as on the iPhone's coordinator (MAP-246).
+     */
+    internal var updates = 0
+    var regionChanges = 0
+        private set
+
     /** The scooter or bay chosen last, and until when, in the uptime's milliseconds, the map keeps it clear of the panel. */
     private var watchedSelection: Pair<String, Long>? = null
 
@@ -546,6 +554,7 @@ class MapCamera(
     /** The map at rest, in the order the iPhone's regionDidChange keeps (MAP-053). */
     private fun regionDidChange(animated: Boolean) {
         if (view.width == 0 || view.height == 0) return
+        regionChanges += 1
         memory.position = map.cameraPosition
         rested?.invoke(animated)
         moveAgainForNewSize()

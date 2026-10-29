@@ -8,6 +8,16 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import com.plhery.scootradar.app.NotDeterminedLocationManager
@@ -21,6 +31,7 @@ import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.ui.ScooterMapScreen
+import com.plhery.scootradar.ui.theme.ScootTheme
 import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertNotNull
@@ -115,15 +126,18 @@ fun withPhoneMap(camera: CameraPosition? = null, test: (PhoneMap) -> Unit) {
 }
 
 /**
- * The app's map screen in an activity, with the [controller] a test gives it, opening on Zürich: the [test] has its
- * map once its camera is made.
+ * The app's map screen in an activity, with the [controller] a test gives it, opening on Zürich, its text at
+ * [textScale] or the phone's: the [test] has its map once its camera is made.
  */
-fun withAppMap(controller: ScooterMapController, test: (PhoneMap) -> Unit) {
+fun withAppMap(controller: ScooterMapController, textScale: Float? = null, test: (PhoneMap) -> Unit) {
     ActivityScenario.launch(ComponentActivity::class.java).use { scenario ->
         val tiles = GroundTiles.openFreeMap(OkHttpClient())
         scenario.onActivity { activity ->
             activity.setContent {
-                ScooterMapScreen(controller = controller, map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) })
+                val given = LocalDensity.current
+                CompositionLocalProvider(LocalDensity provides Density(given.density, textScale ?: given.fontScale)) {
+                    ScooterMapScreen(controller = controller, map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) })
+                }
             }
         }
         val start = SystemClock.uptimeMillis()
@@ -141,6 +155,59 @@ fun withAppMap(controller: ScooterMapController, test: (PhoneMap) -> Unit) {
         }
         assertTrue(ready.await(10, TimeUnit.SECONDS))
         test(PhoneMap(scenario, view!!, map))
+    }
+}
+
+/** ScooterMap as a screen shows it, in the appearance and contrast a test switches. */
+class ThemedMap(val phone: PhoneMap, val dark: MutableState<Boolean>, val contrast: MutableState<Boolean>) {
+    val camera: MapCamera get() = phone.view.camera!!
+
+    fun style(): Style = phone.map.style!!
+}
+
+/**
+ * ScooterMap alone, filling the window or `width` by `height` points laid out past the screen's edges as it needs
+ * to be, in the theme the test switches, with the chrome's frames a test gives it or none. The [test] has it once
+ * its ground is drawn.
+ */
+fun withScooterMap(
+    controller: ScooterMapController,
+    start: ScooterMapStart,
+    width: Int? = 390,
+    height: Int? = 844,
+    chrome: MapChromeFrames? = null,
+    test: (ThemedMap) -> Unit,
+) {
+    val dark = mutableStateOf(false)
+    val contrast = mutableStateOf(false)
+    ActivityScenario.launch(ComponentActivity::class.java).use { scenario ->
+        val tiles = GroundTiles.openFreeMap(OkHttpClient())
+        scenario.onActivity { activity ->
+            activity.setContent {
+                ScootTheme(dark = dark.value, increasedContrast = contrast.value) {
+                    CompositionLocalProvider(LocalMapChrome provides chrome) {
+                        Box(if (width != null && height != null) Modifier.requiredSize(width.dp, height.dp) else Modifier.fillMaxSize()) {
+                            ScooterMap(controller, start, MapCameraMemory(), tiles, dark.value)
+                        }
+                    }
+                }
+            }
+        }
+        var view: ScooterMapView? = null
+        val began = SystemClock.uptimeMillis()
+        while (view == null && SystemClock.uptimeMillis() - began < 30_000) {
+            scenario.onActivity { activity -> view = mapView(activity.window.decorView)?.takeIf { it.camera != null } }
+            if (view == null) Thread.sleep(200)
+        }
+        assertNotNull("the map's camera", view)
+        val ready = CountDownLatch(1)
+        lateinit var map: MapLibreMap
+        scenario.onActivity { view!!.getMapAsync { map = it; ready.countDown() } }
+        assertTrue(ready.await(10, TimeUnit.SECONDS))
+        val shown = PhoneMap(scenario, view!!, map)
+        while (!shown.onMain { map.style?.isFullyLoaded == true } && SystemClock.uptimeMillis() - began < 60_000) Thread.sleep(200)
+        assertTrue("the style", shown.onMain { map.style?.isFullyLoaded == true })
+        test(ThemedMap(shown, dark, contrast))
     }
 }
 

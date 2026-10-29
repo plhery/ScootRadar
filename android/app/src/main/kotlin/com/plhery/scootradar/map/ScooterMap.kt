@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -167,6 +168,8 @@ fun ScooterMap(
             watch = null
         }
     }
+    // Each update of the map by the screen, as SwiftUI's updateUIView: a screen at rest makes none (MAP-246).
+    SideEffect { camera?.let { it.updates += 1 } }
     LaunchedEffect(ground, look) { ground?.show(look) }
     LaunchedEffect(camera, mapKit) { camera?.mapKit = mapKit }
     LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
