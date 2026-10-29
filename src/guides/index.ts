@@ -283,6 +283,8 @@ import sanJoseEn from './en/e-scooters-san-jose';
 import albuquerqueEn from './en/e-scooters-albuquerque';
 import vasterasEn from './en/e-scooters-vasteras';
 import norrkopingEn from './en/e-scooters-norrkoping';
+import vinaDelMarEs from './es/scooters-electricos-vina-del-mar';
+import gavleEn from './en/e-scooters-gavle';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -566,4 +568,6 @@ export const GUIDES: readonly Guide[] = [
   albuquerqueEn,
   vasterasEn,
   norrkopingEn,
+  vinaDelMarEs,
+  gavleEn,
 ];
