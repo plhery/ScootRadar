@@ -300,6 +300,9 @@ class ScooterMarkerScene(
 
     private var appliedLook: LookInputs? = null
 
+    /** How many times the look was worked out: a pan at one zoom and bearing adds none (MAP-237). */
+    internal var lookPasses = 0
+
     /** The scooters that carry their name, in the order the names are placed. */
     var namedIDs: List<String> = emptyList()
         private set
@@ -563,6 +566,7 @@ class ScooterMarkerScene(
         if (inputs == appliedLook) return
         val previous = appliedLook
         appliedLook = inputs
+        lookPasses += 1
 
         val marks = marksByID.values.toList()
         if (previous?.revision != inputs.revision || previous?.origin != inputs.origin) {
