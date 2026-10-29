@@ -322,11 +322,14 @@ banned shared scooters, and feeds that were empty when checked.
     2026; its feed and zone remain.
 - **Sweden** ([guide](swedish-scooter-feeds.md#known-gaps)): Lime in Uppsala
   and Hopp in Kiruna are covered.
-  - Voi, Bolt, Ryde (Uppsala, Göteborg) and Dott (Göteborg) publish no
-    public feed. Voi's scooters in 15 towns come from its rider map since 24
-    October 2026, and Bolt's in Stockholm, Malmö and Lund from its
+  - Voi, Bolt and Ryde (Uppsala, Göteborg, Malmö) publish no public feed.
+    Voi's scooters in 15 towns come from its rider map since 24 October
+    2026, and Bolt's in Stockholm, Malmö and Lund from its
     [rider map](bolt-app-map.md) since 25 October; Bolt's Göteborg market was
-    empty that day. Ryde's and Dott's remain gaps.
+    empty that day. Ryde's remain a gap: Malmö gave it the largest share of
+    its cap, 1,000 of 2,800 scooters from 1 October 2026, and Göteborg lists
+    it beside Voi and Lime (October 2026). Dott names no Swedish town
+    (29 October 2026); Göteborg's list no longer has it.
   - Dott's 12 Swedish regions in the registry (Göteborg, Eskilstuna,
     Helsingborg and others) answer 404, and its Swedish listing is empty.
   - Lime Stockholm, Göteborg and Malmö answer 404. Lime's Göteborg and

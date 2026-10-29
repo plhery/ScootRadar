@@ -133,7 +133,7 @@ const guide: Guide = {
       heading: 'Solna, Sundbyberg, Nacka and the rest of Sweden',
       blocks: [
         'The cap, bays and no-parking areas above are the City of Stockholm’s; its neighbours set their own terms. **Solna** has one-year agreements with Voi and Bolt, whose scooters stand at 52 marked stations (2 July 2026). **Nacka** has an agreement with Voi, for western Sicklaön up to Nacka Forum and Kvarnholmen (10 July 2026), and decided in May 2022 to charge companies SEK 1,400 a scooter a year. For **Sundbyberg** we found no current list; on 25 October the map showed only Voi there.',
-        'Elsewhere in Sweden the map shows, among other towns, Voi and Lime in [Uppsala](map:se:Uppsala) and [Gothenburg](map:se:Göteborg), Voi, Bolt and Lime in [Malmö](map:se:Malmö), and Voi and Bolt in Lund. Unlike Stockholm, [Oslo](guide:oslo) stops rentals every night and [Helsinki](guide:helsinki) on weekend nights.',
+        'Elsewhere in Sweden the map shows, among other towns, Voi and Lime in [Uppsala](map:se:Uppsala) and [Gothenburg](map:se:Göteborg), Voi, Bolt and Lime in [Malmö](map:se:Malmö), and Voi and Bolt in Lund. **Ryde**, which isn’t on the map, also rents scooters in Malmö, where it has the largest share of the City’s cap, 1,000 of 2,800 from 1 October 2026 (8 September 2026), and in Gothenburg, whose City lists it beside Voi and Lime (October 2026). Unlike Stockholm, [Oslo](guide:oslo) stops rentals every night and [Helsinki](guide:helsinki) on weekend nights.',
       ],
     },
     {
@@ -202,6 +202,8 @@ const guide: Guide = {
     { title: 'Solna stad: E-scooters in Solna (updated 2 July 2026)', url: 'https://www.solna.se/bygga-bo--miljo/trafik-och-framkomlighet/cykla-i-solna/elsparkcyklar-i-solna' },
     { title: 'Nacka kommun: E-scooters (updated 10 July 2026)', url: 'https://www.nacka.se/stadsutveckling-trafik/cykla-i-nacka/elsparkcyklar/' },
     { title: 'Nacka kommun: Fee for renting out e-scooters (25 May 2022)', url: 'https://www.nacka.se/stadsutveckling-trafik/trafik-och-resande/nyheter-om-trafik-vagar-och-resande/2022/05/nacka-kommun-infor-avgift-for-uthyrning-av-elsparkcyklar/' },
+    { title: 'Malmö stad: Minutes of the traffic committee, § 69 (8 September 2026)', url: 'https://motenmedborgarportal.malmo.se/committees/tekniska-namndens-trafikutskott/mote-2026-09-08/protocol/protokoll-tru-2026-09-08pdf?downloadMode=open' },
+    { title: 'Göteborgs Stad: Delade elsparkcyklar och elcyklar', url: 'https://goteborg.se/wps/portal/start/trafik-och-resor/trafik-och-gator/cykling-och-cykelvagar/delade-elsparkcyklar-och-elcyklar' },
     { title: 'Chalmers: Alcohol behind many fatal e-scooter crashes (2 July 2026)', url: 'https://www.chalmers.se/aktuellt/nyheter/me-kraftig-berusning-bakom-manga-dodsolyckor-med-elsparkcykel/' },
   ],
 };

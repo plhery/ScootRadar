@@ -122,7 +122,7 @@ const guide: Guide = {
         'Når du leier, gjelder både trafikkreglene og operatørens vilkår, og flere operatører har høyere aldersgrense enn loven. Ifølge regjeringen har mange utleieselskaper allerede 15 eller 16 år som grense.',
         {
           list: [
-            '**Ryde:** minst 16 år, etter vilkårene for Norge (oktober 2026; i august 2026 var grensen 15 år). Kontoen er personlig, og Ryde kan kontrollere opplysningene dine.',
+            '**Ryde:** minst 16 år, etter vilkårene for Norge (oktober 2026; i august 2026 var grensen 15 år). Kontoen er personlig, og Ryde kan kontrollere opplysningene dine. På kveldstid i helgene må du ta en reaksjonstest før turen, skriver Ryde.',
             '**Bolt:** fra 1. desember 2026 minst 16 år, etter Bolts nye vilkår for Norge. Hvilken grense som gjelder før det, ser du i appen. Bolt kan be om bilde av førerkortet eller annen legitimasjon, og for å låse opp i topptimer må du bestå en kognitiv reaksjonstest.',
             '**Voi og Dott:** sjekk appen for aldersgrense og eventuell ID-kontroll.',
           ],
@@ -220,6 +220,7 @@ const guide: Guide = {
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy på offentlig grunn, Arendal', url: 'https://lovdata.no/forskrift/2025-02-27-363' },
     { title: 'Arendal kommune: Elsparkesykler', url: 'https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
     { title: 'Sarpsborg kommune: Utleie av elsparkesykler i Sarpsborg', url: 'https://sarpsborg.com/byggesak-og-teknisk/utleie-av-elsparkesykler-i-sarpsborg/' },
   ],
 };

@@ -261,9 +261,17 @@ now route them, so each town can be searched by name; no new feed is read.
 - **Night rules:** the feed gives opening hours of `24/7`, and no zone carries
   times. Böblingen's
   [voluntary commitment for operators](https://www.boeblingen.de/site/Boeblingen-Internet/get/params_E-497274273/25086993/Selbstverpflichtungserkl%C3%A4rung%20Stadt%20B%C3%B6blingen%20mit%20Anlagen.pdf)
-  sets no-parking areas, groups of at most five scooters, at most 50 per
-  operator in the town centre and a complaints service, but no night ban. No rule on shared scooters was found for
-  Sindelfingen. No curfew was added.
+  sets no-parking areas, groups of at most five scooters, at most 100 per
+  operator in the business area and 50 in the town centre (2022), and a
+  complaints service, but no night ban; it does not replace a special-use
+  permit (Sondernutzungserlaubnis). Sindelfingen's
+  [e-scooter page](https://www.sindelfingen.de/verkehr-mobilitaet/fahrzeuge-teilen/e-scooter)
+  names Lime, Dott and Voi and a voluntary commitment, bans riding in parks
+  and the forest and parking at the Marktplatz, the Wettbachplatz, the
+  station and the bus station, but sets no night ban either (checked 29
+  October 2026). No curfew was added.
+- **Zone name:** on 28 October 2026 the feed named the zone "Stuttgart -
+  Adestraße 30, 70435 Stuttgart-Zuffenhausen", no longer "Stuttgart - New".
 
 ## Zeus's move to ATOM Mobility, October 2026
 

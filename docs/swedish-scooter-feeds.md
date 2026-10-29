@@ -111,8 +111,14 @@ No covered Swedish town bans renting at night, so
   Lime's Stockholm feed answers 404.
 - **Uppsala** has Voi and Ryde besides Lime, and neither publishes a feed,
   so the map shows Lime's part of the up to 4,500 scooters only.
-- **Voi** (Göteborg, Malmö and other towns), **Ryde** and **Dott**
-  (Göteborg) publish no public feed either.
+- **Voi** (Göteborg, Malmö and other towns) and **Ryde** (Göteborg, Malmö)
+  publish no public feed either. Ryde has the largest share of Malmö's cap,
+  1,000 of 2,800 scooters from 1 October 2026 to 31 March 2027
+  ([traffic committee, 8 September 2026](https://motenmedborgarportal.malmo.se/committees/tekniska-namndens-trafikutskott/mote-2026-09-08/protocol/protokoll-tru-2026-09-08pdf?downloadMode=open)),
+  and [Göteborg](https://goteborg.se/wps/portal/start/trafik-och-resor/trafik-och-gator/cykling-och-cykelvagar/delade-elsparkcyklar-och-elcyklar)
+  lists it beside Voi and Lime (October 2026): neither town's Ryde scooters
+  are on the map. Dott, which held a Göteborg permit until 31 March 2026,
+  is no longer on the City's list.
 - **Dott:** all 12 Swedish regions in the registry (Eskilstuna, Göteborg,
   Helsingborg, Höganäs, Jönköping, Lidköping, Partille, Skövde, Trollhättan,
   Varberg, Värnamo, Växjö) answer 404 `ERR_REGION_NOT_FOUND`, and Dott's
