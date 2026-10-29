@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The night of public/icon.svg, the drawing the iPhone's icon is made from (scripts/generate-icons.mjs): its 1024
+     square is the 72 dp an adaptive icon shows, 256 in from each side of these 108 dp, and the night reaches the
+     edges, which a launcher's motion may show. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="1536"
+    android:viewportHeight="1536">
+    <path
+        android:fillColor="#090B10"
+        android:pathData="M0,0h1536v1536h-1536z" />
+    <path android:pathData="M0,0h1536v1536h-1536z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="768"
+                android:centerY="481.28"
+                android:gradientRadius="870.4"
+                android:type="radial">
+                <item
+                    android:color="#FF1B2232"
+                    android:offset="0" />
+                <item
+                    android:color="#001B2232"
+                    android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The scooter alone, for a themed icon, which the launcher tints: the foreground's strokes without the glow, the
+     deck in the colour of the rest. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="1536"
+    android:viewportHeight="1536">
+    <group
+        android:translateX="256"
+        android:translateY="256">
+        <group
+            android:scaleX="2.25"
+            android:scaleY="2.25"
+            android:translateX="-68.5"
+            android:translateY="-77.12">
+            <path
+                android:pathData="M100,346a42,42 0,1 0,84 0a42,42 0,1 0,-84 0M332,346a42,42 0,1 0,84 0a42,42 0,1 0,-84 0M178,322h124l43,-58 15,42M345,264L311,136M281,136h47"
+                android:strokeWidth="24"
+                android:strokeColor="#FFFFFFFF"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round" />
+        </group>
+    </group>
+</vector>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- systemBackground, as the iPhone's launch screen has it in light. -->
+    <color name="launch_background">#FFFFFF</color>
+</resources>

@@ -2,5 +2,9 @@
 <resources>
     <!-- AppCompat's, so that it applies a language chosen for the app on Android 12 as the activity starts.
          Light or dark follows the window's night mode, which the app's appearance sets. -->
-    <style name="Theme.ScootRadar" parent="Theme.AppCompat.DayNight.NoActionBar" />
+    <style name="Theme.ScootRadar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- The iPhone's generated launch screen: the system's background, white or black, and no logo (UI-372). -->
+        <item name="android:windowSplashScreenBackground">@color/launch_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+    </style>
 </resources>

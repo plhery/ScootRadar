@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The scooter of public/icon.svg, its deck lit, at the iPhone icon's size: on its 1024 square, 256 in from each side
+     of these 108 dp, its farthest point is 444 from the centre, inside the 469 of the 66 dp every mask leaves. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="1536"
+    android:viewportHeight="1536">
+    <group
+        android:translateX="256"
+        android:translateY="256">
+        <path android:pathData="M148.18,647.38a331.2,331.2 0,1 0,662.4 0a331.2,331.2 0,1 0,-662.4 0z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:centerX="479.38"
+                    android:centerY="647.38"
+                    android:gradientRadius="331.2"
+                    android:type="radial">
+                    <item
+                        android:color="#9E2F7BFF"
+                        android:offset="0" />
+                    <item
+                        android:color="#9E2F7BFF"
+                        android:offset="0.28" />
+                    <item
+                        android:color="#002F7BFF"
+                        android:offset="1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <group
+            android:scaleX="2.25"
+            android:scaleY="2.25"
+            android:translateX="-68.5"
+            android:translateY="-77.12">
+            <path
+                android:pathData="M100,346a42,42 0,1 0,84 0a42,42 0,1 0,-84 0M332,346a42,42 0,1 0,84 0a42,42 0,1 0,-84 0M178,322h124l43,-58 15,42M345,264L311,136M281,136h47"
+                android:strokeWidth="24"
+                android:strokeColor="#F4F5F7"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round" />
+            <path
+                android:pathData="M207,322h73"
+                android:strokeWidth="24"
+                android:strokeColor="#2F7BFF" />
+        </group>
+    </group>
+</vector>
