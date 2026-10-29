@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Nottingham e-scooter hire: Dott, and 15 months without scooters',
       blocks: [
-        'One company, **Dott**, runs Nottingham’s shared e-scooters, under a Nottingham City Council concession awarded to its UK arm, TIER Operations Ltd. Dott launched on 26 March 2025 with around 1,300 e-scooters, the council’s figure, and added e-bikes on 17 July 2026. **Lime** runs e-bikes only: there are no Lime e-scooters in Nottingham.',
+        'One company, **Dott**, runs Nottingham’s shared e-scooters, under a contract with Nottingham City Council; its UK arm, TIER Operations Ltd, provides the rides, Dott’s terms say. Dott launched on 26 March 2025 with around 1,300 e-scooters, the council’s figure, and added e-bikes on 17 July 2026. **Lime** runs e-bikes only: there are no Lime e-scooters in Nottingham.',
         '**Wind** launched the trial in October 2020, and its fleet switched to **Superpedestrian’s LINK** scooters in December 2021. The scheme was withdrawn in December 2023, when Superpedestrian shut down its UK operations, Cities Today reported, leaving Nottingham without hire scooters for about 15 months.',
         'The council describes Dott’s contract as a five-year deal with a break clause in May 2028, when the national trials are due to end. Pages that still say the trial ends in May 2026 are out of date.',
         'On the afternoon of 14 October 2026 the [map of Nottingham](map:gb:Nottingham) showed about 750 Dott e-scooters: a snapshot, not the fleet size. It doesn’t show e-bikes. Tap a scooter to open the Dott app, where you unlock and pay.',
@@ -178,7 +178,6 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Transport Nottingham: Electric scooter rental trial (updated August 2026)', url: 'https://www.transportnottingham.com/article/electric-scooter-rental-trial/' },
-    { title: 'Contracts Finder: CPU 6549 Public e-scooter hire operator concession, award', url: 'https://www.contractsfinder.service.gov.uk/Notice/a1c8e67d-9891-4124-82fa-b0d5359a3569' },
     { title: 'Cities Today: E-scooters return to Nottingham streets (2 August 2024)', url: 'https://cities-today.com/e-scooters-return-to-nottingham-streets/' },
     { title: 'University of Nottingham: E-bike and e-scooter hire', url: 'https://www.nottingham.ac.uk/sustainability/transport/cycling/e-bike-and-e-scooter-hire.aspx' },
     { title: 'Dott: Terms and conditions, UK', url: 'https://ridedott.com/terms-and-conditions/uk/' },
