@@ -4,12 +4,15 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import {
-  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, STALE_READS, decodeXml, pagesToSubmit, parseSitemap, readSubmitted, requestBodies,
-  run, submit,
+  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, STALE_READS, decodeXml, notTheBuild, pagesToSubmit, parseSitemap, readSubmitted,
+  requestBodies, run, submit,
 } from './indexnow.mjs';
 
 const origin = 'https://scootradar.example.test';
 const host = 'scootradar.example.test';
+// Made-up commits: the one production moved to, and the one before.
+const build = '1111111111111111111111111111111111111111';
+const buildBefore = '2222222222222222222222222222222222222222';
 const page = (/** @type {string} */ url, /** @type {string | null} */ lastmod = null) => ({ url, lastmod });
 // As src/app/sitemap.ts writes it: each page names its translations, and the map has no date.
 const sitemap = (/** @type {{ url: string, lastmod: string | null }[]} */ pages) => '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -19,10 +22,12 @@ const sitemap = (/** @type {{ url: string, lastmod: string | null }[]} */ pages)
   + '</urlset>\n';
 
 /**
- * A fetch that serves `xml` as the live sitemap and answers IndexNow with `status`. The sitemaps of
- * `stale` come first, marked as Next.js marks the build before's while it renders the new one.
+ * A fetch that serves `xml` as the live sitemap, from `build`, and answers IndexNow with `status`.
+ * The sitemaps of `stale` come first: a text is marked as Next.js marks the build before's while it
+ * renders the new one, and `{ xml, from }` comes unmarked from the build `from`, or none.
  */
-function engine(/** @type {string | null} */ xml, status = 200, /** @type {string[]} */ stale = []) {
+function engine(/** @type {string | null} */ xml, status = 200,
+  /** @type {(string | { xml: string, from: string | null })[]} */ stale = []) {
   /** @type {{ url: string, body: { urlList: string[] } }[]} */
   const posts = [];
   /** @type {string[]} */
@@ -35,8 +40,9 @@ function engine(/** @type {string | null} */ xml, status = 200, /** @type {strin
     }
     gets.push(String(url));
     const before = stale[gets.length - 1];
-    if (before !== undefined) return new Response(before, { status: 200, headers: { 'x-nextjs-cache': 'STALE' } });
-    return xml === null ? new Response('gone', { status: 503 }) : new Response(xml, { status: 200 });
+    if (typeof before === 'string') return new Response(before, { status: 200, headers: { 'x-nextjs-cache': 'STALE' } });
+    if (before) return new Response(before.xml, { status: 200, headers: before.from ? { 'x-scootradar-build': before.from } : {} });
+    return xml === null ? new Response('gone', { status: 503 }) : new Response(xml, { status: 200, headers: { 'x-scootradar-build': build } });
   };
   return { fetchImpl, posts, gets };
 }
@@ -157,7 +163,7 @@ describe('the command', () => {
   };
   const live = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-17'), page(`${origin}/guides/new`, '2026-10-17')]);
   const command = async (/** @type {string[]} */ args, /** @type {string | null} */ xml = live, status = 200, cwd = directory,
-    /** @type {string[]} */ stale = []) => {
+    /** @type {(string | { xml: string, from: string | null })[]} */ stale = []) => {
     /** @type {string[]} */
     const lines = [];
     /** @type {number[]} */
@@ -237,6 +243,45 @@ describe('the command', () => {
     expect(atOrigin()).toBe(start);
   });
 
+  it('reads the sitemap again while the build before still answers it, and submits the new build\'s', async () => {
+    const { clone, atOrigin } = repository();
+    const earlier = sitemap([page(`${origin}/`)]);
+    await command([`--since=${ref}`, origin], earlier, 200, clone);
+    const start = atOrigin();
+    const { code, lines, gets, waits, posts } = await command([`--since=${ref}`, `--build=${build}`, origin], live, 200, clone,
+      [{ xml: earlier, from: buildBefore }, { xml: earlier, from: null }]);
+    expect(code).toBe(0);
+    expect([gets.length, waits]).toEqual([3, [5000, 5000]]);
+    expect(lines.slice(0, 2)).toEqual([
+      `${origin}/sitemap.xml is from build 2222222, not 1111111, reading again in 5 s (read 1 of ${STALE_READS}).`,
+      `${origin}/sitemap.xml is from no named build, not 1111111, reading again in 5 s (read 2 of ${STALE_READS}).`,
+    ]);
+    expect(posts.map(post => post.body.urlList)).toEqual([[`${origin}/guides/a`, `${origin}/guides/new`]]);
+    expect(readSubmitted(ref, clone)?.xml).toBe(live);
+    expect(atOrigin()).not.toBe(start);
+  });
+
+  it('sends nothing and keeps the ref when the build before keeps answering, so a later run sends the pages', async () => {
+    const { clone, atOrigin } = repository();
+    const earlier = sitemap([page(`${origin}/`)]);
+    await command([`--since=${ref}`, origin], earlier, 200, clone);
+    const start = atOrigin();
+    const stale = Array(STALE_READS).fill({ xml: earlier, from: buildBefore });
+    const { code, lines, gets, posts } = await command([`--since=${ref}`, `--build=${build.slice(0, 7)}`, origin], live, 200, clone, stale);
+    expect([code, gets.length, posts.length]).toEqual([1, STALE_READS, 0]);
+    expect(lines.at(-1)).toBe(`${origin}/sitemap.xml could not be read: still from build 2222222, not 1111111 after ${STALE_READS} reads`);
+    expect(atOrigin()).toBe(start);
+  });
+
+  it('takes any build\'s sitemap without --build, as a run by hand does', async () => {
+    const { code, gets, posts } = await command(['--all', origin], live, 200, directory, [{ xml: live, from: buildBefore }]);
+    expect([code, gets.length, posts[0].body.urlList.length]).toEqual([0, 1, 3]);
+    const headers = (/** @type {Record<string, string>} */ fields) => new Headers(fields);
+    expect(notTheBuild(headers({ 'x-scootradar-build': buildBefore }), undefined)).toBeNull();
+    expect(notTheBuild(headers({ 'x-scootradar-build': build.toUpperCase() }), build)).toBeNull();
+    expect(notTheBuild(headers({ 'x-scootradar-build': build, 'x-nextjs-cache': 'STALE' }), build)).toBe('stale');
+  });
+
   it('lists the pages without sending them or moving the ref on a dry run', async () => {
     const { clone, atOrigin } = repository();
     await command([`--since=${ref}`, origin], sitemap([page(`${origin}/`)]), 200, clone);
@@ -260,7 +305,8 @@ describe('the command', () => {
     expect((await command(['--all', origin], null)).code).toBe(1);
     expect((await command(['--all', origin], '<html>Bad gateway</html>')).code).toBe(1);
     for (const args of [[origin], ['--all', `--since=${ref}`, origin], [`--since=indexnow`, origin], ['--all'],
-      ['--all', 'scootradar.example.test'], ['--all', '--endpoint=nowhere', origin], ['--all', '--everything', origin]]) {
+      ['--all', 'scootradar.example.test'], ['--all', '--endpoint=nowhere', origin], ['--all', '--everything', origin],
+      ['--all', '--build=production', origin], ['--all', '--build=111111', origin]]) {
       expect((await command(args)).code, args.join(' ')).toBe(2);
     }
   });

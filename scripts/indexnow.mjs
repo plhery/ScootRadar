@@ -13,10 +13,14 @@
 // next run. Where origin has no such ref, nothing is submitted and the ref starts at the live
 // sitemap. Right after a deploy, Next.js can answer with the sitemap of the build before
 // (`x-nextjs-cache: STALE`) while it renders the new one: a stale sitemap is read again, and one
-// still stale after STALE_READS reads sends nothing. --dry-run lists the pages, and sends and
-// moves nothing; --endpoint=<url> asks one engine directly, such as https://www.bing.com/indexnow.
-// A stale sitemap, a refusal or an unreachable engine exits with 1, which the deploy shows but
-// ignores.
+// still stale after STALE_READS reads sends nothing. --build=<commit> names the commit production
+// moved to: a sitemap whose X-ScootRadar-Build header names another build, or none, is read again
+// the same way, so the build before's is never taken. On 29 Oct 2026 the landing page already
+// named the new build while the sitemap, not marked stale, still came from the one before, and
+// its 299 pages were compared instead of the 301. --dry-run lists the pages, and sends and moves
+// nothing; --endpoint=<url> asks one engine directly, such as https://www.bing.com/indexnow. A
+// stale sitemap, one of another build, a refusal or an unreachable engine exits with 1, which the
+// deploy shows but ignores.
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
@@ -31,7 +35,8 @@ const TIMEOUT_MS = 30_000;
 /** How many times a stale sitemap is read, and how long apart. */
 export const STALE_READS = 10;
 const STALE_WAIT_MS = 5_000;
-const USAGE = 'Usage: node scripts/indexnow.mjs (--since=<ref> | --all) [--dry-run] [--endpoint=<url>] https://scootradar.com';
+const USAGE = 'Usage: node scripts/indexnow.mjs (--since=<ref> | --all) [--build=<commit>] [--dry-run] [--endpoint=<url>]'
+  + ' https://scootradar.com';
 /** The file of the ref's commits that holds the sitemap. */
 const SITEMAP_FILE = 'sitemap.xml';
 
@@ -137,24 +142,40 @@ export async function submit(urls, origin, { endpoint = DEFAULT_ENDPOINT, fetchI
 const sleep = (/** @type {number} */ ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
- * The live sitemap's text. A stale one is read again, STALE_WAIT_MS apart, until Next.js serves
- * the one it rendered for the new build; each such read is logged.
+ * Why a sitemap's answer is not the one to take, or null: Next.js marked it stale, or, with
+ * `build`, its X-ScootRadar-Build header names another build or none.
+ * @param {Headers} headers
+ * @param {string | undefined} build
+ */
+export function notTheBuild(headers, build) {
+  if (headers.get('x-nextjs-cache')?.toUpperCase() === 'STALE') return 'stale';
+  if (build === undefined) return null;
+  const answered = headers.get('x-scootradar-build')?.trim().toLowerCase();
+  if (answered?.startsWith(build)) return null;
+  return `from ${answered ? `build ${answered.slice(0, 7)}` : 'no named build'}, not ${build.slice(0, 7)}`;
+}
+
+/**
+ * The live sitemap's text. A stale one, or one of another build than `build`, is read again,
+ * STALE_WAIT_MS apart, until the new build serves the one it rendered; each such read is logged.
  * @param {string} origin
+ * @param {string | undefined} build
  * @param {typeof fetch} fetchImpl
  * @param {(ms: number) => Promise<unknown>} wait
  * @param {(line: string) => void} log
  */
-async function readSitemap(origin, fetchImpl, wait, log) {
+async function readSitemap(origin, build, fetchImpl, wait, log) {
   for (let read = 1; ; read += 1) {
     const response = await fetchImpl(new URL('/sitemap.xml', origin).href, {
       headers: { 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    if (response.headers.get('x-nextjs-cache')?.toUpperCase() !== 'STALE') return response.text();
+    const why = notTheBuild(response.headers, build);
+    if (why === null) return response.text();
     await response.body?.cancel().catch(() => {});
-    if (read === STALE_READS) throw new Error(`still stale after ${STALE_READS} reads`);
-    log(`${origin}/sitemap.xml is stale, reading again in ${STALE_WAIT_MS / 1000} s (read ${read} of ${STALE_READS}).`);
+    if (read === STALE_READS) throw new Error(`still ${why} after ${STALE_READS} reads`);
+    log(`${origin}/sitemap.xml is ${why}, reading again in ${STALE_WAIT_MS / 1000} s (read ${read} of ${STALE_READS}).`);
     await wait(STALE_WAIT_MS);
   }
 }
@@ -209,7 +230,7 @@ export async function run(args, { fetchImpl = fetch, log = console.log, cwd = pr
   const values = new Map();
   const positional = [];
   for (const argument of args) {
-    const option = argument.match(/^--(?:(all|dry-run)|(since|endpoint)=(.+))$/);
+    const option = argument.match(/^--(?:(all|dry-run)|(since|endpoint|build)=(.+))$/);
     if (option?.[1]) flags.add(option[1]);
     else if (option) values.set(option[2], option[3]);
     else positional.push(argument);
@@ -217,7 +238,9 @@ export async function run(args, { fetchImpl = fetch, log = console.log, cwd = pr
   const origin = positional.length === 1 && !positional[0].startsWith('--') ? httpOrigin(positional[0]) : null;
   const since = values.get('since');
   const endpoint = values.get('endpoint') ?? DEFAULT_ENDPOINT;
-  if (!origin || !httpOrigin(endpoint) || flags.has('all') === (since !== undefined) || (since !== undefined && !since.startsWith('refs/'))) {
+  const build = values.get('build')?.toLowerCase();
+  if (!origin || !httpOrigin(endpoint) || flags.has('all') === (since !== undefined) || (since !== undefined && !since.startsWith('refs/'))
+    || (build !== undefined && !/^[0-9a-f]{7,40}$/.test(build))) {
     log(USAGE);
     return 2;
   }
@@ -234,7 +257,7 @@ export async function run(args, { fetchImpl = fetch, log = console.log, cwd = pr
   }
   let xml;
   try {
-    xml = await readSitemap(origin, fetchImpl, wait, log);
+    xml = await readSitemap(origin, build, fetchImpl, wait, log);
   } catch (error) {
     log(`${origin}/sitemap.xml could not be read: ${reason(error)}`);
     return 1;

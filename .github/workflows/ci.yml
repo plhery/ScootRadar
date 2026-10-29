@@ -249,14 +249,17 @@ jobs:
       # The pages new or redated in the sitemap since IndexNow last took them go to it, which Bing
       # and the engines that use its index read (scripts/indexnow.mjs). refs/indexnow/submitted keeps
       # the sitemap it took, and moves only once it takes them all, so pages a deploy could not send
-      # go with the next. A refusal is shown but never fails the deploy.
+      # go with the next. Only a sitemap whose X-ScootRadar-Build header names the commit production
+      # moved to is taken: the landing page can name it while the sitemap still comes from the build
+      # before. A refusal is shown but never fails the deploy.
       - name: Tell IndexNow about new and redated pages
         if: steps.live.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 2
         env:
+          BUILD: ${{ steps.deploy.outputs.website }}
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-        run: node scripts/indexnow.mjs --since=refs/indexnow/submitted "$SITE"
+        run: node scripts/indexnow.mjs --since=refs/indexnow/submitted --build="$BUILD" "$SITE"

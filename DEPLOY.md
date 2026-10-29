@@ -217,10 +217,14 @@ keeps (a commit of `sitemap.xml`; `git fetch origin refs/indexnow/submitted` and
 `git log -p FETCH_HEAD` show it). Right after a deploy, Next.js can answer with
 the sitemap of the build before, marked `x-nextjs-cache: STALE`, while it
 renders the new one: the job reads it again every 5 seconds, up to 10 times, and
-logs each such read. The ref moves to the live sitemap only once IndexNow takes
-every page, so a page a deploy could not send, because the build was not live in
-time, its sitemap stayed stale or IndexNow refused, goes with the next deploy.
-A stale sitemap or a refusal shows as a warning, not a failure. To send them sooner,
+logs each such read. It does the same while the sitemap's `X-ScootRadar-Build`
+header names another build than the commit `production` moved to (`--build`):
+on 29 October 2026 the landing page named the new build while the sitemap still
+came from the one before, unmarked. The ref moves to the live sitemap only once
+IndexNow takes every page, so a page a deploy could not send, because the build
+was not live in time, its sitemap stayed stale or of the build before, or
+IndexNow refused, goes with the next deploy. A stale sitemap, one of the build
+before or a refusal shows as a warning, not a failure. To send them sooner,
 run `node scripts/indexnow.mjs --since=refs/indexnow/submitted
 https://scootradar.com` once the site is live (`--dry-run` lists the pages and
 sends and moves nothing; `--all` submits every page of the sitemap and leaves
