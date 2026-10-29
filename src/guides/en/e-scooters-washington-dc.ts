@@ -120,7 +120,7 @@ const guide: Guide = {
       heading: 'Scooters across the river in Arlington, Virginia',
       blocks: [
         'Arlington County issues its own permits. On 16 October 2026 the [Arlington map](map:us:va:Arlington) showed about 470 Lime and 300 Bird scooters on the Virginia side (the Hopp and Veo ones there are in DC). Since 24 October our map also shows GCOO: about 250 of its scooters there and 260 in Alexandria at 7 pm that Saturday.',
-        'The county’s rules differ from DC’s. Its 2019 ordinance lets you ride on sidewalks at 6 mph at most, except where a protected bike lane runs the same way, and at up to 15 mph on streets and multi-use trails; give an audible signal before passing people on foot. The Mount Vernon Trail, federal land, stays off-limits.',
+        'The county’s rules differ from DC’s. Its 2019 ordinance lets you ride on sidewalks at 6 mph at most and at up to 15 mph on streets and trails. Stay off the sidewalk where a bike lane runs your way, as Falls Church’s staff summed up the County’s rules in 2025 (the 2019 text named only protected lanes). Virginia law has you give an audible signal before passing people on foot. The Mount Vernon Trail, federal land, stays off-limits.',
       ],
     },
     {
@@ -195,8 +195,9 @@ const guide: Guide = {
     { title: 'Veo: Washington, DC open data (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/xdc/gbfs' },
     { title: 'WMATA: bikes and scooters on Metrorail', url: 'https://www.wmata.com/ride/guides/bikes/bikes-on-rail.html' },
     { title: 'Reagan National Airport: biking and walking', url: 'https://www.flyreagan.com/parking-transportation/biking-walking' },
-    { title: 'Arlington County Board: micro-mobility amendments to County Code Chapter 14.2, Board Report #41, 16 November 2019 (PDF)', url: 'https://arlington.granicus.com/MetaViewer.php?view_id=2&clip_id=3689&meta_id=190316' },
-    { title: 'Arlington County Board: minutes of 16 November 2019, item 41 (PDF)', url: 'https://arlington.granicus.com/DocumentViewer.php?file=arlington_d9ce658504e5ee039db6e0014d6bb5e0.pdf&view=1' },
+    { title: 'Arlington Connection: Arlington to Regulate e-Scooters, 22 November 2019', url: 'https://www.connectionnewspapers.com/news/2019/nov/22/arlington-regulate-e-scooters/' },
+    { title: 'City of Falls Church: Shared Mobility Devices, staff presentation, September 2025 (PDF)', url: 'https://fallschurchva.gov/DocumentCenter/View/23507/Micromobility-Presentation' },
+    { title: 'Code of Virginia § 46.2-904', url: 'https://law.lis.virginia.gov/vacode/title46.2/chapter8/section46.2-904/' },
   ],
 };
 

@@ -78,7 +78,7 @@ const guide: Guide = {
     {
       heading: 'Ben Gurion airport, the Red Line and Rav-Kav',
       blocks: [
-        '**The airport.** Ben Gurion lies about 15 km from Tel Aviv; on 16 October 2026 the nearest Lime scooter on our map stood more than 2.5 km from either terminal. Take the train from the lower level of Terminal 3 to Tel Aviv’s HaHagana, HaShalom and Savidor Center stations, 15 to 20 minutes away. Trains don’t run on Shabbat or Jewish holidays; check the Israel Railways app.',
+        '**The airport.** Ben Gurion lies about 15 km from Tel Aviv; on 29 October 2026 the nearest scooter on our map, a Lime, stood more than 3 km from either terminal. Take the train from the lower level of Terminal 3 to Tel Aviv’s HaHagana, HaShalom and Savidor Center stations, 15 to 20 minutes away. Trains don’t run on Shabbat or Jewish holidays; check the Israel Railways app.',
         '**The Red Line.** Tel Aviv’s light rail runs from Petah Tikva through central Tel Aviv to [Bat Yam](map:il:Bat Yam), with 34 stations. When it opened in August 2023, scooters and bikes could board only if they fold and are folded, Walla reported. A shared scooter can’t go on board: end your ride near the station, in a bay if you’re in the centre, and walk in.',
         '**Rav-Kav and apps.** On the Red Line you validate a Rav-Kav card at the station, not on board, or pay with a payment app.',
       ],
