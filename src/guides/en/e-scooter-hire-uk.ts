@@ -85,7 +85,7 @@ const guide: Guide = {
             '**Price:** Voi charges no unlock fee and 27p a minute, around the clock; Lime shows its London price only in its app. Both have discount schemes.',
           ],
         },
-        'A third phase began in September 2026. TfL signed it with Lime and Voi on 24 July 2026 for up to two years, as far as national law allows (the trials are legal until May 2028), and may extend it by up to four years. Trade press reported that it brings new technology to spot riding two up or on the pavement. TfL’s own trial page still describes the second phase.',
+        'A third phase began on 21 September 2026, again with Lime and Voi, for an initial two years, subject to the Department for Transport’s timescales (the trials are legal until May 2028); TfL’s tender gave it the option of extending by up to four years. Both operators are bringing new technology to spot riding two up or on the pavement, the trade site Micromobility Industries reported. TfL’s own trial page still describes the second phase.',
         'The second phase logged 6.4 million trips from September 2023 to September 2026, and by September 2025, 379 riders had been banned for poor riding or anti-social behaviour. Use the Lime or Voi app, or TfL’s Santander Cycles if you’d rather pedal.',
       ],
     },
@@ -116,7 +116,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter parking bays, and what parking outside them costs',
       blocks: [
-        'In most areas, Liverpool included, a ride can end only in a bay or parking spot shown in the app. Voi in Northamptonshire is the exception: in May 2024 the councils said you may leave its scooters on the pavement, wheeled on and off it, except in no-ride and no-park zones.',
+        'In most areas, Liverpool included, a ride can end only in a bay or parking spot shown in the app. For Voi in Northampton, West Northamptonshire Council’s page doesn’t say: it names only the no-park zones, where a ride can’t end.',
         {
           table: {
             caption: 'Where to end a ride, and what the operators charge, October 2026',
@@ -127,7 +127,7 @@ const guide: Guide = {
               ['Dott', 'In the West of England, only in a parking bay; in Nottingham, at one of about 300 parking locations; in Milton Keynes, at one of about 1,840 parking points, and only at cycle racks in Central Milton Keynes; elsewhere where the app allows', 'In the West of England, £10 outside a bay (£15 outside the area); in Milton Keynes, obstructive parkers “will be warned and may be fined” (January 2026); Dott’s UK terms allow a £50 charge for breaking them'],
               ['Bolt, Liverpool', 'In one of about 1,500 bays shown in the app; your end-of-ride photo is checked by AI', 'Up to £40 under Bolt’s UK terms, and up to £100 to fetch a scooter left outside the area'],
               ['Lime, West Midlands', 'In a designated area shown in the app', 'Charges apply; amounts not published'],
-              ['Voi, outside London', 'At a parking spot in most towns; in Northamptonshire, on the pavement but not in a no-ride or no-park zone (the councils, May 2024)', 'Not published; in West Northamptonshire, the council says ending a ride in a no-park zone brings a fine'],
+              ['Voi, outside London', 'At a parking spot in most towns; in Northampton, the council’s page names only the no-park zones, where a ride can’t end', 'Not published; in West Northamptonshire, the council says ending a ride in a no-park zone brings a fine'],
             ],
           },
         },
@@ -193,7 +193,8 @@ const guide: Guide = {
     { title: 'Transport for London: E-scooter rental trial', url: 'https://tfl.gov.uk/modes/driving/electric-scooter-rental-trial' },
     { title: 'Transport for London: E-scooter rental trial report, 24 August to 20 September 2026', url: 'https://tfl.gov.uk/cdn/static/cms/documents/london-escooter-rental-trial-phase-2-trial-period-39-24-aug-to-20-sept-2026.pdf' },
     { title: 'Transport for London: Commissioner’s report, September 2026', url: 'https://content.tfl.gov.uk/commissioners-report-september-2026.pdf' },
-    { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
+    { title: 'Micromobility Industries: London’s e-scooter trial is moving into Phase 3 (13 March 2026)', url: 'https://micromobility.io/news/londons-e-scooter-trial-is-moving-into-phase-3' },
+    { title: 'Micromobility Industries: Lime and Voi reappointed for London’s e-scooter trial (23 September 2026)', url: 'https://micromobility.io/news/lime-and-voi-reappointed-for-londons-e-scooter-trial' },
     { title: 'Voi: E-scooters and e-bikes in London', url: 'https://www.voi.com/city/london' },
     { title: 'Transport for West Midlands: E-scooters in the West Midlands', url: 'https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/cycling-in-the-west-midlands/e-scooters-in-the-west-midlands/' },
     { title: 'Get Around MK (Milton Keynes City Council): Changes to e-bike and scooter parking (30 October 2024)', url: 'https://getaroundmk.org.uk/news/changes-to-electric-bike-and-scooter-parking' },
@@ -211,7 +212,6 @@ const guide: Guide = {
     { title: 'Leeds City Council: LNER Beryl Bikes', url: 'https://www.leeds.gov.uk/parking-roads-and-travel/connecting-leeds-and-transforming-travel/cycling/lner-beryl-bikes' },
     { title: 'Cornwall Council: Beryl bikes and scooters in Cornwall', url: 'https://www.cornwall.gov.uk/transport-parking-and-streets/sustainable-transport/active-travel-walking-and-cycling/beryl-bikes-and-scooters-in-cornwall/' },
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
-    { title: 'West Northamptonshire Council: Stay off the pavement if you’re riding an e-scooter (24 May 2024, archived)', url: 'https://web.archive.org/web/20251220001448/https://www.westnorthants.gov.uk/news/stay-pavement-if-youre-riding-e-scooter' },
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
     { title: 'Cambridgeshire County Council: Cycling', url: 'https://www.cambridgeshire.gov.uk/residents/travel-roads-and-parking/active-travel-in-cambridgeshire/getting-started/cycling' },
     { title: 'Buckinghamshire Council: Buckinghamshire electric scooter trial', url: 'https://www.buckinghamshire.gov.uk/parking-roads-and-transport/bus-passes-and-travel/buckinghamshire-electric-scooter-trial/' },

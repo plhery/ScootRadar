@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Northampton 2026: Voi hours, rules, parking',
   description: 'E-scooters in Northampton: Voi’s 4am–11pm hire, who can ride, where to ride and park, the protection order, buses and trains, and the trial to May 2027.',
   headline: 'E-scooters in Northampton: Voi hire, the 4am–11pm hours, and where you can ride and park',
-  lede: 'E-scooters in Northampton are run by Voi, in a government trial that West Northamptonshire Council has extended to May 2027, and you can hire one from 4am to 11pm every day. You must be 18 or over with a full or provisional driving licence, and the Voi app shows the price before you unlock. Ride on roads and in cycle lanes, never on pavements. You don’t need a parking bay, the councils said in May 2024, but you can’t end a ride in a no-park zone.',
+  lede: 'E-scooters in Northampton are run by Voi, in a government trial that West Northamptonshire Council has extended to May 2027, and you can hire one from 4am to 11pm every day. You must be 18 or over with a full or provisional driving licence, and the Voi app shows the price before you unlock. Ride on roads and in cycle lanes, never on pavements, and don’t end a ride in a no-park zone: you’ll be fined, the council says.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Northampton',
@@ -51,7 +51,7 @@ const guide: Guide = {
             rows: [
               ['Hours', 'Hire from 4am to 11pm, every day', 'The council’s scheme with Voi (September 2025)', '–'],
               ['Pavements', 'Never: use roads and cycle lanes', 'National law', '£50 fixed penalty; Voi warns and bans riders'],
-              ['One rider', 'No passengers', 'National law; Voi enforces it', 'A Voi ban: in August 2024 the councils and the police warned of lifetime bans and possible prosecution'],
+              ['One rider', 'No passengers', 'National law; Voi enforces it', 'Voi investigates reports and bans riders if required, the council says'],
               ['Speed', '12.4 mph at most, 5 mph in slow zones', 'Voi, as the council states', 'The scooter slows itself'],
               ['Phone', 'Not in your hand while riding', 'National law', '£200 and 6 points'],
               ['Drink and drugs', 'Drink-drive law applies', 'National law', 'Court, a driving ban, possibly prison'],
@@ -60,7 +60,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The protection order applies at all times in public places across the whole town, not just the centre. It is due to expire in December 2026: the council has proposed renewing it for three more years, and its cabinet considers the recommendations in November 2026. If two people on one scooter crash, Voi’s insurers may claim third-party payouts back from all riders, the councils, the police and Voi warned in August 2024.',
+        'The protection order applies at all times in public places across the whole town, not just the centre. It is due to expire in December 2026: the council has proposed renewing it for three more years, and its cabinet considers the recommendations in November 2026. The operator provides third-party insurance, the government says, and a rental e-scooter may carry only one person at a time. Voi warns or temporarily bans riders who break the rules, and bans repeat offenders for good, North Northamptonshire Council says.',
         'Don’t take a Voi home: the council says hire scooters must not be kept at private residences. Beginners can limit the speed to 10 mph in the app, it adds. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
         {
           note: 'A private e-scooter is illegal on Northampton’s roads, pavements and cycle lanes and in its parks; you may ride one only on private land with the owner’s permission. Riding one in public counts as riding an uninsured motor vehicle: a £300 fixed penalty and 6 points, and the police can seize it. The University of Northampton doesn’t allow them on its sites either.',
@@ -70,7 +70,7 @@ const guide: Guide = {
     {
       heading: 'Where can you ride a Voi in Northampton?',
       blocks: [
-        'You may ride on roads (never motorways), in cycle lanes and on cycle routes with the blue bicycle sign, unless a sign bans e-scooters there, the government says, but never on the pavement. In May 2024 the councils, the police and Voi also named shared-use cycle and foot paths, marked by a round blue sign showing a bike and pedestrians. You may ride only within the designated trial zones, the council says, and the app shows where they end.',
+        'You may ride on roads (never motorways), in cycle lanes and on cycle routes with the blue bicycle sign, unless a sign bans e-scooters there, the government says, but never on the pavement. You may ride only within the designated trial zones, the council says, and the app shows where they end.',
         'Inside the trial zone, the Voi app marks the no-ride zones, the slow zones, where the scooter drops to 5 mph, and the no-park zones. The council publishes no map of them, and Voi adjusts its geofencing in problem areas, so check the app before heading into the town centre (Abington Street, the Market Square, the Drapery) or a park such as Abington Park, Becket’s Park or the Racecourse. The council’s pages for those parks say nothing about e-scooters.',
         {
           list: [
@@ -83,9 +83,9 @@ const guide: Guide = {
     {
       heading: 'Where to park a Voi in Northampton',
       blocks: [
-        'In May 2024 the councils, the police and Voi said Voi e-scooters may be parked on pavements, except in no-ride and no-park zones, as long as you wheel them onto and off the pavement at the start and end of the ride: no bay needed. Leave the scooter where it won’t block anyone’s way.',
+        'West Northamptonshire Council’s page doesn’t say whether you must end a ride in a parking bay, only where you can’t: in the no-park zones, which the Voi app shows. Leave the scooter where it won’t block anyone’s way, and never ride it on the pavement to get there.',
         'The council’s page is clear about no-park zones: “You can not end a ride in a no-park zone. If you do, you will receive a fine and Voi will move the e-scooter.” It doesn’t say who fines you or how much. Voi and the councils design parking areas, and the university’s zones make a ride slightly cheaper.',
-        'To report a badly parked or misused Voi, use Voi’s online form and give the time, the place and the scooter’s four-digit ID. Most other trial towns make you end every ride in a bay: see [e-scooter hire in the UK](guide:uk-hire).',
+        'To report a badly parked or misused Voi, use Voi’s online form and give the time, the place and the scooter’s four-digit ID. Many trial towns make you end every ride in a bay: see [e-scooter hire in the UK](guide:uk-hire).',
       ],
     },
     {
@@ -117,7 +117,7 @@ const guide: Guide = {
             '**Northampton was among England’s first trial towns.** Voi put 300 scooters on its streets in early September 2020, and the government added Northamptonshire to its list of trial areas on 9 September 2020.',
             '**The night stop used to be longer.** In October 2020 the scooters stopped working from 10pm to 4am; now you can hire one until 11pm.',
             '**Every Voi carries a registration number**, added in the first weeks of the trial after feedback from the police, the council and the public. Its four digits are what you quote when you report misuse.',
-            '**Riding two up gets you banned.** By August 2024 Voi had fined or banned 70 people that year for riding with more than one person on board, the councils, the police and Voi said.',
+            '**Voi swaps the batteries, not the scooters.** Swappable batteries cut service trips, and each scooter has a lifespan of five years or more, the council says.',
           ],
         },
       ],
@@ -134,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'Do I have to park a Voi in a bay in Northampton?',
-      answer: 'No. In May 2024 the councils, the police and Voi said you may leave a Voi on the pavement, wheeled there rather than ridden, except in a no-ride or no-park zone. Ending a ride in a no-park zone brings a fine, the council says, and Voi moves the scooter.',
+      answer: 'West Northamptonshire Council’s page doesn’t say. It names only the no-park zones: ending a ride in one brings a fine, the council says, and Voi moves the scooter. At the University of Northampton, its parking zones make a ride slightly cheaper.',
     },
     {
       question: 'Can I take an e-scooter on the bus or train in Northampton?',
@@ -150,8 +150,6 @@ const guide: Guide = {
     { title: 'West Northamptonshire Council: Northampton e-scooter trial extended to May 2027 (27 April 2026)', url: 'https://www.westnorthants.gov.uk/news/northampton-e-scooter-trial-extended-may-2027-renewed-focus-safety-and-community-concerns' },
     { title: 'West Northamptonshire Council: Public Spaces Protection Orders in force across Northampton', url: 'https://www.westnorthants.gov.uk/personal-safety-and-community-support/public-spaces-protection-orders-pspos/pspos-force-across' },
     { title: 'West Northamptonshire Council: Have your say on proposed Public Spaces Protection Orders (11 August 2026)', url: 'https://www.westnorthants.gov.uk/news/residents-invited-have-their-say-proposed-public-spaces-protection-orders' },
-    { title: 'West Northamptonshire Council: Stay off the pavement if you’re riding an e-scooter (24 May 2024, archived)', url: 'https://web.archive.org/web/20251220001448/https://www.westnorthants.gov.uk/news/stay-pavement-if-youre-riding-e-scooter' },
-    { title: 'West Northamptonshire Council: One person per scooter (6 August 2024, archived)', url: 'https://web.archive.org/web/20260610183547/https://www.westnorthants.gov.uk/news/one-person-scooter' },
     { title: 'North Northamptonshire Council: Voi e-scooters (26 June 2026)', url: 'https://www.northnorthants.gov.uk/buses-and-transport/voi-e-scooters' },
     { title: 'North Northamptonshire Council: Voi e-scooters to be available 24/7 in North Northants (5 February 2025)', url: 'https://www.northnorthants.gov.uk/news/voi-e-scooters-be-available-247-north-northants' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },

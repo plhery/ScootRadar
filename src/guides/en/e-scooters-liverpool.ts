@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Liverpool e-scooter hire: Bolt, and what happened to Voi',
       blocks: [
         'One company, **Bolt**, runs Liverpool’s shared e-scooters and e-bikes, under a Liverpool City Council contract and in partnership with the Liverpool City Region Combined Authority. Its area covers the whole city, Speke and Garston included, but not Bootle, Crosby, Huyton or the Wirral. The council and Merseyside Police call Bolt’s scooters “the only e-scooters permitted for use on public roads in Liverpool”.',
-        '**Voi** launched the trial in October 2020 and ran it for more than five years. Bolt won the council’s tender, signed the contract on 28 October 2025 and took over on 1 February 2026, with about 2,000 e-scooters and a smaller e-bike fleet: Liverpool is its first e-scooter city in the UK. The award notice (November 2025) gives no end date for the contract, and the national trial that makes hire e-scooters legal is due to run until May 2028.',
+        '**Voi** launched the trial in October 2020 and ran it for more than five years. Bolt won the council’s tender, as the council announced on 14 November 2025, and took over on 1 February 2026, with about 2,000 e-scooters and a smaller e-bike fleet: Liverpool is its first e-scooter city in the UK. The council’s announcements give no end date for the contract, and the national trial that makes hire e-scooters legal is due to run until May 2028.',
         'On the morning of 13 October 2026 the [map of Liverpool](map:gb:Liverpool) showed about 1,800 Bolt e-scooters: a snapshot, not the fleet size. It doesn’t show Bolt’s e-bikes, bays or zones. Tap a scooter to open the Bolt app, where you unlock and pay.',
       ],
     },
@@ -171,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: 'How long will Bolt run Liverpool’s e-scooters?',
-      answer: 'That isn’t known. Bolt took over on 1 February 2026 under a council contract whose end date hasn’t been published. Hire e-scooters also depend on the national trial, due to run until May 2028.',
+      answer: 'That isn’t known. Bolt took over on 1 February 2026 under a council contract, and the council’s announcements give no end date. Hire e-scooters also depend on the national trial, due to run until May 2028.',
     },
   ],
   sources: [
@@ -179,7 +179,7 @@ const guide: Guide = {
     { title: 'Liverpool Express: E-scooter FAQs (February 2026)', url: 'https://liverpoolexpress.co.uk/e-scooter-faqs/' },
     { title: 'Liverpool Express: Bolt launching in Liverpool (30 January 2026)', url: 'https://liverpoolexpress.co.uk/bolt-launching-new-shared-scooters-and-e-bikes-in-liverpool-from-sunday-1-february/' },
     { title: 'Liverpool Express: Council and police e-scooter reminder (August 2026)', url: 'https://liverpoolexpress.co.uk/liverpool-city-council-and-merseyside-police-remind-e-scooter-users-to-stay-safe-and-follow-the-law/' },
-    { title: 'Find a Tender: E-Scooter and E-Bike Concession Contract, award notice', url: 'https://www.find-tender.service.gov.uk/Notice/073777-2025' },
+    { title: 'Liverpool Express: Bolt makes Liverpool the home of first UK scooter launch (14 November 2025)', url: 'https://liverpoolexpress.co.uk/bolt-makes-liverpool-the-home-of-first-uk-scooter-launch/' },
     { title: 'Bolt: open data for Liverpool', url: 'https://mds.bolt.eu/gbfs/3/412/gbfs' },
     { title: 'BBC News: Crackdown on e-scooter riders who flout rules (January 2026)', url: 'https://www.bbc.com/news/articles/c78ek4pn8d3o' },
     { title: 'Merseyrail: E-bike ban', url: 'https://www.merseyrail.org/journey-planning/plan-your-journey/e-bike-ban/' },

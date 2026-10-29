@@ -155,7 +155,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'City of Columbus: Shared Mobility Devices Rules and Regulations, effective 1 January 2025 (PDF)', url: 'https://legistar3.granicus.com/Columbus/attachments/2d8f1314-c431-4a4e-b25b-d5d260e52cb0.pdf' },
+    { title: 'City of Columbus: Shared Mobility Devices Rules and Regulations, effective 1 January 2025 (PDF)', url: 'https://columbus.legistar.com/View.ashx?M=F&ID=13636501&GUID=3B2B593E-F5F2-40C7-A475-9B3AFC12622A' },
     { title: 'Columbus City Council: Ordinance 2539-2018, City Code rules for mobility devices (Chapter 2173), passed 27 September 2018 (PDF)', url: 'https://columbus.legistar.com/View.ashx?M=F&ID=6642003&GUID=164CD82C-D7C2-4BBE-8D31-66D0A55F3CDA' },
     { title: 'Columbus City Council: Ordinance 2053-2023, City Code § 2105.28 on shared mobility devices, passed 2 August 2023 (PDF)', url: 'https://columbus.legistar.com/View.ashx?M=F&ID=12176153&GUID=6BFFE5CE-DF84-4033-A1EE-1B45B1C3559D' },
     { title: 'Columbus City Council: Ordinance 3366-2024, the agreement with Veo, passed 11 December 2024', url: 'https://columbus.legistar.com/LegislationDetail.aspx?ID=7043761&GUID=E13F6EF4-76C7-4648-8539-357DC5419A64&FullText=1' },

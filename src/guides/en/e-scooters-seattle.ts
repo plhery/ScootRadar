@@ -166,7 +166,7 @@ const guide: Guide = {
     { title: 'SDOT: shared micromobility permit requirements 6.0, 2026 (PDF)', url: 'https://www.seattle.gov/documents/departments/sdot/newmobilityprogram/shared%20micromobility%20permit%20requirements%206.0%202026%20final.pdf' },
     { title: 'SDOT: shared micromobility update, April 2026 (PDF)', url: 'https://seattle.gov/documents/Departments/SDOT/BoardsCommittees/SPAB/2026/SPAB%20SBAB_Shared%20Micromobility%20Updates.pdf' },
     { title: 'SDOT Blog: new permit rules for bike and scooter share, 14 May 2026', url: 'https://sdotblog.seattle.gov/2026/05/14/e-scooter-safety/' },
-    { title: 'City of Seattle: Ordinance 126160, where scooters may ride (SMC 11.46.010), 2020 (PDF)', url: 'https://legistar2.granicus.com/seattle/attachments/e2a745c4-a661-4816-aefc-4924fd25f9dc.pdf' },
+    { title: 'City of Seattle: Ordinance 126160, where scooters may ride (SMC 11.46.010), 2020 (PDF)', url: 'https://seattle.legistar.com/View.ashx?M=F&ID=8819143&GUID=5D035A7E-8882-4244-AD92-C69A33AB42DE' },
     { title: 'RCW 46.20.500: scooter age and licence', url: 'https://app.leg.wa.gov/RCW/default.aspx?cite=46.20.500' },
     { title: 'RCW 46.61.710: where scooters may be ridden', url: 'https://app.leg.wa.gov/RCW/default.aspx?cite=46.61.710' },
     { title: 'RCW 46.63.110: traffic infraction penalties', url: 'https://app.leg.wa.gov/RCW/default.aspx?cite=46.63.110' },

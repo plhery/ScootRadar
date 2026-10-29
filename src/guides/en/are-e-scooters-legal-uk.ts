@@ -136,7 +136,7 @@ const guide: Guide = {
     {
       heading: 'London: the TfL e-scooter trial',
       blocks: [
-        'London’s trial began on 7 June 2021. Transport for London runs it with London Councils and the boroughs taking part, and since Dott left in April 2024 the operators have been **Lime** and **Voi**. A third phase began in September 2026, again with Lime and Voi, under contracts TfL signed on 24 July 2026. You can hire a scooter in Camden, the City of London, Ealing, Hammersmith and Fulham, Kensington and Chelsea, Lambeth, Richmond upon Thames, Southwark, Tower Hamlets (with limited parking at Canary Wharf and some TfL stations), Wandsworth and Westminster.',
+        'London’s trial began on 7 June 2021. Transport for London runs it with London Councils and the boroughs taking part, and since Dott left in April 2024 the operators have been **Lime** and **Voi**. A third phase began on 21 September 2026, again with Lime and Voi, for an initial two years, the trade site Micromobility Industries reported. You can hire a scooter in Camden, the City of London, Ealing, Hammersmith and Fulham, Kensington and Chelsea, Lambeth, Richmond upon Thames, Southwark, Tower Hamlets (with limited parking at Canary Wharf and some TfL stations), Wandsworth and Westminster.',
         {
           list: [
             'Top speed is capped at **12.5 mph**, below the national 15.5 mph.',
@@ -222,7 +222,7 @@ const guide: Guide = {
     { title: 'Beryl: E-scooters in Cornwall', url: 'https://beryl.cc/e-scooters-cornwall' },
     { title: 'Cornwall Council: Beryl bikes and scooters in Cornwall', url: 'https://www.cornwall.gov.uk/transport-parking-and-streets/sustainable-transport/active-travel-walking-and-cycling/beryl-bikes-and-scooters-in-cornwall/' },
     { title: 'Beryl: E-scooters in Plymouth', url: 'https://beryl.cc/e-scooters-plymouth' },
-    { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
+    { title: 'Micromobility Industries: Lime and Voi reappointed for London’s e-scooter trial (23 September 2026)', url: 'https://micromobility.io/news/lime-and-voi-reappointed-for-londons-e-scooter-trial' },
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
     { title: 'Gloucestershire County Council: New provider for e-scooters in Gloucester and Cheltenham (27 June 2023)', url: 'https://www.gloucestershire.gov.uk/gcc-news/2023-news-archive/news-june-2023/new-provider-for-e-scooters-in-gloucester-and-cheltenham/' },
   ],

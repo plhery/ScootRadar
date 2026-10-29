@@ -173,7 +173,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'City of Gainesville: Ordinance No. 180115, Micromobility Services (Code Chapter 26, Article VII), adopted 3 December 2020 (PDF)', url: 'https://legistar.granicus.com/Gainesville/attachments/47b92c9e-6057-4949-b544-ab1f703aba72.pdf' },
+    { title: 'City of Gainesville: Ordinance No. 180115, Micromobility Services (Code Chapter 26, Article VII), adopted 3 December 2020 (PDF)', url: 'https://gainesville.legistar.com/View.ashx?M=F&ID=9015842&GUID=820AEC7A-E727-4143-862E-2CA046172C1D' },
     { title: 'University of Florida TAPS: Micromobility (Rental E-Scooters) Program', url: 'https://taps.ufl.edu/alternative-transportation/micromobility/' },
     { title: 'University of Florida TAPS: Gators Roll Safe (PDF, 2021)', url: 'https://taps.ufl.edu/wp-content/uploads/2021/06/UF_MM_GRS_LONGSHEET.pdf' },
     { title: 'University of Florida Policy 4-013: Electric Mobility Devices and Bicycles', url: 'https://policy.ufl.edu/policy/electric-mobility-devices-and-bicycles/' },
