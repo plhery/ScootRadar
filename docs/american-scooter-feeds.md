@@ -571,6 +571,22 @@ areas there on 26 October 2026). Elsewhere,
 including Canada (1 a poll, an Edmonton scooter under St. Albert), the
 boxes name nearly every scooter's town, and have no outlines.
 
+**Spokane.** Lime's Spokane market is its whole service area, which reaches
+north past Mead and south-west to Cheney, so its box counted every scooter
+in it under Spokane. Of its 1,778 in the cache's snapshot at 23:30 PDT on 28
+October 2026, 1,632 stood inside the city's TIGERweb outline, 22 inside
+Spokane Valley's, and 124 in unincorporated county north of the city
+(Country Homes 31, Town and Country 23, Fairwood 12, Mead 5, and 53 in no
+census place); none stood in Cheney or Airway Heights. Lime's Spokane Valley
+market held 94: 89 in the city, 4 in the county and 1 in Spokane. Since 29
+October Spokane and Spokane Valley have their outlines, so the 22 count under
+Spokane Valley, and the county's 124, in neither outline, stay under Spokane,
+their feed's town: about 1,757 and 115. The city alone holds more than the
+1,500 vehicles of Lime's contract (Spokesman-Review, 14 May 2026); Lime asked
+for 2,000 in 2026, and no decision was found. Spokane Valley's fall from 125
+on 25 October is Lime's own: every cell of its grid was read without error,
+by day or in the evening, on 27 and 28 October, and listed fewer scooters.
+
 Campus feeds take their town's name: Spin's UC Davis feed is Davis, its
 Michigan State one East Lansing, its NC State one Raleigh, its University of
 Utah one Salt Lake City, and its San Diego feed is the UC San Diego campus,
