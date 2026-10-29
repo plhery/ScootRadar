@@ -61,6 +61,13 @@ class IosMotionTest {
         assertEquals(TimingCurve(0.42f, 0f, 1f, 1f), IosMotion.easeIn)
     }
 
+    /** What QuartzCore's CAMediaTimingFunction(name: .default) and CATransaction.animationDuration() return. */
+    @Test
+    fun implicitAnimationsHaveCoreAnimationsDefaults() {
+        assertEquals(TimingCurve(0.25f, 0.1f, 0.25f, 1f), IosMotion.implicit)
+        assertEquals(0.25, IosMotion.IMPLICIT_DURATION, 0.0)
+    }
+
     private fun assertSpring(dampingRatio: Float, stiffness: Float, spec: SpringSpec) {
         assertEquals(dampingRatio, spec.dampingRatio, 1e-6f)
         assertEquals(stiffness, spec.stiffness, 0.1f)

@@ -44,7 +44,9 @@ import org.maplibre.android.tile.TileOperation
  * TalkBack reads the markers through virtual views over the map (ScooterMarkerAccessibility). The few
  * things that move on their own, the dots lighting up, a name coming, the faded markers breathing, are drawn a
  * frame at a time by changing a layer's strength, never by writing the scooters again (MAP-319): those fading
- * alike are drawn meanwhile by a layer of their own, a band, whose strength is one number (MAP-119).
+ * alike are drawn meanwhile by a layer of their own, a band, whose strength is one number (MAP-119). The dots
+ * easing to a new look or place are drawn meanwhile from a small source of their own, the movers', written at
+ * every frame (MAP-097, MAP-098).
  */
 class ScooterMarkers(
     private val map: MapLibreMap,
@@ -55,6 +57,8 @@ class ScooterMarkers(
     private val scope: CoroutineScope,
     /** The camera's move to what an opened cluster holds. */
     move: (CameraMove) -> Unit,
+    /** Whether the phone has its animations on, as Remove animations leaves them; a test may turn them off. */
+    animates: () -> Boolean = { ValueAnimator.areAnimatorsEnabled() },
 ) {
     private val projection = MapLibreProjection(map, view)
     val art = ScooterMarkerArt(view.pixelRatio, MarkerFonts.of(view.context))
@@ -64,6 +68,7 @@ class ScooterMarkers(
         onParkingSelectionChange = controller::selectParking,
         track = { name, provider -> analytics?.track(name, provider = provider) },
         move = move,
+        animates = animates,
     )
 
     private var style: Style? = null
@@ -151,6 +156,47 @@ class ScooterMarkers(
     /** Whether the scooters have had long enough to be taken in: the layouts under way, if any, are the last. */
     private var overdue = false
 
+    /**
+     * The dots handed back to the scooters' layers once their eases are over, which the movers' layers draw until
+     * MapLibre draws them there: since when, and how they were drawn last.
+     */
+    private var returning: List<MarkerFeature> = emptyList()
+    private var returnedAt = 0.0
+
+    /** Since when dots have waited for MapLibre to take them from the scooters' layers, to start easing. */
+    private var waitingSince: Double? = null
+
+    /**
+     * The scooters written while dots change hands with the movers' layers, which MapLibre lays out a while after:
+     * whether it has taken them in, the tiles it lays out again from them, and whether none is left. Asking
+     * MapLibre what it draws would say so too, but each question waits for its frame, some 50 ms with 5,000.
+     */
+    private class TakingIn {
+        var changed = false
+        val laying = HashSet<String>()
+        var laidOut = false
+    }
+
+    /** The last write of the scooters that dots changing hands wait for. */
+    private var takingIn: TakingIn? = null
+
+    private val handingTiles = MapView.OnTileActionListener { operation, x, y, z, wrap, overscaledZ, source ->
+        val taking = takingIn
+        if (source != ScooterMarkerLayers.MARKERS_SOURCE || taking == null || !taking.changed) return@OnTileActionListener
+        val tile = "$overscaledZ/$wrap/$z/$x/$y"
+        when (operation) {
+            TileOperation.StartParse -> taking.laying += tile
+            TileOperation.EndParse, TileOperation.Error, TileOperation.Cancelled -> {
+                taking.laying -= tile
+                if (taking.laying.isEmpty()) laidOut(taking)
+            }
+            else -> Unit
+        }
+    }
+
+    /** What the movers' source was last given. */
+    private var writtenMovers = ""
+
     private val tiles = MapView.OnTileActionListener { operation, x, y, z, wrap, overscaledZ, source ->
         if (source != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnTileActionListener
         val tile = "$overscaledZ/$wrap/$z/$x/$y"
@@ -182,7 +228,9 @@ class ScooterMarkers(
      * it says nothing of them: they are given [LAID_OUT] from the next frame, then the layouts under way.
      */
     private val sourceChanged = MapView.OnSourceChangedListener { id ->
-        if (id != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnSourceChangedListener
+        if (id != ScooterMarkerLayers.MARKERS_SOURCE) return@OnSourceChangedListener
+        takingIn?.let { takenIn(it) }
+        if (held == null) return@OnSourceChangedListener
         changed = true
         val hold = holds
         whenBegun {
@@ -286,6 +334,9 @@ class ScooterMarkers(
         queued.clear()
         begun.clear()
         listen()
+        returning = emptyList()
+        if (takingIn?.laidOut == false) view.removeOnTileActionListener(handingTiles)
+        takingIn = null
         style = null
     }
 
@@ -370,12 +421,7 @@ class ScooterMarkers(
         val callout = scene.callout(projection)
         calloutTitle = callout?.title
         callout?.let { calloutAnchor = it.anchor }
-        if (scene.markersVersion != writtenMarkers) {
-            writtenMarkers = scene.markersVersion
-            write(style, ScooterMarkerLayers.MARKERS_SOURCE, MarkerFeatures.markers(scene, art))
-            // What TalkBack reads of them, and where, may have changed with them.
-            accessibility.refresh()
-        }
+        writeMarkers(style)
         if (scene.pillsVersion != writtenPills) {
             writtenPills = scene.pillsVersion
             write(style, ScooterMarkerLayers.PILLS_SOURCE, MarkerFeatures.pills(scene, art))
@@ -387,7 +433,37 @@ class ScooterMarkers(
         wantFrames()
     }
 
+    /** Writes the dots, the bays and the clusters, if they changed. */
+    private fun writeMarkers(style: Style) {
+        if (scene.markersVersion == writtenMarkers) return
+        writtenMarkers = scene.markersVersion
+        write(style, ScooterMarkerLayers.MARKERS_SOURCE, MarkerFeatures.markers(scene, art))
+        if (returning.isNotEmpty() || scene.moving().any { it.motion?.begun == null }) {
+            if (takingIn?.laidOut != false) view.addOnTileActionListener(handingTiles)
+            takingIn = TakingIn()
+        }
+        // What TalkBack reads of them, and where, may have changed with them.
+        accessibility.refresh()
+    }
+
     private fun write(style: Style, source: String, features: List<MarkerFeature>) {
+        addPictures(style, source, features)
+        val bands = fadings[source]?.let { fading ->
+            val now = SystemClock.uptimeMillis() / 1000.0
+            // The first dots of a light-up are held until they are drawn.
+            if (source == ScooterMarkerLayers.MARKERS_SOURCE && held == null && fadings.values.none { it.isFading }) {
+                late = 0.0
+                if (features.any { MarkerBand.of(it, epoch, now - epoch) != null }) hold(now)
+            }
+            fading.assign(style, features, fadeTime(now))
+        }
+        // A band's layer draws its markers in the order they are written in.
+        val written = if (bands.isNullOrEmpty()) features else features.sortedBy { it.sortKey }
+        style.getSourceAs<GeoJsonSource>(source)?.setGeoJson(MarkerFeatures.json(written, bands.orEmpty()))
+    }
+
+    /** Adds the pictures a source's markers need to the style, and takes out those none needs once there are many. */
+    private fun addPictures(style: Style, source: String, features: List<MarkerFeature>) {
         val needed = HashMap<String, android.graphics.Bitmap>()
         val names = HashSet<String>(features.size)
         for (feature in features) {
@@ -406,18 +482,6 @@ class ScooterMarkers(
             for (name in unused) style.removeImage(name)
             images.removeAll(unused.toSet())
         }
-        val bands = fadings[source]?.let { fading ->
-            val now = SystemClock.uptimeMillis() / 1000.0
-            // The first dots of a light-up are held until they are drawn.
-            if (source == ScooterMarkerLayers.MARKERS_SOURCE && held == null && fadings.values.none { it.isFading }) {
-                late = 0.0
-                if (features.any { MarkerBand.of(it, epoch, now - epoch) != null }) hold(now)
-            }
-            fading.assign(style, features, fadeTime(now))
-        }
-        // A band's layer draws its markers in the order they are written in.
-        val written = if (bands.isNullOrEmpty()) features else features.sortedBy { it.sortKey }
-        style.getSourceAs<GeoJsonSource>(source)?.setGeoJson(MarkerFeatures.json(written, bands.orEmpty()))
     }
 
     private fun addLayers(style: Style) {
@@ -425,6 +489,8 @@ class ScooterMarkers(
         style.addSource(GeoJsonSource(ScooterMarkerLayers.MARKERS_SOURCE))
         // The names are few and move with their dots: written at once, they are never a frame behind them.
         style.addSource(GeoJsonSource(ScooterMarkerLayers.PILLS_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
+        // So are the dots easing, at every frame.
+        style.addSource(GeoJsonSource(ScooterMarkerLayers.MOVING_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
         for (spec in ScooterMarkerLayers.specs) addLayer(style, spec)
         // The rider above them all.
         ScooterRider.addLayers(style)
@@ -483,7 +549,64 @@ class ScooterMarkers(
             breathing = strength
             style.getLayer(ScooterMarkerLayers.LAST_SEEN)?.setProperties(PaintPropertyValue("icon-opacity", strength))
         }
-        return fades || breathes
+        val moves = moveDots(style, now)
+        return fades || breathes || moves
+    }
+
+    /**
+     * A frame of the dots easing. MapLibre takes a while to lay thousands of scooters out again, and draws the
+     * movers' few at once, so a dot is drawn by both rather than by neither while it changes hands: it starts to
+     * ease once the scooters' layers have let it go, as it was until then, and goes back once they draw it again,
+     * as it is from then. Each write of the movers has MapLibre place every marker again, which takes longer the
+     * more scooters there are: an emulator draws the eases at some 40 frames a second over 1,000, 20 over 2,000.
+     * Returns whether any dot still eases or waits.
+     */
+    private fun moveDots(style: Style, now: Double): Boolean {
+        if (scene.moving().none { it.motion?.begun == null }) {
+            waitingSince = null
+        } else {
+            val since = waitingSince ?: now.also { waitingSince = it }
+            if (takingIn?.laidOut != false || now - since > MOST_HANDING) {
+                scene.beginMotions(now)
+                waitingSince = null
+            }
+        }
+        val settled = scene.settleMotions(now)
+        if (settled.isNotEmpty()) {
+            returning = settled.map { MarkerFeatures.mover(it, art, now) }
+            returnedAt = now
+            // The scooters' layers draw them again from this write.
+            writeMarkers(style)
+        }
+        if (returning.isNotEmpty()) {
+            val moving = scene.moving().mapTo(HashSet()) { "v:${it.scooter.id}" }
+            returning = returning.filter { it.id !in moving }
+            if (takingIn?.laidOut != false || now - returnedAt > MOST_HANDING) returning = emptyList()
+        }
+        val features = MarkerFeatures.movers(scene, art, now) + returning
+        val json = MarkerFeatures.json(features)
+        if (json != writtenMovers) {
+            writtenMovers = json
+            addPictures(style, ScooterMarkerLayers.MOVING_SOURCE, features)
+            style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MOVING_SOURCE)?.setGeoJson(json)
+        }
+        return features.isNotEmpty()
+    }
+
+    /** MapLibre has taken in the scooters that dots changing hands wait for: they are given [LAID_OUT] to start. */
+    private fun takenIn(taking: TakingIn) {
+        taking.changed = true
+        whenBegun {
+            main.postDelayed({ if (takingIn === taking && taking.laying.isEmpty()) laidOut(taking) }, LAID_OUT)
+        }
+    }
+
+    /** MapLibre has laid out the scooters that dots changing hands wait for: it draws them from the next frame. */
+    private fun laidOut(taking: TakingIn) {
+        if (taking.laidOut) return
+        taking.laidOut = true
+        if (takingIn === taking) view.removeOnTileActionListener(handingTiles)
+        wantFrames()
     }
 
     /** The fades' clock, in seconds from the epoch. */
@@ -611,6 +734,9 @@ class ScooterMarkers(
 
         /** The longest the light-up waits for its scooters to be drawn, in seconds. */
         private const val MOST_HELD = 1.5
+
+        /** The longest a dot waits to change hands between the scooters' layers and the movers', in seconds. */
+        private const val MOST_HANDING = 0.5
 
         /**
          * How long MapLibre's tiles are given to start on new scooters, from a frame begun after it took them in, in

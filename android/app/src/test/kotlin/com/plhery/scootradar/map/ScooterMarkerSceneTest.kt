@@ -274,7 +274,7 @@ class ScooterMarkerSceneTest {
         val raised = selected.values.single()
         assertEquals(listOf(raised), raisedAdded)
         assertEquals(ScooterMarkerLayers.RAISED, raised.layer.base)
-        assertEquals(ScooterMarkerLayers.PILLS, raised.below)
+        assertEquals(ScooterMarkerLayers.MOVING_RAISED, raised.below)
         val got = iPhone.transform((0.15 / ScooterMarkerScene.LIGHT_UP).toFloat())
         assertTrue(got > 0.7f)
         assertEquals(got, raised.spec.paint["icon-opacity"] as Float, 1e-4f)

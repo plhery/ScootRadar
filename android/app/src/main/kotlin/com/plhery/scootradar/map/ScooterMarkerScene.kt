@@ -75,6 +75,14 @@ class ScooterMark(scooter: Scooter) {
     /** The name was shown when the look was last drawn: one that comes eases in. */
     internal var wasPillShown = false
 
+    /** The dot easing to its look and its place, which the movers' layers draw meanwhile (MAP-097, MAP-098). */
+    var motion: DotMotion? = null
+        internal set
+
+    /** The dot's look and place when its look was last drawn. */
+    internal var drawnDot: DotDrawing? = null
+    internal var drawnOffset = ScreenPoint.zero
+
     /** Takes the scooter as the server now has it. Returns whether anything changed. */
     fun update(with: Scooter): Boolean {
         if (scooter == with) return false
@@ -291,6 +299,9 @@ class ScooterMarkerScene(
     /** The dots light up once, the first time they appear. */
     private var lightUpEnds: Double? = null
 
+    /** The scooters whose dots ease, in the order they started. */
+    private val movingIDs = LinkedHashSet<String>()
+
     /**
      * Bumped when what a layer draws has changed: the dots and the bays, the names, the faded markers. The
      * layers write a source again only then.
@@ -378,6 +389,7 @@ class ScooterMarkerScene(
         val incomingIDs = scooters.mapTo(HashSet()) { it.id }
         val removed = marksByID.keys.filter { it !in incomingIDs }
         for (id in removed) marksByID.remove(id)
+        movingIDs.removeAll(removed.toSet())
         val additions = mutableListOf<ScooterMark>()
         var changed = removed.isNotEmpty()
         for (scooter in scooters) {
@@ -646,14 +658,37 @@ class ScooterMarkerScene(
         // A change of scale is drawn at once; anything else eases in.
         val animated = previous != null && previous.scaleStep == inputs.scaleStep &&
             previous.headingStep == inputs.headingStep && map.isShown && animates()
-        for (mark in changed.distinct()) refreshLook(mark, animated && mark.scooter.id !in fresh)
+        val bounds = map.projection.bounds
+        for (mark in changed.distinct()) {
+            val eased = animated && mark.scooter.id !in fresh
+            // Only the dots on the map ease, as only theirs have views; the others take their look at once.
+            refreshLook(mark, eased, moves = eased && isNear(dotCentre(mark, map.projection), bounds))
+        }
     }
 
     /**
-     * What the iPhone's marker view does when its look is drawn again: a name that comes eases in. The dot's
-     * picture, its strength and its place change at once (MAP-097, MAP-098).
+     * What the iPhone's marker view does when its look is drawn again: the dot eases to its picture, its strength
+     * and its place where it [moves], and a name that comes eases in where [animated]. At most [MOST_MOVING] dots
+     * ease at once; any more take their look at once.
      */
-    private fun refreshLook(mark: ScooterMark, animated: Boolean) {
+    private fun refreshLook(mark: ScooterMark, animated: Boolean, moves: Boolean = animated) {
+        val drawing = DotDrawing(mark.art, mark.look.diameter, mark.look.strength)
+        val offset = mark.look.offset
+        val drawn = mark.drawnDot
+        val motion = mark.motion
+        if (motion != null) {
+            // Easing already, it goes on from where it has got to, or takes the change at once.
+            motion.go(drawing, offset, now(), moves)
+        } else if (moves && drawn != null && movingIDs.size < MOST_MOVING && mark.dotFade?.isOver(now()) != false &&
+            (DotMotion.eases(drawn, drawing) || offset != mark.drawnOffset)
+        ) {
+            mark.motion = DotMotion(drawn, mark.drawnOffset).also { it.go(drawing, offset, now(), animated = true) }
+            movingIDs += mark.scooter.id
+            markersVersion += 1
+        }
+        mark.drawnDot = drawing
+        mark.drawnOffset = offset
+
         pillsVersion += 1
         val shown = mark.shownPill != null
         if (!shown) {
@@ -673,7 +708,29 @@ class ScooterMarkerScene(
      */
     fun movePills(map: MarkerMap) {
         val animated = animates()
-        for (mark in placePills(map)) refreshLook(mark, animated)
+        for (mark in placePills(map)) refreshLook(mark, animated, moves = false)
+    }
+
+    /** The dots easing, drawn by the movers' layers: none of those in the app's own clusters. */
+    fun moving(): List<ScooterMark> = movingIDs.mapNotNull { id -> marksByID[id]?.takeIf { id !in clusteredIDs } }
+
+    /** MapLibre has handed the dots waiting to ease over to the movers' layers: their eases start [at] then. */
+    fun beginMotions(at: Double) {
+        for (id in movingIDs) marksByID[id]?.motion?.begin(at)
+    }
+
+    /**
+     * Once no dot eases any more, at [at], they all go back to the scooters' layers together: returns them, as the
+     * movers' layers drew them last.
+     */
+    fun settleMotions(at: Double): List<ScooterMark> {
+        if (movingIDs.isEmpty()) return emptyList()
+        val marks = movingIDs.mapNotNull { marksByID[it] }
+        if (marks.any { it.motion?.isOver(at) == false }) return emptyList()
+        for (mark in marks) mark.motion = null
+        movingIDs.clear()
+        markersVersion += 1
+        return marks.filter { it.scooter.id !in clusteredIDs }
     }
 
     /** Chooses a side for each name. Returns the scooters whose name moved. */
@@ -1009,6 +1066,12 @@ class ScooterMarkerScene(
 
         /** The side of the marker of a scooter, MapKit's annotation view: far larger than its dot. */
         const val MARKER_SIZE = 44.0
+
+        /**
+         * The most dots that ease at once: the movers' source is written at every frame while they do, which a
+         * small phone keeps up with for 300.
+         */
+        const val MOST_MOVING = 300
 
         /** The side of a cluster's view, larger than its disc. */
         const val CLUSTER_SIZE = 48.0

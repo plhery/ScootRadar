@@ -50,4 +50,13 @@ object IosMotion {
 
     /** How long `.easeInOut`, `.easeOut` and `.easeIn` take when no duration is given. */
     const val DEFAULT_DURATION = 0.35
+
+    /**
+     * Core Animation's `default` curve, which a layer's implicit animations ease along: QuartzCore gives its control
+     * points as (0.25, 0.1) and (0.25, 1).
+     */
+    val implicit = TimingCurve(0.25f, 0.1f, 0.25f, 1f)
+
+    /** How long a layer's implicit animations take: `CATransaction.animationDuration()`. */
+    const val IMPLICIT_DURATION = 0.25
 }
