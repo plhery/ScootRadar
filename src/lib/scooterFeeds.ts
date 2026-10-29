@@ -24,6 +24,7 @@ import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
 import { ClientCredentialsToken, type UpstreamAuth } from '@/lib/clientCredentialsToken';
 import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
+import { GCOO_US_AREAS_URL, type GcooZoneSource } from '@/lib/gcooZones';
 import type { ZoneSource } from '@/lib/zoneFeeds';
 import {
   providerKeyForSystemId,
@@ -272,7 +273,7 @@ export interface CollectableScooterFeed {
   idlePhase?: number;
   /** If a collection started then is of its town's night, when the night ends (FeedScheduler). */
   nightEnds?: (time: number) => number | undefined;
-  /** Its GBFS documents, for the zones the map draws when asked (zoneFeeds.ts). */
+  /** Its GBFS documents, or GCOO's area file, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
 }
 
@@ -301,6 +302,13 @@ export async function discoverCollectableFeeds(): Promise<CollectableScooterFeed
   ];
 }
 
+// GCOO's American towns share its area file, each with the zones that reach into it (gcooZones.ts).
+const GCOO_US_ZONES: GcooZoneSource = {
+  gcooAreasUrl: GCOO_US_AREAS_URL,
+  towns: REGIONAL_SCOOTER_SYSTEMS.filter(system => system.gcooAppMap && system.country === 'US')
+    .map(system => ({ feedId: `${regionalSource(system)}:${system.id}`, center: system.center, bounds: system.bounds })),
+};
+
 export function independentCollectableFeeds(): CollectableScooterFeed[] {
   const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
   return [
@@ -323,7 +331,7 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
       collect: () => fetchRegionalSystemVehicles(system, { bounds: system.bounds, minBattery: 0 }),
       ...(!isAppMapSystem(system) ? {
         zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: feedBase(system) },
-      } : {}),
+      } : system.gcooAppMap && system.country === 'US' ? { zoneSource: GCOO_US_ZONES } : {}),
     })),
   ];
 }

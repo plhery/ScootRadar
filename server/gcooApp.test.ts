@@ -82,7 +82,8 @@ describe('GCOO collection', () => {
     for (const system of systems) {
       expect(system.provider).toBe('gcoo');
       const feed = configured.find(f => f.id.endsWith(`:${system.id}`))!;
-      expect(feed.zoneSource).toBeUndefined();
+      // GCOO's American towns' zones are in its area file (src/lib/gcooZones.ts); its Korean towns' are not read.
+      expect(Boolean(feed.zoneSource)).toBe(system.country === 'US');
       expect(feed.collect).not.toBe(feeds.find(f => f.id === feed.id)!.collect);
     }
     expect(configured.find(f => f.id === 'publibike')).toBe(feeds.find(f => f.id === 'publibike'));

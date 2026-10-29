@@ -164,15 +164,20 @@ export function normalizeZones(feedId: string, provider: string, types: ZoneType
       return outer ? [[outer, ...holes.filter((hole): hole is [number, number][] => hole !== null)]] : [];
     });
     if (!polygons.length) return [];
-    const bounds = { south: Infinity, west: Infinity, north: -Infinity, east: -Infinity };
-    let points = 0;
-    for (const [lat, lng] of polygons.flatMap(polygon => polygon[0])) {
-      bounds.south = Math.min(bounds.south, lat); bounds.north = Math.max(bounds.north, lat);
-      bounds.west = Math.min(bounds.west, lng); bounds.east = Math.max(bounds.east, lng);
-    }
-    for (const ring of polygons.flat()) points += ring.length;
-    return [{ id: `${feedId}:${index}`, provider, ...kind, polygons, bounds, points }];
+    return [storedZone({ id: `${feedId}:${index}`, provider, ...kind, polygons })];
   });
+}
+
+/** A zone as the cache keeps it: with the bounds of its outer rings, and its points. */
+export function storedZone(zone: MapZone): StoredZone {
+  const bounds = { south: Infinity, west: Infinity, north: -Infinity, east: -Infinity };
+  let points = 0;
+  for (const [lat, lng] of zone.polygons.flatMap(polygon => polygon[0])) {
+    bounds.south = Math.min(bounds.south, lat); bounds.north = Math.max(bounds.north, lat);
+    bounds.west = Math.min(bounds.west, lng); bounds.east = Math.max(bounds.east, lng);
+  }
+  for (const ring of zone.polygons.flat()) points += ring.length;
+  return { ...zone, bounds, points };
 }
 
 /** The next time a zone starts or ends, which changes what normalizeZones returns. */

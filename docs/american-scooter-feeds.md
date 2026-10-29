@@ -780,13 +780,25 @@ their battery and range; none of the three towns bans renting at night.
 
 The same file holds GCOO's zones: on 29 October 2026, 88 no-ride and 8 slow
 zones and 272 no-parking areas around Arlington and Alexandria, 47 no-ride and
-4 slow zones and 39 no-parking areas in Los Angeles. The map draws none of
-them: it draws operators' zones only from GBFS feeds, and GCOO publishes none.
-Like Bird's feed, the file marks Arlington National Cemetery and the Pentagon
-as places to ride through but not to park, and the map draws Bird's as Bird
-publishes them. Federal rules ban riding "a bicycle or similar conveyance" in
-the cemetery without a pass to visit a grave (32 CFR 553.33(c)(8)); the
-Pentagon Reservation's leave its traffic to Virginia law (32 CFR 234.17).
+4 slow zones and 39 no-parking areas in Los Angeles. Since that day the map
+draws them, with the zones turned on, as it draws a GBFS feed's
+([`gcooZones.ts`](../src/lib/gcooZones.ts)): the file is read once an hour for
+the three towns, and each zone goes to the town whose box it reaches into whose
+centre is nearest, so that one in both Virginia boxes is drawn once. That day
+Arlington had 71 no-ride zones and 243 no-parking areas, Alexandria 17 no-ride
+and 8 slow zones and 28 no-parking areas, and Los Angeles 12 no-ride zones and
+33 no-parking areas, one over downtown with 327 holes where parking is allowed.
+Left out are the 35 no-ride and 4 slow zones and 6 no-parking areas west of the
+Los Angeles box, around Venice and Westwood, where none of GCOO's scooters
+stood, and one no-parking area in Arlington, a sliver too thin to draw at 2 m.
+The file gives no slow zone's
+speed. Like Bird's feed, the file marks Arlington National Cemetery and the
+Pentagon as places to ride through but not to park. Federal rules ban riding
+"a bicycle or similar conveyance" in the cemetery without a pass to visit a
+grave (32 CFR 553.33(c)(8)), so since 29 October the map draws it as a no-riding
+zone of its own, the law's, from its OpenStreetMap outline (see
+[DATA_SOURCES.md](../DATA_SOURCES.md)); the Pentagon Reservation's leave its
+traffic to Virginia law (32 CFR 234.17).
 
 **Alexandria.** Arlington's and Alexandria's boxes overlap around Four Mile
 Run: at 12:05 EDT 116 scooters stood in both feeds, and the map shows and

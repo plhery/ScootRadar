@@ -574,6 +574,14 @@ Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
   its area, keeps them an hour and lets them go after six hours without such a
   view. Shapes are simplified to 2 m; one answer carries at most 60,000 points,
   slow zones left out first, then no-parking zones.
+- GCOO publishes no GBFS feed, but since 29 October 2026 its zones in Los
+  Angeles, Arlington and Alexandria come from its app's public area file
+  (`region.gbike.io/us/all_polygons.json.gz`): its no-ride and slow zones, which
+  give no speed, and its no-parking areas, holes included, credited to GCOO. The
+  file is read once an hour for the three towns, and each zone goes to the town
+  whose box it reaches into whose centre is nearest, so that a zone in both
+  Virginia boxes is drawn once (see the
+  [coverage audit](docs/american-scooter-feeds.md#gcoo) for the counts).
 
 Streets where a city or its police forbids riding, in `data/rule-zones.json`,
 are drawn as no riding's zones are, from zoom 14 whether the layer is on or
@@ -1018,8 +1026,10 @@ only where local law requires it, the same open question as in Europe. The
 map's credits name all six under the GBFS line.
 
 Since 24 October 2026, GCOO's fleets in Los Angeles, Alexandria and Arlington
-come from its app's signed-out map, read as in South Korea (below). GCOO
-publishes no licence for it; the credits link to gcoo.io. Since 26 October
+come from its app's signed-out map, read as in South Korea (below), and since
+29 October their zones from its public area file (see
+[Ride and parking zones](#ride-and-parking-zones)). GCOO publishes no licence
+for either; the credits link to gcoo.io. Since 26 October
 2026, Lime's scooters in 58 towns where it publishes no feed, from Los Angeles
 and Austin to Milwaukee and Tampa, and since 28 October in San Marcos and on
 UNC Charlotte's campus, come from its rider map, signed in, as in Europe (see

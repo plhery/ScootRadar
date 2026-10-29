@@ -1,19 +1,24 @@
 import { validateDiscovery, validateTypes } from './feedValidation';
+import { fetchGcooZones, type GcooZoneSource } from './gcooZones';
 import { discoveryFeedEntries, discoveredFeedUrl, fetchJson } from './scooterFeeds';
 import { nextZoneChange, normalizeZones, validateZones, type StoredZone, type ZonesFeed, type ZoneTypesFeed } from './zones';
 
 /** Where a GBFS feed's zones are found: its discovery document, and the address its documents must be under. */
-export interface ZoneSource {
+export interface GbfsZoneSource {
   discoveryUrl: string;
   baseUrl: string;
   /** sharedmobility.ch asks its clients to name themselves. */
   authenticated?: boolean;
 }
 
+/** A GBFS feed's documents, or GCOO's area file, which has its American towns' zones (gcooZones.ts). */
+export type ZoneSource = GbfsZoneSource | GcooZoneSource;
+
 const normalized = new Map<string, { types: ZoneTypesFeed; zones: ZonesFeed; until: number; result: StoredZone[] }>();
 
 /** The zones of one feed, from documents kept for an hour: none when it publishes none, or no scooter type. */
 export async function fetchFeedZones(feedId: string, provider: string, source: ZoneSource): Promise<StoredZone[]> {
+  if ('gcooAreasUrl' in source) return fetchGcooZones(feedId, provider, source);
   const options = { authenticated: source.authenticated, revalidate: 3600 };
   const discovery = await fetchJson<Parameters<typeof discoveryFeedEntries>[0]>(source.discoveryUrl,
     { ...options, validate: validateDiscovery });
