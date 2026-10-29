@@ -1228,7 +1228,17 @@ May 2026 request to make that permanent was undecided as far as found on
   elsewhere.
 - **Lime** writes a `vehicle_type` on each vehicle beside its
   `vehicle_type_id`; it is not GBFS, and only `vehicle_type_id` is read. Lime
-  lists its e-bikes in the same files; only its scooters are shown.
+  lists its e-bikes in the same files; only its scooters are shown. Its seated
+  LimeGlider has no type of its own, so it is shown as a scooter, while Veo's
+  seated Cosmo, typed as a bicycle, is not. Every Lime feed declares the same
+  two scooter types and two bicycle types, all unnamed. Seattle's listed 9,500
+  vehicles of one scooter type and 3,298 e-bikes on 29 October 2026, while
+  Seattle's permit allows at most 7,000 standing scooters, 4,000 seated ones
+  and 4,000 bikes
+  ([SDOT, 2026](https://seattle.gov/documents/Departments/SDOT/BoardsCommittees/SPAB/2026/SPAB%20SBAB_Shared%20Micromobility%20Updates.pdf)),
+  so at least 2,500 of the 9,500 are seated. Lime's rider map, which supplies
+  Boulder, where Lime has put out up to 200 LimeGliders since August 2026,
+  keeps the pins typed `scooter`; whether a Glider's pin is one is not known.
 - **Size.** Lime's Seattle status file is about 2.9 MB, its Chicago one
   2.5 MB, Bird's Los Angeles one 1.9 MB and Veo's Washington one 1.6 MB, with
   its bicycles. The scooter cache sizes itself by the number of feeds; its
