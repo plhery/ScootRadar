@@ -19,6 +19,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -50,8 +51,13 @@ class MapCompassPlaceTest {
         ScooterLanguage.current = language
     }
 
+    /** On a phone, or any window with the dock: a large window's panel has no search bar over the map. */
     @Test
     fun theCompassSitsUnderTheSearchBarAndMakesWayForTheOpenSearchOnAPhone() = withAppMap(testController(scope)) { phone ->
+        // The chrome as the screen measures it, once it has: the rule runs the screen's effects while it waits.
+        val chrome = { phone.onMain { phone.view.camera!!.currentChrome?.invoke() } }
+        runCatching { compose.waitUntil(10_000) { chrome()?.let { it.top != null || it.panel != null } == true } }
+        assumeTrue("the dock's layout: ${chrome()}", chrome()?.panel == null)
         phone.onMain { phone.map.moveCamera(CameraUpdateFactory.bearingTo(30.0)) }
         compose.waitUntil(5_000) { compassShown() }
         compose.waitForIdle()

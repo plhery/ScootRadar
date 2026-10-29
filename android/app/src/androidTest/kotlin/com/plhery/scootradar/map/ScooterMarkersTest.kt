@@ -710,20 +710,18 @@ class ScooterMarkersTest {
             .take(count - probes.size) + probes.map { it.scooter }
         assertEquals(count, scooters.size)
 
-        // Where each probe's middle is in the window, which must show it.
+        // Where each probe's middle is in the window, whose own pixels are read: under the status bar too, which a
+        // foldable's inner screen has taller than the 620 m probe's 39 points from the map's top.
         lateinit var window: Window
         phone.scenario.onActivity { window = it.window }
         phone.onMain {
             val inWindow = IntArray(2).also { phone.view.getLocationInWindow(it) }
-            val onScreen = IntArray(2).also { phone.view.getLocationOnScreen(it) }
-            val visible = Rect().also { phone.view.getWindowVisibleDisplayFrame(it) }
+            val surface = Rect(0, 0, window.decorView.width, window.decorView.height)
             for (probe in probes) {
                 val point = phone.projection.point(probe.scooter.coordinate)
                 probe.x = inWindow[0] + (point.x * ratio).roundToInt()
                 probe.y = inWindow[1] + (point.y * ratio).roundToInt()
-                val screenX = onScreen[0] + (point.x * ratio).roundToInt()
-                val screenY = onScreen[1] + (point.y * ratio).roundToInt()
-                assertTrue("${probe.metres} m is on the screen", visible.contains(screenX, screenY))
+                assertTrue("${probe.metres} m is in the window", surface.contains(probe.x, probe.y))
             }
         }
         val column = Rect(probes.first().x, probes.minOf { it.y }, probes.first().x + 1, probes.maxOf { it.y } + 1)

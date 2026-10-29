@@ -62,7 +62,7 @@ class ScooterMapModelTest {
      * T213. With very large text a card can be taller than the room above the dock and scrolls. A screen that kept
      * updating itself would freeze the app: the card updates the map a few times as it opens, and then nothing
      * moves (MAP-246). The updates are ScooterMap's and the markers', as SwiftUI's updateUIView's; the region changes
-     * the camera's.
+     * the camera's. In a large window the card opens in the panel instead, which keeps its foot as the dock its height.
      */
     @Test
     fun aTallCardOpensOnTheMapScreenWithVeryLargeText() {
@@ -106,11 +106,13 @@ class ScooterMapModelTest {
                 assertTrue("updates of the map as the card opened: ${opened.first - before.first}", opened.first - before.first <= 10)
                 assertTrue("moves of the map as the card opened: ${opened.second - before.second}", opened.second - before.second <= 1)
 
-                // Then a second at rest: the dock keeps its height and the map its place.
-                val dockTops = mutableSetOf(phone.onMain { camera.currentChrome?.invoke()?.bottomTop })
+                // Then a second at rest: the dock keeps its height and the map its place. Beside a large window's
+                // panel, which holds the card there, the panel keeps its foot.
+                fun chromeEdge() = phone.onMain { camera.currentChrome?.invoke()?.let { it.bottomTop ?: it.panel?.maxY } }
+                val dockTops = mutableSetOf(chromeEdge())
                 repeat(20) {
                     Thread.sleep(50)
-                    dockTops += phone.onMain { camera.currentChrome?.invoke()?.bottomTop }
+                    dockTops += chromeEdge()
                 }
                 val rested = counts()
                 val markersRested = markerUpdates()
@@ -119,7 +121,7 @@ class ScooterMapModelTest {
                 assertTrue("updates of the markers once the card was open: ${markersRested - markersOpened}", markersRested - markersOpened <= 2)
                 assertEquals("moves of the map once the card was open", opened.second, rested.second)
                 assertEquals("moves to places once the card was open", opened.third, rested.third)
-                assertTrue("heights of the dock once the card was open: $dockTops", dockTops.size <= 1)
+                assertTrue("heights of the dock or the panel once the card was open: $dockTops", dockTops.size <= 1)
                 assertNotNull(dockTops.single())
             }
         } finally {
