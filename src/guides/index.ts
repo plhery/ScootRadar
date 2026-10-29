@@ -281,6 +281,8 @@ import arlingtonEn from './en/e-scooters-arlington';
 import ramatGanEn from './en/e-scooters-ramat-gan';
 import sanJoseEn from './en/e-scooters-san-jose';
 import albuquerqueEn from './en/e-scooters-albuquerque';
+import vasterasEn from './en/e-scooters-vasteras';
+import norrkopingEn from './en/e-scooters-norrkoping';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -562,4 +564,6 @@ export const GUIDES: readonly Guide[] = [
   ramatGanEn,
   sanJoseEn,
   albuquerqueEn,
+  vasterasEn,
+  norrkopingEn,
 ];

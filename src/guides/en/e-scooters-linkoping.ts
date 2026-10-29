@@ -92,7 +92,7 @@ const guide: Guide = {
     {
       heading: 'The station, Campus Valla and Gamla Linköping',
       blocks: [
-        'From Linköping Central and its Travel Centre (Resecentrum), Stora torget is ten minutes’ walk and the cathedral fifteen, Visit Linköping says. Campus Valla, Linköping University’s largest campus, lies about three kilometres from the centre, near Vallastaden and Linköping Science Park in Mjärdevi, the university says.',
+        'From Linköping Central and its Travel Centre (Resecentrum), Stora torget is ten minutes’ walk and the cathedral fifteen, Visit Linköping says.',
         'We found no night ban, winter pause or season set by the kommun (October 2026).',
         {
           table: {
@@ -100,7 +100,7 @@ const guide: Guide = {
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
               ['Linköping Central', 'Jernhusen, the station’s owner', 'No e-scooter rule on its station or parking pages; the kommun has e-scooter stands at Resecentrum, and no-parking areas in Järnvägsparken and on both sides of Järnvägsavenyn'],
-              ['Campus Valla', 'Linköping University; Akademiska Hus, which develops the campus', 'No e-scooter rule found on their pages'],
+              ['Campus Valla', 'Akademiska Hus, which develops the campus for Linköping University', 'No e-scooter rule found; follow the campus signs'],
               ['Gamla Linköping', 'The open-air museum, about 2 km west of the centre', 'No cycling inside its old town quarters: wheel your bike or leave it in a cycle rack; it names no rule for e-scooters as such'],
             ],
           },
@@ -178,7 +178,6 @@ const guide: Guide = {
     { title: 'Östgötatrafiken: Vad och vem får du ta med (updated 12 May 2026)', url: 'https://www.ostgotatrafiken.se/res-med-oss/allt-om-resan/vad-och-vem-far-du-ta-med' },
     { title: 'Östgötatrafiken: Köp- och resevillkor (updated 14 April 2026)', url: 'https://www.ostgotatrafiken.se/info/kop--och-resevillkor' },
     { title: 'Jernhusen: Linköpings Centralstation', url: 'https://www.jernhusen.se/hitta-din-station/linkoping-centralstation' },
-    { title: 'Linköping University: Campus Valla', url: 'https://liu.se/artikel/campus-valla' },
     { title: 'Akademiska Hus: Investing in Corson on Campus Valla (5 March 2025)', url: 'https://www.akademiskahus.se/en/About-us/Current/News/2025/March/The-heart-of-Campus-Valla-gets-a-new-lease-of-life-Akademihus-invests-heavily-in-Cors_21n/' },
     { title: 'Gamla Linköping: Frågor och svar (questions and answers)', url: 'https://www.gamlalinkoping.se/fragor-och-svar' },
     { title: 'Gamla Linköping: Hitta hit (getting there)', url: 'https://www.gamlalinkoping.se/hitta-hit' },
