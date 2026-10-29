@@ -148,9 +148,14 @@ has none.
 - **Oulu:** no riding from Friday to Saturday and from Saturday to Sunday,
   00:00 to 05:00, nor on 1 May, 00:00 to 05:00
   ([permit terms](https://www.ouka.fi/media/18301/download), 9 December 2025).
-- **Tampere** bans nothing: scooters are limited to 15 km/h from 23:00 to
-  05:00, and riders take a reaction test from Thursday to Saturday nights
-  ([city of Tampere](https://www.tampere.fi/en/transport-streets-and-maintenance/cycling-and-walking/city-bikes-and-e-scooters/e-scooters)).
+- **Tampere** bans nothing: its licence limits scooters to 15 km/h and makes
+  riders take a reaction test from 23:00 to 05:00 on Wednesday to Saturday
+  nights and on the Vappu and Midsummer nights
+  ([licence terms](https://www.tampere.fi/sites/default/files/2026-08/Tampereen-kaupungin-lupaehdot-mikroliikenteelle_paivitetty_2025.pdf),
+  adopted 2 September 2025); since 24 June 2026 the test starts at 20:00 from
+  Friday to Sunday
+  ([city of Tampere](https://www.tampere.fi/ajankohtaista/2026/06/24/sahkopotkulautailun-tapaturmat-vahentyneet-vakavia-onnettomuuksia)).
+  The city's English page still gives the test as Thursday to Saturday.
 
 ## Licences
 

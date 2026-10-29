@@ -82,7 +82,7 @@ No covered Swedish town bans renting at night, so
 - **Stockholm** allows up to 12,000 scooters and has no night rule
   ([Stockholms stad](https://trafik.stockholm/trafikregler/elsparkcyklar/),
   updated 28 May 2026). None of them is on the map.
-- No other Swedish town checked (Göteborg, Malmö) bans renting at night.
+- No other Swedish town checked (Göteborg, Malmö, Linköping) bans renting at night.
 
 ## Licences
 
@@ -111,8 +111,10 @@ No covered Swedish town bans renting at night, so
   Lime's Stockholm feed answers 404.
 - **Uppsala** has Voi and Ryde besides Lime, and neither publishes a feed,
   so the map shows Lime's part of the up to 4,500 scooters only.
-- **Voi** (Göteborg, Malmö and other towns) and **Ryde** (Göteborg, Malmö)
-  publish no public feed either. Ryde has the largest share of Malmö's cap,
+- **Voi** (Göteborg, Malmö and other towns) and **Ryde** (Göteborg, Malmö,
+  Linköping, Norrköping and other towns, per its
+  [locations page](https://www.ryde-technology.com/Locations), 29 October
+  2026) publish no public feed either. Ryde has the largest share of Malmö's cap,
   1,000 of 2,800 scooters from 1 October 2026 to 31 March 2027
   ([traffic committee, 8 September 2026](https://motenmedborgarportal.malmo.se/committees/tekniska-namndens-trafikutskott/mote-2026-09-08/protocol/protokoll-tru-2026-09-08pdf?downloadMode=open)),
   and [Göteborg](https://goteborg.se/wps/portal/start/trafik-och-resor/trafik-och-gator/cykling-och-cykelvagar/delade-elsparkcyklar-och-elcyklar)
