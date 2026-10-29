@@ -321,7 +321,8 @@ banned shared scooters, and feeds that were empty when checked.
     Fjallabyggð publishes a season, so it left the catalog on 15 October
     2026; its feed and zone remain.
 - **Sweden** ([guide](swedish-scooter-feeds.md#known-gaps)): Lime in Uppsala
-  and Hopp in Kiruna are covered.
+  and Hopp in Kiruna are covered by public feeds, and Voi (15 towns), Qick
+  (7), Bolt (3) and Lime in Göteborg and Malmö by app maps.
   - Voi and Bolt publish no public feed.
     Voi's scooters in 15 towns come from its rider map since 24 October
     2026, and Bolt's in Stockholm, Malmö and Lund from its

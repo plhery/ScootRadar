@@ -1078,8 +1078,10 @@ Of these towns' rules, only South Lake Tahoe's sets a season, from 1
 November through 30 April, so Lime's area there is the only Bird or Lime area
 that pauses for winter (see
 [Lime supplement](#lime-supplement--26-october-2026)). Chicago and Detroit
-license scooters all year, Lincoln's code has no winter clause, and Spokane
-said on 29 October 2025 that Lime would run through the winter.
+license scooters all year, Lincoln's code has no winter clause, and Lime ran
+through Spokane's winter of 2025–26 (Spokesman-Review, 4 January 2026); its
+May 2026 request to make that permanent was undecided as far as found on
+29 October 2026, and the City's own site refuses scripts.
 
 ## Reading the feeds
 
