@@ -119,6 +119,11 @@ collector asks for. Counted on the night of 24 to 25 October 2026:
   Torinese 123, Moncalieri 122, Collegno 120, Nichelino 100, Rivoli 60,
   Grugliasco 24 and Borgaro Torinese 18 (18 again in a second count);
   Venaria Reale's 6 count under the nearest of these towns.
+- **Sindelfingen** (`IUACuXnotjY7IOBTqrh4`): of 156 on the night of 28 to 29
+  October 2026, 86 stood in Böblingen, south of 48.697°, all counted under
+  Sindelfingen until then. The box is split there, as Voi's is. Its west edge,
+  8.972°, is the region's own: Maichingen station (8.9696°) lies just outside,
+  and the westernmost scooter stood at 8.9771°, by Maichingen Nord station.
 
 ### Widened boxes
 

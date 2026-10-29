@@ -2132,7 +2132,41 @@
         "east": 9.0493
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
-      "dottAppRegion": "IUACuXnotjY7IOBTqrh4"
+      "dottAppRegion": "IUACuXnotjY7IOBTqrh4",
+      "areas": [
+        {
+          "city": "Sindelfingen",
+          "aliases": [
+            "Maichingen"
+          ],
+          "center": [
+            48.7084,
+            9.0035
+          ],
+          "bounds": {
+            "south": 48.697,
+            "north": 48.7301,
+            "west": 8.972,
+            "east": 9.0493
+          }
+        },
+        {
+          "city": "Böblingen",
+          "aliases": [
+            "Boeblingen"
+          ],
+          "center": [
+            48.685,
+            9.0113
+          ],
+          "bounds": {
+            "south": 48.6625,
+            "north": 48.697,
+            "west": 8.972,
+            "east": 9.0493
+          }
+        }
+      ]
     },
     {
       "id": "dott_de_solingen",
