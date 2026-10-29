@@ -259,6 +259,22 @@ class DeviceMatrixTest(private val look: Look) {
                         if (frame.width > 560.5) problems += "$at: the $name ${frame.width} wide, over 560"
                         if (abs(frame.midX - bounds.midX) > 1) problems += "$at: the $name at ${frame.midX}, not centred at ${bounds.midX}"
                     }
+                    // The top is the search bar and, where the scene has them, the notices under it: as tall and
+                    // as wide as they are, as iOS's onGeometryChange on the stack.
+                    val bar = compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.TestTag, SEARCH_ISLAND_TAG))
+                        .fetchSemanticsNodes().firstOrNull()?.wholeBounds()
+                    val top = frames.top
+                    if (top == null) {
+                        problems += "$at: no top"
+                    } else if (bar != null) {
+                        if (abs(top.minY - bar.top) > 1 || top.minX > bar.left + 1 || top.maxX < bar.right - 1) {
+                            problems += "$at: the top $top not over the search bar $bar"
+                        }
+                        if (scene.notices && top.maxY <= bar.bottom + 8) {
+                            problems += "$at: the top $top leaves out the notices under the search bar $bar"
+                        }
+                        if (!scene.notices && abs(top.maxY - bar.bottom) > 1) problems += "$at: the top $top reaches past the search bar $bar"
+                    }
                     apart("top", frames.top, "dock", frames.dock)
                     apart("top", frames.top, "locate button", frames.locateButton)
                     apart("top", frames.top, "zone legend", frames.zoneLegend)
@@ -430,17 +446,18 @@ enum class MatrixWindow(val width: Int, val height: Int, val fold: FoldingFeatur
 /**
  * The screens and states of ui.md §1 and §3, each as a rider reaches it: the dock's or the panel's content in each of
  * its states, the location card, the zones' legend, the search open, Filters, Settings and its pages, and the card's
- * price menu and walk. [pictured]: the windows it is pictured in.
+ * price menu and walk. [pictured]: the windows it is pictured in; [notices]: whether a notice shows under the search bar.
  */
 enum class MatrixScene(
     private val state: DockState? = null,
     val pictured: Set<MatrixWindow.Picture> = emptySet(),
     val searches: Boolean = false,
+    val notices: Boolean = false,
 ) {
     Finding(DockState.Finding),
 
     /** The first load failed: the banner under the search bar, and the dock waiting. */
-    Waiting(DockState.Waiting, pictured = foldAndTablet),
+    Waiting(DockState.Waiting, pictured = foldAndTablet, notices = true),
     Summary(DockState.Summary, pictured = setOf(MatrixWindow.Picture.Half)),
     Nearest(DockState.Nearest),
     ProviderChosen(DockState.ProviderChosen),
@@ -454,10 +471,10 @@ enum class MatrixScene(
             super.make(controllers, clock).also { it.setPanelCollapsed(true) }
     },
     ParkingBay(DockState.ParkingBay, pictured = foldAndTablet),
-    LocationDenied(pictured = foldAndTablet) {
+    LocationDenied(pictured = foldAndTablet, notices = true) {
         override fun make(controllers: TestControllers, clock: TestClock) = located(controllers, clock, ScooterLocationIssue.Denied)
     },
-    LocationNotFound {
+    LocationNotFound(notices = true) {
         override fun make(controllers: TestControllers, clock: TestClock) = located(controllers, clock, ScooterLocationIssue.NotFound)
     },
 
