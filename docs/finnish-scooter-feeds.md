@@ -141,10 +141,12 @@ scooter on the map, has none.
   which let the 2026 season start on 18 March (Yle); the City had announced no
   time past 31 October by 29 October 2026.
 - **Lahti:** no renting from Friday to Saturday and from Saturday to Sunday,
-  00:00 to 05:00, across the whole city, nor on the nights that start on
-  Maundy Thursday, 30 April and the day before Midsummer Eve
+  00:00 to 05:00, across the whole city, nor on weekday holidays, such as
+  the nights that start on Maundy Thursday, 30 April and the day before
+  Midsummer Eve
   ([permit terms](https://www.lahti.fi/app/uploads/2026/04/mikroliikenneluvan-ehdot-2026.pdf),
-  section 7, 17 February 2026).
+  section 7, 17 February 2026: "arkipyhinä kuten"). The list is open, as
+  Turku's is: the map closes the three named nights only.
 - **Porvoo:** scooters must not be available from Friday to Saturday and from
   Saturday to Sunday, 00:00 to 05:00, nor on the nights of Vappu, Midsummer
   and New Year's Eve; the season runs from 15 April to 31 October
@@ -193,7 +195,7 @@ scooter on the map, has none.
   map shows Dott's and Voi's scooters there from their app maps
   ([Dott](dott-app-map.md), [Voi](voi-app-map.md)); Ryde's and Bolt's are not
   on it. Bolt's only public scooter feeds in Europe are Brussels and Liverpool.
-- **Ryde** (Helsinki, Espoo, Vantaa, Tampere, Turku, Jyväskylä), rechecked on 28 October
+- **Ryde** (Helsinki, Espoo, Vantaa, Tampere, Turku, Jyväskylä, Lahti), rechecked on 28 October
   2026: it publishes GBFS only through Entur, for its sixteen Norwegian
   systems, and through NRW's closed data hub (factsheet 465, ten German
   zones). MobilityData's registry lists no Finnish system, Transitous's

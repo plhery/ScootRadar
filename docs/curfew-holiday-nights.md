@@ -21,7 +21,7 @@ closed already, so they aren't listed.
 | Tønsberg | § 6 d: 23:00 "natt til lørdag og natt til søndag, samt bevegelige helligdager", 01:00 on others | E−4, E−3, E, E+38, E+49 | 23:00–05:00 |
 | Helsinki | Vappu night | 30 Apr | 23:00–05:00 |
 | Espoo, Vantaa | Vappu night | 30 Apr | 00:00–05:00 |
-| Lahti | § 7: the nights that start on Maundy Thursday, 30 April and the day before Midsummer Eve | E−3, 30 Apr, Midsummer Eve −1 | 00:00–05:00 |
+| Lahti | § 7: weekday holidays "kuten" (such as) the nights that start on Maundy Thursday, 30 April and the day before Midsummer Eve | E−3, 30 Apr, Midsummer Eve −1 | 00:00–05:00 |
 | Porvoo | Vappu, Midsummer and New Year's Eve | 30 Apr, 31 Dec (Midsummer night is a Friday's) | 00:00–05:00 |
 | Turku | 2.5: weekday holidays "kuten" (such as) Vappu Eve, May Day, Midsummer Eve, Midsummer Day and New Year's Eve | 30 Apr, 1 May, 31 Dec (the two Midsummer nights are a Friday's and a Saturday's) | 00:00–05:00 |
 
@@ -34,6 +34,8 @@ closed already, so they aren't listed.
 - Turku's list is open ("such as"), and its nights are read as Friday's to
   Saturday's is ("pe–la"): Vappu Eve's night runs into May Day. Only the five
   named holidays are closed.
+- Lahti's list is open too ("arkipyhinä kuten", on weekday holidays such as):
+  only its three named nights are closed.
 - Bergen's next rule ([FOR-2026-06-17-1345](https://lovdata.no/dokument/LF/forskrift/2026-06-17-1345))
   closes holiday eves too, from its next permits (by 31 March 2028 at the
   latest).

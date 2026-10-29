@@ -38,8 +38,9 @@ every stationary reference found. On the evening of 25 October 2026, local
 time: Raleigh (566 scooters, beside Spin's), Indianapolis (984, beside
 Bird's), Cincinnati (236) and Fairfax (75, beside Bird's, around George Mason
 University). Just after midnight on 26 October: Tampa (1,393, beside Spin's),
-Orlando (765), St. Petersburg (586, downtown), Winston-Salem (241) and
-Lansing (173, with East Lansing and Michigan State's campus). Cincinnati
+Orlando (765, as far as International Drive, outside the city),
+St. Petersburg (586, downtown), Winston-Salem (241) and Lansing (173, with
+East Lansing and Michigan State's campus). Cincinnati
 rents Bird's and Lime's scooters only from 06:00 to 23:00, East Lansing
 has Lime take its scooters off the city's streets from 03:00 to 06:00, and
 St. Petersburg's program stops from 02:00 to 05:00, so the map holds a night
@@ -80,8 +81,9 @@ only Veo among the companies licensed to rent e-scooters. See
 
 In the morning of 26 October, local time: Dallas (1,686, beside Bird's),
 Minneapolis (1,543, beside Spin's), St. Paul (901, beside Spin's), Charlotte
-(767), Nashville (738, beside Bird's and Spin's), Omaha (677), Montgomery
-County, Maryland (213, most in Silver Spring, the rest as far as Wheaton,
+(767), Nashville (738, beside Bird's and Spin's), Omaha (677, with Council
+Bluffs and Carter Lake, Iowa), Montgomery County, Maryland (213, most in
+Silver Spring, the rest as far as Wheaton,
 North Bethesda and Rockville; downtown Bethesda is outside Lime's zone),
 Jacksonville (212, downtown), Richmond (112, beside Bird's and Spin's) and
 St. Louis Park (42). The bans already held in Dallas, Minneapolis,
@@ -1041,13 +1043,14 @@ Rules that read like bans but are not, or that no primary source confirms:
   force today repeats either, and the city's
   [Veo page](https://toledo.oh.gov/residents/community/veo-scooters) gives
   no hours.
-- **Omaha:** Park Omaha's scooter page, run by the city's Parking and
-  Mobility Division, gave "Scooter Operating Hours: 5:00 a.m. - 10:30 p.m."
-  in its copy of 18 January 2025 in the Internet Archive, as news did in
-  2019 and 2020. Every copy since, and the live page from Europe, answers
-  403, and the city's agreements with Lime aren't published, so whether the
-  hours hold in 2026 is unconfirmed. Left out until Lime's map is read there
-  after 22:30.
+- **Omaha:** the 2025 hours come only from the Internet Archive's copy, of
+  18 January 2025, of Park Omaha's scooter page, run by the city's Parking
+  and Mobility Division: "Scooter Operating Hours: 5:00 a.m. - 10:30 p.m.",
+  as news gave them in 2019 and 2020. That host refuses this research
+  (every copy since, and the live page from Europe, answers 403), and an
+  archive copy is no source for the map. The city's agreements with Lime
+  aren't published, so whether the hours hold in 2026 is unconfirmed. Left
+  out until Lime's map is read there after 22:30.
 - **Montgomery County, MD:** the 2019 pilot's sample agreement kept riders
   from starting a trip "before 5 a.m. or after 10 p.m.", and a council staff
   memo of 20 July 2022 still lists "Hours of operation 5 am -10 pm". The

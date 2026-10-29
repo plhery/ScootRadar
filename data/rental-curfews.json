@@ -9240,7 +9240,7 @@
         }
       ],
       "source": "https://www.lahti.fi/app/uploads/2026/04/mikroliikenneluvan-ehdot-2026.pdf",
-      "rule": "2026 micromobility licence, 7; Friday and Saturday nights, and those that start on Maundy Thursday, 30 April and the day before Midsummer Eve.",
+      "rule": "2026 micromobility licence, 7; Friday and Saturday nights, and those of the weekday holidays it names: the nights that start on Maundy Thursday, 30 April and the day before Midsummer Eve. It names them \"such as\", so others may close too.",
       "boundary": {
         "source": "osm",
         "id": "345901"
