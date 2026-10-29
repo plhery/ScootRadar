@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.theme.FocusRing
 
 // The web's MapCredits (src/components/MapCredits.tsx), where the iPhone shows Apple's logo and Legal link.
@@ -52,6 +53,21 @@ fun MapCredits(
         }
     }
 }
+
+/**
+ * How far above the map's foot the credits go, beside a panel, where the zones' legend in the corner would cover
+ * them, from the [credits]' sides and the [legend]'s frame in the map's points: just over the legend, as their
+ * licence asks that they be seen. Null where the legend leaves them be. Apple's logo and Legal link, a third as wide,
+ * stay where they are on the iPhone.
+ */
+internal fun creditsOverLegend(credits: Pair<Double, Double>?, legend: ScreenRect?, mapHeight: Double): Double? {
+    if (credits == null || legend == null || legend.isEmpty) return null
+    if (credits.first >= legend.maxX || credits.second <= legend.minX) return null
+    return mapHeight - legend.minY + LEGEND_GAP
+}
+
+/** The room between the legend and the credits over it. */
+private const val LEGEND_GAP = 4.0
 
 private val SOURCES = listOf(
     "© OpenStreetMap" to "https://www.openstreetmap.org/copyright",

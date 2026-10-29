@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -208,6 +210,11 @@ fun ScooterMap(
         }
     }
     val fold by remember(chrome) { derivedStateOf { chrome?.fold?.takeIf { !it.isEmpty } } }
+    // The zones' legend in the corner beside a panel, which the credits go up over where it would cover them.
+    val legend by remember(chrome) {
+        derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.zoneLegend?.takeIf { !it.isEmpty } }
+    }
+    var creditsSides by remember { mutableStateOf<Pair<Double, Double>?>(null) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, view) {
         // A new observer is brought up to the lifecycle's state at once: ON_CREATE, ON_START, ON_RESUME.
@@ -272,6 +279,8 @@ fun ScooterMap(
         } else {
             Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)).padding(start = 8.dp)
         }
+        val overLegend = creditsOverLegend(creditsSides, legend, maxHeight.value.toDouble())
+        val density = LocalDensity.current.density
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
@@ -280,12 +289,16 @@ fun ScooterMap(
                     margins == null -> Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
                     // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
                     margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)
+                    overLegend != null -> sideways.padding(bottom = overLegend.dp)
                     else -> Modifier
                         .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
                         .then(sideways)
                         .padding(bottom = 8.dp)
                 },
-            ),
+            ).onGloballyPositioned {
+                val bounds = it.boundsInWindow()
+                creditsSides = (bounds.left / density).toDouble() to (bounds.right / density).toDouble()
+            },
         )
     }
 }
