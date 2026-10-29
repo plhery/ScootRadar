@@ -4684,6 +4684,26 @@
       "aliases": [
         "Sitten"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Farmington",
+      "center": [
+        40.9805,
+        -111.88744
+      ],
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "regionToken": "6XZLNX7U6SX6C",
+      "serviceAreas": [
+        {
+          "name": "Zone-[Ogden][SZ][Farmington Scooters][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{elyF~hajT|Xnr@n|@yv@bi@ppA~bA`]|K~eBnzCucAf`B}nD?whEovAnT?}i@c~D|i@{iB|gAoExtAgfAxv@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+      ]
     }
   ]
 }

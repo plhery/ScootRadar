@@ -4248,6 +4248,29 @@
         "lngStep": 0.01650690982278792,
         "cells": "0-2,4-11,13-15,17-18"
       }
+    },
+    {
+      "id": "lime_us_app_farmington",
+      "provider": "lime",
+      "city": "Farmington",
+      "region": "UT",
+      "center": [
+        40.9805,
+        -111.88744
+      ],
+      "timeZone": "America/Denver",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6XZLNX7U6SX6C",
+      "limeMapGrid": {
+        "south": 40.95354,
+        "west": -111.94821,
+        "north": 41.02766,
+        "east": -111.87336,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017841539278279594,
+        "cells": "0-18,21-23,26-27"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",

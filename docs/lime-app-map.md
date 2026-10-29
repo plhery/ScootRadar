@@ -226,7 +226,9 @@ operator, Denver's scooters are Veo's alone since 16 May 2026, and Bird's
 St. Louis feed held its fleet while Lime's zone was empty. Farmington, Utah,
 held 2 scooters in each of three audits, on 26 October by night and in the
 afternoon and on the morning of 27 October, Mountain time, and never a
-stationary one to check them against, so it is left out too. In the United
+stationary one to check them against. A fourth, on the morning of 29 October,
+found 5, none of them the 2 seen before, around Station Park and Lagoon, and
+the one stationary scooter, so it was registered then. In the United
 Arab Emirates, neither did Al Mirfa and
 Madinat Zayed, in Al Dhafra, the two far zones of its Abu Dhabi region, in the
 afternoon of 26 October 2026, Gulf time.
@@ -309,6 +311,7 @@ stationary reference scooter, country by country:
 | 28 October 2026 | United States: San Marcos, UNC Charlotte | 36 | 9 | 214 | 20 |
 | 28 October 2026 | Switzerland: Kloten | 8 | 2 | 49 | 1 |
 | 28 October 2026 | Switzerland: Sion | 45 | 12 | 97 | 43 |
+| 29 October 2026 | United States: Farmington | 24 | 6 | 5 | 1 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

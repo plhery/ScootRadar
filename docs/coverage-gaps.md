@@ -27,12 +27,13 @@ and Tampa, in Ashdod and Eilat, in Dubai, Abu Dhabi and Al Ain, and since
 Blackfalds and Waterloo Region, and since 28 October in Feldkirchen bei Graz,
 Klosterneuburg, Korneuburg, Chania, Érd, Százhalombatta, Diósd, Ragusa,
 Marina di Ragusa, Ishigaki, North Ishigaki, San Marcos, UNC Charlotte,
-Kloten, the first Swiss town read from it, and Sion, which no feed covers.
+Kloten, the first Swiss town read from it, and Sion, which no feed covers,
+and since 29 October in Farmington, Utah.
 Kortrijk, Mechelen, Lucca, Volos and Keszthely held no Lime scooter near their
 centres at midnight on 28 October, nor anywhere in their zones at midday:
 dormant regions.
-One other market its rider map lists, Farmington, Utah, showed 2 scooters in
-each of three audits and none to check them against, so it remains a gap. See
+Farmington, Utah, showed 2 scooters in each of three audits and none to check
+them against, and was added once a fourth found 5 and one to check. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 ## Found, not added yet
@@ -549,8 +550,10 @@ banned shared scooters, and feeds that were empty when checked.
       Spokane Valley, West Sacramento, Richmond (beside Bird and Spin), Edmond,
       Clearfield, Fairfax, St. Louis Park, Jenks, North Salt Lake and Tualatin
       ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
-      Still without one: Farmington, Utah, where three audits found 2
-      scooters and none to check them against, and smaller towns.
+      Since 28 October it has also supplied San Marcos and UNC Charlotte's
+      campus, and since 29 October Farmington, Utah, where three audits
+      found 2 scooters and none to check them against before a fourth found
+      5. Still without one: smaller towns.
     - **Bird** in Oklahoma City, whose operating area held no scooter within
       3 km of its centre on 27 October 2026; the area is 26 km across, so it
       is still to be swept whole. Its rider map has supplied

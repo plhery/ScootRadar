@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-28",
+  "verifiedOn": "2026-10-29",
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
@@ -3591,6 +3591,23 @@
       "finishedAt": "2026-10-28T11:13:31.360Z",
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Sion_98_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Farmington",
+      "regionToken": "6XZLNX7U6SX6C",
+      "fingerprint": "b72f670ce12ad1bacb46a88975499eb7ebe6a50e7bd7bf06f02a20959cd47fe0",
+      "groups": 6,
+      "localCells": 24,
+      "coldMapRequests": 24,
+      "warmMapRequests": 24,
+      "scooters": 5,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-29T14:46:37.946Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
       ]
     }
   ],

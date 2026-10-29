@@ -1031,8 +1031,9 @@ come from its app's signed-out map, read as in South Korea (below), and since
 [Ride and parking zones](#ride-and-parking-zones)). GCOO publishes no licence
 for either; the credits link to gcoo.io. Since 26 October
 2026, Lime's scooters in 58 towns where it publishes no feed, from Los Angeles
-and Austin to Milwaukee and Tampa, and since 28 October in San Marcos and on
-UNC Charlotte's campus, come from its rider map, signed in, as in Europe (see
+and Austin to Milwaukee and Tampa, since 28 October in San Marcos and on
+UNC Charlotte's campus, and since 29 October in Farmington, Utah, come from
+its rider map, signed in, as in Europe (see
 [the Lime catalog](docs/lime-app-map.md)). Since 28 October 2026,
 Bird's scooters in eight towns where it publishes no feed, from Austin and
 Sacramento to Yonkers, come from its rider map, signed in, each operating area

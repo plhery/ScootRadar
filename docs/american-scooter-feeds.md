@@ -68,7 +68,8 @@ sets riding hours; Boulder's 2021 pilot did, and Lime's map held its 800
 scooters at 03:18 (see [Night bans](#night-bans)). The night's audits left
 Albuquerque, Clearfield, Farmington, Grand Junction and North Salt Lake no
 stationary scooter to check against, or, in Albuquerque, mixed in a scan from
-the evening before; all but Farmington passed by day (below).
+the evening before; all passed by day (below), Farmington only on
+29 October.
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
 shared scooter and bike operator from 1 September 2026, nor Carthage,
@@ -121,8 +122,12 @@ Port too, so it misleads no one, and Lime's Long Beach map has no zones. In Knox
 night; its 2020 pilot let scooters run from 07:00 to 21:00, and guides give
 07:00 to 23:00, but the city's scooter pages are gone from its new website,
 so the map holds no night ban there. Farmington, Utah, showed 2 scooters and
-none stationary to check against, and the same on the morning of 27 October,
-so it is left out.
+none stationary to check against, and the same on the morning of 27 October.
+On the morning of 29 October it held 5, none of them the 2 seen before, each
+within 1 km of Station Park, by the FrontRunner station, or of Lagoon, and its
+audit found the one stationary scooter, so it is on the map since. Lime runs
+it from its Ogden service; its zone keeps scooters out of Lagoon and slows
+them at Station Park, and no Farmington rule found sets riding hours.
 
 On the evening of 26 October, Eastern time: Alexandria, Virginia (350,
 beside GCOO's). Its program sets no riding hours. Its zone stops at the

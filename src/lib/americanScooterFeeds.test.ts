@@ -54,7 +54,7 @@ describe('the United States', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
     expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Albuquerque', 'Alexandria', 'Arvada', 'Austin', 'Bellevue', 'Berkeley', 'Boise', 'Bothell', 'Boulder', 'Charlotte',
-      'Cincinnati', 'Clearfield', 'Corpus Christi', 'Dallas', 'Edmond', 'Everett', 'Fairfax', 'Grand Junction', 'Indianapolis', 'Isla Vista',
+      'Cincinnati', 'Clearfield', 'Corpus Christi', 'Dallas', 'Edmond', 'Everett', 'Fairfax', 'Farmington', 'Grand Junction', 'Indianapolis', 'Isla Vista',
       'Jacksonville', 'Jenks', 'Knoxville', 'Lansing', 'Little Rock', 'Long Beach', 'Los Angeles', 'Lubbock', 'Milwaukee', 'Minneapolis',
       'Mobile', 'Montgomery County', 'Nashville', 'North Salt Lake', 'Oklahoma City', 'Omaha', 'Orlando', 'Phoenix', 'Portland', 'Raleigh',
       'Redmond', 'Richmond', 'Rochester', 'Sacramento', 'Salt Lake City', 'San Marcos', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
@@ -69,7 +69,7 @@ describe('the United States', () => {
       'us:ar:Little Rock', 'us:tx:Lubbock', 'us:wi:Milwaukee', 'us:al:Mobile', 'us:ok:Oklahoma City', 'us:mn:Rochester', 'us:ok:Tulsa',
       'us:nm:Albuquerque', 'us:ut:Clearfield', 'us:co:Grand Junction', 'us:tn:Knoxville', 'us:ca:Long Beach', 'us:ut:North Salt Lake',
       'us:va:Alexandria', 'us:wa:Bellevue', 'us:ca:Berkeley', 'us:wa:Bothell', 'us:wa:Everett', 'us:wa:Redmond',
-      'us:az:Tucson']) {
+      'us:az:Tucson', 'us:ut:Farmington']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
@@ -77,6 +77,8 @@ describe('the United States', () => {
     expect(lime.find(entry => entry.city === 'Lansing')).toMatchObject({ region: 'MI', timeZone: 'America/Detroit' });
     // Lime's Rochester is Minnesota's; Veo's, in New York, has a feed of its own.
     expect(lime.find(entry => entry.city === 'Rochester')).toMatchObject({ region: 'MN', timeZone: 'America/Chicago' });
+    // Lime's Farmington is Utah's, by Station Park and Lagoon, a zone of its Ogden service.
+    expect(lime.find(entry => entry.city === 'Farmington')).toMatchObject({ region: 'UT', timeZone: 'America/Denver' });
     // Arizona keeps standard time all year.
     expect(lime.find(entry => entry.city === 'Scottsdale')).toMatchObject({ region: 'AZ', timeZone: 'America/Phoenix' });
     expect(lime.find(entry => entry.city === 'Tucson')).toMatchObject({ region: 'AZ', timeZone: 'America/Phoenix' });
