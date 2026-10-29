@@ -22,6 +22,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 /** What a tap means on the markers, how they light up, and how they go to MapLibre: the scene's own tests. */
 @RunWith(AndroidJUnit4::class)
@@ -308,5 +309,63 @@ class ScooterMarkerSceneTest {
         assertEquals(emptyList<MarkerBands.Band>(), names.frame(1.16))
         assertEquals(listOf(pill), names.frame(1.29))
         assertEquals(0.75f, pill.opacity, 1e-4f)
+    }
+
+    @Test
+    fun aLightingUpBandGrowsItsOwnCopiesOfItsDotsPicturesAlongTheIPhonesCurve() {
+        // MAP-119: the iPhone's dot grows from 0.2 of its size as it lights up (ScooterAnnotationView.lightUp). A
+        // band draws its own copies of its dots' pictures, drawn again a step at a time as the band grows.
+        val epoch = 100.0
+        val fade = MarkerFade(100.2, ScooterMarkerScene.LIGHT_UP, MarkerFade.Curve.LightUp)
+        fun dot(id: String, image: String) = MarkerFeature("v:$id", map.at(195.0, 400.0), image, { error("not drawn") }, fade = fade)
+        val bands = MarkerBands(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED)
+        val (lit, _) = bands.assign(listOf(dot("a", "dot/lime"), dot("b", "dot/voi"), dot("c", "dot/lime")), epoch, time = 0.0)
+        val band = lit.values.distinct().single()
+        assertEquals(SymbolLayerSpec.Json("[\"concat\",[\"get\",\"image\"],\"@b0\"]"), band.spec.layout["icon-image"])
+        assertEquals("dot/lime@b0", ScooterMarkerLayers.grown("dot/lime", band.index))
+
+        // Before it starts, a copy of each of its pictures at a fifth of the size; nothing more until it grows a step.
+        assertEquals(listOf("dot/lime@b0 at 0", "dot/voi@b0 at 0"), bands.grow(0.0, lit).map { "$it" }.sorted())
+        assertEquals(0.2, MarkerBand.scale(0), 1e-9)
+        assertEquals(emptyList<String>(), bands.grow(0.2, lit).map { "$it" })
+
+        // Then, at each frame, all of its copies once it has grown a step, as far as the iPhone's curve has got:
+        // three quarters of the way within 0.15 s, whole at its end.
+        val iPhone = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
+        var growth = 0
+        var steps = 0
+        for (frame in 1..40) {
+            val time = 0.2 + frame / 60.0
+            val expected = (iPhone.transform(min(1.0, (time - 0.2) / ScooterMarkerScene.LIGHT_UP).toFloat()) * MarkerBand.GROWTHS).roundToInt()
+            val grown = bands.grow(time).map { "$it" }.sorted()
+            if (expected == growth) {
+                assertEquals("frame $frame", emptyList<String>(), grown)
+            } else {
+                assertEquals("frame $frame", listOf("dot/lime@b0 at $expected", "dot/voi@b0 at $expected"), grown)
+                growth = expected
+                steps += 1
+            }
+            if (frame == 9) assertTrue("$growth", growth >= 15)
+        }
+        assertEquals(MarkerBand.GROWTHS, growth)
+        assertEquals(1.0, MarkerBand.scale(growth), 1e-9)
+        // Each copy drawn again at most once a step.
+        assertTrue("$steps", steps <= MarkerBand.GROWTHS)
+
+        // A dot put in a band whose picture it has no copy of: its copy comes at what the band has grown to.
+        val more = MarkerBands(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED)
+        val (one, _) = more.assign(listOf(dot("a", "dot/lime")), epoch, time = 0.3)
+        more.grow(0.3, one)
+        val reached = one.values.single().growth
+        assertTrue("$reached", reached in 1 until MarkerBand.GROWTHS)
+        val (two, _) = more.assign(listOf(dot("a", "dot/lime"), dot("d", "dot/bolt")), epoch, time = 0.3)
+        assertEquals(listOf("dot/bolt@b0 at $reached"), more.grow(0.3, two).map { "$it" })
+
+        // A name's band fades without growing, as the iPhone's name does.
+        val names = MarkerBands(ScooterMarkerLayers.PILLS, raised = null)
+        val name = MarkerFeature("n:a", map.at(195.0, 400.0), "pill", { error("not drawn") }, fade = MarkerFade(100.9, ScooterMarkerScene.NAME_IN, MarkerFade.Curve.Linear))
+        val (named, _) = names.assign(listOf(name), epoch, time = 1.0)
+        assertEquals(SymbolLayerSpec.Json("[\"get\",\"image\"]"), named.values.single().spec.layout["icon-image"])
+        assertEquals(emptyList<String>(), names.grow(1.0, named).map { "$it" })
     }
 }

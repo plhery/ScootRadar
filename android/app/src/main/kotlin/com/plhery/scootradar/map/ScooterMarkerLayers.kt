@@ -349,18 +349,28 @@ object ScooterMarkerLayers {
     /**
      * The layer drawing a band of [base]'s markers while they fade: the same pictures, those of the band alone, at
      * one strength for all of them, [opacity] to start with. They are drawn in the order they are written in, all
-     * together, not each on its own by its sort key.
+     * together, not each on its own by its sort key. A band that [grows] draws its own copies of the pictures,
+     * which grow with it ([grown]).
      */
-    fun band(base: String, index: Int, opacity: Float = MarkerBand.FAINTEST): SymbolLayerSpec {
+    fun band(base: String, index: Int, opacity: Float = MarkerBand.FAINTEST, grows: Boolean = false): SymbolLayerSpec {
         val layer = specs.first { it.id == base }
+        val layout = layer.layout - "symbol-sort-key" + ("symbol-z-order" to "source")
         return SymbolLayerSpec(
             id = "$base-band-$index",
             source = layer.source,
             filter = "[\"==\",[\"get\",\"band\"],$index]",
-            layout = layer.layout - "symbol-sort-key" + ("symbol-z-order" to "source"),
+            layout = if (grows) layout + ("icon-image" to SymbolLayerSpec.Json("[\"concat\",[\"get\",\"image\"],\"${grown("", index)}\"]")) else layout,
             paint = mapOf("icon-opacity" to opacity),
         )
     }
+
+    /**
+     * A band's copy of one of its markers' pictures, of the same size, the marker drawn in it at the size it has
+     * grown to (MAP-119): MapLibre puts a picture of the same size in the place of the one it had under that name
+     * without laying anything out again, where a scale read off each marker would have it lay out every one of them
+     * at every frame.
+     */
+    fun grown(image: String, band: Int): String = "$image@b$band"
 
     /**
      * The layer a band's goes under: the lowest of its base's bands whose markers sort above its own, else the
@@ -403,6 +413,18 @@ data class MarkerBand(
 
     fun isOver(time: Double): Boolean = time >= start * STEP + length
 
+    /**
+     * Whether its markers grow as they fade in: the dots' light-up, which the iPhone scales from [GROWN_FROM] of
+     * their size along its curve (ScooterAnnotationView.lightUp, MAP-119).
+     */
+    val grows: Boolean get() = curve == MarkerFade.Curve.LightUp
+
+    /** How far its markers have grown at [time], in [GROWTHS] steps from [GROWN_FROM] of their size to the whole. */
+    fun growth(time: Double): Int {
+        val progress = ((time - start * STEP) / length).coerceIn(0.0, 1.0).toFloat()
+        return (lightUp.transform(progress) * GROWTHS).roundToInt()
+    }
+
     /** Its strength once faded in. */
     val opacity: Float get() = (strength * STRENGTH_STEP).toFloat()
 
@@ -429,6 +451,18 @@ data class MarkerBand(
          * over 0.62 s, to within 2.5 %.
          */
         const val EASED_LIGHT_UP = 0.37 / 0.62
+
+        /** The light-up's grow: from a fifth of a dot's size, CABasicAnimation's transform.scale from 0.2. */
+        const val GROWN_FROM = 0.2
+
+        /**
+         * The steps a dot grows by, each a copy of its picture drawn again: 0.04 of its size, about two pixels of a
+         * 16 pt dot at 3x. The curve is quick: a band grows three quarters of its steps in its first 0.15 s.
+         */
+        const val GROWTHS = 20
+
+        /** A dot's scale [growth] steps into its grow. */
+        fun scale(growth: Int): Double = GROWN_FROM + (1 - GROWN_FROM) * growth / GROWTHS
 
         private val lightUp = CubicBezierEasing(0.22f, 1f, 0.36f, 1f)
         private val easeInEaseOut = CubicBezierEasing(0.42f, 0f, 0.58f, 1f)
@@ -481,10 +515,22 @@ class MarkerBands(private val layer: String, private val raised: String?) {
             internal set
         var isEased = false
             internal set
+
+        /** The pictures of its markers, by name, that it has copies of, if it grows. */
+        internal val pictures = HashMap<String, () -> Bitmap>()
+
+        /** How far the copies have been drawn grown: none yet at -1. */
+        var growth = -1
+            internal set
     }
 
     /** MapLibre's ease of a band's layer, from what it shows to [opacity]: after a delay, over a length, in ms. */
     data class Ease(val length: Long, val delay: Long, val opacity: Float)
+
+    /** A band's copy of a picture, [name]d in the style, to be drawn [growth] steps into the grow. */
+    class Grown(val name: String, val image: String, val picture: () -> Bitmap, val growth: Int) {
+        override fun toString() = "$name at $growth"
+    }
 
     private val bands = HashMap<MarkerBand, Band>()
     private var next = 0
@@ -507,7 +553,7 @@ class MarkerBands(private val layer: String, private val raised: String?) {
             val base = if (key.isRaised && raised != null) raised else layer
             val index = next++
             val opacity = key.opacity(time)
-            val spec = ScooterMarkerLayers.band(base, index, opacity)
+            val spec = ScooterMarkerLayers.band(base, index, opacity, grows = key.grows)
             val sortKey = members.map { it.sortKey.toDouble() }.average().toFloat()
             val below = ScooterMarkerLayers.below(base, sortKey, bands.values.map { it.layer })
             val band = Band(key, index, spec, MarkerBand.Layer(spec.id, base, sortKey), below, opacity)
@@ -540,6 +586,34 @@ class MarkerBands(private val layer: String, private val raised: String?) {
     }
 
     fun isOver(time: Double): Boolean = bands.keys.all { it.isOver(time) }
+
+    /**
+     * The copies of their pictures the growing bands need drawn at [time]: each picture of the markers [members]
+     * puts in a band that the band has no copy of yet, at what the band has grown to, and every one of a band's
+     * once it has grown a step further. Each is sent once: those of the same name, once.
+     */
+    fun grow(time: Double, members: Map<MarkerFeature, Band> = emptyMap()): List<Grown> {
+        val grown = LinkedHashMap<String, Grown>()
+        for ((feature, band) in members) {
+            if (!band.key.grows || feature.image in band.pictures) continue
+            band.pictures[feature.image] = feature.picture
+            if (band.growth >= 0) {
+                val name = ScooterMarkerLayers.grown(feature.image, band.index)
+                grown[name] = Grown(name, feature.image, feature.picture, band.growth)
+            }
+        }
+        for (band in bands.values) {
+            if (!band.key.grows) continue
+            val growth = band.key.growth(time)
+            if (growth == band.growth) continue
+            band.growth = growth
+            for ((image, picture) in band.pictures) {
+                val name = ScooterMarkerLayers.grown(image, band.index)
+                grown[name] = Grown(name, image, picture, growth)
+            }
+        }
+        return grown.values.toList()
+    }
 
     /** Hands every band's markers back to the source's layers: returns the bands, whose layers draw nothing now. */
     fun clear(): List<Band> = bands.values.toList().also { bands.clear() }

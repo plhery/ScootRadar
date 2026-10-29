@@ -4,6 +4,7 @@
 package com.plhery.scootradar.map
 
 import android.animation.ValueAnimator
+import android.graphics.Bitmap
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -180,6 +181,16 @@ class ScooterMarkers(
     /** The scooters' source's writes: what a light-up or an ease costs MapLibre. */
     internal var markersWritten = 0
         private set
+
+    /** The copies of pictures the light-up's bands have sent the style as they grow: what the grow costs MapLibre. */
+    internal var picturesGrown = 0
+        private set
+
+    /** The names of those copies, which the style keeps. */
+    private val grownNames = HashSet<String>()
+
+    /** How many copies the style keeps. */
+    internal val picturesKept: Int get() = grownNames.size
 
     private val tiles = MapView.OnTileActionListener { operation, x, y, z, wrap, overscaledZ, source ->
         if (source != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnTileActionListener
@@ -438,7 +449,7 @@ class ScooterMarkers(
 
     /** Adds the pictures a source's markers need to the style, and takes out those none needs once there are many. */
     private fun addPictures(style: Style, source: String, features: List<MarkerFeature>) {
-        val needed = HashMap<String, android.graphics.Bitmap>()
+        val needed = HashMap<String, Bitmap>()
         val names = HashSet<String>(features.size)
         for (feature in features) {
             names += feature.image
@@ -652,6 +663,9 @@ class ScooterMarkers(
     ) {
         private val bands = MarkerBands(layer, raised)
 
+        /** The pictures grown, by name and step, while bands grow: each band takes the same steps. */
+        private val grown = HashMap<Pair<String, Int>, Bitmap>()
+
         val isFading: Boolean get() = bands.isFading
 
         /** Puts each marker fading at [time] in its band, adding the bands' layers it needs. */
@@ -659,6 +673,8 @@ class ScooterMarkers(
             val wasFading = bands.isFading
             val (members, added) = bands.assign(features, epoch, time)
             if (members.isEmpty()) return emptyMap()
+            // The copies of the pictures the bands grow, before their layers ask for them.
+            grow(style, bands.grow(time, members))
             if (!wasFading) beside(style, besideBands, ScooterMarkerLayers.SORT_BESIDE_BANDS)
             for (band in added) {
                 addLayer(style, band.spec, below = band.below)
@@ -686,13 +702,32 @@ class ScooterMarkers(
         fun frame(style: Style, time: Double): Boolean {
             if (!bands.isFading) return false
             for (band in bands.frame(time)) style.getLayer(band.layer.id)?.setProperties(PaintPropertyValue("icon-opacity", band.opacity))
+            grow(style, bands.grow(time))
             if (!bands.isOver(time)) return true
             // In the same layout, the markers come back to the source's layers and leave the bands'.
             beside(style, strength, ScooterMarkerLayers.SORT)
+            grown.clear()
             val emptied = bands.clear().map { it.layer.id }
             for (id in emptied) (style.getLayer(id) as? SymbolLayer)?.setFilter(Expression.raw(ScooterMarkerLayers.NOTHING))
             whenDrawn { if (this@ScooterMarkers.style === style) for (id in emptied) style.removeLayer(id) }
             return false
+        }
+
+        /**
+         * Puts the bands' copies of their pictures in the style, grown as far as each band has: each a picture of
+         * the same size as the one it had, which MapLibre draws from its next frame without laying anything out
+         * again. They stay in the style once the light-up is over, as MapLibre would lay out every source again,
+         * the ground's too, for a picture taken out.
+         */
+        private fun grow(style: Style, copies: List<MarkerBands.Grown>) {
+            if (copies.isEmpty()) return
+            val drawn = HashMap<String, Bitmap>(copies.size)
+            for (copy in copies) {
+                drawn[copy.name] = grown.getOrPut(copy.image to copy.growth) { ScooterMarkerArt.grown(copy.picture(), MarkerBand.scale(copy.growth)) }
+            }
+            style.addImages(drawn)
+            picturesGrown += drawn.size
+            grownNames += drawn.keys
         }
 
         /** The strength and the order of the source's own layers. */

@@ -522,6 +522,9 @@ class ScooterMarkersTest {
         val laidOut: List<Long>,
         /** How many of those it laid out once the light-up had started. */
         val laidOutLit: Int,
+        /** The copies of the dots' pictures sent to the style as their bands grew (MAP-119), and those it keeps. */
+        val grown: Int,
+        val kept: Int,
     ) {
         /** MapLibre's frames from the first dot's fade to the last's, once the light-up waited. */
         val lit: List<RenderedFrame> get() = rendered.filter { it.at in start + late..end + late }
@@ -558,7 +561,7 @@ class ScooterMarkersTest {
             val parsed = if (laidOut.isEmpty()) "none" else "+${laidOut.first()} to +${laidOut.last()} ms (${laidOut.size}, $laidOutLit once lit)"
             return ("$count scooters, %d ms waiting to be drawn, their tiles laid out $parsed, %.2f s lighting up in %d bands: MapLibre drew %d frames (%d whole), " +
                 "gaps p50 %.0f, p90 %.0f, max %.0f ms, its thread's work p50 %.1f, p90 %.1f, max %.1f ms; " +
-                "main thread %d frames, longest gap %d ms, %d vsyncs missed, %.0f ms at work in all; source written %d times; ").format(
+                "main thread %d frames, longest gap %d ms, %d vsyncs missed, %.0f ms at work in all; source written %d times; %d pictures grown, %d kept; ").format(
                 late,
                 (end - start) / 1000.0,
                 bands,
@@ -575,6 +578,8 @@ class ScooterMarkersTest {
                 main.sumOf { max(0L, (it / VSYNC).roundToLong() - 1) },
                 mainWork,
                 rewritten,
+                grown,
+                kept,
             ) + probes
         }
     }
@@ -692,6 +697,7 @@ class ScooterMarkersTest {
             controller.refresh()
         }
         waitFor("the markers have what the server sent") { phone.onMain { markers.scene.marks.size == count } }
+        val grownBefore = phone.onMain { markers.picturesGrown }
         val (written, start, end) = phone.onMain {
             val scene = markers.scene
             for (probe in probes) probe.fade = scene.mark(probe.scooter.id)?.dotFade
@@ -713,6 +719,7 @@ class ScooterMarkersTest {
         reading.join()
         recording?.join()
         val rewritten = phone.onMain { markers.scene.markersVersion } - written
+        val grown = phone.onMain { markers.picturesGrown } - grownBefore
         val late = (phone.onMain { markers.lightUpLate } * 1000).roundToLong()
         for (probe in probes) probe.late = late
         if (reads) phone.onMain { underNames() }
@@ -721,7 +728,7 @@ class ScooterMarkersTest {
         val laidOut = phone.onMain { parsed.filter { it.first in start..end + late } }
         return LightUp(
             count, start, end, phone.onMain { rendered.toList() }, phone.onMain { vsyncs.toList() }, work, probes, rewritten, late, bands,
-            laidOut.map { it.first - start }, laidOut.count { it.second },
+            laidOut.map { it.first - start }, laidOut.count { it.second }, grown, phone.onMain { markers.picturesKept },
         )
     }
 
@@ -786,8 +793,10 @@ class ScooterMarkersTest {
                 withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
                     val lightUp = marked.lightUp(count, pans = false, name = "lightup-$count")
                     Log.i(TAG, "Light-up: $lightUp")
-                    // The dots fade as the strength of a layer, never by writing the scooters again (MAP-319).
+                    // The dots fade as the strength of a layer, never by writing the scooters again (MAP-319), and
+                    // grow as their bands' own pictures, drawn again (MAP-119).
                     assertEquals(0, lightUp.rewritten)
+                    assertTrue("$lightUp", lightUp.grown > 0)
                     // They start once MapLibre has laid them out, from nothing.
                     assertEquals("$lightUp", 0, lightUp.laidOutLit)
                     assertDrawnInTime(lightUp, panning = false)

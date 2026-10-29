@@ -507,6 +507,22 @@ class ScooterMarkerArt(
     }
 
     companion object {
+        /**
+         * A picture with what it shows grown to [scale] of its size about its middle, as a layer's transform.scale
+         * grows it about its anchor, in a picture of the same size and pixel ratio (MAP-119). Whole, it is the
+         * picture itself.
+         */
+        fun grown(picture: Bitmap, scale: Double): Bitmap {
+            if (scale >= 1.0) return picture
+            val bitmap = createBitmap(picture.width, picture.height)
+            bitmap.density = picture.density
+            Canvas(bitmap).apply {
+                scale(scale.toFloat(), scale.toFloat(), picture.width / 2f, picture.height / 2f)
+                drawBitmap(picture, 0f, 0f, Paint(Paint.FILTER_BITMAP_FLAG or Paint.ANTI_ALIAS_FLAG))
+            }
+            return bitmap
+        }
+
         /** Smaller than the others' dots, which stand out over it, as on the web. */
         const val LAST_SEEN_DIAMETER: Double = 10.0
 

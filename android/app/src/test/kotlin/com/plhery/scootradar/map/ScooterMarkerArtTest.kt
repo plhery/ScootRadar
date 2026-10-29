@@ -58,6 +58,32 @@ class ScooterMarkerArtTest {
     }
 
     @Test
+    fun aDotGrowsAboutItsMiddleInAPictureOfItsOwnSize() {
+        // MAP-119: a band's copy of a dot's picture, the dot grown to a part of its size, is a picture of the same
+        // size and pixel ratio, which MapLibre puts in the old one's place without laying anything out again.
+        val picture = art().image(ScooterMarkerArt.Key(ScooterProvider.Voi, diameter = 16.0, state = ScooterDotState.Head, showsInitials = false, isDark = false))
+        assertSame(picture, ScooterMarkerArt.grown(picture, 1.0))
+        fun opaque(bitmap: Bitmap): List<Int> {
+            val columns = (0 until bitmap.width).filter { x -> (0 until bitmap.height).any { y -> bitmap.getPixel(x, y) ushr 24 > 128 } }
+            val rows = (0 until bitmap.height).filter { y -> (0 until bitmap.width).any { x -> bitmap.getPixel(x, y) ushr 24 > 128 } }
+            return listOf(columns.first(), columns.last(), rows.first(), rows.last())
+        }
+        val whole = opaque(picture)
+        val wide = whole[1] - whole[0] + 1
+        for (scale in listOf(0.2, 0.6)) {
+            val grown = ScooterMarkerArt.grown(picture, scale)
+            assertEquals(picture.width, grown.width)
+            assertEquals(picture.height, grown.height)
+            assertEquals(picture.density, grown.density)
+            val (left, right, top, bottom) = opaque(grown)
+            // As wide as the dot at that scale, to a pixel each side, and with the same middle.
+            assertEquals("$scale", wide * scale, (right - left + 1).toDouble(), 2.0)
+            assertEquals("$scale", (whole[0] + whole[1]) / 2.0, (left + right) / 2.0, 1.0)
+            assertEquals("$scale", (whole[2] + whole[3]) / 2.0, (top + bottom) / 2.0, 1.0)
+        }
+    }
+
+    @Test
     fun namesAndCountsStayTwelveAndThirteenPointsAtTheLargestTextSize() {
         // MAP-312 (ScooterMarkerArt.swift:298-300): the pills' and the counts' text is of a fixed size, as the
         // iPhone's, whatever text size the person chose; the dock and the cards grow instead.
