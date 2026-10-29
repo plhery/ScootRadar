@@ -285,6 +285,8 @@ import vasterasEn from './en/e-scooters-vasteras';
 import norrkopingEn from './en/e-scooters-norrkoping';
 import vinaDelMarEs from './es/scooters-electricos-vina-del-mar';
 import gavleEn from './en/e-scooters-gavle';
+import boulderEn from './en/e-scooters-boulder';
+import yonkersEn from './en/e-scooters-yonkers';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -570,4 +572,6 @@ export const GUIDES: readonly Guide[] = [
   norrkopingEn,
   vinaDelMarEs,
   gavleEn,
+  boulderEn,
+  yonkersEn,
 ];

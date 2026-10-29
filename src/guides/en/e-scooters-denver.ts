@@ -117,7 +117,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Boulder** runs its own scheme with Lime, with stand-up scooters and seated LimeGliders, and a mandatory parking zone across most of central Boulder. You need the Lime app there, and Boulder’s rules differ from Denver’s. Lime publishes no live open data for Boulder, so it isn’t on our map.',
+            '**Boulder** runs its own scheme with Lime, with stand-up scooters and seated LimeGliders, and a mandatory parking zone across most of central Boulder. You need the Lime app there, and Boulder’s rules differ from Denver’s: see [e-scooters in Boulder](guide:boulder). The [Boulder map](map:us:co:Boulder) shows Lime’s scooters there, as last counted.',
             '**Aurora** has had no shared scooters since its last operator stopped in August 2022, the City says; it still takes licence applications.',
             '**Colorado Springs and Fort Collins.** CDOT’s Bustang coaches link both with Denver. At 11:25 on 17 October 2026 the map showed about 660 Lime scooters in [Colorado Springs](map:us:co:Colorado Springs) and about 420 Spin scooters in [Fort Collins](map:us:co:Fort Collins).',
           ],
