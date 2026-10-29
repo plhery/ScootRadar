@@ -345,6 +345,15 @@ banned shared scooters, and feeds that were empty when checked.
   - Sweden's national access point (trafficdata.se) has no shared-mobility
     data, and Stockholm's open data has scooter parking bays only, behind a
     key.
+  - Göteborgs Stad publishes none of its e-scooter zones, so the map draws
+    none (checked 29 October 2026). None of these is published: the pavement-parking
+    ban inside Vallgraven and on Drottningtorget; the marked parking places it has
+    built since May 2024; and the digital zones it passes to the operators through
+    Vianova's Cityscope. Its map viewer (karta.goteborg.se, 133 WMS and 15
+    WFS layers), its open GeoServer (open.geodata.tkgbg.se, 102 feature
+    types, whose `cykel:cykelparkeringar` is a bicycle-rack survey of
+    2013–2016) and its open-data catalogue hold none, and data.goteborg.se
+    needs a key.
   - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
 - **Latvia** ([guide](latvian-scooter-feeds.md#known-gaps)): Ride Mobility
   in Rīga is covered.
