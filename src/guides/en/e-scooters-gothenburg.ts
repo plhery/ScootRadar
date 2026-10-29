@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Gothenburg 2026: Voi, Lime, Ryde and rules',
   description: 'E-scooters in Gothenburg: Voi, Lime and Ryde, the City’s permits, where to ride, where to park in the centre, trams and ferries, and Sweden’s fines.',
   headline: 'E-scooters in Gothenburg: Voi, Lime and Ryde, and where to ride and park',
-  lede: 'E-scooters in Gothenburg are rented out under the City’s permit scheme, and its page lists three companies, Voi, Ryde and Lime; our map shows Voi and Lime, not Ryde. Each app shows the price before you unlock. Ride on cycle lanes or the road, never on the pavement. Park in a stand or cycle rack, never on a cycle lane, and never on the pavement inside the old moat or on Drottningtorget.',
+  lede: 'E-scooters in Gothenburg need a City permit; in April 2025 Voi, Ryde and TierDott got one, and the City now lists Voi, Ryde and Lime. Our map shows Voi and Lime, not Ryde. Each app shows its price before you unlock. Ride on cycle lanes or the road, never on the pavement. Park in a stand or cycle rack, never on a cycle lane, nor on the pavement inside the old moat or on Drottningtorget.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Göteborg',
