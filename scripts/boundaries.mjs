@@ -112,10 +112,10 @@ const BOUNDARIES = {
     url: id => `${SGB_MUNICIPALITIES}?where=${encodeURIComponent(`id=${Number(id)}`)}&returnGeometry=true&outSR=4326&f=geojson`,
     geometry: body => body.features?.[0]?.geometry,
   },
-  // An OpenStreetMap relation by id, through Nominatim, whose policy asks each
-  // client to name itself and to send no more than one request a second.
+  // An OpenStreetMap relation by id, or a closed way as "W168664114", through Nominatim,
+  // whose policy asks each client to name itself and to send no more than one request a second.
   osm: {
-    url: id => `https://nominatim.openstreetmap.org/lookup?osm_ids=R${id}&polygon_geojson=1&format=json`,
+    url: id => `https://nominatim.openstreetmap.org/lookup?osm_ids=${/^W\d+$/.test(id) ? id : `R${id}`}&polygon_geojson=1&format=json`,
     headers: { 'User-Agent': 'scootradar (+https://scootradar.com)' },
     geometry: body => body[0]?.geojson,
     pause: 1100,

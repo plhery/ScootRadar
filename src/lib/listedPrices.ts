@@ -31,7 +31,7 @@ export interface ListedPrice {
   minute_fee_from?: boolean;
   /** Tax comes on top, as in the US and Canada. */
   plus_tax: boolean;
-  /** Whose page the price is from: the operator's, or the city's where the operator publishes none. */
+  /** Whose page the price is from: the operator's, or the city's (on a campus, the university's) where the operator publishes none. */
   source: 'operator' | 'city';
   url: string;
   /** The page's words, as read on the day checked. */

@@ -154,9 +154,16 @@ only zoomed out: San Marcos, Texas (127), whose Lime contract, approved on 18
 August 2026 with Texas State University, brought scooters back to downtown,
 the campus and east of Interstate 35 around the clock (Fox 7 Austin), and UNC
 Charlotte (87), the university's campus, a region apart from Charlotte's. The
-campus is inside Charlotte's city limits, so the city's night ban, 01:30 to
-05:00, holds there too, though the university's transportation page says
-Lime rents on campus at all hours; check which applies.
+campus is inside Charlotte's city limits, but Lime rents there "24 hours a
+day, seven days a week" under the university's own contract, $1 to unlock
+and $0.29 a minute
+([Parking and Transportation Services](https://pats.charlotte.edu/transportation/on-campus-transportation/bikes-and-e-scooters/),
+read on 29 October 2026). So since 29 October the campus, OpenStreetMap's
+outline of it, is cut out of the city's night ban, as Michigan State's is
+out of East Lansing's, and the price shows on its scooters
+([`listed-prices.json`](../data/listed-prices.json)). Keeping the campus as
+a hole keeps the city's other holes too: its census outline has 16, pieces
+of county inside its limits that the ban never reached.
 
 ## Bird supplement — 28 October 2026
 
@@ -798,7 +805,7 @@ Lime's map bore out on 26 October.
 | East Lansing, MI | Every night, 03:00–06:00, outside Michigan State's campus | [City Code § 8-610(13)](https://library.municode.com/mi/east_lansing/codes/code_of_ordinances?nodeId=PTIIICOOR_CH8BU_ARTXELSKCO) |
 | St. Petersburg, FL | Every night, 02:00–05:00 | [Scooter Share program report](https://cms5.revize.com/revize/stpete/2025-05-08%20HLUT%20Agenda%20Packet.pdf), Housing, Land Use and Transportation Committee, 8 May 2025 |
 | Jacksonville, FL | Every night, 00:00–05:00 | [Dockless Mobility Program](https://dia.jacksonville.gov/resources/dockless-mobility-program), Downtown Investment Authority |
-| Charlotte, NC | Every night, 01:30–05:00 | [Shared-Use Mobility System Permit Requirements](https://www.charlottenc.gov/files/sharedassets/city/v/1/city-government/departments/documents/cdot/smp/charlotte-shared-use-mobility-system-permit-requirements_07_01_25.pdf), 1 July 2025, § 5.C |
+| Charlotte, NC | Every night, 01:30–05:00 (unconfirmed since 29 October 2026), outside UNC Charlotte's campus | [Shared-Use Mobility System Permit Requirements](https://www.charlottenc.gov/files/sharedassets/city/v/1/city-government/departments/documents/cdot/smp/charlotte-shared-use-mobility-system-permit-requirements_07_01_25.pdf), 1 July 2025, § 5.C |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -908,7 +915,12 @@ Lime's map bore out on 26 October.
   [program page](https://www.charlottenc.gov/City-Government/Departments/Charlotte-Department-of-Transportation-CDOT/Mobility-Planning/Shared-Mobility-Program)
   links the requirements, gives "Operation Hours: 5 a.m. to 1:30 a.m." and
   names Bird and Lime as the operators authorised; Bird publishes no feed
-  there.
+  there. **Unconfirmed since 29 October 2026:** charlottenc.gov answers 403
+  to the requirements, the program page and the rest of the site, and the
+  Wayback Machine refused the lookup (429), so the hours above are as read
+  before and the map keeps them. UNC Charlotte's campus is left out: Lime
+  rents there at all hours under the university's contract (see
+  [the Lime supplement](#lime-supplement--26-october-2026)).
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
 too, so only rides stopping can show one in their feeds.
@@ -1019,7 +1031,13 @@ Rules that read like bans but are not, or that no primary source confirms:
   Oakland, San Jose, Seattle, Colorado Springs, Tempe, Indianapolis, Kansas
   City, Lexington, San Antonio, Arlington, Fairfax, Norfolk, Eau Claire,
   Sacramento, Mankato, Wilmington and Spokane Valley:** no hours in their
-  rules. San Antonio's 2019 curfew is gone. Los Angeles' 07:00–22:00 is when
+  rules. In Sacramento a councilmember's proposal on the "Regulation and
+  Enforcement of E-Bikes, E-Scooters, E-motos, and Plug-in Electric
+  Two-wheelers" (file
+  [2026-01811](https://webapi.legistar.com/v1/sacramento/matters/21827), introduced
+  24 September 2026) was on the Law and Legislation Committee's agenda of 20
+  October 2026; Legistar records no action on it by 29 October, so it is
+  pending and changes nothing on the map yet. San Antonio's 2019 curfew is gone. Los Angeles' 07:00–22:00 is when
   operators must fix badly parked scooters, not when they may rent them.
 - **Greensboro:** since 1 March 2026 a ride started after 22:00 needs
   a "Safe Start Cognitive test", and "the device will remain locked for
