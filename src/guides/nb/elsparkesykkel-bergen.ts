@@ -84,7 +84,7 @@ const guide: Guide = {
           ],
         },
         'Kommunen skrev 19. november 2025 at alle saktesoner i sentrum fra 20. november skulle ha maks 12 km/t fra kl. 07.30 til 20, og 9 km/t på lørdager fra kl. 09 til 18. Kommunens nettside fra oktober 2026 oppgir ingen fartsgrenser. Sonene gjelder bare leide sparkesykler, for private kan ikke styres digitalt, skriver kommunen.',
-        'Alle sonene ser du i [kommunens kart over parkering og soner](https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e). Der står det fortsatt plasser på Festplassen og nord på Torgallmenningen, men de ligger i forbudssonene fra 18. mai 2026. ScootRadar viser ikke sonene i Bergen.',
+        'Alle sonene ser du i [kommunens kart over parkering og soner](https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e). Der står det fortsatt plasser på Festplassen og nord på Torgallmenningen, men de ligger i forbudssonene fra 18. mai 2026. Siden 29. oktober 2026 tegner også ScootRadar-kartet disse sonene fra kommunens kart når du zoomer inn, med Bergen kommune som kilde: 176 parkeringsplasser, 149 soner med parkeringsforbud, 74 saktesoner og 373 soner med kjøreforbud.',
       ],
     },
     {
