@@ -161,7 +161,7 @@
 <xhtml:link rel="alternate" hreflang="es" href="https://scootradar.com/es/guias" />
 <xhtml:link rel="alternate" hreflang="is" href="https://scootradar.com/is/leidarvisar" />
 <xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides" />
-<lastmod>2026-10-28T00:00:00.000Z</lastmod>
+<lastmod>2026-10-29T00:00:00.000Z</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.6</priority>
 </url>
@@ -177,7 +177,7 @@
 <xhtml:link rel="alternate" hreflang="es" href="https://scootradar.com/es/guias" />
 <xhtml:link rel="alternate" hreflang="is" href="https://scootradar.com/is/leidarvisar" />
 <xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides" />
-<lastmod>2026-10-28T00:00:00.000Z</lastmod>
+<lastmod>2026-10-29T00:00:00.000Z</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.6</priority>
 </url>
@@ -2062,6 +2062,18 @@
 <url>
 <loc>https://scootradar.com/guides/e-scooters-austin</loc>
 <lastmod>2026-10-28T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/guides/e-scooters-gothenburg</loc>
+<lastmod>2026-10-29T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/de/ratgeber/e-scooter-sindelfingen</loc>
+<lastmod>2026-10-29T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
