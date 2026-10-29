@@ -87,7 +87,7 @@ No covered Swedish town bans renting at night, so
 - **Stockholm** allows up to 12,000 scooters and has no night rule
   ([Stockholms stad](https://trafik.stockholm/trafikregler/elsparkcyklar/),
   updated 28 May 2026). None of them is on the map.
-- No other Swedish town checked (Göteborg, Malmö, Linköping, Örebro) bans renting at night.
+- No other Swedish town checked (Göteborg, Malmö, Linköping, Västerås, Örebro) bans renting at night.
 
 ## Licences
 

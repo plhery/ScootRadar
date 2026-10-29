@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Ramat Gan 2026: Lime, Bird, rules and parking',
   description: 'E-scooters in Ramat Gan: Lime and Bird, prices in the app, the licence or riding test, helmet and sidewalk fines, parking, the Red Line and Shabbat.',
   headline: 'E-scooters in Ramat Gan: Lime and Bird, the licence rule, parking, the Red Line and Shabbat',
-  lede: 'You can rent e-scooters in Ramat Gan with Lime or Bird, both on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. Dott was renting here too in late October 2026, but its scooters left our map on 28 October: check its app.',
+  lede: 'You can rent e-scooters in Ramat Gan with Lime or Bird, both on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'il:Ramat Gan',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Two apps put stand-up e-scooters on our map of Ramat Gan: **Lime** and **Bird**.',
         'At 10:56 Israel time on Thursday 29 October 2026 the [Ramat Gan map](map:il:Ramat Gan) showed 1,047 scooters inside the city’s boundary: 825 Lime and 222 Bird. That’s what stood there at that moment, not the size of the fleets. Each town next door has its own count: at the same moment the map showed 205 in Givatayim, 136 in Bnei Brak and about 3,000 in Tel Aviv-Yafo.',
-        '**Dott** rented here too: on 25 October 2026 the news site Kipa listed Ramat Gan among the seven towns where it runs shared scooters. Its scooters dropped off our map on 28 October 2026. We found no news of Dott leaving, so it may still rent here: check its app.',
+        'Dott’s scooters left our map on 28 October 2026. On 25 October the news site Kipa had listed Ramat Gan among the seven towns where Dott ran shared scooters, and we found no news of it leaving, so if you use Dott, check its app.',
         'Lime also rents e-bikes in Ramat Gan, since August 2025, RGG News reported. ScootRadar shows e-scooters only, not e-bikes or bike share. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
           table: {
@@ -27,7 +27,6 @@ const guide: Guide = {
             rows: [
               ['Lime', 'Yes: 825', 'In the app', 'In the app'],
               ['Bird', 'Yes: 222', 'In the app', 'In the app, and on the map'],
-              ['Dott', 'No, since 28 October 2026', 'In the app', 'In the app'],
             ],
           },
         },
@@ -44,7 +43,7 @@ const guide: Guide = {
       heading: 'Do you need a licence for an e-scooter in Ramat Gan?',
       blocks: [
         'Yes. Israel’s rules ask every rider for a driving licence or, without one, a passed riding or theory test, Ice reported in 2024. Riding without either has carried a ₪750 fine since 2022, Srugim reported.',
-        'We found no news report on whether a visitor’s foreign licence counts, and no page from Lime, Bird or Dott on how they check one, so carry your licence and follow what your app asks for.',
+        'We found no news report on whether a visitor’s foreign licence counts, and no page from Lime or Bird on how they check one, so carry your licence and follow what your app asks for.',
         { note: '**Carry your driving licence and wear a helmet.** Since 2022 municipal inspectors, not only the police, can fine you for riding without either, Srugim reported.' },
         'The minimum age is 16; riding younger costs ₪1,000, Srugim reported in 2022.',
       ],
@@ -126,7 +125,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Ramat Gan?',
-      answer: 'Lime and Bird are on our [Ramat Gan map](map:il:Ramat Gan): 1,047 scooters inside the city at 10:56 on 29 October 2026. Dott was renting here too in late October 2026, Kipa reported, but its scooters left the map on 28 October, so check its app.',
+      answer: 'Lime and Bird are on our [Ramat Gan map](map:il:Ramat Gan): 1,047 scooters inside the city at 10:56 on 29 October 2026.',
     },
     {
       question: 'How much does a Lime or Bird scooter cost in Ramat Gan?',

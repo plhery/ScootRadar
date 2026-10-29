@@ -54,7 +54,7 @@ const guide: Guide = {
             head: ['Rule', 'What it means', 'Set by', 'If you break it'],
             rows: [
               ['Where to ride', 'The cycle lane if there is one, otherwise the road; from 15 you may use the road anyway, with care, where the limit is 50 km/h or less', 'The law', 'SEK 500'],
-              ['Pavements', 'Never ride on a pavement or footway', 'The law', 'SEK 500'],
+              ['Pavements', 'Never ride on a pavement or footway; you may wheel the scooter there', 'The law', 'SEK 500'],
               ['Pedestrian streets', 'Walking pace; give way to people on foot', 'The law', 'SEK 1,000'],
               ['Red lights', 'Stop, as on a bicycle', 'The law', 'SEK 1,500'],
               ['One rider', 'No passengers', 'The law', 'SEK 500 for the rider and SEK 500 for the passenger'],
