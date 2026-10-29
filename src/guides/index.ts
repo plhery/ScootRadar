@@ -287,6 +287,8 @@ import vinaDelMarEs from './es/scooters-electricos-vina-del-mar';
 import gavleEn from './en/e-scooters-gavle';
 import boulderEn from './en/e-scooters-boulder';
 import yonkersEn from './en/e-scooters-yonkers';
+import hartfordEn from './en/e-scooters-hartford';
+import nagoyaEn from './en/e-scooters-nagoya';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -574,4 +576,6 @@ export const GUIDES: readonly Guide[] = [
   gavleEn,
   boulderEn,
   yonkersEn,
+  hartfordEn,
+  nagoyaEn,
 ];
