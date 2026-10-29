@@ -30,6 +30,7 @@ import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -76,6 +77,8 @@ class PanelPresentationsTest {
 
     @Test
     fun escAndBackCloseThePopoverAndTheForm() {
+        // Over the dock, a phone's or a folded foldable's, Filters and Settings are sheets: IosSheetTest's.
+        assumeTrue("the dock in a window ${windowDp()}", !windowHasTheDock(largeText = false))
         show()
         open("Filters")
         screenshot("presentation-filters")
