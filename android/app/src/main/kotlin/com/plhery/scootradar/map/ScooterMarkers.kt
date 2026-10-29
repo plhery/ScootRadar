@@ -174,9 +174,25 @@ class ScooterMarkers(
     /** Whether the scooters have had long enough to be taken in: the layouts under way, if any, are the last. */
     private var overdue = false
 
-    /** What the movers' source was last given, and the dots the scooters' layers leave to it meanwhile. */
+    /** What the movers' source was last given, and its dots. */
     private var writtenMovers = ""
-    private var handedOver: Set<String> = emptySet()
+    private var movers: Set<String> = emptySet()
+
+    /**
+     * The movers' writes MapLibre has yet to take in, as Android's GeoJsonSource queues them: the one it is taking
+     * in, then the latest written since, which takes the place of any before it. A write is taken in when the
+     * source says it changed, and MapLibre hands it to its renderer as soon as it has said so.
+     */
+    private var moversTaking: Set<String>? = null
+    private var moversQueued: Set<String>? = null
+
+    /**
+     * The dots the scooters' layers leave to the movers', unseen in theirs. MapLibre keeps the state of every dot ever
+     * handed over for as long as the source lives, and takes them all into its tiles at every frame: 2000 dots handed
+     * over and back cost its render thread 0.8 ms more a frame panning over 5000 scooters on the smallest phone's
+     * emulator, 5000 dots 5 ms (ScooterMarkersTest).
+     */
+    private val handedOver = HashSet<String>()
 
     /** The scooters' source's writes: what a light-up or an ease costs MapLibre. */
     internal var markersWritten = 0
@@ -220,9 +236,19 @@ class ScooterMarkers(
 
     /**
      * The scooters MapLibre has taken in, on the main thread. Should a tile take them in with a layout under way,
-     * it says nothing of them: they are given [LAID_OUT] from the next frame, then the layouts under way.
+     * it says nothing of them: they are given [LAID_OUT] from the next frame, then the layouts under way. And the
+     * movers, whose new dots the scooters' layers leave to them from then on.
      */
     private val sourceChanged = MapView.OnSourceChangedListener { id ->
+        if (id == ScooterMarkerLayers.MOVING_SOURCE) {
+            val taken = moversTaking ?: return@OnSourceChangedListener
+            moversTaking = moversQueued
+            moversQueued = null
+            // MapLibre hands the movers to its renderer as soon as this returns, before anything else: the dots' states
+            // reach the renderer with them, for the same frame.
+            handOver(taken)
+            return@OnSourceChangedListener
+        }
         if (id != ScooterMarkerLayers.MARKERS_SOURCE || held == null) return@OnSourceChangedListener
         changed = true
         val hold = holds
@@ -327,7 +353,10 @@ class ScooterMarkers(
         queued.clear()
         begun.clear()
         listen()
-        handedOver = emptySet()
+        movers = emptySet()
+        moversTaking = null
+        moversQueued = null
+        handedOver.clear()
         style = null
     }
 
@@ -572,24 +601,49 @@ class ScooterMarkers(
         val json = MarkerFeatures.json(features)
         if (json != writtenMovers) {
             writtenMovers = json
+            val ids = features.mapTo(HashSet()) { it.id }
             addPictures(style, ScooterMarkerLayers.MOVING_SOURCE, features)
-            style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MOVING_SOURCE)?.setGeoJson(json)
+            handBack(style, ids)
+            style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MOVING_SOURCE)?.let { source ->
+                source.setGeoJson(json)
+                movers = ids
+                if (moversTaking == null) moversTaking = ids else moversQueued = ids
+            }
         }
-        handOver(style, features.mapTo(HashSet()) { it.id })
         return features.isNotEmpty()
     }
 
     /**
-     * Leaves the dots the movers' layers draw unseen in the scooters' own, and shows again those they no longer
-     * draw, by their feature state: from the same frame as the movers' write.
+     * Leaves to the movers' layers the dots of theirs MapLibre has [taken] in, unseen in the scooters' own from then
+     * on, by their feature state, which goes to MapLibre's renderer at once, where the movers' write goes first
+     * through two turns of the main thread's loop: set as MapLibre takes the write in, within the same turn as it
+     * hands the write to its renderer, so that the renderer has both for the same frame, unless one it was already
+     * asked for begins in between. Set once the renderer has the write, the state would come a frame late about
+     * every other time, the dot drawn twice. Not those the movers have dropped since.
      */
-    private fun handOver(style: Style, ids: Set<String>) {
-        if (ids == handedOver) return
-        val source = style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE) ?: return
-        for (id in handedOver) if (id !in ids) source.removeFeatureState(id)
-        for (id in ids) if (id !in handedOver) source.setFeatureState(id, JsonObject().apply { addProperty(ScooterMarkerLayers.HANDED_OVER, true) })
-        handedOver = ids
+    private fun handOver(taken: Set<String>) {
+        val source = style?.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE) ?: return
+        for (id in taken) {
+            if (id !in movers || !handedOver.add(id)) continue
+            source.setFeatureState(id, handed(true))
+        }
     }
+
+    /**
+     * Shows again in the scooters' layers the dots the movers' drop with their next write, before it: their state
+     * reaches the renderer before the write, so that a frame may draw one twice, never none. Set, not removed:
+     * MapLibre takes a frame's states in all at once, sets before removals, so that a removal would undo a dot handed
+     * over again in the same frame.
+     */
+    private fun handBack(style: Style, ids: Set<String>) {
+        if (handedOver.all { it in ids }) return
+        val source = style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE) ?: return
+        val back = handedOver.filter { it !in ids }
+        for (id in back) source.setFeatureState(id, handed(false))
+        handedOver.removeAll(back.toSet())
+    }
+
+    private fun handed(over: Boolean) = JsonObject().apply { addProperty(ScooterMarkerLayers.HANDED_OVER, over) }
 
     /** The fades' clock, in seconds from the epoch. */
     private fun fadeTime(now: Double): Double = (held ?: (now - late)) - epoch

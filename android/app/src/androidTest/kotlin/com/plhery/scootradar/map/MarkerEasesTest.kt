@@ -38,10 +38,12 @@ import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapView
+import org.maplibre.android.style.expressions.Expression
 import org.maplibre.android.style.sources.GeoJsonSource
 import org.maplibre.android.tile.TileOperation
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 import kotlin.math.PI
 import kotlin.math.abs
@@ -124,7 +126,8 @@ class MarkerEasesTest {
     /**
      * A dot's ease from a change made on the main thread, as MapLibre drew it: the colour of a pixel of the window at
      * each frame, by the time since the change in ms; the scooters' source's writes and the layouts of its tiles; when
-     * the movers' layers had the dot, from the first frame to the last.
+     * the scene eased the dot, from the first frame to the last; and MapLibre's frames, each with whether the movers'
+     * source had the dot as it was drawn.
      */
     private class Eased(
         val colours: List<Pair<Long, Int>>,
@@ -133,12 +136,19 @@ class MarkerEasesTest {
         val moved: List<Long>,
         val frames: List<String>,
         val most: Int,
+        val drawn: List<Pair<Long, Boolean>>,
     ) {
-        override fun toString() = "the scooters written $written times, their tiles laid out $layouts; the movers had it from " +
-            "${moved.firstOrNull()} to ${moved.lastOrNull()} ms, $most easing at most; frames (ms:e easing) $frames; its middle ${colours.map { "${it.first}:${Integer.toHexString(it.second)}" }}"
+        override fun toString() = "the scooters written $written times, their tiles laid out $layouts; the scene eased it from " +
+            "${moved.firstOrNull()} to ${moved.lastOrNull()} ms, $most easing at most; frames (ms:e easing) $frames; " +
+            "MapLibre's (ms:m the movers' source with it) ${drawn.map { "${it.first}${if (it.second) "m" else ""}" }}; " +
+            "its middle ${colours.map { "${it.first}:${Integer.toHexString(it.second)}" }}"
     }
 
-    private fun Marked.ease(id: String, x: Int, y: Int, change: () -> Unit): Eased {
+    /**
+     * A dot's ease from a [change]. With the main thread [busy] for as long, in ms, right after the change and at every
+     * frame after it, the window is read every 4 ms rather than at the main thread's frames.
+     */
+    private fun Marked.ease(id: String, x: Int, y: Int, busy: Long = 0, change: () -> Unit): Eased {
         val layouts = HashMap<String, Int>()
         val tiles = MapView.OnTileActionListener { operation, tileX, tileY, z, wrap, overscaledZ, source ->
             if (operation == TileOperation.StartParse && source == ScooterMarkerLayers.MARKERS_SOURCE) {
@@ -146,15 +156,36 @@ class MarkerEasesTest {
                 layouts[tile] = (layouts[tile] ?: 0) + 1
             }
         }
+        var changedAt = 0L
+        // Whether the movers' source has the dot, as MapLibre has just drawn it.
+        val drawn = mutableListOf<Pair<Long, Boolean>>()
+        val mover = Expression.eq(Expression.id(), Expression.literal("v:$id"))
+        val rendered = MapView.OnDidFinishRenderingFrameListener { _, _, _ ->
+            if (changedAt == 0L) return@OnDidFinishRenderingFrameListener
+            val movers = phone.map.style?.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MOVING_SOURCE)
+            drawn += (SystemClock.uptimeMillis() - changedAt) to (movers?.querySourceFeatures(mover)?.isNotEmpty() == true)
+        }
         val written = phone.onMain {
             phone.view.addOnTileActionListener(tiles)
+            phone.view.addOnDidFinishRenderingFrameListener(rendered)
             markers.markersWritten
         }
         val frames = mutableListOf<String>()
         val moved = mutableListOf<Long>()
         var most = 0
-        var changedAt = 0L
-        val colours = probe(phone, x, y, millis = 1_000, everyFrame = {
+        var spinning = busy > 0
+        fun spin() {
+            val until = SystemClock.uptimeMillis() + busy
+            while (SystemClock.uptimeMillis() < until) continue
+        }
+        val busyFrames = object : Choreographer.FrameCallback {
+            override fun doFrame(frameTimeNanos: Long) {
+                if (!spinning) return
+                spin()
+                Choreographer.getInstance().postFrameCallback(this)
+            }
+        }
+        val colours = probe(phone, x, y, millis = 1_000, every = if (busy > 0) 4L else null, everyFrame = {
             val at = SystemClock.uptimeMillis() - changedAt
             val moving = markers.scene.moving()
             most = max(most, moving.size)
@@ -164,10 +195,17 @@ class MarkerEasesTest {
         }) {
             changedAt = SystemClock.uptimeMillis()
             change()
+            if (busy > 0) {
+                // After the markers' own frame, which the change asked for first.
+                Choreographer.getInstance().postFrameCallback(busyFrames)
+                spin()
+            }
         }
         return phone.onMain {
+            spinning = false
             phone.view.removeOnTileActionListener(tiles)
-            Eased(colours, markers.markersWritten - written, HashMap(layouts), moved.toList(), frames.toList(), most)
+            phone.view.removeOnDidFinishRenderingFrameListener(rendered)
+            Eased(colours, markers.markersWritten - written, HashMap(layouts), moved.toList(), frames.toList(), most, drawn.toList())
         }
     }
 
@@ -207,6 +245,33 @@ class MarkerEasesTest {
      */
     @Test
     fun aFaintDotEasesNeitherDrawnTwiceNorMissing() = withMarkers(zurich, mapLibreZoom = 16.0) { marked ->
+        val faint = walkToAFaintDot(marked, busy = 0)
+        assertTrue("drawn twice: ${faint.doubled}; $faint", faint.doubled.isEmpty())
+        assertTrue("missing: ${faint.missing}; $faint", faint.missing.isEmpty())
+        assertHandedOver(faint.walked)
+    }
+
+    /**
+     * The same, with the main thread busy 30 ms right after the rider moves and at every frame after, as on a slow
+     * phone: MapLibre draws on, and takes in the movers' write only once the main thread is free. The dot is never
+     * missing; a frame may draw it twice as it changes hands.
+     */
+    @Test
+    fun aFaintDotEasesNeverMissingWhileTheMainThreadIsBusy() = withMarkers(zurich, mapLibreZoom = 16.0) { marked ->
+        val faint = walkToAFaintDot(marked, busy = 30)
+        Log.i(TAG, "Busy: ${faint.doubled.size} reads drawn twice, ${faint.missing.size} missing, of ${faint.walked.colours.size}")
+        assertTrue("missing: ${faint.missing}; $faint", faint.missing.isEmpty())
+    }
+
+    /**
+     * A faint dot's ease, how strongly each read of the window showed it: drawn twice, stronger than at its end;
+     * missing, fainter than at rest.
+     */
+    private class Faint(val walked: Eased, val atRest: Int, val atEnd: Int, val doubled: List<Pair<Long, Int>>, val missing: List<Pair<Long, Int>>) {
+        override fun toString() = "at rest ${Integer.toHexString(atRest)}, at its end ${Integer.toHexString(atEnd)}; $walked"
+    }
+
+    private fun walkToAFaintDot(marked: Marked, busy: Long): Faint {
         val rider = marked.at(195.0, 614.0)
         val faint = scooter("faint", "lime", GeoPoint(rider.latitude + 310 / METRES_PER_DEGREE, rider.longitude))
         val middle = marked.point(faint.coordinate)
@@ -234,10 +299,10 @@ class MarkerEasesTest {
         assertTrue("no name over it: $names", names.none { (_, frame) -> ScreenRect(frame.x - 4, frame.y - 4, frame.width + 8, frame.height + 8).contains(middle) })
         val atRest = probe(marked.phone, x, y, millis = 200, everyFrame = {}) {}.last().second
 
-        val walked = marked.ease(faint.id, x, y) {
+        val walked = marked.ease(faint.id, x, y, busy) {
             marked.controller.setUserLocation(GeoPoint(rider.latitude + 65 / METRES_PER_DEGREE, rider.longitude))
         }
-        Log.i(TAG, "A faint dot, the rider come closer: $walked")
+        Log.i(TAG, "A faint dot, the rider come closer${if (busy > 0) ", the main thread busy $busy ms a frame" else ""}: $walked")
         val after = marked.phone.onMain { mark.look }
         assertEquals(0.605, after.strength, 0.001)
         assertEquals(before.diameter, after.diameter, 0.0)
@@ -249,17 +314,15 @@ class MarkerEasesTest {
         Log.i(TAG, "Its middle at rest ${Integer.toHexString(atRest)} ($first), then ${Integer.toHexString(atEnd)} ($last)")
         assertTrue("it shows stronger: $first, then $last", last > first)
         val shown = walked.colours.map { it.first to contrast(it.second, ground) }
-        val doubled = shown.filter { it.second > last * 1.1 }
-        val missing = shown.filter { it.second < first * 0.9 }
-        assertTrue("drawn twice: $doubled; $walked", doubled.isEmpty())
-        assertTrue("missing: $missing; $walked", missing.isEmpty())
-        assertHandedOver(walked)
+        return Faint(walked, atRest, atEnd, doubled = shown.filter { it.second > last * 1.1 }, missing = shown.filter { it.second < first * 0.9 })
     }
 
     /**
      * The dot changed hands with the movers' layers in the frame its ease began, and back by the frame after it ended,
      * a quarter of a second later, give or take the frame each was seen in; the scooters' source was written once, for
-     * its new look, and no tile of it laid out twice.
+     * its new look, and no tile of it laid out twice. As MapLibre drew it: the movers' source had the dot from the
+     * first or second frame it drew after the ease began, in every frame on, for as long as the ease give or take a
+     * frame at each end.
      */
     private fun assertHandedOver(eased: Eased) {
         assertEquals("$eased", 1, eased.written)
@@ -268,19 +331,29 @@ class MarkerEasesTest {
         assertTrue("$eased", eased.moved.firstOrNull() == firstFrame)
         val length = (IosMotion.IMPLICIT_DURATION * 1000).toLong()
         assertTrue("$eased", eased.moved.last() - eased.moved.first() in length - 40..length + 20)
+
+        val after = eased.drawn.filter { it.first >= eased.moved.first() }
+        val with = after.filter { it.second }.map { it.first }
+        assertTrue("$eased", with.isNotEmpty() && with.first() <= (after.getOrNull(1)?.first ?: -1))
+        assertTrue("$eased", after.filter { it.first in with.first()..with.last() }.all { it.second })
+        assertTrue("$eased", with.last() - with.first() in length - 40..length + 40)
     }
 
     /**
      * MapLibre's frames from a change made on the main thread, by the time since it in ms, and the main thread's frames
      * at which something moved, the most that moved at once.
      */
-    private class Watched(val drawn: List<Long>, val movedAt: List<Long>, val most: Int) {
-        /** MapLibre's frames while something moved, from the last before it: their gaps. */
+    private class Watched(val drawn: List<Long>, val movedAt: List<Long>, val most: Int, val end: Long) {
+        /**
+         * MapLibre's frames while something moved, from the last before it to the first after it, which draws it
+         * where it ends, or the watch's end, should MapLibre draw none: their gaps.
+         */
         val gaps: List<Long>
             get() {
                 val from = movedAt.firstOrNull() ?: return emptyList()
                 val to = movedAt.last()
-                return (listOfNotNull(drawn.lastOrNull { it < from }) + drawn.filter { it in from..to }).zipWithNext { a, b -> b - a }
+                val last = drawn.firstOrNull { it > to } ?: end
+                return (listOfNotNull(drawn.lastOrNull { it < from }) + drawn.filter { it in from..to } + last).zipWithNext { a, b -> b - a }
             }
 
         val p90: Long get() = gaps.sorted().let { if (it.isEmpty()) 0L else it[((it.size - 1) * 0.9).roundToInt()] }
@@ -320,7 +393,7 @@ class MarkerEasesTest {
         SystemClock.sleep(millis + 100)
         return phone.onMain {
             phone.view.removeOnDidFinishRenderingFrameListener(frames)
-            Watched(drawn.toList(), movedAt.toList(), most)
+            Watched(drawn.toList(), movedAt.toList(), most, millis)
         }
     }
 
@@ -570,37 +643,54 @@ class MarkerEasesTest {
      * The colour of a pixel of the window at each frame for a while after an action, by the time since the action in
      * ms, with something done on the main thread at each frame too.
      */
-    private fun probe(phone: PhoneMap, x: Int, y: Int, millis: Long, everyFrame: () -> Unit, action: () -> Unit): List<Pair<Long, Int>> {
+    private fun probe(
+        phone: PhoneMap,
+        x: Int,
+        y: Int,
+        millis: Long,
+        everyFrame: () -> Unit,
+        every: Long? = null,
+        action: () -> Unit,
+    ): List<Pair<Long, Int>> {
         lateinit var window: Window
         phone.scenario.onActivity { window = it.window }
         val reading = HandlerThread("pixels").apply { start() }
         val reader = Handler(reading.looper)
         val out = mutableListOf<Pair<Long, Int>>()
         var start = 0L
-        var measuring = true
+        val measuring = AtomicBoolean(true)
+        fun read() {
+            val at = SystemClock.uptimeMillis()
+            val pixels = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+            try {
+                PixelCopy.request(window, Rect(x, y, x + 1, y + 1), pixels, { result ->
+                    if (result == PixelCopy.SUCCESS) synchronized(out) { out += (at - start) to pixels.getPixel(0, 0) }
+                }, reader)
+            } catch (_: IllegalArgumentException) {
+            }
+        }
         val vsync = object : Choreographer.FrameCallback {
             override fun doFrame(frameTimeNanos: Long) {
                 everyFrame()
-                reader.post {
-                    val at = SystemClock.uptimeMillis()
-                    val pixels = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                    try {
-                        PixelCopy.request(window, Rect(x, y, x + 1, y + 1), pixels, { result ->
-                            if (result == PixelCopy.SUCCESS) synchronized(out) { out += (at - start) to pixels.getPixel(0, 0) }
-                        }, reader)
-                    } catch (_: IllegalArgumentException) {
-                    }
-                }
-                if (measuring) Choreographer.getInstance().postFrameCallback(this)
+                if (every == null) reader.post { read() }
+                if (measuring.get()) Choreographer.getInstance().postFrameCallback(this)
+            }
+        }
+        // Read on the reader's own thread, every so many ms: the main thread may be busy.
+        val steady = object : Runnable {
+            override fun run() {
+                read()
+                if (measuring.get()) reader.postDelayed(this, every ?: return)
             }
         }
         phone.onMain {
             start = SystemClock.uptimeMillis()
+            if (every != null) reader.post(steady)
             Choreographer.getInstance().postFrameCallback(vsync)
             action()
         }
         SystemClock.sleep(millis)
-        phone.onMain { measuring = false }
+        measuring.set(false)
         SystemClock.sleep(100)
         reading.quitSafely()
         return synchronized(out) { out.toList() }

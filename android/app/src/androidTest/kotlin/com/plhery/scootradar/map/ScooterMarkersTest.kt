@@ -15,6 +15,7 @@ import android.view.MotionEvent
 import android.view.PixelCopy
 import android.view.Window
 import android.view.accessibility.AccessibilityNodeInfo
+import com.google.gson.JsonObject
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -49,7 +50,9 @@ import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.offline.OfflineManager
+import org.maplibre.android.style.sources.GeoJsonSource
 import org.maplibre.android.tile.TileOperation
+import java.io.File
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
@@ -448,6 +451,81 @@ class ScooterMarkersTest {
             val frames = measured.getValue(count)
             assertTrue("$count scooters: $frames; none: $empty", frames.mainWork < 2 * empty.mainWork + 1_000)
         }
+    }
+
+    /**
+     * MapLibre's frames through a pan: the gaps between them and its own count of its time on each, in ms, and its
+     * render thread's time on the processor per frame, as the kernel counts it, which takes in the frame's preparing
+     * (feature states, tiles) as MapLibre's own count doesn't, and other programs' load on the host less.
+     */
+    private class DrawnPan(val gaps: List<Double>, val rendering: List<Double>, val processor: Double) {
+        override fun toString() = "%d map frames, gaps p90 %.1f ms; MapLibre's time on a frame p90 %.2f ms; its thread's %.2f ms a frame"
+            .format(gaps.size + 1, p90(gaps), p90(rendering), processor)
+
+        companion object {
+            fun p90(values: List<Double>): Double = values.sorted().let { if (it.isEmpty()) Double.NaN else it[((it.size - 1) * 0.9).roundToInt()] }
+        }
+    }
+
+    /** Four seconds of a finger panning the map, as MapLibre draws them. */
+    private fun Marked.drawnPan(): DrawnPan {
+        val drawn = mutableListOf<Long>()
+        val rendering = mutableListOf<Double>()
+        val listener = MapView.OnDidFinishRenderingFrameWithStatsListener { _, stats ->
+            drawn += SystemClock.uptimeMillis()
+            rendering += (stats.encodingTime + stats.renderingTime) * 1000
+        }
+        val renderer = renderThread()
+        phone.onMain { phone.view.addOnDidFinishRenderingFrameListener(listener) }
+        val from = processorTime(renderer)
+        swipe(until = SystemClock.uptimeMillis() + 4_000)
+        val to = processorTime(renderer)
+        return phone.onMain {
+            phone.view.removeOnDidFinishRenderingFrameListener(listener)
+            DrawnPan(drawn.zipWithNext { a, b -> (b - a).toDouble() }, rendering.toList(), (to - from) / drawn.size)
+        }
+    }
+
+    /** The kernel's folder for MapLibre's render thread, the newest map's: Java names it as the kernel does. */
+    private fun renderThread(): File {
+        val thread = Thread.getAllStackTraces().keys.filter { it.javaClass.name.endsWith("TextureViewRenderThread") }.maxBy { it.id }
+        return File("/proc/self/task").listFiles()!!.single { File(it, "comm").readText().trim() == thread.name.take(15) }
+    }
+
+    /** A thread's time on the processor so far, in ms. */
+    private fun processorTime(task: File): Double = File(task, "schedstat").readText().trim().split(" ")[0].toLong() / 1e6
+
+    /**
+     * A pan over 5000 scooters after 2000 of their dots have changed hands with the movers' layers and back, as an hour
+     * of eases would have them: MapLibre keeps every feature state ever set, and takes all of them into every tile at
+     * every frame. Handed over and back here at once, without their eases, against the same pan on a fresh map, in
+     * turn, twice: MapLibre's render thread spends less than 2 ms more on a frame.
+     */
+    @Test
+    fun aPanOver5000ScootersCostsNoMoreAfter2000DotsHandedOverAndBack() {
+        val pans = mapOf(false to mutableListOf<DrawnPan>(), true to mutableListOf())
+        repeat(2) {
+            for (handed in listOf(false, true)) withMarkers(zurich, mapLibreZoom = 15.0) { marked ->
+                marked.serve(spread(5_000, around = zurich))
+                settle()
+                if (handed) {
+                    val ids = marked.phone.onMain { marked.markers.scene.marks.take(2_000).map { "v:${it.scooter.id}" } }
+                    assertEquals(2_000, ids.size)
+                    for (over in listOf(true, false)) {
+                        marked.phone.onMain {
+                            val source = marked.phone.map.style!!.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)!!
+                            for (id in ids) source.setFeatureState(id, JsonObject().apply { addProperty(ScooterMarkerLayers.HANDED_OVER, over) })
+                        }
+                        settle()
+                    }
+                }
+                pans.getValue(handed) += marked.drawnPan()
+            }
+        }
+        val fresh = pans.getValue(false)
+        val handed = pans.getValue(true)
+        Log.i(TAG, "5000 scooters panned, fresh: $fresh; after 2000 dots handed over and back: $handed")
+        assertTrue("fresh: $fresh; handed: $handed", handed.sumOf { it.processor } / 2 < fresh.sumOf { it.processor } / 2 + 2)
     }
 
     // The light-up

@@ -268,8 +268,8 @@ object ScooterMarkerLayers {
      * The feature state of a dot the movers' layers draw while it eases (MAP-097, MAP-098): the scooters' own layers
      * leave it unseen meanwhile. A feature's state is set apart from its source and read by a paint property, so
      * MapLibre draws the change from its next frame without laying a tile out again, as it would for a source written
-     * or a filter or an expression changed: the dot changes hands in the frame it starts to ease, and back in the
-     * frame it stops.
+     * or a filter or an expression changed: the dot changes hands in the frame the movers' layers first draw it, and
+     * back by the frame they stop (ScooterMarkers.handOver).
      */
     const val HANDED_OVER = "moving"
 
