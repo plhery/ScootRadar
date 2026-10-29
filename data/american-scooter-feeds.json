@@ -3289,6 +3289,21 @@
         43.6135,
         -116.20345
       ],
+      "towns": [
+        {
+          "city": "Garden City",
+          "center": [
+            43.6683,
+            -116.2944
+          ],
+          "bounds": {
+            "south": 43.6189,
+            "west": -116.3141,
+            "north": 43.6826,
+            "east": -116.2313
+          }
+        }
+      ],
       "timeZone": "America/Boise",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

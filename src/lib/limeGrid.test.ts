@@ -30,4 +30,22 @@ describe('Lime market grids', () => {
     const other = { id: 'lime_public', city: 'Deva', center: [0, 0] as [number, number] };
     expect(limeGridGroups(other)).toEqual([other]);
   });
+
+  it('gives a market\'s other towns an area in each view they meet, cut to it', () => {
+    const town = { city: 'Sântuhalm', center: [.005, .025] as [number, number], bounds: { south: 0, west: .015, north: .008, east: .05 } };
+    const market = { id: 'lime_ro_app_deva', provider: 'lime', city: 'Deva', center: [0, 0] as [number, number],
+      towns: [town], limeAppMap: true, limeMapGrid: grid('0-5') };
+    const [first, second] = limeGridGroups(market) as (typeof market & { areas: { city: string }[] })[];
+    expect(first.areas).toEqual([
+      { city: 'Deva', center: [0, 0], bounds: { south: 0, north: .01, west: 0, east: .01 } },
+      { city: 'Deva', center: [0, 0], bounds: { south: 0, north: .01, west: .01, east: .02 } },
+      { city: 'Sântuhalm', center: [.005, .025], bounds: { south: 0, north: .008, west: .015, east: .02 } },
+      { city: 'Deva', center: [0, 0], bounds: { south: 0, north: .01, west: .02, east: .03 } },
+      { city: 'Sântuhalm', center: [.005, .025], bounds: { south: 0, north: .008, west: .02, east: .03 } },
+      { city: 'Deva', center: [0, 0], bounds: { south: 0, north: .01, west: .03, east: .035 } },
+      { city: 'Sântuhalm', center: [.005, .025], bounds: { south: 0, north: .008, west: .03, east: .035 } },
+    ]);
+    expect(second.areas!.every(area => area.city === 'Deva')).toBe(true);
+    expect('towns' in first).toBe(false);
+  });
 });

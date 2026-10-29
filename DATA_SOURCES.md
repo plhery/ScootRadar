@@ -637,9 +637,9 @@ public zone layers are drawn regardless, credited to the city.
   and Nampa, which marks where Lime's service area ends, as Lime's own zones
   do, and which is no rule of the City's there. Lime's own region data has a
   "Grove Center LSZ" over the Grove Plaza: it is the City's slow zone there, the
-  same 37 points. Of Lime's 1,405 scooters in Boise on the night of 28 October,
+  same 37 points. Of Lime's 1,405 scooters in Boise at 03:25 MDT on 29 October,
   13 stood in a no-riding zone and 147 in a slow zone. Garden City, whose
-  scooters are Lime's Boise fleet, publishes its slow zones only as Lime's
+  scooters are of Lime's Boise market, publishes its slow zones only as Lime's
   maps in PDF (28 October 2025, on its
   [Greenbelt page](https://gardencityidaho.org/e-vehicles-on-the-greenbelt/)),
   with no shapes to draw.

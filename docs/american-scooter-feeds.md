@@ -598,6 +598,18 @@ for 2,000 in 2026, and no decision was found. Spokane Valley's fall from 125
 on 25 October is Lime's own: every cell of its grid was read without error,
 by day or in the evening, on 27 and 28 October, and listed fewer scooters.
 
+**Boise and Garden City.** Lime's Boise service zone takes in Garden City,
+which chose Lime as its only shared operator in July 2024
+([City of Garden City](https://gardencityidaho.org/e-vehicles-on-the-greenbelt/)),
+so every scooter there counted under Boise. Since 29 October Garden City is a
+town of Lime's Boise market (its `towns`, docs/lime-app-map.md), and both
+towns have their TIGERweb outlines. Of the 1,405 scooters in the cache's
+snapshot at 03:25 MDT on 29 October, 77 stood inside Garden City's census
+outline, 1,326 inside Boise's, and 2 in county enclaves, one inside each
+outline's outer ring: 78 count under Garden City and 1,327 under Boise. Boise's
+outline matters as much as Garden City's: 106 of Boise's stood inside Garden
+City's box.
+
 Campus feeds take their town's name: Spin's UC Davis feed is Davis, its
 Michigan State one East Lansing, its NC State one Raleigh, its University of
 Utah one Salt Lake City, and its San Diego feed is the UC San Diego campus,

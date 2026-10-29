@@ -136,7 +136,8 @@ describe('the count of covered cities and countries', () => {
       for (const system of JSON.parse(readFileSync(`data/${file}`, 'utf8')).systems) {
         const country: string = listed.get(`data/${file}`) ?? `unlisted ${file}`;
         countries.add(country);
-        for (const { city, region = system.region } of system.areas ?? [system]) {
+        // A Lime market's other towns count too, as Garden City in Boise's.
+        for (const { city, region = system.region } of system.areas ?? [system, ...system.towns ?? []]) {
           // Switzerland's catalog adds app maps to its areas, by their town.
           const swiss = country === 'CH' ? swissAreas.find(area => area.city === city)?.id : undefined;
           cities.add(swiss ?? [country, region, city].filter(Boolean).map((part, index, parts) =>

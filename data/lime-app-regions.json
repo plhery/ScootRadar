@@ -3149,6 +3149,21 @@
       ],
       "region": "ID",
       "timeZone": "America/Boise",
+      "towns": [
+        {
+          "city": "Garden City",
+          "center": [
+            43.6683,
+            -116.2944
+          ],
+          "bounds": {
+            "south": 43.6189,
+            "west": -116.3141,
+            "north": 43.6826,
+            "east": -116.2313
+          }
+        }
+      ],
       "regionToken": "EVVYGCZGQ2V6O",
       "serviceAreas": [
         {

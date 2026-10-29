@@ -247,6 +247,11 @@ afternoon of 26 October 2026, Gulf time.
   is moved into the polygons where GeoNames' lies outside them, as Montréal's:
   Lime's only scooter zone there is Parc Jean-Drapeau, as the city bans shared
   scooters from its streets.
+- A town inside its neighbour's zone shares its market, whose views cover
+  both. It is one of the market's `towns`, with its centre and box: each
+  refresh group gives it an area where its box meets a view, and its scooters
+  count under it by its outline in `data/town-outlines.json`. Garden City is
+  one in Boise's market since 29 October 2026.
 - No public Lime scooter lies inside the markets' polygons: Lime's public
   feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737),
   Frankfurt (3,630), Wuppertal (947), Arlington's and Washington's near

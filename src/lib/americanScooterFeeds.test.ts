@@ -5,6 +5,8 @@ import { upstreamJsonCache } from './upstreamJsonCache';
 import { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
 import { activeSeasonalPause } from './seasonalPauses';
 import { outlinedTown, systemServesPoint } from './townOutlines';
+import { buildCityOverview, type FeedSnapshot } from './scooterSnapshots';
+import { boundsContainPoint } from './geo';
 import { namedCities } from '@/app/api/geocode/cities';
 import { providerKeyForSystemId } from '@/generated/providers';
 
@@ -103,6 +105,30 @@ describe('the United States', () => {
       expect(outlinedTown(american, lat, lng)?.id).toBe('us:ut:Salt Lake City');
       expect(systemServesPoint(spin, lat, lng), `${lat}, ${lng}`).toBe(true);
     }
+  });
+
+  it('counts Lime\'s Boise scooters in Garden City under Garden City, by both towns\' census outlines', () => {
+    // Lime's Boise market takes in Garden City: one service area, read as one, whose scooters in Garden City count there.
+    const groups = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.id.startsWith('lime_us_app_boise_'));
+    expect(REGIONAL_SCOOTER_CITIES.find(city => city.id === 'us:id:Garden City')).toMatchObject({ city: 'Garden City, ID' });
+    expect(groups.every(group => group.city === 'Boise' && !('towns' in group))).toBe(true);
+    // Positions at 03:25 MDT on 29 October 2026: two in Garden City, and three of Boise's 106 inside Garden City's box.
+    const now = Date.now();
+    const standing = [
+      ['us:id:Garden City', 43.626518, -116.235136], ['us:id:Garden City', 43.634827, -116.242828],
+      ['us:id:Boise', 43.625171, -116.25951], ['us:id:Boise', 43.66924, -116.258778], ['us:id:Boise', 43.639871, -116.240232],
+      ['us:id:Boise', 43.6135, -116.2035],
+    ] as const;
+    const feeds = standing.map(([town, lat, lng], index): FeedSnapshot => {
+      const group = groups.find(entry => entry.limeMapTiles!.some(tile => boundsContainPoint(tile, lat, lng)))!;
+      expect(systemServesPoint(group, lat, lng), `${town} ${lat}, ${lng}`).toBe(true);
+      return { id: `us:${group.id}:${index}`, source: 'us', provider: 'lime', coverage: serviceAreas(group).map(area => area.bounds),
+        vehicles: [{ provider: 'lime', vehicle_id: `${index}`, lat, lng, battery: 80, range_m: null, deep_link: null, distance_m: 0 }],
+        observedAt: now, attemptedAt: now, collectedAt: now, stale: false, failed: false, skipped: false };
+    });
+    const counted = Object.fromEntries(buildCityOverview(feeds, now).cities.filter(city => city.id.startsWith('us:id:'))
+      .map(city => [city.id, city.batteries.lime?.reduce((sum, count) => sum + count, 0) ?? 0]));
+    expect(counted).toEqual({ 'us:id:Boise': 4, 'us:id:Garden City': 2 });
   });
 
   it('opens Hopp, Bolt\'s brand in Washington, DC, and reads its GBFS 3.0 feed: USD 1 to start and USD 0.16 a minute', async () => {
