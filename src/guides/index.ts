@@ -289,6 +289,8 @@ import boulderEn from './en/e-scooters-boulder';
 import yonkersEn from './en/e-scooters-yonkers';
 import hartfordEn from './en/e-scooters-hartford';
 import nagoyaEn from './en/e-scooters-nagoya';
+import orlandoEn from './en/e-scooters-orlando';
+import lahtiEn from './en/e-scooters-lahti';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -578,4 +580,6 @@ export const GUIDES: readonly Guide[] = [
   yonkersEn,
   hartfordEn,
   nagoyaEn,
+  orlandoEn,
+  lahtiEn,
 ];
