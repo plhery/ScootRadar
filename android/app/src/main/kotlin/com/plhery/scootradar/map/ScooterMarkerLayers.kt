@@ -32,8 +32,6 @@ class MarkerFeature(
     val isRaised: Boolean = false,
     /** The picture's scale: other than 1 only for a dot easing, in the movers' layers. */
     val size: Double = 1.0,
-    /** A dot easing, which the movers' layers draw meanwhile, and not the scooters' own. */
-    val isMoving: Boolean = false,
 )
 
 /** What each layer draws, from the scene's marks: the iPhone's annotation views, drawn by MapLibre. */
@@ -86,7 +84,6 @@ object MarkerFeatures {
     /** The dot of a scooter, with its ring and its glow, where its spread puts it. */
     fun dot(mark: ScooterMark, art: ScooterMarkerArt): MarkerFeature {
         val key = mark.art
-        val isMoving = mark.motion != null
         return MarkerFeature(
             id = "v:${mark.scooter.id}",
             coordinate = mark.scooter.coordinate,
@@ -95,9 +92,9 @@ object MarkerFeatures {
             offset = mark.look.offset,
             sortKey = mark.look.zPriority,
             opacity = mark.look.strength,
-            fade = if (isMoving) null else mark.dotFade,
+            // A dot easing is the movers' to draw: no band draws it meanwhile.
+            fade = if (mark.motion != null) null else mark.dotFade,
             isRaised = mark.look.state == ScooterDotState.Selected,
-            isMoving = isMoving,
         )
     }
 
@@ -192,7 +189,6 @@ object MarkerFeatures {
                 append(",\"size\":")
                 number(feature.size)
             }
-            if (feature.isMoving) append(",\"moving\":true")
             bands[feature]?.let { append(",\"band\":").append(it) }
             append("}}")
         }
@@ -236,7 +232,7 @@ data class SymbolLayerSpec(
  * zPriority min), the dots and the bays in the order of their zPriority, the selected one above them, the names,
  * and the rider above all (prioritizeUserLocationView). Every one keeps every marker, overlapping or not: MapKit's
  * required display priority, without collisions (MAP-267). The dots easing are drawn meanwhile by the movers'
- * layers, above the others of theirs.
+ * layers, above the others of theirs, and the scooters' own layers leave them unseen.
  */
 object ScooterMarkerLayers {
     const val LAST_SEEN = "scooters-last-seen"
@@ -268,6 +264,18 @@ object ScooterMarkerLayers {
     /** The dots' strength. */
     const val STRENGTH = "[\"get\",\"opacity\"]"
 
+    /**
+     * The feature state of a dot the movers' layers draw while it eases (MAP-097, MAP-098): the scooters' own layers
+     * leave it unseen meanwhile. A feature's state is set apart from its source and read by a paint property, so
+     * MapLibre draws the change from its next frame without laying a tile out again, as it would for a source written
+     * or a filter or an expression changed: the dot changes hands in the frame it starts to ease, and back in the
+     * frame it stops.
+     */
+    const val HANDED_OVER = "moving"
+
+    /** A strength of the scooters' layers, none for a dot the movers' draw. */
+    fun handedOver(strength: String): String = "[\"case\",[\"boolean\",[\"feature-state\",\"$HANDED_OVER\"],false],0,$strength]"
+
     /** The order they are drawn in: MapLibre draws each sort key on its own. */
     const val SORT = "[\"get\",\"sort\"]"
 
@@ -280,6 +288,10 @@ object ScooterMarkerLayers {
      */
     const val STRENGTH_BESIDE_BANDS = "[\"case\",[\"has\",\"band\"],0,$STRENGTH]"
     const val SORT_BESIDE_BANDS = "[\"case\",[\"has\",\"band\"],-1,$SORT]"
+
+    /** The scooters' layers' strengths, at rest and while bands fade, with the dots easing left to the movers'. */
+    val MARKERS_STRENGTH = handedOver(STRENGTH)
+    val MARKERS_STRENGTH_BESIDE_BANDS = handedOver(STRENGTH_BESIDE_BANDS)
 
     /** A band's filter once its markers are handed back to their layer, until its own is taken out. */
     const val NOTHING = "[\"boolean\",false]"
@@ -306,9 +318,9 @@ object ScooterMarkerLayers {
         SymbolLayerSpec(
             MARKERS,
             MARKERS_SOURCE,
-            filter = "[\"all\",[\"!\",[\"has\",\"raised\"]],[\"!\",[\"has\",\"moving\"]]]",
+            filter = "[\"!\",[\"has\",\"raised\"]]",
             layout = pictures("center"),
-            paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH)),
+            paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(MARKERS_STRENGTH)),
         ),
         SymbolLayerSpec(
             MOVING,
@@ -320,9 +332,9 @@ object ScooterMarkerLayers {
         SymbolLayerSpec(
             RAISED,
             MARKERS_SOURCE,
-            filter = "[\"all\",[\"has\",\"raised\"],[\"!\",[\"has\",\"moving\"]]]",
+            filter = "[\"has\",\"raised\"]",
             layout = pictures("center"),
-            paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH)),
+            paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(MARKERS_STRENGTH)),
         ),
         SymbolLayerSpec(
             MOVING_RAISED,

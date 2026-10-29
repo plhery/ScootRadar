@@ -17,18 +17,12 @@ data class DotDrawing(val art: ScooterMarkerArt.Key, val diameter: Double, val s
     val size: Double get() = diameter / art.diameter
 }
 
-/**
- * A value easing to [to] from [from], over [length] seconds along [curve], from [start]: none while the dot waits
- * for MapLibre to hand it over, when the ease stands at its start.
- */
-class MarkerEase<T>(val from: T, val to: T, val length: Double, val curve: Easing, var start: Double?) {
+/** A value easing to [to] from [from], over [length] seconds along [curve], from [start]. */
+class MarkerEase<T>(val from: T, val to: T, val length: Double, val curve: Easing, val start: Double) {
     /** How far along its curve the ease is at [at], from 0 to 1. */
-    fun progress(at: Double): Float {
-        val start = start ?: return 0f
-        return curve.transform(((at - start) / length).coerceIn(0.0, 1.0).toFloat())
-    }
+    fun progress(at: Double): Float = curve.transform(((at - start) / length).coerceIn(0.0, 1.0).toFloat())
 
-    fun isOver(at: Double): Boolean = start?.let { at >= it + length } ?: false
+    fun isOver(at: Double): Boolean = at >= start + length
 }
 
 /** The point an ease of points has got to at [at]. */
@@ -59,28 +53,16 @@ class DotMotion(drawing: DotDrawing, offset: ScreenPoint) {
     private var look: MarkerEase<DotDrawing>? = null
     private var place: MarkerEase<ScreenPoint>? = null
 
-    /** When MapLibre handed the dot over, from its source's layers to the movers': the eases start then. */
-    var begun: Double? = null
-        private set
-
-    /** Starts the eases waiting for MapLibre to hand the dot over. */
-    fun begin(at: Double) {
-        if (begun != null) return
-        begun = at
-        look?.start = at
-        place?.start = at
-    }
-
     /** Takes the dot to a new look and place, eased from what is drawn now, or at once. */
     fun go(drawing: DotDrawing, offset: ScreenPoint, at: Double, animated: Boolean) {
         if (drawing != this.drawing) {
             val from = drawing(at)
-            look = if (animated && eases(from, drawing)) MarkerEase(from, drawing, IosMotion.IMPLICIT_DURATION, implicit, begun?.let { at }) else null
+            look = if (animated && eases(from, drawing)) MarkerEase(from, drawing, IosMotion.IMPLICIT_DURATION, implicit, at) else null
             this.drawing = drawing
         }
         if (offset != this.offset) {
             val from = offset(at)
-            place = if (animated) MarkerEase(from, offset, SPREAD, easeInOut, begun?.let { at }) else null
+            place = if (animated) MarkerEase(from, offset, SPREAD, easeInOut, at) else null
             this.offset = offset
         }
     }
@@ -101,11 +83,11 @@ class DotMotion(drawing: DotDrawing, offset: ScreenPoint) {
     /** Where the dot is drawn from its scooter at [at]. */
     fun offset(at: Double): ScreenPoint = place?.point(at) ?: offset
 
-    /** Whether the dot's place still eases at [at], or waits to: a name beside it goes with it. */
+    /** Whether the dot's place still eases at [at]: a name beside it goes with it. */
     fun moves(at: Double): Boolean = place?.isOver(at) == false
 
     /** Whether nothing eases any more at [at]: the dot can go back to its source's layers. */
-    fun isOver(at: Double): Boolean = begun != null && look?.isOver(at) != false && place?.isOver(at) != false
+    fun isOver(at: Double): Boolean = look?.isOver(at) != false && place?.isOver(at) != false
 
     companion object {
         /** UIView.animate(withDuration: 0.22), which moves a dot to its new place in a spread. */

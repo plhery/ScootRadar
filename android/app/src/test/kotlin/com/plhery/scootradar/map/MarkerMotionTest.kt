@@ -72,58 +72,54 @@ class MarkerMotionTest {
         val before = drawing(mark)
         assertEquals(ScooterDotState.Plain, mark.look.state)
 
+        val written = scene.markersVersion
         scene.applySelection("voi:far", map)
         val after = drawing(mark)
         assertNotEquals(before.diameter, after.diameter)
         assertNotEquals(before.strength, after.strength)
         val motion = mark.motion!!
-        // The movers' layers draw it meanwhile, and the scooters' own leave it to them.
+        // The movers' layers draw it meanwhile; the scooters' own take its new look with the change, once, and leave
+        // it unseen by its feature state.
         assertEquals(listOf(mark), scene.moving())
+        assertEquals(written + 1, scene.markersVersion)
         val dot = MarkerFeatures.dot(mark, art)
-        assertTrue(dot.isMoving)
         assertEquals(after.art.id, dot.image)
-
-        // Until MapLibre has handed it over, it stays as it was.
-        clock = 100.4
-        assertEquals(before, motion.drawing(100.4))
-        assertTrue(scene.settleMotions(100.4).isEmpty())
-        scene.beginMotions(100.5)
+        assertEquals(after.strength, dot.opacity, 0.0)
 
         fun expect(at: Double) {
-            val progress = implicit.transform(((at - 100.5) / 0.25).toFloat())
+            val progress = implicit.transform(((at - 100.0) / 0.25).toFloat())
             val drawn = motion.drawing(at)
             assertEquals("$at", before.diameter + (after.diameter - before.diameter) * progress, drawn.diameter, 1e-6)
             assertEquals("$at", before.strength + (after.strength - before.strength) * progress, drawn.strength, 1e-6)
         }
-        // At its start, as it was.
-        assertEquals(before, motion.drawing(100.5))
+        // At its start, the moment it changed, as it was.
+        assertEquals(before, motion.drawing(100.0))
         // In the middle of its time, 80 % of the way, the curve being quick to start.
-        expect(100.625)
+        expect(100.125)
         assertEquals(0.80f, implicit.transform(0.5f), 0.005f)
         // The new picture takes the old one's place where the cross-fade is half way, 0.07 s in.
-        expect(100.56)
-        assertEquals(before.art, motion.drawing(100.56).art)
-        expect(100.58)
-        assertEquals(after.art, motion.drawing(100.58).art)
+        expect(100.06)
+        assertEquals(before.art, motion.drawing(100.06).art)
+        expect(100.08)
+        assertEquals(after.art, motion.drawing(100.08).art)
         // The picture drawn is scaled for its dot to be as wide as the ease has it.
-        val mover = MarkerFeatures.mover(mark, art, 100.625)
-        val drawn = motion.drawing(100.625)
+        val mover = MarkerFeatures.mover(mark, art, 100.125)
+        val drawn = motion.drawing(100.125)
         assertEquals(after.art.id, mover.image)
         assertEquals(drawn.diameter / after.diameter, mover.size, 1e-9)
         assertEquals(drawn.strength, mover.opacity, 1e-9)
         assertTrue(mover.isRaised)
         // At its end, as it is.
-        assertEquals(after, motion.drawing(100.75))
-        assertEquals(1.0, MarkerFeatures.mover(mark, art, 100.75).size, 0.0)
+        assertEquals(after, motion.drawing(100.25))
+        assertEquals(1.0, MarkerFeatures.mover(mark, art, 100.25).size, 0.0)
 
-        // Once over, it goes back to the scooters' layers, which draw it again from their next write.
-        assertTrue(scene.settleMotions(100.749).isEmpty())
-        val version = scene.markersVersion
-        assertEquals(listOf(mark), scene.settleMotions(100.75))
+        // Once over, it goes back to the scooters' layers, which have had it as it is all along: they are not written
+        // again for it.
+        assertTrue(scene.settleMotions(100.249).isEmpty())
+        assertEquals(listOf(mark), scene.settleMotions(100.25))
         assertNull(mark.motion)
         assertTrue(scene.moving().isEmpty())
-        assertFalse(MarkerFeatures.dot(mark, art).isMoving)
-        assertTrue(scene.markersVersion > version)
+        assertEquals(written + 1, scene.markersVersion)
     }
 
     @Test
@@ -142,7 +138,6 @@ class MarkerMotionTest {
         assertNotEquals(ScreenPoint.zero, target)
         assertNull(scene.mark("lime:b")!!.motion)
         val motion = mark.motion!!
-        scene.beginMotions(100.0)
 
         assertEquals(ScreenPoint.zero, motion.offset(100.0))
         // The curve is even: half the time, half the way.
@@ -167,7 +162,6 @@ class MarkerMotionTest {
         assertNull(mark.motion)
         assertTrue(scene.moving().isEmpty())
         val dot = MarkerFeatures.dot(mark, art)
-        assertFalse(dot.isMoving)
         assertEquals(mark.art.id, dot.image)
         assertEquals(ScooterDotState.Selected, mark.look.state)
 
@@ -186,7 +180,6 @@ class MarkerMotionTest {
         val plain = drawing(mark)
         scene.applySelection("voi:far", map)
         val motion = mark.motion!!
-        scene.beginMotions(100.0)
 
         // Deselected 0.1 s in, it shrinks back from where it had got to, over a quarter of a second from then.
         clock = 100.1
@@ -202,8 +195,8 @@ class MarkerMotionTest {
 
         // What changes at once while it eases, a new scale, changes at once, and the movers' layers draw it until
         // the dots go back together.
+        clock = 101.0
         scene.applySelection("voi:far", map)
-        scene.beginMotions(101.0)
         val eased = mark.motion!!
         eased.go(plain, ScreenPoint.zero, at = 101.1, animated = false)
         assertEquals(plain, eased.drawing(101.1))
@@ -417,18 +410,25 @@ class MarkerMotionTest {
         )
         assertEquals("[\"!\",[\"has\",\"raised\"]]", specs.getValue(ScooterMarkerLayers.MOVING).filter)
         assertEquals("[\"has\",\"raised\"]", specs.getValue(ScooterMarkerLayers.MOVING_RAISED).filter)
-        // The scooters' own layers leave the dots easing to them.
-        assertEquals("[\"all\",[\"!\",[\"has\",\"raised\"]],[\"!\",[\"has\",\"moving\"]]]", specs.getValue(ScooterMarkerLayers.MARKERS).filter)
-        assertEquals("[\"all\",[\"has\",\"raised\"],[\"!\",[\"has\",\"moving\"]]]", specs.getValue(ScooterMarkerLayers.RAISED).filter)
+        // The scooters' own layers leave the dots easing to them by a paint property reading their feature state, not
+        // by a filter or a property written to their source, which MapLibre would lay out again.
+        assertEquals("[\"!\",[\"has\",\"raised\"]]", specs.getValue(ScooterMarkerLayers.MARKERS).filter)
+        assertEquals("[\"has\",\"raised\"]", specs.getValue(ScooterMarkerLayers.RAISED).filter)
+        val handedOver = "[\"case\",[\"boolean\",[\"feature-state\",\"moving\"],false],0,[\"get\",\"opacity\"]]"
+        for (id in listOf(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED)) {
+            assertEquals(SymbolLayerSpec.Json(handedOver), specs.getValue(id).paint["icon-opacity"])
+        }
+        assertEquals(
+            "[\"case\",[\"boolean\",[\"feature-state\",\"moving\"],false],0,[\"case\",[\"has\",\"band\"],0,[\"get\",\"opacity\"]]]",
+            ScooterMarkerLayers.MARKERS_STRENGTH_BESIDE_BANDS,
+        )
 
         val still = MarkerFeature("v:a", map.at(195.0, 400.0), "dot/a", { error("not drawn") })
-        val moving = MarkerFeature("v:b", map.at(195.0, 400.0), "dot/b", { error("not drawn") }, isMoving = true)
         val mover = MarkerFeature("v:b", map.at(195.0, 400.0), "dot/b", { error("not drawn") }, size = 0.75)
-        val features = JSONObject(MarkerFeatures.json(listOf(still, moving, mover))).getJSONArray("features")
+        val features = JSONObject(MarkerFeatures.json(listOf(still, mover))).getJSONArray("features")
         val first = features.getJSONObject(0).getJSONObject("properties")
         assertFalse(first.has("size"))
         assertFalse(first.has("moving"))
-        assertTrue(features.getJSONObject(1).getJSONObject("properties").getBoolean("moving"))
-        assertEquals(0.75, features.getJSONObject(2).getJSONObject("properties").getDouble("size"), 0.0)
+        assertEquals(0.75, features.getJSONObject(1).getJSONObject("properties").getDouble("size"), 0.0)
     }
 }

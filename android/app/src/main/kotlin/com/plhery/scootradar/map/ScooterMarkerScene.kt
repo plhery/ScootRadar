@@ -707,9 +707,9 @@ class ScooterMarkerScene(
         } else if (moves && few && drawn != null && movingIDs.size < MOST_MOVING && !isLightingUp(mark) &&
             (DotMotion.shows(drawn, drawing) || offset != mark.drawnOffset)
         ) {
+            // The scooters' source takes the dot's new look with the change: the movers' layers draw it meanwhile.
             mark.motion = DotMotion(drawn, mark.drawnOffset).also { it.go(drawing, offset, now(), animated = true) }
             movingIDs += mark.scooter.id
-            markersVersion += 1
         }
         mark.drawnDot = drawing
         mark.drawnOffset = offset
@@ -757,23 +757,16 @@ class ScooterMarkerScene(
     /** The dots easing, drawn by the movers' layers: none of those in the app's own clusters. */
     fun moving(): List<ScooterMark> = movingIDs.mapNotNull { id -> marksByID[id]?.takeIf { id !in clusteredIDs } }
 
-    /** MapLibre has handed the dots waiting to ease over to the movers' layers: their eases start [at] then. */
-    fun beginMotions(at: Double) {
-        for (id in movingIDs) marksByID[id]?.motion?.begin(at)
-    }
-
     /**
-     * Once no dot eases any more, at [at], they all go back to the scooters' layers together: returns them, as the
-     * movers' layers drew them last.
+     * The dots whose eases are over at [at] go back to the scooters' layers, which have had them as they are now
+     * since their eases began, unseen: returns them.
      */
     fun settleMotions(at: Double): List<ScooterMark> {
         if (movingIDs.isEmpty()) return emptyList()
-        val marks = movingIDs.mapNotNull { marksByID[it] }
-        if (marks.any { it.motion?.isOver(at) == false }) return emptyList()
-        for (mark in marks) mark.motion = null
-        movingIDs.clear()
-        markersVersion += 1
-        return marks.filter { it.scooter.id !in clusteredIDs }
+        val settled = movingIDs.mapNotNull { marksByID[it] }.filter { it.motion?.isOver(at) != false }
+        for (mark in settled) mark.motion = null
+        movingIDs.removeAll(settled.mapTo(HashSet()) { it.scooter.id })
+        return settled
     }
 
     /** Chooses a side for each name. Returns the scooters whose name moved. */
