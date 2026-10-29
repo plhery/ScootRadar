@@ -291,6 +291,8 @@ import hartfordEn from './en/e-scooters-hartford';
 import nagoyaEn from './en/e-scooters-nagoya';
 import orlandoEn from './en/e-scooters-orlando';
 import lahtiEn from './en/e-scooters-lahti';
+import hamiltonEn from './en/e-scooters-hamilton';
+import omahaEn from './en/e-scooters-omaha';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -582,4 +584,6 @@ export const GUIDES: readonly Guide[] = [
   nagoyaEn,
   orlandoEn,
   lahtiEn,
+  hamiltonEn,
+  omahaEn,
 ];
