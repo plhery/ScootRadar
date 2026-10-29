@@ -1238,7 +1238,12 @@ May 2026 request to make that permanent was undecided as far as found on
   ([SDOT, 2026](https://seattle.gov/documents/Departments/SDOT/BoardsCommittees/SPAB/2026/SPAB%20SBAB_Shared%20Micromobility%20Updates.pdf)),
   so at least 2,500 of the 9,500 are seated. Lime's rider map, which supplies
   Boulder, where Lime has put out up to 200 LimeGliders since August 2026,
-  keeps the pins typed `scooter`; whether a Glider's pin is one is not known.
+  types a Glider's pin `scooter` too, with `sub_type_name` `glider`: 20 of the
+  200 pins nearest downtown Boulder, asked once without the scooter filter on
+  29 October 2026 (the other 180 `scooter`, no other type). So Boulder's
+  Gliders are shown as scooters, as the City counts them: its
+  [rules](https://bouldercolorado.gov/services/shared-e-scooters-and-e-bikes)
+  call both "shared e-scooters", under the same rules.
 - **Size.** Lime's Seattle status file is about 2.9 MB, its Chicago one
   2.5 MB, Bird's Los Angeles one 1.9 MB and Veo's Washington one 1.6 MB, with
   its bicycles. The scooter cache sizes itself by the number of feeds; its

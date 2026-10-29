@@ -35,6 +35,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   arlingtoncemetery: () => import('../../data/city-zones/arlingtoncemetery.json'),
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
+  boulder: () => import('../../data/city-zones/boulder.json'),
   norrkoping: () => import('../../data/city-zones/norrkoping.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   vasteras: () => import('../../data/city-zones/vasteras.json'),

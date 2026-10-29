@@ -12,7 +12,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // kommun's are WMS layers, served as pictures only: drawn as SVG, each zone is a path in the
 // picture's pixels, read back to its SWEREF 99 grid and so to latitude and longitude.
 // A layer may instead name a boundary (scripts/boundaries.mjs): Arlington National Cemetery's,
-// where federal rules forbid riding, is its OpenStreetMap outline.
+// where federal rules forbid riding, is its OpenStreetMap outline. Boulder's are Lime's, from the
+// public zone file its rider app draws them from, each zone an encoded polyline.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
 
@@ -252,6 +253,54 @@ async function wmsZones(city, { kind, url, layer, fill, srs, box, metresPerPixel
     .map((ring, index) => ({ id: `${city.id}-${slug(kind)}-${index + 1}`, kind, name: city.place, ring }));
 }
 
+/** A Google encoded polyline, as Lime's zone files give each zone, as [lng, lat] points. */
+function decodePolyline(encoded) {
+  const points = [];
+  let at = 0, lat = 0, lng = 0;
+  const delta = () => {
+    let value = 0, shift = 0, byte;
+    do {
+      byte = encoded.charCodeAt(at++) - 63;
+      value |= (byte & 31) << shift;
+      shift += 5;
+    } while (byte >= 32);
+    return value & 1 ? ~(value >>> 1) : value >>> 1;
+  };
+  while (at < encoded.length) {
+    lat += delta();
+    lng += delta();
+    points.push([lng / 1e5, lat / 1e5]);
+  }
+  return points;
+}
+
+/** A Lime zone's name without its codes: "[Boulder][LSZ][[Boulder][LSZ][Pearl Street Mall\n]][low_speed_zone_MIGRATED_FROM_V2]". */
+function limeZoneName(city, name) {
+  const codes = new RegExp(`\\[(?:${city.place}|[A-Z]{2,3}(?: - \\w+)?|\\d+|Updated|REVISED|\\w+_MIGRATED_FROM_V2)\\]`, 'g');
+  const plain = name.replace(/&amp;/g, '&').replace(/[\s ]+/g, ' ').replace(codes, ' ').replace(/[[\]]/g, ' ')
+    .replace(/\b(?:NOZ|NPZ|LSZ|MPZ)\b,?/g, ' ').replace(/\s+/g, ' ').trim();
+  return plain || city.place;
+}
+
+const limeFiles = new Map();
+/**
+ * Lime's zones of a `category`, from the zone file its rider app draws them from: each one ring, an
+ * encoded polyline, kept if it holds for scooters, and below `maxAreaKm2` if given.
+ */
+async function limeZones(city, { kind, url, category, maxAreaKm2 = Infinity }) {
+  if (!limeFiles.has(url)) limeFiles.set(url, getJson(url));
+  const { zone_info: zones } = await limeFiles.get(url);
+  if (!Array.isArray(zones)) throw new Error(`${url} answered no zones`);
+  return zones.filter(zone => zone.category === category && zone.vehicle_types?.includes('scooter')).flatMap(zone => {
+    if (!/^\w+$/.test(zone.zone_token ?? '')) throw new Error(`${url}: a zone without a token`);
+    const ring = decodePolyline(zone.polygon);
+    if (ring.at(-1).join() !== ring[0].join()) ring.push(ring[0]);
+    if (planeArea(toPlane(ring)) / 1e6 >= maxAreaKm2) return [];
+    return [{ id: `${city.id}-${slug(kind)}-${zone.zone_token.toLowerCase()}`, kind, name: limeZoneName(city, zone.name),
+      ring: simplifyRing(ring, TOLERANCE_M, DIGITS) }];
+  });
+}
+
 /** Porto's sharing points, each a disc around its point. */
 async function fiwareZones(city, { kind, url }) {
   const places = await getJson(url);
@@ -275,9 +324,10 @@ for (const city of catalog.cities) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
-        : pathname.endsWith('/wms') ? await wmsZones(city, layer)
-          : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
+      : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
+        : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
+          : pathname.endsWith('/wms') ? await wmsZones(city, layer)
+            : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + zone.ring.length, 0)} points`);
     zones.push(...found);
   }

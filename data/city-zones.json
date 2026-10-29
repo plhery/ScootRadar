@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-29",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -122,6 +122,46 @@
         "east": -116.13164
       },
       "zones": 167
+    },
+    {
+      "id": "boulder",
+      "place": "Boulder",
+      "country": "US",
+      "authority": "Lime",
+      "timeZone": "America/Denver",
+      "source": {
+        "title": "City of Boulder, \"Shared E-scooters and E-bikes\": Lime's scooters, standing and seated, are geofenced, their speed limited in places and stopped in no-go zones; in the Mandatory Parking Zone, most of central Boulder, a ride ends at a Lime parking corral",
+        "url": "https://bouldercolorado.gov/services/shared-e-scooters-and-e-bikes"
+      },
+      "map": {
+        "title": "Lime's zones for Boulder, the public file its rider app draws them from",
+        "url": "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "url": "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json",
+          "category": "no_parking_zone"
+        },
+        {
+          "kind": "slow",
+          "url": "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json",
+          "category": "low_speed_zone"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json",
+          "category": "no_operation_zone",
+          "maxAreaKm2": 10
+        }
+      ],
+      "bounds": {
+        "south": 39.97052,
+        "west": -105.29605,
+        "north": 40.07218,
+        "east": -105.19852
+      },
+      "zones": 101
     },
     {
       "id": "norrkoping",

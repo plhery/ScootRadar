@@ -9,6 +9,8 @@ const BERGEN_CENTRE = { south: 60.388, west: 5.305, north: 60.405, east: 5.345 }
 const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
 // Downtown Boise, round the Grove Plaza.
 const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -116.196 };
+// Downtown Boulder, from the Pearl Street Mall down Boulder Creek.
+const BOULDER_DOWNTOWN = { south: 40.01, west: -105.285, north: 40.022, east: -105.265 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
@@ -41,7 +43,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'norrkoping', 'porto', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'norrkoping', 'porto', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -79,6 +81,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 14 }).map(city => city.id)).toEqual(['bergen']);
     expect(zoneCitiesInView({ bounds: PORTO_CENTRE, zoom: 17 }).map(city => city.id)).toEqual(['porto']);
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
+    expect(zoneCitiesInView({ bounds: BOULDER_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boulder']);
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
@@ -139,6 +142,25 @@ describe('the cities\' zones', () => {
     const shown = ruleZonesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
     expect(shown.filter(zone => zone.rule === 'slow').map(zone => zone.id)).toContain('boise-slow-12');
+  });
+
+  it('draws Lime\'s zones for Boulder, credited to Lime, but not the areas round the city where its service ends', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'boulder')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Lime' && zone.timeZone === 'America/Denver')).toBe(true);
+    // Lime's file has two no-operation zones of about 90 km² each, east and west of the city, where its service area
+    // ends; the others are the size of a park or a campus at most.
+    const { default: file } = await CITY_ZONE_FILES.boulder();
+    for (const zone of file.zones) {
+      const lats = zone.ring.map(([lat]) => lat);
+      expect(Math.max(...lats) - Math.min(...lats), zone.id).toBeLessThan(0.02);
+    }
+    // Its mandatory parking zone, where a ride ends at a corral the file does not hold, is not drawn as a place to park.
+    expect(file.zones.some(zone => zone.kind === 'parking')).toBe(false);
+    const shown = ruleZonesInView({ bounds: BOULDER_DOWNTOWN, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['noRide', 'noParking', 'slow']));
+    expect(shown.find(zone => zone.rule === 'slow' && zone.place === 'Pearl Street Mall')).toBeDefined();
   });
 
   it('draws Arlington National Cemetery as one no-ride zone, credited to the federal rule and OpenStreetMap', async () => {

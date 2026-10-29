@@ -661,6 +661,26 @@ public zone layers are drawn regardless, credited to the city.
   maps in PDF (28 October 2025, on its
   [Greenbelt page](https://gardencityidaho.org/e-vehicles-on-the-greenbelt/)),
   with no shapes to draw.
+- **Boulder** (read 29 October 2026): Lime's 42 no-parking zones, 8 slow
+  zones and 51 no-riding zones, credited to Lime, from the public
+  [zone file](https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json)
+  its rider app draws them from (version 1150, last changed 18 October 2026),
+  drawn with the user's leave of 29 October 2026, as GCOO's file was: the City
+  of Boulder's own layer of them, `trans/LimeScooterLocations` on
+  gis.bouldercolorado.gov, answers scripts only with a Cloudflare challenge.
+  Each zone is an encoded polyline, to within about a metre; Lime's names are
+  kept without their codes ("[Boulder][NOZ - Policy][CU Williams Village]" is
+  CU Williams Village). The legend links the City's
+  [rules](https://bouldercolorado.gov/services/shared-e-scooters-and-e-bikes):
+  Lime's scooters, standing and seated (LimeGliders) alike, are geofenced, their
+  speed limited in places and stopped in no-go zones, and a ride in the
+  Mandatory Parking Zone, most of central Boulder, ends at a Lime parking
+  corral. Left out: Lime's five mandatory parking zones, that one among them,
+  the corrals not being in the file, so that nothing would show where to park;
+  the service area; and two no-operation zones of 88 and 90 km² east and west of the city,
+  where Lime's service area ends, as Boise's. The slow zones' speeds are not
+  shown: two of the eight give one speed in the zone and another in the
+  banner the app shows (10 mph against 5 mph, and against 13 km/h).
 - **Norrköping** (read 29 October 2026): Norrköpings kommun's 57 parking
   places for e-scooters, 29 areas where a scooter may not be returned
   (`NoParking (Återlämning förbjuden)`), 14 slow zones (`Slow
