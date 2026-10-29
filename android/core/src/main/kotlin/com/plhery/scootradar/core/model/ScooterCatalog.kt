@@ -297,6 +297,11 @@ interface ScooterCatalog {
         override fun providers(viewport: GeoBounds): List<ScooterProvider> = ScooterProviderCoverage.providers(viewport)
 
         override fun contains(point: GeoPoint): Boolean = ScooterProviderCoverage.contains(point.latitude, point.longitude)
+
+        /** Reads the catalog now, if nothing has yet, as the app does off the main thread at launch. */
+        fun load() {
+            CatalogData.value
+        }
     }
 
     /** A catalog of what it lists, for tests and previews: a provider operates wherever one of its areas reaches. */

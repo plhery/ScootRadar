@@ -652,17 +652,14 @@ class CityRuleZoneTest {
 
     @Test
     fun bergensAndPortosZonesAreThereByKind() {
-        // The numbers of each are data/'s, which CatalogParityTest holds to the iPhone's: here, that each zone is
-        // its city's and each city sets the kinds the iPhone draws for it (LOG-370).
+        // Which cities have zones, of which kinds and how many, is data/'s, which CatalogParityTest holds to the
+        // iPhone's: here, what holds of every city's (LOG-370). Each zone is its city's, which names it and its rules
+        // once, and none is in two places.
         val cities = CityRuleZone.cityZones.groupBy { it.id.substringBefore('-') }
         for ((city, zones) in cities) {
             assertTrue(city, zones.all { it.id.startsWith("$city-") })
             assertEquals(city, 1, zones.map { listOf(it.authority, it.timeZone, it.source) }.toSet().size)
         }
-        assertEquals(ScooterZoneKind.entries.toSet(), cities["bergen"].orEmpty().map { it.kind }.toSet())
-        assertEquals(setOf("Bergen kommune"), cities["bergen"].orEmpty().map { it.authority }.toSet())
-        assertTrue(cities["porto"].orEmpty().any { it.kind == ScooterZoneKind.Parking })
-        assertEquals(setOf("Porto"), cities["porto"].orEmpty().map { it.authority }.toSet())
         assertEquals(CityRuleZone.cityZones.size, CityRuleZone.cityZones.map { it.id }.toSet().size)
     }
 
