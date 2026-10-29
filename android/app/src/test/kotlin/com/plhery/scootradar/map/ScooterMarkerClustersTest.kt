@@ -166,7 +166,7 @@ class ScooterMarkerClustersTest {
         scene.tap(ScreenPoint(centre.x + 22, centre.y - 22), map)
 
         assertEquals(listOf("cluster_select"), events)
-        assertEquals(listOf<CameraMove>(CameraMove.Fit(scooters.map { it.coordinate })), moves)
+        assertEquals(listOf<CameraMove>(CameraMove.Fit(scooters.map { it.coordinate }, ofCluster = true)), moves)
         // No dot was in reach: the card closes, as the iPhone's own tap closes it.
         assertEquals(listOf<String?>(null), selections)
     }

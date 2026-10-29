@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapFocusRequest
+import com.plhery.scootradar.core.model.ScreenRect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -57,6 +58,46 @@ class MapMoveTest {
                 camera.close()
                 ground.close()
             }
+            frames.cancel()
+            scope.cancel()
+        }
+    }
+
+    /**
+     * With animations off a phone still shows a cluster's scooters in motion, as MapKit's showAnnotations does, but
+     * fits a route at once, and beside a panel the cluster too (MAP-327).
+     */
+    @Test
+    fun withAnimationsOffAPhonesClusterOpensInMotionAndTheRestAtOnce() = withPhoneMap { phone ->
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+        val camera = phone.onMain {
+            phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
+            MapCamera(phone.map, phone.view, testController(scope), MapCameraMemory(), frames, animationsOn = { false })
+        }
+        settle()
+        val steps = CopyOnWriteArrayList<Long>()
+        // Two scooters by Langstrasse, in from the city's span.
+        val scooters = listOf(GeoPoint(47.3786, 8.5274), GeoPoint(47.379, 8.528))
+        val route = listOf(GeoPoint(47.37, 8.52), GeoPoint(47.39, 8.55))
+        fun moved(move: CameraMove): Int {
+            steps.clear()
+            phone.onMain { camera.show(move) }
+            settle()
+            return steps.size
+        }
+        try {
+            phone.onMain { phone.map.addOnCameraMoveListener { steps += SystemClock.uptimeMillis() } }
+            moved(CameraMove.Fit(scooters, ofCluster = true)).let { assertTrue("$it steps", it >= 10) }
+            moved(CameraMove.Fit(route)).let { assertTrue("$it steps", it <= 2) }
+            phone.onMain {
+                val height = phone.projection.bounds.height
+                camera.chromeDidChange(MapChrome(panel = ScreenRect(x = 16.0, y = 16.0, width = 160.0, height = height - 32)))
+            }
+            settle()
+            moved(CameraMove.Fit(scooters, ofCluster = true)).let { assertTrue("$it steps", it <= 2) }
+        } finally {
+            phone.onMain { camera.close() }
             frames.cancel()
             scope.cancel()
         }
