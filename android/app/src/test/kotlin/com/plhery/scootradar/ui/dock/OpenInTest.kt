@@ -34,6 +34,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -46,8 +47,9 @@ import java.util.Locale
 import java.util.TimeZone
 
 // LOG-280 and LOG-328: the card's "Open in" (ScooterControls.swift:1515-1537) notes the tap for the rating, says
-// rental_open, and opens the scooter, or the operator's app where the feed links none. LOG-409: the card is in
-// the language chosen at once, without the activity being made again.
+// rental_open, and opens the scooter, or the operator's app where the feed links none, as Voi's, Dott's and
+// Bolt's rider maps don't (LOG-278). LOG-409: the card is in the language chosen at once, without the activity
+// being made again.
 
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -109,6 +111,33 @@ class OpenInTest {
         assertEquals(listOf(TrackedEvent("rental_open", provider = provider.rawValue, result = "app")), analytics.events)
         assertNotNull(defaults.date("review-rental-opened-at"))
         assertNotNull(shadowOf(application).nextStartedActivity)
+    }
+
+    @Test
+    fun aVoiScooterFromTheRiderMapOpensVoisApp() = opensTheOperatorsApp(ScooterProvider.Voi)
+
+    @Test
+    fun aDottScooterFromTheRiderMapOpensDottsApp() = opensTheOperatorsApp(ScooterProvider.Dott)
+
+    @Test
+    fun aBoltScooterFromTheRiderMapOpensBoltsApp() = opensTheOperatorsApp(ScooterProvider.Bolt)
+
+    /** LOG-278: the rider maps link no scooter, so the card opens the app on the link it claims, an app first. */
+    private fun opensTheOperatorsApp(provider: ScooterProvider) {
+        val target = scooterNearby(provider.rawValue, rentalURIs = null)
+        val app = checkNotNull(target.operatorApp)
+        assertEquals(checkNotNull(provider.app).link, app.link)
+        showCard(target)
+
+        compose.onNodeWithText(openIn(target)).performClick()
+        compose.waitForIdle()
+
+        assertEquals(listOf(TrackedEvent("rental_open", provider = provider.rawValue, result = "app")), analytics.events)
+        val opened = shadowOf(application).nextStartedActivity
+        assertEquals(Intent.ACTION_VIEW, opened.action)
+        assertEquals(app.link, opened.dataString)
+        assertTrue("an app, not a browser", opened.flags and Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER != 0)
+        assertNull("the app took it", shadowOf(application).nextStartedActivity)
     }
 
     @Test
