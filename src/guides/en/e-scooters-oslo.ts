@@ -194,6 +194,7 @@ const guide: Guide = {
     { title: 'Lovdata: on-the-spot fines in road traffic (Norwegian)', url: 'https://lovdata.no/dokument/SF/forskrift/1990-06-29-492' },
     { title: 'Norwegian Public Roads Administration: e-scooter injuries in Oslo, January 2026 (Norwegian)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
     { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Safety (reaction test on weekend evenings)', url: 'https://www.ryde-technology.com/safety' },
   ],
 };
 

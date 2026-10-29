@@ -186,6 +186,7 @@ const guide: Guide = {
     { title: 'Ruter: Kjør elsparkesykkel og bysykkel i appen', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/kjore-i-appen' },
     { title: 'Ruter: Operatører, priser og aldersgrenser', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/operatorer' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
     { title: 'Ryde: Betal med Vipps (7. mars 2023)', url: 'https://www.ryde-technology.com/blog/vipps' },
     { title: 'Ryde: Forsikring', url: 'https://www.ryde-technology.com/insurance' },
     { title: 'Voi: Elsparkesykler i Oslo, priser og aldersgrense', url: 'https://www.voi.com/nb/by/oslo' },

@@ -180,6 +180,7 @@ const guide: Guide = {
     { title: 'Norwegian Public Roads Administration: traffic rules for electric scooters', url: 'https://www.vegvesen.no/en/traffic-information/traffic-safety/norwegian-traffic-rules/traffic-rules-for-electric-scooters/' },
     { title: 'Lovdata: fixed penalties for road traffic offences (Norwegian)', url: 'https://lovdata.no/dokument/SF/forskrift/1990-06-29-492' },
     { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Safety (reaction test on weekend evenings)', url: 'https://www.ryde-technology.com/safety' },
     { title: 'Ryde help: adding a payment card', url: 'https://www.ryde-technology.com/help/add-payment-card' },
     { title: 'Ryde help: the new-account charge', url: 'https://www.ryde-technology.com/help/new-account-verification' },
     { title: 'Ryde: open data for Tromsø (GBFS, via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs' },
