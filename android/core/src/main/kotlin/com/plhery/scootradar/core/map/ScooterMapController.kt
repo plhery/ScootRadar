@@ -296,8 +296,8 @@ class ScooterMapController(
     val zoneState: StateFlow<ScooterZoneState> = _zoneState.asStateFlow()
 
     /**
-     * The zones drawn on the map: those of the providers shown, from zoom 14, and the streets where a city
-     * forbids riding, which show whether or not the zones are on.
+     * The zones drawn on the map: those of the providers shown, from zoom 14, and the cities' rules and zones, which
+     * show whether or not the zones are on.
      */
     internal val _mapZones = MutableStateFlow<List<ScooterZone>>(emptyList())
     val mapZones: StateFlow<List<ScooterZone>> = _mapZones.asStateFlow()
@@ -305,9 +305,16 @@ class ScooterMapController(
     internal val _mapZonesRevision = MutableStateFlow(0)
     val mapZonesRevision: StateFlow<Int> = _mapZonesRevision.asStateFlow()
 
-    /** The streets where a city forbids riding over the map, for the legend. */
+    /**
+     * The cities' rules and zones over the map, for the legend; each is one of mapZones, which may draw more of them,
+     * just off the map.
+     */
     internal val _mapRuleZones = MutableStateFlow<List<CityRuleZone.Shown>>(emptyList())
     val mapRuleZones: StateFlow<List<CityRuleZone.Shown>> = _mapRuleZones.asStateFlow()
+
+    /** How many of mapZones are the operators'. */
+    internal val _mapOperatorZoneCount = MutableStateFlow(0)
+    val mapOperatorZoneCount: StateFlow<Int> = _mapOperatorZoneCount.asStateFlow()
 
     // Day and night until one is chosen in Settings.
     private val _appearance = MutableStateFlow(
@@ -413,6 +420,13 @@ class ScooterMapController(
     internal var recentZoneAnswers: List<ScooterZoneAnswer> = emptyList()
     internal var zoneTask: Job? = null
     internal var zoneTaskArea: ScooterZoneArea? = null
+
+    /**
+     * Where the cities' zones drawn were picked, the map and half of it again on each side: where hundreds are near,
+     * as in Bergen, nearly any pan brings one in or takes one out, and the overlay, the operators' zones with them,
+     * would be merged again each time. Within it, the same are drawn.
+     */
+    internal var ruleZoneArea: GeoBounds? = null
 
     private val _mapScooters = MutableStateFlow<List<Scooter>>(emptyList())
     val mapScooters: StateFlow<List<Scooter>> = _mapScooters.asStateFlow()

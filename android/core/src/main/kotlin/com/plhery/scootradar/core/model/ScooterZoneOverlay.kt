@@ -22,11 +22,12 @@ import org.locationtech.jts.operation.overlayng.OverlayNGRobust
 // the rest of that file draws the zones on the map.
 
 /**
- * The operators' zones as one overlay on the map, drawn above the roads and under their names, the walking
- * route and the scooters. Each kind's zones are merged into one shape, as on the web (zoneShapes.ts): where
- * several operators forbid the same over a street, it is drawn once, within one edge. Only the zones handed
- * in are merged, those of the providers shown, so a filter on one provider leaves its own. Zones drawn
- * dimmer, a city's rules outside their hours, are merged apart from the others.
+ * The operators' zones and the cities' as one overlay on the map, drawn above the roads and under their names,
+ * the walking route and the scooters. Each kind's zones are merged into one shape, as on the web
+ * (zoneShapes.ts): where several operators, or an operator and the city, forbid the same over a street, it is
+ * drawn once, within one edge. Only the zones handed in are merged, those of the providers shown, so a filter
+ * on one provider leaves its own. Zones drawn dimmer, a city's rules outside their hours, are merged apart from
+ * the others.
  *
  * The shapes are JTS's polygons, where the iPhone has Core Graphics' paths. The union takes a while on a
  * large set of zones: make the overlay off the main thread.
@@ -193,11 +194,13 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
     }
 
     /**
-     * The edges in the order they are stroked: no parking's and slow zones', then no riding's over them.
+     * The edges in the order they are stroked: no parking's and slow zones', then a city's parking places', then
+     * no riding's over them.
      *
      * Where riding is forbidden, nothing more needs saying: no parking's and slow zones' edges give way within
      * no riding's zones and along their edge, which other operators' zones of the same street often follow to
-     * the metre. MapKit erases them there with a clear blend, which MapLibre has not: their lines are cut
+     * the metre. A city's parking place there still says where to leave the scooter once walked in, so its edge
+     * is kept whole. MapKit erases them there with a clear blend, which MapLibre has not: their lines are cut
      * instead, less each piece of no riding grown by ScooterZoneLook.edgeClearance points, with the round
      * corners of the stroke that erases them. That takes a while on a large set of zones: run it off the main
      * thread, again as the scale changes, and on every move too when `near` holds only the view's pieces
@@ -205,7 +208,7 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
      */
     fun strokes(near: List<ScooterZoneOverlay.Shape>, scale: Double): List<Stroke> {
         val noRide = near.filter { it.kind == ScooterZoneKind.NoRide }
-        val giving = near.filter { it.kind != ScooterZoneKind.NoRide }
+        val giving = near.filter { it.kind == ScooterZoneKind.NoParking || it.kind == ScooterZoneKind.Slow }
         val clearance = ScooterZoneLook.edgeClearance * scale
         val cleared = STRtree()
         for (shape in noRide) {
@@ -213,6 +216,7 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
             cleared.insert(area.envelopeInternal, PreparedGeometryFactory.prepare(area))
         }
         return giving.map { stroke(it, lines = givingWay(it.polygon.boundary, cleared)) } +
+            near.filter { it.kind == ScooterZoneKind.Parking }.map { stroke(it, lines = it.polygon.boundary) } +
             noRide.map { stroke(it, lines = it.polygon.boundary) }
     }
 

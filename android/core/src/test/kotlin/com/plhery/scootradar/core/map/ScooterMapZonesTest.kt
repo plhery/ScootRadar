@@ -8,6 +8,8 @@ import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.ScooterCatalog
+import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
@@ -22,6 +24,8 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -29,6 +33,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class ScooterMapZonesTest {
     private val zurich = MapRegion(center = GeoPoint(latitude = 47.3769, longitude = 8.5417), latitudeDelta = 0.01, longitudeDelta = 0.01)
+    private val porto = MapRegion(center = GeoPoint(latitude = 41.147, longitude = -8.611), latitudeDelta = 0.01, longitudeDelta = 0.01)
 
     @Test
     fun zonesAreOffUntilTurnedOnAndTheChoiceIsKept() = runTest {
@@ -248,6 +253,129 @@ class ScooterMapZonesTest {
         model.updateViewport(hongdae.copy(latitudeDelta = 0.08, longitudeDelta = 0.08), zoom = 13)
         assertTrue(model.mapRuleZones.value.isEmpty())
         assertTrue(model.mapZones.value.isEmpty())
+    }
+
+    // The catalog's Porto is a few of its parking places (TestCatalog), as the iPhone's test reads them all.
+    @Test
+    fun aCitysZonesAreDrawnFromZoom14WithTheZonesOffAndTheSameOnesOverAShortPan() = runTest {
+        val model = makeController(ZoneStubAPI())
+        model.updateViewport(porto, zoom = 16)
+
+        assertEquals(ScooterZoneState.Off, model.zoneState.value)
+        assertFalse(model.mapRuleZones.value.isEmpty())
+        assertTrue(model.mapRuleZones.value.all { it.rule.kind == ScooterZoneKind.Parking && it.rule.authority == "Porto" && it.inForce })
+        assertTrue(model.mapZones.value.all { it.provider == "city" && it.kind == ScooterZoneKind.Parking && it.strength == 1.0 })
+        assertTrue(model.mapZones.value.map { it.id }.containsAll(model.mapRuleZones.value.map { "rule:${it.rule.id}" }))
+        assertEquals(0, model.mapOperatorZoneCount.value)
+        val revision = model.mapZonesRevision.value
+        val inView = model.mapRuleZones.value
+
+        // A third of the map on, other places are in view and the same are drawn.
+        val nearby = porto.copy(center = GeoPoint(latitude = porto.center.latitude, longitude = porto.center.longitude + 0.0033))
+        model.updateViewport(nearby, zoom = 16)
+        assertNotEquals(inView, model.mapRuleZones.value)
+        assertEquals(revision, model.mapZonesRevision.value)
+        assertTrue(model.mapZones.value.map { it.id }.containsAll(model.mapRuleZones.value.map { "rule:${it.rule.id}" }))
+
+        // Past the half of the map around it, they are picked again.
+        val further = nearby.copy(center = GeoPoint(latitude = nearby.center.latitude, longitude = nearby.center.longitude + 0.01))
+        model.updateViewport(further, zoom = 16)
+        assertTrue(model.mapZonesRevision.value > revision)
+        assertTrue(model.mapZones.value.map { it.id }.containsAll(model.mapRuleZones.value.map { "rule:${it.rule.id}" }))
+
+        model.updateViewport(porto.copy(latitudeDelta = 0.08, longitudeDelta = 0.08), zoom = 13)
+        assertTrue(model.mapRuleZones.value.isEmpty())
+        assertTrue(model.mapZones.value.isEmpty())
+    }
+
+    @Test
+    fun theLegendCountsTheOperatorsZonesApartFromTheCitys() = runTest {
+        val api = ZoneStubAPI()
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(porto, zoom = 16)
+        val shown = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue(shown)
+
+        assertEquals(2, model.mapOperatorZoneCount.value)
+        assertEquals(listOf("lime:0", "bird:0"), model.mapZones.value.filter { it.provider != "city" }.map { it.id })
+        assertFalse(model.mapRuleZones.value.isEmpty())
+        model.showProviders(setOf(ScooterProvider.Lime))
+        assertEquals(1, model.mapOperatorZoneCount.value)
+    }
+
+    // Android's own: where the area the cities' zones are picked over ends, and the zoom they are picked from.
+
+    @Test
+    fun aCitysZonesArePickedAgainOnceTheViewLeavesTheMapAndHalfOfItAgainOnEachSide() = runTest {
+        // A view 0.01° a side picks over 0.02°: here to -8.601° east. Two places just within that edge and just past it.
+        fun place(id: String, longitude: Double) = CityRuleZone(
+            id = "porto-parking-$id", authority = "Porto", timeZone = "Europe/Lisbon", kind = ScooterZoneKind.Parking,
+            source = "https://example.com/porto",
+            ring = listOf(GeoPoint(41.147, longitude), GeoPoint(41.14705, longitude), GeoPoint(41.14705, longitude + 0.00005)),
+        )
+        val within = place("within", -8.60115)
+        val past = place("past", -8.60095)
+        val model = makeController(ZoneStubAPI(), catalog = ScooterCatalog.Listed(ruleZones = listOf(within, past)))
+        model.updateViewport(porto, zoom = 16)
+        assertEquals(GeoBounds(porto).expanded(by = 0.5), model.ruleZoneArea)
+        assertEquals(listOf("rule:porto-parking-within"), model.mapZones.value.map { it.id })
+        assertTrue("Neither is in view", model.mapRuleZones.value.isEmpty())
+        val revision = model.mapZonesRevision.value
+
+        // The view's east edge a hair within the area's: nothing is picked again, though the edge is past `within`.
+        fun east(edge: Double) = porto.copy(center = GeoPoint(latitude = porto.center.latitude, longitude = edge - porto.longitudeDelta / 2))
+        model.updateViewport(east(-8.60101), zoom = 16)
+        assertEquals(GeoBounds(porto).expanded(by = 0.5), model.ruleZoneArea)
+        assertEquals(revision, model.mapZonesRevision.value)
+        assertEquals(listOf("porto-parking-within"), model.mapRuleZones.value.map { it.rule.id })
+
+        // A hair past it, the view's own area is picked over, which reaches `past`.
+        model.updateViewport(east(-8.60099), zoom = 16)
+        assertEquals(GeoBounds(east(-8.60099)).expanded(by = 0.5), model.ruleZoneArea)
+        assertEquals(listOf("rule:porto-parking-within", "rule:porto-parking-past"), model.mapZones.value.map { it.id })
+        assertEquals(revision + 1, model.mapZonesRevision.value)
+    }
+
+    @Test
+    fun aCitysZonesArePickedFromZoom14AsTheMapsLevelRoundsUpTo() = runTest {
+        val model = makeController(ZoneStubAPI())
+        // The map's zoom level is rounded up to the API's zoom: 13.01 and 13.9 are 14, as 14 is.
+        for ((level, drawn) in listOf(13.0 to false, 13.01 to true, 13.9 to true, 14.0 to true)) {
+            model.updateViewport(porto, zoom = ScooterClusteringPolicy.apiZoom(level), zoomLevel = level)
+            assertEquals("at $level", drawn, model.mapZones.value.isNotEmpty())
+            assertEquals("at $level", drawn, model.mapRuleZones.value.isNotEmpty())
+            assertEquals("at $level", drawn, model.ruleZoneArea != null)
+        }
+        model.updateViewport(porto, zoom = 13, zoomLevel = 13.0)
+        assertNull(model.ruleZoneArea)
+    }
+
+    @Test
+    fun aCitysZonesFollowTheMapWhileTheZonesAreAskedFor() = runTest {
+        val api = ZoneStubAPI()
+        api.pending = true
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(porto, zoom = 16)
+        assertEquals(ScooterZoneState.Loading, model.zoneState.value)
+        val inView = model.mapRuleZones.value.map { it.rule.id }
+        assertEquals(listOf("porto-parking-1abcfc08", "porto-parking-9fdb7b30"), inView)
+
+        // Within the area being asked for, before it is answered.
+        val nearby = porto.copy(center = GeoPoint(latitude = porto.center.latitude, longitude = porto.center.longitude + 0.0033))
+        model.updateViewport(nearby, zoom = 16)
+        assertTrue(api.zoneAreas.isEmpty())
+        assertEquals(listOf("porto-parking-1abcfc08", "porto-parking-0814d2f8"), model.mapRuleZones.value.map { it.rule.id })
+
+        // Answered while some feeds' zones are on their way, and asked for again.
+        advanceTimeBy(250)
+        runCurrent()
+        assertEquals(1, api.zoneAreas.size)
+        model.updateViewport(porto, zoom = 16)
+        assertEquals(1, api.zoneAreas.size)
+        assertEquals(inView, model.mapRuleZones.value.map { it.rule.id })
+        assertEquals(ScooterZoneState.Shown, model.zoneState.value)
     }
 }
 

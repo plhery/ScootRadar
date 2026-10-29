@@ -17,10 +17,14 @@ internal class CatalogData(
     val countryCount: Int,
     val curfews: List<RentalCurfew>,
     val ruleZones: List<CityRuleZone>,
+    val cityZones: List<CityRuleZone>,
     val anchors: Map<String, GeoPoint>,
     val credits: List<Pair<String, String>>,
     val regionTotals: Map<String, Map<String, ScooterRegion>>,
 ) {
+    /** Seoul's streets and the cities' zones, put together once (CityRuleZone.onMap). */
+    val onMap: List<CityRuleZone> = ruleZones + cityZones
+
     companion object {
         private const val RESOURCE = "/com/plhery/scootradar/core/generated/catalog.json"
 
@@ -69,6 +73,17 @@ internal class CatalogData(
                         lines = zone.lines.map(::points),
                     )
                 },
+                cityZones = file.cityZones.map { zone ->
+                    val kind = checkNotNull(ScooterZoneKind.fromRawValue(zone.kind)) { "Unknown zone kind ${zone.kind}" }
+                    CityRuleZone(
+                        id = zone.id,
+                        authority = zone.authority,
+                        timeZone = zone.timeZone,
+                        kind = kind,
+                        source = zone.source,
+                        ring = points(zone.ring),
+                    )
+                },
                 anchors = file.countries.anchors.mapValues { (_, anchor) -> GeoPoint(anchor[0], anchor[1]) },
                 credits = file.countries.credits.map { it.title to it.url },
                 regionTotals = file.countries.regionTotals.mapValues { (_, regions) ->
@@ -96,6 +111,7 @@ internal class CatalogData(
         val cities: List<CityEntry>,
         val curfews: List<CurfewEntry>,
         val ruleZones: List<RuleZoneEntry>,
+        val cityZones: List<CityZoneEntry>,
         val countries: CountriesEntry,
     )
 
@@ -137,6 +153,17 @@ internal class CatalogData(
 
     @Serializable
     private class HoursEntry(val fromMinute: Int, val untilMinute: Int)
+
+    /** One of a city's zones, its ring as latitude, longitude, latitude, longitude… */
+    @Serializable
+    private class CityZoneEntry(
+        val id: String,
+        val authority: String,
+        val timeZone: String,
+        val kind: String,
+        val source: String,
+        val ring: DoubleArray,
+    )
 
     @Serializable
     private class CountriesEntry(

@@ -630,6 +630,15 @@ function kotlinCatalogData() {
       source: zone.source.url,
       lines: zone.lines.map(line => line.flat()),
     }))),
+    // The zones were checked as the Swift catalog was written.
+    cityZones: list(cityZones.flatMap(city => city.zones.map(zone => ({
+      id: zone.id,
+      authority: city.authority,
+      timeZone: city.timeZone,
+      kind: zone.kind,
+      source: city.source.url,
+      ring: zone.ring.flat(),
+    })))),
     countries: JSON.stringify(kotlinCountries(countries), null, 1),
   };
   const data = `{\n${Object.entries(sections).map(([key, value]) => `${JSON.stringify(key)}: ${value}`).join(',\n')}\n}\n`;

@@ -40,7 +40,7 @@ class ScooterCatalogTest {
         val generated = ScooterCatalog.Generated
         assertEquals(ScooterCityCatalog.cities, generated.cities)
         assertEquals(RentalCurfew.all, generated.curfews)
-        assertEquals(CityRuleZone.all, generated.ruleZones)
+        assertEquals(CityRuleZone.onMap, generated.ruleZones)
         // Each of the service areas, Swiss and abroad, as the coverage reads them; and none in the middle of the Atlantic.
         val data = CatalogData.value
         for (area in data.swissAreas + data.regionalSystems.map { it.second }) {

@@ -152,6 +152,36 @@ class CatalogParityTest {
     }
 
     @Test
+    fun cityZonesAreTheSwiftOnes() {
+        // Each city's zones are one call, its own from the city's id that starts each zone's.
+        val cities = data.cityZones.groupBy { it.id.substringBefore('-') }
+        val calls = cities.entries.flatMapIndexed { index, (city, zones) ->
+            val first = zones.first()
+            for (zone in zones) {
+                assertEquals(zone.id, listOf(first.authority, first.timeZone, first.source), listOf(zone.authority, zone.timeZone, zone.source))
+            }
+            listOf(
+                "        zones(",
+                "            authority: ${string(first.authority)}, timeZone: ${string(first.timeZone)},",
+                "            source: URL(string: ${string(first.source)})!,",
+                "            ids: ${city}ZoneIds, kinds: ${city}ZoneKinds, rings: ${city}ZoneRings",
+                if (index < cities.size - 1) "        ) +" else "        )",
+            )
+        }
+        assertEquals(section("    static let cityZones: [CityRuleZone] =", ""), calls)
+        assertEquals(
+            swift.filter { Regex("^    private static let [a-z]+Zone(Ids|Kinds|Rings): ").containsMatchIn(it) },
+            cities.flatMap { (city, zones) ->
+                listOf(
+                    "    private static let ${city}ZoneIds: [String] = [${zones.joinToString(", ") { string(it.id) }}]",
+                    "    private static let ${city}ZoneKinds: [ScooterZoneKind] = [${zones.joinToString(", ") { ".${it.kind.rawValue}" }}]",
+                    "    private static let ${city}ZoneRings: [[Double]] = ${numbers(zones.map { it.polygons.single().single() })}",
+                )
+            },
+        )
+    }
+
+    @Test
     fun countriesAreTheSwiftOnes() {
         assertEquals(
             section("    static let anchors: [String: (latitude: Double, longitude: Double)] = [").filter { !it.trimStart().startsWith("//") },

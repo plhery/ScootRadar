@@ -20,11 +20,15 @@ import kotlinx.serialization.encoding.Encoder
 
 // ios/ScootRadar/Models/ScooterZones.swift.
 
-/** What a zone forbids a scooter: riding in it at all, ending a ride in it, or going fast (src/lib/zones.ts). */
+/**
+ * What a zone forbids a scooter: riding in it at all, ending a ride in it, or going fast (src/lib/zones.ts); or,
+ * where a city sets it, where a ride is to end (CityRuleZone).
+ */
 enum class ScooterZoneKind(val rawValue: String) {
     NoRide("noRide"),
     NoParking("noParking"),
     Slow("slow"),
+    Parking("parking"),
     ;
 
     val label: String
@@ -32,13 +36,17 @@ enum class ScooterZoneKind(val rawValue: String) {
             NoRide -> localized("No riding")
             NoParking -> localized("No parking")
             Slow -> localized("Slow")
+            Parking -> localized("Parking")
         }
 
     companion object {
         fun fromRawValue(rawValue: String): ScooterZoneKind? = entries.firstOrNull { it.rawValue == rawValue }
 
+        /** The kinds of the operators' zones, as their legend names them: no operator publishes where to park. */
+        val operatorKinds: List<ScooterZoneKind> = listOf(NoRide, NoParking, Slow)
+
         /** The fills are laid down in this order, the strongest rule on top, as on the web. */
-        val belowFirst: List<ScooterZoneKind> = listOf(Slow, NoParking, NoRide)
+        val belowFirst: List<ScooterZoneKind> = listOf(Parking, Slow, NoParking, NoRide)
     }
 }
 
@@ -73,7 +81,8 @@ data class ScooterZoneResponse(
         override fun deserialize(decoder: Decoder): ScooterZoneResponse {
             val body = decoder.decodeSerializableValue(Body.serializer())
             return ScooterZoneResponse(
-                // A kind added later is left out, as is a ring with too few points.
+                // A kind added later is left out, and parking, which only cities set and the operators' legend
+                // does not name, as is a ring with too few points.
                 zones = body.zones.mapNotNull(Payload::zone),
                 pending = body.meta?.pending ?: false,
                 truncated = body.meta?.truncated ?: false,
@@ -100,7 +109,7 @@ data class ScooterZoneResponse(
         val polygons: List<List<List<List<Double>>>>,
     ) {
         fun zone(): ScooterZone? {
-            val kind = ScooterZoneKind.fromRawValue(kind) ?: return null
+            val kind = ScooterZoneKind.fromRawValue(kind)?.takeIf { it in ScooterZoneKind.operatorKinds } ?: return null
             val polygons = polygons.mapNotNull { polygon ->
                 val rings = polygon.map { ring ->
                     ring.mapNotNull { point -> if (point.size >= 2) GeoPoint(latitude = point[0], longitude = point[1]) else null }
@@ -187,7 +196,8 @@ enum class ScooterZoneState { Off, ZoomIn, Loading, Shown, Failed }
 /**
  * How each kind of zone is drawn, as on the web (ZoneLegend.tsx, map.css): how strongly it is filled, the
  * stronger the rule the stronger the fill, and its edge, solid, dashed or dotted, so that the kinds tell
- * apart without their colours. No riding is hatched too.
+ * apart without their colours. No riding is hatched too. A city's parking places, some only a few metres
+ * across, are filled more strongly still than no parking, in green, so that they show.
  */
 object ScooterZoneLook {
     data class Edge(
@@ -212,12 +222,14 @@ object ScooterZoneLook {
         ScooterZoneKind.NoRide -> 0.4
         ScooterZoneKind.NoParking -> 0.16
         ScooterZoneKind.Slow -> 0.12
+        ScooterZoneKind.Parking -> 0.25
     }
 
     fun edge(kind: ScooterZoneKind): Edge = when (kind) {
         ScooterZoneKind.NoRide -> Edge(width = 1.5, dashes = emptyList(), roundCaps = false)
         ScooterZoneKind.NoParking -> Edge(width = 1.5, dashes = listOf(6.0, 4.0), roundCaps = false)
         ScooterZoneKind.Slow -> Edge(width = 2.0, dashes = listOf(0.1, 4.0), roundCaps = true)
+        ScooterZoneKind.Parking -> Edge(width = 1.5, dashes = emptyList(), roundCaps = false)
     }
 
     /**
@@ -228,30 +240,69 @@ object ScooterZoneLook {
         ScooterZoneKind.NoRide -> if (isDark) 0xFFFF6961 else 0xFFD92D20
         ScooterZoneKind.NoParking -> if (isDark) 0xFFFFB340 else 0xFFC05600
         ScooterZoneKind.Slow -> if (isDark) 0xFF7C9CFF else 0xFF3E63DD
+        ScooterZoneKind.Parking -> if (isDark) 0xFF4CD97B else 0xFF1A7F37
     }
 }
 
 /**
- * A street where a city or its police forbids riding, from data/rule-zones.json, as on the web
- * (src/lib/ruleZones.ts): Seoul's kickboard-free streets so far. Unlike the operators' zones they are the
- * law, so the map draws them from zoom 14 whether or not the zones are on, as no riding's zones are and
- * dimmer outside their hours, and the legend gives their hours and who forbids it, linked to where they
- * say so. CityRuleZone.all is generated.
+ * A street where a city or its police forbids riding, from data/rule-zones.json, or a zone a city sets for shared
+ * scooters, from data/city-zones.json, as on the web (src/lib/ruleZones.ts): Seoul's kickboard-free streets, and
+ * Bergen's and Porto's zones, credited to the city. Unlike the operators' zones they are the law, so the map draws
+ * them from zoom 14 whether or not the zones are on, each as its kind's zones are and dimmer outside its hours, and
+ * the legend gives their kind, their hours and who sets them, linked to where they say so. CityRuleZone.all,
+ * Seoul's streets, and CityRuleZone.cityZones are generated.
  */
-data class CityRuleZone(
+@ConsistentCopyVisibility
+data class CityRuleZone private constructor(
     val id: String,
-    /** Who forbids it, as the legend names them: "Seoul", "Gangnam-gu". */
+    /** Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune". */
     val authority: String,
     val timeZone: String,
-    /** The local day it starts, "YYYY-MM-DD". */
+    /** What it asks of a scooter: no riding, on Seoul's streets. */
+    val kind: ScooterZoneKind,
+    /** The local day it starts, "YYYY-MM-DD"; empty for a city's zone, which has always held. */
     val firstDay: String,
     /** Every day; all day when empty. */
     val hours: List<Hours>,
     /** Where they say so, an https address. */
     val source: String,
-    /** The street's centrelines. */
+    /** A street's centrelines; none for a city's zone. */
     val lines: List<List<GeoPoint>>,
+    val bounds: GeoBounds,
+    /**
+     * As the map draws it. A street is the pieces of its band, a disc at each corner and a strip along each piece,
+     * which the zones' overlay merges into one shape; a city's zone is its ring.
+     */
+    val polygons: List<List<List<GeoPoint>>>,
 ) {
+    /** One of Seoul's streets, where riding is forbidden. */
+    constructor(
+        id: String,
+        authority: String,
+        timeZone: String,
+        firstDay: String,
+        hours: List<Hours>,
+        source: String,
+        lines: List<List<GeoPoint>>,
+    ) : this(
+        id = id, authority = authority, timeZone = timeZone, kind = ScooterZoneKind.NoRide, firstDay = firstDay,
+        hours = hours, source = source, lines = lines, bounds = bounds(of = lines.flatten()),
+        polygons = band(of = lines, widthMeters = bandWidthMeters),
+    )
+
+    /** One of a city's zones: one ring, which holds all day, every day. */
+    constructor(
+        id: String,
+        authority: String,
+        timeZone: String,
+        kind: ScooterZoneKind,
+        source: String,
+        ring: List<GeoPoint>,
+    ) : this(
+        id = id, authority = authority, timeZone = timeZone, kind = kind, firstDay = "", hours = emptyList(),
+        source = source, lines = emptyList(), bounds = bounds(of = ring), polygons = listOf(listOf(ring)),
+    )
+
     data class Hours(
         /** Local minutes since midnight; hours past midnight start after they end. */
         val fromMinute: Int,
@@ -264,33 +315,18 @@ data class CityRuleZone(
 
     /** A rule over the map, with whether it holds now. */
     data class Shown(val rule: CityRuleZone, val inForce: Boolean) {
-        /** As the map draws it: a zone of no riding, dimmer outside its hours. */
+        /** As the map draws it: a zone of its kind, dimmer outside its hours. */
         val mapZone: ScooterZone
             get() = ScooterZone(
-                id = "rule:${rule.id}", provider = "city", kind = ScooterZoneKind.NoRide, maxSpeedKph = null,
-                polygons = rule.band, strength = if (inForce) 1.0 else dimmed,
+                id = "rule:${rule.id}", provider = "city", kind = rule.kind, maxSpeedKph = null,
+                polygons = rule.polygons, strength = if (inForce) 1.0 else dimmed,
             )
-    }
-
-    val bounds: GeoBounds
-
-    /**
-     * The street as pieces of its band, a disc at each corner and a strip along each piece, which the
-     * zones' overlay merges into one shape.
-     */
-    val band: List<List<List<GeoPoint>>>
-
-    init {
-        val points = lines.flatten()
-        bounds = GeoBounds(
-            south = points.minOfOrNull { it.latitude } ?: 0.0, west = points.minOfOrNull { it.longitude } ?: 0.0,
-            north = points.maxOfOrNull { it.latitude } ?: 0.0, east = points.maxOfOrNull { it.longitude } ?: 0.0,
-        )
-        band = band(of = lines, widthMeters = bandWidthMeters)
     }
 
     /** Whether it holds at that instant: from its first day there, within its hours. */
     fun inForce(at: Instant): Boolean {
+        // A city's zone holds at any time: hundreds may be in view, and need no clock read.
+        if (firstDay.isEmpty() && hours.isEmpty()) return true
         val zone = try {
             ZoneId.of(timeZone)
         } catch (_: DateTimeException) {
@@ -304,7 +340,17 @@ data class CityRuleZone(
     }
 
     companion object {
+        /** Seoul's streets. */
         val all: List<CityRuleZone> get() = CatalogData.value.ruleZones
+
+        /**
+         * The zones cities set for shared scooters, as src/lib/ruleZones.ts reads data/city-zones.json: where to park,
+         * where not to, where to ride slowly and where not to ride, each one ring.
+         */
+        val cityZones: List<CityRuleZone> get() = CatalogData.value.cityZones
+
+        /** Seoul's streets and the cities' zones, put together once, as the map shows them. */
+        val onMap: List<CityRuleZone> get() = CatalogData.value.onMap
 
         /** How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14. */
         const val bandWidthMeters = 14.0
@@ -316,10 +362,15 @@ data class CityRuleZone(
         private const val ROUND_CORNERS = 12
 
         /** The rules over the view, from zoom 14 in, each with whether it holds at that instant. */
-        fun shown(over: GeoBounds, zoom: Int, at: Instant, among: List<CityRuleZone> = all): List<Shown> {
+        fun shown(over: GeoBounds, zoom: Int, at: Instant, among: List<CityRuleZone> = onMap): List<Shown> {
             if (zoom < ScooterZoneArea.minimumZoom) return emptyList()
-            return among.filter { it.bounds.intersects(over) }.map { Shown(rule = it, inForce = it.inForce(at)) }
+            return among.mapNotNull { if (it.bounds.intersects(over)) Shown(rule = it, inForce = it.inForce(at)) else null }
         }
+
+        private fun bounds(of: List<GeoPoint>): GeoBounds = GeoBounds(
+            south = of.minOfOrNull { it.latitude } ?: 0.0, west = of.minOfOrNull { it.longitude } ?: 0.0,
+            north = of.maxOfOrNull { it.latitude } ?: 0.0, east = of.maxOfOrNull { it.longitude } ?: 0.0,
+        )
 
         /** bandPolygons in src/lib/ruleZones.ts. */
         fun band(of: List<List<GeoPoint>>, widthMeters: Double): List<List<List<GeoPoint>>> {

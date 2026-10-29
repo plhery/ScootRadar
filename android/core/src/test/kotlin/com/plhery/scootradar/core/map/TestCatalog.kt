@@ -18,9 +18,10 @@ import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterCityFeed
 import com.plhery.scootradar.core.model.ScooterSeasonalPause
+import com.plhery.scootradar.core.model.ScooterZoneKind
 
 // The catalog the controller's tests read: a few of the generated catalog's cities, service areas, night bans and
-// street rules, as data/ had them on 28 October 2026. The Markets lane changes data/ every day; this stays as it
+// street rules, as data/ had them on 28 October 2026, and a few of Porto's parking places as it had them on the 29th. The Markets lane changes data/ every day; this stays as it
 // is, so that a city added near Zürich, a town paused or an area moved leaves the tests' cities, providers and
 // distances what they say (LOG-370).
 
@@ -81,6 +82,43 @@ internal object TestCatalog {
         lines = listOf(listOf(GeoPoint(37.555766, 126.927544), GeoPoint(37.555763, 126.927014), GeoPoint(37.555734, 126.926735))),
     )
 
+    /**
+     * Six of Porto's sharing points, discs of 5 m: two in a view of the centre around (41.147, -8.611) 0.01° a side,
+     * the second near its west edge; one west and one east of it within half the view again; one further east, and
+     * one in the north-west, far off.
+     */
+    private val portoParking = listOf(
+        "1abcfc08" to listOf(
+            GeoPoint(41.144129, -8.609594), GeoPoint(41.144161, -8.609612), GeoPoint(41.144174, -8.609654), GeoPoint(41.144161, -8.609696),
+            GeoPoint(41.144129, -8.609714), GeoPoint(41.144097, -8.609696), GeoPoint(41.144084, -8.609654), GeoPoint(41.144097, -8.609612),
+        ),
+        "9fdb7b30" to listOf(
+            GeoPoint(41.148135, -8.615517), GeoPoint(41.148167, -8.615534), GeoPoint(41.14818, -8.615576), GeoPoint(41.148167, -8.615619),
+            GeoPoint(41.148135, -8.615636), GeoPoint(41.148103, -8.615619), GeoPoint(41.148089, -8.615576), GeoPoint(41.148103, -8.615534),
+        ),
+        "1c3124d8" to listOf(
+            GeoPoint(41.147894, -8.620433), GeoPoint(41.147926, -8.62045), GeoPoint(41.147939, -8.620493), GeoPoint(41.147926, -8.620535),
+            GeoPoint(41.147894, -8.620552), GeoPoint(41.147862, -8.620535), GeoPoint(41.147849, -8.620493), GeoPoint(41.147862, -8.62045),
+        ),
+        "0814d2f8" to listOf(
+            GeoPoint(41.149578, -8.604901), GeoPoint(41.14961, -8.604919), GeoPoint(41.149623, -8.604961), GeoPoint(41.14961, -8.605003),
+            GeoPoint(41.149578, -8.605021), GeoPoint(41.149546, -8.605003), GeoPoint(41.149533, -8.604961), GeoPoint(41.149546, -8.604919),
+        ),
+        "0fcdec2c" to listOf(
+            GeoPoint(41.146077, -8.595948), GeoPoint(41.146109, -8.595965), GeoPoint(41.146122, -8.596007), GeoPoint(41.146109, -8.596049),
+            GeoPoint(41.146077, -8.596067), GeoPoint(41.146045, -8.596049), GeoPoint(41.146032, -8.596007), GeoPoint(41.146045, -8.595965),
+        ),
+        "0e66c7e0" to listOf(
+            GeoPoint(41.172801, -8.646859), GeoPoint(41.172833, -8.646876), GeoPoint(41.172846, -8.646918), GeoPoint(41.172833, -8.64696),
+            GeoPoint(41.172801, -8.646978), GeoPoint(41.172769, -8.64696), GeoPoint(41.172755, -8.646918), GeoPoint(41.172769, -8.646876),
+        ),
+    ).map { (id, ring) ->
+        CityRuleZone(
+            id = "porto-parking-$id", authority = "Porto", timeZone = "Europe/Lisbon", kind = ScooterZoneKind.Parking,
+            source = "https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas", ring = ring,
+        )
+    }
+
     val catalog: ScooterCatalog = ScooterCatalog.Listed(
         cities = swissCities + listOf(berlin, rome, lyon, oslo, skien, astana, zapopan, almaty),
         areas = swissCities.flatMap { city -> swissProviders.map { it to city.bounds } } +
@@ -98,7 +136,7 @@ internal object TestCatalog {
                 areas = listOf(ring(oslo.bounds)),
             ),
         ),
-        ruleZones = listOf(hongdaeRedRoad),
+        ruleZones = listOf(hongdaeRedRoad) + portoParking,
     )
 }
 

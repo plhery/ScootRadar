@@ -33,13 +33,13 @@ class ScooterZoneLayersTest {
     fun drawsTheFillsStrongestOnTopThenTheEdgesNoRidingsLastAllUnderTheTrail() {
         assertEquals(
             listOf(
-                "zones-slow", "zones-noParking", "zones-noRide",
-                "zone-edges-noParking", "zone-edges-slow", "zone-edges-noRide",
+                "zones-parking", "zones-slow", "zones-noParking", "zones-noRide",
+                "zone-edges-noParking", "zone-edges-slow", "zone-edges-parking", "zone-edges-noRide",
                 "walk-trail-fading-casing", "walk-trail-fading", "walk-trail-casing", "walk-trail",
             ),
             GroundOverlays.order,
         )
-        assertEquals(GroundOverlays.order.take(6), ZoneLayers.specs(isDark = false).map { it.id })
+        assertEquals(GroundOverlays.order.take(8), ZoneLayers.specs(isDark = false).map { it.id })
         for (spec in ZoneLayers.specs(isDark = false)) {
             val kind = spec.id.substringAfterLast('-')
             assertEquals("[\"==\",[\"get\",\"kind\"],\"$kind\"]", spec.filter)

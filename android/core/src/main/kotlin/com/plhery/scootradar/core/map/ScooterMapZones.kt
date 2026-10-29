@@ -51,12 +51,16 @@ internal fun ScooterMapController.updateZones() {
     }
     val answer = zoneAnswer
     if (answer != null && answer.area.contains(area)) {
-        // Unless a pending answer is being asked for again, it stands.
-        if (zoneTaskArea == null) setZones(if (answer.failed) ScooterZoneState.Failed else ScooterZoneState.Shown)
+        // Unless a pending answer is being asked for again, it stands; the cities' zones follow the map either way.
+        if (zoneTaskArea == null) setZones(if (answer.failed) ScooterZoneState.Failed else ScooterZoneState.Shown) else rebuildMapZones()
         return
     }
     val taskArea = zoneTaskArea
-    if (taskArea != null && taskArea.contains(area)) return
+    if (taskArea != null && taskArea.contains(area)) {
+        // The cities' zones follow the map meanwhile.
+        rebuildMapZones()
+        return
+    }
     val now = clock()
     recentZoneAnswers = recentZoneAnswers.filter { now.timeIntervalSince(it.receivedAt) <= ScooterMapController.zoneAnswerLifetime }
     val recent = recentZoneAnswers.firstOrNull { it.area.contains(area) }
@@ -114,7 +118,10 @@ private fun ScooterMapController.setZones(state: ScooterZoneState) {
     rebuildMapZones()
 }
 
-/** Like the scooters: only the zones of the providers switched on, and none further out than zoom 14; and the city's rules over the map. */
+/**
+ * Like the scooters: only the zones of the providers switched on, and none further out than zoom 14; and the cities'
+ * rules and zones over the map.
+ */
 internal fun ScooterMapController.rebuildMapZones() {
     val shown = if (zoneState.value == ScooterZoneState.Off || zoneState.value == ScooterZoneState.ZoomIn) {
         emptyList()
@@ -123,8 +130,17 @@ internal fun ScooterMapController.rebuildMapZones() {
             ScooterProvider.fromRawValue(zone.provider)?.let { it in enabledProviders.value } ?: false
         }
     }
-    val rules = CityRuleZone.shown(over = viewport.value, zoom = viewportZoom.value, at = clock(), among = catalog.ruleZones)
-    if (rules != mapRuleZones.value) _mapRuleZones.value = rules
+    val view = viewport.value
+    if (viewportZoom.value < ScooterZoneArea.minimumZoom) {
+        ruleZoneArea = null
+    } else if (ruleZoneArea?.contains(view) != true) {
+        ruleZoneArea = view.expanded(by = 0.5)
+    }
+    val rules = ruleZoneArea?.let { CityRuleZone.shown(over = it, zoom = viewportZoom.value, at = clock(), among = catalog.ruleZones) }
+        ?: emptyList()
+    val rulesInView = rules.filter { it.rule.bounds.intersects(view) }
+    if (rulesInView != mapRuleZones.value) _mapRuleZones.value = rulesInView
+    if (shown.size != mapOperatorZoneCount.value) _mapOperatorZoneCount.value = shown.size
     val drawn = rules.map { it.mapZone } + shown
     if (drawn == mapZones.value) return
     _mapZones.value = drawn

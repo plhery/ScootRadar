@@ -268,7 +268,7 @@ object ScooterProviderCoverage {
 
 /**
  * The catalog as the map controller reads it: the cities, where each provider operates, the night bans and the
- * cities' rules for streets. The app's is the one generated from data/ ([Generated]). A test hands the controller
+ * cities' rules and zones. The app's is the one generated from data/ ([Generated]). A test hands the controller
  * one of its own ([Listed]), which a city added or paused in data/, or a provider's area moved, leaves as it is.
  * Not in the iPhone app, whose tests read its generated catalog.
  */
@@ -279,7 +279,7 @@ interface ScooterCatalog {
     /** The cities' bans on renting at night. */
     val curfews: List<RentalCurfew>
 
-    /** The cities' own rules for streets. */
+    /** The cities' own rules for streets, and the zones they set for scooters, as the map shows them. */
     val ruleZones: List<CityRuleZone>
 
     /** The providers operating in the viewport, in catalogue order. */
@@ -288,11 +288,11 @@ interface ScooterCatalog {
     /** Whether the point is inside an operator's service area. */
     fun contains(point: GeoPoint): Boolean
 
-    /** The catalog generated from data/: ScooterCityCatalog, ScooterProviderCoverage, RentalCurfew.all, CityRuleZone.all. */
+    /** The catalog generated from data/: ScooterCityCatalog, ScooterProviderCoverage, RentalCurfew.all, CityRuleZone.onMap. */
     data object Generated : ScooterCatalog {
         override val cities: List<ScooterCity> get() = ScooterCityCatalog.cities
         override val curfews: List<RentalCurfew> get() = RentalCurfew.all
-        override val ruleZones: List<CityRuleZone> get() = CityRuleZone.all
+        override val ruleZones: List<CityRuleZone> get() = CityRuleZone.onMap
 
         override fun providers(viewport: GeoBounds): List<ScooterProvider> = ScooterProviderCoverage.providers(viewport)
 

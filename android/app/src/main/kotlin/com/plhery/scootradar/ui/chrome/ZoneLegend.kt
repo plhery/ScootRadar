@@ -95,7 +95,7 @@ fun ZoneLegend(
                 },
             )
         } else if (showsKinds(state, count)) {
-            val labels = ScooterZoneKind.entries.map { it.label }
+            val labels = ScooterZoneKind.operatorKinds.map { it.label }
             FlowRow(
                 Modifier.clearAndSetSemantics {
                     contentDescription = zones
@@ -104,7 +104,7 @@ fun ZoneLegend(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                for (kind in ScooterZoneKind.entries) {
+                for (kind in ScooterZoneKind.operatorKinds) {
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
                         ZoneSwatch(kind)
                         Text(kind.label, style = style, color = colors.dockText, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -174,7 +174,7 @@ fun ZoneSwatch(kind: ScooterZoneKind, modifier: Modifier = Modifier) {
     val color = Color(ScooterZoneLook.color(kind, isDark = scootColors.isDark))
     Canvas(modifier.size(16.dp, 12.dp)) {
         val shape = SquircleShape(3.dp).createOutline(size, layoutDirection, this)
-        drawOutline(shape, color.copy(alpha = if (kind == ScooterZoneKind.Slow) 0.1f else 0.16f))
+        drawOutline(shape, color.copy(alpha = swatchFillOpacity(kind)))
         if (kind == ScooterZoneKind.NoRide) {
             clipPath(Path().apply { addOutline(shape) }) {
                 val step = 4.dp.toPx()
@@ -189,7 +189,7 @@ fun ZoneSwatch(kind: ScooterZoneKind, modifier: Modifier = Modifier) {
         val inset = 1.dp.toPx()
         val edge = SquircleShape(2.dp).createOutline(Size(size.width - 2 * inset, size.height - 2 * inset), layoutDirection, this)
         val dashes = when (kind) {
-            ScooterZoneKind.NoRide -> null
+            ScooterZoneKind.NoRide, ScooterZoneKind.Parking -> null
             ScooterZoneKind.NoParking -> floatArrayOf(4.dp.toPx(), 2.5.dp.toPx())
             ScooterZoneKind.Slow -> floatArrayOf(0.1.dp.toPx(), 3.5.dp.toPx())
         }
@@ -205,4 +205,11 @@ fun ZoneSwatch(kind: ScooterZoneKind, modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+/** How strongly the swatch is filled: a city's parking places as strongly as on the map, so that they show. */
+private fun swatchFillOpacity(kind: ScooterZoneKind): Float = when (kind) {
+    ScooterZoneKind.NoRide, ScooterZoneKind.NoParking -> 0.16f
+    ScooterZoneKind.Slow -> 0.1f
+    ScooterZoneKind.Parking -> 0.25f
 }
