@@ -24,7 +24,12 @@ class GroundPalette(
     val green: String,
     val water: String,
     val building: String,
-    val buildingLine: String,
+    /**
+     * The colour the buildings are raised in, whose roofs MapLibre's light shows as [building] from above: it
+     * adds 0.03 to a roof, lights it by 1.15·cos 30° between 0.5 and max(1.5 − luminance, 1), and lays it at 0.8
+     * over the land. The night's would otherwise lift from #10141d to #1d232f, the day's from #e2e5eb to #e8ebf0.
+     */
+    val buildingRaised: String,
     val rail: String,
     val path: String,
     /** The edge of a street where the street is as light as the land; null where it is not needed. */
@@ -41,13 +46,13 @@ class GroundPalette(
 
 object GroundPalettes {
     val night = GroundPalette(
-        land = "#0b0e14", green = "#0d1d1b", water = "#0b2244", building = "#10141d", buildingLine = "#171d2a",
+        land = "#0b0e14", green = "#0d1d1b", water = "#0b2244", building = "#10141d", buildingRaised = "#04070e",
         rail = "#2a3246", path = "#1a2030", casing = null, minor = "#222a3b", mid = "#2b354a", major = "#35415a",
         border = "#3a4560", label = "#76819a", labelStrong = "#9aa4b8", halo = "#0b0e14", waterLabel = "#4670aa",
     )
 
     val day = GroundPalette(
-        land = "#eef0f4", green = "#dbe8da", water = "#c2d8f2", building = "#e2e5eb", buildingLine = "#d6dae2",
+        land = "#eef0f4", green = "#dbe8da", water = "#c2d8f2", building = "#e2e5eb", buildingRaised = "#d8dbe2",
         rail = "#cfd4dd", path = "#f7f8fa", casing = "#dde1e8", minor = "#ffffff", mid = "#ffffff", major = "#ffffff",
         border = "#b9c0cc", label = "#7c8596", labelStrong = "#5f6878", halo = "#eef0f4", waterLabel = "#6d93c4",
     )
@@ -237,12 +242,6 @@ object GroundStyle {
                 filter = all(listOf("==", get("admin_level"), 2), listOf("!=", get("maritime"), 1)),
                 paint = mapOf("line-color" to c.border, "line-width" to grows(4 to 0.6, 10 to 1.4)),
             ),
-            layer("building", "fill", "building", minzoom = web(15), visible = shapes, paint = mapOf("fill-color" to c.building)),
-            // The web strokes each building 1 point wide; MapLibre's own outline of a fill is a single pixel.
-            layer(
-                "building-line", "line", "building", minzoom = web(15), visible = shapes,
-                paint = mapOf("line-color" to c.buildingLine, "line-width" to 1),
-            ),
             // A square or a street closed to cars, mapped as an area.
             layer(
                 "square", "fill", "transportation", minzoom = web(15), visible = shapes,
@@ -273,8 +272,26 @@ object GroundStyle {
                     Street.Mid -> c.mid
                     Street.Major -> c.major
                 }
-            }
+            } + buildings(c, visible = shapes)
     }
+
+    /**
+     * The buildings, raised to their heights as MapKit raises them when the map is tilted close up (MAP-254), as
+     * OpenFreeMap's Liberty does: from above, their roofs are the web's flat buildings in its colour. They come after the
+     * streets, which they hide where they stand in front of them; an outline whose parts have their own heights is
+     * left to its parts.
+     */
+    private fun buildings(c: GroundPalette, visible: Boolean) = layer(
+        "building", "fill-extrusion", "building", minzoom = web(15), visible = visible,
+        filter = listOf("!", listOf("has", "hide_3d")),
+        paint = mapOf(
+            "fill-extrusion-color" to c.buildingRaised,
+            "fill-extrusion-height" to get("render_height"),
+            "fill-extrusion-base" to get("render_min_height"),
+            "fill-extrusion-opacity" to 0.8,
+            "fill-extrusion-vertical-gradient" to true,
+        ),
+    )
 
     private fun railPaint(c: GroundPalette) =
         mapOf("line-color" to c.rail, "line-width" to grows(12 to 0.4, 17 to 1.0, 19 to 2.0))

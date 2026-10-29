@@ -131,6 +131,37 @@ class GroundStyleTest {
             .all { it.value == JsonPrimitive("visible") })
     }
 
+    /** MapKit's buildings rise when the map is tilted close up, as OpenFreeMap's Liberty raises them (MAP-254). */
+    @Test
+    fun theBuildingsRiseToTheirHeightsFromTheWebsZoom15InTheirOwnColours() {
+        val layers = GroundStyle.layers(calmDay)
+        val buildings = layers.filter { (it.json["source-layer"] as? JsonPrimitive)?.content == "building" }
+        // One layer, raised, in place of the flat fill and its outline.
+        assertEquals(listOf("building"), buildings.map { it.id })
+        val building = buildings.single()
+        assertEquals("fill-extrusion", building.type)
+        assertEquals(14.0, building.json["minzoom"]!!.jsonPrimitive.double, 0.0)
+        assertEquals(
+            Json.parseToJsonElement(
+                """{"fill-extrusion-color":"#d8dbe2","fill-extrusion-height":["get","render_height"],""" +
+                    """"fill-extrusion-base":["get","render_min_height"],"fill-extrusion-opacity":0.8,""" +
+                    """"fill-extrusion-vertical-gradient":true}""",
+            ),
+            building.paint,
+        )
+        // A building's outline whose parts have their own heights is left to its parts.
+        assertEquals(Json.parseToJsonElement("""["!",["has","hide_3d"]]"""), building.filter)
+        assertTrue(building.visible)
+        // Drawn after the streets, which the buildings hide where they stand in front, and under the names.
+        val ids = layers.map { it.id }
+        assertTrue(ids.indexOf("building") > ids.indexOf("street-major"))
+        assertTrue(ids.indexOf("building") < ids.indexOf(GroundStyle.FIRST_LABEL_LAYER))
+        // By night, only its colour changes: darker than the night's flat buildings, which MapLibre's light shows
+        // its roofs as (MapBuildingsTest).
+        val night = GroundStyle.changes(calmDay, calmDay.copy(theme = GroundTheme.Night)).filter { it.layer == "building" }
+        assertEquals(listOf(GroundStyle.Change("building", GroundStyle.Change.Kind.Paint, "fill-extrusion-color", JsonPrimitive("#04070e"))), night)
+    }
+
     @Test
     fun anotherLanguageOnlyRenamesThePlaces() {
         val changes = GroundStyle.changes(calmDay, calmDay.copy(language = "de"))
@@ -172,7 +203,7 @@ class GroundStyleTest {
         assertEquals(GroundLook(GroundTheme.Night, GroundDetail.Detailed, "en", satellite = true), look)
         val layers = GroundStyle.layers(look, hasImagery = true).associateBy { it.id }
         assertTrue(layers.getValue(GroundStyle.SATELLITE).visible)
-        for (shape in listOf("landcover", "park", "water", "building", "building-line", "square")) assertFalse(shape, layers.getValue(shape).visible)
+        for (shape in listOf("landcover", "park", "water", "building", "square")) assertFalse(shape, layers.getValue(shape).visible)
         assertTrue(layers.getValue("street-major").visible)
         assertTrue(layers.getValue("city").visible)
         // Without imagery there is no layer for it.
