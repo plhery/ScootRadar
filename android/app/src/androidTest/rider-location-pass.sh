@@ -61,7 +61,17 @@ restoreOrientationRequest() {
         ignored=0
     fi
 }
-trap 'stopFixes; removeTestProviders; restoreOrientationRequest' EXIT
+# The screen's rotation as found, given back too: the turn test's tearDown leaves it held upright, and a turn test
+# interrupted before its tearDown leaves it turned.
+autoRotate=$(device shell settings get system accelerometer_rotation | tr -d '\r')
+userRotation=$(device shell settings get system user_rotation | tr -d '\r')
+restoreRotation() {
+    [[ $userRotation == [0-3] ]] && device shell settings put system user_rotation "$userRotation"
+    [[ $autoRotate == [01] ]] && device shell settings put system accelerometer_rotation "$autoRotate"
+}
+# A test the pass leaves when it is interrupted runs on without the shell that started it, and would set the
+# screen's rotation after this: ended first.
+trap 'stopFixes; device shell am force-stop "$app"; removeTestProviders; restoreOrientationRequest; restoreRotation' EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
