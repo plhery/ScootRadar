@@ -41,6 +41,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -92,9 +93,14 @@ import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalClock
+import com.plhery.scootradar.ui.PrimaryClicksOnlyBesideTheDialog
+import com.plhery.scootradar.ui.SecondaryClicksEdge
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.focusableControl
 import com.plhery.scootradar.ui.dock.textSymbolSize
+import com.plhery.scootradar.ui.keepsSecondaryClicks
+import com.plhery.scootradar.ui.marksSecondaryClicksEdge
+import com.plhery.scootradar.ui.primaryClicksOnly
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.SheetBackButton
 import com.plhery.scootradar.ui.sheet.SheetDoneButton
@@ -645,8 +651,12 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
             initialSelectedDateMillis = date.atZone(zone).toLocalDate().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli(),
         )
         val colors = calendarColors()
+        val formatter = remember { DatePickerDefaults.dateFormatter() }
+        val header = remember { SecondaryClicksEdge() }
         DatePickerDialog(
             onDismissRequest = { picking = false },
+            // A window of its own, which the screen's filter doesn't reach: a right click picks no day (X-AD22).
+            modifier = Modifier.primaryClicksOnly(),
             confirmButton = {
                 TextButton(onClick = {
                     state.selectedDateMillis?.let { millis ->
@@ -659,7 +669,24 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
             dismissButton = { TextButton(onClick = { picking = false }) { Text(localized("Cancel")) } },
             colors = colors,
         ) {
-            DatePicker(state, colors = colors)
+            PrimaryClicksOnlyBesideTheDialog()
+            DatePicker(
+                state,
+                // Typing the date, a right click on the field under the header opens its menu, as the search field's.
+                modifier = if (state.displayMode == DisplayMode.Input) Modifier.keepsSecondaryClicks(below = header) else Modifier,
+                dateFormatter = formatter,
+                colors = colors,
+                // DatePicker's own headline, whose bottom is the header's, the mode's button beside it.
+                headline = {
+                    DatePickerDefaults.DatePickerHeadline(
+                        selectedDateMillis = state.selectedDateMillis,
+                        displayMode = state.displayMode,
+                        dateFormatter = formatter,
+                        modifier = Modifier.marksSecondaryClicksEdge(header).padding(start = 24.dp, end = 12.dp, bottom = 12.dp),
+                        contentColor = colors.headlineContentColor,
+                    )
+                },
+            )
         }
     }
 }

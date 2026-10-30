@@ -1,15 +1,22 @@
 package com.plhery.scootradar.ui
 
 import android.content.Context
+import android.os.SystemClock
+import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -21,17 +28,28 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.rightClick
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.EmptyScooterAPI
 import com.plhery.scootradar.RecordingAnalytics
+import com.plhery.scootradar.TestClock
+import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.AddressSearchResult
+import com.plhery.scootradar.core.generated.ScooterProvider
+import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.ProviderRidePass
+import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.testController
 import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
+import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
+import com.plhery.scootradar.ui.settings.SettingsPage
 import com.plhery.scootradar.ui.sheet.IosMenu
 import com.plhery.scootradar.ui.theme.ScootTheme
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +65,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowDialog
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Locale
 
 // X-AD22: an iPad's pointer acts with its primary button; UIKit's tap recognizers, the map's among them
@@ -63,17 +84,22 @@ class SecondaryClickTest {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val locale = Locale.getDefault()
+    private val controllers = TestControllers()
+    private val zone = ZoneId.of("Europe/Zurich")
 
     @Before
     fun setUp() {
         Locale.setDefault(Locale.US)
         ScooterLanguage.current = ScooterLanguage.En
+        ScooterDateFormat.timeZone = { zone }
     }
 
     @After
     fun tearDown() {
         scope.cancel()
+        controllers.close()
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterDateFormat.timeZone = ZoneId::systemDefault
         Locale.setDefault(locale)
     }
 
@@ -184,5 +210,119 @@ class SecondaryClickTest {
         row.performMouseInput { click() }
         compose.waitForIdle()
         assertEquals(2, chosen)
+    }
+
+    /** Bolt's pass, valid through 14 November 2026 at noon, its page shown and its calendar opened from the date. */
+    private fun openTheCalendar(): ScooterMapController {
+        val clock = TestClock()
+        val model = controllers.make(EmptyScooterAPI, clock)
+        model.setRidePass(ProviderRidePass(enabled = true, expiryDate = noon(14)), ScooterProvider.Bolt)
+        compose.setContent {
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                ScootTheme(dark = false, reduceMotion = true) {
+                    ScooterSettingsSheet(
+                        controller = model,
+                        bottomInset = 0.dp,
+                        defaults = InMemoryScooterDefaults(),
+                        onDone = {},
+                        passProviders = listOf(ScooterProvider.Bolt),
+                        sources = emptyList(),
+                        pages = listOf(SettingsPage.Root, SettingsPage.Pass(ScooterProvider.Bolt)),
+                    )
+                }
+            }
+        }
+        compose.onNodeWithText("Nov 14, 2026", useUnmergedTree = true).performClick()
+        compose.waitUntil { compose.onAllNodes(day(20)).fetchSemanticsNodes().isNotEmpty() }
+        return model
+    }
+
+    private fun noon(day: Int) = ZonedDateTime.of(2026, 11, day, 12, 0, 0, 0, zone).toInstant()
+
+    /** A day of November 2026 in the calendar: its button, which reads the whole date. */
+    private fun day(day: Int) = hasText("November $day, 2026", substring = true) and hasClickAction()
+
+    private val toTyping = hasContentDescription("Switch to text input mode")
+    private val toCalendar = hasContentDescription("Switch to calendar input mode")
+
+    /**
+     * Settings' calendar is a window of its own, which the screen's filter doesn't reach: a right click on a day picks
+     * nothing, nor does one on Done or on the button to type the date, as the iPhone's DatePicker under an iPad's
+     * pointer; a left click picks the day and Done keeps it.
+     */
+    @Test
+    fun aRightClickInTheCalendarPicksNoDay() {
+        val model = openTheCalendar()
+        compose.onNode(day(14)).assertIsSelected()
+
+        compose.onNode(day(20)).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        compose.onNode(day(20)).assertIsNotSelected()
+        compose.onNode(day(14)).assertIsSelected()
+        compose.onNodeWithText(localized("Done")).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertTrue("the calendar stays open", compose.onAllNodes(day(20)).fetchSemanticsNodes().isNotEmpty())
+        assertEquals(noon(14), model.ridePass(ScooterProvider.Bolt).expiryDate)
+        compose.onNode(toTyping).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertTrue("still the calendar, not the field", compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isEmpty())
+
+        compose.onNode(day(20)).performMouseInput { click() }
+        compose.waitForIdle()
+        compose.onNode(day(20)).assertIsSelected()
+        compose.onNodeWithText(localized("Done")).performMouseInput { click() }
+        compose.waitUntil { compose.onAllNodes(day(20)).fetchSemanticsNodes().isEmpty() }
+        assertEquals(noon(20), model.ridePass(ScooterProvider.Bolt).expiryDate)
+    }
+
+    /**
+     * Typing the date, its field is a text field as the search's: a right click opens its menu there, and on the button
+     * above it, back to the calendar, does nothing.
+     */
+    @Test
+    fun aRightClickOnTheCalendarsDateFieldOpensItsMenu() {
+        openTheCalendar()
+        compose.onNode(toTyping).performMouseInput { click() }
+        compose.waitUntil { compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty() }
+        val menu = hasText("Select all")
+        assertTrue("no menu yet", compose.onAllNodes(menu).fetchSemanticsNodes().isEmpty())
+
+        compose.onNode(toCalendar).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertTrue("still the field, not the calendar", compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty())
+        assertTrue("no menu from the button", compose.onAllNodes(menu).fetchSemanticsNodes().isEmpty())
+
+        compose.onNode(hasSetTextAction()).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertTrue("the field's menu", compose.onAllNodes(menu).fetchSemanticsNodes().isNotEmpty())
+    }
+
+    /** A mouse's [action] at ([x], [y]) in a window, with [buttons] down. */
+    private fun mouse(action: Int, x: Float, y: Float, buttons: Int): MotionEvent = MotionEvent.obtain(
+        SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), action, 1,
+        arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = MotionEvent.TOOL_TYPE_MOUSE }),
+        arrayOf(MotionEvent.PointerCoords().apply { this.x = x; this.y = y }),
+        0, buttons, 1f, 1f, 0, 0, InputDevice.SOURCE_MOUSE, 0,
+    )
+
+    /** A click with [button] in the calendar's window, beside the calendar, where a tap closes it. */
+    private fun clickBesideTheCalendar(button: Int) {
+        val window = ShadowDialog.getLatestDialog().window!!.decorView
+        window.dispatchTouchEvent(mouse(MotionEvent.ACTION_DOWN, 2f, 2f, button))
+        window.dispatchTouchEvent(mouse(MotionEvent.ACTION_UP, 2f, 2f, 0))
+        compose.waitForIdle()
+    }
+
+    /**
+     * Beside the calendar, in its window but outside the content, where Compose's dialog closes on any click (no View
+     * takes it), a right click leaves it open, as an iPad's popover under one; a left click closes it.
+     */
+    @Test
+    fun aRightClickBesideTheCalendarLeavesItOpen() {
+        openTheCalendar()
+        clickBesideTheCalendar(MotionEvent.BUTTON_SECONDARY)
+        assertTrue("the calendar stays open", compose.onAllNodes(day(20)).fetchSemanticsNodes().isNotEmpty())
+        clickBesideTheCalendar(MotionEvent.BUTTON_PRIMARY)
+        assertTrue("a left click closes it", compose.onAllNodes(day(20)).fetchSemanticsNodes().isEmpty())
     }
 }
