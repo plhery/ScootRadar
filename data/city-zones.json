@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-30",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Only Taupō and Santa Monica state a licence for theirs, CC BY 4.0 and ODC-By 1.0; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, and Santa Monica's drop zones. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Only Taupō, Santa Monica and Washington state a licence for theirs, CC BY 4.0, ODC-By 1.0 and, for Washington's corrals and no-parking zones, CC BY 4.0; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, and Santa Monica's drop zones. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -505,6 +505,54 @@
         "east": 16.645035
       },
       "zones": 871
+    },
+    {
+      "id": "washington",
+      "place": "Washington",
+      "country": "US",
+      "authority": "District Department of Transportation",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "District Department of Transportation, \"District Shared Fleet Device Laws and Regulations\": a shared scooter is parked on the sidewalk, between it and the kerb or at a bike rack or in-street corral, locked, leaving 3 feet clear, and not ridden on the sidewalk in the Central Business District; the zones where it may not be parked or ridden, or only slowly, are among the rules operators must keep to. The no-parking zones and the corrals are the District's open data (CC BY 4.0)",
+        "url": "https://sharedmobilitydc-dcgis.hub.arcgis.com/pages/safety"
+      },
+      "map": {
+        "title": "DC Open Data, \"Shared Mobility No Parking Zones\" and \"In-Street Micromobility Corrals\" (CC BY 4.0), and DDOT's \"Shared Mobility No Ride Zones\" (ArcGIS)",
+        "url": "https://opendata.dc.gov/datasets/DCGIS::shared-mobility-no-parking-zones"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Transportation_Shared_Mobility_WebMercator/MapServer",
+          "layer": 0
+        },
+        {
+          "kind": "noParking",
+          "url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Transportation_Shared_Mobility_WebMercator/MapServer",
+          "layer": 7
+        },
+        {
+          "kind": "slow",
+          "url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DDOT/Shared_Micromobility/MapServer",
+          "layer": 7,
+          "where": "SPEED > 0",
+          "nameField": "NAME"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DDOT/Shared_Micromobility/MapServer",
+          "layer": 7,
+          "where": "SPEED = 0",
+          "nameField": "NAME"
+        }
+      ],
+      "bounds": {
+        "south": 38.814628,
+        "west": -77.11932,
+        "north": 38.995554,
+        "east": -76.926203
+      },
+      "zones": 682
     }
   ]
 }

@@ -25,6 +25,8 @@ const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -
 const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
 // Västerås's Stora Torget and Stora gatan, where riding is forbidden.
 const VASTERAS_CENTRE = { south: 59.607, west: 16.535, north: 59.614, east: 16.555 };
+// Washington's Wharf and the Tidal Basin's south shore.
+const WASHINGTON_WHARF = { south: 38.875, west: -77.03, north: 38.882, east: -77.015 };
 // Nagoya's Sakae, round the Hisaya-ōdōri park, at zoom 14 on a phone.
 const SAKAE = { south: 35.16, west: 136.895, north: 35.178, east: 136.922 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
@@ -54,7 +56,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'porto', 'santamonica', 'taupo', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'porto', 'santamonica', 'taupo', 'vasteras', 'washington']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -112,9 +114,11 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: OSLO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['oslo']);
     expect(zoneCitiesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }).map(city => city.id)).toEqual(['santamonica']);
     expect(zoneCitiesInView({ bounds: TAUPO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['taupo']);
-    expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
+    // Washington's bounds, a box round the District, reach over the Potomac to the cemetery.
+    expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery', 'washington']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
+    expect(zoneCitiesInView({ bounds: WASHINGTON_WHARF, zoom: 15 }).map(city => city.id)).toEqual(['washington']);
     expect(zoneCitiesInView({ bounds: SAKAE, zoom: 14 }).map(city => city.id)).toEqual(['nagoya']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
@@ -229,6 +233,20 @@ describe('the cities\' zones', () => {
     expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(28);
     const shown = ruleZonesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noRide']));
+  });
+
+  it('draws DDOT\'s corrals and its zones of no parking, no riding and slow riding, credited to it', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'washington')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'District Department of Transportation' && zone.timeZone === 'America/New_York')).toBe(true);
+    // Its 259 in-street corrals; its 252 no-parking zones, in parts; its no-riding layer's 58 zones, those of 0 mph no riding.
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(259);
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(365);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(51);
+    expect(zones.filter(zone => zone.rule === 'slow').map(zone => zone.place)).toContain('Wharf - 5 MPH speed limit');
+    const shown = ruleZonesInView({ bounds: WASHINGTON_WHARF, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
   });
 
   it('draws the Taupō District Council\'s no-parking areas and its town centre\'s slow area, credited to the council under CC BY 4.0', async () => {

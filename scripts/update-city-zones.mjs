@@ -110,8 +110,10 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
+  // The layer's object id, which Washington's no-riding layer has as OBJECTID_1, its OBJECTID repeated.
+  const idField = body.fields?.find(field => field.type === 'esriFieldTypeOID')?.name ?? 'OBJECTID';
   return body.features.flatMap(({ attributes, geometry }) => {
-    const objectId = attributes.OBJECTID ?? attributes.objectid;
+    const objectId = attributes[idField];
     const id = `${city.id}-${slug(kind)}-${objectId}`;
     if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
       return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];

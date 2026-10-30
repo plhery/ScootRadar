@@ -610,9 +610,10 @@ Nagoya's pavements as teal lines; the legend names the city, linked to where it
 says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
-catalogs. `scripts/update-city-zones.mjs` reads them again. Only Taupō and
-Santa Monica state a licence for their layers; since 28 October 2026 a city's
-public zone layers are drawn regardless, credited to the city.
+catalogs. `scripts/update-city-zones.mjs` reads them again. Only Taupō,
+Santa Monica and Washington state a licence for their layers, Washington for
+two of its three; since 28 October 2026 a city's public zone layers are drawn
+regardless, credited to the city.
 
 - **Arlington National Cemetery** (read 29 October 2026): no city's, but a
   federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
@@ -818,6 +819,26 @@ public zone layers are drawn regardless, credited to the city.
   leaves out two parking places. The City's summer no-riding zone on the
   Vasagatan pedestrian street (15 June to 16 August) is not in the layer. The
   service accepts edits; ScootRadar only queries it.
+- **Washington** (read 30 October 2026): the District Department of
+  Transportation's 259 in-street corrals, 252 no-parking zones (365 parts),
+  51 no-riding zones and 7 slow zones. The corrals and the no-parking zones are
+  the District's open data under CC BY 4.0
+  ([In-Street Micromobility Corrals](https://opendata.dc.gov/datasets/DCGIS::in-street-micromobility-corrals),
+  [Shared Mobility No Parking Zones](https://opendata.dc.gov/datasets/DCGIS::shared-mobility-no-parking-zones)),
+  layers 0 and 7 of `maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Transportation_Shared_Mobility_WebMercator/MapServer`.
+  The no-riding and slow zones are layer 7 of DDOT's own
+  `DDOT/Shared_Micromobility` map service, "Shared Mobility No Ride Zones": 58
+  zones named for their places (the Capitol's grounds, the memorials, the
+  Wharf, American University), no riding where `SPEED` is 0 and slow where it
+  is 3 to 6 mph. The open data's "Shared Mobility Speed Limit Zones" is the
+  older layer of the same service, 42 zones of January 2023, without American
+  University's, the DC Jail's and others. Left out: the 13 mandatory parking
+  zones, which ScootRadar has no kind for, and the 2,678 preferred parking
+  points, more than one query answers. The legend links DDOT's
+  [rules](https://sharedmobilitydc-dcgis.hub.arcgis.com/pages/safety): a
+  scooter is parked locked, on the sidewalk, between it and the kerb or at a
+  rack or corral, leaving 3 feet clear, and not ridden on the sidewalk in the
+  Central Business District.
 
 ## Germany and Italy
 
