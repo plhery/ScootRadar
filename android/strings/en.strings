@@ -30,5 +30,6 @@
 /* Settings › Map & data credits: OpenStreetMap's page for reporting a mistake in the map, joined to its name, "OpenStreetMap" (map.md MAP-034). */
 "Fix the map" = "Fix the map";
 /* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address is copied, in two
-   lines at most on a phone, as Android 12 and later cut a toast; the address itself is in the clipboard. */
-"No mail app found. The address was copied." = "No mail app found. The address was copied.";
+   lines at most on a phone at every text size, 2.0 on Android 14 and later, as Android 12 and later cut a toast after
+   two; the address itself is in the clipboard. */
+"No mail app. Address copied." = "No mail app. Address copied.";

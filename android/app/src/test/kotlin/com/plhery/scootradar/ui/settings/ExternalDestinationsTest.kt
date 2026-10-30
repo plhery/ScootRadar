@@ -118,7 +118,7 @@ class ExternalDestinationsTest {
         assertNull(shadowOf(application).nextStartedActivity)
         val clip = application.getSystemService(ClipboardManager::class.java).primaryClip!!
         assertEquals("hello@scootradar.com", clip.getItemAt(0).text.toString())
-        assertEquals("No mail app found. The address was copied.", ShadowToast.getTextOfLatestToast())
+        assertEquals("No mail app. Address copied.", ShadowToast.getTextOfLatestToast())
         assertTrue("not the browser", opened.isEmpty())
     }
 

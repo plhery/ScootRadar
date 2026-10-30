@@ -31,4 +31,4 @@
 "Fix the map" = "Corregir el mapa";
 /* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address is copied, in two
    lines at most on a phone, as Android 12 and later cut a toast; the address itself is in the clipboard. */
-"No mail app found. The address was copied." = "No hay ninguna app de correo. Se ha copiado la dirección.";
+"No mail app. Address copied." = "Sin app de correo. Dirección copiada.";
