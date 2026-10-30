@@ -54,6 +54,7 @@ import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.ScooterMapScreen
 import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
+import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -524,7 +525,8 @@ class MapInTheWindowTest {
     /**
      * In a region that measures in miles, the map turned and zooming: the compass 16 in from the trailing edge, level
      * with the panel's top or under the search bar; the scale at the same height on the leading side, past the
-     * panel; the credits at the foot of the part of the map in view, past the panel by the map's leading margin.
+     * panel; the credits at the foot of the part of the map in view, past the panel by the map's leading margin, and
+     * cut by no control on any side: seen whole, or wholly under a phone's dock as the iPhone's Legal is.
      */
     @Test
     fun theCompassScaleAndCreditsSitInThePartOfTheMapInView() {
@@ -557,17 +559,58 @@ class MapInTheWindowTest {
         // By its middle again: the 18 drawn lie in the middle of the 48 TalkBack is given. Their foot is the upright
         // half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom margin keeps Apple's logo
         // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend where it would cover them;
-        // elsewhere 8 above the safe area's foot.
-        // The legend's rule is Android's only (MAP-318, STATE 29 Oct 06:55Z): their licence asks that the map's credits
-        // be seen, and Apple's logo and Legal link, a third as wide, stay in the map's margins (ScooterMapView.swift
-        // :897-903). The legend is where the screen shows it, not where the chrome hands it to the map, so a legend
-        // measured wrong moves the credits and not what they are checked against (review-app-p finding 4).
+        // over the dock, 4 over it and over the legend and the locate button on it where the dock would cut them, part
+        // of their text beside it and part under it, as on a tablet upright; elsewhere 8 above the safe area's foot.
+        // The legend's and the dock's rules are Android's only (MAP-318, STATE 29 Oct 06:55Z): their licence asks that
+        // the map's credits be seen, and Apple's logo and Legal link, a third as wide, stay in the map's margins
+        // (ScooterMapView.swift :897-903), beside the iPad's dock too. The legend and the dock are where the screen
+        // shows them, not where the chrome hands them to the map, so a frame measured wrong moves the credits and not
+        // what they are checked against (review-app-p finding 4).
         val across = windowFold()?.takeIf { it.intersects(bounds) && it.width > it.height }
-        val sources = listOf("© OpenStreetMap", "OpenFreeMap © OpenMapTiles").mapNotNull { text -> device.findObject(By.text(text))?.let { inMap(it.visibleBounds) } }
-        val legend = chrome.panel?.takeIf { !it.isEmpty }?.let { device.findObject(By.res(ZONE_LEGEND_TAG))?.let { inMap(it.visibleBounds) } }
-            ?.takeIf { legend -> legend.minX < sources.maxOf { it.maxX } && legend.maxX > sources.minOf { it.minX } }
-        val foot = across?.let { it.minY - PANEL_GAP } ?: legend?.let { it.minY - 4 } ?: (bounds.maxY - safe.bottom - 8)
-        assertEquals("the credits' foot: $creditsFrame, the fold $across, the legend under them $legend", foot, creditsFrame.midY + 9, 2.0)
+        // Each credit's four edges as the screen shows it, the 18 drawn, and their text 6 inside them.
+        val sources = listOf("© OpenStreetMap", "OpenFreeMap © OpenMapTiles").map { text ->
+            val found = device.findObject(By.text(text))
+            assertNotNull(text, found)
+            inMap(found.visibleBounds).let { ScreenRect(it.minX, it.midY - 9, it.width, 18.0) }
+        }
+        val text = ScreenRect(sources.minOf { it.minX } + 6, sources.minOf { it.minY }, sources.maxOf { it.maxX } - sources.minOf { it.minX } - 12, 18.0)
+        fun shown(tag: String) = device.findObject(By.res(tag))?.let { inMap(it.visibleBounds) }
+        val dock = shown(DOCK_TAG)
+        val shownLegend = shown(ZONE_LEGEND_TAG)
+        val locateButton = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
+        val overCredits = { frame: ScreenRect -> frame.minX < text.maxX + 6 && frame.maxX > text.minX - 6 }
+        val legend = shownLegend?.takeIf { chrome.panel?.isEmpty == false && overCredits(it) }
+        val cutByDock = chrome.panel == null && dock != null &&
+            !(dock.minX <= text.minX && dock.maxX >= text.maxX) && !(dock.minX >= text.maxX || dock.maxX <= text.minX)
+        val overDock = listOfNotNull(dock, shownLegend, locateButton).filter(overCredits).takeIf { cutByDock }
+        val foot = across?.let { it.minY - PANEL_GAP } ?: legend?.let { it.minY - 4 } ?: overDock?.let { frames -> frames.minOf { it.minY } - 4 }
+            ?: (bounds.maxY - safe.bottom - 8)
+        Log.i(TAG, "${size()}: credits $sources, dock $dock, legend $shownLegend, locate button $locateButton, cut by the dock $cutByDock")
+        assertEquals("the credits' foot: $creditsFrame, the fold $across, the legend under them $legend, the dock $dock", foot, creditsFrame.midY + 9, 2.0)
+        // Seen whole, in the safe area and clear of every control over the map, or, over a dock that spans the map as a
+        // phone's does, wholly under it with all their text, as the iPhone's Legal is under its dock: never cut.
+        val underDock = chrome.panel == null && dock != null && dock.minX <= text.minX + 1 && dock.maxX >= text.maxX - 1 &&
+            dock.minY <= text.minY + 1 && dock.maxY >= text.maxY - 1
+        if (!underDock) {
+            val controls = listOf(
+                "the search bar" to shown(SEARCH_ISLAND_TAG),
+                "the dock" to dock,
+                "the zones' legend" to shownLegend,
+                "the locate button" to locateButton,
+                "the panel" to chrome.panel?.takeIf { !it.isEmpty },
+            ).mapNotNull { (name, frame) -> frame?.let { name to it } }
+            for (source in sources) {
+                assertTrue(
+                    "the credit $source in the safe area $safe of $bounds",
+                    source.minX >= bounds.minX + safe.left - 1 && source.maxX <= bounds.maxX - safe.right + 1 &&
+                        source.minY >= bounds.minY + safe.top - 1 && source.maxY <= bounds.maxY - safe.bottom + 1,
+                )
+                for ((name, frame) in controls) {
+                    val over = frame.intersection(source)
+                    assertTrue("the credit $source cut by $name $frame", over == null || over.width < 1 || over.height < 1)
+                }
+            }
+        }
         if (rightToLeft) {
             assertTrue("the credits $creditsFrame past the leading margin $margins", creditsFrame.maxX <= bounds.maxX - max(margins.right, safe.right) + 1)
             assertTrue("the credits $creditsFrame in the part in view $part", creditsFrame.maxX <= part.maxX + 1 && creditsFrame.minY >= part.minY - 1)

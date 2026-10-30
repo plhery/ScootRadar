@@ -48,7 +48,7 @@ fun MapCredits(
                 style = style,
                 modifier = Modifier
                     .clickable(remember { MutableInteractionSource() }, FocusRing(), role = Role.Button) { uri.openUri(page) }
-                    .padding(horizontal = 6.dp, vertical = 3.dp),
+                    .padding(horizontal = TEXT_INSET.dp, vertical = 3.dp),
             )
         }
     }
@@ -68,8 +68,37 @@ internal fun creditsOverLegend(credits: Pair<Double, Double>?, legend: ScreenRec
     return mapHeight - legend.minY + LEGEND_GAP
 }
 
+/**
+ * How far above the map's foot the credits go, over the dock, from the [credits]' sides, the [dock]'s frame and the
+ * frames of the controls that stand on it, [onDock] (the zones' legend and the locate button), in the map's points:
+ * just over the highest of them over the credits, where the dock would cut them, part of their text beside it and
+ * part under it. Null where the dock leaves them be: beside it, or wholly under a dock that spans the map, as on a
+ * phone, where the iPhone's Legal is under its dock too.
+ *
+ * iOS keeps Apple's logo and Legal link in the map's layout margins, which it moves only beside a panel or a fold
+ * (ScooterMapView.swift:897-903): over the dock they stay in the corner. On a tablet upright the dock keeps to 560 in
+ * the middle, and Legal, a third as wide as the credits, fits beside it; the credits don't, and their licence asks
+ * that they be seen (MAP-318).
+ */
+internal fun creditsOverDock(credits: Pair<Double, Double>?, dock: ScreenRect?, onDock: List<ScreenRect>, mapHeight: Double): Double? {
+    if (credits == null || dock == null || dock.isEmpty) return null
+    // A dock laid out for the map before it turned can lie below its foot for a frame.
+    if (dock.minY >= mapHeight) return null
+    val (start, end) = credits
+    val textStart = start + TEXT_INSET
+    val textEnd = end - TEXT_INSET
+    val underIt = dock.minX <= textStart && dock.maxX >= textEnd
+    val besideIt = dock.minX >= textEnd || dock.maxX <= textStart
+    if (underIt || besideIt) return null
+    val over = (onDock + dock).filter { !it.isEmpty && it.minX < end && it.maxX > start && it.minY < mapHeight }
+    return mapHeight - over.minOf { it.minY } + LEGEND_GAP
+}
+
 /** The room between the legend and the credits over it. */
 private const val LEGEND_GAP = 4.0
+
+/** The room either side of a credit's name, inside its frame. */
+private const val TEXT_INSET = 6.0
 
 private val SOURCES = listOf(
     "© OpenStreetMap" to "https://www.openstreetmap.org/copyright",

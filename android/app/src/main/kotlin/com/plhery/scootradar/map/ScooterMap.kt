@@ -226,6 +226,13 @@ fun ScooterMap(
     val legend by remember(chrome) {
         derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.zoneLegend?.takeIf { !it.isEmpty } }
     }
+    // The dock, and the legend and the locate button on it, which the credits go up over where the dock would cut them.
+    val dock by remember(chrome) {
+        derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Dock }?.dock }
+    }
+    val onDock by remember(chrome) {
+        derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Dock }?.let { listOfNotNull(it.zoneLegend, it.locateButton) }.orEmpty() }
+    }
     var creditsSides by remember { mutableStateOf<Pair<Double, Double>?>(null) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, view) {
@@ -352,16 +359,19 @@ fun ScooterMap(
                 .padding(top = ornamentsTop.dp),
         )
         val overLegend = creditsOverLegend(creditsSides, legend, maxHeight.value.toDouble())
+        val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
         val density = LocalDensity.current.density
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
             modifier = Modifier.align(Alignment.BottomStart).then(
                 when {
-                    margins == null -> Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
+                    margins == null -> overDock?.let { sideways.padding(bottom = it.dp) }
+                        ?: Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
                     // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
                     margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)
                     overLegend != null -> sideways.padding(bottom = overLegend.dp)
+                    overDock != null -> sideways.padding(bottom = overDock.dp)
                     else -> Modifier
                         .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
                         .then(sideways)
