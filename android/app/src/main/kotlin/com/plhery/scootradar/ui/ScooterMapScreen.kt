@@ -870,12 +870,13 @@ private fun TopStack(
     // The notices go while the search is open. They fade as they were when it opened, as the iPhone takes the whole
     // block away (ScooterMapScreen.swift:227) and SwiftUI draws it as it was, where it was, while it fades: a card
     // dismissed as the search opens (its Search a place) doesn't slide out inside the fading block, and the block isn't
-    // pushed down by the bar growing into the open search. The panel's notices stay, and fade with the panel, as the
-    // iPhone's do.
+    // pushed down by the bar growing into the open search. As it closes they fade in where they rest, 8 under the
+    // collapsed bar, over the open search shrinking to it, as SwiftUI lays a view it inserts out where it rests: they
+    // don't ride up with it. The panel's notices stay, and fade with the panel, as the iPhone's do.
     val searchSpring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
     val searchMotion = motion<Float>(searchSpring)
     val (heldFailure, heldIssue) = rememberHeld(failure to locationIssue, holding = isSearching)
-    // Where the notices were as the search opened: 8 under the bar.
+    // Where the notices rest, 8 under the collapsed bar, and where they were as the search opened.
     val heldNoticesTop = remember { intArrayOf(0) }
     Layout(
         content = {
@@ -914,10 +915,11 @@ private fun TopStack(
             .then(modifier)
             .fillMaxWidth(),
     ) { measurables, constraints ->
-        // As a column, centred across, the notices 8 under the bar while the search is closed.
+        // As a column, centred across, the notices 8 under the collapsed bar while the search is closed, the island
+        // still shrinking to it included.
         val loose = constraints.copy(minWidth = 0, minHeight = 0)
         val island = measurables[0].measure(loose)
-        if (!isSearching) heldNoticesTop[0] = island.height + 8.dp.roundToPx()
+        if (!isSearching) heldNoticesTop[0] = (if (barHeight > 0) barHeight else island.height) + 8.dp.roundToPx()
         val noticesTop = heldNoticesTop[0]
         val notices = measurables.getOrNull(1)?.measure(
             if (loose.hasBoundedHeight) loose.copy(maxHeight = (loose.maxHeight - noticesTop).coerceAtLeast(0)) else loose,

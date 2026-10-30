@@ -83,6 +83,7 @@ import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
+import com.plhery.scootradar.ui.keepsSecondaryClicks
 import com.plhery.scootradar.ui.rememberAnnouncementOnChange
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.ScootType
@@ -253,6 +254,8 @@ private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, o
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focus)
+                // A right click opens its edit menu, as UITextField's on an iPad (X-AD22).
+                .keepsSecondaryClicks()
                 .semantics { contentType = ContentType.AddressStreet }
                 // A hardware keyboard's Tab goes on to the next button and Shift+Tab back, as on the iPhone; Enter
                 // searches.

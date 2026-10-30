@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Measurable
@@ -144,7 +145,7 @@ fun MapStatusBanner(
             .iosShadow(shape, Color.Black.copy(alpha = 0.07f), radius = 9.dp, y = 4.dp)
             .chromeGlass(shape)
             .overTheMap()
-            .easedHeight(message, animation, onRestingHeight)
+            .easedHeight(message, animation, onRestingHeight, centred = true)
             .padding(start = 14.dp, end = if (stacks) 14.dp else 5.dp, top = if (stacks) 10.dp else 2.dp, bottom = if (stacks) 10.dp else 2.dp),
     ) {
         if (stacks) {
@@ -240,7 +241,7 @@ private fun IssueAction(title: String, onClick: () -> Unit) {
  * [content] for [target]. As [target] changes in [animation], the old content fades out where it was while the new
  * fades in where it rests, as SwiftUI changes a text, or swaps a branch, in an animation; without one the new is there
  * at once. Laid out as the new content alone, so that the notice comes to rest at its height at once; the old one,
- * going, is out of TalkBack's reach.
+ * going, is out of TalkBack's reach and takes no tap, as SwiftUI takes a view it removes out of hit testing.
  */
 @Composable
 private fun <T : Any> CrossFade(target: T, animation: FiniteAnimationSpec<Float>?, modifier: Modifier, content: @Composable (T) -> Unit) {
@@ -267,7 +268,7 @@ private fun <T : Any> CrossFade(target: T, animation: FiniteAnimationSpec<Float>
                         Modifier
                             .layoutId(item)
                             .graphicsLayer { this.alpha = alpha }
-                            .then(if (item == transition.targetState) Modifier else Modifier.clearAndSetSemantics { }),
+                            .then(if (item == transition.targetState) Modifier else Modifier.clearAndSetSemantics { }.goingOut()),
                         propagateMinConstraints = true,
                     ) { content(item) }
                 }
@@ -281,34 +282,47 @@ private fun <T : Any> CrossFade(target: T, animation: FiniteAnimationSpec<Float>
     }
 }
 
+/** Content on its way out: every touch on it is taken before its buttons see it. */
+private fun Modifier.goingOut(): Modifier = pointerInput(Unit) {
+    awaitPointerEventScope {
+        while (true) {
+            awaitPointerEvent(PointerEventPass.Initial).changes.forEach { it.consume() }
+        }
+    }
+}
+
 /**
  * A notice whose [key] changes while it shows eases its height to its new content's in [animation], as
  * SwiftUI animates a frame; at once without one, and for any other change (the window's width, the text's size). The
  * content is laid out where it rests at once; the height this takes, and the glass drawn around it, ease. [onRest] hears
  * the content's own height as it changes: what the iPhone's onGeometryChange reads, as an animation doesn't move the
  * layout it reads (geometryGroup()'s documentation), so the map's frames and the panel's room take the new height at
- * once.
+ * once. [centred] content stays in the middle of the height as it eases, as a centred HStack's views ride the frame's
+ * spring in SwiftUI; otherwise it keeps to the top.
  */
-private fun Modifier.easedHeight(key: Any, animation: FiniteAnimationSpec<Float>?, onRest: (Int) -> Unit): Modifier =
-    this then EasedHeightElement(key, animation, onRest)
+private fun Modifier.easedHeight(key: Any, animation: FiniteAnimationSpec<Float>?, onRest: (Int) -> Unit, centred: Boolean = false): Modifier =
+    this then EasedHeightElement(key, animation, onRest, centred)
 
 private data class EasedHeightElement(
     val key: Any,
     val animation: FiniteAnimationSpec<Float>?,
     val onRest: (Int) -> Unit,
+    val centred: Boolean,
 ) : ModifierNodeElement<EasedHeightNode>() {
-    override fun create() = EasedHeightNode(key, animation, onRest)
+    override fun create() = EasedHeightNode(key, animation, onRest, centred)
 
     override fun update(node: EasedHeightNode) {
         node.key = key
         node.animation = animation
         node.onRest = onRest
+        node.centred = centred
     }
 
     override fun InspectorInfo.inspectableProperties() {
         name = "easedHeight"
         properties["key"] = key
         properties["animation"] = animation
+        properties["centred"] = centred
     }
 }
 
@@ -316,6 +330,7 @@ private class EasedHeightNode(
     var key: Any,
     var animation: FiniteAnimationSpec<Float>?,
     var onRest: (Int) -> Unit,
+    var centred: Boolean,
 ) : Modifier.Node(), LayoutModifierNode {
     /** The key of the content measured last. */
     private var measuredKey: Any = key
@@ -351,7 +366,7 @@ private class EasedHeightNode(
         }
         measuredKey = key
         shown = if (easing?.isActive == true) height.value.roundToInt() else rest
-        return layout(placeable.width, shown) { placeable.place(0, 0) }
+        return layout(placeable.width, shown) { placeable.place(0, if (centred) (shown - rest) / 2 else 0) }
     }
 
     override fun onDetach() {

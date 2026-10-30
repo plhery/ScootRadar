@@ -14,14 +14,23 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performMouseInput
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.rightClick
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.RecordingAnalytics
+import com.plhery.scootradar.core.api.AddressSearchAPIClient
+import com.plhery.scootradar.core.api.AddressSearchResult
+import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.testController
+import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.sheet.IosMenu
 import com.plhery.scootradar.ui.theme.ScootTheme
@@ -42,7 +51,8 @@ import java.util.Locale
 
 // X-AD22: an iPad's pointer acts with its primary button; UIKit's tap recognizers, the map's among them
 // (ScooterMapView.swift:326-331), answer that button alone unless told otherwise (UITapGestureRecognizer.h,
-// buttonMaskRequired), and the app gives nothing a context menu. A right click does nothing.
+// buttonMaskRequired), and the app gives nothing a context menu. A right click does nothing, but in a text field, whose
+// edit menu it opens.
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w411dp-h891dp-mdpi")
@@ -124,6 +134,35 @@ class SecondaryClickTest {
         assertEquals(listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP), map.touches)
         compose.onNodeWithContentDescription("Settings").performMouseInput { click() }
         compose.waitUntil { "settings_open" in analytics.names }
+    }
+
+    /**
+     * The search field is the one place a right click means something, as UITextField's edit menu on an iPad
+     * (UIEditMenuInteraction): it opens the field's own menu there, and on the open search's Cancel beside it, nothing.
+     */
+    @Test
+    fun aRightClickOnTheSearchFieldOpensItsMenu() {
+        val noPlaces = object : AddressSearchAPIClient {
+            override suspend fun search(query: String, language: String, near: GeoPoint?): List<AddressSearchResult> = emptyList()
+        }
+        compose.setContent {
+            ScooterMapScreen(controller = testController(scope), map = { Box(Modifier.fillMaxSize()) }, glassBlurs = false, addressSearch = noPlaces)
+        }
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
+        compose.waitUntil { compose.onAllNodesWithTag(SEARCH_FIELD_TAG).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahnhofstrasse")
+        compose.waitForIdle()
+        val menu = hasText("Select all")
+        assertTrue("no menu yet", compose.onAllNodes(menu).fetchSemanticsNodes().isEmpty())
+
+        compose.onNodeWithText(localized("Cancel")).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertTrue("the search stays open after a right click on Cancel", compose.onAllNodesWithTag(SEARCH_FIELD_TAG).fetchSemanticsNodes().isNotEmpty())
+        assertTrue("no menu from Cancel", compose.onAllNodes(menu).fetchSemanticsNodes().isEmpty())
+
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertTrue("the field's menu", compose.onAllNodes(menu).fetchSemanticsNodes().isNotEmpty())
     }
 
     /** The menu is a window of its own: a right click on a row chooses nothing, a left click chooses it. */

@@ -8,7 +8,11 @@ import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
@@ -16,11 +20,18 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.click
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.FakeLocationManager
@@ -38,11 +49,15 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.chrome.LOCATION_CARD_TAG
+import com.plhery.scootradar.ui.chrome.MapStatusBanner
 import com.plhery.scootradar.ui.chrome.STATUS_BANNER_TAG
+import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
+import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.animation
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import com.plhery.scootradar.zurichRegion
@@ -226,6 +241,127 @@ class TopNoticeChangeTest {
         assertTrue("the card shows as the block fades: ${film.map { it.first }}", film.take(5).all { it.first != null })
         assertTrue("the card where it was, ${cardRest.top}: ${film.map { it.first }}", film.all { it.first == null || abs(it.first!! - cardRest.top) < 0.5f })
         assertTrue("the banner where it was, ${bannerRest.top}: ${film.map { it.second }}", film.all { it.second == null || abs(it.second!! - bannerRest.top) < 0.5f })
+    }
+
+    /**
+     * A banner whose reason grows by lines, Failed to Busy in a narrow banner: its Try again stays in the middle of the
+     * banner on every frame as the banner's height eases, as the views of the iPhone's centred HStack
+     * (ScooterControls.swift:3027) ride the frame's spring; it doesn't jump to where it rests and stand out of the glass.
+     */
+    @Test
+    fun theBannersButtonStaysInItsMiddleAsItsHeightEases() {
+        var failure by mutableStateOf(ScooterLoadFailure.Failed)
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = false) {
+                Box(Modifier.width(240.dp)) {
+                    MapStatusBanner(
+                        message = failure.message,
+                        actionTitle = localized("Try again"),
+                        onAction = {},
+                        animation = IosMotion.snappy(duration = 0.28).animation(),
+                    )
+                }
+            }
+        }
+        compose.waitForIdle()
+        val before = banner()
+
+        compose.mainClock.autoAdvance = false
+        failure = ScooterLoadFailure.Busy
+        val button = hasContentDescription(localized("Try again"))
+        val film = List(30) {
+            compose.mainClock.advanceTimeByFrame()
+            compose.waitForIdle()
+            banner() to compose.onNode(button).fetchSemanticsNode().boundsInRoot.center.y / compose.density.density
+        }
+        compose.mainClock.autoAdvance = true
+        compose.waitForIdle()
+        val after = banner()
+        assertTrue("the Busy banner is taller: ${before.height} to ${after.height}", after.height > before.height + 8)
+        assertTrue("the banner eases: ${film.map { it.first.height }}", film.take(4).any { abs(it.first.height - after.height) > 2 })
+        film.forEachIndexed { frame, (banner, middle) ->
+            assertEquals(
+                "Try again in the banner's middle on frame $frame of ${film.map { "%.1f/%.1f".format(it.first.center.y, it.second) }}",
+                banner.center.y,
+                middle,
+                1f,
+            )
+        }
+    }
+
+    /**
+     * The Denied card turning Restricted (Settings no longer offers the permission): while the Denied card's actions
+     * fade out, a tap where its Search a place was does nothing, as SwiftUI takes a view it removes out of hit testing;
+     * the Restricted card's one action is elsewhere.
+     */
+    @Test
+    fun theOutgoingCardsActionTakesNoTapWhileItFades() {
+        val clock = TestClock()
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        val location = FakeLocationManager(ScooterAuthorizationStatus.Denied)
+        val model = controllers.make(api, clock, locationManager = location)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        model.focusOnUser()
+        assertTrue(controllers.waitUntil(attempts = 700) { model.locationIssue.value == ScooterLocationIssue.Denied && !model.isLocating.value })
+        show(model, clock)
+        val searchPlace = hasText(localized("Search a place")) and hasClickAction()
+        val where = compose.onNode(searchPlace).fetchSemanticsNode().boundsInRoot.center
+
+        change {
+            location.authorization = ScooterAuthorizationStatus.Restricted
+            model.locationFailed(ScooterLocationError.Denied)
+        }
+        repeat(4) {
+            compose.mainClock.advanceTimeByFrame()
+            compose.waitForIdle()
+        }
+        compose.onRoot().performTouchInput { click(where) }
+        repeat(30) {
+            compose.mainClock.advanceTimeByFrame()
+            compose.waitForIdle()
+        }
+        compose.mainClock.autoAdvance = true
+        compose.waitForIdle()
+        assertEquals("the card the tap left", ScooterLocationIssue.Restricted, model.locationIssue.value)
+        assertTrue("the search stays closed", compose.onAllNodesWithText(localized("Cancel")).fetchSemanticsNodes().isEmpty())
+        val now = compose.onNode(searchPlace).fetchSemanticsNode().boundsInRoot
+        assertTrue("the tap $where is beside the Restricted card's Search a place $now", !now.contains(where))
+    }
+
+    /**
+     * The search opened over the NotFound card, the card turning Denied while the search is open, then closed: the card
+     * is back as the Denied one, fading in where it rests under the collapsed bar on every frame, as SwiftUI lays out a
+     * view it inserts where it rests; it doesn't ride up with the open search shrinking to the bar.
+     */
+    @Test
+    fun theSearchClosedFadesTheNoticesInWhereTheyRestWithWhatTheySayNow() {
+        val (model, location) = notFoundCard()
+        val rest = card().top
+
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
+        compose.waitUntil { compose.onAllNodesWithText(localized("Cancel")).fetchSemanticsNodes().isNotEmpty() }
+        compose.waitForIdle()
+        compose.runOnIdle {
+            location.authorization = ScooterAuthorizationStatus.Denied
+            model.locationFailed(ScooterLocationError.Denied)
+        }
+        compose.waitForIdle()
+
+        compose.mainClock.autoAdvance = false
+        compose.onNodeWithText(localized("Cancel")).performClick()
+        val film = List(30) {
+            compose.mainClock.advanceTimeByFrame()
+            compose.waitForIdle()
+            top(LOCATION_CARD_TAG)
+        }
+        compose.mainClock.autoAdvance = true
+        compose.waitForIdle()
+        assertTrue("the Denied card is back", compose.onAllNodes(hasText(ScooterLocationIssue.Denied.title!!)).fetchSemanticsNodes().isNotEmpty())
+        // Composed on the frame after the search closes, as any notice that comes.
+        assertTrue("the card shows from the second frame: $film", film.drop(1).all { it != null })
+        assertTrue("the card where it rests, $rest: $film", film.all { it == null || abs(it - rest) < 0.5f })
+        assertEquals(rest, card().top, 0.5f)
     }
 
     /** One frame: the notice's frame, the top handed to the map, and the screen's top. */
