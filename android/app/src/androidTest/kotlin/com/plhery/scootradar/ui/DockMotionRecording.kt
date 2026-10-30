@@ -181,6 +181,35 @@ class DockMotionRecording {
         }
     }
 
+    /**
+     * UI-193 after app-r's stage 1: the first notice (a first load that failed) fades in where it rests, a second (a
+     * location that can't be had) joins under it on the spring, the first goes as the load is tried again and the
+     * second slides up into its place, and the last fades out where it was as it is dismissed. Once before the film,
+     * on a screen of its own, as a first load fails only once.
+     */
+    @Test
+    fun notices() {
+        repeat(2) { take ->
+            api.holds = true
+            api.failure = ScooterAPIError.Offline()
+            location.authorizationStatus = ScooterAuthorizationStatus.Denied
+            scenario?.close()
+            val controller = show(loaded = false)
+            val steps = {
+                api.release()
+                Thread.sleep(2_000)
+                main { controller.locationFailed(ScooterLocationError.Denied) }
+                Thread.sleep(2_000)
+                api.failure = null
+                main { controller.retryLoad() }
+                Thread.sleep(2_000)
+                main { controller.dismissLocationIssue() }
+            }
+            if (take == 0) steps() else record("ui193-notices", seconds = 9, action = steps)
+            Thread.sleep(1_000)
+        }
+    }
+
     /** UI-198: Directions finds the way (the label and its spinner), shows it, and hides it again; once before the film. */
     @Test
     fun walkPhase() {

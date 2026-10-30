@@ -35,13 +35,21 @@ import androidx.window.testing.layout.WindowLayoutInfoPublisherRule
 import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.captureScreenRoboImage
 import com.plhery.scootradar.FakeLocationManager
+import com.plhery.scootradar.FakeWalkingDirections
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.AddressSearchResult
+import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.api.WalkingDirectionsError
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.map.showWalkingRoute
+import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.ScooterWalkFailure
+import com.plhery.scootradar.core.model.ScooterWalkPhase
+import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
@@ -56,6 +64,7 @@ import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
+import com.plhery.scootradar.offset
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.dock.DockState
 import com.plhery.scootradar.ui.dock.LocalCoverageCounts
@@ -542,6 +551,28 @@ enum class MatrixScene(
     Walk(DockState.ScooterCard) {
         override fun open(compose: MatrixCompose) = tap(compose, localized("Directions"))
     },
+
+    /** UI-171: the rider at the scooter: "You’re there.", and Directions again. */
+    WalkArrived(pictured = foldAndTablet) {
+        override fun make(controllers: TestControllers, clock: TestClock) = walked(controllers, clock, ScooterWalkPhase.Arrived)
+    },
+
+    /** UI-171: the scooter gone from the map while it was walked to, and no button for the walk. */
+    WalkGone(pictured = foldAndTablet) {
+        override fun make(controllers: TestControllers, clock: TestClock) = walked(controllers, clock, ScooterWalkPhase.Gone)
+    },
+
+    /** UI-171: no place found for the rider to walk from: Open in Maps, and the location card under the search bar. */
+    WalkNoLocation(pictured = foldAndTablet, notices = true) {
+        override fun make(controllers: TestControllers, clock: TestClock) =
+            walked(controllers, clock, ScooterWalkPhase.Failed(ScooterWalkFailure.NoLocation))
+    },
+
+    /** UI-171: no way on foot found: Open in Maps. */
+    WalkNoRoute(pictured = foldAndTablet) {
+        override fun make(controllers: TestControllers, clock: TestClock) =
+            walked(controllers, clock, ScooterWalkPhase.Failed(ScooterWalkFailure.NoRoute))
+    },
     ;
 
     val fileName: String get() = name.replaceFirstChar { it.lowercase() }
@@ -611,6 +642,41 @@ internal fun located(controllers: TestControllers, clock: TestClock, issue: Scoo
     // Near me; with no fix, the card comes 5 s later.
     model.focusOnUser()
     assertTrue(controllers.waitUntil(attempts = 700) { model.locationIssue.value == issue && !model.isLocating.value })
+    return model
+}
+
+/**
+ * Lime's scooter's card at Zürich's centre, its walk come to `end`: from the scooter itself (arrived), from 300 m west
+ * with no way found (Open in Maps), with no place for the rider (located for nothing), or on its way from 300 m west
+ * as the data comes again without the scooter (gone).
+ */
+private fun walked(controllers: TestControllers, clock: TestClock, end: ScooterWalkPhase): ScooterMapController {
+    val target = scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)
+    val other = scooter(id = "b", provider = "voi", latitude = 47.3765, longitude = 8.5430)
+    var vehicles = listOf(target, other)
+    val api = object : ScooterAPIClient {
+        override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = vehicles)
+    }
+    val noRoute = Result.failure<List<GeoPoint>>(WalkingDirectionsError(WalkingDirectionsError.Reason.NoRoute))
+    val directions = FakeWalkingDirections(result = if (end == ScooterWalkPhase.Gone) null else noRoute)
+    val model = controllers.make(api, clock, locationManager = FakeLocationManager(), directions = directions)
+    model.updateViewport(zurichRegion, zoom = 16)
+    assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+    model.selectScooter("lime:a")
+    val west = GeoPoint(target.latitude, target.longitude).offset(east = -300, north = 0)
+    when (end) {
+        ScooterWalkPhase.Arrived -> model.setUserLocation(GeoPoint(target.latitude, target.longitude))
+        ScooterWalkPhase.Failed(ScooterWalkFailure.NoLocation) -> Unit
+        else -> model.setUserLocation(west)
+    }
+    model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
+    if (end == ScooterWalkPhase.Gone) {
+        assertTrue(controllers.waitUntil { model.walk.value?.phase == ScooterWalkPhase.Shown })
+        vehicles = listOf(other)
+        model.refresh()
+    }
+    // Located for nothing, the walk fails as Near me does, 5 s on.
+    assertTrue("the walk at ${model.walk.value?.phase}", controllers.waitUntil(attempts = 700) { model.walk.value?.phase == end && !model.isLoading.value })
     return model
 }
 

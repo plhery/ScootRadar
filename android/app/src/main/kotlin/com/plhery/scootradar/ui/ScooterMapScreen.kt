@@ -54,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
@@ -61,6 +62,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
@@ -504,57 +508,92 @@ private fun DockChrome(
             // so that a card keeps where it was scrolled to and the dock what it last announced.
             val trailing = if (LocalLayoutDirection.current == LayoutDirection.Ltr) 1f else 0f
             val locateGone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.28)), label = "locate")
-            Box(Modifier.fillMaxSize().makingWay(isSearching, { locateGone }, scale = 0.92f, TransformOrigin(trailing, 1f))) {
-                Row(
-                    Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(horizontal = 10.dp)
-                        .widthIn(max = 560.dp)
-                        .fillMaxWidth()
-                        .padding(end = 2.dp)
-                        .padding(bottom = dock + bottom + 10.dp)
-                        .inert(isSearching),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalAlignment = Alignment.Bottom,
-                ) {
-                    // The legend at the leading edge, a spacer's 10 short of the button: the iPhone's HStack. The
-                    // iPad's puts it against the button, after the spacer.
-                    Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
-                        ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp))
-                    }
-                    FloatingMapControls(
-                        controller,
-                        Modifier
-                            .onSizeChanged { locateButtonHeight.intValue = it.height }
-                            // The map centres a scooter in what this button and the dock leave visible.
-                            .onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
-                    )
-                }
-            }
-
             val isAccessibility = TextSize.isAccessibility
             val dockGone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
-            Box(Modifier.fillMaxSize().makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, 1f))) {
-                ScooterControlDock(
-                    controller,
-                    onEditFilters = onShowFilters,
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(horizontal = 10.dp)
-                        .padding(bottom = bottom)
-                        .onGloballyPositioned { chrome.dock = it.windowFrame(density.density) }
-                        .inert(isSearching),
-                    maximumContentHeight = max(
-                        160.dp,
-                        height - chromeTop - (if (isAccessibility) 300.dp else 220.dp) -
-                            // With large text a notice under the search bar needs room too.
-                            (if (isAccessibility && notices) 120.dp else 0.dp),
-                    ),
-                    onHeightChange = { dockHeight.intValue = it },
-                )
+            // The locate row stands 10 above the dock's card, laid out from where the card is in the same pass, as the
+            // iPhone's padding by the dock's height is: a height read back as state would move the row a frame after
+            // the card, which shows under Reduce Motion, where the card changes height in one frame.
+            Layout(
+                content = {
+                    Box(Modifier.fillMaxSize().unheard(isSearching)) {
+                        Row(
+                            Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(horizontal = 10.dp)
+                                .widthIn(max = 560.dp)
+                                .fillMaxWidth()
+                                .padding(end = 2.dp)
+                                .inert(isSearching),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalAlignment = Alignment.Bottom,
+                        ) {
+                            // The legend at the leading edge, a spacer's 10 short of the button: the iPhone's HStack.
+                            // The iPad's puts it against the button, after the spacer.
+                            Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
+                                ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp))
+                            }
+                            FloatingMapControls(
+                                controller,
+                                Modifier
+                                    .onSizeChanged { locateButtonHeight.intValue = it.height }
+                                    // The map centres a scooter in what this button and the dock leave visible.
+                                    .onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
+                            )
+                        }
+                    }
+                    Box(Modifier.fillMaxSize().makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, 1f))) {
+                        ScooterControlDock(
+                            controller,
+                            onEditFilters = onShowFilters,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(horizontal = 10.dp)
+                                .padding(bottom = bottom)
+                                .dockTop()
+                                .onGloballyPositioned { chrome.dock = it.windowFrame(density.density) }
+                                .inert(isSearching),
+                            maximumContentHeight = max(
+                                160.dp,
+                                height - chromeTop - (if (isAccessibility) 300.dp else 220.dp) -
+                                    // With large text a notice under the search bar needs room too.
+                                    (if (isAccessibility && notices) 120.dp else 0.dp),
+                            ),
+                            onHeightChange = { dockHeight.intValue = it },
+                        )
+                    }
+                },
+                modifier = Modifier.fillMaxSize(),
+            ) { (locateRow, dockCard), constraints ->
+                val card = dockCard.measure(constraints)
+                val screenHeight = constraints.maxHeight
+                val cardTop = card[DockTop].takeIf { it != AlignmentLine.Unspecified }
+                    ?: (screenHeight - dockHeight.intValue - bottom.roundToPx())
+                // The row's foot, 10 above the card: the row is laid out down to it.
+                val foot = (cardTop - 10.dp.roundToPx()).coerceIn(1, screenHeight)
+                val screenWidth = constraints.maxWidth
+                val row = locateRow.measure(Constraints.fixed(screenWidth, foot))
+                // It shrinks toward the bottom trailing corner of the iPhone's VStack: the screen's bottom, and the
+                // trailing edge of the row's 560 and its 10 either side, in the middle of a wider screen.
+                val column = min(screenWidth, 580.dp.roundToPx())
+                val corner = (screenWidth - column) / 2f + trailing * column
+                layout(screenWidth, screenHeight) {
+                    row.placeWithLayer(0, 0) {
+                        makeWay(isSearching, locateGone, scale = 0.92f, TransformOrigin(corner / screenWidth, screenHeight.toFloat() / foot))
+                    }
+                    card.place(0, 0)
+                }
             }
         }
     }
+}
+
+/** The top of the dock's card, which the locate row stands on. */
+private val DockTop = HorizontalAlignmentLine(::min)
+
+/** Tells the dock's layout where the card's top is, through [DockTop]. */
+private fun Modifier.dockTop(): Modifier = layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+    layout(placeable.width, placeable.height, mapOf(DockTop to 0)) { placeable.place(0, 0) }
 }
 
 /**
@@ -702,19 +741,24 @@ private fun PanelChrome(
  * TalkBack leaves it as soon as it starts to go, and once it is gone taps go through it to the map.
  */
 private fun Modifier.makingWay(hidden: Boolean, gone: () -> Float, scale: Float, origin: TransformOrigin): Modifier =
-    graphicsLayer {
-        val progress = gone()
-        alpha = 1 - progress
-        val scaled = 1 - (1 - scale) * progress
-        scaleX = scaled
-        scaleY = scaled
-        transformOrigin = origin
-        // Clipped to nothing, it is no longer in the way of a finger: Compose hit-tests inside a layer's clip.
-        if (hidden && progress == 1f) {
-            clip = true
-            shape = EmptyShape
-        }
-    }.then(if (hidden) Modifier.semantics { hideFromAccessibility() } else Modifier)
+    graphicsLayer { makeWay(hidden, gone(), scale, origin) }.unheard(hidden)
+
+/** [makingWay]'s layer, [progress] of the way gone. */
+private fun GraphicsLayerScope.makeWay(hidden: Boolean, progress: Float, scale: Float, origin: TransformOrigin) {
+    alpha = 1 - progress
+    val scaled = 1 - (1 - scale) * progress
+    scaleX = scaled
+    scaleY = scaled
+    transformOrigin = origin
+    // Clipped to nothing, it is no longer in the way of a finger: Compose hit-tests inside a layer's clip.
+    if (hidden && progress == 1f) {
+        clip = true
+        shape = EmptyShape
+    }
+}
+
+/** [makingWay]'s `.accessibilityHidden`. */
+private fun Modifier.unheard(hidden: Boolean): Modifier = if (hidden) semantics { hideFromAccessibility() } else this
 
 /** `.allowsHitTesting(false)` while it goes: its buttons and its scroll take no touch. */
 private fun Modifier.inert(hidden: Boolean): Modifier =
