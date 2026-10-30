@@ -52,6 +52,8 @@ import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.CityRuleZone
+import com.plhery.scootradar.core.model.CityZoneCache
+import com.plhery.scootradar.core.model.CityZoneDownloads
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.WalkRoute
 import com.plhery.scootradar.core.model.addingTimeInterval
@@ -64,6 +66,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeParseException
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -72,6 +75,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -130,6 +134,13 @@ class ScooterMapController(
     debug: Boolean = false,
     /** The cities, service areas, night bans and street rules the map reads: the generated catalog, or a test's own. */
     internal val catalog: ScooterCatalog = ScooterCatalog.Generated,
+    /**
+     * Where the cities' zones the app downloads are kept: the app's caches (CityZoneCache.standard), or nowhere in
+     * tests and previews, which download them again.
+     */
+    cityZoneCache: CityZoneCache? = null,
+    /** Where those files are read, checked and written: away from the main thread. */
+    cityZoneFiles: CoroutineContext = Dispatchers.IO,
 ) {
     internal val clock: () -> Instant = now
 
@@ -312,6 +323,13 @@ class ScooterMapController(
     internal val _mapRuleZones = MutableStateFlow<List<CityRuleZone.Shown>>(emptyList())
     val mapRuleZones: StateFlow<List<CityRuleZone.Shown>> = _mapRuleZones.asStateFlow()
 
+    /**
+     * The cities over the map whose zones are downloaded and not drawn, for the legend: that they are on their way,
+     * or unavailable.
+     */
+    internal val _mapZoneNotices = MutableStateFlow<List<CityZoneDownloads.Notice>>(emptyList())
+    val mapZoneNotices: StateFlow<List<CityZoneDownloads.Notice>> = _mapZoneNotices.asStateFlow()
+
     /** How many of mapZones are the operators'. */
     internal val _mapOperatorZoneCount = MutableStateFlow(0)
     val mapOperatorZoneCount: StateFlow<Int> = _mapOperatorZoneCount.asStateFlow()
@@ -428,6 +446,15 @@ class ScooterMapController(
      */
     internal var ruleZoneArea: GeoBounds? = null
 
+    /**
+     * The zones of the cities the app downloads rather than has built in (docs/city-zone-downloads.md): asked for over
+     * the same area as the cities' zones built in, and drawn with them once here.
+     */
+    internal val cityZoneDownloads = CityZoneDownloads(
+        api = api, cache = cityZoneCache, scope = scope, now = now, builtIn = catalog.zoneDownloads,
+        builtInCities = catalog.zoneCities, files = cityZoneFiles,
+    )
+
     private val _mapScooters = MutableStateFlow<List<Scooter>>(emptyList())
     val mapScooters: StateFlow<List<Scooter>> = _mapScooters.asStateFlow()
 
@@ -474,6 +501,8 @@ class ScooterMapController(
             awaitsReviewLoad = reviewPrompt.alwaysDue
         }
         locationManager.distanceFilter = DISTANCE_FILTER
+        // What has come, or failed to, is drawn or said at once.
+        cityZoneDownloads.onChange = { rebuildMapZones() }
     }
 
     // What the screen sets.

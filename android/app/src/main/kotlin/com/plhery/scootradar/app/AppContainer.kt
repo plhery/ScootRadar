@@ -15,6 +15,7 @@ import com.plhery.scootradar.core.api.ScooterAPI
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.api.ScootRadarWalkingDirections
 import com.plhery.scootradar.core.api.mapsURL
+import com.plhery.scootradar.core.model.CityZoneCache
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -47,6 +48,12 @@ class AppContainer(private val context: Context) {
     val api = ScooterAPI(isOffline = ::isOffline)
 
     val directions = ScootRadarWalkingDirections()
+
+    /**
+     * Where the cities' zones the app downloads are kept: cacheDir/CityZones/v1, among the app's caches, which no
+     * backup takes and Android may clear when space runs short (LOG-422).
+     */
+    val cityZoneCache: CityZoneCache by lazy { CityZoneCache.standard(context.cacheDir) }
 
     /** The server's address search, which the search bar asks for places. */
     val addressSearch: AddressSearchAPIClient by lazy { AddressSearchAPI(client = api.client) }

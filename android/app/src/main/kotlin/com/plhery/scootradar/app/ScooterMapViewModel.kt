@@ -12,6 +12,7 @@ import com.plhery.scootradar.core.map.ScooterHeadingReading
 import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.model.CityZoneCache
 import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterMapStart
@@ -42,6 +43,8 @@ class ScooterMapViewModel(
     val analytics: ScooterAnalytics = container.analytics,
     /** Where the map's scooters come from: the server, or a test's own answers. */
     api: ScooterAPIClient = container.api,
+    /** Where the cities' zones the app downloads are kept. */
+    cityZoneCache: CityZoneCache? = container.cityZoneCache,
     /** What the screen keeps through the end of the process: `@SceneStorage("panelCollapsed")`. */
     savedState: SavedStateHandle,
 ) : ViewModel(), DefaultLifecycleObserver {
@@ -78,6 +81,7 @@ class ScooterMapViewModel(
         analytics = analytics,
         start = container.start,
         debug = BuildConfig.DEBUG,
+        cityZoneCache = cityZoneCache,
     )
 
     init {

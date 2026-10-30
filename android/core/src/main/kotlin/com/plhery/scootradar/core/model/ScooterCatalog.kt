@@ -282,17 +282,28 @@ interface ScooterCatalog {
     /** The cities' own rules for streets, and the zones they set for scooters, as the map shows them. */
     val ruleZones: List<CityRuleZone>
 
+    /** The cities whose zones the app downloads, until an index of them has come (CityZoneDownloads). */
+    val zoneDownloads: List<CityZoneDownload>
+
+    /** The cities whose zones are in [ruleZones], which an index's are left aside for. */
+    val zoneCities: Set<String>
+
     /** The providers operating in the viewport, in catalogue order. */
     fun providers(viewport: GeoBounds): List<ScooterProvider>
 
     /** Whether the point is inside an operator's service area. */
     fun contains(point: GeoPoint): Boolean
 
-    /** The catalog generated from data/: ScooterCityCatalog, ScooterProviderCoverage, RentalCurfew.all, CityRuleZone.onMap. */
+    /**
+     * The catalog generated from data/: ScooterCityCatalog, ScooterProviderCoverage, RentalCurfew.all, CityRuleZone.onMap,
+     * and CityZoneDownloads.builtIn and builtInCities.
+     */
     data object Generated : ScooterCatalog {
         override val cities: List<ScooterCity> get() = ScooterCityCatalog.cities
         override val curfews: List<RentalCurfew> get() = RentalCurfew.all
         override val ruleZones: List<CityRuleZone> get() = CityRuleZone.onMap
+        override val zoneDownloads: List<CityZoneDownload> get() = CityZoneDownloads.builtIn
+        override val zoneCities: Set<String> get() = CityZoneDownloads.builtInCities
 
         override fun providers(viewport: GeoBounds): List<ScooterProvider> = ScooterProviderCoverage.providers(viewport)
 
@@ -311,6 +322,8 @@ interface ScooterCatalog {
         val areas: List<Pair<ScooterProvider, GeoBounds>> = emptyList(),
         override val curfews: List<RentalCurfew> = emptyList(),
         override val ruleZones: List<CityRuleZone> = emptyList(),
+        override val zoneDownloads: List<CityZoneDownload> = emptyList(),
+        override val zoneCities: Set<String> = emptySet(),
     ) : ScooterCatalog {
         override fun providers(viewport: GeoBounds): List<ScooterProvider> {
             val available = areas.filter { it.second.intersects(viewport) }.mapTo(HashSet()) { it.first }

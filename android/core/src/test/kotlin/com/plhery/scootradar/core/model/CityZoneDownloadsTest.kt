@@ -7,7 +7,6 @@ import com.plhery.scootradar.core.map.waitUntil
 import java.io.File
 import java.time.Instant
 import kotlin.io.path.createTempDirectory
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -35,7 +34,6 @@ class CityZoneDownloadsTest {
     /** Round Berlin's Tiergarten, at zoom 16 on a phone. */
     private val tiergarten = GeoBounds(south = 52.51, west = 13.34, north = 52.52, east = 13.37)
     private val zurich = GeoBounds(south = 47.36, west = 8.53, north = 47.38, east = 8.55)
-    private val source = "https://www.berlin.de/sen/uvk/verkehr/verkehrsplanung/fuss-und-radverkehr/"
     private val directory: File = createTempDirectory("CityZoneDownloadsTest").toFile()
     private var now: Instant = Instant.ofEpochSecond(1_793_000_000)
 
@@ -50,13 +48,13 @@ class CityZoneDownloadsTest {
 
     @Test
     fun theIndexListsTheCitiesItCanReadAndNoneOfAnotherFormat() {
-        val file = file(id = "berlin", zones = listOf(zone))
+        val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
         val index = CityZoneIndex(
-            data = index(
+            data = zoneIndex(
                 listOf(
-                    entry("berlin", file = file),
+                    indexEntry("berlin", file = file),
                     """{"id":"hamburg","place":"Hamburg"}""",
-                    entry("lille", file = file, source = "http://example.com"),
+                    indexEntry("lille", file = file, source = "http://example.com"),
                 ),
             ),
         )
@@ -65,7 +63,7 @@ class CityZoneDownloadsTest {
         assertEquals("Berlin", berlin.place)
         assertEquals("Land Berlin, DL-DE Zero", berlin.authority)
         assertEquals("Europe/Berlin", berlin.timeZone)
-        assertEquals(source, berlin.source)
+        assertEquals(berlinSource, berlin.source)
         assertEquals(GeoBounds(south = 52.5, west = 13.3, north = 52.6, east = 13.5), berlin.bounds)
         assertEquals(CityZoneFile.digest(file), berlin.sha256)
         assertEquals("berlin.json", berlin.fileName)
@@ -79,7 +77,7 @@ class CityZoneDownloadsTest {
 
     @Test
     fun aCitysFileIsItsZonesEachOneRingCreditedToTheCityLeavingOutKindsAddedLater() {
-        val berlin = CityZoneIndex(data = index(listOf(entry("berlin", file = ByteArray(0))))).cities.first()
+        val berlin = CityZoneIndex(data = zoneIndex(listOf(indexEntry("berlin", file = ByteArray(0))))).cities.first()
         val file = """
             {"id":"berlin","zones":[
             {"id":"berlin-no-parking-1","kind":"noParking","ring":[52.511,13.35,52.512,13.35,52.512,13.351]},
@@ -92,7 +90,7 @@ class CityZoneDownloadsTest {
         val zone = zones.first()
         assertEquals(ScooterZoneKind.NoParking, zone.kind)
         assertEquals("Land Berlin, DL-DE Zero", zone.authority)
-        assertEquals(source, zone.source)
+        assertEquals(berlinSource, zone.source)
         assertEquals(
             listOf(listOf(listOf(GeoPoint(52.511, 13.35), GeoPoint(52.512, 13.35), GeoPoint(52.512, 13.351)))),
             zone.polygons,
@@ -100,7 +98,7 @@ class CityZoneDownloadsTest {
         assertTrue(zone.inForce(now))
 
         try {
-            CityZoneFile.zones(of = berlin, from = file(id = "hamburg", zones = listOf(this.zone)))
+            CityZoneFile.zones(of = berlin, from = zoneFile(id = "hamburg", zones = listOf(berlinZone)))
             fail("Hamburg's file is not Berlin's")
         } catch (_: CityZoneDownloadError.Mismatch) {
         }
@@ -131,8 +129,8 @@ class CityZoneDownloadsTest {
 
     @Test
     fun aViewOverACityAsksForTheIndexThenItsFileAndDrawsItsZones() = runTest {
-        val file = file(id = "berlin", zones = listOf(zone))
-        val api = DownloadStubAPI(mapOf("index.json" to index(listOf(entry("berlin", file = file))), "berlin.json" to file))
+        val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
+        val api = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = file))), "berlin.json" to file))
         val downloads = makeDownloads(api)
 
         downloads.request(over = zurich)
@@ -163,8 +161,8 @@ class CityZoneDownloadsTest {
 
     @Test
     fun whileTheFileIsOnItsWayTheCitysZonesAreLoadingAndWhenItFailsUnavailableAndAskedForAgainLater() = runTest {
-        val file = file(id = "berlin", zones = listOf(zone))
-        val api = DownloadStubAPI(mapOf("index.json" to index(listOf(entry("berlin", file = file)))))
+        val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
+        val api = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = file)))))
         api.hold("berlin.json")
         val downloads = makeDownloads(api)
         var changes = 0
@@ -210,11 +208,11 @@ class CityZoneDownloadsTest {
 
     @Test
     fun aFileThatIsNotTheIndexsIsNotDrawnAndTheIndexIsAskedForAgainAtOnce() = runTest {
-        val old = file(id = "berlin", zones = listOf(zone))
-        val new = file(id = "berlin", zones = listOf(zone, otherZone))
+        val old = zoneFile(id = "berlin", zones = listOf(berlinZone))
+        val new = zoneFile(id = "berlin", zones = listOf(berlinZone, berlinOtherZone))
         // The index of one deploy, the file of the next; then the next's index.
         val api = DownloadStubAPI(mapOf("berlin.json" to new))
-        api.queue("index.json", listOf(index(listOf(entry("berlin", file = old))), index(listOf(entry("berlin", file = new)))))
+        api.queue("index.json", listOf(zoneIndex(listOf(indexEntry("berlin", file = old))), zoneIndex(listOf(indexEntry("berlin", file = new)))))
         val downloads = makeDownloads(api)
 
         downloads.request(over = tiergarten)
@@ -226,16 +224,16 @@ class CityZoneDownloadsTest {
 
     @Test
     fun aNewVersionIsNotDrawnUntilItHasComeAndAnOldOneNeverInItsPlace() = runTest {
-        val old = file(id = "berlin", zones = listOf(zone))
-        val new = file(id = "berlin", zones = listOf(zone, otherZone))
-        val api = DownloadStubAPI(mapOf("index.json" to index(listOf(entry("berlin", file = old))), "berlin.json" to old))
+        val old = zoneFile(id = "berlin", zones = listOf(berlinZone))
+        val new = zoneFile(id = "berlin", zones = listOf(berlinZone, berlinOtherZone))
+        val api = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = old))), "berlin.json" to old))
         val downloads = makeDownloads(api)
         downloads.request(over = tiergarten)
         val drawn = waitUntil { downloads.shown(over = tiergarten).zones.size == 1 }
         assertTrue(drawn)
 
         // A new version is published, and the new file fails to come.
-        api.set("index.json", index(listOf(entry("berlin", file = new))))
+        api.set("index.json", zoneIndex(listOf(indexEntry("berlin", file = new))))
         api.remove("berlin.json")
         now = now.addingTimeInterval(CityZoneDownloads.indexRefresh)
         downloads.request(over = tiergarten)
@@ -246,8 +244,8 @@ class CityZoneDownloadsTest {
 
     @Test
     fun offlineTheFilesKeptAreDrawnForAWeekAfterTheIndexWasLastConfirmed() = runTest {
-        val file = file(id = "berlin", zones = listOf(zone))
-        val online = DownloadStubAPI(mapOf("index.json" to index(listOf(entry("berlin", file = file))), "berlin.json" to file))
+        val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
+        val online = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = file))), "berlin.json" to file))
         val first = makeDownloads(online)
         first.request(over = tiergarten)
         val drawn = waitUntil { first.shown(over = tiergarten).zones.size == 1 }
@@ -273,8 +271,8 @@ class CityZoneDownloadsTest {
 
     @Test
     fun aCityBuiltIntoTheAppIsDrawnFromTheCatalogAndLeftAsideInTheIndex() = runTest {
-        val file = file(id = "berlin", zones = listOf(zone))
-        val api = DownloadStubAPI(mapOf("index.json" to index(listOf(entry("berlin", file = file))), "berlin.json" to file))
+        val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
+        val api = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = file))), "berlin.json" to file))
         val downloads = makeDownloads(api, builtInCities = setOf("berlin"))
         downloads.request(over = tiergarten)
         val indexed = waitUntil { api.asked == listOf("index.json") }
@@ -287,9 +285,9 @@ class CityZoneDownloadsTest {
 
     @Test
     fun aNewIndexLetsGoOfTheFilesOfCitiesItNoLongerLists() = runTest {
-        val file = file(id = "berlin", zones = listOf(zone))
+        val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
         cache.write("hamburg.json", "{}".toByteArray(), at = now)
-        val api = DownloadStubAPI(mapOf("index.json" to index(listOf(entry("berlin", file = file))), "berlin.json" to file))
+        val api = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = file))), "berlin.json" to file))
         val downloads = makeDownloads(api)
         downloads.request(over = tiergarten)
         val drawn = waitUntil { downloads.shown(over = tiergarten).zones.size == 1 }
@@ -299,32 +297,11 @@ class CityZoneDownloadsTest {
 
     // Helpers
 
-    private val zone = """{"id":"berlin-no-parking-1","kind":"noParking","ring":[52.511,13.35,52.512,13.35,52.512,13.351]}"""
-    private val otherZone = """{"id":"berlin-parking-2","kind":"parking","ring":[52.513,13.36,52.5131,13.36,52.5131,13.3601]}"""
-
-    private fun file(id: String, zones: List<String>): ByteArray =
-        "{\"id\":\"$id\",\"zones\":[\n${zones.joinToString(",\n")}\n]}\n".toByteArray()
-
-    private fun entry(id: String, file: ByteArray, source: String? = null): String =
-        """{"id":"$id","place":"${id.replaceFirstChar { it.uppercase() }}","authority":"Land Berlin, DL-DE Zero","timeZone":"Europe/Berlin",""" +
-            """"source":{"title":"Berlin","url":"${source ?: this.source}"},""" +
-            """"bounds":{"south":52.5,"west":13.3,"north":52.6,"east":13.5},"zones":1,"bytes":${file.size},""" +
-            """"sha256":"${CityZoneFile.digest(file)}"}"""
-
-    private fun index(entries: List<String>): ByteArray =
-        "{\"format\":1,\"cities\":[\n${entries.joinToString(",\n")}\n]}\n".toByteArray()
-
     /** The downloads on the test's scheduler, their files read and written on it too, with the tests' Berlin built in. */
-    private fun TestScope.makeDownloads(api: ScooterAPIClient, builtInCities: Set<String> = emptySet()): CityZoneDownloads {
-        val berlin = CityZoneDownload(
-            id = "berlin", place = "Berlin", authority = "Land Berlin, DL-DE Zero", timeZone = "Europe/Berlin",
-            source = source, bounds = GeoBounds(south = 52.5, west = 13.3, north = 52.6, east = 13.5),
-        )
-        return CityZoneDownloads(
-            api = api, cache = cache, scope = backgroundScope, now = { now }, builtIn = listOf(berlin),
-            builtInCities = builtInCities, files = StandardTestDispatcher(testScheduler),
-        )
-    }
+    private fun TestScope.makeDownloads(api: ScooterAPIClient, builtInCities: Set<String> = emptySet()) = CityZoneDownloads(
+        api = api, cache = cache, scope = backgroundScope, now = { now }, builtIn = listOf(berlinDownload),
+        builtInCities = builtInCities, files = StandardTestDispatcher(testScheduler),
+    )
 
     private fun states(shown: CityZoneDownloads.Shown) = shown.notices.map { it.state }
 
@@ -340,52 +317,5 @@ class CityZoneDownloadsTest {
     private companion object {
         val Loading = CityZoneDownloads.Notice.State.Loading
         val Unavailable = CityZoneDownloads.Notice.State.Unavailable
-    }
-}
-
-/**
- * The website's files under /zones/v1/, by name; a name it has not is a 404. It notes each name asked for, and one it
- * holds is on its way until let go.
- */
-private class DownloadStubAPI(files: Map<String, ByteArray>) : ScooterAPIClient {
-    private val files = files.toMutableMap()
-
-    /** Answers given in turn, the last one again and again. */
-    private val queued = mutableMapOf<String, List<ByteArray>>()
-    private val held = mutableMapOf<String, CompletableDeferred<Unit>>()
-    val asked = mutableListOf<String>()
-
-    override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse =
-        ScooterResponse(vehicles = emptyList())
-
-    override suspend fun cityZoneFile(name: String): ByteArray {
-        asked += name
-        held[name]?.await()
-        val answers = queued[name]
-        if (answers != null && answers.isNotEmpty()) {
-            if (answers.size > 1) queued[name] = answers.drop(1)
-            return answers.first()
-        }
-        return files[name] ?: throw ScooterAPIError.HttpStatus(404)
-    }
-
-    fun queue(name: String, answers: List<ByteArray>) {
-        queued[name] = answers
-    }
-
-    fun set(name: String, data: ByteArray) {
-        files[name] = data
-    }
-
-    fun remove(name: String) {
-        files.remove(name)
-    }
-
-    fun hold(name: String) {
-        held[name] = CompletableDeferred()
-    }
-
-    fun release(name: String) {
-        held.remove(name)?.complete(Unit)
     }
 }

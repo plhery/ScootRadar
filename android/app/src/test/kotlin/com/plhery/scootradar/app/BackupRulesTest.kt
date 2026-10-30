@@ -68,6 +68,14 @@ class BackupRulesTest {
     }
 
     @Test
+    fun theCitiesZonesAreKeptAmongTheCachesWhichTheRulesLeaveOut() {
+        // LOG-422: the rules take only the files above, and a backup never takes the app's caches.
+        assertEquals(File(context.cacheDir, "CityZones/v1"), AppContainer(context).cityZoneCache.directory)
+        val rules = sections(R.xml.data_extraction_rules).values.flatten() + sections(R.xml.backup_rules).values.flatten()
+        assertTrue(rules.all { it.tag == "include" && it.domain != "root" })
+    }
+
+    @Test
     fun theSettingsAreInTheFileTheRulesName() {
         val defaults = AppContainer(context).defaults
         defaults.set(true, forKey = "analytics-disabled")

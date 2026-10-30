@@ -21,6 +21,7 @@ import com.plhery.scootradar.core.model.addingTimeInterval
 import java.time.Instant
 import java.util.concurrent.AbstractExecutorService
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -366,6 +367,7 @@ internal fun TestScope.makeController(
     start: ScooterMapStart = ScooterMapStart.switzerland,
     catalog: ScooterCatalog = TestCatalog.catalog,
     debug: Boolean = false,
+    cityZoneFiles: CoroutineContext = Dispatchers.IO,
 ): ScooterMapController {
     val scheduler = testScheduler
     val startedAt = TestClock().now
@@ -390,6 +392,7 @@ internal fun TestScope.makeController(
         start = start,
         catalog = catalog,
         debug = debug,
+        cityZoneFiles = cityZoneFiles,
     )
 }
 

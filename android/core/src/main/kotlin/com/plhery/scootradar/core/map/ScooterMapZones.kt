@@ -2,6 +2,7 @@ package com.plhery.scootradar.core.map
 
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.CityRuleZone
+import com.plhery.scootradar.core.model.CityZoneDownloads
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneState
@@ -136,10 +137,20 @@ internal fun ScooterMapController.rebuildMapZones() {
     } else if (ruleZoneArea?.contains(view) != true) {
         ruleZoneArea = view.expanded(by = 0.5)
     }
-    val rules = ruleZoneArea?.let { CityRuleZone.shown(over = it, zoom = viewportZoom.value, at = clock(), among = catalog.ruleZones) }
-        ?: emptyList()
+    var rules: List<CityRuleZone.Shown> = emptyList()
+    var notices: List<CityZoneDownloads.Notice> = emptyList()
+    ruleZoneArea?.let { area ->
+        // The cities' zones built in, and those downloaded; the others the area reaches are asked for.
+        cityZoneDownloads.request(over = area)
+        val downloaded = cityZoneDownloads.shown(over = area)
+        val now = clock()
+        rules = CityRuleZone.shown(over = area, zoom = viewportZoom.value, at = now, among = catalog.ruleZones) +
+            CityRuleZone.shown(over = area, zoom = viewportZoom.value, at = now, among = downloaded.zones)
+        notices = downloaded.notices.filter { it.city.bounds.intersects(view) }
+    }
     val rulesInView = rules.filter { it.rule.bounds.intersects(view) }
     if (rulesInView != mapRuleZones.value) _mapRuleZones.value = rulesInView
+    if (notices != mapZoneNotices.value) _mapZoneNotices.value = notices
     if (shown.size != mapOperatorZoneCount.value) _mapOperatorZoneCount.value = shown.size
     val drawn = rules.map { it.mapZone } + shown
     if (drawn == mapZones.value) return
