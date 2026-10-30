@@ -625,6 +625,15 @@ banned shared scooters, and feeds that were empty when checked.
     or geofence layer, nor does the Unified Government of Kansas City,
     Kansas; kcmo.gov answers scripts 403 (checked 30 October 2026). Bird's
     public feed has 121 zones there, drawn as the operator's.
+  - **Tucson's zones:** the City's regulated parking zones (Downtown Core,
+    4th Avenue and Main Gate Square) are only a PDF map in its permit
+    ([E-Scooter Program](https://tucsonaz.gov/Departments/Transportation-Mobility/Bicycle-Pedestrian-Program/E-Scooter-Program)),
+    their corrals are marked in the operator's app, and the City's ArcGIS
+    Online account holds no scooter layer (checked 30 October 2026). The
+    University of Arizona bans e-scooters on its property, shared ones too,
+    and maps 18 parking places on the campus edge for riders' own scooters,
+    not for ending a Lime ride; its campus outline is approximate, it says.
+    So the map draws no Tucson zone.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)),
     and Lime's rider map held none there in a full-area audit on the evening
@@ -769,6 +778,13 @@ banned shared scooters, and feeds that were empty when checked.
   - **Bird's zones** outline service areas in Hadera, Afula, Beit She'an,
     Rosh HaAyin, Eilat and Jerusalem's Har Hotzvim, none of which held a
     scooter on 18 October 2026.
+  - **Petah Tikva's parking bays:** the municipality's public ArcGIS layer
+    of scooter bays (`TRF_Transportation/FeatureServer/11`) holds 38 active
+    bays, last edited on 31 December 2024, all in the north-west business
+    areas, while its Development Company added more than 100 across the city
+    in September 2025 (PTNews). Drawn, it would show fewer than a third of
+    the bays, so the map leaves it out until the layer catches up (checked
+    30 October 2026).
   - **Bird `tel-aviv`:** a duplicate of Bird `israel`: 1,502 of its 1,517
     positions are also in `israel`, under other ids, so reading both would
     count about 1,550 scooters twice.
