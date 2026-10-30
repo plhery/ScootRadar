@@ -3,7 +3,7 @@
     {
       "id": "columbus-parking-1",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Michigan Ave at W 3rd Ave",
       "ring": [
         [39.984137, -83.016816],
         [39.984169, -83.016833],
@@ -18,7 +18,7 @@
     {
       "id": "columbus-parking-2",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Michigan Ave at W 3rd Ave",
       "ring": [
         [39.983718, -83.016705],
         [39.98375, -83.016722],
@@ -33,7 +33,7 @@
     {
       "id": "columbus-parking-3",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Pennsylvania Ave at W 3rd Ave",
       "ring": [
         [39.984051, -83.015452],
         [39.984083, -83.015469],
@@ -48,7 +48,7 @@
     {
       "id": "columbus-parking-4",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Pennsylvania Ave at W 3rd Ave",
       "ring": [
         [39.983689, -83.015385],
         [39.983721, -83.015402],
@@ -63,7 +63,7 @@
     {
       "id": "columbus-parking-5",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Harrison Ave at W 3rd Ave",
       "ring": [
         [39.983936, -83.014112],
         [39.983968, -83.01413],
@@ -78,7 +78,7 @@
     {
       "id": "columbus-parking-6",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Harrison Ave at W 3rd Ave",
       "ring": [
         [39.983658, -83.014012],
         [39.98369, -83.01403],
@@ -93,7 +93,7 @@
     {
       "id": "columbus-parking-7",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Buttles Ave at Neil Ave",
       "ring": [
         [39.977631, -83.011201],
         [39.977663, -83.011218],
@@ -108,7 +108,7 @@
     {
       "id": "columbus-parking-8",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Buttles Ave at Neil Ave",
       "ring": [
         [39.977333, -83.010993],
         [39.977365, -83.01101],
@@ -123,7 +123,7 @@
     {
       "id": "columbus-parking-9",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Nationwide Blvd at E Locust St",
       "ring": [
         [39.969023, -83.000078],
         [39.969055, -83.000096],
@@ -138,7 +138,7 @@
     {
       "id": "columbus-parking-10",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at W Spring St",
       "ring": [
         [39.965989, -83.001492],
         [39.966021, -83.00151],
@@ -153,7 +153,7 @@
     {
       "id": "columbus-parking-11",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Gay St at N High St",
       "ring": [
         [39.963577, -83.000637],
         [39.963609, -83.000654],
@@ -168,7 +168,7 @@
     {
       "id": "columbus-parking-12",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W Spring St at N Wall St",
       "ring": [
         [39.966089, -83.002401],
         [39.966121, -83.002418],
@@ -183,7 +183,7 @@
     {
       "id": "columbus-parking-13",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Gay St at N 3rd St",
       "ring": [
         [39.963902, -82.997973],
         [39.963934, -82.99799],
@@ -198,7 +198,7 @@
     {
       "id": "columbus-parking-14",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at E Nationwide Blvd",
       "ring": [
         [39.96927, -83.001834],
         [39.969302, -83.001851],
@@ -213,7 +213,7 @@
     {
       "id": "columbus-parking-15",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Nationwide Blvd at N High St",
       "ring": [
         [39.969261, -83.001252],
         [39.969293, -83.001269],
@@ -228,7 +228,7 @@
     {
       "id": "columbus-parking-16",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Nationwide Blvd at N 4th St",
       "ring": [
         [39.969294, -82.999675],
         [39.969326, -82.999692],
@@ -243,7 +243,7 @@
     {
       "id": "columbus-parking-17",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Nationwide Blvd at N High St",
       "ring": [
         [39.969005, -83.000962],
         [39.969037, -83.000979],
@@ -258,7 +258,7 @@
     {
       "id": "columbus-parking-18",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Gay St at N 3rd St",
       "ring": [
         [39.963826, -82.998457],
         [39.963858, -82.998474],
@@ -273,7 +273,7 @@
     {
       "id": "columbus-parking-19",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Gay St at N 3rd St",
       "ring": [
         [39.96397, -82.998733],
         [39.964002, -82.99875],
@@ -288,7 +288,7 @@
     {
       "id": "columbus-parking-20",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Nationwide Blvd at N 4th St",
       "ring": [
         [39.968854, -82.99843],
         [39.968886, -82.998447],
@@ -303,7 +303,7 @@
     {
       "id": "columbus-parking-21",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Hoster St",
       "ring": [
         [39.951333, -82.995903],
         [39.951365, -82.99592],
@@ -318,7 +318,7 @@
     {
       "id": "columbus-parking-22",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Sycamore St",
       "ring": [
         [39.949375, -82.995471],
         [39.949407, -82.995488],
@@ -333,7 +333,7 @@
     {
       "id": "columbus-parking-23",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Beck St",
       "ring": [
         [39.950885, -82.99578],
         [39.950917, -82.995797],
@@ -348,7 +348,7 @@
     {
       "id": "columbus-parking-24",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Columbus St",
       "ring": [
         [39.946656, -82.994957],
         [39.946688, -82.994974],
@@ -363,7 +363,7 @@
     {
       "id": "columbus-parking-25",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Blenker St",
       "ring": [
         [39.9522, -82.99604],
         [39.952232, -82.996057],
@@ -378,7 +378,7 @@
     {
       "id": "columbus-parking-26",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Livingston Ave",
       "ring": [
         [39.952629, -82.995921],
         [39.952661, -82.995938],
@@ -393,7 +393,7 @@
     {
       "id": "columbus-parking-27",
       "kind": "parking",
-      "name": "Corral",
+      "name": "S 3rd St at E Frankfort St",
       "ring": [
         [39.947525, -82.995128],
         [39.947557, -82.995145],
@@ -408,7 +408,7 @@
     {
       "id": "columbus-parking-28",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Buttles Ave at N Wall St",
       "ring": [
         [39.977263, -83.004268],
         [39.977295, -83.004285],
@@ -423,7 +423,7 @@
     {
       "id": "columbus-parking-29",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E 1st Ave at N Pearl St",
       "ring": [
         [39.980902, -83.00355],
         [39.980934, -83.003568],
@@ -438,7 +438,7 @@
     {
       "id": "columbus-parking-30",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W Hubbard Ave at N High St",
       "ring": [
         [39.978807, -83.004051],
         [39.978839, -83.004069],
@@ -453,7 +453,7 @@
     {
       "id": "columbus-parking-31",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at E Prescott ST",
       "ring": [
         [39.980014, -83.004007],
         [39.980046, -83.004024],
@@ -468,7 +468,7 @@
     {
       "id": "columbus-parking-32",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at W Poplar St",
       "ring": [
         [39.974651, -83.002927],
         [39.974683, -83.002945],
@@ -483,7 +483,7 @@
     {
       "id": "columbus-parking-33",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at Brickel St",
       "ring": [
         [39.976295, -83.003235],
         [39.976326, -83.003252],
@@ -498,7 +498,7 @@
     {
       "id": "columbus-parking-34",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St and Buttles Ave",
       "ring": [
         [39.977113, -83.003564],
         [39.977145, -83.003581],
@@ -513,7 +513,7 @@
     {
       "id": "columbus-parking-35",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Price Ave at N High St",
       "ring": [
         [39.9808, -83.004636],
         [39.980832, -83.004653],
@@ -528,7 +528,7 @@
     {
       "id": "columbus-parking-36",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E Hubbard Ave at N High St",
       "ring": [
         [39.979058, -83.003639],
         [39.97909, -83.003656],
@@ -543,7 +543,7 @@
     {
       "id": "columbus-parking-37",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W 2nd Ave at N High St",
       "ring": [
         [39.98183, -83.00464],
         [39.981862, -83.004657],
@@ -558,7 +558,7 @@
     {
       "id": "columbus-parking-38",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E 3rd St at N High St",
       "ring": [
         [39.983895, -83.004652],
         [39.983927, -83.004669],
@@ -573,7 +573,7 @@
     {
       "id": "columbus-parking-39",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at E 3rd Ave",
       "ring": [
         [39.9846, -83.00488],
         [39.984632, -83.004897],
@@ -588,7 +588,7 @@
     {
       "id": "columbus-parking-40",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E 2nd Ave at N High St",
       "ring": [
         [39.982608, -83.004369],
         [39.98264, -83.004387],
@@ -603,7 +603,7 @@
     {
       "id": "columbus-parking-41",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W 1st Ave at N Wall St",
       "ring": [
         [39.98016, -83.00479],
         [39.980192, -83.004807],
@@ -618,7 +618,7 @@
     {
       "id": "columbus-parking-42",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W Russell St at N High St",
       "ring": [
         [39.975581, -83.003359],
         [39.975613, -83.003376],
@@ -633,7 +633,7 @@
     {
       "id": "columbus-parking-43",
       "kind": "parking",
-      "name": "Corral",
+      "name": "E 4th Ave at N High St",
       "ring": [
         [39.98593, -83.004892],
         [39.985962, -83.00491],
@@ -648,7 +648,7 @@
     {
       "id": "columbus-parking-44",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W Poplar Ave at N High St",
       "ring": [
         [39.974607, -83.003248],
         [39.974639, -83.003265],
@@ -663,7 +663,7 @@
     {
       "id": "columbus-parking-45",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Warren St at N High St",
       "ring": [
         [39.977906, -83.003457],
         [39.977938, -83.003474],
@@ -678,7 +678,7 @@
     {
       "id": "columbus-parking-46",
       "kind": "parking",
-      "name": "Corral",
+      "name": "N High St at E Greenwood Ave",
       "ring": [
         [39.986054, -83.005482],
         [39.986086, -83.005499],
@@ -693,7 +693,7 @@
     {
       "id": "columbus-parking-47",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W 3rd Ave at N High St",
       "ring": [
         [39.984046, -83.005076],
         [39.984078, -83.005094],

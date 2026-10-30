@@ -129,9 +129,9 @@ function featurePolygons(rings) {
 
 /**
  * A feature or map service layer's zones, those `where` picks: each part of a polygon one ring, its holes
- * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, a point by its
- * `CorralType`, or else after the city, as all are where `nameField` is null: Antwerpen's names are
- * mostly ids. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
+ * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, or else after the
+ * city, as all are where `nameField` is null: Antwerpen's names are mostly ids. A point without a
+ * name is named by its `CorralType`, or as a corral. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
  * goes into each zone's id where two layers of one kind number theirs alike, as Ottawa's two of
  * parking places do.
  */
@@ -144,11 +144,12 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
   return body.features.flatMap(({ attributes, geometry }) => {
     const objectId = attributes[idField];
     const id = `${city.id}-${slug(kind)}-${idTag ? `${idTag}-` : ''}${objectId}`;
+    const name = nameField ? attributes[nameField]?.trim() : null;
     if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
-      return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];
+      const corral = attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral';
+      return [{ id, kind, name: name || corral, ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
-    const name = nameField ? attributes[nameField]?.trim() : null;
     return polygonZones(id, kind, name || city.place, featurePolygons(geometry.rings));
   });
 }

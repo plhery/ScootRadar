@@ -3,7 +3,7 @@
     {
       "id": "baltimore-parking-1",
       "kind": "parking",
-      "name": "Corral",
+      "name": "26 S Arlington Ave",
       "ring": [
         [39.287381, -76.636225],
         [39.287413, -76.636242],
@@ -18,7 +18,7 @@
     {
       "id": "baltimore-parking-2",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1706 Cherry Hill Rd",
       "ring": [
         [39.255978, -76.634285],
         [39.25601, -76.634302],
@@ -33,7 +33,7 @@
     {
       "id": "baltimore-parking-3",
       "kind": "parking",
-      "name": "Corral",
+      "name": "919 E Fort Ave Space #31",
       "ring": [
         [39.2715, -76.601206],
         [39.271532, -76.601223],
@@ -48,7 +48,7 @@
     {
       "id": "baltimore-parking-4",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1501 Light St",
       "ring": [
         [39.272681, -76.611551],
         [39.272713, -76.611568],
@@ -63,7 +63,7 @@
     {
       "id": "baltimore-parking-5",
       "kind": "parking",
-      "name": "Corral",
+      "name": "400 E 33rd St",
       "ring": [
         [39.328533, -76.610949],
         [39.328565, -76.610966],
@@ -78,7 +78,7 @@
     {
       "id": "baltimore-parking-6",
       "kind": "parking",
-      "name": "Corral",
+      "name": "400 E 33rd St",
       "ring": [
         [39.328494, -76.610257],
         [39.328526, -76.610274],
@@ -93,7 +93,7 @@
     {
       "id": "baltimore-parking-7",
       "kind": "parking",
-      "name": "Corral",
+      "name": "3121 St Paul St",
       "ring": [
         [39.326777, -76.615793],
         [39.326809, -76.61581],
@@ -108,7 +108,7 @@
     {
       "id": "baltimore-parking-8",
       "kind": "parking",
-      "name": "Corral",
+      "name": "879-833 W 36th St",
       "ring": [
         [39.331133, -76.631009],
         [39.331165, -76.631026],
@@ -123,7 +123,7 @@
     {
       "id": "baltimore-parking-9",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Rogers Ave Metro, N Rogers Ave",
       "ring": [
         [39.34483, -76.692571],
         [39.344862, -76.692588],
@@ -138,7 +138,7 @@
     {
       "id": "baltimore-parking-10",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Rogers Ave Metro, N Rogers Ave",
       "ring": [
         [39.345227, -76.6931],
         [39.345259, -76.693117],
@@ -153,7 +153,7 @@
     {
       "id": "baltimore-parking-11",
       "kind": "parking",
-      "name": "Corral",
+      "name": "3100 W Cold Spring Ln",
       "ring": [
         [39.336722, -76.673347],
         [39.336754, -76.673364],
@@ -168,7 +168,7 @@
     {
       "id": "baltimore-parking-12",
       "kind": "parking",
-      "name": "Corral",
+      "name": "3771 Wabash Ave",
       "ring": [
         [39.351646, -76.704072],
         [39.351678, -76.704089],
@@ -183,7 +183,7 @@
     {
       "id": "baltimore-parking-13",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2600 Reisterstown Rd",
       "ring": [
         [39.31785, -76.652096],
         [39.317882, -76.652113],
@@ -198,7 +198,7 @@
     {
       "id": "baltimore-parking-14",
       "kind": "parking",
-      "name": "Corral",
+      "name": "325 W North Ave",
       "ring": [
         [39.311761, -76.622836],
         [39.311793, -76.622853],
@@ -213,7 +213,7 @@
     {
       "id": "baltimore-parking-15",
       "kind": "parking",
-      "name": "Corral",
+      "name": "3 W 23rd St",
       "ring": [
         [39.315224, -76.617509],
         [39.315256, -76.617526],
@@ -228,7 +228,7 @@
     {
       "id": "baltimore-parking-16",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1702 Pennsylvania Ave",
       "ring": [
         [39.303994, -76.635625],
         [39.304026, -76.635642],
@@ -243,7 +243,7 @@
     {
       "id": "baltimore-parking-17",
       "kind": "parking",
-      "name": "Corral",
+      "name": "4721 Harford Rd",
       "ring": [
         [39.344121, -76.567888],
         [39.344153, -76.567905],
@@ -258,7 +258,7 @@
     {
       "id": "baltimore-parking-18",
       "kind": "parking",
-      "name": "Corral",
+      "name": "5523 Harford Rd",
       "ring": [
         [39.352591, -76.561074],
         [39.352623, -76.561091],
@@ -273,7 +273,7 @@
     {
       "id": "baltimore-parking-19",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2100 Boone St",
       "ring": [
         [39.313976, -76.608461],
         [39.314008, -76.608478],
@@ -288,7 +288,7 @@
     {
       "id": "baltimore-parking-20",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1611 Guilford Ave",
       "ring": [
         [39.30814, -76.612095],
         [39.308172, -76.612112],
@@ -303,7 +303,7 @@
     {
       "id": "baltimore-parking-21",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2434 E Ware St",
       "ring": [
         [39.317138, -76.616816],
         [39.31717, -76.616833],
@@ -318,7 +318,7 @@
     {
       "id": "baltimore-parking-22",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1400 Greenmount Ave",
       "ring": [
         [39.306588, -76.608685],
         [39.30662, -76.608702],
@@ -333,7 +333,7 @@
     {
       "id": "baltimore-parking-23",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1501 St Paul St",
       "ring": [
         [39.306954, -76.614842],
         [39.306986, -76.614859],
@@ -348,7 +348,7 @@
     {
       "id": "baltimore-parking-24",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1500 N Charles St",
       "ring": [
         [39.307271, -76.616158],
         [39.307303, -76.616175],
@@ -363,7 +363,7 @@
     {
       "id": "baltimore-parking-25",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2351 E North Ave",
       "ring": [
         [39.312498, -76.584692],
         [39.31253, -76.584709],
@@ -378,7 +378,7 @@
     {
       "id": "baltimore-parking-26",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1701 E North Ave",
       "ring": [
         [39.311934, -76.594874],
         [39.311966, -76.594891],
@@ -393,7 +393,7 @@
     {
       "id": "baltimore-parking-27",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1339 E North Ave",
       "ring": [
         [39.311738, -76.599484],
         [39.31177, -76.599501],
@@ -408,7 +408,7 @@
     {
       "id": "baltimore-parking-28",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1300 E North Ave",
       "ring": [
         [39.31218, -76.599361],
         [39.312212, -76.599378],
@@ -423,7 +423,7 @@
     {
       "id": "baltimore-parking-29",
       "kind": "parking",
-      "name": "Corral",
+      "name": "200 E North Ave",
       "ring": [
         [39.311392, -76.612398],
         [39.311424, -76.612415],
@@ -438,7 +438,7 @@
     {
       "id": "baltimore-parking-30",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1201 W North Ave",
       "ring": [
         [39.310202, -76.637371],
         [39.310234, -76.637388],
@@ -453,7 +453,7 @@
     {
       "id": "baltimore-parking-31",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2426 Pennsylvania Ave",
       "ring": [
         [39.309863, -76.642509],
         [39.309895, -76.642526],
@@ -468,7 +468,7 @@
     {
       "id": "baltimore-parking-32",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2509 Pennsylvania Ave",
       "ring": [
         [39.310328, -76.642481],
         [39.31036, -76.642498],
@@ -483,7 +483,7 @@
     {
       "id": "baltimore-parking-33",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1737B W North Ave",
       "ring": [
         [39.309814, -76.646146],
         [39.309846, -76.646163],
@@ -498,7 +498,7 @@
     {
       "id": "baltimore-parking-34",
       "kind": "parking",
-      "name": "Corral",
+      "name": "3201 W North Ave",
       "ring": [
         [39.308857, -76.671212],
         [39.308889, -76.671229],
@@ -513,7 +513,7 @@
     {
       "id": "baltimore-parking-35",
       "kind": "parking",
-      "name": "Corral",
+      "name": "310 W Centre St",
       "ring": [
         [39.296373, -76.620055],
         [39.296405, -76.620072],
@@ -528,7 +528,7 @@
     {
       "id": "baltimore-parking-36",
       "kind": "parking",
-      "name": "Corral",
+      "name": "301 N Eutaw St",
       "ring": [
         [39.292989, -76.620782],
         [39.293021, -76.620799],
@@ -543,7 +543,7 @@
     {
       "id": "baltimore-parking-37",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1209 N Charles St",
       "ring": [
         [39.304473, -76.615851],
         [39.304505, -76.615868],
@@ -558,7 +558,7 @@
     {
       "id": "baltimore-parking-38",
       "kind": "parking",
-      "name": "Corral",
+      "name": "423 E North Ave",
       "ring": [
         [39.311269, -76.609582],
         [39.311301, -76.609599],
@@ -573,7 +573,7 @@
     {
       "id": "baltimore-parking-39",
       "kind": "parking",
-      "name": "Corral",
+      "name": "702 N Broadway",
       "ring": [
         [39.298717, -76.594422],
         [39.298749, -76.594439],
@@ -588,7 +588,7 @@
     {
       "id": "baltimore-parking-40",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1770 E Monument St",
       "ring": [
         [39.298519, -76.59228],
         [39.298551, -76.592297],
@@ -603,7 +603,7 @@
     {
       "id": "baltimore-parking-41",
       "kind": "parking",
-      "name": "Corral",
+      "name": "600 N Wolfe St",
       "ring": [
         [39.297894, -76.590945],
         [39.297926, -76.590962],
@@ -618,7 +618,7 @@
     {
       "id": "baltimore-parking-42",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2101 E Monument St",
       "ring": [
         [39.298582, -76.58745],
         [39.298614, -76.587467],
@@ -633,7 +633,7 @@
     {
       "id": "baltimore-parking-43",
       "kind": "parking",
-      "name": "Corral",
+      "name": "861 Washington Blvd",
       "ring": [
         [39.282849, -76.630917],
         [39.282881, -76.630934],
@@ -648,7 +648,7 @@
     {
       "id": "baltimore-parking-44",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1 W Pratt St",
       "ring": [
         [39.286256, -76.618937],
         [39.286288, -76.618954],
@@ -663,7 +663,7 @@
     {
       "id": "baltimore-parking-45",
       "kind": "parking",
-      "name": "Corral",
+      "name": "301w W Camden St",
       "ring": [
         [39.283956, -76.619596],
         [39.283988, -76.619613],
@@ -678,7 +678,7 @@
     {
       "id": "baltimore-parking-46",
       "kind": "parking",
-      "name": "Corral",
+      "name": "301 W Camden St",
       "ring": [
         [39.285144, -76.619598],
         [39.285176, -76.619615],
@@ -693,7 +693,7 @@
     {
       "id": "baltimore-parking-47",
       "kind": "parking",
-      "name": "Corral",
+      "name": "305 South Paca St",
       "ring": [
         [39.285116, -76.622481],
         [39.285148, -76.622498],
@@ -708,7 +708,7 @@
     {
       "id": "baltimore-parking-48",
       "kind": "parking",
-      "name": "Corral",
+      "name": "200 W Hamburg St",
       "ring": [
         [39.2786, -76.618941],
         [39.278632, -76.618958],
@@ -723,7 +723,7 @@
     {
       "id": "baltimore-parking-49",
       "kind": "parking",
-      "name": "Corral",
+      "name": "905 W Hamburg St",
       "ring": [
         [39.279732, -76.623154],
         [39.279764, -76.623171],
@@ -738,7 +738,7 @@
     {
       "id": "baltimore-parking-50",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1101 Russell St",
       "ring": [
         [39.276797, -76.62476],
         [39.276829, -76.624777],
@@ -753,7 +753,7 @@
     {
       "id": "baltimore-parking-51",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1220 S Howard St",
       "ring": [
         [39.275858, -76.621268],
         [39.27589, -76.621285],
@@ -768,7 +768,7 @@
     {
       "id": "baltimore-parking-52",
       "kind": "parking",
-      "name": "Corral",
+      "name": "788 Washington Blvd",
       "ring": [
         [39.283036, -76.628621],
         [39.283068, -76.628638],
@@ -783,7 +783,7 @@
     {
       "id": "baltimore-parking-53",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2601 Boston St",
       "ring": [
         [39.279888, -76.57935],
         [39.27992, -76.579367],
@@ -798,7 +798,7 @@
     {
       "id": "baltimore-parking-54",
       "kind": "parking",
-      "name": "Corral",
+      "name": "2050 Fleet St",
       "ring": [
         [39.284902, -76.587141],
         [39.284934, -76.587158],
@@ -813,7 +813,7 @@
     {
       "id": "baltimore-parking-55",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1401b Point St",
       "ring": [
         [39.280367, -76.59743],
         [39.280399, -76.597447],
@@ -828,7 +828,7 @@
     {
       "id": "baltimore-parking-56",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1300 Thames St",
       "ring": [
         [39.279523, -76.596696],
         [39.279555, -76.596713],
@@ -843,7 +843,7 @@
     {
       "id": "baltimore-parking-57",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1738 Thames St",
       "ring": [
         [39.282051, -76.591163],
         [39.282083, -76.59118],
@@ -858,7 +858,7 @@
     {
       "id": "baltimore-parking-58",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1641 Aliceanna St",
       "ring": [
         [39.283417, -76.593397],
         [39.283449, -76.593414],
@@ -873,7 +873,7 @@
     {
       "id": "baltimore-parking-59",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1641 Aliceanna St",
       "ring": [
         [39.283421, -76.593182],
         [39.283453, -76.593199],
@@ -888,7 +888,7 @@
     {
       "id": "baltimore-parking-60",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1641 Lancaster St",
       "ring": [
         [39.282487, -76.59329],
         [39.282519, -76.593307],
@@ -903,7 +903,7 @@
     {
       "id": "baltimore-parking-61",
       "kind": "parking",
-      "name": "Corral",
+      "name": "700 S President St",
       "ring": [
         [39.282263, -76.600975],
         [39.282295, -76.600992],
@@ -918,7 +918,7 @@
     {
       "id": "baltimore-parking-62",
       "kind": "parking",
-      "name": "Corral",
+      "name": "716 Eastern Ave",
       "ring": [
         [39.285206, -76.605472],
         [39.285238, -76.605489],
@@ -933,7 +933,7 @@
     {
       "id": "baltimore-parking-63",
       "kind": "parking",
-      "name": "Corral",
+      "name": "402 Key Hwy",
       "ring": [
         [39.281006, -76.607546],
         [39.281038, -76.607563],
@@ -948,7 +948,7 @@
     {
       "id": "baltimore-parking-64",
       "kind": "parking",
-      "name": "Corral",
+      "name": "300 Key Hwy",
       "ring": [
         [39.280856, -76.610424],
         [39.280888, -76.610441],
@@ -963,7 +963,7 @@
     {
       "id": "baltimore-parking-65",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1325 Key Hwy",
       "ring": [
         [39.274184, -76.603288],
         [39.274216, -76.603305],
@@ -978,7 +978,7 @@
     {
       "id": "baltimore-parking-66",
       "kind": "parking",
-      "name": "Corral",
+      "name": "430 N Smallwood St",
       "ring": [
         [39.293373, -76.651926],
         [39.293405, -76.651943],
@@ -993,7 +993,7 @@
     {
       "id": "baltimore-parking-67",
       "kind": "parking",
-      "name": "Corral",
+      "name": "401 Light St",
       "ring": [
         [39.284262, -76.612665],
         [39.284294, -76.612682],
@@ -1008,7 +1008,7 @@
     {
       "id": "baltimore-parking-68",
       "kind": "parking",
-      "name": "Corral",
+      "name": "561 Light St",
       "ring": [
         [39.282257, -76.612464],
         [39.282289, -76.612481],
@@ -1023,7 +1023,7 @@
     {
       "id": "baltimore-parking-69",
       "kind": "parking",
-      "name": "Corral",
+      "name": "300 Key Hwy",
       "ring": [
         [39.281251, -76.61077],
         [39.281283, -76.610787],
@@ -1038,7 +1038,7 @@
     {
       "id": "baltimore-parking-70",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1046 Light St",
       "ring": [
         [39.277001, -76.612473],
         [39.277033, -76.61249],
@@ -1053,7 +1053,7 @@
     {
       "id": "baltimore-parking-71",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1138 S Charles St",
       "ring": [
         [39.275832, -76.614299],
         [39.275864, -76.614316],

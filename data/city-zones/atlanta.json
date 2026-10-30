@@ -3,7 +3,7 @@
     {
       "id": "atlanta-parking-1",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Georgia Ave SE & Terry St SE",
       "ring": [
         [33.736763, -84.384892],
         [33.736795, -84.384908],
@@ -18,7 +18,7 @@
     {
       "id": "atlanta-parking-2",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Georgia Ave SE & Reed St SE",
       "ring": [
         [33.736772, -84.385676],
         [33.736804, -84.385692],
@@ -33,7 +33,7 @@
     {
       "id": "atlanta-parking-3",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Edgewood Ave NE & Howell St SE",
       "ring": [
         [33.754236, -84.369844],
         [33.754268, -84.369859],
@@ -48,7 +48,7 @@
     {
       "id": "atlanta-parking-4",
       "kind": "parking",
-      "name": "Corral",
+      "name": "1111 Euclid Ave NE (Rag-O-Rama)",
       "ring": [
         [33.764214, -84.350605],
         [33.764246, -84.350621],
@@ -63,7 +63,7 @@
     {
       "id": "atlanta-parking-5",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Walker St SW & Haynes St SW",
       "ring": [
         [33.750101, -84.400913],
         [33.750133, -84.400929],
@@ -78,7 +78,7 @@
     {
       "id": "atlanta-parking-7",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Lake Ave NE & Atlanta BeltLine Eastside Trail",
       "ring": [
         [33.757555, -84.364851],
         [33.757587, -84.364867],
@@ -93,7 +93,7 @@
     {
       "id": "atlanta-parking-9",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Edgewood Ave SE & Boulevard SE",
       "ring": [
         [33.754266, -84.372269],
         [33.754298, -84.372285],
@@ -108,7 +108,7 @@
     {
       "id": "atlanta-parking-21",
       "kind": "parking",
-      "name": "Corral",
+      "name": "3rd St NE & Peachtree St NW",
       "ring": [
         [33.773572, -84.384823],
         [33.773604, -84.384838],
@@ -123,7 +123,7 @@
     {
       "id": "atlanta-parking-22",
       "kind": "parking",
-      "name": "Corral",
+      "name": "4th St NW & Spring St NW",
       "ring": [
         [33.775085, -84.388974],
         [33.775116, -84.38899],
@@ -138,7 +138,7 @@
     {
       "id": "atlanta-parking-23",
       "kind": "parking",
-      "name": "Corral",
+      "name": "6th St NE & Cypress St NE",
       "ring": [
         [33.777435, -84.386084],
         [33.777467, -84.3861],
@@ -153,7 +153,7 @@
     {
       "id": "atlanta-parking-24",
       "kind": "parking",
-      "name": "Corral",
+      "name": "7th St NE & Peachtree St NE",
       "ring": [
         [33.778565, -84.384454],
         [33.778597, -84.38447],
@@ -168,7 +168,7 @@
     {
       "id": "atlanta-parking-25",
       "kind": "parking",
-      "name": "Corral",
+      "name": "8th St NW & Spring St NW",
       "ring": [
         [33.779502, -84.389009],
         [33.779534, -84.389025],
@@ -183,7 +183,7 @@
     {
       "id": "atlanta-parking-26",
       "kind": "parking",
-      "name": "Corral",
+      "name": "8th St NW & W Peachtree St NW",
       "ring": [
         [33.779595, -84.386983],
         [33.779627, -84.386999],
@@ -198,7 +198,7 @@
     {
       "id": "atlanta-parking-27",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Peachtree St NE & 15th St NE",
       "ring": [
         [33.789079, -84.384002],
         [33.78911, -84.384018],
@@ -213,7 +213,7 @@
     {
       "id": "atlanta-parking-28",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Spring St NW & Peachtree Pl NW",
       "ring": [
         [33.780351, -84.389009],
         [33.780383, -84.389025],
@@ -228,7 +228,7 @@
     {
       "id": "atlanta-parking-29",
       "kind": "parking",
-      "name": "Corral",
+      "name": "W Peachtree St NW & Peachtree Pl NE",
       "ring": [
         [33.780112, -84.387097],
         [33.780144, -84.387113],
@@ -243,7 +243,7 @@
     {
       "id": "atlanta-parking-30",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Glenwood Ave SE & Gresham Ave SE",
       "ring": [
         [33.740151, -84.345767],
         [33.740183, -84.345783],
@@ -258,7 +258,7 @@
     {
       "id": "atlanta-parking-31",
       "kind": "parking",
-      "name": "Corral",
+      "name": "484 Flat Shoals Ave SE (Nail Shack EAV)",
       "ring": [
         [33.741011, -84.346254],
         [33.741043, -84.346269],
@@ -273,7 +273,7 @@
     {
       "id": "atlanta-parking-32",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Beecher Rd SW & Cascade Rd SW",
       "ring": [
         [33.722222, -84.464172],
         [33.722254, -84.464188],

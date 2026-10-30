@@ -845,7 +845,7 @@
     {
       "id": "ottawa-parking-1",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Laurier East at King Edward",
       "ring": [
         [45.425388, -75.682583],
         [45.42542, -75.682602],
@@ -860,7 +860,7 @@
     {
       "id": "ottawa-parking-2",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Somerset East at Sweetland",
       "ring": [
         [45.423311, -75.677074],
         [45.423343, -75.677093],
@@ -875,7 +875,7 @@
     {
       "id": "ottawa-parking-3",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Mann at Chapel",
       "ring": [
         [45.421053, -75.672382],
         [45.421085, -75.672401],
@@ -890,7 +890,7 @@
     {
       "id": "ottawa-parking-4",
       "kind": "parking",
-      "name": "Corral",
+      "name": "141 Clarence Street",
       "ring": [
         [45.429825, -75.691381],
         [45.429857, -75.6914],
@@ -905,7 +905,7 @@
     {
       "id": "ottawa-parking-5",
       "kind": "parking",
-      "name": "Corral",
+      "name": "George and Sussex",
       "ring": [
         [45.426329, -75.693607],
         [45.426361, -75.693626],
@@ -920,7 +920,7 @@
     {
       "id": "ottawa-parking-7",
       "kind": "parking",
-      "name": "Corral",
+      "name": "McLeod at Bank",
       "ring": [
         [45.411551, -75.69293],
         [45.411583, -75.692948],
@@ -935,7 +935,7 @@
     {
       "id": "ottawa-parking-8",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Cooper at Cartier",
       "ring": [
         [45.41922, -75.689146],
         [45.419252, -75.689165],
@@ -950,7 +950,7 @@
     {
       "id": "ottawa-parking-9",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Cartier at Gilmour",
       "ring": [
         [45.417226, -75.687153],
         [45.417258, -75.687172],
@@ -965,7 +965,7 @@
     {
       "id": "ottawa-parking-10",
       "kind": "parking",
-      "name": "Corral",
+      "name": "170 Second Avenue",
       "ring": [
         [45.403307, -75.68939],
         [45.403339, -75.689409],
@@ -980,7 +980,7 @@
     {
       "id": "ottawa-parking-11",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Holmwood at Bank",
       "ring": [
         [45.399943, -75.686347],
         [45.399975, -75.686365],
@@ -995,7 +995,7 @@
     {
       "id": "ottawa-parking-12",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Pretoria at Bank",
       "ring": [
         [45.408097, -75.69089],
         [45.408128, -75.690908],
@@ -1010,7 +1010,7 @@
     {
       "id": "ottawa-parking-13",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Grove at Bank",
       "ring": [
         [45.392281, -75.68222],
         [45.392313, -75.682239],
@@ -1025,7 +1025,7 @@
     {
       "id": "ottawa-parking-14",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Glebe at Bank",
       "ring": [
         [45.405015, -75.689796],
         [45.405047, -75.689815],
@@ -1040,7 +1040,7 @@
     {
       "id": "ottawa-parking-27",
       "kind": "parking",
-      "name": "Corral",
+      "name": "687 Somerset West",
       "ring": [
         [45.411339, -75.706204],
         [45.411371, -75.706223],
@@ -1055,7 +1055,7 @@
     {
       "id": "ottawa-parking-28",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Elgin at Somerset West",
       "ring": [
         [45.417719, -75.690276],
         [45.417751, -75.690294],
@@ -1070,7 +1070,7 @@
     {
       "id": "ottawa-parking-29",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Gladstone and Bronson",
       "ring": [
         [45.407833, -75.703866],
         [45.407865, -75.703885],
@@ -1085,7 +1085,7 @@
     {
       "id": "ottawa-parking-30",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Rideau and Nelson",
       "ring": [
         [45.429764, -75.683993],
         [45.429796, -75.684012],
@@ -1100,7 +1100,7 @@
     {
       "id": "ottawa-parking-31",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Rideau and Wurtemburg",
       "ring": [
         [45.433189, -75.67478],
         [45.433221, -75.674799],
@@ -1115,7 +1115,7 @@
     {
       "id": "ottawa-parking-33",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Montréal and Cyr",
       "ring": [
         [45.435078, -75.663867],
         [45.43511, -75.663886],
@@ -1130,7 +1130,7 @@
     {
       "id": "ottawa-parking-34",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Wellington West and Irving",
       "ring": [
         [45.40534, -75.722849],
         [45.405372, -75.722868],
@@ -1145,7 +1145,7 @@
     {
       "id": "ottawa-parking-35",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Wellington West between Holland and Huron",
       "ring": [
         [45.39966, -75.732476],
         [45.399692, -75.732494],
@@ -1160,7 +1160,7 @@
     {
       "id": "ottawa-parking-36",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Richmond and McRae",
       "ring": [
         [45.394423, -75.748301],
         [45.394455, -75.748319],
@@ -1175,7 +1175,7 @@
     {
       "id": "ottawa-parking-station-1",
       "kind": "parking",
-      "name": "Corral",
+      "name": "UOttawa Station",
       "ring": [
         [45.420775, -75.682217],
         [45.420807, -75.682236],
@@ -1190,7 +1190,7 @@
     {
       "id": "ottawa-parking-station-2",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Bayview Station area 2",
       "ring": [
         [45.409306, -75.722542],
         [45.409338, -75.722561],
@@ -1205,7 +1205,7 @@
     {
       "id": "ottawa-parking-station-3",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Bayview Station area 1",
       "ring": [
         [45.409623, -75.721273],
         [45.409655, -75.721292],
@@ -1220,7 +1220,7 @@
     {
       "id": "ottawa-parking-station-4",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Tunney's Pasture Station",
       "ring": [
         [45.403846, -75.734613],
         [45.403878, -75.734631],
@@ -1235,7 +1235,7 @@
     {
       "id": "ottawa-parking-station-5",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Lees Station",
       "ring": [
         [45.416122, -75.670549],
         [45.416154, -75.670568],
@@ -1250,7 +1250,7 @@
     {
       "id": "ottawa-parking-station-6",
       "kind": "parking",
-      "name": "Corral",
+      "name": "Pimisi Station",
       "ring": [
         [45.413472, -75.712715],
         [45.413504, -75.712733],

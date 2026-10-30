@@ -121,7 +121,8 @@
           "kind": "parking",
           "url": "https://arlgis.arlingtonva.us/arcgis/rest/services/Open_Data/od_Transportation_Layers/FeatureServer",
           "layer": 2,
-          "where": "Status = 'Installed'"
+          "where": "Status = 'Installed'",
+          "nameField": "Corral_Name"
         }
       ],
       "bounds": {
@@ -182,7 +183,8 @@
           "kind": "parking",
           "url": "https://services2.arcgis.com/zLeajbicrDRLQcny/arcgis/rest/services/Micromobility_Corrals/FeatureServer",
           "layer": 1,
-          "where": "InstallationStatus = 'Complete'"
+          "where": "InstallationStatus = 'Complete'",
+          "nameField": "Location"
         }
       ],
       "bounds": {
@@ -211,7 +213,8 @@
         {
           "kind": "parking",
           "url": "https://services3.arcgis.com/ZTvQ9NuONePFYofE/arcgis/rest/services/Scooter_Corrals/FeatureServer",
-          "layer": 0
+          "layer": 0,
+          "nameField": "Address"
         }
       ],
       "bounds": {
@@ -417,7 +420,8 @@
           "kind": "parking",
           "url": "https://maps2.columbus.gov/arcgis/rest/services/Schemas/PublicService/MapServer",
           "layer": 42,
-          "where": "Status = 'Active'"
+          "where": "Status = 'Active'",
+          "nameField": "Intersection"
         }
       ],
       "bounds": {
@@ -906,12 +910,14 @@
         {
           "kind": "parking",
           "url": "https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer",
-          "layer": 1
+          "layer": 1,
+          "nameField": "LOCATION_EN"
         },
         {
           "kind": "parking",
           "url": "https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer",
           "layer": 2,
+          "nameField": "LOCATION_EN",
           "idTag": "station"
         },
         {
@@ -1025,7 +1031,8 @@
         {
           "kind": "parking",
           "url": "https://gis.santamonica.gov/server/rest/services/Shared_Mobility_Drop_Zones/FeatureServer",
-          "layer": 0
+          "layer": 0,
+          "nameField": "location"
         },
         {
           "kind": "noRide",
