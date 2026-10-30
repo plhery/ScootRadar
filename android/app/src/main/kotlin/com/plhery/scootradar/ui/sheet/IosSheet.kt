@@ -229,7 +229,10 @@ fun IosSheet(
                     paneTitle = title
                     isTraversalGroup = true
                     traversalIndex = 0f
-                },
+                }
+                // Esc closes it, as it closes the form and the popover a larger window has: API 37's key maps no longer
+                // make Esc Back, as API 31's did (review-app-t finding 10).
+                .closedByEscape(close),
         ) {
             // The home indicator is under a sheet at the large height, and partly under a floating one.
             val floating = hasMedium && state.targetValue != SheetValue.Large

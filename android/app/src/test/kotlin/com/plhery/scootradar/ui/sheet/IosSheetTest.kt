@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui.sheet
 
+import android.view.KeyEvent as AndroidKeyEvent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -43,7 +44,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 
-/** The sheet's heights and the ways it goes: dragged down, the dimmed map tapped, and Back (ui.md UI-208, UI-387). */
+/** The sheet's heights and the ways it goes: dragged down, the dimmed map tapped, Back and Esc (ui.md UI-208, UI-387). */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w390dp-h844dp-xhdpi")
 class IosSheetTest {
@@ -121,6 +122,23 @@ class IosSheetTest {
     fun backClosesTheSheet() {
         show(listOf(SheetDetent.Large))
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        compose.waitForIdle()
+        assertEquals(1, dismissals)
+        assertTrue(compose.onAllNodes(sheet).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * A hardware keyboard's Esc closes it, as it closes the form and the popover a larger window has. API 31's key maps
+     * made an Esc nothing took Back, which closed it; API 37's don't, and nothing did (review-app-t finding 10).
+     */
+    @Test
+    fun escClosesTheSheet() {
+        show(listOf(SheetDetent.Large))
+        compose.runOnUiThread {
+            for (action in listOf(AndroidKeyEvent.ACTION_DOWN, AndroidKeyEvent.ACTION_UP)) {
+                compose.activity.dispatchKeyEvent(AndroidKeyEvent(action, AndroidKeyEvent.KEYCODE_ESCAPE))
+            }
+        }
         compose.waitForIdle()
         assertEquals(1, dismissals)
         assertTrue(compose.onAllNodes(sheet).fetchSemanticsNodes().isEmpty())

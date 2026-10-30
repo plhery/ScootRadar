@@ -2,6 +2,7 @@ package com.plhery.scootradar.app
 
 import android.app.NotificationManager
 import android.content.Context
+import android.content.pm.ShortcutManager
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.MainActivity
@@ -54,17 +55,25 @@ class ManifestTest {
         assertEquals(emptyList<Any>(), notifications.notificationChannels)
     }
 
-    /** X-AD07: no widget, as the iPhone app has no widget extension, and no launcher shortcuts, as it has no quick actions. */
+    /**
+     * X-AD07: no widget, as the iPhone app has no widget extension, and no launcher shortcuts, as it has no quick
+     * actions: none on a receiver, an activity or an activity's alias, where a launcher reads them too.
+     */
     @Test
     fun theAppHasNoWidgetsAndNoShortcuts() {
-        val receivers = application.children("receiver")
-        val actions = (receivers + application.children("activity")).flatMap { component ->
+        val components = listOf("receiver", "activity", "activity-alias").flatMap { application.children(it) }
+        val actions = components.flatMap { component ->
             component.children("intent-filter").flatMap { filter -> filter.children("action").map { it.android("name") } }
         }
         assertTrue(actions.toString(), "android.appwidget.action.APPWIDGET_UPDATE" !in actions)
         assertTrue(actions.toString(), "android.intent.action.CREATE_SHORTCUT" !in actions)
-        val metaData = (receivers + application.children("activity")).flatMap { it.children("meta-data") }.map { it.android("name") }
+        val metaData = components.flatMap { it.children("meta-data") }.map { it.android("name") }
         assertTrue(metaData.toString(), "android.appwidget.provider" !in metaData && "android.app.shortcuts" !in metaData)
+
+        // Nor any the code makes as the app opens.
+        Robolectric.buildActivity(MainActivity::class.java).create().start().resume()
+        val shortcuts = ApplicationProvider.getApplicationContext<Context>().getSystemService(ShortcutManager::class.java)
+        assertEquals(emptyList<Any>(), shortcuts.dynamicShortcuts + shortcuts.pinnedShortcuts)
     }
 
     /**

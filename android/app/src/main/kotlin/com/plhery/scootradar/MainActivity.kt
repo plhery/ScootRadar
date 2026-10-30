@@ -137,7 +137,9 @@ class MainActivity : AppCompatActivity() {
      * A key that nothing in the screen took, as when nothing has the focus, which Compose then gives no key: the
      * screen's shortcuts answer it, as an iPad's window answers its key commands whatever has the focus. Esc on the
      * screen with nothing to close does nothing, as UIKit drops it (UI-245), where Android would take it for Back
-     * and leave the app; over a sheet it is still Back, which closes it, and the Back key itself still goes back.
+     * and leave the app. A sheet, form or popover takes Esc itself and closes (closedByEscape); one that has lost the
+     * focus leaves it to Android, whose key maps make it Back on API 31 and not on API 37. The Back key itself still
+     * goes back.
      */
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean =
         shortcuts.handle(androidx.compose.ui.input.key.KeyEvent(event)) ||
