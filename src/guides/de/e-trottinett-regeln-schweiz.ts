@@ -54,14 +54,14 @@ const guide: Guide = {
           },
         },
         'Wer den Führerausweis für Auto, Motorrad, Lastwagen oder Bus hat, hat die Kategorie M automatisch dabei.',
-        'Mit 12 oder 13 Jahren geht es also nicht. Wer zu jung ist oder den nötigen Ausweis nicht hat, macht sich nach dem Strassenverkehrsgesetz strafbar; bei Minderjährigen gilt das Jugendstrafrecht. Wer unter 15 ist, erhält keine Ordnungsbusse, sondern wird verzeigt. Strafbar macht sich auch, wer das Fahrzeug jemandem ohne den nötigen Ausweis überlässt, Eltern eingeschlossen.',
+        'Wer zu jung ist oder den nötigen Ausweis nicht hat, macht sich nach dem Strassenverkehrsgesetz strafbar; bei Minderjährigen gilt das Jugendstrafrecht. Wer unter 15 ist, erhält keine Ordnungsbusse, sondern wird verzeigt. Strafbar macht sich auch, wer das Fahrzeug jemandem ohne den nötigen Ausweis überlässt, Eltern eingeschlossen.',
       ],
     },
     {
       heading: 'Gibt es eine Helmpflicht? Licht, Glocke und Rückstrahler',
       blocks: [
         '**Eine Helmpflicht gibt es nicht.** Die Helmpflicht für Motorfahrräder gilt nicht für solche mit elektrischem Antrieb bis 25 km/h, die Helmbusse von CHF 30.– trifft dich also nicht. Die BFU empfiehlt den Helm trotzdem nachdrücklich, und Dott warnt, dass Kopfverletzungen ohne Helm womöglich nicht versichert sind.',
-        'Am 30. April 2026 lehnte der Nationalrat eine Motion für Helmpflicht und Führerausweis bei E-Rollern und ähnlichen Trendfahrzeugen mit 122 zu 33 Stimmen bei 33 Enthaltungen ab. Am 19. August erklärte sich der Bundesrat bereit, bei der nächsten Verordnungsanpassung eine Helmtragepflicht für E-Trottinette in die Vernehmlassung zu geben. Entwurf und Datum gibt es (Stand 12. Oktober 2026) noch keine.',
+        'Am 30. April 2026 lehnte der Nationalrat eine Motion für Helmpflicht und Führerausweis bei E-Rollern und ähnlichen Trendfahrzeugen mit 122 zu 33 Stimmen bei 33 Enthaltungen ab. Am 19. August erklärte sich der Bundesrat bereit, bei der nächsten Verordnungsanpassung eine Helmtragepflicht für E-Trottinette in die Vernehmlassung zu geben. Einen Entwurf gibt es bis zum 30. Oktober 2026 nicht; die für Dezember 2026 geplante Vernehmlassung zu sieben Verordnungen des Strassenverkehrsrechts nennt den Helm nicht.',
         'Vorgeschrieben ist dagegen:',
         {
           list: [
@@ -84,7 +84,7 @@ const guide: Guide = {
             '**Bahnhof:** Die SBB verbietet das Fahren im ganzen Bahnhof, auch auf Perrons, Rampen und in Unterführungen: schieben.',
           ],
         },
-        'Seit dem 1. Juli 2025 gilt die Zusatztafel «ausgenommen» mit Velosymbol bei Einbahnstrassen und beim Signal «Einfahrt verboten» auch für E-Trottinette. Das Signal «Verbot für Motorfahrräder» gilt nicht mehr für sie, «Verbot für Fahrräder und Motorfahrräder» dagegen schon. Rechts abbiegen bei Rot darfst du nur, wo eine gelbe Tafel mit Velo und Pfeil unter dem Lichtsignal hängt.',
+        'Seit dem 1. Juli 2025 gilt die Zusatztafel «ausgenommen» mit Velosymbol bei Einbahnstrassen und beim Signal «Einfahrt verboten» auch für E-Trottinette. Das Signal «Verbot für Motorfahrräder» gilt nicht mehr für sie, «Verbot für Fahrräder und Motorfahrräder» dagegen schon. Rechts abbiegen bei Rot darfst du nur, wo eine gelbe Tafel mit Velo und Pfeil neben dem roten Licht hängt.',
         '**Parkieren:** auf dem Trottoir nur, wenn für Fussgänger mindestens **1,50 m** frei bleiben, und nie so, dass du einen Eingang, einen Fussgängerstreifen oder eine Blindenleitlinie versperrst (CHF 20.–). Seit dem 1. Juli 2025 darfst du auch in Begegnungs- und Fussgängerzonen nach den allgemeinen Regeln parkieren.',
       ],
     },
@@ -104,13 +104,13 @@ const guide: Guide = {
             '**Drogen:** null Toleranz für THC, Kokain, Amphetamine, MDMA und Morphin, ausser sie sind ärztlich verschrieben.',
           ],
         },
-        'Auch dein Führerausweis fürs Auto kann in Gefahr sein: Die Regeln zum Ausweisentzug sprechen von allen, die angetrunken ein Motorfahrzeug lenken, und die kantonale Behörde entscheidet im Einzelfall. Laut einem Bericht des Zürcher Stadtrats von 2025 ist in der Stadt mindestens die Hälfte der E-Trottinett-Unfälle ein Selbstunfall, meist unter Alkoholeinfluss.',
+        'Auch dein Führerausweis fürs Auto kann in Gefahr sein: Die Regeln zum Ausweisentzug sprechen von allen, die angetrunken ein Motorfahrzeug lenken, und die kantonale Behörde entscheidet im Einzelfall. Laut einem Bericht des Zürcher Stadtrats vom Juni 2025 war in der Stadt von 2019 bis 2022 mindestens die Hälfte der E-Trottinett-Unfälle ein Selbstunfall, meist unter Alkoholeinfluss.',
       ],
     },
     {
       heading: 'Bussen für E-Trottinett und E-Scooter in der Schweiz',
       blocks: [
-        'Die meisten Verstösse erledigt die Polizei mit einer Ordnungsbusse nach der eidgenössischen Bussenliste. Die Beträge gelten in der ganzen Schweiz und sind seit 2024 unverändert.',
+        'Die meisten Verstösse erledigt die Polizei mit einer Ordnungsbusse nach der eidgenössischen Bussenliste. Die Beträge gelten schweizweit und haben sich seit 2025 nicht geändert.',
         {
           table: {
             caption: 'Häufige Bussen für E-Trottinett-Fahrende, Stand Oktober 2026',
@@ -131,7 +131,7 @@ const guide: Guide = {
           },
         },
         'Mehrere Bussen werden zusammengezählt. Du zahlst sofort oder innert 30 Tagen, ohne Kosten; ohne Wohnsitz in der Schweiz zahlst du sofort oder hinterlegst eine Sicherheit. Du kannst die Ordnungsbusse ablehnen, dann folgt ein ordentliches Verfahren.',
-        'Keine feste Busse gibt es, wenn du angetrunken, ohne den nötigen Führerausweis oder mit einem frisierten Gerät fährst oder jemanden gefährdest oder verletzt: Das sind Strafverfahren, ebenso wenn die Bussen zusammen mehr als CHF 600.– ausmachen. Für Fahren unter 16 ohne Ausweis gibt es deshalb auch keinen festen Bussenbetrag.',
+        'Keine feste Busse gibt es, wenn du angetrunken, ohne den nötigen Führerausweis oder mit einem frisierten Gerät fährst oder jemanden gefährdest oder verletzt: Das sind Strafverfahren, ebenso wenn die Bussen zusammen mehr als CHF 600.– ausmachen.',
       ],
     },
     {
@@ -153,22 +153,22 @@ const guide: Guide = {
           ],
         },
         'Diese Versicherung ist dünner, als sie aussieht. Bei Lime, Bolt und Voi ist die Haftpflicht **subsidiär**: Sie zahlt erst nach deiner eigenen Privathaftpflicht. Dotts zuletzt veröffentlichte Deckung zahlte nur über deine anderen Versicherungen hinaus, PubliBike versichert gar nichts. Zu den Polizeibussen kommen Gebühren: Voi kann nach Verwarnungen CHF 25.– fürs falsche Parkieren verlangen, Bolt bis CHF 100.– fürs Abholen eines Scooters ausserhalb des Gebiets.',
-        'Welche Anbieter in deiner Nähe Scooter haben, siehst du auf der Karte in [Zürich](map:ch:zurich), [Bern](map:ch:bern) oder [Basel](map:ch:basel): ScootRadar zeigt die Anbieter, die ihre Standorte veröffentlichen, mit Akku und Gehzeit, und öffnet zum Entsperren und Bezahlen die App des Anbieters. Was eine Fahrt kostet, steht im Ratgeber [E-Trottinett-Preise in der Schweiz](guide:swiss-prices), was in den Städten gilt, in den Ratgebern zu [Zürich](guide:zurich), [Bern](guide:bern) und [Basel](guide:basel).',
-        '**Zu Besuch aus dem Ausland?** Ab 16 darfst du ohne Führerausweis fahren, egal woher du kommst, und die Schweizer Bedingungen der Anbieter verlangen keinen Wohnsitz in der Schweiz. Für 14- und 15-Jährige konnten wir nicht bestätigen, dass ein ausländischer Mofa-Ausweis die Kategorie M ersetzt; verlass dich nicht darauf.',
+        'Welche Anbieter in deiner Nähe Scooter haben, siehst du auf der Karte von [Zürich](map:ch:zurich), [Bern](map:ch:bern) oder [Basel](map:ch:basel), mit Akku und Gehzeit; zum Entsperren und Bezahlen öffnet sie die App des Anbieters. Was eine Fahrt kostet, steht im Ratgeber [E-Trottinett-Preise in der Schweiz](guide:swiss-prices), was in den Städten gilt, in den Ratgebern zu [Zürich](guide:zurich), [Bern](guide:bern) und [Basel](guide:basel).',
+        '**Zu Besuch aus dem Ausland?** Ab 16 darfst du ohne Führerausweis fahren, egal woher du kommst, und die Schweizer Bedingungen der Anbieter verlangen keinen Wohnsitz in der Schweiz. Ob 14- und 15-Jährigen ein ausländischer Mofa-Ausweis statt der Kategorie M genügt, sagt die Verkehrszulassungsverordnung nicht ausdrücklich; verlass dich nicht darauf.',
       ],
     },
     {
       heading: 'Neue E-Trottinett-Regeln in der Schweiz: 2025 und 2026',
       blocks: [
-        'Die letzte grosse Änderung trat am **1. Juli 2025** in Kraft: das ausdrückliche Verbot, zu zweit zu fahren, die neuen Signalregeln und das Parkieren in Begegnungs- und Fussgängerzonen, wie oben beschrieben. Die Definition unterscheidet seither 20 km/h ohne Sitz und 25 km/h mit Sitz; für Stehmodelle blieb es bei 20 km/h.',
-        '**Was ändert sich 2026?** Bis zum 12. Oktober 2026 ist dieses Jahr keine neue Bundesregel für E-Trottinette in Kraft getreten. Die meisten Meldungen zu «neuen Regeln ab 2026» betreffen Deutschland, Österreich, Italien oder Frankreich; wer über die Grenze fährt, findet die deutschen Regeln unter [E-Scooter-Regeln in Deutschland](guide:german-rules). In der Schweiz stehen zur Debatte:',
+        'Die letzte grosse Änderung trat am **1. Juli 2025** in Kraft: das ausdrückliche Verbot, zu zweit zu fahren, die neuen Signalregeln und das Parkieren in Begegnungs- und Fussgängerzonen. Die Definition unterscheidet seither 20 km/h ohne Sitz und 25 km/h mit Sitz; für Stehmodelle blieb es bei 20 km/h.',
+        '**Was ändert sich 2026?** Seit dem 1. Juli 2026 kostet es CHF 30.–, links an einer Verkehrsinsel vorbeizufahren; sonst trat bis zum 30. Oktober 2026 keine neue Bundesregel für E-Trottinette in Kraft. Wer über die Grenze fährt, findet die deutschen Regeln unter [E-Scooter-Regeln in Deutschland](guide:german-rules). In der Schweiz stehen zur Debatte:',
         {
           list: [
-            '**Helm:** Eine Vernehmlassung ist in Aussicht gestellt, Entwurf und Datum fehlen noch (siehe oben).',
-            '**Kontrollschild und Versicherung:** Eine Motion vom 15. Juni 2026 verlangt beides. Der Bundesrat beantragte am 19. August die Ablehnung, das Parlament hat noch nicht entschieden.',
-            '**Frisieren:** Der Bundesrat will die Regeln gegen Tuning präzisieren; ein Entwurf fehlt noch.',
-            '**Zug:** Die Gewerkschaft SEV fordert eine Billettpflicht für E-Trottinette; die SBB-Regel gilt unverändert.',
-            '**Zürich:** Die Stadt will die Sharing-Fahrzeuge per Ausschreibung von 7350 auf 3000 reduzieren, mit drei Anbietern und festen Stationen im Zentrum; ein Startdatum steht nicht fest. Mehr dazu im Ratgeber [E-Trottinett in Zürich](guide:zurich).',
+            '**Helm:** Eine Vernehmlassung ist in Aussicht gestellt, einen Entwurf gibt es nicht (siehe oben).',
+            '**Kontrollschild und Versicherung:** Eine Motion vom 15. Juni 2026 verlangt beides. Der Bundesrat beantragte am 19. August die Ablehnung; der Nationalrat hat sie bis zum 30. Oktober nicht behandelt.',
+            '**Frisieren:** Der Bundesrat will die Regeln gegen Tuning präzisieren (Februar 2026); ein Entwurf fehlt noch.',
+            '**Zug:** Das Zugpersonal im SEV wünscht sich klarere Regeln für Velos und Trottinette (Juni 2026).',
+            '**Zürich:** Der Stadtrat will die Sharing-Fahrzeuge per Ausschreibung von 7350 auf 3000 senken, mit drei Anbietern und festen Stationen im Zentrum (Gemeinderat, 26. August 2026); ein offizielles Startdatum gibt es nicht. Mehr dazu im Ratgeber [E-Trottinett in Zürich](guide:zurich).',
           ],
         },
       ],
@@ -201,12 +201,18 @@ const guide: Guide = {
     { title: 'Fedlex: Verordnung über die technischen Anforderungen an Strassenfahrzeuge (VTS), SR 741.41', url: 'https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de' },
     { title: 'Fedlex: Verkehrszulassungsverordnung (VZV), SR 741.51', url: 'https://www.fedlex.admin.ch/eli/cc/1976/2423_2423_2423/de' },
     { title: 'Fedlex: Ordnungsbussenverordnung (OBV) mit Bussenliste, SR 314.11', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
+    { title: 'Fedlex: Ordnungsbussengesetz (OBG), SR 314.1', url: 'https://www.fedlex.admin.ch/eli/cc/2017/725/de' },
     { title: 'Fedlex: Verordnung der Bundesversammlung über Alkoholgrenzwerte im Strassenverkehr, SR 741.13', url: 'https://www.fedlex.admin.ch/eli/cc/2015/493/de' },
+    { title: 'Fedlex: Geplante Vernehmlassung «Teilrevision von sieben Verordnungen des Strassenverkehrsrechts»', url: 'https://www.fedlex.admin.ch/eli/dl/proj/2026/81/cons_1/de' },
     { title: 'ASTRA: Bedeutung der Radverkehr-Signalisation, gültig ab 1. Juli 2025 (PDF)', url: 'https://www.astra.admin.ch/dam/de/sd-web/3LsKt7R6x8DU/bedeutung-radverkehr-signalisation.pdf' },
     { title: 'BFU: Faktenblatt zu den Regeln für E-Trottinett und andere elektrische Fahrzeuge (PDF)', url: 'https://www.bfu.ch/media/fffpzk2f/bfu_factsheet_e-langsamverkehr_regeln.pdf' },
     { title: 'Curia Vista: Motion 26.3637 «Immatrikulations- und Haftpflichtversicherungspflicht für E-Trottinette»', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
     { title: 'Curia Vista: Motion 26.3010 «Helmpflicht und Führerausweis für E-Roller und ähnliche Trendfahrzeuge»', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263010' },
     { title: 'SBB: Velo als Handgepäck', url: 'https://www.sbb.ch/de/reiseinformationen/individuelle-beduerfnisse/reisen-mit-velos/velo-als-handgepaeck.html' },
+    { title: 'SEV: «Zugpersonal unter Druck», Delegiertenversammlung des Zugpersonals vom 10. Juni 2026', url: 'https://sev-online.ch/de/aktuell/kontakt.sev/2026/zugpersonal-unter-druck-202608-146425/' },
+    { title: 'Kantonspolizei Freiburg: Beschlagnahmung eines Trottinetts, 27. April 2026', url: 'https://www.fr.ch/de/sjsd/pol/news/beschlagnahmung-eines-trottinetts-das-die-zulaessige-hoechstgeschwindigkeit-deutlich-ueberschritten-hat' },
+    { title: 'Stadt Zürich: Weisung GR Nr. 2025/210 des Stadtrats zur Sharing-Mikromobilität, 4. Juni 2025 (PDF)', url: 'https://www.gemeinderat-zuerich.ch/dokumente/9c8a7ffaed6e4f3ca6234611a78f2946-332' },
+    { title: 'Gemeinderat Zürich: Protokoll der Sitzung vom 26. August 2026 (PDF)', url: 'https://www.gemeinderat-zuerich.ch/dokumente/d2565cda09634f2fbdfc8e781ba347a4-332' },
   ],
 };
 
