@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Rome?',
       blocks: [
-        'Only operators authorised by the city may rent out e-scooters in Rome, and as of October 2026 there are three: **Bird**, **Dott** and **Lime**, according to the city’s transport agency, Roma Servizi per la Mobilità. Dott and Lime also rent e-bikes.',
-        'At 1:26 pm on Saturday 24 October 2026 the [map around Rome](map:it:Roma) showed about 4,200 Bird scooters and as many Dott, which the map has shown since that day. Since Sunday 25 October it also shows Lime’s, read from the map in its app: about 4,300 at around 4 pm that day. These are snapshots, not the fleets.',
+        'Only operators authorised by the city may rent out e-scooters in Rome, and on 30 October 2026 there were three: **Bird**, **Dott** and **Lime**, according to the city’s transport agency, Roma Servizi per la Mobilità. Dott and Lime also rent e-bikes.',
+        'At 1:36 pm on Friday 30 October 2026 the [map around Rome](map:it:Roma) showed about 4,100 Bird and 4,000 Dott scooters free to rent at that moment, and about 4,300 Lime as last counted.',
         'The old centre has few by design: each operator may keep only 30 scooters in the Tridente, around Piazza del Popolo, Via del Corso and Piazza di Spagna, 300 in the historic-centre ZTL and 70 in Trastevere. If the map looks empty, walk a few streets out.',
       ],
     },
@@ -40,7 +40,7 @@ const guide: Guide = {
     {
       heading: 'What does an e-scooter cost in Rome?',
       blocks: [
-        'You usually pay an unlock fee plus a price per minute, but no operator publishes its Rome rates on the web, and Bird’s data feed carries none, so the map can’t estimate a price here.',
+        'You usually pay an unlock fee plus a price per minute, but no operator publishes its Rome rates on the web, and the map shows no price for Rome: check it in the app before you unlock.',
         {
           table: {
             caption: 'E-scooter prices in Rome, as the operators describe them (October 2026)',
@@ -52,7 +52,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Prices quoted online for Rome often date from 2020: trust the unlock screen. The free rides you may read about are only for annual Metrebus pass holders, not for the 24-, 48- and 72-hour or weekly tickets visitors buy.',
+        'Prices quoted online for Rome are often years old: trust the unlock screen. The free ride packages you may read about (Dott’s costs a cent) are only for annual Metrebus pass holders, not for the 24-, 48- and 72-hour or weekly tickets visitors buy.',
       ],
     },
     {
@@ -77,13 +77,13 @@ const guide: Guide = {
             ],
           },
         },
-        'Police in Rome do check: in the week the sticker became compulsory, in May 2026, they stopped more than 1,000 vehicles and found more than 400 violations, mostly riders without a helmet, Wanted in Rome reported. Pay within 5 days and a fine is usually cut by 30%.',
+        'Police in Rome do check: in just over a week from 16 May 2026, as the sticker became compulsory, they stopped more than 1,000 vehicles and found more than 400 violations, mostly riders without a helmet, Wanted in Rome reported. Pay within 5 days and a fine is usually cut by 30%.',
       ],
     },
     {
       heading: 'Where you can’t end a ride: the Colosseum, Trevi and St Peter’s',
       blocks: [
-        'A rental in Rome ends only where the operator allows it; anywhere else the app won’t close it, and you keep paying. Bird’s zone data, read on 12 October 2026, marks almost 150 no-parking zones you may ride through. Dott and Lime draw their own, which may differ, and zones change: the map in your app is the reference.',
+        'A rental in Rome ends only where the operator allows it; anywhere else the app won’t close it, and you keep paying. On 12 October 2026 Bird had almost 150 no-parking zones you may ride through; they show on the [map](map:it:Roma) when you zoom in. Dott and Lime draw their own, which may differ, and zones change: the map in your app is the reference.',
         {
           table: {
             caption: 'Where you couldn’t end a Bird ride on 12 October 2026 (Bird’s data)',
@@ -122,14 +122,14 @@ const guide: Guide = {
         '**Hills.** The Aventine, the Esquiline, the Janiculum and the Pincio slow a scooter down on the way up; on the way down, brake early, as the limit is still 20 km/h.',
         '**The Tiber.** The cycle path along the embankments is a popular ride, but you can’t end a Bird ride down there. After floods in late February 2026, mud blocked the stretch between Ponte Sisto and Ponte Garibaldi, and dozens of scooters were left there.',
         '**Airports.** Fiumicino and Ciampino are outside Bird’s operating area, and e-scooters may not use extra-urban roads anyway. Take the train or bus into town; Termini is inside Bird’s area. The Appia Antica around Cecilia Metella is outside it too, and Ostia has a separate Bird area.',
-        '**Other ways around.** Dott and Lime e-bikes (their permits end on 31 October 2026, with nothing announced yet about what follows), Cooltra mopeds, and the ATAC metro, buses and trams.',
+        '**Other ways around.** Dott and Lime e-bikes (their permits end on 31 October 2026, and no extension had been announced by 30 October), Cooltra mopeds, and the ATAC metro, buses and trams.',
       ],
     },
     {
       heading: 'Rome’s new e-scooter tender: what may change in 2027',
       blocks: [
-        'The permits ran out on 31 August 2026. Since then Bird, Dott and Lime have operated on a technical extension lasting, in the city’s words, the period strictly necessary to choose the next operators; the press gives its end as 31 October 2026, the day the e-bike permits end. As of 12 October, nothing had been announced about what happens after that.',
-        'Operators can apply until **26 October 2026 at 15:00**. Rome will pick up to three e-scooter operators for three years, each running 3,000 to 4,500 scooters, and the winners will have up to 150 days from their permit to start, so the line-up may change in 2027. Helmets on board may come too: the tender awards points for an app-unlocked helmet box on every scooter, but no winner has to offer one.',
+        'The permits ran out on 31 August 2026. Since then Bird, Dott and Lime (back from 6 September, after a suspension) have operated on a technical extension lasting, in the city’s words, the period strictly necessary to choose the next operators; the press gives its end as 31 October 2026, the day the e-bike permits end. As of 30 October, nothing had been announced about what happens after that.',
+        'The city has extended the deadline for applications to **2 November 2026 at 15:00**. Rome will pick up to three e-scooter operators for three years, each running 3,000 to 4,500 scooters, and the winners will have up to 150 days from their permit to start, so the line-up may change in 2027. Helmets on board may come too: the tender awards points for an app-unlocked helmet box on every scooter, but no winner has to offer one.',
       ],
     },
     {
@@ -172,6 +172,9 @@ const guide: Guide = {
     { title: 'Roma Servizi per la Mobilità: selection of shared micromobility operators, 2026 tender (Italian)', url: 'https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/' },
     { title: 'Turismo Roma: helmets and identification plates mandatory on shared scooters too', url: 'https://www.turismoroma.it/en/news/electric-scooters-helmets-and-identification-plate-mandatory-shared-vehicles-too' },
     { title: 'Turismo Roma: shared scooters park only in authorised areas (Italian)', url: 'https://turismoroma.it/it/node/81426' },
+    { title: 'Moto.it: Rome extends shared scooters to 31 October 2026, 1 September 2026 (Italian)', url: 'https://www.moto.it/news/roma-proroga-di-due-mesi-ai-monopattini-in-sharing.html' },
+    { title: 'Wanted in Rome: Rome police get tough with electric scooter riders as new rules kick in', url: 'https://www.wantedinrome.com/news/rome-police-get-tough-with-electric-scooter-riders-as-new-rules-kick-in.html' },
+    { title: 'SicurAUTO: stickers stripped from shared scooters in Rome, 4 June 2026 (Italian)', url: 'https://www.sicurauto.it/news/codice-della-strada/disastro-annunciato-targhe-monopattini-in-sharing-a-roma-furti-continui/' },
     { title: 'Bird: geofencing zones for Rome (public GBFS data)', url: 'https://mds.bird.co/gbfs/v2/public/rome/geofencing_zones.json' },
     { title: 'Italian Law 160/2019, art. 1, paragraphs 75 ff.: the e-scooter rules (Normattiva, Italian)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
     { title: 'Dott: terms and conditions for Italy (Italian)', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
