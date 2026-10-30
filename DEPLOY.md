@@ -279,10 +279,14 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
   which asks Cloudflare and Quad9 before netcup's resolvers: those answered
   SERVFAIL for `data.lillemetropole.fr`, Lille's parking inventory, from
   11 October 2026.
-- Coolify HTTP health check: `http://127.0.0.1:3001/health` every 2 seconds,
+- Coolify command health check:
+  `wget -q -O /dev/null http://127.0.0.1:3001/health` every 2 seconds,
   5-second timeout, 10 retries, 60-second start period. Use the IPv4 address
-  because the server binds to `0.0.0.0`. Stop grace period: 60 seconds
-  (Advanced).
+  because the server binds to `0.0.0.0`. A command since 30 October 2026:
+  Coolify's HTTP type runs curl first, which the image lacks, so every check
+  logged "curl: not found" before its wget fallback passed. Coolify accepts
+  only letters, digits, spaces and `-_./:=@,+` in the command. Stop grace
+  period: 60 seconds (Advanced).
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
   `http://127.0.0.1:80`, routed by Coolify's proxy.
 
