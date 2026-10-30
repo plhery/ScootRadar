@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Tenerife?',
       blocks: [
         'This guide, like our map, covers shared e-scooters: the stand-up kind you find on the street, unlock with an app and pay for by the minute. It doesn’t cover mobility scooters or mopeds, though most searches for “scooter hire” in Tenerife turn them up.',
-        'As of 24 October 2026, our map shows four operators in the south:',
+        'On 30 October 2026, our map showed four operators in the south:',
         {
           list: [
             '**Hoppy**, a Belgian brand, from Los Cristianos to Costa Adeje. In Spain your contract is with Hoppylectrico S.L. of Elche.',
@@ -26,9 +26,9 @@ const guide: Guide = {
             '**Hopp**, an Icelandic brand run here by a local franchise, on almost the same strip, plus a small separate area in **Golf del Sur**, further east in San Miguel de Abona.',
           ],
         },
-        'At 12:26 local time on 24 October 2026 the [map of Playa de las Américas](map:es:Playa de las Américas) showed about 1,000 Hoppy, 500 Dott, 370 Bird and 30 Hopp scooters, and the [map of Golf del Sur](map:es:Golf del Sur) another 16 Hopps: a snapshot, not fleet sizes.',
-        'Adeje now requires rental firms to hold a municipal licence (see below). We found no licence scheme, tender or fleet cap published in Arona or San Miguel de Abona.',
-        'Dott has also run in Santa Cruz, the capital, since 2024, free for registered residents according to the city (January 2025); at the same moment the [map of Santa Cruz](map:es:Santa Cruz de Tenerife) showed about 130 Dotts. ISLA Ride, launched in December 2025, advertises e-scooters in Tenerife but publishes neither its towns nor its prices, so it isn’t on our map.',
+        'At 08:27 local time on 30 October 2026 the [map of Playa de las Américas](map:es:Playa de las Américas) showed about 980 Hoppy, 530 Dott, 470 Bird and 30 Hopp scooters free to rent at that moment, not the whole fleet, and the [map of Golf del Sur](map:es:Golf del Sur) another 16 Hopps.',
+        'Adeje’s new traffic ordinance will require rental firms to hold a municipal licence once it takes effect (see below).',
+        'Dott also runs in Santa Cruz, the capital, free for registered residents, the city said in January 2025; at that moment the [map of Santa Cruz](map:es:Santa Cruz de Tenerife) showed about 150 Dotts. ISLA Ride, whose app came out in December 2025, rents e-scooters in Tenerife but publishes neither its towns nor its prices; it isn’t on our map.',
       ],
     },
     {
@@ -37,7 +37,7 @@ const guide: Guide = {
         'Hoppy’s price depends on the scooter model; Dott and Bird publish none for Tenerife, so check the app before you unlock.',
         {
           table: {
-            caption: 'E-scooter prices in the south of Tenerife (published rates, 14 October 2026)',
+            caption: 'E-scooter prices in the south of Tenerife (published rates, 30 October 2026)',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes', 'Where your ride ends'],
             rows: [
               ['Hoppy', '€1', '€0.35–0.37', '€4.50–4.70', '€8.00–8.40', 'Only at one of its parking spots'],
@@ -48,7 +48,7 @@ const guide: Guide = {
           },
         },
         'You pay for every minute the scooter is unlocked, moving or not; the app has the final price. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
-        'For a whole day of sightseeing the bus is cheaper. TITSA’s one-day tourist pass costs €10 (plus €2 for the ten+ card) for 24 hours of unlimited buses and trams; 40 minutes on a Hopp cost €10.95.',
+        'For a whole day of sightseeing the bus is cheaper. A one-day pass costs €10 (plus €2 for the ten+ card) for 24 hours of unlimited TITSA buses and trams; 40 minutes on a Hopp cost €10.95.',
       ],
     },
     {
@@ -56,16 +56,16 @@ const guide: Guide = {
       blocks: [
         'Arona, the municipality that covers Los Cristianos and Playa de las Américas, has banned bikes, segways and scooters on 98 promenades and pedestrian streets since 2016. They include the seafront between Los Cristianos and Las Américas (Paseo Marítimo, Paseo de Las Vistas and Paseo Francisco Andrade Fumero), the pedestrian old town of Los Cristianos, and the promenades of Palm-Mar and Las Galletas.',
         { note: 'Bird and Hopp leave the seafront open; Hoppy slows you to 12 km/h on most of it and blocks two short stretches. The police still stop you: walk the scooter there, or use the road.' },
-        'Arona’s police do check. They removed 5,259 scooters from the town’s streets in 2024, and in one operation in April 2026 they filed 92 reports and immobilised 81 scooters, for riding in pedestrian areas, missing the compulsory registration and parking where it isn’t allowed. The fines go to the rental companies, which can pass them on to you.',
-        'In Costa Adeje, the town hall tells riders to keep off pavements and pedestrian zones, and to get off and walk across zebra crossings. Its new traffic ordinance, published in full in the provincial bulletin on 9 September 2026, makes this law: every promenade counts as a pedestrian zone, closed to scooters, and riding across a zebra crossing as reckless. Rental firms need a municipal licence and must share each scooter’s position live. It takes effect 15 working days after the state and regional governments are notified, a date the town hasn’t published.',
+        'Arona’s police do check: in one operation in April 2026 they filed 92 reports and immobilised 81 scooters, for riding in pedestrian areas, missing the compulsory registration and parking where it isn’t allowed. Dott’s terms for Spain, for one, make the rider pay any fine and let Dott give the police your name.',
+        'In Costa Adeje, the town hall tells riders to keep off pavements and pedestrian zones, and to get off and walk across zebra crossings. Its new traffic ordinance, published in full in the provincial bulletin on 9 September 2026, will make this law: every promenade will count as a pedestrian zone, closed to scooters, and riding across a zebra crossing as reckless. Rental firms will need a municipal licence and must share each scooter’s position live. It takes effect 15 working days after the state and regional governments are notified, a date the town hasn’t published.',
       ],
     },
     {
       heading: 'Where to park: Hoppy’s and Bird’s spots, Hopp’s zones',
       blocks: [
-        '**Hoppy.** A ride can start and end only at one of its parking spots, about 270 along the coast in its open data.',
+        '**Hoppy.** A ride can start and end only at one of its parking spots, about 270 along the coast.',
         '**Bird.** It uses fixed parking spots across its whole area: a ride can end only at one of those shown in the app (its open data lists 199). Find the nearest one before you set off: you pay until the ride ends.',
-        '**Hopp.** Park anywhere sensible inside its two areas, off the promenade and out of pedestrians’ way, then take the end-of-ride photo. In a few zones in the upper part of Costa Adeje, around San Eugenio Alto for example, you can ride through but can’t start or end a ride, and riding is banned in three small zones, among them the Puerto Colón marina. Check the app’s map.',
+        '**Hopp.** Park anywhere sensible inside its two areas, off the promenade and out of pedestrians’ way, then take the end-of-ride photo. In a few zones in the upper part of Costa Adeje, around San Eugenio Alto for example, you can ride through but can’t start or end a ride, and riding is banned in three small zones, among them the Puerto Colón marina. Check the app’s map; ours draws Hopp’s and Hoppy’s zones too.',
         {
           table: {
             caption: 'What the operators charge in Spain for bad parking and other breaches (their terms, October 2026)',
@@ -121,7 +121,7 @@ const guide: Guide = {
         {
           list: [
             '**The promenades closed before Spain had a scooter law.** Arona’s ban dates from 2016; Spain first defined the e-scooter in law in a decree that took effect in January 2021.',
-            '**In Arona, almost every scooter the police seize is a rental.** After the April 2026 operation, the Canary public broadcaster RTVC put the share at 99.9%.',
+            '**Arona’s scooter removals have dropped sharply.** The police removed 5,259 in 2024 and 373 in 2025 up to 23 July; the town hall partly credits tighter checks and talks with the operators.',
             '**The Hopps in Las Américas come from Iceland.** Hopp started in Reykjavík in 2019 and grew through franchises; Hopp Tenerife’s open data gives its start date as 28 March 2022.',
           ],
         },
@@ -131,11 +131,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'What is the best e-scooter app in Tenerife?',
-      answer: 'There isn’t one app for all: Hoppy, Dott, Bird and Hopp each have their own, and you need the one whose scooter you want to ride. Hopp’s published price is the lowest, and it lets you park anywhere sensible in its areas; Hoppy’s and Bird’s rides end only at their parking spots. [Our map](map:es:Playa de las Américas) shows all four, and a button opens the right app. In Santa Cruz, it’s Dott.',
+      answer: 'There isn’t one app for all: Hoppy, Dott, Bird and Hopp each have their own. Hopp’s published price is the lowest, and it lets you park anywhere sensible in its areas; Hoppy’s and Bird’s rides end only at their parking spots. [Our map](map:es:Playa de las Américas) shows all four, and a button opens the right app. In Santa Cruz, it’s Dott.',
     },
     {
       question: 'How much are Hoppy and Hopp scooters in Tenerife?',
-      answer: 'Hoppy, from Belgium, charges €1 to unlock plus €0.35–0.37 a minute: 10 minutes cost €4.50–4.70. Hopp, a different company from Iceland, charges €0.95 plus €0.25 a minute: €3.45 for 10 minutes. Both as published on 14 October 2026.',
+      answer: 'Hoppy, from Belgium, charges €1 to unlock plus €0.35–0.37 a minute: 10 minutes cost €4.50–4.70. Hopp, a different company from Iceland, charges €0.95 plus €0.25 a minute: €3.45 for 10 minutes. Both as published on 30 October 2026.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Tenerife?',
@@ -155,11 +155,14 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'DGT: personal mobility vehicles (VMP), updated 8 October 2026 (Spanish)', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: personal mobility vehicles (VMP), updated 29 October 2026 (Spanish)', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'BOE: Royal Decree 518/2026, amending the traffic regulations, in force from 1 October 2026 (Spanish)', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
     { title: 'Arona Town Hall: the 2016 ban on 98 promenades and pedestrian streets (PDF, Spanish)', url: 'https://www.arona.org/Portals/0/documentos/0_37129_1.pdf' },
     { title: 'Arona Town Hall: scooters removed in 2024 and 2025, 23 July 2025 (Spanish)', url: 'https://www.arona.org/Tu-Ayuntamiento/Prensa/Noticias/ctl/Ver/mid/422?id=92916' },
     { title: 'Arona Town Hall: 92 scooters reported and 81 immobilised, 6 April 2026 (Spanish)', url: 'https://www.arona.org/Tu-Ayuntamiento/Prensa/Noticias/ctl/Ver/mid/422?id=94385' },
     { title: 'Provincial bulletin (BOP) of Santa Cruz de Tenerife: Adeje’s traffic ordinance, full text, 9 September 2026 (PDF, Spanish)', url: 'https://www.bopsantacruzdetenerife.es/boletines/2026/9-9-26/a9-9-26.pdf' },
+    { title: 'RTVC/EFE: Dott free for residents of Santa Cruz de Tenerife, 6 January 2025 (Spanish)', url: 'https://rtvc.es/patinetes-gratuitos-para-residentes-en-santa-cruz-de-tenerife/' },
+    { title: 'ISLA Ride on the App Store (Spanish)', url: 'https://apps.apple.com/es/app/isla-ride/id6756137443' },
     { title: 'Hoppy: open data for Tenerife Sur (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1193/v3.0/gbfs' },
     { title: 'Hopp: locations and prices', url: 'https://hopp.bike/locations' },
     { title: 'Bird: open data for the south of Tenerife (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json' },
@@ -167,6 +170,7 @@ const guide: Guide = {
     { title: 'Dott: terms and conditions for Spain', url: 'https://ridedott.com/terms-and-conditions/spain/' },
     { title: 'TITSA: buses to Tenerife South airport (Spanish)', url: 'https://titsa.com/index.php/tenerife-en-guagua/lineas-de-aeropuertos/aeropuerto-tenerife-sur' },
     { title: 'Metrotenerife: tram user guide (Spanish)', url: 'https://metrotenerife.com/guia-del-usuario/' },
+    { title: 'Metrotenerife: tickets and fares, the one-day pass and the ten+ card', url: 'https://metrotenerife.com/en/tickets-fares/' },
     { title: 'AEMET: climate normals at Tenerife South airport (Spanish)', url: 'https://www.aemet.es/es/serviciosclimaticos/datosclimatologicos/valoresclimatologicos?l=C429I&k=coo' },
   ],
 };
