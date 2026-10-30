@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Electric scooter Oslo 2026: rental prices, curfew and rules',
   description: 'Rent an e-scooter in Oslo from Bolt, Ryde or Voi: NOK 10–10.90 to unlock, NOK 2.50 a minute, age 16, the 11 pm to 5 am curfew and where you can’t ride or park.',
   headline: 'E-scooters in Oslo: operators, prices, the night curfew and where to ride',
-  lede: 'To rent an e-scooter in Oslo, use the app of Bolt, Ryde or Voi, the three companies with city permits, or Ruter’s public transport app. Unlocking costs NOK 10 (NOK 10.90 with Ryde), then NOK 2.50 a minute, so ten minutes come to about NOK 35 (published rates on 12 October 2026). You must be 16 to rent from any of them, and nobody can rent between 11 pm and 5 am. Many squares, parks and stations ban riding or parking, and bad parking can cost NOK 900.',
+  lede: 'To rent an e-scooter in Oslo, use the app of Bolt, Ryde or Voi, the three companies with city permits, or Ruter’s public transport app. Unlocking costs NOK 10 (NOK 10.90 with Ryde), then NOK 2.50 a minute, so ten minutes come to about NOK 35 (published rates on 30 October 2026). You must be 16 to rent from any of them, and nobody can rent between 11 pm and 5 am. Many squares, parks and stations ban riding or parking, and bad parking can cost NOK 900.',
   published: '2026-10-13',
   updated: '2026-10-17',
   city: 'no:Oslo',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Renting an e-scooter in Oslo: Bolt, Ryde and Voi',
       blocks: [
-        'Oslo grants e-scooter permits to three companies: **Bolt, Ryde and Voi**. All three have held permits since 2024; the current ones run for two years from 1 April 2025, so until spring 2027. Who rents scooters after that hasn’t been decided (October 2026); Dott says it will bid.',
-        'The city allows **16,000** small electric vehicles in all, rental e-bikes included, split equally: about 5,300 per company. At most 1,200 may stand inside Ring 1, the inner ring road around the centre. Riders made over 20 million trips in 2025, 80% more than the year before.',
-        'On 12 October 2026 the [map around Oslo](map:no:Oslo) showed about 15,000 Voi, Bolt and Ryde vehicles; its area reaches beyond the city limits, so that figure can’t be compared with the cap. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Oslo grants e-scooter permits to three companies: **Bolt, Ryde and Voi**. Their current permits run for two years from 1 April 2025, so until spring 2027. Who rents scooters after that hasn’t been decided (October 2026); Dott says it will bid.',
+        'The city allows **16,000** small electric vehicles in all, rental e-bikes included, split equally: about 5,300 per company. At most 1,200 may stand inside Ring 1, the inner ring road around the centre. Ruter counted 20.4 million rental e-scooter trips in 2025, up from 11.2 million the year before.',
+        'At 05:27 on 30 October 2026 the [map of Oslo](map:no:Oslo) showed about 14,900 e-scooters inside the city limits at that moment, not the whole fleet: about 5,100 Voi, 5,000 Bolt and 4,900 Ryde, each with its range and price. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Norwegian law sets the minimum age at 12, but each company sets its own, and the city tells you not to rent one if you’re under 15, or for anyone under 15.',
         {
           table: {
@@ -32,7 +32,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ruter still lists 15 for Ryde, but Ryde’s terms for Norway require 16 (17 October 2026). Bolt may ask for ID, and at peak times you must pass a short reaction test to unlock; Ryde tests riders on weekend evenings. On 5 October 2026 the government proposed raising the national minimum age to 16; it is **not law yet**.',
+        'Ruter still lists 15 for Ryde, but Ryde’s terms for Norway require 16 (30 October 2026). Bolt may ask for ID, and Ryde makes riders take a reaction test on weekend evenings. On 5 October 2026 the government proposed raising the national minimum age to 16; it is **not law yet**.',
       ],
     },
     {
@@ -41,7 +41,7 @@ const guide: Guide = {
         'You pay to unlock, then by the minute; the app shows the final price.',
         {
           table: {
-            caption: 'E-scooter prices in Oslo, published rates on 12 October 2026',
+            caption: 'E-scooter prices in Oslo, published rates on 30 October 2026',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi', 'NOK 10', 'NOK 2.50', 'NOK 35', 'NOK 60'],
@@ -50,7 +50,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bolt’s rate above comes from its own data feed; Ruter, though, lists Bolt as charging by the kilometre, so check the price in the Bolt app before you unlock. An average Oslo ride lasts about seven minutes and costs about NOK 27.50 with Voi or Bolt. Riding a lot? Voi sells minute packs and a Voi Pass, and Bolt has weekly and monthly passes, priced in the apps.',
+        'Ruter lists Bolt as charging by the kilometre, but Bolt itself publishes the minute rate above, so check the price in the Bolt app before you unlock. An average Oslo ride lasts about seven minutes and costs about NOK 27.50 with Voi or Bolt. Riding a lot? Voi sells minute packs and a Voi Pass, and Bolt has weekly and monthly passes, priced in the apps.',
         '**The Ruter app**, Oslo’s public transport app, unlocks all three brands and Oslo City Bike. You pay ride by ride, at the same price as in each company’s app, but their passes don’t work there.',
       ],
     },
@@ -59,7 +59,7 @@ const guide: Guide = {
       blocks: [
         'No new rentals: you can’t rent an e-scooter in Oslo between **11 pm and 5 am**, every night, weekends included. The city government may shorten or lift this curfew, but hadn’t as of October 2026.',
         'The curfew began in September 2021, and in its first month scooter injuries recorded at night fell to 8, from just under 100 in August.',
-        'Neighbouring municipalities set their own hours. According to Ruter, Ryde and Voi run around the clock in [Bærum](map:no:Bærum), west of Oslo, and in Lørenskog and Lillestrøm you can rent all night on most weeknights. In Oslo itself, Oslo City Bike runs until 1 am.',
+        'Neighbouring municipalities set their own hours. According to Ruter, Ryde and Voi run around the clock in [Bærum](map:no:Bærum), west of Oslo (though Voi lists a break from midnight to 5 am on Saturday nights), and in Lørenskog and Lillestrøm you can rent all night on most weeknights.',
         '**Constitution Day (17 May) and big events:** the city can switch scooters off in the centre. For the World Cup quarter-final between Norway and England on 11 July 2026, riding was banned from Jernbanetorget to Uranienborg and from Tjuvholmen to Hausmannskvartalet, the same zones as on 17 May. The app shows the zones each time.',
       ],
     },
@@ -128,7 +128,7 @@ const guide: Guide = {
             '**Tram rails:** cross them as close to a right angle as you can, so the wheel can’t drop into the groove.',
             '**Oslo S, T-bane and trams:** end your ride a little way off, since parking is banned at stations and stops. Riding is banned in front of Oslo S, so walk the scooter around it.',
             '**Hills:** the climbs to St. Hanshaugen, Ekeberg and Holmenkollen are steep, and Marka is closed to rental scooters.',
-            '**Oslo Airport, Gardermoen:** it lies outside Ruter’s scooter area, and no shared e-scooter service publishes data there. Take Flytoget, the Airport Express Train, to Oslo S, then find the nearest scooter on the [map of Oslo](map:no:Oslo).',
+            '**Oslo Airport, Gardermoen:** it lies outside Ruter’s scooter area, and the map shows no scooters there. Take Flytoget, the Airport Express Train, to Oslo S, then find the nearest scooter on the [map of Oslo](map:no:Oslo).',
           ],
         },
       ],
@@ -136,7 +136,7 @@ const guide: Guide = {
     {
       heading: 'Oslo City Bike: the alternative after 11 pm',
       blocks: [
-        'Oslo City Bike (Oslo Bysykkel) has 266 stations and runs all year from 5 am to 1 am, two hours longer than the scooters; in winter there are fewer bikes, with studded tyres. You must be 18. Prices as of October 2026:',
+        'Oslo City Bike (Oslo Bysykkel) has 267 stations (30 October 2026) and runs all year from 5 am to 1 am, two hours longer than the scooters; in winter there are fewer bikes, with studded tyres. You must be 18. Prices as of October 2026:',
         {
           list: [
             '**Single trip:** NOK 8 to unlock, then NOK 1 a minute on a regular bike (blue) or NOK 2 on an e-bike (white), plus a one-time NOK 3 registration fee.',
@@ -151,7 +151,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Nine brands were shut out in one day.** When Oslo first picked its operators, on 31 March 2022, Dott, Lime, Bird and Ryde were among the nine that lost out. Ryde was back by 2024.',
+            '**Nine brands were shut out in one day.** When Oslo first picked its operators, on 31 March 2022, Dott, Lime, Bird and Ryde were among the nine that lost out. Ryde has held a permit again since April 2025.',
             '**The city can switch the centre off.** For King Harald’s funeral on 9 September 2026, scooters stopped working in the central pedestrian zone until 9 pm.',
             '**Most pedestrians hit were on the pavement.** Of 31 pedestrians hit by e-scooters in Oslo in 2023, more than half were on the pavement.',
           ],
@@ -193,6 +193,8 @@ const guide: Guide = {
     { title: 'Norwegian Public Roads Administration: traffic rules for electric scooters', url: 'https://www.vegvesen.no/en/traffic-information/traffic-safety/norwegian-traffic-rules/traffic-rules-for-electric-scooters/' },
     { title: 'Lovdata: on-the-spot fines in road traffic (Norwegian)', url: 'https://lovdata.no/dokument/SF/forskrift/1990-06-29-492' },
     { title: 'Norwegian Public Roads Administration: e-scooter injuries in Oslo, January 2026 (Norwegian)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
+    { title: 'Ruter: how we travelled in 2025 (annual report, Norwegian)', url: 'https://ruter.no/rapporter/aarsrapport2025/aaret-2025/slik-reiste-vi-i-2025' },
+    { title: 'Bolt: terms for e-vehicles in Norway (from 1 December 2026)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Safety (reaction test on weekend evenings)', url: 'https://www.ryde-technology.com/safety' },
   ],
