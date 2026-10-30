@@ -124,7 +124,7 @@ const guide: Guide = {
           list: [
             '**Ryde:** minst 16 år, etter vilkårene for Norge (oktober 2026; i august 2026 var grensen 15 år). Kontoen er personlig, og Ryde kan kontrollere opplysningene dine. På kveldstid i helgene må du ta en reaksjonstest før turen, skriver Ryde.',
             '**Bolt:** fra 1. desember 2026 minst 16 år, etter Bolts nye vilkår for Norge. Hvilken grense som gjelder før det, ser du i appen. Bolt kan be om bilde av førerkortet eller annen legitimasjon, og for å låse opp i topptimer må du bestå en kognitiv reaksjonstest.',
-            '**Voi og Dott:** sjekk appen for aldersgrense og eventuell ID-kontroll.',
+            '**Dott:** 18 år, ifølge vilkårene for Norge. **Voi:** sjekk appen for aldersgrense og eventuell ID-kontroll.',
           ],
         },
         'Oslo kommune ber deg la være å leie hvis du er under 15 år, og ikke leie for noen andre som er under 15.',
@@ -182,7 +182,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må du være for å leie elsparkesykkel?',
-      answer: 'Loven sier 12 år, men operatørene setter egne grenser. Ryde krever 16 år, og Bolts vilkår for Norge krever 16 år fra 1. desember 2026. Oslo kommune ber alle under 15 la være å leie. Hos Voi og Dott ser du grensen i appen.',
+      answer: 'Loven sier 12 år, men operatørene setter egne grenser. Ryde krever 16 år, og Bolts vilkår for Norge krever 16 år fra 1. desember 2026. Oslo kommune ber alle under 15 la være å leie. Dott krever 18 år; hos Voi ser du grensen i appen.',
     },
     {
       question: 'Må bilene stoppe for meg i gangfeltet?',
@@ -202,6 +202,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Dott: Vilkår for Norge (23. september 2025)', url: 'https://ridedott.com/no/vilkar-betingelser/norge/' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
     { title: 'Statens vegvesen: Barn og elsparkesykkel', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/barn-og-elsparkesykkel/' },
     { title: 'Lovdata: Trafikkreglene (forskrift om kjørende og gående trafikk)', url: 'https://lovdata.no/dokument/SF/forskrift/1986-03-21-747' },

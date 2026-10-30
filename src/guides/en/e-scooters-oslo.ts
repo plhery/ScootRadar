@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Oslo grants e-scooter permits to three companies: **Bolt, Ryde and Voi**. Their current permits run for two years from 1 April 2025, so until spring 2027. Who rents scooters after that hasn’t been decided (October 2026); Dott says it will bid.',
         'The city allows **16,000** small electric vehicles in all, rental e-bikes included, split equally: about 5,300 per company. At most 1,200 may stand inside Ring 1, the inner ring road around the centre. Ruter counted 20.4 million rental e-scooter trips in 2025, up from 11.2 million the year before.',
-        'At 05:27 on 30 October 2026 the [map of Oslo](map:no:Oslo) showed about 14,900 e-scooters inside the city limits at that moment, not the whole fleet: about 5,100 Voi, 5,000 Bolt and 4,900 Ryde, each with its range and price. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 05:27 on 30 October 2026 the [map of Oslo](map:no:Oslo) showed about 14,900 e-scooters inside the city limits at that moment, not the whole fleet: about 5,100 Voi, 5,000 Bolt and 4,900 Ryde. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Norwegian law sets the minimum age at 12, but each company sets its own, and the city tells you not to rent one if you’re under 15, or for anyone under 15.',
         {
           table: {
@@ -32,7 +32,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ruter still lists 15 for Ryde, but Ryde’s terms for Norway require 16 (30 October 2026). Bolt may ask for ID, and Ryde makes riders take a reaction test on weekend evenings. On 5 October 2026 the government proposed raising the national minimum age to 16; it is **not law yet**.',
+        'Ruter still lists 15 for Ryde, but Ryde’s terms for Norway require 16 (30 October 2026). Bolt may ask for ID, and at peak times you must pass a reaction test to unlock; Ryde tests riders on weekend evenings. On 5 October 2026 the government proposed raising the national minimum age to 16; it is **not law yet**.',
       ],
     },
     {
@@ -195,6 +195,7 @@ const guide: Guide = {
     { title: 'Norwegian Public Roads Administration: e-scooter injuries in Oslo, January 2026 (Norwegian)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
     { title: 'Ruter: how we travelled in 2025 (annual report, Norwegian)', url: 'https://ruter.no/rapporter/aarsrapport2025/aaret-2025/slik-reiste-vi-i-2025' },
     { title: 'Bolt: terms for e-vehicles in Norway (from 1 December 2026)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Bolt: e-scooters in Norway, reaction test at peak times (Norwegian)', url: 'https://bolt.eu/no-no/scooters/' },
     { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Safety (reaction test on weekend evenings)', url: 'https://www.ryde-technology.com/safety' },
   ],
