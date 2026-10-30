@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Leie elsparkesykkel i Oslo: Bolt, Ryde og Voi',
       blocks: [
-        'Oslo kommune gir tillatelse til tre operatører, og i dag er det **Bolt, Ryde og Voi**. De tre har hatt tillatelse siden 2024, og dagens tillatelser varer i to år fra 1. april 2025, altså fram til våren 2027.',
-        'Kommunen tillater til sammen **16 000** små elektriske kjøretøy, elsykler til utleie medregnet, fordelt likt på de tre: rundt 5300 hver. Innenfor Ring 1 får det stå maks 1200 av dem. I 2025 ble det kjørt over 20 millioner turer, 80 prosent flere enn året før.',
-        'På [kartet rundt Oslo](map:no:Oslo) viste ScootRadar rundt 15 000 kjøretøy fra de tre 12. oktober 2026. Utsnittet går utover kommunegrensen, så tallet kan ikke sammenlignes med kommunens tak. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
+        'Oslo kommune gir tillatelse til tre operatører, og i dag er det **Bolt, Ryde og Voi**. Tillatelsene deres varer i to år fra 1. april 2025, altså fram til våren 2027.',
+        'Kommunen tillater til sammen **16 000** små elektriske kjøretøy, elsykler til utleie medregnet, fordelt likt på de tre: rundt 5300 hver. Innenfor Ring 1 får det stå maks 1200 av dem. I 2025 ble det kjørt 20,4 millioner leieturer, opp fra 11,2 millioner året før, ifølge Ruter.',
+        'På [kartet over Oslo](map:no:Oslo) sto det rundt 14 900 elsparkesykler innenfor kommunegrensen kl. 05.27 den 30. oktober 2026: rundt 5100 fra Voi, 5000 fra Bolt og 4900 fra Ryde. Det er det kartet viste akkurat da, ikke hele flåten. Kartet viser hvor hver sparkesykkel står, hvor langt den kommer, og hva den koster. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
         'Kommunen forbereder en ny tildeling for tiden etter våren 2027, og Dott sier at selskapet vil konkurrere om en plass. Hvem som får tillatelse, og hvor mange kjøretøy det blir, er ikke avgjort (oktober 2026).',
       ],
     },
@@ -28,16 +28,16 @@ const guide: Guide = {
         'Tabellen viser prisene operatørene publiserte, men den endelige prisen ser du i appen.',
         {
           table: {
-            caption: 'Priser for elsparkesykkel i Oslo, publisert 12. oktober 2026',
+            caption: 'Priser for elsparkesykkel i Oslo, publisert 30. oktober 2026',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter'],
             rows: [
               ['Voi', '10 kr', '2,50 kr', '35 kr', '60 kr'],
               ['Bolt', '10 kr', '2,50 kr', '35 kr', '60 kr'],
-              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr'],
+              ['Ryde', '10,90 kr', '2,50 kr', '33,40 kr', '58,40 kr'],
             ],
           },
         },
-        'En gjennomsnittstur i Oslo varer rundt sju minutter og koster dermed rundt 27,50 kr hos Voi og Bolt. Ruter oppgir kilometerpris for Bolt, mens Bolt selv publiserer minuttpris, så sjekk prisen i Bolt-appen før du låser opp.',
+        'En gjennomsnittstur i Oslo varer rundt sju minutter og koster dermed rundt 27,50 kr hos Voi og Bolt. Hos Ryde er det første minuttet med i opplåsingen. Ruter oppgir kilometerpris for Bolt, mens Bolt selv publiserer minuttpris, så sjekk prisen i Bolt-appen før du låser opp.',
         'Kjører du ofte, kan et pass lønne seg: Voi selger minuttpakker og Voi Pass, og Bolt har uke- og månedspass. Prisene står i appene.',
         'I **Ruter-appen** kan du låse opp sparkesykler fra alle tre og bysykler fra Oslo Bysykkel. Der betaler du per tur, til samme pris som i operatørens egen app, men pass og abonnement fra operatøren kan ikke brukes.',
       ],
@@ -58,7 +58,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ruter oppgir fortsatt 15 år for Ryde, men Rydes vilkår for Norge krever 16 år (17. oktober 2026). Bolts nye vilkår for Norge, som gjelder fra 1. desember 2026, krever også 16 år. Bolt kan be om legitimasjon, og i topptimer må du bestå en reaksjonstest for å låse opp. Ryde har reaksjonstest på kveldstid i helgene.',
+        'Ruter oppgir fortsatt 15 år for Ryde, men Rydes vilkår for Norge krever 16 år (30. oktober 2026). Bolts nye vilkår for Norge, som gjelder fra 1. desember 2026, krever også 16 år, og Bolt kan be om legitimasjon. Ryde har reaksjonstest på kveldstid i helgene.',
         'Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
       ],
     },
@@ -75,7 +75,7 @@ const guide: Guide = {
       heading: 'Hvor kan du kjøre? Kjøreforbud og saktesoner i Oslo',
       blocks: [
         'Kjør i sykkelfeltet eller på sykkelveien der det finnes, ellers i veibanen. På fortau, i gågater, i parker og på torg ber kommunen deg kjøre i gangfart eller trille. Du får ikke kjøre på motorvei, motortrafikkvei eller veier som er skiltet forbudt for syklende, som mange tunneler og noen bruer.',
-        'I tillegg har kommunen soner der sparkesykkelen selv setter ned farten eller ikke lar seg kjøre. Du ser dem i appen og i [kommunens kart over reguleringene](https://experience.arcgis.com/experience/e77cffa7119144f3bf9cb57c294cbcef). Noen eksempler, per oktober 2026:',
+        'I tillegg har kommunen soner der sparkesykkelen selv setter ned farten eller ikke lar seg kjøre. Du ser dem i appen og i [kommunens kart over reguleringene](https://experience.arcgis.com/experience/e77cffa7119144f3bf9cb57c294cbcef), og zoomer du inn på ScootRadar-kartet, viser det sonene Bolt, Ryde og Voi publiserer. Noen eksempler, per oktober 2026:',
         {
           list: [
             '**Kjøreforbud:** gravlunder som Vår Frelsers gravlund, Marka (også Sognsvann), taket og plassen ved Operaen, Botanisk hage på Tøyen, plassen foran Oslo S og skolegårder på hverdager.',
@@ -83,7 +83,7 @@ const guide: Guide = {
             '**Operatørenes egne soner:** Ryde har kjøreforbud på stadioner som Bislett og Ullevaal, Voi har kjøreforbud i Holmenkollen, og Bolt setter ned farten til 15 km/t på Aker Brygge.',
           ],
         },
-        'Sonene endres ofte, og kartet viser ikke alt, så sjekk appen før du kjører. Kommunens kart har ikke kjøreforbud på Karl Johans gate, men der den er gågate, kjører du i gangfart og aldri over 6 km/t.',
+        'Sonene endres ofte, og kommunens kart viser ikke alt, så sjekk appen før du kjører. Kommunens kart har ikke kjøreforbud på Karl Johans gate, men der den er gågate, kjører du i gangfart og aldri over 6 km/t.',
         'På fortauet er det lov å kjøre når det er lite folk og du ikke er til fare eller hinder, men forbi gående holder du gangfart, aldri over 6 km/t. Byrådet vil forby fortauskjøring så snart loven åpner for det, og Stortinget ba 13. januar 2026 regjeringen om å gi kommunene den muligheten. Forbudet er planlagt, men ikke innført (oktober 2026).',
       ],
     },
@@ -144,7 +144,7 @@ const guide: Guide = {
     {
       heading: 'Oslo Bysykkel: alternativet om kvelden og vinteren',
       blocks: [
-        'Oslo Bysykkel har 266 stasjoner og er åpen hele året fra kl. 05 til 01, to timer lenger enn sparkesyklene. Om vinteren er det færre sykler, og de har piggdekk. Du må ha fylt 18 år. Prisene per oktober 2026:',
+        'Oslo Bysykkel har 267 stasjoner (30. oktober 2026) og er åpen hele året fra kl. 05 til 01, to timer lenger enn sparkesyklene. Om vinteren er det færre sykler, og de har piggdekk. Du må ha fylt 18 år. Prisene per oktober 2026:',
         {
           list: [
             '**Enkelttur:** 8 kr for å låse opp, så 1 kr per minutt på en vanlig sykkel (blå) eller 2 kr per minutt på en elsykkel (hvit), pluss 3 kr i registreringsgebyr første gang.',
@@ -181,16 +181,18 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Lovdata: Oslos forskrift om utleie av små elektriske kjøretøy', url: 'https://lovdata.no/dokument/LF/forskrift/2024-11-20-2821' },
-    { title: 'Oslo kommune: Leie av elsparkesykler og elsykler', url: 'https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/' },
+    { title: 'Oslo kommune: Leie av elsparkesykler', url: 'https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/' },
     { title: 'Ruter: Åpningstider for elsparkesykler og bysykler', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/apningstider' },
     { title: 'Ruter: Operatører, priser og aldersgrenser', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/operatorer' },
     { title: 'Ruter: Kjør elsparkesykkel og bysykkel i appen', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/kjore-i-appen' },
     { title: 'Ruter: Parkering av elsparkesykkel', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/parkering' },
+    { title: 'Ruter: Slik reiste vi i 2025 (årsrapport)', url: 'https://ruter.no/rapporter/aarsrapport2025/aaret-2025/slik-reiste-vi-i-2025' },
     { title: 'Voi: Elsparkesykler i Oslo, priser og aldersgrense', url: 'https://www.voi.com/nb/by/oslo' },
     { title: 'Bolt: Vilkår for elektriske kjøretøy i Norge (fra 1. desember 2026)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Oslo Bysykkel: priser og åpningstider', url: 'https://oslobysykkel.no/' },
     { title: 'Statens vegvesen: Flere skader seg på elsparkesykkel i Oslo (januar 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
   ],
 };
 
