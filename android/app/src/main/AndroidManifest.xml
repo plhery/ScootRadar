@@ -11,10 +11,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- Android 12 has no App languages setting to read localeConfig: AppCompat keeps the app's language there.
-         Backups take the settings and that language only (LOG-298). -->
+         Backups take the settings and that language only (LOG-298). Back is predictive from Android 13, as it is by
+         default from 16 (X-AD02): a sheet follows the gesture down as an iPhone's follows a swipe, and Back with
+         nothing open shows the home screen coming. -->
     <application
         android:name=".app.ScooterApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
