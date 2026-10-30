@@ -255,10 +255,12 @@ fun ScooterMapScreen(
             LocalLocationSettings provides locationSettings,
         ) {
             // The keys reach the screen before what has the focus in it, as a key command reaches the window before
-            // the field being typed in; with nothing focused, the activity hands them over.
+            // the field being typed in; with nothing focused, the activity hands them over. A mouse's right click
+            // reaches nothing in it, the map included, as on an iPad (X-AD22).
             BoxWithConstraints(
                 Modifier
                     .fillMaxSize()
+                    .primaryClicksOnly()
                     .onGloballyPositioned { origin = it.positionInWindow() }
                     .onPreviewKeyEvent(keys::handle),
             ) {

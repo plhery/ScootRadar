@@ -55,6 +55,7 @@ import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
+import com.plhery.scootradar.ui.primaryClicksOnly
 import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
@@ -109,8 +110,9 @@ fun IosMenu(expanded: Boolean, onDismiss: () -> Unit, choices: List<String>, cho
             },
             label = "menu",
         ) {
-            // The shadow's room, which takes a tap as outside the menu.
-            Box(Modifier.pointerInput(Unit) { detectTapGestures { close() } }.padding(SHADOW_ROOM)) {
+            // The shadow's room, which takes a tap as outside the menu. The menu is a window of its own, which the
+            // screen's filter of right clicks doesn't reach.
+            Box(Modifier.primaryClicksOnly().pointerInput(Unit) { detectTapGestures { close() } }.padding(SHADOW_ROOM)) {
                 MenuPanel(choices, chosen, onChoose, onEscape = close)
             }
         }
