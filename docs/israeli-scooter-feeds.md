@@ -252,7 +252,10 @@ houses by the sea) holds the park or any of its scooters.
   That afternoon, from 16:19 to 17:39 Israel time, Bird's feed held 131 to
   137 available scooters inside Holon's boundary, with 19 arrivals and 23
   departures, and the map showed 135 of Bird's and 310 of Lime's there at
-  17:44. So Holon is covered; it is to be checked again in November 2026.
+  17:44. On 30 October nothing new was reported, and at 08:08 the map showed
+  651 inside the boundary: 384 of Lime's, 151 of Bird's and 116 of Dott's,
+  back since its feed returned. So Holon is covered; it is to be checked
+  again in November 2026.
 
 ## Parking
 

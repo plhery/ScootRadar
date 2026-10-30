@@ -236,7 +236,7 @@ banned shared scooters, and feeds that were empty when checked.
     Vigliatore had no available scooter in the app sweep. Lime (Roma, Milano,
     Palermo) answers 404 everywhere; its scooters in ten Italian towns, from
     Roma and Milano to Rimini, come from its [rider map](lime-app-map.md) since
-    25 October 2026. BIT Mobility (Napoli, Bari and others) is behind a login, and
+    25 October 2026. BIT Mobility (Napoli, Bari, Rimini and others) is behind a login, and
     RideMovi answers 401. Bolt and Lime, which hold Catania's other permits,
     publish no feed.
   - Elerent Bologna listed one scooter on 13 October 2026. Elerent's Ragusa
@@ -1203,10 +1203,12 @@ Bonaire had feeds to add. Survey files are in
   ([Globes, 10 September 2026](https://www.globes.co.il/news/article.aspx?did=1001555199)).
   On 29 October 2026 no new decision or ruling had been reported in the
   press, and Bird's feed held 131 to 137 available scooters in Holon that
-  afternoon, with 19 arrivals in 80 minutes. Search the Hebrew press again
+  afternoon, with 19 arrivals in 80 minutes; on 30 October nothing new was
+  reported either, and the map showed 651 inside Holon's boundary at 08:08
+  Israel time (Lime 384, Bird 151, Dott 116). Search the Hebrew press again
   (ice, Globes, Walla, Israel Hayom; Holon's site doesn't answer outside
   Israel). If the ban goes ahead and the feeds empty there, remove Holon's
-  areas from Bird's and Lime's feeds and its outline from
+  areas from Bird's, Dott's and Lime's feeds and its outline from
   `data/town-outlines.json`.
 - **Saturday 21 November 2026, or a Saturday after:** Hatta, in Dott's Dubai
   feed, by day: 12 or 13 scooters, which none rode on 15 October 2026. If they

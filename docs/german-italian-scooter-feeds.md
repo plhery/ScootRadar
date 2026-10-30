@@ -587,7 +587,10 @@ an hour, so no interval was changed for ATOM.
   22 polls from 18:26 to 19:50 on 13 October 2026, with the same ids and
   charge throughout. Hopp's site still lists the town; check it in spring.
 - RideMovi's feeds answer 401, and BIT Mobility (Napoli, Bari and others)
-  shows its scooters only after a login. Helbiz's and Link's hosts no longer
+  shows its scooters only after a login. Rimini renewed its permit, beside
+  Lime's, from 24 March 2026 to 2029
+  ([Comune di Rimini, 10 December 2025](https://www.comune.rimini.it/novita/notizie/monopattini-e-e-bike-sharing-fino-al-2029)),
+  so the map shows Lime's scooters there and not BIT's. Helbiz's and Link's hosts no longer
   resolve. Cooltra lists mopeds and e-bikes, no scooters. Pony's site lists
   Turin, but its server answered `UNKNOWN_REGION` for Turin and Torino.
 - Zeus's own feeds for Castrop-Rauxel, Duisburg, Friedberg, Gera, Herne, Jena,

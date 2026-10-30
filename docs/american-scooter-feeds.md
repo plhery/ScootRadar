@@ -107,8 +107,9 @@ Lime run 24 hours a day, seven days a week, Milwaukee's agreement terms (DPW,
 § 9.3) let an operator offer its scooters 24 hours a day, all year (DPW showed
 a committee night no-ride zones downtown for spring 2026, which no record
 shows in force), and Austin's director rules,
-Oklahoma City's, Tulsa's, Jenks's and Little Rock's codes, Corpus Christi's
-licence agreements and Lubbock's ordinance set no hours. Rochester's season
+Oklahoma City's, Jenks's and Little Rock's codes, Corpus Christi's licence
+agreements and Lubbock's ordinance set no hours, nor do Tulsa's open City
+pages (its code, on Municode, was not read). Rochester's season
 runs from spring until the snow; Lime came back on 13 April 2026.
 
 Audited again on the afternoon of 26 October, local time: Long Beach (1,676),
