@@ -33,11 +33,11 @@ const guide: Guide = {
             rows: [
               ['Voi', '10 kr', '2,50 kr', '35 kr', '60 kr'],
               ['Bolt', '10 kr', '2,50 kr', '35 kr', '60 kr'],
-              ['Ryde', '10,90 kr', '2,50 kr', '33,40 kr', '58,40 kr'],
+              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr'],
             ],
           },
         },
-        'En gjennomsnittstur i Oslo varer rundt sju minutter og koster dermed rundt 27,50 kr hos Voi og Bolt. Hos Ryde er det første minuttet med i opplåsingen. Ruter oppgir kilometerpris for Bolt, mens Bolt selv publiserer minuttpris, så sjekk prisen i Bolt-appen før du låser opp.',
+        'En gjennomsnittstur i Oslo varer rundt sju minutter og koster dermed rundt 27,50 kr hos Voi og Bolt. Ruter oppgir kilometerpris for Bolt, mens Bolt selv publiserer minuttpris, så sjekk prisen i Bolt-appen før du låser opp.',
         'Kjører du ofte, kan et pass lønne seg: Voi selger minuttpakker og Voi Pass, og Bolt har uke- og månedspass. Prisene står i appene.',
         'I **Ruter-appen** kan du låse opp sparkesykler fra alle tre og bysykler fra Oslo Bysykkel. Der betaler du per tur, til samme pris som i operatørens egen app, men pass og abonnement fra operatøren kan ikke brukes.',
       ],
