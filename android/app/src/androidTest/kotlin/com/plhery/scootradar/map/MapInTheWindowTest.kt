@@ -14,6 +14,11 @@ import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
@@ -23,6 +28,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
+import androidx.window.layout.FoldingFeature
+import androidx.window.layout.WindowInfoTracker
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
@@ -34,6 +41,7 @@ import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCluster
@@ -45,15 +53,20 @@ import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.ScooterMapScreen
+import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -67,10 +80,12 @@ import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.abs
 import kotlin.math.cos
+import kotlin.math.floor
 import kotlin.math.hypot
 import kotlin.math.log2
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.sin
 
 /**
@@ -144,18 +159,18 @@ class MapInTheWindowTest {
         assertTrue("the move to the rider", waitFor(LOCATING) { onMain { map.cameraPosition.target }?.let { hypot(it.latitude - rider.latitude, it.longitude - rider.longitude) < 0.01 } == true })
         waitUntilAtRest(rider)
         val bounds = onMain { projection.bounds }
-        val chrome = chrome()
+        val chrome = shownChrome()
         val part = partInView(chrome, bounds)
         val frame = frame(bounds)
         val expected = placed(part, bounds)
-        // The move is measured once on the map tilted as it will be, as iOS's is: a place shown far from where the
-        // margins put the centre lands past it, the ground nearer the eye being drawn larger.
-        val past = 0.15 * abs(expected.y - frame.midY)
+        // The move is measured once on the map tilted as it will be, as iOS's is: replayed so, the place lands a
+        // little down the screen from where it was meant to go, past it where the move takes it down.
+        val landed = replayed(rider, expected, measuredOn = onMain { CameraPosition.Builder(map.cameraPosition).target(LatLng(rider.latitude, rider.longitude)).build() })
         screenshot("located")
         val shown = onMain { projection.point(rider) }
-        Log.i(TAG, "${size()}: chrome $chrome, part $part, frame $frame, rider at $shown for $expected")
-        assertEquals("across: $shown for $expected", expected.x, shown.x, 4.0)
-        assertEquals("up and down: $shown for $expected", expected.y, shown.y, 4.0 + past)
+        Log.i(TAG, "${size()}: chrome $chrome, part $part, frame $frame, rider at $shown for $expected, measured once $landed")
+        assertEquals("across: $shown for $expected", expected.x, shown.x, 3.0)
+        assertLandsAsMeasuredOnce(shown, expected, landed)
         // Locating's span over the window's shorter side, as phones up to 440 points show it.
         val scale = max(1.0, min(bounds.width, bounds.height) / 440)
         val region = MapRegion.around(rider, 350 * scale, 350 * scale)
@@ -173,19 +188,23 @@ class MapInTheWindowTest {
         onMain { controller.selectScooter(scooter.id) }
         // The card in the dock or the panel, at its full height.
         Thread.sleep(2_000)
+        val before = onMain { map.cameraPosition }
         onMain { controller.focusOnScooter(scooter) }
         Thread.sleep(600)
         waitUntilAtRest(scooter.point)
         val bounds = onMain { projection.bounds }
-        val part = partInView(chrome(), bounds)
+        val chrome = shownChrome()
+        val part = partInView(chrome, bounds)
+        val expected = ScreenPoint(part.midX, part.midY)
+        // Measured once on the map as it was, its zoom kept, as iOS's is: replayed so, a scooter moved far up from
+        // where the margins show the centre lands a little short of its spot, down the screen from it, as on a
+        // phone's map over the dock (100 points up, 5 short).
+        val landed = replayed(scooter.point, expected, measuredOn = before)
         screenshot("card")
         val shown = onMain { projection.point(scooter.point) }
-        Log.i(TAG, "${size()}: chrome ${chrome()}, part $part, scooter at $shown")
-        // Measured once on the tilted map, as iOS's is: a scooter moved far up from where the margins show the centre
-        // lands a little short, as on a phone's map over the dock (100 points up, 5 short).
-        val past = 0.15 * abs(part.midY - frame(bounds).midY)
-        if (part.width >= 44) assertEquals("across: $shown in $part", part.midX, shown.x, 3.0)
-        if (part.height >= 44) assertEquals("up and down: $shown in $part", part.midY, shown.y, 3.0 + past)
+        Log.i(TAG, "${size()}: chrome $chrome, part $part, scooter at $shown for $expected, measured once $landed")
+        if (part.width >= 44) assertEquals("across: $shown in $part, measured once $landed", landed.x, shown.x, 3.0)
+        if (part.height >= 44) assertLandsAsMeasuredOnce(shown, expected, landed)
     }
 
     /** A walk's route is fitted in the part of the map in view, 40 points in from its edges, and fills it one way. */
@@ -208,11 +227,19 @@ class MapInTheWindowTest {
         Thread.sleep(3_000)
         waitUntilAtRest(scooter.point)
         val bounds = onMain { projection.bounds }
-        val part = partInView(chrome(), bounds)
+        val part = partInView(shownChrome(), bounds)
         val inside = part.insetBy(FIT_MARGIN - 1, FIT_MARGIN - 1) ?: part
         screenshot("route")
-        val points = onMain { route.map { projection.point(it) } }
-        Log.i(TAG, "${size()}: chrome ${chrome()}, part $part, route at $points")
+        // Measured flat: the fit is made in the plane of the map and the tilt kept, as iOS's fit hands its rect to
+        // setRegionPreservingPerspective (ScooterMapView.swift fit), so on the tilted map the places nearer than the
+        // middle come out a little further from it and the further ones a little nearer (2 points past the margin
+        // beside a book's fold, right to left).
+        val tilted = onMain { map.cameraPosition }
+        val points = onMain {
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder(tilted).tilt(0.0).build()))
+            route.map { projection.point(it) }.also { map.moveCamera(CameraUpdateFactory.newCameraPosition(tilted)) }
+        }
+        Log.i(TAG, "${size()}: chrome ${chrome()}, part $part, route at $points, flat, of the camera $tilted")
         for (point in points) assertTrue("$point in $inside", inside.contains(point))
         // Fitted: as wide or as high as the part less its margins allow, give or take.
         val width = points.maxOf { it.x } - points.minOf { it.x }
@@ -234,7 +261,7 @@ class MapInTheWindowTest {
         val controller = controller()
         show(controller)
         val bounds = onMain { projection.bounds }
-        val part = partInView(chrome(), bounds)
+        val part = partInView(shownChrome(), bounds)
         // Zürich from high enough for the server to group its scooters.
         val opening = onMain {
             val zurich = zurichStart.region.center
@@ -247,7 +274,8 @@ class MapInTheWindowTest {
         val cellAt = at(0.6, 0.7)
         val group = ScooterCluster(
             "group:city:ch:Zürich", groupAt.latitude, groupAt.longitude, count = 1_900, providers = mapOf("voi" to 1_900), city = "Zürich, Winterthur",
-            bounds = GeoBounds(south = groupAt.latitude - 0.1, west = groupAt.longitude - 0.15, north = groupAt.latitude + 0.05, east = groupAt.longitude + 0.2),
+            // Small enough to open well past the opening zoom in a tablet's upright part beside its panel, 388 wide.
+            bounds = GeoBounds(south = groupAt.latitude - 0.03, west = groupAt.longitude - 0.05, north = groupAt.latitude + 0.02, east = groupAt.longitude + 0.06),
         )
         val city = ScooterCluster("city:ch:Zürich", cityAt.latitude, cityAt.longitude, count = 1_288, providers = mapOf("lime" to 700, "voi" to 588), city = "Zürich")
         val cell = ScooterCluster("9:268:179", cellAt.latitude, cellAt.longitude, count = 12, providers = mapOf("voi" to 12))
@@ -274,7 +302,7 @@ class MapInTheWindowTest {
             // On the cluster's view, and with the scooter in reach on the dot's square.
             val tap = if (inReach) ScreenPoint(point.x - 10, point.y) else point
             fingers(tap to tap, millis = 40, steps = 1)
-            assertTrue("${cluster.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 })
+            assertTrue("${cluster.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 }.also { if (!it) Log.i(TAG, "${size()}: ${cluster.id} at zoom ${zoom()}") })
             waitUntilAtRest(centre)
             val expected = placed(part, bounds)
             val shown = onMain { projection.point(centre) }
@@ -282,7 +310,7 @@ class MapInTheWindowTest {
             screenshot("cluster-${cluster.id.substringBefore(':')}")
             Log.i(TAG, "${size()}: ${cluster.id} at $shown for $expected, measured once $landed, part $part")
             assertEquals("${cluster.id} across: $shown for $expected", landed.x, shown.x, 3.0)
-            assertEquals("${cluster.id} up and down: $shown for $expected", landed.y, shown.y, 3.0)
+            assertLandsAsMeasuredOnce(shown, expected, landed, cluster.id)
             assertEquals("${cluster.id} across, as iOS shows it: $shown for $expected", expected.x, shown.x, 3.0)
             if (cluster === city) {
                 val frame = fittedIn(bounds)
@@ -290,6 +318,126 @@ class MapInTheWindowTest {
                 assertEquals("the zoom for a city's span", MapZoom.fitting(region, frame.width, frame.height), zoom(), log2(1.02))
             }
             if (inReach) assertEquals("the scooter in reach chosen", alone.id, onMain { controller.selectedScooterID.value })
+        }
+    }
+
+    /**
+     * A tap on a cluster of the app's own fits its scooters in the part of the map in view, 40 points in from its
+     * edges, beside a panel or a fold as over the dock, as the iPhone fits a route there (MAP-052, MAP-147); a phone's
+     * MapKit shows them with insets of its own, which the app's fit stands in for (MAP-302).
+     */
+    @Test
+    fun aTapOnAClusterOfTheAppsFitsItsScootersInThePartOfTheMapInView() {
+        val controller = controller()
+        show(controller)
+        val bounds = onMain { projection.bounds }
+        val part = partInView(shownChrome(), bounds)
+        // Zürich from high enough for the app to gather the scooters into clusters of its own.
+        val opening = onMain {
+            val zurich = zurichStart.region.center
+            // Flat: the fit is made in the plane of the map, as iOS's is, and a tilt spreads the nearer scooters.
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder(map.cameraPosition).target(LatLng(zurich.latitude, zurich.longitude)).zoom(11.0).tilt(0.0).build()))
+            map.cameraPosition
+        }
+        // The six in one cell of the app's grid, around the middle of the cell under the part's (0.35, 0.5): 80 grid
+        // points a cell at the map's whole zoom 12, a point of the map's zoom 11 each. Split over two cells, the
+        // largest cluster can be close enough to fit at the closest zoom a fit allows, which fills less of the part.
+        val middle = MapPoint(onMain { projection.coordinate(ScreenPoint(part.minX + part.width * 0.35, part.minY + part.height * 0.5)) })
+        val perMapPoint = 256 * 2.0.pow(12) / MapPoint.worldSize
+        val cellMiddleX = (floor(middle.x * perMapPoint / APP_CELL) + 0.5) * APP_CELL
+        val cellMiddleY = (floor(middle.y * perMapPoint / APP_CELL) + 0.5) * APP_CELL
+        val scooters = listOf(-20.0 to -15.0, 15.0 to -20.0, 0.0 to 0.0, -15.0 to 18.0, 20.0 to 12.0, 5.0 to -5.0).mapIndexed { index, (dx, dy) ->
+            val place = MapPoint((cellMiddleX + dx) / perMapPoint, (cellMiddleY + dy) / perMapPoint).coordinate
+            Scooter(provider = if (index % 2 == 0) "voi" else "lime", latitude = place.latitude, longitude = place.longitude, battery = 80, vehicleID = "s$index", distanceMeters = 0.0)
+        }
+        served = ScooterResponse(vehicles = scooters)
+        onMain { controller.updateViewport(MapZoom.region(of = projection.visibleMapRect), zoom = 11) }
+        assertTrue("the app's clusters", waitFor(30_000) { onMain { mapView.markers?.scene?.clusters()?.any { !it.isServer } } == true })
+        Thread.sleep(1_000)
+        val cluster = onMain { mapView.markers!!.scene.clusters().filter { !it.isServer }.maxBy { it.members!!.size } }
+        val members = cluster.members!!.map { it.point }
+        val point = onMain { projection.point(cluster.cluster.coordinate) }
+        assertTrue("${cluster.id} at $point in $part", part.contains(point))
+        fingers(point to point, millis = 40, steps = 1)
+        assertTrue("${cluster.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 })
+        Thread.sleep(500)
+        waitUntilAtRest(members.first())
+        screenshot("app-cluster")
+        val points = onMain { members.map { projection.point(it) } }
+        val inside = part.insetBy(FIT_MARGIN - 1, FIT_MARGIN - 1) ?: part
+        Log.i(TAG, "${size()}: ${cluster.id} of ${members.size}, at $points, part $part")
+        for (shown in points) assertTrue("$shown in $inside", inside.contains(shown))
+        // Fitted: as wide or as high as the part less its margins allow, give or take.
+        val width = points.maxOf { it.x } - points.minOf { it.x }
+        val height = points.maxOf { it.y } - points.minOf { it.y }
+        val filled = max(width / (part.width - 2 * FIT_MARGIN), height / (part.height - 2 * FIT_MARGIN))
+        assertTrue("the scooters fill ${"%.2f".format(filled)} of $part", filled > 0.85)
+    }
+
+    /**
+     * The scooters' names beside a panel and on both halves of a fold (MAP-111, MAP-115), as ScooterMapView.swift's
+     * placePills shows them: on the map beside the panel and below it, as a panel covers only as far down as it
+     * reaches, and on either half of a partly open foldable, the flat one too; none for a dot under the panel or on the
+     * fold. Each scooter is the nearest of its own provider to the rider, so that each is named.
+     */
+    @Test
+    fun namesShowBesideAndBelowAPanelAndOnBothHalvesOfAFoldButNotUnderThem() {
+        val controller = controller()
+        show(controller)
+        locate(rider)
+        assertTrue("the move to the rider", waitFor(LOCATING) { onMain { map.cameraPosition.target }?.let { hypot(it.latitude - rider.latitude, it.longitude - rider.longitude) < 0.01 } == true })
+        waitUntilAtRest(rider)
+        // At street level, where each scooter is a dot of its own.
+        onMain { map.moveCamera(CameraUpdateFactory.zoomTo(16.5)) }
+        Thread.sleep(1_000)
+        val bounds = onMain { projection.bounds }
+        val chrome = shownChrome()
+        val safe = safeArea()
+        val panel = chrome.panel?.takeIf { !it.isEmpty }
+        val fold = chrome.fold?.takeIf { !it.isEmpty && it.intersects(bounds) }
+        assumeTrue("a panel or a fold over the map", panel != null || fold != null)
+        val part = partInView(chrome, bounds)
+        val foot = bounds.maxY - safe.bottom
+
+        // Where each scooter stands, and whether its name shows there.
+        val spots = mutableListOf<Triple<String, ScreenPoint, Boolean>>()
+        spots += Triple("beside", ScreenPoint(part.minX + part.width * 0.25, part.minY + part.height * 0.3), true)
+        if (panel != null) {
+            spots += Triple("under the panel", ScreenPoint(panel.midX, panel.minY + min(panel.height / 2, 100.0)), false)
+            if (foot - panel.maxY >= 120) spots += Triple("below the panel", ScreenPoint(panel.midX, panel.maxY + 60), true)
+        }
+        if (fold != null) {
+            if (fold.width > fold.height) {
+                spots += Triple("on the flat half", ScreenPoint(part.minX + part.width * 0.6, fold.maxY + (foot - fold.maxY) * 0.4), true)
+                spots += Triple("on the fold", ScreenPoint(part.minX + part.width * 0.4, fold.midY), false)
+            } else {
+                // The half the panel is on, below it, is the other one.
+                if (panel == null) {
+                    val other = if (part.midX > fold.midX) (bounds.minX + fold.minX) / 2 else (fold.maxX + bounds.maxX) / 2
+                    spots += Triple("on the other half", ScreenPoint(other, part.minY + part.height * 0.6), true)
+                }
+                spots += Triple("on the fold", ScreenPoint(fold.midX, part.minY + part.height * 0.7), false)
+            }
+        }
+        val providers = listOf("voi", "lime", "bolt", "dott", "bird", "hopp")
+        val scooters = spots.mapIndexed { index, (where, at, _) ->
+            val place = onMain { projection.coordinate(at) }
+            Scooter(provider = providers[index], latitude = place.latitude, longitude = place.longitude, battery = 80, vehicleID = where, distanceMeters = 0.0)
+        }
+        served = ScooterResponse(vehicles = scooters)
+        onMain { controller.refresh() }
+        assertTrue("the scooters", waitFor(30_000) { onMain { controller.mapScooters.value.size } == scooters.size })
+        val named = spots.indices.filter { spots[it].third }.map { scooters[it].id }.toSet()
+        fun shown() = onMain { mapView.markers!!.scene.shownPillFrames(projection).map { (mark, _) -> mark.scooter.id }.toSet() }
+        waitFor(10_000) { shown() == named }
+        Thread.sleep(1_000)
+        screenshot("names")
+        val places = scooters.associate { it.id to onMain { projection.point(it.point) } }
+        Log.i(TAG, "${size()}: chrome $chrome, part $part, scooters at $places, named ${shown()}")
+        for ((index, spot) in spots.withIndex()) {
+            val (where, _, shows) = spot
+            val id = scooters[index].id
+            assertEquals("the name of the scooter $where, at ${places[id]}", shows, id in shown())
         }
     }
 
@@ -307,14 +455,17 @@ class MapInTheWindowTest {
         val compass = device.wait(Until.findObject(By.desc("Compass")), 5_000)
         assertNotNull("the compass", compass)
         val bounds = onMain { projection.bounds }
-        val chrome = chrome()
+        val chrome = shownChrome()
         val safe = safeArea()
         val top = ornamentsTop(chrome, bounds, safe.top)
         val compassFrame = inMap(compass.visibleBounds)
-        Log.i(TAG, "${size()}: chrome $chrome, safe $safe, compass $compassFrame, ornaments' top $top")
+        // Right to left, the sides swap (MAP-059): the compass on the left, the scale and the credits on the right.
+        val rightToLeft = onMain { mapView.layoutDirection == View.LAYOUT_DIRECTION_RTL }
+        Log.i(TAG, "${size()}: chrome $chrome, safe $safe, compass $compassFrame, ornaments' top $top, right to left $rightToLeft")
         // By its middle: TalkBack's frame is the 48 a finger needs around the 44 drawn.
         val half = MapOrnaments.COMPASS_SIZE / 2
-        assertEquals("the compass's trailing edge: $compassFrame", bounds.maxX - safe.right - MapOrnaments.EDGE_GAP - half, compassFrame.midX, 1.0)
+        val compassMiddle = if (rightToLeft) bounds.minX + safe.left + MapOrnaments.EDGE_GAP + half else bounds.maxX - safe.right - MapOrnaments.EDGE_GAP - half
+        assertEquals("the compass's trailing edge: $compassFrame", compassMiddle, compassFrame.midX, 1.0)
         assertEquals("the compass's top: $compassFrame", top + half, compassFrame.midY, 1.0)
 
         val credits = device.findObject(By.text("© OpenStreetMap"))
@@ -323,10 +474,25 @@ class MapInTheWindowTest {
         val margins = onMain { mapView.camera!!.margins }
         Log.i(TAG, "${size()}: credits $creditsFrame, margins $margins")
         val part = partInView(chrome, bounds)
-        // By its middle again: the 18 drawn lie in the middle of the 48 TalkBack is given.
-        assertTrue("the credits $creditsFrame within the map's foot ${bounds.maxY - safe.bottom}", creditsFrame.midY + 9 <= bounds.maxY - safe.bottom + 1)
-        assertTrue("the credits $creditsFrame past the leading margin $margins", creditsFrame.minX >= max(margins.left, safe.left) - 1)
-        assertTrue("the credits $creditsFrame in the part in view $part", creditsFrame.minX >= part.minX - 1 && creditsFrame.minY >= part.minY - 1)
+        // By its middle again: the 18 drawn lie in the middle of the 48 TalkBack is given. Their foot is the upright
+        // half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom margin keeps Apple's logo
+        // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend where it would cover them, as
+        // their licence asks that they be seen (MapCredits.kt creditsOverLegend); elsewhere 8 above the safe area's foot.
+        val across = windowFold()?.takeIf { it.intersects(bounds) && it.width > it.height }
+        val sources = listOf("© OpenStreetMap", "OpenFreeMap © OpenMapTiles").mapNotNull { text -> device.findObject(By.text(text))?.let { inMap(it.visibleBounds) } }
+        val locate = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
+        val legend = chrome.panel?.takeIf { !it.isEmpty }?.let {
+            chrome.bottomFrames.firstOrNull { frame -> locate == null || abs(frame.minX - locate.minX) > 1 || abs(frame.minY - locate.minY) > 1 }
+        }?.takeIf { legend -> legend.minX < sources.maxOf { it.maxX } && legend.maxX > sources.minOf { it.minX } }
+        val foot = across?.let { it.minY - PANEL_GAP } ?: legend?.let { it.minY - 4 } ?: (bounds.maxY - safe.bottom - 8)
+        assertEquals("the credits' foot: $creditsFrame, the fold $across, the legend under them $legend", foot, creditsFrame.midY + 9, 2.0)
+        if (rightToLeft) {
+            assertTrue("the credits $creditsFrame past the leading margin $margins", creditsFrame.maxX <= bounds.maxX - max(margins.right, safe.right) + 1)
+            assertTrue("the credits $creditsFrame in the part in view $part", creditsFrame.maxX <= part.maxX + 1 && creditsFrame.minY >= part.minY - 1)
+        } else {
+            assertTrue("the credits $creditsFrame past the leading margin $margins", creditsFrame.minX >= max(margins.left, safe.left) - 1)
+            assertTrue("the credits $creditsFrame in the part in view $part", creditsFrame.minX >= part.minX - 1 && creditsFrame.minY >= part.minY - 1)
+        }
         chrome.panel?.takeIf { !it.isEmpty }?.let { assertTrue("the credits $creditsFrame clear of the panel $it", !it.intersects(creditsFrame)) }
 
         // A zoom step: the scale shows while the map zooms, level with the compass, past the panel.
@@ -337,8 +503,10 @@ class MapInTheWindowTest {
         screenshot("ornaments")
         Log.i(TAG, "${size()}: scale $scaleFrame")
         assertEquals("the scale's top: $scaleFrame", top, scaleFrame.minY, 1.0)
-        val leading = if (margins.left > 0 && chrome.panel != null) margins.left else safe.left + MapOrnaments.EDGE_GAP
-        assertEquals("the scale's leading edge: $scaleFrame", leading, scaleFrame.minX, 1.0)
+        val leadingMargin = if (rightToLeft) margins.right else margins.left
+        val leading = if (leadingMargin > 0 && chrome.panel != null) leadingMargin else (if (rightToLeft) safe.right else safe.left) + MapOrnaments.EDGE_GAP
+        val edge = if (rightToLeft) bounds.maxX - scaleFrame.maxX else scaleFrame.minX - bounds.minX
+        assertEquals("the scale's leading edge: $scaleFrame", leading, edge, 1.0)
     }
 
     /**
@@ -352,7 +520,7 @@ class MapInTheWindowTest {
         // Once the map has opened where it starts.
         Thread.sleep(1_500)
         waitUntilAtRest(zurichStart.region.center)
-        val part = partInView(chrome(), onMain { projection.bounds })
+        val part = partInView(shownChrome(), onMain { projection.bounds })
         val centre = ScreenPoint(part.midX, part.midY)
         val reach = min(part.width, part.height) / 4
 
@@ -395,10 +563,26 @@ class MapInTheWindowTest {
         assertTrue("tilted from $tilt to $tilted", tilted > tilt + 5)
         assertTrue("tilted $tilted, MapKit's most $most", tilted <= most + 0.5)
 
-        // Locating, then a hand on the map before the move lands: the map stays where the hand leaves it.
+        // Locating, then a hand on the map before the move lands: the map stays where the hand leaves it. The move
+        // has to be under way when the hand comes: the camera at rest before locating, moving between 100 and 150 ms
+        // after, and short of the zoom a place located takes.
+        val bounds = onMain { projection.bounds }
+        val scale = max(1.0, min(bounds.width, bounds.height) / 440)
+        val frame = frame(bounds)
+        val locatedZoom = MapZoom.fitting(MapRegion.around(rider, 350 * scale, 350 * scale), frame.width, frame.height)
+        val resting = onMain { map.cameraPosition }
+        Thread.sleep(50)
+        val atRest = onMain { map.cameraPosition }
         locate(rider)
-        Thread.sleep(150)
+        Thread.sleep(100)
+        val earlier = onMain { map.cameraPosition }
+        Thread.sleep(50)
+        val underWay = onMain { map.cameraPosition }
         fingers(ScreenPoint(centre.x, centre.y) to ScreenPoint(centre.x + reach, centre.y + reach / 2), millis = 300)
+        Log.i(TAG, "${size()}: the camera at $atRest, $earlier 100 ms after locating, $underWay 150 ms after, for zoom $locatedZoom")
+        assertTrue("the camera at rest before locating: $resting, then $atRest", !moved(resting, atRest))
+        assertTrue("the move to the rider under way when the hand came: $earlier, then $underWay", moved(earlier, underWay))
+        assertTrue("the move to the rider not over: zoom ${underWay.zoom} for $locatedZoom", abs(underWay.zoom - locatedZoom) >= 0.05)
         val left = onMain { map.cameraPosition.target!! }
         Thread.sleep(2_500)
         val now = onMain { map.cameraPosition.target!! }
@@ -420,7 +604,7 @@ class MapInTheWindowTest {
         onMain { controller.updateViewport(zurichStart.region, zoom = 17) }
         assertTrue("the scooters", waitFor(30_000) { onMain { controller.mapScooters.value.isNotEmpty() } })
         Thread.sleep(1_500)
-        val part = partInView(chrome(), onMain { projection.bounds })
+        val part = partInView(shownChrome(), onMain { projection.bounds })
         // Away from the scooter, in the part of the map in view.
         val empty = ScreenPoint(part.minX + part.width / 4, part.minY + part.height / 4)
 
@@ -477,10 +661,13 @@ class MapInTheWindowTest {
         val content: ComponentActivity.() -> Unit = {
             enableEdgeToEdge()
             setContent {
-                ScooterMapScreen(
-                    controller = controller,
-                    map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) },
-                )
+                // The chrome's tags as resource ids, for UiAutomator to find the search bar where the screen shows it.
+                Box(Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
+                    ScooterMapScreen(
+                        controller = controller,
+                        map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) },
+                    )
+                }
             }
         }
         // The first launch after the app is installed makes a new activity once, which shows the screen too.
@@ -525,6 +712,106 @@ class MapInTheWindowTest {
 
     /** The chrome's frames as the screen hands them to the map, in the map's points. */
     private fun chrome(): MapChrome = onMain { mapView.camera!!.currentChrome!!.invoke() }
+
+    /**
+     * The chrome the screen hands the map, once it is checked against what the screen shows and iOS's numbers rather
+     * than only read back from the map: over the dock the search bar's foot and the locate button's top where
+     * UiAutomator finds them; a panel 16 inside the safe area and 380 across (ScooterChromeLayout.panelWidth in
+     * ScooterMapScreen.swift); the fold where WindowManager says it is. The map's margins are then iOS's
+     * (ScooterMapView.swift updateMargins), as UIKit reads them back with the safe area: 16 past the panel, 16 past a
+     * fold down the map on the side the map shows, and above a fold across it the safe area's top and 16 above the
+     * fold, which MapLibre's own margins hold too as they put the centre in the upright half; the others the safe
+     * area's.
+     */
+    private fun shownChrome(): MapChrome {
+        val chrome = chrome()
+        val bounds = onMain { projection.bounds }
+        val safe = safeArea()
+        val rightToLeft = onMain { mapView.layoutDirection == View.LAYOUT_DIRECTION_RTL }
+        val fold = windowFold()?.takeIf { it.intersects(bounds) }
+        val handedFold = chrome.fold?.takeIf { !it.isEmpty && it.intersects(bounds) }
+        Log.i(TAG, "${size()}: chrome $chrome, the fold on the screen $fold, safe $safe")
+        if (fold == null) {
+            assertEquals("no fold on the screen", null, handedFold)
+        } else {
+            assertNotNull("the fold on the screen at $fold", handedFold)
+            assertRect("the fold", fold, handedFold!!)
+        }
+        val handedPanel = chrome.panel?.takeIf { !it.isEmpty }
+        var panel: ScreenRect? = null
+        if (handedPanel != null) {
+            val minX = if (rightToLeft) bounds.maxX - safe.right - PANEL_GAP - PANEL_WIDTH else bounds.minX + safe.left + PANEL_GAP
+            panel = ScreenRect(minX, bounds.minY + safe.top + PANEL_GAP, PANEL_WIDTH, handedPanel.height)
+            assertRect("the panel", panel, handedPanel)
+        } else {
+            val bar = device.findObject(By.res(SEARCH_ISLAND_TAG))?.let { inMap(it.visibleBounds) }
+            assertNotNull("the search bar on the screen", bar)
+            assertEquals("the search bar's foot, handed ${chrome.top}, on the screen $bar", bar!!.maxY, chrome.top?.maxY ?: Double.NaN, 1.0)
+            val locate = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
+            assertNotNull("the locate button on the screen", locate)
+            assertEquals("the locate button's top, handed ${chrome.bottomTop}, on the screen $locate", locate!!.minY, chrome.bottomTop ?: Double.NaN, 1.0)
+        }
+
+        // iOS's margins, read back with the safe area, against the app's.
+        var left = 0.0
+        var right = 0.0
+        var bottom = 0.0
+        panel?.let { if (rightToLeft) right = bounds.maxX - it.minX + PANEL_GAP else left = it.maxX - bounds.minX + PANEL_GAP }
+        val across = fold != null && fold.width > fold.height
+        if (fold != null) {
+            when {
+                across -> bottom = bounds.maxY - fold.minY + PANEL_GAP
+                // Down the map, the map shows on the side away from the panel, or the trailing one.
+                (panel?.let { it.midX > fold.midX } ?: rightToLeft) -> right = max(right, bounds.maxX - fold.minX + PANEL_GAP)
+                else -> left = max(left, fold.maxX - bounds.minX + PANEL_GAP)
+            }
+        }
+        val ios = MapInsets(top = safe.top, left = max(safe.left, left), bottom = max(safe.bottom, bottom), right = max(safe.right, right))
+        val margins = onMain { mapView.camera!!.margins }
+        val within = MapCamera.within(bounds, margins, safe)
+        val expected = ScreenRect(bounds.minX + ios.left, bounds.minY + ios.top, bounds.width - ios.left - ios.right, bounds.height - ios.top - ios.bottom)
+        Log.i(TAG, "${size()}: margins $margins, iOS's $ios")
+        assertRect("the map's margins $margins, iOS's $ios", expected, within)
+        if (across) assertEquals("the top margin above a fold across the map: $margins", safe.top, margins.top, 1.0)
+        return chrome
+    }
+
+    /** Whether the camera moved from `from` to `to`: its place, zoom, turn or tilt. */
+    private fun moved(from: CameraPosition, to: CameraPosition): Boolean =
+        abs(from.target!!.latitude - to.target!!.latitude) > 1e-9 || abs(from.target!!.longitude - to.target!!.longitude) > 1e-9 ||
+            abs(from.zoom - to.zoom) > 1e-6 || abs(from.bearing - to.bearing) > 1e-6 || abs(from.tilt - to.tilt) > 1e-6
+
+    private fun assertRect(what: String, expected: ScreenRect, actual: ScreenRect, within: Double = 1.0) {
+        val message = "$what: $actual for $expected"
+        assertEquals(message, expected.minX, actual.minX, within)
+        assertEquals(message, expected.minY, actual.minY, within)
+        assertEquals(message, expected.maxX, actual.maxX, within)
+        assertEquals(message, expected.maxY, actual.maxY, within)
+    }
+
+    /**
+     * The fold of a partly open foldable where WindowManager says it is, in the map's points; none flat, closed or on
+     * a device without one. A seamless screen folds along a line of no width, which is taken a pixel wide.
+     */
+    private fun windowFold(): ScreenRect? {
+        val window = activity
+        val layout = runBlocking { withTimeout(5_000) { WindowInfoTracker.getOrCreate(window).windowLayoutInfo(window).first() } }
+        val fold = layout.displayFeatures.filterIsInstance<FoldingFeature>().firstOrNull { it.state == FoldingFeature.State.HALF_OPENED } ?: return null
+        val (origin, density) = onMain { IntArray(2).also { mapView.getLocationInWindow(it) } to mapView.resources.displayMetrics.density.toDouble() }
+        val at = fold.bounds
+        return ScreenRect((at.left - origin[0]) / density, (at.top - origin[1]) / density, max(at.width(), 1) / density, max(at.height(), 1) / density)
+    }
+
+    /**
+     * `shown` up and down within 3 points of where a move measured once lands the place, `landed`, and on the same side
+     * of `expected` as it: on a tilted map always down the screen from it, past a spot below the middle of the margins,
+     * short of one above it (review finding 3). The side is asked where the one measure leaves it 1.5 points off or more.
+     */
+    private fun assertLandsAsMeasuredOnce(shown: ScreenPoint, expected: ScreenPoint, landed: ScreenPoint, what: String = "the place") {
+        assertEquals("$what up and down: $shown for $expected, measured once $landed", landed.y, shown.y, 3.0)
+        val off = landed.y - expected.y
+        if (abs(off) >= 1.5) assertTrue("$what on the side of $expected the one measure leaves it, as $landed: $shown", (shown.y - expected.y) * off > 0)
+    }
 
     /** The window's safe area, in points: its bars and cutout. */
     private fun safeArea(): MapInsets = onMain {
@@ -750,6 +1037,15 @@ class MapInTheWindowTest {
 
         /** How far in from the part in view a route is fitted (WalkTrailLook.fitMargin). */
         const val FIT_MARGIN = 40.0
+
+        /** A cell of the app's grid at the map's zoom 11 (ScooterGridClustering.cellSize below zoom 13). */
+        const val APP_CELL = 80.0
+
+        /** iOS's panel: 16 inside the safe area, and from the panel or a fold to the map's margin (panelGap). */
+        const val PANEL_GAP = 16.0
+
+        /** iOS's panel's width, at the default text size (ScooterChromeLayout.panelWidth). */
+        const val PANEL_WIDTH = 380.0
 
         val rider = GeoPoint(47.3720, 8.5390)
     }

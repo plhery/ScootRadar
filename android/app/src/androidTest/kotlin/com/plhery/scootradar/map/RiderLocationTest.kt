@@ -31,7 +31,6 @@ import androidx.test.uiautomator.Until
 import com.plhery.scootradar.MainActivity
 import com.plhery.scootradar.app.AndroidLocationManager
 import com.plhery.scootradar.app.ScooterMapViewModel
-import com.plhery.scootradar.app.ScreenOrientation
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterHeadingReading
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -67,6 +66,7 @@ import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sin
 
 /**
@@ -221,8 +221,9 @@ class RiderLocationTest {
         screenshot("rider-portrait")
 
         // A phone's screen stays upright, as the iPhone's app does; a tablet's or an unfolded foldable's turns, as the
-        // iPad's does (UI-375).
-        val phone = ScreenOrientation.smallestWidth(activity) < ScreenOrientation.PHONE_UNDER
+        // iPad's does (UI-375). A phone's by the screen's own size, under Android's 600 dp line for a tablet (the
+        // widest iPhone is 440 points across, iPad mini 744), not by what the app makes of it.
+        val phone = device.displaySizeDp.let { min(it.x, it.y) } < 600
         val wasWide = wide()
         if (wasWide) device.setOrientationPortrait() else device.setOrientationLandscape()
         Thread.sleep(2_000)

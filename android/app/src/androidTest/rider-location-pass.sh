@@ -13,6 +13,10 @@
 set -u
 screens=${1:?the folder for the screens}
 fixes=${2:-gps}
+if [[ $fixes != gps && $fixes != providers ]]; then
+    echo "The fixes come from gps or providers, not $fixes" >&2
+    exit 2
+fi
 serial=emulator-5660
 app=com.plhery.scootradar
 runner=$app.test/androidx.test.runner.AndroidJUnitRunner
@@ -20,27 +24,60 @@ output=/sdcard/Android/media/$app/additional_test_output
 
 device() { ADB_MDNS=0 adb -s "$serial" "$@"; }
 
+# The test providers gone, which would otherwise outlive a test whose instrumentation died before its tearDown and
+# shadow the emulator's GPS: the shell removes them only while it may mock locations.
+removeTestProviders() {
+    device shell appops set 2000 android:mock_location allow
+    for provider in fused gps network; do
+        device shell cmd location providers remove-test-provider $provider > /dev/null 2>&1
+    done
+    device shell appops set 2000 android:mock_location default
+}
+
 reset() {
     device shell pm clear "$app" > /dev/null
     for permission in ACCESS_FINE_LOCATION ACCESS_COARSE_LOCATION; do
         device shell pm revoke "$app" "android.permission.$permission" 2> /dev/null
     done
     device shell cmd location set-location-enabled true
-    device shell appops set 2000 android:mock_location default
+    removeTestProviders
 }
+
+# The loop feeding fixes, while a test runs: stopped after it, and whenever the pass ends, finished or interrupted (a
+# background job of a script ignores the ^C that ends the script).
+fixer=
+stopFixes() {
+    if [[ -n $fixer ]]; then
+        kill "$fixer" 2> /dev/null
+        wait "$fixer" 2> /dev/null
+        fixer=
+    fi
+}
+# The screen's ignoring of apps' orientations, turned off for the turn test, given back too.
+ignored=0
+restoreOrientationRequest() {
+    if [[ $ignored == 1 ]]; then
+        device shell wm set-ignore-orientation-request true
+        ignored=0
+    fi
+}
+trap 'stopFixes; removeTestProviders; restoreOrientationRequest' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 failures=0
 run() {
-    local test=$1 fixer=
+    local test=$1
     if [[ $test == *WithAFix && $fixes == providers ]]; then
         device shell appops set 2000 android:mock_location allow
         for provider in fused gps network; do
             device shell cmd location providers add-test-provider $provider
             device shell cmd location providers set-test-provider-enabled $provider true
         done
+        # The test's tearDown removes the providers before the loop is stopped: a fix set then has none to go to.
         (while true; do
             for provider in fused gps network; do
-                device shell cmd location providers set-test-provider-location $provider --location 47.3782,8.5402 --accuracy 5 > /dev/null
+                device shell cmd location providers set-test-provider-location $provider --location 47.3782,8.5402 --accuracy 5 > /dev/null 2>&1
             done
             sleep 2
         done) &
@@ -58,7 +95,7 @@ run() {
         failures=$((failures + 1))
         echo "$result" | grep -m 3 -E "INSTRUMENTATION_STATUS_CODE: -|Error|Exception|RiderLocationTest.kt"
     fi
-    [[ -n $fixer ]] && kill "$fixer"
+    stopFixes
     device pull "$output/." "$screens" > /dev/null 2>&1
 }
 
@@ -77,7 +114,7 @@ run theRiderLocatedOnceIsRememberedAfterARestartWithAFix
 ignored=$(device shell wm get-ignore-orientation-request | grep -c true)
 device shell wm set-ignore-orientation-request false
 reset; run aTurnOfThePhoneKeepsTheScreenUprightAndTheDotAndItsBeamWithAFix
-[[ $ignored == 1 ]] && device shell wm set-ignore-orientation-request true
+restoreOrientationRequest
 reset; run theBeamPointsTheWayTheRiderFacesOnATurnedAndTiltedMapWithAFix
 reset
 
