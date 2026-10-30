@@ -1,6 +1,7 @@
 package com.plhery.scootradar.ui.sheet
 
 import androidx.activity.compose.PredictiveBackHandler
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.MutatePriority
@@ -66,8 +67,10 @@ import com.plhery.scootradar.ui.theme.LocalScootColors
 import com.plhery.scootradar.ui.theme.animation
 import com.plhery.scootradar.ui.theme.scootColors
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -147,15 +150,17 @@ fun IosSheet(
     if (!isPresented && isDown) return
 
     val scope = rememberCoroutineScope()
-    var backProgress by remember { mutableFloatStateOf(0f) }
-    // Let go, the sheet goes down as small as the gesture left it; shown again before it is down, it is whole again.
-    LaunchedEffect(isPresented) { if (isPresented) backProgress = 0f }
+    // How far Back is drawn out, which shrinks the sheet.
+    val backProgress = remember { Animatable(0f) }
+    // Let go, the sheet goes down as small as the gesture left it; shown again before it is down, it eases back to its
+    // full size on its own spring as it comes up, not whole again in one frame (review-app-v finding 6).
+    LaunchedEffect(isPresented) { if (isPresented) backProgress.animateTo(0f, IosMotion.smooth(duration = 0.5).animation()) }
     PredictiveBackHandler(enabled = isPresented) { progress ->
         try {
-            progress.collect { backProgress = it.progress }
+            progress.collect { backProgress.snapTo(it.progress) }
             close()
         } catch (cancelled: CancellationException) {
-            backProgress = 0f
+            withContext(NonCancellable) { backProgress.snapTo(0f) }
             throw cancelled
         }
     }
@@ -207,7 +212,7 @@ fun IosSheet(
                 }
                 .graphicsLayer {
                     // Back, as it is drawn out, shrinks the sheet a little toward the bottom of the screen.
-                    val scale = 1 - BACK_SHRINK * backProgress
+                    val scale = 1 - BACK_SHRINK * backProgress.value
                     scaleX = scale
                     scaleY = scale
                     transformOrigin = TransformOrigin(0.5f, 1f)

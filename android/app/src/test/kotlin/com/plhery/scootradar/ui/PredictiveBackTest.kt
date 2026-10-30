@@ -15,6 +15,7 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
@@ -42,7 +43,8 @@ import org.robolectric.annotation.Config
 // iOS sheet follows a swipe down, and a page of Settings slides with it, as a NavigationStack's page follows a swipe
 // from the edge; let go, each goes on from where the gesture left it, and called off, each stays. The search, which
 // iOS has no gesture for, is in BackOrderTest. The gesture's progress comes through the dispatcher, as Android 14 and
-// later send it.
+// later send it. Its edges (review-app-v findings 5 and 6): a gesture begun while a tapped page is still coming in,
+// and a sheet shown again before it is down.
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w390dp-h844dp-xhdpi")
@@ -163,6 +165,63 @@ class PredictiveBackTest {
         assertTrue(compose.onAllNodes(form).fetchSemanticsNodes().isEmpty())
     }
 
+    /** How wide [matcher]'s node is drawn, frame by frame for [frames] frames, the clock held. */
+    private fun widths(matcher: SemanticsMatcher, frames: Int): List<Float> =
+        (1..frames).map { compose.mainClock.advanceTimeByFrame(); frame(matcher).width }
+
+    /**
+     * Filters let go all the way out and shown again 4 frames on, before it is down: it eases back from as small as
+     * the gesture left it, 6% smaller, to its full size on the sheet's own spring, as it comes back up, not whole
+     * again in one frame.
+     */
+    @Test
+    fun aSheetShownAgainBeforeItIsDownEasesBackToItsFullSize() {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = false) {
+                IosSheet(isPresented, onDismiss = { isPresented = false }, listOf(SheetDetent.Large), "Filters") { Box(Modifier.fillMaxSize()) }
+            }
+        }
+        compose.waitForIdle()
+        val sheet = pane("Filters")
+        drawOut(1f)
+        letGo(frames = 4)
+        assertFalse(isPresented)
+        assertEquals("as small as the gesture left it", 390f * 0.94f, frame(sheet).width, 0.5f)
+
+        compose.runOnUiThread { isPresented = true }
+        val back = widths(sheet, frames = 4)
+        assertTrue("easing back, not whole at once: $back", back.all { it < 388f } && back.zipWithNext().all { (a, b) -> b >= a - 0.01f })
+        assertTrue("on its way: $back", back.last() > back.first())
+        settle()
+        assertEquals(390f, frame(sheet).width, 0.5f)
+        assertTrue(isPresented)
+    }
+
+    /** Settings beside a panel, let go and shown again before it is down: the form does as the sheet does. */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun aFormSheetShownAgainBeforeItIsDownEasesBackToItsFullSize() {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = false) {
+                IosFormSheet(isPresented, onDismiss = { isPresented = false }, title = "Settings") { Box(Modifier.fillMaxSize()) }
+            }
+        }
+        compose.waitForIdle()
+        val form = pane("Settings")
+        drawOut(1f)
+        letGo(frames = 4)
+        assertFalse(isPresented)
+        assertEquals("as small as the gesture left it", 540f * 0.94f, frame(form).width, 0.5f)
+
+        compose.runOnUiThread { isPresented = true }
+        val back = widths(form, frames = 4)
+        assertTrue("easing back, not whole at once: $back", back.all { it < 538f } && back.zipWithNext().all { (a, b) -> b >= a - 0.01f })
+        assertTrue("on its way: $back", back.last() > back.first())
+        settle()
+        assertEquals(540f, frame(form).width, 0.5f)
+        assertTrue(isPresented)
+    }
+
     private val page = SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)
     private val privacy = page and hasAnyDescendant(hasText("Share anonymous usage"))
     private val settings = page and hasAnyDescendant(hasText("Map & data credits"))
@@ -170,7 +229,10 @@ class PredictiveBackTest {
     private fun title(text: String) = SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading) and hasText(text)
 
     /** Settings' sheet, 390 wide, with Privacy over Settings. */
-    private fun privacyOverSettings(reduceMotion: Boolean) {
+    private fun privacyOverSettings(reduceMotion: Boolean) = settingsSheet(listOf(SettingsPage.Root, SettingsPage.Privacy), reduceMotion)
+
+    /** Settings' sheet, 390 wide, with [pages] open. */
+    private fun settingsSheet(pages: List<SettingsPage>, reduceMotion: Boolean) {
         val clock = TestClock()
         val model = controllers.make(EmptyScooterAPI, clock)
         compose.setContent {
@@ -183,7 +245,7 @@ class PredictiveBackTest {
                         onDone = { },
                         passProviders = emptyList(),
                         sources = emptyList(),
-                        pages = listOf(SettingsPage.Root, SettingsPage.Privacy),
+                        pages = pages,
                     )
                 }
             }
@@ -221,6 +283,66 @@ class PredictiveBackTest {
         compose.onNode(title("Settings")).assertExists()
         assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
         assertTrue(compose.onAllNodes(title("Privacy")).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * A back gesture begun while Privacy, tapped, is still coming in, 200 ms after the tap: the push ends at once, as
+     * iOS lets a push end before any swipe moves a page, and Privacy follows the gesture from its place, Settings
+     * under it from a third of the way, on the next frames, not once the push has run its course: half drawn out,
+     * Privacy half way to the screen's end and Settings a sixth of the width from its place. Called off, Privacy is
+     * in its place.
+     */
+    @Test
+    fun aGestureBegunWhileATappedPageIsComingInFollowsItFromThePagesPlace() {
+        privacyComingIn()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+        compose.mainClock.advanceTimeByFrame()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.5f)) }
+        repeat(3) { compose.mainClock.advanceTimeByFrame() }
+        assertEquals(195f, start(privacy), 1f)
+        assertEquals(-65f, start(settings), 1f)
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.7f)) }
+        repeat(2) { compose.mainClock.advanceTimeByFrame() }
+        assertEquals(273f, start(privacy), 1f)
+        assertEquals(-39f, start(settings), 1f)
+
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackCancelled() }
+        settle()
+        assertEquals(0f, start(privacy), 0.5f)
+        assertTrue("Settings is under Privacy again", compose.onAllNodes(settings).fetchSemanticsNodes().isEmpty())
+        compose.onNode(title("Privacy")).assertExists()
+    }
+
+    /** The same gesture let go: Privacy goes on from where the gesture left it, and Settings is there. */
+    @Test
+    fun aGestureBegunWhileATappedPageIsComingInGoesWhenItIsLetGo() {
+        privacyComingIn()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+        compose.mainClock.advanceTimeByFrame()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.5f)) }
+        repeat(3) { compose.mainClock.advanceTimeByFrame() }
+        assertEquals(195f, start(privacy), 1f)
+
+        letGo(frames = 2)
+        val after = start(privacy)
+        assertTrue("on from half way, not from its place: $after", after >= 195f && after < 390f)
+        settle()
+        assertEquals(0f, start(settings), 0.5f)
+        compose.onNode(title("Settings")).assertExists()
+        assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
+        assertTrue(compose.onAllNodes(title("Privacy")).fetchSemanticsNodes().isEmpty())
+    }
+
+    /** Settings alone, Privacy tapped and 200 ms on its way in, the clock held. */
+    private fun privacyComingIn() {
+        settingsSheet(listOf(SettingsPage.Root), reduceMotion = false)
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasText("Privacy")).performClick()
+        // The tap's push begins once what it posted has run.
+        compose.waitForIdle()
+        compose.mainClock.advanceTimeBy(200)
+        val coming = start(privacy)
+        assertTrue("Privacy on its way in: $coming", coming > 1f && coming < 389f)
     }
 
     /**

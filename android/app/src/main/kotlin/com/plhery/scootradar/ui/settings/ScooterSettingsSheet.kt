@@ -193,6 +193,15 @@ fun ScooterSettingsSheet(
                 if (!started) {
                     started = true
                     followsGesture = true
+                    // A page still coming in, or going, is put in its place at once: iOS lets a push end before any
+                    // swipe moves a page, and a seek toward another state waits for the push to run its course,
+                    // where the page would follow only then (review-app-v finding 5). The page it covered is let go
+                    // of over a frame, so that it comes back under the gesture as if from rest, a third of the way
+                    // out, not on the push's spring it went on.
+                    if (pages.currentState != from || pages.targetState != from) {
+                        pages.snapTo(from)
+                        withFrameNanos { }
+                    }
                     // The page below is laid out at the gesture's start first, so that both pages move from there:
                     // what a transition takes on part way starts where it is.
                     pages.seekTo(0f, below)
