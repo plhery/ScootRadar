@@ -97,7 +97,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   playgrounds, cemeteries; `parkverbot_mikromob`, DL-DE Zero, about 73,500
   points simplified, which would take the iOS catalog from 5.1 MB to about
   6.8 MB) and 637 parking places (DL-DE Zero), and Lille's 680 places
-  (Etalab 2.0).
+  (Etalab 2.0). Brussels's dropzones, where shared bikes and scooters must
+  park, are on Brussels Mobility's WFS (`bm_bike:dropzones_buffer` on
+  data.mobility.brussels, CC0, updated daily): 2,266 circles, some 74,800
+  points before simplifying, beside 2,374 points, 2,106 of them active.
+  Shared scooters are banned there from 1 January 2027, so they would serve
+  two months.
 - **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024) and
   Portland's (2021).
 
@@ -1267,6 +1272,13 @@ Bonaire had feeds to add. Survey files are in
   scooter; and Lincoln, in
   `selwyn`, with about 9 scooters none rode. Poll each on a weekday morning
   and a weekend afternoon, New Zealand time.
+- **17 December 2026:** Leoben (`dott_at_leoben`). Its council banned
+  e-scooters from the town centre on 24 September 2026, then suspended the
+  ban once the ministry held, under the 36th StVO-Novelle, that a pedestrian
+  zone may not treat e-scooters and bicycles differently. The council takes
+  the town centre's access rules up again on 17 December
+  ([the city's statement](https://data.europa.eu/data/datasets/3611ae56-5be2-426b-8e6c-da35ba95b0bb),
+  on data.gv.at, CC BY 4.0). Nothing is drawn until it decides.
 - **19 December 2026:** Hopp Punta Cana (`do-punta-cana`), unridden on the
   evening of 15 October and on the morning of Sunday 18 October 2026: poll
   it by day. If its scooters are ridden, add the Dominican Republic, naming
