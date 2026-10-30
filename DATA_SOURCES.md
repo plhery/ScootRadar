@@ -611,9 +611,9 @@ says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
 catalogs. `scripts/update-city-zones.mjs` reads them again. Only Taupō,
-Santa Monica and Washington state a licence for their layers, Washington for
-two of its three; since 28 October 2026 a city's public zone layers are drawn
-regardless, credited to the city.
+Santa Monica, Vancouver and Washington state a licence for their layers,
+Washington for two of its three; since 28 October 2026 a city's public zone
+layers are drawn regardless, credited to the city.
 
 - **Arlington National Cemetery** (read 29 October 2026): no city's, but a
   federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
@@ -684,6 +684,20 @@ regardless, credited to the city.
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **Minneapolis** (read 30 October 2026): the City of Minneapolis's 206
+  zones where a ride may not end (bridges, construction), 8 speed-capped zones
+  (8 or 10 mph: the Stone Arch Bridge, the Loring Greenway, the University of
+  Minnesota's plazas) and 21 no-riding areas in 23 parts (plazas, parking
+  ramps, golf clubs, the university's malls), from layers 2, 1 and 3 of the
+  City's public `SBSP_Operations_and_Geofence_Data` feature service (last
+  edited 23 October 2026), which states no licence and no City page links.
+  The legend links the City's
+  [parking rules](https://www.minneapolismn.gov/getting-around/scooters/scooter-rules/scooter-parking-rules/):
+  a scooter is locked to a public bike rack, a parking meter hitch or most
+  street signs, not a bus stop sign, out of the sidewalk's 4-foot clear zone.
+  Left out: the 63 mobility hubs, points where scooters are one service among
+  bikes and transit rather than places a ride must end; the University of
+  Minnesota's campus; and the equity distribution areas.
 - **Nagoya** (read 29 October 2026): the pavements where an e-scooter in its
   6 km/h mode may ride, 1,801 lines, about 1,508 km: rule 81 (普通自転車歩道通行可)
   of the Aichi police's traffic rules, from the open data
@@ -769,6 +783,21 @@ regardless, credited to the city.
   drawn, so the school yards, no-riding on weekdays only, are left out; Marka,
   the forest round the city, where riding is forbidden every day, is drawn,
   4,500 of the city's 12,300 points.
+- **Ottawa** (read 30 October 2026): the City of Ottawa's 22 designated
+  parking places and 6 at transit stations that the apps show, each drawn as a
+  disc 5 m round its point, 8 slow ride zones and 38 no-ride areas, from the
+  `E_Scooter` feature service its map of shared e-scooter areas draws (last
+  edited 8 May 2026; "content provided for informational purposes only"). The
+  legend links the City's
+  [rules](https://ottawa.ca/en/city-hall/creating-equal-inclusive-and-diverse-city/accessibility-city/transportation/e-scooters):
+  a shared scooter is parked upright in a signed designated space or an area
+  its provider's app permits, and providers geofence no-ride, no-park and slow
+  zones. Left out: the one no-ride area Bird Canada is excepted from; the 330
+  no-ride roads over 50 km/h (197) and pathways (133), lines with no width to
+  draw as zones; and the deployment area and the two operators' operating
+  zones. ottawa.ca answers scripts with an Incapsula challenge, so the layers
+  were matched to the map through its ArcGIS web map
+  (`15297f33d8a14933b341825e2c81b253`, last changed 16 July 2026).
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),
@@ -799,6 +828,16 @@ regardless, credited to the city.
   is not drawn, and no area sets a curfew. The layer was last edited on 13
   December 2022; the council says it may amend the areas from time to time.
   No operator's scooters in Taupō are on the map: Beam's feed is closed.
+- **Vancouver** (read 30 October 2026): the City of Vancouver's 250 shared
+  e-scooter stations, each its outline in the street, from its
+  `SharedEScooterStation` feature service (last edited 29 October 2026), open
+  data under the
+  [Open Government Licence – Vancouver](https://opendata.vancouver.ca/pages/licence/):
+  "Contains information licensed under the Open Government Licence –
+  Vancouver." The legend links the City's
+  [page](https://vancouver.ca/streets-transportation/shared-e-scooter-system.aspx),
+  which answers scripts 403: the City places parking stations throughout the
+  service area, and a Lime ride ends only at one.
 - **Västerås** (read 29 October 2026): Västerås stad's 298 places to park
   (293 parking places and 5 sharing points, `Delningspunkter`), 502 no-parking
   areas, 45 slow zones and 17 no-riding zones, from layer 2 of the City's

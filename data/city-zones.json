@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-30",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Only Taupō, Santa Monica and Washington state a licence for theirs, CC BY 4.0, ODC-By 1.0 and, for Washington's corrals and no-parking zones, CC BY 4.0; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, and Santa Monica's drop zones. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Only Taupō, Santa Monica, Vancouver and Washington state a licence for theirs, CC BY 4.0, ODC-By 1.0, the Open Government Licence – Vancouver and, for Washington's corrals and no-parking zones, CC BY 4.0; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, Santa Monica's drop zones and Ottawa's designated parking. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -166,6 +166,48 @@
         "east": -105.19852
       },
       "zones": 101
+    },
+    {
+      "id": "minneapolis",
+      "place": "Minneapolis",
+      "country": "US",
+      "authority": "City of Minneapolis",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "City of Minneapolis, \"Park a scooter\": lock a scooter to a public bike rack, a parking meter hitch or most street signs, not a bus stop sign, and keep it out of the sidewalk's 4-foot clear zone; the City's geofences mark where a ride may not end (bridges, construction), where riding is illegal (pedestrian areas, construction, parking garages) and where speed is capped at 8 or 10 mph",
+        "url": "https://www.minneapolismn.gov/getting-around/scooters/scooter-rules/scooter-parking-rules/"
+      },
+      "map": {
+        "title": "City of Minneapolis, \"SBSP_Operations_and_Geofence_Data\" (ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=dae79ddcc012456db9f1c825375bd7e4"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "url": "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/SBSP_Operations_and_Geofence_Data/FeatureServer",
+          "layer": 2,
+          "nameField": "BridgeName"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/SBSP_Operations_and_Geofence_Data/FeatureServer",
+          "layer": 1,
+          "nameField": "Feature"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/SBSP_Operations_and_Geofence_Data/FeatureServer",
+          "layer": 3,
+          "nameField": "AreaName"
+        }
+      ],
+      "bounds": {
+        "south": 44.883867,
+        "west": -93.331808,
+        "north": 45.051219,
+        "east": -93.180673
+      },
+      "zones": 237
     },
     {
       "id": "nagoya",
@@ -361,6 +403,52 @@
       "zones": 835
     },
     {
+      "id": "ottawa",
+      "place": "Ottawa",
+      "country": "CA",
+      "authority": "City of Ottawa",
+      "timeZone": "America/Toronto",
+      "source": {
+        "title": "City of Ottawa, \"E-scooter rules and safety requirements\": a shared e-scooter is parked upright in a signed designated space or an area its provider's app permits, and providers geofence no-ride, no-park and slow zones, the City's map of shared e-scooter areas showing its no-ride and slow ride zones and designated parking",
+        "url": "https://ottawa.ca/en/city-hall/creating-equal-inclusive-and-diverse-city/accessibility-city/transportation/e-scooters"
+      },
+      "map": {
+        "title": "City of Ottawa, \"Map of shared e-scooter areas\"",
+        "url": "https://ottawa.ca/en/city-hall/creating-equal-inclusive-and-diverse-city/accessibility-city/transportation/e-scooters/map-shared-e-scooter-areas"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer",
+          "layer": 1
+        },
+        {
+          "kind": "parking",
+          "url": "https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer",
+          "layer": 2,
+          "idTag": "station"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer",
+          "layer": 5
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services.arcgis.com/G6F8XLCl5KtAlZ2G/arcgis/rest/services/E_Scooter/FeatureServer",
+          "layer": 4,
+          "where": "NAME_EN = 'No Ride Zone'"
+        }
+      ],
+      "bounds": {
+        "south": 45.378424,
+        "west": -75.76472,
+        "north": 45.443623,
+        "east": -75.663754
+      },
+      "zones": 74
+    },
+    {
       "id": "porto",
       "place": "Porto",
       "country": "PT",
@@ -457,6 +545,36 @@
         "east": 176.073902
       },
       "zones": 5
+    },
+    {
+      "id": "vancouver",
+      "place": "Vancouver",
+      "country": "CA",
+      "authority": "City of Vancouver, Open Government Licence – Vancouver",
+      "timeZone": "America/Vancouver",
+      "source": {
+        "title": "City of Vancouver, \"Shared e-scooter system\": the City places e-scooter parking stations throughout the service area, and a ride ends only at one. Contains information licensed under the Open Government Licence – Vancouver",
+        "url": "https://vancouver.ca/streets-transportation/shared-e-scooter-system.aspx"
+      },
+      "map": {
+        "title": "City of Vancouver, \"Shared E-Scooter Station\" (open data, ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=8c23648a641d4ac1b0ae742586ec2dce"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services3.arcgis.com/qrcTTRTwUoS8N47o/arcgis/rest/services/SharedEScooterStation/FeatureServer",
+          "layer": 0,
+          "nameField": "STATION_LOCATION"
+        }
+      ],
+      "bounds": {
+        "south": 49.227185,
+        "west": -123.164988,
+        "north": 49.293361,
+        "east": -123.023881
+      },
+      "zones": 250
     },
     {
       "id": "vasteras",

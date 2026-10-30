@@ -104,9 +104,10 @@ function featurePolygons(rings) {
  * A feature or map service layer's zones, those `where` picks: each part of a polygon one ring, its holes
  * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, a point by its
  * `CorralType`, or else after the city. A zone of several parts is a zone for each, numbered,
- * but for its slivers.
+ * but for its slivers. `idTag` goes into each zone's id where two layers of one kind number
+ * theirs alike, as Ottawa's two of parking places do.
  */
-async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name' }) {
+async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
@@ -114,7 +115,7 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
   const idField = body.fields?.find(field => field.type === 'esriFieldTypeOID')?.name ?? 'OBJECTID';
   return body.features.flatMap(({ attributes, geometry }) => {
     const objectId = attributes[idField];
-    const id = `${city.id}-${slug(kind)}-${objectId}`;
+    const id = `${city.id}-${slug(kind)}-${idTag ? `${idTag}-` : ''}${objectId}`;
     if (Number.isFinite(geometry?.x) && Number.isFinite(geometry?.y)) {
       return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];
     }
