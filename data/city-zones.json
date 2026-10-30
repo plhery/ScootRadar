@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-29",
+  "verifiedOn": "2026-10-30",
   "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities states a licence for them; since 28 October 2026 such public city layers are drawn, credited to the city. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
@@ -272,6 +272,37 @@
         "east": 16.20556
       },
       "zones": 111
+    },
+    {
+      "id": "omaha",
+      "place": "Omaha",
+      "country": "US",
+      "authority": "City of Omaha",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "City of Omaha, New Mobility Hub: a scooter that enters a designated No Ride Zone is shut off automatically and must be walked out of it before the ride goes on; the City's automatic enforcement zones allow neither parking nor riding",
+        "url": "https://new-mobility-hub-omaha.hub.arcgis.com/"
+      },
+      "map": {
+        "title": "City of Omaha, automatic enforcement zones for scooters (ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=4bcc2608d3be41a0bff9aa924ec29c05"
+      },
+      "layers": [
+        {
+          "kind": "noRide",
+          "url": "https://services1.arcgis.com/tIBLyYZX96jUntYm/arcgis/rest/services/Automatic_Enforcement_Populus/FeatureServer",
+          "layer": 0,
+          "where": "Notes = 'No Parking or Riding Allowed'",
+          "nameField": "Location_Name"
+        }
+      ],
+      "bounds": {
+        "south": 41.238048,
+        "west": -96.020946,
+        "north": 41.271195,
+        "east": -95.924356
+      },
+      "zones": 25
     },
     {
       "id": "porto",

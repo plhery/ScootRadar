@@ -11,6 +11,8 @@ const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
 const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -116.196 };
 // Downtown Boulder, from the Pearl Street Mall down Boulder Creek.
 const BOULDER_DOWNTOWN = { south: 40.01, west: -105.285, north: 40.022, east: -105.265 };
+// The Old Market and the Gene Leahy Mall, in downtown Omaha.
+const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
@@ -47,7 +49,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'porto', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'porto', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -101,6 +103,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: PORTO_CENTRE, zoom: 17 }).map(city => city.id)).toEqual(['porto']);
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
     expect(zoneCitiesInView({ bounds: BOULDER_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boulder']);
+    expect(zoneCitiesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['omaha']);
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
@@ -181,6 +184,17 @@ describe('the cities\' zones', () => {
     const shown = ruleZonesInView({ bounds: BOULDER_DOWNTOWN, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['noRide', 'noParking', 'slow']));
     expect(shown.find(zone => zone.rule === 'slow' && zone.place === 'Pearl Street Mall')).toBeDefined();
+  });
+
+  it('draws the City of Omaha\'s automatic enforcement zones as no-ride zones, by their names, credited to the City', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'omaha')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.rule === 'noRide' && zone.authority === 'City of Omaha' && zone.timeZone === 'America/Chicago')).toBe(true);
+    // Its 16 zones labelled "No Parking or Riding Allowed", Creighton's campus in 8 parts; the layer's unlabelled shapes are left out.
+    expect(zones).toHaveLength(25);
+    const shown = ruleZonesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }, Date.now(), zones);
+    expect(shown.map(zone => zone.place)).toEqual(expect.arrayContaining(['Old Market', 'Leahy Mall Redevelopment']));
   });
 
   it('draws Arlington National Cemetery as one no-ride zone, credited to the federal rule and OpenStreetMap', async () => {

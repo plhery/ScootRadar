@@ -366,6 +366,18 @@ banned shared scooters, and feeds that were empty when checked.
     types, whose `cykel:cykelparkeringar` is a bicycle-rack survey of
     2013–2016) and its open-data catalogue hold none, and data.goteborg.se
     needs a key.
+  - Helsingborg's one rule with a shape is not drawn: since 1 September
+    2022 its local traffic rule 1283 2022:502 lets e-scooters park on a
+    pavement or cycle track only outside a marked area of central
+    Helsingborg (3.9 km², Tågaborg to Söder), so inside it they park in a
+    bicycle rack or a marked place. The area is a line of 33 points in the
+    register's own page
+    ([STFS](https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a&map=1)),
+    in SWEREF 99 TM, and the city's own map a picture. The map has no kind
+    for "park only at racks or marked places", and drawing it as no parking
+    would overstate the rule; the marked places are only in the operators'
+    apps, and the 10 km/h streets the city agreed with them are not
+    published (checked 30 October 2026).
   - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
 - **Latvia** ([guide](latvian-scooter-feeds.md#known-gaps)): Ride Mobility
   in Rīga is covered.
@@ -606,6 +618,11 @@ banned shared scooters, and feeds that were empty when checked.
     micromobility layer, ArcGIS Online none for Hartford or its regional
     council (CRCOG), and Veo's Hartford feed no geofencing file (29 October
     2026). So the map draws no Hartford zone.
+  - **Kansas City's zones:** the City publishes none as data: data.kcmo.org
+    (374 datasets) and its ArcGIS Online account hold no scooter, micromobility
+    or geofence layer, nor does the Unified Government of Kansas City,
+    Kansas; kcmo.gov answers scripts 403 (checked 30 October 2026). Bird's
+    public feed has 121 zones there, drawn as the operator's.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)),
     and Lime's rider map held none there in a full-area audit on the evening
@@ -778,6 +795,14 @@ banned shared scooters, and feeds that were empty when checked.
     and Woodend and Pegasus, in Flamingo's `waimakariri` feed (about 5),
     none ridden. The map drops their scooters rather than count them under
     Rolleston or Rangiora.
+  - **Hamilton's zones:** the council sends riders to the operator's app for
+    its no-riding and no-parking areas
+    ([micro-mobility page](https://hamilton.govt.nz/parking-and-transport/transport/micro-mobility)),
+    and publishes none as data: its 389 ArcGIS services hold Lime's trip data
+    only, and the Waikato councils' open-data site nothing more (checked 30
+    October 2026). Its 2019 release named the Hamilton Gardens' grounds, the
+    Lake Rotoroa boardwalk and Waiwhakareke as no-riding, and 15 km/h in the
+    central city, but with no shapes.
   - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
     host answers 401 and whose signed-in map samples returned no scooters on
     24 October 2026 (see [the Beam integration](beam-app-map.md)). Neuron has

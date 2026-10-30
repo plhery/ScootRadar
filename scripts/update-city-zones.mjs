@@ -18,7 +18,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // picture's pixels, read back to its SWEREF 99 grid and so to latitude and longitude.
 // A layer may instead name a boundary (scripts/boundaries.mjs): Arlington National Cemetery's,
 // where federal rules forbid riding, is its OpenStreetMap outline. Boulder's are Lime's, from the
-// public zone file its rider app draws them from, each zone an encoded polyline. Nagoya's are no
+// public zone file its rider app draws them from, each zone an encoded polyline. The City of Omaha's
+// are an ArcGIS feature service too, its zones named in another field. Nagoya's are no
 // zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
@@ -103,7 +104,7 @@ function featurePolygons(rings) {
  * `CorralType`, or else after the city. A zone of several parts is a zone for each, numbered,
  * but for its slivers.
  */
-async function featureServerZones(city, { kind, url, layer, where = '1=1' }) {
+async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name' }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
   const body = await getJson(`${url}/${layer}/query?${query}`);
   if (!Array.isArray(body.features) || body.exceededTransferLimit) throw new Error(`${url}/${layer} answered no whole layer`);
@@ -114,7 +115,7 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1' }) {
       return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
-    const name = attributes.Name?.trim() || city.place;
+    const name = attributes[nameField]?.trim() || city.place;
     const area = ring => planeArea(toPlane(ring));
     const polygons = featurePolygons(geometry.rings).map(([outer, ...holes]) => [outer, ...holes.filter(hole => area(hole) >= SLIVER_M2)]);
     const parts = polygons.length > 1 ? polygons.filter(([outer]) => area(outer) >= SLIVER_M2) : polygons;

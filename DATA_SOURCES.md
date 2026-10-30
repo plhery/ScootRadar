@@ -738,6 +738,23 @@ layers are drawn regardless, credited to the city.
   which the map draws only from 0.7 m a pixel, and 2.75 m for the other zones,
   in tiles that overlap by 50 m. Twelve of the 14 slow zones are no-return
   areas too.
+- **Omaha** (read 30 October 2026): the City of Omaha's automatic enforcement
+  zones for scooters, where neither riding nor parking is allowed, drawn as 25
+  no-riding zones: the 16 the
+  [layer](https://www.arcgis.com/home/item.html?id=4bcc2608d3be41a0bff9aa924ec29c05)
+  labels "No Parking or Riding Allowed" (MECA, the Old Market, the Leahy Mall
+  redevelopment, Creighton's and UNO's campuses, the Federal Courthouse,
+  Aksarben, Soma Townhomes and the Capitol District), Creighton's in 8 parts.
+  The layer, on the City's ArcGIS Online account, was last edited on 10 May
+  2024 and no City page links it; Lime's public zone file for Omaha holds the
+  same zones by name, marked "Auto Enforcement", so they are in force. Its six
+  unlabelled shapes are left out: two over the Henry Doorly Zoo, which the
+  City's College World Series layer names, two slivers of about 1 m² and two
+  near Aksarben. The legend links the City's
+  [New Mobility Hub](https://new-mobility-hub-omaha.hub.arcgis.com/): a scooter
+  that enters a No Ride Zone is shut off and must be walked out. Council Bluffs'
+  site answers scripts only with a challenge, and no layer of its own was
+  found.
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),
