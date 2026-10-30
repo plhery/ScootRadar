@@ -143,7 +143,7 @@ const guide: Guide = {
             rows: [
               ['Berlin', '19 000 im S-Bahn-Ring, ausserhalb keine', 'Auf dem Gehweg 2,30 m frei lassen; nicht an Haltestellen, Kreuzungen, Radwegen, in Grünanlagen und Fussgängerzonen. Im Umkreis von mindestens 100 m um eine Jelbi-Abstellfläche nur dort. Foto am Fahrtende'],
               ['Hamburg', '5000 E-Scooter und 5000 E-Bikes innerhalb des Ring 2, gleichmässig auf die Anbieter verteilt; ausserhalb keine', 'Mindestens 1,60 m Gehweg frei. Verbotszonen in Grünanlagen, an belebten Orten der Innenstadt und am Wasser. Bussgelder fürs Falschparken gibt der Anbieter an dich weiter'],
-              ['[München](map:de:München)', 'Freiwillig: je Anbieter 100 in der Altstadt und 1000 weitere innerhalb des Mittleren Rings', 'Altstadt nur an festen Abstellflächen, sonst bis 100 m um jede Fläche nur dort. Tabu: Fussgängerzonen, Grünanlagen, südlicher Englischer Garten, 10 m rund um Haltestellen'],
+              ['[München](map:de:München)', 'Freiwillig: je Anbieter 100 in der Altstadt und 1000 weitere innerhalb des Mittleren Rings', 'Altstadt nur an festen Abstellflächen, sonst bis 100 m um jede Fläche nur dort. Tabu: Fussgängerzonen, Grünanlagen, der ganze Englische Garten, 10 m rund um Haltestellen'],
               ['[Köln](map:de:Köln)', 'Seit 2022: 500 je Anbieter in der Innenstadt', 'Kein Fahrtende in Fussgängerzonen, auf Brücken, am Rheinufer und in Grünanlagen; in Altstadt und Kolumbaviertel nur an festen Stationen. Nächte auf Samstag und Sonntag (20–6 Uhr): auch nicht an den Ringen zwischen Friesen- und Rudolfplatz, an der Zülpicher Strasse und im Belgischen Viertel. 1,50 m Gehweg frei, sonst 15 €'],
               ['Stuttgart', '6000, je Anbieter 1500, davon 100 in der Kernstadt', 'Kein Fahrtende in Fussgängerzonen, Grünflächen und Parks; 2 m Gehweg frei'],
               ['Hannover', 'Im September 2026 beschlossen: 7500 bei höchstens drei Anbietern; die Auswahl steht noch aus', 'Innenstadt weitgehend Verbotszone mit rund 60 festen Abstellflächen; 2 m Gehweg frei'],
@@ -152,7 +152,7 @@ const guide: Guide = {
           },
         },
         'Karlsruhe nennt auf seiner Website noch eine Mietsperre in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr. Dem Gemeinderat sagte die Stadt aber schon 2021, diese Nachtsperre sei seit der Corona-Pandemie ausgesetzt, und Voi und Bolt vermieten laut ihren Angaben heute rund um die Uhr.',
-        'ScootRadar zeigt auf der [Live-Karte](/map) je nach Stadt andere Anbieter. In Berlin sind es Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime und Bolt: Die [Karte rund um Berlin](map:de:Berlin) zeigte am Samstag, 24. Oktober, kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter, am Sonntagmorgen, 25. Oktober, rund 15 400 Lime-Scooter. Zeus ist dort ebenfalls zugelassen, fehlt aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
+        'ScootRadar zeigt auf der [Live-Karte](/map) je nach Stadt andere Anbieter. In Berlin sind es Dott, Voi, Lime und Bolt: Die [Karte rund um Berlin](map:de:Berlin) zeigte am Freitag, 30. Oktober 2026, um 9:27 Uhr rund 4700 Dott-, 14 400 Voi- und 9200 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 14 700 Lime-Scooter nach der letzten Zählung. Zeus ist dort ebenfalls zugelassen, fehlt aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
       ],
     },
     {
@@ -189,6 +189,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Bayerische Schlösserverwaltung: Englischer Garten, Hinweise für Besucher (PDF)', url: 'https://www.schloesser.bayern.de/deutsch/service/infomat/screen-pdf/engl-garten_dt.pdf' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), aktuelle Fassung', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Strassenverkehrs-Ordnung, Anlage 2 (Vorschriftzeichen), aktuelle Fassung', url: 'https://www.gesetze-im-internet.de/stvo_2013/anlage_2.html' },
     { title: 'Verordnung zur Änderung der eKFV, BGBl. 2026 I Nr. 32', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },

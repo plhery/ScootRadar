@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter hire Munich 2026: Dott, Voi, Lime, Bolt prices',
   description: 'Rent a Voi, Lime, Dott or Bolt e-scooter in Munich: 18+, no licence. Ten minutes cost €4.00 on Dott. Old-town bays, no English Garden or U-Bahn.',
   headline: 'E-scooters in Munich: apps, prices, parking and the Oktoberfest rules',
-  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €4.00 with Dott (its published rate, 12 October 2026); Voi, Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
+  lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €4.00 with Dott (its published rate, 30 October 2026); Voi, Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:München',
@@ -17,15 +17,15 @@ const guide: Guide = {
       heading: 'Which e-scooter apps work in Munich?',
       blocks: [
         'The city and MVV, Munich’s public transport network, list four e-scooter operators: **Dott**, **Lime**, **Voi** and **Bolt**. If an older guide mentions Tier, that’s Dott now: the two merged.',
-        'ScootRadar shows Dott, Voi since 24 October 2026 and Lime and Bolt since 25 October on the [map around Munich](map:de:München): at 15:55 on Saturday 24 October, about 3,600 Dott and 6,800 Voi scooters, and on Sunday 25 October about 10,000 Lime scooters around midday and 3,400 Bolt scooters at 13:50, snapshots, not the fleets.',
+        'At 9:27 on Friday 30 October 2026 the [map around Munich](map:de:München) showed about 3,400 Dott, 6,700 Voi and 3,600 Bolt scooters free at that moment, not the whole fleets, and about 9,400 Lime scooters as last counted.',
         'You rent in the operator’s app; Dott and Voi also work in **MVGO**, the app of MVG, Munich’s transport company, with an M-Login account. All four rent only to riders of 18 or over, although German law allows e-scooters from 14. Step by step: [how to rent an e-scooter](guide:how-to-rent).',
-        'MVV also lists **emmy**, but it rents e-mopeds, not e-scooters: they need a driving licence and a helmet.',
+        'MVV also lists **emmy**, which rents e-mopeds, not e-scooters.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Munich?',
       blocks: [
-        'You pay to unlock, then by the minute. Dott publishes its Munich rate in its public data feed; Voi, Lime and Bolt show theirs in the app.',
+        'You pay to unlock, then by the minute; Voi, Lime and Bolt show their price in the app.',
         {
           table: {
             caption: 'E-scooter prices in Munich (published rates, 12 October 2026)',
@@ -45,10 +45,10 @@ const guide: Guide = {
     {
       heading: 'Where to ride: pedestrian zones, the English Garden and parks',
       blocks: [
-        'Ride on the bike lane or path (Radweg) where there is one, otherwise on the road. Pavements and pedestrian zones are off limits, including Neuhauser Strasse and Kaufingerstrasse between Stachus and Marienplatz: Dott’s zone data marks them and the Viktualienmarkt as no-riding zones, so get off and push.',
+        'Ride on the bike lane or path (Radweg) where there is one, otherwise on the road. Pavements and pedestrian zones are off limits, including Neuhauser Strasse and Kaufingerstrasse between Stachus and Marienplatz: Dott also bars riding there and on the Viktualienmarkt, so get off and push.',
         '**The English Garden is closed to e-scooters**, parked ones included. The Bavarian Palace Administration, which runs the park, explains why: e-scooters count as motor vehicles, and the city’s landscape protection rules keep those out. Going to the Chinese Tower or the Eisbach surfers? Leave the scooter outside and walk in. Riding and parking are also banned in Nymphenburg Palace Park, the Hofgarten, the Maximiliansanlagen and every landscape protection area.',
-        'In Dott’s zone data (12 October 2026) you can’t ride in the Olympiapark, nor end a ride at the Flaucher on the Isar. Each app shows its own zones.',
-        'Our advice: cross tram rails as close to a right angle as you can. Munich is mostly flat; the climbs lead up from the Isar, at the Gasteig or the Nockherberg, for example.',
+        'Dott bars riding in most of the Olympiapark and ending a ride at the Flaucher on the Isar (30 October 2026). Each app shows its own zones; zoom in on the [map](map:de:München) for the city’s bays and zones and Dott’s.',
+        'Cross tram rails as close to a right angle as you can. Munich is mostly flat; the climbs lead up from the Isar, at the Gasteig or the Nockherberg, for example.',
       ],
     },
     {
@@ -74,7 +74,7 @@ const guide: Guide = {
     {
       heading: 'What bad parking costs in Munich',
       blocks: [
-        'If your parked scooter gets in people’s way, city traffic wardens or the police can fine you €20. From 1 March 2027, parking on a pavement or bike lane where it isn’t allowed costs from €55.',
+        'If your parked scooter gets in people’s way, city traffic wardens or the police can fine you €20, or €30 if it endangers them. From 1 March 2027, parking on a pavement or bike lane where it isn’t allowed costs from €55.',
         'The operators add their own charges:',
         {
           table: {
@@ -110,7 +110,7 @@ const guide: Guide = {
       blocks: [
         'Since 2 April 2024, MVG has banned e-scooters, folded or not, from its U-Bahn trains, trams and city buses and from U-Bahn stations. Rental scooters can’t go on the S-Bahn or regional trains either: they don’t fold, and the operators forbid it.',
         'Your own scooter may travel folded and free of charge on the S-Bahn, regional trains and regional buses, if it is no larger than 90 × 80 cm and no heavier than 25 kg. With a rental, end the ride outside the station and rent another at the other end.',
-        '**Airport:** Dott’s zone data puts the terminals outside its area, and we haven’t checked the other operators, so take the S-Bahn there and keep scooters for town.',
+        '**Airport:** the terminals lie outside Dott’s area (30 October 2026), so take the S-Bahn there and keep scooters for town.',
       ],
     },
     {
@@ -148,7 +148,7 @@ const guide: Guide = {
         },
         'Riding in Berlin too? Its parking rules differ: see [e-scooters in Berlin](guide:berlin).',
         '**No permit and no binding cap, for now.** In Bavaria, operators need no city permit and pay no fees. All signed a voluntary commitment, revised in April 2022: at most 100 scooters each in the old town and 1,000 more inside the Mittlerer Ring, the middle ring road; no more than four in one spot; badly parked ones collected within 24 hours.',
-        'The fleet has grown fast: police counted about 4,000 rental e-scooters in 2019 and about 12,000 in 2022; in April 2024 the city counted 18,698, according to press reports. From 1 March 2027, setting out rental scooters will need a city permit across Germany, and Munich wants to attach fleet caps and fees. As of 12 October 2026 we had found no council decision or figures.',
+        'The fleet has grown fast: police counted about 4,000 rental e-scooters in 2019 and about 12,000 in 2022; on 19 April 2024 the city’s Mobility Department counted 18,698, according to dpa. From 1 March 2027, setting out rental scooters will need a city permit across Germany, and Munich wants to attach fleet caps and fees. On 30 June 2026 the Mobility Department said the council would discuss key points in 2026; caps and fees were still open on 30 October.',
       ],
     },
   ],
@@ -183,6 +183,7 @@ const guide: Guide = {
     { title: 'Bavarian Palace Administration: English Garden, notes for visitors (PDF, German)', url: 'https://www.schloesser.bayern.de/deutsch/service/infomat/screen-pdf/engl-garten_dt.pdf' },
     { title: 'muenchen.de: MyRadl, rental bikes for the Munich region (German)', url: 'https://www.muenchen.de/verkehr/aktuell/myradl-im-mvv-muenchen-leihfahrraeder-fuer-die-region' },
     { title: 'Dott: public price feed for Munich (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munich/system_pricing_plans.json' },
+    { title: 'dpa in inFranken.de: Nuremberg and Munich on rental e-scooters, 26 April 2024 (German)', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300,PRINT' },
     { title: 'Voi: e-scooters in Munich', url: 'https://www.voi.com/city/munich' },
     { title: 'Munich police: Oktoberfest 2022 final report (PDF, German)', url: 'https://www.polizei.bayern.de/mam/presse/pp-muenchen/pressebericht_sonderbeilage_abschlussbilanz_wiesn_2022.pdf' },
     { title: 'Federal Ministry for Transport: questions and answers on e-scooters (German)', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq.html' },
