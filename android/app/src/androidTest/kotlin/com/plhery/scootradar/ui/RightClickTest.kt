@@ -13,18 +13,24 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
+import androidx.compose.ui.unit.toSize
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -33,9 +39,11 @@ import androidx.test.uiautomator.UiDevice
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
 import com.plhery.scootradar.core.api.AddressSearchResult
 import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -60,14 +68,18 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 /**
- * X-AD22 on a device: a mouse's right click, sent as the system's input sends one (a MotionEvent from SOURCE_MOUSE with
- * BUTTON_SECONDARY, through UiAutomation, so through the window manager's dispatch), does nothing on the map, on the
- * bar's Settings button, on a row of the Settings sheet or on the search bar, and opens the search field's own menu; a
- * left click acts on each. For ScootRadar_Phone_Min, ScootRadar_Fold folded and open, and ScootRadar_Tablet; the screens
- * are kept in the run's additional output, as right-click-*.png.
+ * X-AD22 on a device: a right click, sent as the system's input sends one (a MotionEvent from SOURCE_MOUSE with
+ * BUTTON_SECONDARY, through UiAutomation, so through the window manager's dispatch), from a mouse or from a trackpad
+ * (whose two-finger click Android sends as a finger from the mouse's source), does nothing on the map, on the bar's
+ * Settings button, on a row of the Settings sheet or on the search bar, and opens the search field's own menu; a left
+ * click acts on each. Around Settings' calendar, a window of its own, a right click leaves it open. For
+ * ScootRadar_Phone_Min, ScootRadar_Fold folded and open, and ScootRadar_Tablet; the screens are kept in the run's
+ * additional output, as right-click-*.png.
  *
  * The button's own press and release events (ACTION_BUTTON_PRESS and _RELEASE) need their action button, which only
  * MotionEvent.setActionButton sets, a test API hidden from the SDK that API 31 and 37 let a test reach by reflection
@@ -106,16 +118,23 @@ class RightClickTest {
     }
 
     @Test
-    fun aRightClickDoesNothingButOpenTheSearchFieldsMenuWhereALeftClickActs() {
+    fun aRightClickDoesNothingButOpenTheSearchFieldsMenuWhereALeftClickActs() = rightClicksOnTheScreen(Clicker.Mouse)
+
+    @Test
+    fun aTrackpadsRightClickDoesNothingButOpenTheSearchFieldsMenuWhereALeftClickActs() = rightClicksOnTheScreen(Clicker.Trackpad)
+
+    private fun rightClicksOnTheScreen(clicker: Clicker) {
         Log.i("RightClickTest", if (setActionButton != null) "clicks with the button's press and release" else "clicks of a down and an up alone")
         val controller = show()
+        val name = clicker.name.lowercase()
+        fun click(at: Offset, button: Int) = click(at, button, clicker)
 
         // The map: a right click beside the chosen scooter leaves it chosen; a left click there, a tap, lets it go.
         onMain { controller.selectScooter(scooter.id) }
         compose.waitForIdle()
         Thread.sleep(1_500)
         val onTheMap = compose.onRoot().fetchSemanticsNode().let { it.positionOnScreen + Offset(it.size.width * 0.7f, it.size.height * 0.3f) }
-        screenshot("right-click-map")
+        screenshot("right-click-$name-map")
         click(onTheMap, MotionEvent.BUTTON_SECONDARY)
         // MapLibre takes a tap once the double tap's time is past.
         Thread.sleep(1_000)
@@ -141,7 +160,7 @@ class RightClickTest {
             Thread.sleep(1_000)
         }
         assertTrue("the row on the screen at ${center(zones)}", center(zones).y < screenHeight() * 0.85f)
-        screenshot("right-click-settings")
+        screenshot("right-click-$name-settings")
         val showsZones = controller.showsZones.value
         click(center(zones), MotionEvent.BUTTON_SECONDARY)
         Thread.sleep(500)
@@ -169,28 +188,83 @@ class RightClickTest {
         assertTrue("no menu after a left click on the field", !shown(menu))
         click(center(field), MotionEvent.BUTTON_SECONDARY)
         compose.waitUntil(5_000) { shown(menu) }
-        screenshot("right-click-field-menu")
+        screenshot("right-click-$name-field-menu")
     }
 
     /**
-     * A mouse's click with [button] at [at] on the screen, as the system sends it: down with the button held, its
+     * Settings' calendar, a window of its own: a right click above it, below it and beside it (where its window leaves
+     * room at its sides), outside what it shows, leaves it open, from a mouse and from a trackpad alike; a left click
+     * there closes it. On a phone the calendar's window is as tall as the calendar, so above and below it are outside
+     * the window, which is handed the press all the same.
+     */
+    @Test
+    fun aRightClickAroundTheCalendarLeavesItOpen() {
+        val controller = show()
+        // Lime's pass, valid through a fortnight from now: Settings lists it under Passes, and its page has the date.
+        onMain { controller.setRidePass(ProviderRidePass(enabled = true, expiryDate = Instant.now().plus(14, ChronoUnit.DAYS)), ScooterProvider.Lime) }
+        click(center(hasContentDescription(localized("Settings"))), MotionEvent.BUTTON_PRIMARY, Clicker.Mouse)
+        val pass = hasText(localized("Pass active"), substring = true) and hasClickAction()
+        compose.waitUntil(5_000) { shown(pass) }
+        Thread.sleep(1_000)
+        compose.onAllNodes(pass).onFirst().performSemanticsAction(SemanticsActions.OnClick)
+        val date = hasText(localized("Valid through"), substring = true) and hasClickAction()
+        compose.waitUntil(5_000) { shown(date) }
+        Thread.sleep(1_000)
+        val calendar = isDialog()
+        for (clicker in Clicker.entries) {
+            val name = clicker.name.lowercase()
+            compose.onAllNodes(date).onFirst().performSemanticsAction(SemanticsActions.OnClick)
+            compose.waitUntil(5_000) { shown(calendar) }
+            Thread.sleep(1_000)
+            val shows = bounds(calendar)
+            val room = 30f
+            val spots = buildList {
+                if (shows.top > room * 2) add("above" to Offset(shows.center.x, shows.top - room))
+                if (shows.bottom < screenHeight() - room * 2) add("below" to Offset(shows.center.x, shows.bottom + room))
+                if (shows.left > room * 2) add("beside" to Offset(shows.left - room, shows.center.y))
+            }
+            Log.i("RightClickTest", "the calendar at $shows on a ${device.displayWidth}x${device.displayHeight} screen: $spots")
+            assertTrue("a place outside the calendar at $shows", spots.isNotEmpty())
+            screenshot("right-click-$name-calendar")
+            for ((where, at) in spots) {
+                click(at, MotionEvent.BUTTON_SECONDARY, clicker)
+                Thread.sleep(500)
+                assertTrue("the calendar open after a right click $where it at $at", shown(calendar))
+            }
+            click(spots.first().second, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertTrue("the calendar closed after a left click ${spots.first().first} it", waitFor(5_000) { !shown(calendar) })
+            Thread.sleep(500)
+        }
+    }
+
+    /**
+     * What clicks: a mouse, or a trackpad, whose two-finger click Android sends as a finger from the mouse's source,
+     * which Compose takes for a mouse's (MotionEventAdapter).
+     */
+    private enum class Clicker(val tool: Int) {
+        Mouse(MotionEvent.TOOL_TYPE_MOUSE),
+        Trackpad(MotionEvent.TOOL_TYPE_FINGER),
+    }
+
+    /**
+     * [clicker]'s click with [button] at [at] on the screen, as the system sends it: down with the button held, its
      * press, its release, and up.
      */
-    private fun click(at: Offset, button: Int) {
+    private fun click(at: Offset, button: Int, clicker: Clicker) {
         val down = SystemClock.uptimeMillis()
-        send(MotionEvent.ACTION_DOWN, at, button, down, down)
+        send(MotionEvent.ACTION_DOWN, at, button, down, down, clicker)
         if (setActionButton != null) {
-            send(MotionEvent.ACTION_BUTTON_PRESS, at, button, down, down, actionButton = button)
-            send(MotionEvent.ACTION_BUTTON_RELEASE, at, 0, down, down + 60, actionButton = button)
+            send(MotionEvent.ACTION_BUTTON_PRESS, at, button, down, down, clicker, actionButton = button)
+            send(MotionEvent.ACTION_BUTTON_RELEASE, at, 0, down, down + 60, clicker, actionButton = button)
         }
-        send(MotionEvent.ACTION_UP, at, 0, down, down + 60)
+        send(MotionEvent.ACTION_UP, at, 0, down, down + 60, clicker)
         compose.waitForIdle()
     }
 
-    private fun send(action: Int, at: Offset, buttons: Int, downTime: Long, time: Long, actionButton: Int = 0) {
+    private fun send(action: Int, at: Offset, buttons: Int, downTime: Long, time: Long, clicker: Clicker, actionButton: Int = 0) {
         val event = MotionEvent.obtain(
             downTime, time, action, 1,
-            arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = MotionEvent.TOOL_TYPE_MOUSE }),
+            arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = clicker.tool }),
             arrayOf(MotionEvent.PointerCoords().apply { x = at.x; y = at.y; pressure = if (buttons == 0) 0f else 1f }),
             0, buttons, 1f, 1f, 0, 0, InputDevice.SOURCE_MOUSE, 0,
         )
@@ -201,6 +275,10 @@ class RightClickTest {
             event.recycle()
         }
     }
+
+    /** Where the first node [matcher] finds is, on the screen. */
+    private fun bounds(matcher: SemanticsMatcher): Rect =
+        compose.onAllNodes(matcher).onFirst().fetchSemanticsNode().let { Rect(it.positionOnScreen, it.size.toSize()) }
 
     /** The middle of the first node [matcher] finds, on the screen. */
     private fun center(matcher: SemanticsMatcher): Offset =

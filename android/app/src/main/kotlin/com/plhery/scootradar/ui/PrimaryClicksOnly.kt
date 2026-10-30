@@ -1,6 +1,7 @@
 package com.plhery.scootradar.ui
 
 import android.annotation.SuppressLint
+import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
 import androidx.compose.runtime.Composable
@@ -26,7 +27,6 @@ import androidx.compose.ui.node.traverseDescendants
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.window.DialogWindowProvider
 
 // X-AD22: an iPad's pointer clicks with its primary button. UIKit's tap recognizers answer that button alone unless
 // told otherwise (UITapGestureRecognizer.h: buttonMaskRequired, "Default is UIEventButtonMaskPrimary"), the map's
@@ -35,11 +35,13 @@ import androidx.compose.ui.window.DialogWindowProvider
 // on devices with pointer-based input, the actions display in a context menu"), as Compose's text field opens its own.
 
 /**
- * A mouse's press that starts with the secondary button, and all of it until the button is let go, taken before
- * anything under it sees it: the buttons, rows and sheets under it, and the map, which takes no tap from it, answer the
- * primary button alone, as on an iPad, where Compose's would take a right click for a click. A press on a
- * [keepsSecondaryClicks] field goes on to it. The pointer's hover, its wheel and the primary button go on as before; a
- * finger or a stylus has no secondary button here. A dialog's content needs [PrimaryClicksOnlyBesideTheDialog] as well.
+ * A mouse's or a trackpad's press that starts with the secondary button, and all of it until the button is let go,
+ * taken before anything under it sees it: the buttons, rows and sheets under it, and the map, which takes no tap from
+ * it, answer the primary button alone, as on an iPad, where Compose's would take a right click for a click. A press on
+ * a [keepsSecondaryClicks] field goes on to it. The pointer's hover, its wheel and the primary button go on as before;
+ * a finger on the screen or a stylus has no secondary button here. Compose tells a trackpad's finger, which is a
+ * mouse's pointer, from one on the screen. A dialog's or a popup's content needs [PrimaryClicksOnlyAroundTheContent]
+ * as well.
  */
 fun Modifier.primaryClicksOnly(): Modifier = this then PrimaryClicksOnlyElement
 
@@ -107,7 +109,8 @@ private class PrimaryClicksOnlyNode : Modifier.Node(), PointerInputModifierNode 
             (field as KeepsSecondaryClicksNode).below?.coordinates?.takeIf { it.isAttached }?.let { edge ->
                 part = part.copy(top = maxOf(part.top, here.localBoundingBoxOf(edge).bottom))
             }
-            over = coordinates.isAttached && part.contains(position)
+            // A node it visits is attached, and so are its coordinates.
+            over = part.contains(position)
             if (over) TraverseDescendantsAction.CancelTraversal else TraverseDescendantsAction.ContinueTraversal
         }
         return over
@@ -115,33 +118,50 @@ private class PrimaryClicksOnlyNode : Modifier.Node(), PointerInputModifierNode 
 }
 
 /**
- * In a dialog's content: a right click beside it, where a tap closes the dialog, leaves it open, as an iPad's popover
- * stays open under one. A Dialog's window is the whole screen, its content in the middle, and a click on the rest, which
- * no View under it takes, goes to the Dialog, which closes on it whatever the button; Compose doesn't see it.
+ * In a dialog's or a popup's content: a right click outside the content, where a tap closes the window, leaves it open,
+ * as an iPad's popover and menu stay open under one. Such a window is handed every press on the app while it shows,
+ * outside it too (it is touch modal): a press beside its content, or past the window's edges, which no View in it
+ * takes, goes to the window's root view, and then to the Dialog or the Popup, which closes on it whatever the button;
+ * Compose's pointer input doesn't see it. A dialog's window is as wide as the screen and as tall as its content (the
+ * calendar's), or the whole screen when the content needs it; a popup's is its content and the room around it.
  */
 @Composable
-fun PrimaryClicksOnlyBesideTheDialog() {
+fun PrimaryClicksOnlyAroundTheContent() {
     val view = LocalView.current
     DisposableEffect(view) {
-        val dialog = (view.parent as? View)?.takeIf { it is DialogWindowProvider }
-        dialog?.setOnTouchListener(BesideTheDialog())
-        onDispose { dialog?.setOnTouchListener(null) }
+        // The decor view of a dialog's window; a popup's PopupLayout, the root of its own.
+        val window = view.rootView
+        window.setOnTouchListener(SecondaryClicksAround())
+        onDispose { window.setOnTouchListener(null) }
     }
 }
 
 /**
- * A mouse's press that starts with the secondary button beside a dialog's content, and all of it, taken. It is no click
- * (none of TalkBack's, which aren't a mouse's), so it has no [View.performClick] to call.
+ * Whether the pointer pressed is one Compose takes for a mouse (ui's MotionEventAdapter): a mouse, or a finger on a
+ * trackpad, which Android sends from the mouse's source (or the touchpad's) with a finger's tool, a trackpad's
+ * two-finger right click among them. Compose takes a trackpad's two-finger swipe or pinch, which presses no button, for
+ * a touch.
+ */
+private fun MotionEvent.isFromAMouse(): Boolean = when (getToolType(actionIndex)) {
+    MotionEvent.TOOL_TYPE_MOUSE -> true
+    MotionEvent.TOOL_TYPE_FINGER -> isFromSource(InputDevice.SOURCE_MOUSE) || isFromSource(InputDevice.SOURCE_TOUCHPAD)
+    else -> false
+}
+
+/** A mouse's or a trackpad's press that starts with the secondary button and not the primary. */
+private fun MotionEvent.isSecondaryPress(): Boolean =
+    isFromAMouse() && isButtonPressed(MotionEvent.BUTTON_SECONDARY) && !isButtonPressed(MotionEvent.BUTTON_PRIMARY)
+
+/**
+ * A mouse's or a trackpad's press that starts with the secondary button outside a window's content, and all of it,
+ * taken. It is no click (none of TalkBack's, which aren't a mouse's), so it has no [View.performClick] to call.
  */
 @SuppressLint("ClickableViewAccessibility")
-private class BesideTheDialog : View.OnTouchListener {
+private class SecondaryClicksAround : View.OnTouchListener {
     private var ignoring = false
 
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-            ignoring = event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE &&
-                event.isButtonPressed(MotionEvent.BUTTON_SECONDARY) && !event.isButtonPressed(MotionEvent.BUTTON_PRIMARY)
-        }
+        if (event.actionMasked == MotionEvent.ACTION_DOWN) ignoring = event.isSecondaryPress()
         val taken = ignoring
         if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) ignoring = false
         return taken

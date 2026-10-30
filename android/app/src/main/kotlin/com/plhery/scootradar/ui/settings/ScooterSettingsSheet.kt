@@ -93,7 +93,7 @@ import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalClock
-import com.plhery.scootradar.ui.PrimaryClicksOnlyBesideTheDialog
+import com.plhery.scootradar.ui.PrimaryClicksOnlyAroundTheContent
 import com.plhery.scootradar.ui.SecondaryClicksEdge
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.focusableControl
@@ -689,7 +689,7 @@ private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
             dismissButton = { TextButton(onClick = { picking = false }) { Text(localized("Cancel")) } },
             colors = colors,
         ) {
-            PrimaryClicksOnlyBesideTheDialog()
+            PrimaryClicksOnlyAroundTheContent()
             DatePicker(
                 state,
                 // Typing the date, a right click on the field under the header opens its menu, as the search field's.

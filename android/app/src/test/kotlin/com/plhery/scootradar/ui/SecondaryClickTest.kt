@@ -30,6 +30,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.rightClick
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -62,6 +63,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -163,6 +165,41 @@ class SecondaryClickTest {
         compose.waitForIdle()
         assertEquals(listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP), map.touches)
         compose.onNodeWithContentDescription("Settings").performMouseInput { click() }
+        compose.waitUntil { "settings_open" in analytics.names }
+    }
+
+    /**
+     * A trackpad's two-finger click, which Android sends as a finger from the mouse's source with the secondary button
+     * down and Compose takes for a mouse's, does nothing on the map or on the bar's Settings button either; its click
+     * acts on each.
+     */
+    @Test
+    fun aTrackpadsRightClickOnTheScreenDoesNothingWhereALeftClickActs() {
+        val analytics = RecordingAnalytics()
+        lateinit var map: MapStandIn
+        lateinit var screen: View
+        compose.setContent {
+            screen = LocalView.current
+            ScooterMapScreen(
+                controller = testController(scope),
+                map = { AndroidView({ MapStandIn(it).also { view -> map = view } }, Modifier.fillMaxSize()) },
+                analytics = analytics.analytics,
+                glassBlurs = false,
+            )
+        }
+        compose.waitForIdle()
+        val onTheMap = compose.onRoot().fetchSemanticsNode().size.let { Offset(it.width / 2f, it.height * 0.4f) }
+        val settings = compose.onNodeWithContentDescription("Settings").fetchSemanticsNode().boundsInRoot.center
+
+        click(screen, onTheMap, MotionEvent.BUTTON_SECONDARY, Clicker.Trackpad)
+        assertEquals("the map's touches from a right click", emptyList<Int>(), map.touches)
+        click(screen, settings, MotionEvent.BUTTON_SECONDARY, Clicker.Trackpad)
+        assertTrue("the search bar shows, Settings unopened", searchBarShows())
+        assertTrue(analytics.names.toString(), "settings_open" !in analytics.names)
+
+        click(screen, onTheMap, MotionEvent.BUTTON_PRIMARY, Clicker.Trackpad)
+        assertEquals(listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP), map.touches)
+        click(screen, settings, MotionEvent.BUTTON_PRIMARY, Clicker.Trackpad)
         compose.waitUntil { "settings_open" in analytics.names }
     }
 
@@ -285,10 +322,17 @@ class SecondaryClickTest {
                 }
             }
         }
-        compose.onNodeWithText("Nov 14, 2026", useUnmergedTree = true).performClick()
-        compose.waitUntil { compose.onAllNodes(day(20)).fetchSemanticsNodes().isNotEmpty() }
+        reopenTheCalendar()
         return model
     }
+
+    /** The calendar opened again from the pass's date, its page shown. */
+    private fun reopenTheCalendar() {
+        compose.onNodeWithText("Nov 14, 2026", useUnmergedTree = true).performClick()
+        compose.waitUntil { calendarOpen() }
+    }
+
+    private fun calendarOpen() = compose.onAllNodes(day(20)).fetchSemanticsNodes().isNotEmpty()
 
     private fun noon(day: Int) = ZonedDateTime.of(2026, 11, day, 12, 0, 0, 0, zone).toInstant()
 
@@ -350,32 +394,75 @@ class SecondaryClickTest {
         assertTrue("the field's menu", compose.onAllNodes(menu).fetchSemanticsNodes().isNotEmpty())
     }
 
-    /** A mouse's [action] at ([x], [y]) in a window, with [buttons] down. */
-    private fun mouse(action: Int, x: Float, y: Float, buttons: Int): MotionEvent = MotionEvent.obtain(
+    /**
+     * What clicks: a mouse; a trackpad, whose two-finger click Android sends as a finger from the mouse's source; and a
+     * touchpad's finger from the touchpad's own source. Compose takes each for a mouse (MotionEventAdapter), and so must
+     * the app's own listeners.
+     */
+    private enum class Clicker(val tool: Int, val source: Int) {
+        Mouse(MotionEvent.TOOL_TYPE_MOUSE, InputDevice.SOURCE_MOUSE),
+        Trackpad(MotionEvent.TOOL_TYPE_FINGER, InputDevice.SOURCE_MOUSE),
+        Touchpad(MotionEvent.TOOL_TYPE_FINGER, InputDevice.SOURCE_TOUCHPAD),
+    }
+
+    /** [clicker]'s [action] at ([x], [y]) in a view, with [buttons] down. */
+    private fun press(action: Int, x: Float, y: Float, buttons: Int, clicker: Clicker): MotionEvent = MotionEvent.obtain(
         SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), action, 1,
-        arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = MotionEvent.TOOL_TYPE_MOUSE }),
+        arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = clicker.tool }),
         arrayOf(MotionEvent.PointerCoords().apply { this.x = x; this.y = y }),
-        0, buttons, 1f, 1f, 0, 0, InputDevice.SOURCE_MOUSE, 0,
+        0, buttons, 1f, 1f, 0, 0, clicker.source, 0,
     )
 
-    /** A click with [button] in the calendar's window, beside the calendar, where a tap closes it. */
-    private fun clickBesideTheCalendar(button: Int) {
-        val window = ShadowDialog.getLatestDialog().window!!.decorView
-        window.dispatchTouchEvent(mouse(MotionEvent.ACTION_DOWN, 2f, 2f, button))
-        window.dispatchTouchEvent(mouse(MotionEvent.ACTION_UP, 2f, 2f, 0))
+    /** A click of [clicker]'s [button] at [at] in [view], dispatched through it: the press with the button down, then up. */
+    private fun click(view: View, at: Offset, button: Int, clicker: Clicker) {
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_DOWN, at.x, at.y, button, clicker))
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_UP, at.x, at.y, 0, clicker))
         compose.waitForIdle()
     }
 
+    /** The calendar's window: its root view, which is handed every press while it shows. */
+    private fun calendarWindow(): View = ShadowDialog.getLatestDialog().window!!.decorView
+
     /**
      * Beside the calendar, in its window but outside the content, where Compose's dialog closes on any click (no View
-     * takes it), a right click leaves it open, as an iPad's popover under one; a left click closes it.
+     * takes it), a right click leaves it open, as an iPad's popover under one, from a mouse and from a trackpad alike;
+     * a left click closes it.
      */
     @Test
     fun aRightClickBesideTheCalendarLeavesItOpen() {
         openTheCalendar()
-        clickBesideTheCalendar(MotionEvent.BUTTON_SECONDARY)
-        assertTrue("the calendar stays open", compose.onAllNodes(day(20)).fetchSemanticsNodes().isNotEmpty())
-        clickBesideTheCalendar(MotionEvent.BUTTON_PRIMARY)
-        assertTrue("a left click closes it", compose.onAllNodes(day(20)).fetchSemanticsNodes().isEmpty())
+        val beside = Offset(2f, 2f)
+        for (clicker in Clicker.entries) {
+            if (!calendarOpen()) reopenTheCalendar()
+            click(calendarWindow(), beside, MotionEvent.BUTTON_SECONDARY, clicker)
+            assertTrue("the calendar stays open after $clicker's right click", calendarOpen())
+            click(calendarWindow(), beside, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertFalse("$clicker's left click closes it", calendarOpen())
+        }
+    }
+
+    /**
+     * The calendar's window is as wide as the screen and as tall as the calendar, and is handed every press while it
+     * shows: one above or below it reaches the window outside all of its views, where the dialog closes on it. A right
+     * click there leaves it open; a left click closes it.
+     *
+     * Robolectric keeps no cursor, and sends a press from the mouse's source to the view at (0, 0) whatever its place:
+     * the touchpad's, sent by its place as a device sends every press, is the one that reaches the window outside its
+     * views here. RightClickTest clicks there with a mouse and a trackpad on devices.
+     */
+    @Test
+    fun aRightClickAboveOrBelowTheCalendarLeavesItOpen() {
+        openTheCalendar()
+        val window = calendarWindow()
+        val above = Offset(window.width / 2f, -40f)
+        val below = Offset(window.width / 2f, window.height + 40f)
+        for (clicker in Clicker.entries) {
+            for (at in listOf(above, below)) {
+                click(window, at, MotionEvent.BUTTON_SECONDARY, clicker)
+                assertTrue("the calendar stays open after $clicker's right click at $at", calendarOpen())
+            }
+        }
+        click(window, above, MotionEvent.BUTTON_PRIMARY, Clicker.Touchpad)
+        assertFalse("a left click above it closes it", calendarOpen())
     }
 }
