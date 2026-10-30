@@ -302,12 +302,21 @@ object GroundStyle {
                 layout = mapOf("line-cap" to "round"),
                 paint = mapOf("line-color" to c.path, "line-width" to grows(16 to 0.6, 17 to 1.3, 19 to 3.2)),
             ),
-        ) + streets("casing", extra = 1.8, visible = c.casing != null) { c.casing ?: c.land } +
-            streets("street", extra = 0.0, visible = true) { kind ->
-                when (kind) {
-                    Street.Service, Street.Minor -> c.minor
-                    Street.Mid -> c.mid
-                    Street.Major -> c.major
+        ) + streets("casing", extra = 1.8, visible = c.casing != null && !look.satellite) { c.casing ?: c.land } +
+            // Over imagery, thin white lines that let the roads in the picture show through, as MapKit's hybrid
+            // draws them (MAP-262), not the night's wide dark ones.
+            streets(
+                "street",
+                extra = 0.0,
+                visible = true,
+                opacity = if (look.satellite) IMAGERY_STREET_OPACITY else 1.0,
+                scale = if (look.satellite) IMAGERY_STREET_WIDTH else 1.0,
+            ) { kind ->
+                when {
+                    look.satellite -> IMAGERY_STREET
+                    kind == Street.Service || kind == Street.Minor -> c.minor
+                    kind == Street.Mid -> c.mid
+                    else -> c.major
                 }
             } + buildings(c, visible = shapes)
     }
@@ -358,13 +367,16 @@ object GroundStyle {
     }
 
     /**
-     * The streets of each kind, `extra` points wider for their casings. The night has no casings; theirs stay in
-     * the style, hidden, so that the day can show them again in place.
+     * The streets of each kind, `extra` points wider for their casings, at [scale] times their widths and at
+     * [opacity]. The night has no casings; theirs stay in the style, hidden, so that the day can show them again in
+     * place. Each street has its opacity, 1 but over imagery, so that a look without imagery sets it back.
      */
     private fun streets(
         prefix: String,
         extra: Double,
         visible: Boolean,
+        opacity: Double = 1.0,
+        scale: Double = 1.0,
         color: (Street) -> String,
     ): List<Layer> = Street.entries.map { kind ->
         val filter = when (kind) {
@@ -381,10 +393,21 @@ object GroundStyle {
             layout = mapOf("line-cap" to "round", "line-join" to "round"),
             paint = mapOf(
                 "line-color" to color(kind),
-                "line-width" to grows(*kind.widths.map { (zoom, width) -> zoom to width + extra }.toTypedArray()),
+                "line-width" to grows(*kind.widths.map { (zoom, width) -> zoom to width * scale + extra }.toTypedArray()),
+                "line-opacity" to opacity,
             ),
         )
     }
+
+    /** MapKit's hybrid streets over imagery: white at half strength, and thin (MAP-262). */
+    private const val IMAGERY_STREET = "#ffffff"
+    private const val IMAGERY_STREET_OPACITY = 0.5
+
+    /**
+     * How wide a street over imagery is against the same street on the ground: a third, so that the road in the
+     * picture shows on either side of the line, as in MapKit's hybrid, where a line runs down a road's middle.
+     */
+    private const val IMAGERY_STREET_WIDTH = 1.0 / 3
 
     /**
      * The names, bottom up. The web places its names in the order of its rules, the first first, where MapLibre

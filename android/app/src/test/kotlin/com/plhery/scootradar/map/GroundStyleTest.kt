@@ -272,6 +272,39 @@ class GroundStyleTest {
         assertNull(GroundStyle.layers(look).firstOrNull { it.id == GroundStyle.SATELLITE })
     }
 
+    /**
+     * MAP-262: over imagery the streets are MapKit's hybrid's, thin white lines at half strength the roads in the
+     * picture show around, not the night's wide dark ones; and they come back as the ground's when the imagery goes.
+     */
+    @Test
+    fun overImageryTheStreetsAreThinWhiteLinesAtHalfStrength() {
+        val night = GroundLook(GroundTheme.Night, GroundDetail.Detailed, "en")
+        val hybrid = GroundLook.of(AppleMapStyle.Satellite, dark = false, language = "en", hasImagery = true)
+        val ground = GroundStyle.layers(night, hasImagery = true).associateBy { it.id }
+        val imagery = GroundStyle.layers(hybrid, hasImagery = true).associateBy { it.id }
+        fun widths(layer: GroundStyle.Layer) = layer.paint["line-width"]!!.jsonArray.drop(3).chunked(2).map { (_, width) -> width.jsonPrimitive.double }
+        for (kind in listOf("service", "minor", "mid", "major")) {
+            val street = imagery.getValue("street-$kind")
+            assertTrue(kind, street.visible)
+            assertEquals(kind, JsonPrimitive("#ffffff"), street.paint["line-color"])
+            assertEquals(kind, JsonPrimitive(0.5), street.paint["line-opacity"])
+            // A third of the street's width on the ground, at each zoom.
+            val onTheGround = widths(ground.getValue("street-$kind"))
+            assertEquals(kind, onTheGround.size, widths(street).size)
+            onTheGround.zip(widths(street)).forEach { (wide, thin) -> assertEquals(kind, wide / 3, thin, 1e-9) }
+            assertFalse(kind, imagery.getValue("casing-$kind").visible)
+            // The ground's own: dark, whole, and as wide as on the web.
+            assertEquals(kind, JsonPrimitive(1.0), ground.getValue("street-$kind").paint["line-opacity"])
+        }
+        assertEquals(JsonPrimitive("#35415a"), ground.getValue("street-major").paint["line-color"])
+
+        // The imagery goes in place: the ground's colours, strength and widths are set again.
+        val back = GroundStyle.changes(hybrid, night, hasImagery = true).filter { it.layer == "street-major" }.associate { it.name to it.value }
+        assertEquals(JsonPrimitive("#35415a"), back["line-color"])
+        assertEquals(JsonPrimitive(1.0), back["line-opacity"])
+        assertEquals(ground.getValue("street-major").paint["line-width"], back["line-width"])
+    }
+
     @Test
     fun theStyleWaitsForTheTilesAddressAndNamesPlacesInOpenFreeMapsNoto() {
         val tiles = "https://tiles.openfreemap.org/planet/20261007_001001_pt/{z}/{x}/{y}.pbf"
