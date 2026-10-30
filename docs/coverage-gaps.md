@@ -103,8 +103,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   points before simplifying, beside 2,374 points, 2,106 of them active.
   Shared scooters are banned there from 1 January 2027, so they would serve
   two months.
-- **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024) and
-  Portland's (2021).
+- **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024),
+  Portland's (2021), Bloomington, Indiana's 64 corrals and its downtown and
+  Switchyard Park areas (December 2023), and Georgetown University's 66
+  parking places and 5 no-riding areas on its campus, in DC's open data
+  (December 2021).
 - **No shared scooters there on the map:** Toulouse Métropole's 27 scooter
   parking places and Grand Paris Seine Ouest's 29, Meudon's among them (both
   Licence Ouverte, edited in late October 2026), as no source covers either.
