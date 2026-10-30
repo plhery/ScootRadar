@@ -68,6 +68,40 @@ record:
 - **Hopp:** its `license_url` points to its privacy policy, so it publishes no
   licence.
 
+## City zone layers not drawn
+
+A city's public zone layers are drawn, credited to the city, since 28 October
+2026 (`DATA_SOURCES.md`). Found on 30 October 2026 and not drawn:
+
+- **Held on their terms:** Tromsø kommune's ("kan ikke benyttes i
+  kommersielle tjenester uten avtale"), Lisboa's ("Reservam-se todos os
+  direitos"; its shared scooters end in January 2027 in any case) and
+  Vilnius's, which are JUDU's ("pernaudojimas negalimas be JUDU sutikimo").
+- **Not trusted:** Holon's 438 parking points, 214 of them marked done
+  (`status1` מבוצעת), are in a layer anyone may edit.
+- **Behind a block:** Köln's layers answer scripts with an anti-bot page,
+  Tel Aviv-Yafo's only from Israel, Scottsdale's with a Cloudflare challenge,
+  and Louisville's ask for a token.
+- **Found, not added yet** (ArcGIS layers the script reads): Antwerpen's
+  no-go (36), no-park (322) and low-speed (44) zones for shared e-steps,
+  revised in August 2022, and its 211 drop zones for them, kept daily
+  (antwerpen.be answers scripts 403); Kraków's 342 mobility points (edited
+  6 October 2026); Vantaa's parking (76), no-parking (29), no-riding (5) and
+  slow (7) areas; Vaasa's 229 parking places; and the corrals of Columbus
+  (47 active, CC0), Alexandria (63, with its restrictions, CC0), Arlington
+  County (128 installed), Atlanta (38 installed) and Baltimore (45, 2024);
+  St. Albert's 13 restricted zones; and, smaller, Pforzheim, Kerava,
+  Herzliya, Sandefjord and Øygarden.
+- **Waiting for a reader of WFS, OGC API or GeoJSON:** Wien's 1,998 areas
+  (`ogdwien:ESCOOTPARKVERBOGD`), Hamburg's 145 parking places and 3,043
+  no-parking areas (DL-DE BY 2.0), Berlin's 637 parking places (DL-DE Zero),
+  München's 446 parking places, 795 no-parking and 55 no-riding areas
+  (DL-DE BY 2.0), Lille's 680 places (Etalab 2.0), Helsinki's 312 (CC BY
+  4.0), Münster's 432 parking places and 701 no-parking areas (DL-DE BY 2.0),
+  Basel's 54 areas (CC BY 4.0), and New York's 538 corrals (Socrata).
+- **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024) and
+  Portland's (2021).
+
 ## No public data, in covered countries
 
 Dott's anonymous app map supplements GBFS in eight countries since 24 October
@@ -722,6 +756,9 @@ banned shared scooters, and feeds that were empty when checked.
   - **No bays:** Lime publishes no parking in Ottawa or Mississauga, where
     rides must end in designated spots, and Bird and Lime none in Edmonton's
     Mill Woods (see the guide's [parking](canadian-scooter-feeds.md#parking)).
+    Ottawa's 28 designated places are drawn since 30 October 2026, from the
+    City's map, but not the areas each app permits in the furniture zone, nor
+    the City's no-ride roads and pathways, which are lines.
 - **United Arab Emirates** ([guide](emirati-scooter-feeds.md#known-gaps)):
   Dott in Dubai, with its Dubai Hills fleet, and in Abu Dhabi, and Lime in
   Dubai, Abu Dhabi and Al Ain, from its rider map since 26 October 2026, are
