@@ -36,6 +36,7 @@ val generateCatalog by tasks.registering(Exec::class) {
     inputs.files(
         repo.resolve("scripts/generate-provider-catalog.mjs"),
         repo.resolve("scripts/country-catalog.mjs"),
+        repo.resolve("scripts/zone-downloads.mjs"),
         repo.resolve("src/lib/limeGrid.ts"),
         repo.resolve("src/generated/timeZones.ts"),
     ).withPropertyName("sources")

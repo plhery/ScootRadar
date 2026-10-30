@@ -18,6 +18,10 @@ internal class CatalogData(
     val curfews: List<RentalCurfew>,
     val ruleZones: List<CityRuleZone>,
     val cityZones: List<CityRuleZone>,
+    /** The cities whose zones the app downloads, as data/city-zones.json had them when the app was built. */
+    val zoneDownloads: List<CityZoneDownload>,
+    /** The cities whose zones are built into the catalog, [cityZones]. */
+    val zoneCities: Set<String>,
     val anchors: Map<String, GeoPoint>,
     val credits: List<Pair<String, String>>,
     val regionTotals: Map<String, Map<String, ScooterRegion>>,
@@ -84,6 +88,17 @@ internal class CatalogData(
                         ring = points(zone.ring),
                     )
                 },
+                zoneDownloads = file.zoneDownloads.map { city ->
+                    CityZoneDownload(
+                        id = city.id,
+                        place = city.place,
+                        authority = city.authority,
+                        timeZone = city.timeZone,
+                        source = city.source,
+                        bounds = bounds(city.bounds),
+                    )
+                },
+                zoneCities = file.zoneCities.toSet(),
                 anchors = file.countries.anchors.mapValues { (_, anchor) -> GeoPoint(anchor[0], anchor[1]) },
                 credits = file.countries.credits.map { it.title to it.url },
                 regionTotals = file.countries.regionTotals.mapValues { (_, regions) ->
@@ -112,6 +127,8 @@ internal class CatalogData(
         val curfews: List<CurfewEntry>,
         val ruleZones: List<RuleZoneEntry>,
         val cityZones: List<CityZoneEntry>,
+        val zoneDownloads: List<ZoneDownloadEntry>,
+        val zoneCities: List<String>,
         val countries: CountriesEntry,
     )
 
@@ -163,6 +180,17 @@ internal class CatalogData(
         val kind: String,
         val source: String,
         val ring: DoubleArray,
+    )
+
+    /** A city whose zones the app downloads, its bounds south, west, north, east. */
+    @Serializable
+    private class ZoneDownloadEntry(
+        val id: String,
+        val place: String,
+        val authority: String,
+        val timeZone: String,
+        val source: String,
+        val bounds: DoubleArray,
     )
 
     @Serializable

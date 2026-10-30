@@ -684,6 +684,17 @@ function kotlinCatalogData() {
       source: city.source.url,
       ring: zone.ring.flat(),
     })))),
+    // The cities whose zones the app downloads, as the iPhone's CityZoneDownloads.builtIn has them, and the
+    // cities whose zones are built in (builtInCities): docs/city-zone-downloads.md.
+    zoneDownloads: list(downloadCityZones.map(city => ({
+      id: city.id,
+      place: city.place,
+      authority: city.authority,
+      timeZone: city.timeZone,
+      source: city.source.url,
+      bounds: bounds(city.bounds),
+    }))),
+    zoneCities: JSON.stringify(cityZones.map(city => city.id)),
     countries: JSON.stringify(kotlinCountries(countries), null, 1),
   };
   const data = `{\n${Object.entries(sections).map(([key, value]) => `${JSON.stringify(key)}: ${value}`).join(',\n')}\n}\n`;

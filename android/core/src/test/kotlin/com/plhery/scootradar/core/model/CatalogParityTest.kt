@@ -198,6 +198,33 @@ class CatalogParityTest {
     }
 
     @Test
+    fun zoneDownloadsAreTheSwiftOnes() {
+        // The cities whose zones the app downloads, as the app is built (CityZoneDownloads.builtIn).
+        val empty = "    static let builtIn: [CityZoneDownload] = []"
+        val swiftCities = if (empty in swift) emptyList() else section("    static let builtIn: [CityZoneDownload] = [")
+        assertEquals(
+            swiftCities,
+            data.zoneDownloads.flatMap { city ->
+                listOf(
+                    "        CityZoneDownload(",
+                    "            id: ${string(city.id)}, place: ${string(city.place)}, authority: ${string(city.authority)},",
+                    "            timeZone: ${string(city.timeZone)}, source: URL(string: ${string(city.source)})!,",
+                    "            bounds: ${bounds(city.bounds)}",
+                    "        ),",
+                )
+            },
+        )
+        assertTrue(data.zoneDownloads.all { it.sha256 == null })
+        // And the cities whose zones are built in, those of the catalog's city zones.
+        assertEquals(
+            swift.single { it.startsWith("    static let builtInCities: Set<String> = ") },
+            "    static let builtInCities: Set<String> = [${data.zoneCities.joinToString(", ") { string(it) }}]",
+        )
+        assertEquals(data.cityZones.map { it.id.substringBefore('-') }.toSet(), data.zoneCities)
+        assertTrue(data.zoneDownloads.none { it.id in data.zoneCities })
+    }
+
+    @Test
     fun countriesAreTheSwiftOnes() {
         assertEquals(
             section("    static let anchors: [String: (latitude: Double, longitude: Double)] = [").filter { !it.trimStart().startsWith("//") },
