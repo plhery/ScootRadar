@@ -222,9 +222,10 @@ fun ScooterMap(
         }
     }
     val fold by remember(chrome) { derivedStateOf { chrome?.fold?.takeIf { !it.isEmpty } } }
-    // The zones' legend in the corner beside a panel, which the credits go up over where it would cover them.
-    val legend by remember(chrome) {
-        derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.zoneLegend?.takeIf { !it.isEmpty } }
+    // The zones' legend and the locate button in the corner beside a panel, which the credits go up over where they
+    // would cover them.
+    val corner by remember(chrome) {
+        derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Panel }?.let { listOfNotNull(it.zoneLegend, it.locateButton) }.orEmpty() }
     }
     // The dock, and the legend and the locate button on it, which the credits go up over where the dock would cut them.
     val dock by remember(chrome) {
@@ -358,7 +359,7 @@ fun ScooterMap(
                 )
                 .padding(top = ornamentsTop.dp),
         )
-        val overLegend = creditsOverLegend(creditsSides, legend, maxHeight.value.toDouble())
+        val overCorner = creditsOverCorner(creditsSides, corner, maxHeight.value.toDouble())
         val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
         val density = LocalDensity.current.density
         MapCredits(
@@ -370,7 +371,7 @@ fun ScooterMap(
                         ?: Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
                     // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
                     margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)
-                    overLegend != null -> sideways.padding(bottom = overLegend.dp)
+                    overCorner != null -> sideways.padding(bottom = overCorner.dp)
                     overDock != null -> sideways.padding(bottom = overDock.dp)
                     else -> Modifier
                         .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))

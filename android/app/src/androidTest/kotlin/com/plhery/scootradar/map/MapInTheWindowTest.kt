@@ -558,9 +558,11 @@ class MapInTheWindowTest {
         val part = partInView(chrome, bounds)
         // By its middle again: the 18 drawn lie in the middle of the 48 TalkBack is given. Their foot is the upright
         // half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom margin keeps Apple's logo
-        // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend where it would cover them;
-        // over the dock, 4 over it and over the legend and the locate button on it where the dock would cut them, part
-        // of their text beside it and part under it, as on a tablet upright; elsewhere 8 above the safe area's foot.
+        // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend and the locate button in the
+        // corner where they would cover them, as the button does on a tablet upright; over the dock, 4 over it and over
+        // the legend and the locate button on it where the dock would cut them, part of their text beside it and part
+        // under it, or their frame, as on a tablet upright with a cutout down its side; elsewhere 8 above the safe
+        // area's foot.
         // The legend's and the dock's rules are Android's only (MAP-318, STATE 29 Oct 06:55Z): their licence asks that
         // the map's credits be seen, and Apple's logo and Legal link, a third as wide, stay in the map's margins
         // (ScooterMapView.swift :897-903), beside the iPad's dock too. The legend and the dock are where the screen
@@ -579,14 +581,14 @@ class MapInTheWindowTest {
         val shownLegend = shown(ZONE_LEGEND_TAG)
         val locateButton = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
         val overCredits = { frame: ScreenRect -> frame.minX < text.maxX + 6 && frame.maxX > text.minX - 6 }
-        val legend = shownLegend?.takeIf { chrome.panel?.isEmpty == false && overCredits(it) }
+        val corner = listOfNotNull(shownLegend, locateButton).filter(overCredits).takeIf { chrome.panel?.isEmpty == false && it.isNotEmpty() }
         val cutByDock = chrome.panel == null && dock != null &&
-            !(dock.minX <= text.minX && dock.maxX >= text.maxX) && !(dock.minX >= text.maxX || dock.maxX <= text.minX)
+            !(dock.minX <= text.minX && dock.maxX >= text.maxX) && overCredits(dock)
         val overDock = listOfNotNull(dock, shownLegend, locateButton).filter(overCredits).takeIf { cutByDock }
-        val foot = across?.let { it.minY - PANEL_GAP } ?: legend?.let { it.minY - 4 } ?: overDock?.let { frames -> frames.minOf { it.minY } - 4 }
+        val foot = across?.let { it.minY - PANEL_GAP } ?: (corner ?: overDock)?.let { frames -> frames.minOf { it.minY } - 4 }
             ?: (bounds.maxY - safe.bottom - 8)
         Log.i(TAG, "${size()}: credits $sources, dock $dock, legend $shownLegend, locate button $locateButton, cut by the dock $cutByDock")
-        assertEquals("the credits' foot: $creditsFrame, the fold $across, the legend under them $legend, the dock $dock", foot, creditsFrame.midY + 9, 2.0)
+        assertEquals("the credits' foot: $creditsFrame, the fold $across, the corner over them $corner, the dock $dock", foot, creditsFrame.midY + 9, 2.0)
         // Seen whole, in the safe area and clear of every control over the map, or, over a dock that spans the map as a
         // phone's does, wholly under it with all their text, as the iPhone's Legal is under its dock: never cut.
         val underDock = chrome.panel == null && dock != null && dock.minX <= text.minX + 1 && dock.maxX >= text.maxX - 1 &&

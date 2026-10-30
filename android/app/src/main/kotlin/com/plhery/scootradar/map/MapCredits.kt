@@ -55,25 +55,29 @@ fun MapCredits(
 }
 
 /**
- * How far above the map's foot the credits go, beside a panel, where the zones' legend in the corner would cover
- * them, from the [credits]' sides and the [legend]'s frame in the map's points: just over the legend, as their
- * licence asks that they be seen. Null where the legend leaves them be. Apple's logo and Legal link, a third as wide,
- * stay where they are on the iPhone.
+ * How far above the map's foot the credits go, beside a panel, where the controls in the map's trailing corner, the
+ * zones' legend and the locate button, would cover them, from the [credits]' sides and the [corner]'s frames in the
+ * map's points: just over the highest of them over the credits, as their licence asks that they be seen. Null where
+ * the corner leaves them be. Apple's logo and Legal link, a third as wide, stay where they are on the iPhone.
+ *
+ * On a tablet upright beside the panel the credits, from 412, reach past the legend to the locate button's side, 655:
+ * over the legend alone they would run under the button (review-app-t finding 4, app-v's pass).
  */
-internal fun creditsOverLegend(credits: Pair<Double, Double>?, legend: ScreenRect?, mapHeight: Double): Double? {
-    if (credits == null || legend == null || legend.isEmpty) return null
-    if (credits.first >= legend.maxX || credits.second <= legend.minX) return null
-    // A legend laid out for the map before it turned can lie below its foot for a frame.
-    if (legend.minY >= mapHeight) return null
-    return mapHeight - legend.minY + LEGEND_GAP
+internal fun creditsOverCorner(credits: Pair<Double, Double>?, corner: List<ScreenRect>, mapHeight: Double): Double? {
+    if (credits == null) return null
+    val (start, end) = credits
+    // A frame laid out for the map before it turned can lie below its foot for a frame.
+    val over = corner.filter { !it.isEmpty && it.minX < end && it.maxX > start && it.minY < mapHeight }
+    if (over.isEmpty()) return null
+    return mapHeight - over.minOf { it.minY } + LEGEND_GAP
 }
 
 /**
  * How far above the map's foot the credits go, over the dock, from the [credits]' sides, the [dock]'s frame and the
  * frames of the controls that stand on it, [onDock] (the zones' legend and the locate button), in the map's points:
  * just over the highest of them over the credits, where the dock would cut them, part of their text beside it and
- * part under it. Null where the dock leaves them be: beside it, or wholly under a dock that spans the map, as on a
- * phone, where the iPhone's Legal is under its dock too.
+ * part under it, or their frame. Null where the dock leaves them be: clear of their frame, or over all of their text,
+ * as a dock that spans the map does on a phone, where the iPhone's Legal is under its dock too.
  *
  * iOS keeps Apple's logo and Legal link in the map's layout margins, which it moves only beside a panel or a fold
  * (ScooterMapView.swift:897-903): over the dock they stay in the corner. On a tablet upright the dock keeps to 560 in
@@ -88,7 +92,8 @@ internal fun creditsOverDock(credits: Pair<Double, Double>?, dock: ScreenRect?, 
     val textStart = start + TEXT_INSET
     val textEnd = end - TEXT_INSET
     val underIt = dock.minX <= textStart && dock.maxX >= textEnd
-    val besideIt = dock.minX >= textEnd || dock.maxX <= textStart
+    // Over the room around their text only, the dock would still cut their frame.
+    val besideIt = dock.minX >= end || dock.maxX <= start
     if (underIt || besideIt) return null
     val over = (onDock + dock).filter { !it.isEmpty && it.minX < end && it.maxX > start && it.minY < mapHeight }
     return mapHeight - over.minOf { it.minY } + LEGEND_GAP
