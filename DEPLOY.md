@@ -279,8 +279,10 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
   which asks Cloudflare and Quad9 before netcup's resolvers: those answered
   SERVFAIL for `data.lillemetropole.fr`, Lille's parking inventory, from
   11 October 2026.
-- Coolify HTTP health check: `http://127.0.0.1:3001/health`, 15-second start
-  period. Use the IPv4 address because the server binds to `0.0.0.0`.
+- Coolify HTTP health check: `http://127.0.0.1:3001/health` every 2 seconds,
+  5-second timeout, 10 retries, 60-second start period. Use the IPv4 address
+  because the server binds to `0.0.0.0`. Stop grace period: 60 seconds
+  (Advanced).
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
   `http://127.0.0.1:80`, routed by Coolify's proxy.
 
@@ -295,6 +297,18 @@ for a push to its branch. It has no Watch Paths: CI decides, from
 the bundle. Coolify matches the webhook to the application by repository name,
 so a renamed repository must be renamed in Coolify as well. After a deploy,
 `/health` and `/ready` return 200 again.
+
+A deploy starts the new container beside the old one, and Traefik sends it
+requests once Docker finds it healthy, after the start period. Coolify then
+stops the old one with SIGTERM, then SIGKILL after the stop grace period.
+Traefik sends the old container requests until Docker finds it unhealthy, so it
+answers them as before for 30 seconds (`DRAIN_MS` in
+`server/scooter-cache.ts`) while `/health` and `/ready` answer 503 with
+`"draining": true`. Ten failed checks two seconds apart make it unhealthy in
+about 21 seconds, and Traefik reloads within two more. Then it saves the
+snapshot and exits. Until 30 October 2026 it closed at once, and Traefik
+answered 46 requests with a 502 in four days. A slower health check needs a
+longer drain, and the stop grace period must cover the drain and the save.
 
 Workers Builds deploys the website from the same commit, at about the same time
 as the cache. When the website needs a cache change first, as the

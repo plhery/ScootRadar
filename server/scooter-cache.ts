@@ -83,6 +83,8 @@ const SAVE_EVERY_MS = 60_000;
 const TICK_MS = 5_000;
 let snapshot: MobilitySnapshot | undefined;
 let stopping = false;
+// Stopped by a deploy, and answering until DRAIN_MS has passed.
+let draining = false;
 let dirty = false;
 let persisting: Promise<void> | undefined;
 let savedAt = 0;
@@ -140,7 +142,7 @@ const server = createSnapshotServer({ snapshot: () => snapshot,
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
   // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
-  lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0) });
+  lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0), draining: () => draining });
 // The city totals, built in two parts (cityOverview): those of the feeds without a retention cap, and
 // those of the capped feeds. The file keeps the first only.
 let baseOverview: MobilitySnapshot['overview'] | undefined;
@@ -413,14 +415,26 @@ const persistenceTimer = setInterval(() => {
   void persist();
 }, TICK_MS);
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));
-for (const signal of ['SIGTERM', 'SIGINT'] as const) {
-  process.on(signal, () => {
-    stopping = true;
-    scheduler.stop();
-    clearTimeout(discoveryTimer);
-    clearInterval(persistenceTimer);
-    stalls.stop();
-    server.close();
-    void (async () => { await persisting; await persist(true); })();
-  });
+function shutDown() {
+  if (stopping) return;
+  stopping = true;
+  scheduler.stop();
+  clearTimeout(discoveryTimer);
+  clearInterval(persistenceTimer);
+  stalls.stop();
+  server.close();
+  // A collection still running, as LUUP's 90-second reads, would hold the process until Docker kills it.
+  void (async () => { await persisting; await persist(true); process.exit(0); })();
 }
+// A deploy stops this container with SIGTERM once the new one is healthy, but Traefik sends it requests
+// until Docker finds it unhealthy, after ten failed checks two seconds apart (DEPLOY.md). It goes on as
+// before for DRAIN_MS while /health and /ready answer 503, then stops. Closed at once, it refused them:
+// Traefik answered 46 with a 502 in the four days to 30 October 2026, up to 12 in a deploy.
+const DRAIN_MS = 30_000;
+process.on('SIGTERM', () => {
+  if (draining) return;
+  draining = true;
+  console.log(JSON.stringify({ event: 'draining', seconds: DRAIN_MS / 1000 }));
+  setTimeout(shutDown, DRAIN_MS);
+});
+process.on('SIGINT', shutDown);

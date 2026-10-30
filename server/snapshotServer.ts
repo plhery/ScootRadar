@@ -62,6 +62,9 @@ interface ServerOptions {
   zones?: (query: FeedQuery) => Promise<ZoneResponse>;
   /** How long a feed's data may be kept, for those with a cap (retentionCaps in cadence.ts). */
   retention?: (feedId: string) => number | undefined;
+  /** Whether a deploy is stopping the container: /health and /ready answer 503 while the rest answers as
+   * before, so Docker marks it unhealthy and Traefik moves its requests to the new one (DEPLOY.md). */
+  draining?: () => boolean;
 }
 
 // The Worker's address searches report here how many requests they sent to Geoapify.
@@ -111,8 +114,9 @@ export function createSnapshotServer(options: ServerOptions) {
       // Usable: collected as often as its cadence promises, so served at once or on the next request.
       const usable = feeds.filter(feed => feedState(feed, now, cadence) !== 'expired');
       const ready = live && usable.length > 0;
-      response.writeHead((url.pathname === '/health' ? live : ready) ? 200 : 503);
-      response.end(JSON.stringify({ live, ready, updatedAt: snapshot?.updatedAt, feeds: snapshot?.feeds.length ?? 0,
+      const draining = options.draining?.() ?? false;
+      response.writeHead(!draining && (url.pathname === '/health' ? live : ready) ? 200 : 503);
+      response.end(JSON.stringify({ live, ready, draining, updatedAt: snapshot?.updatedAt, feeds: snapshot?.feeds.length ?? 0,
         usableFeeds: usable.length,
         // Positions recent enough to show without collecting again.
         servedFeeds: feeds.filter(feed => showsPositions(feed, now)).length,

@@ -160,6 +160,24 @@ describe('snapshot origin boundary', () => {
     expect((await fetch(url, { headers: { ...headers, 'X-Scooter-Client-IP': '192.0.2.2' } })).status).toBe(200);
   });
 
+  it('fails /health and /ready while a deploy drains it, and answers the map as before', async () => {
+    const now = Date.now();
+    const feed = { id: 'france:dott_fr_paris', source: 'france' as const, provider: 'dott' as const, coverage: [], vehicles: [],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false };
+    const snapshot: MobilitySnapshot = { version: 1, updatedAt: now, feeds: [feed], overview: buildCityOverview([], now) };
+    let draining = false;
+    const { port } = await start(snapshot, { draining: () => draining });
+    expect((await fetch(`http://127.0.0.1:${port}/ready`)).status).toBe(200);
+    draining = true;
+    const health = await fetch(`http://127.0.0.1:${port}/health`);
+    expect(health.status).toBe(503);
+    expect(await health.json()).toMatchObject({ live: true, ready: true, draining: true });
+    expect((await fetch(`http://127.0.0.1:${port}/ready`)).status).toBe(503);
+    const map = await fetch(`http://127.0.0.1:${port}/api/scooters?zoom=16`,
+      { headers: { Authorization: `Bearer ${token}`, 'X-Scooter-Client-IP': '192.0.2.1' } });
+    expect(map.status).toBe(200);
+  });
+
   it('serves metrics only to the metrics token, counting routes without their query', async () => {
     const metricsToken = 'a-test-metrics-token-with-at-least-32-characters';
     expect(() => createSnapshotServer({ token, production: true, snapshot: () => undefined, metricsToken: 'short' }))

@@ -15,5 +15,5 @@ COPY --from=build /app/cache.mjs ./cache.mjs
 USER node
 ENV NODE_ENV=production PORT=3001 SCOOTER_SNAPSHOT_PATH=/data/scooters.json
 EXPOSE 3001
-HEALTHCHECK --interval=30s --timeout=5s --start-period=120s CMD node -e "fetch('http://localhost:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+HEALTHCHECK --interval=2s --timeout=5s --start-period=60s --retries=10 CMD node -e "fetch('http://localhost:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 CMD ["node", "cache.mjs"]
