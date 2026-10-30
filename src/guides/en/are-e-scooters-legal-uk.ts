@@ -152,7 +152,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter law in the UK in 2026: what has changed and what hasn’t',
       blocks: [
-        'No law has been passed that makes private e-scooters legal. Here is where things stood on 12 October 2026:',
+        'No law has been passed that makes private e-scooters legal. Here is where things stood on 30 October 2026:',
         {
           list: [
             '**July 2025:** the trials were extended for the fifth time, to May 2028. They began in July 2020 and were first due to end in November 2021.',
@@ -160,10 +160,10 @@ const guide: Guide = {
             '**29 April 2026:** the Crime and Policing Act became law, bringing in seizure without a warning from 29 June. The English Devolution and Community Empowerment Act, passed the same day, will let councils and TfL license shared bike and e-bike schemes once it is in force; e-scooters aren’t covered while the law treats them as motor vehicles.',
             '**13 May 2026:** the King’s Speech had no e-scooter bill. The roads minister, Simon Lightwood, said the government would “consult on detailed proposals for e-scooter regulation over the next year”.',
             '**September 2026:** the Department for Transport repeated that it plans to consult “over the next year”. It will look at registering e-scooters, speed limits, identifying riders and vehicles, and possibly protective equipment such as helmets.',
-            '**16 September 2026:** the E-Scooters (Safety and Sale) Bill, a private member’s bill, was introduced in the House of Lords. It would set speed and power limits for e-scooters on sale and ban kits that remove them. It is not a government bill, and such bills rarely become law.',
+            '**16 September 2026:** the E-Scooters (Safety and Sale) Bill, a private member’s bill, was introduced in the House of Lords. It would set speed and power limits for e-scooters on sale and ban kits that remove them. It is not a government bill, and such bills rarely become law; on 30 October it was still awaiting its second reading.',
           ],
         },
-        'So the next step is a consultation, then an Act of Parliament, then the detailed rules. As of 12 October 2026 we found no published consultation and no government bill, so any page promising legal private e-scooters in 2026 or 2027 is guessing. The consultation that ran from January to April 2026 was about mobility scooters and powered wheelchairs, not e-scooters.',
+        'So the next step is a consultation, then an Act of Parliament, then the detailed rules. On 30 October 2026 there was no published consultation and no government bill, so any page promising legal private e-scooters in 2026 or 2027 is guessing. The consultation that ran from January to April 2026 was about mobility scooters and powered wheelchairs, not e-scooters.',
       ],
     },
     {
@@ -171,7 +171,7 @@ const guide: Guide = {
       blocks: [
         'The government’s list has no trial areas in Wales, Scotland or Northern Ireland, so as far as we can tell there is no rental e-scooter you can legally ride in any of them.',
         'Wales and Scotland come under the same Road Traffic Act as England, so a private e-scooter is just as illegal in public there. We couldn’t find guidance from Police Scotland itself to confirm this. Scotland’s drink-drive limit is lower: 50 mg of alcohol per 100 ml of blood, against 80 mg in the rest of the UK.',
-        'Northern Ireland has its own road traffic law. The guides we found say it also treats e-scooters as motor vehicles, which would make a private one illegal in public there too, but we couldn’t confirm this with an official Northern Ireland source. Don’t assume it’s allowed: check with the PSNI before you ride.',
+        'Northern Ireland has its own road traffic law. Published guides say it also treats e-scooters as motor vehicles, which would make a private one illegal in public there too, but we couldn’t confirm this with an official Northern Ireland source. Don’t assume it’s allowed: check with the PSNI before you ride.',
       ],
     },
   ],

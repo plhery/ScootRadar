@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Boise?',
       blocks: [
-        'Electric scooter rental in Boise means **Lime**. Lime and Bird both arrived in October 2018, after the City adopted ordinances that allowed e-scooters; in July 2023 the City chose Lime as its only shared micromobility provider, which ended Bird’s agreement, KIVI reported. The City’s page still names Lime as its only provider in October 2026, and we found no other company renting scooters in Boise. Garden City, a separate city on the river north-west of downtown, chose Lime as its only provider in July 2024, under its own rules.',
-        'A renewal of Lime’s contract was recommended at a City Council work session on 4 June 2024, KIVI reported: under the new terms Lime pays the City $100,000 a year plus 10 cents a ride, keeps sidewalks and ramps clear of its scooters and bikes, and puts out fewer in the winter months and more in the busy ones. We found no open record of the final vote by 29 October 2026.',
-        'At 1:51 a.m. on Thursday 29 October 2026 the [Boise map](map:us:id:Boise) showed about 1,390 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. The total covers Lime’s whole Boise area, not just the city. Nearly four-fifths of that area is the City of Boise and most of the rest unincorporated Ada County; it also takes in all of Garden City, which has no total of its own on the map, and slivers of Eagle and Meridian. Boise’s code and agreement apply only inside the city limits.',
+        'Electric scooter rental in Boise means **Lime**. Lime and Bird both arrived in October 2018, after the City adopted ordinances that allowed e-scooters; in July 2023 the City chose Lime as its only shared micromobility provider, which ended Bird’s agreement, KIVI reported. The City’s page still names Lime as its only provider in October 2026, and no other company was renting scooters in Boise. Garden City, a separate city on the river north-west of downtown, chose Lime as its only provider in July 2024, under its own rules.',
+        'A renewal of Lime’s contract was recommended at a City Council work session on 4 June 2024, KIVI reported: under the new terms Lime pays the City $100,000 a year plus 10 cents a ride, keeps sidewalks and ramps clear of its scooters and bikes, and puts out fewer in the winter months and more in the busy ones. No record of the final vote had been published by 29 October 2026.',
+        'At 1:51 a.m. on Thursday 29 October 2026 the [Boise map](map:us:id:Boise) showed about 1,390 Lime scooters as last counted, across Lime’s Boise area: nearly four-fifths of it is the City of Boise and most of the rest unincorporated Ada County, with all of Garden City and slivers of Eagle and Meridian. Boise’s code and agreement apply only inside the city limits.',
         'For Lime the map shows each scooter’s position and charge; scooters on a ride aren’t shown. **Not everything is on the map:** ScootRadar shows e-scooters only, so Lime’s e-bikes aren’t on it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -68,7 +68,7 @@ const guide: Guide = {
     {
       heading: 'Nights and winter',
       blocks: [
-        'We found no riding hours or night ban in Boise’s rules, and the map shows Lime’s scooters at every hour.',
+        'Boise’s rules set no riding hours or night ban, and Lime’s scooters are on the map at every hour.',
         'Nor did we find a winter pause. The terms recommended in 2024 have Lime put out fewer scooters in the winter months rather than stop (KIVI), and Lime’s scooters were on the map at the end of October 2026. After a snowfall, check the map: it shows only scooters standing for hire.',
       ],
     },

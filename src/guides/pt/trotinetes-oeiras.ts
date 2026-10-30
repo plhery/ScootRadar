@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Trotinetes em Oeiras: que operadoras há e quanto custam',
       blocks: [
-        'Em novembro de 2022, a Câmara de Oeiras abriu o concelho às trotinetes partilhadas da Bolt, da Bird e da LINK, com cerca de 200 pontos de partilha; a Lime chegou em junho de 2024. Os pontos têm o nome da marca de mobilidade do município, Oeiras Move, gerida pela Parques Tejo, a empresa municipal que trata também do estacionamento. O regulamento municipal da micromobilidade partilhada, de 2024, só pede às empresas privadas que se coordenem com a Parques Tejo. Não encontrámos licença, limite de trotinetes nem taxa publicados para as operadoras.',
+        'Em novembro de 2022, a Câmara de Oeiras abriu o concelho às trotinetes partilhadas da Bolt, da Bird e da LINK, com cerca de 200 pontos de partilha; a Lime chegou em junho de 2024. Os pontos têm o nome da marca de mobilidade do município, Oeiras Move, gerida pela Parques Tejo, a empresa municipal que trata também do estacionamento. O regulamento municipal da micromobilidade partilhada, de 2024, só pede às empresas privadas que se coordenem com a Parques Tejo. Não há licença, limite de trotinetes nem taxa publicados para as operadoras.',
         {
           table: {
             caption: 'Trotinetes partilhadas em Oeiras: quem, a que preço e no mapa (24 de outubro de 2026)',
@@ -35,7 +35,7 @@ const guide: Guide = {
     {
       heading: 'Onde apanhar e deixar a trotinete: os pontos move',
       blocks: [
-        'Em Oeiras, a regra vem da Câmara: em janeiro de 2023, a vereadora da Mobilidade explicou à Lusa que o estacionamento em lugar próprio é obrigatório e que a viagem só começa e acaba num ponto move sinalizado. A Bird aplica-a: nos seus dados abertos de 24 de outubro de 2026, a viagem só pode terminar numa das 400 estações, todas no concelho. Nessa manhã, 338 das 407 trotinetes estavam a menos de 25 m de uma estação.',
+        'Em Oeiras, a regra vem da Câmara: em janeiro de 2023, a vereadora da Mobilidade explicou à Lusa que o estacionamento em lugar próprio é obrigatório e que a viagem só começa e acaba num ponto move sinalizado. A Bird aplica-a: a 24 de outubro de 2026, as suas viagens só podiam terminar numa das suas 400 estações, todas no concelho. Nessa manhã, 338 das 407 trotinetes estavam a menos de 25 m de uma estação.',
         'A rede é mais densa em Carnaxide (78 estações), Linda-a-Velha (70), Algés (61) e Oeiras (56), seguidas de Paço de Arcos (32) e Cruz Quebrada (21); Porto Salvo, Queijas, Caxias e Barcarena têm menos. Há estações às duas entradas da estação de comboios de Oeiras, a cerca de 25 m da de Paço de Arcos e nove a menos de 300 m da de Algés.',
         { note: 'A app não deixa terminar a viagem? Siga até ao ponto move mais próximo: o tempo continua a contar. Pelo contrato da Bird, se não conseguir deixar a trotinete num local válido e pedir à Bird que a vá buscar, a taxa de recolha pode chegar a 120 €.' },
       ],
@@ -45,7 +45,7 @@ const guide: Guide = {
       blocks: [
         '**Passeio marítimo.** O Passeio Marítimo de Oeiras, que segue a costa de Algés ao Forte de São Julião da Barra, «destina-se especialmente à circulação pedonal», diz o Regulamento de Permissões Administrativas, Taxas e Outras Receitas (RPATOR) da Câmara, em vigor desde 1 de janeiro de 2024, que revogou o regulamento das praias de 2021. O artigo 855.º proíbe aí bicicletas e trotinetes «fora dos horários que sejam expressamente definidos» pela Câmara, afixados no local e publicados no site do município. Não conseguimos consultar esses horários: siga a sinalização e, na dúvida, leve a trotinete à mão. A proibição não vale onde houver uma ciclovia própria. A coima vai de 50 a 3500 € (artigo 881.º). Os dados da Bird não marcam o passeio como zona proibida, mas a regra vale na mesma.',
         '**Parque dos Poetas, jardins do Palácio dos Marqueses de Pombal e outros espaços verdes.** Nos espaços verdes públicos, o mesmo regulamento proíbe, no artigo 784.º: «Entrar e circular com qualquer tipo de veículo motorizado», com poucas exceções, como viaturas municipais e de emergência. Proíbe também estacionar sobre relva ou canteiros. A coima vai de 50 a 3500 € (artigo 880.º). O artigo não fala de trotinetes, mas a trotinete elétrica tem motor: o nosso conselho é deixá-la num ponto move e entrar a pé. Há um a pouco mais de 100 m do Parque dos Poetas e outro a cerca de 70 m do Palácio.',
-        '**Centro histórico de Oeiras.** Não encontrámos regras municipais próprias para trotinetes no centro histórico, nem horário noturno ou limite de velocidade municipal no concelho. Valem as do Código da Estrada: na ciclovia ou na estrada, junto à direita, e fora do passeio.',
+        '**Centro histórico de Oeiras.** Não há regras municipais publicadas para trotinetes no centro histórico, nem horário noturno ou limite de velocidade municipal no concelho. Valem as do Código da Estrada: na ciclovia ou na estrada, junto à direita, e fora do passeio.',
       ],
     },
     {

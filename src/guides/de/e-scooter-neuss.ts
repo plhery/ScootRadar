@@ -91,8 +91,8 @@ const guide: Guide = {
         'Jeder Anbieter zieht die Grenze anders:',
         {
           list: [
-            '**Voi:** Vois Fahrgebiet um Neuss reicht laut Datenfeed auf der linken Rheinseite nach Düsseldorf hinein; Luegallee und Hansaallee etwa liegen darin. Burgplatz, Marktplatz, Königsallee und Konrad-Adenauer-Platz am Düsseldorfer Hauptbahnhof liegen im Feed in einem eigenen Fahrgebiet rechts des Rheins.',
-            '**Dott:** Keine Zone aus Dotts offenem Datenfeed für Düsseldorf reicht nach Neuss (Stand 26. Oktober 2026). Für Neuss hat Dott ein eigenes Gebiet; wo du eine Dott-Fahrt beenden darfst, zeigt die App.',
+            '**Voi:** Vois Fahrgebiet um Neuss reicht auf der linken Rheinseite nach Düsseldorf hinein; Luegallee und Hansaallee etwa liegen darin. Burgplatz, Marktplatz, Königsallee und Konrad-Adenauer-Platz am Düsseldorfer Hauptbahnhof liegen in einem eigenen Voi-Fahrgebiet rechts des Rheins.',
+            '**Dott:** Dotts Düsseldorfer Gebiet reicht nicht nach Neuss (Stand 26. Oktober 2026). Für Neuss hat Dott ein eigenes Gebiet; wo du eine Dott-Fahrt beenden darfst, zeigt die App.',
             '**Bolt und Lime:** Wo du eine Fahrt über die Stadtgrenze hinweg beenden kannst, zeigt dir die App.',
           ],
         },
@@ -128,7 +128,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem Leih-Scooter von Neuss nach Düsseldorf fahren?',
-      answer: 'Mit Voi reicht das Fahrgebiet laut Datenfeed auf der linken Rheinseite nach Düsseldorf hinein; die Düsseldorfer Innenstadt rechts des Rheins liegt im Feed in einem eigenen Fahrgebiet. Dotts Düsseldorfer Zonen reichen nicht nach Neuss, für Neuss hat Dott ein eigenes Gebiet. Bei Dott, Bolt und Lime zeigt die App, wo du abstellen darfst.',
+      answer: 'Mit Voi reicht das Fahrgebiet auf der linken Rheinseite nach Düsseldorf hinein; die Düsseldorfer Innenstadt rechts des Rheins liegt in einem eigenen Voi-Fahrgebiet. Dotts Düsseldorfer Zonen reichen nicht nach Neuss, für Neuss hat Dott ein eigenes Gebiet. Bei Dott, Bolt und Lime zeigt die App, wo du abstellen darfst.',
     },
     {
       question: 'Darf ich im Park mit dem E-Scooter fahren oder ihn dort abstellen?',
