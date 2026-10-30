@@ -32,6 +32,8 @@ const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28
 const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
 // Alexandria's Old Town, from Market Square down King Street to the waterfront.
 const ALEXANDRIA_OLD_TOWN = { south: 38.8, west: -77.05, north: 38.81, east: -77.035 };
+// Antwerpen's Meir and Groenplaats.
+const ANTWERPEN_MEIR = { south: 51.215, west: 4.395, north: 51.222, east: 4.41 };
 // Oslo's Karl Johans gate, from the Slottsplassen to Oslo S.
 const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 // Santa Monica's Pier, the Promenade and Palisades Park's south end.
@@ -87,7 +89,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -154,6 +156,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }).map(city => city.id)).toEqual(['santamonica']);
     expect(zoneCitiesInView({ bounds: TAUPO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['taupo']);
     expect(zoneCitiesInView({ bounds: ALEXANDRIA_OLD_TOWN, zoom: 15 }).map(city => city.id)).toEqual(['alexandria']);
+    expect(zoneCitiesInView({ bounds: ANTWERPEN_MEIR, zoom: 15 }).map(city => city.id)).toEqual(['antwerpen']);
     expect(zoneCitiesInView({ bounds: ST_ALBERT_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['stalbert']);
     expect(zoneCitiesInView({ bounds: VAASA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vaasa']);
     expect(zoneCitiesInView({ bounds: JARVENPAA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['jarvenpaa']);
@@ -370,6 +373,23 @@ describe('the cities\' zones', () => {
     expect(zones.filter(zone => zone.rule === 'noParking').map(zone => zone.place).sort()).toEqual(slow);
     const shown = ruleZonesInView({ bounds: ALEXANDRIA_OLD_TOWN, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow']));
+  });
+
+  it('draws Antwerpen\'s zones for shared e-steps and their drop zones, named after the city where the layer names only ids', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'antwerpen')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Stad Antwerpen' && zone.timeZone === 'Europe/Brussels')).toBe(true);
+    // Of its 519 drop zones, the 211 for e-steps; the others are for mopeds, cargo bikes and bikes.
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(211);
+    expect(zones.find(zone => zone.rule === 'parking' && zone.place === 'Dropzone Meir 1')).toBeDefined();
+    // 322 no-parking, 44 low-speed and 36 no-go zones, some of several parts.
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(330);
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(45);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(38);
+    expect(zones.filter(zone => zone.rule !== 'parking').every(zone => zone.place === 'Antwerpen')).toBe(true);
+    const shown = ruleZonesInView({ bounds: ANTWERPEN_MEIR, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));
   });
 
   it('draws the City of St. Albert\'s no-go zones as no-ride zones, credited under its open data licence', async () => {

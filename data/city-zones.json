@@ -54,6 +54,55 @@
       "zones": 88
     },
     {
+      "id": "antwerpen",
+      "place": "Antwerpen",
+      "country": "BE",
+      "authority": "Stad Antwerpen",
+      "timeZone": "Europe/Brussels",
+      "source": {
+        "title": "Stad Antwerpen, open data, \"deelmobiliteit NOGO-zones\": zones where riding a shared e-step is forbidden, such as cemeteries and tunnels; with its no-parking zones, such as parks and the city centre, its low-speed zones, such as the Meir, and its drop zones, where shared vehicles are preferably left",
+        "url": "https://portaal-stadantwerpen.opendata.arcgis.com/datasets/55c2b107304e43bca2c63b9aa516adcf_1068"
+      },
+      "map": {
+        "title": "Stad Antwerpen, \"deelmobiliteit_drop_zones\" (open data, kept daily)",
+        "url": "https://portaal-stadantwerpen.opendata.arcgis.com/datasets/b82fb66481584fbeb6aef1574cdd706f_33"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek13/MapServer",
+          "layer": 33,
+          "where": "modus IN ('Step', 'scooter en step')",
+          "nameField": "Name"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek11/MapServer",
+          "layer": 1069,
+          "nameField": null
+        },
+        {
+          "kind": "slow",
+          "url": "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek11/MapServer",
+          "layer": 1070,
+          "nameField": null
+        },
+        {
+          "kind": "noRide",
+          "url": "https://geodata.antwerpen.be/arcgissql/rest/services/P_Portal/portal_publiek11/MapServer",
+          "layer": 1068,
+          "nameField": null
+        }
+      ],
+      "bounds": {
+        "south": 51.143173,
+        "west": 4.2232,
+        "north": 51.374883,
+        "east": 4.512224
+      },
+      "zones": 624
+    },
+    {
       "id": "arlington",
       "place": "Arlington County",
       "country": "US",

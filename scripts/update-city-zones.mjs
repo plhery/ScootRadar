@@ -129,9 +129,10 @@ function featurePolygons(rings) {
 /**
  * A feature or map service layer's zones, those `where` picks: each part of a polygon one ring, its holes
  * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, a point by its
- * `CorralType`, or else after the city. A zone of several parts is a zone for each, numbered,
- * but for its slivers. `idTag` goes into each zone's id where two layers of one kind number
- * theirs alike, as Ottawa's two of parking places do.
+ * `CorralType`, or else after the city, as all are where `nameField` is null: Antwerpen's names are
+ * mostly ids. A zone of several parts is a zone for each, numbered, but for its slivers. `idTag`
+ * goes into each zone's id where two layers of one kind number theirs alike, as Ottawa's two of
+ * parking places do.
  */
 async function featureServerZones(city, { kind, url, layer, where = '1=1', nameField = 'Name', idTag }) {
   const query = new URLSearchParams({ where, outFields: '*', returnGeometry: 'true', outSR: '4326', f: 'json' });
@@ -146,7 +147,8 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
       return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
-    return polygonZones(id, kind, attributes[nameField]?.trim() || city.place, featurePolygons(geometry.rings));
+    const name = nameField ? attributes[nameField]?.trim() : null;
+    return polygonZones(id, kind, name || city.place, featurePolygons(geometry.rings));
   });
 }
 

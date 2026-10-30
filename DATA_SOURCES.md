@@ -627,6 +627,22 @@ credited to the city.
   [Dockless Mobility page](https://www.alexandriava.gov/DocklessMobility): the
   slow zone of Robinson Landing, made permanent, was extended over the Old Town
   waterfront, the pedestrian blocks of King Street and Founders Park.
+- **Antwerpen** (read 30 October 2026): the Stad Antwerpen's zones for shared
+  e-steps, layers of its geodata service shown on its open data portal: 38
+  no-go zones (36, some of two parts; cemeteries, tunnels), 330 no-parking
+  zones (322; parks, the city centre) and 45 low-speed zones (44; the Meir and
+  other busy streets), `portal_publiek11/MapServer` layers 1068, 1069 and 1070,
+  revised in August 2022 and republished on 17 September 2026; and its 211
+  drop zones for e-steps (`modus` "Step" or "scooter en step"), where shared
+  vehicles are preferably left, of the 519 in `portal_publiek13/MapServer`
+  layer 33, kept daily. They state only "Copyright: Stad Antwerpen" and are
+  drawn under the rule of 28 October 2026, credited to the city. The zones'
+  names are mostly ids (`GISID_323`), so they are named after the city; the
+  drop zones by theirs ("Dropzone Meir 1"). antwerpen.be answers scripts 403,
+  so the legend links the portal's
+  [NOGO-zones](https://portaal-stadantwerpen.opendata.arcgis.com/datasets/55c2b107304e43bca2c63b9aa516adcf_1068),
+  whose description says what each layer is. Left out: the drop zones for
+  mopeds (Felyx), cargo bikes (Cargoroo) and bikes (Donkey Republic).
 - **Arlington County** (read 30 October 2026): the County's 128 installed
   shared mobility device corrals, for scooters and bicycles, each drawn as a
   disc 5 m round its point, from layer 2 of its `Open_Data/od_Transportation_Layers`

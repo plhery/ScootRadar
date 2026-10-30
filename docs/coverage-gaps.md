@@ -85,21 +85,19 @@ A city's public zone layers are drawn, credited to the city, since 28 October
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
   Tel Aviv-Yafo's only from Israel, Scottsdale's with a Cloudflare challenge,
   and Louisville's ask for a token.
-- **Found, not added yet** (ArcGIS layers the script reads): Antwerpen's
-  no-go (36), no-park (322) and low-speed (44) zones for shared e-steps,
-  revised in August 2022, and its 211 drop zones for them, kept daily
-  (antwerpen.be answers scripts 403); the corrals of Columbus (47 active;
-  columbus.gov answers scripts 403, and the CC0 is an older item's), Atlanta
-  (38 installed; its one downtown no-parking and slow zone has no City page
-  to link) and Baltimore (45, 2024); and, smaller, Pforzheim, Kerava (no
-  City page found), Herzliya and Sandefjord.
+- **Found, not added yet** (ArcGIS layers the script reads): the corrals of
+  Columbus (47 active; columbus.gov answers scripts 403, and the CC0 is an
+  older item's), Atlanta (38 installed; its one downtown no-parking and slow
+  zone has no City page to link) and Baltimore (45, 2024); and, smaller,
+  Pforzheim, Kerava (no City page found), Herzliya and Sandefjord.
 - **WFS, OGC API or GeoJSON, not added yet** (the script reads GeoJSON
   since 30 October 2026, when Basel's, Helsinki's, München's, Münster's,
-  Wien's and New York's were added): Hamburg's 145 parking places and 3,043 no-parking
-  areas (DL-DE BY 2.0), Berlin's 2,529 no-parking zones (parks, playgrounds,
-  cemeteries; `parkverbot_mikromob`, DL-DE Zero, about 73,500 points
-  simplified, which would take the iOS catalog from 4.8 MB to about 6.5 MB)
-  and 637 parking places (DL-DE Zero), and Lille's 680 places (Etalab 2.0).
+  Wien's and New York's were added): Hamburg's 145 parking places and 3,043
+  no-parking areas (DL-DE BY 2.0), Berlin's 2,529 no-parking zones (parks,
+  playgrounds, cemeteries; `parkverbot_mikromob`, DL-DE Zero, about 73,500
+  points simplified, which would take the iOS catalog from 5.1 MB to about
+  6.8 MB) and 637 parking places (DL-DE Zero), and Lille's 680 places
+  (Etalab 2.0).
 - **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024) and
   Portland's (2021).
 
