@@ -134,7 +134,7 @@ internal fun SettingsTile(
 @Composable
 internal fun AppearancePicture(appearance: ScooterAppearance) {
     val sun = rememberVectorPainter(Symbols.sunFill)
-    val moon = rememberVectorPainter(Symbols.moonFill)
+    val moon = rememberVectorPainter(Symbols.moonFillRegular)
     Canvas(Modifier.fillMaxWidth().height(64.dp)) {
         when (appearance) {
             ScooterAppearance.Light -> smallScreen(isDark = false)

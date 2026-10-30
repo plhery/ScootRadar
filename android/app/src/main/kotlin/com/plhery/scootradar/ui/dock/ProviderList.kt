@@ -196,7 +196,7 @@ internal fun ProviderListRow(
                             )
                         },
                 )
-                isShown -> SymbolIcon(Symbols.check, textSymbolSize(14f), colors.actionText)
+                isShown -> SymbolIcon(Symbols.checkBold, textSymbolSize(14f), colors.actionText)
             }
         }
     }

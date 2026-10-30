@@ -436,7 +436,7 @@ private fun OpenInButton(controller: ScooterMapController, scooter: Scooter) {
             }
         },
     ) {
-        DockActionLabel(stringFormat(localized("Open in %@"), scooter.providerName), Symbols.scooter)
+        DockActionLabel(stringFormat(localized("Open in %@"), scooter.providerName), Symbols.scooterBold)
     }
 }
 
@@ -515,10 +515,11 @@ private fun directionsTitle(control: ScooterDirectionsControl): String = when (c
     ScooterDirectionsControl.OpenInMaps -> localized("Open in Maps")
 }
 
-private fun directionsSymbol(control: ScooterDirectionsControl): ImageVector = when (control) {
+/** The button's symbol, in a dock action's bold (`.dockActionStyle`, UI-364). */
+internal fun directionsSymbol(control: ScooterDirectionsControl): ImageVector = when (control) {
     ScooterDirectionsControl.Directions, ScooterDirectionsControl.Finding, ScooterDirectionsControl.None -> Symbols.walk
     ScooterDirectionsControl.HideRoute -> Symbols.close
-    ScooterDirectionsControl.OpenInMaps -> Symbols.map
+    ScooterDirectionsControl.OpenInMaps -> Symbols.mapBold
 }
 
 /**

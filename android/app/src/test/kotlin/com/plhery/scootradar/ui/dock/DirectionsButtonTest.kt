@@ -23,11 +23,13 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.theme.ScootTheme
+import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.useFontScale
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -95,6 +97,18 @@ class DirectionsButtonTest {
         val shown = settled()
         val ink = frames.map { it.ink() / shown.ink() }
         assertTrue("the label's darkest ink on each frame, of the settled one's: $ink", ink.all { it > 0.99f })
+    }
+
+    /**
+     * Each symbol is in `.dockActionStyle`'s bold, designFont(14, .bold) (ScooterControls.swift:965): Open in Maps'
+     * map too, which the map's credits and the coverage card draw at regular and semibold (UI-364). No screenshot
+     * shows Open in Maps.
+     */
+    @Test
+    fun theSymbolsAreInADockActionsBold() {
+        assertSame(Symbols.walk, directionsSymbol(ScooterDirectionsControl.Directions))
+        assertSame(Symbols.close, directionsSymbol(ScooterDirectionsControl.HideRoute))
+        assertSame(Symbols.mapBold, directionsSymbol(ScooterDirectionsControl.OpenInMaps))
     }
 
     private fun titleStaysAsTheSpinnerComes() {
