@@ -143,12 +143,9 @@ class TopNoticeMotionTest {
             assertOnTheSpring("the card under the banner", coming.map { it.dock.toDouble() }, dockAlone.toDouble(), dockUnder.toDouble(), within = 1.0)
         }
 
-        // 2. The location card joins it: it slides in from above its place, under the banner, which stays.
-        val joining = change { model.locationFailed(ScooterLocationError.Denied) }.also {
-            assertTrue(controllers.waitUntil { model.locationIssue.value == ScooterLocationIssue.Denied })
-        }.film(card, banner)
-        val cardUnder = top(card)!!
-        assertTrue("the banner stays: ${joining.map { it.other }}", joining.all { abs(it.other!! - bannerRest) < 0.5f })
+        // 2. The location card joins it: it slides in from above its place by its own height, under the banner, which
+        // stays.
+        val (joining, cardUnder) = cardJoins(model, card, banner, bannerRest, panel)
         val firstCard = joining.first { it.top != null }.top!!
         assertTrue("the card comes from above its place: $firstCard, then ${joining.map { it.top }}, to $cardUnder", firstCard < cardUnder - 20)
         assertEquals("the card at its place", cardUnder, joining.last().top!!, 0.5f)
@@ -179,6 +176,55 @@ class TopNoticeMotionTest {
         if (panel) {
             assertOnTheSpring("the card rising", last.map { it.dock.toDouble() }, dockUnderCard.toDouble(), dockAlone.toDouble(), within = 1.0)
         }
+    }
+
+    /**
+     * A location card that leaves the banner slides back up out of its place by its own height, as `.move(edge: .top)`
+     * takes it, while the 8 above it closes: not by its height and the 8.
+     */
+    @Test
+    @Config(qualifiers = "w443dp-h970dp-mdpi")
+    fun aCardLeavingTheBannerSlidesUpByItsOwnHeight() {
+        val clock = TestClock()
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        api.setFailure(ScooterAPIError.Offline())
+        val model = controllers.make(api, clock, locationManager = FakeLocationManager(ScooterAuthorizationStatus.Denied))
+        show(model, clock)
+        val banner = hasText(ScooterLoadFailure.Offline.message)
+        val card = hasText(ScooterLocationIssue.Denied.title!!)
+        compose.runOnIdle { model.updateViewport(zurichRegion, zoom = 16) }
+        assertTrue(controllers.waitUntil { model.loadIssue.value is ScooterLoadIssue.FirstLoadFailed && !model.isLoading.value })
+        compose.waitForIdle()
+        val bannerRest = top(banner)!!
+        val (_, cardUnder, cardHeight) = cardJoins(model, card, banner, bannerRest, panel = false)
+
+        val leaving = change { model.dismissLocationIssue() }.also {
+            assertTrue(controllers.waitUntil { model.locationIssue.value == null })
+        }.film(card, banner)
+        assertTrue("the banner stays: ${leaving.map { it.other }}", leaving.all { abs(it.other!! - bannerRest) < 0.5f })
+        assertOnTheSpring("the card going up by its own height, $cardHeight", leaving.map { it.top?.toDouble() }, cardUnder.toDouble(), (cardUnder - cardHeight).toDouble(), within = 1.5)
+    }
+
+    private data class Joined(val film: List<Frame>, val cardUnder: Float, val cardHeight: Float)
+
+    /**
+     * The location card joins the banner resting at [bannerRest]: the banner stays, and the card slides in on the
+     * notices' spring from its place less its own height, as `.move(edge: .top)` takes it, the 8 above it opening
+     * as it comes. Its height is read from what is under the notices, which moves by it and the 8. Within 1.5 points:
+     * whole pixels at mdpi; a slide by its height and the 8 misses by 8 as it starts.
+     */
+    private fun cardJoins(model: ScooterMapController, card: SemanticsMatcher, banner: SemanticsMatcher, bannerRest: Float, panel: Boolean): Joined {
+        val under = { if (panel) dockTop().toDouble() else frames.top!!.maxY }
+        val underBanner = under()
+        val joining = change { model.locationFailed(ScooterLocationError.Denied) }.also {
+            assertTrue(controllers.waitUntil { model.locationIssue.value == ScooterLocationIssue.Denied })
+        }.film(card, banner)
+        val cardUnder = top(card)!!
+        val cardHeight = (under() - underBanner - 8).toFloat()
+        assertTrue("the banner stays: ${joining.map { it.other }}", joining.all { abs(it.other!! - bannerRest) < 0.5f })
+        assertTrue("the card's height, $cardHeight", cardHeight > 40)
+        assertOnTheSpring("the card coming down by its own height, $cardHeight", joining.map { it.top?.toDouble() }, (cardUnder - cardHeight).toDouble(), cardUnder.toDouble(), within = 1.5)
+        return Joined(joining, cardUnder, cardHeight)
     }
 
     /** One frame of a change: where [Frame.top] a notice is and [Frame.other] another, the dock, and the screen's top. */

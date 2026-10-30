@@ -997,20 +997,6 @@ private fun NoticeStack(
     val locationSettings = LocalLocationSettings.current
     val spring = IosMotion.snappy(duration = 0.28)
     val reduceMotion = LocalReduceMotion.current
-    // A notice that joins another slides in from above its place, and one that leaves another back up out of it, and
-    // what is under it moves on the same spring: the card down as a banner comes over it, and up as the banner goes.
-    val enter = if (reduceMotion) {
-        fadeIn(snap())
-    } else {
-        slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation()) +
-            expandVertically(spring.animation(), Alignment.Top, clip = false)
-    }
-    val exit = if (reduceMotion) {
-        fadeOut(snap())
-    } else {
-        slideOutVertically(spring.animation()) { -it } + fadeOut(spring.animation()) +
-            shrinkVertically(spring.animation(), Alignment.Top, clip = false)
-    }
     // The stack's 8 between them comes and goes with the one that comes or goes, so the card moves by the banner and
     // its spacing on one spring, as the iPhone's does. Under Reduce Motion it comes and goes in the frame the notice
     // does, as the iPhone's nil animation lays both out at once: a snap would land a frame later.
@@ -1018,6 +1004,24 @@ private fun NoticeStack(
     val animatedGap by animateDpAsState(gapTarget, motion(spring), label = "noticesGap")
     val gap = if (reduceMotion) gapTarget else animatedGap
     val density = LocalDensity.current
+    // A notice that joins another slides in from above its place, and one that leaves another back up out of it, by its
+    // own height (`.move(edge: .top)`), and what is under it moves on the same spring: the card down as a banner comes
+    // over it, and up as the banner goes. The card under a banner rides on the 8 that opens and closes above it, which
+    // its slide leaves out: it moves from or to its place's top less its height, as on the iPhone, whose VStack lays
+    // the card out at its place at once.
+    fun enter(gapAbove: Int) = if (reduceMotion) {
+        fadeIn(snap())
+    } else {
+        slideInVertically(spring.animation()) { -(it - gapAbove) } + fadeIn(spring.animation()) +
+            expandVertically(spring.animation(), Alignment.Top, clip = false)
+    }
+    fun exit(gapAbove: Int) = if (reduceMotion) {
+        fadeOut(snap())
+    } else {
+        slideOutVertically(spring.animation()) { -(it - gapAbove) } + fadeOut(spring.animation()) +
+            shrinkVertically(spring.animation(), Alignment.Top, clip = false)
+    }
+    val cardGap = if (failure != null) with(density) { 8.dp.roundToPx() } else 0
     // As ViewThatFits, which weighs the notices that stay.
     val scrolls = with(density) { heights.settled(failure, locationIssue, 8.dp.roundToPx(), Int.MAX_VALUE) > limit.roundToPx() }
     Column(
@@ -1030,7 +1034,7 @@ private fun NoticeStack(
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AnimatedVisibility(failure != null, enter = enter, exit = exit) {
+        AnimatedVisibility(failure != null, enter = enter(0), exit = exit(0)) {
             val shown = lastFailure ?: return@AnimatedVisibility
             Box(Modifier.onSizeChanged { heights.measured(shown, it.height) }) {
                 MapStatusBanner(
@@ -1044,7 +1048,7 @@ private fun NoticeStack(
             }
         }
         Spacer(Modifier.height(gap))
-        AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
+        AnimatedVisibility(locationIssue != null, enter = enter(cardGap), exit = exit(cardGap)) {
             val issue = lastIssue ?: return@AnimatedVisibility
             Box(Modifier.onSizeChanged { heights.measured(issue, it.height) }) {
                 LocationIssueCard(
