@@ -569,7 +569,7 @@ private fun DockChrome(
                 val cardTop = card[DockTop].takeIf { it != AlignmentLine.Unspecified }
                     ?: (screenHeight - dockHeight.intValue - bottom.roundToPx())
                 // The row's foot, 10 above the card: the row is laid out down to it.
-                val foot = (cardTop - 10.dp.roundToPx()).coerceIn(1, screenHeight)
+                val foot = (cardTop - 10.dp.roundToPx()).coerceAtMost(screenHeight).coerceAtLeast(1)
                 val screenWidth = constraints.maxWidth
                 val row = locateRow.measure(Constraints.fixed(screenWidth, foot))
                 // It shrinks toward the bottom trailing corner of the iPhone's VStack: the screen's bottom, and the
@@ -910,32 +910,22 @@ private fun TopStack(
 }
 
 /**
- * The heights of the notices under the search bar, each as it was last measured for what it says, kept while the
- * notices are away under the open search: what the frames handed to the map and the panel's room are worked out from.
+ * The heights of the notices under the search bar, each as it was last measured, 0 before: what the frames handed to
+ * the map and the panel's room are worked out from. Kept while the notices are away under the open search, and while a
+ * notice that changes what it says is measured again: the iPhone's card keeps its place as its kind changes.
  */
 @Stable
 private class NoticeHeights {
-    private var banner by mutableStateOf<Pair<ScooterLoadFailure, Int>?>(null)
-    private var card by mutableStateOf<Pair<ScooterLocationIssue, Int>?>(null)
-
-    /** The banner of [failure] is [height] pixels tall. */
-    fun measured(failure: ScooterLoadFailure, height: Int) {
-        banner = failure to height
-    }
-
-    /** The card of [issue] is [height] pixels tall. */
-    fun measured(issue: ScooterLocationIssue, height: Int) {
-        card = issue to height
-    }
+    var banner by mutableIntStateOf(0)
+    var card by mutableIntStateOf(0)
 
     /**
      * The notices' height as the iPhone's layout has it, up to [limit]: those there are, without one that is going,
-     * which the stack drops from its layout at once while the notice goes over it, [gap] apart. A notice not
-     * yet measured for what it says counts for nothing until it is.
+     * which the stack drops from its layout at once while the notice goes over it, [gap] apart.
      */
     fun settled(failure: ScooterLoadFailure?, locationIssue: ScooterLocationIssue?, gap: Int, limit: Int): Int {
-        val banner = banner?.takeIf { it.first == failure }?.second ?: 0
-        val card = card?.takeIf { it.first == locationIssue }?.second ?: 0
+        val banner = if (failure != null) banner else 0
+        val card = if (locationIssue != null) card else 0
         return min(limit, banner + card + if (banner > 0 && card > 0) gap else 0)
     }
 }
@@ -1036,7 +1026,7 @@ private fun NoticeStack(
     ) {
         AnimatedVisibility(failure != null, enter = enter(0), exit = exit(0)) {
             val shown = lastFailure ?: return@AnimatedVisibility
-            Box(Modifier.onSizeChanged { heights.measured(shown, it.height) }) {
+            Box(Modifier.onSizeChanged { heights.banner = it.height }) {
                 MapStatusBanner(
                     message = shown.message,
                     actionTitle = localized("Try again"),
@@ -1050,7 +1040,7 @@ private fun NoticeStack(
         Spacer(Modifier.height(gap))
         AnimatedVisibility(locationIssue != null, enter = enter(cardGap), exit = exit(cardGap)) {
             val issue = lastIssue ?: return@AnimatedVisibility
-            Box(Modifier.onSizeChanged { heights.measured(issue, it.height) }) {
+            Box(Modifier.onSizeChanged { heights.card = it.height }) {
                 LocationIssueCard(
                     issue = issue,
                     onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
