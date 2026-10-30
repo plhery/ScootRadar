@@ -52,6 +52,10 @@ const ATLANTA_MIDTOWN = { south: 33.775, west: -84.39, north: 33.785, east: -84.
 const BALTIMORE_MOUNT_VERNON = { south: 39.285, west: -76.625, north: 39.3, east: -76.605 };
 // The City of London round the Guildhall and Moorgate, from Wood Street to Finsbury Circus.
 const CITY_OF_LONDON_GUILDHALL = { south: 51.514, west: -0.095, north: 51.52, east: -0.085 };
+// Berlin's Tiergarten and the Brandenburg Gate.
+const BERLIN_TIERGARTEN = { south: 52.511, west: 13.36, north: 52.519, east: 13.38 };
+// Hamburg's Jungfernstieg and the Binnenalster.
+const HAMBURG_JUNGFERNSTIEG = { south: 53.551, west: 9.985, north: 53.558, east: 10.0 };
 // Columbus's Harrison West, round Michigan Avenue and West 3rd Avenue.
 const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east: -83.01 };
 // Helsingborg's Stortorget, Kärnan and the station, Knutpunkten.
@@ -105,9 +109,9 @@ describe('the cities\' zones', () => {
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
 
-  it('draws every city but Berlin and Hamburg, held back for the iPhone release that downloads them', async () => {
+  it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'cityoflondon', 'columbus', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -191,6 +195,8 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BALTIMORE_MOUNT_VERNON, zoom: 15 }).map(city => city.id)).toEqual(['baltimore']);
     expect(zoneCitiesInView({ bounds: COLUMBUS_HARRISON_WEST, zoom: 15 }).map(city => city.id)).toEqual(['columbus']);
     expect(zoneCitiesInView({ bounds: CITY_OF_LONDON_GUILDHALL, zoom: 15 }).map(city => city.id)).toEqual(['cityoflondon']);
+    expect(zoneCitiesInView({ bounds: BERLIN_TIERGARTEN, zoom: 15 }).map(city => city.id)).toEqual(['berlin']);
+    expect(zoneCitiesInView({ bounds: HAMBURG_JUNGFERNSTIEG, zoom: 15 }).map(city => city.id)).toEqual(['hamburg']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);

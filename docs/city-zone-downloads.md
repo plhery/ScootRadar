@@ -97,10 +97,11 @@ from the day it is out.
 
 A city marked `"website": false` is published for the apps but not drawn on
 the website (`ZONE_CITIES` in `src/lib/cityZones.ts` leaves it out). Berlin
-and Hamburg, the first download cities, are so marked until the first iPhone
-release that downloads city zones is out (Desk [222]): delete the line to draw
-them. Nothing in the design needs the hold: the website loads each city's
-zones on demand, as it always has, so it could draw them at once.
+and Hamburg, the first download cities, were so marked from 30 October 2026
+(Desk [222]) until that evening, when 1.2.1 was sent to the App Store and the
+website opened them (Desk [225]); no city is held back now. Nothing in the
+design needs the hold: the website loads each city's zones on demand, as it
+always has.
 
 Lille is not a download city: its 680 places for e-scooters, in the MEL's
 dataset `edpm_vae_libreservice`, are already drawn, on the website and in the

@@ -612,8 +612,8 @@ view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
 catalogs, and Berlin's and Hamburg's, too many to build in: the iOS app
 downloads those from the website's `/zones/v1/` once a view reaches the city
-([city zone downloads](docs/city-zone-downloads.md)), and the website draws
-them only once that iOS release is out. `scripts/update-city-zones.mjs` reads
+([city zone downloads](docs/city-zone-downloads.md)); the website draws them
+as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Alexandria, Basel, Berlin, the City of London, Hamburg, Helsinki,
 München, Münster, St. Albert, Santa Monica, Taupō, Vancouver, Vantaa,
 Washington and Wien state a licence for their layers, Washington for two of its
@@ -723,8 +723,8 @@ credited to the city.
   them, as ScootRadar's does, and lists all three as active (`Status` "Aktiv";
   Festplassen's repainted in May 2023, Steinerskolen's set out with the school),
   so they stay (checked 29 October 2026).
-- **Berlin** (read 30 October 2026; for the iOS app to download, drawn
-  nowhere until that release): the Land Berlin's 2,529 no-parking zones for rental micromobility
+- **Berlin** (read 30 October 2026; the iOS app downloads them, and the
+  website draws them since 30 October 2026): the Land Berlin's 2,529 no-parking zones for rental micromobility
   (2,594 parts), parks, playgrounds, cemeteries and places the districts
   report, which the operators keep free under their special-use permits since
   1 September 2022, and its 637 parking places, Jelbi points and stations and
@@ -805,8 +805,8 @@ credited to the city.
   this one states no licence, and is drawn under the rule of 28 October 2026,
   credited "City of Columbus". columbus.gov answers scripts 403, so the legend
   links the map.
-- **Hamburg** (read 30 October 2026; for the iOS app to download, drawn
-  nowhere until that release): the Freie und Hansestadt Hamburg's 3,043 no-parking zones for
+- **Hamburg** (read 30 October 2026; the iOS app downloads them, and the
+  website draws them since 30 October 2026): the Freie und Hansestadt Hamburg's 3,043 no-parking zones for
   e-scooters (3,589 parts; one has no shape and is left out, and so are the
   island of Neuwerk's four, off Cuxhaven about 105 km away, which would
   stretch the city's area over all the land between: the WFS is asked only for those within a box

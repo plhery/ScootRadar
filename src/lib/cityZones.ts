@@ -28,8 +28,8 @@ export interface ZoneFile {
 }
 
 /**
- * The cities whose zones the website draws: all but those held back for the iPhone release that
- * downloads them (`"website": false`, docs/city-zone-downloads.md).
+ * The cities whose zones the website draws: all but any held back for an iPhone release that
+ * downloads them (`"website": false`, docs/city-zone-downloads.md), none since 30 October 2026.
  */
 export const ZONE_CITIES: ZoneCity[] = index.cities.filter(city => !('website' in city && city.website === false));
 
