@@ -610,9 +610,9 @@ Nagoya's pavements as teal lines; the legend names the city, linked to where it
 says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
-catalogs. `scripts/update-city-zones.mjs` reads them again. None of the cities
-states a licence for its layers; since 28 October 2026 a city's public zone
-layers are drawn regardless, credited to the city.
+catalogs. `scripts/update-city-zones.mjs` reads them again. Only Taupō and
+Santa Monica state a licence for their layers; since 28 October 2026 a city's
+public zone layers are drawn regardless, credited to the city.
 
 - **Arlington National Cemetery** (read 29 October 2026): no city's, but a
   federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
@@ -755,6 +755,19 @@ layers are drawn regardless, credited to the city.
   that enters a No Ride Zone is shut off and must be walked out. Council Bluffs'
   site answers scripts only with a challenge, and no layer of its own was
   found.
+- **Oslo** (read 30 October 2026): Oslo kommune's 12 areas to park, 12
+  no-parking areas, 3 slow areas and 3 of its 4 no-riding areas, in 262, 366,
+  129 and 78 parts, from `geodata.bymoslo.no/arcgis/rest/services/geodata/Reguleringer_Mikromobilitet/MapServer`,
+  the service Bymiljøetaten's
+  [map](https://experience.arcgis.com/experience/e77cffa7119144f3bf9cb57c294cbcef)
+  draws, read by query. The map says rental operators must geofence its zones
+  (§ 7c of the city's regulation on renting small electric vehicles); the
+  legend links the city's
+  [rental page](https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/),
+  which links the map. Only zones of every day (`days` "Alle dager") are
+  drawn, so the school yards, no-riding on weekdays only, are left out; Marka,
+  the forest round the city, where riding is forbidden every day, is drawn,
+  4,500 of the city's 12,300 points.
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),

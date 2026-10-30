@@ -41,6 +41,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   nagoya: () => import('../../data/city-zones/nagoya.json'),
   norrkoping: () => import('../../data/city-zones/norrkoping.json'),
   omaha: () => import('../../data/city-zones/omaha.json'),
+  oslo: () => import('../../data/city-zones/oslo.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   santamonica: () => import('../../data/city-zones/santamonica.json'),
   taupo: () => import('../../data/city-zones/taupo.json'),

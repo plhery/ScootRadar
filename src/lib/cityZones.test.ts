@@ -13,6 +13,8 @@ const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -11
 const BOULDER_DOWNTOWN = { south: 40.01, west: -105.285, north: 40.022, east: -105.265 };
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
 const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
+// Oslo's Karl Johans gate, from the Slottsplassen to Oslo S.
+const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 // Santa Monica's Pier, the Promenade and Palisades Park's south end.
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
@@ -52,7 +54,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'porto', 'santamonica', 'taupo', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'porto', 'santamonica', 'taupo', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -107,6 +109,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
     expect(zoneCitiesInView({ bounds: BOULDER_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boulder']);
     expect(zoneCitiesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['omaha']);
+    expect(zoneCitiesInView({ bounds: OSLO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['oslo']);
     expect(zoneCitiesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }).map(city => city.id)).toEqual(['santamonica']);
     expect(zoneCitiesInView({ bounds: TAUPO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['taupo']);
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
@@ -200,6 +203,21 @@ describe('the cities\' zones', () => {
     expect(zones).toHaveLength(25);
     const shown = ruleZonesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }, Date.now(), zones);
     expect(shown.map(zone => zone.place)).toEqual(expect.arrayContaining(['Old Market', 'Leahy Mall Redevelopment']));
+  });
+
+  it('draws Oslo kommune\'s zones, those of every day: Marka\'s no-riding area but not the school yards\', no-riding on weekdays', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'oslo')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Oslo kommune' && zone.timeZone === 'Europe/Oslo')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(262);
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(366);
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(129);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(78);
+    expect(zones.some(zone => zone.place === 'Kjøreforbud Marka')).toBe(true);
+    expect(zones.some(zone => zone.place === 'Kjøreforbud skolegårder')).toBe(false);
+    const shown = ruleZonesInView({ bounds: OSLO_CENTRE, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
   });
 
   it('draws the City of Santa Monica\'s drop zones and no-riding areas, credited to the City under ODC-By 1.0', async () => {

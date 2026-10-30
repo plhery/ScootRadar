@@ -47,9 +47,11 @@ async function getJson(url) {
 
 const slug = kind => kind.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 
-/** An ArcGIS layer's zones, each one ring: identify over an envelope round the municipality. */
-async function arcgisZones(city, { kind, url, layer }) {
-  const envelope = '4.9,60.1,5.8,60.7';
+/**
+ * An ArcGIS layer's zones, each one ring: identify over the envelope round the municipality. Bergen's
+ * are read so, as its query answers one no-parking zone without a shape.
+ */
+async function arcgisZones(city, { kind, url, layer, envelope }) {
   const query = new URLSearchParams({ geometry: envelope, geometryType: 'esriGeometryEnvelope', sr: '4326',
     layers: `all:${layer}`, tolerance: '0', mapExtent: envelope, imageDisplay: '2000,2000,96', returnGeometry: 'true', f: 'json' });
   const body = await getJson(`${url}/identify?${query}`);
@@ -99,7 +101,7 @@ function featurePolygons(rings) {
 }
 
 /**
- * A feature service layer's zones, those `where` picks: each part of a polygon one ring, its holes
+ * A feature or map service layer's zones, those `where` picks: each part of a polygon one ring, its holes
  * kept as outerRings keeps an enclave, each point a disc, named by its `Name`, a point by its
  * `CorralType`, or else after the city. A zone of several parts is a zone for each, numbered,
  * but for its slivers.
@@ -578,9 +580,9 @@ for (const city of catalog.cities) {
     const found = layer.boundary ? await boundaryZones(city, layer)
       : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
         : pathname.endsWith('.zip') ? await jarticZones(city, layer)
-          : pathname.endsWith('/FeatureServer') ? await featureServerZones(city, layer)
-            : pathname.endsWith('/wms') ? await wmsZones(city, layer)
-              : pathname.includes('/arcgis/') ? await arcgisZones(city, layer) : await fiwareZones(city, layer);
+          : layer.envelope ? await arcgisZones(city, layer)
+            : /\/(Feature|Map)Server$/.test(pathname) ? await featureServerZones(city, layer)
+              : pathname.endsWith('/wms') ? await wmsZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + pointsOf(zone).length, 0)} points`);
     zones.push(...found);
   }
