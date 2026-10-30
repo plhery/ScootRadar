@@ -1056,6 +1056,21 @@ credited to the city.
   ([echoboomer, 6 December 2022](https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas)).
   The broker's scooters themselves are not used: they have not moved since
   8 October 2026.
+- **Sacramento** (read 30 October 2026): the City of Sacramento's 45 drop
+  zones (`RackType` `Dropzone`), points each drawn as a disc of 5 m, from the
+  Department of Public Works' public
+  [Verified Bike Racks Public Layer](https://www.arcgis.com/home/item.html?id=72bf99301c40483eafa02b028401264f)
+  (1,718 points, last edited 26 August 2026), which states no licence; the
+  City's [web policies](https://www.cityofsacramento.gov/city-government/web-policies)
+  forbid no reuse. The legend links the City's
+  [Motorized Scooter Safety & Law](https://www.cityofsacramento.gov/public-works/mobility-and-sustainability/transportation-planning/active_transportation/e-bike-and-scooter-guidelines/motorized-scooter-safety-and-law)
+  page: park a shared scooter upright in a designated drop zone or at a public
+  bike rack. Since 15 January 2022 a shared scooter is locked to a bike rack,
+  or to itself in a drop zone
+  ([Sacramento City Express](https://sacramentocityexpress.com/2022/01/18/new-parking-and-locking-requirements-roll-out-for-shared-scooters-bicycles-in-sacramento),
+  the City's news site). The layer's other racks, corrals among them, are not
+  drawn, as Baltimore's and Västerås's bike racks are not: only the places the
+  City sets aside for shared vehicles are.
 - **Santa Monica** (read 30 October 2026): the City of Santa Monica's 184
   [Shared Mobility Drop Zones](https://www.arcgis.com/home/item.html?id=2c4ef954b4504cc4853246ddf2bcb90c),
   points each drawn as a disc of 5 m, and its 28

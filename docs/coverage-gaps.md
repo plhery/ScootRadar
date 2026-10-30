@@ -84,19 +84,35 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   maps (file of December 2020, served as of January 2025), as the City's
   [legal notices](https://www.orlando.gov/System-pages/Website-Legal-Notices)
   prohibit commercial use of the site's materials "without the written
-  permission of the City of Orlando".
-- **Only as PDF maps:** Lahti's, from the micromobility licence in force
+  permission of the City of Orlando". Albuquerque's 191 Lime stations, in the
+  City's `STAPProject` layer (last edited 25 September 2025; it lists sites
+  for Spin and Beam too, and looks like the approved list rather than the 52
+  stations Lime built), as it states no licence and the City's
+  [legal notices](https://cabq.gov/about/legal) license the site's content
+  "for non-commercial, personal, or educational purposes only".
+- **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
   parked only in one of about 100 marked places, no-riding areas and 15 km/h
   zones. The decision's annexes are georeferenced PDF maps marked "Ehdotus
   8.12.2025"; its terms say the zones in force are available as geodata, but
   neither the city's open data page nor its WFS holds them (30 October 2026).
+  Jyväskylä's, from its micromobility permit conditions in force since 1 May
+  2026 (parking places, no-parking and no-riding areas, 10–15 km/h areas),
+  are drawn only in the city's [map viewer](https://kartta.jkl.fi/IMS/), all
+  but the parking places as pictures; its open WFS (CC BY 4.0) holds none of
+  them, and the conditions let the city give them to operators by WFS (§ 15).
+  Kyoto Prefecture's ban on riding e-scooters onto the Kamo and Takano
+  riverbanks (Kamogawa ordinance) is in scanned PDF maps, and the
+  prefecture's [terms](https://www.pref.kyoto.jp/copyright.html) forbid reuse
+  without permission; Kyoto City sets no scooter zones of its own.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
   Tel Aviv-Yafo's only from Israel, Scottsdale's with a Cloudflare challenge,
-  and Louisville's ask for a token.
+  and Louisville's ask for a token. San José's site and its open data answer
+  scripts with 403, and Spokane's WheelShare page with an Incapsula
+  challenge; neither city's ArcGIS Hub holds a scooter layer.
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -131,6 +147,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   has none, and the city's site can't be read from outside Israel. Rimini
   chose not to mark parking places for shared scooters (its answer to the
   old town's forum, May 2026); its speed limits by area are in text alone.
+  Yonkers's City ArcGIS holds no scooter layer. Gävle's, Örebro's and Viña
+  del Mar's parking places are shown only in the operators' apps, as the
+  cities say: Gävle's slow streets are in text alone, and its CC0 bicycle
+  parking points are not said to be the places; Örebro allows scooters only
+  in bicycle parking and marked places; Viña del Mar's agreement with Whoosh
+  sets 75 points, which the city has not published.
 
 ## No public data, in covered countries
 
