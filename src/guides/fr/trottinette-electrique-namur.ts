@@ -16,10 +16,10 @@ const guide: Guide = {
     {
       heading: 'Trottinette partagée Namur : Bolt, opérateur unique',
       blocks: [
-        'Les trottinettes en libre-partage roulent à Namur depuis décembre 2019. Pour encadrer leur essor, la Ville a d’abord publié une charte pour les opérateurs, puis lancé un marché public : en décembre 2023, elle a désigné **Bolt** comme opérateur unique, avec 720 trottinettes et 80 vélos à assistance électrique. Ce partenariat, conclu pour un an, est renouvelable jusqu’à trois ans, selon la Ville : il peut donc courir jusque vers la fin de 2026. Au 30 octobre 2026, nous n’avons trouvé aucune décision publiée sur la suite.',
-        'Bolt détient la licence wallonne qu’il faut à tout opérateur de trottinettes partagées. Dott et Pony, présents à [Liège](guide:liege), en ont une aussi, mais la Ville ne cite que Bolt à Namur, et nous n’y avons trouvé aucun autre opérateur.',
-        'Le vendredi 30 octobre 2026 vers 3 h 30, notre [carte de Namur](map:be:Namur) montrait environ 630 trottinettes Bolt : un relevé d’un moment, pas la taille de la flotte. Ce total couvre la zone de Bolt à Namur, du centre à Jambes et à la Citadelle, sans suivre les limites de la commune.',
-        'La carte montre l’emplacement et la batterie de chaque trottinette ; pour le prix, les zones et le stationnement, l’app de Bolt fait foi. Les vélos électriques de Bolt n’apparaissent pas sur la carte. Toutes les étapes : [comment louer une trottinette](guide:how-to-rent).',
+        'Les trottinettes en libre-partage roulent à Namur depuis décembre 2019. Pour encadrer leur essor, la Ville a d’abord publié une charte pour les opérateurs, puis lancé un marché public : en décembre 2023, elle a désigné **Bolt** comme opérateur unique, avec 720 trottinettes et 80 vélos à assistance électrique. Ce partenariat, conclu pour un an, est renouvelable jusqu’à trois ans, selon la Ville : il peut donc courir jusque vers la fin de 2026. Au 30 octobre 2026, aucune décision sur la suite n’avait été publiée.',
+        'Bolt détient la licence wallonne qu’il faut à tout opérateur de trottinettes partagées. Dott et Pony, présents à [Liège](guide:liege), en ont une aussi, mais la Ville ne cite que Bolt à Namur.',
+        'Le vendredi 30 octobre 2026 vers 3 h 30, la [carte de Namur](map:be:Namur) montrait environ 630 trottinettes Bolt libres à ce moment-là. Ce total couvre la zone de Bolt à Namur, du centre à Jambes et à la Citadelle, sans suivre les limites de la commune.',
+        'La carte montre l’emplacement et la batterie de chaque trottinette et, quand on zoome, les zones de la Ville : ses 145 emplacements réservés, signalés ou virtuels, le centre et les neuf autres secteurs où l’on ne se gare qu’à ces emplacements, 42 zones de stationnement interdit et 3 zones interdites. Pour le prix et l’endroit où terminer une location, l’app de Bolt fait foi. Les vélos électriques de Bolt n’apparaissent pas sur la carte. Toutes les étapes : [comment louer une trottinette](guide:how-to-rent).',
       ],
     },
     {
@@ -57,7 +57,7 @@ const guide: Guide = {
     {
       heading: 'Citadelle et téléphérique : monter en trottinette',
       blocks: [
-        'Les Bolt montent jusqu’à la Citadelle : vers 1 h du matin le 30 octobre 2026, la carte en montrait une vingtaine autour du site. Nous n’avons trouvé aucune règle de la Citadelle sur les trottinettes. Le Parc Attractif Reine Fabiola, au rond-point Thonar, les interdit en revanche : son règlement du 21 avril 2026 n’y admet que les piétons, les poussettes et les fauteuils roulants.',
+        'Les Bolt montent jusqu’à la Citadelle : vers 1 h du matin le 30 octobre 2026, la carte en montrait une vingtaine autour du site. Sur une partie de la Citadelle, une zone d’environ 440 m sur 370, la Ville interdit de rouler et de garer une trottinette partagée : elle s’y arrête et la location ne peut pas s’y terminer. Le Parc Attractif Reine Fabiola, au rond-point Thonar, les interdit aussi : son règlement du 21 avril 2026 n’y admet que les piétons, les poussettes et les fauteuils roulants.',
         'Le [téléphérique](https://www.telepheriquedenamur.be/fr/infos-pratiques/infos-mobilite/), qui part de la place Maurice Servais, transporte gratuitement les trottinettes qui tiennent dans la cabine (75 cm de large, 1,80 m de haut, 1,10 m de profondeur). Le trajet dure environ 7 minutes et, en cas d’affluence, les piétons passent d’abord.',
         'Sans téléphérique, la ligne 3 du TEC relie la gare de Namur à la Citadelle, selon le site de la Citadelle.',
       ],
@@ -66,7 +66,7 @@ const guide: Guide = {
       heading: 'Gare de Namur, bus TEC et RAVeL',
       blocks: [
         'À la sortie du train, la [carte de Namur](map:be:Namur) vous montre la trottinette la plus proche : vers 1 h du matin le 30 octobre, une soixantaine de Bolt attendaient autour de la gare.',
-        'Avec votre propre trottinette, le [dépliant « Vélo et Bus, mode d’emploi » du TEC](https://cdn.uc.assets.prezly.com/d55d1ce8-fb0d-44d5-b8ec-57adeccf25b8/-/inline/no/D%C3%A9pliant%20V%C3%A9lo%20et%20Bus%20_Mode%20d%27emploi.pdf) (2022) précise que les trottinettes pliantes restent avec le voyageur à bord du bus. Pour le train, nous n’avons pas pu vérifier les règles de la SNCB : renseignez-vous auprès d’elle.',
+        'Avec votre propre trottinette, le [dépliant « Vélo et Bus, mode d’emploi » du TEC](https://cdn.uc.assets.prezly.com/d55d1ce8-fb0d-44d5-b8ec-57adeccf25b8/-/inline/no/D%C3%A9pliant%20V%C3%A9lo%20et%20Bus%20_Mode%20d%27emploi.pdf) (2022) précise que les trottinettes pliantes restent avec le voyageur à bord du bus. Pour le train, renseignez-vous auprès de la SNCB.',
         'Le RAVeL, le réseau wallon de voies lentes réservé aux usagers non motorisés, s’emprunte aussi à trottinette, selon le SPW. Les moins de 16 ans peuvent y rouler en trottinette électrique. Ralentissez en croisant les piétons.',
       ],
     },
@@ -111,7 +111,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelles trottinettes partagées trouve-t-on à Namur ?',
-      answer: 'Bolt, que la Ville a désigné opérateur unique en décembre 2023 après un marché public. Il loue dès 18 ans et figure sur notre carte. Nous n’avons trouvé aucun autre opérateur à Namur en octobre 2026.',
+      answer: 'Bolt, que la Ville a désigné opérateur unique en décembre 2023 après un marché public. Il loue dès 18 ans et figure sur notre carte. C’est le seul opérateur que cite la Ville en octobre 2026.',
     },
     {
       question: 'Combien coûte une trottinette Bolt à Namur ?',
@@ -135,6 +135,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Ville de Namur : zones du libre-partage (données ouvertes, mises à jour le 16 mai 2024)', url: 'https://data.namur.be/explore/dataset/mozonesbolt/' },
     { title: 'Ville de Namur : se déplacer en trottinette', url: 'https://www.namur.be/fr/ma-ville/mobilite/mobilite/deplacement/trottinette' },
     { title: 'Ville de Namur : dépliant « Trottinettes en libre-partage » (septembre 2026)', url: 'https://www.namur.be/fr/ma-ville/mobilite/mobilite/publications/trottinettes-en-libre-partage' },
     { title: 'Conseil communal de Namur : règlement d’accès au piétonnier (9 décembre 2025)', url: 'https://www.deliberations.be/namur/decisions/09-decembre-2025-18-15/reglement-general-pour-lacces-et-les-sorties-dun-pietonnier-controle-par-des-cameras-anpr-adoption' },
