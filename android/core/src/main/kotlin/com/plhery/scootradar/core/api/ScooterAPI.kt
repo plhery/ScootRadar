@@ -44,6 +44,12 @@ interface ScooterAPIClient {
     /** The operators' zones that reach into the area. A client that knows no zones has none to give. */
     suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse =
         ScooterZoneResponse(zones = emptyList(), pending = false, truncated = false)
+
+    /**
+     * A file of the cities' zones the app downloads, under /zones/v1/: the index, or a city's
+     * (docs/city-zone-downloads.md). A client that knows none has no city's to download.
+     */
+    suspend fun cityZoneFile(name: String): ByteArray = throw ScooterAPIError.HttpStatus(404)
 }
 
 class ScooterAPI(
@@ -90,6 +96,9 @@ class ScooterAPI(
         val response = get("api/zones", area.queryItems)
         return decoded(response) { text -> ScooterAPIJson.decodeFromString(ScooterZoneResponse.serializer(), text) }
     }
+
+    /** A static file of the website: the same for everyone, it asks with no coordinates. */
+    override suspend fun cityZoneFile(name: String): ByteArray = get("zones/v1/$name", emptyList()).body
 
     /** The answer read off the main thread; anything that cannot be read is invalid data. */
     private suspend fun <T> decoded(response: ScooterHTTPResponse, read: (String) -> T): T = try {
