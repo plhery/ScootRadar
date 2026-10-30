@@ -350,7 +350,7 @@ private fun ProviderCheck(entry: ScooterProviderEntry, modifier: Modifier) {
     val colors = scootColors
     Box(modifier, contentAlignment = Alignment.Center) {
         when {
-            !entry.isEnabled -> FixedSymbol(Symbols.circle, 22f, colors.secondaryText)
+            !entry.isEnabled -> FixedSymbol(Symbols.circleRegular, 22f, colors.secondaryText)
             entry.isDown -> Box(
                 Modifier
                     .padding(2.dp)
@@ -364,7 +364,7 @@ private fun ProviderCheck(entry: ScooterProviderEntry, modifier: Modifier) {
                         )
                     },
             )
-            else -> FixedSymbol(Symbols.checkCircleFill, 22f, colors.actionFill)
+            else -> FixedSymbol(Symbols.checkCircleFillRegular, 22f, colors.actionFill)
         }
     }
 }

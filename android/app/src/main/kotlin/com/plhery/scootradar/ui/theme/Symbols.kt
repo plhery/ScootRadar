@@ -10,7 +10,8 @@ import androidx.compose.ui.unit.dp
 
 /**
  * The symbols the app draws, from Google's Material Symbols Rounded (Apache License 2.0) at 24 px: the outlines
- * as Google serves them, weight 600 for SF's semibold and 700 for its bold, filled where the SF Symbol is.
+ * as Google serves them, weight 600 for SF's semibold, 700 for its bold and 400 for its regular, filled where the SF
+ * Symbol is.
  */
 object Symbols {
     // name, Material Symbol, style: SF Symbols
@@ -93,6 +94,20 @@ object Symbols {
     val searchRegular: ImageVector by lazy { symbol("search", "M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z") }
     /** xmark.circle.fill in a text field's body font: `cancel`, weight 400, filled, its cross cut out. */
     val clearFillRegular: ImageVector by lazy { symbol("cancel", "m480-424 116 116q11 11 28 11t28-11q11-11 11-28t-11-28L536-480l116-116q11-11 11-28t-11-28q-11-11-28-11t-28 11L480-536 364-652q-11-11-28-11t-28 11q-11 11-11 28t11 28l116 116-116 116q-11 11-11 28t11 28q11 11 28 11t28-11l116-116Zm0 344q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z") }
+    /** envelope in a list row's body font: `mail`, weight 400. */
+    val envelopeRegular: ImageVector by lazy { symbol("mail", "M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm640-480L501-453q-5 3-10.5 4.5T480-447q-5 0-10.5-1.5T459-453L160-640v400h640v-400ZM480-520l320-200H160l320 200ZM160-640v10-59 1-32 32-.5 58.5-10 400-400Z") }
+    /** map in a list row's body font: `map`, weight 400. */
+    val mapRegular: ImageVector by lazy { symbol("map", "m574-129-214-75-186 72q-10 4-19.5 2.5T137-136q-8-5-12.5-13.5T120-169v-561q0-13 7.5-23t20.5-15l186-63q6-2 12.5-3t13.5-1q7 0 13.5 1t12.5 3l214 75 186-72q10-4 19.5-2.5T823-824q8 5 12.5 13.5T840-791v561q0 13-7.5 23T812-192l-186 63q-6 2-12.5 3t-13.5 1q-7 0-13.5-1t-12.5-3Zm-14-89v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z") }
+    /** hand.raised in a list row's body font: `back_hand`, weight 400. */
+    val handRaisedRegular: ImageVector by lazy { symbol("back_hand", "M512-40q-82 0-154-37.5T240-182L63-442q-7-10-5.5-21.5T67-483q20-21 49.5-24t53.5 14l110 76v-383q0-17 11.5-28.5T320-840q17 0 28.5 11.5T360-800v460q0 24-21.5 35.5T297-307l-85-59 95 138q35 51 89 79.5T512-120q103 0 175.5-72.5T760-368v-392q0-17 11.5-28.5T800-800q17 0 28.5 11.5T840-760v392q0 137-95.5 232.5T512-40Zm-32-880q17 0 28.5 11.5T520-880v360q0 17-11.5 28.5T480-480q-17 0-28.5-11.5T440-520v-360q0-17 11.5-28.5T480-920Zm160 40q17 0 28.5 11.5T680-840v320q0 17-11.5 28.5T640-480q-17 0-28.5-11.5T600-520v-320q0-17 11.5-28.5T640-880ZM486-300Z") }
+    /** chevron.left.forwardslash.chevron.right in a list row's body font: `code`, weight 400. */
+    val codeRegular: ImageVector by lazy { symbol("code", "m193-479 155 155q11 11 11 28t-11 28q-11 11-28 11t-28-11L108-452q-6-6-8.5-13T97-480q0-8 2.5-15t8.5-13l184-184q12-12 28.5-12t28.5 12q12 12 12 28.5T349-635L193-479Zm574-2L612-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L668-268q-12 12-28 11.5T612-269q-12-12-12-28.5t12-28.5l155-155Z") }
+    /** circle at `.system(size: 22)`: `radio_button_unchecked`, weight 400. */
+    val circleRegular: ImageVector by lazy { symbol("radio_button_unchecked", "M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z") }
+    /** checkmark.circle.fill at `.system(size: 22)`: `check_circle`, weight 400, filled. */
+    val checkCircleFillRegular: ImageVector by lazy { symbol("check_circle", "m424-408-86-86q-11-11-28-11t-28 11q-11 11-11 28t11 28l114 114q12 12 28 12t28-12l226-226q11-11 11-28t-11-28q-11-11-28-11t-28 11L424-408Zm56 328q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z") }
+    /** exclamationmark.circle.fill in the subheadline font: `error`, weight 400, filled. */
+    val exclamationCircleFillRegular: ImageVector by lazy { symbol("error", "M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5Zm0-160Q520-463 520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440q17 0 28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z") }
     /** The symbol for an SF Symbol's name, as :core gives them; null for one the app doesn't draw. */
     fun named(systemName: String): ImageVector? = when (systemName) {
         "exclamationmark.triangle" -> warning

@@ -380,16 +380,16 @@ private fun SettingsRoot(
                     title = localized("Send feedback"),
                     onOpen = { links.mail(ScooterLinks.feedback) },
                     detail = stringFormat(localized("Version %@"), ScooterLinks.appVersion),
-                    symbol = Symbols.envelope,
+                    symbol = Symbols.envelopeRegular,
                 )
             },
-            { FormNavigationRow(onClick = { push(SettingsPage.Credits) }) { FormLabel(localized("Map & data credits"), Symbols.map) } },
-            { FormNavigationRow(onClick = { push(SettingsPage.Privacy) }) { FormLabel(localized("Privacy"), Symbols.handRaised) } },
+            { FormNavigationRow(onClick = { push(SettingsPage.Credits) }) { FormLabel(localized("Map & data credits"), Symbols.mapRegular) } },
+            { FormNavigationRow(onClick = { push(SettingsPage.Privacy) }) { FormLabel(localized("Privacy"), Symbols.handRaisedRegular) } },
             {
                 ExternalLinkRow(
                     title = localized("Source code on GitHub"),
                     onOpen = { links.open(ScooterLinks.sourceCode) },
-                    symbol = Symbols.code,
+                    symbol = Symbols.codeRegular,
                 )
             },
         ),
@@ -644,7 +644,7 @@ private const val CHOSEN_DAY_ALPHA = 0.14f
 private fun ExpiredRow() {
     FormRow {
         val warning = scootColors.warning
-        SymbolIcon(Symbols.exclamationCircleFill, textSymbolSize(15f), warning)
+        SymbolIcon(Symbols.exclamationCircleFillRegular, textSymbolSize(15f), warning)
         Text(localized("This pass has expired"), style = ScootType.subheadline, color = warning, modifier = Modifier.weight(1f))
     }
 }
