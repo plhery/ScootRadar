@@ -37,6 +37,13 @@ Cheltenham/Gloucester service areas. The 12 NRW.Mobidrom feeds added in
 parallel retain official GBFS instead of the overlapping rider regions.
 Counts describe this audit, not a promise that every fleet remains available.
 
+Dresden, zone 384, was added on 30 October 2026 from one more read of the
+app's zone list, `GET /v1/gateway/zone-centers`: 148 zones, each an id and a
+centre as `[lat, lng]`, the 72 above each within 20 m of its catalog centre.
+Only the ids and centres were kept, and deleted once read. Dresden's box and
+centre are the city's, as Bolt's: the zone's centre lies 4.7 km north-west of
+the city's.
+
 ## Session and collection
 
 The Node cache reads `/data/voi-session.json`, or `VOI_SESSION_PATH`:

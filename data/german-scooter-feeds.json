@@ -3041,6 +3041,24 @@
       "voiAppZone": "247"
     },
     {
+      "id": "voi_de_app_384",
+      "provider": "voi",
+      "city": "Dresden",
+      "center": [
+        51.05089,
+        13.73832
+      ],
+      "bounds": {
+        "south": 50.9692,
+        "north": 51.1842,
+        "west": 13.5721,
+        "east": 13.9768
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=384&include_suggestion=false",
+      "voiAppZone": "384"
+    },
+    {
       "id": "voi_de_app_306",
       "provider": "voi",
       "city": "Darmstadt",
