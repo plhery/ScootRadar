@@ -3,6 +3,7 @@ package com.plhery.scootradar.app
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.ShortcutManager
+import android.os.Looper
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.MainActivity
@@ -12,8 +13,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
+import org.robolectric.Shadows.shadowOf
 import org.w3c.dom.Element
 import java.io.File
+import java.time.Duration
 import java.util.Properties
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -69,11 +72,25 @@ class ManifestTest {
         assertTrue(actions.toString(), "android.intent.action.CREATE_SHORTCUT" !in actions)
         val metaData = components.flatMap { it.children("meta-data") }.map { it.android("name") }
         assertTrue(metaData.toString(), "android.appwidget.provider" !in metaData && "android.app.shortcuts" !in metaData)
+    }
 
-        // Nor any the code makes as the app opens.
-        Robolectric.buildActivity(MainActivity::class.java).create().start().resume()
+    /**
+     * X-AD07: nor any the code publishes as the app runs, a dynamic shortcut or a pinned one: none as it opens, none
+     * once what it posted and put off has run 10 s on, none once it has gone to the background (review-app-v finding
+     * 7). The screen is not composed here, as the map's native library does not load in a JVM test.
+     */
+    @Test
+    fun theAppPublishesNoShortcutsAsItRuns() {
         val shortcuts = ApplicationProvider.getApplicationContext<Context>().getSystemService(ShortcutManager::class.java)
-        assertEquals(emptyList<Any>(), shortcuts.dynamicShortcuts + shortcuts.pinnedShortcuts)
+        val published = { shortcuts.dynamicShortcuts + shortcuts.pinnedShortcuts }
+        val activity = Robolectric.buildActivity(MainActivity::class.java).create().start().resume()
+        assertEquals("as it opens", emptyList<Any>(), published())
+        shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(10))
+        assertEquals("10 s on", emptyList<Any>(), published())
+        activity.pause().stop()
+        shadowOf(Looper.getMainLooper()).idle()
+        assertEquals("in the background", emptyList<Any>(), published())
+        activity.destroy()
     }
 
     /**

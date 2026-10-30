@@ -4,11 +4,13 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -39,7 +41,8 @@ import java.util.TimeZone
 
 /**
  * A tablet upright in a window 600 wide, where the search bar, the dock and the locate button, 560 wide in the middle,
- * come within 20 of its sides: a cutout 48 deep down either side keeps them clear of it.
+ * come within 20 of its sides: a cutout 48 deep down either side keeps them clear of it, laid out left to right or
+ * right to left.
  */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w600dp-h1280dp-mdpi")
@@ -84,13 +87,31 @@ class SafeSidesTest {
         assertEquals(552f, safe.right)
     }
 
-    /** The screen with [cutout] down a side, in the window's points (mdpi: pixels), and the controls inside the rest. */
-    private fun withCutout(cutout: Insets, check: (safe: Rect) -> Unit) {
+    /**
+     * Right to left, as under Force RTL (the app has no right-to-left language): the dock's padding is the window's
+     * left and right, not its start and end, so a cutout down the left is still kept clear on the left
+     * (review-app-v finding 7).
+     */
+    @Test
+    fun rightToLeftACutoutDownTheLeftKeepsTheControlsClearOfIt() = withCutout(Insets.of(48, 0, 0, 0), LayoutDirection.Rtl) { safe ->
+        assertEquals(48f, safe.left)
+    }
+
+    @Test
+    fun rightToLeftACutoutDownTheRightKeepsTheControlsClearOfIt() = withCutout(Insets.of(0, 0, 48, 0), LayoutDirection.Rtl) { safe ->
+        assertEquals(552f, safe.right)
+    }
+
+    /**
+     * The screen laid out in [direction] with [cutout] down a side, in the window's points (mdpi: pixels), and the
+     * controls inside the rest.
+     */
+    private fun withCutout(cutout: Insets, direction: LayoutDirection = LayoutDirection.Ltr, check: (safe: Rect) -> Unit) {
         val clock = TestClock()
         val model = DockState.Summary.make(controllers, clock)
         compose.setContent {
             view = LocalView.current
-            CompositionLocalProvider(LocalClock provides { clock.now }) {
+            CompositionLocalProvider(LocalClock provides { clock.now }, LocalLayoutDirection provides direction) {
                 ScooterMapScreen(controller = model, map = { }, glassBlurs = false, shortcuts = shortcuts)
             }
         }
@@ -108,6 +129,9 @@ class SafeSidesTest {
             "the dock" to hasTestTag(DOCK_TAG),
             "the locate button" to (hasContentDescription("Near me") or hasContentDescription("Go to my location")),
         )
+        // The locate button on the trailing side, so the screen is laid out in that direction.
+        val locate = frame(controls.getValue("the locate button"))
+        assertTrue("the locate button $locate on the $direction trailing side", (locate.center.x > 300f) == (direction == LayoutDirection.Ltr))
         for ((name, matcher) in controls) {
             val frame = frame(matcher)
             assertTrue("$name $frame beside the cutout, inside $safe", frame.left >= safe.left - 0.5f && frame.right <= safe.right + 0.5f)
