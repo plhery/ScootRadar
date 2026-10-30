@@ -175,7 +175,8 @@ class IosSheetTest {
         list.performTouchInput { swipeUp() }
         compose.waitForIdle()
         assertEquals(10f, sheetTop, 1f)
-        list.performTouchInput { swipeDown(endY = bottom) }
+        // Half the sheet's height: back up the list, then the sheet some way down, and it settles.
+        list.performTouchInput { swipeDown(endY = centerY) }
         compose.waitForIdle()
         assertEquals(0, dismissals)
     }

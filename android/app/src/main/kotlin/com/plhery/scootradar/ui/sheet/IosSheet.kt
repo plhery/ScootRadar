@@ -70,6 +70,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 // `.sheet(isPresented:)` with `.presentationDetents` and `.presentationDragIndicator(.visible)` in
@@ -194,10 +195,11 @@ fun IosSheet(
         Box(
             Modifier
                 .layout { measurable, constraints ->
-                    // As tall as the detent it is at, and no shorter than the lowest one as it goes down.
+                    // As tall as the detent it is at, down to the screen's foot, and no shorter than the lowest one
+                    // as it goes down, sliding off the foot.
                     val top = top()
                     val gap = gap()
-                    val height = max(0f, full - max(top, lowestTop) - gap).roundToInt()
+                    val height = max(0f, full - min(top, lowestTop) - gap).roundToInt()
                     val width = max(0, constraints.maxWidth - 2 * gap.roundToInt())
                     val placeable = measurable.measure(Constraints.fixed(width, height))
                     layout(constraints.maxWidth, constraints.maxHeight) { placeable.place(gap.roundToInt(), top.roundToInt()) }
