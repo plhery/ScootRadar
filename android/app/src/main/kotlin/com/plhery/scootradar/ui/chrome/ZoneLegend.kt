@@ -39,12 +39,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.CityRuleZone
+import com.plhery.scootradar.core.model.CityZoneDownloads
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneLook
 import com.plhery.scootradar.core.model.ScooterZoneState
+import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -54,7 +57,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 
 // ZoneLegend and ZoneSwatch in ios/ScootRadar/Views/ScooterControls.swift (ui.md UI-092, UI-093, UI-174, UI-285,
-// UI-348).
+// UI-348, UI-409).
 
 /**
  * What the colours of the zones mean while they are on, or why none are drawn, at the foot of the map beside the
@@ -72,10 +75,15 @@ fun ZoneLegend(
      */
     rules: List<CityRuleZone.Shown>,
     modifier: Modifier = Modifier,
+    /**
+     * The cities over the map whose zones are downloaded and not drawn: a line for each, that they are on their way or
+     * unavailable, so that no zones drawn never reads as none published there.
+     */
+    notices: List<CityZoneDownloads.Notice> = emptyList(),
 ) {
     val colors = scootColors
     val lines = ruleLines(rules, link = colors.dockText, focus = colors.accent)
-    val note = note(state, count, rules = lines.isNotEmpty())
+    val note = zoneLegendNote(state, count, rules = lines.isNotEmpty(), notices = notices.isNotEmpty())
     val zones = localized("Zones")
     val style = ScootType.caption.weight(FontWeight.Medium)
     Column(
@@ -124,6 +132,9 @@ fun ZoneLegend(
                 Text(line.text, style = style, color = colors.dockText)
             }
         }
+        for (notice in notices) {
+            Text(noticeText(notice), style = style, color = colors.dockSecondary)
+        }
     }
 }
 
@@ -134,11 +145,21 @@ const val ZONE_LEGEND_TAG = "zoneLegend"
 private fun showsKinds(state: ScooterZoneState, count: Int): Boolean =
     state != ScooterZoneState.Off && !(state == ScooterZoneState.Shown && count == 0)
 
-private fun note(state: ScooterZoneState, count: Int, rules: Boolean): String? = when {
+/**
+ * What the legend says instead of the kinds: never that no zones are published where a city's are drawn ([rules]), or
+ * where a city's are on their way or unavailable ([notices]).
+ */
+internal fun zoneLegendNote(state: ScooterZoneState, count: Int, rules: Boolean, notices: Boolean): String? = when {
     state == ScooterZoneState.ZoomIn -> localized("Zoom in to see the zones")
     state == ScooterZoneState.Failed -> localized("Zones unavailable right now")
-    state == ScooterZoneState.Shown && count == 0 && !rules -> localized("No zones published here")
+    state == ScooterZoneState.Shown && count == 0 && !rules && !notices -> localized("No zones published here")
     else -> null
+}
+
+/** "Loading Berlin’s zones…", "Berlin’s zones unavailable right now". */
+internal fun noticeText(notice: CityZoneDownloads.Notice): String = when (notice.state) {
+    CityZoneDownloads.Notice.State.Loading -> stringFormat(localized("Loading %@’s zones…"), notice.city.place.isolated)
+    CityZoneDownloads.Notice.State.Unavailable -> stringFormat(localized("%@’s zones unavailable right now"), notice.city.place.isolated)
 }
 
 /** A city's line: one for each kind, authority, hours and whether they hold now. */

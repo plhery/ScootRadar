@@ -19,6 +19,9 @@ import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.model.CityRuleZone
+import com.plhery.scootradar.core.model.CityZoneDownload
+import com.plhery.scootradar.core.model.CityZoneDownloads
+import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -68,7 +71,12 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
     private val locale = Locale.getDefault()
 
     /** The legend's states, with the operators' zones drawn and the city's rules over the map. */
-    enum class Case(val state: ScooterZoneState, val count: Int, val rules: List<CityRuleZone.Shown>) {
+    enum class Case(
+        val state: ScooterZoneState,
+        val count: Int,
+        val rules: List<CityRuleZone.Shown>,
+        val notices: List<CityZoneDownloads.Notice> = emptyList(),
+    ) {
         ZoomIn(ScooterZoneState.ZoomIn, 0, emptyList()),
         Failed(ScooterZoneState.Failed, 0, emptyList()),
         NoneHere(ScooterZoneState.Shown, 0, emptyList()),
@@ -84,6 +92,12 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
 
         /** A city's parking places beside the operators' kinds. */
         KindsAndPorto(ScooterZoneState.Shown, 12, portoZones),
+
+        /**
+         * No operator's zones here, and two cities whose zones are downloaded and not drawn, one on its way and one
+         * unavailable: their lines, and no "No zones published here" (UI-409).
+         */
+        NoticesOnly(ScooterZoneState.Shown, 0, emptyList(), cityNotices),
         ;
 
         val suffix: String get() = name.replaceFirstChar { it.lowercase() }
@@ -113,7 +127,7 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
                         Modifier.testTag(LEGEND).background(standIn(look.dark)).padding(8.dp).width(ROOM),
                         contentAlignment = Alignment.BottomStart,
                     ) {
-                        ZoneLegend(state = case.state, count = case.count, rules = case.rules)
+                        ZoneLegend(state = case.state, count = case.count, rules = case.rules, notices = case.notices)
                     }
                 }
             }
@@ -142,6 +156,17 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
         ).mapIndexed { index, kind ->
             CityRuleZone.Shown(zone("bergen-$index", "Bergen kommune", "Europe/Oslo", kind, GeoPoint(60.39, 5.32)), inForce = true)
         }
+
+        /** Berlin's zones on their way, and Hamburg's unavailable. */
+        private val cityNotices = listOf(
+            CityZoneDownloads.Notice(download("berlin", "Berlin"), CityZoneDownloads.Notice.State.Loading),
+            CityZoneDownloads.Notice(download("hamburg", "Hamburg"), CityZoneDownloads.Notice.State.Unavailable),
+        )
+
+        private fun download(id: String, place: String) = CityZoneDownload(
+            id = id, place = place, authority = place, timeZone = "Europe/Berlin", source = "https://example.com/$id",
+            bounds = GeoBounds(south = 52.5, west = 13.3, north = 52.6, east = 13.5),
+        )
 
         /** Two of Porto's parking places, one line. */
         private val portoZones = (0..1).map { index ->

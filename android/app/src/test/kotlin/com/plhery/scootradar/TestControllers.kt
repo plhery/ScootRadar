@@ -126,6 +126,8 @@ class TestControllers {
         phoneLanguages = { listOf("en-US") },
         keepAppLanguages = {},
         catalog = catalog,
+        // The cities' zones are read on the scheduler too.
+        cityZoneFiles = StandardTestDispatcher(scheduler),
     )
 
     /** What the controllers made with `clock` read as the time: the clock, or the scheduler's. */

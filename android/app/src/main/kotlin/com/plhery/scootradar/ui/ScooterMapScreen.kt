@@ -795,12 +795,14 @@ private fun ZoneLegendOverTheMap(controller: ScooterMapController, chrome: MapCh
     val state by controller.zoneState.collectAsStateWithLifecycle()
     val count by controller.mapOperatorZoneCount.collectAsStateWithLifecycle()
     val rules by controller.mapRuleZones.collectAsStateWithLifecycle()
-    if (state == ScooterZoneState.Off && rules.isEmpty()) return
+    val notices by controller.mapZoneNotices.collectAsStateWithLifecycle()
+    if (state == ScooterZoneState.Off && rules.isEmpty() && notices.isEmpty()) return
     val density = LocalDensity.current.density
     ZoneLegend(
         state = state,
         count = count,
         rules = rules,
+        notices = notices,
         modifier = modifier.onGloballyPositioned { chrome.zoneLegend = it.windowFrame(density) },
     )
     DisposableEffect(Unit) { onDispose { chrome.zoneLegend = null } }

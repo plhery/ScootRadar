@@ -21,7 +21,7 @@ import org.junit.Test
 
 // The map's part of ios/ScootRadar/ViewModels/ScooterMapModel.swift rebuildMapZones (LOG-423): the cities' zones the
 // app downloads, asked for and drawn with those built in. T433, through the screen and its legend, is the app's
-// (ui/chrome/CityZoneNoticesTest.kt).
+// (:app ui/chrome/CityZoneDownloadsTest.kt).
 @OptIn(ExperimentalCoroutinesApi::class)
 class ScooterMapCityZoneDownloadsTest {
     /** Round Berlin's Tiergarten, at zoom 16 on a phone. */

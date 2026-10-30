@@ -27,7 +27,7 @@ import org.junit.Assert.fail
 import org.junit.Test
 
 // ios/ScootRadarTests/CityZoneDownloadsTests.swift (T422 to T432). Its map's test, T433, is the app's
-// (ui/chrome/CityZoneNoticesTest.kt), with the legend it checks.
+// (:app ui/chrome/CityZoneDownloadsTest.kt), with the legend it checks.
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CityZoneDownloadsTest {
