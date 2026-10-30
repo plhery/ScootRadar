@@ -44,8 +44,10 @@ corniche that end near where they started, seen as a new id with at least
 scooters came back within 90 m of where they had left, 20 to 30 minutes
 later, with 1.8, 13.9 and 18.5 km less range, and staff swapped six
 batteries. That is few for 171 scooters, but they are ridden, so Jeddah is
-in; a check on Friday 23 October, with Dott Riyadh, will tell more (see
-[Coverage gaps](coverage-gaps.md#dates-to-check-again)).
+in. On Friday evening 23 October it held 96 to 106 scooters on 1.3 km of the
+waterfront, and 12 of 105 left the feed in 8.5 minutes. Dott took them all off
+on 27 October, and the feed has listed none since: it is checked again on 30
+November (see [Coverage gaps](coverage-gaps.md#dates-to-check-again)).
 
 ## City names
 
@@ -145,8 +147,9 @@ primary source was found.
 ## Known gaps
 
 - **Dott Riyadh:** 93 to 99 scooters, all in Boulevard City, a Riyadh Season
-  venue, and about 10 rides in 12.5 hours. Riyadh Season opens on 21 October
-  2026; check again from Friday 23 October, in the evening.
+  venue, and about 10 rides in 12.5 hours. On Friday evening 23 October,
+  with Riyadh Season open there, it held 44 or 45, none of which moved more
+  than 50 m in 8.5 minutes, so it stays off; check again in mid-November.
 - **Dott Sports Boulevard** (`sbf`): 44 or 45 scooters and about 85 e-bikes
   at one spot, which never moved. **Dott STC City:** empty, with a free plan,
   on the stc headquarters campus: not a public service.

@@ -785,8 +785,9 @@ banned shared scooters, and feeds that were empty when checked.
 - **Saudi Arabia** ([guide](saudi-scooter-feeds.md#known-gaps)): SAHAM in
   Riyadh and Dott in Jeddah are covered.
   - **Dott Riyadh:** 93 to 99 scooters, all in Boulevard City, about 10 rides
-    in 12.5 hours on 15 October 2026. Riyadh Season opens there on 21 October;
-    check from 23 October, in the evening.
+    in 12.5 hours on 15 October 2026, and 44 or 45 that stood still on the
+    evening of 23 October, with Riyadh Season open there; check again in
+    mid-November.
   - **Dott Sports Boulevard** (`sbf`): 44 or 45 scooters, all at one depot,
     which never moved. **Dott STC City:** empty, with a free plan, on the stc
     headquarters campus, not a public service.
@@ -1130,14 +1131,16 @@ Bonaire had feeds to add. Survey files are in
 
 ## Dates to check again
 
-- **After 26 October 2026:** applications to Rome's new operator selection
-  close. Rome's scooter permits ran from 1 September 2023 to 31 August 2026 and
-  are extended (D.D. QG 1649/2026) for the time the selection needs; the press
-  gives 31 October 2026, the day the bike-sharing permits end. The selection
-  picks up to three scooter operators, who then have 150 days to start
+- **After 31 October 2026:** Rome's operator selection. Applications closed
+  on 26 October. Rome's scooter permits ran from 1 September 2023 to 31 August
+  2026 and are extended (D.D. QG 1649/2026) for the time the selection needs;
+  the press gives 31 October 2026, the day the bike-sharing permits end. The
+  selection picks up to three scooter operators, who then have 150 days to
+  start
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
-  Check that Bird Roma still publishes after both dates, and whether the
-  winners do.
+  On 30 October no award was published, and the map held 3,414 Bird and
+  3,396 Dott scooters in Rome. Check that Bird Roma still publishes after 31
+  October, and in mid-November whether the winners are named and publish.
 - **Tuesday 10 November 2026:** Zeus's move to ATOM Mobility. Nothing had
   changed on 20 October 2026: the 26 ids still answered "GBFS disabled", the
   empty ones still listed no vehicle, MobiData BW still had the same 11 Zeus
@@ -1149,13 +1152,14 @@ Bonaire had feeds to add. Survey files are in
   scooters has frozen, so read that town from its ATOM id. Check again every
   few weeks until the move is done, at one request a second on
   `zeus.rideatom.com`; id 189 is a warehouse.
-- **Friday 23 October 2026, 18:00 to 22:00 Riyadh time:** Dott Riyadh, in
-  Boulevard City (`riyadh`): 93 to 99 scooters and about 10 rides on 15
-  October 2026, before Riyadh Season opened there on 21 October. Poll it every
-  five minutes; Dott renews ids after each trip, so count rides as the
-  [Saudi guide](saudi-scooter-feeds.md#rides) does, and add it to
-  `data/saudi-scooter-feeds.json` if it is ridden. Poll Dott Jeddah too, in
-  the catalog on about 23 rides that evening: if it shows none, take it out.
+- **Mid-November 2026, an evening in Riyadh:** Dott Riyadh, in Boulevard
+  City (`riyadh`): 93 to 99 scooters and about 10 rides on 15 October 2026.
+  On Friday 23 October, with Riyadh Season open there, it held 44 or 45, and
+  in 8.5 minutes from 20:49 Riyadh time none moved more than 50 m, so it
+  stays off. Poll it every five minutes; Dott renews ids after each trip, so
+  count rides as the [Saudi guide](saudi-scooter-feeds.md#rides) does, and
+  add it to `data/saudi-scooter-feeds.json` if it is ridden. Read Dott from
+  Netcup.
 - **After 4 November 2026:** Auckland's two-year e-scooter licences, for
   Flamingo and Lime, expire in November 2026, and the council holds no new
   round
@@ -1223,6 +1227,18 @@ Bonaire had feeds to add. Survey files are in
   UTC. If it still lists none then, take it out of
   `data/malaysian-scooter-feeds.json`; if it lists scooters again, nothing
   needs doing.
+- **30 November 2026:** Dott Jeddah (`dott_sa_jeddah`). Dott took its
+  scooters off on 27 October 2026, 89 at 15:49 to none at 00:49 Jeddah time,
+  and its own feed has listed none since; no notice was found. The feed is
+  still polled, and its "feed empty" alert is silenced in Grafana until 30
+  November, 08:00 UTC. Then read Dott's feed from Netcup and look for a
+  notice; whether it stays is decided then.
+- **1 December 2026:** Dott Tarnowskie Góry (`dott_pl_tarnowskie_gory`). It
+  fell from 138 scooters to 28 on 27 October 2026 and has listed none since
+  about 23:00 UTC that day; no dated notice or winter pause was found. The
+  feed is still polled, and its "feed empty" alert is silenced in Grafana
+  until 1 December, 08:00 UTC. Then read Dott's feed from Netcup and look for
+  a notice; whether it stays is decided then.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
