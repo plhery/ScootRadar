@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Tromsø: Ryde, pris, sesong og åpningstider',
   description: 'Ryde er eneste utleier av elsparkesykler i Tromsø: 10,90 kr å låse opp og 2,50 kr per minutt, sesong fra 1. mai til 1. november og stengt kl. 23–06 i helgene.',
   headline: 'Elsparkesykkel i Tromsø: Ryde, pris, sesong, Tromsøbrua og soner',
-  lede: 'Vil du leie elsparkesykkel i Tromsø, er det Ryde du må bruke: Ryde er eneste utleier i byen. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (14. oktober 2026), og du må ha fylt 16 år. Sesongen varer fra 1. mai til senest 1. november, kortere hvis snøen kommer tidlig, og deretter er sparkesyklene borte til våren. Natt til lørdag, søndag og helligdager er utleien stengt fra kl. 23 til 06, og i tunnelene er elsparkesykler forbudt.',
+  lede: 'Vil du leie elsparkesykkel i Tromsø, er det Ryde du må bruke: Ryde er eneste utleier i byen. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (30. oktober 2026), og du må ha fylt 16 år. Sesongen varer fra 1. mai til senest 1. november, kortere hvis snøen kommer tidlig, og deretter er sparkesyklene borte til våren. Natt til lørdag, søndag og helligdager er utleien stengt fra kl. 23 til 06, og i tunnelene er elsparkesykler forbudt.',
   published: '2026-10-14',
   updated: '2026-10-17',
   city: 'no:Tromsø',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Ryde har vært alene i Tromsø siden de første elsparkesyklene kom i 2022. Voi, Bolt og Dott finnes ikke her. Du låser opp og betaler i Ryde-appen. Siden juni 2025 viser også **Svipper-appen** Rydes sparkesykler med pris og rekkevidde, og et trykk tar deg videre til Ryde.',
         'Fra 1. januar 2026 har Tromsø en egen utleieforskrift. Den åpner for inntil to operatører, med tillatelse for to sesonger om gangen. I kommunens postjournal er Rydes søknad fra april 2026 den eneste, og vedtaket om hvem som får tillatelse for 2026 og 2027, var ikke publisert 15. oktober 2026.',
         'Forskriften setter også et tak: **200** kjøretøy i sentrum (Sone 1) og **2000** i resten av byområdet (Sone 2).',
-        'På [kartet over Tromsø](map:no:Tromsø) viste ScootRadar rundt 1050 elsparkesykler fra Ryde 14. oktober 2026. Tallet gjelder sparkesyklene på kartet, ikke hele flåten. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
+        'På [kartet over Tromsø](map:no:Tromsø) sto det rundt 1050 Ryde-sparkesykler 14. oktober 2026. Det er det kartet viste akkurat da, ikke hele flåten. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
@@ -28,7 +28,7 @@ const guide: Guide = {
         'Ryde tar 10,90 kr for å låse opp og 2,50 kr per minutt, også når du står stille. Den endelige prisen ser du i appen før du låser opp.',
         {
           table: {
-            caption: 'Rydes pris publisert 14. oktober 2026, og Svipper-bussen til sammenligning',
+            caption: 'Rydes pris 30. oktober 2026, og Svipper-bussen til sammenligning',
             head: ['Tur eller billett', 'Pris'],
             rows: [
               ['Ryde, 10 minutter', '35,90 kr'],
@@ -42,7 +42,7 @@ const guide: Guide = {
         },
         'Et kvarter på sparkesykkelen koster altså omtrent det samme som en bussbillett. Pass kjøper du bare i Ryde-appen, og der står også prisene for Tromsø.',
         'Du kan betale med kort som godkjennes med 3-D Secure eller BankID på mobil, med Google Pay eller med Vipps. Med Vipps trekkes turene samlet dagen etter, med et dagstak på 400 kr som standard. Nye kunder betaler et beløp for å bekrefte kontoen, og beløpet blir stående som Ryde Credits til senere turer.',
-        'Lovens aldersgrense er 12 år, men Ryde krever 16, og hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt** og var ennå ikke sendt på høring 15. oktober 2026.',
+        'Lovens aldersgrense er 12 år, men Ryde krever 16, og hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt**, og 30. oktober 2026 var det ennå ikke sendt på høring.',
       ],
     },
     {
@@ -55,7 +55,7 @@ const guide: Guide = {
             '**Våren 2026** var Ryde tilbake 1. mai, den første sesongen under den nye forskriften.',
           ],
         },
-        'Den 14. oktober 2026 sto sparkesyklene fortsatt ute, og verken Ryde eller kommunen hadde meldt en tidligere slutt. Regn likevel ikke med å kjøre helt til 1. november. Etter forskriften starter neste sesong 1. mai 2027. Vårrengjøringen er normalt ferdig innen 20. juni, så regn med grus på gang- og sykkelveiene i mai og juni.',
+        'Kl. 13.36 den 30. oktober 2026 viste kartet bare 19 ledige Ryde-sparkesykler, mot rundt 1050 den 14. oktober, så regn ikke med å kjøre helt til 1. november. Etter forskriften starter neste sesong 1. mai 2027. Vårrengjøringen er normalt ferdig innen 20. juni, så regn med grus på gang- og sykkelveiene i mai og juni.',
       ],
     },
     {
@@ -63,7 +63,7 @@ const guide: Guide = {
       blocks: [
         'Natt til lørdag, natt til søndag og natt til helligdager stenger utleien kl. 23 og åpner igjen kl. 06. De andre nettene kan du leie hele natten, også under midnattssola, fra omtrent 20. mai til 22. juli.',
         'Rydes publiserte åpningstider nevner bare fredags- og lørdagsnettene, ikke natt til helligdager, men forskriften gjelder også da, så sjekk appen. På kveldstid i helgene må du dessuten ta en reaksjonstest i appen før turen.',
-        'Stengingen har en forhistorie. Da politiet kontrollerte førere av elsparkesykler en lørdagsnatt i september 2024, var 10 av 25 over promillegrensen, blant dem alle som ble stoppet mellom kl. 24 og 03. Like etterpå ble Ryde og kommunen enige om nattestenging i helgene, som nå står i forskriften.',
+        'Stengingen har en forhistorie. Da politiet kontrollerte førere av elsparkesykler natt til søndag 8. september 2024, var 10 av 25 over promillegrensen, meldte NRK. Dagen etter varslet kommunen og Ryde nattestenging i helgene, og nå står den i forskriften.',
         'Ved store dager og arrangementer kan sentrum stenges:',
         {
           list: [
@@ -107,7 +107,7 @@ const guide: Guide = {
         },
         'I gågata i Storgata gjelder uansett gangfart, maks 6 km/t, selv om sparkesykkelen lar deg kjøre i 12. Grønnegata går parallelt og er en 30-sone.',
         'Kommunen ber deg parkere i sykkelstativ eller der sykler kan stå, utenfor gangtraseen og ikke på åpne plasser eller over ledelinjer for blinde og svaksynte. La det være plass til rullestoler og barnevogner, og sett sparkesykkelen så den ikke velter.',
-        { note: 'Feilparkering koster 900 kr i gebyr, og Tromsø Parkering kan fjerne sparkesykkelen. Siden sommeren 2025 sender Ryde gebyrene videre til kundene. Uten bilde av parkeringen står du ansvarlig etter vilkårene, og Ryde fakturerer et beløp etter egen vurdering, uten noen fast sats. At appen lar deg avslutte turen, betyr ikke at du har parkert lovlig.' },
+        { note: 'Feilparkering koster 900 kr i gebyr, og Tromsø Parkering kan fjerne sparkesykkelen. Ryde kan sende gebyret videre til deg: Uten bilde av parkeringen står du ansvarlig etter vilkårene, og Ryde fakturerer et beløp etter egen vurdering, uten noen fast sats. At appen lar deg avslutte turen, betyr ikke at du har parkert lovlig.' },
         'Vil du klage på et gebyr, gjør du det hos [Tromsø Parkering](https://tromso-parkering.no/klage-pa-ileggelse/). Står en Ryde i veien, kan du ringe Ryde på 67 79 26 44, hverdager kl. 09–15.',
       ],
     },
@@ -189,13 +189,17 @@ const guide: Guide = {
     { title: 'Lovdata: Tromsøs utleieforskrift for små elektriske kjøretøy', url: 'https://lovdata.no/dokument/LF/forskrift/2025-09-03-1800' },
     { title: 'Tromsø kommune: Råd og regler om bruk av elsparkesykler', url: 'https://www.tromso.kommune.no/tema/vei-broyting-og-kosting/rad-og-regler-om-bruk-av-elsparkesykler' },
     { title: 'Troms fylkeskommune: Spørsmål og svar om Tromsøbrua (2026)', url: 'https://www.tromsfylke.no/_f/p1/i1031d413-b9af-485f-8d30-a57e9a5f7457/sporsmal_svar_tromsobrua.pdf' },
+    { title: 'Troms fylkeskommune: Tromsøbrua, utvidelse av sykkelvegen (folkemøte 25. februar 2026)', url: 'https://www.tromsfylke.no/_f/p1/i51806429-a7a5-4d83-a5c4-565078724863/tromsobrua-utvidelse-sykkelveg-orientering-folkemote-250226.pdf' },
     { title: 'Visit Tromsø: Reise rundt i Tromsø', url: 'https://www.visittromso.no/no/reise-rundt' },
     { title: 'Troms fylkeskommune: Nå ser du sparkesykler i Svipper-appen', url: 'https://www.tromsfylke.no/tjenester/samferdsel/aktuelt-samferdsel/na-ser-du-sparkesykler-i-svipper-appen.71706.aspx' },
     { title: 'Svipper: Sykkel på buss og båt', url: 'https://svipper.no/meny/reise/nyttig-informasjon/sykkel/' },
     { title: 'Svipper: Busspriser', url: 'https://svipper.no/meny/billetter-og-priser/busspriser/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Sikkerhet (reaksjonstest på kveldstid i helgene)', url: 'https://www.ryde-technology.com/safety' },
+    { title: 'Ryde: Vipps og dagstaket (på engelsk)', url: 'https://www.ryde-technology.com/help/do-you-offer-vipps' },
+    { title: 'Ryde: Kort med 3-D Secure eller BankID (på engelsk)', url: 'https://www.ryde-technology.com/help/add-payment-card' },
     { title: 'Ryde: Åpne data for Tromsø (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs' },
+    { title: 'NRK: «Ryde» og Tromsø kommune varsler el-sykkelforbud om natta i helgene (9. september 2024)', url: 'https://www.nrk.no/tromsogfinnmark/_ryde_-og-tromso-kommune-varsler-el-sykkelforbud-om-natta-i-helgene-1.17036263' },
     { title: 'NRK: Forbudt med elsparkesykler i Tromsø sentrum 17. mai (2026)', url: 'https://www.nrk.no/tromsogfinnmark/forbudt-med-elsparkesykler-i-tromso-sentrum-17.-mai-1.17884855' },
     { title: 'Fjellheisen: Om oss', url: 'https://fjellheisen.no/om-oss' },
   ],
