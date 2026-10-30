@@ -26,9 +26,9 @@ const guide: Guide = {
             '**Hopp**, una marca islandesa que aquí gestiona una franquicia local, en casi la misma franja y en una pequeña zona aparte en **Golf del Sur**, en San Miguel de Abona.',
           ],
         },
-        'A las 12:26 del 24 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 1000 patinetes de Hoppy, 500 de Dott, 370 de Bird y 30 de Hopp, y el de [Golf del Sur](map:es:Golf del Sur), otros 16 de Hopp: una foto, no el tamaño de sus flotas.',
-        'Adeje exige ahora un título municipal a las empresas de alquiler; en Arona y San Miguel de Abona no hemos encontrado licencia, concurso ni límite de flota publicados.',
-        'En Santa Cruz, la capital, Dott funciona desde 2024; a esa hora, el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife) mostraba unos 130. ISLA Ride, de diciembre de 2025, anuncia patinetes en Tenerife, pero no publica dónde ni a qué precio, y no sale en nuestro mapa.',
+        'A las 8:27 del 30 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 980 patinetes de Hoppy, 530 de Dott, 470 de Bird y 30 de Hopp libres en ese momento, no la flota entera, y el de [Golf del Sur](map:es:Golf del Sur), otros 16 de Hopp.',
+        'La nueva ordenanza de Adeje exigirá un título municipal a las empresas de alquiler cuando entre en vigor (más abajo).',
+        'En Santa Cruz, la capital, también está Dott; a esa hora, el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife) mostraba unos 150. ISLA Ride, de diciembre de 2025, anuncia patinetes en Tenerife, pero no publica dónde ni a qué precio, y no sale en nuestro mapa.',
       ],
     },
     {
@@ -37,7 +37,7 @@ const guide: Guide = {
         'La tarifa de Hoppy depende del modelo; Dott y Bird no publican la suya para Tenerife.',
         {
           table: {
-            caption: 'Precios del alquiler de patinete en Tenerife sur (tarifas publicadas a 14 de octubre de 2026)',
+            caption: 'Precios del alquiler de patinete en Tenerife sur (tarifas publicadas a 30 de octubre de 2026)',
             head: ['Operador', 'Desbloqueo', 'Minuto', '10 min', '20 min', 'Dónde terminas el viaje'],
             rows: [
               ['Hoppy', '1 €', '0,35-0,37 €', '4,50-4,70 €', '8-8,40 €', 'Solo en uno de sus puntos de aparcamiento'],
@@ -56,8 +56,8 @@ const guide: Guide = {
       blocks: [
         'Desde 2016, Arona, el municipio de Los Cristianos y Playa de las Américas, prohíbe circular en bicicleta, segway o patinete por 98 paseos y calles peatonales. Entre ellos están el frente marítimo entre Los Cristianos y Las Américas (Paseo Marítimo, Paseo de Las Vistas y Paseo Francisco Andrade Fumero), la zona peatonal del casco de Los Cristianos y los paseos de Palm-Mar y Las Galletas.',
         { note: 'Bird y Hopp no bloquean el paseo; Hoppy te frena a 12 km/h en casi todo él y lo bloquea en dos tramos cortos. La policía, en cambio, te para: bájate y llévalo a pie, o ve por la calzada.' },
-        'La policía vigila: Arona retiró 5259 patinetes de sus calles en 2024, y en un solo operativo, en abril de 2026, denunció 92 patinetes e inmovilizó 81 por circular por zonas peatonales, no estar inscritos o aparcar en lugares no autorizados. Las multas recaen sobre las empresas de alquiler, que pueden pasártelas a ti.',
-        'En Costa Adeje, el Ayuntamiento pide no circular por aceras ni zonas peatonales y bajarse del patinete para cruzar los pasos de peatones. Su nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, lo convierte en norma: el paseo cuenta como zona peatonal, prohibida a los patinetes, y cruzar el paso subido al patinete es maniobra temeraria. Las empresas de alquiler necesitan un título municipal y deben geolocalizar cada patinete en tiempo real. Su fecha de entrada en vigor no se ha publicado.',
+        'La policía vigila: en un solo operativo, en abril de 2026, Arona denunció 92 patinetes e inmovilizó 81 por circular por zonas peatonales, no estar inscritos o aparcar en lugares no autorizados. Las condiciones de Dott para España, por ejemplo, hacen pagar cualquier multa a quien conduce y permiten a Dott dar tu nombre a la policía.',
+        'En Costa Adeje, el Ayuntamiento pide no circular por aceras ni zonas peatonales y bajarse del patinete para cruzar los pasos de peatones. Su nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, lo convertirá en norma: el paseo contará como zona peatonal, prohibida a los patinetes, y cruzar el paso subido al patinete, como maniobra temeraria. Las empresas de alquiler necesitarán un título municipal y deberán geolocalizar cada patinete en tiempo real. Su fecha de entrada en vigor no se ha publicado.',
       ],
     },
     {
@@ -121,7 +121,7 @@ const guide: Guide = {
         {
           list: [
             '**Los paseos se cerraron antes de que hubiera ley del patinete.** Arona los prohibió en 2016, y la ley española no definió el patinete (VMP) hasta enero de 2021.',
-            '**En Arona, casi todos los patinetes que se lleva la policía son de alquiler.** Según RTVC, tras el operativo de abril de 2026, «el 99,9 % de los vehículos intervenidos pertenecen a empresas de alquiler».',
+            '**Arona retira cada vez menos patinetes.** Su policía retiró 5259 en 2024 y 373 en 2025 hasta el 23 de julio, un descenso que el Ayuntamiento atribuye en parte a más control y al diálogo con las operadoras.',
             '**Los Hopp de Las Américas vienen de Islandia.** Hopp nació en Reikiavik en 2019 y creció con franquicias; Hopp Tenerife arrancó el 28 de marzo de 2022.',
           ],
         },
@@ -131,7 +131,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete eléctrico en Tenerife sur?',
-      answer: 'Con Hoppy, 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €), según sus tarifas a 14 de octubre de 2026. Dott y Bird no publican su precio para Tenerife: míralo en la app.',
+      answer: 'Con Hoppy, 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €), según sus tarifas a 30 de octubre de 2026. Dott y Bird no publican su precio para Tenerife: míralo en la app.',
     },
     {
       question: '¿Qué app de patinetes eléctricos funciona en Tenerife?',
@@ -155,11 +155,12 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 8 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'Ayuntamiento de Arona: los 98 paseos y calles peatonales prohibidos (BOP, agosto de 2016)', url: 'https://www.arona.org/Portals/0/documentos/0_37129_1.pdf' },
     { title: 'Ayuntamiento de Arona: patinetes retirados en 2024 y 2025 (23 de julio de 2025)', url: 'https://www.arona.org/Tu-Ayuntamiento/Prensa/Noticias/ctl/Ver/mid/422?id=92916' },
     { title: 'Ayuntamiento de Arona: 92 patinetes denunciados y 81 inmovilizados (6 de abril de 2026)', url: 'https://www.arona.org/Tu-Ayuntamiento/Prensa/Noticias/ctl/Ver/mid/422?id=94385' },
     { title: 'BOP de Santa Cruz de Tenerife: ordenanza de circulación de Adeje, texto íntegro (9 de septiembre de 2026)', url: 'https://www.bopsantacruzdetenerife.es/boletines/2026/9-9-26/a9-9-26.pdf' },
+    { title: 'Dott: términos y condiciones para España (23 de septiembre de 2025)', url: 'https://ridedott.com/terms-and-conditions/spain/' },
     { title: 'Hoppy: datos abiertos de Tenerife Sur (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1193/v3.0/gbfs' },
     { title: 'Hopp: ubicaciones y tarifas', url: 'https://hopp.bike/locations' },
     { title: 'Bird: datos abiertos del sur de Tenerife (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json' },
