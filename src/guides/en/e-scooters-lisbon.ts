@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'As of October 2026, three operators run shared e-scooters in Lisbon: **Lime**, **Bolt** and **Bird**. Lime also rents e-bikes. LINK, still listed in older guides, has left Portugal.',
         'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended on 23 June 2025, which applies until the city adopts the regulation it began drafting in 2022. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
-        'At 04:27 on 30 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 3,200 Bolt, 2,400 Lime and 1,400 Bird scooters free to rent at that moment, not the whole fleet, with each one’s battery or range.',
+        'At 04:27 on 30 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 3,200 Bolt, 2,400 Lime and 1,400 Bird scooters free to rent at that moment, not the whole fleet, with each one’s battery or range. Bolt’s and Lime’s free scooters alone are over each operator’s cap, and Bird’s are under it; the council has not said whether it gave them the quotas of operators that left.',
       ],
     },
     {
@@ -98,7 +98,7 @@ const guide: Guide = {
             '**Airport.** Bird has hotspots by Terminal 1, on Rua Interior ao Aeroporto da Portela; on 13 October 2026 it had none near Terminal 2.',
             '**Ferries to Cacilhas.** The TTSL ferries take scooters only if they fold and travel as hand luggage, so a shared one can’t board. End your ride near Cais do Sodré, cross to Cacilhas and look for Lime or Bird on the [map of Almada](map:pt:Almada). The 25 de Abril and Vasco da Gama bridges carry motorways and are off limits.',
             '**Metro and trains.** The Metro and CP’s urban trains take scooters on board, but a shared one’s ride can only end at a hotspot: end it near the station and walk in.',
-            '**Beyond the city.** Bird also runs in [Oeiras](map:pt:Oeiras) and [Cascais](map:pt:Cascais), with about 390 and 640 scooters on the map on the morning of 24 October 2026. Bolt runs in Oeiras too, as Lime has since 2024, and the map has shown their scooters there since 25 and 26 October 2026. Lisbon’s agreement and its free minutes don’t apply there. Heading north? See [e-scooters in Porto](guide:porto).',
+            '**Beyond the city.** Bird also runs in [Oeiras](map:pt:Oeiras) and [Cascais](map:pt:Cascais), and Bolt and Lime (since 2024) in Oeiras, all on the map. Lisbon’s agreement and its free minutes don’t apply there. Heading north? See [e-scooters in Porto](guide:porto).',
           ],
         },
       ],

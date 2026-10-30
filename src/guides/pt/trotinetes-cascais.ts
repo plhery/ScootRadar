@@ -24,19 +24,19 @@ const guide: Guide = {
             rows: [
               ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Não publicado: veja na app', 'Sim, só as trotinetes'],
               ['Lime', 'Não: está em Lisboa, Almada e Oeiras', '–', 'Em Lisboa, Almada e Oeiras'],
-              ['Bolt', 'Não: está em Lisboa', '–', 'Não'],
+              ['Bolt', 'Não: está em Lisboa e Oeiras', '–', 'Em Lisboa e Oeiras'],
               ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos', 'Não'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 640 no [mapa de Cascais](map:pt:Cascais) na manhã de 24 de outubro de 2026. As bicicletas elétricas da Bird não aparecem no mapa. Ao lado, em [Oeiras](map:pt:Oeiras), o mapa mostrava cerca de 390 trotinetes, todas da Bird. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 640 no [mapa de Cascais](map:pt:Cascais) na manhã de 24 de outubro de 2026. As bicicletas elétricas da Bird não aparecem no mapa. Ao lado, o [mapa de Oeiras](map:pt:Oeiras) mostra as trotinetes da Bird, da Lime e da Bolt. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Quanto custa: a Bird e as viagens grátis do Cartão Viver Cascais',
       blocks: [
         'A Bird não publica as tarifas de Cascais: a app mostra o preço antes de começar. O contrato de aluguer da Bird para Portugal (de 8 de dezembro de 2021, o ainda publicado) exige 18 anos, prevê uma cativação de 5 € no cartão antes de cada viagem e fixa o preço máximo em 100 € por dia.',
-        '**Trotinetes grátis?** Não. Desde 17 de julho de 2026, quem tem o Cartão Viver Cascais (residentes, estudantes e trabalhadores no concelho) anda de graça nas **bicicletas elétricas** da Bird, até 60 minutos por viagem, sem limite diário, dentro do concelho. O benefício «aplica-se exclusivamente às bicicletas elétricas Bird»: nas trotinetes, paga o preço normal. O desbloqueio não está incluído, embora a Bird o tenha posto a 0 € numa campanha no verão de 2026. Para ativar:',
+        '**Trotinetes grátis?** Não. Desde 17 de julho de 2026, quem tem o Cartão Viver Cascais (residentes, estudantes e trabalhadores no concelho) anda de graça nas **bicicletas elétricas** da Bird, até 60 minutos por viagem, sem limite diário, dentro do concelho. O benefício «aplica-se exclusivamente às bicicletas elétricas Bird»: nas trotinetes, paga o preço normal. O desbloqueio não está incluído. Para ativar:',
         {
           steps: [
             'Registe-se na app da Bird com o mesmo email da conta MyCascais do Cartão Viver Cascais.',
@@ -155,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Lime ou Bolt em Cascais?',
-      answer: 'Não, em outubro de 2026. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa. Em Cascais, as trotinetes partilhadas são da Bird.',
+      answer: 'Não, em outubro de 2026. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa e em Oeiras. Em Cascais, as trotinetes partilhadas são da Bird.',
     },
   ],
   sources: [

@@ -18,13 +18,13 @@ const guide: Guide = {
       blocks: [
         'Em outubro de 2026, há três operadores de trotinetes partilhadas em Lisboa: a **Bolt**, a **Lime** e a **Bird**. A Lime também aluga bicicletas elétricas.',
         'Lisboa não tem um regulamento para as trotinetas partilhadas: as regras vêm de um acordo de colaboração entre a Câmara e os operadores, de 9 de janeiro de 2023, alterado por uma adenda a 23 de junho de 2025. O acordo fixa também um limite sazonal por operador: até 1750 veículos de 1 de abril a 31 de outubro e até 1500 de 1 de novembro a 31 de março.',
-        'Segundo o vice-presidente da Câmara, Gonçalo Reis, a cidade passou de 15 mil trotinetes para cerca de cinco mil (abril de 2026). Às 4h27 de 30 de outubro de 2026, o [mapa de Lisboa](map:pt:Lisboa) mostrava cerca de 3200 trotinetes da Bolt, 2400 da Lime e 1400 da Bird livres naquele momento, não a frota inteira.',
+        'Segundo o vice-presidente da Câmara, Gonçalo Reis, a cidade passou de 15 mil trotinetes para cerca de cinco mil (abril de 2026). Às 4h27 de 30 de outubro de 2026, o [mapa de Lisboa](map:pt:Lisboa) mostrava cerca de 3200 trotinetes da Bolt, 2400 da Lime e 1400 da Bird livres naquele momento, não a frota inteira. Só as livres da Bolt e da Lime já passam o limite por operador, e as da Bird ficam abaixo; a Câmara não disse se lhes deu as quotas dos operadores que saíram.',
       ],
     },
     {
       heading: 'Quanto custa andar de trotinete em Lisboa?',
       blocks: [
-        'Nenhum dos três operadores publica as tarifas de Lisboa, nem no site nem nos dados abertos, por isso o mapa não consegue estimar o preço aqui. A app mostra-o antes de desbloquear.',
+        'Nenhum dos três operadores publica as tarifas de Lisboa: a app mostra o preço antes de desbloquear.',
         {
           table: {
             caption: 'Preços das trotinetes em Lisboa publicados pelos operadores (13 de outubro de 2026)',
@@ -36,7 +36,7 @@ const guide: Guide = {
             ],
           },
         },
-        'A certas horas, a Bolt pode pedir um teste de reação antes de desbloquear. Os preços de guias antigos estão muitas vezes desatualizados. Se nunca alugou uma trotinete, veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'A certas horas, a Bolt pode pedir um teste de reação antes de desbloquear. Se nunca alugou uma trotinete, veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
@@ -141,7 +141,7 @@ const guide: Guide = {
         'Sim, se nada mudar. A 21 de outubro de 2026, a Câmara aprovou a resolução unilateral, «por razões de interesse público», do acordo de 2023 com os operadores, e a proibição da circulação e do estacionamento das trotinetes partilhadas em todo o concelho. Os operadores têm 60 dias para retirar todas as trotinetes; depois, a Câmara pode removê-las e cobrar-lhes os custos.',
         'Antes disso, os operadores têm 10 dias para responder por escrito; sem resposta, a deliberação torna-se definitiva. A Câmara invoca o aumento das reclamações e das ocorrências, como a circulação em contramão e nos passeios, apesar de haver menos trotinetes.',
         'A Câmara promete também mais estações e bicicletas na rede Gira e um projeto de Regulamento Municipal para a Mobilidade Suave no prazo de um ano. Não é uma medida provisória: «É uma suspensão em que não prevemos o regresso das trotinetas», disse o vice-presidente Gonçalo Reis à RTP Antena 1 em outubro de 2026. Até serem retiradas, as apps funcionam como antes, e o [mapa de Lisboa](map:pt:Lisboa) mostra as trotinetes da Bolt, da Lime e da Bird enquanto estiverem na rua.',
-        'Em agosto de 2026, o Automóvel Club de Portugal (ACP) tinha lançado uma petição para um referendo local com a mesma pergunta: se a Câmara deve deixar de autorizar as trotinetes partilhadas.',
+        'Em agosto de 2026, o Automóvel Club de Portugal (ACP) tinha lançado uma petição para um referendo local com a mesma pergunta.',
       ],
     },
   ],
