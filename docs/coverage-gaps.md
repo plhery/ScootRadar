@@ -784,7 +784,7 @@ banned shared scooters, and feeds that were empty when checked.
     areas, while its Development Company added more than 100 across the city
     in September 2025 (PTNews). Drawn, it would show fewer than a third of
     the bays, so the map leaves it out until the layer catches up (checked
-    30 October 2026).
+    30 October 2026; re-checked at each pass over Israel).
   - **Bird `tel-aviv`:** a duplicate of Bird `israel`: 1,502 of its 1,517
     positions are also in `israel`, under other ids, so reading both would
     count about 1,550 scooters twice.
@@ -825,7 +825,8 @@ banned shared scooters, and feeds that were empty when checked.
   - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
     host answers 401 and whose signed-in map samples returned no scooters on
     24 October 2026 (see [the Beam integration](beam-app-map.md)). Neuron has
-    left New Zealand.
+    left New Zealand. Taupō's own zones are drawn all the same, from the
+    district council's layer.
   - **Zone curfews:** Wellington bans hiring in the Courtenay precinct from
     21:00 to 06:00 on Thursday, Friday and Saturday nights and public-holiday
     eves (its code of practice v9.0, §7.4), and Flamingo says hiring stops

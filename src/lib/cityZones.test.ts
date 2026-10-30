@@ -13,6 +13,7 @@ const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -11
 const BOULDER_DOWNTOWN = { south: 40.01, west: -105.285, north: 40.022, east: -105.265 };
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
 const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
+const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
@@ -49,7 +50,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'porto', 'vasteras']);
+    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'nagoya', 'norrkoping', 'omaha', 'porto', 'taupo', 'vasteras']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -104,6 +105,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BOISE_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boise']);
     expect(zoneCitiesInView({ bounds: BOULDER_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['boulder']);
     expect(zoneCitiesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['omaha']);
+    expect(zoneCitiesInView({ bounds: TAUPO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['taupo']);
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
@@ -195,6 +197,16 @@ describe('the cities\' zones', () => {
     expect(zones).toHaveLength(25);
     const shown = ruleZonesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }, Date.now(), zones);
     expect(shown.map(zone => zone.place)).toEqual(expect.arrayContaining(['Old Market', 'Leahy Mall Redevelopment']));
+  });
+
+  it('draws the Taupō District Council\'s no-parking areas and its town centre\'s slow area, credited to the council under CC BY 4.0', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'taupo')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Taupō District Council, CC BY 4.0' && zone.timeZone === 'Pacific/Auckland')).toBe(true);
+    // Its operations area, where the scooters may go at all, is not drawn.
+    expect(zones.map(zone => zone.rule).sort()).toEqual(['noParking', 'noParking', 'noParking', 'noParking', 'slow']);
+    expect(ruleZonesInView({ bounds: TAUPO_CENTRE, zoom: 15 }, Date.now(), zones)).toHaveLength(5);
   });
 
   it('draws Arlington National Cemetery as one no-ride zone, credited to the federal rule and OpenStreetMap', async () => {

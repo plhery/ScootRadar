@@ -763,6 +763,14 @@ layers are drawn regardless, credited to the city.
   ([echoboomer, 6 December 2022](https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas)).
   The broker's scooters themselves are not used: they have not moved since
   8 October 2026.
+- **Taupō** (read 30 October 2026): the Taupō District Council's
+  [Rental E-Scooter Operational Areas](https://www.arcgis.com/home/item.html?id=36092a0943214783afc27bef88cc5430),
+  licensed CC BY 4.0 and credited "Taupō District Council (CC BY 4.0)", as the
+  legend does: the four no-parking areas and the town centre's 15 km/h
+  reduced speed area. The operations area, where the scooters may go at all,
+  is not drawn, and no area sets a curfew. The layer was last edited on 13
+  December 2022; the council says it may amend the areas from time to time.
+  No operator's scooters in Taupō are on the map: Beam's feed is closed.
 - **Västerås** (read 29 October 2026): Västerås stad's 298 places to park
   (293 parking places and 5 sharing points, `Delningspunkter`), 502 no-parking
   areas, 45 slow zones and 17 no-riding zones, from layer 2 of the City's
