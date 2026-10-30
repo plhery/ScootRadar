@@ -150,19 +150,21 @@ banned shared scooters, and feeds that were empty when checked.
     feeds were too small or empty. Hamburg's and Oberhausen's Lime scooters
     come from Lime's rider map since 25 October 2026; there its Solingen
     region has no scooter zone.
-  - Dresden shows Bolt, and Voi's rider map since 30 October 2026. The city
-    lists RideMovi (since August 2025), Bolt (since March 2026) and Voi ("from
-    autumn 2026") for e-scooters, and Lime and Voi for e-bikes only. Checked
-    again on 28 October 2026, after an app user missed the other three:
+  - Dresden shows Bolt only. The city lists RideMovi (since August 2025),
+    Bolt (since March 2026) and Voi ("from autumn 2026") for e-scooters, and
+    Lime and Voi for e-bikes only. Checked again on 28 October 2026, after an
+    app user missed the other three:
     - Lime's public Dresden feed lists 1,288 e-bikes and no scooter, and its
       rider map's Dresden region has no scooter zone (25 October).
     - RideMovi publishes no feed: it is in neither MobilityData's list nor
       Transitous's, and the operators send their MDS data to the city only.
-    - Voi has no public Dresden feed either. Its rider map carries
-      Dresden's scooters: its zone id, 384, came from the app's zone list on
-      30 October 2026 (docs/voi-app-map.md), and the map reads it since. Voi
-      announced scooters and e-bikes from 1 April 2026; the city still dates
-      its scooters "from autumn 2026".
+    - Voi has no public Dresden feed either. Its rider map would carry
+      Dresden's scooters from zone 384 of the app's zone list (read on 30
+      October 2026, behind the session the cache keeps), but the zone held no
+      e-scooter when the map read it that night, while Voi's other 35 German
+      feeds held 219 to 14,371, so the map leaves it out until Voi's scooters
+      are out. Voi announced scooters and e-bikes from 1 April 2026; the city
+      still dates its scooters "from autumn 2026".
   - Duisburg: Bolt's scooters there are on the map since 25 October 2026,
     from its rider map. Ryde's and Lime's Duisburg feeds are only on the
     closed NRW hub (Ryde's answers 401), and Lime's own `duisburg` answers
