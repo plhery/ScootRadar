@@ -1428,6 +1428,64 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
   await expect(legend).toHaveCount(0);
 });
 
+test('central Helsingborg, where scooters park only in racks or marked places, is drawn from zoom 14, credited to the city', async ({ page }) => {
+  test.slow();
+  // Stortorget, at street level, with the operators' zones off.
+  await page.goto('/map?origin=56.0455,12.6945&zones=0');
+  const legend = page.getByRole('group', { name: 'Zones' });
+  await expect(legend).toHaveText('Park only in racks or marked places · Helsingborgs stad');
+  await expect(legend.getByRole('link', { name: 'Helsingborgs stad' })).toHaveAttribute('href',
+    /^https:\/\/rdt\.transportstyrelsen\.se\/rdt\/AF06_View\.aspx\?.*ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a/);
+  // The area is one fill, barely there, within an edge of dashes and dots in its violet, neither
+  // taking a tap or a click from the scooters; its swatch is dashed.
+  const paths = page.locator('.leaflet-rule-zones-pane path');
+  await expect(paths).toHaveCount(2);
+  const area = () => page.evaluate(() => {
+    const fill = document.querySelector('.leaflet-rule-zones-pane .zone-fill-racksOnly')!;
+    const edge = document.querySelector('.leaflet-rule-zones-pane .zone-edge-racksOnly')!;
+    return {
+      fill: getComputedStyle(fill).fill, fillOpacity: fill.getAttribute('fill-opacity'), stroke: getComputedStyle(edge).stroke,
+      dashes: edge.getAttribute('stroke-dasharray'), pointerEvents: getComputedStyle(edge).pointerEvents,
+      swatch: getComputedStyle(document.querySelector('.zone-swatch-racksOnly')!).borderTopStyle,
+    };
+  });
+  expect(await area()).toEqual({
+    fill: 'rgb(124, 58, 237)', fillOpacity: '0.06', stroke: 'rgb(124, 58, 237)', dashes: '10 4 1 4', pointerEvents: 'none', swatch: 'dashed',
+  });
+  await page.goto('/map?origin=56.0455,12.6945&zones=0&theme=dark');
+  await expect(paths).toHaveCount(2);
+  expect((await area()).stroke).toBe('rgb(185, 140, 255)');
+
+  // On the narrowest phone, in every language, the legend's line fits, who says so whole.
+  await page.setViewportSize({ width: 320, height: 568 });
+  for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en']) {
+    await page.evaluate(language => localStorage.setItem('scooters-locale', language), locale);
+    await page.goto('/map?origin=56.0455,12.6945&zones=0');
+    await expect(page.locator('.zone-legend a')).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const fit = await page.locator('.zone-legend').evaluate(element => {
+      const box = element.getBoundingClientRect();
+      const link = element.querySelector('a')!;
+      return {
+        inside: [...element.querySelectorAll('*')].every(child => {
+          const { left, right } = child.getBoundingClientRect();
+          return left >= box.left - 0.5 && right <= box.right + 0.5;
+        }),
+        onScreen: box.right <= innerWidth,
+        linkWhole: link.getClientRects().length === 1,
+        lines: Math.round(element.querySelector('.zone-legend-rule')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
+      };
+    });
+    expect(fit, locale).toEqual({ inside: true, onScreen: true, linkWhole: true, lines: expect.any(Number) });
+    expect(fit.lines, locale).toBeLessThanOrEqual(3);
+  }
+
+  // Further out than zoom 14, neither drawn nor told.
+  await zoomTo(page, 13);
+  await expect(paths).toHaveCount(0);
+  await expect(legend).toHaveCount(0);
+});
+
 test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map?origin=47.3769,8.5417');

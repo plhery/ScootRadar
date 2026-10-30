@@ -10,6 +10,7 @@ import { ruleZonesInView, type RuleKind, type RuleZoneShape } from '@/lib/ruleZo
 const SEOUL_NOON = Date.parse('2026-10-26T03:00:00Z');
 const HONGDAE = { south: 37.55, west: 126.918, north: 37.558, east: 126.93 };
 const SAKAE = { south: 35.165, west: 136.903, north: 35.173, east: 136.915 };
+const STORTORGET = { south: 56.044, west: 12.69, north: 56.049, east: 12.7 };
 const SOURCE = { title: 'Bergen kommune, "Elsparkesykler i Bergen"', url: 'https://www.bergen.kommune.no/elsparkesykler' };
 
 function bergen(id: string, rule: RuleKind): RuleZoneShape {
@@ -57,4 +58,15 @@ it('gives Nagoya\'s pavements one line, a line for a swatch, linked to the rules
   const link = screen.getByRole('link', { name: 'Aichi police, data JARTIC' });
   expect(link.getAttribute('href')).toBe('https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html');
   expect(link.getAttribute('title')).toMatch(/6 km\/h.*出典：「交通規制情報」（https:\/\/www\.jartic\.or\.jp\/service\/opendata\/）（公益財団法人日本道路交通情報センター）を加工して作成$/);
+});
+
+it('names central Helsingborg\'s rule, racks or marked places only, linked to the rule in Transportstyrelsen\'s register', async () => {
+  const helsingborg = ZONE_CITIES.find(city => city.id === 'helsingborg')!;
+  const { default: file } = await CITY_ZONE_FILES.helsingborg();
+  const rules = ruleZonesInView({ bounds: STORTORGET, zoom: 16 }, Date.now(), cityRuleZones(helsingborg, file));
+  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  const lines = [...container.querySelectorAll('.zone-legend-rule')];
+  expect(lines.map(line => line.textContent)).toEqual(['Park only in racks or marked places · Helsingborgs stad']);
+  expect(lines[0].querySelector('.zone-swatch')!.className).toBe('zone-swatch zone-swatch-racksOnly');
+  expect(screen.getByRole('link', { name: 'Helsingborgs stad' }).getAttribute('href')).toBe(helsingborg.source.url);
 });

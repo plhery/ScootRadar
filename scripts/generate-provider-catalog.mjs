@@ -36,12 +36,14 @@ const regionalSystems = catalogSystems(countries, readCatalog);
 const curfews = readJson('data/rental-curfews.json').curfews;
 const ruleZones = readJson('data/rule-zones.json').zones;
 // The apps draw a city's zones, each one ring, but not yet the pavements a scooter may ride on,
-// lines that only the website draws (src/lib/ruleZones.ts): they are left out here, and so is a
-// city with nothing else, Nagoya, so that neither app's catalog lists them.
+// lines, nor an area where scooters park only in racks or marked places, kinds that only the
+// website draws (src/lib/ruleZones.ts): they are left out here, and so is a city with nothing
+// else, Nagoya or Helsingborg, so that neither app's catalog lists them.
+const WEBSITE_ONLY_KINDS = new Set(['pavement', 'racksOnly']);
 const cityZones = readJson('data/city-zones.json').cities
   .map(city => {
     const { zones, ...file } = readJson(`data/city-zones/${city.id}.json`);
-    return { ...city, ...file, zones: zones.filter(zone => zone.kind !== 'pavement') };
+    return { ...city, ...file, zones: zones.filter(zone => !WEBSITE_ONLY_KINDS.has(zone.kind)) };
   })
   .filter(city => city.zones.length);
 

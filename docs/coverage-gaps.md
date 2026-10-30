@@ -401,18 +401,15 @@ banned shared scooters, and feeds that were empty when checked.
     types, whose `cykel:cykelparkeringar` is a bicycle-rack survey of
     2013–2016) and its open-data catalogue hold none, and data.goteborg.se
     needs a key.
-  - Helsingborg's one rule with a shape is not drawn: since 1 September
-    2022 its local traffic rule 1283 2022:502 lets e-scooters park on a
-    pavement or cycle track only outside a marked area of central
-    Helsingborg (3.9 km², Tågaborg to Söder), so inside it they park in a
-    bicycle rack or a marked place. The area is a line of 33 points in the
-    register's own page
-    ([STFS](https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a&map=1)),
-    in SWEREF 99 TM, and the city's own map a picture. The map has no kind
-    for "park only at racks or marked places", and drawing it as no parking
-    would overstate the rule; the marked places are only in the operators'
-    apps, and the 10 km/h streets the city agreed with them are not
-    published (checked 30 October 2026).
+  - Helsingborg's one rule with a shape is drawn since 30 October 2026: its
+    local traffic rule 1283 2022:502, in force since 1 September 2022, lets
+    e-scooters park on a pavement or cycle track only outside central
+    Helsingborg (3.9 km², Tågaborg to Söder), so the map draws that area,
+    from the rule's page in
+    [STFS](https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a&map=1),
+    as "Park only in racks or marked places", on the website only. The marked
+    places are only in the operators' apps, and the 10 km/h streets the city
+    agreed with them are not published (checked 30 October 2026).
   - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
 - **Latvia** ([guide](latvian-scooter-feeds.md#known-gaps)): Ride Mobility
   in Rīga is covered.

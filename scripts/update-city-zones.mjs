@@ -24,7 +24,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
 // A layer of format geojson is GeoJSON: Helsinki's, München's, Münster's and Wien's are WFS layers,
-// asked for so, and Basel's an open data portal's export.
+// asked for so, and Basel's an open data portal's export. Helsingborg's is the area of a local
+// traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
 
@@ -36,7 +37,7 @@ const DISC_CORNERS = 8;
 /** A zone's holes, and the parts of a zone of several, smaller than this are slivers its drawing left: Västerås's 101 are 3 m² at most. */
 const SLIVER_M2 = 5;
 const USER_AGENT = 'scootradar (+https://scootradar.com)';
-const KINDS = new Set(['parking', 'noParking', 'slow', 'noRide', 'pavement']);
+const KINDS = new Set(['parking', 'racksOnly', 'noParking', 'slow', 'noRide', 'pavement']);
 
 const path = resolve(process.cwd(), 'data/city-zones.json');
 const catalog = JSON.parse(readFileSync(path, 'utf8'));
@@ -234,8 +235,12 @@ function nestedPolygons(rings) {
   return polygons;
 }
 
-/** Grids a city's map may draw in: SWEREF 99 16 30, Norrköping's, a transverse Mercator projection of GRS 80. */
-const GRIDS = { 'EPSG:3010': { meridian: 16.5, scale: 1, falseEasting: 150000 } };
+/**
+ * Grids a city's map may draw in, each a transverse Mercator projection of GRS 80: SWEREF 99 16 30,
+ * Norrköping's, and SWEREF 99 TM, the national one, Transportstyrelsen's register's.
+ */
+const GRIDS = { 'EPSG:3010': { meridian: 16.5, scale: 1, falseEasting: 150000 },
+  'EPSG:3006': { meridian: 15, scale: 0.9996, falseEasting: 500000 } };
 
 /** A grid's easting and northing as [lng, lat], by Lantmäteriet's Gauss–Krüger formulas. */
 function gridToLngLat(easting, northing, { meridian, scale, falseEasting }) {
@@ -647,6 +652,28 @@ async function jarticZones(city, { kind, url, within: area }) {
   }
 }
 
+/**
+ * The area of a Swedish local traffic rule, from its page in Transportstyrelsen's register (STFS),
+ * whose map is given the rule's features as GeoJSON in SWEREF 99 TM. Helsingborg's 1283 2022:502 is
+ * one closed line round central Helsingborg, read as the ring of one zone named after the rule.
+ */
+async function stfsZones(city, { kind, url }) {
+  const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+  const quoted = /Register\.init\('[^']*',\s*'((?:[^'\\]|\\.)*)'\)/.exec(await response.text())?.[1];
+  if (!quoted) throw new Error(`${url} has no map`);
+  const { features } = JSON.parse(quoted.replace(/\\(.)/g, '$1'));
+  return features.flatMap(({ geometry, properties }) => {
+    const id = `${city.id}-${slug(kind)}-${properties.Beteckning.replace(/\W+/g, '-')}`;
+    const rings = geometry.type === 'LineString' ? [geometry.coordinates] : geometry.type === 'Polygon' ? geometry.coordinates : [];
+    const [first, last] = [rings[0]?.[0], rings[0]?.at(-1)];
+    if (!first || first[0] !== last[0] || first[1] !== last[1]) throw new Error(`${url}: ${properties.Beteckning} is no closed area`);
+    const polygon = rings.map(ring => ring.map(([easting, northing]) => gridToLngLat(easting, northing, GRIDS['EPSG:3006'])));
+    console.log(`${city.id} ${kind}: ${properties.Beteckning}, ${(planeArea(toPlane(polygon[0])) / 1e6).toFixed(2)} km²`);
+    return polygonZones(id, kind, properties.Beteckning, [polygon]);
+  });
+}
+
 /** A zone's points: its ring, or its lines, as Nagoya's pavements are. */
 const pointsOf = zone => zone.ring ?? zone.lines.flat();
 
@@ -660,9 +687,10 @@ for (const city of catalog.cities) {
       : layer.format === 'geojson' ? await geojsonZones(city, layer)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
-            : layer.envelope ? await arcgisZones(city, layer)
-              : /\/(Feature|Map)Server$/.test(pathname) ? await featureServerZones(city, layer)
-                : pathname.endsWith('/wms') ? await wmsZones(city, layer) : await fiwareZones(city, layer);
+            : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)
+              : layer.envelope ? await arcgisZones(city, layer)
+                : /\/(Feature|Map)Server$/.test(pathname) ? await featureServerZones(city, layer)
+                  : pathname.endsWith('/wms') ? await wmsZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + pointsOf(zone).length, 0)} points`);
     zones.push(...found);
   }

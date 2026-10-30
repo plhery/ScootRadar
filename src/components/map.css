@@ -504,16 +504,19 @@
 /* The operators' zones and the cities' (MapComponent): the colours of the
    appearance, with what ZONE_STYLES says. No riding is hatched, its edge solid; no
    parking's edge is dashed and slow's dotted; parking, which only cities set, is
-   plain within a solid edge, and the pavements a scooter may ride on, a city's too,
-   are lines. */
+   plain within a solid edge, and an area where scooters park only in racks or marked
+   places barely filled within dashes and dots; the pavements a scooter may ride on, a
+   city's too, are lines. */
 .leaflet-container .zone-fill-noRide { fill: url(#zone-no-ride-hatch); }
 .leaflet-container .zone-fill-noParking { fill: var(--zone-no-parking); }
 .leaflet-container .zone-fill-slow { fill: var(--zone-slow); }
 .leaflet-container .zone-fill-parking { fill: var(--zone-parking); }
+.leaflet-container .zone-fill-racksOnly { fill: var(--zone-racks-only); }
 .leaflet-container .zone-edge-noRide { stroke: var(--zone-no-ride); }
 .leaflet-container .zone-edge-noParking { stroke: var(--zone-no-parking); }
 .leaflet-container .zone-edge-slow { stroke: var(--zone-slow); }
 .leaflet-container .zone-edge-parking { stroke: var(--zone-parking); }
+.leaflet-container .zone-edge-racksOnly { stroke: var(--zone-racks-only); }
 .leaflet-container .zone-edge-pavement { stroke: var(--zone-pavement); }
 .zone-patterns {
   position: absolute;

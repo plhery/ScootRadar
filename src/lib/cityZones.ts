@@ -7,7 +7,7 @@ import { ZONES_MIN_ZOOM } from './zones';
 // The zones cities set for shared e-scooters, from data/city-zones.json: each city's are a
 // file of their own, Bergen's about 150 KB, which the map page loads only once a view from
 // zoom 14 reaches the city, and keeps. Nagoya's are the pavements a scooter may ride on, lines
-// rather than rings.
+// rather than rings; Helsingborg's the centre where scooters park only in racks or marked places.
 
 /** A city of data/city-zones.json. */
 export interface ZoneCity {
@@ -45,6 +45,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   boise: () => import('../../data/city-zones/boise.json'),
   boulder: () => import('../../data/city-zones/boulder.json'),
   columbus: () => import('../../data/city-zones/columbus.json'),
+  helsingborg: () => import('../../data/city-zones/helsingborg.json'),
   helsinki: () => import('../../data/city-zones/helsinki.json'),
   jarvenpaa: () => import('../../data/city-zones/jarvenpaa.json'),
   minneapolis: () => import('../../data/city-zones/minneapolis.json'),

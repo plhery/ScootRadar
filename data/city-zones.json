@@ -429,6 +429,34 @@
       "zones": 47
     },
     {
+      "id": "helsingborg",
+      "place": "Helsingborg",
+      "country": "SE",
+      "authority": "Helsingborgs stad",
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Helsingborgs kommun's local traffic rule 1283 2022:502, in force since 1 September 2022: e-scooters may park on a pavement or cycle track only outside the marked area of central Helsingborg, so within it they park in a bicycle rack or a marked place",
+        "url": "https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a"
+      },
+      "map": {
+        "title": "Svensk trafikföreskriftssamling (Transportstyrelsen), 1283 2022:502, its map",
+        "url": "https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a&map=1"
+      },
+      "layers": [
+        {
+          "kind": "racksOnly",
+          "url": "https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a&map=1"
+        }
+      ],
+      "bounds": {
+        "south": 56.03297,
+        "west": 12.677171,
+        "north": 56.064479,
+        "east": 12.720032
+      },
+      "zones": 1
+    },
+    {
       "id": "helsinki",
       "place": "Helsinki",
       "country": "FI",

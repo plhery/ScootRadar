@@ -771,6 +771,19 @@ credited to the city.
   this one states no licence, and is drawn under the rule of 28 October 2026,
   credited "City of Columbus". columbus.gov answers scripts 403, so the legend
   links the map.
+- **Helsingborg** (read 30 October 2026): central Helsingborg, about 3.9 km²
+  from Tågaborg to Söder, where e-scooters park only in a bicycle rack or a
+  marked place: the area of Helsingborgs kommun's local traffic rule
+  1283 2022:502, in force since 1 September 2022, which lets them park on a
+  pavement or cycle track only outside it. The area is one closed line of 33
+  points in SWEREF 99 TM, which the rule's page in Transportstyrelsen's
+  register,
+  [STFS](https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a&map=1),
+  gives its map as GeoJSON; the rule's PDF has it as a picture. Statutes, local
+  traffic rules among them, have no copyright in Sweden (upphovsrättslagen
+  9 §); drawn credited "Helsingborgs stad", under the rule of 28 October 2026.
+  The legend links the rule's page. "Park only in racks or marked places" is a
+  kind of the website's alone: neither app draws it yet.
 - **Helsinki** (read 30 October 2026): Helsingin kaupunki's 312 e-scooter
   parking places (`tyyppi = 'Sähköpotkulauta'`), from its parking places
   layer `Pysakointipaikat_alue` in the city's open WFS, as GeoJSON

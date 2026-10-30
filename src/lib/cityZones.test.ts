@@ -52,6 +52,10 @@ const ATLANTA_MIDTOWN = { south: 33.775, west: -84.39, north: 33.785, east: -84.
 const BALTIMORE_MOUNT_VERNON = { south: 39.285, west: -76.625, north: 39.3, east: -76.605 };
 // Columbus's Harrison West, round Michigan Avenue and West 3rd Avenue.
 const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east: -83.01 };
+// Helsingborg's Stortorget, Kärnan and the station, Knutpunkten.
+const HELSINGBORG_CENTRE = { south: 56.042, west: 12.69, north: 56.049, east: 12.705 };
+// Ramlösa, south of Helsingborg's centre, where scooters may park on the pavement.
+const HELSINGBORG_RAMLOSA = { south: 56.02, west: 12.72, north: 56.026, east: 12.735 };
 // Norrköping's Drottninggatan, from the station to the Gamla torget.
 const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
 // Vaasa's market square and the city centre round it.
@@ -95,7 +99,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'columbus', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'columbus', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -108,12 +112,12 @@ describe('the cities\' zones', () => {
       expect(new Set(file.zones.map(zone => zone.id)).size).toBe(city.zones);
       for (const zone of file.zones) {
         expect(zone.id.startsWith(`${city.id}-`)).toBe(true);
-        // A zone is one ring; a pavement, lines.
+        // A zone is one ring, of a kind the operators' zones have, parking, or racks or marked places only; a pavement, lines.
         if (zone.lines) {
           expect(zone.kind).toBe('pavement');
           expect(zone.lines.every(line => line.length >= 2)).toBe(true);
         } else {
-          expect(KINDS).toContain(zone.kind);
+          expect([...KINDS, 'racksOnly']).toContain(zone.kind);
           expect(zone.ring.length).toBeGreaterThanOrEqual(3);
         }
         expect((zone.ring ?? zone.lines.flat()).every(([lat, lng]) => boundsContainPoint(city.bounds, lat, lng))).toBe(true);
@@ -172,6 +176,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: ARLINGTON_CLARENDON, zoom: 15 }).map(city => city.id)).toEqual(['arlington', 'washington']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
+    expect(zoneCitiesInView({ bounds: HELSINGBORG_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['helsingborg']);
     expect(zoneCitiesInView({ bounds: WASHINGTON_WHARF, zoom: 15 }).map(city => city.id)).toEqual(['washington']);
     expect(zoneCitiesInView({ bounds: WIEN_INNERE_STADT, zoom: 15 }).map(city => city.id)).toEqual(['wien']);
     expect(zoneCitiesInView({ bounds: SAKAE, zoom: 14 }).map(city => city.id)).toEqual(['nagoya']);
@@ -630,5 +635,31 @@ describe('the cities\' zones', () => {
     expect(shown.length).toBeGreaterThan(100);
     expect(shown.every(zone => zone.inForce && zone.polygons.length === 0)).toBe(true);
     expect(ruleZonesInView({ bounds: SAKAE, zoom: 13 }, Date.now(), zones)).toEqual([]);
+  });
+
+  it('draws central Helsingborg, where scooters park only in racks or marked places, from its local traffic rule', async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const helsingborg = ZONE_CITIES.find(city => city.id === 'helsingborg')!;
+    await loadCityZones(helsingborg);
+    const zones = cityZones.get();
+    expect(zones.map(({ id, rule, place, authority, timeZone }) => ({ id, rule, place, authority, timeZone }))).toEqual([{
+      id: 'helsingborg-racks-only-1283-2022-502', rule: 'racksOnly', place: '1283 2022:502',
+      authority: 'Helsingborgs stad', timeZone: 'Europe/Stockholm' }]);
+    // The legend links the rule in Transportstyrelsen's register.
+    expect(helsingborg.source.url).toMatch(/^https:\/\/rdt\.transportstyrelsen\.se\/rdt\/AF06_View\.aspx\?.*ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a/);
+    expect(helsingborg.source.title).toContain('1283 2022:502');
+    // About 3.9 km², the rule's area, round the old town and the station but not Ramlösa.
+    const { default: file } = await CITY_ZONE_FILES.helsingborg();
+    const ring = file.zones[0].ring!;
+    const area = Math.abs(ring.reduce((sum, [lat0, lng0], index) => {
+      const [lat1, lng1] = ring[(index + 1) % ring.length];
+      return sum + (lng0 * lat1 - lng1 * lat0);
+    }, 0)) / 2 * 110_540 * 62_300;
+    expect(area / 1e6).toBeCloseTo(3.9, 1);
+    expect(Math.abs(winding(ring, 56.0475, 12.6946))).toBe(1);
+    expect(Math.abs(winding(ring, 56.0436, 12.695))).toBe(1);
+    expect(winding(ring, 56.0225, 12.727)).toBe(0);
+    expect(ruleZonesInView({ bounds: HELSINGBORG_CENTRE, zoom: 15 }, Date.now(), zones).map(zone => zone.rule)).toEqual(['racksOnly']);
+    expect(ruleZonesInView({ bounds: HELSINGBORG_RAMLOSA, zoom: 15 }, Date.now(), zones)).toEqual([]);
   });
 });

@@ -9,7 +9,8 @@ import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 // "kickboard-free streets" so far. And the zones cities set for shared e-scooters, Bergen's,
 // Porto's and Boise's, and Arlington National Cemetery, where federal rules forbid riding, from
 // data/city-zones.json (cityZones.ts loads each city's as a view reaches it): where to park,
-// where not to, where to ride slowly and where not to ride. And Nagoya's pavements where a
+// where not to, where to ride slowly and where not to ride; and central Helsingborg, where they
+// may park only in a bicycle rack or a marked place. And Nagoya's pavements where a
 // scooter in its 6 km/h mode may ride, by the Aichi police's rules, which are lines, not areas.
 // Unlike the operators' zones they are the law, so the map draws them from zoom 14 whether or
 // not the zones are turned on, dimmer outside their hours, and the legend says who sets them,
@@ -17,9 +18,10 @@ import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 
 /**
  * What a rule asks: what the operators' zones ask; or, which only cities say, that scooters are
- * parked there, or that they may ride on the pavement there.
+ * parked there, that they are parked there only in racks or marked places, or that they may ride
+ * on the pavement there.
  */
-export type RuleKind = ZoneKind | 'parking' | 'pavement';
+export type RuleKind = ZoneKind | 'parking' | 'racksOnly' | 'pavement';
 
 /** Local "HH:MM", from and until. */
 export interface RuleHours {

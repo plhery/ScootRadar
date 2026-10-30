@@ -57,8 +57,11 @@ import './map.css';
 
 /** The panes of the zones' fills are made in this order, the strongest rule on top. */
 const ZONE_KINDS_BELOW_FIRST: MapZone['kind'][] = ['slow', 'noParking', 'noRide'];
-/** The cities' zones are drawn in this order: parking at the bottom, the strongest rule on top. */
-const RULE_KINDS_BELOW_FIRST: RuleKind[] = ['parking', 'slow', 'noParking', 'noRide'];
+/**
+ * The cities' zones are drawn in this order: an area where scooters park only in racks or marked
+ * places at the bottom, as the places within it are over it, then parking, the strongest rule on top.
+ */
+const RULE_KINDS_BELOW_FIRST: RuleKind[] = ['racksOnly', 'parking', 'slow', 'noParking', 'noRide'];
 /** How strongly a street a city forbids riding on is drawn outside its hours, of how strongly within them. */
 const RULE_ZONE_DIMMED = 0.35;
 
