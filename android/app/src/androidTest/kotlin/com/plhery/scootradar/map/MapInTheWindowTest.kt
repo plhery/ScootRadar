@@ -53,6 +53,7 @@ import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.ScooterMapScreen
+import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -497,14 +498,16 @@ class MapInTheWindowTest {
         val part = partInView(chrome, bounds)
         // By its middle again: the 18 drawn lie in the middle of the 48 TalkBack is given. Their foot is the upright
         // half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom margin keeps Apple's logo
-        // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend where it would cover them, as
-        // their licence asks that they be seen (MapCredits.kt creditsOverLegend); elsewhere 8 above the safe area's foot.
+        // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend where it would cover them;
+        // elsewhere 8 above the safe area's foot.
+        // The legend's rule is Android's only (MAP-318, STATE 29 Oct 06:55Z): their licence asks that the map's credits
+        // be seen, and Apple's logo and Legal link, a third as wide, stay in the map's margins (ScooterMapView.swift
+        // :897-903). The legend is where the screen shows it, not where the chrome hands it to the map, so a legend
+        // measured wrong moves the credits and not what they are checked against (review-app-p finding 4).
         val across = windowFold()?.takeIf { it.intersects(bounds) && it.width > it.height }
         val sources = listOf("© OpenStreetMap", "OpenFreeMap © OpenMapTiles").mapNotNull { text -> device.findObject(By.text(text))?.let { inMap(it.visibleBounds) } }
-        val locate = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
-        val legend = chrome.panel?.takeIf { !it.isEmpty }?.let {
-            chrome.bottomFrames.firstOrNull { frame -> locate == null || abs(frame.minX - locate.minX) > 1 || abs(frame.minY - locate.minY) > 1 }
-        }?.takeIf { legend -> legend.minX < sources.maxOf { it.maxX } && legend.maxX > sources.minOf { it.minX } }
+        val legend = chrome.panel?.takeIf { !it.isEmpty }?.let { device.findObject(By.res(ZONE_LEGEND_TAG))?.let { inMap(it.visibleBounds) } }
+            ?.takeIf { legend -> legend.minX < sources.maxOf { it.maxX } && legend.maxX > sources.minOf { it.minX } }
         val foot = across?.let { it.minY - PANEL_GAP } ?: legend?.let { it.minY - 4 } ?: (bounds.maxY - safe.bottom - 8)
         assertEquals("the credits' foot: $creditsFrame, the fold $across, the legend under them $legend", foot, creditsFrame.midY + 9, 2.0)
         if (rightToLeft) {

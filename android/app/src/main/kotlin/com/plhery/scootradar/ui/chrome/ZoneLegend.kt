@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -79,6 +80,7 @@ fun ZoneLegend(
     val style = ScootType.caption.weight(FontWeight.Medium)
     Column(
         modifier
+            .testTag(ZONE_LEGEND_TAG)
             .chromeGlass(SquircleShape(16.dp))
             .then(if (lines.isEmpty()) Modifier else Modifier.overTheMap())
             .padding(horizontal = 12.dp, vertical = 7.dp),
@@ -124,6 +126,9 @@ fun ZoneLegend(
         }
     }
 }
+
+/** The legend's tag, by which the tests find its frame on the screen. */
+const val ZONE_LEGEND_TAG = "zoneLegend"
 
 /** The kinds are listed while the zones are on, but where they are shown and there are none. */
 private fun showsKinds(state: ScooterZoneState, count: Int): Boolean =
