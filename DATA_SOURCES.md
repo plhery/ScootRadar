@@ -611,9 +611,10 @@ says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
 catalogs. `scripts/update-city-zones.mjs` reads them again. Alexandria,
-St. Albert, Santa Monica, Taupō, Vancouver, Vantaa and Washington state a
-licence for their layers, Washington for two of its three; since 28 October
-2026 a city's public zone layers are drawn regardless, credited to the city.
+Basel, Helsinki, München, St. Albert, Santa Monica, Taupō, Vancouver, Vantaa
+and Washington state a licence for their layers, Washington for two of its
+three; since 28 October 2026 a city's public zone layers are drawn regardless,
+credited to the city.
 
 - **Alexandria** (read 30 October 2026): the City of Alexandria's 63 corral
   areas, 13 no-ride zones and 6 slow zones, from its open data under CC0
@@ -650,6 +651,19 @@ licence for their layers, Washington for two of its three; since 28 October
   contributors, ODbL), and the legend credits the rule and OpenStreetMap. The
   outline's one hole, about 60 m across, is bleachers within the cemetery, so
   the zone has none.
+- **Basel** (read 30 October 2026): the Kanton Basel-Stadt's 33
+  no-parking zones (`Parkverbotszone`), where a shared vehicle's rental may
+  not end, and 21 zones it may not be ridden through (`Sperrzone`), from the
+  Amt für Mobilität's open data
+  ([dataset 100332](https://data.bs.ch/explore/dataset/100332/), CC BY 4.0,
+  "Geodaten Kanton Basel-Stadt"; its "+ OpenStreetMap" is the canton's
+  permission for OpenStreetMap to take its CC BY data in), its GeoJSON export,
+  last changed 29 January 2025. The legend links the canton's
+  [Shared Mobility page](https://www.bs.ch/bvd/mobilitaet/shared-mobility),
+  whose map shows the same zones, and whose usage rules of 1 September 2025
+  have the providers build them into their apps within a week. The providers
+  may set more zones of their own, which these are not. The zones' names,
+  codes such as `PV_Bahnhof_Sued`, are left out.
 - **Bergen** (read 29 October 2026): Bergen kommune's 176 parking places, 149
   no-parking zones, 74 slow zones and 373 no-riding zones, the layers its
   [e-scooter map](https://www.bergenskart.no/portal/apps/sites/#/bergenskart/app/64eef270a9834ac089dca4d4b217208e)
@@ -709,6 +723,16 @@ licence for their layers, Washington for two of its three; since 28 October
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **Helsinki** (read 30 October 2026): Helsingin kaupunki's 312 e-scooter
+  parking places (`tyyppi = 'Sähköpotkulauta'`), from its parking places
+  layer `Pysakointipaikat_alue` in the city's open WFS, as GeoJSON
+  ([Helsinki Region Infoshare](https://hri.fi/data/en_GB/dataset/helsingin-kantakaupungin-ja-asukaspysakointivyohykkeiden-pysakointipaikat),
+  CC BY 4.0, updated daily). The legend links the city's
+  [e-scooter page](https://www.hel.fi/fi/kaupunkiymparisto-ja-liikenne/pyoraily/sahkopotkulaudat):
+  in the centre, Taka-Töölö, Pasila, Kallio and Kalasatama, and near metro
+  and train stations, a rental scooter may be parked only in a marked place,
+  painted on the ground and shown in the apps. Its no-parking and no-riding
+  areas are published only as PDF maps, so they are not drawn.
 - **Järvenpää** (read 30 October 2026): Järvenpään kaupunki's 81 no-riding
   areas (`Ajokielto`), 48 no-parking areas (`Pysäköintikielto`) and 10 areas
   of 10 km/h (`Nopeusrajoitus`), the lasting ones (`Tila = 'Pysyvä'`) of
@@ -739,6 +763,22 @@ licence for their layers, Washington for two of its three; since 28 October
   Left out: the 63 mobility hubs, points where scooters are one service among
   bikes and transit rather than places a ride must end; the University of
   Minnesota's campus; and the equity distribution areas.
+- **München** (read 30 October 2026): the Landeshauptstadt München's 430
+  parking areas for shared e-scooters, 791 no-parking zones, where a rental
+  can't end, and 55 no-riding zones (63 parts), the Mobilitätsreferat's
+  layers for e-scooter sharing (`ruhver_mim_abstellfl_ts`,
+  `ruhver_mim_abstellverbot_ts`, `ruhver_mim_fahrverbot_ts`) in the city's
+  open WFS, as GeoJSON, of its open data
+  ([no-parking zones](https://opendata.muenchen.de/dataset/opendata_ruhver_mim_abstellverbot_poly),
+  DL-DE BY 2.0, edited to October 2026). The legend links the city's
+  [e-scooter sharing page](https://muenchenunterwegs.de/angebote/elektrotretroller-sharing):
+  since 5 August 2022 a rental in the old town ends only in a marked parking
+  area, and its geoportal shows the parking areas and zones.
+  The no-parking zones, drawn to the centimetre, are simplified to within 2 m
+  rather than half a metre, which takes their 29,669 points to 17,747. Left
+  out: 11 parking areas suspended by building works and 5 standing in for
+  them, each until a set day, and 4 no-parking zones of building sites and an
+  event, also until a set day.
 - **Nagoya** (read 29 October 2026): the pavements where an e-scooter in its
   6 km/h mode may ride, 1,801 lines, about 1,508 km: rule 81 (普通自転車歩道通行可)
   of the Aichi police's traffic rules, from the open data

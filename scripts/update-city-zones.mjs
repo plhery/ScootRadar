@@ -22,6 +22,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // are an ArcGIS feature service too, its zones named in another field. Nagoya's are no
 // zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
+// A layer of format geojson is GeoJSON: Helsinki's and München's are WFS layers, asked for so, and
+// Basel's an open data portal's export.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
 
@@ -120,13 +122,58 @@ async function featureServerZones(city, { kind, url, layer, where = '1=1', nameF
       return [{ id, kind, name: attributes.CorralType ? `${attributes.CorralType} corral` : 'Corral', ring: disc(geometry.y, geometry.x) }];
     }
     if (!geometry?.rings?.length) throw new Error(`${url}/${layer}: zone ${objectId} has no shape`);
-    const name = attributes[nameField]?.trim() || city.place;
-    const area = ring => planeArea(toPlane(ring));
-    const polygons = featurePolygons(geometry.rings).map(([outer, ...holes]) => [outer, ...holes.filter(hole => area(hole) >= SLIVER_M2)]);
-    const parts = polygons.length > 1 ? polygons.filter(([outer]) => area(outer) >= SLIVER_M2) : polygons;
-    const rings = outerRings(parts, { minAreaKm2: 0, tolerance: TOLERANCE_M, digits: DIGITS, holes: true })
-      .filter(ring => ring.length >= 3);
-    return rings.map((ring, index) => ({ id: rings.length > 1 ? `${id}-${index + 1}` : id, kind, name, ring }));
+    return polygonZones(id, kind, attributes[nameField]?.trim() || city.place, featurePolygons(geometry.rings));
+  });
+}
+
+/**
+ * A feature's polygons, each its outer ring and then its holes, as zones: each part one ring, its
+ * holes kept as outerRings keeps an enclave, a zone of several parts a zone for each, numbered,
+ * but for its slivers.
+ */
+function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
+  const area = ring => planeArea(toPlane(ring));
+  const polygons = featureParts.map(([outer, ...holes]) => [outer, ...holes.filter(hole => area(hole) >= SLIVER_M2)]);
+  const parts = polygons.length > 1 ? polygons.filter(([outer]) => area(outer) >= SLIVER_M2) : polygons;
+  const rings = outerRings(parts, { minAreaKm2: 0, tolerance, digits: DIGITS, holes: true })
+    .filter(ring => ring.length >= 3);
+  return rings.map((ring, index) => ({ id: rings.length > 1 ? `${id}-${index + 1}` : id, kind, name, ring }));
+}
+
+/**
+ * A GeoJSON layer's zones, those whose properties have the values `match` gives each (null for a
+ * property left empty): a WFS's or an OGC API's features, asked for as GeoJSON in latitude and
+ * longitude, or an open data portal's export. Polygons are zones as a feature service's are, and
+ * points discs, named by `nameField` or else `pointName`, or after the city. A zone's id is its
+ * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them.
+ * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
+ * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points.
+ */
+async function geojsonZones(city, { kind, url, match = {}, nameField, idField, pointName, tolerance }) {
+  const body = await getJson(url);
+  if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
+  // A service that pages its answer is asked for all of it at once.
+  if ((Number.isFinite(body.numberMatched) && body.numberMatched !== body.features.length) || body.links?.some(link => link.rel === 'next')) {
+    throw new Error(`${url} answered ${body.features.length} of its features`);
+  }
+  const wanted = ({ properties }) => Object.entries(match).every(([key, values]) => [values].flat().includes(properties?.[key] ?? null));
+  return body.features.filter(wanted).flatMap(feature => {
+    const { properties, geometry } = feature;
+    const featureId = String(idField ? properties[idField] : feature.id).replace(/^.*\./, '');
+    if (!featureId || featureId === 'undefined') throw new Error(`${url}: a feature has no id`);
+    const id = `${city.id}-${slug(kind)}-${featureId}`;
+    const name = (nameField && String(properties[nameField] ?? '').trim()) || null;
+    switch (geometry?.type) {
+      case 'Point':
+      case 'MultiPoint': {
+        const points = geometry.type === 'Point' ? [geometry.coordinates] : geometry.coordinates;
+        return points.map(([lng, lat], index) => ({ id: points.length > 1 ? `${id}-${index + 1}` : id, kind,
+          name: name || pointName || city.place, ring: disc(lat, lng) }));
+      }
+      case 'Polygon': return polygonZones(id, kind, name || city.place, [geometry.coordinates], tolerance);
+      case 'MultiPolygon': return polygonZones(id, kind, name || city.place, geometry.coordinates, tolerance);
+      default: throw new Error(`${url}: zone ${featureId} is a ${geometry?.type ?? 'feature without a shape'}`);
+    }
   });
 }
 
@@ -581,11 +628,12 @@ for (const city of catalog.cities) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
-        : pathname.endsWith('.zip') ? await jarticZones(city, layer)
-          : layer.envelope ? await arcgisZones(city, layer)
-            : /\/(Feature|Map)Server$/.test(pathname) ? await featureServerZones(city, layer)
-              : pathname.endsWith('/wms') ? await wmsZones(city, layer) : await fiwareZones(city, layer);
+      : layer.format === 'geojson' ? await geojsonZones(city, layer)
+        : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
+          : pathname.endsWith('.zip') ? await jarticZones(city, layer)
+            : layer.envelope ? await arcgisZones(city, layer)
+              : /\/(Feature|Map)Server$/.test(pathname) ? await featureServerZones(city, layer)
+                : pathname.endsWith('/wms') ? await wmsZones(city, layer) : await fiwareZones(city, layer);
     console.log(`${city.id} ${layer.kind}: ${found.length} zones, ${found.reduce((sum, zone) => sum + pointsOf(zone).length, 0)} points`);
     zones.push(...found);
   }
