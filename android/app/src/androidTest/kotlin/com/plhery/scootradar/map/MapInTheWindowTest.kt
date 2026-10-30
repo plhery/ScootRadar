@@ -344,6 +344,64 @@ class MapInTheWindowTest {
     }
 
     /**
+     * On a map turned and tilted, a place located and a server cluster's region show where they do north up, and the
+     * map keeps its turn and its tilt: setRegionPreservingPerspective keeps the camera's pitch and heading and measures
+     * where the centre goes on the map as the camera will show it (ScooterMapView.swift:35-70; MAP-041, MAP-051). A
+     * region shown north up, or measured so, would fail here (review-app-p finding 6).
+     */
+    @Test
+    fun onAMapTurnedAndTiltedAPlaceLocatedAndAClusterOpenedShowWhereTheyDoNorthUp() {
+        val controller = controller()
+        show(controller)
+        val bounds = onMain { projection.bounds }
+        val part = partInView(shownChrome(), bounds)
+        val expected = placed(part, bounds)
+        onMain { map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder(map.cameraPosition).bearing(TURN).tilt(TILT).build())) }
+        Thread.sleep(500)
+
+        locate(rider)
+        assertTrue("the move to the rider", waitFor(LOCATING) { onMain { map.cameraPosition.target }?.let { hypot(it.latitude - rider.latitude, it.longitude - rider.longitude) < 0.01 } == true })
+        waitUntilAtRest(rider)
+        val located = onMain { map.cameraPosition }
+        val riderShown = onMain { projection.point(rider) }
+        val riderLanded = replayed(rider, expected, measuredOn = CameraPosition.Builder(located).target(LatLng(rider.latitude, rider.longitude)).build())
+        screenshot("turned-located")
+        Log.i(TAG, "${size()}: turned and tilted, located at $located, the rider at $riderShown for $expected, measured once $riderLanded")
+        assertEquals("the turn kept as the rider is located", TURN, located.bearing, 0.1)
+        assertEquals("the tilt kept as the rider is located", TILT, located.tilt, 0.1)
+        assertEquals("the rider across: $riderShown for $expected", expected.x, riderShown.x, 3.0)
+        assertLandsAsMeasuredOnce(riderShown, expected, riderLanded, "the rider")
+
+        // A city total of the server's, from high enough for the server to group its scooters, the map turned and
+        // tilted as it was.
+        val opening = onMain {
+            val zurich = zurichStart.region.center
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder(located).target(LatLng(zurich.latitude, zurich.longitude)).zoom(9.0).build()))
+            map.cameraPosition
+        }
+        val cityAt = onMain { projection.coordinate(ScreenPoint(part.minX + part.width * 0.65, part.minY + part.height * 0.35)) }
+        val city = ScooterCluster("city:ch:Zürich", cityAt.latitude, cityAt.longitude, count = 1_288, providers = mapOf("lime" to 700, "voi" to 588), city = "Zürich")
+        served = ScooterResponse(vehicles = emptyList(), clusters = listOf(city), meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters"))
+        onMain { controller.updateViewport(MapZoom.region(of = projection.visibleMapRect), zoom = 9) }
+        assertTrue("the cluster drawn", waitFor(30_000) { onMain { mapView.markers?.scene?.clusters()?.size } == 1 })
+        Thread.sleep(1_000)
+        val point = onMain { projection.point(cityAt) }
+        assertTrue("${city.id} at $point in $part", part.contains(point))
+        fingers(point to point, millis = 40, steps = 1)
+        assertTrue("${city.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 })
+        waitUntilAtRest(cityAt)
+        val opened = onMain { map.cameraPosition }
+        val shown = onMain { projection.point(cityAt) }
+        val landed = replayed(cityAt, expected, measuredOn = CameraPosition.Builder(opened).target(LatLng(cityAt.latitude, cityAt.longitude)).build())
+        screenshot("turned-cluster")
+        Log.i(TAG, "${size()}: turned and tilted, ${city.id} opened at $opened, at $shown for $expected, measured once $landed")
+        assertEquals("the turn kept as the cluster opens", TURN, opened.bearing, 0.1)
+        assertEquals("the tilt kept as the cluster opens", TILT, opened.tilt, 0.1)
+        assertEquals("${city.id} across: $shown for $expected", expected.x, shown.x, 3.0)
+        assertLandsAsMeasuredOnce(shown, expected, landed, city.id)
+    }
+
+    /**
      * A tap on a cluster of the app's own fits its scooters in the part of the map in view, 40 points in from its
      * edges, beside a panel or a fold as over the dock, as the iPhone fits a route there (MAP-052, MAP-147); a phone's
      * MapKit shows them with insets of its own, which the app's fit stands in for (MAP-302).
@@ -1078,6 +1136,10 @@ class MapInTheWindowTest {
 
         /** A cell of the app's grid at the map's zoom 11 (ScooterGridClustering.cellSize below zoom 13). */
         const val APP_CELL = 80.0
+
+        /** The turn and the tilt of a map turned and tilted: past north-east, and within MapKit's 35° at any height. */
+        const val TURN = 50.0
+        const val TILT = 30.0
 
         /** iOS's panel: 16 inside the safe area, and from the panel or a fold to the map's margin (panelGap). */
         const val PANEL_GAP = 16.0
