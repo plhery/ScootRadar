@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -234,7 +235,12 @@ fun ScooterMap(
     val onDock by remember(chrome) {
         derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Dock }?.let { listOfNotNull(it.zoneLegend, it.locateButton) }.orEmpty() }
     }
+    // The foot of the search bar and the notices under it over the dock, which the credits keep under.
+    val chromeTop by remember(chrome) {
+        derivedStateOf { chrome?.takeIf { it.layout == ScooterChromeLayout.Dock }?.top?.takeIf { !it.isEmpty }?.maxY }
+    }
     var creditsSides by remember { mutableStateOf<Pair<Double, Double>?>(null) }
+    var creditsHeight by remember { mutableDoubleStateOf(0.0) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, view) {
         // A new observer is brought up to the lifecycle's state at once: ON_CREATE, ON_START, ON_RESUME.
@@ -361,10 +367,15 @@ fun ScooterMap(
         )
         val overCorner = creditsOverCorner(creditsSides, corner, maxHeight.value.toDouble())
         val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
+        // Up over the dock as far as the search bar or a notice under it, they have no room, and wait out of sight; above
+        // a fold across the map they are in its upright half, clear of the dock.
+        val seen = overDock == null || (margins != null && margins.bottom > 0) ||
+            creditsHaveRoom(overDock, creditsHeight, chromeTop ?: safeArea.top, maxHeight.value.toDouble())
         val density = LocalDensity.current.density
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
+            seen = seen,
             modifier = Modifier.align(Alignment.BottomStart).then(
                 when {
                     margins == null -> overDock?.let { sideways.padding(bottom = it.dp) }
@@ -381,6 +392,7 @@ fun ScooterMap(
             ).onGloballyPositioned {
                 val bounds = it.boundsInWindow()
                 creditsSides = (bounds.left / density).toDouble() to (bounds.right / density).toDouble()
+                creditsHeight = (bounds.height / density).toDouble()
             },
         )
     }

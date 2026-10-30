@@ -34,6 +34,7 @@ import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterDeviceOrientation
+import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterLocationManager
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -45,14 +46,22 @@ import com.plhery.scootradar.core.model.MapPoint
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterCluster
+import com.plhery.scootradar.core.model.ScooterDefaults
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterWalkPhase
 import com.plhery.scootradar.core.model.ScooterWalkTarget
+import com.plhery.scootradar.core.model.ScooterZone
+import com.plhery.scootradar.core.model.ScooterZoneArea
+import com.plhery.scootradar.core.model.ScooterZoneKind
+import com.plhery.scootradar.core.model.ScooterZoneResponse
+import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.ui.ScooterMapScreen
+import com.plhery.scootradar.ui.chrome.LOCATION_CARD_TAG
+import com.plhery.scootradar.ui.chrome.STATUS_BANNER_TAG
 import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
@@ -124,6 +133,10 @@ class MapInTheWindowTest {
     private lateinit var mapView: ScooterMapView
     private lateinit var map: MapLibreMap
     private lateinit var projection: MapLibreProjection
+
+    /** The operators' zones the server gives for any area. */
+    @Volatile
+    private var zones: List<ScooterZone> = emptyList()
 
     /** What the server answers once a test has set it; until then the scooters the controller was made with. */
     @Volatile
@@ -550,8 +563,82 @@ class MapInTheWindowTest {
         assertEquals("the compass's trailing edge: $compassFrame", compassMiddle, compassFrame.midX, 1.0)
         assertEquals("the compass's top: $compassFrame", top + half, compassFrame.midY, 1.0)
 
+        val margins = onMain { mapView.camera!!.margins }
+        assertTheCreditsAreSeen(chrome, bounds, safe, rightToLeft)
+
+        // A zoom step: the scale shows while the map zooms, level with the compass, past the panel.
+        onMain { map.animateCamera(CameraUpdateFactory.zoomBy(1.0), 1_000) }
+        val scale = device.wait(Until.findObject(By.desc(Pattern.compile(".*\\b(feet|foot|miles?)$"))), 1_500)
+        assertNotNull("the scale while the map zooms", scale)
+        val scaleFrame = inMap(scale.visibleBounds)
+        screenshot("ornaments")
+        Log.i(TAG, "${size()}: scale $scaleFrame")
+        assertEquals("the scale's top: $scaleFrame", top, scaleFrame.minY, 1.0)
+        val leadingMargin = if (rightToLeft) margins.right else margins.left
+        val leading = if (leadingMargin > 0 && chrome.panel != null) leadingMargin else (if (rightToLeft) safe.right else safe.left) + MapOrnaments.EDGE_GAP
+        val edge = if (rightToLeft) bounds.maxX - scaleFrame.maxX else scaleFrame.minX - bounds.minX
+        assertEquals("the scale's leading edge: $scaleFrame", leading, edge, 1.0)
+    }
+
+    /**
+     * The credits seen whole and cut by no control, as above, with the chrome the rider opens over the map: nothing (the
+     * zones off), a scooter's card in the dock or the panel, the zones' legend listing their kinds, and the card, the
+     * legend and a notice under the search bar together. A window as short as a phone's or a folded Fold's held
+     * sideways leaves the least room over the dock (review-app-v finding 2).
+     */
+    @Test
+    fun theCreditsAreSeenWithNothingOpen() = creditsWith("nothing")
+
+    @Test
+    fun theCreditsAreSeenOverAScootersCard() = creditsWith("card", card = true)
+
+    @Test
+    fun theCreditsAreSeenOverTheZonesLegend() = creditsWith("legend", legend = true)
+
+    @Test
+    fun theCreditsAreSeenOverACardTheLegendAndANotice() = creditsWith("all", card = true, legend = true, notice = true)
+
+    /**
+     * The map at a scooter at zoom 16, with its card chosen if [card], the operators' zones on and drawn there if
+     * [legend], else off, and the location not found if [notice]; then the credits checked, the screen kept as
+     * credits-[name].
+     */
+    private fun creditsWith(name: String, card: Boolean = false, legend: Boolean = false, notice: Boolean = false) {
+        val scooter = Scooter(provider = "voi", latitude = 47.3769, longitude = 8.5417, battery = 80, vehicleID = "s1", distanceMeters = 0.0)
+        zones = if (legend) listOf(ScooterZoneKind.Slow, ScooterZoneKind.NoParking, ScooterZoneKind.NoRide).mapIndexed { index, kind -> zurichZone(kind, east = 0.002 * index) } else emptyList()
+        val controller = controller(scooters = listOf(scooter), defaults = InMemoryScooterDefaults().apply { set(legend, forKey = "map-zones") })
+        show(controller)
+        onMain { map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(scooter.latitude, scooter.longitude), 16.0)) }
+        onMain { controller.updateViewport(zurichStart.region, zoom = 16) }
+        assertTrue("the scooters", waitFor(30_000) { onMain { controller.vehicles.value.isNotEmpty() } })
+        if (legend) {
+            assertTrue("the zones", waitFor(30_000) { onMain { controller.zoneState.value == ScooterZoneState.Shown && controller.mapOperatorZoneCount.value > 0 } })
+        }
+        if (card) onMain { controller.selectScooter(scooter.id) }
+        if (notice) onMain { controller.locationFailed(ScooterLocationError.LocationUnknown) }
+        // The card and the notice at their full heights.
+        Thread.sleep(2_500)
+        assertEquals("the zones' legend", legend, device.findObject(By.res(ZONE_LEGEND_TAG)) != null)
+        assertEquals("the notice", notice, device.findObject(By.res(LOCATION_CARD_TAG)) != null)
+        assertEquals("the card", card, onMain { controller.selectedScooterID.value } == scooter.id)
+        val bounds = onMain { projection.bounds }
+        val rightToLeft = onMain { mapView.layoutDirection == View.LAYOUT_DIRECTION_RTL }
+        screenshot("credits-$name")
+        assertTheCreditsAreSeen(chrome(), bounds, safeArea(), rightToLeft)
+    }
+
+    /**
+     * The credits where the screen shows them: past the panel by the map's leading margin and in the part of the map in
+     * view, at the foot their rules give, and cut by no control on any side: seen whole, or wholly under a phone's dock
+     * as the iPhone's Legal is. Out of sight only where, over the dock, the chrome leaves them no room under the search
+     * bar and its notices (creditsHaveRoom).
+     */
+    private fun assertTheCreditsAreSeen(chrome: MapChrome, bounds: ScreenRect, safe: MapInsets, rightToLeft: Boolean) {
         val credits = device.findObject(By.text("© OpenStreetMap"))
-        assertNotNull("the credits", credits)
+        if (credits == null) {
+            assertNoRoomForTheCredits(chrome, bounds, safe, rightToLeft)
+            return
+        }
         val creditsFrame = inMap(credits.visibleBounds)
         val margins = onMain { mapView.camera!!.margins }
         Log.i(TAG, "${size()}: credits $creditsFrame, margins $margins")
@@ -587,7 +674,11 @@ class MapInTheWindowTest {
         val overDock = listOfNotNull(dock, shownLegend, locateButton).filter(overCredits).takeIf { cutByDock }
         val foot = across?.let { it.minY - PANEL_GAP } ?: (corner ?: overDock)?.let { frames -> frames.minOf { it.minY } - 4 }
             ?: (bounds.maxY - safe.bottom - 8)
-        Log.i(TAG, "${size()}: credits $sources, dock $dock, legend $shownLegend, locate button $locateButton, cut by the dock $cutByDock")
+        Log.i(
+            TAG,
+            "${size()}: credits $sources, dock $dock, legend $shownLegend, locate button $locateButton, cut by the dock $cutByDock, " +
+                "search bar ${shown(SEARCH_ISLAND_TAG)}, banner ${shown(STATUS_BANNER_TAG)}, location's card ${shown(LOCATION_CARD_TAG)}, safe $safe",
+        )
         assertEquals("the credits' foot: $creditsFrame, the fold $across, the corner over them $corner, the dock $dock", foot, creditsFrame.midY + 9, 2.0)
         // Seen whole, in the safe area and clear of every control over the map, or, over a dock that spans the map as a
         // phone's does, wholly under it with all their text, as the iPhone's Legal is under its dock: never cut.
@@ -600,6 +691,10 @@ class MapInTheWindowTest {
                 "the zones' legend" to shownLegend,
                 "the locate button" to locateButton,
                 "the panel" to chrome.panel?.takeIf { !it.isEmpty },
+                "the banner" to shown(STATUS_BANNER_TAG),
+                "the location's card" to shown(LOCATION_CARD_TAG),
+                "the compass" to device.findObject(By.desc("Compass"))?.let { inMap(it.visibleBounds) },
+                "the scale" to shown(SCALE_TAG),
             ).mapNotNull { (name, frame) -> frame?.let { name to it } }
             for (source in sources) {
                 assertTrue(
@@ -621,19 +716,27 @@ class MapInTheWindowTest {
             assertTrue("the credits $creditsFrame in the part in view $part", creditsFrame.minX >= part.minX - 1 && creditsFrame.minY >= part.minY - 1)
         }
         chrome.panel?.takeIf { !it.isEmpty }?.let { assertTrue("the credits $creditsFrame clear of the panel $it", !it.intersects(creditsFrame)) }
+    }
 
-        // A zoom step: the scale shows while the map zooms, level with the compass, past the panel.
-        onMain { map.animateCamera(CameraUpdateFactory.zoomBy(1.0), 1_000) }
-        val scale = device.wait(Until.findObject(By.desc(Pattern.compile(".*\\b(feet|foot|miles?)$"))), 1_500)
-        assertNotNull("the scale while the map zooms", scale)
-        val scaleFrame = inMap(scale.visibleBounds)
-        screenshot("ornaments")
-        Log.i(TAG, "${size()}: scale $scaleFrame")
-        assertEquals("the scale's top: $scaleFrame", top, scaleFrame.minY, 1.0)
-        val leadingMargin = if (rightToLeft) margins.right else margins.left
-        val leading = if (leadingMargin > 0 && chrome.panel != null) leadingMargin else (if (rightToLeft) safe.right else safe.left) + MapOrnaments.EDGE_GAP
-        val edge = if (rightToLeft) bounds.maxX - scaleFrame.maxX else scaleFrame.minX - bounds.minX
-        assertEquals("the scale's leading edge: $scaleFrame", leading, edge, 1.0)
+    /**
+     * With the credits out of sight, that the dock's layout leaves them no room: lifted 4 over the highest of the dock,
+     * the zones' legend and the locate button over their text, 8 in from the safe area's leading edge and about 240
+     * wide, their 18 would come within 4 of the search bar or a notice under it.
+     */
+    private fun assertNoRoomForTheCredits(chrome: MapChrome, bounds: ScreenRect, safe: MapInsets, rightToLeft: Boolean) {
+        fun shown(tag: String) = device.findObject(By.res(tag))?.let { inMap(it.visibleBounds) }
+        val dock = shown(DOCK_TAG)
+        val legend = shown(ZONE_LEGEND_TAG)
+        val locateButton = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
+        val top = listOfNotNull(shown(SEARCH_ISLAND_TAG), shown(STATUS_BANNER_TAG), shown(LOCATION_CARD_TAG)).maxOfOrNull { it.maxY }
+            ?: (bounds.minY + safe.top)
+        val start = if (rightToLeft) bounds.maxX - safe.right - 8 - CREDITS_WIDTH else bounds.minX + safe.left + 8
+        val over = listOfNotNull(dock, legend, locateButton).filter { it.minX < start + CREDITS_WIDTH - 6 && it.maxX > start + 6 }
+        Log.i(TAG, "${size()}: the credits out of sight, over $over, under $top")
+        assertTrue("the credits out of sight beside a panel ${chrome.panel}", chrome.panel?.takeIf { !it.isEmpty } == null)
+        assertTrue("the credits out of sight with no dock over them: $dock", dock != null && dock in over)
+        val foot = over.minOf { it.minY } - 4
+        assertTrue("the credits out of sight with room for them: their foot $foot, the chrome over them down to $top", foot - 18 < top + 4)
     }
 
     /**
@@ -767,13 +870,22 @@ class MapInTheWindowTest {
         screenshot("chosen")
     }
 
-    /** A controller allowed to locate that hears only the fixes the test gives it, with `scooters` about and the walks' `route`. */
-    private fun controller(scooters: List<Scooter> = emptyList(), route: List<GeoPoint> = emptyList()) = ScooterMapController(
+    /**
+     * A controller allowed to locate that hears only the fixes the test gives it, with `scooters` about, the operators'
+     * [zones] in any area, the walks' `route`, and `defaults` as kept from before (the zones on).
+     */
+    private fun controller(
+        scooters: List<Scooter> = emptyList(),
+        route: List<GeoPoint> = emptyList(),
+        defaults: ScooterDefaults = InMemoryScooterDefaults(),
+    ) = ScooterMapController(
         api = object : ScooterAPIClient {
             override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = served ?: ScooterResponse(vehicles = scooters)
+
+            override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
         },
         locationManager = TestLocation(),
-        defaults = InMemoryScooterDefaults(),
+        defaults = defaults,
         scope = scope,
         directions = object : WalkingDirectionsClient {
             override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = route
@@ -1167,6 +1279,13 @@ class MapInTheWindowTest {
 
     private val Scooter.point: GeoPoint get() = GeoPoint(latitude, longitude)
 
+    /** A square of 0.002° a side in Zürich's centre, [east] east of it, of the operators' [kind]. */
+    private fun zurichZone(kind: ScooterZoneKind, east: Double): ScooterZone {
+        val (lat, lon) = 47.3760 to 8.5400 + east
+        val ring = listOf(GeoPoint(lat, lon), GeoPoint(lat, lon + 0.002), GeoPoint(lat + 0.002, lon + 0.002), GeoPoint(lat + 0.002, lon), GeoPoint(lat, lon))
+        return ScooterZone(id = kind.name, provider = "voi", kind = kind, polygons = listOf(listOf(ring)))
+    }
+
     private companion object {
         const val TAG = "MapInTheWindowTest"
 
@@ -1188,6 +1307,9 @@ class MapInTheWindowTest {
 
         /** iOS's panel: 16 inside the safe area, and from the panel or a fold to the map's margin (panelGap). */
         const val PANEL_GAP = 16.0
+
+        /** About how wide the map's credits are, their frames end to end: 245.5 on a phone, 240.8 on a Fold. */
+        const val CREDITS_WIDTH = 240.0
 
         /** iOS's panel's width, at the default text size (ScooterChromeLayout.panelWidth). */
         const val PANEL_WIDTH = 380.0

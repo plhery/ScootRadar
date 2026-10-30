@@ -2,12 +2,16 @@ package com.plhery.scootradar.map
 
 import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 // MAP-318: the credits beside a panel keep clear of the zones' legend, which on a Fold's inner screen reaches over them,
 // and of the locate button beside it, which a tablet upright brings to their end; and they go up over a dock that would
-// cut them, as on a tablet upright with a cutout down its side.
+// cut them, as on a tablet upright with a cutout down its side; where that would take them up to the search bar or a
+// notice under it, as on a phone held sideways or a Fold folded with a card, the legend and a notice, they wait out of
+// sight (review-app-v finding 2).
 
 class MapCreditsTest {
     /** The Fold's inner screen beside the panel: Bergen's legend, four lines, over the credits' end. */
@@ -90,5 +94,47 @@ class MapCreditsTest {
         assertNull(creditsOverDock(8.0 to 245.0, ScreenRect(120.0, 1100.0, 0.0, 0.0), emptyList(), mapHeight = 1280.0))
         assertNull(creditsOverDock(8.0 to 245.0, ScreenRect(120.0, 1180.0, 560.0, 156.0), emptyList(), mapHeight = 800.0))
         assertNull(creditsOverDock(null, tablet.copy(x = 120.0), emptyList(), mapHeight = 1280.0))
+    }
+
+    /**
+     * ScootRadar_Phone_Min held sideways, 640 by 360, as app-y's pass measured it: the dock 16 in from the map's side
+     * would cut the credits, from 8 to 253.5, and with a scooter's card it rises to 160, the zones' legend on it to
+     * 121.5. Lifted 4 over the legend their 18 reach up to 99.5, 5.5 under the search bar's foot, 94: room. The
+     * location's notice under the bar, down to 166, leaves them none, where they would show cut between it and the
+     * legend; nor does the search bar alone, where the legend stands higher with a gesture bar under the dock.
+     */
+    @Test
+    fun theCreditsWaitOutOfSightWhereThePhoneSidewaysLeavesThemNoRoom() {
+        val dock = ScreenRect(x = 16.0, y = 160.0, width = 560.0, height = 192.0)
+        val legend = ScreenRect(x = 18.0, y = 121.5, width = 258.0, height = 28.5)
+        val locate = ScreenRect(x = 445.0, y = 94.0, width = 129.0, height = 56.0)
+        val lift = creditsOverDock(8.0 to 253.5, dock, listOf(legend, locate), mapHeight = 360.0)!!
+        assertEquals(360.0 - 121.5 + 4.0, lift, 0.0)
+        assertTrue(creditsHaveRoom(lift, height = 18.0, top = 94.0, mapHeight = 360.0))
+        assertFalse(creditsHaveRoom(lift, height = 18.0, top = 166.0, mapHeight = 360.0))
+        assertFalse(creditsHaveRoom(lift + 8.0, height = 18.0, top = 94.0, mapHeight = 360.0))
+        // The card without the legend leaves them more room.
+        assertTrue(creditsHaveRoom(360.0 - 160.0 + 4.0, height = 18.0, top = 94.0, mapHeight = 360.0))
+        // Their 18 and the gap of 4 under the chrome, just: room; a point more, none.
+        assertTrue(creditsHaveRoom(360.0 - 120.0, height = 18.0, top = 98.0, mapHeight = 360.0))
+        assertFalse(creditsHaveRoom(360.0 - 119.0, height = 18.0, top = 98.0, mapHeight = 360.0))
+    }
+
+    /**
+     * ScootRadar_Fold folded and held sideways, 969 by 443, past its cutout, 62: the dock from 236 would cut the
+     * credits, from 70.5 to 311.4. With a card, the legend and the location's notice, down to 194.9, they would sit cut
+     * by the notice; with the card and the legend under the search bar alone, they are seen.
+     */
+    @Test
+    fun theCreditsWaitOutOfSightWhereTheFoldFoldedSidewaysLeavesThemNoRoom() {
+        val dock = ScreenRect(x = 236.3, y = 226.9, width = 560.0, height = 192.0)
+        val legend = ScreenRect(x = 238.4, y = 188.7, width = 257.2, height = 28.3)
+        val locate = ScreenRect(x = 665.4, y = 160.4, width = 128.8, height = 56.6)
+        val lift = creditsOverDock(70.5 to 311.4, dock, listOf(legend, locate), mapHeight = 443.0)!!
+        assertEquals(443.0 - 188.7 + 4.0, lift, 1e-9)
+        assertFalse(creditsHaveRoom(lift, height = 18.0, top = 194.9, mapHeight = 443.0))
+        assertTrue(creditsHaveRoom(lift, height = 18.0, top = 122.7, mapHeight = 443.0))
+        val cardOnly = creditsOverDock(70.5 to 311.4, dock, listOf(locate), mapHeight = 443.0)!!
+        assertTrue(creditsHaveRoom(cardOnly, height = 18.0, top = 122.7, mapHeight = 443.0))
     }
 }

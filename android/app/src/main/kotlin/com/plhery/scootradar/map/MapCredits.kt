@@ -10,11 +10,13 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.ScreenRect
@@ -25,7 +27,8 @@ import com.plhery.scootradar.ui.theme.FocusRing
 /**
  * Where the map comes from, as OpenStreetMap's licence and OpenFreeMap's ask (MAP-318): the map's own credits in a
  * corner of the part of it in view, as the iPhone shows Apple's logo and its Legal link there. Its text keeps its
- * size, as Apple's does, and each name opens its page. Over imagery, the imagery's credit comes first.
+ * size, as Apple's does, and each name opens its page. Over imagery, the imagery's credit comes first. Where the
+ * chrome leaves them no room ([creditsHaveRoom]) they are not [seen]: laid out still, but not drawn, read or tapped.
  */
 @Composable
 fun MapCredits(
@@ -34,6 +37,7 @@ fun MapCredits(
     modifier: Modifier = Modifier,
     /** The imagery's name and page, while it is shown. */
     imagery: Pair<String, String>? = null,
+    seen: Boolean = true,
 ) {
     // The ground's own land and label colours (src/lib/quietGround.ts).
     val ground = if (dark) Color(0xCC0B0E14) else Color(0xCCEEF0F4)
@@ -41,13 +45,19 @@ fun MapCredits(
     val size = with(LocalDensity.current) { 10.dp.toSp() }
     val style = TextStyle(color = label, fontSize = size)
     val uri = LocalUriHandler.current
-    Row(modifier.clip(RoundedCornerShape(6.dp)).background(ground)) {
+    Row(
+        modifier
+            .alpha(if (seen) 1f else 0f)
+            .then(if (seen) Modifier else Modifier.clearAndSetSemantics { })
+            .clip(RoundedCornerShape(6.dp))
+            .background(ground),
+    ) {
         for ((name, page) in listOfNotNull(imagery) + SOURCES) {
             BasicText(
                 text = name,
                 style = style,
                 modifier = Modifier
-                    .clickable(remember { MutableInteractionSource() }, FocusRing(), role = Role.Button) { uri.openUri(page) }
+                    .clickable(remember { MutableInteractionSource() }, FocusRing(), enabled = seen, role = Role.Button) { uri.openUri(page) }
                     .padding(horizontal = TEXT_INSET.dp, vertical = 3.dp),
             )
         }
@@ -98,6 +108,20 @@ internal fun creditsOverDock(credits: Pair<Double, Double>?, dock: ScreenRect?, 
     val over = (onDock + dock).filter { !it.isEmpty && it.minX < end && it.maxX > start && it.minY < mapHeight }
     return mapHeight - over.minOf { it.minY } + LEGEND_GAP
 }
+
+/**
+ * Whether the credits, [height] tall, have room [lift] above the map's foot, where [creditsOverDock] puts them: under
+ * the chrome at the map's top, whose foot is [top] (the search bar and the notices under it, or the safe area's top),
+ * by the gap they keep over the controls under them, and so on the map.
+ *
+ * A window as short as a phone's held sideways (640 by 360) or a Fold's folded (970 by 443), with a scooter's card,
+ * the zones' legend and a notice open, leaves them none: the card, the legend and the notice fill the map's leading
+ * side from the search bar down (review-app-v finding 2), and lifted they would show cut between them. They then wait
+ * out of sight until the chrome leaves them room, as the iPhone's Legal stays under its dock; Settings' Map & data
+ * credits name the map's sources all the while.
+ */
+internal fun creditsHaveRoom(lift: Double, height: Double, top: Double, mapHeight: Double): Boolean =
+    mapHeight - lift - height >= top + LEGEND_GAP
 
 /** The room between the legend and the credits over it. */
 private const val LEGEND_GAP = 4.0
