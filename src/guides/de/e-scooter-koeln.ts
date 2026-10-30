@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Sechs Anbieter vermieten in Köln E-Scooter: **Bolt**, **Dott**, **Lime**, **RideMovi**, **Ryde** und **Voi**, laut Stadt 2026 zusammen fast 20 000 Scooter. Tier heisst heute Dott: Wer früher Tier fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Köln](map:de:Köln) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 2850 Dott- und 4100 Voi-Scooter, am Sonntagmittag rund 4700 Lime- und 1900 Bolt-Scooter. RideMovi und Ryde fehlen darauf.',
+        'ScootRadar zeigt auf der [Karte rund um Köln](map:de:Köln) Dott, Voi, Lime und Bolt: am Freitag, 30. Oktober 2026, um 5:27 Uhr rund 2900 Dott-, 4200 Voi- und 1900 Bolt-Scooter, die in dem Moment frei waren, dazu rund 4400 Lime-Scooter nach der letzten Zählung. Bei Dott und Voi zeigt die Karte auch Reichweite und Preis, bei Bolt und Lime den Akkustand. RideMovi und Ryde fehlen darauf.',
       ],
     },
     {
@@ -36,15 +36,15 @@ const guide: Guide = {
             ],
           },
         },
-        'Eine Viertelstunde kostet damit 5,50 € bei Dott und 4,50 € bei Voi. Verbindlich ist der Preis in der App. Günstiger für kurze Wege: KVB-Rad mit 1 € pro 15 Minuten (siehe unten). Den nächsten Dott oder Voi und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Köln](map:de:Köln).',
+        'Eine Viertelstunde kostet damit 5,50 € bei Dott und 4,50 € bei Voi. Verbindlich ist der Preis in der App. Den nächsten Dott oder Voi und was er für 5 bis 30 Minuten kostet, zeigt die [Live-Karte von Köln](map:de:Köln).',
       ],
     },
     {
       heading: 'Wo darf man in Köln mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, auch **Domplatte**, **Hohe Strasse** und **Schildergasse**. Dotts App sperrt sie nicht, erlaubt ist das Fahren trotzdem nicht: Steig am Rand ab und schieb.',
-        'In Parks wie Rheinpark oder Volksgarten ist das Abstellen verboten; ein ausdrückliches Fahrverbot für Kölner Parks haben wir nicht gefunden. Strassenbahnschienen querst du am besten im rechten Winkel, damit das Vorderrad nicht in die Rille rutscht.',
-        'Die deutschen Regeln, kurz: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Daran halten sich viele nicht: 2023 zählte die Kölner Polizei über 580 Fälle mit zwei Personen auf einem Scooter.',
+        'In Parks wie Rheinpark oder Volksgarten ist das Abstellen verboten; ein Fahrverbot für Parks nennt die Stadt auf ihrer E-Scooter-Seite nicht.',
+        'Die deutschen Regeln, kurz: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Trotzdem ahndete die Kölner Polizei 2023 über 580 Fahrten zu zweit.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -82,7 +82,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Die offizielle Abstellfläche vor dem Hauptbahnhof ist laut WDR (August 2026) oft überfüllt. Die Zonen ändern sich; massgeblich ist die Karte in deiner App.',
+        'Die Zonen ändern sich; massgeblich ist die Karte in deiner App. Die Parkverbotszonen von Dott und Voi zeichnet auch die [Live-Karte](map:de:Köln), wenn du hineinzoomst.',
       ],
     },
     {
@@ -92,14 +92,14 @@ const guide: Guide = {
         {
           list: [
             'in den Fussgängerzonen links des Rheins;',
-            'auf den Rheinbrücken;',
+            'auf Brücken;',
             'am Rheinufer und in einem 30 m breiten Streifen dahinter;',
             'an Seen, Weihern und anderen Gewässern und ihren Ufern;',
             'in allen Grünanlagen.',
           ],
         },
-        '**Freitag- und Samstagnacht** (20 bis 6 Uhr) kommen laut Stadt die Ringe zwischen Friesen- und Rudolfplatz, die Zülpicher Strasse, das Belgische Viertel und die Altstadt dazu. Ob jede App das umsetzt, haben wir nicht geprüft; stell den Scooter dann besser ausserhalb ab.',
-        'Seit November 2025 richtet die Stadt auch rund um ihre Mobilstationen Parkverbote ein, ohne einen Radius zu nennen: Lässt dich die App neben einer Station die Fahrt nicht beenden, fahr auf die Fläche. Sonst darfst du auf dem Gehweg parken, wenn niemand behindert wird, mindestens 1,50 m frei bleiben und du weder Bordsteinkante noch Blindenleitstreifen blockierst.',
+        '**Freitag- und Samstagnacht** (20 bis 6 Uhr) kommen laut Stadt die Ringe zwischen Friesen- und Rudolfplatz, die Zülpicher Strasse, das Belgische Viertel und die Altstadt dazu. Stell den Scooter in diesen Nächten ausserhalb dieser Gebiete ab, auch wenn deine App dort das Beenden zulässt.',
+        'Seit November 2025 richtet die Stadt auch rund um ihre Mobilstationen Parkverbote ein: Lässt dich die App neben einer Station die Fahrt nicht beenden, fahr auf die Fläche. Sonst darfst du auf dem Gehweg parken, wenn niemand behindert wird, mindestens 1,50 m frei bleiben und du weder Bordsteinkante noch Blindenleitstreifen blockierst.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Stations- oder Verbotszone. Fahr zur nächsten Station oder aus der Zone hinaus: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -119,21 +119,19 @@ const guide: Guide = {
               ['Weihnachtsmärkte 2025', 'bis 23. Dezember', 'Roncalliplatz, Alter Markt, Heumarkt, Neumarkt, Rudolfplatz'],
               ['Silvester 2025', '31. Dezember bis Neujahrsmorgen', 'Altstadt vom Hauptbahnhof bis zu den Museen, Rheinboulevard Deutz, Deutzer und Severinsbrücke'],
               ['Strassenkarneval 2026', '12. bis 17. Februar', 'Alter Markt, Heumarkt, Dom, Zülpicher Strasse, Kwartier Latäng, Severinstrasse, Rudolfplatz und mehr'],
-              ['CSD 2026', '3. bis 5. Juli', 'Alter Markt, Heumarkt, Schaafenstrasse'],
               ['gamescom city festival 2026', '28. bis 30. August', 'Rudolfplatz, Hohenzollernring zwischen Brabanter Strasse und Friesenwall'],
             ],
           },
         },
-        'Für den **11.11.2026**, einen Mittwoch, waren die Zonen am 13. Oktober noch nicht veröffentlicht (2025 kamen sie am 28. Oktober). Rechne wieder mit Sperren in Altstadt, Kwartier Latäng und rund um die Zülpicher Strasse, ebenso zu den Weihnachtsmärkten und an Karneval 2027 (Weiberfastnacht ist am 4. Februar).',
+        'Für den **11.11.2026**, einen Mittwoch, waren die Zonen am 30. Oktober noch nicht veröffentlicht (2025 kamen sie am 28. Oktober). Rechne wieder mit Sperren in Altstadt, Kwartier Latäng und rund um die Zülpicher Strasse, ebenso zu den Weihnachtsmärkten und an Karneval 2027 (Weiberfastnacht ist am 4. Februar).',
         'Auch nach dem Kölsch gelten auf dem Scooter die Promillegrenzen fürs Auto: ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0. 2023 standen laut Polizei 83 der 400 in Köln verletzten E-Scooter-Fahrer unter Alkohol.',
-        'Zum Spiel ins RheinEnergieStadion: Rund ums Stadion liegt in Dotts Daten eine grosse Parkverbotszone, und die KVB hat dort im Juli 2026 fünf KVB-Rad-Stationen eingerichtet.',
       ],
     },
     {
       heading: 'E-Scooter und KVB: Mitnahmeverbot, KVB-Rad, Flughafen',
       blocks: [
         'Seit dem 1. März 2024 darfst du E-Tretroller nicht mehr in Stadtbahnen und Bussen der KVB mitnehmen, auch nicht zusammengeklappt, weil ihre Akkus brennen können. Mit dem Leih-Scooter heisst das: vor der Haltestelle abstellen, am Ziel einen neuen mieten.',
-        '**Zum Flughafen Köln/Bonn:** Terminals und Flughafenbahnhof liegen ausserhalb des Gebiets von Dott; die anderen Anbieter haben wir nicht geprüft. Nimm die Bahn und steig erst in der Stadt auf einen Scooter um.',
+        '**Zum Flughafen Köln/Bonn:** Terminals und Flughafenbahnhof liegen ausserhalb des Gebiets von Dott (Stand 13. Oktober 2026). Nimm die Bahn und steig erst in der Stadt auf einen Scooter um.',
         '**KVB-Rad**, das Leihradsystem der KVB mit nextbike, ist für kurze Wege oft günstiger. Gratis zurückgeben kannst du das Rad an Stationen und in nicht eingefärbten Strassen und Zonen; in der gelben Zone kostet es 1 € extra, anderswo 20 €.',
         {
           table: {
@@ -141,7 +139,7 @@ const guide: Guide = {
             head: ['Tarif', 'Preis'],
             rows: [
               ['Basistarif', '1 € pro 15 Minuten, höchstens 15 € in 24 Stunden'],
-              ['Mit VRS-Chipkarte, für Studierende von Partnerhochschulen oder mit digitalem Deutschlandticket oder VRS-Abo der KVB', 'erste 30 Minuten gratis, dann 1 € pro halbe Stunde'],
+              ['Mit VRS-Chipkarte, digitalem Deutschlandticket oder VRS-Abo der KVB oder als Studierende einer Partnerhochschule', 'erste 30 Minuten gratis, dann 1 € pro halbe Stunde'],
               ['Monats-Abo (10 €) oder Jahres-Abo (60 €)', 'erste 30 Minuten jeder Fahrt inklusive, dann 1 € pro halbe Stunde'],
               ['Tages-, 3-Tage- und Wochenpass', '1,79 €, 3,29 € und 5,99 € für 30, 60 und 120 Minuten Fahrzeit'],
             ],
@@ -160,7 +158,7 @@ const guide: Guide = {
             'Genehmigungen ab 1. Januar 2027 für ein bis zwei Jahre, ohne neue Anbieter in dieser Zeit.',
           ],
         },
-        'Veröffentlicht werden sollte das Verfahren Ende September 2026. Der WDR meldete im August, es laufe bereits; der Mobilitätsausschuss des Rats vertagte das Thema am 22. September. Wer ab 2027 in Köln E-Scooter vermietet, steht noch nicht fest (Stand 13. Oktober 2026). In Frankfurt verleihen nach einem solchen Verfahren seit Juli 2026 nur noch drei Anbieter: [E-Scooter in Frankfurt](guide:frankfurt). Ein komplettes Verbot hält die Stadt nach dem Fahrrad- und Nahmobilitätsgesetz von NRW für rechtlich nicht möglich (Stand 2023).',
+        'Veröffentlicht werden sollte das Verfahren Ende September 2026. Am 22. September vertagte der Mobilitätsausschuss des Rats einen Antrag zu E-Scootern auf seine nächste Sitzung am 24. November. Wer ab 2027 in Köln E-Scooter vermietet, steht noch nicht fest (Stand 30. Oktober 2026). In Frankfurt verleihen nach einem solchen Verfahren seit Juli 2026 nur noch drei Anbieter: [E-Scooter in Frankfurt](guide:frankfurt). Ein komplettes Verbot liesse das Landesrecht kaum zu: Nach dem Fahrrad- und Nahmobilitätsgesetz von NRW sollen kommunale Satzungen E-Scooter nicht so einschränken, dass ihr Angebot dadurch verhindert wird.',
       ],
     },
     {
@@ -168,8 +166,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Im Rhein landen immer noch Scooter.** 2021 fand der WDR Hunderte im Fluss, vor allem an der Hohenzollernbrücke; seitdem gilt das Parkverbot am Ufer. Im Juli 2026 zogen Freiwillige der Initiative K.R.A.K.E. bei Niedrigwasser am Altstadtufer trotzdem 18 heraus. Einer von ihnen hat nach eigenen Worten in fünf Jahren etwa 260 geborgen, «Tendenz steigend».',
+            '**Im Rhein landen immer noch Scooter.** 2021 deckte der WDR auf, dass Hunderte im Fluss lagen; seitdem gilt das Parkverbot am Ufer. Im Juli 2026 zogen Freiwillige der Initiative K.R.A.K.E. bei Niedrigwasser am Altstadtufer trotzdem 18 heraus. Einer von ihnen hat nach eigenen Worten in fünf Jahren etwa 260 geborgen, «Tendenz steigend».',
             '**Die Polizei warnt auf Bierdeckeln.** Mit der Brauerei Malzmühle druckte sie 15 000 Deckel mit Sprüchen aus dem Kölschen Grundgesetz wie «Et hätt noch immer jot jejange». Seit August 2026 legen die Mühlen-Brauhäuser über 25 000 neue Deckel aus: «Drinkste ene met? – Dann lass den E-Scooter stehen».',
+            '**Eine Patrouille räumt den Scootern hinterher.** Seit Mitte Mai 2026 geht laut Stadt eine Fusspatrouille durch die Altstadt, die die Verleiher gemeinsam bezahlen: Sie stellt umgefallene Scooter auf und bringt falsch abgestellte auf die vorgesehenen Flächen, vor allem rund um den Bahnhof.',
           ],
         },
       ],
@@ -186,7 +185,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Köln ein E-Scooter-Verbot?',
-      answer: 'Nein, ein komplettes Verbot hält die Stadt für rechtlich nicht möglich. Sie will die Flotte aber ab 2027 auf 9000 bis 10 000 Scooter von drei Anbietern halbieren; wer das ist, steht noch nicht fest. Verboten sind E-Scooter in Bahnen und Bussen der KVB.',
+      answer: 'Nein, und ein komplettes Verbot liesse das NRW-Landesrecht kaum zu. Die Stadt will die Flotte aber ab 2027 auf 9000 bis 10 000 Scooter von drei Anbietern halbieren; wer das ist, steht noch nicht fest. Verboten sind E-Scooter in Bahnen und Bussen der KVB.',
     },
     {
       question: 'Darf ich an Karneval mit dem E-Scooter fahren?',
@@ -200,7 +199,8 @@ const guide: Guide = {
   sources: [
     { title: 'Stadt Köln: Häufig gestellte Fragen zu E-Scootern', url: 'https://www.stadt-koeln.de/artikel/68437/index.html' },
     { title: 'Stadt Köln, Mitteilung 1701/2026: E-Scooter-Sharing ab 2027 (PDF)', url: 'https://ratsinformation.stadt-koeln.de/getfile.asp?id=1099681&type=do' },
-    { title: 'Stadt Köln: Grössere Abstellverbotszonen in der Altstadt (21. November 2025)', url: 'https://www.stadt-koeln.de/politik-und-verwaltung/presse/mitteilungen/28061/index.html' },
+    { title: 'Stadt Köln: Beschlussprotokoll des Mobilitätsausschusses, 22. September 2026 (PDF)', url: 'https://ratsinformation.stadt-koeln.de/getfile.asp?id=1112991&type=do' },
+    { title: 'Stadt Köln: Netz von Mobilstationen vergrössert und verdichtet (21. November 2025)', url: 'https://www.stadt-koeln.de/politik-und-verwaltung/presse/mitteilungen/28061/index.html' },
     { title: 'Stadt Köln: Sondernutzungssatzung, Fassung vom 10. Juni 2024 (PDF)', url: 'https://www.stadt-koeln.de/mediaasset/content/satzungen/sondernutzungssatzung_10_06_2024.pdf' },
     { title: 'KVB: Keine E-Tretroller in Bahnen und Bussen', url: 'https://www.kvb.koeln/service/spielregeln/etretroller.html' },
     { title: 'KVB: Leihfahrzeuge zum Strassenkarneval 2026', url: 'https://www.kvb.koeln/unternehmen/presse/pressemitteilungen.html?view=1502' },
@@ -208,6 +208,9 @@ const guide: Guide = {
     { title: 'Dott: Tarif für Köln im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/cologne/system_pricing_plans.json' },
     { title: 'Voi: E-Scooter in Köln', url: 'https://www.voi.com/city/cologne' },
     { title: 'WDR: E-Scooter aus dem Rhein geborgen (18. Juli 2026)', url: 'https://www1.wdr.de/nrw/koeln/e-scooter-koeln-rhein-bergung-100.html' },
+    { title: 'Polizei Köln: Bierdeckel-Kampagne und Zahlen für 2023 (Englisch)', url: 'https://koeln.polizei.nrw/en/have-a-drink-then-leave-the-e-scooter' },
+    { title: 'about-drinks: Kampagne von Mühlen Kölsch und Polizei (14. August 2026)', url: 'https://www.about-drinks.com/muehlen-koelsch-und-polizei-koeln-werben-fuer-mehr-verkehrssicherheit-bei-e-scootern/' },
+    { title: 'Fahrrad- und Nahmobilitätsgesetz NRW, § 30', url: 'https://recht.nrw.de/lrgv/gesetz/01012022-fahrrad-und-nahmobilitaetsgesetz-des-landes-nordrhein-westfalen-fahrrad-und/' },
   ],
 };
 
