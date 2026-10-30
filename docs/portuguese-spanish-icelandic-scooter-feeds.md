@@ -250,6 +250,26 @@ pauses Stykkishólmur from 26 October until 1 May; check in late April 2027.
   looked for without its town, within 15 km of the beach. In Spain, 7 of
   Hoppy's scooters a poll in La Nucía, east of 0.122° W, counted under
   L'Alfàs del Pi; La Nucía now has its outline, and none is misnamed.
+- **Lisboa's count is above its agreement's cap, and is Lisboa's own.** The
+  agreement caps each operator at 1,500 vehicles from November to March and
+  1,750 from April to October
+  ([ECO, 26 June 2025](https://eco.sapo.pt/2025/06/26/lisboa-cria-novas-zonas-proibidas-a-trotinetas-e-torna-utilizacao-gratuita-para-alfacinhas-com-passe-navegante/)).
+  At 09:46 Lisbon time on 30 October 2026 the map counted 3,201 of Bolt's
+  scooters free to rent under Lisboa, 2,345 of Lime's and 1,385 of Bird's.
+  Set against the municipalities of DGT's
+  [CAOP](https://ogcapi.dgterritorio.gov.pt/collections/municipios) two
+  minutes before, 3,200 of Bolt's stood inside Lisboa's boundary and 36 in
+  Oeiras, where the map counted 32, and none in Amadora,
+  Odivelas or Loures, though Bolt's box reaches them. Every id was unique,
+  only `scooter_` types are kept ([Bolt's rider map](bolt-app-map.md)), no
+  100 m square held more than 38 (Cais do Sodré), so no depot, and 52 had
+  under 15% charge. The excess is on the street, not in the count: Lime's is
+  over the cap too, Bird's is not. The council counted about 6,000 authorised
+  scooters among five operators in June 2025 and
+  [about 5,000](https://rr.pt/noticia/pais/2026/04/16/lisboa-com-menos-trotinetes-sao-agora-cerca-de-cinco-mil-na-cidade/467147/)
+  in April 2026; three operators remain, and whether the council gave them the
+  others' quotas is not published, nor has any breach been reported. The cap
+  falls to 1,500 on 1 November.
 - **Reykjavík's capital area** is one city, with Kópavogur, Hafnarfjörður,
   Garðabær, Mosfellsbær and Seltjarnarnes as aliases: their boxes would
   overlap.
