@@ -24,6 +24,9 @@ output=/sdcard/Android/media/$app/additional_test_output
 
 device() { ADB_MDNS=0 adb -s "$serial" "$@"; }
 
+# Whether the shell may mock locations, as found: given back after each use.
+mockLocation=$(device shell appops get 2000 android:mock_location | sed -n 's/^MOCK_LOCATION: \([a-z]*\).*/\1/p')
+mockLocation=${mockLocation:-default}
 # The test providers gone, which would otherwise outlive a test whose instrumentation died before its tearDown and
 # shadow the emulator's GPS: the shell removes them only while it may mock locations.
 removeTestProviders() {
@@ -31,7 +34,7 @@ removeTestProviders() {
     for provider in fused gps network; do
         device shell cmd location providers remove-test-provider $provider > /dev/null 2>&1
     done
-    device shell appops set 2000 android:mock_location default
+    device shell appops set 2000 android:mock_location "$mockLocation"
 }
 
 reset() {
@@ -69,9 +72,14 @@ restoreRotation() {
     [[ $userRotation == [0-3] ]] && device shell settings put system user_rotation "$userRotation"
     [[ $autoRotate == [01] ]] && device shell settings put system accelerometer_rotation "$autoRotate"
 }
+# Location on or off as found, given back too: a test the pass leaves is ended before its tearDown turns it on again.
+locationEnabled=$(device shell cmd location is-location-enabled | tr -d '\r')
+restoreLocation() {
+    [[ $locationEnabled == true || $locationEnabled == false ]] && device shell cmd location set-location-enabled "$locationEnabled"
+}
 # A test the pass leaves when it is interrupted runs on without the shell that started it, and would set the
 # screen's rotation after this: ended first.
-trap 'stopFixes; device shell am force-stop "$app"; removeTestProviders; restoreOrientationRequest; restoreRotation' EXIT
+trap 'stopFixes; device shell am force-stop "$app"; removeTestProviders; restoreOrientationRequest; restoreRotation; restoreLocation' EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
 
