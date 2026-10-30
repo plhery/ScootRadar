@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.tappableElement
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -461,8 +462,10 @@ private fun DockChrome(
     val safeBottom = safe.calculateBottomPadding()
     // The safe area's top with the caption bar left out, which the map shows through.
     val captionTop = WindowInsets.statusBars.union(WindowInsets.displayCutout).asPaddingValues().calculateTopPadding()
-    // The room under the home indicator, or 8 where there is none.
-    val bottom = max(safeBottom, 8.dp)
+    // The dock, the locate row over it and the notices' room stand this far above the safe area's foot; the dock's
+    // foot is the safe area's and this above the window's.
+    val overSafeFoot = dockFoot(safeBottom, tappableBottom = WindowInsets.tappableElement.asPaddingValues().calculateBottomPadding())
+    val bottom = safeBottom + overSafeFoot
     val below by animateDpAsState(chromeTop, motion(IosMotion.snappy(duration = 0.28)), label = "chromeTop")
     // The panel's layout has frames of its own.
     DisposableEffect(chrome) {
@@ -498,7 +501,7 @@ private fun DockChrome(
                 controller,
                 failure = firstLoadFailure,
                 locationIssue = locationIssue,
-                noticesLimit = max(64.dp, height - chromeTop - 8.dp - searchBar - 8.dp - 8.dp - locate - (dock + bottom + 10.dp)),
+                noticesLimit = max(64.dp, height - chromeTop - 8.dp - searchBar - 8.dp - 8.dp - locate - (dock + overSafeFoot + 10.dp)),
                 isSearching = isSearching,
                 onSearchingChange = onSearchingChange,
                 onShowFilters = onShowFilters,
@@ -595,6 +598,17 @@ private fun DockChrome(
         }
     }
 }
+
+/**
+ * How far above the safe area's foot the dock stands, [safeBottom] above the window's, and the locate row over it and
+ * the notices' room with it (UI-121, PLAN §10, the dock's foot). The iPhone lays them out inside the safe area and pads
+ * them by `max(proxy.safeAreaInsets.bottom, 8)` again (ScooterMapScreen.swift:284, :313, :506): over the home
+ * indicator, its inset twice, the dock 68 pt above the foot of an iPhone 17 Pro Max (34 + 34); with no indicator, 8.
+ * A gesture bar is the home indicator: its inset again, 8 at least. A navigation bar that takes taps where the gesture
+ * bar lets them through to the app, the 3-button one, has a [tappableBottom]: it is a home-button iPhone's chin, under
+ * a safe area whose foot is 0 on the iPhone, so 8 above it, not its height twice.
+ */
+internal fun dockFoot(safeBottom: Dp, tappableBottom: Dp): Dp = if (tappableBottom > 0.dp) 8.dp else max(safeBottom, 8.dp)
 
 /** The top of the dock's card, which the locate row stands on. */
 private val DockTop = HorizontalAlignmentLine(::min)

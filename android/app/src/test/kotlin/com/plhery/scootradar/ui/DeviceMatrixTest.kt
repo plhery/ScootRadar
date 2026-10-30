@@ -241,9 +241,10 @@ class DeviceMatrixTest(private val look: Look) {
 
     /**
      * Where the chrome is, against ui.md §2: the layout the window's size picks; in the dock's, the search bar, the
-     * notices, the locate row and the dock inside the window, centred in at most 560 dp and clear of each other; in the
-     * panel's, the panel 16 dp in from the leading edge and the top, 380 dp wide (420 at the accessibility sizes) or
-     * narrower beside a fold down the middle, and the locate button 16 dp in from the trailing corner, clear of it.
+     * notices, the locate row and the dock inside the window, centred in at most 560 dp and clear of each other, the
+     * dock 8 dp above the window's foot; in the panel's, the panel 16 dp in from the leading edge and the top, 380 dp
+     * wide (420 at the accessibility sizes) or narrower beside a fold down the middle, and the locate button 16 dp in
+     * from the trailing corner, clear of it.
      */
     private fun chromeProblems(at: String, window: MatrixWindow, scene: MatrixScene, frames: MapChromeFrames?): List<String> {
         frames ?: return listOf("$at: no chrome")
@@ -285,6 +286,11 @@ class DeviceMatrixTest(private val look: Look) {
                             problems += "$at: the top $top leaves out the notices under the search bar $bar"
                         }
                         if (!scene.notices && abs(top.maxY - bar.bottom) > 1) problems += "$at: the top $top reaches past the search bar $bar"
+                    }
+                    // UI-121: with no bars the safe area is the window, so the dock stands 8 above its foot, as on a
+                    // home-button iPhone (the bars' part is SystemBarsTest's and DockFootTest's).
+                    frames.dock?.let { dock ->
+                        if (abs(dock.maxY - (bounds.maxY - 8)) > 0.5) problems += "$at: the dock's foot at ${dock.maxY}, not 8 above the window's ${bounds.maxY}"
                     }
                     apart("top", frames.top, "dock", frames.dock)
                     apart("top", frames.top, "locate button", frames.locateButton)

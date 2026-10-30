@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui
 
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.geometry.Rect
@@ -40,7 +41,7 @@ import kotlin.math.max
 
 /**
  * The map runs under the status bar, the navigation bar and a cutout, as it runs under the iPhone's status bar and home
- * indicator; the controls keep to the safe area, the dock above the navigation bar's buttons or handle; and the bars'
+ * indicator; the controls keep to the safe area, the dock the handle's inset above it or 8 above the buttons; and the bars'
  * icons are dark on the light map and light on the dark one, whatever the phone's own theme.
  */
 @RunWith(AndroidJUnit4::class)
@@ -96,12 +97,27 @@ class SystemBarsTest {
             val frame = nodes.single(name)
             assertTrue("$name $frame in the safe area $safe of $window", safe.encloses(frame))
         }
-        // Over the map, the dock stands on the safe area's foot, above the navigation bar's buttons or handle, or 8 above
-        // the window's where nothing is there: the iPhone's max(safe bottom, 8) (ScooterMapScreen.swift:313).
-        if (onActivity { it.shortcuts.situation?.layout } == ScooterChromeLayout.Dock) {
+        // UI-121: the iPhone lays the dock out inside the safe area and pads it by max(safe bottom, 8) again
+        // (ScooterMapScreen.swift:313), 68 pt above the foot of an iPhone 17 Pro Max (34 + 34). Over a gesture bar, its
+        // inset twice, 8 at least over the safe area's foot; over a 3-button bar, which takes taps (tappableElement), 8
+        // above it, as over a home-button iPhone's chin (PLAN §10, the dock's foot); the locate button 10 over the dock.
+        // Beside the panel, the locate button 16 above the safe area's foot, as the iPad's `.padding(16)` inside it.
+        val density = onActivity { it.resources.displayMetrics.density }
+        val tappable = onActivity { activity ->
+            ViewCompat.getRootWindowInsets(activity.window.decorView)!!.getInsets(WindowInsetsCompat.Type.tappableElement())
+        }
+        val locate = controls.getValue("the locate button").single("the locate button")
+        val layout = onActivity { it.shortcuts.situation?.layout }
+        if (layout == ScooterChromeLayout.Dock) {
             val dock = compose.onAllNodesWithTag(DOCK_TAG).single("the dock")
-            val foot = window.bottom - max(bars.bottom.toFloat(), 8 * onActivity { it.resources.displayMetrics.density })
-            assertEquals("the dock's foot over the safe bottom ${bars.bottom}", foot, dock.bottom, 1f)
+            val overSafeFoot = if (tappable.bottom > 0) 8 * density else max(bars.bottom.toFloat(), 8 * density)
+            val foot = window.bottom - bars.bottom - overSafeFoot
+            Log.i(TAG, "the dock's foot ${(window.bottom - dock.bottom) / density} dp above the window's, the safe bottom ${bars.bottom / density}, tappable ${tappable.bottom / density}, window $window, density $density")
+            assertEquals("the dock's foot over the safe bottom ${bars.bottom}, the tappable bottom ${tappable.bottom}", foot, dock.bottom, 1f)
+            assertEquals("the locate button's foot over the dock's top ${dock.top}", dock.top - 10 * density, locate.bottom, 1f)
+        } else {
+            Log.i(TAG, "the locate button's foot ${(window.bottom - locate.bottom) / density} dp above the window's beside the panel, the safe bottom ${bars.bottom / density}, tappable ${tappable.bottom / density}, window $window, density $density")
+            assertEquals("the locate button's foot beside the panel over the safe bottom ${bars.bottom}", safe.bottom - 16 * density, locate.bottom, 1f)
         }
     }
 
@@ -182,6 +198,10 @@ class SystemBarsTest {
 
     private fun View.findMap(): ScooterMapView? =
         this as? ScooterMapView ?: (this as? ViewGroup)?.children?.firstNotNullOfOrNull { it.findMap() }
+
+    private companion object {
+        const val TAG = "SystemBarsTest"
+    }
 
     private fun shell(command: String): String =
         ParcelFileDescriptor.AutoCloseInputStream(InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(command))
