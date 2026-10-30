@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
@@ -38,6 +40,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -594,7 +597,7 @@ private fun PanelChrome(
     val density = LocalDensity.current
     // Measured only while the search is closed, as on the iPhone.
     val searchBarHeight = remember { mutableIntStateOf(with(density) { 62.dp.roundToPx() }) }
-    val noticesHeight = remember { mutableIntStateOf(0) }
+    val noticeHeights = remember { NoticeHeights() }
     val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
     val safeBottom = safe.calculateBottomPadding()
     // The safe area's top with the caption bar left out, which the map shows through.
@@ -630,7 +633,11 @@ private fun PanelChrome(
                 // half of it at most, and the dock's content the rest, inside its own padding and above its grabber.
                 val room = height - 16.dp - searchBar - 8.dp - 16.dp
                 val noticesLimit = max(64.dp, room / 2)
-                val noticesTaken = if (notices) with(density) { noticesHeight.intValue.toDp() } else 0.dp
+                val noticesTaken = if (notices) {
+                    with(density) { noticeHeights.settled(firstLoadFailure, locationIssue, 8.dp.roundToPx(), noticesLimit.roundToPx()).toDp() } + 8.dp
+                } else {
+                    0.dp
+                }
                 val dockLimit = max(160.dp, room - noticesTaken - 16.dp - PANEL_FOOT)
                 val gone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.24)), label = "panel")
                 Box(
@@ -660,9 +667,8 @@ private fun PanelChrome(
                                 locationIssue = locationIssue,
                                 limit = noticesLimit,
                                 onSearchingChange = onSearchingChange,
-                                modifier = Modifier
-                                    .onSizeChanged { noticesHeight.intValue = it.height }
-                                    .padding(bottom = 8.dp),
+                                heights = noticeHeights,
+                                modifier = Modifier.padding(bottom = 8.dp),
                             )
                         }
                         ScooterControlDock(
@@ -803,16 +809,18 @@ private fun TopStack(
     // stack goes under a fold in one step, which nothing else draws again (UI-194). Where the stack comes to rest,
     // not where its spring has it, as the iPhone's onGeometryChange reads the layout, which an animation doesn't move:
     // only the views that draw apply it to their frames (geometryGroup()'s documentation). Taps and names keep clear
-    // of where the search bar goes under a fold from its first frame.
+    // of where the search bar goes under a fold from its first frame. So too a notice that goes leaves it at once, as
+    // the iPhone's stack drops it from its layout while it slides away.
     var roomTop by remember { mutableStateOf<Double?>(null) }
     var barFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barHeight by remember { mutableIntStateOf(0) }
-    var noticesHeight by remember { mutableIntStateOf(0) }
+    val noticeHeights = remember { NoticeHeights() }
     val top = run {
         val room = roomTop ?: return@run null
         val bar = barFrame ?: return@run null
         if (barHeight == 0 || isSearching) return@run null
+        val noticesHeight = with(density) { noticeHeights.settled(failure, locationIssue, 8.dp.roundToPx(), noticesLimit.roundToPx()) }
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
         val sides = listOfNotNull(bar, noticesFrame?.takeIf { noticesHeight > 0 })
         val left = sides.minOf { it.minX }
@@ -859,18 +867,37 @@ private fun TopStack(
                 locationIssue = locationIssue,
                 limit = noticesLimit,
                 onSearchingChange = onSearchingChange,
-                modifier = Modifier
-                    .onSizeChanged { noticesHeight = it.height }
-                    .onGloballyPositioned { noticesFrame = it.windowFrame(density.density) },
+                heights = noticeHeights,
+                modifier = Modifier.onGloballyPositioned { noticesFrame = it.windowFrame(density.density) },
             )
         }
     }
 }
 
 /**
+ * The heights of the notices under the search bar, each as it was last measured while it was there, 0 before: what
+ * the frames handed to the map and the panel's room are worked out from.
+ */
+@Stable
+private class NoticeHeights {
+    var banner by mutableIntStateOf(0)
+    var card by mutableIntStateOf(0)
+
+    /**
+     * The notices' height as the iPhone's layout has it, up to [limit]: those there are, without one that is going,
+     * which the stack drops from its layout at once while the notice slides away over it, [gap] apart.
+     */
+    fun settled(failure: ScooterLoadFailure?, locationIssue: ScooterLocationIssue?, gap: Int, limit: Int): Int {
+        val banner = if (failure != null) banner else 0
+        val card = if (locationIssue != null) card else 0
+        return min(limit, banner + card + if (banner > 0 && card > 0) gap else 0)
+    }
+}
+
+/**
  * What sits under the search bar: the banner of a first load that failed, and the card of a location that could not
- * be found, as tall as [limit] at most. As ViewThatFits: a plain stack while the notices fit, which leaves their
- * shadows and slides whole, and a scroll, which clips them, only when they don't.
+ * be found, as tall as [limit] at most, each measured into [heights]. As ViewThatFits: a plain stack while the notices
+ * fit, which leaves their shadows and slides whole, and a scroll, which clips them, only when they don't.
  */
 @Composable
 private fun TopNotices(
@@ -879,6 +906,7 @@ private fun TopNotices(
     locationIssue: ScooterLocationIssue?,
     limit: Dp,
     onSearchingChange: (Boolean) -> Unit,
+    heights: NoticeHeights,
     modifier: Modifier = Modifier,
 ) {
     val isLoading by controller.isLoading.collectAsStateWithLifecycle()
@@ -889,26 +917,40 @@ private fun TopNotices(
     val locationSettings = LocalLocationSettings.current
     val spring = IosMotion.snappy(duration = 0.28)
     val reduceMotion = LocalReduceMotion.current
-    val enter = if (reduceMotion) fadeIn(snap()) else slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation())
-    val exit = if (reduceMotion) fadeOut(snap()) else slideOutVertically(spring.animation()) { -it } + fadeOut(spring.animation())
+    // A notice slides in from above its place and back up out of it, and what is under it moves on the same spring:
+    // the card down as a banner comes over it, and up as the banner goes.
+    val enter = if (reduceMotion) {
+        fadeIn(snap())
+    } else {
+        slideInVertically(spring.animation()) { -it } + fadeIn(spring.animation()) +
+            expandVertically(spring.animation(), Alignment.Top, clip = false)
+    }
+    val exit = if (reduceMotion) {
+        fadeOut(snap())
+    } else {
+        slideOutVertically(spring.animation()) { -it } + fadeOut(spring.animation()) +
+            shrinkVertically(spring.animation(), Alignment.Top, clip = false)
+    }
+    // The stack's 8 between them comes and goes with the one that comes or goes, so the card moves by the banner and
+    // its spacing on one spring, as the iPhone's does.
+    val gap by animateDpAsState(if (failure != null && locationIssue != null) 8.dp else 0.dp, motion(spring), label = "noticesGap")
     val density = LocalDensity.current
-    var contentHeight by remember { mutableIntStateOf(0) }
-    val scrolls = contentHeight > with(density) { limit.roundToPx() }
+    // As ViewThatFits, which weighs the notices that stay.
+    val scrolls = with(density) { heights.settled(failure, locationIssue, 8.dp.roundToPx(), Int.MAX_VALUE) > limit.roundToPx() }
     Column(
         modifier
             .heightIn(max = limit)
             .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
             .layout { measurable, constraints ->
                 val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
-                contentHeight = placeable.height
                 layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
             },
-        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AnimatedVisibility(failure != null, enter = enter, exit = exit) {
             val shown = lastFailure ?: return@AnimatedVisibility
-            Box {
+            DisposableEffect(Unit) { onDispose { heights.banner = 0 } }
+            Box(Modifier.onSizeChanged { heights.banner = it.height }) {
                 MapStatusBanner(
                     message = shown.message,
                     actionTitle = localized("Try again"),
@@ -919,9 +961,11 @@ private fun TopNotices(
                 Announcer(Announcement(shown.message))
             }
         }
+        Spacer(Modifier.height(gap))
         AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
             val issue = lastIssue ?: return@AnimatedVisibility
-            Box {
+            DisposableEffect(Unit) { onDispose { heights.card = 0 } }
+            Box(Modifier.onSizeChanged { heights.card = it.height }) {
                 LocationIssueCard(
                     issue = issue,
                     onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },

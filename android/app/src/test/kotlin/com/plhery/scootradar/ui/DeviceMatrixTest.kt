@@ -591,7 +591,7 @@ private fun settingsPage(compose: MatrixCompose, row: String) {
 }
 
 /** A controller of two scooters in Zürich, after Near me found no place for the rider, as `issue` says why. */
-private fun located(controllers: TestControllers, clock: TestClock, issue: ScooterLocationIssue): ScooterMapController {
+internal fun located(controllers: TestControllers, clock: TestClock, issue: ScooterLocationIssue): ScooterMapController {
     val api = StubScooterAPI(
         ScooterResponse(
             vehicles = listOf(
