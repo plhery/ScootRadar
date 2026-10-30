@@ -5604,7 +5604,7 @@ extension CityRuleZone {
 extension CityZoneDownloads {
     static let builtIn: [CityZoneDownload] = [
         CityZoneDownload(
-            id: "berlin", place: "Berlin", authority: "Land Berlin, Senatsverwaltung für Mobilität, Verkehr, Klimaschutz und Umwelt, DL-DE Zero 2.0",
+            id: "berlin", place: "Berlin", authority: "Land Berlin",
             timeZone: "Europe/Berlin", source: URL(string: "https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/elektromobilitaet/elektro-tretroller/")!,
             bounds: GeoBounds(south: 52.338246, west: 13.088352, north: 52.675456, east: 13.761155)
         ),

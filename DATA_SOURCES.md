@@ -733,8 +733,9 @@ credited to the city.
   Geoportal Berlin's WFS (`parkverbot_mikromob:parkverbot_mikromobilitaet`,
   `abstell_mikromob:ortung_mikromob`) as GeoJSON, of its open data
   ([Parkverbotszonen für Mietfahrzeuge der Mikromobilität](https://gdi.berlin.de/view/parkverbot_mikromob),
-  DL-DE Zero 2.0, revised quarterly, last on 1 October 2026). The legend links
-  the Senate's [e-scooter page](https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/elektromobilitaet/elektro-tretroller/):
+  DL-DE Zero 2.0, revised quarterly, last on 1 October 2026). The licence asks
+  for no credit, so the legend names only the Land Berlin, in a line on a
+  narrow phone, and links the Senate's [e-scooter page](https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/elektromobilitaet/elektro-tretroller/):
   an e-scooter may not be ridden or parked in a park. The no-parking zones are
   simplified to within 2 m, which takes their 82,432 points to 58,256. Each
   parking place takes its name from the layer: a Jelbi point's or station's
