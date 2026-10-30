@@ -260,3 +260,5 @@
 "No zones published here" = "Aucune zone publiée ici";
 "not now" = "pas en ce moment";
 "Zones unavailable right now" = "Zones indisponibles pour le moment";
+"Loading %@’s zones…" = "Chargement des zones de %@…";
+"%@’s zones unavailable right now" = "Zones de %@ indisponibles pour le moment";

@@ -260,3 +260,5 @@
 "No zones published here" = "Hier zijn geen zones gepubliceerd";
 "not now" = "nu niet";
 "Zones unavailable right now" = "Zones nu niet beschikbaar";
+"Loading %@’s zones…" = "Zones van %@ laden…";
+"%@’s zones unavailable right now" = "Zones van %@ nu niet beschikbaar";

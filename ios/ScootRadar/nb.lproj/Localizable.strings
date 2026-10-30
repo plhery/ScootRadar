@@ -260,3 +260,5 @@
 "No zones published here" = "Ingen soner publisert her";
 "not now" = "ikke nå";
 "Zones unavailable right now" = "Sonene er ikke tilgjengelige nå";
+"Loading %@’s zones…" = "Laster inn sonene i %@ …";
+"%@’s zones unavailable right now" = "Sonene i %@ er ikke tilgjengelige nå";

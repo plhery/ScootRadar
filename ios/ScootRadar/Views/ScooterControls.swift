@@ -2846,10 +2846,13 @@ struct ZoneLegend: View {
     /// on: a line for each kind, hours and who sets them, linked to where they
     /// say so (as on the web, ZoneLegend.tsx).
     var rules: [CityRuleZone.Shown] = []
+    /// The cities over the map whose zones are downloaded and not drawn: a line for each, that they are on
+    /// their way or unavailable, so that no zones drawn never reads as none published there.
+    var notices: [CityZoneDownloads.Notice] = []
 
     var body: some View {
         let lines = ruleLines
-        let note = note(rules: !lines.isEmpty)
+        let note = note(hasLines: !lines.isEmpty)
         VStack(alignment: .leading, spacing: 4) {
             if let note {
                 Text(note)
@@ -2882,6 +2885,11 @@ struct ZoneLegend: View {
                 .tint(ScooterPalette.dockText)
                 .accessibilityElement(children: .combine)
             }
+            ForEach(notices, id: \.city.id) { notice in
+                Text(Self.text(of: notice))
+                    .foregroundStyle(ScooterPalette.dockSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .font(.caption.weight(.medium))
         .padding(.horizontal, 12)
@@ -2895,12 +2903,22 @@ struct ZoneLegend: View {
         state != .off && !(state == .shown && count == 0)
     }
 
-    private func note(rules: Bool) -> String? {
+    /// What it says instead of the kinds: never that no zones are published where a city's are drawn, or
+    /// where a city's are on their way or unavailable.
+    func note(hasLines: Bool) -> String? {
         switch state {
         case .zoomIn: String(localized: "Zoom in to see the zones")
         case .failed: String(localized: "Zones unavailable right now")
-        case .shown where count == 0 && !rules: String(localized: "No zones published here")
+        case .shown where count == 0 && !hasLines && notices.isEmpty: String(localized: "No zones published here")
         default: nil
+        }
+    }
+
+    /// "Loading Berlin’s zones…", "Berlin’s zones unavailable right now".
+    static func text(of notice: CityZoneDownloads.Notice) -> String {
+        switch notice.state {
+        case .loading: String(format: String(localized: "Loading %@’s zones…"), notice.city.place.isolated)
+        case .unavailable: String(format: String(localized: "%@’s zones unavailable right now"), notice.city.place.isolated)
         }
     }
 

@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { transform } from 'esbuild';
 import {
@@ -6,6 +6,7 @@ import {
   townOutlinesProblem,
   typescriptCatalogs, typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
+import { swiftZoneDownloads, ZONE_DOWNLOAD_DIRECTORY, zoneDownloadFiles } from './zone-downloads.mjs';
 
 const root = process.cwd();
 const sourcePath = resolve(root, 'data/providers.json');
@@ -40,12 +41,16 @@ const ruleZones = readJson('data/rule-zones.json').zones;
 // website draws (src/lib/ruleZones.ts): they are left out here, and so is a city with nothing
 // else, Nagoya or Helsingborg, so that neither app's catalog lists them.
 const WEBSITE_ONLY_KINDS = new Set(['pavement', 'racksOnly']);
-const cityZones = readJson('data/city-zones.json').cities
+// A city marked download is built into neither: the apps download its zones from the website
+// (docs/city-zone-downloads.md), which publishes them under public/zones/v1/.
+const zoneCities = readJson('data/city-zones.json').cities
   .map(city => {
     const { zones, ...file } = readJson(`data/city-zones/${city.id}.json`);
     return { ...city, ...file, zones: zones.filter(zone => !WEBSITE_ONLY_KINDS.has(zone.kind)) };
   })
   .filter(city => city.zones.length);
+const cityZones = zoneCities.filter(city => !city.download);
+const downloadCityZones = zoneCities.filter(city => city.download);
 
 function validateCatalog() {
   if (!Array.isArray(providers) || providers.length === 0) {
@@ -240,6 +245,26 @@ function writeOrCheck(path, expected) {
   }
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, expected);
+}
+
+// The download cities' files, in a directory of their own: a file there of no city is stale, and
+// deleted, or with --check reported.
+function writeZoneDownloads() {
+  const directory = resolve(root, ZONE_DOWNLOAD_DIRECTORY);
+  const files = zoneDownloadFiles(downloadCityZones);
+  let present = [];
+  try {
+    present = readdirSync(directory);
+  } catch {}
+  for (const name of present.filter(name => !(name in files))) {
+    if (checkOnly) {
+      console.error(`${ZONE_DOWNLOAD_DIRECTORY}/${name} is of no city to download. Run npm run generate:providers.`);
+      process.exitCode = 1;
+    } else {
+      unlinkSync(resolve(directory, name));
+    }
+  }
+  for (const [name, contents] of Object.entries(files)) writeOrCheck(resolve(directory, name), contents);
 }
 
 const swiftBounds = b => `GeoBounds(south: ${b.south}, west: ${b.west}, north: ${b.north}, east: ${b.east})`;
@@ -475,14 +500,17 @@ ${lines.join('\n')}
 `;
 }
 
-function swiftCityZones() {
+// The cities' zones, built in or downloaded, as the apps read them.
+function validateCityZones() {
   const kinds = new Set(['parking', 'noParking', 'slow', 'noRide']);
   const ids = new Set(ruleZones.map(zone => zone.id));
-  const name = (id, what) => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Zone${what}`;
-  const properties = [];
-  const entries = cityZones.map(city => {
+  for (const city of zoneCities) {
     if (!/^[a-z]+$/.test(city.id) || !city.authority || !/^https:\/\//.test(city.source?.url)) {
       throw new Error(`City zones without a source: ${city.id}`);
+    }
+    if (city.download !== undefined && city.download !== true) throw new Error(`City zones ${city.id}: download is true or left out`);
+    if (city.download && !(city.place && city.timeZone && ['south', 'west', 'north', 'east'].every(edge => Number.isFinite(city.bounds?.[edge])))) {
+      throw new Error(`City zones to download without a place, time zone or bounds: ${city.id}`);
     }
     if (city.zones.length === 0) throw new Error(`City without zones: ${city.id}`);
     for (const zone of city.zones) {
@@ -495,6 +523,13 @@ function swiftCityZones() {
         throw new Error(`Invalid city zone ring: ${zone.id}`);
       }
     }
+  }
+}
+
+function swiftCityZones() {
+  const name = (id, what) => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Zone${what}`;
+  const properties = [];
+  const entries = cityZones.map(city => {
     properties.push(
       `    private static let ${name(city.id, 'Ids')}: [String] = [${city.zones.map(zone => JSON.stringify(zone.id)).join(', ')}]`,
       `    private static let ${name(city.id, 'Kinds')}: [ScooterZoneKind] = [${city.zones.map(zone => `.${zone.kind}`).join(', ')}]`,
@@ -669,9 +704,10 @@ const birdProblem = birdAreasProblem(regionalSystems, readJson('data/bird-app-ar
 if (birdProblem) throw new Error(birdProblem);
 const swissProblem = swissCatalogProblem(regionalSystems, swissAreas);
 if (swissProblem) throw new Error(swissProblem);
-// Written in every case: writing it checks the curfews, rule zones and city zones.
+validateCityZones();
+// Written in every case: writing it checks the curfews and rule zones.
 const swift = swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftRuleZones() + swiftCityZones() +
-  swiftCountries(countries);
+  swiftZoneDownloads(downloadCityZones, cityZones) + swiftCountries(countries);
 if (androidDirectory) {
   const generated = 'com/plhery/scootradar/core/generated';
   for (const [path, contents] of [
@@ -686,4 +722,5 @@ if (androidDirectory) {
   writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
   writeOrCheck(catalogsPath, typescriptCatalogs(countries));
   writeOrCheck(swiftPath, swift);
+  writeZoneDownloads();
 }

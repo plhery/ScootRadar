@@ -260,3 +260,5 @@
 "No zones published here" = "Engin svæði birt hér";
 "not now" = "ekki núna";
 "Zones unavailable right now" = "Svæðin eru ekki tiltæk núna";
+"Loading %@’s zones…" = "Sæki svæðin í %@…";
+"%@’s zones unavailable right now" = "Svæðin í %@ eru ekki tiltæk núna";

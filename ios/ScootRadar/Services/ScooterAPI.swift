@@ -4,12 +4,20 @@ protocol ScooterAPIClient: Sendable {
     func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse
     /// The operators' zones that reach into the area.
     func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse
+    /// A file of the cities' zones the app downloads, under /zones/v1/: the index, or a city's
+    /// (docs/city-zone-downloads.md).
+    func cityZoneFile(_ name: String) async throws -> Data
 }
 
 extension ScooterAPIClient {
     /// A client that knows no zones has none to give.
     func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
         ScooterZoneResponse(zones: [], pending: false, truncated: false)
+    }
+
+    /// Nor any city's to download.
+    func cityZoneFile(_ name: String) async throws -> Data {
+        throw ScooterAPIError.httpStatus(404)
     }
 }
 
@@ -81,13 +89,18 @@ actor ScooterAPI: ScooterAPIClient {
         }
     }
 
+    /// A static file of the website: the same for everyone, it asks with no coordinates.
+    func cityZoneFile(_ name: String) async throws -> Data {
+        try await get("zones/v1/\(name)", query: []).0
+    }
+
     /// A GET to the app's server, with what went wrong told apart as the dock reports it.
     private func get(_ path: String, query: [URLQueryItem]) async throws -> (Data, HTTPURLResponse) {
         var components = URLComponents(
             url: baseURL.appending(path: path),
             resolvingAgainstBaseURL: false
         )!
-        components.queryItems = query
+        components.queryItems = query.isEmpty ? nil : query
 
         guard let url = components.url else {
             throw ScooterAPIError.invalidURL

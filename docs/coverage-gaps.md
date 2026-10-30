@@ -90,14 +90,18 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
   Herzliya and Sandefjord. Atlanta's, Baltimore's and Columbus's corrals are
   drawn since 30 October 2026.
+- **Waiting on the iOS release that downloads them:** Berlin's 2,529
+  no-parking zones and 637 parking places (DL-DE Zero) and Hamburg's 3,043
+  no-parking zones and 145 parking areas (DL-DE BY 2.0), read on 30 October
+  2026 and published under `/zones/v1/` for the iOS app to download
+  ([city zone downloads](city-zone-downloads.md)); neither the website nor any
+  shipped app draws them until that release is out.
 - **WFS, OGC API or GeoJSON, not added yet** (the script reads GeoJSON
   since 30 October 2026, when Basel's, Helsinki's, München's, Münster's,
-  Wien's and New York's were added): Hamburg's 145 parking places and 3,043
-  no-parking areas (DL-DE BY 2.0), Berlin's 2,529 no-parking zones (parks,
-  playgrounds, cemeteries; `parkverbot_mikromob`, DL-DE Zero, about 73,500
-  points simplified, which would take the iOS catalog from 5.1 MB to about
-  6.8 MB) and 637 parking places (DL-DE Zero), and Lille's 680 places
-  (Etalab 2.0). Brussels's dropzones, where shared bikes and scooters must
+  Wien's and New York's were added): Lille's 680 places for e-scooters
+  (Etalab 2.0), which the map already draws as Lime Lille's mandatory parking,
+  from the same MEL dataset (`edpm_vae_libreservice`): as city zones they
+  would be drawn twice. Brussels's dropzones, where shared bikes and scooters must
   park, are on Brussels Mobility's WFS (`bm_bike:dropzones_buffer` on
   data.mobility.brussels, CC0, updated daily): 2,266 circles, some 74,800
   points before simplifying, beside 2,374 points, 2,106 of them active.

@@ -99,11 +99,15 @@ async function fresh() {
 
 describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
-    const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
-    const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'cityoflondon', 'columbus', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    const { CITY_ZONE_FILES } = await fresh();
+    const cities = index.cities.map(city => city.id).sort();
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
+  });
+
+  it('draws every city but Berlin and Hamburg, held back for the iPhone release that downloads them', async () => {
+    const { ZONE_CITIES } = await fresh();
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'cityoflondon', 'columbus', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {

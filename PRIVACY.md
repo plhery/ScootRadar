@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 23 October 2026
+Last updated: 30 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -36,6 +36,10 @@ searches.
   iOS app also keeps the number of days it was used, the time "Open in" was last
   tapped and when it last asked. Precise map origins are not persisted, and the
   places chosen in the search are kept in memory only, until the app is closed.
+  The iOS app keeps on the device the ride and parking zones of the cities it
+  downloads them for, such as Berlin, fetched from ScootRadar's website the first
+  time the map shows the city close up: the request names the city, not a
+  position, and the zones are kept until the app or the system clears its cache.
 - Cloudflare hosts and protects the service. Persisted Worker invocation logs
   are disabled so full coordinate-bearing request URLs are not retained in the
   application's log stream.

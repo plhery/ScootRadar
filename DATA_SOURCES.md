@@ -610,9 +610,13 @@ Nagoya's pavements as teal lines; the legend names the city, linked to where it
 says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
-catalogs. `scripts/update-city-zones.mjs` reads them again. Alexandria,
-Basel, Helsinki, München, Münster, St. Albert, Santa Monica, Taupō, Vancouver,
-Vantaa, Washington and Wien state a licence for their layers, Washington for two of its
+catalogs, and Berlin's and Hamburg's, too many to build in: the iOS app
+downloads those from the website's `/zones/v1/` once a view reaches the city
+([city zone downloads](docs/city-zone-downloads.md)), and the website draws
+them only once that iOS release is out. `scripts/update-city-zones.mjs` reads
+them again. Alexandria, Basel, Berlin, the City of London, Hamburg, Helsinki,
+München, Münster, St. Albert, Santa Monica, Taupō, Vancouver, Vantaa,
+Washington and Wien state a licence for their layers, Washington for two of its
 three; since 28 October 2026 a city's public zone layers are drawn regardless,
 credited to the city.
 
@@ -719,6 +723,20 @@ credited to the city.
   them, as ScootRadar's does, and lists all three as active (`Status` "Aktiv";
   Festplassen's repainted in May 2023, Steinerskolen's set out with the school),
   so they stay (checked 29 October 2026).
+- **Berlin** (read 30 October 2026; for the iOS app to download, drawn
+  nowhere until that release): the Land Berlin's 2,529 no-parking zones for rental micromobility
+  (2,594 parts), parks, playgrounds, cemeteries and places the districts
+  report, which the operators keep free under their special-use permits since
+  1 September 2022, and its 637 parking places, Jelbi points and stations and
+  other marked areas, where riders should preferably leave them, each the
+  circle of 10 m the Senate draws round it to find a scooter in it, from the
+  Geoportal Berlin's WFS (`parkverbot_mikromob:parkverbot_mikromobilitaet`,
+  `abstell_mikromob:ortung_mikromob`) as GeoJSON, of its open data
+  ([Parkverbotszonen für Mietfahrzeuge der Mikromobilität](https://gdi.berlin.de/view/parkverbot_mikromob),
+  DL-DE Zero 2.0, revised quarterly, last on 1 October 2026). The legend links
+  the Senate's [e-scooter page](https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/elektromobilitaet/elektro-tretroller/):
+  an e-scooter may not be ridden or parked in a park. The no-parking zones are
+  simplified to within 2 m, which takes their 82,432 points to 58,256.
 - **Boise** (read 29 October 2026): the City of Boise's 43 parking corrals,
   44 no-parking zones, 9 slow zones and 71 no-riding zones, from the
   `Boise_Micromobility` feature service its
@@ -782,6 +800,21 @@ credited to the city.
   this one states no licence, and is drawn under the rule of 28 October 2026,
   credited "City of Columbus". columbus.gov answers scripts 403, so the legend
   links the map.
+- **Hamburg** (read 30 October 2026; for the iOS app to download, drawn
+  nowhere until that release): the Freie und Hansestadt Hamburg's 3,043 no-parking zones for
+  e-scooters (3,589 parts; one has no shape and is left out), where a rental
+  can't end, green spaces, schools and sports grounds among them, and its 145
+  parking areas, 48 marked on the street and 97 digital ones at stops, each a
+  disc 5 m round its point, from the city's WFS (`wfs_hh_escooter` on
+  geodienste.hamburg.de) as GeoJSON, of its open data
+  ([Abstellflächen und Parkverbotszonen E-Scooter Hamburg](https://metaver.de/trefferanzeige?docuuid=723941D2-768B-4ABB-B657-8C0004AE80DD),
+  DL-DE BY 2.0; credit: Freie und Hansestadt Hamburg, Behörde für Verkehr und
+  Mobilitätswende). The legend links the city's
+  [e-scooter page](https://www.hamburg.de/verkehr/e-mobilitaet/e-scooter-411320):
+  a rental can't end in the no-parking zones, shown red in the operators'
+  apps, and where it can the city pairs them with marked parking areas. The
+  no-parking zones are simplified to within 2 m, which takes their 183,892
+  points to 56,764.
 - **Helsingborg** (read 30 October 2026): central Helsingborg, about 3.9 km²
   from Tågaborg to Söder, where e-scooters park only in a bicycle rack or a
   marked place: the area of Helsingborgs kommun's local traffic rule

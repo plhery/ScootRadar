@@ -226,6 +226,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// The cities' rules and zones over the map, for the legend; each is one of mapZones,
     /// which may draw more of them, just off the map.
     private(set) var mapRuleZones: [CityRuleZone.Shown] = []
+    /// The cities over the map whose zones the app downloads and has not drawn: on their way, or unavailable,
+    /// which the legend says rather than draw none (docs/city-zone-downloads.md).
+    private(set) var mapZoneNotices: [CityZoneDownloads.Notice] = []
     /// How many of mapZones are the operators'.
     private(set) var mapOperatorZoneCount = 0
 
@@ -286,6 +289,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private(set) var ridePasses: [ScooterProvider: ProviderRidePass]
 
     @ObservationIgnored private let api: any ScooterAPIClient
+    @ObservationIgnored private let cityZoneDownloads: CityZoneDownloads
     @ObservationIgnored private let locationManager: CLLocationManager
     @ObservationIgnored private var isTrackingHeading = false
     @ObservationIgnored private var isSceneActive = true
@@ -389,7 +393,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let userFocusZoom = 17
 
     override convenience init() {
-        self.init(api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard, start: Self.start)
+        self.init(
+            api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard, start: Self.start,
+            cityZoneCache: CityZoneCache.standard
+        )
     }
 
     init(
@@ -402,7 +409,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         directions: any WalkingDirectionsClient = MapKitWalkingDirections(),
         openInMaps: @escaping @MainActor (ScooterWalkTarget) -> Void = { $0.openInMaps() },
         iPhoneLanguages: @escaping () -> [String] = { ScooterLanguage.iPhoneLanguages },
-        start: ScooterMapStart = .switzerland
+        start: ScooterMapStart = .switzerland,
+        cityZoneCache: CityZoneCache? = nil
     ) {
         startCenter = start.center
         distanceOrigin = start.center
@@ -410,6 +418,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         viewportZoom = start.zoom
         viewportZoomLevel = Double(start.zoom)
         self.api = api
+        cityZoneDownloads = CityZoneDownloads(api: api, cache: cityZoneCache, now: now)
         self.directions = directions
         self.openInMaps = openInMaps
         self.iPhoneLanguages = iPhoneLanguages
@@ -455,6 +464,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         super.init()
 
+        cityZoneDownloads.onChange = { [weak self] in self?.rebuildMapZones() }
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = Self.distanceFilter
@@ -2342,9 +2352,20 @@ extension ScooterMapModel {
         } else if ruleZoneArea?.contains(viewport) != true {
             ruleZoneArea = viewport.expanded(by: 0.5)
         }
-        let rules = ruleZoneArea.map { CityRuleZone.shown(over: $0, zoom: viewportZoom, at: clock()) } ?? []
+        var rules: [CityRuleZone.Shown] = []
+        var notices: [CityZoneDownloads.Notice] = []
+        if let ruleZoneArea {
+            // The cities' zones built in, and those downloaded; the others the area reaches are asked for.
+            cityZoneDownloads.request(over: ruleZoneArea)
+            let downloaded = cityZoneDownloads.shown(over: ruleZoneArea)
+            let now = clock()
+            rules = CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now) +
+                CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now, among: downloaded.zones)
+            notices = downloaded.notices.filter { $0.city.bounds.intersects(viewport) }
+        }
         let rulesInView = rules.filter { $0.rule.bounds.intersects(viewport) }
         if rulesInView != mapRuleZones { mapRuleZones = rulesInView }
+        if notices != mapZoneNotices { mapZoneNotices = notices }
         if shown.count != mapOperatorZoneCount { mapOperatorZoneCount = shown.count }
         let drawn = rules.map(\.mapZone) + shown
         guard drawn != mapZones else { return }

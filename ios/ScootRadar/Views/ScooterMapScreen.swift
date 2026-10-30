@@ -417,9 +417,10 @@ struct ScooterMapScreen: View {
     /// the map; the names on the map keep clear of it.
     @ViewBuilder
     private var zoneLegend: some View {
-        if model.zoneState != .off || !model.mapRuleZones.isEmpty {
+        if model.zoneState != .off || !model.mapRuleZones.isEmpty || !model.mapZoneNotices.isEmpty {
             ZoneLegend(
-                state: model.zoneState, count: model.mapOperatorZoneCount, rules: model.mapRuleZones
+                state: model.zoneState, count: model.mapOperatorZoneCount, rules: model.mapRuleZones,
+                notices: model.mapZoneNotices
             )
                 .onGeometryChange(for: CGRect.self) { geometry in
                     geometry.frame(in: .global)

@@ -260,3 +260,5 @@
 "No zones published here" = "No zones published here";
 "not now" = "not now";
 "Zones unavailable right now" = "Zones unavailable right now";
+"Loading %@’s zones…" = "Loading %@’s zones…";
+"%@’s zones unavailable right now" = "%@’s zones unavailable right now";

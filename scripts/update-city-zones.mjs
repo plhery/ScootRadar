@@ -23,7 +23,7 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // are an ArcGIS feature service too, its zones named in another field. Nagoya's are no
 // zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
-// A layer of format geojson is GeoJSON: Helsinki's, München's, Münster's and Wien's are WFS layers,
+// A layer of format geojson is GeoJSON: Berlin's, Hamburg's, Helsinki's, München's, Münster's and Wien's are WFS layers,
 // asked for so, and Basel's an open data portal's export. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
@@ -173,8 +173,9 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * property left empty): a WFS's or an OGC API's features, asked for as GeoJSON in latitude and
  * longitude, or an open data portal's export. Polygons are zones as a feature service's are, and
  * points discs, named by `nameField` or else `pointName`, or after the city. A zone's id is its
- * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them,
- * or for a feature without one, as Münster's are, a hash of its shape.
+ * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them
+ * and Hamburg's (DE.HH.UP_PARKVERBOTSZONEN_E_SCOOTER_6), or for a feature without one, as
+ * Münster's are, a hash of its shape. A feature without a shape, as one of Hamburg's, is no zone.
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
  * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points.
  */
@@ -188,8 +189,12 @@ async function geojsonZones(city, { kind, url, match = {}, nameField, idField, p
   const wanted = ({ properties }) => Object.entries(match).every(([key, values]) => [values].flat().includes(properties?.[key] ?? null));
   return body.features.filter(wanted).flatMap(feature => {
     const { properties, geometry } = feature;
+    if (geometry === null) {
+      console.log(`${city.id} ${kind}: ${feature.id ?? 'a feature'} has no shape`);
+      return [];
+    }
     const featureId = idField ? String(properties[idField] ?? '')
-      : feature.id != null ? String(feature.id).replace(/^.*\./, '')
+      : feature.id != null ? String(feature.id).replace(/^.*\./, '').replace(/^.*_(?=\d+$)/, '')
         : createHash('sha1').update(JSON.stringify(geometry?.coordinates ?? null)).digest('hex').slice(0, 8);
     if (!featureId) throw new Error(`${url}: a feature has no ${idField}`);
     const id = `${city.id}-${slug(kind)}-${featureId}`;

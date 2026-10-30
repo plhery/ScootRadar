@@ -27,7 +27,11 @@ export interface ZoneFile {
     & ({ ring: number[][]; lines?: undefined } | { lines: number[][][]; ring?: undefined }))[];
 }
 
-export const ZONE_CITIES: ZoneCity[] = index.cities;
+/**
+ * The cities whose zones the website draws: all but those held back for the iPhone release that
+ * downloads them (`"website": false`, docs/city-zone-downloads.md).
+ */
+export const ZONE_CITIES: ZoneCity[] = index.cities.filter(city => !('website' in city && city.website === false));
 
 /**
  * Each city's zones, loaded when asked for. Named one by one, so that the bundler makes each
@@ -42,10 +46,12 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   baltimore: () => import('../../data/city-zones/baltimore.json'),
   basel: () => import('../../data/city-zones/basel.json'),
   bergen: () => import('../../data/city-zones/bergen.json'),
+  berlin: () => import('../../data/city-zones/berlin.json'),
   boise: () => import('../../data/city-zones/boise.json'),
   boulder: () => import('../../data/city-zones/boulder.json'),
   cityoflondon: () => import('../../data/city-zones/cityoflondon.json'),
   columbus: () => import('../../data/city-zones/columbus.json'),
+  hamburg: () => import('../../data/city-zones/hamburg.json'),
   helsingborg: () => import('../../data/city-zones/helsingborg.json'),
   helsinki: () => import('../../data/city-zones/helsinki.json'),
   jarvenpaa: () => import('../../data/city-zones/jarvenpaa.json'),
