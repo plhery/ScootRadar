@@ -88,10 +88,10 @@ const guide: Guide = {
             caption: 'Regras e coimas para trotinetes elétricas em Portugal (Código da Estrada, outubro de 2026)',
             head: ['Regra', 'O que fazer', 'Coima'],
             rows: [
-              ['Passeio', 'Não circular nele (só crianças até aos 10 anos); levar a trotinete à mão', '60 a 300 €'],
-              ['Sentido do trânsito', 'Circular no sentido do trânsito, junto à direita', '250 a 1250 € em contramão'],
-              ['Telemóvel e auriculares', 'Não usar o telemóvel; no máximo um auricular', '250 a 1250 €'],
-              ['Álcool', 'Limite de 0,5 g/l, como para os automobilistas; a partir de 1,2 g/l é crime', '250 a 1250 € (0,5 a 0,8 g/l); 500 a 2500 € (0,8 a 1,2 g/l)'],
+              ['Passeio', 'Não circular nele (só crianças até aos 10 anos); levar a trotinete à mão', '30 a 150 €'],
+              ['Sentido do trânsito', 'Circular no sentido do trânsito, junto à direita', '125 a 625 € em contramão'],
+              ['Telemóvel e auriculares', 'Não usar o telemóvel; no máximo um auricular', '125 a 625 €'],
+              ['Álcool', 'Limite de 0,5 g/l, como para os automobilistas; a partir de 1,2 g/l é crime', '125 a 625 € (0,5 a 0,8 g/l); 250 a 1250 € (0,8 a 1,2 g/l)'],
               ['Passageiros', 'Uma só pessoa por trotinete', '60 a 300 €'],
               ['Luzes', 'Acesas do anoitecer ao amanhecer e com pouca visibilidade', '30 a 150 €'],
               ['Capacete', 'Não é obrigatório, mas é muito recomendado', 'Nenhuma por agora; 30 a 150 € nos projetos de lei'],
@@ -156,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'As trotinetes podem andar no passeio?',
-      answer: 'Não: o Código da Estrada só o permite a crianças até 10 anos, e a coima é de 60 a 300 €. Em Lisboa, as trotinetes partilhadas também não podem andar em ruas pedonais nem em praças.',
+      answer: 'Não: o Código da Estrada só o permite a crianças até 10 anos, e a coima é de 30 a 150 €. Em Lisboa, as trotinetes partilhadas também não podem andar em ruas pedonais nem em praças.',
     },
     {
       question: 'É obrigatório usar capacete na trotinete elétrica?',

@@ -69,7 +69,7 @@ const guide: Guide = {
       blocks: [
         'Fora das zonas acima, a app da Bird deixa terminar a viagem na maior parte da cidade: nos dados abertos da Bird, Portimão não tem estações. A Bird pede que pare numa zona de estacionamento permitida, baixe o descanso, deixe livres passeios, rampas e entradas, e tire a fotografia na app.',
         { note: 'A app não deixa terminar a viagem à beira-mar? Siga até à Avenida Tomás Cabreira ou à Estrada do Vau e pare fora do passeio: enquanto a viagem não acaba, continua a pagar.' },
-        'Uma trotinete própria estacionada no passeio ou na ciclovia dá coima de 30 a 150 €, ou de 60 a 300 € se impedir a passagem de peões. Numa partilhada, o contrato da Bird passa as coimas e as despesas a quem a conduzia, e uma trotinete que não seja devolvida em 48 horas pode custar até 500 €.',
+        'Uma trotinete própria estacionada no passeio ou na ciclovia dá coima de 15 a 75 €, ou de 30 a 150 € se impedir a passagem de peões. Numa partilhada, o contrato da Bird passa as coimas e as despesas a quem a conduzia, e uma trotinete que não seja devolvida em 48 horas pode custar até 500 €.',
       ],
     },
     {
@@ -81,11 +81,11 @@ const guide: Guide = {
             caption: 'Regras e coimas para trotinetes elétricas (Código da Estrada, outubro de 2026)',
             head: ['Regra', 'O que fazer', 'Coima'],
             rows: [
-              ['Passeio', 'Andar na estrada ou na ciclovia; no passeio, só crianças até aos 10 anos', '60 a 300 €'],
-              ['Sentido', 'Pela direita, no sentido do trânsito', '250 a 1250 € em sentido contrário'],
-              ['Telemóvel e auriculares', 'Telemóvel guardado; no máximo um auricular', '250 a 1250 €'],
+              ['Passeio', 'Andar na estrada ou na ciclovia; no passeio, só crianças até aos 10 anos', '30 a 150 €'],
+              ['Sentido', 'Pela direita, no sentido do trânsito', '125 a 625 € em sentido contrário'],
+              ['Telemóvel e auriculares', 'Telemóvel guardado; no máximo um auricular', '125 a 625 €'],
               ['Passageiro', 'Só uma pessoa por trotinete', '60 a 300 €'],
-              ['Álcool', 'Menos de 0,5 g/l', '250 a 2500 €; crime a partir de 1,2 g/l'],
+              ['Álcool', 'Menos de 0,5 g/l', '125 a 1250 €; crime a partir de 1,2 g/l'],
               ['Luzes', 'Acesas do anoitecer ao amanhecer', '30 a 150 €'],
               ['Capacete', 'Não é obrigatório, mas use-o', 'Nenhuma, por agora'],
               ['Idade', 'A lei não fixa mínimo; a Bird pede 18 anos', '–'],

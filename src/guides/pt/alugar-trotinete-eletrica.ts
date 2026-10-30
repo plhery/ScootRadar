@@ -187,7 +187,7 @@ const guide: Guide = {
     },
     {
       question: 'Posso andar de trotinete partilhada no passeio?',
-      answer: 'Não. O Código da Estrada só deixa andar no passeio crianças até aos 10 anos, e a coima é de 60 a 300 €. Circule na ciclovia ou na faixa de rodagem, pela direita. Em Lisboa e no Porto, as trotinetes partilhadas também não podem andar em praças, jardins nem ruas pedonais.',
+      answer: 'Não. O Código da Estrada só deixa andar no passeio crianças até aos 10 anos, e a coima é de 30 a 150 €. Circule na ciclovia ou na faixa de rodagem, pela direita. Em Lisboa e no Porto, as trotinetes partilhadas também não podem andar em praças, jardins nem ruas pedonais.',
     },
     {
       question: 'Podem ir duas pessoas na mesma trotinete?',
