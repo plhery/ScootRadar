@@ -29,5 +29,6 @@
 "Walking routes" = "Itinéraires à pied";
 /* Settings › Map & data credits: OpenStreetMap's page for reporting a mistake in the map, joined to its name, "OpenStreetMap" (map.md MAP-034). */
 "Fix the map" = "Corriger la carte";
-/* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address, %@, is copied. */
-"No mail app found. The address %@ was copied to the clipboard." = "Aucune app de messagerie trouvée. L’adresse %@ a été copiée dans le presse-papiers.";
+/* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address is copied, in two
+   lines at most on a phone, as Android 12 and later cut a toast; the address itself is in the clipboard. */
+"No mail app found. The address was copied." = "Aucune app de messagerie trouvée. L’adresse a été copiée.";

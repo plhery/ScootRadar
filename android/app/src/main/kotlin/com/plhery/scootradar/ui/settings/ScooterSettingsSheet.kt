@@ -254,12 +254,14 @@ private fun rememberLinks(): Links {
 
 /**
  * A mail to [mail]'s address with no mail app on the phone, which some Android phones have none of, where the
- * iPhone always has Mail or offers it again (X-AD39): the address is copied, and the rider told so.
+ * iPhone always has Mail or offers it again (X-AD39): the address is copied, and the rider told so. The toast doesn't
+ * name the address: Android 12 and later show a toast's first two lines only, and 13 and later show what was copied
+ * themselves.
  */
 private fun Context.copyAddress(mail: URI) {
     val address = mail.schemeSpecificPart.substringBefore('?')
     getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText(address, address))
-    Toast.makeText(this, stringFormat(localized("No mail app found. The address %@ was copied to the clipboard."), address), Toast.LENGTH_LONG).show()
+    Toast.makeText(this, localized("No mail app found. The address was copied."), Toast.LENGTH_LONG).show()
 }
 
 @Composable
