@@ -6,13 +6,19 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
+import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.SeekableTransitionState
 import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.rememberTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -40,12 +46,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -97,11 +106,13 @@ import com.plhery.scootradar.ui.theme.SelectionFeedback
 import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
-import com.plhery.scootradar.ui.theme.motion
 import com.plhery.scootradar.ui.theme.scootColors
 import java.net.URI
 import java.time.Instant
 import java.time.ZoneOffset
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 
 // ScooterSettingsSheet, ScooterLanguageSettings, ScooterPrivacySettings, ScooterCreditsList and
 // ProviderRidePassEditor in ios/ScootRadar/Views/ScooterControls.swift (ui.md UI-070, UI-072, UI-077, UI-080 to
@@ -146,8 +157,47 @@ fun ScooterSettingsSheet(
         stack.add(it)
     }
     val pop: () -> Unit = { if (stack.size > 1) stack.removeAt(stack.lastIndex) }
-    // Back takes a page away before it closes the sheet.
-    BackHandler(enabled = stack.size > 1, onBack = pop)
+
+    // The pages shown, which a tap's push or pop springs to, and a back gesture draws along (UI-210).
+    val pages = remember { SeekableTransitionState(stack.toList()) }
+    val transition = rememberTransition(pages, label = "page")
+    // Whether the page going is drawn along by a back gesture: it then follows the gesture's progress evenly.
+    var followsGesture by remember { mutableStateOf(false) }
+    val shownStack = stack.toList()
+    LaunchedEffect(shownStack) {
+        if (pages.targetState == shownStack && pages.currentState != shownStack) {
+            // A back gesture let go of the page: it goes on from where the gesture left it, as iOS's swipe back does.
+            pages.animateTo(shownStack, GESTURE_END)
+        } else {
+            followsGesture = false
+            pages.animateTo(shownStack)
+        }
+    }
+    // Back takes a page away before it closes the sheet. Drawn out, the page follows it, as iOS's page follows a
+    // swipe from the edge; let go, it goes, and called off, it stays.
+    PredictiveBackHandler(enabled = stack.size > 1) { progress ->
+        val from = stack.toList()
+        val below = from.dropLast(1)
+        var started = false
+        try {
+            progress.collect { event ->
+                if (!started) {
+                    started = true
+                    followsGesture = true
+                    // The page below is laid out at the gesture's start first, so that both pages move from there:
+                    // what a transition takes on part way starts where it is.
+                    pages.seekTo(0f, below)
+                    withFrameNanos { }
+                }
+                pages.seekTo(event.progress, below)
+            }
+        } catch (cancelled: CancellationException) {
+            // Android 14 and later take the gesture's progress back to nothing first.
+            withContext(NonCancellable) { if (pages.targetState == below) pages.snapTo(from) }
+            throw cancelled
+        }
+        pop()
+    }
 
     val changes = rememberControllerChanges(controller)
     val appearance by controller.appearance.collectAsState()
@@ -164,18 +214,20 @@ fun ScooterSettingsSheet(
     val reduceMotion = LocalReduceMotion.current
     val colors = scootColors
     Column(Modifier.fillMaxSize()) {
-        // The title cross-fades as a page comes or goes.
-        Crossfade(stack.last() to language, animationSpec = motion(IosMotion.smooth(duration = 0.35)), label = "bar") { (page, _) ->
-            SheetTitleBar(
-                title = page.title(),
-                leading = if (page != SettingsPage.Root) ({ SheetBackButton(onClick = pop) }) else null,
-                trailing = if (page == SettingsPage.Root) ({ SheetDoneButton(localized("Done"), onClick = onDone) }) else null,
-            )
+        // The title cross-fades as a page comes or goes, along with a back gesture.
+        transition.AnimatedContent(transitionSpec = { titleTransition(reduceMotion, followsGesture) }) { shown ->
+            val page = shown.last()
+            // Written again in the language chosen.
+            key(language) {
+                SheetTitleBar(
+                    title = page.title(),
+                    leading = if (page != SettingsPage.Root) ({ SheetBackButton(onClick = pop) }) else null,
+                    trailing = if (page == SettingsPage.Root) ({ SheetDoneButton(localized("Done"), onClick = onDone) }) else null,
+                )
+            }
         }
-        AnimatedContent(
-            targetState = stack.toList(),
-            transitionSpec = { pageTransition(forward = targetState.size > initialState.size, reduceMotion) },
-            label = "page",
+        transition.AnimatedContent(
+            transitionSpec = { pageTransition(forward = targetState.size > initialState.size, reduceMotion, followsGesture) },
         ) { shown ->
             Column(
                 Modifier
@@ -200,20 +252,35 @@ fun ScooterSettingsSheet(
 
 /**
  * A NavigationStack's push: the new page slides in from the end over the one it covers, which slides a third of
- * its width toward the start; a pop runs it backwards. Remove animations swaps them at once.
+ * its width toward the start; a pop runs it backwards, evenly with a back gesture's progress where it
+ * [followsGesture]. Remove animations swaps them at once.
  */
-private fun pageTransition(forward: Boolean, reduceMotion: Boolean): ContentTransform {
+private fun pageTransition(forward: Boolean, reduceMotion: Boolean, followsGesture: Boolean): ContentTransform {
     if (reduceMotion) return EnterTransition.None togetherWith ExitTransition.None
-    val spring = IosMotion.smooth(duration = 0.4).animation(visibilityThreshold = IntOffset.VisibilityThreshold)
+    val spec: FiniteAnimationSpec<IntOffset> =
+        if (followsGesture) following() else IosMotion.smooth(duration = 0.4).animation(visibilityThreshold = IntOffset.VisibilityThreshold)
     val transition = if (forward) {
-        slideInHorizontally(spring) { it } togetherWith slideOutHorizontally(spring) { -it / 3 }
+        slideInHorizontally(spec) { it } togetherWith slideOutHorizontally(spec) { -it / 3 }
     } else {
-        slideInHorizontally(spring) { -it / 3 } togetherWith slideOutHorizontally(spring) { it }
+        slideInHorizontally(spec) { -it / 3 } togetherWith slideOutHorizontally(spec) { it }
     }
     // The deeper page is drawn over the other, coming or going.
     transition.targetContentZIndex = if (forward) 1f else -1f
     return transition
 }
+
+/** The navigation bar's title as a page comes or goes: a cross-fade, evenly with a back gesture where it [followsGesture]. */
+private fun titleTransition(reduceMotion: Boolean, followsGesture: Boolean): ContentTransform {
+    if (reduceMotion) return ContentTransform(EnterTransition.None, ExitTransition.None, sizeTransform = null)
+    val fade: FiniteAnimationSpec<Float> = if (followsGesture) following() else IosMotion.smooth(duration = 0.35).animation()
+    return ContentTransform(fadeIn(fade), fadeOut(fade), sizeTransform = null)
+}
+
+/** How a page and its title follow a back gesture: evenly with its progress, over a push's time. */
+private fun <T> following(): FiniteAnimationSpec<T> = tween(durationMillis = 400, easing = LinearEasing)
+
+/** The rest of the way once a back gesture lets go of the page: a push's spring, on the transition's progress. */
+private val GESTURE_END = IosMotion.smooth(duration = 0.4).animation<Float>()
 
 private fun SettingsPage.title(): String = when (this) {
     SettingsPage.Root -> localized("Settings")

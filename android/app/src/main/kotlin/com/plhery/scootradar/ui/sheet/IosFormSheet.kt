@@ -75,10 +75,11 @@ fun IosFormSheet(
     val dismiss by rememberUpdatedState(onDismiss)
     val close: () -> Unit = { if (presented) dismiss() }
     var backProgress by remember { mutableFloatStateOf(0f) }
+    // Let go, the sheet goes down as small as the gesture left it; shown again before it is down, it is whole again.
+    LaunchedEffect(isPresented) { if (isPresented) backProgress = 0f }
     PredictiveBackHandler(enabled = isPresented) { progress ->
         try {
             progress.collect { backProgress = it.progress }
-            backProgress = 0f
             close()
         } catch (cancelled: CancellationException) {
             backProgress = 0f

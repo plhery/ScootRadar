@@ -1,6 +1,7 @@
 package com.plhery.scootradar.ui
 
 import android.view.KeyEvent as AndroidKeyEvent
+import androidx.activity.BackEventCompat
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.input.key.Key
@@ -24,6 +25,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.ui.dock.DockState
@@ -45,7 +47,8 @@ import java.util.TimeZone
 // X.md X-AD01: Android's Back closes the layer in front, in the order Esc closes them on the iPad
 // (ScooterMapScreen.swift's key commands, UI-245), and with nothing open is left to Android, which takes the rider
 // home. Each layer's own Back is tested beside it: IosSheetTest (a sheet), SettingsSheetTest (a page of Settings),
-// SearchAndLanguageTest (the keyboard, the search and the card, on the device).
+// SearchAndLanguageTest (the keyboard, the search and the card, on the device); PredictiveBackTest has a sheet, the form
+// and a page under the gesture drawn out (X-AD02), and the search's is here.
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w402dp-h874dp-mdpi")
@@ -84,8 +87,48 @@ class BackOrderTest {
      * without the card; then the card; then nothing takes Back, which leaves the app.
      */
     @Test
-    fun backClosesWhatIsInFrontOneLayerAtATimeThenLeavesTheApp() {
+    fun backClosesWhatIsInFrontOneLayerAtATimeThenLeavesTheApp() = backClosesOneLayerAtATime()
+
+    /** Beside the panel, where Settings is a form at the window's end and the filters a popover, in the same order. */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun besideThePanelBackClosesThePopoverAndTheFormInTheSameOrder() = backClosesOneLayerAtATime(beside = true)
+
+    /**
+     * The search beside the panel, under a back gesture drawn out: iOS has no gesture for it, only Cancel and Esc, so
+     * it stays as it is while the gesture is drawn, stays open when it is called off, and closes as Cancel closes it
+     * when it is let go. Android draws nothing for it meanwhile, as the app takes the gesture.
+     */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun theSearchStaysAsItIsUnderABackGestureAndClosesWhenItIsLetGo() {
+        show()
+        press(Key.F, listOf(Key.CtrlLeft))
+        val field = compose.onNodeWithTag(SEARCH_FIELD_TAG)
+        val frame = field.fetchSemanticsNode().boundsInRoot
+
+        drawOut(0.5f)
+        assertEquals(frame, field.fetchSemanticsNode().boundsInRoot)
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackCancelled() }
+        compose.waitForIdle()
+        assertEquals(frame, field.fetchSemanticsNode().boundsInRoot)
+
+        drawOut(0.5f)
+        back()
+        field.assertDoesNotExist()
+    }
+
+    /** A back gesture from the window's start edge, drawn out to [progress], as Android 14 and later send it. */
+    private fun drawOut(progress: Float) {
+        val dispatcher = compose.activity.onBackPressedDispatcher
+        compose.runOnUiThread { dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 400f, 0f, BackEventCompat.EDGE_LEFT)) }
+        compose.runOnUiThread { dispatcher.dispatchOnBackProgressed(BackEventCompat(0f, 400f, progress, BackEventCompat.EDGE_LEFT)) }
+        compose.waitForIdle()
+    }
+
+    private fun backClosesOneLayerAtATime(beside: Boolean = false) {
         val model = show()
+        if (beside) assertEquals(ScooterChromeLayout.Panel, shortcuts.situation!!.layout)
         compose.runOnIdle { model.selectScooter("lime:a") }
 
         press(Key.F, listOf(Key.CtrlLeft))
