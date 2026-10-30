@@ -79,7 +79,19 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Vilnius's, which are JUDU's ("pernaudojimas negalimas be JUDU sutikimo"),
   and Kraków's 342 mobility points (edited 6 October 2026), as its city GIS
   portal's rules allow only personal, non-commercial use and forbid passing
-  its content on.
+  its content on. Orlando's 34 designated parking areas, a KMZ its
+  [program page](https://www.orlando.gov/Initiatives/Bike-Share-Scooter-Share-Program)
+  maps (file of December 2020, served as of January 2025), as the City's
+  [legal notices](https://www.orlando.gov/System-pages/Website-Legal-Notices)
+  prohibit commercial use of the site's materials "without the written
+  permission of the City of Orlando".
+- **Only as PDF maps:** Lahti's, from the micromobility licence in force
+  since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
+  amended 17 February 2026): no-parking areas, the centre, where a scooter is
+  parked only in one of about 100 marked places, no-riding areas and 15 km/h
+  zones. The decision's annexes are georeferenced PDF maps marked "Ehdotus
+  8.12.2025"; its terms say the zones in force are available as geodata, but
+  neither the city's open data page nor its WFS holds them (30 October 2026).
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -108,7 +120,17 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   (December 2021).
 - **No shared scooters there on the map:** Toulouse Métropole's 27 scooter
   parking places and Grand Paris Seine Ouest's 29, Meudon's among them (both
-  Licence Ouverte, edited in late October 2026), as no source covers either.
+  Licence Ouverte, edited in late October 2026), as no source covers either. Grand Rapids's
+  Shared Micromobility Program layers (no-operation and slow zones, Calvin
+  University's), edited 30 October 2026, as Veo, its only operator, has no
+  feed we know of.
+- **None published** (30 October 2026): Tulsa's rules (no riding on the
+  pavement downtown inside the Inner Dispersal Loop, on Cherry Street and in
+  Brookside; Revised Ordinances title 37, § 1101 C) are text alone, and
+  neither the City's nor INCOG's ArcGIS holds a scooter layer. Ashdod's GIS
+  has none, and the city's site can't be read from outside Israel. Rimini
+  chose not to mark parking places for shared scooters (its answer to the
+  old town's forum, May 2026); its speed limits by area are in text alone.
 
 ## No public data, in covered countries
 
