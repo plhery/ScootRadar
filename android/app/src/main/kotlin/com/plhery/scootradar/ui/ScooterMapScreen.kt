@@ -476,14 +476,8 @@ private fun DockChrome(
             // fold it is well under the caption.
             val slot = ScreenRect(12.0, 0.0, (maxWidth - 24.dp).value.toDouble(), 0.0)
             val barWidth = minOf(slot.width, 560.0)
-            val beside = if (chromeTop > 0.dp) {
-                null
-            } else {
-                besideCaption(
-                    ScreenRect(slot.midX - barWidth / 2, (captionTop + 8.dp).value.toDouble(), barWidth, searchBar.value.toDouble()),
-                    captionButtons,
-                )
-            }
+            val bar = ScreenRect(slot.midX - barWidth / 2, (captionTop + 8.dp).value.toDouble(), barWidth, searchBar.value.toDouble())
+            val beside = if (chromeTop > 0.dp) null else besideCaption(bar, captionButtons)
             val safeTop = if (beside != null) captionTop else safe.calculateTopPadding()
             // Measured inside the safe area, as the iPhone's GeometryReader is.
             val height = maxHeight - safeTop - safeBottom
@@ -504,6 +498,7 @@ private fun DockChrome(
                 settledTop = safeTop + 8.dp + chromeTop,
                 modifier = Modifier.padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
                 searchBarModifier = beside?.let { Modifier.besideCaption(it, slot) } ?: Modifier,
+                barSpan = bar.takeIf { beside != null },
             )
 
             // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
@@ -782,7 +777,8 @@ private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
  * The search bar and what sits under it: the banner of a first load that failed, and the card of a location that
  * could not be found. With large text they can be taller than the room above the locate button; then they scroll.
  * [settledTop] is where the stack's top comes to rest under the top of the room it is given, where its [modifier]'s
- * padding springs to.
+ * padding springs to. Beside a caption's buttons, [searchBarModifier] moves and narrows the bar, and [barSpan] is where
+ * it is across the window without them.
  */
 @Composable
 private fun TopStack(
@@ -800,6 +796,7 @@ private fun TopStack(
     settledTop: Dp,
     modifier: Modifier = Modifier,
     searchBarModifier: Modifier = Modifier,
+    barSpan: ScreenRect? = null,
 ) {
     val density = LocalDensity.current
     // The search bar and the notices under it, closed: what the map keeps its names and its taps out of, and centres
@@ -810,7 +807,9 @@ private fun TopStack(
     // not where its spring has it, as the iPhone's onGeometryChange reads the layout, which an animation doesn't move:
     // only the views that draw apply it to their frames (geometryGroup()'s documentation). Taps and names keep clear
     // of where the search bar goes under a fold from its first frame. So too a notice that goes leaves it at once, as
-    // the iPhone's stack drops it from its layout while it slides away.
+    // the iPhone's stack drops it from its layout while it slides away. Beside a caption's buttons, across the bar's
+    // whole width without them: the iPad's containerCornerOffset(_:sizeToFit:) offsets and sizes the bar's content in
+    // the frame the bar had, which its stack lays out.
     var roomTop by remember { mutableStateOf<Double?>(null) }
     var barFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
@@ -818,7 +817,7 @@ private fun TopStack(
     val noticeHeights = remember { NoticeHeights() }
     val top = run {
         val room = roomTop ?: return@run null
-        val bar = barFrame ?: return@run null
+        val bar = barFrame?.let { frame -> barSpan?.let { frame.copy(x = it.x, width = it.width) } ?: frame } ?: return@run null
         if (barHeight == 0 || isSearching) return@run null
         val noticesHeight = with(density) { noticeHeights.settled(failure, locationIssue, 8.dp.roundToPx(), noticesLimit.roundToPx()) }
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f

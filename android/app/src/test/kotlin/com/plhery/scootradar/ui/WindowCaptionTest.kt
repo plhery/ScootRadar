@@ -42,7 +42,8 @@ import java.util.Locale
 import java.util.TimeZone
 
 // UI-126: the search bar beside the buttons of a desktop window's caption bar, as ScooterMapScreen.swift's
-// `.containerCornerOffset(.leading, sizeToFit: true)` moves and narrows the iPad's beside its window's buttons.
+// `.containerCornerOffset(.leading, sizeToFit: true)` moves and narrows the iPad's beside its window's buttons, in the
+// frame it had, which onGeometryChange hands the map.
 
 /**
  * In a window whose caption bar the map runs under, the search bar keeps to the top beside the caption's app chip and
@@ -136,6 +137,13 @@ class WindowCaptionTest {
 
         caption(48, listOf(Rect(0, 0, 150, 48), Rect(430, 0, 600, 48)))
         assertEquals(ScreenRect(158.0, 8.0, 264.0, bar().height), bar())
+        // The map keeps its names and taps off the bar's whole width without the buttons, as the iPad's stack lays out
+        // the frame the bar had (containerCornerOffset(_:sizeToFit:) moves and sizes only its content).
+        val top = frames.top!!
+        assertEquals("$top", 20.0, top.x, 0.5)
+        assertEquals("$top", 560.0, top.width, 0.5)
+        assertEquals("$top", 8.0, top.y, 0.5)
+        assertEquals("$top", bar().height, top.height, 0.5)
     }
 
     /** Too narrow beside them, it goes under the caption, the width it had. */
