@@ -24,6 +24,8 @@ import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
+import com.plhery.scootradar.ui.theme.resetFontScale
+import com.plhery.scootradar.ui.theme.useFontScale
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -65,6 +67,37 @@ class DirectionsButtonTest {
 
     @Test
     fun asTheWayIsBeingFoundDirectionsStaysAsItIsAndOnlyItsSymbolGivesWayToTheSpinner() {
+        titleStaysAsTheSpinnerComes()
+    }
+
+    /**
+     * At a small text size the walker's symbol, 14 points at 0.85 and its frame's 1.2, is narrower than the Mini
+     * spinner's 16: the spinner, in the symbol's overlay, still takes no room, and the title doesn't move (review-app-r).
+     */
+    @Test
+    fun atASmallTextSizeTheSpinnerWiderThanTheSymbolTakesNoRoom() {
+        useFontScale(0.85f)
+        try {
+            titleStaysAsTheSpinnerComes()
+        } finally {
+            resetFontScale()
+        }
+    }
+
+    /** Under Reduce Motion the title is Hide route in one step, as the iPhone's nil animation changes it. */
+    @Test
+    fun underReduceMotionTheTitleIsHideRouteAtOnce() {
+        show(reduceMotion = true)
+        control = ScooterDirectionsControl.Finding
+        settled()
+        control = ScooterDirectionsControl.HideRoute
+        val frames = List(30) { frame() }
+        val shown = settled()
+        val ink = frames.map { it.ink() / shown.ink() }
+        assertTrue("the label's darkest ink on each frame, of the settled one's: $ink", ink.all { it > 0.99f })
+    }
+
+    private fun titleStaysAsTheSpinnerComes() {
         show()
         val rest = settled()
         control = ScooterDirectionsControl.Finding
@@ -99,12 +132,12 @@ class DirectionsButtonTest {
     }
 
     /** The scooter card's Directions button, on its first frame, the clock then left to the test. */
-    private fun show() {
+    private fun show(reduceMotion: Boolean = false) {
         val model = controllers.make(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
         val target = ScooterWalkTarget.Scooter(scooter("s1", "lime"))
         compose.mainClock.autoAdvance = false
         compose.setContent {
-            ScootTheme(dark = false, reduceMotion = false) {
+            ScootTheme(dark = false, reduceMotion = reduceMotion) {
                 Box(Modifier.width(240.dp).testTag("button")) {
                     DirectionsButton(model, target, control, prominent = false)
                 }

@@ -152,6 +152,33 @@ class LocateRowTest {
     }
 
     /**
+     * At rest the locate button is heard by TalkBack and takes its own taps, and the map takes those beside it and
+     * above it: the row it stands in, laid out down to it from the screen's top, takes none (review-app-r).
+     */
+    @Test
+    @Config(qualifiers = "w411dp-h891dp-mdpi")
+    fun atRestTheLocateButtonIsHeardAndTheMapTakesTheTapsBesideIt() {
+        show()
+        val button = compose.onNode(nearMe)
+        val hidden = SemanticsMatcher.keyIsDefined(SemanticsProperties.HideFromAccessibility)
+        button.assert(!hidden and !hasAnyAncestor(hidden))
+        val rest = drawn(button)
+        val density = compose.density.density
+        fun tap(x: Float, y: Float) {
+            compose.onRoot().performTouchInput { click(Offset(x * density, y * density)) }
+            compose.waitForIdle()
+        }
+        tap(rest.center.x, rest.center.y)
+        assertEquals("the button takes its tap", 0, mapTaps)
+        tap(rest.left - 40, rest.center.y)
+        assertEquals("the map takes a tap beside the button", 1, mapTaps)
+        tap(rest.center.x, rest.top - 60)
+        assertEquals("the map takes a tap above the button", 2, mapTaps)
+        tap(rest.left - 200, rest.bottom - 4)
+        assertEquals("the map takes a tap at the row's leading side", 3, mapTaps)
+    }
+
+    /**
      * Opens the search, and checks the locate button shrinks to 0.92 toward the screen's bottom at [corner] across, is
      * hidden from TalkBack once gone, and with [taps] that it takes a tap only while it shows.
      */

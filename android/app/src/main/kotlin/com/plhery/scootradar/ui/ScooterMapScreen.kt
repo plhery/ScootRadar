@@ -865,46 +865,67 @@ private fun TopStack(
         if (top != null) chrome.top = top
     }
 
-    Column(
-        Modifier
+    // The notices go while the search is open. They fade as they were when it opened, as the iPhone takes the whole
+    // block away (ScooterMapScreen.swift:227) and SwiftUI draws it as it was, where it was, while it fades: a card
+    // dismissed as the search opens (its Search a place) doesn't slide out inside the fading block, and the block isn't
+    // pushed down by the bar growing into the open search. The panel's notices stay, and fade with the panel, as the
+    // iPhone's do.
+    val searchSpring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
+    val searchMotion = motion<Float>(searchSpring)
+    val (heldFailure, heldIssue) = rememberHeld(failure to locationIssue, holding = isSearching)
+    // Where the notices were as the search opened: 8 under the bar.
+    val heldNoticesTop = remember { intArrayOf(0) }
+    Layout(
+        content = {
+            SearchIsland(
+                controller,
+                isSearching = isSearching,
+                onSearchingChange = onSearchingChange,
+                onShowFilters = onShowFilters,
+                onShowSettings = onShowSettings,
+                bottomLimit = bottomLimit,
+                onCollapsedHeightChange = {
+                    barHeight = it
+                    onSearchBarHeightChange(it)
+                },
+                modifier = searchBarModifier.onGloballyPositioned { if (!isSearching) barFrame = it.windowFrame(density.density) },
+            )
+            AnimatedVisibility(
+                visible = !isSearching,
+                enter = fadeIn(searchMotion),
+                exit = fadeOut(searchMotion),
+                label = "notices",
+            ) {
+                TopNotices(
+                    controller,
+                    failure = heldFailure,
+                    locationIssue = heldIssue,
+                    limit = noticesLimit,
+                    onSearchingChange = onSearchingChange,
+                    heights = noticeHeights,
+                    modifier = Modifier.onGloballyPositioned { noticesFrame = it.windowFrame(density.density) },
+                )
+            }
+        },
+        modifier = Modifier
             .onGloballyPositioned { roomFrame = it.windowFrame(density.density) }
             .then(modifier)
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        SearchIsland(
-            controller,
-            isSearching = isSearching,
-            onSearchingChange = onSearchingChange,
-            onShowFilters = onShowFilters,
-            onShowSettings = onShowSettings,
-            bottomLimit = bottomLimit,
-            onCollapsedHeightChange = {
-                barHeight = it
-                onSearchBarHeightChange(it)
-            },
-            modifier = searchBarModifier.onGloballyPositioned { if (!isSearching) barFrame = it.windowFrame(density.density) },
+    ) { measurables, constraints ->
+        // As a column, centred across, the notices 8 under the bar while the search is closed.
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val island = measurables[0].measure(loose)
+        if (!isSearching) heldNoticesTop[0] = island.height + 8.dp.roundToPx()
+        val noticesTop = heldNoticesTop[0]
+        val notices = measurables.getOrNull(1)?.measure(
+            if (loose.hasBoundedHeight) loose.copy(maxHeight = (loose.maxHeight - noticesTop).coerceAtLeast(0)) else loose,
         )
-
-        // The notices go while the search is open.
-        val searchSpring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
-        val searchMotion = motion<Float>(searchSpring)
-        AnimatedVisibility(
-            visible = !isSearching,
-            enter = fadeIn(searchMotion),
-            exit = fadeOut(searchMotion),
-            label = "notices",
-        ) {
-            TopNotices(
-                controller,
-                failure = failure,
-                locationIssue = locationIssue,
-                limit = noticesLimit,
-                onSearchingChange = onSearchingChange,
-                heights = noticeHeights,
-                modifier = Modifier.onGloballyPositioned { noticesFrame = it.windowFrame(density.density) },
-            )
+        val width = maxOf(island.width, notices?.width ?: 0).coerceIn(constraints.minWidth, constraints.maxWidth)
+        val height = maxOf(island.height, notices?.let { noticesTop + it.height } ?: 0).coerceIn(constraints.minHeight, constraints.maxHeight)
+        layout(width, height) {
+            // Rounded as the column's centring rounds, so the bar keeps its pixel.
+            island.place(Alignment.CenterHorizontally.align(island.width, width, layoutDirection), 0)
+            notices?.place(Alignment.CenterHorizontally.align(notices.width, width, layoutDirection), noticesTop)
         }
     }
 }
@@ -1024,14 +1045,20 @@ private fun NoticeStack(
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        // A notice that changes while it shows fades what it says into the new and eases its height, on the same
+        // spring, as the iPhone's stack animates its notices' changes; each tells its height at rest, as the iPhone's
+        // layout has it, from the change's first frame.
+        val changes = if (reduceMotion) null else spring.animation<Float>()
         AnimatedVisibility(failure != null, enter = enter(0), exit = exit(0)) {
             val shown = lastFailure ?: return@AnimatedVisibility
-            Box(Modifier.onSizeChanged { heights.banner = it.height }) {
+            Box {
                 MapStatusBanner(
                     message = shown.message,
                     actionTitle = localized("Try again"),
                     onAction = controller::retryLoad,
                     isBusy = isLoading,
+                    animation = changes,
+                    onRestingHeight = { heights.banner = it },
                 )
                 // Said as it appears and each time its message changes.
                 Announcer(Announcement(shown.message))
@@ -1040,7 +1067,7 @@ private fun NoticeStack(
         Spacer(Modifier.height(gap))
         AnimatedVisibility(locationIssue != null, enter = enter(cardGap), exit = exit(cardGap)) {
             val issue = lastIssue ?: return@AnimatedVisibility
-            Box(Modifier.onSizeChanged { heights.card = it.height }) {
+            Box {
                 LocationIssueCard(
                     issue = issue,
                     onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
@@ -1051,6 +1078,8 @@ private fun NoticeStack(
                     },
                     onRetry = { locationSettings.retry(controller::focusOnUser) },
                     onDismiss = controller::dismissLocationIssue,
+                    animation = changes,
+                    onRestingHeight = { heights.card = it },
                 )
                 Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
             }
@@ -1108,6 +1137,14 @@ val LocalAnalytics = staticCompositionLocalOf<ScooterAnalytics?> { null }
 
 /** What the location card's Open Settings and Try again ask of the phone. */
 val LocalLocationSettings = staticCompositionLocalOf { LocationSettings.appPage }
+
+/** [value], or while [holding], the value it had when the hold began. */
+@Composable
+private fun <T> rememberHeld(value: T, holding: Boolean): T {
+    val held = remember { mutableStateOf(value) }
+    if (!holding) held.value = value
+    return held.value
+}
 
 /** The last value that was not null. */
 @Composable
