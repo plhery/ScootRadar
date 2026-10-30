@@ -103,6 +103,32 @@ class ScooterMapLinkTest {
         assertEquals(city.center, ScooterCityCatalog.city(linkedAt = city.center)?.center)
     }
 
+    /**
+     * LOG-267: of two cities whose centres are both within a link's reach, the nearer by the summed differences, as
+     * Swift's min(by:) picks (ScooterMapLink.swift:72-83), whichever comes first; on a tie the first in the catalog,
+     * as min(by:) keeps the first of equals. The offsets are powers of two, so the tie is exact.
+     */
+    @Test
+    fun ofTwoCitiesWithinALinksReachTheNearerAndOnATieTheFirst() {
+        fun town(id: String, longitude: Double) =
+            ScooterCity(id, id, "CH", GeoPoint(latitude = 47.0, longitude = longitude), GeoBounds(46.9, 7.9, 47.1, 8.1))
+        val step = 1.0 / 8192 // About 0.000122°, a quarter of the reach.
+        val west = town("ch:west", 8.0)
+        val east = town("ch:east", 8.0 + 2 * step)
+        fun city(longitude: Double, among: List<ScooterCity>) =
+            ScooterCityCatalog.city(linkedAt = GeoPoint(latitude = 47.0, longitude = longitude), among = among)?.id
+
+        for (among in listOf(listOf(west, east), listOf(east, west))) {
+            assertEquals("ch:west", city(8.0 - step / 2, among))
+            assertEquals("ch:west", city(8.0 + step / 2, among))
+            assertEquals("ch:east", city(8.0 + 3 * step / 2, among))
+            assertEquals("ch:east", city(8.0 + 3 * step, among))
+        }
+        // Halfway, both are as near.
+        assertEquals("ch:west", city(8.0 + step, listOf(west, east)))
+        assertEquals("ch:east", city(8.0 + step, listOf(east, west)))
+    }
+
     @Test
     fun aLinkIsRepairedAsFoundationRepairsIt() {
         // What URL(string:) makes of each on the iPhone, checked with Foundation on a Mac.

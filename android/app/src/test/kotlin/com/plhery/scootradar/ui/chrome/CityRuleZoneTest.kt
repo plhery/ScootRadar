@@ -1,7 +1,9 @@
 package com.plhery.scootradar.ui.chrome
 
+import android.provider.Settings
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
@@ -13,6 +15,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.Locale
+import java.util.TimeZone
 
 // The legend's test of ios/ScootRadarTests/ScooterZonesTests.swift (T421).
 
@@ -20,11 +23,14 @@ import java.util.Locale
 @RunWith(AndroidJUnit4::class)
 class CityRuleZoneTest {
     private val locale = Locale.getDefault()
+    private val zone = TimeZone.getDefault()
 
     @After
     fun tearDown() {
         ScooterLanguage.current = ScooterLanguage.atLaunch
         Locale.setDefault(locale)
+        TimeZone.setDefault(zone)
+        Settings.System.putString(ApplicationProvider.getApplicationContext<android.content.Context>().contentResolver, Settings.System.TIME_12_24, null)
     }
 
     // A street of Seoul, a parking place of Porto's and Bergen's zones, made here rather than read from data/, which
@@ -91,6 +97,29 @@ class CityRuleZoneTest {
         // Who sets it, linked to where they say so.
         assertEquals(listOf(porto.source), links(lines[4]))
         assertEquals(listOf(bergen[0].source), links(lines[5]))
+    }
+
+    /**
+     * LOG-355: a rule's hours are its place's clock, kept as minutes and written as a time at UTC, as the iPhone writes
+     * them at GMT (ScooterControls.swift:2932-2936): the phone's own zone doesn't move them, east of UTC (Auckland) or
+     * west (Los Angeles). CI runs at UTC, where a zone mixed in shows nothing.
+     */
+    @Test
+    fun theLegendsHoursAreThePlacesClockInEveryTimeZone() {
+        Locale.setDefault(Locale.forLanguageTag("en-CH"))
+        ScooterLanguage.current = ScooterLanguage.En
+        Settings.System.putString(ApplicationProvider.getApplicationContext<android.content.Context>().contentResolver, Settings.System.TIME_12_24, "24")
+        // Until midnight, which Swift's Date writes as 00:00.
+        val night = CityRuleZone(
+            id = "seoul-night", authority = "Seoul", timeZone = "Asia/Seoul", firstDay = hongdae.firstDay,
+            hours = listOf(CityRuleZone.Hours(fromMinute = 22 * 60, untilMinute = 24 * 60)), source = hongdae.source,
+            lines = hongdae.lines,
+        )
+        for (id in listOf("Pacific/Auckland", "America/Los_Angeles", "UTC")) {
+            TimeZone.setDefault(TimeZone.getTimeZone(id))
+            val lines = ruleLines(listOf(hongdae, night).map { CityRuleZone.Shown(rule = it, inForce = true) }, link = Color.Blue)
+            assertEquals(id, listOf("No riding 12:00–23:00 · Seoul", "No riding 22:00–00:00 · Seoul"), lines.map { it.text.text })
+        }
     }
 
     @Test

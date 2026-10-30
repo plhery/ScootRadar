@@ -177,6 +177,40 @@ class ScooterAPIContractTest {
         }
     }
 
+    /**
+     * LOG-027/392: Swift decodes an optional enum with decodeIfPresent, which reads a missing or null `parkingStatus`
+     * as none but throws on a value it doesn't know, as on any raw value in another case: Swift's raw values are
+     * matched exactly. So the answer fails to load, as one with an unknown `mode` does, and isn't shown without its
+     * parking status.
+     */
+    @Test
+    fun failsOnAParkingStatusItDoesNotKnowOrInAnotherCaseAsIOSDoes() {
+        val meta = """"partial": false, "stale": false, "failedSources": [], "generatedAt": "2026-10-25T10:02:00.000Z",
+             "truncated": false, "totalVehicles": 0, "zoom": 13"""
+        fun answer(rest: String) = """{"vehicles": [], "clusters": [], "providers": {}, "meta": {$meta, $rest}}"""
+        val sources = """"sources": {"national": "fresh"}"""
+
+        assertEquals(
+            ScooterFeedSourceStatusPayload.Stale,
+            decode(answer(""""mode": "vehicles", $sources, "parkingStatus": "stale"""")).meta.parkingStatus,
+        )
+        assertNull(decode(answer(""""mode": "vehicles", $sources, "parkingStatus": null""")).meta.parkingStatus)
+        assertNull(decode(answer(""""mode": "vehicles", $sources""")).meta.parkingStatus)
+
+        for (rest in listOf(
+            """"mode": "vehicles", $sources, "parkingStatus": "late"""",
+            """"mode": "vehicles", $sources, "parkingStatus": "Stale"""",
+            """"mode": "vehicles", $sources, "parkingStatus": "FAILED"""",
+            """"mode": "Clusters", $sources""",
+            """"mode": "vehicles", "sources": {"national": "Fresh"}""",
+        )) {
+            assertThrows(rest, SerializationException::class.java) { decode(answer(rest)) }
+            val failure = load(answer(rest))
+            assertEquals(rest, ScooterLoadFailure.Failed, failure)
+            assertEquals(rest, "Couldn’t load scooters.", failure?.message)
+        }
+    }
+
     @Test
     fun failsWhenARequiredKeyIsMissingOrNull() {
         assertThrows(SerializationException::class.java) {

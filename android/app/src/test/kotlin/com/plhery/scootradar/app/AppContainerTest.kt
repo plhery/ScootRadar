@@ -7,6 +7,7 @@ import android.provider.Settings
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.BuildConfig
+import com.plhery.scootradar.core.model.RidePriceFormatter
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLengthUnit
@@ -31,6 +32,7 @@ import org.robolectric.shadows.ShadowNetworkCapabilities
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Locale
 import java.util.TimeZone
 
@@ -134,6 +136,30 @@ class AppContainerTest {
         Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, null)
         assertEquals("16:13", ScooterDateFormat.skeleton("jm", time, zurich, Locale.forLanguageTag("en-CH")))
         assertEquals("4:13\u202FPM", ScooterDateFormat.skeleton("jm", time, zurich, us))
+    }
+
+    /**
+     * LOG-355: the day a price was checked is written at UTC, as the iPhone writes it at GMT (ScooterControls.swift:
+     * 1952-1962). The app hands Android's ICU ZoneOffset.UTC, whose id "Z" ICU knows only as an unknown zone at
+     * offset 0, and the phone's own zone doesn't come in, east of UTC or west.
+     */
+    @Test
+    fun theHooksWriteAtUTCWhateverThePhonesZone() {
+        AppContainer(context).setHooks()
+        ScooterLanguage.launchLocale = { Locale.US }
+        Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, "24")
+        try {
+            for (id in listOf("Pacific/Auckland", "America/Los_Angeles")) {
+                TimeZone.setDefault(TimeZone.getTimeZone(id))
+                assertEquals(id, "23:00", ScooterDateFormat.skeleton("jm", Instant.ofEpochSecond(23 * 3600L), ZoneOffset.UTC, Locale.US))
+                val december = Instant.parse("2026-12-01T00:00:00Z")
+                assertEquals(id, "Oct 18", RidePriceFormatter.listedDay("2026-10-18", now = december))
+                assertEquals(id, "Dec 31", RidePriceFormatter.listedDay("2026-12-31", now = Instant.parse("2026-12-31T23:30:00Z")))
+                assertEquals(id, "Dec 31, 2026", RidePriceFormatter.listedDay("2026-12-31", now = Instant.parse("2027-01-01T00:30:00Z")))
+            }
+        } finally {
+            ScooterLanguage.current = ScooterLanguage.atLaunch
+        }
     }
 
     /**

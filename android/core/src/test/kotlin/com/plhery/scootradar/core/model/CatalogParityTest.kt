@@ -43,20 +43,36 @@ class CatalogParityTest {
         return swift.subList(from + 1, swift.subList(from + 1, swift.size).indexOf(end) + from + 1)
     }
 
+    /** The cases of the switch that opens after the line [start], each its provider's key and what it gives, in order. */
+    private fun cases(start: String): List<Pair<String, String>> {
+        val from = swift.indexOf(start)
+        assertTrue("No line \"$start\"", from >= 0 && swift[from + 1] == "        switch self {")
+        val case = Regex("""^        case \.([a-z0-9_]+): (.+)$""")
+        return swift.drop(from + 2).takeWhile { it != "        }" }.map { line ->
+            val (key, value) = checkNotNull(case.matchEntire(line)) { line }.destructured
+            key to value
+        }
+    }
+
     @Test
     fun providersAreTheSwiftOnesInTheirOrder() {
         assertEquals(
             swift.filter { Regex("^    case [a-z0-9_]+$").matches(it) }.map { it.removePrefix("    case ") },
             ScooterProvider.entries.map { it.rawValue },
         )
-        for (provider in ScooterProvider.entries) {
+        // Each in its own switch, provider by provider: a name and a short name swapped, or two providers' swapped,
+        // are each still a line of the file.
+        val entries = ScooterProvider.entries
+        assertEquals(entries.map { it.rawValue to string(it.displayName) }, cases("    var name: String {"))
+        assertEquals(entries.map { it.rawValue to string(it.shortName) }, cases("    var shortName: String {"))
+        assertEquals(entries.map { provider ->
+            val (alpha, red, green, blue) = listOf(24, 16, 8, 0).map { (provider.color shr it) and 0xFF }
+                .map { String.format(Locale.ROOT, "%.6f", it / 255.0) }
+            // The Swift generator writes every colour opaque.
+            provider.rawValue to "UIColor(red: $red, green: $green, blue: $blue, alpha: ${if (alpha == "1.000000") "1" else alpha})"
+        }, cases("    var uiColor: UIColor {"))
+        for (provider in entries) {
             val key = provider.rawValue
-            assertTrue(key, "        case .$key: ${string(provider.displayName)}" in swift)
-            assertTrue(key, "        case .$key: ${string(provider.shortName)}" in swift)
-            val (red, green, blue) = listOf(16, 8, 0).map {
-                String.format(Locale.ROOT, "%.6f", ((provider.color shr it) and 0xFF) / 255.0)
-            }
-            assertTrue(key, "        case .$key: UIColor(red: $red, green: $green, blue: $blue, alpha: 1)" in swift)
             val app = swift.filter { it.startsWith("        case .$key: OperatorApp(link: ") }
             assertEquals(key, listOfNotNull(provider.app?.let { "URL(string: ${string(it.link)})!" }), app.map {
                 it.removePrefix("        case .$key: OperatorApp(link: ").substringBefore(", appStore:")

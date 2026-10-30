@@ -14,6 +14,7 @@ import java.text.DecimalFormatSymbols
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.PI
 import kotlin.math.hypot
 import kotlin.math.sin
@@ -699,6 +700,31 @@ class ScooterMapLookTest {
         ScooterLanguage.current = ScooterLanguage.De
         assertTrue(RidePriceFormatter.listedDay("2026-10-18", now = december)?.contains("Okt") == true)
         assertTrue(listed.listed("x").startsWith("x · veröffentlichter Preis, Stand "))
+    }
+
+    /**
+     * LOG-355: the day is read and written at UTC, as the iPhone's at GMT (ScooterControls.swift:1952-1962), and its
+     * year compared with this one there: the phone's zone moves neither, east of UTC (Auckland, 13 hours ahead in
+     * summer) or west (Los Angeles, 8 hours behind in winter). CI runs at UTC, where a zone mixed in shows nothing.
+     */
+    @Test
+    fun aListedDayIsTheDayItNamesInEveryTimeZone() {
+        ScooterLanguage.current = ScooterLanguage.En
+        val zone = TimeZone.getDefault()
+        try {
+            for (id in listOf("Pacific/Auckland", "America/Los_Angeles", "UTC")) {
+                TimeZone.setDefault(TimeZone.getTimeZone(id))
+                val december = Instant.parse("2026-12-01T00:00:00Z")
+                assertEquals(id, "Oct 18", RidePriceFormatter.listedDay("2026-10-18", now = december))
+                assertEquals(id, "Jan 1, 2026", RidePriceFormatter.listedDay("2026-01-01", now = Instant.parse("2027-06-01T00:00:00Z")))
+                // It is already 2027 in Auckland, still 2026 in Los Angeles; at UTC it is the year's last half hour.
+                assertEquals(id, "Dec 31", RidePriceFormatter.listedDay("2026-12-31", now = Instant.parse("2026-12-31T23:30:00Z")))
+                // And here the first half hour of 2027 at UTC, while Los Angeles still has 2026.
+                assertEquals(id, "Dec 31, 2026", RidePriceFormatter.listedDay("2026-12-31", now = Instant.parse("2027-01-01T00:30:00Z")))
+            }
+        } finally {
+            TimeZone.setDefault(zone)
+        }
     }
 
     @Test

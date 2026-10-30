@@ -1592,7 +1592,12 @@ class ScooterMapController(
 
         private val ridePassesSerializer = MapSerializer(String.serializer(), ProviderRidePass.serializer())
 
-        /** The saved provider choice: every provider but those turned off, of which one this version doesn't know is passed over. */
+        /**
+         * The saved provider choice: every provider but those turned off, of which one this version doesn't know is
+         * passed over. iOS keeps those turned on and ignores the whole list when it names one the catalog has since
+         * dropped (ScooterMapModel.swift:449-454), so a rider who had that one on finds every provider on again; this
+         * list never names one the rider had on, and the choice of the others stays (PLAN §0, LOG-288's fix).
+         */
         private fun savedProviders(defaults: ScooterDefaults): Set<ScooterProvider>? {
             val disabledIDs = defaults.stringArray(forKey = DISABLED_PROVIDERS_KEY) ?: return null
             return ScooterProvider.entries.toSet() - disabledIDs.mapNotNull { ScooterProvider.fromRawValue(it) }.toSet()
