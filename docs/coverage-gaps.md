@@ -75,8 +75,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
 
 - **Held on their terms:** Tromsø kommune's ("kan ikke benyttes i
   kommersielle tjenester uten avtale"), Lisboa's ("Reservam-se todos os
-  direitos"; its shared scooters end in January 2027 in any case) and
-  Vilnius's, which are JUDU's ("pernaudojimas negalimas be JUDU sutikimo").
+  direitos"; its shared scooters end in January 2027 in any case),
+  Vilnius's, which are JUDU's ("pernaudojimas negalimas be JUDU sutikimo"),
+  and Kraków's 342 mobility points (edited 6 October 2026), as its city GIS
+  portal's rules allow only personal, non-commercial use and forbid passing
+  its content on.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -85,11 +88,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
 - **Found, not added yet** (ArcGIS layers the script reads): Antwerpen's
   no-go (36), no-park (322) and low-speed (44) zones for shared e-steps,
   revised in August 2022, and its 211 drop zones for them, kept daily
-  (antwerpen.be answers scripts 403); Kraków's 342 mobility points (edited
-  6 October 2026); and the corrals of Columbus (47 active; columbus.gov
-  answers scripts 403, and the CC0 is an older item's), Arlington County
-  (128 installed), Atlanta (38 installed) and Baltimore (45, 2024); and,
-  smaller, Pforzheim, Kerava, Herzliya, Sandefjord and Øygarden.
+  (antwerpen.be answers scripts 403); the corrals of Columbus (47 active;
+  columbus.gov answers scripts 403, and the CC0 is an older item's), Atlanta
+  (38 installed; its one downtown no-parking and slow zone has no City page
+  to link) and Baltimore (45, 2024); Järvenpää's no-riding, no-parking and
+  10 km/h areas, its parking places being lines; and, smaller, Pforzheim,
+  Kerava (no City page found), Herzliya, Sandefjord and Øygarden.
 - **Waiting for a reader of WFS, OGC API or GeoJSON:** Wien's 1,998 areas
   (`ogdwien:ESCOOTPARKVERBOGD`), Hamburg's 145 parking places and 3,043
   no-parking areas (DL-DE BY 2.0), Berlin's 637 parking places (DL-DE Zero),

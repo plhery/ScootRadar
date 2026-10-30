@@ -29,6 +29,8 @@ const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: 
 const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: -113.62 };
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
+// Clarendon, along Wilson Boulevard in Arlington County.
+const ARLINGTON_CLARENDON = { south: 38.884, west: -77.1, north: 38.892, east: -77.088 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
 // Norrköping's Drottninggatan, from the station to the Gamla torget.
@@ -70,7 +72,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
+    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -135,8 +137,9 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: ST_ALBERT_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['stalbert']);
     expect(zoneCitiesInView({ bounds: VAASA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vaasa']);
     expect(zoneCitiesInView({ bounds: VANTAA_TIKKURILA, zoom: 15 }).map(city => city.id)).toEqual(['vantaa']);
-    // Washington's bounds, a box round the District, reach over the Potomac to the cemetery.
-    expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery', 'washington']);
+    // Washington's bounds, a box round the District, reach over the Potomac to the cemetery and Clarendon, and Arlington County's round the cemetery.
+    expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlington', 'arlingtoncemetery', 'washington']);
+    expect(zoneCitiesInView({ bounds: ARLINGTON_CLARENDON, zoom: 15 }).map(city => city.id)).toEqual(['arlington', 'washington']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
     expect(zoneCitiesInView({ bounds: WASHINGTON_WHARF, zoom: 15 }).map(city => city.id)).toEqual(['washington']);
@@ -320,6 +323,17 @@ describe('the cities\' zones', () => {
     expect(zones.filter(zone => zone.rule === 'noRide').map(zone => zone.place)).toContain('Tikkurilan asema');
     const shown = ruleZonesInView({ bounds: VANTAA_TIKKURILA, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
+  });
+
+  it('draws Arlington County\'s corrals, those installed, as the places to park, credited to the County', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'arlington')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Arlington County' && zone.timeZone === 'America/New_York')).toBe(true);
+    // Its 128 installed corrals, discs round their points; those proposed, approved or removed are left out.
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(128);
+    expect(zones).toHaveLength(128);
+    expect(ruleZonesInView({ bounds: ARLINGTON_CLARENDON, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(0);
   });
 
   it('draws Oslo kommune\'s zones, those of every day: Marka\'s no-riding area but not the school yards\', no-riding on weekdays', async () => {

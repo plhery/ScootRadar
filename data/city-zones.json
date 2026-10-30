@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-30",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria CC0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, Taupō and Vantaa CC BY 4.0, Vancouver the Open Government Licence – Vancouver, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, Santa Monica's drop zones and Ottawa's designated parking. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria CC0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, Taupō and Vantaa CC BY 4.0, Vancouver the Open Government Licence – Vancouver, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's and Arlington County's parking corrals, those installed, Santa Monica's drop zones and Ottawa's designated parking. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "alexandria",
@@ -52,6 +52,36 @@
         "east": -77.037555
       },
       "zones": 88
+    },
+    {
+      "id": "arlington",
+      "place": "Arlington County",
+      "country": "US",
+      "authority": "Arlington County",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "Arlington County, \"Shared Micro-Mobility Devices\": more than 100 corrals throughout the County, safe places to park e-scooters and e-bikes upright and out of the way of pedestrians, motorists and other road users",
+        "url": "https://www.arlingtonva.us/Government/Programs/Transportation/Scooters-and-Dockless-Bikeshare"
+      },
+      "map": {
+        "title": "Arlington County, \"Shared Micromobility Device Parking Corrals\" (map, ArcGIS)",
+        "url": "https://arlgis.maps.arcgis.com/apps/instant/basic/index.html?appid=f525cf9c5bce4cbb9c360b2daecdf31c"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://arlgis.arlingtonva.us/arcgis/rest/services/Open_Data/od_Transportation_Layers/FeatureServer",
+          "layer": 2,
+          "where": "Status = 'Installed'"
+        }
+      ],
+      "bounds": {
+        "south": 38.83782,
+        "west": -77.139658,
+        "north": 38.904307,
+        "east": -77.049396
+      },
+      "zones": 128
     },
     {
       "id": "arlingtoncemetery",

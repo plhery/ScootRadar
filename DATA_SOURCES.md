@@ -626,6 +626,20 @@ licence for their layers, Washington for two of its three; since 28 October
   [Dockless Mobility page](https://www.alexandriava.gov/DocklessMobility): the
   slow zone of Robinson Landing, made permanent, was extended over the Old Town
   waterfront, the pedestrian blocks of King Street and Founders Park.
+- **Arlington County** (read 30 October 2026): the County's 128 installed
+  shared mobility device corrals, for scooters and bicycles, each drawn as a
+  disc 5 m round its point, from layer 2 of its `Open_Data/od_Transportation_Layers`
+  feature service, which its
+  [corrals map](https://arlgis.maps.arcgis.com/apps/instant/basic/index.html?appid=f525cf9c5bce4cbb9c360b2daecdf31c)
+  draws ("Last Revision Date: 3/12/2025", synced in October 2026). Left out:
+  the corrals proposed, approved, not approved or removed, for good or for a
+  while, as the 9 "Temporarily removed" the County's map shows apart. Its GIS
+  data is "provided as a public resource", © Arlington County and not in the
+  public domain; it is credited "Arlington County". The legend links the
+  County's
+  [page](https://www.arlingtonva.us/Government/Programs/Transportation/Scooters-and-Dockless-Bikeshare),
+  which answers scripts 403: more than 100 corrals give riders safe places to
+  park e-scooters and e-bikes upright and out of the way.
 - **Arlington National Cemetery** (read 29 October 2026): no city's, but a
   federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
   National Military Cemetery without a pass to visit a grave

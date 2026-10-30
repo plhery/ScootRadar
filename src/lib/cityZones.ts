@@ -35,6 +35,7 @@ export const ZONE_CITIES: ZoneCity[] = index.cities;
  */
 export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }>> = {
   alexandria: () => import('../../data/city-zones/alexandria.json'),
+  arlington: () => import('../../data/city-zones/arlington.json'),
   arlingtoncemetery: () => import('../../data/city-zones/arlingtoncemetery.json'),
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
