@@ -15,7 +15,6 @@ import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.input.InputModeManager
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalInputModeManager
-import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsFocused
@@ -24,7 +23,6 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.performTouchInput
@@ -200,12 +198,7 @@ class FocusRingTest {
 
     /** The ground's pixel at [at], in pixels from its top left, with the window drawn again first. */
     private fun color(at: Pair<Int, Int>): Color {
-        val view = (compose.onRoot().fetchSemanticsNode().root as ViewRootForTest).view
-        compose.runOnUiThread {
-            view.rootView.invalidate()
-            view.invalidate()
-        }
-        compose.waitForIdle()
+        compose.drawWindowAgain()
         return compose.onNodeWithTag(GROUND).captureToImage().toPixelMap()[at.first, at.second]
     }
 

@@ -65,6 +65,7 @@ import com.plhery.scootradar.ui.sheet.FORM_SHEET_TAG
 import com.plhery.scootradar.ui.sheet.POPOVER_TAG
 import com.plhery.scootradar.ui.theme.Look
 import com.plhery.scootradar.ui.theme.drawnArtOptions
+import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.screenshot
 import com.plhery.scootradar.ui.theme.useFontScale
@@ -214,6 +215,7 @@ class DeviceMatrixTest(private val look: Look) {
                     val name = "matrix/${window.picture!!.fileName}_${scene.fileName}_${look.suffix}"
                     if (scene == MatrixScene.PriceMenu) {
                         // The menu is a window of its own, over the screen's.
+                        compose.putFramesOnSurfaces()
                         captureScreenRoboImage("src/test/screenshots/$name.png", roborazziOptions = drawnArtOptions)
                     } else {
                         compose.screenshot(name)

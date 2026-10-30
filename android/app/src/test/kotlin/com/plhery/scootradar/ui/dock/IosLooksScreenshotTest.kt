@@ -31,6 +31,7 @@ import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.theme.Look
 import com.plhery.scootradar.ui.theme.drawnArtOptions
 import com.plhery.scootradar.ui.theme.PHONE
+import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.screenshot
 import com.plhery.scootradar.ui.theme.screenshotOptions
@@ -152,6 +153,7 @@ enum class IosLook(val state: DockState, val increasedContrast: Boolean = false)
             compose.onNode(hasContentDescription(label) and hasClickAction()).performClick()
             compose.waitForIdle()
             // The menu is a window of its own, over the screen's.
+            compose.putFramesOnSurfaces()
             captureScreenRoboImage("src/test/screenshots/$name.png", roborazziOptions = drawnArtOptions)
         }
     },

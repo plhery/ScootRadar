@@ -8,17 +8,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
-import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.ui.theme.ScootTheme
+import com.plhery.scootradar.ui.theme.drawWindowAgain
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -92,15 +91,10 @@ class HoverTest {
 
     /**
      * The red of the ground's pixel at [at], in pixels from its top left, with the window drawn again first: Robolectric
-     * can capture its drawing from before the content was set, as `screenshot` says.
+     * can capture a frame from before, as `putFramesOnSurfaces` says.
      */
     private fun red(at: Pair<Int, Int> = 20 to 20): Int {
-        val view = (compose.onRoot().fetchSemanticsNode().root as ViewRootForTest).view
-        compose.runOnUiThread {
-            view.rootView.invalidate()
-            view.invalidate()
-        }
-        compose.waitForIdle()
+        compose.drawWindowAgain()
         val pixels = compose.onNodeWithTag("ground").captureToImage().toPixelMap()
         return Math.round(pixels[at.first, at.second].red * 255)
     }
