@@ -25,6 +25,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.withKeyDown
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
@@ -140,6 +141,21 @@ class SearchPanelTest {
     fun returnWithAResultChoosesIt() {
         show("Bahnhof")
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performImeAction()
+        compose.waitForIdle()
+        assertEquals(listOf("Bahnhofstrasse"), chosen.map { it.title })
+    }
+
+    /**
+     * X-AD05: the keyboard's action key is Search, Android's Return, and a hardware keyboard's Enter in the field
+     * chooses the first place as it does.
+     */
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun theKeyboardsKeyIsSearchAndEnterChoosesTheFirstPlaceToo() {
+        show("Bahnhof")
+        val field = compose.onNodeWithTag(SEARCH_FIELD_TAG)
+        assertEquals(ImeAction.Search, field.fetchSemanticsNode().config[SemanticsProperties.ImeAction])
+        field.performKeyInput { pressKey(Key.Enter) }
         compose.waitForIdle()
         assertEquals(listOf("Bahnhofstrasse"), chosen.map { it.title })
     }
