@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Omaha?',
       blocks: [
         'Electric scooter rental in Omaha means **Lime**. After pilots in 2019 and 2020, the City Council voted unanimously in May 2021 to keep Lime and Spin for a year, with the option of four more, WOWT reported. On 22 October 2024 the Council’s agenda held a vote on an agreement between Omaha, Council Bluffs and Lime to extend the programme another year, with a 10-year option, WOWT reported; we found no report of the outcome. Lime is the only company the item named, and the only one we found renting in Omaha or Council Bluffs in October 2026.',
-        'At 3:23 p.m. on Thursday 29 October 2026 the [Omaha map](map:us:ne:Omaha) showed about 720 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. That total takes in Lime’s whole Omaha area, beyond the city line: Carter Lake, Iowa, and Council Bluffs, across the Missouri River, included.',
-        'For each Lime scooter the map shows its position and charge, but no price and no zones. Lime also rents e-bikes in Omaha, WOWT reported on 23 October 2026; they aren’t on the map, nor are Heartland Bike Share’s bikes. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 9:27 p.m. on Thursday 29 October 2026 the [Omaha map](map:us:ne:Omaha) showed about 700 Lime scooters inside the city line as last counted, so some may have moved since: the map’s count, not Lime’s fleet. Lime’s area runs on into Iowa, to Carter Lake and, across the Missouri River, Council Bluffs; the map counts a few more scooters there, under each town’s own name.',
+        'For each Lime scooter the map shows its position and charge, but no price. It draws the City of Omaha’s no-ride zones: the City allows neither riding nor parking in them, and a scooter that enters one shuts off and must be walked out before the ride goes on, the City’s New Mobility Hub says. Lime’s own zones are in its app. Lime also rents e-bikes in Omaha, WOWT reported on 23 October 2026; they aren’t on the map, nor are Heartland Bike Share’s bikes. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -161,6 +161,7 @@ const guide: Guide = {
     { title: 'Metro Transit: Passenger rules', url: 'https://www.ometro.com/rider-guide/passenger-rules/' },
     { title: 'National Park Service: Bob Kerrey Pedestrian Bridge', url: 'https://www.nps.gov/places/bob-kerrey-pedestrian-bridge.htm' },
     { title: 'WOWT: Bob Kerrey Pedestrian Bridge to temporarily close for inspections, 23 November 2025', url: 'https://www.wowt.com/2025/11/23/bob-kerrey-pedestrian-bridge-temporarily-close-inspections-city-says/' },
+    { title: 'City of Omaha: New Mobility Hub (automatic enforcement zones for scooters)', url: 'https://new-mobility-hub-omaha.hub.arcgis.com/' },
     { title: 'Iowa Legislature: Iowa Code 2026, section 321.1 (definitions) (PDF)', url: 'https://www.legis.iowa.gov/docs/code/321.1.pdf' },
     { title: 'Creighton University: Sustainable Creighton commuting guide, August 2024 (PDF)', url: 'https://www.creighton.edu/sites/default/files/Sustainable-Creighton-Commuting-Guide-20240823_0.pdf' },
   ],

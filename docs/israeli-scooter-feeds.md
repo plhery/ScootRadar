@@ -132,9 +132,8 @@ on every side. Lime publishes no zones, so each Lime town's bounds are where
 its scooters stood in the town over every poll, plus 500 m (Or Yehuda's
 widened to take in the town's centre). Lime's rider map does draw its zones,
 and the map keeps its Ashdod and Eilat scooters inside them. Every box is inside Israel's pre-1967 lines: the
-edge nearest the West Bank, Lime's Petah Tikva at 34.9241° E (Dott's, retired,
-reached 34.9304° E), is about 7 km south-west of its nearest point, by Habla,
-outside Qalqilya; no feed had a scooter in the West Bank or in East Jerusalem. Caesarea's box, added on 29 October 2026,
+edge nearest the West Bank, Dott's Petah Tikva at 34.9304° E, is about 5 km
+west of its nearest point, at Oranit; no feed had a scooter in the West Bank or in East Jerusalem. Caesarea's box, added on 29 October 2026,
 ends at 34.9678° E, about 9 km north-west of the West Bank's nearest point,
 by Baqa al-Sharqiyya.
 

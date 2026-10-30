@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Petah Tikva 2026: Lime, Dott, rules and parking',
   description: 'E-scooters in Petah Tikva: Lime and Dott, the City’s permit terms, prices in the app, the licence or test, helmet fines, parking bays and the Red Line.',
   headline: 'E-scooters in Petah Tikva: Lime and Dott, the City’s tenders, parking bays, the Red Line and Shabbat',
-  lede: 'You can rent e-scooters in Petah Tikva with Lime, on our map, or with Dott, in its own app: on 25 October 2026 the news site Kipa listed Petah Tikva among Dott’s towns. Each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
+  lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott, both on our map. Each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'il:Petah Tikva',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Petah Tikva?',
       blocks: [
-        'At 00:33 Israel time on Friday 30 October 2026 the [Petah Tikva map](map:il:Petah Tikva) showed 666 Lime scooters inside the city’s boundary. That’s what stood there at that moment, not the size of the fleet.',
-        '**Dott** isn’t on our map. In September 2025 Dott and Lime were the two companies running shared scooters in Petah Tikva, the local news site PTNews reported, and on 25 October 2026 Kipa listed Petah Tikva among the seven towns where Dott ran them. We found no news of it leaving, so if you use Dott, check its app.',
+        'At 04:27 Israel time on Friday 30 October 2026 the [Petah Tikva map](map:il:Petah Tikva) showed 1,066 scooters inside the city’s boundary: 671 Lime and 395 Dott. That’s what stood there at that moment, not the size of the fleets.',
+        'In September 2025 **Dott** and **Lime** were the two companies running shared scooters in Petah Tikva, the local news site PTNews reported, and on 25 October 2026 the news site Kipa listed Petah Tikva among the seven towns where Dott ran them.',
         '**Bird**, which rents in Ramat Gan and Tel Aviv, didn’t win the 2023 tender and wasn’t one of the two companies PTNews named in 2025; our Petah Tikva map doesn’t show it. ScootRadar shows e-scooters only, not e-bikes or bike share. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
           table: {
             caption: 'Who rents e-scooters in Petah Tikva, 30 October 2026',
-            head: ['Company', 'On our map at 00:33', 'Price', 'City permit'],
+            head: ['Company', 'On our map at 04:27', 'Price', 'City permit'],
             rows: [
-              ['Lime', 'Yes: 666', 'In the app', 'Won the 2023 tender'],
-              ['Dott', 'No: check its app', 'In the app', 'Won the 2023 tender'],
+              ['Lime', 'Yes: 671', 'In the app', 'Won the 2023 tender'],
+              ['Dott', 'Yes: 395', 'In the app', 'Won the 2023 tender'],
               ['Bird', 'No', '–', 'Won in 2021, not in 2023'],
             ],
           },
@@ -95,7 +95,7 @@ const guide: Guide = {
         'Ride on a bike path; where a street has none, ride on the road, never on the sidewalk, dpa reported in 2019, and Ice repeated in 2024 that riding on the sidewalk is banned.',
         '**Parking bays.** In September 2025 the Development Company added more than 100 marked scooter bays across the city’s neighbourhoods, PTNews reported. Its list puts bays on both sides of the Red Line’s Dankner, Beilinson and Shacham stops, by the Krol stop, on both sides of the Central Station and behind Heichal HaTarbut (the city’s culture hall). When a bay is near, end your ride in it.',
         '**Elsewhere**, park as the 2023 contract had the companies keep their scooters: by the kerb or along a building’s wall, with 2 metres of sidewalk clear, never blocking a bus stop, a doorway or a shop window, never at a school gate and never inside a public garden without a bike path.',
-        '**Zones on the map.** Our map draws no ride or parking zones in Petah Tikva: each company’s zones are in its app.',
+        '**Zones on the map.** Our map draws Dott’s no-parking and no-riding zones in Petah Tikva; Lime’s zones, and any slow zones, are in each company’s app.',
       ],
     },
     {
@@ -130,7 +130,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Petah Tikva?',
-      answer: 'Lime is on our [Petah Tikva map](map:il:Petah Tikva): 666 scooters inside the city at 00:33 on 30 October 2026. Dott isn’t on our map, though Kipa listed Petah Tikva among its towns on 25 October 2026, so check its app.',
+      answer: 'Lime and Dott are both on our [Petah Tikva map](map:il:Petah Tikva): 671 Lime and 395 Dott scooters inside the city at 04:27 on 30 October 2026.',
     },
     {
       question: 'How much does a Lime scooter cost in Petah Tikva?',
