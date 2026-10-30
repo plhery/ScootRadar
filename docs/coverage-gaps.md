@@ -410,6 +410,10 @@ banned shared scooters, and feeds that were empty when checked.
     as "Park only in racks or marked places", on the website only. The marked
     places are only in the operators' apps, and the 10 km/h streets the city
     agreed with them are not published (checked 30 October 2026).
+  - No other Swedish town has such a rule in force in STFS: searched county by
+    county on 30 October 2026, "vevanordning", from the words of Helsingborg's
+    title, finds only Helsingborg's, and "elsparkcykel" none. Göteborg's ban
+    inside Vallgraven, for one, has no rule there to draw from.
   - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
 - **Latvia** ([guide](latvian-scooter-feeds.md#known-gaps)): Ride Mobility
   in Rīga is covered.

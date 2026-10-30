@@ -299,16 +299,20 @@ so a renamed repository must be renamed in Coolify as well. After a deploy,
 `/health` and `/ready` return 200 again.
 
 A deploy starts the new container beside the old one, and Traefik sends it
-requests once Docker finds it healthy, after the start period. Coolify then
-stops the old one with SIGTERM, then SIGKILL after the stop grace period.
+requests once Docker finds it healthy, at its first check that passes, a few
+seconds in. Coolify waits out the start period, then stops the old one with
+SIGTERM, then SIGKILL after the stop grace period.
 Traefik sends the old container requests until Docker finds it unhealthy, so it
 answers them as before for 30 seconds (`DRAIN_MS` in
 `server/scooter-cache.ts`) while `/health` and `/ready` answer 503 with
 `"draining": true`. Ten failed checks two seconds apart make it unhealthy in
 about 21 seconds, and Traefik reloads within two more. Then it saves the
 snapshot and exits. Until 30 October 2026 it closed at once, and Traefik
-answered 46 requests with a 502 in four days. A slower health check needs a
-longer drain, and the stop grace period must cover the drain and the save.
+answered 46 requests with a 502 in four days. The first deploy that drained,
+e7df8f69's that day, had none: Traefik stopped sending the old container
+requests 19.5 seconds after SIGTERM, and Coolify had removed it after 36. A
+slower health check needs a longer drain, and the stop grace period must cover
+the drain and the save.
 
 Workers Builds deploys the website from the same commit, at about the same time
 as the cache. When the website needs a cache change first, as the
