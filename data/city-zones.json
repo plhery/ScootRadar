@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-30",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. None of the cities but Taupō states a licence for them, and Taupō's are CC BY 4.0; since 28 October 2026 such public city layers are drawn, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Only Taupō and Santa Monica state a licence for theirs, CC BY 4.0 and ODC-By 1.0; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, and Santa Monica's drop zones. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
     {
       "id": "arlingtoncemetery",
@@ -331,6 +331,40 @@
         "east": -8.574143
       },
       "zones": 230
+    },
+    {
+      "id": "santamonica",
+      "place": "Santa Monica",
+      "country": "US",
+      "authority": "City of Santa Monica, ODC-By 1.0",
+      "timeZone": "America/Los_Angeles",
+      "source": {
+        "title": "City of Santa Monica, Shared Mobility Device Program Administrative Regulations (7 November 2025): devices are shut off or slowed to 1 mph on the Promenade, the Pier and Pier Bridge and in all City parks, and shared e-scooters also on the Beach Path, Ocean Front Walk and the rest of the beach zone, as the City's prohibited riding areas show; a ride ended in one of the City's designated drop zones costs $1 less. Both layers are the City's open data (ODC-By 1.0)",
+        "url": "https://www.santamonica.gov/media/SM-AdminGuidelines_Fall2025Update.pdf"
+      },
+      "map": {
+        "title": "City of Santa Monica, \"Mobility Prohibited Riding Areas\" and \"Shared Mobility Drop Zones\" (open data, ArcGIS)",
+        "url": "https://gis-smgov.opendata.arcgis.com/"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://gis.santamonica.gov/server/rest/services/Shared_Mobility_Drop_Zones/FeatureServer",
+          "layer": 0
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services1.arcgis.com/ntb1ZybmOdA9GyKm/arcgis/rest/services/Mobility_Prohibited_Riding_Areas/FeatureServer",
+          "layer": 0
+        }
+      ],
+      "bounds": {
+        "south": 33.995152,
+        "west": -118.517664,
+        "north": 34.048235,
+        "east": -118.444099
+      },
+      "zones": 212
     },
     {
       "id": "taupo",

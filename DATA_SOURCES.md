@@ -763,6 +763,20 @@ layers are drawn regardless, credited to the city.
   ([echoboomer, 6 December 2022](https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas)).
   The broker's scooters themselves are not used: they have not moved since
   8 October 2026.
+- **Santa Monica** (read 30 October 2026): the City of Santa Monica's 184
+  [Shared Mobility Drop Zones](https://www.arcgis.com/home/item.html?id=2c4ef954b4504cc4853246ddf2bcb90c),
+  points each drawn as a disc of 5 m, and its 28
+  [Mobility Prohibited Riding Areas](https://www.arcgis.com/home/item.html?id=19b767c0962c4161b2e445cacaec2636),
+  both licensed under the Open Data Commons Attribution License 1.0 and
+  credited "City of Santa Monica, ODC-By 1.0", as the legend does. The City's
+  [Administrative Regulations of 7 November 2025](https://www.santamonica.gov/media/SM-AdminGuidelines_Fall2025Update.pdf)
+  name both layers: devices are shut off or slowed to 1 mph on the Promenade,
+  the Pier and Pier Bridge and in all City parks, and shared e-scooters also on
+  the Beach Path, Ocean Front Walk and the rest of the beach zone, where
+  e-bikes may ride, so the areas are drawn as no-riding zones; a ride ended in
+  a drop zone costs $1 less. The riding areas were last edited on 18 April
+  2019; the drop zones match the "175+ designated parking spaces" of the
+  City's [shared mobility page](https://www.santamonica.gov/programs/shared-mobility).
 - **Taupō** (read 30 October 2026): the Taupō District Council's
   [Rental E-Scooter Operational Areas](https://www.arcgis.com/home/item.html?id=36092a0943214783afc27bef88cc5430),
   licensed CC BY 4.0 and credited "Taupō District Council (CC BY 4.0)", as the
