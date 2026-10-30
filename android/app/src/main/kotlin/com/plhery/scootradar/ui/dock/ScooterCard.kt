@@ -1,7 +1,9 @@
 package com.plhery.scootradar.ui.dock
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
@@ -466,27 +469,41 @@ internal fun DirectionsButton(
         },
         label = if (isFinding) localized("Finding the way…") else directionsTitle(control),
     ) {
-        // The label changes with the walk's phase, in its animation: the old one fades out as the new fades in.
-        AnimatedContent(
-            targetState = control,
-            transitionSpec = {
-                if (reduceMotion) {
-                    EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-                } else {
-                    fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                        SizeTransform(clip = false) { _, _ -> spring.animation() }
-                }
-            },
-            contentAlignment = Alignment.Center,
-            label = "directions",
-        ) { shown ->
-            val finding = shown == ScooterDirectionsControl.Finding
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+        // The label changes with the walk's phase, in its animation: the old one fades out as the new fades in. Its
+        // symbol and its title each change by themselves, as a Label's do, so that a title that stays (Directions while
+        // the way is being found) is left as it is (UI-198).
+        val crossFade: AnimatedContentTransitionScope<*>.() -> ContentTransform = {
+            if (reduceMotion) {
+                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
+            } else {
+                fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                    SizeTransform(clip = false) { _, _ -> spring.animation() }
+            }
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+            AnimatedContent(
+                targetState = directionsSymbol(control) to isFinding,
+                transitionSpec = crossFade,
+                contentAlignment = Alignment.Center,
+                label = "directions symbol",
+            ) { (symbol, finding) ->
                 Box(contentAlignment = Alignment.Center) {
-                    SymbolIcon(directionsSymbol(shown), textSymbolSize(14f), LocalContentColor.current, Modifier.alpha(if (finding) 0f else 1f))
-                    if (finding) Spinner(SpinnerSize.Mini, if (prominent) Color.White else colors.dockText)
+                    SymbolIcon(symbol, textSymbolSize(14f), LocalContentColor.current, Modifier.alpha(if (finding) 0f else 1f))
+                    // In the symbol's overlay: the spinner takes the symbol's place and none of its own.
+                    if (finding) {
+                        Box(Modifier.matchParentSize().wrapContentSize(unbounded = true)) {
+                            Spinner(SpinnerSize.Mini, if (prominent) Color.White else colors.dockText)
+                        }
+                    }
                 }
-                Text(directionsTitle(shown), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            AnimatedContent(
+                targetState = directionsTitle(control),
+                transitionSpec = crossFade,
+                contentAlignment = Alignment.Center,
+                label = "directions title",
+            ) { title ->
+                Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     }
