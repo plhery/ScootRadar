@@ -667,6 +667,28 @@ credited to the city.
   contributors, ODbL), and the legend credits the rule and OpenStreetMap. The
   outline's one hole, about 60 m across, is bleachers within the cemetery, so
   the zone has none.
+- **Atlanta** (read 30 October 2026): the City of Atlanta's 19 installed
+  micromobility corrals, 10 the City's and 9 Midtown Alliance's, each drawn as
+  a disc 5 m round its point, from its `Micromobility_Corrals` feature service
+  (`InstallationStatus` "Complete"), which its Department of Transportation's
+  [Micromobility Corrals and Racks Map](https://www.arcgis.com/home/item.html?id=bc4a33a056b84971b97b0de992d33b63)
+  draws. Left out: the 19 not yet installed. The layer states no licence; it is
+  drawn under the rule of 28 October 2026, credited "City of Atlanta".
+  ATLDOT's [page](https://atldot.atlantaga.gov/services-2/bikes-and-scooters/)
+  doesn't name the corrals, so the legend links the map. Also left out: the
+  downtown no-parking and slow zone (`Shared_Micromobility_No_Parking_Slow_Zone`,
+  May 2026), which no City page describes; Bird's own no-parking zone there,
+  of the same outline, is drawn as Bird's.
+- **Baltimore** (read 30 October 2026): the Baltimore City Department of
+  Transportation's 71 scooter corrals, "locations of corrals for the shared
+  scooter program", each a disc 5 m round its point, from its `Scooter_Corrals`
+  feature service (`ScooterCorrals_20240530`, "Last updated 2024"), all of
+  which its
+  [Bike Racks and Scooter Parking Map](https://www.arcgis.com/home/item.html?id=b14d91d49b584dfdb1c6ca3713a30231),
+  updated in August 2026, shows alike: its `Has_Scoote` field, "Yes" for 45, is
+  not explained, so all are drawn. The layer states no licence; it is drawn
+  under the rule of 28 October 2026, credited to the Department, whose map the
+  legend links.
 - **Basel** (read 30 October 2026): the Kanton Basel-Stadt's 33
   no-parking zones (`Parkverbotszone`), where a shared vehicle's rental may
   not end, and 21 zones it may not be ridden through (`Sperrzone`), from the
@@ -739,6 +761,16 @@ credited to the city.
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **Columbus** (read 30 October 2026): the City of Columbus's 47 active
+  scooter corrals, 42 marked and 5 virtual, installed from April 2023 to
+  January 2026, each a disc 5 m round its point, from layer 42 of
+  `Schemas/PublicService/MapServer` on maps2.columbus.gov, which the Division
+  of Parking Services'
+  [Mobility and Parking Map](https://experience.arcgis.com/experience/648adcf8a293489b9ec3f5017e7c9d2b)
+  draws. The City's open data listed an older copy under CC0 (layer 49, gone);
+  this one states no licence, and is drawn under the rule of 28 October 2026,
+  credited "City of Columbus". columbus.gov answers scripts 403, so the legend
+  links the map.
 - **Helsinki** (read 30 October 2026): Helsingin kaupunki's 312 e-scooter
   parking places (`tyyppi = 'Sähköpotkulauta'`), from its parking places
   layer `Pysakointipaikat_alue` in the city's open WFS, as GeoJSON

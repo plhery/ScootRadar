@@ -85,11 +85,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
   Tel Aviv-Yafo's only from Israel, Scottsdale's with a Cloudflare challenge,
   and Louisville's ask for a token.
-- **Found, not added yet** (ArcGIS layers the script reads): the corrals of
-  Columbus (47 active; columbus.gov answers scripts 403, and the CC0 is an
-  older item's), Atlanta (38 installed; its one downtown no-parking and slow
-  zone has no City page to link) and Baltimore (45, 2024); and, smaller,
-  Pforzheim, Kerava (no City page found), Herzliya and Sandefjord.
+- **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
+  downtown no-parking and slow zone (no City page describes it; Bird's own
+  no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
+  Herzliya and Sandefjord. Atlanta's, Baltimore's and Columbus's corrals are
+  drawn since 30 October 2026.
 - **WFS, OGC API or GeoJSON, not added yet** (the script reads GeoJSON
   since 30 October 2026, when Basel's, Helsinki's, München's, Münster's,
   Wien's and New York's were added): Hamburg's 145 parking places and 3,043

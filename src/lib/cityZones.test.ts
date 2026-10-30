@@ -46,6 +46,12 @@ const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 const ARLINGTON_CLARENDON = { south: 38.884, west: -77.1, north: 38.892, east: -77.088 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
+// Midtown Atlanta, along Peachtree Street from 3rd to 8th Street.
+const ATLANTA_MIDTOWN = { south: 33.775, west: -84.39, north: 33.785, east: -84.38 };
+// Baltimore's Mount Vernon, north of the Inner Harbor.
+const BALTIMORE_MOUNT_VERNON = { south: 39.285, west: -76.625, north: 39.3, east: -76.605 };
+// Columbus's Harrison West, round Michigan Avenue and West 3rd Avenue.
+const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east: -83.01 };
 // Norrköping's Drottninggatan, from the station to the Gamla torget.
 const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
 // Vaasa's market square and the city centre round it.
@@ -89,7 +95,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'columbus', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -170,6 +176,9 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: WIEN_INNERE_STADT, zoom: 15 }).map(city => city.id)).toEqual(['wien']);
     expect(zoneCitiesInView({ bounds: SAKAE, zoom: 14 }).map(city => city.id)).toEqual(['nagoya']);
     expect(zoneCitiesInView({ bounds: PARKCHESTER, zoom: 15 }).map(city => city.id)).toEqual(['newyork']);
+    expect(zoneCitiesInView({ bounds: ATLANTA_MIDTOWN, zoom: 15 }).map(city => city.id)).toEqual(['atlanta']);
+    expect(zoneCitiesInView({ bounds: BALTIMORE_MOUNT_VERNON, zoom: 15 }).map(city => city.id)).toEqual(['baltimore']);
+    expect(zoneCitiesInView({ bounds: COLUMBUS_HARRISON_WEST, zoom: 15 }).map(city => city.id)).toEqual(['columbus']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -453,6 +462,24 @@ describe('the cities\' zones', () => {
     expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(128);
     expect(zones).toHaveLength(128);
     expect(ruleZonesInView({ bounds: ARLINGTON_CLARENDON, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(0);
+  });
+
+  it('draws Atlanta\'s, Baltimore\'s and Columbus\'s corrals as the places to park, credited to each city', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    // Atlanta's installed corrals, the City's and Midtown Alliance's; those not yet built are left out.
+    // Baltimore's, as its DOT's map shows them all; Columbus's, those active, physical or virtual.
+    const cities = [
+      { id: 'atlanta', authority: 'City of Atlanta', corrals: 19, view: ATLANTA_MIDTOWN },
+      { id: 'baltimore', authority: 'Baltimore City Department of Transportation', corrals: 71, view: BALTIMORE_MOUNT_VERNON },
+      { id: 'columbus', authority: 'City of Columbus', corrals: 47, view: COLUMBUS_HARRISON_WEST },
+    ];
+    for (const { id, authority, corrals, view } of cities) {
+      await loadCityZones(ZONE_CITIES.find(city => city.id === id)!);
+      const zones = cityZones.get().filter(zone => zone.id.startsWith(`${id}-`));
+      expect(zones).toHaveLength(corrals);
+      expect(zones.every(zone => zone.rule === 'parking' && zone.authority === authority && zone.timeZone === 'America/New_York')).toBe(true);
+      expect(ruleZonesInView({ bounds: view, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(0);
+    }
   });
 
   it('draws Oslo kommune\'s zones, those of every day: Marka\'s no-riding area but not the school yards\', no-riding on weekdays', async () => {

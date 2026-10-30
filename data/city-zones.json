@@ -164,6 +164,65 @@
       "zones": 1
     },
     {
+      "id": "atlanta",
+      "place": "Atlanta",
+      "country": "US",
+      "authority": "City of Atlanta",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "City of Atlanta, Department of Transportation, \"Micromobility Corrals and Racks Map\": the City's and Midtown Alliance's micromobility corrals, where shared scooters and bikes park",
+        "url": "https://www.arcgis.com/home/item.html?id=bc4a33a056b84971b97b0de992d33b63"
+      },
+      "map": {
+        "title": "City of Atlanta, \"Micromobility Corrals\" (ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=da1655c34eeb466f99cffa2d24c6a938"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services2.arcgis.com/zLeajbicrDRLQcny/arcgis/rest/services/Micromobility_Corrals/FeatureServer",
+          "layer": 1,
+          "where": "InstallationStatus = 'Complete'"
+        }
+      ],
+      "bounds": {
+        "south": 33.722177,
+        "west": -84.46428,
+        "north": 33.789124,
+        "east": -84.345767
+      },
+      "zones": 19
+    },
+    {
+      "id": "baltimore",
+      "place": "Baltimore",
+      "country": "US",
+      "authority": "Baltimore City Department of Transportation",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "Baltimore City Department of Transportation, \"Baltimore City Bike Racks and Scooter Parking Map\": its scooter corrals, for the City's shared scooter program",
+        "url": "https://www.arcgis.com/home/item.html?id=b14d91d49b584dfdb1c6ca3713a30231"
+      },
+      "map": {
+        "title": "Baltimore City Department of Transportation, \"Scooter Corrals\" (ArcGIS, last updated 2024)",
+        "url": "https://www.arcgis.com/home/item.html?id=25f5c095fd68418b814840f13f1c5989"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services3.arcgis.com/ZTvQ9NuONePFYofE/arcgis/rest/services/Scooter_Corrals/FeatureServer",
+          "layer": 0
+        }
+      ],
+      "bounds": {
+        "south": 39.255933,
+        "west": -76.704188,
+        "north": 39.352636,
+        "east": -76.561074
+      },
+      "zones": 71
+    },
+    {
       "id": "basel",
       "place": "Basel",
       "country": "CH",
@@ -338,6 +397,36 @@
         "east": -105.19852
       },
       "zones": 101
+    },
+    {
+      "id": "columbus",
+      "place": "Columbus",
+      "country": "US",
+      "authority": "City of Columbus",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "City of Columbus, Division of Parking Services, \"Mobility and Parking Map\": its scooter corrals among the City's parking options",
+        "url": "https://experience.arcgis.com/experience/648adcf8a293489b9ec3f5017e7c9d2b"
+      },
+      "map": {
+        "title": "City of Columbus, \"Mobility and Parking Map\" (ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=e2e822a0910f4217827d3956646dd6cf"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://maps2.columbus.gov/arcgis/rest/services/Schemas/PublicService/MapServer",
+          "layer": 42,
+          "where": "Status = 'Active'"
+        }
+      ],
+      "bounds": {
+        "south": 39.946611,
+        "west": -83.016933,
+        "north": 39.986099,
+        "east": -82.994957
+      },
+      "zones": 47
     },
     {
       "id": "helsinki",
