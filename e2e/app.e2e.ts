@@ -1400,12 +1400,10 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
   // On the narrowest phone, in every language, the legend's line fits: who says so whole, on a
   // second or third line if need be (CI's fonts set it wider), and nothing out of the legend.
   await page.setViewportSize({ width: 320, height: 568 });
-  for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en']) {
-    await page.evaluate(language => localStorage.setItem('scooters-locale', language), locale);
-    await page.goto('/map?origin=35.1688,136.9086&zones=0');
-    await expect(page.locator('.zone-legend a')).toBeVisible();
+  const legendFit = async () => {
+    await expect(page.locator('.zone-legend a').first()).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
-    const fit = await page.locator('.zone-legend').evaluate(element => {
+    return page.locator('.zone-legend').evaluate(element => {
       const box = element.getBoundingClientRect();
       const link = element.querySelector('a')!;
       return {
@@ -1418,6 +1416,11 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
         lines: Math.round(element.querySelector('.zone-legend-rule')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
       };
     });
+  };
+  for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en']) {
+    await page.evaluate(language => localStorage.setItem('scooters-locale', language), locale);
+    await page.goto('/map?origin=35.1688,136.9086&zones=0');
+    const fit = await legendFit();
     expect(fit, locale).toEqual({ inside: true, onScreen: true, linkWhole: true, lines: expect.any(Number) });
     expect(fit.lines, locale).toBeLessThanOrEqual(3);
   }
@@ -1426,6 +1429,12 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
   await zoomTo(page, 13);
   await expect(paths).toHaveCount(0);
   await expect(legend).toHaveCount(0);
+
+  // Who says so longer than a line, as München's office and its licence: on lines of its own, all
+  // of it within the legend, not out of it and off the screen.
+  await page.goto('/map?origin=48.1374,11.5755&zones=0');
+  await expect(legend.getByRole('link', { name: 'Landeshauptstadt München, Mobilitätsreferat, DL-DE BY 2.0' }).first()).toBeVisible();
+  expect(await legendFit()).toEqual({ inside: true, onScreen: true, linkWhole: true, lines: expect.any(Number) });
 });
 
 test('central Helsingborg, where scooters park only in racks or marked places, is drawn from zoom 14, credited to the city', async ({ page }) => {

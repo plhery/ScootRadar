@@ -114,4 +114,22 @@ describe('ruleZonesInView, with the areas a city sets', () => {
     // Only turned, not changed.
     expect([...drawnParking.polygons[0][0]].sort()).toEqual([...ring].sort());
   });
+
+  it('draws an area\'s holes as rings of their own, turned the other way, without the bridges its file keeps them by', () => {
+    // As scripts/boundaries.mjs keeps them: each hole after the first point, there and back.
+    const outer: [number, number][] = [[60.39, 5.32], [60.39, 5.33], [60.4, 5.33], [60.4, 5.32]];
+    const holes: [number, number][][] = [
+      [[60.392, 5.322], [60.394, 5.322], [60.394, 5.324], [60.392, 5.324]],
+      [[60.396, 5.326], [60.398, 5.326], [60.398, 5.328], [60.396, 5.328]],
+    ];
+    const bridged = holes.reduce((kept, hole) => [kept[0], ...hole, hole[0], kept[0], ...kept.slice(1)], outer);
+    const [drawn] = ruleZonesInView({ bounds: TORGET, zoom: 16 }, SEOUL_NOON, [{ ...parking, id: 'test-parking-holes', ring: bridged }]);
+    const bandTurn = Math.sign(turn(bandPolygons([[[37.5, 127], [37.5, 127.00226]]])[0][0]));
+    expect(drawn.polygons).toHaveLength(1);
+    const [drawnOuter, ...drawnHoles] = drawn.polygons[0];
+    expect([...drawnOuter].sort()).toEqual([...outer].sort());
+    expect(Math.sign(turn(drawnOuter))).toBe(bandTurn);
+    expect(drawnHoles.map(hole => [...hole].sort())).toEqual([...holes].reverse().map(hole => [...hole].sort()));
+    for (const hole of drawnHoles) expect(Math.sign(turn(hole))).toBe(-bandTurn);
+  });
 });

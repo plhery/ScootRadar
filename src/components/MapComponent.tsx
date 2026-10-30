@@ -825,8 +825,8 @@ export default function MapComponent({
   // are, in a pane of their own; outside their hours, dimmer. All of a kind that hold now, or
   // all that don't, are one fill and one edge, so that a few hundred zones are a few paths
   // and those over each other are no darker. The fill goes by winding: rings that turn the
-  // same way (ruleZones.ts) fill where they overlap, a band's holes stay open. None of them
-  // takes a tap or a click from the scooters, whose pane is over this one.
+  // same way (ruleZones.ts) fill where they overlap, a band's or an area's holes stay open.
+  // None of them takes a tap or a click from the scooters, whose pane is over this one.
   useEffect(() => {
     const map = mapRef.current;
     if (!readyMap || !map || !ruleZones.length) return;

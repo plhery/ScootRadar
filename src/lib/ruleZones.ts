@@ -162,12 +162,35 @@ function outerRing(ring: [number, number][]): [number, number][] {
   return twiceArea < 0 ? [...ring].reverse() : ring;
 }
 
+/**
+ * A city's zone as its outer ring and its holes, turned the other way. A zone's file keeps a hole
+ * in its one ring by a bridge from the ring's first point to the hole's and back
+ * (scripts/boundaries.mjs): its two sides cancel in the fill, but its edge would be a line across
+ * the zone, 20 km long in Berlin's. So each stretch between the first point's returns that closes
+ * on itself is a hole; any other, and the rest, the outer ring.
+ */
+function areaPolygon(ring: [number, number][]): [number, number][][] {
+  const [first] = ring;
+  const same = (a: [number, number], b: [number, number]) => a[0] === b[0] && a[1] === b[1];
+  const outer = [first];
+  const holes: [number, number][][] = [];
+  let stretch: [number, number][] = [];
+  for (const point of ring.slice(1)) {
+    if (!same(point, first)) { stretch.push(point); continue; }
+    if (stretch.length >= 4 && same(stretch[0], stretch[stretch.length - 1])) holes.push(stretch.slice(0, -1));
+    else outer.push(...stretch, point);
+    stretch = [];
+  }
+  outer.push(...stretch);
+  return [outerRing(outer), ...holes.map(hole => [...outerRing(hole)].reverse())];
+}
+
 const shapes = new Map<string, { bounds: MapBounds; polygons: [number, number][][][] }>();
 
 function shapeOf(zone: RuleZone) {
   let shape = shapes.get(zone.id);
   if (!shape) {
-    shape = zone.ring ? { bounds: linesBounds([zone.ring]), polygons: [[outerRing(zone.ring)]] }
+    shape = zone.ring ? { bounds: linesBounds([zone.ring]), polygons: [areaPolygon(zone.ring)] }
       // A pavement is drawn as its line: a band as wide as a street's would cover the street beside it.
       : zone.rule === 'pavement' ? { bounds: linesBounds(zone.lines), polygons: [] }
         : { bounds: linesBounds(zone.lines), polygons: bandPolygons(zone.lines) };

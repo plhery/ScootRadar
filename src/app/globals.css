@@ -2062,7 +2062,8 @@ svg {
   color: var(--ink-2);
 }
 /* A city's rule: who says so can be opened, and outside its hours its swatch is dimmer, as on the map.
-   On a narrow phone a rule may take two lines, who says so kept whole. */
+   On a narrow phone a rule may take two lines, who says so kept whole, or, longer than a line, as
+   Berlin's office and München's licence are, on lines of its own within the legend. */
 .zone-legend-rule {
   white-space: normal;
 }
@@ -2070,9 +2071,10 @@ svg {
   flex: none;
 }
 .zone-legend-rule a {
+  display: inline-block;
+  max-width: 100%;
   color: inherit;
   pointer-events: auto;
-  white-space: nowrap;
 }
 .zone-legend-rule[data-in-force='false'] .zone-swatch {
   opacity: 0.35;
