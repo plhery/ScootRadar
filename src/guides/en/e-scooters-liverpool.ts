@@ -18,21 +18,21 @@ const guide: Guide = {
       blocks: [
         'One company, **Bolt**, runs Liverpool’s shared e-scooters and e-bikes, under a Liverpool City Council contract and in partnership with the Liverpool City Region Combined Authority. Its area covers the whole city, Speke and Garston included, but not Bootle, Crosby, Huyton or the Wirral. The council and Merseyside Police call Bolt’s scooters “the only e-scooters permitted for use on public roads in Liverpool”.',
         '**Voi** launched the trial in October 2020 and ran it for more than five years. Bolt won the council’s tender, as the council announced on 14 November 2025, and took over on 1 February 2026, with about 2,000 e-scooters and a smaller e-bike fleet: Liverpool is its first e-scooter city in the UK. The council’s announcements give no end date for the contract, and the national trial that makes hire e-scooters legal is due to run until May 2028.',
-        'On the morning of 13 October 2026 the [map of Liverpool](map:gb:Liverpool) showed about 1,800 Bolt e-scooters: a snapshot, not the fleet size. It doesn’t show Bolt’s e-bikes, bays or zones. Tap a scooter to open the Bolt app, where you unlock and pay.',
+        'At 13:36 on 30 October 2026 the [map of Liverpool](map:gb:Liverpool) showed about 1,800 Bolt e-scooters free to rent at that moment. Zoom in and it shows Bolt’s no-go and slow zones, but not its bays or e-bikes. Tap a scooter to open the Bolt app, where you unlock and pay.',
       ],
     },
     {
       heading: 'How much does a Bolt scooter cost in Liverpool?',
       blocks: [
-        'Bolt charges **£1 to unlock and 25p a minute** for e-scooters and e-bikes alike, the rate in its data on 13 October 2026. The app shows the price before you unlock.',
+        'On 30 October 2026 Bolt charged **£1 to unlock and 25p a minute** for e-scooters and e-bikes alike. The app shows the price before you unlock.',
         {
           table: {
-            caption: 'Bolt prices in Liverpool, 13 October 2026',
+            caption: 'Bolt prices in Liverpool, 30 October 2026',
             head: ['Option', 'Price', 'What you get'],
             rows: [
               ['Pay per minute', '£1 + 25p a minute', '5 minutes £2.25, 10 minutes £3.50, 20 minutes £6.00, 30 minutes £8.50'],
-              ['Pay per mile', 'In the app', 'An option meant to encourage slower riding; the rate isn’t published'],
-              ['Passes', 'In the app', 'Daily, weekly or monthly, as the council and Bolt describe them'],
+              ['Pay per mile', 'Not published', 'Announced in January 2026 to encourage slower riding'],
+              ['Passes', 'In the app', 'Daily, weekly or monthly, as the council describes them'],
             ],
           },
         },
@@ -68,7 +68,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The council’s launch notices put Bolt’s top speed at 15.5 mph and its FAQ at 12.5 mph, so go by the limit the app shows. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
+        'The council’s announcement of November 2025 put Bolt’s top speed at 15.5 mph and its FAQ of February 2026 at 12.5 mph, so go by the limit the app shows. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
         {
           note: 'A private e-scooter is illegal on Liverpool’s roads, pavements and cycle lanes and in its parks. Riding one counts as riding an uninsured motor vehicle: a £300 fixed penalty and 6 points, and the police can seize it. Merseyside Police’s Operation Gears has “seized thousands of vehicles”.',
         },
@@ -77,10 +77,10 @@ const guide: Guide = {
     {
       heading: 'Bolt Liverpool no-go zones: where you can and can’t ride',
       blocks: [
-        'Bolt’s scooters stop in no-go zones and slow down in slow zones. This is how we read Bolt’s zone data on 13 October 2026:',
+        'Bolt’s scooters stop in no-go zones and slow down in slow zones. Here are its zones on 30 October 2026:',
         {
           table: {
-            caption: 'Riding zones as we read Bolt’s data, 13 October 2026 (zones change: check the app)',
+            caption: 'Bolt’s riding zones in Liverpool, 30 October 2026 (zones change: check the app)',
             head: ['Where', 'Riding', 'Good to know'],
             rows: [
               ['Liverpool ONE, Church Street, Lord Street, Whitechapel, Williamson Square, Clayton Square', 'No riding', 'Bays around the edge, on the Strand and just off Hanover Street'],
@@ -103,17 +103,17 @@ const guide: Guide = {
     {
       heading: 'Bolt Liverpool parking: bays, photos and fines',
       blocks: [
-        'A ride can only end in one of Bolt’s **parking bays**, shown in the app: about 1,500 in Bolt’s data on 13 October 2026, dense in the centre and thin in the parks and along Otterspool Promenade. Bolt told the BBC in January 2026 that its vehicles “must be parked in specific, identified parking bays”.',
+        'A ride can only end in one of Bolt’s **parking bays**, shown in the app: about 1,500 on 30 October 2026, dense in the centre and thin in the parks and along Otterspool Promenade. Bolt told the BBC in January 2026 that its vehicles must be parked in specific, identified bays.',
         'Find the bay nearest your destination before you set off: the [map](map:gb:Liverpool) shows the scooters, not the bays. Leave the pavement clear for blind and disabled people, and take the photo the app asks for. Bolt checks it with AI, and the council warns that “improper parking may result in a fine”. No amount is published for Liverpool; Bolt’s UK terms allow up to £40.',
-        'The council’s hire page still says you can “just leave them on the street”: that’s out of date. To report a badly parked Bolt, use the app or call 0844 933 4578 (charges may apply).',
+        'On 30 October 2026 the council’s hire page still said you can “just leave them on the street”: that’s out of date. To report a badly parked Bolt, use the app or call 0844 933 4578 (charges may apply).',
       ],
     },
     {
       heading: 'Lime Street, Merseyrail, the Mersey Tunnels and the airport',
       blocks: [
-        'In Bolt’s data, **Lime Street** station is a no-go zone, with about 20 bays within 300 metres; the nearest are on the forecourt side and on Copperas Hill. Edge Hill, South Parkway and many suburban stations are no-go zones too; Moorfields, James Street and Sandhills aren’t.',
+        '**Lime Street** station is a no-go zone, with nearly 20 bays within 300 metres on 30 October 2026; the nearest are on the forecourt side and on Copperas Hill. Edge Hill, South Parkway and many suburban stations are no-go zones too; Moorfields, James Street and Sandhills aren’t.',
         '**No e-scooters on Merseyrail:** they have been banned from its trains and stations since 2023, and non-folding e-bikes will be too from 1 January 2027.',
-        '**Not through the Mersey Tunnels:** Merseytravel has said e-scooters are not allowed “under any circumstances”. The Wirral is outside Bolt’s area anyway, and we found no e-scooter rule on the Mersey Ferries website, so end your ride at the bay by the Pier Head terminal.',
+        '**Across the Mersey:** the Wirral is outside Bolt’s area, so you can’t end a ride there. End it at the bay by the Pier Head ferry terminal instead.',
         '**Liverpool John Lennon Airport** has had Bolt bays since July 2026, near the staff entrance in the free drop-off and pick-up car park, and passengers may use them too. The terminal is a no-go zone: follow the app to the bay and walk the rest. Heading elsewhere? See [e-scooter hire in the UK](guide:uk-hire) for the other trial areas.',
       ],
     },
@@ -122,8 +122,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Anfield and Goodison Park** weren’t in no-go zones in Bolt’s data on 13 October 2026, with about 11 bays within 300 metres of Anfield; Walton Breck Road and Stanley Park are slow (8 mph).',
-            '**Hill Dickinson Stadium**, Everton’s new ground at Bramley-Moore Dock, is rideable, but its nearest bay is about 400 metres away. We found no match-day restrictions; check the app before kick-off.',
+            '**Anfield and Goodison Park** weren’t in no-go zones on 30 October 2026, and about 11 bays lay within 300 metres of Anfield; Walton Breck Road and Stanley Park are slow (8 mph).',
+            '**Hill Dickinson Stadium**, Everton’s new ground at Bramley-Moore Dock, is rideable, but its nearest bay is about 400 metres away. Bolt’s zones had no match-day rules on 30 October 2026; check the app before kick-off.',
             '**The Grand National** festival, from 8 to 10 April 2027, is at Aintree, outside Bolt’s area: end your ride at a bay on Longmoor Lane, about 780 metres from the racecourse, and walk the rest.',
             '**M&S Bank Arena:** Kings Parade is open, Keel Wharf is slow (10 mph) and the Albert Dock next door is a no-go zone. The nearest bay is about 100 metres away, at Monarchs Quay.',
           ],
@@ -133,7 +133,7 @@ const guide: Guide = {
     {
       heading: 'Bolt e-bikes in Liverpool: no licence needed',
       blocks: [
-        'Bolt’s e-bikes cost the same, £1 to unlock and 25p a minute, and need **no driving licence**, though you still register at 18 or over. Liverpool was the first place in the UK to get Bolt’s solar-assisted shared e-bikes. They aren’t on our map: find them in the Bolt app.',
+        'Bolt’s e-bikes cost the same, £1 to unlock and 25p a minute, and need **no driving licence**, though you still register at 18 or over. Liverpool was chosen as the first place in the UK for Bolt’s solar-assisted shared e-bikes. They aren’t on our map: find them in the Bolt app.',
         '**Citybike**, the docked bike share launched in 2014, is gone: Voi’s e-bikes replaced it in November 2022.',
       ],
     },
@@ -145,7 +145,7 @@ const guide: Guide = {
             '**Citybike lives on in the bay names.** 73 of Bolt’s virtual bays are still called “Liverpool - Citybike”, Pier Head Ferry and Church Street among them.',
             '**72,000 rides in ten weeks.** That was Voi’s tally from the October 2020 launch to mid-December, as the fleet grew to 400 scooters.',
             '**From weekend curfew to 24/7.** In June 2021 the council ordered “a full stop of the service after 9pm on Friday, Saturday and Sunday”. Bolt runs round the clock.',
-            '**The Queensway was the world’s longest road tunnel** from its opening in 1934 until 1948. E-scooters are banned from it.',
+            '**The Queensway was the world’s longest road tunnel** from its opening in 1934 until 1948. The Wirral at its far end is outside Bolt’s area.',
             '**Liverpool lost its World Heritage status** in July 2021, only the third site ever removed from UNESCO’s list. Its Albert Dock quays are a Bolt no-go zone.',
           ],
         },
@@ -159,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you leave a Bolt scooter anywhere in Liverpool?',
-      answer: 'No. You can end a ride only in one of Bolt’s parking bays shown in the app, about 1,500 across the city in October 2026, and you must take an end-of-ride photo. Parking badly can cost up to £40 under Bolt’s UK terms.',
+      answer: 'No. You can end a ride only in one of Bolt’s parking bays shown in the app, about 1,500 across the city on 30 October 2026, and you must take an end-of-ride photo. Parking badly can cost up to £40 under Bolt’s UK terms.',
     },
     {
       question: 'Is Bolt open 24 hours in Liverpool?',
@@ -184,7 +184,10 @@ const guide: Guide = {
     { title: 'BBC News: Crackdown on e-scooter riders who flout rules (January 2026)', url: 'https://www.bbc.com/news/articles/c78ek4pn8d3o' },
     { title: 'Merseyrail: E-bike ban', url: 'https://www.merseyrail.org/journey-planning/plan-your-journey/e-bike-ban/' },
     { title: 'WCNW Chamber: Liverpool John Lennon Airport partners with Bolt (July 2026)', url: 'https://wcnwchamber.org.uk/news/ljla-partners-with-bolt-to-launch-dedicated-scooter-and-e-bike-parking/' },
+    { title: 'Cities Today: Liverpool Airport adds Bolt micromobility parking (21 July 2026)', url: 'https://cities-today.com/liverpool-airport-adds-bolt-micromobility-parking/' },
+    { title: 'Railnews: Merseyrail to ban non-folding e-bikes (14 July 2026)', url: 'https://www.railnews.co.uk/news/2026/07/14-merseyrail-to-ban-nonfolding-ebikes.html' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
+    { title: 'GOV.UK: E-scooter trials, guidance for local areas and rental operators (trials due to end 31 May 2028)', url: 'https://www.gov.uk/government/publications/e-scooter-trials-guidance-for-local-areas-and-rental-operators/e-scooter-trials-guidance-for-local-areas-and-rental-operators' },
   ],
 };
 
