@@ -747,7 +747,9 @@ credited to the city.
   obey the geofenced no-ride and slow zones its map shows, and end a trip
   downtown or on Boise State's campus at a mandatory parking pin. The corrals
   are points, drawn as discs 5 m round them; the 23 marked not installed are
-  left out. Left out too: the two mandatory parking zones (Downtown and BSU),
+  left out. The layer names none, and only types them: each is named for its
+  type ("Sidewalk corral"), and the one without, Boise State's on its campus
+  (object 63, rechecked 30 October 2026), just "Corral". Left out too: the two mandatory parking zones (Downtown and BSU),
   which ScootRadar has no kind for, the pins being Lime's; and the no-operation
   layer's ring of 5,259 km² round the whole service area, over Meridian, Eagle
   and Nampa, which marks where Lime's service area ends, as Lime's own zones
