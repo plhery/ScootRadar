@@ -968,8 +968,11 @@ private fun NoticeStack(
             shrinkVertically(spring.animation(), Alignment.Top, clip = false)
     }
     // The stack's 8 between them comes and goes with the one that comes or goes, so the card moves by the banner and
-    // its spacing on one spring, as the iPhone's does.
-    val gap by animateDpAsState(if (failure != null && locationIssue != null) 8.dp else 0.dp, motion(spring), label = "noticesGap")
+    // its spacing on one spring, as the iPhone's does. Under Reduce Motion it comes and goes in the frame the notice
+    // does, as the iPhone's nil animation lays both out at once: a snap would land a frame later.
+    val gapTarget = if (failure != null && locationIssue != null) 8.dp else 0.dp
+    val animatedGap by animateDpAsState(gapTarget, motion(spring), label = "noticesGap")
+    val gap = if (reduceMotion) gapTarget else animatedGap
     val density = LocalDensity.current
     // As ViewThatFits, which weighs the notices that stay.
     val scrolls = with(density) { heights.settled(failure, locationIssue, 8.dp.roundToPx(), Int.MAX_VALUE) > limit.roundToPx() }

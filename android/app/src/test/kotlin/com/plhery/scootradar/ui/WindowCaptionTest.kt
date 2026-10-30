@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.getBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -28,7 +29,9 @@ import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.ui.dock.DockState
@@ -152,6 +155,46 @@ class WindowCaptionTest {
     }
 
     /**
+     * A card under a bar beside the buttons: the stack keeps to the window's top, and the card under the bar is the
+     * width the bar had, not narrowed with it, as the iPad's containerCornerOffset(_:sizeToFit:) moves only the bar's
+     * content; the map's top holds both.
+     */
+    @Test
+    @Config(qualifiers = "w600dp-h900dp-mdpi")
+    fun besideTheButtonsACardUnderTheBarKeepsItsWidthAndTheMapsTopHoldsIt() {
+        show(make = { located(controllers, it, ScooterLocationIssue.Denied) })
+        caption(48, listOf(Rect(0, 0, 150, 48), Rect(430, 0, 600, 48)))
+        assertEquals(ScreenRect(158.0, 8.0, 264.0, bar().height), bar())
+        assertCardUnderTheBar(LayoutDirection.Ltr)
+    }
+
+    /** Right to left, the buttons at the left and the chip at the right: the bar narrows between them, the card not. */
+    @Test
+    @Config(qualifiers = "w600dp-h900dp-mdpi")
+    fun rightToLeftTheDocksSearchBarNarrowsBetweenTheButtonsAndTheChipAndTheCardKeepsItsWidth() {
+        show(LayoutDirection.Rtl, make = { located(controllers, it, ScooterLocationIssue.Denied) })
+        caption(48, listOf(Rect(0, 0, 170, 48), Rect(450, 0, 600, 48)))
+        assertEquals(ScreenRect(178.0, 8.0, 264.0, bar().height), bar())
+        assertCardUnderTheBar(LayoutDirection.Rtl)
+    }
+
+    /**
+     * The location card 8 under the bar, across the bar's whole width without the buttons, 20 to 580, its Dismiss at
+     * its trailing end; and the map's top holding the bar and the card.
+     */
+    private fun assertCardUnderTheBar(direction: LayoutDirection) {
+        val top = frames.top!!
+        val card = top.height - bar().height - 8
+        assertTrue("the top $top holds the card", card > 60)
+        assertEquals("$top", ScreenRect(20.0, 8.0, 560.0, top.height), top)
+        val dismiss = compose.onNodeWithContentDescription(localized("Dismiss")).getBoundsInRoot()
+        // The 44 of the card's Dismiss, 4 in from the card's trailing edge.
+        val trailing = if (direction == LayoutDirection.Ltr) 580.0 - 4 - 44 else 20.0 + 4
+        assertEquals("Dismiss at $dismiss", trailing, dismiss.left.value.toDouble(), 0.5)
+        assertEquals("Dismiss at $dismiss", 8 + bar().height + 8, dismiss.top.value.toDouble(), 10.0)
+    }
+
+    /**
      * A screen 40 in from the window's left: the map's top is the bar's whole width without the buttons where the
      * screen has it, in the window's points, as every frame the map is handed is.
      */
@@ -194,11 +237,15 @@ class WindowCaptionTest {
 
     /**
      * The screen on the list of providers, light, with the map's stand-in reading the chrome's frames; [start] in from
-     * the window's leading edge.
+     * the window's leading edge; or the screen of the model [make] makes.
      */
-    private fun show(direction: LayoutDirection = LayoutDirection.Ltr, start: Dp = 0.dp): ScooterMapController {
+    private fun show(
+        direction: LayoutDirection = LayoutDirection.Ltr,
+        start: Dp = 0.dp,
+        make: (TestClock) -> ScooterMapController = { DockState.Summary.make(controllers, it) },
+    ): ScooterMapController {
         val clock = TestClock()
-        val model = DockState.Summary.make(controllers, clock)
+        val model = make(clock)
         model.setAppearance(ScooterAppearance.Light)
         // Edge to edge, as MainActivity is: the window's insets reach the screen.
         compose.runOnUiThread { WindowCompat.setDecorFitsSystemWindows(compose.activity.window, false) }

@@ -174,6 +174,27 @@ class FoldChromeTest {
     }
 
     /**
+     * UI-194: laid flat again, the search bar goes back up on the same spring, and the map is told it is at the top
+     * from the frame it starts back: the iPhone's `.padding(.top, 8 + chromeTop)` lays the stack out there at once,
+     * which onGeometryChange reads, while the spring only draws it on its way.
+     */
+    @Test
+    @Config(qualifiers = "w669dp-h951dp-mdpi")
+    fun laidFlatTheMapIsToldTheSearchBarIsBackAtTheTopAsItStartsBack() {
+        show()
+        val start = frames.top!!.minY
+        fold(LAPTOP)
+        assertEquals(UNDER_THE_FOLD, frames.top!!.minY, 0.5)
+        val (moved, told) = slide(FLAT)
+        val midway = moved.indices.filter { moved[it] > start + 1 && moved[it] < UNDER_THE_FOLD - 1 }
+        assertTrue("$moved", midway.size >= 5)
+        assertEquals(start, moved.last(), 0.5)
+        val first = moved.indexOfFirst { it < UNDER_THE_FOLD - 0.5 }
+        assertTrue("$moved", first in 0..3)
+        assertTrue("$moved, told $told", told.drop(first).all { abs(it - start) < 0.5 })
+    }
+
+    /**
      * UI-194: under Reduce Motion, where the iPhone's animation is nil, the search bar goes under the fold at once, and
      * the map is told so: its frame was left at the top, where the bar had been, as nothing drew the stack again.
      */
@@ -233,6 +254,9 @@ class FoldChromeTest {
     private companion object {
         /** T245's iPhone Duo standing like a laptop, its 20-point fold across from 465 to 485. */
         val LAPTOP = FoldingFeature(Rect(0, 0, 669, 951), center = 475, size = 20, state = FoldingFeature.State.HALF_OPENED)
+
+        /** The same Duo laid flat: its fold no longer counts. */
+        val FLAT = FoldingFeature(Rect(0, 0, 669, 951), center = 475, size = 20, state = FoldingFeature.State.FLAT)
 
         /** The search bar's top under that fold: 8 points under it. */
         const val UNDER_THE_FOLD = 485.0 + 8
