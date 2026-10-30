@@ -207,7 +207,10 @@ class CityZoneCache(val directory: File) {
 class CityZoneDownloads(
     private val api: ScooterAPIClient,
     private val cache: CityZoneCache?,
-    /** Where it asks and hears back: the map's controller's scope. */
+    /**
+     * Where it asks and hears back: the map's controller's scope. Its dispatcher must dispatch (not
+     * `Dispatchers.Main.immediate` or `Unconfined`), as a job is kept only once it is launched.
+     */
     private val scope: CoroutineScope,
     now: () -> Instant = Instant::now,
     /** The download cities of the app's build, until an index has come. */
@@ -267,11 +270,14 @@ class CityZoneDownloads(
                 }
             }
             restoring = null
-            if (kept != null && index == null) {
-                index = kept.first
-                indexConfirmedAt = kept.second
+            val restored = kept?.takeIf { index == null }
+            if (restored != null) {
+                index = restored.first
+                indexConfirmedAt = restored.second
             }
             lastArea?.let { request(over = it) }
+            // The map drew the build's cities as loading: what it draws now is the kept index's.
+            if (restored != null) onChange?.invoke()
         }
     }
 

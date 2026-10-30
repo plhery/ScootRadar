@@ -82,7 +82,8 @@ class CityZoneDownloadsTest {
             {"id":"berlin","zones":[
             {"id":"berlin-no-parking-1","kind":"noParking","ring":[52.511,13.35,52.512,13.35,52.512,13.351]},
             {"id":"berlin-racks-only-2","kind":"racksOnly","ring":[52.511,13.35,52.512,13.35,52.512,13.351]},
-            {"id":"berlin-parking-3","kind":"parking","ring":[52.511,13.35,52.512]}
+            {"id":"berlin-parking-3","kind":"parking","ring":[52.511,13.35,52.512]},
+            {"id":"berlin-slow-4","kind":"slow","ring":[52.511,13.35,52.512,13.35,52.512,13.351,52.513]}
             ]}
         """.trimIndent().toByteArray()
         val zones = CityZoneFile.zones(of = berlin, from = file)
@@ -244,6 +245,7 @@ class CityZoneDownloadsTest {
 
     @Test
     fun offlineTheFilesKeptAreDrawnForAWeekAfterTheIndexWasLastConfirmed() = runTest {
+        val confirmed = now
         val file = zoneFile(id = "berlin", zones = listOf(berlinZone))
         val online = DownloadStubAPI(mapOf("index.json" to zoneIndex(listOf(indexEntry("berlin", file = file))), "berlin.json" to file))
         val first = makeDownloads(online)
@@ -259,14 +261,38 @@ class CityZoneDownloadsTest {
         val kept = waitUntil { second.shown(over = tiergarten).zones.size == 1 }
         assertTrue(kept)
         assertEquals("The index was due, and failed; the file was read from the device", listOf("index.json"), offline.asked)
+        // Drawn until a week after the index was confirmed, and not from then.
+        now = confirmed.addingTimeInterval(CityZoneDownloads.indexLifetime - 1)
+        assertEquals(1, second.shown(over = tiergarten).zones.size)
+        now = confirmed.addingTimeInterval(CityZoneDownloads.indexLifetime)
+        assertTrue(second.shown(over = tiergarten).zones.isEmpty())
 
-        // A week after the index was confirmed, not any more.
-        now = now.addingTimeInterval(CityZoneDownloads.indexLifetime)
+        // Opened again then: the index is due and fails, and there is nothing to draw.
         val third = makeDownloads(offline)
         third.request(over = tiergarten)
         val unavailable = waitUntil { states(third.shown(over = tiergarten)) == listOf(Unavailable) }
         assertTrue(unavailable)
         assertTrue(third.shown(over = tiergarten).zones.isEmpty())
+    }
+
+    /**
+     * The index kept from before is read as the app opens, away from the map's thread, where the iPhone's is read as
+     * its downloads are made: once it is, the map is told, so that a city of the build it no longer lists stops
+     * saying its zones are loading. Nothing is asked for: the index was confirmed now.
+     */
+    @Test
+    fun theIndexKeptFromBeforeTellsTheMapOnceItIsRead() = runTest {
+        cache.write("index.json", zoneIndex(emptyList()), at = now)
+        val api = DownloadStubAPI(emptyMap())
+        val downloads = makeDownloads(api)
+        var changes = 0
+        downloads.onChange = { changes++ }
+        downloads.request(over = tiergarten)
+        assertEquals(listOf(Loading), states(downloads.shown(over = tiergarten)))
+        runCurrent()
+        assertTrue(downloads.shown(over = tiergarten).notices.isEmpty())
+        assertEquals(1, changes)
+        assertEquals(emptyList<String>(), api.asked)
     }
 
     @Test
