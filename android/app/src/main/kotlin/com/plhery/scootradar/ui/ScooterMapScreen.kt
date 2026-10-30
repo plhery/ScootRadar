@@ -77,7 +77,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
@@ -648,24 +647,16 @@ private fun PanelChrome(
                             .padding(top = searchBar + 8.dp)
                             .inert(isSearching),
                     ) {
-                        // The dock moves down for the notices, and back up as they go, as they slide.
-                        val noticesSpring = motion<IntSize>(IosMotion.snappy(duration = 0.28))
-                        AnimatedVisibility(
-                            notices,
-                            enter = expandVertically(noticesSpring, Alignment.Top, clip = false),
-                            exit = shrinkVertically(noticesSpring, Alignment.Top, clip = false),
-                            label = "notices",
-                        ) {
-                            TopNotices(
-                                controller,
-                                failure = firstLoadFailure,
-                                locationIssue = locationIssue,
-                                limit = noticesLimit,
-                                onSearchingChange = onSearchingChange,
-                                heights = noticeHeights,
-                                modifier = Modifier.padding(bottom = 8.dp),
-                            )
-                        }
+                        // The dock moves down for the notices, and back up as they go, on their spring.
+                        TopNotices(
+                            controller,
+                            failure = firstLoadFailure,
+                            locationIssue = locationIssue,
+                            limit = noticesLimit,
+                            onSearchingChange = onSearchingChange,
+                            heights = noticeHeights,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                        )
                         ScooterControlDock(
                             controller,
                             layout = ScooterChromeLayout.Panel,
@@ -807,7 +798,7 @@ private fun TopStack(
     // not where its spring has it, as the iPhone's onGeometryChange reads the layout, which an animation doesn't move:
     // only the views that draw apply it to their frames (geometryGroup()'s documentation). Taps and names keep clear
     // of where the search bar goes under a fold from its first frame. So too a notice that goes leaves it at once, as
-    // the iPhone's stack drops it from its layout while it slides away. Beside a caption's buttons, across the bar's
+    // the iPhone's stack drops it from its layout while it goes over it. Beside a caption's buttons, across the bar's
     // whole width without them: the iPad's containerCornerOffset(_:sizeToFit:) offsets and sizes the bar's content in
     // the frame the bar had, which its stack lays out.
     var roomTop by remember { mutableStateOf<Double?>(null) }
@@ -874,29 +865,44 @@ private fun TopStack(
 }
 
 /**
- * The heights of the notices under the search bar, each as it was last measured while it was there, 0 before: what
- * the frames handed to the map and the panel's room are worked out from.
+ * The heights of the notices under the search bar, each as it was last measured for what it says, kept while the
+ * notices are away under the open search: what the frames handed to the map and the panel's room are worked out from.
  */
 @Stable
 private class NoticeHeights {
-    var banner by mutableIntStateOf(0)
-    var card by mutableIntStateOf(0)
+    private var banner by mutableStateOf<Pair<ScooterLoadFailure, Int>?>(null)
+    private var card by mutableStateOf<Pair<ScooterLocationIssue, Int>?>(null)
+
+    /** The banner of [failure] is [height] pixels tall. */
+    fun measured(failure: ScooterLoadFailure, height: Int) {
+        banner = failure to height
+    }
+
+    /** The card of [issue] is [height] pixels tall. */
+    fun measured(issue: ScooterLocationIssue, height: Int) {
+        card = issue to height
+    }
 
     /**
      * The notices' height as the iPhone's layout has it, up to [limit]: those there are, without one that is going,
-     * which the stack drops from its layout at once while the notice slides away over it, [gap] apart.
+     * which the stack drops from its layout at once while the notice goes over it, [gap] apart. A notice not
+     * yet measured for what it says counts for nothing until it is.
      */
     fun settled(failure: ScooterLoadFailure?, locationIssue: ScooterLocationIssue?, gap: Int, limit: Int): Int {
-        val banner = if (failure != null) banner else 0
-        val card = if (locationIssue != null) card else 0
+        val banner = banner?.takeIf { it.first == failure }?.second ?: 0
+        val card = card?.takeIf { it.first == locationIssue }?.second ?: 0
         return min(limit, banner + card + if (banner > 0 && card > 0) gap else 0)
     }
 }
 
 /**
  * What sits under the search bar: the banner of a first load that failed, and the card of a location that could not
- * be found, as tall as [limit] at most, each measured into [heights]. As ViewThatFits: a plain stack while the notices
- * fit, which leaves their shadows and slides whole, and a scroll, which clips them, only when they don't.
+ * be found, as tall as [limit] at most, each measured into [heights]. They come as one block with the first notice and
+ * go with the last, as the iPhone inserts its `HeightLimit { topNotices }` and takes it away: SwiftUI runs the
+ * transition of the view inserted into a parent that stays, so the block fades in where it rests and out where it
+ * was, by the default `.opacity`, and the room it takes opens and closes on the same spring, which moves what is under
+ * it (the panel's card). A notice's own slide from the top runs only as it joins another or leaves it (lead, 30 Oct;
+ * to settle on an iPad).
  */
 @Composable
 private fun TopNotices(
@@ -908,6 +914,36 @@ private fun TopNotices(
     heights: NoticeHeights,
     modifier: Modifier = Modifier,
 ) {
+    val spring = IosMotion.snappy(duration = 0.28)
+    val reduceMotion = LocalReduceMotion.current
+    val notices = failure != null || locationIssue != null
+    // The notices as the last went, which the block keeps while it fades: the last doesn't slide away inside it.
+    val last = rememberLast((failure to locationIssue).takeIf { notices })
+    val shown = if (notices) failure to locationIssue else last ?: (null to null)
+    AnimatedVisibility(
+        notices,
+        enter = if (reduceMotion) fadeIn(snap()) else fadeIn(spring.animation()) + expandVertically(spring.animation(), Alignment.Top, clip = false),
+        exit = if (reduceMotion) fadeOut(snap()) else fadeOut(spring.animation()) + shrinkVertically(spring.animation(), Alignment.Top, clip = false),
+        label = "notices",
+    ) {
+        NoticeStack(controller, shown.first, shown.second, limit, onSearchingChange, heights, modifier)
+    }
+}
+
+/**
+ * The notices in their block. As ViewThatFits: a plain stack while the notices fit, which leaves their shadows and
+ * slides whole, and a scroll, which clips them, only when they don't.
+ */
+@Composable
+private fun NoticeStack(
+    controller: ScooterMapController,
+    failure: ScooterLoadFailure?,
+    locationIssue: ScooterLocationIssue?,
+    limit: Dp,
+    onSearchingChange: (Boolean) -> Unit,
+    heights: NoticeHeights,
+    modifier: Modifier,
+) {
     val isLoading by controller.isLoading.collectAsStateWithLifecycle()
     // What a banner or a card said stays on it while it goes.
     val lastFailure = rememberLast(failure)
@@ -916,8 +952,8 @@ private fun TopNotices(
     val locationSettings = LocalLocationSettings.current
     val spring = IosMotion.snappy(duration = 0.28)
     val reduceMotion = LocalReduceMotion.current
-    // A notice slides in from above its place and back up out of it, and what is under it moves on the same spring:
-    // the card down as a banner comes over it, and up as the banner goes.
+    // A notice that joins another slides in from above its place, and one that leaves another back up out of it, and
+    // what is under it moves on the same spring: the card down as a banner comes over it, and up as the banner goes.
     val enter = if (reduceMotion) {
         fadeIn(snap())
     } else {
@@ -948,8 +984,7 @@ private fun TopNotices(
     ) {
         AnimatedVisibility(failure != null, enter = enter, exit = exit) {
             val shown = lastFailure ?: return@AnimatedVisibility
-            DisposableEffect(Unit) { onDispose { heights.banner = 0 } }
-            Box(Modifier.onSizeChanged { heights.banner = it.height }) {
+            Box(Modifier.onSizeChanged { heights.measured(shown, it.height) }) {
                 MapStatusBanner(
                     message = shown.message,
                     actionTitle = localized("Try again"),
@@ -963,8 +998,7 @@ private fun TopNotices(
         Spacer(Modifier.height(gap))
         AnimatedVisibility(locationIssue != null, enter = enter, exit = exit) {
             val issue = lastIssue ?: return@AnimatedVisibility
-            DisposableEffect(Unit) { onDispose { heights.card = 0 } }
-            Box(Modifier.onSizeChanged { heights.card = it.height }) {
+            Box(Modifier.onSizeChanged { heights.measured(issue, it.height) }) {
                 LocationIssueCard(
                     issue = issue,
                     onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },

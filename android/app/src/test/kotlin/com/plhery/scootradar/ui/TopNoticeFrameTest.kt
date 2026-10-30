@@ -36,13 +36,14 @@ import java.util.TimeZone
 import kotlin.math.abs
 
 // UI-193 and UI-003: ScooterMapScreen.swift's top VStack(spacing: 8), whose frame onGeometryChange hands the map, drops
-// a notice from its layout as the notice is taken away, while the notice slides up and fades out over it, and moves
-// what is under a notice that comes or goes on the notices' `.animation(.snappy(duration: 0.28))`.
+// a notice from its layout as the notice is taken away, while the notice goes over it (the last fades where it was, one
+// leaving another slides up and fades), and moves what is under a notice that comes or goes on the notices'
+// `.animation(.snappy(duration: 0.28))`.
 
 /**
  * A notice that goes leaves the frame the map keeps its names and taps out of at once: the map's top is the search
- * bar alone from the next frame, while the card still slides away for 0.28 s. A card under a banner that comes or
- * goes moves by the banner and the space between them on one spring.
+ * bar alone from the next frame, while the card still fades for 0.28 s. A card under a banner that comes or goes
+ * moves by the banner and the space between them on one spring.
  */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w443dp-h970dp-mdpi")
@@ -89,7 +90,7 @@ class TopNoticeFrameTest {
         compose.mainClock.advanceTimeByFrame()
         compose.waitForIdle()
         // The card is still there, on its way out.
-        assertTrue("the card slides away", compose.onAllNodes(card).fetchSemanticsNodes().isNotEmpty())
+        assertTrue("the card fades", compose.onAllNodes(card).fetchSemanticsNodes().isNotEmpty())
         assertEquals("the top ${frames.top}", barHeight(), frames.top!!.height, 0.5)
         compose.mainClock.autoAdvance = true
         compose.waitForIdle()
