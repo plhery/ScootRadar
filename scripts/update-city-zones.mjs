@@ -145,7 +145,8 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * property left empty): a WFS's or an OGC API's features, asked for as GeoJSON in latitude and
  * longitude, or an open data portal's export. Polygons are zones as a feature service's are, and
  * points discs, named by `nameField` or else `pointName`, or after the city. A zone's id is its
- * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them.
+ * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them,
+ * or for a feature without one, as Münster's are, a hash of its shape.
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
  * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points.
  */
@@ -159,8 +160,10 @@ async function geojsonZones(city, { kind, url, match = {}, nameField, idField, p
   const wanted = ({ properties }) => Object.entries(match).every(([key, values]) => [values].flat().includes(properties?.[key] ?? null));
   return body.features.filter(wanted).flatMap(feature => {
     const { properties, geometry } = feature;
-    const featureId = String(idField ? properties[idField] : feature.id).replace(/^.*\./, '');
-    if (!featureId || featureId === 'undefined') throw new Error(`${url}: a feature has no id`);
+    const featureId = idField ? String(properties[idField] ?? '')
+      : feature.id != null ? String(feature.id).replace(/^.*\./, '')
+        : createHash('sha1').update(JSON.stringify(geometry?.coordinates ?? null)).digest('hex').slice(0, 8);
+    if (!featureId) throw new Error(`${url}: a feature has no ${idField}`);
     const id = `${city.id}-${slug(kind)}-${featureId}`;
     const name = (nameField && String(properties[nameField] ?? '').trim()) || null;
     switch (geometry?.type) {

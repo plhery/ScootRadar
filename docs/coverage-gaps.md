@@ -94,12 +94,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   to link) and Baltimore (45, 2024); and, smaller, Pforzheim, Kerava (no
   City page found), Herzliya and Sandefjord.
 - **WFS, OGC API or GeoJSON, not added yet** (the script reads GeoJSON
-  since 30 October 2026, when Basel's, Helsinki's and München's were added):
+  since 30 October 2026, when Basel's, Helsinki's, München's and Münster's
+  were added):
   Wien's 1,998 areas (`ogdwien:ESCOOTPARKVERBOGD`; whether its licence is
   CC BY 4.0 or CC BY-NC is to be checked), Hamburg's 145 parking places and
   3,043 no-parking areas (DL-DE BY 2.0), Berlin's 637 parking places (DL-DE
-  Zero), Lille's 680 places (Etalab 2.0), Münster's 432 parking places and
-  701 no-parking areas (DL-DE BY 2.0), and New York's 538 corrals (Socrata).
+  Zero), Lille's 680 places (Etalab 2.0) and New York's 538 corrals
+  (Socrata).
 - **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024) and
   Portland's (2021).
 

@@ -45,6 +45,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   jarvenpaa: () => import('../../data/city-zones/jarvenpaa.json'),
   minneapolis: () => import('../../data/city-zones/minneapolis.json'),
   munchen: () => import('../../data/city-zones/munchen.json'),
+  munster: () => import('../../data/city-zones/munster.json'),
   nagoya: () => import('../../data/city-zones/nagoya.json'),
   norrkoping: () => import('../../data/city-zones/norrkoping.json'),
   omaha: () => import('../../data/city-zones/omaha.json'),

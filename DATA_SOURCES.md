@@ -611,8 +611,8 @@ says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
 catalogs. `scripts/update-city-zones.mjs` reads them again. Alexandria,
-Basel, Helsinki, München, St. Albert, Santa Monica, Taupō, Vancouver, Vantaa
-and Washington state a licence for their layers, Washington for two of its
+Basel, Helsinki, München, Münster, St. Albert, Santa Monica, Taupō, Vancouver,
+Vantaa and Washington state a licence for their layers, Washington for two of its
 three; since 28 October 2026 a city's public zone layers are drawn regardless,
 credited to the city.
 
@@ -779,6 +779,17 @@ credited to the city.
   out: 11 parking areas suspended by building works and 5 standing in for
   them, each until a set day, and 4 no-parking zones of building sites and an
   event, also until a set day.
+- **Münster** (read 30 October 2026): the Stadt Münster's 432 parking zones
+  for e-scooters and 701 no-parking zones round them, where a rental can't
+  end, from its WFS (`ms:parkzonen_emobility`, `ms:sperrzonen_emobility`) as
+  GeoJSON, of its open data
+  ([Abstellflächen und Parkverbotszonen E-Scooter Münster](https://opendata.stadt-muenster.de/dataset/abstellfl%C3%A4chen-und-parkverbotszonen-e-scooter-m%C3%BCnster),
+  DL-DE BY 2.0, zones added to September 2026). The legend links the
+  Ordnungsamt's [e-scooter page](https://www.stadt-muenster.de/ordnungsamt/elektro-tretroller):
+  since 24 April 2023 the public areas round the parking zones, first in the
+  city centre and on Weseler Straße, are no-parking zones. The features have
+  no ids, so each zone's is a hash of its shape. Left out: three no-parking
+  slivers of under a square metre, which simplify to nothing.
 - **Nagoya** (read 29 October 2026): the pavements where an e-scooter in its
   6 km/h mode may ride, 1,801 lines, about 1,508 km: rule 81 (普通自転車歩道通行可)
   of the Aichi police's traffic rules, from the open data

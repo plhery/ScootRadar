@@ -25,6 +25,7 @@ const BASEL_ALTSTADT = { south: 47.553, west: 7.585, north: 47.56, east: 7.595 }
 const HELSINKI_CENTRE = { south: 60.165, west: 24.935, north: 60.172, east: 24.95 };
 // München's old town, from Stachus to the Marienplatz.
 const MUNCHEN_ALTSTADT = { south: 48.135, west: 11.565, north: 48.142, east: 11.58 };
+const MUNSTER_PRINZIPALMARKT = { south: 51.958, west: 7.62, north: 51.965, east: 7.635 };
 // Vancouver's Commercial Drive, in Grandview-Woodland.
 const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28, east: -123.06 };
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
@@ -82,7 +83,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
+    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -143,6 +144,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BASEL_ALTSTADT, zoom: 15 }).map(city => city.id)).toEqual(['basel']);
     expect(zoneCitiesInView({ bounds: HELSINKI_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['helsinki']);
     expect(zoneCitiesInView({ bounds: MUNCHEN_ALTSTADT, zoom: 15 }).map(city => city.id)).toEqual(['munchen']);
+    expect(zoneCitiesInView({ bounds: MUNSTER_PRINZIPALMARKT, zoom: 15 }).map(city => city.id)).toEqual(['munster']);
     expect(zoneCitiesInView({ bounds: VANCOUVER_COMMERCIAL_DRIVE, zoom: 15 }).map(city => city.id)).toEqual(['vancouver']);
     expect(zoneCitiesInView({ bounds: OSLO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['oslo']);
     expect(zoneCitiesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }).map(city => city.id)).toEqual(['santamonica']);
@@ -325,6 +327,18 @@ describe('the cities\' zones', () => {
     expect(zones.find(zone => zone.rule === 'parking' && zone.place === 'Thalkirchen')).toBeDefined();
     const shown = ruleZonesInView({ bounds: MUNCHEN_ALTSTADT, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'noRide']));
+  });
+
+  it('draws Münster\'s e-scooter parking zones and the no-parking zones round them, credited to the city', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'munster')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Stadt Münster, DL-DE BY 2.0' && zone.timeZone === 'Europe/Berlin')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(432);
+    // 701 no-parking zones, two of two parts, less three slivers of under a square metre.
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(700);
+    const shown = ruleZonesInView({ bounds: MUNSTER_PRINZIPALMARKT, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking']));
   });
 
   it('draws the City of Vancouver\'s e-scooter stations as the places to park, credited under its open government licence', async () => {
