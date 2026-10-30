@@ -117,7 +117,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   /**
    * Every station of the feed is a parking station where rides must end, though the feed says
    * neither: Vancouver makes riders end at the city's e-scooter stations, and Lime lists them as
-   * plain stations, with no geofencing.
+   * plain stations, with no geofencing. Bolt's Liverpool bays flag no `station_parking`: its feed
+   * forbids ending a ride (`global_rules`) but in each bay's own zone, its slow zones and three others.
    */
   stationParking?: boolean;
   /**

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { filterReturningParking, normalizeParkingLocations, type ParkingZonesFeed } from './parking';
 import { FRENCH_SCOOTER_SYSTEMS } from './frenchScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS } from './regionalScooterSystems';
 const system = FRENCH_SCOOTER_SYSTEMS.find(s => s.id === 'dott_fr_lyon')!;
 const types = { data: { vehicle_types: [
   { vehicle_type_id: 'scooter', form_factor: 'scooter_standing', propulsion_type: 'electric' },
@@ -95,5 +96,14 @@ describe('published scooter parking', () => {
   it('deduplicates IDs and does not infer mandatory parking without a published rule', () => {
     expect(normalize([station, station], {})).toHaveLength(1);
     expect(normalize([station], {})[0].mandatory).toBe(false);
+  });
+  it("makes every bay where rides must end of a feed whose rule is the system's, as Bolt's in Liverpool", () => {
+    const liverpool = REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === 'bolt_gb_liverpool')!;
+    // Bolt's feed: no ending a ride but in a bay's own zone, and no bay flagged.
+    const fencing = { data: { global_rules: [{ ride_start_allowed: true, ride_end_allowed: false, ride_through_allowed: false }],
+      geofencing_zones: { features: [] } } } as unknown as ParkingZonesFeed;
+    const bay = { ...station, name: [{ language: 'en', text: 'Liverpool - Citybike - Ropeworks Square' }], lat: 53.4024, lon: -2.97725 };
+    expect(normalizeParkingLocations(liverpool, types, { data: { stations: [bay] } }, fencing))
+      .toMatchObject([{ id: 'bolt_gb_liverpool:bay', provider: 'bolt', mandatory: true }]);
   });
 });

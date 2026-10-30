@@ -263,7 +263,8 @@
         "west": -3.0113,
         "east": -2.8194
       },
-      "discoveryUrl": "https://mds.bolt.eu/gbfs/3/412/gbfs"
+      "discoveryUrl": "https://mds.bolt.eu/gbfs/3/412/gbfs",
+      "stationParking": true
     },
     {
       "id": "dott_gb_bath",

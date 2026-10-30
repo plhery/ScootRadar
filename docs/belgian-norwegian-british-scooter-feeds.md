@@ -257,6 +257,13 @@ directory.
   (`data/listed-prices.json`) gives 22p on Saturdays and Sundays. Ryde and Dott start their per-minute band at minute 1, while their
   descriptions charge every minute; the parser reads it that way, so a ride
   estimate is at most one minute's fee above the letter of the band.
+- **Bolt's Liverpool bays:** 1,499 virtual stations on 30 October 2026, each
+  with its area, which the map shows from zoom 16. A ride ends only in one
+  (Bolt to the BBC, January 2026), but the feed flags no `station_parking`:
+  its `global_rules` forbid ending a ride, and its zones allow it in the
+  bays' own, in the 26 slow zones and in three others, not in the no-go
+  zones. So the system says so with `"stationParking": true`, and each bay's
+  card says "You must park in a bay in this zone."
 - **Night bans:** most Norwegian towns ban renting at night (see
   [Night bans](#night-bans)). Voi empties its Oslo feed during the ban, but
   Bolt and Ryde keep publishing their scooters as available, so the map shows
