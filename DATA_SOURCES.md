@@ -761,6 +761,17 @@ credited to the city.
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **City of London** (read 30 October 2026): the City of London
+  Corporation's 45 parking places for hire scooters and bikes, each set by a
+  traffic management order (2022/21, 2024/1, 2025/13 and 2025/17) and named
+  for its street, from layer 86, "Scooters and Cycle Hire Parking Places", of
+  its `INSPIRE/MapServer` on mapping.cityoflondon.gov.uk, revised on 28 April
+  2025. They are its open data,
+  [Parking Places (Scooters/Cycle Hire)](https://www.data.gov.uk/dataset/fe236d1a-e071-40cc-91d4-ba93e0c7ec07/parking-places-scooters-cycle-hire),
+  under the Open Government Licence v3.0 (contains public sector information
+  licensed under the Open Government Licence v3.0), and the legend links that
+  record: no City page describing the places was found. Its Santander Cycles
+  docking stations (layer 65) are left out.
 - **Columbus** (read 30 October 2026): the City of Columbus's 47 active
   scooter corrals, 42 marked and 5 virtual, installed from April 2023 to
   January 2026, each a disc 5 m round its point, from layer 42 of

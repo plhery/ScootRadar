@@ -50,6 +50,8 @@ const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -
 const ATLANTA_MIDTOWN = { south: 33.775, west: -84.39, north: 33.785, east: -84.38 };
 // Baltimore's Mount Vernon, north of the Inner Harbor.
 const BALTIMORE_MOUNT_VERNON = { south: 39.285, west: -76.625, north: 39.3, east: -76.605 };
+// The City of London round the Guildhall and Moorgate, from Wood Street to Finsbury Circus.
+const CITY_OF_LONDON_GUILDHALL = { south: 51.514, west: -0.095, north: 51.52, east: -0.085 };
 // Columbus's Harrison West, round Michigan Avenue and West 3rd Avenue.
 const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east: -83.01 };
 // Helsingborg's Stortorget, Kärnan and the station, Knutpunkten.
@@ -99,7 +101,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'columbus', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(cities).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'boise', 'boulder', 'cityoflondon', 'columbus', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -184,6 +186,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: ATLANTA_MIDTOWN, zoom: 15 }).map(city => city.id)).toEqual(['atlanta']);
     expect(zoneCitiesInView({ bounds: BALTIMORE_MOUNT_VERNON, zoom: 15 }).map(city => city.id)).toEqual(['baltimore']);
     expect(zoneCitiesInView({ bounds: COLUMBUS_HARRISON_WEST, zoom: 15 }).map(city => city.id)).toEqual(['columbus']);
+    expect(zoneCitiesInView({ bounds: CITY_OF_LONDON_GUILDHALL, zoom: 15 }).map(city => city.id)).toEqual(['cityoflondon']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -485,6 +488,16 @@ describe('the cities\' zones', () => {
       expect(zones.every(zone => zone.rule === 'parking' && zone.authority === authority && zone.timeZone === 'America/New_York')).toBe(true);
       expect(ruleZonesInView({ bounds: view, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(0);
     }
+  });
+
+  it('draws the City of London\'s parking places for hire scooters and bikes, each named for its street', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'cityoflondon')!);
+    const zones = cityZones.get().filter(zone => zone.id.startsWith('cityoflondon-'));
+    expect(zones).toHaveLength(45);
+    expect(zones.every(zone => zone.rule === 'parking' && zone.authority === 'City of London Corporation' && zone.timeZone === 'Europe/London')).toBe(true);
+    expect(zones.find(zone => zone.place === 'Basinghall Street')).toBeDefined();
+    expect(ruleZonesInView({ bounds: CITY_OF_LONDON_GUILDHALL, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(0);
   });
 
   it('draws Oslo kommune\'s zones, those of every day: Marka\'s no-riding area but not the school yards\', no-riding on weekdays', async () => {
