@@ -47,6 +47,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   omaha: () => import('../../data/city-zones/omaha.json'),
   oslo: () => import('../../data/city-zones/oslo.json'),
   ottawa: () => import('../../data/city-zones/ottawa.json'),
+  oygarden: () => import('../../data/city-zones/oygarden.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   santamonica: () => import('../../data/city-zones/santamonica.json'),
   stalbert: () => import('../../data/city-zones/stalbert.json'),

@@ -17,6 +17,8 @@ const JARVENPAA_CENTRE = { south: 60.469, west: 25.08, north: 60.477, east: 25.1
 const MINNEAPOLIS_RIVERFRONT = { south: 44.975, west: -93.27, north: 44.985, east: -93.25 };
 // Ottawa's Parliament Hill, the Rideau Canal and the ByWard Market.
 const OTTAWA_CENTRE = { south: 45.42, west: -75.7, north: 45.43, east: -75.68 };
+// Straume's centre, on Sotra in Øygarden, round Sotra Storsenter.
+const STRAUME_CENTRE = { south: 60.355, west: 5.118, north: 60.362, east: 5.13 };
 // Vancouver's Commercial Drive, in Grandview-Woodland.
 const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28, east: -123.06 };
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
@@ -74,7 +76,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'jarvenpaa', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
+    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'jarvenpaa', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -131,6 +133,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: OMAHA_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['omaha']);
     expect(zoneCitiesInView({ bounds: MINNEAPOLIS_RIVERFRONT, zoom: 15 }).map(city => city.id)).toEqual(['minneapolis']);
     expect(zoneCitiesInView({ bounds: OTTAWA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['ottawa']);
+    expect(zoneCitiesInView({ bounds: STRAUME_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['oygarden']);
     expect(zoneCitiesInView({ bounds: VANCOUVER_COMMERCIAL_DRIVE, zoom: 15 }).map(city => city.id)).toEqual(['vancouver']);
     expect(zoneCitiesInView({ bounds: OSLO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['oslo']);
     expect(zoneCitiesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }).map(city => city.id)).toEqual(['santamonica']);
@@ -263,6 +266,20 @@ describe('the cities\' zones', () => {
     expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(38);
     const shown = ruleZonesInView({ bounds: OTTAWA_CENTRE, zoom: 15 }, Date.now(), zones);
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'slow', 'noRide']));
+  });
+
+  it('draws Øygarden kommune\'s no-riding, no-parking and slow zones in Straume, but not its suggested deployment points', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'oygarden')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Øygarden kommune' && zone.timeZone === 'Europe/Oslo')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(4);
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(1);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(10);
+    // The six it calls parking zones are the points where the kommune suggests the operators set scooters out, not where a ride must end.
+    expect(zones.some(zone => zone.rule === 'parking')).toBe(false);
+    const shown = ruleZonesInView({ bounds: STRAUME_CENTRE, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['noParking', 'slow', 'noRide']));
   });
 
   it('draws the City of Vancouver\'s e-scooter stations as the places to park, credited under its open government licence', async () => {

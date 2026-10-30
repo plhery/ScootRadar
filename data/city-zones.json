@@ -572,6 +572,51 @@
       "zones": 74
     },
     {
+      "id": "oygarden",
+      "place": "Øygarden",
+      "country": "NO",
+      "authority": "Øygarden kommune",
+      "timeZone": "Europe/Oslo",
+      "source": {
+        "title": "Øygarden kommune, \"Kunngjering av løyveordning for utleige av små elektriske køyretøy på offentleg grunn i Øygarden kommune\" (December 2025): rental operators must geofence the kommune's zones in Straume, from 1 March 2026 to 29 February 2028",
+        "url": "https://www.oygarden.kommune.no/_f/p1/i062c6fc5-7989-4580-acb2-4892041ce073/kunngjeringstekst.pdf"
+      },
+      "map": {
+        "title": "Øygarden kommune, \"Geogjerder og soneinndeling ØK\" (map, ArcGIS)",
+        "url": "https://oygardenkart.maps.arcgis.com/apps/instant/atlas/index.html?appid=0d814751e74749fc9d7fa4f482a7abae"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "url": "https://services-eu1.arcgis.com/WwaiT7wLEngTyA4o/arcgis/rest/services/Geogjerder_og_Soneinndeling_ØK_v1_WFL1/FeatureServer",
+          "layer": 2,
+          "where": "sone_type = 'parkeringsforbod'",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services-eu1.arcgis.com/WwaiT7wLEngTyA4o/arcgis/rest/services/Geogjerder_og_Soneinndeling_ØK_v1_WFL1/FeatureServer",
+          "layer": 2,
+          "where": "sone_type = 'saktesone'",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services-eu1.arcgis.com/WwaiT7wLEngTyA4o/arcgis/rest/services/Geogjerder_og_Soneinndeling_ØK_v1_WFL1/FeatureServer",
+          "layer": 2,
+          "where": "sone_type = 'køyreforbod'",
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 60.342138,
+        "west": 5.09638,
+        "north": 60.376544,
+        "east": 5.165057
+      },
+      "zones": 15
+    },
+    {
       "id": "porto",
       "place": "Porto",
       "country": "PT",

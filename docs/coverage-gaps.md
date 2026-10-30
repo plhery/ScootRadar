@@ -92,7 +92,7 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   columbus.gov answers scripts 403, and the CC0 is an older item's), Atlanta
   (38 installed; its one downtown no-parking and slow zone has no City page
   to link) and Baltimore (45, 2024); and, smaller, Pforzheim, Kerava (no
-  City page found), Herzliya, Sandefjord and Øygarden.
+  City page found), Herzliya and Sandefjord.
 - **Waiting for a reader of WFS, OGC API or GeoJSON:** Wien's 1,998 areas
   (`ogdwien:ESCOOTPARKVERBOGD`), Hamburg's 145 parking places and 3,043
   no-parking areas (DL-DE BY 2.0), Berlin's 637 parking places (DL-DE Zero),

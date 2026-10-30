@@ -839,6 +839,19 @@ licence for their layers, Washington for two of its three; since 28 October
   zones. ottawa.ca answers scripts with an Incapsula challenge, so the layers
   were matched to the map through its ArcGIS web map
   (`15297f33d8a14933b341825e2c81b253`, last changed 16 July 2026).
+- **Øygarden** (read 30 October 2026): Øygarden kommune's 10 no-riding zones
+  (`køyreforbod`), 4 no-parking zones (`parkeringsforbod`) and the slow zone of
+  Straume's centre (`saktesone`), all in Straume on Sotra, from the kommune's
+  public `Geogjerder og Soneinndeling ØK` feature service (layer 2,
+  `Geogjerder_Straume`, last edited 4 September 2026), which states no
+  licence. The legend links the kommune's
+  [permit announcement](https://www.oygarden.kommune.no/_f/p1/i062c6fc5-7989-4580-acb2-4892041ce073/kunngjeringstekst.pdf)
+  (December 2025): from 1 March 2026 to 29 February 2028 the rental operators
+  must geofence its zones, which its overview map, the map link here, shows.
+  Left out: the operating area; and the six `parkeringssone` points of 4 to
+  19 m², which the announcement calls suggested places to set scooters out,
+  as it sets no fixed parking zones while Straume's centre is being built.
+  The slow zone's speed is not given.
 - **Porto** (read 29 October 2026): the Câmara Municipal do Porto's 230
   sharing points (pontos de partilha), 2,941 spots, from Porto Digital's
   [FIWARE broker](https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000),
