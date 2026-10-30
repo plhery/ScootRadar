@@ -19,21 +19,21 @@ const guide: Guide = {
         'Three operators hire out stand-up e-scooters by the minute, each with its own app; the “scooters” in most Kos rental shops are mopeds and quads, which need a driving licence.',
         {
           list: [
-            '**Hoppy** (app: Hoppy Mobility), a Belgian company and the one on our map: the [Kos map](map:gr:Kos) showed 323 Hoppy scooters on the afternoon of 14 October 2026, a snapshot rather than a fleet size. They cover Kos town, Lambi and Psalidi, plus one parking spot each at the Tigaki and Agios Fokas ends.',
+            '**Hoppy** (app: Hoppy Mobility), a Belgian company and the one on our map: at 11:27 Greek time on 30 October 2026 the [Kos map](map:gr:Kos) showed about 210 Hoppy scooters free to rent at that moment, not the whole fleet. They cover Kos town, Lambi and Psalidi, plus one parking spot each at the Tigaki and Agios Fokas ends.',
             '**Volta** (app: Volta Ride), run by MOOV, a Kos company with local shareholders.',
             '**Scoot**, a Greek company from Patras, which expanded to Kos for summer 2026 and lists it as active. Its e-mopeds need an AM licence.',
           ],
         },
-        'Volta and Scoot publish no open data, so they aren’t on our map. Hopp still lists Kos on its website, but its live data showed no scooters in October 2026. How many are there in all? Reporting on a municipal committee debate in July 2026, local press put the island’s total at “about 600 to 700”.',
+        'Volta and Scoot aren’t on our map: open their apps to see their scooters. Hopp lists Kos among its locations, but had no scooters to rent there on 30 October 2026.',
       ],
     },
     {
       heading: 'What does a ride cost on Hoppy, Scoot and Volta?',
       blocks: [
-        'Hoppy charges €1 to unlock, then by the minute, moving or not. On 14 October 2026 its Kos scooters showed three rates: €0.30 on 189, €0.35 on 101 and €0.33 on 33. The app shows yours before you unlock.',
+        'Hoppy charges €1 to unlock, then by the minute, moving or not. On 30 October 2026 its Kos scooters carried three rates, €0.30, €0.33 and €0.35 a minute, and the app shows yours before you unlock.',
         {
           table: {
-            caption: 'E-scooter prices on Kos, as published on 14–15 October 2026',
+            caption: 'E-scooter prices on Kos, as published on 30 October 2026',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', 'How you pay'],
             rows: [
               ['Hoppy', '€1', '€0.30–0.35', '€4.00–4.50', 'Credit or debit card'],
@@ -42,7 +42,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Volta’s FAQ says prices “start at” those figures; Scoot’s terms say the app shows any unlock fee before you ride. Hoppy’s terms add an insurance excess of up to €1,000 per claim for damage you cause to others.',
+        'Volta’s FAQ says pricing “starts at” those figures; Scoot’s terms say the app shows any unlock fee before you ride. Hoppy’s terms add an insurance excess of up to €1,000 per claim for damage you cause to others.',
       ],
     },
     {
@@ -56,7 +56,7 @@ const guide: Guide = {
             '**Volta** checks your ID in the app: a passport, ID card or driving licence.',
           ],
         },
-        'No driving licence is needed. The legal minimum age is 17, but Volta and Scoot ask for 18. Hoppy’s app-store pages say riders must be 18 or over, although one clause of its terms allows 16 or the local legal age. Take your passport or ID card on every ride: Greek law requires riders to carry ID, though the insurance certificate can stay in the app. Our guide on [how to rent an e-scooter](guide:how-to-rent) covers a first ride.',
+        'No driving licence is needed. The legal minimum age is 17. Scoot asks for 18, as does Volta’s FAQ, though Volta told the local press in September 2026 that it applies the legal 17. Hoppy’s app-store pages say riders must be 18 or over, although one clause of its terms allows 16 or the local legal age. Take your passport or ID card on every ride: Greek law requires riders to carry ID, though the insurance certificate can stay in the app. Our guide on [how to rent an e-scooter](guide:how-to-rent) covers a first ride.',
       ],
     },
     {
@@ -64,7 +64,7 @@ const guide: Guide = {
       blocks: [
         'Kos tried to write its own rulebook. Council decision 105/2026 of 24 June 2026 banned scooters from Eleftherias, Kazouli and Konitsis squares and from the carriageway of twelve streets, the harbour front among them, with €40 fines.',
         'Volta’s company, MOOV, and Hoppy appealed. On 24 August 2026 the Decentralised Administration of the Aegean, the state’s regional authority, annulled most of it: every traffic rule, the parking spots reserved for rental firms, the towing fees and most fines. Closing streets, it found, takes a separate traffic decision based on a traffic study.',
-        'What survived, such as a €200 fine for throwing a scooter into the sea and a duty on firms to check the coast monthly and fish theirs out, applies only once published in the Government Gazette. We found no publication by 15 October 2026.',
+        'What survived, such as a €200 fine for throwing a scooter into the sea and a duty on firms to check the coast monthly and fish theirs out, applies only once published in the Government Gazette, and it had not been by 30 October 2026.',
         { note: '**No municipal e-scooter rule is in force on Kos.** Greece’s national road code applies, and the apps add their own slow zones. Reports of €40 fines or scooter-free streets describe the annulled version.' },
         'The municipality said in September 2026 that it is updating its traffic study to cover e-scooters, so new rules may follow.',
       ],
@@ -112,7 +112,7 @@ const guide: Guide = {
         'With the town’s rules annulled, national law is what applies on Kos. Law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026, amended the Highway Code (KOK, law 5209/2025): it set the minimum age at 17, raised several fines and made third-party insurance compulsory.',
         {
           table: {
-            caption: 'E-scooter rules in Greece on 14 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
+            caption: 'E-scooter rules in Greece on 30 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
             head: ['Rule', 'What applies', 'Fine'],
             rows: [
               ['Minimum age', '17', '€150'],
@@ -127,7 +127,7 @@ const guide: Guide = {
               ['After dark', 'Reflective clothing or gear', '€30'],
               ['Alcohol', 'Limit 0.5 g/l in the blood (0.25 mg/l in breath), as for drivers', 'From €350'],
               ['Insurance', 'Third-party cover compulsory; on a shared scooter it’s the operator’s, and the app can show it', '–'],
-              ['Registration', 'A national register is planned but not running (no ministerial decision by 14 October 2026); no number plates', '–'],
+              ['Registration', 'A national register is planned but not running (no ministerial decision by 30 October 2026); no number plates', '–'],
             ],
           },
         },
@@ -138,18 +138,18 @@ const guide: Guide = {
       blocks: [
         'Scoot’s FAQ says a helmet is “strongly recommended … though not legally required” on its scooters. That’s wrong in Greece: the law requires an approved, fastened helmet on every e-scooter, at any age, and Scoot’s own terms tell riders to wear one. No operator leaves helmets on its scooters (Volta says some of its stations rent them out), so pack your own.',
         'Volta has also said its scooters run from 07:00 to midnight, and that from 20:30 to midnight and 07:00 to 08:00 its app makes you pass a reaction test first: fail it and you’re locked out for 12 hours. Hoppy’s data say “24/7”.',
-        'No operator publishes a winter season. Hoppy had over 300 scooters out in mid-October 2026; if you visit in winter, open the apps to see what’s still running.',
+        'No operator publishes a winter season. The map still showed about 210 Hoppys on 30 October 2026; if you visit in winter, open the apps to see what’s still running.',
       ],
     },
   ],
   faq: [
     {
       question: 'What is the best e-scooter app on Kos?',
-      answer: 'Each operator has its own app. Hoppy Mobility is the only one with open data: [our map](map:gr:Kos) showed 323 of its scooters on 14 October 2026. Volta Ride and Scoot show their scooters only in their apps; Scoot publishes the lowest per-minute rate, €0.25.',
+      answer: 'Each operator has its own app. Hoppy Mobility is the only one on [our map](map:gr:Kos): about 210 of its scooters free to rent at 11:27 on 30 October 2026. Volta Ride and Scoot show their scooters only in their apps; Scoot publishes the lowest per-minute rate, €0.25.',
     },
     {
       question: 'How much is a Hoppy scooter in Kos?',
-      answer: '€1 to unlock plus €0.30, €0.33 or €0.35 a minute, as published on 14 October 2026, so 10 minutes cost €4.00–4.50; the app shows the rate before you unlock.',
+      answer: '€1 to unlock plus €0.30, €0.33 or €0.35 a minute, as published on 30 October 2026, so 10 minutes cost €4.00–4.50; the app shows the rate before you unlock.',
     },
     {
       question: 'Do you have to wear a helmet on an e-scooter in Kos?',
@@ -161,7 +161,7 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Greece?',
-      answer: 'No driving licence is needed; carry a passport or ID card. The legal minimum age is 17, but Volta and Scoot ask for 18, as do Hoppy’s app-store pages.',
+      answer: 'No driving licence is needed; carry a passport or ID card. The legal minimum age is 17, but Scoot asks for 18, as do Volta’s FAQ and Hoppy’s app-store pages.',
     },
     {
       question: 'Are Kos’s €40 e-scooter fines still in force?',
@@ -175,7 +175,9 @@ const guide: Guide = {
     { title: 'Decentralised Administration of the Aegean: partial annulment of the Kos regulation, 24 August 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%9C1%CE%9A%CE%9F%CE%A11%CE%99-%CE%A4%CE%99%CE%A5' },
     { title: 'Hoppy: open data for Kos (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1501/v3.0/gbfs' },
     { title: 'Hoppy: terms and conditions', url: 'https://behoppy.eu/terms-conditions/' },
-    { title: 'Scoot: frequently asked questions', url: 'https://scoot.ltd/faq' },
+    { title: 'Hopp: locations', url: 'https://hopp.bike/locations' },
+    { title: 'Hopp: open data for Kos (GBFS)', url: 'https://api.hopp.bike/gbfs/gr-kos/gbfs.json' },
+    { title: 'Scoot: frequently asked questions', url: 'https://scoot.ltd/en/faq' },
     { title: 'Volta: frequently asked questions', url: 'https://ridevolta.eu/faq' },
     { title: 'To Vima tis Ko: Volta on the annulment and its own rules, September 2026 (Greek)', url: 'https://vimatisko.gr/katigoria/kentriki-1/freno-tis-apokentromenis-dioikisis-aigaioy-st' },
     { title: 'KTEL Kos: airport buses', url: 'https://ktel-kos.gr/en/airport-itineraries/' },
