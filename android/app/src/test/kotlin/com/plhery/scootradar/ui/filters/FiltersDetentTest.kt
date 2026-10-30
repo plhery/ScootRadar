@@ -33,8 +33,8 @@ import java.util.TimeZone
 // under 700 points tall (`windowHeight < 700 ? [.large] : [.medium, .large]`), the whole window's height.
 
 /**
- * In a tablet's windows that have the dock (ui.md UI-115: under 480 dp tall, or under 760 wide), Filters opens at the
- * large height in a window under 700 dp tall, its providers in view, and halfway in a taller one.
+ * In a tablet's and a fold's windows that have the dock (ui.md UI-115: under 480 dp tall, or under 760 wide), Filters
+ * opens at the large height in a window under 700 dp tall, its providers in view, and halfway in a taller one.
  */
 @RunWith(AndroidJUnit4::class)
 class FiltersDetentTest {
@@ -72,6 +72,14 @@ class FiltersDetentTest {
     fun inATabletsHalfAcrossFiltersOpenAtTheLargeHeight() {
         openFilters()
         // The large detent's top, 10 under the top of the window.
+        assertEquals(10f, sheetTop, 1f)
+    }
+
+    /** The Fold folded and on its side: the dock, 443 dp tall, where Filters opens at the large height. */
+    @Test
+    @Config(qualifiers = "w970dp-h443dp-mdpi")
+    fun onAFoldFoldedOnItsSideFiltersOpenAtTheLargeHeight() {
+        openFilters()
         assertEquals(10f, sheetTop, 1f)
     }
 
