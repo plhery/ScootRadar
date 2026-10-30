@@ -30,6 +30,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -367,10 +368,19 @@ fun ScooterMap(
         )
         val overCorner = creditsOverCorner(creditsSides, corner, maxHeight.value.toDouble())
         val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
-        // Up over the dock as far as the search bar or a notice under it, they have no room, and wait out of sight; above
-        // a fold across the map they are in its upright half, clear of the dock.
+        // Under a phone's dock whose foot would cut them, under it or below it.
+        val underDock = creditsUnderDock(creditsSides, creditsHeight, dock, safeArea.bottom, maxHeight.value.toDouble())
+        // Up over the dock as far as the search bar, a notice under it or the scale under them, they have no room, and
+        // wait out of sight; above a fold across the map they are in its upright half, clear of the dock.
+        val measurer = rememberTextMeasurer()
+        val shownDensity = LocalDensity.current
+        val scaleFoot = if (remember(language.locale) { MapScale.showsScale(language.locale) }) {
+            ornamentsTop + remember(measurer, shownDensity) { scaleHeight(measurer, shownDensity) }
+        } else {
+            null
+        }
         val seen = overDock == null || (margins != null && margins.bottom > 0) ||
-            creditsHaveRoom(overDock, creditsHeight, chromeTop ?: safeArea.top, maxHeight.value.toDouble())
+            creditsHaveRoom(overDock, creditsHeight, creditsCeiling(chromeTop, safeArea.top, scaleFoot), maxHeight.value.toDouble())
         val density = LocalDensity.current.density
         MapCredits(
             dark = dark || look.satellite,
@@ -378,7 +388,7 @@ fun ScooterMap(
             seen = seen,
             modifier = Modifier.align(Alignment.BottomStart).then(
                 when {
-                    margins == null -> overDock?.let { sideways.padding(bottom = it.dp) }
+                    margins == null -> (overDock ?: underDock)?.let { sideways.padding(bottom = it.dp) }
                         ?: Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
                     // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
                     margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)

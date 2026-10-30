@@ -33,9 +33,11 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
@@ -146,16 +148,7 @@ fun MapScaleBar(
 internal fun ScaleArt(step: MapScale.Step, locale: Locale, dark: Boolean, modifier: Modifier = Modifier) {
     val ink = if (dark) Color.White else Color.Black
     val halo = if (dark) Color.Black.copy(alpha = 0.6f) else Color.White.copy(alpha = 0.9f)
-    val density = LocalDensity.current
-    // MapKit's scale keeps its size whatever the phone's font size, as the map's own art does.
-    val textSize = with(density) { 11.dp.toSp() }
-    val style = TextStyle(
-        color = ink,
-        fontSize = textSize,
-        fontFamily = ScootType.family(textSize),
-        fontWeight = FontWeight.SemiBold,
-        shadow = Shadow(halo, blurRadius = with(density) { 2.dp.toPx() }),
-    )
+    val style = scaleStyle(LocalDensity.current, ink, halo)
     val legend = ScooterMeasureFormat.length(step.value, step.unit, locale)
     val spoken = remember(step, locale) { spokenLength(step, locale) }
     val rightToLeft = LocalLayoutDirection.current == LayoutDirection.Rtl
@@ -176,8 +169,8 @@ internal fun ScaleArt(step: MapScale.Step, locale: Locale, dark: Boolean, modifi
                 length.placeRelative(maxOf(bar - length.width, zero.width + gap), height - length.height)
             }
         }
-        Spacer(Modifier.height(2.dp))
-        Canvas(Modifier.width(step.points.dp).height(6.dp)) {
+        Spacer(Modifier.height(LEGEND_TO_BAR.dp))
+        Canvas(Modifier.width(step.points.dp).height(BAR_HEIGHT.dp)) {
             val line = 1.dp.toPx()
             val half = size.width / 2
             val top = size.height - 4.dp.toPx()
@@ -194,6 +187,31 @@ internal fun ScaleArt(step: MapScale.Step, locale: Locale, dark: Boolean, modifi
         }
     }
 }
+
+/** The scale's legend: MapKit's keeps its size whatever the phone's font size, as the map's own art does. */
+private fun scaleStyle(density: Density, ink: Color = Color.Black, halo: Color = Color.Transparent): TextStyle {
+    val textSize = with(density) { 11.dp.toSp() }
+    return TextStyle(
+        color = ink,
+        fontSize = textSize,
+        fontFamily = ScootType.family(textSize),
+        fontWeight = FontWeight.SemiBold,
+        shadow = Shadow(halo, blurRadius = with(density) { 2.dp.toPx() }),
+    )
+}
+
+/**
+ * How tall the scale stands, in points, whatever its length: a line of its legend over its bar. The credits lifted
+ * over the dock keep under it, where the map shows it (ScooterMap).
+ */
+internal fun scaleHeight(measurer: TextMeasurer, density: Density): Double =
+    with(density) { measurer.measure("0", scaleStyle(density)).size.height.toDp().value.toDouble() } + LEGEND_TO_BAR + BAR_HEIGHT
+
+/** The room between the scale's legend and its bar. */
+private const val LEGEND_TO_BAR = 2.0
+
+/** The scale's bar, its ticks' height. */
+private const val BAR_HEIGHT = 6.0
 
 /** The length as TalkBack reads it: "500 feet", "1 mile". */
 internal fun spokenLength(step: MapScale.Step, locale: Locale): String {

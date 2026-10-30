@@ -19,6 +19,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.font.createFontFamilyResolver
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
@@ -648,8 +652,8 @@ class MapInTheWindowTest {
         // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend and the locate button in the
         // corner where they would cover them, as the button does on a tablet upright; over the dock, 4 over it and over
         // the legend and the locate button on it where the dock would cut them, part of their text beside it and part
-        // under it, or their frame, as on a tablet upright with a cutout down its side; elsewhere 8 above the safe
-        // area's foot.
+        // under it, or their frame, as on a tablet upright with a cutout down its side; under a phone's dock whose foot
+        // would cut them, 4 below it or on its foot; elsewhere 8 above the safe area's foot.
         // The legend's and the dock's rules are Android's only (MAP-318, STATE 29 Oct 06:55Z): their licence asks that
         // the map's credits be seen, and Apple's logo and Legal link, a third as wide, stay in the map's margins
         // (ScooterMapView.swift :897-903), beside the iPad's dock too. The legend and the dock are where the screen
@@ -672,8 +676,16 @@ class MapInTheWindowTest {
         val cutByDock = chrome.panel == null && dock != null &&
             !(dock.minX <= text.minX && dock.maxX >= text.maxX) && overCredits(dock)
         val overDock = listOfNotNull(dock, shownLegend, locateButton).filter(overCredits).takeIf { cutByDock }
+        // Under a phone's dock over all of their text whose foot would cut them 8 over the safe area's foot, as its
+        // foot over a gesture bar does where the bar is short (UI-121): 4 below it where they fit over the bar, else on
+        // its foot, under it (creditsUnderDock).
+        val safeFoot = bounds.maxY - safe.bottom - 8
+        val byDocksFoot = dock?.takeIf {
+            chrome.panel == null && chrome.fold?.isEmpty != false && it.minX <= text.minX && it.maxX >= text.maxX &&
+                it.maxY > safeFoot - 18 && it.maxY < safeFoot && it.minY <= safeFoot - 18
+        }?.let { if (it.maxY + 4 + 18 <= bounds.maxY - safe.bottom) it.maxY + 4 + 18 else it.maxY }
         val foot = across?.let { it.minY - PANEL_GAP } ?: (corner ?: overDock)?.let { frames -> frames.minOf { it.minY } - 4 }
-            ?: (bounds.maxY - safe.bottom - 8)
+            ?: byDocksFoot ?: safeFoot
         Log.i(
             TAG,
             "${size()}: credits $sources, dock $dock, legend $shownLegend, locate button $locateButton, cut by the dock $cutByDock, " +
@@ -728,11 +740,20 @@ class MapInTheWindowTest {
         val dock = shown(DOCK_TAG)
         val legend = shown(ZONE_LEGEND_TAG)
         val locateButton = device.findObject(By.desc(Pattern.compile("Go to my location|Near me")))?.let { inMap(it.visibleBounds) }
-        val top = listOfNotNull(shown(SEARCH_ISLAND_TAG), shown(STATUS_BANNER_TAG), shown(LOCATION_CARD_TAG)).maxOfOrNull { it.maxY }
+        val chromeFoot = listOfNotNull(shown(SEARCH_ISLAND_TAG), shown(STATUS_BANNER_TAG), shown(LOCATION_CARD_TAG)).maxOfOrNull { it.maxY }
             ?: (bounds.minY + safe.top)
+        // In a region that measures in miles, the scale under the search bar while the map zooms, on their side.
+        val scaleFoot = onMain {
+            controller.language.value.locale.takeIf { MapScale.showsScale(it) }?.let {
+                val context = InstrumentationRegistry.getInstrumentation().targetContext
+                ornamentsTop(chrome, bounds, safe.top) +
+                    scaleHeight(TextMeasurer(createFontFamilyResolver(context), Density(context), LayoutDirection.Ltr), Density(context))
+            }
+        }
+        val top = max(chromeFoot, scaleFoot ?: 0.0)
         val start = if (rightToLeft) bounds.maxX - safe.right - 8 - CREDITS_WIDTH else bounds.minX + safe.left + 8
         val over = listOfNotNull(dock, legend, locateButton).filter { it.minX < start + CREDITS_WIDTH - 6 && it.maxX > start + 6 }
-        Log.i(TAG, "${size()}: the credits out of sight, over $over, under $top")
+        Log.i(TAG, "${size()}: the credits out of sight, over $over, under $top (the scale's foot $scaleFoot)")
         assertTrue("the credits out of sight beside a panel ${chrome.panel}", chrome.panel?.takeIf { !it.isEmpty } == null)
         assertTrue("the credits out of sight with no dock over them: $dock", dock != null && dock in over)
         val foot = over.minOf { it.minY } - 4

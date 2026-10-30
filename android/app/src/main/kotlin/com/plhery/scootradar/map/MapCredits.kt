@@ -87,7 +87,8 @@ internal fun creditsOverCorner(credits: Pair<Double, Double>?, corner: List<Scre
  * frames of the controls that stand on it, [onDock] (the zones' legend and the locate button), in the map's points:
  * just over the highest of them over the credits, where the dock would cut them, part of their text beside it and
  * part under it, or their frame. Null where the dock leaves them be: clear of their frame, or over all of their text,
- * as a dock that spans the map does on a phone, where the iPhone's Legal is under its dock too.
+ * as a dock that spans the map does on a phone, where the iPhone's Legal is under its dock too ([creditsUnderDock]
+ * keeps them clear of its foot).
  *
  * iOS keeps Apple's logo and Legal link in the map's layout margins, which it moves only beside a panel or a fold
  * (ScooterMapView.swift:897-903): over the dock they stay in the corner. On a tablet upright the dock keeps to 560 in
@@ -110,9 +111,34 @@ internal fun creditsOverDock(credits: Pair<Double, Double>?, dock: ScreenRect?, 
 }
 
 /**
+ * How far above the map's foot the credits go under a dock over all of their text, as a phone's is, where the dock's
+ * foot would cut them 8 above the safe area's foot ([safeBottom] above the map's), from the [credits]' sides, their
+ * [height] and the [dock]'s frame, in the map's points: 4 below the dock where that leaves them over the safe area's
+ * foot, else on the dock's foot, wholly under it. Null where the dock's foot leaves them be, below it or under it.
+ *
+ * The iPhone's dock stands max(safe bottom, 8) over the safe area (ScooterMapScreen.swift:313), and Apple's logo and
+ * Legal link, 9 over the safe area's foot, are seen below it on a phone with a home indicator, whose 34 leave them 12
+ * under the dock (the lead's iPhone 17 Pro Max screen), and under it on one with a home button, whose dock stands 8
+ * over the window's foot. Phone_Min's gesture bar is 16 tall: the dock's foot, 32 above the window's, would cut the
+ * credits, from 24 to 42 above it, and 4 below it they would reach into the bar; they go under it, as they were with
+ * the dock 8 over the bar.
+ */
+internal fun creditsUnderDock(credits: Pair<Double, Double>?, height: Double, dock: ScreenRect?, safeBottom: Double, mapHeight: Double): Double? {
+    if (credits == null || height <= 0 || dock == null || dock.isEmpty || dock.minY >= mapHeight) return null
+    val (start, end) = credits
+    // Over part of their text only, creditsOverDock takes them up over it.
+    if (dock.minX > start + TEXT_INSET || dock.maxX < end - TEXT_INSET) return null
+    val bottom = mapHeight - safeBottom - SAFE_GAP
+    val top = bottom - height
+    if (dock.maxY <= top || dock.maxY >= bottom || dock.minY > top) return null
+    val below = dock.maxY + LEGEND_GAP + height
+    return mapHeight - if (below <= mapHeight - safeBottom) below else dock.maxY
+}
+
+/**
  * Whether the credits, [height] tall, have room [lift] above the map's foot, where [creditsOverDock] puts them: under
- * the chrome at the map's top, whose foot is [top] (the search bar and the notices under it, or the safe area's top),
- * by the gap they keep over the controls under them, and so on the map.
+ * the chrome at the map's top, whose foot is [top] ([creditsCeiling]: the search bar and the notices under it, or the
+ * safe area's top, and the scale under them), by the gap they keep over the controls under them, and so on the map.
  *
  * A window as short as a phone's held sideways (640 by 360) or a Fold's folded (970 by 443), with a scooter's card,
  * the zones' legend and a notice open, leaves them none: the card, the legend and the notice fill the map's leading
@@ -123,8 +149,21 @@ internal fun creditsOverDock(credits: Pair<Double, Double>?, dock: ScreenRect?, 
 internal fun creditsHaveRoom(lift: Double, height: Double, top: Double, mapHeight: Double): Boolean =
     mapHeight - lift - height >= top + LEGEND_GAP
 
+/**
+ * The foot of what the credits keep under at the map's top, for [creditsHaveRoom]: the search bar and the notices under
+ * it, whose foot is [chromeTop], or the safe area's top, [safeTop]; and in a region that measures in miles the scale
+ * under them, on the credits' side, whose foot is [scaleFoot]. It shows only while the map zooms, but lifted over it
+ * they would cover it then, and hide it from TalkBack under their frame (UI-121, Phone_Min sideways over its gesture
+ * bar with a scooter's card: the credits from 114, the scale from 106 to 127).
+ */
+internal fun creditsCeiling(chromeTop: Double?, safeTop: Double, scaleFoot: Double?): Double =
+    maxOf(chromeTop ?: safeTop, scaleFoot ?: safeTop)
+
 /** The room between the legend and the credits over it. */
 private const val LEGEND_GAP = 4.0
+
+/** The room between the credits and the safe area's foot, as MapKit's logo keeps. */
+private const val SAFE_GAP = 8.0
 
 /** The room either side of a credit's name, inside its frame. */
 private const val TEXT_INSET = 6.0

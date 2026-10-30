@@ -11,7 +11,8 @@ import org.junit.Test
 // and of the locate button beside it, which a tablet upright brings to their end; and they go up over a dock that would
 // cut them, as on a tablet upright with a cutout down its side; where that would take them up to the search bar or a
 // notice under it, as on a phone held sideways or a Fold folded with a card, the legend and a notice, they wait out of
-// sight (review-app-v finding 2).
+// sight (review-app-v finding 2). Under a phone's dock whose foot would cut them, standing its gesture bar's inset twice
+// above the window's foot as the iPhone's does (UI-121), they go under it, or below it where they fit over the bar.
 
 class MapCreditsTest {
     /** The Fold's inner screen beside the panel: Bergen's legend, four lines, over the credits' end. */
@@ -94,6 +95,79 @@ class MapCreditsTest {
         assertNull(creditsOverDock(8.0 to 245.0, ScreenRect(120.0, 1100.0, 0.0, 0.0), emptyList(), mapHeight = 1280.0))
         assertNull(creditsOverDock(8.0 to 245.0, ScreenRect(120.0, 1180.0, 560.0, 156.0), emptyList(), mapHeight = 800.0))
         assertNull(creditsOverDock(null, tablet.copy(x = 120.0), emptyList(), mapHeight = 1280.0))
+    }
+
+    /**
+     * UI-121: ScootRadar_Phone_Min upright over its gesture bar, 16 tall, as app-z's pass measured it: the dock, 10 in
+     * from the map's sides, stands its inset twice above the window's foot, to 608, and would cut the credits 8 over
+     * the safe area's foot, from 598 to 616 ("the credit (8, 598, 93, 18) cut by the dock (10, 484, 340, 124)"); 4
+     * below it they would reach 630, into the bar, so they go under it, their foot on its. Over the 3-button bar, 48,
+     * the dock's foot is theirs, 584, and with the dock 8 over the gesture bar, as before UI-121, it was below them:
+     * they stay. On the iPhone 17 Pro Max's 34 they are seen 8 under the dock's foot, 888, as Apple's logo is.
+     */
+    @Test
+    fun underAPhonesDockWhoseFootWouldCutThemTheyGoWhollyUnderIt() {
+        val gesture = ScreenRect(x = 10.0, y = 484.0, width = 340.0, height = 124.0)
+        assertEquals(640.0 - 608.0, creditsUnderDock(8.0 to 245.0, height = 18.0, gesture, safeBottom = 16.0, mapHeight = 640.0)!!, 0.0)
+        val threeButton = gesture.copy(y = 460.0)
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, threeButton, safeBottom = 48.0, mapHeight = 640.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, gesture.copy(y = 500.0), safeBottom = 16.0, mapHeight = 640.0))
+        val iPhone = ScreenRect(x = 10.0, y = 764.0, width = 420.0, height = 124.0)
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, iPhone, safeBottom = 34.0, mapHeight = 956.0))
+    }
+
+    /**
+     * A gesture bar 24 tall would leave the credits room below a dock that cut them, 48 above the window's foot: 4
+     * under its foot, 592, they end at 614, 2 over the bar's 616, seen; a bar of 21 would not, and they go under it.
+     */
+    @Test
+    fun belowADockWhoseFootWouldCutThemWhereItLeavesThemRoomOverTheBar() {
+        val dock = ScreenRect(x = 10.0, y = 468.0, width = 340.0, height = 124.0)
+        assertEquals(640.0 - 614.0, creditsUnderDock(8.0 to 245.0, height = 18.0, dock, safeBottom = 24.0, mapHeight = 640.0)!!, 0.0)
+        // The dock's foot at 594: 4 under it, their 18 end on the bar's 616, just.
+        assertEquals(640.0 - 616.0, creditsUnderDock(8.0 to 245.0, height = 18.0, dock.copy(y = 470.0), safeBottom = 24.0, mapHeight = 640.0)!!, 0.0)
+        val shorter = dock.copy(y = 474.0)
+        assertEquals(640.0 - 598.0, creditsUnderDock(8.0 to 245.0, height = 18.0, shorter, safeBottom = 21.0, mapHeight = 640.0)!!, 0.0)
+    }
+
+    /**
+     * A dock over part of their text only is creditsOverDock's, which takes them up over it; nothing laid out yet, a
+     * dock from the map before it turned, or a dock whose top would cut them, leaves them be.
+     */
+    @Test
+    fun underADockOnlyWhereItSpansTheirText() {
+        val gesture = ScreenRect(x = 10.0, y = 484.0, width = 340.0, height = 124.0)
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, gesture.copy(x = 120.0), safeBottom = 16.0, mapHeight = 640.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, gesture.copy(width = 228.0), safeBottom = 16.0, mapHeight = 640.0))
+        // Over all of their text but the room around it, 6 each side: under it.
+        assertEquals(32.0, creditsUnderDock(8.0 to 245.0, height = 18.0, gesture.copy(x = 14.0, width = 225.0), safeBottom = 16.0, mapHeight = 640.0)!!, 0.0)
+        assertNull(creditsUnderDock(null, height = 18.0, gesture, safeBottom = 16.0, mapHeight = 640.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 0.0, gesture, safeBottom = 16.0, mapHeight = 640.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, null, safeBottom = 16.0, mapHeight = 640.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, ScreenRect(10.0, 608.0, 0.0, 0.0), safeBottom = 16.0, mapHeight = 640.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, gesture, safeBottom = 16.0, mapHeight = 360.0))
+        assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, gesture.copy(y = 600.0, height = 8.0), safeBottom = 16.0, mapHeight = 640.0))
+    }
+
+    /**
+     * UI-121: ScootRadar_Phone_Min sideways over its gesture bar, 16, in a region that measures in miles, as app-z's pass
+     * measured it: the dock stands 32 above the window's foot, and with a scooter's card rises to 136. The credits 4
+     * over it would reach up to 114, over the scale under the search bar, from 106 to 127 while the map zooms, where
+     * TalkBack lost it ("the scale while the map zooms"): they wait out of sight. Over the zones' legend alone, from
+     * 165.5, they keep under the scale; where the region measures in kilometres there is no scale to keep under.
+     */
+    @Test
+    fun theCreditsKeepUnderTheScaleWhereTheRegionMeasuresInMiles() {
+        val card = creditsOverDock(8.0 to 253.5, ScreenRect(x = 40.0, y = 136.0, width = 560.0, height = 192.0), emptyList(), mapHeight = 360.0)!!
+        assertEquals(360.0 - 136.0 + 4.0, card, 0.0)
+        assertFalse(creditsHaveRoom(card, height = 18.0, top = creditsCeiling(chromeTop = 94.0, safeTop = 24.0, scaleFoot = 127.0), mapHeight = 360.0))
+        assertTrue(creditsHaveRoom(card, height = 18.0, top = creditsCeiling(chromeTop = 94.0, safeTop = 24.0, scaleFoot = null), mapHeight = 360.0))
+        val legend = ScreenRect(x = 42.0, y = 165.5, width = 258.0, height = 28.5)
+        val overLegend = creditsOverDock(8.0 to 253.5, ScreenRect(x = 40.0, y = 204.0, width = 560.0, height = 124.0), listOf(legend), mapHeight = 360.0)!!
+        assertTrue(creditsHaveRoom(overLegend, height = 18.0, top = creditsCeiling(chromeTop = 94.0, safeTop = 24.0, scaleFoot = 127.0), mapHeight = 360.0))
+        // The search bar's foot or a notice's lower than the scale's, and no chrome at the top: the safe area's.
+        assertEquals(166.0, creditsCeiling(chromeTop = 166.0, safeTop = 24.0, scaleFoot = 127.0), 0.0)
+        assertEquals(24.0, creditsCeiling(chromeTop = null, safeTop = 24.0, scaleFoot = null), 0.0)
     }
 
     /**

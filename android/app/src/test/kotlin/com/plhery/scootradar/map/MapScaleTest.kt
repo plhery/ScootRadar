@@ -2,18 +2,22 @@ package com.plhery.scootradar.map
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
@@ -109,6 +113,46 @@ class MapScaleTest {
 
     @Test
     fun inSwitzerlandItNeverShows() = assertShows(swiss, shows = false)
+
+    /**
+     * UI-121: the height the credits keep under, measured without the scale on screen, is the scale's own as drawn,
+     * short or long.
+     */
+    @Test
+    fun itsHeightIsTheOneTheCreditsKeepUnder() = assertHeight()
+
+    /** At the phone's largest text too, as the scale keeps its size. */
+    @Test
+    fun itsHeightKeepsAtTheLargestText() {
+        useFontScale(2f)
+        try {
+            assertHeight()
+        } finally {
+            resetFontScale()
+        }
+    }
+
+    private fun assertHeight() {
+        var measured = 0.0
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                val measurer = rememberTextMeasurer()
+                val density = LocalDensity.current
+                measured = remember(measurer, density) { scaleHeight(measurer, density) }
+                Column {
+                    Box(Modifier.testTag("short")) { ScaleArt(MapScale.Step(BigDecimal("500"), ScooterLengthUnit.Feet, 60.0), us, dark = false) }
+                    Box(Modifier.testTag("long")) { ScaleArt(MapScale.Step(BigDecimal("0.5"), ScooterLengthUnit.Miles, 80.47), us, dark = false) }
+                }
+            }
+        }
+        compose.waitForIdle()
+        for (tag in listOf("short", "long")) {
+            val drawn = compose.onNodeWithTag(tag).fetchSemanticsNode().size.height / compose.density.density
+            assertEquals("the scale $tag", drawn.toDouble(), measured, 0.5)
+        }
+        // A line of its 11-point legend over the bar's 2 and 6.
+        assertEquals(22.0, measured, 4.0)
+    }
 
     /** A second after the zoom last changed it fades out over a quarter of a second. */
     @Test
