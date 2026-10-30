@@ -11,9 +11,12 @@ import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.roundToIntRect
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestControllers
@@ -86,7 +89,10 @@ class DirectionsButtonTest {
         }
     }
 
-    /** Under Reduce Motion the title is Hide route in one step, as the iPhone's nil animation changes it. */
+    /**
+     * Under Reduce Motion the title is Hide route in one step, as the iPhone's nil animation changes it: from the first
+     * frame, the title's pixels are the settled Hide route's, not Directions' a frame or two longer.
+     */
     @Test
     fun underReduceMotionTheTitleIsHideRouteAtOnce() {
         show(reduceMotion = true)
@@ -95,8 +101,12 @@ class DirectionsButtonTest {
         control = ScooterDirectionsControl.HideRoute
         val frames = List(30) { frame() }
         val shown = settled()
-        val ink = frames.map { it.ink() / shown.ink() }
-        assertTrue("the label's darkest ink on each frame, of the settled one's: $ink", ink.all { it > 0.99f })
+        val title = placeOf("Hide route")
+        assertTrue("the title's place $title", title.width > 40 && title.height > 10)
+        frames.forEachIndexed { index, pixels ->
+            val changed = (title.left until title.right).sumOf { x -> (title.top until title.bottom).count { y -> pixels[x, y] != shown[x, y] } }
+            assertEquals("the title's pixels unlike Hide route's on frame ${index + 1}", 0, changed)
+        }
     }
 
     /**
@@ -170,6 +180,13 @@ class DirectionsButtonTest {
     private fun settled(): PixelMap {
         compose.mainClock.advanceTimeBy(1_000)
         return pixels()
+    }
+
+    /** Where the [text] is in the button's pixels. */
+    private fun placeOf(text: String): IntRect {
+        val button = compose.onNodeWithTag("button").fetchSemanticsNode().boundsInRoot
+        val title = compose.onNode(hasText(text), useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        return title.translate(-button.topLeft).roundToIntRect()
     }
 
     private fun pixels(): PixelMap {

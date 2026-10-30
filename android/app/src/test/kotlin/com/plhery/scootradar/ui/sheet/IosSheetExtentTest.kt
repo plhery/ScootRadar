@@ -21,6 +21,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.test.swipeUp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -43,7 +44,7 @@ import kotlin.math.roundToInt
  * above the screen's foot over the dimmed map, at the large one, and pulled past it, it reaches the foot with nothing
  * of the map below it, and dragged below the medium height it keeps that height as it slides off (ui.md UI-208,
  * UI-387). A sheet measured at the medium height and placed at the large one ended at the medium's line, the map and
- * the dock showing under it (app-t).
+ * the dock showing under it (app-t). Held between the two heights it is between in all, and a fling carries it on.
  */
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -87,6 +88,64 @@ class IosSheetExtentTest {
         assertDrawnToTheFoot("stretched")
         compose.onNode(sheet).performTouchInput { up() }
         compose.waitForIdle()
+    }
+
+    /**
+     * Held between the medium and large heights, the sheet is between in all: as far inside the screen's edges as it is
+     * from the large height, eased from the medium's 8 to the large's 0, drawn down to that line with the dimmed map
+     * under it (UI-208). A gap that went at once, at either height, would leave it at 0 or 8 here.
+     */
+    @Test
+    @Config(qualifiers = PHONE)
+    fun heldBetweenTheMediumAndLargeHeightsTheSheetIsBetweenInAll() {
+        show(listOf(SheetDetent.Medium, SheetDetent.Large))
+        val foot = window.height.toFloat()
+        val largeTop = LARGE_TOP * px
+        val mediumTop = foot - (foot - largeTop) / 2
+        compose.onNode(sheet).performTouchInput {
+            down(Offset(centerX, top + 40.dp.toPx()))
+            repeat(20) { moveBy(Offset(0f, -(mediumTop - largeTop) / 40)) }
+        }
+        compose.waitForIdle()
+        val top = bounds.top
+        val along = (mediumTop - top) / (mediumTop - largeTop)
+        assertTrue("held $along of the way up", along in 0.3f..0.7f)
+        val gap = INSET * px * (1 - along)
+        assertExtent("between", top = top, bottom = foot - gap)
+        assertEquals("between, the left edge", gap, bounds.left, 1f)
+        assertEquals("between, the right edge", window.width - gap, bounds.right, 1f)
+        val image = image()
+        assertSheet(image, "between, just above its foot", y = foot - gap - 2 * px)
+        assertDimmedMap(image, "between, under its foot", y = foot - gap / 2)
+        compose.onNode(sheet).performTouchInput { up() }
+        compose.waitForIdle()
+    }
+
+    /**
+     * A short pull let go fast, past UIKit's fling speed, carries the sheet on to the next height, up or down; the same
+     * pull let go slowly takes it back to the height it left, the nearest.
+     */
+    @Test
+    @Config(qualifiers = PHONE)
+    fun aFlingCarriesTheSheetOnToTheNextHeightAndASlowPullBack() {
+        show(listOf(SheetDetent.Medium, SheetDetent.Large))
+        val foot = window.height.toFloat()
+        val mediumTop = foot - (foot - LARGE_TOP * px) / 2
+        val pull = 60 * px
+
+        compose.onNode(sheet).performTouchInput { swipeUp(startY = 40 * px, endY = 40 * px - pull, durationMillis = 3_000) }
+        compose.waitForIdle()
+        assertExtent("pulled up slowly", top = mediumTop, bottom = foot - INSET * px)
+        compose.onNode(sheet).performTouchInput { swipeUp(startY = 40 * px, endY = 40 * px - pull, durationMillis = 80) }
+        compose.waitForIdle()
+        assertExtent("flung up", top = LARGE_TOP * px, bottom = foot)
+
+        compose.onNode(sheet).performTouchInput { swipeDown(startY = 40 * px, endY = 40 * px + pull, durationMillis = 3_000) }
+        compose.waitForIdle()
+        assertExtent("pulled down slowly", top = LARGE_TOP * px, bottom = foot)
+        compose.onNode(sheet).performTouchInput { swipeDown(startY = 40 * px, endY = 40 * px + pull, durationMillis = 80) }
+        compose.waitForIdle()
+        assertExtent("flung down", top = mediumTop, bottom = foot - INSET * px)
     }
 
     private fun show(detents: List<SheetDetent>) {

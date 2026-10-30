@@ -14,9 +14,11 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
 
 // X.md X-AD35: the app's own colours, as the iPhone app has them, and never Material You's, which Android 12 and
 // later draw from the wallpaper.
@@ -49,4 +51,33 @@ class ThemeColoursTest {
             assertNotEquals(wallpaper.secondary, shown.secondary)
         }
     }
+
+    /**
+     * No source of the app's, ScootTheme or any other, asks for the wallpaper's colours: Compose's dynamic schemes,
+     * Material Components' DynamicColors (in code or as a theme), the system's palette as a colour resource
+     * (`@android:color/system_accent1_500`, `android.R.color.system_…`), or the wallpaper's colours themselves.
+     */
+    @Test
+    fun noSourceOfTheAppsAsksForTheWallpapersColours() {
+        // Unit tests run in the app module's folder.
+        val folders = listOf(File("src/main"), File("src/debug"), File("../core/src/main"))
+        val sources = folders.flatMap { folder -> folder.walk().filter { it.extension in setOf("kt", "java", "xml") }.toList() }
+        assertTrue("sources read: ${sources.size}", sources.count { it.extension == "kt" } > 100 && sources.any { it.extension == "xml" })
+        val uses = sources.flatMap { file ->
+            file.readLines().withIndex()
+                .filter { (_, line) -> wallpapers.containsMatchIn(line) }
+                .map { (index, line) -> "${file.path}:${index + 1}: ${line.trim()}" }
+        }
+        assertEquals("", uses.joinToString("\n"))
+    }
+
+    private val wallpapers = Regex(
+        listOf(
+            """\bdynamic\w*ColorScheme\b""",
+            """\bDynamicColors\b""",
+            """\bcolor[/.]system_\w+""",
+            """\bWallpaperColors\b""",
+            """\bWallpaperManager\b""",
+        ).joinToString("|"),
+    )
 }

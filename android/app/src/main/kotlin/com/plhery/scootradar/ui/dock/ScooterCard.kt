@@ -1,11 +1,7 @@
 package com.plhery.scootradar.ui.dock
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.expandVertically
@@ -61,6 +57,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.plhery.scootradar.core.IosMotion
+import com.plhery.scootradar.core.SpringSpec
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.cardContent
 import com.plhery.scootradar.core.map.cardStatus
@@ -471,22 +468,11 @@ internal fun DirectionsButton(
     ) {
         // The label changes with the walk's phase, in its animation: the old one fades out as the new fades in. Its
         // symbol and its title each change by themselves, as a Label's do, so that a title that stays (Directions while
-        // the way is being found) is left as it is (UI-198).
-        val crossFade: AnimatedContentTransitionScope<*>.() -> ContentTransform = {
-            if (reduceMotion) {
-                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-            } else {
-                fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                    SizeTransform(clip = false) { _, _ -> spring.animation() }
-            }
-        }
+        // the way is being found) is left as it is (UI-198). Under Reduce Motion each is the new one in the frame the walk
+        // changes, as the iPhone's nil animation lays it out at once.
+        val crossFade = if (reduceMotion) null else spring
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-            AnimatedContent(
-                targetState = directionsSymbol(control) to isFinding,
-                transitionSpec = crossFade,
-                contentAlignment = Alignment.Center,
-                label = "directions symbol",
-            ) { (symbol, finding) ->
+            CrossFaded(directionsSymbol(control) to isFinding, crossFade, label = "directions symbol") { (symbol, finding) ->
                 Box(contentAlignment = Alignment.Center) {
                     SymbolIcon(symbol, textSymbolSize(14f), LocalContentColor.current, Modifier.alpha(if (finding) 0f else 1f))
                     // In the symbol's overlay: the spinner takes the symbol's place and none of its own.
@@ -497,16 +483,33 @@ internal fun DirectionsButton(
                     }
                 }
             }
-            AnimatedContent(
-                targetState = directionsTitle(control),
-                transitionSpec = crossFade,
-                contentAlignment = Alignment.Center,
-                label = "directions title",
-            ) { title ->
+            CrossFaded(directionsTitle(control), crossFade, label = "directions title") { title ->
                 Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
     }
+}
+
+/**
+ * [content] for [state]: as it changes, the old one fades out as the new fades in on [spring], and the size eases on it.
+ * Without a spring (Reduce Motion), the new one in the frame [state] changes: an AnimatedContent with no transition and
+ * a snapped size still draws the old one for a frame.
+ */
+@Composable
+private fun <S> CrossFaded(state: S, spring: SpringSpec?, label: String, content: @Composable (S) -> Unit) {
+    if (spring == null) {
+        Box(contentAlignment = Alignment.Center) { content(state) }
+        return
+    }
+    AnimatedContent(
+        targetState = state,
+        transitionSpec = {
+            fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                SizeTransform(clip = false) { _, _ -> spring.animation() }
+        },
+        contentAlignment = Alignment.Center,
+        label = label,
+    ) { content(it) }
 }
 
 private fun directionsTitle(control: ScooterDirectionsControl): String = when (control) {

@@ -15,8 +15,10 @@ import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -45,12 +47,14 @@ import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.testController
 import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
 import com.plhery.scootradar.ui.settings.SettingsPage
 import com.plhery.scootradar.ui.sheet.IosMenu
+import com.plhery.scootradar.ui.sheet.POPOVER_TAG
 import com.plhery.scootradar.ui.theme.ScootTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -210,6 +214,55 @@ class SecondaryClickTest {
         row.performMouseInput { click() }
         compose.waitForIdle()
         assertEquals(2, chosen)
+    }
+
+    /** The screen over a plain map, with [controller]. */
+    private fun showTheScreen(controller: ScooterMapController) {
+        compose.setContent { ScooterMapScreen(controller = controller, map = { Box(Modifier.fillMaxSize()) }, glassBlurs = false) }
+        compose.waitForIdle()
+    }
+
+    /** Over the dock, Settings is a sheet in the screen: a right click on its row turns nothing, a left click its switch. */
+    @Test
+    fun aRightClickOnASheetsRowTurnsNothing() {
+        val controller = testController(scope)
+        showTheScreen(controller)
+        compose.onNodeWithContentDescription(localized("Settings")).performClick()
+        val zones = hasText(localized("Ride and parking zones"))
+        compose.waitUntil { compose.onAllNodes(zones).fetchSemanticsNodes().isNotEmpty() }
+        val row = compose.onNode(zones)
+        val window = compose.onRoot().fetchSemanticsNode().size
+        assertTrue("the row in the window", row.fetchSemanticsNode().boundsInRoot.center.y < window.height)
+        val shows = controller.showsZones.value
+
+        row.performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertEquals("the zones after a right click on their row", shows, controller.showsZones.value)
+        row.performMouseInput { click() }
+        compose.waitForIdle()
+        assertEquals("the zones after a left click", !shows, controller.showsZones.value)
+    }
+
+    /**
+     * Beside a panel, Filters is a popover in the screen: a right click on a battery minimum chooses nothing, a left
+     * click chooses it.
+     */
+    @Test
+    @Config(qualifiers = "w1024dp-h768dp-mdpi")
+    fun aRightClickInAPopoverChoosesNothing() {
+        val controller = testController(scope)
+        showTheScreen(controller)
+        compose.onNodeWithContentDescription(localized("Filters")).performClick()
+        compose.waitUntil { compose.onAllNodesWithTag(POPOVER_TAG).fetchSemanticsNodes().isNotEmpty() }
+        val sixty = compose.onNode(hasContentDescription(stringFormat(localized("%lld percent or more"), 60L)) and hasAnyAncestor(hasTestTag(POPOVER_TAG)))
+        val before = controller.minimumBattery.value
+
+        sixty.performMouseInput { rightClick() }
+        compose.waitForIdle()
+        assertEquals("the minimum after a right click on 60%", before, controller.minimumBattery.value, 0.0)
+        sixty.performMouseInput { click() }
+        compose.waitForIdle()
+        assertEquals("the minimum after a left click", 60.0, controller.minimumBattery.value, 0.0)
     }
 
     /** Bolt's pass, valid through 14 November 2026 at noon, its page shown and its calendar opened from the date. */

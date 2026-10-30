@@ -402,11 +402,16 @@ class TopNoticeChangeTest {
         return model to location
     }
 
-    /** The notices' spring from [from] to [to] over the frames, starting in one of the first: none further than [within]. */
+    /**
+     * The notices' spring from [from] to [to] over the frames, its first step on the first frame or at most two late:
+     * none further than [within]. Two, not one: the change's own frame measures the new content and lays out the old
+     * height, where easedHeight starts its Animatable, and an Animatable takes the first frame it is handed as its start
+     * (its value then the one it starts from), so the spring's first step is on the third frame.
+     */
     private fun assertOnTheSpring(name: String, values: List<Double>, from: Double, to: Double, within: Double) {
         val spring = TargetBasedAnimation(IosMotion.snappy(duration = 0.28).animation<Float>(), Float.VectorConverter, 0f, 1f)
         val expected = { frame: Int -> from + (to - from) * spring.getValueFromNanos(max(0, frame) * 16 * 1_000_000L) }
-        val misses = (0..3).associateWith { late -> values.indices.maxOf { abs(values[it] - expected(it + 1 - late)) } }
+        val misses = (0..2).associateWith { late -> values.indices.maxOf { abs(values[it] - expected(it + 1 - late)) } }
         assertTrue("$name: ${values.map { "%.1f".format(it) }}, misses by $misses", misses.values.min() < within)
     }
 

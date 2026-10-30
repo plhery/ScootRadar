@@ -129,6 +129,29 @@ class SystemBarsTest {
         }
     }
 
+    /**
+     * X-AD03 with the System appearance, UIUserInterfaceStyle.unspecified: the window's light or dark is the phone's
+     * (the app's night mode AUTO), so are the map and the bars' icons, light ones with the phone dark and dark ones with
+     * it light. Night mode NO or YES for it would leave one of the two wrong.
+     */
+    @Test
+    fun withTheSystemAppearanceTheBarsIconsAreThePhones() {
+        val phone = nightMode()
+        try {
+            scenario.onActivity { controller.setAppearance(ScooterAppearance.System) }
+            for (night in listOf("yes", "no")) {
+                shell("cmd uimode night $night")
+                val light = night == "no"
+                val until = SystemClock.uptimeMillis() + 10_000
+                while (iconsAreDark() != (light to light) && SystemClock.uptimeMillis() < until) Thread.sleep(100)
+                compose.waitForIdle()
+                assertEquals("the status and navigation bars' icons dark under System, the phone's night mode $night", light to light, iconsAreDark())
+            }
+        } finally {
+            shell("cmd uimode night $phone")
+        }
+    }
+
     /** The phone's night mode, read before the test changes it so that it can be put back as it was. */
     private fun nightMode(): String {
         val mode = shell("cmd uimode night").substringAfter("Night mode: ", "").trim()
