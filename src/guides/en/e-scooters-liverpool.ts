@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'One company, **Bolt**, runs Liverpool’s shared e-scooters and e-bikes, under a Liverpool City Council contract and in partnership with the Liverpool City Region Combined Authority. Its area covers the whole city, Speke and Garston included, but not Bootle, Crosby, Huyton or the Wirral. The council and Merseyside Police call Bolt’s scooters “the only e-scooters permitted for use on public roads in Liverpool”.',
         '**Voi** launched the trial in October 2020 and ran it for more than five years. Bolt won the council’s tender, as the council announced on 14 November 2025, and took over on 1 February 2026, with about 2,000 e-scooters and a smaller e-bike fleet: Liverpool is its first e-scooter city in the UK. The council’s announcements give no end date for the contract, and the national trial that makes hire e-scooters legal is due to run until May 2028.',
-        'At 13:36 on 30 October 2026 the [map of Liverpool](map:gb:Liverpool) showed about 1,800 Bolt e-scooters free to rent at that moment. Zoom in and it shows Bolt’s no-go and slow zones, but not its bays or e-bikes. Tap a scooter to open the Bolt app, where you unlock and pay.',
+        'At 13:36 on 30 October 2026 the [map of Liverpool](map:gb:Liverpool) showed about 1,800 Bolt e-scooters free to rent at that moment. Zoom in and it shows Bolt’s parking bays and its no-go and slow zones, but not its e-bikes. Tap a scooter to open the Bolt app, where you unlock and pay.',
       ],
     },
     {
@@ -104,7 +104,7 @@ const guide: Guide = {
       heading: 'Bolt Liverpool parking: bays, photos and fines',
       blocks: [
         'A ride can only end in one of Bolt’s **parking bays**, shown in the app: about 1,500 on 30 October 2026, dense in the centre and thin in the parks and along Otterspool Promenade. Bolt told the BBC in January 2026 that its vehicles must be parked in specific, identified bays.',
-        'Find the bay nearest your destination before you set off: the [map](map:gb:Liverpool) shows the scooters, not the bays. Leave the pavement clear for blind and disabled people, and take the photo the app asks for. Bolt checks it with AI, and the council warns that “improper parking may result in a fine”. No amount is published for Liverpool; Bolt’s UK terms allow up to £40.',
+        'Find the bay nearest your destination before you set off: zoom in on the [map](map:gb:Liverpool) to see the bays. Leave the pavement clear for blind and disabled people, and take the photo the app asks for. Bolt checks it with AI, and the council warns that “improper parking may result in a fine”. No amount is published for Liverpool; Bolt’s UK terms allow up to £40.',
         'On 30 October 2026 the council’s hire page still said you can “just leave them on the street”: that’s out of date. To report a badly parked Bolt, use the app or call 0844 933 4578 (charges may apply).',
       ],
     },
