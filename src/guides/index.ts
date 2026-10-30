@@ -297,6 +297,8 @@ import tucsonEn from './en/e-scooters-tucson';
 import petahTikvaEn from './en/e-scooters-petah-tikva';
 import helsingborgEn from './en/e-scooters-helsingborg';
 import kansasCityEn from './en/e-scooters-kansas-city';
+import ashdodEn from './en/e-scooters-ashdod';
+import namurFr from './fr/trottinette-electrique-namur';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -594,4 +596,6 @@ export const GUIDES: readonly Guide[] = [
   petahTikvaEn,
   helsingborgEn,
   kansasCityEn,
+  ashdodEn,
+  namurFr,
 ];
