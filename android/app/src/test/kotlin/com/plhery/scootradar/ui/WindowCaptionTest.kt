@@ -4,13 +4,18 @@ import android.graphics.Rect
 import android.view.View
 import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.getBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -146,6 +151,26 @@ class WindowCaptionTest {
         assertEquals("$top", bar().height, top.height, 0.5)
     }
 
+    /**
+     * A screen 40 in from the window's left: the map's top is the bar's whole width without the buttons where the
+     * screen has it, in the window's points, as every frame the map is handed is.
+     */
+    @Test
+    @Config(qualifiers = "w640dp-h900dp-mdpi")
+    fun theMapsTopBesideTheButtonsIsInTheWindowWhereverTheScreenIs() {
+        show(start = 40.dp)
+        assertEquals(ScooterChromeLayout.Dock, frames.layout)
+        assertEquals(ScreenRect(60.0, 8.0, 560.0, bar().height), bar())
+
+        caption(48, listOf(Rect(40, 0, 190, 48), Rect(470, 0, 640, 48)))
+        assertEquals(ScreenRect(198.0, 8.0, 264.0, bar().height), bar())
+        val top = frames.top!!
+        assertEquals("$top", 60.0, top.x, 0.5)
+        assertEquals("$top", 560.0, top.width, 0.5)
+        assertEquals("$top", 8.0, top.y, 0.5)
+        assertEquals("$top", bar().height, top.height, 0.5)
+    }
+
     /** Too narrow beside them, it goes under the caption, the width it had. */
     @Test
     @Config(qualifiers = "w400dp-h800dp-mdpi")
@@ -167,8 +192,11 @@ class WindowCaptionTest {
         assertNull(besideCaption(bar, emptyList()))
     }
 
-    /** The screen on the list of providers, light, with the map's stand-in reading the chrome's frames. */
-    private fun show(direction: LayoutDirection = LayoutDirection.Ltr): ScooterMapController {
+    /**
+     * The screen on the list of providers, light, with the map's stand-in reading the chrome's frames; [start] in from
+     * the window's leading edge.
+     */
+    private fun show(direction: LayoutDirection = LayoutDirection.Ltr, start: Dp = 0.dp): ScooterMapController {
         val clock = TestClock()
         val model = DockState.Summary.make(controllers, clock)
         model.setAppearance(ScooterAppearance.Light)
@@ -177,7 +205,9 @@ class WindowCaptionTest {
         compose.setContent {
             view = LocalView.current
             CompositionLocalProvider(LocalClock provides { clock.now }, LocalLayoutDirection provides direction) {
-                ScooterMapScreen(controller = model, map = { frames = LocalMapChrome.current!! }, glassBlurs = false)
+                Box(Modifier.padding(start = start)) {
+                    ScooterMapScreen(controller = model, map = { frames = LocalMapChrome.current!! }, glassBlurs = false)
+                }
             }
         }
         compose.waitForIdle()

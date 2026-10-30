@@ -769,7 +769,7 @@ private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
  * could not be found. With large text they can be taller than the room above the locate button; then they scroll.
  * [settledTop] is where the stack's top comes to rest under the top of the room it is given, where its [modifier]'s
  * padding springs to. Beside a caption's buttons, [searchBarModifier] moves and narrows the bar, and [barSpan] is where
- * it is across the window without them.
+ * it is across the screen without them, in the screen's points from the room's origin.
  */
 @Composable
 private fun TopStack(
@@ -801,20 +801,21 @@ private fun TopStack(
     // the iPhone's stack drops it from its layout while it goes over it. Beside a caption's buttons, across the bar's
     // whole width without them: the iPad's containerCornerOffset(_:sizeToFit:) offsets and sizes the bar's content in
     // the frame the bar had, which its stack lays out.
-    var roomTop by remember { mutableStateOf<Double?>(null) }
+    var roomFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barHeight by remember { mutableIntStateOf(0) }
     val noticeHeights = remember { NoticeHeights() }
     val top = run {
-        val room = roomTop ?: return@run null
-        val bar = barFrame?.let { frame -> barSpan?.let { frame.copy(x = it.x, width = it.width) } ?: frame } ?: return@run null
+        val room = roomFrame ?: return@run null
+        // The span is the screen's, whose origin the room's is; the bar's frame is the window's.
+        val bar = barFrame?.let { frame -> barSpan?.let { frame.copy(x = room.x + it.x, width = it.width) } ?: frame } ?: return@run null
         if (barHeight == 0 || isSearching) return@run null
         val noticesHeight = with(density) { noticeHeights.settled(failure, locationIssue, 8.dp.roundToPx(), noticesLimit.roundToPx()) }
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
         val sides = listOfNotNull(bar, noticesFrame?.takeIf { noticesHeight > 0 })
         val left = sides.minOf { it.minX }
-        ScreenRect(left, room + settledTop.value, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
+        ScreenRect(left, room.y + settledTop.value, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
     }
     SideEffect {
         if (top != null) chrome.top = top
@@ -822,7 +823,7 @@ private fun TopStack(
 
     Column(
         Modifier
-            .onGloballyPositioned { roomTop = it.windowFrame(density.density).y }
+            .onGloballyPositioned { roomFrame = it.windowFrame(density.density) }
             .then(modifier)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),

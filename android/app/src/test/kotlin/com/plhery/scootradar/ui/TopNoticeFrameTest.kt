@@ -3,7 +3,10 @@ package com.plhery.scootradar.ui
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.FakeLocationManager
 import com.plhery.scootradar.StubScooterAPI
@@ -17,6 +20,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.scooter
@@ -95,6 +99,39 @@ class TopNoticeFrameTest {
         compose.mainClock.autoAdvance = true
         compose.waitForIdle()
         assertEquals("the top ${frames.top}", barHeight(), frames.top!!.height, 0.5)
+    }
+
+    /**
+     * The search closing over a card hands the map the bar and the card from its first frame, as the iPhone's stack
+     * lays the card out under the bar again as soon as `searchIsExpanded` is false (ScooterMapScreen.swift's
+     * `if !searchIsExpanded, hasTopNotices`, which onGeometryChange reads): the card's height is kept while the open
+     * search has it away.
+     */
+    @Test
+    fun theSearchClosingOverACardHandsTheMapTheBarAndTheCardFromItsFirstFrame() {
+        val clock = TestClock()
+        val model = located(controllers, clock, ScooterLocationIssue.Denied)
+        show(model, clock)
+        val card = hasText(ScooterLocationIssue.Denied.title!!)
+        val withCard = frames.top!!
+        assertTrue("the top $withCard holds the card under the bar", withCard.height > barHeight() + 8)
+
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
+        compose.waitUntil { compose.onAllNodesWithText(localized("Cancel")).fetchSemanticsNodes().isNotEmpty() }
+        compose.waitForIdle()
+        assertTrue("the card is away under the open search", compose.onAllNodes(card).fetchSemanticsNodes().isEmpty())
+
+        compose.mainClock.autoAdvance = false
+        compose.onNodeWithText(localized("Cancel")).performClick()
+        val tops = eachFrame(20) { frames.top!! }
+        compose.mainClock.autoAdvance = true
+        compose.waitForIdle()
+        assertTrue("the card is back", compose.onAllNodes(card).fetchSemanticsNodes().isNotEmpty())
+        tops.forEachIndexed { frame, top ->
+            assertEquals("the top on frame $frame of ${tops.map { it.height }}", withCard.height, top.height, 0.5)
+            assertEquals("the top on frame $frame", withCard.y, top.y, 0.5)
+        }
+        assertEquals("the top at rest", withCard.height, frames.top!!.height, 0.5)
     }
 
     @Test
