@@ -610,11 +610,22 @@ Nagoya's pavements as teal lines; the legend names the city, linked to where it
 says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
-catalogs. `scripts/update-city-zones.mjs` reads them again. Only Taupō,
-Santa Monica, Vancouver and Washington state a licence for their layers,
-Washington for two of its three; since 28 October 2026 a city's public zone
-layers are drawn regardless, credited to the city.
+catalogs. `scripts/update-city-zones.mjs` reads them again. Alexandria,
+St. Albert, Santa Monica, Taupō, Vancouver, Vantaa and Washington state a
+licence for their layers, Washington for two of its three; since 28 October
+2026 a city's public zone layers are drawn regardless, credited to the city.
 
+- **Alexandria** (read 30 October 2026): the City of Alexandria's 63 corral
+  areas, 13 no-ride zones and 6 slow zones, from its open data under CC0
+  ([Corral Areas](https://www.arcgis.com/home/item.html?id=08767b36d91742919d94100b2c8258c7),
+  [Micromobile Restrictions](https://www.arcgis.com/home/item.html?id=0a02f6c5b3fc42009ce6420730a12326),
+  both updated 7 April 2026). The no-ride zones are pedestrian-only places and
+  synthetic athletic fields (`RSTNCAT` "No Ride Zone", 0 mph); the slow zones
+  (`RSTNCAT` "Slow Zone, No Parking", 6 mph) are drawn as no-parking zones too.
+  The legend links the City's
+  [Dockless Mobility page](https://www.alexandriava.gov/DocklessMobility): the
+  slow zone of Robinson Landing, made permanent, was extended over the Old Town
+  waterfront, the pedestrian blocks of King Street and Founders Park.
 - **Arlington National Cemetery** (read 29 October 2026): no city's, but a
   federal rule's. No one may ride "a bicycle or similar conveyance" in an Army
   National Military Cemetery without a pass to visit a grave
@@ -820,6 +831,16 @@ layers are drawn regardless, credited to the city.
   a drop zone costs $1 less. The riding areas were last edited on 18 April
   2019; the drop zones match the "175+ designated parking spaces" of the
   City's [shared mobility page](https://www.santamonica.gov/programs/shared-mobility).
+- **St. Albert** (read 30 October 2026): the City of St. Albert's 13
+  [e-scooter restricted zones](https://www.arcgis.com/home/item.html?id=3613eb82e4054d0ca95be60abce3dbe2)
+  (12 places, one of two parts), open data under the City of St. Albert Open
+  Data License, "updated weekly" (last edited 27 October 2026), drawn as
+  no-ride zones and credited "City of St. Albert, Open Data License". The
+  legend links the City's
+  [e-scooter questions](https://stalbert.ca/city/eps/rcmp/traffic-safety/e-scooters/faq/):
+  the companies geofence the no-go zones on its Open Data Portal, so that a
+  scooter stops in them. The Farmers' Market's zone is drawn every day, as the
+  layer holds it.
 - **Taupō** (read 30 October 2026): the Taupō District Council's
   [Rental E-Scooter Operational Areas](https://www.arcgis.com/home/item.html?id=36092a0943214783afc27bef88cc5430),
   licensed CC BY 4.0 and credited "Taupō District Council (CC BY 4.0)", as the
@@ -828,6 +849,21 @@ layers are drawn regardless, credited to the city.
   is not drawn, and no area sets a curfew. The layer was last edited on 13
   December 2022; the council says it may amend the areas from time to time.
   No operator's scooters in Taupō are on the map: Beam's feed is closed.
+- **Vaasa** (read 30 October 2026): Vaasan kaupunki's 229 parking places
+  (`Sahkopotkulautojen_pysakointi`) and, from its restriction areas
+  (`Rajoitusalueet_sahkopotkulaudat_view`, by `rajoitus`), 66 no-parking
+  areas (`pysakointikielto`), 17 no-riding areas (`ajokielto`) and the
+  pedestrian centre's 10 km/h area (`nopeusrajoitus`), both last edited
+  14 October 2026; no licence stated, and no public map of the City's draws
+  them. The legend links the City's
+  [news of 10 June 2026](https://www.vaasa.fi/en/news/new-parking-rules-for-electric-scooters/):
+  from 15 June scooters may be parked only in designated parking areas in the
+  city centre, Palosaari, Vöyrinkaupunki and Hietalahti. The
+  [2026 permit terms](https://www.vaasa.fi/app/uploads/2026/03/Mikroliikennelupa-lupaehdot-2026.pdf)
+  set the 10 km/h, forbid riding and parking on sports grounds and school and
+  day-care yards, and set the season from 20 April to 31 October. That
+  restricted parking area (`rajoitetun pysakoinnin alue`), where a ride may
+  end only at a parking place, is not drawn: ScootRadar has no kind for it.
 - **Vancouver** (read 30 October 2026): the City of Vancouver's 250 shared
   e-scooter stations, each its outline in the street, from its
   `SharedEScooterStation` feature service (last edited 29 October 2026), open
@@ -838,6 +874,20 @@ layers are drawn regardless, credited to the city.
   [page](https://vancouver.ca/streets-transportation/shared-e-scooter-system.aspx),
   which answers scripts 403: the City places parking stations throughout the
   service area, and a Lime ride ends only at one.
+- **Vantaa** (read 30 October 2026): Vantaan kaupunki's 76 parking places
+  (painted bays, assigned bicycle racks and two places marked only in the
+  apps), 29 no-parking zones, 7 low-speed zones at 10 km/h and 5 no-go zones
+  round stations, where neither riding nor parking is allowed, drawn as
+  no-riding zones: the
+  [micromobility permit's geodata](https://hri.fi/data/en_GB/dataset/vantaan-mikroliikenneluvan-paikkatietoaineistot)
+  on Helsinki Region Infoshare, licensed CC BY 4.0 and credited "Vantaan
+  kaupunki, CC BY 4.0", as the legend does, read from its
+  [hub](https://micromobility-cityofvantaa.opendata.arcgis.com/)'s feature
+  services (parking places last edited 26 October 2026). The permit, required
+  from 1 January 2026, has operators read the zones from that interface. Left
+  out: the 12 mandatory parking zones, where a ride may end only at a parking
+  place, which ScootRadar has no kind for, and the temporary zones the City
+  sets for large events.
 - **Västerås** (read 29 October 2026): Västerås stad's 298 places to park
   (293 parking places and 5 sharing points, `Delningspunkter`), 502 no-parking
   areas, 45 slow zones and 17 no-riding zones, from layer 2 of the City's

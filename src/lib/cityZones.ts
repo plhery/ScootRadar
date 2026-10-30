@@ -34,6 +34,7 @@ export const ZONE_CITIES: ZoneCity[] = index.cities;
  * file a piece of its own and leaves them all out of the map page.
  */
 export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }>> = {
+  alexandria: () => import('../../data/city-zones/alexandria.json'),
   arlingtoncemetery: () => import('../../data/city-zones/arlingtoncemetery.json'),
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
@@ -46,8 +47,11 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   ottawa: () => import('../../data/city-zones/ottawa.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   santamonica: () => import('../../data/city-zones/santamonica.json'),
+  stalbert: () => import('../../data/city-zones/stalbert.json'),
   taupo: () => import('../../data/city-zones/taupo.json'),
+  vaasa: () => import('../../data/city-zones/vaasa.json'),
   vancouver: () => import('../../data/city-zones/vancouver.json'),
+  vantaa: () => import('../../data/city-zones/vantaa.json'),
   vasteras: () => import('../../data/city-zones/vasteras.json'),
   washington: () => import('../../data/city-zones/washington.json'),
 };

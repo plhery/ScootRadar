@@ -86,12 +86,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   no-go (36), no-park (322) and low-speed (44) zones for shared e-steps,
   revised in August 2022, and its 211 drop zones for them, kept daily
   (antwerpen.be answers scripts 403); Kraków's 342 mobility points (edited
-  6 October 2026); Vantaa's parking (76), no-parking (29), no-riding (5) and
-  slow (7) areas; Vaasa's 229 parking places; and the corrals of Columbus
-  (47 active, CC0), Alexandria (63, with its restrictions, CC0), Arlington
-  County (128 installed), Atlanta (38 installed) and Baltimore (45, 2024);
-  St. Albert's 13 restricted zones; and, smaller, Pforzheim, Kerava,
-  Herzliya, Sandefjord and Øygarden.
+  6 October 2026); and the corrals of Columbus (47 active; columbus.gov
+  answers scripts 403, and the CC0 is an older item's), Arlington County
+  (128 installed), Atlanta (38 installed) and Baltimore (45, 2024); and,
+  smaller, Pforzheim, Kerava, Herzliya, Sandefjord and Øygarden.
 - **Waiting for a reader of WFS, OGC API or GeoJSON:** Wien's 1,998 areas
   (`ogdwien:ESCOOTPARKVERBOGD`), Hamburg's 145 parking places and 3,043
   no-parking areas (DL-DE BY 2.0), Berlin's 637 parking places (DL-DE Zero),

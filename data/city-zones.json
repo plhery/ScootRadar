@@ -1,7 +1,58 @@
 {
   "verifiedOn": "2026-10-30",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Only Taupō, Santa Monica, Vancouver and Washington state a licence for theirs, CC BY 4.0, ODC-By 1.0, the Open Government Licence – Vancouver and, for Washington's corrals and no-parking zones, CC BY 4.0; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, Santa Monica's drop zones and Ottawa's designated parking. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria CC0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, Taupō and Vantaa CC BY 4.0, Vancouver the Open Government Licence – Vancouver, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's operations area, where its scooters may go at all, is not drawn. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's parking corrals, those installed, Santa Monica's drop zones and Ottawa's designated parking. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on.",
   "cities": [
+    {
+      "id": "alexandria",
+      "place": "Alexandria",
+      "country": "US",
+      "authority": "City of Alexandria",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "City of Alexandria, \"Dockless Mobility\": its slow zones, at 6 mph, on the Old Town waterfront, the pedestrian blocks of King Street and Founders Park, and its parking corrals; its corral areas and micromobility restrictions are open data (CC0)",
+        "url": "https://www.alexandriava.gov/DocklessMobility"
+      },
+      "map": {
+        "title": "City of Alexandria, \"Micromobile Restrictions\" (open data, ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=0a02f6c5b3fc42009ce6420730a12326"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services2.arcgis.com/ChYV69FhfjwkvRmy/arcgis/rest/services/Corral_Areas/FeatureServer",
+          "layer": 0,
+          "nameField": "street"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services2.arcgis.com/ChYV69FhfjwkvRmy/arcgis/rest/services/Micromobile_Restrictions/FeatureServer",
+          "layer": 165,
+          "where": "RSTNCAT = 'Slow Zone, No Parking'",
+          "nameField": "MICRSTNNME"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services2.arcgis.com/ChYV69FhfjwkvRmy/arcgis/rest/services/Micromobile_Restrictions/FeatureServer",
+          "layer": 165,
+          "where": "RSTNCAT = 'Slow Zone, No Parking'",
+          "nameField": "MICRSTNNME"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services2.arcgis.com/ChYV69FhfjwkvRmy/arcgis/rest/services/Micromobile_Restrictions/FeatureServer",
+          "layer": 165,
+          "where": "RSTNCAT = 'No Ride Zone'",
+          "nameField": "MICRSTNNME"
+        }
+      ],
+      "bounds": {
+        "south": 38.795775,
+        "west": -77.137789,
+        "north": 38.843875,
+        "east": -77.037555
+      },
+      "zones": 88
+    },
     {
       "id": "arlingtoncemetery",
       "place": "Arlington National Cemetery",
@@ -511,6 +562,36 @@
       "zones": 212
     },
     {
+      "id": "stalbert",
+      "place": "St. Albert",
+      "country": "CA",
+      "authority": "City of St. Albert, Open Data License",
+      "timeZone": "America/Edmonton",
+      "source": {
+        "title": "City of St. Albert, \"Common E-Scooter Questions\": the no-go zones on its Open Data Portal (City of St. Albert Open Data License), which the e-scooter companies geofence so that a scooter stops in them",
+        "url": "https://stalbert.ca/city/eps/rcmp/traffic-safety/e-scooters/faq/"
+      },
+      "map": {
+        "title": "City of St. Albert, \"E-Scooter Restricted Zone\" (open data, ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=3613eb82e4054d0ca95be60abce3dbe2"
+      },
+      "layers": [
+        {
+          "kind": "noRide",
+          "url": "https://services1.arcgis.com/fyyY0cNXvmUWvX1x/arcgis/rest/services/EScooterRestrictedZone_OD/FeatureServer",
+          "layer": 0,
+          "nameField": "RestrictedZone"
+        }
+      ],
+      "bounds": {
+        "south": 53.616959,
+        "west": -113.668661,
+        "north": 53.668718,
+        "east": -113.597709
+      },
+      "zones": 13
+    },
+    {
       "id": "taupo",
       "place": "Taupō",
       "country": "NZ",
@@ -547,6 +628,53 @@
       "zones": 5
     },
     {
+      "id": "vaasa",
+      "place": "Vaasa",
+      "country": "FI",
+      "authority": "Vaasan kaupunki",
+      "timeZone": "Europe/Helsinki",
+      "source": {
+        "title": "City of Vaasa, \"New parking rules for electric scooters\": from 15 June 2026 e-scooters may be parked only in designated parking areas in the city centre, Palosaari, Vöyrinkaupunki and Hietalahti; its 2026 permit terms add 10 km/h in the pedestrian centre, and no riding or parking on sports grounds and school and day-care yards",
+        "url": "https://www.vaasa.fi/en/news/new-parking-rules-for-electric-scooters/"
+      },
+      "map": {
+        "title": "Vaasan kaupunki, \"Rajoitusalueet_sahkopotkulaudat_view\" (ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=38c300862e224407a47497204e7425fe"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services1.arcgis.com/plmcGSi1EuZUrOaf/arcgis/rest/services/Sahkopotkulautojen_pysakointi/FeatureServer",
+          "layer": 0
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services1.arcgis.com/plmcGSi1EuZUrOaf/arcgis/rest/services/Rajoitusalueet_sahkopotkulaudat_view/FeatureServer",
+          "layer": 0,
+          "where": "rajoitus = 'pysakointikielto'"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services1.arcgis.com/plmcGSi1EuZUrOaf/arcgis/rest/services/Rajoitusalueet_sahkopotkulaudat_view/FeatureServer",
+          "layer": 0,
+          "where": "rajoitus = 'nopeusrajoitus'"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services1.arcgis.com/plmcGSi1EuZUrOaf/arcgis/rest/services/Rajoitusalueet_sahkopotkulaudat_view/FeatureServer",
+          "layer": 0,
+          "where": "rajoitus = 'ajokielto'"
+        }
+      ],
+      "bounds": {
+        "south": 63.070449,
+        "west": 21.553919,
+        "north": 63.137078,
+        "east": 21.739751
+      },
+      "zones": 313
+    },
+    {
       "id": "vancouver",
       "place": "Vancouver",
       "country": "CA",
@@ -575,6 +703,54 @@
         "east": -123.023881
       },
       "zones": 250
+    },
+    {
+      "id": "vantaa",
+      "place": "Vantaa",
+      "country": "FI",
+      "authority": "Vantaan kaupunki, CC BY 4.0",
+      "timeZone": "Europe/Helsinki",
+      "source": {
+        "title": "Vantaan kaupunki, \"Geospatial dataset for the micromobility permit in Vantaa\" (CC BY 4.0): 10 km/h for shared e-scooters in its low-speed zones, no riding or parking in its no-go zones, no parking in its no-parking zones, and its designated parking spots",
+        "url": "https://hri.fi/data/en_GB/dataset/vantaan-mikroliikenneluvan-paikkatietoaineistot"
+      },
+      "map": {
+        "title": "Vantaan kaupunki, \"Micromobility permit geodata\" (ArcGIS Hub)",
+        "url": "https://micromobility-cityofvantaa.opendata.arcgis.com/"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services-eu1.arcgis.com/4t4OELwas4vH6rxg/arcgis/rest/services/Pysäköintipaikat_/FeatureServer",
+          "layer": 2,
+          "nameField": "Nimi"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services-eu1.arcgis.com/4t4OELwas4vH6rxg/arcgis/rest/services/Pysäköintikieltoalueet/FeatureServer",
+          "layer": 35,
+          "nameField": "Nimi"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services-eu1.arcgis.com/4t4OELwas4vH6rxg/arcgis/rest/services/Alhaisen_ajonopeuden_alueet/FeatureServer",
+          "layer": 55,
+          "nameField": "Nimi"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services-eu1.arcgis.com/4t4OELwas4vH6rxg/arcgis/rest/services/Ajokieltoalueet/FeatureServer",
+          "layer": 6,
+          "nameField": "Nimi"
+        }
+      ],
+      "bounds": {
+        "south": 60.254579,
+        "west": 24.82271,
+        "north": 60.332956,
+        "east": 25.075027
+      },
+      "zones": 117
     },
     {
       "id": "vasteras",

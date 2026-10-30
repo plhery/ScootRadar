@@ -19,16 +19,24 @@ const OTTAWA_CENTRE = { south: 45.42, west: -75.7, north: 45.43, east: -75.68 };
 const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28, east: -123.06 };
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
 const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
+// Alexandria's Old Town, from Market Square down King Street to the waterfront.
+const ALEXANDRIA_OLD_TOWN = { south: 38.8, west: -77.05, north: 38.81, east: -77.035 };
 // Oslo's Karl Johans gate, from the Slottsplassen to Oslo S.
 const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 // Santa Monica's Pier, the Promenade and Palisades Park's south end.
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
+// St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
+const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: -113.62 };
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
 const ARLINGTON_CEMETERY = { south: 38.874, west: -77.077, north: 38.88, east: -77.068 };
 // Norrköping's Drottninggatan, from the station to the Gamla torget.
 const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
+// Vaasa's market square and the city centre round it.
+const VAASA_CENTRE = { south: 63.09, west: 21.6, north: 63.1, east: 21.63 };
+// Tikkurila's station and centre, in Vantaa.
+const VANTAA_TIKKURILA = { south: 60.288, west: 25.03, north: 60.298, east: 25.05 };
 // Västerås's Stora Torget and Stora gatan, where riding is forbidden.
 const VASTERAS_CENTRE = { south: 59.607, west: 16.535, north: 59.614, east: 16.555 };
 // Washington's Wharf and the Tidal Basin's south shore.
@@ -62,7 +70,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['arlingtoncemetery', 'bergen', 'boise', 'boulder', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'taupo', 'vancouver', 'vasteras', 'washington']);
+    expect(cities).toEqual(['alexandria', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -123,6 +131,10 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: OSLO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['oslo']);
     expect(zoneCitiesInView({ bounds: SANTA_MONICA_PIER, zoom: 15 }).map(city => city.id)).toEqual(['santamonica']);
     expect(zoneCitiesInView({ bounds: TAUPO_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['taupo']);
+    expect(zoneCitiesInView({ bounds: ALEXANDRIA_OLD_TOWN, zoom: 15 }).map(city => city.id)).toEqual(['alexandria']);
+    expect(zoneCitiesInView({ bounds: ST_ALBERT_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['stalbert']);
+    expect(zoneCitiesInView({ bounds: VAASA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vaasa']);
+    expect(zoneCitiesInView({ bounds: VANTAA_TIKKURILA, zoom: 15 }).map(city => city.id)).toEqual(['vantaa']);
     // Washington's bounds, a box round the District, reach over the Potomac to the cemetery.
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlingtoncemetery', 'washington']);
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
@@ -255,6 +267,59 @@ describe('the cities\' zones', () => {
     expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(250);
     expect(zones).toHaveLength(250);
     expect(ruleZonesInView({ bounds: VANCOUVER_COMMERCIAL_DRIVE, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(0);
+  });
+
+  it('draws the City of Alexandria\'s corrals, its no-ride zones and its slow zones where parking is forbidden too', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'alexandria')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'City of Alexandria' && zone.timeZone === 'America/New_York')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(63);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(13);
+    // Its six slow zones, at 6 mph, are each a no-parking zone too.
+    const slow = zones.filter(zone => zone.rule === 'slow').map(zone => zone.place).sort();
+    expect(slow).toHaveLength(6);
+    expect(zones.filter(zone => zone.rule === 'noParking').map(zone => zone.place).sort()).toEqual(slow);
+    const shown = ruleZonesInView({ bounds: ALEXANDRIA_OLD_TOWN, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow']));
+  });
+
+  it('draws the City of St. Albert\'s no-go zones as no-ride zones, credited under its open data licence', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'stalbert')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'City of St. Albert, Open Data License' && zone.timeZone === 'America/Edmonton')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(13);
+    expect(zones).toHaveLength(13);
+    const shown = ruleZonesInView({ bounds: ST_ALBERT_DOWNTOWN, zoom: 15 }, Date.now(), zones);
+    expect(shown.map(zone => zone.place)).toContain("Farmer's Market");
+  });
+
+  it('draws Vaasa\'s parking places and its zones, but not the area where a ride may end only at one of them', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'vaasa')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Vaasan kaupunki' && zone.timeZone === 'Europe/Helsinki')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(229);
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(66);
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(1);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(17);
+    const shown = ruleZonesInView({ bounds: VAASA_CENTRE, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow']));
+  });
+
+  it('draws Vantaa\'s parking places and its no-parking, slow and no-riding zones, credited to the city under CC BY 4.0', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'vantaa')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Vantaan kaupunki, CC BY 4.0' && zone.timeZone === 'Europe/Helsinki')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(76);
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(29);
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(7);
+    // Its no-go zones, round five stations, where neither riding nor parking is allowed.
+    expect(zones.filter(zone => zone.rule === 'noRide').map(zone => zone.place)).toContain('Tikkurilan asema');
+    const shown = ruleZonesInView({ bounds: VANTAA_TIKKURILA, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(KINDS));
   });
 
   it('draws Oslo kommune\'s zones, those of every day: Marka\'s no-riding area but not the school yards\', no-riding on weekdays', async () => {
