@@ -2,8 +2,12 @@ package com.plhery.scootradar.map
 
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapPoint
+import com.plhery.scootradar.core.model.MapRect
+import com.plhery.scootradar.core.model.ScooterMapCameraPolicy
+import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
+import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -199,6 +203,79 @@ class MapCameraTest {
         val laptop = ScreenRect(0.0, 465.0, 669.0, 20.0)
         val upright = ScreenRect(0.0, 0.0, 669.0, 951.0)
         assertEquals(MapInsets(24.0, 0.0, 951.0 - 465 + 16, 0.0), MapCamera.beside(null, laptop, upright, safeTop = 24.0, rightToLeft = false))
+    }
+
+    /**
+     * A server cluster's region, as a place located (MAP-041, MAP-050, MAP-051): beside a panel or a fold its centre
+     * goes to the middle of the part of the map beside it, across, and of the whole map up and down, as the iPhone's
+     * cluster tap gives setRegionPreservingPerspective the part left visible (ScooterMapView.swift:1877-1907, aside at
+     * :44 and :111-115); not to the middle of the map's margins, 16 further on past the panel or the fold.
+     */
+    @Test
+    fun besideAPanelOrAFoldARegionIsCentredInThePartOfTheMapBesideIt() {
+        val city = GeoPoint(47.3769, 8.5417)
+        // The Tablet across, the panel from 16 to 396: iOS shows a city total at (396 + 1280) / 2, where the map's
+        // margins, 412 past its edge, would show it at 846.
+        val tablet = ScreenRect(0.0, 0.0, 1280.0, 800.0)
+        val panel = ScreenRect(16.0, 40.0, 380.0, 500.0)
+        val besidePanel = ScooterMapCameraPolicy.visibleRectIn(tablet, top = 24.0, bottom = tablet.maxY, beside = panel)
+        shownAt(city, tablet, MapCamera.beside(panel, tablet, rightToLeft = false), besidePanel).let {
+            assertEquals(838.0, it.x, 1e-6)
+            assertEquals(400.0, it.y, 1e-6)
+        }
+        // Right to left the panel is down the right side, and the part beside it on the left.
+        val right = ScreenRect(1280.0 - 16 - 380, 40.0, 380.0, 500.0)
+        val besideRight = ScooterMapCameraPolicy.visibleRectIn(tablet, top = 24.0, bottom = tablet.maxY, beside = right)
+        assertEquals(442.0, shownAt(city, tablet, MapCamera.beside(right, tablet, rightToLeft = true), besideRight).x, 1e-6)
+
+        // Open like a book with the panel in the leading half: the middle of the trailing one, past the fold.
+        val window = ScreenRect(0.0, 0.0, 951.0, 669.0)
+        val book = ScreenRect(465.0, 0.0, 20.0, 669.0)
+        val leading = ScreenRect(16.0, 24.0, 380.0, 400.0)
+        val trailing = ScooterMapCameraPolicy.visibleRect(
+            ScooterMapCameraPolicy.visibleRectIn(window, top = 24.0, bottom = window.maxY, beside = leading),
+            safeTop = 24.0,
+            beside = book,
+            on = ScooterMapCameraPolicy.FoldSide.Right,
+        )
+        shownAt(city, window, MapCamera.beside(leading, book, window, safeTop = 24.0, rightToLeft = false), trailing).let {
+            assertEquals((485.0 + 951) / 2, it.x, 1e-6)
+            assertEquals(669.0 / 2, it.y, 1e-6)
+        }
+
+        // A phone's map, whole across: the middle of its margins, which it has none of.
+        val phone = ScreenRect(0.0, 0.0, 390.0, 844.0)
+        val overTheDock = ScooterMapCameraPolicy.visibleRectIn(phone, top = 120.0, bottom = 600.0, beside = null)
+        assertEquals(null, MapCamera.aside(overTheDock, phone))
+    }
+
+    /**
+     * Where `place` shows once a region centred on it is shown on a flat map of `bounds` with `margins`, the part of it
+     * left `visible`: measured on the map as the camera will show it, then moved there, as MapCamera does.
+     */
+    private fun shownAt(place: GeoPoint, bounds: ScreenRect, margins: MapInsets, visible: ScreenRect): ScreenPoint {
+        val centre = MapCamera.aside(visible, bounds)?.let { beside ->
+            ScooterMapCameraPolicy.center(showing = place, on = FlatMap(bounds, margins, centre = place), visible = beside)
+        } ?: place
+        return FlatMap(bounds, margins, centre).point(place)
+    }
+
+    /** A map seen from straight above, north up, at two map points a point, its centre in the middle of its margins. */
+    private class FlatMap(override val bounds: ScreenRect, margins: MapInsets, centre: GeoPoint) : ScooterMapProjection {
+        private val middle = ScreenPoint(
+            bounds.minX + margins.left + (bounds.width - margins.left - margins.right) / 2,
+            bounds.minY + margins.top + (bounds.height - margins.top - margins.bottom) / 2,
+        )
+        private val shown = MapPoint(centre)
+        override val centerCoordinate = centre
+        override val visibleMapRect = MapRect(shown.x - bounds.width, shown.y - bounds.height, 2 * bounds.width, 2 * bounds.height)
+
+        override fun point(coordinate: GeoPoint): ScreenPoint = MapPoint(coordinate).let {
+            ScreenPoint(middle.x + (it.x - shown.x) / 2, middle.y + (it.y - shown.y) / 2)
+        }
+
+        override fun coordinate(point: ScreenPoint): GeoPoint =
+            MapPoint(shown.x + (point.x - middle.x) * 2, shown.y + (point.y - middle.y) * 2).coordinate
     }
 
     @Test

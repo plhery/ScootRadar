@@ -259,11 +259,17 @@ class MapCamera(
         // area then.
         val frame = if (movedMargins != null) withinSafeArea() else frame()
         when (move) {
+            // Beside a panel or a fold the region's centre goes where a place's does, as the iPhone's cluster tap
+            // gives setRegionPreservingPerspective the part of the map left visible.
             is CameraMove.Region -> animate(
-                CameraPosition.Builder(map.cameraPosition)
-                    .target(LatLng(move.region.center.latitude, move.region.center.longitude))
-                    .zoom(MapZoom.fitting(move.region, frame.width, frame.height))
-                    .build(),
+                beside(
+                    CameraPosition.Builder(map.cameraPosition)
+                        .target(LatLng(move.region.center.latitude, move.region.center.longitude))
+                        .zoom(MapZoom.fitting(move.region, frame.width, frame.height))
+                        .build(),
+                    showing = move.region.center,
+                    visible = visibleRect(),
+                ),
             )
             // On a phone MapKit shows a cluster's scooters in motion whatever Reduce Motion says (MAP-327).
             is CameraMove.Fit -> fit(move.coordinates, move.animated, inMotion = move.ofCluster && movedMargins == null)
@@ -353,20 +359,26 @@ class MapCamera(
             longitudinalMeters = request.longitudinalMeters * scale,
         )
         val frame = frame()
-        var target = CameraPosition.Builder(current)
+        val target = CameraPosition.Builder(current)
             .target(LatLng(request.point.latitude, request.point.longitude))
             .zoom(MapZoom.fitting(region, frame.width, frame.height))
             .build()
-        // Beside a panel the place goes to the middle of the part of the map beside it, across, and of the whole
-        // map up and down: where the centre goes is measured on the map as the camera will show it.
-        val beside = ScooterMapCameraPolicy.aside(visible, bounds)
-        if (beside != null) {
-            jump(target)
-            val centre = ScooterMapCameraPolicy.center(showing = request.point, on = projection, visible = beside)
-            target = CameraPosition.Builder(target).target(LatLng(centre.latitude, centre.longitude)).build()
-            jump(current)
-        }
-        animate(target)
+        animate(beside(target, showing = request.point, visible = visible))
+    }
+
+    /**
+     * The camera `target`, which shows `showing` in the middle of the map's margins, moved to show it beside a panel
+     * or a fold in the middle of the part of the map beside it, across, and of the whole map up and down, as
+     * setRegionPreservingPerspective does: where the centre goes is measured on the map as the camera will show it.
+     * Elsewhere the target as it is.
+     */
+    private fun beside(target: CameraPosition, showing: GeoPoint, visible: ScreenRect): CameraPosition {
+        val beside = aside(visible, projection.bounds) ?: return target
+        val current = map.cameraPosition
+        jump(target)
+        val centre = ScooterMapCameraPolicy.center(showing = showing, on = projection, visible = beside)
+        jump(current)
+        return CameraPosition.Builder(target).target(LatLng(centre.latitude, centre.longitude)).build()
     }
 
     /**
@@ -667,6 +679,13 @@ class MapCamera(
             }
             return MapInsets(top, left, bottom, right)
         }
+
+        /**
+         * What a place or a region is centred in beside a panel or a fold, from the part of a map of `bounds` left
+         * `visible`: ScooterMapCameraPolicy.aside, as wide as the part, as tall as the map. None where nothing
+         * covers a side, and the place keeps to the middle of the map's margins.
+         */
+        internal fun aside(visible: ScreenRect, bounds: ScreenRect): ScreenRect? = ScooterMapCameraPolicy.aside(visible, bounds)
 
         /**
          * The part of a map of `bounds` inside both its `margins` and its `safeArea`, each measured from its edges,

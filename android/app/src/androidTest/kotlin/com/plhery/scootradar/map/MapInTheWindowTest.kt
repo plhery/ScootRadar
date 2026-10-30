@@ -36,8 +36,10 @@ import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterResponseMetadata
 import com.plhery.scootradar.core.model.ScooterWalkPhase
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.ScreenPoint
@@ -55,6 +57,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
@@ -104,6 +107,10 @@ class MapInTheWindowTest {
     private lateinit var mapView: ScooterMapView
     private lateinit var map: MapLibreMap
     private lateinit var projection: MapLibreProjection
+
+    /** What the server answers once a test has set it; until then the scooters the controller was made with. */
+    @Volatile
+    private var served: ScooterResponse? = null
 
     @Before
     fun setUp() {
@@ -215,6 +222,78 @@ class MapInTheWindowTest {
         val height = points.maxOf { it.y } - points.minOf { it.y }
         val filled = max(width / (part.width - 2 * FIT_MARGIN), height / (part.height - 2 * FIT_MARGIN))
         assertTrue("the route fills ${"%.2f".format(filled)} of $part", filled > 0.85)
+    }
+
+    /**
+     * A tap on a cluster of the server's opens it where a place located shows, beside a panel or a fold as over the
+     * dock: a group of cities onto their bounds (MAP-050), a city total onto a city's span and a cluster two zoom levels
+     * closer (MAP-051, MAP-147), each centred in the middle of the part of the map beside the panel or the fold across
+     * and of the whole map up and down, as the iPhone's tap gives setRegionPreservingPerspective the part left visible
+     * (ScooterMapView.swift:1877-1907), and elsewhere in the middle of the map's margins. A tap with a scooter's dot in
+     * reach chooses the scooter as well (MAP-209).
+     */
+    @Test
+    fun aTapOnAClusterOfTheServersShowsItsRegionWhereAPlaceLocatedShows() {
+        val controller = controller()
+        show(controller)
+        val bounds = onMain { projection.bounds }
+        val part = partInView(chrome(), bounds)
+        // Zürich from high enough for the server to group its scooters.
+        val opening = onMain {
+            val zurich = zurichStart.region.center
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder(map.cameraPosition).target(LatLng(zurich.latitude, zurich.longitude)).zoom(9.0).build()))
+            map.cameraPosition
+        }
+        fun at(x: Double, y: Double) = onMain { projection.coordinate(ScreenPoint(part.minX + part.width * x, part.minY + part.height * y)) }
+        val groupAt = at(0.3, 0.3)
+        val cityAt = at(0.7, 0.3)
+        val cellAt = at(0.6, 0.7)
+        val group = ScooterCluster(
+            "group:city:ch:Zürich", groupAt.latitude, groupAt.longitude, count = 1_900, providers = mapOf("voi" to 1_900), city = "Zürich, Winterthur",
+            bounds = GeoBounds(south = groupAt.latitude - 0.1, west = groupAt.longitude - 0.15, north = groupAt.latitude + 0.05, east = groupAt.longitude + 0.2),
+        )
+        val city = ScooterCluster("city:ch:Zürich", cityAt.latitude, cityAt.longitude, count = 1_288, providers = mapOf("lime" to 700, "voi" to 588), city = "Zürich")
+        val cell = ScooterCluster("9:268:179", cellAt.latitude, cellAt.longitude, count = 12, providers = mapOf("voi" to 12))
+        // A scooter the server sends alone, 20 points before the cluster.
+        val alone = onMain { projection.point(cellAt) }.let { point ->
+            val place = onMain { projection.coordinate(ScreenPoint(point.x - 20, point.y)) }
+            Scooter(provider = "lime", latitude = place.latitude, longitude = place.longitude, battery = 80, vehicleID = "alone", distanceMeters = 0.0)
+        }
+        served = ScooterResponse(
+            vehicles = listOf(alone),
+            clusters = listOf(group, city, cell),
+            meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters"),
+        )
+        onMain { controller.updateViewport(MapZoom.region(of = projection.visibleMapRect), zoom = 9) }
+        assertTrue("the clusters drawn", waitFor(30_000) { onMain { mapView.markers?.scene?.clusters()?.size } == 3 })
+
+        // A city's span is a phone's, grown with the window's shorter side, as when a city is chosen.
+        val citySpan = max(1.0, min(bounds.width, bounds.height) / 440)
+        for ((cluster, centre, inReach) in listOf(Triple(group, group.bounds!!.center, false), Triple(city, cityAt, false), Triple(cell, cellAt, true))) {
+            onMain { map.moveCamera(CameraUpdateFactory.newCameraPosition(opening)) }
+            Thread.sleep(1_000)
+            val point = onMain { projection.point(cluster.coordinate) }
+            assertTrue("${cluster.id} at $point in $part", part.contains(point))
+            // On the cluster's view, and with the scooter in reach on the dot's square.
+            val tap = if (inReach) ScreenPoint(point.x - 10, point.y) else point
+            fingers(tap to tap, millis = 40, steps = 1)
+            assertTrue("${cluster.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 })
+            waitUntilAtRest(centre)
+            val expected = placed(part, bounds)
+            val shown = onMain { projection.point(centre) }
+            val landed = replayed(centre, expected, measuredOn = onMain { CameraPosition.Builder(map.cameraPosition).target(LatLng(centre.latitude, centre.longitude)).build() })
+            screenshot("cluster-${cluster.id.substringBefore(':')}")
+            Log.i(TAG, "${size()}: ${cluster.id} at $shown for $expected, measured once $landed, part $part")
+            assertEquals("${cluster.id} across: $shown for $expected", landed.x, shown.x, 3.0)
+            assertEquals("${cluster.id} up and down: $shown for $expected", landed.y, shown.y, 3.0)
+            assertEquals("${cluster.id} across, as iOS shows it: $shown for $expected", expected.x, shown.x, 3.0)
+            if (cluster === city) {
+                val frame = fittedIn(bounds)
+                val region = MapRegion(centre, latitudeDelta = 0.08 * citySpan, longitudeDelta = 0.12 * citySpan)
+                assertEquals("the zoom for a city's span", MapZoom.fitting(region, frame.width, frame.height), zoom(), log2(1.02))
+            }
+            if (inReach) assertEquals("the scooter in reach chosen", alone.id, onMain { controller.selectedScooterID.value })
+        }
     }
 
     /**
@@ -383,7 +462,7 @@ class MapInTheWindowTest {
     /** A controller allowed to locate that hears only the fixes the test gives it, with `scooters` about and the walks' `route`. */
     private fun controller(scooters: List<Scooter> = emptyList(), route: List<GeoPoint> = emptyList()) = ScooterMapController(
         api = object : ScooterAPIClient {
-            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = scooters)
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = served ?: ScooterResponse(vehicles = scooters)
         },
         locationManager = TestLocation(),
         defaults = InMemoryScooterDefaults(),
@@ -491,6 +570,41 @@ class MapInTheWindowTest {
     private fun frame(bounds: ScreenRect): ScreenRect {
         val margins = onMain { mapView.camera!!.margins }
         return ScreenRect(bounds.x + margins.left, bounds.y + margins.top, bounds.width - margins.left - margins.right, bounds.height - margins.top - margins.bottom)
+    }
+
+    /** Where a region is fitted: inside the map's margins, and inside its safe area too where a panel or a fold moved them. */
+    private fun fittedIn(bounds: ScreenRect): ScreenRect {
+        val margins = onMain { mapView.camera!!.margins }
+        return if (margins == MapInsets.zero) frame(bounds) else MapCamera.within(bounds, margins, safeArea())
+    }
+
+    /**
+     * Where a place located or a region opened shows (setRegionPreservingPerspective, MAP-041): beside a panel or a
+     * fold down the map, in the middle of the `part` of the map in view across and of the whole map up and down
+     * (aside); elsewhere in the middle of the map's margins.
+     */
+    private fun placed(part: ScreenRect, bounds: ScreenRect): ScreenPoint {
+        val frame = frame(bounds)
+        return if (abs(part.midX - bounds.midX) >= 1) ScreenPoint(part.midX, bounds.midY) else ScreenPoint(frame.midX, frame.midY)
+    }
+
+    /**
+     * Where a move that measures once shows `place`, meaning to show it at `expected`, as ScooterMapCameraPolicy.center
+     * and the iPhone's center(showing:) measure it: on the map at the camera `measuredOn`, the place's point moved by
+     * the offset of the middle of the margins from `expected` is taken back to a place, and the camera centred there.
+     * On a tilted map the ground nearer the eye is drawn larger, so the place lands a little down the screen from
+     * `expected`: past it moved down, short of it moved up. Replayed on the map itself, which is put back as it was.
+     */
+    private fun replayed(place: GeoPoint, expected: ScreenPoint, measuredOn: CameraPosition): ScreenPoint = onMain {
+        val was = map.cameraPosition
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(measuredOn))
+        val middle = projection.point(projection.centerCoordinate)
+        val shown = projection.point(place)
+        val centre = projection.coordinate(ScreenPoint(shown.x + middle.x - expected.x, shown.y + middle.y - expected.y))
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder(measuredOn).target(LatLng(centre.latitude, centre.longitude)).build()))
+        val landed = projection.point(place)
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(was))
+        landed
     }
 
     /**
