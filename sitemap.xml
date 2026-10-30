@@ -193,7 +193,7 @@
 <xhtml:link rel="alternate" hreflang="es" href="https://scootradar.com/es/guias" />
 <xhtml:link rel="alternate" hreflang="is" href="https://scootradar.com/is/leidarvisar" />
 <xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides" />
-<lastmod>2026-10-25T00:00:00.000Z</lastmod>
+<lastmod>2026-10-30T00:00:00.000Z</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.6</priority>
 </url>
@@ -2277,6 +2277,18 @@
 </url>
 <url>
 <loc>https://scootradar.com/guides/e-scooters-kansas-city</loc>
+<lastmod>2026-10-30T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/guides/e-scooters-ashdod</loc>
+<lastmod>2026-10-30T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/fr/guides/trottinette-electrique-namur</loc>
 <lastmod>2026-10-30T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
