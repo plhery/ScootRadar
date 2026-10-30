@@ -11,11 +11,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
 import com.plhery.scootradar.core.api.WalkingDirectionsClient
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterDeviceOrientation
+import com.plhery.scootradar.core.map.ScooterLocationError
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterLocationManager
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -51,8 +55,9 @@ import java.util.Locale
 /**
  * Films the dock's transitions (ui.md §4) over the live map with `screenrecord`, one film for each kind, in
  * /sdcard/Movies/app-c/. Only with the argument recordMotion=true; otherwise each test passes without doing anything.
- * No compose rule: its test clock would move the animations only while the test waits for it, and the films need
- * them in real time.
+ * With ground=plain the map is a plain ground, whose still pixels let a film be measured frame by frame. No compose
+ * rule: its test clock would move the animations only while the test waits for it, and the films need them in real
+ * time.
  */
 @RunWith(AndroidJUnit4::class)
 class DockMotionRecording {
@@ -66,6 +71,7 @@ class DockMotionRecording {
     }
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val plainGround = InstrumentationRegistry.getArguments().getString("ground") == "plain"
     private val locale = Locale.getDefault()
     private val language = ScooterLanguage.current
     private val tiles = GroundTiles.openFreeMap(OkHttpClient())
@@ -89,10 +95,18 @@ class DockMotionRecording {
         Locale.setDefault(locale)
     }
 
-    /** UI-195 and UI-203: the summary becomes a scooter's card, glow and all, and the card the summary again. */
+    /**
+     * UI-195 and UI-203: the summary becomes a scooter's card, glow and all, and the card the summary again. Once
+     * before the film, as each film's change is where it can be: a card drawn for the first time stalls a debug
+     * build's frames.
+     */
     @Test
     fun dockKind() {
         val controller = show()
+        main { controller.selectScooter("lime:a") }
+        Thread.sleep(1_500)
+        main { controller.selectScooter(null) }
+        Thread.sleep(1_500)
         record("ui195-dock-kind", seconds = 5) {
             main { controller.selectScooter("lime:a") }
             Thread.sleep(2_000)
@@ -116,13 +130,22 @@ class DockMotionRecording {
     @Test
     fun chipsReorder() {
         val controller = show()
+        api.scooters = reordered
+        main { controller.refresh() }
+        Thread.sleep(1_500)
+        api.scooters = scooters
+        main { controller.refresh() }
+        Thread.sleep(1_500)
         record("ui199-201-chips-reorder", seconds = 4) {
             api.scooters = reordered
             main { controller.refresh() }
         }
     }
 
-    /** UI-193: a first load that failed slides its banner in under the search bar; Try again takes it away. */
+    /**
+     * UI-193: a first load that failed slides its banner in under the search bar; Try again takes it away. Drawn for
+     * the first time in the film.
+     */
     @Test
     fun topNotice() {
         api.holds = true
@@ -137,23 +160,96 @@ class DockMotionRecording {
         }
     }
 
-    /** UI-198: Directions finds the way (the label and its spinner), shows it, and hides it again. */
+    /**
+     * UI-193: the card of a location that can't be had slides in under the search bar, and goes as it is dismissed;
+     * once before the film.
+     */
+    @Test
+    fun locationCard() {
+        val controller = show()
+        location.authorizationStatus = ScooterAuthorizationStatus.Denied
+        main { controller.locationFailed(ScooterLocationError.Denied) }
+        Thread.sleep(1_500)
+        main { controller.dismissLocationIssue() }
+        Thread.sleep(1_500)
+        // Another issue, which shows again.
+        location.authorizationStatus = ScooterAuthorizationStatus.Restricted
+        record("ui193-location-card", seconds = 5) {
+            main { controller.locationFailed(ScooterLocationError.Denied) }
+            Thread.sleep(2_000)
+            main { controller.dismissLocationIssue() }
+        }
+    }
+
+    /** UI-198: Directions finds the way (the label and its spinner), shows it, and hides it again; once before the film. */
     @Test
     fun walkPhase() {
-        directions.holds = true
         val controller = show()
         // The first fix takes the map to the rider and loads again: the card opens once that is done.
         main { controller.locationsUpdated(listOf(ScooterLocationFix(rider, horizontalAccuracy = 10.0, timestamp = Instant.now()))) }
-        Thread.sleep(5_000)
+        Thread.sleep(if (plainGround) 1_500 else 5_000)
         main { controller.selectScooter("lime:a") }
         Thread.sleep(1_500)
-        record("ui198-walk-phase", seconds = 6) {
-            main { controller.showWalkingRoute(ScooterWalkTarget.Scooter(scooters.first())) }
-            Thread.sleep(1_500)
-            directions.release()
-            Thread.sleep(2_000)
-            main { controller.hideWalkingRoute() }
+        // The second film takes the first's place.
+        repeat(2) {
+            directions.hold()
+            record("ui198-walk-phase", seconds = 6) {
+                main { controller.showWalkingRoute(ScooterWalkTarget.Scooter(scooters.first())) }
+                Thread.sleep(1_500)
+                directions.release()
+                Thread.sleep(2_000)
+                main { controller.hideWalkingRoute() }
+            }
         }
+    }
+
+    /** UI-069 and UI-198: no way is found, and the card's note says so as it fades in; once before the film. */
+    @Test
+    fun walkNote() {
+        directions.fails = true
+        val controller = show()
+        main { controller.locationsUpdated(listOf(ScooterLocationFix(rider, horizontalAccuracy = 10.0, timestamp = Instant.now()))) }
+        Thread.sleep(if (plainGround) 1_500 else 5_000)
+        repeat(2) {
+            main { controller.selectScooter("lime:a") }
+            Thread.sleep(1_500)
+            directions.hold()
+            record("ui069-walk-note", seconds = 5) {
+                main { controller.showWalkingRoute(ScooterWalkTarget.Scooter(scooters.first())) }
+                Thread.sleep(1_000)
+                directions.release()
+                Thread.sleep(2_000)
+                main { controller.selectScooter(null) }
+            }
+            Thread.sleep(1_000)
+        }
+    }
+
+    /**
+     * UI-211: a finger held on Directions (a dock button: it dims at once), on the search bar and on Near me (glass:
+     * they swell on a spring and light up), each let go off the button, so that nothing is done.
+     */
+    @Test
+    fun pressed() {
+        val controller = show()
+        main { controller.selectScooter("lime:a") }
+        Thread.sleep(1_500)
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val targets = listOf("Directions", "Settings", "Near me").map { name ->
+            val found = device.wait(Until.findObject(By.desc(name)), 5_000) ?: device.findObject(By.text(name))
+            checkNotNull(found) { "no $name" }.visibleBounds
+        }
+        fun press() = targets.forEach { bounds ->
+            val (x, y) = bounds.centerX() to bounds.centerY()
+            shell("input motionevent DOWN $x $y")
+            Thread.sleep(1_200)
+            // Off the button before it is let go: no tap.
+            shell("input motionevent MOVE $x ${y - 400}")
+            shell("input motionevent UP $x ${y - 400}")
+            Thread.sleep(1_000)
+        }
+        press()
+        record("ui211-pressed", seconds = 9) { press() }
     }
 
     /** UI-204: the first fix turns Near me into the round locate button, over a still map that the fix can't move. */
@@ -193,17 +289,17 @@ class DockMotionRecording {
                 ScooterMapScreen(
                     controller,
                     map = { dark ->
-                        if (liveMap) ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark)
+                        if (liveMap && !plainGround) ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark)
                         else Box(Modifier.fillMaxSize().background(Color(0xFF1B2230)))
                     },
                 )
             }
         }
-        if (!liveMap) main { controller.updateViewport(zurichStart.region, zurichStart.zoom) }
+        if (!liveMap || plainGround) main { controller.updateViewport(zurichStart.region, zurichStart.zoom) }
         val start = System.currentTimeMillis()
         while (loaded && controller.lastUpdated.value == null && System.currentTimeMillis() - start < 30_000) Thread.sleep(200)
         // Time for OpenFreeMap's tiles.
-        Thread.sleep(5_000)
+        Thread.sleep(if (plainGround) 1_500 else 5_000)
         return controller
     }
 
@@ -249,24 +345,34 @@ class DockMotionRecording {
         }
     }
 
-    /** Walking directions that follow the street round a corner, held back while [holds] says so. */
+    /**
+     * Walking directions that follow the street round a corner, or find none while [fails] says so, held back from
+     * [hold] to [release].
+     */
     private class HeldDirections : WalkingDirectionsClient {
-        @Volatile var holds = false
-        private val gate = CompletableDeferred<Unit>()
+        @Volatile var fails = false
+
+        @Volatile private var gate: CompletableDeferred<Unit>? = null
 
         override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> {
-            if (holds) gate.await()
+            gate?.await()
+            if (fails) throw IllegalStateException("No route")
             return listOf(from, GeoPoint(from.latitude, to.longitude), to)
         }
 
+        fun hold() {
+            gate = CompletableDeferred()
+        }
+
         fun release() {
-            gate.complete(Unit)
+            gate?.complete(Unit)
+            gate = null
         }
     }
 
-    /** The rider's location, allowed; positions come from the test. */
+    /** The rider's location, allowed unless the test says otherwise; positions come from the test. */
     private class AuthorizedLocation : ScooterLocationManager {
-        override val authorizationStatus = ScooterAuthorizationStatus.AuthorizedWhenInUse
+        override var authorizationStatus = ScooterAuthorizationStatus.AuthorizedWhenInUse
         override val location: ScooterLocationFix? = null
         override val isHeadingAvailable = false
         override var headingOrientation = ScooterDeviceOrientation.Portrait
