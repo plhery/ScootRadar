@@ -54,6 +54,8 @@ const VANTAA_TIKKURILA = { south: 60.288, west: 25.03, north: 60.298, east: 25.0
 const VASTERAS_CENTRE = { south: 59.607, west: 16.535, north: 59.614, east: 16.555 };
 // Washington's Wharf and the Tidal Basin's south shore.
 const WASHINGTON_WHARF = { south: 38.875, west: -77.03, north: 38.882, east: -77.015 };
+// Wien's Innere Stadt, from the Hofburg to Stephansplatz.
+const WIEN_INNERE_STADT = { south: 48.203, west: 16.36, north: 48.212, east: 16.38 };
 // Nagoya's Sakae, round the Hisaya-ōdōri park, at zoom 14 on a phone.
 const SAKAE = { south: 35.16, west: 136.895, north: 35.178, east: 136.922 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
@@ -83,7 +85,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
+    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -160,6 +162,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: VASTERAS_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vasteras']);
     expect(zoneCitiesInView({ bounds: NORRKOPING_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['norrkoping']);
     expect(zoneCitiesInView({ bounds: WASHINGTON_WHARF, zoom: 15 }).map(city => city.id)).toEqual(['washington']);
+    expect(zoneCitiesInView({ bounds: WIEN_INNERE_STADT, zoom: 15 }).map(city => city.id)).toEqual(['wien']);
     expect(zoneCitiesInView({ bounds: SAKAE, zoom: 14 }).map(city => city.id)).toEqual(['nagoya']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
@@ -528,6 +531,24 @@ describe('the cities\' zones', () => {
     // An area of two parts is two zones.
     expect(file.zones.filter(zone => zone.id.startsWith('vasteras-no-parking-588-')).map(zone => zone.id))
       .toEqual(['vasteras-no-parking-588-1', 'vasteras-no-parking-588-2']);
+  });
+
+  it('draws Wien\'s lasting zones of every hour, credited to the city under CC BY 4.0', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'wien')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Stadt Wien – data.wien.gv.at, CC BY 4.0' && zone.timeZone === 'Europe/Vienna')).toBe(true);
+    // Of its 408 parking areas, the 6 given up on 30 October 2026 are left out.
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(402);
+    // The 100 m round each parking area, where a scooter is parked only in it.
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(392);
+    // Of its 900 no-riding zones, the Naschmarkt's flea market, on Saturdays only, is left out.
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(899);
+    // Walking pace in 271 residential streets and pedestrian zones, less 3 that ended in 2024, and 20 km/h in 24 shared spaces.
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(295);
+    expect(zones.find(zone => zone.rule === 'noRide' && zone.place === 'Türkenschanzpark')).toBeDefined();
+    const shown = ruleZonesInView({ bounds: WIEN_INNERE_STADT, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'noRide', 'slow']));
   });
 
   it('draws Nagoya\'s pavements where a scooter may ride as lines, credited to the Aichi police and JARTIC', async () => {

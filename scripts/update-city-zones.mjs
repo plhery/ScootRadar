@@ -1,6 +1,7 @@
 import { execFileSync, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createWriteStream, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { get as httpsGet } from 'node:https';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
@@ -22,8 +23,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // are an ArcGIS feature service too, its zones named in another field. Nagoya's are no
 // zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
-// A layer of format geojson is GeoJSON: Helsinki's and München's are WFS layers, asked for so, and
-// Basel's an open data portal's export.
+// A layer of format geojson is GeoJSON: Helsinki's, München's, Münster's and Wien's are WFS layers,
+// asked for so, and Basel's an open data portal's export.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
 
@@ -42,9 +43,32 @@ const catalog = JSON.parse(readFileSync(path, 'utf8'));
 const only = process.argv.slice(2);
 
 async function getJson(url) {
-  const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
-  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
-  return response.json();
+  try {
+    const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+    if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    // Wien's WFS sends its longer answers in more empty HTTP/2 frames than fetch takes: those are
+    // asked for again over HTTP/1.1.
+    if (error.cause?.code !== 'ERR_HTTP2_TOO_MANY_INVALID_FRAMES') throw error;
+    return getJsonOverHttp1(url);
+  }
+}
+
+function getJsonOverHttp1(url) {
+  return new Promise((done, fail) => {
+    httpsGet(url, { headers: { 'User-Agent': USER_AGENT } }, response => {
+      if (response.statusCode !== 200) {
+        response.resume();
+        fail(new Error(`${url} answered ${response.statusCode}`));
+        return;
+      }
+      const chunks = [];
+      response.on('data', chunk => chunks.push(chunk)).on('error', fail).on('end', () => {
+        try { done(JSON.parse(Buffer.concat(chunks).toString('utf8'))); } catch (error) { fail(error); }
+      });
+    }).on('error', fail);
+  });
 }
 
 const slug = kind => kind.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);

@@ -612,7 +612,7 @@ view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
 catalogs. `scripts/update-city-zones.mjs` reads them again. Alexandria,
 Basel, Helsinki, München, Münster, St. Albert, Santa Monica, Taupō, Vancouver,
-Vantaa and Washington state a licence for their layers, Washington for two of its
+Vantaa, Washington and Wien state a licence for their layers, Washington for two of its
 three; since 28 October 2026 a city's public zone layers are drawn regardless,
 credited to the city.
 
@@ -1022,6 +1022,26 @@ credited to the city.
   scooter is parked locked, on the sidewalk, between it and the kerb or at a
   rack or corral, leaving 3 feet clear, and not ridden on the sidewalk in the
   Central Business District.
+- **Wien** (read 30 October 2026): the Stadt Wien's 402 parking areas for
+  rented e-scooters, the 392 areas within 100 m of them, where a scooter is
+  parked only in the parking area, as no-parking zones, 899 no-riding zones (parks, Wiener Wohnen's
+  estates, pedestrian zones, markets) and 295 slow ones (walking pace in
+  residential streets and pedestrian zones, 20 km/h in shared spaces), the
+  Mobilitätsagentur Wien's
+  [E-Scooter-Beschränkungszonen Wien](https://www.data.gv.at/katalog/dataset/a454ea84-6b4f-4961-a511-bf47ef6c1bd0)
+  (`ogdwien:ESCOOTPARKVERBOGD`), CC BY 4.0, credited "Stadt Wien –
+  data.wien.gv.at" as its terms ask, read from its WFS as GeoJSON one type
+  (`TYP`) at a time. The WFS sends its longer answers in more empty HTTP/2
+  frames than Node's fetch takes, so the script asks for those again over
+  HTTP/1.1. The no-parking and no-riding zones, drawn to the centimetre, are
+  simplified to within 2 m, which takes them to 16,547 points. The legend
+  links the City's
+  [rules](https://www.wien.gv.at/verkehr/scooter-roller-regeln): since 19 May
+  2023 a rented e-scooter is parked first in a marked parking area, and not
+  within 100 m of one elsewhere. Left out: what holds until a day (6 parking
+  areas given up on 30 October 2026 and 3 slow zones ended in 2024) or on
+  some days only (the Naschmarkt's flea market, on Saturdays), and 5 empty
+  parts of no-riding zones.
 
 ## Germany and Italy
 
