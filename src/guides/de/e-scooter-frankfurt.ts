@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Frankfurt seit Juli 2026?',
       blocks: [
-        'Seit dem 1. Juli 2026 verleihen in Frankfurt nur noch drei Anbieter E-Scooter: **Bolt** (dunkelgrün), **Lime** (grün-weiss) und **Voi** (rot). Die Stadt hat die Genehmigungen in einem Auswahlverfahren vergeben, befristet bis zum 30. Juni 2028. Wer den Zuschlag bekam, nennt sie selbst nicht und verweist auf laufende verwaltungsrechtliche Verfahren; alle drei Anbieter bestätigten der hessenschau, dass sie eine Genehmigung haben.',
-        'Jeder Anbieter darf im Tagesdurchschnitt höchstens 3500 Scooter aufstellen, zusammen also 10 500 statt bisher 12 000, davon je höchstens 800 im zentralen Innenstadtbereich. Dott, Ryde und RideMovi gingen leer aus und haben den Verleih eingestellt. Tier heisst seit 2024 Dott und ist damit ebenfalls weg, Bird schon länger.',
-        'ScootRadar zeigt auf der [Karte von Frankfurt](map:de:Frankfurt) Lime, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Bolt: an jenem Samstag kurz vor 16 Uhr rund 3300 Lime- und 3150 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        'Seit dem 1. Juli 2026 verleihen in Frankfurt nur noch drei Anbieter E-Scooter: **Bolt** (dunkelgrün), **Lime** (grün-weiss) und **Voi** (rot). Die Stadt hat die Genehmigungen in einem Auswahlverfahren vergeben, befristet bis zum 30. Juni 2028. Wer den Zuschlag bekam, sagte die Stadt im Juli 2026 nicht, mit Verweis auf laufende verwaltungsrechtliche Verfahren; alle drei Anbieter bestätigten der hessenschau, dass sie eine Genehmigung haben.',
+        'Jeder Anbieter darf im Tagesdurchschnitt höchstens 3500 Scooter aufstellen, zusammen also 10 500 statt bisher 12 000, davon je höchstens 800 im zentralen Innenstadtbereich. Dott, Ryde und RideMovi gingen leer aus und haben den Verleih eingestellt. Tier heisst heute Dott und ist damit ebenfalls weg.',
+        'ScootRadar zeigt auf der [Karte von Frankfurt](map:de:Frankfurt) Lime, Voi und Bolt: am Freitag, 30. Oktober 2026, um 9:27 Uhr rund 3300 Lime-, 3100 Voi- und 3000 Bolt-Scooter, die zu diesem Zeitpunkt frei waren. Bei Lime zeigt die Karte auch die Reichweite, bei Voi und Bolt den Akkustand.',
         'Gemietet wird in der App des Anbieters, laut den Bedingungen aller drei erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
@@ -28,7 +28,7 @@ const guide: Guide = {
         'Den Frankfurter Tarif zeigen Voi und Lime in ihrer App; Bolt nennt nur einen Ab-Preis für ganz Deutschland.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Frankfurt (veröffentlichte Tarife, Stand 13. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Frankfurt (veröffentlichte Tarife, Stand 30. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
@@ -38,7 +38,7 @@ const guide: Guide = {
           },
         },
         'Lime rechnet laut seinen deutschen Bedingungen jede angefangene Minute voll ab. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Wer oft fährt, kann mit Paketen und Abos sparen: Voi bietet Minutenpakete und den Voi Pass, nennt die Preise auf seiner Website aber nicht; Bolt hat ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat (Preis für Deutschland).',
+        'Wer oft fährt, kann mit Paketen und Abos sparen: Voi bietet Minutenpakete und den Voi Pass, Bolt hat ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat (Preis für Deutschland).',
       ],
     },
     {
@@ -47,10 +47,10 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege sind tabu, ebenso Fussgängerzonen, ausser ein Schild erlaubt es. Was das in Frankfurt heisst:',
         {
           list: [
-            '**Zeil und Fressgass:** Beide sind Fussgängerzonen. Zwischen Hauptwache und Konstablerwache und in der Grossen Bockenheimer Strasse steigst du ab und schiebst. Die Stadtpolizei kontrolliert dort: Im Juni 2026 hielt sie 66 Fahrzeuge an, 25 davon waren unerlaubt in der Fussgängerzone unterwegs.',
+            '**Zeil und Fressgass:** Beide sind Fussgängerzonen. Zwischen Hauptwache und Konstablerwache und in der Grossen Bockenheimer Strasse steigst du ab und schiebst. Die Stadtpolizei kontrolliert dort: Im Juni 2026 prüfte sie an einem Dienstag 66 Fahrzeuge; 25 Fahrer waren unerlaubt in der Fussgängerzone unterwegs.',
             '**Römerberg und Altstadt:** Die Altstadt rund um den Römerberg ist meist Fussgängerbereich. Achte auf die Sperrzonen in der App und schieb im Zweifel.',
             '**Mainbrücken:** Darüber fährst du auf Radweg oder Fahrbahn, starten oder beenden kannst du dort aber keine Fahrt. Über den Eisernen Steg, eine Fussgängerbrücke, schiebst du besser.',
-            '**Parks, Wallanlagen und Mainufer:** Die Grünanlagensatzung der Stadt gilt für 45 Parks, die Wallanlagen und beide Mainufer. Kraftfahrzeuge sind dort verboten, ohne Genehmigung fahren dürfen nur Fahrzeuge ohne Zulassungs- und Versicherungspflicht. Ein E-Scooter ist versicherungspflichtig, nach unserer Lesart also tabu; ausdrücklich gesagt hat die Stadt das nicht. Sicher ist: Beenden kannst du dort keine Fahrt. Am Museumsufer nimmst du besser den Schaumainkai als die Uferpromenade.',
+            '**Parks, Wallanlagen und Mainufer:** Die Grünanlagensatzung der Stadt gilt für 45 Parks, die Wallanlagen und beide Mainufer. Sie verbietet dort, mit Kraftfahrzeugen zu fahren, sie abzustellen oder zu schieben, und ein E-Scooter ist nach der eKFV ein Kraftfahrzeug. Eine Fahrt beenden kannst du dort ohnehin nicht. Am Museumsufer nimmst du besser den Schaumainkai als die Uferpromenade.',
           ],
         },
         'Unser Rat: Quere Strassenbahnschienen möglichst im rechten Winkel, damit das Vorderrad nicht in die Rille rutscht.',
@@ -94,22 +94,22 @@ const guide: Guide = {
     {
       heading: 'Falsch geparkter E-Scooter in Frankfurt: Kosten und Melden',
       blocks: [
-        'Behinderst du mit dem abgestellten Scooter andere, können Stadt oder Polizei nach dem allgemeinen Bussgeldkatalog 20 € verlangen. Ab 1. März 2027 kostet unzulässiges Parken auf Geh- oder Radweg ab 55 €. Dazu kommt, was die Anbieter laut ihren deutschen Nutzungsbedingungen berechnen:',
+        'Behinderst du mit dem abgestellten Scooter andere, können Stadt oder Polizei nach dem Bussgeldkatalog des Bundes 20 € verlangen, gefährdest du sie, 30 €. Ab 1. März 2027 kostet unzulässiges Parken auf Geh- oder Radweg ab 55 €. Dazu kommt, was die Anbieter laut ihren deutschen Nutzungsbedingungen berechnen:',
         {
           list: [
             '**Voi:** 25 € bei einem Verstoss gegen die Parkregeln; Bussgelder der Behörden gibt Voi an dich weiter.',
-            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026).',
+            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026).',
             '**Lime:** erst eine Verwarnung, dann eine Strafgebühr, bei Wiederholung die Sperre; Bussgelder und Abschleppkosten gibt Lime weiter.',
           ],
         },
-        'Wie teuer schon ein paar Meter sind: Ein Hilfspolizist räumte einen Scooter von einem Blindenleitstreifen, die Stadt stellte dem Anbieter dafür 74 € in Rechnung, und das Verwaltungsgericht Frankfurt gab ihr im Juli 2024 recht.',
+        'Wie teuer schon ein paar Meter sind: Die Stadt liess einen Scooter, der in der Goethestrasse auf einem Blindenleitsystem stand, umsetzen, stellte dem Anbieter dafür 74 € in Rechnung, und das Verwaltungsgericht Frankfurt gab ihr im Juli 2024 recht.',
         'Steht dir ein Scooter im Weg, meldest du ihn in der App oder an der Hotline des Anbieters, auf scooter-melder.de oder in der Falschparker-App von Nivel, die die Stadt nutzt. Laut traffiQ ist eine Beschwerde im Schnitt nach zweieinhalb Stunden erledigt.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Frankfurt: Alkohol, Nachtregel und Bussgelder',
       blocks: [
-        'Die Genehmigung verlangt von den Anbietern an den Tagen Donnerstag bis Sonntag, jeweils von 18 bis 6 Uhr am nächsten Morgen, technische oder softwareseitige Massnahmen gegen Fahrten unter Alkohol- und Drogeneinfluss. Wie jede App das umsetzt, veröffentlichen die Anbieter nicht; die Stadt nannte einen Reaktionstest vor dem Ausleihen als ein mögliches Mittel.',
+        'Die Genehmigung verlangt von den Anbietern an den Tagen Donnerstag bis Sonntag, jeweils von 18 bis 6 Uhr am nächsten Morgen, technische oder softwareseitige Massnahmen gegen Fahrten unter Alkohol- und Drogeneinfluss. Die Stadt nannte einen Reaktionstest vor dem Ausleihen als ein mögliches Mittel.',
         '2025 zählte das Polizeipräsidium Frankfurt in seinem Gebiet, Autobahnen eingeschlossen, 487 Unfälle mit E-Scootern, fast ein Drittel aller in Hessen; Alkohol nannte es als eine der Hauptursachen.',
         'Sonst gelten die deutschen Regeln: keine Helmpflicht (ein Helm ist trotzdem ratsam), nur eine Person pro Scooter. Die wichtigsten Bussgelder:',
         {
@@ -135,15 +135,14 @@ const guide: Guide = {
             '**Member Plus:** 8 € im Monat, pro Fahrt 30 Minuten gratis, danach 0,10 € pro Minute.',
           ],
         },
-        'Nextbike gibt es in Frankfurt nicht; Lime verleiht neben Scootern auch E-Bikes.',
       ],
     },
     {
       heading: 'Messe, Hauptbahnhof und Flughafen: Tipps für Besucher',
       blocks: [
         '**Messe Frankfurt:** Die Hausordnung verbietet das Fahren mit E-Scootern während Veranstaltungen in den Hallen und in den Veranstaltungsbereichen im Freigelände; auf dem übrigen Gelände gilt die Strassenverkehrsordnung. Bei Veranstaltungen kann die Stadt die Anbieter anweisen, Ansammlungen von Scootern binnen drei Stunden wegzuräumen. Zur Buchmesse im Oktober und zu anderen grossen Messen kommst du am bequemsten mit U4 oder S-Bahn.',
-        '**Hauptbahnhof:** Er liegt in der Parkverbotszone des Bahnhofsviertels, dort parkst du nur auf markierten Flächen. Wo gerade Lime- und Voi-Scooter stehen, zeigt die [Live-Karte von Frankfurt](map:de:Frankfurt).',
-        '**Flughafen:** Am Nachmittag des 24. Oktober 2026 stand im Umkreis von einem Kilometer um Terminal 1, Terminal 2, Gateway Gardens und The Squaire kein einziger Lime- oder Voi-Scooter; für Bolt hatten wir keine Daten. Rechne am Flughafen also nicht mit einem Leih-Scooter und nimm vom Regionalbahnhof unter Terminal 1 die S8 oder S9: In rund zwölf Minuten bist du am Hauptbahnhof.',
+        '**Hauptbahnhof:** Er liegt in der Parkverbotszone des Bahnhofsviertels, dort parkst du nur auf markierten Flächen. Wo gerade Scooter von Lime, Voi und Bolt stehen, zeigt die [Live-Karte von Frankfurt](map:de:Frankfurt).',
+        '**Flughafen:** Am 30. Oktober 2026 um 10:05 Uhr stand im Umkreis von einem Kilometer um Terminal 1, Terminal 2, Gateway Gardens und The Squaire ein einziger freier Scooter, ein Lime bei Terminal 1; Voi und Bolt hatten dort keinen. Rechne am Flughafen also nicht mit einem Leih-Scooter und nimm vom Regionalbahnhof unter Terminal 1 die S8 oder S9: In rund zwölf Minuten bist du am Hauptbahnhof.',
       ],
     },
     {
@@ -167,7 +166,7 @@ const guide: Guide = {
     },
     {
       question: 'Wie viele E-Scooter gibt es in Frankfurt?',
-      answer: 'Erlaubt sind höchstens 10 500 Leih-Scooter, 3500 pro Anbieter, davon je höchstens 800 in der Innenstadt. Am 24. Oktober 2026 standen rund 3300 Lime- und 3150 Voi-Scooter auf unserer Karte; Bolt folgte am 25. Oktober.',
+      answer: 'Erlaubt sind höchstens 10 500 Leih-Scooter, 3500 pro Anbieter, davon je höchstens 800 in der Innenstadt. Am 30. Oktober 2026 um 9:27 Uhr zeigte unsere Karte rund 3300 Lime-, 3100 Voi- und 3000 Bolt-Scooter, die zu diesem Zeitpunkt frei waren.',
     },
     {
       question: 'Darf ich mit dem E-Scooter über die Zeil fahren?',
@@ -179,7 +178,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es Leih-E-Scooter am Frankfurter Flughafen?',
-      answer: 'Rechne nicht damit: Am Nachmittag des 24. Oktober 2026 stand im Umkreis von einem Kilometer um die Terminals kein Lime- oder Voi-Scooter, und für Bolt hatten wir keine Daten. Nimm die S8 oder S9 in die Stadt und steig dort um.',
+      answer: 'Rechne nicht damit: Am 30. Oktober 2026 um 10:05 Uhr stand im Umkreis von einem Kilometer um die Terminals ein einziger freier Scooter, ein Lime. Nimm die S8 oder S9 in die Stadt und steig dort um.',
     },
   ],
   sources: [
@@ -188,11 +187,20 @@ const guide: Guide = {
     { title: 'traffiQ: Neue Abstellflächen und Parkverbotszonen (Juni 2026, PDF)', url: 'https://www.traffiq.de/fileadmin/user_upload/pdfs/Presse/2026/traffiQ_2026-113_E-Scooter-Stellplaetze.pdf' },
     { title: 'hessenschau: Nur noch drei E-Scooter-Verleiher in Frankfurt (Juli 2026)', url: 'https://www.hessenschau.de/wirtschaft/nur-noch-drei-e-scooter-verleiher-in-frankfurt-v2,scooter-frankfurt-verleiher-100.html' },
     { title: 'Stadt Frankfurt: Grünanlagensatzung (PDF)', url: 'https://media.frag-den-staat.de/files/foi/487672/Gruenanlagensatzung.pdf' },
-    { title: 'VGF: Mitnahmeverbot für E-Tretroller in U-Bahn und Strassenbahn', url: 'https://www.vgf-ffm.de/de/fahrgastinfo/mitnahme-verbot-e-tretroller' },
+    { title: 'VGF: Mitnahmeverbot für E-Tretroller in U-Bahn und Strassenbahn', url: 'https://www.vgf-ffm.de/de/fahrtinfo/mitnahme-verbot-e-tretroller' },
     { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
     { title: 'Messe Frankfurt: Hausordnung, Stand Juni 2025 (PDF)', url: 'https://eurobike.com/content/dam/messefrankfurt-fairnamic/2026/documents/de/eurobike-2026-hausordnung.pdf' },
     { title: 'Voi: E-Scooter in Frankfurt', url: 'https://www.voi.com/de/city/frankfurt' },
     { title: 'DB Call a Bike: Preise', url: 'https://www.callabike.de/de/preise' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Bussgeldkatalog-Verordnung (BKatV), Anlage', url: 'https://www.gesetze-im-internet.de/bkatv_2013/anlage.html' },
+    { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
+    { title: 'Journal Frankfurt: Kontrolle auf Zeil und Fressgass (11. Juni 2026)', url: 'https://www.journal-frankfurt.de/journal_news/stadtleben-2/Kontrolle-in-Frankfurt-Polizei-stoppt-schnelle-E-Scooter-45781.html' },
+    { title: 'Journal Frankfurt: Verkehrsunfallstatistik 2025 der Polizei Frankfurt (11. Juni 2026)', url: 'https://www.journal-frankfurt.de/journal_news/wohnenverkehr-153/Verkehrsunfallstatistik-Frankfurt-E-Scooter-immer-haeufiger-in-Unfaelle-verwickelt-45783.html' },
+    { title: 'VG Frankfurt, 3. Juli 2024, 12 K 138/24.F (anwaltonline)', url: 'https://www.anwaltonline.com/verkehrsrecht/urteile/36770/kostenbescheid-wegen-umsetzen-von-elektro-scooter-ist-rechtmaessig' },
+    { title: 'hessenschau: Erster E-Scooter-Anbieter ist in Frankfurt gestartet (22. Juni 2019)', url: 'https://www.hessenschau.de/wirtschaft/erster-e-scooter-anbieter-ist-in-frankfurt-gestartet,e-scooter-verleih-100.html' },
+    { title: 'hessenschau: Studie: Frankfurt top bei E-Scootern und Leihrädern (4. Juni 2026)', url: 'https://www.hessenschau.de/wirtschaft/studie-frankfurt-top-bei-e-scootern-und-leihraedern--umland-bleibt-schwachstelle-v1,roller-frankfurt-102.html' },
+    { title: 'Journal Frankfurt: E-Scooter-Boom wegen Streiks (Februar 2024)', url: 'https://www.journal-frankfurt.de/journal_news/Urbanes-Frankfurt-58/E-Scooter-in-Frankfurt-E-Scooter-Boom-in-Frankfurt-wegen-Streiks-41951.html' },
   ],
 };
 
