@@ -29,3 +29,5 @@
 "Walking routes" = "Percorsi a piedi";
 /* Settings › Map & data credits: OpenStreetMap's page for reporting a mistake in the map, joined to its name, "OpenStreetMap" (map.md MAP-034). */
 "Fix the map" = "Correggi la mappa";
+/* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address, %@, is copied. */
+"No mail app found. The address %@ was copied to the clipboard." = "Nessuna app di posta trovata. L’indirizzo %@ è stato copiato negli appunti.";

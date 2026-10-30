@@ -1,7 +1,11 @@
 package com.plhery.scootradar.ui.settings
 
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
@@ -241,11 +245,21 @@ private fun rememberLinks(): Links {
                 try {
                     context.startActivity(Intent(Intent.ACTION_SENDTO, uri.toString().toUri()))
                 } catch (_: ActivityNotFoundException) {
-                    // No mail app.
+                    context.copyAddress(uri)
                 }
             },
         )
     }
+}
+
+/**
+ * A mail to [mail]'s address with no mail app on the phone, which some Android phones have none of, where the
+ * iPhone always has Mail or offers it again (X-AD39): the address is copied, and the rider told so.
+ */
+private fun Context.copyAddress(mail: URI) {
+    val address = mail.schemeSpecificPart.substringBefore('?')
+    getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText(address, address))
+    Toast.makeText(this, stringFormat(localized("No mail app found. The address %@ was copied to the clipboard."), address), Toast.LENGTH_LONG).show()
 }
 
 @Composable

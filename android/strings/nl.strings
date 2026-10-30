@@ -30,3 +30,5 @@
 "Walking routes" = "Looproutes";
 /* Settings › Map & data credits: OpenStreetMap's page for reporting a mistake in the map, joined to its name, "OpenStreetMap" (map.md MAP-034). */
 "Fix the map" = "De kaart corrigeren";
+/* Settings › Send feedback on a phone with no mail app (X.md X-AD39): the toast saying the address, %@, is copied. */
+"No mail app found. The address %@ was copied to the clipboard." = "Geen mail-app gevonden. Het adres %@ is naar het klembord gekopieerd.";
