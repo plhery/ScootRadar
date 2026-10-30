@@ -1,11 +1,11 @@
 package com.plhery.scootradar.ui.dock
 
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.withInfiniteAnimationFrameNanos
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,8 +25,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -469,18 +472,20 @@ internal enum class SpinnerSize(val size: Dp) {
 
 /**
  * iOS's activity indicator (UI-207): eight rounded spokes, the brightest going round once a second, the others
- * fading behind it. It turns under Reduce Motion too, as the iPhone's does.
+ * fading behind it. It turns under Reduce Motion too, as the iPhone's does: it reads the frames' time, as an animation
+ * would not under Android's Remove animations, the app's Reduce Motion, which stopped it on the Tablet.
  */
 @Composable
 internal fun Spinner(size: SpinnerSize = SpinnerSize.Small, color: Color = scootColors.secondaryLabel) {
-    val turn by rememberInfiniteTransition(label = "spinner").animateFloat(
-        initialValue = 0f,
-        targetValue = SPOKES.toFloat(),
-        animationSpec = infiniteRepeatable(tween(1000, easing = LinearEasing), RepeatMode.Restart),
-        label = "turn",
-    )
+    // The spoke ahead, read as the spinner is drawn: each step draws it again, and composes nothing.
+    var head by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) {
+        val start = withInfiniteAnimationFrameNanos { it }
+        while (true) {
+            withInfiniteAnimationFrameNanos { now -> head = ((now - start) / (TURN_NANOS / SPOKES) % SPOKES).toInt() }
+        }
+    }
     Canvas(Modifier.size(size.size).clearAndSetSemantics {}) {
-        val head = turn.toInt() % SPOKES
         val outer = this.size.minDimension / 2
         val width = outer * 0.2f
         val inner = outer * 0.48f
@@ -501,3 +506,6 @@ internal fun Spinner(size: SpinnerSize = SpinnerSize.Small, color: Color = scoot
 }
 
 private const val SPOKES = 8
+
+/** Once round a second. */
+private const val TURN_NANOS = 1_000_000_000L
