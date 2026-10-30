@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-ramat-gan',
   topic: 'ramat-gan',
   name: 'E-scooters in Ramat Gan, Israel',
-  title: 'E-scooters Ramat Gan 2026: Lime, Bird, rules and parking',
-  description: 'E-scooters in Ramat Gan: Lime and Bird, prices in the app, the licence or riding test, helmet and sidewalk fines, parking, the Red Line and Shabbat.',
-  headline: 'E-scooters in Ramat Gan: Lime and Bird, the licence rule, parking, the Red Line and Shabbat',
-  lede: 'You can rent e-scooters in Ramat Gan with Lime or Bird, both on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
+  title: 'E-scooters Ramat Gan 2026: Lime, Bird, Dott, rules, parking',
+  description: 'E-scooters in Ramat Gan: Lime, Bird and Dott, prices, the licence or riding test, helmet and sidewalk fines, parking, the Red Line and Shabbat.',
+  headline: 'E-scooters in Ramat Gan: Lime, Bird and Dott, the licence rule, parking, the Red Line and Shabbat',
+  lede: 'You can rent e-scooters in Ramat Gan with Lime, Bird or Dott, all three on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'il:Ramat Gan',
@@ -16,17 +16,17 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Ramat Gan?',
       blocks: [
-        'Two apps put stand-up e-scooters on our map of Ramat Gan: **Lime** and **Bird**.',
-        'At 10:56 Israel time on Thursday 29 October 2026 the [Ramat Gan map](map:il:Ramat Gan) showed 1,047 scooters inside the city’s boundary: 825 Lime and 222 Bird. That’s what stood there at that moment, not the size of the fleets. Each town next door has its own count: at the same moment the map showed 205 in Givatayim, 136 in Bnei Brak and about 3,000 in Tel Aviv-Yafo.',
-        'Dott’s scooters left our map on 28 October 2026. On 25 October the news site Kipa had listed Ramat Gan among the seven towns where Dott ran shared scooters, and we found no news of it leaving, so if you use Dott, check its app.',
+        'Three apps put stand-up e-scooters on our map of Ramat Gan: **Lime**, **Bird** and **Dott**.',
+        'At 05:27 Israel time on Friday 30 October 2026 the [Ramat Gan map](map:il:Ramat Gan) showed 1,485 scooters inside the city’s boundary: 866 Lime, 433 Dott and 186 Bird. That’s what stood there at that moment, not the size of the fleets. Each town next door has its own count: at the same moment the map showed 524 in Givatayim, 81 in Bnei Brak and about 4,000 in Tel Aviv-Yafo.',
         'Lime also rents e-bikes in Ramat Gan, since August 2025, RGG News reported. ScootRadar shows e-scooters only, not e-bikes or bike share. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
           table: {
-            caption: 'Who rents e-scooters in Ramat Gan, 29 October 2026',
-            head: ['Company', 'On our map at 10:56', 'Price', 'Ride and parking zones'],
+            caption: 'Who rents e-scooters in Ramat Gan, 30 October 2026',
+            head: ['Company', 'On our map at 05:27', 'Price', 'Ride and parking zones'],
             rows: [
-              ['Lime', 'Yes: 825', 'In the app', 'In the app'],
-              ['Bird', 'Yes: 222', 'In the app', 'In the app, and on the map'],
+              ['Lime', 'Yes: 866', 'In the app', 'In the app'],
+              ['Dott', 'Yes: 433', '₪5 to unlock, ₪1.25 a minute, on the map', 'In the app, and on the map'],
+              ['Bird', 'Yes: 186', 'In the app', 'In the app, and on the map'],
             ],
           },
         },
@@ -35,7 +35,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Ramat Gan?',
       blocks: [
-        'We found no Ramat Gan price published by Lime, Bird or the city, so compare the two in their apps: each shows the unlock fee and the rate before you start.',
+        'Our map shows Dott’s price in Ramat Gan: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. We found no Ramat Gan price published by Lime, Bird or the city, so compare them in their apps: each shows the unlock fee and the rate before you start.',
         'Fines cost far more than rides. Since 1 August 2024 every e-scooter in Israel has had to be registered and carry an ID plate, a duty that falls on its owner, Ice reported, so on a shared scooter it’s the company’s. On a scooter of your own, riding without a plate has cost ₪750 since 1 September 2026, Maariv reported.',
       ],
     },
@@ -77,17 +77,17 @@ const guide: Guide = {
       blocks: [
         'Ride on a bike path; where a street has none, ride on the road, never on the sidewalk, dpa reported in 2019, and Ice repeated in 2024 that riding on the sidewalk is banned.',
         '**Parking.** In June 2021 Globes reported that in some areas of Ramat Gan, as in Tel Aviv, shared scooters could be left only in clearly defined spots under the city’s by-laws, and that Lime’s app would warn riders who parked elsewhere and fine them if the scooter stayed there. We found nothing newer from the city on which areas these are, so end your ride where the app accepts it.',
-        '**Zones on the map.** Zoom in on the map and it draws Bird’s zones: about 50 small spots across Ramat Gan where you can’t end a ride, and three where its scooters won’t run (the Safari and two small spots in the centre). Walk the scooter through those. Lime’s zones aren’t on the map, and for both companies the app has the final word.',
+        '**Zones on the map.** Zoom in and the map draws Bird’s and Dott’s zones. Bird has about 50 small spots across Ramat Gan where you can’t end a ride, and three where its scooters won’t run (the Safari and two small spots in the centre). Dott has 47 zones where you can’t end a ride and 11 where its scooters won’t run, among them one over the park and the Safari and one over Bar-Ilan University, and the map marks its parking bays: where a bay shows as required, end a Dott ride only in one. Walk through any no-ride zone. Lime’s zones aren’t on the map, and the app has the final word.',
         '**Hours.** We found no night or Shabbat ban on renting in Ramat Gan.',
       ],
     },
     {
       heading: 'Ramat Gan National Park, the Safari, the Diamond Exchange and Bar-Ilan',
       blocks: [
-        '**Ramat Gan National Park (Park Leumi).** The city’s park covers 1.9 km² around a lake. With zones turned on, the map shows a Bird no-parking zone over it: you can ride through on a Bird, but you can’t end your ride inside. We found no rule of the park’s own on scooters; check Lime’s app for its zones.',
-        '**The Safari.** The zoo next to the park, the Zoological Center Tel Aviv–Ramat Gan, bans riding e-bikes and e-scooters anywhere on its grounds, its visitor rules say, and the map shows a Bird no-ride zone over it. End your ride outside.',
-        '**The Diamond Exchange District.** The towers of the Israel Diamond Exchange stand in the north-west of the city, across the Ayalon Highway from Tel Aviv. Bridges from Savidor Center station lead east into the district, and the Red Line’s Abba Hillel station serves it. The map shows a Bird no-parking spot by the exchange; we found no rule of the exchange’s own on scooters.',
-        '**Bar-Ilan University.** We found no published university rule on e-scooters on its Ramat Gan campus, and the map shows no Bird zone inside it, so ask campus security at the gate before you ride or park inside.',
+        '**Ramat Gan National Park (Park Leumi).** The city’s park covers 1.9 km² around a lake. With zones turned on, the map shows a Bird no-parking zone over it, so you can ride through on a Bird but can’t end your ride inside, and a Dott no-ride zone: walk a Dott through. We found no rule of the park’s own on scooters; check Lime’s app for its zones.',
+        '**The Safari.** The zoo next to the park, the Zoological Center Tel Aviv–Ramat Gan, bans riding e-bikes and e-scooters anywhere on its grounds, its visitor rules say, and the map shows Bird and Dott no-ride zones over it. End your ride outside.',
+        '**The Diamond Exchange District.** The towers of the Israel Diamond Exchange stand in the north-west of the city, across the Ayalon Highway from Tel Aviv. Bridges from Savidor Center station lead east into the district, and the Red Line’s Abba Hillel station serves it. The map shows a Bird no-parking spot by the exchange and a Dott no-parking zone over the district; we found no rule of the exchange’s own on scooters.',
+        '**Bar-Ilan University.** We found no published university rule on e-scooters on its Ramat Gan campus. The map shows a Dott no-ride zone over the campus, so a Dott won’t run inside, and no Bird zone; ask campus security at the gate before you ride or park inside.',
       ],
     },
     {
@@ -101,7 +101,7 @@ const guide: Guide = {
     {
       heading: 'Riding into Tel Aviv, Givatayim and Bnei Brak',
       blocks: [
-        'Ramat Gan runs into its neighbours without a break, and Lime and Bird ride on into them. The national rules stay the same, but parking and zones change at the city line.',
+        'Ramat Gan runs into its neighbours without a break, and Lime, Bird and Dott ride on into them. The national rules stay the same, but parking and zones change at the city line.',
         '**Tel Aviv-Yafo** began requiring marked bays for shared scooters in its centre in August 2019, between Ibn Gabirol Street and the sea, Maariv reported. See the [Tel Aviv guide](guide:tel-aviv) and the [Tel Aviv map](map:il:Tel Aviv).',
         '**Givatayim**, to the south-west, has about 40 small spots where Bird’s scooters won’t run (zoom in on the map to see them), so watch the app as you cross.',
         '**Bnei Brak** lies to the east. When Ramat Gan’s council approved its Saturday buses in 2019, they were to keep to main roads such as Jabotinsky Road, which crosses Bnei Brak, and stay out of religious neighbourhoods, Globes reported: on Shabbat, it’s considerate to do the same on a scooter.',
@@ -125,11 +125,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Ramat Gan?',
-      answer: 'Lime and Bird are on our [Ramat Gan map](map:il:Ramat Gan): 1,047 scooters inside the city at 10:56 on 29 October 2026.',
+      answer: 'Lime, Bird and Dott are on our [Ramat Gan map](map:il:Ramat Gan): 1,485 scooters inside the city at 05:27 on 30 October 2026.',
     },
     {
-      question: 'How much does a Lime or Bird scooter cost in Ramat Gan?',
-      answer: 'We found no published Ramat Gan price, so each app shows the unlock fee and the rate before you start. Compare the two there.',
+      question: 'How much does a Lime, Bird or Dott scooter cost in Ramat Gan?',
+      answer: 'Dott’s is on our map: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. We found none for Lime or Bird, so check their apps.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Ramat Gan as a tourist?',
@@ -145,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a scooter in Ramat Gan National Park?',
-      answer: 'On a Bird you can ride through but not end your ride there: the map shows a Bird no-parking zone over the park. The Safari next door bans e-scooters on its grounds. We found no rule of the park’s own, so check Lime’s app too.',
+      answer: 'On a Bird you can ride through but not end your ride there, and a Dott won’t run there: the map shows a Bird no-parking zone and a Dott no-ride zone over the park. The Safari next door bans e-scooters on its grounds. We found no rule of the park’s own, so check Lime’s app too.',
     },
   ],
   sources: [
@@ -157,7 +157,6 @@ const guide: Guide = {
     { title: 'Ice: Tel Aviv-Yafo reminds riders of the rules and fines (24 September 2023), Hebrew', url: 'https://www.ice.co.il/consumerism/news/article/981670' },
     { title: 'Jüdische Allgemeine (dpa): Tel Aviv hands out thousands of tickets to e-scooter riders (12 July 2019), German', url: 'https://www.juedische-allgemeine.de/israel/tel-aviv-verteilt-tausende-strafzettel-an-e-roller-fahrer/' },
     { title: 'Calcalist: a new bump in the road for Tel Aviv’s e-scooter users, DUI charges (22 July 2019)', url: 'https://www.calcalistech.com/articles/0,7340,L-3766823,00.html' },
-    { title: 'Kipa: Dott offers free rides on election day in the towns where it runs scooters (25 October 2026), Hebrew', url: 'https://www.kipa.co.il/%D7%97%D7%93%D7%A9%D7%95%D7%AA/1234569-0/' },
     { title: 'RGG News: Lime adds shared e-bikes in Ramat Gan (27 August 2025), Hebrew', url: 'https://www.rgg-news.co.il/home-page-ramat-gan/%D7%94%D7%9E%D7%94%D7%A4%D7%9B%D7%94-%D7%94%D7%99%D7%A8%D7%95%D7%A7%D7%94-%D7%9E%D7%AA%D7%A8%D7%97%D7%91%D7%AA-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%9E%D7%A9%D7%99%D7%A7%D7%94-%D7%A9%D7%99%D7%A8%D7%95/' },
     { title: 'Globes: Lime launches AI feature for Tel Aviv e-scooter parking (17 June 2021)', url: 'https://en.globes.co.il/en/article-lime-launches-ai-feature-for-tel-aviv-escooter-parking-1001374991' },
     { title: 'Safari Ramat Gan: visitor information and rules, Hebrew', url: 'https://www.safari.co.il/GenericGrid/item/3469' },

@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Quali monopattini in sharing ci sono a Milano',
       blocks: [
         'A ottobre 2026 gli operatori autorizzati dal Comune sono due, **Dott** e **Lime**, «con un totale di 4.000 mezzi disponibili in città»: lo riportavano il 16 luglio 2026 MilanoPost e Il Giornale, riprendendo la nota del Comune sulla revoca di Bird.',
-        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Milano](map:it:Milano), Sesto San Giovanni compreso, c’erano circa 1.500 monopattini Dott, che la mappa mostra da quel giorno. Da domenica 25 ottobre mostra anche i Lime, letti dalla mappa della sua app: quel giorno verso le 15 erano circa 2.700, sulla stessa area. Sono fotografie di quei momenti, non le flotte. Dott e Lime noleggiano anche bici elettriche, che sulla mappa non compaiono.',
+        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Milano](map:it:Milano), Sesto San Giovanni compreso, c’erano circa 1.500 monopattini Dott, una fotografia di quel momento. Da domenica 25 ottobre la mappa mostra anche i Lime: quel giorno verso le 15 erano circa 2.700 all’ultimo conteggio, sulla stessa area. Non sono le flotte. Dott e Lime noleggiano anche bici elettriche, che sulla mappa non compaiono.',
         'Il quadro è un avviso pubblico del Comune del 2023: al massimo 6.000 monopattini, in offerte da 2.000 per operatore, per tre anni (MilanoToday, dicembre 2023), con autorizzazioni dal 16 dicembre 2023 a dicembre 2026 (Il Giorno, marzo 2024). Per dopo non abbiamo trovato annunci: da dicembre controlla l’app prima di uscire.',
         {
           table: {
@@ -116,7 +116,7 @@ const guide: Guide = {
               ['Passeggeri', 'Nessuno: una persona sola, senza oggetti né animali', '50-250 euro'],
               ['Di sera', 'Luci accese e giubbotto o bretelle retroriflettenti da mezz’ora dopo il tramonto', '50-250 euro'],
               ['Alcol', 'Limite 0,5 g/l; oltre 0,8 g/l è reato', '543-2.170 euro tra 0,5 e 0,8 g/l'],
-              ['Sosta', 'Mai sul marciapiede', '41-168 euro'],
+              ['Sosta', 'Mai sul marciapiede, salvo nelle aree riservate ai monopattini', '41-168 euro'],
             ],
           },
         },

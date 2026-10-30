@@ -6,7 +6,7 @@ const guide: Guide = {
   topic: 'petah-tikva',
   name: 'E-scooters in Petah Tikva, Israel',
   title: 'E-scooters Petah Tikva 2026: Lime, Dott, rules and parking',
-  description: 'E-scooters in Petah Tikva: Lime and Dott, the City’s permit terms, prices in the app, the licence or test, helmet fines, parking bays and the Red Line.',
+  description: 'E-scooters in Petah Tikva: Lime and Dott, the City’s permit terms, prices, the licence or test, helmet fines, parking bays and the Red Line.',
   headline: 'E-scooters in Petah Tikva: Lime and Dott, the City’s tenders, parking bays, the Red Line and Shabbat',
   lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott, both on our map. Each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
   published: '2026-10-30',
@@ -25,7 +25,7 @@ const guide: Guide = {
             head: ['Company', 'On our map at 04:27', 'Price', 'City permit'],
             rows: [
               ['Lime', 'Yes: 671', 'In the app', 'Won the 2023 tender'],
-              ['Dott', 'Yes: 395', 'In the app', 'Won the 2023 tender'],
+              ['Dott', 'Yes: 395', '₪5 to unlock, ₪1.25 a minute, on the map', 'Won the 2023 tender'],
               ['Bird', 'No', '–', 'Won in 2021, not in 2023'],
             ],
           },
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Petah Tikva?',
       blocks: [
-        'We found no current Petah Tikva price published by Lime, Dott or the City, so compare them in their apps: each shows the unlock fee and the rate before you start.',
+        'Our map shows Dott’s price in Petah Tikva: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. We found no current Petah Tikva price published by Lime or the City, so check Lime’s app: it shows the unlock fee and the rate before you start.',
         'Fines cost far more than rides. Since 1 August 2024 every e-scooter in Israel has had to be registered and carry an ID plate, a duty that falls on its owner, Ice reported, so on a shared scooter it’s the company’s. On a scooter of your own, riding without a plate has cost ₪750 since 1 September 2026, Maariv reported.',
       ],
     },
@@ -134,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in Petah Tikva?',
-      answer: 'We found no published Petah Tikva price, so the app shows the unlock fee and the rate before you start. Compare Lime and Dott there.',
+      answer: 'We found no published Petah Tikva price for Lime, so its app shows the unlock fee and the rate before you start. Dott’s is on our map: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Petah Tikva as a tourist?',
