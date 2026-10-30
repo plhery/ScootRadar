@@ -935,6 +935,24 @@ credited to the city.
   both (両側, 3), each drawn once along the line given; and whether it is
   complete, which JARTIC does not warrant. The signs on the street take
   precedence, as the legend's hover text says. Only the website draws them.
+- **Namur** (read 30 October 2026): the Ville de Namur's zones for its shared
+  scooters and e-bikes, Bolt's alone since December 2023: 63 parking places
+  signed on the street (PRLP physiques, points, each drawn as a disc of 5 m)
+  and 82 virtual ones the operator's app shows (PRLP virtuels), the city
+  centre and nine other areas where one may be parked only in such a place
+  ("No Parking sauf en PRLP", drawn as "Park only in racks or marked places",
+  on the website alone), 42 no-parking zones and 3 no-go zones, where riding
+  stops and a ride can't end, from the Ville's open data
+  ([Namur - Mobilité - Le libre-partage à Namur](https://data.namur.be/explore/dataset/mozonesbolt/),
+  `mozonesbolt`, CC BY 4.0, last changed 16 May 2024) as GeoJSON. Its
+  operations area is not drawn, nor zones set for a festival or an event,
+  which the data doesn't hold. The legend links the Ville's
+  [scooter page](https://www.namur.be/fr/ma-ville/mobilite/mobilite/deplacement/trottinette)
+  and its leaflet of October 2026 gives the same rule: in the centre a scooter
+  is parked only in a reserved place or a virtual one shown in the app. The
+  features have no ids, so each zone's is a hash of its shape; a signed
+  place is named by its number and street ("3. Rue d'Arquet - P Malin"), the
+  others after the city.
 - **New York** (read 30 October 2026): NYC DOT's 538 parking corrals for
   shared e-scooters in the East Bronx (307) and Eastern Queens (231), on the
   sidewalk or the roadbed, its open data

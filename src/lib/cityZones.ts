@@ -59,6 +59,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   munchen: () => import('../../data/city-zones/munchen.json'),
   munster: () => import('../../data/city-zones/munster.json'),
   nagoya: () => import('../../data/city-zones/nagoya.json'),
+  namur: () => import('../../data/city-zones/namur.json'),
   newyork: () => import('../../data/city-zones/newyork.json'),
   norrkoping: () => import('../../data/city-zones/norrkoping.json'),
   omaha: () => import('../../data/city-zones/omaha.json'),

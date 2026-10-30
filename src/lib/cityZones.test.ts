@@ -62,6 +62,8 @@ const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east
 const HELSINGBORG_CENTRE = { south: 56.042, west: 12.69, north: 56.049, east: 12.705 };
 // Ramlösa, south of Helsingborg's centre, where scooters may park on the pavement.
 const HELSINGBORG_RAMLOSA = { south: 56.02, west: 12.72, north: 56.026, east: 12.735 };
+// Namur's Place d'Armes, the rue de Fer and the station.
+const NAMUR_CENTRE = { south: 50.462, west: 4.86, north: 50.469, east: 4.87 };
 // Norrköping's Drottninggatan, from the station to the Gamla torget.
 const NORRKOPING_CENTRE = { south: 58.585, west: 16.175, north: 58.597, east: 16.2 };
 // Vaasa's market square and the city centre round it.
@@ -111,7 +113,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -684,5 +686,25 @@ describe('the cities\' zones', () => {
     expect(winding(ring, 56.0225, 12.727)).toBe(0);
     expect(ruleZonesInView({ bounds: HELSINGBORG_CENTRE, zoom: 15 }, Date.now(), zones).map(zone => zone.rule)).toEqual(['racksOnly']);
     expect(ruleZonesInView({ bounds: HELSINGBORG_RAMLOSA, zoom: 15 }, Date.now(), zones)).toEqual([]);
+  });
+
+  it("draws Namur's reserved places and its centre, where a scooter is parked only in one, from the Ville's open data", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const namur = ZONE_CITIES.find(city => city.id === 'namur')!;
+    expect(namur.authority).toBe('Ville de Namur, CC BY 4.0');
+    expect(namur.source.url).toBe('https://www.namur.be/fr/ma-ville/mobilite/mobilite/deplacement/trottinette');
+    // 63 signed places and 82 in the operator's app, the centre and nine other areas reserved-places-only,
+    // 42 no-parking zones and 3 no-go zones; the operations area is not drawn.
+    const { default: file } = await CITY_ZONE_FILES.namur();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'noParking', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 145, racksOnly: 10, noParking: 42, noRide: 3 });
+    expect(file.zones.find(zone => zone.name === "3. Rue d'Arquet - P Malin")?.kind).toBe('parking');
+    // The centre's zone holds the Place d'Armes and the station.
+    const centre = file.zones.filter(zone => zone.kind === 'racksOnly' && Math.abs(winding(zone.ring!, 50.4626, 4.8677)) === 1);
+    expect(centre).toHaveLength(1);
+    expect(Math.abs(winding(centre[0].ring!, 50.4686, 4.8622))).toBe(1);
+    await loadCityZones(namur);
+    const shown = ruleZonesInView({ bounds: NAMUR_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
   });
 });
