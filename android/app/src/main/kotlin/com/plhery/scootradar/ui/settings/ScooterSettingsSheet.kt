@@ -173,14 +173,17 @@ fun ScooterSettingsSheet(
             pages.animateTo(shownStack)
         }
     }
+    val reduceMotion = LocalReduceMotion.current
     // Back takes a page away before it closes the sheet. Drawn out, the page follows it, as iOS's page follows a
-    // swipe from the edge; let go, it goes, and called off, it stays.
+    // swipe from the edge; let go, it goes, and called off, it stays. Under Remove animations nothing moves until it
+    // is let go, as a tap's pop swaps the pages at once.
     PredictiveBackHandler(enabled = stack.size > 1) { progress ->
         val from = stack.toList()
         val below = from.dropLast(1)
         var started = false
         try {
             progress.collect { event ->
+                if (reduceMotion) return@collect
                 if (!started) {
                     started = true
                     followsGesture = true
@@ -211,7 +214,6 @@ fun ScooterSettingsSheet(
     val providers = passProviders ?: remember(controller, changes) { controller.passProviders }
 
     val links = rememberLinks()
-    val reduceMotion = LocalReduceMotion.current
     val colors = scootColors
     Column(Modifier.fillMaxSize()) {
         // The title cross-fades as a page comes or goes, along with a back gesture.

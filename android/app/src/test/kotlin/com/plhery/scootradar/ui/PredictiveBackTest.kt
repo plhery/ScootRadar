@@ -163,18 +163,19 @@ class PredictiveBackTest {
         assertTrue(compose.onAllNodes(form).fetchSemanticsNodes().isEmpty())
     }
 
-    /**
-     * Privacy over Settings, 390 wide: half drawn out, Privacy is half way to the screen's end and Settings a sixth of
-     * the width from its place, as a third of the way slid back; both titles are there, cross-fading. Called off,
-     * Privacy is back in its place; let go, it goes on from half way.
-     */
-    @Test
-    fun aSettingsPageFollowsTheGestureGoesWhenItIsLetGoAndStaysWhenItIsCalledOff() {
+    private val page = SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)
+    private val privacy = page and hasAnyDescendant(hasText("Share anonymous usage"))
+    private val settings = page and hasAnyDescendant(hasText("Map & data credits"))
+
+    private fun title(text: String) = SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading) and hasText(text)
+
+    /** Settings' sheet, 390 wide, with Privacy over Settings. */
+    private fun privacyOverSettings(reduceMotion: Boolean) {
         val clock = TestClock()
         val model = controllers.make(EmptyScooterAPI, clock)
         compose.setContent {
             CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScootTheme(dark = false, reduceMotion = false) {
+                ScootTheme(dark = false, reduceMotion = reduceMotion) {
                     ScooterSettingsSheet(
                         controller = model,
                         bottomInset = 0.dp,
@@ -188,10 +189,16 @@ class PredictiveBackTest {
             }
         }
         compose.waitForIdle()
-        val page = SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)
-        val privacy = page and hasAnyDescendant(hasText("Share anonymous usage"))
-        val settings = page and hasAnyDescendant(hasText("Map & data credits"))
-        fun title(text: String) = SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading) and hasText(text)
+    }
+
+    /**
+     * Privacy over Settings, 390 wide: half drawn out, Privacy is half way to the screen's end and Settings a sixth of
+     * the width from its place, as a third of the way slid back; both titles are there, cross-fading. Called off,
+     * Privacy is back in its place; let go, it goes on from half way.
+     */
+    @Test
+    fun aSettingsPageFollowsTheGestureGoesWhenItIsLetGoAndStaysWhenItIsCalledOff() {
+        privacyOverSettings(reduceMotion = false)
         assertEquals(0f, start(privacy), 0.5f)
         assertTrue(compose.onAllNodes(settings).fetchSemanticsNodes().isEmpty())
 
@@ -214,5 +221,28 @@ class PredictiveBackTest {
         compose.onNode(title("Settings")).assertExists()
         assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
         assertTrue(compose.onAllNodes(title("Privacy")).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * Remove animations: as a tap's push and pop swap the pages at once, nothing moves while the gesture is drawn
+     * out. Privacy stays alone in its place, and its title alone, until the gesture is let go; then Settings is there.
+     */
+    @Test
+    fun underRemoveAnimationsTheSettingsPageStaysUntilTheGestureIsLetGo() {
+        privacyOverSettings(reduceMotion = true)
+
+        drawOut(0.5f)
+        assertEquals(0f, start(privacy), 0.5f)
+        assertTrue("Settings is under Privacy", compose.onAllNodes(settings).fetchSemanticsNodes().isEmpty())
+        assertTrue("Privacy's title alone", compose.onAllNodes(title("Settings")).fetchSemanticsNodes().isEmpty())
+        callOff()
+        assertEquals(0f, start(privacy), 0.5f)
+
+        drawOut(0.5f)
+        letGo(frames = 1)
+        settle()
+        assertEquals(0f, start(settings), 0.5f)
+        compose.onNode(title("Settings")).assertExists()
+        assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
     }
 }
