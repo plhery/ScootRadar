@@ -51,7 +51,7 @@ class AppContainer(private val context: Context) {
 
     /**
      * Where the cities' zones the app downloads are kept: cacheDir/CityZones/v1, among the app's caches, which no
-     * backup takes and Android may clear when space runs short (LOG-422).
+     * backup takes and Android may clear when space runs short (LOG-423).
      */
     val cityZoneCache: CityZoneCache by lazy { CityZoneCache.standard(context.cacheDir) }
 
