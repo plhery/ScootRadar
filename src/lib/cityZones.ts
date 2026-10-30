@@ -40,6 +40,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   bergen: () => import('../../data/city-zones/bergen.json'),
   boise: () => import('../../data/city-zones/boise.json'),
   boulder: () => import('../../data/city-zones/boulder.json'),
+  jarvenpaa: () => import('../../data/city-zones/jarvenpaa.json'),
   minneapolis: () => import('../../data/city-zones/minneapolis.json'),
   nagoya: () => import('../../data/city-zones/nagoya.json'),
   norrkoping: () => import('../../data/city-zones/norrkoping.json'),

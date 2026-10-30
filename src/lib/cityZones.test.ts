@@ -11,6 +11,8 @@ const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
 const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -116.196 };
 // Downtown Boulder, from the Pearl Street Mall down Boulder Creek.
 const BOULDER_DOWNTOWN = { south: 40.01, west: -105.285, north: 40.022, east: -105.265 };
+// Järvenpää's centre, round its station and the Seutulantie pedestrian street.
+const JARVENPAA_CENTRE = { south: 60.469, west: 25.08, north: 60.477, east: 25.1 };
 // Minneapolis's Stone Arch Bridge and Gold Medal Park, by the Mississippi.
 const MINNEAPOLIS_RIVERFRONT = { south: 44.975, west: -93.27, north: 44.985, east: -93.25 };
 // Ottawa's Parliament Hill, the Rideau Canal and the ByWard Market.
@@ -72,7 +74,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
+    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'bergen', 'boise', 'boulder', 'jarvenpaa', 'minneapolis', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -136,6 +138,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: ALEXANDRIA_OLD_TOWN, zoom: 15 }).map(city => city.id)).toEqual(['alexandria']);
     expect(zoneCitiesInView({ bounds: ST_ALBERT_DOWNTOWN, zoom: 15 }).map(city => city.id)).toEqual(['stalbert']);
     expect(zoneCitiesInView({ bounds: VAASA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['vaasa']);
+    expect(zoneCitiesInView({ bounds: JARVENPAA_CENTRE, zoom: 15 }).map(city => city.id)).toEqual(['jarvenpaa']);
     expect(zoneCitiesInView({ bounds: VANTAA_TIKKURILA, zoom: 15 }).map(city => city.id)).toEqual(['vantaa']);
     // Washington's bounds, a box round the District, reach over the Potomac to the cemetery and Clarendon, and Arlington County's round the cemetery.
     expect(zoneCitiesInView({ bounds: ARLINGTON_CEMETERY, zoom: 16 }).map(city => city.id)).toEqual(['arlington', 'arlingtoncemetery', 'washington']);
@@ -296,6 +299,20 @@ describe('the cities\' zones', () => {
     expect(zones).toHaveLength(13);
     const shown = ruleZonesInView({ bounds: ST_ALBERT_DOWNTOWN, zoom: 15 }, Date.now(), zones);
     expect(shown.map(zone => zone.place)).toContain("Farmer's Market");
+  });
+
+  it('draws Järvenpää\'s lasting no-riding, no-parking and 10 km/h areas, but not its temporary ones', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'jarvenpaa')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'Järvenpään kaupunki' && zone.timeZone === 'Europe/Helsinki')).toBe(true);
+    // Its two temporary no-parking areas are left out, and a no-riding sliver of a tenth of a square metre; its parking places are lines and not drawn.
+    expect(zones.filter(zone => zone.rule === 'noParking')).toHaveLength(48);
+    expect(zones.filter(zone => zone.rule === 'slow')).toHaveLength(10);
+    expect(zones.filter(zone => zone.rule === 'noRide')).toHaveLength(81);
+    expect(zones.some(zone => zone.rule === 'parking')).toBe(false);
+    const shown = ruleZonesInView({ bounds: JARVENPAA_CENTRE, zoom: 15 }, Date.now(), zones);
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['noParking', 'slow', 'noRide']));
   });
 
   it('draws Vaasa\'s parking places and its zones, but not the area where a ride may end only at one of them', async () => {

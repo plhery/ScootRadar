@@ -249,6 +249,48 @@
       "zones": 101
     },
     {
+      "id": "jarvenpaa",
+      "place": "Järvenpää",
+      "country": "FI",
+      "authority": "Järvenpään kaupunki",
+      "timeZone": "Europe/Helsinki",
+      "source": {
+        "title": "Järvenpään kaupunki, \"Sähköpotkulautojen rajoitusalueet ja pysäköintipaikat\": the no-riding, no-parking and 10 km/h areas of its micromobility permit, from the 2026 season, which the operators must enforce in their apps",
+        "url": "https://experience.arcgis.com/experience/91cba3f79cec46c8a75b36f070ebbe11"
+      },
+      "map": {
+        "title": "Järvenpään kaupunki, \"Sähköpotkulautojen rajoitusalueet ja pysäköintipaikat\" (web map, ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=3693ba3011204c9a94e6a7df7e3f0bfc"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "url": "https://services.arcgis.com/WjEgLP6nioNr3hKm/arcgis/rest/services/Sähköpotkulautojen_rajoitusalueet/FeatureServer",
+          "layer": 26,
+          "where": "Rajoitus = 'Pysäköintikielto' AND Tila = 'Pysyvä'"
+        },
+        {
+          "kind": "slow",
+          "url": "https://services.arcgis.com/WjEgLP6nioNr3hKm/arcgis/rest/services/Sähköpotkulautojen_rajoitusalueet/FeatureServer",
+          "layer": 26,
+          "where": "Rajoitus = 'Nopeusrajoitus' AND Tila = 'Pysyvä'"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services.arcgis.com/WjEgLP6nioNr3hKm/arcgis/rest/services/Sähköpotkulautojen_rajoitusalueet/FeatureServer",
+          "layer": 26,
+          "where": "Rajoitus = 'Ajokielto' AND Tila = 'Pysyvä'"
+        }
+      ],
+      "bounds": {
+        "south": 60.446458,
+        "west": 25.050057,
+        "north": 60.506739,
+        "east": 25.157566
+      },
+      "zones": 139
+    },
+    {
       "id": "minneapolis",
       "place": "Minneapolis",
       "country": "US",

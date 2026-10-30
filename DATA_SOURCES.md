@@ -709,6 +709,22 @@ licence for their layers, Washington for two of its three; since 28 October
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **Järvenpää** (read 30 October 2026): Järvenpään kaupunki's 81 no-riding
+  areas (`Ajokielto`), 48 no-parking areas (`Pysäköintikielto`) and 10 areas
+  of 10 km/h (`Nopeusrajoitus`), the lasting ones (`Tila = 'Pysyvä'`) of
+  layer 26 of the City's public `Sähköpotkulautojen_rajoitusalueet` feature
+  service (last edited 28 August 2026); no licence stated. The legend links
+  the City's
+  [map of the areas](https://experience.arcgis.com/experience/91cba3f79cec46c8a75b36f070ebbe11):
+  its micromobility permit terms put them on the City's map service from the
+  start of the 2026 season and have the operators enforce them in their apps,
+  as the City's
+  [answer to the statements on the draft terms](https://jarvenpaa.cloudnc.fi/download/noname/%7Bb2145052-c3b0-4393-8793-156c83927dd8%7D/74751)
+  says. Left out: two temporary no-parking areas; 18 speed areas marked not
+  yet in use and 4 marked only `rajoitus`; a no-riding sliver of a tenth of a
+  square metre; the core centre's 15 km/h, which holds only on weekend and
+  holiday nights (23:00–05:00); and the 37 parking places, which the City
+  draws as lines.
 - **Minneapolis** (read 30 October 2026): the City of Minneapolis's 206
   zones where a ride may not end (bridges, construction), 8 speed-capped zones
   (8 or 10 mph: the Stone Arch Bridge, the Loring Greenway, the University of
