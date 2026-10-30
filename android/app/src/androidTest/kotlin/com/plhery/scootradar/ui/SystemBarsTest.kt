@@ -21,6 +21,7 @@ import com.plhery.scootradar.MainActivity
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.map.ScooterMapView
 import com.plhery.scootradar.ui.dock.DOCK_TAG
@@ -32,6 +33,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.math.max
 
 // X.md X-AD03, X-AD04, X-AD34: the app's window and its bars as the device has them, in whichever navigation mode,
 // cutout and appearance the device is in (the emulator passes run it in each, `cmd overlay` changing them).
@@ -77,12 +79,10 @@ class SystemBarsTest {
         }
         assertEquals("the map in the window", window, map)
 
-        val insets = onActivity { activity ->
-            val all = ViewCompat.getRootWindowInsets(activity.window.decorView)!!
-            all.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()) to
-                all.getInsets(WindowInsetsCompat.Type.navigationBars())
+        val bars = onActivity { activity ->
+            ViewCompat.getRootWindowInsets(activity.window.decorView)!!
+                .getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
         }
-        val (bars, navigation) = insets
         val safe = Rect(window.left + bars.left, window.top + bars.top, window.right - bars.right, window.bottom - bars.bottom)
         val controls = mapOf(
             "the search bar" to compose.onAllNodesWithTag(SEARCH_ISLAND_TAG),
@@ -95,7 +95,13 @@ class SystemBarsTest {
         for ((name, nodes) in controls) {
             val frame = nodes.single(name)
             assertTrue("$name $frame in the safe area $safe of $window", safe.encloses(frame))
-            assertTrue("$name $frame above the navigation bar's ${navigation.bottom}", frame.bottom <= window.bottom - navigation.bottom + 1)
+        }
+        // Over the map, the dock stands on the safe area's foot, above the navigation bar's buttons or handle, or 8 above
+        // the window's where nothing is there: the iPhone's max(safe bottom, 8) (ScooterMapScreen.swift:313).
+        if (onActivity { it.shortcuts.situation?.layout } == ScooterChromeLayout.Dock) {
+            val dock = compose.onAllNodesWithTag(DOCK_TAG).single("the dock")
+            val foot = window.bottom - max(bars.bottom.toFloat(), 8 * onActivity { it.resources.displayMetrics.density })
+            assertEquals("the dock's foot over the safe bottom ${bars.bottom}", foot, dock.bottom, 1f)
         }
     }
 

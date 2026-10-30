@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -471,15 +472,21 @@ private fun DockChrome(
         }
     }
 
+    // The controls keep clear of a cutout or a navigation bar down a side, as the iPhone's GeometryReader keeps to the
+    // safe area's sides (X-AD34).
+    val direction = LocalLayoutDirection.current
+    val safeLeft = safe.calculateLeftPadding(direction)
+    val safeRight = safe.calculateRightPadding(direction)
+
     key(language) {
-        BoxWithConstraints(Modifier.fillMaxSize()) {
+        BoxWithConstraints(Modifier.fillMaxSize().absolutePadding(left = safeLeft, right = safeRight)) {
             val dock = with(density) { dockHeight.intValue.toDp() }
             val locate = with(density) { locateButtonHeight.intValue.toDp() }
             val searchBar = with(density) { searchBarHeight.intValue.toDp() }
             val notices = firstLoadFailure != null || locationIssue != null
             // The search bar across the top, at most 560 wide; beside the caption's buttons if it fits there. Under a
-            // fold it is well under the caption.
-            val slot = ScreenRect(12.0, 0.0, (maxWidth - 24.dp).value.toDouble(), 0.0)
+            // fold it is well under the caption. In the window's points, as the caption's buttons are.
+            val slot = ScreenRect((safeLeft + 12.dp).value.toDouble(), 0.0, (maxWidth - 24.dp).value.toDouble(), 0.0)
             val barWidth = minOf(slot.width, 560.0)
             val bar = ScreenRect(slot.midX - barWidth / 2, (captionTop + 8.dp).value.toDouble(), barWidth, searchBar.value.toDouble())
             val beside = if (chromeTop > 0.dp) null else besideCaption(bar, captionButtons)
