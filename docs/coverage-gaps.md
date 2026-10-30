@@ -1215,6 +1215,13 @@ Bonaire had feeds to add. Survey files are in
 - **Late November 2026:** Dott Sharjah, at University City: 93 to 96
   scooters and about 7 rides in 11 hours on 15 October 2026. Add it if it is
   ridden more as the weather cools.
+- **29 November 2026:** Beam Penang (`beam_my_penang`, Beam city 354). It
+  listed 1 to 3 scooters from 24 October 2026, when it was added, and none
+  since about 17:00 UTC on 25 October. The feed is still polled, and its
+  "feed empty" alert is silenced in Grafana until 29 November 2026, 10:15
+  UTC. If it still lists none then, take it out of
+  `data/malaysian-scooter-feeds.json`; if it lists scooters again, nothing
+  needs doing.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
