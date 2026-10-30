@@ -498,6 +498,7 @@ private fun DockChrome(
                 bottomLimit = maxHeight - safeBottom,
                 chrome = chrome,
                 onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
+                settledTop = safeTop + 8.dp + chromeTop,
                 modifier = Modifier.padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
                 searchBarModifier = beside?.let { Modifier.besideCaption(it, slot) } ?: Modifier,
             )
@@ -774,6 +775,8 @@ private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
 /**
  * The search bar and what sits under it: the banner of a first load that failed, and the card of a location that
  * could not be found. With large text they can be taller than the room above the locate button; then they scroll.
+ * [settledTop] is where the stack's top comes to rest under the top of the room it is given, where its [modifier]'s
+ * padding springs to.
  */
 @Composable
 private fun TopStack(
@@ -788,6 +791,7 @@ private fun TopStack(
     bottomLimit: Dp,
     chrome: MapChromeFrames,
     onSearchBarHeightChange: (Int) -> Unit,
+    settledTop: Dp,
     modifier: Modifier = Modifier,
     searchBarModifier: Modifier = Modifier,
 ) {
@@ -795,31 +799,34 @@ private fun TopStack(
     // The search bar and the notices under it, closed: what the map keeps its names and its taps out of, and centres
     // a place below. As wide as they are, as the iPhone's VStack is, not the room they are centred in: in a window
     // more than 584 dp wide the bar's 560 leave the map's sides to it. The open search covers the map, and leaves the
-    // map's frame as it was. Worked out as the stack is drawn, where its frames are read, so that it follows each move
-    // of the stack, as iOS's onGeometryChange does: under Reduce Motion the stack goes under a fold in one step, which
-    // nothing else draws again (UI-194).
-    var stackFrame by remember { mutableStateOf<ScreenRect?>(null) }
+    // map's frame as it was. Worked out as the stack is drawn, where its frames are read: under Reduce Motion the
+    // stack goes under a fold in one step, which nothing else draws again (UI-194). Where the stack comes to rest,
+    // not where its spring has it, as the iPhone's onGeometryChange reads the layout, which an animation doesn't move:
+    // only the views that draw apply it to their frames (geometryGroup()'s documentation). Taps and names keep clear
+    // of where the search bar goes under a fold from its first frame.
+    var roomTop by remember { mutableStateOf<Double?>(null) }
     var barFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barHeight by remember { mutableIntStateOf(0) }
     var noticesHeight by remember { mutableIntStateOf(0) }
     val top = run {
-        val frame = stackFrame ?: return@run null
+        val room = roomTop ?: return@run null
         val bar = barFrame ?: return@run null
         if (barHeight == 0 || isSearching) return@run null
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
         val sides = listOfNotNull(bar, noticesFrame?.takeIf { noticesHeight > 0 })
         val left = sides.minOf { it.minX }
-        ScreenRect(left, frame.y, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
+        ScreenRect(left, room + settledTop.value, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
     }
     SideEffect {
         if (top != null) chrome.top = top
     }
 
     Column(
-        modifier
-            .fillMaxWidth()
-            .onGloballyPositioned { stackFrame = it.windowFrame(density.density) },
+        Modifier
+            .onGloballyPositioned { roomTop = it.windowFrame(density.density).y }
+            .then(modifier)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

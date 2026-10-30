@@ -8,6 +8,7 @@ import androidx.compose.animation.core.VectorConverter
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,6 +26,7 @@ import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.ui.dock.DockState
+import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.theme.animation
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -146,23 +148,29 @@ class FoldChromeTest {
 
     /**
      * UI-194: standing like a laptop, the search bar goes down under the fold on ScooterMapScreen.swift:255's
-     * `.snappy(duration: 0.28)`.
+     * `.snappy(duration: 0.28)`, and the map is told where it goes as it starts (finding 4): the iPhone's
+     * onGeometryChange (ScooterMapScreen.swift:243-247) reads the layout, which the spring doesn't move, as only the
+     * views that draw apply an animation to their frames (geometryGroup()'s documentation).
      */
     @Test
     @Config(qualifiers = "w669dp-h951dp-mdpi")
     fun standingLikeALaptopTheSearchBarGoesUnderTheFoldOnASnappySpring() {
         show()
         val start = frames.top!!.minY
-        val moved = slide(LAPTOP)
-        // The frames are read once the stack is laid out, a frame or two after the spring starts.
+        val (moved, told) = slide(LAPTOP)
+        // The bar is measured once the stack is laid out, a frame or two after the spring starts.
         val spring = TargetBasedAnimation(
             IosMotion.snappy(duration = 0.28).animation<Float>(), Float.VectorConverter, start.toFloat(), UNDER_THE_FOLD.toFloat(),
         )
         val expected = { frame: Int -> spring.getValueFromNanos(maxOf(0, frame) * 16 * 1_000_000L).toDouble() }
         val misses = (0..3).associateWith { late -> moved.indices.maxOf { abs(moved[it] - expected(it - late)) } }
         assertTrue("$moved, misses by $misses", misses.values.min() < 1.0)
-        assertTrue("$moved", moved.count { it > start + 1 && it < UNDER_THE_FOLD - 1 } >= 5)
+        val midway = moved.indices.filter { moved[it] > start + 1 && moved[it] < UNDER_THE_FOLD - 1 }
+        assertTrue("$moved", midway.size >= 5)
         assertEquals(UNDER_THE_FOLD, moved.last(), 0.5)
+        // The map's frame is where the bar goes from the frame it starts to move, and stays there.
+        val first = moved.indexOfFirst { it > start + 0.5 }
+        assertTrue("$moved, told $told", told.drop(first).all { abs(it - UNDER_THE_FOLD) < 0.5 })
     }
 
     /**
@@ -176,23 +184,33 @@ class FoldChromeTest {
         Settings.Global.putFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 0f)
         show()
         val start = frames.top!!.minY
-        val moved = slide(LAPTOP)
+        val (moved, told) = slide(LAPTOP)
         assertTrue("$moved", moved.none { it > start + 1 && it < UNDER_THE_FOLD - 1 })
         assertTrue("$moved", moved.drop(3).all { abs(it - UNDER_THE_FOLD) < 0.5 })
+        assertTrue("$told", told.drop(3).all { abs(it - UNDER_THE_FOLD) < 0.5 })
     }
 
-    /** The search bar's top frame by frame, 40 of them, from when WindowManager tells the screen of [feature]. */
-    private fun slide(feature: FoldingFeature): List<Double> {
+    /**
+     * Frame by frame, 40 of them, from when WindowManager tells the screen of [feature]: where the search bar's top is
+     * drawn, and the top of the frame the map is told.
+     */
+    private fun slide(feature: FoldingFeature): Pair<List<Double>, List<Double>> {
+        // The island's top from the stack's, at rest.
+        val inset = barTop() - frames.top!!.minY
         compose.mainClock.autoAdvance = false
         compose.runOnIdle { hinge.overrideWindowLayoutInfo(TestWindowLayoutInfo(listOf(feature))) }
         val tops = List(40) {
             compose.mainClock.advanceTimeByFrame()
             compose.waitForIdle()
-            frames.top!!.minY
+            barTop() - inset to frames.top!!.minY
         }
         compose.mainClock.autoAdvance = true
-        return tops
+        return tops.unzip()
     }
+
+    /** The search bar's top as it is drawn. */
+    private fun barTop(): Double =
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).fetchSemanticsNode().boundsInRoot.top.toDouble() / compose.density.density
 
     /** The screen on the list of providers, with the map's stand-in reading the chrome's frames. */
     private fun show(direction: LayoutDirection = LayoutDirection.Ltr) {
