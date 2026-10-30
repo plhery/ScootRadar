@@ -83,10 +83,10 @@ const guide: Guide = {
     {
       heading: 'Dott Nottingham no-go zones: where you can and can’t ride',
       blocks: [
-        'Dott’s area is the **City of Nottingham** only: the scooter cuts out at the city boundary. Inside, it stops in no-go zones and slows to 8 mph in slow zones. This is how we read Dott’s zone data on 15 October 2026; in the centre it matches the council’s map:',
+        'Dott’s area is the **City of Nottingham** only: the scooter cuts out at the city boundary. Inside, it stops in no-go zones and slows to 8 mph in slow zones, drawn on the map when you zoom in. In the centre, Dott’s zones match the council’s map:',
         {
           table: {
-            caption: 'Riding zones as we read Dott’s data, 15 October 2026 (zones change: check the app)',
+            caption: 'Riding zones in Dott’s data, 15 October 2026 (zones change: check the app)',
             head: ['Where', 'Riding', 'Good to know'],
             rows: [
               ['Old Market Square (Slab Square), the paved centre', 'No riding', 'Long Row, South Parade, King Street and Market Street are open; a bay on King Street'],

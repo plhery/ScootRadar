@@ -74,7 +74,7 @@ const guide: Guide = {
         'Dott’s Bath area runs from Batheaston and Bathampton in the east to Newbridge and Weston in the west, and since 4 December 2025 south to Odd Down, Southdown and Combe Down. Bathford, Claverton, Southstoke, all three park and ride sites and Bath Spa University’s Newton Park campus lie outside it.',
         {
           table: {
-            caption: 'Riding zones as we read Dott’s data, 24 October 2026 (zones change: check the app)',
+            caption: 'Riding zones in Dott’s data, 24 October 2026 (zones change: check the app)',
             head: ['Where', 'Riding', 'Good to know'],
             rows: [
               ['Roman Baths, Abbey, Stall Street, Abbey Green, Bath Street', 'No-ride', 'Includes Kingston Parade, York Street and Thermae Bath Spa'],
