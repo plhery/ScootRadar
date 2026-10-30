@@ -1227,11 +1227,11 @@ the rides, the rules, the gaps and the recheck command.
 
 ## Israel
 
-The reviewed catalog lives in `data/israeli-scooter-feeds.json`: 2 public
+The reviewed catalog lives in `data/israeli-scooter-feeds.json`: 3 public
 feeds in 15 towns, 13 of them in Gush Dan, around Tel Aviv, then Ashdod and,
-for Bird alone, Caesarea. Bird's `israel` feed at `mds.bird.co` and Lime's
-`tel_aviv` at `data.lime.bike` are
-each the operator's own public GBFS feed, both in
+for Bird alone, Caesarea. Bird's `israel` feed at `mds.bird.co`, Dott's
+`tel-aviv` at `gbfs.api.ridedott.com` and Lime's `tel_aviv` at
+`data.lime.bike` are each the operator's own public GBFS feed, all three in
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
 Bird's `tel-aviv` feed, also in the registry, repeats most of `israel`'s
 scooters under other ids, so it is left out. Israel's open-data portal,

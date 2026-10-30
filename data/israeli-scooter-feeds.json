@@ -216,6 +216,170 @@
       ]
     },
     {
+      "id": "dott_il_tel_aviv",
+      "country": "IL",
+      "provider": "dott",
+      "city": "Gush Dan",
+      "timeZone": "Asia/Jerusalem",
+      "center": [
+        32.0853,
+        34.7818
+      ],
+      "bounds": {
+        "south": 31.9853,
+        "north": 32.1879,
+        "west": 34.723,
+        "east": 34.9304
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/tel-aviv/gbfs.json",
+      "areas": [
+        {
+          "city": "Tel Aviv",
+          "center": [
+            32.0853,
+            34.7818
+          ],
+          "bounds": {
+            "south": 32.0207,
+            "north": 32.1556,
+            "west": 34.7289,
+            "east": 34.8625
+          },
+          "aliases": [
+            "Tel Aviv-Yafo",
+            "Tel Aviv-Jaffa",
+            "Jaffa",
+            "Yafo",
+            "TLV",
+            "תל אביב",
+            "תל אביב-יפו",
+            "יפו",
+            "تل أبيب",
+            "يافا"
+          ]
+        },
+        {
+          "city": "Ramat Gan",
+          "center": [
+            32.0687,
+            34.8247
+          ],
+          "bounds": {
+            "south": 32.0274,
+            "north": 32.1143,
+            "west": 34.7889,
+            "east": 34.8649
+          },
+          "aliases": [
+            "רמת גן"
+          ]
+        },
+        {
+          "city": "Petah Tikva",
+          "center": [
+            32.0878,
+            34.886
+          ],
+          "bounds": {
+            "south": 32.0583,
+            "north": 32.1208,
+            "west": 34.836,
+            "east": 34.9304
+          },
+          "aliases": [
+            "Petach Tikva",
+            "Petach Tikvah",
+            "Petah Tiqva",
+            "פתח תקווה",
+            "פתח תקוה"
+          ]
+        },
+        {
+          "city": "Holon",
+          "center": [
+            32.0193,
+            34.7804
+          ],
+          "bounds": {
+            "south": 31.9853,
+            "north": 32.0474,
+            "west": 34.7451,
+            "east": 34.8207
+          },
+          "aliases": [
+            "חולון"
+          ]
+        },
+        {
+          "city": "Bat Yam",
+          "center": [
+            32.0155,
+            34.7505
+          ],
+          "bounds": {
+            "south": 31.991,
+            "north": 32.0427,
+            "west": 34.723,
+            "east": 34.7721
+          },
+          "aliases": [
+            "בת ים"
+          ]
+        },
+        {
+          "city": "Givatayim",
+          "center": [
+            32.073,
+            34.8113
+          ],
+          "bounds": {
+            "south": 32.0498,
+            "north": 32.0907,
+            "west": 34.7877,
+            "east": 34.8313
+          },
+          "aliases": [
+            "Givataim",
+            "גבעתיים"
+          ]
+        },
+        {
+          "city": "Herzliya",
+          "center": [
+            32.1656,
+            34.8469
+          ],
+          "bounds": {
+            "south": 32.1354,
+            "north": 32.1879,
+            "west": 34.7866,
+            "east": 34.8622
+          },
+          "aliases": [
+            "Herzliyya",
+            "Herzlia",
+            "הרצליה"
+          ]
+        },
+        {
+          "city": "Bnei Brak",
+          "center": [
+            32.0874,
+            34.8324
+          ],
+          "bounds": {
+            "south": 32.0624,
+            "north": 32.1164,
+            "west": 34.8112,
+            "east": 34.858
+          },
+          "aliases": [
+            "בני ברק"
+          ]
+        }
+      ]
+    },
+    {
       "id": "lime_il_tel_aviv",
       "country": "IL",
       "provider": "lime",

@@ -750,21 +750,22 @@ banned shared scooters, and feeds that were empty when checked.
     three feed hosts no longer resolve (18 October 2026); Green Arrows, on
     ATOM Mobility, has no host that answers.
   - **open.data.gov.sa** did not answer.
-- **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird and Lime
-  in 13 towns of Gush Dan, Bird and Lime in Ashdod, and Lime in Eilat,
+- **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird, Dott and
+  Lime in 13 towns of Gush Dan, Bird and Lime in Ashdod, and Lime in Eilat,
   Lime's two from its rider map since 26 October 2026, and Bird in Caesarea
   since 29 October 2026, are covered.
-  - **Dott** is retired since 29 October 2026: its `tel-aviv` region, about
-    2,900 scooters that morning, answers 404 (`ERR_REGION_NOT_FOUND`) from
-    about 11:00 UTC on 28 October, and Dott's Israeli listing
-    (`/public/v2/countries/il/gbfs.json`) names no region. Re-check the
-    listing monthly, next on 29 November 2026, and restore the entry from
-    git if a region comes back.
-  - **Left out:** Lime in Bat Yam and Ramat HaSharon, and Bird in Petah
-    Tikva, about one scooter a poll each. The map drops their scooters
-    rather than count them under a neighbour. Bird's scooters in Pardes
-    Hanna-Karkur stand along Caesarea's business park and at Caesarea–Pardes
-    Hanna station, in Bird's Caesarea zone, and count under Caesarea.
+  - **Dott** was off the map on 29 and 30 October 2026: its `tel-aviv` region
+    answered 404 (`ERR_REGION_NOT_FOUND`) from about 11:00 UTC on 28
+    October, and Dott's Israeli listing (`/public/v2/countries/il/gbfs.json`)
+    named no region. On 30 October the listing named `tel-aviv` again and
+    its feed answered, 2,551 vehicles at 00:44 UTC, so the entry is back.
+  - **Left out:** Dott in Givat Shmuel (6 to 11 scooters, one arrival in the
+    day), Kiryat Ono (2 or 3) and Ramat HaSharon; Lime in Bat Yam and Ramat
+    HaSharon; and Bird in Petah Tikva, about one scooter a poll each. The map
+    drops their scooters rather than count them under a neighbour. Bird's
+    scooters in Pardes Hanna-Karkur stand along Caesarea's business park and
+    at Caesarea–Pardes Hanna station, in Bird's Caesarea zone, and count
+    under Caesarea.
   - **Bird's zones** outline service areas in Hadera, Afula, Beit She'an,
     Rosh HaAyin, Eilat and Jerusalem's Har Hotzvim, none of which held a
     scooter on 18 October 2026.
