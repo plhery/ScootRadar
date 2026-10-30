@@ -78241,7 +78241,7 @@
     {
       "id": "berlin-parking-99",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Prinzenstraße",
       "ring": [
         [52.498637, 13.408028],
         [52.498665, 13.40802],
@@ -78260,7 +78260,7 @@
     {
       "id": "berlin-parking-100",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Jakob-Kaiser-Platz",
       "ring": [
         [52.53639, 13.295089],
         [52.536443, 13.295059],
@@ -78279,7 +78279,7 @@
     {
       "id": "berlin-parking-101",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Landsberger Allee/Petersburger Straße",
       "ring": [
         [52.527268, 13.449484],
         [52.52732, 13.449454],
@@ -78298,7 +78298,7 @@
     {
       "id": "berlin-parking-102",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Ullsteinstraße",
       "ring": [
         [52.452984, 13.385943],
         [52.453012, 13.385935],
@@ -78317,7 +78317,7 @@
     {
       "id": "berlin-parking-103",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Jannowitzbrücke/Holzmarktstraße",
       "ring": [
         [52.513613, 13.422369],
         [52.513641, 13.422361],
@@ -78336,7 +78336,7 @@
     {
       "id": "berlin-parking-104",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Nollendorfplatz",
       "ring": [
         [52.499161, 13.352357],
         [52.499213, 13.352327],
@@ -78355,7 +78355,7 @@
     {
       "id": "berlin-parking-105",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Taubenstraße/Friedrichstraße",
       "ring": [
         [52.512965, 13.389354],
         [52.512993, 13.389345],
@@ -78374,7 +78374,7 @@
     {
       "id": "berlin-parking-106",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kronenstraße/Friedrichstraße",
       "ring": [
         [52.511214, 13.390309],
         [52.511242, 13.390301],
@@ -78393,7 +78393,7 @@
     {
       "id": "berlin-parking-107",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Breitenbachplatz",
       "ring": [
         [52.466972, 13.309001],
         [52.467, 13.308993],
@@ -78412,7 +78412,7 @@
     {
       "id": "berlin-parking-108",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Spandauer Havelpromenade",
       "ring": [
         [52.555291, 13.224312],
         [52.555319, 13.224304],
@@ -78431,7 +78431,7 @@
     {
       "id": "berlin-parking-109",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Stadion Haselhorst",
       "ring": [
         [52.546745, 13.230805],
         [52.546798, 13.230775],
@@ -78450,7 +78450,7 @@
     {
       "id": "berlin-parking-110",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Grützmacherweg",
       "ring": [
         [52.543945, 13.229876],
         [52.543973, 13.229868],
@@ -78469,7 +78469,7 @@
     {
       "id": "berlin-parking-111",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Burscheider Weg",
       "ring": [
         [52.54448, 13.238472],
         [52.544533, 13.238442],
@@ -78488,7 +78488,7 @@
     {
       "id": "berlin-parking-112",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Haselhorster Damm/Gartenfelder Straße",
       "ring": [
         [52.542959, 13.239573],
         [52.543012, 13.239543],
@@ -78507,7 +78507,7 @@
     {
       "id": "berlin-parking-113",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Daumstraße/Rhenaniastraße",
       "ring": [
         [52.554198, 13.226375],
         [52.554251, 13.226345],
@@ -78526,7 +78526,7 @@
     {
       "id": "berlin-parking-114",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Haselhorst",
       "ring": [
         [52.538685, 13.232891],
         [52.538713, 13.232883],
@@ -78545,7 +78545,7 @@
     {
       "id": "berlin-parking-115",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Lichtenberg",
       "ring": [
         [52.510739, 13.501092],
         [52.510791, 13.501062],
@@ -78564,7 +78564,7 @@
     {
       "id": "berlin-parking-116",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Bundesdruckerei",
       "ring": [
         [52.508522, 13.402905],
         [52.508574, 13.402875],
@@ -78583,7 +78583,7 @@
     {
       "id": "berlin-parking-117",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Mierendorffplatz",
       "ring": [
         [52.525536, 13.304805],
         [52.525564, 13.304797],
@@ -78602,7 +78602,7 @@
     {
       "id": "berlin-parking-118",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Elsterwerdaer Platz",
       "ring": [
         [52.505881, 13.561013],
         [52.505909, 13.561005],
@@ -78621,7 +78621,7 @@
     {
       "id": "berlin-parking-119",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gärten der Welt / Blumberger Damm",
       "ring": [
         [52.53852, 13.569389],
         [52.538572, 13.56936],
@@ -78640,7 +78640,7 @@
     {
       "id": "berlin-parking-120",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kienberg",
       "ring": [
         [52.529521, 13.590159],
         [52.529573, 13.59013],
@@ -78659,7 +78659,7 @@
     {
       "id": "berlin-parking-121",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Cecilienstraße / Blumberger Damm",
       "ring": [
         [52.528946, 13.566275],
         [52.528974, 13.566267],
@@ -78678,7 +78678,7 @@
     {
       "id": "berlin-parking-122",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Studentenwohnheim Victor Jara",
       "ring": [
         [52.527487, 13.557806],
         [52.527539, 13.557776],
@@ -78697,7 +78697,7 @@
     {
       "id": "berlin-parking-123",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eitelstraße",
       "ring": [
         [52.525338, 13.557321],
         [52.52539, 13.557291],
@@ -78716,7 +78716,7 @@
     {
       "id": "berlin-parking-124",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kaulsdorf Nord",
       "ring": [
         [52.520883, 13.588472],
         [52.520935, 13.588442],
@@ -78735,7 +78735,7 @@
     {
       "id": "berlin-parking-125",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Arona-Klinik",
       "ring": [
         [52.516028, 13.563719],
         [52.51608, 13.563689],
@@ -78754,7 +78754,7 @@
     {
       "id": "berlin-parking-126",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Biesdorf",
       "ring": [
         [52.513368, 13.554704],
         [52.51342, 13.554674],
@@ -78773,7 +78773,7 @@
     {
       "id": "berlin-parking-127",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Wuhletal",
       "ring": [
         [52.51298, 13.574371],
         [52.513032, 13.574341],
@@ -78792,7 +78792,7 @@
     {
       "id": "berlin-parking-128",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Theater am Park",
       "ring": [
         [52.511245, 13.562605],
         [52.511273, 13.562597],
@@ -78811,7 +78811,7 @@
     {
       "id": "berlin-parking-129",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Biesdorf-Center",
       "ring": [
         [52.506264, 13.55873],
         [52.506292, 13.558722],
@@ -78830,7 +78830,7 @@
     {
       "id": "berlin-parking-130",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Grabensprung",
       "ring": [
         [52.503258, 13.553154],
         [52.50331, 13.553124],
@@ -78849,7 +78849,7 @@
     {
       "id": "berlin-parking-131",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gleiwitzer Straße",
       "ring": [
         [52.493817, 13.561819],
         [52.493869, 13.561789],
@@ -78868,7 +78868,7 @@
     {
       "id": "berlin-parking-132",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Mitte",
       "ring": [
         [52.527802, 13.376786],
         [52.52783, 13.376778],
@@ -78887,7 +78887,7 @@
     {
       "id": "berlin-parking-133",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Mitte/Charitéplatz",
       "ring": [
         [52.524343, 13.377002],
         [52.524371, 13.376994],
@@ -78906,7 +78906,7 @@
     {
       "id": "berlin-parking-134",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Mitte/Rahel-Hirsch-Weg",
       "ring": [
         [52.526304, 13.378153],
         [52.526332, 13.378145],
@@ -78925,7 +78925,7 @@
     {
       "id": "berlin-parking-135",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Benjamin Franklin",
       "ring": [
         [52.442151, 13.319379],
         [52.442204, 13.319349],
@@ -78944,7 +78944,7 @@
     {
       "id": "berlin-parking-136",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Benjamin Franklin/Eingang Nord",
       "ring": [
         [52.443054, 13.321155],
         [52.443082, 13.321147],
@@ -78963,7 +78963,7 @@
     {
       "id": "berlin-parking-137",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Benjamin Franklin/Hindenburgdamm",
       "ring": [
         [52.440498, 13.316924],
         [52.440526, 13.316916],
@@ -78982,7 +78982,7 @@
     {
       "id": "berlin-parking-138",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Cicerostraße/Hochmeisterplatz",
       "ring": [
         [52.494142, 13.302629],
         [52.494195, 13.302599],
@@ -79001,7 +79001,7 @@
     {
       "id": "berlin-parking-139",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Trebbiner Straße",
       "ring": [
         [52.499409, 13.377957],
         [52.499436, 13.377949],
@@ -79020,7 +79020,7 @@
     {
       "id": "berlin-parking-140",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Haveleck",
       "ring": [
         [52.55748, 13.226919],
         [52.557533, 13.226889],
@@ -79039,7 +79039,7 @@
     {
       "id": "berlin-parking-141",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Mendelssohn-Bartholdy-Park",
       "ring": [
         [52.502871, 13.374057],
         [52.502924, 13.374027],
@@ -79058,7 +79058,7 @@
     {
       "id": "berlin-parking-142",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Spandau/Am Omnibushof",
       "ring": [
         [52.517026, 13.185576],
         [52.517079, 13.185546],
@@ -79077,7 +79077,7 @@
     {
       "id": "berlin-parking-143",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Gleisdreieck",
       "ring": [
         [52.500802, 13.374027],
         [52.500855, 13.373997],
@@ -79115,7 +79115,7 @@
     {
       "id": "berlin-parking-145",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Indira-Gandhi-Straße",
       "ring": [
         [52.544692, 13.468967],
         [52.544744, 13.468937],
@@ -79134,7 +79134,7 @@
     {
       "id": "berlin-parking-146",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lindenhof",
       "ring": [
         [52.518002, 13.506917],
         [52.518054, 13.506887],
@@ -79153,7 +79153,7 @@
     {
       "id": "berlin-parking-147",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Stadtgut Hellersdorf/Zossener Straße",
       "ring": [
         [52.544042, 13.596187],
         [52.544094, 13.596158],
@@ -79172,7 +79172,7 @@
     {
       "id": "berlin-parking-148",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Havelländer Ring/Alte Hellersdorfer Str.",
       "ring": [
         [52.542582, 13.593997],
         [52.542634, 13.593968],
@@ -79191,7 +79191,7 @@
     {
       "id": "berlin-parking-149",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Stendaler Str./Jerichower Straße",
       "ring": [
         [52.541922, 13.603477],
         [52.541974, 13.603448],
@@ -79210,7 +79210,7 @@
     {
       "id": "berlin-parking-150",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Tangermünder Straße",
       "ring": [
         [52.540402, 13.608467],
         [52.540454, 13.608438],
@@ -79229,7 +79229,7 @@
     {
       "id": "berlin-parking-151",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Marzahn",
       "ring": [
         [52.548922, 13.583337],
         [52.548949, 13.583329],
@@ -79248,7 +79248,7 @@
     {
       "id": "berlin-parking-152",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Alte Hellersdorfer Str./ Zossener Str.",
       "ring": [
         [52.545162, 13.591757],
         [52.545189, 13.591749],
@@ -79267,7 +79267,7 @@
     {
       "id": "berlin-parking-153",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Hellersdorf",
       "ring": [
         [52.536669, 13.605647],
         [52.536721, 13.605618],
@@ -79286,7 +79286,7 @@
     {
       "id": "berlin-parking-154",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Cottbusser Platz",
       "ring": [
         [52.534712, 13.597177],
         [52.534764, 13.597148],
@@ -79305,7 +79305,7 @@
     {
       "id": "berlin-parking-155",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Stendaler Str./Quedlinburger Str.",
       "ring": [
         [52.539362, 13.604167],
         [52.539414, 13.604138],
@@ -79324,7 +79324,7 @@
     {
       "id": "berlin-parking-156",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Jungfernheide",
       "ring": [
         [52.530882, 13.300742],
         [52.530935, 13.300712],
@@ -79343,7 +79343,7 @@
     {
       "id": "berlin-parking-157",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lion-Feuchtwanger-Str./Gardebuscher Str.",
       "ring": [
         [52.517602, 13.582397],
         [52.517654, 13.582367],
@@ -79362,7 +79362,7 @@
     {
       "id": "berlin-parking-158",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Zoologischer Garten/Hardenbergplatz",
       "ring": [
         [52.506583, 13.333006],
         [52.506636, 13.332976],
@@ -79381,7 +79381,7 @@
     {
       "id": "berlin-parking-159",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Zoologischer Garten/Joachimsthaler Str.",
       "ring": [
         [52.506412, 13.332057],
         [52.506465, 13.332027],
@@ -79400,7 +79400,7 @@
     {
       "id": "berlin-parking-160",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Zoologischer Garten/Jebensstraße",
       "ring": [
         [52.506682, 13.331487],
         [52.506735, 13.331457],
@@ -79419,7 +79419,7 @@
     {
       "id": "berlin-parking-161",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Buch/Moorwiese",
       "ring": [
         [52.636342, 13.491528],
         [52.63637, 13.49152],
@@ -79438,7 +79438,7 @@
     {
       "id": "berlin-parking-162",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/Robert-Rössle-Straße",
       "ring": [
         [52.626488, 13.500577],
         [52.626516, 13.500569],
@@ -79457,7 +79457,7 @@
     {
       "id": "berlin-parking-163",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/Lindenberger Weg",
       "ring": [
         [52.628202, 13.506238],
         [52.628254, 13.506208],
@@ -79476,7 +79476,7 @@
     {
       "id": "berlin-parking-164",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Buch/P+R-Parkplatz",
       "ring": [
         [52.634544, 13.492747],
         [52.634597, 13.492717],
@@ -79495,7 +79495,7 @@
     {
       "id": "berlin-parking-165",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Karower Chaussee",
       "ring": [
         [52.625802, 13.495988],
         [52.625854, 13.495958],
@@ -79514,7 +79514,7 @@
     {
       "id": "berlin-parking-166",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/C31",
       "ring": [
         [52.624322, 13.503308],
         [52.624374, 13.503278],
@@ -79533,7 +79533,7 @@
     {
       "id": "berlin-parking-167",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/D24",
       "ring": [
         [52.625982, 13.502988],
         [52.626034, 13.502958],
@@ -79552,7 +79552,7 @@
     {
       "id": "berlin-parking-168",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/D79",
       "ring": [
         [52.625662, 13.501878],
         [52.625714, 13.501848],
@@ -79571,7 +79571,7 @@
     {
       "id": "berlin-parking-169",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/D85",
       "ring": [
         [52.624952, 13.499448],
         [52.62498, 13.499439],
@@ -79590,7 +79590,7 @@
     {
       "id": "berlin-parking-170",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Campus Buch/B51",
       "ring": [
         [52.626952, 13.507608],
         [52.627004, 13.507578],
@@ -79609,7 +79609,7 @@
     {
       "id": "berlin-parking-171",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Amrumer Straße",
       "ring": [
         [52.542032, 13.348577],
         [52.54206, 13.348569],
@@ -79628,7 +79628,7 @@
     {
       "id": "berlin-parking-172",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Virchow-Klinikum/Nordstraße",
       "ring": [
         [52.542892, 13.343757],
         [52.542945, 13.343727],
@@ -79647,7 +79647,7 @@
     {
       "id": "berlin-parking-173",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Virchow-Klinikum/Forum",
       "ring": [
         [52.541312, 13.340457],
         [52.541365, 13.340427],
@@ -79666,7 +79666,7 @@
     {
       "id": "berlin-parking-174",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charité-Campus Virchow-Klinikum/Südstraße",
       "ring": [
         [52.540922, 13.345147],
         [52.54095, 13.345139],
@@ -79685,7 +79685,7 @@
     {
       "id": "berlin-parking-175",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Machandelweg",
       "ring": [
         [52.519792, 13.251967],
         [52.519845, 13.251937],
@@ -79704,7 +79704,7 @@
     {
       "id": "berlin-parking-176",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Potsdamer Platz/Leipziger Platz",
       "ring": [
         [52.509926, 13.379619],
         [52.509954, 13.379611],
@@ -79723,7 +79723,7 @@
     {
       "id": "berlin-parking-177",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Potsdamer Platz/Botschaft von Kanada",
       "ring": [
         [52.509814, 13.377646],
         [52.509866, 13.377616],
@@ -79742,7 +79742,7 @@
     {
       "id": "berlin-parking-178",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Potsdamer Platz",
       "ring": [
         [52.509362, 13.377709],
         [52.50939, 13.377701],
@@ -79761,7 +79761,7 @@
     {
       "id": "berlin-parking-179",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Potsdamer Platz/G.-Tergit-Promenade",
       "ring": [
         [52.50813, 13.376677],
         [52.508158, 13.376669],
@@ -79780,7 +79780,7 @@
     {
       "id": "berlin-parking-180",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Potsdamer Platz/A.-Hauschner-Straße",
       "ring": [
         [52.510039, 13.376124],
         [52.510091, 13.376094],
@@ -79799,7 +79799,7 @@
     {
       "id": "berlin-parking-181",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lennéstraße/Ebertstraße",
       "ring": [
         [52.512159, 13.376417],
         [52.512187, 13.376409],
@@ -79818,7 +79818,7 @@
     {
       "id": "berlin-parking-182",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi In den Ministergärten/Ebertstraße",
       "ring": [
         [52.512194, 13.377611],
         [52.512222, 13.377603],
@@ -79837,7 +79837,7 @@
     {
       "id": "berlin-parking-183",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Ebertstraße/Hannah-Arendt-Straße",
       "ring": [
         [52.513309, 13.377427],
         [52.513337, 13.377419],
@@ -79856,7 +79856,7 @@
     {
       "id": "berlin-parking-184",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Ebertstraße/Behrenstraße",
       "ring": [
         [52.514234, 13.377411],
         [52.514262, 13.377403],
@@ -79875,7 +79875,7 @@
     {
       "id": "berlin-parking-185",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Platz des 18. März/Ahornsteig",
       "ring": [
         [52.516023, 13.376037],
         [52.516075, 13.376007],
@@ -79894,7 +79894,7 @@
     {
       "id": "berlin-parking-186",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Platz des 18. März/Simsonweg",
       "ring": [
         [52.51627, 13.375744],
         [52.516322, 13.375714],
@@ -79913,7 +79913,7 @@
     {
       "id": "berlin-parking-187",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Brandenburger Tor/Pariser Platz",
       "ring": [
         [52.516639, 13.380509],
         [52.516691, 13.380479],
@@ -79932,7 +79932,7 @@
     {
       "id": "berlin-parking-188",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Brandenburger Tor/Unter den Linden",
       "ring": [
         [52.516336, 13.381459],
         [52.516388, 13.381429],
@@ -79951,7 +79951,7 @@
     {
       "id": "berlin-parking-189",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Unter den Linden/Glinkastraße",
       "ring": [
         [52.516649, 13.386325],
         [52.516677, 13.386317],
@@ -79970,7 +79970,7 @@
     {
       "id": "berlin-parking-191",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gertrud-Kolmar-Straße/Hannah-Arendt-Straße",
       "ring": [
         [52.513376, 13.380392],
         [52.513404, 13.380384],
@@ -79989,7 +79989,7 @@
     {
       "id": "berlin-parking-192",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Wilhlemstraße/An d. Kolonnade",
       "ring": [
         [52.512663, 13.38283],
         [52.512715, 13.3828],
@@ -80008,7 +80008,7 @@
     {
       "id": "berlin-parking-193",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Mohrenstraße",
       "ring": [
         [52.51166, 13.384001],
         [52.511712, 13.383971],
@@ -80027,7 +80027,7 @@
     {
       "id": "berlin-parking-194",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Voßstraße/Gertrud-Kolmar-Straße",
       "ring": [
         [52.511042, 13.381413],
         [52.511094, 13.381383],
@@ -80046,7 +80046,7 @@
     {
       "id": "berlin-parking-195",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mohrenstraße/Friedrichstraße",
       "ring": [
         [52.512132, 13.389117],
         [52.51216, 13.389109],
@@ -80065,7 +80065,7 @@
     {
       "id": "berlin-parking-196",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Jägerstraße/Friedrichstraße",
       "ring": [
         [52.513902, 13.389217],
         [52.513954, 13.389187],
@@ -80084,7 +80084,7 @@
     {
       "id": "berlin-parking-197",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Forum Adlershof",
       "ring": [
         [52.431406, 13.531899],
         [52.431434, 13.531891],
@@ -80103,7 +80103,7 @@
     {
       "id": "berlin-parking-198",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Walter-Nernst-Straße",
       "ring": [
         [52.43275, 13.535831],
         [52.432802, 13.535801],
@@ -80122,7 +80122,7 @@
     {
       "id": "berlin-parking-199",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Landschaftspark Adlershof/Hermann-Dorner-Allee",
       "ring": [
         [52.434042, 13.521081],
         [52.43407, 13.521073],
@@ -80141,7 +80141,7 @@
     {
       "id": "berlin-parking-200",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rudower Chaussee/Wegedorn-Str.",
       "ring": [
         [52.428951, 13.528001],
         [52.428979, 13.527993],
@@ -80160,7 +80160,7 @@
     {
       "id": "berlin-parking-201",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Adlershof/Rudower Chaussee",
       "ring": [
         [52.434796, 13.540677],
         [52.434848, 13.540647],
@@ -80179,7 +80179,7 @@
     {
       "id": "berlin-parking-202",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Groß-Berliner Damm/Abram-Joffe-Str.",
       "ring": [
         [52.434769, 13.531269],
         [52.434821, 13.531239],
@@ -80198,7 +80198,7 @@
     {
       "id": "berlin-parking-203",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Johannisgärten",
       "ring": [
         [52.435731, 13.508263],
         [52.435759, 13.508255],
@@ -80217,7 +80217,7 @@
     {
       "id": "berlin-parking-204",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Magnusstraße",
       "ring": [
         [52.426914, 13.535918],
         [52.426966, 13.535888],
@@ -80236,7 +80236,7 @@
     {
       "id": "berlin-parking-205",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Volmerstr./Max-Planck-Str.",
       "ring": [
         [52.429788, 13.537232],
         [52.42984, 13.537202],
@@ -80255,7 +80255,7 @@
     {
       "id": "berlin-parking-206",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Johann-Hittorf-Str.",
       "ring": [
         [52.431352, 13.52373],
         [52.431404, 13.5237],
@@ -80274,7 +80274,7 @@
     {
       "id": "berlin-parking-207",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Pestalozzistraße/Wilmersdorfer Straße",
       "ring": [
         [52.507903, 13.306115],
         [52.507931, 13.306107],
@@ -80293,7 +80293,7 @@
     {
       "id": "berlin-parking-208",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Goethestraße/Wilmersdorfer Straße",
       "ring": [
         [52.508961, 13.306454],
         [52.509014, 13.306424],
@@ -80312,7 +80312,7 @@
     {
       "id": "berlin-parking-209",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Bismarckstraße",
       "ring": [
         [52.511224, 13.305341],
         [52.511252, 13.305333],
@@ -80331,7 +80331,7 @@
     {
       "id": "berlin-parking-210",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Klosterstraße",
       "ring": [
         [52.51778, 13.412203],
         [52.517832, 13.412173],
@@ -80350,7 +80350,7 @@
     {
       "id": "berlin-parking-211",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schillerstraße/Wilmersdorfer Straße",
       "ring": [
         [52.510031, 13.306115],
         [52.510084, 13.306085],
@@ -80369,7 +80369,7 @@
     {
       "id": "berlin-parking-212",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Frobenstraße/Bülowstraße",
       "ring": [
         [52.498575, 13.359812],
         [52.498628, 13.359782],
@@ -80388,7 +80388,7 @@
     {
       "id": "berlin-parking-213",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi An der Urania",
       "ring": [
         [52.50089, 13.346088],
         [52.500943, 13.346058],
@@ -80407,7 +80407,7 @@
     {
       "id": "berlin-parking-214",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Winterfeldtplatz",
       "ring": [
         [52.497118, 13.354305],
         [52.497171, 13.354275],
@@ -80426,7 +80426,7 @@
     {
       "id": "berlin-parking-215",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Bayreuther Straße",
       "ring": [
         [52.501218, 13.343612],
         [52.501271, 13.343582],
@@ -80445,7 +80445,7 @@
     {
       "id": "berlin-parking-216",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kalckreuthstraße/Kleiststraße",
       "ring": [
         [52.500511, 13.348124],
         [52.500564, 13.348094],
@@ -80464,7 +80464,7 @@
     {
       "id": "berlin-parking-217",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Zietenstraße/Bülowstraße",
       "ring": [
         [52.499133, 13.357395],
         [52.499186, 13.357365],
@@ -80483,7 +80483,7 @@
     {
       "id": "berlin-parking-218",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Nollendorfplatz/Kleiststraße",
       "ring": [
         [52.500405, 13.353766],
         [52.500458, 13.353736],
@@ -80502,7 +80502,7 @@
     {
       "id": "berlin-parking-219",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Fuggerstraße/Martin-Luther-Straße",
       "ring": [
         [52.498834, 13.34658],
         [52.498862, 13.346572],
@@ -80521,7 +80521,7 @@
     {
       "id": "berlin-parking-220",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kalckreuthstraße/Fuggerstraße",
       "ring": [
         [52.499119, 13.348019],
         [52.499172, 13.347989],
@@ -80540,7 +80540,7 @@
     {
       "id": "berlin-parking-221",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Motzstraße/Martin-Luther-Straße",
       "ring": [
         [52.497352, 13.346699],
         [52.497405, 13.346669],
@@ -80559,7 +80559,7 @@
     {
       "id": "berlin-parking-222",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Motzstraße/Eisenacher Straße",
       "ring": [
         [52.498372, 13.349912],
         [52.498425, 13.349882],
@@ -80578,7 +80578,7 @@
     {
       "id": "berlin-parking-223",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eisenacher Straße/ Nollendorfstraße",
       "ring": [
         [52.497272, 13.349802],
         [52.4973, 13.349794],
@@ -80597,7 +80597,7 @@
     {
       "id": "berlin-parking-224",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Bülowstraße",
       "ring": [
         [52.497472, 13.362854],
         [52.4975, 13.362846],
@@ -80616,7 +80616,7 @@
     {
       "id": "berlin-parking-225",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Nollendorfstraße",
       "ring": [
         [52.497834, 13.352011],
         [52.497887, 13.351981],
@@ -80635,7 +80635,7 @@
     {
       "id": "berlin-parking-226",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Maaßenstraße",
       "ring": [
         [52.498211, 13.354077],
         [52.498264, 13.354047],
@@ -80654,7 +80654,7 @@
     {
       "id": "berlin-parking-227",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Spandau Arcaden Ost",
       "ring": [
         [52.534073, 13.198642],
         [52.534126, 13.198612],
@@ -80673,7 +80673,7 @@
     {
       "id": "berlin-parking-228",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Spandau Arcaden West",
       "ring": [
         [52.534364, 13.195967],
         [52.534417, 13.195937],
@@ -80692,7 +80692,7 @@
     {
       "id": "berlin-parking-229",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lustgarten",
       "ring": [
         [52.51864, 13.400739],
         [52.518668, 13.400731],
@@ -80711,7 +80711,7 @@
     {
       "id": "berlin-parking-230",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Boddinstraße",
       "ring": [
         [52.480469, 13.424169],
         [52.480521, 13.424139],
@@ -80730,7 +80730,7 @@
     {
       "id": "berlin-parking-231",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Sommerbad Neukölln",
       "ring": [
         [52.480295, 13.417081],
         [52.480323, 13.417073],
@@ -80749,7 +80749,7 @@
     {
       "id": "berlin-parking-232",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Herrfurthstraße",
       "ring": [
         [52.476684, 13.418993],
         [52.476736, 13.418963],
@@ -80768,7 +80768,7 @@
     {
       "id": "berlin-parking-233",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kienitzer Straße/Schillerpromenade",
       "ring": [
         [52.475597, 13.422175],
         [52.47565, 13.422145],
@@ -80787,7 +80787,7 @@
     {
       "id": "berlin-parking-234",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Allerstraße",
       "ring": [
         [52.474386, 13.419613],
         [52.474414, 13.419605],
@@ -80806,7 +80806,7 @@
     {
       "id": "berlin-parking-235",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eingang Crashgate",
       "ring": [
         [52.470664, 13.420504],
         [52.470692, 13.420496],
@@ -80825,7 +80825,7 @@
     {
       "id": "berlin-parking-236",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Leinestraße",
       "ring": [
         [52.472492, 13.420138],
         [52.47252, 13.42013],
@@ -80844,7 +80844,7 @@
     {
       "id": "berlin-parking-237",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Koserstraße",
       "ring": [
         [52.461601, 13.294786],
         [52.461654, 13.294756],
@@ -80863,7 +80863,7 @@
     {
       "id": "berlin-parking-238",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/U Dahlem-Dorf",
       "ring": [
         [52.457562, 13.290531],
         [52.45759, 13.290523],
@@ -80882,7 +80882,7 @@
     {
       "id": "berlin-parking-239",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Arnimallee",
       "ring": [
         [52.455192, 13.29398],
         [52.455245, 13.29395],
@@ -80901,7 +80901,7 @@
     {
       "id": "berlin-parking-240",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Fabeckstraße",
       "ring": [
         [52.45373, 13.293414],
         [52.453758, 13.293406],
@@ -80920,7 +80920,7 @@
     {
       "id": "berlin-parking-241",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Silberlaube",
       "ring": [
         [52.452504, 13.287175],
         [52.452557, 13.287145],
@@ -80939,7 +80939,7 @@
     {
       "id": "berlin-parking-242",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Boltzmannstraße",
       "ring": [
         [52.447057, 13.280135],
         [52.44711, 13.280105],
@@ -80958,7 +80958,7 @@
     {
       "id": "berlin-parking-243",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Van't-Hoff-Straße",
       "ring": [
         [52.447294, 13.283695],
         [52.447322, 13.283687],
@@ -80977,7 +80977,7 @@
     {
       "id": "berlin-parking-244",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Hauptbahnhof/Heidestraße",
       "ring": [
         [52.527152, 13.370908],
         [52.527205, 13.370878],
@@ -80996,7 +80996,7 @@
     {
       "id": "berlin-parking-247",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Hauptbahnhof/Washingtonplatz",
       "ring": [
         [52.523693, 13.37091],
         [52.523745, 13.37088],
@@ -81015,7 +81015,7 @@
     {
       "id": "berlin-parking-248",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Friedhof Columbiadamm",
       "ring": [
         [52.482423, 13.407176],
         [52.482475, 13.407146],
@@ -81034,7 +81034,7 @@
     {
       "id": "berlin-parking-249",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Behrenstraße/Glinkastraße",
       "ring": [
         [52.515492, 13.387363],
         [52.51552, 13.387355],
@@ -81053,7 +81053,7 @@
     {
       "id": "berlin-parking-250",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mauerstraße/Behrenstraße",
       "ring": [
         [52.515173, 13.384624],
         [52.515225, 13.384594],
@@ -81072,7 +81072,7 @@
     {
       "id": "berlin-parking-251",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Glinkastraße/Jägerstraße",
       "ring": [
         [52.514012, 13.386537],
         [52.51404, 13.386529],
@@ -81091,7 +81091,7 @@
     {
       "id": "berlin-parking-252",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Jägerstraße",
       "ring": [
         [52.513738, 13.387762],
         [52.513766, 13.387754],
@@ -81110,7 +81110,7 @@
     {
       "id": "berlin-parking-253",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mauerstraße/Taubenstraße",
       "ring": [
         [52.513073, 13.385504],
         [52.513101, 13.385496],
@@ -81129,7 +81129,7 @@
     {
       "id": "berlin-parking-254",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Glinkastraße/Mohrenstraße",
       "ring": [
         [52.511922, 13.387146],
         [52.511974, 13.387116],
@@ -81148,7 +81148,7 @@
     {
       "id": "berlin-parking-255",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Museum für Kommunikation",
       "ring": [
         [52.510431, 13.387419],
         [52.510483, 13.387389],
@@ -81167,7 +81167,7 @@
     {
       "id": "berlin-parking-256",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Leipziger Str./Wilhelmstr.",
       "ring": [
         [52.510464, 13.384203],
         [52.510516, 13.384173],
@@ -81186,7 +81186,7 @@
     {
       "id": "berlin-parking-257",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Zimmerstraße/Wilhelmstraße",
       "ring": [
         [52.507402, 13.386035],
         [52.507454, 13.386005],
@@ -81205,7 +81205,7 @@
     {
       "id": "berlin-parking-258",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Zimmerstraße/Friedrichstraße",
       "ring": [
         [52.507692, 13.390946],
         [52.50772, 13.390938],
@@ -81224,7 +81224,7 @@
     {
       "id": "berlin-parking-259",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Krausenstraße/Mauerstraße",
       "ring": [
         [52.509408, 13.388719],
         [52.50946, 13.388689],
@@ -81243,7 +81243,7 @@
     {
       "id": "berlin-parking-260",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Unter den Linden/Charlottenstraße",
       "ring": [
         [52.517315, 13.390565],
         [52.517367, 13.390535],
@@ -81262,7 +81262,7 @@
     {
       "id": "berlin-parking-261",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Charlottenstraße/Rosmarinstraße",
       "ring": [
         [52.516178, 13.391012],
         [52.516206, 13.391004],
@@ -81281,7 +81281,7 @@
     {
       "id": "berlin-parking-262",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Bebelplatz",
       "ring": [
         [52.517557, 13.392633],
         [52.517609, 13.392603],
@@ -81300,7 +81300,7 @@
     {
       "id": "berlin-parking-263",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Neue Wache",
       "ring": [
         [52.517814, 13.396318],
         [52.517866, 13.396288],
@@ -81319,7 +81319,7 @@
     {
       "id": "berlin-parking-264",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Breite Straße/Schlossplatz",
       "ring": [
         [52.516003, 13.403359],
         [52.516055, 13.403329],
@@ -81338,7 +81338,7 @@
     {
       "id": "berlin-parking-265",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Hinter dem Gießhaus/Am Kupfergraben",
       "ring": [
         [52.519248, 13.397115],
         [52.519276, 13.397107],
@@ -81357,7 +81357,7 @@
     {
       "id": "berlin-parking-266",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Burgstraße/Friedrichsbrücke",
       "ring": [
         [52.521199, 13.400785],
         [52.521251, 13.400755],
@@ -81376,7 +81376,7 @@
     {
       "id": "berlin-parking-267",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Spandauer Str./Heiligegeistkirchplatz",
       "ring": [
         [52.521011, 13.403878],
         [52.521039, 13.40387],
@@ -81395,7 +81395,7 @@
     {
       "id": "berlin-parking-268",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Spandauer Str./Marx-Engels-Forum",
       "ring": [
         [52.519322, 13.405821],
         [52.519374, 13.405791],
@@ -81414,7 +81414,7 @@
     {
       "id": "berlin-parking-269",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rathausstraße/Poststraße",
       "ring": [
         [52.517488, 13.405246],
         [52.51754, 13.405216],
@@ -81433,7 +81433,7 @@
     {
       "id": "berlin-parking-270",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Monbijouplatz",
       "ring": [
         [52.523088, 13.39939],
         [52.523116, 13.399382],
@@ -81452,7 +81452,7 @@
     {
       "id": "berlin-parking-271",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Hackescher Markt",
       "ring": [
         [52.5226, 13.40332],
         [52.522652, 13.40329],
@@ -81471,7 +81471,7 @@
     {
       "id": "berlin-parking-272",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Weinmeisterstraße",
       "ring": [
         [52.525137, 13.406056],
         [52.525189, 13.406026],
@@ -81490,7 +81490,7 @@
     {
       "id": "berlin-parking-273",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Neue Schönhauser Straße/Rosenthaler Straße",
       "ring": [
         [52.524709, 13.403979],
         [52.524737, 13.403971],
@@ -81509,7 +81509,7 @@
     {
       "id": "berlin-parking-274",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kleine Rosenthaler Straße/Steinstraße",
       "ring": [
         [52.527308, 13.403563],
         [52.52736, 13.403533],
@@ -81528,7 +81528,7 @@
     {
       "id": "berlin-parking-275",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Linienstraße/Rosenthaler Str.",
       "ring": [
         [52.529004, 13.402333],
         [52.529056, 13.402303],
@@ -81547,7 +81547,7 @@
     {
       "id": "berlin-parking-276",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Rosenthaler Platz Süd",
       "ring": [
         [52.529495, 13.399845],
         [52.529523, 13.399837],
@@ -81566,7 +81566,7 @@
     {
       "id": "berlin-parking-277",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Rosenthaler Platz Nord",
       "ring": [
         [52.52961, 13.399742],
         [52.529662, 13.399712],
@@ -81585,7 +81585,7 @@
     {
       "id": "berlin-parking-278",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Torstraße/U Rosenthaler Platz",
       "ring": [
         [52.529914, 13.403542],
         [52.529966, 13.403512],
@@ -81604,7 +81604,7 @@
     {
       "id": "berlin-parking-279",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Linienstraße/Rückerstraße",
       "ring": [
         [52.528426, 13.407828],
         [52.528478, 13.407798],
@@ -81623,7 +81623,7 @@
     {
       "id": "berlin-parking-280",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Alte Schönhauser Straße/Linienstraße",
       "ring": [
         [52.528031, 13.4091],
         [52.528083, 13.40907],
@@ -81642,7 +81642,7 @@
     {
       "id": "berlin-parking-281",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Alte Schönhauser Straße",
       "ring": [
         [52.526518, 13.407868],
         [52.526546, 13.40786],
@@ -81661,7 +81661,7 @@
     {
       "id": "berlin-parking-282",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Dahlem-Dorf",
       "ring": [
         [52.457155, 13.291163],
         [52.457183, 13.291155],
@@ -81680,7 +81680,7 @@
     {
       "id": "berlin-parking-283",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Onkel Toms Hütte/Wirtschaftsweg",
       "ring": [
         [52.450271, 13.255012],
         [52.450299, 13.255004],
@@ -81699,7 +81699,7 @@
     {
       "id": "berlin-parking-284",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Studentendorf Adlershof",
       "ring": [
         [52.432552, 13.528057],
         [52.432604, 13.528027],
@@ -81718,7 +81718,7 @@
     {
       "id": "berlin-parking-285",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Schönleinstraße",
       "ring": [
         [52.493076, 13.421583],
         [52.493104, 13.421575],
@@ -81737,7 +81737,7 @@
     {
       "id": "berlin-parking-286",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Admiralbrücke",
       "ring": [
         [52.495012, 13.414269],
         [52.495064, 13.414239],
@@ -81756,7 +81756,7 @@
     {
       "id": "berlin-parking-287",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Dieffenbachstr./Graefestr.",
       "ring": [
         [52.492348, 13.417659],
         [52.492376, 13.417651],
@@ -81775,7 +81775,7 @@
     {
       "id": "berlin-parking-288",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Dieffenbachstr./Grimmstr.",
       "ring": [
         [52.493098, 13.414682],
         [52.49315, 13.414652],
@@ -81794,7 +81794,7 @@
     {
       "id": "berlin-parking-289",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Graefestr./Boeckhstr.",
       "ring": [
         [52.493775, 13.418765],
         [52.493827, 13.418735],
@@ -81813,7 +81813,7 @@
     {
       "id": "berlin-parking-290",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Graefestraße/Planufer",
       "ring": [
         [52.495696, 13.419714],
         [52.495724, 13.419706],
@@ -81832,7 +81832,7 @@
     {
       "id": "berlin-parking-291",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Hohenstaufenplatz/Dieffenbachstraße",
       "ring": [
         [52.49159, 13.420436],
         [52.491642, 13.420406],
@@ -81851,7 +81851,7 @@
     {
       "id": "berlin-parking-292",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Körtestraße/Fichtestraße",
       "ring": [
         [52.491392, 13.413053],
         [52.491444, 13.413023],
@@ -81870,7 +81870,7 @@
     {
       "id": "berlin-parking-293",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Südstern/Fontanepromenade (nur Carsharing)",
       "ring": [
         [52.489953, 13.407309],
         [52.490005, 13.407279],
@@ -81889,7 +81889,7 @@
     {
       "id": "berlin-parking-294",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Südstern",
       "ring": [
         [52.489367, 13.407621],
         [52.489395, 13.407613],
@@ -81908,7 +81908,7 @@
     {
       "id": "berlin-parking-295",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Klinikum Am Urban/Planufer",
       "ring": [
         [52.494578, 13.411105],
         [52.49463, 13.411075],
@@ -81927,7 +81927,7 @@
     {
       "id": "berlin-parking-296",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freiligrathstraße",
       "ring": [
         [52.490961, 13.410543],
         [52.491013, 13.410513],
@@ -81946,7 +81946,7 @@
     {
       "id": "berlin-parking-297",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Klinikum Am Urban/Dieffenbachstraße",
       "ring": [
         [52.493868, 13.411542],
         [52.49392, 13.411512],
@@ -81965,7 +81965,7 @@
     {
       "id": "berlin-parking-298",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Hasenheide/Graefestraße",
       "ring": [
         [52.488569, 13.414389],
         [52.488621, 13.414359],
@@ -81984,7 +81984,7 @@
     {
       "id": "berlin-parking-299",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Hasenheide/Jahnstraße",
       "ring": [
         [52.487735, 13.419444],
         [52.487787, 13.419414],
@@ -82003,7 +82003,7 @@
     {
       "id": "berlin-parking-300",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Huxleys Neue Welt",
       "ring": [
         [52.486874, 13.422464],
         [52.486926, 13.422434],
@@ -82022,7 +82022,7 @@
     {
       "id": "berlin-parking-302",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Karl-Liebknecht-Straße/Berliner Fernsehturm",
       "ring": [
         [52.521341, 13.407885],
         [52.521369, 13.407877],
@@ -82041,7 +82041,7 @@
     {
       "id": "berlin-parking-303",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Dircksenstraße/Rochstraße",
       "ring": [
         [52.523429, 13.407088],
         [52.523457, 13.40708],
@@ -82060,7 +82060,7 @@
     {
       "id": "berlin-parking-304",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Alexanderplatz/Dircksenstraße",
       "ring": [
         [52.522679, 13.409542],
         [52.522731, 13.409512],
@@ -82079,7 +82079,7 @@
     {
       "id": "berlin-parking-305",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Alexanderplatz/Grunerstraße",
       "ring": [
         [52.520246, 13.41365],
         [52.520298, 13.41362],
@@ -82098,7 +82098,7 @@
     {
       "id": "berlin-parking-306",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Alexanderplatz/Bernhard-Weiß-Straße",
       "ring": [
         [52.522556, 13.416114],
         [52.522584, 13.416106],
@@ -82117,7 +82117,7 @@
     {
       "id": "berlin-parking-307",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Alexanderplatz/Memhardstraße",
       "ring": [
         [52.52373, 13.411423],
         [52.523782, 13.411393],
@@ -82136,7 +82136,7 @@
     {
       "id": "berlin-parking-308",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Memhardstraße/Rosa-Luxemburg-Straße",
       "ring": [
         [52.524133, 13.410123],
         [52.524185, 13.410093],
@@ -82155,7 +82155,7 @@
     {
       "id": "berlin-parking-309",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Münzstraße/Rochstraße",
       "ring": [
         [52.524395, 13.408316],
         [52.524447, 13.408286],
@@ -82174,7 +82174,7 @@
     {
       "id": "berlin-parking-310",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rosa-Luxemburg-Straße/Hirtenstraße",
       "ring": [
         [52.525762, 13.41103],
         [52.525814, 13.411],
@@ -82193,7 +82193,7 @@
     {
       "id": "berlin-parking-311",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Karl-Liebknecht-Straße/Hirtenstraße",
       "ring": [
         [52.524935, 13.413663],
         [52.524987, 13.413633],
@@ -82212,7 +82212,7 @@
     {
       "id": "berlin-parking-312",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Museumsinsel",
       "ring": [
         [52.517093, 13.399757],
         [52.517145, 13.399727],
@@ -82231,7 +82231,7 @@
     {
       "id": "berlin-parking-313",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Graefestr./Urbanstr.",
       "ring": [
         [52.49122, 13.416429],
         [52.491248, 13.416421],
@@ -82250,7 +82250,7 @@
     {
       "id": "berlin-parking-314",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Onkel Toms Hütte/Riemeisterstraße",
       "ring": [
         [52.450077, 13.254849],
         [52.450105, 13.254841],
@@ -82269,7 +82269,7 @@
     {
       "id": "berlin-parking-315",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Messe/Halle 19",
       "ring": [
         [52.506535, 13.275939],
         [52.506563, 13.275931],
@@ -82288,7 +82288,7 @@
     {
       "id": "berlin-parking-316",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Messe/Hub 27",
       "ring": [
         [52.502661, 13.266657],
         [52.502714, 13.266627],
@@ -82307,7 +82307,7 @@
     {
       "id": "berlin-parking-317",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Messe/City Cube",
       "ring": [
         [52.499211, 13.271608],
         [52.499264, 13.271578],
@@ -82326,7 +82326,7 @@
     {
       "id": "berlin-parking-318",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schönleinstraße/Urbanstraße",
       "ring": [
         [52.490322, 13.419991],
         [52.49035, 13.419983],
@@ -82345,7 +82345,7 @@
     {
       "id": "berlin-parking-319",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Bundesministerium der Finanzen",
       "ring": [
         [52.50815, 13.385404],
         [52.508202, 13.385374],
@@ -82364,7 +82364,7 @@
     {
       "id": "berlin-parking-320",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Niederkirchnerstraße",
       "ring": [
         [52.507165, 13.382263],
         [52.507217, 13.382233],
@@ -82383,7 +82383,7 @@
     {
       "id": "berlin-parking-321",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Zimmerstraße",
       "ring": [
         [52.507515, 13.387899],
         [52.507543, 13.387891],
@@ -82402,7 +82402,7 @@
     {
       "id": "berlin-parking-322",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Hauptbahnhof/Ella-Trebe-Straße",
       "ring": [
         [52.523961, 13.368438],
         [52.524014, 13.368408],
@@ -82421,7 +82421,7 @@
     {
       "id": "berlin-parking-323",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Katharina-Paulus-Straße/Alt-Moabit",
       "ring": [
         [52.522689, 13.36744],
         [52.522742, 13.36741],
@@ -82440,7 +82440,7 @@
     {
       "id": "berlin-parking-324",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eisenacher Straße/Kleiststraße",
       "ring": [
         [52.49995, 13.349665],
         [52.500003, 13.349635],
@@ -82459,7 +82459,7 @@
     {
       "id": "berlin-parking-325",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Wilmersdorfer Straße/Kantstraße",
       "ring": [
         [52.506673, 13.304663],
         [52.506701, 13.304655],
@@ -82478,7 +82478,7 @@
     {
       "id": "berlin-parking-326",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Wilmersdorfer Straße/Stuttgarter Platz",
       "ring": [
         [52.505747, 13.306634],
         [52.505775, 13.306626],
@@ -82497,7 +82497,7 @@
     {
       "id": "berlin-parking-327",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Otto-Braun-Straße/Alexanderstraße",
       "ring": [
         [52.520601, 13.415064],
         [52.520653, 13.415034],
@@ -82516,7 +82516,7 @@
     {
       "id": "berlin-parking-328",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Paulstraße/Magnus-Hirschfeld-Ufer",
       "ring": [
         [52.518486, 13.35517],
         [52.518539, 13.35514],
@@ -82535,7 +82535,7 @@
     {
       "id": "berlin-parking-329",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Großer Stern",
       "ring": [
         [52.5153, 13.350498],
         [52.515328, 13.35049],
@@ -82554,7 +82554,7 @@
     {
       "id": "berlin-parking-330",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lichtensteinallee/Café am Neuen See",
       "ring": [
         [52.510806, 13.345454],
         [52.510834, 13.345446],
@@ -82573,7 +82573,7 @@
     {
       "id": "berlin-parking-331",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Philharmonie",
       "ring": [
         [52.510537, 13.368226],
         [52.510565, 13.368218],
@@ -82592,7 +82592,7 @@
     {
       "id": "berlin-parking-332",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Am Park",
       "ring": [
         [52.511442, 13.373875],
         [52.511494, 13.373845],
@@ -82611,7 +82611,7 @@
     {
       "id": "berlin-parking-333",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Rathaus Steglitz/Berlinickestraße",
       "ring": [
         [52.455544, 13.323275],
         [52.455597, 13.323245],
@@ -82630,7 +82630,7 @@
     {
       "id": "berlin-parking-334",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Henriette-Herz-Park",
       "ring": [
         [52.51084, 13.37279],
         [52.510892, 13.37276],
@@ -82649,7 +82649,7 @@
     {
       "id": "berlin-parking-335",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Neustädtischer Kirchplatz",
       "ring": [
         [52.518452, 13.384963],
         [52.518504, 13.384933],
@@ -82668,7 +82668,7 @@
     {
       "id": "berlin-parking-336",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Dorotheenstraße/Friedrichstraße",
       "ring": [
         [52.518701, 13.387679],
         [52.518729, 13.387671],
@@ -82687,7 +82687,7 @@
     {
       "id": "berlin-parking-337",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Friedrichstraße/Georgenstraße",
       "ring": [
         [52.519845, 13.387458],
         [52.519897, 13.387428],
@@ -82706,7 +82706,7 @@
     {
       "id": "berlin-parking-338",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mittelstraße/Friedrichstraße",
       "ring": [
         [52.518036, 13.389213],
         [52.518088, 13.389183],
@@ -82725,7 +82725,7 @@
     {
       "id": "berlin-parking-339",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Marschallbrücke",
       "ring": [
         [52.519799, 13.38059],
         [52.519851, 13.38056],
@@ -82744,7 +82744,7 @@
     {
       "id": "berlin-parking-340",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kronprinzenbrücke",
       "ring": [
         [52.52242, 13.376686],
         [52.522448, 13.376678],
@@ -82763,7 +82763,7 @@
     {
       "id": "berlin-parking-341",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Reichstagufer",
       "ring": [
         [52.518965, 13.381201],
         [52.519017, 13.381171],
@@ -82782,7 +82782,7 @@
     {
       "id": "berlin-parking-342",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Fontanestraße/Flughafenstraße",
       "ring": [
         [52.479819, 13.4215],
         [52.479846, 13.421492],
@@ -82801,7 +82801,7 @@
     {
       "id": "berlin-parking-343",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Selchower Straße/Schillerpromenade",
       "ring": [
         [52.478818, 13.422085],
         [52.47887, 13.422055],
@@ -82820,7 +82820,7 @@
     {
       "id": "berlin-parking-344",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Boddinstraße/Selchower Straße",
       "ring": [
         [52.479118, 13.425324],
         [52.479171, 13.425294],
@@ -82839,7 +82839,7 @@
     {
       "id": "berlin-parking-345",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Herrfurthstraße/Hermannstraße",
       "ring": [
         [52.477541, 13.42569],
         [52.477593, 13.42566],
@@ -82858,7 +82858,7 @@
     {
       "id": "berlin-parking-346",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Weisestraße/Herrfurthstraße",
       "ring": [
         [52.477478, 13.424144],
         [52.47753, 13.424114],
@@ -82877,7 +82877,7 @@
     {
       "id": "berlin-parking-347",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Herrfurthplatz Ost",
       "ring": [
         [52.477402, 13.422874],
         [52.477454, 13.422844],
@@ -82896,7 +82896,7 @@
     {
       "id": "berlin-parking-348",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Herrfurthplatz West",
       "ring": [
         [52.477021, 13.421231],
         [52.477048, 13.421223],
@@ -82915,7 +82915,7 @@
     {
       "id": "berlin-parking-349",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Kienitzer Straße/Hermannstraße",
       "ring": [
         [52.47601, 13.426403],
         [52.476062, 13.426373],
@@ -82934,7 +82934,7 @@
     {
       "id": "berlin-parking-350",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Allerstraße/Weisestraße",
       "ring": [
         [52.474859, 13.424622],
         [52.474911, 13.424592],
@@ -82953,7 +82953,7 @@
     {
       "id": "berlin-parking-351",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Allerstraße/Schillerpromenade",
       "ring": [
         [52.474703, 13.422505],
         [52.474755, 13.422475],
@@ -82972,7 +82972,7 @@
     {
       "id": "berlin-parking-352",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Okerstraße/U Leinestraße",
       "ring": [
         [52.474306, 13.427321],
         [52.474358, 13.427291],
@@ -82991,7 +82991,7 @@
     {
       "id": "berlin-parking-353",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Leinestraße/Weisestraße",
       "ring": [
         [52.473084, 13.425466],
         [52.473136, 13.425436],
@@ -83010,7 +83010,7 @@
     {
       "id": "berlin-parking-354",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schillerpromenade/Leinestraße",
       "ring": [
         [52.47309, 13.423413],
         [52.473142, 13.423383],
@@ -83029,7 +83029,7 @@
     {
       "id": "berlin-parking-355",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Marie-Elisabeth-Lüders-Haus",
       "ring": [
         [52.520841, 13.377633],
         [52.520893, 13.377603],
@@ -83105,7 +83105,7 @@
     {
       "id": "berlin-parking-359",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Allerstraße",
       "ring": [
         [52.475278, 13.41937],
         [52.475306, 13.419362],
@@ -83124,7 +83124,7 @@
     {
       "id": "berlin-parking-360",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Johanniterstraße",
       "ring": [
         [52.496302, 13.39895],
         [52.49633, 13.398942],
@@ -83143,7 +83143,7 @@
     {
       "id": "berlin-parking-361",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Brachvogelstraße/Alexandrinenstraße",
       "ring": [
         [52.496958, 13.398908],
         [52.496986, 13.3989],
@@ -83162,7 +83162,7 @@
     {
       "id": "berlin-parking-362",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Alexandrinestraße/Neuenburger Straße",
       "ring": [
         [52.499489, 13.400324],
         [52.499541, 13.400294],
@@ -83181,7 +83181,7 @@
     {
       "id": "berlin-parking-363",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Alexandrinenstraße",
       "ring": [
         [52.501171, 13.401842],
         [52.501223, 13.401812],
@@ -83200,7 +83200,7 @@
     {
       "id": "berlin-parking-364",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Franz-Künstler-Straße/Alexandrinenstraße",
       "ring": [
         [52.502187, 13.402614],
         [52.502239, 13.402584],
@@ -83219,7 +83219,7 @@
     {
       "id": "berlin-parking-365",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Modersohnstraße",
       "ring": [
         [52.508613, 13.460035],
         [52.508665, 13.460005],
@@ -83238,7 +83238,7 @@
     {
       "id": "berlin-parking-366",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Modersohnstraße/Simplonstraße",
       "ring": [
         [52.508228, 13.459686],
         [52.508256, 13.459678],
@@ -83428,7 +83428,7 @@
     {
       "id": "berlin-parking-387",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Admiralstraße/Fraenkelufer",
       "ring": [
         [52.495694, 13.415563],
         [52.495747, 13.415533],
@@ -83447,7 +83447,7 @@
     {
       "id": "berlin-parking-388",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Kohlfurter Straße/Fraenkelufer",
       "ring": [
         [52.496669, 13.418887],
         [52.496721, 13.418857],
@@ -83466,7 +83466,7 @@
     {
       "id": "berlin-parking-389",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Görlitzer Bahnhof/Manteuffelstraße",
       "ring": [
         [52.499545, 13.426845],
         [52.499597, 13.426815],
@@ -83485,7 +83485,7 @@
     {
       "id": "berlin-parking-390",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kottbusser Tor/Zentrum Kreuzberg",
       "ring": [
         [52.499388, 13.41763],
         [52.499441, 13.4176],
@@ -83504,7 +83504,7 @@
     {
       "id": "berlin-parking-391",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kottbusser Tor/Reichenberger Straße",
       "ring": [
         [52.498658, 13.419739],
         [52.498686, 13.419731],
@@ -83523,7 +83523,7 @@
     {
       "id": "berlin-parking-392",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jebi Mariannenstraße/Skalitzer Straße",
       "ring": [
         [52.49882, 13.422257],
         [52.498872, 13.422227],
@@ -83542,7 +83542,7 @@
     {
       "id": "berlin-parking-393",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Görlitzer Straße/Skalitzer Straße",
       "ring": [
         [52.498905, 13.425964],
         [52.498933, 13.425956],
@@ -83561,7 +83561,7 @@
     {
       "id": "berlin-parking-394",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rio-Reiser-Platz",
       "ring": [
         [52.499967, 13.423332],
         [52.500019, 13.423302],
@@ -83580,7 +83580,7 @@
     {
       "id": "berlin-parking-395",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Adalbertstraße/Naunynstraße",
       "ring": [
         [52.502096, 13.420106],
         [52.502124, 13.420098],
@@ -83599,7 +83599,7 @@
     {
       "id": "berlin-parking-396",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Dresdner Straße",
       "ring": [
         [52.501057, 13.417132],
         [52.501085, 13.417124],
@@ -83618,7 +83618,7 @@
     {
       "id": "berlin-parking-397",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Oranienplatz/Naunynstraße",
       "ring": [
         [52.502377, 13.417019],
         [52.502429, 13.416989],
@@ -83637,7 +83637,7 @@
     {
       "id": "berlin-parking-398",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mühlenstraße/Straße der Pariser Kommune",
       "ring": [
         [52.508107, 13.435296],
         [52.50816, 13.435266],
@@ -83656,7 +83656,7 @@
     {
       "id": "berlin-parking-399",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rummelsburger Platz",
       "ring": [
         [52.507048, 13.437418],
         [52.507101, 13.437388],
@@ -83675,7 +83675,7 @@
     {
       "id": "berlin-parking-400",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Edith-Kiss-Straße",
       "ring": [
         [52.50566, 13.439418],
         [52.505713, 13.439388],
@@ -83694,7 +83694,7 @@
     {
       "id": "berlin-parking-401",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mühlenstraße/Mildred-Harnack-Straße",
       "ring": [
         [52.50482, 13.44043],
         [52.504872, 13.4404],
@@ -83713,7 +83713,7 @@
     {
       "id": "berlin-parking-402",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Mühlenstraße/Hedwig-Wachenheim-Straße",
       "ring": [
         [52.504059, 13.442527],
         [52.504111, 13.442497],
@@ -83732,7 +83732,7 @@
     {
       "id": "berlin-parking-403",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Warschauer Str./Rudolfstr.",
       "ring": [
         [52.50514, 13.450074],
         [52.505193, 13.450044],
@@ -83751,7 +83751,7 @@
     {
       "id": "berlin-parking-404",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Warschauer Straße",
       "ring": [
         [52.507838, 13.450977],
         [52.507891, 13.450947],
@@ -83770,7 +83770,7 @@
     {
       "id": "berlin-parking-405",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Marchelewskistraße/Revaler Straße",
       "ring": [
         [52.508488, 13.449178],
         [52.508516, 13.44917],
@@ -83789,7 +83789,7 @@
     {
       "id": "berlin-parking-406",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Libauer Straße/Revaler Straße",
       "ring": [
         [52.508452, 13.453083],
         [52.508479, 13.453074],
@@ -83808,7 +83808,7 @@
     {
       "id": "berlin-parking-407",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Simon-Dach-Straße/Revaler Straße",
       "ring": [
         [52.50809, 13.4554],
         [52.508118, 13.455391],
@@ -83827,7 +83827,7 @@
     {
       "id": "berlin-parking-408",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Libauer Straße/Kopernikusstraße",
       "ring": [
         [52.509962, 13.455303],
         [52.510015, 13.455273],
@@ -83846,7 +83846,7 @@
     {
       "id": "berlin-parking-409",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gabriel-Max-Straße/Wühlischstraße",
       "ring": [
         [52.50964, 13.458149],
         [52.509693, 13.458119],
@@ -83865,7 +83865,7 @@
     {
       "id": "berlin-parking-410",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Grünberger Höfe",
       "ring": [
         [52.511921, 13.455722],
         [52.511949, 13.455714],
@@ -83884,7 +83884,7 @@
     {
       "id": "berlin-parking-411",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Grünberger Straße/Warschauer Straße",
       "ring": [
         [52.512279, 13.453578],
         [52.512332, 13.453548],
@@ -83903,7 +83903,7 @@
     {
       "id": "berlin-parking-412",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Warschauer Str./Tamara-Danz-Straße",
       "ring": [
         [52.505473, 13.447478],
         [52.505526, 13.447448],
@@ -83922,7 +83922,7 @@
     {
       "id": "berlin-parking-413",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Tamara-Danz-Straße/Wanda-Kallenbach-Straße",
       "ring": [
         [52.505142, 13.445828],
         [52.505194, 13.445798],
@@ -83941,7 +83941,7 @@
     {
       "id": "berlin-parking-414",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Oberbaumbrücke",
       "ring": [
         [52.502977, 13.446447],
         [52.50303, 13.446417],
@@ -83960,7 +83960,7 @@
     {
       "id": "berlin-parking-415",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Grünberger Straße/Simon-Dach-Straße",
       "ring": [
         [52.511699, 13.457579],
         [52.511726, 13.457571],
@@ -83979,7 +83979,7 @@
     {
       "id": "berlin-parking-416",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Landsberger Allee/Otto-Ostrowski-Straße",
       "ring": [
         [52.527381, 13.453658],
         [52.527433, 13.453628],
@@ -83998,7 +83998,7 @@
     {
       "id": "berlin-parking-417",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Graefestraße/Planufer",
       "ring": [
         [52.495771, 13.419786],
         [52.495799, 13.419778],
@@ -84017,7 +84017,7 @@
     {
       "id": "berlin-parking-418",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Landsberger Allee/Nordausgang",
       "ring": [
         [52.530196, 13.454838],
         [52.530248, 13.454808],
@@ -84036,7 +84036,7 @@
     {
       "id": "berlin-parking-419",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Landsberger Allee/SSE",
       "ring": [
         [52.528541, 13.454773],
         [52.528593, 13.454743],
@@ -84055,7 +84055,7 @@
     {
       "id": "berlin-parking-426",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Westerwaldstraße",
       "ring": [
         [52.549503, 13.178864],
         [52.549555, 13.178834],
@@ -84074,7 +84074,7 @@
     {
       "id": "berlin-parking-427",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Falkenseer Chaussee/Kellerwaldweg",
       "ring": [
         [52.549856, 13.173798],
         [52.549883, 13.173789],
@@ -84093,7 +84093,7 @@
     {
       "id": "berlin-parking-428",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Falkenseer Chaussee/Zeppelinstraße",
       "ring": [
         [52.548026, 13.183383],
         [52.548053, 13.183374],
@@ -84796,7 +84796,7 @@
     {
       "id": "berlin-parking-465",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Rheinsteinstr",
       "ring": [
         [52.484794, 13.53419],
         [52.484846, 13.53416],
@@ -84815,7 +84815,7 @@
     {
       "id": "berlin-parking-466",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "S Charlottenburg",
       "ring": [
         [52.505376, 13.302794],
         [52.505429, 13.302764],
@@ -84834,7 +84834,7 @@
     {
       "id": "berlin-parking-467",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Meta-London-Straße",
       "ring": [
         [52.556398, 13.209418],
         [52.556451, 13.209387],
@@ -84853,7 +84853,7 @@
     {
       "id": "berlin-parking-468",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Amorbacher Weg",
       "ring": [
         [52.557378, 13.208415],
         [52.55743, 13.208385],
@@ -84872,7 +84872,7 @@
     {
       "id": "berlin-parking-469",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Am Maselakepark",
       "ring": [
         [52.556667, 13.213393],
         [52.556719, 13.213363],
@@ -84891,7 +84891,7 @@
     {
       "id": "berlin-parking-470",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "S Greifswalder",
       "ring": [
         [52.540798, 13.438453],
         [52.540826, 13.438444],
@@ -84910,7 +84910,7 @@
     {
       "id": "berlin-parking-471",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jebi Felixstraße/Götzstraße",
       "ring": [
         [52.46351, 13.39487],
         [52.463562, 13.39484],
@@ -84929,7 +84929,7 @@
     {
       "id": "berlin-parking-472",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eingang Tempelhofer Feld/Columbiadamm",
       "ring": [
         [52.483256, 13.403174],
         [52.483284, 13.403166],
@@ -84948,7 +84948,7 @@
     {
       "id": "berlin-parking-473",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Katharina-Heinroth-Ufer/Parkside Gallery Office",
       "ring": [
         [52.508223, 13.343863],
         [52.508276, 13.343833],
@@ -84967,7 +84967,7 @@
     {
       "id": "berlin-parking-474",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Oberlandstraße/Atelier Gardens",
       "ring": [
         [52.464295, 13.4115],
         [52.464323, 13.411492],
@@ -84986,7 +84986,7 @@
     {
       "id": "berlin-parking-475",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rathaus Tempelhof",
       "ring": [
         [52.462608, 13.385709],
         [52.46266, 13.385679],
@@ -85005,7 +85005,7 @@
     {
       "id": "berlin-parking-476",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Rathaus Steglitz/Düppelstraße",
       "ring": [
         [52.457, 13.323669],
         [52.457053, 13.323639],
@@ -85024,7 +85024,7 @@
     {
       "id": "berlin-parking-477",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Walther-Schreiber-Platz/ Peschkestraße",
       "ring": [
         [52.465614, 13.329726],
         [52.465667, 13.329696],
@@ -85043,7 +85043,7 @@
     {
       "id": "berlin-parking-478",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schloßstraße/Muthesiusstraße",
       "ring": [
         [52.45866, 13.321824],
         [52.458713, 13.321794],
@@ -85062,7 +85062,7 @@
     {
       "id": "berlin-parking-479",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Freie Universität",
       "ring": [
         [52.450351, 13.280804],
         [52.450404, 13.280774],
@@ -85081,7 +85081,7 @@
     {
       "id": "berlin-parking-480",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Friedrich-Wilhelm-Platz/\nSchmiljanstraße",
       "ring": [
         [52.470486, 13.330585],
         [52.470539, 13.330555],
@@ -85100,7 +85100,7 @@
     {
       "id": "berlin-parking-481",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Friedrich-Wilhelm-Platz/\nWiesbadener Straße",
       "ring": [
         [52.471722, 13.32796],
         [52.471775, 13.32793],
@@ -85119,7 +85119,7 @@
     {
       "id": "berlin-parking-482",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Oskar-Helene-Heim",
       "ring": [
         [52.449794, 13.270053],
         [52.449847, 13.270023],
@@ -85138,7 +85138,7 @@
     {
       "id": "berlin-parking-483",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Platz der Luftbrücke",
       "ring": [
         [52.485011, 13.387219],
         [52.485063, 13.387189],
@@ -85157,7 +85157,7 @@
     {
       "id": "berlin-parking-484",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Podbielskiallee",
       "ring": [
         [52.464056, 13.296394],
         [52.464109, 13.296364],
@@ -85176,7 +85176,7 @@
     {
       "id": "berlin-parking-485",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Walther-Scheiber-Platz/Lefèvrestraße",
       "ring": [
         [52.466993, 13.328612],
         [52.467046, 13.328582],
@@ -85233,7 +85233,7 @@
     {
       "id": "berlin-parking-488",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Okerstraße/Schillerpromenade",
       "ring": [
         [52.473796, 13.422767],
         [52.473848, 13.422737],
@@ -85537,7 +85537,7 @@
     {
       "id": "berlin-parking-505",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Bellevue",
       "ring": [
         [52.520268, 13.347034],
         [52.520321, 13.347004],
@@ -85556,7 +85556,7 @@
     {
       "id": "berlin-parking-506",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Breitenbachplatz",
       "ring": [
         [52.466752, 13.310635],
         [52.46678, 13.310627],
@@ -85575,7 +85575,7 @@
     {
       "id": "berlin-parking-507",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schloßstraße/Feuerbachstraße",
       "ring": [
         [52.463023, 13.327429],
         [52.463075, 13.327399],
@@ -85594,7 +85594,7 @@
     {
       "id": "berlin-parking-508",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schloßstraße/Gutsmuthsstraße",
       "ring": [
         [52.463727, 13.32729],
         [52.46378, 13.32726],
@@ -85613,7 +85613,7 @@
     {
       "id": "berlin-parking-509",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kottbusser Tor/Admiralstraße",
       "ring": [
         [52.498157, 13.4173],
         [52.498209, 13.417269],
@@ -85632,7 +85632,7 @@
     {
       "id": "berlin-parking-510",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Spandauer Str./Marx-Engels-Forum",
       "ring": [
         [52.519939, 13.404419],
         [52.519966, 13.40441],
@@ -85651,7 +85651,7 @@
     {
       "id": "berlin-parking-511",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Museumsinsel",
       "ring": [
         [52.51741, 13.399518],
         [52.517438, 13.39951],
@@ -85670,7 +85670,7 @@
     {
       "id": "berlin-parking-512",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Futurium",
       "ring": [
         [52.523562, 13.373993],
         [52.523615, 13.373963],
@@ -85689,7 +85689,7 @@
     {
       "id": "berlin-parking-513",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Hbf/Europaplatz",
       "ring": [
         [52.525477, 13.368277],
         [52.525529, 13.368247],
@@ -85708,7 +85708,7 @@
     {
       "id": "berlin-parking-514",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Paulsternstraße",
       "ring": [
         [52.537873, 13.24816],
         [52.537925, 13.248129],
@@ -85727,7 +85727,7 @@
     {
       "id": "berlin-parking-515",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Marius-Carpentier-Straße",
       "ring": [
         [52.557874, 13.212648],
         [52.557901, 13.21264],
@@ -85746,7 +85746,7 @@
     {
       "id": "berlin-parking-516",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Alt-Pichelsdorf",
       "ring": [
         [52.513373, 13.196471],
         [52.513426, 13.19644],
@@ -85765,7 +85765,7 @@
     {
       "id": "berlin-parking-517",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gatower Straße/Heerstraße",
       "ring": [
         [52.515659, 13.18539],
         [52.515711, 13.18536],
@@ -85784,7 +85784,7 @@
     {
       "id": "berlin-parking-518",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Stresow",
       "ring": [
         [52.532507, 13.209635],
         [52.532535, 13.209627],
@@ -85803,7 +85803,7 @@
     {
       "id": "berlin-parking-519",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Rathaus Spandau/Seegefelder Straße",
       "ring": [
         [52.535375, 13.195181],
         [52.535427, 13.195151],
@@ -85822,7 +85822,7 @@
     {
       "id": "berlin-parking-520",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Rathaus Spandau/Martin-Albertz-Weg",
       "ring": [
         [52.537245, 13.200154],
         [52.537273, 13.200146],
@@ -85841,7 +85841,7 @@
     {
       "id": "berlin-parking-521",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Moritzstraße",
       "ring": [
         [52.538375, 13.201124],
         [52.538427, 13.201093],
@@ -85860,7 +85860,7 @@
     {
       "id": "berlin-parking-522",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Altstadt Spandau / Carl-Schurz-Str.",
       "ring": [
         [52.539887, 13.205612],
         [52.539939, 13.205581],
@@ -85879,7 +85879,7 @@
     {
       "id": "berlin-parking-523",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Tiergarten/Klopstockstraße",
       "ring": [
         [52.513744, 13.336856],
         [52.513796, 13.336826],
@@ -85898,7 +85898,7 @@
     {
       "id": "berlin-parking-524",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Storkower Straße",
       "ring": [
         [52.523355, 13.464521],
         [52.523408, 13.464491],
@@ -85917,7 +85917,7 @@
     {
       "id": "berlin-parking-525",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Hansaplatz",
       "ring": [
         [52.518368, 13.342765],
         [52.518395, 13.342756],
@@ -86031,7 +86031,7 @@
     {
       "id": "berlin-parking-531",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kottbusser Tor/Admiralstraße",
       "ring": [
         [52.498159, 13.417298],
         [52.498187, 13.41729],
@@ -86050,7 +86050,7 @@
     {
       "id": "berlin-parking-532",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Paradestr",
       "ring": [
         [52.478004, 13.386237],
         [52.478032, 13.386229],
@@ -86069,7 +86069,7 @@
     {
       "id": "berlin-parking-533",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Tempelhofer Damm/Peter-Strasser-Weg",
       "ring": [
         [52.476425, 13.386197],
         [52.476453, 13.386189],
@@ -86088,7 +86088,7 @@
     {
       "id": "berlin-parking-534",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Tempelhof/Manfred-von-Richthofen-Str",
       "ring": [
         [52.471694, 13.386096],
         [52.471722, 13.386088],
@@ -86107,7 +86107,7 @@
     {
       "id": "berlin-parking-535",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Alt-Tempelhof",
       "ring": [
         [52.46596, 13.385965],
         [52.465988, 13.385957],
@@ -86126,7 +86126,7 @@
     {
       "id": "berlin-parking-536",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Schloßstraße/Ahornstraße",
       "ring": [
         [52.460569, 13.323783],
         [52.460597, 13.323775],
@@ -86145,7 +86145,7 @@
     {
       "id": "berlin-parking-537",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Walther-Schreiber-Platz/Schöneberger Straße",
       "ring": [
         [52.464639, 13.329158],
         [52.464692, 13.329128],
@@ -86164,7 +86164,7 @@
     {
       "id": "berlin-parking-538",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gensweg",
       "ring": [
         [52.415284, 13.434778],
         [52.415336, 13.434748],
@@ -86183,7 +86183,7 @@
     {
       "id": "berlin-parking-539",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi An den Buckower Feldern",
       "ring": [
         [52.41627, 13.437273],
         [52.416298, 13.437265],
@@ -86202,7 +86202,7 @@
     {
       "id": "berlin-parking-540",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Stadtmitte/Krausenstraße",
       "ring": [
         [52.509523, 13.390561],
         [52.509575, 13.390531],
@@ -86221,7 +86221,7 @@
     {
       "id": "berlin-parking-541",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Klingelhöferstraße/Von-der-Heydt-Straße",
       "ring": [
         [52.506872, 13.352469],
         [52.506925, 13.352439],
@@ -86240,7 +86240,7 @@
     {
       "id": "berlin-parking-542",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Fasanerieallee",
       "ring": [
         [52.514114, 13.349142],
         [52.514167, 13.349112],
@@ -86259,7 +86259,7 @@
     {
       "id": "berlin-parking-543",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Volksbühne",
       "ring": [
         [52.526102, 13.411555],
         [52.526154, 13.411525],
@@ -86278,7 +86278,7 @@
     {
       "id": "berlin-parking-544",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Weinmeisterstraße/Gormannstraße",
       "ring": [
         [52.526196, 13.404169],
         [52.526248, 13.404139],
@@ -86297,7 +86297,7 @@
     {
       "id": "berlin-parking-545",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Große Hamburger Straße/Auguststraße",
       "ring": [
         [52.52713, 13.398227],
         [52.527182, 13.398197],
@@ -86316,7 +86316,7 @@
     {
       "id": "berlin-parking-546",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Geschwister-Scholl-Straße/Georgenstraße",
       "ring": [
         [52.520333, 13.392156],
         [52.520361, 13.392148],
@@ -86335,7 +86335,7 @@
     {
       "id": "berlin-parking-547",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Dorothea-Schlegel-Platz",
       "ring": [
         [52.519688, 13.386225],
         [52.519716, 13.386217],
@@ -86354,7 +86354,7 @@
     {
       "id": "berlin-parking-548",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jebi Karlplatz",
       "ring": [
         [52.522828, 13.379461],
         [52.522856, 13.379453],
@@ -86373,7 +86373,7 @@
     {
       "id": "berlin-parking-549",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Platz vor dem Neuen Tor",
       "ring": [
         [52.528575, 13.379038],
         [52.528603, 13.37903],
@@ -86392,7 +86392,7 @@
     {
       "id": "berlin-parking-550",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Tieckstraße/Eichendorffstraße",
       "ring": [
         [52.529485, 13.388427],
         [52.529537, 13.388397],
@@ -86411,7 +86411,7 @@
     {
       "id": "berlin-parking-551",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Bundeswehrkrankenhaus",
       "ring": [
         [52.534823, 13.369866],
         [52.534875, 13.369836],
@@ -86430,7 +86430,7 @@
     {
       "id": "berlin-parking-552",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gedenkstätte Berliner Mauer",
       "ring": [
         [52.53536, 13.3906],
         [52.535388, 13.390592],
@@ -86449,7 +86449,7 @@
     {
       "id": "berlin-parking-553",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Zietenplatz",
       "ring": [
         [52.512209, 13.385933],
         [52.512237, 13.385925],
@@ -86468,7 +86468,7 @@
     {
       "id": "berlin-parking-554",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gendarmenmarkt/Jägerstraße",
       "ring": [
         [52.51417, 13.393633],
         [52.514198, 13.393625],
@@ -86487,7 +86487,7 @@
     {
       "id": "berlin-parking-555",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi HTW Campus Wilhelminenhof",
       "ring": [
         [52.457453, 13.527634],
         [52.457481, 13.527626],
@@ -86506,7 +86506,7 @@
     {
       "id": "berlin-parking-556",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Schwelmer Straße",
       "ring": [
         [52.41241, 13.299498],
         [52.412463, 13.299468],
@@ -86525,7 +86525,7 @@
     {
       "id": "berlin-parking-557",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Wormbacher Weg",
       "ring": [
         [52.410941, 13.302563],
         [52.410994, 13.302533],
@@ -86544,7 +86544,7 @@
     {
       "id": "berlin-parking-558",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität/Emmichstraße",
       "ring": [
         [52.42609, 13.356425],
         [52.426118, 13.356417],
@@ -86563,7 +86563,7 @@
     {
       "id": "berlin-parking-559",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Storkower Straße/Franz-Jacob-Straße",
       "ring": [
         [52.524379, 13.465637],
         [52.524431, 13.465607],
@@ -86582,7 +86582,7 @@
     {
       "id": "berlin-parking-560",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Landsberger Allee/Storkower Straße",
       "ring": [
         [52.528788, 13.458543],
         [52.528816, 13.458535],
@@ -86601,7 +86601,7 @@
     {
       "id": "berlin-parking-561",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Landsberger Allee/Danziger Straße",
       "ring": [
         [52.526316, 13.446917],
         [52.526344, 13.446909],
@@ -86620,7 +86620,7 @@
     {
       "id": "berlin-parking-562",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Marktstraße",
       "ring": [
         [52.503481, 13.474015],
         [52.503533, 13.473985],
@@ -86639,7 +86639,7 @@
     {
       "id": "berlin-parking-563",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Holteistraße",
       "ring": [
         [52.509476, 13.465588],
         [52.509528, 13.465558],
@@ -86658,7 +86658,7 @@
     {
       "id": "berlin-parking-564",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Friedrichsfelde",
       "ring": [
         [52.50534, 13.513838],
         [52.505392, 13.513808],
@@ -86677,7 +86677,7 @@
     {
       "id": "berlin-parking-565",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Lichtenberg",
       "ring": [
         [52.520085, 13.499786],
         [52.520137, 13.499756],
@@ -86696,7 +86696,7 @@
     {
       "id": "berlin-parking-566",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Britz",
       "ring": [
         [52.452756, 13.436054],
         [52.452784, 13.436046],
@@ -86715,7 +86715,7 @@
     {
       "id": "berlin-parking-567",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Carnotstraße/Spreeside Offices",
       "ring": [
         [52.52324, 13.320411],
         [52.523268, 13.320403],
@@ -86734,7 +86734,7 @@
     {
       "id": "berlin-parking-568",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Treptower Park/Puschkinallee",
       "ring": [
         [52.492726, 13.460705],
         [52.492778, 13.460675],
@@ -86753,7 +86753,7 @@
     {
       "id": "berlin-parking-569",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Treptower Park/Hafen",
       "ring": [
         [52.492528, 13.461323],
         [52.49258, 13.461293],
@@ -86772,7 +86772,7 @@
     {
       "id": "berlin-parking-570",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Treptower Park/Martin-Hoffmann-Straße",
       "ring": [
         [52.494308, 13.460643],
         [52.494336, 13.460635],
@@ -86791,7 +86791,7 @@
     {
       "id": "berlin-parking-571",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Treptower Park/Elsenstraße",
       "ring": [
         [52.49318, 13.459243],
         [52.493232, 13.459213],
@@ -86810,7 +86810,7 @@
     {
       "id": "berlin-parking-572",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eisenbahnstraße/Wrangelstraße",
       "ring": [
         [52.502282, 13.43257],
         [52.502334, 13.43254],
@@ -86829,7 +86829,7 @@
     {
       "id": "berlin-parking-573",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Wühlischstraße/Böcklinstraße",
       "ring": [
         [52.50723, 13.467321],
         [52.507282, 13.467291],
@@ -86848,7 +86848,7 @@
     {
       "id": "berlin-parking-574",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Samariterstraße/Silvio-Meier-Straße",
       "ring": [
         [52.515176, 13.463022],
         [52.515204, 13.463014],
@@ -86867,7 +86867,7 @@
     {
       "id": "berlin-parking-575",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Kochstraße/Puttkamer Straße",
       "ring": [
         [52.505201, 13.390985],
         [52.505253, 13.390955],
@@ -86886,7 +86886,7 @@
     {
       "id": "berlin-parking-576",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Samariterplatz",
       "ring": [
         [52.518045, 13.4658],
         [52.518097, 13.46577],
@@ -86905,7 +86905,7 @@
     {
       "id": "berlin-parking-577",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Wilhelmstraße/Zimmerstraße",
       "ring": [
         [52.507046, 13.386004],
         [52.507074, 13.385996],
@@ -86924,7 +86924,7 @@
     {
       "id": "berlin-parking-578",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Besselpark",
       "ring": [
         [52.50406, 13.391167],
         [52.504088, 13.391159],
@@ -86943,7 +86943,7 @@
     {
       "id": "berlin-parking-579",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lachmannstraße",
       "ring": [
         [52.491849, 13.42105],
         [52.491877, 13.421042],
@@ -86962,7 +86962,7 @@
     {
       "id": "berlin-parking-580",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Ostkreuz/Sonntagstraße",
       "ring": [
         [52.504511, 13.467866],
         [52.504563, 13.467836],
@@ -86981,7 +86981,7 @@
     {
       "id": "berlin-parking-581",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Tiergarten/Wegelystraße",
       "ring": [
         [52.514385, 13.335785],
         [52.514413, 13.335777],
@@ -87000,7 +87000,7 @@
     {
       "id": "berlin-parking-582",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Zoologischer Garten/Hertzallee",
       "ring": [
         [52.508834, 13.334456],
         [52.508862, 13.334448],
@@ -87019,7 +87019,7 @@
     {
       "id": "berlin-parking-583",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Joseph-von-Eichendorff-Gasse/ Linkstraße",
       "ring": [
         [52.507378, 13.375269],
         [52.507406, 13.375261],
@@ -87038,7 +87038,7 @@
     {
       "id": "berlin-parking-584",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Marlene-Dietrich-Platz",
       "ring": [
         [52.506999, 13.372996],
         [52.507052, 13.372966],
@@ -87057,7 +87057,7 @@
     {
       "id": "berlin-parking-585",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Ludwig-Beck-Straße/Potsdamer Straße",
       "ring": [
         [52.508975, 13.373307],
         [52.509003, 13.373299],
@@ -87076,7 +87076,7 @@
     {
       "id": "berlin-parking-586",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Brüder-Grimm-Gasse/Linkstraße",
       "ring": [
         [52.506411, 13.374564],
         [52.506464, 13.374534],
@@ -87095,7 +87095,7 @@
     {
       "id": "berlin-parking-587",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Ersatzstandort Jelbi Unter den Linden/Glinkastraße",
       "ring": [
         [52.516765, 13.388069],
         [52.516793, 13.388061],
@@ -87114,7 +87114,7 @@
     {
       "id": "berlin-parking-588",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Sächsische Straße/Darmstädter Straße",
       "ring": [
         [52.497204, 13.318449],
         [52.497232, 13.31844],
@@ -87133,7 +87133,7 @@
     {
       "id": "berlin-parking-589",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Mehringdamm/Rathaus Kreuzberg",
       "ring": [
         [52.493657, 13.385786],
         [52.493685, 13.385778],
@@ -87152,7 +87152,7 @@
     {
       "id": "berlin-parking-590",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Stralauer Allee/Dockyard",
       "ring": [
         [52.49734, 13.464213],
         [52.497392, 13.464183],
@@ -87171,7 +87171,7 @@
     {
       "id": "berlin-parking-591",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Gut Hellersdorf",
       "ring": [
         [52.53884, 13.597509],
         [52.538893, 13.597479],
@@ -87684,7 +87684,7 @@
     {
       "id": "berlin-parking-618",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Feuerbachstraße",
       "ring": [
         [52.463628, 13.331484],
         [52.46368, 13.331454],
@@ -87703,7 +87703,7 @@
     {
       "id": "berlin-parking-619",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Lichterfelde West/Hans-Sachs-Straße",
       "ring": [
         [52.443451, 13.295992],
         [52.443503, 13.295962],
@@ -87722,7 +87722,7 @@
     {
       "id": "berlin-parking-620",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Rathaus Zehlendorf / Kirchstraße",
       "ring": [
         [52.432946, 13.259366],
         [52.432998, 13.259335],
@@ -88026,7 +88026,7 @@
     {
       "id": "berlin-parking-636",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Güntzelstraße",
       "ring": [
         [52.490763, 13.330674],
         [52.490816, 13.330644],
@@ -88045,7 +88045,7 @@
     {
       "id": "berlin-parking-637",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Güntzelstraße/Trautenaustraße",
       "ring": [
         [52.493104, 13.330579],
         [52.493157, 13.330549],
@@ -88064,7 +88064,7 @@
     {
       "id": "berlin-parking-638",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Sophie-Charlotte-Platz/Witzlebenstraße",
       "ring": [
         [52.510642, 13.295962],
         [52.51067, 13.295954],
@@ -88083,7 +88083,7 @@
     {
       "id": "berlin-parking-639",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Eisenhutweg/Brain Box",
       "ring": [
         [52.42884, 13.51561],
         [52.428892, 13.51558],
@@ -88102,7 +88102,7 @@
     {
       "id": "berlin-parking-640",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Johannisthal/Benno-König-Straße",
       "ring": [
         [52.446284, 13.52328],
         [52.446336, 13.52325],
@@ -88121,7 +88121,7 @@
     {
       "id": "berlin-parking-641",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Adlershof/Dörpfeldstraße",
       "ring": [
         [52.43566, 13.541603],
         [52.435712, 13.541573],
@@ -88140,7 +88140,7 @@
     {
       "id": "berlin-parking-642",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Adlershof/Weerthstraße",
       "ring": [
         [52.434567, 13.54307],
         [52.434619, 13.54304],
@@ -88159,7 +88159,7 @@
     {
       "id": "berlin-parking-643",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Blissestraße",
       "ring": [
         [52.485752, 13.320494],
         [52.485805, 13.320464],
@@ -88178,7 +88178,7 @@
     {
       "id": "berlin-parking-644",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Bundesplatz/Detmolder Straße",
       "ring": [
         [52.478775, 13.327554],
         [52.478828, 13.327524],
@@ -88197,7 +88197,7 @@
     {
       "id": "berlin-parking-645",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Bundesplatz/Wexstraße",
       "ring": [
         [52.478925, 13.329149],
         [52.478978, 13.329119],
@@ -88216,7 +88216,7 @@
     {
       "id": "berlin-parking-646",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Heidelberger Platz/Rudolstädter Straße",
       "ring": [
         [52.480415, 13.312421],
         [52.480468, 13.312391],
@@ -88235,7 +88235,7 @@
     {
       "id": "berlin-parking-647",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S+U Heidelberger Platz/Mecklenburgische Straße",
       "ring": [
         [52.479434, 13.311767],
         [52.479487, 13.311737],
@@ -88254,7 +88254,7 @@
     {
       "id": "berlin-parking-648",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Richard-Wagner-Platz",
       "ring": [
         [52.516833, 13.306588],
         [52.516861, 13.30658],
@@ -88273,7 +88273,7 @@
     {
       "id": "berlin-parking-649",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Sophie-Charlotte-Platz",
       "ring": [
         [52.510599, 13.29804],
         [52.510652, 13.29801],
@@ -88292,7 +88292,7 @@
     {
       "id": "berlin-parking-650",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Adlershof/Rudower Chaussee",
       "ring": [
         [52.434796, 13.540677],
         [52.434848, 13.540647],
@@ -88311,7 +88311,7 @@
     {
       "id": "berlin-parking-651",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Mexikoplatz",
       "ring": [
         [52.436628, 13.232057],
         [52.436681, 13.232027],
@@ -88330,7 +88330,7 @@
     {
       "id": "berlin-parking-652",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Lankwitz/Hanna-Renate-Laurien-Platz",
       "ring": [
         [52.439032, 13.343499],
         [52.439085, 13.343469],
@@ -88349,7 +88349,7 @@
     {
       "id": "berlin-parking-653",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi S Lankwitz/Kaulbachstraße",
       "ring": [
         [52.43957, 13.342883],
         [52.439623, 13.342853],
@@ -88368,7 +88368,7 @@
     {
       "id": "berlin-parking-654",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Freie Universität Düppel",
       "ring": [
         [52.431493, 13.236393],
         [52.431546, 13.236363],
@@ -88387,7 +88387,7 @@
     {
       "id": "berlin-parking-655",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Alt-Mariendorf Süd",
       "ring": [
         [52.43878, 13.388353],
         [52.438832, 13.388323],
@@ -88406,7 +88406,7 @@
     {
       "id": "berlin-parking-656",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi U Alt-Mariendorf Nord",
       "ring": [
         [52.440201, 13.387061],
         [52.440229, 13.387053],
@@ -88425,7 +88425,7 @@
     {
       "id": "berlin-parking-657",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi ZOB/Masurenallee",
       "ring": [
         [52.507184, 13.27909],
         [52.507212, 13.279082],
@@ -88444,7 +88444,7 @@
     {
       "id": "berlin-parking-658",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi ZOB/Messedamm",
       "ring": [
         [52.507285, 13.280673],
         [52.507338, 13.280643],
@@ -88501,7 +88501,7 @@
     {
       "id": "berlin-parking-999",
       "kind": "parking",
-      "name": "Berlin",
+      "name": "Jelbi Betriebshof Weißensee",
       "ring": [
         [52.557032, 13.469197],
         [52.557084, 13.469167],

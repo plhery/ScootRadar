@@ -5611,7 +5611,7 @@ extension CityZoneDownloads {
         CityZoneDownload(
             id: "hamburg", place: "Hamburg", authority: "Freie und Hansestadt Hamburg, Behörde für Verkehr und Mobilitätswende, DL-DE BY 2.0",
             timeZone: "Europe/Berlin", source: URL(string: "https://www.hamburg.de/verkehr/e-mobilitaet/e-scooter-411320")!,
-            bounds: GeoBounds(south: 53.395086, west: 8.489865, north: 53.919572, east: 10.325137)
+            bounds: GeoBounds(south: 53.395086, west: 9.730131, north: 53.739437, east: 10.325137)
         ),
     ]
 

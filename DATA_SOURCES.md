@@ -736,7 +736,10 @@ credited to the city.
   DL-DE Zero 2.0, revised quarterly, last on 1 October 2026). The legend links
   the Senate's [e-scooter page](https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/elektromobilitaet/elektro-tretroller/):
   an e-scooter may not be ridden or parked in a park. The no-parking zones are
-  simplified to within 2 m, which takes their 82,432 points to 58,256.
+  simplified to within 2 m, which takes their 82,432 points to 58,256. Each
+  parking place takes its name from the layer: a Jelbi point's or station's
+  ("Jelbi U Breitenbachplatz") or a street's, but 210 of the 220 marked areas
+  have only the placeholder "VRAO", which names none of them (`unnamed`).
 - **Boise** (read 29 October 2026): the City of Boise's 43 parking corrals,
   44 no-parking zones, 9 slow zones and 71 no-riding zones, from the
   `Boise_Micromobility` feature service its
@@ -804,7 +807,10 @@ credited to the city.
   links the map.
 - **Hamburg** (read 30 October 2026; for the iOS app to download, drawn
   nowhere until that release): the Freie und Hansestadt Hamburg's 3,043 no-parking zones for
-  e-scooters (3,589 parts; one has no shape and is left out), where a rental
+  e-scooters (3,589 parts; one has no shape and is left out, and so are the
+  island of Neuwerk's four, off Cuxhaven about 105 km away, which would
+  stretch the city's area over all the land between: the WFS is asked only for those within a box
+  round the mainland city), where a rental
   can't end, green spaces, schools and sports grounds among them, and its 145
   parking areas, 48 marked on the street and 97 digital ones at stops, each a
   disc 5 m round its point, from the city's WFS (`wfs_hh_escooter` on
@@ -815,8 +821,8 @@ credited to the city.
   [e-scooter page](https://www.hamburg.de/verkehr/e-mobilitaet/e-scooter-411320):
   a rental can't end in the no-parking zones, shown red in the operators'
   apps, and where it can the city pairs them with marked parking areas. The
-  no-parking zones are simplified to within 2 m, which takes their 183,892
-  points to 56,764.
+  no-parking zones are simplified to within 2 m, which takes their 184,000 or
+  so points to 56,736 (Neuwerk's left out, rechecked 30 October 2026).
 - **Helsingborg** (read 30 October 2026): central Helsingborg, about 3.9 km²
   from Tågaborg to Söder, where e-scooters park only in a bicycle rack or a
   marked place: the area of Helsingborgs kommun's local traffic rule

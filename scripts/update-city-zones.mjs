@@ -172,14 +172,15 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * A GeoJSON layer's zones, those whose properties have the values `match` gives each (null for a
  * property left empty): a WFS's or an OGC API's features, asked for as GeoJSON in latitude and
  * longitude, or an open data portal's export. Polygons are zones as a feature service's are, and
- * points discs, named by `nameField` or else `pointName`, or after the city. A zone's id is its
+ * points discs, named by `nameField`, unless it is one of the placeholders `unnamed` lists, as
+ * Berlin's "VRAO", or else `pointName`, or after the city. A zone's id is its
  * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them
  * and Hamburg's (DE.HH.UP_PARKVERBOTSZONEN_E_SCOOTER_6), or for a feature without one, as
  * Münster's are, a hash of its shape. A feature without a shape, as one of Hamburg's, is no zone.
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
  * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points.
  */
-async function geojsonZones(city, { kind, url, match = {}, nameField, idField, pointName, tolerance }) {
+async function geojsonZones(city, { kind, url, match = {}, nameField, unnamed = [], idField, pointName, tolerance }) {
   const body = await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
@@ -198,7 +199,8 @@ async function geojsonZones(city, { kind, url, match = {}, nameField, idField, p
         : createHash('sha1').update(JSON.stringify(geometry?.coordinates ?? null)).digest('hex').slice(0, 8);
     if (!featureId) throw new Error(`${url}: a feature has no ${idField}`);
     const id = `${city.id}-${slug(kind)}-${featureId}`;
-    const name = (nameField && String(properties[nameField] ?? '').trim()) || null;
+    const given = nameField && String(properties[nameField] ?? '').trim();
+    const name = given && !unnamed.includes(given) ? given : null;
     switch (geometry?.type) {
       case 'Point':
       case 'MultiPoint': {

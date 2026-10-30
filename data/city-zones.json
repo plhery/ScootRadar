@@ -335,7 +335,11 @@
         {
           "kind": "parking",
           "format": "geojson",
-          "url": "https://gdi.berlin.de/services/wfs/abstell_mikromob?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:4326&typeNames=abstell_mikromob:ortung_mikromob"
+          "url": "https://gdi.berlin.de/services/wfs/abstell_mikromob?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:4326&typeNames=abstell_mikromob:ortung_mikromob",
+          "nameField": "name",
+          "unnamed": [
+            "VRAO"
+          ]
         },
         {
           "kind": "noParking",
@@ -532,17 +536,17 @@
         {
           "kind": "noParking",
           "format": "geojson",
-          "url": "https://geodienste.hamburg.de/wfs_hh_escooter?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/geo%2Bjson&srsName=EPSG:4326&typeNames=de.hh.up:parkverbotszonen_e_scooter",
+          "url": "https://geodienste.hamburg.de/wfs_hh_escooter?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/geo%2Bjson&srsName=EPSG:4326&typeNames=de.hh.up:parkverbotszonen_e_scooter&bbox=53.3,9.6,53.8,10.5,urn:ogc:def:crs:EPSG::4326",
           "tolerance": 2
         }
       ],
       "bounds": {
         "south": 53.395086,
-        "west": 8.489865,
-        "north": 53.919572,
+        "west": 9.730131,
+        "north": 53.739437,
         "east": 10.325137
       },
-      "zones": 3734
+      "zones": 3730
     },
     {
       "id": "helsingborg",
