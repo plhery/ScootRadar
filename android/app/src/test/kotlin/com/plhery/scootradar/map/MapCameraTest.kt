@@ -250,11 +250,55 @@ class MapCameraTest {
     }
 
     /**
-     * Where `place` shows once a region centred on it is shown on a flat map of `bounds` with `margins`, the part of it
-     * left `visible`: measured on the map as the camera will show it, then moved there, as MapCamera does.
+     * A foldable standing like a laptop beside a panel, which iOS never shows (a Duo gets the dock): a place or a
+     * region goes to the middle of the upright half beside the panel, by iOS's rule that the map takes the upright
+     * half, not to the fold in the whole map's middle (the lead's decision of 30 Oct). Without a panel nothing covers
+     * a side, and the margins, above the fold, put it in the upright half already.
      */
-    private fun shownAt(place: GeoPoint, bounds: ScreenRect, margins: MapInsets, visible: ScreenRect): ScreenPoint {
-        val centre = MapCamera.aside(visible, bounds)?.let { beside ->
+    @Test
+    fun standingLikeALaptopBesideAPanelAPlaceGoesToTheMiddleOfTheUprightHalf() {
+        val city = GeoPoint(47.3769, 8.5417)
+        // The Fold unfolded and turned, its fold across the middle, the panel at the top of the leading side.
+        val window = ScreenRect(0.0, 0.0, 883.0, 852.0)
+        val laptop = ScreenRect(0.0, 426.0, 883.0, 1.0)
+        val panel = ScreenRect(16.0, 40.0, 380.0, 360.0)
+        val upright = ScooterMapCameraPolicy.visibleRect(
+            ScooterMapCameraPolicy.visibleRectIn(window, top = 24.0, bottom = window.maxY, beside = panel),
+            safeTop = 24.0,
+            beside = laptop,
+            on = ScooterMapCameraPolicy.FoldSide.Above,
+        )
+        assertEquals(ScreenRect(396.0, 24.0, 487.0, 402.0), upright)
+        val margins = MapCamera.beside(panel, laptop, window, safeTop = 24.0, rightToLeft = false)
+        shownAt(city, window, margins, upright, standing = true).let {
+            assertEquals((396.0 + 883) / 2, it.x, 1e-6)
+            assertEquals((24.0 + 426) / 2, it.y, 1e-6)
+        }
+        // By the rule iOS shares with a fold down the map, the fold itself.
+        assertEquals(426.0, shownAt(city, window, margins, upright, standing = false).y, 1e-6)
+
+        // Without the panel the map is whole across: the middle of its margins, from under the status bar to 16 above
+        // the fold.
+        val whole = ScooterMapCameraPolicy.visibleRect(
+            ScooterMapCameraPolicy.visibleRectIn(window, top = 24.0, bottom = window.maxY, beside = null),
+            safeTop = 24.0,
+            beside = laptop,
+            on = ScooterMapCameraPolicy.FoldSide.Above,
+        )
+        assertEquals(null, MapCamera.aside(whole, window, upright = true))
+        shownAt(city, window, MapCamera.beside(null, laptop, window, safeTop = 24.0, rightToLeft = false), whole, standing = true).let {
+            assertEquals(883.0 / 2, it.x, 1e-6)
+            assertEquals((24.0 + 426 - 16) / 2, it.y, 1e-6)
+        }
+    }
+
+    /**
+     * Where `place` shows once a region centred on it is shown on a flat map of `bounds` with `margins`, the part of it
+     * left `visible`, `standing` like a laptop: measured on the map as the camera will show it, then moved there, as
+     * MapCamera does.
+     */
+    private fun shownAt(place: GeoPoint, bounds: ScreenRect, margins: MapInsets, visible: ScreenRect, standing: Boolean = false): ScreenPoint {
+        val centre = MapCamera.aside(visible, bounds, upright = standing)?.let { beside ->
             ScooterMapCameraPolicy.center(showing = place, on = FlatMap(bounds, margins, centre = place), visible = beside)
         } ?: place
         return FlatMap(bounds, margins, centre).point(place)

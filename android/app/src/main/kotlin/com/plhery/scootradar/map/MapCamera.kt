@@ -232,7 +232,7 @@ class MapCamera(
         // A step from the keyboard moves the map as the person's hand does.
         focusUnderWay = null
         stopMotion()
-        val middle = ScooterMapCameraPolicy.focus(on = projection, visible = visibleRect())
+        val middle = focus(visibleRect())
         val kept = projection.coordinate(middle)
         val starting = map.cameraPosition
         val zoom = min(map.maxZoomLevel, max(map.minZoomLevel, starting.zoom + request.steps))
@@ -368,17 +368,31 @@ class MapCamera(
 
     /**
      * The camera `target`, which shows `showing` in the middle of the map's margins, moved to show it beside a panel
-     * or a fold in the middle of the part of the map beside it, across, and of the whole map up and down, as
-     * setRegionPreservingPerspective does: where the centre goes is measured on the map as the camera will show it.
-     * Elsewhere the target as it is.
+     * or a fold in the middle of the part of the map beside it, across, and of the whole map up and down, or of the
+     * upright half above a fold across it, as setRegionPreservingPerspective does ([aside]): where the centre goes is
+     * measured on the map as the camera will show it. Elsewhere the target as it is.
      */
     private fun beside(target: CameraPosition, showing: GeoPoint, visible: ScreenRect): CameraPosition {
-        val beside = aside(visible, projection.bounds) ?: return target
+        val beside = aside(visible) ?: return target
         val current = map.cameraPosition
         jump(target)
         val centre = ScooterMapCameraPolicy.center(showing = showing, on = projection, visible = beside)
         jump(current)
         return CameraPosition.Builder(target).target(LatLng(centre.latitude, centre.longitude)).build()
+    }
+
+    /** What a place is centred in beside a panel or a fold, from the part of the map left `visible` ([aside]). */
+    private fun aside(visible: ScreenRect): ScreenRect? =
+        aside(visible, projection.bounds, upright = fold()?.let(::foldSide) == ScooterMapCameraPolicy.FoldSide.Above)
+
+    /**
+     * Where a move to a place shows it, so where a step in or out keeps what is shown: ScooterMapCameraPolicy.focus,
+     * up and down in the middle of what [aside] centres a place in, the upright half above a fold across the map.
+     */
+    private fun focus(visible: ScreenRect): ScreenPoint {
+        val shown = ScooterMapCameraPolicy.focus(on = projection, visible = visible)
+        val beside = aside(visible) ?: return shown
+        return ScreenPoint(shown.x, beside.midY)
     }
 
     /**
@@ -684,8 +698,15 @@ class MapCamera(
          * What a place or a region is centred in beside a panel or a fold, from the part of a map of `bounds` left
          * `visible`: ScooterMapCameraPolicy.aside, as wide as the part, as tall as the map. None where nothing
          * covers a side, and the place keeps to the middle of the map's margins.
+         *
+         * Above a fold across the map, `upright`, as tall as the part too: standing like a laptop the map takes the
+         * upright half (ScooterFold in ScooterMapScreen.swift), and a place beside a panel goes to its middle rather
+         * than to the fold. iOS never has a panel there, as a Duo gets the dock (the lead's decision of 30 Oct).
          */
-        internal fun aside(visible: ScreenRect, bounds: ScreenRect): ScreenRect? = ScooterMapCameraPolicy.aside(visible, bounds)
+        internal fun aside(visible: ScreenRect, bounds: ScreenRect, upright: Boolean = false): ScreenRect? {
+            val beside = ScooterMapCameraPolicy.aside(visible, bounds) ?: return null
+            return if (upright) ScreenRect(beside.x, visible.y, beside.width, visible.height) else beside
+        }
 
         /**
          * The part of a map of `bounds` inside both its `margins` and its `safeArea`, each measured from its edges,

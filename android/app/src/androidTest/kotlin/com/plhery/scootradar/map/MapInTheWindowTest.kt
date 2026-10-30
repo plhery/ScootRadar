@@ -133,8 +133,9 @@ class MapInTheWindowTest {
 
     /**
      * Located, the rider shows in the middle of the part of the map beside a panel or a fold, across, and of the whole
-     * map up and down, even where a tabletop's fold crosses it there (MAP-041); elsewhere in the middle of the map
-     * inside its margins. The span is locating's 350 m, grown by the window's shorter side past a phone's 440 points.
+     * map up and down (MAP-041), or of the upright half beside a panel above a tabletop's fold, as the map takes the
+     * upright half there (the lead's decision of 30 Oct); elsewhere in the middle of the map inside its margins. The
+     * span is locating's 350 m, grown by the window's shorter side past a phone's 440 points.
      */
     @Test
     fun locatingPutsTheRiderInTheMiddleOfThePartOfTheMapInView() {
@@ -146,13 +147,9 @@ class MapInTheWindowTest {
         val chrome = chrome()
         val part = partInView(chrome, bounds)
         val frame = frame(bounds)
-        // Beside a panel or a fold down the map, the middle of the part beside it across and of the whole map up and
-        // down (setRegionPreservingPerspective's aside); elsewhere the middle of the map's margins.
-        val aside = abs(part.midX - bounds.midX) >= 1
-        val expected = if (aside) ScreenPoint(part.midX, bounds.midY) else ScreenPoint(frame.midX, frame.midY)
+        val expected = placed(part, bounds)
         // The move is measured once on the map tilted as it will be, as iOS's is: a place shown far from where the
-        // margins put the centre lands past it, the ground nearer the eye being drawn larger (in a tabletop's margins
-        // with a panel, 193 points off, 24 past at the opening tilt).
+        // margins put the centre lands past it, the ground nearer the eye being drawn larger.
         val past = 0.15 * abs(expected.y - frame.midY)
         screenshot("located")
         val shown = onMain { projection.point(rider) }
@@ -581,11 +578,17 @@ class MapInTheWindowTest {
     /**
      * Where a place located or a region opened shows (setRegionPreservingPerspective, MAP-041): beside a panel or a
      * fold down the map, in the middle of the `part` of the map in view across and of the whole map up and down
-     * (aside); elsewhere in the middle of the map's margins.
+     * (aside); beside a panel above a tabletop's fold, in the middle of the part, the upright half, by iOS's rule that
+     * the map takes it (the lead's decision of 30 Oct); elsewhere in the middle of the map's margins.
      */
     private fun placed(part: ScreenRect, bounds: ScreenRect): ScreenPoint {
         val frame = frame(bounds)
-        return if (abs(part.midX - bounds.midX) >= 1) ScreenPoint(part.midX, bounds.midY) else ScreenPoint(frame.midX, frame.midY)
+        val across = chrome().fold?.takeIf { !it.isEmpty && it.intersects(bounds) && it.width > it.height }
+        return when {
+            abs(part.midX - bounds.midX) < 1 -> ScreenPoint(frame.midX, frame.midY)
+            across != null -> ScreenPoint(part.midX, part.midY)
+            else -> ScreenPoint(part.midX, bounds.midY)
+        }
     }
 
     /**
