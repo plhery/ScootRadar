@@ -127,6 +127,9 @@ class MapInTheWindowTest {
     @Volatile
     private var served: ScooterResponse? = null
 
+    /** iOS's margins as shownChrome last checked them, read back with the safe area, in points from the map's edges. */
+    private var iosMargins: MapInsets? = null
+
     @Before
     fun setUp() {
         Locale.setDefault(Locale.UK)
@@ -149,9 +152,9 @@ class MapInTheWindowTest {
     /**
      * Located, the rider shows in the middle of the part of the map beside a panel or a fold, across, and of the whole
      * map up and down (MAP-041), or of the upright half beside a panel above a tabletop's fold, as the map takes the
-     * upright half there (the lead's decision of 30 Oct); elsewhere in the middle of the map inside its margins. The
-     * span is locating's 350 m, grown by the window's shorter side past a phone's 440 points. A step in from the
-     * keyboard then keeps what is there (MAP-049).
+     * upright half there (the lead's decision of 30 Oct); over the dock in the middle of the map, which keeps no
+     * margins (placed). The span is locating's 350 m, grown by the window's shorter side past a phone's 440 points. A
+     * step in from the keyboard then keeps what is there (MAP-049).
      */
     @Test
     fun locatingPutsTheRiderInTheMiddleOfThePartOfTheMapInView() {
@@ -172,6 +175,7 @@ class MapInTheWindowTest {
         Log.i(TAG, "${size()}: chrome $chrome, part $part, frame $frame, rider at $shown for $expected, measured once $landed")
         assertEquals("across: $shown for $expected", expected.x, shown.x, 3.0)
         assertLandsAsMeasuredOnce(shown, expected, landed)
+        assertNoMarginsWithoutAPanelOrAFold(bounds)
         // Locating's span over the window's shorter side, as phones up to 440 points show it.
         val scale = max(1.0, min(bounds.width, bounds.height) / 440)
         val region = MapRegion.around(rider, 350 * scale, 350 * scale)
@@ -269,7 +273,7 @@ class MapInTheWindowTest {
      * dock: a group of cities onto their bounds (MAP-050), a city total onto a city's span and a cluster two zoom levels
      * closer (MAP-051, MAP-147), each centred in the middle of the part of the map beside the panel or the fold across
      * and of the whole map up and down, as the iPhone's tap gives setRegionPreservingPerspective the part left visible
-     * (ScooterMapView.swift:1877-1907), and elsewhere in the middle of the map's margins. A tap with a scooter's dot in
+     * (ScooterMapView.swift:1877-1907), and over the dock in the middle of the map (placed). A tap with a scooter's dot in
      * reach chooses the scooter as well (MAP-209).
      */
     @Test
@@ -335,6 +339,7 @@ class MapInTheWindowTest {
             }
             if (inReach) assertEquals("the scooter in reach chosen", alone.id, onMain { controller.selectedScooterID.value })
         }
+        assertNoMarginsWithoutAPanelOrAFold(bounds)
     }
 
     /**
@@ -783,6 +788,7 @@ class MapInTheWindowTest {
             }
         }
         val ios = MapInsets(top = safe.top, left = max(safe.left, left), bottom = max(safe.bottom, bottom), right = max(safe.right, right))
+        iosMargins = ios
         val margins = onMain { mapView.camera!!.margins }
         val within = MapCamera.within(bounds, margins, safe)
         val expected = ScreenRect(bounds.minX + ios.left, bounds.minY + ios.top, bounds.width - ios.left - ios.right, bounds.height - ios.top - ios.bottom)
@@ -790,6 +796,16 @@ class MapInTheWindowTest {
         assertRect("the map's margins $margins, iOS's $ios", expected, within)
         if (across) assertEquals("the top margin above a fold across the map: $margins", safe.top, margins.top, 1.0)
         return chrome
+    }
+
+    /**
+     * Without a panel or a fold the map keeps no margins (ScooterMapView.swift:913-921 leaves them as they were), which
+     * shownChrome's comparison inside the safe area can't tell from a margin under it (review-app-p finding 2).
+     */
+    private fun assertNoMarginsWithoutAPanelOrAFold(bounds: ScreenRect) {
+        if (chrome().panel?.takeIf { !it.isEmpty } != null || windowFold()?.takeIf { it.intersects(bounds) } != null) return
+        val margins = onMain { mapView.camera!!.margins }
+        assertEquals("the map's margins without a panel or a fold", MapInsets.zero, margins)
     }
 
     /** Whether the camera moved from `from` to `to`: its place, zoom, turn or tilt. */
@@ -879,18 +895,21 @@ class MapInTheWindowTest {
     }
 
     /**
-     * Where a place located or a region opened shows (setRegionPreservingPerspective, MAP-041): beside a panel or a
-     * fold down the map, in the middle of the `part` of the map in view across and of the whole map up and down
-     * (aside); beside a panel above a tabletop's fold, in the middle of the part, the upright half, by iOS's rule that
-     * the map takes it (the lead's decision of 30 Oct); elsewhere in the middle of the map's margins.
+     * Where a place located or a region opened shows (setRegionPreservingPerspective, MAP-041), by iOS's rules from the
+     * chrome on the screen rather than from the app's own margins (review-app-p finding 2): beside a panel or a fold down
+     * the map, in the middle of the `part` of the map in view across and of the whole map up and down (aside); beside a
+     * panel above a tabletop's fold, in the middle of the part, the upright half, by iOS's rule that the map takes it
+     * (the lead's decision of 30 Oct); above a tabletop's fold without one, in the middle of iOS's margins as shownChrome
+     * checked them, from under the status bar to 16 above the fold; over the dock, in the middle of the map, whose
+     * margins iOS leaves as they were (ScooterMapView.swift:913-921).
      */
     private fun placed(part: ScreenRect, bounds: ScreenRect): ScreenPoint {
-        val frame = frame(bounds)
-        val across = chrome().fold?.takeIf { !it.isEmpty && it.intersects(bounds) && it.width > it.height }
+        val fold = windowFold()?.takeIf { it.intersects(bounds) }
+        val across = fold?.takeIf { it.width > it.height }
         return when {
-            abs(part.midX - bounds.midX) < 1 -> ScreenPoint(frame.midX, frame.midY)
-            across != null -> ScreenPoint(part.midX, part.midY)
-            else -> ScreenPoint(part.midX, bounds.midY)
+            abs(part.midX - bounds.midX) >= 1 -> if (across != null) ScreenPoint(part.midX, part.midY) else ScreenPoint(part.midX, bounds.midY)
+            fold == null -> ScreenPoint(bounds.midX, bounds.midY)
+            else -> iosMargins!!.let { ScreenPoint((bounds.minX + it.left + bounds.maxX - it.right) / 2, (bounds.minY + it.top + bounds.maxY - it.bottom) / 2) }
         }
     }
 
