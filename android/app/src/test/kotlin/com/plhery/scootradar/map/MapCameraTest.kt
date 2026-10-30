@@ -219,14 +219,14 @@ class MapCameraTest {
         val tablet = ScreenRect(0.0, 0.0, 1280.0, 800.0)
         val panel = ScreenRect(16.0, 40.0, 380.0, 500.0)
         val besidePanel = ScooterMapCameraPolicy.visibleRectIn(tablet, top = 24.0, bottom = tablet.maxY, beside = panel)
-        shownAt(city, tablet, MapCamera.beside(panel, tablet, rightToLeft = false), besidePanel).let {
+        shownAt(city, tablet, MapCamera.beside(panel, tablet, rightToLeft = false), besidePanel, panel).let {
             assertEquals(838.0, it.x, 1e-6)
             assertEquals(400.0, it.y, 1e-6)
         }
         // Right to left the panel is down the right side, and the part beside it on the left.
         val right = ScreenRect(1280.0 - 16 - 380, 40.0, 380.0, 500.0)
         val besideRight = ScooterMapCameraPolicy.visibleRectIn(tablet, top = 24.0, bottom = tablet.maxY, beside = right)
-        assertEquals(442.0, shownAt(city, tablet, MapCamera.beside(right, tablet, rightToLeft = true), besideRight).x, 1e-6)
+        assertEquals(442.0, shownAt(city, tablet, MapCamera.beside(right, tablet, rightToLeft = true), besideRight, right, rightToLeft = true).x, 1e-6)
 
         // Open like a book with the panel in the leading half: the middle of the trailing one, past the fold.
         val window = ScreenRect(0.0, 0.0, 951.0, 669.0)
@@ -238,7 +238,7 @@ class MapCameraTest {
             beside = book,
             on = ScooterMapCameraPolicy.FoldSide.Right,
         )
-        shownAt(city, window, MapCamera.beside(leading, book, window, safeTop = 24.0, rightToLeft = false), trailing).let {
+        shownAt(city, window, MapCamera.beside(leading, book, window, safeTop = 24.0, rightToLeft = false), trailing, leading, book).let {
             assertEquals((485.0 + 951) / 2, it.x, 1e-6)
             assertEquals(669.0 / 2, it.y, 1e-6)
         }
@@ -270,12 +270,13 @@ class MapCameraTest {
         )
         assertEquals(ScreenRect(396.0, 24.0, 487.0, 402.0), upright)
         val margins = MapCamera.beside(panel, laptop, window, safeTop = 24.0, rightToLeft = false)
-        shownAt(city, window, margins, upright, standing = true).let {
+        // The upright half is told from the fold across the map, as MapCamera tells it from the chrome.
+        shownAt(city, window, margins, upright, panel, laptop).let {
             assertEquals((396.0 + 883) / 2, it.x, 1e-6)
             assertEquals((24.0 + 426) / 2, it.y, 1e-6)
         }
         // By the rule iOS shares with a fold down the map, the fold itself.
-        assertEquals(426.0, shownAt(city, window, margins, upright, standing = false).y, 1e-6)
+        assertEquals(426.0, shownIn(city, window, margins, MapCamera.aside(upright, window, upright = false)).y, 1e-6)
 
         // Without the panel the map is whole across: the middle of its margins, from under the status bar to 16 above
         // the fold.
@@ -285,24 +286,151 @@ class MapCameraTest {
             beside = laptop,
             on = ScooterMapCameraPolicy.FoldSide.Above,
         )
-        assertEquals(null, MapCamera.aside(whole, window, upright = true))
-        shownAt(city, window, MapCamera.beside(null, laptop, window, safeTop = 24.0, rightToLeft = false), whole, standing = true).let {
+        assertEquals(null, MapCamera.aside(whole, window, panel = null, fold = laptop, rightToLeft = false))
+        shownAt(city, window, MapCamera.beside(null, laptop, window, safeTop = 24.0, rightToLeft = false), whole, fold = laptop).let {
             assertEquals(883.0 / 2, it.x, 1e-6)
             assertEquals((24.0 + 426 - 16) / 2, it.y, 1e-6)
         }
     }
 
     /**
-     * Where `place` shows once a region centred on it is shown on a flat map of `bounds` with `margins`, the part of it
-     * left `visible`, `standing` like a laptop: measured on the map as the camera will show it, then moved there, as
-     * MapCamera does.
+     * The upright half, standing like a laptop, is told from the fold MapCamera is handed (review-app-p finding 3): above
+     * a fold across the map a place beside a panel is centred in the part of the map above it, on either side; beside a
+     * fold down the map, or a panel alone, in a part as tall as the map, as iOS's aside has it
+     * (ScooterMapView.swift:111-115).
      */
-    private fun shownAt(place: GeoPoint, bounds: ScreenRect, margins: MapInsets, visible: ScreenRect, standing: Boolean = false): ScreenPoint {
-        val centre = MapCamera.aside(visible, bounds, upright = standing)?.let { beside ->
-            ScooterMapCameraPolicy.center(showing = place, on = FlatMap(bounds, margins, centre = place), visible = beside)
-        } ?: place
-        return FlatMap(bounds, margins, centre).point(place)
+    @Test
+    fun theUprightHalfIsTakenAboveAFoldAcrossTheMapOnly() {
+        // The Fold unfolded and turned, the panel at the top of the leading side, then right to left on the right.
+        val window = ScreenRect(0.0, 0.0, 883.0, 852.0)
+        val laptop = ScreenRect(0.0, 426.0, 883.0, 1.0)
+        val panel = ScreenRect(16.0, 40.0, 380.0, 360.0)
+        val upright = partInView(window, top = 24.0, bottom = window.maxY, panel, laptop, rightToLeft = false)
+        assertEquals(ScreenRect(396.0, 24.0, 487.0, 402.0), upright)
+        assertEquals(upright, MapCamera.aside(upright, window, panel, laptop, rightToLeft = false))
+        val right = ScreenRect(883.0 - 16 - 380, 40.0, 380.0, 360.0)
+        val uprightLeft = partInView(window, top = 24.0, bottom = window.maxY, right, laptop, rightToLeft = true)
+        assertEquals(ScreenRect(0.0, 24.0, 487.0, 402.0), uprightLeft)
+        assertEquals(uprightLeft, MapCamera.aside(uprightLeft, window, right, laptop, rightToLeft = true))
+
+        // Open like a book, the panel in the leading half: the trailing half, as tall as the map.
+        val book = ScreenRect(0.0, 0.0, 951.0, 669.0)
+        val down = ScreenRect(465.0, 0.0, 20.0, 669.0)
+        val leading = ScreenRect(16.0, 24.0, 380.0, 400.0)
+        val trailing = partInView(book, top = 24.0, bottom = book.maxY, leading, down, rightToLeft = false)
+        assertEquals(ScreenRect(485.0, 0.0, 466.0, 669.0), MapCamera.aside(trailing, book, leading, down, rightToLeft = false))
+
+        // The Tablet across, the panel alone: as tall as the map.
+        val tablet = ScreenRect(0.0, 0.0, 1280.0, 800.0)
+        val besidePanel = ScreenRect(16.0, 40.0, 380.0, 500.0)
+        val part = partInView(tablet, top = 24.0, bottom = tablet.maxY, besidePanel, fold = null, rightToLeft = false)
+        assertEquals(ScreenRect(396.0, 0.0, 884.0, 800.0), MapCamera.aside(part, tablet, besidePanel, fold = null, rightToLeft = false))
     }
+
+    /**
+     * A step in or out from the keyboard keeps what is shown where a move to a place shows it (MAP-049; applyZoom and
+     * focus in ScooterMapView.swift:754-780 and :122-127), so a step after locating keeps the rider: over the dock, in
+     * the middle of the map's margins; beside a panel and beside a book's fold, in the middle of the part beside it
+     * across and of the whole map up and down; standing like a laptop, over the dock in the middle of the margins above
+     * the fold, and beside a panel in the middle of the upright half, not on the fold where iOS's focus, which never
+     * sees a panel there, would keep it (review-app-p finding 3). Measured on the map once a place is shown there.
+     */
+    @Test
+    fun aStepFromTheKeyboardKeepsWhatIsShownWhereAPlaceLocatedShows() {
+        val city = GeoPoint(47.3769, 8.5417)
+        val phone = ScreenRect(0.0, 0.0, 390.0, 844.0)
+        val tablet = ScreenRect(0.0, 0.0, 1280.0, 800.0)
+        val book = ScreenRect(0.0, 0.0, 951.0, 669.0)
+        val laptop = ScreenRect(0.0, 0.0, 883.0, 852.0)
+        val across = ScreenRect(0.0, 426.0, 883.0, 1.0)
+        val laptopPanel = ScreenRect(16.0, 40.0, 380.0, 360.0)
+        val windows = listOf(
+            Window("a phone over the dock", phone, top = 120.0, bottom = 600.0, located = ScreenPoint(195.0, 422.0)),
+            Window("the Tablet beside its panel", tablet, top = 24.0, bottom = 800.0, panel = ScreenRect(16.0, 40.0, 380.0, 500.0), located = ScreenPoint(838.0, 400.0)),
+            Window("the Tablet right to left", tablet, top = 24.0, bottom = 800.0, panel = ScreenRect(884.0, 40.0, 380.0, 500.0), rightToLeft = true, located = ScreenPoint(442.0, 400.0)),
+            Window("a book beside its panel", book, top = 24.0, bottom = 669.0, panel = ScreenRect(16.0, 24.0, 380.0, 400.0), fold = ScreenRect(465.0, 0.0, 20.0, 669.0), located = ScreenPoint(718.0, 334.5)),
+            // The search bar lies with the dock under the fold.
+            Window("a laptop over the dock", laptop, top = 500.0, bottom = 780.0, fold = across, located = ScreenPoint(441.5, (24.0 + 426 - 16) / 2)),
+            Window("a laptop beside its panel", laptop, top = 24.0, bottom = 852.0, panel = laptopPanel, fold = across, located = ScreenPoint(639.5, 225.0)),
+            Window("a laptop right to left", laptop, top = 24.0, bottom = 852.0, panel = ScreenRect(487.0, 40.0, 380.0, 360.0), fold = across, rightToLeft = true, located = ScreenPoint(243.5, 225.0)),
+        )
+        for (window in windows) {
+            val bounds = window.bounds
+            val visible = partInView(bounds, top = window.top, bottom = window.bottom, window.panel, window.fold, window.rightToLeft)
+            val map = locatedOn(city, window, visible)
+            val located = map.point(city)
+            assertEquals("${window.name}: located across", window.located.x, located.x, 1e-6)
+            assertEquals("${window.name}: located up and down", window.located.y, located.y, 1e-6)
+            val kept = MapCamera.focus(on = map, visible = visible, panel = window.panel, fold = window.fold, rightToLeft = window.rightToLeft)
+            assertEquals("${window.name}: kept across", located.x, kept.x, 1e-6)
+            assertEquals("${window.name}: kept up and down", located.y, kept.y, 1e-6)
+        }
+        // iOS's own focus, which knows no upright half, would keep the fold, and a step in would take the rider off it.
+        val upright = windows.first { it.name == "a laptop beside its panel" }
+        val visible = partInView(laptop, top = 24.0, bottom = 852.0, laptopPanel, across, rightToLeft = false)
+        assertEquals(426.0, ScooterMapCameraPolicy.focus(on = locatedOn(city, upright, visible), visible = visible).y, 1e-6)
+    }
+
+    /** A window of [aStepFromTheKeyboardKeepsWhatIsShownWhereAPlaceLocatedShows], and where a place located shows in it. */
+    private data class Window(
+        val name: String,
+        val bounds: ScreenRect,
+        /** The top and the bottom of the part of the map in view before a panel or a fold: the search bar's foot, the locate button's top. */
+        val top: Double,
+        val bottom: Double,
+        val panel: ScreenRect? = null,
+        val fold: ScreenRect? = null,
+        val rightToLeft: Boolean = false,
+        val located: ScreenPoint,
+    )
+
+    /** The flat map of `window` once `place` is located, as MapCamera moves it, with the margins it sets there, the part of it left `visible`. */
+    private fun locatedOn(place: GeoPoint, window: Window, visible: ScreenRect): FlatMap {
+        val margins = if (window.panel == null && window.fold == null) {
+            MapInsets.zero
+        } else {
+            MapCamera.beside(window.panel, window.fold, window.bounds, safeTop = SAFE_TOP, rightToLeft = window.rightToLeft)
+        }
+        val beside = MapCamera.aside(visible, window.bounds, window.panel, window.fold, window.rightToLeft)
+        return FlatMap(window.bounds, margins, centre = movedTo(place, window.bounds, margins, beside))
+    }
+
+    /**
+     * The part of a map of `bounds` in view, as MapCamera's visibleRect measures it: between `top` and `bottom`, beside
+     * the `panel`, then on the side of the `fold` where the map shows, from under the status bar above one across it.
+     */
+    private fun partInView(bounds: ScreenRect, top: Double, bottom: Double, panel: ScreenRect?, fold: ScreenRect?, rightToLeft: Boolean): ScreenRect {
+        val visible = ScooterMapCameraPolicy.visibleRectIn(bounds, top = top, bottom = bottom, beside = panel)
+        fold ?: return visible
+        val side = ScooterMapCameraPolicy.side(of = fold, panel = panel, rightToLeft = rightToLeft)
+        return ScooterMapCameraPolicy.visibleRect(visible, safeTop = SAFE_TOP, beside = fold, on = side)
+    }
+
+    /**
+     * Where `place` shows once a region centred on it is shown on a flat map of `bounds` with `margins`, the part of it
+     * left `visible` beside the `panel` or the `fold`: measured on the map as the camera will show it, then moved there,
+     * as MapCamera does.
+     */
+    private fun shownAt(
+        place: GeoPoint,
+        bounds: ScreenRect,
+        margins: MapInsets,
+        visible: ScreenRect,
+        panel: ScreenRect? = null,
+        fold: ScreenRect? = null,
+        rightToLeft: Boolean = false,
+    ): ScreenPoint = shownIn(place, bounds, margins, MapCamera.aside(visible, bounds, panel, fold, rightToLeft))
+
+    /** Where `place` shows once a region centred on it is shown on a flat map of `bounds` with `margins`, centred `beside` a panel or a fold. */
+    private fun shownIn(place: GeoPoint, bounds: ScreenRect, margins: MapInsets, beside: ScreenRect?): ScreenPoint =
+        FlatMap(bounds, margins, movedTo(place, bounds, margins, beside)).point(place)
+
+    /**
+     * The centre of a flat map of `bounds` with `margins` once a region centred on `place` is shown on it: the place in
+     * the middle of the margins, or moved to show it in the middle of what it is centred in `beside` a panel or a fold.
+     */
+    private fun movedTo(place: GeoPoint, bounds: ScreenRect, margins: MapInsets, beside: ScreenRect?): GeoPoint =
+        beside?.let { ScooterMapCameraPolicy.center(showing = place, on = FlatMap(bounds, margins, centre = place), visible = it) } ?: place
 
     /** A map seen from straight above, north up, at two map points a point, its centre in the middle of its margins. */
     private class FlatMap(override val bounds: ScreenRect, margins: MapInsets, centre: GeoPoint) : ScooterMapProjection {
@@ -332,4 +460,9 @@ class MapCameraTest {
 
     private fun position(latitude: Double, longitude: Double, zoom: Double = 10.0, tilt: Double = 0.0, bearing: Double = 0.0) =
         CameraPosition.Builder().target(LatLng(latitude, longitude)).zoom(zoom).tilt(tilt).bearing(bearing).build()
+
+    private companion object {
+        /** The status bar's room at the top of the windows the tests lay out. */
+        const val SAFE_TOP = 24.0
+    }
 }

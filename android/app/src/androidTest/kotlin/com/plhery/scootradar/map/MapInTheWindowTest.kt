@@ -150,7 +150,8 @@ class MapInTheWindowTest {
      * Located, the rider shows in the middle of the part of the map beside a panel or a fold, across, and of the whole
      * map up and down (MAP-041), or of the upright half beside a panel above a tabletop's fold, as the map takes the
      * upright half there (the lead's decision of 30 Oct); elsewhere in the middle of the map inside its margins. The
-     * span is locating's 350 m, grown by the window's shorter side past a phone's 440 points.
+     * span is locating's 350 m, grown by the window's shorter side past a phone's 440 points. A step in from the
+     * keyboard then keeps what is there (MAP-049).
      */
     @Test
     fun locatingPutsTheRiderInTheMiddleOfThePartOfTheMapInView() {
@@ -175,6 +176,21 @@ class MapInTheWindowTest {
         val scale = max(1.0, min(bounds.width, bounds.height) / 440)
         val region = MapRegion.around(rider, 350 * scale, 350 * scale)
         assertEquals("the zoom for ${350 * scale} m", MapZoom.fitting(region, frame.width, frame.height), zoom(), log2(1.02))
+
+        // A step in from the keyboard keeps what is shown where a place located shows (MAP-049, ScooterMapView.swift
+        // applyZoom): beside a panel above a tabletop's fold the upright half's middle, not the fold (review-app-p
+        // finding 3). Measured once on the tilted map, as iOS's step is.
+        val kept = onMain { projection.coordinate(expected) }
+        val unstepped = zoom()
+        onMain { controller.zoom(by = 1) }
+        assertTrue("the step in", waitFor(5_000) { zoom() > unstepped + 0.9 })
+        waitUntilAtRest(kept)
+        val stepped = onMain { projection.point(kept) }
+        screenshot("stepped")
+        Log.i(TAG, "${size()}: a step in from zoom $unstepped to ${zoom()}, what was at $expected now at $stepped")
+        assertEquals("a step in", unstepped + 1, zoom(), 0.01)
+        assertEquals("what was at $expected across after a step in: $stepped", expected.x, stepped.x, 3.0)
+        assertEquals("what was at $expected up and down after a step in: $stepped", expected.y, stepped.y, 3.0)
     }
 
     /** A scooter's card header centres it in the part of the map in view: under the search bar, over the dock or beside the panel. */
