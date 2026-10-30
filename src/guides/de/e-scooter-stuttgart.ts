@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'In Stuttgart vermieten vier Anbieter E-Scooter, alle mit einer Erlaubnis der Stadt: **Voi**, **Dott**, **Lime** und **Bolt**. Dott hiess früher TIER; wer TIER fuhr, nutzt seit Oktober 2024 die Dott-App. Die Seiten der Stadt nennen noch «Tier» oder «TIER/DOTT», gemeint ist derselbe Anbieter.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt alle vier auf der [Karte rund um Stuttgart](map:de:Stuttgart): Am Vormittag des 13. Oktober 2026 standen dort rund 5200 Scooter. Das ist eine Momentaufnahme der offenen Datenfeeds, keine Flottengrösse; erlaubt sind höchstens 6000.',
+        'ScootRadar zeigt alle vier auf der [Karte rund um Stuttgart](map:de:Stuttgart): Am Vormittag des 13. Oktober 2026 zeigte sie rund 5200 Scooter, die zu diesem Zeitpunkt frei waren; erlaubt sind höchstens 6000.',
         'Mit «E-Roller» sind oft auch Elektro-Mopeds gemeint, wie sie etwa stella vermietet: Für die brauchst du Führerschein und Helm, um sie geht es hier nicht.',
       ],
     },
