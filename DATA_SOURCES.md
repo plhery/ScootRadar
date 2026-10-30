@@ -821,6 +821,19 @@ credited to the city.
   both (両側, 3), each drawn once along the line given; and whether it is
   complete, which JARTIC does not warrant. The signs on the street take
   precedence, as the legend's hover text says. Only the website draws them.
+- **New York** (read 30 October 2026): NYC DOT's 538 parking corrals for
+  shared e-scooters in the East Bronx (307) and Eastern Queens (231), on the
+  sidewalk or the roadbed, its open data
+  [Shared E-Scooter Parking Corrals](https://data.cityofnewyork.us/Transportation/Shared-E-Scooter-Parking-Corrals/hjz2-y62k)
+  (updated every six months), read as GeoJSON and named by their streets. The
+  City's open data has no licence: Local Law 11 of 2012 has it published
+  without a licence or any restriction on its use, and the City may ask that
+  its source be named, so the legend credits the DOT. The features have no
+  ids, so each corral's is a hash of its shape. The legend links the
+  program's [FAQ](https://nycdotscootershare.info/faq): a shared e-scooter is
+  parked upright in the sidewalk's furniture zone, or, in a mandatory corral
+  zone, inside a corral to end the trip. Left out: the mandatory corral zones,
+  which ScootRadar has no kind for and the open data does not hold.
 - **Norrköping** (read 29 October 2026): Norrköpings kommun's 57 parking
   places for e-scooters, 29 areas where a scooter may not be returned
   (`NoParking (Återlämning förbjuden)`), 14 slow zones (`Slow

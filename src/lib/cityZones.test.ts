@@ -58,6 +58,8 @@ const WASHINGTON_WHARF = { south: 38.875, west: -77.03, north: 38.882, east: -77
 const WIEN_INNERE_STADT = { south: 48.203, west: 16.36, north: 48.212, east: 16.38 };
 // Nagoya's Sakae, round the Hisaya-ōdōri park, at zoom 14 on a phone.
 const SAKAE = { south: 35.16, west: 136.895, north: 35.178, east: 136.922 };
+// Parkchester, in the East Bronx.
+const PARKCHESTER = { south: 40.828, west: -73.868, north: 40.836, east: -73.852 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 /** The credit JARTIC's terms ask for, of its data processed. */
 const JARTIC_CREDIT = '出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成';
@@ -85,7 +87,7 @@ describe('the cities\' zones', () => {
   it('has a loader for every city of the index and its file, and a city for every loader', async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES } = await fresh();
     const cities = ZONE_CITIES.map(city => city.id).sort();
-    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(cities).toEqual(['alexandria', 'arlington', 'arlingtoncemetery', 'basel', 'bergen', 'boise', 'boulder', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
     expect(Object.keys(CITY_ZONE_FILES).sort()).toEqual(cities);
     expect(readdirSync('data/city-zones').map(name => name.replace(/\.json$/, '')).sort()).toEqual(cities);
   });
@@ -164,6 +166,7 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: WASHINGTON_WHARF, zoom: 15 }).map(city => city.id)).toEqual(['washington']);
     expect(zoneCitiesInView({ bounds: WIEN_INNERE_STADT, zoom: 15 }).map(city => city.id)).toEqual(['wien']);
     expect(zoneCitiesInView({ bounds: SAKAE, zoom: 14 }).map(city => city.id)).toEqual(['nagoya']);
+    expect(zoneCitiesInView({ bounds: PARKCHESTER, zoom: 15 }).map(city => city.id)).toEqual(['newyork']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
     expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
@@ -531,6 +534,17 @@ describe('the cities\' zones', () => {
     // An area of two parts is two zones.
     expect(file.zones.filter(zone => zone.id.startsWith('vasteras-no-parking-588-')).map(zone => zone.id))
       .toEqual(['vasteras-no-parking-588-1', 'vasteras-no-parking-588-2']);
+  });
+
+  it('draws New York\'s e-scooter parking corrals in the East Bronx and Eastern Queens, credited to its DOT', async () => {
+    const { ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    await loadCityZones(ZONE_CITIES.find(city => city.id === 'newyork')!);
+    const zones = cityZones.get();
+    expect(zones.every(zone => zone.authority === 'NYC Department of Transportation' && zone.timeZone === 'America/New_York')).toBe(true);
+    expect(zones.filter(zone => zone.rule === 'parking')).toHaveLength(538);
+    expect(zones.every(zone => zone.rule === 'parking')).toBe(true);
+    expect(zones.find(zone => zone.place === 'Watson Avenue & Morrison Avenue')).toBeDefined();
+    expect(ruleZonesInView({ bounds: PARKCHESTER, zoom: 15 }, Date.now(), zones).length).toBeGreaterThan(10);
   });
 
   it('draws Wien\'s lasting zones of every hour, credited to the city under CC BY 4.0', async () => {

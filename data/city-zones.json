@@ -532,6 +532,36 @@
       "zones": 1801
     },
     {
+      "id": "newyork",
+      "place": "New York",
+      "country": "US",
+      "authority": "NYC Department of Transportation",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "NYC DOT, Shared E-Scooter Program, \"Frequently Asked Questions\": in the East Bronx and Eastern Queens a shared e-scooter is parked upright in the sidewalk's furniture zone, or, in a mandatory corral zone, inside a designated corral to end the trip",
+        "url": "https://nycdotscootershare.info/faq"
+      },
+      "map": {
+        "title": "NYC Open Data, \"Shared E-Scooter Parking Corrals\" (Department of Transportation)",
+        "url": "https://data.cityofnewyork.us/Transportation/Shared-E-Scooter-Parking-Corrals/hjz2-y62k"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://data.cityofnewyork.us/resource/hjz2-y62k.geojson?$limit=50000",
+          "nameField": "parking_location"
+        }
+      ],
+      "bounds": {
+        "south": 40.672241,
+        "west": -73.882207,
+        "north": 40.906511,
+        "east": -73.763814
+      },
+      "zones": 538
+    },
+    {
       "id": "norrkoping",
       "place": "Norrköping",
       "country": "SE",
