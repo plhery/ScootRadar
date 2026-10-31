@@ -39,8 +39,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntOffset
@@ -52,6 +52,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import com.plhery.scootradar.core.IosMotion
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.PrimaryClicksOnlyAroundTheContent
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.textSymbolSize
@@ -164,8 +165,9 @@ private fun MenuRow(title: String, checked: Boolean, onClick: () -> Unit) {
             .heightIn(min = 44.dp)
             .background(if (pressed) colors.tertiarySystemFill else Color.Transparent)
             .clickable(source, FocusRing(), role = Role.Button, onClick = onClick)
-            // Selected on the chosen row only: on the others TalkBack would say "Not selected", which VoiceOver doesn't.
-            .semantics { if (checked) selected = true }
+            // "Selected" on the chosen row only, as VoiceOver reads its trait: Compose's selected would make it a
+            // toggle, "Double-tap to toggle", and read the others as "Not selected", which VoiceOver doesn't.
+            .semantics { if (checked) stateDescription = localized("Selected") }
             .padding(horizontal = 16.dp, vertical = 11.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,

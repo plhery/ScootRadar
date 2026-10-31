@@ -96,8 +96,10 @@ class PriceMenuTest {
         for (row in rows) {
             val title = row.config[SemanticsProperties.Text].joinToString()
             assertEquals(title, Role.Button, row.config.getOrNull(SemanticsProperties.Role))
-            // Not "Not selected" on the others: VoiceOver gives no row a selected trait.
-            assertEquals(title, if (title == "10 min") true else null, row.config.getOrNull(SemanticsProperties.Selected))
+            // "Selected" as a state, not Compose's selected, which TalkBack hints as a toggle; not "Not selected" on the
+            // others: VoiceOver gives no row a selected trait (app-ai's TalkBack pass).
+            assertEquals(title, if (title == "10 min") "Selected" else null, row.config.getOrNull(SemanticsProperties.StateDescription))
+            assertEquals(title, null, row.config.getOrNull(SemanticsProperties.Selected))
             assertTrue("$title is ${row.size.height / density} high", row.size.height >= 44 * density)
         }
     }
@@ -113,7 +115,7 @@ class PriceMenuTest {
 
         open(minutes = 20)
         val chosen = compose.onAllNodes(hasAnyAncestor(hasTestTag(MENU_TAG)) and hasClickAction()).fetchSemanticsNodes()
-            .filter { it.config.getOrNull(SemanticsProperties.Selected) == true }
+            .filter { it.config.getOrNull(SemanticsProperties.StateDescription) == "Selected" }
             .map { it.config[SemanticsProperties.Text].joinToString() }
         assertEquals(listOf("20 min"), chosen)
     }

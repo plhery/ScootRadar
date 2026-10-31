@@ -56,8 +56,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -413,8 +413,9 @@ private fun ResultRows(results: List<AddressSearchResult>, onChoose: (AddressSea
                 showsNoData = !result.isCovered,
                 modifier = Modifier
                     .plainButton { onChoose(result) }
-                    // Selected on the first only: Compose would read the others as "Not selected".
-                    .then(if (isFirst) Modifier.semantics { selected = true } else Modifier)
+                    // "Selected" on the first only, as VoiceOver reads its trait: Compose's selected would make it a
+                    // toggle, "Double-tap to toggle", and read the others as "Not selected".
+                    .then(if (isFirst) Modifier.semantics { stateDescription = localized("Selected") } else Modifier)
                     .then(if (isFirst) Modifier.background(actionText.copy(alpha = 0.08f), SquircleShape(14.dp)) else Modifier),
             )
             if (index < results.lastIndex) RowDivider()

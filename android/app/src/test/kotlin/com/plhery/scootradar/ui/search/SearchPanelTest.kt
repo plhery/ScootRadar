@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui.search
 
+import android.view.View
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -7,10 +8,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.hasAnyAncestor
@@ -72,8 +75,12 @@ class SearchPanelTest {
         Locale.setDefault(locale)
     }
 
+    /** The composition's view, whose nodes TalkBack is given. */
+    private lateinit var view: View
+
     private fun show(query: String) {
         compose.setContent {
+            view = LocalView.current
             ScootTheme(dark = false, reduceMotion = true) {
                 CompositionLocalProvider(LocalAddressSearch provides Places) {
                     Box(Modifier.fillMaxSize()) {
@@ -102,13 +109,20 @@ class SearchPanelTest {
         compose.waitForIdle()
     }
 
+    /**
+     * The first result, which Return chooses, reads "Selected", as VoiceOver reads its selected trait: a state, not
+     * Compose's selected, which makes it a toggle that TalkBack hints "Double-tap to toggle" (app-ai's TalkBack pass).
+     */
     @Test
     fun onlyTheFirstResultIsSelectedForTalkBack() {
         show("Bahnhof")
-        val selected = compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Selected)).fetchSemanticsNodes()
+        compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Selected)).assertCountEquals(0)
+        val selected = compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Selected")).fetchSemanticsNodes()
         assertEquals(1, selected.size)
-        assertEquals(true, selected.single().config[SemanticsProperties.Selected])
         assertTrue(hasText("Bahnhofstrasse", substring = true).matches(selected.single()))
+        val info = view.accessibilityNodeProvider.createAccessibilityNodeInfo(selected.single().id)!!
+        assertFalse(info.isCheckable)
+        assertEquals("Selected", info.stateDescription)
     }
 
     /**

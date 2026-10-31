@@ -8,6 +8,9 @@
 "Sheet Grabber" = "Sheet Grabber";
 "Sheet at half screen" = "Half screen";
 "Sheet expanded" = "Expanded";
+/* What VoiceOver reads of an element with the selected trait, a state and not a toggle: the search's first result,
+   which Return chooses, and a menu's chosen row (app-ai's TalkBack pass). */
+"Selected" = "Selected";
 /* The iPad menu bar's View menu, which iPadOS names: a group of Android's keyboard shortcut helper (ui.md UI-102). */
 "View" = "View";
 /* What a double tap does, where the iPhone has an accessibility hint (ui.md UI-327): TalkBack reads it in
