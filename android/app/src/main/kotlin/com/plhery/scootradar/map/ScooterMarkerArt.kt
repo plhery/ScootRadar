@@ -42,7 +42,8 @@ import kotlin.math.sqrt
  * Under Bold Text an iPhone draws its system font heavier, the markers' text with it, and the pin's symbol (UI-187).
  * Android's Bold Text adds 300 to every weight (Configuration.fontWeightAdjustment), which Compose's text follows:
  * each face here takes it too, up to Inter's heaviest, 900, and [boldText] has the pin's symbol drawn at weight 700.
- * Read once, as the map is made, as iOS reads its fonts as it draws: Android makes the activity again for a change.
+ * Read once, as the map is made: an iPhone reads the pill's faces once a run (static, ScooterMarkerArt.swift:299-300)
+ * and the others as it draws a marker it hasn't kept, and Android makes the activity, and the map, again for a change.
  */
 class MarkerFonts(val semibold: Typeface, val bold: Typeface, val heavy: Typeface, val boldText: Boolean) {
     companion object {

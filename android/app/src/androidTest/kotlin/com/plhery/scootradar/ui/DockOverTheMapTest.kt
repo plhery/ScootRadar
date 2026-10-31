@@ -165,6 +165,9 @@ class DockOverTheMapTest {
         // The glass must show the map as it is now, not as it was when the glass first drew (bug D): the bar's never
         // changes size, so a blur kept from its first draw shows the map's land before any tile, through every pan
         // and appearance.
+        // The pan and the bar's room are a phone's: beside a tablet's panel the pan goes up and the panel's text is
+        // found before any tile (review-app-ag 3).
+        assumeTrue("the panel in a window ${windowDp()}", windowHasTheDock(largeText = false))
         // The blur on whatever the frame watch says of this emulator's frames: it is the blur under test.
         val controller = show(ScooterAppearance.Light, blurs = true)
         val density = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics.density

@@ -34,6 +34,10 @@ class BoldTextMarkersTest {
         "the searched place's pin" to { it.addressImage(isDark = false) },
     )
     private val pill = ScooterMarkerArt.PillContent(voi, "Voi", "3 min", isFilled = false, isDark = false)
+    private val pillParts = listOf(
+        "a pill's name" to pill.copy(time = null),
+        "a pill's time" to pill.copy(name = ""),
+    )
 
     /** Under Bold Text the markers' text and the pin's symbol are drawn heavier: more of each is ink. */
     @Test
@@ -47,11 +51,14 @@ class BoldTextMarkersTest {
             val heavier = if (box == null) 1.0 else ink(other, box) / ink(one, box)
             if (heavier < 1.05) notHeavier += "$name (${"%.3f".format(heavier)})"
         }
-        // A name and its time: the pill is wider for them, as the iPhone measures its text in the heavier font.
-        val (one, other) = regular.pillImage(pill) to bold.pillImage(pill)
-        val heavier = ink(other, whole(other)) / ink(one, whole(one))
-        if (heavier < 1.05) notHeavier += "a name and its time (${"%.3f".format(heavier)})"
+        // A pill's name and its time, each drawn alone (bold and semibold): the time's ink is lost beside the name's.
+        for ((name, content) in pillParts) {
+            val (one, other) = regular.pillImage(content) to bold.pillImage(content)
+            val heavier = ink(other, whole(other)) / ink(one, whole(one))
+            if (heavier < 1.05) notHeavier += "$name (${"%.3f".format(heavier)})"
+        }
         assertEquals("the pictures drawn no heavier under Bold Text", emptyList<String>(), notHeavier)
+        // Together: the pill is wider for them, as the iPhone measures its text in the heavier font.
         assertTrue("the pill under Bold Text, ${bold.pillWidth(pill)} against ${regular.pillWidth(pill)}", bold.pillWidth(pill) > regular.pillWidth(pill))
     }
 
