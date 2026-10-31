@@ -44,8 +44,8 @@ enum class ScooterLanguage(
     }
 
     /**
-     * The language in the region of the phone, as Android makes it at launch: "fr_CH" writes 1 288
-     * where "de_CH" writes 1’288.
+     * The language in the region of the phone, as Locale.current makes it: "fr_CH" writes 1 288 where
+     * "de_CH" writes 1’288.
      */
     val locale: Locale
         get() {
@@ -104,14 +104,15 @@ enum class ScooterLanguage(
 
         /**
          * The language Android chose for this run of the app: the one chosen in Settings, or else the
-         * first of the phone's languages the app speaks. The app sets it as it starts.
+         * first of the phone's languages the app speaks. The app sets it as it starts, and again as the
+         * phone's language changes, where an iPhone's app starts again.
          */
         @Volatile
         var atLaunch: ScooterLanguage = En
 
         /**
          * Locale.current: the locale of this run of the app, in the language it was launched in and the
-         * phone's region and settings. The app sets where it reads it from as it starts.
+         * phone's region and settings as they are now. The app sets where it reads it from as it starts.
          */
         @Volatile
         var launchLocale: () -> Locale = { Locale.getDefault() }

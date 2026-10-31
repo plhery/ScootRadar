@@ -34,7 +34,8 @@ class AppLanguages(private val context: Context) {
 
     /**
      * Locale.current: the locale of this run of the app, in the language it was launched in and the phone's
-     * region and settings. Set as the app starts, it stays so until the next launch, as the iPhone's does.
+     * region and settings. Set as the app starts; the phone's new region, or its new language, changes it as it
+     * changes the iPhone's (phoneLocalesChanged).
      */
     @Volatile
     var launchLocale: Locale = Locale.getDefault()
@@ -42,17 +43,42 @@ class AppLanguages(private val context: Context) {
 
     private var hasLaunched = false
 
+    /** The language the phone's languages gave the app when Locale.current was last made. */
+    private var phoneLanguage: ScooterLanguage? = null
+
     /**
      * Reads the language Android chose for this run, from the `configuration` of the first activity, where
      * AppCompat has put a language chosen for the app on Android 12: the first of its languages the app
-     * speaks. Later activities of the same run, such as one recreated, leave it as it was.
+     * speaks. A later activity of the same run, such as one made again, takes what changed of the phone's
+     * languages meanwhile.
      */
     fun launched(configuration: Configuration) {
-        if (hasLaunched) return
+        if (hasLaunched) return phoneLocalesChanged(configuration)
         hasLaunched = true
+        val phone = LocaleManagerCompat.getSystemLocales(context)
+        phoneLanguage = ScooterLanguage.fromPreferences(phone.tags)
         val language = ScooterLanguage.fromPreferences(LocaleListCompat.wrap(configuration.locales).tags)
         ScooterLanguage.atLaunch = language
-        launchLocale = locale(language, region = LocaleManagerCompat.getSystemLocales(context)[0])
+        launchLocale = locale(language, region = phone[0])
+    }
+
+    /**
+     * The phone's languages or region changed while the app runs, `configuration` the activity's new one. An
+     * iPhone ends its apps as its language changes, and the app opens again in the language iOS then chooses, in
+     * the phone's region; a new region alone reaches Locale.current as the app runs, and what is drawn after reads
+     * it. So Locale.current takes the phone's region, and after a new language the language Android now chooses
+     * for the app: one chosen for it, or the first of the phone's it speaks. A language chosen in the app's
+     * Settings leaves it as it is, as the iPhone's until the next launch.
+     */
+    fun phoneLocalesChanged(configuration: Configuration) {
+        if (!hasLaunched) return
+        val phone = LocaleManagerCompat.getSystemLocales(context)
+        val language = ScooterLanguage.fromPreferences(phone.tags)
+        if (language != phoneLanguage) {
+            phoneLanguage = language
+            ScooterLanguage.atLaunch = ScooterLanguage.fromPreferences(LocaleListCompat.wrap(configuration.locales).tags)
+        }
+        launchLocale = locale(ScooterLanguage.atLaunch, region = phone[0])
     }
 
     /** What the app's language followed as it started: a language chosen for the app, or the phone's. */
