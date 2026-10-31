@@ -13,6 +13,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -55,7 +56,9 @@ class ThemeColoursTest {
     /**
      * No source of the app's, ScootTheme or any other, asks for the wallpaper's colours: Compose's dynamic schemes,
      * Material Components' DynamicColors (in code or as a theme), the system's palette as a colour resource
-     * (`@android:color/system_accent1_500`, `android.R.color.system_…`), or the wallpaper's colours themselves.
+     * (`@android:color/system_accent1_500`, `android.R.color.system_…`), a theme on the device's default
+     * (Theme.DeviceDefault and those under it, whose accent is the wallpaper's from Android 12), or the wallpaper's
+     * colours themselves.
      */
     @Test
     fun noSourceOfTheAppsAsksForTheWallpapersColours() {
@@ -78,6 +81,23 @@ class ThemeColoursTest {
             """\bcolor[/.]system_\w+""",
             """\bWallpaperColors\b""",
             """\bWallpaperManager\b""",
+            """\bTheme[._]DeviceDefault""",
         ).joinToString("|"),
     )
+
+    /**
+     * The scan finds a theme on the device's default, as a parent in XML or in code, and lets AppCompat's, which
+     * res/values/themes.xml has, be (review-app-w finding 9).
+     */
+    @Test
+    fun theScanFindsAThemeOnTheDevicesDefault() {
+        val found = listOf(
+            """<style name="Theme.ScootRadar" parent="@android:style/Theme.DeviceDefault.DayNight">""",
+            """<style name="Theme.ScootRadar" parent="android:Theme.DeviceDefault.Light.NoActionBar">""",
+            """setTheme(android.R.style.Theme_DeviceDefault_DayNight)""",
+        )
+        found.forEach { line -> assertTrue(line, wallpapers.containsMatchIn(line)) }
+        val passed = """<style name="Theme.ScootRadar" parent="Theme.AppCompat.DayNight.NoActionBar">"""
+        assertFalse(passed, wallpapers.containsMatchIn(passed))
+    }
 }
