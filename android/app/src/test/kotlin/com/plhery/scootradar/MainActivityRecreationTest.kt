@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.search.SwissAddressSearchStatus
 import java.util.Locale
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame
@@ -105,6 +106,29 @@ class MainActivityRecreationTest {
         val controller = ViewModelProvider(shown)[ScooterMapViewModel::class.java].controller
         assertEquals(ScooterLanguage.De, controller.language.value)
         compose.onNode(hasSetTextAction()).assert(hasText("Z"))
+    }
+
+    /**
+     * Closing the search ends it: what it was waiting to search for is called off, and the search opened again is a
+     * new one, empty, as the iPhone's panel starts a new search each time it opens. The screen's held one came back
+     * with its text (review-app-ae 6).
+     */
+    @Test
+    fun theSearchClosedAndOpenedAgainIsANewOne() {
+        val screen = ViewModelProvider(compose.activity)[ScooterMapViewModel::class.java].screen
+        compose.onNodeWithContentDescription("Search city or address").performClick()
+        compose.onNode(hasSetTextAction()).performTextInput("Z")
+        val search = screen.search { error("the open search's model") }
+        // Two characters: a search waits out its pause, called off before it ends, so it is sent nowhere.
+        compose.runOnUiThread { search.query = "Zu" }
+        assertEquals(SwissAddressSearchStatus.Searching, search.status.value)
+        compose.onNodeWithText("Cancel").performClick()
+        compose.waitForIdle()
+        assertEquals("closed", 0, compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().size)
+        assertEquals("the search waiting called off", SwissAddressSearchStatus.Idle, search.status.value)
+
+        compose.onNodeWithContentDescription("Search city or address").performClick()
+        compose.onNode(hasSetTextAction()).assert(emptyField)
     }
 
     /**
