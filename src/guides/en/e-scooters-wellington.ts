@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Which e-scooter apps work in Wellington?',
       blocks: [
         'Two companies rent e-scooters on Wellington’s streets in 2026: **Flamingo** and **Lime**. On 20 January 2026 Wellington City Council awarded its shared micromobility tender to both, to follow licences due to expire on 1 March 2026. Flamingo has run here since 2019; Lime launched its e-scooters in March 2026.',
-        'Early on the morning of 23 October 2026 the [map of Wellington](map:nz:wgn:Wellington) showed about 430 Flamingo scooters: a snapshot of what was on the map, not the fleet. **Lime runs in Wellington too**, and since 26 October 2026 our map shows its scooters as well. Flamingo also rents e-bikes, and Lime planned to add its own from April 2026; our map shows e-scooters only.',
-        '**How many are allowed?** The council has agreed to raise the number of shared e-scooters and e-bikes from 1,300 to up to 2,000, split evenly between Lime and Flamingo, RNZ reported on 2 July 2026, when 1,000 e-scooters and 300 e-bikes were in use. We couldn’t confirm when the increase takes effect or when the licences end.',
+        'Early on the morning of 23 October 2026 the [map of Wellington](map:nz:wgn:Wellington) showed about 430 Flamingo scooters free to rent at that moment. **Lime runs in Wellington too**, and since 26 October 2026 our map shows its scooters as well. Flamingo also rents e-bikes, and Lime planned to add its own from April 2026; our map shows e-scooters only.',
+        '**How many are allowed?** The council has agreed to raise the number of shared e-scooters and e-bikes from 1,300 to up to 2,000, split evenly between Lime and Flamingo, RNZ reported on 2 July 2026, when 1,000 e-scooters and 300 e-bikes were in use. When the increase takes effect and when the licences end aren’t published.',
         '**Porirua and Tawa.** Flamingo runs a separate area to the north, “Porirua City (and Tawa)”, at the same price, so Tawa’s scooters belong to that area; the [Porirua map](map:nz:wgn:Porirua) showed about 50 early on 23 October.',
       ],
     },
@@ -96,7 +96,7 @@ const guide: Guide = {
         '**Hills.** Greater Wellington’s e-scooter guide advises avoiding steps and steep inclines where you can; on steeper ones you may have to push with your foot or walk the scooter. Flamingo says its scooters govern their speed downhill.',
         '**Kelburn and the university.** The Wellington Cable Car climbs 119 m over 609 m from Lambton Quay to Kelburn, in 4 to 5 minutes, with cars every 10 minutes. A one-way adult fare is $7, or $4 at the ticket box with a New Zealand student ID, SuperGold or Community Services card. Te Herenga Waka Victoria University asks riders to take particular care on the hilly streets around Kelburn and to walk scooters through campus, where they can’t be parked.',
         '**Wind.** Spring is consistently Wellington’s windiest season, NIWA says: in an average October, gusts top 60 km/h at the airport on about half the days. Flamingo’s terms bar riding in strong wind, heavy rain or electrical storms, so plan around them.',
-        '**To the Hutt.** Te Ara Tupua, a 4.5 km walking and cycling path along the harbour from Ngā Ūranga to Pito-One (Petone), opened in May 2026. Flamingo’s data showed no zones or scooters along it beyond Ngā Ūranga, and Lower Hutt isn’t on our map: check the app’s service area first.',
+        '**To the Hutt.** Te Ara Tupua, a 4.5 km walking and cycling path along the harbour from Ngā Ūranga to Pito-One (Petone), opened in May 2026. the map showed no Flamingo zones or scooters along it beyond Ngā Ūranga, and Lower Hutt isn’t on our map: check the app’s service area first.',
       ],
     },
     {

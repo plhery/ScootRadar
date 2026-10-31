@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'lisbon',
   name: 'Renting an e-scooter in Lisbon',
   title: 'Lisbon e-scooters 2026: Lime, Bolt, Bird, rules and the ban',
-  description: 'Lisbon voted on 21 October 2026 to ban shared e-scooters; operators have 60 days to remove them. Until then: Lime, Bolt or Bird, no-go zones, hotspot parking.',
+  description: 'Lisbon voted on 21 October 2026 to ban shared e-scooters, likely gone by the end of January 2027. Until then: Lime, Bolt or Bird, no-go zones, hotspot parking.',
   headline: 'E-scooters in Lisbon: Lime, Bolt and Bird, the no-go zones, and why your ride ends only at a hotspot',
-  lede: 'You can rent an e-scooter in Lisbon from Lime, Bolt or Bird in their apps, which show the price before you unlock: none of them publishes a Lisbon rate. Shared scooters are capped at 20 km/h, banned from pavements, bus lanes, parks and big squares such as Praça do Comércio and Rossio, and a ride can only end at a designated parking spot, a “hotspot”. Free minutes with the Navegante pass are for Lisbon residents only; visitors pay the app price, or ride Gira bikes for €2 a day. On 21 October 2026 the city council voted to end shared e-scooters: the operators have 60 days to remove them.',
+  lede: 'You can rent an e-scooter in Lisbon from Lime, Bolt or Bird in their apps, which show the price before you unlock: none of them publishes a Lisbon rate. Shared scooters are capped at 20 km/h, banned from pavements, bus lanes, parks and big squares such as Praça do Comércio and Rossio, and a ride can only end at a designated parking spot, a “hotspot”. Free minutes with the Navegante pass are for Lisbon residents only; visitors pay the app price, or ride Gira bikes for €2 a day. On 21 October 2026 the city council voted to end shared e-scooters, which it expects gone by the end of January 2027.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'pt:Lisboa',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Lisbon?',
       blocks: [
         'As of October 2026, three operators run shared e-scooters in Lisbon: **Lime**, **Bolt** and **Bird**. Lime also rents e-bikes. LINK, still listed in older guides, has left Portugal.',
-        'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended on 23 June 2025, which applies until the city adopts the regulation it began drafting in 2022. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
+        'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended on 23 June 2025, which the council voted on 21 October 2026 to end. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
         'At 04:27 on 30 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 3,200 Bolt, 2,400 Lime and 1,400 Bird scooters free to rent at that moment, not the whole fleet, with each one’s battery or range. Bolt’s and Lime’s free scooters alone are over each operator’s cap, and Bird’s are under it; the council has not said whether it gave them the quotas of operators that left.',
       ],
     },
@@ -60,7 +60,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter parking in Lisbon: rides end only at hotspots',
       blocks: [
-        'A ride can only end at a hotspot, a designated parking spot marked in the app. Bird alone listed 1,754 of them in its open data on 13 October 2026. Parking is banned at Metro entrances, bus and tram stops, crossings, taxi ranks and monument entrances.',
+        'A ride can only end at a hotspot, a designated parking spot marked in the app. Bird alone had 1,754 of them on 13 October 2026. Parking is banned at Metro entrances, bus and tram stops, crossings, taxi ranks and monument entrances.',
         { note: 'If the app won’t let you end your ride, you are outside a hotspot or in a no-parking zone. Move to the nearest spot the app shows: since the ride can only end there, you keep paying by the minute until you get there.' },
         'The municipal police and EMEL, the city’s parking company, can remove badly parked scooters: in 2025 the police removed 5,505 scooters and bicycles, about 15 a day. The operator pays, but the agreement requires operators to set penalties for bad parking and riding in their terms, and Bird passes fines and pound fees on to the rider.',
         'At the big stations, end the ride at a hotspot outside the station area and walk: Bird has 19 hotspots within 300 m of Cais do Sodré and 4 within 300 m of Santa Apolónia.',
@@ -96,7 +96,7 @@ const guide: Guide = {
             '**Hills and calçada.** Lisbon is steep and climbs are slow at 20 km/h. The black-and-white stone paving of the old town, the calçada portuguesa, is slippery when wet: slow down in the rain.',
             '**Tram rails.** Cross the rails of the 28 and the other tram lines as close to a right angle as you can: small wheels catch in the groove.',
             '**Airport.** Bird has hotspots by Terminal 1, on Rua Interior ao Aeroporto da Portela; on 13 October 2026 it had none near Terminal 2.',
-            '**Ferries to Cacilhas.** The TTSL ferries take scooters only if they fold and travel as hand luggage, so a shared one can’t board. End your ride near Cais do Sodré, cross to Cacilhas and look for Lime or Bird on the [map of Almada](map:pt:Almada). The 25 de Abril and Vasco da Gama bridges carry motorways and are off limits.',
+            '**Ferries to Cacilhas.** The TTSL ferries take scooters only as hand luggage, so a shared one can’t board. End your ride near Cais do Sodré, cross to Cacilhas and look for Lime or Bird on the [map of Almada](map:pt:Almada). The 25 de Abril and Vasco da Gama bridges carry motorways and are off limits.',
             '**Metro and trains.** The Metro and CP’s urban trains take scooters on board, but a shared one’s ride can only end at a hotspot: end it near the station and walk in.',
             '**Beyond the city.** Bird also runs in [Oeiras](map:pt:Oeiras) and [Cascais](map:pt:Cascais), and Bolt and Lime (since 2024) in Oeiras, all on the map. Lisbon’s agreement and its free minutes don’t apply there. Heading north? See [e-scooters in Porto](guide:porto).',
           ],
@@ -124,10 +124,10 @@ const guide: Guide = {
     {
       heading: 'Will Lisbon ban shared e-scooters?',
       blocks: [
-        'Yes: they are due to go by the end of 2026. On 21 October 2026 the city council approved ending its 2023 agreement with the operators unilaterally, “for reasons of public interest”, and banning shared e-scooters from riding and parking anywhere in the municipality. The operators have 60 days to take every scooter off the streets; after that the council may remove them at the operators’ cost.',
-        'The operators first get 10 days to respond in writing; without a response, the decision becomes final. The council cites rising complaints and incidents, such as riding against the traffic and on pavements, even with fewer scooters.',
-        'The council also promises more Gira stations and bikes, and a draft regulation on soft mobility within a year. Until they go, the apps work as before, and the [map of Lisbon](map:pt:Lisboa) shows Bolt’s, Lime’s and Bird’s scooters as long as they are on the street.',
-        'In August 2026 the Automóvel Club de Portugal (ACP) had launched a petition for a local referendum on the same question.',
+        'Yes: the council expects them gone by the end of January 2027. On 21 October 2026 the city council approved ending its 2023 agreement with the operators unilaterally, “for reasons of public interest”, and banning shared e-scooters from riding and parking anywhere in the municipality. Once the council gives final notice, which deputy mayor Gonçalo Reis expected in November, the operators have 60 days to take every scooter off the streets; after that the council may remove them at their cost.',
+        'The operators had 10 days to respond in writing before the decision becomes final. The council cites rising complaints and incidents, such as riding against the traffic and on pavements, even with fewer scooters. On 23 October Bolt offered to discuss a model that keeps them.',
+        'The council also promises more Gira bikes and a draft soft-mobility regulation within a year. Until the scooters go, the apps and the [map of Lisbon](map:pt:Lisboa) work as before.',
+        'On 19 October 2026 the Automóvel Club de Portugal (ACP) handed the Municipal Assembly about 20,000 signatures for a local referendum on shared e-scooters.',
       ],
     },
     {
@@ -147,7 +147,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Until when can you rent an e-scooter in Lisbon?',
-      answer: 'Until about the end of 2026. The city council voted on 21 October 2026 to suspend shared e-scooters, and the operators have 60 days to remove them.',
+      answer: 'Probably until the end of January 2027: once the council gives final notice of its 21 October 2026 vote, expected in November, the operators have 60 days to remove them.',
     },
     {
       question: 'How much does a Lime scooter cost in Lisbon?',
@@ -163,7 +163,7 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a helmet on an e-scooter in Lisbon?',
-      answer: 'Not by law, as of October 2026, though it is strongly advised. Two bills to make helmets compulsory, with a €30–150 fine, passed a first vote in Parliament on 30 September 2026 but are not law yet.',
+      answer: 'Not by law (31 October 2026), though strongly advised. Two bills to make helmets compulsory, with a €30–150 fine, passed a first vote in Parliament on 30 September 2026 but still await their final vote.',
     },
     {
       question: 'Can I ride a scooter across the 25 de Abril bridge to Almada?',
@@ -186,6 +186,9 @@ const guide: Guide = {
     { title: 'Portuguese Parliament: the PSD helmet bill, Projeto de Lei 622/XVII (Portuguese)', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=356782' },
     { title: 'Código da Estrada, consolidated text (PGDL, Portuguese)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
     { title: 'ACP: the referendum petition on shared e-scooters in Lisbon (Portuguese)', url: 'https://trotinetessimounao.acp.pt' },
+    { title: 'Jornal Económico: “We want the scooters removed by the end of January”, says Gonçalo Reis, 16 October 2026 (Portuguese)', url: 'https://jornaleconomico.sapo.pt/noticias/queremos-as-trotinetes-removidas-ate-ao-final-de-janeiro-afirma-goncalo-reis-que-garante-que-nao-havera-indemnizacoes/' },
+    { title: 'Jornal Económico: Bolt open to discussing a model to keep scooters in Lisbon, 23 October 2026 (Portuguese)', url: 'https://jornaleconomico.sapo.pt/noticias/bolt-diz-estar-disponivel-para-discutir-com-a-autarquia-modelo-para-manter-as-trotinetes-em-lisboa' },
+    { title: 'DN/Lusa: the ACP on the suspension of shared e-scooters in Lisbon, 19 October 2026 (Portuguese)', url: 'https://www.dn.pt/local-geral/acp-satisfeito-com-suspenso-de-trotinetes-partilhadas-em-lisboa' },
     { title: 'Observador: Lisbon council approves suspending shared e-scooters, 21 October 2026 (Portuguese)', url: 'https://observador.pt/2026/10/21/camara-de-lisboa-aprova-suspensao-das-trotinetes-partilhadas-livre-e-il-votaram-contra/' },
   ],
 };

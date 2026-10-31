@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Which e-scooter apps work in Christchurch?',
       blocks: [
         'Two companies run shared e-scooters in Ōtautahi Christchurch in 2026: **Flamingo** and **Lime**. A scooter-share company needs Christchurch City Council’s permission to trade on the street, and the council sets the number of scooters and the conditions in each licence.',
-        'Early on the morning of 23 October 2026 the [map of Christchurch](map:nz:can:Christchurch) showed about 1,160 Flamingo scooters, from Hornby and Halswell to Belfast and east to New Brighton: a snapshot of what was on the map, not the fleet. **Lime runs in Christchurch too**, and since 26 October 2026 our map shows its scooters as well.',
-        'In December 2024 the council picked Lime and a newcomer, Ario, for a five-year licensing period from 31 January 2025; Ario pulled out in August 2025, and Flamingo, which had run here in 2020–21, returned in mid-December 2025. We found no published terms for Flamingo’s licence: its start, its cap or its end date.',
+        'Early on the morning of 23 October 2026 the [map of Christchurch](map:nz:can:Christchurch) showed about 1,160 Flamingo scooters free to rent at that moment, from Hornby and Halswell to Belfast and east to New Brighton. **Lime runs in Christchurch too**, and since 26 October 2026 our map shows its scooters as well.',
+        'In December 2024 the council picked Lime and a newcomer, Ario, for a five-year licensing period from 31 January 2025; Ario pulled out in August 2025, and Flamingo, which had run here in 2020–21, returned in mid-December 2025. The terms of Flamingo’s licence (its start, its cap and its end date) aren’t published.',
         'North of the city, Flamingo has its own area in the Waimakariri District (Rangiora, Kaiapoi, Woodend and Pegasus), at $1 plus 55c a minute and for riders of 18 or over. The district council approved it in April 2024 for up to three years, to 30 April 2027, and Flamingo told councillors its licence allowed up to 200 scooters. That morning the map showed about 45 in [Rangiora](map:nz:can:Rangiora) and 20 in Kaiapoi, and about 20 Jolt scooters in [Rolleston](map:nz:can:Rolleston), in Selwyn.',
         '**Looking for Christchurch in Dorset, England?** Its Beryl e-scooters are in our [Bournemouth guide](guide:bournemouth).',
       ],
@@ -87,9 +87,9 @@ const guide: Guide = {
     {
       heading: 'Where to ride and park: the central city, Hagley Park and the Avon',
       blocks: [
-        'Flamingo’s app colours its zones: orange for low speed, yellow for no parking, red for no riding. Flamingo runs 24 hours, and we found no council curfew.',
-        '**Slow zones.** Flamingo slows its scooters to 15 km/h on parts of Cashel Street, Oxford Terrace and High Street, and its zone data adds Te Pae, the Antigua Street and Armagh Street bridges, Merivale Mall and the Redcliffs shops.',
-        '**No-ride zones.** Flamingo’s city page names the Botanic Gardens, Victoria Square and the Margaret Mahy Playground; its zone data codes Victoria Square as a 15 km/h zone instead, so check the app. That data adds the Bus Interchange, The Crossing, The Terrace, New Regent Street, the hospital grounds, Riccarton Bush, Travis Wetland, motorways, skate parks and three malls: Northlands, The Palms and Barrington.',
+        'Flamingo’s app colours its zones: orange for low speed, yellow for no parking, red for no riding. Flamingo runs 24 hours, and the council publishes no curfew.',
+        '**Slow zones.** Flamingo slows its scooters to 15 km/h on parts of Cashel Street, Oxford Terrace and High Street, and its zone map adds Te Pae, the Antigua Street and Armagh Street bridges, Merivale Mall and the Redcliffs shops.',
+        '**No-ride zones.** Flamingo’s city page names the Botanic Gardens, Victoria Square and the Margaret Mahy Playground; its zone map marks Victoria Square as a 15 km/h zone instead, so check the app. The zone map adds the Bus Interchange, The Crossing, The Terrace, New Regent Street, the hospital grounds, Riccarton Bush, Travis Wetland, motorways, skate parks and three malls: Northlands, The Palms and Barrington.',
         '**Hagley Park.** The council’s Parks and Reserves Bylaw 2025, in force since 4 September 2025, lets you ride in parks only on the parts set aside for vehicles, such as shared paths and cycle tracks. At the council’s request the companies switch scooters off on and around sports fields and grass. In September 2026 Lime moved one of these no-go zones after it was found to cover the new shared path through Hagley Park South.',
         '**The Avon and the trams.** You can ride along the Ōtākaro Avon’s banks, past The Piano and the Arts Centre and over the tram tracks, but can’t end a ride there. Cross tram rails at a right angle, as Flamingo advises.',
         '**Parking.** Leave the scooter at the side of the footpath, ideally by street furniture, clear of entrances. Flamingo has marked spots at the Bus Interchange, Cathedral Square, Tūranga, Latimer Square, Riccarton Mall, The Palms, Halswell and Sumner.',
@@ -100,7 +100,7 @@ const guide: Guide = {
       heading: 'University of Canterbury, Riccarton and the Uni-Cycle',
       blocks: [
         'The council’s December 2024 report found that shared trips cluster in the central city and to and from the University of Canterbury; the average trip was about 1.24 km.',
-        'Flamingo’s zone data has no campus-wide ban at Ilam; College House and Ilam Fields are no-parking zones. On the evening of 23 October Flamingo’s data showed about 100 scooters within 1 km of the campus.',
+        'Flamingo’s zone map has no campus-wide ban at Ilam; College House and Ilam Fields are no-parking zones. On the evening of 23 October the map showed about 100 Flamingo scooters within 1 km of the campus.',
         '**The Uni-Cycle**, Puari ki Pū-taringa-motu, is a 5.6 km route from the campus to the central city via Ilam Fields, Riccarton Bush and Hagley Park, the university says. Riccarton Bush itself is a no-ride zone, so keep to the route.',
       ],
     },
@@ -108,7 +108,7 @@ const guide: Guide = {
       heading: 'Buses, the airport and the stadium',
       blocks: [
         '**Metro buses.** A scooter that folds can go on board, folded and stowed. One that doesn’t fold is the driver’s call, and Metro advises you not to bring it. End a shared ride before you board. From 23 November 2026 Metro takes no Metrocards or cash: pay contactless or with a Motu Move card.',
-        '**Christchurch Airport.** Few scooters wait there: on the evening of 23 October Flamingo’s data showed four within 2 km of the terminal. Buses leave from the northern end of International Arrivals, by Door 9: route 3 runs via Avonhead and the central city to Sumner, route 29 to the city via Fendalton.',
+        '**Christchurch Airport.** Few scooters wait there: on the evening of 23 October the map showed four Flamingo scooters within 2 km of the terminal. Buses leave from the northern end of International Arrivals, by Door 9: route 3 runs via Avonhead and the central city to Sumner, route 29 to the city via Fendalton.',
         '**One New Zealand Stadium at Te Kaha.** The stadium’s grass is a no-ride zone; Flamingo has marked parking spots on Madras and Barbadoes streets around it.',
       ],
     },
