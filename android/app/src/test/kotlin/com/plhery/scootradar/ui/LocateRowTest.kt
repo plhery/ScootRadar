@@ -27,6 +27,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.RecordingAnalytics
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -152,6 +153,26 @@ class LocateRowTest {
     }
 
     /**
+     * In a window too short for the search bar, the locate row and the dock one under the other, as the open Fold's
+     * third of a split screen, the row reaches up over the bar's buttons: the bar is drawn over it and takes their
+     * taps, as the iPhone draws its top stack over the row and the dock, at zIndex 20 (ScooterMapScreen.swift:249,
+     * UI-004).
+     */
+    @Test
+    @Config(qualifiers = "w852dp-h280dp-mdpi")
+    fun inAShortWindowTheSearchBarIsOverTheLocateRowAndTakesTheTapsOnItsButtons() {
+        val analytics = RecordingAnalytics()
+        show(analytics = analytics)
+        val settings = drawn(compose.onNode(hasContentDescription("Settings")))
+        val button = drawn(compose.onNode(nearMe))
+        assertTrue("the locate button $button over the bar's Settings $settings", button.contains(settings.center))
+        val density = compose.density.density
+        compose.onRoot().performTouchInput { click(Offset(settings.center.x * density, settings.center.y * density)) }
+        compose.waitForIdle()
+        assertTrue("Settings opened: ${analytics.names}", "settings_open" in analytics.names)
+    }
+
+    /**
      * At rest the locate button is heard by TalkBack and takes its own taps, and the map takes those beside it and
      * above it: the row it stands in, laid out down to it from the screen's top, takes none (review-app-r).
      */
@@ -251,7 +272,7 @@ class LocateRowTest {
     private fun frame(rect: ScreenRect?) = checkNotNull(rect)
 
     /** The screen on the list of providers, with the map's stand-in reading the chrome's frames. */
-    private fun show(direction: LayoutDirection = LayoutDirection.Ltr): ScooterMapController {
+    private fun show(direction: LayoutDirection = LayoutDirection.Ltr, analytics: RecordingAnalytics? = null): ScooterMapController {
         val clock = TestClock()
         val model = DockState.Summary.make(controllers, clock)
         compose.setContent {
@@ -263,6 +284,7 @@ class LocateRowTest {
                         Box(Modifier.fillMaxSize().pointerInput(Unit) { detectTapGestures { mapTaps++ } })
                     },
                     glassBlurs = false,
+                    analytics = analytics?.analytics,
                 )
             }
         }

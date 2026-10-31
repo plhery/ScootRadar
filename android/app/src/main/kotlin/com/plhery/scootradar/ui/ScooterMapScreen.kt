@@ -84,6 +84,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -511,7 +512,9 @@ private fun DockChrome(
                 chrome = chrome,
                 onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
                 settledTop = safeTop + 8.dp + chromeTop,
-                modifier = Modifier.padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
+                // Drawn over the locate row and the dock, and taking the taps first, as the iPhone's stack at zIndex
+                // 20: in a window too short for all three, as a third of a split screen, the row reaches up to the bar.
+                modifier = Modifier.zIndex(20f).padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
                 searchBarModifier = beside?.let { Modifier.besideCaption(it, slot) } ?: Modifier,
                 barSpan = bar.takeIf { beside != null },
             )
