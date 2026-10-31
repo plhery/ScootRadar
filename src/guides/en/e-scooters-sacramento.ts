@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Sacramento 2026: Lime, Bird, rules, parking',
   description: 'E-scooters in Sacramento: Lime and Bird under City permits, prices in the app, California rules, sidewalk fines up to $207, Sac State and the Parkway.',
   headline: 'E-scooters in Sacramento: Lime and Bird, the rules, where to ride and where to park',
-  lede: 'You can rent e-scooters in Sacramento from Lime and Bird, the two companies the City lists as active under its shared-rideable permits, and both are on the map. We found no open page with their Sacramento prices, so check the app before you unlock. California law asks for a driving licence or instruction permit and a helmet under 18, caps scooters at 15 mph and bans sidewalk riding, which can cost up to $207 in the city. Park upright at a bike rack or a drop zone.',
+  lede: 'You can rent e-scooters in Sacramento from Lime and Bird, the two companies the City lists as active under its shared-rideable permits, and both are on the map. Their Sacramento prices show in the app before you unlock. California law asks for a driving licence or instruction permit and a helmet under 18, caps scooters at 15 mph and bans sidewalk riding, which can cost up to $207 in the city. Park upright at a bike rack or a drop zone.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:ca:Sacramento',
@@ -17,16 +17,16 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Sacramento?',
       blocks: [
         'Electric scooter rental in Sacramento needs a City permit: under City Code chapter 5.18 each company holds a shared-rideable business permit, renewed each year, and the City sets the details in administrative procedures approved on 17 August 2021. Permits are open, not awarded by competition, a review for the City noted in March 2026. A permit covers the city only, not the parts of Sacramento County outside it.',
-        'Two companies run under these permits in 2026: **Lime** and **Bird**. The City’s micromobility dashboard listed them as its active operators on 29 October 2026, and the City’s consultants interviewed them as the existing operators in October and November 2025. We found no other company renting scooters in the city.',
+        'Two companies run under these permits in 2026: **Lime** and **Bird**. The City’s micromobility dashboard listed them as its active operators on 29 October 2026, and the City’s consultants interviewed them as the existing operators in October and November 2025.',
         'A company must keep at least 250 vehicles and may put out up to 1,000 in its first permit year; after that it asks the City to grow, and the City can cut a fleet that is often badly parked or little used. Each company pays $4,440 for its first permit and $2,220 to renew, plus $104 a scooter a year and 10 cents a trip. It must also place 20% of its fleet each morning in the City’s Opportunity Areas, which the City calls disadvantaged communities; the companies missed that share in 2025, the City’s consultants found.',
         'At 10:51 p.m. on Wednesday 28 October 2026 the [Sacramento map](map:us:ca:Sacramento) showed about 1,480 scooters: roughly 1,400 Lime and 80 Bird, both as last counted, so some may have moved since. That is the map’s count, not the fleets. The map has no outline for Sacramento, so its total takes in both companies’ whole Sacramento areas. Bird’s takes in the central city, downtown, Midtown and Old Sacramento included, almost wholly inside the city limits. Lime’s lies more than nine-tenths inside the city limits, Sacramento State included; the rest is unincorporated county land, such as Arden-Arcade and Lemon Hill, where the City’s permit doesn’t apply. [West Sacramento](map:us:ca:West Sacramento), a separate city across the river, has its own total: about 115 Lime scooters at the same time.',
-        'For Bird the map shows each scooter’s position, charge and range; for Lime, position and charge. Scooters on a ride aren’t shown, and the map draws no zones in Sacramento: the apps have the final word. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'For Bird the map shows each scooter’s position, charge and range; for Lime, position and charge. Scooters on a ride aren’t shown. Zoomed in, the map also draws the City’s 45 drop zones, the spots it marks for parking shared bikes and scooters; the companies’ own zones are in their apps, which have the final word. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime or Bird scooter cost in Sacramento?',
       blocks: [
-        'We found no open page with Lime’s or Bird’s Sacramento price on 29 October 2026, so check the rate in the app before you unlock. The City Code makes each company price by the hour or in smaller steps, clearly shown, rent seven days a week and run a 24-hour customer service line.',
+        'Lime’s and Bird’s Sacramento rates show in the app before you unlock. The City Code makes each company price by the hour or in smaller steps, clearly shown, rent seven days a week and run a 24-hour customer service line.',
         '**Riders on low incomes** can get a discount: the code makes every company offer a reduced-fare plan to anyone who lives in housing managed by the Sacramento Housing and Redevelopment Agency (SHRA) or gets an SHRA rent subsidy, or who qualifies for CalFresh, PG&E’s CARE programme, SMUD’s low-income programme or WIC.',
       ],
     },
@@ -68,7 +68,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a scooter at night? Hours and what is changing',
       blocks: [
-        'We found no night ban or riding hours in the City’s rules, the 2021 amendments to chapter 5.18 and the administrative procedures, and the map shows scooters at every hour; the app has the final word.',
+        'The City’s rules, the 2021 amendments to chapter 5.18 and the administrative procedures, set no night ban or riding hours, and the map shows scooters at every hour; the app has the final word.',
         'The rules are under review: the City’s consultants published a peer review in March 2026 and operator interviews in June 2026. On 20 October 2026 a Council committee had on its agenda Vice Mayor Karina Talamantes’s proposal for more enforcement and penalties against illegal riding of e-bikes, e-scooters and e-motos. Neither had changed any rule by 29 October 2026.',
       ],
     },
@@ -89,8 +89,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**SacRT buses and light rail.** We found no SacRT rule on scooters aboard. End a rental before you board, clear of the stop.',
-            '**Sacramento Valley Station.** The City owns the station and its 17-acre site, served by Amtrak’s long-distance trains and the state’s intercity trains. On the Capitol Corridor to the Bay Area you may bring your own electric scooter, with tyres no wider than 2.5 inches, or a folding scooter of up to 50 lb, the Capitol Corridor says. We found no rule for the other trains; a shared scooter stays in Sacramento.',
+            '**SacRT buses and light rail.** End a rental before you board, clear of the stop.',
+            '**Sacramento Valley Station.** The City owns the station and its 17-acre site, served by Amtrak’s long-distance trains and the state’s intercity trains. On the Capitol Corridor to the Bay Area you may bring your own electric scooter, with tyres no wider than 2.5 inches, or a folding scooter of up to 50 lb, the Capitol Corridor says. A shared scooter stays in Sacramento.',
             '**Sacramento International Airport.** It lies outside both companies’ areas on the map. SacRT’s Route 142 express bus runs to downtown, and with Yolobus routes 42A and 42B a bus leaves every 20 to 30 minutes, seven days a week, the airport says.',
           ],
         },
@@ -113,7 +113,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Sacramento?',
-      answer: 'We found no open page with Lime’s or Bird’s Sacramento price on 29 October 2026, so check the app before you unlock. The City Code makes both show their prices clearly and offer a reduced fare to riders on low incomes, such as those on CalFresh or WIC.',
+      answer: 'Lime’s and Bird’s Sacramento rates show in the app before you unlock. The City Code makes both show their prices clearly and offer a reduced fare to riders on low incomes, such as those on CalFresh or WIC.',
     },
     {
       question: 'Which scooter companies operate in Sacramento?',

@@ -28,14 +28,14 @@ const guide: Guide = {
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 13:55 on Thursday 29 October 2026 the [map of Norrköping](map:se:Norrköping) showed about 460 Voi scooters as they stood at that moment and about 490 Qick scooters as last counted: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking.',
+        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 13:55 on Thursday 29 October 2026 the [map of Norrköping](/map?origin=58.591,16.1844) showed about 460 Voi scooters free to rent at that moment and about 490 Qick scooters as last counted. Scooters on a ride aren’t shown, nor prices; zoomed in, the map draws the kommun’s e-scooter parking places and zones.',
         'The map has no outline for Norrköping: its total is everything the two companies’ data assign to the town, and Voi’s area takes in Söderköping, a separate municipality, so it isn’t a count within Norrköping’s boundaries. Bolt and Lime aren’t on the kommun’s list.',
       ],
     },
     {
       heading: 'How much does a Voi or Qick scooter cost in Norrköping?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Norrköping price on an open official page, and neither Qick’s nor Ryde’s website lists one (29 October 2026).',
+        '**The app shows the price** before you unlock. Neither Qick’s nor Ryde’s website lists a Norrköping price (29 October 2026).',
         'Qick rents only to riders aged 18 or over, its website and terms say, and Ryde’s Swedish terms let you ride from 15 (both read 29 October 2026). Check the Voi app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -52,7 +52,7 @@ const guide: Guide = {
             'use geofencing to hold scooters to **6 km/h** on certain stretches and places, and to stop rides ending in areas the kommun marks on its map service.',
           ],
         },
-        'The guidelines name no streets, and we found no list of those places: the app shows where you must slow down or can’t end a ride. The kommun says it is working with the police to update its conditions (28 July 2026), and we found no company’s permit itself.',
+        'The guidelines name no streets, but the kommun’s map service marks those places, and so does our map when you zoom in: its slow zones, the areas where a ride can’t end and those where scooters may not go. The app has the final word. The kommun says it is working with the police to update its conditions (28 July 2026).',
         'The kommun charges each company **SEK 2.50 a day for every scooter** on its land, under fees the municipal council set on 16 December 2024. Its e-scooter page and the guidelines name no cap on numbers, no night rule and no winter pause.',
         'If the kommun picks up a Qick scooter you parked wrongly, Qick’s terms let it charge you up to SEK 1,500; to avoid that, your end-of-ride photo must clearly show the scooter in a cycle rack or other cycle parking. Ryde’s Swedish terms say that if you send no parking photo and a municipality charges Ryde, you pay what Ryde reckons the cost to be.',
       ],
@@ -125,7 +125,7 @@ const guide: Guide = {
     {
       heading: 'Linköping and the map',
       blocks: [
-        'Östgötapendeln trains run from Norrköping through Linköping to Motala and Tranås, Östgötatrafiken says. Voi, Qick and Ryde rent scooters in Linköping too: see our [Linköping guide](guide:linkoping) and the [Linköping map](map:se:Linköping). To see what is standing near you now, open the [Norrköping map](map:se:Norrköping).',
+        'Östgötapendeln trains run from Norrköping through Linköping to Motala and Tranås, Östgötatrafiken says. Voi, Qick and Ryde rent scooters in Linköping too: see our [Linköping guide](guide:linkoping) and the [Linköping map](map:se:Linköping). To see what is standing near you now, open the [Norrköping map](/map?origin=58.591,16.1844).',
       ],
     },
     {
