@@ -48,6 +48,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.style.expressions.Expression
 import org.maplibre.android.style.layers.CircleLayer
@@ -58,8 +59,9 @@ import java.util.concurrent.CountDownLatch
 
 // The zones and the walk's trail on MapLibre's map (map.md MAP-151 to MAP-185): the zones of a fake server read back
 // from the map and off its pixels, their edges cut where no riding lies over them; a route fitted, drawn frame by
-// frame without its source written again, partly walked, then faded; and T371, the walk's scooter kept selected
-// while its trail is drawn. The screens are kept in the run's additional output, as zones-*.png and trail-*.png.
+// frame without its source written again, partly walked, then faded; T371, the walk's scooter kept selected while
+// its trail is drawn; and a route shown as it was on a map made again (X-AD17). The screens are kept in the run's
+// additional output, as zones-*.png and trail-*.png.
 @RunWith(AndroidJUnit4::class)
 class GroundOverlaysTest {
     private val zurich = GeoPoint(47.3769, 8.5417)
@@ -83,6 +85,9 @@ class GroundOverlaysTest {
         val zones: ScooterZoneLayer,
         val trail: WalkTrailLayer,
         val markers: ScooterMarkers,
+        /** What the view model keeps for a map made again, and the frames the map's moves are drawn on. */
+        val memory: MapCameraMemory,
+        val frames: CoroutineScope,
     ) {
         val ratio: Float get() = phone.view.pixelRatio
 
@@ -142,15 +147,16 @@ class GroundOverlaysTest {
                             phoneLanguages = { listOf("en-US") },
                         )
                     }
-                    val camera = MapCamera(phone.map, phone.view, controller, MapCameraMemory(), frames)
+                    val memory = MapCameraMemory()
+                    val camera = MapCamera(phone.map, phone.view, controller, memory, frames)
                     val zones = ScooterZoneLayer(phone.map, phone.view, controller, frames)
-                    val trail = WalkTrailLayer(phone.map, phone.view, controller, frames, fit = { camera.show(it) })
+                    val trail = WalkTrailLayer(phone.map, phone.view, controller, memory, frames, fit = { camera.show(it) })
                     camera.rested = { animated ->
                         trail.mapDidRest(animated)
                         zones.mapDidRest()
                     }
                     val markers = ScooterMarkers(phone.map, phone.view, controller, analytics = null, scope = frames, move = { camera.show(it) })
-                    Ground(phone, controller, camera, zones, trail, markers)
+                    Ground(phone, controller, camera, zones, trail, markers, memory, frames)
                 }
                 try {
                     test(ground)
@@ -380,6 +386,79 @@ class GroundOverlaysTest {
             waitFor("the trail is gone") { ground.shownDots().isEmpty() && ground.shownDots(GroundOverlays.FADING_TRAIL).isEmpty() }
             tap(ground, empty)
             waitFor("the tap closes the card") { ground.phone.onMain { ground.controller.selectedScooterID.value == null } }
+        }
+    }
+
+    /**
+     * X-AD17: a new density or display size makes the activity and its map again. The iPhone's screen is never made
+     * again, and fits a route once, as it is found: the new map shows the route as it was, where the hand had moved
+     * the map since, neither fitted again nor drawn again from its start.
+     */
+    @Test
+    fun aRouteShownIsNeitherFittedNorDrawnAgainOnAMapMadeAgain() {
+        val points = route()
+        val target = Scooter(provider = "voi", latitude = points.last().latitude, longitude = points.last().longitude, battery = 80, vehicleID = "s1")
+        val api = object : ScooterAPIClient {
+            override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = listOf(target))
+        }
+        val directions = object : WalkingDirectionsClient {
+            override suspend fun walkingPath(from: GeoPoint, to: GeoPoint): List<GeoPoint> = points
+        }
+        withGround(api, directions, zoom = 15.0) { ground ->
+            settle()
+            ground.phone.onMain { ground.controller.refresh() }
+            waitFor("the scooter is on the map") { ground.phone.onMain { ground.controller.mapScooters.value.any { it.id == target.id } } }
+            ground.phone.onMain {
+                val controller = ground.controller
+                controller.setUserLocation(points.first())
+                controller.selectScooter(target.id)
+                controller.showWalkingRoute(ScooterWalkTarget.Scooter(target))
+            }
+            waitFor("the route is shown") { ground.phone.onMain { ground.controller.walk.value?.phase == ScooterWalkPhase.Shown } }
+            waitFor("the whole route is drawn") { drawnWhole(ground) }
+            settle()
+            // The hand moves the map a kilometre north, off the route.
+            ground.phone.onMain {
+                ground.phone.map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(zurich.latitude + 0.009, zurich.longitude)))
+            }
+            settle()
+            val moved = ground.phone.onMain { ground.phone.map.cameraPosition }
+            // Made again: the camera and the trail go, and new ones come on the same map and memory, as ScooterMap
+            // makes them. What the trail shows, each frame from then.
+            val ranges = mutableListOf<IntRange>()
+            val watch = object : Choreographer.FrameCallback {
+                override fun doFrame(frameTimeNanos: Long) {
+                    val style = ground.phone.map.style ?: return
+                    ranges += rangeOf((style.getLayer(GroundOverlays.TRAIL) as CircleLayer).filter.toString())
+                    if (ranges.size < 120) Choreographer.getInstance().postFrameCallback(this)
+                }
+            }
+            val (camera, trail) = ground.phone.onMain {
+                ground.trail.close()
+                ground.camera.close()
+                val camera = MapCamera(ground.phone.map, ground.phone.view, ground.controller, ground.memory, ground.frames)
+                val trail = WalkTrailLayer(ground.phone.map, ground.phone.view, ground.controller, ground.memory, ground.frames, fit = { camera.show(it) })
+                camera.rested = { animated -> trail.mapDidRest(animated) }
+                Choreographer.getInstance().postFrameCallback(watch)
+                camera to trail
+            }
+            try {
+                settle()
+                ground.phone.onMain {
+                    val position = ground.phone.map.cameraPosition
+                    assertEquals(moved.target!!.latitude, position.target!!.latitude, 1e-9)
+                    assertEquals(moved.target!!.longitude, position.target!!.longitude, 1e-9)
+                    assertEquals(moved.zoom, position.zoom, 1e-9)
+                }
+                val whole = 0 until ground.dotCount()
+                assertTrue("${ranges.size} frames", ranges.size >= 60)
+                assertTrue("the route whole from the first frame: ${ranges.distinct()}", ranges.all { it == whole })
+            } finally {
+                ground.phone.onMain {
+                    trail.close()
+                    camera.close()
+                }
+            }
         }
     }
 

@@ -127,6 +127,9 @@ class MapCamera(
     /** The camera's own move under way, drawn a frame at a time. */
     private var motion: Job? = null
 
+    /** Where the camera's own move under way lands, which the memory keeps meanwhile. */
+    private var landing: CameraPosition? = null
+
     /** The camera is being moved by this class: MapLibre's idle after each step isn't the map at rest. */
     private var moving = false
 
@@ -183,7 +186,15 @@ class MapCamera(
         view.post { regionDidChange(animated = false) }
     }
 
+    /**
+     * The map goes, as the activity is made again for a new density or display size. The iPhone's screen is never
+     * made again, so what was under way goes on there: a move of the camera lands where it was going, and a move to
+     * a place is made again for the new size, still landing in the middle of the part in view. Here the memory keeps
+     * where the move was going, for the new map to open on, and the new map takes the move to a place again (X-AD17).
+     */
     fun close() {
+        landing = null
+        if (focusUnderWay != null) memory.focusToken = null
         stopMotion()
         moveForNewSizeWaiting?.cancel()
         map.removeOnCameraIdleListener(idle)
@@ -579,7 +590,7 @@ class MapCamera(
     private fun regionDidChange(animated: Boolean) {
         if (view.width == 0 || view.height == 0) return
         regionChanges += 1
-        memory.position = map.cameraPosition
+        memory.position = landing ?: map.cameraPosition
         rested?.invoke(animated)
         moveAgainForNewSize()
         applyFocus(controller.focusRequest.value)
@@ -609,18 +620,26 @@ class MapCamera(
         val from = map.cameraPosition
         val millis = moveMillis(from, target, projection.bounds.height, mapKit)
         moving = true
+        landing = target
+        memory.position = target
         motion = scope.launch(if (inMotion) FullSpeed else EmptyCoroutineContext) {
             Animatable(0f).animateTo(1f, tween(millis, easing = easeInEaseOut)) { jump(between(from, target, value.toDouble())) }
             moving = false
             motion = null
+            landing = null
             regionDidChange(animated = true)
         }
     }
 
+    /** Ends the camera's own move under way: the map is where it stopped, not where it was going. */
     private fun stopMotion() {
         motion?.cancel()
         motion = null
         moving = false
+        if (landing != null) {
+            landing = null
+            memory.position = map.cameraPosition
+        }
     }
 
     /** A move of the camera at once, which MapLibre reports as at rest straight after. */

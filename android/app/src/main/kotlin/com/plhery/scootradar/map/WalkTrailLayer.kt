@@ -44,6 +44,8 @@ class WalkTrailLayer(
     private val map: MapLibreMap,
     private val view: ScooterMapView,
     private val controller: ScooterMapController,
+    /** The route the map has shown, which a map made again shows as it is. */
+    private val memory: MapCameraMemory,
     /** The composition's scope, on whose frame clock the trail draws itself and fades. */
     private val scope: CoroutineScope,
     /** The camera's fit of a route between the search bar and the dock. */
@@ -111,6 +113,7 @@ class WalkTrailLayer(
      */
     internal fun applyTrail(trail: WalkTrail?) {
         if (trail == null) {
+            memory.trailRevision = null
             pendingReveal = null
             revealFallback?.cancel()
             hide()
@@ -118,6 +121,14 @@ class WalkTrailLayer(
         }
         if (trail.revision == revision) {
             setWalked(trail.walked)
+            return
+        }
+        // The route the map showed before it was made again: the camera is where the fit took it, or where the
+        // hand moved it since, and the route was drawn. It stays so, as on the iPhone, whose map is never made again.
+        val shownBefore = trail.revision == memory.trailRevision
+        memory.trailRevision = trail.revision
+        if (shownBefore) {
+            show(trail, drawn = 1.0)
             return
         }
         val animated = ValueAnimator.areAnimatorsEnabled() && view.isAttachedToWindow

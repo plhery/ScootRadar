@@ -55,11 +55,12 @@ import org.maplibre.android.maps.MapLibreMapOptions
 // ScooterMapView's makeUIView, from ios/ScootRadar/Views/ScooterMapView.swift.
 
 /**
- * The camera the map last came to rest on, which a recreated activity opens on, and the requests it has taken. The
- * view model keeps it, so it goes with the process: a new launch opens at the start place, as the iPhone's does
- * (X-AD18).
+ * The camera the map last came to rest on, which a recreated activity opens on, the requests it has taken and the
+ * route it has shown. The view model keeps it, so it goes with the process: a new launch opens at the start place,
+ * as the iPhone's does (X-AD18).
  */
 class MapCameraMemory {
+    /** Where the map came to rest, or where the camera's own move under way lands: the iPhone's goes on to it. */
     var position: CameraPosition? = null
 
     /**
@@ -68,6 +69,12 @@ class MapCameraMemory {
      */
     var focusToken: Int? = null
     var zoomToken: Int? = null
+
+    /**
+     * The route the map has shown, fitted and drawn: the iPhone's fits a route once, as it is found, so a recreated
+     * map shows it as it is, neither fitting it again nor drawing it again.
+     */
+    var trailRevision: Int? = null
 }
 
 /**
@@ -141,7 +148,7 @@ fun ScooterMap(
             }
             // On the ground, under the markers' layers, whichever comes first.
             val zoning = ScooterZoneLayer(map, view, controller, scope).also { zoned = it; zones = it }
-            val walking = WalkTrailLayer(map, view, controller, scope, fit = { moving.show(it) }).also { trailed = it; trail = it }
+            val walking = WalkTrailLayer(map, view, controller, memory, scope, fit = { moving.show(it) }).also { trailed = it; trail = it }
             // The trail first, as the iPhone's regionDidChange has it.
             moving.rested = { animated ->
                 walking.mapDidRest(animated)

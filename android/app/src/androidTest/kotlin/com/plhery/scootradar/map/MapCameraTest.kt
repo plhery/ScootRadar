@@ -17,10 +17,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.maps.MapLibreMap
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-// The moves of ScooterMapView's coordinator (MAP-039–049), on MapLibre's map of an iPhone's size.
+// The moves of ScooterMapView's coordinator (MAP-039–049), on MapLibre's map of an iPhone's size, and what a map made
+// again with the activity keeps of them (X-AD17).
 @RunWith(AndroidJUnit4::class)
 class MapCameraTest {
     private val bern = GeoPoint(46.9480, 7.4474)
@@ -205,6 +207,120 @@ class MapCameraTest {
             frames.cancel()
             scope.cancel()
         }
+    }
+
+    /**
+     * X-AD17, X-M07: a new density or display size makes the activity and its map again while the map is on its
+     * way to a place. The iPhone's screen is never made again, and its move is made again for the new size: the new
+     * map takes the move again, and the place lands in the middle of it at its span (MAP-046).
+     */
+    @Test
+    fun aMapMadeAgainDuringAMoveToAPlaceStillLandsThereAtItsNewSize() = withPhoneMap { phone ->
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+        val memory = MapCameraMemory()
+        try {
+            val first = phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(MapCamera.opening(zurichStart, MapKitCamera.IPhone)))
+                MapCamera(phone.map, phone.view, testController(scope), memory, frames)
+            }
+            settle()
+            val start = phone.onMain { phone.map.cameraPosition.zoom }
+            // Early in the move's two seconds, once it has taken a step, the map goes, as the activity does.
+            closedDuringTheMove(phone, first, start) { first.applyFocus(MapFocusRequest(bern, token = 1)) }
+            val stopped = phone.onMain { phone.map.cameraPosition.zoom }
+            val atBern = MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 844.0)
+            assertTrue("the move was under way: $stopped", stopped > start && stopped < atBern - 0.1)
+            // The new map is 300 points high, opens where the memory says, and hears the controller's request.
+            phone.resize(390, 300)
+            settle()
+            val second = phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(memory.position!!))
+                MapCamera(phone.map, phone.view, testController(scope), memory, frames).also {
+                    it.applyFocus(MapFocusRequest(bern, token = 1))
+                }
+            }
+            settle()
+            phone.onMain {
+                val position = phone.map.cameraPosition
+                assertEquals(bern.latitude, position.target!!.latitude, 1e-6)
+                assertEquals(bern.longitude, position.target!!.longitude, 1e-6)
+                assertEquals(MapZoom.fitting(MapRegion.around(bern, 850.0, 850.0), 390.0, 300.0), position.zoom, 1e-6)
+                second.close()
+            }
+        } finally {
+            frames.cancel()
+            scope.cancel()
+        }
+    }
+
+    /**
+     * X-AD17: the map made again while a route is being fitted opens where the fit lands, as the iPhone's map, never
+     * made again, goes on to it; not where the map last came to rest.
+     */
+    @Test
+    fun aMapMadeAgainDuringAFitOpensWhereTheFitLands() = withPhoneMap { phone ->
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
+        val memory = MapCameraMemory()
+        val opening = MapCamera.opening(zurichStart, MapKitCamera.IPhone)
+        // A walk of about a kilometre in the middle of Zürich, which the fit comes closer to see.
+        val route = listOf(GeoPoint(47.3769, 8.5417), GeoPoint(47.3800, 8.5450), GeoPoint(47.3830, 8.5400))
+        try {
+            val first = phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(opening))
+                MapCamera(phone.map, phone.view, testController(scope), memory, frames)
+            }
+            settle()
+            // Where the fit lands, then the map back where it opened.
+            phone.onMain { first.show(CameraMove.Fit(route, animated = true)) }
+            settle()
+            val landed = phone.onMain { phone.map.cameraPosition }
+            phone.onMain { phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(opening)) }
+            settle()
+            val start = phone.onMain { phone.map.cameraPosition.zoom }
+            assertTrue("the fit comes closer: ${landed.zoom}", landed.zoom > start + 1)
+            closedDuringTheMove(phone, first, start) { first.show(CameraMove.Fit(route, animated = true)) }
+            val stopped = phone.onMain { phone.map.cameraPosition.zoom }
+            assertTrue("the fit was under way: $stopped", stopped < landed.zoom - 0.1)
+            val second = phone.onMain {
+                phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(memory.position!!))
+                MapCamera(phone.map, phone.view, testController(scope), memory, frames)
+            }
+            settle()
+            phone.onMain {
+                val position = phone.map.cameraPosition
+                assertEquals(landed.target!!.latitude, position.target!!.latitude, 1e-6)
+                assertEquals(landed.target!!.longitude, position.target!!.longitude, 1e-6)
+                assertEquals(landed.zoom, position.zoom, 1e-6)
+                second.close()
+            }
+        } finally {
+            frames.cancel()
+            scope.cancel()
+        }
+    }
+
+    /**
+     * Starts a move of the camera, and closes the camera once the move has taken a step closer than `start`: on the
+     * main thread, as the move's steps come, so that a test thread kept waiting doesn't let the move land first.
+     */
+    private fun closedDuringTheMove(phone: PhoneMap, camera: MapCamera, start: Double, move: () -> Unit) {
+        val closed = CountDownLatch(1)
+        phone.onMain {
+            phone.map.addOnCameraMoveListener(object : MapLibreMap.OnCameraMoveListener {
+                override fun onCameraMove() {
+                    if (phone.map.cameraPosition.zoom <= start) return
+                    phone.map.removeOnCameraMoveListener(this)
+                    phone.view.post {
+                        camera.close()
+                        closed.countDown()
+                    }
+                }
+            })
+            move()
+        }
+        assertTrue("the move had begun within a second", closed.await(1, TimeUnit.SECONDS))
     }
 
     /** The camera of a phone's map opened on Zürich, tilted as the app opens it. */
