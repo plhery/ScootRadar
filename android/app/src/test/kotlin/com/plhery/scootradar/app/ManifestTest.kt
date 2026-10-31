@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.ShortcutManager
 import android.os.Looper
+import androidx.activity.compose.setContent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.MainActivity
@@ -77,13 +78,20 @@ class ManifestTest {
     /**
      * X-AD07: nor any the code publishes as the app runs, a dynamic shortcut or a pinned one: none as it opens, none
      * once what it posted and put off has run 10 s on, none once it has gone to the background (review-app-v finding
-     * 7). The screen is not composed here, as the map's native library does not load in a JVM test.
+     * 7). MainActivity's screen is composed and drawn, as DockFootTest composes it, with a stand-in for the map, whose
+     * native library does not load in a JVM test (review-app-yz finding 3). What the screen puts off with a coroutine's
+     * delay waits on kotlinx's own clock, not the looper's, so it is the device's to catch.
      */
     @Test
     fun theAppPublishesNoShortcutsAsItRuns() {
         val shortcuts = ApplicationProvider.getApplicationContext<Context>().getSystemService(ShortcutManager::class.java)
         val published = { shortcuts.dynamicShortcuts + shortcuts.pinnedShortcuts }
-        val activity = Robolectric.buildActivity(MainActivity::class.java).create().start().resume()
+        val activity = Robolectric.buildActivity(MainActivity::class.java).create()
+        var drawn = false
+        activity.get().setContent { activity.get().Screen(map = { drawn = true }) }
+        activity.start().resume().visible()
+        shadowOf(Looper.getMainLooper()).idle()
+        assertTrue("the screen composed", drawn)
         assertEquals("as it opens", emptyList<Any>(), published())
         shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(10))
         assertEquals("10 s on", emptyList<Any>(), published())

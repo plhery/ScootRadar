@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -83,29 +84,39 @@ class MainActivity : AppCompatActivity() {
         lifecycle.addObserver(model)
         lifecycle.addObserver(headingOrientation)
         setContent {
-            ScooterMapScreen(
-                controller = model.controller,
-                map = { dark ->
-                    ScooterMap(
-                        controller = model.controller,
-                        start = model.start,
-                        memory = model.camera,
-                        tiles = model.groundTiles,
-                        dark = dark,
-                        screenshot = model.screenshotCamera,
-                        analytics = model.analytics,
-                    )
-                },
-                analytics = model.analytics,
-                addressSearch = model.addressSearch,
-                defaults = (application as ScooterApplication).container.defaults,
-                locationSettings = model.location,
-                links = openedLinks,
-                shortcuts = shortcuts,
-            )
+            Screen { dark ->
+                ScooterMap(
+                    controller = model.controller,
+                    start = model.start,
+                    memory = model.camera,
+                    tiles = model.groundTiles,
+                    dark = dark,
+                    screenshot = model.screenshotCamera,
+                    analytics = model.analytics,
+                )
+            }
         }
         // The link that opened the app; an activity made again has it already.
         if (savedInstanceState == null) open(intent, launched = true)
+    }
+
+    /**
+     * The screen over [map]: the app's own map, or a test's stand-in, as MapLibre's native library does not load in
+     * a JVM test.
+     */
+    @VisibleForTesting
+    @Composable
+    internal fun Screen(map: @Composable (dark: Boolean) -> Unit) {
+        ScooterMapScreen(
+            controller = model.controller,
+            map = map,
+            analytics = model.analytics,
+            addressSearch = model.addressSearch,
+            defaults = (application as ScooterApplication).container.defaults,
+            locationSettings = model.location,
+            links = openedLinks,
+            shortcuts = shortcuts,
+        )
     }
 
     override fun onNewIntent(intent: Intent) {
