@@ -94,7 +94,8 @@ class MapCamera(
         }
 
     /** The safe area, which a focus on a place keeps the place out from under at the top. */
-    private var safeArea = MapInsets.zero
+    internal var safeArea = MapInsets.zero
+        private set
     private var chrome = MapChrome()
 
     /** The chrome over the map as the screen has it at this moment, read as the map takes a new size. */

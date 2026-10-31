@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.KeyEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -53,7 +55,9 @@ import com.plhery.scootradar.core.model.ScooterRefreshPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
+import com.plhery.scootradar.map.MapInsets
 import com.plhery.scootradar.map.ScooterMap
+import com.plhery.scootradar.map.ScooterMapView
 import com.plhery.scootradar.map.testController
 import com.plhery.scootradar.map.zurichStart
 import com.plhery.scootradar.ui.dock.DOCK_TAG
@@ -133,8 +137,9 @@ class SearchAndLanguageTest {
     /**
      * The keyboard limits the open search: places that reach it scroll above it. The dock, made way for the search,
      * stays where it was (`.ignoresSafeArea(.keyboard, edges: .bottom)`), and so do the map's credits, under the
-     * keyboard as Apple's Legal is (MAP-318). Back puts the keyboard away, then closes the search, then the scooter's
-     * card.
+     * keyboard as Apple's Legal is (MAP-318); the safe area ScooterMap hands its camera and markers stays the bars'
+     * and the cutout's, as the iPhone's map has no keyboard in its own (MAP-001, ScooterMapScreen.swift:95 and :110).
+     * Back puts the keyboard away, then closes the search, then the scooter's card.
      */
     @Test
     fun theKeyboardLiftsTheOpenSearchAndLeavesTheDockWhereItWas() {
@@ -143,6 +148,8 @@ class SearchAndLanguageTest {
         compose.waitForIdle()
         val dock = bounds(DOCK_TAG)
         val credits = creditsBounds()
+        val safe = barsSafeArea()
+        assertEquals("the camera's and the markers' safe area", listOf(safe, safe), mapSafeAreas())
         compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahnhofstrasse")
         compose.waitUntil(10_000) { imeBottom() > 0 && compose.onAllNodes(hasText("Bahnhofstrasse 1")).fetchSemanticsNodes().isNotEmpty() }
@@ -156,6 +163,7 @@ class SearchAndLanguageTest {
         // The map's credits where they were, under the keyboard: they went up over the dock as it shrank making way,
         // and stood partly under the keyboard on API 37, their text cut by its top (app-ab's pass, the Fold folded).
         assertEquals("the credits with the keyboard up, its top at $keyboardTop", credits, creditsBounds())
+        assertEquals("the camera's and the markers' safe area with the keyboard up", listOf(safe, safe), mapSafeAreas())
 
         // The keyboard put away with the search still open: the dock hasn't moved, nor have the credits.
         val madeWay = bounds(DOCK_TAG)
@@ -165,6 +173,7 @@ class SearchAndLanguageTest {
         compose.onNodeWithText("Cancel").assertExists()
         assertEquals(madeWay, bounds(DOCK_TAG))
         assertEquals("the credits with the keyboard put away", credits, creditsBounds())
+        assertEquals("the camera's and the markers' safe area with the keyboard put away", listOf(safe, safe), mapSafeAreas())
 
         // Back, as the phone's own key: the keyboard first, then the search, then the card.
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performClick()
@@ -333,6 +342,31 @@ class SearchAndLanguageTest {
     }
 
     private fun bounds(tag: String): Rect = bounds(compose.onNodeWithTag(tag).fetchSemanticsNode())
+
+    /** The window's bars and cutout, in points, as the map's safe area holds them. */
+    private fun barsSafeArea(): MapInsets {
+        var safe = MapInsets.zero
+        scenario?.onActivity { activity ->
+            val view = activity.window.decorView
+            val insets = ViewCompat.getRootWindowInsets(view)!!.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            val density = view.resources.displayMetrics.density.toDouble()
+            safe = MapInsets(top = insets.top / density, left = insets.left / density, bottom = insets.bottom / density, right = insets.right / density)
+        }
+        return safe
+    }
+
+    /** The safe areas ScooterMap handed its camera and its markers. */
+    private fun mapSafeAreas(): List<MapInsets> {
+        compose.waitForIdle()
+        fun mapIn(view: View): ScooterMapView? =
+            view as? ScooterMapView ?: (view as? ViewGroup)?.let { group -> (0 until group.childCount).firstNotNullOfOrNull { mapIn(group.getChildAt(it)) } }
+        var areas = emptyList<MapInsets>()
+        scenario?.onActivity { activity ->
+            val map = checkNotNull(mapIn(activity.window.decorView)) { "the map" }
+            areas = listOf(checkNotNull(map.camera).safeArea, checkNotNull(map.markers).safeArea)
+        }
+        return areas
+    }
 
     /** OpenStreetMap's credit, the first of the map's. */
     private fun creditsBounds(): Rect = bounds(compose.onNodeWithText("© OpenStreetMap", useUnmergedTree = true).fetchSemanticsNode())

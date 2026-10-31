@@ -119,7 +119,7 @@ class ScooterMapUpdatesTest {
             waitFor("the scooters, the faded marks and the zones are drawn") {
                 shown.phone.onMain {
                     controller.mapScooters.value.any { it.id == target.id } && controller.mapLastSeenScooters.value.isNotEmpty() &&
-                        controller.zoneState.value == ScooterZoneState.Shown && controller.mapZones.value.size == 3
+                        controller.zoneState.value == ScooterZoneState.Shown && controller.mapOperatorZoneCount.value == 3
                 }
             }
             shown.phone.onMain {

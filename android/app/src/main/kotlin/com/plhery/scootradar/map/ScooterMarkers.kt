@@ -74,7 +74,10 @@ class ScooterMarkers(
     )
 
     private var style: Style? = null
-    private var safeArea = MapInsets.zero
+
+    /** The safe area, whose top the names keep clear of. */
+    internal var safeArea = MapInsets.zero
+        private set
     private var chrome = MapChrome()
 
     /** The uptime the bands are counted from, in seconds: small numbers. */

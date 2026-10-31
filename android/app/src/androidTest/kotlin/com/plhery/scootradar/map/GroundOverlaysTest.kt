@@ -203,8 +203,10 @@ class GroundOverlaysTest {
         val api = zonesAPI(listOf(parking, slow, riding))
         withGround(api, zoom = 15.0) { ground ->
             ground.phone.onMain { ground.controller.setShowsZones(true) }
+            // The fake server's three, with Zürich's own zones built in drawn too, as the app draws them: none of the
+            // points read below lies in one of the city's (ScooterZonesTests.swift's operatorZones).
             waitFor("the zones are asked for and drawn") {
-                ground.phone.onMain { ground.controller.zoneState.value == ScooterZoneState.Shown && ground.controller.mapZones.value.size == 3 }
+                ground.phone.onMain { ground.controller.zoneState.value == ScooterZoneState.Shown && ground.controller.mapOperatorZoneCount.value == 3 }
             }
             settle()
             // Each zone where it is, in its own layer.
@@ -494,7 +496,8 @@ class GroundOverlaysTest {
                 waitFor("the whole route is drawn") { drawnWhole(remade) }
                 settle()
                 // Fitted: the camera came closer, the whole route is 40 points in from the map's edges, and it spans
-                // the room inside them across or down, as a fit leaves it.
+                // the room inside them across or down, as a fit leaves it: all of it but 2%, which a fit 45 points in
+                // (0.97 of it on PhoneMap's 390 points across) would not reach.
                 ground.phone.onMain {
                     val zoom = ground.phone.map.cameraPosition.zoom
                     val bounds = ground.phone.projection.bounds
@@ -504,7 +507,7 @@ class GroundOverlaysTest {
                     }
                     val across = (at.maxOf { it.x } - at.minOf { it.x }) / (bounds.width - 80)
                     val down = (at.maxOf { it.y } - at.minOf { it.y }) / (bounds.height - 80)
-                    assertTrue("fitted from zoom $before to $zoom, the route across $across and down $down of the room", zoom > before + 0.1 && maxOf(across, down) > 0.8)
+                    assertTrue("fitted from zoom $before to $zoom, the route across $across and down $down of the room", zoom > before + 0.1 && maxOf(across, down) > 0.98)
                 }
                 // Drawn from its start, frame by frame.
                 val reveal = ranges.filterNotNull().distinct()
