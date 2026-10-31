@@ -42,7 +42,6 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
@@ -132,7 +131,7 @@ internal fun ProviderListRow(
     count: Int,
     /** The provider's colour; none for "All providers". */
     color: Color?,
-    /** Shown on the map: the check, and the selected state for TalkBack. */
+    /** Shown on the map: the check, and "Shown" for TalkBack. */
     isShown: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -152,10 +151,11 @@ internal fun ProviderListRow(
         modifier
             .fillMaxWidth()
             .clickable(interaction, FocusRing(), role = Role.Button, onClick = onClick)
+            // "Shown" says what VoiceOver's selected trait does: Compose's selected would make the row a toggle, which
+            // TalkBack hints "Double-tap to toggle" where the row has no hint of its own (app-ai's TalkBack pass).
             .clearAndSetSemantics {
                 contentDescription = label
                 stateDescription = shown
-                selected = isShown
                 role = Role.Button
                 onClick(label = hint) { onClick(); true }
             }

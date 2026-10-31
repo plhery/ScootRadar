@@ -1,8 +1,10 @@
 package com.plhery.scootradar.ui.filters
 
+import android.view.View
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
@@ -27,6 +29,7 @@ import com.plhery.scootradar.ui.dock.ProviderList
 import com.plhery.scootradar.ui.theme.ScootTheme
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -150,12 +153,16 @@ class FiltersAccessibilityTest {
 
     /**
      * UI-264: a row of the panel's list is read as its chip is, by its label, "Shown" or "Hidden" and what a tap
-     * does, and selected while its provider is shown.
+     * does. Not Compose's selected, which makes the row a toggle that TalkBack hints "Double-tap to toggle" where it
+     * has no hint of its own, as "All providers" has none (app-ai's TalkBack pass): "Shown" says what VoiceOver's
+     * selected trait does.
      */
     @Test
     fun aRowOfThePanelsListIsReadAsItsChip() {
         val model = controllers.make(EmptyScooterAPI)
+        lateinit var view: View
         compose.setContent {
+            view = LocalView.current
             ScootTheme(dark = false, reduceMotion = true) {
                 ProviderList(model, entries)
             }
@@ -167,7 +174,8 @@ class FiltersAccessibilityTest {
         for ((label, shown) in listOf("All providers, 0 scooters" to true, "Lime, 12 scooters" to true, "Bolt, one scooter" to false)) {
             val row = row(label)
             assertEquals(label, if (shown) "Shown" else "Hidden", row.config[SemanticsProperties.StateDescription])
-            assertEquals(label, shown, row.config[SemanticsProperties.Selected])
+            assertEquals(label, null, row.config.getOrNull(SemanticsProperties.Selected))
+            assertFalse(label, view.accessibilityNodeProvider.createAccessibilityNodeInfo(row.id)!!.isCheckable)
             assertEquals(label, Role.Button, row.config[SemanticsProperties.Role])
             assertTrue(label, row.children.isEmpty())
         }
