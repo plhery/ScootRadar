@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.Rect
+import android.graphics.RectF
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -11,6 +12,7 @@ import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
@@ -643,30 +646,35 @@ class MapInTheWindowTest {
             assertNoRoomForTheCredits(chrome, bounds, safe, rightToLeft)
             return
         }
-        val creditsFrame = inMap(credits.visibleBounds)
+        // Each credit's four edges as the screen draws it, the 18 around their text, 6 out to its sides and 3 above and
+        // below it (drawnCredit).
+        val sources = listOf("© OpenStreetMap", "OpenFreeMap © OpenMapTiles").map { text ->
+            val drawn = drawnCredit(text)
+            assertNotNull("$text drawn", drawn)
+            drawn!!
+        }
+        val creditsFrame = ScreenRect(
+            sources.minOf { it.minX },
+            sources.minOf { it.minY },
+            sources.maxOf { it.maxX } - sources.minOf { it.minX },
+            sources.maxOf { it.maxY } - sources.minOf { it.minY },
+        )
         val margins = onMain { mapView.camera!!.margins }
         Log.i(TAG, "${size()}: credits $creditsFrame, margins $margins")
         val part = partInView(chrome, bounds)
-        // By its middle again: the 18 drawn lie in the middle of the 48 TalkBack is given. Their foot is the upright
-        // half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom margin keeps Apple's logo
-        // (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend and the locate button in the
-        // corner where they would cover them, as the button does on a tablet upright; over the dock, 4 over it and over
-        // the legend and the locate button on it where the dock would cut them, part of their text beside it and part
-        // under it, or their frame, as on a tablet upright with a cutout down its side; under a phone's dock whose foot
-        // would cut them, 4 below it or on its foot; elsewhere 8 above the safe area's foot.
+        // Their foot is the upright half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom
+        // margin keeps Apple's logo (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend and
+        // the locate button in the corner where they would cover them, as the button does on a tablet upright; over the
+        // dock, 4 over it and over the legend and the locate button on it where the dock would cut them, part of their
+        // text beside it and part under it, or their frame, as on a tablet upright with a cutout down its side; under a
+        // phone's dock whose foot would cut them, 4 below it or on its foot; elsewhere 8 above the safe area's foot.
         // The legend's and the dock's rules are Android's only (MAP-318, STATE 29 Oct 06:55Z): their licence asks that
         // the map's credits be seen, and Apple's logo and Legal link, a third as wide, stay in the map's margins
         // (ScooterMapView.swift :897-903), beside the iPad's dock too. The legend and the dock are where the screen
         // shows them, not where the chrome hands them to the map, so a frame measured wrong moves the credits and not
         // what they are checked against (review-app-p finding 4).
         val across = windowFold()?.takeIf { it.intersects(bounds) && it.width > it.height }
-        // Each credit's four edges as the screen shows it, the 18 drawn, and their text 6 inside them.
-        val sources = listOf("© OpenStreetMap", "OpenFreeMap © OpenMapTiles").map { text ->
-            val found = device.findObject(By.text(text))
-            assertNotNull(text, found)
-            inMap(found.visibleBounds).let { ScreenRect(it.minX, it.midY - 9, it.width, 18.0) }
-        }
-        val text = ScreenRect(sources.minOf { it.minX } + 6, sources.minOf { it.minY }, sources.maxOf { it.maxX } - sources.minOf { it.minX } - 12, 18.0)
+        val text = ScreenRect(creditsFrame.minX + 6, creditsFrame.minY, creditsFrame.width - 12, creditsFrame.height)
         fun shown(tag: String) = device.findObject(By.res(tag))?.let { inMap(it.visibleBounds) }
         val dock = shown(DOCK_TAG)
         val shownLegend = shown(ZONE_LEGEND_TAG)
@@ -691,7 +699,7 @@ class MapInTheWindowTest {
             "${size()}: credits $sources, dock $dock, legend $shownLegend, locate button $locateButton, cut by the dock $cutByDock, " +
                 "search bar ${shown(SEARCH_ISLAND_TAG)}, banner ${shown(STATUS_BANNER_TAG)}, location's card ${shown(LOCATION_CARD_TAG)}, safe $safe",
         )
-        assertEquals("the credits' foot: $creditsFrame, the fold $across, the corner over them $corner, the dock $dock", foot, creditsFrame.midY + 9, 2.0)
+        assertEquals("the credits' foot: $creditsFrame, the fold $across, the corner over them $corner, the dock $dock", foot, creditsFrame.maxY, 2.0)
         // Seen whole, in the safe area and clear of every control over the map, or, over a dock that spans the map as a
         // phone's does, wholly under it with all their text, as the iPhone's Legal is under its dock: never cut.
         val underDock = chrome.panel == null && dock != null && dock.minX <= text.minX + 1 && dock.maxX >= text.maxX - 1 &&
@@ -1201,10 +1209,38 @@ class MapInTheWindowTest {
     }
 
     /** A frame on the screen, in pixels, in the map's points. */
-    private fun inMap(screen: Rect): ScreenRect = onMain {
+    private fun inMap(screen: Rect): ScreenRect = inMap(RectF(screen))
+
+    private fun inMap(screen: RectF): ScreenRect = onMain {
         val density = mapView.resources.displayMetrics.density.toDouble()
         val at = IntArray(2).also { mapView.getLocationOnScreen(it) }
         ScreenRect((screen.left - at[0]) / density, (screen.top - at[1]) / density, screen.width() / density, screen.height() / density)
+    }
+
+    /**
+     * Where the map's credit [text] is drawn, in the map's points: its characters where the screen tells TalkBack they
+     * are, 6 out to its sides and 3 above and below them, its 18. Not TalkBack's bounds, its 48 tall touch target less
+     * what is drawn over it: under a phone's dock its chips cut their top, and their middle is not the credit's (app-ad
+     * 6a, Phone_Min, the credits under the dock past its corner's curve).
+     */
+    private fun drawnCredit(text: String): ScreenRect? {
+        fun find(node: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
+            if (node == null) return null
+            if (node.text?.toString() == text) return node
+            return (0 until node.childCount).firstNotNullOfOrNull { find(node.getChild(it)) }
+        }
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        val node = (listOfNotNull(automation.rootInActiveWindow) + automation.windows.mapNotNull { it.root })
+            .firstNotNullOfOrNull { find(it) } ?: return null
+        val arguments = Bundle().apply {
+            putInt(AccessibilityNodeInfo.EXTRA_DATA_TEXT_CHARACTER_LOCATION_ARG_START_INDEX, 0)
+            putInt(AccessibilityNodeInfo.EXTRA_DATA_TEXT_CHARACTER_LOCATION_ARG_LENGTH, text.length)
+        }
+        if (!node.refreshWithExtraData(AccessibilityNodeInfo.EXTRA_DATA_TEXT_CHARACTER_LOCATION_KEY, arguments)) return null
+        val characters = BundleCompat.getParcelableArray(node.extras, AccessibilityNodeInfo.EXTRA_DATA_TEXT_CHARACTER_LOCATION_KEY, RectF::class.java)
+            ?.filterIsInstance<RectF>()?.takeIf { it.isNotEmpty() } ?: return null
+        val drawn = inMap(RectF(characters.minOf { it.left }, characters.minOf { it.top }, characters.maxOf { it.right }, characters.maxOf { it.bottom }))
+        return ScreenRect(drawn.minX - 6, drawn.minY - 3, drawn.width + 12, drawn.height + 6)
     }
 
     /** One or two fingers drawn from their starts to their ends over `millis`, in the map's points. */
