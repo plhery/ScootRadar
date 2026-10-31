@@ -120,10 +120,14 @@ class ScooterAPI(
             http.fetch(request)
         } catch (error: CancellationException) {
             throw error
-        } catch (error: SocketTimeoutException) {
-            throw ScooterAPIError.TimedOut()
         } catch (error: IOException) {
-            throw if (isOffline()) ScooterAPIError.Offline() else ScooterAPIError.Network(error)
+            // Offline first, a timeout too: where iOS hears of a connection lost on the way (networkConnectionLost),
+            // Android's socket may only run out its wait.
+            throw when {
+                isOffline() -> ScooterAPIError.Offline()
+                error is SocketTimeoutException -> ScooterAPIError.TimedOut()
+                else -> ScooterAPIError.Network(error)
+            }
         }
 
         if (response.code !in 200..299) throw ScooterAPIError.HttpStatus(response.code)

@@ -241,6 +241,24 @@ class ScooterAPITest {
         }
     }
 
+    /**
+     * A connection lost on the way, as the phone went offline mid-load, may only run out its wait on Android: the
+     * phone offline then, it is offline, as iOS's networkConnectionLost is (X-M21).
+     */
+    @Test
+    fun aTimeoutWithThePhoneOfflineIsOffline() = runBlocking<Unit> {
+        val api = makeAPI(failure = SocketTimeoutException("timeout"), offline = true)
+
+        when (val error = failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }) {
+            null -> fail("Expected an offline error")
+            is ScooterAPIError -> {
+                if (error !is ScooterAPIError.Offline) fail("Expected offline, got $error")
+                assertEquals(ScooterLoadFailure.Offline, error.loadFailure)
+            }
+            else -> fail("Unexpected error: $error")
+        }
+    }
+
     @Test
     fun invalidJSONIsToldApart() = runBlocking<Unit> {
         val api = makeAPI(responseStatus = 200, data = "{}")
@@ -285,6 +303,7 @@ class ScooterAPITest {
             makeAPI(failure = IOException("unexpected end of stream")) to ScooterLoadFailure.Failed,
             makeAPI(failure = UnknownHostException("scootradar.com")) to ScooterLoadFailure.Failed,
             makeAPI(failure = SocketTimeoutException("timeout")) to ScooterLoadFailure.Timeout,
+            makeAPI(failure = SocketTimeoutException("timeout"), offline = true) to ScooterLoadFailure.Offline,
             makeAPI(responseStatus = 429) to ScooterLoadFailure.Busy,
             makeAPI(responseStatus = 502) to ScooterLoadFailure.Unavailable,
             makeAPI(responseStatus = 200, data = "{}") to ScooterLoadFailure.Failed,
