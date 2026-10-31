@@ -24,7 +24,7 @@ const guide: Guide = {
             '**Lime** llegó en 2018 y en junio de 2026 operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, según Forbes Chile.',
           ],
         },
-        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 10.200 scooters estacionados. Unos 980, todos de JET, estaban en Buin, en la provincia de Maipo, fuera de la ciudad. En las comunas de Santiago había unos 9.300: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET. Cada cifra es la de su último recuento, no el tamaño de las flotas. Por comuna (límites de la Biblioteca del Congreso Nacional):',
+        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 10.200 scooters estacionados. Unos 980, todos de JET, estaban en Buin, en la provincia de Maipo, fuera de la ciudad. En las comunas de Santiago había unos 9.300: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET. Cada cifra es la de su último recuento. Por comuna (límites de la Biblioteca del Congreso Nacional):',
         {
           table: {
             caption: 'Scooters en el mapa por comuna, el 25 de octubre de 2026, de 11:47 a 11:56',
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta arrendar un scooter en Santiago?',
       blocks: [
-        'Whoosh y JET no publican su tarifa de Santiago en su web, y no hemos encontrado una tarifa oficial de Lime: el precio lo ves en cada app antes del viaje.',
+        'Whoosh y JET no publican su tarifa de Santiago en su web: el precio de cada operador lo ves en su app antes del viaje.',
         {
           list: [
             '**Whoosh** cobra un costo de inicio, que incluye el primer minuto, más un precio por minuto, según la ciudad, la demanda y tu plan o paquete. Puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
@@ -135,7 +135,7 @@ const guide: Guide = {
             '**EFE y Red.** No hemos encontrado reglas publicadas sobre scooters en los trenes de EFE ni en las micros de Red.',
           ],
         },
-        'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](map:cl:Viña del Mar), que tiene [su propia guía](guide:vina-del-mar), los Whoosh de [Rancagua](map:cl:Rancagua) y los JET de [Temuco](map:cl:Temuco).',
+        'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](guide:vina-del-mar), los Whoosh de [La Serena](guide:la-serena), [Rancagua](map:cl:Rancagua) y [Puerto Montt](guide:puerto-montt), y los JET de [Temuco](guide:temuco), cada una con su propia guía salvo Rancagua.',
       ],
     },
     {
