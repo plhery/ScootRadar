@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui
 
 import android.graphics.RectF
 import android.os.ParcelFileDescriptor
+import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
@@ -108,6 +109,13 @@ class DockMotionRecording {
     private var marker by mutableStateOf(false)
     private var markers = 0
     private var markerBounds: Rect? = null
+
+    /**
+     * When reduceMotionAtOnce's steps turned the marker, and when it acted on the screen, a step, a press or a click
+     * (SystemClock.uptimeMillis).
+     */
+    private val markedAt = mutableListOf<Long>()
+    private val actedAt = mutableListOf<Long>()
 
     @Before
     fun setUp() {
@@ -337,8 +345,10 @@ class DockMotionRecording {
      *   transition's, would.
      * - A marker, a square at the screen's end edge drawn over all, turns from black to white or back in the same
      *   snapshot as each step the test makes on the controller ([step]), so in the frame that step's change is drawn
-     *   in. No change comes after a marker's frame within [LATE_MILLIS]: a part a frame or more late, alone or not,
-     *   would. The marker's every turn must be in the film, else that rule read nothing.
+     *   in. That frame must be a change, and no other may come after it until the test's next step, press or click
+     *   (less [ACTION_MARGIN_MILLIS]): a part a frame or more late, alone or not, would bring one, and a step's change
+     *   late or never drawn would leave its frame bare. The marker's every turn must be in the film, else that rule
+     *   read nothing.
      *
      * What it cannot see, which ReduceMotionAtOnceTest checks frame by frame on the JVM: a part late after a tap or
      * TalkBack's click, which the test cannot mark in the frame of the change, if it changes alone or 3 frames or more
@@ -377,6 +387,7 @@ class DockMotionRecording {
                 if (found == null) Thread.sleep(200)
             }
             val at = checkNotNull(found) { "no $name" }.visibleBounds
+            actedAt += SystemClock.uptimeMillis()
             shell("input motionevent DOWN ${at.centerX()} ${at.centerY()}")
             Thread.sleep(400)
             shell("input motionevent UP ${at.centerX()} ${at.centerY()}")
@@ -387,9 +398,12 @@ class DockMotionRecording {
         // frame by design.
         fun step(marked: Boolean = true, block: () -> Unit) {
             main {
+                val now = SystemClock.uptimeMillis()
+                actedAt += now
                 if (marked) {
                     marker = !marker
                     markers++
+                    markedAt += now
                 }
                 block()
             }
@@ -432,6 +446,8 @@ class DockMotionRecording {
         }
         steps(true)
         markers = 0
+        markedAt.clear()
+        actedAt.clear()
         record("ui184-reduce-motion", seconds = 75) { steps(false) }
         assumeTrue("the film is read only on a plain ground, with ground=plain; over the live map it is only made", plainGround)
 
@@ -460,7 +476,13 @@ class DockMotionRecording {
             "changes over more than one frame, at " + twice.joinToString { (a, b) -> "%.0f ms (%d) and %.0f ms (%d)".format(a.millis, a.changed, b.millis, b.changed) }
         }
         check(marks.size == markers) { "the marker turned $markers times, and ${marks.size} times in the film: ${marks.map { it.millis.toInt() }}" }
-        val late = marks.flatMap { mark -> changes.filter { it.millis > mark.millis && it.millis - mark.millis < LATE_MILLIS }.map { mark to it } }
+        val bare = marks.filter { it.changed <= CHANGE_POINTS }
+        check(bare.isEmpty()) { "steps whose frame changes nothing: ${bare.map { "%.0f ms (%d)".format(it.millis, it.changed) }}" }
+        // Until the test's next action, as long after the step's frame as it came after the step.
+        val late = marks.zip(markedAt).flatMap { (mark, at) ->
+            val next = actedAt.firstOrNull { it > at }?.let { (it - at).toDouble() } ?: LAST_STEP_MILLIS
+            changes.filter { it.millis > mark.millis && it.millis - mark.millis < next - ACTION_MARGIN_MILLIS }.map { mark to it }
+        }
         check(late.isEmpty()) {
             "changes after their step's frame, at " +
                 late.joinToString { (mark, change) -> "%.0f ms (%d), the step's at %.0f ms".format(change.millis, change.changed, mark.millis) }
@@ -542,6 +564,7 @@ class DockMotionRecording {
     private fun expandSheet() {
         val grabber = accessibilityNode(localized("Sheet Grabber"))
         if (grabber == null || grabber.stateDescription?.toString() != localized("Sheet at half screen")) return
+        actedAt += SystemClock.uptimeMillis()
         check(grabber.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "the grabber's click" }
         Thread.sleep(1_500)
     }
@@ -558,6 +581,7 @@ class DockMotionRecording {
             Thread.sleep(200)
             node = accessibilityNode(description)
         }
+        actedAt += SystemClock.uptimeMillis()
         check(checkNotNull(node) { "no $description" }.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "$description's click" }
         Thread.sleep(1_500)
     }
@@ -657,10 +681,13 @@ class DockMotionRecording {
         const val CHANGE_POINTS = 150
 
         /**
-         * How long after a step's frame no other change may come: more than a part 3 frames late, or 20, and less than
-         * the 1.5 s to the next step.
+         * How long before the test's next action the screen may change again after a step's frame: more than the
+         * step's frame can come after the step, a frame or two of the film.
          */
-        const val LATE_MILLIS = 500.0
+        const val ACTION_MARGIN_MILLIS = 200.0
+
+        /** The time a last step is given, the 1.5 s the test waits after it. */
+        const val LAST_STEP_MILLIS = 1_500.0
 
         /** The marker's side: at least 24 points of the film across, more than [CHANGE_POINTS] once the encoder blurs it. */
         val MARKER_SIZE = 24.dp
