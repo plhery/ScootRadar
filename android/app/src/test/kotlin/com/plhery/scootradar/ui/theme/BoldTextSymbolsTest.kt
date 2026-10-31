@@ -70,7 +70,9 @@ class BoldTextSymbolsTest {
         val changed = mutableListOf<String>()
         for ((name, symbol) in symbols) {
             shown = symbol
-            compose.waitForIdle()
+            // The frame drawn on the window's surface, which the capture takes: one coming too soon after the last
+            // is skipped, and the capture would show the symbol before it.
+            compose.drawWindowAgain()
             val regular = ink(compose.onNodeWithTag(REGULAR).captureToImage())
             val bold = ink(compose.onNodeWithTag(BOLD).captureToImage())
             if (name in ALREADY_BOLD) {
@@ -93,6 +95,7 @@ class BoldTextSymbolsTest {
                 BoldText { Box(Modifier.width(160.dp).testTag(BOLD)) { AppearancePicture(ScooterAppearance.Sun) } }
             }
         }
+        compose.drawWindowAgain()
         val sun = Color(1f, 0.72f, 0.1f)
         val regular = count(compose.onNodeWithTag(REGULAR).captureToImage(), sun)
         val bold = count(compose.onNodeWithTag(BOLD).captureToImage(), sun)
