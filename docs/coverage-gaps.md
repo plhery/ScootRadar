@@ -93,7 +93,19 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   17 micromobility regulation areas (no riding, no parking, slow), 40 parking
   boxes and corrals and 21 no-lock bridges, ArcGIS layers last edited in
   2021 and 2022, as the City's [legal notice](https://www.austintexas.gov/legal-notice)
-  grants permission to use its files "for only personal use".
+  grants permission to use its files "for only personal use". Mülheim an der
+  Ruhr's 76 e-scooter stations, where a ride in the centre and the district
+  centres begins and ends, are points on its
+  [geoportal page](https://geo.muelheim-ruhr.de/e-roller-stationen), outside
+  its open data, and the city's
+  [terms of use](https://cms.muelheim-ruhr.de/nutzungsbedingungen) allow
+  its online services "ausschließlich für den persönlichen Bedarf".
+  Budapest's 1,122 mobility points and 9 micromobility zones, in whose inner
+  city and transition zones a shared scooter is parked only at a point, are
+  Budapest Közút's ArcGIS layers (`mobi_gdb`, updated 31 August 2026; no
+  licence stated), shown on BKK's site, whose
+  [legal notice](https://bkk.hu/jogi-tudnivalok/jogi-nyilatkozat/) allows
+  only non-commercial personal use without BKK's prior written consent.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -115,7 +127,17 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   scooter is parked only in a marked box or rack (since 12 June 2024), and
   its slow area are PDF annexes to its micromobility permit. Charlotte's
   uptown area without sidewalk riding, and UNC Charlotte's wheels-free
-  central campus (from fall 2026), are pictures only.
+  central campus (from fall 2026), are pictures only. Dresden's red zones,
+  where a shared vehicle may not be parked (its sharing guidelines), are a PDF
+  map of 22 December 2021 whose note allows electronic processing only with
+  the city's written permission. Lübeck's 35 sharing stations in the old town
+  and at the main station, outside which a ride there may not end, are site
+  plans in a council report's PDF annex (VO/2025/14043, March 2025); the wider
+  no-parking zones are a voluntary agreement between the operators, the city's
+  transport company and the city. Mainz's 25 parking areas in the Altstadt and
+  the Neustadt, outside which a hired scooter there may not be parked since
+  1 March 2026 (a voluntary agreement for now), and its no-parking zones are
+  two PDF maps with its press release of 27 February 2026.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -179,6 +201,28 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   parking points are not said to be the places; Örebro allows scooters only
   in bicycle parking and marked places; Viña del Mar's agreement with Whoosh
   sets 75 points, which the city has not published.
+- **None published** (31 October 2026): Hamm's no-parking zones, and Hagen's
+  no-parking zones and the places where a scooter must be parked (the main
+  station's among them), are shown only in the operators' apps, as the cities
+  say. Oldenburg's no-riding and no-parking zones (parks, cemeteries, car
+  parks), agreed with its operator, and Magdeburg's fixed parking places for
+  Voi, its only operator (from about October 2025), are not published.
+  Chemnitz has set no zones (council groups asked for fixed parking places in
+  May 2026), and Linz says it has no legal power to: its rule that a scooter
+  is parked only in a marked area is the operators' own commitment. Fürth's
+  site answers scripts with 403, and its geoportal holds no scooter layer.
+  Darmstadt's no-parking zones (the pedestrian zone, parks) are in the
+  operators' apps alone, and its Call a Bike layer does not say which 17
+  stations take scooters. Salt Lake City's downtown parking zones, outside
+  which a ride may not end since August 2026, are not published; its page
+  still says the City is working on a parking map. Recife's 92 parking points,
+  set with the operators of its pilot and changeable by them, are in their
+  apps alone, and the city's portals did not answer. Campo Grande's law of
+  14 September 2026 lets the city set no-parking areas, and Campos do Jordão's
+  of 10 June 2026 asks for decrees that set its 15 km/h tourist areas and
+  parking points; neither has set any. Verona and Bari publish none (Verona's
+  next sharing tender is for bikes alone), and Tokyo's rules are national,
+  set by road signs.
 
 ## No public data, in covered countries
 

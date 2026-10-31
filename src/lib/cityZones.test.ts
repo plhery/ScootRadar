@@ -140,7 +140,8 @@ describe('the cities\' zones', () => {
       }
       expect(city.source.url).toMatch(/^https:\/\//);
     }
-  });
+    // Every point of every city's zones: 4.2 s on CI on 31 October 2026, past 5 s once Turku's came.
+  }, 30_000);
 
   it('makes a city\'s zones rule zones of the city, in force always', async () => {
     const { cityRuleZones, ZONE_CITIES } = await fresh();
