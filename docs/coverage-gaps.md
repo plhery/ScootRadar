@@ -228,7 +228,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   where e-scooters may ride are a picture on the
   [RTA's page](https://www.rta.ae/wps/portal/rta/ae/home/about-rta/escooter);
   its KML of cycle tracks holds no scooter rule, and the RTA's terms ask its
-  consent for any use of its site's content.
+  consent for any use of its site's content. Hannover's zones where a scooter
+  is not parked and no ride ends, set by a voluntary agreement with the
+  operators (6 January 2023), are one scanned page, Anlage 1 of 16 April 2026,
+  on its [e-scooter page](https://www.hannover.de/Service/Presse-Medien/Hannover.de/Aktuelles/Service-2019/E-Scooter-in-Hannover);
+  its open data and geoportal hosts do not resolve. Napoli's historic centre,
+  where a shared scooter is left only in an area set for it (its 2023 call
+  for operators, art. 4 c. 7), is a PDF plan of 12 May 2020.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -242,6 +248,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   site and open data portal answer 403 from outside the United States
   (Cloudflare 1009), so the terms of its two corral layers (205 corrals
   installed in 2023–24, 59 in 2025; no licence stated) can't be read.
+  Marseille's sites answer scripts with a page asking for JavaScript and
+  cookies; its scooter bays, set under its 2023 call for operators, reach
+  them through Vianova's platform, and its open data holds only fleet and
+  trip counts (31 October 2026).
 - **Found, not added yet:** Malmö's centre, where a hired scooter is
   parked only in a mobility hub (since January 2024), and its 268 hubs are
   layers of the city's Stadsatlas WMS, linked from its
@@ -266,7 +276,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Warszawy with the data's date and the date it was fetched, but ask a reuser
   to tell the city by e-mail of any processing of them (clause 3e). Its
   no-riding and no-parking areas (Stare Miasto, Łazienki Królewskie and three
-  parks) and its 12 km/h streets are text alone.
+  parks) and its 12 km/h streets are text alone. Stavanger kommune's 214
+  zones (152 parking places, the inner centre where a ride ends only at one
+  of them, no-parking, no-riding and slow zones) are on a public map its
+  [e-scooter page](https://www.stavanger.kommune.no/vei-og-trafikk/stavanger-pa-sykkel/utleie-av-sparkesykler-i-stavanger/)
+  embeds, served as JSON by Nivel's micromobility platform, with no terms and
+  no documentation: no open data service (31 October 2026).
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -411,7 +426,14 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Winterthur's operating area is an unpublished annex to its concession
   contracts (Voi's alone runs past 2025), and St. Gallen's no-parking and
   slow areas are its operator's geofencing; its open data holds only the
-  scooters' positions.
+  scooters' positions. Lyon's places where a shared scooter must be parked,
+  in the Presqu'île since June 2021 and in more districts since, are shown in
+  the operators' apps, as the city says; the Métropole's WFS holds none, and
+  the city's page on them asks for a login. Grenoble's are zones its operator
+  proposes and each commune approves; the region's Mobilités M map shows only
+  Voi's scooters. Charleroi's drop zones are in the operators' apps while the
+  city maps the places it will impose, and Palermo leaves its zones to the
+  operators' systems; neither publishes any (31 October 2026).
 
 ## No public data, in covered countries
 

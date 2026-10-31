@@ -38,6 +38,8 @@ const ANTWERPEN_MEIR = { south: 51.215, west: 4.395, north: 51.222, east: 4.41 }
 const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 // Santa Monica's Pier, the Promenade and Palisades Park's south end.
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
+// Bordeaux's centre, from the Place Pey-Berland to the Grand Théâtre.
+const BORDEAUX_CENTRE = { south: 44.835, west: -0.585, north: 44.845, east: -0.57 };
 // Braunschweig's old town, from the Altstadtmarkt by the Kohlmarkt and the Burgplatz to the Schlossplatz.
 const BRAUNSCHWEIG_ALTSTADT = { south: 52.259, west: 10.512, north: 52.267, east: 10.532 };
 // Lambeth's Vauxhall, from Vauxhall Cross to the Oval.
@@ -46,11 +48,11 @@ const LAMBETH_VAUXHALL = { south: 51.483, west: -0.13, north: 51.49, east: -0.11
 const NORFOLK_DOWNTOWN = { south: 36.844, west: -76.296, north: 36.857, east: -76.287 };
 // Poznań's Old Market Square and the streets round it.
 const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
-// Rostock's old town, from the Kröpeliner Tor along the Kröpeliner Straße to the Neuer Markt.
 // Reykjavík's centre, from Austurvöllur to Hallgrímskirkja.
 const REYKJAVIK_CENTRE = { south: 64.141, west: -21.945, north: 64.149, east: -21.925 };
 // Rīga's old town, from the Dom to the Freedom Monument.
 const RIGA_OLD_TOWN = { south: 56.945, west: 24.1, north: 56.953, east: 24.12 };
+// Rostock's old town, from the Kröpeliner Tor along the Kröpeliner Straße to the Neuer Markt.
 const ROSTOCK_ALTSTADT = { south: 54.086, west: 12.125, north: 54.093, east: 12.146 };
 // Sacramento's downtown, from Old Sacramento to the State Capitol.
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
@@ -61,6 +63,8 @@ const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: 
 // Stockholm's Norrmalm, from Gustav Adolfs torg to Stureplan and Nybroplan.
 const STOCKHOLM_NORRMALM = { south: 59.323, west: 18.06, north: 59.337, east: 18.08 };
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
+// Trondheim's Midtbyen, from the Nidaros Cathedral to Torvet.
+const TRONDHEIM_MIDTBYEN = { south: 63.425, west: 10.38, north: 63.437, east: 10.41 };
 // Turku's market square, the cathedral and the river between them.
 const TURKU_CENTRE = { south: 60.448, west: 22.255, north: 60.456, east: 22.28 };
 // Zürich's centre, the main station, Bahnhofstrasse and the Niederdorf.
@@ -137,7 +141,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -734,6 +738,21 @@ describe('the cities\' zones', () => {
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
   });
 
+  it("draws Bordeaux Métropole's places for shared e-scooters, from its open data under the Licence Ouverte", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const bordeaux = ZONE_CITIES.find(city => city.id === 'bordeaux')!;
+    expect(bordeaux.authority).toBe('Bordeaux Métropole, Licence Ouverte');
+    expect(bordeaux.timeZone).toBe('Europe/Paris');
+    // Its 556 places for bikes and e-scooters, each named for its commune; those for bikes or mopeds alone are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.bordeaux();
+    expect(file.zones).toHaveLength(556);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    expect(file.zones.filter(zone => zone.name === 'Mérignac')).toHaveLength(52);
+    await loadCityZones(bordeaux);
+    const shown = ruleZonesInView({ bounds: BORDEAUX_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(20);
+  });
+
   it("draws Braunschweig's parking places, its old town where a scooter is parked only at one, and its no-parking zones, credited to the city under CC BY 4.0", async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
     const braunschweig = ZONE_CITIES.find(city => city.id === 'braunschweig')!;
@@ -893,6 +912,24 @@ describe('the cities\' zones', () => {
     await loadCityZones(seattle);
     const shown = ruleZonesInView({ bounds: SEATTLE_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(50);
+  });
+
+  it("draws Trondheim's parking, no-parking, slow and no-riding zones for e-scooters, from the city's map, credited to the city", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const trondheim = ZONE_CITIES.find(city => city.id === 'trondheim')!;
+    expect(trondheim.authority).toBe('Trondheim kommune');
+    expect(trondheim.timeZone).toBe('Europe/Oslo');
+    // 55 of its zones are both no-parking and slow; the zones that cap the operators' fleets are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.trondheim();
+    const counts = Object.fromEntries(['parking', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 16, noParking: 66, slow: 62, noRide: 11 });
+    // Torvet is ridden slowly and no ride ends there; the Nidaros Cathedral's grounds are not ridden.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.kind).sort();
+    expect(at(63.4305, 10.3951)).toEqual(['noParking', 'slow']);
+    expect(at(63.4269, 10.3969)).toEqual(['noRide']);
+    await loadCityZones(trondheim);
+    const shown = ruleZonesInView({ bounds: TRONDHEIM_MIDTBYEN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));
   });
 
   it("draws Turku's parking places and its no-parking, slow and no-riding areas, from the city's open map services", async () => {

@@ -614,7 +614,7 @@ catalogs, and Berlin's and Hamburg's, too many to build in: the iOS app
 downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
-them again. Alexandria, Basel, Berlin, Braunschweig, the City of London,
+them again. Alexandria, Basel, Berlin, Bordeaux, Braunschweig, the City of London,
 Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
 Santa Monica, Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
 Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
@@ -765,6 +765,22 @@ city's public zone layers are drawn regardless, credited to the city.
   maps in PDF (28 October 2025, on its
   [Greenbelt page](https://gardencityidaho.org/e-vehicles-on-the-greenbelt/)),
   with no shapes to draw.
+- **Bordeaux** (read 31 October 2026): Bordeaux Métropole's 556 places for
+  shared bikes and e-scooters (`typologie` VT, bikes and e-scooters, and VTS,
+  bikes, e-scooters and mopeds), each named for its commune (`nom_commune`),
+  from its open data
+  [Emplacement freefloating Bordeaux Métropole](https://opendata.bordeaux-metropole.fr/explore/dataset/st_freefloating_s/),
+  under the Licence Ouverte, its GeoJSON export, refreshed daily (places
+  entered from 25 September 2025, the last on 23 October 2026). Its 40 places
+  for bikes or mopeds alone (V, VS and S) are not drawn. The places are those
+  marked on the ground, half of them under 10 m². The legend credits
+  "Bordeaux Métropole, Licence Ouverte" and links the Métropole's
+  [free-floating page](https://sedeplacer.bordeaux-metropole.fr/a-velo/loffre-free-floating-bordeaux-metropole):
+  from 1 November 2025 to 1 November 2029, Pony and Dott rent e-scooters in 24
+  of its communes, where one is parked in a place set for it, shown in the
+  app and marked on the ground. Those communes are not drawn as a zone where a
+  scooter is left only in one, the layer holding the places alone. One place
+  is in Talence, which the service leaves out.
 - **Boulder** (read 29 October 2026): Lime's 42 no-parking zones, 8 slow
   zones and 51 no-riding zones, credited to Lime, from the public
   [zone file](https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json)
@@ -1233,6 +1249,20 @@ city's public zone layers are drawn regardless, credited to the city.
   is not drawn, and no area sets a curfew. The layer was last edited on 13
   December 2022; the council says it may amend the areas from time to time.
   No operator's scooters in Taupō are on the map: Beam's feed is closed.
+- **Trondheim** (read 31 October 2026): Trondheim kommune's 16 parking
+  zones, 66 no-parking zones, 62 slow zones (6 km/h, one 12 km/h) and 11
+  no-riding zones, the layer `samferdsel:elsparkesykkelsoner` its
+  [map of e-scooter zones](https://geoinnsyn.no/?application=trondheim&project=Elsparkesykkelsoner)
+  draws, from the city's WFS (`kart.trondheim.kommune.no/geoserver`), read as
+  GeoJSON. 55 zones are both no-parking and slow (`sonetype`
+  "parkeringsforbud/saktesone"), drawn as both. Not drawn: the three zones
+  named for the parts of the city where the operators' fleets are capped
+  (`midtbyen` and `tiller-heimda-byasen`), one of them a small area by Øya
+  with a speed of 0. The layer states no licence and the city's site sets no
+  terms: the legend credits Trondheim kommune and links its
+  [page on e-scooters](https://www.trondheim.kommune.no/tema/klima-miljo-og-naring/tillatelser-og-bevillinger/elsparkesykler-i-trondheim/),
+  which gives Tier-Dott, Voi and Ryde permits for the seasons of 2025 and
+  2026, 15 March to 1 December, and links the map of regulated zones.
 - **Turku** (read 31 October 2026): Turun kaupunki's 128 parking places for
   e-scooters (`Skuutti_pysakointipaikka`: 113 painted boxes, 9 racks and 6
   in bicycle parking, named by `Sijainti`), points each drawn as a disc of 5 m,
