@@ -137,6 +137,16 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Move points, where a shared scooter's trip starts and ends, are a metadata
   record of its geoportal (data of April 2023, no download), for internal use
   only unless the municipality licenses it (Decreto-Lei 193/95, art. 14).
+  Plymouth's 69 Beryl docking sites, where its scooters (since July 2026) are
+  taken and left, are a layer of the council's ArcGIS map on Connect
+  Plymouth, last edited in August 2025, and the council's
+  [terms](https://www.plymouth.gov.uk/website-terms-and-conditions) forbid
+  reproducing its material without its prior written agreement; its open data
+  licence covers only the datasets it lists. Leeds's 82 live LNER Beryl bays,
+  outside which a scooter is not returned without a charge, and the scheme's
+  operating area are layers of the council's ArcGIS (edited 6 October 2026),
+  and its [terms](https://www.leeds.gov.uk/terms-and-conditions) ask
+  permission to republish anything from its site.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -334,6 +344,19 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   shared under the Public Sector Geospatial Agreement, not as open data), and
   of the boroughs only Lambeth publishes its bays, drawn since 31 October
   2026; Southwark's and Westminster's pages were not found.
+  Bournemouth's (BCP's) Beryl bays are on Beryl's site alone, and its seafront
+  ban on hired scooters from 10:00 to 18:00 in July and August is text; the
+  go-slow and no-go zones are Beryl's geofencing. Brighton & Hove names its
+  no-go streets and its go-slow area by the Palace Pier in text alone, and its
+  GIS's cycle hire bays don't say which are scooter hubs. Birmingham's
+  parking areas, Lime's since April 2026, are shown in its app, as TfWM says,
+  and TfWM's layer of Beryl's zones is the old operator's (February 2024).
+  Salford's bays are in Lime's app alone (and the council's page, of July
+  2025, has the trial end on 31 May 2026). Santiago's parking points, in the
+  comunas where Whoosh, Jet and Lime run under municipal permits, are in the
+  operators' apps alone. Norwich's council site (norfolk.gov.uk) answers
+  scripts with 403, and Norfolk County Council's ArcGIS holds no scooter
+  layer.
 
 ## No public data, in covered countries
 
