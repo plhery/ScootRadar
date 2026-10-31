@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui
 
+import android.graphics.RectF
 import android.os.ParcelFileDescriptor
 import android.provider.Settings
 import android.util.Log
@@ -9,9 +10,19 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.InterceptPlatformTextInput
+import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
@@ -53,6 +64,7 @@ import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
 import okhttp3.OkHttpClient
 import org.junit.After
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -91,6 +103,11 @@ class DockMotionRecording {
     private val location = AuthorizedLocation()
     private val directions = HeldDirections()
     private var scenario: ActivityScenario<ComponentActivity>? = null
+
+    /** reduceMotionAtOnce's marker: black or white, and how many times its steps turned it. */
+    private var marker by mutableStateOf(false)
+    private var markers = 0
+    private var markerBounds: Rect? = null
 
     @Before
     fun setUp() {
@@ -313,16 +330,30 @@ class DockMotionRecording {
      * search opens over the card and back as it closes, and a walk with no location, whose note comes with the card and
      * goes as the route is hidden. Once before the film, but for the first fix and Settings, which change once.
      *
-     * With ground=plain the film is then read frame by frame (filmFrames): no frame that changes the screen comes
-     * within [ONE_CHANGE_MILLIS] of another, as a change drawn over two frames or more, its old state's or a
-     * transition's, would. A change is a frame of which more than [CHANGE_POINTS] points differ from the frame before:
-     * more than the field's cursor blinking and the encoder's own touches to a still screen. The keyboard is kept away,
-     * the screen's text input intercepted: it comes up some frames after the search opens and goes a frame or two after
-     * it closes, under Remove animations too, in its own window, and on API 37 Gboard draws a taller layout between
-     * (FLAG_ALT_FOCUSABLE_IM and FLAG_NOT_FOCUSABLE leave it be). The presses' light is kept apart: each tap is a press
-     * held 0.4 s and let go, as a click's press and its release would light a glass button for a frame between them,
-     * but Settings' button's, clicked as TalkBack does (clickAccessibly). Over the live map, whose tiles and labels
-     * come as they load, the film is only made.
+     * With ground=plain the film is then read frame by frame (filmFrames). A change is a frame of which more than
+     * [CHANGE_POINTS] points differ from the frame before: more than the field's cursor blinking and the encoder's own
+     * touches to a still screen.
+     * - No change comes within [ONE_CHANGE_MILLIS] of another, as a change drawn over two frames, its old state's or a
+     *   transition's, would.
+     * - A marker, a square at the screen's end edge drawn over all, turns from black to white or back in the same
+     *   snapshot as each step the test makes on the controller ([step]), so in the frame that step's change is drawn
+     *   in. No change comes after a marker's frame within [LATE_MILLIS]: a part a frame or more late, alone or not,
+     *   would. The marker's every turn must be in the film, else that rule read nothing.
+     *
+     * What it cannot see, which ReduceMotionAtOnceTest checks frame by frame on the JVM: a part late after a tap or
+     * TalkBack's click, which the test cannot mark in the frame of the change, if it changes alone or 3 frames or more
+     * after the rest; the refresh's chips, whose counts come with the server's answer, not in the step's frame;
+     * changes under [CHANGE_POINTS] points or [filmFrames]' 32 levels of grey (a glass's light on a light ground),
+     * below which the encoder's own touches lie; and two frames `screenrecord` merged under load. A pass is weaker
+     * than a fail. Run without ground=plain, it films and is then skipped by an assumption (am instrument's status
+     * -4): it read nothing, and does not pass.
+     *
+     * The keyboard is kept away, the screen's text input intercepted: it comes up some frames after the search opens
+     * and goes a frame or two after it closes, under Remove animations too, in its own window, and on API 37 Gboard
+     * draws a taller layout between (FLAG_ALT_FOCUSABLE_IM and FLAG_NOT_FOCUSABLE leave it be). The presses' light is
+     * kept apart: each tap is a press held 0.4 s and let go, as a click's press and its release would light a glass
+     * button for a frame between them, but Settings' button's, clicked as TalkBack does (clickAccessibly). Over the
+     * live map, whose tiles and labels come as they load, the film is only made.
      */
     @Test
     fun reduceMotionAtOnce() {
@@ -352,8 +383,16 @@ class DockMotionRecording {
             Thread.sleep(1_500)
         }
         fun named(label: String) = arrayOf(By.desc(label), By.text(label))
-        fun step(block: () -> Unit) {
-            main(block)
+        // The marker turns with the step's change unless [marked] is false: a change that is not drawn in the step's
+        // frame by design.
+        fun step(marked: Boolean = true, block: () -> Unit) {
+            main {
+                if (marked) {
+                    marker = !marker
+                    markers++
+                }
+                block()
+            }
             Thread.sleep(1_500)
         }
         val searchBar = By.desc(Pattern.compile("Search city or address|Finding your location.*|Showing scooters near.*"))
@@ -365,7 +404,7 @@ class DockMotionRecording {
             step { controller.setMinimumBattery(75.0) }
             step { controller.resetFilters() }
             api.scooters = if (warm) scooters else reordered
-            step { controller.refresh() }
+            step(marked = false) { controller.refresh() }
             // The bar's label: no place, a location on its way, or the place shown.
             tap("the search bar", searchBar)
             tap("Cancel", *named("Cancel"))
@@ -392,20 +431,39 @@ class DockMotionRecording {
             }
         }
         steps(true)
+        markers = 0
         record("ui184-reduce-motion", seconds = 75) { steps(false) }
-        if (!plainGround) return
+        assumeTrue("the film is read only on a plain ground, with ground=plain; over the live map it is only made", plainGround)
 
         val film = File(InstrumentationRegistry.getInstrumentation().targetContext.cacheDir, "ui184-reduce-motion.mp4")
         val copy = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("cat $FOLDER/ui184-reduce-motion.mp4")
         ParcelFileDescriptor.AutoCloseInputStream(copy).use { input -> film.outputStream().use { input.copyTo(it) } }
-        val frames = filmFrames(film, top = bars.first, bottom = bars.second)
+        var square = RectF()
+        scenario!!.onActivity { activity ->
+            val root = activity.window.decorView
+            val at = checkNotNull(markerBounds)
+            square = RectF(at.left / root.width, at.top / root.height, at.right / root.width, at.bottom / root.height)
+        }
+        val frames = filmFrames(film, top = bars.first, bottom = bars.second, marker = square)
         film.delete()
         val changes = frames.filter { it.changed > CHANGE_POINTS }
-        Log.i("DockMotionRecording", "${frames.size} frames; changes at ${changes.map { "%.0f ms (%d)".format(it.millis, it.changed) }}")
+        val marks = frames.filter { it.marker }
+        Log.i(
+            "DockMotionRecording",
+            "${frames.size} frames; changes at ${changes.map { "%.0f ms (%d)".format(it.millis, it.changed) }}; marker at " +
+                "${marks.map { "%.0f ms".format(it.millis) }}; every frame (ms, points, faint): " +
+                frames.joinToString(" ") { "%.0f,%d,%d".format(it.millis, it.changed, it.faint) },
+        )
         check(changes.size >= 20) { "the film's changes, ${changes.size}: ${changes.map { it.millis.toInt() }}" }
         val twice = changes.zipWithNext().filter { (a, b) -> b.millis - a.millis < ONE_CHANGE_MILLIS }
         check(twice.isEmpty()) {
             "changes over more than one frame, at " + twice.joinToString { (a, b) -> "%.0f ms (%d) and %.0f ms (%d)".format(a.millis, a.changed, b.millis, b.changed) }
+        }
+        check(marks.size == markers) { "the marker turned $markers times, and ${marks.size} times in the film: ${marks.map { it.millis.toInt() }}" }
+        val late = marks.flatMap { mark -> changes.filter { it.millis > mark.millis && it.millis - mark.millis < LATE_MILLIS }.map { mark to it } }
+        check(late.isEmpty()) {
+            "changes after their step's frame, at " +
+                late.joinToString { (mark, change) -> "%.0f ms (%d), the step's at %.0f ms".format(change.millis, change.changed, mark.millis) }
         }
     }
 
@@ -433,14 +491,27 @@ class DockMotionRecording {
         scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity {
             it.setContent {
                 // On the plain ground, measured frame by frame, no keyboard: the search's field takes no text input.
-                InterceptPlatformTextInput({ request, next -> if (plainGround) awaitCancellation() else next.startInputMethod(request) }) {
-                    ScooterMapScreen(
-                        controller,
-                        map = { dark ->
-                            if (liveMap && !plainGround) ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark)
-                            else Box(Modifier.fillMaxSize().background(Color(0xFF1B2230)))
-                        },
-                    )
+                Box(Modifier.fillMaxSize()) {
+                    InterceptPlatformTextInput({ request, next -> if (plainGround) awaitCancellation() else next.startInputMethod(request) }) {
+                        ScooterMapScreen(
+                            controller,
+                            map = { dark ->
+                                if (liveMap && !plainGround) ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark)
+                                else Box(Modifier.fillMaxSize().background(Color(0xFF1B2230)))
+                            },
+                        )
+                    }
+                    // reduceMotionAtOnce's marker, over the sheets too.
+                    if (plainGround) {
+                        Box(
+                            Modifier
+                                .align(Alignment.CenterEnd)
+                                .padding(end = 4.dp)
+                                .size(MARKER_SIZE)
+                                .onGloballyPositioned { markerBounds = it.boundsInWindow() }
+                                .background(if (marker) Color.White else Color.Black),
+                        )
+                    }
                 }
             }
         }
@@ -584,6 +655,15 @@ class DockMotionRecording {
 
         /** The points a frame of that film must change to be a change: about a word of the dock's text. */
         const val CHANGE_POINTS = 150
+
+        /**
+         * How long after a step's frame no other change may come: more than a part 3 frames late, or 20, and less than
+         * the 1.5 s to the next step.
+         */
+        const val LATE_MILLIS = 500.0
+
+        /** The marker's side: at least 24 points of the film across, more than [CHANGE_POINTS] once the encoder blurs it. */
+        val MARKER_SIZE = 24.dp
 
         /** 250 m west of Lime's scooter. */
         val rider = GeoPoint(47.3772, 8.5388)
