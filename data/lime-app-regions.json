@@ -3228,6 +3228,21 @@
       ],
       "region": "UT",
       "timeZone": "America/Denver",
+      "towns": [
+        {
+          "city": "South Salt Lake",
+          "center": [
+            40.7188,
+            -111.8883
+          ],
+          "bounds": {
+            "south": 40.6781,
+            "west": -111.9115,
+            "north": 40.7344,
+            "east": -111.8689
+          }
+        }
+      ],
       "regionToken": "6XZLNX7U6SX6C",
       "serviceAreas": [
         {

@@ -10,6 +10,7 @@ export { LIME_IDLE_INTERVAL_MS } from './limeAreas';
 import limeRegions from '../data/lime-app-regions.json';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
+import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { Pacer, SweepProgress, takeNearest } from './sweeps';
 
@@ -272,7 +273,8 @@ export class LimeMapCollector {
       // A narrower reply can omit a valid pin seen in its parent. Preserve all
       // observed pins, and keep querying parent views on subsequent refreshes.
       for (const v of result.vehicles) {
-        if (boundsContainPoint(cell.bounds, v.lat, v.lng) && areas.some(area => polygonContainsPoint(area, v.lat, v.lng))) vehicles.set(v.id, v);
+        if (boundsContainPoint(cell.bounds, v.lat, v.lng) && areas.some(area => polygonContainsPoint(area, v.lat, v.lng))
+          && systemServesPoint(system, v.lat, v.lng)) vehicles.set(v.id, v);
       }
       if (cell.probe) {
         leaves.push(cell);

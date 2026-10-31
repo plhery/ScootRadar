@@ -3373,6 +3373,21 @@
         40.7608,
         -111.891
       ],
+      "towns": [
+        {
+          "city": "South Salt Lake",
+          "center": [
+            40.7188,
+            -111.8883
+          ],
+          "bounds": {
+            "south": 40.6781,
+            "west": -111.9115,
+            "north": 40.7344,
+            "east": -111.8689
+          }
+        }
+      ],
       "timeZone": "America/Denver",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

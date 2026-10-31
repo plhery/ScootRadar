@@ -586,7 +586,8 @@ Paul and Minneapolis, left as boxes for so few. A feed keeps no scooter in an
 outlined town where its operator has no area: Veo Santa Monica's 1 or 2 in
 Culver City, Lime Oakland's 1 in Emeryville and Veo Berkeley's 1 in Oakland
 are left out (and Bird Cleveland's 2 in Cleveland Heights were, until its
-areas there on 26 October 2026). Elsewhere,
+areas there on 26 October 2026), as are, since 31 October 2026, the 19 of
+Lime's rider map in Culver City. Elsewhere,
 including Canada (1 a poll, an Edmonton scooter under St. Albert), the
 boxes name nearly every scooter's town, and have no outlines.
 

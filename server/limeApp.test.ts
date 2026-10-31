@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
+import type { MapBounds } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
 import { LimeClient, LimeAccountPool, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
@@ -22,6 +23,7 @@ const response = (body: unknown, status = 200) => ({ status, body });
 const pin = (id = 'scooter', lat = 0.0025, lng = 0.0025, extra = {}) => ({ id, type: 'scooter',
   location: { latitude: lat, longitude: lng }, battery_percentage: 65, ...extra });
 const map = (...pins: unknown[]) => ({ data: { attributes: { bike_pins: pins, current_level: 'block' } } });
+const LOS_ANGELES = 'ZYJJ72EMTLKEL', SALT_LAKE_CITY = '6XZLNX7U6SX6C';
 const system: RegionalScooterSystem = { id: 'lime_cz_test', country: 'CZ' as RegionalScooterSystem['country'], provider: 'lime',
   city: 'Test', center: [.005, .005], bounds: { south: 0, north: .01, west: 0, east: .01 },
   discoveryUrl: 'https://web-production.lime.bike/api/rider/v2/map/bike_pins', limeAppMap: true, limeServiceAreas: ['???o}@o}@??n}@n}@?'] };
@@ -370,6 +372,17 @@ describe('complete Lime scooter maps', () => {
     await expect(new LimeMapCollector(api).collect(registered)).resolves.toMatchObject({ vehicles: [] });
     // Another town of the same region has polygons of its own, not Deva's.
     await expect(new LimeMapCollector(api).collect({ ...registered, city: 'Hunedoara' })).rejects.toThrow('verified service outlines');
+  });
+  it('drops pins in a town Lime does not serve, and keeps those in a town its market takes in', async () => {
+    const market = (id: string, city: string, limeAppRegion: string, tile: MapBounds) => ({ ...system, id, country: 'US' as const,
+      city, limeAppRegion, limeServiceAreas: undefined, bounds: tile, limeMapTiles: [tile] });
+    const collected = (target: RegionalScooterSystem, ...pins: unknown[]) => new LimeMapCollector({ pins: vi.fn(async () => map(...pins)) })
+      .collect(target).then(({ vehicles }) => vehicles.map(v => v.vehicle_id!.split(':')[1]));
+    // Lime's Los Angeles zone covers Culver City, where the City's only operator is Bird.
+    await expect(collected(market('lime_test_la', 'Los Angeles', LOS_ANGELES, { south: 34, north: 34.05, west: -118.43, east: -118.36 }),
+      pin('culver-city', 34.0211, -118.3965), pin('palms', 34.0284, -118.4077))).resolves.toEqual(['palms']);
+    await expect(collected(market('lime_test_slc', 'Salt Lake City', SALT_LAKE_CITY, { south: 40.7, north: 40.74, west: -111.92, east: -111.86 }),
+      pin('south-salt-lake', 40.7188, -111.8883))).resolves.toEqual(['south-salt-lake']);
   });
   it('uses a capped nearest set only when its radius covers every cell corner with a margin', () => {
     const near = parseLimePins(map(...Array.from({ length: 200 }, (_, i) => pin(String(i)))));

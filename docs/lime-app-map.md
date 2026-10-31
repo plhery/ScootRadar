@@ -253,9 +253,18 @@ afternoon of 26 October 2026, Gulf time.
   both. It is one of the market's `towns`, with its centre and box: each
   refresh group gives it an area where its box meets a view, and its scooters
   count under it by its outline in `data/town-outlines.json`. Garden City is
-  one in Boise's market since 29 October 2026, and Council Bluffs and Carter
+  one in Boise's market since 29 October 2026, Council Bluffs and Carter
   Lake, Iowa, in Omaha's since 30 October, each with its `region`, the state
-  it is in where that is not the market's.
+  it is in where that is not the market's, and South Salt Lake in Salt Lake
+  City's since 31 October.
+- A scooter in an outlined town that Lime has as neither a market nor one of
+  their `towns` is left out, as in any feed since 31 October 2026 (see **Town
+  outlines** in [american-scooter-feeds.md](american-scooter-feeds.md)):
+  19 stood in Culver City that day, all inside Lime's Los Angeles zone, where
+  the City's only operator is Bird, and 10 in Grugliasco, inside Torino's,
+  where the Città metropolitana authorised only Dott and Voi. Of 394,047
+  points sampled across the 211 markets that day, only Los Angeles's (1.3%)
+  and Torino's (1.6%) fell in such a town.
 - No public Lime scooter lies inside the markets' polygons: Lime's public
   feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737),
   Frankfurt (3,630), Wuppertal (947), Arlington's and Washington's near
