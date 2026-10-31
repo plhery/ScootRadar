@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Cleveland?',
       blocks: [
         'Electric scooter rental in Cleveland runs on three-year City permits under Chapter 517 of the Codified Ordinances and on vendor rules the City last published on 27 March 2026; the current permit cycle began in 2024. Its Shared Mobility page names two companies: **Bird** (silver and blue or black scooters, blue e-bikes) and **Veo** (black scooters and e-bikes with blue accents).',
-        'At 11:41 a.m. on Monday 26 October 2026 the [Cleveland map](map:us:oh:Cleveland) showed about 540 scooters, roughly 330 Bird and 210 Veo: what stood there at that moment, not the fleets. It counted another 23 Veo scooters in [Cleveland Heights](map:us:oh:Cleveland Heights), 15 in South Euclid and 9 in University Heights, which it treats as towns of their own. Matched to the Census Bureau’s boundaries a quarter of an hour later, all but three of the Birds stood in the city of Cleveland; neither company had any in Lakewood.',
+        'At 11:41 a.m. on Monday 26 October 2026 the [Cleveland map](map:us:oh:Cleveland) showed about 540 scooters free to rent at that moment, roughly 330 Bird and 210 Veo. It counted another 23 Veo scooters in [Cleveland Heights](map:us:oh:Cleveland Heights), 15 in South Euclid and 9 in University Heights, which it treats as towns of their own. All but three of the Birds stood within Cleveland’s city limits; neither company had any in Lakewood.',
         'For Bird the map shows each scooter’s position, charge and range, and its zones (see below); for Veo, position and range. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
         '**Bikes aren’t on the map.** ScootRadar shows standing e-scooters only. That morning the two companies’ open data also listed about 320 Veo and 140 Bird e-bikes in and around Cleveland: open their apps to find one. The City’s page names no other bike share.',
       ],
@@ -69,7 +69,7 @@ const guide: Guide = {
       heading: 'Parking a Bird or Veo scooter in Cleveland: hubs only in Zone 1',
       blocks: [
         'The City splits Cleveland in two. **Zone 1** covers its planning areas of Downtown, Ohio City and University Circle, where “devices are required to be in either a physical or geofenced hub if not ridden”: end the ride at a hub the app shows. In **Zone 2**, the rest of the city, you may also park in the tree lawn or the furniture zone of the sidewalk, and the companies must reward riders who end at a hub.',
-        'In 2025 the City installed more than 70 hubs, each with blue bike racks and a sign; other good spots are marked with two parallel white lines on the sidewalk. Wherever you park:',
+        'In 2025 the City installed more than 70 hubs, each with blue bike racks and a sign. Zoomed in, the map draws the 95 hubs in the City’s open data (ODbL), but not Zone 1’s boundary. Other good spots are marked with two parallel white lines on the sidewalk. Wherever you park:',
         {
           list: [
             '**Upright, off the roadway** and not within 3 feet of the curb.',
@@ -152,6 +152,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of Cleveland: Shared Mobility', url: 'https://www.clevelandohio.gov/transportation-mobility/shared-mobility' },
+    { title: 'City of Cleveland: Cleveland and Cuyahoga County Shared Mobility Hubs (open data, ODbL)', url: 'https://data.clevelandohio.gov/datasets/17a75fd5ac72444dad36b23cf6bfb774_0/about' },
     { title: 'The City Record, 27 March 2026: shared mobility vendor rules, pp. 140–152 (PDF)', url: 'https://www.clevelandcitycouncil.gov/sites/default/files/2026-03/City%20Record%203-27-26.pdf' },
     { title: 'The City Record, 5 July 2024: vendor rules, pp. 30–41 (PDF)', url: 'https://www.clevelandcitycouncil.gov/sites/default/files/2024-07/CITY%20RECORD%207-5-2024.pdf' },
     { title: 'Cleveland Ordinance 464-2019, mobility devices, 3 June 2019 (PDF)', url: 'https://cityofcleveland.legistar1.com/cityofcleveland/attachments/d9744004-212a-4be7-89d8-3f234aa05e45.pdf' },

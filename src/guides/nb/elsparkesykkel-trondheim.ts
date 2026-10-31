@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Trondheim kommune har gitt tillatelse til tre operatører: **Dott, Voi og Ryde**. Tillatelsene gjelder sesongene 2025 og 2026. Dott het tidligere Tier, og kommunen skriver fortsatt «Tier-Dott». Ingen andre har tillatelse til å leie ut elsparkesykler i byen, heller ikke Bolt.',
         'Ryde var først ute i 2019 og vant mot kommunen i Høyesterett i desember 2021: Kommunen kunne ikke styre utleien som grunneier, men trengte hjemmel i lov. I februar 2022 fikk byen en egen utleieforskrift. Den tillater opptil tre operatører og **3200** kjøretøy til sammen, fordelt likt. I 2019 var taket 200, og i 2020 var det 600.',
-        'Kommunen har dessuten som prøveordning tillatt flere sparkesykler i ytre bydeler, i 2025 opptil 1500 ekstra på Tiller, Heimdal og Byåsen. Et vedtak for 2026 er ikke publisert, men ordningen kan forklare at ScootRadar viste rundt 3900 elsparkesykler fra Voi, Ryde og Dott på [kartet over Trondheim](map:no:Trondheim) 13. oktober 2026. Det er en telling på kartet, ikke kommunens tall.',
+        'Kommunen har dessuten som prøveordning tillatt flere sparkesykler i ytre bydeler, i 2025 opptil 1500 ekstra på Tiller, Heimdal og Byåsen. Et vedtak for 2026 er ikke publisert, men ordningen kan forklare at ScootRadar viste rundt 3900 ledige elsparkesykler fra Voi, Ryde og Dott på [kartet over Trondheim](map:no:Trondheim) 13. oktober 2026.',
         'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
@@ -76,7 +76,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ryde har også kjøreforbud på flere andre gravplasser, på idrettsanlegg som Lerkendal stadion, Spektrum og Leangen og på tunnelrampene ved Ila og Strindheim. Sonene endres ofte, og kommunen har et eget [kart over sonene](https://geoinnsyn.no/?application=trondheim&project=Elsparkesykkelsoner).',
+        'Ryde har også kjøreforbud på flere andre gravplasser, på idrettsanlegg som Lerkendal stadion, Spektrum og Leangen og på tunnelrampene ved Ila og Strindheim. Sonene endres ofte, og kommunen har et eget [kart over sonene](https://geoinnsyn.no/?application=trondheim&project=Elsparkesykkelsoner). Zoomer du inn, tegner ScootRadar-kartet Trondheim kommunes soner.',
         'Nordre gate og Thomas Angells gate er gågater, så der gjelder uansett maks 6 km/t, selv om sparkesykkelen lar deg kjøre fortere.',
         'På fortauet er det lov å kjøre når det er lite folk og du ikke er til fare eller hinder, men forbi gående holder du gangfart, aldri over 6 km/t. I mars 2026 ba bystyret byrådet vurdere kjøreforbud på fortau i utvalgte soner, men Trondheim har ikke innført noe forbud (oktober 2026).',
       ],
@@ -189,6 +189,7 @@ const guide: Guide = {
   sources: [
     { title: 'Lovdata: Trondheims forskrift om utleie av små elektriske kjøretøy', url: 'https://lovdata.no/dokument/LF/forskrift/2022-02-08-192' },
     { title: 'Trondheim kommune: Elsparkesykler i Trondheim', url: 'https://www.trondheim.kommune.no/tema/klima-miljo-og-naring/tillatelser-og-bevillinger/elsparkesykler-i-trondheim/' },
+    { title: 'Trondheim kommune: Elsparkesykkelsoner, kart over parkerings-, forbuds- og saktesoner (Trondheimskartet)', url: 'https://geoinnsyn.no/?application=trondheim&project=Elsparkesykkelsoner' },
     { title: 'Trondheim kommune: Høring om ny utleieforskrift (2026)', url: 'https://www.trondheim.kommune.no/aktuelt/om-kommunen/kunngjoringer/horinger/forslag-til-revidert-forskrift-om-utleie-av-sma-elektriske-kjoretoy-pa-offentlig-grunn-i-trondheim-kommune/' },
     { title: 'Trondheim kommune: Sykkelheisen Trampe', url: 'https://www.trondheim.kommune.no/org/byutvikling/kommunalteknikk/trampe/' },
     { title: 'Høyesterett: HR-2021-2510-A, Trondheim kommune mot Ryde', url: 'https://www.domstol.no/globalassets/upload/hret/avgjorelser/2021/desember-2021/hr-2021-2510-a.pdf' },

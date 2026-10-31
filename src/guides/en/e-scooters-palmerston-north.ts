@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Palmerston North?',
       blocks: [
-        'Scooter hire in Palmy, as locals call the city, comes from two companies in 2026: **Flamingo** and **Lime**. Shared e-scooters arrived on 1 November 2021, when Lime, Beam and Flamingo began a year-long trial under Palmerston North City Council permits. In July 2023 the council renewed all three companies’ permits for a further three years and let them run around the clock, the NZ Herald’s Manawatū Guardian and Stuff reported.',
+        'Scooter hire in Palmy, as locals call the city, comes from two companies in 2026: **Flamingo** and **Lime**. Shared e-scooters arrived on 1 November 2021, when Lime, Beam and Flamingo began a year-long trial under Palmerston North City Council permits. In July 2023 the council renewed all three companies’ permits for a further three years, to July 2026, and let them run around the clock, the NZ Herald’s Manawatū Guardian and Stuff reported.',
         'At 9.13pm on Saturday 31 October 2026 the [map of Palmerston North](map:nz:mwt:Palmerston North) showed 241 Flamingo scooters free to rent at that moment and 116 Lime scooters as last counted. Flamingo’s area runs from Massey University and Aokautere in the south to Milson and Kelvin Grove in the north; Lime’s, about 38 km², takes in Massey’s campus but stops short of Aokautere and the airport. Neither reaches Feilding or Ashhurst.',
         'The map shows each Flamingo scooter’s place, its range and Flamingo’s price; zoom in and it also draws Flamingo’s zones and marked parking spots. For Lime it shows each scooter’s place and charge, but not its price or its zones: those are in Lime’s app. Scooters on a ride aren’t shown, and each app has the final word on where you may ride and park.',
         '**Beam**, which launched with the others in 2021, no longer lists New Zealand among the countries it serves.',
@@ -66,7 +66,7 @@ const guide: Guide = {
               ['No-ride and slow zones', 'Shown in the app; the scooter slows or stops', 'Operator'],
               ['Parking', 'Not blocking a path or entrance, not in a no-parking zone; end-of-ride photo', 'Operator'],
               ['Massey University', 'Motorbikes and scooters on the ring road and the roads outside it, not inside it; e-scooters aren’t named', 'University'],
-              ['Shared scooter companies', 'Council permits; the last renewal reported, in July 2023, gave Beam, Flamingo and Lime three years', 'Council'],
+              ['Shared scooter companies', 'Council permits; the last renewal reported, in July 2023, was for three years, to July 2026', 'Council'],
             ],
           },
         },

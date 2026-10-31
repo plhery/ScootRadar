@@ -19,7 +19,7 @@ const guide: Guide = {
         'This guide, like our map, covers shared e-scooters: the stand-up kind you unlock with an app and pay for by the minute, not mopeds or mobility scooters. On Lanzarote our map shows one operator, **Hoppy**, and only in Puerto del Carmen, in the municipality of Tías. In Spain your contract is with Hoppylectrico S.L. of Elche.',
         'At 00:03 local time on Saturday 31 October 2026 the [map of Puerto del Carmen](map:es:Puerto del Carmen) showed 205 Hoppy scooters free to rent at that moment. That total covers Hoppy’s whole Puerto del Carmen area, from just west of the old harbour along the seafront to Matagorda. The map shows each scooter’s place, its range and Hoppy’s price; zoom in and it draws Hoppy’s two no-ride areas too, but not its parking spots, so the app has the final word.',
         '**Dott isn’t on the map.** Dott lists Lanzarote among its locations but names no town, area or price there; if you see a Dott scooter, its app has the details.',
-        'Elsewhere, councils remove rental scooters that lack a municipal permit: Yaiza’s police took 82 shared scooters off Playa Blanca’s streets on 9–13 May 2026, and Teguise’s were removing unauthorised ones in Costa Teguise later that month. Arrecife, the capital, has none on the map, and shops that hire out e-scooters by the day aren’t on it either.',
+        'In Puerto del Carmen, Tías Town Hall said on 18 July 2024 that the company renting out scooters there had no municipal permit to operate in Tías, and on 20 July 2026 that its police would go on removing the scooters and the companies would pay the fines. Other councils remove rental scooters that lack a municipal permit too: Yaiza’s police took 82 shared scooters off Playa Blanca’s streets on 9–13 May 2026, and Teguise’s were removing unauthorised ones in Costa Teguise later that month. Arrecife, the capital, has none on the map, and shops that hire out e-scooters by the day aren’t on it either.',
       ],
     },
     {
@@ -134,7 +134,7 @@ const guide: Guide = {
         {
           list: [
             '**Hoppy once rented in Playa Blanca too.** In June 2024 Yaiza’s police began removing the scooters of Bird, Hoppylectrico (Hoppy’s Spanish company) and a third firm, Spadimur, from Playa Blanca because they had no permit. On 18 June the council gave initial approval to its mobility bylaw.',
-            '**Three summers of removals.** Tías’s police removed 34 rental scooters from Puerto del Carmen in July 2024, because the company running them had no municipal permit, then 72 e-scooters in August 2025 and 71 in one week of July 2026.',
+            '**Three summers of removals.** Tías’s police removed 34 rental scooters from Puerto del Carmen in July 2024, then 72 e-scooters in August 2025 and 71 in one week of July 2026.',
             '**A bylaw five years in the making.** Tías consulted the public on an e-scooter bylaw in August 2021; in July 2026 La Voz de Lanzarote reported that it had commissioned a consultancy to draft one.',
             '**A €340,000 repair.** The Cabildo, the island government, resurfaced the Avenida de las Playas bike lane between Calle Acatife and Avenida Italia for €339,606 of Spanish tourism funds, passed on by the Canary Islands government; the works finished in February 2023.',
           ],
@@ -173,6 +173,8 @@ const guide: Guide = {
     { title: 'Dott: locations', url: 'https://ridedott.com/locations/' },
     { title: 'Tías Town Hall: bylaw on the public use of beaches and bathing areas (PDF, Spanish)', url: 'https://www.ayuntamientodetias.es/wp-content/uploads/2020/04/ORDENANZA-MUNICIPAL-REGULADORA-DEL-USO-PuBLICO-DE-LAS.pdf' },
     { title: 'Tías Town Hall: prior public consultation on a personal mobility vehicle bylaw, 5 August 2021 (PDF, Spanish)', url: 'https://www.ayuntamientodetias.es/wp-content/uploads/2021/08/Anuncio-consulta-previa-VMP.pdf' },
+    { title: 'Tías Town Hall: rental scooters removed from Puerto del Carmen; the company has no municipal permit, 18 July 2024 (Spanish)', url: 'https://www.ayuntamientodetias.es/tias-retira-de-la-via-publica-los-patinetes-de-alquiler/' },
+    { title: 'Tías Town Hall: 71 e-scooters removed from Puerto del Carmen; the companies will pay the fines, 20 July 2026 (Spanish)', url: 'https://www.ayuntamientodetias.es/el-ayuntamiento-de-tias-retira-71-patinetes-electricos-de-la-via-publica-de-puerto-del-carmen/' },
     { title: 'La Voz de Lanzarote: Tías police remove 71 abandoned e-scooters, 20 July 2026', url: 'https://www.lavozdelanzarote.com/en/news/politics/security-and-order-in-tias-the-police-remove-71-electric-scooters-what-does-this-mean-for-you_244876_102.html' },
     { title: 'La Voz de Lanzarote: Tías removes 72 e-scooters from Puerto del Carmen, 22 August 2025', url: 'https://www.lavozdelanzarote.com/en/news/politics/tias-removes-more-than-70-scooters-from-public-roads-in-puerto-carmen_237292_102.html' },
     { title: 'La Voz de Lanzarote: Tías removes 34 rental scooters from Puerto del Carmen, 19 July 2024', url: 'https://www.lavozdelanzarote.com/en/news/politics/tias-removes-34-rental-scooters-from-public-roads-in-puerto-del-carmen_228016_102.html' },

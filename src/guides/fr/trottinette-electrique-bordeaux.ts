@@ -29,7 +29,7 @@ const guide: Guide = {
           },
         },
         'Les prix de Dott et Pony sont ceux de leurs données publiques, hors pass et promotions. Le même jour, la page bordelaise de Pony affichait 0,26 € la minute : seul compte le prix que l’app indique avant le déverrouillage.',
-        'Le 13 octobre 2026, la [carte de Bordeaux](map:fr:Bordeaux) de ScootRadar montrait environ 1 000 trottinettes Dott et autant de Pony : un relevé, pas la taille des flottes. Un bouton ouvre l’app de l’opérateur, où vous déverrouillez et payez. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
+        'Le 13 octobre 2026, la [carte de Bordeaux](map:fr:Bordeaux) de ScootRadar montrait environ 1 000 trottinettes Dott et autant de Pony, libres à ce moment-là. Quand on zoome, elle dessine aussi les 556 emplacements pour trottinettes de Bordeaux Métropole (données ouvertes, Licence Ouverte). Un bouton ouvre l’app de l’opérateur, où vous déverrouillez et payez. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
       ],
     },
     {
@@ -50,7 +50,7 @@ const guide: Guide = {
     {
       heading: 'Zones lentes et zones interdites : où rouler à Bordeaux',
       blocks: [
-        'Dott et Pony fixent chacun leurs zones, où l’app ralentit la trottinette, l’arrête ou refuse la fin de location. Elles changent : **l’app fait foi**. Exemples relevés dans leurs données le 13 octobre 2026 ; les zones n’y sont pas nommées, nous les avons situées d’après leurs coordonnées.',
+        'Dott et Pony fixent chacun leurs zones, où l’app ralentit la trottinette, l’arrête ou refuse la fin de location. Elles changent : **l’app fait foi**. Exemples relevés dans leurs données le 13 octobre 2026.',
         {
           table: {
             caption: 'Zones lentes et interdites de Dott et Pony à Bordeaux, exemples du 13 octobre 2026',
@@ -182,6 +182,7 @@ const guide: Guide = {
     { title: 'Bordeaux Métropole : les opérateurs retenus, communiqué du 16 septembre 2025', url: 'https://www.bordeaux-metropole.fr/sites/MET-BXMETRO-DRUPAL/files/2025-09/COMMUNIQUE%20DE%20PRESSE%20-%20AMI%20freefloating_0.pdf' },
     { title: 'Bordeaux Métropole : les règles du free-floating (dépliant, octobre 2025)', url: 'https://sedeplacer.bordeaux-metropole.fr/sites/MET-BXMETRO-DRUPAL/files/2025-10/FreeFloating_FLYER_A5_2025_WEB.pdf' },
     { title: 'data.gouv.fr : emplacements free-floating de Bordeaux Métropole', url: 'https://www.data.gouv.fr/datasets/emplacement-freefloating-bordeaux-metropole-2' },
+    { title: 'Bordeaux Métropole : données ouvertes, emplacements free-floating (Licence Ouverte)', url: 'https://opendata.bordeaux-metropole.fr/explore/dataset/st_freefloating_s/' },
     { title: 'Bordeaux Métropole : baromètre des mobilités, 1er trimestre 2026', url: 'https://sedeplacer.bordeaux-metropole.fr/sites/MET-BXMETRO-DRUPAL/files/2026-04/Barom%C3%A8tre%20des%20mobilit%C3%A9s%201er%20trimestre%202026.pdf' },
     { title: 'Dott : flux de données public (GBFS) de Bordeaux', url: 'https://gbfs.api.ridedott.com/public/v2/bordeaux/gbfs.json' },
     { title: 'Pony : flux de données public (GBFS) de Bordeaux', url: 'https://proxy.transport.data.gouv.fr/resource/pony-bordeaux-gbfs/gbfs.json' },

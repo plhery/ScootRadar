@@ -27,7 +27,7 @@ const guide: Guide = {
         },
         'Bolt fährt in Aachen laut Website nur mit Auto und Taxi, Lime gar nicht (Stand 17. Oktober 2026).',
         'Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent). Laut Stadt kannst du die E-Scooter aller Anbieter auch in der App movA buchen, zusammen mit Bus und Bahn.',
-        'Auf der [Karte von Aachen](map:de:Aachen) zeigt ScootRadar Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 430 Dott- und 450 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. RideMovi und Ryde fehlen auf der Karte; ihre Scooter siehst du nur in ihren Apps.',
+        'Auf der [Karte von Aachen](map:de:Aachen) zeigt ScootRadar Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 430 Dott- und 450 Voi-Scooter, die zu diesem Zeitpunkt frei waren. Zoomst du hinein, zeichnet sie die 23 eingerichteten Abstellflächen der Stadt Aachen und die Abstellverbotszonen um sie herum (offene Daten, DL-DE BY 2.0). RideMovi und Ryde fehlen auf der Karte; ihre Scooter siehst du nur in ihren Apps.',
       ],
     },
     {
@@ -116,7 +116,7 @@ const guide: Guide = {
       heading: 'E-Scooter im Bus: Was bei ASEAG und AVV gilt',
       blocks: [
         'In den Bussen der ASEAG fährt dein eigener E-Scooter zusammengeklappt jederzeit und ohne Ticket mit, als Handgepäck. Lässt er sich nicht klappen, behandelt die ASEAG ihn wie ein Fahrrad: Du brauchst ein Ticket und steigst nur an Wochentagen nach 19 Uhr, samstags ab 15 Uhr und an Sonn- und Feiertagen ganztägig ein, wenn Platz ist. Rollstühle und Kinderwagen haben Vorrang; wird es eng, entscheidet das Fahrpersonal. Die Regel vom März 2024 steht im Oktober 2026 weiter online; anders als die KVB in Köln nimmt die ASEAG E-Scooter also mit.',
-        'Für Regionalzüge ab Aachen Hbf oder Aachen West schrieb der AVV 2019: zusammengeklappt kostenlos als Gepäck, sonst wie ein Fahrrad mit Ticket. Die Mitteilung steht heute im Archiv, eine neuere Regel haben wir nicht gefunden: Frag im Zweifel beim AVV nach. Über die Grenze fährst du mit dem euregioticket, einem Tagesticket für Bus und Bahn in der ganzen Euregio Maas-Rhein.',
+        'Für Regionalzüge ab Aachen Hbf oder Aachen West schrieb der AVV 2019: zusammengeklappt kostenlos als Gepäck, sonst wie ein Fahrrad mit Ticket. Die Mitteilung steht heute im Archiv: Frag im Zweifel beim AVV nach. Über die Grenze fährst du mit dem euregioticket, einem Tagesticket für Bus und Bahn in der ganzen Euregio Maas-Rhein.',
         'Im Fernverkehr der Deutschen Bahn, etwa im ICE ab Aachen Hbf, fährt dein Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst, etwa im Gepäckregal.',
         'Leih-Scooter lassen sich nicht zusammenklappen. Mit ihnen beendest du die Fahrt an der Haltestelle und steigst ohne Scooter ein.',
       ],
@@ -170,6 +170,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Stadt Aachen: Sharing, E-Tretroller in Aachen', url: 'https://www.aachen.de/in-aachen-leben/mobilitaet-verkehr/mobilitaetsangebote/sharing/' },
+    { title: 'Stadt Aachen: Abstellflächen und Verbotszonen für E-Tretroller im Geoportal (offene Daten, Datenlizenz Deutschland – Namensnennung 2.0)', url: 'https://geoportal.aachen.de/extern/?lang=de&basemap=web61482881ca3e4ky73o&blop=1&x=294513.5&y=5627463.5&zl=13&hl=0&layers=abstellverbotszonenfuere-tretroller6800dcc02f4cftv3eg|abstellflaechenfueretretroller6800dcc02f477wfems' },
     { title: 'Stadt Aachen: Qualitätsvereinbarung für E-Tretroller-Verleihsysteme (Stand 1. November 2020, PDF)', url: 'https://www.aachen.de/in-aachen-leben/mobilitaet-verkehr/mobilitaetsangebote/sharing/qualitaetsvereinbarung-stadt-aachen-e-tretrollerverleihsystemen.pdf?cid=utd' },
     { title: 'Stadt Aachen: Mobilitätsangebote für Neubürger (Dezember 2025, PDF)', url: 'https://www.aachen.de/in-aachen-leben/mobilitaet-verkehr/mobilitaetskonzepte/mobilitaet-fuer-neubuerger-innen/mobilitaetsangebote-in-aachen-fuer-neubuergerinnen-de.pdf' },
     { title: 'Stadt Aachen, Vorlage FB 68/0107/WP18: Abstellflächen für E-Tretroller (September 2024, PDF)', url: 'https://ratsinfo.aachen.de/public/wicket/resource/org.apache.wicket.Application/doc1016761.pdf' },
