@@ -483,6 +483,13 @@ class SecondaryClickTest {
      */
     private val barrelButtons = listOf(MotionEvent.BUTTON_STYLUS_PRIMARY, MotionEvent.BUTTON_STYLUS_SECONDARY)
 
+    /**
+     * The buttons a stylus may press: its barrel's, and the primary and secondary, which a stylus's driver may send for
+     * them (Android before 6.0 sent the barrel's as BUTTON_SECONDARY) and Compose reads with them in the same masks
+     * (0x21, 0x42). A tip on the screen presses none.
+     */
+    private val stylusButtons = barrelButtons + listOf(MotionEvent.BUTTON_PRIMARY, MotionEvent.BUTTON_SECONDARY)
+
     /** [clicker]'s [action] at ([x], [y]) in a view, with [buttons] down. */
     private fun press(action: Int, x: Float, y: Float, buttons: Int, clicker: Clicker): MotionEvent = MotionEvent.obtain(
         SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), action, 1,
@@ -495,6 +502,30 @@ class SecondaryClickTest {
     private fun click(view: View, at: Offset, button: Int, clicker: Clicker) {
         view.dispatchTouchEvent(press(MotionEvent.ACTION_DOWN, at.x, at.y, button, clicker))
         view.dispatchTouchEvent(press(MotionEvent.ACTION_UP, at.x, at.y, 0, clicker))
+        compose.waitForIdle()
+    }
+
+    /**
+     * [pen] above [view] at [at] with [button] held, coming in and moving a little, then on the screen there and lifted,
+     * the button held throughout, as Android sends a stylus's hover (its hover's end, then the press).
+     */
+    private fun hoverThenTap(view: View, at: Offset, button: Int, pen: Clicker) {
+        view.dispatchGenericMotionEvent(press(MotionEvent.ACTION_HOVER_ENTER, at.x - 4, at.y, button, pen))
+        view.dispatchGenericMotionEvent(press(MotionEvent.ACTION_HOVER_MOVE, at.x, at.y, button, pen))
+        view.dispatchGenericMotionEvent(press(MotionEvent.ACTION_HOVER_EXIT, at.x, at.y, button, pen))
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_DOWN, at.x, at.y, button, pen))
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_UP, at.x, at.y, button, pen))
+        compose.waitForIdle()
+    }
+
+    /**
+     * [pen]'s tip on [view] at [at] with no button, then [button] pressed on the barrel as the tip moves 2 pixels, as a
+     * hand pressing it moves it, and the tip lifted with it held. Compose hands on no move that only presses a button.
+     */
+    private fun barrelPressedMidTap(view: View, at: Offset, button: Int, pen: Clicker) {
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_DOWN, at.x, at.y, 0, pen))
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_MOVE, at.x + 2, at.y, button, pen))
+        view.dispatchTouchEvent(press(MotionEvent.ACTION_UP, at.x + 2, at.y, button, pen))
         compose.waitForIdle()
     }
 
@@ -568,7 +599,7 @@ class SecondaryClickTest {
         val settings = compose.onNodeWithContentDescription("Settings").fetchSemanticsNode().boundsInRoot.center
 
         for (pen in pens) {
-            for (button in barrelButtons) {
+            for (button in stylusButtons) {
                 click(screen, onTheMap, button, pen)
                 assertEquals("the map's touches from the $pen's tap with button $button", emptyList<Int>(), map.touches)
                 click(screen, settings, button, pen)
@@ -583,6 +614,78 @@ class SecondaryClickTest {
         compose.waitUntil { "settings_open" in analytics.names }
     }
 
+    /** The screen with the map's stand-in, which keeps its touches, and [analytics], which says Settings opened. */
+    private fun showTheScreenWithTheMap(analytics: RecordingAnalytics): Pair<View, MapStandIn> {
+        lateinit var map: MapStandIn
+        lateinit var screen: View
+        compose.setContent {
+            screen = LocalView.current
+            ScooterMapScreen(
+                controller = testController(scope),
+                map = { AndroidView({ MapStandIn(it).also { view -> map = view } }, Modifier.fillMaxSize()) },
+                analytics = analytics.analytics,
+                glassBlurs = false,
+            )
+        }
+        compose.waitForIdle()
+        return screen to map
+    }
+
+    /**
+     * A stylus held above the screen with a barrel button down, then put on it, is a press with the button held: it
+     * does nothing, from its tip or its eraser, on the map or on the bar's Settings button. Hovering with no button,
+     * then tapping, acts.
+     */
+    @Test
+    fun aStylusHoveringWithABarrelButtonHeldThenTappingDoesNothing() {
+        val analytics = RecordingAnalytics()
+        val (screen, map) = showTheScreenWithTheMap(analytics)
+        val onTheMap = compose.onRoot().fetchSemanticsNode().size.let { Offset(it.width / 2f, it.height * 0.4f) }
+        val settings = compose.onNodeWithContentDescription("Settings").fetchSemanticsNode().boundsInRoot.center
+
+        for (pen in pens) {
+            for (button in stylusButtons) {
+                hoverThenTap(screen, onTheMap, button, pen)
+                assertEquals("the map's touches from the $pen's tap after a hover with button $button", emptyList<Int>(), map.touches)
+                hoverThenTap(screen, settings, button, pen)
+                assertTrue("the search bar shows, Settings unopened by the $pen with button $button", searchBarShows())
+                assertTrue(analytics.names.toString(), "settings_open" !in analytics.names)
+            }
+        }
+
+        hoverThenTap(screen, onTheMap, 0, Clicker.Stylus)
+        assertEquals(listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP), map.touches)
+        hoverThenTap(screen, settings, 0, Clicker.Stylus)
+        compose.waitUntil { "settings_open" in analytics.names }
+    }
+
+    /**
+     * A barrel button pressed while a plain tap of the tip is on the screen leaves it a tap, as a mouse's right button
+     * pressed during a left click leaves it a click: a press is a secondary one or not from how it begins (PLAN §10, "A
+     * stylus's barrel button": a press with it does nothing, a plain stylus tap taps). An Android view would take it for
+     * a context click; the app has none. The map has the whole tap, and Settings opens.
+     */
+    @Test
+    fun aBarrelButtonPressedDuringAStylusTapLeavesItATap() {
+        val analytics = RecordingAnalytics()
+        val (screen, map) = showTheScreenWithTheMap(analytics)
+        val onTheMap = compose.onRoot().fetchSemanticsNode().size.let { Offset(it.width / 2f, it.height * 0.4f) }
+        val settings = compose.onNodeWithContentDescription("Settings").fetchSemanticsNode().boundsInRoot.center
+
+        barrelPressedMidTap(screen, onTheMap, MotionEvent.BUTTON_STYLUS_PRIMARY, Clicker.Stylus)
+        assertEquals(listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE, MotionEvent.ACTION_UP), map.touches)
+        barrelPressedMidTap(screen, settings, MotionEvent.BUTTON_STYLUS_PRIMARY, Clicker.Stylus)
+        compose.waitUntil { "settings_open" in analytics.names }
+    }
+
+    /** Beside the calendar, a barrel button pressed during a plain tap leaves it a tap too: the calendar closes. */
+    @Test
+    fun aBarrelButtonPressedDuringAStylusTapBesideTheCalendarClosesIt() {
+        openTheCalendar()
+        barrelPressedMidTap(calendarWindow(), Offset(2f, 2f), MotionEvent.BUTTON_STYLUS_PRIMARY, Clicker.Stylus)
+        assertFalse("the calendar closed", calendarOpen())
+    }
+
     /**
      * Beside the calendar, a stylus's tap with a barrel button held leaves it open, as a right click does; a plain tap
      * of its tip closes it.
@@ -592,7 +695,7 @@ class SecondaryClickTest {
         openTheCalendar()
         val beside = Offset(2f, 2f)
         for (pen in pens) {
-            for (button in barrelButtons) {
+            for (button in stylusButtons) {
                 click(calendarWindow(), beside, button, pen)
                 assertTrue("the calendar stays open after the $pen's tap with button $button", calendarOpen())
             }
@@ -611,7 +714,7 @@ class SecondaryClickTest {
         val menu = showAMenu { dismissed++ }
         val shadow = Offset(menu.width / 2f, 2f)
         for (pen in pens) {
-            for (button in barrelButtons) {
+            for (button in stylusButtons) {
                 click(menu, shadow, button, pen)
                 assertEquals("closed by the $pen's tap with button $button in its shadow's room", 0, dismissed)
                 pressInAnotherWindow(menu, button, pen)

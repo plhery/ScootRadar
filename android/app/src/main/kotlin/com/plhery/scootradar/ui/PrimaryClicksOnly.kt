@@ -43,8 +43,10 @@ import androidx.compose.ui.unit.IntSize
  * held. The buttons, rows and sheets under it, and the map, which takes no tap from it, answer the primary button
  * alone, as on an iPad, where Compose's would take a right click for a click. A press on a [keepsSecondaryClicks] field
  * goes on to it. The pointer's hover, its wheel and the primary button go on as before, and so does a stylus's plain
- * tap; a finger on the screen has no secondary button. Compose tells a trackpad's finger, which is a mouse's pointer,
- * from one on the screen. A dialog's or a popup's content needs [PrimaryClicksOnlyAroundTheContent] as well.
+ * tap, a barrel button pressed during it too: a press is a secondary one or not from how it begins, as a mouse's right
+ * button pressed during a left click leaves it a click (PLAN §10). A finger on the screen has no secondary button.
+ * Compose tells a trackpad's finger, which is a mouse's pointer, from one on the screen. A dialog's or a popup's content
+ * needs [PrimaryClicksOnlyAroundTheContent] as well.
  */
 fun Modifier.primaryClicksOnly(): Modifier = this then PrimaryClicksOnlyElement
 
