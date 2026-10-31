@@ -7,7 +7,10 @@ import android.os.Looper
 import android.provider.Settings
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
@@ -128,5 +131,28 @@ fun <S> ContentAtOnce(
         key(contentKey(state)) {
             Box(propagateMinConstraints = true) { content(state) }
         }
+    }
+}
+
+/**
+ * AnimatedVisibility, or with [atOnce] (Reduce Motion, where the iPhone's animation is nil) [content] there or gone in
+ * the frame [visible] changes, laid out as AnimatedVisibility lays it out (the constraints passed on, the content at
+ * its top start): AnimatedVisibility with a snapped fade still draws the old state for a frame (UI-184). A change of
+ * [atOnce] while the content shows starts it afresh, its state with it.
+ */
+@Composable
+fun AppearingContent(
+    visible: Boolean,
+    atOnce: Boolean,
+    enter: EnterTransition,
+    exit: ExitTransition,
+    modifier: Modifier = Modifier,
+    label: String = "AnimatedVisibility",
+    content: @Composable () -> Unit,
+) {
+    if (atOnce) {
+        if (visible) Box(modifier, propagateMinConstraints = true) { content() }
+    } else {
+        AnimatedVisibility(visible, modifier, enter, exit, label) { content() }
     }
 }

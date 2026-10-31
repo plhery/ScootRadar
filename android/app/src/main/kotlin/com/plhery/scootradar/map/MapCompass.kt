@@ -37,6 +37,7 @@ import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
+import com.plhery.scootradar.ui.theme.atOnceUnderReduceMotion
 import com.plhery.scootradar.ui.theme.easing
 import com.plhery.scootradar.ui.theme.iosShadow
 import org.maplibre.android.maps.MapLibreMap
@@ -172,8 +173,10 @@ fun MapCompass(bearing: () -> Double, showsMapCompass: Boolean, dark: Boolean, o
     val bearing = bearing()
     val shown = MapOrnaments.showsCompass(bearing, showsMapCompass)
     // MapKit doesn't say how long its compass fades; a quarter of a second, as its shortest camera move.
+    // Under Remove animations there, or gone, in the frame the map turns from north or to it (UI-184).
     val spec = if (LocalReduceMotion.current) snap() else tween<Float>(FADE_MILLIS, easing = IosMotion.easeInOut.easing)
-    val opacity by animateFloatAsState(if (shown) 1f else 0f, spec, label = "compass")
+    val target = if (shown) 1f else 0f
+    val opacity by animateFloatAsState(target, spec, label = "compass").atOnceUnderReduceMotion(target)
     // The bearing it last showed, kept as it fades out at north.
     var lastBearing by remember { mutableDoubleStateOf(bearing) }
     if (shown) lastBearing = bearing

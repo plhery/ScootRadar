@@ -1,8 +1,6 @@
 package com.plhery.scootradar.ui.dock
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -82,6 +80,7 @@ import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalAnalytics
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.IosMenu
+import com.plhery.scootradar.ui.theme.AppearingContent
 import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
@@ -576,10 +575,12 @@ internal fun WalkNote(note: ScooterWalkNote?, modifier: Modifier = Modifier) {
     // The note stays as it was while it fades.
     val shown = remember { mutableStateOf(note) }
     if (note != null) shown.value = note
-    AnimatedVisibility(
+    // Under Reduce Motion there or gone in the frame the walk changes (UI-184).
+    AppearingContent(
         visible = note != null,
-        enter = if (reduceMotion) fadeIn(snap()) else fadeIn(spring.animation()) + expandVertically(spring.animation()),
-        exit = if (reduceMotion) fadeOut(snap()) else fadeOut(spring.animation()) + shrinkVertically(spring.animation()),
+        atOnce = reduceMotion,
+        enter = fadeIn(spring.animation()) + expandVertically(spring.animation()),
+        exit = fadeOut(spring.animation()) + shrinkVertically(spring.animation()),
     ) {
         shown.value?.let { WalkNoteRow(it, modifier) }
     }

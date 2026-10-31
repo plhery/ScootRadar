@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
+import com.plhery.scootradar.ui.theme.atOnceUnderReduceMotion
 import com.plhery.scootradar.ui.theme.scootColors
 
 // ChromeGlass in ios/ScootRadar/Views/ScooterControls.swift, and the fills that stand in for it (PLAN §4 "Glass",
@@ -91,7 +92,8 @@ fun Modifier.pressedGlass(pressed: Boolean, shape: Shape, glass: Modifier, hover
     val reduceMotion = LocalReduceMotion.current
     val swell by animateFloatAsState(if (pressed && !reduceMotion) PRESSED_SWELL else 1f, pressSpring, label = "swell")
     val lit = if (pressed) 1f else if (hovered) 0.5f else 0f
-    val light by animateFloatAsState(lit, if (reduceMotion) snap() else pressSpring, label = "light")
+    // Under Reduce Motion lit, or not, in the frame it is pressed or let go (UI-184).
+    val light by animateFloatAsState(lit, if (reduceMotion) snap() else pressSpring, label = "light").atOnceUnderReduceMotion(lit)
     graphicsLayer {
         scaleX = swell
         scaleY = swell

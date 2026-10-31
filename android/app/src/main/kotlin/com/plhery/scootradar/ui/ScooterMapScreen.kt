@@ -1,10 +1,8 @@
 package com.plhery.scootradar.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -131,6 +129,7 @@ import com.plhery.scootradar.ui.sheet.IosFormSheet
 import com.plhery.scootradar.ui.sheet.IosPopover
 import com.plhery.scootradar.ui.sheet.IosSheet
 import com.plhery.scootradar.ui.sheet.SheetDetent
+import com.plhery.scootradar.ui.theme.AppearingContent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.SelectionFeedback
@@ -902,9 +901,10 @@ private fun TopStack(
     // dismissed as the search opens (its Search a place) doesn't slide out inside the fading block, and the block isn't
     // pushed down by the bar growing into the open search. As it closes they fade in where they rest, 8 under the
     // collapsed bar, over the open search shrinking to it, as SwiftUI lays a view it inserts out where it rests: they
-    // don't ride up with it. The panel's notices stay, and fade with the panel, as the iPhone's do.
+    // don't ride up with it. The panel's notices stay, and fade with the panel, as the iPhone's do. Under Reduce Motion
+    // they are gone, or back, in the frame the search opens or closes (UI-184).
     val searchSpring = IosMotion.spring(response = 0.36, dampingFraction = 0.88)
-    val searchMotion = motion<Float>(searchSpring)
+    val reduceMotion = LocalReduceMotion.current
     val (heldFailure, heldIssue) = rememberHeld(failure to locationIssue, holding = isSearching)
     // Where the notices rest, 8 under the collapsed bar, and where they were as the search opened.
     val heldNoticesTop = remember { intArrayOf(0) }
@@ -923,10 +923,11 @@ private fun TopStack(
                 },
                 modifier = searchBarModifier.onGloballyPositioned { if (!isSearching) barFrame = it.windowFrame(density.density) },
             )
-            AnimatedVisibility(
+            AppearingContent(
                 visible = !isSearching,
-                enter = fadeIn(searchMotion),
-                exit = fadeOut(searchMotion),
+                atOnce = reduceMotion,
+                enter = fadeIn(searchSpring.animation()),
+                exit = fadeOut(searchSpring.animation()),
                 label = "notices",
             ) {
                 TopNotices(
@@ -1010,10 +1011,12 @@ private fun TopNotices(
     // The notices as the last went, which the block keeps while it fades: the last doesn't slide away inside it.
     val last = rememberLast((failure to locationIssue).takeIf { notices })
     val shown = if (notices) failure to locationIssue else last ?: (null to null)
-    AnimatedVisibility(
+    // Under Reduce Motion the block is there, or gone, in the frame of the first notice or the last (UI-184).
+    AppearingContent(
         notices,
-        enter = if (reduceMotion) fadeIn(snap()) else fadeIn(spring.animation()) + expandVertically(spring.animation(), Alignment.Top, clip = false),
-        exit = if (reduceMotion) fadeOut(snap()) else fadeOut(spring.animation()) + shrinkVertically(spring.animation(), Alignment.Top, clip = false),
+        atOnce = reduceMotion,
+        enter = fadeIn(spring.animation()) + expandVertically(spring.animation(), Alignment.Top, clip = false),
+        exit = fadeOut(spring.animation()) + shrinkVertically(spring.animation(), Alignment.Top, clip = false),
         label = "notices",
     ) {
         NoticeStack(controller, shown.first, shown.second, limit, onSearchingChange, heights, modifier)
@@ -1053,19 +1056,12 @@ private fun NoticeStack(
     // own height (`.move(edge: .top)`), and what is under it moves on the same spring: the card down as a banner comes
     // over it, and up as the banner goes. The card under a banner rides on the 8 that opens and closes above it, which
     // its slide leaves out: it moves from or to its place's top less its height, as on the iPhone, whose VStack lays
-    // the card out at its place at once.
-    fun enter(gapAbove: Int) = if (reduceMotion) {
-        fadeIn(snap())
-    } else {
-        slideInVertically(spring.animation()) { -(it - gapAbove) } + fadeIn(spring.animation()) +
-            expandVertically(spring.animation(), Alignment.Top, clip = false)
-    }
-    fun exit(gapAbove: Int) = if (reduceMotion) {
-        fadeOut(snap())
-    } else {
-        slideOutVertically(spring.animation()) { -(it - gapAbove) } + fadeOut(spring.animation()) +
-            shrinkVertically(spring.animation(), Alignment.Top, clip = false)
-    }
+    // the card out at its place at once. Under Reduce Motion a notice is there, or gone, in the frame it comes or goes
+    // (UI-184).
+    fun enter(gapAbove: Int) = slideInVertically(spring.animation()) { -(it - gapAbove) } + fadeIn(spring.animation()) +
+        expandVertically(spring.animation(), Alignment.Top, clip = false)
+    fun exit(gapAbove: Int) = slideOutVertically(spring.animation()) { -(it - gapAbove) } + fadeOut(spring.animation()) +
+        shrinkVertically(spring.animation(), Alignment.Top, clip = false)
     val cardGap = if (failure != null) with(density) { 8.dp.roundToPx() } else 0
     // As ViewThatFits, which weighs the notices that stay.
     val scrolls = with(density) { heights.settled(failure, locationIssue, 8.dp.roundToPx(), Int.MAX_VALUE) > limit.roundToPx() }
@@ -1083,8 +1079,8 @@ private fun NoticeStack(
         // spring, as the iPhone's stack animates its notices' changes; each tells its height at rest, as the iPhone's
         // layout has it, from the change's first frame.
         val changes = if (reduceMotion) null else spring.animation<Float>()
-        AnimatedVisibility(failure != null, enter = enter(0), exit = exit(0)) {
-            val shown = lastFailure ?: return@AnimatedVisibility
+        AppearingContent(failure != null, atOnce = reduceMotion, enter = enter(0), exit = exit(0)) {
+            val shown = lastFailure ?: return@AppearingContent
             Box {
                 MapStatusBanner(
                     message = shown.message,
@@ -1099,8 +1095,8 @@ private fun NoticeStack(
             }
         }
         Spacer(Modifier.height(gap))
-        AnimatedVisibility(locationIssue != null, enter = enter(cardGap), exit = exit(cardGap)) {
-            val issue = lastIssue ?: return@AnimatedVisibility
+        AppearingContent(locationIssue != null, atOnce = reduceMotion, enter = enter(cardGap), exit = exit(cardGap)) {
+            val issue = lastIssue ?: return@AppearingContent
             Box {
                 LocationIssueCard(
                     issue = issue,

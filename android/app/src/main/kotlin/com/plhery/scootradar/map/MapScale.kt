@@ -45,6 +45,7 @@ import com.plhery.scootradar.core.model.ScooterLengthUnit
 import com.plhery.scootradar.core.model.ScooterMeasureFormat
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
+import com.plhery.scootradar.ui.theme.atOnceUnderReduceMotion
 import com.plhery.scootradar.ui.theme.easing
 import kotlinx.coroutines.delay
 import java.math.BigDecimal
@@ -136,8 +137,10 @@ fun MapScaleBar(
         delay(HOLD_MILLIS)
         visible = false
     }
+    // Under Remove animations there, or gone, in the frame it shows or goes (UI-184).
     val spec = if (LocalReduceMotion.current) snap() else tween<Float>(FADE_MILLIS, easing = IosMotion.easeInOut.easing)
-    val opacity by animateFloatAsState(if (visible) 1f else 0f, spec, label = "scale")
+    val target = if (visible) 1f else 0f
+    val opacity by animateFloatAsState(target, spec, label = "scale").atOnceUnderReduceMotion(target)
     if (!visible && opacity == 0f) return
     val step = MapScale.step(metresPerPoint()) ?: return
     ScaleArt(step, locale, dark, modifier.alpha(opacity))
