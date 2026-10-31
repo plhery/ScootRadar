@@ -46,6 +46,9 @@ android {
             it.jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED", "--add-opens=java.base/java.io=ALL-UNNAMED")
             // Screenshots draw through Android's own renderer, so the glass's blur and the shadows show (Roborazzi).
             it.systemProperty("robolectric.pixelCopyRenderMode", "hardware")
+            // All the app's tests share one JVM, and the frame-by-frame tests hold a dozen screens of pixels each:
+            // Gradle's 512 MB ran out (ReduceMotionAtOnceTest, OutOfMemoryError).
+            it.maxHeapSize = "2g"
         }
     }
 }
