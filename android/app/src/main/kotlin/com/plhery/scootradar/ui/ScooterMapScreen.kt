@@ -728,6 +728,9 @@ private fun PanelChrome(
                     .atOnceUnderReduceMotion(searchGone)
                 Box(
                     Modifier
+                        // Drawn over the zones' legend and the locate button, and taking the taps first where a wide
+                        // legend reaches in under its foot, as the iPhone's panel at zIndex 20 (ScooterMapScreen.swift:396).
+                        .zIndex(20f)
                         .padding(16.dp)
                         .width(width)
                         // The map shows a scooter beside the panel, and keeps its names and its taps off it.
