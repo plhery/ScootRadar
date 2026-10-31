@@ -28,7 +28,8 @@ import com.plhery.scootradar.ui.theme.FocusRing
  * Where the map comes from, as OpenStreetMap's licence and OpenFreeMap's ask (MAP-318): the map's own credits in a
  * corner of the part of it in view, as the iPhone shows Apple's logo and its Legal link there. Its text keeps its
  * size, as Apple's does, and each name opens its page. Over imagery, the imagery's credit comes first. Where the
- * chrome leaves them no room ([creditsHaveRoom]) they are not [seen]: laid out still, but not drawn, read or tapped.
+ * chrome leaves them no room ([creditsHaveRoom]) they are not [seen]: laid out still, but not drawn, read or tapped,
+ * and a touch on them reaches the map.
  */
 @Composable
 fun MapCredits(
@@ -53,11 +54,14 @@ fun MapCredits(
             .background(ground),
     ) {
         for ((name, page) in listOfNotNull(imagery) + SOURCES) {
+            val interaction = remember { MutableInteractionSource() }
             BasicText(
                 text = name,
                 style = style,
                 modifier = Modifier
-                    .clickable(remember { MutableInteractionSource() }, FocusRing(), enabled = seen, role = Role.Button) { uri.openUri(page) }
+                    // Out of sight, not even disabled: a disabled clickable is still hit, and the map under them would
+                    // lose a pan or a tap begun there.
+                    .then(if (seen) Modifier.clickable(interaction, FocusRing(), role = Role.Button) { uri.openUri(page) } else Modifier)
                     .padding(horizontal = TEXT_INSET.dp, vertical = 3.dp),
             )
         }
