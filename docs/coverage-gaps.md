@@ -1915,6 +1915,20 @@ Bonaire had feeds to add. Survey files are in
   former Neuron towns (Red Deer, Saskatoon, Regina, Waterloo Region): probe
   the slugs again, as a public feed would replace Lime's rider map there. Windsor's one-year contract with Bird, from May 2026, ends
   then too: check that `windsor-on` still answers.
+- **1 May 2027:** Lime Blackfalds and Lime Lacombe (`lime_ca_app_blackfalds`,
+  `lime_ca_app_lacombe`), empty since 28 October 2026. They held 12 and 11
+  scooters on 27 October and none in the collection of 28 October about 16:30
+  UTC, or on 30 October, or at 17:31 UTC on 31 October. It isn't the town
+  filter of 31 October: the zeros of 28 and 30 October came from reads before
+  it, and it drops nothing here, as no Canadian town has an outline. It reads
+  as Lime taking in both towns for the winter, but that is inferred: neither
+  town publishes a season. Blackfalds's e-scooter page gives none, Neuron began
+  in Lacombe on 28 April 2023, and the nights of 28 and 29 October fell to
+  −3.8 °C and −5.2 °C. Lime Red Deer, in the same Lime region, still held 235
+  on 31 October, the end of its season by bylaw. The catalog pauses neither
+  town, so their five feeds stay in Grafana's "ScootRadar feed empty", which
+  fired at 16:59 UTC on 31 October, three days after they emptied. If they list
+  scooters again, add the dates of their season to the catalog.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
   in Omiš, Hopp's Greek island towns (Chania, Kardamena, Kalymnos and others),
