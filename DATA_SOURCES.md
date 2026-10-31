@@ -1233,10 +1233,10 @@ city's public zone layers are drawn regardless, credited to the city.
   is not drawn, and no area sets a curfew. The layer was last edited on 13
   December 2022; the council says it may amend the areas from time to time.
   No operator's scooters in Taupō are on the map: Beam's feed is closed.
-- **Turku** (read 31 October 2026): Turun kaupunki's 126 parking places for
-  e-scooters (`Skuutti_pysakointipaikka`: 111 painted boxes, 9 racks and 6
+- **Turku** (read 31 October 2026): Turun kaupunki's 128 parking places for
+  e-scooters (`Skuutti_pysakointipaikka`: 113 painted boxes, 9 racks and 6
   in bicycle parking, named by `Sijainti`), points each drawn as a disc of 5 m,
-  its 150 no-parking areas, 24 speed-limited areas (10 or 15 km/h) and 157
+  its 151 no-parking areas, 24 speed-limited areas (10 or 15 km/h) and 157
   no-riding areas, from the city's OGC API
   (`turku.asiointi.fi/TrimbleOGCApi`, collections `GIS:Skuutti_*`), the
   layers of its [service map](https://palvelukartta.turku.fi/fi/mobility/scooters).

@@ -900,10 +900,10 @@ describe('the cities\' zones', () => {
     const turku = ZONE_CITIES.find(city => city.id === 'turku')!;
     expect(turku.authority).toBe('Turun kaupunki, CC BY 4.0');
     expect(turku.timeZone).toBe('Europe/Helsinki');
-    // Its 126 parking places, points drawn as discs; its areas' few stray points, each inside an area of its kind, are left out.
+    // Its 128 parking places, points drawn as discs; its areas' few stray points, each inside an area of its kind, are left out.
     const { default: file } = await CITY_ZONE_FILES.turku();
     const counts = Object.fromEntries(['parking', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
-    expect(counts).toEqual({ parking: 126, noParking: 150, slow: 24, noRide: 157 });
+    expect(counts).toEqual({ parking: 128, noParking: 151, slow: 24, noRide: 157 });
     expect(file.zones.find(zone => zone.name === 'Kakola Hotel')?.kind).toBe('parking');
     await loadCityZones(turku);
     const shown = ruleZonesInView({ bounds: TURKU_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
