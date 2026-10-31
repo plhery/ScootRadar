@@ -597,6 +597,16 @@ class ScooterMapController(
     /** The language the app follows on Automatic: the first of the phone's languages it is translated into, or else English. */
     val phoneLanguage: ScooterLanguage get() = ScooterLanguage.fromPreferences(phoneLanguages())
 
+    /**
+     * The phone's languages changed while the app runs: on Automatic the app's text is in the phone's new language
+     * at once, as an iPhone's app is when it opens again (iOS ends the apps when the phone's language changes, so
+     * they start in it). A language chosen for the app stays. An Android seam: the app calls it as its configuration's
+     * locales change.
+     */
+    fun phoneLanguagesChanged() {
+        if (_languageChoice.value == ScooterLanguageChoice.Automatic) setLanguage(phoneLanguage)
+    }
+
     /** Light or dark now. Automatic goes by the sun where the rider is, or where the map opened until they are located. */
     val interfaceStyle: UserInterfaceStyle
         get() = appearance.value.interfaceStyle(clock(), userLocation.value ?: startCenter)

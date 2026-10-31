@@ -870,6 +870,36 @@ class ScooterMapControllerTest {
         assertEquals(emptyList<String>(), appLanguages)
     }
 
+    /**
+     * The phone's languages changed while the app runs (X-M23): on Automatic its text is the phone's new language at
+     * once, as an iPhone's app is when it opens again (iOS ends the apps as the phone's language changes); a
+     * language chosen for the app stays.
+     */
+    @Test
+    fun aChangeOfThePhonesLanguagesIsFollowedOnAutomaticOnly() = runTest {
+        var phoneLanguages = listOf("en-US")
+        val model = makeController(
+            StubScooterAPI(ScooterResponse(vehicles = emptyList())),
+            phoneLanguages = { phoneLanguages },
+            keepAppLanguages = {},
+        )
+        model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.Fr))
+        model.setLanguageChoice(ScooterLanguageChoice.Automatic)
+        assertEquals(ScooterLanguage.En, model.language.value)
+
+        phoneLanguages = listOf("de-CH", "en-US")
+        model.phoneLanguagesChanged()
+        assertEquals(ScooterLanguage.De, model.language.value)
+        assertEquals(ScooterLanguage.De, ScooterLanguage.current)
+        assertEquals("Dunkel", ScooterAppearance.Dark.label)
+
+        model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.It))
+        phoneLanguages = listOf("fr-CH")
+        model.phoneLanguagesChanged()
+        assertEquals(ScooterLanguage.It, model.language.value)
+        assertEquals(ScooterLanguageChoice.Language(ScooterLanguage.It), model.languageChoice.value)
+    }
+
     @Test
     fun rideDurationAndProviderPassesPersistIndependently() = runTest {
         val defaults = InMemoryScooterDefaults()

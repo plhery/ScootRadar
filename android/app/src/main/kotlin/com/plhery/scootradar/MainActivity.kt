@@ -179,5 +179,8 @@ class MainActivity : AppCompatActivity() {
         // A foldable unfolded or folded is on another screen.
         ScreenOrientation.apply(this)
         headingOrientation.displayChanged()
+        // The phone's languages changed while the map is open (locale is among the changes the activity takes
+        // itself): on Automatic the app's text follows them at once, the card, the search and the camera kept (X-M23).
+        model.controller.phoneLanguagesChanged()
     }
 }
