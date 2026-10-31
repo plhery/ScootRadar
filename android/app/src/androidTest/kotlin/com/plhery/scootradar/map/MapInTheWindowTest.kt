@@ -455,24 +455,27 @@ class MapInTheWindowTest {
         onMain { controller.updateViewport(MapZoom.region(of = projection.visibleMapRect), zoom = 11) }
         assertTrue("the app's clusters", waitFor(30_000) { onMain { mapView.markers?.scene?.clusters()?.any { !it.isServer } } == true })
         Thread.sleep(1_000)
+        // The part as the cluster is tapped: the dock now counts the six served, and the locate button over it moves
+        // with its height (on a 360 × 640 phone 44 points down from the dock of the first, empty load).
+        val tapped = partInView(shownChrome(), bounds)
         val cluster = onMain { mapView.markers!!.scene.clusters().filter { !it.isServer }.maxBy { it.members!!.size } }
         val members = cluster.members!!.map { it.point }
         val point = onMain { projection.point(cluster.cluster.coordinate) }
-        assertTrue("${cluster.id} at $point in $part", part.contains(point))
+        assertTrue("${cluster.id} at $point in $tapped", tapped.contains(point))
         fingers(point to point, millis = 40, steps = 1)
         assertTrue("${cluster.id} opened", waitFor(5_000) { zoom() > opening.zoom + 0.5 })
         Thread.sleep(500)
         waitUntilAtRest(members.first())
         screenshot("app-cluster")
         val points = onMain { members.map { projection.point(it) } }
-        val inside = part.insetBy(FIT_MARGIN - 1, FIT_MARGIN - 1) ?: part
-        Log.i(TAG, "${size()}: ${cluster.id} of ${members.size}, at $points, part $part")
+        val inside = tapped.insetBy(FIT_MARGIN - 1, FIT_MARGIN - 1) ?: tapped
+        Log.i(TAG, "${size()}: ${cluster.id} of ${members.size}, at $points, part $tapped (before the load $part)")
         for (shown in points) assertTrue("$shown in $inside", inside.contains(shown))
         // Fitted: as wide or as high as the part less its margins allow, give or take.
         val width = points.maxOf { it.x } - points.minOf { it.x }
         val height = points.maxOf { it.y } - points.minOf { it.y }
-        val filled = max(width / (part.width - 2 * FIT_MARGIN), height / (part.height - 2 * FIT_MARGIN))
-        assertTrue("the scooters fill ${"%.2f".format(filled)} of $part", filled > 0.85)
+        val filled = max(width / (tapped.width - 2 * FIT_MARGIN), height / (tapped.height - 2 * FIT_MARGIN))
+        assertTrue("the scooters fill ${"%.2f".format(filled)} of $tapped", filled > 0.85)
     }
 
     /**
