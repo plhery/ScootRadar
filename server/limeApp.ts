@@ -15,6 +15,8 @@ import { Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://web-production.lime.bike';
 const RETRY_MS = 60_000;
+/** How long the other container of a deploy gets to save the session it renewed. */
+const PEER_SAVE_MS = 1_000;
 const PIN_LIMIT = 200;
 // One Lime region can hold several towns' markets, as Düsseldorf's holds Neuss and Hilden: each keeps its own polygons.
 const serviceOutlines = new Map(limeRegions.markets.map(market => [`${market.regionToken}|${market.city}`, market.serviceAreas.map(area => area.polygon)]));
@@ -26,7 +28,7 @@ interface Session {
 interface Reply { status: number; retryAfter?: string; body: unknown }
 type Transport = (path: string, headers: Record<string, string>, body?: string) => Promise<Reply>;
 interface LimeClientOptions {
-  sessionPath?: string; now?: () => number; intervalMs?: number; transport?: Transport;
+  sessionPath?: string; now?: () => number; intervalMs?: number; peerSaveMs?: number; transport?: Transport;
   onRequest?: (kind: 'status' | 'metadata') => void;
 }
 const object = (v: unknown): Record<string, unknown> | undefined =>
@@ -155,6 +157,17 @@ export class LimeClient {
           const r = await this.call('/api/auth/v2/oauth/token', s, JSON.stringify({ grant_type: 'refresh_token',
             refresh_token: s.refreshToken, client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
             client_assertion: limeClientAssertion(s.privateKey, this.now()) }));
+          if (r.status === 401) {
+            // Lime takes a refresh token once, and a deploy's two containers share this file: the
+            // one that loses the renewal goes on with the session the other saved. Lost and held
+            // for the minute below, the new container's renewal failed 7 feeds on 30 October 2026.
+            await new Promise(resolve => setTimeout(resolve, this.options.peerSaveMs ?? PEER_SAVE_MS));
+            const saved = await this.load();
+            if (saved.refreshToken !== s.refreshToken) {
+              this.failure = undefined;
+              return this.session = saved;
+            }
+          }
           if (r.status !== 200) throw new Error(`Lime session HTTP ${r.status}`);
           const d = object(r.body);
           if (!d || !text(d.access_token) || !text(d.refresh_token) || !positive(d.expires_in) ||

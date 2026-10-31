@@ -471,4 +471,9 @@ The observed refresh lifetime is 180 days, subject to upstream revocation.
 The OAuth request carries no expired rider bearer header. Map requests carry
 the access token and native app/device headers. A rejected map token gets one
 renewal attempt; repeated authentication failures back off for a minute.
+Lime takes a refresh token once and refuses it after that with a 401. The old and
+new caches of a deploy run together for a minute or so on the same session file,
+so the one that loses the renewal waits a second, reads the file and goes on with
+the session the other saved. On 30 October 2026, before this, the new cache's
+renewal lost at 15:35:15 and failed 7 feeds until the minute's hold ended.
 Session errors omit upstream bodies and credentials.

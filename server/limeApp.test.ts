@@ -33,7 +33,7 @@ async function fixture(suffix = '') {
   await writeFile(sessionPath, JSON.stringify(seed), { mode: 0o600 });
   let now = initialTime;
   const transport = vi.fn<(path: string, headers: Record<string, string>, body?: string) => Promise<ReturnType<typeof response> & { retryAfter?: string }>>(async () => response(map()));
-  const client = new LimeClient({ sessionPath, transport, now: () => now, intervalMs: 0 });
+  const client = new LimeClient({ sessionPath, transport, now: () => now, intervalMs: 0, peerSaveMs: 0 });
   const renewed = () => response({ access_token: 'new-access', refresh_token: 'new-refresh', expires_in: 36000,
     refresh_token_expires_in: 180 * 86400, renewal_window: 900 });
   return { client, transport, seed, sessionPath, directory, renewed, advance: (ms: number) => { now += ms; } };
@@ -88,6 +88,27 @@ describe('Lime portable rider session', () => {
     await expect(f.client.pins(system.bounds)).rejects.toThrow('Lime map HTTP 401');
     await expect(f.client.pins(system.bounds)).rejects.toThrow('authorization was rejected');
     expect(f.transport).toHaveBeenCalledTimes(3);
+  });
+  it('goes on with the session the other container saved when it loses the renewal', async () => {
+    const f = await fixture(); f.advance(10 * 3600_000 - 60_000);
+    f.transport.mockImplementation(async (path, headers) => {
+      if (!path.endsWith('/token')) {
+        expect(headers.Authorization).toBe('Bearer peer-access');
+        return response(map());
+      }
+      await writeFile(f.sessionPath, JSON.stringify({ ...f.seed, accessToken: 'peer-access', refreshToken: 'peer-refresh',
+        expiresAt: initialTime + 20 * 3600_000 }));
+      return response({}, 401);
+    });
+    await expect(f.client.pins(system.bounds)).resolves.toEqual(map());
+    expect(f.transport).toHaveBeenCalledTimes(2);
+  });
+  it('holds off when its refresh token is refused and nobody saved another', async () => {
+    const f = await fixture(); f.advance(10 * 3600_000 - 60_000);
+    f.transport.mockResolvedValue(response({}, 401));
+    await expect(f.client.pins(system.bounds)).rejects.toThrow('Lime session HTTP 401');
+    await expect(f.client.pins(system.bounds)).rejects.toThrow('Lime session HTTP 401');
+    expect(f.transport).toHaveBeenCalledTimes(1);
   });
   it('accepts a replacement login file after rejection without prematurely renewing its fresh token', async () => {
     const f = await fixture(); let calls = 0;
