@@ -106,6 +106,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   licence stated), shown on BKK's site, whose
   [legal notice](https://bkk.hu/jogi-tudnivalok/jogi-nyilatkozat/) allows
   only non-commercial personal use without BKK's prior written consent.
+  Augsburg's 37 e-scooter parking places (`SYMBOL` "E-Scooter Stellplatz" in
+  its geoportal's parking layer, loaded 14 September 2026), outside which a
+  scooter may not be parked in the city centre, as the geoportal's terms
+  require the city's prior written permission for any use; the centre itself
+  is not published as a shape.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -141,12 +146,19 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   no-parking along all the city's quays and at 13 places, Gamla stan,
   Medborgarplatsen and Odenplan among them, is a picture on its
   [e-scooter page](https://trafik.stockholm/trafikregler/elsparkcyklar/)
-  (2024); its 834 parking places are drawn since 31 October 2026.
+  (2024); its 834 parking places are drawn since 31 October 2026. Rostock's
+  no-parking zones (parks, the Warnow's banks, the pedestrian zones) are three
+  PDF maps of July 2021; its 15 parking places are drawn since 31 October
+  2026. Bielefeld's no-parking area is one PDF map of March 2025 (and a
+  picture of it) on its [e-scooter page](https://www.bielefeld.de/e-scooter).
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
   Tel Aviv-Yafo's only from Israel, Scottsdale's with a Cloudflare challenge,
-  and Louisville's ask for a token. San José's site and its open data answer
+  and Louisville's ask for a token. İstanbul's municipality's sites (its open
+  data and maps, UKOME's decisions) don't answer from outside Turkey, and
+  Southampton's site and open data answer scripts with an Incapsula
+  challenge. San José's site and its open data answer
   scripts with 403, and Spokane's WheelShare page with an Incapsula
   challenge; neither city's ArcGIS Hub holds a scooter layer. Milwaukee's
   site and open data portal answer 403 from outside the United States
@@ -264,6 +276,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   operators, are in their apps alone. São Paulo's stations, where a shared
   scooter is taken and returned (each permitted through a system behind a
   login), are listed nowhere public; the city points to the operators' apps.
+  Bremen's no-parking zones, an annex to its permits that it has not
+  published, Flensburg's, agreed with the operators and changed as they run,
+  and Padova's no-parking zones and rewarded parking points, set with Dott
+  and shown in its app, are not published. Cambridge's and Cheltenham's
+  parking bays, outside which a hired scooter in central Cheltenham may not
+  be left, and their no-go areas are in Voi's app alone; neither council
+  publishes them.
 
 ## No public data, in covered countries
 

@@ -40,6 +40,8 @@ const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
 // Poznań's Old Market Square and the streets round it.
 const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
+// Rostock's old town, from the Kröpeliner Tor along the Kröpeliner Straße to the Neuer Markt.
+const ROSTOCK_ALTSTADT = { south: 54.086, west: 12.125, north: 54.093, east: 12.146 };
 // Sacramento's downtown, from Old Sacramento to the State Capitol.
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
 // St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
@@ -121,7 +123,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'sacramento', 'santamonica', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'rostock', 'sacramento', 'santamonica', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -734,6 +736,20 @@ describe('the cities\' zones', () => {
     await loadCityZones(poznan);
     const shown = ruleZonesInView({ bounds: POZNAN_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
+  });
+
+  it("draws Rostock's marked parking places for e-scooters, from the city's open data", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const rostock = ZONE_CITIES.find(city => city.id === 'rostock')!;
+    expect(rostock.authority).toBe('Stadt Rostock');
+    // Its 15 places, points drawn as discs, named by their street; its no-parking zones, PDF maps of 2021, are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.rostock();
+    expect(file.zones).toHaveLength(15);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    expect(file.zones.find(zone => zone.id === 'rostock-parking-03190001')?.name).toBe('Kröpeliner Str.');
+    await loadCityZones(rostock);
+    const shown = ruleZonesInView({ bounds: ROSTOCK_ALTSTADT, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(5);
   });
 
   it("draws the City of Sacramento's drop zones, from its layer of bike racks", async () => {

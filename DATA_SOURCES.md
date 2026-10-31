@@ -615,8 +615,8 @@ downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Alexandria, Basel, Berlin, the City of London, Hamburg, Helsinki,
-München, Münster, St. Albert, Santa Monica, Stockholm, Taupō, Turku, Vancouver,
-Vantaa, Washington and Wien state a licence for their layers, Washington for two of its
+München, Münster, Rostock, St. Albert, Santa Monica, Stockholm, Taupō, Turku,
+Vancouver, Vantaa, Washington and Wien state a licence for their layers, Washington for two of its
 three; since 28 October 2026 a city's public zone layers are drawn regardless,
 credited to the city.
 
@@ -1068,6 +1068,19 @@ credited to the city.
   drawn; two points with no such mark, about 15 m from Piotrowo's points of
   the same numbers, are. The map states no licence, and the authority's site
   sets no terms. The legend credits it by its own short name, ZDM Poznań.
+- **Rostock** (read 31 October 2026): the Hanse- und Universitätsstadt
+  Rostock's 15 marked parking places for e-scooters, points each drawn as a
+  disc of 5 m and named by their street, from its open data
+  [Abstellflächen für E-Tretroller](https://www.opendata-hro.de/dataset/abstellflaechen_e_tretroller)
+  (CC0, file of 30 June 2026; first marked 2023–26). One, on the
+  Henrik-Ibsen-Straße, is a pictogram only. The legend credits the city as
+  Stadt Rostock, as its full name takes three lines at 320 px, and links its
+  [e-scooter page](https://rathaus.rostock.de/de/leih_e_scooter/323713): under
+  its voluntary agreements with the operators a ride may not end in the
+  no-parking zones, as parks, the Warnow's banks and the pedestrian zones, and
+  the city is making parking places at their edges and at public transport
+  stops. The zones themselves are PDF maps of July 2021 and are not drawn
+  ([coverage gaps](docs/coverage-gaps.md)).
 - **Sacramento** (read 30 October 2026): the City of Sacramento's 45 drop
   zones (`RackType` `Dropzone`), points each drawn as a disc of 5 m, from the
   Department of Public Works' public
