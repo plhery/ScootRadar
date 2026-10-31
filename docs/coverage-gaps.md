@@ -110,7 +110,17 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   its geoportal's parking layer, loaded 14 September 2026), outside which a
   scooter may not be parked in the city centre, as the geoportal's terms
   require the city's prior written permission for any use; the centre itself
-  is not published as a shape.
+  is not published as a shape. Kassel's bicycle racks where a scooter may be
+  parked (`E_Scooter` "ja", 2,098 of the geoportal's 2,128 `Fahrradbügel`),
+  outside which, or a marked place, a hired scooter there may not be parked
+  since April 2026, as the layer states no licence and the city's
+  [legal notice](https://www.kassel.de/rechtliche-hinweise.php) requires its
+  express consent to copy its content; the layer also hides its shapes from
+  queries. Kiel's 19 "E-Scooter Verbotszonen", its Kieler Woche's event areas
+  where scooters may not be parked during the festival, as the city's
+  [imprint](https://www.kiel.de/de/_info/impressum.php) allows reuse only with
+  written permission; its lasting no-parking zones are in the operators'
+  apps alone.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -282,7 +292,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   and shown in its app, are not published. Cambridge's and Cheltenham's
   parking bays, outside which a hired scooter in central Cheltenham may not
   be left, and their no-go areas are in Voi's app alone; neither council
-  publishes them.
+  publishes them, nor does Oxfordshire its mandatory parking zones, no-ride
+  and slow zones, or West Northamptonshire Northampton's. Ingolstadt,
+  Osnabrück (whose geoportal refused connections), Saarbrücken and Torino
+  publish none; Wiesbaden's 30 and more parking places, where a scooter in
+  the Historisches Fünfeck is parked only at one, are not published (a
+  council motion of 29 April 2026 asks the city to publish them, as open
+  data too), and its geoportal did not answer.
 
 ## No public data, in covered countries
 

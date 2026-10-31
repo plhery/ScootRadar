@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
+import { inflateRawSync } from 'node:zlib';
 import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } from './boundaries.mjs';
 
 // Writes data/city-zones/<id>.json, each city's zones from the layers data/city-zones.json lists,
@@ -178,10 +179,13 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
 
 /**
  * A GeoJSON layer's zones, those whose properties have the values `match` gives each (null for a
- * property left empty): a WFS's or an OGC API's features, asked for as GeoJSON in latitude and
- * longitude, or an open data portal's export. Polygons are zones as a feature service's are, and
- * points discs, named by `nameField`, unless it is one of the placeholders `unnamed` lists, as
- * Berlin's "VRAO", or else `pointName`, or after the city. A zone's id is its
+ * property left empty) and not all those `except` gives, as Braunschweig's no-parking zones leave
+ * out its old town's, where a scooter is parked only at a station: a WFS's or an OGC API's
+ * features, asked for as GeoJSON in latitude and longitude, or an open data portal's export.
+ * Polygons are zones as a feature service's are, and points discs, named by `nameField` less the
+ * pattern `nameTrim`, as the kind's abbreviation Braunschweig's begin with ("PVZ - "), unless it
+ * is one of the placeholders `unnamed` lists, as Berlin's "VRAO", or else `pointName`, or after
+ * the city. A zone's id is its
  * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them
  * and Hamburg's (DE.HH.UP_PARKVERBOTSZONEN_E_SCOOTER_6), or for a feature without one, as
  * Münster's are, a hash of its shape, as it is with `shapeIds` too, for a layer whose ids change
@@ -192,16 +196,18 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * Stockholm's parking place at John Ericssonsgatan 14, 70 cm wide, would otherwise be a line. A
  * layer of zones may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone
  * of its own kind.
- * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures).
+ * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), and one of
+ * format zip a zip of GeoJSON files (zipFeatures).
  */
-async function geojsonZones(city, { kind, format, url, match = {}, nameField, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly }) {
-  const body = format === 'kml' ? kmlFeatures(await getText(url)) : await getJson(url);
+async function geojsonZones(city, { kind, format, url, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly }) {
+  const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'zip' ? await zipFeatures(url) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
   if ((Number.isFinite(body.numberMatched) && body.numberMatched !== body.features.length) || body.links?.some(link => link.rel === 'next')) {
     throw new Error(`${url} answered ${body.features.length} of its features`);
   }
-  const wanted = ({ properties }) => Object.entries(match).every(([key, values]) => [values].flat().includes(properties?.[key] ?? null));
+  const has = (properties, given) => Object.entries(given).every(([key, values]) => [values].flat().includes(properties?.[key] ?? null));
+  const wanted = ({ properties }) => has(properties, match) && !(except && has(properties, except));
   return body.features.filter(wanted).flatMap(feature => {
     const { properties, geometry } = feature;
     if (geometry === null) {
@@ -217,7 +223,8 @@ async function geojsonZones(city, { kind, format, url, match = {}, nameField, un
         : createHash('sha1').update(JSON.stringify(geometry?.coordinates ?? null)).digest('hex').slice(0, 8);
     if (!featureId) throw new Error(`${url}: a feature has no ${idField}`);
     const id = `${city.id}-${slug(kind)}-${featureId}`;
-    const given = nameField && String(properties[nameField] ?? '').trim();
+    let given = nameField && String(properties[nameField] ?? '').trim();
+    if (given && nameTrim) given = given.replace(new RegExp(nameTrim), '').trim();
     const name = given && !unnamed.includes(given) ? given : null;
     switch (geometry?.type) {
       case 'Point':
@@ -258,6 +265,38 @@ function kmlFeatures(kml) {
         return { properties, geometry };
       })),
   };
+}
+
+/**
+ * A zip of GeoJSON files' features, as one answer: Braunschweig's open data gives each of its zones
+ * a file of its own, named in a DOS code page that macOS's file system refuses, so the zip is read
+ * here, entry by entry from its central directory, rather than unpacked.
+ */
+async function zipFeatures(url) {
+  const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+  const zip = Buffer.from(await response.arrayBuffer());
+  const end = zip.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
+  if (end < 0) throw new Error(`${url} is no zip`);
+  const features = [];
+  for (let entry = zip.readUInt32LE(end + 16), count = zip.readUInt16LE(end + 10); count > 0; count--) {
+    if (zip.readUInt32LE(entry) !== 0x02014b50) throw new Error(`${url}: its central directory is broken`);
+    const method = zip.readUInt16LE(entry + 10);
+    const size = zip.readUInt32LE(entry + 20);
+    const nameLength = zip.readUInt16LE(entry + 28);
+    const name = zip.toString('latin1', entry + 46, entry + 46 + nameLength);
+    const header = zip.readUInt32LE(entry + 42);
+    const data = header + 30 + zip.readUInt16LE(header + 26) + zip.readUInt16LE(header + 28);
+    entry += 46 + nameLength + zip.readUInt16LE(entry + 30) + zip.readUInt16LE(entry + 32);
+    if (!/\.(geo)?json$/i.test(name)) continue;
+    if (method !== 0 && method !== 8) throw new Error(`${url}: ${name} is compressed by method ${method}`);
+    const bytes = zip.subarray(data, data + size);
+    const file = JSON.parse((method === 8 ? inflateRawSync(bytes) : bytes).toString('utf8'));
+    if (!Array.isArray(file.features)) throw new Error(`${url}: ${name} holds no features`);
+    features.push(...file.features);
+  }
+  if (!features.length) throw new Error(`${url} holds no GeoJSON`);
+  return { features };
 }
 
 /**
@@ -737,7 +776,7 @@ for (const city of catalog.cities) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : ['geojson', 'kml'].includes(layer.format) ? await geojsonZones(city, layer)
+      : ['geojson', 'kml', 'zip'].includes(layer.format) ? await geojsonZones(city, layer)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)

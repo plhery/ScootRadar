@@ -614,11 +614,11 @@ catalogs, and Berlin's and Hamburg's, too many to build in: the iOS app
 downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
-them again. Alexandria, Basel, Berlin, the City of London, Hamburg, Helsinki,
-München, Münster, Rostock, St. Albert, Santa Monica, Stockholm, Taupō, Turku,
-Vancouver, Vantaa, Washington and Wien state a licence for their layers, Washington for two of its
-three; since 28 October 2026 a city's public zone layers are drawn regardless,
-credited to the city.
+them again. Alexandria, Basel, Berlin, Braunschweig, the City of London,
+Hamburg, Helsinki, München, Münster, Rostock, St. Albert, Santa Monica,
+Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington and Wien state a licence
+for their layers, Washington for two of its three; since 28 October 2026 a
+city's public zone layers are drawn regardless, credited to the city.
 
 - **Alexandria** (read 30 October 2026): the City of Alexandria's 63 corral
   areas, 13 no-ride zones and 6 slow zones, from its open data under CC0
@@ -785,6 +785,24 @@ credited to the city.
   where Lime's service area ends, as Boise's. The slow zones' speeds are not
   shown: two of the eight give one speed in the zone and another in the
   banner the app shows (10 mph against 5 mph, and against 13 km/h).
+- **Braunschweig** (read 31 October 2026): the Stadt Braunschweig's 29
+  parking places for e-scooters in force
+  ([Abstellflächen für E-Scooter](https://opendata.braunschweig.de/dataset/abstellfl%C3%A4chen-f%C3%BCr-e-scooter),
+  published 2 March 2026), its 54 no-parking zones and the old town within the
+  Oker, the Okerumflut, where since 26 October 2022 a hired scooter is parked
+  only on one of the marked places (`PVZ - Geschäftsgebiet - A1`,
+  "Stationsbasiertes System innerhalb der Okerumflut", drawn as racks or
+  marked places only, only on the website; its holes, the pedestrian zone
+  among them, are left open),
+  from [E-Tretroller | Parkverbotszonen](https://opendata.braunschweig.de/dataset/e-tretroller-parkverbotszonen)
+  (files of 25 November 2025), both CC BY 4.0 and credited "Stadt Braunschweig,
+  CC BY 4.0". Each is a zip of GeoJSON files, one zone a file. The places set
+  until a day, as An der Martinikirche until 28 October 2026, are not drawn,
+  and the abbreviations the names begin with (AZ, PVZ) are left off. The
+  portal's [terms](https://opendata.braunschweig.de/page/nutzungsbedingungen-kontakt-lizenzen)
+  ask a service that uses its data to tell the editors where it is found. The
+  legend links the city's
+  [press release of 26 October 2022](https://www.braunschweig.de/politik_verwaltung/ob/textarchiv/textarchiv-2022/790_E_Scooter_stationsbasiertes-System_2610.pdf).
 - **City of London** (read 30 October 2026): the City of London
   Corporation's 45 parking places for hire scooters and bikes, each set by a
   traffic management order (2022/21, 2024/1, 2025/13 and 2025/17) and named

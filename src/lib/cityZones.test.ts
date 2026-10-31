@@ -38,6 +38,8 @@ const ANTWERPEN_MEIR = { south: 51.215, west: 4.395, north: 51.222, east: 4.41 }
 const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 // Santa Monica's Pier, the Promenade and Palisades Park's south end.
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
+// Braunschweig's old town, from the Altstadtmarkt by the Kohlmarkt and the Burgplatz to the Schlossplatz.
+const BRAUNSCHWEIG_ALTSTADT = { south: 52.259, west: 10.512, north: 52.267, east: 10.532 };
 // Poznań's Old Market Square and the streets round it.
 const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
 // Rostock's old town, from the Kröpeliner Tor along the Kröpeliner Straße to the Neuer Markt.
@@ -123,7 +125,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'rostock', 'sacramento', 'santamonica', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'rostock', 'sacramento', 'santamonica', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -716,6 +718,27 @@ describe('the cities\' zones', () => {
     expect(Math.abs(winding(centre[0].ring!, 50.4686, 4.8622))).toBe(1);
     await loadCityZones(namur);
     const shown = ruleZonesInView({ bounds: NAMUR_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
+  });
+
+  it("draws Braunschweig's parking places, its old town where a scooter is parked only at one, and its no-parking zones, credited to the city under CC BY 4.0", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const braunschweig = ZONE_CITIES.find(city => city.id === 'braunschweig')!;
+    expect(braunschweig.authority).toBe('Stadt Braunschweig, CC BY 4.0');
+    // 29 parking places in force, of 35 parts, the old town within the Oker, of 9, and 54 no-parking zones, of 59;
+    // the places set until a day, as An der Martinikirche until 28 October 2026, are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.braunschweig();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'noParking'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 35, racksOnly: 9, noParking: 59 });
+    expect(file.zones.find(zone => zone.name === 'Abelnkarre')?.kind).toBe('parking');
+    expect(file.zones.some(zone => zone.name === 'An der Martinikirche')).toBe(false);
+    // The old town holds the Kohlmarkt, but not the pedestrian zone's Burgplatz, a no-parking zone.
+    const oldTown = file.zones.filter(zone => zone.kind === 'racksOnly');
+    expect(oldTown.filter(zone => Math.abs(winding(zone.ring!, 52.2619, 10.5196)) === 1)).toHaveLength(1);
+    expect(oldTown.filter(zone => Math.abs(winding(zone.ring!, 52.2641, 10.5236)) === 1)).toHaveLength(0);
+    expect(file.zones.find(zone => zone.name === 'Fußgängerzone')?.kind).toBe('noParking');
+    await loadCityZones(braunschweig);
+    const shown = ruleZonesInView({ bounds: BRAUNSCHWEIG_ALTSTADT, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
   });
 
