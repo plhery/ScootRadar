@@ -2,6 +2,8 @@ package com.plhery.scootradar.ui
 
 import android.os.ParcelFileDescriptor
 import android.provider.Settings
+import android.util.Log
+import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -9,6 +11,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.InterceptPlatformTextInput
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -35,6 +40,7 @@ import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterWalkTarget
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
 import com.plhery.scootradar.map.ScooterMap
@@ -43,6 +49,7 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
 import okhttp3.OkHttpClient
 import org.junit.After
@@ -52,6 +59,7 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.junit.runners.model.Statement
+import java.io.File
 import java.time.Instant
 import java.util.Locale
 import java.util.regex.Pattern
@@ -298,17 +306,38 @@ class DockMotionRecording {
 
     /**
      * UI-184, run with Remove animations on (the run sets it, and sets it back): each place whose content changes swaps
-     * it with no fade, slide or roll, in one film. On a large window, with the panel: the dock's kind, the panel's fold,
-     * the Filters symbol, the chips' counts, Near me's first fix, the search opening and closing, and a Settings page
-     * pushed and popped. Once before the film, but for the first fix and Settings, which change once.
+     * it with no fade, slide or roll, in one film. On a large window, with the panel: the dock's kind, the panel's
+     * fold, the Filters symbol, the chips' counts, Near me's first fix, the search opening and closing, and a Settings
+     * page pushed and popped; on a phone, the dock in the panel's place and Settings taken to its large height first.
+     * Before the first fix, with the location denied: the location card coming and going, the notices going as the
+     * search opens over the card and back as it closes, and a walk with no location, whose note comes with the card and
+     * goes as the route is hidden. Once before the film, but for the first fix and Settings, which change once.
+     *
+     * With ground=plain the film is then read frame by frame (filmFrames): no frame that changes the screen comes
+     * within [ONE_CHANGE_MILLIS] of another, as a change drawn over two frames or more, its old state's or a
+     * transition's, would. A change is a frame of which more than [CHANGE_POINTS] points differ from the frame before:
+     * more than the field's cursor blinking and the encoder's own touches to a still screen. The keyboard is kept away,
+     * the screen's text input intercepted: it comes up some frames after the search opens and goes a frame or two after
+     * it closes, under Remove animations too, in its own window, and on API 37 Gboard draws a taller layout between
+     * (FLAG_ALT_FOCUSABLE_IM and FLAG_NOT_FOCUSABLE leave it be). The presses' light is kept apart: each tap is a press
+     * held 0.4 s and let go, as a click's press and its release would light a glass button for a frame between them,
+     * but Settings' button's, clicked as TalkBack does (clickAccessibly). Over the live map, whose tiles and labels
+     * come as they load, the film is only made.
      */
     @Test
     fun reduceMotionAtOnce() {
         val resolver = InstrumentationRegistry.getInstrumentation().targetContext.contentResolver
         check(Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f) { "Remove animations is off" }
         val controller = show()
+        var bars = 0f to 1f
+        scenario!!.onActivity { activity ->
+            val root = activity.window.decorView
+            val insets = ViewCompat.getRootWindowInsets(root)!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            bars = insets.top.toFloat() / root.height to 1f - insets.bottom.toFloat() / root.height
+        }
         val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-        // A Compose button's label is its description, a row's its text: either, whichever shows first.
+        // A Compose button's label is its description, a row's its text: either, whichever shows first. Pressed and
+        // held, then let go.
         fun tap(name: String, vararg selectors: BySelector) {
             val until = System.currentTimeMillis() + 5_000
             var found: UiObject2? = null
@@ -316,42 +345,68 @@ class DockMotionRecording {
                 found = selectors.firstNotNullOfOrNull { device.findObject(it) }
                 if (found == null) Thread.sleep(200)
             }
-            checkNotNull(found) { "no $name" }.click()
+            val at = checkNotNull(found) { "no $name" }.visibleBounds
+            shell("input motionevent DOWN ${at.centerX()} ${at.centerY()}")
+            Thread.sleep(400)
+            shell("input motionevent UP ${at.centerX()} ${at.centerY()}")
             Thread.sleep(1_500)
         }
         fun named(label: String) = arrayOf(By.desc(label), By.text(label))
+        fun step(block: () -> Unit) {
+            main(block)
+            Thread.sleep(1_500)
+        }
+        val searchBar = By.desc(Pattern.compile("Search city or address|Finding your location.*|Showing scooters near.*"))
         val steps = { warm: Boolean ->
-            main { controller.selectScooter("lime:a") }
-            Thread.sleep(1_500)
-            main { controller.selectScooter(null) }
-            Thread.sleep(1_500)
-            main { controller.setPanelCollapsed(true) }
-            Thread.sleep(1_500)
-            main { controller.setPanelCollapsed(false) }
-            Thread.sleep(1_500)
-            main { controller.setMinimumBattery(75.0) }
-            Thread.sleep(1_500)
-            main { controller.resetFilters() }
-            Thread.sleep(1_500)
+            step { controller.selectScooter("lime:a") }
+            step { controller.selectScooter(null) }
+            step { controller.setPanelCollapsed(true) }
+            step { controller.setPanelCollapsed(false) }
+            step { controller.setMinimumBattery(75.0) }
+            step { controller.resetFilters() }
             api.scooters = if (warm) scooters else reordered
-            main { controller.refresh() }
-            Thread.sleep(1_500)
+            step { controller.refresh() }
             // The bar's label: no place, a location on its way, or the place shown.
-            tap("the search bar", By.desc(Pattern.compile("Search city or address|Finding your location.*|Showing scooters near.*")))
+            tap("the search bar", searchBar)
             tap("Cancel", *named("Cancel"))
             if (!warm) {
-                main {
+                location.authorizationStatus = ScooterAuthorizationStatus.Denied
+                step { controller.focusOnUser() }
+                tap("the search bar", searchBar)
+                tap("Cancel", *named("Cancel"))
+                step { controller.dismissLocationIssue() }
+                step { controller.selectScooter("lime:a") }
+                step { controller.showWalkingRoute(ScooterWalkTarget.Scooter(scooters.first())) }
+                step { controller.hideWalkingRoute() }
+                step { controller.dismissLocationIssue() }
+                step { controller.selectScooter(null) }
+                location.authorizationStatus = ScooterAuthorizationStatus.AuthorizedWhenInUse
+                step {
                     controller.locationsUpdated(listOf(ScooterLocationFix(rider, horizontalAccuracy = 10.0, timestamp = Instant.now())))
                 }
-                Thread.sleep(1_500)
-                tap("Settings", *named("Settings"))
+                clickAccessibly(localized("Settings"))
+                expandSheet()
                 tap("the Language row", *named("English"))
                 tap("Back", *named("Back"))
                 tap("Done", *named("Done"))
             }
         }
         steps(true)
-        record("ui184-reduce-motion", seconds = 40) { steps(false) }
+        record("ui184-reduce-motion", seconds = 75) { steps(false) }
+        if (!plainGround) return
+
+        val film = File(InstrumentationRegistry.getInstrumentation().targetContext.cacheDir, "ui184-reduce-motion.mp4")
+        val copy = InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("cat $FOLDER/ui184-reduce-motion.mp4")
+        ParcelFileDescriptor.AutoCloseInputStream(copy).use { input -> film.outputStream().use { input.copyTo(it) } }
+        val frames = filmFrames(film, top = bars.first, bottom = bars.second)
+        film.delete()
+        val changes = frames.filter { it.changed > CHANGE_POINTS }
+        Log.i("DockMotionRecording", "${frames.size} frames; changes at ${changes.map { "%.0f ms (%d)".format(it.millis, it.changed) }}")
+        check(changes.size >= 20) { "the film's changes, ${changes.size}: ${changes.map { it.millis.toInt() }}" }
+        val twice = changes.zipWithNext().filter { (a, b) -> b.millis - a.millis < ONE_CHANGE_MILLIS }
+        check(twice.isEmpty()) {
+            "changes over more than one frame, at " + twice.joinToString { (a, b) -> "%.0f ms (%d) and %.0f ms (%d)".format(a.millis, a.changed, b.millis, b.changed) }
+        }
     }
 
     /** UI-206: the live dot's ring, 1.6 s a round. */
@@ -377,13 +432,16 @@ class DockMotionRecording {
         )
         scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity {
             it.setContent {
-                ScooterMapScreen(
-                    controller,
-                    map = { dark ->
-                        if (liveMap && !plainGround) ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark)
-                        else Box(Modifier.fillMaxSize().background(Color(0xFF1B2230)))
-                    },
-                )
+                // On the plain ground, measured frame by frame, no keyboard: the search's field takes no text input.
+                InterceptPlatformTextInput({ request, next -> if (plainGround) awaitCancellation() else next.startInputMethod(request) }) {
+                    ScooterMapScreen(
+                        controller,
+                        map = { dark ->
+                            if (liveMap && !plainGround) ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark)
+                            else Box(Modifier.fillMaxSize().background(Color(0xFF1B2230)))
+                        },
+                    )
+                }
             }
         }
         if (!liveMap || plainGround) main { controller.updateViewport(zurichStart.region, zurichStart.zoom) }
@@ -403,6 +461,46 @@ class DockMotionRecording {
         // The recorder's output closes as it stops, at its time limit.
         ParcelFileDescriptor.AutoCloseInputStream(recorder).use { it.readBytes() }
         Thread.sleep(500)
+    }
+
+    /**
+     * On a phone Settings opens at half the screen, the Language row under it: the grabber takes the sheet to its large
+     * height, as TalkBack's double tap on it does, in one frame under Remove animations, where a drag would move it
+     * over many. Nothing at a form sheet's, whose grabber would close it.
+     */
+    private fun expandSheet() {
+        val grabber = accessibilityNode(localized("Sheet Grabber"))
+        if (grabber == null || grabber.stateDescription?.toString() != localized("Sheet at half screen")) return
+        check(grabber.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "the grabber's click" }
+        Thread.sleep(1_500)
+    }
+
+    /**
+     * Clicks the control described [description] as TalkBack does, with no press: Settings' button, whose light goes as
+     * the finger lifts and its sheet comes the 3 to 10 frames it takes to compose, which a quicker device could bring
+     * within ONE_CHANGE_MILLIS of each other.
+     */
+    private fun clickAccessibly(description: String) {
+        val until = System.currentTimeMillis() + 5_000
+        var node = accessibilityNode(description)
+        while (node == null && System.currentTimeMillis() < until) {
+            Thread.sleep(200)
+            node = accessibilityNode(description)
+        }
+        check(checkNotNull(node) { "no $description" }.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "$description's click" }
+        Thread.sleep(1_500)
+    }
+
+    /** The node described [description] in any of the screen's windows. */
+    private fun accessibilityNode(description: String): AccessibilityNodeInfo? {
+        fun find(node: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
+            if (node == null) return null
+            if (node.contentDescription?.toString() == description) return node
+            return (0 until node.childCount).firstNotNullOfOrNull { find(node.getChild(it)) }
+        }
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        val roots = listOfNotNull(automation.rootInActiveWindow) + automation.windows.mapNotNull { it.root }
+        return roots.firstNotNullOfOrNull { find(it) }
     }
 
     private fun main(block: () -> Unit) {
@@ -480,6 +578,12 @@ class DockMotionRecording {
 
     private companion object {
         const val FOLDER = "/sdcard/Movies/app-c"
+
+        /** The least time between two changes of the screen in reduceMotionAtOnce's film: more than two frames at 60 Hz. */
+        const val ONE_CHANGE_MILLIS = 40.0
+
+        /** The points a frame of that film must change to be a change: about a word of the dock's text. */
+        const val CHANGE_POINTS = 150
 
         /** 250 m west of Lime's scooter. */
         val rider = GeoPoint(47.3772, 8.5388)
