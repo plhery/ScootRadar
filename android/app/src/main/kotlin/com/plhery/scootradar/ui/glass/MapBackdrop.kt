@@ -73,7 +73,7 @@ class MapBackdrop(context: Context) : FrameLayout(context) {
 /**
  * Draws behind the element the map under it, blurred by [radius]: the map's frame from [backdrop], moved to where
  * the element is. Clip to the element's shape first. The modifier is kept across compositions, so that a change in
- * the element's content doesn't blur the map again: only a frame of the map's does.
+ * the element's content doesn't blur the map again: only a frame of the map's, or the element moving over it, does.
  */
 fun Modifier.mapBlur(backdrop: MapBackdrop, radius: Dp): Modifier = composed {
     remember(backdrop, radius) {
@@ -84,32 +84,53 @@ fun Modifier.mapBlur(backdrop: MapBackdrop, radius: Dp): Modifier = composed {
             glass.at[1] = position.y
         }.drawBehind {
             // Read so that each frame of the map's draws the glass again.
-            backdrop.frames.intValue
-            drawBlurred(backdrop, glass, radius)
+            drawBlurred(backdrop, backdrop.frames.intValue, glass, radius)
         }
     }
 }
 
-/** The blurred copy of the map behind one element, where it is, and the blur last set on it. */
+/**
+ * The blurred copy of the map behind one element, where it is, and what its blur was made for.
+ *
+ * Android keeps the image a RenderEffect made of a node for as long as the node keeps that effect, even when what the
+ * node draws changes (bug D: with one effect kept, the glass showed the map as it was at its first draw, before any
+ * tile, through every pan and appearance). So the glass takes a new effect for each new frame of the map's, and for
+ * each new place or size over it: the blur is made again when what is under the glass has changed, and only then.
+ */
 private class BlurredMap {
     val node = RenderNode("glass")
     val at = floatArrayOf(0f, 0f)
-    private var blurredBy = Float.NaN
+    private var frame = -1
+    private var radius = Float.NaN
+    private var left = Float.NaN
+    private var top = Float.NaN
+    private var width = -1
+    private var height = -1
 
-    fun blur(px: Float) {
-        if (px == blurredBy) return
+    /** Blurs by [px] the map's [frame] drawn [left] and [top] of the glass, [width] by [height]. */
+    fun blur(px: Float, frame: Int, left: Float, top: Float, width: Int, height: Int) {
+        if (frame == this.frame && px == radius && left == this.left && top == this.top && width == this.width && height == this.height) return
         node.setRenderEffect(RenderEffect.createBlurEffect(px, px, Shader.TileMode.CLAMP))
-        blurredBy = px
+        this.frame = frame
+        radius = px
+        this.left = left
+        this.top = top
+        this.width = width
+        this.height = height
     }
 }
 
-private fun DrawScope.drawBlurred(backdrop: MapBackdrop, glass: BlurredMap, radius: Dp) {
+private fun DrawScope.drawBlurred(backdrop: MapBackdrop, frame: Int, glass: BlurredMap, radius: Dp) {
     val origin = backdrop.positionInWindow()
-    glass.node.setPosition(0, 0, size.width.toInt(), size.height.toInt())
-    glass.blur(radius.toPx())
+    val left = origin[0] - glass.at[0]
+    val top = origin[1] - glass.at[1]
+    val width = size.width.toInt()
+    val height = size.height.toInt()
+    glass.node.setPosition(0, 0, width, height)
+    glass.blur(radius.toPx(), frame, left, top, width, height)
     val recording = glass.node.beginRecording()
     try {
-        recording.translate(origin[0] - glass.at[0], origin[1] - glass.at[1])
+        recording.translate(left, top)
         recording.drawRenderNode(backdrop.node)
     } finally {
         glass.node.endRecording()

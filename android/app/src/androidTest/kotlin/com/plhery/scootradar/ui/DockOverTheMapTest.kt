@@ -29,10 +29,12 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -45,6 +47,8 @@ import com.plhery.scootradar.map.testController
 import com.plhery.scootradar.map.zurichStart
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.glass.LocalGlass
+import com.plhery.scootradar.ui.glass.glassMayBlur
+import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -156,13 +160,58 @@ class DockOverTheMapTest {
         assertTrue("blurred ${mean(blurred, strip)}, filled ${mean(filled, strip)}", abs(mean(blurred, strip) - mean(filled, strip)) > 10)
     }
 
+    @Test
+    fun theGlassFollowsTheMapUnderIt() {
+        // The glass must show the map as it is now, not as it was when the glass first drew (bug D): the bar's never
+        // changes size, so a blur kept from its first draw shows the map's land before any tile, through every pan
+        // and appearance.
+        // The blur on whatever the frame watch says of this emulator's frames: it is the blur under test.
+        val controller = show(ScooterAppearance.Light, blurs = true)
+        val density = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics.density
+        val bar = bounds(SEARCH_ISLAND_TAG)
+        // The bar's room above its buttons, clear of its rounded ends.
+        val glass = Rect(bar.left + 48 * density, bar.top + 2 * density, bar.right - 48 * density, bar.top + 6 * density)
+        val before = screenshot("dock-glass-follows-0")
+
+        // A finger pans the map down under the bar, by a third of the screen.
+        val dock = dockBounds()
+        val x = (before.width / 2).toInt()
+        val from = (bar.bottom + 24 * density).toInt()
+        val to = minOf(from + before.height / 3, (dock.top - 24 * density).toInt())
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).swipe(x, from, x, to, 40)
+        settle()
+        val panned = screenshot("dock-glass-follows-1")
+        val change = difference(before, panned, glass)
+        assertTrue("the bar's glass after a pan: changed by $change of 255", change > 0.5)
+
+        // Dark: the night ground under the glass's dark tint, not the day's.
+        compose.runOnIdle { controller.setAppearance(ScooterAppearance.Dark) }
+        val open = Rect(0f, (bar.bottom + dock.top) / 2 - 20 * density, 16 * density, (bar.bottom + dock.top) / 2 + 20 * density)
+        val start = System.currentTimeMillis()
+        while (System.currentTimeMillis() - start < 20_000 && mean(screen(), open) > 60) Thread.sleep(250)
+        settle()
+        val dark = screenshot("dock-glass-follows-2")
+        assertTrue("the night map: ${mean(dark, open)}", mean(dark, open) < 60)
+        // The night land through the glass is near black (about 18 of 255); the day's land under the dark tint, about 90.
+        assertTrue("the bar's glass over the night map: ${mean(dark, glass)}", mean(dark, glass) < 50)
+    }
+
+    /** Waits for the map to stop and draw its tiles, and the glass to draw over them. */
+    private fun settle() {
+        compose.waitForIdle()
+        Thread.sleep(3_000)
+        compose.waitForIdle()
+    }
+
     /** The screen over the live map, with a controller of [scooters], once they are in and the ground is drawn. */
-    private fun show(): ScooterMapController {
+    private fun show(appearance: ScooterAppearance? = null, blurs: Boolean? = null): ScooterMapController {
         val controller = testController(scope, api)
+        appearance?.let(controller::setAppearance)
         setContent {
             ScooterMapScreen(
                 controller = controller,
                 map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) },
+                glassBlurs = blurs ?: glassMayBlur(),
             )
         }
         // A phone just started can take half a minute to reach the network.
@@ -204,8 +253,10 @@ class DockOverTheMapTest {
     /** The All chip, which TalkBack reads as "All providers, 5 scooters". */
     private fun allChip() = compose.onNodeWithContentDescription(localized("All providers"), substring = true)
 
-    private fun dockBounds(): Rect {
-        val node = compose.onNodeWithTag(DOCK_TAG).fetchSemanticsNode()
+    private fun dockBounds(): Rect = bounds(DOCK_TAG)
+
+    private fun bounds(tag: String): Rect {
+        val node = compose.onNodeWithTag(tag).fetchSemanticsNode()
         val position = node.positionOnScreen
         return Rect(position.x, position.y, position.x + node.size.width, position.y + node.size.height)
     }
@@ -222,6 +273,10 @@ class DockOverTheMapTest {
         }
         return bitmap
     }
+
+    /** The mean change of brightness in [area] from one screen to the other, from 0 to 255. */
+    private fun difference(one: Bitmap, other: Bitmap, area: Rect): Double =
+        brightness(one, area).zip(brightness(other, area)).flatMap { (a, b) -> a.indices.map { abs(a[it] - b[it]) } }.average()
 
     /** How much the brightness varies in [area]: its standard deviation, from 0 to 255. */
     private fun spread(bitmap: Bitmap, area: Rect): Double {
