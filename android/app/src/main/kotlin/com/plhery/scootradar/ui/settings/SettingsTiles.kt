@@ -56,6 +56,7 @@ import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.TextSize
+import com.plhery.scootradar.ui.theme.boldText
 import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.shrinking
 import com.plhery.scootradar.ui.theme.weight
@@ -136,8 +137,9 @@ internal fun SettingsTile(
  */
 @Composable
 internal fun AppearancePicture(appearance: ScooterAppearance) {
-    val sun = rememberVectorPainter(Symbols.sunFill)
-    val moon = rememberVectorPainter(Symbols.moonFillRegular)
+    // Heavier under Bold Text, as iOS's SF Symbols are (UI-187).
+    val sun = rememberVectorPainter(boldText(Symbols.sunFill))
+    val moon = rememberVectorPainter(boldText(Symbols.moonFillRegular))
     Canvas(Modifier.fillMaxWidth().height(64.dp)) {
         when (appearance) {
             ScooterAppearance.Light -> smallScreen(isDark = false)

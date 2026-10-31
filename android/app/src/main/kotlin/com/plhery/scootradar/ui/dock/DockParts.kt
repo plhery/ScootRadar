@@ -76,6 +76,7 @@ import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.TextSize
+import com.plhery.scootradar.ui.theme.boldText
 import com.plhery.scootradar.ui.theme.designFont
 import com.plhery.scootradar.ui.theme.hairline
 import com.plhery.scootradar.ui.theme.easing
@@ -182,10 +183,10 @@ internal val SymbolBaseline: (Measured) -> Int = { (it.measuredHeight * SYMBOL_B
 /** Where in its box a Material symbol's glyph stands. */
 internal const val SYMBOL_BASELINE = 21f / 24f
 
-/** A symbol at a size in points, in a colour, with nothing to say to TalkBack. */
+/** A symbol at a size in points, in a colour, with nothing to say to TalkBack; heavier under Bold Text (UI-187). */
 @Composable
 internal fun SymbolIcon(symbol: ImageVector, size: Dp, color: Color, modifier: Modifier = Modifier) {
-    Icon(symbol, contentDescription = null, tint = color, modifier = modifier.size(size))
+    Icon(boldText(symbol), contentDescription = null, tint = color, modifier = modifier.size(size))
 }
 
 /**
