@@ -167,6 +167,23 @@
       "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydefredrikstad/gbfs"
     },
     {
+      "id": "ryde_no_larvik",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Larvik",
+      "center": [
+        59.0533,
+        10.0352
+      ],
+      "bounds": {
+        "south": 59.02,
+        "north": 59.092,
+        "west": 9.97,
+        "east": 10.09
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydelarvik/gbfs"
+    },
+    {
       "id": "ryde_no_lillestrom",
       "country": "NO",
       "provider": "ryde",

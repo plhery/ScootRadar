@@ -1,7 +1,7 @@
 # Holiday nights in the night bans
 
 Since 29 October 2026 the map and the cache close the nights 9 of
-`data/rental-curfews.json`'s 45 towns close around public holidays, besides
+`data/rental-curfews.json`'s 46 towns close around public holidays, besides
 their weekday nights. The iOS and Android apps don't yet (below). Holiday
 hours elsewhere, such as LUUP's in Japan, have no calendar (`server/luupApp.ts`).
 

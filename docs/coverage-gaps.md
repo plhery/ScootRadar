@@ -717,7 +717,7 @@ banned shared scooters, and feeds that were empty when checked.
     scooters in Antwerpen come from its rider map since 25 October 2026; the
     map's Brussels market held no scooter that day.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
-  - RideMovi in Bergen and Ryde in Drammen and Larvik still have no working
+  - RideMovi in Bergen and Ryde in Drammen still have no working
     source. RideMovi rechecked on 28 October 2026: it isn't in Entur's GBFS
     manifest (81 systems) or MobilityData's list, and Entur's mobility API
     holds no scooter within 8 km of central Bergen. Lime's Bergen scooters, about 2,100, come from its rider map

@@ -33,8 +33,8 @@ its signed-in map was observed through native UI automation.
 No additional SMS was requested during the 27 October recheck.
 
 Bergen is covered through Skyss since 28 October 2026, at the user's request
-of 27 October. The direct rider route, for Drammen, Larvik, Kristiansand and
-Göteborg, still requires independent proof generation, response decryption
+of 27 October, and Larvik through Entur's `rydelarvik` since 31 October. The
+direct rider route, for Drammen, Kristiansand and Göteborg, still requires independent proof generation, response decryption
 and session-renewal tests. A successful app login alone does not establish
 that its session can be used by a server.
 
@@ -279,7 +279,8 @@ that one phone login will produce a portable bearer token.
 
 ## Public sources rechecked on 27 October
 
-Entur's GBFS 3 manifest still lists the same sixteen Ryde systems. The
+Entur's GBFS 3 manifest still listed the same sixteen Ryde systems then
+(it has listed `rydelarvik` too since 31 October 2026 at the latest). The
 discovery URLs for `rydebergen`, `rydedrammen`, `rydelarvik` and
 `rydekristiansand` return 404. Entur GraphQL recognizes
 `YRY:Operator:Ryde`: a control in Oslo returned vehicles from `rydeoslo`,

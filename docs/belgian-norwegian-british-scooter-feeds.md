@@ -40,7 +40,7 @@ The table lists the public feeds.
 | Belgium | Voi | 1 | Antwerpen | 925 |
 | Belgium | Hoppy | 5 | Blankenberge, Kortrijk, Mechelen, Oostende (with Bredene), Sint-Niklaas | 1,225 |
 | Norway | Voi | 9 | Oslo, Bærum / Asker, Lillestrøm / Lørenskog, Trondheim, Stavanger / Sandnes, Kristiansand / Vennesla, Arendal, Moss, Fredrikstad / Sarpsborg | 13,850 |
-| Norway | Ryde | 16 | Oslo, Trondheim, Stavanger, Bærum, Lillestrøm, Tromsø, Lørenskog, Sandefjord, Bodø, Asker, Ålesund, Skien, Fredrikstad, Tønsberg, Porsgrunn, Sarpsborg | 18,000 |
+| Norway | Ryde | 17 | Oslo, Trondheim, Stavanger, Bærum, Lillestrøm, Tromsø, Lørenskog, Sandefjord, Bodø, Asker, Ålesund, Skien, Fredrikstad, Tønsberg, Porsgrunn, Sarpsborg, Larvik | 18,000 |
 | Norway | Bolt | 1 | Oslo | 4,930 |
 | Norway | Dott | 2 | Trondheim, Stjørdal | 950 |
 | United Kingdom | Beryl | 6 | Bournemouth / Christchurch / Poole, Brighton, Cornwall (Falmouth, Newquay, Penzance, Truro), Leeds, Norwich (with Wymondham), Plymouth | 2,200 |
@@ -354,6 +354,7 @@ stays open at night.
 | Tromsø | Friday and Saturday, 23:00–06:00 | [FOR-2025-09-03-1800](https://lovdata.no/dokument/LF/forskrift/2025-09-03-1800) § 12 |
 | Tønsberg | Friday and Saturday 23:00–05:00, other nights 01:00–05:00 | [FOR-2024-09-04-2115](https://lovdata.no/dokument/LF/forskrift/2024-09-04-2115) § 6 d |
 | Sandefjord | Every night, 01:00–05:00 | [FOR-2022-06-22-1166](https://lovdata.no/dokument/LF/forskrift/2022-06-22-1166) § 7 e |
+| Larvik | Every night, 23:00–05:00 | [FOR-2025-06-18-1805](https://lovdata.no/dokument/LF/forskrift/2025-06-18-1805) § 6 g |
 | Lillestrøm | Friday and Saturday, 00:00–05:00 | [FOR-2022-06-15-1545](https://lovdata.no/dokument/LF/forskrift/2022-06-15-1545) § 7 e |
 | Rælingen | Friday and Saturday, 23:00–05:00 | [FOR-2022-12-07-2621](https://lovdata.no/dokument/LF/forskrift/2022-12-07-2621) § 7 e |
 | Arendal | Every night, 23:00–05:00 | [Voi's feed](https://api.entur.io/mobility/v2/gbfs/v3/voiarendal/gbfs), 16–23 Oct 2026 |
@@ -462,8 +463,7 @@ stays open at night.
   ([NRK](https://www.nrk.no/stor-oslo/bystyret-stemte-ned-innstramminger-for-elsparkesykler-i-oslo-1.17746568)).
 - Beryl drops its scooters from the BCP and Brighton feeds during the ban, so
   the moon explains an empty map there.
-- Drammen and Larvik in Norway ban some nights too, but have no public
-  feed.
+- Drammen in Norway bans some nights too, but has no public feed.
 - No other city checked in the covered countries bans renting at night,
   except on event nights: Munich's Oktoberfest, Cologne's carnival and
   Brussels on New Year's Eve.
@@ -510,11 +510,11 @@ stays open at night.
     13 October 2026, and West-Vlaanderen 76 pedal bikes too. Hoppy's Genk
     system (1522) held 6 e-bikes.
 - **Norway:**
-  - RideMovi in Bergen, Drammen (Ryde, Gogo) and Larvik (Ryde) still have
-    scooters without a working source. Skyss's map, which shows Ryde's
-    Bergen scooters, lists none in Drammen or Larvik. Entur's GBFS manifest
-    and checked GraphQL queries lack them; guessed system ids answer 404.
-    Ryde's fleet in
+  - RideMovi in Bergen and Drammen (Ryde, Gogo) still have scooters without
+    a working source. Skyss's map, which shows Ryde's Bergen scooters, lists
+    none in Drammen. Entur's GBFS manifest and checked GraphQL queries lack
+    them; guessed system ids answer 404. Ryde's Larvik feed reached Entur's
+    manifest by 31 October 2026. Ryde's fleet in
     Kristiansand is missing too: of Ryde's towns that Entur lacked until
     October 2026, only Asker, Bærum, Bodø, Lillestrøm and Lørenskog were in
     its manifest on 22 October 2026. Dott, Bodø's other permit holder in
