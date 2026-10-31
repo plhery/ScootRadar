@@ -322,8 +322,9 @@ city's notice ends its season.
 When it fires, check the operator's app or site and the town's pages, then add a
 `seasonal` window to the catalog if the city or the operator publishes one, or remove
 the feed and record it in [coverage gaps](coverage-gaps.md), or silence it in Grafana
-while waiting. A Swiss system comes from sharedmobility.ch, not a catalog: add its id
-to `LEFT_OUT_SWISS_SYSTEMS` in `src/lib/feedCoverage.ts`, and remove its town from
+while waiting. A Swiss system comes from sharedmobility.ch or `OPERATOR_SWISS_SYSTEMS`,
+not a catalog: add its id to `LEFT_OUT_SWISS_SYSTEMS` in `src/lib/feedCoverage.ts`, and
+remove it from `OPERATOR_SWISS_SYSTEMS` if it is there, and its town from
 `data/swiss-scooter-areas.json` if no other operator serves it.
 
 ## Sentry

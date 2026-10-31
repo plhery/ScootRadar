@@ -109,6 +109,18 @@ the production API, no operator showed a scooter in any of them:
 Bird Grenchen and Bird's Bulle system (`bird-platform-partner-jmfleets-bulle`)
 are in `LEFT_OUT_SWISS_SYSTEMS`.
 
+Since 31 October 2026, when sharedmobility.ch stopped serving any provider,
+Bird's scooters in Zürich, Basel and Kloten and Lime's in Opfikon are read from
+the operators' own public feeds (`OPERATOR_SWISS_SYSTEMS` in
+`src/lib/scooterFeeds.ts`): Bird's at `mds.bird.co`, held for 15 minutes as
+Bird's are everywhere, and Lime's at `data.lime.bike`, under its
+[GBFS terms](https://www.li.me/legal/public-gbfs-terms). They keep their
+national ids, and with them their towns, zones, records and alerts. Bird's feeds
+give zones and no prices, as its copy on sharedmobility.ch did. Lime's Opfikon
+feed gives neither, so its scooters show no price, which its copy did. Lime
+publishes no feed of its own for Zürich, Basel or Uster
+([coverage gaps](docs/coverage-gaps.md)).
+
 Since 28 October 2026 Bolt's scooters in Zürich and Basel, Voi's in its eight
 Swiss zones and Dott's in Zürich, Basel, St. Gallen, Romanshorn and Rorschach
 stand where the operators' rider maps put them (`server/swissAppMaps.ts`, and

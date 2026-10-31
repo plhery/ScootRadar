@@ -299,19 +299,23 @@ export function listedNationalFeeds(systemIds: readonly string[]): CollectableSc
 }
 
 function nationalCollectableFeeds(entries: NonNullable<RegistryFeed['systems']>): CollectableScooterFeed[] {
-  const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
   return entries.flatMap(entry => {
     const system = registrySystem(entry.id, entry.url);
-    return system ? [{
-      id: `national:${system.id}`,
-      host: new URL(system.discoveryUrl).hostname,
-      source: 'national' as const,
-      provider: system.provider,
-      coverage: knownSystemCoverage(system.id) ?? [SWISS_MOBILITY_BOUNDS],
-      collect: () => fetchSystemVehicles(system, query),
-      zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: system.baseUrl, authenticated: true },
-    }] : [];
+    return system ? [nationalCollectableFeed(system)] : [];
   });
+}
+
+function nationalCollectableFeed(system: NationalSystem): CollectableScooterFeed {
+  const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
+  return {
+    id: `national:${system.id}`,
+    host: new URL(system.discoveryUrl).hostname,
+    source: 'national',
+    provider: system.provider,
+    coverage: knownSystemCoverage(system.id) ?? [SWISS_MOBILITY_BOUNDS],
+    collect: () => fetchSystemVehicles(system, query),
+    zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: system.baseUrl, authenticated: system.authenticated },
+  };
 }
 
 // GCOO's American towns share its area file, each with the zones that reach into it (gcooZones.ts).
@@ -324,6 +328,7 @@ const GCOO_US_ZONES: GcooZoneSource = {
 export function independentCollectableFeeds(): CollectableScooterFeed[] {
   const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
   return [
+    ...OPERATOR_SWISS_SYSTEMS.map(system => nationalCollectableFeed(system)),
     ...HOPP_SWISS_TOWNS.map(town => ({
       id: `hopp:${town.id}`, host: new URL(town.discoveryUrl).hostname, source: 'hopp' as const, provider: 'hopp' as const,
       coverage: [town.coverage],
@@ -353,7 +358,23 @@ interface NationalSystem {
   provider: ProviderKey;
   discoveryUrl: string;
   baseUrl: string;
+  /** sharedmobility.ch's copy, which asks for its contact header and gives prices in whole francs. */
+  authenticated: boolean;
 }
+
+const operatorSwissSystem = (id: string, provider: ProviderKey, discoveryUrl: string): NationalSystem => (
+  { id, provider, discoveryUrl, baseUrl: new URL('.', discoveryUrl).toString(), authenticated: false });
+
+// Systems whose operator publishes its own open feed, read there and not from sharedmobility.ch's
+// copy, whatever the registry lists: Bird and Lime Opfikon left the map when it stopped on
+// 31 October 2026. Their national ids keep their towns, zones, records and alerts. Lime publishes
+// no feed of its own for Zürich, Basel or Uster, which still come from the registry.
+const OPERATOR_SWISS_SYSTEMS: NationalSystem[] = [
+  operatorSwissSystem('bird-zurich', 'bird', 'https://mds.bird.co/gbfs/v2/public/zurich/gbfs.json'),
+  operatorSwissSystem('bird-basel', 'bird', 'https://mds.bird.co/gbfs/v2/public/basel/gbfs.json'),
+  operatorSwissSystem('bird-kloten', 'bird', 'https://mds.bird.co/gbfs/v2/public/kloten/gbfs.json'),
+  operatorSwissSystem('lime_opfikon', 'lime', 'https://data.lime.bike/api/partners/v2/gbfs/opfikon/gbfs.json'),
+];
 
 export class ScooterFeedsUnavailableError extends Error {
   readonly failedSources: string[];
@@ -838,6 +859,7 @@ function registrySystem(systemId: string, systemUrl: string): NationalSystem | n
     if (!provider || provider === 'hopp' || systemId === 'velospot') return null;
     // Systems for towns their operator has left, until rechecked (LEFT_OUT_SWISS_SYSTEMS).
     if (LEFT_OUT_SWISS_SYSTEMS.has(systemId)) return null;
+    if (OPERATOR_SWISS_SYSTEMS.some(system => system.id === systemId)) return null;
 
     const discoveryUrl = url.toString();
     url.pathname = url.pathname.slice(0, -'/gbfs'.length);
@@ -848,6 +870,7 @@ function registrySystem(systemId: string, systemUrl: string): NationalSystem | n
       provider,
       discoveryUrl,
       baseUrl: url.toString().replace(/\/$/, ''),
+      authenticated: true,
     };
   } catch {
     return null;
@@ -1009,9 +1032,10 @@ async function fetchSystemVehicles(
     return { vehicles: [], stale: false, skipped: true };
   }
 
+  const { authenticated } = system;
   const discovery = await fetchJson<DiscoveryFeed>(system.discoveryUrl, {
     validate: validateDiscovery,
-    authenticated: true,
+    authenticated,
     revalidate: METADATA_REVALIDATE_SECONDS,
   });
   const entries = discoveryFeedEntries(discovery.data);
@@ -1022,7 +1046,7 @@ async function fetchSystemVehicles(
     return { vehicles: [], stale: discovery.stale, skipped: true };
   }
 
-  const types = await fetchScooterTypes(typesUrl, providerKeyForSystemId(system.id), true);
+  const types = await fetchScooterTypes(typesUrl, providerKeyForSystemId(system.id), authenticated);
   const typesById = types.byId;
   if (!types.hasScooter) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
@@ -1044,10 +1068,10 @@ async function fetchSystemVehicles(
   const [status, plans] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, {
       validate: value => { if (!isAbandonedStatus(value)) validateVehicleStatus(value); },
-      authenticated: true,
+      authenticated,
       revalidate: STATUS_REVALIDATE_SECONDS,
     }),
-    fetchPricingPlans(pricingUrl, { authenticated: true, source: system.id, country: 'CH', wholeUnitPrice: true }),
+    fetchPricingPlans(pricingUrl, { authenticated, source: system.id, country: 'CH', wholeUnitPrice: authenticated }),
   ]);
   // An operator that has left the city, or never sends positions, is not failing.
   if (isAbandonedStatus(status.data)) {
@@ -1077,8 +1101,7 @@ async function fetchNationalVehicles(query: FeedQuery): Promise<SourceVehicles> 
   });
 
   const systems =
-    (registry.data.systems ?? [])
-      .map(system => registrySystem(system.id, system.url))
+    [...(registry.data.systems ?? []).map(system => registrySystem(system.id, system.url)), ...OPERATOR_SWISS_SYSTEMS]
       .filter((system): system is NationalSystem => (
         system !== null &&
         (!query.providers || query.providers.has(system.provider))

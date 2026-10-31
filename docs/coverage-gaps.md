@@ -548,10 +548,18 @@ Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.
 
 - **Switzerland:** everything comes from sharedmobility.ch, apart from Hopp
-  (Zürich, Basel and Kloten) and PubliBike, read from their own feeds, and
-  Lime in Kloten and Sion, from its rider map. Hopp
+  (Zürich, Basel and Kloten), PubliBike, Bird (Zürich, Basel and Kloten) and
+  Lime in Opfikon, read from their own feeds, and Lime in Kloten and Sion, from
+  its rider map. Hopp
   stamps each response with the time it was asked for, so the fifteen-minute
   age limit can't tell how old its positions are.
+  - Lime Zürich, Lime Basel and Lime Uster are blocked while sharedmobility.ch
+    is down. It has served no provider since 02:13:09 UTC on 31 October 2026:
+    at 15:40 its registry timed out and `lime_zurich` answered 404 "Provider …
+    not configured or disabled". Lime publishes no feed for them
+    (`data.lime.bike` answers 404 under each name tried), MobiData BW's copies
+    answer 502, and Lime's rider map, which lists all three, needs a signed-in
+    account. They held about 746, 310 and 112 scooters at 02:00.
   - Lime Winterthur, Zug and Wetzikon list no vehicles, with fresh
     timestamps, as they have since at least 11 October 2026, and are left
     out of collection since 15 October 2026 (`LEFT_OUT_SWISS_SYSTEMS` in

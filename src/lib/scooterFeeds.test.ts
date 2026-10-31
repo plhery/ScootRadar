@@ -34,6 +34,10 @@ function jsonResponse(value: unknown): Response {
 }
 
 function nationalResponse(url: string): Response | null {
+  // The systems read from their operators, here with no vehicles to read.
+  if (url.startsWith('https://mds.bird.co/') || url.startsWith('https://data.lime.bike/')) {
+    return jsonResponse({ data: { en: { feeds: [{ name: 'system_information', url }] } } });
+  }
   if (url === 'https://sharedmobility.ch/v2/gbfs') {
     return jsonResponse({
       systems: [{
@@ -449,6 +453,54 @@ describe('fetchScooters source health', () => {
     expect(fetchMock.mock.calls.map(([url]) => String(url))).not.toContain('https://sharedmobility.ch/v2/gbfs');
   });
 
+  it('reads Bird and Lime Opfikon from their operators\' own feeds, whatever the registry lists', async () => {
+    const base = 'https://mds.bird.co/gbfs/v2/public/kloten';
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === `${base}/gbfs.json`) {
+        return jsonResponse({ data: { en: { feeds: [
+          { name: 'free_bike_status', url: `${base}/free_bike_status.json` },
+          { name: 'vehicle_types', url: `${base}/vehicle_types.json` },
+          { name: 'geofencing_zones', url: `${base}/geofencing_zones.json` },
+        ] } } });
+      }
+      if (url === `${base}/vehicle_types.json`) {
+        return jsonResponse({ data: { vehicle_types: [{ vehicle_type_id: 'scooter', form_factor: 'scooter', propulsion_type: 'electric' }] } });
+      }
+      if (url === `${base}/free_bike_status.json`) {
+        return jsonResponse({ last_updated: Math.floor(Date.now() / 1000), data: { bikes: [
+          { bike_id: 'b1', lat: 47.45, lon: 8.58, is_disabled: false, is_reserved: false, vehicle_type_id: 'scooter' },
+        ] } });
+      }
+      throw new Error(`Unexpected URL: ${url}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const feeds = independentCollectableFeeds().filter(feed => feed.source === 'national');
+    expect(feeds.map(feed => [feed.id, feed.host, feed.provider])).toEqual([
+      ['national:bird-zurich', 'mds.bird.co', 'bird'],
+      ['national:bird-basel', 'mds.bird.co', 'bird'],
+      ['national:bird-kloten', 'mds.bird.co', 'bird'],
+      ['national:lime_opfikon', 'data.lime.bike', 'lime'],
+    ]);
+    const kloten = feeds[2];
+    expect(kloten.zoneSource).toEqual({ discoveryUrl: `${base}/gbfs.json`, baseUrl: `${base}/`, authenticated: false });
+    expect((await kloten.collect()).vehicles).toEqual([expect.objectContaining({ provider: 'bird', lat: 47.45 })]);
+    // sharedmobility.ch's contact header is for sharedmobility.ch alone.
+    for (const [, init] of fetchMock.mock.calls as unknown as [string, RequestInit][]) {
+      expect(new Headers(init.headers).has('Authorization')).toBe(false);
+    }
+
+    // Held before a restart, or listed again by the registry, they are not read twice.
+    const listed = ['lime_zurich', 'bird-kloten', 'lime_opfikon'];
+    expect(listedNationalFeeds(listed).map(feed => feed.id)).toEqual(['national:lime_zurich']);
+    vi.stubGlobal('fetch', vi.fn(async () => jsonResponse({ systems: listed.map(id => (
+      { id, url: `https://sharedmobility.ch/v2/gbfs/${id}/gbfs` })) })));
+    const ids = (await discoverCollectableFeeds()).map(feed => feed.id);
+    expect(ids.filter(id => id === 'national:bird-kloten')).toHaveLength(1);
+    expect((await discoverCollectableFeeds()).find(feed => feed.id === 'national:bird-kloten')?.host).toBe('mds.bird.co');
+  });
+
   it('loads only Hopp when it is explicitly requested', async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const response = hoppResponse(String(input));
@@ -743,7 +795,7 @@ describe('fetchScooters source health', () => {
     expect(result.meta.partial).toBe(false);
     expect(result.meta.sources.national).toBe('skipped');
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect((await discoverCollectableFeeds()).map(feed => feed.id).filter(id => id.startsWith('national:'))).toEqual([]);
+    expect((await discoverCollectableFeeds()).filter(feed => feed.host === 'sharedmobility.ch')).toEqual([]);
   });
 
   it('uses declared Voi regions to skip its national vehicle feed', async () => {
