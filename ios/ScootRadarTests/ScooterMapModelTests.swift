@@ -800,11 +800,16 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(model.focusRequest?.point, userLocation)
     }
 
+    /// Without the cities' zones, which these tests' maps leave off: MapKit crashes, or hangs,
+    /// when a map goes while it still draws an overlay's tiles (-[MKMapViewInternal startEffects]
+    /// from a timer, or a VKMapView waiting on its tile decoding), and Zürich's zones, where the
+    /// map opens, were put on a test's map as it ended (CI, 31 Oct 2026). ScooterZonesTests has them.
     private func makeModel(api: any ScooterAPIClient) -> ScooterMapModel {
         ScooterMapModel(
             api: api,
             locationManager: CLLocationManager(),
-            defaults: isolatedDefaults()
+            defaults: isolatedDefaults(),
+            builtInZones: []
         )
     }
 
@@ -2942,12 +2947,14 @@ extension ScooterMapModelTests {
         )
     }
 
+    /// Without the cities' zones, as makeModel(api:).
     private func makeModel(api: any ScooterAPIClient, clock: TestClock) -> ScooterMapModel {
         ScooterMapModel(
             api: api,
             locationManager: CLLocationManager(),
             defaults: isolatedDefaults(),
-            now: { clock.now }
+            now: { clock.now },
+            builtInZones: []
         )
     }
 
@@ -3942,7 +3949,9 @@ extension ScooterMapModelTests {
         let model = ScooterMapModel(
             api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
             locationManager: manager,
-            defaults: isolatedDefaults()
+            defaults: isolatedDefaults(),
+            // As makeModel(api:).
+            builtInZones: []
         )
         let (window, mapView) = try await panelWindow(showing: model)
         defer { window.isHidden = true }
@@ -4001,7 +4010,9 @@ extension ScooterMapModelTests {
         let model = ScooterMapModel(
             api: api,
             locationManager: manager,
-            defaults: isolatedDefaults()
+            defaults: isolatedDefaults(),
+            // As makeModel(api:).
+            builtInZones: []
         )
         model.updateViewport(zurichRegion, zoom: 16)
         let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
@@ -4088,7 +4099,8 @@ extension ScooterMapModelTests {
     private static let rider = CLLocationCoordinate2D(latitude: 47.3720, longitude: 8.5390)
 
     /// A model allowed to locate that hears only the fixes the test gives
-    /// it, whatever the simulator's own location is, with `vehicles` about.
+    /// it, whatever the simulator's own location is, with `vehicles` about;
+    /// without the cities' zones, as makeModel(api:).
     private func modelLocatedByTheTest(vehicles: [Scooter] = []) -> (ScooterMapModel, CLLocationManager) {
         modelLocatedByTheTest(api: StubScooterAPI(response: ScooterResponse(vehicles: vehicles)))
     }
@@ -4098,7 +4110,8 @@ extension ScooterMapModelTests {
         let model = ScooterMapModel(
             api: api,
             locationManager: manager,
-            defaults: isolatedDefaults()
+            defaults: isolatedDefaults(),
+            builtInZones: []
         )
         return (model, manager)
     }

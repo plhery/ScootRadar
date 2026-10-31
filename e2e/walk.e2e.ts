@@ -334,9 +334,11 @@ test('Directions draws the walk from where you are, a tap on the map keeps it, a
   };
   await expect.poll(reaches).toEqual({ fromYou: true, toLime: true });
   await expect.poll(() => routeInFrame(page)).toBe(true);
-  // The map moved first, then the line grew from its start: it is never drawn mid-flight.
+  // The map moved first, then the line grew from its start: it is never drawn mid-flight. A slow
+  // machine shows a frame or two of it before the whole line: mobile WebKit on CI drew one, over
+  // Zürich's zones, in two runs of seven on 31 Oct 2026.
   const { drawn } = await routeLog(page);
-  expect(drawn.length).toBeGreaterThan(2);
+  expect(drawn.length).toBeGreaterThan(1);
   expect(drawn[0].length).toBeLessThan(drawn.at(-1)!.length * 0.9);
   expect(new Set(drawn.map(step => step.zoom)).size).toBe(1);
 
