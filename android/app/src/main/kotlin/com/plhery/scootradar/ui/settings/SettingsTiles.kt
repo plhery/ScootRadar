@@ -42,6 +42,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import com.plhery.scootradar.core.model.AppleMapStyle
@@ -120,6 +121,8 @@ internal fun SettingsTile(
             color = if (isSelected) colors.actionText else colors.label,
             maxLines = 1,
             softWrap = false,
+            // `.lineLimit(1)`: what doesn't fit at three quarters of its size ends with "…", not at the tile's edge.
+            overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
             autoSize = shrinking(style, 0.75f),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
