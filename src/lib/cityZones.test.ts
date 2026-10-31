@@ -47,6 +47,10 @@ const NORFOLK_DOWNTOWN = { south: 36.844, west: -76.296, north: 36.857, east: -7
 // Poznań's Old Market Square and the streets round it.
 const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
 // Rostock's old town, from the Kröpeliner Tor along the Kröpeliner Straße to the Neuer Markt.
+// Reykjavík's centre, from Austurvöllur to Hallgrímskirkja.
+const REYKJAVIK_CENTRE = { south: 64.141, west: -21.945, north: 64.149, east: -21.925 };
+// Rīga's old town, from the Dom to the Freedom Monument.
+const RIGA_OLD_TOWN = { south: 56.945, west: 24.1, north: 56.953, east: 24.12 };
 const ROSTOCK_ALTSTADT = { south: 54.086, west: 12.125, north: 54.093, east: 12.146 };
 // Sacramento's downtown, from Old Sacramento to the State Capitol.
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
@@ -59,7 +63,9 @@ const STOCKHOLM_NORRMALM = { south: 59.323, west: 18.06, north: 59.337, east: 18
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
 // Turku's market square, the cathedral and the river between them.
 const TURKU_CENTRE = { south: 60.448, west: 22.255, north: 60.456, east: 22.28 };
+// Zürich's centre, the main station, Bahnhofstrasse and the Niederdorf.
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
+const GENEVE = { south: 46.2, west: 6.14, north: 46.21, east: 6.155 };
 // Clarendon, along Wilson Boulevard in Arlington County.
 const ARLINGTON_CLARENDON = { south: 38.884, west: -77.1, north: 38.892, east: -77.088 };
 // Arlington National Cemetery's Memorial Amphitheater and the Tomb of the Unknown Soldier.
@@ -131,7 +137,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'rostock', 'sacramento', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -219,7 +225,8 @@ describe('the cities\' zones', () => {
     expect(zoneCitiesInView({ bounds: BERLIN_TIERGARTEN, zoom: 15 }).map(city => city.id)).toEqual(['berlin']);
     expect(zoneCitiesInView({ bounds: HAMBURG_JUNGFERNSTIEG, zoom: 15 }).map(city => city.id)).toEqual(['hamburg']);
     expect(zoneCitiesInView({ bounds: BERGEN_CENTRE, zoom: 13 })).toEqual([]);
-    expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 })).toEqual([]);
+    expect(zoneCitiesInView({ bounds: ZURICH, zoom: 16 }).map(city => city.id)).toEqual(['zurich']);
+    expect(zoneCitiesInView({ bounds: GENEVE, zoom: 16 })).toEqual([]);
     expect(zoneCitiesInView(null)).toEqual([]);
   });
 
@@ -803,6 +810,49 @@ describe('the cities\' zones', () => {
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
   });
 
+  it("draws Reykjavík's parking places for shared vehicles, its no-parking and slow zones, from the city's open map services", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const reykjavik = ZONE_CITIES.find(city => city.id === 'reykjavik')!;
+    expect(reykjavik.authority).toBe('Reykjavíkurborg');
+    expect(reykjavik.timeZone).toBe('Atlantic/Reykjavik');
+    // Its 9 parking places, points drawn as discs; its water protection areas, underpasses and the like where none
+    // may be parked, and its school grounds and pedestrian streets, ridden at 10 km/h at most.
+    const { default: file } = await CITY_ZONE_FILES.reykjavik();
+    const counts = Object.fromEntries(['parking', 'noParking', 'slow'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 9, noParking: 157, slow: 49 });
+    expect(file.zones.filter(zone => zone.name === 'Grunnskólar').every(zone => zone.kind === 'slow')).toBe(true);
+    expect(file.zones.filter(zone => zone.name === 'Undirgöng').every(zone => zone.kind === 'noParking')).toBe(true);
+    // The slow zone of Austurstræti.
+    expect(file.zones.filter(zone => zone.kind === 'slow' && Math.abs(winding(zone.ring!, 64.1475, -21.9395)) === 1)).toHaveLength(1);
+    await loadCityZones(reykjavik);
+    const shown = ruleZonesInView({ bounds: REYKJAVIK_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow']));
+  });
+
+  it("draws Rīga's parking places, its historic centre where a scooter is parked only at one, its no-parking places and its slow zone, from the city's open data", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const riga = ZONE_CITIES.find(city => city.id === 'riga')!;
+    expect(riga.authority).toBe('Rīgas dome, CC BY 4.0');
+    expect(riga.timeZone).toBe('Europe/Riga');
+    // Its 90 parking areas and the 32 of its parking points not within one, drawn as discs; its 353 crossings,
+    // bridges, cycle paths and narrow pavements where none may be parked.
+    const { default: file } = await CITY_ZONE_FILES.riga();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'noParking', 'slow'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 122, racksOnly: 1, noParking: 353, slow: 1 });
+    expect(file.zones.find(zone => zone.name === 'Bruņinieku iela 10')?.kind).toBe('parking');
+    // The historic centre and the slow zone hold the Dom; the slow zone the Central Market too.
+    const centre = file.zones.find(zone => zone.kind === 'racksOnly')!;
+    const slow = file.zones.find(zone => zone.kind === 'slow')!;
+    expect(centre.name).toBe('Vēsturiskā centra daļa');
+    expect(Math.abs(winding(centre.ring!, 56.949, 24.1043))).toBe(1);
+    expect(Math.abs(winding(slow.ring!, 56.949, 24.1043))).toBe(1);
+    expect(Math.abs(winding(centre.ring!, 56.944, 24.114))).toBe(0);
+    expect(Math.abs(winding(slow.ring!, 56.944, 24.114))).toBe(1);
+    await loadCityZones(riga);
+    const shown = ruleZonesInView({ bounds: RIGA_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly', 'noParking', 'slow']));
+  });
+
   it("draws Rostock's marked parking places for e-scooters, from the city's open data", async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
     const rostock = ZONE_CITIES.find(city => city.id === 'rostock')!;
@@ -874,5 +924,24 @@ describe('the cities\' zones', () => {
     await loadCityZones(stockholm);
     const shown = ruleZonesInView({ bounds: STOCKHOLM_NORRMALM, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(50);
+  });
+
+  it("draws Zürich's parking, no-parking and no-riding zones for shared vehicles, credited to the city", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const zurich = ZONE_CITIES.find(city => city.id === 'zurich')!;
+    expect(zurich.authority).toBe('Stadt Zürich');
+    expect(zurich.timeZone).toBe('Europe/Zurich');
+    // Its no-riding zones are walked at 4 km/h, and no ride may end in one.
+    const { default: file } = await CITY_ZONE_FILES.zurich();
+    const counts = Object.fromEntries(['parking', 'noParking', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 31, noParking: 35, noRide: 176 });
+    // Bahnhofstrasse and the Lindenhof are in one no-riding zone, the main station's hall in a no-parking zone.
+    const bahnhofstrasse = file.zones.find(zone => zone.kind === 'noRide' && Math.abs(winding(zone.ring!, 47.3717, 8.5394)) === 1);
+    expect(bahnhofstrasse?.id).toBe('zurich-no-ride-81');
+    expect(Math.abs(winding(bahnhofstrasse!.ring!, 47.3729, 8.5409))).toBe(1);
+    expect(file.zones.find(zone => Math.abs(winding(zone.ring!, 47.3779, 8.5403)) === 1)?.kind).toBe('noParking');
+    await loadCityZones(zurich);
+    const shown = ruleZonesInView({ bounds: ZURICH, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'noRide']));
   });
 });

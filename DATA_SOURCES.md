@@ -615,9 +615,9 @@ downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Alexandria, Basel, Berlin, Braunschweig, the City of London,
-Hamburg, Helsinki, München, Münster, Rostock, St. Albert, Santa Monica,
-Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington and Wien state a licence
-for their layers, Washington for two of its three; since 28 October 2026 a
+Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
+Santa Monica, Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
+Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
 city's public zone layers are drawn regardless, credited to the city.
 
 - **Alexandria** (read 30 October 2026): the City of Alexandria's 63 corral
@@ -1111,6 +1111,39 @@ city's public zone layers are drawn regardless, credited to the city.
   drawn; two points with no such mark, about 15 m from Piotrowo's points of
   the same numbers, are. The map states no licence, and the authority's site
   sets no terms. The legend credits it by its own short name, ZDM Poznań.
+- **Reykjavík** (read 31 October 2026): Reykjavíkurborg's 9 parking places
+  for shared vehicles (`Skilasvaedi_deilifarartaekja`, `TEGUND` 1), points
+  each drawn as a disc of 5 m, and from its e-scooter geofencing layer
+  (`Escooter_geofencing`) 157 no-parking areas (`TYPE` 1: water protection
+  areas, underpasses and the like) and 49 slow ones (`TYPE` 2: school grounds
+  and pedestrian streets), from the city's map services
+  (`lukrgatt.reykjavik.is`, `OpinGognSamgongur`), named by what they are
+  (`HEIMILD`: Verndarsvæði, Undirgöng, Grunnskólar, Göngugötur), the master
+  plan's name taken off, or after the city where that names an office. The no-parking
+  areas, the largest water protection areas of over 1,000 points, are
+  simplified to within 2 m. Its data is "©Reykjavíkurborg - LUKR", with no
+  restriction on use once its authorship is credited: the legend credits
+  Reykjavíkurborg and links its
+  [rules for dockless rentals](https://reykjavik.is/sites/default/files/2026-02/Verklagsreglur_um_st%C3%B6%C3%B0valausar_hj%C3%B3laleigur_2026.pdf),
+  in force since 4 February 2026: 10 km/h at most in the slow zones, no
+  parking in the areas it sets, and the places it sets for parking. Left out:
+  the layers' notes (`ATHUGASEMDIR`), one of which holds an e-mail address.
+- **Rīga** (read 31 October 2026): the Rīgas dome's 90 parking areas for
+  e-scooters and 32 parking points, each drawn as a disc of 5 m, named by their
+  address (`adrese`); its historic centre (`Vēsturiskā centra daļa`), where a
+  scooter is parked only at one of them (racks or marked places only, drawn
+  only on the website); its 353 other no-parking places (crossings, bridges,
+  tunnels, cycle paths, pavements under 1.5 m) and its slow zone, the
+  dataset
+  [Elektroskrejriteņu izmantošanas nosacījumi](https://data.gov.lv/dati/dataset/elektroskrejritenu-izmantosanas-nosacijumi)
+  on data.gov.lv, CC BY 4.0, read as KML. 89 of the 121 parking points mark
+  parking areas the other layer draws as shapes, and are left out
+  (`pointsOutside`); nine parking areas of under 0.1 m² are dropped. The
+  legend credits "Rīgas dome, CC BY 4.0" and links the city's
+  [binding regulations](https://www.vestnesis.lv/ta/id/350955) No.
+  RD-24-261-sn, in force since 1 May 2024: a shared scooter is not left in a
+  no-parking zone, but at a parking place the city's map shows, nor ridden
+  faster than a speed zone's limit.
 - **Rostock** (read 31 October 2026): the Hanse- und Universitätsstadt
   Rostock's 15 marked parking places for e-scooters, points each drawn as a
   disc of 5 m and named by their street, from its open data
@@ -1317,6 +1350,18 @@ city's public zone layers are drawn regardless, credited to the city.
   areas given up on 30 October 2026 and 3 slow zones ended in 2024) or on
   some days only (the Naschmarkt's flea market, on Saturdays), and 5 empty
   parts of no-riding zones.
+- **Zürich** (read 31 October 2026): the Stadt Zürich's 31 parking zones, 35
+  no-parking zones and 176 no-riding zones for sharing operators, its
+  Dienstabteilung Verkehr's
+  [Sharing Zonen](https://data.stadt-zuerich.ch/dataset/geo_sharing_zonen),
+  CC0 (the city asks for the credit "Quelle: Stadt Zürich"), read from its WFS
+  as GeoJSON, one type at a time (`parkierzonen`, `parkverbotszonen`,
+  `fahrverbotszonen`). In a no-riding zone an operator holds a scooter to
+  4 km/h and a ride cannot end; in a no-parking zone a ride cannot end. The
+  legend credits the Stadt Zürich and links the dataset, whose
+  [map](https://www.geocat.ch/geonetwork/srv/ger/md.viewer#/full_view/ece5befa-f8e1-4753-8330-88d9cf09e832)
+  geocat.ch describes. The zones have no names, so they are named after the
+  city.
 
 ## Germany and Italy
 

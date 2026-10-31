@@ -195,11 +195,12 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points. Or a finer one:
  * Stockholm's parking place at John Ericssonsgatan 14, 70 cm wide, would otherwise be a line. A
  * layer of zones may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone
- * of its own kind.
+ * of its own kind; or only those within a zone of its kind an earlier layer drew, `pointsOutside`:
+ * 89 of Rīga's 121 parking points mark parking places its other layer draws as shapes.
  * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), and one of
  * format zip a zip of GeoJSON files (zipFeatures).
  */
-async function geojsonZones(city, { kind, format, url, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly }) {
+async function geojsonZones(city, { kind, format, url, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
   const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'zip' ? await zipFeatures(url) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
@@ -208,7 +209,9 @@ async function geojsonZones(city, { kind, format, url, match = {}, except, nameF
   }
   const has = (properties, given) => Object.entries(given).every(([key, values]) => [values].flat().includes(properties?.[key] ?? null));
   const wanted = ({ properties }) => has(properties, match) && !(except && has(properties, except));
-  return body.features.filter(wanted).flatMap(feature => {
+  const covered = ([lng, lat]) => pointsOutside && earlier.some(zone => zone.kind === kind && zone.ring && within([lat, lng], zone.ring));
+  let left = 0;
+  const zones = body.features.filter(wanted).flatMap(feature => {
     const { properties, geometry } = feature;
     if (geometry === null) {
       console.log(`${city.id} ${kind}: ${feature.id ?? 'a feature'} has no shape`);
@@ -229,7 +232,9 @@ async function geojsonZones(city, { kind, format, url, match = {}, except, nameF
     switch (geometry?.type) {
       case 'Point':
       case 'MultiPoint': {
-        const points = geometry.type === 'Point' ? [geometry.coordinates] : geometry.coordinates;
+        const given = geometry.type === 'Point' ? [geometry.coordinates] : geometry.coordinates;
+        const points = given.filter(point => !covered(point));
+        left += given.length - points.length;
         return points.map(([lng, lat], index) => ({ id: points.length > 1 ? `${id}-${index + 1}` : id, kind,
           name: name || pointName || city.place, ring: disc(lat, lng) }));
       }
@@ -238,25 +243,28 @@ async function geojsonZones(city, { kind, format, url, match = {}, except, nameF
       default: throw new Error(`${url}: zone ${featureId} is a ${geometry?.type ?? 'feature without a shape'}`);
     }
   });
+  if (left) console.log(`${city.id} ${kind}: ${left} points within a zone of their kind, left out`);
+  return zones;
 }
 
 /**
  * A KML file's placemarks as GeoJSON features, as Google My Maps exports a map: each placemark's
- * properties its folder's name, `folder`, its own, `name`, and its data, and its shape a point or a
- * polygon, its outer ring and then its holes. Any other shape is given by its name, for
- * geojsonZones to refuse.
+ * properties its folder's name, `folder`, its own, `name`, and its data, or its schema's data, as
+ * Rīga's portal exports it, and its shape a point or a polygon, its outer ring and then its holes.
+ * Any other shape is given by its name, for geojsonZones to refuse.
  */
 function kmlFeatures(kml) {
   const text = value => value.trim().replace(/^<!\[CDATA\[([\s\S]*)\]\]>$/, '$1')
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&');
   const element = (xml, tag) => new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`).exec(xml)?.[1];
   const positions = list => list.trim().split(/\s+/).map(position => position.split(',').slice(0, 2).map(Number));
-  const folders = [...kml.matchAll(/<Folder>([\s\S]*?)<\/Folder>/g)].map(([, folder]) => folder);
+  const folders = [...kml.matchAll(/<Folder\b[^>]*>([\s\S]*?)<\/Folder>/g)].map(([, folder]) => folder);
   return {
-    features: (folders.length ? folders : [kml]).flatMap(folder => [...folder.matchAll(/<Placemark>([\s\S]*?)<\/Placemark>/g)]
+    features: (folders.length ? folders : [kml]).flatMap(folder => [...folder.matchAll(/<Placemark\b[^>]*>([\s\S]*?)<\/Placemark>/g)]
       .map(([, placemark]) => {
         const properties = { folder: folders.length ? text(element(folder, 'name') ?? '') : null, name: text(element(placemark, 'name') ?? '') };
         for (const [, key, value] of placemark.matchAll(/<Data name="([^"]+)">\s*<value>([\s\S]*?)<\/value>/g)) properties[text(key)] = text(value);
+        for (const [, key, value] of placemark.matchAll(/<SimpleData name="([^"]+)">([\s\S]*?)<\/SimpleData>/g)) properties[text(key)] = text(value);
         const point = element(placemark, 'Point');
         const polygon = element(placemark, 'Polygon');
         const geometry = point ? { type: 'Point', coordinates: positions(element(point, 'coordinates'))[0] }
@@ -776,7 +784,7 @@ for (const city of catalog.cities) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : ['geojson', 'kml', 'zip'].includes(layer.format) ? await geojsonZones(city, layer)
+      : ['geojson', 'kml', 'zip'].includes(layer.format) ? await geojsonZones(city, layer, zones)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)

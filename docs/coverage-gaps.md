@@ -146,7 +146,30 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   outside which a scooter is not returned without a charge, and the scheme's
   operating area are layers of the council's ArcGIS (edited 6 October 2026),
   and its [terms](https://www.leeds.gov.uk/terms-and-conditions) ask
-  permission to republish anything from its site.
+  permission to republish anything from its site. Roma's 13 parking areas for
+  sharing bikes and scooters (Roma Servizi per la Mobilità's layer
+  `Monopattini_coordinate_nuove`, edited April 2026) state no licence, and its
+  [legal notes](https://romamobilita.it/azienda/note-legali/) forbid
+  reproducing its material for profit; its call for new operators (bids until
+  2 November 2026, the current ones running until 31 October) sets no-parking
+  macro-areas the city has yet to draw. Le Chesnay-Rocquencourt's map of
+  Dott's places is drawn by a widget behind a keyed API, and its
+  [legal notice](https://www.lechesnay-rocquencourt.fr/20/mentions-legales.htm)
+  forbids reproducing anything from its site without the town's prior
+  permission. Bristol's only layer is the council's 212 proposed bays,
+  consulted on until 31 October 2026 (the 55 installed are not published),
+  and its [copyright terms](https://www.bristol.gov.uk/council/about-our-website/copyright-of-website-content)
+  ask its express prior written permission; the West of England Combined
+  Authority's geofence layer is a copy of Dott's, of July 2025. Stuttgart's
+  90 no-parking zones and 74 parking areas for e-scooters are layers of its
+  geoserver's WFS (`A32_ES_ABSTELLVERBOTSZONEN`, `A32_ES_ABSTELLFLAECHEN`),
+  and its [geodata terms](https://www.stuttgart.de/geodaten-nutzungsbedingungen)
+  say they are not open data and send commercial use to the
+  Stadtmessungsamt. Düsseldorf's 49 no-parking zones round its 364 sharing
+  stations, where a scooter is left only at the station, are layers of
+  Düsseldorf Maps' WFS (`verkehr:sharing_parkverbotszone`, edited 14 October
+  2026), and their record in NRW's geoportal releases the city's geodata for
+  internal use only.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -187,6 +210,25 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   PDF maps of July 2021; its 15 parking places are drawn since 31 October
   2026. Bielefeld's no-parking area is one PDF map of March 2025 (and a
   picture of it) on its [e-scooter page](https://www.bielefeld.de/e-scooter).
+  Bern's zones where a scooter is neither ridden nor parked, and its busy
+  squares where one is parked only under a parking concept, are JPEG annexes
+  to its permit conditions of 3 July 2020; the city said in September 2023
+  that they still cover large parts of the centre, and neither its open data
+  nor its geoportal holds them. Nottingham's operational zones are one JPG map
+  of March 2025 on Transport Nottingham's
+  [trial page](https://www.transportnottingham.com/article/electric-scooter-rental-trial/);
+  its about 300 mandatory parking places are in the operator's app alone.
+  Kos's 30 parking points for e-scooters, where alone an operator's are left,
+  are a table of approximate coordinates in its regulation of 24 June 2026
+  ([ΑΔΑ Ψ6Ω1ΩΛΕ-Χ0Υ](https://diavgeia.gov.gr/doc/Ψ6Ω1ΩΛΕ-Χ0Υ)), in force
+  once published in the Government Gazette, and its maps are pictures.
+  Auckland's about 30 e-parking zones along Queen Street, where a scooter
+  must be parked since 12 August 2024, are a picture on Auckland Transport's
+  [page](https://haveyoursay.at.govt.nz/scooter-parking). Dubai's districts
+  where e-scooters may ride are a picture on the
+  [RTA's page](https://www.rta.ae/wps/portal/rta/ae/home/about-rta/escooter);
+  its KML of cycle tracks holds no scooter rule, and the RTA's terms ask its
+  consent for any use of its site's content.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -356,7 +398,20 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   comunas where Whoosh, Jet and Lime run under municipal permits, are in the
   operators' apps alone. Norwich's council site (norfolk.gov.uk) answers
   scripts with 403, and Norfolk County Council's ArcGIS holds no scooter
-  layer.
+  layer. Liverpool's council names dedicated bays and no-ride zones but
+  publishes neither, and its ArcGIS holds none. Versailles publishes no zones
+  for shared scooters, which are the operators' own; Versailles Grand Parc's
+  data holds bike racks only. In the south of Tenerife, Adeje's ordinance of
+  April 2026 sets no zones, and Arona's is still a draft. In Fuerteventura,
+  Antigua's ordinance sets where scooters may go in text alone, Pájara's sets
+  only fees, and Puerto del Rosario's site answers scripts with 403. Rhodes
+  has published no rules for shared scooters. Calgary names its slow streets
+  on its [e-scooter page](https://www.calgary.ca/bike-walk-roll/electric-scooters.html);
+  Open Calgary's micromobility dataset is the operators' scooters, not zones.
+  Winterthur's operating area is an unpublished annex to its concession
+  contracts (Voi's alone runs past 2025), and St. Gallen's no-parking and
+  slow areas are its operator's geofencing; its open data holds only the
+  scooters' positions.
 
 ## No public data, in covered countries
 

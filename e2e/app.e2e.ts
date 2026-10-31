@@ -1252,8 +1252,9 @@ test('combines provider filters and resets them together', async ({ page }) => {
 test('the operators\' zones are drawn unless turned off, for the providers shown, with what they mean', async ({ page }) => {
   const square = (south: number, west: number) =>
     [[[[south, west], [south, west + 0.003], [south + 0.002, west + 0.003], [south + 0.002, west], [south, west]]]];
+  // Zürich's own zones are drawn too, in their pane and below the operators' in the legend.
   const edges = page.locator('.leaflet-zones-edges-pane g path');
-  const noRideWidth = () => page.evaluate(() => document.querySelector<SVGPathElement>('.zone-edge-noRide')!.getBBox().width);
+  const noRideWidth = () => page.evaluate(() => document.querySelector<SVGPathElement>('.leaflet-zones-edges-pane .zone-edge-noRide')!.getBBox().width);
   const asked: string[] = [];
   await page.route('**/api/zones?**', route => {
     asked.push(new URL(route.request().url()).search);
@@ -1272,27 +1273,28 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await focusFixtureArea(page);
   // Further out than zoom 14, nothing is asked for, and a word says why there are none.
   const legend = page.getByRole('group', { name: 'Zones' });
+  const operators = legend.locator('.zone-legend-item:not(.zone-legend-rule)');
   await expect(legend).toHaveText('Zoom in to see the zones');
   expect(asked).toEqual([]);
 
   await zoomTo(page, 16);
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
-  await expect(legend).toHaveText('No ridingNo parkingSlow');
+  await expect(operators).toHaveText(['No riding', 'No parking', 'Slow']);
   // One shape and one edge for each kind, the operators' zones merged, under the scooters.
   await expect(edges).toHaveCount(3);
   expect(asked.length).toBeGreaterThan(0);
   const merged = await noRideWidth();
   // No parking's and slow zones' edges keep clear of no riding's.
   for (const kind of ['noParking', 'slow']) {
-    await expect(page.locator(`.zone-edge-${kind}`)).toHaveAttribute('mask', 'url(#zone-edges-clear-of-no-riding)');
+    await expect(page.locator(`.leaflet-zones-edges-pane .zone-edge-${kind}`)).toHaveAttribute('mask', 'url(#zone-edges-clear-of-no-riding)');
   }
   await expect(page.locator('#zone-edges-clear-of-no-riding path')).toHaveCount(1);
   // Told apart without their colours, on the map as in the legend: no riding hatched
   // within a solid edge, no parking's edge dashed and slow's dotted.
   const drawn = await page.evaluate(() => ({
-    fill: getComputedStyle(document.querySelector('.zone-fill-noRide')!).fill,
-    edges: ['noRide', 'noParking', 'slow'].map(kind => document.querySelector(`.zone-edge-${kind}`)!.getAttribute('stroke-dasharray')),
-    swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-swatch-${kind}`)!).borderTopStyle),
+    fill: getComputedStyle(document.querySelector('.leaflet-zones-noRide-pane .zone-fill-noRide')!).fill,
+    edges: ['noRide', 'noParking', 'slow'].map(kind => document.querySelector(`.leaflet-zones-edges-pane .zone-edge-${kind}`)!.getAttribute('stroke-dasharray')),
+    swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-legend-item:not(.zone-legend-rule) .zone-swatch-${kind}`)!).borderTopStyle),
   }));
   expect(drawn).toEqual({ fill: 'url("#zone-no-ride-hatch")', edges: [null, '6 4', '0.1 4'], swatches: ['solid', 'dashed', 'dotted'] });
   // Lime alone: its zone alone, two thirds as wide as the merged one.
@@ -1301,7 +1303,7 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await expect(edges).toHaveCount(1);
   expect((await noRideWidth()) / merged).toBeCloseTo(2 / 3, 1);
 
-  // Turned off: nothing is drawn or said, and the choice is kept.
+  // Turned off: the operators' are no longer drawn or said, the city's still are, and the choice is kept.
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
   const zones = settings.getByRole('switch', { name: 'Ride and parking zones' });
@@ -1311,7 +1313,8 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await page.keyboard.press('Escape');
   await expect(settings).not.toBeVisible();
   await expect.poll(() => new URL(page.url()).search).toBe('?zones=0');
-  await expect(legend).toHaveCount(0);
+  await expect(operators).toHaveCount(0);
+  await expect(legend.locator('.zone-legend-rule').first()).toBeVisible();
   await expect(edges).toHaveCount(0);
 
   // On the next visit too: further out, not even the word to zoom in.
@@ -3102,7 +3105,8 @@ test.describe('on a small phone, or one held on its side', () => {
     // The three scooters stand on one spot: one provider alone leaves one marker to press.
     await page.getByRole('button', { name: `${name}, 1. Shown.`, exact: true }).click();
     const marker = page.getByRole('button', { name: `${name} scooter`, exact: true });
-    await marker.click();
+    // Zürich's zones' legend stands over it on so narrow a screen: it is pressed as a key would.
+    await marker.press('Enter');
     await expect(page.locator('.sheet .dock-card').getByRole('heading', { name })).toBeVisible();
     return marker;
   };
@@ -3302,7 +3306,7 @@ test.describe('on a small phone, or one held on its side', () => {
     });
     await page.setViewportSize({ width: 320, height: 568 });
     await page.goto('/map?origin=47.3769,8.5417');
-    await page.locator('.scooter-marker-wrap').click();
+    await page.locator('.scooter-marker-wrap').press('Enter');
     const card = page.locator('.sheet .dock-card');
     // "Open in PubliBike / Velospot" is wider than what 320 px leave beside "Directions".
     const open = card.getByRole('link', { name: 'Open in PubliBike / Velospot' });

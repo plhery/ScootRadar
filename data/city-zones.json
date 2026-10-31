@@ -1375,6 +1375,132 @@
       "zones": 271
     },
     {
+      "id": "reykjavik",
+      "place": "Reykjavík",
+      "country": "IS",
+      "authority": "Reykjavíkurborg",
+      "timeZone": "Atlantic/Reykjavik",
+      "source": {
+        "title": "Reykjavíkurborg, \"Verklagsreglur um stöðvalausar hjólaleigur 2026\" (in force since 4 February 2026): no faster than 10 km/h in its slow zones, school grounds and pedestrian streets among them; no parking in the areas it sets, as water protection areas, pedestrian streets and underpasses; and the places it sets for parking",
+        "url": "https://reykjavik.is/sites/default/files/2026-02/Verklagsreglur_um_st%C3%B6%C3%B0valausar_hj%C3%B3laleigur_2026.pdf"
+      },
+      "map": {
+        "title": "Reykjavíkurborg, \"Escooter_geofencing\" and \"Skilasvæði deilifarartækja\" (open data, ArcGIS)",
+        "url": "https://www.arcgis.com/home/item.html?id=e268bf190050448199797a39ab10c4cc"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://lukrgatt.reykjavik.is/server/rest/services/OpinGognSamgongur/Skilasvaedi_deilifarartaekja/FeatureServer/0/query?where=TEGUND%3D1&outFields=*&outSR=4326&f=geojson",
+          "match": {
+            "TEGUND": 1
+          },
+          "shapeIds": true,
+          "pointName": "Parking place"
+        },
+        {
+          "kind": "noParking",
+          "format": "geojson",
+          "url": "https://lukrgatt.reykjavik.is/server/rest/services/OpinGognSamgongur/Escooter_geofencing/FeatureServer/0/query?where=TYPE%3D1&outFields=*&outSR=4326&f=geojson",
+          "match": {
+            "TYPE": 1
+          },
+          "nameField": "HEIMILD",
+          "shapeIds": true,
+          "nameTrim": "^Aðalskipulag Reykjavíkur 2010-2030 - ",
+          "unnamed": [
+            "Skrifstofa samgöngustjóra og borgarhönnunar",
+            "Skrifstofa Samgöngustjóra og borgarhönnunar",
+            "Faxaflóahafnir"
+          ],
+          "tolerance": 2
+        },
+        {
+          "kind": "slow",
+          "format": "geojson",
+          "url": "https://lukrgatt.reykjavik.is/server/rest/services/OpinGognSamgongur/Escooter_geofencing/FeatureServer/0/query?where=TYPE%3D2&outFields=*&outSR=4326&f=geojson",
+          "match": {
+            "TYPE": 2
+          },
+          "nameField": "HEIMILD",
+          "shapeIds": true,
+          "nameTrim": "^Aðalskipulag Reykjavíkur 2010-2030 - ",
+          "unnamed": [
+            "Skrifstofa samgöngustjóra og borgarhönnunar",
+            "Skrifstofa Samgöngustjóra og borgarhönnunar",
+            "Faxaflóahafnir"
+          ]
+        }
+      ],
+      "bounds": {
+        "south": 63.968437,
+        "west": -21.980584,
+        "north": 64.256428,
+        "east": -21.439953
+      },
+      "zones": 215
+    },
+    {
+      "id": "riga",
+      "place": "Rīga",
+      "country": "LV",
+      "authority": "Rīgas dome, CC BY 4.0",
+      "timeZone": "Europe/Riga",
+      "source": {
+        "title": "Rīgas dome, binding regulations No. RD-24-261-sn (27 March 2024, in force since 1 May 2024): a shared scooter may not be left in a no-parking zone, but at a parking place the city's map shows, nor ridden in a speed zone faster than its limit; the city publishes the zones on GeoRīga",
+        "url": "https://www.vestnesis.lv/ta/id/350955"
+      },
+      "map": {
+        "title": "Rīgas dome, \"Elektroskrejriteņu izmantošanas nosacījumi\" (open data, CC BY 4.0)",
+        "url": "https://data.gov.lv/dati/dataset/elektroskrejritenu-izmantosanas-nosacijumi"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "kml",
+          "url": "https://data.gov.lv/dati/dataset/a3396daf-2a6b-45f6-9273-4d07c71728f7/resource/c5394674-02c7-4d43-8786-2268f01237f0/download/elektroskrejritenu_stavvietas_laukumi.kml"
+        },
+        {
+          "kind": "parking",
+          "format": "kml",
+          "url": "https://data.gov.lv/dati/dataset/a3396daf-2a6b-45f6-9273-4d07c71728f7/resource/6b17376c-f101-4e15-b790-6d4f100d72b2/download/elektroskrejritenu_stavvietas_punkti.kml",
+          "nameField": "adrese",
+          "pointsOutside": true
+        },
+        {
+          "kind": "racksOnly",
+          "format": "kml",
+          "url": "https://data.gov.lv/dati/dataset/a3396daf-2a6b-45f6-9273-4d07c71728f7/resource/a6fe4ddf-a16e-4917-863c-30ea5ace4ba1/download/elektroskrejritenu_no_parking_zona.kml",
+          "match": {
+            "nosaukums": "Vēsturiskā centra daļa"
+          },
+          "nameField": "nosaukums"
+        },
+        {
+          "kind": "noParking",
+          "format": "kml",
+          "url": "https://data.gov.lv/dati/dataset/a3396daf-2a6b-45f6-9273-4d07c71728f7/resource/a6fe4ddf-a16e-4917-863c-30ea5ace4ba1/download/elektroskrejritenu_no_parking_zona.kml",
+          "except": {
+            "nosaukums": "Vēsturiskā centra daļa"
+          },
+          "nameField": "nosaukums"
+        },
+        {
+          "kind": "slow",
+          "format": "kml",
+          "url": "https://data.gov.lv/dati/dataset/a3396daf-2a6b-45f6-9273-4d07c71728f7/resource/279b98f5-376c-48af-8b27-c99e51685e0b/download/elektroskrejritenu_low_speed_zona.kml"
+        }
+      ],
+      "bounds": {
+        "south": 56.899754,
+        "west": 23.984285,
+        "north": 57.04858,
+        "east": 24.253964
+      },
+      "zones": 477
+    },
+    {
       "id": "rostock",
       "place": "Rostock",
       "country": "DE",
@@ -1977,6 +2103,48 @@
         "east": 16.535498
       },
       "zones": 1988
+    },
+    {
+      "id": "zurich",
+      "place": "Zürich",
+      "country": "CH",
+      "authority": "Stadt Zürich",
+      "timeZone": "Europe/Zurich",
+      "source": {
+        "title": "Stadt Zürich, Dienstabteilung Verkehr, \"Sharing Zonen\": the zones sharing operators must keep in the city: in its no-riding zones a scooter is held to 4 km/h and a ride cannot end, in its no-parking zones a ride cannot end, and its parking zones are designated places to park; open data under CC0",
+        "url": "https://data.stadt-zuerich.ch/dataset/geo_sharing_zonen"
+      },
+      "map": {
+        "title": "Stadt Zürich, \"Sharing Zonen\" (geocat.ch, its WFS and WMS)",
+        "url": "https://www.geocat.ch/geonetwork/srv/ger/md.viewer#/full_view/ece5befa-f8e1-4753-8330-88d9cf09e832"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://www.ogd.stadt-zuerich.ch/wfs/geoportal/Sharing_Zonen?service=WFS&version=1.1.0&request=GetFeature&typename=parkierzonen&outputFormat=application/json&srsName=EPSG:4326",
+          "idField": "fid"
+        },
+        {
+          "kind": "noParking",
+          "format": "geojson",
+          "url": "https://www.ogd.stadt-zuerich.ch/wfs/geoportal/Sharing_Zonen?service=WFS&version=1.1.0&request=GetFeature&typename=parkverbotszonen&outputFormat=application/json&srsName=EPSG:4326",
+          "idField": "fid"
+        },
+        {
+          "kind": "noRide",
+          "format": "geojson",
+          "url": "https://www.ogd.stadt-zuerich.ch/wfs/geoportal/Sharing_Zonen?service=WFS&version=1.1.0&request=GetFeature&typename=fahrverbotszonen&outputFormat=application/json&srsName=EPSG:4326",
+          "idField": "fid"
+        }
+      ],
+      "bounds": {
+        "south": 47.326413,
+        "west": 8.467851,
+        "north": 47.428033,
+        "east": 8.621594
+      },
+      "zones": 242
     }
   ]
 }

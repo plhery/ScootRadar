@@ -231,10 +231,10 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertTrue(shown)
         let asked = await api.zoneAreas()
         XCTAssertEqual(asked, [ScooterZoneArea(covering: GeoBounds(south: 47.361, west: 8.521, north: 47.399, east: 8.559))])
-        XCTAssertEqual(model.mapZones.map(\.id), ["lime:0", "bird:0"])
+        XCTAssertEqual(operatorZones(model).map(\.id), ["lime:0", "bird:0"])
 
         model.showProviders([.lime])
-        XCTAssertEqual(model.mapZones.map(\.id), ["lime:0"])
+        XCTAssertEqual(operatorZones(model).map(\.id), ["lime:0"])
     }
 
     func testZonesAreNotAskedForFurtherOutThanZoom14AndComeBackWithoutAskingAgain() async throws {
@@ -253,7 +253,7 @@ final class ScooterZonesModelTests: XCTestCase {
 
         model.updateViewport(zurich, zoom: 16)
         XCTAssertEqual(model.zoneState, .shown)
-        XCTAssertEqual(model.mapZones.count, 2)
+        XCTAssertEqual(operatorZones(model).count, 2)
         try await Task.sleep(for: .milliseconds(400))
         let areas = await api.zoneAreas()
         XCTAssertEqual(areas.count, 1)
@@ -277,7 +277,7 @@ final class ScooterZonesModelTests: XCTestCase {
         bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
         model.updateViewport(bern, zoom: 16)
         XCTAssertEqual(model.zoneState, .loading)
-        XCTAssertEqual(model.mapZones.count, 2, "Zürich's stay drawn until Bern's come")
+        XCTAssertEqual(operatorZones(model).count, 2, "Zürich's stay drawn until Bern's come")
         let second = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
         XCTAssertTrue(second)
 
@@ -297,7 +297,7 @@ final class ScooterZonesModelTests: XCTestCase {
         model.updateViewport(zurich, zoom: 16)
         let failed = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .failed }
         XCTAssertTrue(failed)
-        XCTAssertTrue(model.mapZones.isEmpty)
+        XCTAssertTrue(operatorZones(model).isEmpty)
 
         await api.setFailure(nil)
         model.showsZones = false
@@ -306,7 +306,7 @@ final class ScooterZonesModelTests: XCTestCase {
         let shown = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
         XCTAssertTrue(shown, "Turned on again, the zones are asked for again")
         model.showsZones = false
-        XCTAssertTrue(model.mapZones.isEmpty)
+        XCTAssertTrue(operatorZones(model).isEmpty)
     }
 
     func testACitysRulesAreDrawnFromZoom14WithTheZonesOffAndDimmerOutsideTheirHours() {
@@ -395,6 +395,11 @@ final class ScooterZonesModelTests: XCTestCase {
 
     private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil, now: @escaping () -> Date = Date.init) -> ScooterMapModel {
         ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(), now: now)
+    }
+
+    /// The operators' zones drawn, without the city's: Zürich's own are drawn there too.
+    private func operatorZones(_ model: ScooterMapModel) -> [ScooterZone] {
+        model.mapZones.filter { $0.provider != "city" }
     }
 
     private func isolatedDefaults() -> UserDefaults {

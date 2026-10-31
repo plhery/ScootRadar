@@ -71,6 +71,8 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   oygarden: () => import('../../data/city-zones/oygarden.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   poznan: () => import('../../data/city-zones/poznan.json'),
+  reykjavik: () => import('../../data/city-zones/reykjavik.json'),
+  riga: () => import('../../data/city-zones/riga.json'),
   rostock: () => import('../../data/city-zones/rostock.json'),
   sacramento: () => import('../../data/city-zones/sacramento.json'),
   santamonica: () => import('../../data/city-zones/santamonica.json'),
@@ -85,6 +87,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   vasteras: () => import('../../data/city-zones/vasteras.json'),
   washington: () => import('../../data/city-zones/washington.json'),
   wien: () => import('../../data/city-zones/wien.json'),
+  zurich: () => import('../../data/city-zones/zurich.json'),
 };
 
 /** The city's zones as rule zones: in force always, set by the city, linked to where it says so. */
