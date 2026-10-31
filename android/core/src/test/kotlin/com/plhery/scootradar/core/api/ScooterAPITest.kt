@@ -298,6 +298,45 @@ class ScooterAPITest {
     }
 
     /**
+     * After a network lost, the next request goes on a new connection: the server speaks HTTP/2, whose connection
+     * outlives a request ended on it, and OkHttp hands a kept one to the next request unchecked, which on the lost
+     * network's socket would wait out its 20 seconds (review-app-ah 1). Both the connection of a request the loss
+     * ended and an idle one go.
+     */
+    @Test
+    fun theRequestAfterANetworkLostGoesOnANewConnection() = runBlocking<Unit> {
+        val h2 = MockWebServer().apply { protocols = listOf(Protocol.H2_PRIOR_KNOWLEDGE); start() }
+        try {
+            h2.enqueue(answer(200, emptyResponseData))
+            h2.enqueue(MockResponse.Builder().code(200).body(emptyResponseData).headersDelay(30, TimeUnit.SECONDS).build())
+            h2.enqueue(answer(200, emptyResponseData))
+            h2.enqueue(answer(200, emptyResponseData))
+            val api = ScooterAPI(
+                baseURL = h2.url("/"),
+                client = OkHttpClient.Builder().protocols(listOf(Protocol.H2_PRIOR_KNOWLEDGE)).build(),
+                isOffline = { false },
+            )
+            api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            assertEquals("the first request's connection", 0, h2.takeRequest().connectionIndex)
+
+            val load = async(Dispatchers.Default) { failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) } }
+            assertEquals("the held request, on the same connection", 0, checkNotNull(h2.takeRequest(5, TimeUnit.SECONDS)).connectionIndex)
+            api.networkLost()
+            val error = withTimeout(2_000) { load.await() }
+            assertTrue("Expected offline, got $error", error is ScooterAPIError.Offline)
+
+            api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            assertEquals("the request after the loss of one under way", 1, h2.takeRequest().connectionIndex)
+
+            api.networkLost()
+            api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0)
+            assertEquals("the request after the loss of an idle connection", 2, h2.takeRequest().connectionIndex)
+        } finally {
+            h2.close()
+        }
+    }
+
+    /**
      * Wi-Fi turned off with a load under way: Android destroys the sockets of its address at once, and the read fails
      * with ECONNABORTED before ConnectivityManager says the phone is offline (on Phone_Min, API 31: 20 to 80 ms
      * before). That load is offline, as iOS's networkConnectionLost is (X-M21), whether the socket's words come

@@ -80,11 +80,16 @@ class ScooterAPI(
      * The phone has just lost its way to the internet: the requests under way end at once, as offline. iOS's
      * URLSession ends them so (networkConnectionLost), where a socket of a network Android has lost may wait out
      * its 20 seconds. The app calls it as ConnectivityManager tells it the phone is offline.
+     *
+     * The connections go with the network: the server speaks HTTP/2, whose connection outlives a request ended on
+     * it, and OkHttp hands a kept one to the next request unchecked, which would then wait out the 20 seconds on a
+     * dead socket. The idle ones close now, those of the requests ended as each is out (review-app-ah 1).
      */
     fun networkLost() {
         for (call in underWay.keys) {
             if (underWay.replace(call, false, true)) call.cancel()
         }
+        http.connectionPool.evictAll()
     }
 
     override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
@@ -147,7 +152,7 @@ class ScooterAPI(
                 else -> ScooterAPIError.Network(error)
             }
         } finally {
-            underWay.remove(call)
+            if (underWay.remove(call) == true) http.connectionPool.evictAll()
         }
 
         if (response.code !in 200..299) throw ScooterAPIError.HttpStatus(response.code)

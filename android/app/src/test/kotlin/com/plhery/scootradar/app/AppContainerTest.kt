@@ -192,8 +192,7 @@ class AppContainerTest {
 
     /**
      * X-M21: the loads under way end as the phone goes offline, where a socket of the network Android lost waited out
-     * its 20 seconds and the iPhone's URLSession ends them at once; a network lost with another validated in its
-     * place leaves them be. The app watches from its start.
+     * its 20 seconds and the iPhone's URLSession ends them at once. The app watches from its start.
      */
     @Test
     fun theLoadsUnderWayEndAsThePhoneGoesOffline() {
@@ -205,16 +204,18 @@ class AppContainerTest {
         val callback = (shadowOf(connectivity).networkCallbacks - callbacks).single()
         val network = checkNotNull(connectivity.activeNetwork)
 
+        // Android calls a default network's onLost only when no other network takes its place, and what it says of
+        // the networks then may be out of date: a validated one still reported doesn't keep the loads (review-app-ah 2).
         shadowOf(connectivity).setNetworkCapabilities(
             network,
             ShadowNetworkCapabilities.newInstance().also { shadowOf(it).addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) },
         )
         callback.onLost(network)
-        assertEquals("a network lost, another validated", 0, lost)
+        assertEquals("the default network lost, a validated one still reported", 1, lost)
 
         // Which Robolectric tells the callbacks of.
         shadowOf(connectivity).setDefaultNetworkActive(false)
-        assertEquals("the last network lost", 1, lost)
+        assertEquals("the last network lost", 2, lost)
     }
 
     /** LOG-345: the zone is read once, as the iPhone's static let is, the first time the start is asked for. */
