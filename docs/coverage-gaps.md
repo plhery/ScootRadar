@@ -175,7 +175,14 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   the City's
   [copyright notice](https://www.phoenix.gov/administration/departments/communications/copyright.html)
   allows materials from its site "for your own personal, non-commercial and
-  not-for-profit purposes" alone (31 October 2026).
+  not-for-profit purposes" alone (31 October 2026). The University of
+  Florida's zones on its Gainesville campus (6 dismount zones, one more on
+  football game days, a slow zone, and the campus, where a scooter is parked
+  only in one of its 60 parking areas: `eScooter_Zones_view` and `eScooter_view`
+  on ArcGIS), as they state no licence and UF's
+  [web disclaimer](https://it.ufl.edu/media/itufledu/documents/governance/web-services/Standard-Web-Disclaimer.pdf)
+  sends "requests for permission for the use of UF copyrighted material" to
+  the unit responsible.
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -249,7 +256,21 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   server inside the city's network, and its open data holds no zone layer.
   Chelmsford's no-ride, slow, no-parking and mandatory parking zones are a
   picture on [Essex Highways' trial page](https://essexhighways.org/e-scooters),
-  of May 2025, before Voi took over the trial.
+  of May 2025, before Voi took over the trial. Raleigh's mandatory parking
+  zones, in force since September 2026 within 100 m of each finished corral
+  (55% of those planned), are a picture on its
+  [news page](https://raleighnc.gov/transportation/news/mandatory-parking-zones-shared-bikes-and-scooters);
+  its corral layer on ArcGIS (`Micromobility_ArtCorrals_Public`, 58 corrals
+  "current as of 3/3/2026") plans built and future corrals alike with nothing
+  to tell them apart, states no licence and is not in its open data, and its
+  no-riding and no-parking layer was drawn for its call for operators.
+  Fayetteville, Arkansas's only map is of its service area (2022), and the
+  University of Arkansas's slow zones and corrals are PDFs (March 2023).
+  Opfikon's parking, slow, no-parking and no-riding zones, beside Zürich
+  Airport, under its rules for e-scooter sharing in force since 1 January
+  2025, are a picture in a [PDF](https://www.opfikon.ch/_doc/7259647) of
+  21 September 2026, and its site's terms ask for written consent before
+  any of it is reproduced.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -265,7 +286,21 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   installed in 2023–24, 59 in 2025; no licence stated) can't be read.
   Christchurch's and Wellington's councils' sites answer scripts with 403,
   and neither city's open data nor GIS holds a scooter zone layer (31 October
-  2026). San Diego's scooter corral and geofence layers (`ScooterCorral_Public` on
+  2026). Tampa's 165 places where a shared scooter is left downtown (97
+  public bike racks and 68 multi-use hubs, under CC0) are on its map server,
+  which sends requests from outside the United States to a notice; its
+  no-riding streets (the Riverwalk, Bayshore Boulevard, 7th Avenue in Ybor
+  City, Hyde Park Village and Armature Works) are text alone. Durham's and
+  Newark's sites answer scripts with a Cloudflare challenge (Newark's open
+  data, 1009, from outside the United States), and neither's GIS holds a
+  scooter layer. Palmerston North's permit maps of August 2021 (its slow
+  zones in the city centre and Memorial Park and the no-riding area at
+  Victoria Esplanade) are an ArcGIS layer that asks for a login, and Dunedin's
+  council site answers scripts with a Cloudflare challenge while its GIS
+  holds no scooter layer. Ramat Gan's municipal GIS server doesn't answer
+  scripts from Europe and its site serves an empty page; its ArcGIS Online
+  account and data.gov.il hold no scooter layer. San Diego's scooter corral
+  and geofence layers (`ScooterCorral_Public` on
   webmaps.sandiego.gov) time out, and Tempe's program pages answer scripts
   with 403 (Akamai); Tempe's open data has only Bird's zones, harvested from
   its GBFS. Marseille's sites answer scripts with a page asking for JavaScript and
@@ -304,7 +339,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   no documentation: no open data service (31 October 2026). Long Beach's
   geofenced areas are on Populus's public policy map, which its rules link,
   read through a key built into the map's page; its drop zones go to the
-  operators alone.
+  operators alone. Nashville's slow, no-riding and no-parking zones are on
+  Populus's map too, which its programme page links, and its downtown corrals
+  in a [PDF](https://www.nashville.gov/sites/default/files/2025-03/NDOT_DowntownCorralInstallations_03172025.pdf)
+  (17 March 2025).
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -327,7 +365,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   2018's dockless bikes, and San Antonio's six prohibited areas (the River
   Walk, San Pedro Creek, La Villita, HemisFair, Main Plaza and Alamo Plaza;
   December 2018), whose open data portal answers 403 from outside the United
-  States. Westminster's, Dallas's (2022–23), Los Angeles's (2024),
+  States. Gainesville's micromobility map of May 2021 (32 no-riding, 5 slow
+  and 4 special zones and 66 parking places), a Google My Maps map no City
+  page links now; the City says its zones are in the operators' apps.
+  Westminster's, Dallas's (2022–23), Los Angeles's (2024),
   Portland's (2021), Bloomington, Indiana's 64 corrals and its downtown and
   Switchyard Park areas (December 2023), and Georgetown University's 66
   parking places and 5 no-riding areas on its campus, in DC's open data
@@ -471,7 +512,22 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   drawn with Dott and Lime in January 2026, are in their apps alone (a
   parish council's link to a map of them now answers 404), and Bath's are in
   Dott's: the West of England Combined Authority's only layer is a copy of
-  Dott's zones of July 2025, as Bristol's is.
+  Dott's zones of July 2025, as Bristol's is. Lexington sends riders to
+  designated scooter parking zones or bike racks but maps none, and Richmond,
+  Virginia's GeoHub holds only trail and bike layers. Fairfax County sets no
+  zones (a scooter is parked where a bike could be); the City of Fairfax's
+  ArcGIS holds only trip counts and its site answers 403, and George Mason
+  University's corral map is a PDF behind a Cloudflare challenge (31 October
+  2026). Edmonton's rules (no riding or parking on Whyte Avenue between 112
+  and 97 Street, slow zones on Jasper Avenue, corrals in Mill Woods) are text
+  and the operators' apps, and its open data's only scooter zones are the
+  operators' operating areas of 2020–21. Culver City gives its operator the
+  prohibited places on a map for its app alone; Tauranga's and Kloten's
+  councils publish none, and Zürich Airport's operator sets rules for
+  bicycles alone. Of Lanzarote's councils, Yaiza has shared scooters parked
+  only in reserved places under its ordinance of November 2024, loaded into
+  the operators' apps but not published, and Tías and Teguise have no rules
+  for them yet.
 
 ## No public data, in covered countries
 
