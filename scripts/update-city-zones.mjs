@@ -25,7 +25,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
 // A layer of format geojson is GeoJSON: Berlin's, Hamburg's, Helsinki's, München's, Münster's and Wien's are WFS layers,
 // asked for so, Turku's an OGC API's collections, Sacramento's a feature service's query answered
-// as GeoJSON, and Basel's an open data portal's export. Helsingborg's is the area of a local
+// as GeoJSON, and Basel's an open data portal's export; Poznań's, of format kml, are a Google My
+// Maps map's KML, read as GeoJSON. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
@@ -55,6 +56,12 @@ async function getJson(url) {
     if (error.cause?.code !== 'ERR_HTTP2_TOO_MANY_INVALID_FRAMES') throw error;
     return getJsonOverHttp1(url);
   }
+}
+
+async function getText(url) {
+  const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+  return response.text();
 }
 
 function getJsonOverHttp1(url) {
@@ -181,9 +188,10 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
  * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points. A layer of zones
  * may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone of its own kind.
+ * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures).
  */
-async function geojsonZones(city, { kind, url, match = {}, nameField, unnamed = [], idField, pointName, tolerance, polygonsOnly }) {
-  const body = await getJson(url);
+async function geojsonZones(city, { kind, format, url, match = {}, nameField, unnamed = [], idField, pointName, tolerance, polygonsOnly }) {
+  const body = format === 'kml' ? kmlFeatures(await getText(url)) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
   if ((Number.isFinite(body.numberMatched) && body.numberMatched !== body.features.length) || body.links?.some(link => link.rel === 'next')) {
@@ -219,6 +227,33 @@ async function geojsonZones(city, { kind, url, match = {}, nameField, unnamed = 
       default: throw new Error(`${url}: zone ${featureId} is a ${geometry?.type ?? 'feature without a shape'}`);
     }
   });
+}
+
+/**
+ * A KML file's placemarks as GeoJSON features, as Google My Maps exports a map: each placemark's
+ * properties its folder's name, `folder`, its own, `name`, and its data, and its shape a point or a
+ * polygon, its outer ring and then its holes. Any other shape is given by its name, for
+ * geojsonZones to refuse.
+ */
+function kmlFeatures(kml) {
+  const text = value => value.trim().replace(/^<!\[CDATA\[([\s\S]*)\]\]>$/, '$1')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+  const element = (xml, tag) => new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`).exec(xml)?.[1];
+  const positions = list => list.trim().split(/\s+/).map(position => position.split(',').slice(0, 2).map(Number));
+  const folders = [...kml.matchAll(/<Folder>([\s\S]*?)<\/Folder>/g)].map(([, folder]) => folder);
+  return {
+    features: (folders.length ? folders : [kml]).flatMap(folder => [...folder.matchAll(/<Placemark>([\s\S]*?)<\/Placemark>/g)]
+      .map(([, placemark]) => {
+        const properties = { folder: folders.length ? text(element(folder, 'name') ?? '') : null, name: text(element(placemark, 'name') ?? '') };
+        for (const [, key, value] of placemark.matchAll(/<Data name="([^"]+)">\s*<value>([\s\S]*?)<\/value>/g)) properties[text(key)] = text(value);
+        const point = element(placemark, 'Point');
+        const polygon = element(placemark, 'Polygon');
+        const geometry = point ? { type: 'Point', coordinates: positions(element(point, 'coordinates'))[0] }
+          : polygon ? { type: 'Polygon', coordinates: [...polygon.matchAll(/<coordinates>([\s\S]*?)<\/coordinates>/g)].map(([, ring]) => positions(ring)) }
+            : { type: /<(LineString|MultiGeometry|Model|Track|gx:Track)>/.exec(placemark)?.[1] ?? null };
+        return { properties, geometry };
+      })),
+  };
 }
 
 /**
@@ -698,7 +733,7 @@ for (const city of catalog.cities) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : layer.format === 'geojson' ? await geojsonZones(city, layer)
+      : ['geojson', 'kml'].includes(layer.format) ? await geojsonZones(city, layer)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)

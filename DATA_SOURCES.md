@@ -1056,6 +1056,18 @@ credited to the city.
   ([echoboomer, 6 December 2022](https://echoboomer.pt/policia-municipal-porto-multou-trotinetes-mal-estacionadas)).
   The broker's scooters themselves are not used: they have not moved since
   8 October 2026.
+- **Poznań** (read 31 October 2026): the Zarząd Dróg Miejskich w Poznaniu's
+  (the city roads authority's) 270 Hop & Go points, each drawn as a disc of
+  5 m, and the zone of the paid parking zones, where since 1 April 2024 a
+  shared scooter is left only at one (racks or marked places only, drawn only on
+  the website), from the authority's map
+  [Punkty mikromobilności Hop & Go](https://www.google.com/maps/d/viewer?mid=10_etpKeXbrF4JTxC-NUQZsePqz-fvdo),
+  a Google My Maps map on its
+  [Zasady parkowania](https://zdm.poznan.pl/zasady-parkowania-zasady-parkowania)
+  page, read as KML. The four points marked inactive (`Nieaktywny` 1) are not
+  drawn; two points with no such mark, about 15 m from Piotrowo's points of
+  the same numbers, are. The map states no licence, and the authority's site
+  sets no terms. The legend credits it by its own short name, ZDM Poznań.
 - **Sacramento** (read 30 October 2026): the City of Sacramento's 45 drop
   zones (`RackType` `Dropzone`), points each drawn as a disc of 5 m, from the
   Department of Public Works' public

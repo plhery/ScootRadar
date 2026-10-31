@@ -155,7 +155,16 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   with no dataset and no terms; the city sells its map products. UT Austin's
   21 scooter parking areas and its 5 mph zones are a Google My Maps without
   date or terms, which lacks the walk-only core of the campus (from August
-  2026).
+  2026). Tallinn's, the annexes of its regulation on renting out light
+  vehicles (in force since 2025), are layers of the city's ArcGIS: the centre,
+  where a scooter is parked only in an area the city sets, with 128 marked
+  places (edited in July–September 2026), the Old Town's no-parking zone, and
+  2,415 no-parking zones round junctions, stops, bridges and tunnels, and
+  1,080 speed zones, those round schools and kindergartens on weekdays only:
+  some 264,000 points in all, 190,000 of them the junctions'. The layers state
+  no licence, and the city's site answers scripts with a Cloudflare challenge,
+  so its terms can't be read; Estonia's Copyright Act leaves legal acts
+  unprotected (§ 5).
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -222,7 +231,19 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   of 10 June 2026 asks for decrees that set its 15 km/h tourist areas and
   parking points; neither has set any. Verona and Bari publish none (Verona's
   next sharing tender is for bikes alone), and Tokyo's rules are national,
-  set by road signs.
+  set by road signs. Wrocław's parking places for shared scooters are its
+  bike racks, and its open data API answers scripts with 403. Bucharest's
+  placement zones, approved by its traffic commission under the regulation of
+  27 October 2026, are in the operators' apps alone, as are Recife's,
+  Monterrey's and San Pedro Garza García's parking points; Porto Alegre's
+  virtual stations, the operators' proposals the city approves, are not
+  published. Antalya's UKOME rules name no places, and its open data portal
+  did not answer. Curitiba's streets and squares where a scooter stops
+  (Rua XV de Novembro, the Passeio Público) are named in the press alone, and
+  the city's site answers scripts with 403, as Florianópolis's did not answer.
+  Seoul's parking zones the city paid for are a list of addresses under an
+  open licence (공공누리 type 1), without coordinates; its five streets
+  without scooters from 30 September 2026 are not mapped.
 
 ## No public data, in covered countries
 

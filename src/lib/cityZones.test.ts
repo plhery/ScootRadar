@@ -38,6 +38,8 @@ const ANTWERPEN_MEIR = { south: 51.215, west: 4.395, north: 51.222, east: 4.41 }
 const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 // Santa Monica's Pier, the Promenade and Palisades Park's south end.
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
+// Poznań's Old Market Square and the streets round it.
+const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
 // Sacramento's downtown, from Old Sacramento to the State Capitol.
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
 // St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
@@ -117,7 +119,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'sacramento', 'santamonica', 'stalbert', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'sacramento', 'santamonica', 'stalbert', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -711,6 +713,25 @@ describe('the cities\' zones', () => {
     await loadCityZones(namur);
     const shown = ruleZonesInView({ bounds: NAMUR_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
+  });
+
+  it("draws Poznań's Hop & Go points and the zone where a shared scooter is left only at one, from the city roads authority's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const poznan = ZONE_CITIES.find(city => city.id === 'poznan')!;
+    expect(poznan.authority).toBe('ZDM Poznań');
+    expect(poznan.timeZone).toBe('Europe/Warsaw');
+    // Its 270 points not marked inactive, drawn as discs, and the zone of the paid parking zones.
+    const { default: file } = await CITY_ZONE_FILES.poznan();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 270, racksOnly: 1 });
+    expect(file.zones.find(zone => zone.name === 'Kosińskiego - Prądzyńskiego')?.kind).toBe('parking');
+    // The zone holds the Old Market Square and Jeżyce's market.
+    const zone = file.zones.find(zone => zone.kind === 'racksOnly')!;
+    expect(Math.abs(winding(zone.ring!, 52.4083, 16.9335))).toBe(1);
+    expect(Math.abs(winding(zone.ring!, 52.4089, 16.905))).toBe(1);
+    await loadCityZones(poznan);
+    const shown = ruleZonesInView({ bounds: POZNAN_OLD_TOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
   });
 
   it("draws the City of Sacramento's drop zones, from its layer of bike racks", async () => {
