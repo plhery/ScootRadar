@@ -38,6 +38,7 @@ export const ZONE_CITIES: ZoneCity[] = index.cities.filter(city => !('website' i
  * file a piece of its own and leaves them all out of the map page.
  */
 export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }>> = {
+  aachen: () => import('../../data/city-zones/aachen.json'),
   alexandria: () => import('../../data/city-zones/alexandria.json'),
   antwerpen: () => import('../../data/city-zones/antwerpen.json'),
   arlington: () => import('../../data/city-zones/arlington.json'),
@@ -76,6 +77,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   riga: () => import('../../data/city-zones/riga.json'),
   rostock: () => import('../../data/city-zones/rostock.json'),
   sacramento: () => import('../../data/city-zones/sacramento.json'),
+  sanfrancisco: () => import('../../data/city-zones/sanfrancisco.json'),
   santamonica: () => import('../../data/city-zones/santamonica.json'),
   seattle: () => import('../../data/city-zones/seattle.json'),
   stalbert: () => import('../../data/city-zones/stalbert.json'),

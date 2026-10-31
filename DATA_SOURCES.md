@@ -614,12 +614,32 @@ catalogs, and Berlin's and Hamburg's, too many to build in: the iOS app
 downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
-them again. Alexandria, Basel, Berlin, Bordeaux, Braunschweig, the City of London,
+them again. Aachen, Alexandria, Basel, Berlin, Bordeaux, Braunschweig, the City of London,
 Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
-Santa Monica, Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
+San Francisco, Santa Monica, Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
 Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
 city's public zone layers are drawn regardless, credited to the city.
 
+- **Aachen** (read 31 October 2026): the Stadt Aachen's 23 parking areas
+  for e-scooters set up (`status` eingerichtet, and Reitwm, an unexplained
+  value whose 7 areas lie in holes of the no-parking zones as the others do),
+  named by their address (`adresse`), and its 6 no-parking zones, the layers
+  `abstellflaechen_fuer_e_tretroller` and
+  `abstellverbotszonen_fuer_e-tretroller` of its open data WFS
+  (`geoserver.aachen.de/opendata/e_scooter`), which its
+  [geoportal](https://geoportal.aachen.de/extern/) draws as "Abstellflächen
+  und Verbotszonen". The centre's zone, of 67 parts, takes in the city inside
+  the Alleenring with a hole at each parking area, so a scooter there is left
+  only in one; one parking area, Augustinerbach 12, lies within it. Its 29
+  provisional areas (vorläufig) are not drawn, nor the 30 m buffers round
+  the first ones. The WFS's terms are the Datenlizenz Deutschland –
+  Namensnennung 2.0, credited "Stadt Aachen" with the year the data was
+  fetched, as the legend does: "Stadt Aachen (2026), DL-DE BY 2.0". The legend
+  links the city's
+  [Sharing page](https://www.aachen.de/in-aachen-leben/mobilitaet-verkehr/mobilitaetsangebote/sharing/):
+  parking areas are set up in the centre and the districts, and its council's
+  report of June 2025 (FB 68/0182/WP18) sets the virtual no-parking zones so
+  that scooters are parked in them.
 - **Alexandria** (read 30 October 2026): the City of Alexandria's 63 corral
   areas, 13 no-ride zones and 6 slow zones, from its open data under CC0
   ([Corral Areas](https://www.arcgis.com/home/item.html?id=08767b36d91742919d94100b2c8258c7),
@@ -1188,6 +1208,23 @@ city's public zone layers are drawn regardless, credited to the city.
   the City's news site). The layer's other racks, corrals among them, are not
   drawn, as Baltimore's and Västerås's bike racks are not: only the places the
   City sets aside for shared vehicles are.
+- **San Francisco** (read 31 October 2026): SFMTA's five no-parking zones
+  for shared scooters, from its
+  [Scooter Share Geofencing Specifications October 2025 Update – Parking Restrictions](https://www.sfmta.com/media/43308/download)
+  (15 September 2025, in force from 1 October 2025): on the Port's land west
+  of Taylor Street, along The Embarcadero from Taylor Street to Howard Street,
+  at Pier 40 and at Bayfront Park, and in and around Chinatown. They are
+  geographies of SFMTA's MDS Geography API, read from DataSF's
+  [SFMTA - Mobility Data Specification](https://data.sf.gov/d/h5q5-vfti),
+  under the ODC Public Domain Dedication and License, and named by `name`,
+  its "PS " taken off. Along The Embarcadero a scooter may still be parked
+  at the bike racks of seven places the memo names (Pier 43, Pier 41, Pier 31,
+  Pier 27, Pier 9, Pier ½ and Ferry Plaza), which the data does not hold. Not
+  drawn: the Embarcadero's zone of November 2022 and Pier 40's of September
+  2024, which the memo's zones replaced but which have no `retire_date`, and
+  the zones set for APEC's week (November 2023) and for events (February
+  2025), ended. The legend credits SFMTA, as the dataset does, and links the
+  memo.
 - **Santa Monica** (read 30 October 2026): the City of Santa Monica's 184
   [Shared Mobility Drop Zones](https://www.arcgis.com/home/item.html?id=2c4ef954b4504cc4853246ddf2bcb90c),
   points each drawn as a disc of 5 m, and its 28

@@ -31,6 +31,8 @@ const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
 const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
 // Alexandria's Old Town, from Market Square down King Street to the waterfront.
+// Aachen's centre, from the Dom and the Markt to the Elisenbrunnen.
+const AACHEN_CENTRE = { south: 50.77, west: 6.075, north: 50.78, east: 6.095 };
 const ALEXANDRIA_OLD_TOWN = { south: 38.8, west: -77.05, north: 38.81, east: -77.035 };
 // Antwerpen's Meir and Groenplaats.
 const ANTWERPEN_MEIR = { south: 51.215, west: 4.395, north: 51.222, east: 4.41 };
@@ -56,6 +58,8 @@ const RIGA_OLD_TOWN = { south: 56.945, west: 24.1, north: 56.953, east: 24.12 };
 const ROSTOCK_ALTSTADT = { south: 54.086, west: 12.125, north: 54.093, east: 12.146 };
 // Sacramento's downtown, from Old Sacramento to the State Capitol.
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
+// San Francisco's Embarcadero, from the Ferry Building to Pier 9, and Chinatown.
+const SAN_FRANCISCO_EMBARCADERO = { south: 37.79, west: -122.41, north: 37.805, east: -122.39 };
 // Seattle's downtown, from Pioneer Square to Westlake.
 const SEATTLE_DOWNTOWN = { south: 47.6, west: -122.345, north: 47.615, east: -122.325 };
 // St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
@@ -141,7 +145,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -738,6 +742,25 @@ describe('the cities\' zones', () => {
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
   });
 
+  it("draws Aachen's parking areas for e-scooters and the no-parking zones round them, under the Datenlizenz Deutschland", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const aachen = ZONE_CITIES.find(city => city.id === 'aachen')!;
+    expect(aachen.authority).toBe('Stadt Aachen (2026), DL-DE BY 2.0');
+    expect(aachen.timeZone).toBe('Europe/Berlin');
+    // Its 23 parking areas set up, those still provisional not drawn, and its 6 no-parking zones, the centre's of 67 parts.
+    const { default: file } = await CITY_ZONE_FILES.aachen();
+    const counts = Object.fromEntries(['parking', 'noParking'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 23, noParking: 72 });
+    // The Dom is in the centre's no-parking zone, and Löhergraben 34's parking area in a hole of it.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.kind);
+    expect(at(50.7747, 6.0839)).toEqual(['noParking']);
+    expect(file.zones.find(zone => zone.name === 'Löhergraben 34')?.kind).toBe('parking');
+    expect(at(50.77279, 6.07761)).toEqual(['parking']);
+    await loadCityZones(aachen);
+    const shown = ruleZonesInView({ bounds: AACHEN_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking']));
+  });
+
   it("draws Bordeaux Métropole's places for shared e-scooters, from its open data under the Licence Ouverte", async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
     const bordeaux = ZONE_CITIES.find(city => city.id === 'bordeaux')!;
@@ -897,6 +920,24 @@ describe('the cities\' zones', () => {
     await loadCityZones(sacramento);
     const shown = ruleZonesInView({ bounds: SACRAMENTO_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(20);
+  });
+
+  it("draws SFMTA's no-parking zones for shared scooters, on the Port's land and in Chinatown, from DataSF", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const sanfrancisco = ZONE_CITIES.find(city => city.id === 'sanfrancisco')!;
+    expect(sanfrancisco.authority).toBe('SFMTA');
+    expect(sanfrancisco.timeZone).toBe('America/Los_Angeles');
+    // The five zones of October 2025; those they replaced, and those of APEC's week and of events, are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.sanfrancisco();
+    expect(file.zones.map(zone => zone.name).sort()).toEqual(['Chinatown', 'South of Howard - Bayfront Park', 'South of Howard - Pier 40', 'Taylor to Howard', 'West of Taylor']);
+    expect(file.zones.every(zone => zone.kind === 'noParking')).toBe(true);
+    // The Ferry Building is in the zone from Taylor to Howard, Portsmouth Square in Chinatown's.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    expect(at(37.7955, -122.3937)).toEqual(['Taylor to Howard']);
+    expect(at(37.7948, -122.4056)).toEqual(['Chinatown']);
+    await loadCityZones(sanfrancisco);
+    const shown = ruleZonesInView({ bounds: SAN_FRANCISCO_EMBARCADERO, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'noParking')).toHaveLength(2);
   });
 
   it("draws the City of Seattle's bike and scooter corrals, from its layer of bike racks", async () => {

@@ -169,7 +169,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   stations, where a scooter is left only at the station, are layers of
   Düsseldorf Maps' WFS (`verkehr:sharing_parkverbotszone`, edited 14 October
   2026), and their record in NRW's geoportal releases the city's geodata for
-  internal use only.
+  internal use only. Phoenix's 110 no-riding zones and 389 parking posts
+  downtown (`STR_eScooters` on its map server, outside its open data; the
+  posts look like the 2019 pilot's, without the 103 corrals added since), as
+  the City's
+  [copyright notice](https://www.phoenix.gov/administration/departments/communications/copyright.html)
+  allows materials from its site "for your own personal, non-commercial and
+  not-for-profit purposes" alone (31 October 2026).
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -234,7 +240,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   on its [e-scooter page](https://www.hannover.de/Service/Presse-Medien/Hannover.de/Aktuelles/Service-2019/E-Scooter-in-Hannover);
   its open data and geoportal hosts do not resolve. Napoli's historic centre,
   where a shared scooter is left only in an area set for it (its 2023 call
-  for operators, art. 4 c. 7), is a PDF plan of 12 May 2020.
+  for operators, art. 4 c. 7), is a PDF plan of 12 May 2020. Wuppertal's 11
+  marked parking bays for e-scooters (report VO/1104/24, September 2024) are
+  photos and maps in a PDF annex; its site and geoportal answer scripts with
+  a Cloudflare challenge. Heidelberg's inner zone, where a shared scooter is
+  parked only at a station under its concept of 14 November 2024, is in the
+  council's PDF papers; its page's links to the zone map point at a file
+  server inside the city's network, and its open data holds no zone layer.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -248,7 +260,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   site and open data portal answer 403 from outside the United States
   (Cloudflare 1009), so the terms of its two corral layers (205 corrals
   installed in 2023–24, 59 in 2025; no licence stated) can't be read.
-  Marseille's sites answer scripts with a page asking for JavaScript and
+  San Diego's scooter corral and geofence layers (`ScooterCorral_Public` on
+  webmaps.sandiego.gov) time out, and Tempe's program pages answer scripts
+  with 403 (Akamai); Tempe's open data has only Bird's zones, harvested from
+  its GBFS. Marseille's sites answer scripts with a page asking for JavaScript and
   cookies; its scooter bays, set under its 2023 call for operators, reach
   them through Vianova's platform, and its open data holds only fleet and
   trip counts (31 October 2026).
@@ -433,7 +448,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   proposes and each commune approves; the region's Mobilités M map shows only
   Voi's scooters. Charleroi's drop zones are in the operators' apps while the
   city maps the places it will impose, and Palermo leaves its zones to the
-  operators' systems; neither publishes any (31 October 2026).
+  operators' systems; neither publishes any (31 October 2026). Freiburg's
+  no-riding and no-parking zones are shown in the operators' apps, as the city
+  says, and its geoportal's sharing WFS holds only the vehicles. Leipzig's
+  page on e-scooters allows their rental only at stations (LVB's mobility
+  stations), none inside the Promenadenring, and lists none. Indianapolis's
+  data and GIS hold no scooter layer.
 
 ## No public data, in covered countries
 
