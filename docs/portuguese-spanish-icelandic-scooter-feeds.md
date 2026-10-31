@@ -56,7 +56,8 @@ directory. Its timezone reads Europe/London, which keeps the Canaries' time.
   Costa Blanca are in the next section; its other Spanish systems carry
   e-bikes or nothing (see [Known gaps](#known-gaps)).
 - **Bounds:** ATOM's geofencing forbids starting or ending a ride everywhere
-  (`global_rules`) and allows both in 58 parking zones along the resort. The
+  (`global_rules`) and allows both in 63 parking zones along the resort
+  (31 October 2026; 58 when the feed was added). The
   bounds enclose those zones, plus 0.005° of latitude and 0.01° of longitude;
   every scooter seen stood inside them. Tías, Tias and Lanzarote are aliases.
 - **Prices:** EUR 1.20 to start, then EUR 0.35 or 0.37 a minute, by tier.
@@ -315,8 +316,15 @@ the dock and each scooter's card state the ban and when renting resumes.
   ([La Voz de Lanzarote](https://www.lavozdelanzarote.com/en/news/politics/tias-removes-34-rental-scooters-from-public-roads-in-puerto-del-carmen_228016_102.html))
   and 71 left on pavements and promenades in one week of July 2026
   ([La Voz de Lanzarote](https://www.lavozdelanzarote.com/en/news/politics/security-and-order-in-tias-the-police-remove-71-electric-scooters-what-does-this-mean-for-you_244876_102.html)).
-  The town says rental firms without a licence break its bylaws. Neither
-  report names Hoppy. No curfew was added.
+  Town Hall said on
+  [18 July 2024](https://www.ayuntamientodetias.es/tias-retira-de-la-via-publica-los-patinetes-de-alquiler/)
+  that the company renting out scooters there had no municipal permit to
+  operate in Tías, and on
+  [20 July 2026](https://www.ayuntamientodetias.es/el-ayuntamiento-de-tias-retira-71-patinetes-electricos-de-la-via-publica-de-puerto-del-carmen/)
+  that its police would go on removing them and the companies would pay the
+  fines. Tías has no scooter bylaw in force: the second release says a
+  consultancy was asked to prepare one. Neither the reports nor the releases
+  name Hoppy. No curfew was added.
 - **Adeje** (Playa de las Américas) approved a new mobility ordinance in May
   2026 that makes rental firms hold a municipal authorisation, but the report
   names no rental hours

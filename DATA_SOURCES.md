@@ -635,8 +635,8 @@ city's public zone layers are drawn regardless, credited to the city.
 - **Aachen** (read 31 October 2026): the Stadt Aachen's 23 parking areas
   for e-scooters set up (`status` eingerichtet, and Reitwm, an unexplained
   value whose 7 areas lie in holes of the no-parking zones as the others do),
-  named by their address (`adresse`), and its 6 no-parking zones, the layers
-  `abstellflaechen_fuer_e_tretroller` and
+  named by their address (`adresse`), and its 6 no-parking zones, 72 shapes
+  on the map, the layers `abstellflaechen_fuer_e_tretroller` and
   `abstellverbotszonen_fuer_e-tretroller` of its open data WFS
   (`geoserver.aachen.de/opendata/e_scooter`), which its
   [geoportal](https://geoportal.aachen.de/extern/) draws as "Abstellflächen
