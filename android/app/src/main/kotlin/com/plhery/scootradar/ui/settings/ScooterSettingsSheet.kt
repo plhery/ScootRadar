@@ -6,7 +6,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.activity.compose.PredictiveBackHandler
+import androidx.activity.BackEventCompat
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.FiniteAnimationSpec
@@ -45,13 +47,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.withFrameNanos
@@ -74,6 +79,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.api.ScooterAnalytics
 import com.plhery.scootradar.core.generated.ScooterProvider
@@ -117,7 +123,14 @@ import java.net.URI
 import java.time.Instant
 import java.time.ZoneOffset
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // ScooterSettingsSheet, ScooterLanguageSettings, ScooterPrivacySettings, ScooterCreditsList and
@@ -160,11 +173,6 @@ fun ScooterSettingsSheet(
     // Each page keeps where it is scrolled to while pages above it come and go, as in a NavigationStack; a page
     // pushed again starts at its top.
     val scrolls = remember { mutableMapOf<Int, ScrollState>() }
-    val push: (SettingsPage) -> Unit = {
-        scrolls.remove(stack.size + 1)
-        stack.add(it)
-    }
-    val pop: () -> Unit = { if (stack.size > 1) stack.removeAt(stack.lastIndex) }
 
     // The pages shown, which a tap's push or pop springs to, and a back gesture draws along (UI-210).
     val pages = remember { SeekableTransitionState(stack.toList()) }
@@ -191,13 +199,28 @@ fun ScooterSettingsSheet(
     // is let go, as a tap's pop swaps the pages at once. While a page goes, even the last one over Settings, Back is
     // still the pages' own, so that neither the sheet under them nor the activity takes it; a gesture held on after
     // the page is gone stays with the handler it began on, as the dispatcher keeps it there to its end.
-    PredictiveBackHandler(enabled = stack.size > 1 || pageGoing()) { progress ->
+    val back = rememberPagesBack()
+    fun backIsThePages() = stack.size > 1 || pageGoing()
+    // A tap's push or pop gives Back to the pages or takes it from them at once: a Back in the frame of the tap acts on
+    // the pages as they now are, which under Remove animations are drawn in that frame (review-app-ad 3).
+    val push: (SettingsPage) -> Unit = {
+        scrolls.remove(stack.size + 1)
+        stack.add(it)
+        back.isEnabled = backIsThePages()
+    }
+    val pop: () -> Unit = {
+        if (stack.size > 1) stack.removeAt(stack.lastIndex)
+        back.isEnabled = backIsThePages()
+    }
+    // And whatever else changes whether it is theirs, a page done going, in the composition that follows.
+    val pagesTakeBack = backIsThePages()
+    val onBack: suspend (Flow<BackEventCompat>) -> Unit = onBack@{ progress ->
         // UINavigationController's swipe from the edge does not begin while a page is pushed or popped: a page going
         // runs out, and the swipe does nothing (review-app-yz finding 1). Back begun then, a gesture or Android 12's
         // Back alone, moves nothing and takes no page away, drawn out, called off or let go.
         if (pageGoing() || stack.size < 2) {
             progress.collect { }
-            return@PredictiveBackHandler
+            return@onBack
         }
         val from = stack.toList()
         val below = from.dropLast(1)
@@ -230,6 +253,10 @@ fun ScooterSettingsSheet(
             throw cancelled
         }
         pop()
+    }
+    SideEffect {
+        back.isEnabled = pagesTakeBack
+        back.onBack = onBack
     }
 
     val changes = rememberControllerChanges(controller)
@@ -320,6 +347,71 @@ private fun <T> following(): FiniteAnimationSpec<T> = tween(durationMillis = 400
 
 /** The rest of the way once a back gesture lets go of the page: a push's spring, on the transition's progress. */
 private val GESTURE_END = IosMotion.smooth(duration = 0.4).animation<Float>()
+
+/**
+ * The pages' Back: PredictiveBackHandler's, run the same way (each Back runs [onBack] with its progress, which ends
+ * as it is let go and is called off with the gesture), but on whenever [isEnabled] is set, as a tap pushes or pops a
+ * page. PredictiveBackHandler takes its `enabled` from the composition after the change, a frame later: a Back in
+ * that frame, under Remove animations on the pages already shown, went to the pages after the last one's tapped Back
+ * and was lost, or to the sheet after a tapped page and closed it with the page on it (review-app-ad 3).
+ */
+private class PagesBack(private val scope: CoroutineScope) : OnBackPressedCallback(false) {
+    var onBack: suspend (Flow<BackEventCompat>) -> Unit = { it.collect { } }
+    private var progress: Channel<BackEventCompat>? = null
+    private var running: Job? = null
+    private var isGesture = false
+
+    private fun begin() {
+        val events = Channel<BackEventCompat>(Channel.BUFFERED).also { progress = it }
+        running = scope.launch {
+            if (isEnabled) {
+                var collected = false
+                onBack(events.consumeAsFlow().onCompletion { collected = true })
+                check(collected) { "The pages' Back must collect its progress" }
+            }
+        }
+    }
+
+    override fun handleOnBackStarted(backEvent: BackEventCompat) {
+        handleOnBackCancelled()
+        isGesture = true
+        begin()
+    }
+
+    override fun handleOnBackProgressed(backEvent: BackEventCompat) {
+        progress?.trySend(backEvent)
+    }
+
+    override fun handleOnBackPressed() {
+        // Android 12's Back, or one let go without its start: a Back of its own, its progress ended at once.
+        if (progress != null && !isGesture) handleOnBackCancelled()
+        if (progress == null) begin()
+        progress?.close()
+        isGesture = false
+    }
+
+    override fun handleOnBackCancelled() {
+        progress?.cancel(CancellationException("Back called off"))
+        running?.cancel()
+        progress = null
+        running = null
+        isGesture = false
+    }
+}
+
+/** A [PagesBack] on the window's dispatcher, where PredictiveBackHandler puts its own, for as long as the sheet is up. */
+@Composable
+private fun rememberPagesBack(): PagesBack {
+    val scope = rememberCoroutineScope()
+    val back = remember(scope) { PagesBack(scope) }
+    val dispatcher = checkNotNull(LocalOnBackPressedDispatcherOwner.current) { "Settings' sheet needs a back dispatcher" }.onBackPressedDispatcher
+    val lifecycle = LocalLifecycleOwner.current
+    DisposableEffect(dispatcher, lifecycle, back) {
+        dispatcher.addCallback(lifecycle, back)
+        onDispose { back.remove() }
+    }
+    return back
+}
 
 private fun SettingsPage.title(): String = when (this) {
     SettingsPage.Root -> localized("Settings")

@@ -472,26 +472,7 @@ class PredictiveBackTest {
      */
     @Test
     fun aGestureBegunWhileTheLastPageGoesLeavesTheSheetUp() {
-        val clock = TestClock()
-        val model = controllers.make(EmptyScooterAPI, clock)
-        compose.setContent {
-            CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScootTheme(dark = false, reduceMotion = false) {
-                    IosSheet(isPresented, onDismiss = { isPresented = false }, listOf(SheetDetent.Large), "Settings") { bottomInset ->
-                        ScooterSettingsSheet(
-                            controller = model,
-                            bottomInset = bottomInset,
-                            defaults = InMemoryScooterDefaults(),
-                            onDone = { isPresented = false },
-                            passProviders = emptyList(),
-                            sources = emptyList(),
-                            pages = listOf(SettingsPage.Root, SettingsPage.Privacy),
-                        )
-                    }
-                }
-            }
-        }
-        compose.waitForIdle()
+        settingsInASheet(listOf(SettingsPage.Root, SettingsPage.Privacy), reduceMotion = false)
         val sheet = pane("Settings")
         compose.mainClock.autoAdvance = false
         compose.onNode(hasContentDescription("Back")).performClick()
@@ -513,6 +494,84 @@ class PredictiveBackTest {
         assertEquals(390f, frame(sheet).width, 0.5f)
         assertEquals(0f, start(settings), 0.5f)
         assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
+    }
+
+    /** Settings' sheet, at the large height, with [pages] open; Done, Back on Settings or the dimmed map close it. */
+    private fun settingsInASheet(pages: List<SettingsPage>, reduceMotion: Boolean) {
+        val clock = TestClock()
+        val model = controllers.make(EmptyScooterAPI, clock)
+        compose.setContent {
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                ScootTheme(dark = false, reduceMotion = reduceMotion) {
+                    IosSheet(isPresented, onDismiss = { isPresented = false }, listOf(SheetDetent.Large), "Settings") { bottomInset ->
+                        ScooterSettingsSheet(
+                            controller = model,
+                            bottomInset = bottomInset,
+                            defaults = InMemoryScooterDefaults(),
+                            onDone = { isPresented = false },
+                            passProviders = emptyList(),
+                            sources = emptyList(),
+                            pages = pages,
+                        )
+                    }
+                }
+            }
+        }
+        compose.waitForIdle()
+    }
+
+    /**
+     * Remove animations, Privacy over Settings: Back tapped puts Settings alone in its place in the frame of the tap,
+     * and a Back in that frame is the sheet's, as Back on Settings is: it closes the sheet. The pages' Back took its
+     * `enabled` from the composition, a frame later, so it was still on, took the Back, and had no page to take
+     * (review-app-ad 3).
+     */
+    @Test
+    fun underRemoveAnimationsABackInTheFrameOfTheLastPagesTappedBackClosesTheSheet() {
+        settingsInASheet(listOf(SettingsPage.Root, SettingsPage.Privacy), reduceMotion = true)
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasContentDescription("Back")).performClick()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        settle()
+        assertFalse("the sheet closed", isPresented)
+    }
+
+    /**
+     * The same with a gesture begun in the tap's frame: the sheet is drawn along by it, 3% smaller half drawn out, as
+     * Back on Settings draws it; let go, it closes.
+     */
+    @Test
+    fun underRemoveAnimationsAGestureInTheFrameOfTheLastPagesTappedBackDrawsTheSheetAlong() {
+        settingsInASheet(listOf(SettingsPage.Root, SettingsPage.Privacy), reduceMotion = true)
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasContentDescription("Back")).performClick()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.5f)) }
+        repeat(2) { compose.mainClock.advanceTimeByFrame() }
+        assertEquals("the sheet drawn along by the gesture", 390f * 0.97f, frame(pane("Settings")).width, 0.5f)
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        settle()
+        assertFalse("the sheet closed", isPresented)
+    }
+
+    /**
+     * Remove animations, Settings alone: Privacy tapped is in its place in the frame of the tap, and a Back in that
+     * frame takes it away, the sheet staying up with Settings in it. The pages' Back, off until the composition after
+     * the tap, left that Back to the sheet, which closed with Privacy on it (review-app-ad 3).
+     */
+    @Test
+    fun underRemoveAnimationsABackInTheFrameOfATappedPageTakesItAway() {
+        settingsInASheet(listOf(SettingsPage.Root), reduceMotion = true)
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasText("Privacy")).performClick()
+        // The tap's push is made once what it posted has run, the clock held.
+        compose.waitForIdle()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        settle()
+        assertTrue("the sheet up", isPresented)
+        assertEquals(0f, start(settings), 0.5f)
+        compose.onNode(title("Settings")).assertExists()
+        assertTrue("Privacy gone", compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
     }
 
     /**
