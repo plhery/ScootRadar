@@ -121,6 +121,22 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   [imprint](https://www.kiel.de/de/_info/impressum.php) allows reuse only with
   written permission; its lasting no-parking zones are in the operators'
   apps alone.
+  Nürnberg's two areas within the Bundesstraßenring, where a hired scooter is
+  taken and left only at a marked collection place (the old town since 1 May
+  2024, up to the ring since 19 November 2024), are map 271 of the city's own
+  map service, not marked public, and the city's
+  [legal notice](https://haftungshinweis.nuernberg.de) allows copies only for
+  private, non-commercial use and any other use only with the author's
+  written consent; its 300 or so collection places are not published.
+  Denver's corrals (the City's 106, edited in March 2026, and 286 permitted to
+  operators in 2021–25) are layers of the City's ArcGIS Online accounts,
+  outside its Open Data Catalog and its CC BY 3.0, and the City's
+  [terms of use](https://www.denvergov.org/Terms-of-Use) forbid commercial use
+  without its written permission; the downtown zone where a scooter is parked
+  only in a corral is a layer that asks for a token. Oeiras's 200 or so Oeiras
+  Move points, where a shared scooter's trip starts and ends, are a metadata
+  record of its geoportal (data of April 2023, no download), for internal use
+  only unless the municipality licenses it (Decreto-Lei 193/95, art. 14).
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -299,6 +315,25 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   the Historisches Fünfeck is parked only at one, are not published (a
   council motion of 29 April 2026 asks the city to publish them, as open
   data too), and its geoportal did not answer.
+  Frankfurt's 263 parking places, round each of which the operators keep
+  100 m free of parked scooters under their permits (traffiQ, 18 June 2026),
+  go to the operators through traffiQ's curbside software and are shown in a
+  third-party app alone; the city's geoportal and WFS hold no scooter layer,
+  and frankfurt.de answers scripts with 403. Chicago's paths where a scooter
+  may not be ridden (the Lakefront Trail, The 606, the Riverwalk) are named on
+  CDOT's page alone: its data portal holds only the pilots' areas of 2019 and
+  2020, and its 2025 rules answer scripts with "Access Denied". Kristiansand's
+  regulation of 24 January 2024 caps each operator's fleet by zone and lets
+  the kommune set zones by geofencing, but none is published; its ArcGIS layer
+  of three zones is the 2022 draft's fleet caps, and the kommune's sites
+  refused connections. Milano sets no zones of its own: a sharing scooter is
+  left in a bike or motorcycle parking area (Delibera di Giunta 970 of 11 July
+  2023), and the 3,288 bike parking areas of its open data (CC BY) are
+  ordinary bike parking, not drawn, as Sacramento's other racks are not. In
+  London, TfL's trial publishes no zones (its no-go and go-slow areas are
+  shared under the Public Sector Geospatial Agreement, not as open data), and
+  of the boroughs only Lambeth publishes its bays, drawn since 31 October
+  2026; Southwark's and Westminster's pages were not found.
 
 ## No public data, in covered countries
 

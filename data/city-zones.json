@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-10-31",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria, Rostock and Stockholm CC0, Basel, Braunschweig, Helsinki, Namur, Taupō, Turku, Vantaa and Wien CC BY 4.0, Berlin the Datenlizenz Deutschland – Zero 2.0, Hamburg, München and Münster the Datenlizenz Deutschland – Namensnennung 2.0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, Vancouver the Open Government Licence – Vancouver, the City of London the Open Government Licence v3.0, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's and Namur's operations areas, where their scooters may go at all, are not drawn. Namur's zones where a scooter may be parked only in a reserved place are drawn as such, only on the website, as Helsingborg's centre, Braunschweig's old town within the Oker and Poznań's zone of Hop & Go points are. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre, or 2 m for Berlin's, Hamburg's and München's no-parking zones and Wien's no-parking and no-riding zones, drawn to the centimetre, and 20 cm for Stockholm's parking places, one of them 70 cm wide. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's and Arlington County's parking corrals, those installed, Santa Monica's and Sacramento's drop zones, Namur's signed parking places, Poznań's Hop & Go points, Ottawa's designated parking, Turku's parking places, Rostock's, Stockholm's five given as points and Hamburg's parking areas, marked or at stops; Berlin's are the circles of 10 m it draws round each of its parking places. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events, nor München's areas and zones set until a day, for building sites or an event, nor Wien's set until a day or for some days only, as the Naschmarkt's flea market on Saturdays. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on. Berlin's and Hamburg's, too many to build into the iPhone app, are marked download: the app downloads them when a view reaches the city (docs/city-zone-downloads.md). The website draws them as it does the others.",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria, Rostock and Stockholm CC0, Basel, Braunschweig, Helsinki, Namur, Taupō, Turku, Vantaa and Wien CC BY 4.0, Berlin the Datenlizenz Deutschland – Zero 2.0, Hamburg, München and Münster the Datenlizenz Deutschland – Namensnennung 2.0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, Vancouver the Open Government Licence – Vancouver, the City of London the Open Government Licence v3.0, Lambeth too for its website, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's and Namur's operations areas, where their scooters may go at all, are not drawn. Namur's zones where a scooter may be parked only in a reserved place are drawn as such, only on the website, as Helsingborg's centre, Braunschweig's old town within the Oker, the London Borough of Lambeth and Poznań's zone of Hop & Go points are. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre, or 2 m for Berlin's, Hamburg's and München's no-parking zones and Wien's no-parking and no-riding zones, drawn to the centimetre, and 20 cm for Stockholm's parking places, one of them 70 cm wide. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's and Arlington County's parking corrals, those installed, Seattle's bike and scooter corrals, Santa Monica's and Sacramento's drop zones, Namur's signed parking places, Poznań's Hop & Go points, Lambeth's parking bays, Ottawa's designated parking, Turku's parking places, Rostock's, Stockholm's five given as points and Hamburg's parking areas, marked or at stops; Berlin's are the circles of 10 m it draws round each of its parking places. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events, nor München's areas and zones set until a day, for building sites or an event, nor Wien's set until a day or for some days only, as the Naschmarkt's flea market on Saturdays. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on. Berlin's and Hamburg's, too many to build into the iPhone app, are marked download: the app downloads them when a view reaches the city (docs/city-zone-downloads.md). The website draws them as it does the others.",
   "cities": [
     {
       "id": "alexandria",
@@ -708,6 +708,52 @@
       "zones": 139
     },
     {
+      "id": "lambeth",
+      "place": "Lambeth",
+      "country": "GB",
+      "authority": "Lambeth Council",
+      "timeZone": "Europe/London",
+      "source": {
+        "title": "Lambeth Council, \"Dockless Cycle Hire\": Lambeth uses a bay-only parking system, so a rental e-scooter or e-bike is left in a designated dockless parking bay at the end of a journey",
+        "url": "https://www.lambeth.gov.uk/shared-mobility-lambeth/dockless-cycle-hire"
+      },
+      "map": {
+        "title": "Lambeth Council, \"Lambeth Shared E-scooter and E-bike Parking Bays\" (Google My Maps)",
+        "url": "https://www.google.com/maps/d/viewer?mid=1FbWV3uJ-tR_bJSPB-JhQzy7gUKmwISw"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "kml",
+          "url": "https://www.google.com/maps/d/kml?mid=1FbWV3uJ-tR_bJSPB-JhQzy7gUKmwISw&forcekml=1",
+          "match": {
+            "folder": [
+              "Lambeth Shared Bay Locations",
+              "Transport for London Shared Bay Locations"
+            ]
+          },
+          "nameField": "name",
+          "pointName": "Parking bay"
+        },
+        {
+          "kind": "racksOnly",
+          "format": "kml",
+          "url": "https://www.google.com/maps/d/kml?mid=1FbWV3uJ-tR_bJSPB-JhQzy7gUKmwISw&forcekml=1",
+          "match": {
+            "folder": "Borough Boundary"
+          },
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 51.41099,
+        "west": -0.151221,
+        "north": 51.509876,
+        "east": -0.078287
+      },
+      "zones": 347
+    },
+    {
       "id": "minneapolis",
       "place": "Minneapolis",
       "country": "US",
@@ -968,6 +1014,36 @@
         "east": -73.763814
       },
       "zones": 538
+    },
+    {
+      "id": "norfolk",
+      "place": "Norfolk",
+      "country": "US",
+      "authority": "City of Norfolk",
+      "timeZone": "America/New_York",
+      "source": {
+        "title": "City of Norfolk, \"Micro-Mobility Program\": end a ride in one of the designated parking corrals or at a bike rack, or if none is free on the sidewalk close to the curb",
+        "url": "https://www.norfolk.gov/5527/Micro-Mobility-Program"
+      },
+      "map": {
+        "title": "City of Norfolk, \"Norfolk's Bike Network & Facilities Map\" (ArcGIS): its existing micromobility corrals",
+        "url": "https://www.arcgis.com/home/item.html?id=1f7431fded254a419d1cbf0c25ce3c60"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services2.arcgis.com/fUAsosS8WXl3mXcn/arcgis/rest/services/Existing/FeatureServer",
+          "layer": 1,
+          "nameField": "Name"
+        }
+      ],
+      "bounds": {
+        "south": 36.84483,
+        "west": -76.294249,
+        "north": 36.856273,
+        "east": -76.288444
+      },
+      "zones": 23
     },
     {
       "id": "norrkoping",
@@ -1396,6 +1472,40 @@
         "east": -118.444099
       },
       "zones": 212
+    },
+    {
+      "id": "seattle",
+      "place": "Seattle",
+      "country": "US",
+      "authority": "City of Seattle",
+      "timeZone": "America/Los_Angeles",
+      "source": {
+        "title": "Seattle Department of Transportation, \"Bike Racks & Parking\": its bike and scooter corrals downtown, organized parking for shared bikes and scooters",
+        "url": "https://seattle.gov/transportation/projects-and-programs/programs/bike-program/bike-racks"
+      },
+      "map": {
+        "title": "City of Seattle, \"Bicycle Racks\" (Seattle GeoData, ArcGIS): its bike and scooter zones among the racks SDOT maintains",
+        "url": "https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::bicycle-racks"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/Bicycle_Racks_(Active)/FeatureServer/0/query?where=BIKE_FACILITY%20LIKE%20%27%25-ZONE%27&outFields=*&outSR=4326&f=geojson",
+          "match": {
+            "CURRENT_STATUS": "INSVC"
+          },
+          "idField": "COMPKEY",
+          "pointName": "Bike and scooter corral"
+        }
+      ],
+      "bounds": {
+        "south": 47.57801,
+        "west": -122.414634,
+        "north": 47.701578,
+        "east": -122.314269
+      },
+      "zones": 135
     },
     {
       "id": "stalbert",

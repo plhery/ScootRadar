@@ -1,0 +1,257 @@
+{
+  "zones": [
+    {
+      "id": "norfolk-parking-1",
+      "kind": "parking",
+      "name": "Granby Street - 100 block",
+      "ring": [
+        [36.846745, -76.292077],
+        [36.846685, -76.292108],
+        [36.846693, -76.292132],
+        [36.846755, -76.292106]
+      ]
+    },
+    {
+      "id": "norfolk-parking-2",
+      "kind": "parking",
+      "name": "Plume at Granby by Dominion Enterprises",
+      "ring": [
+        [36.847325, -76.291691],
+        [36.847311, -76.291633],
+        [36.847293, -76.291645],
+        [36.847305, -76.291699]
+      ]
+    },
+    {
+      "id": "norfolk-parking-3",
+      "kind": "parking",
+      "name": "Granby Street at City Hall Avenue",
+      "ring": [
+        [36.847813, -76.291608],
+        [36.847767, -76.291635],
+        [36.847774, -76.291659],
+        [36.84782, -76.291628]
+      ]
+    },
+    {
+      "id": "norfolk-parking-6",
+      "kind": "parking",
+      "name": "Granby Street at TCC",
+      "ring": [
+        [36.850174, -76.290386],
+        [36.850181, -76.290406],
+        [36.850234, -76.290379],
+        [36.850224, -76.290353]
+      ]
+    },
+    {
+      "id": "norfolk-parking-14",
+      "kind": "parking",
+      "name": "Olney Road at W Wilson Avenue",
+      "ring": [
+        [36.856273, -76.289903],
+        [36.856263, -76.289777],
+        [36.856239, -76.289782],
+        [36.85625, -76.289903]
+      ]
+    },
+    {
+      "id": "norfolk-parking-17",
+      "kind": "parking",
+      "name": "Granby Street NB at Freemason Street",
+      "ring": [
+        [36.851093, -76.289817],
+        [36.851054, -76.289834],
+        [36.85106, -76.289849],
+        [36.851098, -76.289834]
+      ]
+    },
+    {
+      "id": "norfolk-parking-22",
+      "kind": "parking",
+      "name": "W Tazewell Street at Boush Street",
+      "ring": [
+        [36.849573, -76.292038],
+        [36.849552, -76.291957],
+        [36.849528, -76.291979],
+        [36.849554, -76.292048]
+      ]
+    },
+    {
+      "id": "norfolk-parking-26",
+      "kind": "parking",
+      "name": "E. Main Street at Atlantic Street",
+      "ring": [
+        [36.845763, -76.289855],
+        [36.845763, -76.289965],
+        [36.845791, -76.289968],
+        [36.845791, -76.289853]
+      ]
+    },
+    {
+      "id": "norfolk-parking-27",
+      "kind": "parking",
+      "name": "E. Main Street at Commercial Place",
+      "ring": [
+        [36.845765, -76.289014],
+        [36.845761, -76.288939],
+        [36.845737, -76.288941],
+        [36.845742, -76.289014]
+      ]
+    },
+    {
+      "id": "norfolk-parking-29",
+      "kind": "parking",
+      "name": "Waterside Drive at Atlantic Street",
+      "ring": [
+        [36.84483, -76.290441],
+        [36.844865, -76.290561],
+        [36.844891, -76.290553],
+        [36.844869, -76.290462]
+      ]
+    },
+    {
+      "id": "norfolk-parking-30",
+      "kind": "parking",
+      "name": "Waterside Drive near Granby Connector",
+      "ring": [
+        [36.845382, -76.292529],
+        [36.845419, -76.292675],
+        [36.845442, -76.292665],
+        [36.845409, -76.292545]
+      ]
+    },
+    {
+      "id": "norfolk-parking-31",
+      "kind": "parking",
+      "name": "Main Street at Boush Street",
+      "ring": [
+        [36.846615, -76.293389],
+        [36.846648, -76.293485],
+        [36.846663, -76.293477],
+        [36.846633, -76.293381]
+      ]
+    },
+    {
+      "id": "norfolk-parking-32",
+      "kind": "parking",
+      "name": "Waterside Drive at Waterside District",
+      "ring": [
+        [36.844969, -76.291692],
+        [36.844938, -76.291557],
+        [36.844913, -76.291565],
+        [36.844948, -76.291705]
+      ]
+    },
+    {
+      "id": "norfolk-parking-34",
+      "kind": "parking",
+      "name": "Bank Street at MacArthur Square",
+      "ring": [
+        [36.846974, -76.28943],
+        [36.847017, -76.28942],
+        [36.847015, -76.289395],
+        [36.846974, -76.289404]
+      ]
+    },
+    {
+      "id": "norfolk-parking-35",
+      "kind": "parking",
+      "name": "Plume Street at MacArthur Square",
+      "ring": [
+        [36.846866, -76.289694],
+        [36.84686, -76.289617],
+        [36.846843, -76.289619],
+        [36.846848, -76.289699]
+      ]
+    },
+    {
+      "id": "norfolk-parking-41",
+      "kind": "parking",
+      "name": "Bank Street SB at City Hall Avenue",
+      "ring": [
+        [36.847449, -76.289326],
+        [36.847452, -76.289346],
+        [36.847491, -76.289343],
+        [36.84749, -76.289319]
+      ]
+    },
+    {
+      "id": "norfolk-parking-51",
+      "kind": "parking",
+      "name": "York Street at Duke Street",
+      "ring": [
+        [36.853731, -76.292288],
+        [36.85374, -76.292184],
+        [36.853718, -76.292168],
+        [36.853709, -76.292283]
+      ]
+    },
+    {
+      "id": "norfolk-parking-53",
+      "kind": "parking",
+      "name": "Waterside Drive at Otter Berth",
+      "ring": [
+        [36.845093, -76.292219],
+        [36.845081, -76.292308],
+        [36.845111, -76.292445],
+        [36.845142, -76.292433]
+      ]
+    },
+    {
+      "id": "norfolk-parking-54",
+      "kind": "parking",
+      "name": "Bute Street at Granby Street",
+      "ring": [
+        [36.852929, -76.289059],
+        [36.852936, -76.289135],
+        [36.852953, -76.289135],
+        [36.852947, -76.289041]
+      ]
+    },
+    {
+      "id": "norfolk-parking-56",
+      "kind": "parking",
+      "name": "W Olney Road at Granby",
+      "ring": [
+        [36.856188, -76.288511],
+        [36.856188, -76.288444],
+        [36.856164, -76.288447],
+        [36.856167, -76.288516]
+      ]
+    },
+    {
+      "id": "norfolk-parking-58",
+      "kind": "parking",
+      "name": "York Street at TIDE Station",
+      "ring": [
+        [36.853512, -76.294249],
+        [36.853518, -76.294144],
+        [36.853484, -76.294147],
+        [36.853479, -76.294246]
+      ]
+    },
+    {
+      "id": "norfolk-parking-61",
+      "kind": "parking",
+      "name": "Plume By Randolph",
+      "ring": [
+        [36.847517, -76.292564],
+        [36.847504, -76.292499],
+        [36.847484, -76.292507],
+        [36.847502, -76.292572]
+      ]
+    },
+    {
+      "id": "norfolk-parking-62",
+      "kind": "parking",
+      "name": "Granby at Plume by Starbucks",
+      "ring": [
+        [36.847527, -76.291785],
+        [36.84752, -76.291759],
+        [36.847448, -76.291789],
+        [36.847455, -76.291816]
+      ]
+    }
+  ]
+}

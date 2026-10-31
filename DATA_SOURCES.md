@@ -881,6 +881,21 @@ city's public zone layers are drawn regardless, credited to the city.
   square metre; the core centre's 15 km/h, which holds only on weekend and
   holiday nights (23:00–05:00); and the 37 parking places, which the City
   draws as lines.
+- **Lambeth** (read 31 October 2026): Lambeth Council's 342 shared parking
+  bays for rental e-scooters and e-bikes and Transport for London's 4 in the
+  borough, points each drawn as a disc of 5 m and named for their street, and
+  the London Borough of Lambeth's outline, where a rental scooter is left only
+  in a bay (racks or marked places only, drawn only on the website), from the
+  council's map
+  [Lambeth Shared E-scooter and E-bike Parking Bays](https://www.google.com/maps/d/viewer?mid=1FbWV3uJ-tR_bJSPB-JhQzy7gUKmwISw),
+  a Google My Maps map linked from its
+  [Dockless Cycle Hire](https://www.lambeth.gov.uk/shared-mobility-lambeth/dockless-cycle-hire)
+  page, read as KML: "Lambeth uses a bay-only parking system". The legend links
+  that page. The map states no licence; the council's
+  [terms](https://www.lambeth.gov.uk/about-council/using-website/terms-conditions-disclaimer)
+  put its website under its copyright and the Open Government Licence. The
+  outline's 3,996 points are 855 within half a metre. The other boroughs in
+  London's rental trial publish no bays as data (docs/coverage-gaps.md).
 - **Minneapolis** (read 30 October 2026): the City of Minneapolis's 206
   zones where a ride may not end (bridges, construction), 8 speed-capped zones
   (8 or 10 mph: the Stone Arch Bridge, the Loring Greenway, the University of
@@ -984,6 +999,16 @@ city's public zone layers are drawn regardless, credited to the city.
   parked upright in the sidewalk's furniture zone, or, in a mandatory corral
   zone, inside a corral to end the trip. Left out: the mandatory corral zones,
   which ScootRadar has no kind for and the open data does not hold.
+- **Norfolk** (read 31 October 2026): the City of Norfolk's 23 micromobility
+  corrals downtown, each named for its place, from the layer "Existing"
+  (last edited 17 March 2026) of the City's
+  [Norfolk's Bike Network & Facilities Map](https://www.arcgis.com/home/item.html?id=1f7431fded254a419d1cbf0c25ce3c60)
+  on its ArcGIS Online site. Its proposed corrals, a layer of their own, are
+  not drawn. Neither the layer nor the City's site or open data states a
+  licence. The legend links the City's
+  [Micro-Mobility Program](https://www.norfolk.gov/5527/Micro-Mobility-Program)
+  page: end a ride in a designated parking corral or at a bike rack, or if none
+  is free on the sidewalk close to the curb.
 - **Norrköping** (read 29 October 2026): Norrköpings kommun's 57 parking
   places for e-scooters, 29 areas where a scooter may not be returned
   (`NoParking (Återlämning förbjuden)`), 14 slow zones (`Slow
@@ -1128,6 +1153,19 @@ city's public zone layers are drawn regardless, credited to the city.
   a drop zone costs $1 less. The riding areas were last edited on 18 April
   2019; the drop zones match the "175+ designated parking spaces" of the
   City's [shared mobility page](https://www.santamonica.gov/programs/shared-mobility).
+- **Seattle** (read 31 October 2026): the City of Seattle's 135 bike and
+  scooter corrals in service (`BIKE_FACILITY` `ONSDW-ZONE` on the sidewalk,
+  `ONST-ZONE` in the street), points each drawn as a disc of 5 m, from SDOT's
+  [Bicycle Racks](https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::bicycle-racks)
+  layer on Seattle GeoData, edited daily; one without a place is not drawn, nor
+  are its other racks. A corral's id is its asset key, `COMPKEY`, as the layer's
+  object ids are renumbered as it is loaded anew. The City's
+  [data policy](https://data.seattle.gov/stories/s/Data-Policy/6ukr-wvup/):
+  "Unless otherwise indicated, data on this site does not require specific
+  attribution." The legend credits the City and links SDOT's
+  [Bike Racks & Parking](https://seattle.gov/transportation/projects-and-programs/programs/bike-program/bike-racks)
+  page: as of May 2026, 204 bike and scooter corrals downtown, organized
+  parking for shared bikes and scooters. The layer holds 136.
 - **St. Albert** (read 30 October 2026): the City of St. Albert's 13
   [e-scooter restricted zones](https://www.arcgis.com/home/item.html?id=3613eb82e4054d0ca95be60abce3dbe2)
   (12 places, one of two parts), open data under the City of St. Albert Open

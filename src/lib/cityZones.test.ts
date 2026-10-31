@@ -40,12 +40,18 @@ const OSLO_CENTRE = { south: 59.909, west: 10.725, north: 59.92, east: 10.755 };
 const SANTA_MONICA_PIER = { south: 34.006, west: -118.502, north: 34.019, east: -118.485 };
 // Braunschweig's old town, from the Altstadtmarkt by the Kohlmarkt and the Burgplatz to the Schlossplatz.
 const BRAUNSCHWEIG_ALTSTADT = { south: 52.259, west: 10.512, north: 52.267, east: 10.532 };
+// Lambeth's Vauxhall, from Vauxhall Cross to the Oval.
+const LAMBETH_VAUXHALL = { south: 51.483, west: -0.13, north: 51.49, east: -0.115 };
+// Norfolk's downtown, Granby Street from City Hall Avenue to Olney Road.
+const NORFOLK_DOWNTOWN = { south: 36.844, west: -76.296, north: 36.857, east: -76.287 };
 // Poznań's Old Market Square and the streets round it.
 const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94 };
 // Rostock's old town, from the Kröpeliner Tor along the Kröpeliner Straße to the Neuer Markt.
 const ROSTOCK_ALTSTADT = { south: 54.086, west: 12.125, north: 54.093, east: 12.146 };
 // Sacramento's downtown, from Old Sacramento to the State Capitol.
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
+// Seattle's downtown, from Pioneer Square to Westlake.
+const SEATTLE_DOWNTOWN = { south: 47.6, west: -122.345, north: 47.615, east: -122.325 };
 // St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
 const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: -113.62 };
 // Stockholm's Norrmalm, from Gustav Adolfs torg to Stureplan and Nybroplan.
@@ -125,7 +131,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'rostock', 'sacramento', 'santamonica', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'rostock', 'sacramento', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -742,6 +748,42 @@ describe('the cities\' zones', () => {
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking', 'noParking']));
   });
 
+  it("draws Lambeth's parking bays and the borough, where a rental scooter is left only in one, from the council's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const lambeth = ZONE_CITIES.find(city => city.id === 'lambeth')!;
+    expect(lambeth.authority).toBe('Lambeth Council');
+    expect(lambeth.timeZone).toBe('Europe/London');
+    // Its 342 bays and Transport for London's 4, points drawn as discs, and the borough's outline.
+    const { default: file } = await CITY_ZONE_FILES.lambeth();
+    const counts = Object.fromEntries(['parking', 'racksOnly'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 346, racksOnly: 1 });
+    expect(file.zones.find(zone => zone.name === 'Goding Street')?.kind).toBe('parking');
+    expect(file.zones.find(zone => zone.name === 'Brixton Hill')?.kind).toBe('parking');
+    // The borough holds Brixton and the Oval, not Parliament Square across the river.
+    const zone = file.zones.find(zone => zone.kind === 'racksOnly')!;
+    expect(Math.abs(winding(zone.ring!, 51.4613, -0.1145))).toBe(1);
+    expect(Math.abs(winding(zone.ring!, 51.4837, -0.115))).toBe(1);
+    expect(winding(zone.ring!, 51.5005, -0.1265)).toBe(0);
+    await loadCityZones(lambeth);
+    const shown = ruleZonesInView({ bounds: LAMBETH_VAUXHALL, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
+  });
+
+  it("draws the City of Norfolk's micromobility corrals, from its bike network map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const norfolk = ZONE_CITIES.find(city => city.id === 'norfolk')!;
+    expect(norfolk.authority).toBe('City of Norfolk');
+    expect(norfolk.timeZone).toBe('America/New_York');
+    // Its 23 existing corrals, each named for its place; the proposed ones are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.norfolk();
+    expect(file.zones).toHaveLength(23);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    expect(file.zones.find(zone => zone.id === 'norfolk-parking-1')?.name).toBe('Granby Street - 100 block');
+    await loadCityZones(norfolk);
+    const shown = ruleZonesInView({ bounds: NORFOLK_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(10);
+  });
+
   it("draws Poznań's Hop & Go points and the zone where a shared scooter is left only at one, from the city roads authority's map", async () => {
     const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
     const poznan = ZONE_CITIES.find(city => city.id === 'poznan')!;
@@ -786,6 +828,21 @@ describe('the cities\' zones', () => {
     await loadCityZones(sacramento);
     const shown = ruleZonesInView({ bounds: SACRAMENTO_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(20);
+  });
+
+  it("draws the City of Seattle's bike and scooter corrals, from its layer of bike racks", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const seattle = ZONE_CITIES.find(city => city.id === 'seattle')!;
+    expect(seattle.authority).toBe('City of Seattle');
+    expect(seattle.timeZone).toBe('America/Los_Angeles');
+    // Its 135 corrals in service, points drawn as discs; one without a place and its other bike racks are not drawn.
+    const { default: file } = await CITY_ZONE_FILES.seattle();
+    expect(file.zones).toHaveLength(135);
+    expect(file.zones.every(zone => zone.kind === 'parking' && zone.name === 'Bike and scooter corral')).toBe(true);
+    expect(file.zones.find(zone => zone.id === 'seattle-parking-927424')).toBeDefined();
+    await loadCityZones(seattle);
+    const shown = ruleZonesInView({ bounds: SEATTLE_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(50);
   });
 
   it("draws Turku's parking places and its no-parking, slow and no-riding areas, from the city's open map services", async () => {
