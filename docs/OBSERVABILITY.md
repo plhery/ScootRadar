@@ -117,6 +117,11 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_snapshot_updated_timestamp_seconds` (a collection finished),
   `scootradar_discovery_success_timestamp_seconds`,
   `scootradar_overview_generated_timestamp_seconds` and `scootradar_build_info{version}`.
+  The discovery time is saved with the feed states, `feed-states.json` beside the
+  snapshot, and a restart restores it, however long it was down: "feed discovery
+  stale" counts from the cache's start only before any discovery is saved, as on a new
+  volume. While sharedmobility.ch was down on 31 October 2026 it counted from each
+  restart, and the day's deploys put it out three times before it held.
 - `process_*` and `nodejs_*`: memory, CPU, start time and event loop delay.
 
 Counters start at zero with the process; the dashboard's "Deploys" annotation marks

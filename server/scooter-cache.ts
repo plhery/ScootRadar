@@ -169,12 +169,18 @@ try {
 // reported when its wait ends, and one already reported is not again. States saved too long before
 // are left (FEED_STATES_MAX_AGE_MS): each feed's first state is then its baseline.
 let restoredFeedStates: Record<string, FeedStateEntry> = {};
+// When the feed catalog was last discovered, saved with the feed states, so that a restart doesn't
+// reset the "feed discovery stale" alert's clock to its own start.
+let discoveredAt: number | undefined;
 try {
   const saved = await readFeedStates(feedStatesPath, Date.now());
   if (saved) {
     restoredFeedStates = saved.feeds;
+    discoveredAt = saved.discoveredAt;
+    if (discoveredAt) metrics.recordDiscovery(discoveredAt);
     console.log(JSON.stringify({ event: 'feed_states_restored', feeds: Object.keys(saved.feeds).length,
-      ageSeconds: Math.round(saved.ageMs / 1000) }));
+      ageSeconds: Math.round(saved.ageMs / 1000),
+      discoveryAgeSeconds: discoveredAt ? Math.round((Date.now() - discoveredAt) / 1000) : null }));
   }
 } catch (error) {
   if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
@@ -334,7 +340,7 @@ async function persist(final = false) {
   // which a restart builds again from what it holds.
   const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
     feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
-  const states = logFeedStates.saved();
+  const states = logFeedStates.saved(), discovered = discoveredAt;
   persisting = (async () => {
     try {
       await saveAtomically(snapshotPath, 'scooters', path => writeSnapshot(path, saved));
@@ -344,7 +350,7 @@ async function persist(final = false) {
       reportError('persist', error);
     }
     try {
-      await saveAtomically(feedStatesPath, 'feed-states', path => writeFeedStates(path, states, now));
+      await saveAtomically(feedStatesPath, 'feed-states', path => writeFeedStates(path, states, now, discovered));
     } catch (error) {
       console.error('Feed state persistence failed', error);
       reportError('persist:feed-states', error);
@@ -374,7 +380,8 @@ async function discover() {
     const definitions = withAppCollectors(await discoverOnceMore(discoverCollectableFeeds, 5_000,
       error => console.warn('Feed discovery failed; trying once more in 5 seconds', error)));
     if (!stopping) setDefinitions(definitions, () => true);
-    metrics.recordDiscovery();
+    discoveredAt = Date.now();
+    metrics.recordDiscovery(discoveredAt);
     discoveryFailingSince = undefined;
   } catch (error) {
     retryMs = 60_000;

@@ -101,6 +101,25 @@ describe('the saved feed states', () => {
     expect(await readFeedStates(path, now)).toEqual({ ageMs: FEED_STATES_MAX_AGE_MS, feeds: {} });
   });
 
+  it('keep when the catalog was last discovered however old they are, so a restart does not reset the discovery alert', async () => {
+    const path = join(directory, 'feed-states.json');
+    // sharedmobility.ch's registry last answered at 01:56 UTC on 31 October 2026, and every restart
+    // after made the alert count from the restart.
+    const discoveredAt = now - 18 * 3600_000;
+    await writeFeedStates(path, states, now - 3600_000, discoveredAt);
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 3600_000, discoveredAt, feeds: {} });
+    await writeFeedStates(path, states, now - 60_000, discoveredAt);
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 60_000, discoveredAt, feeds: states });
+    // Never discovered, as before the first discovery or by a version before this one, or at a time
+    // after the save, which none can be: none.
+    await writeFeedStates(path, states, now);
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
+    await writeFile(path, JSON.stringify({ version: 1, savedAt: now, discoveredAt: now + 1, feeds: states }));
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
+    await writeFile(path, JSON.stringify({ version: 1, savedAt: now, discoveredAt: 'yesterday', feeds: states }));
+    expect(await readFeedStates(path, now)).toEqual({ ageMs: 0, feeds: states });
+  });
+
   it('are refused when missing, cut short or not JSON, left when of another version, and keep only entries of their shape', async () => {
     const path = join(directory, 'feed-states.json');
     await expect(readFeedStates(path, now)).rejects.toMatchObject({ code: 'ENOENT' });

@@ -75,9 +75,9 @@ export async function readSnapshot(path: string): Promise<MobilitySnapshot | nul
 }
 
 // The feed states (createFeedStateLog) are saved beside the snapshot, with it, as one JSON document
-// small enough to write whole:
+// small enough to write whole, with when the feed catalog was last discovered:
 //
-//   {"version":1,"savedAt":…,"feeds":{"norway:dott_no_trondheim":{"state":"expired","since":…,"change":{…}},…}}
+//   {"version":1,"savedAt":…,"discoveredAt":…,"feeds":{"norway:dott_no_trondheim":{"state":"expired","since":…,"change":{…}},…}}
 
 /**
  * How soon after they were saved the feed states are restored: a deploy stops the cache for a
@@ -98,20 +98,28 @@ function isFeedStateEntry(value: unknown): value is FeedStateEntry {
     (entry.change === undefined || entry.change?.event === 'snapshot_feed_state');
 }
 
-/** Writes the feed states, saved at `savedAt`, to the path. */
-export async function writeFeedStates(path: string, feeds: Readonly<Record<string, FeedStateEntry>>, savedAt: number): Promise<void> {
-  await writeFile(path, `${JSON.stringify({ version: 1, savedAt, feeds })}\n`);
+/** Writes the feed states, saved at `savedAt`, to the path, with when the catalog was last discovered if it was. */
+export async function writeFeedStates(path: string, feeds: Readonly<Record<string, FeedStateEntry>>, savedAt: number,
+  discoveredAt?: number): Promise<void> {
+  await writeFile(path, `${JSON.stringify({ version: 1, savedAt, discoveredAt, feeds })}\n`);
 }
 
 /**
  * Reads the feed states writeFeedStates wrote, with how long before `now`: none if saved
  * FEED_STATES_MAX_AGE_MS or more before, and null if of another version. An entry of another shape
- * is left out. Rejects a file cut short or not JSON.
+ * is left out. Rejects a file cut short or not JSON. When the catalog was last discovered is kept
+ * however old the file is: a restart doesn't make it any more recent, and the "feed discovery
+ * stale" alert goes on counting from it, where it counted from the restart while sharedmobility.ch
+ * was down on 31 October 2026, and each deploy put it out.
  */
-export async function readFeedStates(path: string, now: number): Promise<{ ageMs: number; feeds: Record<string, FeedStateEntry> } | null> {
-  const saved = JSON.parse(await readFile(path, 'utf8')) as { version?: unknown; savedAt?: unknown; feeds?: unknown } | null;
+export async function readFeedStates(path: string, now: number):
+  Promise<{ ageMs: number; discoveredAt?: number; feeds: Record<string, FeedStateEntry> } | null> {
+  const saved = JSON.parse(await readFile(path, 'utf8')) as
+    { version?: unknown; savedAt?: unknown; discoveredAt?: unknown; feeds?: unknown } | null;
   if (saved?.version !== 1 || typeof saved.savedAt !== 'number' || !saved.feeds || typeof saved.feeds !== 'object') return null;
   const ageMs = now - saved.savedAt;
-  return { ageMs, feeds: ageMs < FEED_STATES_MAX_AGE_MS
+  const discoveredAt = typeof saved.discoveredAt === 'number' && saved.discoveredAt > 0 && saved.discoveredAt <= saved.savedAt
+    ? saved.discoveredAt : undefined;
+  return { ageMs, ...(discoveredAt ? { discoveredAt } : {}), feeds: ageMs < FEED_STATES_MAX_AGE_MS
     ? Object.fromEntries(Object.entries(saved.feeds).filter(([, entry]) => isFeedStateEntry(entry))) : {} };
 }
