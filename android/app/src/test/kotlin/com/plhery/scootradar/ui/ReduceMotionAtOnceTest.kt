@@ -1,11 +1,15 @@
 package com.plhery.scootradar.ui
 
+import android.content.Context
+import android.provider.Settings
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -18,8 +22,10 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onFirst
@@ -28,9 +34,11 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.FakeLocationManager
 import com.plhery.scootradar.StubScooterAPI
+import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterLocationFix
@@ -44,8 +52,10 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.chrome.FloatingMapControls
+import com.plhery.scootradar.ui.dock.DockState
 import com.plhery.scootradar.ui.dock.RollingCount
 import com.plhery.scootradar.ui.dock.ScooterControlDock
+import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.search.ScooterSearchIsland
 import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
 import com.plhery.scootradar.ui.theme.ScootTheme
@@ -79,6 +89,11 @@ class ReduceMotionAtOnceTest {
 
     private val controllers = TestControllers()
     private val locale = Locale.getDefault()
+    private val resolver = ApplicationProvider.getApplicationContext<Context>().contentResolver
+    private val animatorScale = Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
+
+    /** How far down the place its pixels are compared from, as a share of its height. */
+    private var from = 0f
 
     @Before
     fun setUp() {
@@ -91,6 +106,7 @@ class ReduceMotionAtOnceTest {
         controllers.close()
         ScooterLanguage.current = ScooterLanguage.atLaunch
         Locale.setDefault(locale)
+        Settings.Global.putFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, animatorScale)
     }
 
     // The search island: the open panel closes to the bar (ScooterSearchIsland's island).
@@ -217,6 +233,52 @@ class ReduceMotionAtOnceTest {
         }
     }
 
+    // The screen as the search opens and closes: a phone's locate button and dock, or a large window's panel, make way
+    // for it and come back (ScooterMapScreen's locateGone, dockGone and the panel's gone).
+
+    @Test
+    fun underReduceMotionTheDockMakesWayForTheSearchAtOnce() = searchOverTheScreen(reduceMotion = true)
+
+    @Test
+    fun withoutReduceMotionTheDockFadesForTheSearch() = searchOverTheScreen(reduceMotion = false)
+
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-xhdpi")
+    fun underReduceMotionThePanelMakesWayForTheSearchAtOnce() = searchOverTheScreen(reduceMotion = true)
+
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-xhdpi")
+    fun withoutReduceMotionThePanelFadesForTheSearch() = searchOverTheScreen(reduceMotion = false)
+
+    /**
+     * The whole screen on the providers' list, under Remove animations (which it reads as Reduce Motion) or not, as
+     * the search bar is tapped and the search cancelled. Its lower half is compared, under the open search, whose
+     * field's cursor blinks.
+     */
+    private fun searchOverTheScreen(reduceMotion: Boolean) {
+        Settings.Global.putFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, if (reduceMotion) 0f else 1f)
+        val clock = TestClock()
+        val model = DockState.Summary.make(controllers, clock)
+        compose.mainClock.autoAdvance = false
+        compose.setContent {
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                Box(Modifier.fillMaxSize().testTag(PLACE)) {
+                    ScooterMapScreen(controller = model, map = {}, glassBlurs = false)
+                }
+            }
+        }
+        compose.mainClock.advanceTimeByFrame()
+        from = 0.5f
+        assertTheChange("the screen, the search opened", reduceMotion) {
+            compose.onAllNodes(hasClickAction() and hasAnyAncestor(hasTestTag(SEARCH_ISLAND_TAG))).onFirst()
+                .performSemanticsAction(SemanticsActions.OnClick)
+        }
+        assertTheChange("the screen, the search cancelled", reduceMotion) {
+            compose.onAllNodes((hasText("Cancel") or hasContentDescription("Cancel")) and hasClickAction()).onFirst()
+                .performSemanticsAction(SemanticsActions.OnClick)
+        }
+    }
+
     /** The search island at the top of the place, as the screen has it, with nothing found or kept. */
     @Composable
     private fun Island(isSearching: Boolean, hasActiveFilters: Boolean) {
@@ -292,10 +354,11 @@ class ReduceMotionAtOnceTest {
         return compose.onNodeWithTag(PLACE).captureToImage().toPixelMap()
     }
 
-    /** How many pixels differ between [a] and [b], of the same place. */
+    /** How many pixels differ between [a] and [b], of the same place, [from] down. */
     private fun unlike(a: PixelMap, b: PixelMap): Int {
         assertEquals("the place's size", a.width to a.height, b.width to b.height)
-        return (0 until a.width).sumOf { x -> (0 until a.height).count { y -> a[x, y] != b[x, y] } }
+        val top = (a.height * from).toInt()
+        return (0 until a.width).sumOf { x -> (top until a.height).count { y -> a[x, y] != b[x, y] } }
     }
 
     private companion object {

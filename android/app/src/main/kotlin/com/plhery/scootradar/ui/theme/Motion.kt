@@ -18,9 +18,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +58,14 @@ val LocalReduceMotion = staticCompositionLocalOf { false }
 @ReadOnlyComposable
 fun <T> motion(spring: SpringSpec): FiniteAnimationSpec<T> =
     if (LocalReduceMotion.current) snap() else spring.animation()
+
+/**
+ * This animated value, or under Reduce Motion [target] itself, in the frame it changes: an animate*AsState given
+ * [motion]'s snap() starts after that frame, so what it moves would stay where it was for one (UI-184).
+ */
+@Composable
+fun <T> State<T>.atOnceUnderReduceMotion(target: T): State<T> =
+    if (LocalReduceMotion.current) rememberUpdatedState(target) else this
 
 /** Whether animations are off on the phone, read again when the setting changes. */
 @Composable

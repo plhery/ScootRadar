@@ -136,6 +136,7 @@ import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.SelectionFeedback
 import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
+import com.plhery.scootradar.ui.theme.atOnceUnderReduceMotion
 import com.plhery.scootradar.ui.theme.motion
 import kotlin.math.min
 import kotlinx.coroutines.flow.Flow
@@ -466,7 +467,7 @@ private fun DockChrome(
     // foot is the safe area's and this above the window's.
     val overSafeFoot = dockFoot(safeBottom, tappableBottom = WindowInsets.tappableElement.asPaddingValues().calculateBottomPadding())
     val bottom = safeBottom + overSafeFoot
-    val below by animateDpAsState(chromeTop, motion(IosMotion.snappy(duration = 0.28)), label = "chromeTop")
+    val below by animateDpAsState(chromeTop, motion(IosMotion.snappy(duration = 0.28)), label = "chromeTop").atOnceUnderReduceMotion(chromeTop)
     // The panel's layout has frames of its own.
     DisposableEffect(chrome) {
         onDispose {
@@ -519,9 +520,13 @@ private fun DockChrome(
             // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
             // so that a card keeps where it was scrolled to and the dock what it last announced.
             val trailing = if (LocalLayoutDirection.current == LayoutDirection.Ltr) 1f else 0f
-            val locateGone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.28)), label = "locate")
+            // Under Reduce Motion gone, or back, in the frame the search opens or closes (UI-184).
+            val searchGone = if (isSearching) 1f else 0f
+            val locateGone by animateFloatAsState(searchGone, motion(IosMotion.snappy(duration = 0.28)), label = "locate")
+                .atOnceUnderReduceMotion(searchGone)
             val isAccessibility = TextSize.isAccessibility
-            val dockGone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
+            val dockGone by animateFloatAsState(searchGone, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
+                .atOnceUnderReduceMotion(searchGone)
             // The locate row stands 10 above the dock's card, laid out from where the card is in the same pass, as the
             // iPhone's padding by the dock's height is: a height read back as state would move the row a frame after
             // the card, which shows under Reduce Motion, where the card changes height in one frame.
@@ -695,7 +700,9 @@ private fun PanelChrome(
                     0.dp
                 }
                 val dockLimit = max(160.dp, room - noticesTaken - 16.dp - PANEL_FOOT)
-                val gone by animateFloatAsState(if (isSearching) 1f else 0f, motion(IosMotion.snappy(duration = 0.24)), label = "panel")
+                val searchGone = if (isSearching) 1f else 0f
+                val gone by animateFloatAsState(searchGone, motion(IosMotion.snappy(duration = 0.24)), label = "panel")
+                    .atOnceUnderReduceMotion(searchGone)
                 Box(
                     Modifier
                         .padding(16.dp)

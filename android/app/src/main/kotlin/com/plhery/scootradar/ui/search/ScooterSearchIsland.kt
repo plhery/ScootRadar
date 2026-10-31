@@ -66,6 +66,7 @@ import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
+import com.plhery.scootradar.ui.theme.atOnceUnderReduceMotion
 import com.plhery.scootradar.ui.theme.iosShadow
 import com.plhery.scootradar.ui.theme.motion
 import com.plhery.scootradar.ui.theme.scootColors
@@ -121,10 +122,8 @@ fun ScooterSearchIsland(
     // The collapsed bar keeps its own room above and under it, inside its buttons, so that they reach the glass's
     // edges; the open panel has 10 of the island's.
     val padding = if (isSearching) 10.dp else 0.dp
-    val springing by animateDpAsState(padding, motion(spring), label = "islandPadding")
-    // Under Reduce Motion the panel's or the bar's own in the frame the search opens or closes, as its content is:
-    // an animation, snapped, comes a frame later (UI-184).
-    val vertical = if (reduceMotion) padding else springing
+    // Under Reduce Motion the panel's or the bar's own in the frame the search opens or closes, as its content is.
+    val vertical by animateDpAsState(padding, motion(spring), label = "islandPadding").atOnceUnderReduceMotion(padding)
     // The closed island is interactive glass (UI-211): a finger anywhere on it, its buttons' too, swells it.
     var touched by remember { mutableStateOf(false) }
 
