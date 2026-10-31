@@ -3,6 +3,7 @@
 package com.plhery.scootradar.map
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -25,6 +26,7 @@ import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterDotState
 import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.ui.theme.SEARCH_BOLD_PATH
 import com.plhery.scootradar.ui.theme.SEARCH_PATH
 import kotlin.math.acos
 import kotlin.math.ceil
@@ -36,22 +38,37 @@ import kotlin.math.sqrt
 /**
  * The faces of the markers' text: Inter (NEEDS-USER #2), in the weights the iPhone takes of its system font:
  * semibold, bold and heavy, each an instance of the chrome's variable Inter at its text optical size.
+ *
+ * Under Bold Text an iPhone draws its system font heavier, the markers' text with it, and the pin's symbol (UI-187).
+ * Android's Bold Text adds 300 to every weight (Configuration.fontWeightAdjustment), which Compose's text follows:
+ * each face here takes it too, up to Inter's heaviest, 900, and [boldText] has the pin's symbol drawn at weight 700.
+ * Read once, as the map is made, as iOS reads its fonts as it draws: Android makes the activity again for a change.
  */
-class MarkerFonts(val semibold: Typeface, val bold: Typeface, val heavy: Typeface) {
+class MarkerFonts(val semibold: Typeface, val bold: Typeface, val heavy: Typeface, val boldText: Boolean) {
     companion object {
-        fun of(context: Context) = MarkerFonts(
-            semibold = inter(context, 600),
-            bold = inter(context, 700),
-            heavy = inter(context, 800),
-        )
+        fun of(context: Context): MarkerFonts {
+            val adjustment = context.resources.configuration.fontWeightAdjustment
+            val added = if (adjustment == Configuration.FONT_WEIGHT_ADJUSTMENT_UNDEFINED) 0 else adjustment
+            return MarkerFonts(
+                semibold = inter(context, 600 + added),
+                bold = inter(context, 700 + added),
+                heavy = inter(context, 800 + added),
+                boldText = added > 0,
+            )
+        }
 
         private fun inter(context: Context, weight: Int): Typeface {
+            val inInter = weight.coerceIn(INTER_LIGHTEST, INTER_HEAVIEST)
             val font = Font.Builder(context.resources, R.font.inter_variable)
-                .setWeight(weight)
-                .setFontVariationSettings("'wght' $weight")
+                .setWeight(inInter)
+                .setFontVariationSettings("'wght' $inInter")
                 .build()
             return Typeface.CustomFallbackBuilder(FontFamily.Builder(font).build()).build()
         }
+
+        /** The ends of the variable Inter's weight axis. */
+        private const val INTER_LIGHTEST = 100
+        private const val INTER_HEAVIEST = 900
     }
 }
 
@@ -365,14 +382,14 @@ class ScooterMarkerArt(
 
     /**
      * The searched place's pin (MAP-033): MapKit's balloon at rest in the system's blue, with a magnifying glass
-     * for its glyph.
+     * for its glyph, heavier under Bold Text.
      */
     fun addressImage(isDark: Boolean): Bitmap = addresses.getOrPut(isDark) {
         val shape = BayShape.rest
         balloon(if (isDark) SYSTEM_BLUE_DARK else SYSTEM_BLUE, shape) { x, centre ->
             // A Material symbol fills 20 of its 24 units, as an SF Symbol fills its point size (SYMBOL_FRAME).
             val side = (shape.glyph * 24 / 20).toFloat()
-            val glyph = PathParser.createPathFromPathData(SEARCH_PATH)
+            val glyph = PathParser.createPathFromPathData(if (fonts.boldText) SEARCH_BOLD_PATH else SEARCH_PATH)
             withSave {
                 translate(x - side / 2, centre - side / 2)
                 scale(side / 960f, side / 960f)
