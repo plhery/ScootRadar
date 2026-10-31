@@ -76,6 +76,7 @@ import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.rememberAnnouncementOnChange
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.rememberNow
+import com.plhery.scootradar.ui.spokenPlainly
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
@@ -400,7 +401,7 @@ private fun CountLine(summary: ScooterDockSummary) {
         withStyle(headline.toSpanStyle()) { append(number) }
         withStyle(subheadline.toSpanStyle()) { append(" ${summary.countLabel}") }
     }
-    Text(text, style = headline, color = scootColors.dockText)
+    Text(text, style = headline, color = scootColors.dockText, modifier = Modifier.spokenPlainly(text))
 }
 
 /** The notices under the status: a night ban or a season in blue, trouble with the data in grey. */

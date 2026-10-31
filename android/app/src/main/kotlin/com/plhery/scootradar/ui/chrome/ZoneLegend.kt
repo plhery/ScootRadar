@@ -49,6 +49,7 @@ import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.glass.chromeGlass
+import com.plhery.scootradar.ui.spokenPlainly
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.scootColors
@@ -129,7 +130,7 @@ fun ZoneLegend(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 ZoneSwatch(line.kind, Modifier.alpha(if (line.inForce) 1f else CityRuleZone.dimmed.toFloat()))
-                Text(line.text, style = style, color = colors.dockText)
+                Text(line.text, style = style, color = colors.dockText, modifier = Modifier.spokenPlainly(line.text))
             }
         }
         for (notice in notices) {
