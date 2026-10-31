@@ -92,10 +92,11 @@ fun Modifier.mapBlur(backdrop: MapBackdrop, radius: Dp): Modifier = composed {
 /**
  * The blurred copy of the map behind one element, where it is, and what its blur was made for.
  *
- * Android keeps the image a RenderEffect made of a node for as long as the node keeps that effect, even when what the
- * node draws changes (bug D: with one effect kept, the glass showed the map as it was at its first draw, before any
- * tile, through every pan and appearance). So the glass takes a new effect for each new frame of the map's, and for
- * each new place or size over it: the blur is made again when what is under the glass has changed, and only then.
+ * Android 12 (API 31) keeps the image a RenderEffect made of a node for as long as the node keeps that effect, even
+ * when what the node draws changes (bug D: with one effect kept, the glass showed the map as it was at its first draw,
+ * before any tile, through every pan and appearance; API 37 makes it again, the versions between weren't tried). So
+ * the glass takes a new effect for each new frame of the map's, and for each new place or size over it: the blur is
+ * made again when what is under the glass has changed, and only then.
  */
 private class BlurredMap {
     val node = RenderNode("glass")
