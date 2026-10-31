@@ -2,8 +2,6 @@ package com.plhery.scootradar.ui
 
 import android.view.View
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.platform.LocalDensity
@@ -39,7 +37,9 @@ import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
-import com.plhery.scootradar.map.creditsSafeArea
+import com.plhery.scootradar.map.MapInsets
+import com.plhery.scootradar.map.mapSafeArea
+import com.plhery.scootradar.map.mapSafeInsets
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.dock.DockState
@@ -88,8 +88,8 @@ class DockFootTest {
     private lateinit var frames: MapChromeFrames
     private lateinit var failure: ScooterLoadFailure
 
-    /** The foot of the safe area as the map reads it, and as its credits keep to it. */
-    private var safeBottom = -1
+    /** The safe area as the map's camera and markers read it, and its foot as its credits keep to it. */
+    private var safeArea: MapInsets? = null
     private var creditsBottom = -1
 
     @Before
@@ -162,9 +162,42 @@ class DockFootTest {
             dispatch(bars)
             assertEquals("$bars: the credits' safe foot", bars.bottom, creditsBottom)
             dispatch(bars, keyboard = 336)
-            assertEquals("$bars with the keyboard up: the map's safe foot", 336, safeBottom)
             assertEquals("$bars with the keyboard up: the credits' safe foot", bars.bottom, creditsBottom)
         }
+    }
+
+    /**
+     * The search open: the keyboard leaves the safe area the map's camera and markers read as it was, as the iPhone's
+     * map, which ignores the safe area (ScooterMapScreen.swift:95) on a screen that ignores the keyboard's at its foot
+     * (:110), has no keyboard in its own. With it, a cluster tapped beside a tablet's panel opened less close than on
+     * the iPad, its region framed above the keyboard (review-app-ad (a)).
+     */
+    @Test
+    fun theKeyboardLeavesTheMapsSafeAreaAsItWasOverEitherBar() {
+        show(Bars.Gesture)
+        for (bars in listOf(Bars.Gesture, Bars.ThreeButton)) {
+            dispatch(bars)
+            val down = checkNotNull(safeArea)
+            assertEquals("$bars: the map's safe foot", bars.bottom.toDouble(), down.bottom, 0.0)
+            dispatch(bars, keyboard = 336)
+            assertEquals("$bars with the keyboard up: the map's safe area", down, safeArea)
+        }
+    }
+
+    /**
+     * A place picked on a phone: the search closes and its keyboard goes down in steps as the camera moves to the place.
+     * The safe area the camera reads stays as it was on every step, so the move goes on, where on each step it was made
+     * again 100 ms later from rest (MapCamera.moveAgainForNewSize), a hitch the iPhone doesn't have.
+     */
+    @Test
+    fun theKeyboardGoingDownStepByStepLeavesTheMapsSafeAreaBe() {
+        show(Bars.Gesture)
+        val seen = mutableSetOf<MapInsets>()
+        for (keyboard in listOf(336, 300, 220, 140, 60, 0)) {
+            dispatch(Bars.Gesture, keyboard = keyboard)
+            seen += checkNotNull(safeArea)
+        }
+        assertEquals("the map's safe areas as the keyboard went down: $seen", 1, seen.size)
     }
 
     /**
@@ -280,9 +313,8 @@ class DockFootTest {
                     controller = shown,
                     map = {
                         frames = LocalMapChrome.current!!
-                        val density = LocalDensity.current
-                        safeBottom = WindowInsets.safeDrawing.getBottom(density)
-                        creditsBottom = creditsSafeArea.getBottom(density)
+                        safeArea = mapSafeInsets()
+                        creditsBottom = mapSafeArea.getBottom(LocalDensity.current)
                     },
                     glassBlurs = false,
                     shortcuts = shortcuts,

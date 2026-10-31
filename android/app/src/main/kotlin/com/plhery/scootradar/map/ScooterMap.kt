@@ -5,10 +5,13 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -53,6 +56,33 @@ import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.maps.MapLibreMapOptions
 
 // ScooterMapView's makeUIView, from ios/ScootRadar/Views/ScooterMapView.swift.
+
+/**
+ * The map's safe area: the system's bars and the display's cutout, not the keyboard. The iPhone's map ignores the safe
+ * area (ScooterMapScreen.swift:95) on a screen that ignores the keyboard's at its foot (:110), so MKMapView's own safe
+ * area has no keyboard: the camera frames a region or a route and makes a move to a place as with the keyboard down,
+ * the keyboard going down moves nothing, and Apple's Legal stays in the map's margins, under the keyboard. In
+ * safeDrawing, which counts it, a cluster tapped beside a tablet's panel with the search's keyboard up opened about 0.7
+ * levels less close than on the iPad, a place picked on a phone was moved again 100 ms after each step of the keyboard
+ * going down, and the credits rose to 8 over it wherever the dock did not place them (review-app-ad (a)).
+ */
+internal val mapSafeArea: WindowInsets
+    @Composable get() = WindowInsets.systemBars.union(WindowInsets.displayCutout)
+
+/** [mapSafeArea] in the map's points, as its camera and its markers take it. */
+@Composable
+internal fun mapSafeInsets(): MapInsets {
+    val density = LocalDensity.current
+    val direction = LocalLayoutDirection.current
+    val safe = mapSafeArea
+    val points = density.density.toDouble()
+    return MapInsets(
+        top = safe.getTop(density) / points,
+        left = safe.getLeft(density, direction) / points,
+        bottom = safe.getBottom(density) / points,
+        right = safe.getRight(density, direction) / points,
+    )
+}
 
 /**
  * The camera the map last came to rest on, which a recreated activity opens on, the requests it has taken and the
@@ -194,14 +224,8 @@ fun ScooterMap(
     LaunchedEffect(rider, dark, highContrast) { rider?.setLook(RiderArt.Look(dark = dark, highContrast = highContrast)) }
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
-    val safe = WindowInsets.safeDrawing
     val points = density.density.toDouble()
-    val safeArea = MapInsets(
-        top = safe.getTop(density) / points,
-        left = safe.getLeft(density, direction) / points,
-        bottom = safe.getBottom(density) / points,
-        right = safe.getRight(density, direction) / points,
-    )
+    val safeArea = mapSafeInsets()
     val focus by controller.focusRequest.collectAsStateWithLifecycle()
     val zoom by controller.zoomRequest.collectAsStateWithLifecycle()
     LaunchedEffect(camera, safeArea) { camera?.safeAreaDidChange(safeArea) }
@@ -378,8 +402,8 @@ fun ScooterMap(
         val overCorner = creditsOverCorner(creditsSides, corner, maxHeight.value.toDouble())
         val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
         // Clear of the bars, but not of the keyboard, which they stay under as the iPhone's Legal does.
-        val creditsSafe = creditsSafeArea
-        val creditsBottom = creditsSafe.getBottom(density) / points
+        val safe = mapSafeArea
+        val creditsBottom = safe.getBottom(density) / points
         // Under a phone's dock whose foot would cut them, under it or below it.
         val underDock = creditsUnderDock(creditsSides, creditsHeight, dock, creditsBottom, maxHeight.value.toDouble())
         // Under it, past the curve of its leading corner, which would show them, where they stand on its foot or near.
@@ -411,18 +435,18 @@ fun ScooterMap(
                         overDock != null -> sideways.padding(bottom = overDock.dp)
                         startUnderDock != null -> {
                             val foot = underDock?.let { Modifier.padding(bottom = it.dp) }
-                                ?: Modifier.windowInsetsPadding(creditsSafe.only(WindowInsetsSides.Bottom)).padding(bottom = 8.dp)
+                                ?: Modifier.windowInsetsPadding(safe.only(WindowInsetsSides.Bottom)).padding(bottom = 8.dp)
                             foot.padding(start = startUnderDock.dp)
                         }
                         underDock != null -> sideways.padding(bottom = underDock.dp)
-                        else -> Modifier.windowInsetsPadding(creditsSafe).padding(8.dp)
+                        else -> Modifier.windowInsetsPadding(safe).padding(8.dp)
                     }
                     // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
                     margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)
                     overCorner != null -> sideways.padding(bottom = overCorner.dp)
                     overDock != null -> sideways.padding(bottom = overDock.dp)
                     else -> Modifier
-                        .windowInsetsPadding(creditsSafe.only(WindowInsetsSides.Bottom))
+                        .windowInsetsPadding(safe.only(WindowInsetsSides.Bottom))
                         .then(sideways)
                         .padding(bottom = 8.dp)
                 },
