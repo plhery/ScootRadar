@@ -17,6 +17,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -72,6 +73,20 @@ class ScooterAPI(
         .writeTimeout(20, TimeUnit.SECONDS)
         .build()
 
+    /** The requests under way, each with whether [networkLost] ended it. */
+    private val underWay = ConcurrentHashMap<Call, Boolean>()
+
+    /**
+     * The phone has just lost its way to the internet: the requests under way end at once, as offline. iOS's
+     * URLSession ends them so (networkConnectionLost), where a socket of a network Android has lost may wait out
+     * its 20 seconds. The app calls it as ConnectivityManager tells it the phone is offline.
+     */
+    fun networkLost() {
+        for (call in underWay.keys) {
+            if (underWay.replace(call, false, true)) call.cancel()
+        }
+    }
+
     override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int): ScooterResponse {
         val response = get(
             "api/scooters",
@@ -116,18 +131,23 @@ class ScooterAPI(
         }.build()
         val request = Request.Builder().url(url).header("Accept", "application/json").build()
 
+        val call = http.newCall(request)
+        underWay[call] = false
         val response = try {
-            http.fetch(request)
+            call.fetch()
         } catch (error: CancellationException) {
             throw error
         } catch (error: IOException) {
             // Offline first, a timeout too: where iOS hears of a connection lost on the way (networkConnectionLost),
-            // Android's socket may only run out its wait.
+            // Android's socket may only run out its wait, unless the app heard of it first (networkLost), or Android
+            // ended it with its network, before ConnectivityManager says the phone is offline (isConnectionLost).
             throw when {
-                isOffline() -> ScooterAPIError.Offline()
+                underWay[call] == true || error.isConnectionLost || isOffline() -> ScooterAPIError.Offline()
                 error is SocketTimeoutException -> ScooterAPIError.TimedOut()
                 else -> ScooterAPIError.Network(error)
             }
+        } finally {
+            underWay.remove(call)
         }
 
         if (response.code !in 200..299) throw ScooterAPIError.HttpStatus(response.code)
@@ -291,6 +311,16 @@ sealed class ScooterAPIError(message: String, cause: Throwable? = null) : Except
         }
 }
 
+/**
+ * A connection Android ended as the network it went through went away (Wi-Fi turned off: the sockets of its address
+ * are destroyed at once), iOS's networkConnectionLost. The socket's read fails with ECONNABORTED, whose message is
+ * the same on Android and Linux, alone or after the TLS layer's own words.
+ */
+internal val IOException.isConnectionLost: Boolean
+    get() = generateSequence<Throwable>(this) { it.cause }.take(8).any { it.message?.contains(CONNECTION_ABORT) == true }
+
+private const val CONNECTION_ABORT = "Software caused connection abort"
+
 /** What came back from a server: the status, the headers and the whole body. */
 internal class ScooterHTTPResponse(val code: Int, val headers: Headers, val body: ByteArray)
 
@@ -300,8 +330,11 @@ internal val jsonMediaType: MediaType = "application/json".toMediaType()
  * The request, its answer read to the end on OkHttp's threads. Cancelling the coroutine cancels the call and
  * throws the cancellation, never the failure of the call it ended; a call that ran out of time fails.
  */
-internal suspend fun OkHttpClient.fetch(request: Request): ScooterHTTPResponse = suspendCancellableCoroutine { continuation ->
-    val call = newCall(request)
+internal suspend fun OkHttpClient.fetch(request: Request): ScooterHTTPResponse = newCall(request).fetch()
+
+/** The call, its answer read to the end on OkHttp's threads, as [OkHttpClient.fetch]. */
+internal suspend fun Call.fetch(): ScooterHTTPResponse = suspendCancellableCoroutine { continuation ->
+    val call = this
     continuation.invokeOnCancellation { call.cancel() }
     call.enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {

@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.webkit.WebView
@@ -91,6 +92,21 @@ class AppContainer(private val context: Context) {
         ScooterListFormat.and = formats::and
         ScooterLanguage.launchLocale = { languages.launchLocale }
         ScooterLinks.appVersion = BuildConfig.VERSION_NAME
+    }
+
+    /**
+     * Ends the server's requests under way as the phone goes offline, by [lost]: a socket of the network Android lost
+     * may wait out its 20 seconds, where the iPhone's URLSession ends its requests as offline at once (X-M21). A
+     * network lost with another in its place that reaches the internet leaves them be. Called once, as the app
+     * starts.
+     */
+    fun watchNetwork(lost: () -> Unit = api::networkLost) {
+        val connectivity = context.getSystemService(ConnectivityManager::class.java) ?: return
+        connectivity.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+            override fun onLost(network: Network) {
+                if (isOffline()) lost()
+            }
+        })
     }
 
     /** Whether the phone has no network that reaches the internet just now: none Android has validated. */

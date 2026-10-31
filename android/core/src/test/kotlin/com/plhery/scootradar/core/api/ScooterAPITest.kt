@@ -12,6 +12,7 @@ import com.plhery.scootradar.core.model.ScooterStartPlace
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import java.io.IOException
 import java.net.MalformedURLException
+import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.time.Instant
@@ -19,16 +20,21 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
+import javax.net.ssl.SSLException
 import kotlin.io.path.createTempDirectory
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -257,6 +263,60 @@ class ScooterAPITest {
             }
             else -> fail("Unexpected error: $error")
         }
+    }
+
+    /**
+     * The phone gone offline with a load under way: the app tells the API (networkLost), which ends it at once as
+     * offline, as iOS's URLSession ends it (networkConnectionLost), where a socket of the network Android lost waited
+     * out its 20 seconds (X-M21). A request made after it goes as any other.
+     */
+    @Test
+    fun aRequestUnderWayAsTheNetworkIsLostIsOfflineAtOnce() = runBlocking<Unit> {
+        val started = CountDownLatch(1)
+        val requests = AtomicInteger()
+        server.enqueue(answer(200, emptyResponseData))
+        val api = ScooterAPI(
+            baseURL = server.url("/"),
+            client = OkHttpClient.Builder().addInterceptor { chain ->
+                if (requests.getAndIncrement() > 0) return@addInterceptor chain.proceed(chain.request())
+                started.countDown()
+                // A socket of a network the phone lost, which hears nothing more.
+                while (!chain.call().isCanceled()) Thread.sleep(5)
+                throw IOException("Canceled")
+            }.build(),
+            isOffline = { false },
+        )
+        val load = async(Dispatchers.Default) { failure { api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) } }
+        assertTrue("the load under way", started.await(5, TimeUnit.SECONDS))
+
+        api.networkLost()
+        val error = withTimeout(2_000) { load.await() }
+        assertTrue("Expected offline, got $error", error is ScooterAPIError.Offline)
+        assertEquals(ScooterLoadFailure.Offline, (error as ScooterAPIError).loadFailure)
+
+        assertTrue(api.scooters(bounds = bounds, zoom = 16, minimumBattery = 0).vehicles.isEmpty())
+    }
+
+    /**
+     * Wi-Fi turned off with a load under way: Android destroys the sockets of its address at once, and the read fails
+     * with ECONNABORTED before ConnectivityManager says the phone is offline (on Phone_Min, API 31: 20 to 80 ms
+     * before). That load is offline, as iOS's networkConnectionLost is (X-M21), whether the socket's words come
+     * alone, after the TLS layer's or as the cause; a connection the server reset has failed.
+     */
+    @Test
+    fun aConnectionAndroidEndedWithItsNetworkIsOffline() = runBlocking<Unit> {
+        for (lost in listOf(
+            SocketException("Software caused connection abort"),
+            SSLException("Read error: ssl=0x7b2c4a10: I/O error during system call, Software caused connection abort"),
+            IOException("unexpected end of stream", SocketException("Software caused connection abort")),
+        )) {
+            val error = failure { makeAPI(failure = lost).scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }
+            assertTrue("$lost: expected offline, got $error", error is ScooterAPIError.Offline)
+        }
+
+        val resetAPI = makeAPI(failure = SocketException("Connection reset"))
+        val reset = failure { resetAPI.scooters(bounds = bounds, zoom = 16, minimumBattery = 0) }
+        assertTrue("a connection the server reset: expected a failure, got $reset", reset is ScooterAPIError.Network)
     }
 
     @Test

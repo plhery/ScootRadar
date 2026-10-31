@@ -17,5 +17,6 @@ class ScooterApplication : Application() {
         thread(name = "Catalog") { ScooterCatalog.Generated.load() }
         container = AppContainer(this)
         container.setHooks()
+        container.watchNetwork()
     }
 }
