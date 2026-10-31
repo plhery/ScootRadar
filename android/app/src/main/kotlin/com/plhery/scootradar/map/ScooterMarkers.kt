@@ -22,6 +22,7 @@ import com.plhery.scootradar.core.map.mapOrigin
 import com.plhery.scootradar.core.map.walkRemainingMetres
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScreenPoint
+import com.plhery.scootradar.core.model.ScreenRect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.merge
@@ -397,6 +398,12 @@ class ScooterMarkers(
         )
         scene.movePills(markerMap)
         flush()
+    }
+
+    /** Filters or Settings over the map, and the open search over it: what TalkBack may hear of the markers. */
+    fun heardDidChange(covered: Boolean, search: ScreenRect?) {
+        accessibility.covered = covered
+        accessibility.search = search
     }
 
     /** The safe area, whose top the names stay below. */

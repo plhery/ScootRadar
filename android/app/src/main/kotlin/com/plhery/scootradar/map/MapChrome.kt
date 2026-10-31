@@ -51,6 +51,15 @@ class MapChromeFrames {
     /** The buttons of a desktop window's caption bar, which the compass keeps under. */
     var captionButtons by mutableStateOf(emptyList<ScreenRect>())
 
+    /**
+     * The open search over the map, in the dock's layout: a finger exploring it with TalkBack finds its rows, not the
+     * markers under them. The other frames keep the closed bar's, as the iPhone's do.
+     */
+    var search by mutableStateOf<ScreenRect?>(null)
+
+    /** Filters or Settings over the map, which TalkBack then hears none of, as VoiceOver hears nothing under a sheet. */
+    var covered by mutableStateOf(false)
+
     val chrome: MapChrome
         get() = when (layout) {
             ScooterChromeLayout.Dock -> MapChrome(

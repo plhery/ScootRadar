@@ -151,6 +151,20 @@ class ScooterMarkerAccessibility(
     private var elements: List<MarkerElement> = emptyList()
     private var isCurrent = false
 
+    /**
+     * A sheet over the map, or the phone's search over all of it: none of the markers shows, and TalkBack hears none
+     * of them, as VoiceOver hears nothing under a sheet.
+     */
+    var covered = false
+        set(value) {
+            if (field == value) return
+            field = value
+            refresh()
+        }
+
+    /** The open search over the map, in the dock's layout: a finger on it finds its rows. */
+    var search: ScreenRect? = null
+
     /** The markers have moved or changed: TalkBack is told, and they are listed again when it asks. */
     fun refresh() {
         isCurrent = false
@@ -180,14 +194,30 @@ class ScooterMarkerAccessibility(
         return elements
     }
 
+    // A finger exploring the map finds what is in front, as VoiceOver's does: on the chrome, the chrome's own elements,
+    // which Compose finds after the map has had the finger, and never a marker under them.
     override fun getVirtualViewAt(x: Float, y: Float): Int {
-        val elements = current()
-        val element = MarkerElements.at(ScreenPoint(x / ratio.toDouble(), y / ratio.toDouble()), elements, scene, map)
+        val point = ScreenPoint(x / ratio.toDouble(), y / ratio.toDouble())
+        if (covered || scene.parent.isUnderChrome(point) || search?.contains(point) == true) return INVALID_ID
+        val element = MarkerElements.at(point, current(), scene, map)
         return element?.let { ids[it.key] } ?: INVALID_ID
     }
 
     override fun getVisibleVirtualViews(virtualViewIds: MutableList<Int>) {
+        if (covered) return
         for (element in current()) virtualViewIds += ids.getValue(element.key)
+    }
+
+    // MapLibre's MapView reads its own English description, "Showing a Map created with MapLibre…", and offers a
+    // click and a long press that do nothing: VoiceOver has no element for the map itself, only for its markers.
+    override fun onPopulateNodeForHost(node: AccessibilityNodeInfoCompat) {
+        node.contentDescription = null
+        node.isClickable = false
+        node.isLongClickable = false
+        node.isFocusable = false
+        node.removeAction(AccessibilityActionCompat.ACTION_CLICK)
+        node.removeAction(AccessibilityActionCompat.ACTION_LONG_CLICK)
+        node.removeAction(AccessibilityActionCompat.ACTION_FOCUS)
     }
 
     // ExploreByTouchHelper makes the bounds on the screen, and whether the view is visible, from those in the map.
@@ -229,6 +259,10 @@ class ScooterMarkerAccessibility(
         sendEventForVirtualView(virtualViewId, AccessibilityEvent.TYPE_VIEW_CLICKED)
         return true
     }
+
+    /** The search bar, a large window's panel, or the locate button, the legend and the dock over [point]. */
+    private fun MarkerParent.isUnderChrome(point: ScreenPoint): Boolean =
+        (listOfNotNull(interactionExclusionFrame, panelFrame) + bottomChromeFrames).any { !it.isEmpty && it.contains(point) }
 
     private fun pixels(frame: ScreenRect): Rect = Rect(
         (frame.minX * ratio).roundToInt(),

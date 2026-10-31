@@ -1,7 +1,9 @@
 package com.plhery.scootradar.map
 
+import android.app.Activity
 import android.graphics.Rect
 import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
 import androidx.test.core.app.ApplicationProvider
@@ -11,6 +13,7 @@ import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScooterParking
+import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -20,6 +23,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -271,5 +275,93 @@ class ScooterMarkerAccessibilityTest {
         // No rider shown, no element.
         scene.parent = MarkerParent()
         assertEquals(listOf("a:search"), MarkerElements.of(scene, map).map { it.key })
+    }
+
+    @Test
+    fun theMapIsNoElementOfItsOwnOnlyItsMarkersAre() {
+        // MapLibre's MapView reads its own English description and offers a click and a long press that do nothing;
+        // VoiceOver has no element for the map, only for its markers (app-ai's TalkBack pass).
+        // A view in a window: one out of any reads nothing at all.
+        val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
+        val view = View(activity)
+        activity.setContentView(view)
+        view.contentDescription = "Showing a Map created with MapLibre. Scroll by dragging two fingers. Zoom by pinching two fingers."
+        view.isClickable = true
+        view.isLongClickable = true
+        view.isFocusable = true
+        val map = FlatMarkerMap()
+        scene.reconcile(listOf(scooter("a", "lime", at = map.at(195.0, 300.0))), revision = 1)
+        scene.updateLook(map)
+
+        // The view's delegate, as the markers make it.
+        val accessibility = ScooterMarkerAccessibility(view, scene, map, density) { changes += 1 }
+        ViewCompat.setAccessibilityDelegate(view, accessibility)
+        val node = accessibility.getAccessibilityNodeProvider(view)!!.createAccessibilityNodeInfo(ExploreByTouchHelper.HOST_ID)!!
+        assertEquals("the view is in its window", true, view.isAttachedToWindow)
+        assertNull(node.contentDescription)
+        assertFalse(node.isClickable)
+        assertFalse(node.isLongClickable)
+        assertFalse(node.isFocusable)
+        val actions = listOf(AccessibilityNodeInfoCompat.ACTION_CLICK, AccessibilityNodeInfoCompat.ACTION_LONG_CLICK, AccessibilityNodeInfoCompat.ACTION_FOCUS)
+        assertEquals(emptyList<Int>(), node.actionList.map { it.id }.filter { it in actions })
+        // Its markers are in it all the same.
+        assertEquals(1, node.childCount)
+    }
+
+    @Test
+    fun aFingerOnTheChromeFindsNoMarkerUnderIt() {
+        // A finger exploring the screen finds what is in front, the search bar, the dock or the panel, as VoiceOver's
+        // does: not a marker under them, which a double tap would then open (app-ai's TalkBack pass).
+        val map = FlatMarkerMap()
+        scene.reconcile(
+            listOf(
+                scooter("top", "lime", at = map.at(195.0, 70.0)),
+                scooter("free", "voi", at = map.at(195.0, 300.0)),
+                scooter("docked", "bolt", at = map.at(195.0, 700.0)),
+            ),
+            revision = 1,
+        )
+        scene.updateLook(map)
+        scene.parent = scene.parent.copy(
+            interactionExclusionFrame = ScreenRect(0.0, 0.0, 390.0, 110.0),
+            bottomChromeFrames = listOf(ScreenRect(16.0, 560.0, 50.0, 50.0), ScreenRect(0.0, 620.0, 390.0, 224.0)),
+        )
+        val accessibility = helper(map)
+        fun at(x: Double, y: Double) = accessibility.virtualViewAt((x * density).toFloat(), (y * density).toFloat())
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 70.0))
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 700.0))
+        val free = at(195.0, 300.0)
+        assertNotEquals(ExploreByTouchHelper.INVALID_ID, free)
+        // Swiped to, the markers under the chrome are read all the same, as VoiceOver reads MapKit's in its order.
+        assertEquals(3, accessibility.virtualViews().size)
+
+        // The open search over the map, whose rows a finger finds.
+        accessibility.search = ScreenRect(16.0, 50.0, 358.0, 400.0)
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 300.0))
+        accessibility.search = null
+        assertEquals(free, at(195.0, 300.0))
+
+        // Beside a large window's panel.
+        scene.parent = MarkerParent(panelFrame = ScreenRect(0.0, 0.0, 320.0, 844.0))
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 300.0))
+    }
+
+    @Test
+    fun nothingOfTheMapIsHeardUnderASheet() {
+        // Filters and Settings are modal, as VoiceOver reads a sheet alone.
+        val map = FlatMarkerMap()
+        scene.reconcile(listOf(scooter("a", "lime", at = map.at(195.0, 300.0))), revision = 1)
+        scene.updateLook(map)
+        val accessibility = helper(map)
+        val marker = accessibility.virtualViews().single()
+
+        accessibility.covered = true
+        assertEquals(emptyList<Int>(), accessibility.virtualViews())
+        assertEquals(ExploreByTouchHelper.INVALID_ID, accessibility.virtualViewAt(195f * 3, 300f * 3))
+        assertEquals(0, accessibility.node(ExploreByTouchHelper.HOST_ID).childCount)
+
+        accessibility.covered = false
+        assertEquals(listOf(marker), accessibility.virtualViews())
+        assertEquals(marker, accessibility.virtualViewAt(195f * 3, 300f * 3))
     }
 }

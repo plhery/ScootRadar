@@ -241,6 +241,11 @@ fun ScooterMap(
             markers?.chromeDidChange(it)
         }
     }
+    // What TalkBack hears of the markers: none under a sheet, and none that a finger finds under the open search.
+    LaunchedEffect(markers, chrome) {
+        if (chrome == null) return@LaunchedEffect
+        snapshotFlow { chrome.covered to chrome.search }.collect { (covered, search) -> markers?.heardDidChange(covered, search) }
+    }
     LaunchedEffect(camera, focus) { camera?.applyFocus(focus) }
     LaunchedEffect(camera, zoom) { camera?.applyZoom(zoom) }
     // A scooter or bay chosen beside a panel is brought out from under it.

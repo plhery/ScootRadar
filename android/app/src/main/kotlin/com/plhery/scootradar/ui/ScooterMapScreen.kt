@@ -297,6 +297,7 @@ fun ScooterMapScreen(
                     chrome.fold = fold
                     chrome.isSearching = searchIsExpanded
                     chrome.captionButtons = captionButtons
+                    chrome.covered = sheetOpen
                 }
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
@@ -488,6 +489,7 @@ private fun DockChrome(
         onDispose {
             chrome.top = null
             chrome.dock = null
+            chrome.search = null
         }
     }
 
@@ -983,7 +985,10 @@ private fun TopStack(
                     barHeight = it
                     onSearchBarHeightChange(it)
                 },
-                modifier = searchBarModifier.onGloballyPositioned { if (!isSearching) barFrame = it.windowFrame(density.density) },
+                modifier = searchBarModifier.onGloballyPositioned {
+                    if (!isSearching) barFrame = it.windowFrame(density.density)
+                    chrome.search = if (isSearching) it.windowFrame(density.density) else null
+                },
             )
             AppearingContent(
                 visible = !isSearching,
