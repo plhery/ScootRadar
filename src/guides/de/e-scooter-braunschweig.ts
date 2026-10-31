@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Braunschweig 2026: Anbieter, Preise, Parken',
   description: 'E-Scooter Braunschweig: die vier Anbieter, was über Preise bekannt ist, Stationen in der Okerumflut, Fahren im Park und die Mitnahme in Bus und Tram.',
   headline: 'E-Scooter Braunschweig: Anbieter, Preise und warum du in der Innenstadt nur an Stationen parkst',
-  lede: 'E-Scooter in Braunschweig leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Ryde oder Voi. Einen Braunschweiger Tarif fanden wir bei keinem der vier offen; den Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone; auf den Wegen der städtischen Parks erlaubt die Parksatzung E-Scooter ausdrücklich, Fussgänger haben dort Vorrang. Innerhalb der Okerumflut stellst du den Scooter nur an markierten Stationen ab. Zusammengeklappt fährt dein eigener Scooter kostenlos in Bus und Tram mit.',
+  lede: 'E-Scooter in Braunschweig leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Ryde oder Voi. Den Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone; auf den Wegen der städtischen Parks erlaubt die Parksatzung E-Scooter ausdrücklich, Fussgänger haben dort Vorrang. Innerhalb der Okerumflut stellst du den Scooter nur an markierten Stationen ab. Zusammengeklappt fährt dein eigener Scooter kostenlos in Bus und Tram mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Braunschweig',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt Braunschweig (undatierte Seite, gelesen am 25. Oktober 2026) sind vier Verleiher im Stadtgebiet tätig: **Bolt**, **Ryde**, **TIER**, das heute Dott heisst, und **Voi**. Bolt, Dott und Ryde führen Braunschweig auch auf ihren eigenen Seiten. Voi kam laut seiner Mitteilung vom März 2025 am 1. April 2025 mit rund 800 Scootern dazu, «bis in die Aussenbezirke». Lime steht nicht auf der Liste der Stadt.',
         'Du leihst den Scooter in der App des Anbieters, ab 18 und ohne Führerschein. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Braunschweig](map:de:Braunschweig) Dott und Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1150 Scooter, knapp 600 von Dott und gut 550 von Voi. Sie standen im ganzen Stadtgebiet, in den äusseren Stadtbezirken dünner; in Wolfenbüttel stand in der Nacht darauf keiner. Das ist eine Momentaufnahme, keine Flottengrösse. Die Karte zeigt, wo die Scooter stehen, keine Preise, Zonen oder Stationen. Seit dem 25. Oktober zeigt sie auch Bolt; Ryde findest du nur in seiner App.',
+        'ScootRadar zeigt auf der [Karte von Braunschweig](map:de:Braunschweig) Dott und Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1150 Scooter, die zu diesem Zeitpunkt frei waren: knapp 600 von Dott und gut 550 von Voi. Sie standen im ganzen Stadtgebiet, in den äusseren Stadtbezirken dünner; in Wolfenbüttel stand in der Nacht darauf keiner. Die Karte zeigt, wo die Scooter stehen, keine Preise; zoomst du hinein, zeichnet sie die Abstellflächen und Parkverbotszonen der Stadt Braunschweig und die Okerumflut, in der du nur an den markierten Stationen abstellst (offene Daten, CC BY 4.0). Seit dem 25. Oktober zeigt sie auch Bolt; Ryde findest du nur in seiner App.',
         'Eine Genehmigung der Stadt braucht ein Verleih laut Stadt grundsätzlich nicht. Stattdessen sollen Anbieter und Stadt eine Qualitätsvereinbarung unterzeichnen (Vorlage von Dezember 2021), laut ihrem § 12 «für keine Partei verbindlich». Sie sieht höchstens 100 Scooter je Anbieter innerhalb der Okerumflut (Zone A1) vor und höchstens fünf je Standort (100 m Umkreis), wenn der Anbieter sie aufstellt. Liegen seine Scooter ein Jahr lang unter 2 bis 3 Fahrten am Tag, soll er ihre Zahl anpassen.',
       ],
     },
@@ -121,7 +121,7 @@ const guide: Guide = {
     {
       heading: 'Eintracht, Schoduvel und Kurioses',
       blocks: [
-        '**Eintracht-Stadion:** Eine eigene Spieltagsregel für E-Scooter fanden wir weder bei der Stadt noch beim Verein. West-, Süd- und Osteingang sind aber immer Parkverbotszonen; beende die Fahrt ein Stück entfernt. Den nächsten Dott oder Voi zeigt die [Live-Karte von Braunschweig](map:de:Braunschweig).',
+        '**Eintracht-Stadion:** West-, Süd- und Osteingang sind immer Parkverbotszonen; beende die Fahrt ein Stück entfernt. Den nächsten Dott oder Voi zeigt die [Live-Karte von Braunschweig](map:de:Braunschweig).',
         '**Grossveranstaltungen:** Bei Ereignissen wie dem Karnevalsumzug Schoduvel sollen die Anbieter laut der unverbindlichen Vereinbarung auf Wunsch von Stadt oder Polizei weitere Flächen freihalten und dort die Rückgabe sperren.',
         {
           list: [

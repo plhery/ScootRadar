@@ -17,9 +17,9 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Arlington, VA?',
       blocks: [
         'Arlington is a county, not a city, and its Board adopted its shared scooter and e-bike rules on 16 November 2019. In September 2025 the staff of neighbouring Falls Church counted **three permitted operators** in the County, **Lime**, **Bird** and **Spin**, with up to 2,000 e-scooters and 1,000 e-bikes allowed and 1,600 scooters out. Operators paid $1,000 to apply for each kind of device, plus $80 a device. ARLnow still counted three operators in March 2026, without naming them.',
-        '**Spin**, which Bird bought in 2023, has no scooters on our map: its open data listed none in Arlington in late October 2026. **GCOO**, a South Korean brand with a permit next door in Alexandria until 31 March 2027, publishes a service area covering most of Arlington, and the map has shown its scooters there since 24 October 2026. Falls Church’s staff deck of 11 February 2026 still listed Lime, Bird and Spin in Arlington and GCOO in Alexandria only, and BikeArlington, the County’s cycling programme, names Lime, Bird and Spin; we couldn’t read the County’s own website to check for later changes. Veo and LINK left early in 2024, ARLnow reported.',
+        '**Spin**, which Bird bought in 2023, has no scooters on our map: its open data listed none in Arlington in late October 2026. **GCOO**, a South Korean brand with a permit next door in Alexandria until 31 March 2027, publishes a service area covering most of Arlington, and the map has shown its scooters there since 24 October 2026. Falls Church’s staff deck of 11 February 2026 still listed Lime, Bird and Spin in Arlington and GCOO in Alexandria only, and BikeArlington, the County’s cycling programme, names Lime, Bird and Spin. Veo and LINK left early in 2024, ARLnow reported.',
         'At 4:56 a.m. on Thursday 29 October 2026 the [Arlington map](map:us:va:Arlington) showed about 1,010 scooters: some 520 Lime and 230 Bird at that moment, and 260 GCOO as last counted. That is what the map holds, not the fleets. The total is what the three companies list for Arlington, less any in Alexandria, not a count within the County’s boundary: a few may stand just over the line in Falls Church or Fairfax County.',
-        'For Bird and GCOO the map shows each scooter’s position, charge and range, and Bird’s zones; for Lime, position and range. Scooters on a ride aren’t shown, nor are e-bikes or Capital Bikeshare. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'For Bird and GCOO the map shows each scooter’s position, charge and range, and their zones; for Lime, position and range. Scooters on a ride aren’t shown, nor are e-bikes or Capital Bikeshare. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -39,7 +39,7 @@ const guide: Guide = {
             rows: [
               ['Where to ride', 'Streets, bike lanes, shared-use paths and sidewalks, unless signs say otherwise. Never on an Interstate', 'Arlington County, as summed up by Falls Church in 2025; Code of Virginia § 46.2-908.1'],
               ['Sidewalks', 'Not where signs ban riding, and not where a bike lane runs your way: use the lane. The County’s 2020 notice named protected lanes; the 2025 summary says any', 'Arlington County; Code of Virginia §§ 46.2-903, 46.2-904'],
-              ['Speed', '6 mph on sidewalks and 15 mph on streets and trails, as the County announced in November 2019; we found no later word. 20 mph at most anywhere in Virginia', 'Arlington County (2019); Code of Virginia § 46.2-908.1'],
+              ['Speed', '6 mph on sidewalks and 15 mph on streets and trails, as the County announced in November 2019. 20 mph at most anywhere in Virginia', 'Arlington County (2019); Code of Virginia § 46.2-908.1'],
               ['People on foot', 'On a sidewalk, shared-use path or crosswalk, yield to them and give an audible signal before you pass', 'Code of Virginia § 46.2-904'],
               ['Age', '18 to ride a GCOO; Lime and Bird set theirs in their apps. Under 14, only with someone 18 or older supervising', 'GCOO’s terms; Code of Virginia § 46.2-908.1'],
               ['Helmet', 'Virginia lets a county require one up to age 14; we couldn’t check whether Arlington does. GCOO advises one for everyone', 'Code of Virginia § 46.2-906.1; GCOO'],
@@ -62,7 +62,7 @@ const guide: Guide = {
             '**On the sidewalk,** park in a rack, against the curb, by a street sign or light post, or at the back edge, leaving the walkway clear. In the street, only against the curb or in a corral.',
             '**Never block** curb ramps, crosswalks, bus stops or fire access, and never park on private property without the owner’s consent.',
             '**Who pays.** Under the 2019 rules a company has two hours to fix a reported scooter or faces a $50 civil penalty; Virginia law can fine you up to $50 for parking in people’s way.',
-            '**Zones on the map.** At street zoom the map draws Bird’s no-parking zones: Arlington National Cemetery and Fort Myer, the Pentagon and its Metro station, Gravelly Point, the Marine Corps War Memorial and dozens of small patches. Lime and GCOO show theirs in their apps.',
+            '**Zones on the map.** At street zoom the map draws Bird’s no-parking zones: Arlington National Cemetery and Fort Myer, the Pentagon and its Metro station, Gravelly Point, the Marine Corps War Memorial and dozens of small patches. It also draws GCOO’s zones, Arlington County’s corrals and the cemetery as a no-ride zone, under federal rules; Lime shows its zones in its app.',
           ],
         },
       ],
@@ -121,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'Which scooter companies operate in Arlington?',
-      answer: 'The map shows Lime, Bird and GCOO. Falls Church’s February 2026 deck listed Lime, Bird and Spin in Arlington, and Spin’s scooters aren’t on the map. GCOO has a permit in Alexandria until 31 March 2027; we couldn’t check for one in Arlington.',
+      answer: 'The map shows Lime, Bird and GCOO. Falls Church’s February 2026 deck listed Lime, Bird and Spin in Arlington, and Spin’s scooters aren’t on the map. GCOO has a permit in Alexandria until 31 March 2027.',
     },
     {
       question: 'Can you ride a scooter on the Mount Vernon Trail?',
@@ -159,6 +159,7 @@ const guide: Guide = {
     { title: 'Reagan National Airport: Biking and walking', url: 'https://www.flyreagan.com/parking-transportation/biking-walking' },
     { title: 'WMATA: Bikes on Metrorail', url: 'https://www.wmata.com/ride/guides/bikes/bikes-on-rail.html' },
     { title: 'Arlington Transit (ART): How to ride', url: 'https://www.arlingtontransit.com/rider-info-fares/how-to-ride/' },
+    { title: 'Arlington County: parking corrals map (ArcGIS)', url: 'https://arlgis.maps.arcgis.com/apps/instant/basic/index.html?appid=f525cf9c5bce4cbb9c360b2daecdf31c' },
     { title: 'City of Alexandria: Dockless Mobility', url: 'https://www.alexandriava.gov/DocklessMobility' },
     { title: 'GCOO: GCOO Access', url: 'https://gcoo.io/en/service/access' },
     { title: 'Gbike USA (GCOO): Rental Agreement', url: 'https://gbike.io/policy/us/en/rental.html' },

@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Stockholm: Voi and Bolt',
       blocks: [
-        '**Voi** and **Bolt** are the only companies renting out e-scooters in the City of Stockholm. On 11 December 2025 the city’s traffic committee (trafiknämnden) limited e-scooter operators to two from 1 July 2026, and in June 2026 the city chose Voi and Bolt, Bolt and the local paper Mitt i reported. Lime had to leave and said it would appeal; we found no ruling on that appeal (October 2026).',
+        '**Voi** and **Bolt** are the only companies renting out e-scooters in the City of Stockholm. On 11 December 2025 the city’s traffic committee (trafiknämnden) limited e-scooter operators to two from 1 July 2026, and in June 2026 the city chose Voi and Bolt, Bolt and the local paper Mitt i reported. Lime had to leave and said it would appeal.',
         'The city allows up to **12,000** rental e-scooters, a cap it kept in December 2025, and Bolt says its permit covers up to 6,000 of them for about two years. Each company needs a permit from the Swedish Police Authority (Polismyndigheten) to use public land, granted only if the city agrees, and pays the city SEK 1,400 a scooter a year, the city’s traffic office wrote in October 2025. We found no separate cap for the inner city; from 1 July 2026 the city’s criteria for sharing out scooters reward companies that reach the outer districts.',
-        'At about 15:20 on Sunday 25 October 2026 the [map of Stockholm](map:se:Stockholm) showed about 12,300 e-scooters, some 6,600 Voi and 5,700 Bolt: a snapshot, not the fleet size. It shows where they stand and their battery, not prices, zones, parking or hours. Its area reaches past the city limits, so the count can’t be compared with the cap. By Statistics Sweden’s boundaries, about 10,950 stood in the City of Stockholm, 590 in Solna, 380 in Nacka and 370 in Sundbyberg, and none on Lidingö.',
+        'At about 15:20 on Sunday 25 October 2026 the [map of Stockholm](map:se:Stockholm) showed about 12,300 e-scooters free to rent at that moment, some 6,600 Voi and 5,700 Bolt. It shows where they stand and their battery, not prices or hours; zoomed in, it draws Stockholms stad’s e-scooter bays (open data, CC0), but not its no-parking areas. Its area reaches past the city limits, so the count can’t be compared with the cap. By Statistics Sweden’s boundaries, about 10,950 stood in the City of Stockholm, 590 in Solna, 380 in Nacka and 370 in Sundbyberg, and none on Lidingö.',
         'Voi and Bolt also rent out **e-bikes** here, up to 1,500 each since 1 January 2026, Mitt i reported in June 2026, citing the city. The map shows standing e-scooters only.',
       ],
     },
     {
       heading: 'How much does a Voi or Bolt e-scooter cost in Stockholm?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Stockholm price on an open official page: Bolt’s Swedish website mentions a small unlocking fee plus a per-minute fee that can vary and sends you to the app for prices; Voi’s website refused our requests.',
+        '**The app shows the price** before you unlock. Bolt’s Swedish website mentions a small unlocking fee plus a per-minute fee that can vary and sends you to the app for prices.',
         {
           table: {
             caption: 'Voi and Bolt in Stockholm at a glance, October 2026, and who says so',
@@ -178,6 +178,7 @@ const guide: Guide = {
   sources: [
     { title: 'City of Stockholm: Electric scooters (updated 21 October 2026)', url: 'https://trafik.stockholm/en/traffic-regulations/electric-scooters/' },
     { title: 'Stockholms stad: Elsparkcyklar (updated 28 May 2026)', url: 'https://trafik.stockholm/trafikregler/elsparkcyklar/' },
+    { title: 'Stockholms stad: Elsparkcykelplats, the e-scooter bays (open data, CC0)', url: 'https://dataportalen.stockholm.se/dataportalen/srv/swe/catalog.search#/metadata/LvFeature19742957' },
     { title: 'Stockholms stad: Gamla stan (updated 8 October 2026)', url: 'https://trafik.stockholm/trafikregler/gamla-stan/' },
     { title: 'Trafiknämnden: Minutes, § 31 (11 December 2025)', url: 'https://insynsverige.se/documentHandler.ashx?did=2064027' },
     { title: 'Trafikkontoret: Report on rental e-scooters and bikes (22 October 2025)', url: 'https://insynsverige.se/documentHandler.ashx?did=2063931' },

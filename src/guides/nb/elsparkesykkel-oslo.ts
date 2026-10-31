@@ -75,7 +75,7 @@ const guide: Guide = {
       heading: 'Hvor kan du kjøre? Kjøreforbud og saktesoner i Oslo',
       blocks: [
         'Kjør i sykkelfeltet eller på sykkelveien der det finnes, ellers i veibanen. På fortau, i gågater, i parker og på torg ber kommunen deg kjøre i gangfart eller trille. Du får ikke kjøre på motorvei, motortrafikkvei eller veier som er skiltet forbudt for syklende, som mange tunneler og noen bruer.',
-        'I tillegg har kommunen soner der sparkesykkelen selv setter ned farten eller ikke lar seg kjøre. Du ser dem i appen og i [kommunens kart over reguleringene](https://experience.arcgis.com/experience/e77cffa7119144f3bf9cb57c294cbcef), og zoomer du inn på ScootRadar-kartet, viser det sonene Bolt, Ryde og Voi publiserer. Noen eksempler, per oktober 2026:',
+        'I tillegg har kommunen soner der sparkesykkelen selv setter ned farten eller ikke lar seg kjøre. Du ser dem i appen og i [kommunens kart over reguleringene](https://experience.arcgis.com/experience/e77cffa7119144f3bf9cb57c294cbcef), og zoomer du inn på ScootRadar-kartet, tegner det Oslo kommunes parkeringsplasser, saktesoner og soner med parkerings- og kjøreforbud (ikke skolegårdene), og sonene Bolt, Ryde og Voi publiserer. Noen eksempler, per oktober 2026:',
         {
           list: [
             '**Kjøreforbud:** gravlunder som Vår Frelsers gravlund, Marka (også Sognsvann), taket og plassen ved Operaen, Botanisk hage på Tøyen, plassen foran Oslo S og skolegårder på hverdager.',

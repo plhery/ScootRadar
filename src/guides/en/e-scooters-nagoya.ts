@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Nagoya 2026: LUUP, rules and where to park',
   description: 'E-scooters in Nagoya: LUUP’s ports and prices, who may ride (16 or over, no licence), the 6 km/h pavement mode and the City’s ¥5,000 removal fee.',
   headline: 'E-scooters in Nagoya: renting LUUP, who may ride, where to ride and where to park',
-  lede: 'You rent e-scooters in Nagoya from LUUP, at its ports: it is the one company the map shows there, and the only one we could confirm renting them in 2026. Japanese law lets anyone 16 or over ride the 20 km/h class without a driving licence, and asks riders only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port: the City removes e-scooters left in its no-parking zones, Sakae’s among them, and charges ¥5,000 to give one back.',
+  lede: 'You rent e-scooters in Nagoya from LUUP, at its ports: it is the one company the map shows there. Japanese law lets anyone 16 or over ride the 20 km/h class without a driving licence, and asks riders only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port: the City removes e-scooters left in its no-parking zones, Sakae’s among them, and charges ¥5,000 to give one back.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'jp:Nagoya',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Nagoya: LUUP on the map',
       blocks: [
-        'The map shows one company’s e-scooters in Nagoya, **LUUP**, counted at its ports: each port on the [Nagoya map](map:jp:Nagoya) shows how many scooters stand there, without their charge or range, and ports closed at the time are left off. At 03:06 on Friday 30 October 2026, Nagoya time, the map’s Nagoya figure was about 830 LUUP scooters: a snapshot, not a fleet size.',
+        'The map shows one company’s e-scooters in Nagoya, **LUUP**, counted at its ports: each port on the [Nagoya map](map:jp:Nagoya) shows how many scooters stand there, without their charge or range, and ports closed at the time are left off. At 03:06 on Friday 30 October 2026, Nagoya time, the map’s Nagoya figure was about 830 LUUP scooters free to rent at that moment. Zoomed in, the website draws the pavements the Aichi police open to bicycles, and so to the 6 km/h mode (JARTIC open data).',
         'That figure takes in LUUP’s Nagoya service as a whole, not the city alone: any of its ports just over the city line, in neighbouring cities such as Kiyosu, Kitanagoya, Kasugai, Owariasahi, Nagakute, Nisshin or Toyoake, count as Nagoya too.',
         'ScootRadar shows standing e-scooters only: not LUUP’s e-bikes or seated scooters, nor any bike share. Nor does it show **Su_i** (スーイ), the e-scooter share of Crystal, a Nagoya company: it ran in the Nagoya area in August 2024, Space Connect reported, and we couldn’t confirm it still does. We found no other company renting e-scooters in Nagoya.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
@@ -150,6 +150,7 @@ const guide: Guide = {
     { title: 'Road Traffic Act Enforcement Regulations, art. 38 (e-Gov, Japanese)', url: 'https://laws.e-gov.go.jp/law/335M50000002060' },
     { title: 'National Police Agency: specified small motorised bicycles (Japanese)', url: 'https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html' },
     { title: 'National Police Agency: guideline for rental companies, March 2023 (Japanese)', url: 'https://www.npa.go.jp/bureau/traffic/anzen/img/tokuteikogata/guideline.pdf' },
+    { title: 'JARTIC: open data, the police’s traffic rules (交通規制情報) (Japanese)', url: 'https://www.jartic.or.jp/service/opendata/' },
     { title: 'Nagoya City: e-scooters and removal, 17 October 2025 (Japanese)', url: 'https://www.city.nagoya.jp/bousai/anzen/1014355/1014407/1014413.html' },
     { title: 'Nagoya City: depots for removed bicycles and mopeds (Japanese)', url: 'https://www.city.nagoya.jp/bousai/anzen/1014355/1014407/1014411.html' },
     { title: 'Nagoya City: Sakae no-parking zone, 2 September 2026 (Japanese)', url: 'https://www.city.nagoya.jp/bousai/anzen/1014355/1014407/1014414.html' },

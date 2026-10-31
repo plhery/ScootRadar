@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter hire Porto 2026: Bird and Lime, rules, parking',
   description: 'Rent a Bird or Lime e-scooter in Porto: the app shows the price before you unlock. End every ride at a blue sharing point; no pavements, squares or bus lanes.',
   headline: 'E-scooters in Porto: Bird and Lime, where you can ride and where to park',
-  lede: 'You can rent an e-scooter in Porto from Bird or Lime, the two companies the city licensed in 2025; both also rent out e-bikes in the same app. We found no published Porto prices for either: the app shows the price before you unlock. You must end every ride at a municipal sharing point, marked in blue on the ground, and may not ride on pavements, squares, pedestrian streets, bus lanes or the upper deck of the Dom Luís I bridge. Since November 2025 the service may run 24 hours a day.',
+  lede: 'You can rent an e-scooter in Porto from Bird or Lime, the two companies the city licensed in 2025; both also rent out e-bikes in the same app. The app shows the price before you unlock. You must end every ride at a municipal sharing point, marked in blue on the ground, and may not ride on pavements, squares, pedestrian streets, bus lanes or the upper deck of the Dom Luís I bridge. Since November 2025 the service may run 24 hours a day.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'pt:Porto',
@@ -28,7 +28,7 @@ const guide: Guide = {
             ],
           },
         },
-        'ScootRadar shows Bird’s e-scooters with their battery level: about 480 on the [map around Porto](map:pt:Porto) on 13 October 2026. The area spills into Matosinhos, so that isn’t Bird’s fleet size. Since 26 October the map also shows Lime’s, with their battery level: a full scan of Lime’s Porto zone, finished at 22:27 on 25 October, found about 430, counted separately from Bird’s. New to shared scooters? Read [how to rent an e-scooter](guide:how-to-rent).',
+        'ScootRadar shows Bird’s e-scooters with their battery level: about 480 on the [map around Porto](map:pt:Porto) on 13 October 2026, free to rent at that moment, in an area that spills into Matosinhos. Since 26 October the map also shows Lime’s, with their battery level: about 430 as last counted at 22:27 on 25 October, apart from Bird’s. Zoomed in, it draws the Câmara Municipal do Porto’s 230 sharing points. New to shared scooters? Read [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -107,7 +107,7 @@ const guide: Guide = {
       blocks: [
         'Since November 2025 Porto’s rules let the service run 24 hours a day. From 2020 until then, every shared scooter had to be off the street from 22:00 to 06:00, and many older guides still say so. The city can bring night closures back, for one operator or all of them, if crashes rise abnormally.',
         'In April 2026 a 25-year-old died in a collision between scooters in Porto, and on 21 April the city council voted unanimously for a study of scooter use and crashes, with no deadline. On 4 September 2026 the mayor, Pedro Duarte, called scooters “a problem in the city” and said he wanted to cut their use substantially in favour of other soft modes, in talks with the operators.',
-        'As of 13 October 2026 we had found no new restriction adopted. Check the app before you ride.',
+        'No new restriction had been adopted by 13 October 2026. Check the app before you ride.',
       ],
     },
     {
@@ -159,12 +159,13 @@ const guide: Guide = {
     },
     {
       question: 'Is Porto going to ban e-scooters?',
-      answer: 'We found no such decision as of 13 October 2026. The mayor wants far fewer scooters and more bikes, by agreement with the operators, and in April 2026 the council voted for a study of scooter use and crashes. Porto’s rules already let the city cut hours or close streets.',
+      answer: 'Not as of 13 October 2026. The mayor wants far fewer scooters and more bikes, by agreement with the operators, and in April 2026 the council voted for a study of scooter use and crashes. Porto’s rules already let the city cut hours or close streets.',
     },
   ],
   sources: [
     { title: 'Diário da República: Regulamento n.º 1222/2025, Porto’s rules since November 2025 (Portuguese)', url: 'https://diariodarepublica.pt/dr/detalhe/regulamento/1222-2025-944874377' },
     { title: 'City of Porto: shared scooters and sharing points (Portuguese)', url: 'https://mobilidade.cm-porto.pt/modos-suaves/trotinetas' },
+    { title: 'Câmara Municipal do Porto: sharing points, on Porto Digital’s urban platform', url: 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000' },
     { title: 'City of Porto: the service starts, 31 May 2020 (Portuguese)', url: 'https://www.porto.pt/pt/noticia/regime-de-partilha-de-trotinetas-e-bicicletas-entra-amanha-em-funcionamento' },
     { title: 'Echo Boomer: Bird and Lime get Porto’s licences, August 2025 (Portuguese)', url: 'https://echoboomer.pt/?p=265398' },
     { title: 'Echo Boomer: Lime starts in Porto, September 2025 (Portuguese)', url: 'https://echoboomer.pt/lime-estreia-porto-700-trotinetes-bicicletas/' },

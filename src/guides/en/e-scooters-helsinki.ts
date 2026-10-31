@@ -25,14 +25,14 @@ const guide: Guide = {
           ],
         },
         'Five companies rented out scooters in Helsinki in 2025 and three in 2026. Since late July 2026 Donkey Republic has also rented out pedal bikes under the licence.',
-        'Between 18:45 and 19:00 on Sunday 25 October 2026 the map showed about 4,000 scooters within Helsinki’s city limits (about 2,300 Voi and 1,700 Dott) and about 2,300 more in Espoo: a snapshot, not a fleet size. Zoomed out, the [Helsinki map](map:fi:Helsinki) counts Voi’s Espoo scooters in Helsinki’s total, about 5,800 at 14:50 that day. It shows Voi’s scooters with their battery level, and Dott’s positions only.',
+        'Between 18:45 and 19:00 on Sunday 25 October 2026 the map showed about 4,000 scooters free to rent at that moment within Helsinki’s city limits (about 2,300 Voi and 1,700 Dott) and about 2,300 more in Espoo. Zoomed out, the [Helsinki map](map:fi:Helsinki) counts Voi’s Espoo scooters in Helsinki’s total, about 5,800 at 14:50 that day. It shows Voi’s scooters with their battery level, and Dott’s positions only; zoomed in, it draws the City of Helsinki’s e-scooter bays (CC BY 4.0).',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Helsinki?',
       blocks: [
-        'We found no Helsinki prices on an open web page: each app shows the unlock fee and the rate per minute before you start.',
+        'Each app shows the unlock fee and the rate per minute before you start.',
         'Dott’s terms for Finland do set the extra fees it can charge:',
         {
           table: {
@@ -144,7 +144,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does an e-scooter cost in Helsinki?',
-      answer: 'The app shows it: we found no Helsinki prices on an open web page. Check the unlock fee and the rate per minute before you start.',
+      answer: 'The app shows it: check the unlock fee and the rate per minute before you start.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Finland?',
@@ -166,6 +166,7 @@ const guide: Guide = {
   sources: [
     { title: 'City of Helsinki: electric scooters (modified 21 October 2026)', url: 'https://www.hel.fi/en/urban-environment-and-traffic/cycling/electric-scooters' },
     { title: 'City of Helsinki: sähköpotkulaudat, with the zone maps (Finnish)', url: 'https://www.hel.fi/fi/kaupunkiymparisto-ja-liikenne/pyoraily/sahkopotkulaudat' },
+    { title: 'Helsinki Region Infoshare: Parking places in Helsinki, with the e-scooter bays (CC BY 4.0)', url: 'https://hri.fi/data/en_GB/dataset/helsingin-kantakaupungin-ja-asukaspysakointivyohykkeiden-pysakointipaikat' },
     { title: 'City of Helsinki: 2026 micromobility licence terms, 2 December 2025 (Finnish, PDF)', url: 'https://ahjojulkaisu.hel.fi/CF797207-A9AA-C8A6-906D-9AE871400002.pdf' },
     { title: 'City of Helsinki: removal fees, 18 December 2025 (Finnish)', url: 'https://paatokset.hel.fi/fi/asia/hel-2025-018726' },
     { title: 'City of Helsinki: scooter use fell in 2026, 2 October 2026 (Finnish)', url: 'https://www.hel.fi/fi/uutiset/sahkopotkulautojen-kaytto-vaheni-helsingissa' },

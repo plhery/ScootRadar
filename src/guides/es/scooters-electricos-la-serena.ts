@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: '¿Qué scooters de arriendo hay en La Serena?',
       blocks: [
-        'Los scooters eléctricos de La Serena son de **Whoosh**, la misma empresa que los arrienda en Santiago y Viña del Mar:',
+        'Los scooters eléctricos de La Serena son de **Whoosh**, la misma empresa que los arrienda en Santiago, Viña del Mar y [Puerto Montt](guide:puerto-montt):',
         {
           list: [
             '**El anuncio.** El 11 de noviembre de 2025, la municipalidad anunció hasta 600 scooters, sobre todo en los sectores turísticos y cerca de universidades e institutos, para unir el casco histórico con la Avenida del Mar.',

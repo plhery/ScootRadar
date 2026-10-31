@@ -81,7 +81,7 @@ const guide: Guide = {
             '**Elsewhere, aim for a preferred spot.** Preferred parking spots, marked P in the app and some with a “Park Here” sign, take $1 off your next ride. About 40 corrals marked “Park Here” went in during 2024 around downtown, Boise State, nearby neighbourhoods and transit corridors.',
             '**Leave the way clear.** Stand the scooter upright at the edge of the sidewalk or by a bike rack. Never block bus stops, benches, curb ramps, intersections, building entrances or ADA access, and never park on private property, in a parking garage or in the street unless a corral is there. You may be fined for breaking the parking rules, the City says.',
             '**On the Greenbelt,** park off the path, on concrete or another hard surface.',
-            '**Zones.** Obey the geofenced no-ride and slow zones, which the City maps on its page, as Garden City does Lime’s slow zones; the ScootRadar map doesn’t draw them. Report a badly parked Lime with the City’s online enforcement request form.',
+            '**Zones.** Obey the geofenced no-ride and slow zones, which the City maps on its page, as Garden City does Lime’s slow zones. Zoomed in, the ScootRadar map draws the City of Boise’s no-ride, slow and no-parking zones and its parking corrals, but not Garden City’s zones. Report a badly parked Lime with the City’s online enforcement request form.',
           ],
         },
       ],
@@ -150,6 +150,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of Boise: Shared Mobility in Boise (e-scooters and e-bikes)', url: 'https://www.cityofboise.org/departments/finance/how-to-use-e-scooters-and-e-bikes/' },
+    { title: 'City of Boise: Micromobility map, its zones and parking corrals (ArcGIS)', url: 'https://boise.maps.arcgis.com/apps/instant/basic/index.html?appid=178b5eb1b16b48989624aa28ae6a4506' },
     { title: 'City of Boise: Greenbelt and downtown safety efforts, 23 October 2025', url: 'https://www.cityofboise.org/news/planning-and-development-services/2025/october/city-of-boise-strengthens-greenbelt-downtown-pedestrian-and-rider-safety-efforts/' },
     { title: 'City of Boise: Biking safely, helmets and lights', url: 'https://www.cityofboise.org/programs/bike-safety-and-education/safety-and-rules/' },
     { title: 'City of Boise: Stationless devices FAQ, October 2018 (PDF)', url: 'https://ccdcboise.com/wp-content/uploads/2018/10/City-of-Boise-Stationless-Devices-FAQ.pdf' },

@@ -188,7 +188,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'BOE: Royal Decree 518/2026, reform of Spain’s General Traffic Regulations (Spanish)', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
-    { title: 'DGT: personal mobility vehicles (VMP), updated 8 October 2026 (Spanish)', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: personal mobility vehicles (VMP), updated 29 October 2026 (Spanish)', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'Provincial bulletin (BOP) of Las Palmas, 29 July 2019: Antigua’s e-scooter bylaw (PDF, Spanish)', url: 'https://www.boplaspalmas.net/boletines/2019/29-7-19/29-7-19.pdf' },
     { title: 'Pájara Town Hall: bylaw no. 51 on personal mobility vehicles (Spanish)', url: 'https://www.pajara.es/51-ordenanza-sobre-el-uso-y-la-circulacion-de-vehiculos-de-movilidad-personal-y-de-bicicletas-de-pedales-con-pedaleo-asistido-del-municipio-de-pajara/' },
     { title: 'Provincial bulletin (BOP) of Las Palmas, 16 March 2026: La Oliva’s draft bylaw, initial approval (PDF, Spanish)', url: 'https://www.boplaspalmas.net/boletines/2026/16-3-26/16-3-26.pdf' },

@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Leih-E-Scooter darf in Wien laut der E-Scooter-Verordnung des Magistrats, die seit dem 1. Juli 2023 gilt, nur aufstellen, wer mit der Stadt einen Konzessionsvertrag über höchstens drei Jahre hat. Ausgeschrieben werden die Konzessionen für die Bezirke 1 bis 9 und 20; anderswo bekommt jeder Betreiber, der die Bedingungen erfüllt, einen Vertrag. Laut ihrer Infoseite vergibt die Stadt Scooter-Konzessionen «nur noch an 2 ausgewählte Betreiber»; Namen nennt sie dort keine.',
         'Die Ausschreibung von 2023 gewannen laut dem Pressedienst der Stadt Bird, Lime, Link und Voi. Bird und Link schieden danach laut Presse aus; seit Februar 2024 sind laut «Standard» nur noch Lime und Voi übrig. Zuletzt nennt die «Autorevue» Lime, mit Stand April 2025; eine offizielle Bestätigung für Oktober 2026 fanden wir nicht, Limes App zeigte am 25. Oktober 2026 aber rund 1950 Scooter in Wien. Bolt bietet in Wien laut eigener Website nur Autofahrten an. Dott fährt laut eigener Seite im Umland, etwa in Mödling und Baden, nicht aber in Wien (beides Stand 25. Oktober 2026); seine Scooter siehst du auf der [Karte von Mödling](map:at:Mödling).',
-        'ScootRadar zeigt auf der [Karte von Wien](map:at:Wien) Voi und Lime. Von Voi standen in der Nacht auf Sonntag, 25. Oktober 2026, um 1 Uhr rund 1860 Scooter auf der Karte, in allen 23 Bezirken, die meisten in der Donaustadt, in Floridsdorf und in Favoriten, in der Inneren Stadt nur rund 70; in Schwechat, Klosterneuburg und Vösendorf stand keiner. Von Lime waren es am Abend desselben Tages, gegen 19 Uhr, rund 1950 in seinem ganzen Wiener Fahrgebiet. Das sind Momentaufnahmen, keine Flottengrössen. Die Karte zeigt nur Standort und Akkustand, keine Preise, Zonen, Abstellflächen oder E-Bikes.',
+        'ScootRadar zeigt auf der [Karte von Wien](map:at:Wien) Voi und Lime. Von Voi standen in der Nacht auf Sonntag, 25. Oktober 2026, um 1 Uhr rund 1860 Scooter, die zu diesem Zeitpunkt frei waren, in allen 23 Bezirken, die meisten in der Donaustadt, in Floridsdorf und in Favoriten, in der Inneren Stadt nur rund 70; in Schwechat, Klosterneuburg und Vösendorf stand keiner. Von Lime waren es am Abend desselben Tages, gegen 19 Uhr, rund 1950 nach der letzten Zählung, in seinem ganzen Wiener Fahrgebiet. Die Karte zeigt Standort und Akkustand, keine Preise oder E-Bikes; zoomst du hinein, zeichnet sie die Abstellflächen, Sperr-, Abstellverbots- und Tempozonen der Stadt Wien (offene Daten, CC BY 4.0).',
         {
           steps: [
             'Den nächsten Scooter auf der [Live-Karte von Wien](map:at:Wien) suchen und die App des Anbieters öffnen.',
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Wien?',
       blocks: [
-        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis; laut Presse gibt es auch Pässe und Abos. Einen offenen Wiener Tarif fanden wir weder bei Voi noch bei Lime, und auch die Stadt nennt keine Preise. Verlässlich ist nur die App: Sie zeigt dir den Preis vor dem Entsperren.',
+        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis; laut Presse gibt es auch Pässe und Abos. Verlässlich ist nur die App: Sie zeigt dir den Preis vor dem Entsperren.',
       ],
     },
     {

@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Een deelstep huren in Antwerpen: Voi, Lime en Bolt',
       blocks: [
         '**Voi**, **Lime** en **Bolt** hebben de drie vergunningen die de stad voor deelsteps verleent, elk voor 500 tot 1700 steps. Lime rijdt er sinds maart 2021, Voi sinds oktober 2024 en Bolt sinds maart 2025, in de plaats van Poppy.',
-        'Op de kaart van Slim naar Antwerpen, de mobiliteitssite van de stad, stonden er op de avond van 13 oktober 2026 zo’n 2330 van de drie samen: een momentopname, geen officieel vlootcijfer. Op [onze kaart van Antwerpen](map:be:Antwerpen) zie je de steps van Voi, die ochtend ongeveer 820, en sinds 25 oktober 2026 ook die van Bolt, die dag om 13.50 uur ongeveer 900. Sinds 26 oktober 2026 staat ook Lime erop, met de plek en de batterijlading van elke step. Een volledige scan van de Lime-zone, afgerond op 25 oktober om 23.05 uur, vond er zo’n 880: een aparte telling, los van Voi en Bolt.',
+        'Op de kaart van Slim naar Antwerpen, de mobiliteitssite van de stad, stonden er op de avond van 13 oktober 2026 zo’n 2330 van de drie samen. Op [onze kaart van Antwerpen](map:be:Antwerpen) zie je de steps van Voi, die ochtend ongeveer 820 die op dat moment vrij stonden, en sinds 25 oktober 2026 ook die van Bolt, die dag om 13.50 uur ongeveer 900 vrije. Sinds 26 oktober 2026 staat ook Lime erop, met de plek en de batterijlading van elke step: zo’n 880 bij de laatste telling, op 25 oktober om 23.05 uur. Zoom je in, dan tekent de kaart ook de dropzones, no park zones, trage zones en no-go zones van de Stad Antwerpen.',
         'Hoe huren werkt, lees je stap voor stap in [een deelstep huren](guide:how-to-rent).',
       ],
     },
@@ -168,6 +168,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Stad Antwerpen, open data: dropzones voor deelmobiliteit', url: 'https://portaal-stadantwerpen.opendata.arcgis.com/datasets/b82fb66481584fbeb6aef1574cdd706f_33' },
     { title: 'Slim naar Antwerpen: Deelsteps', url: 'https://www.slimnaarantwerpen.be/nl/deelmobiliteit/deelsteps' },
     { title: 'Slim naar Antwerpen: Uitbreiding no park zone voor deelsteps binnen de Leien (20 juni 2025)', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/uitbreiding-no-park-zone-voor-deelsteps-binnen-leien' },
     { title: 'Slim naar Antwerpen: Bolt lanceert elektrische deelsteps in Antwerpen', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/bolt-lanceert-elektrische-deelsteps-in-antwerpen' },

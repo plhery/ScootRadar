@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Two companies, **Lime** and **Voi**, rent out e-scooters in London. They run them in Transport for London’s (TfL) rental trial, which TfL manages with London Councils and the boroughs taking part, under the Department for Transport’s national trials. London’s began on 7 June 2021; Dott, a third operator, left in April 2024.',
         'A third phase began on 21 September 2026, again with Lime and Voi, for an initial two years, subject to the Department for Transport’s timescales; TfL’s tender gave it the option of extending by up to four years, the trade site Micromobility Industries reported in March and September 2026. TfL’s trial page still describes the second phase, and says the national trials that make hire e-scooters legal can run until 31 May 2028.',
-        'Since 24 October 2026 the [map of London](map:gb:London) has shown Voi’s e-scooters, about 1,600 at 14:55 that Saturday, and since 25 October Lime’s, about 1,500 on Lime’s own map in the early hours: snapshots, not the fleet sizes. It shows their positions and battery, not prices, zones or bays. Lime, Voi and Forest also rent e-bikes in London, which the map doesn’t show.',
+        'Since 24 October 2026 the [map of London](map:gb:London) has shown Voi’s e-scooters, about 1,600 free to rent at 14:55 that Saturday, and since 25 October Lime’s, about 1,500 as last counted in the early hours. It shows their positions and battery, not prices; zoomed in, it draws the bays of Lambeth Council and the City of London Corporation (Open Government Licence), not other boroughs’. Lime, Voi and Forest also rent e-bikes in London, which the map doesn’t show.',
         'TfL counted more than 4,000 hire e-scooters and about 1,900 parking bays in September 2026, in a trial area of about 300 km². From late June to September 2026 the two could run up to 5,350 scooters, a cap TfL, London Councils and the boroughs set.',
       ],
     },
@@ -153,7 +153,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter in London at night?',
-      answer: 'Yes. TfL describes the scheme as a 24/7 service, and we found no night ban. The lights stay on for the whole ride, and drink-drive law applies at any hour.',
+      answer: 'Yes. TfL describes the scheme as a 24/7 service. The lights stay on for the whole ride, and drink-drive law applies at any hour.',
     },
     {
       question: 'What happens if I ride out of the trial area?',
@@ -161,7 +161,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I see Lime scooters on ScootRadar?',
-      answer: 'Yes, since 25 October 2026: our [London map](map:gb:London) shows Lime’s e-scooters beside Voi’s. Where nobody has looked for a while, Lime’s fill in as the map reads them, where you look first, which takes seconds for a few streets and longer for all of London. To ride one, open the Lime app.',
+      answer: 'Yes, since 25 October 2026: our [London map](map:gb:London) shows Lime’s e-scooters beside Voi’s. To ride one, open the Lime app.',
     },
   ],
   sources: [
@@ -180,6 +180,8 @@ const guide: Guide = {
     { title: 'Voi: E-scooters and e-bikes in London (12 October 2026)', url: 'https://www.voi.com/city/london' },
     { title: 'City of London: E-scooters in the City of London (1 June 2026)', url: 'https://www.cityoflondon.gov.uk/services/streets/travelling-in-the-city-of-london/e-scooters-in-the-city-of-london' },
     { title: 'Lambeth Council: Electric scooter trial rental scheme', url: 'https://www.lambeth.gov.uk/shared-mobility-lambeth/electric-scooter-trial-rental-scheme' },
+    { title: 'Lambeth Council: Shared e-scooter and e-bike parking bays (map)', url: 'https://www.google.com/maps/d/viewer?mid=1FbWV3uJ-tR_bJSPB-JhQzy7gUKmwISw' },
+    { title: 'City of London: Parking places for hire scooters and bikes (open data, OGL v3.0)', url: 'https://www.data.gov.uk/dataset/fe236d1a-e071-40cc-91d4-ba93e0c7ec07/parking-places-scooters-cycle-hire' },
     { title: 'Ealing Council: Expansion across the borough', url: 'https://www.ealing.gov.uk/info/201173/transport_and_parking/2802/micromobility/5' },
     { title: 'The Royal Parks: E-scooters in the Royal Parks, policy statement', url: 'https://www.royalparks.org.uk/sites/default/files/2023-07/E-scooters%20In%20The%20Royal%20Parks.pdf' },
     { title: 'Canal & River Trust: Our Towpath Code (March 2026)', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },

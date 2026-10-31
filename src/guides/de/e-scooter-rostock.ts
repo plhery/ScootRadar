@@ -19,7 +19,7 @@ const guide: Guide = {
         'In Rostock verleihen drei Anbieter E-Scooter: **Voi**, **Dott** und **MOIN**. Die Stadt schliesst mit ihnen freiwillige Vereinbarungen, etwa über Parkverbotszonen und höchstens fünf Scooter je Standort.',
         '**MOIN** ist ein Angebot der MIR Solutions GmbH aus Rostock. Laut einem Bericht der Stadt vom Mai 2022 startete es 2020; laut eigener Seite (Stand November 2025) fährt es auch in Schwerin, Greifswald, Stralsund und Neubrandenburg. **Dott** führt Rostock auf seiner Standortliste; Vertragspartner ist laut AGB die TIER Mobility SE, und TIER kam laut demselben Bericht 2021. **Voi** zählte laut eigener Mitteilung bis Mai 2025 rund eine Million Fahrten in Rostock. Bolt und Ryde führen Rostock nicht unter ihren Städten (gelesen am 25. Oktober 2026).',
         'Wie du per App leihst, zeigt Schritt für Schritt [E-Scooter mieten](guide:how-to-rent).',
-        'Die [Karte von Rostock](map:de:Rostock) zeigt Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 790 Scooter, etwa 450 Voi und 340 Dott. Am Sonntag gegen 6:30 Uhr standen alle rund 820 in der Stadt, rund 75 davon in Warnemünde und Diedrichshagen. Das sind Momentaufnahmen, keine Flottengrössen. **MOIN fehlt auf unserer Karte**; seine Scooter zeigt nur die MOIN-App. Die Karte zeigt Standort und bei Voi den Akkustand; Preise, Sperrzonen und Abstellflächen zeigt nur die App des Anbieters.',
+        'Die [Karte von Rostock](map:de:Rostock) zeigt Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 790 Scooter, die zu diesem Zeitpunkt frei waren, etwa 450 Voi und 340 Dott. Am Sonntag gegen 6:30 Uhr standen alle rund 820 in der Stadt, rund 75 davon in Warnemünde und Diedrichshagen. **MOIN fehlt auf unserer Karte**; seine Scooter zeigt nur die MOIN-App. Die Karte zeigt Standort und bei Voi den Akkustand, und zoomst du hinein, die 15 markierten Abstellflächen der Stadt Rostock (offene Daten, CC0). Preise und Sperrzonen zeigt die App des Anbieters.',
       ],
     },
     {
@@ -73,7 +73,7 @@ const guide: Guide = {
           },
         },
         '**Obergrenzen:** Laut Stadt dürfen seit dem Winter 2021 höchstens 2000 Leih-Scooter in Rostock stehen, je Anbieter 660, in der Innenstadt zusammen 500 und in Warnemünde 120, höchstens fünf je Anbieter an einem Ort.',
-        '**Kontrolle:** Laut Stadt ahnden Ordnungsdienst und Polizei Verstösse gegen die StVO; für die Parkverbotszonen sind die Anbieter selbst verantwortlich. Blockiert ein Scooter den Gehweg, muss der Anbieter ihn sofort entfernen, sonst lässt ihn die Stadt kostenpflichtig wegräumen. Im Oktober 2025 nahm die Bürgerschaft einen Antrag an, der laut Nordkurier unter anderem Pflicht-Abstellfotos in den Apps und klare Eingriffsmöglichkeiten des Ordnungsdienstes vorsieht. Eine neue Satzung fanden wir bis Oktober 2026 nicht.',
+        '**Kontrolle:** Laut Stadt ahnden Ordnungsdienst und Polizei Verstösse gegen die StVO; für die Parkverbotszonen sind die Anbieter selbst verantwortlich. Blockiert ein Scooter den Gehweg, muss der Anbieter ihn sofort entfernen, sonst lässt ihn die Stadt kostenpflichtig wegräumen. Im Oktober 2025 nahm die Bürgerschaft einen Antrag an, der laut Nordkurier unter anderem Pflicht-Abstellfotos in den Apps und klare Eingriffsmöglichkeiten des Ordnungsdienstes vorsieht.',
         {
           note: 'MOIN verlangt am Fahrtende ein vollständiges Foto des korrekt geparkten Scooters, Dott kann eines anfordern. Mach es deutlich.',
         },
@@ -162,6 +162,7 @@ const guide: Guide = {
     { title: 'Stadt Rostock: Nutzerbefragung Leih-E-Tretroller, Bericht vom Mai 2022 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.4984.de/datei/Bericht%20Nutzerbefragung%20Leih-E-Tretroller%20Rostock%202021.pdf' },
     { title: 'Nordkurier: Wildes Abstellen von E-Scootern: Rostock will Gefahr eindämmen (16. Oktober 2025)', url: 'https://www.nordkurier.de/regional/rostock/wildes-abstellen-von-e-scootern-rostock-will-gefahr-eindaemmen-4011927' },
     { title: 'Nordkurier: Ärger rund um E-Roller: So will Rostock gegensteuern (18. März 2026)', url: 'https://www.nordkurier.de/regional/rostock/immer-wieder-sorgen-e-scooter-fuer-aerger-so-soll-fuer-sichere-nutzung-gesorgt-werden-4442114' },
+    { title: 'Stadt Rostock: Abstellflächen für E-Tretroller (offene Daten, CC0)', url: 'https://www.opendata-hro.de/dataset/abstellflaechen_e_tretroller' },
     { title: 'Stadt Rostock: Abstellverbotszonen für E-Tretroller, Innenstadt, Juli 2021 (PDF)', url: 'https://rathaus.rostock.de/media/rostock_01.a.4984.de/datei/Zonen%20e-Tretroller-Verleiher%20-%20Innenstadt%20-%20Juli21.pdf' },
     { title: 'Stadt Rostock: Grünflächensatzung von 2009 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.1107.de/datei/7_04.46475.pdf' },
     { title: 'Stadt Rostock: Strandsatzung von 2026 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.1107.de/datei/3%2003%20%28P005382930%29.pdf' },

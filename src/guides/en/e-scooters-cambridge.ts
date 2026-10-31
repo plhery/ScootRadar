@@ -58,7 +58,7 @@ const guide: Guide = {
       heading: 'Where can you ride a Voi in Cambridge?',
       blocks: [
         'Across England, hire scooters may use roads (never motorways), cycle lanes and routes with the blue bicycle sign, but never the pavement. In 2022 Cambridgeshire County Council made an experimental Electric Scooter Exemptions order: hire scooters could go wherever a pedal cycle may on dual-use cycle tracks, contraflow cycle lanes, bus lanes, bus gates and streets signed “no entry except cycles”.',
-        'That order came into force on 31 March 2022 “for a period not exceeding 18 months”. The county’s page of experimental orders still listed it on 25 October 2026, but we found no record that it was made permanent, so don’t count on bus lanes: follow the signs and the app. Voi’s no-ride and slow zones are in the app: we found no published list, for King’s Parade, the Market Square or anywhere else.',
+        'That order came into force on 31 March 2022 “for a period not exceeding 18 months”. The county’s page of experimental orders still listed it on 25 October 2026, with no record of it being made permanent, so don’t count on bus lanes: follow the signs and the app. Voi’s no-ride and slow zones, for King’s Parade, the Market Square and elsewhere, are in the app.',
         'The area has grown: in December 2024 the BBC reported plans for a larger zone taking in the Histon to Girton link and the University’s Laundry Farm on Barton Road, with more to follow through 2025. Before dawn on 25 October 2026 our map showed Voi scooters from Eddington and the Science Park to Cherry Hinton and Trumpington Park & Ride, and in the edge villages above; the app’s map shows where you can ride and end a ride.',
       ],
     },
@@ -97,8 +97,8 @@ const guide: Guide = {
         {
           list: [
             '**Thameslink and Great Northern**: “all e-scooters, e-unicycles, e-skateboards and hoverboards are not permitted on our trains or in our stations from 1 June 2023”, even with the battery removed, and rail replacement buses ban them too.',
-            '**Greater Anglia**, which runs Cambridge and Cambridge North stations, and **CrossCountry**: we couldn’t check their rules.',
-            '**Buses:** Whippet, which runs guided busway services alongside Stagecoach, says “we do not allow carriage of electric scooters on our buses”. We couldn’t check Stagecoach’s own conditions.',
+            '**Greater Anglia**, which runs Cambridge and Cambridge North stations, has banned e-scooters from its trains since 1 June 2023, the Colchester Gazette reported, and the East Suffolk Lines rail partnership still says so. Check **CrossCountry**’s own rules.',
+            '**Buses:** Whippet, which runs guided busway services alongside Stagecoach, says “we do not allow carriage of electric scooters on our buses”. Check Stagecoach’s own conditions before you board.',
           ],
         },
         'Taking a Thameslink or Great Northern train to London? Voi hires out e-scooters there too: see the [map of London](map:gb:London). Oxford has a Voi scheme of its own: see [e-scooters in Oxford](guide:oxford).',
@@ -136,7 +136,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take an e-scooter on the train at Cambridge?',
-      answer: 'Not on Thameslink or Great Northern: both have banned e-scooters from their trains and stations since 1 June 2023. We couldn’t check Greater Anglia’s or CrossCountry’s rules.',
+      answer: 'Not on Thameslink or Great Northern: both have banned e-scooters from their trains and stations since 1 June 2023, and Greater Anglia from its trains since the same day. Check CrossCountry’s own rules.',
     },
     {
       question: 'Can I ride my own e-scooter in Cambridge?',
@@ -158,6 +158,8 @@ const guide: Guide = {
     { title: 'Thameslink: Bringing your bike on a train (e-scooter policy)', url: 'https://www.thameslinkrailway.com/travel-information/onboard-travel/bringing-a-bike' },
     { title: 'Great Northern: Taking a bike on a train (e-scooter policy)', url: 'https://www.greatnorthernrail.com/travel-information/onboard-travel/bringing-a-bike' },
     { title: 'National Rail: Cambridge station', url: 'https://www.nationalrail.co.uk/stations/cambridge/' },
+    { title: 'Colchester Gazette: Greater Anglia bans e-scooters from Thursday, June 1 (26 May 2023)', url: 'https://www.gazette-news.co.uk/news/23551203.greater-anglia-bans-e-scooters-thursday-june-1/' },
+    { title: 'East Suffolk Lines Community Rail Partnership: Bicycles', url: 'https://eastsuffolklines.co.uk/bicycles' },
     { title: 'Whippet: Conditions of carriage', url: 'https://www.whippetbus.co.uk/conditions-of-carriage/' },
     { title: 'The Busway: About', url: 'https://www.thebusway.info/about.shtml' },
     { title: 'BBC News: Extension of city’s e-scooter trial wins backing (18 November 2025)', url: 'https://www.bbc.co.uk/news/articles/c1j83667900o' },

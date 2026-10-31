@@ -200,7 +200,7 @@ const guide: Guide = {
     { title: 'BOE: Real Decreto 52/2026, Registro de Vehículos Personales Ligeros', url: 'https://www.boe.es/eli/es/rd/2026/01/28/52' },
     { title: 'BOE: Ley 5/2025, seguro obligatorio de los vehículos personales ligeros (disposición adicional primera)', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2025-15424' },
     { title: 'BOE: Ley sobre Tráfico y Seguridad Vial (Real Decreto Legislativo 6/2015), texto consolidado', url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2015-11722' },
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 8 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'DGT: puesta en marcha del registro de vehículos personales ligeros (27 de enero de 2026)', url: 'https://www.dgt.es/comunicacion/notas-de-prensa/20260127-trafico-pone-en-marcha-registro-vehiculos-personales-ligeros/' },
     { title: 'DGT: Instrucción 2019/S-149 TV-108 sobre vehículos de movilidad personal', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/muevete-con-seguridad/normas-de-trafico/S-sanciones/Intruccion-VMP-y-otros-vehiculos-ligeros.pdf' },
     { title: 'DGT: Informe anual de siniestralidad vial 2024', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/dgt-en-cifras/publicaciones/Principales_Cifras_Siniestralidad/INF_ANUAL_2024_v4_FINAL.pdf' },

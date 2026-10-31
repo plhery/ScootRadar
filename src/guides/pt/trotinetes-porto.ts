@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trotinetes partilhadas no Porto 2026: Bird, Lime e regras',
   description: 'Bird e Lime no Porto: a viagem acaba sempre num ponto de partilha azul; proibido andar em passeios, ruas pedonais e no tabuleiro superior da Ponte Luís I.',
   headline: 'Trotinetes no Porto: Bird e Lime, onde pode andar e onde estacionar',
-  lede: 'Pode alugar trotinetes no Porto à Bird e à Lime, as duas empresas licenciadas pela Câmara em 2025; ambas têm também bicicletas elétricas na mesma app. Não encontrámos tarifas publicadas para o Porto: a app mostra o preço antes de desbloquear. A viagem termina sempre num ponto de partilha, marcado a azul no chão, e é proibido andar em passeios, praças, ruas pedonais, corredores BUS e no tabuleiro superior da Ponte Luís I. Desde novembro de 2025, o serviço pode funcionar 24 horas por dia.',
+  lede: 'Pode alugar trotinetes no Porto à Bird e à Lime, as duas empresas licenciadas pela Câmara em 2025; ambas têm também bicicletas elétricas na mesma app. A app mostra o preço antes de desbloquear. A viagem termina sempre num ponto de partilha, marcado a azul no chão, e é proibido andar em passeios, praças, ruas pedonais, corredores BUS e no tabuleiro superior da Ponte Luís I. Desde novembro de 2025, o serviço pode funcionar 24 horas por dia.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'pt:Porto',
@@ -28,7 +28,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 480 no [mapa do Porto](map:pt:Porto) a 13 de outubro de 2026, numa área que entra por Matosinhos; não é, portanto, a frota da Bird. Desde 26 de outubro, o mapa mostra também as da Lime, com a bateria: uma contagem completa da zona da Lime no Porto, terminada às 22h27 de 25 de outubro, encontrou cerca de 430, que não se somam às da Bird. Nunca alugou uma trotinete? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 480 no [mapa do Porto](map:pt:Porto) a 13 de outubro de 2026, livres naquele momento, numa área que entra por Matosinhos. Desde 26 de outubro, o mapa mostra também as da Lime, com a bateria: cerca de 430 na última contagem, às 22h27 de 25 de outubro, que não se somam às da Bird. Se ampliar o mapa, vê também os 230 pontos de partilha da Câmara Municipal do Porto. Nunca alugou uma trotinete? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
@@ -107,7 +107,7 @@ const guide: Guide = {
       blocks: [
         'Desde novembro de 2025, o regulamento permite que o serviço funcione 24 horas por dia. Entre 2020 e 2025, as trotinetes tinham de ser recolhidas entre as 22h00 e as 6h00. A Câmara pode voltar a impor um horário sem serviço, a um operador ou a todos, se a sinistralidade crescer de forma anormal.',
         'Em abril de 2026, uma colisão entre trotinetes no Porto matou uma pessoa de 25 anos. A 21 de abril, a Câmara aprovou por unanimidade um estudo sobre o uso de trotinetes e os acidentes, sem prazo. A 4 de setembro de 2026, o presidente da Câmara, Pedro Duarte, disse que «as trotinetes hoje em dia são um problema na cidade» e que quer «reduzir substancialmente a utilização da trotinete» a favor de outros modos suaves, em conversa com os operadores.',
-        'Até 13 de outubro de 2026, não encontrámos nenhuma nova restrição aprovada. Antes de sair, veja a app.',
+        'Até 13 de outubro de 2026, não tinha sido aprovada nenhuma nova restrição. Antes de sair, veja a app.',
       ],
     },
     {
@@ -154,12 +154,13 @@ const guide: Guide = {
     },
     {
       question: 'A Câmara do Porto vai acabar com as trotinetes?',
-      answer: 'Até 13 de outubro de 2026, não encontrámos nenhuma decisão nesse sentido. O presidente da Câmara quer menos trotinetes e mais bicicletas, por acordo com os operadores, e a Câmara aprovou em abril um estudo sobre o uso de trotinetes e os acidentes. O regulamento já permite reduzir o horário ou fechar ruas.',
+      answer: 'Até 13 de outubro de 2026, não tinha sido tomada nenhuma decisão nesse sentido. O presidente da Câmara quer menos trotinetes e mais bicicletas, por acordo com os operadores, e a Câmara aprovou em abril um estudo sobre o uso de trotinetes e os acidentes. O regulamento já permite reduzir o horário ou fechar ruas.',
     },
   ],
   sources: [
     { title: 'Diário da República: Regulamento n.º 1222/2025 (Porto)', url: 'https://diariodarepublica.pt/dr/detalhe/regulamento/1222-2025-944874377' },
     { title: 'Câmara do Porto: trotinetas e pontos de partilha', url: 'https://mobilidade.cm-porto.pt/modos-suaves/trotinetas' },
+    { title: 'Câmara Municipal do Porto: pontos de partilha, na plataforma urbana do Porto Digital', url: 'https://broker.fiware.urbanplatform.portodigital.pt/v2/entities?type=OnStreetParking&q=dataProvider==cmp&options=keyValues&limit=1000' },
     { title: 'Câmara do Porto: arranque do serviço (maio de 2020)', url: 'https://www.porto.pt/pt/noticia/regime-de-partilha-de-trotinetas-e-bicicletas-entra-amanha-em-funcionamento' },
     { title: 'Echo Boomer: as licenças da Bird e da Lime (agosto de 2025)', url: 'https://echoboomer.pt/?p=265398' },
     { title: 'Echo Boomer: a Lime estreia-se no Porto (setembro de 2025)', url: 'https://echoboomer.pt/lime-estreia-porto-700-trotinetes-bicicletas/' },
