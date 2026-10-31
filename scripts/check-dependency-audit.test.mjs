@@ -20,6 +20,24 @@ function lintAudit() {
   return { report: { auditReportVersion: 2, vulnerabilities }, packages };
 }
 
+function minimatchAudit() {
+  const vias = {
+    minimatch: [{ name: 'minimatch', url: 'https://github.com/advisories/GHSA-g3hv-75wg-m249' }],
+    eslint: ['@eslint-community/eslint-utils', 'minimatch'],
+    '@eslint-community/eslint-utils': ['eslint'],
+    'eslint-plugin-import': ['minimatch'],
+    'eslint-config-next': ['eslint', 'eslint-plugin-import'],
+  };
+  const packages = {};
+  const vulnerabilities = {};
+  for (const [name, via] of Object.entries(vias)) {
+    const node = `node_modules/${name}`;
+    packages[node] = { dev: true, version: name === 'minimatch' ? '3.1.5' : '1.0.0' };
+    vulnerabilities[name] = { severity: 'moderate', nodes: [node], via };
+  }
+  return { report: { auditReportVersion: 2, vulnerabilities }, packages };
+}
+
 describe('CI dependency audit', () => {
   it('accepts a clean audit and the single unpatched lint advisory with inherited findings', () => {
     expect(checkAuditReport({ auditReportVersion: 2, vulnerabilities: {} }, {})).toEqual({
@@ -61,6 +79,21 @@ describe('CI dependency audit', () => {
   it('rejects a different braces version so the exception must be reviewed after an update', () => {
     const { report, packages } = lintAudit();
     packages['node_modules/braces'].version = '3.0.4';
+    expect(checkAuditReport(report, packages).failures).toEqual(Object.keys(report.vulnerabilities));
+  });
+
+  it('accepts the minimatch 3 advisory through ESLint, whose findings inherit from each other', () => {
+    const { report, packages } = minimatchAudit();
+    expect(checkAuditReport(report, packages)).toEqual({
+      failures: [], exceptions: Object.keys(report.vulnerabilities),
+    });
+  });
+
+  it('rejects the minimatch advisory on another version or in production', () => {
+    const { report, packages } = minimatchAudit();
+    packages['node_modules/minimatch'].version = '10.2.6';
+    expect(checkAuditReport(report, packages).failures).toEqual(Object.keys(report.vulnerabilities));
+    packages['node_modules/minimatch'] = { version: '3.1.5' };
     expect(checkAuditReport(report, packages).failures).toEqual(Object.keys(report.vulnerabilities));
   });
 
