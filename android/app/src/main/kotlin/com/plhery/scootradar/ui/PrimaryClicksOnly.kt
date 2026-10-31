@@ -154,13 +154,15 @@ private fun MotionEvent.isSecondaryPress(): Boolean =
 
 /**
  * A mouse's or a trackpad's press that starts with the secondary button outside a window's content, and all of it,
- * taken. It is no click (none of TalkBack's, which aren't a mouse's), so it has no [View.performClick] to call.
+ * taken; and one in another window, which a popup is told of (ACTION_OUTSIDE, one event) and closes on. It is no click
+ * (none of TalkBack's, which aren't a mouse's), so it has no [View.performClick] to call.
  */
 @SuppressLint("ClickableViewAccessibility")
 private class SecondaryClicksAround : View.OnTouchListener {
     private var ignoring = false
 
     override fun onTouch(view: View, event: MotionEvent): Boolean {
+        if (event.actionMasked == MotionEvent.ACTION_OUTSIDE) return event.isSecondaryPress()
         if (event.actionMasked == MotionEvent.ACTION_DOWN) ignoring = event.isSecondaryPress()
         val taken = ignoring
         if (event.actionMasked == MotionEvent.ACTION_UP || event.actionMasked == MotionEvent.ACTION_CANCEL) ignoring = false

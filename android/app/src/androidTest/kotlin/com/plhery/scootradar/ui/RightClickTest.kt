@@ -47,7 +47,9 @@ import com.plhery.scootradar.core.model.ProviderRidePass
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterRidePricing
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
 import com.plhery.scootradar.map.ScooterMap
@@ -55,6 +57,7 @@ import com.plhery.scootradar.map.testController
 import com.plhery.scootradar.map.zurichStart
 import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
+import com.plhery.scootradar.ui.sheet.MENU_TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -77,7 +80,8 @@ import java.util.Locale
  * BUTTON_SECONDARY, through UiAutomation, so through the window manager's dispatch), from a mouse or from a trackpad
  * (whose two-finger click Android sends as a finger from the mouse's source), does nothing on the map, on the bar's
  * Settings button, on a row of the Settings sheet or on the search bar, and opens the search field's own menu; a left
- * click acts on each. Around Settings' calendar, a window of its own, a right click leaves it open. For
+ * click acts on each. Around Settings' calendar and the card's menu, windows of their own, a right click leaves them
+ * open. For
  * ScootRadar_Phone_Min, ScootRadar_Fold folded and open, and ScootRadar_Tablet; the screens are kept in the run's
  * additional output, as right-click-*.png.
  *
@@ -238,6 +242,48 @@ class RightClickTest {
     }
 
     /**
+     * The card's price menu, a window of its own: a right click on the map past it, or in its shadow's room, leaves it
+     * open, from a mouse and from a trackpad alike, as Settings' calendar (PLAN §10); a left click on the map closes it.
+     */
+    @Test
+    fun aRightClickOutsideTheMenuLeavesItOpen() {
+        val controller = show()
+        onMain { controller.selectScooter(scooter.id) }
+        val price = hasContentDescription(stringFormat(localized("Ride estimate, %lld minutes. Change duration."), controller.rideEstimateMinutes.value.toLong()))
+        compose.waitUntil(5_000) { shown(price) }
+        Thread.sleep(1_500)
+        val menu = hasTestTag(MENU_TAG)
+        val density = application.resources.displayMetrics.density
+        for (clicker in Clicker.entries) {
+            val name = clicker.name.lowercase()
+            click(center(price), MotionEvent.BUTTON_PRIMARY, Clicker.Mouse)
+            compose.waitUntil(5_000) { shown(menu) }
+            Thread.sleep(1_000)
+            val shows = bounds(menu)
+            // The menu's window is the menu and its shadow's room, 56 points around it.
+            val window = shows.inflate(56 * density)
+            val past = listOf(
+                Offset(device.displayWidth / 2f, screenHeight() * 0.15f),
+                Offset(device.displayWidth / 2f, screenHeight() * 0.85f),
+                Offset(device.displayWidth * 0.1f, screenHeight() / 2f),
+                Offset(device.displayWidth * 0.9f, screenHeight() / 2f),
+            ).first { !window.inflate(20 * density).contains(it) }
+            val shadow = Offset(shows.center.x, if (shows.top - window.top > 20 * density) shows.top - 10 * density else shows.bottom + 10 * density)
+            Log.i("RightClickTest", "the menu at $shows, its window about $window; past it at $past, in its shadow at $shadow")
+            screenshot("right-click-$name-menu")
+            click(past, MotionEvent.BUTTON_SECONDARY, clicker)
+            Thread.sleep(500)
+            assertTrue("the menu open after a right click past it at $past", shown(menu))
+            click(shadow, MotionEvent.BUTTON_SECONDARY, clicker)
+            Thread.sleep(500)
+            assertTrue("the menu open after a right click in its shadow at $shadow", shown(menu))
+            click(past, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertTrue("the menu closed after a left click past it", waitFor(5_000) { !shown(menu) })
+            Thread.sleep(500)
+        }
+    }
+
+    /**
      * What clicks: a mouse, or a trackpad, whose two-finger click Android sends as a finger from the mouse's source,
      * which Compose takes for a mouse's (MotionEventAdapter).
      */
@@ -353,8 +399,11 @@ class RightClickTest {
     }
 
     private companion object {
-        /** Lime's scooter in the middle of Zürich, where the map opens. */
-        val scooter = Scooter(provider = "lime", latitude = 47.3769, longitude = 8.5417, battery = 82, vehicleID = "a", distanceMeters = 0.0)
+        /** Lime's scooter in the middle of Zürich, where the map opens, with its price, so that its card has the menu. */
+        val scooter = Scooter(
+            provider = "lime", latitude = 47.3769, longitude = 8.5417, battery = 82, vehicleID = "a", distanceMeters = 0.0,
+            pricing = ScooterRidePricing(currency = "CHF", unlockFeeMinorUnits = 100, minuteFeeMinorUnits = 35),
+        )
 
         val oneScooter = object : ScooterAPIClient {
             override suspend fun scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) = ScooterResponse(vehicles = listOf(scooter))

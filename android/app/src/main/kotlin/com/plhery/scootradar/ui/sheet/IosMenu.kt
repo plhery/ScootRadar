@@ -52,6 +52,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import com.plhery.scootradar.core.IosMotion
+import com.plhery.scootradar.ui.PrimaryClicksOnlyAroundTheContent
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
@@ -73,7 +74,8 @@ const val MENU_TAG = "menu"
  * A `Menu`'s list of [choices], opened by what it is in: a rounded panel of glass under it, or over it where there
  * is no room under it, kept inside the window. Its rows are 44 dp high at least, separated by hairlines, and the
  * [chosen] one has a check at its end. It grows out of what opened it and fades; with Reduce Motion it fades. A tap
- * outside it, Back or a hardware keyboard's Esc closes it through [onDismiss]; a row calls [onChoose] with its index.
+ * outside it (not a right click), Back or a hardware keyboard's Esc closes it through [onDismiss]; a row calls
+ * [onChoose] with its index.
  */
 @Composable
 fun IosMenu(expanded: Boolean, onDismiss: () -> Unit, choices: List<String>, chosen: Int?, onChoose: (Int) -> Unit) {
@@ -93,6 +95,8 @@ fun IosMenu(expanded: Boolean, onDismiss: () -> Unit, choices: List<String>, cho
         // The window is larger than the menu by its shadow's room, which may reach past the screen's edge.
         properties = PopupProperties(focusable = true, clippingEnabled = false),
     ) {
+        // A right click outside the menu, past its window or in another, leaves it open, as on an iPad (X-AD22).
+        PrimaryClicksOnlyAroundTheContent()
         val reduceMotion = LocalReduceMotion.current
         val grow = IosMotion.snappy(duration = 0.35)
         val fade = IosMotion.smooth(duration = 0.25)
@@ -110,8 +114,8 @@ fun IosMenu(expanded: Boolean, onDismiss: () -> Unit, choices: List<String>, cho
             },
             label = "menu",
         ) {
-            // The shadow's room, which takes a tap as outside the menu. The menu is a window of its own, which the
-            // screen's filter of right clicks doesn't reach.
+            // The shadow's room, which takes a tap as outside the menu, and a right click as nothing. The menu is a
+            // window of its own, which the screen's filter of right clicks doesn't reach.
             Box(Modifier.primaryClicksOnly().pointerInput(Unit) { detectTapGestures { close() } }.padding(SHADOW_ROOM)) {
                 MenuPanel(choices, chosen, onChoose, onEscape = close)
             }

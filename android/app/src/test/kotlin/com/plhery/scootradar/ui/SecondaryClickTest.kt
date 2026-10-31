@@ -55,6 +55,7 @@ import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
 import com.plhery.scootradar.ui.settings.SettingsPage
 import com.plhery.scootradar.ui.sheet.IosMenu
+import com.plhery.scootradar.ui.sheet.MENU_TAG
 import com.plhery.scootradar.ui.sheet.POPOVER_TAG
 import com.plhery.scootradar.ui.theme.ScootTheme
 import kotlinx.coroutines.CoroutineScope
@@ -71,6 +72,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
+import org.robolectric.util.ReflectionHelpers
 import org.robolectric.shadows.ShadowDialog
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -251,6 +253,67 @@ class SecondaryClickTest {
         row.performMouseInput { click() }
         compose.waitForIdle()
         assertEquals(2, chosen)
+    }
+
+    /** A menu of three lengths, open, which counts its [dismissals] (onDismiss) and gives its window: its PopupLayout. */
+    private fun showAMenu(dismissals: () -> Unit): View {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                Box(Modifier.fillMaxSize()) {
+                    IosMenu(expanded = true, onDismiss = dismissals, choices = listOf("5 min", "10 min", "15 min"), chosen = 1, onChoose = {})
+                }
+            }
+        }
+        compose.waitForIdle()
+        val global = Class.forName("android.view.WindowManagerGlobal")
+        val windows = ReflectionHelpers.getField<List<View>>(ReflectionHelpers.callStaticMethod<Any>(global, "getInstance"), "mViews")
+        return windows.last { it.javaClass.simpleName == "PopupLayout" }
+    }
+
+    /** [clicker]'s press with [button] in another window than [menu]'s, which [menu]'s is told of as one outside it. */
+    private fun pressInAnotherWindow(menu: View, button: Int, clicker: Clicker) {
+        menu.dispatchTouchEvent(press(MotionEvent.ACTION_OUTSIDE, 0f, 0f, button, clicker))
+        compose.waitForIdle()
+    }
+
+    /**
+     * The menu is a window of its own, handed every press while it shows: a right click outside it, past its window, in
+     * its shadow's room or in another window, leaves it open, as Settings' calendar beside it, from a mouse and from a
+     * trackpad alike (PLAN §10; an iPad's menu takes no secondary click as a tap outside it).
+     */
+    @Test
+    fun aRightClickOutsideAMenuLeavesItOpen() {
+        var dismissed = 0
+        val menu = showAMenu { dismissed++ }
+        val past = Offset(menu.width + 150f, menu.height + 150f)
+        val shadow = Offset(menu.width / 2f, 2f)
+        for (clicker in Clicker.entries) {
+            click(menu, past, MotionEvent.BUTTON_SECONDARY, clicker)
+            assertEquals("closed by $clicker's right click past its window", 0, dismissed)
+            click(menu, shadow, MotionEvent.BUTTON_SECONDARY, clicker)
+            assertEquals("closed by $clicker's right click in its shadow's room", 0, dismissed)
+            pressInAnotherWindow(menu, MotionEvent.BUTTON_SECONDARY, clicker)
+            assertEquals("closed by $clicker's right click in another window", 0, dismissed)
+        }
+        compose.onNodeWithTag(MENU_TAG).assertExists()
+    }
+
+    /** A left click outside the menu closes it: past its window, in its shadow's room or in another window. */
+    @Test
+    fun aLeftClickOutsideAMenuClosesIt() {
+        var dismissed = 0
+        val menu = showAMenu { dismissed++ }
+        val past = Offset(menu.width + 150f, menu.height + 150f)
+        val shadow = Offset(menu.width / 2f, 2f)
+        for (clicker in listOf(Clicker.Mouse, Clicker.Trackpad)) {
+            val before = dismissed
+            click(menu, past, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertEquals("closed by $clicker's left click past its window", before + 1, dismissed)
+            click(menu, shadow, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertEquals("closed by $clicker's left click in its shadow's room", before + 2, dismissed)
+            pressInAnotherWindow(menu, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertEquals("closed by $clicker's left click in another window", before + 3, dismissed)
+        }
     }
 
     /** The screen over a plain map, with [controller]. */
