@@ -527,7 +527,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   bicycles alone. Of Lanzarote's councils, Yaiza has shared scooters parked
   only in reserved places under its ordinance of November 2024, loaded into
   the operators' apps but not published, and Tías and Teguise have no rules
-  for them yet.
+  for them yet. Neuss sets where shared scooters may be parked in each
+  operator's permit, which it doesn't publish, and its open data and GIS hold
+  no scooter layer; Sindelfingen's no-riding and no-parking places (its parks
+  and woods, the pedestrian zone, the Marktplatz, the Wettbachplatz, the
+  station and the bus station) are text on its
+  [e-scooter page](https://www.sindelfingen.de/verkehr-mobilitaet/fahrzeuge-teilen/e-scooter),
+  which the operators have undertaken to keep.
 
 ## No public data, in covered countries
 
