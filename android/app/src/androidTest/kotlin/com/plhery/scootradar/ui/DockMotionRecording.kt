@@ -1,6 +1,7 @@
 package com.plhery.scootradar.ui
 
 import android.os.ParcelFileDescriptor
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -12,7 +13,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.ScooterAPIError
@@ -51,6 +54,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.model.Statement
 import java.time.Instant
 import java.util.Locale
+import java.util.regex.Pattern
 
 /**
  * Films the dock's transitions (ui.md §4) over the live map with `screenrecord`, one film for each kind, in
@@ -290,6 +294,64 @@ class DockMotionRecording {
                 controller.locationsUpdated(listOf(ScooterLocationFix(rider, horizontalAccuracy = 10.0, timestamp = Instant.now())))
             }
         }
+    }
+
+    /**
+     * UI-184, run with Remove animations on (the run sets it, and sets it back): each place whose content changes swaps
+     * it with no fade, slide or roll, in one film. On a large window, with the panel: the dock's kind, the panel's fold,
+     * the Filters symbol, the chips' counts, Near me's first fix, the search opening and closing, and a Settings page
+     * pushed and popped. Once before the film, but for the first fix and Settings, which change once.
+     */
+    @Test
+    fun reduceMotionAtOnce() {
+        val resolver = InstrumentationRegistry.getInstrumentation().targetContext.contentResolver
+        check(Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f) { "Remove animations is off" }
+        val controller = show()
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        // A Compose button's label is its description, a row's its text: either, whichever shows first.
+        fun tap(name: String, vararg selectors: BySelector) {
+            val until = System.currentTimeMillis() + 5_000
+            var found: UiObject2? = null
+            while (found == null && System.currentTimeMillis() < until) {
+                found = selectors.firstNotNullOfOrNull { device.findObject(it) }
+                if (found == null) Thread.sleep(200)
+            }
+            checkNotNull(found) { "no $name" }.click()
+            Thread.sleep(1_500)
+        }
+        fun named(label: String) = arrayOf(By.desc(label), By.text(label))
+        val steps = { warm: Boolean ->
+            main { controller.selectScooter("lime:a") }
+            Thread.sleep(1_500)
+            main { controller.selectScooter(null) }
+            Thread.sleep(1_500)
+            main { controller.setPanelCollapsed(true) }
+            Thread.sleep(1_500)
+            main { controller.setPanelCollapsed(false) }
+            Thread.sleep(1_500)
+            main { controller.setMinimumBattery(75.0) }
+            Thread.sleep(1_500)
+            main { controller.resetFilters() }
+            Thread.sleep(1_500)
+            api.scooters = if (warm) scooters else reordered
+            main { controller.refresh() }
+            Thread.sleep(1_500)
+            // The bar's label: no place, a location on its way, or the place shown.
+            tap("the search bar", By.desc(Pattern.compile("Search city or address|Finding your location.*|Showing scooters near.*")))
+            tap("Cancel", *named("Cancel"))
+            if (!warm) {
+                main {
+                    controller.locationsUpdated(listOf(ScooterLocationFix(rider, horizontalAccuracy = 10.0, timestamp = Instant.now())))
+                }
+                Thread.sleep(1_500)
+                tap("Settings", *named("Settings"))
+                tap("the Language row", *named("English"))
+                tap("Back", *named("Back"))
+                tap("Done", *named("Done"))
+            }
+        }
+        steps(true)
+        record("ui184-reduce-motion", seconds = 40) { steps(false) }
     }
 
     /** UI-206: the live dot's ring, 1.6 s a round. */
