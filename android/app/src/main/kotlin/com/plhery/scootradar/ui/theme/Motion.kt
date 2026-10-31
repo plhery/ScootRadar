@@ -5,18 +5,25 @@ import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.SpringSpec
@@ -69,4 +76,47 @@ fun reduceMotionSetting(): Boolean {
         onDispose { resolver.unregisterContentObserver(observer) }
     }
     return off.value
+}
+
+/**
+ * AnimatedContent, or with [atOnce] (Reduce Motion, where the iPhone's animation is nil, or a count that doesn't roll)
+ * the new content in the frame [targetState] changes, as [ContentAtOnce]: AnimatedContent with no transition and a
+ * snapped size still draws the old content until its transition has run, a frame or more (UI-184). A change of
+ * [atOnce] while a content shows starts it afresh, its state with it.
+ */
+@Composable
+fun <S> ChangingContent(
+    targetState: S,
+    atOnce: Boolean,
+    modifier: Modifier = Modifier,
+    transitionSpec: AnimatedContentTransitionScope<S>.() -> ContentTransform,
+    contentAlignment: Alignment = Alignment.TopStart,
+    label: String,
+    contentKey: (S) -> Any? = { it },
+    content: @Composable (S) -> Unit,
+) {
+    if (atOnce) {
+        ContentAtOnce(targetState, modifier, contentAlignment, contentKey, content)
+    } else {
+        AnimatedContent(targetState, modifier, transitionSpec, contentAlignment, label, contentKey) { content(it) }
+    }
+}
+
+/**
+ * [content] for [state], laid out as AnimatedContent lays out one content (the constraints passed on, the content's
+ * nodes at its top start, the content at [contentAlignment]), with its own state for each [contentKey], as there.
+ */
+@Composable
+fun <S> ContentAtOnce(
+    state: S,
+    modifier: Modifier = Modifier,
+    contentAlignment: Alignment = Alignment.TopStart,
+    contentKey: (S) -> Any? = { it },
+    content: @Composable (S) -> Unit,
+) {
+    Box(modifier, contentAlignment = contentAlignment, propagateMinConstraints = true) {
+        key(contentKey(state)) {
+            Box(propagateMinConstraints = true) { content(state) }
+        }
+    }
 }

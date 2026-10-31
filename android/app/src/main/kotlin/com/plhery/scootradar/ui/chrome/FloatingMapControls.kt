@@ -1,10 +1,6 @@
 package com.plhery.scootradar.ui.chrome
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -23,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,6 +39,7 @@ import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
@@ -64,17 +61,15 @@ fun FloatingMapControls(controller: ScooterMapController, modifier: Modifier = M
     val isLocating = controller.isLocating.collectAsState().value
     val reduceMotion = LocalReduceMotion.current
     val spring = IosMotion.snappy(duration = 0.28)
-    AnimatedContent(
+    // Under Reduce Motion the round button in the frame of the first fix (UI-184).
+    ChangingContent(
         targetState = hasLocatedOnce,
+        atOnce = reduceMotion,
         modifier = modifier,
         contentAlignment = Alignment.BottomEnd,
         transitionSpec = {
-            if (reduceMotion) {
-                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-            } else {
-                fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                    SizeTransform(clip = false) { _, _ -> spring.animation() }
-            }
+            fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                SizeTransform(clip = false) { _, _ -> spring.animation() }
         },
         label = "locate",
     ) { located ->

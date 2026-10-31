@@ -1,11 +1,7 @@
 package com.plhery.scootradar.ui.search
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -63,6 +59,7 @@ import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.glass.pressedGlass
+import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -123,7 +120,11 @@ fun ScooterSearchIsland(
     val reduceMotion = LocalReduceMotion.current
     // The collapsed bar keeps its own room above and under it, inside its buttons, so that they reach the glass's
     // edges; the open panel has 10 of the island's.
-    val vertical by animateDpAsState(if (isSearching) 10.dp else 0.dp, motion(spring), label = "islandPadding")
+    val padding = if (isSearching) 10.dp else 0.dp
+    val springing by animateDpAsState(padding, motion(spring), label = "islandPadding")
+    // Under Reduce Motion the panel's or the bar's own in the frame the search opens or closes, as its content is:
+    // an animation, snapped, comes a frame later (UI-184).
+    val vertical = if (reduceMotion) padding else springing
     // The closed island is interactive glass (UI-211): a finger anywhere on it, its buttons' too, swells it.
     var touched by remember { mutableStateOf(false) }
 
@@ -155,16 +156,14 @@ fun ScooterSearchIsland(
             .padding(horizontal = 10.dp, vertical = vertical.coerceAtLeast(0.dp))
             .testTag(SEARCH_ISLAND_TAG),
     ) {
-        AnimatedContent(
+        // Under Reduce Motion the panel or the bar in the frame the search opens or closes (UI-184).
+        ChangingContent(
             targetState = isSearching,
+            atOnce = reduceMotion,
             contentAlignment = Alignment.TopStart,
             transitionSpec = {
-                if (reduceMotion) {
-                    EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-                } else {
-                    fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                        SizeTransform(clip = false) { _, _ -> spring.animation() }
-                }
+                fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                    SizeTransform(clip = false) { _, _ -> spring.animation() }
             },
             label = "island",
         ) { searching ->
@@ -268,15 +267,12 @@ private fun CollapsedBar(
             // active. `.contentTransition(.symbolEffect(.replace))`: one goes down as the other comes up.
             val replace = IosMotion.snappy(duration = 0.3)
             val reduceMotion = LocalReduceMotion.current
-            AnimatedContent(
+            ChangingContent(
                 targetState = hasActiveFilters,
+                atOnce = reduceMotion,
                 transitionSpec = {
-                    if (reduceMotion) {
-                        EnterTransition.None togetherWith ExitTransition.None
-                    } else {
-                        (fadeIn(replace.animation()) + scaleIn(replace.animation(), initialScale = 0.5f)) togetherWith
-                            (fadeOut(replace.animation()) + scaleOut(replace.animation(), targetScale = 0.5f))
-                    }
+                    (fadeIn(replace.animation()) + scaleIn(replace.animation(), initialScale = 0.5f)) togetherWith
+                        (fadeOut(replace.animation()) + scaleOut(replace.animation(), targetScale = 0.5f))
                 },
                 label = "filtersIcon",
             ) { active ->

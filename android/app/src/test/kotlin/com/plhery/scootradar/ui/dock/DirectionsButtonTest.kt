@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
@@ -90,29 +91,35 @@ class DirectionsButtonTest {
     }
 
     /**
-     * Under Reduce Motion the title is Hide route in one step, as the iPhone's nil animation changes it: from the first
-     * frame, the title's pixels are the settled Hide route's, not Directions' a frame or two longer.
+     * Under Reduce Motion the button is Hide route's in one step, as the iPhone's nil animation changes it: from the
+     * frame the walk changes, the button's pixels, its symbol's and its title's, are the settled Hide route's, not
+     * the spinner's or Directions' a frame or two longer (review-app-w finding 4: the title's alone missed the symbol).
      */
     @Test
-    fun underReduceMotionTheTitleIsHideRouteAtOnce() {
+    fun underReduceMotionTheButtonIsHideRoutesAtOnce() {
         show(reduceMotion = true)
         control = ScooterDirectionsControl.Finding
-        settled()
+        val finding = settled()
         control = ScooterDirectionsControl.HideRoute
+        // Recomposition sees the change in the next frame.
+        Snapshot.sendApplyNotifications()
         val frames = List(30) { frame() }
         val shown = settled()
         val title = placeOf("Hide route")
         assertTrue("the title's place $title", title.width > 40 && title.height > 10)
+        // The symbol's place, before the title: the spinner there gives way to the cross.
+        val symbol = (0 until title.left).count { x -> (0 until shown.height).any { y -> finding[x, y] != shown[x, y] } }
+        assertTrue("the symbol's columns that change: $symbol", symbol > 10)
         frames.forEachIndexed { index, pixels ->
-            val changed = (title.left until title.right).sumOf { x -> (title.top until title.bottom).count { y -> pixels[x, y] != shown[x, y] } }
-            assertEquals("the title's pixels unlike Hide route's on frame ${index + 1}", 0, changed)
+            val changed = (0 until shown.width).sumOf { x -> (0 until shown.height).count { y -> pixels[x, y] != shown[x, y] } }
+            assertEquals("the button's pixels unlike Hide route's on frame ${index + 1}", 0, changed)
         }
     }
 
     /**
      * Each symbol is in `.dockActionStyle`'s bold, designFont(14, .bold) (ScooterControls.swift:965): Open in Maps'
-     * map too, which the map's credits and the coverage card draw at regular and semibold (UI-364). No screenshot
-     * shows Open in Maps.
+     * map too, which the map's credits and the coverage card draw at regular and semibold (UI-364). The device matrix's
+     * fold and tablet walkNoRoute screenshots (screenshots/matrix) show Open in Maps.
      */
     @Test
     fun theSymbolsAreInADockActionsBold() {

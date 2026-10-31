@@ -9,8 +9,6 @@ import android.widget.Toast
 import androidx.activity.compose.PredictiveBackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ContentTransform
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SeekableTransitionState
@@ -106,6 +104,7 @@ import com.plhery.scootradar.ui.sheet.SheetBackButton
 import com.plhery.scootradar.ui.sheet.SheetDoneButton
 import com.plhery.scootradar.ui.sheet.SheetTitleBar
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.ContentAtOnce
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SelectionFeedback
@@ -242,8 +241,10 @@ fun ScooterSettingsSheet(
     val links = rememberLinks()
     val colors = scootColors
     Column(Modifier.fillMaxSize()) {
-        // The title cross-fades as a page comes or goes, along with a back gesture.
-        transition.AnimatedContent(transitionSpec = { titleTransition(reduceMotion, followsGesture) }) { shown ->
+        // The title cross-fades as a page comes or goes, along with a back gesture, and the page slides. Under Remove
+        // animations both are the new page's in the frame it is pushed or popped (UI-184): the transition, moved on to
+        // the stack by an effect after that frame and running out its none, would draw the page before a frame longer.
+        val title: @Composable (List<SettingsPage>) -> Unit = { shown ->
             val page = shown.last()
             // Written again in the language chosen.
             key(language) {
@@ -254,9 +255,7 @@ fun ScooterSettingsSheet(
                 )
             }
         }
-        transition.AnimatedContent(
-            transitionSpec = { pageTransition(forward = targetState.size > initialState.size, reduceMotion, followsGesture) },
-        ) { shown ->
+        val content: @Composable (List<SettingsPage>) -> Unit = { shown ->
             Column(
                 Modifier
                     .fillMaxSize()
@@ -275,16 +274,24 @@ fun ScooterSettingsSheet(
                 }
             }
         }
+        if (reduceMotion) {
+            ContentAtOnce(shownStack) { title(it) }
+            ContentAtOnce(shownStack) { content(it) }
+        } else {
+            transition.AnimatedContent(transitionSpec = { titleTransition(followsGesture) }) { title(it) }
+            transition.AnimatedContent(
+                transitionSpec = { pageTransition(forward = targetState.size > initialState.size, followsGesture) },
+            ) { content(it) }
+        }
     }
 }
 
 /**
  * A NavigationStack's push: the new page slides in from the end over the one it covers, which slides a third of
  * its width toward the start; a pop runs it backwards, evenly with a back gesture's progress where it
- * [followsGesture]. Remove animations swaps them at once.
+ * [followsGesture]. Remove animations swaps them at once, without it (ContentAtOnce).
  */
-private fun pageTransition(forward: Boolean, reduceMotion: Boolean, followsGesture: Boolean): ContentTransform {
-    if (reduceMotion) return EnterTransition.None togetherWith ExitTransition.None
+private fun pageTransition(forward: Boolean, followsGesture: Boolean): ContentTransform {
     val spec: FiniteAnimationSpec<IntOffset> =
         if (followsGesture) following() else IosMotion.smooth(duration = 0.4).animation(visibilityThreshold = IntOffset.VisibilityThreshold)
     val transition = if (forward) {
@@ -298,8 +305,7 @@ private fun pageTransition(forward: Boolean, reduceMotion: Boolean, followsGestu
 }
 
 /** The navigation bar's title as a page comes or goes: a cross-fade, evenly with a back gesture where it [followsGesture]. */
-private fun titleTransition(reduceMotion: Boolean, followsGesture: Boolean): ContentTransform {
-    if (reduceMotion) return ContentTransform(EnterTransition.None, ExitTransition.None, sizeTransform = null)
+private fun titleTransition(followsGesture: Boolean): ContentTransform {
     val fade: FiniteAnimationSpec<Float> = if (followsGesture) following() else IosMotion.smooth(duration = 0.35).animation()
     return ContentTransform(fadeIn(fade), fadeOut(fade), sizeTransform = null)
 }

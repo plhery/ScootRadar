@@ -1,10 +1,6 @@
 package com.plhery.scootradar.ui.dock
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -50,8 +46,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
-import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.IosMotion
+import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.allProviderCount
 import com.plhery.scootradar.core.map.allProvidersSelected
@@ -60,6 +56,7 @@ import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -245,22 +242,19 @@ internal fun chipAccessibilityLabel(title: String, count: Int, isDown: Boolean):
 /**
  * A count as `.contentTransition(.numericText())` draws it: when [rolls], the new number comes up from below as
  * the old goes up and out when it grows, and the other way when it shrinks; otherwise it takes the old one's
- * place. The whole number rolls, where the iPhone rolls only the digits that change.
+ * place in the frame it changes (UI-184). The whole number rolls, where the iPhone rolls only the digits that change.
  */
 @Composable
 internal fun RollingCount(count: Int, rolls: Boolean, style: TextStyle, color: Color) {
     val spring = IosMotion.snappy(duration = 0.25)
-    AnimatedContent(
+    ChangingContent(
         targetState = count,
+        atOnce = !rolls,
         transitionSpec = {
-            if (!rolls) {
-                EnterTransition.None togetherWith ExitTransition.None using SizeTransform { _, _ -> snap() }
-            } else {
-                val direction = if (targetState > initialState) 1 else -1
-                (slideInVertically(spring.animation()) { it * direction } + fadeIn(spring.animation())) togetherWith
-                    (slideOutVertically(spring.animation()) { -it * direction } + fadeOut(spring.animation())) using
-                    SizeTransform(clip = true) { _, _ -> spring.animation() }
-            }
+            val direction = if (targetState > initialState) 1 else -1
+            (slideInVertically(spring.animation()) { it * direction } + fadeIn(spring.animation())) togetherWith
+                (slideOutVertically(spring.animation()) { -it * direction } + fadeOut(spring.animation())) using
+                SizeTransform(clip = true) { _, _ -> spring.animation() }
         },
         label = "count",
     ) { shown ->

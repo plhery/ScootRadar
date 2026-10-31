@@ -1,10 +1,6 @@
 package com.plhery.scootradar.ui.dock
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -55,6 +51,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isFinite
 import com.plhery.scootradar.core.IosMotion
+import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dock
 import com.plhery.scootradar.core.map.dockAnnouncement
@@ -70,7 +67,6 @@ import com.plhery.scootradar.core.model.ScooterDockStatus
 import com.plhery.scootradar.core.model.ScooterDockSummary
 import com.plhery.scootradar.core.model.ScooterFilterSummary
 import com.plhery.scootradar.core.model.ScooterLanguage
-import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
@@ -81,6 +77,7 @@ import com.plhery.scootradar.ui.rememberAnnouncementOnChange
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.rememberNow
 import com.plhery.scootradar.ui.theme.CapsuleShape
+import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SelectionFeedback
@@ -139,18 +136,16 @@ fun ScooterControlDock(
             when (layout) {
                 ScooterChromeLayout.Dock -> DockCards(controller, content, layout, PaddingValues(16.dp), maximumContentHeight, onEditFilters)
                 ScooterChromeLayout.Panel -> {
-                    // The card folds to its line, and opens again, as the one fades into the other.
+                    // The card folds to its line, and opens again, as the one fades into the other; under Reduce
+                    // Motion the one is the other in the frame it folds (UI-184).
                     val fold = IosMotion.snappy(duration = 0.3)
-                    AnimatedContent(
+                    ChangingContent(
                         targetState = isFolded,
+                        atOnce = reduceMotion,
                         contentAlignment = Alignment.TopStart,
                         transitionSpec = {
-                            if (reduceMotion) {
-                                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-                            } else {
-                                fadeIn(fold.animation()) togetherWith fadeOut(fold.animation()) using
-                                    SizeTransform(clip = false) { _, _ -> fold.animation() }
-                            }
+                            fadeIn(fold.animation()) togetherWith fadeOut(fold.animation()) using
+                                SizeTransform(clip = false) { _, _ -> fold.animation() }
                         },
                         label = "fold",
                     ) { folded ->
@@ -199,7 +194,8 @@ private val GRABBER_OVERHANG = 10.dp
 
 /**
  * What the card holds, inside [padding]: all of the content, which scrolls when taller than [maximumContentHeight].
- * A change of kind springs the card to its new height while the old content fades out and the new fades in.
+ * A change of kind springs the card to its new height while the old content fades out and the new fades in; under
+ * Reduce Motion the new one is there at once.
  */
 @Composable
 private fun DockCards(
@@ -214,17 +210,15 @@ private fun DockCards(
     val shape = SquircleShape(28.dp)
     val spring = IosMotion.snappy(duration = 0.28, extraBounce = 0.06)
     val reduceMotion = LocalReduceMotion.current
-    AnimatedContent(
+    // Under Reduce Motion the new kind's card in the frame the dock changes (UI-184).
+    ChangingContent(
         targetState = content,
+        atOnce = reduceMotion,
         contentKey = { it.kind },
         contentAlignment = Alignment.TopStart,
         transitionSpec = {
-            if (reduceMotion) {
-                EnterTransition.None togetherWith ExitTransition.None using SizeTransform(clip = false) { _, _ -> snap() }
-            } else {
-                fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                    SizeTransform(clip = false) { _, _ -> spring.animation() }
-            }
+            fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
+                SizeTransform(clip = false) { _, _ -> spring.animation() }
         },
         label = "dock",
     ) { shown ->

@@ -1,6 +1,5 @@
 package com.plhery.scootradar.ui.dock
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.snap
@@ -83,6 +82,7 @@ import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalAnalytics
 import com.plhery.scootradar.ui.rememberControllerChanges
 import com.plhery.scootradar.ui.sheet.IosMenu
+import com.plhery.scootradar.ui.theme.ChangingContent
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SquircleShape
@@ -470,9 +470,8 @@ internal fun DirectionsButton(
         // symbol and its title each change by themselves, as a Label's do, so that a title that stays (Directions while
         // the way is being found) is left as it is (UI-198). Under Reduce Motion each is the new one in the frame the walk
         // changes, as the iPhone's nil animation lays it out at once.
-        val crossFade = if (reduceMotion) null else spring
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-            CrossFaded(directionsSymbol(control) to isFinding, crossFade, label = "directions symbol") { (symbol, finding) ->
+            CrossFaded(directionsSymbol(control) to isFinding, spring, reduceMotion, label = "directions symbol") { (symbol, finding) ->
                 Box(contentAlignment = Alignment.Center) {
                     SymbolIcon(symbol, textSymbolSize(14f), LocalContentColor.current, Modifier.alpha(if (finding) 0f else 1f))
                     // In the symbol's overlay: the spinner takes the symbol's place and none of its own.
@@ -483,7 +482,7 @@ internal fun DirectionsButton(
                     }
                 }
             }
-            CrossFaded(directionsTitle(control), crossFade, label = "directions title") { title ->
+            CrossFaded(directionsTitle(control), spring, reduceMotion, label = "directions title") { title ->
                 Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
@@ -492,17 +491,13 @@ internal fun DirectionsButton(
 
 /**
  * [content] for [state]: as it changes, the old one fades out as the new fades in on [spring], and the size eases on it.
- * Without a spring (Reduce Motion), the new one in the frame [state] changes: an AnimatedContent with no transition and
- * a snapped size still draws the old one for a frame.
+ * [atOnce] (Reduce Motion), the new one in the frame [state] changes (ChangingContent).
  */
 @Composable
-private fun <S> CrossFaded(state: S, spring: SpringSpec?, label: String, content: @Composable (S) -> Unit) {
-    if (spring == null) {
-        Box(contentAlignment = Alignment.Center) { content(state) }
-        return
-    }
-    AnimatedContent(
+private fun <S> CrossFaded(state: S, spring: SpringSpec, atOnce: Boolean, label: String, content: @Composable (S) -> Unit) {
+    ChangingContent(
         targetState = state,
+        atOnce = atOnce,
         transitionSpec = {
             fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
                 SizeTransform(clip = false) { _, _ -> spring.animation() }
