@@ -1,6 +1,9 @@
 package com.plhery.scootradar.ui.dock
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -242,19 +245,26 @@ internal fun chipAccessibilityLabel(title: String, count: Int, isDown: Boolean):
 /**
  * A count as `.contentTransition(.numericText())` draws it: when [rolls], the new number comes up from below as
  * the old goes up and out when it grows, and the other way when it shrinks; otherwise it takes the old one's
- * place in the frame it changes (UI-184). The whole number rolls, where the iPhone rolls only the digits that change.
+ * place, under Reduce Motion in the frame it changes (UI-184). The whole number rolls, where the iPhone rolls only
+ * the digits that change.
  */
 @Composable
 internal fun RollingCount(count: Int, rolls: Boolean, style: TextStyle, color: Color) {
     val spring = IosMotion.snappy(duration = 0.25)
     ChangingContent(
         targetState = count,
-        atOnce = !rolls,
+        // Not `!rolls`: the dock's [rolls] is true only in the composition of a new order, and a change of atOnce
+        // would draw the count afresh at the new number instead of rolling it.
+        atOnce = LocalReduceMotion.current,
         transitionSpec = {
-            val direction = if (targetState > initialState) 1 else -1
-            (slideInVertically(spring.animation()) { it * direction } + fadeIn(spring.animation())) togetherWith
-                (slideOutVertically(spring.animation()) { -it * direction } + fadeOut(spring.animation())) using
-                SizeTransform(clip = true) { _, _ -> spring.animation() }
+            if (!rolls) {
+                EnterTransition.None togetherWith ExitTransition.None using SizeTransform { _, _ -> snap() }
+            } else {
+                val direction = if (targetState > initialState) 1 else -1
+                (slideInVertically(spring.animation()) { it * direction } + fadeIn(spring.animation())) togetherWith
+                    (slideOutVertically(spring.animation()) { -it * direction } + fadeOut(spring.animation())) using
+                    SizeTransform(clip = true) { _, _ -> spring.animation() }
+            }
         },
         label = "count",
     ) { shown ->

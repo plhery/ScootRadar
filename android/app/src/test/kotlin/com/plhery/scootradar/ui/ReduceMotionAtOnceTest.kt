@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Alignment
@@ -194,6 +196,22 @@ class ReduceMotionAtOnceTest {
 
     @Test
     fun aCountThatRollsRollsToTheNewOne() = countChanges(rolls = true)
+
+    /**
+     * As the dock passes it, true only in the composition where the chips' order changes (ProviderChips' `rolls`): the
+     * count rolls from that composition on, not drawn afresh at the new number (review-app-aa-ab finding 1).
+     */
+    @Test
+    fun aCountRollsWhenOnlyTheCompositionOfTheChangeSaysSo() {
+        var count by mutableStateOf(12)
+        show(reduceMotion = false) {
+            val last = remember { intArrayOf(count) }
+            val rolls = count != last[0]
+            SideEffect { last[0] = count }
+            Place(Alignment.Center) { RollingCount(count, rolls, TextStyle(fontSize = 17.sp), Color.Black) }
+        }
+        assertTheChange("the count", reduceMotion = false) { count = 88 }
+    }
 
     private fun countChanges(rolls: Boolean) {
         var count by mutableStateOf(12)
