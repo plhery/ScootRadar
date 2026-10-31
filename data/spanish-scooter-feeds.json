@@ -476,19 +476,19 @@
       ]
     },
     {
-      "id": "dott_es_marbella",
+      "id": "dott_es_estepona",
       "country": "ES",
       "provider": "dott",
-      "city": "Marbella",
+      "city": "Estepona",
       "center": [
         36.427,
         -5.1504
       ],
       "bounds": {
         "south": 36.4076,
-        "north": 36.5881,
+        "north": 36.5448,
         "west": -5.1754,
-        "east": -4.5935
+        "east": -4.9937
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "O1pKEippkF1p2L7JNk0H"

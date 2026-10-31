@@ -775,7 +775,7 @@ banned shared scooters, and feeds that were empty when checked.
     Country have no shared scooters.
   - Lime's rider map still lists Madrid, Alcorcón, Málaga and Sevilla; none
     held a scooter in its full-area audit on the night of 25 October 2026.
-  - Dott now covers Marbella, Playa de las Américas and Santa Cruz de Tenerife
+  - Dott now covers Estepona, Playa de las Américas and Santa Cruz de Tenerife
     through its app map. Its other discovered Spanish regions had no available
     scooter. Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
     public feed. Neither has Islaride (Grupo Tambor, "more than 500"

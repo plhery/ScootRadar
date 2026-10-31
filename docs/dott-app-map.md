@@ -119,6 +119,12 @@ collector asks for. Counted on the night of 24 to 25 October 2026:
   Torinese 123, Moncalieri 122, Collegno 120, Nichelino 100, Rivoli 60,
   Grugliasco 24 and Borgaro Torinese 18 (18 again in a second count);
   Venaria Reale's 6 count under the nearest of these towns.
+- **Estepona** (`O1pKEippkF1p2L7JNk0H`): named Marbella until 31 October
+  2026, when all 153 of its scooters stood in Estepona, none east of about
+  5.1° W, and Dott's [locations page](https://ridedott.com/locations/) listed
+  Estepona and not Marbella. The box, which ran east to 4.5935° W, past
+  Marbella as far as Fuengirola, now stops at Estepona's outline plus about
+  1 km.
 - **Sindelfingen** (`IUACuXnotjY7IOBTqrh4`): of 156 on the night of 28 to 29
   October 2026, 86 stood in Böblingen, south of 48.697°, all counted under
   Sindelfingen until then. The box is split there, as Voi's is. Its west edge,
