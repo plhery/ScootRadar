@@ -615,7 +615,7 @@ downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Alexandria, Basel, Berlin, the City of London, Hamburg, Helsinki,
-München, Münster, St. Albert, Santa Monica, Taupō, Vancouver, Vantaa,
+München, Münster, St. Albert, Santa Monica, Taupō, Turku, Vancouver, Vantaa,
 Washington and Wien state a licence for their layers, Washington for two of its
 three; since 28 October 2026 a city's public zone layers are drawn regardless,
 credited to the city.
@@ -1103,6 +1103,24 @@ credited to the city.
   is not drawn, and no area sets a curfew. The layer was last edited on 13
   December 2022; the council says it may amend the areas from time to time.
   No operator's scooters in Taupō are on the map: Beam's feed is closed.
+- **Turku** (read 31 October 2026): Turun kaupunki's 126 parking places for
+  e-scooters (`Skuutti_pysakointipaikka`: 111 painted boxes, 9 racks and 6
+  in bicycle parking, named by `Sijainti`), points each drawn as a disc of 5 m,
+  its 150 no-parking areas, 24 speed-limited areas (10 or 15 km/h) and 157
+  no-riding areas, from the city's OGC API
+  (`turku.asiointi.fi/TrimbleOGCApi`, collections `GIS:Skuutti_*`), the
+  layers of its [service map](https://palvelukartta.turku.fi/fi/mobility/scooters).
+  The city's [map terms](https://www.turku.fi/tietoa-turusta/kartat-ja-paikkatieto)
+  let anyone use its interfaces freely and publish its open map data with the
+  credit "© Turun kaupunki, käyttölupa CC BY 4.0": the legend credits
+  "Turun kaupunki, CC BY 4.0" and links its
+  [e-scooter page](https://www.turku.fi/liikenne-kadut-ja-kunnossapito/sahkopotkulaudat),
+  which asks riders to park preferably in the marked places, never in a
+  no-parking area, and says the no-riding areas are kept up to date on the
+  service map. The areas' seven stray points, each inside an area of its own
+  kind, are left out (`polygonsOnly`); some areas lie in Kaarina, which the
+  layers cover too. The weekend night ban and night speed limits are the
+  city's for the whole city, not areas, and are not drawn.
 - **Vaasa** (read 30 October 2026): Vaasan kaupunki's 229 parking places
   (`Sahkopotkulautojen_pysakointi`) and, from its restriction areas
   (`Rajoitusalueet_sahkopotkulaudat_view`, by `rajoitus`), 66 no-parking

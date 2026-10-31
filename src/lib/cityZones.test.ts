@@ -43,6 +43,8 @@ const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east
 // St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
 const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: -113.62 };
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
+// Turku's market square, the cathedral and the river between them.
+const TURKU_CENTRE = { south: 60.448, west: 22.255, north: 60.456, east: 22.28 };
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
 // Clarendon, along Wilson Boulevard in Arlington County.
 const ARLINGTON_CLARENDON = { south: 38.884, west: -77.1, north: 38.892, east: -77.088 };
@@ -115,7 +117,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'sacramento', 'santamonica', 'stalbert', 'taupo', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'sacramento', 'santamonica', 'stalbert', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -721,5 +723,20 @@ describe('the cities\' zones', () => {
     await loadCityZones(sacramento);
     const shown = ruleZonesInView({ bounds: SACRAMENTO_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(20);
+  });
+
+  it("draws Turku's parking places and its no-parking, slow and no-riding areas, from the city's open map services", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const turku = ZONE_CITIES.find(city => city.id === 'turku')!;
+    expect(turku.authority).toBe('Turun kaupunki, CC BY 4.0');
+    expect(turku.timeZone).toBe('Europe/Helsinki');
+    // Its 126 parking places, points drawn as discs; its areas' few stray points, each inside an area of its kind, are left out.
+    const { default: file } = await CITY_ZONE_FILES.turku();
+    const counts = Object.fromEntries(['parking', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 126, noParking: 150, slow: 24, noRide: 157 });
+    expect(file.zones.find(zone => zone.name === 'Kakola Hotel')?.kind).toBe('parking');
+    await loadCityZones(turku);
+    const shown = ruleZonesInView({ bounds: TURKU_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));
   });
 });

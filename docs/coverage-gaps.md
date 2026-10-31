@@ -89,7 +89,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   for Spin and Beam too, and looks like the approved list rather than the 52
   stations Lime built), as it states no licence and the City's
   [legal notices](https://cabq.gov/about/legal) license the site's content
-  "for non-commercial, personal, or educational purposes only".
+  "for non-commercial, personal, or educational purposes only". Austin's
+  17 micromobility regulation areas (no riding, no parking, slow), 40 parking
+  boxes and corrals and 21 no-lock bridges, ArcGIS layers last edited in
+  2021 and 2022, as the City's [legal notice](https://www.austintexas.gov/legal-notice)
+  grants permission to use its files "for only personal use".
 - **Only as PDF maps or map pictures:** Lahti's, from the micromobility licence in force
   since 1 January 2026 (urban environment committee, 16 December 2025, § 158;
   amended 17 February 2026): no-parking areas, the centre, where a scooter is
@@ -106,13 +110,30 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   riverbanks (Kamogawa ordinance) is in scanned PDF maps, and the
   prefecture's [terms](https://www.pref.kyoto.jp/copyright.html) forbid reuse
   without permission; Kyoto City sets no scooter zones of its own.
+  Uppsala's night slow area (10 km/h from 23:00 to 05:00) is a PDF annex to
+  its permit conditions of 31 March 2026, and Tampere's centre, where a
+  scooter is parked only in a marked box or rack (since 12 June 2024), and
+  its slow area are PDF annexes to its micromobility permit. Charlotte's
+  uptown area without sidewalk riding, and UNC Charlotte's wheels-free
+  central campus (from fall 2026), are pictures only.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
   Tel Aviv-Yafo's only from Israel, Scottsdale's with a Cloudflare challenge,
   and Louisville's ask for a token. San José's site and its open data answer
   scripts with 403, and Spokane's WheelShare page with an Incapsula
-  challenge; neither city's ArcGIS Hub holds a scooter layer.
+  challenge; neither city's ArcGIS Hub holds a scooter layer. Milwaukee's
+  site and open data portal answer 403 from outside the United States
+  (Cloudflare 1009), so the terms of its two corral layers (205 corrals
+  installed in 2023–24, 59 in 2025; no licence stated) can't be read.
+- **Found, not added yet:** Malmö's centre, where a hired scooter is
+  parked only in a mobility hub (since January 2024), and its 268 hubs are
+  layers of the city's Stadsatlas WMS, linked from its
+  [e-scooter page](https://malmo.se/Bo-och-leva/Stadsmiljo-och-trafik/Trafik/For-dig-som-cyklar/Elsparkcyklar.html),
+  with no dataset and no terms; the city sells its map products. UT Austin's
+  21 scooter parking areas and its 5 mph zones are a Google My Maps without
+  date or terms, which lacks the walk-only core of the campus (from August
+  2026).
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -147,7 +168,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   has none, and the city's site can't be read from outside Israel. Rimini
   chose not to mark parking places for shared scooters (its answer to the
   old town's forum, May 2026); its speed limits by area are in text alone.
-  Yonkers's City ArcGIS holds no scooter layer. Gävle's, Örebro's and Viña
+  Yonkers's City ArcGIS holds no scooter layer, and Osaka publishes no list
+  or map of the ports its wards agree with operators. Innsbruck's 34 parking
+  areas and the centre where a ride ends only at one are conditions the city
+  set its operators, not published; Linköping's places where a ride may not
+  end, its 6 km/h streets and three painted boxes are text alone, shown in
+  the operators' apps. Gävle's, Örebro's and Viña
   del Mar's parking places are shown only in the operators' apps, as the
   cities say: Gävle's slow streets are in text alone, and its CC0 bicycle
   parking points are not said to be the places; Örebro allows scooters only

@@ -71,6 +71,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   santamonica: () => import('../../data/city-zones/santamonica.json'),
   stalbert: () => import('../../data/city-zones/stalbert.json'),
   taupo: () => import('../../data/city-zones/taupo.json'),
+  turku: () => import('../../data/city-zones/turku.json'),
   vaasa: () => import('../../data/city-zones/vaasa.json'),
   vancouver: () => import('../../data/city-zones/vancouver.json'),
   vantaa: () => import('../../data/city-zones/vantaa.json'),

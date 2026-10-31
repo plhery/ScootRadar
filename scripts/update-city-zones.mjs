@@ -24,7 +24,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // zones but lines: the pavements where a scooter in its 6 km/h mode may ride, from the Aichi
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
 // A layer of format geojson is GeoJSON: Berlin's, Hamburg's, Helsinki's, München's, Münster's and Wien's are WFS layers,
-// asked for so, and Basel's an open data portal's export. Helsingborg's is the area of a local
+// asked for so, Turku's an OGC API's collections, Sacramento's a feature service's query answered
+// as GeoJSON, and Basel's an open data portal's export. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
@@ -178,9 +179,10 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * and Hamburg's (DE.HH.UP_PARKVERBOTSZONEN_E_SCOOTER_6), or for a feature without one, as
  * Münster's are, a hash of its shape. A feature without a shape, as one of Hamburg's, is no zone.
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
- * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points.
+ * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points. A layer of zones
+ * may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone of its own kind.
  */
-async function geojsonZones(city, { kind, url, match = {}, nameField, unnamed = [], idField, pointName, tolerance }) {
+async function geojsonZones(city, { kind, url, match = {}, nameField, unnamed = [], idField, pointName, tolerance, polygonsOnly }) {
   const body = await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
@@ -192,6 +194,10 @@ async function geojsonZones(city, { kind, url, match = {}, nameField, unnamed = 
     const { properties, geometry } = feature;
     if (geometry === null) {
       console.log(`${city.id} ${kind}: ${feature.id ?? 'a feature'} has no shape`);
+      return [];
+    }
+    if (polygonsOnly && /Point$/.test(geometry.type)) {
+      console.log(`${city.id} ${kind}: ${feature.id ?? 'a feature'} is a point, left out`);
       return [];
     }
     const featureId = idField ? String(properties[idField] ?? '')
