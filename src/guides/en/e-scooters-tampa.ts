@@ -24,7 +24,7 @@ const guide: Guide = {
           ],
         },
         'The City’s list of current contracts for October 2026 shows the programme under contract 25-P-00196, with two vendors, Neutron Holdings Inc. d/b/a Lime and Pheenix USH LLC, until 5 November 2028. Its programme page, last updated on 7 May 2025, names the two companies as Lime and Spin.',
-        'At 6:44 am on Monday 26 October 2026 the [Tampa map](map:us:fl:Tampa) counted about 1,720 e-scooters, some 1,400 Lime and 320 Spin: what the map showed at that moment, not the fleets. Every Spin scooter then stood inside Tampa’s city limits as the Census Bureau draws them.',
+        'At 6:44 am on Monday 26 October 2026 the [Tampa map](map:us:fl:Tampa) showed about 320 Spin scooters free to rent at that moment and about 1,400 Lime scooters as last counted. Every Spin scooter then stood inside Tampa’s city limits.',
         'The map shows standing e-scooters only. Both companies also rent e-bikes, and Spin’s open data listed 22 that morning: find them in the apps. Coast Bike Share is gone: HOPR, which ran it, says it has closed all its sites in Tampa.',
         'Install an app and add a card before you set out; [how to rent an e-scooter](guide:how-to-rent) explains the rest.',
       ],
@@ -75,7 +75,7 @@ const guide: Guide = {
         },
         'In April 2024 the City also named Hyde Park Village and Armature Works as places not to ride; its programme page lists only the three above, so check the app there.',
         '**Gasparilla.** In 2026 the City set a no-ride zone for shared e-scooters and e-bikes around both Gasparilla parades, the children’s on 24 January and Pirate Fest on 31 January. The 2027 parades are on 23 and 30 January: watch for the City’s notice.',
-        'Spin’s open data held 82 no-ride zones on 26 October 2026: some 60 small ones in and around downtown, others over both universities, MacDill Air Force Base and both airports. At street zoom the [Tampa map](map:us:fl:Tampa) draws Spin’s no-ride and no-parking zones, but no Lime zones: check Lime’s app before you set off.',
+        'Spin’s open data held 82 no-ride zones on 26 October 2026: some 60 small ones in and around downtown, others over both universities, MacDill Air Force Base and both airports. At street zoom the [Tampa map](map:us:fl:Tampa) draws Spin’s no-ride and no-parking zones and the City’s 67 multi-use hubs and 92 public bike racks (CC0), but no Lime zones: check Lime’s app before you set off.',
         'Mind the streetcar tracks downtown and in Ybor City: the TECO Line Streetcar asks anyone with a bicycle or scooter to cross its tracks at a right angle, so the wheels don’t get stuck.',
       ],
     },
@@ -100,7 +100,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**University of South Florida.** Spin’s open data makes 98% of USF’s Tampa campus (on the Census Bureau’s map) no-ride, and at 6:46 am on 26 October 2026 the nearest Spin scooter stood 3.7 miles (5.9 km) away. USF’s safety page, read that day, says e-scooters “are not allowed in buildings on any USF campus” and should be secured outside at a bike rack or in a designated corral.',
+            '**University of South Florida.** Spin’s open data makes 98% of USF’s Tampa campus no-ride, and at 6:46 am on 26 October 2026 the nearest Spin scooter stood 3.7 miles (5.9 km) away. USF’s safety page, read that day, says e-scooters “are not allowed in buildings on any USF campus” and should be secured outside at a bike rack or in a designated corral.',
             '**University of Tampa.** UT points students to the City’s programme and says scooters “should be returned to a corral at the end of your ride”. Spin’s data makes 91% of the campus no-ride, yet at that hour it placed 83 Spin scooters within 500 m of it.',
             '**Hillsborough Community College**’s Dale Mabry campus is 87% no-ride in Spin’s data, and **MacDill Air Force Base** almost all of it.',
           ],
@@ -157,6 +157,7 @@ const guide: Guide = {
   sources: [
     { title: 'City of Tampa: Shared Micromobility Program (updated 7 May 2025)', url: 'https://www.tampa.gov/tss-transportation/programs/shared-micromobility-program' },
     { title: 'City of Tampa: Don’t be an April Fool, follow the new eScooter rules! (1 April 2024)', url: 'https://www.tampa.gov/news/2024-04/dont-be-april-fool-follow-new-escooter-rules-146491' },
+    { title: 'City of Tampa GeoHub: Micro Mobility Location, its multi-use hubs and public bike racks (open data, CC0; places last edited February 2024)', url: 'https://city-tampa.opendata.arcgis.com/datasets/fe264a7348b14167bbfbcff4653a226b_15/about' },
     { title: 'City of Tampa: Current contracts, October 2026 (PDF)', url: 'https://www.tampa.gov/sites/default/files/document/2026/current-contracts-web-october-accessible.pdf' },
     { title: 'City of Tampa: Gasparilla safety', url: 'https://www.tampa.gov/special-events-coordination/gasparilla-safety' },
     { title: 'City of Tampa: 2027 Gasparilla parade information', url: 'https://www.tampa.gov/special-events-coordination/gasparilla-parades-2026-information' },
