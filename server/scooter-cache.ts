@@ -287,17 +287,15 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   return { failed };
 }
 
-function setDefinitions(collected: CollectableScooterFeed[], retireMissing: boolean) {
+function setDefinitions(collected: CollectableScooterFeed[], retiresMissing: (feed: FeedSnapshot) => boolean) {
   // Capped feeds are collected every 13 minutes while nobody looks, but expire as the others do.
   const definitions = withRetentionCaps(collected, schedule.idleIntervalMs);
   collectable = definitions;
   ownIdleExpiry = ownIdleExpiries(definitions, schedule.idleExpiryMs);
   retentionCap = retentionCaps(definitions);
-  if (retireMissing) {
-    const active = new Set(definitions.map(feed => feed.id));
-    for (const id of records.keys()) if (!active.has(id)) records.delete(id);
-    for (const id of lastErrors.keys()) if (!active.has(id)) lastErrors.delete(id);
-  }
+  const active = new Set(definitions.map(feed => feed.id));
+  for (const [id, feed] of records) if (!active.has(id) && retiresMissing(feed)) records.delete(id);
+  for (const id of lastErrors.keys()) if (!active.has(id) && !records.has(id)) lastErrors.delete(id);
   registerFeedDefinitions(records, definitions);
   dropExpiredData(Date.now());
   publish();
@@ -375,7 +373,7 @@ async function discover() {
   try {
     const definitions = withAppCollectors(await discoverOnceMore(discoverCollectableFeeds, 5_000,
       error => console.warn('Feed discovery failed; trying once more in 5 seconds', error)));
-    if (!stopping) setDefinitions(definitions, true);
+    if (!stopping) setDefinitions(definitions, () => true);
     metrics.recordDiscovery();
     discoveryFailingSince = undefined;
   } catch (error) {
@@ -388,9 +386,11 @@ async function discover() {
 }
 // The national feeds the snapshot holds are collected from the start, as the registry listed them
 // before, should it fail now (listedNationalFeeds); discovery replaces them with its catalog.
+// The others come with the code, so one it no longer has goes now, whatever the registry answers:
+// Dott's feed renamed Estepona on 31 October 2026 counted twice beside the old one's saved scooters.
 const restoredNational = [...records.values()].filter(feed => feed.source === 'national')
   .map(feed => feed.id.slice(feed.id.indexOf(':') + 1));
-setDefinitions(withAppCollectors([...listedNationalFeeds(restoredNational), ...independentCollectableFeeds()]), false);
+setDefinitions(withAppCollectors([...listedNationalFeeds(restoredNational), ...independentCollectableFeeds()]), feed => feed.source !== 'national');
 scheduler.start();
 void discover();
 // Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, or 30 for one
