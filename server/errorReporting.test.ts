@@ -101,3 +101,15 @@ it('groups the expiries of a host\'s feeds, one event an hour for each, and says
   expect(Sentry.captureMessage).toHaveBeenCalledWith('Feeds stopped being served from api.sharedmobility.ch');
   expect(Sentry.captureMessage).toHaveBeenCalledTimes(3);
 });
+
+it('says when an expired feed is out of the catalog, which nothing collects', () => {
+  const feed = { id: 'national:dott_rorschach', source: 'national' as const, provider: 'dott', coverage: [], vehicles: [],
+    observedAt: 0, attemptedAt: 0, stale: false, failed: false, skipped: false };
+  const change = { event: 'snapshot_feed_state' as const, feed: feed.id, state: 'expired' as const, previous: 'ok' as const,
+    secondsInPrevious: 240610, observationAgeSeconds: 1804, attemptAgeSeconds: 1802 };
+  reportFeedExpired(change, feed, undefined, undefined, ['national:dott_basel'], 0);
+  expect(scope.setFingerprint).toHaveBeenCalledWith(['snapshot-feed-expired', 'unknown']);
+  expect(scope.setContext).toHaveBeenCalledWith('feed', { ...change, lastError: 'none: the feed is not in the catalog, so nothing collects it' });
+  expect(scope.setContext).toHaveBeenCalledWith('host', { host: 'unknown', alsoExpired: ['national:dott_basel'] });
+  expect(Sentry.captureMessage).toHaveBeenCalledWith('Feeds stopped being served from unknown');
+});

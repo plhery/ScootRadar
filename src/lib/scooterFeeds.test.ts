@@ -7,6 +7,7 @@ import {
   fetchScooters,
   forgetPlanRefreshes,
   independentCollectableFeeds,
+  listedNationalFeeds,
   planRefreshCounts,
   ScooterFeedsUnavailableError,
   vehiclePricing,
@@ -430,6 +431,22 @@ describe('fetchScooters source health', () => {
     expect(ids).toContain('publibike-stations');
     expect(ids).toContain('national:lime_zurich');
     expect(ids).not.toContain('national:velospot');
+  });
+
+  it('collects the national feeds held before at the registry\'s addresses, while the registry is down', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const response = nationalResponse(String(input));
+      if (response) return response;
+      throw new Error(`Unexpected URL: ${String(input)}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    // Velospot comes from PubliBike's own feed, as when the registry lists it.
+    const feeds = listedNationalFeeds(['lime_zurich', 'velospot']);
+    expect(feeds.map(feed => [feed.id, feed.host, feed.source, feed.provider])).toEqual([
+      ['national:lime_zurich', 'sharedmobility.ch', 'national', 'lime']]);
+    expect(feeds[0].zoneSource).toMatchObject({ discoveryUrl: 'https://sharedmobility.ch/v2/gbfs/lime_zurich/gbfs' });
+    expect((await feeds[0].collect()).vehicles.length).toBeGreaterThan(0);
+    expect(fetchMock.mock.calls.map(([url]) => String(url))).not.toContain('https://sharedmobility.ch/v2/gbfs');
   });
 
   it('loads only Hopp when it is explicitly requested', async () => {

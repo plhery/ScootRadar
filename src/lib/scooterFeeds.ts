@@ -280,26 +280,38 @@ export interface CollectableScooterFeed {
 // The persistent collector refreshes each system independently. A failing
 // operator must not discard another city's last successful snapshot.
 export async function discoverCollectableFeeds(): Promise<CollectableScooterFeed[]> {
-  const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
   const registry = await fetchJson<RegistryFeed>(NATIONAL_V23_REGISTRY_URL, {
     validate: validateRegistry,
     authenticated: true, revalidate: METADATA_REVALIDATE_SECONDS,
   });
-  return [
-    ...(registry.data.systems ?? []).flatMap(entry => {
-      const system = registrySystem(entry.id, entry.url);
-      return system ? [{
-        id: `national:${system.id}`,
-        host: new URL(system.discoveryUrl).hostname,
-        source: 'national' as const,
-        provider: system.provider,
-        coverage: knownSystemCoverage(system.id) ?? [SWISS_MOBILITY_BOUNDS],
-        collect: () => fetchSystemVehicles(system, query),
-        zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: system.baseUrl, authenticated: true },
-      }] : [];
-    }),
-    ...independentCollectableFeeds(),
-  ];
+  return [...nationalCollectableFeeds(registry.data.systems ?? []), ...independentCollectableFeeds()];
+}
+
+/**
+ * The national feeds of the systems the cache held before a restart, for it to collect until the
+ * registry answers: each at the address the registry gives a system,
+ * https://sharedmobility.ch/v2/gbfs/<id>/gbfs. sharedmobility.ch refused HTTPS from 02:13 UTC on
+ * 31 October 2026, and the cache, restarted by deploys at 02:20, 02:47 and 03:04, collected none of
+ * its 15 Swiss feeds, not even the 8 read from Bolt's, Voi's and Dott's rider maps.
+ */
+export function listedNationalFeeds(systemIds: readonly string[]): CollectableScooterFeed[] {
+  return nationalCollectableFeeds(systemIds.map(id => ({ id, url: `${NATIONAL_V23_REGISTRY_URL}/${id}/gbfs` })));
+}
+
+function nationalCollectableFeeds(entries: NonNullable<RegistryFeed['systems']>): CollectableScooterFeed[] {
+  const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
+  return entries.flatMap(entry => {
+    const system = registrySystem(entry.id, entry.url);
+    return system ? [{
+      id: `national:${system.id}`,
+      host: new URL(system.discoveryUrl).hostname,
+      source: 'national' as const,
+      provider: system.provider,
+      coverage: knownSystemCoverage(system.id) ?? [SWISS_MOBILITY_BOUNDS],
+      collect: () => fetchSystemVehicles(system, query),
+      zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: system.baseUrl, authenticated: true },
+    }] : [];
+  });
 }
 
 // GCOO's American towns share its area file, each with the zones that reach into it (gcooZones.ts).

@@ -379,14 +379,19 @@ Tracing is off, and no trace headers go to the operators' feeds.
   between updates stays quiet. Its `feed` context has the `snapshot_feed_state` figures of
   its expiry and the last collection error, or says that the last collection succeeded and
   its data then aged past the limit; its `host` context lists the host's other feeds
-  expired by then.
+  expired by then. A feed the catalog no longer has, which nothing collects, is of host
+  `unknown`, and says so.
 - **Unexpected errors**: the restore and persistence of the snapshot and of the feed
   states (a missing file is not one), feed discovery, a request
   answered 500, and a collection that threw outside the feed's own error handling. Each
   is reported at most once an hour, so a failure repeating every few seconds stays one
   event an hour; the logs keep every occurrence. A failed discovery is tried once more
   5 seconds later and reported only if that fails too: sharedmobility.ch's registry
-  answered a single 504 as the cache started on 25 October 2026.
+  answered a single 504 as the cache started on 25 October 2026. Until the registry
+  answers, a restarted cache collects the Swiss national feeds its snapshot holds, at the
+  addresses the registry gives them: three deploys while sharedmobility.ch refused HTTPS
+  on 31 October 2026 had left the 15 Swiss feeds uncollected, the 8 read from rider maps
+  included.
 - **A Swiss rider map failing**: Bolt's, Voi's or Dott's rider map read for a Swiss
   national feed (DATA_SOURCES.md) that has failed for ten minutes, at most once an hour
   for each feed (`swiss-app-map:<feed>`). The national feed alone stands meanwhile, so

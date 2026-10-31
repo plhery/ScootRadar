@@ -123,17 +123,21 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
  * UTC on 25 October 2026, each its own issue then. Each feed is an event of its host's,
  * tagged with the feed, at most one an hour, so a feed that keeps expiring between
  * updates stays quiet; `alsoExpired` lists the host's other feeds expired by then.
+ * A feed without a host is one the catalog no longer has, which nothing collects: the
+ * national feeds after the restarts of 31 October 2026, while sharedmobility.ch was down.
  */
 export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined,
-  host: string, alsoExpired: string[], now = Date.now()) {
+  host: string | undefined, alsoExpired: string[], now = Date.now()) {
   if (!due(`expired:${feed.id}`, now)) return;
+  const from = host ?? 'unknown';
   Sentry.withScope(scope => {
     scope.setLevel('warning');
-    scope.setFingerprint(['snapshot-feed-expired', host]);
-    scope.setTags({ feed: feed.id, source: feed.source, provider: feed.provider, host });
+    scope.setFingerprint(['snapshot-feed-expired', from]);
+    scope.setTags({ feed: feed.id, source: feed.source, provider: feed.provider, host: from });
     scope.setContext('feed', { ...change,
-      lastError: feed.failed ? lastError ?? 'unknown' : 'none: the last collection succeeded, and its data has since passed the age limit' });
-    scope.setContext('host', { host, alsoExpired: alsoExpired.length ? alsoExpired : 'none' });
-    Sentry.captureMessage(`Feeds stopped being served from ${host}`);
+      lastError: !host ? 'none: the feed is not in the catalog, so nothing collects it'
+        : feed.failed ? lastError ?? 'unknown' : 'none: the last collection succeeded, and its data has since passed the age limit' });
+    scope.setContext('host', { host: from, alsoExpired: alsoExpired.length ? alsoExpired : 'none' });
+    Sentry.captureMessage(`Feeds stopped being served from ${from}`);
   });
 }

@@ -1,7 +1,8 @@
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
-import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
+import { discoverCollectableFeeds, independentCollectableFeeds, listedNationalFeeds, planRefreshCounts,
+  type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_AGE_MS, overviewDue, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
@@ -381,7 +382,11 @@ async function discover() {
   }
   if (!stopping) discoveryTimer = setTimeout(() => void discover(), retryMs);
 }
-setDefinitions(withAppCollectors(independentCollectableFeeds()), false);
+// The national feeds the snapshot holds are collected from the start, as the registry listed them
+// before, should it fail now (listedNationalFeeds); discovery replaces them with its catalog.
+const restoredNational = [...records.values()].filter(feed => feed.source === 'national')
+  .map(feed => feed.id.slice(feed.id.indexOf(':') + 1));
+setDefinitions(withAppCollectors([...listedNationalFeeds(restoredNational), ...independentCollectableFeeds()]), false);
 scheduler.start();
 void discover();
 // Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, or 30 for one
@@ -397,7 +402,8 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     const now = Date.now();
     if (snapshotPaused(feed, now)) return;
     const hostOf = new Map(collectable.map(definition => [definition.id, definition.host]));
-    const host = hostOf.get(feed.id) ?? 'unknown';
+    // Without one, the feed is out of the catalog, and so are the others listed with it.
+    const host = hostOf.get(feed.id);
     const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
       !snapshotPaused(other, now) && feedState(other, now, cadence) === 'expired').map(other => other.id).sort();
     reportFeedExpired(change, feed, lastErrors.get(feed.id), host, alsoExpired);
