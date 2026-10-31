@@ -370,11 +370,14 @@ fun ScooterMap(
         )
         val overCorner = creditsOverCorner(creditsSides, corner, maxHeight.value.toDouble())
         val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
+        // Clear of the bars, but not of the keyboard, which they stay under as the iPhone's Legal does.
+        val creditsSafe = creditsSafeArea
+        val creditsBottom = creditsSafe.getBottom(density) / points
         // Under a phone's dock whose foot would cut them, under it or below it.
-        val underDock = creditsUnderDock(creditsSides, creditsHeight, dock, safeArea.bottom, maxHeight.value.toDouble())
+        val underDock = creditsUnderDock(creditsSides, creditsHeight, dock, creditsBottom, maxHeight.value.toDouble())
         // Under it, past the curve of its leading corner, which would show them, where they stand on its foot or near.
         val startUnderDock = if (margins == null && overDock == null) {
-            val foot = maxHeight.value.toDouble() - (underDock ?: (safeArea.bottom + 8))
+            val foot = maxHeight.value.toDouble() - (underDock ?: (creditsBottom + 8))
             creditsStartUnderDock(creditsSides, creditsHeight, foot, dock, maxWidth.value.toDouble(), direction == LayoutDirection.Rtl)
         } else {
             null
@@ -401,18 +404,18 @@ fun ScooterMap(
                         overDock != null -> sideways.padding(bottom = overDock.dp)
                         startUnderDock != null -> {
                             val foot = underDock?.let { Modifier.padding(bottom = it.dp) }
-                                ?: Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)).padding(bottom = 8.dp)
+                                ?: Modifier.windowInsetsPadding(creditsSafe.only(WindowInsetsSides.Bottom)).padding(bottom = 8.dp)
                             foot.padding(start = startUnderDock.dp)
                         }
                         underDock != null -> sideways.padding(bottom = underDock.dp)
-                        else -> Modifier.windowInsetsPadding(WindowInsets.safeDrawing).padding(8.dp)
+                        else -> Modifier.windowInsetsPadding(creditsSafe).padding(8.dp)
                     }
                     // Above a fold across the map, on the upright half, as far up as the map's bottom margin.
                     margins.bottom > 0 -> sideways.padding(bottom = margins.bottom.dp)
                     overCorner != null -> sideways.padding(bottom = overCorner.dp)
                     overDock != null -> sideways.padding(bottom = overDock.dp)
                     else -> Modifier
-                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+                        .windowInsetsPadding(creditsSafe.only(WindowInsetsSides.Bottom))
                         .then(sideways)
                         .padding(bottom = 8.dp)
                 },

@@ -4,7 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -70,6 +74,15 @@ fun MapCredits(
         }
     }
 }
+
+/**
+ * The safe area the credits keep to: the system's bars and the display's cutout, not the keyboard. The iPhone's screen
+ * ignores the keyboard's safe area at its foot (ScooterMapScreen.swift:110) and the map all of it, so Apple's Legal
+ * stays in the map's margins, under the keyboard, while the search is open. In safeDrawing, which counts the keyboard,
+ * they rose to 8 over it wherever the dock did not place them.
+ */
+internal val creditsSafeArea: WindowInsets
+    @Composable get() = WindowInsets.systemBars.union(WindowInsets.displayCutout)
 
 /**
  * How far above the map's foot the credits go, beside a panel, where the controls in the map's trailing corner, the

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsNotFocused
@@ -131,8 +132,9 @@ class SearchAndLanguageTest {
 
     /**
      * The keyboard limits the open search: places that reach it scroll above it. The dock, made way for the search,
-     * stays where it was (`.ignoresSafeArea(.keyboard, edges: .bottom)`). Back puts the keyboard away, then closes the
-     * search, then the scooter's card.
+     * stays where it was (`.ignoresSafeArea(.keyboard, edges: .bottom)`), and so do the map's credits, under the
+     * keyboard as Apple's Legal is (MAP-318). Back puts the keyboard away, then closes the search, then the scooter's
+     * card.
      */
     @Test
     fun theKeyboardLiftsTheOpenSearchAndLeavesTheDockWhereItWas() {
@@ -150,14 +152,17 @@ class SearchAndLanguageTest {
         val places = compose.onNode(hasAnyAncestor(hasTestTag(SEARCH_ISLAND_TAG)) and SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
         assertTrue("the places scroll", places.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].maxValue() > 0)
         assertTrue("$island over a keyboard from $keyboardTop", island.bottom <= keyboardTop + 1)
+        val credits = creditsBounds()
 
-        // The keyboard put away with the search still open: the dock hasn't moved.
+        // The keyboard put away with the search still open: the dock hasn't moved, nor have the credits, which in the
+        // keyboard's safe area stood partly under it on API 37, cut by its top (app-ab's pass, the Fold folded).
         val madeWay = bounds(DOCK_TAG)
         scenario?.onActivity { WindowCompat.getInsetsController(it.window, it.window.decorView).hide(WindowInsetsCompat.Type.ime()) }
         compose.waitUntil(10_000) { imeBottom() == 0 }
         compose.waitForIdle()
         compose.onNodeWithText("Cancel").assertExists()
         assertEquals(madeWay, bounds(DOCK_TAG))
+        assertEquals("the credits with the keyboard up, its top at $keyboardTop", creditsBounds(), credits)
 
         // Back, as the phone's own key: the keyboard first, then the search, then the card.
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performClick()
@@ -325,8 +330,12 @@ class SearchAndLanguageTest {
         return bottom
     }
 
-    private fun bounds(tag: String): Rect {
-        val node = compose.onNodeWithTag(tag).fetchSemanticsNode()
+    private fun bounds(tag: String): Rect = bounds(compose.onNodeWithTag(tag).fetchSemanticsNode())
+
+    /** OpenStreetMap's credit, the first of the map's. */
+    private fun creditsBounds(): Rect = bounds(compose.onNodeWithText("© OpenStreetMap", useUnmergedTree = true).fetchSemanticsNode())
+
+    private fun bounds(node: SemanticsNode): Rect {
         val position = node.positionOnScreen
         return Rect(position.x, position.y, position.x + node.size.width, position.y + node.size.height)
     }

@@ -2,8 +2,11 @@ package com.plhery.scootradar.ui
 
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -33,6 +36,7 @@ import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
+import com.plhery.scootradar.map.creditsSafeArea
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.dock.DockState
@@ -79,6 +83,10 @@ class DockFootTest {
     private lateinit var view: View
     private lateinit var frames: MapChromeFrames
     private lateinit var failure: ScooterLoadFailure
+
+    /** The foot of the safe area as the map reads it, and as its credits keep to it. */
+    private var safeBottom = -1
+    private var creditsBottom = -1
 
     @Before
     fun setUp() {
@@ -134,6 +142,24 @@ class DockFootTest {
             assertTheDockStandsOn(foot, "$bars")
             dispatch(bars, keyboard = 336)
             assertTheDockStandsOn(foot, "$bars with the keyboard up")
+        }
+    }
+
+    /**
+     * MAP-318, the search open: the map's credits keep clear of the bar, not of the keyboard, which leaves them where
+     * they were, under it, as the iPhone's screen ignores the keyboard's safe area at its foot (ScooterMapScreen.swift
+     * :110) and Apple's Legal stays in the map's margins. In safeDrawing they rose with the keyboard, and on API 37 stood
+     * partly under it, their text cut by its top.
+     */
+    @Test
+    fun theKeyboardLeavesTheMapsCreditsWhereTheyWereOverEitherBar() {
+        show(Bars.Gesture)
+        for (bars in listOf(Bars.Gesture, Bars.ThreeButton)) {
+            dispatch(bars)
+            assertEquals("$bars: the credits' safe foot", bars.bottom, creditsBottom)
+            dispatch(bars, keyboard = 336)
+            assertEquals("$bars with the keyboard up: the map's safe foot", 336, safeBottom)
+            assertEquals("$bars with the keyboard up: the credits' safe foot", bars.bottom, creditsBottom)
         }
     }
 
@@ -216,7 +242,17 @@ class DockFootTest {
         compose.setContent {
             view = LocalView.current
             CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScooterMapScreen(controller = shown, map = { frames = LocalMapChrome.current!! }, glassBlurs = false, shortcuts = shortcuts)
+                ScooterMapScreen(
+                    controller = shown,
+                    map = {
+                        frames = LocalMapChrome.current!!
+                        val density = LocalDensity.current
+                        safeBottom = WindowInsets.safeDrawing.getBottom(density)
+                        creditsBottom = creditsSafeArea.getBottom(density)
+                    },
+                    glassBlurs = false,
+                    shortcuts = shortcuts,
+                )
             }
         }
         compose.waitForIdle()
