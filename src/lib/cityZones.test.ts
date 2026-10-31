@@ -44,6 +44,8 @@ const POZNAN_OLD_TOWN = { south: 52.404, west: 16.92, north: 52.412, east: 16.94
 const SACRAMENTO_DOWNTOWN = { south: 38.574, west: -121.506, north: 38.584, east: -121.488 };
 // St. Albert's downtown, round St. Anne Street, where the Farmers' Market is held.
 const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: -113.62 };
+// Stockholm's Norrmalm, from Gustav Adolfs torg to Stureplan and Nybroplan.
+const STOCKHOLM_NORRMALM = { south: 59.323, west: 18.06, north: 59.337, east: 18.08 };
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
 // Turku's market square, the cathedral and the river between them.
 const TURKU_CENTRE = { south: 60.448, west: 22.255, north: 60.456, east: 22.28 };
@@ -119,7 +121,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'sacramento', 'santamonica', 'stalbert', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'boulder', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'sacramento', 'santamonica', 'stalbert', 'stockholm', 'taupo', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -760,5 +762,21 @@ describe('the cities\' zones', () => {
     await loadCityZones(turku);
     const shown = ruleZonesInView({ bounds: TURKU_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws Stockholm's parking places for e-scooters, from the city's open data", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const stockholm = ZONE_CITIES.find(city => city.id === 'stockholm')!;
+    expect(stockholm.authority).toBe('Stockholms stad');
+    expect(stockholm.timeZone).toBe('Europe/Stockholm');
+    // Its 834 parking places, five of them points drawn as discs, the narrowest 70 cm wide; its no-parking
+    // along the quays and at 13 places, published only as a picture, is not drawn.
+    const { default: file } = await CITY_ZONE_FILES.stockholm();
+    expect(file.zones).toHaveLength(834);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    expect(file.zones.find(zone => zone.name === 'John Ericssonsgatan 14')?.ring).toHaveLength(4);
+    await loadCityZones(stockholm);
+    const shown = ruleZonesInView({ bounds: STOCKHOLM_NORRMALM, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(50);
   });
 });

@@ -137,7 +137,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   transport company and the city. Mainz's 25 parking areas in the Altstadt and
   the Neustadt, outside which a hired scooter there may not be parked since
   1 March 2026 (a voluntary agreement for now), and its no-parking zones are
-  two PDF maps with its press release of 27 February 2026.
+  two PDF maps with its press release of 27 February 2026. Stockholm's
+  no-parking along all the city's quays and at 13 places, Gamla stan,
+  Medborgarplatsen and Odenplan among them, is a picture on its
+  [e-scooter page](https://trafik.stockholm/trafikregler/elsparkcyklar/)
+  (2024); its 834 parking places are drawn since 31 October 2026.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -164,7 +168,15 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   some 264,000 points in all, 190,000 of them the junctions'. The layers state
   no licence, and the city's site answers scripts with a Cloudflare challenge,
   so its terms can't be read; Estonia's Copyright Act leaves legal acts
-  unprotected (§ 5).
+  unprotected (§ 5). Warszawa's 133 parking zones for shared scooters
+  ("strefy postoju", in Śródmieście, Żoliborz, Wola and Bielany, agreed with
+  Bolt, Dott and Lime in May 2026) are 131 points of the city's map
+  (`ROWERY_STOJAKI_HULAJNOGI_N` on mapa.um.warszawa.pl), whose
+  reuse terms let anyone reuse them free, credited to the Urząd m.st.
+  Warszawy with the data's date and the date it was fetched, but ask a reuser
+  to tell the city by e-mail of any processing of them (clause 3e). Its
+  no-riding and no-parking areas (Stare Miasto, Łazienki Królewskie and three
+  parks) and its 12 km/h streets are text alone.
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -243,7 +255,15 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   the city's site answers scripts with 403, as Florianópolis's did not answer.
   Seoul's parking zones the city paid for are a list of addresses under an
   open licence (공공누리 type 1), without coordinates; its five streets
-  without scooters from 30 September 2026 are not mapped.
+  without scooters from 30 September 2026 are not mapped. Gdańsk, Gdynia and
+  Sopot publish none: their scooter parkings, Gdańsk's 12 km/h old town and
+  Sopot's no-riding zones are in the press alone. Ulm's and Neu-Ulm's
+  centres, where Dott's scooters are parked only at a parking island under
+  the concession of 1 July 2026, are shown in the operator's app, and
+  ulm.de answers scripts with 403; Wolfsburg's no-parking zones, set with the
+  operators, are in their apps alone. São Paulo's stations, where a shared
+  scooter is taken and returned (each permitted through a system behind a
+  login), are listed nowhere public; the city points to the operators' apps.
 
 ## No public data, in covered countries
 

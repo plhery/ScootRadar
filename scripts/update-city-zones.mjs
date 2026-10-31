@@ -184,13 +184,17 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * Berlin's "VRAO", or else `pointName`, or after the city. A zone's id is its
  * `idField`, or the feature's id without the layer's name before it, as Helsinki's WFS gives them
  * and Hamburg's (DE.HH.UP_PARKVERBOTSZONEN_E_SCOOTER_6), or for a feature without one, as
- * Münster's are, a hash of its shape. A feature without a shape, as one of Hamburg's, is no zone.
+ * Münster's are, a hash of its shape, as it is with `shapeIds` too, for a layer whose ids change
+ * from one answer to the next: Stockholm's WFS makes its layer anew each night, ids and row
+ * numbers too. A feature without a shape, as one of Hamburg's, is no zone.
  * A layer may keep its rings to within a coarser `tolerance` in metres than TOLERANCE_M: München's
- * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points. A layer of zones
- * may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone of its own kind.
+ * 791 no-parking zones, drawn to the centimetre, would otherwise be 30,000 points. Or a finer one:
+ * Stockholm's parking place at John Ericssonsgatan 14, 70 cm wide, would otherwise be a line. A
+ * layer of zones may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone
+ * of its own kind.
  * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures).
  */
-async function geojsonZones(city, { kind, format, url, match = {}, nameField, unnamed = [], idField, pointName, tolerance, polygonsOnly }) {
+async function geojsonZones(city, { kind, format, url, match = {}, nameField, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly }) {
   const body = format === 'kml' ? kmlFeatures(await getText(url)) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
@@ -209,7 +213,7 @@ async function geojsonZones(city, { kind, format, url, match = {}, nameField, un
       return [];
     }
     const featureId = idField ? String(properties[idField] ?? '')
-      : feature.id != null ? String(feature.id).replace(/^.*\./, '').replace(/^.*_(?=\d+$)/, '')
+      : feature.id != null && !shapeIds ? String(feature.id).replace(/^.*\./, '').replace(/^.*_(?=\d+$)/, '')
         : createHash('sha1').update(JSON.stringify(geometry?.coordinates ?? null)).digest('hex').slice(0, 8);
     if (!featureId) throw new Error(`${url}: a feature has no ${idField}`);
     const id = `${city.id}-${slug(kind)}-${featureId}`;

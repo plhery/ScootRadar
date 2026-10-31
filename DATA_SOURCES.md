@@ -615,8 +615,8 @@ downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Alexandria, Basel, Berlin, the City of London, Hamburg, Helsinki,
-München, Münster, St. Albert, Santa Monica, Taupō, Turku, Vancouver, Vantaa,
-Washington and Wien state a licence for their layers, Washington for two of its
+München, Münster, St. Albert, Santa Monica, Stockholm, Taupō, Turku, Vancouver,
+Vantaa, Washington and Wien state a licence for their layers, Washington for two of its
 three; since 28 October 2026 a city's public zone layers are drawn regardless,
 credited to the city.
 
@@ -1107,6 +1107,22 @@ credited to the city.
   the companies geofence the no-go zones on its Open Data Portal, so that a
   scooter stops in them. The Farmers' Market's zone is drawn every day, as the
   layer holds it.
+- **Stockholm** (read 31 October 2026): Stockholms stad's 834 parking places
+  for e-scooters, from Trafikkontoret's
+  [Elsparkcykelplats](https://dataportalen.stockholm.se/dataportalen/srv/swe/catalog.search#/metadata/LvFeature19742957)
+  on its open data portal, under CC0 (made in 2022, updated as needed and
+  reviewed each first quarter), read from its WFS as GeoJSON and credited
+  "Stockholms stad". Five are points, each drawn as a disc of 5 m; the rings
+  are kept to within 20 cm, so that the place at John Ericssonsgatan 14, 70 cm
+  wide, is no line. The service makes the layer anew each night, its ids too,
+  so each place's id is a hash of its shape. The legend links the city's
+  [Elsparkcyklar](https://trafik.stockholm/trafikregler/elsparkcyklar/) page:
+  about 700 parking places, and a scooter may be parked in any of the city's
+  bicycle racks too, which are not drawn. Its no-parking along all the city's
+  quays and at 13 places, Gamla stan, Medborgarplatsen and Odenplan among them,
+  is published only as a picture and is not drawn
+  ([coverage gaps](docs/coverage-gaps.md)); none of the city's local traffic
+  rules (`ltfr:LTFR_FORESKRIFT`) names e-scooters.
 - **Taupō** (read 30 October 2026): the Taupō District Council's
   [Rental E-Scooter Operational Areas](https://www.arcgis.com/home/item.html?id=36092a0943214783afc27bef88cc5430),
   licensed CC BY 4.0 and credited "Taupō District Council (CC BY 4.0)", as the
