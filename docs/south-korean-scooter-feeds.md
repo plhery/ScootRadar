@@ -303,7 +303,7 @@ more, or named by it, is one of its towns.
 
 | Beam region | Beam city id | Observed scooters | Towns |
 | --- | ---: | ---: | --- |
-| Ansan | 2826 | 1028 | Ansan |
+| Ansan | 2826 | 1028 | Ansan, Siheung |
 | Bucheon/Bupyeong | 2292 | 361 | Bucheon |
 | Changwon | 2178 | 321 | Changwon |
 | Cheongju | 552 | 3455 | Cheongju |
@@ -331,6 +331,11 @@ more, or named by it, is one of its towns.
 | Wirye | 6453 | 971 | Hanam, Seoul, Seongnam |
 | Yecheon | 6398 | 55 | Yecheon, Andong |
 | Yeoju | 5294 | 184 | Yeoju |
+
+Siheung holds less than a twentieth of Ansan's envelope, a strip along its
+northern edge, but on 31 October 74 of the region's 1,075 scooters stood
+there, all of them ones Beam's app assigns to Ansan: Beam serves that corner
+of Siheung, which is one of the region's towns.
 
 Bucheon/Bupyeong's Incheon part, and the parts of other regions in towns
 that are Beam's through another region, as Hwaseong in Ansan's envelope, need
