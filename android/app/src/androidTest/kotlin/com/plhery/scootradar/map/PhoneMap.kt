@@ -75,6 +75,14 @@ class PhoneMap(val scenario: ActivityScenario<ComponentActivity>, val view: Scoo
         event(MotionEvent.ACTION_UP, STEPS)
     }
 
+    /**
+     * A new style on the map, as a map made again starts with: none of the old one's sources, layers and filters.
+     * On the main thread.
+     */
+    fun newStyle() {
+        map.setStyle(Style.Builder().fromJson(BLANK))
+    }
+
     /** Runs on the main thread, as the map must be used. */
     fun <T> onMain(block: () -> T): T {
         var result: T? = null
