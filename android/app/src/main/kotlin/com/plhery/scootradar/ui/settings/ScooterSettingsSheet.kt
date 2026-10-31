@@ -180,17 +180,19 @@ fun ScooterSettingsSheet(
     }
     val reduceMotion = LocalReduceMotion.current
     // A page going, after a tapped Back or a back gesture let go: the pages shown are still more than the stack's.
-    val pageGoing = pages.currentState.size > stack.size
+    // Under Remove animations none is: the pages are the stack's in the frame it changes (ContentAtOnce), while the
+    // transition runs out its snap a frame or two later, and the iPhone's pop, with no animation, is over at once.
+    fun pageGoing() = !reduceMotion && pages.currentState.size > stack.size
     // Back takes a page away before it closes the sheet. Drawn out, the page follows it, as iOS's page follows a
     // swipe from the edge; let go, it goes, and called off, it stays. Under Remove animations nothing moves until it
     // is let go, as a tap's pop swaps the pages at once. While a page goes, even the last one over Settings, Back is
     // still the pages' own, so that neither the sheet under them nor the activity takes it; a gesture held on after
     // the page is gone stays with the handler it began on, as the dispatcher keeps it there to its end.
-    PredictiveBackHandler(enabled = stack.size > 1 || pageGoing) { progress ->
+    PredictiveBackHandler(enabled = stack.size > 1 || pageGoing()) { progress ->
         // UINavigationController's swipe from the edge does not begin while a page is pushed or popped: a page going
         // runs out, and the swipe does nothing (review-app-yz finding 1). Back begun then, a gesture or Android 12's
         // Back alone, moves nothing and takes no page away, drawn out, called off or let go.
-        if (pages.currentState.size > stack.size || stack.size < 2) {
+        if (pageGoing() || stack.size < 2) {
             progress.collect { }
             return@PredictiveBackHandler
         }

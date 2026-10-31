@@ -355,8 +355,8 @@ class PredictiveBackTest {
         compose.onAllNodes(matcher).fetchSemanticsNodes().singleOrNull()?.let { it.positionInRoot.x / compose.density.density }
 
     /** Open-source licences over Map & data credits over Settings, 390 wide. */
-    private fun licencesOverCreditsOverSettings() =
-        settingsSheet(listOf(SettingsPage.Root, SettingsPage.Credits, SettingsPage.Notices), reduceMotion = false)
+    private fun licencesOverCreditsOverSettings(reduceMotion: Boolean = false) =
+        settingsSheet(listOf(SettingsPage.Root, SettingsPage.Credits, SettingsPage.Notices), reduceMotion)
 
     /** The licences let go of half drawn out: 3 frames on, they run out from half way, the clock held. */
     private fun licencesLetGo() {
@@ -536,5 +536,45 @@ class PredictiveBackTest {
         assertEquals(0f, start(settings), 0.5f)
         compose.onNode(title("Settings")).assertExists()
         assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * Remove animations: Back tapped on the licences puts the credits in their place in the frame of the tap, and no
+     * page is going then, as none is on the iPhone, whose pop has no animation. A Back right after it takes the credits
+     * away too: in the tap's frame, or 1 or 2 frames on, while the pages' transition still ran out its snap, it was
+     * taken for a Back during a pop and did nothing (review-app-aa-ab finding 3). Settings is alone in its place.
+     */
+    @Test
+    fun underRemoveAnimationsABackInTheFrameOfATappedBackTakesTheNextPage() = backAfterATappedBack(frames = 0)
+
+    @Test
+    fun underRemoveAnimationsABackAFrameAfterATappedBackTakesTheNextPage() = backAfterATappedBack(frames = 1)
+
+    @Test
+    fun underRemoveAnimationsABackTwoFramesAfterATappedBackTakesTheNextPage() = backAfterATappedBack(frames = 2)
+
+    /** The same with a gesture begun a frame after the tap, drawn out half way and let go. */
+    @Test
+    fun underRemoveAnimationsAGestureJustAfterATappedBackTakesTheNextPageWhenItIsLetGo() =
+        backAfterATappedBack(frames = 1, gesture = true)
+
+    private fun backAfterATappedBack(frames: Int, gesture: Boolean = false) {
+        licencesOverCreditsOverSettings(reduceMotion = true)
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasContentDescription("Back")).performClick()
+        repeat(frames) { compose.mainClock.advanceTimeByFrame() }
+        if (gesture) {
+            compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+            compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.5f)) }
+            compose.mainClock.advanceTimeByFrame()
+        }
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        settle()
+        val place = startOrNull(settings)
+        assertTrue("Settings back $frames frames after the tap", place != null)
+        assertEquals(0f, place!!, 0.5f)
+        compose.onNode(title("Settings")).assertExists()
+        assertTrue("the credits gone", compose.onAllNodes(credits).fetchSemanticsNodes().isEmpty())
+        assertTrue("the licences gone", compose.onAllNodes(licences).fetchSemanticsNodes().isEmpty())
     }
 }
