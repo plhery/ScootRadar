@@ -52,6 +52,7 @@ import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.search.SwissAddressSearchModel
 import com.plhery.scootradar.ui.LocalAnalytics
+import com.plhery.scootradar.ui.LocalScreenState
 import com.plhery.scootradar.ui.chrome.overTheMap
 import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.Spinner
@@ -72,6 +73,7 @@ import com.plhery.scootradar.ui.theme.motion
 import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.shrinking
 import com.plhery.scootradar.ui.theme.weight
+import kotlinx.coroutines.CoroutineScope
 
 // ScooterSearchIsland in ios/ScootRadar/Views/SwissAddressSearch.swift: the search bar at the top of a phone's map,
 // collapsed and open (ui.md UI-009 to UI-012).
@@ -170,11 +172,17 @@ fun ScooterSearchIsland(
                 val api = LocalAddressSearch.current
                 val analytics = LocalAnalytics.current
                 val scope = rememberCoroutineScope()
-                // A new search each time it opens, as the iPhone's panel has its own.
+                // A new search each time it opens, as the iPhone's panel has its own. The screen keeps it while it
+                // is open, through an activity made again or the chrome made again in a new language, and ends it
+                // as it closes; an island shown alone ends its own as it goes.
+                val held = LocalScreenState.current
                 val model = remember {
-                    if (api != null) SwissAddressSearchModel(scope, analytics, api) else SwissAddressSearchModel(scope, analytics)
+                    val make = { runsIn: CoroutineScope ->
+                        if (api != null) SwissAddressSearchModel(runsIn, analytics, api) else SwissAddressSearchModel(runsIn, analytics)
+                    }
+                    held?.search(make) ?: make(scope)
                 }
-                DisposableEffect(model) { onDispose { model.cancel() } }
+                DisposableEffect(model) { onDispose { if (held == null) model.cancel() } }
                 SideEffect { model.near = near }
                 ScooterSearchPanel(
                     model = model,

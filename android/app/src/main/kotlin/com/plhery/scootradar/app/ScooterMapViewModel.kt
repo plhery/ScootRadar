@@ -19,6 +19,7 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterScreenshotCamera
 import com.plhery.scootradar.map.GroundTiles
 import com.plhery.scootradar.map.MapCameraMemory
+import com.plhery.scootradar.ui.ScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -60,6 +61,9 @@ class ScooterMapViewModel(
 
     /** The camera a recreated activity opens on. */
     val camera = MapCameraMemory()
+
+    /** What the screen has open, which a recreated activity shows as it was. */
+    val screen = ScreenState(scope)
 
     /** Where the ground's tiles are, asked for once for the screen. */
     val groundTiles = GroundTiles.openFreeMap(container.api.client)

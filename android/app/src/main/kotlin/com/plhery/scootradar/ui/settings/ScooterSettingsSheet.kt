@@ -53,6 +53,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -152,8 +153,10 @@ fun ScooterSettingsSheet(
     sources: List<ScooterCreditsList.Source>? = null,
     /** The pages open as the sheet opens, the first at the bottom; tests open one directly. */
     pages: List<SettingsPage> = listOf(SettingsPage.Root),
+    /** The pages, kept by the screen through an activity made again; the sheet's own if null. */
+    heldPages: SnapshotStateList<SettingsPage>? = null,
 ) {
-    val stack = remember { mutableStateListOf<SettingsPage>().apply { addAll(pages) } }
+    val stack = heldPages ?: remember { mutableStateListOf<SettingsPage>().apply { addAll(pages) } }
     // Each page keeps where it is scrolled to while pages above it come and go, as in a NavigationStack; a page
     // pushed again starts at its top.
     val scrolls = remember { mutableMapOf<Int, ScrollState>() }

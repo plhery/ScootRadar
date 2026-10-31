@@ -84,16 +84,21 @@ class MainActivity : AppCompatActivity() {
         lifecycle.addObserver(model)
         lifecycle.addObserver(headingOrientation)
         setContent {
-            Screen { dark ->
-                ScooterMap(
-                    controller = model.controller,
-                    start = model.start,
-                    memory = model.camera,
-                    tiles = model.groundTiles,
-                    dark = dark,
-                    screenshot = model.screenshotCamera,
-                    analytics = model.analytics,
-                )
+            val standIn = mapStandIn
+            if (standIn != null) {
+                Screen(standIn)
+            } else {
+                Screen { dark ->
+                    ScooterMap(
+                        controller = model.controller,
+                        start = model.start,
+                        memory = model.camera,
+                        tiles = model.groundTiles,
+                        dark = dark,
+                        screenshot = model.screenshotCamera,
+                        analytics = model.analytics,
+                    )
+                }
             }
         }
         // The link that opened the app; an activity made again has it already.
@@ -116,6 +121,7 @@ class MainActivity : AppCompatActivity() {
             locationSettings = model.location,
             links = openedLinks,
             shortcuts = shortcuts,
+            screenState = model.screen,
         )
     }
 
@@ -182,5 +188,14 @@ class MainActivity : AppCompatActivity() {
         // The phone's languages changed while the map is open (locale is among the changes the activity takes
         // itself): on Automatic the app's text follows them at once, the card, the search and the camera kept (X-M23).
         model.controller.phoneLanguagesChanged()
+    }
+
+    internal companion object {
+        /**
+         * What a JVM test draws in place of the map, MapLibre's native library not loading there: in the activity
+         * and in the one Android makes again for a new configuration. Null in the app.
+         */
+        @VisibleForTesting
+        var mapStandIn: (@Composable (dark: Boolean) -> Unit)? = null
     }
 }
