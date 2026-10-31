@@ -94,6 +94,8 @@ const BERLIN_TIERGARTEN = { south: 52.511, west: 13.36, north: 52.519, east: 13.
 const HAMBURG_JUNGFERNSTIEG = { south: 53.551, west: 9.985, north: 53.558, east: 10.0 };
 // Cleveland's downtown, round Public Square.
 const CLEVELAND_DOWNTOWN = { south: 41.495, west: -81.7, north: 41.51, east: -81.68 };
+// Downtown Tampa, round Franklin Street.
+const TAMPA_DOWNTOWN = { south: 27.943, west: -82.462, north: 27.952, east: -82.452 };
 // Columbus's Harrison West, round Michigan Avenue and West 3rd Avenue.
 const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east: -83.01 };
 // Helsingborg's Stortorget, Kärnan and the station, Knutpunkten.
@@ -151,7 +153,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'tampa', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -836,6 +838,21 @@ describe('the cities\' zones', () => {
     await loadCityZones(cleveland);
     const shown = ruleZonesInView({ bounds: CLEVELAND_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
     expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(10);
+  });
+
+  it("draws the City of Tampa's multi-use hubs and public bike racks, from its GeoHub under CC0", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const tampa = ZONE_CITIES.find(city => city.id === 'tampa')!;
+    expect(tampa.authority).toBe('City of Tampa, CC0');
+    expect(tampa.timeZone).toBe('America/New_York');
+    // Its 67 hubs and 92 racks, points drawn as discs; the six it marks secure, five of them racks in its garages, are left out.
+    const { default: file } = await CITY_ZONE_FILES.tampa();
+    expect(file.zones.filter(zone => zone.name === 'Multi-use hub')).toHaveLength(67);
+    expect(file.zones.filter(zone => zone.name === 'Public bike rack')).toHaveLength(92);
+    expect(file.zones.every(zone => zone.kind === 'parking')).toBe(true);
+    await loadCityZones(tampa);
+    const shown = ruleZonesInView({ bounds: TAMPA_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(30);
   });
 
   it("draws the City of Norfolk's micromobility corrals, from its bike network map", async () => {

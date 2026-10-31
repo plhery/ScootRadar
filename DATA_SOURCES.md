@@ -628,7 +628,7 @@ downloads those from the website's `/zones/v1/` once a view reaches the city
 as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Aachen, Alexandria, Basel, Berlin, Bordeaux, Braunschweig, the City of London,
 Cleveland, Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
-San Francisco, Santa Monica, Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
+San Francisco, Santa Monica, Stockholm, Tampa, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
 Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
 city's public zone layers are drawn regardless, credited to the city.
 
@@ -1305,6 +1305,22 @@ city's public zone layers are drawn regardless, credited to the city.
   is published only as a picture and is not drawn
   ([coverage gaps](docs/coverage-gaps.md)); none of the city's local traffic
   rules (`ltfr:LTFR_FORESKRIFT`) names e-scooters.
+- **Tampa** (read 31 October 2026): the City of Tampa's 67 multi-use hubs
+  and 92 public bike racks downtown and round it, points each drawn as a disc
+  of 5 m, from its GeoHub's
+  [Micro Mobility Location](https://city-tampa.opendata.arcgis.com/datasets/fe264a7348b14167bbfbcff4653a226b_15/about)
+  (published 8 October 2025, its places last edited 21 February 2024), under
+  CC0, credited "City of Tampa, CC0". The City's map server
+  (`OpenData/Transportation/MapServer/15` on arcgis.tampagov.net) answers only
+  the United States, so the layer is read from the GeoHub's own download, the
+  same 165 places; tampa.gov's GIS page links the GeoHub. Six marked secure
+  are left out: five racks in the City's parking garages and one hub. The
+  legend links the City's notice of 1 April 2024: a shared scooter or e-bike
+  is parked only at a docking station, marked or virtual corrals, public bike
+  racks, scooter racks and charging stations, or the company may charge up to
+  $5. The virtual corrals are in the operators' apps alone, so not drawn, and
+  its no-riding streets (the Riverwalk, Bayshore Boulevard, 7th Avenue in Ybor
+  City) are published only as text.
 - **Taupō** (read 30 October 2026): the Taupō District Council's
   [Rental E-Scooter Operational Areas](https://www.arcgis.com/home/item.html?id=36092a0943214783afc27bef88cc5430),
   licensed CC BY 4.0 and credited "Taupō District Council (CC BY 4.0)", as the

@@ -26,7 +26,8 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // police's traffic rules as JARTIC publishes them, a zip of one CSV of the whole prefecture.
 // A layer of format geojson is GeoJSON: Berlin's, Hamburg's, Helsinki's, München's, Münster's and Wien's are WFS layers,
 // asked for so, Turku's an OGC API's collections, Sacramento's a feature service's query answered
-// as GeoJSON, and Basel's an open data portal's export; Poznań's, of format kml, are a Google My
+// as GeoJSON, Basel's an open data portal's export and Tampa's its GeoHub's download, as the City's
+// map server answers only the United States; Poznań's, of format kml, are a Google My
 // Maps map's KML, read as GeoJSON. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:

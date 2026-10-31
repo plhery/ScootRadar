@@ -83,6 +83,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   seattle: () => import('../../data/city-zones/seattle.json'),
   stalbert: () => import('../../data/city-zones/stalbert.json'),
   stockholm: () => import('../../data/city-zones/stockholm.json'),
+  tampa: () => import('../../data/city-zones/tampa.json'),
   taupo: () => import('../../data/city-zones/taupo.json'),
   trondheim: () => import('../../data/city-zones/trondheim.json'),
   turku: () => import('../../data/city-zones/turku.json'),
