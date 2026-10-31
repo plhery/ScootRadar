@@ -2,6 +2,9 @@ package com.plhery.scootradar.app
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.util.DisplayMetrics
+import android.view.Display
+import androidx.core.content.ContextCompat
 import kotlin.math.min
 
 // INFOPLIST_KEY_UISupportedInterfaceOrientations and its _iPad, from ios/ScootRadar.xcodeproj/project.pbxproj.
@@ -22,13 +25,23 @@ object ScreenOrientation {
     /**
      * The shorter side of the screen the activity is on, in dp: of the largest window it could have there, so that
      * a small window on a tablet's screen turns as the tablet does. A foldable folded shows on its outer screen and
-     * unfolded on its inner one.
+     * unfolded on its inner one. It is counted at the screen's own density, not at the one the rider's Display size
+     * sets, so that a tablet stays a tablet at every Display size, as an iPad stays one under Display Zoom: a 2560 by
+     * 1600 tablet at 320 dpi is 800 dp across, which its largest Display size would make 533 (X-M25).
      */
     fun smallestWidth(activity: Activity): Int {
         val bounds = activity.windowManager.maximumWindowMetrics.bounds
-        val density = activity.resources.configuration.densityDpi / 160f
-        return (min(bounds.width(), bounds.height()) / density).toInt()
+        val screen = ContextCompat.getDisplayOrDefault(activity).displayId
+        val dpi = screenDensity(screen, current = activity.resources.configuration.densityDpi)
+        return (min(bounds.width(), bounds.height()) * DisplayMetrics.DENSITY_DEFAULT / dpi.toFloat()).toInt()
     }
+
+    /**
+     * The density a screen counts as its own: for the device's built-in screen the one it was made with, which
+     * Display size leaves alone; for another, a monitor's, the `current` one, as Android keeps no other for it.
+     */
+    internal fun screenDensity(displayId: Int, current: Int, stable: Int = DisplayMetrics.DENSITY_DEVICE_STABLE): Int =
+        if (displayId == Display.DEFAULT_DISPLAY) stable else current
 
     /** Asks for the orientation of the screen the activity is on now, if it isn't asked for already. */
     fun apply(activity: Activity) {
