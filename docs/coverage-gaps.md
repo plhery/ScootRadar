@@ -247,6 +247,9 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   parked only at a station under its concept of 14 November 2024, is in the
   council's PDF papers; its page's links to the zone map point at a file
   server inside the city's network, and its open data holds no zone layer.
+  Chelmsford's no-ride, slow, no-parking and mandatory parking zones are a
+  picture on [Essex Highways' trial page](https://essexhighways.org/e-scooters),
+  of May 2025, before Voi took over the trial.
 - **Not trusted:** Holon's 438 parking points, 214 of them marked done
   (`status1` מבוצעת), are in a layer anyone may edit.
 - **Behind a block:** Köln's layers answer scripts with an anti-bot page,
@@ -260,7 +263,9 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   site and open data portal answer 403 from outside the United States
   (Cloudflare 1009), so the terms of its two corral layers (205 corrals
   installed in 2023–24, 59 in 2025; no licence stated) can't be read.
-  San Diego's scooter corral and geofence layers (`ScooterCorral_Public` on
+  Christchurch's and Wellington's councils' sites answer scripts with 403,
+  and neither city's open data nor GIS holds a scooter zone layer (31 October
+  2026). San Diego's scooter corral and geofence layers (`ScooterCorral_Public` on
   webmaps.sandiego.gov) time out, and Tempe's program pages answer scripts
   with 403 (Akamai); Tempe's open data has only Bird's zones, harvested from
   its GBFS. Marseille's sites answer scripts with a page asking for JavaScript and
@@ -296,7 +301,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   of them, no-parking, no-riding and slow zones) are on a public map its
   [e-scooter page](https://www.stavanger.kommune.no/vei-og-trafikk/stavanger-pa-sykkel/utleie-av-sparkesykler-i-stavanger/)
   embeds, served as JSON by Nivel's micromobility platform, with no terms and
-  no documentation: no open data service (31 October 2026).
+  no documentation: no open data service (31 October 2026). Long Beach's
+  geofenced areas are on Populus's public policy map, which its rules link,
+  read through a key built into the map's page; its drop zones go to the
+  operators alone.
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),
@@ -313,7 +321,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   points before simplifying, beside 2,374 points, 2,106 of them active.
   Shared scooters are banned there from 1 January 2027, so they would serve
   two months.
-- **Old:** Westminster's, Dallas's (2022–23), Los Angeles's (2024),
+- **Old:** Detroit's 26 scooter access restrictions downtown (no access,
+  10 mph, no parking, preferred parking; last edited May 2021; the current
+  ones go to the operators on award), Saint Paul's 24 no-parking areas for
+  2018's dockless bikes, and San Antonio's six prohibited areas (the River
+  Walk, San Pedro Creek, La Villita, HemisFair, Main Plaza and Alamo Plaza;
+  December 2018), whose open data portal answers 403 from outside the United
+  States. Westminster's, Dallas's (2022–23), Los Angeles's (2024),
   Portland's (2021), Bloomington, Indiana's 64 corrals and its downtown and
   Switchyard Park areas (December 2023), and Georgetown University's 66
   parking places and 5 no-riding areas on its campus, in DC's open data
@@ -453,7 +467,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   says, and its geoportal's sharing WFS holds only the vehicles. Leipzig's
   page on e-scooters allows their rental only at stations (LVB's mobility
   stations), none inside the Promenadenring, and lists none. Indianapolis's
-  data and GIS hold no scooter layer.
+  data and GIS hold no scooter layer. Milton Keynes's mandatory parking zones,
+  drawn with Dott and Lime in January 2026, are in their apps alone (a
+  parish council's link to a map of them now answers 404), and Bath's are in
+  Dott's: the West of England Combined Authority's only layer is a copy of
+  Dott's zones of July 2025, as Bristol's is.
 
 ## No public data, in covered countries
 

@@ -30,9 +30,9 @@ const MUNSTER_PRINZIPALMARKT = { south: 51.958, west: 7.62, north: 51.965, east:
 const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28, east: -123.06 };
 // The Old Market and the Gene Leahy Mall, in downtown Omaha.
 const OMAHA_DOWNTOWN = { south: 41.252, west: -95.94, north: 41.262, east: -95.922 };
-// Alexandria's Old Town, from Market Square down King Street to the waterfront.
 // Aachen's centre, from the Dom and the Markt to the Elisenbrunnen.
 const AACHEN_CENTRE = { south: 50.77, west: 6.075, north: 50.78, east: 6.095 };
+// Alexandria's Old Town, from Market Square down King Street to the waterfront.
 const ALEXANDRIA_OLD_TOWN = { south: 38.8, west: -77.05, north: 38.81, east: -77.035 };
 // Antwerpen's Meir and Groenplaats.
 const ANTWERPEN_MEIR = { south: 51.215, west: 4.395, north: 51.222, east: 4.41 };
@@ -88,6 +88,8 @@ const CITY_OF_LONDON_GUILDHALL = { south: 51.514, west: -0.095, north: 51.52, ea
 const BERLIN_TIERGARTEN = { south: 52.511, west: 13.36, north: 52.519, east: 13.38 };
 // Hamburg's Jungfernstieg and the Binnenalster.
 const HAMBURG_JUNGFERNSTIEG = { south: 53.551, west: 9.985, north: 53.558, east: 10.0 };
+// Cleveland's downtown, round Public Square.
+const CLEVELAND_DOWNTOWN = { south: 41.495, west: -81.7, north: 41.51, east: -81.68 };
 // Columbus's Harrison West, round Michigan Avenue and West 3rd Avenue.
 const COLUMBUS_HARRISON_WEST = { south: 39.98, west: -83.025, north: 39.99, east: -83.01 };
 // Helsingborg's Stortorget, Kärnan and the station, Knutpunkten.
@@ -145,7 +147,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -816,6 +818,20 @@ describe('the cities\' zones', () => {
     await loadCityZones(lambeth);
     const shown = ruleZonesInView({ bounds: LAMBETH_VAUXHALL, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'parking']));
+  });
+
+  it("draws the City of Cleveland's shared mobility hubs, from its open data under the ODbL", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const cleveland = ZONE_CITIES.find(city => city.id === 'cleveland')!;
+    expect(cleveland.authority).toBe('City of Cleveland, ODbL');
+    expect(cleveland.timeZone).toBe('America/New_York');
+    // Its 95 hubs, 71 in Cleveland and 24 in four suburbs, points drawn as discs.
+    const { default: file } = await CITY_ZONE_FILES.cleveland();
+    expect(file.zones).toHaveLength(95);
+    expect(file.zones.every(zone => zone.kind === 'parking' && zone.name === 'Shared mobility hub')).toBe(true);
+    await loadCityZones(cleveland);
+    const shown = ruleZonesInView({ bounds: CLEVELAND_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(shown.filter(zone => zone.rule === 'parking').length).toBeGreaterThan(10);
   });
 
   it("draws the City of Norfolk's micromobility corrals, from its bike network map", async () => {

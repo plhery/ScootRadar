@@ -615,7 +615,7 @@ downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
 them again. Aachen, Alexandria, Basel, Berlin, Bordeaux, Braunschweig, the City of London,
-Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
+Cleveland, Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
 San Francisco, Santa Monica, Stockholm, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
 Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
 city's public zone layers are drawn regardless, credited to the city.
@@ -850,6 +850,21 @@ city's public zone layers are drawn regardless, credited to the city.
   licensed under the Open Government Licence v3.0), and the legend links that
   record: no City page describing the places was found. Its Santander Cycles
   docking stations (layer 65) are left out.
+- **Cleveland** (read 31 October 2026): the City of Cleveland's 95 shared
+  mobility hubs, 71 in Cleveland and 24 in Cleveland Heights, South Euclid,
+  East Cleveland and University Heights, points each drawn as a disc of 5 m,
+  from its open data
+  [Cleveland and Cuyahoga County Shared Mobility Hubs](https://data.clevelandohio.gov/datasets/17a75fd5ac72444dad36b23cf6bfb774_0/about)
+  (last edited 5 September 2025), under the ODbL, which the portal's terms
+  set for all its data. The layer names them only by code (`Reference`, such
+  as "SE1"), so each is "Shared mobility hub". The legend credits "City of
+  Cleveland, ODbL" and links the City's
+  [Shared Mobility page](https://www.clevelandohio.gov/shared-mobility): over
+  70 hubs installed in 2025, blue bike racks with a sign, where a scooter is
+  best parked. Under its rules of 5 July 2024 (City Record), a shared device in
+  Downtown, Ohio City and University Circle is parked at a hub, physical or
+  geofenced; that zone is not published, so it is not drawn, nor are the
+  geofenced hubs, which the layer does not hold.
 - **Columbus** (read 30 October 2026): the City of Columbus's 47 active
   scooter corrals, 42 marked and 5 virtual, installed from April 2023 to
   January 2026, each a disc 5 m round its point, from layer 42 of

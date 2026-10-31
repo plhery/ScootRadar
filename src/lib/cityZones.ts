@@ -53,6 +53,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   boulder: () => import('../../data/city-zones/boulder.json'),
   braunschweig: () => import('../../data/city-zones/braunschweig.json'),
   cityoflondon: () => import('../../data/city-zones/cityoflondon.json'),
+  cleveland: () => import('../../data/city-zones/cleveland.json'),
   columbus: () => import('../../data/city-zones/columbus.json'),
   hamburg: () => import('../../data/city-zones/hamburg.json'),
   helsingborg: () => import('../../data/city-zones/helsingborg.json'),
