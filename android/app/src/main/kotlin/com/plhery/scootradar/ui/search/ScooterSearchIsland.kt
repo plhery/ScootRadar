@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -169,40 +170,44 @@ fun ScooterSearchIsland(
             label = "island",
         ) { searching ->
             if (searching) {
-                val api = LocalAddressSearch.current
-                val analytics = LocalAnalytics.current
-                val scope = rememberCoroutineScope()
-                // A new search each time it opens, as the iPhone's panel has its own. The screen keeps it while it
-                // is open, through an activity made again or the chrome made again in a new language, and ends it
-                // as it closes; an island shown alone ends its own as it goes.
                 val held = LocalScreenState.current
-                val model = remember {
-                    val make = { runsIn: CoroutineScope ->
-                        if (api != null) SwissAddressSearchModel(runsIn, analytics, api) else SwissAddressSearchModel(runsIn, analytics)
+                // A new panel each time it opens, also when it opens again while the last one fades out, which
+                // AnimatedContent would show again with what was typed in it (review-app-ae 5).
+                key(held?.searchOpenings) {
+                    val api = LocalAddressSearch.current
+                    val analytics = LocalAnalytics.current
+                    val scope = rememberCoroutineScope()
+                    // A new search each time it opens, as the iPhone's panel has its own. The screen keeps it while it
+                    // is open, through an activity made again or the chrome made again in a new language, and ends it
+                    // as it closes; an island shown alone ends its own as it goes.
+                    val model = remember {
+                        val make = { runsIn: CoroutineScope ->
+                            if (api != null) SwissAddressSearchModel(runsIn, analytics, api) else SwissAddressSearchModel(runsIn, analytics)
+                        }
+                        held?.search(make) ?: make(scope)
                     }
-                    held?.search(make) ?: make(scope)
+                    DisposableEffect(model) { onDispose { if (held == null) model.cancel() } }
+                    SideEffect { model.near = near }
+                    ScooterSearchPanel(
+                        model = model,
+                        recentPlaces = recentPlaces,
+                        nearbyCities = nearbyCities,
+                        bottomLimit = bottomLimit,
+                        onSelect = { destination ->
+                            onSelect(destination)
+                            onSearchingChange(false)
+                        },
+                        onChooseCity = { city ->
+                            onChooseCity(city)
+                            onSearchingChange(false)
+                        },
+                        onUseCurrentLocation = {
+                            onUseCurrentLocation()
+                            onSearchingChange(false)
+                        },
+                        onCancel = { onSearchingChange(false) },
+                    )
                 }
-                DisposableEffect(model) { onDispose { if (held == null) model.cancel() } }
-                SideEffect { model.near = near }
-                ScooterSearchPanel(
-                    model = model,
-                    recentPlaces = recentPlaces,
-                    nearbyCities = nearbyCities,
-                    bottomLimit = bottomLimit,
-                    onSelect = { destination ->
-                        onSelect(destination)
-                        onSearchingChange(false)
-                    },
-                    onChooseCity = { city ->
-                        onChooseCity(city)
-                        onSearchingChange(false)
-                    },
-                    onUseCurrentLocation = {
-                        onUseCurrentLocation()
-                        onSearchingChange(false)
-                    },
-                    onCancel = { onSearchingChange(false) },
-                )
             } else {
                 CollapsedBar(
                     state = state,

@@ -1,6 +1,8 @@
 package com.plhery.scootradar
 
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasSetTextAction
@@ -11,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.app.ScooterMapViewModel
@@ -19,6 +22,7 @@ import java.util.Locale
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExternalResource
@@ -102,6 +106,33 @@ class MainActivityRecreationTest {
         assertEquals(ScooterLanguage.De, controller.language.value)
         compose.onNode(hasSetTextAction()).assert(hasText("Z"))
     }
+
+    /**
+     * The search closed and opened again while it still fades out is a new one, as SwiftUI inserts a new panel while
+     * the old one goes: empty, and the screen's, so that a new text size keeps what is typed in it. The old one came
+     * back with its text, which the screen no longer held: a new text size lost it, and the next close left its work
+     * running (review-app-ae 5).
+     */
+    @Test
+    fun theSearchOpenedAgainAsItFadesOutIsANewOneTheScreenKeeps() {
+        val screen = ViewModelProvider(compose.activity)[ScooterMapViewModel::class.java].screen
+        compose.onNodeWithContentDescription("Search city or address").performClick()
+        compose.onNode(hasSetTextAction()).performTextInput("Z")
+        compose.mainClock.autoAdvance = false
+        compose.onNodeWithText("Cancel").performClick()
+        repeat(3) { compose.mainClock.advanceTimeByFrame() }
+        assertTrue("the panel fading out", compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty())
+        compose.runOnUiThread { screen.searchIsExpanded = true }
+        compose.mainClock.autoAdvance = true
+        compose.waitForIdle()
+        compose.onNode(hasSetTextAction()).assert(emptyField)
+
+        compose.onNode(hasSetTextAction()).performTextInput("Q")
+        madeAgainForANewTextSize()
+        compose.onNode(hasSetTextAction()).assert(hasText("Q"))
+    }
+
+    private val emptyField = SemanticsMatcher.expectValue(SemanticsProperties.EditableText, AnnotatedString(""))
 
     /** A new font size, which the activity doesn't take itself: Android makes it again, its ViewModel kept. */
     private fun madeAgainForANewTextSize() {

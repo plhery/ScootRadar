@@ -3,6 +3,7 @@ package com.plhery.scootradar.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,9 +39,18 @@ class ScreenState(
             if (!value) {
                 search?.cancel()
                 search = null
+            } else if (!searchOpen) {
+                searchOpenings++
             }
             searchOpen = value
         }
+
+    /**
+     * How many times the search has opened: each opening's panel is a new one, also one opened again while the last
+     * still fades out, as SwiftUI inserts a new panel while the old one is removed.
+     */
+    var searchOpenings by mutableIntStateOf(0)
+        private set
 
     var filtersPresented by mutableStateOf(false)
 
