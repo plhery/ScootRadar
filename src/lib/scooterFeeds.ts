@@ -367,12 +367,17 @@ const operatorSwissSystem = (id: string, provider: ProviderKey, discoveryUrl: st
 
 // Systems whose operator publishes its own open feed, read there and not from sharedmobility.ch's
 // copy, whatever the registry lists: Bird and Lime Opfikon left the map when it stopped on
-// 31 October 2026. Their national ids keep their towns, zones, records and alerts. Lime publishes
-// no feed of its own for Zürich, Basel or Uster, which still come from the registry.
+// 31 October 2026. Their national ids keep their towns, zones, records and alerts. Bird's
+// Winterthur, Schaffhausen and Biel feeds have sent no position, there as on sharedmobility.ch,
+// and are skipped as inactive until they do. Lime publishes no feed of its own for Zürich, Basel
+// or Uster, nor JM Fleets for Bird's Biel partner system, which still come from the registry.
 const OPERATOR_SWISS_SYSTEMS: NationalSystem[] = [
   operatorSwissSystem('bird-zurich', 'bird', 'https://mds.bird.co/gbfs/v2/public/zurich/gbfs.json'),
   operatorSwissSystem('bird-basel', 'bird', 'https://mds.bird.co/gbfs/v2/public/basel/gbfs.json'),
   operatorSwissSystem('bird-kloten', 'bird', 'https://mds.bird.co/gbfs/v2/public/kloten/gbfs.json'),
+  operatorSwissSystem('bird-winterthur', 'bird', 'https://mds.bird.co/gbfs/v2/public/winterthur/gbfs.json'),
+  operatorSwissSystem('bird-schaffhausen', 'bird', 'https://mds.bird.co/gbfs/v2/public/schaffhausen/gbfs.json'),
+  operatorSwissSystem('bird-biel', 'bird', 'https://mds.bird.co/gbfs/v2/public/biel/gbfs.json'),
   operatorSwissSystem('lime_opfikon', 'lime', 'https://data.lime.bike/api/partners/v2/gbfs/opfikon/gbfs.json'),
 ];
 

@@ -455,18 +455,22 @@ describe('fetchScooters source health', () => {
 
   it('reads Bird and Lime Opfikon from their operators\' own feeds, whatever the registry lists', async () => {
     const base = 'https://mds.bird.co/gbfs/v2/public/kloten';
+    // Bird's Winterthur feed lists no scooter and was never updated, as on sharedmobility.ch.
+    const winterthur = 'https://mds.bird.co/gbfs/v2/public/winterthur';
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
-      if (url === `${base}/gbfs.json`) {
+      const town = [base, winterthur].find(prefix => url.startsWith(`${prefix}/`));
+      if (url === `${town}/gbfs.json`) {
         return jsonResponse({ data: { en: { feeds: [
-          { name: 'free_bike_status', url: `${base}/free_bike_status.json` },
-          { name: 'vehicle_types', url: `${base}/vehicle_types.json` },
-          { name: 'geofencing_zones', url: `${base}/geofencing_zones.json` },
+          { name: 'free_bike_status', url: `${town}/free_bike_status.json` },
+          { name: 'vehicle_types', url: `${town}/vehicle_types.json` },
+          { name: 'geofencing_zones', url: `${town}/geofencing_zones.json` },
         ] } } });
       }
-      if (url === `${base}/vehicle_types.json`) {
+      if (url === `${town}/vehicle_types.json`) {
         return jsonResponse({ data: { vehicle_types: [{ vehicle_type_id: 'scooter', form_factor: 'scooter', propulsion_type: 'electric' }] } });
       }
+      if (url === `${winterthur}/free_bike_status.json`) return jsonResponse({ last_updated: 0, ttl: 60, data: { bikes: [] } });
       if (url === `${base}/free_bike_status.json`) {
         return jsonResponse({ last_updated: Math.floor(Date.now() / 1000), data: { bikes: [
           { bike_id: 'b1', lat: 47.45, lon: 8.58, is_disabled: false, is_reserved: false, vehicle_type_id: 'scooter' },
@@ -481,11 +485,15 @@ describe('fetchScooters source health', () => {
       ['national:bird-zurich', 'mds.bird.co', 'bird'],
       ['national:bird-basel', 'mds.bird.co', 'bird'],
       ['national:bird-kloten', 'mds.bird.co', 'bird'],
+      ['national:bird-winterthur', 'mds.bird.co', 'bird'],
+      ['national:bird-schaffhausen', 'mds.bird.co', 'bird'],
+      ['national:bird-biel', 'mds.bird.co', 'bird'],
       ['national:lime_opfikon', 'data.lime.bike', 'lime'],
     ]);
     const kloten = feeds[2];
     expect(kloten.zoneSource).toEqual({ discoveryUrl: `${base}/gbfs.json`, baseUrl: `${base}/`, authenticated: false });
     expect((await kloten.collect()).vehicles).toEqual([expect.objectContaining({ provider: 'bird', lat: 47.45 })]);
+    expect(await feeds[3].collect()).toMatchObject({ vehicles: [], skipped: true });
     // sharedmobility.ch's contact header is for sharedmobility.ch alone.
     for (const [, init] of fetchMock.mock.calls as unknown as [string, RequestInit][]) {
       expect(new Headers(init.headers).has('Authorization')).toBe(false);

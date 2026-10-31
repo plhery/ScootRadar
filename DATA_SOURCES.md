@@ -117,8 +117,11 @@ Bird's are everywhere, and Lime's at `data.lime.bike`, under its
 [GBFS terms](https://www.li.me/legal/public-gbfs-terms). They keep their
 national ids, and with them their towns, zones, records and alerts. Bird's feeds
 give zones and no prices, as its copy on sharedmobility.ch did. Lime's Opfikon
-feed gives neither, so its scooters show no price, which its copy did. Lime
-publishes no feed of its own for Zürich, Basel or Uster
+feed gives neither, so its scooters show no price, which its copy did. Bird's
+Winterthur, Schaffhausen and Biel feeds are read at `mds.bird.co` too: they
+list no scooter and have never sent a position, and are skipped as inactive,
+as their copies on sharedmobility.ch were. Lime publishes no feed of its own for Zürich,
+Basel or Uster, nor JM Fleets for Bird's Biel partner system
 ([coverage gaps](docs/coverage-gaps.md)).
 
 Since 28 October 2026 Bolt's scooters in Zürich and Basel, Voi's in its eight
