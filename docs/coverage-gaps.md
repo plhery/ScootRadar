@@ -1681,6 +1681,12 @@ Bonaire had feeds to add. Survey files are in
   feed is still polled, and its "feed empty" alert is silenced in Grafana
   until 1 December, 08:00 UTC. Then read Dott's feed from Netcup and look for
   a notice; whether it stays is decided then.
+- **1 December 2026:** Dott Hatvan (`dott_hu_hatvan`). It fell from 70
+  scooters on 24 October 2026 to 15 and listed none from 28 October, 00:00
+  UTC; Dott's public feed answers 404 for the town and no notice was found in
+  Hungarian or English. The feed is read from Dott's rider map, on Netcup, and
+  is still polled. Then read it there and look for a notice; whether it stays
+  is decided then.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
@@ -1812,6 +1818,12 @@ Bonaire had feeds to add. Survey files are in
   April by the city's notice that its first season ended on 31 October 2026.
   The scooters came out on 30 March in 2026: if they are back before 1 April,
   move `until` to that day; in October 2027, set `from` by the city's notice.
+- **1 April 2027:** Hoppy Zakynthos (`hoppy_gr_zakynthos`, ATOM 2198). It
+  fell from 33 scooters on 24 October 2026 to none by 27 October, 18:00 UTC,
+  as its season ended ([Greek feeds](greek-scooter-feeds.md)), with Kos and
+  Rhodes falling and no dates published, so the feed has no `seasonal` window.
+  It is still polled. If it holds scooters by then, nothing needs doing;
+  otherwise look for a notice and decide whether it stays.
 - **1 April 2027:** Hopp Bucharest (`ro-bucharest`), empty on 18 October
   2026, in case Hopp starts a season there.
 - **1 April 2027:** Lichtensteig, out of the map's towns since 18 October
