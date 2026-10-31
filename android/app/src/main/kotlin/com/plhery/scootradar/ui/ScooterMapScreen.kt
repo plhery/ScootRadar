@@ -190,6 +190,8 @@ fun ScooterMapScreen(
     val backdrop = remember { MapBackdrop(context) }
     // Where the chrome is over the map, for the map to keep clear of it.
     val chrome = remember { MapChromeFrames() }
+    // What TalkBack is told, in one pane for as long as the screen shows.
+    val announcements = remember { Announcements() }
     var searchIsExpanded by screenState::searchIsExpanded
     var filtersPresented by screenState::filtersPresented
     var settingsPresented by screenState::settingsPresented
@@ -259,6 +261,7 @@ fun ScooterMapScreen(
             LocalMapChrome provides chrome,
             LocalLocationSettings provides locationSettings,
             LocalScreenState provides screenState,
+            LocalAnnouncements provides announcements,
         ) {
             // The keys reach the screen before what has the focus in it, as a key command reaches the window before
             // the field being typed in; with nothing focused, the activity hands them over. A mouse's right click
@@ -299,6 +302,8 @@ fun ScooterMapScreen(
                     chrome.captionButtons = captionButtons
                     chrome.covered = sheetOpen
                 }
+                // Heard under a sheet too, as VoiceOver's announcements are.
+                announcements.Pane()
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
                     map(dark)

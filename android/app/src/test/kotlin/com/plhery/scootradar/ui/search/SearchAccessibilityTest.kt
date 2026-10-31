@@ -203,11 +203,15 @@ class SearchAccessibilityTest {
         compose.waitForIdle()
     }
 
-    /** What the panes say that TalkBack reads as they appear: the announcements. */
+    /**
+     * What the panes say that TalkBack reads as they appear or change: the announcements. An empty title is one
+     * withdrawn, which TalkBack doesn't read.
+     */
     private fun announced(): List<String> =
         compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.PaneTitle), useUnmergedTree = true)
             .fetchSemanticsNodes()
             .map { it.config[SemanticsProperties.PaneTitle] }
+            .filter { it.isNotEmpty() }
 }
 
 /** Three places for "Bahnhof", one for "Zürich HB", none for "Nowhere", and a failure for "Offline". */

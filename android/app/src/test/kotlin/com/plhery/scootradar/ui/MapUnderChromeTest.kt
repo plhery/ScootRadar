@@ -72,7 +72,8 @@ class MapUnderChromeTest {
         // The window's points are its pixels at mdpi.
         val island = compose.onNodeWithTag(SEARCH_ISLAND_TAG).fetchSemanticsNode().boundsInWindow
         val search = frames.search
-        assertTrue("the open search $search holds the island $island", search != null && search.contains(ScreenPoint(island.center.x.toDouble(), island.center.y.toDouble())) && search.height >= island.height - 1)
+        val middle = ScreenPoint(island.center.x.toDouble(), island.center.y.toDouble())
+        assertTrue("the open search $search holds the island $island", search != null && search.contains(middle) && search.height >= island.height - 1)
         assertFalse(frames.covered)
 
         compose.runOnIdle { screen.searchIsExpanded = false }
