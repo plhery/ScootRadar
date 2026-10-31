@@ -42,7 +42,7 @@ import { boltMapRequests, withBoltAppCollectors } from './boltApp';
 import { alpacaMapRequests, withAlpacaAppCollectors } from './alpacaApp';
 import { dartMapRequests, withDartAppCollectors } from './dartApp';
 import { skyssMapRequests, withSkyssAppCollectors } from './skyssApp';
-import { readsSwissAppMap, withSwissAppMaps } from './swissAppMaps';
+import { readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps } from './swissAppMaps';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
@@ -54,6 +54,7 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withBirdAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
   withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
+  (current: CollectableScooterFeed[]) => withLimeStandby(current, id => records.get(id)),
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
 initErrorReporting();
@@ -242,11 +243,14 @@ async function rebuildBaseOverview(feeds: FeedSnapshot[], now: number) {
   }
 }
 
-/** Drops the capped feeds' data that would pass its cap before the next tick: whether it dropped any. */
+/**
+ * Drops the capped feeds' data that would pass its cap before the next tick, and a Lime standby
+ * group's once its national feed serves again: whether it dropped any.
+ */
 function dropExpiredData(now: number) {
   let dropped = false;
   for (const [id, record] of records) {
-    const kept = retained(record, now + TICK_MS, retentionCap(id));
+    const kept = standingDown(retained(record, now + TICK_MS, retentionCap(id)), other => records.get(other), now);
     if (kept === record) continue;
     records.set(id, kept);
     dropped = true;

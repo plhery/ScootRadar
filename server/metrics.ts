@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { monitorEventLoopDelay } from 'node:perf_hooks';
 import { COUNTRY_NAMES } from '../src/generated/countries';
+import { standbyNationalFeed } from '../src/lib/feedCoverage';
 import { COUNTRY_SOURCES, collectsParking } from '../src/lib/regionalScooterSystems';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
@@ -132,8 +133,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       // A skipped feed, whose operator lists nothing at all (Bird out of season, a Dott region it
       // has paused), has no state either, but holds no scooter, which the empty-feed alert counts.
       // Not the Swiss systems sharedmobility.ch keeps listing after their operator stopped: they are
-      // skipped as inactive for good.
-      const counted = attempted.filter(feed => !feed.skipped || feed.source !== 'national');
+      // skipped as inactive for good. Nor Lime's groups standing by for a national feed that serves.
+      const counted = attempted.filter(feed => !feed.skipped || (feed.source !== 'national' && !standbyNationalFeed(feed.id)));
       const labelsOf = (feed: FeedLabels): Labels => ({ feed: feed.id, source: feed.source, provider: feed.provider });
       // A feed retired from the catalog stops counting.
       if (snapshot) {

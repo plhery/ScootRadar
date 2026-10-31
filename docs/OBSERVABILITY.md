@@ -133,7 +133,12 @@ Few people use the map, so the cache collects a feed every minute only where som
 looks:
 
 - **Always**: the sources in `SCOOTER_ALWAYS_FAST` (Switzerland by default) every minute. `CH`
-  means its open data, `national`, `hopp` and `publibike`, and not `switzerland`, Lime's Kloten map.
+  means its open data, `national`, `hopp` and `publibike`, and not `switzerland`, Lime's maps of
+  Kloten and Sion and its standby for Zürich, Basel and Uster.
+- **Standby**: those three towns' Lime groups ask Lime for nothing while the town's national feed
+  serves, and show as `skipped` in `/feeds`. Once it has shown no scooter for 15 minutes they are
+  read as Lime's other groups, except every 30 minutes rather than every three days, until it is
+  back (`withLimeStandby` in `server/swissAppMaps.ts`).
 - **Watched**: a map request covering a feed keeps it on the minute for 10 minutes. If
   its last collection is over a minute old, the request starts one at once.
 - **Idle**: every other feed every 20 minutes, each at its own time in the interval
@@ -296,7 +301,8 @@ day. Hopp Dalvík and Bird Leduc, emptied for the winter on 20 and 21 October 20
 paused on 22 October, before their alerts were due, and Hopp Ólafsvík, emptied on the
 22nd, from the 23rd. Hopp Stykkishólmur, emptied on 25 October, is paused from the 26th,
 after its alert fired on the 28th. Bird Penticton is paused from 1 November 2026, when the
-city's notice ends its season.
+city's notice ends its season. Lime's Zürich, Basel and Uster groups count only while they
+stand in for their national feeds: on standby they list nothing by design.
 
 - **Not a quiet night or a snow day.** Beryl empties Bournemouth and Brighton every
   night and Voi its Oslo feed during the night ban; Bird lists nothing in Calgary on a

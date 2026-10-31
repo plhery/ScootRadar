@@ -1,7 +1,10 @@
 import type { ProviderKey } from '../src/generated/providers';
+import { VEHICLE_MAX_AGE_MS } from '../src/lib/dataFreshness';
+import { standbyNationalFeed } from '../src/lib/feedCoverage';
 import { boundsCenter, haversineM } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
+import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { Vehicle } from '../src/lib/types';
 import { collectBoltRegion } from './boltApp';
 import { collectDottRegion } from './dottApp';
@@ -200,3 +203,35 @@ export function withSwissAppMaps(feeds: CollectableScooterFeed[]): CollectableSc
 /** Whether the feed is a national one read from a rider map, collected as the app maps are rather than every minute. */
 export const readsSwissAppMap = (feed: Pick<CollectableScooterFeed, 'id' | 'source'>) =>
   feed.source === 'national' && SWISS_APP_MAPS.has(feed.id.slice(feed.id.indexOf(':') + 1));
+
+/** How often a standby group nobody looks at is read while it serves its town: Lime's three days are too long for a town's only source. */
+export const LIME_STANDBY_INTERVAL_MS = 30 * 60_000;
+
+/** Whether a national feed has scooters to show. A feed that stops or freezes passes the age limit, one that was dropped has no record. */
+const nationalServes = (record: FeedSnapshot | undefined, now: number) =>
+  record !== undefined && !record.skipped && record.vehicles.length > 0 && now - record.observedAt <= VEHICLE_MAX_AGE_MS;
+
+/**
+ * Lime's Zürich, Basel and Uster stand by for their national feeds, which give prices, ranges and
+ * rental links where the rider map gives none: while one serves, its market's groups are skipped
+ * without asking Lime, so they spend none of its accounts' 36 requests a minute. Once it has served
+ * nothing for 15 minutes they are read as any Lime market, and a view wakes the groups it shows. The
+ * 126 local views of the three, every 30 minutes, are about 4 requests a minute.
+ */
+export function withLimeStandby(feeds: CollectableScooterFeed[], recordOf: (id: string) => FeedSnapshot | undefined,
+  now = Date.now): CollectableScooterFeed[] {
+  return feeds.map(feed => {
+    const national = standbyNationalFeed(feed.id);
+    if (!national) return feed;
+    return { ...feed, idleIntervalMs: LIME_STANDBY_INTERVAL_MS,
+      collect: async () => nationalServes(recordOf(national), now()) ? { vehicles: [], stale: false, skipped: true } : feed.collect() };
+  });
+}
+
+/** A standby group's record once its national feed serves again, emptied, as the two would count the same scooters. */
+export function standingDown(record: FeedSnapshot, recordOf: (id: string) => FeedSnapshot | undefined, now: number): FeedSnapshot {
+  if (!record.vehicles.length && !record.sweep) return record;
+  const national = standbyNationalFeed(record.id);
+  if (!national || !nationalServes(recordOf(national), now)) return record;
+  return { ...record, vehicles: [], sweep: undefined, skipped: true };
+}

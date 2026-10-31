@@ -28,7 +28,8 @@ Blackfalds and Waterloo Region, and since 28 October in Feldkirchen bei Graz,
 Klosterneuburg, Korneuburg, Chania, Érd, Százhalombatta, Diósd, Ragusa,
 Marina di Ragusa, Ishigaki, North Ishigaki, San Marcos, UNC Charlotte,
 Kloten, the first Swiss town read from it, and Sion, which no feed covers,
-and since 29 October in Farmington, Utah.
+since 29 October in Farmington, Utah, and since 31 October in Zürich, Basel and
+Uster while sharedmobility.ch lists no Lime there.
 Kortrijk, Mechelen, Lucca, Volos and Keszthely held no Lime scooter near their
 centres at midnight on 28 October, nor anywhere in their zones at midday:
 dormant regions.
@@ -552,16 +553,20 @@ banned shared scooters, and feeds that were empty when checked.
   (Zürich, Basel and Kloten), PubliBike, Bird (Zürich, Basel, Kloten,
   Winterthur, Schaffhausen and Biel) and Lime in Opfikon, read from their own
   feeds, and Lime in Kloten and Sion, from
-  its rider map. Hopp
+  its rider map, as Lime in Zürich, Basel and Uster while sharedmobility.ch
+  serves none. Hopp
   stamps each response with the time it was asked for, so the fifteen-minute
   age limit can't tell how old its positions are.
-  - Lime Zürich, Lime Basel and Lime Uster are blocked while sharedmobility.ch
-    is down. It has served no provider since 02:13:09 UTC on 31 October 2026:
-    at 15:40 its registry timed out and `lime_zurich` answered 404 "Provider …
-    not configured or disabled". Lime publishes no feed for them
-    (`data.lime.bike` answers 404 under each name tried), MobiData BW's copies
-    answer 502, and Lime's rider map, which lists all three, needs a signed-in
-    account. They held about 746, 310 and 112 scooters at 02:00.
+  - Lime Zürich, Lime Basel and Lime Uster lose their prices, ranges and rental
+    links while sharedmobility.ch is down, and nothing else. It has served no
+    provider since 02:13:09 UTC on 31 October 2026: at 15:40 its registry timed
+    out and `lime_zurich` answered 404 "Provider … not configured or disabled".
+    Lime publishes no feed for them (`data.lime.bike` answers 404 under each
+    name tried) and MobiData BW's copies answer 502, so the cache reads Lime's
+    rider map, signed in, until the national feeds are back (`withLimeStandby`
+    in `server/swissAppMaps.ts`). They held about 746, 310 and 112 scooters at
+    02:00. The map on map.geo.admin.ch still shows them, but from a frozen file:
+    its GeoJSON was last modified at 02:10:18 UTC.
   - Bird's Biel partner system (`bird-platform-partner-jmfleetswl-biel`) and
     sharedmobility.ch's PubliBike system (`publibike`) are out with it, and
     the map loses nothing: in the cache's records, back to 16 October 2026,

@@ -4749,6 +4749,63 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CH",
+      "city": "Basel",
+      "center": [
+        47.5596,
+        7.5886
+      ],
+      "timeZone": "Europe/Zurich",
+      "regionToken": "NTDHDWYOTHLGK",
+      "serviceAreas": [
+        {
+          "name": "[Basel][SZ][[Basel][SZ][SZ - Basel+BL - ]]",
+          "polygon": "iojaHsdxm@e@~L{F~EwAjG`En]{GoCaCqHf@yJ{BaAkCrN}BPmEyIaFf@kItEy@gAsCk@uCIByErD{M|Cqc@iD{BqIvi@uDlNoE~E~Bkp@sHgCuDtWmCzHDeTaEiQaCn@kAxBdBzM{BjQMla@uUlM`VhLbTbMpVzRnEv`@k@tI^tBlEuAnD{AzFtA|M|]{Dnk@hUze@nKfUeGbUaBhT{Ap\\oIhKoVkDu\\nFyZnhAxs@tW~^h]aG|TvAtXyCbU{Av\\dFpFlHzUdK~WrD~@rOyMlXxJfWbcAjAbDdRrZr@bFUxEpL~PpH|b@`Lp]lErAfj@riA?xg@d^tk@rPr@tFgLim@kmAw`@kr@lKes@sDwh@iDwKxM{OpW_NcKi_@{EyPrj@b@^id@|BeGlg@bK|AgJ`OjGfFeWnKcHhJR`_@c[|B{LkFgNuIiEuKC_BiBhVcl@xGoLb@aGmRcmAcSeLcMoSd`@rLxF~LpQzGlF}p@eGmAdFyXfC}Vl[dBpCk[kCw[kA_w@q_@kIaV`s@xCzO~JdEiJnEeYcIsLw@eRa@oOvBc@uNrCgHi@eKP}JjKuWtDyCjKyKfEwAfHeJvGkT{A}JhPsGdNuI|RcNeAkOgYrK}BsJ_JqAmNyD}HoZiDuA~@}L@_DaKiGaVgJmO_JkHwK_DuC_GbHeRhToXtJcHzEmC|IuFtj@qQh\\kYvUc[h[sHhLwFpOkXaQuSmCYcLsCeLj@cOdNh@d@q\\_PsLeNcJmFsU|CqEvM{a@eA_LyJeGaExD"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Basel_1332_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CH",
+      "city": "Uster",
+      "center": [
+        47.34,
+        8.72
+      ],
+      "timeZone": "Europe/Zurich",
+      "regionToken": "ESP5EFROKTSZH",
+      "serviceAreas": [
+        {
+          "name": "[Uster][Service Zone] Operations zone",
+          "polygon": "s_d`Hyz}s@z@eBbDvCzUif@zKxNbDuG^sLdHcMnDk_@xTtTtH{ZvTuPvJrKbI~YnEnElG|@dX{EbV}@nC_@hSaQvGwM~\\ghAze@`m@lDwC|Mmd@bJkNzHuHcMku@gEhAiEmLl@wOeQufAnb@gd@uWwj@hBqNcPqk@_d@h[aj@yf@eG~y@}Tjg@oOrE{PzVaL|GkLvCcFdEePqSsA{c@mH{_@kHqKmJeVuRrLaEfQpCtp@dDd]hUb_@xEtKNpOcFvUgJzXmH|QkFhKaJxKgB|FjFlAwGnJwGpT_Pru@iN`a@mTrc@jAdCP[bKjWjBpMdItH??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Uster_322_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CH",
+      "city": "Zürich",
+      "center": [
+        47.3769,
+        8.5417
+      ],
+      "timeZone": "Europe/Zurich",
+      "regionToken": "ZOU7OR7JYII6X",
+      "serviceAreas": [
+        {
+          "name": "Zurich SZ",
+          "polygon": "mxn`H_~es@??qh@~CwE|pAadBcTsCvyAbVdMjYn`@h_@gOr^qp@tSkj@zLiMiHhfBdJ~Fc@pp@vBjUsEvPcPjr@nJ~f@fJt|@vDdExPwAbHk]`HFpAkDlHhCu@pIdFhNaH`Z~GlAmBbUtLhCnMl^LpMvJe@xLfJdFqBlGeM~@cHeGkE_BuGlAoKtLtG~AsHpXgA\\wBvF_@nDj_Af\\vOlM_s@zIpQcDfb@|KiNxLZaAtHdNdW|f@t\\pG`AnAf\\x@~W~KuRdC}u@bRia@lDqLkAcO~IXfRv_@jMEpJuT`RcL|Fsn@by@cdAbm@kw@xe@gQheA}Ahe@mGgUqrBeWuu@oe@w~@ynAahDmDqMnDyBmLkt@}IuUmAp@`@aJgI}Km@sZcBmCtHuOtDyn@AkHaJsAoEyIf@{L]cVaDuGl@kGCwFm@mDh@eGS}ErAUCoG^?b@cF\\kFy@_AmAsJ}BcFoDfKgAJ}AnBcA`BWv@eAlBWVc@Rg@D_@K_CgAeBIuAQWOu@gBCWIp@e@rBiBvDwAjDIv@WlA]|EKjOOdCAd@_FWSgDgCP]XkE`BKc@LYCc@Ki@kCiFiE}AmAo@KUuAv@sB|@g@\\s@p@Yf@jCtDBHaAlJXLNTH^@\\APvDvE_@fA{@`E}@jLBx@Kf@a@V_@^c@|@yAvDMjAKXSPUDQFo@v@mCrDc@t@aAr@c@p@g@n@}@t@[b@KV_@xAE`@IfAK^KLUFI?MSWj@sAbA{@b@{@n@w@tAP`AmAjCw@jAe@pA{@rBUm@]e@iAt@}AbB_ApCoCmBmBrBm@F_Ah@UD_@g@o@a@u@Ss@xA_AbBg@dBaAd@YvASZ{AvD_AAg@l@mCjFi@j@mCxDu@gAoAkAgA~FMbAe@tEEBo@Wd@}Ay@a@cCgBz@cDXmB^mBy@cAwC{AAlBsAO}@rAa@t@q@pBi@~BUrAm@`CgEnR_FeCuApAiCv@k@hIbFdDtDTDpFoCTcBgAmBw@mAO}Ak@yB[yAeA_C_G_@uAc@cC@{Bo@Ia@wAk@aAmEiH]a@?h@a@pB[n@mAnA_Ap@eCwHiBgId@o@SgAfA_Bh@eAf@wAKk@MQk@i@BIaCyBbCuIa@[_AAu@QwCwA}AiAIDgCjNwM{GgCbNgQqIcEuBVcF}@KEr@Qb@Ot@qD~c@CbE[pA?~@oAnDwTb}Ai@r@qAZgAqBcDeCyE?yDTy@ZuCDaDZiCcA_MPLJ~@dA`@`@h@p@|@pBK~AQtEU|AG`DPLv@s@f@DKd@FjA^v@~Ax@|EvBbAz@`A~BKbBjC|R{CpAT|AiKrETvAkOrh@iSwQe@x@_B{Ac@lAsB{C{CdDcJdDeOpC"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Zurich_61755_exclude_new_type.json"
+      ]
     }
   ]
 }

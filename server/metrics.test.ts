@@ -71,6 +71,9 @@ it('counts a catalog feed whose operator lists nothing as empty, but not an inac
     feed({ id: 'uk:beryl_gb_brighton', source: 'uk' as FeedSnapshot['source'], provider: 'beryl' }),
     // sharedmobility.ch still lists Bird in Biel, which sent its last position long ago.
     feed({ id: 'national:bird-biel', provider: 'bird', skipped: true }),
+    // Lime's group standing by for its national feed asks Lime for nothing.
+    feed({ id: 'switzerland:lime_ch_app_zurich_004', source: 'switzerland' as FeedSnapshot['source'], provider: 'lime', skipped: true }),
+    feed({ id: 'switzerland:lime_ch_app_kloten_000', source: 'switzerland' as FeedSnapshot['source'], provider: 'lime', skipped: true }),
   ]), now);
   const saskatoon = 'feed="canada:bird_ca_saskatoon",source="canada",provider="bird"';
   expect(sample(text, `scootradar_feed_vehicles{${saskatoon}}`)).toBe('0');
@@ -82,6 +85,8 @@ it('counts a catalog feed whose operator lists nothing as empty, but not an inac
   expect(text).toContain('scootradar_feed_info{feed="uk:beryl_gb_brighton",source="uk",provider="beryl",country="United Kingdom"} 1\n');
   expect(sample(text, 'scootradar_feed_info{feed="national:voiscooters.com",source="national",provider="voi",country="Switzerland"}')).toBe('1');
   expect(text).not.toContain('national:bird-biel');
+  expect(text).not.toContain('lime_ch_app_zurich');
+  expect(sample(text, 'scootradar_feed_vehicles{feed="switzerland:lime_ch_app_kloten_000",source="switzerland",provider="lime"}')).toBe('0');
 });
 
 it('renders just the counters for the scrape of each container, computing no gauge', () => {

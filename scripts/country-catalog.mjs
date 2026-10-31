@@ -450,8 +450,10 @@ export function birdAreasProblem(systems, { areas }) {
 /**
  * Why Switzerland's catalog is wrong, or null. Its towns are the areas of
  * data/swiss-scooter-areas.json, which the open data covers; the catalog adds the Lime app maps of
- * the towns where it lists no Lime, as Kloten. Each names an area's town, its centre within that
- * area's bounds, and its scooters count there (regionalCityId in src/lib/regionalScooterSystems.ts).
+ * the towns where it lists no Lime, as Kloten, and of those it would otherwise lose with
+ * sharedmobility.ch, as Zürich (LIME_STANDBY_MARKETS in src/lib/feedCoverage.ts). Each names an
+ * area's town, its centre within that area's bounds, and its scooters count there (regionalCityId
+ * in src/lib/regionalScooterSystems.ts).
  */
 export function swissCatalogProblem(systems, swissAreas) {
   for (const system of systems) {

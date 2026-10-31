@@ -4,10 +4,23 @@ import {
   coverageIntersects,
   knownSystemCoverage,
   PUBLIBIKE_STATION_COVERAGE,
+  standbyNationalFeed,
 } from '@/lib/feedCoverage';
 import { REGIONAL_SCOOTER_SYSTEMS, serviceAreas } from '@/lib/regionalScooterSystems';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from '@/lib/scooterSnapshots';
 import type { MapBounds, Vehicle } from '@/lib/types';
+
+describe('Lime standby markets', () => {
+  it('names the national feed of each group of the three towns, and of no other Swiss market', () => {
+    const swiss = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.limeAppMap && system.country === 'CH');
+    const standing = swiss.filter(system => standbyNationalFeed(`switzerland:${system.id}`));
+    expect(new Set(standing.map(system => system.city))).toEqual(new Set(['Zürich', 'Basel', 'Uster']));
+    expect(new Set(swiss.filter(system => !standing.includes(system)).map(system => system.city))).toEqual(new Set(['Kloten', 'Sion']));
+    expect(standing.length).toBe(32);
+    expect(standbyNationalFeed('switzerland:lime_ch_app_basel_004')).toBe('national:lime_basel');
+    expect(standbyNationalFeed('national:lime_basel')).toBeUndefined();
+  });
+});
 
 describe('feed coverage routing', () => {
   const zurich = { south: 47.36, west: 8.52, north: 47.39, east: 8.57 };

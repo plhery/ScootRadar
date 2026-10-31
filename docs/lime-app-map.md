@@ -158,6 +158,22 @@ scooters all moved between its two reference views that night, leaving none to
 check the scan against; audited again at midday, 43 of its 97 stood still, and
 the scan found all of them.
 
+Basel's, Uster's and Zurich's joined that catalog on 31 October 2026 as a standby
+for sharedmobility.ch, which stopped serving any provider that morning and took
+them off the map: Lime publishes no feed of its own for them. The national feeds
+stay their source, with prices, ranges and rental links the rider map doesn't
+give. While one serves, its market's groups are skipped without asking Lime, and
+are emptied within 5 seconds of its coming back, so no scooter counts twice. Once
+it has shown nothing for 15 minutes, by its positions' age, so a feed that freezes
+counts too, they are read as any Lime market, except every 30 minutes rather than
+every three days: about 4 of the accounts' 36 requests a minute, only during an
+outage (`withLimeStandby` in `server/swissAppMaps.ts`). A view wakes its groups at
+once, as anywhere. Their scooters then show no price, as Kloten's and Sion's.
+Opfikon's are dropped from Zürich's groups by the town's outline, as Lime's own
+feed there lists them. The audit of a market not yet in the catalog has to keep
+every scooter: `systemServesPoint` drops those of a town its operator doesn't
+serve, and Zürich has an outline.
+
 In Germany, 49 large cities were read: 12, Leipzig among them, found no
 region, 20 regions without a scooter zone, as Mannheim's, Karlsruhe's and
 Kassel's, and 11 a region already known. Of the six new regions with scooter
@@ -323,11 +339,20 @@ stationary reference scooter, country by country:
 | 28 October 2026 | Switzerland: Kloten | 8 | 2 | 49 | 1 |
 | 28 October 2026 | Switzerland: Sion | 45 | 12 | 97 | 43 |
 | 29 October 2026 | United States: Farmington | 24 | 6 | 5 | 1 |
+| 31 October 2026 | Switzerland: Zürich, Basel, Uster | 126 | 32 | 1,048 | 25 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was
 reported just across that edge, in the neighbouring view, when each was
 read. Budapest was audited again that evening, from scratch, and found all 172.
+
+Zürich's audit, around midnight on a Saturday in the town's busiest streets, missed one
+of 23 references, 197 m from any edge of its view. Read twice 10 seconds apart afterwards,
+that view and the reference view listed the same 11 scooters, that one too, so the
+view had lost none: most likely the scooter was rented or held while its group was
+read. An audit resumed after a timeout read its reference views after the group
+holding them, and "missed" two scooters that may have come since, so it says nothing:
+audit a market in one run. The third, unbroken, found all 15.
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

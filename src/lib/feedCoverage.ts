@@ -70,6 +70,22 @@ export const LEFT_OUT_SWISS_SYSTEMS: ReadonlySet<string> = new Set([
   'lime_winterthur', 'lime_zug', 'lime_wetzikon', 'bird-grenchen', 'bird-platform-partner-jmfleets-bulle',
 ]);
 
+/**
+ * Lime's markets read from its rider map only while the national feed of their town serves no
+ * scooter (withLimeStandby in server/swissAppMaps.ts), by the market's system id: Lime publishes
+ * no feed of its own for them, so sharedmobility.ch's stopping on 31 October 2026 took them off
+ * the map.
+ */
+const LIME_STANDBY_MARKETS: ReadonlyMap<string, string> = new Map([
+  ['lime_ch_app_zurich', 'national:lime_zurich'],
+  ['lime_ch_app_basel', 'national:lime_basel'],
+  ['lime_ch_app_uster', 'national:lime_uster'],
+]);
+
+/** The national feed a feed stands by for, if it does: "switzerland:lime_ch_app_basel_004"'s is "national:lime_basel". */
+export const standbyNationalFeed = (feedId: string) =>
+  LIME_STANDBY_MARKETS.get(feedId.slice(feedId.indexOf(':') + 1).replace(/_\d{3}$/, ''));
+
 // Systems named after one town that serve others too, as their published
 // geofencing shows: Bolt Zürich's "Wadenswil" zone, which takes in Richterswil,
 // and Dott St. Gallen's polygon around Wil. Its Lichtensteig zone is left out:

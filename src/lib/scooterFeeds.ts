@@ -11,6 +11,7 @@ import {
   LEFT_OUT_SWISS_SYSTEMS,
   PUBLIBIKE_FREE_FLOATING_COVERAGE,
   PUBLIBIKE_STATION_COVERAGE,
+  standbyNationalFeed,
   SWISS_MOBILITY_BOUNDS,
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
@@ -370,7 +371,8 @@ const operatorSwissSystem = (id: string, provider: ProviderKey, discoveryUrl: st
 // 31 October 2026. Their national ids keep their towns, zones, records and alerts. Bird's
 // Winterthur, Schaffhausen and Biel feeds have sent no position, there as on sharedmobility.ch,
 // and are skipped as inactive until they do. Lime publishes no feed of its own for Zürich, Basel
-// or Uster, nor JM Fleets for Bird's Biel partner system, which still come from the registry.
+// or Uster, nor JM Fleets for Bird's Biel partner system, which still come from the registry; while
+// Lime's are out of it its rider map stands in (withLimeStandby in server/swissAppMaps.ts).
 const OPERATOR_SWISS_SYSTEMS: NationalSystem[] = [
   operatorSwissSystem('bird-zurich', 'bird', 'https://mds.bird.co/gbfs/v2/public/zurich/gbfs.json'),
   operatorSwissSystem('bird-basel', 'bird', 'https://mds.bird.co/gbfs/v2/public/basel/gbfs.json'),
@@ -1479,8 +1481,9 @@ function skipPausedDottRegion(error: unknown): SourceVehicles {
 }
 
 async function fetchRegionalVehicles(query: FeedQuery, country: ScooterCountry): Promise<SourceVehicles> {
+  // Lime's standby groups are the cache's alone: here the national feed stands for their towns.
   const systems = REGIONAL_SCOOTER_SYSTEMS.filter(system => (
-    system.country === country && (!query.providers || query.providers.has(system.provider)) &&
+    system.country === country && (!query.providers || query.providers.has(system.provider)) && !standbyNationalFeed(system.id) &&
     coverageIntersects(serviceAreas(system).map(area => area.bounds), query.bounds)
   ));
   if (systems.length === 0) return { vehicles: [], stale: false, skipped: true };

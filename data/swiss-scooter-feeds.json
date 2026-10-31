@@ -4,7 +4,10 @@
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Kloten_5536_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Sion_98_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Sion_98_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Basel_1332_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Uster_322_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Zurich_61755_exclude_new_type.json"
   ],
   "systems": [
     {
@@ -52,6 +55,72 @@
         "latStep": 0.013474667624865252,
         "lngStep": 0.019457081455254193,
         "cells": "2-4,9-13,16-21,24-30,32-47,50-55,61-62"
+      }
+    },
+    {
+      "id": "lime_ch_app_basel",
+      "provider": "lime",
+      "city": "Basel",
+      "center": [
+        47.5596,
+        7.5886
+      ],
+      "timeZone": "Europe/Zurich",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "NTDHDWYOTHLGK",
+      "limeMapGrid": {
+        "south": 47.5083,
+        "west": 7.49979,
+        "north": 47.59395,
+        "east": 7.66887,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019948184793851974,
+        "cells": "3-7,9,11-26,28-34,38-44,48-53,61-62"
+      }
+    },
+    {
+      "id": "lime_ch_app_uster",
+      "provider": "lime",
+      "city": "Uster",
+      "center": [
+        47.34,
+        8.72
+      ],
+      "timeZone": "Europe/Zurich",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ESP5EFROKTSZH",
+      "limeMapGrid": {
+        "south": 47.32014,
+        "west": 8.67748,
+        "north": 47.38004,
+        "east": 8.75936,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019877034682811053,
+        "cells": "1-13,15-18,20-21"
+      }
+    },
+    {
+      "id": "lime_ch_app_zurich",
+      "provider": "lime",
+      "city": "Zürich",
+      "center": [
+        47.3769,
+        8.5417
+      ],
+      "timeZone": "Europe/Zurich",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ZOU7OR7JYII6X",
+      "limeMapGrid": {
+        "south": 47.32037,
+        "west": 8.44801,
+        "north": 47.45527,
+        "east": 8.62544,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019877121213611192,
+        "cells": "2-4,11-15,19-43,45-52,54-61,64-69,73-77,84-85,94"
       }
     }
   ]

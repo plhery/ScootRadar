@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-29",
+  "verifiedOn": "2026-10-31",
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
@@ -3608,6 +3608,57 @@
       "finishedAt": "2026-10-29T14:46:37.946Z",
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CH",
+      "city": "Basel",
+      "regionToken": "NTDHDWYOTHLGK",
+      "fingerprint": "39bf59ca02310aee2b0973bf5e5b6aeddaccfde295f1364f27a531659589f627",
+      "groups": 11,
+      "localCells": 44,
+      "coldMapRequests": 44,
+      "warmMapRequests": 44,
+      "scooters": 271,
+      "stationaryReferences": 4,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-31T22:55:59.117Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Basel_1332_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CH",
+      "city": "Uster",
+      "regionToken": "ESP5EFROKTSZH",
+      "fingerprint": "f55a3a6abb296a23aa834d0249600b8f45fbe7754dcbae9e8538063ef0947932",
+      "groups": 5,
+      "localCells": 19,
+      "coldMapRequests": 19,
+      "warmMapRequests": 19,
+      "scooters": 98,
+      "stationaryReferences": 6,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-31T22:59:29.070Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Uster_322_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CH",
+      "city": "Zürich",
+      "regionToken": "ZOU7OR7JYII6X",
+      "fingerprint": "60e4114f94fae007a5dc93f7445701f4586e981ab836e83a1ce4701516b657b8",
+      "groups": 16,
+      "localCells": 63,
+      "coldMapRequests": 63,
+      "warmMapRequests": 63,
+      "scooters": 679,
+      "stationaryReferences": 15,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-31T23:37:19.943Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Zurich_61755_exclude_new_type.json"
       ]
     }
   ],

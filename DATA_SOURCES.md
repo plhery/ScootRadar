@@ -177,6 +177,13 @@ with the dataset's: Kloten's, and Sion's, which only Lime serves, its zone and
 `SCOOTER_ALWAYS_FAST=CH`, which stands for the dataset, Hopp and PubliBike,
 leaves them at Lime's own pace.
 
+Lime publishes no feed for Zürich, Basel or Uster, whose scooters come from the
+dataset. Since 31 October 2026 the same catalog holds them too, as a standby: the
+cache reads them from Lime's rider map only once the dataset's feed for the town
+has shown no scooter for 15 minutes, and stops when it is back
+(`withLimeStandby` in `server/swissAppMaps.ts`). Their scooters then show no
+price, range or rental link, which only the dataset gives.
+
 ### Listed prices
 
 Lime, Bird and Spin publish no prices in their feeds, nor do PubliBike and a

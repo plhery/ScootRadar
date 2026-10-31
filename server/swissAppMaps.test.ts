@@ -1,8 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { VEHICLE_MAX_AGE_MS } from '../src/lib/dataFreshness';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
+import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { Vehicle } from '../src/lib/types';
 import { reportError } from './errorReporting';
-import { collectFromAppMap, mergeAppMap, readsSwissAppMap, withSwissAppMaps, type SwissAppMapState } from './swissAppMaps';
+import { collectFromAppMap, LIME_STANDBY_INTERVAL_MS, mergeAppMap, readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps,
+  type SwissAppMapState } from './swissAppMaps';
 
 vi.mock('./errorReporting', () => ({ reportError: vi.fn() }));
 afterEach(() => { vi.mocked(reportError).mockClear(); vi.restoreAllMocks(); });
@@ -99,5 +102,65 @@ describe('withSwissAppMaps', () => {
       'sharedmobility.ch', 'sharedmobility.ch', 'sharedmobility.ch']);
     expect(wrapped.slice(3)).toEqual(feeds.slice(3));
     expect(feeds.map(readsSwissAppMap)).toEqual([true, true, true, false, false, false]);
+  });
+});
+
+describe('withLimeStandby', () => {
+  const now = 1_800_000_000_000;
+  const seen = (id: string) => scooter(id, 47.37, 8.54, { provider: 'lime' });
+  const record = (changes: Partial<FeedSnapshot>): FeedSnapshot => ({ id: 'national:lime_zurich', source: 'national', provider: 'lime',
+    coverage: [], vehicles: [seen('n')], observedAt: now - 60_000, attemptedAt: now - 60_000, stale: false, failed: false, skipped: false, ...changes });
+  const group = (id: string, collect = vi.fn(async (): Promise<SourceVehicles> => ({ vehicles: [seen('a')], stale: false }))) =>
+    ({ id, source: 'switzerland', provider: 'lime', host: 'web-production.lime.bike', idleIntervalMs: 259_200_000, collect } as unknown as CollectableScooterFeed);
+  const standing = (national: FeedSnapshot | undefined, id = 'switzerland:lime_ch_app_zurich_004') => {
+    const feed = group(id);
+    return { read: feed.collect, feed: withLimeStandby([feed], wanted => wanted === 'national:lime_zurich' ? national : undefined, () => now)[0] };
+  };
+
+  it('asks Lime for nothing while the national feed serves', async () => {
+    const { feed, read } = standing(record({}));
+    await expect(feed.collect()).resolves.toEqual({ vehicles: [], stale: false, skipped: true });
+    expect(read).not.toHaveBeenCalled();
+  });
+
+  it.each<[string, FeedSnapshot | undefined]>([
+    ['has been dropped from the registry', undefined],
+    ['is failing with positions past the age limit', record({ failed: true, observedAt: now - VEHICLE_MAX_AGE_MS - 1 })],
+    ['answers with the same old positions', record({ observedAt: now - VEHICLE_MAX_AGE_MS - 1 })],
+    ['lists no scooter', record({ vehicles: [] })],
+    ['is skipped', record({ skipped: true })],
+  ])('reads the rider map when the national feed %s', async (_, national) => {
+    const { feed, read } = standing(national);
+    await expect(feed.collect()).resolves.toEqual({ vehicles: [seen('a')], stale: false });
+    expect(read).toHaveBeenCalledOnce();
+  });
+
+  it('keeps reading the national feed for a moment of failure, within the age limit', async () => {
+    const { feed, read } = standing(record({ failed: true, observedAt: now - VEHICLE_MAX_AGE_MS }));
+    await expect(feed.collect()).resolves.toMatchObject({ skipped: true });
+    expect(read).not.toHaveBeenCalled();
+  });
+
+  it('reads the market every half hour rather than every three days, and leaves other Lime markets alone', () => {
+    expect(standing(undefined).feed.idleIntervalMs).toBe(LIME_STANDBY_INTERVAL_MS);
+    const kloten = group('switzerland:lime_ch_app_kloten_000');
+    expect(withLimeStandby([kloten], () => undefined)[0]).toBe(kloten);
+  });
+
+  describe('standingDown', () => {
+    const groupRecord = (changes: Partial<FeedSnapshot> = {}) => record({ id: 'switzerland:lime_ch_app_zurich_004', source: 'switzerland' as FeedSnapshot['source'], ...changes });
+
+    it('empties a standby group once its national feed serves, so nothing counts twice', () => {
+      const sweep = { startedAt: now - 1_000, vehicles: [seen('a')], swept: [] };
+      expect(standingDown(groupRecord({ sweep }), () => record({}), now)).toEqual({ ...groupRecord(), vehicles: [], sweep: undefined, skipped: true });
+    });
+
+    it('leaves it while the national feed serves nothing, and any other feed', () => {
+      const up = groupRecord();
+      expect(standingDown(up, () => record({ observedAt: now - VEHICLE_MAX_AGE_MS - 1 }), now)).toBe(up);
+      expect(standingDown(up, () => undefined, now)).toBe(up);
+      const kloten = groupRecord({ id: 'switzerland:lime_ch_app_kloten_000' });
+      expect(standingDown(kloten, () => record({}), now)).toBe(kloten);
+    });
   });
 });
