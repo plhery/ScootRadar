@@ -6,6 +6,7 @@ import { ruleInForce, ruleZonesInView } from './ruleZones';
 
 // Around Bergen's Torget and Bryggen, at zoom 14 on a phone.
 const BERGEN_CENTRE = { south: 60.388, west: 5.305, north: 60.405, east: 5.345 };
+// Porto's Baixa, from the Sé and São Bento station up the Avenida dos Aliados.
 const PORTO_CENTRE = { south: 41.14, west: -8.62, north: 41.155, east: -8.6 };
 // Downtown Boise, round the Grove Plaza.
 const BOISE_DOWNTOWN = { south: 43.608, west: -116.212, north: 43.621, east: -116.196 };
@@ -25,6 +26,7 @@ const BASEL_ALTSTADT = { south: 47.553, west: 7.585, north: 47.56, east: 7.595 }
 const HELSINKI_CENTRE = { south: 60.165, west: 24.935, north: 60.172, east: 24.95 };
 // München's old town, from Stachus to the Marienplatz.
 const MUNCHEN_ALTSTADT = { south: 48.135, west: 11.565, north: 48.142, east: 11.58 };
+// Münster's Prinzipalmarkt, between the Dom and the Ludgeristraße.
 const MUNSTER_PRINZIPALMARKT = { south: 51.958, west: 7.62, north: 51.965, east: 7.635 };
 // Vancouver's Commercial Drive, in Grandview-Woodland.
 const VANCOUVER_COMMERCIAL_DRIVE = { south: 49.265, west: -123.075, north: 49.28, east: -123.06 };
@@ -66,6 +68,7 @@ const SEATTLE_DOWNTOWN = { south: 47.6, west: -122.345, north: 47.615, east: -12
 const ST_ALBERT_DOWNTOWN = { south: 53.627, west: -113.64, north: 53.637, east: -113.62 };
 // Stockholm's Norrmalm, from Gustav Adolfs torg to Stureplan and Nybroplan.
 const STOCKHOLM_NORRMALM = { south: 59.323, west: 18.06, north: 59.337, east: 18.08 };
+// Taupō's town centre by the lake, with its four no-parking areas and the 15 km/h area.
 const TAUPO_CENTRE = { south: -38.692, west: 176.066, north: -38.684, east: 176.076 };
 // Trondheim's Midtbyen, from the Nidaros Cathedral to Torvet.
 const TRONDHEIM_MIDTBYEN = { south: 63.425, west: 10.38, north: 63.437, east: 10.41 };
@@ -73,6 +76,7 @@ const TRONDHEIM_MIDTBYEN = { south: 63.425, west: 10.38, north: 63.437, east: 10
 const TURKU_CENTRE = { south: 60.448, west: 22.255, north: 60.456, east: 22.28 };
 // Zürich's centre, the main station, Bahnhofstrasse and the Niederdorf.
 const ZURICH = { south: 47.36, west: 8.53, north: 47.38, east: 8.55 };
+// Genève's centre, from the Pont du Mont-Blanc to the old town, where no city zones are drawn.
 const GENEVE = { south: 46.2, west: 6.14, north: 46.21, east: 6.155 };
 // Clarendon, along Wilson Boulevard in Arlington County.
 const ARLINGTON_CLARENDON = { south: 38.884, west: -77.1, north: 38.892, east: -77.088 };
