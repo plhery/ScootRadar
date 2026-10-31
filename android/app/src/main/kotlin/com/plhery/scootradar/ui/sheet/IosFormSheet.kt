@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.theme.LocalReduceMotion
 import com.plhery.scootradar.ui.theme.LocalScootColors
 import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.animation
@@ -80,9 +81,11 @@ fun IosFormSheet(
     // Let go, the sheet goes down as small as the gesture left it; shown again before it is down, it eases back to its
     // full size on its own spring as it comes up, not whole again in one frame (review-app-v finding 6).
     LaunchedEffect(isPresented) { if (isPresented) backProgress.animateTo(0f, IosMotion.smooth(duration = 0.5).animation()) }
+    // Under Remove animations nothing moves until the gesture is let go, as Settings' pages hold (PLAN §10, X-AD02).
+    val reduceMotion by rememberUpdatedState(LocalReduceMotion.current)
     PredictiveBackHandler(enabled = isPresented) { progress ->
         try {
-            progress.collect { backProgress.snapTo(it.progress) }
+            progress.collect { if (!reduceMotion) backProgress.snapTo(it.progress) }
             close()
         } catch (cancelled: CancellationException) {
             withContext(NonCancellable) { backProgress.snapTo(0f) }

@@ -46,7 +46,8 @@ import org.robolectric.annotation.Config
 // iOS has no gesture for, is in BackOrderTest. The gesture's progress comes through the dispatcher, as Android 14 and
 // later send it. Its edges (review-app-v findings 5 and 6): a gesture begun while a tapped page is still coming in,
 // and a sheet shown again before it is down; and one begun while a page is still going (review-app-yz finding 1),
-// which moves nothing, as iOS's swipe from the edge does not begin during a pop.
+// which moves nothing, as iOS's swipe from the edge does not begin during a pop. Under Remove animations nothing moves
+// until the gesture is let go, the pages, the sheet and the form (PLAN §10; review-app-af 2).
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w390dp-h844dp-xhdpi")
@@ -84,6 +85,12 @@ class PredictiveBackTest {
     /** A back gesture from the screen's start edge, drawn out to [progress]. */
     private fun drawOut(progress: Float) {
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(progress)) }
+        compose.waitForIdle()
+    }
+
+    /** The gesture under way drawn on to [progress]. */
+    private fun drawOn(progress: Float) {
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(progress)) }
         compose.waitForIdle()
     }
@@ -537,21 +544,83 @@ class PredictiveBackTest {
     }
 
     /**
-     * The same with a gesture begun in the tap's frame: the sheet is drawn along by it, 3% smaller half drawn out, as
-     * Back on Settings draws it; let go, it closes.
+     * The same with a gesture begun in the tap's frame: the gesture is the sheet's, as Back on Settings is, and under
+     * Remove animations the sheet stays whole while it is drawn out (PLAN §10, X-AD02; it shrank, review-app-af 2);
+     * let go, it closes.
      */
     @Test
-    fun underRemoveAnimationsAGestureInTheFrameOfTheLastPagesTappedBackDrawsTheSheetAlong() {
+    fun underRemoveAnimationsAGestureInTheFrameOfTheLastPagesTappedBackLeavesTheSheetWholeUntilItIsLetGo() {
         settingsInASheet(listOf(SettingsPage.Root, SettingsPage.Privacy), reduceMotion = true)
         compose.mainClock.autoAdvance = false
         compose.onNode(hasContentDescription("Back")).performClick()
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.5f)) }
         repeat(2) { compose.mainClock.advanceTimeByFrame() }
-        assertEquals("the sheet drawn along by the gesture", 390f * 0.97f, frame(pane("Settings")).width, 0.5f)
+        assertEquals("the sheet whole under the gesture", 390f, frame(pane("Settings")).width, 0.5f)
+        assertTrue("the sheet up", isPresented)
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
         settle()
         assertFalse("the sheet closed", isPresented)
+    }
+
+    /**
+     * Remove animations, Filters on a phone: nothing moves until the gesture is let go (PLAN §10, X-AD02). Drawn out
+     * half way or all the way, the sheet stays 390 wide in its place; called off, it is up; let go, it is gone.
+     */
+    @Test
+    fun underRemoveAnimationsASheetStaysWholeUntilTheGestureIsLetGo() {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                IosSheet(isPresented, onDismiss = { isPresented = false }, listOf(SheetDetent.Large), "Filters") { Box(Modifier.fillMaxSize()) }
+            }
+        }
+        compose.waitForIdle()
+        val sheet = pane("Filters")
+        val shown = frame(sheet)
+        assertEquals(390f, shown.width, 0.5f)
+
+        drawOut(0.5f)
+        assertEquals("half drawn out", shown, frame(sheet))
+        drawOn(1f)
+        assertEquals("all the way out", shown, frame(sheet))
+        callOff()
+        assertEquals(shown, frame(sheet))
+        assertTrue(isPresented)
+
+        drawOut(1f)
+        letGo(frames = 1)
+        assertFalse(isPresented)
+        settle()
+        assertTrue(compose.onAllNodes(sheet).fetchSemanticsNodes().isEmpty())
+    }
+
+    /** Remove animations, Settings beside a panel: the form, 540 wide, does as the sheet does. */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun underRemoveAnimationsAFormSheetStaysWholeUntilTheGestureIsLetGo() {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = true) {
+                IosFormSheet(isPresented, onDismiss = { isPresented = false }, title = "Settings") { Box(Modifier.fillMaxSize()) }
+            }
+        }
+        compose.waitForIdle()
+        val form = pane("Settings")
+        val shown = frame(form)
+        assertEquals(540f, shown.width, 0.5f)
+
+        drawOut(0.5f)
+        assertEquals("half drawn out", shown, frame(form))
+        drawOn(1f)
+        assertEquals("all the way out", shown, frame(form))
+        callOff()
+        assertEquals(shown, frame(form))
+        assertTrue(isPresented)
+
+        drawOut(1f)
+        letGo(frames = 1)
+        assertFalse(isPresented)
+        settle()
+        assertTrue(compose.onAllNodes(form).fetchSemanticsNodes().isEmpty())
     }
 
     /**
