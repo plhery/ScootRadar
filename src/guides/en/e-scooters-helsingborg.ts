@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Helsingborg 2026: Voi, Ryde and the rules',
   description: 'E-scooters in Helsingborg: Voi and Ryde, the City’s slow zones and fees, where to park in the centre, Skånetrafiken, the Helsingør ferry and Sweden’s fines.',
   headline: 'E-scooters in Helsingborg: Voi and Ryde, and where to ride and park',
-  lede: 'E-scooters in Helsingborg are rented from Voi and Ryde, the two companies Helsingborgs stad names (October 2026). Our map shows where Voi scooters stand, but not Ryde’s, and no prices or zones: each app shows those. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h on pedestrian streets and in Stadsparken. In central Helsingborg, end your ride in a cycle rack or a marked e-scooter place, never on a footway or cycle lane.',
+  lede: 'E-scooters in Helsingborg are rented from Voi and Ryde, the two companies Helsingborgs stad names (October 2026). Our map shows where Voi scooters stand, but not Ryde’s, nor prices or the companies’ slow zones: each app shows those. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h on pedestrian streets and in Stadsparken. In central Helsingborg, end your ride in a cycle rack or a marked e-scooter place, never on a footway or cycle lane.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'se:Helsingborg',
@@ -27,14 +27,14 @@ const guide: Guide = {
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 00:34 on Friday 30 October 2026 the [map of Helsingborg](map:se:Helsingborg) showed about 760 Voi scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking.',
+        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 00:34 on Friday 30 October 2026 the [map of Helsingborg](map:se:Helsingborg) showed about 760 Voi scooters free to rent at that moment. Scooters on a ride aren’t shown, nor prices; zoomed in, the map draws central Helsingborg, where Helsingborgs stad’s local traffic rule has you park in a cycle rack or a marked place.',
         'That total takes in the town from Råå in the south almost to Laröd in the north, an area about 11 km long, but not Ödåkra, Påarp or Helsingør across the Sound. Bolt, Dott and Lime aren’t on the City’s list.',
       ],
     },
     {
       heading: 'How much does a Voi or Ryde scooter cost in Helsingborg?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Helsingborg price on an open official page, and Ryde’s website lists none.',
+        '**The app shows the price** before you unlock.',
         'Ryde’s Swedish terms let you ride from 15, round the per-minute price up to the next whole minute and allow a fee of up to SEK 500 if you take a scooter outside its operating area (read 30 October 2026). Check the Voi app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -81,7 +81,7 @@ const guide: Guide = {
     {
       heading: 'Where to park an e-scooter in Helsingborg',
       blocks: [
-        'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Helsingborg applies the ban in **central Helsingborg**: there you must park in a cycle rack or one of the special e-scooter places, which the companies’ apps mark. On the City’s maps the zone is the uncoloured area around the centre, Söder, Högaborg, Eneborg, Olympia and Slottshöjden; the red is the rest of the municipality, where the ban doesn’t apply.',
+        'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Helsingborg applies the ban in **central Helsingborg**: there you must park in a cycle rack or one of the special e-scooter places, which the companies’ apps mark. On the City’s maps the zone is the uncoloured area around the centre, Söder, Högaborg, Eneborg, Olympia and Slottshöjden; the red is the rest of the municipality, where the ban doesn’t apply. Our [map](map:se:Helsingborg) draws the same area when you zoom in.',
         'Elsewhere in the municipality parking stays free for e-scooters, with no new ban, the City says (page updated 8 April 2024). Wherever you are, don’t leave a scooter where it is a danger or in anyone’s way.',
         'To report a badly parked scooter, use the City’s fault report (felanmälan) on its website or its app Ett bättre Helsingborg (A better Helsingborg), and the City passes it on to the company. Or contact the company: Voi at support@voiapp.io, Ryde at support@ryde-technology.com. Ryde’s Swedish terms ask for a parking photo at the end of each ride; if you send none and a municipality charges Ryde, you pay what Ryde reckons the cost to be.',
         {
@@ -171,6 +171,7 @@ const guide: Guide = {
   sources: [
     { title: 'Helsingborgs stad: Elsparkcykel, e-scooters (updated 6 March 2026, read 30 October 2026)', url: 'https://helsingborg.se/trafik-och-stadsplanering/cykling/elsparkcykel/' },
     { title: 'Helsingborgs stad: Parking e-scooters since 1 September 2022 (updated 8 April 2024)', url: 'https://helsingborg.se/trafik-och-stadsplanering/cykling/elsparkcykel/elsparkscyklar-parkering/' },
+    { title: 'Helsingborgs kommun: Local traffic rule 1283 2022:502, in force since 1 September 2022, and its map (Svensk trafikföreskriftssamling)', url: 'https://rdt.transportstyrelsen.se/rdt/AF06_View.aspx?UseStfs=1&ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a&of=1&ForeskriftIds=670e14f8-a3d8-447a-ae02-8021396b466a' },
     { title: 'Helsingborgs stad: Fees for the use of public land, section 6.14 (revised 27 August 2024)', url: 'https://media.helsingborg.se/uploads/networks/1/sites/2/2017/12/taxor_for_markupplatelse_pa_allman_plats_beslutad_i_kf_240827_sbf.pdf' },
     { title: 'Helsingborgs stad: Centrum and Kullagatan', url: 'https://helsingborg.se/bo-bygga-och-miljo/bostader/bostadsomraden-och-samhallen/centrum/' },
     { title: 'Helsingborgs stadslexikon: Kullagatan', url: 'https://stadslexikon.helsingborg.se/kullagatan/' },

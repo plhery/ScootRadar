@@ -24,7 +24,7 @@ const guide: Guide = {
           ],
         },
         '**Prices.** We found no Ottawa price outside the apps, which show the fare before you unlock. Bird charges an unlock fee and a rate per minute, plus taxes and “compliance fees”, and sells ride passes and a Bird Plus subscription. Bird’s Community & Access pricing can lower fares for seniors, veterans and people on income assistance. We found no student discount.',
-        'At 3:25 pm on 17 October 2026 the [map of Ottawa](map:ca:on:Ottawa) showed about 460 Lime and 430 Bird scooters: a snapshot, not the fleets.',
+        'At 3:25 pm on 17 October 2026 the [map of Ottawa](map:ca:on:Ottawa) showed about 430 Bird scooters free to rent at that moment and about 460 Lime scooters as last counted.',
         '**Visiting?** Get the app before you go; Bird takes a credit, debit or prepaid card. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -87,7 +87,7 @@ const guide: Guide = {
             '**Lansdowne.** Bird’s open data bars starting or ending a ride at Lansdowne: ride through, but park outside it.',
           ],
         },
-        'Our test of Bird’s open data on 22 October 2026 also put Dow’s Lake, the Central Experimental Farm, Billings Bridge, the VIA Rail station, the Canada Science and Technology Museum and Rideau Hall outside its service area. Lime publishes no zones: check its app.',
+        'Bird’s open data on 22 October 2026 also put Dow’s Lake, the Central Experimental Farm, Billings Bridge, the VIA Rail station, the Canada Science and Technology Museum and Rideau Hall outside its service area. Lime publishes no zones: check its app. Zoomed in, the [Ottawa map](map:ca:on:Ottawa) draws the City of Ottawa’s no-ride and slow ride zones and its designated parking areas, from the City’s map of shared e-scooter areas.',
       ],
     },
     {
@@ -160,6 +160,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'City of Ottawa: Map of shared e-scooter areas', url: 'https://ottawa.ca/en/city-hall/creating-equal-inclusive-and-diverse-city/accessibility-city/transportation/e-scooters/map-shared-e-scooter-areas' },
     { title: 'Ontario Regulation 389/19: pilot project, electric kick-scooters', url: 'https://www.ontario.ca/laws/regulation/190389' },
     { title: 'Ontario Highway Traffic Act, s. 228', url: 'https://www.ontario.ca/laws/statute/90h08' },
     { title: 'Government of Ontario: electric kick-style scooters (e-scooters)', url: 'https://www.ontario.ca/page/electric-kick-style-scooters-e-scooters' },

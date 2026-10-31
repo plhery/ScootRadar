@@ -24,7 +24,7 @@ const guide: Guide = {
             '**Lime and Bird** ran scooters here until the start of 2025, when the new agreements replaced them, so older guides naming them are out of date.',
           ],
         },
-        'At 15:25 on 17 October 2026 the [Columbus map](map:us:oh:Columbus) showed about 880 Veo and 700 Spin scooters: what was on the map at that moment, not the fleets. The map shows stand-up scooters only, so Veo’s seated scooters, which its open data lists as bicycles, aren’t on it; that evening Veo listed more seated scooters than stand-up ones.',
+        'At 15:25 on 17 October 2026 the [Columbus map](map:us:oh:Columbus) showed about 880 Veo and 700 Spin scooters free to rent at that moment. The map shows stand-up scooters only, so Veo’s seated scooters, which its open data lists as bicycles, aren’t on it; that evening Veo listed more seated scooters than stand-up ones.',
         '**Visiting?** Get the Veo or Spin app before you set out: both require riders to be 18. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -91,7 +91,7 @@ const guide: Guide = {
       heading: 'Parking a scooter in Columbus',
       blocks: [
         'The City Code bans parking on the sidewalk where a scooter gets in people’s way, including on ADA ramps, by building entrances and at transit stops, and anywhere on the street, parking spaces and loading zones included.',
-        'The City’s rules for shared scooters hold riders to the companies’ parking rules: a scooter may be attached only to a corral, a docking station, a public bike rack or another approved parking spot.',
+        'The City’s rules for shared scooters hold riders to the companies’ parking rules: a scooter may be attached only to a corral, a docking station, a public bike rack or another approved parking spot. Zoomed in, the [Columbus map](map:us:oh:Columbus) draws the City’s 47 scooter corrals, from its Mobility and Parking Map.',
         'City checks in 2025 found about 7% of parked scooters and bikes breaking ADA rules, WOSU reported, and riders who park badly can be fined, a City official told Spectrum News as the programme began.',
       ],
     },
@@ -156,6 +156,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of Columbus: Shared Mobility Devices Rules and Regulations, effective 1 January 2025 (PDF)', url: 'https://columbus.legistar.com/View.ashx?M=F&ID=13636501&GUID=3B2B593E-F5F2-40C7-A475-9B3AFC12622A' },
+    { title: 'City of Columbus: Mobility and Parking Map, with its scooter corrals (ArcGIS)', url: 'https://www.arcgis.com/home/item.html?id=e2e822a0910f4217827d3956646dd6cf' },
     { title: 'Columbus City Council: Ordinance 2539-2018, City Code rules for mobility devices (Chapter 2173), passed 27 September 2018 (PDF)', url: 'https://columbus.legistar.com/View.ashx?M=F&ID=6642003&GUID=164CD82C-D7C2-4BBE-8D31-66D0A55F3CDA' },
     { title: 'Columbus City Council: Ordinance 2053-2023, City Code § 2105.28 on shared mobility devices, passed 2 August 2023 (PDF)', url: 'https://columbus.legistar.com/View.ashx?M=F&ID=12176153&GUID=6BFFE5CE-DF84-4033-A1EE-1B45B1C3559D' },
     { title: 'Columbus City Council: Ordinance 3366-2024, the agreement with Veo, passed 11 December 2024', url: 'https://columbus.legistar.com/LegislationDetail.aspx?ID=7043761&GUID=E13F6EF4-76C7-4648-8539-357DC5419A64&FullText=1' },

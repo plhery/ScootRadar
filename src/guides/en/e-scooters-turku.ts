@@ -28,13 +28,13 @@ const guide: Guide = {
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as every scooter in town. At 05:51 Turku time on Thursday 29 October 2026 the [Turku map](map:fi:Turku) showed about 2,400 Voi scooters as they stood at that moment: a snapshot, not a fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking. The map’s Turku area isn’t cut to the city limits and may take in parts of Kaarina and Raisio.',
+        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as every scooter in town. At 05:51 Turku time on Thursday 29 October 2026 the [Turku map](map:fi:Turku) showed about 2,400 Voi scooters free to rent at that moment. Scooters on a ride aren’t shown, nor prices; zoomed in, the map draws the City of Turku’s parking bays and its no-parking, slow and no-riding areas, from its open data (CC BY 4.0). The map’s Turku area isn’t cut to the city limits and may take in parts of Kaarina and Raisio.',
       ],
     },
     {
       heading: 'Electric scooter rental in Turku: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock: we found no Turku price on an open official or company page (29 October 2026). New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**The app shows the price** before you unlock. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Bad parking can cost more. The licence lets the City move a wrongly parked scooter and bill the company; from March 2026 the fees are €20 for a short move or €40 to the depot, plus €25 in handling costs and €15 a week in storage, Yle reported on 24 February 2026. The company may pass this on to the rider who parked it.',
       ],
     },
@@ -72,7 +72,7 @@ const guide: Guide = {
       heading: 'Where to park an e-scooter in Turku',
       blocks: [
         '**In the centre, only in a marked area.** Central Turku has fixed parking: you may end your ride only in a painted bay or at an e-scooter rack, the City says. In 2026 it painted bays at 15 new sites in the centre, at Kupittaa and near the main bus lines; about 120 sites now hold up to 1,000 scooters (8 June 2026).',
-        '**No-parking areas.** In the centre and at Kupittaa some places are off limits, such as bridges and certain junctions. The apps and the City’s service map show both.',
+        '**No-parking areas.** In the centre and at Kupittaa some places are off limits, such as bridges and certain junctions. The apps, the City’s service map and our map, zoomed in, show both.',
         '**Elsewhere,** use a bay if there is one; if not, leave the scooter at the very edge of the pavement, cycle path or road, parallel to it, where it is in nobody’s way.',
         '**The photo.** The licence makes every app ask for a photo of the parked scooter, and the companies must penalise clearly wrong parking.',
       ],
@@ -116,7 +116,7 @@ const guide: Guide = {
     {
       heading: 'The station, the universities and the harbour',
       blocks: [
-        'Campuses and other landowners may restrict the scooters on their land, and the companies must respect that, the licence says. We found no current scooter rule from the University of Turku, Åbo Akademi or the Port of Turku (29 October 2026).',
+        'Campuses and other landowners may restrict the scooters on their land, and the companies must respect that, the licence says.',
         'At 06:26 on 29 October the map showed about 250 Voi scooters, as they stood at that moment, between the railway station and the Market Square, in an area of about 1.0 by 1.5 km, and at 06:31 about 600 round Åbo Akademi, the University of Turku’s main campus and Kupittaa, in about 1.3 by 1.4 km.',
       ],
     },
@@ -158,6 +158,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of Turku: Electric scooters (updated 23 December 2025)', url: 'https://www.turku.fi/en/traffic-streets-and-maintenance/electric-scooters' },
+    { title: 'City of Turku: Service map, e-scooters: parking places, no-parking, speed-limited and no-riding areas (CC BY 4.0)', url: 'https://palvelukartta.turku.fi/en/mobility/scooters' },
     { title: 'City of Turku: Micromobility licence terms, adopted 11 November 2025 (Finnish, PDF)', url: 'https://www.turku.fi/sites/default/files/document/turun-kaupungin-mikroliikenneluvan-lupaehdot_2026.pdf' },
     { title: 'City of Turku: The licence from 2026, 12 November 2025 (Finnish)', url: 'https://www.turku.fi/ajankohtaista/sahkopotkulautayritykset-toimivat-ensi-vuodesta-alkaen-mikroliikenneluvan-ehdoilla' },
     { title: 'City of Turku: New painted parking bays, 8 June 2026 (Finnish)', url: 'https://www.turku.fi/ajankohtaista/turussa-ohjataan-sahkopotkulautojen-pysakointia-skuuttiruutujen-maalauksilla' },

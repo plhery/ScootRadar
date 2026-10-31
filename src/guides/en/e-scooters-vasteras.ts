@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Västerås 2026: Voi, Ryde and the rules',
   description: 'E-scooters in Västerås: Voi and Ryde, the city’s permit conditions, slow zones, where to ride and park, VL buses, trains and Sweden’s fines.',
   headline: 'E-scooters in Västerås: Voi and Ryde, and where to ride and park',
-  lede: 'E-scooters in Västerås are rented from Voi and Ryde, the two companies with permits, Västerås stad says (October 2026). Our map shows where Voi scooters stand, but not Ryde’s, and no prices or zones: each app shows those. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h in the city’s slow zones. End your ride in an e-scooter parking place or cycle parking, never on a pavement or footway.',
+  lede: 'E-scooters in Västerås are rented from Voi and Ryde, the two companies with permits, Västerås stad says (October 2026). Our map shows where Voi scooters stand, but not Ryde’s, and, zoomed in, the city’s parking places and zones; each app shows its prices. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h in the city’s slow zones. End your ride in an e-scooter parking place or cycle parking, never on a pavement or footway.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Västerås',
@@ -27,14 +27,14 @@ const guide: Guide = {
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 13:55 on Thursday 29 October 2026 the [map of Västerås](map:se:Västerås) showed about 960 Voi scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking.',
+        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 13:55 on Thursday 29 October 2026 the [map of Västerås](map:se:Västerås) showed about 960 Voi scooters free to rent at that moment. Scooters on a ride aren’t shown, nor prices; zoomed in, the map draws Västerås stad’s e-scooter parking places, its slow zones and the areas where you may not park or ride.',
         'That total takes in the whole town and some of the villages around it, in an area up to about 15 km across, but no neighbouring town. Bolt, Lime and Qick aren’t on the city’s list.',
       ],
     },
     {
       heading: 'How much does a Voi or Ryde scooter cost in Västerås?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Västerås price on an open official page, and Ryde’s website lists none.',
+        '**The app shows the price** before you unlock.',
         'Ryde’s Swedish terms let you ride from 15 and allow a fee of up to SEK 500 if you take a scooter outside its operating area (read 29 October 2026). Check the Voi app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -82,7 +82,7 @@ const guide: Guide = {
       heading: 'Where to park an e-scooter in Västerås',
       blocks: [
         'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack. Västerås stad asks you to park where the scooter doesn’t block anyone, never on a pavement or footway, and to choose an e-scooter parking place (uppställningsplats) or cycle parking first.',
-        'The city’s [digital map of e-scooter rules](https://gisportal.vasteras.se/portal/apps/webappviewer/index.html?id=27c54fbfdc5c47f8b827dca65914920a) shows where riding or parking is banned and where slow zones apply. On 29 October 2026 it marked about 500 no-parking areas, among them the bus station and some bus stops and pedestrian crossings; nearly 300 parking places, one of them at the city hall (Stadshuset); and 17 areas where you may neither ride nor park, such as schools, multi-storey car parks and the inside of a shopping centre.',
+        'The city’s [digital map of e-scooter rules](https://gisportal.vasteras.se/portal/apps/webappviewer/index.html?id=27c54fbfdc5c47f8b827dca65914920a) shows where riding or parking is banned and where slow zones apply. On 29 October 2026 it marked about 500 no-parking areas, among them the bus station and some bus stops and pedestrian crossings; nearly 300 parking places, one of them at the city hall (Stadshuset); and 17 areas where you may neither ride nor park, such as schools, multi-storey car parks and the inside of a shopping centre. Our [map](map:se:Västerås) draws them too when you zoom in.',
         'In April 2025 the city began trying out marked areas for picking up and leaving hire scooters at four central places: two at the travel centre (resecentrum), one at the Silo car park and one at Oxbackens centrum.',
         'To report a badly parked scooter, tell the company that owns it first: Voi at support@voiapp.io, Ryde at geofence.vasteras@ryde-technology.com. If the problem persists, report it to the city with a photo and the position, through its website or its app Mitt Västerås. Ryde’s Swedish terms say that if you send no parking photo and a municipality charges Ryde, you pay what Ryde reckons the cost to be.',
         {
