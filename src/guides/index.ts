@@ -303,6 +303,7 @@ import tulsaEn from './en/e-scooters-tulsa';
 import riminiIt from './it/monopattini-sharing-rimini';
 import dunedinEn from './en/e-scooters-dunedin';
 import lanzaroteEn from './en/e-scooters-lanzarote';
+import chelmsfordEn from './en/e-scooters-chelmsford';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -606,4 +607,5 @@ export const GUIDES: readonly Guide[] = [
   riminiIt,
   dunedinEn,
   lanzaroteEn,
+  chelmsfordEn,
 ];
