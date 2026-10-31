@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerButtons
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerId
@@ -33,15 +34,17 @@ import androidx.compose.ui.unit.IntSize
 // own among them (ios/ScootRadar/Views/ScooterMapView.swift:326-331). A text field is the one place a secondary click
 // means something: UITextField opens its edit menu there (UIEditMenuInteraction: "When responding to a secondary click
 // on devices with pointer-based input, the actions display in a context menu"), as Compose's text field opens its own.
+// A secondary press does nothing, whatever sends it (lead, X-AD22): a stylus's barrel button is one, as Android's own
+// views take a stylus's tap with it held for a context click.
 
 /**
- * A mouse's or a trackpad's press that starts with the secondary button, and all of it until the button is let go,
- * taken before anything under it sees it: the buttons, rows and sheets under it, and the map, which takes no tap from
- * it, answer the primary button alone, as on an iPad, where Compose's would take a right click for a click. A press on
- * a [keepsSecondaryClicks] field goes on to it. The pointer's hover, its wheel and the primary button go on as before;
- * a finger on the screen or a stylus has no secondary button here. Compose tells a trackpad's finger, which is a
- * mouse's pointer, from one on the screen. A dialog's or a popup's content needs [PrimaryClicksOnlyAroundTheContent]
- * as well.
+ * A secondary press, and all of it until it is let go, taken before anything under it sees it: a mouse's or a
+ * trackpad's that starts with the secondary button, and a stylus's, from its tip or its eraser, with a barrel button
+ * held. The buttons, rows and sheets under it, and the map, which takes no tap from it, answer the primary button
+ * alone, as on an iPad, where Compose's would take a right click for a click. A press on a [keepsSecondaryClicks] field
+ * goes on to it. The pointer's hover, its wheel and the primary button go on as before, and so does a stylus's plain
+ * tap; a finger on the screen has no secondary button. Compose tells a trackpad's finger, which is a mouse's pointer,
+ * from one on the screen. A dialog's or a popup's content needs [PrimaryClicksOnlyAroundTheContent] as well.
  */
 fun Modifier.primaryClicksOnly(): Modifier = this then PrimaryClicksOnlyElement
 
@@ -83,8 +86,7 @@ private class PrimaryClicksOnlyNode : Modifier.Node(), PointerInputModifierNode 
         // On the way down, root to leaves, so before anything under it.
         if (pass != PointerEventPass.Initial) return
         for (change in pointerEvent.changes) {
-            if (change.changedToDownIgnoreConsumed() && change.type == PointerType.Mouse &&
-                pointerEvent.buttons.isSecondaryPressed && !pointerEvent.buttons.isPrimaryPressed &&
+            if (change.changedToDownIgnoreConsumed() && isSecondaryPress(change.type, pointerEvent.buttons) &&
                 !overAFieldThatKeepsIt(change.position)
             ) {
                 ignored += change.id
@@ -118,6 +120,18 @@ private class PrimaryClicksOnlyNode : Modifier.Node(), PointerInputModifierNode 
 }
 
 /**
+ * Whether a press of a [type] of pointer with [buttons] down is a secondary one: a mouse's that starts with the
+ * secondary button and not the primary, or a stylus's with a barrel button held. Compose reads a stylus's buttons into
+ * the primary and the secondary (BUTTON_STYLUS_PRIMARY and BUTTON_STYLUS_SECONDARY); its tip on the screen presses
+ * neither.
+ */
+private fun isSecondaryPress(type: PointerType, buttons: PointerButtons): Boolean = when (type) {
+    PointerType.Mouse -> buttons.isSecondaryPressed && !buttons.isPrimaryPressed
+    PointerType.Stylus, PointerType.Eraser -> buttons.isPrimaryPressed || buttons.isSecondaryPressed
+    else -> false
+}
+
+/**
  * In a dialog's or a popup's content: a right click outside the content, where a tap closes the window, leaves it open,
  * as an iPad's popover and menu stay open under one. Such a window is handed every press on the app while it shows,
  * outside it too (it is touch modal): a press beside its content, or past the window's edges, which no View in it
@@ -148,14 +162,25 @@ private fun MotionEvent.isFromAMouse(): Boolean = when (getToolType(actionIndex)
     else -> false
 }
 
-/** A mouse's or a trackpad's press that starts with the secondary button and not the primary. */
-private fun MotionEvent.isSecondaryPress(): Boolean =
-    isFromAMouse() && isButtonPressed(MotionEvent.BUTTON_SECONDARY) && !isButtonPressed(MotionEvent.BUTTON_PRIMARY)
+/**
+ * A secondary press, as [isSecondaryPress] reads Compose's: a mouse's or a trackpad's that starts with the secondary
+ * button and not the primary, or a stylus's, its tip or its eraser (which Compose tells by the tool), with a button held.
+ */
+private fun MotionEvent.isSecondaryPress(): Boolean = when {
+    isFromAMouse() -> isButtonPressed(MotionEvent.BUTTON_SECONDARY) && !isButtonPressed(MotionEvent.BUTTON_PRIMARY)
+    getToolType(actionIndex) == MotionEvent.TOOL_TYPE_STYLUS || getToolType(actionIndex) == MotionEvent.TOOL_TYPE_ERASER ->
+        buttonState and STYLUS_BUTTONS != 0
+    else -> false
+}
+
+/** The buttons Compose reads as a stylus's primary and secondary: the barrel's, and the primary and secondary. */
+private const val STYLUS_BUTTONS = MotionEvent.BUTTON_PRIMARY or MotionEvent.BUTTON_SECONDARY or
+    MotionEvent.BUTTON_STYLUS_PRIMARY or MotionEvent.BUTTON_STYLUS_SECONDARY
 
 /**
- * A mouse's or a trackpad's press that starts with the secondary button outside a window's content, and all of it,
- * taken; and one in another window, which a popup is told of (ACTION_OUTSIDE, one event) and closes on. It is no click
- * (none of TalkBack's, which aren't a mouse's), so it has no [View.performClick] to call.
+ * A secondary press outside a window's content, a mouse's, a trackpad's or a stylus's, and all of it, taken; and one in
+ * another window, which a popup is told of (ACTION_OUTSIDE, one event) and closes on. It is no click (none of
+ * TalkBack's, which aren't a mouse's or a stylus's), so it has no [View.performClick] to call.
  */
 @SuppressLint("ClickableViewAccessibility")
 private class SecondaryClicksAround : View.OnTouchListener {

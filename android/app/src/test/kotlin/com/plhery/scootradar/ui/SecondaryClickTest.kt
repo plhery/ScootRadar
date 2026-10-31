@@ -287,7 +287,7 @@ class SecondaryClickTest {
         val menu = showAMenu { dismissed++ }
         val past = Offset(menu.width + 150f, menu.height + 150f)
         val shadow = Offset(menu.width / 2f, 2f)
-        for (clicker in Clicker.entries) {
+        for (clicker in mice) {
             click(menu, past, MotionEvent.BUTTON_SECONDARY, clicker)
             assertEquals("closed by $clicker's right click past its window", 0, dismissed)
             click(menu, shadow, MotionEvent.BUTTON_SECONDARY, clicker)
@@ -460,13 +460,28 @@ class SecondaryClickTest {
     /**
      * What clicks: a mouse; a trackpad, whose two-finger click Android sends as a finger from the mouse's source; and a
      * touchpad's finger from the touchpad's own source. Compose takes each for a mouse (MotionEventAdapter), and so must
-     * the app's own listeners.
+     * the app's own listeners. A stylus's tip and its eraser, which Compose takes for a stylus and an eraser.
      */
     private enum class Clicker(val tool: Int, val source: Int) {
         Mouse(MotionEvent.TOOL_TYPE_MOUSE, InputDevice.SOURCE_MOUSE),
         Trackpad(MotionEvent.TOOL_TYPE_FINGER, InputDevice.SOURCE_MOUSE),
         Touchpad(MotionEvent.TOOL_TYPE_FINGER, InputDevice.SOURCE_TOUCHPAD),
+        Stylus(MotionEvent.TOOL_TYPE_STYLUS, InputDevice.SOURCE_STYLUS),
+        Eraser(MotionEvent.TOOL_TYPE_ERASER, InputDevice.SOURCE_STYLUS),
     }
+
+    /** What Compose takes for a mouse. */
+    private val mice = listOf(Clicker.Mouse, Clicker.Trackpad, Clicker.Touchpad)
+
+    /** A stylus's tip and its eraser. */
+    private val pens = listOf(Clicker.Stylus, Clicker.Eraser)
+
+    /**
+     * A stylus's barrel buttons, as Android names them: Compose reads the first as a primary button and the second as a
+     * secondary one (isPrimaryPressed, isSecondaryPressed), and Android's own views take a tap with either held for a
+     * context click, a mouse's right click.
+     */
+    private val barrelButtons = listOf(MotionEvent.BUTTON_STYLUS_PRIMARY, MotionEvent.BUTTON_STYLUS_SECONDARY)
 
     /** [clicker]'s [action] at ([x], [y]) in a view, with [buttons] down. */
     private fun press(action: Int, x: Float, y: Float, buttons: Int, clicker: Clicker): MotionEvent = MotionEvent.obtain(
@@ -495,7 +510,7 @@ class SecondaryClickTest {
     fun aRightClickBesideTheCalendarLeavesItOpen() {
         openTheCalendar()
         val beside = Offset(2f, 2f)
-        for (clicker in Clicker.entries) {
+        for (clicker in mice) {
             if (!calendarOpen()) reopenTheCalendar()
             click(calendarWindow(), beside, MotionEvent.BUTTON_SECONDARY, clicker)
             assertTrue("the calendar stays open after $clicker's right click", calendarOpen())
@@ -519,7 +534,7 @@ class SecondaryClickTest {
         val window = calendarWindow()
         val above = Offset(window.width / 2f, -40f)
         val below = Offset(window.width / 2f, window.height + 40f)
-        for (clicker in Clicker.entries) {
+        for (clicker in mice) {
             for (at in listOf(above, below)) {
                 click(window, at, MotionEvent.BUTTON_SECONDARY, clicker)
                 assertTrue("the calendar stays open after $clicker's right click at $at", calendarOpen())
@@ -527,5 +542,83 @@ class SecondaryClickTest {
         }
         click(window, above, MotionEvent.BUTTON_PRIMARY, Clicker.Touchpad)
         assertFalse("a left click above it closes it", calendarOpen())
+    }
+
+    /**
+     * A stylus's tap with a barrel button held is a right click, which does nothing (X-AD22: a secondary press does
+     * nothing, whatever sends it): from its tip or its eraser, with either button, it gives the map no touch and opens
+     * nothing from the bar's Settings button. A plain tap of its tip acts on each.
+     */
+    @Test
+    fun aStylusTapWithABarrelButtonOnTheScreenDoesNothingWhereAPlainTapActs() {
+        val analytics = RecordingAnalytics()
+        lateinit var map: MapStandIn
+        lateinit var screen: View
+        compose.setContent {
+            screen = LocalView.current
+            ScooterMapScreen(
+                controller = testController(scope),
+                map = { AndroidView({ MapStandIn(it).also { view -> map = view } }, Modifier.fillMaxSize()) },
+                analytics = analytics.analytics,
+                glassBlurs = false,
+            )
+        }
+        compose.waitForIdle()
+        val onTheMap = compose.onRoot().fetchSemanticsNode().size.let { Offset(it.width / 2f, it.height * 0.4f) }
+        val settings = compose.onNodeWithContentDescription("Settings").fetchSemanticsNode().boundsInRoot.center
+
+        for (pen in pens) {
+            for (button in barrelButtons) {
+                click(screen, onTheMap, button, pen)
+                assertEquals("the map's touches from the $pen's tap with button $button", emptyList<Int>(), map.touches)
+                click(screen, settings, button, pen)
+                assertTrue("the search bar shows, Settings unopened by the $pen's button $button", searchBarShows())
+                assertTrue(analytics.names.toString(), "settings_open" !in analytics.names)
+            }
+        }
+
+        click(screen, onTheMap, 0, Clicker.Stylus)
+        assertEquals(listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP), map.touches)
+        click(screen, settings, 0, Clicker.Stylus)
+        compose.waitUntil { "settings_open" in analytics.names }
+    }
+
+    /**
+     * Beside the calendar, a stylus's tap with a barrel button held leaves it open, as a right click does; a plain tap
+     * of its tip closes it.
+     */
+    @Test
+    fun aStylusTapWithABarrelButtonBesideTheCalendarLeavesItOpen() {
+        openTheCalendar()
+        val beside = Offset(2f, 2f)
+        for (pen in pens) {
+            for (button in barrelButtons) {
+                click(calendarWindow(), beside, button, pen)
+                assertTrue("the calendar stays open after the $pen's tap with button $button", calendarOpen())
+            }
+        }
+        click(calendarWindow(), beside, 0, Clicker.Stylus)
+        assertFalse("a plain tap of the stylus closes it", calendarOpen())
+    }
+
+    /**
+     * Outside a menu, in its shadow's room or in another window, a stylus's tap with a barrel button held leaves it
+     * open, as a right click does; a plain tap of its tip in another window closes it.
+     */
+    @Test
+    fun aStylusTapWithABarrelButtonOutsideAMenuLeavesItOpen() {
+        var dismissed = 0
+        val menu = showAMenu { dismissed++ }
+        val shadow = Offset(menu.width / 2f, 2f)
+        for (pen in pens) {
+            for (button in barrelButtons) {
+                click(menu, shadow, button, pen)
+                assertEquals("closed by the $pen's tap with button $button in its shadow's room", 0, dismissed)
+                pressInAnotherWindow(menu, button, pen)
+                assertEquals("closed by the $pen's tap with button $button in another window", 0, dismissed)
+            }
+        }
+        pressInAnotherWindow(menu, 0, Clicker.Stylus)
+        assertEquals("closed by a plain tap of the stylus in another window", 1, dismissed)
     }
 }
