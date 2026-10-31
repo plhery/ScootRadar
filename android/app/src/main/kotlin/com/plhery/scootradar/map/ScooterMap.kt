@@ -328,7 +328,9 @@ fun ScooterMap(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.End))
-                .padding(top = compassTop.dp, end = MapOrnaments.EDGE_GAP.dp),
+                // No less than 0, which a padding can't be: while a dialog's keyboard shows (a pass's date typed in
+                // Settings), a phone's chrome measures as far as 245 above the window's top, the search bar's foot too.
+                .padding(top = compassTop.coerceAtLeast(0.0).dp, end = MapOrnaments.EDGE_GAP.dp),
         )
         val margins = if (panelSides == null && fold == null) {
             null
@@ -364,7 +366,7 @@ fun ScooterMap(
                         Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)).padding(start = MapOrnaments.EDGE_GAP.dp)
                     },
                 )
-                .padding(top = ornamentsTop.dp),
+                .padding(top = ornamentsTop.coerceAtLeast(0.0).dp),
         )
         val overCorner = creditsOverCorner(creditsSides, corner, maxHeight.value.toDouble())
         val overDock = creditsOverDock(creditsSides, dock, onDock, maxHeight.value.toDouble())
