@@ -305,6 +305,7 @@ import dunedinEn from './en/e-scooters-dunedin';
 import lanzaroteEn from './en/e-scooters-lanzarote';
 import chelmsfordEn from './en/e-scooters-chelmsford';
 import laSerenaEs from './es/scooters-electricos-la-serena';
+import hildesheimDe from './de/e-scooter-hildesheim';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -610,4 +611,5 @@ export const GUIDES: readonly Guide[] = [
   lanzaroteEn,
   chelmsfordEn,
   laSerenaEs,
+  hildesheimDe,
 ];
