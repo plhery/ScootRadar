@@ -3,6 +3,7 @@ package com.plhery.scootradar.map
 import android.app.Activity
 import android.graphics.Rect
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
@@ -306,6 +307,11 @@ class ScooterMarkerAccessibilityTest {
         assertEquals(emptyList<Int>(), node.actionList.map { it.id }.filter { it in actions })
         // Its markers are in it all the same.
         assertEquals(1, node.childCount)
+        // Nor is it heard as it takes the keyboard's focus, as it does when a place is chosen and the search's field
+        // goes: TalkBack reads the description the view's event carries.
+        val focused = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+        view.onInitializeAccessibilityEvent(focused)
+        assertNull(focused.contentDescription)
     }
 
     @Test

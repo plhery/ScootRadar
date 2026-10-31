@@ -1,11 +1,16 @@
 package com.plhery.scootradar.ui
 
+import android.view.View
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestControllers
@@ -22,6 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
 
 /**
@@ -31,6 +37,8 @@ import java.util.Locale
  */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w443dp-h970dp-mdpi")
+// Compose leaves out the nodes others cover by Android's Region, which only native graphics computes.
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AnnouncementsTest {
     @get:Rule
     val compose = createComposeRule()
@@ -51,11 +59,17 @@ class AnnouncementsTest {
         Locale.setDefault(locale)
     }
 
-    /** The titles of the panes on the screen. */
-    private fun panes(): List<String> =
+    /** The composition's view, whose nodes TalkBack is given. */
+    private lateinit var view: View
+
+    /**
+     * The titles of the panes on the screen, as TalkBack is given them: null for one it isn't, as Compose doesn't give
+     * it a node drawn under another that covers it.
+     */
+    private fun panes(): List<String?> =
         compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.PaneTitle), useUnmergedTree = true)
             .fetchSemanticsNodes()
-            .map { it.config[SemanticsProperties.PaneTitle] }
+            .map { view.accessibilityNodeProvider.createAccessibilityNodeInfo(it.id)?.paneTitle?.toString() }
 
     @Test
     fun aCardClosingLeavesThePaneWithNothingToSay() {
@@ -64,9 +78,13 @@ class AnnouncementsTest {
         val model = controllers.make(api)
         model.updateViewport(zurichRegion, zoom = 16)
         assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
-        compose.setContent { ScooterMapScreen(controller = model, map = {}, glassBlurs = false) }
+        compose.setContent {
+            view = LocalView.current
+            // A view over the whole screen, as MapLibre's map is.
+            ScooterMapScreen(controller = model, map = { AndroidView(::View, Modifier.fillMaxSize()) }, glassBlurs = false)
+        }
         compose.waitForIdle()
-        assertEquals(emptyList<String>(), panes())
+        assertEquals(emptyList<String?>(), panes())
 
         compose.runOnIdle { model.selectScooter(target.id) }
         compose.waitForIdle()
@@ -87,9 +105,12 @@ class AnnouncementsTest {
     @Test
     fun theSameWordsSaidAgainAreANewTitle() {
         var announcement by mutableStateOf<Announcement?>(null)
-        compose.setContent { Announcer(announcement) }
+        compose.setContent {
+            view = LocalView.current
+            Announcer(announcement)
+        }
         compose.waitForIdle()
-        assertEquals(emptyList<String>(), panes())
+        assertEquals(emptyList<String?>(), panes())
 
         announcement = Announcement("Finding the way…", serial = 1)
         compose.waitForIdle()

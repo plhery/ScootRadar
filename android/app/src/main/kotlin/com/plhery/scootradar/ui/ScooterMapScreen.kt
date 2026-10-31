@@ -302,8 +302,6 @@ fun ScooterMapScreen(
                     chrome.captionButtons = captionButtons
                     chrome.covered = sheetOpen
                 }
-                // Heard under a sheet too, as VoiceOver's announcements are.
-                announcements.Pane()
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
                     map(dark)
@@ -392,6 +390,10 @@ fun ScooterMapScreen(
                         heldPages = screenState.settingsPages,
                     )
                 }
+                // Over the map and the sheets: Compose doesn't give TalkBack a node that what is drawn over it covers,
+                // as the map covers the screen, and the pane's titles are then never heard. Heard under a sheet too,
+                // as VoiceOver's announcements are.
+                announcements.Pane()
             }
         }
     }

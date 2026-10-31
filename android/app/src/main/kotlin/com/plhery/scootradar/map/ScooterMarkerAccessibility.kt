@@ -220,6 +220,13 @@ class ScooterMarkerAccessibility(
         node.removeAction(AccessibilityActionCompat.ACTION_FOCUS)
     }
 
+    // Nor as it takes the keyboard's focus, when a place is chosen and the search's field goes: TalkBack reads the
+    // description its event carries.
+    override fun onInitializeAccessibilityEvent(host: View, event: AccessibilityEvent) {
+        super.onInitializeAccessibilityEvent(host, event)
+        event.contentDescription = null
+    }
+
     // ExploreByTouchHelper makes the bounds on the screen, and whether the view is visible, from those in the map.
     @Suppress("DEPRECATION")
     override fun onPopulateNodeForVirtualView(virtualViewId: Int, node: AccessibilityNodeInfoCompat) {
