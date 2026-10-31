@@ -19,7 +19,7 @@ import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
-import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
+import { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
@@ -368,6 +368,8 @@ async function saveAtomically(path: string, name: string, write: (temporaryPath:
 }
 
 let discoveryTimer: ReturnType<typeof setTimeout>;
+// Since when every discovery has failed, for Sentry to hear of it only after a while (reportDiscoveryFailing).
+let discoveryFailingSince: number | undefined;
 async function discover() {
   let retryMs = 3600_000;
   try {
@@ -375,10 +377,12 @@ async function discover() {
       error => console.warn('Feed discovery failed; trying once more in 5 seconds', error)));
     if (!stopping) setDefinitions(definitions, true);
     metrics.recordDiscovery();
+    discoveryFailingSince = undefined;
   } catch (error) {
     retryMs = 60_000;
     console.error('Feed discovery failed; retaining the previous catalog', error);
-    reportError('discovery', error);
+    discoveryFailingSince ??= Date.now();
+    reportDiscoveryFailing(error, discoveryFailingSince);
   }
   if (!stopping) discoveryTimer = setTimeout(() => void discover(), retryMs);
 }

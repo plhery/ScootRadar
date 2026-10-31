@@ -10,7 +10,7 @@ vi.mock('@sentry/node', () => ({
   withScope: (callback: (value: typeof scope) => void) => callback(scope),
 }));
 const Sentry = await import('@sentry/node');
-const { initErrorReporting, reportError, reportFeedExpired } = await import('./errorReporting');
+const { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired } = await import('./errorReporting');
 
 beforeEach(() => vi.clearAllMocks());
 
@@ -73,6 +73,20 @@ it('reports a repeating error once an hour per key', () => {
   reportError('discovery-test', error, 5_000);
   reportError('persist-test', error, 3600_000);
   expect(Sentry.captureException).toHaveBeenCalledTimes(3);
+});
+
+it('reports a failing discovery once it has failed for 15 minutes, as one issue whatever the error', () => {
+  const since = Date.UTC(2026, 9, 31, 2, 20);
+  // A restart's first tries, and the minute's retries after them, are no event.
+  reportDiscoveryFailing(new TypeError('fetch failed'), since, since);
+  reportDiscoveryFailing(new TypeError('fetch failed'), since, since + 14 * 60_000);
+  expect(Sentry.captureException).not.toHaveBeenCalled();
+  reportDiscoveryFailing(new DOMException('The operation was aborted due to timeout', 'TimeoutError'), since, since + 15 * 60_000);
+  reportDiscoveryFailing(new Error('GBFS request failed with HTTP 504'), since, since + 30 * 60_000);
+  reportDiscoveryFailing(new Error('GBFS request failed with HTTP 504'), since, since + 75 * 60_000);
+  expect(Sentry.captureException).toHaveBeenCalledTimes(2);
+  expect(scope.setFingerprint.mock.calls).toEqual(Array(2).fill([['feed-discovery-failing']]));
+  expect(scope.setContext).toHaveBeenCalledWith('discovery', { failingSince: '2026-10-31T02:20:00.000Z', minutesFailing: 75 });
 });
 
 it('groups the expiries of a host\'s feeds, one event an hour for each, and says why each expired', () => {

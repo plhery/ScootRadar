@@ -4,6 +4,7 @@ import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { FeedStateChange } from './feedStateLog';
 
 const REPORT_INTERVAL_MS = 3600_000;
+const DISCOVERY_REPORT_AFTER_MS = 15 * 60_000;
 const lastReportedAt = new Map<string, number>();
 
 /**
@@ -109,6 +110,24 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
   Sentry.withScope(scope => {
     scope.setTag('operation', key.split(':')[0]);
     scope.setFingerprint(['{{ default }}', key]);
+    Sentry.captureException(error);
+  });
+}
+
+/**
+ * A discovery that has failed every time for 15 minutes (scooter-cache.ts): until then the cache
+ * collects the catalog it had and asks again every minute, so a registry that answers a minute
+ * later, or a restart's first try that times out, is no event. One issue whatever the error, at
+ * most one event an hour: sharedmobility.ch's outage from 02:13 UTC on 31 October 2026 was three
+ * issues, a connect timeout, a timeout and a 504, and the first was raised by each night's restart.
+ */
+export function reportDiscoveryFailing(error: unknown, failingSince: number, now = Date.now()) {
+  if (now - failingSince < DISCOVERY_REPORT_AFTER_MS || !due('discovery', now)) return;
+  Sentry.withScope(scope => {
+    scope.setTag('operation', 'discovery');
+    scope.setFingerprint(['feed-discovery-failing']);
+    scope.setContext('discovery', { failingSince: new Date(failingSince).toISOString(),
+      minutesFailing: Math.floor((now - failingSince) / 60_000) });
     Sentry.captureException(error);
   });
 }
