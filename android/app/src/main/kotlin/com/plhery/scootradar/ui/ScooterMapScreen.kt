@@ -526,12 +526,13 @@ private fun DockChrome(
             val isAccessibility = TextSize.isAccessibility
             val dockGone by animateFloatAsState(searchGone, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
                 .atOnceUnderReduceMotion(searchGone)
+            val laidOut = remember { LaidOutFrames() }
             // The locate row stands 10 above the dock's card, laid out from where the card is in the same pass, as the
             // iPhone's padding by the dock's height is: a height read back as state would move the row a frame after
             // the card, which shows under Reduce Motion, where the card changes height in one frame.
             Layout(
                 content = {
-                    Box(Modifier.fillMaxSize().unheard(isSearching)) {
+                    Box(Modifier.fillMaxSize().unheard(isSearching).onGloballyPositioned { laidOut.row = it }) {
                         Row(
                             Modifier
                                 .align(Alignment.BottomCenter)
@@ -546,18 +547,23 @@ private fun DockChrome(
                             // The legend at the leading edge, a spacer's 10 short of the button: the iPhone's HStack.
                             // The iPad's puts it against the button, after the spacer.
                             Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
-                                ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp))
+                                ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp)) { laidOut.frame(laidOut.row, it, density.density) }
                             }
                             FloatingMapControls(
                                 controller,
                                 Modifier
                                     .onSizeChanged { locateButtonHeight.intValue = it.height }
                                     // The map centres a scooter in what this button and the dock leave visible.
-                                    .onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },
+                                    .onGloballyPositioned { chrome.locateButton = laidOut.frame(laidOut.row, it, density.density) },
                             )
                         }
                     }
-                    Box(Modifier.fillMaxSize().makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, 1f))) {
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, 1f))
+                            .onGloballyPositioned { laidOut.dock = it },
+                    ) {
                         ScooterControlDock(
                             controller,
                             onEditFilters = onShowFilters,
@@ -566,7 +572,7 @@ private fun DockChrome(
                                 .padding(horizontal = 10.dp)
                                 .padding(bottom = bottom)
                                 .dockTop()
-                                .onGloballyPositioned { chrome.dock = it.windowFrame(density.density) }
+                                .onGloballyPositioned { chrome.dock = laidOut.frame(laidOut.dock, it, density.density) }
                                 .inert(isSearching),
                             maximumContentHeight = max(
                                 160.dp,
@@ -578,7 +584,7 @@ private fun DockChrome(
                         )
                     }
                 },
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().onGloballyPositioned { laidOut.screen = it },
             ) { (locateRow, dockCard), constraints ->
                 val card = dockCard.measure(constraints)
                 val screenHeight = constraints.maxHeight
@@ -811,7 +817,13 @@ private val EmptyShape = object : Shape {
  * keep clear of it.
  */
 @Composable
-private fun ZoneLegendOverTheMap(controller: ScooterMapController, chrome: MapChromeFrames, modifier: Modifier = Modifier) {
+private fun ZoneLegendOverTheMap(
+    controller: ScooterMapController,
+    chrome: MapChromeFrames,
+    modifier: Modifier = Modifier,
+    /** Its frame as laid out, where it makes way for the search with the locate row. */
+    laidOut: ((LayoutCoordinates) -> ScreenRect)? = null,
+) {
     val state by controller.zoneState.collectAsStateWithLifecycle()
     val count by controller.mapOperatorZoneCount.collectAsStateWithLifecycle()
     val rules by controller.mapRuleZones.collectAsStateWithLifecycle()
@@ -823,9 +835,38 @@ private fun ZoneLegendOverTheMap(controller: ScooterMapController, chrome: MapCh
         count = count,
         rules = rules,
         notices = notices,
-        modifier = modifier.onGloballyPositioned { chrome.zoneLegend = it.windowFrame(density) },
+        modifier = modifier.onGloballyPositioned { chrome.zoneLegend = laidOut?.invoke(it) ?: it.windowFrame(density) },
     )
     DisposableEffect(Unit) { onDispose { chrome.zoneLegend = null } }
+}
+
+/**
+ * The frames of the chrome that makes way for the search, the dock and the locate row over it, as they are laid out,
+ * as SwiftUI's frames are, which `.scaleEffect` leaves be: what the map reads of them does not shrink with them toward
+ * the screen's foot as the search opens. Read through the layout of the [screen], outside their layers, and the
+ * coordinates inside the [dock]'s layer and the [row]'s, each laid out from the screen layout's origin. As they shrank,
+ * the dock no longer spanned the map's credits on a phone (its side from 10 in to 18.5 on the Fold folded, past their
+ * text from 14), and the credits went up over it, 4 over the highest shrunk frame over them: under the open search's
+ * keyboard on API 37, their text cut by its top (app-ab's pass).
+ */
+private class LaidOutFrames {
+    var screen: LayoutCoordinates? = null
+    var dock: LayoutCoordinates? = null
+    var row: LayoutCoordinates? = null
+
+    /** The frame of [of], inside [space], in the window in points; on the screen, until the layouts are known. */
+    fun frame(space: LayoutCoordinates?, of: LayoutCoordinates, density: Float): ScreenRect {
+        val screen = screen
+        if (screen == null || space == null || !screen.isAttached || !space.isAttached) return of.windowFrame(density)
+        val laid = space.localBoundingBoxOf(of, clipBounds = false)
+        val origin = screen.localToWindow(laid.topLeft)
+        return ScreenRect(
+            (origin.x / density).toDouble(),
+            (origin.y / density).toDouble(),
+            (laid.width / density).toDouble(),
+            (laid.height / density).toDouble(),
+        )
+    }
 }
 
 /** Where a piece of the chrome is in the window, in points, which are the map's. */

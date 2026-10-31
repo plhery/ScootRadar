@@ -15,6 +15,8 @@ import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
@@ -34,6 +36,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLoadIssue
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.map.creditsSafeArea
@@ -55,6 +58,7 @@ import org.robolectric.annotation.Config
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.abs
 import kotlin.math.max
 
 // UI-121, UI-122, X-AD34: ScooterMapScreen.swift lays the dock (:313), the locate row (:284) and the notices' room
@@ -161,6 +165,36 @@ class DockFootTest {
             assertEquals("$bars with the keyboard up: the map's safe foot", 336, safeBottom)
             assertEquals("$bars with the keyboard up: the credits' safe foot", bars.bottom, creditsBottom)
         }
+    }
+
+    /**
+     * MAP-318, the search opening: the dock and the locate row make way for it, fading and shrinking toward the screen's
+     * foot, and the map reads them where they are laid out, as SwiftUI's frames leave `.scaleEffect` out. Read as they
+     * shrank, the dock no longer spanned the map's credits, which went up over it, under the search's keyboard.
+     */
+    @Test
+    fun theMapReadsTheDockAndTheLocateButtonWhereTheyAreLaidOutAsTheyMakeWayForTheSearch() {
+        show(Bars.Gesture)
+        val dock = frames.dock!!
+        val locate = frames.locateButton!!
+        compose.mainClock.autoAdvance = false
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
+        for (frame in 1..30) {
+            compose.mainClock.advanceTimeByFrame()
+            compose.waitForIdle()
+            assertSameFrame("the dock $frame frames on", dock, frames.dock)
+            assertSameFrame("the locate button $frame frames on", locate, frames.locateButton)
+        }
+        assertTrue("the search open", frames.isSearching)
+        val shown = compose.onNode(hasTestTag(DOCK_TAG), useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        compose.mainClock.autoAdvance = true
+        assertTrue("the dock shrunk making way: $shown, laid out at $dock", shown.width / compose.density.density < dock.width - 1)
+    }
+
+    private fun assertSameFrame(what: String, expected: ScreenRect, actual: ScreenRect?) {
+        val same = actual != null && listOf(expected.x - actual.x, expected.y - actual.y, expected.width - actual.width, expected.height - actual.height)
+            .all { abs(it) < 0.01 }
+        assertTrue("$what: $actual, laid out at $expected", same)
     }
 
     /**

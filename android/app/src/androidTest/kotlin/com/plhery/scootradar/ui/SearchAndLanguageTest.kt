@@ -142,6 +142,7 @@ class SearchAndLanguageTest {
         compose.runOnIdle { controller.selectScooter("lime:a") }
         compose.waitForIdle()
         val dock = bounds(DOCK_TAG)
+        val credits = creditsBounds()
         compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahnhofstrasse")
         compose.waitUntil(10_000) { imeBottom() > 0 && compose.onAllNodes(hasText("Bahnhofstrasse 1")).fetchSemanticsNodes().isNotEmpty() }
@@ -152,17 +153,18 @@ class SearchAndLanguageTest {
         val places = compose.onNode(hasAnyAncestor(hasTestTag(SEARCH_ISLAND_TAG)) and SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
         assertTrue("the places scroll", places.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].maxValue() > 0)
         assertTrue("$island over a keyboard from $keyboardTop", island.bottom <= keyboardTop + 1)
-        val credits = creditsBounds()
+        // The map's credits where they were, under the keyboard: they went up over the dock as it shrank making way,
+        // and stood partly under the keyboard on API 37, their text cut by its top (app-ab's pass, the Fold folded).
+        assertEquals("the credits with the keyboard up, its top at $keyboardTop", credits, creditsBounds())
 
-        // The keyboard put away with the search still open: the dock hasn't moved, nor have the credits, which in the
-        // keyboard's safe area stood partly under it on API 37, cut by its top (app-ab's pass, the Fold folded).
+        // The keyboard put away with the search still open: the dock hasn't moved, nor have the credits.
         val madeWay = bounds(DOCK_TAG)
         scenario?.onActivity { WindowCompat.getInsetsController(it.window, it.window.decorView).hide(WindowInsetsCompat.Type.ime()) }
         compose.waitUntil(10_000) { imeBottom() == 0 }
         compose.waitForIdle()
         compose.onNodeWithText("Cancel").assertExists()
         assertEquals(madeWay, bounds(DOCK_TAG))
-        assertEquals("the credits with the keyboard up, its top at $keyboardTop", creditsBounds(), credits)
+        assertEquals("the credits with the keyboard put away", credits, creditsBounds())
 
         // Back, as the phone's own key: the keyboard first, then the search, then the card.
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performClick()
