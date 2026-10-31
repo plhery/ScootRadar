@@ -180,10 +180,21 @@ fun ScooterSettingsSheet(
         }
     }
     val reduceMotion = LocalReduceMotion.current
+    // A page going, after a tapped Back or a back gesture let go: the pages shown are still more than the stack's.
+    val pageGoing = pages.currentState.size > stack.size
     // Back takes a page away before it closes the sheet. Drawn out, the page follows it, as iOS's page follows a
     // swipe from the edge; let go, it goes, and called off, it stays. Under Remove animations nothing moves until it
-    // is let go, as a tap's pop swaps the pages at once.
-    PredictiveBackHandler(enabled = stack.size > 1) { progress ->
+    // is let go, as a tap's pop swaps the pages at once. While a page goes, even the last one over Settings, Back is
+    // still the pages' own, so that neither the sheet under them nor the activity takes it; a gesture held on after
+    // the page is gone stays with the handler it began on, as the dispatcher keeps it there to its end.
+    PredictiveBackHandler(enabled = stack.size > 1 || pageGoing) { progress ->
+        // UINavigationController's swipe from the edge does not begin while a page is pushed or popped: a page going
+        // runs out, and the swipe does nothing (review-app-yz finding 1). Back begun then, a gesture or Android 12's
+        // Back alone, moves nothing and takes no page away, drawn out, called off or let go.
+        if (pages.currentState.size > stack.size || stack.size < 2) {
+            progress.collect { }
+            return@PredictiveBackHandler
+        }
         val from = stack.toList()
         val below = from.dropLast(1)
         var started = false
@@ -193,11 +204,11 @@ fun ScooterSettingsSheet(
                 if (!started) {
                     started = true
                     followsGesture = true
-                    // A page still coming in, or going, is put in its place at once: iOS lets a push end before any
-                    // swipe moves a page, and a seek toward another state waits for the push to run its course,
-                    // where the page would follow only then (review-app-v finding 5). The page it covered is let go
-                    // of over a frame, so that it comes back under the gesture as if from rest, a third of the way
-                    // out, not on the push's spring it went on.
+                    // A page still coming in is put in its place at once: iOS lets a push end before any swipe moves a
+                    // page, and a seek toward another state waits for the push to run its course, where the page
+                    // would follow only then (review-app-v finding 5). The page it covered is let go of over a frame,
+                    // so that it comes back under the gesture as if from rest, a third of the way out, not on the
+                    // push's spring it went on.
                     if (pages.currentState != from || pages.targetState != from) {
                         pages.snapTo(from)
                         withFrameNanos { }

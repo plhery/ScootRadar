@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasAnyDescendant
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
@@ -44,7 +45,8 @@ import org.robolectric.annotation.Config
 // from the edge; let go, each goes on from where the gesture left it, and called off, each stays. The search, which
 // iOS has no gesture for, is in BackOrderTest. The gesture's progress comes through the dispatcher, as Android 14 and
 // later send it. Its edges (review-app-v findings 5 and 6): a gesture begun while a tapped page is still coming in,
-// and a sheet shown again before it is down.
+// and a sheet shown again before it is down; and one begun while a page is still going (review-app-yz finding 1),
+// which moves nothing, as iOS's swipe from the edge does not begin during a pop.
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w390dp-h844dp-xhdpi")
@@ -343,6 +345,174 @@ class PredictiveBackTest {
         compose.mainClock.advanceTimeBy(200)
         val coming = start(privacy)
         assertTrue("Privacy on its way in: $coming", coming > 1f && coming < 389f)
+    }
+
+    private val credits = page and hasAnyDescendant(hasText("OpenFreeMap · OpenStreetMap"))
+    private val licences = page and hasAnyDescendant(hasText("Gson", substring = true))
+
+    /** Where [matcher]'s node starts, in the window's points, or null where it is gone. */
+    private fun startOrNull(matcher: SemanticsMatcher): Float? =
+        compose.onAllNodes(matcher).fetchSemanticsNodes().singleOrNull()?.let { it.positionInRoot.x / compose.density.density }
+
+    /** Open-source licences over Map & data credits over Settings, 390 wide. */
+    private fun licencesOverCreditsOverSettings() =
+        settingsSheet(listOf(SettingsPage.Root, SettingsPage.Credits, SettingsPage.Notices), reduceMotion = false)
+
+    /** The licences let go of half drawn out: 3 frames on, they run out from half way, the clock held. */
+    private fun licencesLetGo() {
+        licencesOverCreditsOverSettings()
+        drawOut(0.5f)
+        letGo(frames = 3)
+        val going = start(licences)
+        assertTrue("the licences on their way out: $going", going > 195.5f && going < 300f)
+    }
+
+    /** Back tapped on the licences: 4 frames on, they are on their way out on a pop's spring, the clock held. */
+    private fun licencesBackTapped() {
+        licencesOverCreditsOverSettings()
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasContentDescription("Back")).performClick()
+        repeat(4) { compose.mainClock.advanceTimeByFrame() }
+        val going = start(licences)
+        assertTrue("the licences on their way out: $going", going > 1f && going < 300f)
+    }
+
+    /**
+     * A second gesture begun as the licences go, drawn out to 0.3 then 0.5 over 6 frames, the clock held. As iOS's
+     * swipe does not begin during a pop, the licences run out as they were: on the screen and further out each
+     * frame, not gone; Map & data credits comes in under them from a third of the way, not drawn along by the
+     * gesture, and Settings stays under it.
+     */
+    private fun aSecondGestureMovesNothing() {
+        val path = mutableListOf(start(licences))
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+        compose.mainClock.advanceTimeByFrame()
+        for (progress in listOf(0.3f, 0.3f, 0.3f, 0.5f, 0.5f, 0.5f)) {
+            compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(progress)) }
+            compose.mainClock.advanceTimeByFrame()
+            val going = startOrNull(licences)
+            assertTrue("the licences gone ${path.size} frames after the gesture began: $path", going != null)
+            path += going!!
+            val under = start(credits)
+            assertTrue("the credits drawn along by the gesture at $progress: $under ($path)", under <= 0.5f)
+            assertTrue("Settings comes in at $progress ($path)", compose.onAllNodes(settings).fetchSemanticsNodes().isEmpty())
+        }
+        assertTrue("the licences run out, further each frame: $path", path.zipWithNext().all { (a, b) -> b > a })
+        assertTrue("the licences on the screen: $path", path.last() < 390f)
+    }
+
+    /** Once all is still: the credits alone in their place with their title, the licences gone and Settings under. */
+    private fun assertTheCreditsAreAloneInPlace() {
+        settle()
+        val place = startOrNull(credits)
+        assertTrue("the credits taken away too", place != null)
+        assertEquals(0f, place!!, 0.5f)
+        compose.onNode(title("Map & data credits")).assertExists()
+        assertTrue("the licences gone", compose.onAllNodes(licences).fetchSemanticsNodes().isEmpty())
+        assertTrue("Settings under the credits", compose.onAllNodes(settings).fetchSemanticsNodes().isEmpty())
+        assertTrue(compose.onAllNodes(title("Settings")).fetchSemanticsNodes().isEmpty())
+    }
+
+    /**
+     * Review-app-yz finding 1: the licences let go of half drawn out run out, and a second gesture begun on their
+     * way, drawn out and called off, moves nothing: they run out, and the credits are alone in their place.
+     */
+    @Test
+    fun aGestureBegunWhileALetGoPageIsGoingLeavesItToRunOutAndCalledOffChangesNothing() {
+        licencesLetGo()
+        aSecondGestureMovesNothing()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackCancelled() }
+        assertTheCreditsAreAloneInPlace()
+    }
+
+    /** The same second gesture let go takes no page away: the credits stay, Settings under them. */
+    @Test
+    fun aGestureBegunWhileALetGoPageIsGoingTakesNoOtherPageWhenItIsLetGo() {
+        licencesLetGo()
+        aSecondGestureMovesNothing()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        assertTheCreditsAreAloneInPlace()
+    }
+
+    /** Back tapped on the licences, and a gesture begun as they go, drawn out and called off: it moves nothing. */
+    @Test
+    fun aGestureBegunWhileATappedBackPageIsGoingLeavesItToRunOutAndCalledOffChangesNothing() {
+        licencesBackTapped()
+        aSecondGestureMovesNothing()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackCancelled() }
+        assertTheCreditsAreAloneInPlace()
+    }
+
+    /** The same gesture let go takes no page away. */
+    @Test
+    fun aGestureBegunWhileATappedBackPageIsGoingTakesNoOtherPageWhenItIsLetGo() {
+        licencesBackTapped()
+        aSecondGestureMovesNothing()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        assertTheCreditsAreAloneInPlace()
+    }
+
+    /**
+     * Android 12, which sends no gesture's progress, only Back as it is let go: a Back while the licences go takes
+     * no page away either.
+     */
+    @Test
+    fun aBackWithoutAGestureWhileAPageIsGoingTakesNoOtherPage() {
+        licencesBackTapped()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        repeat(2) { compose.mainClock.advanceTimeByFrame() }
+        assertTrue("the licences still going", startOrNull(licences) != null)
+        assertTheCreditsAreAloneInPlace()
+    }
+
+    /**
+     * Settings' sheet with Privacy over Settings, Back tapped: while Privacy goes, the last page over Settings, a
+     * gesture is still Settings' own, not the sheet's under it: drawn out, the sheet keeps its size, also once Privacy
+     * is gone under the held gesture; let go, the sheet stays up, Settings in it.
+     */
+    @Test
+    fun aGestureBegunWhileTheLastPageGoesLeavesTheSheetUp() {
+        val clock = TestClock()
+        val model = controllers.make(EmptyScooterAPI, clock)
+        compose.setContent {
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                ScootTheme(dark = false, reduceMotion = false) {
+                    IosSheet(isPresented, onDismiss = { isPresented = false }, listOf(SheetDetent.Large), "Settings") { bottomInset ->
+                        ScooterSettingsSheet(
+                            controller = model,
+                            bottomInset = bottomInset,
+                            defaults = InMemoryScooterDefaults(),
+                            onDone = { isPresented = false },
+                            passProviders = emptyList(),
+                            sources = emptyList(),
+                            pages = listOf(SettingsPage.Root, SettingsPage.Privacy),
+                        )
+                    }
+                }
+            }
+        }
+        compose.waitForIdle()
+        val sheet = pane("Settings")
+        compose.mainClock.autoAdvance = false
+        compose.onNode(hasContentDescription("Back")).performClick()
+        repeat(4) { compose.mainClock.advanceTimeByFrame() }
+        assertTrue("Privacy on its way out", startOrNull(privacy) != null)
+
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackStarted(event(0f)) }
+        compose.mainClock.advanceTimeByFrame()
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.dispatchOnBackProgressed(event(0.5f)) }
+        repeat(3) { compose.mainClock.advanceTimeByFrame() }
+        assertEquals("the sheet drawn along by the gesture", 390f, frame(sheet).width, 0.5f)
+        // Held on until Privacy is gone, then let go.
+        repeat(60) { compose.mainClock.advanceTimeByFrame() }
+        assertTrue("Privacy gone", compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
+        assertEquals("the sheet drawn along by the gesture once Privacy is gone", 390f, frame(sheet).width, 0.5f)
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        settle()
+        assertTrue("the sheet closed", isPresented)
+        assertEquals(390f, frame(sheet).width, 0.5f)
+        assertEquals(0f, start(settings), 0.5f)
+        assertTrue(compose.onAllNodes(privacy).fetchSemanticsNodes().isEmpty())
     }
 
     /**
