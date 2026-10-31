@@ -117,7 +117,7 @@ fun ScooterControlDock(
     val changes = rememberControllerChanges(controller)
     val content = remember(controller, changes) { controller.dock }
     val colors = scootColors
-    val shape = SquircleShape(28.dp)
+    val shape = SquircleShape(DOCK_RADIUS)
     val reduceMotion = LocalReduceMotion.current
     SelectionFeedback(controller.enabledProviders.collectAsState().value)
     // Only the panel folds; a phone's dock always shows all it has.
@@ -207,7 +207,7 @@ private fun DockCards(
     onEditFilters: () -> Unit,
 ) {
     val colors = scootColors
-    val shape = SquircleShape(28.dp)
+    val shape = SquircleShape(DOCK_RADIUS)
     val spring = IosMotion.snappy(duration = 0.28, extraBounce = 0.06)
     val reduceMotion = LocalReduceMotion.current
     // Under Reduce Motion the new kind's card in the frame the dock changes (UI-184).
@@ -238,6 +238,9 @@ private fun DockCards(
 
 /** The dock's tag, by which the tests over the live map find it. */
 const val DOCK_TAG = "dock"
+
+/** The radius of the dock's continuous corners, past whose curve the map's credits keep under it. */
+internal val DOCK_RADIUS = 28.dp
 
 /** What the dock shows, without its details: a change of kind animates. */
 internal val ScooterDockContent.kind: String

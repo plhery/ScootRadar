@@ -20,7 +20,10 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.ui.dock.DOCK_RADIUS
 import com.plhery.scootradar.ui.theme.FocusRing
+import com.plhery.scootradar.ui.theme.SQUIRCLE_EXTENT
+import kotlin.math.min
 
 // The web's MapCredits (src/components/MapCredits.tsx), where the iPhone shows Apple's logo and Legal link.
 
@@ -140,6 +143,44 @@ internal fun creditsUnderDock(credits: Pair<Double, Double>?, height: Double, do
 }
 
 /**
+ * Where the credits start, from the map's leading side, under a phone's dock over all of their text whose rounded
+ * corners would show them, their foot, [foot], within the reach of its bottom corners' curve: past the curve of its
+ * leading corner, wholly under its straight edge, or centred on the dock where they are wider than that edge. From the
+ * [credits]' sides, their [height] and the [dock]'s frame, in the map's points, [mapWidth] wide. Null where the dock
+ * leaves them be: over part of their text only ([creditsOverDock]'s), below its foot, or over it clear of the curve.
+ *
+ * Phone_Min upright, over its gesture bar on the dock's foot ([creditsUnderDock]) as over its 3-button bar 8 over the
+ * safe area's foot, showed their "©" and their frame's corner in the dock's corner: they started at 8, and the curve
+ * runs 42.8 in from the dock's side at 10 (28 radii of SquircleShape's 1.53), to 52.8. An iPhone with a home button
+ * lays Legal out the same way in the map's margins, in its dock's corner (by the layout, not seen); the lead asked
+ * that the credits keep clear of it (app-ad's brief).
+ */
+internal fun creditsStartUnderDock(
+    credits: Pair<Double, Double>?,
+    height: Double,
+    foot: Double,
+    dock: ScreenRect?,
+    mapWidth: Double,
+    rightToLeft: Boolean,
+): Double? {
+    if (credits == null || height <= 0 || dock == null || dock.isEmpty) return null
+    val (start, end) = credits
+    if (dock.minX > start + TEXT_INSET || dock.maxX < end - TEXT_INSET) return null
+    // How far in from the corner the curve starts: no further than half the dock's shorter side, a capsule's.
+    val reach = min(DOCK_RADIUS.value.toDouble() * SQUIRCLE_EXTENT, min(dock.width, dock.height) / 2)
+    val top = foot - height
+    // On the dock's foot to within the frames' rounding to pixels.
+    if (foot > dock.maxY + ROUNDING || top < dock.minY || foot <= dock.maxY - reach) return null
+    val width = end - start
+    val left = if (width <= dock.width - 2 * reach) {
+        if (rightToLeft) dock.maxX - reach - width else dock.minX + reach
+    } else {
+        dock.minX + (dock.width - width) / 2
+    }
+    return if (rightToLeft) mapWidth - (left + width) else left
+}
+
+/**
  * Whether the credits, [height] tall, have room [lift] above the map's foot, where [creditsOverDock] puts them: under
  * the chrome at the map's top, whose foot is [top] ([creditsCeiling]: the search bar and the notices under it, or the
  * safe area's top, and the scale under them), by the gap they keep over the controls under them, and so on the map.
@@ -171,6 +212,9 @@ private const val SAFE_GAP = 8.0
 
 /** The room either side of a credit's name, inside its frame. */
 private const val TEXT_INSET = 6.0
+
+/** How far apart two frames measured from the same pixels can lie, rounded each its own way. */
+private const val ROUNDING = 1.0
 
 private val SOURCES = listOf(
     "© OpenStreetMap" to "https://www.openstreetmap.org/copyright",

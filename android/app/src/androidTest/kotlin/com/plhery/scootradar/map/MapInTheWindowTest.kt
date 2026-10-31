@@ -696,7 +696,20 @@ class MapInTheWindowTest {
         // phone's does, wholly under it with all their text, as the iPhone's Legal is under its dock: never cut.
         val underDock = chrome.panel == null && dock != null && dock.minX <= text.minX + 1 && dock.maxX >= text.maxX - 1 &&
             dock.minY <= text.minY + 1 && dock.maxY >= text.maxY - 1
-        if (!underDock) {
+        if (underDock) {
+            // Under its straight edge, past the curve of its corners, 28 × 1.53 in from its sides (SquircleShape(28)),
+            // where their foot is within the curve's reach of its: in the curve they show in its rounded corner (app-ad
+            // 6a, Phone_Min upright, the "©" in it over either bar).
+            val reach = min(28.0 * 1.52866483, min(dock.width, dock.height) / 2)
+            if (sources.maxOf { it.maxY } > dock.maxY - reach) {
+                for (source in sources) {
+                    assertTrue(
+                        "the credit $source past the curve of the dock's corners, $reach in from its sides: $dock",
+                        source.minX >= dock.minX + reach - 1 && source.maxX <= dock.maxX - reach + 1,
+                    )
+                }
+            }
+        } else {
             val controls = listOf(
                 "the search bar" to shown(SEARCH_ISLAND_TAG),
                 "the dock" to dock,

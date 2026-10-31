@@ -31,7 +31,7 @@ class SquircleShape(private val radius: Dp) : Shape {
         val half = min(size.width, size.height) / 2
         val wanted = with(density) { radius.toPx() }
         if (wanted >= half) return CapsuleShape.createOutline(size, layoutDirection, density)
-        val r = min(wanted, half / EXTENT)
+        val r = min(wanted, half / SQUIRCLE_EXTENT)
         if (r <= 0f) return Outline.Rectangle(size.toRect())
         return Outline.Generic(continuousRect(size.width, size.height, r))
     }
@@ -41,12 +41,10 @@ class SquircleShape(private val radius: Dp) : Shape {
     override fun hashCode() = radius.hashCode()
 
     override fun toString() = "SquircleShape($radius)"
-
-    private companion object {
-        /** How far from the corner the curve starts, in radii. */
-        const val EXTENT = 1.52866483f
-    }
 }
+
+/** How far from the corner a [SquircleShape]'s curve starts, in radii. */
+internal const val SQUIRCLE_EXTENT = 1.52866483f
 
 /** `Capsule()`. */
 val CapsuleShape = RoundedCornerShape(percent = 50)

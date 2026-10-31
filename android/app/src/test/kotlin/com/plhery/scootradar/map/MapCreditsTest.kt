@@ -3,6 +3,7 @@ package com.plhery.scootradar.map
 import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -114,6 +115,53 @@ class MapCreditsTest {
         assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, gesture.copy(y = 500.0), safeBottom = 16.0, mapHeight = 640.0))
         val iPhone = ScreenRect(x = 10.0, y = 764.0, width = 420.0, height = 124.0)
         assertNull(creditsUnderDock(8.0 to 245.0, height = 18.0, iPhone, safeBottom = 34.0, mapHeight = 956.0))
+    }
+
+    /**
+     * Under Phone_Min's dock, on its foot over the gesture bar (608) or 8 over the 3-button bar (584), the credits from
+     * 8 showed their "©" and their frame's corner in its rounded corner (screens/app-ab/P-gestural-dock-foot-light.png):
+     * its curve runs 28 × 1.52866483 = 42.8 in from its side at 10. They start past it, at 52.8, wholly under its straight
+     * edge; right to left, 52.8 in from the map's right.
+     */
+    @Test
+    fun underAPhonesDockTheCreditsStartPastItsCornersCurve() {
+        val gesture = ScreenRect(x = 10.0, y = 484.0, width = 340.0, height = 124.0)
+        val past = 10.0 + 28.0 * 1.52866483
+        assertEquals(past, creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = false)!!, 0.001)
+        val threeButton = gesture.copy(y = 460.0)
+        assertEquals(past, creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 584.0, threeButton, mapWidth = 360.0, rightToLeft = false)!!, 0.001)
+        // Moved there, they stay: from 52.8, 237 wide, the dock is still over all of them.
+        assertEquals(past, creditsStartUnderDock(past to past + 237.0, height = 18.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = false)!!, 0.001)
+        // A frame a pixel off the dock's foot, at 2 pixels a point.
+        assertEquals(past, creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.5, gesture, mapWidth = 360.0, rightToLeft = false)!!, 0.001)
+        assertEquals(past, creditsStartUnderDock(115.0 to 352.0, height = 18.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = true)!!, 0.001)
+        // A dock 20 off the map's right, right to left: its curve ends 62.8 in.
+        val off = gesture.copy(x = 0.0)
+        assertEquals(20.0 + 28.0 * 1.52866483, creditsStartUnderDock(93.0 to 330.0, height = 18.0, foot = 608.0, off, mapWidth = 360.0, rightToLeft = true)!!, 0.001)
+    }
+
+    /**
+     * Wider than the dock's straight edge, 254.4 of its 340, as a longer credit with satellite imagery would be, they are
+     * centred on it, their ends as far into either curve. Below its foot, over it clear of the curve (42.8 over its
+     * foot), over part of their text only, beside a tablet's dock, or with nothing laid out yet, they are left be.
+     */
+    @Test
+    fun theCreditsKeepTheirStartWhereTheDocksCornerLeavesThemBe() {
+        val gesture = ScreenRect(x = 10.0, y = 484.0, width = 340.0, height = 124.0)
+        assertEquals(40.0, creditsStartUnderDock(8.0 to 288.0, height = 18.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = false)!!, 0.001)
+        assertEquals(40.0, creditsStartUnderDock(72.0 to 352.0, height = 18.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = true)!!, 0.001)
+        // 4 below its foot, as on the iPhone 17 Pro Max's 34 or a gesture bar of 24.
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 630.0, gesture, mapWidth = 360.0, rightToLeft = false))
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.0 - 43.0, gesture, mapWidth = 360.0, rightToLeft = false))
+        assertNotNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.0 - 42.0, gesture, mapWidth = 360.0, rightToLeft = false))
+        // Their top over the dock's: not wholly under it, wherever they start.
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.0, gesture.copy(y = 600.0, height = 8.0), mapWidth = 360.0, rightToLeft = false))
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.0, gesture.copy(x = 120.0), mapWidth = 360.0, rightToLeft = false))
+        val tablet = ScreenRect(x = 120.0, y = 1100.0, width = 560.0, height = 156.0)
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 1256.0, tablet, mapWidth = 800.0, rightToLeft = false))
+        assertNull(creditsStartUnderDock(null, height = 18.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = false))
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 0.0, foot = 608.0, gesture, mapWidth = 360.0, rightToLeft = false))
+        assertNull(creditsStartUnderDock(8.0 to 245.0, height = 18.0, foot = 608.0, null, mapWidth = 360.0, rightToLeft = false))
     }
 
     /**
