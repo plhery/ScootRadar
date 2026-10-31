@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui
 
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.Activity
 import android.app.Application
 import android.graphics.Bitmap
@@ -8,6 +9,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.InputDevice
 import android.view.MotionEvent
+import android.view.accessibility.AccessibilityWindowInfo
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -65,6 +67,7 @@ import kotlinx.coroutines.cancel
 import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -198,8 +201,9 @@ class RightClickTest {
     /**
      * Settings' calendar, a window of its own: a right click above it, below it and beside it (where its window leaves
      * room at its sides), outside what it shows, leaves it open, from a mouse and from a trackpad alike; a left click
-     * there closes it. On a phone the calendar's window is as tall as the calendar, so above and below it are outside
-     * the window, which is handed the press all the same.
+     * there closes it. The calendar, then its text input (shorter, so that a phone has room above and below its
+     * window); on a phone the calendar's window is as tall as what it shows, so that above and below it are outside the
+     * window, which is handed the press all the same. Places on the system's bars or keyboard are left out.
      */
     @Test
     fun aRightClickAroundTheCalendarLeavesItOpen() {
@@ -215,29 +219,74 @@ class RightClickTest {
         compose.waitUntil(5_000) { shown(date) }
         Thread.sleep(1_000)
         val calendar = isDialog()
-        for (clicker in Clicker.entries) {
+        val toTyping = hasContentDescription("Switch to text input mode")
+        // The trackpad first, whose right click closed it before X-AD22's fix.
+        for (clicker in listOf(Clicker.Trackpad, Clicker.Mouse)) {
             val name = clicker.name.lowercase()
             compose.onAllNodes(date).onFirst().performSemanticsAction(SemanticsActions.OnClick)
             compose.waitUntil(5_000) { shown(calendar) }
             Thread.sleep(1_000)
-            val shows = bounds(calendar)
-            val room = 30f
-            val spots = buildList {
-                if (shows.top > room * 2) add("above" to Offset(shows.center.x, shows.top - room))
-                if (shows.bottom < screenHeight() - room * 2) add("below" to Offset(shows.center.x, shows.bottom + room))
-                if (shows.left > room * 2) add("beside" to Offset(shows.left - room, shows.center.y))
+            var last: Pair<String, Offset>? = null
+            for (mode in listOf("calendar", "text input")) {
+                if (mode == "text input") {
+                    // The keyboard comes up, and the calendar's window goes up out of its way.
+                    compose.onAllNodes(toTyping).onFirst().performSemanticsAction(SemanticsActions.OnClick)
+                    Thread.sleep(1_000)
+                }
+                val shows = settled { bounds(calendar) }
+                val spots = around(shows)
+                Log.i("RightClickTest", "$clicker: the $mode at $shows on a ${device.displayWidth}x${device.displayHeight} screen: $spots")
+                screenshot("right-click-$name-calendar-${mode.replace(' ', '-')}")
+                for ((where, at) in spots) {
+                    click(at, MotionEvent.BUTTON_SECONDARY, clicker)
+                    Thread.sleep(500)
+                    assertTrue("the $mode open after a right click $where it at $at", shown(calendar))
+                    last = where to at
+                }
             }
-            Log.i("RightClickTest", "the calendar at $shows on a ${device.displayWidth}x${device.displayHeight} screen: $spots")
-            assertTrue("a place outside the calendar at $shows", spots.isNotEmpty())
-            screenshot("right-click-$name-calendar")
-            for ((where, at) in spots) {
-                click(at, MotionEvent.BUTTON_SECONDARY, clicker)
-                Thread.sleep(500)
-                assertTrue("the calendar open after a right click $where it at $at", shown(calendar))
-            }
-            click(spots.first().second, MotionEvent.BUTTON_PRIMARY, clicker)
-            assertTrue("the calendar closed after a left click ${spots.first().first} it", waitFor(5_000) { !shown(calendar) })
+            assertNotNull("a place outside the calendar", last)
+            val (where, at) = last!!
+            click(at, MotionEvent.BUTTON_PRIMARY, clicker)
+            assertTrue("the calendar closed after a left click $where it", waitFor(5_000) { !shown(calendar) })
             Thread.sleep(500)
+        }
+    }
+
+    /** What [read] gives once it gives the same twice, 300 ms apart, as a window moving for the keyboard comes to rest. */
+    private fun <T> settled(read: () -> T): T {
+        var last = read()
+        repeat(20) {
+            Thread.sleep(300)
+            val now = read()
+            if (now == last) return now
+            last = now
+        }
+        return last
+    }
+
+    /**
+     * Places 30 pixels above, below and beside [shows], where they are on the screen and on none of the system's windows
+     * (its bars, the keyboard), which would take the click.
+     */
+    private fun around(shows: Rect): List<Pair<String, Offset>> {
+        val room = 30f
+        val system = systemWindows()
+        return listOf(
+            "above" to Offset(shows.center.x, shows.top - room),
+            "below" to Offset(shows.center.x, shows.bottom + room),
+            "beside" to Offset(shows.left - room, shows.center.y),
+        ).filter { (_, at) ->
+            at.x >= 0 && at.y >= 0 && at.x < device.displayWidth && at.y < device.displayHeight && system.none { it.contains(at) }
+        }
+    }
+
+    /** Where the system's windows are on the screen: the status and navigation bars, the keyboard. */
+    private fun systemWindows(): List<Rect> {
+        val automation = instrumentation.uiAutomation
+        automation.serviceInfo = automation.serviceInfo.apply { flags = flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS }
+        return automation.windows.filter { it.type != AccessibilityWindowInfo.TYPE_APPLICATION }.map { window ->
+            val bounds = android.graphics.Rect().also(window::getBoundsInScreen)
+            Rect(bounds.left.toFloat(), bounds.top.toFloat(), bounds.right.toFloat(), bounds.bottom.toFloat())
         }
     }
 
@@ -262,12 +311,13 @@ class RightClickTest {
             val shows = bounds(menu)
             // The menu's window is the menu and its shadow's room, 56 points around it.
             val window = shows.inflate(56 * density)
+            val system = systemWindows()
             val past = listOf(
                 Offset(device.displayWidth / 2f, screenHeight() * 0.15f),
                 Offset(device.displayWidth / 2f, screenHeight() * 0.85f),
                 Offset(device.displayWidth * 0.1f, screenHeight() / 2f),
                 Offset(device.displayWidth * 0.9f, screenHeight() / 2f),
-            ).first { !window.inflate(20 * density).contains(it) }
+            ).first { at -> !window.inflate(20 * density).contains(at) && system.none { it.contains(at) } }
             val shadow = Offset(shows.center.x, if (shows.top - window.top > 20 * density) shows.top - 10 * density else shows.bottom + 10 * density)
             Log.i("RightClickTest", "the menu at $shows, its window about $window; past it at $past, in its shadow at $shadow")
             screenshot("right-click-$name-menu")
