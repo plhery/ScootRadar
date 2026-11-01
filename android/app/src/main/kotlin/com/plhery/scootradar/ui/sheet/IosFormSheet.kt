@@ -69,7 +69,7 @@ fun IosFormSheet(
 ) {
     // How far up the sheet is, from 0, under the window, to 1, in its place.
     val shown = remember { Animatable(0f) }
-    LaunchedEffect(isPresented) { shown.animateTo(if (isPresented) 1f else 0f, IosMotion.smooth(duration = 0.5).animation()) }
+    LaunchedEffect(isPresented) { shown.animateTo(if (isPresented) 1f else 0f, IosMotion.smooth(duration = 0.5).animation(SETTLED)) }
     val isDown by remember { derivedStateOf { shown.value == 0f } }
     if (!isPresented && isDown) return
 
@@ -80,7 +80,7 @@ fun IosFormSheet(
     val backProgress = remember { Animatable(0f) }
     // Let go, the sheet goes down as small as the gesture left it; shown again before it is down, it eases back to its
     // full size on its own spring as it comes up, not whole again in one frame (review-app-v finding 6).
-    LaunchedEffect(isPresented) { if (isPresented) backProgress.animateTo(0f, IosMotion.smooth(duration = 0.5).animation()) }
+    LaunchedEffect(isPresented) { if (isPresented) backProgress.animateTo(0f, IosMotion.smooth(duration = 0.5).animation(SETTLED)) }
     // Under Remove animations nothing moves until the gesture is let go, as Settings' pages hold (PLAN §10, X-AD02).
     val reduceMotion by rememberUpdatedState(LocalReduceMotion.current)
     PredictiveBackHandler(enabled = isPresented) { progress ->
@@ -165,6 +165,12 @@ fun IosFormSheet(
 }
 
 /** `.presentationSizing(.form)` on an iPad: 540 by 620 points. */
+/**
+ * How near its end, as a share of the way, the sheet's spring stops: under half a pixel of a Tablet's 2,560, where
+ * Compose's default 0.01 left the last 16 to 21 px of the way to one frame (UI-208).
+ */
+private const val SETTLED = 0.0002f
+
 private val FORM_WIDTH = 540.dp
 private val FORM_HEIGHT = 620.dp
 

@@ -548,6 +548,8 @@ private fun DockChrome(
             val dockGone by animateFloatAsState(searchGone, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
                 .atOnceUnderReduceMotion(searchGone)
             val laidOut = remember { LaidOutFrames() }
+            // Where the safe area ends, as a share of the window's height.
+            val safeFoot = if (maxHeight > 0.dp) (maxHeight - safeBottom) / maxHeight else 1f
             // The locate row stands 10 above the dock's card, and the search bar's notices end 8 above the locate
             // button: both laid out from where the card is in the same pass, as the iPhone has its padding by the
             // dock's height and its notices' HeightLimit in the frame the card changes. A height read back as state
@@ -606,7 +608,9 @@ private fun DockChrome(
                     Box(
                         Modifier
                             .fillMaxSize()
-                            .makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, 1f))
+                            // Toward the middle of the safe area's foot, where the iPhone's VStack ends in its
+                            // GeometryReader (`.bottom`), not the window's below a navigation bar.
+                            .makingWay(isSearching, { dockGone }, scale = 0.96f, TransformOrigin(0.5f, safeFoot))
                             .onGloballyPositioned { laidOut.dock = it },
                     ) {
                         ScooterControlDock(
@@ -646,13 +650,15 @@ private fun DockChrome(
                 val stack = topStack.measure(
                     Constraints(maxWidth = screenWidth, maxHeight = (buttonTop - 8.dp.roundToPx() + (below - chromeTop).roundToPx()).coerceAtLeast(0)),
                 )
-                // It shrinks toward the bottom trailing corner of the iPhone's VStack: the screen's bottom, and the
-                // trailing edge of the row's 560 and its 10 either side, in the middle of a wider screen.
+                // It shrinks toward the bottom trailing corner of the iPhone's VStack: the safe area's foot, where the
+                // VStack ends in its GeometryReader, and the trailing edge of the row's 560 and its 10 either side, in
+                // the middle of a wider screen.
                 val column = min(screenWidth, 580.dp.roundToPx())
                 val corner = (screenWidth - column) / 2f + trailing * column
+                val pivot = (screenHeight - safeBottom.roundToPx()).toFloat() / foot
                 layout(screenWidth, screenHeight) {
                     row.placeWithLayer(0, 0) {
-                        makeWay(isSearching, locateGone, scale = 0.92f, TransformOrigin(corner / screenWidth, screenHeight.toFloat() / foot))
+                        makeWay(isSearching, locateGone, scale = 0.92f, TransformOrigin(corner / screenWidth, pivot))
                     }
                     card.place(0, 0)
                     stack.place(0, 0)

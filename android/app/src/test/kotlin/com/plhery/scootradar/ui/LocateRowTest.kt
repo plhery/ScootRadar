@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui
 
 import android.content.Context
 import android.provider.Settings
+import android.view.View
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
@@ -25,6 +27,9 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.RecordingAnalytics
@@ -37,6 +42,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
+import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.dock.DockState
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import org.junit.After
@@ -134,6 +140,18 @@ class LocateRowTest {
     }
 
     /**
+     * UI-190 and UI-191 over a navigation bar 48 tall, as Phone_Min's: the locate button and the dock's card shrink
+     * toward the safe area's foot, where the iPhone's VStacks end in their GeometryReader (`.bottomTrailing`,
+     * `.bottom`), not toward the window's, which moved the card's foot 4 to 5 px on Phone_Min's film (app-al).
+     */
+    @Test
+    @Config(qualifiers = "w411dp-h891dp-mdpi")
+    fun overANavigationBarTheLocateButtonAndTheCardShrinkTowardTheSafeAreasFoot() {
+        show(navigationBar = 48)
+        makesWayToward(corner = 411f, foot = 891f - 48, card = true)
+    }
+
+    /**
      * The Fold folded on its side, whose dock is in the middle: the VStack is as wide as the row's 560 and the 10 either
      * side (a Spacer takes no width across a VStack), so the corner is 290 from the middle, at 775, not the screen's.
      * In a window this short the open search reaches down over where the button was, so the taps aren't tried.
@@ -200,13 +218,20 @@ class LocateRowTest {
     }
 
     /**
-     * Opens the search, and checks the locate button shrinks to 0.92 toward the screen's bottom at [corner] across, is
-     * hidden from TalkBack once gone, and with [taps] that it takes a tap only while it shows.
+     * Opens the search, and checks the locate button shrinks to 0.92 toward [foot] (the screen's bottom by default) at
+     * [corner] across, is hidden from TalkBack once gone, and with [taps] that it takes a tap only while it shows; with
+     * [card], that the dock's card shrinks to 0.96 toward the middle of [foot].
      */
-    private fun makesWayToward(corner: Float, taps: Boolean = true) {
-        val height = compose.onRoot().fetchSemanticsNode().boundsInRoot.height / compose.density.density
+    private fun makesWayToward(
+        corner: Float,
+        foot: Float = compose.onRoot().fetchSemanticsNode().boundsInRoot.height / compose.density.density,
+        taps: Boolean = true,
+        card: Boolean = false,
+    ) {
         val button = compose.onNode(nearMe)
+        val dock = compose.onNodeWithTag(DOCK_TAG)
         val rest = drawn(button)
+        val dockRest = drawn(dock)
         val middle = Offset(rest.center.x * compose.density.density, rest.center.y * compose.density.density)
         if (taps) {
             compose.onRoot().performTouchInput { click(middle) }
@@ -216,13 +241,14 @@ class LocateRowTest {
 
         compose.mainClock.autoAdvance = false
         compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
-        val going = List(30) {
+        val frames = List(30) {
             compose.mainClock.advanceTimeByFrame()
             compose.waitForIdle()
-            drawn(button)
+            drawn(button) to drawn(dock)
         }
         compose.mainClock.autoAdvance = true
         compose.waitForIdle()
+        val going = frames.map { it.first }
         val scales = going.map { it.width / rest.width }
         assertTrue("the button's scales $scales", scales.count { it < 0.995f && it > 0.925f } >= 3)
         assertEquals(0.92f, scales.last(), 0.002f)
@@ -230,7 +256,17 @@ class LocateRowTest {
             val scale = it.width / rest.width
             // Each edge as far from the corner as it was, times the scale.
             assertEquals("frame $frame's left of $going", corner - scale * (corner - rest.left), it.left, 0.5f)
-            assertEquals("frame $frame's foot of $going", height - scale * (height - rest.bottom), it.bottom, 0.5f)
+            assertEquals("frame $frame's foot of $going", foot - scale * (foot - rest.bottom), it.bottom, 0.5f)
+        }
+        if (card) {
+            val cards = frames.map { it.second }
+            val cardScales = cards.map { it.width / dockRest.width }
+            assertTrue("the card's scales $cardScales", cardScales.count { it < 0.995f && it > 0.965f } >= 3)
+            assertEquals(0.96f, cardScales.last(), 0.002f)
+            cards.forEachIndexed { frame, it ->
+                val scale = it.width / dockRest.width
+                assertEquals("frame $frame's card foot of $cards", foot - scale * (foot - dockRest.bottom), it.bottom, 0.5f)
+            }
         }
         button.assert(hasAnyAncestor(SemanticsMatcher.keyIsDefined(SemanticsProperties.HideFromAccessibility)))
         if (taps) {
@@ -271,11 +307,20 @@ class LocateRowTest {
 
     private fun frame(rect: ScreenRect?) = checkNotNull(rect)
 
-    /** The screen on the list of providers, with the map's stand-in reading the chrome's frames. */
-    private fun show(direction: LayoutDirection = LayoutDirection.Ltr, analytics: RecordingAnalytics? = null): ScooterMapController {
+    /**
+     * The screen on the list of providers, with the map's stand-in reading the chrome's frames; with [navigationBar], a
+     * status bar 24 tall and a 3-button navigation bar that tall, as Phone_Min has.
+     */
+    private fun show(
+        direction: LayoutDirection = LayoutDirection.Ltr,
+        analytics: RecordingAnalytics? = null,
+        navigationBar: Int = 0,
+    ): ScooterMapController {
         val clock = TestClock()
         val model = DockState.Summary.make(controllers, clock)
+        lateinit var view: View
         compose.setContent {
+            view = LocalView.current
             CompositionLocalProvider(LocalClock provides { clock.now }, LocalLayoutDirection provides direction) {
                 ScooterMapScreen(
                     controller = model,
@@ -289,6 +334,16 @@ class LocateRowTest {
             }
         }
         compose.waitForIdle()
+        if (navigationBar > 0) {
+            // mdpi: pixels are dp.
+            val insets = WindowInsetsCompat.Builder()
+                .setInsets(WindowInsetsCompat.Type.statusBars(), Insets.of(0, 24, 0, 0))
+                .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, navigationBar))
+                .setInsets(WindowInsetsCompat.Type.tappableElement(), Insets.of(0, 24, 0, navigationBar))
+                .build()
+            compose.runOnUiThread { ViewCompat.dispatchApplyWindowInsets(view, insets) }
+            compose.waitForIdle()
+        }
         assertEquals(ScooterChromeLayout.Dock, frames.layout)
         return model
     }

@@ -198,7 +198,9 @@ private val GRABBER_OVERHANG = 10.dp
 /**
  * What the card holds, inside [padding]: all of the content, which scrolls when taller than [maximumContentHeight].
  * A change of kind springs the card to its new height while the old content fades out and the new fades in; under
- * Reduce Motion the new one is there at once.
+ * Reduce Motion the new one is there at once. The iPhone animates the dock by its kind alone (ScooterControls.swift:
+ * 200), so within a kind, as the summary gains its status row, the card is its new height in the frame it changes;
+ * a walk's note grows by its own animation (UI-202).
  */
 @Composable
 private fun DockCards(
@@ -220,8 +222,9 @@ private fun DockCards(
         contentKey = { it.kind },
         contentAlignment = Alignment.TopStart,
         transitionSpec = {
-            fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using
-                SizeTransform(clip = false) { _, _ -> spring.animation() }
+            // Within a kind no size animation, not even a snap, which would leave the card its old height for a frame.
+            val resize = if (initialState.kind == targetState.kind) null else SizeTransform(clip = false) { _, _ -> spring.animation() }
+            fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using resize
         },
         label = "dock",
     ) { shown ->
