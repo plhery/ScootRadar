@@ -55,3 +55,27 @@ describe('apple-app-site-association', () => {
     expect(swift).toContain('"scootradar.com"');
   });
 });
+
+// The Android app's side of the same links (App Links): the verified intent filter in
+// android/app/src/main/AndroidManifest.xml and android/core/src/main/kotlin/com/plhery/scootradar/core/model/ScooterMapLink.kt.
+// Android claims "/" whole; the app hands a "/" without an origin on to the browser, as the association leaves it on the web.
+describe('the Android app’s links', () => {
+  const manifest = readFileSync('android/app/src/main/AndroidManifest.xml', 'utf8');
+  const kotlin = readFileSync('android/core/src/main/kotlin/com/plhery/scootradar/core/model/ScooterMapLink.kt', 'utf8');
+  const filter = /<intent-filter android:autoVerify="true">([\s\S]*?)<\/intent-filter>/.exec(manifest)?.[1] ?? '';
+  const claimed = (attribute: string) =>
+    [...filter.matchAll(new RegExp(`android:${attribute}="([^"]+)"`, 'g'))].map(match => match[1]);
+  const listed = (pattern: RegExp) => pattern.exec(kotlin)?.[1].match(/"[^"]+"/g)?.map(name => JSON.parse(name));
+
+  it('claims the paths the association opens, on the hosts the app reads', () => {
+    expect(claimed('scheme')).toEqual(['https']);
+    expect(claimed('path')).toEqual(components.filter(component => !component.exclude).map(component => component['/']));
+    // www besides, unlike the iPhone's entitlement: it opens the app only once www serves assetlinks.json itself.
+    expect(claimed('host')).toEqual(listed(/val hosts: Set<String> = setOf\(([^)]+)\)/));
+    expect(claimed('host')).toContain('scootradar.com');
+  });
+
+  it('matches what the app reads from a link', () => {
+    expect(listed(/val parameters: List<String> = listOf\(([^)]+)\)/)).toEqual([...CLIENT_PARAMETERS]);
+  });
+});
