@@ -791,6 +791,44 @@
       "zones": 2848
     },
     {
+      "id": "halmstad",
+      "place": "Halmstad",
+      "country": "SE",
+      "authority": "Halmstads kommun",
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Halmstads kommun, \"Elsparkcyklar\" (updated 17 June 2026): the kommune's \"sparkeringar\", places it has laid out where it would rather e-scooters were parked (Stora torg, Norre port, Lilla torg, the city library, Resecentrum, the university and others), and the places where a rented e-scooter cannot be returned",
+        "url": "https://www.halmstad.se/trafikochinfrastruktur/elsparkcyklar.7418.html"
+      },
+      "map": {
+        "title": "Halmstads kommun, map layers \"Sparkering\" and \"Förbudsområde\" (elsparkcykel) on karta.halmstad.se, which its page embeds",
+        "url": "https://karta.halmstad.se/?m=ext&x=111646.98712731568&y=6283619.175326102&z=4.823529953950333&l=58,100,9eojsy,sh4kzk"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geojson",
+          "url": "https://karta.halmstad.se/geoserver/tf/ows?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:3008&typeNames=tf:elsparkcykel_sparkering",
+          "grid": "EPSG:3008",
+          "nameField": "notering"
+        },
+        {
+          "kind": "noParking",
+          "format": "geojson",
+          "url": "https://karta.halmstad.se/geoserver/tf/ows?service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json&srsName=EPSG:3008&typeNames=tf:elsparkcykel_forbudsomr",
+          "grid": "EPSG:3008",
+          "nameField": "notering"
+        }
+      ],
+      "bounds": {
+        "south": 56.657391,
+        "west": 12.812084,
+        "north": 56.68236,
+        "east": 12.899298
+      },
+      "zones": 26
+    },
+    {
       "id": "hamburg",
       "place": "Hamburg",
       "country": "DE",

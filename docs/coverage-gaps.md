@@ -905,6 +905,10 @@ banned shared scooters, and feeds that were empty when checked.
     county on 30 October 2026, "vevanordning", from the words of Helsingborg's
     title, finds only Helsingborg's, and "elsparkcykel" none. Göteborg's ban
     inside Vallgraven, for one, has no rule there to draw from.
+  - Halmstad's zones are drawn since 1 November 2026, from the kommune's own
+    map: its 23 sparkeringar and the 3 areas where a ride cannot end. Its
+    Centralstationen, which the kommune's page lists too, is not in the
+    layer, and its 6 km/h on pedestrian streets has no layer.
   - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
 - **Latvia** ([guide](latvian-scooter-feeds.md#known-gaps)): Ride Mobility
   in Rīga is covered.

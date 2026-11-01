@@ -955,6 +955,24 @@ its source and the date it was read.
   night ban (`data/rental-curfews.json`), not a zone. The map states no
   licence, only that it is for information; the legend credits the City and
   links the page.
+- **Halmstad** (read 1 November 2026): Halmstads kommun's 23 "sparkeringar",
+  the places it has laid out where it would rather e-scooters were parked
+  (Stora torg, Norre port, Lilla torg, the city library, Resecentrum, the
+  university and bus stops), and the 3 areas where a rented e-scooter cannot
+  be returned (along the Nissan in the centre, in front of Halmstad Arena and
+  at the skatepark), from the layers `tf:elsparkcykel_sparkering` and
+  `tf:elsparkcykel_forbudsomr` of the kommune's GeoServer, which its
+  [map](https://karta.halmstad.se/?m=ext&x=111646.98712731568&y=6283619.175326102&z=4.823529953950333&l=58,100,9eojsy,sh4kzk)
+  draws and its
+  [e-scooter page](https://www.halmstad.se/trafikochinfrastruktur/elsparkcyklar.7418.html)
+  (updated 17 June 2026) embeds. They are read in the layers' own grid,
+  SWEREF 99 13 30, since the service rounds degrees to four places, about
+  6 m. One sparkering has no shape and is left out; the Centralstationen,
+  which the page also lists as a place a ride cannot end, is not in the
+  layer, nor drawn. The bike racks the page lets e-scooters use are not
+  drawn, as Västerås's are not. No licence is stated; drawn credited
+  "Halmstads kommun", under the rule of 28 October 2026. The legend links
+  the kommune's page.
 - **Hamburg** (read 30 October 2026; the iOS app downloads them, and the
   website draws them since 30 October 2026): the Freie und Hansestadt Hamburg's 3,043 no-parking zones for
   e-scooters (3,589 parts; one has no shape and is left out, and so are the

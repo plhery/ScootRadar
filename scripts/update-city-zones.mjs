@@ -207,11 +207,18 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * public policy map (populusFeatures), and one of format geopdf the point symbols of a
  * georeferenced PDF's map (geopdfFeatures).
  */
-async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
+async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, grid, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
   const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'zip' ? await zipFeatures(url)
     : format === 'nivel' ? nivelFeatures(await getJson(url), url) : format === 'populus' ? await populusFeatures(url, policy)
       : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
+  // A layer in a grid's metres, which a service gives to the millimetre where its degrees are rounded to metres.
+  if (grid) {
+    if (!GRIDS[grid] || !body.crs?.properties?.name?.endsWith(grid.replace(':', '::'))) throw new Error(`${url} answered no ${grid}`);
+    const toLngLat = coordinates => typeof coordinates[0] === 'number' ? gridToLngLat(coordinates[0], coordinates[1], GRIDS[grid])
+      : coordinates.map(toLngLat);
+    body.features.forEach(({ geometry }) => { if (geometry) geometry.coordinates = toLngLat(geometry.coordinates); });
+  }
   // A service that pages its answer is asked for all of it at once.
   if ((Number.isFinite(body.numberMatched) && body.numberMatched !== body.features.length) || body.links?.some(link => link.rel === 'next')) {
     throw new Error(`${url} answered ${body.features.length} of its features`);
@@ -524,9 +531,10 @@ function nestedPolygons(rings) {
 
 /**
  * Grids a city's map may draw in, each a transverse Mercator projection of GRS 80: SWEREF 99 16 30,
- * Norrköping's, and SWEREF 99 TM, the national one, Transportstyrelsen's register's.
+ * Norrköping's, SWEREF 99 13 30, Halmstad's, and SWEREF 99 TM, the national one, Transportstyrelsen's register's.
  */
 const GRIDS = { 'EPSG:3010': { meridian: 16.5, scale: 1, falseEasting: 150000 },
+  'EPSG:3008': { meridian: 13.5, scale: 1, falseEasting: 150000 },
   'EPSG:3006': { meridian: 15, scale: 0.9996, falseEasting: 500000 } };
 
 /** A grid's easting and northing as [lng, lat], by Lantmäteriet's Gauss–Krüger formulas. */

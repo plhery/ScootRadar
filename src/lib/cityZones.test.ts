@@ -120,6 +120,8 @@ const WIEN_INNERE_STADT = { south: 48.203, west: 16.36, north: 48.212, east: 16.
 const SAKAE = { south: 35.16, west: 136.895, north: 35.178, east: 136.922 };
 // Parkchester, in the East Bronx.
 const PARKCHESTER = { south: 40.828, west: -73.868, north: 40.836, east: -73.852 };
+// Halmstad's centre, from Stora torg and the Nissan's banks to Resecentrum.
+const HALMSTAD_CENTRE = { south: 56.668, west: 12.85, north: 56.68, east: 12.87 };
 // Stavanger's centre, from Torget and the Domkirken to Nytorget and Breiavatnet.
 const STAVANGER_SENTRUM = { south: 58.966, west: 5.722, north: 58.975, east: 5.742 };
 // Downtown Long Beach, from the Aquarium and Shoreline Village to the Convention Center and the beach path.
@@ -169,7 +171,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'dallas', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'longbeach', 'milwaukee', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'nashville', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'saltlakecity', 'sanantonio', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stavanger', 'stockholm', 'tampa', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'dallas', 'halmstad', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'longbeach', 'milwaukee', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'nashville', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'saltlakecity', 'sanantonio', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stavanger', 'stockholm', 'tampa', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -1044,6 +1046,30 @@ describe('the cities\' zones', () => {
     await loadCityZones(stavanger);
     const shown = ruleZonesInView({ bounds: STAVANGER_SENTRUM, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws Halmstad's sparkeringar and the places where a ride cannot end, from the kommune's map, placed by its own grid", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const halmstad = ZONE_CITIES.find(city => city.id === 'halmstad')!;
+    expect(halmstad.authority).toBe('Halmstads kommun');
+    expect(halmstad.timeZone).toBe('Europe/Stockholm');
+    // 23 of the layer's 24 places (one has no shape) and its 3 areas, read in SWEREF 99 13 30.
+    const { default: file } = await CITY_ZONE_FILES.halmstad();
+    const counts = Object.fromEntries(['parking', 'noParking'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 23, noParking: 3 });
+    expect(file.zones.length).toBe(26);
+    const library = file.zones.find(zone => zone.name === 'Stadsbiblioteket')!.ring!;
+    const [lat, lng] = [library.reduce((sum, [y]) => sum + y, 0) / library.length, library.reduce((sum, [, x]) => sum + x, 0) / library.length];
+    expect(Math.abs(lat - 56.6747) * 110_540).toBeLessThan(2);
+    expect(Math.abs(lng - 12.8621) * 61_300).toBeLessThan(2);
+    // The Nissan's banks in the centre end no ride; the Arena's place is just outside its area.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    expect(at(56.67426, 12.85463)).toEqual(['Nissan']);
+    expect(at(56.67407, 12.88802)).toEqual(['Arena']);
+    expect(at(56.673783, 12.888751)).toEqual(['Arenan']);
+    await loadCityZones(halmstad);
+    const shown = ruleZonesInView({ bounds: HALMSTAD_CENTRE, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking']));
   });
 
   it("draws Long Beach's no-parking, slow and no-riding areas and its beach path, from Populus's public policy map the city links, but not the operators' drop zones", async () => {
