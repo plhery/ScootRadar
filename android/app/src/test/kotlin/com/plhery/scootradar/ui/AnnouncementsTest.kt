@@ -77,25 +77,25 @@ class AnnouncementsTest {
             ScooterMapScreen(controller = model, map = { AndroidView(::View, Modifier.fillMaxSize()) }, glassBlurs = false)
         }
         compose.waitForIdle()
-        assertEquals(emptyList<String>(), talkBack.heard())
+        assertEquals(emptyList<String>(), talkBack.sent())
 
         compose.runOnIdle { model.selectScooter(target.id) }
         compose.waitForIdle()
         val card = model.dockAnnouncement
         assertTrue("$card", card != null && card.startsWith("Lime scooter"))
-        assertEquals(listOf(card), talkBack.heard())
+        assertEquals(listOf(card), talkBack.sent())
         // Said without a pane: the window keeps the app's title.
         assertEquals(0, panes().size)
 
         // Closed, nothing is said.
         compose.runOnIdle { model.clearSelection() }
         compose.waitForIdle()
-        assertEquals(listOf(card), talkBack.heard())
+        assertEquals(listOf(card), talkBack.sent())
 
         // Opened again, it is heard again, as VoiceOver hears each card.
         compose.runOnIdle { model.selectScooter(target.id) }
         compose.waitForIdle()
-        assertEquals(listOf(card, card), talkBack.heard())
+        assertEquals(listOf(card, card), talkBack.sent())
     }
 
     @Test
@@ -111,13 +111,13 @@ class AnnouncementsTest {
         say(Announcement("Finding the way…", serial = 1))
         say(Announcement("Finding the way…", serial = 2))
         say(Announcement("Finding the way…", serial = 3))
-        assertEquals(List(3) { "Finding the way…" }, talkBack.heard())
+        assertEquals(List(3) { "Finding the way…" }, talkBack.sent())
 
         // Withdrawn, nothing is said; the same words said after are heard again.
         say(null)
-        assertEquals(3, talkBack.heard().size)
+        assertEquals(3, talkBack.sent().size)
         say(Announcement("Finding the way…", serial = 4))
-        assertEquals(List(4) { "Finding the way…" }, talkBack.heard())
+        assertEquals(List(4) { "Finding the way…" }, talkBack.sent())
         assertEquals(0, panes().size)
     }
 }

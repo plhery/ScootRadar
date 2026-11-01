@@ -14,6 +14,7 @@ import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.core.model.WalkRoute
 import com.plhery.scootradar.core.model.localized
 import kotlin.math.abs
 import kotlin.math.hypot
@@ -211,8 +212,9 @@ class ScooterMarkerAccessibility(
         for (dot in come) {
             val scooter = dot.mark.scooter
             for ((id, before) in gone) {
-                // A ten-thousandth of a degree of latitude is 11 m: most are ruled out before the distance is measured.
-                if (before.provider != scooter.provider || abs(before.latitude - scooter.latitude) > 0.0001) continue
+                // Two ten-thousandths of a degree of latitude are 22 m: most are ruled out before the distance is
+                // measured.
+                if (before.provider != scooter.provider || abs(before.latitude - scooter.latitude) > 0.0002) continue
                 val metres = before.distance(from = scooter.coordinate)
                 if (metres <= RENAMED_WITHIN) pairs += Triple(dot.key, id, metres)
             }
@@ -314,7 +316,10 @@ class ScooterMarkerAccessibility(
     private companion object {
         const val BUTTON = "android.widget.Button"
 
-        /** How far a scooter named anew may be from where it was, in metres. */
-        const val RENAMED_WITHIN = 5.0
+        /**
+         * How far a scooter named anew may be from where it was, in metres: as far as a walk follows one to its new
+         * name, with the card it holds (review-lead-1nov K5).
+         */
+        const val RENAMED_WITHIN = WalkRoute.rebindDistance
     }
 }

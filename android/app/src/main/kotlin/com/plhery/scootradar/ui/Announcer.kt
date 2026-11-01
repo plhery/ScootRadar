@@ -21,7 +21,7 @@ data class Announcement(val text: String, val serial: Int = 0)
  * each new one, the same words included. Once said it isn't taken back, as VoiceOver's isn't, and nothing is said
  * while TalkBack is off.
  *
- * An announcement, though Android's calls for one are deprecated in API 37 (PLAN §10, app-ai F9). A pane's title
+ * An announcement, though Android's calls for one are deprecated since API 36 (PLAN §10, app-ai F9). A pane's title
  * becomes the window's title for TalkBack 16.2, which then says "ScootRadar" at the next window change, and files
  * the focus under the announcement, where it isn't found again as a sheet or a menu closes (review-app-ai R2). A
  * live region is a node TalkBack's swipes stop on.

@@ -174,14 +174,14 @@ class SearchAccessibilityTest {
         isSearching = true
         show()
         compose.mainClock.autoAdvance = false
-        assertEquals(emptyList<String>(), talkBack.heard())
+        assertEquals(emptyList<String>(), talkBack.sent())
 
         type("Bahnhof")
-        assertEquals(emptyList<String>(), talkBack.heard())
+        assertEquals(emptyList<String>(), talkBack.sent())
         compose.mainClock.advanceTimeBy(1_000)
         compose.waitForIdle()
         val said = mutableListOf("3 address suggestions")
-        assertEquals(said, talkBack.heard())
+        assertEquals(said, talkBack.sent())
 
         for ((query, words) in listOf(
             "Zürich HB" to "One address suggestion",
@@ -192,13 +192,13 @@ class SearchAccessibilityTest {
             compose.mainClock.advanceTimeBy(1_000)
             compose.waitForIdle()
             said += words
-            assertEquals(query, said, talkBack.heard())
+            assertEquals(query, said, talkBack.sent())
         }
 
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextClearance()
         compose.mainClock.advanceTimeBy(1_000)
         compose.waitForIdle()
-        assertEquals(said, talkBack.heard())
+        assertEquals(said, talkBack.sent())
     }
 
     private fun type(query: String) {

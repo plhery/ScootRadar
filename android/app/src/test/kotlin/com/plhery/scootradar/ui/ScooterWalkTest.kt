@@ -102,17 +102,17 @@ class ScooterWalkTest {
         val talkBack = TalkBackAnnouncements()
         compose.setContent { ScootTheme(dark = false, reduceMotion = true) { ScooterControlDock(model) } }
         compose.waitForIdle()
-        assertEquals(emptyList<String>(), talkBack.heard())
+        assertEquals(emptyList<String>(), talkBack.sent())
 
         model.selectScooter(target.id)
         compose.waitForIdle()
         val card = model.dockAnnouncement ?: return fail("Expected the card's announcement")
         assertTrue(card, card.startsWith("Lime scooter"))
-        assertEquals(listOf(card), talkBack.heard())
+        assertEquals(listOf(card), talkBack.sent())
 
         model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
         compose.waitForIdle()
-        assertEquals(listOf(card, localized("Finding the way…")), talkBack.heard())
+        assertEquals(listOf(card, localized("Finding the way…")), talkBack.sent())
     }
 
     /** The open card's Directions button follows the walk without the card being drawn anew. */

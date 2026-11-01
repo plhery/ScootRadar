@@ -1,10 +1,16 @@
 package com.plhery.scootradar.ui
 
 import android.content.Context
+import android.graphics.Rect
+import android.os.Bundle
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.view.accessibility.AccessibilityNodeInfo
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.semantics.SemanticsNode
@@ -15,12 +21,16 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import androidx.customview.widget.ExploreByTouchHelper
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
@@ -42,6 +52,7 @@ import com.plhery.scootradar.ui.sheet.POPOVER_TAG
 import com.plhery.scootradar.ui.theme.PHONE
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -64,7 +75,7 @@ import java.util.TimeZone
 @OptIn(ExperimentalTestApi::class)
 class FocusReturnTest {
     @get:Rule
-    val compose = createComposeRule()
+    val compose = createAndroidComposeRule<ComponentActivity>()
 
     private val controllers = TestControllers()
     private val locale = Locale.getDefault()
@@ -95,10 +106,15 @@ class FocusReturnTest {
         TimeZone.setDefault(timeZone)
     }
 
-    private fun show(model: ScooterMapController, clock: TestClock = TestClock(), addressSearch: AddressSearchAPIClient? = null) {
+    private fun show(
+        model: ScooterMapController,
+        clock: TestClock = TestClock(),
+        addressSearch: AddressSearchAPIClient? = null,
+        map: @Composable (dark: Boolean) -> Unit = {},
+    ) {
         compose.setContent {
             CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScooterMapScreen(controller = model, map = {}, glassBlurs = false, addressSearch = addressSearch)
+                ScooterMapScreen(controller = model, map = map, glassBlurs = false, addressSearch = addressSearch)
             }
         }
         compose.waitForIdle()
@@ -115,16 +131,27 @@ class FocusReturnTest {
      */
     private fun SemanticsNodeInteraction.focusedByTalkBack(): SemanticsNodeInteraction {
         val node = fetchSemanticsNode()
+        focusedByTalkBack(node.view, node.id)
+        return this
+    }
+
+    /** TalkBack's focus moves to the virtual view [id] of [view], as a swipe moves it. */
+    private fun focusedByTalkBack(view: View, id: Int) {
         compose.runOnIdle {
-            focused?.let { (view, id) ->
-                if (view != node.view && view.isAttachedToWindow) {
-                    view.accessibilityNodeProvider.performAction(id, AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS, null)
+            focused?.let { (was, wasID) ->
+                if (was != view && was.isAttachedToWindow) {
+                    was.accessibilityNodeProvider.performAction(wasID, AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS, null)
                 }
             }
-            assertTrue(node.view.accessibilityNodeProvider.performAction(node.id, AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null))
-            focused = node.view to node.id
+            assertTrue(view.accessibilityNodeProvider.performAction(id, AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null))
+            focused = view to id
         }
-        return this
+    }
+
+    /** Android's Back. */
+    private fun back() {
+        compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        compose.waitForIdle()
     }
 
     /** TalkBack's double tap on the node it focuses. */
@@ -244,6 +271,62 @@ class FocusReturnTest {
         compose.onNode(hasText(localized("Cancel")) and hasClickAction()).focusedByTalkBack().doubleTapped()
         compose.onNodeWithTag(SEARCH_FIELD_TAG).assertDoesNotExist()
         assertTrue("TalkBack's focus on the bar, the search cancelled", bar.isFocusedByTalkBack())
+    }
+
+    /**
+     * Beside a large window's panel the map is heard while searching: Back closes the search with TalkBack's focus on
+     * a marker, or on the locate button, and the focus isn't taken to the bar (review-lead-1nov K1). Where it stays
+     * isn't asked here: Robolectric's window is never shown, and its next traversal clears the focus whatever it is on
+     * (ViewRootImpl.performTraversals, as a window hides), where a device's keeps it.
+     */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun besideThePanelBackLeavesTheFocusOnTheMap() {
+        var map: OneMarkerMap? = null
+        show(controllers.make(EmptyScooterAPI)) {
+            AndroidView(factory = { context -> OneMarkerMap(context).also { map = it } }, modifier = Modifier.fillMaxSize())
+        }
+        val bar = button(localized("Search city or address"))
+        bar.focusedByTalkBack().doubleTapped()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertExists()
+        val marker = checkNotNull(map)
+        focusedByTalkBack(marker, OneMarkerMap.MARKER)
+        back()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertDoesNotExist()
+        assertFalse("TalkBack's focus taken from a marker to the bar", bar.isFocusedByTalkBack())
+
+        bar.focusedByTalkBack().doubleTapped()
+        // Near me, as the locate button is before the first fix.
+        button(localized("Near me")).focusedByTalkBack()
+        back()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertDoesNotExist()
+        assertFalse("TalkBack's focus taken from the locate button to the bar", bar.isFocusedByTalkBack())
+    }
+}
+
+/** A map with one marker, which it draws and TalkBack hears as a node of its own, as the map's markers are. */
+private class OneMarkerMap(context: Context) : View(context) {
+    val helper = object : ExploreByTouchHelper(this) {
+        override fun getVirtualViewAt(x: Float, y: Float): Int = MARKER
+
+        override fun getVisibleVirtualViews(virtualViewIds: MutableList<Int>) {
+            virtualViewIds += MARKER
+        }
+
+        override fun onPopulateNodeForVirtualView(virtualViewId: Int, node: AccessibilityNodeInfoCompat) {
+            node.contentDescription = "Bird scooter"
+            node.setBoundsInParent(Rect(900, 400, 944, 444))
+        }
+
+        override fun onPerformActionForVirtualView(virtualViewId: Int, action: Int, arguments: Bundle?): Boolean = false
+    }
+
+    init {
+        ViewCompat.setAccessibilityDelegate(this, helper)
+    }
+
+    companion object {
+        const val MARKER = 0
     }
 }
 

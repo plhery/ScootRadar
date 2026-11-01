@@ -211,6 +211,48 @@ class ScooterMarkerAccessibilityTest {
     }
 
     @Test
+    fun theNearestOfTwoScootersComeKeepsTheViewOfOneGoneAsFarAsAWalkFollowsIt() {
+        // A walk follows a scooter named anew up to 15 m away (WalkRoute.rebindDistance), and its marker keeps its view
+        // as far. Of two come near one gone, the nearer keeps it, even listed after the other.
+        val map = FlatMarkerMap()
+        val here = map.at(195.0, 300.0)
+        val there = map.at(195.0, 600.0)
+        scene.reconcile(listOf(scooter("one", "bird", at = here), scooter("two", "bird", at = there)), revision = 1)
+        val accessibility = helper(map)
+        val before = accessibility.virtualViews()
+        assertEquals(2, before.size)
+
+        // A metre is about 0.000009 of a degree of latitude: 8 m north and 4 m south of the first, 16 m north of the
+        // second.
+        scene.reconcile(
+            listOf(
+                scooter("north", "bird", battery = 41, latitude = here.latitude + 0.000072, longitude = here.longitude),
+                scooter("south", "bird", battery = 62, latitude = here.latitude - 0.000036, longitude = here.longitude),
+                scooter("far", "bird", latitude = there.latitude + 0.000144, longitude = there.longitude),
+            ),
+            revision = 2,
+        )
+        accessibility.refresh()
+        val after = accessibility.virtualViews()
+        assertEquals(3, after.size)
+        val south = MarkerDescriptions.of(scene.mark("bird:south")!!)
+        assertEquals(listOfNotNull(south.label, south.value).joinToString(", "), accessibility.node(before[0]).contentDescription)
+        assertTrue("16 m from where it was: another scooter", before[1] !in after)
+
+        // 8 m from where it was, the walk's scooter keeps its view.
+        scene.reconcile(
+            listOf(
+                scooter("south-again", "bird", battery = 62, latitude = here.latitude - 0.000036 + 0.000072, longitude = here.longitude),
+                scooter("north", "bird", battery = 41, latitude = here.latitude + 0.000072, longitude = here.longitude),
+                scooter("far", "bird", latitude = there.latitude + 0.000144, longitude = there.longitude),
+            ),
+            revision = 3,
+        )
+        accessibility.refresh()
+        assertEquals(after.sorted(), accessibility.virtualViews().sorted())
+    }
+
+    @Test
     fun aFingerExploringTheMapFindsWhatATapThereTakes() {
         val map = FlatMarkerMap()
         val bayPlace = map.at(300.0, 600.0)
