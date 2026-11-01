@@ -104,6 +104,12 @@ describe('published scooter parking', () => {
       ['YRY:Station:station123193', 'BPZ - få opp en blir parking her'], ['YRY:Station:bay', 'BPZ - Torget']]
       .map(([id, text]) => ({ ...station, station_id: id, name: [{ language: 'no', text }], lat: 59.0535, lon: 10.0768 }));
     expect(normalizeParkingLocations(larvik, ryde, { data: { stations } }, {}).map(location => location.name)).toEqual(['BPZ - Torget']);
+    // Asker's "åpne", made with Larvik's, stands on a football pitch; its "parkering " is a place.
+    const asker = REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === 'ryde_no_asker')!;
+    const askerStations = [['YRY:Station:station104668', 'åpne'], ['YRY:Station:station105338', 'parkering ']]
+      .map(([id, text]) => ({ ...station, station_id: id, name: [{ language: 'no', text }], lat: 59.8136, lon: 10.4283 }));
+    expect(normalizeParkingLocations(asker, ryde, { data: { stations: askerStations } }, {}).map(location => location.name))
+      .toEqual(['parkering']);
   });
   it("makes every bay where rides must end of a feed whose rule is the system's, as Bolt's in Liverpool", () => {
     const liverpool = REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === 'bolt_gb_liverpool')!;

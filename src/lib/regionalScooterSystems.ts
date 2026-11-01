@@ -127,7 +127,7 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    * Stations of the feed that are its operator's tests, not places to park, left off the map:
    * Ryde's three in Larvik are "rush", "åpne" and "BPZ - få opp en blir parking her" ("get one
    * up, it will be parking here"), a few metres across, where its other towns' stations name a
-   * place (1 Nov 2026).
+   * place (1 Nov 2026). Asker's "åpne", made with Larvik's, stands on a football pitch.
    */
   testStations?: string[];
   /**
