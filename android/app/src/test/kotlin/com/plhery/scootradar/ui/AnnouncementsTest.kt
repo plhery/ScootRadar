@@ -11,11 +11,16 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.FakeLocationManager
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestControllers
+import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.dockAnnouncement
+import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.zurichRegion
 import org.junit.After
@@ -96,6 +101,31 @@ class AnnouncementsTest {
         compose.runOnIdle { model.selectScooter(target.id) }
         compose.waitForIdle()
         assertEquals(listOf(card, card), talkBack.sent())
+    }
+
+    /**
+     * A walk with no location brings the location card and the dock's "Couldn’t find your location." in one change: the
+     * card is said first, as it comes, and the dock's words a recomposition after they change (review-lead-1nov-c 2).
+     */
+    @Test
+    fun aWalkWithNoLocationSaysTheCardBeforeTheDock() {
+        val target = scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(target)))
+        val model = controllers.make(api, locationManager = FakeLocationManager(ScooterAuthorizationStatus.Denied))
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        compose.setContent {
+            ScooterMapScreen(controller = model, map = { AndroidView(::View, Modifier.fillMaxSize()) }, glassBlurs = false)
+        }
+        compose.runOnIdle { model.selectScooter(target.id) }
+        compose.waitForIdle()
+        val before = talkBack.sent().size
+
+        compose.runOnIdle { model.showWalkingRoute(ScooterWalkTarget.Scooter(target)) }
+        compose.waitForIdle()
+        val said = talkBack.sent().drop(before)
+        val card = ScooterLocationIssue.Denied.let { listOfNotNull(it.title, it.message).joinToString(" ") }
+        assertEquals("the card, then the dock, of $said", listOf(card, "Couldn’t find your location."), said.take(2))
     }
 
     @Test

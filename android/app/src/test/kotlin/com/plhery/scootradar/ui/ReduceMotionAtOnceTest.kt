@@ -90,6 +90,8 @@ import com.plhery.scootradar.ui.search.ScooterSearchIsland
 import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
+import com.plhery.scootradar.ui.theme.resetFontScale
+import com.plhery.scootradar.ui.theme.useFontScale
 import com.plhery.scootradar.zurichRegion
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -142,6 +144,7 @@ class ReduceMotionAtOnceTest {
         ScooterLanguage.current = ScooterLanguage.atLaunch
         Locale.setDefault(locale)
         Settings.Global.putFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, animatorScale)
+        resetFontScale()
     }
 
     // The search island: the open panel closes to the bar (ScooterSearchIsland's island).
@@ -411,7 +414,7 @@ class ReduceMotionAtOnceTest {
             .fetchSemanticsNode().boundsInRoot
         val nearMe = compose.onNode((hasContentDescription("Near me") or hasText("Near me")) and hasClickAction()).fetchSemanticsNode().boundsInRoot
         val density = compose.density.density
-        assertTrue("the notices ${notices.bottom / density} over Near me ${nearMe.top / density}", notices.bottom <= nearMe.top - 8 * density + 0.5f)
+        assertEquals("the notices' foot, 8 over Near me at ${nearMe.top / density}", nearMe.top - 8 * density, notices.bottom, 0.5f)
         assertTheChange("the walk hidden", reduceMotion = true, frames = 6) { model.hideWalkingRoute() }
     }
 
@@ -425,7 +428,7 @@ class ReduceMotionAtOnceTest {
         show(reduceMotion = false) {
             Place {
                 Box(Modifier.size(100.dp, 200.dp).background(Color.White)) {
-                    Column(Modifier.heightIn(max = 50.dp).fitOrClip()) {
+                    Column(Modifier.heightIn(max = 50.dp).fitOrClip(clips = true)) {
                         Box(Modifier.size(100.dp, 120.dp).background(Color.Red))
                     }
                 }
@@ -435,6 +438,41 @@ class ReduceMotionAtOnceTest {
         val foot = (50 * compose.density.density).toInt()
         assertEquals("above the room's foot", Color.Red, pixels[pixels.width / 2, foot - 2])
         assertEquals("under the room's foot", Color.White, pixels[pixels.width / 2, foot + 2])
+    }
+
+    /**
+     * With animations, a card that goes after the notices' scroll gave way to the plain stack fades out whole past the
+     * room's foot, as the iPhone's HeightLimit draws it, which doesn't clip: the clip is for a notice not yet measured,
+     * or Reduce Motion's frame. In the 8 between the room's foot and the locate button only a notice past its room
+     * shows; with large text a banner and a card scroll there, and the banner alone fits once the card is dismissed.
+     */
+    @Test
+    @Config(qualifiers = "w400dp-h450dp-xhdpi")
+    fun withAnimationsACardGoingPastItsRoomFadesWhole() {
+        useFontScale(2f)
+        val clock = TestClock()
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter("s1", "lime")))).apply { setFailure(ScooterAPIError.Offline()) }
+        val model = controllers.make(api, clock, locationManager = FakeLocationManager(ScooterAuthorizationStatus.Denied))
+        model.focusOnUser()
+        assertTrue(controllers.waitUntil(attempts = 700) { model.locationIssue.value != null && !model.isLocating.value })
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.loadIssue.value is ScooterLoadIssue.FirstLoadFailed && !model.isLoading.value })
+        showTheScreen(model, clock, reduceMotion = false)
+        settled()
+        val place = compose.onNodeWithTag(PLACE).fetchSemanticsNode().boundsInRoot
+        val nearMe = compose.onNode((hasContentDescription("Near me") or hasText("Near me")) and hasClickAction()).fetchSemanticsNode().boundsInRoot
+        val density = compose.density.density
+        from = (nearMe.top - 7 * density - place.top) / place.height
+        to = (nearMe.top - density - place.top) / place.height
+        val scrolled = settled()
+        model.dismissLocationIssue()
+        Snapshot.sendApplyNotifications()
+        val film = List(8) { frame() }
+        val gone = settled()
+        assertEquals("nothing past the room's foot at rest", 0, unlike(scrolled, gone))
+        val past = film.map { unlike(it, gone) }
+        // From the first frame: as it begins to shrink its layout still overflows the room, which the clip would cut.
+        assertTrue("the card fading past the room's foot from the first frame, by pixel counts $past", past.take(3).all { it > 20 })
     }
 
     /**
