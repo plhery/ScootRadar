@@ -68,10 +68,14 @@ describe('the Android app’s links', () => {
   const listed = (pattern: RegExp) => pattern.exec(kotlin)?.[1].match(/"[^"]+"/g)?.map(name => JSON.parse(name));
 
   it('claims the paths the association opens, on the hosts the app reads', () => {
+    // One verified filter, and whole paths: a prefix or a pattern would take the pages of the site too.
+    expect(manifest.match(/android:autoVerify="true"/g)).toHaveLength(1);
+    expect(filter).not.toMatch(/android:path\w+=/);
     expect(claimed('scheme')).toEqual(['https']);
-    expect(claimed('path')).toEqual(components.filter(component => !component.exclude).map(component => component['/']));
+    expect(claimed('path').sort())
+      .toEqual(components.filter(component => !component.exclude).map(component => component['/']).sort());
     // www besides, unlike the iPhone's entitlement: it opens the app only once www serves assetlinks.json itself.
-    expect(claimed('host')).toEqual(listed(/val hosts: Set<String> = setOf\(([^)]+)\)/));
+    expect(claimed('host').sort()).toEqual(listed(/val hosts: Set<String> = setOf\(([^)]+)\)/)?.sort());
     expect(claimed('host')).toContain('scootradar.com');
   });
 

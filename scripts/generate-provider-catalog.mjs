@@ -403,9 +403,16 @@ function swiftCurfews() {
   };
   // Calendar's weekdays: 1 is Sunday.
   const weekdays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-  const night = ({ days, from, until }) => {
+  const night = ({ days, dates, from, until }) => {
     if (days !== undefined && (days.length === 0 || !days.every(day => weekdays.includes(day)))) {
       throw new Error(`Invalid curfew days: ${days}`);
+    }
+    // Holiday evenings as src/lib/rentalCurfews.ts reads them (holidayEvening). A "MM-DD" must be a day of every
+    // year: the website would roll "02-30" over into March, where the Android app reads no evening.
+    for (const date of dates ?? []) {
+      const [, month, day] = /^(\d\d)-(\d\d)$/.exec(date) ?? [];
+      const fixed = month && new Date(Date.UTC(2023, Number(month) - 1, Number(day))).toISOString().slice(5, 10) === date;
+      if (!fixed && !/^(easter|midsummerEve)([+-]\d+)?$/.test(date)) throw new Error(`Invalid curfew date: ${date}`);
     }
     const evenings = days ? `[${days.map(day => weekdays.indexOf(day) + 1).join(', ')}]` : 'nil';
     return `RentalCurfew.Night(evenings: ${evenings}, fromMinute: ${time(from)}, untilMinute: ${time(until)})`;
