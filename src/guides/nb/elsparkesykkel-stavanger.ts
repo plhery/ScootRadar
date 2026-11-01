@@ -20,7 +20,7 @@ const guide: Guide = {
         'Ryde var litt for tidlig ute: I slutten av august 2019 satte selskapet ut 100 sparkesykler uten avtale med kommunen og måtte fjerne alle igjen.',
         'Stavanger har en egen utleieforskrift, og etter en endring fra 22. september 2025 gir kommunen tillatelse til opptil to operatører. Voi og Ryde fikk i oktober 2025 tillatelser som gjelder fra 2026 til og med 2028 og kan forlenges med ett år inntil to ganger.',
         'Forskriften setter også et samlet tak, fordelt likt mellom operatørene: **500** kjøretøy i indre sentrum og **1000** i den sentrale byen. I resten av kommunen er det ikke noe tak.',
-        'På [kartet over Stavanger](map:no:Stavanger) viste ScootRadar rundt 5000 elsparkesykler 13. oktober 2026, rundt 2750 fra Voi og 2200 fra Ryde. Kartutsnittet dekker også bydelene utenfor den sentrale byen, Sola, deler av Randaberg og nordre Sandnes, der taket ikke gjelder. Tallet er derfor en telling på kartet, ikke flåten, og kan ikke sammenlignes med taket. Voi og Ryde er begge med, så kartet viser alle operatørene i byen.',
+        'På [kartet over Stavanger](map:no:Stavanger) viste ScootRadar rundt 5000 elsparkesykler 13. oktober 2026, rundt 2750 fra Voi og 2200 fra Ryde. Kartutsnittet dekker også bydelene utenfor den sentrale byen, Sola, deler av Randaberg og nordre Sandnes, der taket ikke gjelder. Voi og Ryde er begge med, så kartet viser alle operatørene i byen.',
         'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },

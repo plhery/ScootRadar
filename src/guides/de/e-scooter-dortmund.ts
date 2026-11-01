@@ -19,7 +19,7 @@ const guide: Guide = {
         'Fünf Anbieter vermieten im Oktober 2026 E-Scooter in Dortmund: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde** aus Norwegen. Dott, Bolt und Ryde führen Dortmund auf ihren Websites (Stand 24. Oktober 2026). Lime führt NRW.Mobidrom, das Mobilitätsdatenportal des Landes, seit April 2026 als E-Scooter-Anbieter in Dortmund.',
         'Im Dezember 2023 zählte die Stadt bei Bolt, Voi, Lime und Tier zusammen 3650 Leih-Scooter; jeder wurde im Schnitt zwei- bis dreimal am Tag ausgeliehen.',
         'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Dortmund](map:de:Dortmund) zeigt ScootRadar Voi, Dott und seit dem 25. Oktober 2026 Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 1400 Voi- und 360 Dott-Scooter, alle im Stadtgebiet von Dortmund, am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Für Voi zeigt die Karte auch Preis und Parkzonen, mit der Einstellung «Fahr- und Parkzonen» auch Sperrzonen; für Dott nur Standorte. Ryde findest du nur in seiner App. E-Bikes zeigt die Karte nicht.',
+        'Auf der [Karte von Dortmund](map:de:Dortmund) zeigt ScootRadar Voi, Dott und seit dem 25. Oktober 2026 Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 1400 Voi- und 360 Dott-Scooter, alle im Stadtgebiet von Dortmund, am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter. Für Voi zeigt die Karte auch Preis und Parkzonen, mit der Einstellung «Fahr- und Parkzonen» auch Sperrzonen; für Dott nur Standorte. Ryde findest du nur in seiner App. E-Bikes zeigt die Karte nicht.',
       ],
     },
     {
