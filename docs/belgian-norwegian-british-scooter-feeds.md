@@ -222,8 +222,11 @@ directory.
   1 April; Asker and Bærum close in winter on dates not yet published (see
   [Night bans](#night-bans)). Lillestrøm's and Rælingen's weekend night bans
   already cover Ryde's scooters, by each kommune's boundary. Asker, Bærum and
-  Lørenskog ban no hours, and Bodø kommune's page names none; its forskrift
-  of 16 June 2022 could not be read, as Lovdata refused our requests.
+  Lørenskog ban no hours, and neither does Bodø: its forskrift
+  ([FOR-2022-06-16-1128](https://lovdata.no/dokument/LF/forskrift/2022-06-16-1128),
+  as amended on 20 June 2025) lets renting run "alle dager, hele døgnet"
+  and the kommune bring in a night closing, which it hasn't (read on
+  1 November 2026).
 - **Bodø:** the kommune's page names Ryde and Dott as the 2025 permit
   holders, with 250 scooters each. Ryde listed about 720 available on
   22 October 2026, and Dott publishes nothing for Bodø.
@@ -418,6 +421,32 @@ stays open at night.
   here for 1 April 2026 to 31 March 2027. It closes the whole municipality, so
   the Skien feed's scooters standing in Porsgrunn close too; Skien stays open
   and only slows scooters to 12 km/h from 00:00 to 05:00, which the map leaves out.
+- **No night ban** in Fredrikstad, Sarpsborg, Moss, Ålesund, Bodø or
+  Stjørdal (checked 1 November 2026). Moss's
+  [forskrift](https://www.moss.kommune.no/_f/id2ae59c9-d737-4219-9372-e954eca324c4/lokal-forskrift-om-utleie-av-sma-elektriske-kjoretoy-pa-offentlig-grunn-moss-kommune.pdf)
+  and Bodø's let renting run all day; Fredrikstad's
+  ([FOR-2023-03-23-417](https://lovdata.no/dokument/LF/forskrift/2023-03-23-417)),
+  Sarpsborg's
+  ([forskrift](https://www.sarpsborg.com/globalassets/dokumenter/byggesak-og-teknisk/forskrift-om-utleie-av-sma-elektriske-kjoretoy-pa-offentlig-grunn-i-sarpsborg-kommune.pdf))
+  and Ålesund's
+  ([FOR-2022-06-16-1148](https://lovdata.no/dokument/LF/forskrift/2022-06-16-1148))
+  let the kommune close hours through the zones it shares with the operators,
+  and none has published any. The 20:00 to 07:00 hours in Sarpsborg's and
+  Moss's rules only silence the scooters' alarms. Stjørdal has no forskrift
+  on Lovdata. From 28 October to 1 November 2026 Ryde's feeds there listed
+  124 scooters or more all night, Voi's Moss feed 203 or more, and Dott's
+  Stjørdal feed 23 or more.
+- **Voi's own night pauses:** Voi empties its Bærum / Asker feed from 00:00
+  to 05:00 on Saturday nights only (into Sunday 18 and 25 October and
+  1 November 2026), and its Lillestrøm / Lørenskog feed from 23:00 to 05:00
+  on Friday and Saturday nights (every weekend since 17 October), Lørenskog's
+  scooters too. Neither Bærum's nor Asker's forskrift
+  ([FOR-2026-02-04-201](https://lovdata.no/dokument/LF/forskrift/2026-02-04-201),
+  [FOR-2026-02-03-213](https://lovdata.no/dokument/LF/forskrift/2026-02-03-213))
+  nor their pages name any hours, and Ryde's feeds there kept hundreds of
+  scooters on every night from 22 October (at least 583 in Asker, 1,565 in
+  Bærum and 739 in Lørenskog), so the map sets no ban for Bærum, Asker or
+  Lørenskog.
 - **Winter:** some towns' rules allow renting only in a season, so their feeds
   have a seasonal pause, read as Ottawa's is
   ([Canadian feeds](canadian-scooter-feeds.md#winter)):
