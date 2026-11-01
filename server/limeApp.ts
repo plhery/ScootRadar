@@ -5,7 +5,7 @@ import { request } from 'node:https';
 import { dirname, join, resolve } from 'node:path';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { daytimeSweeps } from './appMapCadence';
-import { decodeLimeArea, limeAreaTiles, LIME_QUERY_INTERVAL_MS, LIME_IDLE_INTERVAL_MS, LIME_WATCH_MS } from './limeAreas';
+import { decodeLimeArea, limeAreaTiles, LIME_QUERY_INTERVAL_MS, LIME_IDLE_INTERVAL_MS, LIME_ROUTINE_EVERY, LIME_WATCH_MS } from './limeAreas';
 export { LIME_IDLE_INTERVAL_MS } from './limeAreas';
 import limeRegions from '../data/lime-app-regions.json';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
@@ -99,7 +99,7 @@ export class LimeClient {
     this.sessionPath = options.sessionPath ?? process.env.LIME_SESSION_PATH ??
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'lime-session.json');
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now);
+    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now, 0, LIME_ROUTINE_EVERY);
     this.transport = options.transport ?? transport;
   }
   private async load(): Promise<Session> {

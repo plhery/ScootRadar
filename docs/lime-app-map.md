@@ -395,7 +395,12 @@ collections stalled, some past their 15-minute budget. Idle groups are swept eve
 (`LIME_IDLE_INTERVAL_MS`), not every two hours as the other app maps: every
 market Lime's rider map lists takes about 17,500 requests, a day at that pace,
 so the idle sweeps take about a third of the requests, and may take half
-(`npm run check:providers`): the rest is for the towns people look at. An idle
+(`npm run check:providers`): the rest is for the towns people look at. A town
+someone looks at goes first, but while an idle sweep waits, every third turn of
+its account is kept for it (`LIME_ROUTINE_EVERY`, the `Pacer` in
+`server/sweeps.ts`): on the night of 1 November 2026 a watched Zürich took every
+turn of two of the three accounts, and nine groups of the Swiss standby went
+nearly two hours without a first sweep. An idle
 sweep falls between 08:00 and 21:00 in its town. A sweep by night there, as a new
 town's first or one someone asked for, is followed by one at 08:00, within the quarter
 of an hour after, not three days on (`limeDaytime` in `server/limeApp.ts`), and one in a

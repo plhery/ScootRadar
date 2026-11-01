@@ -9,6 +9,7 @@ import type { MapBounds } from '../src/lib/types';
 import { idPhase } from './feedScheduler';
 import { LimeClient, LimeAccountPool, readLimeAccounts, withLimeAppCollectors, limeDaytime, LIME_IDLE_INTERVAL_MS, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
 import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
+import { LIME_QUERY_INTERVAL_MS, LIME_ROUTINE_EVERY } from './limeAreas';
 import { withinCollection } from './sweeps';
 
 const http = vi.hoisted(() => ({ request: vi.fn() }));
@@ -286,6 +287,33 @@ describe('independent Lime production accounts', () => {
       expect(times).toHaveLength(2);
       await vi.advanceTimersByTimeAsync(1); await waiting;
       expect(times.at(-1)).toEqual({ device: a.seed.deviceToken, at: 5000 });
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('keeps an account\'s every third turn for a sweep nobody looks at while a watched town asks for them all', async () => {
+    // On the night of 1 November 2026 a watched Zürich took every turn of two accounts, and nine
+    // groups of the Swiss standby went nearly two hours without a first sweep.
+    const f = await fixture();
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      const client = new LimeClient({ sessionPath: f.sessionPath, intervalMs: LIME_QUERY_INTERVAL_MS, transport: async () => response(map()) });
+      await client.pins(system.bounds);
+      const scope = (urgent: boolean) => ({ urgent: () => urgent, focus: () => undefined, progress: () => {} });
+      let watched = true;
+      const looking = (async () => {
+        while (watched) await withinCollection(scope(true), () => client.pins(system.bounds));
+      })();
+      await vi.advanceTimersByTimeAsync(10_000);
+      const views = 8, started = Date.now();
+      let took: number | undefined;
+      const sweep = withinCollection(scope(false), async () => {
+        for (let view = 0; view < views; view++) await client.pins(system.bounds);
+      }).then(() => { took = Date.now() - started; });
+      await vi.advanceTimersByTimeAsync(views * LIME_ROUTINE_EVERY * LIME_QUERY_INTERVAL_MS);
+      expect(took).toBeDefined();
+      watched = false;
+      await vi.advanceTimersByTimeAsync(10 * LIME_QUERY_INTERVAL_MS);
+      await Promise.all([looking, sweep]);
     } finally { vi.useRealTimers(); }
   });
 

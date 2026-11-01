@@ -12,6 +12,13 @@ export const LIME_QUERY_INTERVAL_MS = 5_000;
  */
 export const LIME_IDLE_INTERVAL_MS = 72 * 60 * 60_000;
 /**
+ * Every third turn of an account, while an idle sweep waits, is kept for it (Pacer in sweeps.ts): the
+ * third of the requests those sweeps take. On the night of 1 November 2026 a watched Zürich took every
+ * turn of two of the three accounts, and nine groups of the Swiss standby went nearly two hours without
+ * a first sweep.
+ */
+export const LIME_ROUTINE_EVERY = 3;
+/**
  * How long a request keeps a Lime group watched: three minutes, not the cache's ten. The map asks
  * again every minute while it is open, so a view keeps its groups; a group panned past is collected
  * every minute for three minutes, not ten, on the 36 requests a minute every Lime town shares.
