@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -49,6 +50,7 @@ import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -80,8 +82,9 @@ import java.util.Locale
 import java.util.regex.Pattern
 
 /**
- * Films the dock's transitions (ui.md §4) over the live map with `screenrecord`, one film for each kind, in
- * /sdcard/Movies/app-c/. Only with the argument recordMotion=true; otherwise each test passes without doing anything.
+ * Films the dock's transitions, the search's and the sheets' (ui.md §4) over the live map with `screenrecord`, one
+ * film for each kind, in /sdcard/Movies/app-c/. Only with the argument recordMotion=true; otherwise each test passes
+ * without doing anything.
  * With ground=plain the map is a plain ground, whose still pixels let a film be measured frame by frame. No compose
  * rule: its test clock would move the animations only while the test waits for it, and the films need them in real
  * time.
@@ -521,6 +524,122 @@ class DockMotionRecording {
     }
 
     /**
+     * UI-189, UI-190 and UI-191: the search opens from the bar into its panel and closes again, each clicked as
+     * TalkBack clicks, with no press to light the glass. The locate row and the dock's card make way as it opens and
+     * come back as it closes; in the panel's layout the panel makes way. Once before the film.
+     */
+    @Test
+    fun searchOpensAndCloses() {
+        show()
+        val steps = {
+            clickAccessibly("the search bar") { it.contentDescription?.toString()?.let(SEARCH_BAR::matches) == true }
+            Thread.sleep(500)
+            clickAccessibly(localized("Cancel"))
+        }
+        steps()
+        Thread.sleep(1_500)
+        record("ui189-191-search", seconds = 5, action = steps)
+    }
+
+    /**
+     * UI-202: a refresh fails with the scooters still shown, and the dock says so and offers Try again; Try again
+     * loads a moment, and the two go as the scooters come. Then the map moves where nothing is loaded, "Finding
+     * scooters…", and that load fails: the count comes back with the status and Try again, in the dock's cross-fade.
+     * Once before the film, on a screen of its own.
+     */
+    @Test
+    fun statusRow() {
+        repeat(2) { take ->
+            api.holds = false
+            api.failure = null
+            scenario?.close()
+            val controller = show()
+            val steps = {
+                api.failure = ScooterAPIError.Offline()
+                main { controller.refresh() }
+                Thread.sleep(2_000)
+                api.failure = null
+                api.holds = true
+                main { controller.retryLoad() }
+                Thread.sleep(1_000)
+                api.release()
+                Thread.sleep(2_000)
+                api.holds = true
+                api.failure = ScooterAPIError.Offline()
+                main { controller.updateViewport(MapRegion.around(nowhere, 1_000.0, 1_000.0), zoom = 15) }
+                Thread.sleep(1_500)
+                api.release()
+            }
+            if (take == 0) steps() else record("ui202-status-row", seconds = 10, action = steps)
+            Thread.sleep(1_000)
+        }
+    }
+
+    /**
+     * UI-205: the Filters symbol, outline to filled as a filter turns on, and back as they are reset; once before the
+     * film.
+     */
+    @Test
+    fun filtersSymbol() {
+        val controller = show()
+        val steps = {
+            main { controller.setMinimumBattery(75.0) }
+            Thread.sleep(1_500)
+            main { controller.resetFilters() }
+        }
+        steps()
+        Thread.sleep(1_500)
+        record("ui205-filters-symbol", seconds = 4, action = steps)
+    }
+
+    /**
+     * UI-208: the sheets, each opened as TalkBack clicks its button. In a phone's layout Filters slides up over the
+     * dimmed map, to its large height in a window under 700 tall and halfway in a taller one, and is dragged away;
+     * Settings slides up halfway, is dragged up to its large height and back down, each let go short of where it
+     * rests, and is dragged away. The finger is UiDevice's, on the grabber. In the panel's layout Settings is a form
+     * sheet, which slides up over the dimmed window and goes with Done. Once before the film.
+     */
+    @Test
+    fun sheets() {
+        show()
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val height = device.displayHeight
+        fun drag(to: Int, millis: Int) {
+            val grabber = android.graphics.Rect()
+            checkNotNull(accessibilityNode(localized("Sheet Grabber"))) { "no grabber" }.getBoundsInScreen(grabber)
+            Log.i("DockMotionRecording", "the grabber at $grabber, dragged to $to over $millis ms")
+            // 5 ms a step asked; on the emulators a step takes about 33, a 500 ms drag 3.3 s, slow enough not to fling.
+            device.swipe(grabber.centerX(), grabber.centerY(), grabber.centerX(), to, millis / 5)
+            Thread.sleep(1_500)
+            Log.i("DockMotionRecording", "the grabber then at ${accessibilityNode(localized("Sheet Grabber"))?.let { node ->
+                android.graphics.Rect().also { node.getBoundsInScreen(it) }
+            }}")
+        }
+        fun grabberTop(): Int {
+            val grabber = android.graphics.Rect()
+            checkNotNull(accessibilityNode(localized("Sheet Grabber"))) { "no grabber" }.getBoundsInScreen(grabber)
+            return grabber.top
+        }
+        val steps = {
+            if (panelLayout) {
+                clickAccessibly(localized("Settings"))
+                clickAccessibly(localized("Done"))
+            } else {
+                clickAccessibly(localized("Filters"))
+                drag(to = height - 40, millis = 300)
+                clickAccessibly(localized("Settings"))
+                val half = grabberTop()
+                drag(to = half / 3, millis = 500)
+                drag(to = half - 60, millis = 500)
+                drag(to = height - 40, millis = 300)
+            }
+            Thread.sleep(1_000)
+        }
+        steps()
+        record("ui208-sheets", seconds = if (panelLayout) 6 else 26, action = steps)
+    }
+
+    /**
      * The screen over the live map, or a plain ground in its place, once the scooters are in (unless [loaded] is
      * false) and the ground is drawn.
      */
@@ -535,6 +654,9 @@ class DockMotionRecording {
             phoneLanguages = { listOf("en-GB") },
         )
         scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity {
+            // Edge to edge, as MainActivity is: on API 31 the window would otherwise end at the bars, and the safe
+            // area's foot, which the dock and the locate row make way toward, would be the window's.
+            it.enableEdgeToEdge()
             it.setContent {
                 // On the plain ground, measured frame by frame, no keyboard: the search's field takes no text input.
                 BoxWithConstraints(Modifier.fillMaxSize()) {
@@ -595,19 +717,26 @@ class DockMotionRecording {
     }
 
     /**
-     * Clicks the control described [description] as TalkBack does, with no press: Settings' button, whose light goes as
-     * the finger lifts and its sheet comes the 3 to 10 frames it takes to compose, which a quicker device could bring
-     * within ONE_CHANGE_MILLIS of each other.
+     * Clicks the control described or titled [description] as TalkBack does, with no press: Settings' button, whose
+     * light goes as the finger lifts and its sheet comes the 3 to 10 frames it takes to compose, which a quicker device
+     * could bring within ONE_CHANGE_MILLIS of each other.
      */
-    private fun clickAccessibly(description: String) {
+    private fun clickAccessibly(description: String) =
+        clickAccessibly(description) { it.contentDescription?.toString() == description || it.text?.toString() == description }
+
+    /** Clicks the first control that is [wanted] as TalkBack does, [name] in a failure, and waits 1.5 s. */
+    private fun clickAccessibly(name: String, wanted: (AccessibilityNodeInfo) -> Boolean) {
         val until = System.currentTimeMillis() + 5_000
-        var node = accessibilityNode(description)
+        var node = accessibilityNode(wanted)
         while (node == null && System.currentTimeMillis() < until) {
             Thread.sleep(200)
-            node = accessibilityNode(description)
+            node = accessibilityNode(wanted)
         }
+        // A title is a node of its own under its button, as Cancel's is.
+        var button = checkNotNull(node) { "no $name" }
+        while (!button.isClickable) button = button.parent ?: break
         actedAt += SystemClock.uptimeMillis()
-        check(checkNotNull(node) { "no $description" }.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "$description's click" }
+        check(button.performAction(AccessibilityNodeInfo.ACTION_CLICK)) { "$name's click" }
         Thread.sleep(1_500)
     }
 
@@ -740,6 +869,12 @@ class DockMotionRecording {
 
         /** 250 m west of Lime's scooter. */
         val rider = GeoPoint(47.3772, 8.5388)
+
+        /** In Zürich, 3 km north west of the scooters: none within half a kilometre. */
+        val nowhere = GeoPoint(47.3950, 8.5000)
+
+        /** The collapsed search bar's label: no place, a location on its way, or the place shown. */
+        val SEARCH_BAR = Regex("Search city or address|Finding your location.*|Showing scooters near.*")
 
         fun scooter(id: String, provider: String, latitude: Double, longitude: Double, battery: Int = 70) = Scooter(
             provider = provider, latitude = latitude, longitude = longitude, battery = battery, rangeMeters = null,
