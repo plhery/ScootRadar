@@ -11,6 +11,7 @@ import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScreenRect
+import com.plhery.scootradar.ui.ScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -94,6 +95,32 @@ class MarkersUnderTheChromeTest {
             assertEquals("swipes under the open search", listOf(marker), heard())
             phone.onMain { frames.search = null }
             compose.waitUntil(5_000) { found() == marker }
+        }
+    }
+
+    /**
+     * The same through the screen, with ScooterMap in the map's place as MainActivity puts it there: the markers
+     * follow the sheets the screen opens, as ScooterMap hears the chrome the screen measures and none of its own
+     * (review-lead-1nov K7).
+     */
+    @Test
+    fun noMarkerIsHeardUnderTheScreensSheets() {
+        val screen = ScreenState(scope)
+        withAppMap(testController(scope, api), screenState = screen) { phone ->
+            phone.onMain { phone.map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(zurich.latitude, zurich.longitude), 16.0)) }
+            val markers = phone.onMain { ViewCompat.getAccessibilityDelegate(phone.view) as ScooterMarkerAccessibility }
+            fun heard() = phone.onMain { markers.virtualViews() }
+            compose.waitUntil(30_000) { heard().size == 1 }
+            val marker = heard().single()
+
+            phone.onMain { screen.settingsPresented = true }
+            compose.waitUntil(5_000) { heard().isEmpty() }
+            phone.onMain { screen.settingsPresented = false }
+            compose.waitUntil(5_000) { heard() == listOf(marker) }
+            phone.onMain { screen.filtersPresented = true }
+            compose.waitUntil(5_000) { heard().isEmpty() }
+            phone.onMain { screen.filtersPresented = false }
+            compose.waitUntil(5_000) { heard() == listOf(marker) }
         }
     }
 }

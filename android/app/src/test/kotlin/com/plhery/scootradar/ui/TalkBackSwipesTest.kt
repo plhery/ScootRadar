@@ -5,13 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.view.accessibility.AccessibilityNodeInfo
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.node.RootForTest
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -25,25 +19,30 @@ import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
+import com.plhery.scootradar.TestCatalog
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
+import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.InMemoryScooterDefaults
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterZone
+import com.plhery.scootradar.core.model.ScooterZoneArea
+import com.plhery.scootradar.core.model.ScooterZoneKind
+import com.plhery.scootradar.core.model.ScooterZoneResponse
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.localized
-import com.plhery.scootradar.ui.chrome.FloatingMapControls
-import com.plhery.scootradar.ui.chrome.ZoneLegend
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.theme.PHONE
-import com.plhery.scootradar.ui.theme.ScootTheme
+import com.plhery.scootradar.zurichRegion
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -165,39 +164,19 @@ class TalkBackSwipesTest {
 
     /**
      * F5: the legend's kinds and its city lines are read together, then the locate button, as the iPhone's HStack
-     * lists them, the legend then the button; TalkBack read the button between them.
+     * lists them, the legend then the button; TalkBack read the button between them. The screen's own row, Zürich at
+     * a street's zoom with an operator's zone and a city's parking place (review-lead-1nov K7).
      */
     @Test
     fun theLegendIsReadWholeBeforeTheLocateButton() {
-        val model = controllers.make(EmptyScooterAPI)
+        val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = listOf(cityZone))
+        val model = controllers.make(ZonedAPI(listOf(operatorZone)), defaults = InMemoryScooterDefaults(), catalog = catalog)
         // Located once: the round button.
         model.locationsUpdated(listOf(ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 5.0, timestamp = Instant.now())))
         assertTrue(controllers.waitUntil { model.hasLocatedOnce.value })
-        val rule = CityRuleZone(
-            id = "zurich",
-            authority = "Stadt Zürich",
-            timeZone = "Europe/Zurich",
-            firstDay = "2026-05-01",
-            hours = emptyList(),
-            source = "https://example.com/zurich",
-            lines = listOf(listOf(GeoPoint(47.3769, 8.5417), GeoPoint(47.3779, 8.5427))),
-        )
-        val clock = TestClock()
-        compose.setContent {
-            view = LocalView.current
-            CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScootTheme(dark = false, reduceMotion = true) {
-                    // The phone's row: the legend at the leading edge, the button at the trailing one, their feet level.
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.Bottom) {
-                        Box(Modifier.weight(1f), contentAlignment = Alignment.BottomStart) {
-                            ZoneLegend(state = ScooterZoneState.Shown, count = 3, rules = listOf(CityRuleZone.Shown(rule, inForce = true)))
-                        }
-                        FloatingMapControls(model)
-                    }
-                }
-            }
-        }
-        compose.waitForIdle()
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.zoneState.value == ScooterZoneState.Shown && model.mapRuleZones.value.isNotEmpty() })
+        show(model)
 
         val order = swipeOrder()
         val kinds = order.place(compose.onNode(hasContentDescription(localized("Zones"))))
@@ -226,8 +205,36 @@ class TalkBackSwipesTest {
         assertTrue("the folded line, then the grabber", order.place(line) < order.place(grabber))
     }
 
+    /** No scooters, and the zones it is given for any area. */
+    private class ZonedAPI(private val zones: List<ScooterZone>) : ScooterAPIClient by EmptyScooterAPI {
+        override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
+    }
+
     private companion object {
         /** Compose's extra for tests, which holds the node a node is read before. */
         const val TRAVERSAL_BEFORE = "android.view.accessibility.extra.EXTRA_DATA_TEST_TRAVERSALBEFORE_VAL"
+
+        /** A square of 0.002° a side in Zürich's centre. */
+        val operatorZone = ScooterZone(
+            id = "voi:slow",
+            provider = "voi",
+            kind = ScooterZoneKind.Slow,
+            polygons = listOf(listOf(square(GeoPoint(47.3760, 8.5400), 0.002))),
+        )
+
+        /** One of the city's parking places: the legend's city line. */
+        val cityZone = CityRuleZone(
+            id = "zurich-parking-1",
+            authority = "Stadt Zürich",
+            timeZone = "Europe/Zurich",
+            kind = ScooterZoneKind.Parking,
+            source = "https://example.com/zurich",
+            ring = square(GeoPoint(47.3769, 8.5417), 0.0001),
+        )
+
+        fun square(at: GeoPoint, side: Double) = listOf(
+            at, GeoPoint(at.latitude, at.longitude + side), GeoPoint(at.latitude + side, at.longitude + side),
+            GeoPoint(at.latitude + side, at.longitude), at,
+        )
     }
 }

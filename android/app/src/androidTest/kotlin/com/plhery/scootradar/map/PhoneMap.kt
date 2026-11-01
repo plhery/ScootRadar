@@ -31,6 +31,8 @@ import com.plhery.scootradar.core.model.MapRegion
 import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.ui.ScooterMapScreen
+import com.plhery.scootradar.ui.ScreenState
+import com.plhery.scootradar.ui.rememberScreenState
 import com.plhery.scootradar.ui.theme.ScootTheme
 import kotlinx.coroutines.CoroutineScope
 import okhttp3.OkHttpClient
@@ -135,16 +137,21 @@ fun withPhoneMap(camera: CameraPosition? = null, test: (PhoneMap) -> Unit) {
 
 /**
  * The app's map screen in an activity, with the [controller] a test gives it, opening on Zürich, its text at
- * [textScale] or the phone's: the [test] has its map once its camera is made.
+ * [textScale] or the phone's, and what it has open in [screenState] if the test gives one: the [test] has its map
+ * once its camera is made.
  */
-fun withAppMap(controller: ScooterMapController, textScale: Float? = null, test: (PhoneMap) -> Unit) {
+fun withAppMap(controller: ScooterMapController, textScale: Float? = null, screenState: ScreenState? = null, test: (PhoneMap) -> Unit) {
     ActivityScenario.launch(ComponentActivity::class.java).use { scenario ->
         val tiles = GroundTiles.openFreeMap(OkHttpClient())
         scenario.onActivity { activity ->
             activity.setContent {
                 val given = LocalDensity.current
                 CompositionLocalProvider(LocalDensity provides Density(given.density, textScale ?: given.fontScale)) {
-                    ScooterMapScreen(controller = controller, map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) })
+                    ScooterMapScreen(
+                        controller = controller,
+                        map = { dark -> ScooterMap(controller, zurichStart, MapCameraMemory(), tiles, dark) },
+                        screenState = screenState ?: rememberScreenState(),
+                    )
                 }
             }
         }

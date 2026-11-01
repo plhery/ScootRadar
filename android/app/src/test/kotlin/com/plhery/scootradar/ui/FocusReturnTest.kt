@@ -60,6 +60,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -72,6 +73,7 @@ import java.util.TimeZone
  */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = PHONE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 @OptIn(ExperimentalTestApi::class)
 class FocusReturnTest {
     @get:Rule
