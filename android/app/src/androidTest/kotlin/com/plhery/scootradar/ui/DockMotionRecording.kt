@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,6 +50,7 @@ import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterWalkTarget
@@ -109,6 +111,9 @@ class DockMotionRecording {
     private var marker by mutableStateOf(false)
     private var markers = 0
     private var markerBounds: Rect? = null
+
+    /** Whether the screen shows the panel beside the map, as it chooses: the dock under it otherwise. */
+    private var panelLayout = false
 
     /**
      * When reduceMotionAtOnce's steps turned the marker, and when it acted on the screen, a step, a press or a click
@@ -333,7 +338,8 @@ class DockMotionRecording {
      * UI-184, run with Remove animations on (the run sets it, and sets it back): each place whose content changes swaps
      * it with no fade, slide or roll, in one film. On a large window, with the panel: the dock's kind, the panel's
      * fold, the Filters symbol, the chips' counts, Near me's first fix, the search opening and closing, and a Settings
-     * page pushed and popped; on a phone, the dock in the panel's place and Settings taken to its large height first.
+     * page pushed and popped; on a phone, the dock in the panel's place and Settings taken to its large height and its
+     * Language row scrolled into view first.
      * Before the first fix, with the location denied: the location card coming and going, the notices going as the
      * search opens over the card and back as it closes, and a walk with no location, whose note comes with the card and
      * goes as the route is hidden. Once before the film, but for the first fix and Settings, which change once.
@@ -388,14 +394,28 @@ class DockMotionRecording {
                 found = selectors.firstNotNullOfOrNull { device.findObject(it) }
                 if (found == null) Thread.sleep(200)
             }
-            val at = checkNotNull(found) { "no $name" }.visibleBounds
+            val at = checkNotNull(found) { "no $name, on the screen: ${onScreen()}" }.visibleBounds
             actedAt += SystemClock.uptimeMillis()
             shell("input motionevent DOWN ${at.centerX()} ${at.centerY()}")
             Thread.sleep(400)
             shell("input motionevent UP ${at.centerX()} ${at.centerY()}")
             Thread.sleep(1_500)
         }
-        fun named(label: String) = arrayOf(By.desc(label), By.text(label))
+        // The app's own: a phone's 3-button bar describes its Back key "Back" too.
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.packageName
+        fun named(label: String) = arrayOf(By.desc(label).pkg(app), By.text(label).pkg(app))
+        // Settings scrolled a page at a time as TalkBack scrolls it, with no press, until one of [selectors] shows: on a
+        // phone the Language row is under the large sheet's fold.
+        fun scrolledTo(vararg selectors: BySelector) {
+            repeat(6) {
+                if (selectors.any { device.hasObject(it) }) return
+                val list = checkNotNull(accessibilityNode { it.isScrollable && it.packageName == app }) { "no list to scroll" }
+                actedAt += SystemClock.uptimeMillis()
+                check(list.performAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)) { "the list's scroll" }
+                Thread.sleep(1_500)
+            }
+            error("no row in view after 6 pages")
+        }
         // The marker turns with the step's change unless [marked] is false: a change that is not drawn in the step's
         // frame by design.
         fun step(marked: Boolean = true, block: () -> Unit) {
@@ -415,8 +435,9 @@ class DockMotionRecording {
         val steps = { warm: Boolean ->
             step { controller.selectScooter("lime:a") }
             step { controller.selectScooter(null) }
-            step { controller.setPanelCollapsed(true) }
-            step { controller.setPanelCollapsed(false) }
+            // A phone's dock has no panel to fold, as the iPhone's hasn't: nothing changes there.
+            step(marked = panelLayout) { controller.setPanelCollapsed(true) }
+            step(marked = panelLayout) { controller.setPanelCollapsed(false) }
             step { controller.setMinimumBattery(75.0) }
             step { controller.resetFilters() }
             api.scooters = if (warm) scooters else reordered
@@ -441,6 +462,7 @@ class DockMotionRecording {
                 }
                 clickAccessibly(localized("Settings"))
                 expandSheet()
+                scrolledTo(*named("English"))
                 tap("the Language row", *named("English"))
                 tap("Back", *named("Back"))
                 tap("Done", *named("Done"))
@@ -515,7 +537,8 @@ class DockMotionRecording {
         scenario = ActivityScenario.launch(ComponentActivity::class.java).onActivity {
             it.setContent {
                 // On the plain ground, measured frame by frame, no keyboard: the search's field takes no text input.
-                Box(Modifier.fillMaxSize()) {
+                BoxWithConstraints(Modifier.fillMaxSize()) {
+                    panelLayout = rememberChromeLayout(maxWidth) == ScooterChromeLayout.Panel
                     InterceptPlatformTextInput({ request, next -> if (plainGround) awaitCancellation() else next.startInputMethod(request) }) {
                         ScooterMapScreen(
                             controller,
@@ -589,15 +612,36 @@ class DockMotionRecording {
     }
 
     /** The node described [description] in any of the screen's windows. */
-    private fun accessibilityNode(description: String): AccessibilityNodeInfo? {
+    private fun accessibilityNode(description: String) = accessibilityNode { it.contentDescription?.toString() == description }
+
+    /** The first node that is [wanted] in any of the screen's windows. */
+    private fun accessibilityNode(wanted: (AccessibilityNodeInfo) -> Boolean): AccessibilityNodeInfo? {
         fun find(node: AccessibilityNodeInfo?): AccessibilityNodeInfo? {
             if (node == null) return null
-            if (node.contentDescription?.toString() == description) return node
+            if (wanted(node)) return node
             return (0 until node.childCount).firstNotNullOfOrNull { find(node.getChild(it)) }
         }
         val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
         val roots = listOfNotNull(automation.rootInActiveWindow) + automation.windows.mapNotNull { it.root }
         return roots.firstNotNullOfOrNull { find(it) }
+    }
+
+    /**
+     * Each window's nodes and their words, those not visible to the user marked so: what a selector didn't find. On
+     * Phone_Min the screen's window once had none for the 5 s a tap waits (1 Nov).
+     */
+    private fun onScreen(): String = InstrumentationRegistry.getInstrumentation().uiAutomation.windows.joinToString(" ") { window ->
+        var nodes = 0
+        val words = mutableListOf<String>()
+        fun read(node: AccessibilityNodeInfo?) {
+            if (node == null) return
+            nodes++
+            val said = listOfNotNull(node.contentDescription, node.text).joinToString(" / ")
+            if (said.isNotEmpty()) words += if (node.isVisibleToUser) "\"$said\"" else "\"$said\" (hidden)"
+            (0 until node.childCount).forEach { read(node.getChild(it)) }
+        }
+        read(window.root)
+        "[${window.title}, $nodes nodes] ${words.joinToString(" ")}"
     }
 
     private fun main(block: () -> Unit) {
