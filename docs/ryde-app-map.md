@@ -11,7 +11,8 @@ Ryde's own authenticated API remains a separate, unfinished path. Its
 Mac-compatible iPhone app opens its signed-in map, but exporting the keys
 needed for independent proofs and decryption has not succeeded.
 On 1 November a separate diagnostic companion on the physical Pixel obtained
-a Google verification token for a fresh Ryde challenge. Its authenticated
+a Google Integrity token for a fresh Ryde challenge and subsequently a
+reCAPTCHA token with the working RideMovi package-context setup. Its authenticated
 session and live map remain unverified; see [the companion test](#physical-pixel-companion-test-1-november-2026).
 
 Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
@@ -100,10 +101,37 @@ action. The companion used its own package identity. Google returned
 No Ryde phone endpoint was called. Google's
 [error-code reference](https://docs.cloud.google.com/recaptcha/docs/reference/android/com/google/android/recaptcha/RecaptchaErrorCode)
 identifies this as a site key that does not support the calling package.
-Consequently, waiting for the reported phone limit alone does not make this
-companion login viable. OAuth and reCAPTCHA app registration are distinct
-from the earlier successful Integrity token issuance; no authenticated Ryde
-map or portable session has been demonstrated by this helper.
+
+That initial result did **not** establish that a companion could not obtain
+verification. A follow-up reproduced the working RideMovi helper's setup:
+an `Application` context reports the installed official package name to the
+reCAPTCHA SDK, with a manifest `queries` entry allowing its public package
+metadata to be read. Without that entry, Cronet failed locally with
+`Cannot determine package version`; after adding it, the physical Pixel
+obtained a token for `send_sms`. This is an SDK request-context override;
+the companion's installed package, signing certificate and UID are unchanged.
+No Google OAuth retry, Ryde phone endpoint or SMS request was made.
+
+The configuration captured on 1 November contains `smsDeviceRequests: 8`
+and `smsDeviceMinutes: 1440`. Those settings are consistent with an
+eight-request, 24-hour device window, but do not reveal the affected device's
+remaining wait or exact reset policy. Keep phone attempts on hold until that
+window can be respected; do not change device IDs to evade it.
+
+Private offline protocol helpers now cover the companion key-file format,
+phone normalization, native request signing, DPoP JWT encoding, JWK
+thumbprints and ECIES decryption. Five offline checks passed, including the
+known native signature vector, a verifiable JOSE signature and rejection of
+wrong-key or corrupted encrypted envelopes. These are preparation, not live
+authentication or map evidence.
+
+The next live test is one fresh phone login with its own attestation and
+reCAPTCHA tokens, followed by a nonempty read in a missing city such as
+Drammen. Validate server-side decryption, identity, coverage limits and
+successful renewal before enabling a collector. SDK token issuance alone
+does not establish Ryde's acceptance. Google OAuth remains a separate
+blocked path; no authenticated map or portable session has yet been
+demonstrated by this helper.
 
 ## Skyss's guest map: Skyss / Tet / Ruter
 
@@ -344,7 +372,10 @@ that one phone login will produce a portable bearer token.
 Entur's GBFS 3 manifest still listed the same sixteen Ryde systems then
 (it has listed `rydelarvik` too since 31 October 2026 at the latest). The
 discovery URLs for `rydebergen`, `rydedrammen`, `rydelarvik` and
-`rydekristiansand` return 404. Entur GraphQL recognizes
+`rydekristiansand` returned 404 on 27 October. A fresh manifest check on
+1 November listed seventeen Ryde systems, all already configured in
+ScootRadar; Bergen is the eighteenth configured system through Skyss.
+Entur GraphQL recognizes
 `YRY:Operator:Ryde`: a control in Oslo returned vehicles from `rydeoslo`,
 while a 15 km Bergen query returned none. Queries around Drammen and
 Larvik returned vehicles from existing Asker and Sandefjord feeds,
