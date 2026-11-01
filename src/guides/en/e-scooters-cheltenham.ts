@@ -66,7 +66,7 @@ const guide: Guide = {
             '**The edges:** BBC News reported on 11 June 2026 that the trial covers Gloucester and Cheltenham “along with Churchdown and Bishops Cleeve”. At 07:22 on Sunday 25 October our map showed Voi scooters from Up Hatherley to Charlton Kings and Prestbury, but none in Bishop’s Cleeve.',
           ],
         },
-        'Commuting to Gloucester? The council describes two separate areas, so check the app’s map before planning a ride between them. Gloucester’s scooters, about 200 at 14:55 on 24 October, are on the [map of Gloucester](map:gb:Gloucester). Nor can you take one to another trial area: the council says they “cannot be taken and used by a rider in a different place, even if that place has its own e-scooter trial running”.',
+        'Commuting to [Gloucester](guide:gloucester)? The council describes two separate areas, so check the app’s map before planning a ride between them. Gloucester’s scooters, about 200 at 14:55 on 24 October, are on the [map of Gloucester](map:gb:Gloucester). Nor can you take one to another trial area: the council says they “cannot be taken and used by a rider in a different place, even if that place has its own e-scooter trial running”.',
       ],
     },
     {
