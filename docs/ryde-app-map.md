@@ -12,7 +12,9 @@ Mac-compatible iPhone app opens its signed-in map, but exporting the keys
 needed for independent proofs and decryption has not succeeded.
 On 1 November a separate diagnostic companion on the physical Pixel obtained
 a Google Integrity token for a fresh Ryde challenge and subsequently a
-reCAPTCHA token with the working RideMovi package-context setup. Its authenticated
+reCAPTCHA token with the working RideMovi package-context setup. Normal Google
+browser sign-in subsequently returned a verified identity credential without SMS,
+but the first Ryde exchange rejected app/device attestation. Its authenticated
 session and live map remain unverified; see [the companion test](#physical-pixel-companion-test-1-november-2026).
 
 Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
@@ -125,13 +127,46 @@ known native signature vector, a verifiable JOSE signature and rejection of
 wrong-key or corrupted encrypted envelopes. These are preparation, not live
 authentication or map evidence.
 
-The next live test is one fresh phone login with its own attestation and
-reCAPTCHA tokens, followed by a nonempty read in a missing city such as
-Drammen. Validate server-side decryption, identity, coverage limits and
-successful renewal before enabling a collector. SDK token issuance alone
-does not establish Ryde's acceptance. Google OAuth remains a separate
-blocked path; no authenticated map or portable session has yet been
-demonstrated by this helper.
+### Google browser sign-in and Ryde exchange
+
+A later check on 1 November established that the native Credential Manager
+failure does not block every Google login path. A normal OpenID sign-in using
+Ryde's public web client and its registered Firebase callback returned a Google
+ID token in regular Chrome, using the authorized account's saved passkey and
+no SMS. The embedded browser was rejected by Google as an unsupported browser.
+
+The local handoff verified Google's RS256 signature against its published keys,
+issuer, audience, original state and nonce, expiration, verified email and the
+requested account. The Firebase handler displayed a missing-initial-state error
+because it had not started this flow; the returned Google credential passed the
+independent checks. The credential stayed in a mode-0600 file outside Git and
+was deleted after the blocked exchange. Temporary browser tabs and local transfer servers were
+closed afterward.
+
+One fresh companion challenge and classic Integrity token, only five seconds
+old when exported, were submitted to `/appRyde/userLoginByGoogle` with that
+Google credential, the same companion device id, separate software signing and
+encryption keys, an ES256 DPoP proof, raw public `encJwk`, app metadata and native
+`timeSign`. The location fields used the official client's unavailable-location
+fallback, `1,1`. Ryde returned HTTP/JSON 403, `APP_ATTEST_INVALID`, with a generic
+official-app/supported-device message. No rider token was issued. This response
+does not expose the individual integrity verdict or establish whether Ryde
+validated the Google credential before rejecting attestation.
+
+A single follow-up passed the same installed-official-package context used
+successfully for reCAPTCHA to the classic Integrity SDK. Google rejected it
+locally with SDK code `-7`, `APP_UID_MISMATCH`: the caller UID does not match
+the installed package. This is a different protection from reCAPTCHA's
+package-context check; that earlier success does not transfer to Integrity.
+No second Ryde login or SMS request followed. See Google's
+[Integrity error reference](https://developer.android.com/google/play/integrity/reference/com/google/android/play/core/integrity/model/IntegrityErrorCode#APP_UID_MISMATCH).
+
+Google authentication without SMS is therefore demonstrated. Independent Ryde
+login remains blocked at app/device verification, which a phone-code login also
+uses. Do not request an SMS merely to retry the same unresolved verification
+step. After obtaining an accepted session, validate a nonempty read in a missing
+city such as Drammen, independent decryption, identity, coverage limits,
+successful renewal and server compatibility before enabling a direct collector.
 
 ## Skyss's guest map: Skyss / Tet / Ruter
 
