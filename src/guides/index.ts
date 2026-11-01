@@ -329,6 +329,7 @@ import sloughEn from './en/e-scooters-slough';
 import esteponaEn from './en/e-scooters-estepona';
 import knarvikNb from './nb/elsparkesykkel-knarvik';
 import jenaDe from './de/e-scooter-jena';
+import schwerinDe from './de/e-scooter-schwerin';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -658,4 +659,5 @@ export const GUIDES: readonly Guide[] = [
   esteponaEn,
   knarvikNb,
   jenaDe,
+  schwerinDe,
 ];
