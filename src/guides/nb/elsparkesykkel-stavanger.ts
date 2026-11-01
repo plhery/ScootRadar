@@ -17,7 +17,6 @@ const guide: Guide = {
       heading: 'Leie elsparkesykkel i Stavanger: Voi og Ryde',
       blocks: [
         'To operatører har avtale med Stavanger kommune: **Voi og Ryde**. Slik har det vært siden sommeren 2023, og før det var også Tier i byen. Bolt og Dott leier ikke ut i Stavanger, Sandnes eller Sola.',
-        'Ryde var litt for tidlig ute: I slutten av august 2019 satte selskapet ut 100 sparkesykler uten avtale med kommunen og måtte fjerne alle igjen.',
         'Stavanger har en egen utleieforskrift, og etter en endring fra 22. september 2025 gir kommunen tillatelse til opptil to operatører. Voi og Ryde fikk i oktober 2025 tillatelser som gjelder fra 2026 til og med 2028 og kan forlenges med ett år inntil to ganger.',
         'Forskriften setter også et samlet tak, fordelt likt mellom operatørene: **500** kjøretøy i indre sentrum og **1000** i den sentrale byen. I resten av kommunen er det ikke noe tak.',
         'På [kartet over Stavanger](map:no:Stavanger) viste ScootRadar rundt 5000 elsparkesykler 13. oktober 2026, rundt 2750 fra Voi og 2200 fra Ryde. Kartutsnittet dekker også bydelene utenfor den sentrale byen, Sola, deler av Randaberg og nordre Sandnes, der taket ikke gjelder. Voi og Ryde er begge med, så kartet viser alle operatørene i byen.',
@@ -77,7 +76,7 @@ const guide: Guide = {
             ],
           },
         },
-        'I gågatene gjelder uansett maks 6 km/t etter trafikkreglene. Sonene endres ofte, så les tabellen som eksempler, ikke som en fullstendig liste.',
+        'I gågatene gjelder uansett maks 6 km/t etter trafikkreglene. Sonene endres ofte, så les tabellen som eksempler. Siden 1. november 2026 tegner også ScootRadar-kartet kommunens soner når du zoomer inn, med Stavanger kommune som kilde: de oppmerkede parkeringsplassene, indre sentrumssone, der du bare parkerer på dem, soner med parkeringsforbud, saktesoner og kjøreforbud.',
       ],
     },
     {
