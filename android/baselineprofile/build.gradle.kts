@@ -4,7 +4,7 @@
 // Analytics sends from neither (AppContainer.sendsAnalytics). Never run by CI or a plain build: they need a device,
 // with no other UiAutomation client connected to it (an agent's snapshot helper takes it, and the run fails).
 //
-// - The profile: ./gradlew :app:generateBaselineProfile, with one device or emulator connected, rooted below
+// - The profile: ./gradlew :app:generateReleaseBaselineProfile, with one device or emulator connected, rooted below
 //   Android 13 (adb root). It is saved in app/src/release/generated/baselineProfiles.
 // - Startup: ./gradlew :baselineprofile:connectedBenchmarkReleaseAndroidTest
 //   -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=Macrobenchmark

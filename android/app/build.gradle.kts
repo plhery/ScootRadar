@@ -66,7 +66,7 @@ android {
 }
 
 baselineProfile {
-    // The profile is recorded on a device by hand (generateBaselineProfile) and kept in
+    // The profile is recorded on a device by hand (generateReleaseBaselineProfile) and kept in
     // src/release/generated/baselineProfiles, so neither a plain build nor CI needs a device.
     automaticGenerationDuringBuild = false
 }

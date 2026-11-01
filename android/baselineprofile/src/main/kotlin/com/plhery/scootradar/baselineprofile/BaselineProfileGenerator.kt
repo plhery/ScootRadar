@@ -1,7 +1,8 @@
 package com.plhery.scootradar.baselineprofile
 
 // Android's own (X-AD30): the journeys the app's Baseline Profile is recorded from, on the nonMinifiedRelease build,
-// by :app:generateBaselineProfile. Each runs until the classes and methods it uses are the same three times running.
+// by :app:generateReleaseBaselineProfile. Each runs until the classes and methods it uses are the same three times
+// running.
 
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
