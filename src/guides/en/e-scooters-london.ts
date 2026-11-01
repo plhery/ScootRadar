@@ -97,16 +97,16 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'No-go zones: the Royal Parks, canal towpaths and go-slow areas',
+      heading: 'The Royal Parks, canal towpaths and go-slow areas',
       blocks: [
         'Inside the trial area the app’s map shows two kinds of zone: in a no-go area the scooter comes to a safe stop, and in a go-slow area its speed drops to 8 mph, say the City of London and Lambeth Council.',
         'Some places are closed to every e-scooter, hired or not:',
         {
           list: [
             '**The Royal Parks:** Hyde Park, Kensington Gardens, Green Park, St James’s Park, the Regent’s Park and Primrose Hill, Richmond Park, Bushy Park, Greenwich Park, Brompton Cemetery and Victoria Tower Gardens. The Royal Parks, the charity that runs them, “does not, and has no plans to, permit the use of e-scooters on the land it manages”, and the Metropolitan Police enforce its park regulations.',
-            '**Canal towpaths:** the Canal & River Trust’s Towpath Code (March 2026) says e-scooters “are not allowed”, the Regent’s Canal and the Grand Union included. The Trust’s bylaws prohibit them, and it has allowed no trial on its towpaths.',
           ],
         },
+        'The canal towpaths, the Regent’s Canal and the Grand Union included, belong to the Canal & River Trust: check its own rules before you ride on one.',
         'Council parks and private estates set their own rules: follow the app, whose navigation highlights cycleways and quiet routes, TfL says.',
       ],
     },
@@ -184,7 +184,6 @@ const guide: Guide = {
     { title: 'City of London: Parking places for hire scooters and bikes (open data, OGL v3.0)', url: 'https://www.data.gov.uk/dataset/fe236d1a-e071-40cc-91d4-ba93e0c7ec07/parking-places-scooters-cycle-hire' },
     { title: 'Ealing Council: Expansion across the borough', url: 'https://www.ealing.gov.uk/info/201173/transport_and_parking/2802/micromobility/5' },
     { title: 'The Royal Parks: E-scooters in the Royal Parks, policy statement', url: 'https://www.royalparks.org.uk/sites/default/files/2023-07/E-scooters%20In%20The%20Royal%20Parks.pdf' },
-    { title: 'Canal & River Trust: Our Towpath Code (March 2026)', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
     { title: 'Transport for London: Santander Cycles, what you pay', url: 'https://tfl.gov.uk/modes/cycling/santander-cycles/what-you-pay' },
     { title: 'Transport for London: Santander Cycles app switch (October 2026)', url: 'https://tfl.gov.uk/info-for/media/press-releases/2026/october/tfl-and-santander-to-make-bike-hire-quicker-and-easier-than-ever' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },

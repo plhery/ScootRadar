@@ -74,7 +74,7 @@ const guide: Guide = {
         'Inside the trial zone, the Voi app marks the no-ride zones, the slow zones, where the scooter drops to 5 mph, and the no-park zones. The council publishes no map of them, and Voi adjusts its geofencing in problem areas, so check the app before heading into the town centre (Abington Street, the Market Square, the Drapery) or a park such as Abington Park, Becket’s Park or the Racecourse. The council’s pages for those parks say nothing about e-scooters.',
         {
           list: [
-            '**The canal towpath:** the Northampton Arm of the Grand Union Canal runs 4.8 miles from Gayton Junction to the River Nene in the town centre, and the Canal & River Trust looks after it. Its Towpath Code says e-scooters “are not allowed”, and the trust has let no trial onto its towpaths.',
+            '**The canal towpath:** the Northampton Arm of the Grand Union Canal runs 4.8 miles from Gayton Junction to the River Nene in the town centre, and the Canal & River Trust looks after it: check its own rules before you ride there.',
             '**Dark evenings:** the scooters have front and rear lights and a bell, the council says, and the government advises light-coloured or fluorescent clothing.',
           ],
         },
@@ -115,7 +115,6 @@ const guide: Guide = {
         {
           list: [
             '**Northampton was among England’s first trial towns.** Voi put 300 scooters on its streets in early September 2020, and the government added Northamptonshire to its list of trial areas on 9 September 2020.',
-            '**The night stop used to be longer.** In October 2020 the scooters stopped working from 10pm to 4am; now you can hire one until 11pm.',
             '**Every Voi carries a registration number**, added in the first weeks of the trial after feedback from the police, the council and the public. Its four digits are what you quote when you report misuse.',
             '**Voi swaps the batteries, not the scooters.** Swappable batteries cut service trips, and each scooter has a lifespan of five years or more, the council says.',
           ],
@@ -155,9 +154,6 @@ const guide: Guide = {
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'University of Northampton: Cycling, e-scooters and walking', url: 'https://www.northampton.ac.uk/student-life/travel-and-parking/cycling-and-walking/' },
     { title: 'University of Northampton: Student parking', url: 'https://www.northampton.ac.uk/student-life/travel-and-parking/student-parking/' },
-    { title: 'Canal & River Trust: Our towpath code (March 2026)', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
-    { title: 'Canal & River Trust: Towpath FAQs', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/faqs' },
-    { title: 'Micromobilitybiz: Visible number plates and curfew introduced to Voi’s e-scooters in Northampton (20 October 2020)', url: 'https://micromobilitybiz.com/visible-number-plates-and-curfew-introduced-to-vois-e-scooters-in-northampton/' },
   ],
 };
 

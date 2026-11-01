@@ -89,7 +89,7 @@ const guide: Guide = {
     {
       heading: 'Campuses, canals, parks and hospitals',
       blocks: [
-        'Landowners set their own rules; here is what we found:',
+        'Landowners set their own rules:',
         {
           table: {
             caption: 'Rules on land owned by others, as each owner states them, October 2026',
@@ -97,7 +97,6 @@ const guide: Guide = {
             rows: [
               ['Edgbaston campus and halls', 'University of Birmingham', 'Lime’s vehicles “can’t currently be used on campus”; there are “dozens of locations” near it; private e-scooters “are not allowed on campus or in student accommodation” (October 2026)'],
               ['Warwick campus', 'University of Warwick', 'Lime e-scooters are available; private ones “cannot be used, stored, or charged within the University” (6 July 2026)'],
-              ['Canal towpaths', 'Canal & River Trust', 'E-scooters “are not allowed” (Towpath Code, 2023), and it has allowed no trials on towpaths'],
               ['Sutton Park', 'Birmingham City Council', '“Cycling and horse riding are only allowed on the bridleways” (31 March 2026); nothing on e-scooters'],
               ['Cannon Hill Park and other parks', 'Birmingham City Council', 'No e-scooter rule found; activities “must not put other people at risk, cause a nuisance” (4 September 2026)'],
               ['Queen Elizabeth Hospital', 'University Hospitals Birmingham', 'Its staff travel page points to Lime, “available across much of Birmingham” (9 July 2026); no site rule found'],
@@ -117,8 +116,8 @@ const guide: Guide = {
           list: [
             '**National Express West Midlands buses** will not carry e-scooters, e-bikes or bikes “under any circumstances”, though a folded bicycle in a carrying bag is fine (conditions of carriage, 10 March 2026).',
             '**Avanti West Coast**, from New Street: “electric scooters are not permitted on our trains or anywhere on our stations”.',
-            '**Chiltern Railways**, which manages Moor Street: since 12 June 2023 e-scooters, and charging them, are not permitted on its trains or in its stations.',
-            '**Trams and other trains:** we couldn’t check the rules of West Midlands Metro, West Midlands Railway (which manages Snow Hill), London Northwestern or CrossCountry; Network Rail’s New Street page doesn’t mention e-scooters.',
+            '**Chiltern Railways**, which manages Moor Street: check its own rules before you take any e-scooter to its trains.',
+            '**Trams and other trains:** check the rules of West Midlands Metro, West Midlands Railway (which manages Snow Hill), London Northwestern or CrossCountry; Network Rail’s New Street page doesn’t mention e-scooters.',
           ],
         },
         'For schemes elsewhere in the UK, see [e-scooter hire in the UK](guide:uk-hire).',
@@ -160,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter along the canals?',
-      answer: 'No. The Canal & River Trust bans e-scooters from its towpaths under its byelaws and has allowed no rental trials on them.',
+      answer: 'Check the Canal & River Trust’s own rules first: the towpaths are the trust’s.',
     },
   ],
   sources: [
@@ -182,12 +181,9 @@ const guide: Guide = {
     { title: 'University of Birmingham: Lime e-bikes and e-scooters', url: 'https://intranet.birmingham.ac.uk/student/travelling-to-campus/west-midlands-bikes-and-e-scooters.aspx' },
     { title: 'University of Warwick: Lime e-bikes and e-scooters (revised 6 July 2026)', url: 'https://warwick.ac.uk/about/campus-journey/mode-of-travel/cycling/lime/' },
     { title: 'University Hospitals Birmingham: E-bikes and scooters (reviewed 9 July 2026)', url: 'https://www.uhb.nhs.uk/getting-here/getting-to-work/cycling-to-work/e-bikes-and-scooters/' },
-    { title: 'Canal & River Trust: Safe cycling on canal towpaths, FAQs', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/faqs' },
-    { title: 'Canal & River Trust: We’ve launched our Towpath Code (2023)', url: 'https://canalrivertrust.org.uk/news-and-views/news/weve-launched-our-towpath-code' },
     { title: 'Bullring & Grand Central: Bullring visitor guide', url: 'https://www.bullring.co.uk/terms-conditions' },
     { title: 'National Express West Midlands: Conditions of carriage (10 March 2026)', url: 'https://nxbus.co.uk/media/gpmn1mhu/nxbus-conditions-of-carriage-100326.pdf' },
     { title: 'Avanti West Coast: Bikes', url: 'https://www.avantiwestcoast.co.uk/onboard/bikes' },
-    { title: 'Chiltern Railways: Travelling with your bike and scooter', url: 'https://www.chilternrailways.co.uk/customer-service/travelling-your-bike' },
     { title: 'National Rail: Birmingham Moor Street station', url: 'https://www.nationalrail.co.uk/stations/birmingham-moor-street/' },
   ],
 };

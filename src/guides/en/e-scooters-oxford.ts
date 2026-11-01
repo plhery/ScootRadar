@@ -78,7 +78,7 @@ const guide: Guide = {
       heading: 'Where to park a Voi e-scooter in Oxford',
       blocks: [
         '“In Oxford, users can only end their rides in mandatory parking zones, which are clearly identified in the app,” the council says. In 2021 Voi began asking for a photo of the parked scooter at the end of each ride, the council said.',
-        'Bad parking counts as a strike. In June 2021 the council said riders who park badly get a warning by email first, then a £25 fine. In April 2026 Voi announced an **Oxford Parking Fund** of at least £3.5m over the next few years, the BBC reported: street patrols at known hotspots, a trial of parking on the carriageway to free narrow pavements, and tighter controls for riders who keep parking badly.',
+        'Bad parking counts as a strike. In June 2021 the council said riders who park badly get a warning by email first, then a £25 fine.',
         'To report a badly parked or misused scooter, give Voi the four-character number plate on its side and back, with the date, time and place.',
       ],
     },
@@ -93,8 +93,7 @@ const guide: Guide = {
             rows: [
               ['John Radcliffe Hospital', 'Oxford University Hospitals', 'Voi e-scooters “are not allowed on our hospital sites”: they cut out near the entrances (page reviewed March 2026)'],
               ['Oxford Brookes campuses and halls', 'Oxford Brookes University', '“The use of any e-scooters (hired or personal) is not permitted”, and e-scooter and e-bike batteries may not be charged on its sites or in residences'],
-              ['Oxford Canal towpath', 'Canal & River Trust', '“E-scooters, motorbikes, modified e-bikes and other unauthorised vehicles are not allowed” (Towpath Code, March 2026)'],
-              ['University Parks, college grounds, Port Meadow, city parks, Thames towpath', 'Several owners', 'We couldn’t check a published e-scooter rule: follow the signs, and the app’s zones'],
+              ['University Parks, college grounds, Port Meadow, city parks, the Oxford Canal and Thames towpaths', 'Several owners, the Canal & River Trust among them', 'Check each owner’s rules, and follow the signs and the app’s zones'],
             ],
           },
         },
@@ -107,8 +106,7 @@ const guide: Guide = {
         'You can’t take a hire scooter on a bus or a train: the council says they “can’t be folded or collapsed in any way and can’t be taken on public transport or train stations”. End your ride in a bay and walk in.',
         {
           list: [
-            '**GWR**, whose trains link Oxford with London Paddington: check GWR’s own rules before you take any e-scooter to its trains.',
-            '**Chiltern Railways**, from Oxford to London Marylebone: since 12 June 2023 e-scooters, and charging them, are not permitted on its trains or in its stations, because of the fire risk.',
+            '**GWR and Chiltern Railways**, whose trains link Oxford with London Paddington and Marylebone: check their own rules before you take any e-scooter to their trains.',
             '**Buses:** the council’s line above covers them; for your own e-scooter, check Oxford Bus Company’s or Stagecoach’s conditions.',
           ],
         },
@@ -122,7 +120,6 @@ const guide: Guide = {
           list: [
             '**A slow start.** At the launch in February 2021 the scooters were held to 10 mph and, for the first two weeks, could be hired only from 6am to 10pm.',
             '**Over 100 times around the world.** By May 2024 Oxford’s hire scooters had covered more than 2.5 million miles, the council said.',
-            '**A record 2025.** Riders made 1.5 million trips on Voi’s e-scooters and e-bikes in Oxford in 2025, with a peak of 164,000 in October, Voi told the BBC.',
             '**A college bay.** Wolfson College got its own Voi bay, for six e-scooters, in the year to May 2024, the council said.',
           ],
         },
@@ -148,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take a Voi scooter on the train at Oxford station?',
-      answer: 'No. Hire scooters can’t be folded, and the council says they can’t be taken on public transport or into train stations. Chiltern bans e-scooters from its trains and stations; for GWR’s, check GWR’s own rules. End your ride in a bay before you walk in.',
+      answer: 'No. Hire scooters can’t be folded, and the council says they can’t be taken on public transport or into train stations. For your own e-scooter, check GWR’s and Chiltern’s own rules. End your ride in a bay before you walk in.',
     },
     {
       question: 'Can I ride my own e-scooter in Oxford?',
@@ -164,13 +161,9 @@ const guide: Guide = {
     { title: 'Oxfordshire County Council: New electric scooter hire scheme for Oxford launched with Voi (18 February 2021)', url: 'https://news.oxfordshire.gov.uk/new-escooter-launch/' },
     { title: 'Oxfordshire County Council: Experimental pedestrian and cycle zone, Market Street', url: 'https://letstalk.oxfordshire.gov.uk/marketstreet_pedestriancycle_experiment2024' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
-    { title: 'Canal & River Trust: Our Towpath Code (25 March 2026)', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
     { title: 'Oxford University Hospitals: John Radcliffe Hospital, other transport (reviewed 24 March 2026)', url: 'https://www.ouh.nhs.uk/hospitals/jr/find-us/other-transport' },
     { title: 'Oxford Brookes University: Cycling and e-scooters', url: 'https://www.brookes.ac.uk/travel/cycling' },
-    { title: 'Chiltern Railways: Travelling with your bike and scooter', url: 'https://www.chilternrailways.co.uk/customer-service/travelling-your-bike' },
     { title: 'Oxford Travel Options: Scooting (August 2026)', url: 'https://www.oxfordtraveloptions.co.uk/travelling-within-oxford/scooting' },
-    { title: 'BBC News: E-scooter parking in city set for £3.5m investment (28 April 2026)', url: 'https://www.bbc.co.uk/news/articles/cq6j6311m1zo' },
-    { title: 'BBC News: Busiest year for city e-bike and e-scooter scheme (22 December 2025)', url: 'https://www.bbc.co.uk/news/articles/cp84ppxj5k3o' },
   ],
 };
 

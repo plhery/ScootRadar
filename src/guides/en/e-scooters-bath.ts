@@ -91,7 +91,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The towpath ban also comes from its owner: the Canal & River Trust’s Towpath Code (March 2026) does not allow e-scooters, and the trust has let no e-scooter trial onto its towpaths.',
+        'The towpath belongs to the Canal & River Trust: check its own rules before you ride on any of it.',
         'Dott’s zones are unnamed shapes we matched to OpenStreetMap: the app’s map is the one that counts.',
       ],
     },
@@ -156,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter on the Kennet and Avon Canal towpath?',
-      answer: 'No. The Canal & River Trust, which owns it, bans e-scooters there, and almost all of it inside Dott’s Bath area is a no-ride zone.',
+      answer: 'Not inside Dott’s Bath area, where almost all of it is a no-ride zone. The towpath belongs to the Canal & River Trust, so check its own rules too.',
     },
     {
       question: 'Do Dott scooters reach Bath Spa University’s Newton Park campus?',
@@ -178,8 +178,6 @@ const guide: Guide = {
     { title: 'B&NES: Electric scooter trials traffic order (September 2025)', url: 'https://www.bathnes.gov.uk/traffic-order/electric-scooter-trials' },
     { title: 'B&NES: Future mobility projects', url: 'https://www.bathnes.gov.uk/journey-net-zero/future-mobility-current-projects' },
     { title: 'Hello Rayo: E-scooter trial extending to 24 hours in Bath (October 2025)', url: 'https://www.hellorayo.co.uk/greatest-hits/bristol/news/dot-24-hour-ebike-scooter-safety-bath' },
-    { title: 'Canal & River Trust: Our towpath code', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
-    { title: 'Canal & River Trust: Towpath FAQs', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/faqs' },
     { title: 'University of Bath: Active travel', url: 'https://www.bath.ac.uk/guides/active-travel/' },
     { title: 'University of Bath: Regulations for students 2026–27', url: 'https://www.bath.ac.uk/publications/regulations-for-students-2026-27/attachments/regulations-for-students-2026-27-12-use-of-motor-vehicles-on-the-university-site.pdf' },
     { title: 'Bath Spa University: Getting around', url: 'https://www.bathspa.ac.uk/student-life/why-bath-spa/life-in-bath/getting-around/' },
