@@ -82,10 +82,10 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Horario.** El 28 de noviembre de 2025, junto con bajar la velocidad, las autoridades decidieron que los scooters no funcionaran entre la 1 y las 6 de la madrugada, según La Voz de Pucón. Los términos de Whoosh no fijan horarios: la app te dice si puedes partir.',
+            '**Horario.** El 28 de noviembre de 2025, junto con bajar la velocidad, las autoridades decidieron que los scooters no funcionaran entre la 1 y las 6 de la madrugada, según La Voz de Pucón. Aun así, cada noche del 24 al 31 de octubre de 2026 el mapa mostró entre 168 y 194 Whoosh para arrendar de la 1 a las 6. Los términos de Whoosh no fijan horarios: la app te dice si puedes partir.',
             '**Plaza de Armas.** En enero de 2026, la municipalidad y Whoosh hicieron una escuela de conducción en plena plaza (Alerta Noticias Temuco). Lo que ha publicado la municipalidad no fija reglas propias para la plaza: rigen la Ley de Tránsito y las zonas «P».',
             '**Centro y Avenida O’Higgins.** Según Whoosh, la mayoría de los viajes van al centro (Araucanía Noticias, marzo de 2026). Tampoco hay reglas propias para O’Higgins: ciclovía o calzada, y 15 km/h donde la app lo marque.',
-            '**Camino Internacional.** Para la Secplac es hoy la principal avenida urbana de Pucón, y prepara su remodelación (Araucanía Noticias, agosto de 2026). En diciembre de 2025, un editorial de La Voz de Pucón contó que un usuario de Whoosh había chocado en su ciclovía a un joven ciclista que se preparaba para el Ironman 70.3.',
+            '**Camino Internacional.** En diciembre de 2025, un editorial de La Voz de Pucón contó que un usuario de Whoosh había chocado en su ciclovía a un joven ciclista que se preparaba para el Ironman 70.3.',
             '**Veredas.** El 1 de febrero de 2026, según contó un lector en La Voz de Pucón, un adolescente en scooter lo atropelló en la vereda de la calle Colo Colo, camino al lago. La vereda es solo para los casos de excepción de la ley.',
             '**Playa Grande y orilla del lago.** Whoosh prohíbe andar fuera de superficies pavimentadas: no a la arena de la Playa Grande. Junto al lago Villarrica rigen la ley y las zonas «P».',
             '**Villarrica.** Whoosh nombra Villarrica entre sus ciudades, pero el 31 de octubre el mapa no mostraba ningún Whoosh allá. Si sales de la zona permitida, Whoosh te cobra $10.000 y puede bloquear el scooter.',
@@ -128,7 +128,6 @@ const guide: Guide = {
             '**Entre noviembre de 2025 y mayo de 2026, los scooters de Pucón sumaron más de 199.000 viajes**, más de 45.000 usuarios y 348.000 km, con una accidentabilidad no superior al 1 %, según la Secplac (Araucanía Noticias, agosto de 2026).',
             '**Los viajes en scooter en Pucón duran en promedio 10 minutos** y se concentran entre las 18:00 y las 22:00, sobre todo en el centro, según Whoosh (Araucanía Noticias, marzo de 2026).',
             '**Según El Mercurio, Pucón cobra por scooter el 1,4 % de lo que cobra Vitacura**: $1.779 al mes, contra casi $120.000 (La Voz de Pucón, septiembre de 2026). Con el millón al mes que cita el administrador municipal, sería casi el triple.',
-            '**En junio de 2018, la municipalidad recibió cinco motos eléctricas donadas para labores de control**, de hasta 45 km/h, y se anunció como la primera del país en usarlas (Araucanía Noticias).',
           ],
         },
       ],
@@ -153,7 +152,7 @@ const guide: Guide = {
     },
     {
       question: '¿Los scooters de Pucón tienen horario?',
-      answer: 'En noviembre de 2025, las autoridades de Pucón decidieron que no funcionaran entre la 1 y las 6 de la madrugada, según La Voz de Pucón. Los términos de Whoosh no fijan horarios, pero puede terminar un arriendo a las cuatro horas.',
+      answer: 'En noviembre de 2025, las autoridades de Pucón decidieron que no funcionaran entre la 1 y las 6 de la madrugada, según La Voz de Pucón, pero cada noche del 24 al 31 de octubre de 2026 el mapa mostró Whoosh para arrendar a esas horas. Los términos de Whoosh no fijan horarios, pero puede terminar un arriendo a las cuatro horas.',
     },
     {
       question: '¿Seguirá Whoosh en Pucón?',
@@ -180,7 +179,6 @@ const guide: Guide = {
     { title: 'Araucanía Noticias: sanciones y bloqueo de cuentas (diciembre de 2025)', url: 'https://araucanianoticias.cl/2025/comenzaron-sanciones-de-cortesa-y-multas-por-mal-uso-de-scooters-elctricos-en-pucn/1205295392' },
     { title: 'Araucanía Noticias: 148 mil viajes en el verano (marzo de 2026)', url: 'https://araucanianoticias.cl/2026/scooters-electricos-registran-cerca-de-148-mil-viajes-durante-el-verano-en-pucon/0313302171' },
     { title: 'Araucanía Noticias: plan de movilidad de Pucón (agosto de 2026)', url: 'https://araucanianoticias.cl/2026/pucon-impulsa-un-ambicioso-plan-de-movilidad-centrado-en-el-peaton-los-ciclos-y-el-transporte-publico/0817313746' },
-    { title: 'Araucanía Noticias: motos eléctricas municipales (junio de 2018)', url: 'https://araucanianoticias.cl/2018/pucn-ser-el-primer-municipio-del-pas-en-el-uso-de-motos-elctricas-para-labores-de-control/0620147631' },
     { title: 'T13: fiscalización a scooters (noviembre de 2025)', url: 'https://www.t13.cl/noticia/nacional/parte-fiscalizacion-scooters-cuales-son-las-sanciones-desde-cuando-se-aplicaran-20-11-2025' },
   ],
 };
