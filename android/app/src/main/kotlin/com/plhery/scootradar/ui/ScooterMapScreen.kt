@@ -58,6 +58,8 @@ import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
@@ -66,11 +68,19 @@ import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.ui.node.LayoutModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.invalidateDraw
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -514,8 +524,6 @@ private fun DockChrome(
 
     key(language) {
         BoxWithConstraints(Modifier.fillMaxSize().absolutePadding(left = safeLeft, right = safeRight)) {
-            val dock = with(density) { dockHeight.intValue.toDp() }
-            val locate = with(density) { locateButtonHeight.intValue.toDp() }
             val searchBar = with(density) { searchBarHeight.intValue.toDp() }
             val notices = firstLoadFailure != null || locationIssue != null
             // The search bar across the top, at most 560 wide; beside the caption's buttons if it fits there. Under a
@@ -528,27 +536,6 @@ private fun DockChrome(
             // Measured inside the safe area, as the iPhone's GeometryReader is.
             val height = maxHeight - safeTop - safeBottom
 
-            TopStack(
-                controller,
-                failure = firstLoadFailure,
-                locationIssue = locationIssue,
-                noticesLimit = max(64.dp, height - chromeTop - 8.dp - searchBar - 8.dp - 8.dp - locate - (dock + overSafeFoot + 10.dp)),
-                isSearching = isSearching,
-                onSearchingChange = onSearchingChange,
-                onShowFilters = onShowFilters,
-                onShowSettings = onShowSettings,
-                // The window's bottom, inside its safe area.
-                bottomLimit = maxHeight - safeBottom,
-                chrome = chrome,
-                onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
-                settledTop = safeTop + 8.dp + chromeTop,
-                // Drawn over the locate row and the dock, and taking the taps first, as the iPhone's stack at zIndex
-                // 20: in a window too short for all three, as a third of a split screen, the row reaches up to the bar.
-                modifier = Modifier.zIndex(20f).padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
-                searchBarModifier = beside?.let { Modifier.besideCaption(it, slot) } ?: Modifier,
-                barSpan = bar.takeIf { beside != null },
-            )
-
             // The locate button and the dock make way for the search, and come back as it closes. They stay, unseen,
             // so that a card keeps where it was scrolled to and the dock what it last announced.
             val trailing = if (LocalLayoutDirection.current == LayoutDirection.Ltr) 1f else 0f
@@ -560,11 +547,33 @@ private fun DockChrome(
             val dockGone by animateFloatAsState(searchGone, motion(IosMotion.snappy(duration = 0.24)), label = "dock")
                 .atOnceUnderReduceMotion(searchGone)
             val laidOut = remember { LaidOutFrames() }
-            // The locate row stands 10 above the dock's card, laid out from where the card is in the same pass, as the
-            // iPhone's padding by the dock's height is: a height read back as state would move the row a frame after
-            // the card, which shows under Reduce Motion, where the card changes height in one frame.
+            // The locate row stands 10 above the dock's card, and the search bar's notices end 8 above the locate
+            // button: both laid out from where the card is in the same pass, as the iPhone's padding by the dock's height
+            // and its notices' HeightLimit are. A height read back as state would move them a frame after the card, which
+            // shows under Reduce Motion, where the card changes height in one frame: on a small phone a walk's note made
+            // the card taller under a location card drawn whole over Near me for a frame, and cut a frame late as it went.
             Layout(
                 content = {
+                    TopStack(
+                        controller,
+                        failure = firstLoadFailure,
+                        locationIssue = locationIssue,
+                        isSearching = isSearching,
+                        onSearchingChange = onSearchingChange,
+                        onShowFilters = onShowFilters,
+                        onShowSettings = onShowSettings,
+                        // The window's bottom, inside its safe area.
+                        bottomLimit = maxHeight - safeBottom,
+                        chrome = chrome,
+                        onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
+                        settledTop = safeTop + 8.dp + chromeTop,
+                        // Drawn over the locate row and the dock, and taking the taps first, as the iPhone's stack at
+                        // zIndex 20: in a window too short for all three, as a third of a split screen, the row reaches
+                        // up to the bar.
+                        modifier = Modifier.zIndex(20f).padding(top = safeTop + 8.dp + below, start = 12.dp, end = 12.dp),
+                        searchBarModifier = beside?.let { Modifier.besideCaption(it, slot) } ?: Modifier,
+                        barSpan = bar.takeIf { beside != null },
+                    )
                     Box(Modifier.fillMaxSize().unheard(isSearching).onGloballyPositioned { laidOut.row = it }) {
                         Row(
                             Modifier
@@ -585,6 +594,7 @@ private fun DockChrome(
                             FloatingMapControls(
                                 controller,
                                 Modifier
+                                    .topAs(LocateTop)
                                     .onSizeChanged { locateButtonHeight.intValue = it.height }
                                     // The map centres a scooter in what this button and the dock leave visible.
                                     .onGloballyPositioned { chrome.locateButton = laidOut.frame(laidOut.row, it, density.density) },
@@ -604,7 +614,7 @@ private fun DockChrome(
                                 .align(Alignment.BottomCenter)
                                 .padding(horizontal = 10.dp)
                                 .padding(bottom = bottom)
-                                .dockTop()
+                                .topAs(DockTop)
                                 .onGloballyPositioned { chrome.dock = laidOut.frame(laidOut.dock, it, density.density) }
                                 .inert(isSearching),
                             maximumContentHeight = max(
@@ -618,7 +628,7 @@ private fun DockChrome(
                     }
                 },
                 modifier = Modifier.fillMaxSize().onGloballyPositioned { laidOut.screen = it },
-            ) { (locateRow, dockCard), constraints ->
+            ) { (topStack, locateRow, dockCard), constraints ->
                 val card = dockCard.measure(constraints)
                 val screenHeight = constraints.maxHeight
                 val cardTop = card[DockTop].takeIf { it != AlignmentLine.Unspecified }
@@ -627,6 +637,13 @@ private fun DockChrome(
                 val foot = (cardTop - 10.dp.roundToPx()).coerceAtMost(screenHeight).coerceAtLeast(1)
                 val screenWidth = constraints.maxWidth
                 val row = locateRow.measure(Constraints.fixed(screenWidth, foot))
+                val buttonTop = row[LocateTop].takeIf { it != AlignmentLine.Unspecified } ?: (foot - locateButtonHeight.intValue)
+                // The search bar and its notices are laid out down to 8 above the locate button, the foot of the
+                // room the iPhone's topNoticesHeightLimit leaves them, which it works out from where the stack rests:
+                // under a fold, chromeTop down, where its top springs to.
+                val stack = topStack.measure(
+                    Constraints(maxWidth = screenWidth, maxHeight = (buttonTop - 8.dp.roundToPx() + (below - chromeTop).roundToPx()).coerceAtLeast(0)),
+                )
                 // It shrinks toward the bottom trailing corner of the iPhone's VStack: the screen's bottom, and the
                 // trailing edge of the row's 560 and its 10 either side, in the middle of a wider screen.
                 val column = min(screenWidth, 580.dp.roundToPx())
@@ -636,6 +653,7 @@ private fun DockChrome(
                         makeWay(isSearching, locateGone, scale = 0.92f, TransformOrigin(corner / screenWidth, screenHeight.toFloat() / foot))
                     }
                     card.place(0, 0)
+                    stack.place(0, 0)
                 }
             }
         }
@@ -656,10 +674,13 @@ internal fun dockFoot(safeBottom: Dp, tappableBottom: Dp): Dp = if (tappableBott
 /** The top of the dock's card, which the locate row stands on. */
 private val DockTop = HorizontalAlignmentLine(::min)
 
-/** Tells the dock's layout where the card's top is, through [DockTop]. */
-private fun Modifier.dockTop(): Modifier = layout { measurable, constraints ->
+/** The top of the locate button, which the search bar's notices end 8 above. */
+private val LocateTop = HorizontalAlignmentLine(::min)
+
+/** Tells the dock's layout where this top is, through [line]: the card's, [DockTop], or the locate button's, [LocateTop]. */
+private fun Modifier.topAs(line: HorizontalAlignmentLine): Modifier = layout { measurable, constraints ->
     val placeable = measurable.measure(constraints)
-    layout(placeable.width, placeable.height, mapOf(DockTop to 0)) { placeable.place(0, 0) }
+    layout(placeable.width, placeable.height, mapOf(line to 0)) { placeable.place(0, 0) }
 }
 
 /**
@@ -767,10 +788,9 @@ private fun PanelChrome(
                             controller,
                             failure = firstLoadFailure,
                             locationIssue = locationIssue,
-                            limit = noticesLimit,
                             onSearchingChange = onSearchingChange,
                             heights = noticeHeights,
-                            modifier = Modifier.padding(bottom = 8.dp),
+                            modifier = Modifier.padding(bottom = 8.dp).heightIn(max = noticesLimit),
                         )
                         ScooterControlDock(
                             controller,
@@ -926,16 +946,17 @@ private fun LayoutCoordinates.windowFrame(density: Float): ScreenRect {
 /**
  * The search bar and what sits under it: the banner of a first load that failed, and the card of a location that
  * could not be found. With large text they can be taller than the room above the locate button; then they scroll.
- * [settledTop] is where the stack's top comes to rest under the top of the room it is given, where its [modifier]'s
- * padding springs to. Beside a caption's buttons, [searchBarModifier] moves and narrows the bar, and [barSpan] is where
- * it is across the screen without them, in the screen's points from the room's origin.
+ * The stack is laid out in that room, down to the foot its constraints' height ends at, 8 above the locate button; the
+ * open search goes on past it, down to [bottomLimit]. [settledTop] is where the stack's top comes to rest under the top
+ * of the room it is given, where its [modifier]'s padding springs to. Beside a caption's buttons, [searchBarModifier]
+ * moves and narrows the bar, and [barSpan] is where it is across the screen without them, in the screen's points from
+ * the room's origin.
  */
 @Composable
 private fun TopStack(
     controller: ScooterMapController,
     failure: ScooterLoadFailure?,
     locationIssue: ScooterLocationIssue?,
-    noticesLimit: Dp,
     isSearching: Boolean,
     onSearchingChange: (Boolean) -> Unit,
     onShowFilters: () -> Unit,
@@ -965,12 +986,14 @@ private fun TopStack(
     var noticesFrame by remember { mutableStateOf<ScreenRect?>(null) }
     var barHeight by remember { mutableIntStateOf(0) }
     val noticeHeights = remember { NoticeHeights() }
+    // The notices' room, in pixels, as the stack was last laid out.
+    var noticesLimit by remember { mutableIntStateOf(Constraints.Infinity) }
     val top = run {
         val room = roomFrame ?: return@run null
         // The span is the screen's, whose origin the room's is; the bar's frame is the window's.
         val bar = barFrame?.let { frame -> barSpan?.let { frame.copy(x = room.x + it.x, width = it.width) } ?: frame } ?: return@run null
         if (barHeight == 0 || isSearching) return@run null
-        val noticesHeight = with(density) { noticeHeights.settled(failure, locationIssue, 8.dp.roundToPx(), noticesLimit.roundToPx()) }
+        val noticesHeight = with(density) { noticeHeights.settled(failure, locationIssue, 8.dp.roundToPx(), noticesLimit) }
         val notices = if (noticesHeight > 0) with(density) { 8.dp.toPx() } + noticesHeight else 0f
         val sides = listOfNotNull(bar, noticesFrame?.takeIf { noticesHeight > 0 })
         val left = sides.minOf { it.minX }
@@ -1021,7 +1044,6 @@ private fun TopStack(
                     controller,
                     failure = heldFailure,
                     locationIssue = heldIssue,
-                    limit = noticesLimit,
                     onSearchingChange = onSearchingChange,
                     heights = noticeHeights,
                     modifier = Modifier.onGloballyPositioned { noticesFrame = it.windowFrame(density.density) },
@@ -1036,12 +1058,16 @@ private fun TopStack(
         // As a column, centred across, the notices 8 under the collapsed bar while the search is closed, the island
         // still shrinking to it included.
         val loose = constraints.copy(minWidth = 0, minHeight = 0)
-        val island = measurables[0].measure(loose)
+        // The open search ends itself at bottomLimit, or above the keyboard: not in the notices' room.
+        val island = measurables[0].measure(loose.copy(maxHeight = Constraints.Infinity))
         if (!isSearching) heldNoticesTop[0] = (if (barHeight > 0) barHeight else island.height) + 8.dp.roundToPx()
         val noticesTop = heldNoticesTop[0]
-        val notices = measurables.getOrNull(1)?.measure(
-            if (loose.hasBoundedHeight) loose.copy(maxHeight = (loose.maxHeight - noticesTop).coerceAtLeast(0)) else loose,
-        )
+        // From 8 under the bar to the room's foot, and never less than a banner, or the title of a card
+        // (topNoticesHeightLimit): the notices' constraints, which they choose to scroll in as they are laid out, in the
+        // frame the room changes.
+        val limit = if (loose.hasBoundedHeight) maxOf(64.dp.roundToPx(), loose.maxHeight - noticesTop) else Constraints.Infinity
+        noticesLimit = limit
+        val notices = measurables.getOrNull(1)?.measure(loose.copy(maxHeight = limit))
         val width = maxOf(island.width, notices?.width ?: 0).coerceIn(constraints.minWidth, constraints.maxWidth)
         val height = maxOf(island.height, notices?.let { noticesTop + it.height } ?: 0).coerceIn(constraints.minHeight, constraints.maxHeight)
         layout(width, height) {
@@ -1075,7 +1101,7 @@ private class NoticeHeights {
 
 /**
  * What sits under the search bar: the banner of a first load that failed, and the card of a location that could not
- * be found, as tall as [limit] at most, each measured into [heights]. They come as one block with the first notice and
+ * be found, as tall as the room they are given at most, each measured into [heights]. They come as one block with the first notice and
  * go with the last, as the iPhone inserts its `HeightLimit { topNotices }` and takes it away: SwiftUI runs the
  * transition of the view inserted into a parent that stays, so the block fades in where it rests and out where it
  * was, by the default `.opacity`, and the room it takes opens and closes on the same spring, which moves what is under
@@ -1087,7 +1113,6 @@ private fun TopNotices(
     controller: ScooterMapController,
     failure: ScooterLoadFailure?,
     locationIssue: ScooterLocationIssue?,
-    limit: Dp,
     onSearchingChange: (Boolean) -> Unit,
     heights: NoticeHeights,
     modifier: Modifier = Modifier,
@@ -1106,20 +1131,19 @@ private fun TopNotices(
         exit = fadeOut(spring.animation()) + shrinkVertically(spring.animation(), Alignment.Top, clip = false),
         label = "notices",
     ) {
-        NoticeStack(controller, shown.first, shown.second, limit, onSearchingChange, heights, modifier)
+        NoticeStack(controller, shown.first, shown.second, onSearchingChange, heights, modifier)
     }
 }
 
 /**
- * The notices in their block. As ViewThatFits: a plain stack while the notices fit, which leaves their shadows and
- * slides whole, and a scroll, which clips them, only when they don't.
+ * The notices in their block, as tall as the room they are given at most. As ViewThatFits: a plain stack while the
+ * notices fit, which leaves their shadows and slides whole, and a scroll, which clips them, only when they don't.
  */
 @Composable
 private fun NoticeStack(
     controller: ScooterMapController,
     failure: ScooterLoadFailure?,
     locationIssue: ScooterLocationIssue?,
-    limit: Dp,
     onSearchingChange: (Boolean) -> Unit,
     heights: NoticeHeights,
     modifier: Modifier,
@@ -1150,57 +1174,106 @@ private fun NoticeStack(
     fun exit(gapAbove: Int) = slideOutVertically(spring.animation()) { -(it - gapAbove) } + fadeOut(spring.animation()) +
         shrinkVertically(spring.animation(), Alignment.Top, clip = false)
     val cardGap = if (failure != null) with(density) { 8.dp.roundToPx() } else 0
-    // As ViewThatFits, which weighs the notices that stay.
-    val scrolls = with(density) { heights.settled(failure, locationIssue, 8.dp.roundToPx(), Int.MAX_VALUE) > limit.roundToPx() }
-    Column(
-        modifier
-            .heightIn(max = limit)
-            .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
-                layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
-            },
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        // A notice that changes while it shows fades what it says into the new and eases its height, on the same
-        // spring, as the iPhone's stack animates its notices' changes; each tells its height at rest, as the iPhone's
-        // layout has it, from the change's first frame.
-        val changes = if (reduceMotion) null else spring.animation<Float>()
-        AppearingContent(failure != null, atOnce = reduceMotion, enter = enter(0), exit = exit(0)) {
-            val shown = lastFailure ?: return@AppearingContent
-            Box {
-                MapStatusBanner(
-                    message = shown.message,
-                    actionTitle = localized("Try again"),
-                    onAction = controller::retryLoad,
-                    isBusy = isLoading,
-                    animation = changes,
-                    onRestingHeight = { heights.banner = it },
-                )
-                // Said as it appears and each time its message changes.
-                Announcer(Announcement(shown.message))
+    // As ViewThatFits, which weighs the notices that stay, in the room they are laid out in, the height they are given:
+    // chosen in the frame that room changes, as the iPhone lays out the dock's card and the notices in one pass. On a
+    // small phone the dock's card grows with a walk's note and shrinks back as it goes, and a scroll chosen a frame
+    // later left the location card drawn whole over Near me for a frame, or cut for a frame once it fit again.
+    BoxWithConstraints(modifier, propagateMinConstraints = true) {
+        val scrolls = constraints.hasBoundedHeight &&
+            heights.settled(failure, locationIssue, with(density) { 8.dp.roundToPx() }, Int.MAX_VALUE) > constraints.maxHeight
+        Column(
+            Modifier
+                .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+                .fitOrClip(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            // A notice that changes while it shows fades what it says into the new and eases its height, on the
+            // same spring, as the iPhone's stack animates its notices' changes; each tells its height at rest, as the
+            // iPhone's layout has it, from the change's first frame.
+            val changes = if (reduceMotion) null else spring.animation<Float>()
+            AppearingContent(failure != null, atOnce = reduceMotion, enter = enter(0), exit = exit(0)) {
+                val shown = lastFailure ?: return@AppearingContent
+                Box {
+                    MapStatusBanner(
+                        message = shown.message,
+                        actionTitle = localized("Try again"),
+                        onAction = controller::retryLoad,
+                        isBusy = isLoading,
+                        animation = changes,
+                        onRestingHeight = { heights.banner = it },
+                    )
+                    // Said as it appears and each time its message changes.
+                    Announcer(Announcement(shown.message))
+                }
+            }
+            Spacer(Modifier.height(gap))
+            AppearingContent(locationIssue != null, atOnce = reduceMotion, enter = enter(cardGap), exit = exit(cardGap)) {
+                val issue = lastIssue ?: return@AppearingContent
+                Box {
+                    LocationIssueCard(
+                        issue = issue,
+                        onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
+                        onSearchPlace = {
+                            // Searching is the answer to the card, so it goes away.
+                            controller.dismissLocationIssue()
+                            onSearchingChange(true)
+                        },
+                        onRetry = { locationSettings.retry(controller::focusOnUser) },
+                        onDismiss = controller::dismissLocationIssue,
+                        animation = changes,
+                        onRestingHeight = { heights.card = it },
+                    )
+                    Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
+                }
             }
         }
-        Spacer(Modifier.height(gap))
-        AppearingContent(locationIssue != null, atOnce = reduceMotion, enter = enter(cardGap), exit = exit(cardGap)) {
-            val issue = lastIssue ?: return@AppearingContent
-            Box {
-                LocationIssueCard(
-                    issue = issue,
-                    onOpenSettings = { context.startActivity(locationSettings.settingsIntent(context)) },
-                    onSearchPlace = {
-                        // Searching is the answer to the card, so it goes away.
-                        controller.dismissLocationIssue()
-                        onSearchingChange(true)
-                    },
-                    onRetry = { locationSettings.retry(controller::focusOnUser) },
-                    onDismiss = controller::dismissLocationIssue,
-                    animation = changes,
-                    onRestingHeight = { heights.card = it },
-                )
-                Announcer(Announcement(listOfNotNull(issue.title, issue.message).joinToString(" ")))
-            }
+    }
+}
+
+/**
+ * The plain stack's notices measured whole, and the stack as tall as its room at most. While they overflow it, as a
+ * notice does in the frame it comes before its height is known, they are clipped at the room's top and foot, 30 out at
+ * the sides for their shadows, as the scroll that takes them from the next frame clips them (clipScrollableContainer):
+ * not drawn over the locate button for that frame. Under the scroll, which measures them whole itself, they fit.
+ */
+internal fun Modifier.fitOrClip(): Modifier = this then FitOrClip
+
+/** [fitOrClip]'s element. */
+private object FitOrClip : ModifierNodeElement<FitOrClipNode>() {
+    override fun create() = FitOrClipNode()
+
+    override fun update(node: FitOrClipNode) = Unit
+
+    override fun InspectorInfo.inspectableProperties() {
+        name = "fitOrClip"
+    }
+
+    override fun hashCode() = "fitOrClip".hashCode()
+
+    override fun equals(other: Any?) = other === this
+}
+
+/**
+ * [fitOrClip]'s node, which keeps the room's foot while the notices overflow it, as they were last measured. It draws
+ * in the notices' own frame, as tall as they are, not the room's: the clip is at the foot it keeps.
+ */
+private class FitOrClipNode : Modifier.Node(), LayoutModifierNode, DrawModifierNode {
+    private var foot: Int? = null
+
+    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
+        val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
+        val overflow = constraints.maxHeight.takeIf { placeable.height > it }
+        if (overflow != foot) {
+            foot = overflow
+            invalidateDraw()
         }
+        return layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
+    }
+
+    override fun ContentDrawScope.draw() {
+        val foot = foot ?: return drawContent()
+        val sides = 30.dp.roundToPx().toFloat()
+        clipRect(-sides, 0f, size.width + sides, foot.toFloat()) { this@draw.drawContent() }
     }
 }
 

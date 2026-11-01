@@ -2,11 +2,14 @@ package com.plhery.scootradar.ui
 
 import android.content.Context
 import android.provider.Settings
+import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -25,10 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
@@ -41,6 +48,9 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.FakeLocationManager
@@ -53,14 +63,18 @@ import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dock
+import com.plhery.scootradar.core.map.hideWalkingRoute
+import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDockContent
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLoadIssue
+import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterSearchBarState
 import com.plhery.scootradar.core.model.ScooterWalkNote
+import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.map.MapCompass
 import com.plhery.scootradar.map.MapScaleBar
 import com.plhery.scootradar.map.SCALE_TAG
@@ -108,6 +122,9 @@ class ReduceMotionAtOnceTest {
     private val locale = Locale.getDefault()
     private val resolver = ApplicationProvider.getApplicationContext<Context>().contentResolver
     private val animatorScale = Settings.Global.getFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
+
+    /** The screen's view, which the window's insets are handed to. */
+    private lateinit var view: View
 
     /** The rows of the place whose pixels are compared, from and to, as shares of its height: where the change is. */
     private var from = 0f
@@ -340,6 +357,86 @@ class ReduceMotionAtOnceTest {
         assertTheChange("the notices, the search cancelled", reduceMotion, frames = 6) { cancelTheSearch() }
     }
 
+    // The location card on a small phone, as a walk with no location brings it with the scooter card's note, and as the
+    // walk ends: the card takes the room the notices have above Near me, which the dock's card leaves, in the frame the
+    // dock's card changes height, as the iPhone lays both out in one pass (PLAN §10, the notices' room).
+
+    /**
+     * Phone_Min's window, 360 by 640, as DockMotionRecording films it: the location denied, the card shown once and
+     * dismissed, a scooter's card open. The walk brings the card back over Near me, cut to its room, and the scooter
+     * card's "Couldn't find your location." with it; hidden, the note goes and the card has its whole height again.
+     * Each frame from the first is the settled one's: the card was drawn whole over Near me in the first frame of the
+     * walk and cut a frame later, and stayed cut a frame as it ended, its room read back from the dock's height.
+     */
+    @Test
+    @Config(qualifiers = "w360dp-h640dp-xhdpi")
+    fun underReduceMotionTheCardTakesItsRoomAboveNearMeAtOnceOnASmallPhone() = walkWithNoLocation(cardShownBefore = true)
+
+    /**
+     * As the walk brings the card for the first time, before its height is known: in the first frame it is cut to its
+     * room as the scroll that takes it from the next frame cuts it, not drawn whole over Near me.
+     */
+    @Test
+    @Config(qualifiers = "w360dp-h640dp-xhdpi")
+    fun underReduceMotionACardNotYetMeasuredIsCutToItsRoomAtOnceOnASmallPhone() = walkWithNoLocation(cardShownBefore = false)
+
+    private fun walkWithNoLocation(cardShownBefore: Boolean) {
+        val clock = TestClock()
+        val lime = scooter("s1", "lime")
+        val model = controllers.make(
+            StubScooterAPI(ScooterResponse(vehicles = listOf(lime))),
+            clock,
+            locationManager = FakeLocationManager(ScooterAuthorizationStatus.Denied),
+        )
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        showTheScreen(model, clock, reduceMotion = true)
+        phoneMinBars()
+        if (cardShownBefore) {
+            model.focusOnUser()
+            assertTrue(controllers.waitUntil { model.locationIssue.value != null && !model.isLocating.value })
+            settled()
+            model.dismissLocationIssue()
+        }
+        model.selectScooter("lime:s1")
+        assertTrue(controllers.waitUntil { model.dock is ScooterDockContent.Scooter })
+        settled()
+        val title = hasText(ScooterLocationIssue.Denied.title!!)
+        assertTheChange("the walk with no location", reduceMotion = true, frames = 6) {
+            model.showWalkingRoute(ScooterWalkTarget.Scooter(lime))
+            assertTrue(controllers.waitUntil { model.locationIssue.value != null && !model.isLocating.value })
+        }
+        // The card is cut to its room, which ends 8 above Near me, and scrolls.
+        val notices = compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange) and hasAnyDescendant(title))
+            .fetchSemanticsNode().boundsInRoot
+        val nearMe = compose.onNode((hasContentDescription("Near me") or hasText("Near me")) and hasClickAction()).fetchSemanticsNode().boundsInRoot
+        val density = compose.density.density
+        assertTrue("the notices ${notices.bottom / density} over Near me ${nearMe.top / density}", notices.bottom <= nearMe.top - 8 * density + 0.5f)
+        assertTheChange("the walk hidden", reduceMotion = true, frames = 6) { model.hideWalkingRoute() }
+    }
+
+    /**
+     * The clip the walk's first frame takes when the card's height comes after the dock's pass, so the plain stack holds
+     * the card: notices taller than their room are cut at its foot, though they draw in their own frame, as tall as they
+     * are. The screen's own tests reach it only in that order of passes.
+     */
+    @Test
+    fun noticesTallerThanTheirRoomAreCutAtItsFoot() {
+        show(reduceMotion = false) {
+            Place {
+                Box(Modifier.size(100.dp, 200.dp).background(Color.White)) {
+                    Column(Modifier.heightIn(max = 50.dp).fitOrClip()) {
+                        Box(Modifier.size(100.dp, 120.dp).background(Color.Red))
+                    }
+                }
+            }
+        }
+        val pixels = pixels()
+        val foot = (50 * compose.density.density).toInt()
+        assertEquals("above the room's foot", Color.Red, pixels[pixels.width / 2, foot - 2])
+        assertEquals("under the room's foot", Color.White, pixels[pixels.width / 2, foot + 2])
+    }
+
     /**
      * The whole screen of [model], under Remove animations (which it reads as Reduce Motion) or not, its first frame
      * drawn.
@@ -348,6 +445,7 @@ class ReduceMotionAtOnceTest {
         Settings.Global.putFloat(resolver, Settings.Global.ANIMATOR_DURATION_SCALE, if (reduceMotion) 0f else 1f)
         compose.mainClock.autoAdvance = false
         compose.setContent {
+            view = LocalView.current
             CompositionLocalProvider(LocalClock provides { clock.now }) {
                 Box(Modifier.fillMaxSize().testTag(PLACE)) {
                     ScooterMapScreen(controller = model, map = {}, glassBlurs = false)
@@ -355,6 +453,19 @@ class ReduceMotionAtOnceTest {
             }
         }
         compose.mainClock.advanceTimeByFrame()
+    }
+
+    /**
+     * ScootRadar_Phone_Min's bars, at its 2 pixels a point: the status bar, 24 high, and the 3-button bar, 48, which
+     * takes taps.
+     */
+    private fun phoneMinBars() {
+        val insets = WindowInsetsCompat.Builder()
+            .setInsets(WindowInsetsCompat.Type.statusBars(), Insets.of(0, 48, 0, 0))
+            .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, 96))
+            .setInsets(WindowInsetsCompat.Type.tappableElement(), Insets.of(0, 48, 0, 96))
+            .build()
+        compose.runOnUiThread { ViewCompat.dispatchApplyWindowInsets(view, insets) }
     }
 
     private fun openTheSearch() {
