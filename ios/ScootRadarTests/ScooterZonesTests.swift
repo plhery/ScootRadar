@@ -499,13 +499,32 @@ final class CityRuleZoneTests: XCTestCase {
     }
 
     func testEveryStreetCreditsOpenStreetMapInTheLegend() {
-        // Seoul's streets are traced on OpenStreetMap's roads, the user's exception for this layer only (1 November 2026),
-        // and the Apple map credits no OpenStreetMap, so the legend line does.
-        let streets = CityRuleZone.all.filter { $0.id.hasPrefix("seoul-") }
-        XCTAssertEqual(streets.count, 3)
-        for street in streets {
+        // Seoul's and Antalya's streets are traced on OpenStreetMap's roads, the user's exception for this layer only
+        // (1 November 2026), and the Apple map credits no OpenStreetMap, so the legend line does.
+        XCTAssertEqual(CityRuleZone.all.filter { $0.id.hasPrefix("seoul-") }.count, 3)
+        for street in CityRuleZone.all {
             XCTAssertTrue(street.authority.hasSuffix(", lines © OpenStreetMap"), street.authority)
         }
+    }
+
+    func testAntalyasBoulevardIsShownAtAllHoursSinceSeptember2025CreditedToUKOME() throws {
+        // Trendy Lara, in Kundu, where its lines end; the boulevard runs on west into Güzeloba, where riding is allowed.
+        let kundu = GeoBounds(south: 36.862, west: 30.915, north: 36.868, east: 30.925)
+        let guzeloba = GeoBounds(south: 36.85, west: 30.83, north: 36.86, east: 30.855)
+        // 2 November 2026, 02:30 in Antalya (UTC+3).
+        let night = Date(timeIntervalSince1970: 1_793_575_800)
+        let shown = CityRuleZone.shown(over: kundu, zoom: 15, at: night)
+        XCTAssertEqual(shown.map(\.rule.id), ["antalya-yasar-sobutay-bulvari"])
+        XCTAssertEqual(shown.map(\.inForce), [true])
+        let boulevard = try XCTUnwrap(shown.first?.rule)
+        XCTAssertEqual(boulevard.authority, "Antalya UKOME, lines © OpenStreetMap")
+        XCTAssertEqual(boulevard.timeZone, "Europe/Istanbul")
+        XCTAssertTrue(boulevard.hours.isEmpty)
+        XCTAssertEqual(boulevard.kind, .noRide)
+        // 29 September 2025, noon in Antalya: the day before UKOME's first decision.
+        XCTAssertFalse(boulevard.inForce(at: Date(timeIntervalSince1970: 1_759_136_400)))
+        XCTAssertTrue(CityRuleZone.shown(over: guzeloba, zoom: 15, at: night).isEmpty)
+        XCTAssertTrue(CityRuleZone.shown(over: kundu, zoom: 13, at: night).isEmpty)
     }
 
     func testAStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
@@ -523,7 +542,7 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertTrue(covers(37.50045, 127.00226))
     }
 
-    func testSeoulsStreetsAloneAreAllAndForbidRiding() {
+    func testTheStreetsAloneAreAllAndForbidRiding() {
         // Which streets they are is data/'s, which Android's CatalogParityTest holds to this catalog: here, what each is.
         XCTAssertFalse(CityRuleZone.all.isEmpty)
         XCTAssertTrue(CityRuleZone.all.allSatisfy { $0.kind == .noRide && !$0.lines.isEmpty })

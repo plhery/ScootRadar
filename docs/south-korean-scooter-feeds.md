@@ -405,6 +405,13 @@ anonymous app map" and "DART anonymous app map", and link to ridebeam.com, gcoo.
 alpaca.kr. DART's site has no working https, and Swing's, swingmobility.com,
 did not answer from here, so neither has a link.
 
+Seoul's three no-ride streets (data/rule-zones.json) are traced on
+OpenStreetMap's roads, the user's exception to map rules not resting on
+OpenStreetMap (1 November 2026). The credits add "Seoul's no-ride streets
+traced on OpenStreetMap, ODbL" under the "KR: OpenStreetMap boundaries ·
+ODbL" link, and the legend names it after the authority: "Seoul, lines ©
+OpenStreetMap".
+
 Alpaca's [rider terms](https://alpaca.kr/terms/html/term_01.html)
 (회원이용약관), of 주식회사 알파모빌리티 (Alpha Mobility, in Ansan), in force
 since 14 May 2026, forbid members, in article 27(2), to copy, transmit,

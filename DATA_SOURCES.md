@@ -619,8 +619,8 @@ Streets where a city or its police forbids riding, in `data/rule-zones.json`,
 are drawn as no riding's zones are, from zoom 14 whether the layer is on or
 not, dimmer outside their hours; the legend gives the hours and names who
 forbids it, linked to where they say so. The iOS app has them as built
-(ProviderCatalog.generated.swift). So far Seoul's three kickboard-free
-streets, 12:00 to 23:00 every day: Hongdae's Red Road (sections R1 to R6) and
+(ProviderCatalog.generated.swift), and so does the Android app (catalog.json).
+So far Seoul's three kickboard-free streets, 12:00 to 23:00 every day: Hongdae's Red Road (sections R1 to R6) and
 Banpo's academy street since 16 May 2025
 ([Seoul and the Seoul police](https://news.seoul.go.kr/traffic/archives/514266)),
 and Daechi-dong's academy street since 30 September 2026
@@ -636,9 +636,24 @@ layer only. Where and when each rule holds still comes from its authority
 alone. The pages are under KOGL Type 4
 (credit, no commercial use, no changes): only where and when the rule holds is
 taken from them, not their maps or words. Yeonsinnae's and Wirye's streets,
-which the press reports from 30 September 2026, wait for an official page, and
-Antalya's ban on Yaşar Sobutay Bulvarı (UKOME decision 374) for an official
-line of which road it means.
+which the press reports from 30 September 2026, wait for an official page.
+
+Antalya's Yaşar Sobutay Bulvarı, the Lara tourist road, is closed to e-scooters,
+Roadpet and Ginger vehicles in every public area within Kemerağzı and Kundu, at
+all hours, since UKOME decision 2025/09-708 of 30 September 2025; decision
+2026/06-374 of 30 June 2026 added three- and four-wheeled mopeds
+([UKOME decisions](https://www.antalya.bel.tr/tr/ukome-kararlari?ukome-yil=2026&ukome-ay=6)).
+No map was published. UKOME's own decisions name the road "Lara Turizm Yolu
+(Yaşar Sobutay Bulvarı)", once "Tesisler Caddesi", and place parcels and
+hotels on it, from Concorde and Kundu Bazaar in Kemerağzı to Titanic Mardan
+Palace and Trendy Lara in Kundu. The land registry's parcel map (TKGM) puts those
+parcels 7 to 35 m from OpenStreetMap's two carriageways there. The lines are
+those carriageways, © OpenStreetMap contributors under the ODbL, from the edge
+of Kemerağzı (OpenStreetMap's boundary, within about 25 m of the registry's) to
+Trendy Lara: about 6.5 km, credited "Antalya UKOME, lines © OpenStreetMap". The
+0.9 km on to Kumköy, which no decision names, is left out, and so is Güzeloba,
+where the same boulevard is open to scooters. Turkey's credits add "Antalya's
+no-ride boulevard traced on OpenStreetMap, ODbL" and the OpenStreetMap link.
 
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as

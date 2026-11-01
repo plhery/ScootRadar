@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Antalya: BinBin, Beam, Martı, Hop and Turkey’s 2026 rules',
   lede: 'E-scooters in Antalya are rented through four apps: BinBin, Beam, Martı and Hop. BinBin publishes no Antalya price; the app shows the unlock fee and the price a minute before you start. Turkish law lets you ride from 15 without a licence: in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, and never on the pavement. On Yaşar Sobutay Bulvarı, the Lara tourist road through Kundu, scooters are banned outright.',
   published: '2026-10-26',
-  updated: '2026-10-26',
+  updated: '2026-11-02',
   city: 'tr:Antalya',
   sections: [
     {
@@ -43,7 +43,7 @@ const guide: Guide = {
               ['Where?', 'Muratpaşa, Konyaaltı, Kepez and Alanya; Beam also in Manavgat', 'BinBin; Beam'],
               ['What does a ride cost?', 'An unlock fee plus a price a minute, shown in the app', 'BinBin; the national regulation'],
               ['Who can ride?', '15 and over, no licence; Martı asks for 16', 'The traffic law; Martı'],
-              ['Banned streets?', 'Yaşar Sobutay Bulvarı in Kemerağzı and Kundu', 'UKOME, 30 June 2026'],
+              ['Banned streets?', 'Yaşar Sobutay Bulvarı in Kemerağzı and Kundu', 'UKOME, 30 September 2025 and 30 June 2026'],
               ['Night ban?', 'None found', 'The law; UKOME’s published decisions; the operators'],
               ['Where does a ride end?', 'Where the app allows, never in a red area', 'BinBin; Martı'],
             ],
@@ -63,7 +63,7 @@ const guide: Guide = {
             '**Never on the pavement** or anywhere set aside for pedestrians, and no more than two side by side in a lane.',
           ],
         },
-        '**Not on the Lara tourist road in Kundu.** On 30 June 2026 UKOME banned scooters, Roadpet and Ginger vehicles and three- and four-wheeled mopeds from all public areas of Yaşar Sobutay Bulvarı in Kemerağzı and Kundu, widening its ban of September 2025.',
+        '**Not on the Lara tourist road in Kemerağzı and Kundu.** Since 30 September 2025 UKOME has banned scooters, Roadpet and Ginger vehicles from all public areas of Yaşar Sobutay Bulvarı in Kemerağzı and Kundu, its pavements and cycle path included, at all hours; on 30 June 2026 it added three- and four-wheeled mopeds. The [map](map:tr:Antalya) draws the boulevard from Kemerağzı to Trendy Lara as a no-riding street from zoom 14. West of Kemerağzı, in Güzeloba, the same boulevard is open to scooters.',
         '**No-go and slow zones are UKOME’s.** Under the national regulation, its decisions list where scooters may not run and how fast they may go, at most 25 km/h. In 2022 it set a top speed of 20 km/h for e-scooters in Antalya and told the operators to block them, through their apps, on the tram line, in the old town (Kaleiçi), on Konyaaltı Kent Meydanı, on Kapalıyol (Kazım Özalp Caddesi) and on Liman Caddesi in Kemer. Its decisions online, which run to June 2026, don’t change these, but we couldn’t confirm the operators still apply them: your app shows the zones. Since June 2026 the regulation has made operators enforce zones: a warning sounds as you near a no-go zone, and inside one the scooter slows gradually to 6 km/h.',
         '**The seafront.** On Konyaaltı’s seafront (Akdeniz Bulvarı) and in Konyaaltı Beach Park, a UKOME decision of June 2022 keeps the pedestrian areas for people on foot and the cycle paths for pedal bikes and e-scooters only. Elsewhere, as on the Lara seafront, we found only the national rules: ride in the cycle path where there is one, never on the promenade, and walk the scooter in pedestrian streets.',
       ],
@@ -165,7 +165,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride an e-scooter on the Lara road in Kundu?',
-      answer: 'No. UKOME has banned scooters from all public areas of Yaşar Sobutay Bulvarı in Kemerağzı and Kundu since 30 June 2026.',
+      answer: 'No. UKOME has banned scooters from all public areas of Yaşar Sobutay Bulvarı in Kemerağzı and Kundu since 30 September 2025, at all hours.',
     },
     {
       question: 'Can you take an e-scooter on the AntRay tram?',

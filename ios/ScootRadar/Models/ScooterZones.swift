@@ -223,11 +223,11 @@ enum ScooterZoneLook {
 
 /// A street where a city or its police forbids riding, from data/rule-zones.json, or a zone a
 /// city sets for shared scooters, from data/city-zones.json, as on the web (src/lib/ruleZones.ts):
-/// Seoul's kickboard-free streets, and Bergen's and Porto's zones, credited to the city. Unlike
+/// Seoul's kickboard-free streets, Antalya's boulevard, and Bergen's and Porto's zones, credited to the city. Unlike
 /// the operators' zones they are the law, so the map draws them from zoom 14 whether or not the
 /// zones are on, each as its kind's zones are and dimmer outside its hours, and the legend gives
 /// their kind, their hours and who sets them, linked to where they say so. CityRuleZone.all,
-/// Seoul's streets, and CityRuleZone.cityZones are generated, the cities' zones as a JSON file in
+/// the streets, and CityRuleZone.cityZones are generated, the cities' zones as a JSON file in
 /// the app (CityZoneFile.builtIn).
 struct CityRuleZone: Equatable, Sendable, Identifiable {
     struct Hours: Equatable, Sendable {
@@ -256,7 +256,7 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         }
     }
 
-    /// Seoul's streets and the cities' zones, put together once, as the map shows them: first when the app
+    /// The streets and the cities' zones, put together once, as the map shows them: first when the app
     /// starts, aside (ScootRadarApp).
     static let onMap: [CityRuleZone] = all + cityZones
     /// How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14.
@@ -270,7 +270,7 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     /// Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune".
     let authority: String
     let timeZone: String
-    /// What it asks of a scooter: no riding, on Seoul's streets.
+    /// What it asks of a scooter: no riding, on the streets.
     let kind: ScooterZoneKind
     /// The local day it starts, "YYYY-MM-DD"; empty for a city's zone, which has always held.
     let firstDay: String
@@ -285,7 +285,7 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     /// along each piece, which the zones' overlay merges into one shape; a city's zone is its ring.
     let polygons: [[[GeoPoint]]]
 
-    /// One of Seoul's streets, where riding is forbidden.
+    /// A street where riding is forbidden.
     init(id: String, authority: String, timeZone: String, firstDay: String, hours: [Hours], source: URL, lines: [[GeoPoint]]) {
         self.id = id
         self.authority = authority

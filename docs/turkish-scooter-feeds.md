@@ -127,3 +127,15 @@ Beam's operating areas there, about 1 km wider for the H3 cells that cross
 their edges. At 04:24 Turkish time on 26 October the map
 counted all 1,200 of Beam's in Antalya; a count by district boundaries at
 about 03:00 put about 460 in Alanya, 125 in Manavgat and 46 in Kemer.
+
+## No-ride streets
+
+Antalya's Yaşar Sobutay Bulvarı in Kemerağzı and Kundu (Aksu), the Lara
+tourist road, is drawn as a no-ride street at all hours (data/rule-zones.json,
+2 November 2026). UKOME closed it to e-scooters, Roadpet and Ginger vehicles in
+decision 2025/09-708 of 30 September 2025, and decision 2026/06-374 of 30 June
+2026 added three- and four-wheeled mopeds. Its lines are OpenStreetMap's two
+carriageways from the edge of Kemerağzı to Trendy Lara, matched to the road
+UKOME's decisions name by the parcels they place on it. They are the user's
+exception to map rules not resting on OpenStreetMap, and are credited to it
+(DATA_SOURCES.md, "Ride and parking zones").

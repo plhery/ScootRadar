@@ -1432,7 +1432,7 @@
         "tr:Samsun"
       ],
       "credits": {
-        "attribution": "Turkey: BinBin anonymous app map; Beam authenticated rider map",
+        "attribution": "Turkey: BinBin anonymous app map; Beam authenticated rider map; Antalya's no-ride boulevard traced on OpenStreetMap, ODbL",
         "links": [
           {
             "label": "TR: BinBin map",
@@ -1441,6 +1441,10 @@
           {
             "label": "TR: Beam map",
             "href": "https://www.ridebeam.com/"
+          },
+          {
+            "label": "TR: OpenStreetMap boundaries · ODbL",
+            "href": "https://opendatacommons.org/licenses/odbl/"
           }
         ]
       }
@@ -1540,7 +1544,7 @@
         "kr:Ulsan"
       ],
       "credits": {
-        "attribution": "South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map, Deer's scooters included; Alpaca anonymous app map; DART anonymous app map",
+        "attribution": "South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map, Deer's scooters included; Alpaca anonymous app map; DART anonymous app map; Seoul's no-ride streets traced on OpenStreetMap, ODbL",
         "links": [
           {
             "label": "KR: Beam map",

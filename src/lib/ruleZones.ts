@@ -132,9 +132,16 @@ export function bandPolygons(lines: [number, number][][], widthM = BAND_WIDTH_M)
       ]]);
     }
   }
-  // The union reads [lat, lng] as [x, y], and gives the points back in that order.
+  // The union reads [lat, lng] as [x, y], and gives the points back in that order. Pieces it
+  // can't join (its sweep fails on some edges two lines share) are drawn as they are, as the
+  // iPhone draws them, rather than the map failing.
   const [first, ...rest] = pieces;
-  return first ? polygonClipping.union(first, ...rest) : [];
+  if (!first) return [];
+  try {
+    return polygonClipping.union(first, ...rest);
+  } catch {
+    return pieces as [number, number][][][];
+  }
 }
 
 function linesBounds(lines: [number, number][][]): MapBounds {
@@ -185,15 +192,25 @@ function areaPolygon(ring: [number, number][]): [number, number][][] {
   return [outerRing(outer), ...holes.map(hole => [...outerRing(hole)].reverse())];
 }
 
-const shapes = new Map<string, { bounds: MapBounds; polygons: [number, number][][][] }>();
+const zoneBounds = new Map<string, MapBounds>();
+const shapes = new Map<string, [number, number][][][]>();
 
+function boundsOf(zone: RuleZone) {
+  let bounds = zoneBounds.get(zone.id);
+  if (!bounds) {
+    bounds = linesBounds(zone.ring ? [zone.ring] : zone.lines);
+    zoneBounds.set(zone.id, bounds);
+  }
+  return bounds;
+}
+
+/** Built the first time it is in view: a long street's band takes tens of milliseconds. */
 function shapeOf(zone: RuleZone) {
   let shape = shapes.get(zone.id);
   if (!shape) {
-    shape = zone.ring ? { bounds: linesBounds([zone.ring]), polygons: [areaPolygon(zone.ring)] }
+    shape = zone.ring ? [areaPolygon(zone.ring)]
       // A pavement is drawn as its line: a band as wide as a street's would cover the street beside it.
-      : zone.rule === 'pavement' ? { bounds: linesBounds(zone.lines), polygons: [] }
-        : { bounds: linesBounds(zone.lines), polygons: bandPolygons(zone.lines) };
+      : zone.rule === 'pavement' ? [] : bandPolygons(zone.lines);
     shapes.set(zone.id, shape);
   }
   return shape;
@@ -205,10 +222,8 @@ const NONE: RuleZoneShape[] = [];
 export function ruleZonesInView(view: { bounds: MapBounds; zoom: number } | null, now: number,
   zones: RuleZone[] = RULE_ZONES): RuleZoneShape[] {
   if (!view || view.zoom < ZONES_MIN_ZOOM) return NONE;
-  const shown = zones.flatMap(zone => {
-    const { bounds, polygons } = shapeOf(zone);
-    return boundsIntersect(view.bounds, bounds) ? [{ ...zone, polygons, inForce: ruleInForce(zone, now) }] : [];
-  });
+  const shown = zones.flatMap(zone => boundsIntersect(view.bounds, boundsOf(zone))
+    ? [{ ...zone, polygons: shapeOf(zone), inForce: ruleInForce(zone, now) }] : []);
   // The same empty list every time, so that a map without them does not draw again.
   return shown.length ? shown : NONE;
 }

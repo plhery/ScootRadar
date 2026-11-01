@@ -51,6 +51,17 @@ describe('bandPolygons', () => {
     expect(polygonContainsPoint(outer, 37.5 + 9 / 110_540, 127.001)).toBe(false);
     expect(polygonContainsPoint(outer, 37.50045, 127.00226)).toBe(true);
   });
+
+  it('joins every street of the file into a shape or a few, so none is drawn piece by piece', () => {
+    // Pieces the union can't join are drawn as they are (hundreds for Antalya's boulevard): two
+    // lines sharing an edge can make it fail, so a carriageway leaves out the edges another draws.
+    for (const zone of RULE_ZONES) expect(bandPolygons(zone.lines).length, zone.id).toBeLessThanOrEqual(zone.lines.length);
+  });
+
+  it('draws the pieces as they are when they can\'t be joined, rather than failing', () => {
+    const line: [number, number][] = [[37.5, 127], [37.5, 127.001]];
+    expect(bandPolygons([line, [...line].reverse(), line], 14).length).toBeGreaterThan(0);
+  });
 });
 
 describe('ruleZonesInView', () => {
@@ -63,6 +74,26 @@ describe('ruleZonesInView', () => {
     expect(ruleZonesInView({ bounds: HONGDAE, zoom: 13 }, SEOUL_NOON)).toEqual([]);
     expect(ruleZonesInView({ bounds: DAECHI, zoom: 16 }, SEOUL_NOON).map(zone => zone.authority)).toEqual(['Gangnam-gu, lines © OpenStreetMap']);
     expect(ruleZonesInView(null, SEOUL_NOON)).toEqual([]);
+  });
+
+  it('gives Antalya\'s boulevard in Kemerağzı and Kundu at all hours since 30 September 2025, credited to UKOME', () => {
+    // Trendy Lara, Kundu, where the lines end; the boulevard runs on into Güzeloba, where riding is allowed.
+    const kundu = { south: 36.862, west: 30.915, north: 36.868, east: 30.925 };
+    const guzeloba = { south: 36.85, west: 30.83, north: 36.86, east: 30.855 };
+    const night = Date.parse('2026-11-01T23:30:00Z');
+    const [boulevard, ...others] = ruleZonesInView({ bounds: kundu, zoom: 15 }, night);
+    expect(others).toEqual([]);
+    expect(boulevard.id).toBe('antalya-yasar-sobutay-bulvari');
+    expect(boulevard.inForce).toBe(true);
+    expect(boulevard.authority).toBe('Antalya UKOME, lines © OpenStreetMap');
+    expect(boulevard.timeZone).toBe('Europe/Istanbul');
+    expect(boulevard.hours).toBeUndefined();
+    expect(ruleZonesInView({ bounds: kundu, zoom: 15 }, Date.parse('2025-09-29T12:00:00Z'))[0].inForce).toBe(false);
+    expect(ruleZonesInView({ bounds: guzeloba, zoom: 15 }, night)).toEqual([]);
+    // On the eastbound carriageway in front of Titanic Mardan Palace.
+    const line = boulevard.lines![0];
+    const [lat, lng] = line[Math.floor(line.length * 0.9)];
+    expect(boulevard.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng))).toBe(true);
   });
 
   it('keeps each street whole, with a source and hours', () => {

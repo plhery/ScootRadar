@@ -290,7 +290,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     @ObservationIgnored private let api: any ScooterAPIClient
     @ObservationIgnored private let cityZoneDownloads: CityZoneDownloads
-    /// Seoul's streets and the cities' zones built in (CityRuleZone.onMap), first read when drawn, from zoom
+    /// The streets and the cities' zones built in (CityRuleZone.onMap), first read when drawn, from zoom
     /// 14: the cities' come from a file in the app (CityZoneFile.builtIn), which a launch needn't wait on.
     @ObservationIgnored private let builtInZones: () -> [CityRuleZone]
     @ObservationIgnored private let locationManager: CLLocationManager
