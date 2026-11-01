@@ -322,6 +322,7 @@ import portsmouthEn from './en/e-scooters-portsmouth';
 import isleOfWightEn from './en/e-scooters-isle-of-wight';
 import aylesburyEn from './en/e-scooters-aylesbury';
 import arendalNb from './nb/elsparkesykkel-arendal';
+import friedrichshafenDe from './de/e-scooter-friedrichshafen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -644,4 +645,5 @@ export const GUIDES: readonly Guide[] = [
   isleOfWightEn,
   aylesburyEn,
   arendalNb,
+  friedrichshafenDe,
 ];
