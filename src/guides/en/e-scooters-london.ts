@@ -46,7 +46,7 @@ const guide: Guide = {
           },
         },
         'Islington, Hackney, Newham, Greenwich and the other boroughs aren’t taking part. A hire scooter is legal only inside the trial area, and a ride ends only in a bay inside it, so check the app’s map before you head for a borough boundary. Stratford, with the London Stadium and Westfield, is in Newham: walk or take the train from the last bay.',
-        'Heading out of London for the day? The map also shows Voi in [Oxford](map:gb:Oxford) and [Cambridge](map:gb:Cambridge), and [e-scooter hire in the UK](guide:uk-hire) covers all 21 trial areas.',
+        'Heading out of London for the day? The map also shows Voi in [Slough](guide:slough), on the Elizabeth line, and in [Oxford](map:gb:Oxford) and [Cambridge](map:gb:Cambridge), and [e-scooter hire in the UK](guide:uk-hire) covers all 21 trial areas.',
       ],
     },
     {
