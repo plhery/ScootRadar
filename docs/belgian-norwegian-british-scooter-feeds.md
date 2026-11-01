@@ -410,6 +410,25 @@ stays open at night.
   from 4am to 10pm, Voi's e-bikes at any hour (undated page). Voi's map listed
   no scooter there from 22:00 to 04:00 on each night from 24 October to
   1 November 2026. Added on 1 November 2026.
+- **No night ban** found in Britain's other areas (checked 1 November 2026).
+  Liverpool's scooters can be rented "24 hours a day, 7 days a week" since
+  Bolt took over on 1 February 2026
+  ([Liverpool Express](https://www.liverpoolexpress.co.uk/e-scooter-faqs/)),
+  Dott's in Bath and Bristol "24/7"
+  ([Travelwest](https://travelwest.info/e-scooter-e-bike-hire/)), Oxford's
+  "24 hours a day"
+  ([county page](https://www.oxfordshire.gov.uk/residents/roads-and-transport/connecting-oxfordshire/active-travel/e-scooter-trial)),
+  and Beryl's in Norwich "24 hours a day, 7 days a week"
+  ([Beryl](https://help-bikes.beryl.cc/en/articles/11697388-beryl-e-scooters-in-norwich)).
+  The trial pages for Cheltenham and Gloucester, Slough, Chelmsford and
+  Braintree, London, Salford, Milton Keynes and Nottingham give no hours, and
+  Buckinghamshire's says only that Voi kept Zipp's.
+- **Southampton:** the council's Q&A of May 2023 gave hire hours of 04:00 to
+  22:00 "for the start of the service", and a search engine's extract of its
+  Q&A of April 2024 gives 04:00 to midnight, but that document is no longer
+  online and the council's site refuses scripts, so no ban was added. Voi's Southampton feed listed 733 scooters or more every night from
+  25 October to 1 November 2026, but its Northampton feed lists scooters
+  during that town's ban too, so the feed settles nothing.
 - Stavanger, Tromsø and Tønsberg also close on the eve of public holidays
   (Tønsberg those of the movable ones, from 23:00), which the map closes too
   since 29 October 2026 ([holiday nights](curfew-holiday-nights.md)).
