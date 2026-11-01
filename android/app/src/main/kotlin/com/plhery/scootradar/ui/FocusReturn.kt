@@ -12,8 +12,9 @@ import androidx.compose.ui.semantics.getAllSemanticsNodes
 // TalkBack's focus as a menu, popover or sheet closes (PLAN §10; app-ai's TalkBack pass, F10 and SH3).
 
 /**
- * TalkBack's focus back on the control it was on as a menu, popover or sheet opened, once that closes, as VoiceOver
- * goes back to the element it was on as UIKit dismisses a modal. Left to itself, TalkBack looks for the node it last
+ * TalkBack's focus back on the control it was on as a menu, popover or sheet opened, once that closes (PLAN §10:
+ * UIKit is believed to put VoiceOver back on a closed modal's presenter, which no Apple document settles, and a marker
+ * or the search bar is a lost place either way). Left to itself, TalkBack looks for the node it last
  * focused by the window's title and its pane's, which the screen's announcements and the sheets' panes change, and
  * else takes the window's first node: the search bar, or a marker. Put back a frame after the close, the focus is in
  * the window as TalkBack settles on the change, and TalkBack keeps it. Without TalkBack nothing is kept or moved.
