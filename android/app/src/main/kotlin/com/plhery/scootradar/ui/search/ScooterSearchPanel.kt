@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,18 +14,15 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
@@ -46,7 +42,6 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalDensity
@@ -62,7 +57,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isFinite
@@ -77,6 +71,7 @@ import com.plhery.scootradar.core.search.KeyboardOverlap
 import com.plhery.scootradar.core.search.SwissAddressSearchModel
 import com.plhery.scootradar.core.search.SwissAddressSearchStatus
 import com.plhery.scootradar.ui.Announcer
+import com.plhery.scootradar.ui.FitOrScroll
 import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
@@ -208,27 +203,6 @@ private fun announcement(status: SwissAddressSearchStatus): String? = when (stat
         }
     SwissAddressSearchStatus.NoResults -> localized("No places found.")
     SwissAddressSearchStatus.Failed -> localized("Search isn’t available right now.")
-}
-
-/**
- * HeightLimit with ViewThatFits: as tall as the content, up to [maximum], and scrolling only when it is taller. A
- * plain stack while it fits leaves the rows' shapes whole.
- */
-@Composable
-private fun FitOrScroll(maximum: Dp, modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
-    var contentHeight by remember { mutableIntStateOf(0) }
-    val scrolls = maximum.isFinite && contentHeight > with(LocalDensity.current) { maximum.roundToPx() }
-    Column(
-        modifier
-            .then(if (maximum.isFinite) Modifier.heightIn(max = maximum) else Modifier)
-            .then(if (scrolls) Modifier.verticalScroll(rememberScrollState()) else Modifier)
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
-                contentHeight = placeable.height
-                layout(placeable.width, min(placeable.height, constraints.maxHeight)) { placeable.place(0, 0) }
-            },
-        content = content,
-    )
 }
 
 /** The field, with a search icon before it and, once something is typed, a button that empties it. */

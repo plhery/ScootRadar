@@ -2,10 +2,19 @@ package com.plhery.scootradar.ui.dock
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestControllers
@@ -45,6 +54,7 @@ class DockHeightTest {
     private val controllers = TestControllers()
     private val locale = Locale.getDefault()
     private val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter("s1", "lime"))))
+    private var limit by mutableStateOf(Dp.Infinity)
 
     @Before
     fun setUp() {
@@ -154,6 +164,31 @@ class DockHeightTest {
         return first + frames(27)
     }
 
+    /**
+     * Content within the card's limit is a plain stack, as the iPhone's ViewThatFits takes its plain content while it
+     * fits: it draws its shapes whole and takes no drag of its own. Content past the limit scrolls, from the frame the
+     * limit changes, and is plain again from the frame it fits (UI-027, UI-212).
+     */
+    @Test
+    fun theCardScrollsOnlyWhatIsTallerThanItsLimit() {
+        limit = 400.dp
+        shown()
+        compose.mainClock.advanceTimeBy(2_000)
+        assertEquals("the summary within its limit, plain", 0, scrolls())
+        limit = 40.dp
+        Snapshot.sendApplyNotifications()
+        compose.mainClock.advanceTimeByFrame()
+        assertEquals("past a limit of 40, scrolling", 1, scrolls())
+        limit = 400.dp
+        Snapshot.sendApplyNotifications()
+        compose.mainClock.advanceTimeByFrame()
+        assertEquals("within it again, plain", 0, scrolls())
+    }
+
+    private fun scrolls() = compose.onAllNodes(
+        SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange) and hasAnyAncestor(hasTestTag(DOCK_TAG)),
+    ).fetchSemanticsNodes().size
+
     /** Heights of the dock's card in pixels: before a change, in each of the 20 frames after, and settled. */
     private data class Film(val before: Int, val frames: List<Int>, val after: Int)
 
@@ -165,7 +200,7 @@ class DockHeightTest {
         compose.mainClock.autoAdvance = false
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = false) {
-                Box(Modifier.fillMaxWidth()) { ScooterControlDock(model) }
+                Box(Modifier.fillMaxWidth()) { ScooterControlDock(model, maximumContentHeight = limit) }
             }
         }
         compose.mainClock.advanceTimeByFrame()

@@ -18,9 +18,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -51,7 +49,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.isFinite
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -73,6 +70,7 @@ import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.Announcer
+import com.plhery.scootradar.ui.FitOrScroll
 import com.plhery.scootradar.ui.chrome.overTheMap
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.rememberAnnouncementOnChange
@@ -197,7 +195,8 @@ private val FOLDED_FOOT = 22.dp
 private val GRABBER_OVERHANG = 10.dp
 
 /**
- * What the card holds, inside [padding]: all of the content, which scrolls when taller than [maximumContentHeight].
+ * What the card holds, inside [padding]: all of the content, a plain stack while it fits in [maximumContentHeight]
+ * and a scroll when taller ([FitOrScroll]).
  * A change of kind springs the card to its new height while the old content fades out and the new fades in; under
  * Reduce Motion the new one is there at once. The iPhone animates the dock by its kind alone (ScooterControls.swift:
  * 200), so within a kind, as the summary gains its status row, the card is its new height in the frame it changes;
@@ -232,14 +231,11 @@ private fun DockCards(
             fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using resize
         },
     ) { shown ->
-        val scroll = rememberScrollState()
-        Box(
+        FitOrScroll(
+            maximumContentHeight,
             (if (shown is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(shown.scooter.providerInfo), shape) else Modifier)
                 .fillMaxWidth()
-                .padding(padding)
-                // HeightLimit: as tall as the content, up to the limit, and scrolling past it. Without a limit
-                // nothing scrolls, as a scroll needs a height to fit in.
-                .then(if (maximumContentHeight.isFinite) Modifier.heightIn(max = maximumContentHeight).verticalScroll(scroll) else Modifier),
+                .padding(padding),
         ) {
             DockContent(controller, shown, layout, onEditFilters)
         }
