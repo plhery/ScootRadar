@@ -450,7 +450,11 @@ stays open at night.
   and Ålesund's
   ([FOR-2022-06-16-1148](https://lovdata.no/dokument/LF/forskrift/2022-06-16-1148))
   let the kommune close hours through the zones it shares with the operators,
-  and none has published any. The 20:00 to 07:00 hours in Sarpsborg's and
+  and none has published any. Fredrikstad only slows scooters to 10 km/h from
+  23:00 to 05:00 on the nights into Saturday and Sunday
+  ([kommune page](https://www.fredrikstad.kommune.no/tjenester/vei-sykkel-ferge/sykkel/elsparkesykler/),
+  updated 17 September 2025), which the map leaves out, as Skien's. The
+  20:00 to 07:00 hours in Sarpsborg's and
   Moss's rules only silence the scooters' alarms. Stjørdal has no forskrift
   on Lovdata. From 28 October to 1 November 2026 Ryde's feeds there listed
   124 scooters or more all night, Voi's Moss feed 203 or more, and Dott's
