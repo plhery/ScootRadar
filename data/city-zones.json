@@ -1,6 +1,6 @@
 {
-  "verifiedOn": "2026-10-31",
-  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria, Rostock, Stockholm and Tampa CC0, Basel, Braunschweig, Helsinki, Namur, Rīga, Taupō, Turku, Vantaa and Wien CC BY 4.0, Cleveland the ODbL, Berlin the Datenlizenz Deutschland – Zero 2.0, Bordeaux Métropole the Licence Ouverte, Aachen, Hamburg, München and Münster the Datenlizenz Deutschland – Namensnennung 2.0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, San Francisco's SFMTA the ODC Public Domain Dedication and License, Vancouver the Open Government Licence – Vancouver, the City of London the Open Government Licence v3.0, Lambeth too for its website, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city. Taupō's and Namur's operations areas, where their scooters may go at all, are not drawn. Namur's zones where a scooter may be parked only in a reserved place are drawn as such, only on the website, as Helsingborg's centre, Braunschweig's old town within the Oker, the London Borough of Lambeth and Poznań's zone of Hop & Go points are. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Bordeaux Métropole's places for bikes or mopeds alone are not drawn, nor Trondheim's zones that cap the operators' fleets in its centre and its south, nor Aachen's parking areas not yet set up (vorläufig). San Francisco's are the five zones of SFMTA's parking restrictions from 1 October 2025: the zones they replaced on the Embarcadero and at Pier 40, still in its data without an end, are not drawn, nor those it set for APEC's week or an event. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre, or 2 m for Berlin's, Hamburg's and München's no-parking zones and Wien's no-parking and no-riding zones, drawn to the centimetre, and 20 cm for Stockholm's parking places, one of them 70 cm wide. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's and Arlington County's parking corrals, those installed, Seattle's bike and scooter corrals, Cleveland's shared mobility hubs, Tampa's multi-use hubs and public bike racks, but for the six it marks secure, five of them racks in its parking garages, Santa Monica's and Sacramento's drop zones, Namur's signed parking places, Poznań's Hop & Go points, Lambeth's parking bays, Ottawa's designated parking, Turku's parking places, Rostock's, Stockholm's five given as points and Hamburg's parking areas, marked or at stops; Berlin's are the circles of 10 m it draws round each of its parking places. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events, nor München's areas and zones set until a day, for building sites or an event, nor Wien's set until a day or for some days only, as the Naschmarkt's flea market on Saturdays. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on. Berlin's and Hamburg's, too many to build into the iPhone app, are marked download: the app downloads them when a view reaches the city (docs/city-zone-downloads.md). The website draws them as it does the others.",
+  "verifiedOn": "2026-11-01",
+  "about": "Zones a city sets for shared e-scooters, read from the layers of its public map: where to park, where not to, where to ride slowly and where not to ride. Some state a licence for theirs: Alexandria, Rostock, Stockholm and Tampa CC0, Basel, Braunschweig, Helsinki, Namur, Rīga, Taupō, Turku, Vantaa and Wien CC BY 4.0, Cleveland the ODbL, Berlin the Datenlizenz Deutschland – Zero 2.0, Bordeaux Métropole the Licence Ouverte, Aachen, Hamburg, München and Münster the Datenlizenz Deutschland – Namensnennung 2.0, St. Albert its Open Data License, Santa Monica ODC-By 1.0, San Francisco's SFMTA the ODC Public Domain Dedication and License, Vancouver the Open Government Licence – Vancouver, the City of London the Open Government Licence v3.0, Lambeth too for its website, and Washington CC BY 4.0 for its corrals and no-parking zones; since 28 October 2026 public city layers are drawn without one too, credited to the city, and since 1 November 2026 a public zone map the city points to: Stavanger's are the zones Nivel's platform serves to the map the kommune's page embeds, Long Beach's and Nashville's the shapes of the cities' policies on Populus's public policy map, which each city links, and Nashville's corrals the symbols of Metro's PDF map of them (17 March 2025), placed by the PDF's own georeference. Long Beach's parking drop zones, which the City gives the operators alone, are not drawn. A city whose map stops answering keeps the zones last read from it. Taupō's and Namur's operations areas, where their scooters may go at all, are not drawn. Namur's zones where a scooter may be parked only in a reserved place are drawn as such, only on the website, as Helsingborg's centre, Braunschweig's old town within the Oker, the London Borough of Lambeth, Poznań's zone of Hop & Go points, Stavanger's inner centre and Long Beach's beach path are. Oslo's school yards, no-riding on weekdays only, are not drawn: only its zones of every day are. Bordeaux Métropole's places for bikes or mopeds alone are not drawn, nor Trondheim's zones that cap the operators' fleets in its centre and its south, nor Aachen's parking areas not yet set up (vorläufig). San Francisco's are the five zones of SFMTA's parking restrictions from 1 October 2025: the zones they replaced on the Embarcadero and at Pier 40, still in its data without an end, are not drawn, nor those it set for APEC's week or an event. Each city's zones are in data/city-zones/<id>.json, written by scripts/update-city-zones.mjs from the layers below, with the bounds here: each zone is one ring of [lat, lng] points, simplified to within half a metre, or 2 m for Berlin's, Hamburg's and München's no-parking zones and Wien's no-parking and no-riding zones, drawn to the centimetre, and Nashville's parks, 21,000 points at half a metre, and 20 cm for Stockholm's parking places, one of them 70 cm wide. A zone of several parts is a zone for each, and a hole in one, as in five of Västerås's, is drawn by its ring going round the hole and back. Norrköping's map serves its zones only as pictures: they are read from the SVG it draws, to within its 0.5 m pixels for the parking places and 2.75 m for the other zones. Porto gives its parking places as points with their number of spots, so each is drawn as a disc of 5 m around its point, and so are Boise's and Arlington County's parking corrals, those installed, Seattle's bike and scooter corrals, Cleveland's shared mobility hubs, Tampa's multi-use hubs and public bike racks, but for the six it marks secure, five of them racks in its parking garages, Santa Monica's and Sacramento's drop zones, Namur's signed parking places, Poznań's Hop & Go points, Lambeth's parking bays, Ottawa's designated parking, Turku's parking places, Rostock's, Stockholm's five given as points and Hamburg's parking areas, marked or at stops; Berlin's are the circles of 10 m it draws round each of its parking places. Ottawa's no-ride roads and pathways are lines, not drawn; nor are Minneapolis's mobility hubs, no places a ride must end. Vantaa's mandatory parking zones and Vaasa's restricted parking area, where a ride may end only at one of the city's parking places, are not drawn, nor are Vantaa's temporary zones for events, nor München's areas and zones set until a day, for building sites or an event, nor Wien's set until a day or for some days only, as the Naschmarkt's flea market on Saturdays. Arlington National Cemetery is no city, but federal rules forbid riding there (32 CFR 553.33(c)(8)): it is drawn as a no-ride zone, its outline from OpenStreetMap (© OpenStreetMap contributors, ODbL), credited to both. Boulder's are Lime's, the operator's, credited to it: the City of Boulder's own layer answers scripts only with a challenge, so they are read from the public zone file Lime's rider app draws them from, each zone an encoded polyline, to within about a metre. Its mandatory parking zone, where a ride ends at a Lime corral that the file does not hold, and its two no-riding areas of about 90 km² round the city, where Lime's service area ends, are not drawn. Nagoya's zones are lines instead of a ring: the pavements where a scooter in its 6 km/h mode may ride, rule 81 (普通自転車歩道通行可) of the Aichi police's traffic rules as JARTIC publishes them, those whose middle lies within the city's outline on OpenStreetMap, simplified to within a metre. Only the website draws them; the apps' catalogs leave them out. The map draws them from zoom 14, whether or not the operators' zones are on. Berlin's and Hamburg's, too many to build into the iPhone app, are marked download: the app downloads them when a view reaches the city (docs/city-zone-downloads.md). The website draws them as it does the others.",
   "cities": [
     {
       "id": "aachen",
@@ -862,6 +862,86 @@
       "zones": 347
     },
     {
+      "id": "longbeach",
+      "place": "Long Beach",
+      "country": "US",
+      "authority": "City of Long Beach",
+      "timeZone": "America/Los_Angeles",
+      "source": {
+        "title": "City of Long Beach, \"Shared Micromobility Program\" (October 2025), section 3.8, Geofencing: the City's no-parking, no-riding and slow zones, and the beach path, where a ride ends only in a designated corral, are on the map it names",
+        "url": "https://www.longbeach.gov/globalassets/go-active-lb/media-library/documents/programs/micro-mobility-program-e-scooterse-bikes/2025-october-shared-micromobility-program-final"
+      },
+      "map": {
+        "title": "City of Long Beach, \"Long Beach - Mobility Policies\", its current geofenced areas on Populus's public policy map",
+        "url": "https://maps.populus.ai/long_beach/policies"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "$ No Parking Areas  - $0.50 fee per violation",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "racksOnly",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "Beach Path Ops Zone - No Parking",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "Aquarium Slow Ride",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "Beach Path Slow Ride",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "Bluff Park Slow Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "No Ride -- All Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/long_beach/public/policies",
+          "policy": "Aquarium - No Ride",
+          "idField": "uuid",
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 33.71535,
+        "west": -118.275103,
+        "north": 33.83605,
+        "east": -118.091622
+      },
+      "zones": 57
+    },
+    {
       "id": "minneapolis",
       "place": "Minneapolis",
       "country": "US",
@@ -1092,6 +1172,69 @@
         "east": 4.9041
       },
       "zones": 200
+    },
+    {
+      "id": "nashville",
+      "place": "Nashville",
+      "country": "US",
+      "authority": "Metro Nashville",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "Metro Nashville, \"Shared Bike and Scooter Program\": the slow, no-ride and no-parking zones the Transportation Licensing Commission designates, kept by geofencing, on the Interactive Nashville Shared Mobility Tracker the page links",
+        "url": "https://www.nashville.gov/departments/transportation/transportation-licensing/shared-bike-and-scooter-program"
+      },
+      "map": {
+        "title": "Metro Nashville, \"Nashville - Mobility Policies\", on Populus's public map beside the tracker the City links",
+        "url": "https://app.populus.ai/nashville/public/policies"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "geopdf",
+          "url": "https://www.nashville.gov/sites/default/files/2025-03/NDOT_DowntownCorralInstallations_03172025.pdf",
+          "ocg": "Corral Location",
+          "symbols": {
+            "0.67059 0.80392 0.4": "On-street scooter corral",
+            "0.21961 0.65882 0": "On-street bike and scooter corral",
+            "0.90196 0 0": "Sidewalk scooter corral",
+            "1 0.33333 0": "Sidewalk bike and scooter corral",
+            "0.90196 0.90196 0": null
+          },
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/nashville/public/policies",
+          "policy": "No Ride Zones - Midtown & Downtown",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/nashville/public/policies",
+          "policy": "No Ride Zones - Parks",
+          "idField": "uuid",
+          "nameField": "name",
+          "tolerance": 2
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/nashville/public/policies",
+          "policy": "Slow Zones - Downtown",
+          "idField": "uuid",
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 35.98569,
+        "west": -86.965113,
+        "north": 36.350639,
+        "east": -86.609599
+      },
+      "zones": 622
     },
     {
       "id": "newyork",
@@ -1811,6 +1954,79 @@
         "east": -113.597709
       },
       "zones": 13
+    },
+    {
+      "id": "stavanger",
+      "place": "Stavanger",
+      "country": "NO",
+      "authority": "Stavanger kommune",
+      "timeZone": "Europe/Oslo",
+      "source": {
+        "title": "Stavanger kommune, \"Utleie av sparkesykler i Stavanger\" (updated 19 June 2026): the map of the zones the operators keep to, the marked parking places for e-scooters, the centre where a scooter is not parked and a ride doesn't end but at one of them, other no-parking areas and the zones held to walking speed",
+        "url": "https://www.stavanger.kommune.no/vei-og-trafikk/stavanger-pa-sykkel/utleie-av-sparkesykler-i-stavanger/"
+      },
+      "map": {
+        "title": "Stavanger kommune's public map of its e-scooter zones, on Nivel's platform, embedded on its page",
+        "url": "https://app.nivel.no/public-map/019dd0a0-a677-71c7-9d04-04bfa3555af8"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "nivel",
+          "url": "https://app.nivel.no/public/019dd0a0-a677-71c7-9d04-04bfa3555af8/zones",
+          "match": {
+            "is_parking": true
+          },
+          "nameField": "name"
+        },
+        {
+          "kind": "racksOnly",
+          "format": "nivel",
+          "url": "https://app.nivel.no/public/019dd0a0-a677-71c7-9d04-04bfa3555af8/zones",
+          "match": {
+            "has_no_parking": true,
+            "name": "Indre sentrumssone"
+          },
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "nivel",
+          "url": "https://app.nivel.no/public/019dd0a0-a677-71c7-9d04-04bfa3555af8/zones",
+          "match": {
+            "has_no_parking": true
+          },
+          "except": {
+            "name": "Indre sentrumssone"
+          },
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "nivel",
+          "url": "https://app.nivel.no/public/019dd0a0-a677-71c7-9d04-04bfa3555af8/zones",
+          "match": {
+            "has_speed_limit": true
+          },
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "nivel",
+          "url": "https://app.nivel.no/public/019dd0a0-a677-71c7-9d04-04bfa3555af8/zones",
+          "match": {
+            "has_no_access": true
+          },
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 58.89064,
+        "west": 5.602845,
+        "north": 58.995912,
+        "east": 5.762586
+      },
+      "zones": 216
     },
     {
       "id": "stockholm",

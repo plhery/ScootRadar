@@ -640,7 +640,11 @@ them again. Aachen, Alexandria, Basel, Berlin, Bordeaux, Braunschweig, the City 
 Cleveland, Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St. Albert,
 San Francisco, Santa Monica, Stockholm, Tampa, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
 Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
-city's public zone layers are drawn regardless, credited to the city.
+city's public zone layers are drawn regardless, credited to the city, and since 1 November 2026 a public
+zone map the city itself points to, as Stavanger's on Nivel's platform, Long Beach's and Nashville's on
+Populus's and Nashville's PDF of its corrals. Such a map may go without notice: nothing watches for it,
+and a city whose map stops answering keeps the zones last read from it, each city's entry here giving
+its source and the date it was read.
 
 - **Aachen** (read 31 October 2026): the Stadt Aachen's 23 parking areas
   for e-scooters set up (`status` eingerichtet, and Reitwm, an unexplained
@@ -969,6 +973,24 @@ city's public zone layers are drawn regardless, credited to the city.
   put its website under its copyright and the Open Government Licence. The
   outline's 3,996 points are 855 within half a metre. The other boroughs in
   London's rental trial publish no bays as data (docs/coverage-gaps.md).
+- **Long Beach** (read 1 November 2026): the City of Long Beach's 21
+  no-parking areas, where a parked scooter costs its operator $0.50, 25
+  no-riding zones (the Port, the airport, the campuses of CSULB and LBCC,
+  Shoreline Village, the Transit Mall, the Aquarium's entrance and others),
+  10 slow zones (5 mph by the Aquarium and the beach path, 6–8 mph in Bluff
+  Park) and the beach path, where a ride ends only in a designated corral
+  (drawn only on the website), the shapes of the City's policies on
+  [Populus's public policy map](https://maps.populus.ai/long_beach/policies),
+  which section 3.8 of its
+  [program rules](https://www.longbeach.gov/globalassets/go-active-lb/media-library/documents/programs/micro-mobility-program-e-scooterse-bikes/2025-october-shared-micromobility-program-final)
+  (October 2025) names as where its current geofenced areas are. The map's
+  page reads them with a key built into its script, which
+  `scripts/update-city-zones.mjs` reads from the script each time and never
+  keeps. Not drawn: its parking drop zones ("All Parking Corrals"), which the
+  City gives the operators alone, its corrals' capacity and fleet caps, and
+  its 48-hour parking limit. A zone the City numbers but does not name is
+  named after the city. The map states no terms; the legend credits the City
+  and links the rules.
 - **Minneapolis** (read 30 October 2026): the City of Minneapolis's 206
   zones where a ride may not end (bridges, construction), 8 speed-capped zones
   (8 or 10 mph: the Stone Arch Bridge, the Loring Greenway, the University of
@@ -1059,6 +1081,30 @@ city's public zone layers are drawn regardless, credited to the city.
   features have no ids, so each zone's is a hash of its shape; a signed
   place is named by its number and street ("3. Rue d'Arquet - P Malin"), the
   others after the city.
+- **Nashville** (read 1 November 2026): Metro Nashville's 131 corrals
+  downtown for scooters, or bikes and scooters, on the street or in the
+  sidewalk's furnishing zone, points each drawn as a disc of 5 m, read from
+  the [Downtown Corral Installations Map](https://www.nashville.gov/sites/default/files/2025-03/NDOT_DowntownCorralInstallations_03172025.pdf)
+  (17 March 2025, Metro GIS) its
+  [Shared Bike and Scooter Program](https://www.nashville.gov/departments/transportation/transportation-licensing/shared-bike-and-scooter-program)
+  page links: a PDF exported from ArcGIS Pro whose page holds the map's frame
+  in Web Mercator and its corners' latitude and longitude, so each corral's
+  symbol, in the layer "Corral Location", is read at its centre to within
+  about a metre (checked against the Ryman's block and Broadway on its own
+  basemap); the 7 for bikes alone are not drawn. And its 489 no-riding zones,
+  485 of them its parks, cemeteries and community grounds, 134 places
+  (simplified to within 2 m: at half a metre they would be 21,000 points),
+  and 4 downtown and in Midtown (Vanderbilt
+  University and its Medical Center, the Music City Center, the Ryman and
+  Fifth Third Bank Plaza), and its 2 slow zones (8 mph on Lower Broadway and
+  Second Avenue), the shapes of Metro's policies on
+  [Populus's public policy map](https://app.populus.ai/nashville/public/policies),
+  beside the Interactive Nashville Shared Mobility Tracker the page links, read
+  as Long Beach's are. Its no-parking zones are those same areas, so are not
+  drawn twice, nor are its fleet caps or its rule for e-bikes; its curfew,
+  midnight to 5:00, is a night ban (`data/rental-curfews.json`). Neither the
+  PDF nor the map states terms; the legend credits Metro Nashville and links
+  the page.
 - **New York** (read 30 October 2026): NYC DOT's 538 parking corrals for
   shared e-scooters in the East Bronx (307) and Eastern Queens (231), on the
   sidewalk or the roadbed, its open data
@@ -1299,6 +1345,23 @@ city's public zone layers are drawn regardless, credited to the city.
   the companies geofence the no-go zones on its Open Data Portal, so that a
   scooter stops in them. The Farmers' Market's zone is drawn every day, as the
   layer holds it.
+- **Stavanger** (read 1 November 2026): Stavanger kommune's 152 parking
+  places for e-scooters, the inner centre ("Indre sentrumssone"), where a
+  scooter is parked and a ride ends only at one of them (drawn only on the
+  website), 35 no-parking zones (schools, churchyards, parks, the cycle
+  highway and the university), 8 zones held to walking speed and 20
+  no-riding zones (mostly car parks and sports pitches): 213 of the 214 zones of the
+  [public map](https://app.nivel.no/public-map/019dd0a0-a677-71c7-9d04-04bfa3555af8)
+  its page
+  [Utleie av sparkesykler i Stavanger](https://www.stavanger.kommune.no/vei-og-trafikk/stavanger-pa-sykkel/utleie-av-sparkesykler-i-stavanger/)
+  (updated 19 June 2026) embeds, served as JSON by Nivel's micromobility
+  platform: "I store deler av sentrum er det ikke mulig å parkere og avslutte
+  leien av sparkesykkelen … Unntaket er de oppmerkede parkeringsplassene". 3
+  zones are both no-parking and slow, drawn as both; the kommune's boundary,
+  the 214th, is not drawn, nor are a zone's dates for events (the page says
+  the zones reach further during Gladmat, ONS, Nordic Edge and 17 May). The
+  map states no terms and has no documentation; the legend credits the
+  kommune and links the page.
 - **Stockholm** (read 31 October 2026): Stockholms stad's 834 parking places
   for e-scooters, from Trafikkontoret's
   [Elsparkcykelplats](https://dataportalen.stockholm.se/dataportalen/srv/swe/catalog.search#/metadata/LvFeature19742957)

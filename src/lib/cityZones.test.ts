@@ -120,6 +120,12 @@ const WIEN_INNERE_STADT = { south: 48.203, west: 16.36, north: 48.212, east: 16.
 const SAKAE = { south: 35.16, west: 136.895, north: 35.178, east: 136.922 };
 // Parkchester, in the East Bronx.
 const PARKCHESTER = { south: 40.828, west: -73.868, north: 40.836, east: -73.852 };
+// Stavanger's centre, from Torget and the Domkirken to Nytorget and Breiavatnet.
+const STAVANGER_SENTRUM = { south: 58.966, west: 5.722, north: 58.975, east: 5.742 };
+// Downtown Long Beach, from the Aquarium and Shoreline Village to the Convention Center and the beach path.
+const LONG_BEACH_DOWNTOWN = { south: 33.758, west: -118.2, north: 33.769, east: -118.18 };
+// Nashville's Lower Broadway and Second Avenue, by the Ryman and the Music City Center.
+const NASHVILLE_DOWNTOWN = { south: 36.157, west: -86.785, north: 36.167, east: -86.772 };
 const KINDS = ['noRide', 'noParking', 'slow', 'parking'];
 /** The credit JARTIC's terms ask for, of its data processed. */
 const JARTIC_CREDIT = '出典：「交通規制情報」（https://www.jartic.or.jp/service/opendata/）（公益財団法人日本道路交通情報センター）を加工して作成';
@@ -153,7 +159,7 @@ describe('the cities\' zones', () => {
 
   it('draws every city, Berlin and Hamburg too, none held back for an iPhone release', async () => {
     const { ZONE_CITIES } = await fresh();
-    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stockholm', 'tampa', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
+    expect(ZONE_CITIES.map(city => city.id).sort()).toEqual(['aachen', 'alexandria', 'antwerpen', 'arlington', 'arlingtoncemetery', 'atlanta', 'baltimore', 'basel', 'bergen', 'berlin', 'boise', 'bordeaux', 'boulder', 'braunschweig', 'cityoflondon', 'cleveland', 'columbus', 'hamburg', 'helsingborg', 'helsinki', 'jarvenpaa', 'lambeth', 'longbeach', 'minneapolis', 'munchen', 'munster', 'nagoya', 'namur', 'nashville', 'newyork', 'norfolk', 'norrkoping', 'omaha', 'oslo', 'ottawa', 'oygarden', 'porto', 'poznan', 'reykjavik', 'riga', 'rostock', 'sacramento', 'sanfrancisco', 'santamonica', 'seattle', 'stalbert', 'stavanger', 'stockholm', 'tampa', 'taupo', 'trondheim', 'turku', 'vaasa', 'vancouver', 'vantaa', 'vasteras', 'washington', 'wien', 'zurich']);
   });
 
   it('holds in each file the zones the index counts, of the kinds drawn, within the bounds that load them', async () => {
@@ -1008,6 +1014,72 @@ describe('the cities\' zones', () => {
     await loadCityZones(trondheim);
     const shown = ruleZonesInView({ bounds: TRONDHEIM_MIDTBYEN, zoom: 15 }, Date.now(), cityZones.get());
     expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws Stavanger's parking places, its inner centre, where a scooter is parked only in one, and its no-parking, slow and no-riding zones, from the kommune's map", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const stavanger = ZONE_CITIES.find(city => city.id === 'stavanger')!;
+    expect(stavanger.authority).toBe('Stavanger kommune');
+    expect(stavanger.timeZone).toBe('Europe/Oslo');
+    // 213 of the 214 zones Nivel serves to the map the kommune's page embeds, 3 both no-parking and
+    // slow; the kommune's boundary is not drawn.
+    const { default: file } = await CITY_ZONE_FILES.stavanger();
+    const counts = Object.fromEntries(['parking', 'racksOnly', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 152, racksOnly: 1, noParking: 35, slow: 8, noRide: 20 });
+    expect(file.zones.find(zone => zone.kind === 'racksOnly')?.name).toBe('Indre sentrumssone');
+    // Torget is in the inner centre and its pedestrian streets are ridden slowly; Jorenholmen's car park is not ridden.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.kind).sort();
+    expect(at(58.9707, 5.7325)).toEqual(['racksOnly', 'slow']);
+    expect(at(58.97233, 5.73706)).toEqual(['noRide', 'racksOnly']);
+    await loadCityZones(stavanger);
+    const shown = ruleZonesInView({ bounds: STAVANGER_SENTRUM, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'racksOnly', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws Long Beach's no-parking, slow and no-riding areas and its beach path, from Populus's public policy map the city links, but not the operators' drop zones", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const longBeach = ZONE_CITIES.find(city => city.id === 'longbeach')!;
+    expect(longBeach.authority).toBe('City of Long Beach');
+    expect(longBeach.timeZone).toBe('America/Los_Angeles');
+    const { default: file } = await CITY_ZONE_FILES.longbeach();
+    const counts = Object.fromEntries(['racksOnly', 'noParking', 'slow', 'noRide'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ racksOnly: 1, noParking: 21, slow: 10, noRide: 25 });
+    expect(file.zones.some(zone => zone.kind === 'parking')).toBe(false);
+    // The Aquarium's plaza is not ridden, nor the airport; the beach path is left only at a drop zone.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.kind).sort();
+    expect(at(33.7623, -118.1966)).toEqual(['noRide', 'slow']);
+    expect(at(33.8177, -118.1516)).toEqual(['noParking', 'noRide']);
+    expect(at(33.7611, -118.1559)).toEqual(['racksOnly']);
+    await loadCityZones(longBeach);
+    const shown = ruleZonesInView({ bounds: LONG_BEACH_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['racksOnly', 'noParking', 'slow', 'noRide']));
+  });
+
+  it("draws Nashville's corrals downtown, from Metro's map of them, and its no-riding zones, its parks among them, and its slow zones, from Populus's public policy map Metro links", async () => {
+    const { CITY_ZONE_FILES, ZONE_CITIES, cityZones, loadCityZones } = await fresh();
+    const nashville = ZONE_CITIES.find(city => city.id === 'nashville')!;
+    expect(nashville.authority).toBe('Metro Nashville');
+    expect(nashville.timeZone).toBe('America/Chicago');
+    const { default: file } = await CITY_ZONE_FILES.nashville();
+    const counts = Object.fromEntries(['parking', 'noRide', 'slow'].map(kind => [kind, file.zones.filter(zone => zone.kind === kind).length]));
+    expect(counts).toEqual({ parking: 131, noRide: 489, slow: 2 });
+    expect(file.zones.length).toBe(622);
+    // The map's 138 corrals of March 2025, points drawn as discs, but for the 7 for bikes alone.
+    const corrals = Object.groupBy(file.zones.filter(zone => zone.kind === 'parking'), zone => zone.name!);
+    expect(Object.fromEntries(Object.entries(corrals).map(([name, zones]) => [name, zones!.length]))).toEqual({
+      'Sidewalk scooter corral': 90, 'On-street bike and scooter corral': 22, 'Sidewalk bike and scooter corral': 12, 'On-street scooter corral': 7,
+    });
+    // Lower Broadway and Second Avenue are ridden slowly, a corral on Broadway's south side by 3rd Avenue;
+    // the Ryman and Centennial Park are not ridden.
+    const at = (lat: number, lng: number) => file.zones.filter(zone => Math.abs(winding(zone.ring!, lat, lng)) === 1).map(zone => zone.name);
+    expect(at(36.16083, -86.77763)).toEqual(['Broadway']);
+    expect(at(36.164, -86.7765)).toEqual(['Second Ave']);
+    expect(at(36.1612, -86.7785)).toEqual(['Ryman Auditorium']);
+    expect(at(36.1497, -86.8126)).toEqual(['Centennial Park']);
+    expect(at(36.160862, -86.777152)).toEqual(['On-street bike and scooter corral']);
+    await loadCityZones(nashville);
+    const shown = ruleZonesInView({ bounds: NASHVILLE_DOWNTOWN, zoom: 15 }, Date.now(), cityZones.get());
+    expect(new Set(shown.map(zone => zone.rule))).toEqual(new Set(['parking', 'slow', 'noRide']));
   });
 
   it("draws Turku's parking places and its no-parking, slow and no-riding areas, from the city's open map services", async () => {

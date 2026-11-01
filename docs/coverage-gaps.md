@@ -333,18 +333,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Warszawy with the data's date and the date it was fetched, but ask a reuser
   to tell the city by e-mail of any processing of them (clause 3e). Its
   no-riding and no-parking areas (Stare Miasto, Łazienki Królewskie and three
-  parks) and its 12 km/h streets are text alone. Stavanger kommune's 214
-  zones (152 parking places, the inner centre where a ride ends only at one
-  of them, no-parking, no-riding and slow zones) are on a public map its
-  [e-scooter page](https://www.stavanger.kommune.no/vei-og-trafikk/stavanger-pa-sykkel/utleie-av-sparkesykler-i-stavanger/)
-  embeds, served as JSON by Nivel's micromobility platform, with no terms and
-  no documentation: no open data service (31 October 2026). Long Beach's
-  geofenced areas are on Populus's public policy map, which its rules link,
-  read through a key built into the map's page; its drop zones go to the
-  operators alone. Nashville's slow, no-riding and no-parking zones are on
-  Populus's map too, which its programme page links, and its downtown corrals
-  in a [PDF](https://www.nashville.gov/sites/default/files/2025-03/NDOT_DowntownCorralInstallations_03172025.pdf)
-  (17 March 2025).
+  parks) and its 12 km/h streets are text alone. Long Beach's parking drop
+  zones, a policy on Populus's public map, are given to the operators alone
+  (its rules, 3.2.1), so are not drawn; its other zones, Stavanger's and
+  Nashville's, corrals included, are drawn since 1 November 2026
+  (DATA_SOURCES.md).
 - **Found, not added yet** (ArcGIS layers the script reads): Atlanta's
   downtown no-parking and slow zone (no City page describes it; Bird's own
   no-parking zone there is drawn), Pforzheim, Kerava (no City page found),

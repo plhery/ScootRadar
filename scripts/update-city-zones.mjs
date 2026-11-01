@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { inflateRawSync } from 'node:zlib';
+import { inflateRawSync, inflateSync } from 'node:zlib';
 import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } from './boundaries.mjs';
 
 // Writes data/city-zones/<id>.json, each city's zones from the layers data/city-zones.json lists,
@@ -28,7 +28,10 @@ import { boundary, outerRings, planeArea, simplifyRing, toPlane, writeCatalog } 
 // asked for so, Turku's an OGC API's collections, Sacramento's a feature service's query answered
 // as GeoJSON, Basel's an open data portal's export and Tampa's its GeoHub's download, as the City's
 // map server answers only the United States; Poznań's, of format kml, are a Google My
-// Maps map's KML, read as GeoJSON. Helsingborg's is the area of a local
+// Maps map's KML, read as GeoJSON. Stavanger's, of format nivel, are the zones Nivel's platform
+// serves to the map the kommune's page embeds, and Long Beach's and Nashville's, of format
+// populus, the shapes of policies on Populus's public policy map, which each city links; both are
+// read as GeoJSON. Helsingborg's is the area of a local
 // traffic rule, read from the map of Transportstyrelsen's register of them (STFS), in SWEREF 99 TM.
 // Run it now and then, then npm run generate:providers. Name cities to refresh only theirs:
 // node scripts/update-city-zones.mjs boise
@@ -198,11 +201,16 @@ function polygonZones(id, kind, name, featureParts, tolerance = TOLERANCE_M) {
  * layer of zones may leave its points out, `polygonsOnly`: Turku's hold a few, each inside a zone
  * of its own kind; or only those within a zone of its kind an earlier layer drew, `pointsOutside`:
  * 89 of Rīga's 121 parking points mark parking places its other layer draws as shapes.
- * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), and one of
- * format zip a zip of GeoJSON files (zipFeatures).
+ * A layer of format kml is a KML file's placemarks, read as GeoJSON (kmlFeatures), one of
+ * format zip a zip of GeoJSON files (zipFeatures), one of format nivel the active zones of a
+ * Nivel public map (nivelFeatures), one of format populus a policy's shapes on Populus's
+ * public policy map (populusFeatures), and one of format geopdf the point symbols of a
+ * georeferenced PDF's map (geopdfFeatures).
  */
-async function geojsonZones(city, { kind, format, url, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
-  const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'zip' ? await zipFeatures(url) : await getJson(url);
+async function geojsonZones(city, { kind, format, url, policy, ocg, symbols, match = {}, except, nameField, nameTrim, unnamed = [], idField, shapeIds, pointName, tolerance, polygonsOnly, pointsOutside }, earlier) {
+  const body = format === 'kml' ? kmlFeatures(await getText(url)) : format === 'zip' ? await zipFeatures(url)
+    : format === 'nivel' ? nivelFeatures(await getJson(url), url) : format === 'populus' ? await populusFeatures(url, policy)
+      : format === 'geopdf' ? await geopdfFeatures(url, ocg, symbols) : await getJson(url);
   if (!Array.isArray(body.features)) throw new Error(`${url} answered no features`);
   // A service that pages its answer is asked for all of it at once.
   if ((Number.isFinite(body.numberMatched) && body.numberMatched !== body.features.length) || body.links?.some(link => link.rel === 'next')) {
@@ -306,6 +314,183 @@ async function zipFeatures(url) {
   }
   if (!features.length) throw new Error(`${url} holds no GeoJSON`);
   return { features };
+}
+
+/**
+ * Stavanger kommune's zones, as Nivel's micromobility platform serves them to the public map the
+ * kommune's page embeds: a list of zones, each with its name, what it sets (`is_parking`,
+ * `has_no_parking`, `has_speed_limit`, `has_no_access`, `is_municipal_boundary`) and its shape, a
+ * GeoJSON polygon given as text. Only zones whose status is active are kept.
+ */
+function nivelFeatures(zones, url) {
+  if (!Array.isArray(zones)) throw new Error(`${url} answered no zones`);
+  return {
+    features: zones.filter(zone => zone.status === 'active').map(({ polygons, ...properties }) => ({
+      id: properties.id, properties, geometry: JSON.parse(polygons.main),
+    })),
+  };
+}
+
+/**
+ * A georeferenced PDF's point symbols as GeoJSON points, as Metro Nashville's map of its downtown
+ * corrals draws them (exported from ArcGIS Pro): the shapes filled within its optional content
+ * (layer) named `ocg`, each at the centre of its shape and named by its fill colour as `symbols`
+ * gives it, or left out where `symbols` gives null (the corrals for bikes alone). A colour it does
+ * not list is refused, as a changed legend. The page's viewport gives the map's frame in Web
+ * Mercator and its corners' latitude and longitude, so a symbol's centre, where the map puts its
+ * point, is read to within about a metre. The content of each form of the file is read alone, as
+ * the page draws it, unmoved.
+ */
+async function geopdfFeatures(url, ocg, symbols) {
+  const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
+  if (!response.ok) throw new Error(`${url} answered ${response.status}`);
+  const pdf = Buffer.from(await response.arrayBuffer()).toString('latin1');
+  const numbers = list => list.trim().split(/\s+/).map(Number);
+  const frame = /\/VP\s*\[\s*<<\s*\/BBox\s*\[([^\]]+)\][\s\S]*?\/WKT\s*\(PROJCS\["([^"]*)"[\s\S]*?\/GPTS\s*\[([^\]]+)\]\s*\/LPTS\s*\[([^\]]+)\]/.exec(pdf);
+  if (!frame || !/Mercator/.test(frame[2])) throw new Error(`${url}: no map frame in Web Mercator`);
+  const [x0, y0, x1, y1] = numbers(frame[1]);
+  // Its corners' latitude and longitude, from the frame's lower left round to its lower right.
+  const corners = numbers(frame[3]);
+  const [south, west, north, , , east] = corners;
+  if (frame[4].trim().replace(/\s+/g, ' ') !== '0 0 0 1 1 1 1 0' || corners[3] !== west || corners[4] !== north || corners[6] !== south || corners[7] !== east) {
+    throw new Error(`${url}: its map frame is not upright`);
+  }
+  const mercator = lat => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+  const place = (x, y) => {
+    const v = mercator(south) + ((y - y0) / (y1 - y0)) * (mercator(north) - mercator(south));
+    return [Number((west + ((x - x0) / (x1 - x0)) * (east - west)).toFixed(DIGITS)),
+      Number(((Math.atan(Math.exp(v)) * 360) / Math.PI - 90).toFixed(DIGITS))];
+  };
+  // Its objects, those packed in object streams too, and its forms' content.
+  const objects = new Map();
+  const forms = [];
+  for (const match of pdf.matchAll(/\d+ 0 obj\s*<<((?:(?!endobj)[\s\S])*?)>>\s*stream\r?\n/g)) {
+    const [, dict] = match;
+    const kind = /\/Type\s*\/ObjStm/.test(dict) ? 'objects' : /\/Subtype\s*\/Form/.test(dict) ? 'form' : null;
+    if (!kind) continue;
+    const start = match.index + match[0].length;
+    const length = /\/Length\s+(\d+)(?!\s+\d+\s+R)/.exec(dict)?.[1];
+    const raw = Buffer.from(pdf.slice(start, length ? start + Number(length) : pdf.indexOf('endstream', start)), 'latin1');
+    const data = (/\/FlateDecode/.test(dict) ? inflateSync(raw) : raw).toString('latin1');
+    if (kind === 'form') {
+      forms.push({ data, matrix: numbers(/\/Matrix\s*\[([^\]]+)\]/.exec(dict)?.[1] ?? '1 0 0 1 0 0') });
+      continue;
+    }
+    const first = Number(/\/First\s+(\d+)/.exec(dict)[1]);
+    const header = numbers(data.slice(0, first));
+    for (let i = 0; i < header.length; i += 2) objects.set(header[i], data.slice(first + header[i + 1], i + 3 < header.length ? first + header[i + 3] : data.length));
+  }
+  for (const [, number, body] of pdf.matchAll(/(\d+) 0 obj\s*(<<(?:(?!endobj|stream)[\s\S])*?>>)\s*endobj/g)) objects.set(Number(number), body);
+  const text = literal => {
+    const bytes = literal.replace(/\\([nrtbf()\\]|[0-7]{1,3}|\r?\n)/g, (_, escape) => (/^[0-7]/.test(escape) ? String.fromCharCode(parseInt(escape, 8))
+      : { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f' }[escape] ?? (/^\r?\n$/.test(escape) ? '' : escape)));
+    return bytes.startsWith('\xfe\xff') ? Buffer.from(bytes.slice(2), 'latin1').swap16().toString('utf16le') : bytes;
+  };
+  const layers = new Set([...objects].filter(([, body]) => /\/Type\s*\/OCG\b/.test(body)
+    && text(/\/Name\s*\(((?:\\[\s\S]|[^\\)])*)\)/.exec(body)?.[1] ?? '') === ocg).map(([number]) => number));
+  if (!layers.size) throw new Error(`${url}: no layer named ${ocg}`);
+  const marked = new Set();
+  for (const body of objects.values()) {
+    for (const [, properties] of body.matchAll(/\/Properties\s*<<((?:(?!>>)[\s\S])*)>>/g)) {
+      for (const [, name, number] of properties.matchAll(/\/([^\s/<>[\]()]+)\s*(\d+)\s+0\s+R/g)) if (layers.has(Number(number))) marked.add(name);
+    }
+  }
+  const features = [];
+  for (const { data, matrix } of forms) {
+    let ctm = matrix;
+    let operands = [];
+    let fill = null;
+    let path = [];
+    const saved = [];
+    const marks = [];
+    for (const [token] of data.matchAll(/\((?:\\[\s\S]|[^\\)])*\)|<<|>>|<[\da-fA-F\s]*>|\[|\]|\/[^\s/[\]()<>{}%]*|[+-]?(?:\d+\.?\d*|\.\d+)|[A-Za-z'"]+\*?|%[^\r\n]*/g)) {
+      if (/^[+-]?[\d.]/.test(token)) { operands.push(Number(token)); continue; }
+      if (/^[/([\]<>]/.test(token) || token.startsWith('%')) { if (!token.startsWith('%')) operands.push(token); continue; }
+      const values = operands.filter(operand => typeof operand === 'number');
+      switch (token) {
+        case 'q': saved.push(ctm); break;
+        case 'Q': ctm = saved.pop() ?? ctm; break;
+        case 'cm': {
+          const [a, b, c, d, e, f] = values.slice(-6);
+          ctm = [a * ctm[0] + b * ctm[2], a * ctm[1] + b * ctm[3], c * ctm[0] + d * ctm[2], c * ctm[1] + d * ctm[3],
+            e * ctm[0] + f * ctm[2] + ctm[4], e * ctm[1] + f * ctm[3] + ctm[5]];
+          break;
+        }
+        case 'BDC': marks.push(operands[0] === '/OC' && marked.has(String(operands[1]).slice(1))); break;
+        case 'BMC': marks.push(false); break;
+        case 'EMC': marks.pop(); break;
+        case 'sc': case 'scn': case 'rg': case 'g': case 'k': fill = values.join(' '); break;
+        case 'm': case 'l': case 'c': case 'v': case 'y':
+          for (let i = 0; i + 1 < values.length; i += 2) path.push([values[i], values[i + 1]]);
+          break;
+        case 're': {
+          const [x, y, w, h] = values;
+          path.push([x, y], [x + w, y + h]);
+          break;
+        }
+        case 'f': case 'F': case 'f*': case 'B': case 'B*': case 'b': case 'b*':
+          if (marks.includes(true) && path.length) {
+            if (!(fill in symbols)) throw new Error(`${url}: ${ocg} holds a shape of colour ${fill}, which its legend did not`);
+            const xs = path.map(([x]) => x);
+            const ys = path.map(([, y]) => y);
+            const [cx, cy] = [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
+            const [x, y] = [ctm[0] * cx + ctm[2] * cy + ctm[4], ctm[1] * cx + ctm[3] * cy + ctm[5]];
+            if (x < x0 || x > x1 || y < y0 || y > y1) throw new Error(`${url}: ${ocg} holds a shape outside its map`);
+            if (symbols[fill] !== null) features.push({ type: 'Feature', properties: { name: symbols[fill] }, geometry: { type: 'Point', coordinates: place(x, y) } });
+          }
+          path = [];
+          break;
+        case 'S': case 's': case 'n': path = []; break;
+        default:
+      }
+      operands = [];
+    }
+  }
+  if (!features.length) throw new Error(`${url}: no symbols in ${ocg}`);
+  return { features };
+}
+
+/** Each Populus region's key and published policies, read once for all its layers. */
+const populusRegions = new Map();
+
+/**
+ * A city's zones as Populus's public policy map shows them (app.populus.ai/<region>/public/policies):
+ * the shapes of the published MDS policy of the given name, read as the map reads them, with the key
+ * its page's script carries. The key is read from the script each time, never kept. A shape named
+ * only by a number (Long Beach's numbers its no-parking areas) is left unnamed.
+ */
+async function populusFeatures(url, policy) {
+  const region = /^\/([^/]+)\/public\/policies$/.exec(new URL(url).pathname)?.[1];
+  if (!region) throw new Error(`${url} is no Populus policy map`);
+  if (!populusRegions.has(region)) {
+    populusRegions.set(region, (async () => {
+      const page = await getText(url);
+      const script = /<script type="module"[^>]*src="([^"]+\.js)"/.exec(page)?.[1];
+      if (!script) throw new Error(`${url}: no script found`);
+      const code = await getText(new URL(script, url).href);
+      const variable = /"x-api-key":([A-Za-z_$][\w$]*)/.exec(code)?.[1];
+      const key = variable && new RegExp(`[,;{\\s]${variable.replace(/\$/g, '\\$')}="([^"]+)"`).exec(code)?.[1];
+      if (!key) throw new Error(`${url}: its script carries no key`);
+      const get = async path => {
+        const response = await fetch(`${new URL(url).origin}/v2/regions/${region}${path}`,
+          { headers: { 'User-Agent': USER_AGENT, 'x-api-key': key, 'accept-language': 'en' } });
+        if (!response.ok) throw new Error(`Populus ${region}${path} answered ${response.status}`);
+        return response.json();
+      };
+      const { items, total } = await get('/mds/policies?page=1&size=100');
+      if (!Array.isArray(items) || items.length !== total) throw new Error(`Populus ${region} answered ${items?.length} of ${total} policies`);
+      return { get, items };
+    })());
+  }
+  const { get, items } = await populusRegions.get(region);
+  const found = items.filter(item => item.name.trim() === policy);
+  if (found.length !== 1) throw new Error(`Populus ${region}: ${found.length} policies named ${policy}`);
+  const { geographies } = await get(`/mds/policies/${found[0].policy_id}/geographies`);
+  return {
+    features: geographies.flatMap(({ geography_json: json }) => (json.type === 'FeatureCollection' ? json.features : [json]))
+      .map(feature => ({ ...feature, properties: { ...feature.properties,
+        name: /^\s*\d+\s*$/.test(feature.properties?.name ?? '') ? null : feature.properties?.name?.trim() ?? null } })),
+  };
 }
 
 /**
@@ -778,14 +963,25 @@ async function stfsZones(city, { kind, url }) {
 /** A zone's points: its ring, or its lines, as Nagoya's pavements are. */
 const pointsOf = zone => zone.ring ?? zone.lines.flat();
 
+// A city whose map stops answering keeps the zones last drawn from it, as its file and its bounds
+// here are only written once all its layers are read: a city's or a platform's map may go without
+// notice, and the run goes on to the others.
 for (const city of catalog.cities) {
   if (only.length && !only.includes(city.id)) continue;
+  try {
+    await updateCity(city);
+  } catch (error) {
+    console.log(`${city.id}: ${error.message}; its last zones are kept`);
+  }
+}
+
+async function updateCity(city) {
   const zones = [];
   for (const layer of city.layers) {
     if (!KINDS.has(layer.kind)) throw new Error(`${city.id}: unknown kind ${layer.kind}`);
     const pathname = layer.boundary ? null : new URL(layer.url).pathname;
     const found = layer.boundary ? await boundaryZones(city, layer)
-      : ['geojson', 'kml', 'zip'].includes(layer.format) ? await geojsonZones(city, layer, zones)
+      : ['geojson', 'kml', 'zip', 'nivel', 'populus', 'geopdf'].includes(layer.format) ? await geojsonZones(city, layer, zones)
         : pathname.startsWith('/zones_attributes/') ? await limeZones(city, layer)
           : pathname.endsWith('.zip') ? await jarticZones(city, layer)
             : pathname.endsWith('/AF06_View.aspx') ? await stfsZones(city, layer)
@@ -797,6 +993,7 @@ for (const city of catalog.cities) {
   }
   const ids = new Set(zones.map(zone => zone.id));
   if (ids.size !== zones.length) throw new Error(`${city.id}: two zones share an id`);
+  if (!zones.length) throw new Error(`${city.id}: no zones read`);
   zones.sort((a, b) => a.kind.localeCompare(b.kind) || a.id.localeCompare(b.id, 'en', { numeric: true }));
   const points = zones.flatMap(pointsOf);
   city.bounds = {
