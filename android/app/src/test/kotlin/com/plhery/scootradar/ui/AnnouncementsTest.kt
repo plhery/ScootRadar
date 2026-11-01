@@ -71,8 +71,23 @@ class AnnouncementsTest {
             .fetchSemanticsNodes()
             .map { view.accessibilityNodeProvider.createAccessibilityNodeInfo(it.id)?.paneTitle?.toString() }
 
+    /**
+     * What TalkBack 16.2 says of a pane's titles in turn (WindowEventInterpreter): an empty title is dropped and the
+     * window keeps the one before; a title equal to the window's is no change and isn't read. Its words, as heard.
+     */
+    private class TalkBack {
+        private var window: String? = null
+        val heard = mutableListOf<String>()
+
+        fun sees(title: String?) {
+            if (title.isNullOrEmpty() || title == window) return
+            window = title
+            heard += title.replace("\u200B", "")
+        }
+    }
+
     @Test
-    fun aCardClosingLeavesThePaneWithNothingToSay() {
+    fun aCardClosingSaysNothingAndTheCardOpenedAgainIsHeardAgain() {
         val target = scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)
         val api = StubScooterAPI(ScooterResponse(vehicles = listOf(target)))
         val model = controllers.make(api)
@@ -85,25 +100,31 @@ class AnnouncementsTest {
         }
         compose.waitForIdle()
         assertEquals(emptyList<String?>(), panes())
+        val talkBack = TalkBack()
 
         compose.runOnIdle { model.selectScooter(target.id) }
         compose.waitForIdle()
         val card = model.dockAnnouncement
         assertTrue("$card", card != null && card.startsWith("Lime scooter"))
-        assertEquals(listOf(card), panes())
+        talkBack.sees(panes().single())
+        assertEquals(listOf(card), talkBack.heard)
 
+        // Closed, the pane stays and says nothing.
         compose.runOnIdle { model.clearSelection() }
         compose.waitForIdle()
         assertEquals(listOf(""), panes())
+        talkBack.sees(panes().single())
+        assertEquals(listOf(card), talkBack.heard)
 
-        // Opened again, it is said again.
+        // Opened again with no other window between, it is heard again, as VoiceOver hears each card.
         compose.runOnIdle { model.selectScooter(target.id) }
         compose.waitForIdle()
-        assertEquals(listOf(card), panes())
+        talkBack.sees(panes().single())
+        assertEquals(listOf(card, card), talkBack.heard)
     }
 
     @Test
-    fun theSameWordsSaidAgainAreANewTitle() {
+    fun theSameWordsSaidAgainAreHeardAgainEvenAfterAWithdraw() {
         var announcement by mutableStateOf<Announcement?>(null)
         compose.setContent {
             view = LocalView.current
@@ -111,20 +132,25 @@ class AnnouncementsTest {
         }
         compose.waitForIdle()
         assertEquals(emptyList<String?>(), panes())
+        val talkBack = TalkBack()
+        fun say(next: Announcement?) {
+            announcement = next
+            compose.waitForIdle()
+            talkBack.sees(panes().single())
+        }
 
-        announcement = Announcement("Finding the way…", serial = 1)
-        compose.waitForIdle()
-        assertEquals(listOf("Finding the way…"), panes())
         // A title that doesn't change is not read again: a zero-width space tells the two apart.
-        announcement = Announcement("Finding the way…", serial = 2)
-        compose.waitForIdle()
-        assertEquals(listOf("Finding the way…\u200B"), panes())
-        announcement = Announcement("Finding the way…", serial = 3)
-        compose.waitForIdle()
-        assertEquals(listOf("Finding the way…"), panes())
+        say(Announcement("Finding the way…", serial = 1))
+        say(Announcement("Finding the way…", serial = 2))
+        say(Announcement("Finding the way…", serial = 3))
+        assertEquals(List(3) { "Finding the way…" }, talkBack.heard)
 
-        announcement = null
-        compose.waitForIdle()
+        // Withdrawn: the pane stays, with nothing to say.
+        say(null)
         assertEquals(listOf(""), panes())
+        assertEquals(3, talkBack.heard.size)
+        // TalkBack kept the last words through the empty title: the same words said now must still be new to it.
+        say(Announcement("Finding the way…", serial = 4))
+        assertEquals(List(4) { "Finding the way…" }, talkBack.heard)
     }
 }

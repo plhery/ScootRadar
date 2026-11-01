@@ -38,7 +38,10 @@ class Announcements {
     var title by mutableStateOf<String?>(null)
         private set
 
-    /** The title the pane last gave TalkBack. */
+    /**
+     * The words TalkBack last took from the pane. An empty title isn't any: TalkBack drops it and keeps the words
+     * before as the window's title, so the same words said after a withdraw would be no change to it (review-app-ai 1).
+     */
     private var shown: String? = null
     private var said: Announcement? = null
 
@@ -60,7 +63,7 @@ class Announcements {
     fun Pane() {
         val title = title ?: return
         Box(Modifier.size(1.dp).semantics { paneTitle = title })
-        SideEffect { shown = title }
+        SideEffect { if (title.isNotEmpty()) shown = title }
     }
 }
 
