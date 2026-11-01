@@ -62,7 +62,7 @@ internal class CatalogData(
                     RentalCurfew(
                         city = curfew.city,
                         timeZone = curfew.timeZone,
-                        nights = curfew.nights.map { RentalCurfew.Night(it.evenings?.toSet(), it.fromMinute, it.untilMinute) },
+                        nights = curfew.nights.map { RentalCurfew.Night(it.evenings?.toSet(), it.fromMinute, it.untilMinute, it.dates) },
                         areas = curfew.areas.map(::points),
                     )
                 },
@@ -155,7 +155,12 @@ internal class CatalogData(
     private class CurfewEntry(val city: String, val timeZone: String, val nights: List<NightEntry>, val areas: List<DoubleArray>)
 
     @Serializable
-    private class NightEntry(val evenings: List<Int>? = null, val fromMinute: Int, val untilMinute: Int)
+    private class NightEntry(
+        val evenings: List<Int>? = null,
+        val fromMinute: Int,
+        val untilMinute: Int,
+        val dates: List<String> = emptyList(),
+    )
 
     @Serializable
     private class RuleZoneEntry(

@@ -1475,6 +1475,63 @@ class ScooterModelsTest {
         assertTrue(ScooterDockNotice.Curfew(farCurfew).text.contains(there))
     }
 
+    /**
+     * The nights 9 towns close around public holidays besides their weekday nights, as the website reads them since 29
+     * October 2026 (src/lib/rentalCurfews.test.ts, "holiday nights"; docs/curfew-holiday-nights.md; LOG-420).
+     */
+    @Test
+    fun citiesBanRentingOnTheHolidayNightsTheyName() {
+        assertEquals(
+            listOf("2026-04-05", "2027-03-28", "2028-04-16"),
+            listOf(2026, 2027, 2028).map { RentalCurfew.easterSunday(it).toString() },
+        )
+        assertEquals(LocalDate.of(2027, 5, 5), RentalCurfew.holidayEvening("easter+38", 2027))
+        assertEquals(LocalDate.of(2027, 3, 24), RentalCurfew.holidayEvening("easter-4", 2027))
+        assertEquals(
+            listOf(LocalDate.of(2026, 6, 19), LocalDate.of(2027, 6, 25)),
+            listOf(2026, 2027).map { RentalCurfew.holidayEvening("midsummerEve", it) },
+        )
+        assertEquals(LocalDate.of(2026, 12, 24), RentalCurfew.holidayEvening("12-24", 2026))
+        assertNull(RentalCurfew.holidayEvening("christmas", 2026))
+
+        // Every holiday date in the catalog reads.
+        val dates = RentalCurfew.all.flatMap { curfew -> curfew.nights.flatMap { it.dates } }
+        assertTrue(dates.isNotEmpty())
+        for (date in dates) assertNotNull(date, RentalCurfew.holidayEvening(date, 2027))
+
+        val oslo = ZoneId.of("Europe/Oslo")
+        val helsinki = ZoneId.of("Europe/Helsinki")
+        fun ban(point: GeoPoint, on: String) = RentalCurfew.active(at = point, on = at(on))
+        val stavanger = GeoPoint(58.97, 5.7331)
+        val tromso = GeoPoint(69.6492, 18.9553)
+        val tonsberg = GeoPoint(59.2675, 10.4076)
+        // Thursday 6 May 2027 is Ascension Day: 00:30 that morning in Stavanger, and not a week earlier.
+        assertEquals(RentalCurfew.Active("Stavanger", at("2027-05-06T03:00:00Z"), oslo), ban(stavanger, "2027-05-05T22:30:00Z"))
+        assertNull(ban(stavanger, "2027-04-28T22:30:00Z"))
+        // Christmas Eve, Thursday 24 December 2026, 23:30 in Tromsø.
+        assertEquals(RentalCurfew.Active("Tromsø", at("2026-12-25T05:00:00Z"), oslo), ban(tromso, "2026-12-24T22:30:00Z"))
+        assertNull(ban(tromso, "2026-12-17T22:30:00Z"))
+        // Tønsberg from 23:00 the night before Maundy Thursday 2027, from 01:00 a week earlier.
+        assertEquals(RentalCurfew.Active("Tønsberg", at("2027-03-25T04:00:00Z"), oslo), ban(tonsberg, "2027-03-24T22:30:00Z"))
+        assertNull(ban(tonsberg, "2027-03-17T22:30:00Z"))
+
+        // Vappu night, Thursday 30 April 2026: Helsinki from 23:00, Espoo from midnight.
+        val helsinkiCentre = GeoPoint(60.1699, 24.9384)
+        val espoo = GeoPoint(60.2055, 24.6559)
+        assertEquals(RentalCurfew.Active("Helsinki", at("2026-05-01T02:00:00Z"), helsinki), ban(helsinkiCentre, "2026-04-30T20:30:00Z"))
+        assertNull(ban(espoo, "2026-04-30T20:30:00Z"))
+        assertEquals("Espoo", ban(espoo, "2026-04-30T21:30:00Z")?.city)
+        assertNull(ban(helsinkiCentre, "2026-04-23T20:30:00Z"))
+        // Lahti, 00:30 on Midsummer Eve, Friday 19 June 2026, and a week earlier.
+        val lahti = GeoPoint(60.9827, 25.6612)
+        assertEquals(RentalCurfew.Active("Lahti", at("2026-06-19T02:00:00Z"), helsinki), ban(lahti, "2026-06-18T21:30:00Z"))
+        assertNull(ban(lahti, "2026-06-11T21:30:00Z"))
+        // Turku, 00:30 on New Year's Day 2027, a Friday: the night of New Year's Eve, a Thursday.
+        val turku = GeoPoint(60.4518, 22.2666)
+        assertEquals(RentalCurfew.Active("Turku", at("2027-01-01T03:00:00Z"), helsinki), ban(turku, "2026-12-31T22:30:00Z"))
+        assertNull(ban(turku, "2026-12-24T22:30:00Z"))
+    }
+
     @Test
     fun dockStatusPrefersFailureThenDelayThenCityTotalsThenAge() {
         val updated = Instant.ofEpochSecond(1_790_000_000)

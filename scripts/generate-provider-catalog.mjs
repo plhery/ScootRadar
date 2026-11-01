@@ -659,10 +659,12 @@ function kotlinCatalogData() {
     curfews: list(curfews.map(curfew => ({
       city: curfew.city,
       timeZone: curfew.timeZone,
-      nights: curfew.nights.map(({ days, from, until }) => ({
+      nights: curfew.nights.map(({ days, dates, from, until }) => ({
         ...(days ? { evenings: days.map(day => weekdays.indexOf(day) + 1) } : {}),
         fromMinute: minute(from),
         untilMinute: minute(until),
+        // The holiday evenings, which the iPhone's catalog doesn't carry yet (docs/curfew-holiday-nights.md).
+        ...(dates?.length ? { dates } : {}),
       })),
       areas: curfew.areas.map(area => area.flat()),
     }))),

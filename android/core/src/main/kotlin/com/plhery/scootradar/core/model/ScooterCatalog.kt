@@ -2,6 +2,7 @@ package com.plhery.scootradar.core.model
 
 import com.plhery.scootradar.core.generated.ScooterProvider
 import java.math.BigDecimal
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -355,18 +356,28 @@ data class RentalCurfew(
         /** Local minutes since midnight; a window past midnight starts after it ends. */
         val fromMinute: Int,
         val untilMinute: Int,
+        /**
+         * The holiday evenings it starts on besides: "12-24", or days from Easter Sunday, "easter-4" the Wednesday
+         * before Maundy Thursday, or from Finland's Midsummer Eve, "midsummerEve-1" ([holidayEvening]). The website
+         * reads them since 29 October 2026; the iPhone doesn't yet (docs/curfew-holiday-nights.md).
+         */
+        val dates: List<String> = emptyList(),
     ) {
-        /** Whether it holds at that wall-clock time, on that weekday. */
-        fun holds(atMinute: Int, weekday: Int): Boolean {
-            val evening: Int
+        /** Whether it holds at that wall-clock time, on that weekday and date. */
+        fun holds(atMinute: Int, weekday: Int, date: LocalDate): Boolean {
+            // Whether the night started the evening before.
+            val before: Boolean
             if (fromMinute > untilMinute) {
                 if (!(atMinute >= fromMinute || atMinute < untilMinute)) return false
-                evening = if (atMinute >= fromMinute) weekday else weekday - 1
+                before = atMinute < fromMinute
             } else {
                 if (!(atMinute >= fromMinute && atMinute < untilMinute)) return false
-                evening = if (fromMinute >= 12 * 60) weekday else weekday - 1
+                before = fromMinute < 12 * 60
             }
-            return evenings?.contains((evening + 6) % 7 + 1) ?: true
+            val evening = if (before) weekday - 1 else weekday
+            if (evenings == null || (evening + 6) % 7 + 1 in evenings) return true
+            val day = if (before) date.minusDays(1) else date
+            return dates.any { holidayEvening(it, day.year) == day }
         }
     }
 
@@ -407,11 +418,47 @@ data class RentalCurfew(
                 val local = clock.hour * 60 + clock.minute
                 // Apple's weekdays: 1 for Sunday.
                 val weekday = clock.dayOfWeek.value % 7 + 1
-                val night = curfew.nights.firstOrNull { it.holds(atMinute = local, weekday = weekday) } ?: continue
+                val date = clock.toLocalDate()
+                val night = curfew.nights.firstOrNull { it.holds(atMinute = local, weekday = weekday, date = date) } ?: continue
                 val until = nextDate(after = on, zone = zone, time = LocalTime.of(night.untilMinute / 60, night.untilMinute % 60))
                 return Active(city = curfew.city, until = until, timeZone = zone)
             }
             return null
+        }
+
+        private val fixedHoliday = Regex("""(\d\d)-(\d\d)""")
+        private val movingHoliday = Regex("""(easter|midsummerEve)([+-]\d+)?""")
+
+        /**
+         * The evening a night's holiday date names in that year: "12-24", "easter-4", "midsummerEve-1"; null for a
+         * date it can't read. As holidayEvening on the web.
+         */
+        fun holidayEvening(date: String, year: Int): LocalDate? {
+            fixedHoliday.matchEntire(date)?.let { fixed ->
+                val (month, day) = fixed.destructured
+                return runCatching { LocalDate.of(year, month.toInt(), day.toInt()) }.getOrNull()
+            }
+            val moving = movingHoliday.matchEntire(date) ?: return null
+            val (name, offset) = moving.destructured
+            val base = if (name == "easter") easterSunday(year) else midsummerEve(year)
+            return base.plusDays(offset.removePrefix("+").ifEmpty { "0" }.toLong())
+        }
+
+        /** Easter Sunday of the year, by the Gregorian computus, as easterSunday on the web. */
+        fun easterSunday(year: Int): LocalDate {
+            val golden = year % 19
+            val century = year / 100
+            val epact = (19 * golden + century - century / 4 - (century - (century + 8) / 25 + 1) / 3 + 15) % 30
+            val weekday = (32 + 2 * (century % 4) + 2 * (year % 100 / 4) - epact - year % 4) % 7
+            val correction = (golden + 11 * epact + 22 * weekday) / 451
+            val march = epact + weekday - 7 * correction + 114
+            return LocalDate.of(year, march / 31, march % 31 + 1)
+        }
+
+        /** Finland's Midsummer Eve, the Friday from 19 to 25 June. */
+        private fun midsummerEve(year: Int): LocalDate {
+            val first = LocalDate.of(year, Month.JUNE, 19)
+            return first.plusDays(((DayOfWeek.FRIDAY.value - first.dayOfWeek.value + 7) % 7).toLong())
         }
 
         /**

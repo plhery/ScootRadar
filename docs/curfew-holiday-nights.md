@@ -2,8 +2,9 @@
 
 Since 29 October 2026 the map and the cache close the nights 9 of
 `data/rental-curfews.json`'s 46 towns close around public holidays, besides
-their weekday nights. The iOS and Android apps don't yet (below). Holiday
-hours elsewhere, such as LUUP's in Japan, have no calendar (`server/luupApp.ts`).
+their weekday nights, and the Android app since 1 November 2026. The iOS app
+doesn't yet (below). Holiday hours elsewhere, such as LUUP's in Japan, have no
+calendar (`server/luupApp.ts`).
 
 ## The nights
 
@@ -50,11 +51,11 @@ Year's Eve 2026 in Turku, each against the same night a week earlier.
 
 ## Follow-ups
 
-- **Android** (row LOG-420 of the Android lane): `RentalCurfew.Night` in
-  `ScooterCatalog.kt` takes the dates, which the generator (`--android`) adds
-  to catalog.json's curfews, and holds on those evenings with the same
-  calendar, under the same dated tests. The first night it misses is Christmas
-  Eve 2026 in Stavanger and Tromsø.
+- **Android**, done 1 November 2026 (row LOG-420 of the Android lane):
+  `RentalCurfew.Night` in `ScooterCatalog.kt` takes the dates, which the
+  generator (`--android`) adds to catalog.json's curfews, and holds on those
+  evenings with the same calendar (`holidayEvening`, `easterSunday`), under the
+  same dated tests (`ScooterModelsTest.citiesBanRentingOnTheHolidayNightsTheyName`).
 - **iOS**, once ScootRadar 1.2.1 is off hold: the same in `RentalCurfew`
   (`Models/ScooterModels.swift`), with `swiftCurfews` in
   `scripts/generate-provider-catalog.mjs` emitting the dates.
