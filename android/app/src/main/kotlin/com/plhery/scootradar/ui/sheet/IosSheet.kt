@@ -42,6 +42,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
@@ -225,6 +227,15 @@ fun IosSheet(
                     clip = true
                 }
                 .background(sheetColors.systemGroupedBackground)
+                // Seen before the list sees the event, which it then scrolls by.
+                .pointerInput(scroll) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent(PointerEventPass.Initial)
+                            scroll.byPointer = event.type == PointerEventType.Scroll || event.changes.any { it.pressed }
+                        }
+                    }
+                }
                 .nestedScroll(scroll)
                 .draggable(
                     motion,
@@ -375,6 +386,13 @@ private class SheetMotion(
 private class SheetScrollConnection(private val motion: SheetMotion) : NestedScrollConnection {
     private val state get() = motion.state
 
+    /**
+     * Whether a finger, a pen or a mouse button is down on the sheet, or a wheel turns over it. TalkBack's scroll, and
+     * its bringing a row into view, come as the list's own scroll with nothing pressed, and move only the list, as
+     * VoiceOver's scroll leaves a sheet at its height (app-ai SH2).
+     */
+    var byPointer = false
+
     /** Whether the finger on the list has moved the sheet: a list that only scrolled leaves the sheet be. */
     private var moved = false
 
@@ -385,10 +403,10 @@ private class SheetScrollConnection(private val motion: SheetMotion) : NestedScr
     }
 
     override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset =
-        if (available.y < 0 && source == NestedScrollSource.UserInput) move(available.y) else Offset.Zero
+        if (available.y < 0 && source == NestedScrollSource.UserInput && byPointer) move(available.y) else Offset.Zero
 
     override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset =
-        if (source == NestedScrollSource.UserInput) move(available.y) else Offset.Zero
+        if (source == NestedScrollSource.UserInput && byPointer) move(available.y) else Offset.Zero
 
     override suspend fun onPreFling(available: Velocity): Velocity =
         if (moved && available.y < 0 && state.requireOffset() > state.anchors.minPosition()) {

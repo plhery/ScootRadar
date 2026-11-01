@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.AnnotatedString
@@ -90,6 +91,9 @@ fun ZoneLegend(
     Column(
         modifier
             .testTag(ZONE_LEGEND_TAG)
+            // Read whole, then the locate button beside it, as the iPhone's HStack lists the two (F5): TalkBack's
+            // order by position read the button between the kinds and the cities' lines under them.
+            .semantics { isTraversalGroup = true }
             .chromeGlass(SquircleShape(16.dp))
             .then(if (lines.isEmpty()) Modifier else Modifier.overTheMap())
             .padding(horizontal = 12.dp, vertical = 7.dp),

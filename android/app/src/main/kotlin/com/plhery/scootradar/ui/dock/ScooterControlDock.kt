@@ -43,6 +43,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -124,7 +125,8 @@ fun ScooterControlDock(
     // Only the panel folds; a phone's dock always shows all it has.
     val isFolded = layout == ScooterChromeLayout.Panel && controller.isPanelCollapsed.collectAsState().value
 
-    Box(modifier.widthIn(max = 560.dp)) {
+    // The card's content, then its grabber, in the order they are drawn (F13).
+    Box(modifier.widthIn(max = 560.dp).semantics { isTraversalGroup = true }) {
         Box(
             Modifier
                 .iosShadow(shape, Color.Black.copy(alpha = if (colors.isDark) 0.3f else 0.1f), radius = 16.dp, y = 10.dp)

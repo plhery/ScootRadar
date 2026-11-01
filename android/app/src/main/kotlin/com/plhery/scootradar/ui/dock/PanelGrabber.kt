@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.theme.CapsuleShape
@@ -65,6 +66,9 @@ internal fun PanelGrabber(isFolded: Boolean, setFolded: (Boolean) -> Unit, modif
                 stateDescription = value
                 role = Role.Button
                 onClick { set(!folded); true }
+                // Read after the card's content, as it is drawn under it: folded, the card's line reaches down past the
+                // grabber's top (F13).
+                traversalIndex = 1f
             }
             .pointerInput(Unit) {
                 val slop = 10.dp.toPx()
