@@ -260,6 +260,15 @@ feed it covers rather than filtering with `== 1`. When it filtered, a feed that
 recovered before its 10 minutes left the answer empty, and Grafana kept the pending
 alert and fired it anyway, as for six Beryl feeds on 12 October 2026.
 
+"Feed stopped" measures how much of the last 7 days a feed was served every half
+hour, not every 5 minutes. A feed is served when it has not expired or while it is
+paused (`1 - expired × (1 - paused)`): the cache sets exactly one of ok, failing and
+expired, and exports `scootradar_feed_paused` for every feed with a state, so each
+series is read once. Read every 5 minutes, the 7 days of every feed took Prometheus
+about 29 seconds, against Grafana's 30, and the rule timed out 46 times on the night
+of 1 November 2026, mostly from 03:18 to 04:32 UTC. Every half hour it takes about 7,
+gives the same answer, and moved no feed's share across half (at most 3.5 points).
+
 "Cache restarting" counts the restarts of one build, by joining the start time with
 `scootradar_build_info`: a deploy starts another build, so its series begins without a
 change. Every commit that changes the cache deploys it once CI passes, and for about a
