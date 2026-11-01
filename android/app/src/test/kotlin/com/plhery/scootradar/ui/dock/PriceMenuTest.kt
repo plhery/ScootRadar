@@ -100,6 +100,9 @@ class PriceMenuTest {
             // others: VoiceOver gives no row a selected trait (app-ai's TalkBack pass).
             assertEquals(title, if (title == "10 min") "Selected" else null, row.config.getOrNull(SemanticsProperties.StateDescription))
             assertEquals(title, null, row.config.getOrNull(SemanticsProperties.Selected))
+            // Nor a switch's or a box's state: Compose makes a node with either checkable, which TalkBack reads as one
+            // to tick (review-app-ai T2).
+            assertEquals(title, null, row.config.getOrNull(SemanticsProperties.ToggleableState))
             assertTrue("$title is ${row.size.height / density} high", row.size.height >= 44 * density)
         }
     }

@@ -230,10 +230,13 @@ class ScooterMarkerAccessibility(
     }
 
     // A finger exploring the map finds what is in front, as VoiceOver's does: on the chrome, the chrome's own elements,
-    // which Compose finds after the map has had the finger, and never a marker under them.
+    // which Compose finds after the map has had the finger, and never a marker under them. The open search is all that
+    // is in front then: the dock, the notices, the legend and the locate button make way, hidden from VoiceOver as
+    // ScooterMapScreen.swift hides them, and their frames, kept for the map's names, hold no finger back.
     override fun getVirtualViewAt(x: Float, y: Float): Int {
         val point = ScreenPoint(x / ratio.toDouble(), y / ratio.toDouble())
-        if (covered || scene.parent.isUnderChrome(point) || search?.contains(point) == true) return INVALID_ID
+        val inFront = search?.contains(point) ?: scene.parent.isUnderChrome(point)
+        if (covered || inFront) return INVALID_ID
         val element = MarkerElements.at(point, current(), scene, map)
         return element?.let { ids[it.key] } ?: INVALID_ID
     }

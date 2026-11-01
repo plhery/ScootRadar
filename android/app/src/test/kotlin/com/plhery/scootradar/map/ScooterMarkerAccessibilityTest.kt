@@ -1,9 +1,12 @@
 package com.plhery.scootradar.map
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityManager
+import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
@@ -26,6 +29,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -420,11 +424,15 @@ class ScooterMarkerAccessibilityTest {
         // Swiped to, the markers under the chrome are read all the same, as VoiceOver reads MapKit's in its order.
         assertEquals(3, accessibility.virtualViews().size)
 
-        // The open search over the map, whose rows a finger finds.
+        // The open search over the map, whose rows a finger finds. The dock has made way for it, hidden from VoiceOver
+        // as the iPhone hides it: the marker where it was is found (review-app-ai R4).
+        val docked = accessibility.virtualViews().single { it != free && accessibility.node(it).bounds().centerY() > 600 * density }
         accessibility.search = ScreenRect(16.0, 50.0, 358.0, 400.0)
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 300.0))
+        assertEquals("under the dock that made way", docked, at(195.0, 700.0))
         accessibility.search = null
         assertEquals(free, at(195.0, 300.0))
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 700.0))
 
         // Beside a large window's panel.
         scene.parent = MarkerParent(panelFrame = ScreenRect(0.0, 0.0, 320.0, 844.0))
@@ -437,15 +445,26 @@ class ScooterMarkerAccessibilityTest {
         val map = FlatMarkerMap()
         scene.reconcile(listOf(scooter("a", "lime", at = map.at(195.0, 300.0))), revision = 1)
         scene.updateLook(map)
+        // TalkBack on, and what the map's view asks to tell it: TalkBack keeps the markers it has until it is told they
+        // changed (review-app-ai T2).
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        shadowOf(context.getSystemService(AccessibilityManager::class.java)).setEnabled(true)
+        val told = mutableListOf<AccessibilityEvent>()
+        object : FrameLayout(context) {
+            override fun requestSendAccessibilityEvent(child: View, event: AccessibilityEvent): Boolean = told.add(event)
+        }.addView(host)
+        fun markersChanged() = told.count { it.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED }
         val accessibility = helper(map)
         val marker = accessibility.virtualViews().single()
 
         accessibility.covered = true
+        assertEquals("TalkBack told as the sheet opens", 1, markersChanged())
         assertEquals(emptyList<Int>(), accessibility.virtualViews())
         assertEquals(ExploreByTouchHelper.INVALID_ID, accessibility.virtualViewAt(195f * 3, 300f * 3))
         assertEquals(0, accessibility.node(ExploreByTouchHelper.HOST_ID).childCount)
 
         accessibility.covered = false
+        assertEquals("TalkBack told as it closes", 2, markersChanged())
         assertEquals(listOf(marker), accessibility.virtualViews())
         assertEquals(marker, accessibility.virtualViewAt(195f * 3, 300f * 3))
     }

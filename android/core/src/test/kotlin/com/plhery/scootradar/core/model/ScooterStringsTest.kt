@@ -53,6 +53,17 @@ class ScooterStringsTest {
     }
 
     @Test
+    fun androidsOwnKeysAreNoneOfTheIPhones() {
+        // Android's wording is read before the iPhone's: a key of the iPhone's in android/strings would replace its
+        // sentence wherever the iPhone's code uses it, unseen (review-app-ai R6). Android's own sentences have keys of
+        // their own.
+        val iPhone = ScooterLanguage.entries.flatMap { it.strings.keys + it.strings.countingKeys }.toSet()
+        for (language in ScooterLanguage.entries) {
+            assertEquals(language.rawValue, emptySet<String>(), language.strings.androidKeys intersect iPhone)
+        }
+    }
+
+    @Test
     fun everySentenceOfEveryLanguageTakesTheArgumentsOfItsKey() {
         // %@ takes a string and %lld a whole number, as Swift's interpolations make them.
         val specifier = Regex("%(?:(\\d+)\\$)?(@|lld)")

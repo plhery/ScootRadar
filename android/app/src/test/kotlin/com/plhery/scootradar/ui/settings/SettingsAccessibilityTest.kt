@@ -6,6 +6,7 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -16,6 +17,8 @@ import com.plhery.scootradar.EmptyScooterAPI
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.generated.ScooterProvider
+import com.plhery.scootradar.core.model.AppleMapStyle
+import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
 import com.plhery.scootradar.core.model.ScooterLinks
@@ -109,6 +112,27 @@ class SettingsAccessibilityTest {
         }
         // Automatic is a choice too, not chosen.
         assertEquals(false, row(localized("Automatic (language)")).config[SemanticsProperties.Selected])
+    }
+
+    /**
+     * UI-292: the appearances and the map's looks are choices, read by their names, the chosen one selected, as
+     * Filters' presets are (PLAN §10, review-app-ai R3).
+     */
+    @Test
+    fun anAppearanceAndAMapLookAreChoicesTheChosenOneSelected() {
+        show(listOf(SettingsPage.Root))
+        // The tile, not the Language row's "Automatic".
+        fun tile(name: String) = compose.onNode(hasText(name) and isSelectable()).fetchSemanticsNode()
+        for (choice in ScooterAppearance.entries) {
+            val tile = tile(choice.label)
+            assertEquals(choice.rawValue, Role.RadioButton, tile.config[SemanticsProperties.Role])
+            assertEquals(choice.rawValue, choice == model.appearance.value, tile.config[SemanticsProperties.Selected])
+        }
+        for (style in AppleMapStyle.entries - AppleMapStyle.Satellite) {
+            val tile = tile(style.label)
+            assertEquals(style.rawValue, Role.RadioButton, tile.config[SemanticsProperties.Role])
+            assertEquals(style.rawValue, style == model.mapStyle.value, tile.config[SemanticsProperties.Selected])
+        }
     }
 
     /** UI-294: a row that leaves the app is one button, read by its title and its detail; its arrow is not read. */
