@@ -55,8 +55,7 @@ const guide: Guide = {
       heading: 'Innenstadt, Hauptbahnhof und Holstenhallen: E-Scooter an den grossen Zielen',
       blocks: [
         '**Innenstadt und Hauptbahnhof:** Den zentralen Innenstadtbereich verortet die Stadt «zwischen Hauptbahnhof und Rathaus sowie zwischen Kleinflecken und Rencks Park». Am 1. November 2026 um 14:20 Uhr standen rund um Hauptbahnhof und Grossflecken, auf rund 1,7 Quadratkilometern, 14 freie Dott-Scooter, drei davon höchstens 300 Meter vom Hauptbahnhof entfernt.',
-        '**Holstenhallen:** Zu Neumünsters Hallen- und Messegelände fährt laut Holstenhallen (gelesen am 1. November 2026) die SWN-Buslinie 5 vom Hauptbahnhof; der «Kielius» (Autokraft-Linie 4550) vom Hamburger Flughafen nach Kiel hält am Messegelände. Dort findet jeden Herbst die NordBau statt, laut Holstenhallen «die grösste Messe des Landes»; vom 26. bis 29. November 2026 belegt der 64. Trakehner Hengstmarkt alle Hallen.',
-        'Am 1. November um 14:20 Uhr, am Tag des Nord-Flohmarkts in Halle 5, standen rund um Hallen und Messegelände auf rund 1,7 Quadratkilometern 13 freie Dott-Scooter. Was auf dem Gelände selbst gilt, entscheiden die Holstenhallen.',
+        '**Holstenhallen:** Am 1. November 2026 um 14:20 Uhr standen rund um Neumünsters Hallen- und Messegelände, auf rund 1,7 Quadratkilometern, 13 freie Dott-Scooter. Was auf dem Gelände selbst gilt, entscheiden die Holstenhallen.',
       ],
     },
     {
@@ -64,7 +63,7 @@ const guide: Guide = {
       blocks: [
         '**SWN-Bus:** Den Stadtverkehr fährt die SWN Verkehr GmbH im SH-Tarif. Seit dem 1. Juli 2024 nehmen ihre Busse keine E-Tretroller mehr mit, wie die Stadtverkehre in Kiel, Lübeck und Heide; die Stadt nannte im Juni 2024 die Brandgefahr der Akkus als Grund. Das Verbot gelte auf allen Linien, auch in Kleinbussen und bei Fahrten auf telefonische Bestellung, und ebenso in den Bussen der Autokraft ausserhalb des hvv, schrieb sie. Laut NAH.SH (Stand 1. November 2026) gilt es weiter, auch für Scooter mit Betriebserlaubnis oder Kennzeichen; eine Ausnahme für zusammengeklappte nennen weder Stadt noch NAH.SH. E-Bikes, Pedelecs und Elektro-Rollstühle seien nicht betroffen, schrieb die Stadt 2024.',
         '**Leih-Scooter** lassen sich nicht zusammenklappen: Beende die Fahrt vor der Haltestelle, aber nicht direkt daneben, und steig ohne Scooter ein.',
-        '**Regionalzug:** Neumünster liegt laut Holstenhallen an der Strecke Hamburg–Kiel/Flensburg und ist IC-Station. Im Nahverkehrszug darf ein eigener E-Scooter laut NAH.SH mit, wenn Platz ist; einen Anspruch darauf hast du nicht, Kinderwagen und Rollstühle haben Vorrang. Ist er so gross wie ein Fahrrad, brauchst du eine Fahrradtageskarte (6 € für die gewählte Strecke, fürs ganze Netz des SH-Tarifs ab 6,60 €). Kleinere oder zusammengeklappte Scooter fahren wie Handgepäck kostenlos mit.',
+        '**Regionalzug:** Im Nahverkehrszug darf ein eigener E-Scooter laut NAH.SH mit, wenn Platz ist; einen Anspruch darauf hast du nicht, Kinderwagen und Rollstühle haben Vorrang. Ist er so gross wie ein Fahrrad, brauchst du eine Fahrradtageskarte (6 € für die gewählte Strecke, fürs ganze Netz des SH-Tarifs ab 6,60 €). Kleinere oder zusammengeklappte Scooter fahren wie Handgepäck kostenlos mit.',
         '**Fernzüge:** In ICE und IC nimmt die Deutsche Bahn laut ihren FAQ (Stand Oktober 2026) einen E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; aufgeklappt gilt er als Traglast und darf nur mit, wenn er sicher untergebracht ist. Den eingebauten Akku darfst du unterwegs weder ausbauen noch laden noch als Powerbank nutzen.',
       ],
     },
@@ -97,7 +96,7 @@ const guide: Guide = {
         {
           list: [
             '**900 Jahre Neumünster.** «Im Jahr 2027 feiert Neumünster sein 900-jähriges Bestehen», schreibt die Stadt (Stand 1. November 2026). Vereine, Initiativen und Bürger können eigene Veranstaltungen für das Jubiläumsjahr einreichen.',
-            '**Pferde für die Welt.** Neumünster nennt sich Pferdestadt: Auf den Auktionen in den Holstenhallen würden edle Pferde «in die ganze Welt verkauft», schreibt die Stadt. Die Auktionshalle misst laut Holstenhallen über 5.000 Quadratmeter und ist «der wichtigste Umschlagplatz für Nutztiere in Schleswig-Holstein».',
+            '**Pferde für die Welt.** Neumünster nennt sich Pferdestadt: Auf den Auktionen in den Holstenhallen würden edle Pferde «in die ganze Welt verkauft», schreibt die Stadt.',
             '**Masterplan auf Tour.** Im September 2021 zog die Stadt mit ihrem Masterplan Mobilität vom Grossflecken aus «von Einfeld bis Wittorf» durch alle neun Stadtteile; am 26. September 2023 beschloss die Ratsversammlung den Plan.',
             '**Eislaufen mit Handschuhen.** Vom 19. November bis 23. Dezember 2026 läuft der Weihnachtsmarkt mit Eisvergnügen, laut Stadt montags bis mittwochs von 11 bis 20:30 Uhr, donnerstags bis samstags bis 21 Uhr und sonntags von 12 bis 20:30 Uhr. Auf der Eisbahn gilt «Handschuh-Pflicht».',
           ],
@@ -138,11 +137,7 @@ const guide: Guide = {
     { title: 'Stadt Neumünster: 900 Jahre Neumünster', url: 'https://www.neumuenster.de/900-jahre/unser-stadtjubilaeum' },
     { title: 'Stadt Neumünster: Pferdestadt Neumünster', url: 'https://www.neumuenster.de/kultur-freizeit/tourismus/aktiv-in-neumuenster/pferdestadt' },
     { title: 'Stadt Neumünster: Weihnachtsmarkt mit Eisvergnügen', url: 'https://www.neumuenster.de/kultur-freizeit/weihnachtsmarkteisbahn' },
-    { title: 'SWN: Tarifbestimmungen und Fahrgastrechte', url: 'https://swn.net/regional/produkte/verkehr/tarifbestimmungen' },
     { title: 'NAH.SH: Fahrradmitnahme im SH-Tarif', url: 'https://www.nah.sh/de/fahrkarten/fahrradmitnahme/' },
-    { title: 'Holstenhallen Neumünster: Anreise', url: 'https://www.holstenhallen.com/de/veranstalter/reiseplanung/anreise' },
-    { title: 'Holstenhallen Neumünster: Die Holstenhallen', url: 'https://www.holstenhallen.com/de/holstenhallen' },
-    { title: 'Holstenhallen Neumünster: Termine', url: 'https://www.holstenhallen.com/de/termine' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },

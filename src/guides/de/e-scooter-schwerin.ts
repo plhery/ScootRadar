@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Schwerin?',
       blocks: [
-        'In Schwerin vermietet **Voi** E-Scooter. Die Stadt erteilte Voi zum 20. März 2025 eine Sondernutzungserlaubnis für 200 E-Scooter; damit gab es laut ihrer Mitteilung vom 18. März 2025 «insgesamt 300 E-Scooter von zwei gewerblichen Anbietern» in Schwerin. Den zweiten nennt die Mitteilung nicht. Im Mai 2022 hatte die Stadt **MOIN** und **TIER** den Einsatz von jeweils 100 E-Scootern genehmigt.',
+        'In Schwerin vermietet **Voi** E-Scooter.',
         '**MOIN** ist ein Anbieter aus [Rostock](guide:rostock). Laut seiner eigenen Seite (Stand November 2025) stehen MOIN-Scooter in Rostock, Schwerin, Greifswald, Stralsund und Neubrandenburg. **MOIN fehlt auf unserer Karte**; seine Scooter zeigt nur die MOIN-App. **Dott**, das früher Tier hiess, führt Schwerin nicht unter seinen Standorten, und Bolt nennt Schwerin in der Städteliste seiner Website nicht (Stand 1. November 2026).',
         'Voi vermietet erst ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'ScootRadar zeigt auf der [Karte von Schwerin](map:de:Schwerin) Voi: am Sonntag, 1. November 2026, um 19:48 Uhr rund 240 Voi-Scooter, die zu diesem Zeitpunkt frei waren. Die Zahl gilt für Vois ganzes Gebiet in Schwerin, nicht nur für die Innenstadt: Um 19:25 Uhr standen 235 freie Scooter über die Stadt verteilt, von Lankow im Nordwesten und Lewenberg im Norden über Weststadt, Paulsstadt und Altstadt bis zum Grossen Dreesch, nach Neu Zippendorf, Muesser Holz und Muess im Südosten, einzelne auch in Görries und Krebsförden. Bei Voi zeigt die Karte Standort und Akkustand; Preise und Sperrzonen zeigt nur die App.',
@@ -26,7 +26,7 @@ const guide: Guide = {
       heading: 'Was kostet ein E-Scooter in Schwerin?',
       blocks: [
         'Voi nennt seinen Preis in der App, bevor du entsperrst; verbindlich ist, was sie dir dann zeigt. Bei MOIN zeigt ihn die MOIN-App.',
-        'Für die Fläche zahlt der Anbieter: Die Strassen- und Grünflächensatzung, die die Stadtvertretung am 29. September 2025 beschlossen hat, verlangt für die «Bereitstellung von öffentlichen Flächen als Mietstation für E-Scooter» 1 € pro Scooter und Monat, abgerechnet pro Halbjahr. Als die Änderung im Mai 2025 noch geplant war, sagte Verkehrsdezernent Bernd Nottebaum, sie solle unter anderem «die Errichtung von Sammelpunkten für E-Scooter» mitfinanzieren.',
+        'Für die Fläche zahlt der Anbieter: Die Strassen- und Grünflächensatzung, die die Stadtvertretung am 29. September 2025 beschlossen hat, verlangt für die «Bereitstellung von öffentlichen Flächen als Mietstation für E-Scooter» 1 € pro Scooter und Monat, abgerechnet pro Halbjahr.',
       ],
     },
     {
@@ -42,12 +42,11 @@ const guide: Guide = {
       heading: 'E-Scooter in Schwerin abstellen: Parkverbotszonen und Wasser',
       blocks: [
         'Für das Abstellen gelten laut eKFV die Parkvorschriften für Fahrräder: Stell den Scooter so ab, dass er niemanden behindert, also nicht mitten auf dem Gehweg, vor Einfahrten oder auf dem Radweg.',
-        'Die Stadt regelt den Verleih über eine Sondernutzungserlaubnis. Darin waren laut ihrer Mitteilung vom 18. März 2025 Qualitätsstandards, «sogenannte Parkverbotszonen» und Obergrenzen festgelegt, dazu Standards für Kontrolle, Verkehrssicherheit und Datenaustausch; die bekannten Abstellregeln galten auch für Voi. Welche Zonen heute gelten, zeigt dir die App.',
-        'Als die Stadt im Oktober 2021 mit MOIN über eine Sondernutzungsvereinbarung sprach, sagte MOIN laut Stadt zu, Park- und Verbotszonen gemeinsam festzulegen; dabei solle «insbesondere der Abstand zu Wasserflächen eingehalten werden». Auf den Grünflächen, auch an den Promenaden am Wasser, verbietet die Satzung das Abstellen ohnehin.',
+        'Die Stadt regelt den Verleih über eine Sondernutzungserlaubnis. Welche Parkverbotszonen gelten, zeigt dir die App.',
+        'Auf den Grünflächen, auch an den Promenaden am Wasser, verbietet die Strassen- und Grünflächensatzung das Abstellen.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder ausserhalb des Gebiets. Fahr hinaus: Solange die Fahrt läuft, zahlst du weiter.',
         },
-        '**Obergrenze:** Als stadtverträgliche Höchstgrenze nannte die Stadt im Mai 2022 und wieder im März 2025 300 E-Scooter.',
       ],
     },
     {
@@ -94,9 +93,6 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**290 am Tag.** Anfang Oktober 2021 nutzten laut MOIN täglich etwa 290 Personen seine Roller in Schwerin, im Schnitt 15 Minuten und 2,1 Kilometer lang. Der Vandalismus beschränkte sich laut MOIN bis dahin auf gestohlene Kennzeichen (Mitteilung der Stadt vom 4. Oktober 2021).',
-            '**Eher für Touristen.** Im Mai 2022 schrieb die Stadt, wegen der kurzen Wege seien in Schwerin durch E-Scooter keine Emissionseinsparungen zu erwarten; sie sah sie «eher als ein für Touristen und den Freizeitbereich attraktives Angebot». In [Rostock](guide:rostock) waren laut derselben Mitteilung damals 2.000 E-Scooter im Einsatz.',
-            '**Voi kam von sich aus.** «Wir gehen nicht aktiv auf andere Anbieter zu», sagte Wirtschaftsdezernent Bernd Nottebaum im Mai 2022. Voi hatte laut Stadt Anfang 2025 selbst das Gespräch gesucht; seine «korallfarbenen» Scooter sollten vom Wochenende nach dem 18. März 2025 an verteilt werden.',
             '**Fähre über den Pfaffenteich.** Die Pfaffenteichfähre «Petermännchen» der NVS kostet laut Tarifheft (Stand 1. Februar 2026) 2 € je Fahrt, für Kinder von 3 bis 14 Jahren 1 €. Einzel- und Zeitkarten der NVS gelten auf ihr nicht; wer ein Schwerin-Ticket oder ein Doppeldecker-Ticket hat, fährt kostenlos.',
           ],
         },
@@ -122,14 +118,10 @@ const guide: Guide = {
     },
     {
       question: 'Wo darf ich einen Leih-Scooter in Schwerin abstellen?',
-      answer: 'Dort, wo die App die Fahrt beenden lässt, nach den Parkregeln für Fahrräder: ohne Fussgänger oder Verkehr zu behindern und nicht auf Grünflächen. Parkverbotszonen legte die Stadt laut ihrer Mitteilung vom März 2025 in der Erlaubnis für Voi fest; welche heute gelten, zeigt dir die App.',
+      answer: 'Dort, wo die App die Fahrt beenden lässt, nach den Parkregeln für Fahrräder: ohne Fussgänger oder Verkehr zu behindern und nicht auf Grünflächen. Welche Parkverbotszonen gelten, zeigt dir die App.',
     },
   ],
   sources: [
-    { title: 'Stadt Schwerin: Mit VOI erhält ein zweiter Anbieter eine Sondernutzungserlaubnis (18. März 2025)', url: 'https://www.schwerin.de/news/weiterer-e-scooter-anbieter/' },
-    { title: 'Stadt Schwerin: Mit TIER erhält zweiter Anbieter eine Sondernutzungserlaubnis (18. Mai 2022)', url: 'https://www.schwerin.de/news/weiterer-anbieter-e-roller/' },
-    { title: 'Stadt Schwerin: Rollerverleih in Schwerin kann weiterlaufen (4. Oktober 2021)', url: 'https://www.schwerin.de/news/c5db0b35-252f-11ec-9ba0-1967de695b51/' },
-    { title: 'Stadt Schwerin: Stadt plant Änderungen der Strassen- und Grünflächensatzung (19. Mai 2025)', url: 'https://www.schwerin.de/news/stadt-plant-aenderung-der-strassen-und-gruenflaechensatzung/' },
     { title: 'Stadt Schwerin: Strassen- und Grünflächensatzung, beschlossen am 29. September 2025 (PDF)', url: 'https://www.schwerin.de/export/sites/default/.galleries/Dokumente/Bekanntmachungen/Bekanntmachungen-2025/Strassen-und-Gruenflaechensatzung-2025.pdf' },
     { title: 'Nahverkehr Schwerin: Tarifheft, Stand 1. Februar 2026 (PDF)', url: 'https://www.nahverkehr-schwerin.de/_Resources/Persistent/3/6/6/2/3662b69b3ff503ffd01ab4275d1d62ac582ecfe7/Tarifheft%202026-02-01_K_GFA_17.10.AS_Inhalt_V3.pdf' },
     { title: 'MOIN. Scooters & Cars', url: 'https://moin-sharing.app/' },
