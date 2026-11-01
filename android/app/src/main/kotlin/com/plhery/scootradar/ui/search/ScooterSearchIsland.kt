@@ -88,6 +88,9 @@ const val SEARCH_ISLAND_TAG = "searchIsland"
 /** The search field's tag. */
 const val SEARCH_FIELD_TAG = "searchField"
 
+/** The collapsed bar's button that opens the search: where TalkBack's focus goes as the search closes. */
+const val SEARCH_BAR_TAG = "searchBar"
+
 /**
  * The search bar at the top of the map. Collapsed, it says what the map is based on: nothing yet, your location, a
  * searched place, or a location on its way. Tapped, it opens into the search panel, which asks [LocalAddressSearch]
@@ -247,6 +250,7 @@ private fun CollapsedBar(
         Row(
             Modifier
                 .weight(1f)
+                .testTag(SEARCH_BAR_TAG)
                 .plainButton(label = state.accessibilityLabel, onClick = onOpen)
                 .padding(vertical = COLLAPSED_PADDING)
                 .heightIn(min = if (isAccessibility) 60.dp else 50.dp),

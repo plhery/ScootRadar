@@ -19,18 +19,24 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performKeyInput
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.EmptyScooterAPI
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
+import com.plhery.scootradar.core.api.AddressSearchAPIClient
+import com.plhery.scootradar.core.api.AddressSearchResult
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.dock.DockState
+import com.plhery.scootradar.ui.search.SEARCH_FIELD_TAG
 import com.plhery.scootradar.ui.sheet.MENU_TAG
 import com.plhery.scootradar.ui.sheet.POPOVER_TAG
 import com.plhery.scootradar.ui.theme.PHONE
@@ -89,10 +95,10 @@ class FocusReturnTest {
         TimeZone.setDefault(timeZone)
     }
 
-    private fun show(model: ScooterMapController, clock: TestClock = TestClock()) {
+    private fun show(model: ScooterMapController, clock: TestClock = TestClock(), addressSearch: AddressSearchAPIClient? = null) {
         compose.setContent {
             CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScooterMapScreen(controller = model, map = {}, glassBlurs = false)
+                ScooterMapScreen(controller = model, map = {}, glassBlurs = false, addressSearch = addressSearch)
             }
         }
         compose.waitForIdle()
@@ -206,4 +212,47 @@ class FocusReturnTest {
     /** The price cell, which reads the length chosen now. */
     private fun price(minutes: Long) =
         compose.onNode(hasContentDescription(stringFormat(localized("Ride estimate, %lld minutes. Change duration."), minutes)) and hasClickAction())
+
+    /**
+     * The search closed by a place chosen, or by Cancel, puts the focus on the bar, which reads the place chosen:
+     * TalkBack put it on the first node it found once the keyboard had gone, a cluster on an open Fold (app-ai's F11).
+     */
+    @Test
+    fun theSearchClosedPutsTheFocusOnTheBar() {
+        searchClosed()
+    }
+
+    /** Beside a large window's panel, where the search opens in the panel. */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun besideThePanelTheSearchClosedPutsTheFocusOnTheBar() {
+        searchClosed()
+    }
+
+    private fun searchClosed() {
+        show(controllers.make(EmptyScooterAPI), addressSearch = ZurichHB)
+        button(localized("Search city or address")).focusedByTalkBack().doubleTapped()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Zürich HB")
+        compose.mainClock.advanceTimeBy(1_000)
+        compose.waitForIdle()
+        compose.onNode(hasText("8001 Zürich, Switzerland") and hasClickAction()).focusedByTalkBack().doubleTapped()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertDoesNotExist()
+        val bar = button(stringFormat(localized("Showing scooters near %@. Search another place."), "Zürich HB".isolated))
+        assertTrue("TalkBack's focus on the bar, a place chosen", bar.isFocusedByTalkBack())
+
+        bar.doubleTapped()
+        compose.onNode(hasText(localized("Cancel")) and hasClickAction()).focusedByTalkBack().doubleTapped()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertDoesNotExist()
+        assertTrue("TalkBack's focus on the bar, the search cancelled", bar.isFocusedByTalkBack())
+    }
+}
+
+/** Zürich HB, for "Zürich HB". */
+private object ZurichHB : AddressSearchAPIClient {
+    override suspend fun search(query: String, language: String, near: GeoPoint?): List<AddressSearchResult> =
+        if (query != "Zürich HB") {
+            emptyList()
+        } else {
+            listOf(AddressSearchResult(47.3779, 8.5403, "Zürich HB, 8001 Zürich, Switzerland", "Zürich HB", "8001 Zürich, Switzerland", true))
+        }
 }

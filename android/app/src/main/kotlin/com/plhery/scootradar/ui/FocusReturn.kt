@@ -1,15 +1,18 @@
 package com.plhery.scootradar.ui
 
 import android.view.View
+import android.view.accessibility.AccessibilityManager
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.node.RootForTest
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getAllSemanticsNodes
+import androidx.compose.ui.semantics.getOrNull
 
-// TalkBack's focus as a menu, popover or sheet closes (PLAN §10; app-ai's TalkBack pass, F10 and SH3).
+// TalkBack's focus as a menu, popover, sheet or the search closes (PLAN §10; app-ai's TalkBack pass, F10, F11 and SH3).
 
 /**
  * TalkBack's focus back on the control it was on as a menu, popover or sheet opened, once that closes (PLAN §10:
@@ -43,6 +46,23 @@ class AccessibilityFocusReturn internal constructor(private val view: View) {
         if (open == isOpen) return
         isOpen = open
         if (open) opening() else closed()
+    }
+
+    /**
+     * TalkBack's focus onto the node tagged [tag], once the screen shows it: the search bar as the search closes, by
+     * a place chosen, Cancel or Back. The row the focus was on goes with the panel, and TalkBack, finding no focus once
+     * the keyboard's window had gone, put it on the first node it found, a cluster on an open Fold (app-ai's F11); a
+     * focus already on the bar keeps TalkBack's own away. Nothing else on the screen is heard while the search is
+     * open, so the focus is taken from nowhere else.
+     */
+    fun moveTo(tag: String) {
+        if (view.context.getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled != true) return
+        view.post {
+            val root = view as? RootForTest ?: return@post
+            val node = root.semanticsOwner.getAllSemanticsNodes(mergingEnabled = false)
+                .firstOrNull { it.config.getOrNull(SemanticsProperties.TestTag) == tag } ?: return@post
+            view.accessibilityNodeProvider?.performAction(node.id, AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null)
+        }
     }
 }
 

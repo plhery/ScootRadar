@@ -124,6 +124,7 @@ import com.plhery.scootradar.ui.glass.LocalGlass
 import com.plhery.scootradar.ui.glass.MapBackdrop
 import com.plhery.scootradar.ui.glass.glassMayBlur
 import com.plhery.scootradar.ui.search.LocalAddressSearch
+import com.plhery.scootradar.ui.search.SEARCH_BAR_TAG
 import com.plhery.scootradar.ui.search.ScooterSearchIsland
 import com.plhery.scootradar.ui.settings.ScooterSettingsSheet
 import com.plhery.scootradar.ui.sheet.IosFormSheet
@@ -407,7 +408,10 @@ fun ScooterMapScreen(
             controller.open(link)
         }
     }
-    OnChange(searchIsExpanded) { expanded -> analytics?.track(if (expanded) "search_open" else "search_close") }
+    OnChange(searchIsExpanded) { expanded ->
+        analytics?.track(if (expanded) "search_open" else "search_close")
+        if (!expanded) focusReturn.moveTo(SEARCH_BAR_TAG)
+    }
     OnChange(filtersPresented) { open ->
         analytics?.track(if (open) "filters_open" else "panel_close")
         if (open) analytics?.track(screen = "/filters")
