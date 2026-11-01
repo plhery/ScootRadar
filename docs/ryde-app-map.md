@@ -10,6 +10,9 @@ requests on 27 October, and 4,679 in 27 at midnight. See
 Ryde's own authenticated API remains a separate, unfinished path. Its
 Mac-compatible iPhone app opens its signed-in map, but exporting the keys
 needed for independent proofs and decryption has not succeeded.
+On 1 November a separate diagnostic companion on the physical Pixel obtained
+a Google verification token for a fresh Ryde challenge. Its authenticated
+session and live map remain unverified; see [the companion test](#physical-pixel-companion-test-1-november-2026).
 
 Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
 6.1.0, build 718. APK signatures match the publisher's
@@ -42,6 +45,36 @@ The `ScootRadar_Ryde_Play` AVD is retained for reference. The fresh verified
 APK, decompiled sources and private diagnostics are under
 `~/.cache/scootradar/rider-auth/ryde/`, outside Git. Bolt's and Bird's saved
 rider sessions are separate.
+
+## Physical Pixel companion test, 1 November 2026
+
+A diagnostic APK, `com.scootradar.rydetest`, was built and installed on the
+user-authorized physical Pixel 9 running Android 17. Its source and APK stay
+under `~/.local/share/scootradar/ryde-login/`, outside Git. This first stage
+has no SMS, login, ride or payment endpoint.
+
+The helper generated two separate software P-256 keypairs in its own private
+storage, reloaded their PKCS8/X509 encodings, and passed local ECDSA signing
+and ECDH/HKDF/AES-GCM round-trip checks on synthetic data. This establishes
+local key usability; server registration of those keys remains unverified.
+
+Its first `POST /appRyde/getAttestChallenge`, with `purpose=login`,
+`platform=2`, its own stable device id, `timestamp` and `timeSign`, returned
+JSON status 407. Static inspection reconfirmed the signing calculation against
+the official APK's native library. A fresh host-side challenge succeeded using
+`User-Agent: Ryde/6.1.0 Android`. Adding that header to the helper's otherwise
+unchanged request made the physical-phone challenge succeed too.
+
+The helper then called Google's official **classic** Play Integrity API with
+Ryde's server nonce and the public project number from the inspected app.
+Google issued an opaque verification token. It was saved only in the helper's
+private storage, and was neither displayed nor logged. No SMS was requested.
+
+Token issuance does not reveal Google's verdict or establish Ryde's server
+acceptance. A fresh authorized login, DPoP key registration, independent map
+read, live response decryption and renewal still need testing before a direct
+Ryde collector can be enabled. The next dependency is the rider account to use
+for that login; existing public-feed and Skyss coverage continues independently.
 
 ## Skyss's guest map: Skyss / Tet / Ruter
 
