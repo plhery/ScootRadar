@@ -163,8 +163,10 @@ test('a guide follows the appearance of the system, where the landing page stays
 });
 
 test('a guide is accessible in either appearance, and its targets are big enough for a finger', async ({ page }) => {
-  // Four axe passes take about 26 s of the usual 30 on mobile WebKit, even alone.
-  test.slow();
+  // Four axe passes, and the size of every link in either appearance: the guide list had about 340
+  // on 1 Nov 2026, and grows with each guide. On CI it took 52 s to 1.5 min, and once ran out of
+  // the 90 s test.slow() gave it on mobile WebKit, so it has three minutes.
+  test.setTimeout(180_000);
   // Each appearance from the load: the cards would still be on their way from the other one.
   for (const colorScheme of ['light', 'dark'] as const) {
     await page.emulateMedia({ reducedMotion: 'reduce', colorScheme });
