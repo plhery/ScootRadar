@@ -830,7 +830,10 @@ private fun PanelChrome(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {
-                    ZoneLegendOverTheMap(controller, chrome)
+                    // The button keeps its size, as the iPad's HStack sizes its least flexible view first, and the
+                    // legend wraps in what is left: measured first, a long line took the whole row at the largest
+                    // text, and "Near me" was 0 wide (UI-410).
+                    ZoneLegendOverTheMap(controller, chrome, Modifier.weight(1f, fill = false))
                     FloatingMapControls(
                         controller,
                         Modifier.onGloballyPositioned { chrome.locateButton = it.windowFrame(density.density) },

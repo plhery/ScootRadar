@@ -37,6 +37,7 @@ import com.github.takahirom.roborazzi.captureScreenRoboImage
 import com.plhery.scootradar.FakeLocationManager
 import com.plhery.scootradar.FakeWalkingDirections
 import com.plhery.scootradar.StubScooterAPI
+import com.plhery.scootradar.TestCatalog
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
@@ -45,6 +46,7 @@ import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.api.WalkingDirectionsError
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.showWalkingRoute
+import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterWalkFailure
@@ -52,6 +54,7 @@ import com.plhery.scootradar.core.model.ScooterWalkPhase
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterDateFormat
@@ -503,6 +506,31 @@ enum class MatrixScene(
             model.updateViewport(zurichRegion, zoom = 16)
             assertTrue(controllers.waitUntil { api.calls >= 1 && model.lastUpdated.value != null && !model.isLoading.value })
             assertTrue(controllers.waitUntil { model.zoneState.value != ScooterZoneState.Off && model.zoneState.value != ScooterZoneState.Loading })
+            return model
+        }
+    },
+    /**
+     * UI-410: a street traced on OpenStreetMap over the map, the zones off, its line in the legend the longest a city's
+     * has, credited and outside its hours at the test's clock: "No riding 12:00–23:00 · Seoul, lines © OpenStreetMap
+     * (not now)", wrapped beside the locate button or under the panel.
+     */
+    CreditedStreet {
+        override fun make(controllers: TestControllers, clock: TestClock): ScooterMapController {
+            val street = CityRuleZone(
+                id = "seoul-credited",
+                authority = "Seoul, lines © OpenStreetMap",
+                timeZone = "Asia/Seoul",
+                firstDay = "2025-05-16",
+                hours = listOf(CityRuleZone.Hours(fromMinute = 12 * 60, untilMinute = 23 * 60)),
+                source = "https://example.com/seoul",
+                lines = listOf(listOf(GeoPoint(47.3769, 8.5417), GeoPoint(47.3779, 8.5427))),
+            )
+            val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = listOf(street))
+            val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+            val model = controllers.make(api, clock, catalog = catalog)
+            model.updateViewport(zurichRegion, zoom = 16)
+            assertTrue(controllers.waitUntil { api.calls >= 1 && model.lastUpdated.value != null && !model.isLoading.value })
+            assertTrue(controllers.waitUntil { model.mapRuleZones.value.map { it.inForce } == listOf(false) })
             return model
         }
     },
