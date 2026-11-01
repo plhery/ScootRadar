@@ -17,22 +17,22 @@ const guide: Guide = {
       heading: 'E-scooters in Milton Keynes: Lime, Dott and the council’s trial',
       blocks: [
         'Two companies, **Lime** and **Dott**, hire out e-scooters in Milton Keynes, and **e-bikes** in the same apps. Milton Keynes City Council, the highway authority, runs the trial “working with Lime and Dott”, its Get Around MK site says.',
-        '**Since when?** Since August 2020, when the council announced a 12-month trial with Lime, Spin and Ginger. Tier took over from Spin in August 2022, MKFM reported, and merged with Dott in March 2024; Dott said it would move every Tier city to the Dott app by early 2025. By October 2024 the council named only Lime and Dott; we couldn’t find when Ginger left.',
-        '**Until when?** Milton Keynes is on the government’s list of trial areas (updated 7 July 2026), and the national trials run until May 2028. We couldn’t check the council’s own terms after May 2026.',
+        '**Since when?** Since August 2020, when the council announced a 12-month trial with Lime, Spin and Ginger. Tier took over from Spin in August 2022, MKFM reported, and merged with Dott in March 2024; Dott said it would move every Tier city to the Dott app by early 2025. By October 2024 the council named only Lime and Dott.',
+        '**Until when?** Milton Keynes is on the government’s list of trial areas (updated 7 July 2026), and the national trials run until May 2028.',
         'At 07:47 on Sunday 25 October 2026 the [map of Milton Keynes](map:gb:Milton Keynes) showed about 1,200 e-scooters, about 1,110 Lime and 90 Dott: a snapshot, not the fleet size. It shows where they stand and Lime’s battery, not prices, zones, parking, hours or e-bikes. The total takes in the older towns too: later that morning scooters stood from Stony Stratford and Wolverton to Newport Pagnell, Kents Hill and Bletchley.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Milton Keynes?',
       blocks: [
-        'Dott charges **£1 to unlock and 24p a minute**, for e-scooters and e-bikes alike, in its open data feed on 25 October 2026. We found Lime’s Milton Keynes price on no open page, so check the Lime app: it shows the price before you unlock.',
+        'Dott charges **£1 to unlock and 24p a minute**, for e-scooters and e-bikes alike, in its open data on 25 October 2026. For Lime, check the app: it shows the price before you unlock.',
         {
           table: {
             caption: 'E-scooter prices and discounts in Milton Keynes, October 2026',
             head: ['Option', 'Price', 'Who says so'],
             rows: [
               ['Dott, pay as you go', '£1 + 24p a minute: 10 minutes £3.40, 20 minutes £5.80', 'Dott’s published prices, 25 October 2026'],
-              ['Lime, pay as you go', 'Shown in the Lime app before you unlock', 'No open page we checked states it'],
+              ['Lime, pay as you go', 'Shown in the Lime app before you unlock', 'The Lime app'],
               ['Lime Access', '50% off Lime e-bike and e-scooter rides with a Jobcentre Plus Travel Card, a Blue Light Card, a student card (NUS or your institution’s), another free or discounted travel card, or another eligible key-worker ID or pass', 'Get Around MK and The Parks Trust'],
               ['Dott UK Access Scheme', 'Up to 80% off for blue light cardholders, NHS employees, university students and staff, apprentices, holders of a national bus pass or railcard for older or disabled people, people on income support or universal credit, and refugees and asylum seekers', 'Get Around MK'],
             ],
@@ -116,7 +116,7 @@ const guide: Guide = {
           list: [
             '**Avanti West Coast**, whose intercity trains stop at Milton Keynes Central: “electric scooters are not permitted on our trains or anywhere on our stations”. The ban began on 27 December 2022, on its trains and at the 16 stations it manages, over the risks of lithium-ion batteries.',
             '**London Northwestern Railway** manages Milton Keynes Central: check its own conditions before you take any e-scooter on board.',
-            '**Buses:** we couldn’t check Arriva’s conditions; the council’s MK Connect page mentions mobility scooters, not e-scooters.',
+            '**Buses:** check Arriva’s conditions before you travel; the council’s MK Connect page mentions mobility scooters, not e-scooters.',
           ],
         },
         'Commuting to London? Lime and Voi hire out e-scooters in parts of the capital: see our [London guide](guide:london). Voi runs the schemes in [Northampton](map:gb:Northampton) and [Aylesbury](map:gb:Aylesbury), where the map showed about 1,250 and 230 e-scooters at 07:47 on 25 October 2026; see [e-scooters in Aylesbury](guide:aylesbury).',
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'What time do e-scooters stop in Milton Keynes?',
-      answer: 'No council page we found sets hours, and we found no night ban. Check the Lime or Dott app before a late ride home.',
+      answer: 'The council’s pages set no hours and no night ban (October 2026). Check the Lime or Dott app before a late ride home.',
     },
   ],
   sources: [

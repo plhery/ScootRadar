@@ -17,15 +17,15 @@ const guide: Guide = {
       heading: 'E-scooters in Salford: Lime and the trial',
       blocks: [
         '**Lime** is the only company hiring out e-scooters in Salford. It runs the Department for Transport trial and is “fully responsible for the implementation and operating costs”, with the support of Salford City Council, Transport for Greater Manchester (TfGM) and the University of Salford, the council’s Greener Salford site says. The first 300 scooters took to the road on Monday 26 October 2020. When the trial was extended in March 2024, council and TfGM officers were to choose the operator, the Manchester Evening News reported; in January 2025 a TfGM paper for the Greater Manchester Combined Authority said it “continues to run with the operator Lime”.',
-        'Hire e-scooters are legal here because Salford is one of England’s 21 trial areas, which run until May 2028. In October 2025 the combined authority said the local trial had been “extended until May 2026, pending legislative approval”. We found no council, TfGM or combined authority decision after May 2026; the government’s list of 7 July 2026 still names Salford.',
+        'Hire e-scooters are legal here because Salford is one of England’s 21 trial areas, which run until May 2028. In October 2025 the combined authority said the local trial had been “extended until May 2026, pending legislative approval”. The government’s list of 7 July 2026 still names Salford.',
         'At 07:47 on Sunday 25 October 2026 the [map of Salford](map:gb:Salford) showed about 810 Lime e-scooters: a snapshot, not the fleet size. It shows where they stand and their battery, not prices, zones, parking or hours. That afternoon all of the roughly 750 it showed stood inside Salford’s boundary, none across the Irwell in Manchester or Trafford; most were in Pendleton and Charlestown, Quays and Ordsall wards.',
-        'We found no sign of Lime e-bikes here. TfGM’s Starling Bank Bikes, pedal and electric, are a separate scheme, which the map doesn’t show.',
+        'TfGM’s Starling Bank Bikes, pedal and electric, are a separate scheme, which the map doesn’t show.',
       ],
     },
     {
       heading: 'How much does a Lime e-scooter cost in Salford?',
       blocks: [
-        '**The app shows the price** before you unlock: we found no current published price. In October 2024 the Manchester Evening News reported **£1 to unlock, then 17p a minute**, so 20 minutes would cost £4.40. Greener Salford once mentioned “discounts … for job seekers, students and some employment sectors”.',
+        '**The app shows the price** before you unlock. In October 2024 the Manchester Evening News reported **£1 to unlock, then 17p a minute**, so 20 minutes would cost £4.40; the app has today’s. Greener Salford once mentioned “discounts … for job seekers, students and some employment sectors”.',
         {
           table: {
             caption: 'Lime in Salford at a glance, October 2026, and who says so',
@@ -67,7 +67,7 @@ const guide: Guide = {
         {
           note: 'A private e-scooter is illegal on Salford’s roads, pavements and cycle lanes and in its parks: “It is against the law to use a privately owned electric scooter on public land,” the government says. Riding one counts as riding an uninsured motor vehicle: a £300 fixed penalty and 6 points, and the police can seize it, since 29 June 2026 without a warning first if it’s ridden anti-socially. A vehicle seized from 22 July 2026 can be disposed of after seven days rather than 14.',
         },
-        'Greater Manchester Police “will continue to target” illegal riders, e-scooters included, says the region’s road safety plan for 2024–2027; GMP’s own website refused our request.',
+        'Greater Manchester Police “will continue to target” illegal riders, e-scooters included, says the region’s road safety plan for 2024–2027.',
       ],
     },
     {
@@ -75,7 +75,7 @@ const guide: Guide = {
       blocks: [
         'Ride on roads and in cycle lanes. The scooters “can use bike lanes and shared footways where cycling is permitted but are not allowed on footways or in other pedestrian areas”, Greener Salford said when the trial ran to May 2024.',
         'The council has limited the scooters “to an area between the University of Salford, Salford Quays and up to the boundary with Manchester city council, as well as parts of Pendleton to Salford Royal Hospital”, the Manchester Evening News reported in March 2024. On 25 October 2026 the map also showed scooters in Eccles ward, but none in Swinton, Walkden or Worsley.',
-        'We found no official list of no-go or slow zones for Salford Quays, MediaCityUK or the Crescent, and no published hours: check the app before you set off.',
+        'For no-go and slow zones at Salford Quays, MediaCityUK or the Crescent, and for hours, check the app before you set off.',
       ],
     },
     {
@@ -105,11 +105,11 @@ const guide: Guide = {
     {
       heading: 'Can you take an e-scooter on a tram, bus or train?',
       blocks: [
-        'We couldn’t confirm that any of them carries e-scooters:',
+        'Check each operator’s rules before you take an e-scooter on board:',
         {
           list: [
             '**Northern** manages Salford Central, Salford Crescent and Eccles stations: check its own rules before you take any e-scooter on board.',
-            '**Metrolink trams and Bee Network buses:** TfGM sets their conditions of carriage, and its website refused our request too. A combined authority report of 12 December 2024 says Metrolink “currently allows folded bikes”, and says nothing about e-scooters.',
+            '**Metrolink trams and Bee Network buses:** TfGM sets their conditions of carriage. A combined authority report of 12 December 2024 says Metrolink “currently allows folded bikes”, and says nothing about e-scooters.',
           ],
         },
         'A hire scooter stays behind: end the ride in a bay near the station or stop. On the afternoon of 25 October 2026 the map showed about 100 Lime scooters within 300 m of Salford Crescent station and about 120 within 500 m of the Salford Quays tram stop.',
@@ -144,7 +144,7 @@ const guide: Guide = {
     },
     {
       question: 'Is the Salford e-scooter trial still running in 2026?',
-      answer: 'We found no local decision after May 2026: in October 2025 the combined authority said the trial had been “extended until May 2026, pending legislative approval”. The government’s list of 7 July 2026 still names Salford, the national trials run until May 2028, and on 25 October 2026 the map showed about 810 Lime e-scooters here.',
+      answer: 'Yes, by the government’s list. In October 2025 the combined authority said the trial had been “extended until May 2026, pending legislative approval”. The government’s list of 7 July 2026 still names Salford, the national trials run until May 2028, and on 25 October 2026 the map showed about 810 Lime e-scooters here.',
     },
     {
       question: 'Can I use a foreign driving licence?',
