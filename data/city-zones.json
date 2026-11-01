@@ -243,12 +243,12 @@
       "authority": "Baltimore City Department of Transportation",
       "timeZone": "America/New_York",
       "source": {
-        "title": "Baltimore City Department of Transportation, \"Baltimore City Bike Racks and Scooter Parking Map\": its scooter corrals, for the City's shared scooter program",
-        "url": "https://www.arcgis.com/home/item.html?id=b14d91d49b584dfdb1c6ca3713a30231"
+        "title": "Baltimore City Department of Transportation, \"Dockless Vehicles\" (updated 20 May 2026): the City's no-riding, no-parking and slow zones on the \"Baltimore City Policy API\" map the page links, and its scooter corrals, on its \"Baltimore City Bike Racks and Scooter Parking Map\"",
+        "url": "https://www.baltimorecity.gov/transportation/our-work/bike-baltimore/dockless-vehicles"
       },
       "map": {
-        "title": "Baltimore City Department of Transportation, \"Scooter Corrals\" (ArcGIS, last updated 2024)",
-        "url": "https://www.arcgis.com/home/item.html?id=25f5c095fd68418b814840f13f1c5989"
+        "title": "Baltimore City Department of Transportation, its current zones on Populus's public policy map, which the City links as its \"Policy API\", and \"Scooter Corrals\" (ArcGIS, last updated 2024)",
+        "url": "https://app.populus.ai/baltimore/public/policies"
       },
       "layers": [
         {
@@ -256,15 +256,87 @@
           "url": "https://services3.arcgis.com/ZTvQ9NuONePFYofE/arcgis/rest/services/Scooter_Corrals/FeatureServer",
           "layer": 0,
           "nameField": "Address"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Garage No Parking Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "JHU No Parking Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Loyola University No Parking",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Stadium No Parking Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Waterfront No Parking Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Promenade Slow Ride Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Fort McHenry No-Ride Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Rash Park No-Ride Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/baltimore/public/policies",
+          "policy": "Stadium No Ride Zone",
+          "idField": "uuid",
+          "nameField": "name"
         }
       ],
       "bounds": {
         "south": 39.255933,
         "west": -76.704188,
-        "north": 39.352636,
+        "north": 39.353615,
         "east": -76.561074
       },
-      "zones": 71
+      "zones": 139
     },
     {
       "id": "basel",
@@ -670,6 +742,55 @@
       "zones": 47
     },
     {
+      "id": "dallas",
+      "place": "Dallas",
+      "country": "US",
+      "authority": "City of Dallas",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "City of Dallas Department of Transportation, \"Dockless Vehicle Program\": a dockless vehicle is not ridden on sidewalks, trails, parks or plazas, nor in other designated No-Ride Zones, and slows to 10 mph in Slow-Ride Zones (rules posted 17 April 2026); the interactive map the page links shows where they are",
+        "url": "https://dallascityhall.com/departments/transportation/Pages/dockless-vehicle-program.aspx"
+      },
+      "map": {
+        "title": "City of Dallas, Department of Transportation and Public Works, \"Dallas Shared Dockless Vehicle Program Application\": its scooter no-ride zones, slow ride zones, no-parking locations and on-street scooter and bicycle parking corrals",
+        "url": "https://dallasgis.maps.arcgis.com/apps/webappviewer/index.html?id=19ba664de1f741c4876dec2fd56b3477"
+      },
+      "download": true,
+      "layers": [
+        {
+          "kind": "parking",
+          "url": "https://services2.arcgis.com/rwnOSbfKSwyTBcwN/arcgis/rest/services/Dockless_Designated_Scooter_Parking_Spots/FeatureServer",
+          "layer": 0,
+          "where": "Status = 'Existing'",
+          "nameField": "Address"
+        },
+        {
+          "kind": "noParking",
+          "url": "https://services2.arcgis.com/rwnOSbfKSwyTBcwN/arcgis/rest/services/Dockless_No_Park_Zones/FeatureServer",
+          "layer": 0
+        },
+        {
+          "kind": "slow",
+          "url": "https://services2.arcgis.com/rwnOSbfKSwyTBcwN/arcgis/rest/services/Dockless_Slow_Ride_Zones/FeatureServer",
+          "layer": 0,
+          "where": "Name IN ('Deep Ellum', 'Ron Kirk Bridge')"
+        },
+        {
+          "kind": "noRide",
+          "url": "https://services2.arcgis.com/rwnOSbfKSwyTBcwN/arcgis/rest/services/Dockless_No_Ride_Zones/FeatureServer",
+          "layer": 0,
+          "nameField": "NAME"
+        }
+      ],
+      "bounds": {
+        "south": 32.618342,
+        "west": -96.987694,
+        "north": 33.016616,
+        "east": -96.473692
+      },
+      "zones": 2848
+    },
+    {
       "id": "hamburg",
       "place": "Hamburg",
       "country": "DE",
@@ -940,6 +1061,71 @@
         "east": -118.091622
       },
       "zones": 57
+    },
+    {
+      "id": "milwaukee",
+      "place": "Milwaukee",
+      "country": "US",
+      "authority": "City of Milwaukee",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "City of Milwaukee Department of Public Works, \"Dockless Scooter Program\": no riding on sidewalks or the Riverwalk; the no-riding, slow and no-parking zones and the areas where a ride ends at a corral, that the Commissioner of Public Works sets and the operators keep by geofencing, are on the Populus portal the page links",
+        "url": "https://city.milwaukee.gov/dpw/Infrastructure/Programs/Dockless-Scooter-Program"
+      },
+      "map": {
+        "title": "City of Milwaukee, its current zones on Populus's public policy map, beside the open data portal the City links",
+        "url": "https://app.populus.ai/milwaukee/public/policies"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/milwaukee/public/policies",
+          "policy": "No Parking Zones",
+          "idField": "uuid",
+          "nameField": "name",
+          "tolerance": 2
+        },
+        {
+          "kind": "racksOnly",
+          "format": "populus",
+          "url": "https://app.populus.ai/milwaukee/public/policies",
+          "policy": "Clustered Parking Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/milwaukee/public/policies",
+          "policy": "Slow Ride Zones (10 mph)",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/milwaukee/public/policies",
+          "policy": "Slow Ride Zones (5 mph)",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/milwaukee/public/policies",
+          "policy": "No Ride Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 42.986246,
+        "west": -88.064088,
+        "north": 43.163192,
+        "east": -87.866955
+      },
+      "zones": 149
     },
     {
       "id": "minneapolis",
@@ -1814,6 +2000,118 @@
         "east": -121.469909
       },
       "zones": 45
+    },
+    {
+      "id": "saltlakecity",
+      "place": "Salt Lake City",
+      "country": "US",
+      "authority": "Salt Lake City",
+      "timeZone": "America/Denver",
+      "source": {
+        "title": "Salt Lake City Transportation, \"Shared Mobility\" (updated 19 August 2026): where a shared scooter is not parked, and the public data map the page links, on Populus's platform; downtown, since August 2026, a ride ends only at one of the City's parking corrals",
+        "url": "https://www.slc.gov/transportation/sharedmobility/"
+      },
+      "map": {
+        "title": "Salt Lake City, its current zones on Populus's public policy map, beside the public data map the City links",
+        "url": "https://app.populus.ai/salt_lake_city/public/policies"
+      },
+      "layers": [
+        {
+          "kind": "parking",
+          "format": "populus",
+          "url": "https://app.populus.ai/salt_lake_city/public/policies",
+          "policy": "Downtown Mandatory Parking Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "racksOnly",
+          "format": "populus",
+          "url": "https://app.populus.ai/salt_lake_city/public/policies",
+          "policy": "Downtown No Parking Zone",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/salt_lake_city/public/policies",
+          "policy": "No Parking Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "slow",
+          "format": "populus",
+          "url": "https://app.populus.ai/salt_lake_city/public/policies",
+          "policy": "All-Hours 8 MPH Slow Ride Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noRide",
+          "format": "populus",
+          "url": "https://app.populus.ai/salt_lake_city/public/policies",
+          "policy": "No Ride Zones",
+          "idField": "uuid",
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 40.719011,
+        "west": -111.941511,
+        "north": 40.788021,
+        "east": -111.706328
+      },
+      "zones": 349
+    },
+    {
+      "id": "sanantonio",
+      "place": "San Antonio",
+      "country": "US",
+      "authority": "City of San Antonio",
+      "timeZone": "America/Chicago",
+      "source": {
+        "title": "City of San Antonio, City Code, Sec. 19-661: a dockless vehicle is not parked on trails, creek ways, plazas and parks, the Riverwalk among them; the \"Dockless Vehicles\" page links the City's micromobility dashboard on Populus's platform",
+        "url": "https://www.sa.gov/Directory/Departments/DTOPS/Permits-Policies/Dockless-Vehicles"
+      },
+      "map": {
+        "title": "City of San Antonio, its current no-parking areas on Populus's public policy map, beside the micromobility dashboard the City links",
+        "url": "https://app.populus.ai/san_antonio/public/policies"
+      },
+      "layers": [
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/san_antonio/public/policies",
+          "policy": "$$ Parks - No Parking; 1 hr time limit ($100 fine/ violation)",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/san_antonio/public/policies",
+          "policy": "$$ Riverwalk - No Parking; 1 hr time limit ($100 fine/ violation)",
+          "idField": "uuid",
+          "nameField": "name"
+        },
+        {
+          "kind": "noParking",
+          "format": "populus",
+          "url": "https://app.populus.ai/san_antonio/public/policies",
+          "policy": "$$ San Pedro Creek Park; 1 Hour no parking ($100 fine/ violation)",
+          "idField": "uuid",
+          "nameField": "name"
+        }
+      ],
+      "bounds": {
+        "south": 29.410394,
+        "west": -98.500956,
+        "north": 29.433456,
+        "east": -98.482678
+      },
+      "zones": 47
     },
     {
       "id": "sanfrancisco",

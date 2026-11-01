@@ -632,7 +632,7 @@ Nagoya's pavements as teal lines; the legend names the city, linked to where it
 says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
 view reaches it; the iOS app has them as built, all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
-catalogs, and Berlin's and Hamburg's, too many to build in: the iOS app
+catalogs, and Berlin's, Hamburg's and Dallas's, too many to build in: the iOS app
 downloads those from the website's `/zones/v1/` once a view reaches the city
 ([city zone downloads](docs/city-zone-downloads.md)); the website draws them
 as it does the others. `scripts/update-city-zones.mjs` reads
@@ -641,8 +641,11 @@ Cleveland, Hamburg, Helsinki, München, Münster, Reykjavík, Rīga, Rostock, St
 San Francisco, Santa Monica, Stockholm, Tampa, Taupō, Turku, Vancouver, Vantaa, Washington, Wien and
 Zürich state a licence or terms for their layers, Washington for two of its three; since 28 October 2026 a
 city's public zone layers are drawn regardless, credited to the city, and since 1 November 2026 a public
-zone map the city itself points to, as Stavanger's on Nivel's platform, Long Beach's and Nashville's on
-Populus's and Nashville's PDF of its corrals. Such a map may go without notice: nothing watches for it,
+zone map the city itself points to, as Stavanger's on Nivel's platform, Long Beach's, Nashville's,
+Baltimore's, Milwaukee's, Salt Lake City's and San Antonio's on Populus's and Nashville's PDF of its corrals.
+A Populus map counts when the city's page links it or the trip dashboard beside it, as Nashville's
+does; what a policy gives the operators alone (drop zones, caps, fees) and a zone in force only at some
+hours or on some days are not drawn. Such a map may go without notice: nothing watches for it,
 and a city whose map stops answering keeps the zones last read from it, each city's entry here giving
 its source and the date it was read.
 
@@ -737,8 +740,21 @@ its source and the date it was read.
   [Bike Racks and Scooter Parking Map](https://www.arcgis.com/home/item.html?id=b14d91d49b584dfdb1c6ca3713a30231),
   updated in August 2026, shows alike: its `Has_Scoote` field, "Yes" for 45, is
   not explained, so all are drawn. The layer states no licence; it is drawn
-  under the rule of 28 October 2026, credited to the Department, whose map the
-  legend links.
+  under the rule of 28 October 2026, credited to the Department. And since
+  1 November 2026 (read that day) its 6 no-riding zones (Fort McHenry, Rash
+  Field Park, and round Oriole Park at Camden Yards and M&T Bank Stadium), 40
+  no-parking zones (13 garages, the campuses of Johns Hopkins and Loyola, the
+  two stadiums, the waterfront) and the Inner Harbor promenade, slowed to
+  8 mph in 22 parts, the shapes of the Department's policies on
+  [Populus's public policy map](https://app.populus.ai/baltimore/public/policies),
+  which its
+  [Dockless Vehicles](https://www.baltimorecity.gov/transportation/our-work/bike-baltimore/dockless-vehicles)
+  page (updated 20 May 2026) links as the "Baltimore City Policy API"; its
+  permit rules define the zones "as defined in the Department's MDS Policy
+  API". Not drawn: Populus's 60 corrals, those of the City's own map, the
+  stadiums' preferred parking (no City text says riders are sent there), the
+  non-deployment zones (operator drop-offs alone), deployment districts, caps,
+  fees and its 5-day limit. The legend links the page.
 - **Basel** (read 30 October 2026): the Kanton Basel-Stadt's 33
   no-parking zones (`Parkverbotszone`), where a shared vehicle's rental may
   not end, and 21 zones it may not be ridden through (`Sperrzone`), from the
@@ -901,6 +917,34 @@ its source and the date it was read.
   this one states no licence, and is drawn under the rule of 28 October 2026,
   credited "City of Columbus". columbus.gov answers scripts 403, so the legend
   links the map.
+- **Dallas** (read 1 November 2026; the iOS app downloads them): the City of
+  Dallas's 1,471 scooter no-riding zones (2,831 parts, 74,000 points), 445 of
+  them its parks, plazas, trails and Fair Park and the rest roads, most of
+  them of 35 mph and more, buffered, its 5 no-parking areas (Bishop Arts,
+  McKinney Avenue, Lower Greenville, Trinity Groves, Victory Park), its slow
+  zones in Deep Ellum and on the Ronald Kirk Pedestrian Bridge, at 10 mph from
+  5:00 to 21:00 every day, whenever a scooter is ridden, and its 10 on-street
+  scooter and bicycle corrals in Deep Ellum and downtown (`Status` Existing),
+  each a disc 5 m round its point, from the feature services
+  `Dockless_No_Ride_Zones`, `Dockless_No_Park_Zones`, `Dockless_Slow_Ride_Zones`
+  and `Dockless_Designated_Scooter_Parking_Spots` (last edited 2023; the
+  application last changed May 2025) of the City's
+  [Dallas Shared Dockless Vehicle Program Application](https://dallasgis.maps.arcgis.com/apps/webappviewer/index.html?id=19ba664de1f741c4876dec2fd56b3477),
+  which its
+  [Dockless Vehicle Program](https://dallascityhall.com/departments/transportation/Pages/dockless-vehicle-program.aspx)
+  page links: "Dockless Vehicles may not be ridden on or in: sidewalks,
+  trails, parks, plazas, on roads with a speed limit of 35 MPH or higher, and
+  in other designated No-Ride Zones … To see where Slow-and No-Ride Zones are
+  located, check out the interactive map". The program rules posted on
+  17 April 2026 say the same (sections F and G), and Populus's copy of the
+  no-riding zones holds 1,473 shapes. Not drawn: the slow zones in force only
+  on some days (Bishop Arts Tuesday to Sunday from noon, the Farmers Market on
+  weekends, Victory Park Friday to Sunday) and the West End's, which the rules
+  don't name; the sidewalk corral sites, a list of the operators' requests;
+  and the central deployment zone. Rides start only from 5:00 to 20:45, a
+  night ban (`data/rental-curfews.json`), not a zone. The map states no
+  licence, only that it is for information; the legend credits the City and
+  links the page.
 - **Hamburg** (read 30 October 2026; the iOS app downloads them, and the
   website draws them since 30 October 2026): the Freie und Hansestadt Hamburg's 3,043 no-parking zones for
   e-scooters (3,589 parts; one has no shape and is left out, and so are the
@@ -991,6 +1035,23 @@ its source and the date it was read.
   its 48-hour parking limit. A zone the City numbers but does not name is
   named after the city. The map states no terms; the legend credits the City
   and links the rules.
+- **Milwaukee** (read 1 November 2026): the City of Milwaukee's no-riding
+  zones (51 parts: the Riverwalk, Marquette's and UW-Milwaukee's campuses,
+  downtown parking structures, the restricted lakefront), its no-parking zones
+  (61 parts: trails, bridges, the Riverwalk; simplified to within 2 m), its
+  slow zones at 10 mph (6) and at 5 mph on sidewalks (27), and the 4 areas
+  (the Third Ward, the two campuses, South Shore Park) where a ride ends only
+  at a corral or a virtual parking pin (drawn only on the website), the shapes
+  of the City's policies on
+  [Populus's public policy map](https://app.populus.ai/milwaukee/public/policies),
+  beside the Populus Open Data Portal its
+  [Dockless Scooter Program](https://city.milwaukee.gov/dpw/Infrastructure/Programs/Dockless-Scooter-Program)
+  page links. Its permit terms (9.6 and 9.7) have the operators geofence the
+  no-riding, slow and no-parking zones and the corral areas the Commissioner of
+  Public Works sets; its page: no riding on sidewalks or the Riverwalk. Not
+  drawn: the Halloween zones on Brady Street (30 October to 1 November 2026),
+  fleet caps, distribution and fees. The City's site answers scripts 403; the
+  map states no terms.
 - **Minneapolis** (read 30 October 2026): the City of Minneapolis's 206
   zones where a ride may not end (bridges, construction), 8 speed-capped zones
   (8 or 10 mph: the Stone Arch Bridge, the Loring Greenway, the University of
@@ -1291,6 +1352,34 @@ its source and the date it was read.
   the City's news site). The layer's other racks, corrals among them, are not
   drawn, as Baltimore's and Västerås's bike racks are not: only the places the
   City sets aside for shared vehicles are.
+- **Salt Lake City** (read 1 November 2026): Salt Lake City's 19 no-riding
+  zones (Temple Square, the Capitol, City Creek, Emigration Canyon and
+  others), 42 no-parking zones, 4 slow zones at 8 mph at all hours (the
+  Gateway, Library Square, Liberty Park, Washington Square), and downtown,
+  since August 2026, its 3 mandatory parking areas (drawn only on the website)
+  and their 281 corrals, about 15 m across, where alone a ride ends there, the
+  shapes of the City's policies on
+  [Populus's public policy map](https://app.populus.ai/salt_lake_city/public/policies),
+  beside the public data map its
+  [Shared Mobility](https://www.slc.gov/transportation/sharedmobility/) page
+  (updated 19 August 2026) links. Its page lists where a scooter is not
+  parked; the City's policy manager told KSL on 17 September 2026 that riders
+  "just can't end their trip" downtown outside a corral. Not drawn: 122
+  proposed corrals ("SLC Proposed Corrals"), the preferred parking spots
+  downtown and on University Street (no City text says riders are sent
+  there), the University of Utah's zones, which bind operators other than
+  Spin, caps and the equity zone. A zone the City numbers but does not name
+  is named after the city. The map states no terms.
+- **San Antonio** (read 1 November 2026): the City of San Antonio's 47
+  no-parking areas, 31 on the River Walk, 9 on San Pedro Creek and 7 parks and
+  plazas (Hemisfair, Market Square), the shapes of the City's policies on
+  [Populus's public policy map](https://app.populus.ai/san_antonio/public/policies)
+  (in force since March 2025), beside the Micromobility Public Dashboard its
+  [Dockless Vehicles](https://www.sa.gov/Directory/Departments/DTOPS/Permits-Policies/Dockless-Vehicles)
+  page links. City Code section 19-661 bars parking on trails, creek ways,
+  plazas and parks, the River Walk among them; the operator has an hour to
+  move a scooter left there. sa.gov answers scripts 403. Not drawn: the
+  operators' cap. The map states no terms.
 - **San Francisco** (read 31 October 2026): SFMTA's five no-parking zones
   for shared scooters, from its
   [Scooter Share Geofencing Specifications October 2025 Update – Parking Restrictions](https://www.sfmta.com/media/43308/download)

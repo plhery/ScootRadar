@@ -85,7 +85,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   maps (file of December 2020, served as of January 2025), as the City's
   [legal notices](https://www.orlando.gov/System-pages/Website-Legal-Notices)
   prohibit commercial use of the site's materials "without the written
-  permission of the City of Orlando". Albuquerque's 191 Lime stations, in the
+  permission of the City of Orlando"; so, for the same reason, are its 25
+  no-riding and 69 no-parking zones and Lake Nona's park-only area on
+  Populus's public policy map, beside the stats dashboard its page links
+  (1 November 2026). Albuquerque's 191 Lime stations, in the
   City's `STAPProject` layer (last edited 25 September 2025; it lists sites
   for Spin and Beam too, and looks like the approved list rather than the 52
   stations Lime built), as it states no licence and the City's
@@ -265,6 +268,9 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   "current as of 3/3/2026") plans built and future corrals alike with nothing
   to tell them apart, states no licence and is not in its open data, and its
   no-riding and no-parking layer was drawn for its call for operators.
+  Populus's map, beside the trip dashboard its page links, holds only Pullen
+  Park and Glenwood South's mandatory zone, without the corrals (1 November
+  2026).
   Fayetteville, Arkansas's only map is of its service area (2022), and the
   University of Arkansas's slow zones and corrals are PDFs (March 2023).
   Opfikon's parking, slow, no-parking and no-riding zones, beside Zürich
@@ -360,10 +366,15 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   2018's dockless bikes, and San Antonio's six prohibited areas (the River
   Walk, San Pedro Creek, La Villita, HemisFair, Main Plaza and Alamo Plaza;
   December 2018), whose open data portal answers 403 from outside the United
-  States. Gainesville's micromobility map of May 2021 (32 no-riding, 5 slow
+  States; its current no-parking areas are drawn from Populus's map since
+  1 November 2026. Kołobrzeg's map annex to its agreement of June 2024 with
+  TIER, Bolt and Lime (49 parking points, no riding in the centre and on the
+  spa promenade, no parking in the centre), a Google My Maps map on a news
+  page now in the City's archive: Dott runs there now, and whether the
+  agreement still holds is unclear. Gainesville's micromobility map of May 2021 (32 no-riding, 5 slow
   and 4 special zones and 66 parking places), a Google My Maps map no City
   page links now; the City says its zones are in the operators' apps.
-  Westminster's, Dallas's (2022–23), Los Angeles's (2024),
+  Westminster's, Los Angeles's (2024),
   Portland's (2021), Bloomington, Indiana's 64 corrals and its downtown and
   Switchyard Park areas (December 2023), and Georgetown University's 66
   parking places and 5 no-riding areas on its campus, in DC's open data
@@ -373,7 +384,22 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Licence Ouverte, edited in late October 2026), as no source covers either. Grand Rapids's
   Shared Micromobility Program layers (no-operation and slow zones, Calvin
   University's), edited 30 October 2026, as Veo, its only operator, has no
-  feed we know of.
+  feed we know of. Drammen kommune's 75 no-parking zones, 6 slow zones (6 and
+  10 km/h), 31 parking places and 2 no-riding areas (and 36 round schools on
+  weekdays 07–17), on the
+  [map](https://drammen-kommune.maps.arcgis.com/apps/instant/sidebar/index.html?appid=842ca8784e2947df959bd64bcc6e235e)
+  its [page](https://www.drammen.kommune.no/tjenester/vei-trafikk-parkering/sykkeltilbud/)
+  links (layers of November 2024, the map of June 2026), as Ryde's and Gogo's
+  scooters there have no source (1 November 2026).
+- **Vendor maps no city page links** (1 November 2026): the public policy
+  maps on Populus of Chicago, Columbus, Saint Paul, Lincoln, Berkeley, Tampa,
+  Knoxville, St. Petersburg, Lexington, Montgomery County, Indianapolis,
+  Durham, Providence, Brampton, Calgary, Edmonton, Kelowna, Okotoks and
+  Oshawa; Ottawa's page can't be read from here, and its policy adds nothing
+  to the places drawn and Bird's stations. Tucson's is linked only in an
+  addendum to its call for operators. San Diego's isn't public, nor Durham's
+  zone page. No other city page found links a Nivel, Ride Report, Vianova or
+  Passport zone map.
 - **None published** (30 October 2026): Tulsa's rules (no riding on the
   pavement downtown inside the Inner Dispersal Loop, on Cherry Street and in
   Brookside; Revised Ordinances title 37, § 1101 C) are text alone, and
@@ -404,9 +430,7 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   site answers scripts with 403, and its geoportal holds no scooter layer.
   Darmstadt's no-parking zones (the pedestrian zone, parks) are in the
   operators' apps alone, and its Call a Bike layer does not say which 17
-  stations take scooters. Salt Lake City's downtown parking zones, outside
-  which a ride may not end since August 2026, are not published; its page
-  still says the City is working on a parking map. Recife's 92 parking points,
+  stations take scooters. Recife's 92 parking points,
   set with the operators of its pilot and changeable by them, are in their
   apps alone, and the city's portals did not answer. Campo Grande's law of
   14 September 2026 lets the city set no-parking areas, and Campos do Jordão's

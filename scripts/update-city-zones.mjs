@@ -369,7 +369,8 @@ async function geopdfFeatures(url, ocg, symbols) {
     const kind = /\/Type\s*\/ObjStm/.test(dict) ? 'objects' : /\/Subtype\s*\/Form/.test(dict) ? 'form' : null;
     if (!kind) continue;
     const start = match.index + match[0].length;
-    const length = /\/Length\s+(\d+)(?!\s+\d+\s+R)/.exec(dict)?.[1];
+    // A length given, not one in another object: "/Length 38 0 R" is not read as 3.
+    const length = /\/Length\s+(\d+)\b(?!\s+\d+\s+R)/.exec(dict)?.[1];
     const raw = Buffer.from(pdf.slice(start, length ? start + Number(length) : pdf.indexOf('endstream', start)), 'latin1');
     const data = (/\/FlateDecode/.test(dict) ? inflateSync(raw) : raw).toString('latin1');
     if (kind === 'form') {
