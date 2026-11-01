@@ -1601,16 +1601,6 @@ Bonaire had feeds to add. Survey files are in
 
 ## Dates to check again
 
-- **After 31 October 2026:** Rome's operator selection. Applications closed
-  on 26 October. Rome's scooter permits ran from 1 September 2023 to 31 August
-  2026 and are extended (D.D. QG 1649/2026) for the time the selection needs;
-  the press gives 31 October 2026, the day the bike-sharing permits end. The
-  selection picks up to three scooter operators, who then have 150 days to
-  start
-  ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
-  On 30 October no award was published, and the map held 3,414 Bird and
-  3,396 Dott scooters in Rome. Check that Bird Roma still publishes after 31
-  October, and in mid-November whether the winners are named and publish.
 - **Tuesday 10 November 2026:** Zeus's move to ATOM Mobility. Nothing had
   changed on 20 October 2026: the 26 ids still answered "GBFS disabled", the
   empty ones still listed no vehicle, MobiData BW still had the same 11 Zeus
@@ -1622,6 +1612,26 @@ Bonaire had feeds to add. Survey files are in
   scooters has frozen, so read that town from its ATOM id. Check again every
   few weeks until the move is done, at one request a second on
   `zeus.rideatom.com`; id 189 is a warehouse.
+- **Monday 16 November 2026:** Rome's operator selection. Bids close at 15:00
+  on Monday 2 November 2026, extended on 15 October from 26 October
+  ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/),
+  updated 29 October). A commission then ranks the bids, with no date set,
+  and the first three scooter operators get permits, with 150 days from the
+  permit to start.
+  Rome's scooter permits ran to 31 August 2026 and are extended (D.D. QG
+  1649/2026) "limitatamente al periodo strettamente necessario alla
+  conclusione della nuova procedura di selezione" (D.D. QG 1803/2026, 24
+  September); only the press gives 31 October as the end, and no act re-dates
+  it. On 1 November no ranking was published and no report named a winner,
+  and Bird Roma still published, fresh (ttl 60 s): about 3,790 available
+  scooters in five polls from 10:15 to 10:35 UTC, 8 to 15 of them appearing
+  or going between polls five minutes apart. The map held 3,990 Dott and
+  4,290 Lime scooters there too. The call asks the winners for GBFS and MDS data shared with Roma Servizi per la
+  Mobilità and "terze parti", not for a public feed or a licence (Avviso art.
+  6.5, Allegato E). MobilityData lists no other Rome scooter feed: Cooltra
+  Rome's lists mopeds and e-bikes. Check the ranking, any act on the current
+  permits, and whether the winners publish; until then Bird's count in the
+  cache is the daily signal.
 - **Mid-November 2026, an evening in Riyadh:** Dott Riyadh, in Boulevard
   City (`riyadh`): 93 to 99 scooters and about 10 rides on 15 October 2026.
   On Friday 23 October, with Riyadh Season open there, it held 44 or 45, and
