@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; watchMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; keepsIdleTurns?: boolean; watchMs?: number; idleIntervalMs?: number; idlePhase?: number; nightEnds?: (time: number) => number | undefined }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -144,6 +144,30 @@ it('wakes the paced town longest past its interval while polled towns hold its h
     expect(late[1].at - late[0].at).toBeGreaterThanOrEqual(50_000);
     const meanwhile = calls.filter(call => polled.includes(call.id) && call.at >= late[0].at && call.at < late[1].at + 50_000);
     expect(meanwhile.length).toBeGreaterThanOrEqual(2);
+  } finally { clearInterval(poll); scheduler.stop(); }
+});
+
+it('starts one idle sweep at a time while watched towns hold the slots of an account that keeps it turns', async () => {
+  // Through the night of 1 November 2026 Zürich's watched groups held both slots of two Lime accounts, and
+  // five Swiss groups, never collected so never late, waited 4.5 hours for their first sweep.
+  const account = { host: 'web-production.lime.bike', paced: true, concurrencyKey: 'lime-account:primary', keepsIdleTurns: true };
+  const watched = ['zurich-a', 'zurich-b', 'zurich-c'].map(id => ({ id, ...account }));
+  const quiet = ['basel-a', 'basel-b'].map(id => ({ id, ...account }));
+  const { scheduler, calls } = schedule(watched, { lastCollectedAt: () => T0 - 2 * MINUTE },
+    () => new Promise(resolve => setTimeout(resolve, 50_000)));
+  const ids = watched.map(feed => feed.id);
+  const poll = setInterval(() => scheduler.demand(ids), 20_000);
+  try {
+    scheduler.demand(ids);
+    await vi.advanceTimersByTimeAsync(MINUTE);
+    scheduler.setFeeds([...watched, ...quiet]);
+    await vi.advanceTimersByTimeAsync(10 * MINUTE);
+    const sweeps = calls.filter(call => call.id.startsWith('basel'));
+    expect(sweeps.slice(0, 2).map(call => [call.id, call.reason])).toEqual([['basel-a', 'idle'], ['basel-b', 'idle']]);
+    expect(sweeps[0].at).toBe(MINUTE);
+    // The second waits for the first to end, and the watched towns are collected all the while.
+    expect(sweeps[1].at - sweeps[0].at).toBeGreaterThanOrEqual(50_000);
+    expect(calls.filter(call => ids.includes(call.id) && call.at >= sweeps[0].at && call.at < sweeps[1].at).length).toBeGreaterThanOrEqual(2);
   } finally { clearInterval(poll); scheduler.stop(); }
 });
 

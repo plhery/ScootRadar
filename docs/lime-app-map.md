@@ -166,9 +166,13 @@ give. While one serves, its market's groups are skipped without asking Lime, and
 are emptied within 5 seconds of its coming back, so no scooter counts twice. Once
 it has shown nothing for 15 minutes, by its positions' age, so a feed that freezes
 counts too, they are read as any Lime market, except every 30 minutes rather than
-every three days: about 4 of the accounts' 36 requests a minute, only during an
-outage (`withLimeStandby` in `server/swissAppMaps.ts`). A view wakes its groups at
-once, as anywhere. Their scooters then show no price, as Kloten's and Sion's.
+every three days: about 4 of the accounts' 36 requests a minute while nobody looks,
+only during an outage (`withLimeStandby` in `server/swissAppMaps.ts`). A view wakes
+its groups at once, as anywhere, and Zürich is looked at around the clock: from 01:00
+to 08:00 UTC on 1 November 2026 the three markets took about 26 of the 36 (24 to 28 by
+the hour), 85 to 90% of the rider map's collections, and every turn of the two
+accounts Zürich's six busiest groups fall on. Their scooters then show no price, as
+Kloten's and Sion's.
 Opfikon's are dropped from Zürich's groups by the town's outline, as Lime's own
 feed there lists them. The audit of a market not yet in the catalog has to keep
 every scooter: `systemServesPoint` drops those of a town its operator doesn't
@@ -400,7 +404,15 @@ someone looks at goes first, but while an idle sweep waits, every third turn of
 its account is kept for it (`LIME_ROUTINE_EVERY`, the `Pacer` in
 `server/sweeps.ts`): on the night of 1 November 2026 a watched Zürich took every
 turn of two of the three accounts, and nine groups of the Swiss standby went
-nearly two hours without a first sweep. An idle
+nearly two hours without a first sweep. While the towns looked at hold both of an
+account's slots, one idle sweep still starts beside them (`keepsIdleTurns`, in
+`server/feedScheduler.ts`): until the same day it waited for a slot, so the turns kept
+for it went unused, Zürich's groups held both slots of those two accounts through the
+night, their idle groups started only once late, five minutes before they would
+expire, and five groups of the standby, never collected, so never late, waited 4.5
+hours for their first sweep. The idle sweeps take about 4 of the 36 requests a
+minute on average and the standby up to 4 more, so a third of each account's turns
+keeps up with them even when every turn is asked for. An idle
 sweep falls between 08:00 and 21:00 in its town. A sweep by night there, as a new
 town's first or one someone asked for, is followed by one at 08:00, within the quarter
 of an hour after, not three days on (`limeDaytime` in `server/limeApp.ts`), and one in a

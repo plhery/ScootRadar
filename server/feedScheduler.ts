@@ -15,6 +15,12 @@ export interface ScheduledFeed {
   paced?: boolean;
   /** An independently paced account within the host has its own collection slots. */
   concurrencyKey?: string;
+  /**
+   * Its client keeps one turn in so many for an idle sweep while one waits (Pacer's routineEvery), so
+   * one idle sweep may start while the towns someone looks at hold its slots: the turns kept for it
+   * would otherwise go unused.
+   */
+  keepsIdleTurns?: boolean;
   /** Where in its idle interval it is collected, in [0, 1), when not where its id puts it (idPhase). */
   idlePhase?: number;
   /**
@@ -294,7 +300,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // idle feeds on other hosts went uncollected for over half an hour.
     let shared = [...this.running.values()].filter(feed => !feed.paced).length;
     for (const feed of pending) {
-      if (rank(feed) > now || (!feed.paced && shared >= MAX_RUNNING) || this.hostFull(feed)) continue;
+      if (rank(feed) > now || (!feed.paced && shared >= MAX_RUNNING) || this.hostFull(feed, now)) continue;
       this.run(feed, now);
       if (!feed.paced) shared++;
     }
@@ -332,12 +338,20 @@ export class FeedScheduler<T extends ScheduledFeed> {
   /**
    * A paced client spaces its host's requests whatever runs, and gives a feed someone looks at
    * its turns first (sweeps.ts): such a feed asked for by a request has slots of its own on the
-   * host, so a town opened while idle sweeps hold the others starts at once.
+   * host, so a town opened while idle sweeps hold the others starts at once. Where the client keeps
+   * turns for an idle sweep, one idle sweep starts even while the towns looked at hold the slots:
+   * through the night of 1 November 2026 Zürich's watched groups held both slots of two of Lime's
+   * three accounts, the turns kept for idle sweeps went unused, their idle groups started only once
+   * late, five minutes before they would expire, and five Swiss groups, never collected so never
+   * late, waited 4.5 hours for their first sweep.
    */
-  private hostFull(feed: T): boolean {
+  private hostFull(feed: T, now: number): boolean {
+    const running = [...this.running.values()].filter(other => this.slotKey(other) === this.slotKey(feed));
+    const idle = (candidate: T) => !this.woken.has(candidate.id) && this.mode(candidate, now) === 'idle';
+    if (feed.keepsIdleTurns && idle(feed) && !running.some(idle)) return false;
     const own = feed.paced && this.woken.has(feed.id)
-      ? (running: T) => this.woken.has(running.id) : () => true;
-    return [...this.running.values()].filter(running => this.slotKey(running) === this.slotKey(feed) && own(running)).length >= MAX_RUNNING_PER_HOST;
+      ? (other: T) => this.woken.has(other.id) : () => true;
+    return running.filter(own).length >= MAX_RUNNING_PER_HOST;
   }
 
   private run(feed: T, now: number): void {

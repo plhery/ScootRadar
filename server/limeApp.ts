@@ -371,7 +371,7 @@ export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: 
     const s = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
     if (!s) return feed;
     const selected = accounts ?? pool();
-    return { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, watchMs: LIME_WATCH_MS, paced: true,
+    return { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, watchMs: LIME_WATCH_MS, paced: true, keepsIdleTurns: true,
       ...s.timeZone ? limeDaytime(feed.id, s.timeZone) : {},
       concurrencyKey: `lime-account:${selected.accountFor(s.id).id}`, collect: () => selected.collect(s) };
   });
