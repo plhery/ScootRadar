@@ -255,6 +255,34 @@ class DockMotionRecording {
         }
     }
 
+    /**
+     * UI-193, the card leaving the banner: the first notice (a first load that failed) fades in, the card of a location
+     * that can't be had joins under it, the card is dismissed while the banner stays, and the banner, the last, fades
+     * out where it was as the load is tried again. Once before the film, on a screen of its own, as [notices].
+     */
+    @Test
+    fun noticesCardLeaves() {
+        repeat(2) { take ->
+            api.holds = true
+            api.failure = ScooterAPIError.Offline()
+            location.authorizationStatus = ScooterAuthorizationStatus.Denied
+            scenario?.close()
+            val controller = show(loaded = false)
+            val steps = {
+                api.release()
+                Thread.sleep(2_000)
+                main { controller.locationFailed(ScooterLocationError.Denied) }
+                Thread.sleep(2_000)
+                main { controller.dismissLocationIssue() }
+                Thread.sleep(2_000)
+                api.failure = null
+                main { controller.retryLoad() }
+            }
+            if (take == 0) steps() else record("ui193-notices-card-leaves", seconds = 9, action = steps)
+            Thread.sleep(1_000)
+        }
+    }
+
     /** UI-198: Directions finds the way (the label and its spinner), shows it, and hides it again; once before the film. */
     @Test
     fun walkPhase() {
