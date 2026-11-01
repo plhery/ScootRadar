@@ -440,6 +440,37 @@ class ScooterMarkerAccessibilityTest {
     }
 
     @Test
+    fun besideAPanelTheOpenSearchAndTheCornerAreInFront() {
+        // Beside a large window's panel the open search is over the panel, whose card makes way, hidden from VoiceOver
+        // as the iPhone hides it: a finger finds the marker where the card was. The legend and the locate button in the
+        // map's corner stay, in front of the markers under them (review-lead-1nov-b B1).
+        val map = FlatMarkerMap()
+        scene.reconcile(
+            listOf(
+                scooter("rows", "lime", at = map.at(160.0, 200.0)),
+                scooter("card", "voi", at = map.at(160.0, 600.0)),
+                scooter("corner", "bolt", at = map.at(355.0, 805.0)),
+                scooter("free", "dott", at = map.at(355.0, 300.0)),
+            ),
+            revision = 1,
+        )
+        scene.updateLook(map)
+        scene.parent = MarkerParent(panelFrame = ScreenRect(0.0, 0.0, 320.0, 844.0), bottomChromeFrames = listOf(ScreenRect(330.0, 780.0, 50.0, 50.0)))
+        val accessibility = helper(map)
+        fun at(x: Double, y: Double) = accessibility.virtualViewAt((x * density).toFloat(), (y * density).toFloat())
+        val free = at(355.0, 300.0)
+        assertNotEquals(ExploreByTouchHelper.INVALID_ID, free)
+        assertEquals("under the card", ExploreByTouchHelper.INVALID_ID, at(160.0, 600.0))
+        assertEquals("under the corner", ExploreByTouchHelper.INVALID_ID, at(355.0, 805.0))
+
+        accessibility.search = ScreenRect(16.0, 16.0, 288.0, 400.0)
+        assertEquals("under the open search", ExploreByTouchHelper.INVALID_ID, at(160.0, 200.0))
+        assertNotEquals("where the card was", ExploreByTouchHelper.INVALID_ID, at(160.0, 600.0))
+        assertEquals("under the corner, which stays", ExploreByTouchHelper.INVALID_ID, at(355.0, 805.0))
+        assertEquals(free, at(355.0, 300.0))
+    }
+
+    @Test
     fun nothingOfTheMapIsHeardUnderASheet() {
         // Filters and Settings are modal, as VoiceOver reads a sheet alone.
         val map = FlatMarkerMap()

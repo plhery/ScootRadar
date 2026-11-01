@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
@@ -11,6 +12,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestCatalog
@@ -19,6 +21,7 @@ import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.map.ScooterMapController
+import com.plhery.scootradar.core.map.dockLine
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -31,10 +34,12 @@ import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneResponse
 import com.plhery.scootradar.core.model.ScooterZoneState
+import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.chrome.ZoneLegend
 import com.plhery.scootradar.ui.dock.DOCK_TAG
 import com.plhery.scootradar.ui.dock.ScooterControlDock
+import com.plhery.scootradar.ui.settings.SettingsPage
 import com.plhery.scootradar.ui.theme.PHONE
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.zurichRegion
@@ -128,14 +133,15 @@ class SpokenTextTest {
     }
 
     /**
-     * The whole screen, past the two texts above: the dock's count, the legend's city line and a scooter's card on a
-     * phone give TalkBack no styles (review-app-ai T2).
+     * The whole screen, past the two texts above: the dock's count, the legend's city line, a scooter's card, the open
+     * search, Filters, and Settings with its languages on a phone give TalkBack no styles (review-app-ai T2,
+     * review-lead-1nov-b B4).
      */
     @Test
     @Config(qualifiers = PHONE)
     fun nothingOnThePhonesScreenIsReadWithItsStyles() {
         val model = zurich()
-        show(model)
+        val screen = show(model)
         compose.onNode(hasText("Stadt Zürich", substring = true)).assertExists()
         compose.onNode(hasText("2 scooters", substring = true)).assertExists()
         assertEquals(emptyList<String>(), styledTexts())
@@ -144,6 +150,34 @@ class SpokenTextTest {
         compose.waitForIdle()
         compose.onNode(hasText("CHF", substring = true)).assertExists()
         assertEquals("a scooter's card", emptyList<String>(), styledTexts())
+
+        compose.runOnIdle {
+            model.selectScooter(null)
+            screen.searchIsExpanded = true
+        }
+        compose.waitForIdle()
+        compose.onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.EditableText)).assertExists()
+        assertEquals("the open search", emptyList<String>(), styledTexts())
+
+        compose.runOnIdle {
+            screen.searchIsExpanded = false
+            screen.filtersPresented = true
+        }
+        compose.waitForIdle()
+        compose.onNode(hasText(localized("Battery"))).assertExists()
+        assertEquals("Filters", emptyList<String>(), styledTexts())
+
+        compose.runOnIdle {
+            screen.filtersPresented = false
+            screen.settingsPresented = true
+        }
+        compose.waitForIdle()
+        compose.onNode(hasText(localized("Appearance"))).assertExists()
+        assertEquals("Settings", emptyList<String>(), styledTexts())
+        compose.runOnIdle { screen.settingsPages.add(SettingsPage.Language) }
+        compose.waitForIdle()
+        compose.onNode(hasText("Deutsch")).assertExists()
+        assertEquals("Settings' languages", emptyList<String>(), styledTexts())
     }
 
     /**
@@ -164,27 +198,39 @@ class SpokenTextTest {
 
         val line = compose.onNode(hasClickAction() and hasAnyAncestor(hasTestTag(DOCK_TAG)))
         val label = line.fetchSemanticsNode().config[SemanticsProperties.ContentDescription].single()
-        assertTrue("the card's parts: $label", label.startsWith("Lime, "))
+        val parts = compose.runOnIdle { model.dockLine(at = clock.now) }.parts
+        assertTrue("the card's parts, a dot between them: $parts", parts.size > 1 && parts.first() == "Lime")
+        assertEquals(parts.joinToString(", "), label)
         assertEquals(emptyList<String>(), styledTexts())
     }
 
-    private fun show(model: ScooterMapController) {
-        val clock = TestClock()
+    /** The screen's clock. */
+    private val clock = TestClock()
+
+    /** The screen over no map, and what it has open. */
+    private fun show(model: ScooterMapController): ScreenState {
+        lateinit var screen: ScreenState
         compose.setContent {
+            screen = rememberScreenState()
             CompositionLocalProvider(LocalClock provides { clock.now }) {
-                ScooterMapScreen(controller = model, map = {}, glassBlurs = false)
+                ScooterMapScreen(controller = model, map = {}, glassBlurs = false, screenState = screen)
             }
         }
         compose.waitForIdle()
+        return screen
     }
 
-    /** The texts TalkBack is given that carry styles, which TalkBack 16 reads aloud. */
-    private fun styledTexts(): List<String> = compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Text), useUnmergedTree = true)
+    /**
+     * The texts TalkBack is given that carry styles, which TalkBack 16 reads aloud: a field's text too. A language's
+     * name in its own language is spoken in it, which TalkBack does without saying so.
+     */
+    private fun styledTexts(): List<String> = compose
+        .onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Text) or SemanticsMatcher.keyIsDefined(SemanticsProperties.EditableText), useUnmergedTree = true)
         .fetchSemanticsNodes()
         // What a button's own label replaced is listed in the tests' tree, but not given to TalkBack.
         .filter { node -> generateSequence(node.parent) { it.parent }.none { it.config.isClearingSemantics } }
-        .flatMap { it.config[SemanticsProperties.Text] }
-        .filter { it.spanStyles.isNotEmpty() || it.paragraphStyles.isNotEmpty() }
+        .flatMap { it.config.getOrElse(SemanticsProperties.Text) { emptyList() } + listOfNotNull(it.config.getOrNull(SemanticsProperties.EditableText)) }
+        .filter { text -> text.spanStyles.any { it.item != SpanStyle(localeList = it.item.localeList) } || text.paragraphStyles.isNotEmpty() }
         .map { it.text }
 
     /**

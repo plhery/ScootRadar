@@ -164,7 +164,7 @@ class ScooterMarkerAccessibility(
             refresh()
         }
 
-    /** The open search over the map, in the dock's layout: a finger on it finds its rows. */
+    /** The open search over the map, in either layout: a finger on it finds its rows. */
     var search: ScreenRect? = null
 
     /** The markers have moved or changed: TalkBack is told, and they are listed again when it asks. */
@@ -230,12 +230,17 @@ class ScooterMarkerAccessibility(
     }
 
     // A finger exploring the map finds what is in front, as VoiceOver's does: on the chrome, the chrome's own elements,
-    // which Compose finds after the map has had the finger, and never a marker under them. The open search is all that
-    // is in front then: the dock, the notices, the legend and the locate button make way, hidden from VoiceOver as
-    // ScooterMapScreen.swift hides them, and their frames, kept for the map's names, hold no finger back.
+    // which Compose finds after the map has had the finger, and never a marker under them. The open search is in front
+    // then, with a large window's corner beside the panel: the dock, the notices and a panel's card make way, and on a
+    // phone the legend and the locate button too, hidden from VoiceOver as ScooterMapScreen.swift hides them; their
+    // frames, kept for the map's names, hold no finger back.
     override fun getVirtualViewAt(x: Float, y: Float): Int {
         val point = ScreenPoint(x / ratio.toDouble(), y / ratio.toDouble())
-        val inFront = search?.contains(point) ?: scene.parent.isUnderChrome(point)
+        val parent = scene.parent
+        val inFront = when (val open = search) {
+            null -> parent.isUnderChrome(point)
+            else -> open.contains(point) || parent.panelFrame != null && parent.bottomChromeFrames.any { !it.isEmpty && it.contains(point) }
+        }
         if (covered || inFront) return INVALID_ID
         val element = MarkerElements.at(point, current(), scene, map)
         return element?.let { ids[it.key] } ?: INVALID_ID

@@ -90,4 +90,30 @@ class MapUnderChromeTest {
         compose.waitForIdle()
         assertTrue(frames.covered)
     }
+
+    /** Beside a large window's panel too, the open search is where a finger finds its rows (review-lead-1nov-b B1). */
+    @Test
+    @Config(qualifiers = "w1280dp-h800dp-mdpi")
+    fun besideThePanelTheOpenSearchIsOverIt() {
+        val model = controllers.make(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        lateinit var screen: ScreenState
+        lateinit var frames: MapChromeFrames
+        compose.setContent {
+            screen = rememberScreenState()
+            ScooterMapScreen(controller = model, map = { frames = LocalMapChrome.current!! }, glassBlurs = false, screenState = screen)
+        }
+        compose.waitForIdle()
+        assertNull(frames.search)
+
+        compose.runOnIdle { screen.searchIsExpanded = true }
+        compose.waitForIdle()
+        val island = compose.onNodeWithTag(SEARCH_ISLAND_TAG).fetchSemanticsNode().boundsInWindow
+        val search = frames.search
+        val middle = ScreenPoint(island.center.x.toDouble(), island.center.y.toDouble())
+        assertTrue("the open search $search holds the island $island", search != null && search.contains(middle) && search.height >= island.height - 1)
+
+        compose.runOnIdle { screen.searchIsExpanded = false }
+        compose.waitForIdle()
+        assertNull(frames.search)
+    }
 }

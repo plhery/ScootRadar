@@ -52,7 +52,7 @@ class MapChromeFrames {
     var captionButtons by mutableStateOf(emptyList<ScreenRect>())
 
     /**
-     * The open search over the map, in the dock's layout: a finger exploring it with TalkBack finds its rows, not the
+     * The open search over the map, in either layout: a finger exploring it with TalkBack finds its rows, not the
      * markers under them. The other frames keep the closed bar's, as the iPhone's do.
      */
     var search by mutableStateOf<ScreenRect?>(null)

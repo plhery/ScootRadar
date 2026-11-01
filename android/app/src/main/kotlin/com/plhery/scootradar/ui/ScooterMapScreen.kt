@@ -702,7 +702,12 @@ private fun PanelChrome(
     // The safe area's top with the caption bar left out, which the map shows through.
     val captionTop = WindowInsets.statusBars.union(WindowInsets.displayCutout).asPaddingValues().calculateTopPadding()
     val direction = LocalLayoutDirection.current
-    DisposableEffect(chrome) { onDispose { chrome.panel = null } }
+    DisposableEffect(chrome) {
+        onDispose {
+            chrome.panel = null
+            chrome.search = null
+        }
+    }
 
     key(language) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
@@ -784,7 +789,9 @@ private fun PanelChrome(
                         // The window's bottom, inside its safe area.
                         bottomLimit = windowHeight - safeBottom,
                         onCollapsedHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
-                        modifier = beside?.let { Modifier.besideCaption(it, bar) } ?: Modifier,
+                        modifier = (beside?.let { Modifier.besideCaption(it, bar) } ?: Modifier).onGloballyPositioned {
+                            chrome.search = if (isSearching) it.windowFrame(density.density) else null
+                        },
                         onFiltersFrameChange = onFiltersButtonFrame,
                     )
                 }
