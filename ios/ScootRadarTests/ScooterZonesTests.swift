@@ -544,6 +544,34 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(Set(CityRuleZone.cityZones.map(\.id)).count, CityRuleZone.cityZones.count)
     }
 
+    func testTheCitiesZonesAreReadWholeFromTheFileInTheApp() throws {
+        // They come from CityZones.generated.json in the app, not Swift literals: every zone in it, in its order, with
+        // its ring point for point, and a city's names once, as in a downloaded file.
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "CityZones.generated", withExtension: "json"))
+        let file = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any])
+        let cities = try XCTUnwrap(file["cities"] as? [[String: Any]])
+        let zones = cities.flatMap { ($0["zones"] as? [[String: Any]]) ?? [] }
+        XCTAssertGreaterThan(cities.count, 10)
+        XCTAssertEqual(CityRuleZone.cityZones.map(\.id), zones.compactMap { $0["id"] as? String })
+        XCTAssertEqual(
+            CityRuleZone.cityZones.map { $0.polygons.first?.first?.flatMap { [$0.latitude, $0.longitude] } ?? [] },
+            zones.map { ($0["ring"] as? [Double]) ?? [] }
+        )
+
+        let data = Data("""
+        {"cities": [{"id": "porto", "authority": "Porto", "timeZone": "Europe/Lisbon", "source": "https://example.com/porto", \
+        "zones": [{"id": "porto-parking-1", "kind": "parking", "ring": [41.15, -8.61, 41.1501, -8.6098, 41.1502, -8.61]}, \
+        {"id": "porto-later-2", "kind": "later", "ring": [41.15, -8.61, 41.1501, -8.6098, 41.1502, -8.61]}, \
+        {"id": "porto-parking-3", "kind": "parking", "ring": [41.15, -8.61, 41.1501, -8.6098]}]}]}
+        """.utf8)
+        let porto = try CityZoneFile.builtIn(from: data)
+        XCTAssertEqual(porto.map(\.id), ["porto-parking-1"])
+        XCTAssertEqual(porto.first?.authority, "Porto")
+        XCTAssertEqual(porto.first?.timeZone, "Europe/Lisbon")
+        XCTAssertEqual(porto.first?.source.absoluteString, "https://example.com/porto")
+        XCTAssertEqual(porto.first?.polygons.first?.first?.count, 3)
+    }
+
     func testACitysZoneIsOneRingWithinItsBoundsThatAlwaysHolds() throws {
         for zone in CityRuleZone.cityZones {
             XCTAssertTrue(zone.lines.isEmpty && zone.hours.isEmpty && zone.firstDay.isEmpty, zone.id)

@@ -290,8 +290,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     @ObservationIgnored private let api: any ScooterAPIClient
     @ObservationIgnored private let cityZoneDownloads: CityZoneDownloads
-    /// Seoul's streets and the cities' zones built in (CityRuleZone.onMap).
-    @ObservationIgnored private let builtInZones: [CityRuleZone]
+    /// Seoul's streets and the cities' zones built in (CityRuleZone.onMap), first read when drawn, from zoom
+    /// 14: the cities' come from a file in the app (CityZoneFile.builtIn), which a launch needn't wait on.
+    @ObservationIgnored private let builtInZones: () -> [CityRuleZone]
     @ObservationIgnored private let locationManager: CLLocationManager
     @ObservationIgnored private var isTrackingHeading = false
     @ObservationIgnored private var isSceneActive = true
@@ -413,7 +414,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         iPhoneLanguages: @escaping () -> [String] = { ScooterLanguage.iPhoneLanguages },
         start: ScooterMapStart = .switzerland,
         cityZoneCache: CityZoneCache? = nil,
-        builtInZones: [CityRuleZone] = CityRuleZone.onMap
+        builtInZones: @autoclosure @escaping () -> [CityRuleZone] = CityRuleZone.onMap
     ) {
         startCenter = start.center
         distanceOrigin = start.center
@@ -2363,7 +2364,7 @@ extension ScooterMapModel {
             cityZoneDownloads.request(over: ruleZoneArea)
             let downloaded = cityZoneDownloads.shown(over: ruleZoneArea)
             let now = clock()
-            rules = CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now, among: builtInZones) +
+            rules = CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now, among: builtInZones()) +
                 CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now, among: downloaded.zones)
             notices = downloaded.notices.filter { $0.city.bounds.intersects(viewport) }
         }

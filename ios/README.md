@@ -264,7 +264,8 @@ update it.
   walking route: how far is left, where the rider is along it, when they left it
   or arrived, and the walk's states.
   `ProviderCatalog.generated.swift` (providers, service areas, covered
-  cities) and `ScooterAPIContract.generated.swift` (the API's shape) are written
+  cities), `CityZones.generated.json` (the cities' zones built in, read by
+  `CityZoneFile.builtIn`) and `ScooterAPIContract.generated.swift` (the API's shape) are written
   by `npm run generate:providers` and `npm run generate:api-contract` from the
   repository's shared data; do not edit them by hand.
 - `Services/` — the scooter API, the address search, MapKit's walking directions

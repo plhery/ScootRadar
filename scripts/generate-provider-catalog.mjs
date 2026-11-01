@@ -12,6 +12,9 @@ const root = process.cwd();
 const sourcePath = resolve(root, 'data/providers.json');
 const typescriptPath = resolve(root, 'src/generated/providers.ts');
 const swiftPath = resolve(root, 'ios/ScootRadar/Models/ProviderCatalog.generated.swift');
+// The cities' zones the iPhone app has as built, which it reads once from its bundle (CityZoneFile.builtIn):
+// as Swift literals, their numbers took most of the iOS job's ten minutes of compiling the catalog.
+const swiftCityZonesPath = resolve(root, 'ios/ScootRadar/Models/CityZones.generated.json');
 // The Android app's build runs this with --android=<directory> (android/core/build.gradle.kts): it then
 // checks the catalog as ever but writes only the Android app's files, into its build directory, so
 // they are never stale and the website's checks never see them.
@@ -534,41 +537,30 @@ function validateCityZones() {
 }
 
 function swiftCityZones() {
-  const name = (id, what) => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Zone${what}`;
-  const properties = [];
-  const entries = cityZones.map(city => {
-    properties.push(
-      `    private static let ${name(city.id, 'Ids')}: [String] = [${city.zones.map(zone => JSON.stringify(zone.id)).join(', ')}]`,
-      `    private static let ${name(city.id, 'Kinds')}: [ScooterZoneKind] = [${city.zones.map(zone => `.${zone.kind}`).join(', ')}]`,
-      `    private static let ${name(city.id, 'Rings')}: [[Double]] = [${city.zones.map(zone => `[${zone.ring.flat().join(', ')}]`).join(', ')}]`,
-    );
-    return `        zones(\n            authority: ${JSON.stringify(city.authority)}, timeZone: ${JSON.stringify(city.timeZone)},\n` +
-      `            source: URL(string: ${JSON.stringify(city.source.url)})!,\n` +
-      `            ids: ${name(city.id, 'Ids')}, kinds: ${name(city.id, 'Kinds')}, rings: ${name(city.id, 'Rings')}\n        )`;
-  });
-
   return `
 /// The zones cities set for shared scooters, as src/lib/ruleZones.ts reads data/city-zones.json: where to
-/// park, where not to, where to ride slowly and where not to ride, each one ring.
+/// park, where not to, where to ride slowly and where not to ride, each one ring. They are read once, from
+/// CityZones.generated.json in the app's bundle, which this generator writes beside this file.
 extension CityRuleZone {
-    static let cityZones: [CityRuleZone] =
-${entries.join(' +\n')}
-
-    /// Each zone of a city, its ring as latitude, longitude, latitude, longitude…
-    private static func zones(
-        authority: String, timeZone: String, source: URL, ids: [String], kinds: [ScooterZoneKind], rings: [[Double]]
-    ) -> [CityRuleZone] {
-        zip(ids, zip(kinds, rings)).map { id, zone in
-            CityRuleZone(
-                id: id, authority: authority, timeZone: timeZone, kind: zone.0, source: source,
-                ring: stride(from: 0, to: zone.1.count, by: 2).map { GeoPoint(latitude: zone.1[$0], longitude: zone.1[$0 + 1]) }
-            )
-        }
-    }
-
-${properties.join('\n')}
+    static let cityZones: [CityRuleZone] = CityZoneFile.builtIn()
 }
 `;
+}
+
+/**
+ * The cities' zones the iPhone app has as built: each city as a downloaded city's file is
+ * (docs/city-zone-downloads.md), its id and zones, each zone's ring as latitude, longitude, latitude,
+ * longitude…, with who sets them, the time zone and the source. One zone a line, to read a diff.
+ */
+function swiftCityZonesData() {
+  const cities = cityZones.map(city => {
+    const head = JSON.stringify({ id: city.id, authority: city.authority, timeZone: city.timeZone, source: city.source.url });
+    const zones = city.zones.map(zone => JSON.stringify({ id: zone.id, kind: zone.kind, ring: zone.ring.flat() }));
+    return `${head.slice(0, -1)}, "zones": [\n${zones.join(',\n')}\n]}`;
+  });
+  const data = `{"cities": [\n${cities.join(',\n')}\n]}\n`;
+  JSON.parse(data);
+  return data;
 }
 
 // The Android app names the providers as the iPhone app does, in Kotlin's casing (BoltHopp), and reads
@@ -742,5 +734,6 @@ if (androidDirectory) {
   writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
   writeOrCheck(catalogsPath, typescriptCatalogs(countries));
   writeOrCheck(swiftPath, swift);
+  writeOrCheck(swiftCityZonesPath, swiftCityZonesData());
   writeZoneDownloads();
 }

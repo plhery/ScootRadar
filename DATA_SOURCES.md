@@ -645,7 +645,8 @@ drawn the same way, from zoom 14 whether the layer is on or not, each kind as
 the operators' (no riding, no parking, slow), the places to park in green and
 Nagoya's pavements as teal lines; the legend names the city, linked to where it
 says so. The web loads a city's zones, `data/city-zones/<id>.json`, only once a
-view reaches it; the iOS app has them as built, all but Nagoya's pavements,
+view reaches it; the iOS app has them as built (CityZones.generated.json, in the
+app), all but Nagoya's pavements,
 which `scripts/generate-provider-catalog.mjs` leaves out of both apps'
 catalogs, and Berlin's, Hamburg's and Dallas's, too many to build in: the iOS app
 downloads those from the website's `/zones/v1/` once a view reaches the city

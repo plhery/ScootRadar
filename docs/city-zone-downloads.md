@@ -1,8 +1,11 @@
 # City zones the apps download
 
 The zones a city sets for shared scooters (`data/city-zones.json`, see
-DATA_SOURCES.md, "Ride and parking zones") are built into both apps' catalogs,
-`ProviderCatalog.generated.swift` on the iPhone and `catalog.json` on Android.
+DATA_SOURCES.md, "Ride and parking zones") are built into both apps: on the
+iPhone as `CityZones.generated.json` in the app, which `CityZoneFile.builtIn`
+reads when they are first drawn, and in `catalog.json` on Android. Until
+2 November 2026 the iPhone had them as Swift number literals in
+`ProviderCatalog.generated.swift`.
 By 30 October 2026 they were 4 MB of the iPhone's 5.15 MB catalog, and the iOS
 check on GitHub took 23.5 of its 30 minutes, longer with every city: Berlin's
 no-parking zones alone would have taken the catalog to about 6.8 MB. A city
@@ -10,6 +13,13 @@ marked `"download": true` in `data/city-zones.json` is no longer built in: the
 apps download its zones when a view reaches it (Desk [222], 30 October 2026).
 The website is unchanged: it has always loaded a city's zones only once a view
 reaches it (`src/lib/cityZones.ts`).
+
+On 2 November 2026 the built-in zones' rings left the Swift catalog, 7.1 MB
+then and 1.2 MB since, for `CityZones.generated.json` (5.8 MB): the compiler
+took 10.5 minutes over the literals on GitHub, and the app built them all at
+launch. The app now reads the file aside when it starts, so zooming in soon
+after doesn't wait on it. Android's `CatalogParityTest` holds its zones to
+that file. A city too big to build in is still downloaded.
 
 ## What is published
 

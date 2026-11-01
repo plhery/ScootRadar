@@ -6,6 +6,10 @@ import java.util.Locale
 import kotlin.math.abs
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.double
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -168,33 +172,33 @@ class CatalogParityTest {
     }
 
     @Test
-    fun cityZonesAreTheSwiftOnes() {
-        // Each city's zones are one call, its own from the city's id that starts each zone's.
-        val cities = data.cityZones.groupBy { it.id.substringBefore('-') }
-        val calls = cities.entries.flatMapIndexed { index, (city, zones) ->
-            val first = zones.first()
-            for (zone in zones) {
-                assertEquals(zone.id, listOf(first.authority, first.timeZone, first.source), listOf(zone.authority, zone.timeZone, zone.source))
+    fun cityZonesAreTheIPhoneOnes() {
+        // The iPhone app reads its cities' zones from CityZones.generated.json, which the generator writes
+        // beside its catalog: each city as a downloaded city's file is, its zones with who sets them, its
+        // time zone and its source. The same zones in the same order, ring for ring.
+        val file = File(System.getProperty("scootradar.repo"), "ios/ScootRadar/Models/CityZones.generated.json")
+        val iPhone = Json.parseToJsonElement(file.readText()).jsonObject.getValue("cities").jsonArray.flatMap { entry ->
+            val city = entry.jsonObject
+            val text = { key: String -> city.getValue(key).jsonPrimitive.content }
+            city.getValue("zones").jsonArray.map { zone ->
+                val fields = zone.jsonObject
+                assertTrue(fields.getValue("id").jsonPrimitive.content.startsWith("${text("id")}-"))
+                listOf(
+                    fields.getValue("id").jsonPrimitive.content, text("authority"), text("timeZone"),
+                    fields.getValue("kind").jsonPrimitive.content, text("source"),
+                    fields.getValue("ring").jsonArray.map { it.jsonPrimitive.double },
+                )
             }
+        }
+        val android = data.cityZones.map { zone ->
             listOf(
-                "        zones(",
-                "            authority: ${string(first.authority)}, timeZone: ${string(first.timeZone)},",
-                "            source: URL(string: ${string(first.source)})!,",
-                "            ids: ${city}ZoneIds, kinds: ${city}ZoneKinds, rings: ${city}ZoneRings",
-                if (index < cities.size - 1) "        ) +" else "        )",
+                zone.id, zone.authority, zone.timeZone, zone.kind.rawValue, zone.source,
+                zone.polygons.single().single().flatMap { listOf(it.latitude, it.longitude) },
             )
         }
-        assertEquals(section("    static let cityZones: [CityRuleZone] =", ""), calls)
-        assertEquals(
-            swift.filter { Regex("^    private static let [a-z]+Zone(Ids|Kinds|Rings): ").containsMatchIn(it) },
-            cities.flatMap { (city, zones) ->
-                listOf(
-                    "    private static let ${city}ZoneIds: [String] = [${zones.joinToString(", ") { string(it.id) }}]",
-                    "    private static let ${city}ZoneKinds: [ScooterZoneKind] = [${zones.joinToString(", ") { ".${it.kind.rawValue}" }}]",
-                    "    private static let ${city}ZoneRings: [[Double]] = ${numbers(zones.map { it.polygons.single().single() })}",
-                )
-            },
-        )
+        assertEquals(android.size, iPhone.size)
+        android.zip(iPhone).forEach { (ours, theirs) -> assertEquals(ours[0].toString(), ours, theirs) }
+        assertTrue("The Swift catalog still holds zone rings", swift.none { it.contains("ZoneRings: [[Double]]") })
     }
 
     @Test

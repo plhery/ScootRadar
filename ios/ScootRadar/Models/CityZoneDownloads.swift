@@ -81,27 +81,63 @@ private struct Lossy<Value: Decodable>: Decodable {
 
 /// A city's file, /zones/v1/<id>.json: its id, and its zones, each one ring as latitude, longitude, latitude…
 enum CityZoneFile {
+    /// A zone as a city's file gives it: its ring is its points' latitudes and longitudes in turn.
+    private struct Zone: Decodable {
+        let id: String
+        let kind: String
+        let ring: [Double]
+    }
+
     /// Its zones, each in force always and credited to the city; a zone of a kind added later is left out, as
     /// is a ring of fewer than three points.
     static func zones(of city: CityZoneDownload, from data: Data) throws -> [CityRuleZone] {
         struct Payload: Decodable {
-            struct Zone: Decodable {
-                let id: String
-                let kind: String
-                let ring: [Double]
-            }
-
             let id: String
             let zones: [Zone]
         }
         let payload = try JSONDecoder().decode(Payload.self, from: data)
         guard payload.id == city.id else { throw CityZoneDownloadError.mismatch }
-        return payload.zones.compactMap { zone in
+        return ruleZones(payload.zones, authority: city.authority, timeZone: city.timeZone, source: city.source)
+    }
+
+    /// The cities' zones the app is built with (CityRuleZone.cityZones), from CityZones.generated.json in its
+    /// bundle, which scripts/generate-provider-catalog.mjs writes from data/city-zones/: each city as its
+    /// downloaded file is, with who sets its zones, its time zone and its source. As Swift number literals,
+    /// their rings took the compiler minutes and the launch the time to build them. None if the file is
+    /// missing or unreadable, which the tests rule out.
+    static func builtIn(bundle: Bundle = .main) -> [CityRuleZone] {
+        guard let url = bundle.url(forResource: "CityZones.generated", withExtension: "json"),
+              let data = try? Data(contentsOf: url, options: .mappedIfSafe),
+              let zones = try? builtIn(from: data) else {
+            assertionFailure("CityZones.generated.json is missing from the app or unreadable")
+            return []
+        }
+        return zones
+    }
+
+    static func builtIn(from data: Data) throws -> [CityRuleZone] {
+        struct Payload: Decodable {
+            struct City: Decodable {
+                let authority: String
+                let timeZone: String
+                let source: URL
+                let zones: [Zone]
+            }
+
+            let cities: [City]
+        }
+        return try JSONDecoder().decode(Payload.self, from: data).cities.flatMap { city in
+            ruleZones(city.zones, authority: city.authority, timeZone: city.timeZone, source: city.source)
+        }
+    }
+
+    private static func ruleZones(_ zones: [Zone], authority: String, timeZone: String, source: URL) -> [CityRuleZone] {
+        zones.compactMap { zone in
             guard let kind = ScooterZoneKind(rawValue: zone.kind), zone.ring.count >= 6, zone.ring.count.isMultiple(of: 2) else {
                 return nil
             }
             return CityRuleZone(
-                id: zone.id, authority: city.authority, timeZone: city.timeZone, kind: kind, source: city.source,
+                id: zone.id, authority: authority, timeZone: timeZone, kind: kind, source: source,
                 ring: stride(from: 0, to: zone.ring.count, by: 2).map { GeoPoint(latitude: zone.ring[$0], longitude: zone.ring[$0 + 1]) }
             )
         }

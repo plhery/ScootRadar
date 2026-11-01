@@ -52,6 +52,7 @@
 		A000000000000000000000B0 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = C000000000000000000000B0 /* Localizable.stringsdict */; };
 		A00000000000000000000012 /* SwissAddressSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001A /* SwissAddressSearch.swift */; };
 		A00000000000000000000013 /* AddressSearchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001B /* AddressSearchAPI.swift */; };
+		A000000000000000000000E0 /* CityZones.generated.json in Resources */ = {isa = PBXBuildFile; fileRef = B000000000000000000000E0 /* CityZones.generated.json */; };
 		A00000000000000000000014 /* ProviderCatalog.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001C /* ProviderCatalog.generated.swift */; };
 		A00000000000000000000015 /* ScooterAPIContract.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001D /* ScooterAPIContract.generated.swift */; };
 /* End PBXBuildFile section */
@@ -139,6 +140,7 @@
 		B000000000000000000000B8 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = is; path = is.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B0000000000000000000001A /* SwissAddressSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissAddressSearch.swift; sourceTree = "<group>"; };
 		B0000000000000000000001B /* AddressSearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchAPI.swift; sourceTree = "<group>"; };
+		B000000000000000000000E0 /* CityZones.generated.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = CityZones.generated.json; sourceTree = "<group>"; };
 		B0000000000000000000001C /* ProviderCatalog.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderCatalog.generated.swift; sourceTree = "<group>"; };
 		B0000000000000000000001D /* ScooterAPIContract.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterAPIContract.generated.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -214,6 +216,7 @@
 				B00000000000000000005D01 /* ScooterZones.swift */,
 				B00000000000000000005E01 /* CityZoneDownloads.swift */,
 				B0000000000000000000002A /* ScooterMapLink.swift */,
+				B000000000000000000000E0 /* CityZones.generated.json */,
 				B0000000000000000000001C /* ProviderCatalog.generated.swift */,
 				B0000000000000000000001D /* ScooterAPIContract.generated.swift */,
 			);
@@ -427,6 +430,7 @@
 				A000000000000000000000B0 /* Localizable.stringsdict in Resources */,
 				A00000000000000000000011 /* InfoPlist.strings in Resources */,
 				A00000000000000000000024 /* PrivacyInfo.xcprivacy in Resources */,
+				A000000000000000000000E0 /* CityZones.generated.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

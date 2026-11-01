@@ -227,7 +227,8 @@ enum ScooterZoneLook {
 /// the operators' zones they are the law, so the map draws them from zoom 14 whether or not the
 /// zones are on, each as its kind's zones are and dimmer outside its hours, and the legend gives
 /// their kind, their hours and who sets them, linked to where they say so. CityRuleZone.all,
-/// Seoul's streets, and CityRuleZone.cityZones are generated.
+/// Seoul's streets, and CityRuleZone.cityZones are generated, the cities' zones as a JSON file in
+/// the app (CityZoneFile.builtIn).
 struct CityRuleZone: Equatable, Sendable, Identifiable {
     struct Hours: Equatable, Sendable {
         /// Local minutes since midnight; hours past midnight start after they end.
@@ -255,7 +256,8 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         }
     }
 
-    /// Seoul's streets and the cities' zones, put together once, as the map shows them.
+    /// Seoul's streets and the cities' zones, put together once, as the map shows them: first when the app
+    /// starts, aside (ScootRadarApp).
     static let onMap: [CityRuleZone] = all + cityZones
     /// How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14.
     static let bandWidthMeters = 14.0
