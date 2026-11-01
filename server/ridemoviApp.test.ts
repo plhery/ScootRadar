@@ -6,7 +6,7 @@ import areas from '../data/ridemovi-areas.json';
 import { haversineM, boundsContainPoint } from '../src/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem } from '../src/lib/regionalScooterSystems';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
-import { collectRidemoviArea, parseRidemoviReply, RidemoviClient, withRidemoviAppCollectors } from './ridemoviApp';
+import { collectRidemoviArea, parseRidemoviReply, RIDEMOVI_FORBIDDEN_RETRY_MS, RidemoviClient, withRidemoviAppCollectors } from './ridemoviApp';
 
 const lat = 51.0504, lng = 13.7373;
 const bike = (id = 1, offset = 0.01) => ({ id, lat: lat + offset, lon: lng, cityId: 86, bikeType: 'SN1',
@@ -65,6 +65,22 @@ async function harness(fetcher = vi.fn<typeof fetch>().mockResolvedValue(Respons
 }
 
 describe('RideMovi private session and transport', () => {
+  it('spaces default map requests five seconds apart even when the caller asks again immediately', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockImplementation(async () => Response.json(reply()));
+    const { sessionPath } = await harness(fetcher);
+    vi.useFakeTimers();
+    try {
+      const client = new RidemoviClient({ sessionPath, fetch: fetcher });
+      await client.nearest(86, lat, lng);
+      const next = client.nearest(86, lat, lng);
+      await vi.advanceTimersByTimeAsync(4_999);
+      expect(fetcher).toHaveBeenCalledTimes(1);
+      await vi.advanceTimersByTimeAsync(1);
+      await next;
+      expect(fetcher).toHaveBeenCalledTimes(2);
+    } finally { vi.useRealTimers(); }
+  });
+
   it('only reads the map, sends the token in a header, disables redirects and bounds the request', async () => {
     const { client, fetcher, token } = await harness();
     await client.nearest(86, lat, lng);
@@ -127,7 +143,10 @@ describe('RideMovi private session and transport', () => {
     const { client, advance } = await harness(fetcher);
     await expect(client.nearest(86, lat, lng)).rejects.toThrow('HTTP 403');
     await expect(client.nearest(86, lat, lng)).rejects.toThrow('held');
-    advance(60_000);
+    advance(RIDEMOVI_FORBIDDEN_RETRY_MS - 1);
+    await expect(client.nearest(86, lat, lng)).rejects.toThrow('held');
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    advance(1);
     await expect(client.nearest(86, lat, lng)).resolves.toBeDefined();
     expect(fetcher).toHaveBeenCalledTimes(2);
   });

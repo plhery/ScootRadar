@@ -13,6 +13,11 @@ const ORIGIN = 'https://api.ridemoviapp.com';
 const PATH = '/bike/nearby?ridingStatus=0&vehicleType=escooter&areaLimit=1';
 export const RIDEMOVI_PAGE = 30;
 const RETRY_MS = 60_000;
+// After two production sweeps (68 and 59 reads), the map alone returned an AWS HTML 403,
+// while the same session still worked from the Mac and public metadata worked from Netcup.
+// The quota is unpublished: keep subsequent sweeps slower and leave the edge a longer cooldown.
+const QUERY_INTERVAL_MS = 5_000;
+export const RIDEMOVI_FORBIDDEN_RETRY_MS = 15 * 60_000;
 export const ridemoviMapRequests = { status: 0 };
 interface ClientOptions { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; startHoldMs?: number }
 export interface RidemoviScooter { id: string; lat: number; lng: number; battery: number | null; range_m: number | null }
@@ -93,7 +98,7 @@ export class RidemoviClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'ridemovi-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? 1_200, this.now, this.now() + (options.startHoldMs ?? 0));
+    this.pace = new Pacer(options.intervalMs ?? QUERY_INTERVAL_MS, this.now, this.now() + (options.startHoldMs ?? 0));
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
@@ -134,8 +139,9 @@ export class RidemoviClient {
       // A generic 403 can come from an HTTP protection layer; it does not prove an expired login.
       if (response.status === 401) this.rejectedToken = token;
       const retry = response.headers.get('retry-after');
-      const delay = retry && /^\d+$/.test(retry) ? Number(retry) * 1000 : retry ? Date.parse(retry) - this.now() : RETRY_MS;
-      this.blockedUntil = this.now() + Math.max(RETRY_MS, Math.min(3_600_000, delay || RETRY_MS));
+      const minimum = response.status === 403 ? RIDEMOVI_FORBIDDEN_RETRY_MS : RETRY_MS;
+      const delay = retry && /^\d+$/.test(retry) ? Number(retry) * 1000 : retry ? Date.parse(retry) - this.now() : minimum;
+      this.blockedUntil = this.now() + Math.max(minimum, Math.min(3_600_000, delay || minimum));
       throw new Error(`RideMovi map HTTP ${response.status}`);
     }
     const payload = await jsonBody(response);
@@ -150,7 +156,7 @@ export class RidemoviClient {
 
 const MAP: NearestMap = { name: 'RideMovi', page: RIDEMOVI_PAGE, reachM: 5_000, cellM: 3_000 };
 const AREAS = new Map(areaCatalog.areas.map(area => [area.id, { cityId: area.cityId, rings: area.rings as Ring[] }]));
-const LIMITS: SweepLimits = { requests: 300, milliseconds: 10 * 60_000, retryMs: 3_000 };
+const LIMITS: SweepLimits = { requests: 300, milliseconds: 15 * 60_000, retryMs: 3_000 };
 type Position = { lat: number; lng: number };
 
 export async function collectRidemoviArea(system: RegionalScooterSystem, previous: readonly Position[],

@@ -84,8 +84,17 @@ in percent; range is `estimatedTravelDistanceInKM`, converted to metres.
 Unavailable or implausible battery/range stays unknown. QR numbers, lock ids,
 battery hardware identifiers and account data are not published.
 
-Requests are paced at least 1.2 seconds apart, with a 20-second timeout,
-2 MiB body limit, no redirects, a bounded sweep and Retry-After backoff.
+The initial production reader completed two sweeps (68 and 59 requests), then
+its map requests returned a 118-byte AWS load-balancer HTML 403 without
+Retry-After. At the same time the session still returned scooters from the Mac,
+and public operating-area metadata still worked from Netcup. This points to an
+edge restriction on the server's map requests; the exact quota is unknown.
+
+Requests are now paced at least **five seconds apart**, with a 20-second timeout,
+2 MiB body limit, no redirects, a 300-request / 15-minute sweep budget and
+Retry-After backoff. A generic HTTP 403 holds requests for at least 15 minutes,
+preserves the token and last snapshot, and does not request a new login.
+The slower cadence has not yet been verified through a sustained production run.
 The new cache waits two minutes so a deployment does not double the pace.
 Idle sweeps run every two hours; a map visit keeps the feed watched for two
 minutes. Sweeps reuse previous positions to plan fewer requests, report
