@@ -16,10 +16,10 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Cambridge: Voi and the combined authority’s trial',
       blocks: [
-        'One company, **Voi**, hires out e-scooters in Cambridge. Cambridgeshire County Council’s cycling page says “Voi has e-bikes and e-scooters for hire across Cambridge and some of the surrounding villages” and names no other operator; Voi’s scooters “remain the only ones that can be used legally in the city”, the BBC reported in November 2025.',
+        'One company, **Voi**, hires out e-scooters in Cambridge. Cambridgeshire County Council’s cycling page says “Voi has e-bikes and e-scooters for hire across Cambridge and some of the surrounding villages” and names no other operator.',
         '**Who runs it?** The Cambridgeshire and Peterborough Combined Authority holds the contract with Voi, the Cambridge Independent reported in September 2026. Cambridgeshire County Council is the highway authority, so it makes the traffic orders for the city’s roads.',
-        '**How long will it run?** Voi’s contract was due to end on 31 May 2026, the BBC reported, but the trial has since been “extended until May 2028”, the Cambridge Independent reported in September 2026.',
-        'In November 2025 the scheme had **870 e-scooters and 419 e-bikes** and was on track for 1.5 million rides that year, the BBC reported. At 14:55 on Saturday 24 October 2026 the [map of Cambridge](map:gb:Cambridge) showed about 800 Voi e-scooters: a snapshot, not the fleet size. It shows their positions and battery, not prices, zones, parking hubs or Voi’s e-bikes. The total covers the villages on the city’s edge too: before dawn on 25 October about one in six stood outside the city boundary, in Orchard Park, Milton, Girton, Histon and Impington, Teversham, Oakington and Fulbourn, and none in Great Shelford, Grantchester or Waterbeach.',
+        '**How long will it run?** The trial has been “extended until May 2028”, the Cambridge Independent reported in September 2026.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Cambridge](map:gb:Cambridge) showed about 800 Voi e-scooters free to rent. The total covers the villages on the city’s edge too: before dawn on 25 October about one in six stood outside the city boundary, in Orchard Park, Milton, Girton, Histon and Impington, Teversham, Oakington and Fulbourn, and none in Great Shelford, Grantchester or Waterbeach.',
       ],
     },
     {
@@ -59,13 +59,13 @@ const guide: Guide = {
       blocks: [
         'Across England, hire scooters may use roads (never motorways), cycle lanes and routes with the blue bicycle sign, but never the pavement. In 2022 Cambridgeshire County Council made an experimental Electric Scooter Exemptions order: hire scooters could go wherever a pedal cycle may on dual-use cycle tracks, contraflow cycle lanes, bus lanes, bus gates and streets signed “no entry except cycles”.',
         'That order came into force on 31 March 2022 “for a period not exceeding 18 months”. The county’s page of experimental orders still listed it on 25 October 2026, with no record of it being made permanent, so don’t count on bus lanes: follow the signs and the app. Voi’s no-ride and slow zones, for King’s Parade, the Market Square and elsewhere, are in the app.',
-        'The area has grown: in December 2024 the BBC reported plans for a larger zone taking in the Histon to Girton link and the University’s Laundry Farm on Barton Road, with more to follow through 2025. Before dawn on 25 October 2026 our map showed Voi scooters from Eddington and the Science Park to Cherry Hinton and Trumpington Park & Ride, and in the edge villages above; the app’s map shows where you can ride and end a ride.',
+        'Before dawn on 25 October 2026 our map showed Voi scooters from Eddington and the Science Park to Cherry Hinton and Trumpington Park & Ride, and in the edge villages above; the app’s map shows where you can ride and end a ride.',
       ],
     },
     {
       heading: 'Where to park a Voi e-scooter in Cambridge',
       blocks: [
-        'The county council asks riders to “park without blocking the pavement”. Cambridge uses **parking hubs**: “the parking hub model experiences high demand, with spaces under pressure at peak times”, said a report for the combined authority that the BBC covered in November 2025. Addenbrooke’s was its “notable example”; Trumpington Park & Ride and the Biomedical Campus had problems too.',
+        'The county council asks riders to “park without blocking the pavement”. Cambridge uses **parking hubs**.',
         'The centre is tight: in March 2022 there were only 4 parking spots within 200 metres of the Market Square while the app was opened 120 times a day there, Cambridge Ahead’s report said, and before dawn on 25 October 2026 our map showed just one Voi scooter within 500 metres of it. The app shows where you can end your ride.',
       ],
     },
@@ -109,7 +109,6 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Four blue whales.** Since 2020, Cambridge’s hire e-scooters and e-bikes have avoided 649 tonnes of carbon emissions, “equivalent to the weight of four blue whales”, the BBC reported in December 2024.',
             '**94 seized in three days.** During a three-day crackdown in August, Cambridgeshire Constabulary seized 94 e-bikes and e-scooters across the city, Varsity reported in March 2026.',
             '**The longest of its kind.** Voi riders may use the path beside the guided busway, whose own website calls its track “the longest in the world”.',
           ],
@@ -162,8 +161,6 @@ const guide: Guide = {
     { title: 'East Suffolk Lines Community Rail Partnership: Bicycles', url: 'https://eastsuffolklines.co.uk/bicycles' },
     { title: 'Whippet: Conditions of carriage', url: 'https://www.whippetbus.co.uk/conditions-of-carriage/' },
     { title: 'The Busway: About', url: 'https://www.thebusway.info/about.shtml' },
-    { title: 'BBC News: Extension of city’s e-scooter trial wins backing (18 November 2025)', url: 'https://www.bbc.co.uk/news/articles/c1j83667900o' },
-    { title: 'BBC News: E-bike hire scheme expands to cover more of city (20 December 2024)', url: 'https://www.bbc.co.uk/news/articles/cj491927pleo' },
     { title: 'Cambridge Independent: Claims of rise in head injuries prompts e-scooter review in Cambridgeshire (9 September 2026)', url: 'https://www.cambridgeindependent.co.uk/news/claims-of-rise-in-head-injuries-prompts-e-scooter-review-in-9482048/' },
     { title: 'Cambridge Ahead: Embracing micro-mobility (March 2025)', url: 'https://www.cambridgeahead.co.uk/wp-content/uploads/2025/03/embracing-micro-mobility.pdf' },
     { title: 'Varsity: Is the ‘voiage’ worth it? (3 March 2026)', url: 'https://www.varsity.co.uk/features/31296' },

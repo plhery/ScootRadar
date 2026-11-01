@@ -118,7 +118,7 @@ const guide: Guide = {
     {
       heading: 'Brighton station, Hove station and the trains',
       blocks: [
-        '**No e-scooters on Southern, Thameslink or Gatwick Express trains.** Their operator, GTR, has banned them from its trains and stations since 1 June 2023 because of the fire risk from their batteries; e-bikes and mobility scooters are still allowed. Day-trippers: come by train, then pick up a Beryl scooter outside.',
+        '**Southern, Thameslink and Gatwick Express trains:** check their operator GTR’s own rules before you take any e-scooter on board. Day-trippers: come by train, then pick up a Beryl scooter outside.',
         {
           list: [
             '**Brighton station:** the Brighton Station – South bay, with room for 20.',
@@ -189,7 +189,6 @@ const guide: Guide = {
     { title: 'Beryl: student discount (August 2026)', url: 'https://help-bikes.beryl.cc/en/articles/11712995-student-discount-with-beryl' },
     { title: 'Beryl: Brighton open data', url: 'https://beryl-gbfs-production.web.app/v2_2/Brighton/gbfs.json' },
     { title: 'GOV.UK: Using a rental e-scooter (7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
-    { title: 'Southern: bringing a bike or scooter', url: 'https://www.southernrailway.com/travel-information/onboard-travel/bringing-a-bike' },
     { title: 'GTR: e-scooters banned from 1 June (May 2023)', url: 'https://www.mynewsdesk.com/uk/gtr/pressreleases/gtr-reminds-passengers-e-scooters-will-be-banned-from-1-june-3254434' },
     { title: 'University of Brighton: e-scooters and e-bikes at the university (February 2024)', url: 'https://blogs.brighton.ac.uk/studentnewsandevents/2024/02/21/use-and-charging-of-e-scooters-and-e-bikes-at-the-university/' },
   ],

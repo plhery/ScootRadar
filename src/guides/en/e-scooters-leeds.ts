@@ -132,8 +132,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Beryl is named after Leeds cyclist Beryl Burton**, who won 96 national championships and seven world titles, the BBC reports.',
-            '**A trial that waited six years.** Leeds applied in 2020 but withdrew over the work of re-designating cycle tracks, the council told the BBC; Beryl calls the 2026 trial the first approved in the UK since 2020.',
+            '**The first new trial since 2020.** Beryl calls the 2026 Leeds trial the first approved in the UK since 2020.',
             '**Over 28,000 e-scooter journeys** were made by early July 2026, about 8% of all the scheme’s journeys, Beryl said. The average Leeds trip was 2.35 km and took about 15 minutes.',
           ],
         },
@@ -185,9 +184,6 @@ const guide: Guide = {
     { title: 'University of Leeds residences: Terms and conditions 2026/27', url: 'https://accommodation.leeds.ac.uk/info/73/terms-and-conditions/132/terms-and-conditions-202627' },
     { title: 'LNER: Travelling with bicycles', url: 'https://www.lner.co.uk/our-trains/travelling-with-bicycles/' },
     { title: 'First Bus: Conditions of travel, West Yorkshire (March 2026)', url: 'https://www.firstbus.co.uk/sites/default/files/public/node_images/Conditions%20of%20Travel%20-%20West%20Yorkshire%20-%20%20March%2026%20_0.pdf' },
-    { title: 'BBC News: Beryl e-scooter hire scheme begins trial in Leeds (19 March 2026)', url: 'https://www.bbc.co.uk/news/articles/ckg05d45744o' },
-    { title: 'BBC News: E-scooters could be allowed on Leeds roads if trial approved (21 October 2025)', url: 'https://www.bbc.co.uk/news/articles/cn0g43e6drlo' },
-    { title: 'BBC News: Leeds Beryl e-bike hire scheme links up with rail firm LNER (24 September 2025)', url: 'https://www.bbc.co.uk/news/articles/cp3qxpw9769o' },
   ],
 };
 

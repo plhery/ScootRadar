@@ -103,7 +103,7 @@ const guide: Guide = {
     {
       heading: 'Bolt Liverpool parking: bays, photos and fines',
       blocks: [
-        'A ride can only end in one of Bolt’s **parking bays**, shown in the app: about 1,500 on 30 October 2026, dense in the centre and thin in the parks and along Otterspool Promenade. Bolt told the BBC in January 2026 that its vehicles must be parked in specific, identified bays.',
+        'A ride can only end in one of Bolt’s **parking bays**, shown in the app: about 1,500 on 30 October 2026, dense in the centre and thin in the parks and along Otterspool Promenade.',
         'Find the bay nearest your destination before you set off: zoom in on the [map](map:gb:Liverpool) to see the bays. Leave the pavement clear for blind and disabled people, and take the photo the app asks for. Bolt checks it with AI, and the council warns that “improper parking may result in a fine”. No amount is published for Liverpool; Bolt’s UK terms allow up to £40.',
         'On 30 October 2026 the council’s hire page still said you can “just leave them on the street”: that’s out of date. To report a badly parked Bolt, use the app or call 0844 933 4578 (charges may apply).',
       ],
@@ -181,7 +181,6 @@ const guide: Guide = {
     { title: 'Liverpool Express: Council and police e-scooter reminder (August 2026)', url: 'https://liverpoolexpress.co.uk/liverpool-city-council-and-merseyside-police-remind-e-scooter-users-to-stay-safe-and-follow-the-law/' },
     { title: 'Liverpool Express: Bolt makes Liverpool the home of first UK scooter launch (14 November 2025)', url: 'https://liverpoolexpress.co.uk/bolt-makes-liverpool-the-home-of-first-uk-scooter-launch/' },
     { title: 'Bolt: open data for Liverpool', url: 'https://mds.bolt.eu/gbfs/3/412/gbfs' },
-    { title: 'BBC News: Crackdown on e-scooter riders who flout rules (January 2026)', url: 'https://www.bbc.com/news/articles/c78ek4pn8d3o' },
     { title: 'Merseyrail: E-bike ban', url: 'https://www.merseyrail.org/journey-planning/plan-your-journey/e-bike-ban/' },
     { title: 'WCNW Chamber: Liverpool John Lennon Airport partners with Bolt (July 2026)', url: 'https://wcnwchamber.org.uk/news/ljla-partners-with-bolt-to-launch-dedicated-scooter-and-e-bike-parking/' },
     { title: 'Cities Today: Liverpool Airport adds Bolt micromobility parking (21 July 2026)', url: 'https://cities-today.com/liverpool-airport-adds-bolt-micromobility-parking/' },
