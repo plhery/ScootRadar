@@ -121,7 +121,7 @@ const guide: Guide = {
             '**Buses:** we couldn’t check Arriva’s conditions; the council’s MK Connect page mentions mobility scooters, not e-scooters.',
           ],
         },
-        'Commuting to London? Lime and Voi hire out e-scooters in parts of the capital: see our [London guide](guide:london). Voi runs the schemes in [Northampton](map:gb:Northampton) and [Aylesbury](map:gb:Aylesbury), where the map showed about 1,250 and 230 e-scooters at 07:47 on 25 October 2026.',
+        'Commuting to London? Lime and Voi hire out e-scooters in parts of the capital: see our [London guide](guide:london). Voi runs the schemes in [Northampton](map:gb:Northampton) and [Aylesbury](map:gb:Aylesbury), where the map showed about 1,250 and 230 e-scooters at 07:47 on 25 October 2026; see [e-scooters in Aylesbury](guide:aylesbury).',
       ],
     },
     {
