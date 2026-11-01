@@ -168,7 +168,6 @@ const guide: Guide = {
     { title: 'GOV.UK: E-scooter trials, guidance for local areas and rental operators (trials due to end 31 May 2028)', url: 'https://www.gov.uk/government/publications/e-scooter-trials-guidance-for-local-areas-and-rental-operators/e-scooter-trials-guidance-for-local-areas-and-rental-operators' },
     { title: 'Anglia Ruskin University: Rules, Regulations and Procedures for Students (amended July 2026)', url: 'https://www.aru.ac.uk/-/media/Files/about-us/corporate-documents/Rules_Regulations_Procedures_for_Students.pdf' },
     { title: 'Anglia Ruskin University: Chelmsford campus', url: 'https://www.aru.ac.uk/student-life/life-on-campus/chelmsford-campus' },
-    { title: 'National Rail: Chelmsford station', url: 'https://www.nationalrail.co.uk/stations/chelmsford/' },
     { title: 'Colchester Gazette: Greater Anglia bans e-scooters from Thursday, June 1 (26 May 2023)', url: 'https://www.gazette-news.co.uk/news/23551203.greater-anglia-bans-e-scooters-thursday-june-1/' },
     { title: 'East Suffolk Lines Community Rail Partnership: Bicycles', url: 'https://eastsuffolklines.co.uk/bicycles' },
   ],

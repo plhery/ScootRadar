@@ -184,7 +184,6 @@ const guide: Guide = {
     { title: 'Bullring & Grand Central: Bullring visitor guide', url: 'https://www.bullring.co.uk/terms-conditions' },
     { title: 'National Express West Midlands: Conditions of carriage (10 March 2026)', url: 'https://nxbus.co.uk/media/gpmn1mhu/nxbus-conditions-of-carriage-100326.pdf' },
     { title: 'Avanti West Coast: Bikes', url: 'https://www.avantiwestcoast.co.uk/onboard/bikes' },
-    { title: 'National Rail: Birmingham Moor Street station', url: 'https://www.nationalrail.co.uk/stations/birmingham-moor-street/' },
   ],
 };
 

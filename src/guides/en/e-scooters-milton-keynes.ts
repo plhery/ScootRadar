@@ -101,7 +101,6 @@ const guide: Guide = {
             rows: [
               ['Willen Lake, Campbell Park and the other parks', 'The Parks Trust', 'Hire scooters have places with enforced slow speeds and areas where you can’t end a ride; follow the Redway Code. Private e-scooters “must not be used in any Park locations”'],
               ['The shopping centre', 'centre:mk', '“Bikes and scooters are not to be used within the shopping centre”; there are council bike racks outside'],
-              ['Walton Hall campus', 'The Open University', 'We couldn’t read the university’s own rules'],
               ['Milton Keynes University Hospital', 'The hospital’s NHS trust', 'Lists bike racks (April 2026), but nothing on e-scooters'],
               ['Bletchley Park', 'Bletchley Park Trust', '“Scooters, children’s bikes, roller skates etc. are also not allowed” (visitor FAQs, on play equipment)'],
               ['Stadium MK', 'Stadium MK', 'Its FAQs and travel page say nothing on e-scooters'],
@@ -116,7 +115,7 @@ const guide: Guide = {
         {
           list: [
             '**Avanti West Coast**, whose intercity trains stop at Milton Keynes Central: “electric scooters are not permitted on our trains or anywhere on our stations”. The ban began on 27 December 2022, on its trains and at the 16 stations it manages, over the risks of lithium-ion batteries.',
-            '**London Northwestern Railway** manages Milton Keynes Central, National Rail says; we couldn’t check its own conditions.',
+            '**London Northwestern Railway** manages Milton Keynes Central: check its own conditions before you take any e-scooter on board.',
             '**Buses:** we couldn’t check Arriva’s conditions; the council’s MK Connect page mentions mobility scooters, not e-scooters.',
           ],
         },
@@ -189,7 +188,6 @@ const guide: Guide = {
     { title: 'Stadium MK: FAQs', url: 'https://www.stadiummk.com/faqs' },
     { title: 'Avanti West Coast: Bikes on board', url: 'https://www.avantiwestcoast.co.uk/onboard/bikes' },
     { title: 'Avanti West Coast: E-scooter ban (21 December 2022)', url: 'https://newsdesk.avantiwestcoast.co.uk/news/avanti-west-coast-introduces-ban-on-e-scooters-across-its-route' },
-    { title: 'National Rail: Milton Keynes Central station', url: 'https://www.nationalrail.co.uk/stations/milton-keynes-central/' },
   ],
 };
 

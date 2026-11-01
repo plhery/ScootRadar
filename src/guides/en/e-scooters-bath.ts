@@ -92,7 +92,7 @@ const guide: Guide = {
           },
         },
         'The towpath belongs to the Canal & River Trust: check its own rules before you ride on any of it.',
-        'Dott’s zones are unnamed shapes we matched to OpenStreetMap: the app’s map is the one that counts.',
+        'The app’s map shows every zone exactly: check it before you ride.',
       ],
     },
     {

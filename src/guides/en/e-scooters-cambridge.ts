@@ -156,7 +156,6 @@ const guide: Guide = {
     { title: 'Anglia Ruskin University: Student life in Cambridge, a money-saving guide (22 November 2023)', url: 'https://www.aru.ac.uk/blogs/student-life-in-cambridge-a-money-saving-guide' },
     { title: 'Thameslink: Bringing your bike on a train (e-scooter policy)', url: 'https://www.thameslinkrailway.com/travel-information/onboard-travel/bringing-a-bike' },
     { title: 'Great Northern: Taking a bike on a train (e-scooter policy)', url: 'https://www.greatnorthernrail.com/travel-information/onboard-travel/bringing-a-bike' },
-    { title: 'National Rail: Cambridge station', url: 'https://www.nationalrail.co.uk/stations/cambridge/' },
     { title: 'Colchester Gazette: Greater Anglia bans e-scooters from Thursday, June 1 (26 May 2023)', url: 'https://www.gazette-news.co.uk/news/23551203.greater-anglia-bans-e-scooters-thursday-june-1/' },
     { title: 'East Suffolk Lines Community Rail Partnership: Bicycles', url: 'https://eastsuffolklines.co.uk/bicycles' },
     { title: 'Whippet: Conditions of carriage', url: 'https://www.whippetbus.co.uk/conditions-of-carriage/' },

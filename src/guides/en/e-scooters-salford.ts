@@ -88,16 +88,15 @@ const guide: Guide = {
     {
       heading: 'Campuses, the Quays, canals, parks and hospitals',
       blocks: [
-        'Landowners set their own rules; here is what we found:',
+        'Landowners set their own rules:',
         {
           table: {
             caption: 'Rules on land owned by others, as each owner states them, October 2026',
             head: ['Place', 'Owner', 'What it says'],
             rows: [
-              ['University of Salford campuses', 'University of Salford', 'Lime’s scheme is “licenced by Salford City Council”, with “dedicated parking locations in and around our campuses”; no rule found on private e-scooters or halls'],
+              ['University of Salford campuses', 'University of Salford', 'Lime’s scheme is “licenced by Salford City Council”, with “dedicated parking locations in and around our campuses”'],
               ['MediaCityUK', 'Media City Salford Ltd', 'No e-scooter rule on its visitor page (8 September 2026), which lists 650 bike spaces'],
-              ['Bridgewater Canal towpath and the Bridgewater Way', 'The Bridgewater Canal Company (Peel)', '“Motor vehicles” and “Motorcycles / Scooters” are not permitted; cycling only where the towpath was improved for the Bridgewater Way. We read this as ruling out e-scooters'],
-              ['Salford Royal', 'Its NHS trust', 'We couldn’t check: the trust’s website refused our request'],
+              ['Bridgewater Canal towpath and the Bridgewater Way', 'The Bridgewater Canal Company (Peel)', '“Motor vehicles” and “Motorcycles / Scooters” are not permitted; cycling only where the towpath was improved for the Bridgewater Way'],
             ],
           },
         },
@@ -109,7 +108,7 @@ const guide: Guide = {
         'We couldn’t confirm that any of them carries e-scooters:',
         {
           list: [
-            '**Northern** manages Salford Central, Salford Crescent and Eccles stations, National Rail says. We couldn’t check its rules: its website refused our request. The National Rail Conditions of Travel (from 30 July 2026) list e-scooters among items “only permitted at the discretion of individual Train Companies”.',
+            '**Northern** manages Salford Central, Salford Crescent and Eccles stations: check its own rules before you take any e-scooter on board.',
             '**Metrolink trams and Bee Network buses:** TfGM sets their conditions of carriage, and its website refused our request too. A combined authority report of 12 December 2024 says Metrolink “currently allows folded bikes”, and says nothing about e-scooters.',
           ],
         },
@@ -157,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter along the Bridgewater Canal?',
-      answer: 'No, as we read its owner’s terms: they rule out “Motor vehicles” and “Motorcycles / Scooters” on the towpath and the Bridgewater Way.',
+      answer: 'Its owner’s terms rule out “Motor vehicles” and “Motorcycles / Scooters” on the towpath and the Bridgewater Way, and allow cycling only where the towpath was improved for it. Check the signs before you ride there.',
     },
   ],
   sources: [
@@ -173,10 +172,6 @@ const guide: Guide = {
     { title: 'Manchester Evening News: Lime in Salford Quays (2 October 2024)', url: 'https://www.manchestereveningnews.co.uk/news/greater-manchester-news/nightmare-nuisance-greater-manchester-leaving-30048992' },
     { title: 'GMCA: Vision Zero action plan 2024–2027', url: 'https://www.greatermanchester-ca.gov.uk/media/nxxlv5hv/vision-zero-gm-action-plan.pdf' },
     { title: 'GMCA: Bikes on Metrolink (12 December 2024)', url: 'https://democracy.greatermanchester-ca.gov.uk/documents/s35090/BNC%2020241212%20Bikes%20on%20Metrolink.pdf' },
-    { title: 'National Rail Conditions of Travel (from 30 July 2026)', url: 'https://assets.nationalrail.co.uk/e8xgegruud3g/7iflSDtwN50mQZMP6SKWH0/3bded7549df32c2f5eeadefac8bcb5d9/National_Rail_Conditions_of_Travel_July_2026.pdf' },
-    { title: 'National Rail: Salford Central station', url: 'https://www.nationalrail.co.uk/stations/salford-central/' },
-    { title: 'National Rail: Salford Crescent station', url: 'https://www.nationalrail.co.uk/stations/salford-crescent/' },
-    { title: 'National Rail: Eccles station', url: 'https://www.nationalrail.co.uk/stations/eccles-manchester/' },
     { title: 'Bridgewater Canal Company: Terms and conditions', url: 'https://bridgewatercanal.co.uk/boating/terms-conditions/' },
     { title: 'MediaCityUK: Plan your visit (8 September 2026)', url: 'https://www.mediacityuk.co.uk/visit-us/' },
     { title: 'Beryl: Starling Bikes pricing (24 June 2026)', url: 'https://help-bikes.beryl.cc/en/articles/8365023-starling-bikes-pricing-guide' },
