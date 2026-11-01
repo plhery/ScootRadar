@@ -384,5 +384,13 @@
         "dart_"
       ]
     }
+  },
+  {
+    "key": "ridemovi",
+    "name": "RideMovi",
+    "color": "#f36b21",
+    "initial": "RM",
+    "systemIds": { "prefixes": ["ridemovi"] },
+    "app": { "link": "https://ridemovi.app.link/ZduGyMtOD6", "appStoreId": 1503536800 }
   }
 ]

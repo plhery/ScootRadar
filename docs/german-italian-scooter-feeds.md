@@ -560,39 +560,23 @@ an hour, so no interval was changed for ATOM.
 
 ## RideMovi Dresden app map (1 November 2026)
 
-The official Android app, RideMovi 5.2.0 (`com.ridemovi.app`), uses
-`https://api.ridemoviapp.com`. Its scooter map is separate from GBFS:
+Dresden's RideMovi scooters are collected through its authenticated rider map,
+using the dedicated account's session obtained through an authorized companion
+APK on the physical phone. Direct map reads succeeded from both the Mac and
+the production cache container; the phone is not needed for collection.
 
-- `GET /bike/operationArea/getNearestOperationArea?vehicleType=escooter`, with
-  `X-Vivi-Latitude: 51.0504` and `X-Vivi-Longitude: 13.7373`, answered anonymously
-  with code `1000` and the `Dresden_OPS` operating polygon: area id `1286`, city
-  id `86`. This establishes the configured service area, not available scooters.
-- The app requests `GET /bike/nearby` with `ridingStatus=0`,
-  `vehicleType=escooter`, `areaLimit=100`, the same coordinate headers and a
-  rider's bearer token. Without a token it returned code `15000`, `Token is
-  null`. The app reads `data.nearbyBikes` and separate parking and restriction
-  arrays; neither a complete Dresden fleet nor the meaning of the result limit
-  has been verified.
-- The verified-email login requests a code with
-  `POST /user/sendVerifyCodeByEmail`, query fields `mobileNo`, `email` and
-  `deviceId`, and a JSON body containing `reCaptcha` and the app's `siteKey`.
-  Verification uses `POST /user/loginByEmail`, query fields `email`, `otp` and
-  `deviceId`, and an empty JSON object. The app obtains `deviceId` from
-  `react-native-device-info.getUniqueId()`.
+The nearby endpoint returns at most 30 scooters, and `areaLimit` changes only
+parking/restriction arrays. The collector covers the published `Dresden_OPS`
+polygon (area 1286, city 86) using overlapping nearest-neighbour reads. The
+first full audit found 682 scooters in 68 requests over 81 seconds. An audit
+of 599 stationary scooters found no missing neighbours inside certified views.
+An underfilled view is certified only up to its last scooter; an empty reply
+cannot establish coverage. Battery and range come from the app's fields.
 
-A dedicated rider account signed in successfully by email code in the official
-app on a physical phone. Direct HTTP login with a separate device id did not
-yield a token (`400`, code `11070`); a code already used by the app does not
-establish portability. Requesting an email code directly without a reCAPTCHA
-token returned `403`, code `11062`, with a generic validation-code failure.
-The test emulator also returned to phone entry without opening email code entry.
-These replies do not identify an app-integrity check as the cause.
-
-RideMovi remains a gap. Before enabling a collector, obtain a portable dedicated
-rider session, verify its lifetime or renewal from the cache server, and audit
-the nearby response's scooter types, availability, bounds and completeness.
-App login and an operating polygon alone do not meet those checks. Keep rider
-credentials, codes, APKs and raw diagnostic captures outside the repository.
+See [RideMovi authentication, coverage and maintenance](ridemovi-app-map.md).
+The token's long-term lifetime is unknown; rejected sessions require an
+operator login and replacement of the cache's private file. No login, ride
+or payment action runs in the collector.
 
 ## Known gaps
 

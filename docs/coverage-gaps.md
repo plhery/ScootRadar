@@ -658,7 +658,7 @@ banned shared scooters, and feeds that were empty when checked.
     feeds were too small or empty. Hamburg's and Oberhausen's Lime scooters
     come from Lime's rider map since 25 October 2026; there its Solingen
     region has no scooter zone.
-  - Dresden shows Bolt only. The city lists RideMovi (since August 2025),
+  - Dresden shows Bolt and, since 1 November 2026, RideMovi. The city lists RideMovi (since August 2025),
     Bolt (since March 2026) and Voi ("from autumn 2026") for e-scooters, and
     Lime and Voi for e-bikes only. Checked again on 28 October 2026, after an
     app user missed the other three:
@@ -666,10 +666,10 @@ banned shared scooters, and feeds that were empty when checked.
       rider map's Dresden region has no scooter zone (25 October).
     - RideMovi publishes no feed: it is in neither MobilityData's list nor
       Transitous's, and the operators send their MDS data to the city only.
-      Its app API returned Dresden's operating polygon on 1 November 2026,
-      but its scooter map requires a rider token. Physical-phone email login
-      worked; a portable session and complete fleet retrieval remain unverified
-      ([app investigation](german-italian-scooter-feeds.md#ridemovi-dresden-app-map-1-november-2026)).
+      Its authenticated rider map was verified on 1 November 2026: a companion
+      phone login produced a portable session, and a full-area sweep found
+      682 scooters. The cache now reads that map
+      ([authentication and coverage](ridemovi-app-map.md)).
     - Voi has no public Dresden feed either. Its rider map would carry
       Dresden's scooters from zone 384 of the app's zone list (read on 30
       October 2026, behind the session the cache keeps), but the zone held no

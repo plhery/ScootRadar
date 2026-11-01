@@ -42,6 +42,7 @@ import { boltMapRequests, withBoltAppCollectors } from './boltApp';
 import { alpacaMapRequests, withAlpacaAppCollectors } from './alpacaApp';
 import { dartMapRequests, withDartAppCollectors } from './dartApp';
 import { skyssMapRequests, withSkyssAppCollectors } from './skyssApp';
+import { ridemoviMapRequests, withRidemoviAppCollectors } from './ridemoviApp';
 import { readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps } from './swissAppMaps';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
@@ -52,6 +53,8 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBirdAppCollectors(current, systems, id => records.get(id)?.vehicles),
+  (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
+    withRidemoviAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
   withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
   (current: CollectableScooterFeed[]) => withLimeStandby(current, id => records.get(id)),
@@ -131,7 +134,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
       binbinMapRequests.status + beamMapRequests.status + gcooMapRequests.status + kickgoingMapRequests.status + swingMapRequests.status +
-      alpacaMapRequests.status + dartMapRequests.status + skyssMapRequests.status + boltMapRequests.status + birdMapRequests.status,
+      alpacaMapRequests.status + dartMapRequests.status + skyssMapRequests.status + boltMapRequests.status + birdMapRequests.status + ridemoviMapRequests.status,
     metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata +
       boltMapRequests.metadata + birdMapRequests.metadata,
   }),

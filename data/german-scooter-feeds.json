@@ -4246,6 +4246,24 @@
       ]
     },
     {
+      "id": "ridemovi_de_dresden",
+      "country": "DE",
+      "provider": "ridemovi",
+      "city": "Dresden",
+      "center": [
+        51.0504,
+        13.7373
+      ],
+      "bounds": {
+        "south": 50.98139,
+        "north": 51.10008,
+        "west": 13.64874,
+        "east": 13.86795
+      },
+      "discoveryUrl": "https://api.ridemoviapp.com/bike/nearby",
+      "ridemoviAppArea": "1286"
+    },
+    {
       "id": "lime_de_app_augsburg",
       "provider": "lime",
       "city": "Augsburg",

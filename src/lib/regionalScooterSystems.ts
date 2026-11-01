@@ -46,6 +46,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   dottAppRegion?: string;
   /** Rider app region, read by the Node cache using its private Voi session. */
   voiAppZone?: string;
+  /** RideMovi's reviewed operating area, swept through its private rider session by the Node cache. */
+  ridemoviAppArea?: string;
   /** Bounded scooter viewports, collected completely using the cache's private Lime session. */
   limeAppMap?: true;
   /** ATOM rider-map account, whose app identifiers and rider token are private to the Node cache. */
@@ -151,7 +153,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSyste
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
     system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
-    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.skyssAppZone || system.boltAppCity);
+    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

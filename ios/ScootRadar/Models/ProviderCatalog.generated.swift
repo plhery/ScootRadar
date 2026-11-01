@@ -43,6 +43,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case deer
     case alpaca
     case dart
+    case ridemovi
 
     var id: String { rawValue }
 
@@ -87,6 +88,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .deer: "Deer"
         case .alpaca: "Alpaca"
         case .dart: "DART"
+        case .ridemovi: "RideMovi"
         }
     }
 
@@ -131,6 +133,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .deer: "De"
         case .alpaca: "A"
         case .dart: "Da"
+        case .ridemovi: "RM"
         }
     }
 
@@ -159,6 +162,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .swing: OperatorApp(link: URL(string: "https://tswm.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1459344011")!)
         case .deer: OperatorApp(link: URL(string: "https://deer.tswm.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1455718957")!)
         case .alpaca: OperatorApp(link: URL(string: "https://alpaca.kr/")!, appStore: URL(string: "https://apps.apple.com/app/id1328860619")!)
+        case .ridemovi: OperatorApp(link: URL(string: "https://ridemovi.app.link/ZduGyMtOD6")!, appStore: URL(string: "https://apps.apple.com/app/id1503536800")!)
         default: nil
         }
     }
@@ -206,6 +210,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .deer: UIColor(red: 0.780392, green: 0.690196, blue: 0.000000, alpha: 1)
         case .alpaca: UIColor(red: 1.000000, green: 0.431373, blue: 0.207843, alpha: 1)
         case .dart: UIColor(red: 0.039216, green: 0.517647, blue: 1.000000, alpha: 1)
+        case .ridemovi: UIColor(red: 0.952941, green: 0.419608, blue: 0.129412, alpha: 1)
         }
     }
 
@@ -217,6 +222,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.xingxing, [], ["xingxing_"]),
         (.zelectra, [], ["zelectra"]),
         (.flamingo, [], ["flamingo"]),
+        (.ridemovi, [], ["ridemovi"]),
         (.elerent, [], ["elerent"]),
         (.whoosh, [], ["whoosh_"]),
         (.alpaca, [], ["alpaca_"]),
@@ -604,6 +610,7 @@ enum ScooterProviderCoverage {
         systems.append((.bolt, GeoBounds(south: 51.2918, west: 9.4294, north: 51.3531, east: 9.5665)))
         systems.append((.bolt, GeoBounds(south: 51.4953, west: 9.8716, north: 51.5743, east: 9.9778)))
         systems.append((.bolt, GeoBounds(south: 48.2891, west: 10.8371, north: 48.4093, east: 10.9607)))
+        systems.append((.ridemovi, GeoBounds(south: 50.98139, west: 13.64874, north: 51.10008, east: 13.86795)))
         systems.append((.lime, GeoBounds(south: 48.30784, west: 10.87133751, north: 48.32131467, east: 10.93211377)))
         systems.append((.lime, GeoBounds(south: 48.32131467, west: 10.85107875, north: 48.33478934, east: 10.93211377)))
         systems.append((.lime, GeoBounds(south: 48.33478934, west: 10.85107875, north: 48.348264, east: 10.95397)))
@@ -4106,7 +4113,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "de:Eschborn", name: "Eschborn", countryCode: "DE", center: GeoPoint(latitude: 50.14328, longitude: 8.57111), bounds: GeoBounds(south: 50.0909, west: 8.5196, north: 50.1483, east: 8.5916), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_714")]))
         cities.append(ScooterCity(id: "de:Weiterstadt", name: "Weiterstadt", countryCode: "DE", center: GeoPoint(latitude: 49.9039, longitude: 8.58874), bounds: GeoBounds(south: 49.8441, west: 8.5386, north: 49.9089, east: 8.6026), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_714")]))
         cities.append(ScooterCity(id: "de:Oldenburg", name: "Oldenburg", countryCode: "DE", center: GeoPoint(latitude: 53.14039, longitude: 8.21479), bounds: GeoBounds(south: 53.0872, west: 8.1447, north: 53.2018, east: 8.2653), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_715")]))
-        cities.append(ScooterCity(id: "de:Dresden", name: "Dresden", countryCode: "DE", center: GeoPoint(latitude: 51.05089, longitude: 13.73832), bounds: GeoBounds(south: 50.9692, west: 13.5721, north: 51.1842, east: 13.9768), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_742")]))
+        cities.append(ScooterCity(id: "de:Dresden", name: "Dresden", countryCode: "DE", center: GeoPoint(latitude: 51.05089, longitude: 13.73832), bounds: GeoBounds(south: 50.9692, west: 13.5721, north: 51.1842, east: 13.9768), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_742"), ScooterCityFeed(id: "germany:ridemovi_de_dresden")]))
         cities.append(ScooterCity(id: "de:Fürth", name: "Fürth", countryCode: "DE", center: GeoPoint(latitude: 49.47593, longitude: 10.98856), bounds: GeoBounds(south: 49.4509, west: 10.9486, north: 49.5009, east: 11.0286), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_746")]))
         cities.append(ScooterCity(id: "de:Schwabach", name: "Schwabach", countryCode: "DE", center: GeoPoint(latitude: 49.33047, longitude: 11.02346), bounds: GeoBounds(south: 49.3081, west: 10.9889, north: 49.3769, east: 11.0733), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_746")]))
         cities.append(ScooterCity(id: "de:Stein", name: "Stein", countryCode: "DE", center: GeoPoint(latitude: 49.41581, longitude: 11.01599), bounds: GeoBounds(south: 49.3824, west: 11.011, north: 49.4235, east: 11.0685), feeds: [ScooterCityFeed(id: "germany:bolt_de_app_746")]))

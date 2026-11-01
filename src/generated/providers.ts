@@ -48,6 +48,7 @@ const PROVIDER_DEFINITIONS = {
   deer: { name: "Deer", color: "#c7b000", initial: "De", app: { link: "https://deer.tswm.link/", appStoreId: 1455718957 } },
   alpaca: { name: "Alpaca", color: "#ff6e35", initial: "A", app: { link: "https://alpaca.kr/", appStoreId: 1328860619 } },
   dart: { name: "DART", color: "#0a84ff", initial: "Da" },
+  ridemovi: { name: "RideMovi", color: "#f36b21", initial: "RM", app: { link: "https://ridemovi.app.link/ZduGyMtOD6", appStoreId: 1503536800 } },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -67,6 +68,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   xingxing: {"prefixes":["xingxing_"]},
   zelectra: {"prefixes":["zelectra"]},
   flamingo: {"prefixes":["flamingo"]},
+  ridemovi: {"prefixes":["ridemovi"]},
   elerent: {"prefixes":["elerent"]},
   whoosh: {"prefixes":["whoosh_"]},
   alpaca: {"prefixes":["alpaca_"]},

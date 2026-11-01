@@ -42,6 +42,12 @@ volume, never in Git, command arguments or Worker variables. Token rotation
 is saved atomically under that volume. See [Voi](docs/voi-app-map.md) and
 [Lime](docs/lime-app-map.md) for the file schemas and renewal requirements.
 
+RideMovi uses `/data/ridemovi-session.json` (`RIDEMOVI_SESSION_PATH` overrides
+it), mode `0600`, owned by Node UID 1000. Seed it through stdin before enabling
+the collector. Unlike the rotating sessions above, its lifetime is unknown
+and a rejected token requires a fresh operator login. The client reloads the
+file without a restart. See [RideMovi](docs/ridemovi-app-map.md).
+
 Lime can use several production accounts through private `/data/lime-accounts.json`
 (`LIME_ACCOUNTS_PATH` overrides it). Its version-1 manifest lists non-secret ids
 and distinct session filenames; each session keeps the schema above and is

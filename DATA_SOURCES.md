@@ -308,6 +308,16 @@ development and commercial/distribution restrictions that need review before
 public deployment. See the [investigation and source terms](docs/french-scooter-feeds.md)
 for the verified cities, sample counts, excluded feeds, and recheck command.
 
+## RideMovi authenticated rider map
+
+Since 1 November 2026, RideMovi's Dresden scooters are read from its rider map,
+covering its published operating polygon with overlapping views of at most
+30 nearest scooters. The first full audit found 682 scooters. The cache keeps
+the dedicated rider session in a private file and publishes only scooter
+positions, battery and range. Empty or untrusted replies fail collection;
+the token may require an operator to sign in again when it expires. See
+[RideMovi's API, session and coverage audit](docs/ridemovi-app-map.md).
+
 ## Dott anonymous app map
 
 Since 24 October 2026, 157 regions not served by the public GBFS feeds use
