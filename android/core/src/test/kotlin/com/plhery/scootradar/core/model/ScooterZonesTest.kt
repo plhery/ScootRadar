@@ -561,6 +561,24 @@ class CityRuleZoneTest {
     )
     private val rules = listOf(hongdaeRedRoad, daechiAcademyStreet)
 
+    // Antalya's boulevard at all hours, as data/ had it on 2 November 2026 (LOG-370): the east end of its eastbound line,
+    // to Trendy Lara in Kundu, and the west end of the other, short of Güzeloba.
+    private val antalyaBoulevard = CityRuleZone(
+        id = "antalya-yasar-sobutay-bulvari",
+        authority = "Antalya UKOME, lines © OpenStreetMap",
+        timeZone = "Europe/Istanbul",
+        firstDay = "2025-09-30",
+        hours = emptyList(),
+        source = "https://www.antalya.bel.tr/tr/ukome-kararlari?ukome-yil=2026&ukome-ay=6",
+        lines = listOf(
+            listOf(
+                GeoPoint(36.860133, 30.920041), GeoPoint(36.861702, 30.92099), GeoPoint(36.862399, 30.921405),
+                GeoPoint(36.865773, 30.923432),
+            ),
+            listOf(GeoPoint(36.858925, 30.86112), GeoPoint(36.858967, 30.860066), GeoPoint(36.858976, 30.859913)),
+        ),
+    )
+
     // Bergen's zones, one of each kind in iOS's view of the centre, and two of Porto's sharing points, four corners
     // of each disc, one in its view and one far off, as data/ had them on 29 October 2026: data/ is read again from
     // the cities (LOG-370).
@@ -627,13 +645,36 @@ class CityRuleZoneTest {
 
     @Test
     fun everyStreetCreditsOpenStreetMapInTheLegend() {
-        // Seoul's streets are traced on OpenStreetMap's roads, the user's exception for this layer only (1 November 2026),
-        // and the iPhone's Apple map credits no OpenStreetMap, so the legend line does, on both phones: the line is the
-        // catalog's. The catalog's own, as many as data/ has (LOG-370; iOS counts three).
-        val streets = CityRuleZone.all.filter { it.id.startsWith("seoul-") }
-        assertFalse(streets.isEmpty())
-        for (street in streets) {
+        // Seoul's and Antalya's streets are traced on OpenStreetMap's roads, the user's exception for this layer only
+        // (1 November 2026), and the iPhone's Apple map credits no OpenStreetMap, so the legend line does, on both
+        // phones: the line is the catalog's. The catalog's own, as many as data/ has (LOG-370; iOS counts Seoul's three).
+        assertTrue(CityRuleZone.all.any { it.id.startsWith("seoul-") })
+        for (street in CityRuleZone.all) {
             assertTrue(street.authority, street.authority.endsWith(", lines © OpenStreetMap"))
+        }
+    }
+
+    @Test
+    fun antalyasBoulevardIsShownAtAllHoursSinceSeptember2025CreditedToUKOME() {
+        // Trendy Lara, in Kundu, where its lines end; the boulevard runs on west into Güzeloba, where riding is allowed.
+        val kundu = GeoBounds(south = 36.862, west = 30.915, north = 36.868, east = 30.925)
+        val guzeloba = GeoBounds(south = 36.85, west = 30.83, north = 36.86, east = 30.855)
+        // 2 November 2026, 02:30 in Antalya (UTC+3).
+        val night = Instant.ofEpochSecond(1_793_575_800)
+        val among = rules + antalyaBoulevard
+        val shown = CityRuleZone.shown(over = kundu, zoom = 15, at = night, among = among)
+        assertEquals(listOf("antalya-yasar-sobutay-bulvari"), shown.map { it.rule.id })
+        assertEquals(listOf(true), shown.map { it.inForce })
+        val boulevard = shown.single().rule
+        assertTrue(boulevard.hours.isEmpty())
+        assertEquals(ScooterZoneKind.NoRide, boulevard.kind)
+        // 29 September 2025, noon in Antalya: the day before UKOME's first decision.
+        assertFalse(boulevard.inForce(Instant.ofEpochSecond(1_759_136_400)))
+        assertTrue(CityRuleZone.shown(over = guzeloba, zoom = 15, at = night, among = among).isEmpty())
+        assertTrue(CityRuleZone.shown(over = kundu, zoom = 13, at = night, among = among).isEmpty())
+        // The catalog's own streets without hours, Antalya's among them, hold at any hour from their first day.
+        for (street in CityRuleZone.all.filter { it.hours.isEmpty() && it.firstDay <= "2026-11-01" }) {
+            assertTrue(street.id, street.inForce(night))
         }
     }
 
@@ -668,7 +709,7 @@ class CityRuleZoneTest {
     }
 
     @Test
-    fun seoulsStreetsAloneAreAllAndForbidRiding() {
+    fun theStreetsAloneAreAllAndForbidRiding() {
         // CatalogParityTest reads the generated list of these, and holds them to the iPhone's; here, what each is.
         assertFalse(CityRuleZone.all.isEmpty())
         assertTrue(CityRuleZone.all.all { it.kind == ScooterZoneKind.NoRide && it.lines.isNotEmpty() })

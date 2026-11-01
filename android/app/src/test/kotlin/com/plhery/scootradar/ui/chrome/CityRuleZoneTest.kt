@@ -101,20 +101,22 @@ class CityRuleZoneTest {
     }
 
     /**
-     * Seoul's streets as the catalog has them, traced on OpenStreetMap's roads: their line credits it, the whole
-     * "Seoul, lines © OpenStreetMap" linked to the city's notice (e1548810). The iPhone's test reads the catalog's
-     * street in the legend; the test above has a street of its own (LOG-370), so this one reads the catalog's.
+     * The streets as the catalog has them, Seoul's and Antalya's, traced on OpenStreetMap's roads: their line credits
+     * it, the whole "Seoul, lines © OpenStreetMap" linked to the city's notice (e1548810, UI-410), and a street at all
+     * hours has none in its line: "No riding · Antalya UKOME, lines © OpenStreetMap" (UI-411). The iPhone's test reads
+     * the catalog's street in the legend; the test above has a street of its own (LOG-370), so this one reads the
+     * catalog's.
      */
     @Test
     fun theCatalogsStreetsCreditOpenStreetMapInTheirLine() {
         Locale.setDefault(Locale.forLanguageTag("en-CH"))
         ScooterLanguage.current = ScooterLanguage.En
-        val streets = CityRuleZone.all.filter { it.id.startsWith("seoul-") }
-        assertFalse(streets.isEmpty())
-        for (street in streets) {
+        assertFalse(CityRuleZone.all.isEmpty())
+        for (street in CityRuleZone.all) {
             val line = ruleLines(listOf(CityRuleZone.Shown(rule = street, inForce = true)), link = Color.Blue).single()
             val text = line.text.text
             assertTrue(text, text.endsWith(" · ${street.authority}") && text.endsWith(", lines © OpenStreetMap"))
+            if (street.hours.isEmpty()) assertEquals("No riding · ${street.authority}", text)
             val linked = line.text.getLinkAnnotations(0, text.length).single()
             assertEquals(street.authority, text.substring(linked.start, linked.end))
             assertEquals(street.source, (linked.item as LinkAnnotation.Url).url)
