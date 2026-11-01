@@ -57,6 +57,7 @@ describe('German and Italian scooter coverage', () => {
     ['Corralejo', 'Corralejo, Spain'], ['La Oliva España', 'Corralejo, Spain'], ['Altea', 'Altea, Spain'], ['Albir', 'L\'Albir, Spain'],
     ['El Albir Spain', 'L\'Albir, Spain'], ['Alfaz del Pi', 'L\'Alfàs del Pi, Spain'], ['L\'Alfas del Pi', 'L\'Alfàs del Pi, Spain'],
     ['La Nucia', 'La Nucía, Spain'], ['Polop', 'La Nucía, Spain'], ['La Mata', 'Torrevieja, Spain'],
+    ['Frekhaug', 'Knarvik, Norway'],
     ['Catane Italie', 'Catania, Italy'], ['Kyiv', 'Kyiv, Ukraine'], ['Kiev', 'Kyiv, Ukraine'], ['Kiew Ukraine', 'Kyiv, Ukraine'],
     ['Київ', 'Kyiv, Ukraine'], ['Київ Україна', 'Kyiv, Ukraine'], ['Киев', 'Kyiv, Ukraine'], ['Kyiv Ucraina', 'Kyiv, Ukraine']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);

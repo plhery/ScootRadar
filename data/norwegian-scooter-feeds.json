@@ -869,7 +869,10 @@
       },
       "timeZone": "Europe/Oslo",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=412&include_suggestion=false",
-      "voiAppZone": "412"
+      "voiAppZone": "412",
+      "aliases": [
+        "Frekhaug"
+      ]
     },
     {
       "id": "voi_no_app_414",
