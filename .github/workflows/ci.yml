@@ -104,8 +104,11 @@ jobs:
     name: iOS
     runs-on: macos-26
     # 10.5 to 13 minutes as a rule since the tests run without clones (24 Oct 2026). On clones they
-    # took up to 23 on a slow runner, and three runs ran out of 20 on 22 Oct 2026.
-    timeout-minutes: 30
+    # took up to 23 on a slow runner, and three runs ran out of 20 on 22 Oct 2026. From 30 Oct the
+    # city zones built into the catalog made it 17 to 25: ProviderCatalog.generated.swift, 7 MB on
+    # 1 Nov, took 10.5 of them to compile, against 4.5 at 3.2 MB. So 40, for the cities still to come;
+    # one of thousands of shapes is downloaded instead (docs/city-zone-downloads.md).
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

@@ -580,9 +580,12 @@ final class CityRuleZoneTests: XCTestCase {
             Set(CityRuleZone.shown(over: bergen, zoom: 14, at: seoulNoon, among: zones).map(\.rule.kind)),
             Set(ScooterZoneKind.allCases)
         )
-        // The catalog's own, as the app reads them: each over its own place.
+        // The catalog's own, as the app reads them: each over its own place, among its city's. Among all of them, as
+        // shown(over:) reads each, the time grew with the square of their number: 106 s on CI for 19,268 (1 Nov 2026).
+        let cities = Dictionary(grouping: CityRuleZone.onMap, by: \.authority)
         for zone in CityRuleZone.cityZones {
-            XCTAssertTrue(CityRuleZone.shown(over: zone.bounds, zoom: 14, at: seoulNoon).contains { $0.rule == zone }, zone.id)
+            let city = cities[zone.authority] ?? []
+            XCTAssertTrue(CityRuleZone.shown(over: zone.bounds, zoom: 14, at: seoulNoon, among: city).contains { $0.rule == zone }, zone.id)
         }
     }
 
