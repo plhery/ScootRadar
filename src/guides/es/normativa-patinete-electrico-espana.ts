@@ -156,7 +156,7 @@ const guide: Guide = {
               ['Costa Blanca: [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada', 'Hoppy y Hopp', 'Unos 410 de Hoppy en Torrevieja; de Hopp, unos 430 en Torrevieja y 35 en Pilar de la Horadada', 'Hoppy: 1 € y de 0,28 a 0,35 € por minuto; Hopp: 0,99 € y 0,33 €'],
               ['Marina Baixa (Alicante): [Altea](map:es:Altea), L’Albir, L’Alfàs del Pi y La Nucía', 'Hoppy', 'Unos 350', '1 € y de 0,30 a 0,35 € por minuto'],
               ['[Jávea](map:es:Jávea) (Alicante)', 'Hopp', 'Unos 25', '0,95 € y 0,25 € por minuto'],
-              ['Costa del Sol: Estepona (Málaga)', 'Dott', 'Unos 150', 'No publicada'],
+              ['Costa del Sol: [Estepona](map:es:Estepona) (Málaga)', 'Dott', 'Unos 150', 'No publicada'],
             ],
           },
         },

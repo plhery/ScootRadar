@@ -22,7 +22,7 @@ const guide: Guide = {
             '**Hoppy:** el sur de Tenerife, de Los Cristianos a Costa Adeje; Fuerteventura (Caleta de Fuste y Corralejo); Lanzarote (Puerto del Carmen); y, en la Costa Blanca, Torrevieja y la Marina Baixa (Altea, L’Albir, L’Alfàs del Pi y La Nucía).',
             '**Bird:** [Gijón](map:es:Gijón), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
             '**Hopp:** [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada, en la Costa Blanca; Jávea (y Dénia, según su web), en la Marina Alta; y el sur de Tenerife, en [Playa de las Américas](map:es:Playa de las Américas) y Golf del Sur.',
-            '**Dott:** el sur de Tenerife, Santa Cruz de Tenerife (desde 2024, según el Ayuntamiento) y Estepona, en la Costa del Sol. Tiene condiciones y seguro para España y Canarias; su tarifa, solo en la app.',
+            '**Dott:** el sur de Tenerife, Santa Cruz de Tenerife (desde 2024, según el Ayuntamiento) y [Estepona](map:es:Estepona), en la Costa del Sol. Tiene condiciones y seguro para España y Canarias; su tarifa, solo en la app.',
           ],
         },
         'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',
