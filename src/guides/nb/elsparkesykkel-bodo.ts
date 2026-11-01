@@ -50,7 +50,7 @@ const guide: Guide = {
     {
       heading: 'Døgnåpent: ingen nattestenging i Bodø',
       blocks: [
-        'Fram til sommeren 2025 var utleien stengt fra kl. 01 til 05 natt til hverdager og fra kl. 23 til 05 natt til lørdag og søndag. Den 20. juni 2025 vedtok bystyret å åpne for utleie hele døgnet, med 28 mot 10 stemmer, skriver NRK. Politiet hadde fryktet mer ruskjøring.',
+        'Fram til sommeren 2025 var utleien stengt fra kl. 01 til 05 natt til hverdager og fra kl. 23 til 05 natt til lørdag og søndag. Den 20. juni 2025 endret kommunen forskriften og åpnet for utleie hele døgnet.',
         'Nå sier forskriften at utleie kan skje «alle dager, hele døgnet», og Rydes åpne data viser åpent døgnet rundt. Kommunen kan innføre nattestenging igjen, midlertidig eller på ubestemt tid, men 22. oktober 2026 gjaldt ingen.',
       ],
     },
@@ -181,7 +181,6 @@ const guide: Guide = {
     { title: 'Bodø kommune: Svar til NRK om gebyrer for feilparkering, 12. januar 2026', url: 'https://api.einnsyn.no/dokumentobjekt/do_01kfy9gsd9e98rjrdvqdtdscpf/download' },
     { title: 'Bodø kommune: Elsparkesykkel', url: 'https://bodo.kommune.no/tjenester/vei-vann-og-avlop/vei/elsparkesykkel/' },
     { title: 'Bodø kommune: Tidslinje Ny bydel Hernes', url: 'https://bodo.kommune.no/ny-bydel-hernes/tidslinje/' },
-    { title: 'NRK Nordland: Vedtok døgnåpent utleie av elsparkesykler i Bodø (2025)', url: 'https://www.nrk.no/nordland/vedtok-dognapent-utleie-av-elsparkesykler-i-bodo-1.17464287' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Åpne data for Bodø (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydebodo/gbfs' },
     { title: 'Dott: Locations', url: 'https://ridedott.com/locations/' },

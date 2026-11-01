@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Leie elsparkesykkel i Ålesund: bare Ryde',
       blocks: [
-        'På kommunens nettside (sist endret 11. august 2026) står **Ryde** som eneste utleier med tillatelse, og tillatelsen gjelder sesongen 2026. Kommunen fikk søknader fra to selskaper i mars 2026, men postjournalen viser tilsagn bare til Ryde, 13. april 2026. Dagen etter meldte NRK at flere hundre sparkesykler var satt ut.',
+        'På kommunens nettside (sist endret 11. august 2026) står **Ryde** som eneste utleier med tillatelse, og tillatelsen gjelder sesongen 2026. Kommunen fikk søknader fra to selskaper i mars 2026, men postjournalen viser tilsagn bare til Ryde, 13. april 2026.',
         'Forskriften kom allerede i juni 2022, men 2026 var første gang kommunen fikk søkere. Kommunen lyser ut tillatelser hvert år, og alle som oppfyller kravene, får tillatelse for ett år. Mellom Steinvågbrua og Fagerlia, i det kommunen kaller sone 1, kan det stå høyst 300 sparkesykler. I resten av kommunen er det ikke noe tak, og operatørene betaler et gebyr som skal dekke kommunens kostnader.',
         '**Voi, Bolt og Dott leier ikke ut i Ålesund.** Kommunen nevner bare Ryde, og ingen av de andre publiserer åpne data for byen.',
         'På [ScootRadar-kartet over Ålesund](map:no:Ålesund) sto det rundt 610 Ryde-sparkesykler kl. 19.25 den 17. oktober 2026, i hele kjøreområdet fra Hessa til Spjelkavik. Det er det kartet viste akkurat da, ikke hele flåten. Kartet viser bare operatører med åpne data, og i Ålesund er Ryde den eneste med tillatelse.',
@@ -172,7 +172,6 @@ const guide: Guide = {
     { title: 'Ålesund kommune: Jugendfest 2026, viktig informasjon om Aksla og elsparkesykler', url: 'https://alesund.kommune.no/aktuelt/siste-nytt/jugendfest-2026-viktig-informasjon-om-aksla-og-elsparkesykler.73684.aspx' },
     { title: 'Ålesund kommune: Trafikk ved cruiseanløp', url: 'https://alesund.kommune.no/veg-vatn-og-avlop/veg/trafikk-ved-cruiseanlop/' },
     { title: 'Ålesund kommune, innsyn: arkivsak 2023/7053, løyve til elsparkesykkelutleie', url: 'https://alesund.kommune.no/innsyn/sok-og-postliste/' },
-    { title: 'NRK Møre og Romsdal: Har starta med utleige av elsparkesyklar i Ålesund (14. april 2026)', url: 'https://www.nrk.no/mr/har-starta-med-utleige-av-elsparkesyklar-i-alesund-1.17845679' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ålesund havn: Cruiseanløp', url: 'https://alesund.havn.no/skipstrafikk/cruiseanlop/' },
     { title: 'Fjord Norge: Byfjellet Aksla i Ålesund', url: 'https://www.fjordnorway.com/no/se-og-gjore/aksla-utsiktspunkt' },

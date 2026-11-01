@@ -63,11 +63,9 @@ const guide: Guide = {
       blocks: [
         'Natt til lørdag, natt til søndag og natt til helligdager stenger utleien kl. 23 og åpner igjen kl. 06. De andre nettene kan du leie hele natten, også under midnattssola, fra omtrent 20. mai til 22. juli.',
         'Rydes publiserte åpningstider nevner bare fredags- og lørdagsnettene, ikke natt til helligdager, men forskriften gjelder også da, så sjekk appen. På kveldstid i helgene må du dessuten ta en reaksjonstest i appen før turen.',
-        'Stengingen har en forhistorie. Da politiet kontrollerte førere av elsparkesykler natt til søndag 8. september 2024, var 10 av 25 over promillegrensen, meldte NRK. Dagen etter varslet kommunen og Ryde nattestenging i helgene, og nå står den i forskriften.',
         'Ved store dager og arrangementer kan sentrum stenges:',
         {
           list: [
-            '**17. mai:** I 2026 var det kjøreforbud i deler av sentrum fra kl. 07 til 18 og gangfart i andre deler. Sjekk appen før 17. mai 2027.',
             '**Midnight Sun Marathon** (neste gang 19. juni 2027) og **Bukta-festivalen** i Telegrafbukta (23.–24. juli 2027) er i sesongen. Arrangører kan be kommunen om en sone der sparkesyklene stopper, så se i appen.',
             '**Vinterfestivalene** faller utenfor sesongen: Under Tromsø internasjonale filmfestival (18.–24. januar 2027) og Nordlysfestivalen (11.–20. februar 2027) står det ingen elsparkesykler ute.',
           ],
@@ -199,8 +197,6 @@ const guide: Guide = {
     { title: 'Ryde: Vipps og dagstaket (på engelsk)', url: 'https://www.ryde-technology.com/help/do-you-offer-vipps' },
     { title: 'Ryde: Kort med 3-D Secure eller BankID (på engelsk)', url: 'https://www.ryde-technology.com/help/add-payment-card' },
     { title: 'Ryde: Åpne data for Tromsø (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs' },
-    { title: 'NRK: «Ryde» og Tromsø kommune varsler el-sykkelforbud om natta i helgene (9. september 2024)', url: 'https://www.nrk.no/tromsogfinnmark/_ryde_-og-tromso-kommune-varsler-el-sykkelforbud-om-natta-i-helgene-1.17036263' },
-    { title: 'NRK: Forbudt med elsparkesykler i Tromsø sentrum 17. mai (2026)', url: 'https://www.nrk.no/tromsogfinnmark/forbudt-med-elsparkesykler-i-tromso-sentrum-17.-mai-1.17884855' },
     { title: 'Fjellheisen: Om oss', url: 'https://fjellheisen.no/om-oss' },
   ],
 };
