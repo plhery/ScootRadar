@@ -333,7 +333,7 @@ directory.
 
 Each Norwegian municipality sets its own hours in its *forskrift* on renting
 small electric vehicles, and British trial areas set theirs in the trial's
-conditions. Seventeen Norwegian towns and three British areas covered ban renting
+conditions. Nineteen Norwegian towns and four British areas covered ban renting
 at night. While a ban holds, the dock tells of it, with a moon, for the town in
 view, and a scooter's card says when it can be rented again. Web and iOS read
 the same [`rental-curfews.json`](../data/rental-curfews.json). It holds each
@@ -363,9 +363,11 @@ stays open at night.
 | Lillesand | Every night, 23:00–05:00 | [FOR-2024-01-31-325](https://lovdata.no/dokument/LF/forskrift/2024-01-31-325) § 6 c |
 | Øygarden (Sotra) | Every night, 00:00–05:00 | [FOR-2024-02-22-3713](https://lovdata.no/dokument/LF/forskrift/2024-02-22-3713) § 6 b |
 | Askøy | Friday and Saturday, 00:00–05:00 | [Kommune page](https://askoy.kommune.no/aktuelt/el-sparkesykler-pa-askoy-utleie-og-bruk), 21 Aug 2026 |
+| Klepp | Friday and Saturday, 00:00–05:00, and holiday eves | [Kommune page](https://www.klepp.kommune.no/artikkel/elsparkesyklar-fraa-voi), 23 Jun 2026 |
 | Bournemouth, Christchurch, Poole | Every night, 22:00–05:00 | [Beryl](https://help-bikes.beryl.cc/en/articles/16098480-when-are-beryl-e-scooters-available-to-hire) |
 | Brighton and Hove | Every night, 00:00–05:00 | [Council](https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial) |
 | Northampton | Every night, 23:00–04:00 | [Council](https://www.westnorthants.gov.uk/travel/e-scooters-west-northamptonshire), 11 Sep 2025 |
+| Portsmouth | Every night, 22:00–04:00 | [Council](https://travel.portsmouth.gov.uk/rental-e-scooter-and-e-bike-schemes/) |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Trondheim's** rule bans every night, but lets the city trial weekday
@@ -390,10 +392,21 @@ stays open at night.
   the map names Sotra. Askøy has no forskrift on Lovdata: its hours are the
   kommune's page's, and a draft forskrift went out for comment in June 2026.
   Alver (Knarvik), Time (Bryne) and Gjesdal (Ålgård) have no forskrift and no
-  night ban found.
+  night ban found. Time's kommunestyre asked on 18 February 2026 for an
+  agreement with Voi "etter modell frå Sandnes/Klepp", but the kommune's page,
+  changed 28 October 2026, names no night ban, and the decision's document
+  answered only a server error on 1 November 2026.
+- **Klepp** has no forskrift on Lovdata: its hours are those of its agreement
+  with Voi, adopted by the kommunestyre, which the kommune's page quotes:
+  24:00 to 05:00 on the nights to Saturday, to Sunday and to public holidays.
+  Voi's map still lists Klepp's scooters then. Added on 1 November 2026.
 - **Northampton's** hours are the council's: Voi's scooters are available
   from 4am to 11pm daily. No ban was found for Kettering, Corby, Wellingborough
   or Rushden.
+- **Portsmouth's** hours are the council's: rental e-scooters can be ridden
+  from 4am to 10pm, Voi's e-bikes at any hour (undated page). Voi's map listed
+  no scooter there from 22:00 to 04:00 on each night from 24 October to
+  1 November 2026. Added on 1 November 2026.
 - Stavanger, Tromsø and Tønsberg also close on the eve of public holidays
   (Tønsberg those of the movable ones, from 23:00), which the map closes too
   since 29 October 2026 ([holiday nights](curfew-holiday-nights.md)).
