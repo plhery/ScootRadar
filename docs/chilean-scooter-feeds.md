@@ -35,8 +35,8 @@ No night ban or season was found for Viña del Mar.
 
 ## Night bans, October 2026
 
-No night ban was found anywhere the map shows Chilean scooters (checked
-28 October 2026), so the catalog sets none:
+No night ban in force was found anywhere the map shows Chilean scooters
+(checked 28 October 2026, Pucón on 1 November), so the catalog sets none:
 
 - **National law:** [Ley 21.088](https://www.leychile.cl/Consulta/obtxml?opt=7&idLey=21088)
   (2018), which regulates scooters, sets no hours for renting or riding them.
@@ -60,3 +60,12 @@ No night ban was found anywhere the map shows Chilean scooters (checked
   to be awarded in November 2026
   ([La Tercera](https://www.latercera.com/pulso/noticia/licitacion-de-scooters-de-lo-barnechea-vitacura-y-las-condes-enfrenta-a-dos-gigantes-de-estados-unidos-y-rusia/),
   3 September 2026): check its rules when they are published, and Temuco's.
+- **Pucón:** after a meeting on 28 November 2025, the authorities decided the
+  scooters would stop from one to six in the morning, with a lower top speed
+  ([La Voz de Pucón](https://www.lavozdepucon.cl/2025/11/29/scooters-autoridades-deciden-baja-de-la-velocidad-y-restringir-el-horario-de-funcionamiento/),
+  29 November 2025). The article cites no decree or agreement and gives no
+  start date or season, and Whoosh's Pucón region, whose collector counts
+  only scooters that can be rented, listed 168 to 194 of them every half hour
+  from 1:00 to 6:00 on each night from 24 to 31 October 2026, as many as at
+  20:00. So the catalog sets no ban there (checked 1 November 2026); add it if
+  the municipality publishes the rule or the scooters go at night.

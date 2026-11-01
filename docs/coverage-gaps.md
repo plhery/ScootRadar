@@ -656,6 +656,11 @@ banned shared scooters, and feeds that were empty when checked.
       feeds held 219 to 14,371, so the map leaves it out until Voi's scooters
       are out. Voi announced scooters and e-bikes from 1 April 2026; the city
       still dates its scooters "from autumn 2026".
+  - Cottbus shows Dott only. Go Mobility, from Neupetershain, has rented
+    e-scooters and e-bikes there since 18 June 2024 (40 scooters and 30
+    e-bikes at the start), but publishes no feed: it isn't in MobilityData's
+    list (1 November 2026), and only its own rider app, Go Mobility Vehicle
+    Sharing, shows its scooters: the map adds no new rider-app source for now.
   - Duisburg: Bolt's scooters there are on the map since 25 October 2026,
     from its rider map. Ryde's and Lime's Duisburg feeds are only on the
     closed NRW hub (Ryde's answers 401), and Lime's own `duisburg` answers
@@ -747,6 +752,13 @@ banned shared scooters, and feeds that were empty when checked.
   - Ryde's fleet in Kristiansand is missing from Entur. Its fleets in Asker,
     Bærum, Bodø, Lillestrøm and Lørenskog are on the map since 22 October
     2026. Dott publishes nothing for Bodø.
+  - Ryde in Moss is missing too. Moss kommune names Ryde and Voi as its
+    scooter operators (28 March 2025), and Voi's Moss feed is on the map, but
+    neither Entur's manifest nor MobilityData's list has a Ryde system for
+    Moss (1 November 2026): Ryde Sarpsborg's scooters reach 59.30° N, short
+    of Moss at 59.43°. Only Ryde's rider app shows them
+    ([investigation](ryde-app-map.md)), and the map adds no new rider-app
+    source for now.
   - Lime Oslo is empty, and seven Bolt systems in Entur are empty.
   - Bolt Oslo's 2 scooters in Lørenskog and 1 in Bærum, which didn't move in
     ten minutes on 15 October 2026, are left out since that evening: Bolt has
