@@ -132,7 +132,7 @@ const guide: Guide = {
             '**Tog, buss og ferje:** Kristiansand stasjon, rutebilstasjonen og ferjeterminalen for båtene til Hirtshals ligger samlet i vestkanten av Kvadraturen. Der kan du bare parkere på oppmerkede plasser, og Voi har stasjoner ved togstasjonen og ved bussholdeplassen i Havnegata. Den nærmeste Voi ser du på [kartet over Kristiansand](map:no:Kristiansand).',
             '**Kjevik og Dyreparken:** Både flyplassen og Dyreparken, «Norges største turistdestinasjon» med over én million gjester i året ifølge parken selv, ligger utenfor Vois kjøreområde. Du kan verken kjøre en Voi dit eller avslutte turen der.',
             '**IK Start:** Sparebanken Norge Arena, tidligere Sør Arena, ligger i Vois vanlige kjøreområde. De neste hjemmekampene er 25. oktober mot Sandefjord og 1. november mot Lillestrøm, begge kl. 17. Kampene 29. november og 13. desember kan komme etter at sparkesyklene er tatt inn for vinteren.',
-            '**Nabokommunene:** Voi leier også ut i Vennesla, Lillesand, Grimstad og Arendal, der egne forskrifter gjelder.',
+            '**Nabokommunene:** Voi leier også ut i Vennesla, Lillesand, Grimstad og [Arendal](guide:arendal), der egne forskrifter gjelder.',
           ],
         },
       ],

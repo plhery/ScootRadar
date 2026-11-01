@@ -165,7 +165,7 @@ const guide: Guide = {
               ['Skien og Porsgrunn', 'Porsgrunn: 23–05 hver natt i hele kommunen. Skien: ikke stengt', 'Maks 12 km/t i sentrum fra kl. 00 til 05. Ingen utleie fra 15. desember til det er snø- og isfritt om våren.'],
               ['Tønsberg', '23–05 natt til lørdag, søndag og bevegelige helligdager, ellers 01–05', 'Maks 300 kjøretøy, elsykler medregnet. Tas inn ved fare for snø og is.'],
               ['Fredrikstad og Sarpsborg', 'Ikke stengt', 'Maks 10 km/t kl. 23–05 natt til lørdag og søndag. Voi og Ryde har felles tillatelse til 31. mars 2027, med 1500 kjøretøy til sammen. Sparkesyklene tas inn når det snør.'],
-              ['Arendal', 'Forskriften: 00–05 hver natt. Kommunens side sier at du ikke kan leie mellom kl. 23 og 06. Vois åpne data: 23–05', 'Tillatelsene gjelder for to sesonger.'],
+              ['[Arendal](guide:arendal)', 'Forskriften: 00–05 hver natt. Kommunens side sier at du ikke kan leie mellom kl. 23 og 06. Vois åpne data: 23–05', 'Tillatelsene gjelder for to sesonger.'],
               ['Sandefjord', '01–05', 'Alle kvalifiserte operatører får ettårig tillatelse. Sparkesyklene skal bort innen første snøfall, senest 1. november (politisk vedtak 29. oktober 2025).'],
               ['Asker', 'Ikke stengt. Vois åpne data: 00–05 natt til søndag', 'Opptil to operatører. Vinterstengt etter forskriften, uten fast dato.'],
             ],

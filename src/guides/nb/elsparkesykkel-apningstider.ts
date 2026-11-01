@@ -25,7 +25,7 @@ const guide: Guide = {
               ['[Oslo](guide:oslo)', 'Kl. 23–05 hver natt', 'Bolt, Ryde, Voi', 'Kommunens forskrift'],
               ['Porsgrunn', 'Kl. 23–05 hver natt', 'Ryde', 'Kommunenes kunngjøring for 2026–27'],
               ['[Sandefjord](guide:sandefjord)', 'Kl. 01–05 hver natt', 'Ryde', 'Kommunens forskrift'],
-              ['Arendal', 'Vois data: kl. 23–05 hver natt. Kommunens side (endret 7. juli 2026): kl. 23–06. Forskriften: kl. 00–05', 'Voi', 'Voi og kommunen, som kan stramme inn forskriften'],
+              ['[Arendal](guide:arendal)', 'Vois data: kl. 23–05 hver natt. Kommunens side (endret 7. juli 2026): kl. 23–06. Forskriften: kl. 00–05', 'Voi', 'Voi og kommunen, som kan stramme inn forskriften'],
               ['Vennesla', 'Forskriften: kl. 00–04 hver natt. Vois felles data med Kristiansand viser bare kl. 23–05 natt til lørdag og søndag', 'Voi', 'Kommunens forskrift'],
               ['Lillesand', 'Kl. 23–05 hver natt', 'Voi', 'Kommunens forskrift'],
               ['Grimstad', 'Kl. 00–04 hver natt', 'Voi', 'Kommunens forskrift'],

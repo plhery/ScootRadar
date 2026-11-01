@@ -321,6 +321,7 @@ import mossNb from './nb/elsparkesykkel-moss';
 import portsmouthEn from './en/e-scooters-portsmouth';
 import isleOfWightEn from './en/e-scooters-isle-of-wight';
 import aylesburyEn from './en/e-scooters-aylesbury';
+import arendalNb from './nb/elsparkesykkel-arendal';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -642,4 +643,5 @@ export const GUIDES: readonly Guide[] = [
   portsmouthEn,
   isleOfWightEn,
   aylesburyEn,
+  arendalNb,
 ];
