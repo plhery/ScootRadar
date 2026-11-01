@@ -196,6 +196,8 @@ fun ScooterMapScreen(
     var filtersPresented by screenState::filtersPresented
     var settingsPresented by screenState::settingsPresented
     val sheetOpen = filtersPresented || settingsPresented
+    // TalkBack's focus goes back to the button that opened a sheet, popover or form, as it closes.
+    val focusReturn = rememberAccessibilityFocusReturn()
     // Where a large window's Filters popover points: the panel's Filters button, in the window.
     var filtersButton by remember { mutableStateOf<Rect?>(null) }
     // Where the screen is in the window, in pixels, which a fold is measured from.
@@ -224,12 +226,14 @@ fun ScooterMapScreen(
             ScooterKeyCommand.ZoomIn, ScooterKeyCommand.ZoomInWithoutShift -> controller.zoom(by = 1)
             ScooterKeyCommand.ZoomOut -> controller.zoom(by = -1)
             ScooterKeyCommand.Filters -> {
+                focusReturn.opening()
                 searchIsExpanded = false
                 filtersPresented = true
             }
             ScooterKeyCommand.StandardMap, ScooterKeyCommand.QuietMap, ScooterKeyCommand.SatelliteMap ->
                 command.mapStyle?.let(controller::setMapStyle)
             ScooterKeyCommand.Settings -> {
+                focusReturn.opening()
                 searchIsExpanded = false
                 settingsPresented = true
             }
@@ -305,11 +309,14 @@ fun ScooterMapScreen(
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
                     map(dark)
+                    // Before the chrome is hidden from TalkBack under what opens.
                     val onShowFilters = {
+                        focusReturn.opening()
                         searchIsExpanded = false
                         filtersPresented = true
                     }
                     val onShowSettings = {
+                        focusReturn.opening()
                         searchIsExpanded = false
                         settingsPresented = true
                     }
@@ -416,6 +423,7 @@ fun ScooterMapScreen(
         analytics?.track(if (open) "settings_open" else "panel_close")
         if (open) analytics?.track(screen = "/settings")
     }
+    OnChange(sheetOpen) { open -> if (!open) focusReturn.closed() }
 
     // Back closes the search, else the card of the scooter or bay chosen (UI-250), as Escape does on the iPad.
     // A sheet over the map takes Back first.

@@ -99,6 +99,7 @@ import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.LocalClock
 import com.plhery.scootradar.ui.PrimaryClicksOnlyAroundTheContent
+import com.plhery.scootradar.ui.ReturnsAccessibilityFocus
 import com.plhery.scootradar.ui.SecondaryClicksEdge
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.focusableControl
@@ -725,6 +726,8 @@ private fun PassEditor(controller: ScooterMapController, provider: ScooterProvid
 @Composable
 private fun DateRow(title: String, date: Instant, onChange: (Instant) -> Unit) {
     var picking by remember { mutableStateOf(false) }
+    // TalkBack's focus goes back to the row as the calendar closes.
+    ReturnsAccessibilityFocus(picking)
     val zone = ScooterDateFormat.timeZone()
     val day = ScooterDateFormat.skeleton("yMMMd", date, zone, ScooterLanguage.current.locale)
     // Only the capsule opens the calendar, and greys under the finger, half as far under a pointer (UI-233);

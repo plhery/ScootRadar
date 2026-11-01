@@ -54,6 +54,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.ui.PrimaryClicksOnlyAroundTheContent
+import com.plhery.scootradar.ui.ReturnsAccessibilityFocus
 import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
@@ -80,6 +81,8 @@ const val MENU_TAG = "menu"
  */
 @Composable
 fun IosMenu(expanded: Boolean, onDismiss: () -> Unit, choices: List<String>, chosen: Int?, onChoose: (Int) -> Unit) {
+    // TalkBack's focus goes back to what opened the menu as it closes.
+    ReturnsAccessibilityFocus(expanded)
     val visibility = remember { MutableTransitionState(false) }
     visibility.targetState = expanded
     if (!visibility.currentState && !visibility.targetState) return
