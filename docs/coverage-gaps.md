@@ -1703,7 +1703,9 @@ Bonaire had feeds to add. Survey files are in
   press, and Bird's feed held 131 to 137 available scooters in Holon that
   afternoon, with 19 arrivals in 80 minutes; on 30 October nothing new was
   reported either, and the map showed 651 inside Holon's boundary at 08:08
-  Israel time (Lime 384, Bird 151, Dott 116). Search the Hebrew press again
+  Israel time (Lime 384, Bird 151, Dott 116). On 1 November still no
+  decision or ruling had been reported, and the map showed 627 there at 14:44
+  Israel time (Lime 374, Dott 130, Bird 123). Search the Hebrew press again
   (ice, Globes, Walla, Israel Hayom; Holon's site doesn't answer outside
   Israel). If the ban goes ahead and the feeds empty there, remove Holon's
   areas from Bird's, Dott's and Lime's feeds and its outline from
@@ -1788,7 +1790,9 @@ Bonaire had feeds to add. Survey files are in
   says anything of e-scooters.
 - **Mid-November 2026:** Bærum's and Asker's winter dates. Both towns close
   renting in winter on dates each year's announcement sets (Bærum's season
-  ended on 10 December in 2025), and none was published by 22 October 2026.
+  ended on 10 December in 2025), and none was published by 22 October 2026,
+  nor by 1 November (Bærum's page was last updated on 27 April, Asker's on 21
+  August).
   Once they are, give Voi's Bærum / Asker feed and Ryde's Asker and Bærum
   feeds a `seasonal` window, as Lillestrøm's.
 - **Early December 2026:** Ryde Bodø, paused from 1 December to 1 April by
