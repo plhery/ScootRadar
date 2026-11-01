@@ -34,7 +34,6 @@ const guide: Guide = {
               ['Who runs it?', 'Voi, with e-scooters and e-bikes', 'Solent Transport chose Voi in 2024, the Daily Echo reported'],
               ['What does it cost?', 'Shown in the Voi app before you unlock', 'No open official page states it'],
               ['Who can ride?', '18 or over, with a full or provisional driving licence', 'The University of Southampton (2026)'],
-              ['Until when?', 'Until 11pm from October 2023; 2026 hours in the app', 'The city council, as CiTTi Magazine reported in 2023'],
               ['Where does a ride end?', 'Only in a parking zone shown in the app', 'The University of Southampton (2026)'],
               ['A free ride?', '30 minutes, after Voi’s 15-minute online RideSafe Academy', 'The University of Southampton (2026)'],
             ],
@@ -114,7 +113,7 @@ const guide: Guide = {
           list: [
             '**South Western Railway**, which runs Southampton Central: e-scooters and e-bikes from official hire schemes, “such as those in Bournemouth and Southampton”, may be used only on station forecourts, to reach or leave the hire bays, and never in station buildings, on platforms or on trains. Private e-scooters aren’t allowed anywhere on railway premises.',
             '**Southern**, along the coast towards Brighton: since 1 June 2023 all e-scooters have been banned from its trains and stations.',
-            '**Red Funnel** to the Isle of Wight: “Electric scooters are not permitted on board or in terminal areas”, which covers carrying, storing and charging them.',
+            '**Red Funnel** to the Isle of Wight doesn’t allow electric scooters on board or in its terminal areas, its luggage rules say, so you can’t carry, store or charge one there either.',
             '**The Hythe ferry** across Southampton Water had no scheduled service on 25 October 2026, its website said; the Hythe Pier Company bought the old operator’s assets from the liquidators in June 2026.',
             '**Buses and other trains:** we couldn’t check Bluestar’s, Unilink’s, CrossCountry’s or GWR’s own conditions.',
           ],
@@ -142,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'What time do Voi scooters stop in Southampton?',
-      answer: 'In October 2023 the city council extended Voi’s e-scooter hours to 11pm, CiTTi Magazine reported. We couldn’t confirm the 2026 hours at an official source, so check the Voi app before a late ride home.',
+      answer: 'The Voi app shows when you can hire one, so check it before a late ride home.',
     },
     {
       question: 'Can I ride a Voi to Eastleigh, Totton or Netley?',
@@ -165,7 +164,6 @@ const guide: Guide = {
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'Department for Transport: Rental e-scooter trials (21 July 2025)', url: 'https://www.gov.uk/government/publications/rental-e-scooter-trials/rental-e-scooter-trials' },
     { title: 'Micromobility Biz: Voi e-scooter trial begins in Southampton (18 March 2021)', url: 'https://micromobilitybiz.com/voi-e-scooter-trial-begins-in-southampton/' },
-    { title: 'CiTTi Magazine: E-scooter operating hours extended in Southampton (11 October 2023)', url: 'https://www.cittimagazine.co.uk/news/micromobility/e-scooter-operating-hours-extended-in-southampton.html' },
     { title: 'Daily Echo: Solent e-scooters and e-bikes hit five million rides (10 October 2025)', url: 'https://www.dailyecho.co.uk/news/25529506.solent-e-scooters-e-bikes-hit-five-million-rides/' },
     { title: 'Daily Echo: Concerns over “monopoly” created by e-scooter trial extensions (23 November 2025)', url: 'https://www.dailyecho.co.uk/news/25642599.concerns-monopoly-created-e-scooter-trial-extensions/' },
     { title: 'Daily Echo: New Voi e-scooter bays to be installed in Southampton (26 May 2026)', url: 'https://www.dailyecho.co.uk/news/26136881.new-voi-e-scooter-bays-installed-southampton/' },
