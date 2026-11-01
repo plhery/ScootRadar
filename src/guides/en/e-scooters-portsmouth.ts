@@ -100,7 +100,7 @@ const guide: Guide = {
             '**Gosport Ferry** carries bicycles and e-scooters for an extra fare, £1.80 for an open return since 2 April 2026, its website says, and it leaves from a pontoon beside Portsmouth Harbour station. A Voi is no use on the other side, as Gosport is outside the trial: end your ride before you board.',
           ],
         },
-        'On the island, Voi hires out e-scooters too: at 04:11 GMT on 1 November 2026 the map showed 217 free to rent on the [Isle of Wight](map:gb:Isle of Wight). For Southampton, the third town in the Solent trial, see [e-scooters in Southampton](guide:southampton).',
+        'On the island, Voi hires out e-scooters too: at 04:11 GMT on 1 November 2026 the map showed 217 free to rent on the [Isle of Wight](map:gb:Isle of Wight); see [e-scooters on the Isle of Wight](guide:isle-of-wight). For Southampton, the third town in the Solent trial, see [e-scooters in Southampton](guide:southampton).',
       ],
     },
     {

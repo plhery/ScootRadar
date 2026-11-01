@@ -319,6 +319,7 @@ import cottbusDe from './de/e-scooter-cottbus';
 import bryneNb from './nb/elsparkesykkel-bryne';
 import mossNb from './nb/elsparkesykkel-moss';
 import portsmouthEn from './en/e-scooters-portsmouth';
+import isleOfWightEn from './en/e-scooters-isle-of-wight';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -638,4 +639,5 @@ export const GUIDES: readonly Guide[] = [
   bryneNb,
   mossNb,
   portsmouthEn,
+  isleOfWightEn,
 ];
