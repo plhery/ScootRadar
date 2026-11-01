@@ -1,5 +1,7 @@
 package com.plhery.scootradar
 
+import android.content.res.Resources
+import android.os.LocaleList
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -106,6 +108,35 @@ class MainActivityRecreationTest {
         val controller = ViewModelProvider(shown)[ScooterMapViewModel::class.java].controller
         assertEquals(ScooterLanguage.De, controller.language.value)
         compose.onNode(hasSetTextAction()).assert(hasText("Z"))
+    }
+
+    /**
+     * The phone's language changed while the app was in the background, on Automatic: the activity Android makes
+     * again as the rider comes back shows the new language's text, as one kept running does (X-M23). A stopped
+     * activity hears of no change; the one made again reads the phone's languages as it is made (review-app-ah 3).
+     * Robolectric tells every activity of a new configuration, stopped or not, so only the phone's languages change
+     * here, in the system configuration they are read from, which tells no activity. The new text size that has the
+     * activity made again is set first: setting it puts the system's languages back.
+     */
+    @Test
+    fun anActivityMadeAfterThePhonesLanguageChangedInTheBackgroundShowsIt() {
+        compose.onNodeWithContentDescription("Settings").assertExists()
+        RuntimeEnvironment.setFontScale(1.3f)
+        val system = Resources.getSystem().configuration
+        val phone = system.locales
+        system.setLocales(LocaleList(Locale.forLanguageTag("de-CH")))
+        try {
+            val shown = compose.activity
+            compose.activityRule.scenario.recreate()
+            compose.waitForIdle()
+            assertNotSame("the activity made again", shown, compose.activity)
+        } finally {
+            system.setLocales(phone)
+        }
+        val controller = ViewModelProvider(compose.activity)[ScooterMapViewModel::class.java].controller
+        assertEquals(ScooterLanguage.De, controller.language.value)
+        compose.onNodeWithContentDescription("Einstellungen").assertExists()
+        compose.onNodeWithContentDescription("Stadt oder Adresse suchen").assertExists()
     }
 
     /**

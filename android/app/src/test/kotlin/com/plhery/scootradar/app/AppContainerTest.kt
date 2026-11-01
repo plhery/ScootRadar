@@ -17,6 +17,7 @@ import com.plhery.scootradar.core.model.ScooterMapStart
 import com.plhery.scootradar.core.model.ScooterMeasureFormat
 import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterStartPlace
+import okhttp3.Request
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -30,11 +31,16 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowNetworkCapabilities
 import java.math.BigDecimal
+import java.net.InetAddress
+import java.net.ServerSocket
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.Locale
 import java.util.TimeZone
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "en-rUS")
@@ -216,6 +222,42 @@ class AppContainerTest {
         // Which Robolectric tells the callbacks of.
         shadowOf(connectivity).setDefaultNetworkActive(false)
         assertEquals("the last network lost", 2, lost)
+    }
+
+    /**
+     * X-M21: the watch the app sets as it starts is the server's, and not only a callback: the loss ends the server's
+     * requests and closes the connections they keep, which only the API's networkLost does (review-app-ah 3). An idle
+     * connection to the phone itself stands for the server's.
+     */
+    @Test
+    fun theAppsOwnWatchClosesTheServersConnections() {
+        val connectivity = context.getSystemService(ConnectivityManager::class.java)
+        val watch = shadowOf(connectivity).networkCallbacks.single()
+        val api = (context as ScooterApplication).container.api
+        // The app's one client, which earlier tests may have left connections in.
+        val pool = api.client.connectionPool
+        pool.evictAll()
+        val done = CountDownLatch(1)
+        ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->
+            thread(name = "Server") {
+                server.accept().use { socket ->
+                    val request = socket.getInputStream().bufferedReader()
+                    while (!request.readLine().isNullOrEmpty()) Unit
+                    socket.getOutputStream().apply { write("HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n".toByteArray()); flush() }
+                    done.await(5, TimeUnit.SECONDS)
+                }
+            }
+            try {
+                val url = "http://${server.inetAddress.hostAddress}:${server.localPort}/"
+                api.client.newCall(Request.Builder().url(url).build()).execute().close()
+                assertEquals("the connection kept", 1, pool.connectionCount())
+
+                watch.onLost(checkNotNull(connectivity.activeNetwork))
+                assertEquals("the connections gone with the network", 0, pool.connectionCount())
+            } finally {
+                done.countDown()
+            }
+        }
     }
 
     /** LOG-345: the zone is read once, as the iPhone's static let is, the first time the start is asked for. */

@@ -76,10 +76,12 @@ class SettingsTileNameTest {
     }
 
     /**
-     * `.minimumScaleFactor(0.75)`: a name that doesn't fit its tile at its size is drawn smaller first, down to three
-     * quarters of it, and only cut short with "…" at three quarters. The size drawn is read from the span of the
-     * name's first four letters, against theirs laid out at its size and at three quarters of it: the layout TalkBack
-     * is handed keeps the style asked for, not the size drawn.
+     * `.minimumScaleFactor(0.75)`: a name that doesn't fit its tile at its size is drawn smaller first, at the largest
+     * size that fits, down to three quarters of it, and only cut short with "…" at three quarters. The size drawn is
+     * read from the span of the name's first four letters, against theirs laid out at its size, at the largest that
+     * fits and at three quarters of it: the layout TalkBack is handed keeps the style asked for, not the size drawn.
+     * The app shrinks a quarter of a dp at a time, so the largest that fits is drawn up to a quarter of a dp under; a
+     * shrink straight to three quarters is drawn under it (review-app-ah 3).
      */
     @Test
     fun aTilesNameThatDoesNotFitShrinksBeforeItIsCutShort() {
@@ -87,6 +89,7 @@ class SettingsTileNameTest {
         val wrong = mutableListOf<String>()
         val seen = mutableListOf<String>()
         var tooWide = 0
+        var shrunk = 0
         for ((name, layout) in tiles) {
             val input = layout.layoutInput
             val measurer = TextMeasurer(input.fontFamilyResolver, input.density, input.layoutDirection, cacheSize = 0)
@@ -97,20 +100,36 @@ class SettingsTileNameTest {
             val drawn = layout.span()
             val fits = own.size.width <= layout.size.width
             val cutShort = layout.isLineEllipsized(0)
-            seen += "$name %.1f px, %.1f at its size, %.1f at three quarters, %d of %d wide%s"
-                .format(drawn, own.span(), threeQuarters.span(), own.size.width, layout.size.width, if (cutShort) ", cut short" else "")
+            // The largest size in pixels that fits the tile's room, to a hundredth of a pixel, down to three quarters.
+            val room = input.constraints.maxWidth
+            fun at(px: Float) = laidOut(input.style.copy(fontSize = with(input.density) { px.toSp() }))
+            val ownPx = with(input.density) { input.style.fontSize.toPx() }
+            var largest = ownPx * 0.75f
+            var over = ownPx
+            while (over - largest > 0.01f) {
+                val middle = (largest + over) / 2
+                if (at(middle).size.width <= room) largest = middle else over = middle
+            }
+            val step = with(input.density) { 0.25.dp.toPx() }
+            val fitting = at(largest).span()
+            seen += "$name %.1f px, %.1f at its size, %.1f at the largest that fits, %.1f at three quarters, %d of %d wide%s"
+                .format(drawn, own.span(), fitting, threeQuarters.span(), own.size.width, room, if (cutShort) ", cut short" else "")
             if (!fits) tooWide++
+            if (!fits && !cutShort) shrunk++
             when {
                 fits && abs(drawn - own.span()) > 1 -> wrong += "$name, which fits, not drawn at its size"
                 !fits && drawn > own.span() - 1 -> wrong += "$name, wider than its tile, drawn at its size"
                 drawn < threeQuarters.span() - 1 -> wrong += "$name drawn under three quarters of its size"
                 cutShort && abs(drawn - threeQuarters.span()) > 1 -> wrong += "$name cut short above three quarters of its size"
+                !fits && !cutShort && (drawn > fitting + 1 || drawn < at(largest - step).span() - 1) ->
+                    wrong += "$name not drawn at the largest size that fits"
             }
         }
         assertTrue("the six tiles' names laid out, ${tiles.size} found", tiles.size >= NAMES.size)
         assertEquals("the tiles' names drawn as `.minimumScaleFactor(0.75)` draws them: $seen", emptyList<String>(), wrong)
-        // Automatic at 1.3 doesn't fit a tile on a phone 360 wide at its size.
+        // Automatic at 1.3 doesn't fit a tile on a phone 360 wide at its size, and another name fits it smaller.
         assertTrue("a name wider than its tile: $seen", tooWide > 0)
+        assertTrue("a name shrunk to fit, not cut short: $seen", shrunk > 0)
     }
 
     /** The tiles' names laid out under Automatic at font scale 1.3, each with its layout. */

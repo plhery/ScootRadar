@@ -16,16 +16,22 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.app.ScooterMapViewModel
+import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.ui.settings.SettingsPage
 import java.util.Locale
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotSame
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.geometry.LatLng
 import org.robolectric.Robolectric
 import org.robolectric.annotation.Config
 
@@ -93,6 +99,45 @@ class MainActivityProcessEndTest {
         compose.onNode(hasSetTextAction()).assert(SemanticsMatcher.expectValue(SemanticsProperties.EditableText, AnnotatedString("")))
         again.pause().stop().destroy()
     }
+
+    /**
+     * The camera, the card and the place searched for are not kept for a new process (X-AD18): what the activity's
+     * ViewModel saves holds the panel's fold alone, and the screen made again from it opens with none of them. Put in
+     * the SavedStateHandle, they would come back with a screen that looked as the first test asks (review-app-ah 3).
+     */
+    @Test
+    fun theCameraTheCardAndThePlaceAreNotKeptForANewProcess() {
+        val first = Robolectric.buildActivity(MainActivity::class.java).setup()
+        val model = ViewModelProvider(first.get())[ScooterMapViewModel::class.java]
+        val place = MapDestination("Bahnhofplatz", "8001 Zürich", GeoPoint(47.3779, 8.5403), MapDestination.Kind.Address, isCovered = true)
+        compose.runOnIdle {
+            model.controller.focusOnAddress(place)
+            model.controller.selectScooter("lime:a")
+            model.camera.position = CameraPosition.Builder().target(LatLng(47.3779, 8.5403)).zoom(16.0).build()
+        }
+        compose.waitForIdle()
+        assertEquals(place, model.controller.searchedDestination.value)
+        assertEquals("lime:a", model.controller.selectedScooterID.value)
+
+        val saved = Bundle()
+        first.pause().stop().saveInstanceState(saved)
+        val kept = checkNotNull(savedHolding(ScooterMapViewModel.PANEL_COLLAPSED, saved)) { "the ViewModel's saved state" }
+        assertEquals("what the ViewModel keeps for a new process", setOf(ScooterMapViewModel.PANEL_COLLAPSED), kept.keySet())
+        first.destroy()
+
+        val again = Robolectric.buildActivity(MainActivity::class.java).setup(saved)
+        compose.waitForIdle()
+        val modelAgain = ViewModelProvider(again.get())[ScooterMapViewModel::class.java]
+        assertNotSame("a new process's view model", model, modelAgain)
+        assertNull("the place searched for", modelAgain.controller.searchedDestination.value)
+        assertNull("the card", modelAgain.controller.selectedScooterID.value)
+        assertNull("the camera", modelAgain.camera.position)
+        again.pause().stop().destroy()
+    }
+
+    /** The bundle within [bundle], or it itself, that holds [key]: the saved state of a SavedStateHandle that has it. */
+    private fun savedHolding(key: String, bundle: Bundle): Bundle? =
+        if (bundle.containsKey(key)) bundle else bundle.keySet().firstNotNullOfOrNull { name -> bundle.getBundle(name)?.let { savedHolding(key, it) } }
 
     private companion object {
         /** A row only Filters has. */

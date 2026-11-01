@@ -354,7 +354,9 @@ class DockMotionRecording {
      * TalkBack's click, which the test cannot mark in the frame of the change, if it changes alone or 3 frames or more
      * after the rest; the refresh's chips, whose counts come with the server's answer, not in the step's frame;
      * changes under [CHANGE_POINTS] points or [filmFrames]' 32 levels of grey (a glass's light on a light ground),
-     * below which the encoder's own touches lie; and two frames `screenrecord` merged under load. A pass is weaker
+     * below which the encoder's own touches lie, so a small part late, a count or a symbol, counts as no change and
+     * passes: two steps' whole frames changed only 214 and 227 points (review-app-af 5); and two frames
+     * `screenrecord` merged under load. A pass is weaker
      * than a fail. Run without ground=plain, it films and is then skipped by an assumption (am instrument's status
      * -4): it read nothing, and does not pass.
      *
