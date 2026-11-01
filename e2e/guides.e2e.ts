@@ -165,7 +165,8 @@ test('a guide follows the appearance of the system, where the landing page stays
 test('a guide is accessible in either appearance, and its targets are big enough for a finger', async ({ page }) => {
   // Four axe passes, and the size of every link in either appearance: the guide list had about 340
   // on 1 Nov 2026, and grows with each guide. On CI it took 52 s to 1.5 min, and once ran out of
-  // the 90 s test.slow() gave it on mobile WebKit, so it has three minutes.
+  // the 90 s test.slow() gave it on mobile WebKit, so it has three minutes. The links are measured
+  // in one read of the page since 2 Nov, not a round trip each, so new guides add little.
   test.setTimeout(180_000);
   // Each appearance from the load: the cards would still be on their way from the other one.
   for (const colorScheme of ['light', 'dark'] as const) {
@@ -175,10 +176,12 @@ test('a guide is accessible in either appearance, and its targets are big enough
       const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
       expect(accessibility.violations, `${address}, ${colorScheme}`).toEqual([]);
 
-      for (const link of await page.locator('.pill a:visible, .trail a, .contents a, .btn, .guide-list a, .footer a').all()) {
-        const box = (await link.boundingBox())!;
-        expect(box.height, await link.innerText()).toBeGreaterThanOrEqual(38);
-      }
+      const links = await page.locator('.pill a:visible, .trail a, .contents a, .btn, .guide-list a, .footer a')
+        .evaluateAll(elements => elements.map(element => ({
+          text: (element as HTMLElement).innerText, height: element.getBoundingClientRect().height,
+        })));
+      expect(links.length, `${address}, ${colorScheme}`).toBeGreaterThan(10);
+      for (const { text, height } of links) expect(height, text).toBeGreaterThanOrEqual(38);
     }
   }
 });

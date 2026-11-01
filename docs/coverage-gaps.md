@@ -443,13 +443,16 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   27 October 2026, are in the operators' apps alone, as are Recife's,
   Monterrey's and San Pedro Garza García's parking points; Porto Alegre's
   virtual stations, the operators' proposals the city approves, are not
-  published. Antalya's UKOME rules name no places, and its open data portal
-  did not answer. Curitiba's streets and squares where a scooter stops
+  published. Antalya's UKOME rules name places in words alone, and its open
+  data portal did not answer; Yaşar Sobutay Bulvarı, closed to scooters in
+  Kemerağzı and Kundu, is drawn from OpenStreetMap's road (DATA_SOURCES.md). Curitiba's streets and squares where a scooter stops
   (Rua XV de Novembro, the Passeio Público) are named in the press alone, and
   the city's site answers scripts with 403, as Florianópolis's did not answer.
   Seoul's parking zones the city paid for are a list of addresses under an
-  open licence (공공누리 type 1), without coordinates; its five streets
-  without scooters from 30 September 2026 are not mapped. Gdańsk, Gdynia and
+  open licence (공공누리 type 1), without coordinates. Of its five streets
+  without scooters from 30 September 2026, Hongdae's, Banpo's and
+  Daechi-dong's are drawn from OpenStreetMap's roads (DATA_SOURCES.md);
+  Yeonsinnae's and Wirye's have press reports alone. Gdańsk, Gdynia and
   Sopot publish none: their scooter parkings, Gdańsk's 12 km/h old town and
   Sopot's no-riding zones are in the press alone. Ulm's and Neu-Ulm's
   centres, where Dott's scooters are parked only at a parking island under
