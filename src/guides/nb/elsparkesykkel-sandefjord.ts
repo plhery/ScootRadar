@@ -110,7 +110,7 @@ const guide: Guide = {
       heading: 'Tønsberg og Larvik',
       blocks: [
         'I [Tønsberg](map:no:Tønsberg) kjører også Ryde, og på kartet sto det rundt 440 sparkesykler i Tønsberg og på Nøtterøy 17. oktober 2026, til samme pris som i Sandefjord. Tønsberg stenger tidligere i helgen: fra kl. 23 til 05 natt til lørdag, søndag og bevegelige helligdager, ellers fra kl. 01 til 05. Der tas sparkesyklene inn når det er fare for snø og is. VKTs linje 1 går mellom Sandefjord og Tønsberg.',
-        'Ryde kjører også i Larvik. Ifølge Larvik kommune hadde Ryde 350 sparkesykler og 3000 brukere der per 1. juni 2026, og antallet turer steg fra 7700 i mars til 20 100 i mai. Larvik har sin egen forskrift fra juni 2025. Ryde publiserer ingen åpne data for Larvik, så kartet viser ikke sparkesyklene der.',
+        'Ryde kjører også i [Larvik](guide:larvik), og kartet viste rundt 210 sparkesykler i Larvik by 1. november 2026. Opplåsingen koster 5,90 kr der, men minuttprisen er den samme som i Sandefjord. Larvik har sin egen forskrift fra juni 2025, og den stenger utleien fra kl. 23 til 05 hver natt. Ifølge Larvik kommune steg antallet turer fra 7700 i mars til 20 100 i mai 2026.',
       ],
     },
     {
