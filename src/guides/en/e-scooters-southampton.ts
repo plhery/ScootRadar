@@ -119,7 +119,7 @@ const guide: Guide = {
             '**Buses and other trains:** we couldn’t check Bluestar’s, Unilink’s, CrossCountry’s or GWR’s own conditions.',
           ],
         },
-        'Heading to the island or Portsmouth? Voi hires out e-scooters there too: at 14:55 on 24 October 2026 the map showed about 210 on the [Isle of Wight](map:gb:Isle of Wight) and 550 in [Portsmouth](map:gb:Portsmouth). See [e-scooter hire in the UK](guide:uk-hire) for all 21 trial areas.',
+        'Heading to the island or Portsmouth? Voi hires out e-scooters there too: at 14:55 on 24 October 2026 the map showed about 210 on the [Isle of Wight](map:gb:Isle of Wight) and 550 in [Portsmouth](guide:portsmouth). See [e-scooter hire in the UK](guide:uk-hire) for all 21 trial areas.',
       ],
     },
     {
