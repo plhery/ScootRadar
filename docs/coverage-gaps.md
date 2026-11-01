@@ -1742,6 +1742,18 @@ Bonaire had feeds to add. Survey files are in
   Hungarian or English. The feed is read from Dott's rider map, on Netcup, and
   is still polled. Then read it there and look for a notice; whether it stays
   is decided then.
+- **1 December 2026:** Dott Lubliniec (`dott_pl_lubliniec`). It held about
+  128 scooters on 24 October 2026 and 102 on the morning of 28 October, when
+  they were taken in by day, from 11:00 to 12:00 and 17:45 to 19:45 UTC; the
+  last 8 went by 12:25 UTC on 29 October, and it has listed none since. The
+  feed stays ok, Dott's locations page still lists Lubliniec, and no notice
+  was found; Dott's public feed answers 404 for every Polish town, Lubliniec
+  included. Dott's other Polish towns thinned the same week (Katowice and
+  Chorzów from about 1,300 to 250, Brzeg, Leszno, Nowy Targ and Zawiercie by
+  about half). The feed is read from Dott's rider map, on Netcup, and is still
+  polled; its "feed empty" alert is silenced in Grafana until 1 December,
+  08:00 UTC. Then read it there and look for a notice; whether it stays is
+  decided then.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
