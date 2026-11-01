@@ -22,6 +22,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildTypes {
+        // The build for Play: shrunk, optimised and obfuscated by R8, its unused resources taken out. It has no
+        // signing config: its key waits for the user (NEEDS-USER #9), so assembleRelease makes an unsigned APK.
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
     buildFeatures {
         compose = true
         // The version the feedback mail and the review prompt name, and whether this is a debug build.
