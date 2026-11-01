@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Erfurt 2026: Yoio, Dott, Preise, Parkverbote',
   description: 'E-Scooter Erfurt: was Yoio kostet, wo Yoio und Dott auf der Karte stehen, wo du in der Altstadt weder fährst noch parkst und was in der Strassenbahn gilt.',
   headline: 'E-Scooter Erfurt: Yoio und Dott, Preise, Parkverbotszonen und was in der Altstadt gilt',
-  lede: 'Einen E-Scooter in Erfurt leihst du ab 18 und ohne Führerschein bei Yoio oder bei Dott, das früher Tier hiess. Laut Yoios Datenfeed vom 23. Oktober 2026 kostet das Entsperren 1,09 € und die Minute 0,25 €, bei einzelnen Scootern 0,21 €; zehn Minuten kosten also 3,59 € oder 3,19 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone der Altstadt. Abstellen darfst du im Gebiet der App, aber nicht am Anger, auf der Krämerbrücke, am Fischmarkt, Wenigemarkt, Domplatz und Benediktsplatz und in «Venedig». In Strassenbahn und Bus der EVAG darf kein E-Scooter mit.',
+  lede: 'Einen E-Scooter in Erfurt leihst du ab 18 und ohne Führerschein bei Yoio oder bei Dott, das früher Tier hiess. Laut Yoios offenen Daten vom 23. Oktober 2026 kostet das Entsperren 1,09 € und die Minute 0,25 €, bei einzelnen Scootern 0,21 €; zehn Minuten kosten also 3,59 € oder 3,19 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone der Altstadt. Abstellen darfst du im Gebiet der App, aber nicht am Anger, auf der Krämerbrücke, am Fischmarkt, Wenigemarkt, Domplatz und Benediktsplatz und in «Venedig». In Strassenbahn und Bus der EVAG darf kein E-Scooter mit.',
   published: '2026-10-23',
   updated: '2026-10-24',
   city: 'de:Erfurt',
@@ -24,10 +24,10 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Erfurt?',
       blocks: [
-        'Yoio veröffentlicht seine Tarife im offenen Datenfeed. Am 23. Oktober 2026 listete der Feed für jeden Scooter 1,09 € fürs Entsperren, den Minutenpreis aber je Scooter: 0,25 € für rund 180, 0,21 € für 20. Was die zwei Stufen bedeuten, erklärt Yoio nicht; seine Gebührenordnung nennt gar keine Minutenpreise und verweist auf die App. Laut Yoios Hilfe kann der Minutenpreis variieren und steht in der App auf dem Button «Fahrt starten».',
+        'Yoio veröffentlicht seine Tarife in seinen offenen Daten. Am 23. Oktober 2026 listeten sie für jeden Scooter 1,09 € fürs Entsperren, den Minutenpreis aber je Scooter: 0,25 € für rund 180, 0,21 € für 20. Was die zwei Stufen bedeuten, erklärt Yoio nicht; seine Gebührenordnung nennt gar keine Minutenpreise und verweist auf die App. Laut Yoios Hilfe kann der Minutenpreis variieren und steht in der App auf dem Button «Fahrt starten».',
         {
           table: {
-            caption: 'E-Scooter-Preise in Erfurt (Yoio-Datenfeed, 23. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Erfurt (offene Daten von Yoio, 23. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Yoio, die meisten Scooter', '1,09 €', '0,25 €', '3,59 €', '6,09 €'],
@@ -36,7 +36,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bei Yoio zählt laut AGB jede angefangene Minute. Mehr als 19,99 € kostet eine Fahrt laut Feed nicht; bei 0,25 € pro Minute ist das nach gut 75 Minuten erreicht. Mit einer Jahreskarte des örtlichen Nahverkehrs gibt es laut Yoios Gebührenordnung (Stand 2021) 25 € Guthaben im Jahr. Verbindlich ist bei beiden Anbietern der Preis, den die App vor dem Start zeigt.',
+        'Bei Yoio zählt laut AGB jede angefangene Minute. Mehr als 19,99 € kostet eine Fahrt laut seinen offenen Daten nicht; bei 0,25 € pro Minute ist das nach gut 75 Minuten erreicht. Mit einer Jahreskarte des örtlichen Nahverkehrs gibt es laut Yoios Gebührenordnung (Stand 2021) 25 € Guthaben im Jahr. Verbindlich ist bei beiden Anbietern der Preis, den die App vor dem Start zeigt.',
       ],
     },
     {
@@ -45,7 +45,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. Eigene Fahrregeln für E-Scooter haben weder Thüringen noch Erfurt.',
         '**Altstadt:** Die Fussgängerzone reicht laut Stadt vom Anger über Bahnhofstrasse und Schlösserstrasse, Fischmarkt und Marktstrasse bis zum Domplatz, zum Wenigemarkt und zur Krämerbrücke. Mit den verkehrsberuhigten Gassen ringsum nennt die Stadt das Gebiet «Begegnungszone», ein Arbeitstitel, kein Verkehrszeichen. Fahrräder dürfen über den Anger montags bis samstags von 18:30 bis 9 Uhr und sonntags fahren, im westlichen Anger bis zur Borngasse rund um die Uhr. Für E-Scooter gilt diese Freigabe heute nicht: Steig ab und schieb.',
         '**Ab 1. März 2027** gilt eine Freigabe mit dem Zusatzschild «Radverkehr frei» laut Bundesverkehrsministerium auch für E-Scooter, im Schritttempo. Die Kommunen können E-Scooter aber eigens verbieten. Ob Erfurt das am Anger tut, hat die Stadt bisher nicht gesagt (Stand Oktober 2026); sonst dürftest du dort zu denselben Zeiten fahren wie Fahrräder.',
-        '**Skateparks:** In den Skateparks im Nordpark, am Alten Nordhäuser Bahnhof (Domizil) und im Südpark sowie auf einer kleinen Fläche an der Rosa-Luxemburg-Strasse darfst du mit Yoio laut Datenfeed weder starten noch beenden noch durchfahren.',
+        '**Skateparks:** In den Skateparks im Nordpark, am Alten Nordhäuser Bahnhof (Domizil) und im Südpark sowie auf einer kleinen Fläche an der Rosa-Luxemburg-Strasse darfst du mit Yoio laut seinen offenen Daten weder starten noch beenden noch durchfahren.',
         '**egapark:** Die Parkordnung der Betreiberin, der Erfurter Garten- und Ausstellungs gGmbH, sagt unter Punkt 4.6: «Das Mitbringen und Nutzen von Fahrzeugen, Fahrrädern und Fortbewegungsmitteln jeglicher Art ist im egapark nicht gestattet.» Auch hineinschieben darfst du einen E-Scooter also nicht.',
       ],
     },
@@ -53,14 +53,14 @@ const guide: Guide = {
       heading: 'E-Scooter in Erfurt abstellen: wo die App das Fahrtende sperrt',
       blocks: [
         'Laut Stadt gilt nach einer freiwilligen Selbstverpflichtung aller Anbieter ein Abstellverbot in historisch sensiblen Bereichen, etwa am Anger, auf der Krämerbrücke, in «Venedig», am Fischmarkt, am Domplatz, am Wenigemarkt und am Benediktsplatz. Dort lässt sich die Miete technisch nicht beenden (Stand 2025). Die meisten dieser Plätze gehören zur Fussgängerzone, dort fährst du ohnehin nicht.',
-        'Yoios Datenfeed vom 23. Oktober 2026 zeigt weitere Parkverbotszonen: entlang der Gera und ihrer Arme durch die Altstadt, am Petersberg, entlang der Gleise am Hauptbahnhof und im Stadtpark. Den Domplatz deckte die Verbotszone nur zu etwa drei Vierteln ab. Halte dich an die Liste der Stadt, auch wenn die App am Rand des Platzes das Fahrtende erlaubt.',
+        'Yoios offene Daten vom 23. Oktober 2026 zeigen weitere Parkverbotszonen: entlang der Gera und ihrer Arme durch die Altstadt, am Petersberg, entlang der Gleise am Hauptbahnhof und im Stadtpark. Den Domplatz deckte die Verbotszone nur zu etwa drei Vierteln ab. Halte dich an die Liste der Stadt, auch wenn die App am Rand des Platzes das Fahrtende erlaubt.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (unsere Auswertung des Yoio-Datenfeeds, 23. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (offene Daten von Yoio, 23. Oktober 2026)',
             head: ['Ort', 'Fahrt mit Yoio beenden?'],
             rows: [
               ['Anger, Fischmarkt, Wenigemarkt, Krämerbrücke', 'Nein, Parkverbotszone'],
-              ['Domplatz', 'Nein laut Stadt; im Feed zu etwa drei Vierteln gesperrt'],
+              ['Domplatz', 'Nein laut Stadt; bei Yoio zu etwa drei Vierteln gesperrt'],
               ['Hauptbahnhof', 'Ja auf dem Willy-Brandt-Platz vor dem Bahnhof, nein entlang der Gleise'],
               ['Zitadelle Petersberg', 'Nein, die nächste erlaubte Stelle liegt knapp 200 m entfernt'],
               ['Universität (Nordhäuser Strasse 63)', 'Ja'],
@@ -81,7 +81,7 @@ const guide: Guide = {
         'Die Verkehrsregeln setzt der Bund. Wo Leih-Scooter stehen dürfen, entscheiden laut Bundesverkehrsministerium die Kommunen. Ihre Satzung über die Sondernutzung öffentlicher Strassen stützt die Stadt auf das Thüringer Strassengesetz. Gebiet, Zonen, Preise und Gebühren legt der Anbieter fest; die Verbotszonen der Altstadt sperrt er auf Wunsch der Stadt in der App.',
         'Erfurt behandelt den Verleih bisher als Gemeingebrauch, also ohne Erlaubnis, und regelt ihn über eine freiwillige Selbstverpflichtung, die alle Anbieter unterschrieben haben: Gebiet, Flottengrösse, Parkverbotszonen. Für die Innenstadt nannte die Stadt 2025 eine «bisherige Obergrenze von 100 E-Scootern». Die Obergrenze für das ganze Stadtgebiet, 2021 mit dem Stadtratsausschuss festgelegt, hat sie nicht veröffentlicht. Das Abstellen kontrolliert der Vollzugsdienst der städtischen Ordnungsbehörde, das Fahren die Polizei.',
         'Die Wirkung der Selbstverpflichtung nennt die Stadt «mässig» (2025). Sie bevorzugt eine Regelung als Sondernutzung, mit festen Abstellflächen in der Innenstadt und freiem Abstellen im übrigen Stadtgebiet; rund 60 mögliche Standorte hat sie vorgeprüft. Die Sondernutzungsgebühr für gewerbliche E-Scooter liegt laut Stadt bei 0 €, ausgewiesen ist bisher keine Fläche.',
-        'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüft und den Ausschuss bis Ende September 2026 informiert. Diesen Bericht und eine Vorlage zu Sondernutzung und Vergabe, die die Verwaltung für das erste Quartal 2026 angekündigt hatte, fanden wir im Ratsinformationssystem bis zum 23. Oktober 2026 nicht. Feste Abstellflächen, Gebühren oder eine Auswahl der Anbieter sind also nicht beschlossen.',
+        'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüft und den Ausschuss bis Ende September 2026 informiert. Diesen Bericht und eine Vorlage zu Sondernutzung und Vergabe, die die Verwaltung für das erste Quartal 2026 angekündigt hatte, enthielt das Ratsinformationssystem bis zum 23. Oktober 2026 nicht. Feste Abstellflächen, Gebühren oder eine Auswahl der Anbieter sind also nicht beschlossen.',
       ],
     },
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
         '**Strassenbahn und Bus:** Die EVAG schliesst E-Scooter von der Mitnahme aus, weil sie versicherungspflichtig sind; das gilt auch für deinen eigenen. Fahrräder dürfen mit, ausser montags bis freitags von 7 bis 10 und von 14 bis 18 Uhr. Wo die Beförderungsbedingungen «E-Scooter» mit Siegel erlauben, meinen sie rollstuhlähnliche Elektromobile.',
         '**Ankunft am Hauptbahnhof:** Auf dem Willy-Brandt-Platz vor dem Bahnhof beendest du eine Yoio-Fahrt, aber nicht direkt am Eingang.',
         '**Uni, FH, egapark und Messe:** An der Universität und am FH-Hauptcampus endest du direkt. Am FH-Standort Leipziger Strasse, am egapark und an der Messe stellst du gut 100 m entfernt ab.',
-        '**Ausflüge:** Thüringer Zoopark, Nordstrand und Flughafen liegen ausserhalb des Gebiets. Eine Fahrt dorthin könntest du nicht beenden. Yoio vermietet laut Datenfeed rund um die Uhr; eine Nachtsperre oder Wintersaison nennen weder Stadt noch Yoio.',
+        '**Ausflüge:** Thüringer Zoopark, Nordstrand und Flughafen liegen ausserhalb des Gebiets. Eine Fahrt dorthin könntest du nicht beenden. Yoio vermietet laut seinen offenen Daten rund um die Uhr; eine Nachtsperre oder Wintersaison nennen weder Stadt noch Yoio.',
       ],
     },
     {
@@ -135,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet Yoio in Erfurt?',
-      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,21 € pro Minute, laut Yoios Datenfeed vom 23. Oktober 2026. Zehn Minuten kosten damit 3,59 € oder 3,19 €, eine Fahrt höchstens 19,99 €. Den Minutenpreis des Scooters zeigt dir die App vor dem Start.',
+      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,21 € pro Minute, laut Yoios offenen Daten vom 23. Oktober 2026. Zehn Minuten kosten damit 3,59 € oder 3,19 €, eine Fahrt höchstens 19,99 €. Den Minutenpreis des Scooters zeigt dir die App vor dem Start.',
     },
     {
       question: 'Wo kann ich in Erfurt einen E-Scooter abstellen?',
@@ -158,7 +158,7 @@ const guide: Guide = {
     { title: 'Stadt Erfurt: Niederschrift der Stadtratssitzung vom 18. Dezember 2025 (PDF)', url: 'https://buergerinfo.erfurt.de/getfile.asp?id=993706&type=do' },
     { title: 'Stadt Erfurt: Begegnungszone', url: 'https://www.erfurt.de/ef/de/leben/planen/verkehr/begegnungszone/index.html' },
     { title: 'Stadt Erfurt: Sondernutzungssatzung (PDF)', url: 'https://www.erfurt.de/mam/ef/rathaus/stadtrecht/6/6814.pdf' },
-    { title: 'Yoio: Datenfeed für Erfurt (GBFS)', url: 'https://yoio.rideatom.com/gbfs/159/v3.0/gbfs' },
+    { title: 'Yoio: offene Daten für Erfurt (GBFS)', url: 'https://yoio.rideatom.com/gbfs/159/v3.0/gbfs' },
     { title: 'Yoio: E-Scooter-Sharing in Göttingen, Freiburg und Erfurt', url: 'https://yoio.app/' },
     { title: 'Yoio: Gebührenordnung (PDF)', url: 'https://yourcar-carsharing.de/images/Yoio-Gebuehrenordnung.pdf' },
     { title: 'Yoio: Allgemeine Geschäftsbedingungen (PDF)', url: 'https://yourcar-carsharing.de/images/Yoio-AGB.pdf' },

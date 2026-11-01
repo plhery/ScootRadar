@@ -49,14 +49,14 @@ const guide: Guide = {
         '**Parks:** Die Grünflächensatzung von 2009 verbietet in städtischen Grün- und Parkanlagen, sie «mit Kraftfahrzeugen zu befahren» und Fahrzeuge abzustellen (§ 4), bei 5 bis 1000 € Geldbusse (§ 11). E-Scooter nennt sie nicht, laut eKFV sind sie aber Kraftfahrzeuge. Für uns heisst das: In den Wallanlagen und anderen städtischen Parks schiebst du, auch auf den Wegen.',
         '**IGA Park:** Die Parkordnung (Februar 2025) verbietet «das Befahren mit Kraftfahrzeugen sowie das Abstellen dieser auf Wegen und Grünflächen»; «das Fahrradfahren erfolgt auf eigene Gefahr». Bei Verstössen darf das Personal ein «erhöhtes Nutzungsentgelt» von 20 € kassieren. Auch hier schiebst du nach unserer Lesart.',
         '**Strand:** Die Strandsatzung von 2026 verbietet an den Stränden von Diedrichshagen, Warnemünde, Hohe Düne, Markgrafenheide und der Rostocker Heide «das Abstellen und Fahren von Fahrzeugen, auch von Fahrrädern und Booten», bei bis zu 1000 € Geldbusse. Für Strandpromenade und Alten Strom fanden wir keine eigene E-Scooter-Regel; dort gelten die Schilder.',
-        '**Nacht, Saison, Campus:** Ein Nachtfahrverbot, eine Saisonpause oder eine Campusregel der Universität fanden wir nicht.',
+        '**Nacht und Saison:** Ein Nachtfahrverbot oder eine Saisonpause nennt die Stadt nicht (Stand Oktober 2026).',
       ],
     },
     {
       heading: 'E-Scooter in Rostock abstellen: Sperrzonen, Abstellflächen, Obergrenzen',
       blocks: [
-        'Laut Stadt sperren die Anbieter das Fahrtende per Geofencing in Parkverbotszonen, etwa in Grün- und Parkanlagen, an den Uferbereichen der Warnow und in den Fussgängerzonen. Im März 2026 arbeitete die Stadt laut Nordkurier an Abstellverbotszonen an stark genutzten Haltestellen. Welche gelten, zeigt die App.',
-        '**Feste Abstellflächen:** Im Oktober 2025 gab es laut Stadt acht markierte Flächen, etwa am Neuen Markt; rund 20 in der Innenstadt sollten noch 2025 entstehen (Nordkurier, 16. Oktober 2025). Im März 2026 entstanden sie unter anderem an Mobilpunkten, weitere sollten 2026 folgen, auch in Warnemünde (Nordkurier, 18. März 2026). Den Stand vom Oktober 2026 fanden wir nicht. Wo eine Gemeinde Parkplätze ausweist, parkst du laut Dotts Bedingungen nur dort.',
+        'Laut Stadt sperren die Anbieter das Fahrtende per Geofencing in Parkverbotszonen, etwa in Grün- und Parkanlagen, an den Uferbereichen der Warnow und in den Fussgängerzonen. Welche gelten, zeigt die App.',
+        '**Feste Abstellflächen:** Ihre markierten Abstellflächen veröffentlicht die Stadt in ihren offenen Daten. Wo eine Gemeinde Parkplätze ausweist, parkst du laut Dotts Bedingungen nur dort.',
         'Sonst gelten die Regeln für Fahrräder: Abstellen auf dem Gehweg ist erlaubt, solange niemand behindert oder gefährdet wird.',
         {
           table: {
@@ -73,7 +73,7 @@ const guide: Guide = {
           },
         },
         '**Obergrenzen:** Laut Stadt dürfen seit dem Winter 2021 höchstens 2000 Leih-Scooter in Rostock stehen, je Anbieter 660, in der Innenstadt zusammen 500 und in Warnemünde 120, höchstens fünf je Anbieter an einem Ort.',
-        '**Kontrolle:** Laut Stadt ahnden Ordnungsdienst und Polizei Verstösse gegen die StVO; für die Parkverbotszonen sind die Anbieter selbst verantwortlich. Blockiert ein Scooter den Gehweg, muss der Anbieter ihn sofort entfernen, sonst lässt ihn die Stadt kostenpflichtig wegräumen. Im Oktober 2025 nahm die Bürgerschaft einen Antrag an, der laut Nordkurier unter anderem Pflicht-Abstellfotos in den Apps und klare Eingriffsmöglichkeiten des Ordnungsdienstes vorsieht.',
+        '**Kontrolle:** Laut Stadt ahnden Ordnungsdienst und Polizei Verstösse gegen die StVO; für die Parkverbotszonen sind die Anbieter selbst verantwortlich. Blockiert ein Scooter den Gehweg, muss der Anbieter ihn sofort entfernen, sonst lässt ihn die Stadt kostenpflichtig wegräumen.',
         {
           note: 'MOIN verlangt am Fahrtende ein vollständiges Foto des korrekt geparkten Scooters, Dott kann eines anfordern. Mach es deutlich.',
         },
@@ -160,8 +160,6 @@ const guide: Guide = {
   sources: [
     { title: 'Stadt Rostock: E-Tretroller und Elektrokleinstfahrzeuge in Rostock', url: 'https://rathaus.rostock.de/de/leih_e_scooter/323713' },
     { title: 'Stadt Rostock: Nutzerbefragung Leih-E-Tretroller, Bericht vom Mai 2022 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.4984.de/datei/Bericht%20Nutzerbefragung%20Leih-E-Tretroller%20Rostock%202021.pdf' },
-    { title: 'Nordkurier: Wildes Abstellen von E-Scootern: Rostock will Gefahr eindämmen (16. Oktober 2025)', url: 'https://www.nordkurier.de/regional/rostock/wildes-abstellen-von-e-scootern-rostock-will-gefahr-eindaemmen-4011927' },
-    { title: 'Nordkurier: Ärger rund um E-Roller: So will Rostock gegensteuern (18. März 2026)', url: 'https://www.nordkurier.de/regional/rostock/immer-wieder-sorgen-e-scooter-fuer-aerger-so-soll-fuer-sichere-nutzung-gesorgt-werden-4442114' },
     { title: 'Stadt Rostock: Abstellflächen für E-Tretroller (offene Daten, CC0)', url: 'https://www.opendata-hro.de/dataset/abstellflaechen_e_tretroller' },
     { title: 'Stadt Rostock: Abstellverbotszonen für E-Tretroller, Innenstadt, Juli 2021 (PDF)', url: 'https://rathaus.rostock.de/media/rostock_01.a.4984.de/datei/Zonen%20e-Tretroller-Verleiher%20-%20Innenstadt%20-%20Juli21.pdf' },
     { title: 'Stadt Rostock: Grünflächensatzung von 2009 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.1107.de/datei/7_04.46475.pdf' },
