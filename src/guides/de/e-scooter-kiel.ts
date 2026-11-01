@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Kiel 2026: Anbieter, Preise, Parken, KVG',
   description: 'E-Scooter Kiel: die drei Anbieter, was über Preise bekannt ist, wo du fahren und parken darfst und was in Parks, zur Kieler Woche und in Bus und Fähre gilt.',
   headline: 'E-Scooter Kiel: Anbieter, Preise, Stationen und warum kein Scooter in Bus oder Fähre darf',
-  lede: 'E-Scooter in Kiel leihst du ab 18 und ohne Führerschein bei Bolt, Dott oder Voi. Einen Kieler Tarif fanden wir bei keinem der drei offen; Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Entsperrgebühr, verbindlich ist die App. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone Holstenstrasse; durch städtische Parks schiebst du, so lesen wir die Grünflächensatzung. Steht eine E-Scooter-Station in unmittelbarer Nähe, beendest du die Fahrt laut Stadt dort. In KVG-Busse und auf die Fördefähren darf kein E-Scooter.',
+  lede: 'E-Scooter in Kiel leihst du ab 18 und ohne Führerschein bei Bolt, Dott oder Voi. Einen Kieler Tarif nennt keiner der drei öffentlich (Stand 24. Oktober 2026); Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Entsperrgebühr, verbindlich ist die App. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone Holstenstrasse; durch städtische Parks schiebst du, denn die Grünflächensatzung verbietet dort Kraftfahrzeuge, und dazu zählen E-Scooter laut Stadt. Steht eine E-Scooter-Station in unmittelbarer Nähe, beendest du die Fahrt laut Stadt dort. In KVG-Busse und auf die Fördefähren darf kein E-Scooter.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Kiel',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Kiel?',
       blocks: [
-        'Laut Landeshauptstadt Kiel bieten «zurzeit» drei Unternehmen E-Scooter an: **Dott**, **Bolt** und **Voi**. Die Seite der Stadt ist undatiert; wir haben sie am 24. Oktober 2026 gelesen. Bolt und Dott führen Kiel auch auf ihren eigenen Seiten. Leih-Scooter gibt es in Kiel seit August 2020.',
+        'Laut Landeshauptstadt Kiel (undatierte Seite, Stand 24. Oktober 2026) bieten «zurzeit» drei Unternehmen E-Scooter an: **Dott**, **Bolt** und **Voi**. Bolt und Dott führen Kiel auch auf ihren eigenen Seiten. Leih-Scooter gibt es in Kiel seit August 2020.',
         'Du leihst den Scooter in der App des Anbieters, ab 18 und ohne Führerschein. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Kiel](map:de:Kiel) Dott, Voi und seit dem 25. Oktober Bolt: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 2000 Scooter, gut 1400 von Voi und gut 550 von Dott, am Sonntag kurz vor 14 Uhr rund 850 von Bolt. Die Zahl schliesst den Nachbarort Kronshagen ein, wo am selben Abend rund 85 standen, und einzelne Scooter in Schwentinental, Mönkeberg und Schönkirchen. Das sind Momentaufnahmen, keine Flottengrössen. Die Karte zeigt Standort und Akkustand; Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
+        'ScootRadar zeigt auf der [Karte von Kiel](map:de:Kiel) Dott, Voi und seit dem 25. Oktober Bolt: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 2000 freie Scooter, gut 1400 von Voi und gut 550 von Dott, am Sonntag kurz vor 14 Uhr rund 850 von Bolt. Die Zahl schliesst den Nachbarort Kronshagen ein, wo am selben Abend rund 85 standen, und einzelne Scooter in Schwentinental, Mönkeberg und Schönkirchen. Die Karte zeigt Standort und Akkustand; Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
         'Grundsätzlich verbieten kann die Stadt Leih-Scooter laut eigener Aussage nicht. Vor jedem Start schliesst sie mit dem Anbieter eine freiwillige Vereinbarung, laut Stadt «rechtlich nur eingeschränkt wirksam». In der veröffentlichten Vorlage von 2021 behält sie sich vor, die Zahl der Scooter je Anbieter bei Bedarf zu begrenzen; eine Obergrenze oder Gebühr steht darin nicht, und die Sondernutzungssatzung vom Mai 2025 nennt keinen Tarif für Leih-Scooter.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Kiel?',
       blocks: [
-        'Einen Kieler Tarif fanden wir bei keinem Anbieter offen. Laut Stadt zahlst du meist eine Startgebühr fürs Entsperren und einen Minutenpreis, beides je nach Anbieter verschieden. Den Preis zeigt die App vor dem Entsperren.',
+        'Einen Kieler Tarif nennt keiner der drei öffentlich. Laut Stadt zahlst du meist eine Startgebühr fürs Entsperren und einen Minutenpreis, beides je nach Anbieter verschieden. Den Preis zeigt die App vor dem Entsperren.',
         {
           table: {
             caption: 'Was die Anbieter offen zu Preisen sagen (Stand 24. Oktober 2026)',
@@ -46,10 +46,10 @@ const guide: Guide = {
       blocks: [
         'Du fährst auf dem Radweg, Radfahr- oder Schutzstreifen oder in der Fahrradstrasse und nur dort, wo es nichts davon gibt, auf der Fahrbahn. Auf gemeinsamen Geh- und Radwegen haben Fussgänger Vorrang. Gehwege sind tabu (15 €, ab 1. März 2027 25 €), ebenso Fussgängerzonen, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es; ab 1. März 2027 reicht auch «Radverkehr frei».',
         '**Holstenstrasse:** Kiels Einkaufsstrasse ist zwischen Holstenplatz und Altem Markt Fussgängerzone, also keine Strecke für den Scooter. Seit März 2026 baut die Stadt den oberen Teil am Alten Markt um, mit Winterpause von Mitte November 2026 bis Anfang 2027; fertig sein soll er im Herbst 2027.',
-        '**Parks:** Die Grünflächensatzung der Stadt von 2022 verbietet, auf städtischen Grünflächen mit Kraftfahrzeugen zu fahren oder sie dort abzustellen. E-Scooter nennt sie nicht eigens; laut Stadt gelten sie aber rechtlich als Kraftfahrzeuge. Beides zusammen heisst für uns: Im Schrevenpark, rund um den Kleinen Kiel oder im Schwanenseepark schiebst du, auch auf den Wegen.',
-        '**Kiellinie und Hörn:** Für die Promenade vom Ostseekai bis zur Wik und für die Hörn haben wir keine eigene E-Scooter-Regel der Stadt gefunden; es gelten die bundesweiten. Auf der Promenade fährst du nur, wo sie ein Radweg ist oder ein Schild «Elektrokleinstfahrzeuge frei» sie freigibt, sonst auf Radweg oder Fahrbahn daneben.',
+        '**Parks:** Die Grünflächensatzung der Stadt von 2022 verbietet, auf städtischen Grünflächen mit Kraftfahrzeugen zu fahren oder sie dort abzustellen. E-Scooter nennt sie nicht eigens; laut Stadt gelten sie aber rechtlich als Kraftfahrzeuge. Im Schrevenpark, rund um den Kleinen Kiel oder im Schwanenseepark schiebst du also, auch auf den Wegen.',
+        '**Kiellinie und Hörn:** Für die Promenade vom Ostseekai bis zur Wik und für die Hörn nennt die Stadt keine eigene E-Scooter-Regel (Stand 24. Oktober 2026); es gelten die bundesweiten. Auf der Promenade fährst du nur, wo sie ein Radweg ist oder ein Schild «Elektrokleinstfahrzeuge frei» sie freigibt, sonst auf Radweg oder Fahrbahn daneben.',
         '**Velorouten:** Die Veloroute 10, Kiels erste Premiumroute, führt rund 7 km auf einer früheren Bahntrasse von Hassee an der Universität vorbei in die Wik, grösstenteils ohne Kreuzungen und Ampeln. Die Veloroute 1 folgt der Förde und quert die Hörn über die Hörnbrücke; öffnet diese Klappbrücke für Schiffe, wartest du laut Stadt etwa 15 Minuten, oder du umfährst das Hörnbecken. Am 4. November 2026 wird die Brücke laut Hafenamt ausgehoben; wie lange sie fehlt, sagt die Anordnung nicht.',
-        '**Tempo und Nacht:** Eigene Tempo- oder Fahrverbotszonen der Stadt für E-Scooter und ein Nachtfahrverbot haben wir nicht gefunden. Was ein Anbieter zusätzlich sperrt oder bremst, zeigt seine App.',
+        '**Tempo und Nacht:** Eigene Tempo- oder Fahrverbotszonen für E-Scooter und ein Nachtfahrverbot nennt die Stadt nicht (Stand 24. Oktober 2026). Was ein Anbieter zusätzlich sperrt oder bremst, zeigt seine App.',
       ],
     },
     {
@@ -141,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Kiel?',
-      answer: 'Einen Kieler Tarif fanden wir bei keinem Anbieter offen. Meist zahlst du eine Entsperrgebühr plus Minutenpreis; Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute (Stand Oktober 2026). Verbindlich ist die App.',
+      answer: 'Einen Kieler Tarif nennt keiner der drei öffentlich. Meist zahlst du eine Entsperrgebühr plus Minutenpreis; Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute (Stand Oktober 2026). Verbindlich ist die App.',
     },
     {
       question: 'Wo stelle ich in Kiel einen Leih-Scooter ab?',
@@ -149,7 +149,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Schrevenpark fahren?',
-      answer: 'Nach unserer Lesart nicht: Die Grünflächensatzung verbietet, auf städtischen Grünflächen mit Kraftfahrzeugen zu fahren, und E-Scooter gelten laut Stadt rechtlich als Kraftfahrzeuge. Eine Leihfahrt beendest du dort ohnehin nicht.',
+      answer: 'Nein: Die Grünflächensatzung verbietet, auf städtischen Grünflächen mit Kraftfahrzeugen zu fahren, und E-Scooter gelten laut Stadt rechtlich als Kraftfahrzeuge. Eine Leihfahrt beendest du dort ohnehin nicht.',
     },
     {
       question: 'Darf ich einen E-Scooter in den Bus oder auf die Fähre mitnehmen?',

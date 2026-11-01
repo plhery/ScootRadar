@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Konstanz 2026: Anbieter, Preise, Verbotszonen',
   description: 'E-Scooter Konstanz: Hopp, Lime und Zeus, was zehn Minuten kosten, wo du an Altstadt und Seeufer nicht abstellst und was an der Grenze zu Kreuzlingen gilt.',
   headline: 'E-Scooter Konstanz: Anbieter, Preise und Verbotszonen zwischen Altstadt, Uni und Schweizer Grenze',
-  lede: 'Einen E-Scooter in Konstanz leihst du ab 18 und ohne Führerschein bei Hopp, Lime oder Zeus. Alle drei verlangen laut ihren Datenfeeds 1 € fürs Entsperren, dazu 0,25 € pro Minute bei Hopp und Zeus und 0,31 € bei Lime (Stand 22. Oktober 2026). Im Kern der Altstadt, am Bahnhof, an der Seestrasse und auf der Alten Rheinbrücke und der Fahrradbrücke beendest du laut den Feeds bei keinem eine Fahrt, an der Laube am Rand der Altstadt bei allen dreien. In Kreuzlingen endet keine Leih-Fahrt, und ein Nachtverbot ist nicht bekannt.',
+  lede: 'Einen E-Scooter in Konstanz leihst du ab 18 und ohne Führerschein bei Hopp, Lime oder Zeus. Alle drei verlangen laut ihren offenen Daten bei MobiData BW 1 € fürs Entsperren, dazu 0,25 € pro Minute bei Hopp und Zeus und 0,31 € bei Lime (Stand 22. Oktober 2026). Im Kern der Altstadt, am Bahnhof, an der Seestrasse und auf der Alten Rheinbrücke und der Fahrradbrücke beendest du laut diesen Daten bei keinem eine Fahrt, an der Laube am Rand der Altstadt bei allen dreien. In Kreuzlingen endet keine Leih-Fahrt, und ein Nachtverbot nennt die Stadt nicht (Januar 2024).',
   published: '2026-10-22',
   updated: '2026-10-23',
   city: 'de:Konstanz',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Konstanz?',
       blocks: [
-        'Im Oktober 2026 vermieten **Hopp**, **Lime** und **Zeus** E-Scooter in Konstanz; Zeus fährt hier seit November 2020. Hopp ist ein Franchise-System aus Island; im Datenfeed heisst das Konstanzer System «Hopp Konstanz» und läuft seit 16. Januar 2025. Wer es betreibt, nennt Hopp nicht, und auf Hopps eigener Standortliste fehlt Konstanz (Stand 22. Oktober 2026). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Am 22. Oktober 2026 um 10:01 Uhr zeigte die [Karte von Konstanz](map:de:Konstanz) rund 290 Scooter: rund 110 von Hopp, rund 90 von Lime und rund 90 von Zeus. Das ist eine Momentaufnahme der offenen Datenfeeds, keine Flottengrösse. Laut Stadt darf jeder Anbieter höchstens 150 Scooter aufstellen (Mitteilung vom Januar 2024).',
-        '**Bolt, Voi und Dott** fanden wir in Konstanz nicht: Bolt und Dott nennen die Stadt nicht auf ihren Standortlisten, und Voi hat laut Datenfeed kein Gebiet dort (Stand 23. Oktober 2026). Auch MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus. Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter.',
+        'Im Oktober 2026 vermieten **Hopp**, **Lime** und **Zeus** E-Scooter in Konstanz; Zeus fährt hier seit November 2020. Hopp ist ein Franchise-System aus Island; laut MobiData BW heisst das Konstanzer System «Hopp Konstanz» und läuft seit 16. Januar 2025. Wer es betreibt, nennt Hopp nicht, und auf Hopps eigener Standortliste fehlt Konstanz (Stand 22. Oktober 2026). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Am 22. Oktober 2026 um 10:01 Uhr zeigte die [Karte von Konstanz](map:de:Konstanz) rund 290 freie Scooter: rund 110 von Hopp, rund 90 von Lime und rund 90 von Zeus. Laut Stadt darf jeder Anbieter höchstens 150 Scooter aufstellen (Mitteilung vom Januar 2024).',
+        '**Bolt, Voi und Dott:** Bolt und Dott nennen Konstanz nicht auf ihren Standortlisten, Voi hat laut seinen offenen Daten bei MobiData BW kein Gebiet dort, und MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus (Stand 23. Oktober 2026). Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter.',
       ],
     },
     {
@@ -29,9 +29,9 @@ const guide: Guide = {
             caption: 'E-Scooter-Preise in Konstanz (Stand und Quelle in der ersten Spalte)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Hopp (Datenfeed, 22. Oktober 2026)', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
-              ['Lime (Datenfeed, 22. Oktober 2026)', '1,00 €', '0,31 €', '4,10 €', '7,20 €'],
-              ['Zeus (Datenfeed, 22. Oktober 2026)', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
+              ['Hopp (offene Daten, 22. Oktober 2026)', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
+              ['Lime (offene Daten, 22. Oktober 2026)', '1,00 €', '0,31 €', '4,10 €', '7,20 €'],
+              ['Zeus (offene Daten, 22. Oktober 2026)', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
             ],
           },
         },
@@ -42,11 +42,11 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Konstanz abstellen: Altstadt, Seeufer und Brücken',
       blocks: [
-        'Die Stadt macht den Anbietern Auflagen, so ihre Mitteilung vom Januar 2024; eine neuere Fassung konnten wir nicht prüfen. Die Scooter sollen Fussgängerzone, Friedhof und Uferpromenade nicht befahren und dort, im Umfeld von Schulen, auf Brücken und auf 250 Metern zum Ufer nicht abgestellt werden. Auf dem Gehweg müssen 2,5 Meter frei bleiben, an Haltestellen 3 Meter.',
-        'Die Anbieter setzen das in ihren Apps unterschiedlich um. Hopp sperrt im Kern der Altstadt, rund um Konzil, Hafen und Stadtgarten und am Strandbad Horn sogar das Fahren. Zeus und Lime sperren dort nur das Abstellen, dafür in einem grösseren Gebiet. Zeus führt darin feste Abstellflächen, etwa am Fischmarkt und an der Laube. Laut den Datenfeeds gilt:',
+        'Die Stadt macht den Anbietern Auflagen, so ihre Mitteilung vom Januar 2024. Die Scooter sollen Fussgängerzone, Friedhof und Uferpromenade nicht befahren und dort, im Umfeld von Schulen, auf Brücken und auf 250 Metern zum Ufer nicht abgestellt werden. Auf dem Gehweg müssen 2,5 Meter frei bleiben, an Haltestellen 3 Meter.',
+        'Die Anbieter setzen das in ihren Apps unterschiedlich um. Hopp sperrt im Kern der Altstadt, rund um Konzil, Hafen und Stadtgarten und am Strandbad Horn sogar das Fahren. Zeus und Lime sperren dort nur das Abstellen, dafür in einem grösseren Gebiet. Zeus führt darin feste Abstellflächen, etwa am Fischmarkt und an der Laube. Laut ihren offenen Daten gilt:',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (Datenfeeds von Hopp, Zeus und Lime, Stand 22. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (offene Daten von Hopp, Zeus und Lime, Stand 22. Oktober 2026)',
             head: ['Ort', 'Hopp', 'Zeus', 'Lime'],
             rows: [
               ['Marktstätte, Münster, Niederburg, Obermarkt, Rosgartenstrasse', 'Fahrverbot', 'Verbotszone', 'Verbotszone'],
@@ -71,7 +71,7 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter zur Uni, zur HTWG und zum Bahnhof',
       blocks: [
-        'Die **Universität** liegt auf dem Giesberg über Egg. Laut den Datenfeeds lässt dich Hopp auf dem Campus abstellen. Zeus sperrt den grössten Teil, hat aber eine feste Fläche an der Universitätsstrasse. Lime sperrt fast den ganzen Campus; dann hilft konrad mit seiner Station an der Uni.',
+        'Die **Universität** liegt auf dem Giesberg über Egg. Hopp lässt dich laut seinen offenen Daten auf dem Campus abstellen. Zeus sperrt den grössten Teil, hat aber eine feste Fläche an der Universitätsstrasse. Lime sperrt fast den ganzen Campus; dann hilft konrad mit seiner Station an der Uni.',
         'Die **HTWG** liegt direkt am Seerhein. Hopp und Zeus erlauben das Abstellen dort. Lime sperrt das Ufer des Seerheins samt HTWG; mit Lime suchst du dir einen Platz in den Strassen dahinter im Paradies.',
         'Am **Bahnhof Konstanz** beendet keiner der drei eine Fahrt, auf dem Bahnhofplatz sperrt Hopp sogar das Fahren. Stell den Scooter vorher ab, etwa an der Oberen Laube, keine zehn Gehminuten entfernt. Am **Bahnhof Petershausen** auf der anderen Rheinseite geht es bei Hopp und Zeus, bei Lime nicht.',
       ],
@@ -80,7 +80,7 @@ const guide: Guide = {
       heading: 'E-Scooter-Regeln in Konstanz: wo du fährst, Bussgelder, Promille',
       blocks: [
         'Es gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur, wo es keinen gibt, auf der Fahrbahn. Auf Gehwegen und in der Fussgängerzone der Altstadt fährst du nicht; die Uferpromenade sollen Leih-Scooter laut Stadt (Januar 2024) ebenfalls meiden.',
-        'Manche Gassen öffnet ein Zusatzschild für den Radverkehr. Für E-Scooter gilt es heute nicht. Ab 1. März 2027 gibt «Radverkehr frei» auch E-Scooter frei, im Schritttempo; Hopp sperrt den Kern der Altstadt laut Datenfeed aber unabhängig davon. Ein Nachtverbot oder eine Winterpause nennt die Stadt in ihrer Mitteilung von 2024 nicht, und laut Datenfeeds vermieten alle drei rund um die Uhr.',
+        'Manche Gassen öffnet ein Zusatzschild für den Radverkehr. Für E-Scooter gilt es heute nicht. Ab 1. März 2027 gibt «Radverkehr frei» auch E-Scooter frei, im Schritttempo; Hopp sperrt den Kern der Altstadt laut seinen offenen Daten aber unabhängig davon. Ein Nachtverbot oder eine Winterpause nennt die Stadt in ihrer Mitteilung von 2024 nicht, und laut ihren offenen Daten vermieten alle drei rund um die Uhr.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -102,8 +102,8 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter nach Kreuzlingen?',
       blocks: [
-        'Kreuzlingen in der Schweiz grenzt direkt an Paradies und Altstadt. Laut den Datenfeeds sperrt Lime auf Schweizer Seite das Fahren, Zeus drosselt dort auf 1 km/h, und Hopps Gebiet reicht nicht über die Grenze. Beenden kannst du eine Fahrt drüben bei keinem der drei.',
-        'Leih-Scooter in Kreuzlingen selbst fanden wir nicht: Bolt und Dott nennen die Stadt nicht, und MobiData BW, die auch Schweizer Systeme wie das von Voi führt, hat dort keinen Scooter-Anbieter (Stand Oktober 2026). Donkey Republic verleiht in Kreuzlingen Fahrräder, E-Bikes und E-Lastenräder an Stationen.',
+        'Kreuzlingen in der Schweiz grenzt direkt an Paradies und Altstadt. Laut den offenen Daten der drei sperrt Lime auf Schweizer Seite das Fahren, Zeus drosselt dort auf 1 km/h, und Hopps Gebiet reicht nicht über die Grenze. Beenden kannst du eine Fahrt drüben bei keinem der drei.',
+        'Für Kreuzlingen selbst nennen Bolt und Dott keinen Standort, und MobiData BW, die auch Schweizer Systeme wie das von Voi führt, hat dort keinen Scooter-Anbieter (Stand Oktober 2026). Donkey Republic verleiht in Kreuzlingen Fahrräder, E-Bikes und E-Lastenräder an Stationen.',
         'Fährst du einen eigenen E-Scooter über die Grenze, gelten drüben die Schweizer Regeln. Das E-Trottinett ist dort ein Leicht-Motorfahrrad, das du ab 16 ohne Führerausweis fährst, mit 14 und 15 nur mit Ausweis der Kategorie M. Das Licht brennt auch am Tag, auf dem Trottoir, also dem Gehweg, fährst du nicht (CHF 40.–), und die Grenze von 0,5 Promille gilt für alle, auch unter 21. Mehr in den [E-Trottinett-Regeln der Schweiz](guide:swiss-rules).',
       ],
     },
@@ -119,7 +119,7 @@ const guide: Guide = {
       heading: 'Wie Konstanz E-Scooter regelt: Sondernutzungserlaubnis und Obergrenze',
       blocks: [
         'Seit 1. Januar 2024 braucht jeder Anbieter eine Sondernutzungserlaubnis, um Scooter auf öffentliche Flächen zu stellen. So teilte es die Stadt im Januar 2024 mit: Jeder darf höchstens 150 Scooter aufstellen und zahlt 120 € pro Scooter und Jahr. Falsch abgestellte Scooter soll er binnen zwei Stunden umstellen, ungenutzte spätestens nach 36 Stunden.',
-        'Im Paradies und am Altstadtring wollte die Stadt damals als Pilot Abstellflächen markieren; bewähren sie sich, sollen sie in der ganzen Stadt folgen. Ob sich an Obergrenze, Gebühr oder Abstellflächen seither etwas geändert hat, konnten wir nicht prüfen: Auf der Website der Stadt fanden wir dazu im Oktober 2026 keine aktuelle Seite.',
+        'Im Paradies und am Altstadtring wollte die Stadt damals als Pilot Abstellflächen markieren; bewähren sie sich, sollen sie in der ganzen Stadt folgen.',
       ],
     },
     {
@@ -137,19 +137,19 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Konstanz?',
-      answer: 'Die von Hopp, Lime oder Zeus. Du musst 18 sein, einen Führerschein brauchst du nicht. Alle drei zeigt die [Live-Karte von Konstanz](map:de:Konstanz); Bolt, Voi und Dott fanden wir in Konstanz nicht (Stand Oktober 2026).',
+      answer: 'Die von Hopp, Lime oder Zeus. Du musst 18 sein, einen Führerschein brauchst du nicht. Alle drei zeigt die [Live-Karte von Konstanz](map:de:Konstanz). Bolt und Dott nennen Konstanz nicht auf ihren Standortlisten, und Voi hat laut MobiData BW kein Gebiet dort (Stand Oktober 2026).',
     },
     {
       question: 'Was kostet ein E-Scooter in Konstanz?',
-      answer: 'Laut Datenfeeds 1 € fürs Entsperren und 0,25 € pro Minute bei Hopp und Zeus, 0,31 € bei Lime (Stand 22. Oktober 2026). Zehn Minuten kosten also 3,50 € oder 4,10 €. Verbindlich ist der Preis in der App.',
+      answer: 'Laut ihren offenen Daten 1 € fürs Entsperren und 0,25 € pro Minute bei Hopp und Zeus, 0,31 € bei Lime (Stand 22. Oktober 2026). Zehn Minuten kosten also 3,50 € oder 4,10 €. Verbindlich ist der Preis in der App.',
     },
     {
       question: 'Kann ich mit dem Leih-Scooter nach Kreuzlingen fahren?',
-      answer: 'Nein. Laut den Datenfeeds sperrt Lime die Schweizer Seite, Zeus drosselt dort auf 1 km/h, und Hopps Gebiet reicht nicht hinüber; drüben beendest du bei keinem eine Fahrt. In Kreuzlingen selbst fanden wir keine Leih-Scooter.',
+      answer: 'Nein. Laut ihren offenen Daten sperrt Lime die Schweizer Seite, Zeus drosselt dort auf 1 km/h, und Hopps Gebiet reicht nicht hinüber; drüben beendest du bei keinem eine Fahrt. In Kreuzlingen selbst führt MobiData BW keinen Scooter-Anbieter (Stand Oktober 2026).',
     },
     {
       question: 'Wo darf ich in der Konstanzer Altstadt abstellen?',
-      answer: 'Im Kern der Altstadt und am Bahnhof bei keinem der drei, so ihre Datenfeeds vom 22. Oktober 2026. An der Laube und im Paradies geht es bei allen dreien; Zeus hat ausserdem feste Flächen, etwa am Fischmarkt beim Konzil. In der Fussgängerzone fährst du mit keinem E-Scooter.',
+      answer: 'Im Kern der Altstadt und am Bahnhof bei keinem der drei, so ihre offenen Daten vom 22. Oktober 2026. An der Laube und im Paradies geht es bei allen dreien; Zeus hat ausserdem feste Flächen, etwa am Fischmarkt beim Konzil. In der Fussgängerzone fährst du mit keinem E-Scooter.',
     },
     {
       question: 'Darf ich einen E-Scooter auf die Fähre nach Meersburg mitnehmen?',
@@ -162,18 +162,18 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'seemoz: Miet-E-Scooter: Betreiber brauchen nun Sondernutzungserlaubnis (Mitteilung der Stadt, 15. Januar 2024)', url: 'https://www.seemoz.de/miet-e-scooter-betreiber-brauchen-nun-sondernutzungserlaubnis/' },
-    { title: 'MobiData BW: Datenfeed von Hopp Konstanz (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/hopp_konstanz/gbfs' },
-    { title: 'MobiData BW: Datenfeed von Zeus Konstanz (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_konstanz/gbfs' },
-    { title: 'MobiData BW: Datenfeed von Lime in Baden-Württemberg (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_bw/gbfs' },
-    { title: 'MobiData BW: Datenfeed von Donkey Republic Kreuzlingen (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/donkey_kreuzlingen/gbfs' },
+    { title: 'MobiData BW: offene Daten von Hopp Konstanz (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/hopp_konstanz/gbfs' },
+    { title: 'MobiData BW: offene Daten von Zeus Konstanz (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_konstanz/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime in Baden-Württemberg (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_bw/gbfs' },
+    { title: 'MobiData BW: offene Daten von Donkey Republic Kreuzlingen (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/donkey_kreuzlingen/gbfs' },
     { title: 'Zeus: ZEUS Is Now In Konstanz (20. November 2020)', url: 'https://zeusscooters.com/2020/11/zeus-is-now-in-konstanz/' },
     { title: 'Zeus: Städte', url: 'https://zeusscooters.com/cities/' },
     { title: 'Zeus: Preise und Pässe', url: 'https://zeusscooters.com/' },
     { title: 'Hopp: Standorte', url: 'https://hopp.bike/locations' },
     { title: 'Hopp: Nutzungsbedingungen für Deutschland', url: 'https://hopp.bike/tos?group=389FGQfb9eqWNoxBiQlENu' },
     { title: 'Hopp: E-Scooter und E-Bikes, Preise', url: 'https://hopp.bike/two-wheels' },
-    { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
-    { title: 'MobiData BW: Datenfeed von Voi in Deutschland (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
+    { title: 'MobiData BW: Verzeichnis der offenen Sharing-Daten (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
+    { title: 'MobiData BW: offene Daten von Voi in Deutschland (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
     { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
     { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
     { title: 'Stadtwerke Konstanz: Fahrradmietsystem konrad', url: 'https://www.stadtwerke-konstanz.de/fahrrad/fahrradmietsystem/' },
