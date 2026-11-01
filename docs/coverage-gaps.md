@@ -1669,19 +1669,27 @@ Bonaire had feeds to add. Survey files are in
   and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
   still holds scooters in Beaumont, and whether the town goes on in 2027;
   remove its area from `lime_ca_edmonton` if it doesn't. Check again in April
-  2027.
+  2027. On 1 November 2026 the feed still held 60 scooters in Beaumont, and
+  the town's page named no plan for 2027; last year the scooters left on 15
+  November.
 - **November 2026:** Lime's Regina, Waterloo Region, Lacombe and Blackfalds
   markets, from its rider map since 27 October 2026. None of the four
   publishes a season ([Canada's winter section](canadian-scooter-feeds.md#winter)):
   if Lime takes its scooters in, pause each from the day it empties until
-  spring, as Leduc.
+  spring, as Leduc. Lacombe and Blackfalds emptied in October (their "feed
+  empty" alerts are silenced to 1 May 2027); on 1 November Regina's daily
+  peak was still about 160 to 180 and Waterloo Region's about 470.
 - **November 2026:** Bird's rider-map towns, from its map since 28 October
   2026. Only Penticton announced its end (below); Kamloops's agreement with
   Bird runs to 1 November, Cranbrook's last two seasons ended that day,
   Okotoks's scooters "will soon be removed", and Medicine Hat, Brampton,
   Oshawa, Cochrane, Vernon, Mankato and Bloomington have emptied for the
   winter before, by Bird's or the town's choice ([Canada's winter section](canadian-scooter-feeds.md#winter)). Pause
-  each from the day its area empties until spring, as Leduc.
+  each from the day its area empties until spring, as Leduc. Spruce Grove's
+  emptied on 28 and 29 October and is paused from 29 October. On 1 November
+  Penticton held 1, and Medicine Hat (38 on 28 October to 12) and Okotoks (40
+  to 24) were falling; Kamloops (162), Cranbrook (35) and the others held
+  theirs.
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));

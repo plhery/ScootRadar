@@ -398,7 +398,12 @@
         "east": -113.85028
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "8a982f01-819a-44f2-a963-27765a185f61"
+      "birdAppArea": "8a982f01-819a-44f2-a963-27765a185f61",
+      "seasonal": {
+        "from": "10-29",
+        "until": "05-01",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_app_st_albert",

@@ -255,6 +255,13 @@ had Leduc "kicking off the scooting season in the coming weeks"; the window's
 dates are 2026's, so check in late April 2027 when the scooters come back
 ([coverage gaps](coverage-gaps.md)).
 
+Spruce Grove and Stony Plain publish no season either, and Bird took its
+scooters in on 28 October 2026: its rider map's area held 49 until that
+evening's sweep, Edmonton time, 2 then, 1 the next morning and none from the
+evening of the 29th. So the catalog pauses it from 29 October until 1 May,
+Edmonton time, as Leduc, Bird's other town near Edmonton: check in late April
+2027 when the scooters come back.
+
 Penticton publishes no season either, but the city's
 [notice of 23 October 2026](https://www.penticton.ca/city-hall/news-alerts/seasonal-shutdown-citys-e-scooter-and-e-bike-service)
 says its "shared e-scooter and e-bike service will conclude its first season
@@ -348,7 +355,7 @@ above):
 - **Cochrane** runs "through the warmer months, weather permitting";
   **Vernon** ran from March to October in 2025; **Lethbridge**'s pilot had an
   "Option for year-round operation"; **Spruce Grove** and **Stony Plain**
-  publish no season.
+  publish no season (paused from 29 October 2026, above).
 - **Calgary** offers scooters "year-round"
   ([info sheet](https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf));
   **Edmonton**, **Hamilton**, **St. Albert**, **Airdrie**, **Kelowna**,
