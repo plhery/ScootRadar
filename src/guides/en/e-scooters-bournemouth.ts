@@ -117,7 +117,7 @@ const guide: Guide = {
     {
       heading: 'Stations, Bournemouth Airport, trains and buses',
       blocks: [
-        '**No e-scooters on South Western Railway trains.** SWR has banned them from its trains and stations since 1 June 2023, citing the fire risk from their batteries; e-bikes, electric wheelchairs and mobility scooters are exempt. Hire e-scooters such as Beryl’s may cross a station forecourt only to reach a hire bay, never station buildings, platforms or trains, SWR says. We couldn’t confirm morebus’s rules: ask before boarding with any e-scooter.',
+        '**Trains and buses.** End your Beryl ride before you go into a station, and check South Western Railway’s and morebus’s own rules before you travel with any e-scooter.',
         {
           list: [
             '**Bournemouth station:** the Bournemouth Station bay, with room for 17, is about 25 metres away.',
@@ -169,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take an e-scooter on the train from Bournemouth or Poole?',
-      answer: 'No. South Western Railway has banned e-scooters from its trains and stations since 1 June 2023, citing fire risk; a hire scooter may only cross the forecourt to a hire bay. Ask morebus about its buses before you travel.',
+      answer: 'Check South Western Railway’s own rules before you travel, and end a Beryl ride before you go into the station. Ask morebus about its buses too.',
     },
     {
       question: 'Can I ride my own e-scooter in Bournemouth?',
@@ -193,8 +193,6 @@ const guide: Guide = {
     { title: 'BCP Council: BCP Council extends Beryl partnership (December 2023)', url: 'https://bcpcouncil.gov.uk/news-hub/news-articles/bcp-council-extends-beryl-partnership' },
     { title: 'Beryl: Third anniversary of the BCP e-scooter trial (January 2024)', url: 'https://beryl.cc/news/2024/01/24/third-anniversary-successful-bcp-e-scooter-trial' },
     { title: 'Department for Transport: National evaluation of e-scooter trials, findings report (December 2022)', url: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1128454/national-evaluation-of-e-scooter-trials-findings-report.pdf' },
-    { title: 'South Western Railway: SWR to ban e-scooters from its trains and stations from 1 June (May 2023)', url: 'https://www.southwesternrailway.com/other/news-and-media/news/2023/may/swr-to-ban-escooters-from-its-trains-and-stations-from-1-june' },
-    { title: 'South Western Railway: Travelling with a bike', url: 'https://www.southwesternrailway.com/travelling-with-us/travelling-with-a-bike' },
     { title: 'Beryl: Terms of service (November 2025)', url: 'https://beryl.cc/terms' },
   ],
 };

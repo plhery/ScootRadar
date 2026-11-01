@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter hire Isle of Wight 2026: Voi, rules, ferries',
   description: 'E-scooters on the Isle of Wight: Voi hire in Newport, Cowes, East Cowes and Ryde. Who can ride, where, the floating bridge, the ferries and Island Line.',
   headline: 'E-scooters on the Isle of Wight: Voi hire, the Solent trial, and the ferries',
-  lede: 'E-scooters on the Isle of Wight come from one company, Voi, in the Solent trial: the government added the island to its list of trial areas in December 2020, and the trials are due to end in May 2028. On 1 November 2026 the map showed its scooters in Newport, Cowes, East Cowes and Ryde. You need a full or provisional driving licence; ride on roads and cycle lanes, never on pavements, and check the price in the Voi app before you unlock. Wightlink and Red Funnel don’t let e-scooters on board, and a private e-scooter is illegal everywhere in public.',
+  lede: 'E-scooters on the Isle of Wight come from one company, Voi, in the Solent trial: the government added the island to its list of trial areas in December 2020, and the trials are due to end in May 2028. On 1 November 2026 the map showed its scooters in Newport, Cowes, East Cowes and Ryde. You need a full or provisional driving licence; ride on roads and cycle lanes, never on pavements, and check the price in the Voi app before you unlock. Wightlink doesn’t let e-scooters on board; check with the other ferry companies before you travel. A private e-scooter is illegal everywhere in public.',
   published: '2026-11-01',
   updated: '2026-11-01',
   city: 'gb:Isle of Wight',
@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'E-scooters on the Isle of Wight: Voi and the Solent trial',
       blocks: [
-        '**Voi** hires out the island’s e-scooters. The government’s list of rental trial areas, updated on 7 July 2026, has the Solent (the Isle of Wight, Portsmouth and Southampton) among 21 areas, and its change log shows the island arriving first: “Solent (Isle of Wight)” was added on 9 December 2020, and Portsmouth and Southampton on 31 March 2021. The government says the 21 live trials are due to end on 31 May 2028. On 1 November 2026 Red Funnel’s guide to getting around the island said Voi hires out e-scooters and e-bikes in some of the main towns.',
-        'At 06:33 GMT on Sunday 1 November 2026 the [map of the Isle of Wight](map:gb:Isle of Wight) showed 216 Voi e-scooters free to rent at that moment. The total takes in the whole island; at 04:45 GMT that morning the scooters stood in four towns and their edges: Newport, Cowes, East Cowes and Ryde, with a few in Seaview, Wootton Bridge and Fishbourne. The map shows where each scooter stands and its battery, not prices, zones, parking places or Voi’s e-bikes; you unlock and pay in the Voi app.',
+        '**Voi** hires out the island’s e-scooters. The government’s list of rental trial areas, updated on 7 July 2026, has the Solent (the Isle of Wight, Portsmouth and Southampton) among 21 areas, and its change log shows the island arriving first: “Solent (Isle of Wight)” was added on 9 December 2020, and Portsmouth and Southampton on 31 March 2021. The government says the 21 live trials are due to end on 31 May 2028.',
+        'At 06:33 GMT on Sunday 1 November 2026 the [map of the Isle of Wight](map:gb:Isle of Wight) showed 216 Voi e-scooters free to rent at that moment. The total takes in the whole island; at 04:45 GMT that morning the scooters stood in four towns and their edges: Newport, Cowes, East Cowes and Ryde, with a few in Seaview, Wootton Bridge and Fishbourne. The map shows where each scooter stands and its battery, not prices, zones or parking places; you unlock and pay in the Voi app.',
       ],
     },
     {
@@ -74,8 +74,8 @@ const guide: Guide = {
       blocks: [
         'In a trial area you may ride on the road, except motorways, in cycle lanes and on cycle routes with the blue bicycle sign, unless a sign bans e-scooters there, but never on the pavement, the government’s guidance says. Where you may ride and end a ride, and any go-slow or no-go zones, are in the Voi app; the map here doesn’t draw them, so check the app before you set off for a beach or a village outside the four towns.',
         '**Ryde.** At 04:58 GMT on 1 November 2026 the map showed 20 scooters in Ryde North West, the ward that takes in Ryde Pier, whose head is Wightlink’s FastCat port.',
-        '**Cowes and East Cowes.** Red Funnel’s West Cowes and East Cowes terminals are on either side of the River Medina. The Isle of Wight Council’s floating bridge between the two towns takes bicycles and scooters only if they are pushed or carried: its terms of use bar riding them on board. On 1 November 2026 a foot passenger’s single cost £1, or 50p with a Saver Card.',
-        '**Newport.** At 04:45 GMT on 1 November 2026 the map showed 67 scooters in Newport, home of the Isle of Wight Council’s County Hall, 31 of them in and around the centre. Its bus station is the bigger of the island’s two main ones, with a travel shop, Red Funnel’s guide says.',
+        '**Cowes and East Cowes.** The Isle of Wight Council’s floating bridge across the River Medina between the two towns takes bicycles and scooters only if they are pushed or carried: its terms of use bar riding them on board. On 1 November 2026 a foot passenger’s single cost £1, or 50p with a Saver Card.',
+        '**Newport.** At 04:45 GMT on 1 November 2026 the map showed 67 scooters in Newport, home of the Isle of Wight Council’s County Hall, 31 of them in and around the centre.',
       ],
     },
     {
@@ -84,7 +84,7 @@ const guide: Guide = {
         {
           list: [
             '**Wightlink**: on 1 November 2026 its questions-and-answers page said it bans e-scooters and other small e-vehicles from its ships and FastCats and from its customer buildings, because fire services report a growing number of fires caused by their batteries, and that the ban stays until there is better understanding and legislation. E-bikes, electric wheelchairs and mobility scooters are not affected. Its FastCats cross from Portsmouth Harbour to Ryde Pier Head in 22 minutes, and its car ferries sail from Portsmouth and Lymington to Fishbourne and Yarmouth.',
-            '**Red Funnel**: e-scooters are not allowed on board or in its terminal areas, and that covers carrying, storing and charging them, its luggage and bicycles page said on 1 November 2026. Bicycles travel free on the car ferry between Southampton and East Cowes, and the Red Jet between Southampton and West Cowes has bike racks.',
+            '**Red Funnel**, from Southampton: check with Red Funnel before you travel with any e-scooter.',
             '**Hovertravel**, the hovercraft from Southsea to Ryde, sets its own rules: ask it before you travel.',
           ],
         },
@@ -94,9 +94,8 @@ const guide: Guide = {
     {
       heading: 'Island Line and the buses',
       blocks: [
-        'South Western Railway, which runs Island Line, bans private e-scooters from all railway premises: station forecourts, cycle stores, station buildings, platforms and trains. Hire e-scooters may come onto a station forecourt only to reach or leave designated hire bays, and never into station buildings, onto platforms or onto trains, its bike page said on 1 November 2026. Island Line carries up to four bicycles free, in the Shanklin end of each train.',
-        'The line runs from Ryde Pier Head through Ryde Esplanade, Ryde St John’s Road, Smallbrook Junction, Brading, Sandown and Lake to Shanklin, Red Funnel’s guide says. Of its towns only Ryde had Voi scooters on the map at 04:45 GMT on 1 November 2026, so don’t count on one in Sandown or Shanklin.',
-        'Southern Vectis runs the island’s buses, with bus stations in Newport and Ryde, Red Funnel’s guide says. End your Voi ride before you get on.',
+        'South Western Railway runs Island Line. End your Voi ride before you go into a station, and check South Western Railway’s own rules before you take any e-scooter onto railway premises or a train.',
+        'On the island’s buses, end your Voi ride before you get on.',
       ],
     },
     {
@@ -107,7 +106,6 @@ const guide: Guide = {
             '**First in the Solent.** The government added the Isle of Wight to its list of e-scooter trial areas on 9 December 2020, nearly four months before Portsmouth and Southampton.',
             '**A ferry with chains.** The terms of the Isle of Wight Council’s floating bridge across the Medina ban sitting or standing on its prows or chains, and boarding while the prow is raised.',
             '**22 minutes to Portsmouth.** Wightlink’s FastCat links Ryde Pier Head with Portsmouth Harbour station, and Wightlink says its six vehicle ferries and two FastCats sail 364 days a year.',
-            '**Two hours round the coast.** Red Funnel says you can travel round the island’s entire coastline in about two hours.',
           ],
         },
       ],
@@ -116,7 +114,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is Voi the only e-scooter hire on the Isle of Wight?',
-      answer: 'Yes. Voi hires out e-scooters and e-bikes in some of the island’s main towns, Red Funnel’s guide said on 1 November 2026, and only trial scooters may be ridden in public. Voi’s e-bikes aren’t on the map.',
+      answer: 'Yes. At 06:33 GMT on 1 November 2026 the map showed 216 Voi e-scooters free to rent on the island and no other company’s, and only trial scooters may be ridden in public.',
     },
     {
       question: 'Where can I find a Voi e-scooter on the Isle of Wight?',
@@ -128,7 +126,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take an e-scooter on the ferry to the Isle of Wight?',
-      answer: 'Not with Wightlink, which bans e-scooters from its ships, FastCats and customer buildings, or with Red Funnel, which keeps them off its ferries and out of its terminals. Ask Hovertravel about its own rules. End your Voi ride before you board and hire another on the other side.',
+      answer: 'Not with Wightlink, which bans e-scooters from its ships, FastCats and customer buildings. Check with Red Funnel and Hovertravel before you travel. End your Voi ride before you board and hire another on the other side.',
     },
     {
       question: 'Can I take a Voi on the floating bridge between Cowes and East Cowes?',
@@ -142,14 +140,10 @@ const guide: Guide = {
   sources: [
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'GOV.UK: E-scooter trials, guidance for local areas and rental operators', url: 'https://www.gov.uk/government/publications/e-scooter-trials-guidance-for-local-areas-and-rental-operators/e-scooter-trials-guidance-for-local-areas-and-rental-operators' },
-    { title: 'Red Funnel: Getting around the Isle of Wight', url: 'https://www.redfunnel.co.uk/isle-of-wight-guide/getting-around' },
-    { title: 'Red Funnel: Luggage and bicycles', url: 'https://www.redfunnel.co.uk/policies-and-conditions/luggage-pets-bicycles' },
-    { title: 'Red Funnel: Ferry terminals', url: 'https://www.redfunnel.co.uk/isle-of-wight-ferry/plan/terminals' },
     { title: 'Wightlink: why small e-vehicles are banned on board', url: 'https://www.wightlink.co.uk/faq/answers/why-have-you-banned-all-e-scooters-e-skateboards-e-unicycles-and-hoverboards-on-board-you-ships-and-inside-customer-buildings' },
     { title: 'Wightlink: Ports', url: 'https://www.wightlink.co.uk/facilities/ports' },
     { title: 'Isle of Wight Floating Bridge: Terms of use', url: 'https://www.iwfloatingbridge.co.uk/terms-of-use/' },
     { title: 'Isle of Wight Floating Bridge: Prices', url: 'https://www.iwfloatingbridge.co.uk/prices-tickets/' },
-    { title: 'South Western Railway: Travelling with a bike', url: 'https://www.southwesternrailway.com/travelling-with-us/travelling-with-a-bike' },
   ],
 };
 

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'southampton',
   name: 'E-scooter hire in Southampton',
   title: 'E-scooters Southampton 2026: Voi hire, parking and rules',
-  description: 'E-scooters in Southampton with Voi: who can ride, where to ride and park, the trial to May 2028, and the rules at the station, the universities and Red Funnel.',
+  description: 'E-scooters in Southampton with Voi: who can ride, where to ride and park, the trial to May 2028, and the rules at the station, the universities and the ferries.',
   headline: 'E-scooters in Southampton: Voi hire, parking zones and where you can ride',
-  lede: 'E-scooters in Southampton are hired from Voi, the only operator in the Solent trial, which also covers Portsmouth and the Isle of Wight and runs until May 2028. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle lanes but never on pavements, and end every ride in a parking zone shown in the app. We couldn’t find the current price on an open official page, so check it in the Voi app before you unlock. South Western Railway, Southern and Red Funnel don’t allow e-scooters on board.',
+  lede: 'E-scooters in Southampton are hired from Voi, the only operator in the Solent trial, which also covers Portsmouth and the Isle of Wight and runs until May 2028. You must be 18 or over with a full or provisional driving licence, ride on roads and cycle lanes but never on pavements, and end every ride in a parking zone shown in the app. Check the price in the Voi app before you unlock. Southern doesn’t allow e-scooters on board; check with South Western Railway and Red Funnel before you travel with one.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'gb:Southampton',
@@ -19,7 +19,7 @@ const guide: Guide = {
         '**Voi** is the only company hiring out e-scooters in Southampton. The city is in the government’s Solent trial area, with Portsmouth and the Isle of Wight. According to the Daily Echo, the scheme is a partnership of Southampton City Council, Portsmouth City Council, Hampshire County Council and the Isle of Wight Council within Solent Transport, which named Voi the sole provider of shared e-scooters and e-bikes in the region in June 2024.',
         'Voi launched in Southampton on 18 March 2021 with 50 scooters, as part of Solent Transport’s Future Transport Zone, funded by the Department for Transport, Micromobility Biz reported. The government added Portsmouth and Southampton to its list of trial areas on 31 March 2021, and the national trials that make hire scooters legal run until May 2028.',
         '**Voi also hires out e-bikes**, unlocked in the same app: the University of Southampton points visitors to “Voi shared e-bikes and e-scooters”.',
-        'At 14:55 on Saturday 24 October 2026 the [map of Southampton](map:gb:Southampton) showed about 880 Voi e-scooters: a snapshot, not the fleet size. It shows where they stand and their battery, not prices, zones, parking, hours or e-bikes. The total covers the city itself: early on 25 October, 846 of 850 scooters stood inside the city boundary, from Bassett and Redbridge to Weston and Thornhill, and 4 just over it in West End. None stood in Eastleigh, Chandler’s Ford, Netley or Totton, or at the airport.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Southampton](map:gb:Southampton) showed about 880 Voi e-scooters. It shows where they stand and their battery, not prices, zones, parking, hours or e-bikes. The total covers the city itself: early on 25 October, 846 of 850 scooters stood inside the city boundary, from Bassett and Redbridge to Weston and Thornhill, and 4 just over it in West End. None stood in Eastleigh, Chandler’s Ford, Netley or Totton, or at the airport.',
       ],
     },
     {
@@ -108,14 +108,14 @@ const guide: Guide = {
     {
       heading: 'Can you take an e-scooter on a train, ferry or bus?',
       blocks: [
-        'None of the train and ferry companies we could check lets a hire scooter on board:',
+        'End your ride before you board a train or ferry:',
         {
           list: [
-            '**South Western Railway**, which runs Southampton Central: e-scooters and e-bikes from official hire schemes, “such as those in Bournemouth and Southampton”, may be used only on station forecourts, to reach or leave the hire bays, and never in station buildings, on platforms or on trains. Private e-scooters aren’t allowed anywhere on railway premises.',
+            '**South Western Railway**, which runs Southampton Central: end your Voi ride in a parking zone outside, and check its own rules before you take any e-scooter into the station or onto a train.',
             '**Southern**, along the coast towards Brighton: since 1 June 2023 all e-scooters have been banned from its trains and stations.',
-            '**Red Funnel** to the Isle of Wight doesn’t allow electric scooters on board or in its terminal areas, its luggage rules say, so you can’t carry, store or charge one there either.',
+            '**Red Funnel** to the Isle of Wight: check with the ferry company before you travel with any e-scooter.',
             '**The Hythe ferry** across Southampton Water had no scheduled service on 25 October 2026, its website said; the Hythe Pier Company bought the old operator’s assets from the liquidators in June 2026.',
-            '**Buses and other trains:** we couldn’t check Bluestar’s, Unilink’s, CrossCountry’s or GWR’s own conditions.',
+            '**Buses and other trains:** check Bluestar’s, Unilink’s, CrossCountry’s or GWR’s own conditions before you travel.',
           ],
         },
         'Heading to the island or Portsmouth? Voi hires out e-scooters there too: at 14:55 on 24 October 2026 the map showed about 210 on the [Isle of Wight](guide:isle-of-wight) and 550 in [Portsmouth](guide:portsmouth). See [e-scooter hire in the UK](guide:uk-hire) for all 21 trial areas.',
@@ -149,11 +149,11 @@ const guide: Guide = {
     },
     {
       question: 'Can I take an e-scooter on the Red Funnel ferry to the Isle of Wight?',
-      answer: 'No. Red Funnel doesn’t allow e-scooters on board or in its terminals, even carried. Voi also hires out e-scooters on the island, so pick up another one there.',
+      answer: 'Check with Red Funnel before you travel. Voi also hires out e-scooters on the island, so end your ride before you board and pick up another one there.',
     },
     {
       question: 'Can I leave a Voi at Southampton Central?',
-      answer: 'Only in the hire bays. South Western Railway lets hire e-scooters onto the station forecourt just to reach or leave the designated bays; they aren’t allowed in the station building, on platforms or on trains.',
+      answer: 'Only in a parking zone the Voi app shows. End the ride there, outside the station, and check South Western Railway’s own rules before you take any e-scooter inside.',
     },
     {
       question: 'Can I ride my own e-scooter in Southampton?',
@@ -175,9 +175,7 @@ const guide: Guide = {
     { title: 'University of Southampton: University Accommodation Agreement for 2026-27', url: 'https://www.southampton.ac.uk/student-life/accommodation/fees-contracts/halls/agreement' },
     { title: 'Solent University: Travel and transport', url: 'https://students.solent.ac.uk/university-life/campus/travel-and-transport' },
     { title: 'University Hospital Southampton: Getting to Southampton General and Princess Anne hospitals', url: 'https://www.uhs.nhs.uk/for-visitors/southampton-general-hospital/getting-here' },
-    { title: 'South Western Railway: Travelling with a bike', url: 'https://www.southwesternrailway.com/travelling-with-us/travelling-with-a-bike' },
     { title: 'Southern: Bringing a bike or scooter', url: 'https://www.southernrailway.com/travel-information/onboard-travel/bringing-a-bike' },
-    { title: 'Red Funnel: Luggage and bicycles', url: 'https://www.redfunnel.co.uk/policies-and-conditions/luggage-pets-bicycles' },
     { title: 'Hythe Ferry: Hythe Ferry update (18 June 2026)', url: 'https://hytheferry.co.uk/press-release' },
     { title: 'Associated British Ports: Southampton', url: 'https://www.abports.co.uk/locations/southampton' },
   ],

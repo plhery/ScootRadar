@@ -106,7 +106,7 @@ const guide: Guide = {
     {
       heading: 'Portsmouth’s stations and the trains',
       blocks: [
-        'South Western Railway bans private e-scooters from all railway premises, station forecourts, cycle stores, platforms and trains included. Hire scooters may come onto a station forecourt only to reach or leave the designated hire bays, and never into station buildings, onto platforms or onto trains, its bike page said on 1 November 2026.',
+        'South Western Railway runs Portsmouth’s stations: check its own rules before you take any e-scooter onto railway premises or a train.',
         'Express FM’s 2021 launch report listed Voi racks at Hilsea station and The Hard Interchange, the main bus terminal beside Portsmouth Harbour station. End your ride in a bay outside and walk in.',
       ],
     },
@@ -158,7 +158,6 @@ const guide: Guide = {
     { title: 'Wightlink: why small e-vehicles are banned on board', url: 'https://www.wightlink.co.uk/faq/answers/why-have-you-banned-all-e-scooters-e-skateboards-e-unicycles-and-hoverboards-on-board-you-ships-and-inside-customer-buildings' },
     { title: 'Wightlink: Ports', url: 'https://www.wightlink.co.uk/facilities/ports' },
     { title: 'Gosport Ferry: Bikes and motorbikes', url: 'https://gosportferry.co.uk/ferry-service/bikes-motorbikes/' },
-    { title: 'South Western Railway: Travelling with a bike', url: 'https://www.southwesternrailway.com/travelling-with-us/travelling-with-a-bike' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'GOV.UK: E-scooter trials, guidance for local areas and rental operators', url: 'https://www.gov.uk/government/publications/e-scooter-trials-guidance-for-local-areas-and-rental-operators/e-scooter-trials-guidance-for-local-areas-and-rental-operators' },
   ],
