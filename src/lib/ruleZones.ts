@@ -32,7 +32,7 @@ export interface RuleHours {
 interface RuleZoneCommon {
   id: string;
   place: string;
-  /** Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune". */
+  /** Who sets it, as the legend names them, with any credit the shapes need: "Seoul, lines © OpenStreetMap", "Bergen kommune". */
   authority: string;
   rule: RuleKind;
   /** The local day it starts, "YYYY-MM-DD"; since always when left out. */

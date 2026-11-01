@@ -1,12 +1,12 @@
 {
   "verifiedOn": "2026-10-26",
-  "about": "Streets where a city or its police forbids riding e-scooters, at the hours given, by the clock of the zone's time zone. Each is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. The map draws them as bands. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2).",
+  "about": "Streets where a city or its police forbids riding e-scooters, at the hours given, by the clock of the zone's time zone. Each is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. The map draws them as bands, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers these streets only. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2).",
   "zones": [
     {
       "id": "seoul-hongdae-red-road",
       "place": "Hongdae Red Road, sections R1 to R6 (Mapo-gu)",
       "country": "KR",
-      "authority": "Seoul",
+      "authority": "Seoul, lines © OpenStreetMap",
       "rule": "noRide",
       "from": "2025-05-16",
       "timeZone": "Asia/Seoul",
@@ -55,7 +55,7 @@
       "id": "seoul-banpo-academy-street",
       "place": "Banpo academy street (Seocho-gu)",
       "country": "KR",
-      "authority": "Seoul",
+      "authority": "Seoul, lines © OpenStreetMap",
       "rule": "noRide",
       "from": "2025-05-16",
       "timeZone": "Asia/Seoul",
@@ -147,7 +147,7 @@
       "id": "seoul-daechi-academy-street",
       "place": "Daechi-dong academy street (Gangnam-gu)",
       "country": "KR",
-      "authority": "Gangnam-gu",
+      "authority": "Gangnam-gu, lines © OpenStreetMap",
       "rule": "noRide",
       "from": "2026-09-30",
       "timeZone": "Asia/Seoul",

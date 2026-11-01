@@ -491,10 +491,20 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(shown.map(\.rule.id), ["seoul-hongdae-red-road"])
         XCTAssertEqual(shown.map(\.inForce), [true])
         XCTAssertTrue(CityRuleZone.shown(over: hongdae, zoom: 13, at: seoulNoon).isEmpty)
-        XCTAssertEqual(CityRuleZone.shown(over: daechi, zoom: 16, at: seoulNoon).map(\.rule.authority), ["Gangnam-gu"])
+        XCTAssertEqual(CityRuleZone.shown(over: daechi, zoom: 16, at: seoulNoon).map(\.rule.authority), ["Gangnam-gu, lines © OpenStreetMap"])
         for rule in CityRuleZone.all {
             XCTAssertEqual(rule.source.scheme, "https")
             XCTAssertFalse(rule.polygons.isEmpty)
+        }
+    }
+
+    func testEveryStreetCreditsOpenStreetMapInTheLegend() {
+        // Seoul's streets are traced on OpenStreetMap's roads, the user's exception for this layer only (1 November 2026),
+        // and the Apple map credits no OpenStreetMap, so the legend line does.
+        let streets = CityRuleZone.all.filter { $0.id.hasPrefix("seoul-") }
+        XCTAssertEqual(streets.count, 3)
+        for street in streets {
+            XCTAssertTrue(street.authority.hasSuffix(", lines © OpenStreetMap"), street.authority)
         }
     }
 
@@ -639,10 +649,10 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(lines.map(\.kind), [.noRide, .noRide, .noParking, .slow, .parking, .parking])
         let texts = lines.map { String($0.text.characters) }
         XCTAssertEqual(texts[0], "\(ScooterZoneKind.noRide.label) · Bergen kommune")
-        // "No riding 12:00–23:00 · Seoul", in the user's format.
+        // "No riding 12:00–23:00 · Seoul, lines © OpenStreetMap", in the user's format.
         XCTAssertTrue(texts[1].hasPrefix("\(ScooterZoneKind.noRide.label) "), texts[1])
         XCTAssertTrue(texts[1].contains("–"), texts[1])
-        XCTAssertTrue(texts[1].hasSuffix(" · Seoul"), texts[1])
+        XCTAssertTrue(texts[1].hasSuffix(" · Seoul, lines © OpenStreetMap"), texts[1])
         XCTAssertEqual(texts[2], "\(ScooterZoneKind.noParking.label) · Bergen kommune")
         XCTAssertEqual(texts[3], "\(ScooterZoneKind.slow.label) · Bergen kommune")
         XCTAssertEqual(texts[4], "\(ScooterZoneKind.parking.label) · Porto")

@@ -61,7 +61,7 @@ describe('ruleZonesInView', () => {
     expect(hongdae[0].polygons.length).toBeGreaterThan(0);
     expect(ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, SEOUL_23H)[0].inForce).toBe(false);
     expect(ruleZonesInView({ bounds: HONGDAE, zoom: 13 }, SEOUL_NOON)).toEqual([]);
-    expect(ruleZonesInView({ bounds: DAECHI, zoom: 16 }, SEOUL_NOON).map(zone => zone.authority)).toEqual(['Gangnam-gu']);
+    expect(ruleZonesInView({ bounds: DAECHI, zoom: 16 }, SEOUL_NOON).map(zone => zone.authority)).toEqual(['Gangnam-gu, lines © OpenStreetMap']);
     expect(ruleZonesInView(null, SEOUL_NOON)).toEqual([]);
   });
 
@@ -71,6 +71,12 @@ describe('ruleZonesInView', () => {
       expect(zone.lines.every(line => line.length >= 2)).toBe(true);
       expect(zone.hours?.every(({ from, until }) => /^\d\d:\d\d$/.test(from) && /^\d\d:\d\d$/.test(until)) ?? true).toBe(true);
     }
+  });
+
+  it('credits OpenStreetMap in the legend for every street, its lines being traced on its roads', () => {
+    // The user's exception to map rules not resting on OpenStreetMap covers these streets only (1 November 2026).
+    expect(RULE_ZONES.length).toBeGreaterThan(0);
+    for (const zone of RULE_ZONES) expect(zone.authority).toMatch(/^[^,]+, lines © OpenStreetMap$/);
   });
 });
 

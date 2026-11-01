@@ -5352,19 +5352,19 @@ extension RentalCurfew {
 extension CityRuleZone {
     static let all: [CityRuleZone] = [
         CityRuleZone(
-            id: "seoul-hongdae-red-road", authority: "Seoul",
+            id: "seoul-hongdae-red-road", authority: "Seoul, lines © OpenStreetMap",
             timeZone: "Asia/Seoul", firstDay: "2025-05-16", hours: [.init(fromMinute: 720, untilMinute: 1380)],
             source: URL(string: "https://news.seoul.go.kr/traffic/archives/514266")!,
             lines: points(seoulHongdaeRedRoadLines)
         ),
         CityRuleZone(
-            id: "seoul-banpo-academy-street", authority: "Seoul",
+            id: "seoul-banpo-academy-street", authority: "Seoul, lines © OpenStreetMap",
             timeZone: "Asia/Seoul", firstDay: "2025-05-16", hours: [.init(fromMinute: 720, untilMinute: 1380)],
             source: URL(string: "https://news.seoul.go.kr/traffic/archives/514266")!,
             lines: points(seoulBanpoAcademyStreetLines)
         ),
         CityRuleZone(
-            id: "seoul-daechi-academy-street", authority: "Gangnam-gu",
+            id: "seoul-daechi-academy-street", authority: "Gangnam-gu, lines © OpenStreetMap",
             timeZone: "Asia/Seoul", firstDay: "2026-09-30", hours: [.init(fromMinute: 720, untilMinute: 1380)],
             source: URL(string: "https://www.gangnam.go.kr/board/B_000031/1075336/view.do?mid=ID01_0313")!,
             lines: points(seoulDaechiAcademyStreetLines)

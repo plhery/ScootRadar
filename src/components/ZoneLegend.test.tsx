@@ -42,7 +42,7 @@ it('keeps a street\'s line with its hours, and the operators\' kinds before the 
   const rules = [bergen('parking-1', 'parking'), ...ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, SEOUL_NOON)];
   const { container } = render(<I18nProvider><ZoneLegend state="shown" count={2} rules={rules} /></I18nProvider>);
   expect([...container.querySelectorAll('.zone-legend-item')].map(item => item.textContent)).toEqual([
-    'No riding', 'No parking', 'Slow', 'No riding 12:00–23:00 · Seoul', 'Parking · Bergen kommune',
+    'No riding', 'No parking', 'Slow', 'No riding 12:00–23:00 · Seoul, lines © OpenStreetMap', 'Parking · Bergen kommune',
   ]);
 });
 

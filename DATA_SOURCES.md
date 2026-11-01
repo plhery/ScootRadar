@@ -628,7 +628,12 @@ and Daechi-dong's academy street since 30 September 2026
 Each was traced from its authority's map, [Seoul's](https://mediahub.seoul.go.kr/archives/2014422)
 and the one in Gangnam's notice, laid over OpenFreeMap's roads: Hongdae's and
 Daechi-dong's lines follow the line drawn, Banpo's are the roads under it,
-© OpenStreetMap contributors under the ODbL. The pages are under KOGL Type 4
+© OpenStreetMap contributors under the ODbL. The legend credits it after the
+authority, "Seoul, lines © OpenStreetMap", since the iOS app's Apple map
+credits no OpenStreetMap. Map rules otherwise don't rest on OpenStreetMap:
+these lines are the user's exception (1 November 2026), and it covers this
+layer only. Where and when each rule holds still comes from its authority
+alone. The pages are under KOGL Type 4
 (credit, no commercial use, no changes): only where and when the rule holds is
 taken from them, not their maps or words. Yeonsinnae's and Wirye's streets,
 which the press reports from 30 September 2026, wait for an official page, and
