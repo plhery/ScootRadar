@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.roborazzi)
+    // The Baseline Profile, recorded by :baselineprofile and shipped in the release build (X-AD30).
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -63,6 +65,12 @@ android {
     }
 }
 
+baselineProfile {
+    // The profile is recorded on a device by hand (generateBaselineProfile) and kept in
+    // src/release/generated/baselineProfiles, so neither a plain build nor CI needs a device.
+    automaticGenerationDuringBuild = false
+}
+
 roborazzi {
     // The baselines, recorded on the Mac with recordRoborazziDebug and checked on CI with verifyRoborazziDebug.
     outputDir.set(file("src/test/screenshots"))
@@ -88,6 +96,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     // The fold of a partly open foldable, which the chrome and the map keep clear of (UI-116). Apache 2.0.
     implementation(libs.androidx.window)
+    // Installs the Baseline Profile where Play does not, and lets the startup benchmark compile the app with it.
+    implementation(libs.profileinstaller)
+    baselineProfile(project(":baselineprofile"))
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 

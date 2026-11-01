@@ -2,6 +2,7 @@ package com.plhery.scootradar.map
 
 import android.content.ComponentCallbacks2
 import android.content.res.Configuration
+import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -216,6 +217,8 @@ fun ScooterMap(
     LaunchedEffect(ground, look) { ground?.show(look) }
     LaunchedEffect(camera, mapKit) { camera?.mapKit = mapKit }
     LaunchedEffect(markers, dark, look.satellite) { markers?.setDark(dark || look.satellite) }
+    // The launch is fully drawn once the map shows its first markers, which the startup benchmark measures (X-AD30).
+    ReportDrawnWhen { markers?.markersShown == true }
     LaunchedEffect(zones, dark, look.satellite) { zones?.setDark(dark || look.satellite) }
     LaunchedEffect(trail, dark, look.satellite) { trail?.setDark(dark || look.satellite) }
     // The dot is the app's blue, whatever the ground.

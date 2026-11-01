@@ -202,6 +202,15 @@ class ScooterMarkers(
     internal var markersWritten = 0
         private set
 
+    /**
+     * Whether the map has shown its first markers: once the light-up of the first written has started, their tiles
+     * laid out, or the frame after they were written where none lights up. Android's own: the app reports its
+     * launch fully drawn then (ScooterMap), which the startup benchmark measures (X-AD30); nothing on screen changes.
+     */
+    var markersShown by mutableStateOf(false)
+        private set
+    private var markersAwaited = false
+
     /** The copies of pictures the light-up's bands have sent the style as they grow: what the grow costs MapLibre. */
     internal var picturesGrown = 0
         private set
@@ -478,7 +487,13 @@ class ScooterMarkers(
         if (scene.markersVersion == writtenMarkers) return
         writtenMarkers = scene.markersVersion
         markersWritten += 1
-        write(style, ScooterMarkerLayers.MARKERS_SOURCE, MarkerFeatures.markers(scene, art))
+        val features = MarkerFeatures.markers(scene, art)
+        write(style, ScooterMarkerLayers.MARKERS_SOURCE, features)
+        // The first markers are shown as their light-up starts (release), or drawn as they are if none lights up.
+        if (!markersAwaited && features.isNotEmpty()) {
+            markersAwaited = true
+            if (held == null) whenDrawn { markersShown = true }
+        }
         // What TalkBack reads of them, and where, may have changed with them.
         accessibility.refresh()
     }
@@ -694,6 +709,7 @@ class ScooterMarkers(
         late = SystemClock.uptimeMillis() / 1000.0 - since
         lightUpLate = late
         held = null
+        if (markersAwaited) markersShown = true
         view.removeOnTileActionListener(tiles)
         val style = style ?: return
         for (fading in fadings.values) fading.release(style)
