@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Bath e-scooter hire: Dott, in the West of England trial',
       blocks: [
         'One company, **Dott**, rents e-scooters and e-bikes in Bath, under a contract with the West of England Mayoral Combined Authority (WECA). WECA runs the trial with Bath and North East Somerset Council (B&NES), Bristol and South Gloucestershire. Voi brought the first scooters to Bath in October 2020, Tier took over in 2023, and Dott replaced Tier on 3 September 2024.',
-        'At 10.19am on Saturday 24 October 2026 the [map of Bath](map:gb:Bath) showed about 310 Dott e-scooters: a snapshot, not the fleet size. The map shows e-scooters only; Dott’s e-bikes, about 60 of them in its Bath data later that morning, are not on it.',
+        'At 10.19am on Saturday 24 October 2026 the [map of Bath](map:gb:Bath) showed about 310 Dott e-scooters free to rent. The map shows e-scooters only; Dott’s e-bikes, about 60 of them in its Bath data later that morning, are not on it.',
         'Dott had dropped its midnight curfew in Bath by October 2025, and Travelwest, WECA’s travel site, says its vehicles are available 24/7. Dott’s contract with WECA ends in 2027: on 25 August 2026 WECA invited tenders for the next one, and no winner had been announced by 24 October 2026. Hire e-scooters also depend on the national trial, due to run until May 2028.',
       ],
     },
@@ -120,8 +120,8 @@ const guide: Guide = {
     {
       heading: 'Bath Spa station, GWR trains and First buses',
       blocks: [
-        'GWR lists Dott bays close to Bath Spa and Oldfield Park stations. In Dott’s data, Bath Spa station is a 10 mph slow zone and the bus station area next door is no-ride; Oldfield Park station is no-ride, with a bay about 70 metres away.',
-        '**No e-scooters on GWR.** “E-scooters are banned on all GWR trains and stations,” Great Western Railway says: riders who bring one are asked to leave, and an unattended one is treated as abandoned and disposed of. End your ride in a bay and walk in.',
+        'In Dott’s data, Bath Spa station is a 10 mph slow zone and the bus station area next door is no-ride; Oldfield Park station is no-ride, with a bay about 70 metres away.',
+        '**GWR trains:** check GWR’s own rules before you take any e-scooter to its trains. End your ride in a bay and walk in.',
         '**No e-scooters on First buses either.** First West of England’s conditions of travel (March 2026) allow folding bikes and non-motorised folding scooters on board, but “Electric scooters are not permitted to be brought on board”.',
       ],
     },
@@ -183,7 +183,6 @@ const guide: Guide = {
     { title: 'University of Bath: Active travel', url: 'https://www.bath.ac.uk/guides/active-travel/' },
     { title: 'University of Bath: Regulations for students 2026–27', url: 'https://www.bath.ac.uk/publications/regulations-for-students-2026-27/attachments/regulations-for-students-2026-27-12-use-of-motor-vehicles-on-the-university-site.pdf' },
     { title: 'Bath Spa University: Getting around', url: 'https://www.bathspa.ac.uk/student-life/why-bath-spa/life-in-bath/getting-around/' },
-    { title: 'GWR: Bringing your bike', url: 'https://www.gwr.com/travelling-with-us/on-our-trains/bringing-your-bike' },
     { title: 'First West of England: Conditions of travel (March 2026)', url: 'https://www.firstbus.co.uk/sites/default/files/public/node_images/Conditions%20of%20Travel%20-%20WoE%20-%20%20March%2026%20_0.pdf' },
     { title: 'Dott: open data for Bath', url: 'https://gbfs.api.ridedott.com/public/v2/bath/gbfs.json' },
   ],

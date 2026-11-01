@@ -19,8 +19,7 @@ const guide: Guide = {
         'Kristiansand kommune har avtale med to operatører: **Voi og Ryde**. Avtalen gjelder til og med 31. mars 2027, og det er Agder kollektivtrafikk (AKT) som administrerer den. Bolt, som hadde tillatelse fra 2022 til mars 2024, leier ikke lenger ut i byen.',
         'Siden 1. april 2024 gjelder en ny utleieforskrift. Den åpner for opptil to operatører, valgt etter en konkurranse som AKT gjennomfører, og en tillatelse gjelder i tre år om gangen. Hver operatør får ha maks **150** kjøretøy i Kvadraturen (sone 1) og **350** i sone 2, mens det ikke er noe tak i resten av kommunen.',
         'De første utleide sparkesyklene kom i 2019. Kommunen ville ha flere utenfor sentrum, og det har den fått: 14. oktober 2026 viste kommunens eget kart rundt 1320 elsparkesykler fra Voi og 1230 fra Ryde, de aller fleste utenfor sentrum.',
-        'Ryde har ikke alltid hatt tillatelse. Selskapet søkte ikke i 2022, fordi det mente forskriften var ugyldig, og samme sommer fjernet kommunen 800 av Rydes 1000 sparkesykler fra gatene. Ryde betalte 250 000 kr for å få dem tilbake og tapte saken i Agder tingrett i august 2022.',
-        'På [kartet over Kristiansand](map:no:Kristiansand) viste ScootRadar rundt 1150 Voi-sparkesykler 14. oktober 2026. Tallet gjelder sparkesyklene på kartet, ikke hele flåten. **Ryde mangler på kartet:** Selskapet deler ikke posisjonene sine for Kristiansand offentlig, så Rydes sparkesykler ser du bare i Ryde-appen eller i AKT Billett-appen. AKT Billett viser begge operatørene og sender deg videre til appen deres, der du låser opp og betaler.',
+        'På [kartet over Kristiansand](map:no:Kristiansand) viste ScootRadar rundt 1150 Voi-sparkesykler 14. oktober 2026. **Ryde mangler på kartet:** Selskapet deler ikke posisjonene sine for Kristiansand offentlig, så Rydes sparkesykler ser du bare i Ryde-appen eller i AKT Billett-appen. AKT Billett viser begge operatørene og sender deg videre til appen deres, der du låser opp og betaler.',
         'Hvem som får tillatelse fra april 2027, er ikke kjent: Ingen ny konkurranse var utlyst per 15. oktober 2026. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
@@ -63,7 +62,6 @@ const guide: Guide = {
       heading: 'Elsparkesykler i Kristiansand om vinteren',
       blocks: [
         'Om vinteren kan du ikke regne med å finne en elsparkesykkel i Kristiansand. Etter forskriften skal sparkesyklene tas inn når det er fare for snø og is, og ifølge AKT sier kontrakten at de skal samles inn «allerede før det kommer snøfall».',
-        'I januar 2026 fikk Voi daglige bøter av AKT fordi sparkesyklene i Grimstad og Arendal ikke var samlet inn før snøen kom. I Kristiansand var de da allerede fjernet, skrev NRK 10. januar.',
         'Det finnes ingen fast dato for når sparkesyklene forsvinner om høsten eller kommer tilbake om våren. Den 15. oktober 2026 sto de fortsatt ute, og verken kommunen, AKT eller Voi hadde meldt når de tas inn. Når Voi tar dem inn, blir [kartet over Kristiansand](map:no:Kristiansand) tomt. For Ryde sjekker du appen.',
       ],
     },
@@ -177,8 +175,6 @@ const guide: Guide = {
     { title: 'Voi: Elsparkesykler til leie i Kristiansand', url: 'https://www.voi.com/nb/by/kristiansand' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Parkeringsgebyr fra kommunen (på engelsk)', url: 'https://www.ryde-technology.com/help/parking-ticket-municipality' },
-    { title: 'NRK Sørlandet: Får daglige bøter for å ikke ha ryddet elsparkesykler (10. januar 2026)', url: 'https://www.nrk.no/sorlandet/far-daglige-boter-for-a-ikke-ha-ryddet-elsparkesykler-1.17721975' },
-    { title: 'NRK Sørlandet: Krever å få elsparkesyklene tilbake på gaten (22. juli 2022)', url: 'https://www.nrk.no/sorlandet/krever-a-fa-elsparkesyklene-tilbake-pa-gaten-1.16044990' },
   ],
 };
 

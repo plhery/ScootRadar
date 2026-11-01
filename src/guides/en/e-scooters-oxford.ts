@@ -19,7 +19,7 @@ const guide: Guide = {
         'One company, **Voi**, hires out e-scooters in Oxford. Oxfordshire County Council, the highway authority, runs the trial, and its page says Voi “operates our rental scheme” with around 850 e-scooters. The trial began in Headington on 18 February 2021 and has run around the clock since October 2022.',
         '**Lime** is in Oxford too, but with e-bikes only: the council’s e-bike page lists Voi and Lime as the city’s two dockless e-bike operators.',
         '**How long will it run?** The council says Oxford’s trial has been extended until 31 May 2028; the national trials that make hire scooters legal run until May 2028. On 18 June 2026 the council approved plans for a single operator of both hire e-scooters and e-bikes once its e-scooter contract expired on 30 September 2026. On 25 October 2026 its trial page still named Voi, and our map showed Voi’s scooters.',
-        'At 14:55 on Saturday 24 October 2026 the [map of Oxford](map:gb:Oxford) showed about 810 Voi e-scooters: a snapshot, not the fleet size. It shows their positions and battery, not prices, zones, bays or e-bikes. The total counts every Voi scooter in and around Oxford: overnight on 25 October almost all stood inside the city boundary, from Cutteslowe to Blackbird Leys; a few stood just beyond it, and none in Kidlington, Kennington or Abingdon.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Oxford](map:gb:Oxford) showed about 810 Voi e-scooters free to rent. It shows their positions and battery, not prices, zones, bays or e-bikes. The total counts every Voi scooter in and around Oxford: overnight on 25 October almost all stood inside the city boundary, from Cutteslowe to Blackbird Leys; a few stood just beyond it, and none in Kidlington, Kennington or Abingdon.',
       ],
     },
     {
@@ -104,12 +104,12 @@ const guide: Guide = {
     {
       heading: 'Oxford station, trains and buses',
       blocks: [
-        'You can’t take a hire scooter on a bus or a train: the council says they “can’t be folded or collapsed in any way and can’t be taken on public transport or train stations”. GWR says Voi has hire bays close to Oxford station, so end your ride there and walk in.',
+        'You can’t take a hire scooter on a bus or a train: the council says they “can’t be folded or collapsed in any way and can’t be taken on public transport or train stations”. End your ride in a bay and walk in.',
         {
           list: [
-            '**GWR**, whose trains link Oxford with London Paddington: “E-scooters are banned on all GWR trains and stations.” Anyone who brings one will be asked to leave, and an unattended e-scooter is treated as abandoned and disposed of.',
+            '**GWR**, whose trains link Oxford with London Paddington: check GWR’s own rules before you take any e-scooter to its trains.',
             '**Chiltern Railways**, from Oxford to London Marylebone: since 12 June 2023 e-scooters, and charging them, are not permitted on its trains or in its stations, because of the fire risk.',
-            '**Buses:** the council’s line above covers them; we couldn’t check Oxford Bus Company’s or Stagecoach’s own conditions.',
+            '**Buses:** the council’s line above covers them; for your own e-scooter, check Oxford Bus Company’s or Stagecoach’s conditions.',
           ],
         },
         'Heading to London? Voi hires out e-scooters there too: see the [map of London](map:gb:London), and [e-scooter hire in the UK](guide:uk-hire) for all 21 trial areas.',
@@ -148,7 +148,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take a Voi scooter on the train at Oxford station?',
-      answer: 'No. GWR bans e-scooters from all its trains and stations, Chiltern bans them from its trains and stations too, and hire scooters can’t be folded. End your ride in a bay near the station.',
+      answer: 'No. Hire scooters can’t be folded, and the council says they can’t be taken on public transport or into train stations. Chiltern bans e-scooters from its trains and stations; for GWR’s, check GWR’s own rules. End your ride in a bay before you walk in.',
     },
     {
       question: 'Can I ride my own e-scooter in Oxford?',
@@ -167,7 +167,6 @@ const guide: Guide = {
     { title: 'Canal & River Trust: Our Towpath Code (25 March 2026)', url: 'https://canalrivertrust.org.uk/support-us/our-campaigns/stay-kind-slow-down/our-towpath-code' },
     { title: 'Oxford University Hospitals: John Radcliffe Hospital, other transport (reviewed 24 March 2026)', url: 'https://www.ouh.nhs.uk/hospitals/jr/find-us/other-transport' },
     { title: 'Oxford Brookes University: Cycling and e-scooters', url: 'https://www.brookes.ac.uk/travel/cycling' },
-    { title: 'GWR: Bringing your bike', url: 'https://www.gwr.com/travelling-with-us/on-our-trains/bringing-your-bike' },
     { title: 'Chiltern Railways: Travelling with your bike and scooter', url: 'https://www.chilternrailways.co.uk/customer-service/travelling-your-bike' },
     { title: 'Oxford Travel Options: Scooting (August 2026)', url: 'https://www.oxfordtraveloptions.co.uk/travelling-within-oxford/scooting' },
     { title: 'BBC News: E-scooter parking in city set for £3.5m investment (28 April 2026)', url: 'https://www.bbc.co.uk/news/articles/cq6j6311m1zo' },

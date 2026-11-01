@@ -42,7 +42,7 @@ const guide: Guide = {
       blocks: [
         'Ifølge Vois åpne data (1. november 2026) kan du leie en Voi fra kl. 05 til 23, alle dager. Kommunens side (sist endret 7. juli 2026) sier at det ikke er mulig å leie mellom kl. 23 og 06, altså en time lenger om morgenen.',
         'Forskriften fra 2025 sier at utleie ikke kan skje fra midnatt til kl. 05, alle dager, og at kommunedirektøren kan oppheve eller stramme inn nattestengingen. Vois data og kommunens side oppgir altså en lengre nattestenging enn forskriften. Skal du ut tidlig om morgenen, sjekker du appen. Tidene i andre byer står i guiden om [åpningstider for elsparkesykler](guide:opening-hours).',
-        'Om vinteren kan du ikke regne med sparkesykler. Etter forskriften skal de tas inn når det er fare for snø og is, uten noen fast dato. I januar 2026 fikk Voi daglige bøter av AKT fordi sparkesyklene i Grimstad og Arendal ikke var samlet inn før snøen kom, skrev NRK 10. januar. Søndag 1. november 2026 sto de fortsatt ute. Når Voi tar dem inn, blir [kartet over Arendal](map:no:Arendal) tomt.',
+        'Om vinteren kan du ikke regne med sparkesykler. Etter forskriften skal de tas inn når det er fare for snø og is, uten noen fast dato. Søndag 1. november 2026 sto de fortsatt ute. Når Voi tar dem inn, blir [kartet over Arendal](map:no:Arendal) tomt.',
       ],
     },
     {
@@ -162,7 +162,6 @@ const guide: Guide = {
     { title: 'Arendalsuka: Om Arendalsuka', url: 'https://www.arendalsuka.no/om-arendalsuka' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
     { title: 'Samferdselsdepartementet: Regjeringen foreslår å heve aldersgrensen for bruk av elsparkesykler til 16 år (5. oktober 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19092540/regjeringen-foreslar-a-heve-aldersgrensen-for-bruk-av-elsparkesykler-til-16-ar?lang=no' },
-    { title: 'NRK Sørlandet: Får daglige bøter for å ikke ha ryddet elsparkesykler (10. januar 2026)', url: 'https://www.nrk.no/sorlandet/far-daglige-boter-for-a-ikke-ha-ryddet-elsparkesykler-1.17721975' },
   ],
 };
 

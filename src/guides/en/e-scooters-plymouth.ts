@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Plymouth e-scooter hire: Beryl, in a trial since July 2026',
       blocks: [
         'One company, **Beryl**, rents e-scooters in Plymouth, alongside the e-bikes it has run there since March 2023 for the council’s Connect Plymouth scheme. The council signed its decision to go ahead with the trial on 1 July 2026, the government added Plymouth to its list of trial areas on 7 July, and the scooters went on hire on 28 July. Beryl funds the trial, about £1 million, at no cost to the council.',
-        'Beryl lists 200 e-scooters and 510 e-bikes in Plymouth. At 9.18am on Friday 23 October 2026 the [map of Plymouth](map:gb:Plymouth) showed about 160 Beryl e-scooters: a snapshot, not the fleet size. The map shows e-scooters only, not Beryl’s e-bikes.',
+        'Beryl lists 200 e-scooters and 510 e-bikes in Plymouth. At 9.18am on Friday 23 October 2026 the [map of Plymouth](map:gb:Plymouth) showed about 160 Beryl e-scooters free to rent. The map shows e-scooters only, not Beryl’s e-bikes.',
         '**How long will it run?** Beryl’s Plymouth page says “until March 2028”, subject to review. That is Beryl’s date for Plymouth; the government’s national trials, which make hire scooters legal, run separately until May 2028. The council’s pages give no end date.',
         '**Can you ride at night?** Yes. Beryl’s hire-hours page (July 2026) limits night hires only in Bournemouth, Christchurch and Poole and in Brighton, and our map still showed Plymouth scooters at 2.26am on Saturday 17 October 2026.',
       ],
@@ -118,7 +118,7 @@ const guide: Guide = {
         'Every ride ends in a bay, so dock before you board a train or ferry.',
         {
           list: [
-            '**Trains:** GWR bans e-scooters from all its trains and stations because of the battery fire risk, and asks anyone bringing one to leave. Dock at Saltash Road and walk to the station.',
+            '**Trains:** check GWR’s own rules before you take any e-scooter to its trains. Dock at Saltash Road and walk to the station.',
             '**Ferries:** the Mount Batten and Cremyll ferries carry bicycles, but neither the council nor the ferry companies mention e-scooters. Dock at Barbican Landing Stage for the Mount Batten ferry, at Admiral’s Hard for the Cremyll ferry to Mount Edgcumbe (back there since 19 July 2026, says Plymouth Boat Trips), or at the Torpoint Ferry bay.',
             '**Derriford:** the hospital, the district centre, Alpha Way and George Park and Ride have bays in a zone of their own; the Marjon University bays were out of use on 23 October 2026.',
           ],
@@ -182,7 +182,6 @@ const guide: Guide = {
     { title: 'Beryl: open data for Plymouth', url: 'https://beryl-gbfs-production.web.app/v2_2/Plymouth/gbfs.json' },
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'Devon & Cornwall Police: Plymouth police tackle illegal e-scooter, e-bike and e-motorcycle riders (22 July 2026)', url: 'https://news.devon-cornwall.police.uk/news-article/ec6155a4-8a86-f111-9d9b-6045bdd24049' },
-    { title: 'GWR: Bringing your bike on the train', url: 'https://www.gwr.com/travelling-with-us/on-our-trains/bringing-your-bike' },
     { title: 'University of Plymouth: Things to bring to university', url: 'https://www.plymouth.ac.uk/student-life/things-to-bring' },
   ],
 };
