@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.ComponentActivity
@@ -913,6 +914,64 @@ class MapInTheWindowTest {
         Log.i(TAG, "${size()}: chosen ${(System.nanoTime() - tapped) / 1_000_000} ms after the tap")
         Thread.sleep(1_500)
         screenshot("chosen")
+    }
+
+    /**
+     * The rest of MapKit's gestures, which MapLibre's own settings all leave on (MAP-199): one finger drags the map, the
+     * place under it staying under it; a tap of two fingers steps out; and a double tap held and dragged zooms. That one
+     * goes MapLibre's way, Google Maps': down zooms in and up out, about the middle of the map, where MapKit's goes in
+     * as the finger goes up (NEEDS-USER #16).
+     */
+    @Test
+    fun oneFingerDragsTheMapTwoFingersTappedStepOutAndADoubleTapHeldZooms() {
+        show(controller())
+        Thread.sleep(1_500)
+        waitUntilAtRest(zurichStart.region.center)
+        val part = partInView(shownChrome(), onMain { projection.bounds })
+        val centre = ScreenPoint(part.midX, part.midY)
+        val reach = min(part.width, part.height) / 4
+
+        // Dragged, then held still before the finger lifts, so that nothing flings on.
+        val from = ScreenPoint(centre.x - reach / 2, centre.y - reach / 2)
+        val to = ScreenPoint(centre.x + reach / 2, centre.y)
+        val place = onMain { projection.coordinate(from) }
+        fingers(millis = 900, steps = 45) { done -> listOf(ScreenPoint(from.x + (to.x - from.x) * min(1.0, done / 0.6), from.y + (to.y - from.y) * min(1.0, done / 0.6))) }
+        Thread.sleep(800)
+        val dragged = onMain { projection.point(place) }
+        Log.i(TAG, "${size()}: dragged from $from to $to, the place now at $dragged")
+        // Short of the finger by what it moves before the map follows at most, as MapKit's map is: the touch slop, then
+        // MapLibre's own 4 dp (maplibre_minimum_move_threshold).
+        val slop = onMain { ViewConfiguration.get(mapView.context).scaledTouchSlop / mapView.resources.displayMetrics.density } + 4
+        val short = hypot(to.x - dragged.x, to.y - dragged.y)
+        assertTrue("the place under the finger: $dragged for $to, $short short with $slop before the map follows", short <= slop + 2)
+        val along = ((dragged.x - from.x) * (to.x - from.x) + (dragged.y - from.y) * (to.y - from.y)) / hypot(to.x - from.x, to.y - from.y)
+        assertEquals("along the finger's way", hypot(to.x - from.x, to.y - from.y) - short, along, 1.5)
+
+        val before = zoom()
+        fingers(
+            ScreenPoint(centre.x - reach / 2, centre.y) to ScreenPoint(centre.x - reach / 2, centre.y),
+            ScreenPoint(centre.x + reach / 2, centre.y) to ScreenPoint(centre.x + reach / 2, centre.y),
+            millis = 60,
+            steps = 1,
+        )
+        Thread.sleep(1_500)
+        assertEquals("a step out", before - 1, zoom(), 0.1)
+
+        // Tapped, then tapped again and held, the finger going down a quarter of the map and staying there.
+        fun doubleTapHeld(by: Double): Double {
+            val start = zoom()
+            val end = ScreenPoint(centre.x, centre.y + by)
+            fingers(centre to centre, millis = 40, steps = 1)
+            Thread.sleep(80)
+            fingers(millis = 900, steps = 45) { done -> listOf(ScreenPoint(centre.x, centre.y + by * min(1.0, done / 0.6))) }
+            Thread.sleep(1_000)
+            Log.i(TAG, "${size()}: a double tap held and dragged to $end zoomed from $start to ${zoom()}")
+            return zoom() - start
+        }
+        val down = doubleTapHeld(reach)
+        assertTrue("dragged down: in by $down", down > 0.3)
+        val up = doubleTapHeld(-reach)
+        assertTrue("dragged up: out by $up", up < -0.3)
     }
 
     /**
