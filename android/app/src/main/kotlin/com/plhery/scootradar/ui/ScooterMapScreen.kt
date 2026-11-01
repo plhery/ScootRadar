@@ -1248,7 +1248,8 @@ private fun NoticeStack(
  * them from the next frame clips them (clipScrollableContainer): a notice that comes before its height is known, or any
  * under Reduce Motion, isn't drawn over the locate button for that frame. Otherwise they are drawn whole past the
  * foot, as the iPhone's HeightLimit draws them: a notice going after the scroll gave way, or a spring past its rest.
- * Under the scroll, which measures them whole itself, they fit.
+ * Under the scroll, which measures them whole itself, they fit. [FitOrScroll] clips its content so in the frame it
+ * outgrows its room, before its scroll comes.
  */
 internal fun Modifier.fitOrClip(clips: Boolean): Modifier = this then FitOrClipElement(clips)
 

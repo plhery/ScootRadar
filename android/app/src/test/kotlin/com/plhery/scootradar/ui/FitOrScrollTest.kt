@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.ui.theme.ScootTheme
@@ -67,7 +69,7 @@ class FitOrScrollTest {
             pixel(48) to pixel(52)
         }
         assertEquals("cut at the limit, frame by frame", List(3) { Color.Red to Color.White }, grown)
-        assertEquals("tall, it scrolls", 1, scrolls().size)
+        assertEquals("tall, it scrolls the 120 in 50", 70f, scrollRange().maxValue())
 
         tall = false
         Snapshot.sendApplyNotifications()
@@ -77,6 +79,31 @@ class FitOrScrollTest {
         assertEquals("its foot again", Color.Red to Color.White, pixel(28) to pixel(32))
     }
 
+    /**
+     * The scroll starts at the top each time it comes, as ViewThatFits's ScrollView is a view of its own. A scroll
+     * state kept across the plain stack came back where it was left, the content's head out of sight: a limit that
+     * grows in one step (a notice dismissed over the panel's card) drops the scroll before it measures again, so its
+     * offset was never brought back to the top (review-lead-1nov-f 2).
+     */
+    @Test
+    fun aScrollThatComesAgainStartsAtTheTop() {
+        var limit by mutableStateOf(50.dp)
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = false) {
+                FitOrScroll(limit) { Box(Modifier.size(100.dp, 120.dp)) }
+            }
+        }
+        compose.onNode(scroll).performSemanticsAction(SemanticsActions.ScrollBy) { it(0f, 70f) }
+        compose.waitForIdle()
+        assertEquals("scrolled to its foot", 70f, scrollRange().value())
+        limit = 200.dp
+        compose.waitForIdle()
+        assertEquals("within 200, plain", emptyList<Unit>(), scrolls())
+        limit = 50.dp
+        compose.waitForIdle()
+        assertEquals("in 50 again, from the top", 0f, scrollRange().value())
+    }
+
     /** The colour in the middle of the content's width, [y] dp down. */
     private fun pixel(y: Int): Color {
         compose.putFramesOnSurfaces()
@@ -84,8 +111,11 @@ class FitOrScrollTest {
         return image[(50 * compose.density.density).toInt(), (y * compose.density.density).toInt()]
     }
 
-    private fun scrolls() = compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
-        .fetchSemanticsNodes().map { }
+    private val scroll = SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)
+
+    private fun scrolls() = compose.onAllNodes(scroll).fetchSemanticsNodes().map { }
+
+    private fun scrollRange() = compose.onNode(scroll).fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
 
     private companion object {
         const val PLACE = "place"

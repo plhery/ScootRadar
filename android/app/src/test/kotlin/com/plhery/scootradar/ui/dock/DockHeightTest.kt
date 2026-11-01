@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui.dock
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -55,6 +56,7 @@ class DockHeightTest {
     private val locale = Locale.getDefault()
     private val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter("s1", "lime"))))
     private var limit by mutableStateOf(Dp.Infinity)
+    private var room by mutableStateOf(Dp.Unspecified)
 
     @Before
     fun setUp() {
@@ -185,9 +187,25 @@ class DockHeightTest {
         assertEquals("within it again, plain", 0, scrolls())
     }
 
-    private fun scrolls() = compose.onAllNodes(
-        SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange) and hasAnyAncestor(hasTestTag(DOCK_TAG)),
-    ).fetchSemanticsNodes().size
+    /**
+     * In a room shorter than its limit, as the panel's card has under the notices in a short window (its limit floored
+     * at 160), content taller than the room scrolls: chosen by the limit alone, it stayed plain, cut at the room's
+     * foot, the rest out of reach (review-lead-1nov-f 1).
+     */
+    @Test
+    fun theCardScrollsWhatIsTallerThanTheRoomItIsGiven() {
+        limit = 400.dp
+        room = 60.dp
+        shown()
+        compose.mainClock.advanceTimeBy(2_000)
+        assertEquals("the summary in 60 less its padding, scrolling", 1, scrolls())
+        val range = compose.onNode(scroll).fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
+        assertTrue("with more to scroll to: ${range.maxValue()}", range.maxValue() > 10)
+    }
+
+    private val scroll = SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange) and hasAnyAncestor(hasTestTag(DOCK_TAG))
+
+    private fun scrolls() = compose.onAllNodes(scroll).fetchSemanticsNodes().size
 
     /** Heights of the dock's card in pixels: before a change, in each of the 20 frames after, and settled. */
     private data class Film(val before: Int, val frames: List<Int>, val after: Int)
@@ -200,7 +218,7 @@ class DockHeightTest {
         compose.mainClock.autoAdvance = false
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = false) {
-                Box(Modifier.fillMaxWidth()) { ScooterControlDock(model, maximumContentHeight = limit) }
+                Box(Modifier.fillMaxWidth().heightIn(max = room)) { ScooterControlDock(model, maximumContentHeight = limit) }
             }
         }
         compose.mainClock.advanceTimeByFrame()
