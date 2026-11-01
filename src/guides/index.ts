@@ -331,6 +331,7 @@ import knarvikNb from './nb/elsparkesykkel-knarvik';
 import jenaDe from './de/e-scooter-jena';
 import schwerinDe from './de/e-scooter-schwerin';
 import gloucesterEn from './en/e-scooters-gloucester';
+import santaCruzDeTenerifeEs from './es/alquiler-patinete-electrico-santa-cruz-de-tenerife';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -662,4 +663,5 @@ export const GUIDES: readonly Guide[] = [
   jenaDe,
   schwerinDe,
   gloucesterEn,
+  santaCruzDeTenerifeEs,
 ];
