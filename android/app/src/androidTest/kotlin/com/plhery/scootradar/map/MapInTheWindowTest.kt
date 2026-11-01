@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.activity.ComponentActivity
@@ -919,8 +918,8 @@ class MapInTheWindowTest {
     /**
      * The rest of MapKit's gestures, which MapLibre's own settings all leave on (MAP-199): one finger drags the map, the
      * place under it staying under it; a tap of two fingers steps out; and a double tap held and dragged zooms. That one
-     * goes MapLibre's way, Google Maps': down zooms in and up out, about the middle of the map, where MapKit's goes in
-     * as the finger goes up (NEEDS-USER #16).
+     * goes MapLibre's way, Google Maps': down zooms in and up out, about the middle of the map view (under the chrome
+     * too), where MapKit's goes in as the finger goes up (NEEDS-USER #16).
      */
     @Test
     fun oneFingerDragsTheMapTwoFingersTappedStepOutAndADoubleTapHeldZooms() {
@@ -931,21 +930,28 @@ class MapInTheWindowTest {
         val centre = ScreenPoint(part.midX, part.midY)
         val reach = min(part.width, part.height) / 4
 
-        // Dragged, then held still before the finger lifts, so that nothing flings on.
+        // The finger nudged until the map follows it (MapLibre waits for 4 dp, maplibre_minimum_move_threshold), then
+        // dragged on and held still before it lifts, so that nothing flings on: the place under it once the map
+        // follows stays under it. On the map flat: tilted, MapLibre moves the map's middle by the drag, and a place away
+        // from the middle slips a few points against the finger (3 pt over 62 at the opening's 20° on Phone_Min).
+        onMain { map.moveCamera(CameraUpdateFactory.tiltTo(0.0)) }
+        Thread.sleep(500)
         val from = ScreenPoint(centre.x - reach / 2, centre.y - reach / 2)
         val to = ScreenPoint(centre.x + reach / 2, centre.y)
-        val place = onMain { projection.coordinate(from) }
-        fingers(millis = 900, steps = 45) { done -> listOf(ScreenPoint(from.x + (to.x - from.x) * min(1.0, done / 0.6), from.y + (to.y - from.y) * min(1.0, done / 0.6))) }
+        val way = hypot(to.x - from.x, to.y - from.y)
+        val nudged = ScreenPoint(from.x + (to.x - from.x) * 10 / way, from.y + (to.y - from.y) * 10 / way)
+        val finger = Finger(from)
+        finger.moveTo(nudged, millis = 100, steps = 5)
+        Thread.sleep(150)
+        val place = onMain { projection.coordinate(nudged) }
+        finger.moveTo(to, millis = 500, steps = 25)
+        Thread.sleep(300)
+        finger.lift()
         Thread.sleep(800)
         val dragged = onMain { projection.point(place) }
-        Log.i(TAG, "${size()}: dragged from $from to $to, the place now at $dragged")
-        // Short of the finger by what it moves before the map follows at most, as MapKit's map is: the touch slop, then
-        // MapLibre's own 4 dp (maplibre_minimum_move_threshold).
-        val slop = onMain { ViewConfiguration.get(mapView.context).scaledTouchSlop / mapView.resources.displayMetrics.density } + 4
-        val short = hypot(to.x - dragged.x, to.y - dragged.y)
-        assertTrue("the place under the finger: $dragged for $to, $short short with $slop before the map follows", short <= slop + 2)
-        val along = ((dragged.x - from.x) * (to.x - from.x) + (dragged.y - from.y) * (to.y - from.y)) / hypot(to.x - from.x, to.y - from.y)
-        assertEquals("along the finger's way", hypot(to.x - from.x, to.y - from.y) - short, along, 1.5)
+        Log.i(TAG, "${size()}: dragged from $nudged to $to, the place under the finger now at $dragged")
+        assertEquals("the place under the finger: $dragged for $to", to.x, dragged.x, 1.5)
+        assertEquals("the place under the finger: $dragged for $to", to.y, dragged.y, 1.5)
 
         val before = zoom()
         fingers(
@@ -953,6 +959,7 @@ class MapInTheWindowTest {
             ScreenPoint(centre.x + reach / 2, centre.y) to ScreenPoint(centre.x + reach / 2, centre.y),
             millis = 60,
             steps = 1,
+            planned = true,
         )
         Thread.sleep(1_500)
         assertEquals("a step out", before - 1, zoom(), 0.1)
@@ -1306,15 +1313,16 @@ class MapInTheWindowTest {
     }
 
     /** One or two fingers drawn from their starts to their ends over `millis`, in the map's points. */
-    private fun fingers(vararg paths: Pair<ScreenPoint, ScreenPoint>, millis: Long = 600, steps: Int = 30) =
-        fingers(millis, steps) { done -> paths.map { (from, to) -> ScreenPoint(from.x + (to.x - from.x) * done, from.y + (to.y - from.y) * done) } }
+    private fun fingers(vararg paths: Pair<ScreenPoint, ScreenPoint>, millis: Long = 600, steps: Int = 30, planned: Boolean = false) =
+        fingers(millis, steps, planned) { done -> paths.map { (from, to) -> ScreenPoint(from.x + (to.x - from.x) * done, from.y + (to.y - from.y) * done) } }
 
     /**
      * Fingers on the screen where `at` puts them as the gesture is done from 0 to 1 over `millis`, in the map's
      * points: real touches, sent through the window as the screen sends them, so that the chrome over the map takes
-     * those on it.
+     * those on it. Each touch is stamped as it is sent, or, `planned`, at its time in the gesture: MapLibre times a
+     * two-finger tap by its touches' stamps (under 150 ms), which a busy emulator's slow sending can outlast.
      */
-    private fun fingers(millis: Long = 600, steps: Int = 30, at: (done: Double) -> List<ScreenPoint>) {
+    private fun fingers(millis: Long = 600, steps: Int = 30, planned: Boolean = false, at: (done: Double) -> List<ScreenPoint>) {
         val (origin, density) = onMain { IntArray(2).also { mapView.getLocationOnScreen(it) } to mapView.resources.displayMetrics.density }
         val count = at(0.0).size
         val properties = Array(count) { MotionEvent.PointerProperties().apply { id = it; toolType = MotionEvent.TOOL_TYPE_FINGER } }
@@ -1328,7 +1336,8 @@ class MapInTheWindowTest {
                     size = 1f
                 }
             }.toTypedArray()
-            val event = MotionEvent.obtain(down, SystemClock.uptimeMillis(), action, pointers, properties, coordinates, 0, 0, 1f, 1f, 0, 0, InputDevice.SOURCE_TOUCHSCREEN, 0)
+            val time = if (planned) down + (millis * done).toLong() else SystemClock.uptimeMillis()
+            val event = MotionEvent.obtain(down, time, action, pointers, properties, coordinates, 0, 0, 1f, 1f, 0, 0, InputDevice.SOURCE_TOUCHSCREEN, 0)
             instrumentation.uiAutomation.injectInputEvent(event, true)
             event.recycle()
         }
@@ -1341,6 +1350,48 @@ class MapInTheWindowTest {
         }
         if (count == 2) send(MotionEvent.ACTION_POINTER_UP or second, 2, 1.0)
         send(MotionEvent.ACTION_UP, 1, 1.0)
+    }
+
+    /**
+     * One finger put down at `at`, then moved and lifted step by step, in the map's points: real touches through the
+     * window, as [fingers] sends them, for a test that reads the map while the finger is still on it.
+     */
+    private inner class Finger(at: ScreenPoint) {
+        private val down = SystemClock.uptimeMillis()
+        private val properties = arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = MotionEvent.TOOL_TYPE_FINGER })
+        private val place = onMain { IntArray(2).also { mapView.getLocationOnScreen(it) } to mapView.resources.displayMetrics.density }
+        private var last = at
+
+        init {
+            send(MotionEvent.ACTION_DOWN, at)
+        }
+
+        fun moveTo(to: ScreenPoint, millis: Long, steps: Int) {
+            val from = last
+            for (step in 1..steps) {
+                SystemClock.sleep(millis / steps)
+                val done = step.toDouble() / steps
+                send(MotionEvent.ACTION_MOVE, ScreenPoint(from.x + (to.x - from.x) * done, from.y + (to.y - from.y) * done))
+            }
+        }
+
+        fun lift() = send(MotionEvent.ACTION_UP, last)
+
+        private fun send(action: Int, point: ScreenPoint) {
+            last = point
+            val (origin, density) = place
+            val coordinates = arrayOf(
+                MotionEvent.PointerCoords().apply {
+                    x = origin[0] + (point.x * density).toFloat()
+                    y = origin[1] + (point.y * density).toFloat()
+                    pressure = 1f
+                    size = 1f
+                },
+            )
+            val event = MotionEvent.obtain(down, SystemClock.uptimeMillis(), action, 1, properties, coordinates, 0, 0, 1f, 1f, 0, 0, InputDevice.SOURCE_TOUCHSCREEN, 0)
+            instrumentation.uiAutomation.injectInputEvent(event, true)
+            event.recycle()
+        }
     }
 
     private fun locate(place: GeoPoint) = onMain { controller.locationsUpdated(listOf(ScooterLocationFix(place, horizontalAccuracy = 5.0, timestamp = Instant.now()))) }
