@@ -558,6 +558,42 @@ burst like the roughly 900 quick requests after which it blocked a scanning
 address. With the twenty-minute cadence Hoppy's host stays near 130 requests
 an hour, so no interval was changed for ATOM.
 
+## RideMovi Dresden app map (1 November 2026)
+
+The official Android app, RideMovi 5.2.0 (`com.ridemovi.app`), uses
+`https://api.ridemoviapp.com`. Its scooter map is separate from GBFS:
+
+- `GET /bike/operationArea/getNearestOperationArea?vehicleType=escooter`, with
+  `X-Vivi-Latitude: 51.0504` and `X-Vivi-Longitude: 13.7373`, answered anonymously
+  with code `1000` and the `Dresden_OPS` operating polygon: area id `1286`, city
+  id `86`. This establishes the configured service area, not available scooters.
+- The app requests `GET /bike/nearby` with `ridingStatus=0`,
+  `vehicleType=escooter`, `areaLimit=100`, the same coordinate headers and a
+  rider's bearer token. Without a token it returned code `15000`, `Token is
+  null`. The app reads `data.nearbyBikes` and separate parking and restriction
+  arrays; neither a complete Dresden fleet nor the meaning of the result limit
+  has been verified.
+- The verified-email login requests a code with
+  `POST /user/sendVerifyCodeByEmail`, query fields `mobileNo`, `email` and
+  `deviceId`, and a JSON body containing `reCaptcha` and the app's `siteKey`.
+  Verification uses `POST /user/loginByEmail`, query fields `email`, `otp` and
+  `deviceId`, and an empty JSON object. The app obtains `deviceId` from
+  `react-native-device-info.getUniqueId()`.
+
+A dedicated rider account signed in successfully by email code in the official
+app on a physical phone. Direct HTTP login with a separate device id did not
+yield a token (`400`, code `11070`); a code already used by the app does not
+establish portability. Requesting an email code directly without a reCAPTCHA
+token returned `403`, code `11062`, with a generic validation-code failure.
+The test emulator also returned to phone entry without opening email code entry.
+These replies do not identify an app-integrity check as the cause.
+
+RideMovi remains a gap. Before enabling a collector, obtain a portable dedicated
+rider session, verify its lifetime or renewal from the cache server, and audit
+the nearby response's scooter types, availability, bounds and completeness.
+App login and an operating polygon alone do not meet those checks. Keep rider
+credentials, codes, APKs and raw diagnostic captures outside the repository.
+
 ## Known gaps
 
 - Dott no longer publishes most German regions, among them Hamburg, Bremen,
@@ -586,7 +622,8 @@ an hour, so no interval was changed for ATOM.
 - Hopp Augsburg (`de-augsburg`) listed 42 scooters, all disabled, in each of
   22 polls from 18:26 to 19:50 on 13 October 2026, with the same ids and
   charge throughout. Hopp's site still lists the town; check it in spring.
-- RideMovi's feeds answer 401, and BIT Mobility (Napoli, Bari and others)
+- RideMovi's feeds answer 401; its [Dresden app map](#ridemovi-dresden-app-map-1-november-2026)
+  also needs a usable rider session. BIT Mobility (Napoli, Bari and others)
   shows its scooters only after a login. Rimini renewed its permit, beside
   Lime's, from 24 March 2026 to 2029
   ([Comune di Rimini, 10 December 2025](https://www.comune.rimini.it/novita/notizie/monopattini-e-e-bike-sharing-fino-al-2029)),

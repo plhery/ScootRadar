@@ -666,6 +666,10 @@ banned shared scooters, and feeds that were empty when checked.
       rider map's Dresden region has no scooter zone (25 October).
     - RideMovi publishes no feed: it is in neither MobilityData's list nor
       Transitous's, and the operators send their MDS data to the city only.
+      Its app API returned Dresden's operating polygon on 1 November 2026,
+      but its scooter map requires a rider token. Physical-phone email login
+      worked; a portable session and complete fleet retrieval remain unverified
+      ([app investigation](german-italian-scooter-feeds.md#ridemovi-dresden-app-map-1-november-2026)).
     - Voi has no public Dresden feed either. Its rider map would carry
       Dresden's scooters from zone 384 of the app's zone list (read on 30
       October 2026, behind the session the cache keeps), but the zone held no
