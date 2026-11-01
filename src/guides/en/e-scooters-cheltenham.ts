@@ -18,14 +18,14 @@ const guide: Guide = {
       blocks: [
         'One company, **Voi**, hires out e-scooters in Cheltenham. Gloucestershire County Council’s e-scooter pages say “Voi has been appointed as the operator responsible for running the trial” and name no other operator; the Jockey Club’s racecourse travel page calls Voi “the e-scooter hire service” in the town.',
         '**Who runs it?** The county council, as the local transport authority, “facilitated the trial” and picked the operator; Voi runs the scooters, and the operators take “all the financial risk”, the council says. Gloucestershire joined the national trial in 2020. After a tender, the council gave Voi a contract “starting on 1 August 2023”, its announcement of June 2023 says.',
-        '**How long will it run?** The national trials run until May 2028. The county council “has agreed to continue Voi Ltd’s contract until July 2027”, BBC News reported on 11 June 2026; the day before, Greatest Hits Radio said the council was seeking to extend it “from 1st July 2026 to 30th June 2027”. The council also plans a joint e-scooter and e-bike contract from July 2027, the station reported, but that is not yet decided. For now the council’s pages mention e-scooters only.',
-        'At 14:55 on Saturday 24 October 2026 the [map of Cheltenham](map:gb:Cheltenham) showed about 670 Voi e-scooters: a snapshot, not the fleet size. It shows their positions and battery, not prices, zones, parking bays or hours. The map’s Cheltenham area reaches beyond the borough to villages such as Bishop’s Cleeve and Winchcombe, while Churchdown’s scooters count towards Gloucester. At 07:22 on Sunday 25 October every scooter in that area stood inside the borough, about one in five in Charlton Kings, Leckhampton, Up Hatherley, Prestbury and Swindon Village.',
+        '**How long will it run?** The national trials, Gloucestershire’s among them, run until May 2028.',
+        'At 14:55 on Saturday 24 October 2026 the [map of Cheltenham](map:gb:Cheltenham) showed about 670 Voi e-scooters free to rent. The map’s Cheltenham area reaches beyond the borough to villages such as Bishop’s Cleeve and Winchcombe, while Churchdown’s scooters count towards Gloucester. At 07:22 on Sunday 25 October every scooter in that area stood inside the borough, about one in five in Charlton Kings, Leckhampton, Up Hatherley, Prestbury and Swindon Village.',
       ],
     },
     {
       heading: 'How much does a Voi e-scooter cost in Cheltenham?',
       blocks: [
-        'No council page we checked gives Voi’s Cheltenham prices or hours, so check the app: it shows the unlock fee and the price per minute before you start, and any passes on offer.',
+        'Check Voi’s Cheltenham prices in the app: it shows the unlock fee and the price per minute before you start, and any passes on offer.',
         'To hire one, the county council says: download the Voi app, register your driving licence, add a credit or debit card, read or watch the safety briefing, then unlock a scooter in the app. The council’s 2023 announcement adds a selfie and Voi’s online safety lesson before your first ride. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -62,8 +62,8 @@ const guide: Guide = {
         {
           list: [
             '**Slow zones:** the county council’s 2023 announcement gives a top speed of 12.5 mph and “a mandatory 5mph limit in several ‘low speed’ areas, such as Cheltenham High Street”. The scooter keeps working there, but slower.',
-            '**No-go zones:** “there are some areas where you cannot ride, such as motorways and shopping centres. Your scooter will switch off if you enter a ‘no go’ area”, the council says. We found no published list of them: the app’s map has them.',
-            '**The edges:** BBC News reported on 11 June 2026 that the trial covers Gloucester and Cheltenham “along with Churchdown and Bishops Cleeve”. At 07:22 on Sunday 25 October our map showed Voi scooters from Up Hatherley to Charlton Kings and Prestbury, but none in Bishop’s Cleeve.',
+            '**No-go zones:** “there are some areas where you cannot ride, such as motorways and shopping centres. Your scooter will switch off if you enter a ‘no go’ area”, the council says. The app’s map shows them.',
+            '**The edges:** At 07:22 on Sunday 25 October our map showed Voi scooters from Up Hatherley to Charlton Kings and Prestbury, but none in Bishop’s Cleeve.',
           ],
         },
         'Commuting to [Gloucester](guide:gloucester)? The council describes two separate areas, so check the app’s map before planning a ride between them. Gloucester’s scooters, about 200 at 14:55 on 24 October, are on the [map of Gloucester](map:gb:Gloucester). Nor can you take one to another trial area: the council says they “cannot be taken and used by a rider in a different place, even if that place has its own e-scooter trial running”.',
@@ -73,7 +73,7 @@ const guide: Guide = {
       heading: 'Where to park a Voi e-scooter in Cheltenham',
       blocks: [
         'Cheltenham uses **parking bays**, not free parking anywhere. “Designated parking bays have been established in city and town centres”, and “all parking bays have been approved by the highways authority and local councils”, the county council says. “Riders may face small fines if they leave the e-scooter anywhere other than a designated Voi parking bay.”',
-        'In June 2023 the county council said the service had 310 scooters at 170 bays across Gloucester and Cheltenham. On 8 April 2026, after residents complained about scooters abandoned in pedestrianised areas, BBC News reported that Voi was creating 100 painted parking bays across the two towns, the busiest areas first, and that Voi’s enforcement procedure for bad parking “can lead to fines or bans”. The app’s map shows each bay: check it before you set off.',
+        'In June 2023 the county council said the service had 310 scooters at 170 bays across Gloucester and Cheltenham. The app’s map shows each bay: check it before you set off.',
       ],
     },
     {
@@ -86,31 +86,19 @@ const guide: Guide = {
             head: ['Place', 'Owner', 'What it says'],
             rows: [
               ['Cheltenham Racecourse', 'The Jockey Club', 'Voi’s nearest parking spot to the racecourse is near New Barn Lane, inside Gate 1 (festival travel page, read 25 October 2026)'],
-              ['Pittville Park, Montpellier Gardens, Imperial Gardens, Sandford Park', 'Cheltenham Borough Council', 'No rule we could read: its parks directory says nothing about e-scooters (25 October 2026), so follow the signs'],
-              ['University of Gloucestershire campuses', 'The university', 'We couldn’t check: its website refused our requests'],
-              ['Cheltenham General Hospital', 'Gloucestershire Hospitals NHS Foundation Trust', 'No rule we could read: its travel and parking pages don’t mention e-scooters (25 October 2026)'],
+              ['Pittville Park, Montpellier Gardens, Imperial Gardens, Sandford Park', 'Cheltenham Borough Council', 'Its parks directory names no e-scooter rule (25 October 2026): follow the signs'],
+              ['Cheltenham General Hospital', 'Gloucestershire Hospitals NHS Foundation Trust', 'Its travel and parking pages don’t mention e-scooters (25 October 2026)'],
             ],
           },
         },
-        'For **Cheltenham Festival** week in March, Visit Cheltenham, the town’s tourism site, said in February 2025 that Voi has bays “at all the most important locations”, so you can travel between Cheltenham Spa station, the town centre and the racecourse; register in the app before you arrive. The Jockey Club’s festival travel page also lists Stagecoach raceday shuttles between the racecourse, the town centre and the station. We found no special e-scooter rule from the council, the Jockey Club or Visit Cheltenham for race days or the Literature, Jazz, Science or Music festivals.',
+        'For **Cheltenham Festival** week in March, Visit Cheltenham, the town’s tourism site, said in February 2025 that Voi has bays “at all the most important locations”, so you can travel between Cheltenham Spa station, the town centre and the racecourse; register in the app before you arrive. The Jockey Club’s festival travel page also lists Stagecoach raceday shuttles between the racecourse, the town centre and the station.',
       ],
     },
     {
       heading: 'Cheltenham Spa station, trains and buses',
       blocks: [
         'The Jockey Club says Voi has “parking zones at key transport hubs like bus and rail stations”, and at 07:22 on Sunday 25 October our map showed about 30 Voi scooters within 500 metres of Cheltenham Spa station. End your ride in a bay near the station and walk in.',
-        'For e-scooters on trains and buses, we couldn’t check the rules of GWR, CrossCountry or Stagecoach West, because their websites refused our requests, and National Rail’s page for Cheltenham Spa station says nothing about e-scooters.',
-      ],
-    },
-    {
-      heading: 'Did you know?',
-      blocks: [
-        {
-          list: [
-            '**As busy as a bus route.** Voi counted 34,000 e-scooter journeys a month in Gloucestershire in March 2026, and the county’s cabinet member for sustainable transport and road safety likened that to a major bus route, BBC News reported on 11 June 2026.',
-            '**About one in seven.** Voi says 14.5% of the people of Gloucester and Cheltenham are active e-scooter users, BBC News reported the same day; Greatest Hits Radio put the scheme’s active users at 37,600 on 10 June 2026.',
-          ],
-        },
+        'For your own e-scooter on trains and buses, check GWR’s, CrossCountry’s and Stagecoach West’s own rules.',
       ],
     },
   ],
@@ -150,9 +138,6 @@ const guide: Guide = {
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
     { title: 'The Jockey Club: Travel to the Cheltenham Festival', url: 'https://www.thejockeyclub.co.uk/cheltenham-festival/plan-your-day/travel/' },
     { title: 'Visit Cheltenham: How to get to Cheltenham Festival on an e-scooter (25 February 2025)', url: 'https://www.visitcheltenham.com/blog/read/2025/02/how-to-get-to-cheltenham-festival-on-an-e-scooter-b831' },
-    { title: 'BBC News: E-scooters could soon be rolled out to new areas (11 June 2026)', url: 'https://www.bbc.co.uk/news/articles/ckg4rkv31gpo' },
-    { title: 'BBC News: New bays to prevent e-scooters being ‘dumped’ (8 April 2026)', url: 'https://www.bbc.co.uk/news/articles/c895eep1wdlo' },
-    { title: 'Greatest Hits Radio: Council to vote on extending e-scooter trial in Gloucestershire (10 June 2026)', url: 'https://www.hellorayo.co.uk/greatest-hits/gloucestershire/news/council-to-vote-on-extending-e-scooter-trial-in-gloucestershire' },
   ],
 };
 
