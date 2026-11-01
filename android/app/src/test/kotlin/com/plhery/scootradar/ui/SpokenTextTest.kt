@@ -1,6 +1,19 @@
 package com.plhery.scootradar.ui
 
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.Context
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
+import android.view.View
+import android.view.accessibility.AccessibilityManager
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.node.RootForTest
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.semantics.getAllSemanticsNodes
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
@@ -13,6 +26,8 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.unit.dp
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestCatalog
@@ -52,6 +67,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 /**
@@ -130,6 +146,66 @@ class SpokenTextTest {
         val link = links.single().item as LinkAnnotation.Url
         assertEquals("https://example.com/zurich", link.url)
         assertEquals(null, link.styles)
+    }
+
+    /**
+     * UI-410: a street traced on OpenStreetMap credits it in its legend line, and TalkBack names the line's link by the
+     * whole authority, "Seoul, lines © OpenStreetMap", not "Seoul" alone, as VoiceOver names the iPhone's link by its
+     * text. Each line is one node TalkBack stops on, whose text carries one link, over the whole authority, to the
+     * rule's source; no node TalkBack is given names a link by anything else. The catalog's streets, at the width the
+     * phone's legend has beside the locate button, where the credited lines wrap.
+     */
+    @Test
+    @Config(qualifiers = PHONE)
+    fun aStreetsCreditIsOneLinkNamedByTheWholeAuthority() {
+        // TalkBack on: a service and touch exploration, as Compose gives TalkBack its nodes then.
+        val accessibility = ApplicationProvider.getApplicationContext<Context>().getSystemService(AccessibilityManager::class.java)
+        shadowOf(accessibility).setEnabled(true)
+        shadowOf(accessibility).setTouchExplorationEnabled(true)
+        shadowOf(accessibility).setEnabledAccessibilityServiceList(listOf(AccessibilityServiceInfo()))
+        val streets = CityRuleZone.all
+        lateinit var view: View
+        compose.setContent {
+            view = LocalView.current
+            ScootTheme(dark = false, reduceMotion = true) {
+                Box(Modifier.width(216.dp)) {
+                    ZoneLegend(state = ScooterZoneState.Off, count = 0, rules = streets.map { CityRuleZone.Shown(it, inForce = true) })
+                }
+            }
+        }
+        compose.waitForIdle()
+
+        /** A node as TalkBack is given it: whether it stops on it, its text and the links in it, by what they cover. */
+        class Given(val stops: Boolean, val text: CharSequence?, val links: List<Pair<String, String>>, val parent: Int?)
+        val given = compose.runOnIdle {
+            val provider = view.accessibilityNodeProvider
+            (view as RootForTest).semanticsOwner.getAllSemanticsNodes(mergingEnabled = false).mapNotNull { node ->
+                val info = provider.createAccessibilityNodeInfo(node.id) ?: return@mapNotNull null
+                val text = info.text
+                val links = (text as? Spanned)?.let { spanned ->
+                    spanned.getSpans(0, spanned.length, ClickableSpan::class.java).map { span ->
+                        spanned.subSequence(spanned.getSpanStart(span), spanned.getSpanEnd(span)).toString() to ((span as? URLSpan)?.url ?: "")
+                    }
+                } ?: emptyList()
+                // A link's own node, given apart, is named by its text or its label.
+                val named = if (info.isClickable && links.isEmpty()) listOfNotNull(info.text ?: info.contentDescription).map { it.toString() to "" } else emptyList()
+                node.id to Given(info.isScreenReaderFocusable || info.isFocusable, text, links + named, node.parent?.id)
+            }.toMap()
+        }
+        val lines = given.values.filter { it.text?.contains(" · ") == true }
+        // Seoul's two streets share a line, their authority and hours.
+        assertEquals(streets.map { "${it.authority} ${it.hours}" }.distinct().size, lines.size)
+        for (line in lines) {
+            val text = line.text.toString()
+            val street = streets.first { text.endsWith(" · ${it.authority}") }
+            assertTrue(text, street.authority.endsWith(", lines © OpenStreetMap"))
+            assertEquals(text, listOf(street.authority to street.source), line.links)
+            assertEquals(text, true, given[line.parent]?.stops)
+        }
+        // Nothing else TalkBack is given is a link, or names one otherwise.
+        val names = given.values.flatMap { it.links }.map { it.first }.toSet()
+        assertEquals(streets.map { it.authority }.toSet(), names)
+        assertEquals(lines.size, given.values.count { it.stops })
     }
 
     /**

@@ -56,7 +56,7 @@ import org.robolectric.annotation.GraphicsMode
 import java.util.Locale
 
 /**
- * The zones' legend (ui.md UI-092, UI-093, UI-174, UI-285, UI-348) in each of its states, light and dark, at font
+ * The zones' legend (ui.md UI-092, UI-093, UI-174, UI-285, UI-348, UI-409 to UI-411) in each of its states, light and dark, at font
  * scale 1.0 and 2.0, over a plain stand-in for the map, as wide as the room beside the locate button; the cities'
  * rules and zones are made here rather than read from data/ (logic.md LOG-370).
  */
@@ -98,6 +98,15 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
          * unavailable: their lines, and no "No zones published here" (UI-409).
          */
         NoticesOnly(ScooterZoneState.Shown, 0, emptyList(), cityNotices),
+
+        /**
+         * A street traced on OpenStreetMap, which its line credits: "No riding 12:00–23:00 · Seoul, lines ©
+         * OpenStreetMap", the whole authority linked and wrapped beside the swatch (UI-410).
+         */
+        CreditedStreet(ScooterZoneState.Off, 0, creditedStreet),
+
+        /** A street at all hours, whose line gives none: "No riding · Antalya UKOME, lines © OpenStreetMap" (UI-411). */
+        StreetAtAllHours(ScooterZoneState.Off, 0, boulevard),
         ;
 
         val suffix: String get() = name.replaceFirstChar { it.lowercase() }
@@ -148,6 +157,30 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
         private val seoulRules = listOf(
             CityRuleZone.Shown(rule("seoul", "Seoul", listOf(CityRuleZone.Hours(fromMinute = 22 * 60, untilMinute = 6 * 60))), inForce = true),
             CityRuleZone.Shown(rule("gangnam", "Gangnam-gu", listOf(CityRuleZone.Hours(fromMinute = 9 * 60, untilMinute = 18 * 60 + 30))), inForce = false),
+        )
+
+        /** One of Seoul's streets, its lines traced on OpenStreetMap, in force (UI-410). */
+        private val creditedStreet = listOf(
+            CityRuleZone.Shown(
+                rule("seoul-credited", "Seoul, lines © OpenStreetMap", listOf(CityRuleZone.Hours(fromMinute = 12 * 60, untilMinute = 23 * 60))),
+                inForce = true,
+            ),
+        )
+
+        /** Antalya's boulevard, its lines traced on OpenStreetMap, at all hours (UI-411). */
+        private val boulevard = listOf(
+            CityRuleZone.Shown(
+                CityRuleZone(
+                    id = "antalya-boulevard",
+                    authority = "Antalya UKOME, lines © OpenStreetMap",
+                    timeZone = "Europe/Istanbul",
+                    firstDay = "2025-09-30",
+                    hours = emptyList(),
+                    source = "https://example.com/antalya",
+                    lines = listOf(listOf(GeoPoint(36.8602, 30.9200), GeoPoint(36.8658, 30.9234))),
+                ),
+                inForce = true,
+            ),
         )
 
         /** Bergen's zones, one of each kind and a second parking place, which shares its line. */

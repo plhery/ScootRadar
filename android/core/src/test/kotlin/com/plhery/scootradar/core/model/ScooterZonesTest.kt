@@ -249,6 +249,23 @@ class ScooterZoneOverlayTest {
         }
     }
 
+    /**
+     * Every street of the catalog is merged into a shape or a few, as the web's test holds its own (67eed3a8, UI-411):
+     * a union round-off defeated would leave the street's hundreds of discs and strips, each filled and edged on its
+     * own, darker where they overlap. Antalya's boulevard is two carriageways that meet and part again, the westbound
+     * one split where it shares the other's edges.
+     */
+    @Test
+    fun everyStreetIsJoinedIntoAShapeOrAFewSoNoneIsDrawnPieceByPiece() {
+        assertFalse(CityRuleZone.all.isEmpty())
+        for (street in CityRuleZone.all) {
+            val zone = CityRuleZone.Shown(street, inForce = true).mapZone
+            val shapes = ScooterZoneOverlay(zones = listOf(zone), isDark = false).shapes
+            assertTrue("${street.id}: ${zone.polygons.size} pieces merged into ${shapes.size}", shapes.size in 1..street.lines.size)
+            assertTrue(street.id, shapes.all { it.polygon.isValid })
+        }
+    }
+
     @Test
     fun theColoursAreTheIPhonesOwn() {
         // ScooterZoneLook.color's components (ScooterZones.swift), red, green and blue, each to the nearest of
