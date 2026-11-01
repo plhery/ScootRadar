@@ -65,10 +65,10 @@ class AppContainer(private val context: Context) {
      */
     var analyticsSmokeTest = false
 
-    /** "ScootRadar Android" in Umami: a release sends, a debug build only when started for the smoke test. */
+    /** "ScootRadar Android" in Umami: the release build sends, a debug build only when started for the smoke test. */
     val analytics: ScooterAnalytics by lazy {
         ScooterAnalytics(
-            sends = !BuildConfig.DEBUG || analyticsSmokeTest,
+            sends = sendsAnalytics(BuildConfig.BUILD_TYPE, analyticsSmokeTest),
             userAgent = ScooterAnalytics.userAgent(Build.VERSION.RELEASE, chromeMajor()),
             defaults = defaults,
             scope = scope,
@@ -128,4 +128,15 @@ class AppContainer(private val context: Context) {
     /** The major version of the phone's WebView, which is Chrome's: 0 when it has none. */
     private fun chromeMajor(): Int =
         WebView.getCurrentWebViewPackage()?.versionName?.substringBefore('.')?.toIntOrNull() ?: 0
+
+    companion object {
+        /**
+         * Whether a build of [buildType] sends analytics: the `release` build type itself, which is the one that goes
+         * to Play, or a debug build started for the smoke test. The builds made from release to measure the app and
+         * to record its Baseline Profile (benchmarkRelease, nonMinifiedRelease) are not debuggable either, but run
+         * on an emulator, whose sessions must count nowhere. The Baseline Profile plugin makes them with
+         * `initWith(release)`, so a flag set only on release would follow them; the build type's name does not.
+         */
+        fun sendsAnalytics(buildType: String, smokeTest: Boolean): Boolean = buildType == "release" || smokeTest
+    }
 }

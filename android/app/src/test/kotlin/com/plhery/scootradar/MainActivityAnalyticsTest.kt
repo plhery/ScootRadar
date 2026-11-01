@@ -17,7 +17,8 @@ import org.robolectric.Robolectric
 
 // Events go to Umami from a debug build only when it is started for the smoke test, as the iPhone app's simulator
 // only with -analytics-smoke-test (ScooterAnalytics.swift:29-30, docs/analytics.md): a phone a developer runs, or
-// a test, counts nowhere. A release always sends, which a debug build's tests can't run.
+// a test, counts nowhere. The release build type always sends, and no other build made from it
+// (app/AnalyticsBuildTypeTest), which a debug build's tests can't run.
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityAnalyticsTest {
