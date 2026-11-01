@@ -51,7 +51,7 @@ const guide: Guide = {
               ['Fussgängerzone an Weststrasse und Bahnhofstrasse', 'Nicht fahren, solange kein Schild es erlaubt', 'Bund (eKFV)'],
               ['Gehwege in Grünanlagen und Alleen', 'Befahren nur mit Krankenfahrstuhl, Kinderwagen oder Kinderfahrzeug; nach unserer Lesart gilt das Verbot auch für E-Scooter', 'Stadt (Strassen- und Anlagenordnung von 2021)'],
               ['Betriebswege am Datteln-Hamm-Kanal', 'Frei nur für Fussgänger und Fahrräder; nach unserer Lesart ist der E-Scooter als Kraftfahrzeug ausgeschlossen', 'Bund (Wasserstrassen-Betriebsanlagenverordnung)'],
-              ['Hauptbahnhof', 'Im Bahnhof und auf den Vorplätzen der DB nur schieben oder tragen', 'DB (Hausordnung, Stand Oktober 2026)'],
+              ['Hauptbahnhof', 'Die Hausordnung der DB; beende die Fahrt vor dem Bahnhof', 'DB'],
               ['Hochschule Hamm-Lippstadt', 'StVO und Schrittgeschwindigkeit auf dem Gelände; E-Roller in den Gebäuden nur in einer Tasche', 'Hochschule (Hausordnung, zuletzt geändert am 20. Januar 2025)'],
             ],
           },
@@ -74,7 +74,7 @@ const guide: Guide = {
         'In ihrem Antragsformular für Verleiher verlangt die Stadt, dass der Anbieter «durch technische Vorkehrungen» das Abstellen in der Fussgängerzone, in öffentlichen Grünanlagen («Gärten, Wald, Parkanlagen, Uferbereiche usw.»), auf schmalen Gehwegen, an Gleisanlagen und vor stark besuchten Einrichtungen verhindert, «z. B. HBF und Tierpark». Dazu soll er den Plan der Stadt mit diesen Rückgabeverbotszonen in seine Buchungs-Software einbauen. Auf Geh- und Radwegen sollen 1,50 m frei bleiben, Rettungswege, Einfahrten und Bushaltestellen ganz, und bei Veranstaltungen soll der Anbieter auf Verlangen von Stadt oder Polizei Bereiche freihalten.',
         {
           list: [
-            '**Hauptbahnhof:** Am 26. Oktober 2026 zeigte die Karte gegen 16.40 Uhr 17 Dott-Scooter im Umkreis von 300 m um den Willy-Brandt-Platz 1 am Hauptbahnhof. Die Hausordnung der DB (Stand Oktober 2026) verbietet «in unseren Bahnhöfen und auf unseren Vorplätzen», Kleinstfahrzeuge «an Zugängen, auf Bahnsteigen und ausserhalb der dafür ausgewiesenen Flächen» abzustellen.',
+            '**Hauptbahnhof:** Am 26. Oktober 2026 zeigte die Karte gegen 16.40 Uhr 17 Dott-Scooter im Umkreis von 300 m um den Willy-Brandt-Platz 1 am Hauptbahnhof. Im Bahnhof gilt die Hausordnung der DB: Beende die Fahrt davor.',
           ],
         },
         {
@@ -175,7 +175,6 @@ const guide: Guide = {
     { title: 'Stadtwerke Hamm: FAQ zum Busverkehr', url: 'https://www.stadtwerke-hamm.de/privatkunden/verkehr/faq' },
     { title: 'Westfalentarif: Beförderungsbedingungen für Nahverkehr in NRW (gültig ab 1. Januar 2026, PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
     { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },
-    { title: 'Deutsche Bahn: Hausordnung der Bahnhöfe (Stand Oktober 2026)', url: 'https://www.bahnhof.de/hausordnung' },
   ],
 };
 

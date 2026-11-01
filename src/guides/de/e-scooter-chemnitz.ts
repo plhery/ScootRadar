@@ -48,7 +48,7 @@ const guide: Guide = {
             caption: 'Wo in Chemnitz eigene Regeln gelten und wer sie setzt (Stand 26. Oktober 2026)',
             head: ['Ort', 'Was gilt', 'Wer es regelt'],
             rows: [
-              ['Hauptbahnhof', 'Im Bahnhof und auf den Vorplätzen der DB nur schieben oder tragen', 'DB (Hausordnung, Stand Oktober 2026)'],
+              ['Hauptbahnhof', 'Die Hausordnung der DB; beende die Fahrt vor dem Bahnhof', 'DB'],
               ['Gelände der TU Chemnitz', 'StVO auf dem ganzen Gelände; in den Gebäuden und auf ausgewiesenen Flächen nicht fahren; nach unserer Lesart nicht auf Fusswegen, vor Hydranten und auf Grünanlagen abstellen', 'TU Chemnitz (Hausordnung vom 4. März 2026)'],
               ['Strassenbahnen und Busse der CVAG', 'Kein E-Scooter, auch nicht zusammengeklappt', 'VMS (Beförderungsbedingungen, gültig ab 1. April 2026)'],
             ],
@@ -56,7 +56,7 @@ const guide: Guide = {
         },
         {
           list: [
-            '**Hauptbahnhof:** Chemnitz Hbf ist ein Bahnhof der DB. Ihre Hausordnung (Stand Oktober 2026) verbietet «in unseren Bahnhöfen und auf unseren Vorplätzen» das «Fahren, Rollen mit … E-Scootern»: «Nur das Schieben oder Tragen ist erlaubt.»',
+            '**Hauptbahnhof:** Chemnitz Hbf ist ein Bahnhof der DB, und dort gilt ihre Hausordnung: Lies ihre Regeln, bevor du mit einem E-Scooter hineingehst.',
             '**TU Chemnitz:** Laut Hausordnung der Universität vom 4. März 2026 gilt die StVO «auf dem gesamten Gelände der TUC». Unzulässig ist «das Benutzen von Rollschuhen, Inline-Skates, Skateboards, Rollern, E-Scootern u. ä. in den Universitätsgebäuden und auf ausgewiesenen Flächen».',
           ],
         },
@@ -69,7 +69,7 @@ const guide: Guide = {
         'Dotts Geschäftsbedingungen verlangen mehr: Hat eine Stadt Parkplätze für die Scooter ausgewiesen, parkst du nur dort, sonst so, dass du keine Gebäudeeingänge blockierst und weder Fussgänger noch Verkehr behinderst. Dott kann beim Beenden der Fahrt ein Foto verlangen, und fahren darfst du nur im Betriebsgebiet, das dir die Dott-App auf einer Karte zeigt.',
         {
           list: [
-            '**Hauptbahnhof:** Die Hausordnung der DB verbietet, Kleinstfahrzeuge «an Zugängen, auf Bahnsteigen und ausserhalb der dafür ausgewiesenen Flächen» abzustellen. Sonst behält sich die DB «die sofortige Entfernung» vor und stellt die Kosten in Rechnung.',
+            '**Hauptbahnhof:** Beende die Fahrt vor dem Bahnhof; was dort fürs Abstellen gilt, regelt die Hausordnung der DB.',
             '**TU Chemnitz:** Die Hausordnung untersagt «das Abstellen von Fahrrädern und Fahrzeugen aller Art auf Fusswegen, vor Hydranten und auf den Grünanlagen». Widerrechtlich und verkehrsbehindernd abgestellte «Fahrzeuge jeglicher Art» kann die Universität auf Kosten des Halters abschleppen lassen. E-Scooter nennt sie dabei nicht; nach unserer Lesart gilt beides auch für sie.',
           ],
         },
@@ -146,7 +146,7 @@ const guide: Guide = {
     },
     {
       question: 'Wo darf ich in Chemnitz einen Leih-Scooter abstellen?',
-      answer: 'Wie ein Fahrrad, ohne jemanden zu behindern. Hat die Stadt Parkplätze für Leih-Scooter ausgewiesen, verlangt Dott, dass du dort parkst. Am Hauptbahnhof nicht an Zugängen und auf Bahnsteigen, auf dem Gelände der TU nach unserer Lesart ihrer Hausordnung nicht auf Fusswegen, vor Hydranten und auf Grünanlagen.',
+      answer: 'Wie ein Fahrrad, ohne jemanden zu behindern. Hat die Stadt Parkplätze für Leih-Scooter ausgewiesen, verlangt Dott, dass du dort parkst. Am Hauptbahnhof gilt die Hausordnung der DB, auf dem Gelände der TU nach unserer Lesart ihrer Hausordnung nicht auf Fusswegen, vor Hydranten und auf Grünanlagen.',
     },
     {
       question: 'Zeigt die Karte alle E-Scooter in Chemnitz?',
@@ -161,8 +161,6 @@ const guide: Guide = {
     { title: 'CVAG: Beförderungsbedingungen', url: 'https://www.cvag.de/fahrtinfo/befoerderungsbedingungen' },
     { title: 'VMS: Beförderungsbedingungen und Tarifbestimmungen, gültig ab 1. April 2026 (PDF)', url: 'https://www.vms.de/wp-content/uploads/2026/09/BR-BefBedTarifbestimmungen-VMS-Tarif-09_2026-WEB.pdf' },
     { title: 'TU Chemnitz: Hausordnung vom 4. März 2026 (PDF)', url: 'https://www.tu-chemnitz.de/verwaltung/technik/documents/public/Hausordnung.pdf' },
-    { title: 'Deutsche Bahn: Chemnitz Hbf', url: 'https://www.bahnhof.de/chemnitz-hbf' },
-    { title: 'Deutsche Bahn: Hausordnung der Bahnhöfe (Stand Oktober 2026)', url: 'https://www.bahnhof.de/hausordnung' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern (FAQ)', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },
   ],

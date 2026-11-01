@@ -56,14 +56,14 @@ const guide: Guide = {
       heading: 'E-Scooter in Fürth abstellen: Wo die Fahrt enden darf',
       blocks: [
         'Fürs Parken gelten bundesweit die Regeln für Fahrräder: Abstellen auf dem Gehweg ist erlaubt, solange niemand behindert oder gefährdet wird. Ab 1. März 2027 steht das ausdrücklich in der StVO, und Falschparken auf Geh- oder Radweg kostet dann ab 55 €. Wo du die Miete beenden darfst, zeigt die App. Bolt verlangt einen zulässigen Parkbereich: «Insbesondere darf das E-Fahrzeug nicht in den in der App ausgewiesenen roten Bereichen geparkt werden.» Dotts Geschäftsbedingungen verlangen mehr: Hat eine Stadt Parkplätze für die Scooter ausgewiesen, parkst du nur dort, sonst so, dass du keine Gebäudeeingänge blockierst und weder Fussgänger noch Verkehr behinderst. Dott kann beim Beenden der Fahrt ein Foto verlangen.',
-        '**Fürth (Bay) Hbf:** Die Hausordnung der DB (Stand Oktober 2026) verbietet «in unseren Bahnhöfen und auf unseren Vorplätzen», mit E-Scootern zu fahren («Nur das Schieben oder Tragen ist erlaubt»), und Kleinstfahrzeuge «an Zugängen, auf Bahnsteigen und ausserhalb der dafür ausgewiesenen Flächen» abzustellen.',
+        '**Fürth (Bay) Hbf:** Im Bahnhof gilt die Hausordnung der DB: Beende die Fahrt davor und lies ihre Regeln, bevor du mit einem E-Scooter hineingehst.',
         {
           table: {
             caption: 'Wo in Fürth eigene Regeln gelten und wer sie setzt (Stand 26. Oktober 2026)',
             head: ['Ort', 'Was gilt', 'Wer es regelt'],
             rows: [
               ['Fussgängerzone in der Innenstadt', 'Nur schieben, ausser ein Schild erlaubt das Fahren', 'Bund (eKFV, StVO), Stadt (Beschilderung)'],
-              ['Fürth (Bay) Hbf', 'Im Bahnhof und auf den Vorplätzen der DB nur schieben oder tragen; nicht an Zugängen und auf Bahnsteigen abstellen', 'DB (Hausordnung, Stand Oktober 2026)'],
+              ['Fürth (Bay) Hbf', 'Die Hausordnung der DB; beende die Fahrt vor dem Bahnhof', 'DB'],
               ['U-Bahn, Busse und U-Bahnhöfe der VAG', 'Kein E-Scooter, auch kein eigener', 'VAG'],
               ['Rote Bereiche in der Bolt-App', 'Nicht abstellen', 'Bolt (Nutzungsbedingungen)'],
             ],
@@ -130,7 +130,7 @@ const guide: Guide = {
     },
     {
       question: 'Wo darf ich in Fürth einen Leih-Scooter abstellen?',
-      answer: 'Wo die App das Fahrtende erlaubt und so, dass niemand behindert wird; bei Bolt nicht in den roten Bereichen der App. Am Hauptbahnhof laut DB nicht an Zugängen und auf Bahnsteigen.',
+      answer: 'Wo die App das Fahrtende erlaubt und so, dass niemand behindert wird; bei Bolt nicht in den roten Bereichen der App. Am Hauptbahnhof gilt die Hausordnung der DB.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Fussgängerzone in Fürth fahren?',
@@ -155,8 +155,6 @@ const guide: Guide = {
     { title: 'infra fürth: Tickets und Preise für Bus und U-Bahn in Fürth', url: 'https://www.infra-fuerth.de/mobilitaet/oepnv/unser-oepnv-angebot' },
     { title: 'infranken.de (dpa): VGN verbietet E-Scooter in Bus, U-Bahn und Tram (13. Mai 2024)', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-vgn-verbietet-e-scooter-in-bus-u-bahn-und-tram-mit-ungewoehnlicher-begruendung-art-5869423' },
     { title: 'VAG_Rad: Fahrradverleih in Nürnberg, Fürth, Erlangen und Schwabach', url: 'https://www.vagrad.de/de/' },
-    { title: 'Deutsche Bahn: Bahnhof Fürth (Bay) Hbf', url: 'https://www.bahnhof.de/fuerth-bay-hbf' },
-    { title: 'Deutsche Bahn: Hausordnung der Bahnhöfe (Stand Oktober 2026)', url: 'https://www.bahnhof.de/hausordnung' },
     { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },
     { title: 'LDBV: ALKIS-Verwaltungsgebiete (Open Data, CC BY 4.0)', url: 'https://geodaten.bayern.de/opengeodata/OpenDataDetail.html?pn=verwaltung' },
     { title: 'LDBV: Hausumringe (Open Data, CC BY 4.0)', url: 'https://geodaten.bayern.de/opengeodata/OpenDataDetail.html?pn=hausumringe' },

@@ -64,12 +64,12 @@ const guide: Guide = {
               ['Parks, Wälder, Friedhöfe, Gewässer und Uferzonen', 'Nach unserer Lesart weder fahren noch parken', 'Stadt (Strassenordnung vom 14. Februar 2019)'],
               ['Grünstreifen', 'Nach unserer Lesart weder fahren noch abstellen', 'Stadt (Strassenordnung)'],
               ['Fussgängerzonen', 'Nur schieben, ausser ein Schild erlaubt das Fahren', 'Bund (eKFV, StVO), Stadt (Beschilderung)'],
-              ['Solingen Hbf', 'Im Bahnhof und auf den Vorplätzen der DB nur schieben oder tragen', 'DB (Hausordnung, Stand Oktober 2026)'],
+              ['Solingen Hbf', 'Die Hausordnung der DB; beende die Fahrt vor dem Bahnhof', 'DB'],
               ['Rote Bereiche in der Bolt-App', 'Nicht abstellen', 'Bolt (Nutzungsbedingungen)'],
             ],
           },
         },
-        '**Solingen Hbf in Ohligs:** Der Hauptbahnhof liegt an der Bahnstrasse 5 in Solingen-Ohligs. Am 26. Oktober 2026 zeigte die Karte gegen 17.30 Uhr sieben Dott-Scooter und keinen von Bolt im Umkreis von 300 m um diese Adresse. Die Hausordnung der DB (Stand Oktober 2026) verbietet «in unseren Bahnhöfen und auf unseren Vorplätzen», Kleinstfahrzeuge «an Zugängen, auf Bahnsteigen und ausserhalb der dafür ausgewiesenen Flächen» abzustellen.',
+        '**Solingen Hbf in Ohligs:** Der Hauptbahnhof liegt an der Bahnstrasse 5 in Solingen-Ohligs. Am 26. Oktober 2026 zeigte die Karte gegen 17.30 Uhr sieben Dott-Scooter und keinen von Bolt im Umkreis von 300 m um diese Adresse. Im Bahnhof gilt die Hausordnung der DB: Beende die Fahrt davor.',
       ],
     },
     {
@@ -130,7 +130,7 @@ const guide: Guide = {
     },
     {
       question: 'Wo darf ich in Solingen einen Leih-Scooter abstellen?',
-      answer: 'Wo die App das Fahrtende erlaubt und so, dass niemand behindert wird. Nach unserer Lesart der Strassenordnung nicht in Parks, Wäldern, auf Friedhöfen, an Ufern und auf Grünstreifen; am Hauptbahnhof laut DB nicht an Zugängen und auf Bahnsteigen.',
+      answer: 'Wo die App das Fahrtende erlaubt und so, dass niemand behindert wird. Nach unserer Lesart der Strassenordnung nicht in Parks, Wäldern, auf Friedhöfen, an Ufern und auf Grünstreifen; am Hauptbahnhof gilt die Hausordnung der DB.',
     },
     {
       question: 'Darf ich einen E-Scooter im Bus der Stadtwerke Solingen mitnehmen?',
@@ -157,8 +157,6 @@ const guide: Guide = {
     { title: 'Stadtwerke Solingen: Mobil', url: 'https://www.stadtwerke-solingen.de/mobil/' },
     { title: 'Beförderungsbedingungen Nahverkehr NRW, gültig ab 1. Januar 2026 (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
     { title: 'VRR: Handbuch Tarif und Vertrieb, Stand 1. Juli 2026 (PDF)', url: 'https://www.vrr.de/fileadmin/user_upload/pdf/service/downloads/Tarifhandbuch/VRR_Handbuch_2026.pdf' },
-    { title: 'Deutsche Bahn: Bahnhof Solingen Hbf', url: 'https://www.bahnhof.de/solingen-hbf' },
-    { title: 'Deutsche Bahn: Hausordnung der Bahnhöfe (Stand Oktober 2026)', url: 'https://www.bahnhof.de/hausordnung' },
     { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },
   ],
 };

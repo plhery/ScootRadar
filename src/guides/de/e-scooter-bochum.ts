@@ -169,7 +169,6 @@ const guide: Guide = {
     { title: 'ADAC: E-Scooter im Nahverkehr, wo die Mitnahme verboten ist (17. November 2025)', url: 'https://www.adac.de/news/verkehr-e-scooter-mitnahmeverbot-nahverkehr/' },
     { title: 'VRR: Handbuch Tarif und Vertrieb (Stand 1. Juli 2026, PDF)', url: 'https://www.vrr.de/fileadmin/user_upload/pdf/service/downloads/Tarifhandbuch/VRR_Handbuch_2026.pdf' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
-    { title: 'Deutsche Bahn: Bochum Hbf (bahnhof.de)', url: 'https://www.bahnhof.de/bochum-hbf' },
     { title: 'mobil.nrw: Mobilitätsgarantie NRW', url: 'https://www.mobil.nrw/fahren/mobigarantie.html' },
     { title: 'VfL Bochum 1848: Anreise und Parken', url: 'https://www.vfl-bochum.de/stadion/anreise-parken/' },
     { title: 'Hochschule Bochum: Hausordnung (18. September 2014, PDF)', url: 'https://www.hochschule-bochum.de/fileadmin/public/Die-BO_Hochschule/Hochschulrecht/190_Hausordnung.pdf' },
