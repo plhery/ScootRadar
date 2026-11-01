@@ -58,7 +58,7 @@ near its centre.
 
 ## Bird supplement — 28 October 2026
 
-Bird publishes no feed for thirteen of its Canadian towns, so its rider map,
+Bird publishes no feed for fourteen of its Canadian towns, so its rider map,
 signed in, supplies them: each of Bird's operating areas is swept whole, a
 request every 30 seconds for all of Bird's areas, and once a day while
 nobody looks ([Bird's rider app](bird-app-map.md)). Swept on 27 October 2026,
@@ -69,13 +69,13 @@ Grove (50), Okotoks (47), Medicine Hat (44), St. Albert (38, beside Lime's),
 Penticton (26) and Cranbrook (19). Spruce Grove's area also covers Stony
 Plain, so the map lists it once, under Spruce Grove, and search finds it by
 Stony Plain too. Cranbrook keeps Alberta's time, as the East Kootenay does.
-Bird's areas in Airdrie and Chestermere held no scooter within 5 km of their
-centres, and its map showed no area in Laval, Red Deer or Regina; Bird
-Canada's list of its towns names none of them. Pickering, which it names,
-is still to be swept: its area, 29 km across, was read only near its centre,
-8 km north of the town's. Penticton's first season
-ends on 31 October, by the city's notice, so its area pauses from 1 November
-([Winter](#winter)).
+Pickering followed on 1 November 2026, with 36 scooters in the town's south,
+when its area, 29 km across, was first swept whole. Bird's areas in Airdrie
+and Chestermere, swept whole that day, held no scooter, and Vancouver's two
+and Montréal's none either; its map shows no area in Laval, Red Deer or Regina.
+Bird Canada's list of its towns names none of Airdrie, Chestermere, Laval,
+Red Deer or Regina. Penticton's and Pickering's seasons end on 31 October, so
+their areas pause from 1 November ([Winter](#winter)).
 
 The original GBFS audit follows.
 
@@ -272,6 +272,13 @@ November until 1 April, Vancouver time: the scooters came out on 30 March
 (council report of 20 January 2026). The window's dates are this winter's,
 so check in March 2027.
 
+Pickering's [pilot page](https://www.pickering.ca/property-roads-safety/parking-roads-and-driveways/shared-e-scooter-pilot-program/)
+says it runs "annually from April through the end of October (weather
+permitting)", with rentals from 1 April in 2026, so the catalog pauses Bird's
+Pickering area from 1 November until 1 April, Toronto time. Bird still listed
+36 scooters there on the afternoon of 1 November: they stay on the map until
+they are collected.
+
 Red Deer's Business Licence Bylaw 3609/2018 has operators "Remove E-scooters
 from the City between November 1 and March 15 each year" (Schedule J, 2(f),
 [consolidated 5 September 2025](https://www.reddeer.ca/media/reddeerca/city-government/bylaws/Business-Licence-Bylaw-3609-2018.pdf)),
@@ -364,9 +371,15 @@ above):
 
 ## Night bans
 
-No covered Canadian town bans renting at night. Parc Jean-Drapeau, whose
-rule is the park's own, is the one Canadian entry in
-[`rental-curfews.json`](../data/rental-curfews.json).
+Pickering is the one covered Canadian town that bans renting at night.
+With Parc Jean-Drapeau, whose rule is the park's own, it is a Canadian entry
+in [`rental-curfews.json`](../data/rental-curfews.json).
+
+- **Pickering:** "daily hours of operation from 6:00 am to 11:00 pm", and "all
+  e-scooters will be remotely deactivated at 10:45 pm each night" until 06:00
+  ([pilot page](https://www.pickering.ca/property-roads-safety/parking-roads-and-driveways/shared-e-scooter-pilot-program/),
+  read on 1 November 2026). The map says renting is closed from 22:45,
+  Toronto time, inside the city's boundary from OpenStreetMap.
 
 - **Parc Jean-Drapeau:** "Les trottinettes électriques peuvent être utilisées
   entre 6 h et 23 h, tous les jours", and not outside the park
@@ -460,9 +473,8 @@ Bays show from zoom 16, as elsewhere.
   Parc Jean-Drapeau's islands (Lime's, above); **London, ON** opted out of
   the provincial pilot.
 - **Bird**'s Kelowna, Saskatoon, Ajax and Surrey feeds were empty. Its rider
-  map supplies thirteen towns with no feed since 28 October 2026 (above); its
-  Airdrie and Chestermere areas held no scooter near their centres on 27
-  October, and its Pickering area is still to be swept whole.
+  map supplies fourteen towns with no feed (above); its Airdrie and
+  Chestermere areas held no scooter, swept whole on 1 November 2026.
 - **Neuron**'s twelve Canadian feeds answer 404 since Lime bought it; Lime has
   no public feed yet for its other former Neuron towns, which its rider map
   supplies since 27 October 2026 (Saskatoon, Regina, Red Deer, Lacombe,

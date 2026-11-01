@@ -53,7 +53,7 @@ were added.
 | **Voi official GBFS access** | The user authorized an authenticated rider-map adapter on 24 October 2026; it adds 72 regions, including 17 in the UK ([evidence](voi-app-map.md)). Official access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
 | **Rider sign-in for JET** | JET's separate Central Asian app needs a rider account, with phone and SMS verification, for Almaty, Ulaanbaatar, Tashkent and Tbilisi. No guest session was found (24 October 2026). Beam's Google sign-in is complete, with a [54-region collector](beam-app-map.md) across Australia, Malaysia, South Korea and Türkiye. LUUP's [19-city collector](luup-app-map.md) and Whoosh's [25-region collector](whoosh-app-map.md) are integrated too. Go Jet's [signed-out adapter](gojet-app-map.md) supplies 54 regions in six countries without a rider sign-in. See [the evidence](jet-whoosh-beam-luup-app-maps.md) |
 | **Rider sign-ins for six ATOM apps** | IslaRide (Tenerife), wer2 (Doha), Reby (Dakar), IZZY (Tashkent), Silk Road Samarkand and e-moob (Tamarindo) answer their map only to a signed-in rider, and each needs its own phone and SMS sign-in, as MoVe's did. On 25 October 2026 the user chose to leave them for another day. Reby also refused a sign-in from a Swiss IP (error `11-6`), and e-moob's Aruba fleet stays out, since Aruba banned e-scooters from public roads in July 2026. See [the apps](atom-operator-apps.md) |
-| **Bird's rider app** | Since 28 October 2026 it supplies 21 towns where Bird publishes no feed, signed in, each area swept whole, at one request every 30 seconds for all of them: eight American ones, from Austin to Yonkers, and thirteen Canadian ones, from Lethbridge to Mississauga. Its map made up scooters twice on 27 October 2026, both times after about 200 requests, so the request limit, not published, is the constraint: the cache stays near half of it. Beyond the 33 largest US and Canadian towns, only the 25 where Bird was said to run were searched, and each area was read only near its centre: Pickering's, Oklahoma City's, Washington's, Chula Vista's, San Jose's, Vancouver's and Houston's, which held no scooter there, are still to be swept whole. See [requests, limits and evidence](bird-app-map.md) |
+| **Bird's rider app** | Since 28 October 2026 it supplies 23 towns where Bird publishes no feed, signed in, each area swept whole, at one request every 30 seconds for all of them: nine American ones, from Austin to Yonkers, and fourteen Canadian ones, from Lethbridge to Mississauga. Its map made up scooters twice on 27 October 2026, both times after about 200 requests, so the request limit, not published, is the constraint: the cache stays near half of it. Beyond the 33 largest US and Canadian towns, only the 25 where Bird was said to run have been searched. Swept whole on 1 November, Pickering's and Oklahoma City's areas held scooters, and the others left unchecked none. See [requests, limits and evidence](bird-app-map.md) |
 | **Boulder's parking corrals** (Colorado) | The City of Boulder publishes its Lime Groves (parking corrals) and Lime zones in the `trans/LimeScooterLocations` map service on gis.bouldercolorado.gov, which holds proposed Groves beside the active ones. Since at least 29 October 2026 the server has answered scripts with HTTP 403 and a Cloudflare challenge, from Switzerland and from Germany, and no copy of the layer is on ArcGIS Online. The zones are drawn from Lime's public zone file instead, since 29 October 2026, with the user's leave (`DATA_SOURCES.md`); the corrals are not in that file, so the Mandatory Parking Zone, most of central Boulder, where a ride ends at one, is not drawn either. The City's 2023 PDF maps of Downtown and University Hill are pictures only |
 | **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Both operators' scooters there come from their rider maps since 25 October 2026, [Bolt's](bolt-app-map.md) and [Lime's](lime-app-map.md), so their NRW.Mobidrom feeds are not needed |
 
@@ -1066,11 +1066,9 @@ banned shared scooters, and feeds that were empty when checked.
       campus, and since 29 October Farmington, Utah, where three audits
       found 2 scooters and none to check them against before a fourth found
       5. Still without one: smaller towns.
-    - **Bird** in Oklahoma City, whose operating area held no scooter within
-      3 km of its centre on 27 October 2026; the area is 26 km across, so it
-      is still to be swept whole. Its rider map has supplied
-      Austin, Bloomington, IN, Charlotte, Jacksonville, Mankato, Sacramento,
-      Wilmington, NC, and Yonkers since 28 October 2026
+    - **Bird:** its rider map has supplied Austin, Bloomington, IN, Charlotte,
+      Jacksonville, Mankato, Sacramento, Wilmington, NC, and Yonkers since 28
+      October 2026, and Oklahoma City since 1 November
       ([Bird's rider app](bird-app-map.md)). Bird in **Long Beach** is one
       of the City's two permitted operators, with Lime (Public Works memo of
       5 March 2026; the
@@ -1197,12 +1195,10 @@ banned shared scooters, and feeds that were empty when checked.
     Kamloops, Cranbrook, Regina, Mississauga, Brampton, Oshawa, Pickering and
     Laval answer 404 "Invalid organization slug" for 14 forms of each name,
     and its Airdrie and St. Albert scooters had no feed either. Since 28
-    October 2026 Bird's rider map supplies thirteen of these towns ([Canada's guide](canadian-scooter-feeds.md#bird-supplement--28-october-2026)).
-    On 27 October its areas in Airdrie and Chestermere held no scooter near
-    their centres, and it showed no area in Red Deer, Regina or Laval; Lime's
-    Airdrie, Red Deer, Regina and Laval scooters are covered. Bird Canada
-    lists Pickering among its towns, and its area there, 29 km across, was
-    read only near its centre: still to be swept whole.
+    October 2026 Bird's rider map supplies fourteen of these towns ([Canada's guide](canadian-scooter-feeds.md#bird-supplement--28-october-2026)).
+    Swept whole on 1 November 2026, its areas in Airdrie and Chestermere held
+    no scooter, and it shows no area in Red Deer, Regina or Laval; Lime's
+    Airdrie, Red Deer, Regina and Laval scooters are covered.
   - **Neuron:** its 12 Canadian feeds answer 404 since Lime bought it on 3
     July 2026. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
     and its rider map the other towns since 27 October 2026, but for Sylvan
@@ -1880,6 +1876,8 @@ Bonaire had feeds to add. Survey files are in
   April by the city's notice that its first season ended on 31 October 2026.
   The scooters came out on 30 March in 2026: if they are back before 1 April,
   move `until` to that day; in October 2027, set `from` by the city's notice.
+  Bird Pickering likewise, its pilot's page saying April to the end of
+  October: check that the pilot comes back in 2027.
 - **1 April 2027:** Hoppy Zakynthos (`hoppy_gr_zakynthos`, ATOM 2198). It
   fell from 33 scooters on 24 October 2026 to none by 27 October, 18:00 UTC,
   as its season ended ([Greek feeds](greek-scooter-feeds.md)), with Kos and

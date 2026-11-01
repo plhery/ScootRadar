@@ -378,6 +378,31 @@
       }
     },
     {
+      "id": "bird_ca_app_pickering",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Pickering",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.8358,
+        -79.0906
+      ],
+      "bounds": {
+        "south": 43.79226,
+        "north": 44.00967,
+        "west": -79.21855,
+        "east": -79.0084
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "c9beabe5-5b9b-4611-8270-faf379af0ff1",
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-01",
+        "timeZone": "America/Toronto"
+      }
+    },
+    {
       "id": "bird_ca_app_spruce_grove",
       "country": "CA",
       "provider": "bird",

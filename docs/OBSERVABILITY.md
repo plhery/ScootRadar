@@ -310,7 +310,7 @@ day. Hopp Dalvík and Bird Leduc, emptied for the winter on 20 and 21 October 20
 paused on 22 October, before their alerts were due, and Hopp Ólafsvík, emptied on the
 22nd, from the 23rd. Hopp Stykkishólmur, emptied on 25 October, is paused from the 26th,
 after its alert fired on the 28th. Bird Penticton is paused from 1 November 2026, when the
-city's notice ends its season. Lime's Zürich, Basel and Uster groups count only while they
+city's notice ends its season, and Bird Pickering, whose page ends its season in October. Lime's Zürich, Basel and Uster groups count only while they
 stand in for their national feeds: on standby they list nothing by design.
 
 - **Not a quiet night or a snow day.** Beryl empties Bournemouth and Brighton every

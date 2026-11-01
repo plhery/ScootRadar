@@ -45,13 +45,15 @@ about half what it took. An area nobody looks at is swept once a day
 (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
 ten minutes after a day without a sweep. A request keeps an area watched for
 three minutes, and a watched area is swept again as soon as its sweep ends.
-The 21 areas took 160 requests on 27 October, so a day's round of them all
-takes about 80 of the client's 1,440 minutes.
+The 23 areas took about 180 requests, so a day's round of them all takes
+about 90 of the client's 1,440 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
 cache waits two minutes, while the cache it replaces may still be sweeping.
 
-Production and research share the account's limit. Once the cache holds the
-session, run no Bird research on that account.
+Production and research share an account's limit, and renewing rotates its
+refresh token. So research runs on an account of its own since 1 November
+2026, with its own device, kept outside the repository, and never on the
+session the cache holds.
 
 | Area | Scooters | Requests | Time | Swept |
 | --- | ---: | ---: | ---: | --- |
@@ -77,6 +79,8 @@ session, run no Bird research on that account.
 | Bloomington, IN | 267 | 4 | 120 s | 23:14 UTC |
 | Brampton | 135 | 11 | 300 s | 23:17 UTC |
 | Mississauga | 103 | 17 | 510 s | 23:22 UTC |
+| Pickering | 36 | 12 | 330 s | 15:14 UTC, 1 November |
+| Oklahoma City | 43 | 9 | 270 s | 15:19 UTC, 1 November |
 
 These were swept with the production code on 27 October 2026, the first four a
 request every six seconds, the others at the production pace after Bird's map
@@ -118,9 +122,7 @@ Seattle had operating areas without a scooter within 3 km of their centres;
 Seattle revoked Bird's permit in March 2026, and we found no 2026 Bird
 permit in San Jose, where the City permitted Lime in March 2026. That
 search was stopped after the 33 largest of the 1,189 towns it had queued,
-and a read at a centre clears a small area only: Washington's area is 28
-km across, Oklahoma City's 26, Chula Vista's 22 and San Jose's 16, so
-those are unchecked, not empty.
+and a read at a centre clears a small area only, as 1 November showed below.
 That evening, from 22:32 to 22:53 UTC, the same search, an area read every 30
 seconds and a scooter read within 5 km of each new area's centre, went
 through 25 towns where Bird was said to run without a feed: the Canadian
@@ -128,15 +130,30 @@ towns of [Coverage gaps](coverage-gaps.md) and the American ones a search
 of the web had named. Fifteen had an operating area with scooters, all in the
 table above with Brampton and Mississauga, found by the first search.
 Airdrie's and Chestermere's areas, 9 and 7 km across, had no scooter within
-5 km of their centres. Pickering's had none either, but it is 29 km across
-and its centre 8 km north of the town's, and Bird Canada's site lists
-Pickering among its towns: unchecked. Laval, Red Deer, Regina, Springfield,
+5 km of their centres, nor Pickering's, 29 km across, its centre 8 km north
+of the town's. Laval, Red Deer, Regina, Springfield,
 MO, Pocatello, Athens, OH, Abilene and Amarillo with Canyon had no area at
-all. Laval's read listed nothing though Montréal's areas are 14 km away, so
-an empty read proves little alone; Bird Canada's list names none of Laval,
-Red Deer, Regina, Airdrie or Chestermere.
+all. Bird Canada's list names none of Laval, Red Deer, Regina, Airdrie or
+Chestermere.
 Wilmington's and Mankato's areas are their universities' campuses, so each
 town's centre on the map is its campus.
+
+The area list reaches about 9 km, whatever the radius asked. In the 58 reads
+above, the farthest area listed began 9 km from the point read, and Laval,
+12.8 km from the edge of Montréal's nearest area, listed nothing at 25, 100
+or 500 km alike (1 November 2026). So a read clears its own town and no
+further, and a search must read every 8 km or so.
+
+On 1 November 2026, on the research account, the areas left unchecked were
+swept whole with the production code: 94 requests from 15:08 to 15:55 UTC.
+Pickering's held 36 scooters, in the town's south, and Oklahoma City's 43,
+downtown, each missed by the read at its area's centre; both are in the table
+above. Airdrie's, Chestermere's, Vancouver's two, Chula Vista's, San Jose's
+two, Washington's own, Alexandria's (3 on 27 October) and Montréal's held
+none. An unnamed area of 60 km around Washington held 150, around George
+Mason University, 144 of them inside Bird's public Fairfax feed: no new town.
+Houston's and Toronto's areas are a few hundred metres across, so their
+centre reads cleared them, and Seattle's permit is revoked, so it was left out.
 
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.

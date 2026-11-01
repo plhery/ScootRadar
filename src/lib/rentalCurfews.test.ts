@@ -42,6 +42,8 @@ const BIRMINGHAM_AL: [number, number] = [33.5186, -86.8104];
 const CINCINNATI: [number, number] = [39.1031, -84.512];
 const COVINGTON_KY: [number, number] = [39.0837, -84.5086];
 const EAST_LANSING: [number, number] = [42.7471, -84.483];
+const PICKERING: [number, number] = [43.8358, -79.0906];
+const AJAX: [number, number] = [43.8501, -79.0329];
 const MSU_CAMPUS: [number, number] = [42.7318, -84.4822];
 const LANSING: [number, number] = [42.7337, -84.5555];
 const ST_PETERSBURG: [number, number] = [27.7709, -82.6386];
@@ -251,6 +253,14 @@ describe('activeCurfew', () => {
     expect(activeCurfew(ILE_NOTRE_DAME, at('2026-10-27T09:59:00Z'))?.city).toBe('Parc Jean-Drapeau');
     expect(activeCurfew(ILE_NOTRE_DAME, at('2026-10-27T10:00:00Z'))).toBeNull();
     expect(activeCurfew(MONTREAL, at('2026-10-27T03:00:00Z'))).toBeNull();
+  });
+
+  it('closes Pickering from 22:45, when Bird\'s scooters are switched off, to 06:00, and not Ajax next door', () => {
+    expect(activeCurfew(PICKERING, at('2026-10-28T02:44:00Z'))).toBeNull();
+    expect(activeCurfew(PICKERING, at('2026-10-28T02:45:00Z')))
+      .toEqual({ city: 'Pickering', until: at('2026-10-28T10:00:00Z'), timeZone: 'America/Toronto' });
+    expect(activeCurfew(PICKERING, at('2026-10-28T10:00:00Z'))).toBeNull();
+    expect(activeCurfew(AJAX, at('2026-10-28T02:45:00Z'))).toBeNull();
   });
 
   it('stops at the edge of Oslo, and needs a place', () => {

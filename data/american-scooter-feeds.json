@@ -885,6 +885,26 @@
       "birdAppArea": "b96664dd-8003-4947-bb74-6b10e98af3a9"
     },
     {
+      "id": "bird_us_app_oklahoma_city",
+      "country": "US",
+      "provider": "bird",
+      "city": "Oklahoma City",
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "center": [
+        35.46756,
+        -97.51643
+      ],
+      "bounds": {
+        "south": 35.43414,
+        "north": 35.60918,
+        "west": -97.65796,
+        "east": -97.45825
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "f9da155a-3335-4f84-8bdc-f97e3e3f4cc1"
+    },
+    {
       "id": "bird_us_app_sacramento",
       "country": "US",
       "provider": "bird",

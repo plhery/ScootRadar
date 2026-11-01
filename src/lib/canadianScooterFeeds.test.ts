@@ -53,7 +53,7 @@ describe('Canada', () => {
     // Bird's towns with no public feed: its rider map, each operating area swept whole, since 28 October 2026.
     expect(canadian.filter(entry => entry.birdAppArea).map(entry => entry.city)).toEqual([
       'Brampton', 'Cochrane', 'Cranbrook', 'Kamloops', 'Lethbridge', 'Medicine Hat', 'Mississauga', 'Okotoks', 'Oshawa', 'Penticton',
-      'Spruce Grove', 'St. Albert', 'Vernon',
+      'Pickering', 'Spruce Grove', 'St. Albert', 'Vernon',
     ]);
     // Saskatchewan keeps standard time all year, and Cranbrook, in the East Kootenay, Alberta's time.
     const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', QC: 'America/Toronto', NS: 'America/Halifax',
@@ -72,8 +72,9 @@ describe('Canada', () => {
       'Airdrie, AB', 'Ajax, ON', 'Beaumont, AB', 'Blackfalds, AB', 'Brampton, ON', 'Calgary, AB', 'Cochrane, AB', 'Coquitlam, BC',
       'Cranbrook, BC', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Hamilton, ON', 'Kamloops, BC', 'Kelowna, BC', 'Lacombe, AB',
       'Laval, QC', 'Leduc, AB', 'Lethbridge, AB', 'Medicine Hat, AB', 'Mississauga, ON', 'Moncton, NB', 'Montréal, QC', 'Okotoks, AB',
-      'Oshawa, ON', 'Ottawa, ON', 'Penticton, BC', 'Port Moody, BC', 'Red Deer, AB', 'Regina, SK', 'Richmond, BC', 'Saint John, NB',
-      'Saskatoon, SK', 'Spruce Grove, AB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Vernon, BC', 'Waterloo Region, ON', 'Windsor, ON',
+      'Oshawa, ON', 'Ottawa, ON', 'Penticton, BC', 'Pickering, ON', 'Port Moody, BC', 'Red Deer, AB', 'Regina, SK', 'Richmond, BC',
+      'Saint John, NB', 'Saskatoon, SK', 'Spruce Grove, AB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Vernon, BC',
+      'Waterloo Region, ON', 'Windsor, ON',
     ]);
     expect(city('ca:on:Ottawa')).toMatchObject({ city: 'Ottawa, ON', country: 'CA', region: 'ON' });
   });
@@ -186,7 +187,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s from 1 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s and Pickering\'s from 1 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -220,6 +221,11 @@ describe('Canada', () => {
     expect(activeSeasonalPause(penticton, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Penticton, BC', month: 4 });
     expect(activeSeasonalPause(penticton, Date.UTC(2027, 3, 1, 18))).toBeNull();
     expect(feedPaused('canada:bird_ca_app_penticton', winter)).toBe(true);
+    // Pickering's page runs its pilot "from April through the end of October"; rentals start on 1 April.
+    const pickering: [number, number] = [43.8358, -79.0906];
+    expect(activeSeasonalPause(pickering, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Pickering, ON', month: 4 });
+    expect(activeSeasonalPause(pickering, Date.UTC(2027, 3, 1, 18))).toBeNull();
+    expect(feedPaused('canada:bird_ca_app_pickering', winter)).toBe(true);
     // Laval's by-law sets the season from 15 April to 15 November, for every group of Lime's map there.
     const laval: [number, number] = [45.56995, -73.692];
     expect(activeSeasonalPause(laval, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -249,7 +255,7 @@ describe('Canada', () => {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:bc:Penticton', 'ca:ab:Spruce Grove', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:bc:Penticton', 'ca:on:Pickering', 'ca:ab:Spruce Grove', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
   });
 
   it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {

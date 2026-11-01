@@ -17,10 +17,10 @@ credentials are used. The catalog is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
 The map covers 136 towns in 34 states and the District: Washington, DC
-(Hopp, Veo and Lime), 32 towns of Bird's (8 from its rider map), 75 of
+(Hopp, Veo and Lime), 33 towns of Bird's (9 from its rider map), 75 of
 Lime's (58 from its rider map), 39 more of Veo's, 29 of Spin's, Lyft's
 Chicago and Portland, and GCOO's Los Angeles, Arlington and Alexandria,
-Virginia. In 38 of them, from Tempe and
+Virginia. In 39 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Fourteen of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
@@ -180,8 +180,8 @@ of county inside its limits that the ban never reached.
 ## Bird supplement — 28 October 2026
 
 Bird publishes no feed for Austin, Bloomington, Indiana, Charlotte,
-Jacksonville, Mankato, Sacramento, Wilmington, North Carolina, or Yonkers, so
-its rider map, signed in, supplies them: each of Bird's operating areas there
+Jacksonville, Mankato, Oklahoma City, Sacramento, Wilmington, North Carolina,
+or Yonkers, so its rider map, signed in, supplies them: each of Bird's operating areas there
 is swept whole, a request every 30 seconds for all of Bird's areas, and once a
 day while nobody looks ([Bird's rider app](bird-app-map.md)). On the evening
 of 27 October 2026, local time: Yonkers 811 scooters, a town of its own beside
@@ -194,9 +194,11 @@ from 17:09 to 17:31 Central time, beside Lime's 3,282 the afternoon before.
 Indianapolis, swept the same way as a check, held 580 scooters, and Bird's
 public feed 586 inside the same outline, 582 of them within 50 m of one the
 sweep found. Spin's scooters, which Bird's app also shows, are left to
-Spin's public feeds.
+Spin's public feeds. Oklahoma City followed on 1 November 2026, with 43
+scooters downtown, beside Lime's, when its area, 26 km across, was first
+swept whole.
 
-None of the eight towns sets a season by rule. Bird kept Bloomington's
+None of the nine towns sets a season by rule. Bird kept Bloomington's
 scooters in from 24 November 2025 to 18 March 2026 by its own choice
 ([B Square Bulletin](https://bsquarebulletin.com/bloomington-electric-scooter-ridership-drops-82-city-prepares-new-licensing-round/),
 18 July 2026), and Mankato's have been stored each November, so either
@@ -1097,7 +1099,7 @@ Rules that read like bans but are not, or that no primary source confirms:
 - **Washington, DC, Los Angeles, Santa Monica, Culver City, San Francisco,
   Oakland, San Jose, Seattle, Colorado Springs, Tempe, Indianapolis, Kansas
   City, Lexington, San Antonio, Arlington, Fairfax, Norfolk, Eau Claire,
-  Sacramento, Mankato, Wilmington and Spokane Valley:** no hours in their
+  Sacramento, Mankato, Wilmington, Oklahoma City and Spokane Valley:** no hours in their
   rules. In Sacramento a councilmember's proposal on the "Regulation and
   Enforcement of E-Bikes, E-Scooters, E-motos, and Plug-in Electric
   Two-wheelers" (file

@@ -1,7 +1,7 @@
 {
   "verifiedOn": "2026-10-26",
   "about": "Night bans on renting shared scooters. A night belongs to the evening it starts on: \"fri\" with 00:00–05:00 is the early hours of Saturday. A night's \"dates\" are the holiday evenings it starts on besides its days: \"12-24\", or days from Easter Sunday (\"easter-4\") or from Finland's Midsummer Eve, the Friday from 19 to 25 June (\"midsummerEve-1\").",
-  "areaSource": "Norwegian municipalities from Kartverket (CC BY 4.0), British local authority districts from the ONS (Open Government Licence v3.0), Portuguese municipalities from the CAOP (Informação geográfica cedida pela Direção-Geral do Território, CC BY 4.0), American incorporated places from the Census Bureau's TIGERweb (public domain) and Kyiv, Helsinki, Espoo, Vantaa, Turku, Lahti, Porvoo, Montréal's Parc Jean-Drapeau and Michigan State University's campus, cut out of East Lansing, from OpenStreetMap (© OpenStreetMap contributors, ODbL), simplified to within 100 m by scripts/update-curfew-areas.mjs",
+  "areaSource": "Norwegian municipalities from Kartverket (CC BY 4.0), British local authority districts from the ONS (Open Government Licence v3.0), Portuguese municipalities from the CAOP (Informação geográfica cedida pela Direção-Geral do Território, CC BY 4.0), American incorporated places from the Census Bureau's TIGERweb (public domain) and Kyiv, Helsinki, Espoo, Vantaa, Turku, Lahti, Porvoo, Montréal's Parc Jean-Drapeau, Pickering and Michigan State University's campus, cut out of East Lansing, from OpenStreetMap (© OpenStreetMap contributors, ODbL), simplified to within 100 m by scripts/update-curfew-areas.mjs",
   "curfews": [
     {
       "id": "oslo",
@@ -9015,6 +9015,54 @@
           [45.5188, -73.5259],
           [45.5185, -73.5287],
           [45.5119, -73.5282]
+        ]
+      ]
+    },
+    {
+      "id": "pickering",
+      "city": "Pickering",
+      "country": "CA",
+      "timeZone": "America/Toronto",
+      "nights": [
+        {
+          "from": "22:45",
+          "until": "06:00"
+        }
+      ],
+      "source": "https://www.pickering.ca/property-roads-safety/parking-roads-and-driveways/shared-e-scooter-pilot-program/",
+      "rule": "Shared e-scooter Pilot Program, read on 1 November 2026",
+      "note": "The city's page sets \"daily hours of operation from 6:00 am to 11:00 pm\", and \"all e-scooters will be remotely deactivated at 10:45 pm each night\" until 06:00, so none can be rented from 22:45. Bird Canada is its operator.",
+      "boundary": {
+        "source": "osm",
+        "id": "2408836"
+      },
+      "areas": [
+        [
+          [43.9709, -79.22],
+          [43.9529, -79.2142],
+          [43.8142, -79.1518],
+          [43.81, -79.1459],
+          [43.8068, -79.1339],
+          [43.8007, -79.1352],
+          [43.8019, -79.1312],
+          [43.8002, -79.1253],
+          [43.7976, -79.1243],
+          [43.7961, -79.1202],
+          [43.7947, -79.121],
+          [43.7949, -79.1153],
+          [43.7931, -79.1132],
+          [43.8058, -79.0352],
+          [43.8455, -79.0516],
+          [43.842, -79.0609],
+          [43.855, -79.0665],
+          [43.8543, -79.0706],
+          [43.8707, -79.0788],
+          [43.876, -79.0698],
+          [43.8947, -79.0774],
+          [43.8927, -79.0826],
+          [43.9043, -79.0883],
+          [43.9226, -79.0086],
+          [44.0108, -79.048]
         ]
       ]
     },
