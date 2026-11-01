@@ -18,6 +18,7 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
@@ -40,6 +41,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.plhery.scootradar.MainActivity
 import com.plhery.scootradar.app.ScooterMapViewModel
 import com.plhery.scootradar.core.api.AddressSearchAPIClient
@@ -85,7 +87,7 @@ import org.junit.runner.RunWith
 /**
  * The search and the language page on a phone (ui.md UI-009 to UI-012, UI-074): a place searched for and chosen
  * moves the map there; the keyboard lifts the open search and leaves the dock where it was; Return with no place
- * found puts the keyboard away; and a language chosen
+ * found puts the keyboard away, and a drag through the places leaves it up; and a language chosen
  * in Settings shows the app in it at once, in the same activity, over the same map, with no scooters asked for
  * again. The screens are kept in the run's additional output, as search-*.png and language-*.png.
  */
@@ -206,6 +208,43 @@ class SearchAndLanguageTest {
         compose.onNodeWithTag(SEARCH_FIELD_TAG).assertIsNotFocused()
         compose.onNodeWithText("Cancel").assertExists()
         compose.onNodeWithText("No places found.").assertExists()
+    }
+
+    /**
+     * UI-236 and UI-391: the places dragged by a finger scroll under a keyboard that stays up, the field still
+     * focused. The iPhone sets no `scrollDismissesKeyboard` on them (SwissAddressSearch.swift:330-342), and the iOS
+     * 27.1 simulator keeps its keyboard up while they are dragged. The finger goes through the system's input, as a
+     * rider's does, slowly enough to be a drag and not a fling. Kept as search-dragged.png.
+     */
+    @Test
+    fun draggingThePlacesScrollsThemAndLeavesTheKeyboardUpAndTheFieldFocused() {
+        show(addressSearch = streets)
+        compose.onNodeWithTag(SEARCH_ISLAND_TAG).performClick()
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput("Bahnhofstrasse")
+        compose.waitUntil(10_000) { imeBottom() > 0 && compose.onAllNodes(hasText("Bahnhofstrasse 1")).fetchSemanticsNodes().isNotEmpty() }
+        // The keyboard's own slide up over.
+        Thread.sleep(1_000)
+        compose.waitForIdle()
+        val keyboard = imeBottom()
+        val places = compose.onNode(hasAnyAncestor(hasTestTag(SEARCH_ISLAND_TAG)) and SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
+        fun scrolled() = places.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange].value()
+        assertEquals("the places at their top", 0f, scrolled())
+        val shown = bounds(places.fetchSemanticsNode())
+
+        // 0.6 s up the places, from near their foot to near their top, in the screen's pixels.
+        val x = shown.center.x.toInt()
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+            .swipe(x, (shown.bottom - 30).toInt(), x, (shown.top + 30).toInt(), 120)
+        // Long enough for a keyboard put away to have slid down.
+        Thread.sleep(1_000)
+        compose.waitForIdle()
+        screenshot("search-dragged")
+        assertTrue("the places scrolled: ${scrolled()}", scrolled() > 0f)
+        var imeVisible = false
+        scenario?.onActivity { imeVisible = ViewCompat.getRootWindowInsets(it.window.decorView)?.isVisible(WindowInsetsCompat.Type.ime()) == true }
+        assertTrue("the keyboard shown", imeVisible)
+        assertEquals("the keyboard's height", keyboard, imeBottom())
+        compose.onNodeWithTag(SEARCH_FIELD_TAG).assertIsFocused()
     }
 
     @Test
