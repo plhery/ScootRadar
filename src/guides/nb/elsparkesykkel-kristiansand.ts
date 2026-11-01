@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Kristiansand 2026: priser og åpningstider',
   description: 'Elsparkesykkel i Kristiansand: priser hos Voi og Ryde, når Voi stenger, vinterpausen, soner, parkering i Kvadraturen og gebyret på 900 kr.',
   headline: 'Elsparkesykkel i Kristiansand: Voi og Ryde, priser, åpningstider og soner',
-  lede: 'Vil du leie elsparkesykkel i Kristiansand, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen til og med 31. mars 2027. Voi tar 5 kr for å låse opp og 2,50 kr per minutt (14. oktober 2026), mens Ryde viser prisen bare i appen, og begge krever at du har fylt 16 år. Natt til lørdag og natt til søndag er utleien stengt: Forskriften sier fra midnatt til kl. 05, men Voi stenger allerede kl. 23. Om vinteren samles sparkesyklene inn før snøen kommer, og i deler av Kvadraturen kan du bare avslutte turen på en oppmerket plass.',
+  lede: 'Vil du leie elsparkesykkel i Kristiansand, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen. Voi tar 5 kr for å låse opp og 2,50 kr per minutt (14. oktober 2026), mens Ryde viser prisen bare i appen, og begge krever at du har fylt 16 år. Natt til lørdag og natt til søndag er utleien stengt: Forskriften sier fra midnatt til kl. 05, men Voi stenger allerede kl. 23. Om vinteren samles sparkesyklene inn før snøen kommer, og i deler av Kvadraturen kan du bare avslutte turen på en oppmerket plass.',
   published: '2026-10-14',
   updated: '2026-10-17',
   city: 'no:Kristiansand',
@@ -16,11 +16,11 @@ const guide: Guide = {
     {
       heading: 'Leie elsparkesykkel i Kristiansand: Voi og Ryde',
       blocks: [
-        'Kristiansand kommune har avtale med to operatører: **Voi og Ryde**. Avtalen gjelder til og med 31. mars 2027, og det er Agder kollektivtrafikk (AKT) som administrerer den. Bolt, som hadde tillatelse fra 2022 til mars 2024, leier ikke lenger ut i byen.',
+        'Kristiansand kommune har avtale med to operatører: **Voi og Ryde**. Agder kollektivtrafikk (AKT) administrerer avtalen. Bolt, som hadde tillatelse fra 2022 til mars 2024, leier ikke lenger ut i byen.',
         'Siden 1. april 2024 gjelder en ny utleieforskrift. Den åpner for opptil to operatører, valgt etter en konkurranse som AKT gjennomfører, og en tillatelse gjelder i tre år om gangen. Hver operatør får ha maks **150** kjøretøy i Kvadraturen (sone 1) og **350** i sone 2, mens det ikke er noe tak i resten av kommunen.',
         'De første utleide sparkesyklene kom i 2019. Kommunen ville ha flere utenfor sentrum, og det har den fått: 14. oktober 2026 viste kommunens eget kart rundt 1320 elsparkesykler fra Voi og 1230 fra Ryde, de aller fleste utenfor sentrum.',
         'På [kartet over Kristiansand](map:no:Kristiansand) viste ScootRadar rundt 1150 Voi-sparkesykler 14. oktober 2026. **Ryde mangler på kartet:** Selskapet deler ikke posisjonene sine for Kristiansand offentlig, så Rydes sparkesykler ser du bare i Ryde-appen eller i AKT Billett-appen. AKT Billett viser begge operatørene og sender deg videre til appen deres, der du låser opp og betaler.',
-        'Hvem som får tillatelse fra april 2027, er ikke kjent: Ingen ny konkurranse var utlyst per 15. oktober 2026. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
+        'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
