@@ -118,8 +118,9 @@ Web collection runs only on `scootradar.com`, honors DNT/GPC and
 `localStorage['umami.disabled']`, and has an opt-out on `/privacy`.
 iOS has an opt-out under Settings › About › Privacy. Simulators, previews and XCTest are disabled;
 launch a simulator with `-analytics-smoke-test` only for an intentional production
-collection check. Android sends from release builds only: a debug build sends when
-started with `--ez analytics-smoke-test true`, and never under its tests. Physical-device installations collect after rebuilding/installing
+collection check. Android sends from the `release` build type only (not the benchmark builds made from it to
+measure the app on an emulator): a debug build sends when started with `--ez analytics-smoke-test true`, and
+never under its tests. Physical-device installations collect after rebuilding/installing
 this revision. Existing installed binaries cannot gain tracking through a web deploy.
 
 ## Deployment/verification

@@ -75,7 +75,8 @@ jobs:
 
       # verifyRoborazziDebug has the JVM tests compare their screenshots with the baselines recorded on the
       # Mac (android/app/src/test/screenshots). All their text is the bundled Inter, so Linux's fonts don't enter.
-      - run: ./gradlew --console=plain :core:test :core:animalsnifferMain :app:testDebugUnitTest :app:verifyRoborazziDebug :app:lintDebug :app:assembleDebug
+      # assembleRelease runs R8 and the resource shrinker over the release build, unsigned (X-AD30).
+      - run: ./gradlew --console=plain :core:test :core:animalsnifferMain :app:testDebugUnitTest :app:verifyRoborazziDebug :app:lintDebug :app:assembleDebug :app:assembleRelease
 
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -71,7 +71,7 @@ fun MacrobenchmarkScope.openSearch() {
     }
     field.text = "Bern"
     // The city's row, its country under its name.
-    device.wait(Until.hasObject(By.pkg(PACKAGE).textContains("Switzerland")), 10_000)
+    check(device.wait(Until.hasObject(By.pkg(PACKAGE).textContains("Switzerland")), 10_000)) { "No result for Bern" }
     device.pressBack()
     device.pressBack()
     device.waitForIdle()

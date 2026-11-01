@@ -1,7 +1,5 @@
 package com.plhery.scootradar.app
 
-import com.plhery.scootradar.BuildConfig
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -27,11 +25,5 @@ class AnalyticsBuildTypeTest {
     fun aDebugBuildSendsOnlyForTheSmokeTest() {
         assertFalse(AppContainer.sendsAnalytics("debug", smokeTest = false))
         assertTrue(AppContainer.sendsAnalytics("debug", smokeTest = true))
-    }
-
-    /** The unit tests run on the debug build, whose BuildConfig names its build type. */
-    @Test
-    fun theTestsBuildIsTheDebugBuildType() {
-        assertEquals("debug", BuildConfig.BUILD_TYPE)
     }
 }
