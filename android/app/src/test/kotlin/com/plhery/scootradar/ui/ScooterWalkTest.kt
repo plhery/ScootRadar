@@ -1,8 +1,5 @@
 package com.plhery.scootradar.ui
 
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -29,6 +26,7 @@ import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.dock.ScooterControlDock
 import com.plhery.scootradar.ui.theme.ScootTheme
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
@@ -101,19 +99,20 @@ class ScooterWalkTest {
     @Test
     fun theDockAndTheWalkAreAnnouncedAsTheyChange() {
         val (model, _, target) = harness()
+        val talkBack = TalkBackAnnouncements()
         compose.setContent { ScootTheme(dark = false, reduceMotion = true) { ScooterControlDock(model) } }
         compose.waitForIdle()
-        compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.PaneTitle)).assertCountEquals(0)
+        assertEquals(emptyList<String>(), talkBack.heard())
 
         model.selectScooter(target.id)
         compose.waitForIdle()
         val card = model.dockAnnouncement ?: return fail("Expected the card's announcement")
         assertTrue(card, card.startsWith("Lime scooter"))
-        compose.onNode(SemanticsMatcher.expectValue(SemanticsProperties.PaneTitle, card)).assertExists()
+        assertEquals(listOf(card), talkBack.heard())
 
         model.showWalkingRoute(ScooterWalkTarget.Scooter(target))
         compose.waitForIdle()
-        compose.onNode(SemanticsMatcher.expectValue(SemanticsProperties.PaneTitle, localized("Finding the way…"))).assertExists()
+        assertEquals(listOf(card, localized("Finding the way…")), talkBack.heard())
     }
 
     /** The open card's Directions button follows the walk without the card being drawn anew. */

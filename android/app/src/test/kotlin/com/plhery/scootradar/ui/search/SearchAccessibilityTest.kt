@@ -30,6 +30,7 @@ import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterCity
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterSearchBarState
+import com.plhery.scootradar.ui.TalkBackAnnouncements
 import com.plhery.scootradar.ui.theme.ScootTheme
 import java.io.IOException
 import java.util.Locale
@@ -169,18 +170,20 @@ class SearchAccessibilityTest {
      */
     @Test
     fun talkBackHearsHowManyPlacesWereFoundAndNothingWhileSearching() {
+        val talkBack = TalkBackAnnouncements()
         isSearching = true
         show()
         compose.mainClock.autoAdvance = false
-        assertEquals(emptyList<String>(), announced())
+        assertEquals(emptyList<String>(), talkBack.heard())
 
         type("Bahnhof")
-        assertEquals(emptyList<String>(), announced())
+        assertEquals(emptyList<String>(), talkBack.heard())
         compose.mainClock.advanceTimeBy(1_000)
         compose.waitForIdle()
-        assertEquals(listOf("3 address suggestions"), announced())
+        val said = mutableListOf("3 address suggestions")
+        assertEquals(said, talkBack.heard())
 
-        for ((query, said) in listOf(
+        for ((query, words) in listOf(
             "Zürich HB" to "One address suggestion",
             "Nowhere" to "No places found.",
             "Offline" to "Search isn’t available right now.",
@@ -188,13 +191,14 @@ class SearchAccessibilityTest {
             type(query)
             compose.mainClock.advanceTimeBy(1_000)
             compose.waitForIdle()
-            assertEquals(query, listOf(said), announced())
+            said += words
+            assertEquals(query, said, talkBack.heard())
         }
 
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextClearance()
         compose.mainClock.advanceTimeBy(1_000)
         compose.waitForIdle()
-        assertTrue(announced().isEmpty())
+        assertEquals(said, talkBack.heard())
     }
 
     private fun type(query: String) {
@@ -202,16 +206,6 @@ class SearchAccessibilityTest {
         compose.onNodeWithTag(SEARCH_FIELD_TAG).performTextInput(query)
         compose.waitForIdle()
     }
-
-    /**
-     * What the panes say that TalkBack reads as they appear or change: the announcements. An empty title is one
-     * withdrawn, which TalkBack doesn't read.
-     */
-    private fun announced(): List<String> =
-        compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.PaneTitle), useUnmergedTree = true)
-            .fetchSemanticsNodes()
-            .map { it.config[SemanticsProperties.PaneTitle] }
-            .filter { it.isNotEmpty() }
 }
 
 /** Three places for "Bahnhof", one for "Zürich HB", none for "Nowhere", and a failure for "Offline". */

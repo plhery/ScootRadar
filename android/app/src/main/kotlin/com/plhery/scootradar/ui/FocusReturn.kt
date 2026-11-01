@@ -14,10 +14,11 @@ import androidx.compose.ui.semantics.getAllSemanticsNodes
 /**
  * TalkBack's focus back on the control it was on as a menu, popover or sheet opened, once that closes (PLAN §10:
  * UIKit is believed to put VoiceOver back on a closed modal's presenter, which no Apple document settles, and a marker
- * or the search bar is a lost place either way). Left to itself, TalkBack looks for the node it last
- * focused by the window's title and its pane's, which the screen's announcements and the sheets' panes change, and
- * else takes the window's first node: the search bar, or a marker. Put back a frame after the close, the focus is in
- * the window as TalkBack settles on the change, and TalkBack keeps it. Without TalkBack nothing is kept or moved.
+ * or the search bar is a lost place either way). TalkBack 16.2 puts it back itself, 550 ms after the change, on the
+ * node it last focused under the window's title and pane title: the opener, now that announcements leave the window's
+ * title alone (review-app-ai R2; Filters on Phone_Min, 1 Nov). TalkBack files only the focus it moves, so its own
+ * comes after this one, and a frame after a sheet closes the opener is still under it and this one fails. Without
+ * TalkBack nothing is kept or moved.
  */
 class AccessibilityFocusReturn internal constructor(private val view: View) {
     /** The node of [view] TalkBack's focus was on as something opened. */
