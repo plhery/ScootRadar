@@ -101,8 +101,9 @@ val runWebClustering by tasks.registering(Exec::class) {
     commandLine(node.get(), webClusteringScript.absolutePath, webClustering.get().asFile.absolutePath)
 }
 
-// CatalogParityTest and TimeZonesParityTest read the iPhone app's generated files to check the Android
-// ones hold the same; RentalLinkPolicyParityTest reads its rental link table.
+// CatalogParityTest and TimeZonesParityTest read the iPhone app's generated files (its catalog, its cities' zones
+// in CityZones.generated.json, its time zones) to check the Android ones hold the same; RentalLinkPolicyParityTest
+// reads its rental link table.
 val iosModels = repo.resolve("ios/ScootRadar/Models")
 tasks.test {
     dependsOn(runWebClustering)
@@ -110,6 +111,7 @@ tasks.test {
     systemProperty("scootradar.webClustering", webClustering.get().asFile.absolutePath)
     inputs.files(
         iosModels.resolve("ProviderCatalog.generated.swift"),
+        iosModels.resolve("CityZones.generated.json"),
         iosModels.resolve("TimeZones.generated.swift"),
         iosModels.resolve("ScooterModels.swift"),
     ).withPropertyName("iosModels")

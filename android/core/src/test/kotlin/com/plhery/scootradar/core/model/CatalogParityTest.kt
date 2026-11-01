@@ -199,6 +199,7 @@ class CatalogParityTest {
         assertEquals(android.size, iPhone.size)
         android.zip(iPhone).forEach { (ours, theirs) -> assertEquals(ours[0].toString(), ours, theirs) }
         assertTrue("The Swift catalog still holds zone rings", swift.none { it.contains("ZoneRings: [[Double]]") })
+        assertTrue("The iPhone reads its zones from elsewhere", "    static let cityZones: [CityRuleZone] = CityZoneFile.builtIn()" in swift)
     }
 
     @Test

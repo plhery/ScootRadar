@@ -626,6 +626,18 @@ class CityRuleZoneTest {
     }
 
     @Test
+    fun everyStreetCreditsOpenStreetMapInTheLegend() {
+        // Seoul's streets are traced on OpenStreetMap's roads, the user's exception for this layer only (1 November 2026),
+        // and the iPhone's Apple map credits no OpenStreetMap, so the legend line does, on both phones: the line is the
+        // catalog's. The catalog's own, as many as data/ has (LOG-370; iOS counts three).
+        val streets = CityRuleZone.all.filter { it.id.startsWith("seoul-") }
+        assertFalse(streets.isEmpty())
+        for (street in streets) {
+            assertTrue(street.authority, street.authority.endsWith(", lines © OpenStreetMap"))
+        }
+    }
+
+    @Test
     fun aStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
         // About 200 m east, then 100 m north.
         val line = listOf(

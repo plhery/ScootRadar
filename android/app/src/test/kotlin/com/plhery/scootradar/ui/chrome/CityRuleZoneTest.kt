@@ -11,6 +11,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -97,6 +98,27 @@ class CityRuleZoneTest {
         // Who sets it, linked to where they say so.
         assertEquals(listOf(porto.source), links(lines[4]))
         assertEquals(listOf(bergen[0].source), links(lines[5]))
+    }
+
+    /**
+     * Seoul's streets as the catalog has them, traced on OpenStreetMap's roads: their line credits it, the whole
+     * "Seoul, lines © OpenStreetMap" linked to the city's notice (e1548810). The iPhone's test reads the catalog's
+     * street in the legend; the test above has a street of its own (LOG-370), so this one reads the catalog's.
+     */
+    @Test
+    fun theCatalogsStreetsCreditOpenStreetMapInTheirLine() {
+        Locale.setDefault(Locale.forLanguageTag("en-CH"))
+        ScooterLanguage.current = ScooterLanguage.En
+        val streets = CityRuleZone.all.filter { it.id.startsWith("seoul-") }
+        assertFalse(streets.isEmpty())
+        for (street in streets) {
+            val line = ruleLines(listOf(CityRuleZone.Shown(rule = street, inForce = true)), link = Color.Blue).single()
+            val text = line.text.text
+            assertTrue(text, text.endsWith(" · ${street.authority}") && text.endsWith(", lines © OpenStreetMap"))
+            val linked = line.text.getLinkAnnotations(0, text.length).single()
+            assertEquals(street.authority, text.substring(linked.start, linked.end))
+            assertEquals(street.source, (linked.item as LinkAnnotation.Url).url)
+        }
     }
 
     /**
