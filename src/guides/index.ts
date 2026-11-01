@@ -314,6 +314,7 @@ import elmshornDe from './de/e-scooter-elmshorn';
 import recklinghausenDe from './de/e-scooter-recklinghausen';
 import erlangenDe from './de/e-scooter-erlangen';
 import puconEs from './es/scooters-electricos-pucon';
+import rancaguaEs from './es/scooters-electricos-rancagua';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -628,4 +629,5 @@ export const GUIDES: readonly Guide[] = [
   recklinghausenDe,
   erlangenDe,
   puconEs,
+  rancaguaEs,
 ];

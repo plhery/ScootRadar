@@ -135,7 +135,7 @@ const guide: Guide = {
             '**EFE y Red.** No hemos encontrado reglas publicadas sobre scooters en los trenes de EFE ni en las micros de Red.',
           ],
         },
-        'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](guide:vina-del-mar), los Whoosh de [La Serena](guide:la-serena), [Rancagua](map:cl:Rancagua) y [Puerto Montt](guide:puerto-montt), y los JET de [Temuco](guide:temuco), cada una con su propia guía salvo Rancagua.',
+        'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](guide:vina-del-mar), los Whoosh de [La Serena](guide:la-serena), [Rancagua](guide:rancagua), [Pucón](guide:pucon) y [Puerto Montt](guide:puerto-montt), y los JET de [Temuco](guide:temuco), cada una con su propia guía.',
       ],
     },
     {
