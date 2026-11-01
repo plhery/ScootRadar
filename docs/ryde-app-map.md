@@ -73,8 +73,37 @@ private storage, and was neither displayed nor logged. No SMS was requested.
 Token issuance does not reveal Google's verdict or establish Ryde's server
 acceptance. A fresh authorized login, DPoP key registration, independent map
 read, live response decryption and renewal still need testing before a direct
-Ryde collector can be enabled. The next dependency is the rider account to use
-for that login; existing public-feed and Skyss coverage continues independently.
+Ryde collector can be enabled. Existing public-feed and Skyss coverage
+continues independently.
+
+The user's existing Google login works in the official Android app. A normal
+Credential Manager check in the companion failed before returning a Google
+credential or making a Ryde login request. Its callback reported
+`[16] Account reauth failed`; the Google authentication provider log identified
+the cause as an Android application not registered for that OAuth client
+(package name and signing-certificate fingerprint). This is a companion
+registration requirement controlled by Ryde, not evidence that the user's
+Google account or the physical device failed verification. The official
+app's signed-in session was preserved.
+
+The user supplied a phone number for the fallback but reported that the
+official app's phone path said “too many attempts for this device.” Further
+phone attempts are on hold. The message does not establish a 24-hour duration,
+and Ryde's [login help](https://www.ryde-technology.com/help/login-issues)
+does not specify one. No SMS or Ryde phone-login request has been sent by
+the companion.
+
+A separate no-SMS check used Google's reCAPTCHA Android SDK 18.9.3, matching
+the inspected official APK, with its public Android site key and `send_sms`
+action. The companion used its own package identity. Google returned
+`INVALID_PACKAGE_NAME`, “Package name not allowed,” without issuing a token.
+No Ryde phone endpoint was called. Google's
+[error-code reference](https://docs.cloud.google.com/recaptcha/docs/reference/android/com/google/android/recaptcha/RecaptchaErrorCode)
+identifies this as a site key that does not support the calling package.
+Consequently, waiting for the reported phone limit alone does not make this
+companion login viable. OAuth and reCAPTCHA app registration are distinct
+from the earlier successful Integrity token issuance; no authenticated Ryde
+map or portable session has been demonstrated by this helper.
 
 ## Skyss's guest map: Skyss / Tet / Ruter
 
