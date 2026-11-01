@@ -108,8 +108,9 @@ jobs:
     # city zones built into the catalog made it 17 to 25: ProviderCatalog.generated.swift, 7 MB on
     # 1 Nov, took 10.5 of them to compile, against 4.5 at 3.2 MB. So 40, for the cities still to come;
     # one of thousands of shapes is downloaded instead (docs/city-zone-downloads.md). On 2 Nov the
-    # zones' rings left the Swift for CityZones.generated.json, a file in the app: the catalog is 1.2 MB.
-    timeout-minutes: 40
+    # zones' rings left the Swift for CityZones.generated.json, a file in the app: the catalog is 1.2 MB
+    # and the job took 11.8 minutes on 3444812c, so 30 again, which a slow runner's 23 stays under.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
