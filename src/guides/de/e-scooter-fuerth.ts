@@ -115,7 +115,7 @@ const guide: Guide = {
       blocks: [
         '**Nürnberg:** Die [Karte von Nürnberg](map:de:Nürnberg) zeigt Voi, Dott, Lime und Bolt. In der Altstadt und überall innerhalb des Bundesstrassenrings beendest du die Fahrt dort nur an einem markierten Sammelparkplatz; mehr steht in [E-Scooter in Nürnberg](guide:nuremberg).',
         '**Zirndorf und Oberasbach:** Am selben Montagabend standen nach der amtlichen Grenze in Zirndorf rund 80 Voi-Scooter und ein Dott-Scooter, in Oberasbach ein Voi-Scooter. Ob du eine Fahrt aus Fürth dort beenden darfst, zeigt dir die App.',
-        '**Erlangen:** Die [Karte von Erlangen](map:de:Erlangen) zeigt dort Dott, Bolt und Voi; Dott führt auch Erlangen unter seinen Standorten.',
+        '**Erlangen:** Die [Karte von Erlangen](map:de:Erlangen) zeigt dort Dott, Bolt und Voi; Dott führt auch Erlangen unter seinen Standorten. Mehr steht in [E-Scooter in Erlangen](guide:erlangen).',
       ],
     },
   ],

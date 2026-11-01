@@ -312,6 +312,7 @@ import puertoMonttEs from './es/scooters-electricos-puerto-montt';
 import temucoEs from './es/scooters-electricos-temuco';
 import elmshornDe from './de/e-scooter-elmshorn';
 import recklinghausenDe from './de/e-scooter-recklinghausen';
+import erlangenDe from './de/e-scooter-erlangen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -624,4 +625,5 @@ export const GUIDES: readonly Guide[] = [
   temucoEs,
   elmshornDe,
   recklinghausenDe,
+  erlangenDe,
 ];
