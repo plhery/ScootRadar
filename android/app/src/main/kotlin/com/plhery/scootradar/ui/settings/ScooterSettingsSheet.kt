@@ -114,6 +114,7 @@ import com.plhery.scootradar.ui.sheet.SheetTitleBar
 import com.plhery.scootradar.ui.theme.CapsuleShape
 import com.plhery.scootradar.ui.theme.ContentAtOnce
 import com.plhery.scootradar.ui.theme.LocalReduceMotion
+import com.plhery.scootradar.ui.theme.SETTLED_FRACTION
 import com.plhery.scootradar.ui.theme.ScootType
 import com.plhery.scootradar.ui.theme.SelectionFeedback
 import com.plhery.scootradar.ui.theme.Symbols
@@ -346,8 +347,11 @@ private fun titleTransition(followsGesture: Boolean): ContentTransform {
 /** How a page and its title follow a back gesture: evenly with its progress, over a push's time. */
 private fun <T> following(): FiniteAnimationSpec<T> = tween(durationMillis = 400, easing = LinearEasing)
 
-/** The rest of the way once a back gesture lets go of the page: a push's spring, on the transition's progress. */
-private val GESTURE_END = IosMotion.smooth(duration = 0.4).animation<Float>()
+/**
+ * The rest of the way once a back gesture lets go of the page: a push's spring, on the transition's progress, to its
+ * very end, not the last hundredth of the page's width in one frame.
+ */
+private val GESTURE_END = IosMotion.smooth(duration = 0.4).animation(SETTLED_FRACTION)
 
 /**
  * The pages' Back: PredictiveBackHandler's, run the same way (each Back runs [onBack] with its progress, which ends

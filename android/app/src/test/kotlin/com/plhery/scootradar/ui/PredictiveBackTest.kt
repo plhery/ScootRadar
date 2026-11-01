@@ -295,6 +295,29 @@ class PredictiveBackTest {
     }
 
     /**
+     * Let go half drawn out, Privacy runs out on a push's spring to its very end, a point at most in its last step to
+     * the screen's end, where the spring's default end, a hundredth of the way short, left the last 4 points of its
+     * width to one frame (review-lead-1nov-e 1).
+     */
+    @Test
+    fun aSettingsPageLetGoRunsOutToTheScreensEnd() {
+        privacyOverSettings(reduceMotion = false)
+        drawOut(0.5f)
+        letGo(frames = 0)
+        val starts = List(90) {
+            compose.mainClock.advanceTimeByFrame()
+            startOrNull(privacy)
+        }
+        settle()
+        assertEquals("gone at last: $starts", null, starts.last())
+        val shown = starts.filterNotNull()
+        assertTrue("from half way: $shown", shown.first() >= 195f && shown.first() < 300f)
+        assertEquals("at the screen's end: $shown", 390f, shown.last(), 0.5f)
+        // At 2 pixels a point, a step of a point at most.
+        assertTrue("the last step out, a point at most: $shown", shown.zipWithNext { a, b -> b - a }.last() <= 1f)
+    }
+
+    /**
      * A back gesture begun while Privacy, tapped, is still coming in, 200 ms after the tap: the push ends at once, as
      * iOS lets a push end before any swipe moves a page, and Privacy follows the gesture from its place, Settings
      * under it from a third of the way, on the next frames, not once the push has run its course: half drawn out,

@@ -1,6 +1,7 @@
 package com.plhery.scootradar.ui.dock
 
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -215,18 +216,21 @@ private fun DockCards(
     val shape = SquircleShape(DOCK_RADIUS)
     val spring = IosMotion.snappy(duration = 0.28, extraBounce = 0.06)
     val reduceMotion = LocalReduceMotion.current
+    val transition = updateTransition(content, label = "dock")
     // Under Reduce Motion the new kind's card in the frame the dock changes (UI-184).
-    ChangingContent(
-        targetState = content,
+    transition.ChangingContent(
         atOnce = reduceMotion,
         contentKey = { it.kind },
         contentAlignment = Alignment.TopStart,
         transitionSpec = {
-            // Within a kind no size animation, not even a snap, which would leave the card its old height for a frame.
-            val resize = if (initialState.kind == targetState.kind) null else SizeTransform(clip = false) { _, _ -> spring.animation() }
+            // From rest a change within a kind takes no size animation, not even a snap, which would leave the card its
+            // old height for a frame. One that comes while a change is under way goes on with its spring, as the
+            // iPhone's snappy runs on under an unanimated change: without a SizeTransform AnimatedContent would run
+            // the rest of the way on its own (review-lead-1nov-e 2).
+            val atRest = initialState.kind == targetState.kind && !transition.isRunning
+            val resize = if (atRest) null else SizeTransform(clip = false) { _, _ -> spring.animation() }
             fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using resize
         },
-        label = "dock",
     ) { shown ->
         val scroll = rememberScrollState()
         Box(

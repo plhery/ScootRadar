@@ -115,6 +115,45 @@ class DockHeightTest {
         }
     }
 
+    /**
+     * A refresh landing as a scooter's card opens leaves its spring alone: the card's heights are those of the same
+     * card opening without it, frame by frame, as the iPhone's snappy runs on under an unanimated change.
+     * AnimatedContent ran the rest of the way on its own spring, up to 13 px apart, when the change within the kind
+     * took no SizeTransform (review-lead-1nov-e 2).
+     */
+    @Test
+    fun aRefreshLandingAsACardOpensLeavesItsSpringAlone() {
+        val model = shown()
+        compose.mainClock.advanceTimeBy(2_000)
+        val alone = opening(model)
+        model.clearSelection()
+        assertTrue(controllers.waitUntil { model.dock is ScooterDockContent.Summary })
+        frames(1)
+        compose.mainClock.advanceTimeBy(2_000)
+        val refreshed = opening(model) {
+            api.setResponse(ScooterResponse(vehicles = listOf(scooter("s1", "lime", battery = 79))))
+            model.retryLoad()
+            assertTrue(
+                controllers.waitUntil {
+                    api.calls == 2 && !model.isLoading.value && (model.dock as? ScooterDockContent.Scooter)?.scooter?.battery == 79
+                },
+            )
+        }
+        assertTrue("springing: $alone", alone.toSet().size > 5)
+        // The spring taken up again where it was, a pixel at most apart.
+        val apart = alone.zip(refreshed) { a, b -> abs(a - b) }
+        assertTrue("the card's heights $refreshed with a refresh landing 3 frames in, $alone without", apart.all { it <= 1 })
+    }
+
+    /** The card's heights over 30 frames as lime:s1's card opens, with [during] done after the third. */
+    private fun opening(model: ScooterMapController, during: (() -> Unit)? = null): List<Int> {
+        model.selectScooter("lime:s1")
+        assertTrue(controllers.waitUntil { model.dock is ScooterDockContent.Scooter })
+        val first = frames(3)
+        during?.invoke()
+        return first + frames(27)
+    }
+
     /** Heights of the dock's card in pixels: before a change, in each of the 20 frames after, and settled. */
     private data class Film(val before: Int, val frames: List<Int>, val after: Int)
 

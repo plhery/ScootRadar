@@ -152,6 +152,18 @@ class LocateRowTest {
     }
 
     /**
+     * The same over a gesture bar 24 tall, which takes no taps: the card stands 24 above the safe area's foot
+     * (dockFoot), so a card shrinking about its own foot would miss as surely as one shrinking toward the window's
+     * (review-lead-1nov-e 3).
+     */
+    @Test
+    @Config(qualifiers = "w411dp-h891dp-mdpi")
+    fun overAGestureBarTheLocateButtonAndTheCardShrinkTowardTheSafeAreasFoot() {
+        show(navigationBar = 24, takesTaps = false)
+        makesWayToward(corner = 411f, foot = 891f - 24, card = true)
+    }
+
+    /**
      * The Fold folded on its side, whose dock is in the middle: the VStack is as wide as the row's 560 and the 10 either
      * side (a Spacer takes no width across a VStack), so the corner is 290 from the middle, at 775, not the screen's.
      * In a window this short the open search reaches down over where the button was, so the taps aren't tried.
@@ -309,12 +321,14 @@ class LocateRowTest {
 
     /**
      * The screen on the list of providers, with the map's stand-in reading the chrome's frames; with [navigationBar], a
-     * status bar 24 tall and a 3-button navigation bar that tall, as Phone_Min has.
+     * status bar 24 tall and a navigation bar that tall: 3 buttons, as Phone_Min has, or a gesture bar unless it
+     * [takesTaps].
      */
     private fun show(
         direction: LayoutDirection = LayoutDirection.Ltr,
         analytics: RecordingAnalytics? = null,
         navigationBar: Int = 0,
+        takesTaps: Boolean = true,
     ): ScooterMapController {
         val clock = TestClock()
         val model = DockState.Summary.make(controllers, clock)
@@ -339,7 +353,7 @@ class LocateRowTest {
             val insets = WindowInsetsCompat.Builder()
                 .setInsets(WindowInsetsCompat.Type.statusBars(), Insets.of(0, 24, 0, 0))
                 .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, navigationBar))
-                .setInsets(WindowInsetsCompat.Type.tappableElement(), Insets.of(0, 24, 0, navigationBar))
+                .setInsets(WindowInsetsCompat.Type.tappableElement(), Insets.of(0, 24, 0, if (takesTaps) navigationBar else 0))
                 .build()
             compose.runOnUiThread { ViewCompat.dispatchApplyWindowInsets(view, insets) }
             compose.waitForIdle()

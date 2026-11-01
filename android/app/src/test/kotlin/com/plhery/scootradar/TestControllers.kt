@@ -81,6 +81,11 @@ class StubScooterAPI(private var response: ScooterResponse) : ScooterAPIClient {
     fun setFailure(failure: ScooterAPIError?) {
         this.failure = failure
     }
+
+    /** What the next calls answer. */
+    fun setResponse(response: ScooterResponse) {
+        this.response = response
+    }
 }
 
 /** A clock the test moves by hand: the waits of the test's scheduler do not move it. */

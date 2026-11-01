@@ -14,6 +14,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -39,6 +40,13 @@ import com.plhery.scootradar.core.TimingCurve
 /** The spring Compose runs for one of SwiftUI's. */
 fun <T> SpringSpec.animation(visibilityThreshold: T? = null): androidx.compose.animation.core.SpringSpec<T> =
     spring(dampingRatio = dampingRatio, stiffness = stiffness, visibilityThreshold = visibilityThreshold)
+
+/**
+ * How near its end, as a share of the way, a spring over a 0..1 fraction stops: under half a pixel of a Tablet's
+ * 2,560. Compose's default, 0.01, leaves the last hundredth of the way to one frame: 16 to 21 px of the form sheet's
+ * rise (UI-208), 7 of a Settings page's 720 on Phone_Min (review-lead-1nov-e 1).
+ */
+const val SETTLED_FRACTION = 0.0002f
 
 /** The curve Compose eases along for one of Core Animation's. */
 val TimingCurve.easing: Easing get() = CubicBezierEasing(x1, y1, x2, y2)
@@ -112,6 +120,26 @@ fun <S> ChangingContent(
         ContentAtOnce(targetState, modifier, contentAlignment, contentKey, content)
     } else {
         AnimatedContent(targetState, modifier, transitionSpec, contentAlignment, label, contentKey) { content(it) }
+    }
+}
+
+/**
+ * [ChangingContent] on a transition its caller holds, so that a transition spec can ask whether a change is still under
+ * way ([Transition.isRunning]) as the next one comes.
+ */
+@Composable
+fun <S> Transition<S>.ChangingContent(
+    atOnce: Boolean,
+    modifier: Modifier = Modifier,
+    transitionSpec: AnimatedContentTransitionScope<S>.() -> ContentTransform,
+    contentAlignment: Alignment = Alignment.TopStart,
+    contentKey: (S) -> Any? = { it },
+    content: @Composable (S) -> Unit,
+) {
+    if (atOnce) {
+        ContentAtOnce(targetState, modifier, contentAlignment, contentKey, content)
+    } else {
+        this.AnimatedContent(modifier, transitionSpec, contentAlignment, contentKey) { content(it) }
     }
 }
 
