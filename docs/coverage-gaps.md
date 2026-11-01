@@ -1667,25 +1667,6 @@ Bonaire had feeds to add. Survey files are in
   ([Auckland Council](https://www.aucklandcouncil.govt.nz/en/licences-regulations/e-scooter-licences-regulations-auckland.html)).
   Check that Flamingo's `auckland` feed still lists scooters that are
   ridden; if it empties, take it out of `data/new-zealand-scooter-feeds.json`.
-- **Early November 2026:** Beam Geraldton (`beam_au_geraldton`). Beam's
-  agreement with the City of Greater Geraldton runs to the end of October 2026,
-  and on 28 July 2026 the council voted for a new two-year deed with Beam,
-  whose terms the chief executive settles (item CEO152,
-  [minutes](https://www.cgg.wa.gov.au/council-meetings/ordinary-council-meeting/28-july-2026-ordinary-meeting-of-council/243/documents/confirmed-minutes-ordinary-meeting-of-council-28-july-2026-public.pdf)).
-  The council's draft safety terms of January 2026 turn hired scooters off from
-  midnight to 5:30; whether the deed keeps them isn't public. On 25 October
-  2026 Beam's map listed 221 to 225 scooters there from 00:50 to 05:30 Perth
-  time, as by day. Compare the first November nights with the day, and add a
-  night ban to `data/rental-curfews.json` if the scooters go. Beam's map gives
-  no availability, so a ban might leave the count alone: look for rides after
-  midnight too. On the first November night, 1 November 2026, the map listed
-  182 there at 00:50 Perth time and none from about 01:00 to 05:40. It listed
-  191 again by 05:50. The feed was collected every 20 minutes and stayed ok
-  throughout. Perth, Bunbury, Broome and Esperance, in the same time zone, kept
-  theirs all night, so the scooters do go at night there, close to the draft's
-  midnight to 5:30. A night ban from midnight to 5:30 is proposed, not yet
-  added: its wording should come from the deed or a council page, and the
-  first night started near 01:00.
 - **November 2026:** Beaumont's pilot runs "until the end of October 2026",
   and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
   still holds scooters in Beaumont, and whether the town goes on in 2027;

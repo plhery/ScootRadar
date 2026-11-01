@@ -317,6 +317,16 @@ describe('holiday nights', () => {
     expect(activeCurfew(TURKU, at('2026-12-31T22:30:00Z'))).toEqual({ city: 'Turku', until: at('2027-01-01T03:00:00Z'), timeZone: 'Europe/Helsinki' });
     expect(activeCurfew(TURKU, at('2026-12-24T22:30:00Z'))).toBeNull();
   });
+
+  it("closes Geraldton from 01:00 to 05:30, Perth time, when Beam's map empties", () => {
+    const geraldton: [number, number] = [-28.7774, 114.6149];
+    // 00:50 AWST: Beam still listed 180 scooters on 1 and 2 November 2026.
+    expect(activeCurfew(geraldton, at('2026-11-01T16:50:00Z'))).toBeNull();
+    expect(activeCurfew(geraldton, at('2026-11-01T17:00:00Z'))).toEqual({ city: 'Geraldton', until: at('2026-11-01T21:30:00Z'), timeZone: 'Australia/Perth' });
+    expect(activeCurfew(geraldton, at('2026-11-01T21:30:00Z'))).toBeNull();
+    // Perth, 420 km south, keeps its scooters all night.
+    expect(activeCurfew([-31.9523, 115.8613], at('2026-11-01T18:00:00Z'))).toBeNull();
+  });
 });
 
 describe('polygonContainsPoint', () => {

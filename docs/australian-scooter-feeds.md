@@ -49,3 +49,29 @@ Geraldton, Hervey Bay, Mackay, Perth and Port Douglas. The initial samples
 contained 2,821 standing scooters. These entries preserve Lime's Brisbane
 coverage and use the [shared Beam collector](beam-app-map.md), with reviewed
 city ids, bounds and each city's canonical local time zone.
+
+## Night bans
+
+Geraldton is the one covered Australian town where renting stops at night, an
+entry in [`rental-curfews.json`](../data/rental-curfews.json) from 01:00 to
+05:30, Perth time, inside the City of Greater Geraldton.
+
+- **The hours are Beam's.** Beam, the only operator, listed 180 scooters there
+  at 00:50 and none from 01:10 to 05:30, back by 05:50, on the nights of 1 and
+  2 November 2026 (Prometheus, collected every 20 minutes, feed ok
+  throughout). Perth, Bunbury, Broome and Esperance, in the same time zone,
+  kept theirs, so it isn't an outage. On 25 October, under the old agreement,
+  the map listed 221 to 225 there all night.
+- **The council's terms.** In January 2026 the council asked that any new
+  agreement switch hired scooters off from midnight to 5:30 (CEO report, item
+  CEO143; Geraldton Guardian, 28 January 2026). On 28 July 2026 it voted a
+  two-year deed with Beam whose terms the chief executive settles (item CEO152,
+  [minutes](https://www.cgg.wa.gov.au/council-meetings/ordinary-council-meeting/28-july-2026-ordinary-meeting-of-council/243/documents/confirmed-minutes-ordinary-meeting-of-council-28-july-2026-public.pdf)).
+  The deed isn't public. The map's 01:00 start, not the draft's midnight, is
+  what riders meet, as with Voi in Arendal; if the City publishes the deed's
+  hours, use those.
+- **Boundary:** the City of Greater Geraldton in OpenStreetMap (relation
+  11689919), read through Nominatim and simplified to within 100 m, with the
+  Abrolhos Islands as a second ring. © OpenStreetMap contributors, under the
+  [ODbL](https://opendatacommons.org/licenses/odbl/); the map's credits name it
+  as "AU: OpenStreetMap boundaries · ODbL".

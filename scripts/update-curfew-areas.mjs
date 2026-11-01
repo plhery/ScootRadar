@@ -7,7 +7,8 @@ import { boundary, outerRings, writeCatalog } from './boundaries.mjs';
 // (CC BY 4.0), British local authority districts from the ONS (Open Government
 // Licence v3.0), Portuguese municipalities from the Direção-Geral do Território's
 // CAOP (CC BY 4.0), American incorporated places from the Census Bureau's
-// TIGERweb (public domain), and Kyiv from OpenStreetMap (ODbL). Pieces smaller
+// TIGERweb (public domain), and Kyiv, Pickering, Geraldton and others from
+// OpenStreetMap (ODbL). Pieces smaller
 // than MIN_AREA_KM2 (skerries, most islands) are left out, or than the boundary's
 // own `minAreaKm2`: Parc Jean-Drapeau's two islands are each under a square
 // kilometre. Run it after adding a curfew, then npm run generate:providers.
