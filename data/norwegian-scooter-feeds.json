@@ -181,7 +181,12 @@
         "west": 9.97,
         "east": 10.09
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydelarvik/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydelarvik/gbfs",
+      "testStations": [
+        "YRY:Station:station104765",
+        "YRY:Station:station104766",
+        "YRY:Station:station123193"
+      ]
     },
     {
       "id": "ryde_no_lillestrom",

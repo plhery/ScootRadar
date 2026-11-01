@@ -19,6 +19,12 @@ const SIMPLIFY_TOLERANCE_M = 2;
  * cities in Germany and the UAE, and 20 km/h, the usual limit in Europe, are not.
  */
 const SLOW_ZONE_MAX_KPH = 18;
+/**
+ * A zone's outer ring this many degrees of longitude wide (half as many of latitude) goes round
+ * the world, only to forbid what lies outside its holes: Ryde's "OCNRZ - Larvik" forbids riding
+ * outside the town so, which would be drawn over every view of it. Not drawn.
+ */
+const WORLD_RING_DEGREES = 180;
 
 /** What a zone forbids a scooter: riding in it at all, ending a ride in it, or going fast. */
 export type ZoneKind = 'noRide' | 'noParking' | 'slow';
@@ -140,6 +146,11 @@ export function simplifyRing(ring: unknown, toleranceM = SIMPLIFY_TOLERANCE_M): 
   return simplified.length >= 4 ? simplified : null;
 }
 
+function aroundTheWorld(ring: [number, number][]) {
+  const span = (values: number[]) => Math.max(...values) - Math.min(...values);
+  return span(ring.map(([, lng]) => lng)) >= WORLD_RING_DEGREES || span(ring.map(([lat]) => lat)) >= WORLD_RING_DEGREES / 2;
+}
+
 /**
  * The zones of a feed that a scooter must mind now, drawn from its first rule
  * that names a scooter type (or no type), as GBFS reads them. A zone that
@@ -161,7 +172,7 @@ export function normalizeZones(feedId: string, provider: string, types: ZoneType
     const polygons = polygonsOf(zone.geometry).flatMap(polygon => {
       if (!Array.isArray(polygon)) return [];
       const [outer, ...holes] = polygon.map(ring => simplifyRing(ring));
-      return outer ? [[outer, ...holes.filter((hole): hole is [number, number][] => hole !== null)]] : [];
+      return outer && !aroundTheWorld(outer) ? [[outer, ...holes.filter((hole): hole is [number, number][] => hole !== null)]] : [];
     });
     if (!polygons.length) return [];
     return [storedZone({ id: `${feedId}:${index}`, provider, ...kind, polygons })];

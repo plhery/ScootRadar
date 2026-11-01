@@ -122,6 +122,13 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    */
   stationParking?: boolean;
   /**
+   * Stations of the feed that are its operator's tests, not places to park, left off the map:
+   * Ryde's three in Larvik are "rush", "åpne" and "BPZ - få opp en blir parking her" ("get one
+   * up, it will be parking here"), a few metres across, where its other towns' stations name a
+   * place (1 Nov 2026).
+   */
+  testStations?: string[];
+  /**
    * Scooters also wait docked at the feed's stations, which its station status counts by type
    * and its vehicle status does not list: Divvy docks Lyft's scooters in Chicago. Each is shown at
    * its station, with no charge or range.

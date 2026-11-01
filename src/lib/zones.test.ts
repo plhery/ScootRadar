@@ -80,6 +80,18 @@ describe('operator zones', () => {
     expect(simplifyRing([[8.54, 47.37], [8.5400001, 47.3700001], [8.5400002, 47.37], [8.54, 47.37]])).toBeNull();
   });
 
+  it('draws no ring round the world, whose hole is where riding is allowed, as Ryde\'s in Larvik', () => {
+    const hole = [[8.5, 47.3], [8.6, 47.3], [8.6, 47.4], [8.5, 47.4], [8.5, 47.3]];
+    // Ryde's starts at a pole, where a degree of longitude is no metre wide; this one at the equator.
+    const world = [[-180, 0], [-180, -90], [180, -90], [180, 90], [-180, 90], [-180, 0]];
+    const zones = normalizeZones('f', 'ryde', types, { data: { geofencing_zones: { features: [
+      { geometry: { type: 'Polygon', coordinates: [world, hole] }, properties: { rules: [{ ride_through_allowed: false }] } },
+      { geometry: { type: 'MultiPolygon', coordinates: [[world, hole], [square]] }, properties: { rules: [{ ride_through_allowed: false }] } },
+    ] } } });
+    expect(zones.map(zone => [zone.id, zone.polygons.length])).toEqual([['f:1', 1]]);
+    expect(zones[0].bounds).toEqual({ south: 47.37, west: 8.54, north: 47.371, east: 8.5415 });
+  });
+
   it('answers for an area with the zones that forbid most, within its size', () => {
     const zones = normalizeZones('f', 'dott', types, feed(
       [{ maximum_speed_kph: 10 }], [{ ride_allowed: false, ride_through_allowed: true }], [{ ride_through_allowed: false }],

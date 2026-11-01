@@ -97,6 +97,14 @@ describe('published scooter parking', () => {
     expect(normalize([station, station], {})).toHaveLength(1);
     expect(normalize([station], {})[0].mandatory).toBe(false);
   });
+  it("leaves out the stations a feed's operator made as tests, as Ryde's in Larvik", () => {
+    const larvik = REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === 'ryde_no_larvik')!;
+    const ryde = { data: { vehicle_types: [{ vehicle_type_id: 'YRY:VehicleType:1', form_factor: 'scooter_standing', propulsion_type: 'electric' }] } };
+    const stations = [['YRY:Station:station104765', 'rush'], ['YRY:Station:station104766', 'åpne'],
+      ['YRY:Station:station123193', 'BPZ - få opp en blir parking her'], ['YRY:Station:bay', 'BPZ - Torget']]
+      .map(([id, text]) => ({ ...station, station_id: id, name: [{ language: 'no', text }], lat: 59.0535, lon: 10.0768 }));
+    expect(normalizeParkingLocations(larvik, ryde, { data: { stations } }, {}).map(location => location.name)).toEqual(['BPZ - Torget']);
+  });
   it("makes every bay where rides must end of a feed whose rule is the system's, as Bolt's in Liverpool", () => {
     const liverpool = REGIONAL_SCOOTER_SYSTEMS.find(s => s.id === 'bolt_gb_liverpool')!;
     // Bolt's feed: no ending a ride but in a bay's own zone, and no bay flagged.

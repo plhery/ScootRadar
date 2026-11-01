@@ -116,7 +116,7 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
   });
   const unique = new Map<string, ParkingLocation>();
   for (const station of information.data?.stations ?? []) {
-    if (typeof station.station_id !== 'string' || !station.station_id ||
+    if (typeof station.station_id !== 'string' || !station.station_id || system.testStations?.includes(station.station_id) ||
       typeof station.lat !== 'number' || typeof station.lon !== 'number' ||
       !Number.isFinite(station.lat) || !Number.isFinite(station.lon) ||
       !serviceAreas(system).some(area => boundsContainPoint(area.bounds, station.lat!, station.lon!)) ||
