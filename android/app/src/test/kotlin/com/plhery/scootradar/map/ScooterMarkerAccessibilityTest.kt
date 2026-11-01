@@ -9,6 +9,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.customview.widget.ExploreByTouchHelper
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.MapDestination
 import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
@@ -171,6 +172,42 @@ class ScooterMarkerAccessibilityTest {
         assertTrue(accessibility.node(b).isSelected)
         scene.applySelection(null, map)
         assertFalse(accessibility.node(b).isSelected)
+    }
+
+    @Test
+    fun aScooterTheFeedNamesAnewKeepsItsView() {
+        // Bird's feed names its scooters anew at every refresh: two Birds a metre apart at Zürich HB, on 1 Nov 2026,
+        // came under new ids 15 minutes later, each a metre or less from where it was.
+        val map = FlatMarkerMap()
+        val here = map.at(195.0, 300.0)
+        val beside = GeoPoint(here.latitude, here.longitude + 0.000013)
+        val there = map.at(195.0, 700.0)
+        scene.reconcile(
+            listOf(scooter("one", "bird", at = here), scooter("two", "bird", at = beside), scooter("three", "bird", at = there)),
+            revision = 1,
+        )
+        val accessibility = helper(map)
+        val before = accessibility.virtualViews()
+        assertEquals(3, before.size)
+
+        // The two keep theirs, as TalkBack's focus may be on one; a Lime where the third Bird was and a Bird come
+        // elsewhere are other scooters.
+        scene.reconcile(
+            listOf(
+                scooter("one-again", "bird", at = GeoPoint(here.latitude + 0.000005, here.longitude - 0.000004)),
+                scooter("two-again", "bird", at = beside),
+                scooter("elsewhere", "bird", at = map.at(195.0, 500.0)),
+                scooter("lime", "lime", at = there),
+            ),
+            revision = 2,
+        )
+        accessibility.refresh()
+        val after = accessibility.virtualViews()
+        assertEquals(before.take(2), after.take(2))
+        assertTrue(after.drop(2).none { it in before })
+        // The view reads the scooter come.
+        val description = MarkerDescriptions.of(scene.mark("bird:one-again")!!)
+        assertEquals(listOfNotNull(description.label, description.value).joinToString(", "), accessibility.node(after[0]).contentDescription)
     }
 
     @Test

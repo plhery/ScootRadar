@@ -15,6 +15,7 @@ import com.plhery.scootradar.core.model.ScooterParking
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.localized
+import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -180,10 +181,11 @@ class ScooterMarkerAccessibility(
     private fun current(): List<MarkerElement> {
         if (isCurrent) return elements
         val elements = MarkerElements.of(scene, map)
+        val renamed = renamed(elements)
         val numbers = HashMap<String, Int>(elements.size)
         val byNumber = HashMap<Int, MarkerElement>(elements.size)
         for (element in elements) {
-            val id = ids[element.key] ?: nextID++
+            val id = ids[element.key] ?: renamed[element.key] ?: nextID++
             numbers[element.key] = id
             byNumber[id] = element
         }
@@ -192,6 +194,37 @@ class ScooterMarkerAccessibility(
         this.elements = elements
         isCurrent = true
         return elements
+    }
+
+    /**
+     * The views of scooters gone from the list that scooters come in their place keep: of the same provider, within
+     * [RENAMED_WITHIN] metres, the nearest first. Bird's feed names its scooters anew at every refresh (two Birds at
+     * Zürich HB on 1 Nov 2026 came under new ids 15 minutes later, a metre or less from where they were), and TalkBack's
+     * focus on a view gone moves by itself to another and reads it (app-ai's F3).
+     */
+    private fun renamed(elements: List<MarkerElement>): Map<String, Int> {
+        val come = elements.filterIsInstance<MarkerElement.Dot>().filter { it.key !in ids }
+        if (come.isEmpty()) return emptyMap()
+        val keys = elements.mapTo(HashSet()) { it.key }
+        val gone = listed.mapNotNull { (id, element) -> (element as? MarkerElement.Dot)?.takeIf { it.key !in keys }?.let { id to it.mark.scooter } }
+        val pairs = mutableListOf<Triple<String, Int, Double>>()
+        for (dot in come) {
+            val scooter = dot.mark.scooter
+            for ((id, before) in gone) {
+                // A ten-thousandth of a degree of latitude is 11 m: most are ruled out before the distance is measured.
+                if (before.provider != scooter.provider || abs(before.latitude - scooter.latitude) > 0.0001) continue
+                val metres = before.distance(from = scooter.coordinate)
+                if (metres <= RENAMED_WITHIN) pairs += Triple(dot.key, id, metres)
+            }
+        }
+        val kept = HashMap<String, Int>()
+        val taken = HashSet<Int>()
+        for ((key, id) in pairs.sortedBy { it.third }) {
+            if (key in kept || id in taken) continue
+            kept[key] = id
+            taken += id
+        }
+        return kept
     }
 
     // A finger exploring the map finds what is in front, as VoiceOver's does: on the chrome, the chrome's own elements,
@@ -280,5 +313,8 @@ class ScooterMarkerAccessibility(
 
     private companion object {
         const val BUTTON = "android.widget.Button"
+
+        /** How far a scooter named anew may be from where it was, in metres. */
+        const val RENAMED_WITHIN = 5.0
     }
 }
