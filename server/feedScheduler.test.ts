@@ -171,6 +171,30 @@ it('starts one idle sweep at a time while watched towns hold the slots of an acc
   } finally { clearInterval(poll); scheduler.stop(); }
 });
 
+it('gives the idle sweep of an account that keeps it turns to the feed nearest its expiry, not the one due first', async () => {
+  // On the morning of 1 November 2026 groups a night's views had left due at its end took the idle sweeps of
+  // two Lime accounts whose slots Zürich held, and a Hamburg and a Zürich group at their interval expired.
+  const account = { host: 'web-production.lime.bike', paced: true, concurrencyKey: 'lime-account:primary', keepsIdleTurns: true };
+  const watched = ['zurich-a', 'zurich-b', 'zurich-c'].map(id => ({ id, ...account }));
+  // Collected ten minutes ago, at night, so due when the night ended two minutes later; it expires 20 minutes on.
+  const morning = { id: 'berlin', ...account, nightEnds: (time: number) => time === T0 - 10 * MINUTE ? T0 - 8 * MINUTE : undefined };
+  // Collected an idle interval ago, less a minute: due on the interval, it expires a minute later.
+  const stale = { id: 'hamburg', ...account };
+  const last: Record<string, number> = { berlin: T0 - 10 * MINUTE, hamburg: T0 - 19 * MINUTE };
+  const { scheduler, calls } = schedule(watched, { lastCollectedAt: feed => last[feed.id] ?? T0 - 2 * MINUTE },
+    () => new Promise(resolve => setTimeout(resolve, 50_000)));
+  const ids = watched.map(feed => feed.id);
+  const poll = setInterval(() => scheduler.demand(ids), 20_000);
+  try {
+    scheduler.demand(ids);
+    await vi.advanceTimersByTimeAsync(MINUTE);
+    scheduler.setFeeds([...watched, morning, stale]);
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    expect(calls.filter(call => !ids.includes(call.id)).map(call => [call.id, call.at / 1000, call.reason]))
+      .toEqual([['hamburg', 60, 'idle'], ['berlin', 110, 'idle']]);
+  } finally { clearInterval(poll); scheduler.stop(); }
+});
+
 it('collects always-fast feeds every minute and idle ones every idle interval', async () => {
   const { scheduler, times, calls } = schedule([
     { id: 'zurich', host: 'ch', fast: true }, { id: 'lyon', host: 'fr' },

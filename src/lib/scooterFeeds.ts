@@ -270,7 +270,7 @@ export interface CollectableScooterFeed {
   paced?: boolean;
   /** Independent Node scheduler slots for an account whose client enforces its own pace. */
   concurrencyKey?: string;
-  /** Its client keeps turns for an idle sweep, which has a slot of its own (FeedScheduler). */
+  /** Its client keeps turns for an idle sweep, which has a slot of its own and goes to the feed nearest its expiry (FeedScheduler). */
   keepsIdleTurns?: boolean;
   /** Where in its idle interval it is collected, when not where its id puts it (FeedScheduler). */
   idlePhase?: number;

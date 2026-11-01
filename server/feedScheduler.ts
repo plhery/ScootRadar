@@ -18,7 +18,7 @@ export interface ScheduledFeed {
   /**
    * Its client keeps one turn in so many for an idle sweep while one waits (Pacer's routineEvery), so
    * one idle sweep may start while the towns someone looks at hold its slots: the turns kept for it
-   * would otherwise go unused.
+   * would otherwise go unused. Its idle feeds due go nearest their expiry first.
    */
   keepsIdleTurns?: boolean;
   /** Where in its idle interval it is collected, in [0, 1), when not where its id puts it (idPhase). */
@@ -106,6 +106,8 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private readonly due = new Map<string, number>();
   private readonly running = new Map<string, T>();
   private readonly startedAt = new Map<string, number>();
+  // When each feed's last successful collection started: its scooters expire an idle interval and a grace after.
+  private readonly collectedAt = new Map<string, number>();
   private readonly failures = new Map<string, number>();
   private readonly watchedSince = new Map<string, number>();
   private readonly watchedUntil = new Map<string, number>();
@@ -128,7 +130,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     this.definitions = definitions;
     const now = Date.now();
     const ids = new Set(definitions.map(feed => feed.id));
-    for (const map of [this.due, this.startedAt, this.failures, this.watchedSince, this.watchedUntil, this.focusOf, this.byId]) {
+    for (const map of [this.due, this.startedAt, this.collectedAt, this.failures, this.watchedSince, this.watchedUntil, this.focusOf, this.byId]) {
       for (const id of map.keys()) if (!ids.has(id)) map.delete(id);
     }
     for (const id of this.woken) if (!ids.has(id) && !this.running.has(id)) this.settle(id);
@@ -140,6 +142,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       // A feed without a record waits behind the restored ones already overdue: it has no positions to lose.
       if (!last) { added.push(feed); continue; }
       this.startedAt.set(feed.id, last);
+      this.collectedAt.set(feed.id, last);
       // A restored feed keeps its turn, even one gone by, so a restart goes on with the longest overdue
       // rather than in the catalog's order. After the stall of 24 October 2026, feeds 29 minutes old
       // waited behind ones of 21, and expired (30) on the restart at 19:59.
@@ -291,10 +294,18 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // A polling client must not keep re-queuing earlier feeds ahead of areas
     // still waiting for their first requested collection.
     const wakeOrder = new Map([...this.woken].map((id, index) => [id, index]));
-    const pending = this.definitions.filter(feed => !this.running.has(feed.id)).sort((a, b) => {
+    const waiting = this.definitions.filter(feed => !this.running.has(feed.id));
+    // Where the client keeps turns for an idle sweep, its idle feeds due go nearest their expiry first,
+    // since those turns are all they may have. On the morning of 1 November 2026 the groups a night's
+    // views had left due at its end, collected hours before, took the idle sweeps of two Lime accounts
+    // whose slots Zürich held, and a Hamburg and a Zürich group at their interval expired behind them.
+    const expiring = new Map(waiting.filter(feed => feed.keepsIdleTurns && idle(feed) && rank(feed) <= now).map(feed =>
+      [feed.id, (this.collectedAt.get(feed.id) ?? -Infinity) + (feed.idleIntervalMs ?? this.options.idleIntervalMs)]));
+    const order = (feed: T) => expiring.get(feed.id) ?? rank(feed);
+    const pending = waiting.sort((a, b) => {
       const aWake = wakeOrder.get(a.id), bWake = wakeOrder.get(b.id);
       return idle(a) - idle(b) ||
-        (aWake !== undefined && bWake !== undefined ? aWake - bWake : rank(a) - rank(b));
+        (aWake !== undefined && bWake !== undefined ? aWake - bWake : order(a) - order(b));
     });
     // After the deploy of 24 October 2026, paced app-map sweeps held every shared slot, and
     // idle feeds on other hosts went uncollected for over half an hour.
@@ -373,7 +384,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       const current = this.byId.get(feed.id);
       if (current) {
         if (failed) this.failures.set(feed.id, (this.failures.get(feed.id) ?? 0) + 1);
-        else this.failures.delete(feed.id);
+        else { this.failures.delete(feed.id); this.collectedAt.set(feed.id, now); }
         this.due.set(feed.id, this.nextDue(current, now, Date.now(), failed));
       }
       this.settle(feed.id);

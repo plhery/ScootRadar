@@ -412,7 +412,11 @@ night, their idle groups started only once late, five minutes before they would
 expire, and five groups of the standby, never collected, so never late, waited 4.5
 hours for their first sweep. The idle sweeps take about 4 of the 36 requests a
 minute on average and the standby up to 4 more, so a third of each account's turns
-keeps up with them even when every turn is asked for. An idle
+keeps up with them even when every turn is asked for, but not with the sweeps at 08:00
+after a night's views (below) besides. So the idle sweep goes to the group nearest its
+expiry first: on the morning of 1 November 2026 those sweeps, of groups collected
+hours before, took it in their turn, and a Hamburg and a Zürich group at their
+interval expired behind them. An idle
 sweep falls between 08:00 and 21:00 in its town. A sweep by night there, as a new
 town's first or one someone asked for, is followed by one at 08:00, within the quarter
 of an hour after, not three days on (`limeDaytime` in `server/limeApp.ts`), and one in a
