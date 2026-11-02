@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Im Oktober 2026 vermieten **Hopp**, **Lime** und **Zeus** E-Scooter in Konstanz; Zeus fährt hier seit November 2020. Hopp ist ein Franchise-System aus Island; laut MobiData BW heisst das Konstanzer System «Hopp Konstanz» und läuft seit 16. Januar 2025. Wer es betreibt, nennt Hopp nicht, und auf Hopps eigener Standortliste fehlt Konstanz (Stand 22. Oktober 2026). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am 22. Oktober 2026 um 10:01 Uhr zeigte die [Karte von Konstanz](map:de:Konstanz) rund 290 freie Scooter: rund 110 von Hopp, rund 90 von Lime und rund 90 von Zeus. Laut Stadt darf jeder Anbieter höchstens 150 Scooter aufstellen (Mitteilung vom Januar 2024).',
-        '**Bolt, Voi und Dott:** Bolt und Dott nennen Konstanz nicht auf ihren Standortlisten, Voi hat laut seinen offenen Daten bei MobiData BW kein Gebiet dort, und MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus (Stand 23. Oktober 2026). Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter.',
+        '**Bolt, Voi und Dott:** Bolt und Dott nennen Konstanz nicht auf ihren Standortlisten, Voi hat laut seinen offenen Daten bei MobiData BW kein Gebiet dort, und MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus (Stand 23. Oktober 2026). Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter; mehr im [Ratgeber für Singen](guide:singen).',
       ],
     },
     {

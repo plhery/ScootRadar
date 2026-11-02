@@ -342,6 +342,7 @@ import kaunasEn from './en/e-scooters-kaunas';
 import clujNapocaEn from './en/e-scooters-cluj-napoca';
 import ferraraIt from './it/monopattini-sharing-ferrara';
 import reggioEmiliaIt from './it/monopattini-sharing-reggio-emilia';
+import singenDe from './de/e-scooter-singen';
 import bremerhavenDe from './de/e-scooter-bremerhaven';
 
 export const GUIDES: readonly Guide[] = [
@@ -685,5 +686,6 @@ export const GUIDES: readonly Guide[] = [
   clujNapocaEn,
   ferraraIt,
   reggioEmiliaIt,
+  singenDe,
   bremerhavenDe,
 ];
