@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'riga',
   name: 'Renting an e-scooter in Riga',
   title: 'E-scooter Riga 2026: Ride, Bolt, prices and the licence rule',
-  description: 'E-scooter Riga guide: Ride (the old Tuul fleet) and Bolt, what a ride costs, the licence even adults need, Old Town parking, the airport and Jūrmala.',
+  description: 'E-scooter Riga guide: Ride and Bolt, what a ride costs, the licence even adults need, Old Town parking, the airport and Jūrmala.',
   headline: 'E-scooters in Riga: Ride and Bolt, what a ride costs, the licence rule and where to park in the Old Town',
-  lede: 'You can rent an e-scooter in Riga with Ride, which took over Tuul’s scooters, or with Bolt. Ride charges €0.29 to unlock plus €0.22 a minute (published rate, 14 October 2026); Bolt shows its price in the app. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and Ride rents only to adults. In the Old Town you can park only at marked spots, and Ride’s scooters don’t reach the airport.',
+  lede: 'You can rent an e-scooter in Riga with Ride or with Bolt. Ride charges €0.29 to unlock plus €0.22 a minute (published rate, 14 October 2026); Bolt shows its price in the app. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and Ride rents only to adults. In the Old Town you can park only at marked spots, and Ride’s scooters don’t reach the airport.',
   published: '2026-10-14',
   updated: '2026-10-25',
   city: 'lv:Rīga',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Two apps rent out stand-up e-scooters in Riga. (Many “scooter rental” offers in Riga are for mopeds, which need a driving licence.)',
         {
           list: [
-            '**Ride**, whose app “RIDE: Mobility Solutions” runs in English. Its scooters are Tuul’s old fleet: the Estonian company sold its scooter business to Ride in September 2025 and closed its own service. You sign up with a mobile number, a text code and a card that passes 3-D Secure.',
+            '**Ride**, whose app “RIDE: Mobility Solutions” runs in English. You sign up with a mobile number, a text code and a card that passes 3-D Secure.',
             '**Bolt**, in the same app as its taxis.',
             '**SKOK** rents only e-mopeds, which need a driving licence, and e-bikes.',
           ],
@@ -108,7 +108,7 @@ const guide: Guide = {
     {
       heading: 'Winter, events and safety in Riga',
       blocks: [
-        '**Winter.** In 2023/24 Tuul, whose scooters Ride now runs, kept going all winter. Expect fewer scooters from late November, and check the app.',
+        '**Winter.** Whether scooters run in winter is up to each company: check the app before you set out.',
         '**Events** to plan around:',
         {
           list: [
@@ -125,7 +125,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Ride’s open data still call its scooters “Tuul Riga”**, a year after Ride bought the Estonian company’s fleet.',
+            '**Ride’s open data call its Riga scooters “Tuul Riga”**, not Ride.',
             '**Adults need a licence for an e-scooter but not for an e-bike**: since 5 June 2026 e-bike riders of 18 and over are exempt.',
             '**Riga’s Art Nouveau streets are a 20 km/h zone.** UNESCO calls the historic centre, a World Heritage Site since 1997, “the finest concentration of Art Nouveau architecture in the world”.',
           ],
@@ -136,11 +136,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Does Riga have e-scooters, and which apps work there?',
-      answer: 'Yes: Ride, which runs the former Tuul scooters, and Bolt. Ride charges €0.29 to unlock plus €0.22 a minute; Bolt shows its price in the app. [Our map](map:lv:Rīga) shows both.',
+      answer: 'Yes: Ride and Bolt. Ride charges €0.29 to unlock plus €0.22 a minute; Bolt shows its price in the app. [Our map](map:lv:Rīga) shows both.',
     },
     {
       question: 'Is Tuul still in Riga?',
-      answer: 'Not under its own name. Tuul sold its scooter business to Ride in September 2025 and closed its own service; the same scooters now run in the Ride app.',
+      answer: 'The scooters in Ride’s open data for Riga are named “Tuul Riga”, and you rent them in the Ride app.',
     },
     {
       question: 'How old do you have to be to rent an e-scooter in Riga?',
