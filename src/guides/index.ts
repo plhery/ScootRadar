@@ -334,6 +334,7 @@ import gloucesterEn from './en/e-scooters-gloucester';
 import santaCruzDeTenerifeEs from './es/alquiler-patinete-electrico-santa-cruz-de-tenerife';
 import vilniusEn from './en/e-scooters-vilnius';
 import tartuEn from './en/e-scooters-tartu';
+import parnuEn from './en/e-scooters-parnu';
 import bergamoIt from './it/monopattini-sharing-bergamo';
 import grimstadNb from './nb/elsparkesykkel-grimstad';
 import lodzEn from './en/e-scooters-lodz';
@@ -343,6 +344,7 @@ import katowiceEn from './en/e-scooters-katowice';
 import bydgoszczEn from './en/e-scooters-bydgoszcz';
 import kaunasEn from './en/e-scooters-kaunas';
 import clujNapocaEn from './en/e-scooters-cluj-napoca';
+import sibiuEn from './en/e-scooters-sibiu';
 import ferraraIt from './it/monopattini-sharing-ferrara';
 import reggioEmiliaIt from './it/monopattini-sharing-reggio-emilia';
 import singenDe from './de/e-scooter-singen';
@@ -689,6 +691,7 @@ export const GUIDES: readonly Guide[] = [
   santaCruzDeTenerifeEs,
   vilniusEn,
   tartuEn,
+  parnuEn,
   bergamoIt,
   grimstadNb,
   lodzEn,
@@ -698,6 +701,7 @@ export const GUIDES: readonly Guide[] = [
   bydgoszczEn,
   kaunasEn,
   clujNapocaEn,
+  sibiuEn,
   ferraraIt,
   reggioEmiliaIt,
   singenDe,
