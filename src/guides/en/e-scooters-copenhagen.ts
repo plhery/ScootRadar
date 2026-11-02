@@ -43,7 +43,7 @@ const guide: Guide = {
         'Yes, from the age of 15. The rules are set by an executive order, BEK nr 40 of 14 January 2019 (BEK 40), and Rådet for Sikker Trafik, the Danish Road Safety Council, lists them on its page for e-scooters (el-løbehjul):',
         {
           list: [
-            '**Age:** 15 or over (BEK 40, § 10). Under 15, a child may ride only with an adult of at least 18, or alone in signed play areas and on private land.',
+            '**Age:** 15 or over (BEK 40, § 10). Under 15, a child may ride only with an adult of at least 18 or within signed play and home zones (§ 10), or on private land, Rådet for Sikker Trafik adds.',
             '**Helmet:** compulsory for every rider, adults included, since 1 January 2022 (§ 10 a). Riding without one costs DKK 1,500. Bring one when you rent.',
             '**One rider only:** no passengers.',
             '**Lights:** on whenever you ride, day and night.',
@@ -78,7 +78,7 @@ const guide: Guide = {
     {
       heading: 'Denmark’s e-scooter rules and fines in one table',
       blocks: [
-        'These national rules apply in Copenhagen as everywhere in Denmark.',
+        'These national rules apply in Copenhagen as everywhere in Denmark, [Odense](guide:odense) included.',
         {
           table: {
             caption: 'E-scooter rules in Denmark on 2 November 2026 (Rådet for Sikker Trafik)',
