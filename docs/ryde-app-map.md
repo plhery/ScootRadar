@@ -473,6 +473,43 @@ keys or the non-debuggable-process redaction observed in an earlier synthetic
 CryptoKit test. Private results remain outside Git under
 `mac-session/content-check-20261102/`.
 
+### Mac bridge and location simulation check, 2 November
+
+A user-authorized bridge experiment tried to move the signed-in Mac app to
+central Drammen and export a fresh decrypted map. **No Drammen map request or
+plaintext fleet export was achieved.** Destination searches for Drammen and
+its coordinates did not move the map there. Touch Alternatives enabled keyboard
+panning, but the available desktop controls could not perform the pinch needed
+to navigate from Zürich; the user could not perform it remotely either. The
+temporary Touch Alternatives setting was restored to Off after the test.
+
+Finder could copy the app-owned HTTP cache, its SQLite journals and response
+files, the current log and diagnostic database, although direct reads by the
+agent were denied by macOS container permissions. The copied cache passed
+SQLite's `quick_check`. Its map entry's HTTP `Date` and DPoP `iat` were both
+`2026-11-02T21:57:20Z`, establishing a fresh official-app response for Zürich
+(`cityId=0`). The cache row's `time_stamp` still read `15:03:56`; that field
+alone would incorrectly suggest an old response.
+
+The fresh map response had status 200 and an encrypted `key` envelope with
+`alg`, `ekt`, `epk`, `iv` and `data`. The current log exposed decryption-success
+markers without the resulting fleet JSON, and the diagnostic database had zero
+`trace_event` rows. `getCityFences` listed Drammen with `cityId=43`; this is city
+metadata, not a verified scooter observation or a way to invoke the map reader.
+
+At the user's suggestion, a small local helper queried Core Location's private
+`CLSimulationManager` interface. The status query failed, and `locationd` logged
+“unentitled client attempting to simulate location.” A separate ad-hoc-signed
+copy declaring `com.apple.locationd.simulation` was killed before executing.
+No location simulation was started, and no system protection or Ryde binary was
+changed. These tests did not establish a usable location override on this Mac.
+
+The checked disk outputs therefore do not supply a working bridge. Moving the
+map remains a prerequisite for the Drammen test; exporting its decrypted result
+also requires an app interface or another verified access path. Keeping Ryde
+open by itself has not demonstrated either capability. Private snapshots and
+helper diagnostics are under `mac-session/drammen-bridge-20261102/` outside Git.
+
 ## Recheck: model spoofing, attestation and session keys
 
 The 27 October APK download is still 6.1.0 / 718. `apksigner verify`
