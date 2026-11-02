@@ -20,7 +20,7 @@ const guide: Guide = {
         'At 15:57 on Monday 2 November 2026, Polish time, the [Katowice and Chorzów map](map:pl:Katowice / Chorzów) showed about 700 Bolt scooters free to rent at that moment.',
         'Neighbouring Siemianowice Śląskie, Świętochłowice and Ruda Śląska have no map of their own on ScootRadar: look for scooters there on the Katowice and Chorzów one. Zabrze, Gliwice and Tychy have maps of their own: see the [Zabrze](map:pl:Zabrze), [Gliwice](map:pl:Gliwice) and [Tychy](map:pl:Tychy) maps.',
         'Check the fare, and the company’s minimum age for renting, in the app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
-        'Our guides to [Kraków](guide:krakow), [Łódź](guide:lodz), [Warsaw](guide:warsaw) and [Wrocław](guide:wroclaw) cover the same national rules.',
+        'Our guides to [Kraków](guide:krakow), [Łódź](guide:lodz), [Warsaw](guide:warsaw), [Wrocław](guide:wroclaw), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
       ],
     },
     {

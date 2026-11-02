@@ -25,7 +25,7 @@ const guide: Guide = {
         },
         'At 02:47 Warsaw time on Monday 2 November 2026 the [Łódź map](map:pl:Łódź) showed about 1,480 Bolt scooters free to rent at that moment and about 1,010 Lime scooters as last counted.',
         'Polish law lets you ride from 13; check the app’s own minimum age before you rent.',
-        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent). Poland’s other big cities have guides of their own: [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Poznań](guide:poznan), [Gdańsk, Gdynia and Sopot](guide:gdansk) and [Katowice and Chorzów](guide:katowice).',
+        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent). Poland’s other big cities have guides of their own: [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Poznań](guide:poznan), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun).',
       ],
     },
     {
