@@ -703,7 +703,8 @@ private fun Modifier.topAs(line: HorizontalAlignmentLine): Modifier = layout { m
  * PM · Seoul, lines © OpenStreetMap (not now)", broke into about twelve lines, words cut inside, and ran up under the
  * search bar and the status bar. The iPhone's stack has no answer there (its lines are fixedSize, with no limit) and
  * would do the same on its smallest phone at its largest sizes; wherever the legend fits beside the button, as it
- * always does at the default sizes, the row is the iPhone's.
+ * always does at the default sizes, the row is the iPhone's. Where it fits neither way, it is as tall as its room
+ * under the ceiling, and scrolls (review-app-ap R2).
  */
 @Composable
 private fun LocateRow(
@@ -736,7 +737,13 @@ private fun LocateRow(
         val over = besideHeight > room - slack &&
             legendBox.maxIntrinsicHeight(width) + gap + placedButton.height < besideHeight
         stacked[0] = over
-        val placedLegend = legendBox.measure(loose.copy(maxWidth = if (over) width else beside))
+        // At most down from the ceiling, where it scrolls, as the notices under the search bar do in theirs (the
+        // iPhone's HeightLimit): two lines or more at the largest text ran up under the bar over the button too. Never
+        // under the notices' least room, a banner's 64, in a window too short for both.
+        val cap = maxOf(64.dp.roundToPx(), room - if (over) placedButton.height + gap else 0)
+        val placedLegend = legendBox.measure(
+            loose.copy(maxWidth = if (over) width else beside, maxHeight = min(loose.maxHeight, cap)),
+        )
         val height = if (over && placedLegend.height > 0) {
             placedLegend.height + gap + placedButton.height
         } else {

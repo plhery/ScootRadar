@@ -1,6 +1,7 @@
 package com.plhery.scootradar.ui.chrome
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +28,7 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -90,6 +94,7 @@ fun ZoneLegend(
     val note = zoneLegendNote(state, count, rules = lines.isNotEmpty(), notices = notices.isNotEmpty())
     val zones = localized("Zones")
     val style = ScootType.caption.weight(FontWeight.Medium)
+    val scroll = rememberScrollState()
     Column(
         modifier
             .testTag(ZONE_LEGEND_TAG)
@@ -98,6 +103,9 @@ fun ZoneLegend(
             .semantics { isTraversalGroup = true }
             .chromeGlass(SquircleShape(16.dp))
             .then(if (lines.isEmpty()) Modifier else Modifier.overTheMap())
+            // Inside the glass, as tall as the room it is given at most, and scrolled where it is taller (the locate
+            // row's ceiling under the search bar, UI-410): a drag pans the map under it until then.
+            .scrollsWhereShort(scroll)
             .padding(horizontal = 12.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -151,6 +159,20 @@ fun ZoneLegend(
         }
     }
 }
+
+/**
+ * Scrolls by [state] where it is given less height than it takes, and only then takes drags. Where nothing bounds its
+ * height, as where a test measures the legend, it is as tall as it takes: a scroll may not be measured unbounded.
+ */
+private fun Modifier.scrollsWhereShort(state: ScrollState): Modifier = layout { measurable, constraints ->
+    val bounded = if (constraints.hasBoundedHeight) {
+        constraints
+    } else {
+        constraints.copy(maxHeight = maxOf(constraints.minHeight, measurable.maxIntrinsicHeight(constraints.maxWidth)))
+    }
+    val placeable = measurable.measure(bounded)
+    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+}.verticalScroll(state, enabled = state.maxValue > 0)
 
 /** The legend's tag, by which the tests find its frame on the screen. */
 const val ZONE_LEGEND_TAG = "zoneLegend"
