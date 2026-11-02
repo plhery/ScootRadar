@@ -38,6 +38,7 @@ import com.plhery.scootradar.map.MapChromeFrames
 import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
 import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.theme.resetFontScale
+import com.plhery.scootradar.ui.theme.screenshot
 import com.plhery.scootradar.ui.theme.useFontScale
 import com.plhery.scootradar.zurichRegion
 import org.junit.After
@@ -181,31 +182,38 @@ class LegendBesideNearMeTest {
     /**
      * With the card of a location that was denied under the search bar, and "Near me" the pill, two lines at font scale
      * 2.0 stand 8 under the card, not under it, where their first lines were out of reach of the scroll
-     * (review-legend-cap R1); both lines are reached by scrolling.
+     * (review-legend-cap R1). Beside the pill the legend was about 125 wide, its lines cut inside their words, each
+     * taller than the legend; it goes over the button at the row's width, in the 53 left over it, and scrolls to its
+     * last line. The screenshot is the screen as it then is.
      */
     @Test
     @Config(qualifiers = PHONE_MIN)
-    fun underALocationCardTheLinesStandUnderItAndScroll() {
+    fun underALocationCardTheLinesGoOverNearMeAtTheRowsWidthAndScroll() {
         useFontScale(2f)
         show(located = false, denied = true, authorities = listOf(SEOUL, GANGNAM))
         val legend = frame(frames.zoneLegend, "legend")
+        val button = frame(frames.locateButton, "locate button")
         val card = frame(frames.top, "search bar and card")
         assertTrue("the card under the bar: $card", card.height > 150)
+        assertTrue("\"Near me\" ${button.width} wide, the wide pill", button.width > 150)
         assertTrue("the legend $legend 8 under the card $card", legend.minY >= card.maxY + 8 - 0.5)
-        assertTrue("the legend $legend 64 tall at least", legend.height >= 64 - 0.5)
+        assertTrue("the legend $legend over the button $button", legend.maxY <= button.minY - 10 + 0.5)
+        assertTrue("the legend $legend at the row's width, wider than beside the button $button", legend.width > 360 - 20 - button.width + 100)
+        assertEquals("the foot of what the map shows clear", legend.minY, checkNotNull(frames.chrome.bottomTop), 0.5)
         val node = compose.onNodeWithTag(ZONE_LEGEND_TAG)
         val range = node.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
         assertEquals("scrolled to its top", 0f, range.value(), 0f)
         val first = compose.onNodeWithText("Seoul", substring = true).getUnclippedBoundsInRoot()
         val shown = node.getUnclippedBoundsInRoot()
         assertTrue("the first line $first starts inside the legend $shown", first.top >= shown.top)
-        // A short room: a swipe the legend's height scrolls a few hundred pixels.
-        repeat(12) {
+        compose.screenshot("zones/underLocationCard_lightLargeText")
+        // A short room: a swipe the legend's height scrolls a few dozen pixels.
+        repeat(30) {
             if (range.value() < range.maxValue()) node.performTouchInput { swipeUp(startY = bottom - 4f, endY = top + 4f, durationMillis = 400) }
             compose.waitForIdle()
         }
         assertEquals("scrolled to its foot", range.maxValue(), range.value(), 0.5f)
-        // Beside the pill, the legend is narrow and a line taller than it: its foot is in view.
+        // Each line is taller than the room left to the legend: its foot is in view.
         val last = compose.onNodeWithText("Gangnam-gu", substring = true).getUnclippedBoundsInRoot()
         assertTrue("the last line's foot $last in the legend $shown", last.bottom <= shown.bottom && last.bottom > shown.top + 7.dp)
     }

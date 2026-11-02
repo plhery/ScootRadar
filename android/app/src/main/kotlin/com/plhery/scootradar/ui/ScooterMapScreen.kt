@@ -710,7 +710,7 @@ private fun Modifier.topAs(line: HorizontalAlignmentLine): Modifier = layout { m
  * search bar and the status bar. The iPhone's stack has no answer there (its lines are fixedSize, with no limit) and
  * would do the same on its smallest phone at its largest sizes; wherever the legend fits beside the button, as it
  * always does at the default sizes, the row is the iPhone's. Where it fits neither way, it is as tall as its room
- * under the ceiling, and scrolls (review-app-ap R2).
+ * under the ceiling, and scrolls (review-app-ap R2), over the button where that shows more of it.
  */
 @Composable
 private fun LocateRow(
@@ -741,16 +741,28 @@ private fun LocateRow(
         // iPhone's HeightLimit): two lines or more at the largest text ran up under the bar over the button too. Never
         // under the notices' least room, a banner's 64, in a window too short for both.
         val floor = 64.dp.roundToPx()
-        val overReach = min(overHeight, maxOf(floor, room - placedButton.height - gap)) + gap + placedButton.height
+        val overRoom = room - placedButton.height - gap
+        val overReach = min(overHeight, maxOf(floor, overRoom)) + gap + placedButton.height
         val besideReach = min(besideHeight, maxOf(floor, room))
-        // Over the button only where that ends lower than beside it, both as tall as they may be: in a landscape
-        // phone's short row over it the legend would only reach higher, up to the floor's 64 over the button and
-        // under the search bar (review-legend-cap B2). Back beside only with 8 to spare, so that a notice or the search
-        // bar changing height by a little doesn't move it to and fro.
+        // Over the button where that ends lower than beside it, both as tall as they may be: in a landscape phone's
+        // short row over it the legend would only reach higher, up to the floor's 64 over the button and under the
+        // search bar (review-legend-cap B2). Back beside only with 8 to spare, so that a notice or the search bar
+        // changing height by a little doesn't move it to and fro.
         val slack = if (stacked[0]) 8.dp.roundToPx() else 0
-        val over = besideHeight > room - slack && overHeight + gap + placedButton.height < besideHeight && overReach <= besideReach
+        val endsLower = besideHeight > room - slack && overHeight + gap + placedButton.height < besideHeight && overReach <= besideReach
+        // Over it too where both would scroll and over it, in what is left of the room and under the 64, it shows more
+        // of the legend: under a location card at font scale 2.0 on ScootRadar_Phone_Min, beside "Near me" the legend
+        // was 125 wide, a line cut inside its words and taller than the legend; over it, at the row's 338, its words
+        // stay whole.
+        val showsMore = besideHeight > besideReach && overRoom > 0 &&
+            (overRoom + slack).toLong() * besideHeight >= besideReach.toLong() * overHeight
+        val over = endsLower || showsMore
         stacked[0] = over
-        val cap = maxOf(floor, room - if (over) placedButton.height + gap else 0)
+        val cap = when {
+            endsLower -> maxOf(floor, overRoom)
+            over -> overRoom
+            else -> maxOf(floor, room)
+        }
         val placedLegend = legendBox.measure(
             loose.copy(maxWidth = if (over) width else beside, maxHeight = min(loose.maxHeight, cap)),
         )
