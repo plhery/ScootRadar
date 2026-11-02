@@ -269,8 +269,8 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   to tell them apart, states no licence and is not in its open data, and its
   no-riding and no-parking layer was drawn for its call for operators.
   Populus's map, beside the trip dashboard its page links, holds only Pullen
-  Park and Glenwood South's mandatory zone, without the corrals (1 November
-  2026).
+  Park and Glenwood South's mandatory zone, its corrals cut out: both drawn
+  since 2 November 2026 (DATA_SOURCES.md), the other mandatory zones not.
   Fayetteville, Arkansas's only map is of its service area (2022), and the
   University of Arkansas's slow zones and corrals are PDFs (March 2023).
   Opfikon's parking, slow, no-parking and no-riding zones, beside Zürich

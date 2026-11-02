@@ -5495,7 +5495,7 @@ extension CityZoneDownloads {
         ),
     ]
 
-    static let builtInCities: Set<String> = ["aachen", "alexandria", "antwerpen", "arlington", "arlingtoncemetery", "atlanta", "baltimore", "basel", "bergen", "boise", "bordeaux", "boulder", "braunschweig", "cityoflondon", "cleveland", "columbus", "halmstad", "helsinki", "jarvenpaa", "lambeth", "longbeach", "milwaukee", "minneapolis", "munchen", "munster", "namur", "nashville", "newyork", "norfolk", "norrkoping", "omaha", "oslo", "ottawa", "oygarden", "porto", "poznan", "reykjavik", "riga", "rostock", "sacramento", "saltlakecity", "sanantonio", "sanfrancisco", "santamonica", "seattle", "stalbert", "stavanger", "stockholm", "tampa", "taupo", "trondheim", "turku", "vaasa", "vancouver", "vantaa", "vasteras", "washington", "wien", "zurich"]
+    static let builtInCities: Set<String> = ["aachen", "alexandria", "antwerpen", "arlington", "arlingtoncemetery", "atlanta", "baltimore", "basel", "bergen", "boise", "bordeaux", "boulder", "braunschweig", "cityoflondon", "cleveland", "columbus", "halmstad", "helsinki", "jarvenpaa", "lambeth", "longbeach", "milwaukee", "minneapolis", "munchen", "munster", "namur", "nashville", "newyork", "norfolk", "norrkoping", "omaha", "oslo", "ottawa", "oygarden", "porto", "poznan", "raleigh", "reykjavik", "riga", "rostock", "sacramento", "saltlakecity", "sanantonio", "sanfrancisco", "santamonica", "seattle", "stalbert", "stavanger", "stockholm", "tampa", "taupo", "trondheim", "turku", "vaasa", "vancouver", "vantaa", "vasteras", "washington", "wien", "zurich"]
 }
 
 /// The countries of data/countries.json, as src/generated/countries.ts has them on the web.

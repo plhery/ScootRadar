@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Raleigh, North Carolina: Spin and Lime, the 11 p.m. stop, and where to ride and park',
   lede: 'E-scooters in Raleigh come from Spin and Lime, the two companies with City agreements (September 2026). NC State says Spin’s scooters are available to ride from 6 a.m. to 11 p.m. A 2018 City ordinance keeps scooters off sidewalks and greenway trails, and downtown you end your ride in a painted corral. NC State lists Spin’s price for rides that start on campus; elsewhere, check the app.',
   published: '2026-10-27',
-  updated: '2026-10-27',
+  updated: '2026-11-02',
   city: 'us:nc:Raleigh',
   sections: [
     {
@@ -78,6 +78,7 @@ const guide: Guide = {
           ],
         },
         'Spin published 74 no-ride and 41 no-parking zones in its open data on 27 October 2026, which the map draws at street zoom. Matched to Wake County’s parcel map, two no-parking zones cover the downtown core around Fayetteville Street and Glenwood South along Glenwood Avenue: there, a ride ends only in a corral, and the corrals themselves aren’t in Spin’s data. Another covers Dorothea Dix Park. No-ride zones take in Capitol Square, Moore Square, Nash Square, Pullen Park, land around Lake Johnson, Meredith College, William Peace University and parts of NC State’s Centennial Campus. The map doesn’t show Lime’s zones: check its app.',
+        'The map also draws the City’s own zones from its policies on Populus, credited to the City: Pullen Park, where you may neither ride nor park, and Glenwood South’s mandatory parking zone, the 100 metres round its 13 corrals, with the corrals left open. The City’s other mandatory zones downtown aren’t on its public map, so the map doesn’t draw them: look for the painted corral.',
       ],
     },
     {

@@ -1412,6 +1412,23 @@ its source and the date it was read.
   drawn; two points with no such mark, about 15 m from Piotrowo's points of
   the same numbers, are. The map states no licence, and the authority's site
   sets no terms. The legend credits it by its own short name, ZDM Poznań.
+- **Raleigh** (read 2 November 2026): the City of Raleigh's no-riding zone
+  over Pullen Park (from April 2024 to February 2029) and its no-parking zone
+  there, and Glenwood South's mandatory parking zone, since 14 September 2026,
+  drawn as no parking: the 100 m round its 13 finished corrals, the corrals
+  cut out, as "the app will not let you end the trip" there outside one
+  ([City of Raleigh](https://raleighnc.gov/transportation/news/mandatory-parking-zones-shared-bikes-and-scooters)).
+  They are the shapes of the City's policies on
+  [Populus's public policy map](https://app.populus.ai/raleigh/public/policies),
+  beside the trip map its
+  [E-Scooter Program](https://raleighnc.gov/transportation/services/e-scooter-program)
+  page links ("Where are people riding scooters in Raleigh? Have a look!"), as
+  Nashville's and Milwaukee's are. The City's picture of its mandatory zones
+  also covers downtown, the Warehouse District and the east side, which
+  Populus doesn't hold, so they are not drawn; nor is its corral layer on
+  ArcGIS, which marks built and planned corrals alike. Not drawn either: the
+  night hours (6 a.m. to 11 p.m., in the rental curfews), the event zones,
+  the equity zone, caps and fees. The map states no terms.
 - **Reykjavík** (read 31 October 2026): Reykjavíkurborg's 9 parking places
   for shared vehicles (`Skilasvaedi_deilifarartaekja`, `TEGUND` 1), points
   each drawn as a disc of 5 m, and from its e-scooter geofencing layer

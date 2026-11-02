@@ -79,6 +79,7 @@ export const CITY_ZONE_FILES: Record<string, () => Promise<{ default: ZoneFile }
   oygarden: () => import('../../data/city-zones/oygarden.json'),
   porto: () => import('../../data/city-zones/porto.json'),
   poznan: () => import('../../data/city-zones/poznan.json'),
+  raleigh: () => import('../../data/city-zones/raleigh.json'),
   reykjavik: () => import('../../data/city-zones/reykjavik.json'),
   riga: () => import('../../data/city-zones/riga.json'),
   rostock: () => import('../../data/city-zones/rostock.json'),
