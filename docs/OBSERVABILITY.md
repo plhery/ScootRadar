@@ -336,6 +336,12 @@ stand in for their national feeds: on standby they list nothing by design.
   of Doha's 32 groups, 4 of Brisbane's, one of Santiago's and one of Naha's, while each
   town held its usual fleet. A group is reported only if every group of its town has
   listed none for 3 days.
+
+The rule reads each feed's 3 days of counts once, Lime's groups by town, and its pauses
+hour by hour: it took 11 seconds of Grafana's 30 on 2 November 2026, when it read
+Lime's groups three times and the pauses at every scrape, and 5 seconds since, with the
+same answers at seven times checked from 22 October to 2 November, Dott Lubliniec's
+start at 12:33 on 1 November among them.
 - **Followed for 3 days.** A feed is reported only if Prometheus held it 3 days ago, so
   a new feed, or one skipped before its vehicles were exported (15 October 2026), waits.
 
