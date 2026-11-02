@@ -19,7 +19,7 @@ const guide: Guide = {
         {
           list: [
             '**Bolt**, whose scooters and e-bikes were the green ones when Reidas described them on 9 August 2024.',
-            '**Ride**, whose vehicles were the red ones in that report. It calls itself an e-bike sharing service, but its Lithuanian page, which lists Vilnius and Kaunas, also tells riders how to start an e-scooter. Open the Ride app to see what stands near you.',
+            '**Ride**, whose vehicles were the red ones in that report. It calls itself an e-bike sharing service, but its Lithuanian page, which lists Vilnius and [Kaunas](guide:kaunas), also tells riders how to start an e-scooter. Open the Ride app to see what stands near you.',
           ],
         },
         'In 2024 these were the two companies renting shared scooters and e-bikes in Vilnius, Reidas reported on 6 May 2025, citing JUDU, the city’s mobility company.',
