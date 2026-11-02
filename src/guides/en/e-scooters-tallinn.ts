@@ -85,7 +85,8 @@ const guide: Guide = {
           ],
         },
         '**Parking.** In a zone covering the Old Town, the city centre, Balti jaam station, Telliskivi Creative City and western Kadriorg up to the palace, you may end a ride only in a parking area marked on the street and shown in the app. Most of Kalamaja, north of Kopli street, lies outside the zone.',
-        'Everywhere else, don’t park within 10 metres of a bus or tram shelter. Never park in the marked area of a junction, on a pavement or path narrower than 1.7 metres, or on a bridge, a viaduct or in a tunnel unless there’s a parking area. A badly parked scooter can be reported to its operator, which must move it within 3 hours between 08:00 and 22:00.',
+        'Everywhere else, don’t park within 10 metres of a bus or tram shelter. Never park in the marked area of a junction, on a pavement or path narrower than 1.7 metres, or on a bridge, a viaduct or in a tunnel unless there’s a parking area. Every rental scooter must carry its operator’s name or brand and a clearly legible phone number, so a badly parked one can be reported by phone or in the app; the operator must move it as soon as it can, and within 3 hours between 08:00 and 22:00.',
+        '**Zones can change at short notice.** Tallinn’s Transport Board can add slow zones of down to 10 km/h and extra parking bans, giving operators 14 days’ notice, and for roadworks or events it can set other speed and parking rules for a fixed period, usually five working days ahead. So the app may slow you or refuse to end a ride where the regulation’s maps show nothing. The city publishes the parking areas and speed zones as a map application on its website, and the same rules apply to rented e-bikes, bicycles and small mopeds (regulation §§ 1–5).',
       ],
     },
     {

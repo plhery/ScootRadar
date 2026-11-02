@@ -49,16 +49,17 @@ const guide: Guide = {
       blocks: [
         'Fra Knarvik terminal går Skyss-linje 300 Knarvik–Åsane–Bergen og ekspresslinje 300E Knarvik–Bergen, ifølge Enturs rutedata (1. november 2026). Linje 310 Knarvik–Flatøy–Rossland–Skjelanger stopper også ved Frekhaug kai. Båten Knarvik–Frekhaug–Bergen, som Skyss kaller Nordhordlandsbåten, går fra Knarvik kai til Strandkaiterminalen i Bergen. Mandag 2. november 2026 har den seks avganger fra Knarvik kai, fra kl. 05.52 til 16.15, ifølge Enturs rutedata.',
         'Hele Alver og Bergen ligger i Skyss’ sone A, så fra Knarvik til Bergen betaler du for én sone: 51 kr for en voksen enkeltbillett og 26 kr for en barnebillett, etter prisene som gjelder fra 1. november 2026, skriver Skyss. Det gjelder både bussen og båten.',
+        'Innenfor sone A trenger du ikke vise billetten når du går på bussen, og du kan gå inn både foran og bak. Går bussen eller båten ut av sone A, viser du billetten når du går om bord, og sjåfører, mannskap og kontrollører kan når som helst be om å se den, skriver Skyss (november 2026). Båten er Skyss-linje 390, som Norled kjører, ifølge Enturs rutedata. Er den forsinket eller innstilt, kan du ofte få varsel på SMS.',
         {
           list: [
             '**Leid elsparkesykkel:** Avslutt turen og parker lovlig før du går på bussen eller båten.',
             '**Egen elsparkesykkel på bussen:** Skyss regner elsparkesykkel som sykkel. Den kan være høyst 175 cm lang og 70 cm bred, og den blir bare med når det er egnet og ledig plass. Den skal ikke stå i veien for andre eller sperre dører, midtgang eller nødutganger, og der det er stropper, fester du den. På buss og bybane koster den det samme som en barnebillett, skriver Skyss (november 2026).',
-            '**Hvem får plassen:** Er det for lite plass i bussens fleksområde, prioriterer sjåføren rullestol først, så barnevogn og så sykkel, sparkesykkel og bagasje. Blir du stående igjen fordi det ikke er plass til sparkesykkelen, gir det ikke rett til refusjon etter reisegarantien, skriver Skyss.',
+            '**Hvem får plassen:** Den som allerede er om bord, kan ikke bli bedt om å gå av for å gi plass. Er det for lite plass i bussens fleksområde, prioriterer sjåføren rullestol først, så barnevogn og så sykkel, sparkesykkel og bagasje. Blir du stående igjen fordi det ikke er plass til sparkesykkelen, gir det ikke rett til refusjon etter reisegarantien, skriver Skyss.',
             '**Egen elsparkesykkel på båten:** Sykler, også elsparkesykler, går gratis på båten. På noen båtruter skal syklene stå ute på dekk, og mannskapet viser hvor, skriver Skyss.',
             '**Ekspressbusser og tog:** Reiser du med Skyss-billett på ekspressbuss, ekspressbåt eller tog, gjelder egne regler, skriver Skyss. Sjekk dem før du tar med sparkesykkelen.',
           ],
         },
-        'Voi har ikke tillatelse i Bergen: der har Ryde, Lime og RideMovi kommunens tillatelse til og med 31. mars 2027. Nattestenging, parkering og forbudssoner står i [guiden for Bergen](guide:bergen), og sparkesyklene i [kartet over Bergen](map:no:Bergen).',
+        'Voi har ikke tillatelse i Bergen: der har Ryde, Lime og RideMovi kommunens tillatelse til og med 31. mars 2027. Nattestenging, parkering og forbudssoner står i [guiden for Bergen](guide:bergen), og sparkesyklene i [kartet over Bergen](map:no:Bergen). Også kartet i Skyss-appen viser ledige elsparkesykler i Bergen og stativene til Bergen Bysykkel, skriver Skyss.',
         'Kjører du egen elsparkesykkel mot Bergen, går veien over Nordhordlandsbrua og gjennom Åsane. Statens vegvesen skriver (november 2026) at gang- og sykkeltilbudet langs E39 i Åsane, mellom Vågsbotn og Klauvaneset ved Nordhordlandsbrua, varierer mye. Flere steder må biler kjøre på gang- og sykkelveien for å komme til eiendommer, og andre steder må folk gå og sykle langs vegskulderen der bilene kjører.',
       ],
     },
