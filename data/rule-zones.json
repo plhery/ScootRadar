@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-11-02",
-  "about": "Streets where a city or its police forbids riding e-scooters, at the hours given, by the clock of the zone's time zone. Each is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. Antalya's has no map: UKOME's decisions name the road and place parcels and hotels on it, and its lines are OpenStreetMap's two carriageways from the edge of Kemerağzı, where the ban starts, to Trendy Lara in Kundu, the last place a decision puts on it; the 0.9 km on to Kumköy, which no decision names, is left out. Chicago's three have no map either: the Chicago Department of Transportation's page names the Lakefront Trail, The 606 and the Chicago Riverwalk, and their lines are OpenStreetMap's ways of those names, both of the Lakefront Trail's where it has a bike and a walking trail, the Riverwalk on the Main Branch's south bank alone. Edmonton's has none: the City's page names Whyte Avenue from 112 to 97 Street, and its lines are OpenStreetMap's carriageways between those streets. The map draws them as bands, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers this layer only. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2). Antalya's covers every public area of the boulevard, its pavements and cycle path too, at all hours. Chicago's are the rules CDOT sets the riders of its shared scooters, at all hours. Edmonton's is the City's for shared e-scooters and e-bikes, which may neither ride nor park there. Tampa's are the City's for shared micromobility vehicles, at all hours.",
+  "about": "Streets where a city or its police forbids riding e-scooters, at the hours given, by the clock of the zone's time zone. Each is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. Antalya's has no map: UKOME's decisions name the road and place parcels and hotels on it, and its lines are OpenStreetMap's two carriageways from the edge of Kemerağzı, where the ban starts, to Trendy Lara in Kundu, the last place a decision puts on it; the 0.9 km on to Kumköy, which no decision names, is left out. Chicago's three have no map either: the Chicago Department of Transportation's page names the Lakefront Trail, The 606 and the Chicago Riverwalk, and their lines are OpenStreetMap's ways of those names, both of the Lakefront Trail's where it has a bike and a walking trail, the Riverwalk on the Main Branch's south bank alone. Edmonton's has none: the City's page names Whyte Avenue from 112 to 97 Street, and its lines are OpenStreetMap's carriageways between those streets. The map draws them as bands, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers this layer only. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2). Antalya's covers every public area of the boulevard, its pavements and cycle path too, at all hours. Chicago's are the rules CDOT sets the riders of its shared scooters, at all hours. Edmonton's is the City's for shared e-scooters and e-bikes, which may neither ride nor park there. Tampa's are the City's for shared micromobility vehicles, at all hours. Brighton & Hove's are the council's for the e-scooters hired in its trial, at all hours.",
   "zones": [
     {
       "id": "seoul-hongdae-red-road",
@@ -2640,6 +2640,175 @@
           [27.960322, -82.450206],
           [27.960456, -82.450735],
           [27.960467, -82.451246]
+        ]
+      ]
+    },
+    {
+      "id": "brighton-cranbourne-street",
+      "place": "Cranbourne Street, Brighton",
+      "country": "GB",
+      "authority": "Brighton & Hove City Council, lines © OpenStreetMap",
+      "rule": "noRide",
+      "timeZone": "Europe/London",
+      "source": {
+        "title": "Brighton & Hove City Council, \"Beryl e-scooters trial\": \"You cannot ride e-scooters in the following areas: … 24-hour no-go locations, including: … Cranbourne St, Brighton\"",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "map": {
+        "title": "No map: the council's page names the street; the line is OpenStreetMap's way of Cranbourne Street",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "lines": [
+        [
+          [50.823186, -0.143759],
+          [50.823341, -0.144621]
+        ]
+      ]
+    },
+    {
+      "id": "brighton-kensington-gardens",
+      "place": "Kensington Gardens, in the North Laine, Brighton",
+      "country": "GB",
+      "authority": "Brighton & Hove City Council, lines © OpenStreetMap",
+      "rule": "noRide",
+      "timeZone": "Europe/London",
+      "source": {
+        "title": "Brighton & Hove City Council, \"Beryl e-scooters trial\": \"You cannot ride e-scooters in the following areas: … 24-hour no-go locations, including: … Kensington Gardens\"",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "map": {
+        "title": "No map: the council's page names the street; the line is OpenStreetMap's way of Kensington Gardens",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "lines": [
+        [
+          [50.826891, -0.138428],
+          [50.82564, -0.138938]
+        ]
+      ]
+    },
+    {
+      "id": "brighton-undercliff-walk",
+      "place": "The Undercliff Walk, from Brighton Marina to Saltdean",
+      "country": "GB",
+      "authority": "Brighton & Hove City Council, lines © OpenStreetMap",
+      "rule": "noRide",
+      "timeZone": "Europe/London",
+      "source": {
+        "title": "Brighton & Hove City Council, \"Beryl e-scooters trial\": \"You cannot ride e-scooters in the following areas: … 24-hour no-go locations, including: … The Undercliff (Marina to Saltdean)\"",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "map": {
+        "title": "No map: the council's page names the path and its ends; the lines are OpenStreetMap's ways of the Undercliff Walk, from the Marina to Saltdean",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "lines": [
+        [
+          [50.814189, -0.106332],
+          [50.814165, -0.105689],
+          [50.814243, -0.105599],
+          [50.814279, -0.105499],
+          [50.814302, -0.104807],
+          [50.814362, -0.104554],
+          [50.814168, -0.103172],
+          [50.813772, -0.100698],
+          [50.813632, -0.0999],
+          [50.813474, -0.099218],
+          [50.81319, -0.097644],
+          [50.812941, -0.096836],
+          [50.812561, -0.095315],
+          [50.812335, -0.094517],
+          [50.812115, -0.092786],
+          [50.81194, -0.092146],
+          [50.81137, -0.089501],
+          [50.810597, -0.086638],
+          [50.810435, -0.085742],
+          [50.810082, -0.084556],
+          [50.809242, -0.081957],
+          [50.808952, -0.080963],
+          [50.808594, -0.079891],
+          [50.808489, -0.079415],
+          [50.808387, -0.078689],
+          [50.808248, -0.07812],
+          [50.808043, -0.077411],
+          [50.807879, -0.077022],
+          [50.807526, -0.075842],
+          [50.807341, -0.075068],
+          [50.807125, -0.074297],
+          [50.806861, -0.07308],
+          [50.806691, -0.07243],
+          [50.806451, -0.071614],
+          [50.805614, -0.069228],
+          [50.805378, -0.068481],
+          [50.804399, -0.064728],
+          [50.804055, -0.063531],
+          [50.803588, -0.062113],
+          [50.803243, -0.060822],
+          [50.802809, -0.058594],
+          [50.802607, -0.057726],
+          [50.80245, -0.057375],
+          [50.802307, -0.056946],
+          [50.802041, -0.05593],
+          [50.801876, -0.055397],
+          [50.801867, -0.055248],
+          [50.802032, -0.054905],
+          [50.801655, -0.052715],
+          [50.801604, -0.052214],
+          [50.801525, -0.0518],
+          [50.801592, -0.051282],
+          [50.801616, -0.050586],
+          [50.801593, -0.049901],
+          [50.801477, -0.049212],
+          [50.80067, -0.045296],
+          [50.800567, -0.044653],
+          [50.800534, -0.044342],
+          [50.800582, -0.043207],
+          [50.800614, -0.042956],
+          [50.80033, -0.041101],
+          [50.800286, -0.040985],
+          [50.800268, -0.040825],
+          [50.800103, -0.040432],
+          [50.799813, -0.039064],
+          [50.799563, -0.038309],
+          [50.79956, -0.038051],
+          [50.799236, -0.036924],
+          [50.798496, -0.034893]
+        ]
+      ]
+    },
+    {
+      "id": "hove-promenade",
+      "place": "Hove Promenade, from Hove Lagoon to Medina Terrace",
+      "country": "GB",
+      "authority": "Brighton & Hove City Council, lines © OpenStreetMap",
+      "rule": "noRide",
+      "timeZone": "Europe/London",
+      "source": {
+        "title": "Brighton & Hove City Council, \"Beryl e-scooters trial\": \"You cannot ride e-scooters in the following areas: … 24-hour no-go locations, including: … Hove Promenade\"",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "map": {
+        "title": "No map: the council's page names the promenade; the lines are OpenStreetMap's ways named Hove Promenade, from Hove Lagoon to Medina Terrace, and the promenade on east of them, unnamed there, is not drawn",
+        "url": "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial"
+      },
+      "lines": [
+        [
+          [50.826669, -0.200847],
+          [50.825571, -0.187975],
+          [50.825472, -0.187103],
+          [50.825287, -0.184569],
+          [50.82531, -0.184396],
+          [50.82518, -0.182964],
+          [50.825187, -0.182856],
+          [50.825172, -0.182718],
+          [50.825118, -0.182578],
+          [50.824866, -0.181219],
+          [50.824769, -0.181194],
+          [50.824629, -0.180184],
+          [50.824498, -0.179134],
+          [50.824399, -0.178097],
+          [50.824398, -0.177835],
+          [50.824138, -0.175184]
         ]
       ]
     }

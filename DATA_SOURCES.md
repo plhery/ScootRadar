@@ -705,6 +705,28 @@ the United States' credits name them beside Chicago's trails.
 Hyde Park Village and Armature Works, in the April 2024 notice but not on the
 programme page, are not drawn.
 
+Brighton & Hove's hired e-scooters may not be ridden in its "24-hour no-go
+locations", among them "Cranbourne St, Brighton", "The Undercliff (Marina to
+Saltdean)", "Hove Promenade" and "Kensington Gardens"
+([Brighton & Hove City Council](https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial),
+read 2 November 2026), which publishes no map of them. Those four are drawn,
+on OpenStreetMap's ways of those names, © OpenStreetMap contributors under the
+ODbL: Cranbourne Street and Kensington Gardens, two short pedestrian streets;
+the Undercliff Walk from the Marina to Saltdean (about 5.4 km); and the ways
+OpenStreetMap names Hove Promenade, from Hove Lagoon to Medina Terrace (about
+1.8 km). The promenade on east of Medina Terrace, by Hove Lawns, is unnamed
+there and not drawn. They are credited "Brighton & Hove City Council, lines ©
+OpenStreetMap", and the United Kingdom's credits add "Brighton & Hove's no-ride
+streets traced on OpenStreetMap, ODbL". The rest of the list is not drawn: the
+lower promenade and the Madeira Drive Boardwalk, which OpenStreetMap names
+only in part or not at all, The Lanes, Churchill Square, The Level's
+crosswalks, Falmer and Stanmer north of The Keep, the skate parks and pump
+tracks, which are areas, the A259 from Black Rock to Saltdean, whose east end
+isn't given, and the timed and temporary zones, whose hours aren't. Beryl's
+GBFS for Brighton outlines 19 zones by name (Boardwalks, Lower Promenade,
+Brighton Marina & Undercliff…) with no rules, so the zone layer draws none of
+them.
+
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as
 the operators' (no riding, no parking, slow), the places to park in green and

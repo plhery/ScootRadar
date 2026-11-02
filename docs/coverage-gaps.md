@@ -501,8 +501,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Bournemouth's (BCP's) Beryl bays are on Beryl's site alone, and its seafront
   ban on hired scooters from 10:00 to 18:00 in July and August is text; the
   go-slow and no-go zones are Beryl's geofencing. Brighton & Hove names its
-  no-go streets and its go-slow area by the Palace Pier in text alone, and its
-  GIS's cycle hire bays don't say which are scooter hubs. Birmingham's
+  no-go places and its go-slow area by the Palace Pier in text alone; four of
+  them (Cranbourne Street, Kensington Gardens, the Undercliff Walk, Hove
+  Promenade) are drawn from OpenStreetMap's ways since 2 November 2026
+  (DATA_SOURCES.md), the rest being areas, unnamed in OpenStreetMap or without
+  ends or hours, and Beryl's GBFS outlines its zones with no rules. Its GIS's
+  cycle hire bays don't say which are scooter hubs. Birmingham's
   parking areas, Lime's since April 2026, are shown in its app, as TfWM says,
   and TfWM's layer of Beryl's zones is the old operator's (February 2024).
   Salford's bays are in Lime's app alone (and the council's page, of July

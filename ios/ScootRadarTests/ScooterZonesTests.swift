@@ -596,6 +596,30 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(ids(GeoBounds(south: 27.959, west: -82.432, north: 27.9615, east: -82.429)), [])
     }
 
+    func testFourOfBrightonAndHovesNoGoPlacesAreShownAtAllHoursCreditedToTheCouncil() throws {
+        // 2 November 2026, 03:30 in Brighton (UTC+0).
+        let night = Date(timeIntervalSince1970: 1_793_590_200)
+        let streets: Set = ["brighton-cranbourne-street", "brighton-kensington-gardens", "brighton-undercliff-walk", "hove-promenade"]
+        func ids(_ view: GeoBounds) -> [String] {
+            CityRuleZone.shown(over: view, zoom: 16, at: night).map(\.rule.id).filter(streets.contains)
+        }
+        // Kensington Gardens, in the North Laine.
+        let laine = CityRuleZone.shown(over: GeoBounds(south: 50.8258, west: -0.1392, north: 50.8266, east: -0.1384), zoom: 17, at: night)
+            .filter { streets.contains($0.rule.id) }
+        XCTAssertEqual(laine.map(\.rule.id), ["brighton-kensington-gardens"])
+        XCTAssertEqual(laine.map(\.inForce), [true])
+        let lane = try XCTUnwrap(laine.first?.rule)
+        XCTAssertEqual(lane.authority, "Brighton & Hove City Council, lines © OpenStreetMap")
+        XCTAssertEqual(lane.timeZone, "Europe/London")
+        XCTAssertTrue(lane.firstDay.isEmpty && lane.hours.isEmpty)
+        XCTAssertEqual(ids(GeoBounds(south: 50.8229, west: -0.1448, north: 50.8236, east: -0.1436)), ["brighton-cranbourne-street"])
+        // The Undercliff Walk below Rottingdean; Hove Promenade east of Hove Lagoon, but not its stretch by Hove Lawns,
+        // which OpenStreetMap doesn't name.
+        XCTAssertEqual(ids(GeoBounds(south: 50.8025, west: -0.0595, north: 50.8035, east: -0.0575)), ["brighton-undercliff-walk"])
+        XCTAssertEqual(ids(GeoBounds(south: 50.825, west: -0.1885, north: 50.826, east: -0.1865)), ["hove-promenade"])
+        XCTAssertEqual(ids(GeoBounds(south: 50.8228, west: -0.1665, north: 50.8245, east: -0.1645)), [])
+    }
+
     func testAStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
         // About 200 m east, then 100 m north.
         let line = [

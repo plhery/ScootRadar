@@ -149,6 +149,25 @@ describe('ruleZonesInView', () => {
     expect(only({ south: 27.959, west: -82.432, north: 27.9615, east: -82.429 })).toEqual([]);
   });
 
+  it('gives four of Brighton & Hove\'s no-go places at all hours, credited to the council', () => {
+    const night = Date.parse('2026-11-02T03:30:00Z');
+    const only = (bounds: { south: number; west: number; north: number; east: number }) =>
+      ruleZonesInView({ bounds, zoom: 16 }, night).map(zone => zone.id);
+    // Kensington Gardens, in the North Laine.
+    const [lane] = ruleZonesInView({ bounds: { south: 50.8258, west: -0.1392, north: 50.8266, east: -0.1384 }, zoom: 17 }, night);
+    expect(lane).toMatchObject({
+      id: 'brighton-kensington-gardens', inForce: true,
+      authority: 'Brighton & Hove City Council, lines © OpenStreetMap', timeZone: 'Europe/London',
+    });
+    expect(lane.polygons.some(([outer]) => polygonContainsPoint(outer, 50.826265, -0.138683))).toBe(true);
+    expect(only({ south: 50.8229, west: -0.1448, north: 50.8236, east: -0.1436 })).toEqual(['brighton-cranbourne-street']);
+    // The Undercliff Walk below Rottingdean; Hove Promenade east of Hove Lagoon, but not its stretch east of Medina
+    // Terrace, by Hove Lawns, which OpenStreetMap doesn't name.
+    expect(only({ south: 50.8025, west: -0.0595, north: 50.8035, east: -0.0575 })).toEqual(['brighton-undercliff-walk']);
+    expect(only({ south: 50.825, west: -0.1885, north: 50.826, east: -0.1865 })).toEqual(['hove-promenade']);
+    expect(only({ south: 50.8228, west: -0.1665, north: 50.8245, east: -0.1645 })).toEqual([]);
+  });
+
   it('keeps each street whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);

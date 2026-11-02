@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in Brighton and Hove: Beryl’s prices, hours and where you can ride',
   lede: 'You can hire an e-scooter in Brighton and Hove from Beryl, in a council trial that began on 24 July 2026. It costs £1 to unlock and 20p a minute on weekdays or 22p at weekends, so 15 minutes cost £4.00 or £4.30. You can’t start a hire between midnight and 5am, any night of the week. You must be 18 or over with a driving licence, keep off the pavements, the promenades and The Lanes, and end every ride in a Beryl bay.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-11-02',
   city: 'gb:Brighton',
   sections: [
     {
@@ -98,6 +98,7 @@ const guide: Guide = {
             ],
           },
         },
+        'Our [Brighton map](map:gb:Brighton) draws four of them as no-riding bands from zoom 14, credited to the council, along OpenStreetMap’s ways: Cranbourne Street, Kensington Gardens, the Undercliff Walk from the Marina to Saltdean, and Hove Promenade from Hove Lagoon to Medina Terrace. The rest, Hove Lawns’ stretch of the promenade among them, are in the app alone: Beryl’s open data outlines them without saying what each allows.',
       ],
     },
     {
