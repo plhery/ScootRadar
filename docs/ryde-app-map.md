@@ -554,9 +554,10 @@ The prepared leaf certificate is not a CA. Proposed trust is restricted to the
 signed Ryde executable, TLS server authentication and `api.ryde.vip`; the PAC
 routes only that hostname through localhost. The original proxy configuration
 is backed up, and an independent guard is prepared to restore it and remove the
-certificate after one map capture, a TLS failure or five minutes. Activation is
-pending the user's approval of that scoped trust change. No system certificate
-or proxy setting was changed, no native-app exchange was intercepted, and no
+certificate after one map capture, a TLS failure or five minutes. The user
+approved this scoped capture on 3 November 2026. Activation remains unperformed
+after the renewed administrator-authentication request timed out. No system
+certificate or proxy setting was changed, no native-app exchange was intercepted, and no
 session-key rotation was attempted. Unused local listeners were stopped.
 
 ## Recheck: model spoofing, attestation and session keys
