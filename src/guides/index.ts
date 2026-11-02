@@ -339,6 +339,7 @@ import grimstadNb from './nb/elsparkesykkel-grimstad';
 import lodzEn from './en/e-scooters-lodz';
 import szczecinEn from './en/e-scooters-szczecin';
 import kaunasEn from './en/e-scooters-kaunas';
+import clujNapocaEn from './en/e-scooters-cluj-napoca';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -678,4 +679,5 @@ export const GUIDES: readonly Guide[] = [
   lodzEn,
   szczecinEn,
   kaunasEn,
+  clujNapocaEn,
 ];
