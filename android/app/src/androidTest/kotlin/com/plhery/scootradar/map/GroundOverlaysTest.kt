@@ -3,7 +3,11 @@ package com.plhery.scootradar.map
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PointF
+import android.os.ParcelFileDescriptor
+import android.os.SystemClock
+import android.util.Log
 import android.view.Choreographer
+import android.view.MotionEvent
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +22,7 @@ import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.hideWalkingRoute
 import com.plhery.scootradar.core.map.showWalkingRoute
 import com.plhery.scootradar.core.map.walkTrail
+import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
@@ -31,6 +36,7 @@ import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneLook
+import com.plhery.scootradar.core.model.ScooterZoneOverlay
 import com.plhery.scootradar.core.model.ScooterZoneResponse
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.ScreenPoint
@@ -41,6 +47,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -51,12 +58,15 @@ import org.junit.runner.RunWith
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.maps.MapView
 import org.maplibre.android.style.expressions.Expression
 import org.maplibre.android.style.layers.CircleLayer
 import org.maplibre.android.style.sources.GeoJsonSource
+import org.maplibre.geojson.Feature
 import org.maplibre.geojson.Point
 import java.io.File
 import java.util.concurrent.CountDownLatch
+import kotlin.math.abs
 
 // The zones and the walk's trail on MapLibre's map (map.md MAP-151 to MAP-185): the zones of a fake server read back
 // from the map and off its pixels, their edges cut where no riding lies over them; a route fitted, drawn frame by
@@ -95,8 +105,10 @@ class GroundOverlaysTest {
         fun point(of: GeoPoint): ScreenPoint = phone.onMain { phone.projection.point(of) }
 
         /** The features of a layer drawn at a point of the map, in points. */
-        fun drawn(at: ScreenPoint, layer: String): Int = phone.onMain {
-            phone.map.queryRenderedFeatures(PointF((at.x * ratio).toFloat(), (at.y * ratio).toFloat()), layer).size
+        fun drawn(at: ScreenPoint, layer: String): Int = features(at, layer).size
+
+        fun features(at: ScreenPoint, layer: String): List<Feature> = phone.onMain {
+            phone.map.queryRenderedFeatures(PointF((at.x * ratio).toFloat(), (at.y * ratio).toFloat()), layer)
         }
 
         /** The numbers of the trail's dots that its filter shows. */
@@ -128,8 +140,8 @@ class GroundOverlaysTest {
             if (layer.startsWith(GroundOverlays.FADING_TRAIL)) GroundOverlays.FADING_TRAIL_SOURCE else GroundOverlays.TRAIL_SOURCE
     }
 
-    private fun withGround(api: ScooterAPIClient, directions: WalkingDirectionsClient? = null, zoom: Double, test: (Ground) -> Unit) {
-        val start = CameraPosition.Builder().target(LatLng(zurich.latitude, zurich.longitude)).zoom(zoom).build()
+    private fun withGround(api: ScooterAPIClient, directions: WalkingDirectionsClient? = null, zoom: Double, at: GeoPoint = zurich, test: (Ground) -> Unit) {
+        val start = CameraPosition.Builder().target(LatLng(at.latitude, at.longitude)).zoom(zoom).build()
         withPhoneMap(start) { phone ->
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
             val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
@@ -246,6 +258,114 @@ class GroundOverlaysTest {
             waitFor("the uncut edge is drawn") { ground.drawn(slowEdgeUnder, ZoneLayers.edgeID(ScooterZoneKind.Slow)) == 1 }
             save(snapshot(ground), "zones-unclipped")
         }
+    }
+
+    /**
+     * UI-411: Antalya's boulevard as the catalog has it, two carriageways that meet and part again: no riding's band
+     * from zoom 14 and none at 13, at full strength at any hour. Its pieces are merged into one, and at zooms 14 to 17
+     * it lies under every point of both lines and the middle of every stretch between them, and from 16, where the
+     * band is wide enough to tell, no edge crosses it. It is built off the main thread in well under a second, and
+     * the map's frames keep coming as it appears under a pan and as a finger pans along it at zoom 15. Each zoom is a
+     * fiftieth below the whole one, which the map's measured level would otherwise round either way. Near a tile's
+     * edge the map returns the one piece once from each tile, so "drawn" there is any number above none. The
+     * numbers are logged as "boulevard: …" and the screens kept as boulevard-*.png.
+     */
+    @Test
+    fun antalyasBoulevardIsDrawnWholeFromZoom14AndQuickly() {
+        val boulevard = CityRuleZone.all.single { it.id.startsWith("antalya-") }
+        // Each point of the lines and the middle of each stretch between them, from Trendy Lara in the east.
+        val points = boulevard.lines.flatMap { line ->
+            line + line.zipWithNext { a, b -> GeoPoint((a.latitude + b.latitude) / 2, (a.longitude + b.longitude) / 2) }
+        }.distinct().sortedByDescending { it.longitude }
+        val east = points.first()
+        val fill = ZoneLayers.fillID(ScooterZoneKind.NoRide)
+        val edge = ZoneLayers.edgeID(ScooterZoneKind.NoRide)
+        val log = StringBuilder("boulevard: ${boulevard.lines.map { it.size }} points in its lines, ${points.size} looked at\n")
+        withGround(zonesAPI(emptyList()), zoom = MapZoom.mapLibreZoom(13 - NEAR), at = east) { ground ->
+            // Zoom 13: nothing of it.
+            look(ground, east, level = 13 - NEAR)
+            settle()
+            assertEquals(13, ground.phone.onMain { ground.controller.viewportZoom.value })
+            assertEquals(emptyList<CityRuleZone.Shown>(), ground.phone.onMain { ground.controller.mapRuleZones.value })
+            assertEquals(0, ground.drawn(ground.point(east), fill))
+            save(snapshot(ground), "boulevard-13")
+
+            // Zoom 14: built as the map comes to rest, and drawn.
+            val asked = SystemClock.uptimeMillis()
+            look(ground, east, level = 14 - NEAR)
+            waitFor("the band is drawn at zoom 14") { ground.drawn(ground.point(east), fill) > 0 }
+            log.append("zoom 14 to drawn: ${SystemClock.uptimeMillis() - asked} ms\n")
+            assertEquals(14, ground.phone.onMain { ground.controller.viewportZoom.value })
+            val shown = ground.phone.onMain { ground.controller.mapRuleZones.value }
+            assertEquals(listOf(boulevard.id to true), shown.map { it.rule.id to it.inForce })
+
+            // What the overlay's work takes for this view, off the main thread, as the layer does it.
+            val zones = ground.phone.onMain { ground.controller.mapZones.value }
+            val scale = ground.phone.onMain { ZoneLayers.scale(ground.phone.map.cameraPosition.zoom) }
+            val merging = mutableListOf<Long>()
+            val drawing = mutableListOf<Long>()
+            lateinit var overlay: ScooterZoneOverlay
+            runBlocking(Dispatchers.Default) {
+                repeat(5) {
+                    var start = SystemClock.elapsedRealtimeNanos()
+                    overlay = ScooterZoneOverlay(zones, isDark = false)
+                    merging += (SystemClock.elapsedRealtimeNanos() - start) / 1_000_000
+                    start = SystemClock.elapsedRealtimeNanos()
+                    // Its fills are written as it is made.
+                    ZoneDrawing(zones).edges(scale)
+                    drawing += (SystemClock.elapsedRealtimeNanos() - start) / 1_000_000
+                }
+            }
+            log.append("${zones.sumOf { it.polygons.size }} pieces merged into ${overlay.shapes.size} in $merging ms; merged, filled and edged in $drawing ms\n")
+            assertEquals(1, overlay.shapes.size)
+            assertTrue("the band built in ${drawing.sorted()[2]} ms", drawing.sorted()[2] < 1_000)
+
+            // Whole along both carriageways, at full strength.
+            for (level in 14..17) {
+                val unseen = points.toMutableList()
+                var looks = 0
+                while (unseen.isNotEmpty()) {
+                    val next = unseen.first()
+                    look(ground, next, level - NEAR)
+                    assertEquals(level, ground.phone.onMain { ground.controller.viewportZoom.value })
+                    waitFor("the band drawn at zoom $level by $next") { ground.drawn(ground.point(next), fill) > 0 }
+                    val inView = ground.phone.onMain {
+                        unseen.filter { point ->
+                            val shown = ground.phone.projection.point(point)
+                            shown.x in 20.0..370.0 && shown.y in 20.0..824.0
+                        }
+                    }
+                    assertTrue("$next in the middle of the view", next in inView)
+                    for (point in inView) {
+                        // The one piece, from each of the map's tiles whose edge it is near.
+                        val features = ground.features(ground.point(point), fill)
+                        assertTrue("the band at zoom $level at $point", features.isNotEmpty())
+                        for (feature in features) {
+                            assertEquals("its strength at $point", ScooterZoneLook.fillOpacity(ScooterZoneKind.NoRide), feature.getNumberProperty("opacity").toDouble(), 1e-9)
+                        }
+                        if (level >= 16) assertEquals("an edge across the band at zoom $level at $point", 0, ground.drawn(ground.point(point), edge))
+                    }
+                    if (looks == 0) save(snapshot(ground), "boulevard-$level-east")
+                    looks += 1
+                    unseen -= inView.toSet()
+                }
+                log.append("zoom $level: ${points.size} points under the band, in $looks views\n")
+            }
+
+            // Frames: the band appearing as a finger pans it into a view at zoom 14, from 2.5 km east of its end, and a
+            // finger panning along it at zoom 15.
+            val off = GeoPoint(east.latitude, east.longitude + 0.028)
+            look(ground, off, level = 14 - NEAR)
+            waitFor("the band gone off the view") { ground.phone.onMain { ground.controller.mapRuleZones.value.isEmpty() } }
+            log.append("appearing as a pan brings it in at zoom 14: ${pan(ground, millis = 1_600)}\n")
+            waitFor("the band shown after the pan") { ground.phone.onMain { ground.controller.mapRuleZones.value.isNotEmpty() } }
+            look(ground, east, level = 15 - NEAR)
+            waitFor("the band drawn at zoom 15") { ground.drawn(ground.point(east), fill) > 0 }
+            save(snapshot(ground), "boulevard-15-before-pan")
+            log.append("panning along it at zoom 15: ${pan(ground)}\n")
+            save(snapshot(ground), "boulevard-15-after-pan")
+        }
+        Log.i("GroundOverlaysTest", log.toString())
     }
 
     @Test
@@ -597,6 +717,67 @@ class GroundOverlaysTest {
         override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
     }
 
+    /**
+     * The camera put flat over [at] at the iPhone's zoom [level], and, unless told not to [waits], the controller told
+     * the view, which it is once the map rests.
+     */
+    private fun look(ground: Ground, at: GeoPoint, level: Double, waits: Boolean = true) {
+        ground.phone.onMain {
+            val position = CameraPosition.Builder().target(LatLng(at.latitude, at.longitude)).zoom(MapZoom.mapLibreZoom(level)).tilt(0.0).bearing(0.0).build()
+            ground.phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+        }
+        if (!waits) return
+        waitFor("the controller told zoom $level over $at") {
+            ground.phone.onMain {
+                val view = ground.controller.viewport.value
+                abs(ground.controller.viewportZoomLevel.value - level) < 0.005 && at.latitude in view.south..view.north && at.longitude in view.west..view.east
+            }
+        }
+    }
+
+    /** A pan's frames: a finger drawn across the map for [millis], 800 ms a swipe, the view moving west. */
+    private fun pan(ground: Ground, millis: Long = 4_000): String {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        gfxinfo("reset")
+        val drawn = mutableListOf<Long>()
+        val frames = MapView.OnDidFinishRenderingFrameListener { _, _, _ -> drawn += SystemClock.uptimeMillis() }
+        ground.phone.onMain { ground.phone.view.addOnDidFinishRenderingFrameListener(frames) }
+        val ratio = ground.ratio
+        val until = SystemClock.uptimeMillis() + millis
+        while (SystemClock.uptimeMillis() < until) {
+            val down = SystemClock.uptimeMillis()
+            fun send(action: Int, x: Float) {
+                val event = MotionEvent.obtain(down, SystemClock.uptimeMillis(), action, x * ratio, 420f * ratio, 0)
+                instrumentation.runOnMainSync { ground.phone.view.dispatchTouchEvent(event) }
+                event.recycle()
+            }
+            send(MotionEvent.ACTION_DOWN, 60f)
+            for (step in 1..PAN_STEPS) {
+                SystemClock.sleep(16)
+                send(MotionEvent.ACTION_MOVE, 60f + 270f * step / PAN_STEPS)
+            }
+            // Held still before it is let go, so that it doesn't fling.
+            SystemClock.sleep(100)
+            send(MotionEvent.ACTION_MOVE, 330f)
+            send(MotionEvent.ACTION_UP, 330f)
+        }
+        ground.phone.onMain { ground.phone.view.removeOnDidFinishRenderingFrameListener(frames) }
+        val stats = gfxinfo("")
+        val janky = Regex("Janky frames: (\\d+) \\(([\\d.]+)%\\)").find(stats)?.groupValues
+        val total = Regex("Total frames rendered: (\\d+)").find(stats)?.groupValues?.get(1)
+        val percentiles = listOf(50, 90, 99).joinToString("/") { Regex("${it}th percentile: (\\d+)ms").find(stats)?.groupValues?.get(1) ?: "?" }
+        val gaps = drawn.zipWithNext { a, b -> b - a }.sorted()
+        val p90 = gaps.getOrNull((gaps.size * 0.9).toInt()) ?: 0L
+        return "window frames $total, janky ${janky?.let { "${it[1]} (${it[2]} %)" }}, $percentiles ms; map frames ${drawn.size} in $millis ms, " +
+            "p90 gap $p90 ms, longest ${gaps.lastOrNull()} ms, over 50 ms ${gaps.count { it > 50 }}"
+    }
+
+    private fun gfxinfo(argument: String): String {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val output = instrumentation.uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName} $argument".trim())
+        return ParcelFileDescriptor.AutoCloseInputStream(output).use { String(it.readBytes()) }
+    }
+
     /** Two collections of features as one. */
     private fun merged(first: String, second: String): String {
         val head = "{\"type\":\"FeatureCollection\",\"features\":["
@@ -650,3 +831,9 @@ private fun rangeOf(filter: String): IntRange {
     val (low, high) = Regex("-?\\d+(\\.\\d+)?").findAll(filter).map { it.value.toDouble().toInt() }.toList().takeLast(2)
     return low..high
 }
+
+/** How far below a whole zoom the boulevard's test looks: the map's measured level might round it either way. */
+private const val NEAR = 0.02
+
+/** The moves of a finger's swipe across the map, one a frame. */
+private const val PAN_STEPS = 50

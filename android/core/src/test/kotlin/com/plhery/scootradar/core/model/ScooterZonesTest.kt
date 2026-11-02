@@ -20,6 +20,8 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.locationtech.jts.geom.Coordinate
+import org.locationtech.jts.geom.GeometryFactory
 import org.locationtech.jts.geom.LineString
 
 // ios/ScootRadarTests/ScooterZonesTests.swift: ScooterZonesTests, ScooterZoneOverlayTests and
@@ -263,6 +265,54 @@ class ScooterZoneOverlayTest {
             val shapes = ScooterZoneOverlay(zones = listOf(zone), isDark = false).shapes
             assertTrue("${street.id}: ${zone.polygons.size} pieces merged into ${shapes.size}", shapes.size in 1..street.lines.size)
             assertTrue(street.id, shapes.all { it.polygon.isValid })
+        }
+    }
+
+    /**
+     * Every street's merged band covers its lines, each point and the middle of each stretch, so it has no gap, and
+     * no corner of it is further from them than half the band's width, so it has no spike (UI-411): the union's
+     * round-off might lose a piece or throw a point out.
+     */
+    @Test
+    fun everyStreetsBandCoversItsLinesAndReachesNoFurther() {
+        val geometry = GeometryFactory()
+        val half = CityRuleZone.bandWidthMeters / 2
+        for (street in CityRuleZone.all) {
+            val zone = CityRuleZone.Shown(street, inForce = true).mapZone
+            val overlay = ScooterZoneOverlay(zones = listOf(zone), isDark = false)
+            // The overlay's shapes are in map points from the corner of its zones.
+            val points = zone.polygons.flatten().flatten().map { MapPoint(it) }
+            val corner = MapPoint(points.minOf { it.x }, points.minOf { it.y })
+            val along = street.lines.flatMap { line ->
+                line + line.zipWithNext { a, b -> GeoPoint((a.latitude + b.latitude) / 2, (a.longitude + b.longitude) / 2) }
+            }
+            for (point in along) {
+                val at = MapPoint(point)
+                val inside = geometry.createPoint(Coordinate(at.x - corner.x, at.y - corner.y))
+                assertTrue("${street.id}: $point in its band", overlay.shapes.any { it.polygon.covers(inside) })
+            }
+            val furthest = overlay.shapes.flatMap { overlay.rings(of = it).flatten() }.maxOf { vertex ->
+                street.lines.minOf { line -> metresFrom(vertex, line) }
+            }
+            assertTrue("${street.id}: a corner of its band ${"%.2f".format(Locale.ROOT, furthest)} m from its lines", furthest <= half * 1.02)
+        }
+    }
+
+    /** How far a point is from a line, in metres as the band measures them along it (CityRuleZone.band). */
+    private fun metresFrom(point: GeoPoint, line: List<GeoPoint>): Double {
+        val perLongitude = 111_320 * cos(line.first().latitude * PI / 180)
+        val perLatitude = 110_540.0
+        fun x(of: GeoPoint) = (of.longitude - point.longitude) * perLongitude
+        fun y(of: GeoPoint) = (of.latitude - point.latitude) * perLatitude
+        if (line.size == 1) return sqrt(x(line[0]) * x(line[0]) + y(line[0]) * y(line[0]))
+        return line.zipWithNext().minOf { (a, b) ->
+            val (ax, ay, bx, by) = listOf(x(a), y(a), x(b), y(b))
+            val length = (bx - ax) * (bx - ax) + (by - ay) * (by - ay)
+            val t = if (length > 0) ((-ax) * (bx - ax) + (-ay) * (by - ay)) / length else 0.0
+            val along = t.coerceIn(0.0, 1.0)
+            val cx = ax + along * (bx - ax)
+            val cy = ay + along * (by - ay)
+            sqrt(cx * cx + cy * cy)
         }
     }
 
