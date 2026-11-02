@@ -342,6 +342,7 @@ import kaunasEn from './en/e-scooters-kaunas';
 import clujNapocaEn from './en/e-scooters-cluj-napoca';
 import ferraraIt from './it/monopattini-sharing-ferrara';
 import reggioEmiliaIt from './it/monopattini-sharing-reggio-emilia';
+import bremerhavenDe from './de/e-scooter-bremerhaven';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -684,4 +685,5 @@ export const GUIDES: readonly Guide[] = [
   clujNapocaEn,
   ferraraIt,
   reggioEmiliaIt,
+  bremerhavenDe,
 ];

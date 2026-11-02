@@ -39,7 +39,7 @@ const guide: Guide = {
           },
         },
         'Für Bremen-Nord hob die Stadt die Grenze um 200 Scooter an, weil Scooter dort «insbesondere in den Abendstunden» gut als Anschluss an Bus und Bahn angenommen würden und Bremen-Nord «bisher nicht vollständig erschlossen» sei.',
-        'Am Sonntag gegen 8:30 Uhr standen bis auf zwei alle Dott-Scooter der Karte innerhalb der Stadtgrenze; die zwei standen knapp nördlich von Burglesum in Ritterhude. Knapp 100 standen in Burglesum und Vegesack. Dotts Scooter zeigt die Karte allerdings nicht in der ganzen Stadt: Blumenthal, der Osten ab Oberneuland und Osterholz und der äusserste Süden fehlen. Ob dort Dott-Scooter stehen, siehst du in der Dott-App. Limes Fahrgebiet auf der Karte reicht im Norden bis Blumenthal. Bremerhaven ist auf der [Karte von Bremerhaven](map:de:Bremerhaven) eine eigene Stadt, am Sonntag um 7:47 Uhr mit rund 280 Dott-Scootern, und zählt nicht zu Bremen.',
+        'Am Sonntag gegen 8:30 Uhr standen bis auf zwei alle Dott-Scooter der Karte innerhalb der Stadtgrenze; die zwei standen knapp nördlich von Burglesum in Ritterhude. Knapp 100 standen in Burglesum und Vegesack. Dotts Scooter zeigt die Karte allerdings nicht in der ganzen Stadt: Blumenthal, der Osten ab Oberneuland und Osterholz und der äusserste Süden fehlen. Ob dort Dott-Scooter stehen, siehst du in der Dott-App. Limes Fahrgebiet auf der Karte reicht im Norden bis Blumenthal. Bremerhaven ist auf der [Karte von Bremerhaven](map:de:Bremerhaven) eine eigene Stadt, am Sonntag um 7:47 Uhr mit rund 280 Dott-Scootern, und zählt nicht zu Bremen; mehr im [Ratgeber für Bremerhaven](guide:bremerhaven).',
       ],
     },
     {
