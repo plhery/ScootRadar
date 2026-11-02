@@ -346,6 +346,34 @@ as reported by the user. The temporary keychain and its generated password were
 removed, and the original keychain search list was restored. No source item or
 system security setting was changed.
 
+### Mac signing-key storage recheck, 2 November
+
+Static tracing of the installed 6.1.0 binary gives a more specific result than
+the imported CryptoKit symbols alone. `DPoPKeyStore` has a persistence store,
+a persistence key and a cached key. Its key-loading function calls the
+`P256.Signing.PrivateKey` raw-data initializer on the persisted value. When it
+creates a key, it obtains `rawRepresentation` and passes that data to the
+persistence store. The `KeychainAPISecurityPersistenceStore` implementation
+calls `KeychainTool`, which reads a generic-password item under the
+`com.ryde.ryde` service. Its save path supplies
+`kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`.
+
+This establishes a software-key serialization path in the installed version;
+the specific value of the existing session's item has not been read or matched
+to its public DPoP key. Apple's [accessibility documentation](https://developer.apple.com/documentation/security/ksecattraccessibleafterfirstunlockthisdeviceonly)
+says an item with that attribute does not migrate in a backup to another
+device. It does not, by itself, establish that a private key is in the Secure
+Enclave or that its bytes can never be exported through an authorized path.
+
+A separate local helper queried only the signing-key account with interactive
+authentication disabled, once using the data-protection keychain and once
+using its default query. Both returned `errSecItemNotFound` (`-25300`); no key
+data was returned. This status does not isolate the cause. A normal LLDB
+attach to the running App Store app also failed with “Not allowed to attach to
+process.” The app still displayed its signed-in map after that check. No
+Keychain prompt, setting change, rotation or independent map request was made.
+The app was closed after the test.
+
 These failures establish that the tested export paths did not work; they do not
 prove the iOS keys are hardware-bound or universally non-exportable. Do not repeat
 these prompts without new evidence that addresses the failure. The existing app
