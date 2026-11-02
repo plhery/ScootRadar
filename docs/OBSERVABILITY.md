@@ -267,12 +267,14 @@ expired, and exports `scootradar_feed_paused` for every feed with a state, so ea
 series is read once. Read every 5 minutes, the 7 days of every feed took Prometheus
 about 29 seconds, against Grafana's 30, and the rule timed out 46 times on the night
 of 1 November 2026, mostly from 03:18 to 04:32 UTC. Every half hour it took about 8,
-and every two hours, since 2 November 2026, about 4.7. Each step gave the same answers
-as the one before: at eight times from 26 October to 2 November, the twelve feeds
-firing on the 26th and Swiss Lime during the hub's outage among them. The two-hour
-share stayed within 1.2 points of the half-hour one for a feed with a week of history,
-and within 14 for one only a few hours old, none of them near half. A feed younger
-than two hours has no reading until the next even hour UTC, so it cannot fire before.
+gave the same answer, and moved no feed's share across half (at most 3.5 points).
+Every two hours, since 2 November 2026, it takes about 4.7, and gave the same answers
+as every half hour at eight times from 26 October to 2 November: among them Voi's
+twelve NRW feeds firing on the 26th and Swiss Lime's three during the hub's outage.
+The two-hour share stayed within 1.2 points of the half-hour one for a feed with a
+week of history, and within 14 for one only a few hours old, none of them near half.
+A feed younger than two hours has no reading until the next even hour UTC, so it
+cannot fire before.
 
 "Cache restarting" counts the restarts of one build, by joining the start time with
 `scootradar_build_info`: a deploy starts another build, so its series begins without a
