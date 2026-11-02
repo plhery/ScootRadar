@@ -20,7 +20,7 @@ const guide: Guide = {
         'Szczecin had three scooter rental companies in 2022, Tier, Bolt and Quick, and two in 2024, Tier and Bolt, the city hall (Urząd Miasta Szczecin) said on 17 April 2025, answering a request for public information.',
         'At 02:47 on Monday 2 November 2026, Polish time, the [Szczecin map](map:pl:Szczecin) showed 1,639 Bolt and Dott scooters free to rent at that moment.',
         'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
-        'The same national rules apply in our guides to [Poznań](guide:poznan) and [Gdańsk, Gdynia and Sopot](guide:gdansk). Coming over from Germany? Its rules differ: see the [Berlin guide](guide:berlin).',
+        'The same national rules apply in our guides to [Poznań](guide:poznan), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun). Coming over from Germany? Its rules differ: see the [Berlin guide](guide:berlin).',
       ],
     },
     {
@@ -102,8 +102,8 @@ const guide: Guide = {
     {
       heading: 'Trams, buses and trains',
       blocks: [
-        '**Trams and buses (ZDiTM).** The city council’s rules for ZDiTM’s trams and buses (24 March 2015, last amended in 2026) don’t name e-scooters. They ban using a skateboard, a scooter (hulajnoga) or similar equipment inside a vehicle, and let you carry hand luggage only if it doesn’t block the aisle or the driver’s view or put other passengers at risk, up to 100 × 50 × 100 cm, 250 cm in all; bicycles are exempt from that size limit and go in the marked spaces. Anything larger is excluded from carriage, and ZDiTM charges a PLN 240 surcharge for it, or PLN 480 if paid after 7 days. Read literally, that takes in a scooter larger than the limit. With a rental, end your ride and park before you board.',
-        '**Trains.** POLREGIO’s REGIO trains serve Szczecin and its region, and the Szczecin Metropolitan Ticket (Szczeciński Bilet Metropolitalny), a monthly ticket sold by ZDiTM and POLREGIO, covers them along with the city’s trams and buses. POLREGIO’s carriage rules (consolidated text from 1 September 2026) let you take a folded scooter free as hand luggage, as one of up to three items. An unfolded one counts as a bulky item, allowed only if it is easy to load and doesn’t block the aisle: buy a luggage ticket for it and put it only in a compartment or space marked for large items, one per passenger. The rules also ban leaving scooters unattended outside the places set for them.',
+        '**Trams and buses (ZDiTM).** The city council’s rules for ZDiTM’s trams and buses (24 March 2015, last amended in 2026) don’t name e-scooters. They ban using a skateboard, a scooter (hulajnoga) or similar equipment inside a vehicle, and let you carry hand luggage only if it doesn’t block the aisle or the driver’s view or put other passengers at risk, up to 100 × 50 × 100 cm, 250 cm in all; bicycles are exempt from that size limit and go in the marked spaces. Anything larger is excluded from carriage, and ZDiTM charges a PLN 240 surcharge for it, or PLN 480 if paid after 7 days. With a rental, end your ride and park before you board.',
+        '**Trains.** POLREGIO’s REGIO trains serve Szczecin and its region, and the Szczecin Metropolitan Ticket (Szczeciński Bilet Metropolitalny), a monthly ticket sold by ZDiTM and POLREGIO, covers them along with the city’s trams and buses. Check the carrier’s rules before you take a scooter aboard.',
         '**Szczecin Główny and the airport.** Ask staff before you ride or bring a scooter into the main station or Szczecin-Goleniów airport.',
       ],
     },
@@ -154,7 +154,6 @@ const guide: Guide = {
     { title: 'ZDiTM Szczecin: carrying luggage (Polish)', url: 'https://www.zditm.szczecin.pl/pl/pasazer/bilety-i-oplaty/przewoz-bagazu' },
     { title: 'ZDiTM Szczecin: surcharges (Polish)', url: 'https://www.zditm.szczecin.pl/pl/pasazer/bilety-i-oplaty/oplaty-dodatkowe' },
     { title: 'ZDiTM Szczecin: Szczecin Metropolitan Ticket (Polish)', url: 'https://www.zditm.szczecin.pl/pl/pasazer/szczecinski-bilet-metropolitalny' },
-    { title: 'POLREGIO: carriage rules, consolidated text from 1 September 2026 (Polish, PDF)', url: 'https://polregio.pl/media/29636/jednolity-tekst-zm-nr-16-rpr-od-01092026.pdf' },
     { title: 'KRBRD: helmets compulsory under 16, 3 June 2026 (Polish)', url: 'https://www.krbrd.gov.pl/obowiazkowe-kaski-ochronne-dla-dzieci-do-16-roku-zycia/' },
     { title: 'Dziennik Ustaw: Road Traffic Act, consolidated text 2024 (Polish)', url: 'https://dziennikustaw.gov.pl/D2024000125101.pdf' },
     { title: 'Dziennik Ustaw: act of 17 October 2025 amending it (Polish)', url: 'https://dziennikustaw.gov.pl/DU/2025/1676' },
