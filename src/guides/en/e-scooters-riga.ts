@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter Riga 2026: Ride, Bolt, prices and the licence rule',
   description: 'E-scooter Riga guide: Ride (the old Tuul fleet) and Bolt, what a ride costs, the licence even adults need, Old Town parking, the airport and Jūrmala.',
   headline: 'E-scooters in Riga: Ride and Bolt, what a ride costs, the licence rule and where to park in the Old Town',
-  lede: 'You can rent an e-scooter in Riga with Ride, which took over Tuul’s scooters, or with Bolt. Ride charges €0.29 to unlock plus €0.22 a minute (published rate, 14 October 2026); Bolt shows its price in the app. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and the apps rent only to adults. In the Old Town you can park only at marked spots, and Ride’s scooters don’t reach the airport.',
+  lede: 'You can rent an e-scooter in Riga with Ride, which took over Tuul’s scooters, or with Bolt. Ride charges €0.29 to unlock plus €0.22 a minute (published rate, 14 October 2026); Bolt shows its price in the app. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and Ride rents only to adults. In the Old Town you can park only at marked spots, and Ride’s scooters don’t reach the airport.',
   published: '2026-10-14',
   updated: '2026-10-25',
   city: 'lv:Rīga',
@@ -20,11 +20,11 @@ const guide: Guide = {
         {
           list: [
             '**Ride**, whose app “RIDE: Mobility Solutions” runs in English. Its scooters are Tuul’s old fleet: the Estonian company sold its scooter business to Ride in September 2025 and closed its own service. You sign up with a mobile number, a text code and a card that passes 3-D Secure.',
-            '**Bolt**, in the same app as its taxis. New riders are capped at 15 km/h for their first five rides.',
+            '**Bolt**, in the same app as its taxis.',
             '**SKOK** rents only e-mopeds, which need a driving licence, and e-bikes.',
           ],
         },
-        'On the afternoon of 14 October 2026 the [map of Riga](map:lv:Rīga) showed 649 Ride scooters: a count of what’s on the map, not the fleet. Bolt joined the map on 25 October 2026: about 4,000 scooters at 14:50 that day. Ride’s app also rents seated e-bikes at the same price, which our map doesn’t count.',
+        'At 14:50 on Sunday 25 October 2026 the [map of Riga](map:lv:Rīga) showed 3,996 Bolt and 695 Ride scooters free to rent at that moment. Ride’s app also rents seated e-bikes at the same price.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -46,7 +46,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bolt publishes no Riga price. Its Latvian website advertises scooters “starting from €0.15 per minute”, a national figure; the unlock fee and rate vary by place, so check the app.',
+        'Bolt shows its price in the app, so check it before you unlock.',
         'Ride’s terms add up to €50 to fetch a scooter left outside its area, a €50 fee per incident on top of any fine or cost you cause it, and €1,500 if you don’t end a rental within 24 hours.',
       ],
     },
@@ -55,9 +55,9 @@ const guide: Guide = {
       blocks: [
         'Yes. Latvian law lets you ride an e-scooter from 14, but only with a bicycle licence or a driving licence of any category, and that applies to adults too. Riding without one costs €25. In spring 2026 Riga’s municipal police checked 631 micromobility riders and found 224 without a licence.',
         'Your driving licence from home should count. Latvia’s road authority, CSDD, lets visitors drive on a licence from the EU or EFTA or one showing the 1968 Road Traffic Convention’s categories, and on any other foreign car licence for cars only.',
-        'Since 1 April 2026 every shared operator must, before you ride, check your age and licence in the app and test your reactions on screen (a drink-and-drugs check, not a breath test). Neither Ride nor Bolt publishes how it checks a foreign licence.',
+        'Since 1 April 2026 every shared operator must, before you ride, check your age and licence in the app and test your reactions on screen (a drink-and-drugs check, not a breath test).',
         { note: '**Carry your driving licence when you ride.** The app may ask for it, and the police run checks.' },
-        'The law’s minimum age is 14, but Ride and Bolt rent only to riders of 18 and over. That’s their own policy, which Latvia’s consumer protection centre checked in January 2026, not a number in the law.',
+        'The law’s minimum age is 14, but Ride rents only to riders of 18 and over, its own policy rather than a number in the law. Bolt’s app shows its own limit.',
       ],
     },
     {
@@ -80,7 +80,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in Latvia on 15 October 2026 (Road Traffic Law and Road Traffic Regulations, likumi.lv)',
             head: ['Rule', 'What applies', 'Fine'],
             rows: [
-              ['Minimum age', '14 by law; Ride and Bolt set 18 (their own policy)', '–'],
+              ['Minimum age', '14 by law; Ride sets 18 (its own policy)', '–'],
               ['Licence', 'A bicycle licence or a driving licence of any category, at every age', '€25'],
               ['Shared scooters', 'Since 1 April 2026 the app checks age and licence and runs a reaction test', '–'],
               ['Helmet', 'Compulsory and buckled under 18; advised for adults', 'Warning or €10–70'],
@@ -100,7 +100,7 @@ const guide: Guide = {
     {
       heading: 'From Riga airport, to Jūrmala and on the tram',
       blocks: [
-        '**The airport.** Ride’s scooters don’t reach it: the terminal lies outside all its zones, and Bolt publishes no zone map. Take **bus 22** from the P1 car park, between arrival exits E and C, to the Old Town (11. novembra krastmala), the bus and railway stations and the Central Market in about 30 minutes. It runs 05:25–00:10, 5–8 buses an hour on weekdays. A 90-minute ticket costs €1.50 from the machine at the stop or Narvesen in the terminal, or €1.81 from the driver, by bank card only.',
+        '**The airport.** Ride’s scooters don’t reach it: the terminal lies outside all its zones. For Bolt, check its app. Take **bus 22** from the P1 car park, between arrival exits E and C, to the Old Town (11. novembra krastmala), the bus and railway stations and the Central Market in about 30 minutes. It runs 05:25–00:10, 5–8 buses an hour on weekdays. A 90-minute ticket costs €1.50 from the machine at the stop or Narvesen in the terminal, or €1.81 from the driver, by bank card only.',
         '**Jūrmala.** Ride has a small area of its own from Lielupe through Bulduri and Dzintari to Majori. Riding there from Riga is long: take the Vivi train on the Tukums line and pick up a scooter there; the area starts a short walk from Majori station. On Jomas iela, the pedestrian street, walk the scooter when it’s busy.',
         '**Trams, trolleybuses and buses.** Since January 2026 Rīgas satiksme’s rules let you take a bicycle or your own e-scooter on board free of charge, if it can’t roll or tip over; give up the pram and wheelchair space when someone needs it.',
       ],
@@ -108,7 +108,7 @@ const guide: Guide = {
     {
       heading: 'Winter, events and safety in Riga',
       blocks: [
-        '**Winter.** Neither Ride nor Bolt has announced its plans for 2026/27. For winter 2024/25 Bolt said it would keep about a fifth of its Riga scooters on the streets, switched off in heavy snow or ice; in 2023/24 Tuul, whose scooters Ride now runs, kept going all winter. Expect fewer scooters from late November, and check the app.',
+        '**Winter.** In 2023/24 Tuul, whose scooters Ride now runs, kept going all winter. Expect fewer scooters from late November, and check the app.',
         '**Events** to plan around:',
         {
           list: [
@@ -118,7 +118,6 @@ const guide: Guide = {
           ],
         },
         '**Safety.** The State Police counted 327 crashes involving e-scooters in Latvia in 2025, with 219 riders hurt; the commonest causes were alcohol, two people on one scooter and reckless manoeuvres. Ride will supply a red helmet to any customer who asks, from its Riga warehouse or by parcel locker.',
-        'The [Riga map](map:lv:Rīga) shows the nearest Ride scooter and the walk to it.',
       ],
     },
     {
@@ -137,7 +136,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Does Riga have e-scooters, and which apps work there?',
-      answer: 'Yes: Ride, which runs the former Tuul scooters, and Bolt. Ride charges €0.29 to unlock plus €0.22 a minute; Bolt shows its price in the app. [Our map](map:lv:Rīga) shows both, Bolt since 25 October 2026.',
+      answer: 'Yes: Ride, which runs the former Tuul scooters, and Bolt. Ride charges €0.29 to unlock plus €0.22 a minute; Bolt shows its price in the app. [Our map](map:lv:Rīga) shows both.',
     },
     {
       question: 'Is Tuul still in Riga?',
@@ -145,7 +144,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to rent an e-scooter in Riga?',
-      answer: '18 with Ride and Bolt. Latvian law allows riding from 14 with a licence, but both operators set 18 as their own policy, and the app checks your age.',
+      answer: '18 with Ride, its own policy: Latvian law allows riding from 14 with a licence. Bolt’s app shows its own limit, and since 1 April 2026 every shared app must check your age.',
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in Latvia?',
@@ -157,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter from Riga airport to the city?',
-      answer: 'Not with Ride: the terminal is outside all its zones, and Bolt publishes no zone map. Bus 22 reaches the Old Town, the station and the Central Market in about 30 minutes for €1.50.',
+      answer: 'Not with Ride: the terminal is outside all its zones; for Bolt, check its app. Bus 22 reaches the Old Town, the station and the Central Market in about 30 minutes for €1.50.',
     },
   ],
   sources: [
@@ -170,7 +169,6 @@ const guide: Guide = {
     { title: 'State Police: e-scooter crashes, Latvian', url: 'https://www.vp.gov.lv/lv/jaunums/pargalviba-reibums-un-risks-kapec-elektroskrejritenu-braucieni-beidzas-ar-traumam' },
     { title: 'Ride: open data for Riga (GBFS)', url: 'https://rideride.rideatom.com/gbfs/27/v3.0/gbfs' },
     { title: 'Ride: terms and conditions', url: 'https://ridemobility.eu/terms-and-conditions/' },
-    { title: 'Bolt: scooters in Latvia', url: 'https://bolt.eu/en-lv/scooters/' },
     { title: 'Riga Airport: public transport', url: 'https://www.riga-airport.com/en/public-transport' },
   ],
 };
