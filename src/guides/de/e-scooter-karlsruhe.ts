@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Karlsruhe?',
       blocks: [
         'Die Stadt nennt drei Anbieter: **Voi**, **Bolt** und **Dott**, das früher TIER hiess. Gemietet wird in der App des Anbieters, ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Karlsruhe](map:de:Karlsruhe) alle drei Anbieter: am Samstag, 24. Oktober 2026, um 13:26 Uhr rund 1900 Scooter, je rund 620 von Voi, Bolt und Dott. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        '**Dott ohne Preis auf der Karte.** Dott hat seinen offenen Datenfeed für Karlsruhe im September 2026 abgeschaltet. Seit dem 24. Oktober 2026 zeigt unsere Karte seine Scooter trotzdem, aber keinen Preis: Was eine Fahrt bei Dott kostet, siehst du nur in der App.',
+        'ScootRadar zeigt auf der [Karte von Karlsruhe](map:de:Karlsruhe) alle drei Anbieter: am Samstag, 24. Oktober 2026, um 13:26 Uhr rund 1900 Scooter, je rund 620 von Voi, Bolt und Dott.',
+        '**Dott: Preis in der App.** Was eine Fahrt bei Dott kostet, siehst du in der App.',
         '**Lime** gibt es in Karlsruhe nicht mehr: Die Stadt fehlt auf Limes Städteliste, und sein Datenfeed zeigte dort am 14. Oktober 2026 keinen Scooter.',
       ],
     },

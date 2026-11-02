@@ -18,8 +18,8 @@ const guide: Guide = {
       blocks: [
         'Die Stadt nennt zwei Anbieter von E-Scootern: **Zeus** und **Yoio**. Yoio von der YourCar GmbH aus Göttingen kam im Dezember 2020 als erster, mit 150 Scootern; mehr erlaubte die Stadt damals nicht. Zeus folgte im April 2023. Roxy Mobility, 2022 noch dabei, steht nicht mehr auf der Liste der Stadt.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt beide auf der [Karte rund um Freiburg](map:de:Freiburg im Breisgau): Am Nachmittag des 14. Oktober 2026 standen dort rund 530 Scooter, knapp 290 von Zeus und gut 240 von Yoio. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        'Der dritte Anbieter auf der Liste der Stadt, **Freib-e** von Süwag, verleiht Elektro-Motorroller, für die du Führerschein und Helm brauchst. Unsere Karte zeigt sie nicht.',
+        'ScootRadar zeigt beide auf der [Karte rund um Freiburg](map:de:Freiburg im Breisgau): Am Nachmittag des 14. Oktober 2026 standen dort rund 530 Scooter, knapp 290 von Zeus und gut 240 von Yoio.',
+        'Der dritte Anbieter auf der Liste der Stadt, **Freib-e** von Süwag, verleiht Elektro-Motorroller, für die du Führerschein und Helm brauchst.',
       ],
     },
     {

@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Heidelberg?',
       blocks: [
         'Seit 1. April 2026 dürfen in Heidelberg nur noch drei Anbieter Leih-Scooter aufstellen: **Dott**, das früher TIER hiess, **Bolt** und, neu in der Stadt, **Voi**. Die Stadt hat sie in einem Auswahlverfahren bestimmt; ihre Erlaubnisse laufen bis 31. März 2028. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Heidelberg](map:de:Heidelberg) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Bolt: An jenem Samstag kurz vor 16 Uhr standen dort rund 360 Dott- und 300 Voi-Scooter, am Sonntag kurz vor 14 Uhr rund 370 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen.',
-        'Bei Bolt zeigt die Karte Standort und Akkustand; Preise und Zonen zeigt nur seine App.',
+        'Auf der [Karte von Heidelberg](map:de:Heidelberg) standen am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 360 Dott- und 300 Voi-Scooter, die zu diesem Zeitpunkt frei waren, am Sonntag kurz vor 14 Uhr rund 370 von Bolt.',
+        'Preise und Zonen siehst du in der App des Anbieters.',
         '**Lime und Zeus** gehören seit April 2026 nicht mehr zu den Heidelberger Anbietern, auch wenn ihre Websites die Stadt noch nennen. Zeus-Scooter stehen laut dem offenen Datenfeed von Zeus südlich von Heidelberg, vor allem in Leimen: Die [Karte von Leimen](map:de:Leimen) zeigte am selben Nachmittag rund 70 Scooter, 60 davon von Zeus, den Rest von Dott, dessen Heidelberger Gebiet bis in den Norden Leimens reicht. Weitere Zeus-Scooter standen in Walldorf und Wiesloch.',
       ],
     },

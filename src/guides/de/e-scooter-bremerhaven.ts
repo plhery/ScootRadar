@@ -17,9 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Bremerhaven?',
       blocks: [
         'In Bremerhaven vermietet **Dott** E-Scooter. Dott hiess früher Tier; Dotts Bedingungen für Deutschland nennen die TIER Mobility SE als Vertragspartner. Gemietet wird in der Dott-App, laut Bedingungen erst ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Bremerhaven](map:de:Bremerhaven) Dott: am Montag, 2. November 2026, um 5:09 Uhr 249 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Die Zahl schliesst das Überseehafengebiet und die Scooter gleich jenseits der Stadtgrenze in Niedersachsen ein.',
-        'Um 5:37 Uhr am selben Morgen standen auf der Karte in Lehe mehr freie Dott-Scooter als in jedem anderen Stadtteil, viele auch in Leherheide, Wulsdorf, Mitte und Geestemünde, weitere im Fischereihafen, in Schiffdorferdamm und Surheide, einer in Weddewarden. Zehn standen im Überseehafengebiet, das zur Stadt Bremen gehört, 15 jenseits der Stadtgrenze in Niedersachsen: 14 im Norden in Geestland, einer in Schiffdorf.',
-        'Was in der Stadt Bremen gilt, steht in [E-Scooter in Bremen](guide:bremen).',
+        'ScootRadar zeigt auf der [Karte von Bremerhaven](map:de:Bremerhaven) Dott: am Montag, 2. November 2026, um 5:09 Uhr 249 Dott-Scooter, die zu diesem Zeitpunkt frei waren.',
+        'Das Überseehafengebiet gehört zur Stadt Bremen. Was in der Stadt Bremen gilt, steht in [E-Scooter in Bremen](guide:bremen).',
       ],
     },
     {
