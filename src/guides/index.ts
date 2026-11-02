@@ -336,6 +336,7 @@ import vilniusEn from './en/e-scooters-vilnius';
 import tartuEn from './en/e-scooters-tartu';
 import bergamoIt from './it/monopattini-sharing-bergamo';
 import grimstadNb from './nb/elsparkesykkel-grimstad';
+import lodzEn from './en/e-scooters-lodz';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -672,4 +673,5 @@ export const GUIDES: readonly Guide[] = [
   tartuEn,
   bergamoIt,
   grimstadNb,
+  lodzEn,
 ];
