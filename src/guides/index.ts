@@ -338,7 +338,9 @@ import bergamoIt from './it/monopattini-sharing-bergamo';
 import grimstadNb from './nb/elsparkesykkel-grimstad';
 import lodzEn from './en/e-scooters-lodz';
 import szczecinEn from './en/e-scooters-szczecin';
+import torunEn from './en/e-scooters-torun';
 import katowiceEn from './en/e-scooters-katowice';
+import bydgoszczEn from './en/e-scooters-bydgoszcz';
 import kaunasEn from './en/e-scooters-kaunas';
 import clujNapocaEn from './en/e-scooters-cluj-napoca';
 import ferraraIt from './it/monopattini-sharing-ferrara';
@@ -691,7 +693,9 @@ export const GUIDES: readonly Guide[] = [
   grimstadNb,
   lodzEn,
   szczecinEn,
+  torunEn,
   katowiceEn,
+  bydgoszczEn,
   kaunasEn,
   clujNapocaEn,
   ferraraIt,
