@@ -17,15 +17,13 @@ const guide: Guide = {
       heading: 'Leie elsparkesykkel i Knarvik: Voi i Alver',
       blocks: [
         'I Knarvik er det **Voi** du finner på kartet. [Kartet over Knarvik](map:no:Knarvik) viste rundt 180 Voi-sparkesykler kl. 18.43 søndag 1. november 2026. Det er kartets siste telling, ikke nødvendigvis slik de sto akkurat da.',
-        'Tallet tar med mer enn Knarvik. Kl. 18.28 samme dag viste kartet rundt 70 i Knarvik og på Isdalstø, rundt 85 på og rundt Frekhaug, omtrent 4 km sørvest for Knarvik i luftlinje, og rundt 25 nordvest for Isdalstø, mot Alversund. Alle stedene ligger i Alver kommune, og Alver rådhus ligger i Knarvik.',
-        'Kl. 18.49 viste kartet 30 Voi-sparkesykler rundt sentrum, fra Knarvik kai opp til Alver rådhus og østover mot Røsvik, 8 av dem under 300 meter fra Knarvik terminal, der bussene stopper ved kjøpesenteret Amfi Knarvik. Kl. 18.51 viste kartet rundt 85 på og rundt Frekhaug, blant annet rundt 25 ved Fossemyra idrettspark og Sagstad skule og rundt 15 i Frekhaug sentrum.',
         'Kartet viser hvor hver sparkesykkel står og hvor mye strøm den har igjen, men ikke prisen. Kartet viser bare Voi i Knarvik. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster det å leie Voi i Knarvik?',
       blocks: [
-        'Prisen ser du i Voi-appen før du låser opp, for kartet viser den ikke for Knarvik. Til sammenligning koster en Voi i [Arendal](guide:arendal) 10 kr å låse opp og 2,50 kr per minutt, ifølge Vois åpne data 1. november 2026. I Knarvik kan prisen være en annen, så sjekk appen hver gang, særlig før en lengre tur.',
+        'Prisen ser du i Voi-appen før du låser opp, så sjekk den hver gang, særlig før en lengre tur.',
         'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. Statens vegvesen minner om at utleieselskapene kan ha høyere aldersgrense, for eksempel 16 eller 18 år, og hva Voi krever, ser du i appen. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget er **ikke vedtatt**.',
         'Den dyreste delen av turen kan bli parkeringen: Står sparkesykkelen til hinder, kan det koste 900 kr, som du leser mer om lenger ned.',
       ],
@@ -92,7 +90,6 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Flere på Frekhaug enn i Knarvik.** Kl. 18.28 søndag 1. november 2026 viste kartet rundt 85 Voi-sparkesykler på og rundt Frekhaug og rundt 70 i Knarvik og på Isdalstø.',
             '**Knarvik terminal er et knutepunkt.** Enturs rutedata (1. november 2026) har 15 Skyss-linjer ved Knarvik terminal, og i tillegg Vy-bussene Bergen–Førde–Ålesund og Ulsteinvik–Bergen–Kristiansand–Oslo og Fjordekspressen.',
             '**Én sone fra Fedje til Os.** Skyss deler Vestland i ti prissoner, fra A til J. Sone A tar med Bergen, Askøy, Øygarden, Osterøy, Alver, Austrheim, Fedje og tidligere Os kommune, og en enkeltbillett for én sone gjelder i 60 minutter, skriver Skyss.',
             '**Ny E39 i tunnel mot brua.** Statens vegvesen planlegger firefelts motorvei på E39 mellom Vågsbotn og Nordhordlandsbrua, med en tunnel på rundt 5 km i to løp. Forslaget til reguleringsplan ble lagt ut på høring fredag 30. oktober 2026, med frist for innspill 18. desember, og Vegvesenet skriver at Stortinget har signalisert at byggingen kan starte tidlig på 2030-tallet.',
@@ -113,7 +110,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg leie elsparkesykkel på Frekhaug?',
-      answer: 'Ja, Voi-sparkesyklene på Frekhaug er med på kartet over Knarvik. Kl. 18.51 søndag 1. november 2026 viste kartet rundt 85 der. Om du kan kjøre mellom Frekhaug og Knarvik, ser du av Vois soner i appen.',
+      answer: 'Ja, Frekhaug er med på kartet over Knarvik. Om du kan kjøre mellom Frekhaug og Knarvik, ser du av Vois soner i appen.',
     },
     {
       question: 'Kan jeg ta med elsparkesykkel på bussen fra Knarvik til Bergen?',
@@ -134,7 +131,6 @@ const guide: Guide = {
     { title: 'Statens vegvesen: Gang- og sykkeltiltak E39 Vågsbotn–Klauvaneset', url: 'https://www.vegvesen.no/vegprosjekter/europaveg/e39vagsbotnklauvaneset/e39vagsbotnklauvanesetgangogsykkel/' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
     { title: 'Bergen kommune: Ryde, Lime og RideMovi får leie ut elsparkesykler (16. februar 2026)', url: 'https://www.bergen.kommune.no/hvaskjer/bymiljo/ryde-lime-og-ridemovi-far-leie-ut-elsparkesykler-i-bergen' },
-    { title: 'Entur: Vois åpne data for Arendal (GBFS, 1. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voiarendal/gbfs' },
     { title: 'Samferdselsdepartementet: Regjeringen foreslår å heve aldersgrensen for bruk av elsparkesykler til 16 år (5. oktober 2026)', url: 'https://kommunikasjon.ntb.no/pressemelding/19092540/regjeringen-foreslar-a-heve-aldersgrensen-for-bruk-av-elsparkesykler-til-16-ar?lang=no' },
   ],
 };

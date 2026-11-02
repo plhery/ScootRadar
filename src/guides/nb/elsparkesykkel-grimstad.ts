@@ -25,7 +25,6 @@ const guide: Guide = {
       heading: 'Hva koster det å leie Voi i Grimstad?',
       blocks: [
         'Prisen ser du i Voi-appen før du låser opp. Betaler du per tur, er det vanligvis en fast oppstartspris pluss en pris per minutt, og prisene kan variere noe med sted og etterspørsel, skriver AKT. Pakker med forhåndsbetalte minutter eller abonnement finnes i enkelte byer, og prismodellene står i appene.',
-        'Til sammenligning koster en Voi i [Arendal](guide:arendal) 10 kr å låse opp og 2,50 kr per minutt, ifølge Vois åpne data 2. november 2026. I Grimstad kan prisen være en annen, så sjekk appen før turen.',
         'Loven sier at du må ha fylt 12 år, og hjelm er påbudt under 15 år. AKT skriver at du vanligvis må være over 18 år for å leie, men at andre aldersgrenser kan gjelde, og hva Voi krever, ser du i appen.',
         'Når du leier, er du i de fleste tilfeller forsikret med ansvarsforsikring, ulykkesforsikring eller begge, skriver AKT. Hvilke forsikringer som gjelder, ser du i appen.',
       ],
@@ -124,7 +123,7 @@ const guide: Guide = {
     },
     {
       question: 'Hva koster det å leie Voi i Grimstad?',
-      answer: 'Prisen ser du i Voi-appen før du låser opp. AKT skriver at du vanligvis betaler en fast oppstartspris pluss en pris per minutt. Til sammenligning koster en Voi i Arendal 10 kr å låse opp og 2,50 kr per minutt, ifølge Vois åpne data 2. november 2026, men i Grimstad kan prisen være en annen.',
+      answer: 'Prisen ser du i Voi-appen før du låser opp. AKT skriver at du vanligvis betaler en fast oppstartspris pluss en pris per minutt.',
     },
     {
       question: 'Kan jeg ta med elsparkesykkel på bussen i Grimstad?',
@@ -141,7 +140,6 @@ const guide: Guide = {
     { title: 'Universitetet i Agder: Slik kommer du deg til Campus Grimstad', url: 'https://www.uia.no/om-uia/finn-fram/campus-grimstad/index.html' },
     { title: 'Entur: Avganger fra Grimstad Odden (2. november 2026)', url: 'https://entur.no/nearby-stop-place-detail?id=NSR:StopPlace:25611' },
     { title: 'Entur: Avganger fra Universitetet, Grimstad (2. november 2026)', url: 'https://entur.no/nearby-stop-place-detail?id=NSR:StopPlace:21930' },
-    { title: 'Entur: Vois åpne data for Arendal (GBFS, 2. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voiarendal/gbfs' },
     { title: 'Statens vegvesen: Trafikkregler for elsparkesykler', url: 'https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/sikker-pa-elsparkesykkel/trafikkregler/' },
   ],
 };
