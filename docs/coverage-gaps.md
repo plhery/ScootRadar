@@ -1686,14 +1686,17 @@ Bonaire had feeds to add. Survey files are in
   remove its area from `lime_ca_edmonton` if it doesn't. Check again in April
   2027. On 1 November 2026 the feed still held 60 scooters in Beaumont, and
   the town's page named no plan for 2027; last year the scooters left on 15
-  November.
+  November. That evening it held 16 there.
 - **November 2026:** Lime's Regina, Waterloo Region, Lacombe and Blackfalds
   markets, from its rider map since 27 October 2026. None of the four
   publishes a season ([Canada's winter section](canadian-scooter-feeds.md#winter)):
   if Lime takes its scooters in, pause each from the day it empties until
   spring, as Leduc. Lacombe and Blackfalds emptied in October (their "feed
   empty" alerts are silenced to 1 May 2027); on 1 November Regina's daily
-  peak was still about 160 to 180 and Waterloo Region's about 470.
+  peak was still about 160 to 180. Lime took Waterloo Region's scooters in
+  on 1 November (about 470 that morning, 16 of its 17 groups empty by the
+  evening), and it is paused from that day until 1 April. Regina still held
+  150 on the evening of 1 November.
 - **November 2026:** Bird's rider-map towns, from its map since 28 October
   2026. Only Penticton announced its end (below); Kamloops's agreement with
   Bird runs to 1 November, Cranbrook's last two seasons ended that day,
@@ -1704,7 +1707,11 @@ Bonaire had feeds to add. Survey files are in
   emptied on 28 and 29 October and is paused from 29 October. On 1 November
   Penticton held 1, and Medicine Hat (38 on 28 October to 12) and Okotoks (40
   to 24) were falling; Kamloops (162), Cranbrook (35) and the others held
-  theirs.
+  theirs. Medicine Hat held 1 from the morning of 1 November and is paused
+  from that day until 1 April. On the evening of 1 November, Kamloops held
+  145 (its city has the scooters stored by 1 December), Cranbrook 23,
+  Okotoks 21, Vernon 106, Oshawa 117, Brampton 103, Cochrane 54, Bloomington
+  228 and Mankato 30.
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));

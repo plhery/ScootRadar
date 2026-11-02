@@ -4281,7 +4281,12 @@
         "Waterloo",
         "Cambridge",
         "Region of Waterloo"
-      ]
+      ],
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-01",
+        "timeZone": "America/Toronto"
+      }
     },
     {
       "country": "CA",

@@ -290,7 +290,12 @@
         "east": -110.62192
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "e3d0e392-83c5-4f46-84fe-7b9ea9094c66"
+      "birdAppArea": "e3d0e392-83c5-4f46-84fe-7b9ea9094c66",
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-01",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_app_mississauga",
@@ -943,6 +948,11 @@
       ],
       "timeZone": "America/Toronto",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "seasonal": {
+        "from": "11-01",
+        "until": "04-01",
+        "timeZone": "America/Toronto"
+      },
       "limeAppMap": true,
       "limeAppRegion": "5FSQ62WQBOSGF",
       "limeMapGrid": {

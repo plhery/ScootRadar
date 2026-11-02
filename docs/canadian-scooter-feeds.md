@@ -272,6 +272,24 @@ November until 1 April, Vancouver time: the scooters came out on 30 March
 (council report of 20 January 2026). The window's dates are this winter's,
 so check in March 2027.
 
+Medicine Hat's bylaws set no dates, but Bird stores its scooters there each
+winter and brings them back in April; they left on 1 November in 2024. In
+2026 its rider map's area held 36 on 30 October, 24 that evening, 12 from
+the morning of 31 October and 1 from the morning of 1 November, Edmonton
+time. So the
+catalog pauses it from 1 November until 1 April, Edmonton time: check in
+late March 2027.
+
+Waterloo Region's [program page](https://www.engagewr.ca/shared-micromobility-program)
+gives the season as "between April and October", with no dates. Lime took
+its scooters in on 1 November 2026: its rider map held about 470 there in
+17 groups that morning, and 16 of the groups read none in the sweeps
+from 15:30 to 20:00 that afternoon and evening, Toronto time (the last
+group's 17 positions were older). So the catalog pauses Lime's Waterloo
+Region market from 1 November until 1 April, Toronto time (the pause is in
+`data/lime-app-regions.json`, which writes the catalog's Lime entries):
+check in late March 2027.
+
 Pickering's [pilot page](https://www.pickering.ca/property-roads-safety/parking-roads-and-driveways/shared-e-scooter-pilot-program/)
 says it runs "annually from April through the end of October (weather
 permitting)", with rentals from 1 April in 2026, so the catalog pauses Bird's
@@ -331,7 +349,8 @@ above):
   "between April and October" each year, with no dates. Lime took over
   Neuron's agreement, which ran "through to October 2026"
   ([Region and cities, 3 July 2026](https://www.waterloo.ca/news/posts/region-and-cities-will-work-with-lime-on-deployment-of-lime-vehicles/)),
-  and the program renews each year until November 2029.
+  and the program renews each year until November 2029. Paused from 1
+  November 2026 (above).
 - **Lacombe** and **Blackfalds** publish no season.
 - **Windsor:** the city's page says "between April and October"; its 2023
   report says Bird doesn't run in winter by its own choice, and the 2026
@@ -354,7 +373,7 @@ above):
   said the scooters "will soon be removed for the season".
 - **Medicine Hat:** Bird stores its scooters for the winter and brings them
   back in April, by its own choice; they left on 1 November in 2024. The
-  bylaws set no dates.
+  bylaws set no dates. Paused from 1 November 2026 (above).
 - **Brampton** set its seasons each year: 1 May to 30 November in 2024, 1
   April to 16 November in 2025; the 2026 season opened on 1 April with no
   end date. **Oshawa**'s ran from April to 1 December in 2023 and 2024, and

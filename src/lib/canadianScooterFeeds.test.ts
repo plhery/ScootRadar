@@ -187,7 +187,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s and Pickering\'s from 1 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s, Pickering\'s, Medicine Hat\'s and Waterloo Region\'s from 1 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -226,6 +226,24 @@ describe('Canada', () => {
     expect(activeSeasonalPause(pickering, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Pickering, ON', month: 4 });
     expect(activeSeasonalPause(pickering, Date.UTC(2027, 3, 1, 18))).toBeNull();
     expect(feedPaused('canada:bird_ca_app_pickering', winter)).toBe(true);
+    // Bird took Medicine Hat's scooters in from 30 October 2026, 36 to 1 on the morning of 1 November, as it does each
+    // winter until April; the window is that winter's.
+    const medicineHat: [number, number] = [50.0405, -110.6766];
+    // 23:30 on 31 October in Medicine Hat (UTC-6) is still in season; 00:30 on 1 November is not.
+    expect(activeSeasonalPause(medicineHat, Date.UTC(2026, 10, 1, 5, 30))).toBeNull();
+    expect(activeSeasonalPause(medicineHat, Date.UTC(2026, 10, 1, 6, 30))).toEqual({ city: 'Medicine Hat, AB', month: 4 });
+    expect(activeSeasonalPause(medicineHat, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Medicine Hat, AB', month: 4 });
+    expect(activeSeasonalPause(medicineHat, Date.UTC(2027, 3, 1, 18))).toBeNull();
+    expect(feedPaused('canada:bird_ca_app_medicine_hat', winter)).toBe(true);
+    // Lime took Waterloo Region's scooters in on 1 November 2026, every group of its map there; the Region's season runs
+    // from April to October.
+    const waterlooRegion: [number, number] = [43.45161, -80.49253];
+    // 23:30 on 31 October in Kitchener (UTC-4) is still in season; 00:30 on 1 November is not.
+    expect(activeSeasonalPause(waterlooRegion, Date.UTC(2026, 10, 1, 3, 30))).toBeNull();
+    expect(activeSeasonalPause(waterlooRegion, Date.UTC(2026, 10, 1, 4, 30))).toEqual({ city: 'Waterloo Region, ON', month: 4 });
+    expect(activeSeasonalPause(waterlooRegion, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Waterloo Region, ON', month: 4 });
+    expect(activeSeasonalPause(waterlooRegion, Date.UTC(2027, 3, 1, 18))).toBeNull();
+    expect(feedPaused('canada:lime_ca_app_waterloo_region_008', winter)).toBe(true);
     // Laval's by-law sets the season from 15 April to 15 November, for every group of Lime's map there.
     const laval: [number, number] = [45.56995, -73.692];
     expect(activeSeasonalPause(laval, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -250,12 +268,13 @@ describe('Canada', () => {
     // The other towns' winters are announced each year, or are the operator's own.
     for (const [id, point] of [['ca:on:Mississauga', [43.589, -79.6441]], ['ca:ab:Calgary', [51.0447, -114.0719]],
       ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]], ['ca:qc:Montréal', [45.5146, -73.534]],
-      ['ca:on:Ajax', [43.85012, -79.03288]], ['ca:sk:Regina', [50.45008, -104.6178]], ['ca:on:Waterloo Region', [43.45161, -80.49253]],
+      ['ca:on:Ajax', [43.85012, -79.03288]], ['ca:sk:Regina', [50.45008, -104.6178]],
       ['ca:ab:Lacombe', [52.46681, -113.7353]], ['ca:ab:Blackfalds', [52.38342, -113.7853]]] as const) {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:bc:Penticton', 'ca:on:Pickering', 'ca:ab:Spruce Grove', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:ab:Medicine Hat', 'ca:bc:Penticton', 'ca:on:Pickering', 'ca:ab:Spruce Grove',
+        'ca:nb:Moncton', 'ca:qc:Laval', 'ca:on:Waterloo Region', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
   });
 
   it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {
