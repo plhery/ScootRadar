@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Scooters eléctricos Santiago de Chile: Whoosh, JET y Lime',
   description: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime comuna por comuna, dónde ver el precio, casco, ciclovía y dónde estacionar.',
   headline: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime, comuna por comuna, y las reglas para andar',
-  lede: 'Los scooters eléctricos de Santiago de Chile se arriendan con tres apps, Whoosh, GO JET (de JET) y Lime, y cada comuna decide si los permite. El 25 de octubre de 2026 a mediodía, más de la mitad de los que el mapa mostraba en la ciudad estaba en La Florida, Las Condes y San Miguel, y casi ninguno en Santiago centro, Providencia y Ñuñoa. El precio lo ves en la app. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, y casco. Whoosh y JET piden 18 años para arrendar.',
+  lede: 'Los scooters eléctricos de Santiago de Chile se arriendan con tres apps, Whoosh, GO JET (de JET) y Lime, y cada comuna decide si los permite. El precio lo ves en la app. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, y casco. Whoosh y JET piden 18 años para arrendar.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'cl:Santiago',
@@ -19,33 +19,13 @@ const guide: Guide = {
         'En octubre de 2026 arriendan scooters en Santiago tres empresas:',
         {
           list: [
-            '**Whoosh** llegó en 2023 con un «permiso precario» de La Reina, según La Tercera, y en mayo de 2026 sumó Renca, su duodécima comuna de la región.',
+            '**Whoosh** llegó a Chile en 2023, según Forbes Chile, y en mayo de 2026 sumó Renca, su duodécima comuna de la región.',
             '**JET** llegó a mediados de 2025 por Huechuraba, según El Dínamo, y se arrienda con su app **GO JET**.',
             '**Lime** llegó en 2018 y en junio de 2026 operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, según Forbes Chile.',
           ],
         },
-        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 10.200 scooters estacionados. Unos 980, todos de JET, estaban en Buin, en la provincia de Maipo, fuera de la ciudad. En las comunas de Santiago había unos 9.300: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET. Cada cifra es la de su último recuento. Por comuna (límites de la Biblioteca del Congreso Nacional):',
-        {
-          table: {
-            caption: 'Scooters en el mapa por comuna, el 25 de octubre de 2026, de 11:47 a 11:56',
-            head: ['Comuna', 'Scooters', 'De quién'],
-            rows: [
-              ['La Florida', 'unos 2.520', 'Whoosh 1.130, JET 710, Lime 670'],
-              ['Las Condes', 'unos 1.390', 'Lime 710, Whoosh 590, JET 100'],
-              ['San Miguel', 'unos 1.320', 'Lime 530, JET 460, Whoosh 340'],
-              ['Vitacura', 'unos 610', 'Lime 320, Whoosh 280'],
-              ['Renca', 'unos 490', 'Whoosh'],
-              ['Macul', 'unos 410', 'Whoosh'],
-              ['La Cisterna', 'unos 400', 'Lime 200, Whoosh 190'],
-              ['Huechuraba', 'unos 340', 'JET'],
-              ['San Joaquín', 'unos 330', 'Whoosh 210, Lime 120'],
-              ['Cerrillos', 'unos 300', 'JET'],
-              ['Cerro Navia, Quinta Normal y Conchalí', 'unos 720', 'Whoosh'],
-            ],
-          },
-        },
-        'En Santiago centro, Providencia, Ñuñoa y La Reina había menos de 20 en cada una, y en Lo Barnechea, ninguno.',
-        'El mapa muestra cada scooter estacionado y su batería, no precios, zonas ni horarios. Según la prensa, JET opera también en Colina y Paine, que el mapa no cubre: ahí, búscalos en GO JET.',
+        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 9.300 scooters estacionados en las comunas de Santiago: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET, cada uno según su último recuento.',
+        'Según la prensa, JET opera también en Colina y Paine: ahí, búscalos en GO JET.',
         '**Bicis.** El mapa no muestra las bicicletas eléctricas de Whoosh y JET (en Peñalolén, JET tiene solo bicis), ni las bicis públicas de **Bike Itaú**, con estaciones en comunas como Providencia, Las Condes, Vitacura y Ñuñoa.',
       ],
     },
@@ -116,10 +96,7 @@ const guide: Guide = {
               ['San Miguel', 'Whoosh desde el 27 de junio de 2025, por acuerdo con la municipalidad: un piloto de 200 scooters en estacionamientos exclusivos, que crecería a 500. Lime desde octubre de 2025: 200 de libre flotación dentro de un polígono'],
               ['Renca', 'Whoosh desde mayo de 2026: 400 scooters en más de 250 estaciones; el alcalde anunció 15% de descuento con la Tarjeta Vecino'],
               ['Cerrillos', 'JET, en marcha blanca desde el 2 de octubre de 2026: 300 scooters y 200 bicis'],
-              ['Lo Barnechea, Las Condes y Vitacura', 'Licitación conjunta liderada por Lo Barnechea, por unos 1.800 vehículos. La Tercera esperaba la adjudicación para noviembre de 2026; El Mercurio informó en septiembre que la ganó Lime, pero no hemos encontrado una adjudicación publicada por las comunas. Lo Barnechea terminó su contrato el 15 de octubre de 2026 y anunciará cuándo vuelve el servicio'],
-              ['La Reina', 'Whoosh partió ahí en mayo de 2023 y se fue el 31 de julio de 2025, cuando la comuna licitaba el servicio para una sola marca (La Tercera, agosto de 2025)'],
-              ['Ñuñoa', 'Whoosh tuvo un permiso piloto de ocho meses que no se renovó; en agosto de 2025 conversaba para volver (La Tercera)'],
-              ['Providencia', 'En mayo de 2024 dijo que estos scooters no podrían estacionarse en la comuna (La Tercera); en agosto de 2025, Whoosh decía estar ahí. No hemos encontrado nada más reciente'],
+              ['Lo Barnechea, Las Condes y Vitacura', 'Licitaron juntas el servicio, y El Mercurio informó en septiembre de 2026 que lo ganó Lime (La Voz de Pucón). Lo Barnechea terminó su contrato el 15 de octubre de 2026 y anunciará cuándo vuelve el servicio'],
             ],
           },
         },
@@ -131,8 +108,7 @@ const guide: Guide = {
         {
           list: [
             '**Metro.** Con un scooter de arriendo, no: Whoosh lo prohíbe y te cobra $10.000 si lo subes. Termina el viaje en una zona «P» y sigue en Metro.',
-            '**Micros, autos y taxis.** Tampoco: Whoosh cobra $10.000 por llevarlo en un vehículo, y los términos de JET no te dan derecho a transportarlo en uno.',
-            '**EFE y Red.** No hemos encontrado reglas publicadas sobre scooters en los trenes de EFE ni en las micros de Red.',
+            '**Micros, trenes, autos y taxis.** Tampoco: los términos de Whoosh lo prohíben, con un cobro de $10.000, y los de JET no te dan derecho a transportarlo en un vehículo.',
           ],
         },
         'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](guide:vina-del-mar), los Whoosh de [La Serena](guide:la-serena), [Rancagua](guide:rancagua), [Pucón](guide:pucon) y [Puerto Montt](guide:puerto-montt), y los JET de [Temuco](guide:temuco), cada una con su propia guía.',
@@ -167,7 +143,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta arrendar un scooter eléctrico en Santiago?',
-      answer: 'Cada app te muestra el precio antes del viaje: Whoosh y JET no publican su tarifa de Santiago, y no hemos encontrado la de Lime. Whoosh cobra un costo de inicio más un precio por minuto.',
+      answer: 'Cada app te muestra el precio antes del viaje: Whoosh y JET no publican su tarifa de Santiago en su web. Whoosh cobra un costo de inicio más un precio por minuto.',
     },
     {
       question: '¿Qué app necesito para los scooters de Santiago?',
@@ -178,8 +154,8 @@ const guide: Guide = {
       answer: 'Sí. Los scooters de arriendo cuentan como ciclos, y el Decreto 102 de Transportes obliga a quien maneja un ciclo y a su acompañante a usar casco.',
     },
     {
-      question: '¿Hay scooters en Providencia y Santiago centro?',
-      answer: 'Casi no: el 25 de octubre de 2026 a mediodía, el mapa mostraba menos de 20 en cada una. Donde más había era en La Florida, Las Condes y San Miguel.',
+      question: '¿En qué comunas de Santiago hay scooters?',
+      answer: 'En las que dan permiso o convenio. En junio de 2026, Lime operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, y Whoosh en doce comunas, entre ellas Renca, Quinta Normal y Cerro Navia (Forbes Chile); JET, en Huechuraba y, desde octubre, en Cerrillos, entre otras. El mapa te muestra dónde están.',
     },
     {
       question: '¿Puedo subir un scooter de arriendo al Metro?',
@@ -187,14 +163,13 @@ const guide: Guide = {
     },
     {
       question: '¿Los scooters de Santiago tienen horario?',
-      answer: 'No hemos encontrado ninguno: ni las comunas ni las empresas publican un horario nocturno para Santiago.',
+      answer: 'Los términos de Whoosh y de GO JET no fijan un horario nocturno. Para Lime, mira su app.',
     },
   ],
   sources: [
     { title: 'BCN: Ley de Tránsito, texto vigente', url: 'https://www.bcn.cl/leychile/navegar?idNorma=1007469' },
     { title: 'BCN: Ley 21.088 (2018)', url: 'https://www.bcn.cl/leychile/navegar?idNorma=1118358' },
     { title: 'BCN: Decreto 102 de Transportes, seguridad de los ciclos', url: 'https://www.bcn.cl/leychile/navegar?idNorma=1162453' },
-    { title: 'BCN: límites comunales', url: 'https://www.bcn.cl/siit/mapas_vectoriales/index_html' },
     { title: 'SII: valores de la UTM en 2026', url: 'https://www.sii.cl/valores_y_fechas/utm/utm2026.htm' },
     { title: 'Whoosh: términos para Chile', url: 'https://whoosh.bike/terms_cl/es' },
     { title: 'Whoosh: preguntas frecuentes', url: 'https://whoosh.bike/faq/es_la' },
@@ -206,9 +181,6 @@ const guide: Guide = {
     { title: 'Lo Barnechea: término del contrato (octubre de 2026)', url: 'https://lobarnechea.cl/Noticias/termino-de-contrato-servicio-de-scooters-y-bicicletas/' },
     { title: 'Las Condes: fiscalización de scooters (mayo de 2024)', url: 'https://www.lascondes.cl/campana-de-fiscalizacion-de-scooters-electricos-en-las-condes/' },
     { title: 'Vitacura: normas para scooters (septiembre de 2024)', url: 'https://vitacura.cl/noticias/movilidad-sostenible-normas-para-transitar-en-scooters-electricos/' },
-    { title: 'La Tercera: Las Condes y Providencia (mayo de 2024)', url: 'https://www.latercera.com/nacional/noticia/hasta-195-mil-pesos-las-condes-comenzara-a-multar-por-mal-uso-de-scooters-electricos/YHQ5LZDXRJDP5DEAF4AUACFWYY/' },
-    { title: 'La Tercera: Whoosh en Santiago (agosto de 2025)', url: 'https://www.latercera.com/pulso/noticia/whoosh-apunta-a-llevar-sus-scooters-electricos-a-todo-el-gran-santiago-para-2028/' },
-    { title: 'La Tercera: la licitación del sector oriente (septiembre de 2026)', url: 'https://www.latercera.com/pulso/noticia/licitacion-de-scooters-de-lo-barnechea-vitacura-y-las-condes-enfrenta-a-dos-gigantes-de-estados-unidos-y-rusia/' },
     { title: 'La Voz de Pucón, citando a El Mercurio (septiembre de 2026)', url: 'https://www.lavozdepucon.cl/2026/09/29/scooters-electricos-municipios-de-santiago-obtienen-ingresos-millonarios-mientras-pucon-solo-cobra-poco-mas-de-300-mil-al-mes/' },
     { title: 'G5 Noticias: Whoosh en Renca (mayo de 2026)', url: 'https://g5noticias.cl/2026/05/12/renca-incorpora-scooters-electricos-como-nueva-alternativa-de-movilidad-en-la-comuna/' },
     { title: 'El Diario Santiago: JET en Cerrillos (octubre de 2026)', url: 'https://eldiariosantiago.cl/2026/10/03/jet-en-cerrillos-500-vehiculos-electricos/' },

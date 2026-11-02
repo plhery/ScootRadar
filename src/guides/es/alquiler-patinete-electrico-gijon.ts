@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Alquiler patinete eléctrico Gijón: Bird, precio y normas',
   description: 'Alquiler de patinete eléctrico en Gijón con Bird: dónde ver el precio, casco obligatorio, por qué el Muro y Cimadevilla van a pie y dónde aparcar.',
   headline: 'Alquiler de patinete eléctrico en Gijón: Bird, precio, casco y por dónde circular',
-  lede: 'Para el alquiler de patinete eléctrico en Gijón, el único operador que hemos encontrado es Bird, que va de La Calzada y El Arbeyal a la Universidad Laboral y Cabueñes. No publica su tarifa: la ves en la app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, que llevas tú. Gijón no tiene ordenanza de patinetes, pero la ley y su ordenanza de circulación prohíben ir en cualquier vehículo por aceras y zonas peatonales: el paseo del Muro y las calles peatonales de Cimadevilla, a pie.',
+  lede: 'Para el alquiler de patinete eléctrico en Gijón tienes Bird, que va de La Calzada y El Arbeyal a la Universidad Laboral y Cabueñes. No publica su tarifa: la ves en la app antes de desbloquear. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, que llevas tú. Gijón no tiene ordenanza de patinetes, pero la ley y su ordenanza de circulación prohíben ir en cualquier vehículo por aceras y zonas peatonales: el paseo del Muro y las calles peatonales de Cimadevilla, a pie.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'es:Gijón',
@@ -16,11 +16,10 @@ const guide: Guide = {
     {
       heading: '¿Qué patinetes de alquiler hay en Gijón?',
       blocks: [
-        'Esta guía va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos. A 24 de octubre de 2026, en Gijón solo hemos encontrado uno: **Bird**. No tiene estaciones: lo coges y lo dejas dentro de su zona.',
-        'A las 11:19 del sábado 24 de octubre de 2026, el [mapa de Gijón](map:es:Gijón) mostraba unos 320 patinetes de Bird: una foto de sus datos abiertos, no el tamaño de su flota.',
+        'Esta guía va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos. A 24 de octubre de 2026, en Gijón alquila **Bird**. No tiene estaciones: lo coges y lo dejas dentro de su zona.',
+        'A las 11:19 del sábado 24 de octubre de 2026, el [mapa de Gijón](map:es:Gijón) mostraba unos 320 patinetes de Bird.',
         '**Su zona.** Según los datos abiertos de Bird, va de La Calzada y El Arbeyal a la Universidad Laboral, el hospital de Cabueñes y el Parque Científico Tecnológico, y por el sur hasta Roces y Contrueces. Quedan fuera El Musel y el Jardín Botánico. Si sales de la zona, Bird puede cobrarte por cada minuto fuera.',
-        '**Bicis.** Los datos de Bird en Gijón prevén bicis eléctricas, pero el 24 de octubre no había ninguna. Nuestro mapa solo muestra patinetes; tampoco salen las bicis públicas de GijónBici.',
-        '**Sin licencia municipal.** En 2021, el Ayuntamiento quería adjudicar el servicio por concurso con su nueva ordenanza de movilidad, pero el Tribunal Superior de Justicia de Asturias la declaró nula, en una sentencia firme que el BOPA publicó el 10 de noviembre de 2023. Desde entonces no hemos encontrado ninguna autorización, límite de patinetes ni tasa para las empresas.',
+        '**La ordenanza anulada.** En 2021, el Ayuntamiento quería adjudicar el servicio por concurso con su nueva ordenanza de movilidad, pero el Tribunal Superior de Justicia de Asturias la declaró nula, en una sentencia firme que el BOPA publicó el 10 de noviembre de 2023.',
       ],
     },
     {
@@ -55,7 +54,7 @@ const guide: Guide = {
             '**Fuera de la ciudad**, las carreteras interurbanas están prohibidas. Las vías ciclistas entre pueblos se permiten desde el 1 de octubre de 2026, pero tu Bird tiene que quedarse en su zona.',
           ],
         },
-        { note: 'Desde el 1 de octubre de 2026, cada ayuntamiento decide por qué calles puedes ir, pero a 24 de octubre no hemos encontrado ninguna que Gijón haya cerrado a los patinetes. Si ves la señal R-118, un círculo rojo con un patinete, esa calle está prohibida para ti.' },
+        { note: 'Desde el 1 de octubre de 2026, cada ayuntamiento decide por qué calles puedes ir. Si ves la señal R-118, un círculo rojo con un patinete, esa calle está prohibida para ti.' },
         'Según miGijón, el 28 de mayo de 2026 el concejal de Movilidad, Pelayo Barcia, anunció que desde el 1 de junio no se podría ir en patinete por nueve calles del centro, entre ellas Uría, Capuchinos y Begoña. El 30 de mayo, la alcaldesa, Carmen Moriyón, se desmarcó («La solución es regular; no prohibir»), y el 5 de junio la medida estaba «totalmente descartada». La nota del Ayuntamiento que la anunciaba ya no está en su web, y en septiembre miGijón confirmaba que no llegó a aplicarse.',
       ],
     },
@@ -107,13 +106,13 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Autobuses de EMTUSA.** Con tu patinete, pregunta antes. Una moción de VOX que el Pleno rechazó el 15 de abril de 2026 afirma que EMTUSA «ha acordado recientemente la prohibición del acceso de patinetes eléctricos a los autobuses urbanos», pero no hemos encontrado esa norma publicada, y su reglamento de viajeros, de 2009, no habla de patinetes.',
+            '**Autobuses de EMTUSA.** Con tu patinete, pregunta antes. Una moción de VOX que el Pleno rechazó el 15 de abril de 2026 afirma que EMTUSA «ha acordado recientemente la prohibición del acceso de patinetes eléctricos a los autobuses urbanos»; su reglamento de viajeros, de 2009, no habla de patinetes.',
             '**Cercanías Asturias.** Desde el 7 de septiembre de 2026, Renfe admite tu patinete con la etiqueta identificativa, el marcaje del fabricante y el seguro en vigor. En Cercanías, «debe permanecer plegado y cumplir las condiciones de peso y dimensiones establecidas»: como mucho, 120 × 50 × 55 cm. No puedes cargarlo a bordo, y los de alquiler compartido no pueden subir. Asturias no está entre las excepciones de Renfe.',
             '**Bicis públicas.** Si prefieres pedalear, GijónBici arrancó en julio de 2023 con 250 bicis eléctricas en 47 estaciones, de 6:00 a medianoche todo el año.',
             '**Playas.** Deja el patinete fuera del paseo, sin ocupar la acera, y baja andando.',
-            '**Estudiantes.** La Universidad Laboral y la Escuela Politécnica de Ingeniería, en el campus de Gijón, están dentro de la zona. No hemos encontrado normas de la Universidad de Oviedo sobre patinetes.',
+            '**Estudiantes.** La Universidad Laboral y la Escuela Politécnica de Ingeniería, en el campus de Gijón, están dentro de la zona.',
             '**Camino del Norte.** Un Bird te sirve para moverte por Gijón el día que pares, no para la etapa.',
-            '**Horario.** Nadie publica horario ni temporada para Gijón, y Bird avisa de que sus patinetes no siempre están disponibles: mira la app.',
+            '**Horario.** Bird no publica horario ni temporada para Gijón, y avisa de que sus patinetes no siempre están disponibles: mira la app.',
             '**Terreno.** El plan de movilidad municipal describe una ciudad bastante llana; las cuestas están en Cimadevilla y en El Coto-Ceares.',
           ],
         },
@@ -139,11 +138,11 @@ const guide: Guide = {
     },
     {
       question: '¿Qué app necesito para los patinetes de Gijón?',
-      answer: 'La de Bird, el único operador que hemos encontrado en Gijón. [Nuestro mapa](map:es:Gijón) te enseña dónde están sus patinetes y te lleva a su app.',
+      answer: 'La de Bird. [Nuestro mapa](map:es:Gijón) te enseña dónde están sus patinetes y te lleva a su app.',
     },
     {
       question: '¿Están prohibidos los patinetes en el centro de Gijón?',
-      answer: 'A 24 de octubre de 2026 no hemos encontrado ninguna prohibición en vigor. Según miGijón, el Ayuntamiento anunció en mayo un veto en nueve calles del centro, pero la alcaldesa lo frenó y no llegó a aplicarse. En todo Gijón, eso sí, están prohibidas la acera y las zonas peatonales.',
+      answer: 'El veto anunciado, no: según miGijón, el Ayuntamiento anunció en mayo de 2026 un veto en nueve calles del centro, pero la alcaldesa lo frenó y en septiembre seguía sin aplicarse. En todo Gijón, eso sí, están prohibidas la acera y las zonas peatonales.',
     },
     {
       question: '¿Se puede ir en patinete por el Muro de San Lorenzo?',
@@ -155,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: '¿Puedo subir el patinete al autobús o al tren en Gijón?',
-      answer: 'Un Bird, al tren no: Renfe no admite patinetes de alquiler compartido. El tuyo puede ir en Cercanías plegado, con etiqueta, marcaje del fabricante y seguro. En EMTUSA, pregunta antes: una moción de VOX de abril de 2026 dice que la empresa los prohibió, pero EMTUSA no lo ha publicado.',
+      answer: 'Un Bird, al tren no: Renfe no admite patinetes de alquiler compartido. El tuyo puede ir en Cercanías plegado, con etiqueta, marcaje del fabricante y seguro. En EMTUSA, pregunta antes: una moción de VOX de abril de 2026 dice que la empresa los prohibió, pero su reglamento de viajeros, de 2009, no habla de patinetes.',
     },
   ],
   sources: [

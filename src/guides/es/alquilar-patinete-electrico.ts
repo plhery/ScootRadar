@@ -26,7 +26,7 @@ const guide: Guide = {
           ],
         },
         'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',
-        'Para ver juntos los de Hoppy, Bird, Hopp y Dott en estos lugares, abre [nuestro mapa](/map): verás el tiempo a pie y, en Hoppy y Hopp, una estimación del precio; un botón te lleva a la app del operador. No incluye Oviedo, donde Bird no publica sus datos, y otros operadores pueden funcionar sin publicarlos.',
+        'Para ver juntos los de Hoppy, Bird, Hopp y Dott en estos lugares, abre [nuestro mapa](/map): verás el tiempo a pie y, en Hoppy y Hopp, una estimación del precio; un botón te lleva a la app del operador. Oviedo no sale en él.',
       ],
     },
     {
@@ -53,8 +53,8 @@ const guide: Guide = {
       heading: 'Qué piden para alquilar un patinete eléctrico: edad, casco y pago',
       blocks: [
         '**18 años** en todos los operadores (Bird, Dott, Hopp, Hoppy y Lime), aunque la ley permite conducir un patinete desde los 15. Hoppy alquila desde los 16 en Bélgica, pero no en España.',
-        '**Ni carné ni DNI escaneado.** No hemos encontrado ningún operador que pida escanear un documento en España: en los contratos de Bird y Hoppy declaras tú que tienes 18 años.',
-        '**Tu casco y, de noche, tu elemento reflectante o luminoso.** Los dos los llevas tú, porque la multa (200 €) es para quien conduce, y no hemos encontrado ningún operador que preste casco. Si alquilas en vacaciones, mételos en la maleta.',
+        '**Ni carné ni DNI escaneado.** En los contratos de Bird y Hoppy, declaras tú que tienes 18 años.',
+        '**Tu casco y, de noche, tu elemento reflectante o luminoso.** Los dos los llevas tú, porque la multa (200 €) es para quien conduce. Si alquilas en vacaciones, mételos en la maleta.',
         {
           table: {
             caption: 'Formas de pago y retención en la tarjeta, según los operadores (octubre de 2026)',
@@ -67,7 +67,7 @@ const guide: Guide = {
             ],
           },
         },
-        'La retención no es un cargo, sino un bloqueo temporal: Hopp la libera al acabar, aunque tu banco puede tardar días en reflejarlo. **Bizum** no figura en ningún operador que hayamos consultado.',
+        'La retención no es un cargo, sino un bloqueo temporal: Hopp la libera al acabar, aunque tu banco puede tardar días en reflejarlo. Ninguno de los cuatro menciona **Bizum**.',
       ],
     },
     {
@@ -92,7 +92,6 @@ const guide: Guide = {
         '**Un ejemplo.** Vas 12 minutos en un Hopp por Torrevieja: 0,99 € + 12 × 0,33 € = 4,95 €. Si al llegar das vueltas cinco minutos más buscando dónde dejarlo, son 17 minutos: 6,60 €. El precio final te lo da la app.',
         '**Bird**, según la prensa, rondaba los 0,15 € por minuto en Getafe y cobraba 0,22 € en Oviedo, las dos cifras de junio de 2025; el precio de hoy, en la app.',
         '**Abonos.** Con el abono de Bird (Menú › Abono, en algunos mercados) o un pase de Hopp no pagas el desbloqueo, y solo valen donde los compras.',
-        'Ojo: la web española de Bolt anuncia patinetes «desde 0,15 € por minuto», pero no hemos encontrado ninguna ciudad española donde los tenga.',
       ],
     },
     {

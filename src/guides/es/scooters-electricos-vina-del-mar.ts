@@ -20,19 +20,18 @@ const guide: Guide = {
         {
           list: [
             '**Whoosh** partió en el verano de 2026 con 350 scooters y 75 puntos de estacionamiento, según G5 Noticias (19 de febrero de 2026), y la alcaldesa Macarena Ripamonti dijo entonces que la ciudad avanzaba «hacia un ecosistema de movilidad inteligente y sustentable». Opera por un convenio con la Municipalidad de Viña del Mar, según UCV Radio (5 de junio de 2026).',
-            '**Lime**: La Tercera contaba en noviembre de 2025 que planeaba llegar pronto a Viña del Mar, y en junio de 2026 Forbes Chile ya incluía Viña del Mar entre las comunas donde opera. No hemos encontrado un convenio ni un permiso publicado.',
+            '**Lime**: en junio de 2026, Forbes Chile ya incluía Viña del Mar entre las ciudades donde opera.',
           ],
         },
-        'No hemos encontrado el texto del convenio de Whoosh en el sitio de la municipalidad. El 3 de junio de 2026, la Fundación Comité de Defensa del Borde Costero pidió a la Contraloría Regional de Valparaíso que revisara su legalidad, preocupada por los scooters en las veredas, según Puranoticia (3 de junio) y UCV Radio (5 de junio). No hemos encontrado una respuesta de la Contraloría.',
-        'No hemos encontrado otra empresa de scooters en Viña del Mar en 2026, ni a JET.',
-        'El 29 de octubre de 2026 a las 11:55, el [mapa de Viña del Mar](map:cl:Viña del Mar) mostraba unos 920 scooters estacionados en el centro y la costa de la ciudad: unos 630 de Whoosh y 290 de Lime, cada uno según su último recuento. No es el tamaño de las flotas, y no incluye los Whoosh de Limache.',
-        'El mapa muestra cada scooter estacionado y su batería, no precios, zonas ni horarios. Si nunca has arrendado uno, [nuestra guía para arrendar](guide:how-to-rent) explica los pasos en la app, pero está escrita para España: allá la ley es otra.',
+        'El 3 de junio de 2026, la Fundación Comité de Defensa del Borde Costero pidió a la Contraloría Regional de Valparaíso que revisara la legalidad del convenio de Whoosh, preocupada por los scooters en las veredas, según Puranoticia (3 de junio) y UCV Radio (5 de junio).',
+        'El 29 de octubre de 2026 a las 11:55, el [mapa de Viña del Mar](map:cl:Viña del Mar) mostraba unos 920 scooters estacionados en el centro y la costa de la ciudad: unos 630 de Whoosh y 290 de Lime, cada uno según su último recuento.',
+        'Si nunca has arrendado uno, [nuestra guía para arrendar](guide:how-to-rent) explica los pasos en la app, pero está escrita para España: allá la ley es otra.',
       ],
     },
     {
       heading: '¿Cuánto cuesta arrendar un scooter en Viña del Mar?',
       blocks: [
-        'Whoosh no publica su tarifa de Viña del Mar en su web, y no hemos encontrado una tarifa oficial de Lime: el precio lo ves en cada app antes del viaje. Whoosh cobra un costo de inicio más un precio por minuto, según la ciudad, la demanda y tu plan o paquete, y puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
+        'Whoosh no publica su tarifa de Viña del Mar en su web: el precio de Whoosh y el de Lime los ves en cada app antes del viaje. Whoosh cobra un costo de inicio más un precio por minuto, según la ciudad, la demanda y tu plan o paquete, y puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
         'Whoosh puede cobrarte aparte, en pesos chilenos, según sus términos para Chile. Son cobros de la empresa, no multas de la ley:',
         {
           table: {
@@ -82,7 +81,7 @@ const guide: Guide = {
         {
           list: [
             '**Whoosh.** Según su web (octubre de 2026), sus scooters solo se toman y se dejan en las zonas «P» de la app, que aprueba la municipalidad. Déjalo pegado a una pared, una reja o la solera, paralelo a ella, sin estorbar a peatones ni autos. Terminar fuera de una «P» te cuesta $5.000.',
-            '**Lime.** Mira en su app dónde puedes dejarlo: no hemos encontrado sus reglas para Viña del Mar.',
+            '**Lime.** Mira en su app dónde puedes dejarlo antes de terminar el viaje.',
           ],
         },
         'La Ley de Tránsito pide estacionar las bicicletas de preferencia en lugares habilitados, dejando espacio a los peatones, y prohíbe amarrarlas en zonas de carga y descarga, estacionamientos para personas con discapacidad, paraderos o pasos de peatones.',
@@ -94,11 +93,10 @@ const guide: Guide = {
         {
           list: [
             '**CicloRecreoVía.** Cada domingo en la mañana, en general de 9:00 a 13:00 o 14:00, la Avenida San Martín y la Avenida Marina, entre 15 Norte y el Reloj de Flores, se cierran a los autos y se abren a bicicletas, patines y scooters, según Visita Viña, el sitio de turismo del municipio (mayo de 2025).',
-            '**Avenida Perú.** No hemos encontrado una regla municipal sobre scooters en su paseo. Con marejadas, el municipio la cierra a autos y personas, junto con la Avenida Los Héroes, como el 15 de julio de 2026, y advierte multas a quien se acerque a la costa.',
-            '**Playas.** No hemos encontrado una regla municipal para la arena. Los términos de Whoosh prohíben andar fuera de superficies pavimentadas.',
-            '**Quinta Vergara.** El parque abre de 7:00 a 19:00, según el municipio (marzo de 2023). No hemos encontrado una regla sobre scooters dentro del parque.',
-            '**Reloj de Flores.** No hemos encontrado una regla propia: es el extremo de la CicloRecreoVía.',
-            '**Hacia Valparaíso o Concón.** No hemos encontrado un permiso para scooters de arriendo en esas comunas. Si sales de la zona permitida de Whoosh, te cobra $10.000 y puede bloquear el scooter.',
+            '**Avenida Perú.** Con marejadas, el municipio la cierra a autos y personas, junto con la Avenida Los Héroes, como el 15 de julio de 2026, y advierte multas a quien se acerque a la costa.',
+            '**Playas.** Con un Whoosh, nada de arena: sus términos prohíben andar fuera de superficies pavimentadas.',
+            '**Quinta Vergara.** El parque abre de 7:00 a 19:00, según el municipio (marzo de 2023).',
+            '**Hacia Valparaíso o Concón.** Mira en la app hasta dónde llega la zona permitida: si sales de la de Whoosh, te cobra $10.000 y puede bloquear el scooter.',
           ],
         },
       ],
@@ -108,9 +106,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Tren.** Con un Whoosh, no: sus términos prohíben subirlo a un tren, el metro, una micro, un auto o un taxi, y Whoosh te cobra $10.000 si lo llevas. Termina el viaje en una zona «P» y sigue en tren. EFE Valparaíso deja subir bicicletas al tren Limache-Puerto, el Merval, los fines de semana y festivos; no hemos encontrado una regla suya sobre scooters.',
-            '**Micros.** No hemos encontrado una regla publicada para las micros del Gran Valparaíso; Whoosh no te deja subirlo.',
-            '**Limache.** Al otro extremo de la línea, Whoosh arrienda también en Limache: el [mapa de Limache](map:cl:Limache) mostraba unos 110 scooters el 29 de octubre a las 11:55, según su último recuento, aparte de los de Viña del Mar.',
+            '**Tren y micros.** Con un Whoosh, no: sus términos prohíben subirlo a un tren, el metro, una micro, un auto o un taxi, y Whoosh te cobra $10.000 si lo llevas. Termina el viaje en una zona «P» y sigue en tren.',
+            '**Limache.** Al otro extremo de la línea, Whoosh arrienda también en Limache: búscalos en el [mapa de Limache](map:cl:Limache).',
           ],
         },
         'Si vas a la capital, en nuestra [guía de Santiago](guide:santiago-de-chile) están las comunas donde arriendan Whoosh, JET y Lime.',
@@ -136,7 +133,6 @@ const guide: Guide = {
             '**En abril de 2022, el municipio y EFE Valparaíso estrenaron 30 scooters gratis para los pasajeros del tren**, un piloto de su convenio por la movilidad sustentable, según el municipio.',
             '**Expedio se fue de Viña del Mar en enero de 2025, a menos de un año de partir, diciendo que le habían robado el 80% de su flota**, según BioBioChile.',
             '**En su primer mes, los Whoosh de Viña sumaron más de 53.000 viajes de unos 24.000 usuarios**, y en el Festival de Viña fueron de las formas preferidas para ir y volver de la Quinta Vergara, según Radio Carnaval (marzo de 2026).',
-            '**El tren Limache-Puerto fue pionero en Chile al dejar subir bicicletas**: lo hace los fines de semana y festivos desde 2013, según EFE.',
           ],
         },
       ],
@@ -145,7 +141,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta arrendar un scooter eléctrico en Viña del Mar?',
-      answer: 'Cada app te muestra el precio antes del viaje: Whoosh no publica su tarifa de Viña del Mar, y no hemos encontrado la de Lime. Whoosh cobra un costo de inicio más un precio por minuto, que cambia según la demanda y tu plan.',
+      answer: 'Cada app te muestra el precio antes del viaje: Whoosh no publica su tarifa de Viña del Mar en su web. Whoosh cobra un costo de inicio más un precio por minuto, que cambia según la demanda y tu plan.',
     },
     {
       question: '¿Qué app necesito para los scooters de Viña del Mar?',
@@ -165,7 +161,7 @@ const guide: Guide = {
     },
     {
       question: '¿Los scooters de Viña del Mar tienen horario?',
-      answer: 'No que sepamos: los términos de Whoosh no fijan horario y no hemos encontrado uno de la municipalidad. Eso sí, Whoosh puede terminar un arriendo a las cuatro horas.',
+      answer: 'Los términos de Whoosh no fijan horario, aunque Whoosh puede terminar un arriendo a las cuatro horas. Para Lime, mira su app.',
     },
   ],
   sources: [
@@ -180,13 +176,10 @@ const guide: Guide = {
     { title: 'Municipalidad de Viña del Mar: cierre de Av. Perú por marejadas (julio de 2026)', url: 'https://www.munivina.cl/noticias/municipio-de-vina-del-mar-realizo-cierre-preventivo-de-av-peru-por-marejadas-en-borde-costero/' },
     { title: 'Municipalidad de Viña del Mar: reapertura de la Quinta Vergara (marzo de 2023)', url: 'https://www.munivina.cl/noticias/parque-quinta-vergara-reabre-museos-espacios-publicos-y-areas-verdes-para-los-visitantes/' },
     { title: 'Visita Viña: Viña del Mar con niños y la CicloRecreoVía (mayo de 2025)', url: 'https://visitavina.munivina.cl/en/vina-del-mar-con-ninos-aventura-y-diversion-para-toda-la-familia/' },
-    { title: 'EFE: preguntas frecuentes del tren Limache-Puerto', url: 'https://www.efe.cl/atencion-a-clientes/preguntas-frecuentes/preguntas-limache-puerto/' },
-    { title: 'EFE Valparaíso: bicicletas en el tren (enero de 2023)', url: 'https://www.efe.cl/efe-valparaiso-otorga-nuevas-facilidades-para-viajar-los-fines-de-semana-con-bicicletas-en-el-tren/' },
     { title: 'G5 Noticias: llega Whoosh a Viña del Mar (febrero de 2026)', url: 'https://g5noticias.cl/2026/02/19/vina-del-mar-incorporo-350-scooters-electricos-como-alternativa-de-movilidad-urbana-en-temporada-alta/' },
     { title: 'Radio Carnaval: el primer mes de Whoosh (marzo de 2026)', url: 'https://www.radiocarnaval.cl/scooters-electricos-superan-los-53-mil-viajes-en-su-primer-mes-de-operacion-en-vina-del-mar/' },
     { title: 'Puranoticia: vecinos recurren a Contraloría (junio de 2026)', url: 'https://puranoticia.pnt.cl/region-valparaiso/scooters-electricos-en-la-mira-vecinos-de-vina-del-mar-recurren-a' },
     { title: 'UCV Radio: el convenio con Whoosh ante Contraloría (junio de 2026)', url: 'https://ucvradio.cl/news/piden-a-contraloria-revisar-convenio-para-instalacion-de-scooters-electricos-en-vina-del-mar/' },
-    { title: 'La Tercera: Lime y su apuesta por Chile (noviembre de 2025)', url: 'https://www.latercera.com/pulso/noticia/scooters-electricos-el-retorno-de-lime-a-america-latina-y-su-apuesta-por-chile/' },
     { title: 'Forbes Chile: el boom de los scooters (junio de 2026)', url: 'https://forbes.cl/negocios/2026-06-01/el-boom-de-los-scooters-en-chile-es-el-pais-con-mayor-frecuencia-de-uso-en-america-latina/' },
     { title: 'T13: fiscalización a scooters (noviembre de 2025)', url: 'https://www.t13.cl/noticia/nacional/parte-fiscalizacion-scooters-cuales-son-las-sanciones-desde-cuando-se-aplicaran-20-11-2025' },
     { title: 'BioBioChile: Expedio deja Viña del Mar (enero de 2025)', url: 'https://www.biobiochile.cl/noticias/nacional/region-de-valparaiso/2025/01/22/empresa-de-scooters-electricos-se-va-de-vina-del-mar-y-acusa-el-robo-del-80-de-su-flota.shtml' },

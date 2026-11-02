@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Scooters eléctricos Monterrey y San Pedro: Whoosh y JET',
   description: 'Scooters eléctricos en Monterrey y San Pedro Garza García: Whoosh, JET y Lime, dónde están, cuánto cuesta la renta y dónde puedes andar y estacionar.',
   headline: 'Scooters eléctricos en Monterrey y San Pedro: Whoosh, JET y Lime, dónde encontrarlos y las reglas para andar',
-  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. El domingo 25 de octubre de 2026 a las 14:09, el mapa mostraba unos 890 scooters en Monterrey, casi todos de Whoosh, y unos 800 en San Pedro, con casi todos los de JET; desde el 26 de octubre muestra también los Lime. En Monterrey, el reglamento de tránsito prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
+  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. En Monterrey rentan Whoosh y Lime, y en San Pedro, Whoosh y JET. En Monterrey, el reglamento de tránsito prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'mx:Monterrey',
@@ -24,22 +24,8 @@ const guide: Guide = {
             '**Lime** llegó a Monterrey en septiembre de 2025 por un convenio con el municipio, con scooters y bicis eléctricas; se renta con su app o con la de Uber. Ese mes empezó también en Guadalupe (Publimetro). En diciembre de 2025 amplió su zona de Monterrey hacia el Distrito Tec (Notiviral).',
           ],
         },
-        'El domingo 25 de octubre de 2026, entre las 14:09 y las 14:11, el [mapa de Monterrey](map:mx:Monterrey) mostraba unos 1,700 scooters estacionados: unos 1,210 de Whoosh y 490 de JET. Cada cifra es la de su último recuento, no el tamaño de las flotas. Por municipio (límites del Marco Geoestadístico del INEGI):',
-        {
-          table: {
-            caption: 'Scooters en el mapa por municipio, el 25 de octubre de 2026, de 14:09 a 14:11',
-            head: ['Municipio', 'Scooters', 'De quién', 'Dónde'],
-            rows: [
-              ['Monterrey', 'unos 890', 'Whoosh, y 2 de JET', 'El centro, al norte del río Santa Catarina (unos 450); justo al sur del río, por Colima y Francisco Zarco (unos 190); y alrededor del Tec (unos 160)'],
-              ['San Pedro Garza García', 'unos 800', 'JET unos 485, Whoosh unos 315', 'Del Valle, por Río Mississipi, Río Orinoco y Río Suchiate (unos 475); el Casco Urbano (unos 240); Valle Oriente (unos 85)'],
-              ['Guadalupe', '6', 'Whoosh', 'En su orilla oeste, junto a Monterrey'],
-              ['Santa Catarina y San Nicolás de los Garza', 'ninguno', '—', '—'],
-            ],
-          },
-        },
-        'En el centro de Monterrey y cerca del Tec verás Whoosh; los JET están casi todos en San Pedro.',
-        'El mapa muestra GO JET, Whoosh y, desde el 26 de octubre de 2026, Lime: cada scooter estacionado, su batería y, en Whoosh, su autonomía; no precios, zonas ni horarios.',
-        '**Bicis.** El mapa tampoco muestra las bicis eléctricas de Lime. En el Parque Fundidora, Rueda Verde renta bicis y scooters por hora en sus módulos desde abril de 2026 (Publimetro).',
+        'El domingo 25 de octubre de 2026, entre las 14:09 y las 14:11, el [mapa de Monterrey](map:mx:Monterrey) mostraba unos 1,700 scooters estacionados: unos 1,210 de Whoosh y 490 de JET, cada uno según su último recuento. Desde el 26 de octubre de 2026, el mapa muestra también los Lime.',
+        '**Bicis.** El mapa no muestra las bicis eléctricas de Lime. En el Parque Fundidora, Rueda Verde renta bicis y scooters por hora en sus módulos desde abril de 2026 (Publimetro).',
       ],
     },
     {
@@ -87,7 +73,7 @@ const guide: Guide = {
             ],
           },
         },
-        '**Casco.** No hemos encontrado una regla vigente en Monterrey ni en San Pedro que lo exija. Úsalo de todos modos.',
+        '**Casco.** El reglamento de tránsito de Monterrey no menciona los scooters, y a los ciclistas solo les dice que pueden usarlo «de preferencia» (art. 34). Úsalo de todos modos.',
         'Los dos municipios preparan reglas propias, aún no vigentes:',
         {
           list: [
@@ -126,7 +112,7 @@ const guide: Guide = {
             '**Circuito San Pedro.** El programa de San Pedro conecta los scooters con las paradas de su transporte municipal gratuito, de 19 rutas (Milenio, abril de 2026).',
           ],
         },
-        'Fuera de Monterrey, el mapa también muestra los Lime de [Querétaro](map:mx:Querétaro) y los Whoosh de [Zapopan](map:mx:Zapopan); el 25 de octubre de 2026, Whoosh tenía Zapopan fuera de temporada.',
+        'Fuera de Monterrey, el mapa también muestra los Lime de [Querétaro](map:mx:Querétaro) y los Whoosh de [Zapopan](map:mx:Zapopan).',
       ],
     },
     {
@@ -170,21 +156,20 @@ const guide: Guide = {
     },
     {
       question: '¿Es obligatorio el casco en Monterrey?',
-      answer: 'No hemos encontrado una regla vigente que lo exija; San Pedro propone exigirlo a los menores de edad, y en Monterrey lo plantearon integrantes del Cabildo. Úsalo de todos modos.',
+      answer: 'El reglamento de tránsito de Monterrey no menciona los scooters, y a los ciclistas solo les dice que pueden usarlo «de preferencia». San Pedro propone exigirlo a los menores de edad, y en Monterrey lo plantearon integrantes del Cabildo. Úsalo de todos modos.',
     },
     {
       question: '¿Hay scooters de renta en el centro de Monterrey?',
-      answer: 'Sí: el 25 de octubre de 2026 a las 14:09, el mapa mostraba unos 450 Whoosh en el centro, al norte del río Santa Catarina. Desde el 26 de octubre, el mapa muestra también los de Lime.',
+      answer: 'Sí: Whoosh tiene zonas de estacionamiento en Centro-sur, Fundidora y la colonia Independencia, definidas con el municipio (junio de 2026), y Lime renta en Monterrey desde septiembre de 2025. El mapa te muestra los de los dos.',
     },
     {
       question: '¿Los scooters de Monterrey tienen horario?',
-      answer: 'No hemos encontrado horarios ni prohibiciones de noche en fuentes oficiales. Players of Life escribió en abril de 2026 que Whoosh funcionaba las 24 horas en San Pedro.',
+      answer: 'Players of Life escribió en abril de 2026 que Whoosh funcionaba las 24 horas en San Pedro. El proyecto de reglamento de San Pedro, aún no vigente, propone 15 km/h como máximo de noche.',
     },
   ],
   sources: [
     { title: 'Monterrey: llega Whoosh (junio de 2026)', url: 'https://www.monterrey.gob.mx/noticias/ampl%C3%ADa-monterrey-oferta-de-micro-movilidad-sustentable/' },
     { title: 'Monterrey: Reglamento de Tránsito y Vialidad', url: 'https://www.monterrey.gob.mx/pdf/portaln/reglamentos/Reglamento%20de%20Transito%20y%20Vialidad%20del%20Municipio%20de%20Monterrey.pdf' },
-    { title: 'INEGI: Marco Geoestadístico', url: 'https://www.inegi.org.mx/app/biblioteca/ficha.html?upc=794551132173' },
     { title: 'Whoosh: términos para México', url: 'https://whoosh.bike/terminos/mx' },
     { title: 'Whoosh: zonas de parking', url: 'https://whoosh.bike/parking_rules/es_la' },
     { title: 'GO JET: términos para México', url: 'https://static.jetshr.com/jet_website/docs/pdfs/Terms_and_Conditions_Mexico.pdf' },

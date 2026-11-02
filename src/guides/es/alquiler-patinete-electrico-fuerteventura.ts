@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Alquiler patinete eléctrico Fuerteventura 2026: Hoppy y Bird',
   description: 'Alquiler de patinete eléctrico en Fuerteventura con Hoppy y Bird: en qué pueblos, precios, casco obligatorio, la ordenanza de cada municipio y dónde aparcar.',
   headline: 'Alquiler de patinete eléctrico en Fuerteventura: Hoppy y Bird pueblo a pueblo, precios, casco y ordenanzas',
-  lede: 'Para el alquiler de patinete eléctrico en Fuerteventura tienes Hoppy y Bird en Caleta de Fuste, Hoppy en Corralejo y Bird en Costa Calma y Morro Jable; en Puerto del Rosario no hemos encontrado ninguno. Diez minutos en un Hoppy cuestan de 4,20 a 4,90 €, y Bird solo muestra su precio en la app. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, que ningún operador presta. Y cada municipio tiene sus normas: Antigua y Pájara prohíben los patinetes en paseos y zonas peatonales, Pájara solo los deja ir por la calzada en las zonas 30, y la ordenanza de La Oliva aún no está en vigor.',
+  lede: 'Para el alquiler de patinete eléctrico en Fuerteventura tienes Hoppy y Bird en Caleta de Fuste, Hoppy en Corralejo y Bird en Costa Calma y Morro Jable. Diez minutos en un Hoppy cuestan de 4,20 a 4,90 €, y Bird solo muestra su precio en la app. Necesitas 18 años y, desde el 1 de octubre de 2026, casco, que ningún operador presta. Y cada municipio tiene sus normas: Antigua y Pájara prohíben los patinetes en paseos y zonas peatonales, Pájara solo los deja ir por la calzada en las zonas 30, y la ordenanza de La Oliva aún no está en vigor.',
   published: '2026-10-14',
   updated: '2026-10-15',
   city: 'es:Caleta de Fuste',
@@ -20,17 +20,17 @@ const guide: Guide = {
         {
           table: {
             caption: 'Patinetes compartidos en Fuerteventura por pueblo (nuestro mapa, tarde del 14 de octubre de 2026)',
-            head: ['Pueblo (municipio)', 'Operadores', 'Patinetes en el mapa'],
+            head: ['Pueblo (municipio)', 'Operadores'],
             rows: [
-              ['[Caleta de Fuste](map:es:Caleta de Fuste) (Antigua)', 'Hoppy y Bird', '314: 167 de Hoppy y 147 de Bird'],
-              ['[Corralejo](map:es:Corralejo) (La Oliva)', 'Hoppy', '194'],
-              ['[Costa Calma](map:es:Costa Calma) (Pájara)', 'Bird', '65'],
-              ['[Morro Jable](map:es:Morro Jable) (Pájara)', 'Bird', '62'],
-              ['Puerto del Rosario', 'Ninguno', '–'],
+              ['[Caleta de Fuste](map:es:Caleta de Fuste) (Antigua)', 'Hoppy y Bird'],
+              ['[Corralejo](map:es:Corralejo) (La Oliva)', 'Hoppy'],
+              ['[Costa Calma](map:es:Costa Calma) (Pájara)', 'Bird'],
+              ['[Morro Jable](map:es:Morro Jable) (Pájara)', 'Bird'],
+              ['Puerto del Rosario', 'Ninguno'],
             ],
           },
         },
-        'Son cifras de sus datos abiertos, no el tamaño de sus flotas. En Caleta de Fuste necesitas las dos apps para verlos todos. Las tiendas que alquilan por horas o días no salen en nuestro mapa: no publican datos.',
+        'Esa tarde, el mapa de Caleta de Fuste mostraba 314 patinetes: 167 de Hoppy y 147 de Bird. Allí necesitas las dos apps para verlos todos.',
       ],
     },
     {
@@ -81,7 +81,7 @@ const guide: Guide = {
       blocks: [
         'En Canarias no hay ley autonómica del patinete: rigen la normativa estatal y la ordenanza de cada ayuntamiento.',
         '**Antigua (Caleta de Fuste).** Su ordenanza de 2019, aún vigente, prohíbe los patinetes en «las aceras, plazas, avenidas peatonales y cualquier otro espacio reservado a los viandantes». Los de alquiler necesitan autorización municipal, y el Ayuntamiento puede limitar cuántos hay.',
-        '**Pájara (Costa Calma y Morro Jable).** La Ordenanza nº 51, en vigor desde finales de 2022, saca el patinete de la calzada salvo en las zonas 30 que fije la Alcaldía (no hemos encontrado su lista: sigue las señales). Sí puedes ir por carriles bici y, a 5 km/h, por aceras bici e itinerarios ciclistas señalizados en zonas peatonales. Tampoco deja circular por paseos, parques ni aceras, y solo permite aparcar en sitios para patinetes o bicicletas. Cada empresa puede tener hasta 50 patinetes por población, ampliables por la Alcaldía.',
+        '**Pájara (Costa Calma y Morro Jable).** La Ordenanza nº 51, en vigor desde finales de 2022, saca el patinete de la calzada salvo en las zonas 30 que fije la Alcaldía: sigue las señales. Sí puedes ir por carriles bici y, a 5 km/h, por aceras bici e itinerarios ciclistas señalizados en zonas peatonales. Tampoco deja circular por paseos, parques ni aceras, y solo permite aparcar en sitios para patinetes o bicicletas. Cada empresa puede tener hasta 50 patinetes por población, ampliables por la Alcaldía.',
         '**La Oliva (Corralejo).** El pleno aprobó inicialmente su ordenanza el 26 de febrero de 2026, pero a 15 de octubre el BOP no había publicado su texto definitivo, así que **no está en vigor**: en Corralejo rigen la normativa estatal y las zonas de Hoppy.',
       ],
     },
@@ -93,7 +93,7 @@ const guide: Guide = {
           list: [
             '**Caleta de Fuste.** El paseo marítimo es espacio peatonal, aunque la app te deje circular por él. Donde un tramo esté señalizado como carril bici, sigue las señales; si no, bájate y llévalo a pie.',
             '**Corralejo.** Hoppy no te deja circular, empezar ni terminar el viaje en la Avenida Marítima, en el puerto ni en el tramo peatonal de la Avenida Nuestra Señora del Carmen. En el barrio marinero, por la calle La Milagrosa, te limita a 10 km/h.',
-            '**Costa Calma y Morro Jable.** Nada de paseos, tampoco el de la playa de Morro Jable. Dónde te para Bird no queda claro en sus datos abiertos: fíate del mapa de la app.',
+            '**Costa Calma y Morro Jable.** Nada de paseos, tampoco el de la playa de Morro Jable. Dónde te para Bird, míralo en el mapa de su app.',
           ],
         },
       ],
