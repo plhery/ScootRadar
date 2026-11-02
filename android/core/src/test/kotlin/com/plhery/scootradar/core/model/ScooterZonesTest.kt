@@ -912,13 +912,40 @@ class CityRuleZoneTest {
     }
 
     @Test
-    fun theStreetsAloneAreAllAndForbidRiding() {
-        // CatalogParityTest reads the generated list of these, and holds them to the iPhone's; here, what each is.
+    fun theStreetsAndAreasAreAllAndForbidRidingOrSlowIt() {
+        // CatalogParityTest reads the generated list of these, and holds them to the iPhone's; here, what each is: a
+        // street, its lines, or an area, one ring, where riding is forbidden or slow.
         assertFalse(CityRuleZone.all.isEmpty())
-        assertTrue(CityRuleZone.all.all { it.kind == ScooterZoneKind.NoRide && it.lines.isNotEmpty() })
+        assertTrue(CityRuleZone.all.all { it.kind == ScooterZoneKind.NoRide || it.kind == ScooterZoneKind.Slow })
+        assertTrue(CityRuleZone.all.all { it.lines.isNotEmpty() || it.polygons.single().single().size >= 3 })
         assertTrue(CityRuleZone.cityZones.all { it.lines.isEmpty() })
         assertEquals((CityRuleZone.all + CityRuleZone.cityZones).map { it.id }, CityRuleZone.onMap.map { it.id })
         assertEquals(CityRuleZone.onMap.size, CityRuleZone.onMap.map { it.id }.toSet().size)
+    }
+
+    @Test
+    fun aSlowStreetIsABandOfItsKindAndAnAreaHoldsFromItsFirstDayWithinItsHours() {
+        // As Warsaw's 12 km/h streets and its Old Town, where riding is forbidden from 22 May 2026, traced on OpenStreetMap.
+        val street = CityRuleZone(
+            id = "test-slow-street", authority = "Test, lines © OpenStreetMap", timeZone = "Europe/Warsaw",
+            kind = ScooterZoneKind.Slow, firstDay = "", hours = emptyList(), source = "https://example.com",
+            lines = listOf(listOf(GeoPoint(52.23, 21.0), GeoPoint(52.23, 21.003))),
+        )
+        assertEquals(ScooterZoneKind.Slow, CityRuleZone.Shown(rule = street, inForce = true).mapZone.kind)
+        assertTrue(street.polygons.isNotEmpty())
+        val ring = listOf(GeoPoint(52.249, 21.01), GeoPoint(52.249, 21.014), GeoPoint(52.251, 21.014), GeoPoint(52.251, 21.01))
+        val area = CityRuleZone.area(
+            id = "test-no-ride-area", authority = "Test, lines © OpenStreetMap", timeZone = "Europe/Warsaw",
+            kind = ScooterZoneKind.NoRide, firstDay = "2026-05-22", hours = listOf(CityRuleZone.Hours(22 * 60, 6 * 60)),
+            source = "https://example.com", ring = ring,
+        )
+        assertTrue(area.lines.isEmpty())
+        assertEquals(listOf(listOf(ring)), area.polygons)
+        assertEquals(ScooterZoneKind.NoRide, CityRuleZone.Shown(rule = area, inForce = true).mapZone.kind)
+        // Warsaw is UTC+2 in May: 23:00 the night before its first day, and of that day; then noon.
+        assertFalse(area.inForce(at = Instant.parse("2026-05-21T21:00:00Z")))
+        assertTrue(area.inForce(at = Instant.parse("2026-05-22T21:00:00Z")))
+        assertFalse(area.inForce(at = Instant.parse("2026-05-23T10:00:00Z")))
     }
 
     @Test

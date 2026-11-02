@@ -153,21 +153,29 @@ class CatalogParityTest {
             data.curfews.map { numbers(it.areas) },
         )
 
-        val zones = section("    static let all: [CityRuleZone] = [").filter { !it.contains("lines: points(") }
+        val zones = section("    static let all: [CityRuleZone] = [").filter { !it.contains("lines: points(") && !it.contains("ring: ring(") }
         assertEquals(zones, data.ruleZones.flatMap { zone ->
             val hours = zone.hours.joinToString(", ") { ".init(fromMinute: ${it.fromMinute}, untilMinute: ${it.untilMinute})" }
+            // A street forbids riding unless it says otherwise; an area always says.
+            val kind = if (zone.kind == ScooterZoneKind.NoRide && zone.lines.isNotEmpty()) "" else " kind: .${zone.kind.rawValue},"
             listOf(
                 "        CityRuleZone(",
                 "            id: ${string(zone.id)}, authority: ${string(zone.authority)},",
-                "            timeZone: ${string(zone.timeZone)}, firstDay: ${string(zone.firstDay)}, hours: [$hours],",
+                "            timeZone: ${string(zone.timeZone)},$kind firstDay: ${string(zone.firstDay)}, hours: [$hours],",
                 "            source: URL(string: ${string(zone.source)})!,",
                 "        ),",
             )
         })
+        val (streets, areas) = data.ruleZones.partition { it.lines.isNotEmpty() }
         assertEquals(
             swift.filter { Regex("^    private static let [A-Za-z0-9]+Lines: \\[\\[Double]] = ").containsMatchIn(it) }
                 .map { it.substringAfter(" = ") },
-            data.ruleZones.map { numbers(it.lines) },
+            streets.map { numbers(it.lines) },
+        )
+        assertEquals(
+            swift.filter { Regex("^    private static let [A-Za-z0-9]+Ring: \\[Double] = ").containsMatchIn(it) }
+                .map { it.substringAfter(" = ") },
+            areas.map { numbers(it.polygons.single()).removePrefix("[").removeSuffix("]") },
         )
     }
 

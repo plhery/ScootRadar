@@ -635,8 +635,12 @@ Daechi-dong's lines follow the line drawn, Banpo's are the roads under it,
 authority, "Seoul, lines © OpenStreetMap", since the iOS app's Apple map
 credits no OpenStreetMap. Map rules otherwise don't rest on OpenStreetMap:
 these lines are the user's exception (1 November 2026), and it covers this
-layer only. Where and when each rule holds still comes from its authority
-alone. The pages are under KOGL Type 4
+layer only: streets where a city forbids riding, and since 3 November 2026
+streets where it asks scooters to ride slowly and areas where it forbids
+riding, each traced on OpenStreetMap where the city names it but publishes no
+shape. Where and when each rule holds still comes from its authority alone,
+and so does a slow street's speed, kept in data/rule-zones.json but not yet
+shown on any map. The pages are under KOGL Type 4
 (credit, no commercial use, no changes): only where and when the rule holds is
 taken from them, not their maps or words. Yeonsinnae's and Wirye's streets,
 which the press reports from 30 September 2026, wait for an official page.

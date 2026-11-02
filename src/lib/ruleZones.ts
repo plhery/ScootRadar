@@ -5,8 +5,9 @@ import { localClock } from './rentalCurfews';
 import type { MapBounds } from './types';
 import { ZONES_MIN_ZOOM, type ZoneKind } from './zones';
 
-// Streets where a city or its police forbids riding, from data/rule-zones.json: Seoul's
-// "kickboard-free streets" so far. And the zones cities set for shared e-scooters, Bergen's,
+// Streets where a city or its police forbids riding or asks scooters to go slowly, and areas where it
+// forbids riding, from data/rule-zones.json, traced on OpenStreetMap where the city names them but
+// publishes no shape: Seoul's "kickboard-free streets", Warsaw's Old Town. And the zones cities set for shared e-scooters, Bergen's,
 // Porto's and Boise's, and Arlington National Cemetery, where federal rules forbid riding, from
 // data/city-zones.json (cityZones.ts loads each city's as a view reaches it): where to park,
 // where not to, where to ride slowly and where not to ride; and central Helsingborg, where they
@@ -35,6 +36,8 @@ interface RuleZoneCommon {
   /** Who sets it, as the legend names them, with any credit the shapes need: "Seoul, lines © OpenStreetMap", "Bergen kommune". */
   authority: string;
   rule: RuleKind;
+  /** The speed a slow rule sets, when the city gives one, kept for the record: the map doesn't show it yet. */
+  maxSpeedKph?: number;
   /** The local day it starts, "YYYY-MM-DD"; since always when left out. */
   from?: string;
   timeZone: string;
@@ -67,7 +70,7 @@ export type RuleZoneShape = RuleZone & {
   inForce: boolean;
 };
 
-export const RULE_ZONES = catalog.zones as unknown as RuleStreet[];
+export const RULE_ZONES = catalog.zones as unknown as RuleZone[];
 
 /** How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14. */
 const BAND_WIDTH_M = 14;

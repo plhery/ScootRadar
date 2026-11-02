@@ -55,7 +55,9 @@ describe('bandPolygons', () => {
   it('joins every street of the file into a shape or a few, so none is drawn piece by piece', () => {
     // Pieces the union can't join are drawn as they are (hundreds for Antalya's boulevard): two
     // lines sharing an edge can make it fail, so a carriageway leaves out the edges another draws.
-    for (const zone of RULE_ZONES) expect(bandPolygons(zone.lines).length, zone.id).toBeLessThanOrEqual(zone.lines.length);
+    for (const zone of RULE_ZONES) {
+      if (zone.lines) expect(bandPolygons(zone.lines).length, zone.id).toBeLessThanOrEqual(zone.lines.length);
+    }
   });
 
   it('draws the pieces as they are when they can\'t be joined, rather than failing', () => {
@@ -168,16 +170,21 @@ describe('ruleZonesInView', () => {
     expect(only({ south: 50.8228, west: -0.1665, north: 50.8245, east: -0.1645 })).toEqual([]);
   });
 
-  it('keeps each street whole, with a source and hours', () => {
+  it('keeps each street and area whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);
-      expect(zone.lines.every(line => line.length >= 2)).toBe(true);
+      expect(['noRide', 'slow']).toContain(zone.rule);
+      // A speed only for a slow rule, and only as a whole number a scooter can ride at.
+      if (zone.maxSpeedKph !== undefined) expect(zone.rule === 'slow' && Number.isInteger(zone.maxSpeedKph) && zone.maxSpeedKph <= 25, zone.id).toBe(true);
+      if (zone.ring) expect(zone.ring.length, zone.id).toBeGreaterThanOrEqual(3);
+      else expect(zone.lines.every(line => line.length >= 2), zone.id).toBe(true);
       expect(zone.hours?.every(({ from, until }) => /^\d\d:\d\d$/.test(from) && /^\d\d:\d\d$/.test(until)) ?? true).toBe(true);
     }
   });
 
-  it('credits OpenStreetMap in the legend for every street, its lines being traced on its roads', () => {
-    // The user's exception to map rules not resting on OpenStreetMap covers this layer only (1 November 2026).
+  it('credits OpenStreetMap in the legend for every street and area, its lines being traced on its ways', () => {
+    // The user's exception to map rules not resting on OpenStreetMap covers this layer only (1 November 2026),
+    // its no-ride areas and slow streets too (3 November 2026).
     expect(RULE_ZONES.length).toBeGreaterThan(0);
     for (const zone of RULE_ZONES) expect(zone.authority).toMatch(/^[^,]+, lines © OpenStreetMap$/);
   });
@@ -222,6 +229,19 @@ describe('ruleZonesInView, with the areas a city sets', () => {
     }
     // Only turned, not changed.
     expect([...drawnParking.polygons[0][0]].sort()).toEqual([...ring].sort());
+  });
+
+  it('draws a slow street as a band of its own kind, its speed kept but not drawn', () => {
+    const street = {
+      ...parking, id: 'test-slow-street', rule: 'slow' as const, maxSpeedKph: 12, ring: undefined,
+      lines: [[[60.3955, 5.322], [60.3955, 5.328]]] as [number, number][][],
+    };
+    const [drawn] = ruleZonesInView({ bounds: TORGET, zoom: 16 }, SEOUL_NOON, [street]);
+    expect(drawn).toMatchObject({ id: 'test-slow-street', rule: 'slow', maxSpeedKph: 12, inForce: true });
+    expect(drawn.polygons).toHaveLength(1);
+    expect(polygonContainsPoint(drawn.polygons[0][0], 60.3955, 5.325)).toBe(true);
+    expect(polygonContainsPoint(drawn.polygons[0][0], 60.39555, 5.325)).toBe(true);
+    expect(polygonContainsPoint(drawn.polygons[0][0], 60.3957, 5.325)).toBe(false);
   });
 
   it('draws an area\'s holes as rings of their own, turned the other way, without the bridges its file keeps them by', () => {

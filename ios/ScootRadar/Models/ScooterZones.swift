@@ -273,30 +273,33 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     /// Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune".
     let authority: String
     let timeZone: String
-    /// What it asks of a scooter: no riding, on the streets.
+    /// What it asks of a scooter: no riding, or riding slowly.
     let kind: ScooterZoneKind
-    /// The local day it starts, "YYYY-MM-DD"; empty for a city's zone, which has always held.
+    /// The local day it starts, "YYYY-MM-DD"; empty for one that has always held, as a city's zone.
     let firstDay: String
     /// Every day; all day when empty.
     let hours: [Hours]
     /// Where they say so.
     let source: URL
-    /// A street's centrelines; none for a city's zone.
+    /// A street's centrelines; none for an area.
     let lines: [[GeoPoint]]
     let bounds: GeoBounds
     /// Its bounds piece by piece, so that a long street is over a view only where it runs: the whole
     /// of Chicago's lakefront trail, 22 km, would put it over the Loop beside it.
     let pieceBounds: [GeoBounds]
     /// As the map draws it. A street is the pieces of its band, a disc at each corner and a strip
-    /// along each piece, which the zones' overlay merges into one shape; a city's zone is its ring.
+    /// along each piece, which the zones' overlay merges into one shape; an area is its ring.
     let polygons: [[[GeoPoint]]]
 
-    /// A street where riding is forbidden.
-    init(id: String, authority: String, timeZone: String, firstDay: String, hours: [Hours], source: URL, lines: [[GeoPoint]]) {
+    /// A street where riding is forbidden, or slow.
+    init(
+        id: String, authority: String, timeZone: String, kind: ScooterZoneKind = .noRide, firstDay: String, hours: [Hours],
+        source: URL, lines: [[GeoPoint]]
+    ) {
         self.id = id
         self.authority = authority
         self.timeZone = timeZone
-        kind = .noRide
+        self.kind = kind
         self.firstDay = firstDay
         self.hours = hours
         self.source = source
@@ -306,14 +309,18 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         polygons = Self.band(of: lines, widthMeters: Self.bandWidthMeters)
     }
 
-    /// One of a city's zones: one ring, which holds all day, every day.
-    init(id: String, authority: String, timeZone: String, kind: ScooterZoneKind, source: URL, ring: [GeoPoint]) {
+    /// An area, one ring: one of a city's zones, which holds all day, every day; or an area traced on
+    /// OpenStreetMap where a city forbids riding or asks scooters to go slowly, from its first day, within its hours.
+    init(
+        id: String, authority: String, timeZone: String, kind: ScooterZoneKind, firstDay: String = "", hours: [Hours] = [],
+        source: URL, ring: [GeoPoint]
+    ) {
         self.id = id
         self.authority = authority
         self.timeZone = timeZone
         self.kind = kind
-        firstDay = ""
-        hours = []
+        self.firstDay = firstDay
+        self.hours = hours
         self.source = source
         lines = []
         let bounds = Self.bounds(of: ring)

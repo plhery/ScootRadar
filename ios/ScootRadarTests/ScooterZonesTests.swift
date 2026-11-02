@@ -635,10 +635,12 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertTrue(covers(37.50045, 127.00226))
     }
 
-    func testTheStreetsAloneAreAllAndForbidRiding() {
-        // Which streets they are is data/'s, which Android's CatalogParityTest holds to this catalog: here, what each is.
+    func testTheStreetsAndAreasAreAllAndForbidRidingOrSlowIt() {
+        // Which they are is data/'s, which Android's CatalogParityTest holds to this catalog: here, what each is, a
+        // street, its lines, or an area, one ring, where riding is forbidden or slow.
         XCTAssertFalse(CityRuleZone.all.isEmpty)
-        XCTAssertTrue(CityRuleZone.all.allSatisfy { $0.kind == .noRide && !$0.lines.isEmpty })
+        XCTAssertTrue(CityRuleZone.all.allSatisfy { $0.kind == .noRide || $0.kind == .slow })
+        XCTAssertTrue(CityRuleZone.all.allSatisfy { !$0.lines.isEmpty || ($0.polygons.count == 1 && $0.polygons[0].count == 1 && $0.polygons[0][0].count >= 3) })
         XCTAssertTrue(CityRuleZone.cityZones.allSatisfy { $0.lines.isEmpty })
         XCTAssertEqual(CityRuleZone.onMap.map(\.id), (CityRuleZone.all + CityRuleZone.cityZones).map(\.id))
         XCTAssertEqual(Set(CityRuleZone.onMap.map(\.id)).count, CityRuleZone.onMap.count)
@@ -716,6 +718,34 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(drawn.kind, .parking)
         XCTAssertEqual(drawn.polygons, [[ring]])
         XCTAssertEqual(drawn.strength, 1)
+    }
+
+    func testASlowStreetIsABandOfItsKindAndAnAreaHoldsFromItsFirstDayWithinItsHours() throws {
+        // As Warsaw's 12 km/h streets and its Old Town, where riding is forbidden from 22 May 2026, traced on OpenStreetMap.
+        let source = try XCTUnwrap(URL(string: "https://example.com"))
+        let street = CityRuleZone(
+            id: "test-slow-street", authority: "Test, lines © OpenStreetMap", timeZone: "Europe/Warsaw", kind: .slow,
+            firstDay: "", hours: [], source: source,
+            lines: [[GeoPoint(latitude: 52.23, longitude: 21.0), GeoPoint(latitude: 52.23, longitude: 21.003)]]
+        )
+        XCTAssertEqual(CityRuleZone.Shown(rule: street, inForce: true).mapZone.kind, .slow)
+        XCTAssertFalse(street.polygons.isEmpty)
+        let ring = [
+            GeoPoint(latitude: 52.249, longitude: 21.01), GeoPoint(latitude: 52.249, longitude: 21.014),
+            GeoPoint(latitude: 52.251, longitude: 21.014), GeoPoint(latitude: 52.251, longitude: 21.01)
+        ]
+        let area = CityRuleZone(
+            id: "test-no-ride-area", authority: "Test, lines © OpenStreetMap", timeZone: "Europe/Warsaw", kind: .noRide,
+            firstDay: "2026-05-22", hours: [.init(fromMinute: 22 * 60, untilMinute: 6 * 60)], source: source, ring: ring
+        )
+        XCTAssertTrue(area.lines.isEmpty)
+        XCTAssertEqual(area.polygons, [[ring]])
+        XCTAssertEqual(CityRuleZone.Shown(rule: area, inForce: true).mapZone.kind, .noRide)
+        // Warsaw is UTC+2 in May: 23:00 the night before its first day, and of that day; then noon.
+        let date = { (text: String) in try XCTUnwrap(ISO8601DateFormatter().date(from: text)) }
+        XCTAssertFalse(area.inForce(at: try date("2026-05-21T21:00:00Z")))
+        XCTAssertTrue(area.inForce(at: try date("2026-05-22T21:00:00Z")))
+        XCTAssertFalse(area.inForce(at: try date("2026-05-23T10:00:00Z")))
     }
 
     func testACitysZonesAreShownFromZoom14() throws {

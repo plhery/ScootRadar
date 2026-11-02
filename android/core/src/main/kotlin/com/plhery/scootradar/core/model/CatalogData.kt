@@ -67,12 +67,26 @@ internal class CatalogData(
                     )
                 },
                 ruleZones = file.ruleZones.map { zone ->
-                    CityRuleZone(
+                    val kind = checkNotNull(ScooterZoneKind.fromRawValue(zone.kind)) { "Unknown rule ${zone.kind}" }
+                    val hours = zone.hours.map { CityRuleZone.Hours(it.fromMinute, it.untilMinute) }
+                    zone.ring?.let { ring ->
+                        CityRuleZone.area(
+                            id = zone.id,
+                            authority = zone.authority,
+                            timeZone = zone.timeZone,
+                            kind = kind,
+                            firstDay = zone.firstDay,
+                            hours = hours,
+                            source = zone.source,
+                            ring = points(ring),
+                        )
+                    } ?: CityRuleZone(
                         id = zone.id,
                         authority = zone.authority,
                         timeZone = zone.timeZone,
+                        kind = kind,
                         firstDay = zone.firstDay,
-                        hours = zone.hours.map { CityRuleZone.Hours(it.fromMinute, it.untilMinute) },
+                        hours = hours,
                         source = zone.source,
                         lines = zone.lines.map(::points),
                     )
@@ -167,10 +181,14 @@ internal class CatalogData(
         val id: String,
         val authority: String,
         val timeZone: String,
+        /** "slow"; left out for no riding. */
+        val kind: String = "noRide",
         val firstDay: String,
         val hours: List<HoursEntry>,
         val source: String,
-        val lines: List<DoubleArray>,
+        /** A street's centrelines; or, for an area, its ring as latitude, longitude, latitude, longitude… */
+        val lines: List<DoubleArray> = emptyList(),
+        val ring: DoubleArray? = null,
     )
 
     @Serializable

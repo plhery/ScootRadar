@@ -464,36 +464,59 @@ ${areas.join('\n')}
 `;
 }
 
+const ruleZoneIds = new Set();
+const validPoints = list => list.every(point => point.length === 2 && point.every(Number.isFinite));
+
+/**
+ * A street, its centrelines, where riding is forbidden or slow; or an area, one ring, where it is: no
+ * other rule is drawn from OpenStreetMap's shapes, as only these are allowed (DATA_SOURCES.md).
+ */
+function validateRuleZone(zone) {
+  if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(zone.id) || ruleZoneIds.has(zone.id)) throw new Error(`Invalid rule zone id: ${zone.id}`);
+  ruleZoneIds.add(zone.id);
+  if (zone.rule !== 'noRide' && zone.rule !== 'slow') throw new Error(`Unknown rule: ${zone.rule} (${zone.id})`);
+  // The speed a city sets, kept for the record: the apps don't show it yet, nor the website.
+  if (zone.maxSpeedKph !== undefined && (zone.rule !== 'slow' || !Number.isInteger(zone.maxSpeedKph) ||
+    zone.maxSpeedKph < 1 || zone.maxSpeedKph > 25)) throw new Error(`Invalid rule zone speed: ${zone.id}`);
+  // A rule with no first day, as Chicago's trails, holds since always: the apps read an empty one so.
+  if (zone.from !== undefined && !/^\d{4}-\d\d-\d\d$/.test(zone.from)) throw new Error(`Invalid rule zone start: ${zone.id}`);
+  if (!/^https:\/\//.test(zone.source?.url) || !zone.authority) throw new Error(`Rule zone without a source: ${zone.id}`);
+  if (zone.ring !== undefined) {
+    if (zone.lines !== undefined || zone.ring.length < 3 || !validPoints(zone.ring)) throw new Error(`Invalid rule zone ring: ${zone.id}`);
+  } else if (!zone.lines?.length || zone.lines.some(line => line.length < 2 || !validPoints(line))) {
+    throw new Error(`Invalid rule zone line: ${zone.id}`);
+  }
+}
+
 function swiftRuleZones() {
   const time = value => {
     if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(value)) throw new Error(`Invalid rule zone time: ${value}`);
     const [hours, minutes] = value.split(':').map(Number);
     return hours * 60 + minutes;
   };
-  // Each street's lines go in a property of their own, as bare numbers, as the curfews' rings do.
-  const linesName = id => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Lines`;
-  const ids = new Set();
+  // Each street's lines, or each area's ring, go in a property of their own, as bare numbers, as the
+  // curfews' rings do.
+  const propertyName = (id, kind) => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}${kind}`;
   const lines = [];
   const entries = ruleZones.map(zone => {
-    if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(zone.id) || ids.has(zone.id)) throw new Error(`Invalid rule zone id: ${zone.id}`);
-    ids.add(zone.id);
-    if (zone.rule !== 'noRide') throw new Error(`Unknown rule: ${zone.rule} (${zone.id})`);
-    // A rule with no first day, as Chicago's trails, holds since always: the apps read an empty one so.
-    if (zone.from !== undefined && !/^\d{4}-\d\d-\d\d$/.test(zone.from)) throw new Error(`Invalid rule zone start: ${zone.id}`);
-    if (!/^https:\/\//.test(zone.source?.url) || !zone.authority) throw new Error(`Rule zone without a source: ${zone.id}`);
-    if (!zone.lines.length || zone.lines.some(line => line.length < 2 ||
-      !line.every(point => point.length === 2 && point.every(Number.isFinite)))) {
-      throw new Error(`Invalid rule zone line: ${zone.id}`);
-    }
+    validateRuleZone(zone);
     const hours = (zone.hours ?? []).map(({ from, until }) => `.init(fromMinute: ${time(from)}, untilMinute: ${time(until)})`);
-    lines.push(`    private static let ${linesName(zone.id)}: [[Double]] = [${zone.lines.map(line => `[${line.flat().join(', ')}]`).join(', ')}]`);
-    return `        CityRuleZone(\n            id: ${JSON.stringify(zone.id)}, authority: ${JSON.stringify(zone.authority)},\n` +
-      `            timeZone: ${JSON.stringify(zone.timeZone)}, firstDay: ${JSON.stringify(zone.from ?? '')}, hours: [${hours.join(', ')}],\n` +
-      `            source: URL(string: ${JSON.stringify(zone.source.url)})!,\n            lines: points(${linesName(zone.id)})\n        ),`;
+    const head = `        CityRuleZone(\n            id: ${JSON.stringify(zone.id)}, authority: ${JSON.stringify(zone.authority)},\n` +
+      // A street forbids riding unless it says otherwise; an area always says.
+      `            timeZone: ${JSON.stringify(zone.timeZone)},${zone.rule === 'noRide' && !zone.ring ? '' : ` kind: .${zone.rule},`}` +
+      ` firstDay: ${JSON.stringify(zone.from ?? '')}, hours: [${hours.join(', ')}],\n` +
+      `            source: URL(string: ${JSON.stringify(zone.source.url)})!,\n`;
+    if (zone.ring) {
+      lines.push(`    private static let ${propertyName(zone.id, 'Ring')}: [Double] = [${zone.ring.flat().join(', ')}]`);
+      return `${head}            ring: ring(${propertyName(zone.id, 'Ring')})\n        ),`;
+    }
+    lines.push(`    private static let ${propertyName(zone.id, 'Lines')}: [[Double]] = [${zone.lines.map(line => `[${line.flat().join(', ')}]`).join(', ')}]`);
+    return `${head}            lines: points(${propertyName(zone.id, 'Lines')})\n        ),`;
   }).join('\n');
 
   return `
-/// Streets where a city forbids riding, as src/lib/ruleZones.ts reads data/rule-zones.json.
+/// Streets where a city forbids riding or asks scooters to go slowly, and areas where it forbids riding,
+/// traced on OpenStreetMap, as src/lib/ruleZones.ts reads data/rule-zones.json.
 extension CityRuleZone {
     static let all: [CityRuleZone] = [
 ${entries}
@@ -501,9 +524,12 @@ ${entries}
 
     /// Each line as latitude, longitude, latitude, longitude…
     private static func points(_ coordinates: [[Double]]) -> [[GeoPoint]] {
-        coordinates.map { line in
-            stride(from: 0, to: line.count, by: 2).map { GeoPoint(latitude: line[$0], longitude: line[$0 + 1]) }
-        }
+        coordinates.map(ring)
+    }
+
+    /// A ring, or a line, as latitude, longitude, latitude, longitude…
+    private static func ring(_ coordinates: [Double]) -> [GeoPoint] {
+        stride(from: 0, to: coordinates.count, by: 2).map { GeoPoint(latitude: coordinates[$0], longitude: coordinates[$0 + 1]) }
     }
 
 ${lines.join('\n')}
@@ -675,7 +701,9 @@ function kotlinCatalogData() {
       firstDay: zone.from ?? '',
       hours: (zone.hours ?? []).map(({ from, until }) => ({ fromMinute: minute(from), untilMinute: minute(until) })),
       source: zone.source.url,
-      lines: zone.lines.map(line => line.flat()),
+      // A street's centrelines, or an area's ring.
+      ...(zone.rule === 'noRide' ? {} : { kind: zone.rule }),
+      ...(zone.ring ? { ring: zone.ring.flat() } : { lines: zone.lines.map(line => line.flat()) }),
     }))),
     // The zones were checked as the Swift catalog was written.
     cityZones: list(cityZones.flatMap(city => city.zones.map(zone => ({

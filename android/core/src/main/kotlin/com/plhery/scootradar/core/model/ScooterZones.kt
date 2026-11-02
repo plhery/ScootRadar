@@ -263,34 +263,35 @@ data class CityRuleZone private constructor(
     /** Who sets it, as the legend names them: "Seoul", "Gangnam-gu", "Bergen kommune". */
     val authority: String,
     val timeZone: String,
-    /** What it asks of a scooter: no riding, on Seoul's streets. */
+    /** What it asks of a scooter: no riding, or riding slowly. */
     val kind: ScooterZoneKind,
-    /** The local day it starts, "YYYY-MM-DD"; empty for a city's zone, which has always held. */
+    /** The local day it starts, "YYYY-MM-DD"; empty for one that has always held, as a city's zone. */
     val firstDay: String,
     /** Every day; all day when empty. */
     val hours: List<Hours>,
     /** Where they say so, an https address. */
     val source: String,
-    /** A street's centrelines; none for a city's zone. */
+    /** A street's centrelines; none for an area. */
     val lines: List<List<GeoPoint>>,
     val bounds: GeoBounds,
     /**
      * As the map draws it. A street is the pieces of its band, a disc at each corner and a strip along each piece,
-     * which the zones' overlay merges into one shape; a city's zone is its ring.
+     * which the zones' overlay merges into one shape; an area is its ring.
      */
     val polygons: List<List<List<GeoPoint>>>,
 ) {
-    /** One of Seoul's streets, where riding is forbidden. */
+    /** A street where riding is forbidden, or slow. */
     constructor(
         id: String,
         authority: String,
         timeZone: String,
+        kind: ScooterZoneKind = ScooterZoneKind.NoRide,
         firstDay: String,
         hours: List<Hours>,
         source: String,
         lines: List<List<GeoPoint>>,
     ) : this(
-        id = id, authority = authority, timeZone = timeZone, kind = ScooterZoneKind.NoRide, firstDay = firstDay,
+        id = id, authority = authority, timeZone = timeZone, kind = kind, firstDay = firstDay,
         hours = hours, source = source, lines = lines, bounds = bounds(of = lines.flatten()),
         polygons = band(of = lines, widthMeters = bandWidthMeters),
     )
@@ -354,8 +355,26 @@ data class CityRuleZone private constructor(
     }
 
     companion object {
-        /** Seoul's streets. */
+        /** The streets and areas traced on OpenStreetMap where a city forbids riding or asks scooters to go slowly. */
         val all: List<CityRuleZone> get() = CatalogData.value.ruleZones
+
+        /**
+         * An area traced on OpenStreetMap where a city forbids riding or asks scooters to go slowly, one ring, from its
+         * first day, within its hours: a function, as a constructor would clash on the JVM with a street's.
+         */
+        fun area(
+            id: String,
+            authority: String,
+            timeZone: String,
+            kind: ScooterZoneKind,
+            firstDay: String,
+            hours: List<Hours>,
+            source: String,
+            ring: List<GeoPoint>,
+        ) = CityRuleZone(
+            id = id, authority = authority, timeZone = timeZone, kind = kind, firstDay = firstDay, hours = hours,
+            source = source, lines = emptyList(), bounds = bounds(of = ring), polygons = listOf(listOf(ring)),
+        )
 
         /**
          * The zones cities set for shared scooters, as src/lib/ruleZones.ts reads data/city-zones.json: where to park,
@@ -363,7 +382,7 @@ data class CityRuleZone private constructor(
          */
         val cityZones: List<CityRuleZone> get() = CatalogData.value.cityZones
 
-        /** Seoul's streets and the cities' zones, put together once, as the map shows them. */
+        /** The streets and areas, and the cities' zones, put together once, as the map shows them. */
         val onMap: List<CityRuleZone> get() = CatalogData.value.onMap
 
         /** How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14. */
