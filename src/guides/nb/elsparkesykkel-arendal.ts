@@ -86,7 +86,7 @@ const guide: Guide = {
             '**Ferja til Tromøy:** Skilsøferga går til og fra Tromøy. Billetten kjøper du om bord, og appen AKT Billett har bare bussbilletter, skriver Arendalsuka (november 2026). Tromøy ligger utenfor Vois område.',
           ],
         },
-        'Skal du videre, finner du Voi også i Grimstad og Lillesand, og Voi og Ryde i Kristiansand (AKT, november 2026). Priser og regler for Kristiansand står i [guiden for Kristiansand](guide:kristiansand).',
+        'Skal du videre, finner du Voi også i [Grimstad](guide:grimstad) og Lillesand, og Voi og Ryde i Kristiansand (AKT, november 2026). Priser og regler for Kristiansand står i [guiden for Kristiansand](guide:kristiansand).',
       ],
     },
     {
