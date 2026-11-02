@@ -138,8 +138,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**More complaints.** The city’s traffic office received just over 3,000 fault reports about e-scooters in 2024, and over 4,000 by September 2025.',
-            '**Alcohol and helmets.** In a Chalmers University of Technology study of fatal crashes from 2016 to 2024, 8 of the 18 e-scooter riders killed were under the influence of alcohol and none wore a helmet; nearly nine in ten of the alcohol-related deaths were on privately owned scooters (2 July 2026).',
+            '**Fault reports rising.** The city’s traffic office received just over 3,000 fault reports about e-scooters in 2024, and over 4,000 in 2025 by September.',
+            '**Alcohol and helmets.** A Chalmers University of Technology study, published on 2 July 2026, looked at fatal e-scooter crashes from 2016 to 2024: 8 of the 18 riders killed were under the influence of alcohol and none wore a helmet, and nearly nine in ten of the alcohol-related deaths were on privately owned scooters.',
           ],
         },
       ],
