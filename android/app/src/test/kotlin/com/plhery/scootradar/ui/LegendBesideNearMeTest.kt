@@ -147,8 +147,8 @@ class LegendBesideNearMeTest {
     /**
      * On the smallest phone in landscape at font scale 2.0, once located, the line wraps the same over the round button
      * as beside it, and over it would only reach higher, up to the status bar: it stays beside it, the iPhone's row. It
-     * ran up behind the search bar, to 4 from the window's top, its kinds hidden there; it is as tall as the room under
-     * the bar, and scrolls (review-app-ap R2).
+     * ran up behind the search bar, to 4 from the window's top, its first lines hidden there; it is 64 tall, the floor,
+     * 2 more than the room under the bar, and scrolls (review-app-ap R2).
      */
     @Test
     @Config(qualifiers = PHONE_MIN_LANDSCAPE)
@@ -156,6 +156,10 @@ class LegendBesideNearMeTest {
         useFontScale(2f)
         show(located = true)
         assertBeside(scrolls = true)
+        val legend = frame(frames.zoneLegend, "legend")
+        val bar = frame(frames.top, "search bar")
+        assertEquals("the legend $legend 64 tall, the floor", 64.0, legend.height, 0.5)
+        assertTrue("the legend $legend at most 2 above 8 under the bar $bar", legend.minY >= bar.maxY + 8 - 2 - 0.5)
     }
 
     /**
