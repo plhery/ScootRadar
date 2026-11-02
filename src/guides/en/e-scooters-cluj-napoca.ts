@@ -19,7 +19,7 @@ const guide: Guide = {
         'Bolt and Lime rent e-scooters (trotinete electrice) in Cluj-Napoca, each through its own app. Drawing up new rules in spring 2026, the city hall began talks with Lime, which was open to them, and was to continue with Bolt, deputy mayor Dan Tarcea told Radio Cluj on 21 April 2026.',
         'At 03:47 on Monday 2 November 2026, Romanian time, the [Cluj-Napoca map](map:ro:Cluj-Napoca) showed about 320 Bolt scooters free to rent at that moment and about 650 Lime scooters as last counted.',
         'Rental scooters come under the rules the Local Council adopted on 3 November 2020 (HCL 790/2020). An operator needs a yearly permit to use public land, the city may cap the number of scooters (art. 9), and each scooter must carry the operator’s name (art. 19).',
-        'Bolt and Lime also rent scooters in [Bucharest](guide:bucharest). New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Bolt and Lime also rent scooters in [Bucharest](guide:bucharest) and [Sibiu](guide:sibiu). New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {

@@ -78,7 +78,7 @@ const guide: Guide = {
       blocks: [
         '**No curfew in the law.** The Traffic Act sets no night ban for e-scooters, and at 01:28 on a Monday the map showed 1,295 free to rent. After dark you need a white light at the front and a red one at the back (§ 87). If a scooter can’t take those lights, its rider must use a light on paths and pavements and may not ride on the road in the dark or in poor visibility (§ 31).',
         '**Winter.** When Tartu’s bike-share e-bikes came back on the streets on 9 March 2026, the city warned that early-spring mornings could still be slippery and reminded cyclists that people on foot have priority on the pavement. On frosty mornings, check the app and the pavement before you set off.',
-        'Travelling on? See our guides to [Tallinn](guide:tallinn), where the city sets slow zones and parking areas by regulation, and [Riga](guide:riga).',
+        'Travelling on? See our guides to [Pärnu](guide:parnu), where summer nights have a lower speed limit, [Tallinn](guide:tallinn), where the city sets slow zones and parking areas by regulation, and [Riga](guide:riga).',
       ],
     },
     {
