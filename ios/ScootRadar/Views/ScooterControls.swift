@@ -2881,7 +2881,7 @@ struct ZoneLegend: View {
             }
             ForEach(lines, id: \.key) { line in
                 HStack(spacing: 6) {
-                    ZoneSwatch(kind: line.kind)
+                    ZoneSwatch(kind: line.kind, timed: line.timed)
                         .opacity(line.inForce ? 1 : CityRuleZone.dimmed)
                     Text(line.text)
                         .fixedSize(horizontal: false, vertical: true)
@@ -2942,8 +2942,8 @@ struct ZoneLegend: View {
     /// A line for each of the cities' rules whose hours set it apart, or that does not hold yet, by kind,
     /// hours and whether they hold now, the strongest rule first: "No riding 12:00–23:00",
     /// "No riding (not now)".
-    var ruleLines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: String)] {
-        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: String)] = []
+    var ruleLines: [(key: String, kind: ScooterZoneKind, inForce: Bool, timed: Bool, text: String)] {
+        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, timed: Bool, text: String)] = []
         // Hundreds of a city's zones may be in view, and make a few lines.
         var keys = Set<String>()
         for kind in ScooterZoneKind.allCases {
@@ -2954,7 +2954,7 @@ struct ZoneLegend: View {
                 guard keys.insert(key).inserted else { continue }
                 var text = hours.isEmpty ? kind.label : "\(kind.label) \(hours)"
                 if !shown.inForce { text += " (\(String(localized: "not now")))" }
-                lines.append((key, kind, shown.inForce, text))
+                lines.append((key, kind, shown.inForce, !hours.isEmpty, text))
             }
         }
         return lines
@@ -2993,6 +2993,8 @@ struct ZoneLegend: View {
 /// kinds apart without their colours.
 private struct ZoneSwatch: View {
     let kind: ScooterZoneKind
+    /// A city's rule with hours: no riding hatched the other way, as the map draws it.
+    var timed = false
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -3004,8 +3006,8 @@ private struct ZoneSwatch: View {
                 Canvas { context, size in
                     var lines = Path()
                     for c in stride(from: 0, through: size.width + size.height, by: 4) {
-                        lines.move(to: CGPoint(x: c, y: 0))
-                        lines.addLine(to: CGPoint(x: c - size.height, y: size.height))
+                        lines.move(to: CGPoint(x: c, y: timed ? size.height : 0))
+                        lines.addLine(to: CGPoint(x: c - size.height, y: timed ? 0 : size.height))
                     }
                     context.stroke(lines, with: .color(color.opacity(0.55)), lineWidth: 1.5)
                 }

@@ -153,8 +153,10 @@ providers shown are merged, so one provider shown shows its own. A legend beside
 the locate button says what the colours mean, or asks to zoom in, or says that
 none are published here or that they can't be had right now. It names each kind
 once, whether the operators or a city set it: a city's rule has a line of its
-own only for its hours. Who sets the cities' zones is credited once each, small,
-at its foot, linked to where they say so.
+own only for its hours. A rule with hours, such as Seoul's streets, is hatched
+the other way, on the map and on its line, and drawn apart from no riding at
+all hours. Who sets the cities' zones is credited once each, small, at its
+foot, linked to where they say so.
 
 **Location problems.** A card under the search bar: **Location is off** with
 **Open Settings** and **Search a place**; restricted on this device; or not

@@ -8,13 +8,16 @@ import UIKit
 /// a street, it is drawn once, within one edge. Only the zones handed in are
 /// merged, those of the providers shown, so a filter on one provider leaves its
 /// own. Zones drawn dimmer, a city's rules outside their hours, are merged
-/// apart from the others.
+/// apart from the others, and so are a city's rules with hours, Seoul's
+/// streets, whose no riding is hatched the other way.
 final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
     /// One piece of a kind's merged zones, its outline and its holes, in map
     /// points from the corner of the overlay.
     struct Shape {
         let kind: ScooterZoneKind
         let strength: CGFloat
+        /// A city's rule with hours.
+        let timed: Bool
         let path: CGPath
         let bounds: MKMapRect
     }
@@ -29,7 +32,7 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
 
     init(zones: [ScooterZone], isDark: Bool) {
         let polygons = zones.map { zone in
-            (kind: zone.kind, strength: CGFloat(zone.strength),
+            (kind: zone.kind, strength: CGFloat(zone.strength), timed: zone.timed,
              points: zone.polygons.map { polygon in polygon.map { ring in ring.map { MKMapPoint($0.coordinate) } } })
         }
         let points = polygons.flatMap { $0.points.flatMap { $0.flatMap { $0 } } }
@@ -41,8 +44,8 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
         // Near the corner, where a CGFloat has its centimetres to spare.
         shapes = ScooterZoneKind.allCases.flatMap { kind -> [Shape] in
             let ofKind = polygons.filter { $0.kind == kind }
-            return Set(ofKind.map(\.strength)).sorted().flatMap { strength -> [Shape] in
-                let paths = ofKind.filter { $0.strength == strength }.flatMap(\.points).map { polygon in
+            return Set(ofKind.map(\.strength)).sorted().flatMap { strength in [false, true].flatMap { timed -> [Shape] in
+                let paths = ofKind.filter { $0.strength == strength && $0.timed == timed }.flatMap(\.points).map { polygon in
                     let path = CGMutablePath()
                     for ring in polygon {
                         path.addLines(between: ring.map { CGPoint(x: $0.x - corner.x, y: $0.y - corner.y) })
@@ -54,11 +57,11 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
                 return merged.componentsSeparated(using: .evenOdd).map { piece in
                     let box = piece.boundingBoxOfPath
                     return Shape(
-                        kind: kind, strength: strength, path: piece,
+                        kind: kind, strength: strength, timed: timed, path: piece,
                         bounds: MKMapRect(x: corner.x + box.minX, y: corner.y + box.minY, width: box.width, height: box.height)
                     )
                 }
-            }
+            } }
         }
         self.isDark = isDark
         super.init()
@@ -79,13 +82,15 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
 
 /// Draws the zones as the web does (MapComponent.tsx): each kind's fills as
 /// one translucent layer, the strongest rule on top, those drawn dimmer in a
-/// fainter layer of their own; then every edge. MapKit
+/// fainter layer of their own, a city's rules with hours hatched the other
+/// way; then every edge. MapKit
 /// draws tiles of it on several threads at once: all it reads is made when
 /// it is.
 final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
     private struct Shape {
         let kind: ScooterZoneKind
         let strength: CGFloat
+        let timed: Bool
         let path: CGPath
         let bounds: MKMapRect
     }
@@ -108,7 +113,7 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
         )
         shapes = overlay.shapes.map { shape in
             Shape(
-                kind: shape.kind, strength: shape.strength,
+                kind: shape.kind, strength: shape.strength, timed: shape.timed,
                 path: shape.path.copy(using: &transform) ?? shape.path, bounds: shape.bounds
             )
         }
@@ -131,7 +136,7 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
                 context.beginTransparencyLayer(auxiliaryInfo: nil)
                 for shape in ofKind where shape.strength == strength {
                     if kind == .noRide {
-                        hatch(shape.path, in: tile, color: color, unit: unit, context: context)
+                        hatch(shape.path, in: tile, color: color, unit: unit, reversed: shape.timed, context: context)
                     } else {
                         context.addPath(shape.path)
                         context.setFillColor(color)
@@ -189,8 +194,11 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
     }
 
     /// No riding: a ground and lines across it at 45°, the lines laid on the
-    /// map's own grid so that they run on from one tile to the next.
-    private func hatch(_ path: CGPath, in tile: CGRect, color: CGColor, unit: CGFloat, context: CGContext) {
+    /// map's own grid so that they run on from one tile to the next. Rising to
+    /// the right; reversed, a city's rule with hours, falling to it.
+    private func hatch(
+        _ path: CGPath, in tile: CGRect, color: CGColor, unit: CGFloat, reversed: Bool, context: CGContext
+    ) {
         let box = path.boundingBoxOfPath.intersection(tile.insetBy(dx: -unit, dy: -unit))
         guard !box.isNull, !box.isEmpty else { return }
         context.saveGState()
@@ -198,13 +206,22 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
         context.clip(using: .evenOdd)
         context.setFillColor(color.copy(alpha: ScooterZoneLook.hatchGroundOpacity) ?? color)
         context.fill(box)
-        // Lines x + y = c, ScooterZoneLook.hatchSpacing apart across them.
+        // Lines x + y = c, or reversed x − y = c, ScooterZoneLook.hatchSpacing apart across them.
         let step = ScooterZoneLook.hatchSpacing * unit * sqrt(2)
-        var c = ((box.minX + box.minY) / step).rounded(.down) * step
-        while c <= box.maxX + box.maxY {
-            context.move(to: CGPoint(x: c - box.minY, y: box.minY))
-            context.addLine(to: CGPoint(x: c - box.maxY, y: box.maxY))
-            c += step
+        if reversed {
+            var c = ((box.minX - box.maxY) / step).rounded(.down) * step
+            while c <= box.maxX - box.minY {
+                context.move(to: CGPoint(x: c + box.minY, y: box.minY))
+                context.addLine(to: CGPoint(x: c + box.maxY, y: box.maxY))
+                c += step
+            }
+        } else {
+            var c = ((box.minX + box.minY) / step).rounded(.down) * step
+            while c <= box.maxX + box.maxY {
+                context.move(to: CGPoint(x: c - box.minY, y: box.minY))
+                context.addLine(to: CGPoint(x: c - box.maxY, y: box.maxY))
+                c += step
+            }
         }
         context.setStrokeColor(color)
         context.setLineWidth(ScooterZoneLook.hatchWidth * unit)

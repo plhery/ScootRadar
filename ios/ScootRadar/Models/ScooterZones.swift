@@ -39,6 +39,9 @@ struct ScooterZone: Equatable, Sendable, Identifiable {
     let polygons: [[[GeoPoint]]]
     /// How strongly it is drawn: a city's rule outside its hours is dimmer (CityRuleZone).
     var strength: Double = 1
+    /// A city's rule with hours, Seoul's streets: no riding hatched the other way, so that it is told
+    /// from no riding at all hours where they meet.
+    var timed = false
 }
 
 struct ScooterZoneResponse: Equatable, Sendable {
@@ -247,11 +250,11 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         let rule: CityRuleZone
         let inForce: Bool
 
-        /// As the map draws it: a zone of its kind, dimmer outside its hours.
+        /// As the map draws it: a zone of its kind, dimmer outside its hours, hatched the other way if it has any.
         var mapZone: ScooterZone {
             ScooterZone(
                 id: "rule:\(rule.id)", provider: "city", kind: rule.kind, maxSpeedKph: nil, polygons: rule.polygons,
-                strength: inForce ? 1 : CityRuleZone.dimmed
+                strength: inForce ? 1 : CityRuleZone.dimmed, timed: !rule.hours.isEmpty
             )
         }
     }

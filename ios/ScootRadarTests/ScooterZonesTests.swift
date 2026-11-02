@@ -790,6 +790,8 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(legend.kinds(besideNote: false), [.noRide, .noParking, .slow, .parking])
         let lines = legend.ruleLines
         XCTAssertEqual(lines.map(\.kind), [.noRide])
+        // Its swatch hatched the other way, as the map draws it.
+        XCTAssertEqual(lines.map(\.timed), [true])
         // "No riding 12:00–23:00", in the user's format.
         XCTAssertTrue(lines[0].text.hasPrefix("\(ScooterZoneKind.noRide.label) "), lines[0].text)
         XCTAssertTrue(lines[0].text.contains("–"), lines[0].text)
@@ -829,6 +831,19 @@ final class CityRuleZoneTests: XCTestCase {
         ], isDark: false)
         XCTAssertEqual(Set(overlay.shapes.map(\.strength)), [CityRuleZone.dimmed, 1])
         XCTAssertTrue(overlay.shapes.allSatisfy { $0.kind == .noRide })
+    }
+
+    func testAStreetWithHoursIsDrawnApartFromNoRidingAtAllHoursToBeHatchedTheOtherWay() throws {
+        let rule = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
+        let ring = rule.polygons[0][0]
+        let street = CityRuleZone.Shown(rule: rule, inForce: true).mapZone
+        XCTAssertTrue(street.timed)
+        let overlay = ScooterZoneOverlay(zones: [
+            street,
+            ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]])
+        ], isDark: false)
+        XCTAssertEqual(Set(overlay.shapes.map(\.timed)), [false, true])
+        XCTAssertTrue(overlay.shapes.allSatisfy { $0.kind == .noRide && $0.strength == 1 })
     }
 
     /// Ray casting.
