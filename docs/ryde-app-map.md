@@ -522,11 +522,42 @@ copy declaring `com.apple.locationd.simulation` was killed before executing.
 No location simulation was started, and no system protection or Ryde binary was
 changed. These tests did not establish a usable location override on this Mac.
 
+The user subsequently authenticated an administrator-level run of the same
+read-only status helper. It also returned `querySucceeded=false`; administrator
+access did not make this simulation interface usable. The private authentication
+file was removed after the command.
+
 The checked disk outputs therefore do not supply a working bridge. Moving the
 map remains a prerequisite for the Drammen test; exporting its decrypted result
 also requires an app interface or another verified access path. Keeping Ryde
 open by itself has not demonstrated either capability. Private snapshots and
 helper diagnostics are under `mac-session/drammen-bridge-20261102/` outside Git.
+
+### Prepared local proxy bridge experiment
+
+A different bridge design could let the unmodified app generate fresh DPoP
+proofs while a local proxy substitutes a bridge-owned encryption public key
+during normal session-key rotation. The proxy would then decrypt the server's
+envelopes and re-encrypt them to the app's original public key. This depends on
+live acceptance of the substituted key and correct key-id translation; neither
+has been tested. DPoP alone does not bind the request body, as described in
+[RFC 9449 section 11.7](https://www.rfc-editor.org/rfc/rfc9449.html#section-11.7).
+Additional Ryde checks may still prevent this approach.
+
+A first, capture-only test was prepared under
+`mac-session/bridge-proxy-20261102/`, outside Git. Its local TLS handshake worked
+with an explicitly trusted test client. Offline ECIES translation passed the
+existing Ryde decryptor, including wrong-recipient and tampering rejection.
+These checks do not establish compatibility with the actual Mac app.
+
+The prepared leaf certificate is not a CA. Proposed trust is restricted to the
+signed Ryde executable, TLS server authentication and `api.ryde.vip`; the PAC
+routes only that hostname through localhost. The original proxy configuration
+is backed up, and an independent guard is prepared to restore it and remove the
+certificate after one map capture, a TLS failure or five minutes. Activation is
+pending the user's approval of that scoped trust change. No system certificate
+or proxy setting was changed, no native-app exchange was intercepted, and no
+session-key rotation was attempted. Unused local listeners were stopped.
 
 ## Recheck: model spoofing, attestation and session keys
 
