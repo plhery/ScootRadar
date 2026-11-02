@@ -346,6 +346,7 @@ import singenDe from './de/e-scooter-singen';
 import bremerhavenDe from './de/e-scooter-bremerhaven';
 import szegedEn from './en/e-scooters-szeged';
 import athensEn from './en/e-scooters-athens';
+import thessalonikiEn from './en/e-scooters-thessaloniki';
 import copenhagenEn from './en/e-scooters-copenhagen';
 import sotraNb from './nb/elsparkesykkel-sotra';
 
@@ -694,6 +695,7 @@ export const GUIDES: readonly Guide[] = [
   bremerhavenDe,
   szegedEn,
   athensEn,
+  thessalonikiEn,
   copenhagenEn,
   sotraNb,
 ];
