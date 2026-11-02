@@ -37,7 +37,7 @@ const guide: Guide = {
           ],
         },
         'On 2 November 2026, decision 527/2025 was still the latest on the regulation that Diavgeia listed for the municipality. The decisions are in Greek. For a visitor the practical rule is simple: end a ride only where the app allows, and read its map before you park.',
-        'The new Highway Code it follows is law 5209/2025, published in the Government Gazette (ΦΕΚ Α΄ 100) on 13 June 2025. Each town’s rules apply only within its borders, so check the app again if you ride into a neighbouring municipality.',
+        'The new Highway Code it follows is law 5209/2025, published in the Government Gazette (ΦΕΚ Α΄ 100) on 13 June 2025. Each town’s rules apply only within its borders, so check the app again if you ride into a neighbouring municipality. Next door, the Municipality of Kalamaria has a council decision of its own, 196/2025: by its title on Diavgeia, it sets the fees e-scooter rental firms pay for the use of public space, and fines for the use of e-scooters. It was amended in 2026 (decision 240/2026 of 21 May, approved on 23 June in decision 230/2026).',
         { note: '**Two rulebooks apply at once.** The city’s regulation covers how e-scooters circulate and park in Thessaloniki; Greek national law, below, sets the age, helmet, speed and fines for every rider.' },
       ],
     },
@@ -97,7 +97,7 @@ const guide: Guide = {
     {
       heading: 'Greece’s e-scooter rules and fines in one table',
       blocks: [
-        'These are the national rules that apply in Thessaloniki, as in [Athens](guide:athens), [Kos](guide:kos) and [Rhodes](guide:rhodes).',
+        'These are the national rules that apply in Thessaloniki, as in [Athens](guide:athens), [Heraklion](guide:heraklion), [Kos](guide:kos) and [Rhodes](guide:rhodes).',
         {
           table: {
             caption: 'E-scooter rules in Greece on 2 November 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
@@ -180,7 +180,6 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Government Gazette ΦΕΚ Α΄ 117, 24 July 2026: law 5322/2026, e-scooter articles 73–81 (Greek)', url: 'https://search.et.gr/el/fek/?fekId=802862' },
     { title: 'Municipality of Thessaloniki, Municipal Committee: act 1383/2024, approving the regulation and referring it to the council, 11 December 2024 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%A55%CE%99%CE%A9%CE%A15-7%CE%9E1' },
     { title: 'Municipality of Thessaloniki: decision 835/2024, the e-scooter regulation, 16 December 2024 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A1%CE%A8%CE%9E%CE%A8%CE%A9%CE%A15-9%CE%A9%CE%9A' },
     { title: 'Municipality of Thessaloniki: decision 86/2025, the first amendment, 10 March 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%99%CE%9A0%CE%A9%CE%A15-3%CE%A92' },
@@ -188,6 +187,7 @@ const guide: Guide = {
     { title: 'Municipality of Thessaloniki: decision 416/2025, amending the June decision, 14 July 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%A319%CE%A9%CE%A15-%CE%97%CE%94%CE%94' },
     { title: 'Municipality of Thessaloniki, Municipal Committee: act 1191/2025, the regulation following the new Highway Code, 8 October 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%A48%CE%96%CE%A9%CE%A15-%CE%98%CE%A8%CE%9E' },
     { title: 'Municipality of Thessaloniki: decision 527/2025, its e-scooter regulation, 13 October 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%991%CE%A5%CE%A9%CE%A15-%CE%A1%CE%9D%CE%A1' },
+    { title: 'Municipality of Kalamaria: decision 230/2026, approving the amendment of council decision 196/2025 on fees for e-scooter rental firms and fines for e-scooter use, 23 June 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/9%CE%A5%CE%A16%CE%A9%CE%95%CE%A1-%CE%A0%CE%95%CE%A0' },
     { title: 'Municipality of Athens: decision 717/2025, the e-scooter regulation, 20 November 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%948%CE%91%CE%A96%CE%9C-9%CE%92%CE%98' },
   ],
 };
