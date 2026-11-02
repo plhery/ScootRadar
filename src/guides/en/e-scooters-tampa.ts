@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Tampa: Lime and Spin, the rules, corral parking and where you can’t ride',
   lede: 'E-scooters in Tampa come from two companies, Lime and Spin, under a City contract that runs to November 2028. Spin’s open data lists no prices, so check the app before you unlock. Florida law asks for no driver’s licence to ride a scooter, and Spin rents only to people aged 18 or over. End every ride in a designated corral, and never ride on the Tampa Riverwalk, Bayshore Boulevard or 7th Avenue in Ybor City.',
   published: '2026-10-26',
-  updated: '2026-10-26',
+  updated: '2026-11-02',
   city: 'us:fl:Tampa',
   sections: [
     {
@@ -70,9 +70,10 @@ const guide: Guide = {
           list: [
             '**The Tampa Riverwalk.** Friends of the Riverwalk also says scooters are not permitted on it, though you can scoot to it.',
             '**Bayshore Boulevard.** The City names the whole boulevard. Spin’s open data marks the path along its bay side, about 4 miles (6 km), as a no-ride zone.',
-            '**7th Avenue** in Ybor City. Spin’s open data marks it as no-ride from Nuccio Parkway to just past 21st Street.',
+            '**7th Avenue** in Ybor City. Spin’s open data marks it as no-ride from about Nuccio Parkway to just past 22nd Street.',
           ],
         },
+        'Our [Tampa map](map:us:fl:Tampa) draws all three as no-riding bands from zoom 14, credited to the City, along OpenStreetMap’s ways: the Riverwalk’s paths, Bayshore Boulevard from Platt Street to MacDill Air Force Base, and 7th Avenue across Ybor City as the City bounds it, from Nebraska Avenue to 22nd Street. Hyde Park Village and Armature Works are not drawn.',
         'In April 2024 the City also named Hyde Park Village and Armature Works as places not to ride; its programme page lists only the three above, so check the app there.',
         '**Gasparilla.** In 2026 the City set a no-ride zone for shared e-scooters and e-bikes around both Gasparilla parades, the children’s on 24 January and Pirate Fest on 31 January. The 2027 parades are on 23 and 30 January: watch for the City’s notice.',
         'Spin’s open data held 82 no-ride zones on 26 October 2026: some 60 small ones in and around downtown, others over both universities, MacDill Air Force Base and both airports. At street zoom the [Tampa map](map:us:fl:Tampa) draws Spin’s no-ride and no-parking zones and the City’s 67 multi-use hubs and 92 public bike racks (CC0), but no Lime zones: check Lime’s app before you set off.',

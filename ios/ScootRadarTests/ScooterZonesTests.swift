@@ -570,6 +570,32 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertTrue(CityRuleZone.shown(over: east, zoom: 16, at: night).filter { $0.rule.id.hasPrefix("edmonton-") }.isEmpty)
     }
 
+    func testTampasRiverwalkBayshoreAnd7thAvenueAreShownAtAllHoursCreditedToTheCity() throws {
+        // 2 November 2026, 03:30 in Tampa (UTC-5).
+        let night = Date(timeIntervalSince1970: 1_793_608_200)
+        // The City's hubs and racks are shown too; only its three streets are its riding rules.
+        let streets: Set = ["tampa-riverwalk", "tampa-bayshore-boulevard", "tampa-7th-avenue-ybor-city"]
+        func ids(_ view: GeoBounds) -> [String] {
+            CityRuleZone.shown(over: view, zoom: 16, at: night).map(\.rule.id).filter(streets.contains)
+        }
+        // Curtis Hixon Park, on the Riverwalk; Florida Avenue, a few blocks inland, has no rule.
+        let park = CityRuleZone.shown(over: GeoBounds(south: 27.95, west: -82.4655, north: 27.952, east: -82.4635), zoom: 16, at: night)
+            .filter { streets.contains($0.rule.id) }
+        XCTAssertEqual(park.map(\.rule.id), ["tampa-riverwalk"])
+        XCTAssertEqual(park.map(\.inForce), [true])
+        let riverwalk = try XCTUnwrap(park.first?.rule)
+        XCTAssertEqual(riverwalk.authority, "City of Tampa, lines © OpenStreetMap")
+        XCTAssertEqual(riverwalk.timeZone, "America/New_York")
+        XCTAssertTrue(riverwalk.firstDay.isEmpty && riverwalk.hours.isEmpty)
+        XCTAssertEqual(ids(GeoBounds(south: 27.949, west: -82.4565, north: 27.951, east: -82.4545)), [])
+        // Bayshore Boulevard by the bay; none inside MacDill Air Force Base.
+        XCTAssertEqual(ids(GeoBounds(south: 27.919, west: -82.4915, north: 27.921, east: -82.4885)), ["tampa-bayshore-boulevard"])
+        XCTAssertEqual(ids(GeoBounds(south: 27.858, west: -82.49, north: 27.862, east: -82.486)), [])
+        // 7th Avenue at 15th Street, in Ybor City; it runs on east of 22nd Street, open to riding.
+        XCTAssertEqual(ids(GeoBounds(south: 27.959, west: -82.444, north: 27.9615, east: -82.441)), ["tampa-7th-avenue-ybor-city"])
+        XCTAssertEqual(ids(GeoBounds(south: 27.959, west: -82.432, north: 27.9615, east: -82.429)), [])
+    }
+
     func testAStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
         // About 200 m east, then 100 m north.
         let line = [

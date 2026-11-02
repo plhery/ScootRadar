@@ -131,6 +131,24 @@ describe('ruleZonesInView', () => {
     expect(ruleZonesInView({ bounds: { south: 53.517, west: -113.4785, north: 53.519, east: -113.477 }, zoom: 16 }, night)).toEqual([]);
   });
 
+  it('gives Tampa\'s Riverwalk, Bayshore Boulevard and 7th Avenue in Ybor City at all hours, credited to the City', () => {
+    const night = Date.parse('2026-11-02T08:30:00Z');
+    const only = (bounds: { south: number; west: number; north: number; east: number }) =>
+      ruleZonesInView({ bounds, zoom: 16 }, night).map(zone => zone.id);
+    // Curtis Hixon Park, on the Riverwalk; Florida Avenue, a few blocks inland, has no rule.
+    const [riverwalk] = ruleZonesInView({ bounds: { south: 27.95, west: -82.4655, north: 27.952, east: -82.4635 }, zoom: 16 }, night);
+    expect(riverwalk).toMatchObject({ id: 'tampa-riverwalk', inForce: true, authority: 'City of Tampa, lines © OpenStreetMap', timeZone: 'America/New_York' });
+    expect(only({ south: 27.949, west: -82.4565, north: 27.951, east: -82.4545 })).toEqual([]);
+    // Bayshore Boulevard by the bay, its carriageways and the path beside them; none inside MacDill Air Force Base.
+    const [bayshore] = ruleZonesInView({ bounds: { south: 27.919, west: -82.4915, north: 27.921, east: -82.4885 }, zoom: 16 }, night);
+    expect(bayshore.id).toBe('tampa-bayshore-boulevard');
+    expect(bayshore.polygons.some(([outer]) => polygonContainsPoint(outer, 27.919588, -82.490444))).toBe(true);
+    expect(only({ south: 27.858, west: -82.49, north: 27.862, east: -82.486 })).toEqual([]);
+    // 7th Avenue at 15th Street, in Ybor City; it runs on east of 22nd Street, open to riding.
+    expect(only({ south: 27.959, west: -82.444, north: 27.9615, east: -82.441 })).toEqual(['tampa-7th-avenue-ybor-city']);
+    expect(only({ south: 27.959, west: -82.432, north: 27.9615, east: -82.429 })).toEqual([]);
+  });
+
   it('keeps each street whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);

@@ -296,9 +296,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   2026). Tampa's map server answers only the United States, but its
   GeoHub's download of the same layer serves anywhere: its hubs and public
   bike racks are drawn since 31 October 2026, all but the six it marks
-  secure. Its no-riding streets (the Riverwalk, Bayshore Boulevard, 7th
-  Avenue in Ybor City, Hyde Park Village and Armature Works) are text alone,
-  and its virtual corrals are only in the operators' apps. Durham's and
+  secure. Its no-riding streets, the Riverwalk, Bayshore Boulevard and 7th
+  Avenue in Ybor City, are text alone, and are drawn from OpenStreetMap's
+  ways since 2 November 2026 (DATA_SOURCES.md); Hyde Park Village and
+  Armature Works, named in April 2024 but not on the programme page, are
+  not. Its virtual corrals are only in the operators' apps. Durham's and
   Newark's sites answer scripts with a Cloudflare challenge (Newark's open
   data, 1009, from outside the United States), and neither's GIS holds a
   scooter layer. Palmerston North's permit maps of August 2021 (its slow

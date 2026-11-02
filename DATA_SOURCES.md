@@ -667,8 +667,8 @@ connectors (58 km of lines, 1,252 points); the Bloomingdale Trail from Ridgeway
 to Ashland Avenue; and the Chicago Riverwalk on the Main Branch's south bank,
 from Lake Shore Drive to Lake Street, without its steps or the other riverwalks
 along the river. They are credited "Chicago DOT, lines © OpenStreetMap", and the
-United States' credits add "Chicago's no-ride trails traced on OpenStreetMap,
-ODbL". Sheridan Road from Devon to Bryn Mawr Avenue, a no-scooter zone since
+United States' credits add "Chicago's no-ride trails and Tampa's no-ride
+streets traced on OpenStreetMap, ODbL". Sheridan Road from Devon to Bryn Mawr Avenue, a no-scooter zone since
 July 2026 by the Sun-Times, is not on CDOT's page and is not drawn. A rule zone
 counts as over a view only where a piece of its lines is, not wherever its
 bounds are: the Lakefront Trail's bounds cover the Loop.
@@ -684,6 +684,26 @@ Gateway Boulevard, as three lines meeting there made the bands' union fail.
 They are credited "City of Edmonton, lines © OpenStreetMap", and Canada's
 credits add "Edmonton's no-ride stretch of Whyte Avenue traced on
 OpenStreetMap, ODbL". Its slow zones and Mill Woods' corrals are not drawn.
+
+Tampa's "shared micromobility vehicles shall not be ridden in the following
+locations: Tampa Riverwalk, Bayshore Boulevard, 7th Avenue"
+([City of Tampa](https://www.tampa.gov/tss-transportation/programs/shared-micromobility-program),
+updated 7 May 2025), which publishes no map of them. The lines are
+OpenStreetMap's, © OpenStreetMap contributors under the ODbL, read on 2
+November 2026: the Tampa Riverwalk's footways and cycleways, its steps left
+out (about 4.8 km); Bayshore Boulevard's carriageways from Platt Street to
+the fence of MacDill Air Force Base, whose roads aren't the City's (about
+17 km of carriageway, two for most of the way); and East 7th Avenue from
+Nebraska Avenue to 22nd Street (1.6 km). The City's notice of April 2024 has
+"7th Ave. (Ybor City)" and neither gives the avenue's ends, so they are Ybor
+City's as the City bounds its Ybor City CRA, "22nd Street on the east,
+Nebraska Avenue on the west"
+([City of Tampa](https://www.tampa.gov/CRAs/ybor-city/history)); Spin's
+no-ride zone on it, in its GBFS, runs from about Nuccio Parkway to just past
+22nd Street. They are credited "City of Tampa, lines © OpenStreetMap", and
+the United States' credits name them beside Chicago's trails.
+Hyde Park Village and Armature Works, in the April 2024 notice but not on the
+programme page, are not drawn.
 
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as
