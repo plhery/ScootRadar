@@ -340,6 +340,7 @@ import lodzEn from './en/e-scooters-lodz';
 import szczecinEn from './en/e-scooters-szczecin';
 import kaunasEn from './en/e-scooters-kaunas';
 import clujNapocaEn from './en/e-scooters-cluj-napoca';
+import ferraraIt from './it/monopattini-sharing-ferrara';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -680,4 +681,5 @@ export const GUIDES: readonly Guide[] = [
   szczecinEn,
   kaunasEn,
   clujNapocaEn,
+  ferraraIt,
 ];

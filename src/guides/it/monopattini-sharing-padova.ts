@@ -135,7 +135,7 @@ const guide: Guide = {
       blocks: [
         'Il servizio di Dott copre anche Albignasego, Cadoneghe, Casalserugo, Legnaro, Limena, Mestrino, Ponte San Nicolò, Rubano, Selvazzano Dentro, Vigonza e Vigodarzere. La delibera del Comune vi distribuisce 1.165 mezzi in più, ma monopattini ne assegna solo a quattro: Legnaro 100, Rubano 50, Selvazzano Dentro 30 e Mestrino 20. Negli altri la delibera prevede solo bici ed e-bike.',
         'Dal 30 luglio 2026, annunciava il Comune di Rubano, Dott c’è anche a Rubano, Selvazzano Dentro, Albignasego, Mestrino e Casalserugo. A Rubano tutto il territorio è una «no parking zone»: lasci il mezzo solo nei punti di sosta, 49 a luglio 2026, e fuori da quelli continui a pagare.',
-        'Più lontano, la mappa mostra i Dott a [Ferrara](map:it:Ferrara) e i Dott e i Lime a [Verona](map:it:Verona); per Milano c’è la guida ai [monopattini sharing a Milano](guide:milan).',
+        'Più lontano, la mappa mostra i Dott a [Ferrara](guide:ferrara) e i Dott e i Lime a [Verona](map:it:Verona); per Milano c’è la guida ai [monopattini sharing a Milano](guide:milan).',
       ],
     },
     {
