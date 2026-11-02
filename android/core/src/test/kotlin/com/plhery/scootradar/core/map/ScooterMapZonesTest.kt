@@ -8,6 +8,7 @@ import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.MapRegion
+import com.plhery.scootradar.core.model.PinnedStreets
 import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterClusteringPolicy
 import com.plhery.scootradar.core.model.ScooterResponse
@@ -308,6 +309,24 @@ class ScooterMapZonesTest {
     }
 
     // Android's own: where the area the cities' zones are picked over ends, and the zoom they are picked from.
+
+    /**
+     * A long street is in the legend only where a piece of it is in view (logic.md LOG-425): the Loop by Michigan Avenue
+     * at zoom 16, inside the lakefront trail's bounds. The wider area its zones are picked over takes in the trail's
+     * end by Monroe Street, so its band is drawn, off the view's edge; the view stops west of every point of the trail,
+     * so no line says so. On the trail's whole bounds the legend named it here.
+     */
+    @Test
+    fun aStreetIsInTheLegendOnlyWhereAPieceOfItIsInView() = runTest {
+        val loop = MapRegion(center = GeoPoint(latitude = 41.880, longitude = -87.6235), latitudeDelta = 0.004, longitudeDelta = 0.007)
+        val trail = PinnedStreets.chicagoTrails.single { it.id == "chicago-lakefront-trail" }
+        assertTrue(trail.bounds.intersects(GeoBounds(loop)))
+        val model = makeController(ZoneStubAPI(), catalog = ScooterCatalog.Listed(ruleZones = listOf(trail)))
+        model.setShowsZones(false)
+        model.updateViewport(loop, zoom = 16)
+        assertEquals(listOf("rule:chicago-lakefront-trail"), model.mapZones.value.map { it.id })
+        assertTrue(model.mapRuleZones.value.isEmpty())
+    }
 
     @Test
     fun aCitysZonesArePickedAgainOnceTheViewLeavesTheMapAndHalfOfItAgainOnEachSide() = runTest {
