@@ -34,7 +34,6 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import java.time.Instant
-import kotlin.math.abs
 
 // UI-410 on ScootRadar_Phone_Min: the locate row over the dock, ScooterMapScreen.swift:263-276.
 
@@ -76,6 +75,8 @@ class LegendBesideNearMeTest {
         assertTrue("the legend $legend over the button $button", legend.maxY <= button.minY - 10 + 0.5)
         assertTrue("the legend $legend wider than beside the button $button", legend.width > 360 - 20 - button.width)
         assertEquals("the button's foot, the row's", frame(frames.dock, "dock").minY - 10, button.maxY, 0.5)
+        // Across the row's width, the legend is what the map centres a place or the scooters above.
+        assertEquals("the foot of what the map shows clear", legend.minY, checkNotNull(frames.chrome.bottomTop), 0.5)
     }
 
     /** At the default size the line fits beside "Near me": the iPhone's row, both on its foot. */
@@ -95,13 +96,26 @@ class LegendBesideNearMeTest {
         assertBeside()
     }
 
-    private fun assertBeside() {
+    /**
+     * On the smallest phone in landscape at font scale 2.0, once located, the line wraps the same over the round button
+     * as beside it, and over it would only reach higher, up to the status bar: it stays beside it, the iPhone's row.
+     */
+    @Test
+    @Config(qualifiers = PHONE_MIN_LANDSCAPE)
+    fun inALandscapeRowTheLineStaysBesideTheButtonWhereOverItItWouldReachHigher() {
+        useFontScale(2f)
+        show(located = true)
+        assertBeside(underTheBar = false)
+    }
+
+    private fun assertBeside(underTheBar: Boolean = true) {
         val legend = frame(frames.zoneLegend, "legend")
         val button = frame(frames.locateButton, "locate button")
         val top = frame(frames.top, "search bar")
         assertTrue("the legend $legend beside the button $button", legend.maxX <= button.minX - 20 + 0.5)
         assertEquals("the legend's foot, the button's", button.maxY, legend.maxY, 0.5)
-        assertTrue("the legend $legend under the search bar $top", legend.minY >= top.maxY)
+        if (underTheBar) assertTrue("the legend $legend under the search bar $top", legend.minY >= top.maxY)
+        assertEquals("the foot of what the map shows clear, the button's top", button.minY, checkNotNull(frames.chrome.bottomTop), 0.5)
     }
 
     private fun frame(frame: ScreenRect?, name: String): ScreenRect = checkNotNull(frame) { "no $name" }
@@ -148,5 +162,8 @@ class LegendBesideNearMeTest {
     private companion object {
         /** ScootRadar_Phone_Min: 720 × 1280 px at 320 dpi. */
         const val PHONE_MIN = "w360dp-h640dp-xhdpi"
+
+        /** ScootRadar_Phone_Min turned on its side. */
+        const val PHONE_MIN_LANDSCAPE = "w640dp-h360dp-xhdpi"
     }
 }

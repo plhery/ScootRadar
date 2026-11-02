@@ -272,7 +272,8 @@ class GroundOverlaysTest {
      */
     @Test
     fun antalyasBoulevardIsDrawnWholeFromZoom14AndQuickly() {
-        val boulevard = CityRuleZone.all.single { it.id.startsWith("antalya-") }
+        // By its id, and below only it of what the map shows: another street of the catalog's near it can't fail this.
+        val boulevard = CityRuleZone.all.single { it.id == "antalya-yasar-sobutay-bulvari" }
         // Each point of the lines and the middle of each stretch between them, from Trendy Lara in the east.
         val points = boulevard.lines.flatMap { line ->
             line + line.zipWithNext { a, b -> GeoPoint((a.latitude + b.latitude) / 2, (a.longitude + b.longitude) / 2) }
@@ -297,10 +298,11 @@ class GroundOverlaysTest {
             log.append("zoom 14 to drawn: ${SystemClock.uptimeMillis() - asked} ms\n")
             assertEquals(14, ground.phone.onMain { ground.controller.viewportZoom.value })
             val shown = ground.phone.onMain { ground.controller.mapRuleZones.value }
-            assertEquals(listOf(boulevard.id to true), shown.map { it.rule.id to it.inForce })
+            assertEquals(listOf(boulevard.id to true), shown.filter { it.rule.id == boulevard.id }.map { it.rule.id to it.inForce })
 
             // What the overlay's work takes for this view, off the main thread, as the layer does it.
-            val zones = ground.phone.onMain { ground.controller.mapZones.value }
+            val zones = ground.phone.onMain { ground.controller.mapZones.value }.filter { it.id == "rule:${boulevard.id}" }
+            assertEquals(1, zones.size)
             val scale = ground.phone.onMain { ZoneLayers.scale(ground.phone.map.cameraPosition.zoom) }
             val merging = mutableListOf<Long>()
             val drawing = mutableListOf<Long>()

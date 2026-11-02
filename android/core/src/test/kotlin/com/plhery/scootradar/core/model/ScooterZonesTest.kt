@@ -270,8 +270,8 @@ class ScooterZoneOverlayTest {
 
     /**
      * Every street's merged band covers its lines, each point and the middle of each stretch, so it has no gap, and
-     * no corner of it is further from them than half the band's width, so it has no spike (UI-411): the union's
-     * round-off might lose a piece or throw a point out.
+     * its furthest corner is half the band's width from them, so it has no spike and is not too thin (UI-411): the
+     * union's round-off might lose a piece or throw a point out.
      */
     @Test
     fun everyStreetsBandCoversItsLinesAndReachesNoFurther() {
@@ -294,7 +294,8 @@ class ScooterZoneOverlayTest {
             val furthest = overlay.shapes.flatMap { overlay.rings(of = it).flatten() }.maxOf { vertex ->
                 street.lines.minOf { line -> metresFrom(vertex, line) }
             }
-            assertTrue("${street.id}: a corner of its band ${"%.2f".format(Locale.ROOT, furthest)} m from its lines", furthest <= half * 1.02)
+            // And as wide as it should be: a band built narrower would cover the points above all the same.
+            assertTrue("${street.id}: a corner of its band ${"%.2f".format(Locale.ROOT, furthest)} m from its lines", furthest in half * 0.98..half * 1.02)
         }
     }
 
@@ -722,7 +723,7 @@ class CityRuleZoneTest {
     }
 
     @Test
-    fun antalyasBoulevardIsShownAtAllHoursSinceSeptember2025CreditedToUKOME() {
+    fun antalyasBoulevardIsShownAtAllHoursSinceSeptember2025() {
         // Trendy Lara, in Kundu, where its lines end; the boulevard runs on west into Güzeloba, where riding is allowed.
         val kundu = GeoBounds(south = 36.862, west = 30.915, north = 36.868, east = 30.925)
         val guzeloba = GeoBounds(south = 36.85, west = 30.83, north = 36.86, east = 30.855)
@@ -732,9 +733,10 @@ class CityRuleZoneTest {
         val shown = CityRuleZone.shown(over = kundu, zoom = 15, at = night, among = among)
         assertEquals(listOf("antalya-yasar-sobutay-bulvari"), shown.map { it.rule.id })
         assertEquals(listOf(true), shown.map { it.inForce })
+        // Its hours, kind and authority are the fixture's, pinned to the catalog of 67eed3a8 (logic.md LOG-370): the
+        // iPhone's checks of the catalog's (ScooterZonesTests.swift:520-521) are the generated data's here, every
+        // street credited "…, lines © OpenStreetMap" (above).
         val boulevard = shown.single().rule
-        assertTrue(boulevard.hours.isEmpty())
-        assertEquals(ScooterZoneKind.NoRide, boulevard.kind)
         // 29 September 2025, noon in Antalya: the day before UKOME's first decision.
         assertFalse(boulevard.inForce(Instant.ofEpochSecond(1_759_136_400)))
         assertTrue(CityRuleZone.shown(over = guzeloba, zoom = 15, at = night, among = among).isEmpty())

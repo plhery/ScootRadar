@@ -580,8 +580,9 @@ private fun DockChrome(
                     )
                     Box(Modifier.fillMaxSize().unheard(isSearching).onGloballyPositioned { laidOut.row = it }) {
                         LocateRow(
-                            // 8 under the search bar, in the row's box, which begins at the window's top.
-                            legendCeiling = safeTop + 8.dp + below + searchBar + 8.dp,
+                            // 8 under the search bar, in the row's box, which begins at the window's top: where the
+                            // bar settles under a fold, not where it springs through, so the legend moves once.
+                            legendCeiling = safeTop + 8.dp + chromeTop + searchBar + 8.dp,
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .padding(horizontal = 10.dp)
@@ -697,8 +698,8 @@ private fun Modifier.topAs(line: HorizontalAlignmentLine): Modifier = layout { m
  * short of it, both down on the row's foot.
  *
  * Where the legend, beside the button, would reach higher than [legendCeiling] (from the top of the box the row stands
- * in), it goes over the button instead, at the row's whole width (UI-410). On ScootRadar_Phone_Min at font scale 2.0
- * before the first location, "Near me" took about 190 of the row's 340 dp: a street's line, "No riding 12:00 PM–11:00
+ * in), it goes over the button instead, at the row's whole width, where its top then ends lower (UI-410). On
+ * ScootRadar_Phone_Min at font scale 2.0 before the first location, "Near me" took about 190 of the row's 340 dp: a street's line, "No riding 12:00 PM–11:00
  * PM · Seoul, lines © OpenStreetMap (not now)", broke into about twelve lines, words cut inside, and ran up under the
  * search bar and the status bar. The iPhone's stack has no answer there (its lines are fixedSize, with no limit) and
  * would do the same on its smallest phone at its largest sizes; wherever the legend fits beside the button, as it
@@ -711,6 +712,8 @@ private fun LocateRow(
     button: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // The last placement, read and written only while measuring: not state, which would measure the row again.
+    val stacked = remember { booleanArrayOf(false) }
     Layout(
         content = {
             Box(contentAlignment = Alignment.BottomStart) { legend() }
@@ -725,7 +728,14 @@ private fun LocateRow(
         // The iPhone's spacing of 10 and its Spacer, 10 more, between the legend and the button.
         val beside = maxOf(0, width - placedButton.width - 2 * gap)
         val room = constraints.maxHeight - legendCeiling.roundToPx()
-        val over = legendBox.maxIntrinsicHeight(beside) > room
+        val besideHeight = legendBox.maxIntrinsicHeight(beside)
+        // Over the button only where that ends lower than beside it, as in a landscape phone's short row, where over
+        // it the legend would only reach higher; and back beside only with 8 to spare, so that a notice or the
+        // search bar changing height by a little doesn't move it to and fro.
+        val slack = if (stacked[0]) 8.dp.roundToPx() else 0
+        val over = besideHeight > room - slack &&
+            legendBox.maxIntrinsicHeight(width) + gap + placedButton.height < besideHeight
+        stacked[0] = over
         val placedLegend = legendBox.measure(loose.copy(maxWidth = if (over) width else beside))
         val height = if (over && placedLegend.height > 0) {
             placedLegend.height + gap + placedButton.height
@@ -874,9 +884,10 @@ private fun PanelChrome(
                     )
                 }
 
-                // The legend against the locate button, in the map's trailing corner.
+                // The legend against the locate button, in the map's trailing corner, 10 in from the leading side
+                // at the most, the iPad's spacing after its Spacer (ScooterMapScreen.swift:401-404).
                 Row(
-                    Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                    Modifier.align(Alignment.BottomEnd).padding(16.dp).padding(start = 10.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {

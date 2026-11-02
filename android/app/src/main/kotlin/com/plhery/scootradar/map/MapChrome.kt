@@ -64,7 +64,7 @@ class MapChromeFrames {
         get() = when (layout) {
             ScooterChromeLayout.Dock -> MapChrome(
                 top = top,
-                bottomTop = locateButton?.minY,
+                bottomTop = bottomChromeTop(locateButton, zoneLegend),
                 bottomFrames = listOfNotNull(locateButton, zoneLegend, dock),
                 fold = fold,
             )
@@ -79,3 +79,15 @@ class MapChromeFrames {
 
 /** The frames of the chrome drawn over the map; none where nothing is drawn over it, as in the map's own tests. */
 val LocalMapChrome = staticCompositionLocalOf<MapChromeFrames?> { null }
+
+/**
+ * The top of the chrome over the dock, the foot of what the map shows clear of it: the locate button's, as the
+ * iPhone's `bottomChromeTop`, but where the zones' legend stands over the button (a small phone at the largest text,
+ * UI-410, ScooterMapScreen.kt's LocateRow) the legend's, which then spans the row. Beside the button the legend keeps
+ * to the leading side, as on the iPhone, and the button's top stands.
+ */
+internal fun bottomChromeTop(locateButton: ScreenRect?, zoneLegend: ScreenRect?): Double? {
+    val button = locateButton ?: return null
+    val over = zoneLegend != null && !zoneLegend.isEmpty && zoneLegend.maxY <= button.minY + 0.5
+    return if (over) minOf(button.minY, zoneLegend!!.minY) else button.minY
+}

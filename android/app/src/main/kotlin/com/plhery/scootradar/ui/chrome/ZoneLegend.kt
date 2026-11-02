@@ -4,9 +4,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -120,7 +122,14 @@ fun ZoneLegend(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 for (kind in ScooterZoneKind.operatorKinds) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                    // As wide as its one line, in the FlowRow's intrinsics too, which pack by an item's least width
+                    // (a Text's longest word): the legend's height asked beside the locate button is then the one it
+                    // takes (LocateRow, UI-410).
+                    Row(
+                        Modifier.width(IntrinsicSize.Max),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
                         ZoneSwatch(kind)
                         Text(kind.label, style = style, color = colors.dockText, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
