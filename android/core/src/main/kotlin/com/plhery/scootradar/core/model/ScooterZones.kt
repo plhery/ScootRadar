@@ -64,6 +64,11 @@ data class ScooterZone(
     val polygons: List<List<List<GeoPoint>>>,
     /** How strongly it is drawn: a city's rule outside its hours is dimmer (CityRuleZone). */
     val strength: Double = 1.0,
+    /**
+     * A city's rule with hours, Seoul's streets: no riding hatched the other way, so that it is told from no riding at
+     * all hours where they meet.
+     */
+    val timed: Boolean = false,
 )
 
 @Serializable(with = ScooterZoneResponse.Serializer::class)
@@ -324,11 +329,11 @@ data class CityRuleZone private constructor(
 
     /** A rule over the map, with whether it holds now. */
     data class Shown(val rule: CityRuleZone, val inForce: Boolean) {
-        /** As the map draws it: a zone of its kind, dimmer outside its hours. */
+        /** As the map draws it: a zone of its kind, dimmer outside its hours, hatched the other way if it has any. */
         val mapZone: ScooterZone
             get() = ScooterZone(
                 id = "rule:${rule.id}", provider = "city", kind = rule.kind, maxSpeedKph = null,
-                polygons = rule.polygons, strength = if (inForce) 1.0 else dimmed,
+                polygons = rule.polygons, strength = if (inForce) 1.0 else dimmed, timed = rule.hours.isNotEmpty(),
             )
     }
 

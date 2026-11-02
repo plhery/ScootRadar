@@ -85,6 +85,8 @@ class CityRuleZoneTest {
         assertEquals(all, legendKinds(ScooterZoneState.Off, 0, shown, besideNote = false))
         val lines = ruleLines(shown)
         assertEquals(listOf(ScooterZoneKind.NoRide), lines.map { it.kind })
+        // Its swatch hatched the other way, as the map draws it.
+        assertEquals(listOf(true), lines.map { it.timed })
         // "No riding 12:00–23:00", in the user's format, with no one's name.
         val text = lines.single().text
         assertTrue(text, text.startsWith("No riding ") && text.contains("–") && !text.contains("Seoul"))

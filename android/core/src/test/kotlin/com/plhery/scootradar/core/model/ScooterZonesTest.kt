@@ -886,6 +886,32 @@ class CityRuleZoneTest {
     }
 
     @Test
+    fun aStreetWithHoursIsDrawnApartFromNoRidingAtAllHoursToBeHatchedTheOtherWay() {
+        val rule = hongdaeRedRoad
+        val ring = rule.polygons[0][0]
+        val street = CityRuleZone.Shown(rule = rule, inForce = true).mapZone
+        assertTrue(street.timed)
+        val overlay = ScooterZoneOverlay(
+            zones = listOf(
+                street,
+                ScooterZone(id = "lime:0", provider = "lime", kind = ScooterZoneKind.NoRide, maxSpeedKph = null, polygons = listOf(listOf(ring))),
+            ),
+            isDark = false,
+        )
+        assertEquals(setOf(false, true), overlay.shapes.map { it.timed }.toSet())
+        assertTrue(overlay.shapes.all { it.kind == ScooterZoneKind.NoRide && it.strength == 1.0 })
+        // Its lines fall to the right, x − y the same along each, where no riding's at all hours rise to it.
+        val renderer = ScooterZoneRenderer(overlay)
+        // The whole overlay as one tile.
+        val tile = overlay.boundingMapRect!!
+        for (shape in overlay.shapes) {
+            val line = renderer.hatch(shape, tile, scale = 1.0).getGeometryN(0).coordinates
+            val (from, to) = line.first() to line.last()
+            if (shape.timed) assertEquals(from.x - from.y, to.x - to.y, 1e-6) else assertEquals(from.x + from.y, to.x + to.y, 1e-6)
+        }
+    }
+
+    @Test
     fun theStreetsAloneAreAllAndForbidRiding() {
         // CatalogParityTest reads the generated list of these, and holds them to the iPhone's; here, what each is.
         assertFalse(CityRuleZone.all.isEmpty())

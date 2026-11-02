@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.model.ScooterZoneKind
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.boolean
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -54,11 +55,18 @@ class ScooterZoneLayersTest {
         val dark = ZoneLayers.specs(isDark = true).associateBy { it.id }
         assertEquals("#3E63DD", light.getValue("zones-slow").paint["fill-color"])
         assertEquals("#C05600", light.getValue("zones-noParking").paint["fill-color"])
-        assertEquals("zone-hatch-light", light.getValue("zones-noRide").paint["fill-pattern"])
+        assertEquals(ZoneLayers.hatch(isDark = false), light.getValue("zones-noRide").paint["fill-pattern"])
+        assertEquals(
+            "[\"case\",[\"==\",[\"get\",\"timed\"],true],\"zone-hatch-timed-light\",\"zone-hatch-light\"]",
+            ZoneLayers.hatch(isDark = false).text,
+        )
         assertEquals("#D92D20", light.getValue("zone-edges-noRide").paint["line-color"])
         assertEquals("#7C9CFF", dark.getValue("zones-slow").paint["fill-color"])
         assertEquals("#FFB340", dark.getValue("zone-edges-noParking").paint["line-color"])
-        assertEquals("zone-hatch-dark", dark.getValue("zones-noRide").paint["fill-pattern"])
+        assertEquals(
+            "[\"case\",[\"==\",[\"get\",\"timed\"],true],\"zone-hatch-timed-dark\",\"zone-hatch-dark\"]",
+            (dark.getValue("zones-noRide").paint["fill-pattern"] as SymbolLayerSpec.Json).text,
+        )
         assertEquals("#FF6961", dark.getValue("zone-edges-noRide").paint["line-color"])
         // Another appearance sets their colours, nothing else.
         for ((id, spec) in light) {
@@ -269,9 +277,38 @@ class ScooterZoneLayersTest {
         assertEquals(red, image.getPixel(side - 1, 0))
         assertTrue(Color.alpha(image.getPixel(0, side / 4)) < 200)
         assertEquals(0xFFFF6961.toInt(), ZoneHatch.image(isDark = true, pixelRatio = 4f).getPixel(side / 2, side / 2))
+        // A city's rule with hours, falling to the right: the same picture mirrored.
+        val timed = ZoneHatch.image(isDark = false, pixelRatio = 4f, timed = true)
+        assertEquals(side, timed.width)
+        assertEquals(red, timed.getPixel(side / 2, side / 2))
+        assertTrue(Color.alpha(timed.getPixel(3, side - 4)) < 200)
+        assertEquals(red, timed.getPixel(side - 4, side - 4))
+        for (y in 0 until side) {
+            for (x in 0 until side) {
+                assertEquals("($x, $y)", Color.alpha(image.getPixel(side - 1 - x, y)).toDouble(), Color.alpha(timed.getPixel(x, y)).toDouble(), 2.0)
+            }
+        }
+        assertEquals("zone-hatch-timed-dark", ZoneHatch.name(isDark = true, timed = true))
     }
 
-    private class Feature(val type: String, val kind: String, val opacity: Double, val lines: List<List<MapPoint>>) {
+    @Test
+    fun hatchesACitysRuleWithHoursTheOtherWayApartFromNoRidingAtAllHours() {
+        val drawing = ZoneDrawing(
+            listOf(
+                zone(ScooterZoneKind.NoRide, square(0.0, 0.0, 400.0)),
+                zone(ScooterZoneKind.NoRide, square(200.0, 0.0, 400.0)).copy(timed = true),
+            ),
+        )
+        // Each its own shape, though they meet: the one hatched the one way, the other the other.
+        val fills = features(drawing.fills)
+        assertEquals(listOf("noRide", "noRide"), fills.map { it.kind })
+        assertEquals(listOf(false, true), fills.map { it.timed })
+        assertEquals(listOf(0.4, 0.4), fills.map { it.opacity })
+        // Within the same edge as no riding's.
+        assertEquals(listOf("noRide", "noRide"), features(drawing.edges(scale = 1.0)).map { it.kind })
+    }
+
+    private class Feature(val type: String, val kind: String, val opacity: Double, val timed: Boolean, val lines: List<List<MapPoint>>) {
         val points: List<MapPoint> get() = lines.flatten()
     }
 
@@ -286,7 +323,10 @@ class ScooterZoneLayersTest {
             "MultiPolygon" -> coordinates.flatMap { polygon -> polygon.jsonArray.map(::line) }
             else -> error(type)
         }
-        Feature(type, properties.getValue("kind").jsonPrimitive.content, properties.getValue("opacity").jsonPrimitive.double, lines)
+        Feature(
+            type, properties.getValue("kind").jsonPrimitive.content, properties.getValue("opacity").jsonPrimitive.double,
+            properties["timed"]?.jsonPrimitive?.boolean ?: false, lines,
+        )
     }
 
     private fun line(json: JsonElement): List<MapPoint> = (json as JsonArray).map { position ->

@@ -27,7 +27,7 @@ import org.locationtech.jts.operation.overlayng.OverlayNGRobust
  * (zoneShapes.ts): where several operators, or an operator and the city, forbid the same over a street, it is
  * drawn once, within one edge. Only the zones handed in are merged, those of the providers shown, so a filter
  * on one provider leaves its own. Zones drawn dimmer, a city's rules outside their hours, are merged apart from
- * the others.
+ * the others, and so are a city's rules with hours, Seoul's streets, whose no riding is hatched the other way.
  *
  * The shapes are JTS's polygons, where the iPhone has Core Graphics' paths. The union takes a while on a
  * large set of zones: make the overlay off the main thread.
@@ -37,6 +37,8 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
     class Shape(
         val kind: ScooterZoneKind,
         val strength: Double,
+        /** A city's rule with hours. */
+        val timed: Boolean,
         val polygon: Polygon,
         val bounds: MapRect,
     )
@@ -52,11 +54,11 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
     private val corner: MapPoint
 
     /** A zone's polygons in map points. */
-    private class Drawn(val kind: ScooterZoneKind, val strength: Double, val points: List<List<List<MapPoint>>>)
+    private class Drawn(val kind: ScooterZoneKind, val strength: Double, val timed: Boolean, val points: List<List<List<MapPoint>>>)
 
     init {
         val polygons = zones.map { zone ->
-            Drawn(zone.kind, zone.strength, zone.polygons.map { polygon -> polygon.map { ring -> ring.map { MapPoint(it) } } })
+            Drawn(zone.kind, zone.strength, zone.timed, zone.polygons.map { polygon -> polygon.map { ring -> ring.map { MapPoint(it) } } })
         }
         val points = polygons.flatMap { it.points.flatten().flatten() }
         val corner = MapPoint(x = points.minOfOrNull { it.x } ?: 0.0, y = points.minOfOrNull { it.y } ?: 0.0)
@@ -69,19 +71,21 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
         shapes = ScooterZoneKind.entries.flatMap { kind ->
             val ofKind = polygons.filter { it.kind == kind }
             ofKind.map { it.strength }.distinct().sorted().flatMap { strength ->
-                val areas = ofKind.filter { it.strength == strength }.flatMap { it.points }.mapNotNull { polygon ->
-                    area(polygon.map { ring -> ring.map { Coordinate(it.x - corner.x, it.y - corner.y) } })
-                }
-                if (areas.isEmpty()) return@flatMap emptyList()
-                val merged = union(areas)
-                (0 until merged.numGeometries).mapNotNull { index ->
-                    val piece = merged.getGeometryN(index) as? Polygon ?: return@mapNotNull null
-                    if (piece.isEmpty) return@mapNotNull null
-                    val box = piece.envelopeInternal
-                    Shape(
-                        kind = kind, strength = strength, polygon = piece,
-                        bounds = MapRect(x = corner.x + box.minX, y = corner.y + box.minY, width = box.width, height = box.height),
-                    )
+                listOf(false, true).flatMap { timed ->
+                    val areas = ofKind.filter { it.strength == strength && it.timed == timed }.flatMap { it.points }.mapNotNull { polygon ->
+                        area(polygon.map { ring -> ring.map { Coordinate(it.x - corner.x, it.y - corner.y) } })
+                    }
+                    if (areas.isEmpty()) return@flatMap emptyList()
+                    val merged = union(areas)
+                    (0 until merged.numGeometries).mapNotNull { index ->
+                        val piece = merged.getGeometryN(index) as? Polygon ?: return@mapNotNull null
+                        if (piece.isEmpty) return@mapNotNull null
+                        val box = piece.envelopeInternal
+                        Shape(
+                            kind = kind, strength = strength, timed = timed, polygon = piece,
+                            bounds = MapRect(x = corner.x + box.minX, y = corner.y + box.minY, width = box.width, height = box.height),
+                        )
+                    }
                 }
             }
         }
@@ -141,9 +145,9 @@ class ScooterZoneOverlay(zones: List<ScooterZone>, val isDark: Boolean) {
 
 /**
  * The zones as the map draws them, as the web does (MapComponent.tsx): each kind's fills as one translucent
- * layer, the strongest rule on top, those drawn dimmer in a fainter layer of their own; then every edge. This
- * decides what the map draws, without drawing, in the overlay's map points from its corner. A scale is how
- * many map points one point spans, MapKit's 1 / zoomScale.
+ * layer, the strongest rule on top, those drawn dimmer in a fainter layer of their own, a city's rules with hours
+ * hatched the other way; then every edge. This decides what the map draws, without drawing, in the overlay's map
+ * points from its corner. A scale is how many map points one point spans, MapKit's 1 / zoomScale.
  */
 class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
     /** A kind's fills of one strength, laid down as one translucent layer, so that its zones are no darker where they meet. */
@@ -222,10 +226,10 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
 
     /**
      * No riding's hatching over a piece in a tile of the map: lines across it at 45°, laid on the overlay's own
-     * grid so that they run on from one tile to the next. They are the lines x + y = c,
-     * ScooterZoneLook.hatchSpacing points apart across them, over the piece's bounds within the tile grown by a
-     * point; they are drawn clipped to the piece, on a ground of its colour. The map's fill pattern draws lines
-     * of the same spacing and angle, laid on the world's grid instead.
+     * grid so that they run on from one tile to the next. They are the lines x + y = c, or x − y = c for a city's
+     * rule with hours, ScooterZoneLook.hatchSpacing points apart across them, over the piece's bounds within the
+     * tile grown by a point; they are drawn clipped to the piece, on a ground of its colour. The map's fill pattern
+     * draws lines of the same spacing and angle, laid on the world's grid instead.
      */
     fun hatch(shape: ScooterZoneOverlay.Shape, tile: MapRect, scale: Double): MultiLineString {
         val unit = scale
@@ -239,14 +243,22 @@ class ScooterZoneRenderer(zones: ScooterZoneOverlay) {
         val maxY = min(bounds.maxY, reach.maxY)
         // Core Graphics' intersection, neither null nor empty.
         if (!(maxX > minX && maxY > minY)) return ScooterZoneOverlay.factory.createMultiLineString()
-        // Lines x + y = c, ScooterZoneLook.hatchSpacing apart across them.
+        // Lines x + y = c, or x − y = c, ScooterZoneLook.hatchSpacing apart across them.
         val step = ScooterZoneLook.hatchSpacing * unit * sqrt(2.0)
         if (!(step > 0)) return ScooterZoneOverlay.factory.createMultiLineString()
         val lines = mutableListOf<LineString>()
-        var c = floor((minX + minY) / step) * step
-        while (c <= maxX + maxY) {
-            lines += ScooterZoneOverlay.factory.createLineString(arrayOf(Coordinate(c - minY, minY), Coordinate(c - maxY, maxY)))
-            c += step
+        if (shape.timed) {
+            var c = floor((minX - maxY) / step) * step
+            while (c <= maxX - minY) {
+                lines += ScooterZoneOverlay.factory.createLineString(arrayOf(Coordinate(c + minY, minY), Coordinate(c + maxY, maxY)))
+                c += step
+            }
+        } else {
+            var c = floor((minX + minY) / step) * step
+            while (c <= maxX + maxY) {
+                lines += ScooterZoneOverlay.factory.createLineString(arrayOf(Coordinate(c - minY, minY), Coordinate(c - maxY, maxY)))
+                c += step
+            }
         }
         return ScooterZoneOverlay.factory.createMultiLineString(lines.toTypedArray())
     }

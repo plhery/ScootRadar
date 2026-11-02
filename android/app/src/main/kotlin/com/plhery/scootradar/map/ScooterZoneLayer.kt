@@ -142,7 +142,9 @@ class ScooterZoneLayer(
     private fun addLayers(style: Style) {
         style.addSource(GeoJsonSource(GroundOverlays.ZONES_SOURCE))
         style.addSource(GeoJsonSource(GroundOverlays.ZONE_EDGES_SOURCE))
-        for (dark in listOf(false, true)) style.addImage(ZoneHatch.name(dark), ZoneHatch.image(dark, view.pixelRatio))
+        for (dark in listOf(false, true)) {
+            for (timed in listOf(false, true)) style.addImage(ZoneHatch.name(dark, timed), ZoneHatch.image(dark, view.pixelRatio, timed))
+        }
         shownDark = isDark
         for (spec in ZoneLayers.specs(isDark)) GroundOverlays.add(style, spec)
     }
@@ -152,7 +154,8 @@ class ScooterZoneLayer(
  * The zones' layers, bottom to top: the fills of a city's parking places, slow zones, no parking and no riding, the
  * strongest rule on top, each kind's of one strength at the opacity of its whole layer (MAP-154, MAP-155, MAP-330);
  * then the edges, no parking's and slow zones' first, then parking's and no riding's over them (MAP-159, MAP-160).
- * Each feature carries its kind and its opacity, which a zone drawn dimmer lowers.
+ * Each feature carries its kind and its opacity, which a zone drawn dimmer lowers, and a fill whether it is a city's
+ * rule with hours, whose no riding is hatched the other way.
  *
  * What the iPhone draws in points on them, the hatch, the edges' widths and dashes and their clearance, is drawn
  * as MapKit shows it: MapKit draws the overlay on tiles a whole zoom deeper than the map's and shows them at half
@@ -200,14 +203,14 @@ object ZoneLayers {
 
     private fun ofKind(kind: ScooterZoneKind) = "[\"==\",[\"get\",\"kind\"],\"${kind.rawValue}\"]"
 
-    /** No riding is hatched, its colour in the pattern's picture; the others are flat. */
+    /** No riding is hatched, its colour in the pattern's picture, a city's rule with hours the other way; the others are flat. */
     fun fill(kind: ScooterZoneKind, isDark: Boolean) = OverlayLayerSpec(
         id = fillID(kind),
         type = OverlayLayerSpec.Type.Fill,
         source = GroundOverlays.ZONES_SOURCE,
         filter = ofKind(kind),
         paint = if (kind == ScooterZoneKind.NoRide) {
-            mapOf("fill-pattern" to ZoneHatch.name(isDark), "fill-opacity" to opacity)
+            mapOf("fill-pattern" to hatch(isDark), "fill-opacity" to opacity)
         } else {
             mapOf("fill-color" to color(kind, isDark), "fill-opacity" to opacity)
         },
@@ -234,6 +237,11 @@ object ZoneLayers {
         )
     }
 
+    /** No riding's pattern for a feature: the other way where it is a city's rule with hours. */
+    fun hatch(isDark: Boolean) = SymbolLayerSpec.Json(
+        "[\"case\",[\"==\",[\"get\",\"timed\"],true],\"${ZoneHatch.name(isDark, timed = true)}\",\"${ZoneHatch.name(isDark)}\"]",
+    )
+
     /** A kind's colour as the style writes it. */
     fun color(kind: ScooterZoneKind, isDark: Boolean): String =
         String.format(Locale.ROOT, "#%06X", ScooterZoneLook.color(kind, isDark) and 0xFFFFFF)
@@ -248,7 +256,7 @@ class ZoneDrawing(zones: List<ScooterZone>) {
     val overlay = ScooterZoneOverlay(zones, isDark = false)
     private val renderer = ScooterZoneRenderer(overlay)
 
-    /** Each piece's outline and holes as a polygon, with its kind and its whole layer's opacity. */
+    /** Each piece's outline and holes as a polygon, with its kind, its whole layer's opacity and whether it is a city's rule with hours. */
     val fills: String = buildString {
         append("{\"type\":\"FeatureCollection\",\"features\":[")
         var first = true
@@ -256,7 +264,7 @@ class ZoneDrawing(zones: List<ScooterZone>) {
             for (shape in fill.shapes) {
                 if (!first) append(',')
                 first = false
-                feature(fill.kind, fill.opacity) { polygon(overlay.rings(of = shape)) }
+                feature(fill.kind, fill.opacity, timed = shape.timed) { polygon(overlay.rings(of = shape)) }
             }
         }
         append("]}")
@@ -306,11 +314,18 @@ class ZoneDrawing(zones: List<ScooterZone>) {
         append("]}")
     }
 
-    private inline fun StringBuilder.feature(kind: ScooterZoneKind, opacity: Double, geometry: StringBuilder.() -> Unit) {
+    private inline fun StringBuilder.feature(
+        kind: ScooterZoneKind,
+        opacity: Double,
+        timed: Boolean = false,
+        geometry: StringBuilder.() -> Unit,
+    ) {
         append("{\"type\":\"Feature\",\"geometry\":")
         geometry()
         append(",\"properties\":{\"kind\":\"").append(kind.rawValue).append("\",\"opacity\":")
-        append(GroundOverlays.number(opacity)).append("}}")
+        append(GroundOverlays.number(opacity))
+        if (timed) append(",\"timed\":true")
+        append("}}")
     }
 
     private fun StringBuilder.polygon(rings: List<List<GeoPoint>>) {
@@ -334,7 +349,8 @@ class ZoneDrawing(zones: List<ScooterZone>) {
 
 /**
  * No riding's hatching as MapLibre's fill pattern (MAP-157): the iPhone's ground of the colour at 0.4 and lines
- * of it across at 45°, rising to the right, 8 points apart across them and 2 wide. One turn of the pattern is a
+ * of it across at 45°, rising to the right, or falling to it for a city's rule with hours, 8 points apart across
+ * them and 2 wide. One turn of the pattern is a
  * square 8√2 points across with a line from corner to corner and the corners of the next two, so that it runs on
  * from one square to the next. MapLibre lays it on the world's grid, as MapKit lays the iPhone's on the
  * overlay's, turned and tilted with the map (MAP-158). The picture is the iPhone's turn at half its points,
@@ -344,6 +360,8 @@ class ZoneDrawing(zones: List<ScooterZone>) {
 object ZoneHatch {
     const val LIGHT = "zone-hatch-light"
     const val DARK = "zone-hatch-dark"
+    const val TIMED_LIGHT = "zone-hatch-timed-light"
+    const val TIMED_DARK = "zone-hatch-timed-dark"
 
     /** How far the lines repeat along either axis, in the iPhone's points. */
     val period: Double = ScooterZoneLook.hatchSpacing * sqrt(2.0)
@@ -351,7 +369,10 @@ object ZoneHatch {
     /** The same as MapLibre lays it on a tile at the map's whole zoom: half of it. */
     val laid: Double = period / 2
 
-    fun name(isDark: Boolean) = if (isDark) DARK else LIGHT
+    fun name(isDark: Boolean, timed: Boolean = false) = when {
+        timed -> if (isDark) TIMED_DARK else TIMED_LIGHT
+        else -> if (isDark) DARK else LIGHT
+    }
 
     /** The picture's side in pixels at a pixel ratio. */
     fun side(pixelRatio: Float): Int = max(2, (laid * pixelRatio).roundToInt())
@@ -359,8 +380,8 @@ object ZoneHatch {
     /** The picture's density, which MapLibre reads its pixel ratio from: the side in pixels spans what is laid in points. */
     fun density(side: Int): Int = (side * DisplayMetrics.DENSITY_DEFAULT / laid).roundToInt()
 
-    /** One turn of the pattern in no riding's colour for an appearance. */
-    fun image(isDark: Boolean, pixelRatio: Float): Bitmap {
+    /** One turn of the pattern in no riding's colour for an appearance, the other way for a city's rule with hours. */
+    fun image(isDark: Boolean, pixelRatio: Float, timed: Boolean = false): Bitmap {
         val side = side(pixelRatio)
         val bitmap = createBitmap(side, side)
         bitmap.density = density(side)
@@ -373,8 +394,9 @@ object ZoneHatch {
             // The width across the lines, in this picture's pixels: halved with the period.
             strokeWidth = (ScooterZoneLook.hatchWidth / 2 * side / laid).toFloat()
         }
-        // x + y = 0, side and twice the side, run past the picture's edges, where it is cut.
+        // x + y = 0, side and twice the side, run past the picture's edges, where it is cut; mirrored, the other way.
         val s = side.toFloat()
+        if (timed) canvas.scale(-1f, 1f, s / 2, s / 2)
         for (c in listOf(0f, s, 2 * s)) canvas.drawLine(c + s, -s, c - 2 * s, 2 * s, paint)
         return bitmap
     }

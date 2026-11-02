@@ -161,7 +161,7 @@ fun ZoneLegend(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                ZoneSwatch(line.kind, Modifier.alpha(if (line.inForce) 1f else CityRuleZone.dimmed.toFloat()))
+                ZoneSwatch(line.kind, Modifier.alpha(if (line.inForce) 1f else CityRuleZone.dimmed.toFloat()), timed = line.timed)
                 Text(line.text, style = style, color = colors.dockText)
             }
         }
@@ -222,7 +222,14 @@ internal fun noticeText(notice: CityZoneDownloads.Notice): String = when (notice
 }
 
 /** A city's line, for a rule whose hours set it apart or that does not hold yet: one for each kind, hours and whether they hold now. */
-internal class RuleLine(val key: String, val kind: ScooterZoneKind, val inForce: Boolean, val text: String)
+internal class RuleLine(
+    val key: String,
+    val kind: ScooterZoneKind,
+    val inForce: Boolean,
+    /** Its hours set it apart: its swatch hatched the other way, as the map draws it. */
+    val timed: Boolean,
+    val text: String,
+)
 
 /** The lines, the strongest rule first: "No riding 12:00–23:00", "No riding (not now)". */
 internal fun ruleLines(rules: List<CityRuleZone.Shown>): List<RuleLine> {
@@ -237,7 +244,7 @@ internal fun ruleLines(rules: List<CityRuleZone.Shown>): List<RuleLine> {
             if (!keys.add(key)) continue
             var text = if (hours.isEmpty()) kind.label else "${kind.label} $hours"
             if (!shown.inForce) text += " (${localized("not now")})"
-            lines += RuleLine(key, kind, shown.inForce, text)
+            lines += RuleLine(key, kind, shown.inForce, timed = hours.isNotEmpty(), text = text)
         }
     }
     return lines
@@ -273,11 +280,11 @@ private fun wallTime(minute: Int): String =
 
 /**
  * A zone as the map draws it, so that the edge and the hatching tell the kinds apart without their colours, in the
- * app's appearance: 16 by 12 points, its corners rounded by 3, filled faintly, no riding hatched every 4 points, and
- * its edge a point in, solid, dashed or dotted.
+ * app's appearance: 16 by 12 points, its corners rounded by 3, filled faintly, no riding hatched every 4 points, the
+ * other way for a city's rule with hours ([timed]), and its edge a point in, solid, dashed or dotted.
  */
 @Composable
-fun ZoneSwatch(kind: ScooterZoneKind, modifier: Modifier = Modifier) {
+fun ZoneSwatch(kind: ScooterZoneKind, modifier: Modifier = Modifier, timed: Boolean = false) {
     val color = Color(ScooterZoneLook.color(kind, isDark = scootColors.isDark))
     Canvas(modifier.size(16.dp, 12.dp)) {
         val shape = SquircleShape(3.dp).createOutline(size, layoutDirection, this)
@@ -287,7 +294,8 @@ fun ZoneSwatch(kind: ScooterZoneKind, modifier: Modifier = Modifier) {
                 val step = 4.dp.toPx()
                 var c = 0f
                 while (c <= size.width + size.height) {
-                    drawLine(color.copy(alpha = 0.55f), Offset(c, 0f), Offset(c - size.height, size.height), strokeWidth = 1.5.dp.toPx())
+                    val (top, bottom) = if (timed) size.height to 0f else 0f to size.height
+                    drawLine(color.copy(alpha = 0.55f), Offset(c, top), Offset(c - size.height, bottom), strokeWidth = 1.5.dp.toPx())
                     c += step
                 }
             }
