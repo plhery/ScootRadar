@@ -154,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'Wo melde ich einen falsch abgestellten E-Scooter?',
-      answer: 'Beim Anbieter: Dott unter heidelberg@ridedott.com, Bolt unter heidelberg-micromobility@bolt.eu, Voi über «Einen Voi melden» auf voi.com. Oder beim Amt für Mobilität der Stadt unter nahmobilitaet@heidelberg.de.',
+      answer: 'Beim Anbieter, etwa Dott unter heidelberg@ridedott.com oder Voi über «Einen Voi melden» auf voi.com, oder beim Amt für Mobilität der Stadt unter nahmobilitaet@heidelberg.de.',
     },
   ],
   sources: [
@@ -164,10 +164,9 @@ const guide: Guide = {
     { title: 'Stadt Heidelberg: Abstellflächen für Miet-E-Tretroller in der Bahnstadt (27. November 2025)', url: 'https://www.heidelberg.de/HD/Presse/27_11_2025+stadt+heidelberg+plant+abstellflaechen+fuer+miet-e-tretroller+in+der+bahnstadt.html' },
     { title: 'Stadt Heidelberg: Neue Gebühren für Anbieter von E-Tretrollern (10. April 2025)', url: 'https://www.heidelberg.de/7071_34581_34869_284696_1219308_5668136_5667961.html' },
     { title: 'Stadt Heidelberg: Regeln für den E-Scooter (26. September 2019)', url: 'https://www.heidelberg.de/26_09_2019+regeln+fuer+den+e-scooter.html' },
-    { title: 'MobiData BW: Datenfeed von Dott in Heidelberg (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heidelberg/gbfs' },
-    { title: 'MobiData BW: Datenfeed von Zeus (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_leimen_walldorf_wiesloch/gbfs' },
+    { title: 'MobiData BW: Datenfeed von Dott in Heidelberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heidelberg/gbfs' },
+    { title: 'MobiData BW: Datenfeed von Zeus (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_leimen_walldorf_wiesloch/gbfs' },
     { title: 'Voi: E-Scooter in Heidelberg', url: 'https://www.voi.com/de/city/heidelberg' },
-    { title: 'Bolt: Heidelberg', url: 'https://bolt.eu/de-de/cities/heidelberg/' },
     { title: 'rnv: Beförderungsbedingungen', url: 'https://www.rnv-online.de/fahrtinfo/sicher-unterwegs/befoerderungsbedingungen/' },
     { title: 'VRN: Beförderungsbedingungen, Anlage 3: Mitnahme von E-Tretrollern', url: 'https://www.vrn.de/tickets/tarifsystem/befoerderungsbedingungen/artikel/011912/index.html' },
     { title: 'VRN: E-Tretroller von Dott', url: 'https://www.vrn.de/mobilitaet/e-tretroller/dott/index.html' },

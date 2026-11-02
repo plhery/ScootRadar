@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Hildesheim 2026: Bolt, Dott, Parkzonen, Preise',
   description: 'E-Scooter in Hildesheim leihen: Bolt und Dott, ihre Preise und Pässe, die 18 Parkzonen der Innenstadt seit 2026 und was in Bus und Bahn gilt.',
   headline: 'E-Scooter Hildesheim: Bolt, Dott, die Parkzonen der Innenstadt und die Regeln',
-  lede: 'Einen E-Scooter in Hildesheim leihst du ab 18 und ohne Führerschein bei Bolt oder Dott (früher Tier). Den Preis zeigt dir die App, bevor du entsperrst; Bolt wirbt bundesweit mit «ab 0,15 € pro Minute». Seit dem 1. Januar 2026 beendest du die Fahrt in der Innenstadt nur in einer der 18 ausgeschilderten Parkzonen der Stadt. Durch die Fussgängerzone fährst du nicht, und im Stadtbus fährt ein eigener Scooter mit wie ein Fahrrad.',
+  lede: 'Einen E-Scooter in Hildesheim leihst du ohne Führerschein bei Bolt oder Dott (früher Tier), bei Dott ab 18. Den Preis zeigt dir die App, bevor du entsperrst. Seit dem 1. Januar 2026 beendest du die Fahrt in der Innenstadt nur in einer der 18 ausgeschilderten Parkzonen der Stadt. Durch die Fussgängerzone fährst du nicht, und im Stadtbus fährt ein eigener Scooter mit wie ein Fahrrad.',
   published: '2026-10-31',
   updated: '2026-10-31',
   city: 'de:Hildesheim',
@@ -16,28 +16,17 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Hildesheim?',
       blocks: [
-        'In Hildesheim vermieten **Bolt** und **Dott** E-Scooter. Bolt kam im August 2021 in die Stadt und führt Hildesheim auf seiner Städteseite mit E-Scootern. Dott nennt Hildesheim unter seinen Standorten, in der Nähe auch Hannover, Peine und Salzgitter. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App.',
-        'Du leihst den Scooter in der App des Anbieters. Beide verlangen laut ihren Bedingungen mindestens 18 Jahre, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Hildesheim](map:de:Hildesheim) beide Anbieter: am Samstag, 31. Oktober 2026, um 5:12 Uhr rund 380 Bolt- und 210 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Bei Bolt zeigt die Karte auch den Akkustand, bei Dott nur den Standort. Preise, Parkzonen und Sperrgebiete zeigt sie in Hildesheim nicht: Die stehen in der App des Anbieters.',
-        '**Lime**, das auch in [Hannover](guide:hanover) vermietet, kam laut eigener Mitteilung im September 2020 mit rund 300 Scootern nach Hildesheim. Auf der Karte erscheinen in Hildesheim keine Lime-Scooter; ob Lime hier noch vermietet, zeigt dir seine App.',
+        'In Hildesheim vermieten **Bolt** und **Dott** E-Scooter. Bolt kam im August 2021 in die Stadt. Dott nennt Hildesheim unter seinen Standorten, in der Nähe auch Hannover, Peine und Salzgitter. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App.',
+        'Du leihst den Scooter in der App des Anbieters. Dott verlangt laut seinen Bedingungen mindestens 18 Jahre, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'ScootRadar zeigt auf der [Karte rund um Hildesheim](map:de:Hildesheim) beide Anbieter: am Samstag, 31. Oktober 2026, um 5:12 Uhr rund 380 Bolt- und 210 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Preise, Parkzonen und Sperrgebiete zeigt dir die App des Anbieters.',
+        '**Lime**, das auch in [Hannover](guide:hanover) vermietet, kam laut eigener Mitteilung im September 2020 mit rund 300 Scootern nach Hildesheim; ob Lime hier noch vermietet, zeigt dir seine App.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Hildesheim?',
       blocks: [
-        'Bolt und Dott nennen ihren Preis für Hildesheim in der App, bevor du entsperrst. Was sie öffentlich angeben:',
-        {
-          table: {
-            caption: 'Was Bolt und Dott über ihre Preise sagen (Stand 31. Oktober 2026)',
-            head: ['Anbieter', 'Entsperren', 'Pro Minute', 'Pässe'],
-            rows: [
-              ['Bolt', 'kleine Gebühr', 'ab 0,15 € (bundesweit), je nach Ort', 'Wochen- und Monatspässe; unbegrenzt entsperren ab 0,99 € im Monat'],
-              ['Dott', 'in der App', 'in der App', 'Tages-, Wochen- und Monatspässe in der App'],
-            ],
-          },
-        },
-        'Bolt schreibt dazu, der Minutenpreis könne je nach Standort variieren. Verbindlich ist bei beiden der Preis, den die App vor dem Entsperren zeigt.',
-        'Teuer wird falsches Parken. Bolts Nutzungsbedingungen, gültig seit 1. August 2023 und gleich in der Fassung ab 1. Dezember 2026, sehen 15 € Parkgebühr vor, wenn der Scooter nicht nach den Fahrregeln steht und kein deutliches Foto am Fahrtende das belegt; ausserhalb des erlaubten Parkbereichs kann Bolt bis zu 100 € fürs Abholen berechnen. Zahlt Dott ein Bussgeld für dich, verlangt es laut seinen AGB 50 € Verwaltungsgebühr dazu.',
+        'Bolt und Dott nennen ihren Preis für Hildesheim in der App, bevor du entsperrst; Dott verkauft dort auch Tages-, Wochen- und Monatspässe. Verbindlich ist bei beiden der Preis, den die App vor dem Entsperren zeigt.',
+        'Teuer wird falsches Parken. Zahlt Dott ein Bussgeld für dich, verlangt es laut seinen AGB 50 € Verwaltungsgebühr dazu.',
       ],
     },
     {
@@ -46,14 +35,14 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahrstreifen oder in der Fahrradstrasse; wo es nichts davon gibt, auf der Fahrbahn oder im verkehrsberuhigten Bereich. Gehwege sind tabu.',
         '**Fussgängerzone:** Auch die Fussgängerzone der Innenstadt, etwa die Almsstrasse, ist für E-Scooter gesperrt, solange kein Schild «Elektrokleinstfahrzeuge frei» sie öffnet; erst ab 1. März 2027 genügt auch «Radverkehr frei», dann im Schritttempo. Die Polizei kontrolliert: Beamte der Innenstadtwache stellten am 19. und 25. September 2025 zusammen 35 Verstösse von Rad- und E-Scooter-Fahrern in der Fussgängerzone fest und kündigten weitere Kontrollen an.',
         '**Gemeinsame Geh- und Radwege:** Hier haben Fussgänger Vorrang; du passt dein Tempo an und behinderst niemanden. Fahr in der richtigen Richtung: In der Schützenwiese wurde am 26. Mai 2026 eine 20-Jährige schwer verletzt, die nach bisherigen Erkenntnissen einen solchen Weg in Gegenrichtung befahren und an einer Bedarfsampel die Fahrbahn gequert hatte, ohne anzuhalten; ein Auto erfasste sie.',
-        '**Allein und hintereinander:** Mitfahrer sind verboten, nebeneinander fährst du nicht. Leih-Scooter fahren bauartbedingt höchstens 20 km/h; schreibt die örtliche Behörde weniger vor, gilt laut Dotts AGB das niedrigere Tempo. Bolt begrenzt deine ersten fünf Fahrten auf 15 km/h.',
+        '**Allein und hintereinander:** Mitfahrer sind verboten, nebeneinander fährst du nicht. Leih-Scooter fahren bauartbedingt höchstens 20 km/h; schreibt die örtliche Behörde weniger vor, gilt laut Dotts AGB das niedrigere Tempo.',
       ],
     },
     {
       heading: 'E-Scooter in Hildesheim abstellen: die Parkzonen der Innenstadt',
       blocks: [
         'Seit dem 1. Januar 2026 müssen Leih-Scooter in der Innenstadt in den Abstellzonen stehen, die die Stadt eingerichtet und ausgeschildert hat: **18 Zonen an 17 Standorten**. Laut der Pressemitteilung dazu vom 22. Dezember 2025 sind die Anbieter angehalten, ihre Apps so einzustellen, dass sich die Miete ausserhalb nicht beenden lässt und die Gebühren weiterlaufen. Bewährt sich das Konzept, können auch in anderen Stadtteilen Parkzonen entstehen.',
-        'Die Zonen erkennst du an der Beschilderung vor Ort; die Live-Karte zeichnet sie nicht. Laut Hildesheimer Allgemeiner Zeitung klappte das Parken in den Zonen Anfang Januar 2026 noch nicht überall.',
+        'Die Zonen erkennst du an der Beschilderung vor Ort. Laut Hildesheimer Allgemeiner Zeitung klappte das Parken in den Zonen Anfang Januar 2026 noch nicht überall.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du ausserhalb einer Parkzone oder in einem Parkverbot. Fahr zur nächsten ausgeschilderten Zone: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -69,18 +58,17 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter im Bus und am Hauptbahnhof: SVHI, erixx, enno, ICE',
+      heading: 'E-Scooter im Bus und am Hauptbahnhof: SVHI, erixx, enno',
       blocks: [
         '**Stadtbusse (SVHI):** Die Stadtverkehr Hildesheim verweist auf die Beförderungsbedingungen des Tarifverbunds ROSA. Dort sind E-Tretroller Fahrrädern gleichgestellt: Du nimmst einen eigenen E-Scooter mit wie ein Rad, ganztägig, mit gültigem Kinderfahrausweis und Einstieg an der zweiten Tür. Laut SVHI fahren höchstens zwei Räder je Bus mit; bei vollen Bussen haben Fahrgäste ohne Rad Vorrang, Rollstuhl und Kinderwagen ohnehin, und das Fahrpersonal entscheidet. Ganz zusammengeklappt zählt ein Tretroller als Handgepäck. Im Bus darauf fahren darfst du nicht.',
         '**Leih-Scooter** lassen sich nicht zusammenklappen: Beende die Fahrt vor der Haltestelle und miete am Ziel einen neuen.',
         '**Regionalzüge am Hauptbahnhof:** Im erixx (RE 10 Bad Harzburg–Hildesheim–Hannover) und im enno von metronom (RE 50 Hildesheim–Braunschweig–Wolfsburg) fahren kleinere E-Tretroller laut Beförderungsbedingungen kostenlos mit, wenn Platz ist, im Fahrrad- oder Gepäckbereich. Ein Roller in Fahrradgrösse gilt als Fahrrad, und wer ein Rad mitnimmt, muss bei Platzmangel Rollstuhl und Kinderwagen weichen.',
-        '**Fernzüge:** In ICE und IC nimmt die Deutsche Bahn einen E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; aufgeklappt gilt er als Traglast und darf nur mit, wenn er sicher untergebracht ist. Den eingebauten Akku darfst du unterwegs weder ausbauen noch laden noch als Powerbank nutzen.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Hildesheim: Bussgelder, Alkohol, Helm',
       blocks: [
-        'In Hildesheim gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Hildesheim gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -96,7 +84,7 @@ const guide: Guide = {
           },
         },
         'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0.',
-        'Einen Helm empfehlen Bolt und Dott. Wo Dott eine Versicherung für eigene Verletzungen der Fahrer anbietet, sind Kopfverletzungen laut AGB nicht versichert, wenn du ohne Helm fährst.',
+        'Einen Helm empfiehlt Dott. Wo Dott eine Versicherung für eigene Verletzungen der Fahrer anbietet, sind Kopfverletzungen laut AGB nicht versichert, wenn du ohne Helm fährst.',
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
@@ -117,7 +105,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter kann ich in Hildesheim leihen?',
-      answer: 'Die von Bolt und Dott, jeweils in der App des Anbieters. Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Freie Scooter beider Anbieter zeigt auch die [Live-Karte von Hildesheim](map:de:Hildesheim).',
+      answer: 'Die von Bolt und Dott, jeweils in der App des Anbieters; Dott verlangt mindestens 18 Jahre. Einen Führerschein brauchst du nicht. Freie Scooter beider Anbieter zeigt auch die [Live-Karte von Hildesheim](map:de:Hildesheim).',
     },
     {
       question: 'Wo darf ich einen Leih-Scooter in der Hildesheimer Innenstadt abstellen?',
@@ -125,7 +113,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Hildesheim?',
-      answer: 'Den Preis zeigt die App von Bolt oder Dott, bevor du entsperrst. Bolt nennt bundesweit «ab 0,15 € pro Minute», je nach Ort, plus eine kleine Entsperrgebühr; beide verkaufen auch Pässe.',
+      answer: 'Den Preis zeigt die App von Bolt oder Dott, bevor du entsperrst; Dott verkauft auch Pässe.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Hildesheimer Fussgängerzone fahren?',
@@ -133,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter im Bus oder Zug mitnehmen?',
-      answer: 'Einen eigenen ja: Im Stadtbus fährt er laut SVHI und ROSA wie ein Fahrrad mit, mit Kinderfahrausweis und wenn Platz ist, zusammengeklappt als Handgepäck. Im erixx und im enno fahren kleinere E-Tretroller kostenlos mit, in ICE und IC zusammengeklappt als Handgepäck. Einen Leih-Scooter stellst du vor der Haltestelle ab.',
+      answer: 'Einen eigenen ja: Im Stadtbus fährt er laut SVHI und ROSA wie ein Fahrrad mit, mit Kinderfahrausweis und wenn Platz ist, zusammengeklappt als Handgepäck. Im erixx und im enno fahren kleinere E-Tretroller kostenlos mit. Einen Leih-Scooter stellst du vor der Haltestelle ab.',
     },
   ],
   sources: [
@@ -147,10 +135,6 @@ const guide: Guide = {
     { title: 'Hildesheimer Presse: Polizei ermittelt 15-Jährigen nach E-Scooter-Tuning (18. Oktober 2026)', url: 'https://hildesheimer-presse.de/2026/10/18/flucht-mit-35-km-h-und-ohne-kennzeichen-polizei-ermittelt-15-jaehrigen-nach-e-scooter-tuning-zeugen-gesucht/' },
     { title: 'Hildesheimer Allgemeine Zeitung: Neue Regeln für Miet-E-Scooter in Hildesheim (2. Mai 2024)', url: 'https://www.hildesheimer-allgemeine.de/meldung/miet-e-scooter-in-hildesheim-neue-regeln-und-ein-schon-lange-bestehendes-verbot.html' },
     { title: 'Hildesheimer Allgemeine Zeitung: Seit dem 1. Januar gibt es für E-Scooter in der Innenstadt Parkzonen (4. Januar 2026)', url: 'https://www.hildesheimer-allgemeine.de/meldung/seit-1-januar-gelten-fuer-e-scooter-in-hildesheimer-city-parkzonen-bei-der-einhaltung-ist-noch-luft-nach-oben.html' },
-    { title: 'Bolt: Bolt in Hildesheim', url: 'https://bolt.eu/de-de/cities/hildesheim/' },
-    { title: 'Bolt: E-Scooter mieten', url: 'https://bolt.eu/de-de/scooters/' },
-    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig seit 1. August 2023, bis 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicle-old/' },
-    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
@@ -161,7 +145,6 @@ const guide: Guide = {
     { title: 'ROSA Tarifverbund: Tarif- und Beförderungsbestimmungen (Stand 1. Januar 2026)', url: 'https://www.rosa-hildesheim.de/de/Service/Tarif-und-Befoerderungbestimmungen/' },
     { title: 'erixx: Beförderungsbedingungen (gültig ab 1. Januar 2026, PDF)', url: 'https://www.erixx.de/media/erixx/downloads/3_Befoerderungsbedingungen/01_01_2026_erixx-Befoerderungsbedingungen.pdf' },
     { title: 'metronom: Beförderungsbedingungen, auch für enno (gültig ab 1. Januar 2026, PDF)', url: 'https://www.der-metronom.de/media/metronom/downloads/3_Befoerderungsbedingungen/2026/01.01.2026_metronom-Befoerderungsbedingungen.pdf' },
-    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],
 };
 

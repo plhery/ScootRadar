@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Konstanz?',
       blocks: [
-        'Im Oktober 2026 vermieten **Hopp**, **Lime** und **Zeus** E-Scooter in Konstanz; Zeus fährt hier seit November 2020. Hopp ist ein Franchise-System aus Island; laut MobiData BW heisst das Konstanzer System «Hopp Konstanz» und läuft seit 16. Januar 2025. Wer es betreibt, nennt Hopp nicht, und auf Hopps eigener Standortliste fehlt Konstanz (Stand 22. Oktober 2026). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Im Oktober 2026 vermieten **Hopp**, **Lime** und **Zeus** E-Scooter in Konstanz. Hopp ist ein Franchise-System aus Island; laut MobiData BW heisst das Konstanzer System «Hopp Konstanz» und läuft seit 16. Januar 2025. Wer es betreibt, nennt Hopp nicht, und auf Hopps eigener Standortliste fehlt Konstanz (Stand 22. Oktober 2026). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am 22. Oktober 2026 um 10:01 Uhr zeigte die [Karte von Konstanz](map:de:Konstanz) rund 290 freie Scooter: rund 110 von Hopp, rund 90 von Lime und rund 90 von Zeus. Laut Stadt darf jeder Anbieter höchstens 150 Scooter aufstellen (Mitteilung vom Januar 2024).',
-        '**Bolt, Voi und Dott:** Bolt und Dott nennen Konstanz nicht auf ihren Standortlisten, Voi hat laut seinen offenen Daten bei MobiData BW kein Gebiet dort, und MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus (Stand 23. Oktober 2026). Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter; mehr im [Ratgeber für Singen](guide:singen).',
+        '**Bolt, Voi und Dott:** Dott nennt Konstanz nicht auf seiner Standortliste, Voi hat laut seinen offenen Daten bei MobiData BW kein Gebiet dort, und MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus (Stand 23. Oktober 2026). Zeus vermietet auch in Singen: mehr im [Ratgeber für Singen](guide:singen).',
       ],
     },
     {
@@ -35,7 +35,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Preise ändern sich kurzfristig: Lime verlangte am 17. Oktober noch 0,29 € pro Minute. Zeus nennt auf seiner Website, ohne Datum und für alle Städte, «etwa 1,50 €» fürs Entsperren und Pässe ab 4,99 €. Ob es die Pässe in Konstanz gibt, zeigt die App.',
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Preise ändern sich kurzfristig: Lime verlangte am 17. Oktober noch 0,29 € pro Minute.',
         'Für längere Wege ist oft **konrad** günstiger, das Leihrad der Stadtwerke: 1,25 € für die ersten 30 Minuten, höchstens 10 € am Tag, und im Monatstarif für 20 € sind bei jeder Fahrt 30 Minuten frei. Stationen gibt es unter anderem am Bahnhof, an Universität und HTWG, an der Mainau und am Fährhafen Staad.',
       ],
     },
@@ -103,14 +103,14 @@ const guide: Guide = {
       heading: 'Mit dem E-Scooter nach Kreuzlingen?',
       blocks: [
         'Kreuzlingen in der Schweiz grenzt direkt an Paradies und Altstadt. Laut den offenen Daten der drei sperrt Lime auf Schweizer Seite das Fahren, Zeus drosselt dort auf 1 km/h, und Hopps Gebiet reicht nicht über die Grenze. Beenden kannst du eine Fahrt drüben bei keinem der drei.',
-        'Für Kreuzlingen selbst nennen Bolt und Dott keinen Standort, und MobiData BW, die auch Schweizer Systeme wie das von Voi führt, hat dort keinen Scooter-Anbieter (Stand Oktober 2026). Donkey Republic verleiht in Kreuzlingen Fahrräder, E-Bikes und E-Lastenräder an Stationen.',
+        'Für Kreuzlingen selbst führt MobiData BW, die auch Schweizer Systeme wie das von Voi enthält, keinen Scooter-Anbieter (Stand Oktober 2026). Donkey Republic verleiht in Kreuzlingen Fahrräder, E-Bikes und E-Lastenräder an Stationen.',
         'Fährst du einen eigenen E-Scooter über die Grenze, gelten drüben die Schweizer Regeln. Das E-Trottinett ist dort ein Leicht-Motorfahrrad, das du ab 16 ohne Führerausweis fährst, mit 14 und 15 nur mit Ausweis der Kategorie M. Das Licht brennt auch am Tag, auf dem Trottoir, also dem Gehweg, fährst du nicht (CHF 40.–), und die Grenze von 0,5 Promille gilt für alle, auch unter 21. Mehr in den [E-Trottinett-Regeln der Schweiz](guide:swiss-rules).',
       ],
     },
     {
       heading: 'E-Scooter im Bus, auf der Fähre und auf der Mainau',
       blocks: [
-        '**Bus:** Im Verkehrsverbund Hegau-Bodensee (VHB), also auch im Roten Arnold der Stadtwerke, fährt ein eigener E-Scooter kostenlos als Handgepäck mit, wenn er zusammengeklappt ist und du ihn trägst oder über oder unter dem Sitz verstaust. Der Akku muss fest verbaut sein, laden darfst du ihn an Bord nicht (Stand 1. März 2026). Leih-Scooter lassen sich nicht klappen und bleiben draussen.',
+        '**Bus:** Im Verkehrsverbund Hegau-Bodensee (VHB), also auch im Roten Arnold der Stadtwerke, gilt ein eigener E-Scooter laut Tarifbestimmungen als kostenloses Handgepäck, «wenn das E-Kfz zusammengeklappt getragen wird, es über- oder unter dem Sitz verstaut wird»: zusammengeklappt, getragen und am Sitz verstaut. Der Akku muss fest verbaut sein, laden darfst du ihn an Bord nicht (Stand 1. März 2026). Einen Anspruch auf Mitnahme hast du nicht; im Einzelfall entscheidet das Personal. Leih-Scooter lassen sich nicht klappen und bleiben draussen.',
         '**Fähre nach Meersburg:** Die Autofähre der Stadtwerke legt rund um die Uhr am Fährhafen Staad ab. Ein eigener E-Scooter gilt dort als Fahrrad: 7 € einfach samt Erwachsenem, 13,30 € hin und zurück (Tarif 2026); zusammengeklappt und verpackt fährt er kostenlos. Mit einem Leih-Scooter geht das nicht: In Staad beendest du keine Fahrt, in Meersburg vermietet keiner der drei.',
         '**Mainau:** Auf die Blumeninsel darfst du keinen E-Scooter mitnehmen, auch kein Fahrrad; am Eingang gibt es Fahrradständer und kostenpflichtige Schliessfächer. Einen Leih-Scooter stellst du dort nicht ab, ein konrad-Rad an der Station schon.',
       ],
@@ -137,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Konstanz?',
-      answer: 'Die von Hopp, Lime oder Zeus. Du musst 18 sein, einen Führerschein brauchst du nicht. Alle drei zeigt die [Live-Karte von Konstanz](map:de:Konstanz). Bolt und Dott nennen Konstanz nicht auf ihren Standortlisten, und Voi hat laut MobiData BW kein Gebiet dort (Stand Oktober 2026).',
+      answer: 'Die von Hopp, Lime oder Zeus. Du musst 18 sein, einen Führerschein brauchst du nicht. Alle drei zeigt die [Live-Karte von Konstanz](map:de:Konstanz). Voi hat laut MobiData BW kein Gebiet dort (Stand Oktober 2026).',
     },
     {
       question: 'Was kostet ein E-Scooter in Konstanz?',
@@ -162,19 +162,15 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'seemoz: Miet-E-Scooter: Betreiber brauchen nun Sondernutzungserlaubnis (Mitteilung der Stadt, 15. Januar 2024)', url: 'https://www.seemoz.de/miet-e-scooter-betreiber-brauchen-nun-sondernutzungserlaubnis/' },
-    { title: 'MobiData BW: offene Daten von Hopp Konstanz (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/hopp_konstanz/gbfs' },
-    { title: 'MobiData BW: offene Daten von Zeus Konstanz (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_konstanz/gbfs' },
-    { title: 'MobiData BW: offene Daten von Lime in Baden-Württemberg (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_bw/gbfs' },
-    { title: 'MobiData BW: offene Daten von Donkey Republic Kreuzlingen (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/donkey_kreuzlingen/gbfs' },
-    { title: 'Zeus: ZEUS Is Now In Konstanz (20. November 2020)', url: 'https://zeusscooters.com/2020/11/zeus-is-now-in-konstanz/' },
-    { title: 'Zeus: Städte', url: 'https://zeusscooters.com/cities/' },
-    { title: 'Zeus: Preise und Pässe', url: 'https://zeusscooters.com/' },
+    { title: 'MobiData BW: offene Daten von Hopp Konstanz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/hopp_konstanz/gbfs' },
+    { title: 'MobiData BW: offene Daten von Zeus Konstanz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_konstanz/gbfs' },
+    { title: 'MobiData BW: offene Daten von Lime in Baden-Württemberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_bw/gbfs' },
+    { title: 'MobiData BW: offene Daten von Donkey Republic Kreuzlingen (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/donkey_kreuzlingen/gbfs' },
     { title: 'Hopp: Standorte', url: 'https://hopp.bike/locations' },
     { title: 'Hopp: Nutzungsbedingungen für Deutschland', url: 'https://hopp.bike/tos?group=389FGQfb9eqWNoxBiQlENu' },
     { title: 'Hopp: E-Scooter und E-Bikes, Preise', url: 'https://hopp.bike/two-wheels' },
-    { title: 'MobiData BW: Verzeichnis der offenen Sharing-Daten (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
-    { title: 'MobiData BW: offene Daten von Voi in Deutschland (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
-    { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
+    { title: 'MobiData BW: Verzeichnis der offenen Sharing-Daten (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
+    { title: 'MobiData BW: offene Daten von Voi in Deutschland (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
     { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
     { title: 'Stadtwerke Konstanz: Fahrradmietsystem konrad', url: 'https://www.stadtwerke-konstanz.de/fahrrad/fahrradmietsystem/' },
     { title: 'Stadtwerke Konstanz: Stadtbus, Infos', url: 'https://www.stadtwerke-konstanz.de/bus/infos/' },

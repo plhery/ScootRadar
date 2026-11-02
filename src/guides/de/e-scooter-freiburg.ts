@@ -89,7 +89,7 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter-Regeln in Freiburg: Bussgelder, Alkohol, Unfälle',
+      heading: 'E-Scooter-Regeln in Freiburg: Bussgelder und Alkohol',
       blocks: [
         'In Freiburg gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
@@ -106,8 +106,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0. Yoio verbietet in seinen Bedingungen jeden Alkohol (0,0 Promille), Zeus das Fahren unter Alkoholeinfluss.',
-        '2025 zählte die Polizei in der Stadt Freiburg 82 Unfälle mit E-Scootern und anderen Elektrokleinstfahrzeugen, fast doppelt so viele wie 2024 (47). Getötet wurde auf ihnen seit 2021 niemand.',
+        'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0. Yoio verbietet in seinen Bedingungen jeden Alkohol (0,0 Promille).',
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
@@ -182,16 +181,14 @@ const guide: Guide = {
   sources: [
     { title: 'Stadt Freiburg: E-Roller-Sharing', url: 'https://www.freiburg.de/pb/2045706.html' },
     { title: 'Stadt Freiburg: Ortsrecht (Parkanlagensatzung, Fussgängerbereich)', url: 'https://www.freiburg.de/pb/,Lde/206280.html' },
-    { title: 'Zeus: Datenfeed für Freiburg (GBFS, MobiData BW)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_freiburg/gbfs' },
-    { title: 'Yoio: Datenfeed für Freiburg (GBFS, MobiData BW)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/yoio_freiburg/gbfs' },
+    { title: 'Zeus: Datenfeed für Freiburg (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_freiburg/gbfs' },
+    { title: 'Yoio: Datenfeed für Freiburg (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/yoio_freiburg/gbfs' },
     { title: 'Yoio: Gebührenordnung (PDF)', url: 'https://yourcar-carsharing.de/images/Yoio-Gebuehrenordnung.pdf' },
-    { title: 'Zeus: Allgemeine Geschäftsbedingungen', url: 'https://zeusscooters.com/terms-and-conditions/' },
     { title: 'VAG Freiburg: Beförderungsbedingungen', url: 'https://www.vag-freiburg.de/befoerderungsbedingungen-vag' },
     { title: 'Frelo: Tarife', url: 'https://www.frelo.de/de/' },
     { title: 'visit.freiburg.de: Top-Events in Freiburg', url: 'https://visit.freiburg.de/events/top-10-events' },
     { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
     { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
-    { title: 'Polizeipräsidium Freiburg: Unfallbarometer 2025, Stadtkreis Freiburg (PDF)', url: 'https://www.presseportal.de/download/document/6995b7d5270000fd2cbf70e0-unfallbarometer2025freiburg.pdf' },
   ],
 };
 

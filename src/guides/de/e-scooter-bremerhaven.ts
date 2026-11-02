@@ -80,9 +80,8 @@ const guide: Guide = {
         },
         '**Hauptbahnhof und Hochschule:** Züge der Deutschen Bahn und der EVB fahren laut Hochschule Bremerhaven regelmässig von Bremen und Hamburg nach Bremerhaven. Vom Hauptbahnhof fahren mehrere Buslinien in 3 bis 5 Minuten zur Hochschule, An der Karlstadt 8. Einen eigenen E-Scooter nimmst du in diese Busse nicht mit.',
         '**Leih-Scooter** lassen sich nicht zusammenklappen: Beende die Fahrt vor der Haltestelle und miete am Ziel einen neuen.',
-        '**Weserfähre nach Nordenham:** Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif (Stand April 2026) die Preisstufe B; den Preis für die Fähre zahlst du laut VBN zusätzlich. Ob dein eigener E-Scooter mit auf die Fähre darf, frag vor der Fahrt nach.',
+        '**Weserfähre nach Nordenham:** Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif (Stand April 2026) die Preisstufe B; den Preis für die Fähre zahlst du laut VBN zusätzlich. Anleger, Fahrplan und ob dein eigener E-Scooter mit darf, erfragst du vor der Fahrt beim Betreiber der Fähre.',
         'Mit einem Leih-Scooter bleibst du in Dotts Gebiet, das die App auf ihrer Karte zeigt: Verlässt du es, kann Dott ihn abschalten.',
-        '**Fernzüge:** In ICE und IC nimmt die Deutsche Bahn laut ihren FAQ (Stand Oktober 2026) einen E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; aufgeklappt gilt er als Traglast und darf nur mit, wenn er sicher untergebracht ist. Den eingebauten Akku darfst du unterwegs weder ausbauen noch laden noch als Powerbank nutzen.',
       ],
     },
     {
@@ -141,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem E-Scooter auf die Weserfähre nach Nordenham?',
-      answer: 'Ob ein eigener mitdarf, frag vor der Fahrt nach. Mit einem Leih-Scooter bleibst du in Dotts Gebiet aus der App: Verlässt du es, kann Dott ihn abschalten. Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif die Preisstufe B, den Fährpreis zahlst du zusätzlich.',
+      answer: 'Ob ein eigener mitdarf und wo die Fähre anlegt, frag vor der Fahrt beim Betreiber nach. Mit einem Leih-Scooter bleibst du in Dotts Gebiet aus der App: Verlässt du es, kann Dott ihn abschalten. Für Fahrten über die Fähre Blexen–Bremerhaven gilt im VBN-Tarif die Preisstufe B, den Fährpreis zahlst du zusätzlich.',
     },
   ],
   sources: [
@@ -154,7 +153,6 @@ const guide: Guide = {
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV)', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Bussgeldkatalog-Verordnung, Anlage', url: 'https://www.gesetze-im-internet.de/bkatv_2013/anlage.html' },
     { title: 'Kraftfahrt-Bundesamt: Bundeseinheitlicher Tatbestandskatalog (Datenbank, Stand 8. Oktober 2026)', url: 'https://www.kba.de/DE/Themen/ZentraleRegister/FAER/BT_KAT_OWI/btkat_node.html' },
-    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],
 };
 

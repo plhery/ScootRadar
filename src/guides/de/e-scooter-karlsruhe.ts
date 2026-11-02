@@ -74,11 +74,11 @@ const guide: Guide = {
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du im 100-m-Umkreis einer Abstellfläche, aber nicht auf ihr, oder in einer Verbotszone. Fahr zur nächsten Fläche, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
-        'Für falsches Abstellen verlangen die Anbieter laut ihren deutschen Bedingungen eigene Gebühren: Voi 25 €, Bolt 15 € ohne klares Abstellfoto, Dott bis 300 € fürs Einsammeln.',
+        'Für falsches Abstellen verlangen die Anbieter laut ihren deutschen Bedingungen eigene Gebühren: Voi 25 €, Dott bis 300 € fürs Einsammeln.',
       ],
     },
     {
-      heading: 'E-Scooter-Regeln in Karlsruhe: Bussgelder, Alkohol, Unfälle',
+      heading: 'E-Scooter-Regeln in Karlsruhe: Bussgelder und Alkohol',
       blocks: [
         'In Karlsruhe gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
@@ -96,7 +96,6 @@ const guide: Guide = {
           },
         },
         'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, bei unsicherem Fahren schon ab 0,3, und der Führerschein ist dann in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0.',
-        '2025 zählte die Polizei in Stadt und Landkreis Karlsruhe 138 Unfälle mit E-Scootern und anderen Elektrokleinstfahrzeugen, nach 92 im Jahr 2024. In 90 Fällen hatten die Fahrer den Unfall selbst verursacht. Elf Fahrer wurden schwer verletzt, getötet wurde niemand.',
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
@@ -176,9 +175,8 @@ const guide: Guide = {
     { title: 'Stadt Karlsruhe, Beschlussvorlage 2026/0605: Änderung der Sondernutzungsgebührensatzung (PDF)', url: 'https://web1.karlsruhe.de/ris/oparl/bodies/0001/downloadfiles/00680539.pdf' },
     { title: 'KVV: Gemeinschaftstarif und Beförderungsbedingungen, gültig ab 1. August 2026 (PDF)', url: 'https://www.kvv.de/fileadmin/user_upload/kvv/Dateien/Flyer/2026-07-15_KVV_brs_Gemeinschaftstarif_A5_bf.pdf' },
     { title: 'KVV.nextbike: Tarife', url: 'https://www.kvv-nextbike.de/de/' },
-    { title: 'Polizeipräsidium Karlsruhe: Verkehrsstatistik 2025 (PDF)', url: 'https://ppkarlsruhe.polizei-bw.de/wp-content/uploads/sites/5/2026/02/Verkehrsstatistik-2025_Polizeipraesidium-Karlsruhe_Final.pdf' },
     { title: 'Voi: E-Scooter in Karlsruhe', url: 'https://www.voi.com/de/city/karlsruhe' },
-    { title: 'Bolt: Tarif für Karlsruhe im offenen Datenfeed (GBFS, MobiData BW)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_karlsruhe/system_pricing_plans' },
+    { title: 'Bolt: Tarif für Karlsruhe im offenen Datenfeed (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_karlsruhe/system_pricing_plans' },
     { title: 'DAS FEST: Anreise', url: 'https://www.dasfest.de/info/anreise' },
   ],
 };

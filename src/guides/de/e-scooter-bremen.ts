@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Bremen 2026: Anbieter, Preise, Parken, BSAG',
   description: 'E-Scooter Bremen: wer verleiht, was eine Fahrt kostet, wo du fährst und parkst, warum der Bürgerpark tabu ist und was in Bahn und Bus der BSAG gilt.',
   headline: 'E-Scooter Bremen: Anbieter, Preise, Parken und die Regeln der Stadt',
-  lede: 'E-Scooter in Bremen leihst du ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Unsere Karte zeigt beide: am Sonntagmorgen, 25. Oktober 2026, rund 650 Dott- und 1250 Lime-Scooter. Einen Bremer Tarif fanden wir nicht offen, den Preis zeigt die App. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
+  lede: 'E-Scooter in Bremen leihst du ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Den Preis zeigt die App. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Bremen',
@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Bremen?',
       blocks: [
         'Wer in Bremen Leih-Scooter auf die Strasse stellt, braucht eine Sondernutzungserlaubnis des Ordnungsamts. Seit einem Konzept von 2021 vergibt die Stadt höchstens zwei. Nach dem neuen Konzept, das der Senat im Oktober 2024 beschloss, entscheidet unter den geeigneten Bewerbern das Los. Am 5. Juni 2025 zog die Stadt laut Senat unter sechs geeigneten Bewerbern **Tier Mobility** und **LimeBike Germany**. Ihre Erlaubnisse gelten drei Jahre ab dem 1. August 2025. Neu vergeben wird laut Innenbehörde erst im Sommer 2028 (Landesteilhabebeirat, 19. November 2025).',
-        'Im April 2025 waren es noch **Bolt** und **Lime** (Beirat Neustadt). Bolts Bremen-Seite nennt heute nur Fahrten mit Fahrer und Taxis, keine E-Scooter (Stand 25. Oktober 2026). **Lime** bot im Oktober 2025 dem Beirat Hemelingen ein Gespräch an und hat heute Scooter auf der Strasse: Seit dem 25. Oktober 2026 zeigt sie auch unsere Karte.',
-        'Tier ist mit Dott fusioniert; Dotts Bedingungen nennen die TIER Mobility SE als Vertragspartner. Die [Karte von Bremen](map:de:Bremen) zeigt **Dott** und seit dem 25. Oktober **Lime**: Am Samstag, 24. Oktober 2026, standen dort gegen 15:55 Uhr rund 620 Dott-Scooter, am Sonntag um 7:47 Uhr rund 650; am Sonntag gegen 9 Uhr standen rund 1250 Lime-Scooter in Limes Fahrgebiet. Das ist eine Momentaufnahme der freien Scooter, keine Flottengrösse. Die Karte zeigt nur, wo sie stehen: keine Preise, Zonen oder Abstellflächen.',
+        'Im April 2025 waren es noch **Bolt** und **Lime** (Beirat Neustadt). **Lime** bot im Oktober 2025 dem Beirat Hemelingen ein Gespräch an.',
+        'Tier ist mit Dott fusioniert; Dotts Bedingungen nennen die TIER Mobility SE als Vertragspartner. ScootRadar zeigt auf der [Karte von Bremen](map:de:Bremen) beide: am Sonntag, 25. Oktober 2026, um 7:47 Uhr rund 650 Dott-Scooter, die zu diesem Zeitpunkt frei waren, dazu gegen 9 Uhr rund 1250 Lime-Scooter nach der letzten Zählung.',
         'Gemietet wird in der App, bei Dott laut Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
@@ -39,13 +39,13 @@ const guide: Guide = {
           },
         },
         'Für Bremen-Nord hob die Stadt die Grenze um 200 Scooter an, weil Scooter dort «insbesondere in den Abendstunden» gut als Anschluss an Bus und Bahn angenommen würden und Bremen-Nord «bisher nicht vollständig erschlossen» sei.',
-        'Am Sonntag gegen 8:30 Uhr standen bis auf zwei alle Dott-Scooter der Karte innerhalb der Stadtgrenze; die zwei standen knapp nördlich von Burglesum in Ritterhude. Knapp 100 standen in Burglesum und Vegesack. Dotts Scooter zeigt die Karte allerdings nicht in der ganzen Stadt: Blumenthal, der Osten ab Oberneuland und Osterholz und der äusserste Süden fehlen. Ob dort Dott-Scooter stehen, siehst du in der Dott-App. Limes Fahrgebiet auf der Karte reicht im Norden bis Blumenthal. Bremerhaven ist auf der [Karte von Bremerhaven](map:de:Bremerhaven) eine eigene Stadt, am Sonntag um 7:47 Uhr mit rund 280 Dott-Scootern, und zählt nicht zu Bremen; mehr im [Ratgeber für Bremerhaven](guide:bremerhaven).',
+        'Wo in deinem Stadtteil gerade ein Scooter steht und wo du die Fahrt beenden darfst, zeigt die App des Anbieters. Bremerhaven ist eine eigene Stadt und zählt nicht zu Bremen: mehr im [Ratgeber für Bremerhaven](guide:bremerhaven).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Bremen?',
       blocks: [
-        'Einen Bremer Tarif veröffentlicht Dott nicht. «In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
+        'Dott nennt seinen Preis in der App: «In der Dott-App siehst du den Preis, der in deiner Region gilt» (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
         {
           table: {
             caption: 'Dott in Deutschland: Gebühren laut Bedingungen (letzte Aktualisierung 23. September 2025)',
@@ -73,12 +73,12 @@ const guide: Guide = {
               ['Bürgerpark und Stadtwald', 'Mit E-Scootern «auf allen Wegen grundsätzlich nicht gestattet»; Radfahren nur auf freigegebenen Wegen', 'Bürgerparkverein, Parkordnung vom August 2025, in Übereinstimmung mit der Stadt'],
               ['Alle Grünanlagen', 'Fahrt beenden oder pausieren nicht möglich, ausser der Verantwortliche lässt das Abstellen zu', 'Stadt, Erlaubnis der Anbieter'],
               ['Innenstadt', 'Parkverbotszonen («Negativzonen») laut Protokoll des Beirats Hemelingen vom Oktober 2025; wo genau, zeigt die App', 'Stadt, Erlaubnis der Anbieter'],
-              ['Flughafen', 'Abstellverbot laut Beirat Neustadt, der im April 2025 eine Ausnahme nahe Terminal 1 forderte; ob sie kam, fanden wir nicht', 'Ordnungsamt und Mobilitätsbehörde (laut Beirat)'],
+              ['Flughafen', 'Abstellverbot laut Beirat Neustadt, der im April 2025 eine Ausnahme nahe Terminal 1 forderte; ob es sie gibt, zeigt die App', 'Ordnungsamt und Mobilitätsbehörde (laut Beirat)'],
               ['Fussgängerzone', 'Absteigen und schieben, ausser ein Schild erlaubt das Fahren', 'Bund'],
             ],
           },
         },
-        'Eine eigene Scooter-Regel für die Schlachte, die Weserufer, den Marktplatz, die Wallanlagen oder den Hauptbahnhof fanden wir in den Unterlagen der Stadt nicht. Wo ein Ort als Grünanlage gilt, lässt dich die App die Fahrt dort aber nicht beenden. Weitere Verbotszonen kann die Stadt laut Mustererlaubnis nachträglich festlegen, auch nur vorübergehend. Eine Nachtsperre oder Saison fanden wir nicht.',
+        'Wo ein Ort als Grünanlage gilt, lässt dich die App die Fahrt dort nicht beenden. Weitere Verbotszonen kann die Stadt laut Mustererlaubnis nachträglich festlegen, auch nur vorübergehend; welche gerade gelten, zeigt die App.',
       ],
     },
     {
@@ -138,7 +138,7 @@ const guide: Guide = {
           list: [
             '**Strassenbahn und Bus der BSAG:** kein E-Scooter, auch nicht zusammengeklappt. Zusammengeklappt kostenlos fahren Falträder und Tretroller ohne Motor mit, E-Scooter nicht. Genauso streng ist die ÜSTRA in [Hannover](guide:hanover).',
             '**Regionalzug und Regio-S-Bahn:** E-Scooter dürfen mit, ins Fahrrad- oder Mehrzweckabteil, mit einem FahrradTicket für jede Fahrt und nur, solange Platz ist. Bei der NordWestBahn gehören sie auch zusammengeklappt in den Mehrzweckbereich.',
-            '**IC und ICE:** Es gilt der Tarif der Deutschen Bahn. Zusammengeklappt und sicher verstaut fährt dein eigener E-Scooter dort kostenlos als Handgepäck mit.',
+            '**IC und EC:** Für die Mitnahme gelten laut VBN die Bestimmungen und Preise der Deutschen Bahn.',
             '**Akku:** nur ein vom Hersteller freigegebener mit CE-Zeichen, nicht sichtbar beschädigt; laden ist verboten.',
           ],
         },
@@ -148,14 +148,10 @@ const guide: Guide = {
     {
       heading: 'Uni, Constructor University, Hauptbahnhof und Flughafen: Tipps',
       blocks: [
-        'Wo am Sonntag, 25. Oktober 2026, gegen 8:30 Uhr Dott-Scooter standen, gibt einen Anhaltspunkt:',
         {
           list: [
-            '**Universität Bremen:** rund 15 im Umkreis von 500 m um den Boulevard, knapp 30 im Umkreis von 1 km.',
-            '**Constructor University in Vegesack:** rund 10 im Umkreis von 500 m, gut 20 im Umkreis von 1 km; am Bahnhof Vegesack rund 10 im Umkreis von 1 km.',
-            '**Hauptbahnhof:** rund 20 im Umkreis von 500 m. **Marktplatz:** zwei im Umkreis von 500 m, knapp 20 im Umkreis von 1 km.',
-            '**Weserstadion:** rund 20 im Umkreis von 1 km. Eine eigene Scooter-Regel für Spieltage von Werder Bremen fanden wir nicht.',
-            '**Flughafen:** einer im Umkreis von 1 km, der nächste gut 600 m vom Terminal entfernt.',
+            '**Universität, Constructor University, Hauptbahnhof, Marktplatz, Weserstadion:** Ob du dort abstellen darfst, zeigt dir die App vor dem Beenden der Fahrt.',
+            '**Flughafen:** Laut Beirat Neustadt gilt am Flughafen ein Abstellverbot; beende die Fahrt vorher.',
           ],
         },
         'Freie Dott- und Lime-Scooter in deiner Nähe zeigt die [Live-Karte von Bremen](map:de:Bremen).',
@@ -165,11 +161,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Bremen?',
-      answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost. Unsere Karte zeigt beide, am Morgen des 25. Oktober 2026 rund 650 Dott- und 1250 Lime-Scooter. Bolt nennt für Bremen keine E-Scooter mehr.',
+      answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost.',
     },
     {
       question: 'Was kostet ein E-Scooter in Bremen?',
-      answer: 'Einen Bremer Tarif fanden wir nicht offen; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten und ab dem zweiten Verstoss 15 €, die der Anbieter nach Vorgabe der Stadt verlangt.',
+      answer: 'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten und ab dem zweiten Verstoss 15 €, die der Anbieter nach Vorgabe der Stadt verlangt.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Bürgerpark fahren?',
@@ -185,7 +181,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Bremen-Nord E-Scooter?',
-      answer: 'Ja, die Stadt erlaubt dort bis zu 700. Am 25. Oktober 2026 standen auf unserer Karte knapp 100 Dott-Scooter in Burglesum und Vegesack. Dott-Scooter in Blumenthal zeigt unsere Karte nicht, Limes Fahrgebiet reicht seit dem 25. Oktober bis dorthin.',
+      answer: 'Ja, die Stadt erlaubt dort bis zu 700. Wo in Burglesum, Vegesack oder Blumenthal gerade einer steht, zeigt dir die App des Anbieters.',
     },
   ],
   sources: [
@@ -200,7 +196,6 @@ const guide: Guide = {
     { title: 'VBN: Tarifbestimmungen und Beförderungsbedingungen 2026 (PDF)', url: 'https://www.vbn.de/fileadmin/content/_Tickets/Tarifbestimmungen/Tarifbestimmungen_und_Befoerderungsbedingungen_2026.pdf' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
-    { title: 'Bolt: Bremen', url: 'https://bolt.eu/de-de/cities/bremen/' },
   ],
 };
 
