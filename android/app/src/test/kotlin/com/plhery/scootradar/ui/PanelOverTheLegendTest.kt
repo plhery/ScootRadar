@@ -91,7 +91,7 @@ class PanelOverTheLegendTest {
     }
 
     /**
-     * Where the legend's first label lies under the panel's foot, beside its grabber, the panel's glass is drawn over
+     * Where the legend's second label lies under the panel's foot, beside its grabber, the panel's glass is drawn over
      * it: the label shows through it only dimly, as the map does (a tenth of it in the light, 6% in the dark).
      */
     @Test
@@ -99,7 +99,7 @@ class PanelOverTheLegendTest {
     fun thePanelIsDrawnOverTheZonesLegendWhereBothAre() {
         show()
         val panel = rect(frames.panel)
-        val label = drawn(compose.onNode(hasText("Circulation interdite"), useUnmergedTree = true))
+        val label = drawn(compose.onNode(hasText("Stationnement interdit"), useUnmergedTree = true))
         // Clear of the grabber, 36 wide in the middle of the panel's foot.
         val left = max(label.left, panel.center.x + 40)
         val right = min(label.right, panel.right)
@@ -189,8 +189,8 @@ class PanelOverTheLegendTest {
 
     private companion object {
         /**
-         * The Tablet in a free window, 800 dp wide: the panel opens from 780, and French's legend, about 437 dp wide
-         * with the kinds on one line, reaches 214 dp in under it.
+         * The Tablet in a free window, 800 dp wide: the panel opens from 780, and French's legend, its kinds on a line
+         * from "Circulation interdite" to "Stationnement interdit" and beyond, reaches in under it.
          */
         const val WINDOW = "w800dp-h576dp-mdpi"
 

@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.ui.theme.PHONE
 import com.plhery.scootradar.ui.theme.ScootTheme
@@ -81,7 +82,10 @@ class ZoneLegendIntrinsicsTest {
         /** From a sliver to the locate row's widest, 560, every 2 dp. */
         val WIDTHS = 60..560 step 2
 
-        /** The operators' kinds with a street's line, and with two lines of a city's rules, one in force. */
+        /**
+         * The operators' kinds with a street's line, with two lines of a city's rules, one in force, and with a city's
+         * parking among them, each with its credit.
+         */
         val cases = mapOf(
             "the kinds and a street" to listOf(
                 CityRuleZone.Shown(rule("seoul-credited", "Seoul, lines © OpenStreetMap", 12 * 60, 23 * 60), inForce = false),
@@ -89,6 +93,16 @@ class ZoneLegendIntrinsicsTest {
             "the kinds and two rules" to listOf(
                 CityRuleZone.Shown(rule("seoul", "Seoul", 22 * 60, 6 * 60), inForce = true),
                 CityRuleZone.Shown(rule("gangnam", "Gangnam-gu", 9 * 60, 18 * 60 + 30), inForce = false),
+            ),
+            "the kinds and a city's parking" to listOf(
+                CityRuleZone.Shown(
+                    CityRuleZone(
+                        id = "porto-parking-1", authority = "Porto", timeZone = "Europe/Lisbon", kind = ScooterZoneKind.Parking,
+                        source = "https://example.com/porto",
+                        ring = listOf(GeoPoint(41.1441, -8.6096), GeoPoint(41.1441, -8.6095), GeoPoint(41.1442, -8.6095)),
+                    ),
+                    inForce = true,
+                ),
             ),
         )
 

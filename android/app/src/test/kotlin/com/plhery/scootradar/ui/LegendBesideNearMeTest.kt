@@ -268,7 +268,7 @@ class LegendBesideNearMeTest {
 
     /**
      * Zürich at a street's zoom, a scooter, and a city's street with hours, not in force: its line ends "(not now)". A
-     * line each for more [authorities]. [denied]: the card of a location that was denied under the search bar.
+     * street for each of more [authorities], each from an hour later, so a line each, and each credited at the foot. [denied]: the card of a location that was denied under the search bar.
      */
     private fun show(
         located: Boolean,
@@ -283,7 +283,7 @@ class LegendBesideNearMeTest {
                 authority = authority,
                 timeZone = "Asia/Seoul",
                 firstDay = "2025-05-16",
-                hours = listOf(CityRuleZone.Hours(fromMinute = 12 * 60, untilMinute = 23 * 60)),
+                hours = listOf(CityRuleZone.Hours(fromMinute = (12 + index) * 60, untilMinute = 23 * 60)),
                 source = "https://example.com/street-$index",
                 lines = listOf(listOf(GeoPoint(47.3769, 8.5417), GeoPoint(47.3779, 8.5427))),
             )

@@ -93,7 +93,8 @@ class CityZoneDownloadsTest {
         assertTrue(controllers.waitUntil { model.mapZones.value.map { it.id } == listOf("rule:berlin-no-parking-1") })
         compose.waitForIdle()
         compose.onNodeWithText("Loading Berlin’s zones…").assertDoesNotExist()
-        compose.onNodeWithText("No parking · Land Berlin, DL-DE Zero").assertExists()
+        compose.onNodeWithText("No parking", useUnmergedTree = true).assertExists()
+        compose.onNodeWithText("Land Berlin, DL-DE Zero").assertExists()
 
         // A new version is published, and its file fails to come: the old one is not drawn, and the legend says so.
         api.set("index.json", index(zoneFile(listOf(ZONE, OTHER_ZONE))))
@@ -103,7 +104,7 @@ class CityZoneDownloadsTest {
         assertTrue(controllers.waitUntil { model.mapZoneNotices.value.map { it.state } == listOf(CityZoneDownloads.Notice.State.Unavailable) })
         compose.waitForIdle()
         compose.onNodeWithText("Berlin’s zones unavailable right now").assertExists()
-        compose.onNodeWithText("No parking · Land Berlin, DL-DE Zero").assertDoesNotExist()
+        compose.onNodeWithText("Land Berlin, DL-DE Zero").assertDoesNotExist()
         assertTrue(model.mapZones.value.isEmpty())
 
         // Further out than zoom 14, neither the zones nor the notice, nor the legend.

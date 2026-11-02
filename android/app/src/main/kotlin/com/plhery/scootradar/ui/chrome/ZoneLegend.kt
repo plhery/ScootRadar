@@ -73,8 +73,9 @@ import java.time.ZoneOffset
 
 /**
  * What the colours of the zones mean while they are on, or why none are drawn, at the foot of the map beside the
- * locate button, as on the web (ZoneLegend.tsx). Taps go through it to the map, but for a city's line, whose
- * authority, who sets it, is a link: then it takes them all.
+ * locate button, as on the web (ZoneLegend.tsx). Each kind is named once, the strongest rule first, whether the
+ * operators or a city set it; who sets a city's is credited once, small, at the foot. Taps go through it to the map,
+ * but where it credits a city, whose name is a link: then it takes them all.
  */
 @Composable
 fun ZoneLegend(
@@ -82,8 +83,9 @@ fun ZoneLegend(
     /** The operators' zones drawn. */
     count: Int,
     /**
-     * The cities' rules and zones over the map, whether or not the zones are on: a line for each kind, hours and
-     * who sets them, linked to where they say so (as on the web, ZoneLegend.tsx).
+     * The cities' rules and zones over the map, whether or not the zones are on: their kinds among the operators', a
+     * line for any whose hours set it apart, and who sets them, linked to where they say so (as on the web,
+     * ZoneLegend.tsx).
      */
     rules: List<CityRuleZone.Shown>,
     modifier: Modifier = Modifier,
@@ -94,8 +96,10 @@ fun ZoneLegend(
     notices: List<CityZoneDownloads.Notice> = emptyList(),
 ) {
     val colors = scootColors
-    val lines = ruleLines(rules, link = colors.dockText, focus = colors.accent)
-    val note = zoneLegendNote(state, count, rules = lines.isNotEmpty(), notices = notices.isNotEmpty())
+    val note = zoneLegendNote(state, count, rules = rules.isNotEmpty(), notices = notices.isNotEmpty())
+    val kinds = legendKinds(state, count, rules, besideNote = note != null)
+    val lines = ruleLines(rules)
+    val credit = zoneCredit(rules, link = colors.dockSecondary, focus = colors.accent)
     val zones = localized("Zones")
     val style = ScootType.caption.weight(FontWeight.Medium)
     val scroll = rememberScrollState()
@@ -108,7 +112,7 @@ fun ZoneLegend(
             // order by position read the button between the kinds and the cities' lines under them.
             .semantics { isTraversalGroup = true }
             .chromeGlass(SquircleShape(16.dp))
-            .then(if (lines.isEmpty()) Modifier else Modifier.overTheMap())
+            .then(if (credit == null) Modifier else Modifier.overTheMap())
             // Inside the glass, as tall as the room it is given at most, and scrolled where it is taller (the locate
             // row's ceiling under the search bar, UI-410): a tap or a drag goes to the map under it until then.
             .scrollsWhereShort(scroll, scrolls) { scrolls = it }
@@ -125,8 +129,9 @@ fun ZoneLegend(
                     stateDescription = note
                 },
             )
-        } else if (showsKinds(state, count)) {
-            val labels = ScooterZoneKind.operatorKinds.map { it.label }
+        }
+        if (kinds.isNotEmpty()) {
+            val labels = kinds.map { it.label }
             FlowRow(
                 Modifier.clearAndSetSemantics {
                     contentDescription = zones
@@ -135,7 +140,7 @@ fun ZoneLegend(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                for (kind in ScooterZoneKind.operatorKinds) {
+                for (kind in kinds) {
                     // As wide as its one line, in the FlowRow's intrinsics too, which pack by an item's least width
                     // (a Text's longest word): the legend's height asked beside the locate button is then the one it
                     // takes (LocateRow, UI-410).
@@ -157,11 +162,14 @@ fun ZoneLegend(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 ZoneSwatch(line.kind, Modifier.alpha(if (line.inForce) 1f else CityRuleZone.dimmed.toFloat()))
-                Text(line.text, style = style, color = colors.dockText, modifier = Modifier.spokenPlainly(line.text))
+                Text(line.text, style = style, color = colors.dockText)
             }
         }
         for (notice in notices) {
             Text(noticeText(notice), style = style, color = colors.dockSecondary)
+        }
+        if (credit != null) {
+            Text(credit, style = ScootType.caption2, color = colors.dockSecondary, modifier = Modifier.spokenPlainly(credit))
         }
     }
 }
@@ -185,9 +193,16 @@ private fun Modifier.scrollsWhereShort(state: ScrollState, scrolls: Boolean, onS
 /** The legend's tag, by which the tests find its frame on the screen. */
 const val ZONE_LEGEND_TAG = "zoneLegend"
 
-/** The kinds are listed while the zones are on, but where they are shown and there are none. */
-private fun showsKinds(state: ScooterZoneState, count: Int): Boolean =
-    state != ScooterZoneState.Off && !(state == ScooterZoneState.Shown && count == 0)
+/**
+ * Each kind once, the strongest rule first: the operators' while they are drawn, unless a note stands for them
+ * ([besideNote]), and those of the cities' [rules] that hold at all hours.
+ */
+internal fun legendKinds(state: ScooterZoneState, count: Int, rules: List<CityRuleZone.Shown>, besideNote: Boolean): List<ScooterZoneKind> {
+    val operators = !besideNote && state != ScooterZoneState.Off && !(state == ScooterZoneState.Shown && count == 0)
+    return ScooterZoneKind.entries.filter { kind ->
+        (operators && kind in ScooterZoneKind.operatorKinds) || rules.any { it.rule.kind == kind && it.rule.hours.isEmpty() && it.inForce }
+    }
+}
 
 /**
  * What the legend says instead of the kinds: never that no zones are published where a city's are drawn ([rules]), or
@@ -206,40 +221,50 @@ internal fun noticeText(notice: CityZoneDownloads.Notice): String = when (notice
     CityZoneDownloads.Notice.State.Unavailable -> stringFormat(localized("%@’s zones unavailable right now"), notice.city.place.isolated)
 }
 
-/** A city's line: one for each kind, authority, hours and whether they hold now. */
-internal class RuleLine(val key: String, val kind: ScooterZoneKind, val inForce: Boolean, val text: AnnotatedString)
+/** A city's line, for a rule whose hours set it apart or that does not hold yet: one for each kind, hours and whether they hold now. */
+internal class RuleLine(val key: String, val kind: ScooterZoneKind, val inForce: Boolean, val text: String)
 
-/**
- * The lines, the strongest rule first: "No riding 12:00–23:00 · Seoul", "Parking · Porto". The city's name is a link,
- * white on the [focus] colour while a keyboard is on it, as iPadOS rings a link in the tint (UI-251).
- */
-internal fun ruleLines(rules: List<CityRuleZone.Shown>, link: Color, focus: Color = link): List<RuleLine> {
+/** The lines, the strongest rule first: "No riding 12:00–23:00", "No riding (not now)". */
+internal fun ruleLines(rules: List<CityRuleZone.Shown>): List<RuleLine> {
     val lines = mutableListOf<RuleLine>()
     // Hundreds of a city's zones may be in view, and make a few lines.
     val keys = mutableSetOf<String>()
     for (kind in ScooterZoneKind.entries) {
         for (shown in rules) {
-            if (shown.rule.kind != kind) continue
+            if (shown.rule.kind != kind || (shown.rule.hours.isEmpty() && shown.inForce)) continue
             val hours = shown.rule.hours.joinToString(", ") { "${wallTime(it.fromMinute)}–${wallTime(it.untilMinute)}" }
-            val key = "${kind.rawValue} ${shown.rule.authority} $hours ${shown.inForce}"
+            val key = "${kind.rawValue} $hours ${shown.inForce}"
             if (!keys.add(key)) continue
-            val text = buildAnnotatedString {
-                append(if (hours.isEmpty()) "${kind.label} · " else "${kind.label} $hours · ")
-                withLink(
-                    LinkAnnotation.Url(
-                        shown.rule.source,
-                        TextLinkStyles(
-                            style = SpanStyle(color = link, textDecoration = TextDecoration.Underline),
-                            focusedStyle = SpanStyle(color = Color.White, background = focus),
-                        ),
-                    ),
-                ) { append(shown.rule.authority) }
-                if (!shown.inForce) append(" (${localized("not now")})")
-            }
+            var text = if (hours.isEmpty()) kind.label else "${kind.label} $hours"
+            if (!shown.inForce) text += " (${localized("not now")})"
             lines += RuleLine(key, kind, shown.inForce, text)
         }
     }
     return lines
+}
+
+/**
+ * Who sets the cities' rules, each once, the strongest rule's first, linked to where they say so: "Bergen kommune ·
+ * Seoul, lines © OpenStreetMap". Each name is a link, white on the [focus] colour while a keyboard is on it, as iPadOS
+ * rings a link in the tint (UI-251).
+ */
+internal fun zoneCredit(rules: List<CityRuleZone.Shown>, link: Color, focus: Color = link): AnnotatedString? {
+    val credited = ScooterZoneKind.entries.flatMap { kind -> rules.filter { it.rule.kind == kind } }.distinctBy { it.rule.authority }
+    if (credited.isEmpty()) return null
+    return buildAnnotatedString {
+        credited.forEachIndexed { index, shown ->
+            if (index > 0) append(" · ")
+            withLink(
+                LinkAnnotation.Url(
+                    shown.rule.source,
+                    TextLinkStyles(
+                        style = SpanStyle(color = link, textDecoration = TextDecoration.Underline),
+                        focusedStyle = SpanStyle(color = Color.White, background = focus),
+                    ),
+                ),
+            ) { append(shown.rule.authority) }
+        }
+    }
 }
 
 /** "23:00" or "11:00 PM", a time on the place's clock in the user's format (formatWallTime on the web). */

@@ -87,10 +87,10 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
         RulesOnly(ScooterZoneState.Off, 0, seoulRules),
         KindsAndRules(ScooterZoneState.Shown, 12, seoulRules),
 
-        /** The zones off, and a line for each kind a city sets, the strongest first. */
+        /** The zones off, and each kind a city sets, the strongest first, and the city credited at the foot. */
         BergenOnly(ScooterZoneState.Off, 0, bergenZones),
 
-        /** A city's parking places beside the operators' kinds. */
+        /** A city's parking places among the operators' kinds, and the city credited at the foot. */
         KindsAndPorto(ScooterZoneState.Shown, 12, portoZones),
 
         /**
@@ -100,12 +100,12 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
         NoticesOnly(ScooterZoneState.Shown, 0, emptyList(), cityNotices),
 
         /**
-         * A street traced on OpenStreetMap, which its line credits: "No riding 12:00–23:00 · Seoul, lines ©
-         * OpenStreetMap", the whole authority linked and wrapped beside the swatch (UI-410).
+         * A street traced on OpenStreetMap: its line, "No riding 12:00–23:00", and at the foot its credit, the whole
+         * "Seoul, lines © OpenStreetMap" linked (UI-410).
          */
         CreditedStreet(ScooterZoneState.Off, 0, creditedStreet),
 
-        /** A street at all hours, whose line gives none: "No riding · Antalya UKOME, lines © OpenStreetMap" (UI-411). */
+        /** A street at all hours: its kind alone, and at the foot "Antalya UKOME, lines © OpenStreetMap" (UI-411). */
         StreetAtAllHours(ScooterZoneState.Off, 0, boulevard),
         ;
 
@@ -183,7 +183,7 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
             ),
         )
 
-        /** Bergen's zones, one of each kind and a second parking place, which shares its line. */
+        /** Bergen's zones, one of each kind and a second parking place, named once. */
         private val bergenZones = listOf(
             ScooterZoneKind.Parking, ScooterZoneKind.Slow, ScooterZoneKind.NoParking, ScooterZoneKind.NoRide, ScooterZoneKind.Parking,
         ).mapIndexed { index, kind ->
@@ -201,7 +201,7 @@ class ZoneLegendScreenshotTest(private val case: Case, private val look: Look) {
             bounds = GeoBounds(south = 52.5, west = 13.3, north = 52.6, east = 13.5),
         )
 
-        /** Two of Porto's parking places, one line. */
+        /** Two of Porto's parking places, named once. */
         private val portoZones = (0..1).map { index ->
             CityRuleZone.Shown(zone("porto-$index", "Porto", "Europe/Lisbon", ScooterZoneKind.Parking, GeoPoint(41.147, -8.611)), inForce = true)
         }

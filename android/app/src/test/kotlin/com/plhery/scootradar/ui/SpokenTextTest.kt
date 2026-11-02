@@ -149,11 +149,11 @@ class SpokenTextTest {
     }
 
     /**
-     * UI-410: a street traced on OpenStreetMap credits it in its legend line, and TalkBack names the line's link by the
-     * whole authority, "Seoul, lines © OpenStreetMap", not "Seoul" alone, as VoiceOver names the iPhone's link by its
-     * text. Each line is one node TalkBack stops on, whose text carries one link, over the whole authority, to the
-     * rule's source; no node TalkBack is given names a link by anything else. The catalog's streets, at the width the
-     * phone's legend has beside the locate button, where the credited lines wrap.
+     * UI-410: a street traced on OpenStreetMap credits it at the legend's foot, and TalkBack names the credit's link by
+     * the whole authority, "Seoul, lines © OpenStreetMap", not "Seoul" alone, as VoiceOver names the iPhone's link by
+     * its text. The credit is one node TalkBack stops on, whose text carries a link for each authority, over the whole
+     * of it, to its rule's source; no node TalkBack is given names a link by anything else. The catalog's streets, at
+     * the width the phone's legend has beside the locate button, where the credit wraps.
      */
     @Test
     @Config(qualifiers = PHONE)
@@ -192,20 +192,17 @@ class SpokenTextTest {
                 node.id to Given(info.isScreenReaderFocusable || info.isFocusable, text, links + named, node.parent?.id)
             }.toMap()
         }
-        val lines = given.values.filter { it.text?.contains(" · ") == true }
-        // Seoul's two streets share a line, their authority and hours.
-        assertEquals(streets.map { "${it.authority} ${it.hours}" }.distinct().size, lines.size)
-        for (line in lines) {
-            val text = line.text.toString()
-            val street = streets.first { text.endsWith(" · ${it.authority}") }
-            assertTrue(text, street.authority.endsWith(", lines © OpenStreetMap"))
-            assertEquals(text, listOf(street.authority to street.source), line.links)
-            assertEquals(text, true, given[line.parent]?.stops)
-        }
+        val authorities = streets.distinctBy { it.authority }
+        val credit = given.values.single { it.text?.toString() == authorities.joinToString(" · ") { it.authority } }
+        assertEquals(authorities.map { it.authority to it.source }, credit.links)
+        assertTrue(credit.stops)
         // Nothing else TalkBack is given is a link, or names one otherwise.
         val names = given.values.flatMap { it.links }.map { it.first }.toSet()
-        assertEquals(streets.map { it.authority }.toSet(), names)
-        assertEquals(lines.size, given.values.count { it.stops })
+        assertEquals(authorities.map { it.authority }.toSet(), names)
+        // It stops on the kind of the streets at all hours, a line for each of the others' hours, and the credit.
+        val kinds = if (streets.any { it.hours.isEmpty() }) 1 else 0
+        val hours = streets.filter { it.hours.isNotEmpty() }.map { it.hours }.distinct().size
+        assertEquals(kinds + hours + 1, given.values.count { it.stops })
     }
 
     /**

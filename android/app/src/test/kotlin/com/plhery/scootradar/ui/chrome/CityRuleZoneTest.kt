@@ -2,6 +2,7 @@ package com.plhery.scootradar.ui.chrome
 
 import android.provider.Settings
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -9,9 +10,11 @@ import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
+import com.plhery.scootradar.core.model.ScooterZoneState
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,7 +23,7 @@ import java.util.TimeZone
 
 // The legend's test of ios/ScootRadarTests/ScooterZonesTests.swift (T421).
 
-/** The cities' lines in the zones' legend (ui.md UI-408). */
+/** The cities' kinds, lines and credit in the zones' legend (ui.md UI-408). */
 @RunWith(AndroidJUnit4::class)
 class CityRuleZoneTest {
     private val locale = Locale.getDefault()
@@ -65,67 +68,68 @@ class CityRuleZoneTest {
     )
 
     /** Porto's parking place, two of Bergen's and one of each of its other kinds, and Seoul's street, all in force. */
-    private fun lines(): List<RuleLine> {
-        val rules = listOf(porto) + bergen.filter { it.kind == ScooterZoneKind.Parking }.take(2) +
-            listOf(first(ScooterZoneKind.Slow), first(ScooterZoneKind.NoRide), first(ScooterZoneKind.NoParking), hongdae)
-        return ruleLines(rules.map { CityRuleZone.Shown(rule = it, inForce = true) }, link = Color.Blue)
-    }
+    private val shown: List<CityRuleZone.Shown>
+        get() = (
+            listOf(porto) + bergen.filter { it.kind == ScooterZoneKind.Parking }.take(2) +
+                listOf(first(ScooterZoneKind.Slow), first(ScooterZoneKind.NoRide), first(ScooterZoneKind.NoParking), hongdae)
+            ).map { CityRuleZone.Shown(rule = it, inForce = true) }
 
-    private fun links(line: RuleLine) = line.text.getLinkAnnotations(0, line.text.length).map { (it.item as LinkAnnotation.Url).url }
+    private fun links(text: AnnotatedString) = text.getLinkAnnotations(0, text.length).map { (it.item as LinkAnnotation.Url).url }
 
     @Test
-    fun theLegendHasALineForEachKindAndWhoSetsItTheStrongestRuleFirst() {
+    fun theLegendNamesEachKindOnceTheStrongestFirstAndCreditsEachCityOnce() {
         Locale.setDefault(Locale.forLanguageTag("en-CH"))
         ScooterLanguage.current = ScooterLanguage.En
-        val lines = lines()
-        assertEquals(
-            listOf(
-                ScooterZoneKind.NoRide, ScooterZoneKind.NoRide, ScooterZoneKind.NoParking, ScooterZoneKind.Slow,
-                ScooterZoneKind.Parking, ScooterZoneKind.Parking,
-            ),
-            lines.map { it.kind },
-        )
-        val texts = lines.map { it.text.text }
-        assertEquals("No riding · Bergen kommune", texts[0])
-        // "No riding 12:00–23:00 · Seoul", in the user's format.
-        assertTrue(texts[1], texts[1].startsWith("No riding "))
-        assertTrue(texts[1], texts[1].contains("–"))
-        assertTrue(texts[1], texts[1].endsWith(" · Seoul"))
-        assertEquals("No parking · Bergen kommune", texts[2])
-        assertEquals("Slow · Bergen kommune", texts[3])
-        assertEquals("Parking · Porto", texts[4])
-        assertEquals("Parking · Bergen kommune", texts[5])
-        // Who sets it, linked to where they say so.
-        assertEquals(listOf(porto.source), links(lines[4]))
-        assertEquals(listOf(bergen[0].source), links(lines[5]))
+        val all = listOf(ScooterZoneKind.NoRide, ScooterZoneKind.NoParking, ScooterZoneKind.Slow, ScooterZoneKind.Parking)
+        // The zones off: the cities' kinds, each once, and Hongdae's street a line of its own for its hours.
+        assertEquals(all, legendKinds(ScooterZoneState.Off, 0, shown, besideNote = false))
+        val lines = ruleLines(shown)
+        assertEquals(listOf(ScooterZoneKind.NoRide), lines.map { it.kind })
+        // "No riding 12:00–23:00", in the user's format, with no one's name.
+        val text = lines.single().text
+        assertTrue(text, text.startsWith("No riding ") && text.contains("–") && !text.contains("Seoul"))
+        // Who sets them, once each, the strongest rule's first, linked to where they say so.
+        val credit = zoneCredit(shown, link = Color.Blue)!!
+        assertEquals("Bergen kommune · Seoul · Porto", credit.text)
+        assertEquals(listOf(bergen[0].source, hongdae.source, porto.source), links(credit))
+        // The zones on: the operators' kinds and the cities' together, still each once.
+        assertEquals(all, legendKinds(ScooterZoneState.Shown, 12, shown, besideNote = false))
+        // Further out, the note stands for the operators' kinds, and the cities' are still named.
+        val portoOnly = listOf(CityRuleZone.Shown(rule = porto, inForce = true))
+        assertEquals(listOf(ScooterZoneKind.Parking), legendKinds(ScooterZoneState.ZoomIn, 0, portoOnly, besideNote = true))
+        // No city: no credit.
+        assertNull(zoneCredit(emptyList(), link = Color.Blue))
     }
 
     /**
-     * The streets as the catalog has them, Seoul's and Antalya's, traced on OpenStreetMap's roads: their line credits
-     * it, the whole "Seoul, lines © OpenStreetMap" linked to the city's notice (e1548810, UI-410), and a street at all
-     * hours has none in its line: "No riding · Antalya UKOME, lines © OpenStreetMap" (UI-411). The iPhone's test reads
-     * the catalog's street in the legend; the test above has a street of its own (LOG-370), so this one reads the
-     * catalog's.
+     * The streets as the catalog has them, Seoul's and Antalya's, traced on OpenStreetMap's roads: the credit names it,
+     * the whole "Seoul, lines © OpenStreetMap" linked to the city's notice (e1548810, UI-410), and a street at all
+     * hours has no line of its own, only its kind (UI-411). The iPhone's test reads the catalog's street in the legend;
+     * the test above has a street of its own (LOG-370), so this one reads the catalog's.
      */
     @Test
-    fun theCatalogsStreetsCreditOpenStreetMapInTheirLine() {
+    fun theCatalogsStreetsCreditOpenStreetMap() {
         Locale.setDefault(Locale.forLanguageTag("en-CH"))
         ScooterLanguage.current = ScooterLanguage.En
         assertFalse(CityRuleZone.all.isEmpty())
         for (street in CityRuleZone.all) {
-            val line = ruleLines(listOf(CityRuleZone.Shown(rule = street, inForce = true)), link = Color.Blue).single()
-            val text = line.text.text
-            assertTrue(text, text.endsWith(" · ${street.authority}") && text.endsWith(", lines © OpenStreetMap"))
-            if (street.hours.isEmpty()) assertEquals("No riding · ${street.authority}", text)
-            val linked = line.text.getLinkAnnotations(0, text.length).single()
-            assertEquals(street.authority, text.substring(linked.start, linked.end))
-            assertEquals(street.source, (linked.item as LinkAnnotation.Url).url)
+            val shown = listOf(CityRuleZone.Shown(rule = street, inForce = true))
+            val credit = zoneCredit(shown, link = Color.Blue)!!
+            assertEquals(street.authority, credit.text)
+            assertTrue(credit.text, credit.text.endsWith(", lines © OpenStreetMap"))
+            assertEquals(listOf(street.source), links(credit))
+            if (street.hours.isEmpty()) {
+                assertTrue(ruleLines(shown).isEmpty())
+                assertEquals(listOf(ScooterZoneKind.NoRide), legendKinds(ScooterZoneState.Off, 0, shown, besideNote = false))
+            } else {
+                assertTrue(ruleLines(shown).single().text.startsWith("No riding "))
+            }
         }
     }
 
     /**
      * LOG-355: a rule's hours are its place's clock, kept as minutes and written as a time at UTC, as the iPhone writes
-     * them at GMT (ScooterControls.swift:2932-2936): the phone's own zone doesn't move them, east of UTC (Auckland) or
+     * them at GMT (ScooterControls.swift wallTime): the phone's own zone doesn't move them, east of UTC (Auckland) or
      * west (Los Angeles). CI runs at UTC, where a zone mixed in shows nothing.
      */
     @Test
@@ -141,8 +145,8 @@ class CityRuleZoneTest {
         )
         for (id in listOf("Pacific/Auckland", "America/Los_Angeles", "UTC")) {
             TimeZone.setDefault(TimeZone.getTimeZone(id))
-            val lines = ruleLines(listOf(hongdae, night).map { CityRuleZone.Shown(rule = it, inForce = true) }, link = Color.Blue)
-            assertEquals(id, listOf("No riding 12:00–23:00 · Seoul", "No riding 22:00–00:00 · Seoul"), lines.map { it.text.text })
+            val lines = ruleLines(listOf(hongdae, night).map { CityRuleZone.Shown(rule = it, inForce = true) })
+            assertEquals(id, listOf("No riding 12:00–23:00", "No riding 22:00–00:00"), lines.map { it.text })
         }
     }
 
@@ -150,15 +154,14 @@ class CityRuleZoneTest {
     fun theLegendsLinesAreInTheUsersLanguage() {
         Locale.setDefault(Locale.forLanguageTag("nl-NL"))
         ScooterLanguage.current = ScooterLanguage.Nl
-        val texts = lines().map { it.text.text }
-        assertEquals("Rijverbod · Bergen kommune", texts[0])
-        assertTrue(texts[1], texts[1].startsWith("Rijverbod ") && texts[1].endsWith(" · Seoul"))
         assertEquals(
-            listOf("Parkeerverbod · Bergen kommune", "Langzaam · Bergen kommune", "Parkeerplek · Porto", "Parkeerplek · Bergen kommune"),
-            texts.drop(2),
+            listOf("Rijverbod", "Parkeerverbod", "Langzaam", "Parkeerplek"),
+            legendKinds(ScooterZoneState.Off, 0, shown, besideNote = false).map { it.label },
         )
+        assertTrue(ruleLines(shown).single().text.startsWith("Rijverbod "))
         // A rule outside its hours says so.
-        val dimmed = ruleLines(listOf(CityRuleZone.Shown(rule = hongdae, inForce = false)), link = Color.Blue).single()
-        assertTrue(dimmed.text.text, dimmed.text.text.endsWith(" · Seoul (nu niet)"))
+        val dimmed = ruleLines(listOf(CityRuleZone.Shown(rule = hongdae, inForce = false))).single()
+        assertFalse(dimmed.inForce)
+        assertTrue(dimmed.text, dimmed.text.endsWith(" (nu niet)"))
     }
 }
