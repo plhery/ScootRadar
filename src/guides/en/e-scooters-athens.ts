@@ -95,7 +95,7 @@ const guide: Guide = {
     {
       heading: 'Greece’s e-scooter rules and fines in one table',
       blocks: [
-        'These are the national rules that apply in Athens, as in [Kos](guide:kos) and [Rhodes](guide:rhodes).',
+        'These are the national rules that apply in Athens, as in [Thessaloniki](guide:thessaloniki), [Heraklion](guide:heraklion), [Kos](guide:kos) and [Rhodes](guide:rhodes).',
         {
           table: {
             caption: 'E-scooter rules in Greece on 2 November 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
@@ -179,7 +179,6 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Government Gazette ΦΕΚ Α΄ 117, 24 July 2026: law 5322/2026, e-scooter articles 73–81 (Greek)', url: 'https://search.et.gr/el/fek/?fekId=802862' },
     { title: 'Municipality of Athens, 4th municipal community: the e-scooter regulation, 27 October 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/96%CE%95%CE%9B%CE%A96%CE%9C-%CE%9D7%CE%91' },
     { title: 'Municipality of Athens, 2nd municipal community: the e-scooter regulation, 10 November 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%9C7%CE%98%CE%A96%CE%9C-%CE%9A%CE%A6%CE%93' },
     { title: 'Municipality of Athens: decision 717/2025, the e-scooter regulation, 20 November 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%948%CE%91%CE%A96%CE%9C-9%CE%92%CE%98' },
