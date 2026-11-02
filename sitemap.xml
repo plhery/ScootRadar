@@ -2528,6 +2528,12 @@
 <priority>0.7</priority>
 </url>
 <url>
+<loc>https://scootradar.com/guides/e-scooters-katowice</loc>
+<lastmod>2026-11-02T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
 <loc>https://scootradar.com/guides/e-scooters-kaunas</loc>
 <lastmod>2026-11-02T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
@@ -2583,6 +2589,12 @@
 </url>
 <url>
 <loc>https://scootradar.com/guides/e-scooters-heraklion</loc>
+<lastmod>2026-11-02T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/guides/e-scooters-rethymno</loc>
 <lastmod>2026-11-02T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
