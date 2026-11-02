@@ -349,6 +349,7 @@ import szegedEn from './en/e-scooters-szeged';
 import athensEn from './en/e-scooters-athens';
 import thessalonikiEn from './en/e-scooters-thessaloniki';
 import heraklionEn from './en/e-scooters-heraklion';
+import rethymnoEn from './en/e-scooters-rethymno';
 import copenhagenEn from './en/e-scooters-copenhagen';
 import odenseEn from './en/e-scooters-odense';
 import sotraNb from './nb/elsparkesykkel-sotra';
@@ -701,6 +702,7 @@ export const GUIDES: readonly Guide[] = [
   athensEn,
   thessalonikiEn,
   heraklionEn,
+  rethymnoEn,
   copenhagenEn,
   odenseEn,
   sotraNb,
