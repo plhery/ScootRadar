@@ -130,6 +130,7 @@ import skienNb from './nb/elsparkesykkel-skien';
 import portimaoPt from './pt/trotinetes-portimao';
 import ottawaEn from './en/e-scooters-ottawa';
 import mississaugaEn from './en/e-scooters-mississauga';
+import halifaxEn from './en/e-scooters-halifax';
 import konstanzDe from './de/e-scooter-konstanz';
 import tonsbergNb from './nb/elsparkesykkel-tonsberg';
 import sanAntonioEn from './en/e-scooters-san-antonio';
@@ -351,6 +352,7 @@ import reggioEmiliaIt from './it/monopattini-sharing-reggio-emilia';
 import singenDe from './de/e-scooter-singen';
 import bremerhavenDe from './de/e-scooter-bremerhaven';
 import klagenfurtDe from './de/e-scooter-klagenfurt';
+import sanktAugustinDe from './de/e-scooter-sankt-augustin';
 import szegedEn from './en/e-scooters-szeged';
 import athensEn from './en/e-scooters-athens';
 import thessalonikiEn from './en/e-scooters-thessaloniki';
@@ -489,6 +491,7 @@ export const GUIDES: readonly Guide[] = [
   portimaoPt,
   ottawaEn,
   mississaugaEn,
+  halifaxEn,
   konstanzDe,
   tonsbergNb,
   sanAntonioEn,
@@ -710,6 +713,7 @@ export const GUIDES: readonly Guide[] = [
   singenDe,
   bremerhavenDe,
   klagenfurtDe,
+  sanktAugustinDe,
   szegedEn,
   athensEn,
   thessalonikiEn,
