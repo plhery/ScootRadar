@@ -810,6 +810,26 @@ class CityRuleZoneTest {
         assertEquals(emptyList<String>(), ids(GeoBounds(south = 27.959, west = -82.432, north = 27.9615, east = -82.429)))
     }
 
+    @Test
+    fun fourOfBrightonAndHovesNoGoPlacesAreShownAtAllHours() {
+        // 2 November 2026, 03:30 in Brighton (UTC+0).
+        val night = Instant.ofEpochSecond(1_793_590_200)
+        val places = PinnedStreets.brightonAndHove
+        fun ids(view: GeoBounds) = CityRuleZone.shown(over = view, zoom = 16, at = night, among = places).map { it.rule.id }
+        // Kensington Gardens, in the North Laine.
+        val laine = CityRuleZone.shown(
+            over = GeoBounds(south = 50.8258, west = -0.1392, north = 50.8266, east = -0.1384), zoom = 17, at = night, among = places,
+        )
+        assertEquals(listOf("brighton-kensington-gardens"), laine.map { it.rule.id })
+        assertEquals(listOf(true), laine.map { it.inForce })
+        assertEquals(listOf("brighton-cranbourne-street"), ids(GeoBounds(south = 50.8229, west = -0.1448, north = 50.8236, east = -0.1436)))
+        // The Undercliff Walk below Rottingdean; Hove Promenade east of Hove Lagoon, but not its stretch by Hove Lawns,
+        // which OpenStreetMap doesn't name.
+        assertEquals(listOf("brighton-undercliff-walk"), ids(GeoBounds(south = 50.8025, west = -0.0595, north = 50.8035, east = -0.0575)))
+        assertEquals(listOf("hove-promenade"), ids(GeoBounds(south = 50.825, west = -0.1885, north = 50.826, east = -0.1865)))
+        assertEquals(emptyList<String>(), ids(GeoBounds(south = 50.8228, west = -0.1665, north = 50.8245, east = -0.1645)))
+    }
+
     /**
      * A street's line is bounded 16 points at a time, as the iPhone's (CityRuleZone.pieceBounds): over a view only where
      * a piece of it runs, not wherever its bounds reach.

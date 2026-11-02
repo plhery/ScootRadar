@@ -175,5 +175,70 @@ internal object PinnedStreets {
         ),
     )
 
+    // Four of Brighton & Hove's no-go places as data/ had them on 2 November 2026: Cranbourne Street and Kensington
+    // Gardens whole, the piece of the Undercliff Walk below Rottingdean, and Hove Promenade whole, which ends west
+    // of Hove Lawns.
+    val brightonAndHove = listOf(
+        CityRuleZone(
+            id = "brighton-cranbourne-street",
+            authority = "Brighton & Hove City Council, lines © OpenStreetMap",
+            timeZone = "Europe/London",
+            firstDay = "",
+            hours = emptyList(),
+            source = "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial",
+            lines = listOf(
+                points(
+                    50.823186, -0.143759, 50.823341, -0.144621
+                ),
+            ),
+        ),
+        CityRuleZone(
+            id = "brighton-kensington-gardens",
+            authority = "Brighton & Hove City Council, lines © OpenStreetMap",
+            timeZone = "Europe/London",
+            firstDay = "",
+            hours = emptyList(),
+            source = "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial",
+            lines = listOf(
+                points(
+                    50.826891, -0.138428, 50.82564, -0.138938
+                ),
+            ),
+        ),
+        CityRuleZone(
+            id = "brighton-undercliff-walk",
+            authority = "Brighton & Hove City Council, lines © OpenStreetMap",
+            timeZone = "Europe/London",
+            firstDay = "",
+            hours = emptyList(),
+            source = "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial",
+            lines = listOf(
+                points(
+                    50.806691, -0.07243, 50.806451, -0.071614, 50.805614, -0.069228, 50.805378, -0.068481,
+                    50.804399, -0.064728, 50.804055, -0.063531, 50.803588, -0.062113, 50.803243, -0.060822,
+                    50.802809, -0.058594, 50.802607, -0.057726, 50.80245, -0.057375, 50.802307, -0.056946,
+                    50.802041, -0.05593, 50.801876, -0.055397, 50.801867, -0.055248, 50.802032, -0.054905,
+                    50.801655, -0.052715
+                ),
+            ),
+        ),
+        CityRuleZone(
+            id = "hove-promenade",
+            authority = "Brighton & Hove City Council, lines © OpenStreetMap",
+            timeZone = "Europe/London",
+            firstDay = "",
+            hours = emptyList(),
+            source = "https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial",
+            lines = listOf(
+                points(
+                    50.826669, -0.200847, 50.825571, -0.187975, 50.825472, -0.187103, 50.825287, -0.184569,
+                    50.82531, -0.184396, 50.82518, -0.182964, 50.825187, -0.182856, 50.825172, -0.182718,
+                    50.825118, -0.182578, 50.824866, -0.181219, 50.824769, -0.181194, 50.824629, -0.180184,
+                    50.824498, -0.179134, 50.824399, -0.178097, 50.824398, -0.177835, 50.824138, -0.175184
+                ),
+            ),
+        ),
+    )
+
     private fun points(vararg latLon: Double): List<GeoPoint> = latLon.toList().chunked(2) { GeoPoint(it[0], it[1]) }
 }
