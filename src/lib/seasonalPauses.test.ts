@@ -162,6 +162,35 @@ describe('a city with a winter pause', () => {
       .toMatchObject({ failedSources: ['canada:bird_montreal'], partial: true });
   });
 
+  it('shows the pause, not "refreshing" over the scooters last listed, while a request collects the feed again', () => {
+    // Bird's last collection listed a scooter an hour ago, slowly, as an app map would: collected again
+    // for the request, out of season it would stand faded under "refreshing".
+    const vehicle = { provider: 'bird', lat: 45.5, lng: -73.57, battery: 80, range_m: null, vehicle_id: 'b1', deep_link: null, distance_m: null };
+    const at = (now: number): FeedSnapshot => ({ id: 'canada:bird_montreal', source: 'canada' as FeedSnapshot['source'], provider: 'bird',
+      coverage: [fixture.systems[0].bounds], vehicles: [vehicle], observedAt: now - 3_600_000, attemptedAt: now - 3_600_000,
+      collectionMs: 40_000, stale: false, failed: false, skipped: false });
+    const answer = (now: number, options: Parameters<typeof querySnapshot>[4]) => querySnapshot({ version: 1, updatedAt: now,
+      feeds: [at(now)], overview: { generatedAt: now, feedIds: [], cities: [] } },
+    { bounds: fixture.systems[0].bounds, minBattery: 0 }, 16, now, options);
+    const refreshing = { refreshing: new Set(['canada:bird_montreal']), comingSoon: new Set(['canada:bird_montreal']) };
+    const idle = { idleInView: new Set(['canada:bird_montreal']) };
+
+    for (const options of [refreshing, idle]) {
+      const paused = answer(JANUARY, options);
+      expect(paused.vehicles).toEqual([]);
+      expect(paused.lastSeen).toBeUndefined();
+      expect(paused.meta).toMatchObject({ failedSources: [], partial: false, stale: false });
+      expect(paused.meta.sources).toMatchObject({ canada: 'skipped' });
+      expect([paused.meta.refreshing, paused.meta.followUpMs, paused.meta.lastSeenAt]).toEqual([undefined, undefined, undefined]);
+      expect(paused.meta.refreshAfterSeconds).toBe(60);
+    }
+    // In season, the same feed stands faded while it comes.
+    const inSeason = answer(JULY, refreshing);
+    expect(inSeason.lastSeen?.vehicles).toHaveLength(1);
+    expect(inSeason.meta).toMatchObject({ refreshing: true, followUpMs: 0 });
+    expect(answer(JULY, idle).lastSeen?.vehicles).toHaveLength(1);
+  });
+
   it('says so in the dock, in every language, with the month the scooters are back', () => {
     const input: DockInput = {
       count: 0, originInViewport: false, nearest: null, loading: null, failure: null, outOfDate: false, hasData: true,

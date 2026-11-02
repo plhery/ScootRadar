@@ -118,12 +118,14 @@ export const showsLastSeen = (feed: FeedSnapshot, now: number,
 const failedAtOperator = (feed: FeedSnapshot) => feed.failed && feed.attemptedAt > 0;
 
 /**
- * A feed in its seasonal pause that serves nothing and is not on its way is expected to be quiet:
- * neither failed nor served, as if it had not been asked (seasonalPauses.ts).
+ * A feed in its seasonal pause that serves nothing is expected to be quiet: neither failed nor served,
+ * as if it had not been asked (seasonalPauses.ts). So is one collected again for a request, which
+ * catches an operator back early: until it brings positions to show, the map shows the pause, not
+ * "refreshing" over the faded scooters it last listed, which in Red Deer on 2 November 2026 were
+ * Lime's of 31 October, the evening before its pause.
  */
-function quietInPause(feed: FeedSnapshot, now: number, usable: (feed: FeedSnapshot) => boolean,
-  refreshing?: ReadonlySet<string>): boolean {
-  return !usable(feed) && (feed.failed || !refreshing?.has(feed.id)) && snapshotPaused(feed, now);
+function quietInPause(feed: FeedSnapshot, now: number, usable: (feed: FeedSnapshot) => boolean): boolean {
+  return !usable(feed) && snapshotPaused(feed, now);
 }
 
 /**
@@ -146,7 +148,7 @@ function healthFor(feeds: FeedSnapshot[], now: number, usable: (feed: FeedSnapsh
   refreshing?: ReadonlySet<string>): ScooterFetchMetadata {
   const meta = emptyHealth();
   for (const source of Object.keys(meta.sources) as Array<keyof typeof meta.sources>) {
-    const relevant = feeds.filter(feed => feed.source === source && !feed.skipped && !quietInPause(feed, now, usable, refreshing));
+    const relevant = feeds.filter(feed => feed.source === source && !feed.skipped && !quietInPause(feed, now, usable));
     if (!relevant.length) continue;
     const served = relevant.filter(usable);
     const coming = relevant.filter(feed => !usable(feed) && !failedAtOperator(feed) && refreshing?.has(feed.id));
@@ -509,9 +511,12 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const relevant = feedsForQuery(snapshot, query, zoom);
   const counted = relevant.filter(feed => !options.idleInView?.has(feed.id) || showsPositions(feed, now));
   const meta = healthFor(counted, now, undefined, options.refreshing);
-  const refreshing = relevant.some(feed => !feed.skipped && options.refreshing?.has(feed.id));
+  const showing = (feed: FeedSnapshot) => showsPositions(feed, now);
+  // Collected again for this request, but quiet in its pause: it is not said to be on its way.
+  const coming = relevant.filter(feed => !feed.skipped && options.refreshing?.has(feed.id) && !quietInPause(feed, now, showing));
+  const refreshing = coming.length > 0;
   // A city whose every feed is in its seasonal pause has nothing to show, which is no failure.
-  const asked = counted.filter(feed => !feed.skipped && !quietInPause(feed, now, candidate => showsPositions(candidate, now), options.refreshing));
+  const asked = counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing));
   // Nothing to show is unavailable only while the cache is behind or starting. When an operator's
   // feed fails, the answer names it, and the map says who is not sharing data rather than
   // that it could not refresh.
@@ -545,7 +550,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const lastSeenTimes: number[] = [];
   const fading = { refreshing: options.refreshing, idle: options.idleInView };
   for (const feed of relevant) {
-    if (!showsLastSeen(feed, now, fading, options.lastSeenMaxAgeMs?.(feed.id))) continue;
+    if (!showsLastSeen(feed, now, fading, options.lastSeenMaxAgeMs?.(feed.id)) || quietInPause(feed, now, showing)) continue;
     const swept = shownSweep(feed, now)?.swept ?? [];
     const before = lastSeen.size;
     pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) ||
@@ -560,7 +565,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,
-    ...(refreshing ? { refreshing: true, followUpMs: relevant.some(feed => options.comingSoon?.has(feed.id))
+    ...(refreshing ? { refreshing: true, followUpMs: coming.some(feed => options.comingSoon?.has(feed.id))
       ? 0 : REFRESHING_RETRY_SECONDS * 1000 } : {}),
     ...(lastSeenTimes.length ? { lastSeenAt: new Date(Math.min(...lastSeenTimes)).toISOString() } : {}),
     availableProviders: providersForViewport(query.bounds),

@@ -393,6 +393,25 @@ describe('collection on demand', () => {
     expect(body.meta.refreshing).toBeUndefined();
   });
 
+  it('does not wait for a feed in its seasonal pause, and shows the pause rather than "refreshing"', async () => {
+    // Closed for the season by its operator, as Whoosh's Almaty: a pause whatever the date.
+    const { scheduler, snapshot } = cache([feed('france:dott_fr_lyon', lyon, Date.now() - minutes(20), { seasonOver: true })], null);
+    stops.push(() => scheduler.stop());
+    const { port } = await start(undefined, { snapshot, refresher: scheduler });
+    const started = Date.now();
+    const response = await fetch(lyonUrl(port), { headers });
+    expect(response.status).toBe(200);
+    const body = await response.json() as ScooterResponse;
+    expect(Date.now() - started).toBeLessThan(1_000);
+    // Still collected, should its operator come back early.
+    expect(scheduler.refreshing('france:dott_fr_lyon')).toBe(true);
+    expect(body.vehicles).toEqual([]);
+    expect(body.lastSeen).toBeUndefined();
+    expect(body.meta).toMatchObject({ failedSources: [], partial: false, stale: false, refreshAfterSeconds: 60, seasonOver: ['france:dott_fr_lyon'] });
+    expect(body.meta.refreshing).toBeUndefined();
+    expect(body.meta.sources.france).toBe('skipped');
+  });
+
   it('does not wait for a feed whose last collection failed', async () => {
     const { scheduler, snapshot } = cache([feed('france:dott_fr_lyon', lyon, Date.now() - minutes(20), { failed: true })], null);
     stops.push(() => scheduler.stop());

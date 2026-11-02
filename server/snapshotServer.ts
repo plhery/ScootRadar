@@ -7,6 +7,7 @@ import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySna
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { collectsParking, isAppMapFeed } from '../src/lib/regionalScooterSystems';
+import { snapshotPaused } from '../src/lib/seasonalPauses';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
@@ -196,8 +197,10 @@ export function createSnapshotServer(options: ServerOptions) {
       // Positions too old to show would leave the map empty of a feed quick to collect: the answer waits
       // for the first such feed to come back, and the others that come with it. A slow feed's sweep is
       // not waited for: its last positions stand faded, and its sweep's finds come in on the next requests.
+      // Nor is a feed in its seasonal pause: the map shows the pause, and an operator back early comes in
+      // on the next request.
       const quick = watched.filter(feed => !feed.failed && !showsPositions(feed, now) && !collectsSlowly(feed) &&
-        refresher.refreshing(feed.id)).map(feed => feed.id);
+        !snapshotPaused(feed, now) && refresher.refreshing(feed.id)).map(feed => feed.id);
       if (quick.length) {
         const coldWaitMs = options.coldWaitMs ?? COLD_WAIT_MS;
         const came = await refresher.wait(quick, coldWaitMs, true);
