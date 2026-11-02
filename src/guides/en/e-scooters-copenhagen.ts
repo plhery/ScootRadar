@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Copenhagen 2026: Lime, Danish law and city rules',
   description: 'E-scooters in Copenhagen: Lime, the no-rental zone in the centre, the 400 parking areas, Denmark’s helmet rule, age 15, the fines and the Metro.',
   headline: 'E-scooters in Copenhagen: renting a Lime, the city’s no-rental zone, and Denmark’s rules',
-  lede: 'Lime is the only company with an agreement to rent out e-scooters in Copenhagen for 2025 to 2027. Danish rules make a helmet compulsory for every rider, set the minimum age at 15 and the top speed at 20 km/h, and send you onto the cycle track, never the pavement. The city adds its own: no rental scooters standing in the dense centre, and parking only in about 400 selected areas.',
+  lede: 'Lime is the only company with an agreement to rent out e-scooters in Copenhagen for 2025 to 2027. Danish rules make a helmet compulsory for every rider, set the minimum age at 15, limit the motor to 20 km/h and send you onto the cycle track, never the pavement. The city adds its own: no rental scooters standing in the dense centre, and parking only in about 400 selected areas.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'dk:København',
@@ -40,17 +40,17 @@ const guide: Guide = {
     {
       heading: 'Can you ride an e-scooter in Copenhagen? Age and helmet',
       blocks: [
-        'Yes, from the age of 15. Rådet for Sikker Trafik, the Danish Road Safety Council, lists the rules on its page for e-scooters (el-løbehjul), last updated on 19 May 2026, and North Zealand Police repeated them in September 2026:',
+        'Yes, from the age of 15. The rules are set by an executive order, BEK nr 40 of 14 January 2019 (BEK 40), and Rådet for Sikker Trafik, the Danish Road Safety Council, lists them on its page for e-scooters (el-løbehjul):',
         {
           list: [
-            '**Age:** 15 or over. Under 15, a child may ride only with an adult of at least 18, or alone in signed play areas and on private land.',
-            '**Helmet:** compulsory for every rider, adults included, since 1 January 2022. Riding without one costs DKK 1,500. Bring one when you rent.',
+            '**Age:** 15 or over (BEK 40, § 10). Under 15, a child may ride only with an adult of at least 18, or alone in signed play areas and on private land.',
+            '**Helmet:** compulsory for every rider, adults included, since 1 January 2022 (§ 10 a). Riding without one costs DKK 1,500. Bring one when you rent.',
             '**One rider only:** no passengers.',
-            '**Lights:** on at all times, day and night, white or yellow at the front and red at the back.',
+            '**Lights:** on whenever you ride, day and night.',
             '**Phone:** no phone in your hand while you ride, as on a bicycle.',
           ],
         },
-        'An e-scooter is legal on Danish roads only if it can go no faster than 20 km/h on its motor alone and can’t be set to go faster. The police can confiscate an illegal one.',
+        'An e-scooter is legal on Danish roads only if it can go no faster than 20 km/h on its motor alone (BEK 40, § 1) and can’t be set to go faster. The police can confiscate an illegal one.',
       ],
     },
     {
@@ -78,7 +78,7 @@ const guide: Guide = {
     {
       heading: 'Denmark’s e-scooter rules and fines in one table',
       blocks: [
-        'These are the national rules, as Rådet for Sikker Trafik lists them (updated 19 May 2026). They apply in Copenhagen as everywhere in Denmark.',
+        'These national rules apply in Copenhagen as everywhere in Denmark.',
         {
           table: {
             caption: 'E-scooter rules in Denmark on 2 November 2026 (Rådet for Sikker Trafik)',
@@ -96,7 +96,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Where the table says DKK 1,000, that is the council’s fine for breaking the traffic rules on an e-scooter; it gives no separate amount for each rule.',
+        'DKK 1,000 is the council’s one fine for breaking the traffic rules on an e-scooter.',
       ],
     },
     {
@@ -104,9 +104,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Alcohol.** The limit is 0.5 per mille, with a zero limit for illegal drugs. Stopped over the limit, you are arrested and a blood sample is taken. The fine is DKK 2,000 the first time and DKK 4,000 the second; a third time can mean prison. After an evening in Nyhavn, walk or take the Metro.',
+            '**Alcohol.** The limit is 0.5 per mille (færdselsloven § 53), with a zero limit for illegal drugs. Stopped over the limit, you are arrested and a blood sample is taken. The fine is DKK 2,000 the first time and DKK 4,000 the second; a third time can mean prison. After an evening in Nyhavn, walk or take the Metro.',
             '**Insurance.** On a rental scooter it is the company’s duty to hold the compulsory liability insurance for any damage you cause, and you must be able to show proof of it, tourists included; the app or the company’s website should show it. Ride against the rules and the insurance may not pay: hit someone on the pavement, for example, and you could face a very large claim yourself.',
-            '**At night.** Your lights must be on anyway, day and night: white or yellow at the front, red at the back, clearly visible from at least 300 metres.',
+            '**At night.** Your lights must be on anyway, day and night: white or yellow at the front, red at the back, clearly visible from at least 300 metres (BEK 40, § 8).',
           ],
         },
       ],
@@ -114,7 +114,7 @@ const guide: Guide = {
     {
       heading: 'Metro, S-tog, buses and the harbour bus',
       blocks: [
-        'On a rental scooter, end your ride in a parking area near the station and walk in. For a scooter of your own, Din Offentlige Transport, the partnership of DSB, the Metro, Movia and Hovedstadens Letbane, gives these rules (read 2 November 2026); staff decide whether there is room:',
+        'On a rental scooter, end your ride in a parking area near the station and walk in. For a scooter of your own, Din Offentlige Transport, the partnership of DSB, the Metro, Movia and Hovedstadens Letbane, gives these rules; staff decide whether there is room:',
         {
           list: [
             '**Small and folded:** a scooter that folds to under 30 × 60 × 100 cm travels free on trains and buses, folded for the whole trip. A bigger one counts as a bicycle.',
@@ -181,6 +181,10 @@ const guide: Guide = {
     { title: 'Rådet for Sikker Trafik and the police: stop children riding e-scooters illegally, 28 September 2024 (Danish)', url: 'https://www.sikkertrafik.dk/presse/pressemeddelelser/radet-for-sikker-trafik-og-politiet-advarer-stop-borns-ulovlige-korsel-pa-el-lobehjul/' },
     { title: 'Midt- og Vestjyllands Politi: helmets compulsory on e-scooters from 1 January 2022, 10 December 2021 (Danish)', url: 'https://politi.dk/midt-og-vestjyllands-politi/nyhedsliste/el-loebehjul-snart-er-det-lovpligtigt-at-baere-hjelm/2021/12/10' },
     { title: 'Nordsjællands Politi: daily report of 24–25 September 2026, with the rules for e-scooters (Danish)', url: 'https://politi.dk/nordsjaellands-politi/doegnrapporter/nordsjaellands-politi-uddrag-af-doegnrapporten-24-25-september-2026/2026/09/25' },
+    { title: 'Road Traffic Act (færdselsloven), LBK nr 118 af 12/01/2026 (Danish)', url: 'https://www.retsinformation.dk/eli/lta/2026/118' },
+    { title: 'Executive order on e-scooters, BEK nr 40 af 14/01/2019 (Danish)', url: 'https://www.retsinformation.dk/eli/lta/2019/40' },
+    { title: 'Amending order BEK nr 665 af 01/07/2019 (Danish)', url: 'https://www.retsinformation.dk/eli/lta/2019/665' },
+    { title: 'Amending order BEK nr 55 af 19/01/2021: helmets (Danish)', url: 'https://www.retsinformation.dk/eli/lta/2021/55' },
     { title: 'Din Offentlige Transport: bicycles and scooters on buses, the Metro and trains (read 2 November 2026, Danish)', url: 'https://dinoffentligetransport.dk/saadan-rejser-du/cykler-og-loebehjul' },
   ],
 };
