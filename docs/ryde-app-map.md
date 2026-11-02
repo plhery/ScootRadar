@@ -337,6 +337,24 @@ password dialog closing without a visible error. They are using screen
 sharing; whether that explains the denial remains unverified. No key was
 exported, and no keychain password or security setting was changed.
 
+A follow-up on 1–2 November tested Keychain Access's item-copy operation into
+an isolated encrypted file keychain, preserving the original entries. After
+the user authenticated, Keychain Access reported that it could not add the item
+because one or more parameters were invalid. No item appeared in the destination.
+A subsequent **Copy Password to Clipboard** attempt also produced no usable value,
+as reported by the user. The temporary keychain and its generated password were
+removed, and the original keychain search list was restored. No source item or
+system security setting was changed.
+
+These failures establish that the tested export paths did not work; they do not
+prove the iOS keys are hardware-bound or universally non-exportable. Do not repeat
+these prompts without new evidence that addresses the failure. The existing app
+session still opens its map, but its cached response remains encrypted and its
+local diagnostic log records only decryption success, not the decrypted vehicle
+payload. Neither is a demonstrated server bridge. Broader coverage currently
+requires another verified data source or read-only feed/API access from Ryde;
+Google or SMS authentication alone does not supply the missing signing keys.
+
 Raw cache snapshots, session headers and diagnostics are private under
 `~/.cache/scootradar/rider-auth/ryde/mac-session/`, outside Git. No proxy
 certificate, network proxy or global security setting was changed.
