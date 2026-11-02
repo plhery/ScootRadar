@@ -71,11 +71,19 @@ Sharing the `android14-6.1` KMI does not satisfy that check. No root payload was
 installed or executed, and no official-app Integrity token or Ryde login was
 requested during this check.
 
-This establishes an unsupported kernel for the supplied root payloads, not
-whether the underlying vulnerability is patched. The Android experiment needs
-a verified payload for this exact kernel or another owned device with a supported
-profile while retaining locked, stock verified boot. Unlocking or downgrading
-this phone is not part of the test. The existing Ryde session is unchanged.
+A subsequent check of the exact `9dd05ae3a1de` kernel source found both
+completed public Pixel root chains patched. GhostLock/IonStack's
+`CVE-2026-43499` path contains the [`waiter_task` fix](https://android.googlesource.com/kernel/common/+/9dd05ae3a1de/kernel/locking/rtmutex.c#1473),
+and FFWheel's `CVE-2026-43049` path contains the [`ret = 0` fix](https://android.googlesource.com/kernel/common/+/9dd05ae3a1de/drivers/hid/hid-logitech-hidpp.c#4274).
+Joyride's source fix is absent, but its [public documentation](https://github.com/JingMatrix/pixel-ksu-root/blob/main/cves/cve-2026-93189-joyride/README.md)
+reports no controlled read/write or usable capability; it is a research lead,
+not a root route. Other published tools do not verify this exact `tokay` kernel,
+and generating GhostLock offsets would not make its patched trigger usable.
+
+The Android experiment therefore needs a new completed exploit chain for this
+exact kernel or another owned device with a supported profile while retaining
+locked, stock verified boot. Unlocking or downgrading this phone is not part of
+the test. The existing Ryde session is unchanged.
 
 ## Physical Pixel companion test, 1 November 2026
 
@@ -464,14 +472,24 @@ Rotation reduces the keys a server reader would need, but does not remove the
 signing-key access requirement. No fresh login, SMS, request mutation or
 security-setting change was made.
 
-A subsequent content-enabled check ran `heap --addresses` for
+An initial content-enabled check ran `heap --addresses` for
 `SecureBytes.Backing` and `leaks --hex --fullContent --referenceTree` against
 the existing Ryde process. Each reached a 50-second timeout with no output;
-both diagnostic processes were stopped. No key bytes were obtained. This is
-inconclusive about content access: it does not demonstrate either readable
-keys or the non-debuggable-process redaction observed in an earlier synthetic
-CryptoKit test. Private results remain outside Git under
-`mac-session/content-check-20261102/`.
+both diagnostic processes were stopped. A follow-up replaced live scanning
+with `heap --forkCorpse --addresses='SecureBytes.Backing[1-256]'`, which
+completed. It found the 64-byte signing-key backing but explicitly reported
+that the process was not debuggable and that, due to security restrictions,
+`heap` could show only readonly memory contents of restricted processes. No key bytes were
+included. Content-enabled variants of `heap`, `leaks` and full-content memory
+graphs therefore do not offer a usable extraction path for this target.
+
+A separate raw-memory attempt used `/usr/bin/gcore`, which carries Apple's
+`com.apple.security.cs.debugger.read.root` entitlement on this system. Both an
+ordinary invocation and a user-authorized administrator invocation returned
+“insufficient privilege: Operation not permitted.” No core file was created,
+and no security setting or app data was changed. Private results remain outside
+Git under `mac-session/content-check-20261102/` and
+`mac-session/corpse-check-20261102/`.
 
 ### Mac bridge and location simulation check, 2 November
 
