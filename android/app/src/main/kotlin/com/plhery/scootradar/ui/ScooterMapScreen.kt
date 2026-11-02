@@ -497,6 +497,8 @@ private fun DockChrome(
     val locateButtonHeight = remember { mutableIntStateOf(with(density) { 52.dp.roundToPx() }) }
     // Measured only while the search is closed, as on the iPhone.
     val searchBarHeight = remember { mutableIntStateOf(with(density) { 62.dp.roundToPx() }) }
+    // The notices' settled height under the search bar, in pixels, as the stack last laid them out: the legend stays under them.
+    val noticesHeight = remember { mutableIntStateOf(0) }
     // The keyboard doesn't move the dock or the locate row (`.ignoresSafeArea(.keyboard, edges: .bottom)`): the safe
     // area without it. Not safeDrawing.exclude(ime), which takes the keyboard's height off the navigation bar's too.
     val safe = WindowInsets.systemBars.union(WindowInsets.displayCutout).asPaddingValues()
@@ -570,6 +572,7 @@ private fun DockChrome(
                         bottomLimit = maxHeight - safeBottom,
                         chrome = chrome,
                         onSearchBarHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
+                        onNoticesHeightChange = { noticesHeight.intValue = it },
                         settledTop = safeTop + 8.dp + chromeTop,
                         // Drawn over the locate row and the dock, and taking the taps first, as the iPhone's stack at
                         // zIndex 20: in a window too short for all three, as a third of a split screen, the row reaches
@@ -581,8 +584,11 @@ private fun DockChrome(
                     Box(Modifier.fillMaxSize().unheard(isSearching).onGloballyPositioned { laidOut.row = it }) {
                         LocateRow(
                             // 8 under the search bar, in the row's box, which begins at the window's top: where the
-                            // bar settles under a fold, not where it springs through, so the legend moves once.
-                            legendCeiling = safeTop + 8.dp + chromeTop + searchBar + 8.dp,
+                            // bar settles under a fold, not where it springs through, so the legend moves once. And 8
+                            // under the notices there: under a location card the legend's first lines were out of
+                            // reach of its scroll (review-legend-cap R1).
+                            legendCeiling = safeTop + 8.dp + chromeTop + searchBar + 8.dp +
+                                with(density) { if (noticesHeight.intValue > 0) noticesHeight.intValue.toDp() + 8.dp else 0.dp },
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .padding(horizontal = 10.dp)
@@ -730,17 +736,21 @@ private fun LocateRow(
         val beside = maxOf(0, width - placedButton.width - 2 * gap)
         val room = constraints.maxHeight - legendCeiling.roundToPx()
         val besideHeight = legendBox.maxIntrinsicHeight(beside)
-        // Over the button only where that ends lower than beside it, as in a landscape phone's short row, where over
-        // it the legend would only reach higher; and back beside only with 8 to spare, so that a notice or the
-        // search bar changing height by a little doesn't move it to and fro.
-        val slack = if (stacked[0]) 8.dp.roundToPx() else 0
-        val over = besideHeight > room - slack &&
-            legendBox.maxIntrinsicHeight(width) + gap + placedButton.height < besideHeight
-        stacked[0] = over
+        val overHeight = legendBox.maxIntrinsicHeight(width)
         // At most down from the ceiling, where it scrolls, as the notices under the search bar do in theirs (the
         // iPhone's HeightLimit): two lines or more at the largest text ran up under the bar over the button too. Never
         // under the notices' least room, a banner's 64, in a window too short for both.
-        val cap = maxOf(64.dp.roundToPx(), room - if (over) placedButton.height + gap else 0)
+        val floor = 64.dp.roundToPx()
+        val overReach = min(overHeight, maxOf(floor, room - placedButton.height - gap)) + gap + placedButton.height
+        val besideReach = min(besideHeight, maxOf(floor, room))
+        // Over the button only where that ends lower than beside it, both as tall as they may be: in a landscape
+        // phone's short row over it the legend would only reach higher, up to the floor's 64 over the button and
+        // under the search bar (review-legend-cap B2). Back beside only with 8 to spare, so that a notice or the search
+        // bar changing height by a little doesn't move it to and fro.
+        val slack = if (stacked[0]) 8.dp.roundToPx() else 0
+        val over = besideHeight > room - slack && overHeight + gap + placedButton.height < besideHeight && overReach <= besideReach
+        stacked[0] = over
+        val cap = maxOf(floor, room - if (over) placedButton.height + gap else 0)
         val placedLegend = legendBox.measure(
             loose.copy(maxWidth = if (over) width else beside, maxHeight = min(loose.maxHeight, cap)),
         )
@@ -1047,6 +1057,7 @@ private fun TopStack(
     modifier: Modifier = Modifier,
     searchBarModifier: Modifier = Modifier,
     barSpan: ScreenRect? = null,
+    onNoticesHeightChange: (Int) -> Unit = {},
 ) {
     val density = LocalDensity.current
     // The search bar and the notices under it, closed: what the map keeps its names and its taps out of, and centres
@@ -1079,8 +1090,11 @@ private fun TopStack(
         val left = sides.minOf { it.minX }
         ScreenRect(left, room.y + settledTop.value, sides.maxOf { it.maxX } - left, ((barHeight + notices) / density.density).toDouble())
     }
+    // The notices' settled height, for what stands under them.
+    val noticesSettled = with(density) { noticeHeights.settled(failure, locationIssue, 8.dp.roundToPx(), noticesLimit) }
     SideEffect {
         if (top != null) chrome.top = top
+        onNoticesHeightChange(noticesSettled)
     }
 
     // The notices go while the search is open. They fade as they were when it opened, as the iPhone takes the whole

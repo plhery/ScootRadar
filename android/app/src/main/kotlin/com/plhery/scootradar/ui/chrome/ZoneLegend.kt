@@ -14,6 +14,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -95,6 +99,8 @@ fun ZoneLegend(
     val zones = localized("Zones")
     val style = ScootType.caption.weight(FontWeight.Medium)
     val scroll = rememberScrollState()
+    // Taller than its room when last measured: only then is it a scroll, which takes every touch on it, even turned off.
+    var scrolls by remember { mutableStateOf(false) }
     Column(
         modifier
             .testTag(ZONE_LEGEND_TAG)
@@ -104,8 +110,8 @@ fun ZoneLegend(
             .chromeGlass(SquircleShape(16.dp))
             .then(if (lines.isEmpty()) Modifier else Modifier.overTheMap())
             // Inside the glass, as tall as the room it is given at most, and scrolled where it is taller (the locate
-            // row's ceiling under the search bar, UI-410): a drag pans the map under it until then.
-            .scrollsWhereShort(scroll)
+            // row's ceiling under the search bar, UI-410): a tap or a drag goes to the map under it until then.
+            .scrollsWhereShort(scroll, scrolls) { scrolls = it }
             .padding(horizontal = 12.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -161,18 +167,20 @@ fun ZoneLegend(
 }
 
 /**
- * Scrolls by [state] where it is given less height than it takes, and only then takes drags. Where nothing bounds its
- * height, as where a test measures the legend, it is as tall as it takes: a scroll may not be measured unbounded.
+ * Scrolls by [state] where it is given less height than it takes, which [scrolls] says it was when last measured, and
+ * is no scroll at all until then: a scroll, even one turned off, takes every touch on it, which the map under the legend
+ * should have (review-legend-cap B1). [onScrollsChange] hears it from each measure that bounds the height, never from a
+ * measure of intrinsics, which would turn it to and fro. Where nothing bounds its height, as where a test measures the
+ * legend, it is as tall as it takes: a scroll may not be measured unbounded.
  */
-private fun Modifier.scrollsWhereShort(state: ScrollState): Modifier = layout { measurable, constraints ->
-    val bounded = if (constraints.hasBoundedHeight) {
-        constraints
-    } else {
-        constraints.copy(maxHeight = maxOf(constraints.minHeight, measurable.maxIntrinsicHeight(constraints.maxWidth)))
-    }
-    val placeable = measurable.measure(bounded)
-    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
-}.verticalScroll(state, enabled = state.maxValue > 0)
+private fun Modifier.scrollsWhereShort(state: ScrollState, scrolls: Boolean, onScrollsChange: (Boolean) -> Unit): Modifier =
+    layout { measurable, constraints ->
+        val tall = measurable.maxIntrinsicHeight(constraints.maxWidth)
+        if (constraints.hasBoundedHeight) onScrollsChange(tall > constraints.maxHeight)
+        val bounded = if (constraints.hasBoundedHeight) constraints else constraints.copy(maxHeight = maxOf(constraints.minHeight, tall))
+        val placeable = measurable.measure(bounded)
+        layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+    }.then(if (scrolls) Modifier.verticalScroll(state) else Modifier)
 
 /** The legend's tag, by which the tests find its frame on the screen. */
 const val ZONE_LEGEND_TAG = "zoneLegend"
