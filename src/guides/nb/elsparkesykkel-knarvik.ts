@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Leie elsparkesykkel i Knarvik: Voi i Alver',
       blocks: [
-        'I Knarvik er det **Voi** du finner på kartet. [Kartet over Knarvik](map:no:Knarvik) viste rundt 180 Voi-sparkesykler kl. 18.43 søndag 1. november 2026. Det er kartets siste telling, ikke nødvendigvis slik de sto akkurat da.',
+        'I Knarvik er det **Voi** du finner på kartet. [Kartet over Knarvik](map:no:Knarvik) viste rundt 180 Voi-sparkesykler kl. 18.43 søndag 1. november 2026.',
         'Kartet viser hvor hver sparkesykkel står og hvor mye strøm den har igjen, men ikke prisen. Kartet viser bare Voi i Knarvik. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },

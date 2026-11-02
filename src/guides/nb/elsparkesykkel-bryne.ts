@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'På Bryne er det **Voi** som leier ut elsparkesykler. Time kommunes side om elsparkesykler (sist endret 28. oktober 2026) viser bare til Voi: Det er Vois kart over sonene kommunen viser fram, og Vois sparkesykler du kan melde fra om. Kommunestyret i Time gjorde vedtak i saken om hvordan elsparkesykler og utleieselskaper skal håndteres i kommunen, 18. februar 2026.',
         'I Klepp kommune, med Kleppe like nord for Bryne, skrev kommunen i oktober 2025 at Voi hadde satt ut sparkesykler etter avtale med kommunen, først som en prøveordning i et par måneder. I juni 2026 skrev Klepp kommune at avtalen med Voi er vedtatt i kommunestyret.',
-        '[Kartet over Bryne](map:no:Bryne) viste rundt 340 Voi-sparkesykler kl. 03.43 natt til søndag 1. november 2026. Det er kartets siste telling, ikke nødvendigvis slik de sto akkurat da. Tallet tar med mer enn Bryne: Litt etter kl. 04 sto rundt 295 på Bryne, rundt 45 på Kleppe i Klepp kommune og noen få lenger øst, mot Kvernaland. Kartet viser hvor hver sparkesykkel står og hvor mye strøm den har igjen, men ikke prisen.',
+        '[Kartet over Bryne](map:no:Bryne) viste rundt 340 Voi-sparkesykler kl. 03.43 natt til søndag 1. november 2026. Tallet tar med mer enn Bryne: Litt etter kl. 04 sto rundt 295 på Bryne, rundt 45 på Kleppe i Klepp kommune og noen få lenger øst, mot Kvernaland. Kartet viser hvor hver sparkesykkel står og hvor mye strøm den har igjen, men ikke prisen.',
         'Verken Time kommune (28. oktober 2026) eller Klepp kommune (juni 2026) nevner noen annen operatør enn Voi, og Voi er med på kartet. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },

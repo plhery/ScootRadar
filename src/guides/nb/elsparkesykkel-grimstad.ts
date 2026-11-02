@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Leie elsparkesykkel i Grimstad: Voi og AKT',
       blocks: [
         'I Grimstad er det **Voi** som leier ut elsparkesykler. Kommunens side om elsparkesykler (sist endret 12. januar 2026) sier at Voi vant anbudet for mikromobilitet i Grimstad kommune og har inngått en toårig avtale med kommunen og AKT. Sparkesyklene kom til sentrum våren 2025, skriver kommunen på siden om Sykkelbyen Grimstad. AKT har ansvaret for å administrere tilbudet med elsparkesykler og bysykler på Agder, og på AKTs side (sist endret 28. mai 2026) er Voi den eneste operatøren i Grimstad. Ryde står der bare for Kristiansand.',
-        '[Kartet over Grimstad](map:no:Grimstad) viste rundt 260 Voi-sparkesykler kl. 00.28 mandag 2. november 2026. Det er kartets siste telling, ikke nødvendigvis slik de sto akkurat da.',
+        '[Kartet over Grimstad](map:no:Grimstad) viste rundt 260 Voi-sparkesykler kl. 00.28 mandag 2. november 2026.',
         'AKT skriver at tilbudet er avhengig av at nok folk bruker det, og at det kan bli et fast innslag i bybildet i alle kommunene hvis det blir tatt godt imot. Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },

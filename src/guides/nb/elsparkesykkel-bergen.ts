@@ -19,7 +19,7 @@ const guide: Guide = {
         'Bergen kommune har gitt tillatelse til tre operatører: **Ryde, Lime og RideMovi**. Tillatelsene gjelder fra 1. april 2026 til og med 31. mars 2027. De varer ett år, ikke to som før, så kommunen kan samordne dem med en ny bysykkelordning fra 2027.',
         'Utleieforskriften fra 2022 deler Bergen i fire soner. Den setter et tak på 900 kjøretøy i sone 1, indre sentrum, og 1500 i sone 2, bygatesonen rundt, fordelt likt mellom operatørene. Kommunen kan endre taket, og 19. november 2025 skrev den at taket i sone 1 skulle ned til 750 fra 28. november. Lenger ut setter forskriften ikke noe tak.',
         'Ifølge kommunen var det over 9500 elsparkesykler i Bergen i september 2026, i alle bydeler unntatt Arna.',
-        '[Kartet over Bergen](map:no:Bergen) viste rundt 6800 elsparkesykler kl. 18.50 onsdag 28. oktober 2026: rundt 4700 fra Ryde og 2100 fra Lime. Det er kartets siste telling av hver operatør, ikke nødvendigvis slik de sto akkurat da.',
+        '[Kartet over Bergen](map:no:Bergen) viste rundt 6800 elsparkesykler kl. 18.50 onsdag 28. oktober 2026: rundt 4700 fra Ryde og 2100 fra Lime.',
         '**RideMovi er ikke med på kartet.** RideMovis oransje sparkesykler finner du bare i RideMovis egen app.',
         '[Askøy](map:no:Askøy), [Sotra](guide:sotra) og [Knarvik](guide:knarvik) er egne byer på kartet, med Voi.',
       ],

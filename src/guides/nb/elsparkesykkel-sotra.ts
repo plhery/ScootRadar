@@ -17,8 +17,7 @@ const guide: Guide = {
       heading: 'Leie elsparkesykkel på Sotra: Voi på Straume',
       blocks: [
         'På Sotra er det **Voi** som leier ut elsparkesykler. Øygarden kommune har gitt Voi Technology Norway AS tillatelse til å drive elsparkesykler på Straume fra 1. mars 2026 til 29. februar 2028, og kommunen skriver at Voi i dag er det eneste utleiefirmaet som setter ut elsparkesykler der (siden er sist endret 8. september 2026). Da tillatelsesperioden startet, innførte kommunen nye systemer for å melde feilparkering og for geogjerder, så den kan ta en mer aktiv rolle i å følge opp kjøring og parkering av delte kjøretøy på offentlig grunn.',
-        '[Kartet over Sotra](map:no:Sotra) viste rundt 210 Voi-sparkesykler kl. 06.09 mandag 2. november 2026. Det er kartets siste telling, ikke nødvendigvis slik de sto akkurat da.',
-        'Kl. 06.17 samme morgen viste kartets siste telling de fleste rundt Straume og Sotra Arena, på Bildøy og Foldnes, østover mot Brattholmen og sørover mot Ebbesvik, og noen få på Kolltveit og ved Fjell kyrkje, men ingen ved Ågotnes. Alle stedene ligger i Øygarden kommune.',
+        '[Kartet over Sotra](map:no:Sotra) viste rundt 210 Voi-sparkesykler kl. 06.09 mandag 2. november 2026.',
         'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
