@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Athens?',
       blocks: [
-        'Lime rents stand-up e-scooters in Athens through its app: you unlock one with your phone and pay as you ride. Many shops that advertise “scooter rental” in Greece hire mopeds, which need a driving licence; a shared e-scooter needs none.',
+        'Lime rents stand-up e-scooters in Athens through its app: you unlock one with your phone and pay in the app. No driving licence is needed.',
         'At 9:57 am on Monday 2 November 2026, Greek time, the [Athens map](map:gr:Athens) showed about 3,700 Lime scooters as last counted. The map shows the nearest one and the walk to it, and a button opens the app.',
         'Check the price in the app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -35,7 +35,7 @@ const guide: Guide = {
           ],
         },
         'The decisions are in Greek, and the consolidated text of 18 May 2026 is the latest. For a visitor the practical rule is simple: end a ride only where the app allows, and read its map before you park.',
-        'Athens is not alone. Thessaloniki approved its own regulation in a decision issued on 13 October 2025, once the new Highway Code (law 5209/2025, published in the Government Gazette, ΦΕΚ Α΄ 100, on 13 June 2025) applied in full, and Kos adopted one in June 2026. Each town’s rules apply only within its borders, so check the app again when you ride into a neighbouring municipality.',
+        'Athens is not alone. [Thessaloniki](guide:thessaloniki), whose first regulation dates from December 2024, approved it again in a decision issued on 13 October 2025, once the new Highway Code (law 5209/2025, published in the Government Gazette, ΦΕΚ Α΄ 100, on 13 June 2025) applied in full, and Kos adopted one in June 2026. Each town’s rules apply only within its borders, so check the app again when you ride into a neighbouring municipality.',
         { note: '**Two rulebooks apply at once.** The city’s regulation covers how e-scooters circulate and park in Athens; Greek national law, below, sets the age, helmet, speed and fines for every rider.' },
       ],
     },
@@ -144,7 +144,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Thessaloniki came first.** Its council approved its own e-scooter regulation unanimously, in decision 527/2025, issued on 13 October 2025: more than five weeks before Athens adopted its rules.',
+            '**Thessaloniki came first.** Its council first approved an e-scooter regulation in December 2024 (decision 835/2024), and approved the current version unanimously in decision 527/2025, issued on 13 October 2025: more than five weeks before Athens adopted its rules.',
             '**Greek law files e-scooters under Ε.Π.Η.Ο.**, short for Ελαφρύ Προσωπικό Ηλεκτρικό Όχημα, a light personal electric vehicle. It is the name you’ll see on Athens’s regulation.',
             '**Not every town’s rules survive.** Kos adopted its own regulation in June 2026, and most of it was annulled two months later: see our [Kos guide](guide:kos).',
           ],
@@ -188,6 +188,7 @@ const guide: Guide = {
     { title: 'Municipality of Athens: decision 264/2026, the amended and consolidated regulation, 18 May 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%A6%CE%A99%CE%A96%CE%9C-1%CE%94%CE%A3' },
     { title: 'Municipality of Kos: decision 105/2026, its e-scooter regulation, 24 June 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A86%CE%A91%CE%A9%CE%9B%CE%95-%CE%A70%CE%A5' },
     { title: 'Decentralised Administration of the Aegean: partial annulment of the Kos regulation, 24 August 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%9C1%CE%9A%CE%9F%CE%A11%CE%99-%CE%A4%CE%99%CE%A5' },
+    { title: 'Municipality of Thessaloniki: decision 835/2024, the e-scooter regulation, 16 December 2024 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A1%CE%A8%CE%9E%CE%A8%CE%A9%CE%A15-9%CE%A9%CE%9A' },
     { title: 'Municipality of Thessaloniki: decision 527/2025, its e-scooter regulation, 13 October 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%991%CE%A5%CE%A9%CE%A15-%CE%A1%CE%9D%CE%A1' },
   ],
 };
