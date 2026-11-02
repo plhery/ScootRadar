@@ -303,6 +303,15 @@ data class CityRuleZone private constructor(
         source = source, lines = emptyList(), bounds = bounds(of = ring), polygons = listOf(listOf(ring)),
     )
 
+    /**
+     * Its bounds piece by piece, so that a long street is over a view only where it runs: the whole of Chicago's
+     * lakefront trail, 22 km, would put it over the Loop beside it. A city's zone is its ring's.
+     */
+    val pieceBounds: List<GeoBounds> = if (lines.isEmpty()) listOf(bounds) else pieceBounds(of = lines)
+
+    /** Whether any of it is over the view. */
+    fun reaches(view: GeoBounds): Boolean = pieceBounds.any { it.intersects(view) }
+
     data class Hours(
         /** Local minutes since midnight; hours past midnight start after they end. */
         val fromMinute: Int,
@@ -364,7 +373,16 @@ data class CityRuleZone private constructor(
         /** The rules over the view, from zoom 14 in, each with whether it holds at that instant. */
         fun shown(over: GeoBounds, zoom: Int, at: Instant, among: List<CityRuleZone> = onMap): List<Shown> {
             if (zoom < ScooterZoneArea.minimumZoom) return emptyList()
-            return among.mapNotNull { if (it.bounds.intersects(over)) Shown(rule = it, inForce = it.inForce(at)) else null }
+            return among.mapNotNull { if (it.reaches(over)) Shown(rule = it, inForce = it.inForce(at)) else null }
+        }
+
+        /** The points of each piece of a line bounded on its own. */
+        private const val PIECE_POINTS = 16
+
+        private fun pieceBounds(of: List<List<GeoPoint>>): List<GeoBounds> = of.flatMap { line ->
+            (0 until maxOf(line.size - 1, 1) step PIECE_POINTS).map { start ->
+                bounds(of = line.subList(start, minOf(start + PIECE_POINTS + 1, line.size)))
+            }
         }
 
         private fun bounds(of: List<GeoPoint>): GeoBounds = GeoBounds(

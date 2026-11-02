@@ -148,7 +148,7 @@ internal fun ScooterMapController.rebuildMapZones() {
             CityRuleZone.shown(over = area, zoom = viewportZoom.value, at = now, among = downloaded.zones)
         notices = downloaded.notices.filter { it.city.bounds.intersects(view) }
     }
-    val rulesInView = rules.filter { it.rule.bounds.intersects(view) }
+    val rulesInView = rules.filter { it.rule.reaches(view) }
     if (rulesInView != mapRuleZones.value) _mapRuleZones.value = rulesInView
     if (notices != mapZoneNotices.value) _mapZoneNotices.value = notices
     if (shown.size != mapOperatorZoneCount.value) _mapOperatorZoneCount.value = shown.size
