@@ -344,6 +344,7 @@ import ferraraIt from './it/monopattini-sharing-ferrara';
 import reggioEmiliaIt from './it/monopattini-sharing-reggio-emilia';
 import singenDe from './de/e-scooter-singen';
 import bremerhavenDe from './de/e-scooter-bremerhaven';
+import sotraNb from './nb/elsparkesykkel-sotra';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -688,4 +689,5 @@ export const GUIDES: readonly Guide[] = [
   reggioEmiliaIt,
   singenDe,
   bremerhavenDe,
+  sotraNb,
 ];

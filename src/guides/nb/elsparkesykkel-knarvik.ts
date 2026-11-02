@@ -33,7 +33,7 @@ const guide: Guide = {
     {
       heading: 'Når kan du leie? Natt og vinter i Knarvik',
       blocks: [
-        'Om Voi stenger om natten i Knarvik, og når, ser du i Voi-appen. I nabokommunene Askøy og Øygarden, der Voi også leier ut, er utleien stengt om natten: på [Askøy](map:no:Askøy) natt til lørdag og søndag, skriver Askøy kommune (august 2026), og på [Sotra](map:no:Sotra) hver natt, etter Øygardens forskrift. Tidene og hvem som bestemmer dem, står i guiden om [åpningstider for elsparkesykler](guide:opening-hours).',
+        'Om Voi stenger om natten i Knarvik, og når, ser du i Voi-appen. I nabokommunene Askøy og Øygarden, der Voi også leier ut, er utleien stengt om natten: på [Askøy](map:no:Askøy) natt til lørdag og søndag, skriver Askøy kommune (august 2026), og på [Sotra](guide:sotra) hver natt, etter Øygardens forskrift. Tidene og hvem som bestemmer dem, står i guiden om [åpningstider for elsparkesykler](guide:opening-hours).',
         'Tar Voi sparkesyklene inn for vinteren, blir [kartet over Knarvik](map:no:Knarvik) tomt. Søndag 1. november 2026 var de fortsatt på kartet.',
       ],
     },

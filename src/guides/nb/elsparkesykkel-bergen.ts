@@ -21,7 +21,7 @@ const guide: Guide = {
         'Ifølge kommunen var det over 9500 elsparkesykler i Bergen i september 2026, i alle bydeler unntatt Arna.',
         '[Kartet over Bergen](map:no:Bergen) viste rundt 6800 elsparkesykler kl. 18.50 onsdag 28. oktober 2026: rundt 4700 fra Ryde og 2100 fra Lime. Det er kartets siste telling av hver operatør, ikke nødvendigvis slik de sto akkurat da. For Ryde viser kartet bare hvor sparkesykkelen står, for Lime også hvor mye strøm den har igjen.',
         '**RideMovi er ikke med på kartet.** RideMovis oransje sparkesykler finner du bare i RideMovis egen app.',
-        'Kartet har ingen grense for Bergen kommune. Bergen-tallet er alle sparkesyklene fra Ryde og Lime i et rektangel rundt byen, som også når over Byfjorden til deler av Askøy, så det er ikke en telling innenfor kommunegrensen. [Askøy](map:no:Askøy), [Sotra](map:no:Sotra) og [Knarvik](guide:knarvik) er egne byer på kartet, med Voi. ScootRadar viser bare elsparkesykler som står ledige, ikke bysykler eller elsykler.',
+        'Kartet har ingen grense for Bergen kommune. Bergen-tallet er alle sparkesyklene fra Ryde og Lime i et rektangel rundt byen, som også når over Byfjorden til deler av Askøy, så det er ikke en telling innenfor kommunegrensen. [Askøy](map:no:Askøy), [Sotra](guide:sotra) og [Knarvik](guide:knarvik) er egne byer på kartet, med Voi. ScootRadar viser bare elsparkesykler som står ledige, ikke bysykler eller elsykler.',
       ],
     },
     {
