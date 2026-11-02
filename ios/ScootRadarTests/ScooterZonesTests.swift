@@ -552,6 +552,24 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertTrue(CityRuleZone.shown(over: loop, zoom: 16, at: night).filter { $0.rule.id.hasPrefix("chicago-") }.isEmpty)
     }
 
+    func testEdmontonsWhyteAvenueIsShownFrom112To97StreetAtAllHoursCreditedToTheCity() throws {
+        // 2 November 2026, 01:30 in Edmonton (UTC-7).
+        let night = Date(timeIntervalSince1970: 1_793_608_200)
+        // Gateway Boulevard, in Old Strathcona; 82 Avenue goes on west of 112 Street and east of 97 Street, open to riding.
+        let gateway = GeoBounds(south: 53.517, west: -113.499, north: 53.519, east: -113.496)
+        let shown = CityRuleZone.shown(over: gateway, zoom: 16, at: night)
+        XCTAssertEqual(shown.map(\.rule.id), ["edmonton-whyte-avenue"])
+        XCTAssertEqual(shown.map(\.inForce), [true])
+        let whyte = try XCTUnwrap(shown.first?.rule)
+        XCTAssertEqual(whyte.authority, "City of Edmonton, lines © OpenStreetMap")
+        XCTAssertEqual(whyte.timeZone, "America/Edmonton")
+        XCTAssertTrue(whyte.firstDay.isEmpty && whyte.hours.isEmpty)
+        let west = GeoBounds(south: 53.515, west: -113.525, north: 53.519, east: -113.5225)
+        let east = GeoBounds(south: 53.517, west: -113.4785, north: 53.519, east: -113.477)
+        XCTAssertTrue(CityRuleZone.shown(over: west, zoom: 16, at: night).filter { $0.rule.id.hasPrefix("edmonton-") }.isEmpty)
+        XCTAssertTrue(CityRuleZone.shown(over: east, zoom: 16, at: night).filter { $0.rule.id.hasPrefix("edmonton-") }.isEmpty)
+    }
+
     func testAStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
         // About 200 m east, then 100 m north.
         let line = [

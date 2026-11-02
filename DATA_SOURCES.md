@@ -673,6 +673,18 @@ July 2026 by the Sun-Times, is not on CDOT's page and is not drawn. A rule zone
 counts as over a view only where a piece of its lines is, not wherever its
 bounds are: the Lakefront Trail's bounds cover the Loop.
 
+Edmonton's shared e-scooters and e-bikes may neither ride nor park "on Whyte
+(82) Avenue between 112 Street and 97 Street"
+([City of Edmonton](https://www.edmonton.ca/transportation/cycling_walking/bike-electric-scooter-sharing),
+2 November 2026), which publishes no map of it. The lines are OpenStreetMap's
+carriageways of Whyte Avenue NW and 82 Avenue NW between 112 Street NW and 97
+Street NW, © OpenStreetMap contributors under the ODbL: about 2.7 km, one
+carriageway or two. The single one is joined to one of the two it splits into at
+Gateway Boulevard, as three lines meeting there made the bands' union fail.
+They are credited "City of Edmonton, lines © OpenStreetMap", and Canada's
+credits add "Edmonton's no-ride stretch of Whyte Avenue traced on
+OpenStreetMap, ODbL". Its slow zones and Mill Woods' corrals are not drawn.
+
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as
 the operators' (no riding, no parking, slow), the places to park in green and

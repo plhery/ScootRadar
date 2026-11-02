@@ -120,6 +120,17 @@ describe('ruleZonesInView', () => {
     expect(lakefront[0].polygons.some(([outer]) => polygonContainsPoint(outer, point[0], point[1]))).toBe(true);
   });
 
+  it('gives Edmonton\'s Whyte Avenue from 112 to 97 Street at all hours, credited to the City', () => {
+    const night = Date.parse('2026-11-02T08:30:00Z');
+    // Gateway Boulevard, in Old Strathcona; 82 Avenue goes on west of 112 Street and east of 97 Street, open to riding.
+    const [whyte, ...others] = ruleZonesInView({ bounds: { south: 53.517, west: -113.499, north: 53.519, east: -113.496 }, zoom: 16 }, night);
+    expect(others).toEqual([]);
+    expect(whyte).toMatchObject({ id: 'edmonton-whyte-avenue', inForce: true, authority: 'City of Edmonton, lines © OpenStreetMap', timeZone: 'America/Edmonton' });
+    expect(whyte.polygons.some(([outer]) => polygonContainsPoint(outer, 53.51808, -113.4975))).toBe(true);
+    expect(ruleZonesInView({ bounds: { south: 53.515, west: -113.525, north: 53.519, east: -113.5225 }, zoom: 16 }, night)).toEqual([]);
+    expect(ruleZonesInView({ bounds: { south: 53.517, west: -113.4785, north: 53.519, east: -113.477 }, zoom: 16 }, night)).toEqual([]);
+  });
+
   it('keeps each street whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);

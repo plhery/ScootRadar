@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-11-02",
-  "about": "Streets where a city or its police forbids riding e-scooters, at the hours given, by the clock of the zone's time zone. Each is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. Antalya's has no map: UKOME's decisions name the road and place parcels and hotels on it, and its lines are OpenStreetMap's two carriageways from the edge of Kemerağzı, where the ban starts, to Trendy Lara in Kundu, the last place a decision puts on it; the 0.9 km on to Kumköy, which no decision names, is left out. Chicago's three have no map either: the Chicago Department of Transportation's page names the Lakefront Trail, The 606 and the Chicago Riverwalk, and their lines are OpenStreetMap's ways of those names, both of the Lakefront Trail's where it has a bike and a walking trail, the Riverwalk on the Main Branch's south bank alone. The map draws them as bands, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers this layer only. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2). Antalya's covers every public area of the boulevard, its pavements and cycle path too, at all hours. Chicago's are the rules CDOT sets the riders of its shared scooters, at all hours.",
+  "about": "Streets where a city or its police forbids riding e-scooters, at the hours given, by the clock of the zone's time zone. Each is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. Antalya's has no map: UKOME's decisions name the road and place parcels and hotels on it, and its lines are OpenStreetMap's two carriageways from the edge of Kemerağzı, where the ban starts, to Trendy Lara in Kundu, the last place a decision puts on it; the 0.9 km on to Kumköy, which no decision names, is left out. Chicago's three have no map either: the Chicago Department of Transportation's page names the Lakefront Trail, The 606 and the Chicago Riverwalk, and their lines are OpenStreetMap's ways of those names, both of the Lakefront Trail's where it has a bike and a walking trail, the Riverwalk on the Main Branch's south bank alone. Edmonton's has none: the City's page names Whyte Avenue from 112 to 97 Street, and its lines are OpenStreetMap's carriageways between those streets. The map draws them as bands, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers this layer only. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2). Antalya's covers every public area of the boulevard, its pavements and cycle path too, at all hours. Chicago's are the rules CDOT sets the riders of its shared scooters, at all hours. Edmonton's is the City's for shared e-scooters and e-bikes, which may neither ride nor park there.",
   "zones": [
     {
       "id": "seoul-hongdae-red-road",
@@ -2193,6 +2193,64 @@
           [41.887249, -87.627679],
           [41.887304, -87.627681],
           [41.887292, -87.628223]
+        ]
+      ]
+    },
+    {
+      "id": "edmonton-whyte-avenue",
+      "place": "Whyte (82) Avenue, from 112 Street to 97 Street",
+      "country": "CA",
+      "authority": "City of Edmonton, lines © OpenStreetMap",
+      "rule": "noRide",
+      "timeZone": "America/Edmonton",
+      "source": {
+        "title": "City of Edmonton, \"Shared Micromobility Program\": \"Riding and parking shared e-scooters and e-bikes is not permitted on Whyte (82) Avenue between 112 Street and 97 Street\"",
+        "url": "https://www.edmonton.ca/transportation/cycling_walking/bike-electric-scooter-sharing"
+      },
+      "map": {
+        "title": "No map: the City's page names the stretch; the lines are OpenStreetMap's carriageways of Whyte Avenue NW and 82 Avenue NW from 112 Street NW to 97 Street NW, whose cross streets stay open",
+        "url": "https://www.edmonton.ca/transportation/cycling_walking/bike-electric-scooter-sharing"
+      },
+      "lines": [
+        [
+          [53.518074, -113.497462],
+          [53.518036, -113.497631],
+          [53.518037, -113.497792],
+          [53.518049, -113.499378],
+          [53.518079, -113.499502]
+        ],
+        [
+          [53.518074, -113.497462],
+          [53.518121, -113.497633],
+          [53.518124, -113.499371],
+          [53.518079, -113.499502]
+        ],
+        [
+          [53.5181, -113.506323],
+          [53.518146, -113.506431],
+          [53.518175, -113.520556],
+          [53.51814, -113.520764]
+        ],
+        [
+          [53.518079, -113.499502],
+          [53.5181, -113.506323]
+        ],
+        [
+          [53.5181, -113.506323],
+          [53.518051, -113.506431],
+          [53.518065, -113.520599],
+          [53.518023, -113.520763]
+        ],
+        [
+          [53.518099, -113.479729],
+          [53.518113, -113.494758],
+          [53.518073, -113.494922]
+        ],
+        [
+          [53.518074, -113.497462],
+          [53.518073, -113.494922],
+          [53.518026, -113.494743],
+          [53.518, -113.479728]
         ]
       ]
     }

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Edmonton: Bird and Lime, where you may ride, the fines, the LRT and winter',
   lede: 'You can rent an e-scooter in Edmonton from Bird or Lime, the two companies the City licenses; we found no price outside their apps. You must be 18, you need no licence, and a helmet is optional on a scooter. Bird caps its scooters at 20 km/h, and you may ride in bike lanes, on shared pathways and on roads posted at 50 km/h or less, but not on sidewalks: that’s a $250 ticket. Whyte Avenue is off limits, you can walk a scooter onto the LRT but not a bus, and there are none at the airport. The City’s licences allow riding all year, weather permitting, but we found no last day announced for 2026.',
   published: '2026-10-17',
-  updated: '2026-10-23',
+  updated: '2026-11-02',
   city: 'ca:ab:Edmonton',
   sections: [
     {
@@ -72,6 +72,7 @@ const guide: Guide = {
           ],
         },
         'Bird’s open data adds 365 no-parking zones, such as the Alberta Legislature Grounds, Rogers Place, Hawrelak Park and West Edmonton Mall. Lime publishes none: check the app map.',
+        'Our [Edmonton map](map:ca:ab:Edmonton) draws Whyte Avenue from 112 to 97 Street as a no-riding band from zoom 14, credited to the City, along OpenStreetMap’s carriageways. The slow zones and Mill Woods’ corrals are not drawn.',
       ],
     },
     {

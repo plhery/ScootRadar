@@ -545,7 +545,8 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   University's corral map is a PDF behind a Cloudflare challenge (31 October
   2026). Edmonton's rules (no riding or parking on Whyte Avenue between 112
   and 97 Street, slow zones on Jasper Avenue, corrals in Mill Woods) are text
-  and the operators' apps, and its open data's only scooter zones are the
+  and the operators' apps, Whyte Avenue's drawn from OpenStreetMap's
+  carriageways since 2 November 2026 (DATA_SOURCES.md), and its open data's only scooter zones are the
   operators' operating areas of 2020–21. Culver City gives its operator the
   prohibited places on a map for its app alone; Tauranga's and Kloten's
   councils publish none, and Zürich Airport's operator sets rules for
