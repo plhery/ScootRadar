@@ -345,6 +345,7 @@ import reggioEmiliaIt from './it/monopattini-sharing-reggio-emilia';
 import singenDe from './de/e-scooter-singen';
 import bremerhavenDe from './de/e-scooter-bremerhaven';
 import szegedEn from './en/e-scooters-szeged';
+import athensEn from './en/e-scooters-athens';
 import sotraNb from './nb/elsparkesykkel-sotra';
 
 export const GUIDES: readonly Guide[] = [
@@ -691,5 +692,6 @@ export const GUIDES: readonly Guide[] = [
   singenDe,
   bremerhavenDe,
   szegedEn,
+  athensEn,
   sotraNb,
 ];
