@@ -557,7 +557,8 @@ JET's Go Jet map needs no rider account. Its app signing configuration lives
 in mode-0600 `/data/jet-config.json`, owned by the cache's `node` user
 (`JET_CONFIG_PATH` overrides the path), never in Git, Worker or build variables.
 The Node collector uses TLS 1.2 and spaces map requests 500 ms apart across
-all regions. Every city's tiles must succeed before its snapshot is replaced.
+all regions. Every city's tiles must succeed before its snapshot is replaced; a
+tile that stalls or answers a 5xx is asked for once more.
 See [the configuration format and verified coverage](docs/gojet-app-map.md).
 
 BinBin's Turkish guest map needs no secret. Its one client starts a request at

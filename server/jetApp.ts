@@ -51,6 +51,10 @@ export const requestJetMap: Request = (url, headers, timeoutMs) => new Promise((
   request.on('close', () => clearTimeout(timer));
 });
 
+/** A stalled request or a 5xx, which JET's map gives now and then, unlike a refusal or a bad map. */
+const passing = (message: string) => Object.assign(new Error(message), { passing: true });
+const isPassing = (error: unknown) => error instanceof Error && (error as { passing?: boolean }).passing === true;
+
 /** Public map reads need app signing configuration, but no rider account or attestation token. */
 export class JetClient {
   private readonly configPath: string;
@@ -107,14 +111,15 @@ export class JetClient {
         'X-App-Version': config.appVersion, 'X-Device-Id': config.deviceId, 'X-Timestamp': timestamp,
         'X-Signature': createHmac('sha256', config.signingKey).update(url + timestamp).digest('base64'),
       }, Math.min(this.timeoutMs, remaining));
-    } catch { throw new Error('JET map request failed or timed out'); }
+    } catch { throw passing('JET map request failed or timed out'); }
     if (!Number.isInteger(response.status) || response.status !== 200) {
       if ([401, 403, 429].includes(response.status)) {
         const retry = response.retryAfter;
         const delay = retry && /^\d+$/.test(retry) ? Number(retry) * 1000 : retry ? Date.parse(retry) - this.now() : 0;
         this.blockedUntil = this.now() + Math.max(60_000, Math.min(3600_000, delay || 0));
       }
-      throw new Error(`JET map HTTP ${response.status}`);
+      const message = `JET map HTTP ${response.status}`;
+      throw response.status >= 500 && response.status < 600 ? passing(message) : new Error(message);
     }
     return response.body;
   }
@@ -168,8 +173,13 @@ export async function collectJetRegion(system: RegionalScooterSystem, client = d
   if (!system.jetAppMap) throw new Error('Not a JET app map region');
   const started = Date.now();
   const vehicles = new Map<string, Vehicle>();
+  // A tile that stalls or fails with a 5xx is asked for once more: one such tile in Santiago's 24 lost the whole
+  // sweep 16 times from 21:00 UTC on 1 November 2026, while JET's map stalled requests in all its countries;
+  // a tile that took 22 seconds then answered in under one when asked again.
+  const read = (tile: MapBounds) => client.vehicles(tile, started + 90_000)
+    .catch((error: unknown) => { if (isPassing(error)) return client.vehicles(tile, started + 90_000); throw error; });
   for (const tile of jetMapTiles(system.bounds)) {
-    const batch = parseJetVehicles(await client.vehicles(tile, started + 90_000));
+    const batch = parseJetVehicles(await read(tile));
     for (const vehicle of batch) if (boundsContainPoint(system.bounds, vehicle.lat, vehicle.lng)) vehicles.set(vehicle.vehicle_id, vehicle);
   }
   // A failed tile throws before any partial sweep can replace the last good snapshot.

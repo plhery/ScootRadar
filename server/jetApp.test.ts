@@ -100,10 +100,44 @@ describe('Go Jet map completeness', () => {
     expect(snapshot.stale).toBe(false);
     expect(f.request).toHaveBeenCalledTimes(3);
     f.request.mockResolvedValueOnce({ status: 200, body: { transports: [scooter()] } })
-      .mockResolvedValueOnce({ status: 503 });
+      .mockResolvedValueOnce({ status: 503 }).mockResolvedValueOnce({ status: 503 });
     await expect(collectJetRegion(system, f.client)).rejects.toThrow('HTTP 503');
     f.request.mockResolvedValue({ status: 200, body: { transport_clusters: [{ num_points: 2 }] } });
     await expect(collectJetRegion(system, f.client)).rejects.toThrow('clustered map');
+  });
+});
+
+describe('Go Jet passing failures', () => {
+  const system = { id: 'jet_cl_test', provider: 'jet', country: 'CL', jetAppMap: true,
+    bounds: { ...bounds, east: -70.49 } } as RegionalScooterSystem;
+
+  it('asks once more for a tile that stalled or failed with a 5xx, and keeps the sweep', async () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_800_000_000_000);
+    const f = await fixture();
+    f.request.mockResolvedValue({ status: 200, body: { transports: [scooter()] } });
+    f.request.mockRejectedValueOnce(new Error('JET map request timed out'));
+    await expect(collectJetRegion(system, f.client)).resolves.toMatchObject({ vehicles: [{ vehicle_id: 'jet:S.123' }] });
+    expect(f.request).toHaveBeenCalledTimes(4);
+    f.request.mockClear();
+    f.request.mockResolvedValueOnce({ status: 200, body: { transports: [] } }).mockResolvedValueOnce({ status: 502 });
+    await expect(collectJetRegion(system, f.client)).resolves.toMatchObject({ vehicles: [{ vehicle_id: 'jet:S.123' }] });
+    expect(f.request).toHaveBeenCalledTimes(4);
+    expect(new URL(f.request.mock.calls[2][0]).search).toBe(new URL(f.request.mock.calls[1][0]).search);
+  });
+
+  it('asks only once more, and not again after a refusal or a bad map', async () => {
+    vi.spyOn(Date, 'now').mockReturnValue(1_800_000_000_000);
+    const f = await fixture();
+    f.request.mockRejectedValue(new Error('socket hang up'));
+    await expect(collectJetRegion(system, f.client)).rejects.toThrow('failed or timed out');
+    expect(f.request).toHaveBeenCalledTimes(2);
+    for (const [reply, error] of [[{ status: 404 }, 'HTTP 404'], [{ status: 403 }, 'HTTP 403'],
+      [{ status: 200, body: { code: 'GC-1' } }, 'invalid or clustered']] as const) {
+      const other = await fixture();
+      other.request.mockResolvedValue(reply);
+      await expect(collectJetRegion(system, other.client)).rejects.toThrow(error);
+      expect(other.request).toHaveBeenCalledTimes(1);
+    }
   });
 });
 

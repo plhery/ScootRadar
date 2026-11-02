@@ -119,7 +119,12 @@ range, price or per-scooter rental URL is added.
 
 The shared client spaces requests 500 ms apart, honors `Retry-After`, holds
 off all regions after HTTP 401/403/429, caps replies at 8 MiB and bounds a
-collection to 90 seconds and 96 tiles. Larger envelopes require review.
+collection to 90 seconds and 96 tiles. Larger envelopes require review. A tile
+whose request fails, stalls past 15 seconds or answers a 5xx is asked for once
+more within those 90 seconds. From 21:00 UTC on 1 November 2026 the map stalled
+requests in every country it serves: 77 sweeps failed in under four hours, 16 of
+them Santiago's, whose 24 tiles lost the whole sweep to any one, and a tile that
+took 22 seconds answered in under one when asked again.
 
 Linux Node 26's default TLS handshake received a Cloudflare HTML challenge
 even with correct app headers. Standard `node:https` requests constrained to
