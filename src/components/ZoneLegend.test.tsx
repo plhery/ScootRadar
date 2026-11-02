@@ -22,51 +22,67 @@ function bergen(id: string, rule: RuleKind): RuleZoneShape {
 
 beforeEach(() => localStorage.setItem('scooters-locale', 'en'));
 
-it('gives a city\'s zones a line for each rule, the strongest first, each linked to where the city says so', () => {
+/** What the legend lists, item by item, and its credit. */
+function listed(container: HTMLElement) {
+  return {
+    items: [...container.querySelectorAll('.zone-legend-item')].map(item => item.textContent),
+    credit: container.querySelector('.zone-legend-credit')?.textContent,
+  };
+}
+
+it('names each of a city\'s kinds once, the strongest first, and credits the city once, linked to where it says so', () => {
   const rules = [
     bergen('parking-1', 'parking'), bergen('no-parking-1', 'noParking'), bergen('slow-1', 'slow'),
     bergen('no-parking-2', 'noParking'), bergen('no-ride-1', 'noRide'),
   ];
   const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
-  const lines = [...container.querySelectorAll('.zone-legend-rule')];
-  expect(lines.map(line => line.textContent)).toEqual([
-    'No riding · Bergen kommune', 'No parking · Bergen kommune', 'Slow · Bergen kommune', 'Parking · Bergen kommune',
-  ]);
-  expect(lines.map(line => line.querySelector('.zone-swatch')!.className))
+  expect(listed(container)).toEqual({ items: ['No riding', 'No parking', 'Slow', 'Parking'], credit: 'Bergen kommune' });
+  expect([...container.querySelectorAll('.zone-legend-item .zone-swatch')].map(swatch => swatch.className))
     .toEqual(['noRide', 'noParking', 'slow', 'parking'].map(kind => `zone-swatch zone-swatch-${kind}`));
-  expect(screen.getAllByRole('link', { name: 'Bergen kommune' }).map(link => link.getAttribute('href')))
-    .toEqual(Array(4).fill(SOURCE.url));
+  expect(container.querySelectorAll('.zone-legend-rule')).toHaveLength(0);
+  expect(screen.getByRole('link', { name: 'Bergen kommune' }).getAttribute('href')).toBe(SOURCE.url);
 });
 
-it('keeps a street\'s line with its hours, and the operators\' kinds before the cities\' lines', () => {
-  const rules = [bergen('parking-1', 'parking'), ...ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, SEOUL_NOON)];
+it('names a kind the operators and a city both set once, gives a street a line for its hours, and credits each city once', () => {
+  const rules = [
+    bergen('parking-1', 'parking'), bergen('no-ride-1', 'noRide'),
+    ...ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, SEOUL_NOON),
+  ];
   const { container } = render(<I18nProvider><ZoneLegend state="shown" count={2} rules={rules} /></I18nProvider>);
-  expect([...container.querySelectorAll('.zone-legend-item')].map(item => item.textContent)).toEqual([
-    'No riding', 'No parking', 'Slow', 'No riding 12:00–23:00 · Seoul, lines © OpenStreetMap', 'Parking · Bergen kommune',
-  ]);
+  expect(listed(container)).toEqual({
+    items: ['No riding', 'No parking', 'Slow', 'Parking', 'No riding 12:00–23:00'],
+    credit: 'Bergen kommune · Seoul, lines © OpenStreetMap',
+  });
+  expect(container.querySelector('.zone-legend-rule')!.getAttribute('data-in-force')).toBe('true');
 });
 
-it('gives Nagoya\'s pavements one line, a line for a swatch, linked to the rules with JARTIC\'s credit', async () => {
+it('says when a street\'s rule does not hold now, and still names its kind and who sets it', () => {
+  const evening = Date.parse('2026-10-26T15:00:00Z');
+  const rules = ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, evening);
+  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  expect(listed(container)).toEqual({ items: ['No riding 12:00–23:00 (not now)'], credit: 'Seoul, lines © OpenStreetMap' });
+  expect(container.querySelector('.zone-legend-rule')!.getAttribute('data-in-force')).toBe('false');
+});
+
+it('names Nagoya\'s pavements once, a line for a swatch, credited to the rules with JARTIC\'s credit', async () => {
   const nagoya = ZONE_CITIES.find(city => city.id === 'nagoya')!;
   const { default: file } = await CITY_ZONE_FILES.nagoya();
   const rules = ruleZonesInView({ bounds: SAKAE, zoom: 16 }, Date.now(), cityRuleZones(nagoya, file));
   expect(rules.length).toBeGreaterThan(10);
   const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
-  const lines = [...container.querySelectorAll('.zone-legend-rule')];
-  expect(lines.map(line => line.textContent)).toEqual(['Pavement riding at 6 km/h · Aichi police, data JARTIC']);
-  expect(lines[0].querySelector('.zone-swatch')!.className).toBe('zone-swatch zone-swatch-pavement');
+  expect(listed(container)).toEqual({ items: ['Pavement riding at 6 km/h'], credit: 'Aichi police, data JARTIC' });
+  expect(container.querySelector('.zone-legend-item .zone-swatch')!.className).toBe('zone-swatch zone-swatch-pavement');
   const link = screen.getByRole('link', { name: 'Aichi police, data JARTIC' });
   expect(link.getAttribute('href')).toBe('https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html');
   expect(link.getAttribute('title')).toMatch(/6 km\/h.*出典：「交通規制情報」（https:\/\/www\.jartic\.or\.jp\/service\/opendata\/）（公益財団法人日本道路交通情報センター）を加工して作成$/);
 });
 
-it('names central Helsingborg\'s rule, racks or marked places only, linked to the rule in Transportstyrelsen\'s register', async () => {
+it('names central Helsingborg\'s rule, racks or marked places only, credited to the city and linked to the rule in Transportstyrelsen\'s register', async () => {
   const helsingborg = ZONE_CITIES.find(city => city.id === 'helsingborg')!;
   const { default: file } = await CITY_ZONE_FILES.helsingborg();
   const rules = ruleZonesInView({ bounds: STORTORGET, zoom: 16 }, Date.now(), cityRuleZones(helsingborg, file));
   const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
-  const lines = [...container.querySelectorAll('.zone-legend-rule')];
-  expect(lines.map(line => line.textContent)).toEqual(['Park only in racks or marked places · Helsingborgs stad']);
-  expect(lines[0].querySelector('.zone-swatch')!.className).toBe('zone-swatch zone-swatch-racksOnly');
+  expect(listed(container)).toEqual({ items: ['Park only in racks or marked places'], credit: 'Helsingborgs stad' });
+  expect(container.querySelector('.zone-legend-item .zone-swatch')!.className).toBe('zone-swatch zone-swatch-racksOnly');
   expect(screen.getByRole('link', { name: 'Helsingborgs stad' }).getAttribute('href')).toBe(helsingborg.source.url);
 });

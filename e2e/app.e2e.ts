@@ -1252,7 +1252,7 @@ test('combines provider filters and resets them together', async ({ page }) => {
 test('the operators\' zones are drawn unless turned off, for the providers shown, with what they mean', async ({ page }) => {
   const square = (south: number, west: number) =>
     [[[[south, west], [south, west + 0.003], [south + 0.002, west + 0.003], [south + 0.002, west], [south, west]]]];
-  // Zürich's own zones are drawn too, in their pane and below the operators' in the legend.
+  // Zürich's own zones are drawn too, in their pane, their kinds named once with the operators' in the legend.
   const edges = page.locator('.leaflet-zones-edges-pane g path');
   const noRideWidth = () => page.evaluate(() => document.querySelector<SVGPathElement>('.leaflet-zones-edges-pane .zone-edge-noRide')!.getBBox().width);
   const asked: string[] = [];
@@ -1273,13 +1273,14 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await focusFixtureArea(page);
   // Further out than zoom 14, nothing is asked for, and a word says why there are none.
   const legend = page.getByRole('group', { name: 'Zones' });
-  const operators = legend.locator('.zone-legend-item:not(.zone-legend-rule)');
+  const kinds = legend.locator('.zone-legend-item');
   await expect(legend).toHaveText('Zoom in to see the zones');
   expect(asked).toEqual([]);
 
   await zoomTo(page, 16);
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
-  await expect(operators).toHaveText(['No riding', 'No parking', 'Slow']);
+  await expect(kinds).toHaveText(['No riding', 'No parking', 'Slow', 'Parking']);
+  await expect(legend.locator('.zone-legend-credit')).toHaveText('Stadt Zürich');
   // One shape and one edge for each kind, the operators' zones merged, under the scooters.
   await expect(edges).toHaveCount(3);
   expect(asked.length).toBeGreaterThan(0);
@@ -1294,7 +1295,7 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   const drawn = await page.evaluate(() => ({
     fill: getComputedStyle(document.querySelector('.leaflet-zones-noRide-pane .zone-fill-noRide')!).fill,
     edges: ['noRide', 'noParking', 'slow'].map(kind => document.querySelector(`.leaflet-zones-edges-pane .zone-edge-${kind}`)!.getAttribute('stroke-dasharray')),
-    swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-legend-item:not(.zone-legend-rule) .zone-swatch-${kind}`)!).borderTopStyle),
+    swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-legend-item .zone-swatch-${kind}`)!).borderTopStyle),
   }));
   expect(drawn).toEqual({ fill: 'url("#zone-no-ride-hatch")', edges: [null, '6 4', '0.1 4'], swatches: ['solid', 'dashed', 'dotted'] });
   // Lime alone: its zone alone, two thirds as wide as the merged one.
@@ -1303,7 +1304,7 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await expect(edges).toHaveCount(1);
   expect((await noRideWidth()) / merged).toBeCloseTo(2 / 3, 1);
 
-  // Turned off: the operators' are no longer drawn or said, the city's still are, and the choice is kept.
+  // Turned off: the operators' are no longer drawn, the city's still are, named and credited, and the choice is kept.
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
   const zones = settings.getByRole('switch', { name: 'Ride and parking zones' });
@@ -1313,8 +1314,8 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await page.keyboard.press('Escape');
   await expect(settings).not.toBeVisible();
   await expect.poll(() => new URL(page.url()).search).toBe('?zones=0');
-  await expect(operators).toHaveCount(0);
-  await expect(legend.locator('.zone-legend-rule').first()).toBeVisible();
+  await expect(kinds).toHaveText(['No riding', 'No parking', 'Parking']);
+  await expect(legend.locator('.zone-legend-credit')).toHaveText('Stadt Zürich');
   await expect(edges).toHaveCount(0);
 
   // On the next visit too: further out, not even the word to zoom in.
@@ -1337,9 +1338,10 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   // Bergen's Torget, at street level, with the operators' zones off.
   await page.goto('/map?origin=60.3955,5.3245&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
-  await expect(legend).toHaveText(
-    'No riding · Bergen kommuneNo parking · Bergen kommuneSlow · Bergen kommuneParking · Bergen kommune');
-  await expect(legend.getByRole('link', { name: 'Bergen kommune' }).last())
+  // Each kind once, and the city credited once, linked to where it says so.
+  await expect(legend.locator('.zone-legend-item')).toHaveText(['No riding', 'No parking', 'Slow', 'Parking']);
+  await expect(legend.locator('.zone-legend-credit')).toHaveText('Bergen kommune');
+  await expect(legend.getByRole('link', { name: 'Bergen kommune' }))
     .toHaveAttribute('href', /^https:\/\/www\.bergen\.kommune\.no\//);
   expect(await bergenLoaded()).toBe(true);
   // However many zones, one fill and one edge for each rule, parking at the bottom.
@@ -1372,7 +1374,8 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
   // Sakae, at street level, with the operators' zones off.
   await page.goto('/map?origin=35.1688,136.9086&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
-  await expect(legend).toHaveText('Pavement riding at 6 km/h · Aichi police, data JARTIC');
+  await expect(legend.locator('.zone-legend-item')).toHaveText(['Pavement riding at 6 km/h']);
+  await expect(legend.locator('.zone-legend-credit')).toHaveText('Aichi police, data JARTIC');
   const link = legend.getByRole('link', { name: 'Aichi police, data JARTIC' });
   await expect(link).toHaveAttribute('href', 'https://www.npa.go.jp/bureau/traffic/anzen/tokuteikogata.html');
   await expect(link).toHaveAttribute('title',
@@ -1400,8 +1403,8 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
   await expect(paths).toHaveCount(1);
   expect((await pavement()).stroke).toBe('rgb(59, 201, 219)');
 
-  // On the narrowest phone, in every language, the legend's line fits: who says so whole, on a
-  // second or third line if need be (CI's fonts set it wider), and nothing out of the legend.
+  // On the narrowest phone, in every language, the legend fits: the kind on a second line if need
+  // be, who says so whole (CI's fonts set them wider), and nothing out of the legend.
   await page.setViewportSize({ width: 320, height: 568 });
   const legendFit = async () => {
     await expect(page.locator('.zone-legend a').first()).toBeVisible();
@@ -1416,7 +1419,7 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
         }),
         onScreen: box.right <= innerWidth,
         linkWhole: link.getClientRects().length === 1,
-        lines: Math.round(element.querySelector('.zone-legend-rule')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
+        lines: Math.round(element.querySelector('.zone-legend-item')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
       };
     });
   };
@@ -1425,7 +1428,7 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
     await page.goto('/map?origin=35.1688,136.9086&zones=0');
     const fit = await legendFit();
     expect(fit, locale).toEqual({ inside: true, onScreen: true, linkWhole: true, lines: expect.any(Number) });
-    expect(fit.lines, locale).toBeLessThanOrEqual(3);
+    expect(fit.lines, locale).toBeLessThanOrEqual(2);
   }
 
   // Further out than zoom 14, neither drawn nor told.
@@ -1445,7 +1448,8 @@ test('central Helsingborg, where scooters park only in racks or marked places, i
   // Stortorget, at street level, with the operators' zones off.
   await page.goto('/map?origin=56.0455,12.6945&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
-  await expect(legend).toHaveText('Park only in racks or marked places · Helsingborgs stad');
+  await expect(legend.locator('.zone-legend-item')).toHaveText(['Park only in racks or marked places']);
+  await expect(legend.locator('.zone-legend-credit')).toHaveText('Helsingborgs stad');
   await expect(legend.getByRole('link', { name: 'Helsingborgs stad' })).toHaveAttribute('href',
     /^https:\/\/rdt\.transportstyrelsen\.se\/rdt\/AF06_View\.aspx\?.*ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a/);
   // The area is one fill, barely there, within an edge of dashes and dots in its violet, neither
@@ -1468,7 +1472,8 @@ test('central Helsingborg, where scooters park only in racks or marked places, i
   await expect(paths).toHaveCount(2);
   expect((await area()).stroke).toBe('rgb(185, 140, 255)');
 
-  // On the narrowest phone, in every language, the legend's line fits, who says so whole.
+  // On the narrowest phone, in every language, the legend fits: the rule on a second line if need
+  // be, who says so whole.
   await page.setViewportSize({ width: 320, height: 568 });
   for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en']) {
     await page.evaluate(language => localStorage.setItem('scooters-locale', language), locale);
@@ -1485,11 +1490,11 @@ test('central Helsingborg, where scooters park only in racks or marked places, i
         }),
         onScreen: box.right <= innerWidth,
         linkWhole: link.getClientRects().length === 1,
-        lines: Math.round(element.querySelector('.zone-legend-rule')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
+        lines: Math.round(element.querySelector('.zone-legend-item')!.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight)),
       };
     });
     expect(fit, locale).toEqual({ inside: true, onScreen: true, linkWhole: true, lines: expect.any(Number) });
-    expect(fit.lines, locale).toBeLessThanOrEqual(3);
+    expect(fit.lines, locale).toBeLessThanOrEqual(2);
   }
 
   // Further out than zoom 14, neither drawn nor told.

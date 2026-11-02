@@ -2052,32 +2052,36 @@ svg {
   pointer-events: none;
   transition: bottom 280ms var(--spring);
 }
+/* Each kind once. On a narrow phone a long one, as Italian's racks or marked places, takes a second
+   line beside its swatch. */
 .zone-legend-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  white-space: nowrap;
+}
+.zone-legend-item .zone-swatch {
+  flex: none;
 }
 .zone-legend-note {
   color: var(--ink-2);
 }
-/* A city's rule: who says so can be opened, and outside its hours its swatch is dimmer, as on the map.
-   On a narrow phone a rule may take two lines, who says so kept whole, or, longer than a line, as
-   Berlin's office and München's licence are, on lines of its own within the legend. */
-.zone-legend-rule {
-  white-space: normal;
+/* A city's rule within its hours alone: outside them its swatch is dimmer, as on the map. */
+.zone-legend-rule[data-in-force='false'] .zone-swatch {
+  opacity: 0.35;
 }
-.zone-legend-rule .zone-swatch {
-  flex: none;
+/* Who sets the cities' rules, small and quiet at the foot, each of them whole and to be opened: on
+   lines of its own where longer than a line, as Berlin's office and München's licence are. */
+.zone-legend-credit {
+  flex-basis: 100%;
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 400;
 }
-.zone-legend-rule a {
+.zone-legend-credit a {
   display: inline-block;
   max-width: 100%;
   color: inherit;
   pointer-events: auto;
-}
-.zone-legend-rule[data-in-force='false'] .zone-swatch {
-  opacity: 0.35;
 }
 /* Each as on the map, so that the edge and the hatching tell them apart without the colour. */
 .zone-swatch {
