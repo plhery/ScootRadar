@@ -49,20 +49,13 @@ import { scooterTip } from '@/lib/scooterTip';
 import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
-import type { RuleKind, RuleZoneShape } from '@/lib/ruleZones';
+import type { RuleZoneShape } from '@/lib/ruleZones';
 import type { MapZone } from '@/lib/zones';
-import { mergeZones } from '@/lib/zoneShapes';
+import { AREA_KINDS_BELOW_FIRST, mergeZones, type AreaKind } from '@/lib/zoneShapes';
 import { ZONE_EDGE_CLEARANCE, ZONE_STYLES } from './ZoneLegend';
 import './map.css';
 
-/** The panes of the zones' fills are made in this order, the strongest rule on top. */
-const ZONE_KINDS_BELOW_FIRST: MapZone['kind'][] = ['slow', 'noParking', 'noRide'];
-/**
- * The cities' zones are drawn in this order: an area where scooters park only in racks or marked
- * places at the bottom, as the places within it are over it, then parking, the strongest rule on top.
- */
-const RULE_KINDS_BELOW_FIRST: RuleKind[] = ['racksOnly', 'parking', 'slow', 'noParking', 'noRide'];
-/** How strongly a street a city forbids riding on is drawn outside its hours, of how strongly within them. */
+/** How strongly a city's rule is drawn outside its hours, of how strongly within them. */
 const RULE_ZONE_DIMMED = 0.35;
 
 /** Polygons of [lat, lng] points, each moved by whole turns of the globe to the copy of the world the map frames. */
@@ -767,45 +760,62 @@ export default function MapComponent({
     }
   }, [clustered, formatNumber, frameLng, lastSeenClusters, lastSeenVehicles, readyMap]);
 
-  // The zones are drawn under the rest of what is drawn on the ground, in panes inside the
-  // one that turns with the map: each kind's fills in a pane of its own that is translucent
-  // as a whole, so that zones over each other are no darker, then all their edges. Each
-  // kind is one shape, the operators' zones merged, within one edge. SVG, as the walk's
-  // way: leaflet-rotate's renderer patch reads a map Leaflet's canvas does not hand it.
-  const zoneShapes = useMemo(() => mergeZones(zones), [zones]);
+  // The operators' zones and the cities' are drawn under the rest of what is drawn on the ground,
+  // in panes inside the one that turns with the map: each kind's fills in a pane of its own that
+  // is translucent as a whole, so that zones over each other are no darker, then all their edges.
+  // Each kind is one shape, the operators' zones and the city's merged, within one edge; a city's
+  // rules outside their hours apart and dimmer, and those with hours, Seoul's streets, apart and
+  // hatched the other way (map.css). Unlike the operators' zones a city's are the law, drawn
+  // whether or not the zones are on. None of them takes a tap or a click from the scooters, whose
+  // pane is over these. SVG, as the walk's way: leaflet-rotate's renderer patch reads a map
+  // Leaflet's canvas does not hand it.
+  const zoneShapes = useMemo(() => mergeZones(zones, ruleZones), [ruleZones, zones]);
+  const pavements = useMemo(() => ruleZones.filter(zone => zone.rule === 'pavement'), [ruleZones]);
   useEffect(() => {
     const map = mapRef.current;
-    if (!readyMap || !map || !zoneShapes.length) return;
+    if (!readyMap || !map || (!zoneShapes.length && !pavements.length)) return;
     const pane = (name: string, opacity = 1) => {
       const element = map.getPane(name) ?? map.createPane(name, map.getPane('overlayPane'));
       element.style.zIndex = '-1';
       element.style.opacity = String(opacity);
       return L.svg({ pane: name, padding: 0.5 });
     };
-    const fills = Object.fromEntries(ZONE_KINDS_BELOW_FIRST.map(kind =>
-      [kind, pane(`zones-${kind}`, ZONE_STYLES[kind].fillOpacity)])) as Record<MapZone['kind'], L.Renderer>;
+    const fills = Object.fromEntries(AREA_KINDS_BELOW_FIRST.map(kind =>
+      [kind, pane(`zones-${kind}`, ZONE_STYLES[kind].fillOpacity)])) as Record<AreaKind, L.Renderer>;
     const edges = pane('zones-edges');
     const layer = L.layerGroup();
-    const drawn = new Map<MapZone['kind'], { shape: [number, number][][][]; edge: L.Polygon }>();
-    for (const { kind, polygons } of zoneShapes) {
+    const drawn: { kind: AreaKind; inForce: boolean; shape: [number, number][][][]; edge: L.Polygon }[] = [];
+    for (const { kind, inForce, timed, polygons } of zoneShapes) {
       const shape = polygonsNear(polygons, frameLng);
-      L.polygon(shape, { renderer: fills[kind], className: `zone-fill-${kind}`, interactive: false, stroke: false, fillOpacity: 1 }).addTo(layer);
-      const edge = L.polygon(shape, { ...ZONE_STYLES[kind].edge, renderer: edges, className: `zone-edge-${kind}`, interactive: false, fill: false }).addTo(layer);
-      drawn.set(kind, { shape, edge });
+      const strength = inForce ? 1 : RULE_ZONE_DIMMED;
+      // By winding: the rings of a shape the union could not join still fill where they overlap.
+      L.polygon(shape, { renderer: fills[kind], className: `zone-fill-${kind}${timed ? ' zone-fill-timed' : ''}`, interactive: false,
+        stroke: false, fillRule: 'nonzero', fillOpacity: strength }).addTo(layer);
+      const { edge } = ZONE_STYLES[kind];
+      drawn.push({ kind, inForce, shape, edge: L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer: edges,
+        className: `zone-edge-${kind}`, interactive: false, fill: false }).addTo(layer) });
+    }
+    // The pavements a scooter may ride on are lines along the kerb, over the fills: all of
+    // them one line of a few pixels, and no band round them, which would cover the street.
+    // Each zone's lines are moved to the map's copy of the world as a polygon's rings are.
+    for (const inForce of [false, true]) {
+      const lines = pavements.filter(zone => zone.inForce === inForce)
+        .flatMap(zone => polygonsNear([zone.lines ?? []], frameLng)[0]);
+      if (!lines.length) continue;
+      const { edge } = ZONE_STYLES.pavement;
+      L.polyline(lines, { ...edge, opacity: (edge.opacity ?? 1) * (inForce ? 1 : RULE_ZONE_DIMMED), renderer: edges,
+        className: 'zone-edge-pavement', interactive: false }).addTo(layer);
     }
     layer.addTo(map);
     // Where riding is forbidden, nothing more needs saying: no parking's and slow zones'
     // edges give way within no riding's zones and along their edge, which other operators'
-    // zones of the same street often follow to the metre. A mask in the edges' own SVG,
+    // zones of the same street often follow to the metre. Parking's edge is kept whole: it
+    // still says where to leave the scooter once walked in. A mask in the edges' own SVG,
     // whose no riding Leaflet keeps in step with the map as it does every path.
-    const noRide = drawn.get('noRide');
-    const giving = [drawn.get('noParking'), drawn.get('slow')].flatMap(kind => kind?.edge.getElement() ?? []);
-    const svg = (noRide?.edge.getElement() as SVGPathElement | undefined)?.ownerSVGElement;
-    if (noRide && svg && giving.length) {
-      const clearance = L.polygon(noRide.shape, {
-        renderer: edges, interactive: false, color: '#000', opacity: 1, weight: 2 * ZONE_EDGE_CLEARANCE, lineJoin: 'round',
-        fillColor: '#000', fillOpacity: 1,
-      }).addTo(layer);
+    const noRide = drawn.filter(shape => shape.kind === 'noRide' && shape.inForce);
+    const giving = drawn.filter(shape => shape.kind === 'noParking' || shape.kind === 'slow').flatMap(shape => shape.edge.getElement() ?? []);
+    const svg = (noRide[0]?.edge.getElement() as SVGPathElement | undefined)?.ownerSVGElement;
+    if (svg && giving.length) {
       const svgElement = (name: string, attributes: Record<string, string>) => {
         const element = document.createElementNS('http://www.w3.org/2000/svg', name);
         for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
@@ -814,56 +824,18 @@ export default function MapComponent({
       const everywhere = { x: '-1000000', y: '-1000000', width: '2000000', height: '2000000' };
       const mask = svgElement('mask', { id: 'zone-edges-clear-of-no-riding', maskUnits: 'userSpaceOnUse', ...everywhere });
       mask.appendChild(svgElement('rect', { ...everywhere, fill: '#fff' }));
-      mask.appendChild(clearance.getElement()!);
+      for (const { shape } of noRide) {
+        const clearance = L.polygon(shape, {
+          renderer: edges, interactive: false, color: '#000', opacity: 1, weight: 2 * ZONE_EDGE_CLEARANCE, lineJoin: 'round',
+          fillColor: '#000', fillOpacity: 1, fillRule: 'nonzero',
+        }).addTo(layer);
+        mask.appendChild(clearance.getElement()!);
+      }
       svg.insertBefore(svgElement('defs', {}), svg.firstChild).appendChild(mask);
       for (const edge of giving) edge.setAttribute('mask', 'url(#zone-edges-clear-of-no-riding)');
     }
     return () => { layer.remove(); for (const renderer of [...Object.values(fills), edges]) renderer.remove(); };
-  }, [frameLng, readyMap, zoneShapes]);
-
-  // The zones a city sets and the streets it forbids riding on, each kind as the operators'
-  // are, in a pane of their own; outside their hours, dimmer; and those with hours, Seoul's
-  // streets, hatched the other way (map.css). All of a kind that hold now, or all that don't,
-  // with hours or without, are one fill and one edge, so that a few hundred zones are a few
-  // paths and those over each other are no darker. The fill goes by winding: rings that turn the
-  // same way (ruleZones.ts) fill where they overlap, a band's or an area's holes stay open.
-  // None of them takes a tap or a click from the scooters, whose pane is over this one.
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!readyMap || !map || !ruleZones.length) return;
-    const element = map.getPane('rule-zones') ?? map.createPane('rule-zones', map.getPane('overlayPane'));
-    element.style.zIndex = '-1';
-    const renderer = L.svg({ pane: 'rule-zones', padding: 0.5 });
-    const layer = L.layerGroup();
-    for (const kind of RULE_KINDS_BELOW_FIRST) {
-      for (const inForce of [false, true]) {
-        for (const timed of [false, true]) {
-          const shape = ruleZones.filter(zone => zone.rule === kind && zone.inForce === inForce && !!zone.hours?.length === timed)
-            .flatMap(zone => polygonsNear(zone.polygons, frameLng));
-          if (!shape.length) continue;
-          const { fillOpacity, edge } = ZONE_STYLES[kind];
-          const strength = inForce ? 1 : RULE_ZONE_DIMMED;
-          L.polygon(shape, { renderer, className: `zone-fill-${kind}${timed ? ' zone-fill-timed' : ''}`, interactive: false,
-            stroke: false, fillRule: 'nonzero', fillOpacity: fillOpacity * strength }).addTo(layer);
-          L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${kind}`,
-            interactive: false, fill: false }).addTo(layer);
-        }
-      }
-    }
-    // The pavements a scooter may ride on are lines along the kerb, over the fills: all of
-    // them one line of a few pixels, and no band round them, which would cover the street.
-    // Each zone's lines are moved to the map's copy of the world as a polygon's rings are.
-    for (const inForce of [false, true]) {
-      const lines = ruleZones.filter(zone => zone.rule === 'pavement' && zone.inForce === inForce)
-        .flatMap(zone => polygonsNear([zone.lines ?? []], frameLng)[0]);
-      if (!lines.length) continue;
-      const { edge } = ZONE_STYLES.pavement;
-      L.polyline(lines, { ...edge, opacity: (edge.opacity ?? 1) * (inForce ? 1 : RULE_ZONE_DIMMED), renderer,
-        className: 'zone-edge-pavement', interactive: false }).addTo(layer);
-    }
-    layer.addTo(map);
-    return () => { layer.remove(); renderer.remove(); };
-  }, [frameLng, readyMap, ruleZones]);
+  }, [frameLng, pavements, readyMap, zoneShapes]);
 
   // The ground: one layer, drawn here from vector tiles in the colours of the
   // appearance. Its address is asked for first; until it is known, and whenever

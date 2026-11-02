@@ -598,10 +598,12 @@ Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
   zone around it is not cut out of that zone, and the operator's app has the
   final word.
 - On the map each kind's zones are merged into one shape, whichever operators
-  publish them, so the same rule over a street is drawn once, within one edge;
-  no parking's and slow zones' edges give way within no riding's zones and along
+  publish them and with a city's own zones of that kind (below), so the same
+  rule over a street is drawn once, within one edge, as in the apps; no
+  parking's and slow zones' edges give way within no riding's zones and along
   their edge. Only the providers shown are merged, so one provider shown shows
-  its own.
+  its own. A city's rules outside their hours, drawn dimmer, and those with
+  hours, hatched the other way, are merged apart.
 - The cache reads a system's zones only once a view with the layer on reaches
   its area, keeps them an hour and lets them go after six hours without such a
   view. Shapes are simplified to 2 m; one answer carries at most 60,000 points,

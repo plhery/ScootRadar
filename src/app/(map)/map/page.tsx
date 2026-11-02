@@ -43,7 +43,7 @@ import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlaces } from '@/lib/useRecentPlaces';
 import { useCityZones } from '@/lib/useCityZones';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
-import { useZoneData } from '@/lib/useZoneData';
+import { useZoneData, zoneArea, zoneAreaKey } from '@/lib/useZoneData';
 import { groupCityTotals } from '@/lib/clustering';
 import { mapRepresentationsMatch, providersForViewport } from '@/lib/mapCoverage';
 import {
@@ -383,6 +383,15 @@ export default function Home() {
   const ruleZones = useMemo(
     () => ruleZonesInView(mapQuery, now, [...RULE_ZONES, ...cityZones]),
     [cityZones, mapQuery, now]
+  );
+  // The map draws them over the area the operators' zones are asked for, the view rounded out to
+  // a grid of about 2 km, as it merges each kind of theirs with the operators' (zoneShapes.ts): a
+  // move within that area merges nothing anew, which in Münster's no-parking zones would take
+  // tens of milliseconds at every move. The legend names those in view.
+  const zoneAreaAddress = zoneAreaKey(mapQuery);
+  const drawnRuleZones = useMemo(
+    () => ruleZonesInView(zoneAreaAddress ? zoneArea(zoneAreaAddress) : null, now, [...RULE_ZONES, ...cityZones]),
+    [cityZones, now, zoneAreaAddress]
   );
 
   const handleProviderToggle = (provider: string) => {
@@ -992,7 +1001,7 @@ export default function Home() {
       <MapWrapper
         parking={mapParking}
         zones={mapZones}
-        ruleZones={ruleZones}
+        ruleZones={drawnRuleZones}
         vehicles={mapVehicles}
         clusters={mapClusters}
         clustered={responseMeta?.mode === 'clusters'}

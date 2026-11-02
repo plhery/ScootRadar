@@ -1252,17 +1252,24 @@ test('combines provider filters and resets them together', async ({ page }) => {
 test('the operators\' zones are drawn unless turned off, for the providers shown, with what they mean', async ({ page }) => {
   const square = (south: number, west: number) =>
     [[[[south, west], [south, west + 0.003], [south + 0.002, west + 0.003], [south + 0.002, west], [south, west]]]];
-  // Zürich's own zones are drawn too, in their pane, their kinds named once with the operators' in the legend.
+  // Zürich's own zones are drawn too, each kind merged with the operators', their kinds named once with the operators' in the legend.
   const edges = page.locator('.leaflet-zones-edges-pane g path');
-  const noRideWidth = () => page.evaluate(() => document.querySelector<SVGPathElement>('.leaflet-zones-edges-pane .zone-edge-noRide')!.getBBox().width);
+  const edge = (kind: string) => page.evaluate(kind => {
+    const path = document.querySelector<SVGPathElement>(`.leaflet-zones-edges-pane .zone-edge-${kind}`)!;
+    return { length: path.getTotalLength(), rings: path.getAttribute('d')!.split('M').length - 1 };
+  }, kind);
+  // 0.0015° of longitude in pixels at zoom 16.
+  const halfSquare = 0.0015 * 256 * 2 ** 16 / 360;
   const asked: string[] = [];
   await page.route('**/api/zones?**', route => {
     asked.push(new URL(route.request().url()).search);
     return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
       zones: [
+        // Over two of Zürich's no-riding zones, by the Bahnhofquai.
         { id: 'lime:0', provider: 'lime', kind: 'noRide', polygons: square(47.375, 8.538) },
         // The same rule of another operator, over half of Lime's.
         { id: 'voi:0', provider: 'voi', kind: 'noRide', polygons: square(47.375, 8.5395) },
+        // Over a corner of Zürich's no-parking zone at the Central.
         { id: 'bird:0', provider: 'bird', kind: 'noParking', polygons: square(47.377, 8.542) },
         { id: 'bolt:0', provider: 'bolt', kind: 'slow', maxSpeedKph: 10, polygons: square(47.379, 8.539) },
       ],
@@ -1281,10 +1288,11 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   await expect(kinds).toHaveText(['No riding', 'No parking', 'Slow', 'Parking']);
   await expect(legend.locator('.zone-legend-credit')).toHaveText('Stadt Zürich');
-  // One shape and one edge for each kind, the operators' zones merged, under the scooters.
-  await expect(edges).toHaveCount(3);
+  // One shape and one edge for each kind, the operators' zones and the city's merged, under the scooters.
+  await expect(edges).toHaveCount(4);
   expect(asked.length).toBeGreaterThan(0);
-  const merged = await noRideWidth();
+  const noRide = await edge('noRide');
+  const noParking = await edge('noParking');
   // No parking's and slow zones' edges keep clear of no riding's.
   for (const kind of ['noParking', 'slow']) {
     await expect(page.locator(`.leaflet-zones-edges-pane .zone-edge-${kind}`)).toHaveAttribute('mask', 'url(#zone-edges-clear-of-no-riding)');
@@ -1298,11 +1306,17 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
     swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-legend-item .zone-swatch-${kind}`)!).borderTopStyle),
   }));
   expect(drawn).toEqual({ fill: 'url("#zone-no-ride-hatch")', edges: [null, '6 4', '0.1 4'], swatches: ['solid', 'dashed', 'dotted'] });
-  // Lime alone: its zone alone, two thirds as wide as the merged one.
+  // Lime alone: its zone alone with the city's. Voi's half beyond it no longer lengthens its top and
+  // bottom, where Voi's whole square drawn apart would have been an edge of its own; Bird's square
+  // gone, the city's no-parking zone it overlapped keeps as many rings, as Bird's was none of its own.
   await page.getByRole('button', { name: /^Lime, 1\./ }).click();
   await expect(page.locator('.scooter-marker')).toHaveCount(1);
-  await expect(edges).toHaveCount(1);
-  expect((await noRideWidth()) / merged).toBeCloseTo(2 / 3, 1);
+  await expect(edges).toHaveCount(3);
+  // To 5 px: Leaflet rounds each corner to the pixel.
+  expect(noRide.length - (await edge('noRide')).length).toBeCloseTo(2 * halfSquare, -1);
+  const cityNoParking = await edge('noParking');
+  expect(cityNoParking.rings).toBe(noParking.rings);
+  expect(cityNoParking.length).toBeLessThan(noParking.length);
 
   // Turned off: the operators' are no longer drawn, the city's still are, named and credited, and the choice is kept.
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
@@ -1316,7 +1330,8 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
   await expect.poll(() => new URL(page.url()).search).toBe('?zones=0');
   await expect(kinds).toHaveText(['No riding', 'No parking', 'Parking']);
   await expect(legend.locator('.zone-legend-credit')).toHaveText('Stadt Zürich');
-  await expect(edges).toHaveCount(0);
+  await expect(edges).toHaveCount(3);
+  await expect(page.locator('.leaflet-zones-edges-pane .zone-edge-slow')).toHaveCount(0);
 
   // On the next visit too: further out, not even the word to zoom in.
   await page.goto('/map');
@@ -1344,23 +1359,25 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   await expect(legend.getByRole('link', { name: 'Bergen kommune' }))
     .toHaveAttribute('href', /^https:\/\/www\.bergen\.kommune\.no\//);
   expect(await bergenLoaded()).toBe(true);
-  // However many zones, one fill and one edge for each rule, parking at the bottom.
-  const paths = page.locator('.leaflet-rule-zones-pane path');
+  // However many zones, one fill and one edge for each rule, each kind's fill in its pane, parking
+  // at the bottom, then the edges.
+  const paths = page.locator('.leaflet-overlay-pane path[class^="zone-"]');
   await expect(paths).toHaveCount(8);
   expect(await paths.evaluateAll(elements => elements.map(element => element.getAttribute('class')))).toEqual(
-    ['parking', 'slow', 'noParking', 'noRide'].flatMap(kind => [`zone-fill-${kind}`, `zone-edge-${kind}`]));
+    ['fill', 'edge'].flatMap(part => ['parking', 'slow', 'noParking', 'noRide'].map(kind => `zone-${part}-${kind}`)));
   // Parking in its green, filled as one shape within a solid edge, as its swatch is.
   const parking = await page.evaluate(() => {
-    const fill = document.querySelector('.leaflet-rule-zones-pane .zone-fill-parking')!;
-    const edge = document.querySelector('.leaflet-rule-zones-pane .zone-edge-parking')!;
+    const fill = document.querySelector('.leaflet-zones-parking-pane .zone-fill-parking')!;
+    const edge = document.querySelector('.leaflet-zones-edges-pane .zone-edge-parking')!;
     return {
-      fill: getComputedStyle(fill).fill, fillRule: fill.getAttribute('fill-rule'), fillOpacity: fill.getAttribute('fill-opacity'),
+      fill: getComputedStyle(fill).fill, fillRule: fill.getAttribute('fill-rule'),
+      fillOpacity: Number(fill.getAttribute('fill-opacity')) * Number(getComputedStyle(fill.closest('.leaflet-pane')!).opacity),
       stroke: getComputedStyle(edge).stroke, dashes: edge.getAttribute('stroke-dasharray'),
       swatch: getComputedStyle(document.querySelector('.zone-swatch-parking')!).borderTopStyle,
     };
   });
   expect(parking).toEqual({
-    fill: 'rgb(26, 127, 55)', fillRule: 'nonzero', fillOpacity: '0.25', stroke: 'rgb(26, 127, 55)', dashes: null, swatch: 'solid',
+    fill: 'rgb(26, 127, 55)', fillRule: 'nonzero', fillOpacity: 0.25, stroke: 'rgb(26, 127, 55)', dashes: null, swatch: 'solid',
   });
 
   // Further out than zoom 14, neither drawn nor told.
@@ -1374,12 +1391,12 @@ test('Seoul\'s streets closed to riding at hours of the day are hatched the othe
   await page.goto('/map?origin=37.554,126.924&zones=0');
   const legend = page.getByRole('group', { name: 'Zones' });
   await expect(legend.locator('.zone-legend-rule')).toHaveText(/^No riding 12:00–23:00/);
-  const fill = page.locator('.leaflet-rule-zones-pane .zone-fill-noRide');
+  const fill = page.locator('.leaflet-zones-noRide-pane .zone-fill-noRide');
   await expect(fill).toHaveCount(1);
   const drawn = await page.evaluate(() => ({
-    fill: getComputedStyle(document.querySelector('.leaflet-rule-zones-pane .zone-fill-noRide')!).fill,
+    fill: getComputedStyle(document.querySelector('.leaflet-zones-noRide-pane .zone-fill-noRide')!).fill,
     pattern: document.querySelector('#zone-no-ride-hatch-timed')!.getAttribute('patternTransform'),
-    edge: getComputedStyle(document.querySelector('.leaflet-rule-zones-pane .zone-edge-noRide')!).stroke,
+    edge: getComputedStyle(document.querySelector('.leaflet-zones-edges-pane .zone-edge-noRide')!).stroke,
     swatch: getComputedStyle(document.querySelector('.zone-legend-rule .zone-swatch')!).backgroundImage,
   }));
   expect(drawn).toMatchObject({ fill: 'url("#zone-no-ride-hatch-timed")', pattern: 'rotate(-45)', edge: 'rgb(217, 45, 32)' });
@@ -1399,10 +1416,10 @@ test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lin
     /6 km\/h.*出典：「交通規制情報」（https:\/\/www\.jartic\.or\.jp\/service\/opendata\/）（公益財団法人日本道路交通情報センター）を加工して作成$/);
   // Every pavement in view is one path of lines, in its teal, a few pixels wide and not filled,
   // which takes no tap or click from the scooters; its swatch is a line too.
-  const paths = page.locator('.leaflet-rule-zones-pane path');
+  const paths = page.locator('.leaflet-overlay-pane path[class^="zone-"]');
   await expect(paths).toHaveCount(1);
   const pavement = () => page.evaluate(() => {
-    const edge = document.querySelector('.leaflet-rule-zones-pane .zone-edge-pavement')!;
+    const edge = document.querySelector('.leaflet-zones-edges-pane .zone-edge-pavement')!;
     return {
       className: edge.getAttribute('class'), stroke: getComputedStyle(edge).stroke, width: edge.getAttribute('stroke-width'),
       cap: edge.getAttribute('stroke-linecap'), fill: edge.getAttribute('fill'), pointerEvents: getComputedStyle(edge).pointerEvents,
@@ -1471,19 +1488,21 @@ test('central Helsingborg, where scooters park only in racks or marked places, i
     /^https:\/\/rdt\.transportstyrelsen\.se\/rdt\/AF06_View\.aspx\?.*ForeskriftId=670e14f8-a3d8-447a-ae02-8021396b466a/);
   // The area is one fill, barely there, within an edge of dashes and dots in its violet, neither
   // taking a tap or a click from the scooters; its swatch is dashed.
-  const paths = page.locator('.leaflet-rule-zones-pane path');
+  const paths = page.locator('.leaflet-overlay-pane path[class^="zone-"]');
   await expect(paths).toHaveCount(2);
   const area = () => page.evaluate(() => {
-    const fill = document.querySelector('.leaflet-rule-zones-pane .zone-fill-racksOnly')!;
-    const edge = document.querySelector('.leaflet-rule-zones-pane .zone-edge-racksOnly')!;
+    const fill = document.querySelector('.leaflet-zones-racksOnly-pane .zone-fill-racksOnly')!;
+    const edge = document.querySelector('.leaflet-zones-edges-pane .zone-edge-racksOnly')!;
     return {
-      fill: getComputedStyle(fill).fill, fillOpacity: fill.getAttribute('fill-opacity'), stroke: getComputedStyle(edge).stroke,
+      fill: getComputedStyle(fill).fill,
+      fillOpacity: Number(fill.getAttribute('fill-opacity')) * Number(getComputedStyle(fill.closest('.leaflet-pane')!).opacity),
+      stroke: getComputedStyle(edge).stroke,
       dashes: edge.getAttribute('stroke-dasharray'), pointerEvents: getComputedStyle(edge).pointerEvents,
       swatch: getComputedStyle(document.querySelector('.zone-swatch-racksOnly')!).borderTopStyle,
     };
   });
   expect(await area()).toEqual({
-    fill: 'rgb(124, 58, 237)', fillOpacity: '0.06', stroke: 'rgb(124, 58, 237)', dashes: '10 4 1 4', pointerEvents: 'none', swatch: 'dashed',
+    fill: 'rgb(124, 58, 237)', fillOpacity: 0.06, stroke: 'rgb(124, 58, 237)', dashes: '10 4 1 4', pointerEvents: 'none', swatch: 'dashed',
   });
   await page.goto('/map?origin=56.0455,12.6945&zones=0&theme=dark');
   await expect(paths).toHaveCount(2);

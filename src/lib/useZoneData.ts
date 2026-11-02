@@ -17,6 +17,24 @@ const PENDING_RETRIES = 3;
 const GRID = 50;
 const gridded = (value: number, round: (value: number) => number) => String(round(value * GRID) / GRID);
 
+/** The area the operators' zones are asked for, as the address it is asked at: the view rounded out to the grid, from zoom 14 in. */
+export function zoneAreaKey(query: { bounds: MapBounds; zoom: number } | null): string | null {
+  if (!query || query.zoom < ZONES_MIN_ZOOM) return null;
+  return new URLSearchParams({
+    south: gridded(query.bounds.south, Math.floor), west: gridded(query.bounds.west, Math.floor),
+    north: gridded(query.bounds.north, Math.ceil), east: gridded(query.bounds.east, Math.ceil),
+    // The answer is the same at every zoom it is given at.
+    zoom: String(ZONES_MIN_ZOOM),
+  }).toString();
+}
+
+/** That area as a view, from its address. */
+export function zoneArea(key: string): { bounds: MapBounds; zoom: number } {
+  const params = new URLSearchParams(key);
+  const value = (name: string) => Number(params.get(name));
+  return { bounds: { south: value('south'), west: value('west'), north: value('north'), east: value('east') }, zoom: value('zoom') };
+}
+
 export type ZoneDataState = 'off' | 'zoomIn' | 'loading' | 'shown' | 'failed';
 
 export interface ZoneData {
@@ -32,13 +50,8 @@ const NO_ZONES: MapZone[] = [];
  * asks for nothing more.
  */
 export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, enabled: boolean): ZoneData {
-  const wanted = enabled && query !== null && query.zoom >= ZONES_MIN_ZOOM;
-  const key = wanted ? new URLSearchParams({
-    south: gridded(query.bounds.south, Math.floor), west: gridded(query.bounds.west, Math.floor),
-    north: gridded(query.bounds.north, Math.ceil), east: gridded(query.bounds.east, Math.ceil),
-    // The answer is the same at every zoom it is given at.
-    zoom: String(ZONES_MIN_ZOOM),
-  }).toString() : null;
+  const key = enabled ? zoneAreaKey(query) : null;
+  const wanted = key !== null;
   const [answer, setAnswer] = useState<{ key: string; zones: MapZone[]; failed: boolean } | null>(null);
 
   useEffect(() => {

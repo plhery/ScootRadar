@@ -12,8 +12,9 @@ import type { ZoneKind } from '@/lib/zones';
  * How each kind of zone is drawn: how strongly it is filled (the stronger the rule, the
  * stronger the fill) and its edge, solid, dashed or dotted. Each kind's zones are merged
  * into one shape (zoneShapes.ts) and filled at once, so that the same rule of five
- * operators over a street looks like one. Parking is only ever a city's (ruleZones.ts), and so
- * is an area where scooters park only in racks or marked places: a whole town centre, so barely
+ * operators, or of an operator and the city, over a street looks like one. Parking is only
+ * ever a city's (ruleZones.ts), and so is an area where scooters park only in racks or
+ * marked places: a whole town centre, so barely
  * filled, within an edge of dashes and dots. So is the pavement a scooter may ride on, a line
  * rather than an area: its edge is the line
  * itself, a few pixels wide at every zoom, and it has no fill. The colours, and no riding's
