@@ -88,7 +88,7 @@ const guide: Guide = {
     {
       heading: 'Greek e-scooter rules for visitors',
       blocks: [
-        'E-scooters are legal on Rhodes and ridden much like bicycles. National law sets the rules: the Highway Code (KOK, law 5209/2025, ΦΕΚ Α΄ 100, 13 June 2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026. These are the national rules that apply on Rhodes, as in [Athens](guide:athens), [Thessaloniki](guide:thessaloniki), [Heraklion](guide:heraklion) and [Kos](guide:kos).',
+        'E-scooters are legal on Rhodes and ridden much like bicycles. National law sets the rules: the Highway Code (KOK, law 5209/2025, ΦΕΚ Α΄ 100, 13 June 2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026. These are the national rules that apply on Rhodes, as in [Athens](guide:athens), [Thessaloniki](guide:thessaloniki), [Heraklion](guide:heraklion), [Rethymno](guide:rethymno) and [Kos](guide:kos).',
         {
           table: {
             caption: 'E-scooter rules in Greece on 14 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',

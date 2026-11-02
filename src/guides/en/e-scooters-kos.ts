@@ -65,7 +65,7 @@ const guide: Guide = {
     {
       heading: 'Greece’s e-scooter rules and fines in one table',
       blocks: [
-        'With the town’s rules annulled, national law applies on Kos. Law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026, amended the Highway Code (KOK, law 5209/2025, ΦΕΚ Α΄ 100, 13 June 2025): it set the minimum age at 17, raised several fines and made third-party insurance compulsory. These are the national rules that apply on Kos, as in [Athens](guide:athens), [Thessaloniki](guide:thessaloniki), [Heraklion](guide:heraklion) and [Rhodes](guide:rhodes).',
+        'With the town’s rules annulled, national law applies on Kos. Law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026, amended the Highway Code (KOK, law 5209/2025, ΦΕΚ Α΄ 100, 13 June 2025): it set the minimum age at 17, raised several fines and made third-party insurance compulsory. These are the national rules that apply on Kos, as in [Athens](guide:athens), [Thessaloniki](guide:thessaloniki), [Heraklion](guide:heraklion), [Rethymno](guide:rethymno) and [Rhodes](guide:rhodes).',
         {
           table: {
             caption: 'E-scooter rules in Greece on 30 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',

@@ -133,7 +133,7 @@ const guide: Guide = {
     {
       heading: 'Elsewhere on Crete and the islands',
       blocks: [
-        'Our map also covers [Chania](map:gr:Chania) and [Rethymno](map:gr:Rethymno). The same national rules apply there. Each town’s rules apply only within its borders, so check the map and the app again in each one.',
+        'Our map also covers [Chania](map:gr:Chania) and Rethymno, which has [a guide of its own](guide:rethymno). The same national rules apply there. Each town’s rules apply only within its borders, so check the map and the app again in each one.',
         'Island-hopping? See our guides to [Rhodes](guide:rhodes) and [Kos](guide:kos), where the same Highway Code applies.',
       ],
     },
