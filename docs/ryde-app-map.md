@@ -387,6 +387,37 @@ Raw cache snapshots, session headers and diagnostics are private under
 `~/.cache/scootradar/rider-auth/ryde/mac-session/`, outside Git. No proxy
 certificate, network proxy or global security setting was changed.
 
+### Read-only live heap and key-rotation trace, 2 November
+
+The Mac-compatible app was reopened and inspected with Apple's `heap
+-noContent` and `leaks -noContent -referenceTree` diagnostics. The heap
+listed `APISecurityManager` and `DPoPKeyStore`; the reference tree showed the
+manager owning its DPoP store and a cached `SecureBytes.Backing` under
+`DPoPKeyStore.cachedKey`. It also showed cached active and secondary
+encryption-key backings under `EncryptionKeyStore`. These content-disabled
+diagnostics expose object names, sizes and ownership only. They did not read
+or export any key bytes. The system tools could inspect these references even
+though normal LLDB attach remained denied; the analysis warned that its
+WebKit malloc-zone view could be incomplete.
+
+The Android client trace sharpens the API option. `/appRyde/rotateSessionKey`
+accepts the session token and a new encryption public JWK. The normal request
+interceptor adds the DPoP proof, DPoP authorization and encryption-key
+identifier. The app creates the new keypair, calls this endpoint during
+session maintenance when needed, then activates the new local private key
+after acceptance. This route can replace the response-decryption key without
+exporting its old private key, but it still depends on the existing DPoP
+signing key for each signed map request. `/appRyde/registerDpopKey` is a
+separate path that obtains an attestation challenge. Neither live rotation nor
+an independent server map read has been tested.
+
+The current Mac observation therefore improves confidence that the signing
+key is cached as software-backed key material in the app process, while
+leaving its value unavailable through the content-disabled diagnostics.
+Rotation reduces the keys a server reader would need, but does not remove the
+signing-key access requirement. No fresh login, SMS, request mutation or
+security-setting change was made.
+
 ## Recheck: model spoofing, attestation and session keys
 
 The 27 October APK download is still 6.1.0 / 718. `apksigner verify`
