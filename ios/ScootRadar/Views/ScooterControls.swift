@@ -2837,31 +2837,36 @@ struct FloatingMapControls: View {
 
 /// What the colours of the zones mean while they are on, or why none are
 /// drawn, at the foot of the map beside the locate button, as on the web
-/// (ZoneLegend.tsx). Taps go through it to the map.
+/// (ZoneLegend.tsx). Each kind is named once, the strongest rule first, whether
+/// the operators or a city set it; who sets a city's is credited once, small, at
+/// the foot. Taps go through it to the map.
 struct ZoneLegend: View {
     let state: ScooterZoneState
     /// The operators' zones drawn.
     let count: Int
     /// The cities' rules and zones over the map, whether or not the zones are
-    /// on: a line for each kind, hours and who sets them, linked to where they
-    /// say so (as on the web, ZoneLegend.tsx).
+    /// on: their kinds among the operators', a line for any whose hours set it apart,
+    /// and who sets them, linked to where they say so (as on the web, ZoneLegend.tsx).
     var rules: [CityRuleZone.Shown] = []
     /// The cities over the map whose zones are downloaded and not drawn: a line for each, that they are on
     /// their way or unavailable, so that no zones drawn never reads as none published there.
     var notices: [CityZoneDownloads.Notice] = []
 
     var body: some View {
+        let note = note(hasRules: !rules.isEmpty)
+        let kinds = kinds(besideNote: note != nil)
         let lines = ruleLines
-        let note = note(hasLines: !lines.isEmpty)
+        let credit = credit
         VStack(alignment: .leading, spacing: 4) {
             if let note {
                 Text(note)
                     .foregroundStyle(ScooterPalette.dockSecondary)
                     .accessibilityLabel(String(localized: "Zones"))
                     .accessibilityValue(note)
-            } else if showsKinds {
+            }
+            if !kinds.isEmpty {
                 FlowLayout(spacing: 12, lineSpacing: 4) {
-                    ForEach(ScooterZoneKind.operatorKinds, id: \.self) { kind in
+                    ForEach(kinds, id: \.self) { kind in
                         HStack(spacing: 6) {
                             ZoneSwatch(kind: kind)
                             Text(kind.label)
@@ -2872,7 +2877,7 @@ struct ZoneLegend: View {
                 .foregroundStyle(ScooterPalette.dockText)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(String(localized: "Zones"))
-                .accessibilityValue(ScooterZoneKind.operatorKinds.map(\.label).joined(separator: ", "))
+                .accessibilityValue(kinds.map(\.label).joined(separator: ", "))
             }
             ForEach(lines, id: \.key) { line in
                 HStack(spacing: 6) {
@@ -2882,7 +2887,6 @@ struct ZoneLegend: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .foregroundStyle(ScooterPalette.dockText)
-                .tint(ScooterPalette.dockText)
                 .accessibilityElement(children: .combine)
             }
             ForEach(notices, id: \.city.id) { notice in
@@ -2890,26 +2894,29 @@ struct ZoneLegend: View {
                     .foregroundStyle(ScooterPalette.dockSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            if let credit {
+                Text(credit)
+                    .font(.caption2)
+                    .foregroundStyle(ScooterPalette.dockSecondary)
+                    .tint(ScooterPalette.dockSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .font(.caption.weight(.medium))
         .padding(.horizontal, 12)
         .padding(.vertical, 7)
         .chromeGlass(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        // Only a city's line has anything to tap: who sets it.
-        .allowsHitTesting(!lines.isEmpty)
+        // Only the credit has anything to tap: who sets a city's zones.
+        .allowsHitTesting(credit != nil)
     }
 
-    private var showsKinds: Bool {
-        state != .off && !(state == .shown && count == 0)
-    }
-
-    /// What it says instead of the kinds: never that no zones are published where a city's are drawn, or
-    /// where a city's are on their way or unavailable.
-    func note(hasLines: Bool) -> String? {
+    /// What it says instead of the operators' kinds: never that no zones are published where a city's are drawn,
+    /// or where a city's are on their way or unavailable.
+    func note(hasRules: Bool) -> String? {
         switch state {
         case .zoomIn: String(localized: "Zoom in to see the zones")
         case .failed: String(localized: "Zones unavailable right now")
-        case .shown where count == 0 && !hasLines && notices.isEmpty: String(localized: "No zones published here")
+        case .shown where count == 0 && !hasRules && notices.isEmpty: String(localized: "No zones published here")
         default: nil
         }
     }
@@ -2922,28 +2929,56 @@ struct ZoneLegend: View {
         }
     }
 
-    /// One line for each kind, authority, hours and whether they hold now,
-    /// the strongest rule first: "No riding 12:00–23:00 · Seoul", "Parking · Porto".
-    var ruleLines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: AttributedString)] {
-        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: AttributedString)] = []
+    /// Each kind once, the strongest rule first: the operators' while they are drawn, unless a note
+    /// stands for them, and those of the cities' rules that hold at all hours.
+    func kinds(besideNote: Bool) -> [ScooterZoneKind] {
+        let operators = !besideNote && state != .off && !(state == .shown && count == 0)
+        return ScooterZoneKind.allCases.filter { kind in
+            (operators && ScooterZoneKind.operatorKinds.contains(kind))
+                || rules.contains { $0.rule.kind == kind && $0.rule.hours.isEmpty && $0.inForce }
+        }
+    }
+
+    /// A line for each of the cities' rules whose hours set it apart, or that does not hold yet, by kind,
+    /// hours and whether they hold now, the strongest rule first: "No riding 12:00–23:00",
+    /// "No riding (not now)".
+    var ruleLines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: String)] {
+        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, text: String)] = []
         // Hundreds of a city's zones may be in view, and make a few lines.
         var keys = Set<String>()
         for kind in ScooterZoneKind.allCases {
-            for shown in rules where shown.rule.kind == kind {
+            for shown in rules where shown.rule.kind == kind && !(shown.rule.hours.isEmpty && shown.inForce) {
                 let hours = shown.rule.hours.map { "\(Self.wallTime($0.fromMinute))–\(Self.wallTime($0.untilMinute))" }
                     .joined(separator: ", ")
-                let key = "\(kind.rawValue) \(shown.rule.authority) \(hours) \(shown.inForce)"
+                let key = "\(kind.rawValue) \(hours) \(shown.inForce)"
                 guard keys.insert(key).inserted else { continue }
-                var text = AttributedString(hours.isEmpty ? "\(kind.label) · " : "\(kind.label) \(hours) · ")
-                var authority = AttributedString(shown.rule.authority)
-                authority.link = shown.rule.source
-                authority.underlineStyle = .single
-                text += authority
-                if !shown.inForce { text += AttributedString(" (\(String(localized: "not now")))") }
+                var text = hours.isEmpty ? kind.label : "\(kind.label) \(hours)"
+                if !shown.inForce { text += " (\(String(localized: "not now")))" }
                 lines.append((key, kind, shown.inForce, text))
             }
         }
         return lines
+    }
+
+    /// Who sets the cities' rules, each once, the strongest rule's first, linked to where they say so:
+    /// "Bergen kommune · Seoul, lines © OpenStreetMap".
+    var credit: AttributedString? {
+        var authorities: [AttributedString] = []
+        var named = Set<String>()
+        for kind in ScooterZoneKind.allCases {
+            for shown in rules where shown.rule.kind == kind && named.insert(shown.rule.authority).inserted {
+                var authority = AttributedString(shown.rule.authority)
+                authority.link = shown.rule.source
+                authority.underlineStyle = .single
+                authorities.append(authority)
+            }
+        }
+        guard var credit = authorities.first else { return nil }
+        for authority in authorities.dropFirst() {
+            credit += AttributedString(" · ")
+            credit += authority
+        }
+        return credit
     }
 
     /// "23:00" or "11:00 PM", a time on the place's clock in the user's format (formatWallTime on the web).

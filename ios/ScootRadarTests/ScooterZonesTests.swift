@@ -772,7 +772,7 @@ final class CityRuleZoneTests: XCTestCase {
     }
 
     @MainActor
-    func testTheLegendHasALineForEachKindAndWhoSetsItTheStrongestRuleFirst() throws {
+    func testTheLegendNamesEachKindOnceTheStrongestFirstAndCreditsEachCityOnce() throws {
         let hongdae = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
         // Porto's and Bergen's zones, made here as data/ changes them: where they are is not the legend's.
         let ring = [60.39, 5.32, 60.3901, 5.32, 60.3901, 5.3201]
@@ -783,23 +783,41 @@ final class CityRuleZoneTests: XCTestCase {
         let first = { (kind: ScooterZoneKind) in try XCTUnwrap(bergen.first { $0.kind == kind }) }
         let rules = [porto] + bergen.filter { $0.kind == .parking }.prefix(2)
             + [try first(.slow), try first(.noRide), try first(.noParking), hongdae]
-        let legend = ZoneLegend(state: .off, count: 0, rules: rules.map { CityRuleZone.Shown(rule: $0, inForce: true) })
+        let shown = rules.map { CityRuleZone.Shown(rule: $0, inForce: true) }
 
+        // The zones off: the cities' kinds, each once, and Hongdae's street a line of its own for its hours.
+        let legend = ZoneLegend(state: .off, count: 0, rules: shown)
+        XCTAssertEqual(legend.kinds(besideNote: false), [.noRide, .noParking, .slow, .parking])
         let lines = legend.ruleLines
-        XCTAssertEqual(lines.map(\.kind), [.noRide, .noRide, .noParking, .slow, .parking, .parking])
-        let texts = lines.map { String($0.text.characters) }
-        XCTAssertEqual(texts[0], "\(ScooterZoneKind.noRide.label) · Bergen kommune")
-        // "No riding 12:00–23:00 · Seoul, lines © OpenStreetMap", in the user's format.
-        XCTAssertTrue(texts[1].hasPrefix("\(ScooterZoneKind.noRide.label) "), texts[1])
-        XCTAssertTrue(texts[1].contains("–"), texts[1])
-        XCTAssertTrue(texts[1].hasSuffix(" · Seoul, lines © OpenStreetMap"), texts[1])
-        XCTAssertEqual(texts[2], "\(ScooterZoneKind.noParking.label) · Bergen kommune")
-        XCTAssertEqual(texts[3], "\(ScooterZoneKind.slow.label) · Bergen kommune")
-        XCTAssertEqual(texts[4], "\(ScooterZoneKind.parking.label) · Porto")
-        XCTAssertEqual(texts[5], "\(ScooterZoneKind.parking.label) · Bergen kommune")
-        // Who sets it, linked to where they say so.
-        XCTAssertEqual(lines[4].text.runs.compactMap { $0.link }, [porto.source])
-        XCTAssertEqual(lines[5].text.runs.compactMap { $0.link }, [bergen[0].source])
+        XCTAssertEqual(lines.map(\.kind), [.noRide])
+        // "No riding 12:00–23:00", in the user's format.
+        XCTAssertTrue(lines[0].text.hasPrefix("\(ScooterZoneKind.noRide.label) "), lines[0].text)
+        XCTAssertTrue(lines[0].text.contains("–"), lines[0].text)
+        XCTAssertFalse(lines[0].text.contains("Seoul"), lines[0].text)
+        // Who sets them, once each, the strongest rule's first, linked to where they say so.
+        let credit = try XCTUnwrap(legend.credit)
+        XCTAssertEqual(String(credit.characters), "Bergen kommune · Seoul, lines © OpenStreetMap · Porto")
+        XCTAssertEqual(credit.runs.compactMap { $0.link }, [bergen[0].source, hongdae.source, porto.source])
+
+        // The zones on: the operators' kinds and the cities' together, still each once.
+        let on = ZoneLegend(state: .shown, count: 12, rules: shown)
+        XCTAssertEqual(on.kinds(besideNote: false), [.noRide, .noParking, .slow, .parking])
+        // Further out, the note stands for the operators' kinds, and the cities' are still named.
+        let zoomIn = ZoneLegend(state: .zoomIn, count: 0, rules: [CityRuleZone.Shown(rule: porto, inForce: true)])
+        XCTAssertNotNil(zoomIn.note(hasRules: true))
+        XCTAssertEqual(zoomIn.kinds(besideNote: true), [.parking])
+        // No city: no credit.
+        XCTAssertNil(ZoneLegend(state: .shown, count: 12).credit)
+    }
+
+    @MainActor
+    func testAStreetOutsideItsHoursHasALineSayingSo() throws {
+        let hongdae = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
+        let legend = ZoneLegend(state: .shown, count: 12, rules: [CityRuleZone.Shown(rule: hongdae, inForce: false)])
+        XCTAssertEqual(legend.kinds(besideNote: false), ScooterZoneKind.operatorKinds)
+        let line = try XCTUnwrap(legend.ruleLines.first)
+        XCTAssertFalse(line.inForce)
+        XCTAssertTrue(line.text.hasSuffix(" (\(String(localized: "not now")))"), line.text)
     }
 
     func testARuleOutsideItsHoursIsDrawnApartAndDimmer() throws {

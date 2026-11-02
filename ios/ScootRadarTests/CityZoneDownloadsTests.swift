@@ -269,8 +269,8 @@ final class CityZoneDownloadsTests: XCTestCase {
         let notice = try XCTUnwrap(model.mapZoneNotices.first)
         XCTAssertEqual(ZoneLegend.text(of: notice), String(format: String(localized: "%@’s zones unavailable right now"), "Berlin"))
         // Never "No zones published here" over a city whose zones are not drawn.
-        XCTAssertNil(ZoneLegend(state: .shown, count: 0, rules: [], notices: model.mapZoneNotices).note(hasLines: false))
-        XCTAssertEqual(ZoneLegend(state: .shown, count: 0).note(hasLines: false), String(localized: "No zones published here"))
+        XCTAssertNil(ZoneLegend(state: .shown, count: 0, rules: [], notices: model.mapZoneNotices).note(hasRules: false))
+        XCTAssertEqual(ZoneLegend(state: .shown, count: 0).note(hasRules: false), String(localized: "No zones published here"))
 
         await api.set("berlin.json", file)
         now += CityZoneDownloads.retryAfter
