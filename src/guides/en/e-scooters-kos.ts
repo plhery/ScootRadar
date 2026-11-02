@@ -109,7 +109,7 @@ const guide: Guide = {
     {
       heading: 'Greece’s e-scooter rules and fines in one table',
       blocks: [
-        'With the town’s rules annulled, national law is what applies on Kos. Law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026, amended the Highway Code (KOK, law 5209/2025): it set the minimum age at 17, raised several fines and made third-party insurance compulsory.',
+        'With the town’s rules annulled, national law applies on Kos. Law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026, amended the Highway Code (KOK, law 5209/2025, ΦΕΚ Α΄ 100, 13 June 2025): it set the minimum age at 17, raised several fines and made third-party insurance compulsory.',
         {
           table: {
             caption: 'E-scooter rules in Greece on 30 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
@@ -170,7 +170,6 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Government Gazette ΦΕΚ Α΄ 117, 24 July 2026: law 5322/2026, e-scooter articles 73–81 (Greek)', url: 'https://search.et.gr/el/fek/?fekId=802862' },
-    { title: 'Highway Code (KOK), law 5209/2025, consolidated with the July 2026 changes (Greek)', url: 'https://www.taxheaven.gr/law/5209/2025' },
     { title: 'Municipality of Kos: decision 105/2026, the e-scooter regulation (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A86%CE%A91%CE%A9%CE%9B%CE%95-%CE%A70%CE%A5' },
     { title: 'Decentralised Administration of the Aegean: partial annulment of the Kos regulation, 24 August 2026 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%9C1%CE%9A%CE%9F%CE%A11%CE%99-%CE%A4%CE%99%CE%A5' },
     { title: 'Hoppy: open data for Kos (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1501/v3.0/gbfs' },

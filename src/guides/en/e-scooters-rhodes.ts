@@ -117,7 +117,7 @@ const guide: Guide = {
     {
       heading: 'Greek e-scooter rules for visitors',
       blocks: [
-        'E-scooters are legal on Rhodes and ridden much like bicycles. National law sets the rules: the Highway Code (KOK, law 5209/2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026.',
+        'E-scooters are legal on Rhodes and ridden much like bicycles. National law sets the rules: the Highway Code (KOK, law 5209/2025, ΦΕΚ Α΄ 100, 13 June 2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026.',
         {
           table: {
             caption: 'E-scooter rules in Greece on 14 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
@@ -195,7 +195,6 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Government Gazette ΦΕΚ Α΄ 117, 24 July 2026: law 5322/2026, e-scooter articles 73–81 (Greek)', url: 'https://search.et.gr/el/fek/?fekId=802862' },
-    { title: 'Highway Code (KOK), law 5209/2025, consolidated with the July 2026 changes (Greek)', url: 'https://www.taxheaven.gr/law/5209/2025' },
     { title: 'Municipality of Rhodes: decision 140/2025 on the Old Town’s pedestrian streets (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%93%CE%A0%CE%A3%CE%A91%CE%A1-%CE%97%CE%A5%CE%A4' },
     { title: 'Municipality of Rhodes: decision 167/2026 on the e-bike sharing scheme (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%A0%CE%A55%CE%A91%CE%A1-%CE%9A6%CE%94' },
     { title: 'Municipality of Rhodes: decision 355/2026, the Medieval Town patrol tender (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/92%CE%A11%CE%A91%CE%A1-758' },

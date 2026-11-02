@@ -35,7 +35,7 @@ const guide: Guide = {
           ],
         },
         'The decisions are in Greek, and the consolidated text of 18 May 2026 is the latest. For a visitor the practical rule is simple: end a ride only where the app allows, and read its map before you park.',
-        'Athens is not alone. Thessaloniki approved its own regulation in a decision issued on 13 October 2025, once the new Highway Code (law 5209/2025, published in the Government Gazette on 13 June 2025) applied in full, and Kos adopted one in June 2026. Each town’s rules apply only within its borders, so check the app again when you ride into a neighbouring municipality.',
+        'Athens is not alone. Thessaloniki approved its own regulation in a decision issued on 13 October 2025, once the new Highway Code (law 5209/2025, published in the Government Gazette, ΦΕΚ Α΄ 100, on 13 June 2025) applied in full, and Kos adopted one in June 2026. Each town’s rules apply only within its borders, so check the app again when you ride into a neighbouring municipality.',
         { note: '**Two rulebooks apply at once.** The city’s regulation covers how e-scooters circulate and park in Athens; Greek national law, below, sets the age, helmet, speed and fines for every rider.' },
       ],
     },
@@ -180,7 +180,6 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Government Gazette ΦΕΚ Α΄ 117, 24 July 2026: law 5322/2026, e-scooter articles 73–81 (Greek)', url: 'https://search.et.gr/el/fek/?fekId=802862' },
-    { title: 'Highway Code (KOK), law 5209/2025, consolidated with the July 2026 changes (Greek)', url: 'https://www.taxheaven.gr/law/5209/2025' },
     { title: 'Municipality of Athens, 4th municipal community: the e-scooter regulation, 27 October 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/96%CE%95%CE%9B%CE%A96%CE%9C-%CE%9D7%CE%91' },
     { title: 'Municipality of Athens, 2nd municipal community: the e-scooter regulation, 10 November 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%9C7%CE%98%CE%A96%CE%9C-%CE%9A%CE%A6%CE%93' },
     { title: 'Municipality of Athens: decision 717/2025, the e-scooter regulation, 20 November 2025 (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%948%CE%91%CE%A96%CE%9C-9%CE%92%CE%98' },
