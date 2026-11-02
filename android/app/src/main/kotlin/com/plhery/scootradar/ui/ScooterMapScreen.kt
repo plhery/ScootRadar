@@ -579,31 +579,30 @@ private fun DockChrome(
                         barSpan = bar.takeIf { beside != null },
                     )
                     Box(Modifier.fillMaxSize().unheard(isSearching).onGloballyPositioned { laidOut.row = it }) {
-                        Row(
-                            Modifier
+                        LocateRow(
+                            // 8 under the search bar, in the row's box, which begins at the window's top.
+                            legendCeiling = safeTop + 8.dp + below + searchBar + 8.dp,
+                            modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .padding(horizontal = 10.dp)
                                 .widthIn(max = 560.dp)
                                 .fillMaxWidth()
                                 .padding(end = 2.dp)
                                 .inert(isSearching),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            verticalAlignment = Alignment.Bottom,
-                        ) {
-                            // The legend at the leading edge, a spacer's 10 short of the button: the iPhone's HStack.
-                            // The iPad's puts it against the button, after the spacer.
-                            Box(Modifier.weight(1f).padding(end = 10.dp), contentAlignment = Alignment.BottomStart) {
+                            legend = {
                                 ZoneLegendOverTheMap(controller, chrome, Modifier.padding(start = 2.dp)) { laidOut.frame(laidOut.row, it, density.density) }
-                            }
-                            FloatingMapControls(
-                                controller,
-                                Modifier
-                                    .topAs(LocateTop)
-                                    .onSizeChanged { locateButtonHeight.intValue = it.height }
-                                    // The map centres a scooter in what this button and the dock leave visible.
-                                    .onGloballyPositioned { chrome.locateButton = laidOut.frame(laidOut.row, it, density.density) },
-                            )
-                        }
+                            },
+                            button = {
+                                FloatingMapControls(
+                                    controller,
+                                    Modifier
+                                        .topAs(LocateTop)
+                                        .onSizeChanged { locateButtonHeight.intValue = it.height }
+                                        // The map centres a scooter in what this button and the dock leave visible.
+                                        .onGloballyPositioned { chrome.locateButton = laidOut.frame(laidOut.row, it, density.density) },
+                                )
+                            },
+                        )
                     }
                     Box(
                         Modifier
@@ -689,6 +688,57 @@ private val LocateTop = HorizontalAlignmentLine(::min)
 private fun Modifier.topAs(line: HorizontalAlignmentLine): Modifier = layout { measurable, constraints ->
     val placeable = measurable.measure(constraints)
     layout(placeable.width, placeable.height, mapOf(line to 0)) { placeable.place(0, 0) }
+}
+
+/**
+ * The row over the dock, as the iPhone's `HStack(alignment: .bottom) { zoneLegend; Spacer(minLength: 0);
+ * FloatingMapControls }` (ScooterMapScreen.swift:263-276): the [button] at the trailing edge at its own size, which
+ * SwiftUI gives the least flexible view first, and the [legend] at the leading edge in what is left, a spacer's 10
+ * short of it, both down on the row's foot.
+ *
+ * Where the legend, beside the button, would reach higher than [legendCeiling] (from the top of the box the row stands
+ * in), it goes over the button instead, at the row's whole width (UI-410). On ScootRadar_Phone_Min at font scale 2.0
+ * before the first location, "Near me" took about 190 of the row's 340 dp: a street's line, "No riding 12:00 PM–11:00
+ * PM · Seoul, lines © OpenStreetMap (not now)", broke into about twelve lines, words cut inside, and ran up under the
+ * search bar and the status bar. The iPhone's stack has no answer there (its lines are fixedSize, with no limit) and
+ * would do the same on its smallest phone at its largest sizes; wherever the legend fits beside the button, as it
+ * always does at the default sizes, the row is the iPhone's.
+ */
+@Composable
+private fun LocateRow(
+    legendCeiling: Dp,
+    legend: @Composable () -> Unit,
+    button: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Layout(
+        content = {
+            Box(contentAlignment = Alignment.BottomStart) { legend() }
+            button()
+        },
+        modifier = modifier,
+    ) { (legendBox, locate), constraints ->
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val gap = 10.dp.roundToPx()
+        val width = constraints.maxWidth
+        val placedButton = locate.measure(loose)
+        // The iPhone's spacing of 10 and its Spacer, 10 more, between the legend and the button.
+        val beside = maxOf(0, width - placedButton.width - 2 * gap)
+        val room = constraints.maxHeight - legendCeiling.roundToPx()
+        val over = legendBox.maxIntrinsicHeight(beside) > room
+        val placedLegend = legendBox.measure(loose.copy(maxWidth = if (over) width else beside))
+        val height = if (over && placedLegend.height > 0) {
+            placedLegend.height + gap + placedButton.height
+        } else {
+            maxOf(placedLegend.height, placedButton.height)
+        }
+        layout(width, min(height, constraints.maxHeight)) {
+            val foot = min(height, constraints.maxHeight)
+            placedButton.placeRelative(width - placedButton.width, foot - placedButton.height)
+            val legendFoot = if (over && placedLegend.height > 0) foot - placedButton.height - gap else foot
+            placedLegend.placeRelative(0, legendFoot - placedLegend.height)
+        }
+    }
 }
 
 /**
