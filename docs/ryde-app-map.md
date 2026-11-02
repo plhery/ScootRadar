@@ -374,6 +374,17 @@ process.” The app still displayed its signed-in map after that check. No
 Keychain prompt, setting change, rotation or independent map request was made.
 The app was closed after the test.
 
+A 2 November signing check explains why the helper result cannot prove absence:
+the signed Apple app has application identifier
+`ZH9J2JZ9YQ.com.ryde.NewRyde` and declares no explicit Keychain-sharing group.
+Apple's default is then the app-identifier group, private to that app. A
+separately signed helper cannot query it unless Ryde shares the group with
+that helper. Apple's [Keychain sharing documentation](https://developer.apple.com/documentation/Security/sharing-access-to-keychain-items-among-a-collection-of-apps)
+describes this default isolation. The same check found Apple's `heap` and
+`leaks` tools carry read-only task-port entitlements; `debugserver` does not.
+That accounts for the observed read-only object-graph access alongside the
+denied debugger attach, without showing the key value.
+
 These failures establish that the tested export paths did not work; they do not
 prove the iOS keys are hardware-bound or universally non-exportable. Do not repeat
 these prompts without new evidence that addresses the failure. The existing app
