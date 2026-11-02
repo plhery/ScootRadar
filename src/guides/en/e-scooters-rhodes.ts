@@ -23,8 +23,7 @@ const guide: Guide = {
             '**Hopp**, an Icelandic brand run here by a franchise, in **Faliraki only**, out to the edges of Kallithea and Kalythies.',
           ],
         },
-        'On the afternoon of 14 October 2026, a stormy day, the [map of Rhodes town](map:gr:Rhodes) showed 241 Hoppy scooters, and Hoppy had 554 across its five areas from Ialysos to Kolymbia; the [Faliraki map](map:gr:Faliraki) showed another 134 Hopps. These are map counts, not fleet sizes.',
-        'We found no third operator: Scoot, a Greek company from Patras, lists Rhodes only among its “next cities”.',
+        'On the afternoon of 14 October 2026, a stormy day, the [map of Rhodes town](map:gr:Rhodes) showed 241 Hoppy scooters free to rent at that moment, and the [Faliraki map](map:gr:Faliraki) another 134 Hopps.',
       ],
     },
     {
@@ -55,9 +54,9 @@ const guide: Guide = {
             ],
           },
         },
-        'A handful of Hoppys showed €0.33 or €0.30 elsewhere. Hopp’s website still lists Rhodes at €0.28 a minute, but its open data showed €0.33 on 14 and 15 October: go by the app.',
+        'Hopp’s website still lists Rhodes at €0.28 a minute, but its open data showed €0.33 on 14 and 15 October: go by the app.',
         'Hoppy’s terms add two costs worth knowing: an insurance excess of up to €1,000 per claim if you cause damage to others, and €50 if an under-age rider is caught.',
-        'The town plans a cheaper option: 55 shared e-bikes at eight stations, free for the first two hours, then €4 an hour. The council adopted its rules in June 2026; we found no start date.',
+        'The town plans a cheaper option: 55 shared e-bikes at eight stations, free for the first two hours, then €4 an hour. The council adopted its rules in June 2026.',
       ],
     },
     {
@@ -118,7 +117,7 @@ const guide: Guide = {
     {
       heading: 'Greek e-scooter rules for visitors',
       blocks: [
-        'E-scooters are legal on Rhodes and ridden much like bicycles. We found no municipal e-scooter rules, so national law applies: the Highway Code (KOK, law 5209/2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026.',
+        'E-scooters are legal on Rhodes and ridden much like bicycles. National law sets the rules: the Highway Code (KOK, law 5209/2025) as amended by law 5322/2026, published in the Government Gazette (ΦΕΚ Α΄ 117) and in force since 24 July 2026.',
         {
           table: {
             caption: 'E-scooter rules in Greece on 14 October 2026 (Highway Code, law 5209/2025, as amended by law 5322/2026)',
@@ -150,7 +149,7 @@ const guide: Guide = {
             '**Helmet.** Compulsory for every e-scooter rider in Greece, adults included. Neither Hoppy nor Hopp supplies one, so pack your own.',
             '**Heat.** In July and August, ride early or late and carry water.',
             '**Storms.** On 14 October 2026 heavy rain closed schools and stopped the town buses.',
-            '**Winter.** Neither operator publishes a winter season. Hoppy’s open data say “24/7”, and the two operators had nearly 700 scooters out in mid-October, but check the app before an off-season trip.',
+            '**Winter.** Neither operator publishes a winter season (October 2026), so check the app before an off-season trip.',
           ],
         },
       ],
@@ -191,7 +190,7 @@ const guide: Guide = {
     },
     {
       question: 'Are there e-scooters on Rhodes in winter?',
-      answer: 'Neither operator says. Scooters were out in mid-October 2026, but no winter schedule is published, so check the app before you travel.',
+      answer: 'Neither operator publishes a winter schedule (October 2026), so check the app before you travel.',
     },
   ],
   sources: [
