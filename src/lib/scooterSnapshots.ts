@@ -290,9 +290,16 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
 /**
  * buildCityOverview a step at a time: a town's sources, then a feed's scooters. Over a million
  * scooters the whole build takes seconds, which the cache spends between steps on the map's requests.
+ *
+ * A feed in its seasonal pause counts only while the map shows its positions: an operator who brings
+ * its scooters back early, as one until the streets are clear may, is counted. Its older ones are not,
+ * though `counts` takes them: Lime's groups nobody looks at are swept every three days (limeAreas.ts),
+ * and Red Deer's, paused from 1 November 2026, still counted 151 scooters read on 31 October the
+ * next morning. Not counted, it is quiet in the town's health (quietInPause), neither failed nor stale.
  */
-export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, counts: (feed: FeedSnapshot) => boolean,
+export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, countsUnpaused: (feed: FeedSnapshot) => boolean,
   retention?: (feedId: string) => number | undefined): Generator<void, MobilitySnapshot['overview']> {
+  const counts = (feed: FeedSnapshot) => countsUnpaused(feed) && (showsPositions(feed, now) || !snapshotPaused(feed, now));
   const totals = new Map<string, CityTotals>();
   for (const city of [...regionalCities, ...SWISS_SCOOTER_AREAS]) {
     const country = regionalCities.find(candidate => candidate.id === city.id)?.country;

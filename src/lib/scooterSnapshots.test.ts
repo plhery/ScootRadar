@@ -359,6 +359,29 @@ describe('feeds collected on demand', () => {
     expect(querySnapshot(cached, query, 8, now).meta.sources.france).toBe('fresh');
     expect(overviewNeedsRefresh(cached, [idle], now + 60_000, onTime)).toBe(false);
   });
+
+  it('leaves out of the city totals the scooters of a feed in its seasonal pause, unless the map shows them', () => {
+    // Red Deer's Lime groups, paused from 1 November 2026: on its morning of 2 November, the cache
+    // still took as on time a group swept on 31 October, as it does for three days (limeAreas.ts).
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(item => item.id === 'lime_ca_app_red_deer_000')!;
+    const [south, west] = [52.23, -113.83];
+    const at = Date.parse('2026-11-02T13:00:00Z');
+    const swept = Date.parse('2026-10-31T18:12:17Z');
+    const group = feed({ id: `${regionalSource(system)}:${system.id}`, source: 'canada', provider: 'lime',
+      coverage: serviceAreas(system).map(area => area.bounds), observedAt: swept, attemptedAt: swept, collectedAt: swept,
+      vehicles: [{ ...vehicle('rd-1'), lat: south, lng: west, provider: 'lime' }, { ...vehicle('rd-2'), lat: south, lng: west, provider: 'lime' }] });
+    const onTime = () => true;
+    const redDeer = (feeds: FeedSnapshot[], time: number) => buildCityOverview(feeds, time, onTime).cities.find(city => city.id === 'ca:ab:Red Deer')!;
+    const paused = redDeer([group], at);
+    expect(paused.batteries).toEqual({});
+    // Quiet, as a town's paused feed is up close: neither failed nor stale.
+    expect([paused.sources.canada, paused.failedSources]).toEqual(['skipped', []]);
+    // Swept the evening before the pause, they counted then.
+    expect(Object.values(redDeer([group], swept + minutes(60)).batteries.lime ?? []).reduce((a, b) => a + b, 0)).toBe(2);
+    // Brought back early, scooters the map shows count.
+    const back = { ...group, observedAt: at - minutes(5), collectedAt: at - minutes(5) };
+    expect(redDeer([back], at).batteries.lime?.reduce((a, b) => a + b, 0)).toBe(2);
+  });
 });
 
 describe('a map across the 180° line', () => {
