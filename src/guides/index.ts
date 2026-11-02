@@ -355,6 +355,7 @@ import bremerhavenDe from './de/e-scooter-bremerhaven';
 import klagenfurtDe from './de/e-scooter-klagenfurt';
 import sanktAugustinDe from './de/e-scooter-sankt-augustin';
 import pinnebergDe from './de/e-scooter-pinneberg';
+import meerbuschDe from './de/e-scooter-meerbusch';
 import szegedEn from './en/e-scooters-szeged';
 import athensEn from './en/e-scooters-athens';
 import thessalonikiEn from './en/e-scooters-thessaloniki';
@@ -718,6 +719,7 @@ export const GUIDES: readonly Guide[] = [
   klagenfurtDe,
   sanktAugustinDe,
   pinnebergDe,
+  meerbuschDe,
   szegedEn,
   athensEn,
   thessalonikiEn,
