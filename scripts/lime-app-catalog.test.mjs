@@ -11,13 +11,15 @@ it('partitions the complete service grid into bounded groups and preserves publi
     { id: 'old-app-group', limeAppMap: true }] };
   const market = { country: 'RO', city: 'Deva', center: [.015, .015], timeZone: 'Europe/Bucharest', regionToken: 'region',
     serviceAreas: [{ polygon: '???ozDozD??nzDnzD?' }], sourceDocuments: ['https://assets.lime.bike/zones_attributes/example.json'] };
+  const warnings = [];
   const result = limeAppCatalogs({ verifiedOn: '2026-10-24', markets: [market] },
-    [{ code: 'RO', catalog: 'ro.json' }], () => previous, { decodeLimeArea, limeAreaGrid }).get('ro.json');
+    [{ code: 'RO', catalog: 'ro.json' }], () => previous, { decodeLimeArea, limeAreaGrid }, message => warnings.push(message)).get('ro.json');
   expect(result.catalogSource).toBe(previous.catalogSource);
   expect(result.serviceAreaSources).toEqual(previous.serviceAreaSources);
   expect(result.verifiedOn).toBe('2026-10-25');
   expect(result.systems[0]).toBe(publicFeed);
   expect(result.systems.some(s => s.id === 'old-app-group')).toBe(false);
+  expect(warnings).toEqual(['ro.json: old-app-group is no market of data/lime-app-regions.json, so it is left out']);
   // The market is one entry, as compact as its grid; its refresh groups are made from it.
   expect(result.systems.filter(s => s.limeAppMap).map(s => s.id)).toEqual(['lime_ro_app_deva']);
   const app = result.systems.filter(s => s.limeAppMap).flatMap(limeGridGroups);
@@ -75,4 +77,28 @@ it('keeps the catalog grid when the same grid computed on another processor diff
   expect(step[0]).not.toBe(grid.lngStep);
   expect(generate(step[0])).toBe(step[0]);
   expect(generate(grid.lngStep * 1.001)).toBe(grid.lngStep);
+});
+
+it('stops on a key set by hand on a market\'s entry in the catalog, which it would drop, and tells of what it changes', () => {
+  const market = { country: 'CA', city: 'Regina', region: 'SK', center: [.015, .015], timeZone: 'America/Regina', regionToken: 'regina',
+    serviceAreas: [{ polygon: '???ozDozD??nzDnzD?' }], sourceDocuments: ['https://assets.lime.bike/zones_attributes/example.json'] };
+  const seasonal = { from: '11-01', until: '05-01', timeZone: 'America/Regina' };
+  const generate = (systems, markets = [market]) => {
+    const warnings = [];
+    limeAppCatalogs({ verifiedOn: '2026-11-02', markets }, [{ code: 'CA', catalog: 'ca.json' }], () => ({ systems }),
+      { decodeLimeArea, limeAreaGrid }, message => warnings.push(message));
+    return warnings;
+  };
+  // A pause written into the country's catalog instead of data/lime-app-regions.json.
+  expect(() => generate([{ id: 'lime_ca_app_regina', limeAppMap: true, seasonal }]))
+    .toThrow('ca.json: lime_ca_app_regina has "seasonal", which its market (Regina) in data/lime-app-regions.json doesn\'t give');
+  // Set on the market, it is written and nothing is said.
+  expect(generate([{ id: 'lime_ca_app_regina', limeAppMap: true, seasonal }], [{ ...market, seasonal }])).toEqual([]);
+  // A value the market changes, and an entry whose market is gone, are told.
+  expect(generate([{ id: 'lime_ca_app_regina', limeAppMap: true, seasonal: { ...seasonal, until: '04-15' } },
+    { id: 'lime_ca_app_moose_jaw', limeAppMap: true }], [{ ...market, seasonal }])).toEqual([
+    'ca.json: lime_ca_app_regina\'s "seasonal" becomes {"from":"11-01","until":"05-01","timeZone":"America/Regina"} from ' +
+      'data/lime-app-regions.json ({"from":"11-01","until":"04-15","timeZone":"America/Regina"} in the catalog)',
+    'ca.json: lime_ca_app_moose_jaw is no market of data/lime-app-regions.json, so it is left out',
+  ]);
 });

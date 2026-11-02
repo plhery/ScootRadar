@@ -542,7 +542,7 @@ final class CityRuleZoneTests: XCTestCase {
             // 15 June 2019: no first day, so always.
             XCTAssertTrue(zone.inForce(at: Date(timeIntervalSince1970: 1_560_600_000)), zone.id)
         }
-        // Damen Avenue, under The 606; State Street in the Loop, inside the lakefront trail's bounds but 1.5 km from it.
+        // Damen Avenue, under The 606; State Street in the Loop, inside the lakefront trail's bounds but 0.9 km from it.
         let damen = GeoBounds(south: 41.912, west: -87.68, north: 41.916, east: -87.675)
         XCTAssertEqual(CityRuleZone.shown(over: damen, zoom: 15, at: night).map(\.rule.id), ["chicago-606-bloomingdale-trail"])
         let loop = GeoBounds(south: 41.878, west: -87.629, north: 41.882, east: -87.627)
@@ -553,9 +553,9 @@ final class CityRuleZoneTests: XCTestCase {
     }
 
     func testEdmontonsWhyteAvenueIsShownFrom112To97StreetAtAllHoursCreditedToTheCity() throws {
-        // 2 November 2026, 01:30 in Edmonton (UTC-7).
+        // 2 November 2026, 02:30 in Edmonton (UTC-6: Alberta keeps that clock from 1 November 2026).
         let night = Date(timeIntervalSince1970: 1_793_608_200)
-        // Gateway Boulevard, in Old Strathcona; 82 Avenue goes on west of 112 Street and east of 97 Street, open to riding.
+        // 104 Street, in Old Strathcona; 82 Avenue goes on west of 112 Street and east of 97 Street, open to riding.
         let gateway = GeoBounds(south: 53.517, west: -113.499, north: 53.519, east: -113.496)
         let shown = CityRuleZone.shown(over: gateway, zoom: 16, at: night)
         XCTAssertEqual(shown.map(\.rule.id), ["edmonton-whyte-avenue"])
@@ -578,7 +578,7 @@ final class CityRuleZoneTests: XCTestCase {
         func ids(_ view: GeoBounds) -> [String] {
             CityRuleZone.shown(over: view, zoom: 16, at: night).map(\.rule.id).filter(streets.contains)
         }
-        // Curtis Hixon Park, on the Riverwalk; Florida Avenue, a few blocks inland, has no rule.
+        // The Riverwalk just north of Curtis Hixon Park; Morgan Street, a few blocks inland, has no rule.
         let park = CityRuleZone.shown(over: GeoBounds(south: 27.95, west: -82.4655, north: 27.952, east: -82.4635), zoom: 16, at: night)
             .filter { streets.contains($0.rule.id) }
         XCTAssertEqual(park.map(\.rule.id), ["tampa-riverwalk"])

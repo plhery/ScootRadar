@@ -122,7 +122,7 @@ describe('ruleZonesInView', () => {
 
   it('gives Edmonton\'s Whyte Avenue from 112 to 97 Street at all hours, credited to the City', () => {
     const night = Date.parse('2026-11-02T08:30:00Z');
-    // Gateway Boulevard, in Old Strathcona; 82 Avenue goes on west of 112 Street and east of 97 Street, open to riding.
+    // 104 Street, in Old Strathcona; 82 Avenue goes on west of 112 Street and east of 97 Street, open to riding.
     const [whyte, ...others] = ruleZonesInView({ bounds: { south: 53.517, west: -113.499, north: 53.519, east: -113.496 }, zoom: 16 }, night);
     expect(others).toEqual([]);
     expect(whyte).toMatchObject({ id: 'edmonton-whyte-avenue', inForce: true, authority: 'City of Edmonton, lines © OpenStreetMap', timeZone: 'America/Edmonton' });
@@ -135,7 +135,7 @@ describe('ruleZonesInView', () => {
     const night = Date.parse('2026-11-02T08:30:00Z');
     const only = (bounds: { south: number; west: number; north: number; east: number }) =>
       ruleZonesInView({ bounds, zoom: 16 }, night).map(zone => zone.id);
-    // Curtis Hixon Park, on the Riverwalk; Florida Avenue, a few blocks inland, has no rule.
+    // The Riverwalk just north of Curtis Hixon Park; Morgan Street, a few blocks inland, has no rule.
     const [riverwalk] = ruleZonesInView({ bounds: { south: 27.95, west: -82.4655, north: 27.952, east: -82.4635 }, zoom: 16 }, night);
     expect(riverwalk).toMatchObject({ id: 'tampa-riverwalk', inForce: true, authority: 'City of Tampa, lines © OpenStreetMap', timeZone: 'America/New_York' });
     expect(only({ south: 27.949, west: -82.4565, north: 27.951, east: -82.4545 })).toEqual([]);
