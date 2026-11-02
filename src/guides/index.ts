@@ -334,6 +334,7 @@ import gloucesterEn from './en/e-scooters-gloucester';
 import santaCruzDeTenerifeEs from './es/alquiler-patinete-electrico-santa-cruz-de-tenerife';
 import vilniusEn from './en/e-scooters-vilnius';
 import tartuEn from './en/e-scooters-tartu';
+import bergamoIt from './it/monopattini-sharing-bergamo';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -668,4 +669,5 @@ export const GUIDES: readonly Guide[] = [
   santaCruzDeTenerifeEs,
   vilniusEn,
   tartuEn,
+  bergamoIt,
 ];
