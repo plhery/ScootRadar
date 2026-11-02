@@ -56,9 +56,9 @@ const NOTES: Partial<Record<ZoneDataState, TranslationKey>> = {
 /**
  * What the colours of the zones mean, while they are on; or why none are drawn. Each kind is named
  * once, the strongest rule first, whether the operators or a city (ruleZones.ts) set it: a city's
- * rule has a line of its own only where its hours set it apart, or its first day is still to come,
- * dimmer while it does not hold. Who sets the cities' rules is credited once each, small, at the
- * foot, linked to where they say so.
+ * rule has a line of its own only where its hours set it apart, its swatch hatched the other way
+ * as the map draws it, or where its first day is still to come; dimmer while it does not hold. Who
+ * sets the cities' rules is credited once each, small, at the foot, linked to where they say so.
  */
 export default function ZoneLegend({ state, count, rules = [] }: {
   state: ZoneDataState;
@@ -94,7 +94,7 @@ export default function ZoneLegend({ state, count, rules = [] }: {
       ))}
       {[...lines].map(([key, { zone, hours }]) => (
         <span key={key} className="zone-legend-item zone-legend-rule" data-in-force={zone.inForce}>
-          <span className={`zone-swatch zone-swatch-${zone.rule}`} aria-hidden="true" />
+          <span className={`zone-swatch zone-swatch-${zone.rule}${hours ? ' zone-swatch-timed' : ''}`} aria-hidden="true" />
           <span>
             {t(LABELS[zone.rule])}{hours && ` ${hours}`}
             {!zone.inForce && ` (${t('zones.ruleNotNow')})`}

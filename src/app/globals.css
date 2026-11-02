@@ -2098,6 +2098,12 @@ svg {
     repeating-linear-gradient(-45deg, color-mix(in srgb, var(--zone-color) 55%, transparent) 0 1.5px, transparent 1.5px 4px),
     color-mix(in srgb, var(--zone-color) 16%, transparent);
 }
+/* A rule with hours, Seoul's streets, hatched the other way, as on the map. */
+.zone-swatch-noRide.zone-swatch-timed {
+  background:
+    repeating-linear-gradient(45deg, color-mix(in srgb, var(--zone-color) 55%, transparent) 0 1.5px, transparent 1.5px 4px),
+    color-mix(in srgb, var(--zone-color) 16%, transparent);
+}
 .zone-swatch-noParking {
   --zone-color: var(--zone-no-parking);
   border-style: dashed;

@@ -506,8 +506,10 @@
    parking's edge is dashed and slow's dotted; parking, which only cities set, is
    plain within a solid edge, and an area where scooters park only in racks or marked
    places barely filled within dashes and dots; the pavements a scooter may ride on, a
-   city's too, are lines. */
+   city's too, are lines. A city's rule with hours, Seoul's streets, is hatched the other
+   way, so that it is told from no riding at all hours where they meet. */
 .leaflet-container .zone-fill-noRide { fill: url(#zone-no-ride-hatch); }
+.leaflet-container .zone-fill-noRide.zone-fill-timed { fill: url(#zone-no-ride-hatch-timed); }
 .leaflet-container .zone-fill-noParking { fill: var(--zone-no-parking); }
 .leaflet-container .zone-fill-slow { fill: var(--zone-slow); }
 .leaflet-container .zone-fill-parking { fill: var(--zone-parking); }

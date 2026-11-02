@@ -54,6 +54,8 @@ it('names a kind the operators and a city both set once, gives a street a line f
     credit: 'Bergen kommune · Seoul, lines © OpenStreetMap',
   });
   expect(container.querySelector('.zone-legend-rule')!.getAttribute('data-in-force')).toBe('true');
+  // Hatched the other way, as the map draws a rule with hours.
+  expect(container.querySelector('.zone-legend-rule .zone-swatch')!.className).toBe('zone-swatch zone-swatch-noRide zone-swatch-timed');
 });
 
 it('says when a street\'s rule does not hold now, and still names its kind and who sets it', () => {

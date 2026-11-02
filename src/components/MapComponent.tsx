@@ -822,9 +822,10 @@ export default function MapComponent({
   }, [frameLng, readyMap, zoneShapes]);
 
   // The zones a city sets and the streets it forbids riding on, each kind as the operators'
-  // are, in a pane of their own; outside their hours, dimmer. All of a kind that hold now, or
-  // all that don't, are one fill and one edge, so that a few hundred zones are a few paths
-  // and those over each other are no darker. The fill goes by winding: rings that turn the
+  // are, in a pane of their own; outside their hours, dimmer; and those with hours, Seoul's
+  // streets, hatched the other way (map.css). All of a kind that hold now, or all that don't,
+  // with hours or without, are one fill and one edge, so that a few hundred zones are a few
+  // paths and those over each other are no darker. The fill goes by winding: rings that turn the
   // same way (ruleZones.ts) fill where they overlap, a band's or an area's holes stay open.
   // None of them takes a tap or a click from the scooters, whose pane is over this one.
   useEffect(() => {
@@ -836,15 +837,17 @@ export default function MapComponent({
     const layer = L.layerGroup();
     for (const kind of RULE_KINDS_BELOW_FIRST) {
       for (const inForce of [false, true]) {
-        const shape = ruleZones.filter(zone => zone.rule === kind && zone.inForce === inForce)
-          .flatMap(zone => polygonsNear(zone.polygons, frameLng));
-        if (!shape.length) continue;
-        const { fillOpacity, edge } = ZONE_STYLES[kind];
-        const strength = inForce ? 1 : RULE_ZONE_DIMMED;
-        L.polygon(shape, { renderer, className: `zone-fill-${kind}`, interactive: false, stroke: false,
-          fillRule: 'nonzero', fillOpacity: fillOpacity * strength }).addTo(layer);
-        L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${kind}`,
-          interactive: false, fill: false }).addTo(layer);
+        for (const timed of [false, true]) {
+          const shape = ruleZones.filter(zone => zone.rule === kind && zone.inForce === inForce && !!zone.hours?.length === timed)
+            .flatMap(zone => polygonsNear(zone.polygons, frameLng));
+          if (!shape.length) continue;
+          const { fillOpacity, edge } = ZONE_STYLES[kind];
+          const strength = inForce ? 1 : RULE_ZONE_DIMMED;
+          L.polygon(shape, { renderer, className: `zone-fill-${kind}${timed ? ' zone-fill-timed' : ''}`, interactive: false,
+            stroke: false, fillRule: 'nonzero', fillOpacity: fillOpacity * strength }).addTo(layer);
+          L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${kind}`,
+            interactive: false, fill: false }).addTo(layer);
+        }
       }
     }
     // The pavements a scooter may ride on are lines along the kerb, over the fills: all of
@@ -1390,6 +1393,11 @@ export default function MapComponent({
         <svg className="zone-patterns" aria-hidden="true" focusable="false">
           <defs>
             <pattern id="zone-no-ride-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect className="zone-hatch-ground" width="8" height="8" />
+              <line className="zone-hatch-line" x1="0" y1="0" x2="0" y2="8" />
+            </pattern>
+            {/* A city's rule with hours, the other way. */}
+            <pattern id="zone-no-ride-hatch-timed" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
               <rect className="zone-hatch-ground" width="8" height="8" />
               <line className="zone-hatch-line" x1="0" y1="0" x2="0" y2="8" />
             </pattern>

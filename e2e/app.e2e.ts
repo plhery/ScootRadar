@@ -1369,6 +1369,23 @@ test('a city\'s own zones are drawn from zoom 14, zones on or off: a fill and an
   await expect(legend).toHaveCount(0);
 });
 
+test('Seoul\'s streets closed to riding at hours of the day are hatched the other way, on the map as in the legend', async ({ page }) => {
+  // Hongdae's Red Road, at street level, with the operators' zones off.
+  await page.goto('/map?origin=37.554,126.924&zones=0');
+  const legend = page.getByRole('group', { name: 'Zones' });
+  await expect(legend.locator('.zone-legend-rule')).toHaveText(/^No riding 12:00–23:00/);
+  const fill = page.locator('.leaflet-rule-zones-pane .zone-fill-noRide');
+  await expect(fill).toHaveCount(1);
+  const drawn = await page.evaluate(() => ({
+    fill: getComputedStyle(document.querySelector('.leaflet-rule-zones-pane .zone-fill-noRide')!).fill,
+    pattern: document.querySelector('#zone-no-ride-hatch-timed')!.getAttribute('patternTransform'),
+    edge: getComputedStyle(document.querySelector('.leaflet-rule-zones-pane .zone-edge-noRide')!).stroke,
+    swatch: getComputedStyle(document.querySelector('.zone-legend-rule .zone-swatch')!).backgroundImage,
+  }));
+  expect(drawn).toMatchObject({ fill: 'url("#zone-no-ride-hatch-timed")', pattern: 'rotate(-45)', edge: 'rgb(217, 45, 32)' });
+  expect(drawn.swatch).toMatch(/^repeating-linear-gradient\(45deg, /);
+});
+
 test('Nagoya\'s pavements where a scooter may ride are drawn from zoom 14 as lines, credited to the Aichi police and JARTIC', async ({ page }) => {
   test.slow();
   // Sakae, at street level, with the operators' zones off.
