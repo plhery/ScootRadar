@@ -49,6 +49,34 @@ APK, decompiled sources and private diagnostics are under
 `~/.cache/scootradar/rider-auth/ryde/`, outside Git. Bolt's and Bird's saved
 rider sessions are separate.
 
+### Physical Pixel root compatibility, 2 November 2026
+
+A read-only check of the connected Pixel 9 (`tokay`) found Android 17 build
+`CP3A.261005.005`, security patch `2026-10-05` and kernel
+`6.1.162-android14-11-g9dd05ae3a1de-ab16261587`. Its bootloader is locked,
+verified boot reports `green`, and the ADB shell has no available `su` command.
+
+[Keystork](https://github.com/DavidBuchanan314/keystork) describes obtaining Play
+Integrity tokens in an installed app's identity. It requires unrestricted root;
+useful device attestation additionally depends on retaining the locked bootloader
+and stock verified boot. This remains an untested Ryde approach, not evidence of
+accepted attestation or registration of independent software keys.
+
+The current [Root-My-Pixel profiles](https://github.com/alex193a/Root-My-Pixel/blob/03a6f7642bf0972e36c338829a02ba61d149105b/app/src/main/assets/profiles.json)
+include only two Pixel 9 payloads: `CP2A.260705.006` for kernel
+`6.1.157-android14-11` and `AD1A.240905.004` for `6.1.75-android14-11`.
+Its [profile resolver](https://github.com/alex193a/Root-My-Pixel/blob/03a6f7642bf0972e36c338829a02ba61d149105b/app/src/main/kotlin/com/alex193a/rootmypixel/data/repository/PayloadRepositoryImpl.kt)
+matches device codename and kernel-release prefix; neither matches this phone.
+Sharing the `android14-6.1` KMI does not satisfy that check. No root payload was
+installed or executed, and no official-app Integrity token or Ryde login was
+requested during this check.
+
+This establishes an unsupported kernel for the supplied root payloads, not
+whether the underlying vulnerability is patched. The Android experiment needs
+a verified payload for this exact kernel or another owned device with a supported
+profile while retaining locked, stock verified boot. Unlocking or downgrading
+this phone is not part of the test. The existing Ryde session is unchanged.
+
 ## Physical Pixel companion test, 1 November 2026
 
 A diagnostic APK, `com.scootradar.rydetest`, was built and installed on the
@@ -435,6 +463,15 @@ leaving its value unavailable through the content-disabled diagnostics.
 Rotation reduces the keys a server reader would need, but does not remove the
 signing-key access requirement. No fresh login, SMS, request mutation or
 security-setting change was made.
+
+A subsequent content-enabled check ran `heap --addresses` for
+`SecureBytes.Backing` and `leaks --hex --fullContent --referenceTree` against
+the existing Ryde process. Each reached a 50-second timeout with no output;
+both diagnostic processes were stopped. No key bytes were obtained. This is
+inconclusive about content access: it does not demonstrate either readable
+keys or the non-debuggable-process redaction observed in an earlier synthetic
+CryptoKit test. Private results remain outside Git under
+`mac-session/content-check-20261102/`.
 
 ## Recheck: model spoofing, attestation and session keys
 
