@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Chicago: Lime and Divvy, what a ride costs, the rules, and where you can’t ride',
   lede: 'E-scooters in Chicago come from two apps: Lime, the one company with a City scooter-sharing licence, and Divvy, the City’s bike-share system, run by Lyft. A Divvy scooter costs $1 to unlock plus $0.44 a minute plus tax (published rate, 17 October 2026); Lime shows its price only in the app. Shared scooters top out at 15 mph, run all year and must keep off sidewalks, the Lakefront Trail, The 606 and the Riverwalk. Divvy’s can be rented at any hour, Lime’s from 5 am to midnight.',
   published: '2026-10-17',
-  updated: '2026-10-23',
+  updated: '2026-11-02',
   city: 'us:il:Chicago',
   sections: [
     {
@@ -84,6 +84,7 @@ const guide: Guide = {
           ],
         },
         'Since July 2026 a fifth zone covers **Sheridan Road from Devon Avenue to Bryn Mawr Avenue** in Edgewater, street and sidewalks, the Sun-Times reported: use the Winthrop and Kenmore avenue greenways instead.',
+        'Our [Chicago map](map:us:il:Chicago) draws the Lakefront Trail, The 606 and the Riverwalk as no-riding bands from zoom 14, credited to CDOT, along OpenStreetMap’s paths of those names. O’Hare and Sheridan Road are not drawn, as the City’s page doesn’t name them.',
         '**Navy Pier**’s guest code bans unauthorised personal transportation devices, and bike riding on its South Dock and East End Plaza. Divvy has a station and racks by the pier: end your ride there and walk.',
         '**The parks.** The Chicago Park District is gathering ideas for rules on e-scooters and e-bikes on its bike paths and trails, to go with the state law that takes effect on 1 January 2027.',
       ],

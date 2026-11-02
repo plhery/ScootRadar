@@ -655,6 +655,24 @@ Trendy Lara: about 6.5 km, credited "Antalya UKOME, lines © OpenStreetMap". The
 where the same boulevard is open to scooters. Turkey's credits add "Antalya's
 no-ride boulevard traced on OpenStreetMap, ODbL" and the OpenStreetMap link.
 
+Chicago's shared scooters "cannot be operated on the Lakefront Trail, The 606
+(Bloomingdale Trail), or the Chicago Riverwalk", at any hour
+([CDOT](https://www.chicago.gov/city/en/depts/cdot/supp_info/escooter-share-pilot-project.html),
+2 November 2026). CDOT publishes no map of them, and its data portal holds only
+the pilots' areas of 2019 and 2020. The lines are OpenStreetMap's ways of those
+names, © OpenStreetMap contributors under the ODbL: the Lakefront Trail from
+Ardmore Avenue to 71st Street, its bike and its walking trail where it has two,
+with the Navy Pier Flyover that carries it over the river and without its
+connectors (58 km of lines, 1,252 points); the Bloomingdale Trail from Ridgeway
+to Ashland Avenue; and the Chicago Riverwalk on the Main Branch's south bank,
+from Lake Shore Drive to Lake Street, without its steps or the other riverwalks
+along the river. They are credited "Chicago DOT, lines © OpenStreetMap", and the
+United States' credits add "Chicago's no-ride trails traced on OpenStreetMap,
+ODbL". Sheridan Road from Devon to Bryn Mawr Avenue, a no-scooter zone since
+July 2026 by the Sun-Times, is not on CDOT's page and is not drawn. A rule zone
+counts as over a view only where a piece of its lines is, not wherever its
+bounds are: the Lakefront Trail's bounds cover the Loop.
+
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as
 the operators' (no riding, no parking, slow), the places to park in green and

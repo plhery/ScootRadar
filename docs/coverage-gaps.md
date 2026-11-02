@@ -480,8 +480,11 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   third-party app alone; the city's geoportal and WFS hold no scooter layer,
   and frankfurt.de answers scripts with 403. Chicago's paths where a scooter
   may not be ridden (the Lakefront Trail, The 606, the Riverwalk) are named on
-  CDOT's page alone: its data portal holds only the pilots' areas of 2019 and
-  2020, and its 2025 rules answer scripts with "Access Denied". Kristiansand's
+  CDOT's page alone, and are drawn from OpenStreetMap's ways of those names
+  since 2 November 2026 (DATA_SOURCES.md); its data portal holds only the
+  pilots' areas of 2019 and 2020. Sheridan Road from Devon to Bryn Mawr
+  Avenue, a no-scooter zone since July 2026, and O'Hare are in the press and
+  the operators' geofencing alone, not on CDOT's page. Kristiansand's
   regulation of 24 January 2024 caps each operator's fleet by zone and lets
   the kommune set zones by geofencing, but none is published; its ArcGIS layer
   of three zones is the 2022 draft's fleet caps, and the kommune's sites

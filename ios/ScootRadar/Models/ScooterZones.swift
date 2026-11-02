@@ -281,6 +281,9 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     /// A street's centrelines; none for a city's zone.
     let lines: [[GeoPoint]]
     let bounds: GeoBounds
+    /// Its bounds piece by piece, so that a long street is over a view only where it runs: the whole
+    /// of Chicago's lakefront trail, 22 km, would put it over the Loop beside it.
+    let pieceBounds: [GeoBounds]
     /// As the map draws it. A street is the pieces of its band, a disc at each corner and a strip
     /// along each piece, which the zones' overlay merges into one shape; a city's zone is its ring.
     let polygons: [[[GeoPoint]]]
@@ -296,6 +299,7 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         self.source = source
         self.lines = lines
         bounds = Self.bounds(of: lines.flatMap { $0 })
+        pieceBounds = Self.pieceBounds(of: lines)
         polygons = Self.band(of: lines, widthMeters: Self.bandWidthMeters)
     }
 
@@ -309,8 +313,26 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         hours = []
         self.source = source
         lines = []
-        bounds = Self.bounds(of: ring)
+        let bounds = Self.bounds(of: ring)
+        self.bounds = bounds
+        pieceBounds = [bounds]
         polygons = [[ring]]
+    }
+
+    /// Whether any of it is over the view.
+    func reaches(_ view: GeoBounds) -> Bool {
+        pieceBounds.contains { $0.intersects(view) }
+    }
+
+    /// The points of each piece of a line bounded on its own.
+    private static let piecePoints = 16
+
+    private static func pieceBounds(of lines: [[GeoPoint]]) -> [GeoBounds] {
+        lines.flatMap { line in
+            stride(from: 0, to: max(line.count - 1, 1), by: piecePoints).map { start in
+                bounds(of: Array(line[start..<min(start + piecePoints + 1, line.count)]))
+            }
+        }
     }
 
     private static func bounds(of points: [GeoPoint]) -> GeoBounds {
@@ -337,7 +359,7 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     /// The rules over the view, from zoom 14 in, each with whether it holds at that instant.
     static func shown(over view: GeoBounds, zoom: Int, at date: Date, among rules: [CityRuleZone] = onMap) -> [Shown] {
         guard zoom >= ScooterZoneArea.minimumZoom else { return [] }
-        return rules.compactMap { $0.bounds.intersects(view) ? Shown(rule: $0, inForce: $0.inForce(at: date)) : nil }
+        return rules.compactMap { $0.reaches(view) ? Shown(rule: $0, inForce: $0.inForce(at: date)) : nil }
     }
 
     /// bandPolygons in src/lib/ruleZones.ts.

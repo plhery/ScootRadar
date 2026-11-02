@@ -527,6 +527,31 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertTrue(CityRuleZone.shown(over: kundu, zoom: 13, at: night).isEmpty)
     }
 
+    func testChicagosTrailsAreShownAtAllHoursCreditedToCDOTAndOnlyWhereTheyRun() throws {
+        // Where the Riverwalk ends at Lake Shore Drive, the Lakefront Trail crosses the river on the Navy Pier Flyover.
+        let riverMouth = GeoBounds(south: 41.885, west: -87.618, north: 41.892, east: -87.609)
+        // 2 November 2026, 02:30 in Chicago (UTC-6).
+        let night = Date(timeIntervalSince1970: 1_793_608_200)
+        let shown = CityRuleZone.shown(over: riverMouth, zoom: 15, at: night).filter { $0.rule.id.hasPrefix("chicago-") }
+        XCTAssertEqual(shown.map(\.rule.id).sorted(), ["chicago-lakefront-trail", "chicago-riverwalk"])
+        XCTAssertEqual(shown.map(\.inForce), [true, true])
+        for zone in shown.map(\.rule) {
+            XCTAssertEqual(zone.authority, "Chicago DOT, lines © OpenStreetMap")
+            XCTAssertEqual(zone.timeZone, "America/Chicago")
+            XCTAssertTrue(zone.firstDay.isEmpty && zone.hours.isEmpty, zone.id)
+            // 15 June 2019: no first day, so always.
+            XCTAssertTrue(zone.inForce(at: Date(timeIntervalSince1970: 1_560_600_000)), zone.id)
+        }
+        // Damen Avenue, under The 606; State Street in the Loop, inside the lakefront trail's bounds but 1.5 km from it.
+        let damen = GeoBounds(south: 41.912, west: -87.68, north: 41.916, east: -87.675)
+        XCTAssertEqual(CityRuleZone.shown(over: damen, zoom: 15, at: night).map(\.rule.id), ["chicago-606-bloomingdale-trail"])
+        let loop = GeoBounds(south: 41.878, west: -87.629, north: 41.882, east: -87.627)
+        let trail = try XCTUnwrap(CityRuleZone.all.first { $0.id == "chicago-lakefront-trail" })
+        XCTAssertTrue(trail.bounds.intersects(loop))
+        XCTAssertFalse(trail.reaches(loop))
+        XCTAssertTrue(CityRuleZone.shown(over: loop, zoom: 16, at: night).filter { $0.rule.id.hasPrefix("chicago-") }.isEmpty)
+    }
+
     func testAStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
         // About 200 m east, then 100 m north.
         let line = [

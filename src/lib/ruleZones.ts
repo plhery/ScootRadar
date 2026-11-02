@@ -192,13 +192,18 @@ function areaPolygon(ring: [number, number][]): [number, number][][] {
   return [outerRing(outer), ...holes.map(hole => [...outerRing(hole)].reverse())];
 }
 
-const zoneBounds = new Map<string, MapBounds>();
+const zoneBounds = new Map<string, MapBounds[]>();
 const shapes = new Map<string, [number, number][][][]>();
+/** The points of each piece of a line bounded on its own. */
+const PIECE_POINTS = 16;
 
+/** Its bounds piece by piece: the whole of Chicago's lakefront trail, 22 km, would put it over the Loop beside it. */
 function boundsOf(zone: RuleZone) {
   let bounds = zoneBounds.get(zone.id);
   if (!bounds) {
-    bounds = linesBounds(zone.ring ? [zone.ring] : zone.lines);
+    bounds = zone.ring ? [linesBounds([zone.ring])] : zone.lines.flatMap(line =>
+      Array.from({ length: Math.max(1, Math.ceil((line.length - 1) / PIECE_POINTS)) },
+        (_, index) => linesBounds([line.slice(index * PIECE_POINTS, (index + 1) * PIECE_POINTS + 1)])));
     zoneBounds.set(zone.id, bounds);
   }
   return bounds;
@@ -222,7 +227,7 @@ const NONE: RuleZoneShape[] = [];
 export function ruleZonesInView(view: { bounds: MapBounds; zoom: number } | null, now: number,
   zones: RuleZone[] = RULE_ZONES): RuleZoneShape[] {
   if (!view || view.zoom < ZONES_MIN_ZOOM) return NONE;
-  const shown = zones.flatMap(zone => boundsIntersect(view.bounds, boundsOf(zone))
+  const shown = zones.flatMap(zone => boundsOf(zone).some(bounds => boundsIntersect(view.bounds, bounds))
     ? [{ ...zone, polygons: shapeOf(zone), inForce: ruleInForce(zone, now) }] : []);
   // The same empty list every time, so that a map without them does not draw again.
   return shown.length ? shown : NONE;

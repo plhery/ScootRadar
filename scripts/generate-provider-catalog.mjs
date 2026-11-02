@@ -478,7 +478,8 @@ function swiftRuleZones() {
     if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(zone.id) || ids.has(zone.id)) throw new Error(`Invalid rule zone id: ${zone.id}`);
     ids.add(zone.id);
     if (zone.rule !== 'noRide') throw new Error(`Unknown rule: ${zone.rule} (${zone.id})`);
-    if (!/^\d{4}-\d\d-\d\d$/.test(zone.from)) throw new Error(`Invalid rule zone start: ${zone.id}`);
+    // A rule with no first day, as Chicago's trails, holds since always: the apps read an empty one so.
+    if (zone.from !== undefined && !/^\d{4}-\d\d-\d\d$/.test(zone.from)) throw new Error(`Invalid rule zone start: ${zone.id}`);
     if (!/^https:\/\//.test(zone.source?.url) || !zone.authority) throw new Error(`Rule zone without a source: ${zone.id}`);
     if (!zone.lines.length || zone.lines.some(line => line.length < 2 ||
       !line.every(point => point.length === 2 && point.every(Number.isFinite)))) {
@@ -487,7 +488,7 @@ function swiftRuleZones() {
     const hours = (zone.hours ?? []).map(({ from, until }) => `.init(fromMinute: ${time(from)}, untilMinute: ${time(until)})`);
     lines.push(`    private static let ${linesName(zone.id)}: [[Double]] = [${zone.lines.map(line => `[${line.flat().join(', ')}]`).join(', ')}]`);
     return `        CityRuleZone(\n            id: ${JSON.stringify(zone.id)}, authority: ${JSON.stringify(zone.authority)},\n` +
-      `            timeZone: ${JSON.stringify(zone.timeZone)}, firstDay: ${JSON.stringify(zone.from)}, hours: [${hours.join(', ')}],\n` +
+      `            timeZone: ${JSON.stringify(zone.timeZone)}, firstDay: ${JSON.stringify(zone.from ?? '')}, hours: [${hours.join(', ')}],\n` +
       `            source: URL(string: ${JSON.stringify(zone.source.url)})!,\n            lines: points(${linesName(zone.id)})\n        ),`;
   }).join('\n');
 
@@ -671,7 +672,7 @@ function kotlinCatalogData() {
       id: zone.id,
       authority: zone.authority,
       timeZone: zone.timeZone,
-      firstDay: zone.from,
+      firstDay: zone.from ?? '',
       hours: (zone.hours ?? []).map(({ from, until }) => ({ fromMinute: minute(from), untilMinute: minute(until) })),
       source: zone.source.url,
       lines: zone.lines.map(line => line.flat()),

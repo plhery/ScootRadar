@@ -2368,7 +2368,7 @@ extension ScooterMapModel {
                 CityRuleZone.shown(over: ruleZoneArea, zoom: viewportZoom, at: now, among: downloaded.zones)
             notices = downloaded.notices.filter { $0.city.bounds.intersects(viewport) }
         }
-        let rulesInView = rules.filter { $0.rule.bounds.intersects(viewport) }
+        let rulesInView = rules.filter { $0.rule.reaches(viewport) }
         if rulesInView != mapRuleZones { mapRuleZones = rulesInView }
         if notices != mapZoneNotices { mapZoneNotices = notices }
         if shown.count != mapOperatorZoneCount { mapOperatorZoneCount = shown.count }

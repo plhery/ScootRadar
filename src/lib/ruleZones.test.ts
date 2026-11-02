@@ -96,6 +96,30 @@ describe('ruleZonesInView', () => {
     expect(boulevard.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng))).toBe(true);
   });
 
+  it('gives Chicago\'s Lakefront Trail, The 606 and Riverwalk at all hours, credited to CDOT', () => {
+    // Where the Riverwalk ends at Lake Shore Drive, the Lakefront Trail crosses the river on the Navy Pier Flyover.
+    const riverMouth = { south: 41.885, west: -87.618, north: 41.892, east: -87.609 };
+    const night = Date.parse('2026-11-02T08:30:00Z');
+    const here = ruleZonesInView({ bounds: riverMouth, zoom: 15 }, night);
+    expect(here.map(zone => zone.id).sort()).toEqual(['chicago-lakefront-trail', 'chicago-riverwalk']);
+    for (const zone of here) {
+      expect(zone.inForce).toBe(true);
+      expect(zone.authority).toBe('Chicago DOT, lines © OpenStreetMap');
+      expect(zone.from).toBeUndefined();
+      expect(zone.hours).toBeUndefined();
+    }
+    expect(ruleZonesInView({ bounds: riverMouth, zoom: 15 }, Date.parse('2019-06-15T12:00:00Z'))[0].inForce).toBe(true);
+    // Damen Avenue, over which The 606 runs; State Street in the Loop has no rule.
+    expect(ruleZonesInView({ bounds: { south: 41.912, west: -87.68, north: 41.916, east: -87.675 }, zoom: 15 }, night)
+      .map(zone => zone.id)).toEqual(['chicago-606-bloomingdale-trail']);
+    expect(ruleZonesInView({ bounds: { south: 41.878, west: -87.629, north: 41.882, east: -87.627 }, zoom: 16 }, night)).toEqual([]);
+    // North Avenue Beach, where the trail's bike and walking paths run side by side.
+    const trail = here.find(zone => zone.id === 'chicago-lakefront-trail')!;
+    const lakefront = ruleZonesInView({ bounds: { south: 41.909, west: -87.63, north: 41.915, east: -87.62 }, zoom: 15 }, night);
+    const point = trail.lines!.flat().find(([lat, lng]) => lat > 41.91 && lat < 41.914 && lng > -87.63 && lng < -87.62)!;
+    expect(lakefront[0].polygons.some(([outer]) => polygonContainsPoint(outer, point[0], point[1]))).toBe(true);
+  });
+
   it('keeps each street whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);
@@ -105,7 +129,7 @@ describe('ruleZonesInView', () => {
   });
 
   it('credits OpenStreetMap in the legend for every street, its lines being traced on its roads', () => {
-    // The user's exception to map rules not resting on OpenStreetMap covers these streets only (1 November 2026).
+    // The user's exception to map rules not resting on OpenStreetMap covers this layer only (1 November 2026).
     expect(RULE_ZONES.length).toBeGreaterThan(0);
     for (const zone of RULE_ZONES) expect(zone.authority).toMatch(/^[^,]+, lines © OpenStreetMap$/);
   });
