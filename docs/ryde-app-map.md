@@ -411,6 +411,13 @@ signing key for each signed map request. `/appRyde/registerDpopKey` is a
 separate path that obtains an attestation challenge. Neither live rotation nor
 an independent server map read has been tested.
 
+Static inspection of the installed Apple binary independently confirms both
+endpoints are present, along with session-rotation success and
+`requires_registration` log paths. This confirms rotation is implemented in
+the Apple app too. The strings do not establish when that path sends an App
+Attest proof or whether the live session can rotate without fresh registration;
+the server-side acceptance conditions remain unverified.
+
 The current Mac observation therefore improves confidence that the signing
 key is cached as software-backed key material in the app process, while
 leaving its value unavailable through the content-disabled diagnostics.
