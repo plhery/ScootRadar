@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Alquiler patinete eléctrico Tenerife sur: Hoppy, Dott y Bird',
   description: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, casco obligatorio, paseos prohibidos, dónde aparcar y cómo ir al aeropuerto.',
   headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, casco, edad y paseos prohibidos',
-  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, que nuestro mapa muestra en la costa que va de Los Cristianos a Costa Adeje, pasando por Playa de las Américas; Hopp tiene además una pequeña zona en Golf del Sur. Cada uno muestra su precio en la app antes de desbloquear. La ley permite conducir desde los 15 años, pero la edad para alquilar la fija cada operador: consulta la app. Desde el 1 de octubre de 2026 el casco es obligatorio: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
+  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, en la costa que va de Los Cristianos a Costa Adeje, pasando por Playa de las Américas; Hopp tiene además una pequeña zona en Golf del Sur. Cada uno muestra su precio en la app antes de desbloquear. La ley permite conducir desde los 15 años, pero la edad para alquilar la fija cada operador: consulta la app. Desde el 1 de octubre de 2026 el casco es obligatorio: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
   published: '2026-10-13',
   updated: '2026-10-24',
   city: 'es:Playa de las Américas',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: '¿Qué patinetes de alquiler hay en el sur de Tenerife?',
       blocks: [
-        'Esta guía, como nuestro mapa, va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos; no de los scooters de movilidad reducida ni de las motos, que es casi todo lo que sale al buscar «alquiler scooter Tenerife».',
+        'Esta guía va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos; no de los scooters de movilidad reducida ni de las motos, que es casi todo lo que sale al buscar «alquiler scooter Tenerife».',
         'A 24 de octubre de 2026, nuestro mapa muestra cuatro operadores en el sur:',
         {
           list: [
@@ -44,14 +44,14 @@ const guide: Guide = {
         'Desde 2016, Arona, el municipio de Los Cristianos y Playa de las Américas, prohíbe circular en bicicleta, segway o patinete por 98 paseos y calles peatonales. Entre ellos están el frente marítimo entre Los Cristianos y Las Américas (Paseo Marítimo, Paseo de Las Vistas y Paseo Francisco Andrade Fumero), la zona peatonal del casco de Los Cristianos y los paseos de Palm-Mar y Las Galletas.',
         { note: 'Aunque la app te deje pasar por el paseo, la policía te para: bájate y llévalo a pie, o ve por la calzada.' },
         'La policía vigila: en un solo operativo, en abril de 2026, Arona denunció 92 patinetes e inmovilizó 81 por circular por zonas peatonales, no estar inscritos o aparcar en lugares no autorizados.',
-        'En Costa Adeje, el Ayuntamiento pide no circular por aceras ni zonas peatonales y bajarse del patinete para cruzar los pasos de peatones. Su nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, lo convertirá en norma: el paseo contará como zona peatonal, prohibida a los patinetes, y cruzar el paso subido al patinete, como maniobra temeraria. Las empresas de alquiler necesitarán un título municipal y deberán geolocalizar cada patinete en tiempo real. Su fecha de entrada en vigor no se ha publicado.',
+        'En Costa Adeje, la nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, hará del paseo una zona peatonal, prohibida a los patinetes, y de cruzar el paso subido al patinete, una maniobra temeraria. Las empresas de alquiler necesitarán un título municipal y deberán geolocalizar cada patinete en tiempo real. Su fecha de entrada en vigor no se ha publicado.',
       ],
     },
     {
       heading: 'Dónde aparcar el patinete en Tenerife sur',
       blocks: [
         'Dónde puedes terminar el viaje, y lo que te cobra el operador si aparcas mal o sales de su zona, te lo dice su app: consulta la app y mira su mapa antes de salir, porque pagas hasta que cierras el viaje.',
-        'Las multas del ayuntamiento van aparte. La policía de Arona denuncia los patinetes aparcados donde no se permite, y ha centrado sus controles y retiradas en los paseos marítimos, las playas y las zonas comerciales y de restauración de Las Américas, Los Cristianos y Las Galletas. Adeje pide dejarlos en una zona señalizada sin estorbar el paso.',
+        'Las multas del ayuntamiento van aparte. La policía de Arona denuncia los patinetes aparcados donde no se permite, y ha centrado sus controles y retiradas en los paseos marítimos, las playas y las zonas comerciales y de restauración de Las Américas, Los Cristianos y Las Galletas.',
         'Con la nueva ordenanza de Adeje, un patinete en una plaza señalizada solo está bien aparcado si no se sale de las líneas pintadas ni invade la calzada, la acera o un paso de peatones. El Ayuntamiento quiere crear más plazas para patinetes y bicicletas, sobre todo en zonas turísticas, comerciales y hoteleras, playas y paradas de transporte público, y las empresas de alquiler podrán ocupar como mucho la mitad.',
       ],
     },
@@ -80,13 +80,12 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Calor, cuestas, guagua y aeropuerto',
+      heading: 'Calor, guagua y aeropuerto',
       blocks: [
         {
           list: [
             '**Calor.** En el aeropuerto Tenerife Sur, la máxima media es de 28,4 °C en agosto y aún de 26,8 °C en octubre (AEMET, 1981-2010), y solo llueve unos 15 días al año. En enero, la máxima media aún es de 21,7 °C, y la poca lluvia cae sobre todo de noviembre a marzo. Lleva agua y, en verano, sal temprano o al atardecer.',
-            '**Cuestas.** La costa de Los Cristianos a Puerto Colón es bastante llana; Costa Adeje sube con fuerza hacia el interior, por San Eugenio Alto y Torviscas Alto.',
-            '**Aeropuerto y otras zonas.** Ninguna zona de patinetes llega al aeropuerto Tenerife Sur, y no puedes ir en patinete de Los Cristianos a Golf del Sur o El Médano: la TF-1 es una autopista y las carreteras interurbanas están prohibidas. Coge una guagua de TITSA, y consulta su horario antes de viajar.',
+            '**Aeropuerto y otras zonas.** No puedes ir en patinete de Los Cristianos a Golf del Sur, a El Médano o al aeropuerto Tenerife Sur: la TF-1 es una autopista y las carreteras interurbanas están prohibidas. Coge una guagua de TITSA, y consulta su horario antes de viajar.',
           ],
         },
       ],

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Tenerife e-scooters 2026: Hoppy, Dott, Bird, Hopp and rules',
   description: 'E-scooters in south Tenerife: Hoppy, Dott, Bird and Hopp, each with its price in the app. Helmet compulsory, promenades banned, no riding to the airport.',
   headline: 'E-scooters in Tenerife: Hoppy, Dott, Bird and Hopp in the south, the helmet rule, and the promenades you can’t ride',
-  lede: 'You can rent an e-scooter in Tenerife from Hoppy, Dott, Bird or Hopp in the south of the island: our map shows them along the coast from Los Cristianos through Playa de las Américas to Costa Adeje, and Hopp also in Golf del Sur. Each shows its price in its app before you unlock. Spain’s law lets you ride from 15, but each operator sets its own age for renting, so check the app; and since 1 October 2026 a helmet is compulsory in Spain: bring your own. Stay off the seafront promenade between Los Cristianos and Las Américas, where scooters are banned and the police check.',
+  lede: 'You can rent an e-scooter in Tenerife from Hoppy, Dott, Bird or Hopp in the south of the island, along the coast from Los Cristianos through Playa de las Américas to Costa Adeje, and Hopp also in Golf del Sur. Each shows its price in its app before you unlock. Spain’s law lets you ride from 15, but each operator sets its own age for renting, so check the app; and since 1 October 2026 a helmet is compulsory in Spain: bring your own. Stay off the seafront promenade between Los Cristianos and Las Américas, where scooters are banned and the police check.',
   published: '2026-10-13',
   updated: '2026-10-24',
   city: 'es:Playa de las Américas',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Tenerife?',
       blocks: [
-        'This guide, like our map, covers shared e-scooters: the stand-up kind you find on the street, unlock with an app and pay for by the minute. It doesn’t cover mobility scooters or mopeds, though most searches for “scooter hire” in Tenerife turn them up.',
+        'This guide covers shared e-scooters: the stand-up kind you find on the street, unlock with an app and pay for by the minute. It doesn’t cover mobility scooters or mopeds, though most searches for “scooter hire” in Tenerife turn them up.',
         'On 30 October 2026, our map showed four operators in the south:',
         {
           list: [
@@ -44,14 +44,14 @@ const guide: Guide = {
         'Arona, the municipality that covers Los Cristianos and Playa de las Américas, has banned bikes, segways and scooters on 98 promenades and pedestrian streets since 2016. They include the seafront between Los Cristianos and Las Américas (Paseo Marítimo, Paseo de Las Vistas and Paseo Francisco Andrade Fumero), the pedestrian old town of Los Cristianos, and the promenades of Palm-Mar and Las Galletas.',
         { note: 'Whatever your app allows on the seafront, the police stop scooters there: walk the scooter, or use the road.' },
         'Arona’s police do check: in one operation in April 2026 they filed 92 reports and immobilised 81 scooters, for riding in pedestrian areas, missing the compulsory registration and parking where it isn’t allowed.',
-        'In Costa Adeje, the town hall tells riders to keep off pavements and pedestrian zones, and to get off and walk across zebra crossings. Its new traffic ordinance, published in full in the provincial bulletin on 9 September 2026, will make this law: every promenade will count as a pedestrian zone, closed to scooters, and riding across a zebra crossing as reckless. Rental firms will need a municipal licence and must share each scooter’s position live. It takes effect 15 working days after the state and regional governments are notified, a date the town hasn’t published.',
+        'In Costa Adeje, the new traffic ordinance, published in full in the provincial bulletin on 9 September 2026, will make every promenade a pedestrian zone, closed to scooters, and riding across a zebra crossing will count as reckless. Rental firms will need a municipal licence and must share each scooter’s position live. It takes effect 15 working days after the state and regional governments are notified, a date the town hasn’t published.',
       ],
     },
     {
       heading: 'Where to park in the south of Tenerife',
       blocks: [
         'Where a ride may end, and what the operator charges if you park badly or leave its area, is in its app: check the app’s map before you set off, as you pay until the ride ends.',
-        'Town-hall fines come on top. Arona’s police report scooters parked where they shouldn’t be, and have focused their checks and removals on the seafront promenades, the beaches and the shopping and restaurant streets of Las Américas, Los Cristianos and Las Galletas. Adeje asks you to park in a marked zone without blocking the way.',
+        'Town-hall fines come on top. Arona’s police report scooters parked where they shouldn’t be, and have focused their checks and removals on the seafront promenades, the beaches and the shopping and restaurant streets of Las Américas, Los Cristianos and Las Galletas.',
         'Under Adeje’s new ordinance, a scooter in a marked bay counts as properly parked only if it stays inside the painted lines and sticks out onto neither the road, the pavement nor a zebra crossing. The town means to add bays for scooters and bikes, above all in tourist, shopping and hotel areas, at beaches and at public-transport stops, and rental firms may hold at most half of them.',
       ],
     },
@@ -79,14 +79,13 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Heat, hills, buses and the airport',
+      heading: 'Heat, buses and the airport',
       blocks: [
         {
           list: [
             '**Heat.** At Tenerife South airport the average daily high is 28.4 °C in August and still 26.8 °C in October (AEMET, 1981–2010), with only about 15 rainy days a year. In January the average high is still 21.7 °C, and what little rain falls comes mostly between November and March. Carry water and ride early or late in summer.',
-            '**Hills.** The seafront from Los Cristianos to Puerto Colón is fairly flat. Costa Adeje climbs steeply inland, around San Eugenio Alto and Torviscas Alto.',
             '**Between resorts.** You can’t ride from Los Cristianos to Golf del Sur, El Médano or the airport: the TF-1 is a motorway, and interurban roads are closed to e-scooters.',
-            '**The airport.** No scooter area reaches Tenerife South: take a TITSA bus, and check its timetable before you travel.',
+            '**The airport.** Take a TITSA bus to Tenerife South, and check its timetable before you travel.',
             '**Buses and the tram.** The tram between Santa Cruz and La Laguna bans e-scooters on board, Metrotenerife says; bikes may board when there’s room. For the bus, check TITSA’s rules before you travel.',
           ],
         },
