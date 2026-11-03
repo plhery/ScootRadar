@@ -7,9 +7,13 @@ the map Skyss's travel app shows signed out. The scooter cache reads it with
 requests on 27 October, and 4,679 in 27 at midnight. See
 [the production reader](#the-production-reader).
 
-Ryde's own authenticated API remains a separate, unfinished path. Its
-Mac-compatible iPhone app opens its signed-in map, but exporting the keys
-needed for independent proofs and decryption has not succeeded.
+A bounded Mac bridge test **decrypted 100 Ryde scooters in central Drammen on
+3 November 2026**, and a second fresh read reproduced it. The unmodified app
+generated the proofs; a scoped local proxy translated the response encryption.
+The successful repeat also verified restoration to an app-owned key. This is
+a working prototype, not an enabled production collector or an unattended
+service; see [the live bridge result](#live-drammen-bridge-3-november). Exporting
+the app's signing key for an independent server reader remains unsolved.
 On 1 November a separate diagnostic companion on the physical Pixel obtained
 a Google Integrity token for a fresh Ryde challenge and subsequently a
 reCAPTCHA token with the working RideMovi package-context setup. Normal Google
@@ -22,10 +26,10 @@ Checked 24 and 27 October 2026 against the official Android `com.ryde_android`
 [app-link association](https://www.ryde-technology.com/.well-known/assetlinks.json).
 The user subsequently signed in with Apple on an iPhone and on this Mac.
 The official Mac-compatible iPhone app opens its map and has a successful
-authenticated map response in its local HTTP cache. Independent retrieval and
-decryption through that direct rider API remain unverified; Skyss's guest
-route below needs neither that session nor its keys, and the direct API is
-needed only for Ryde's towns Skyss does not show.
+authenticated map response in its local HTTP cache. The later bridge proved
+live decryption without exporting the app's keys; fully independent proof
+generation remains unverified. Skyss's guest route needs neither the session
+nor its keys, and the direct API is needed only for towns Skyss does not show.
 
 ## Current status and how to resume
 
@@ -40,9 +44,10 @@ No additional SMS was requested during the 27 October recheck.
 
 Bergen is covered through Skyss since 28 October 2026, at the user's request
 of 27 October, and Larvik through Entur's `rydelarvik` since 31 October. The
-direct rider route, for Drammen, Kristiansand and Göteborg, still requires independent proof generation, response decryption
-and session-renewal tests. A successful app login alone does not establish
-that its session can be used by a server.
+direct rider bridge has now returned Drammen scooters. Continuous collection,
+coverage completeness, controlled shutdown and longer-lived session behavior
+still need validation before enabling it for Drammen, Kristiansand or Göteborg.
+Its signing dependency remains the official app running on the Mac.
 
 The `ScootRadar_Ryde_Play` AVD is retained for reference. The fresh verified
 APK, decompiled sources and private diagnostics are under
@@ -426,13 +431,14 @@ prove the iOS keys are hardware-bound or universally non-exportable. Do not repe
 these prompts without new evidence that addresses the failure. The existing app
 session still opens its map, but its cached response remains encrypted and its
 local diagnostic log records only decryption success, not the decrypted vehicle
-payload. Neither is a demonstrated server bridge. Broader coverage currently
-requires another verified data source or read-only feed/API access from Ryde;
-Google or SMS authentication alone does not supply the missing signing keys.
+payload. Neither disk output supplies a server bridge. The later live bridge
+uses the app's proofs with response-key translation; Google or SMS authentication
+alone does not supply the missing signing keys.
 
 Raw cache snapshots, session headers and diagnostics are private under
 `~/.cache/scootradar/rider-auth/ryde/mac-session/`, outside Git. No proxy
-certificate, network proxy or global security setting was changed.
+certificate, network proxy or global security setting was changed during these
+key-export checks.
 
 ### Read-only live heap and key-rotation trace, 2 November
 
@@ -455,15 +461,16 @@ session maintenance when needed, then activates the new local private key
 after acceptance. This route can replace the response-decryption key without
 exporting its old private key, but it still depends on the existing DPoP
 signing key for each signed map request. `/appRyde/registerDpopKey` is a
-separate path that obtains an attestation challenge. Neither live rotation nor
-an independent server map read has been tested.
+separate path that obtains an attestation challenge. At this stage neither live
+rotation nor an independent server map read had been tested; the 3 November
+bridge trials below subsequently verified native rotation.
 
 Static inspection of the installed Apple binary independently confirms both
 endpoints are present, along with session-rotation success and
 `requires_registration` log paths. This confirms rotation is implemented in
 the Apple app too. The strings do not establish when that path sends an App
 Attest proof or whether the live session can rotate without fresh registration;
-the server-side acceptance conditions remain unverified.
+the server-side acceptance conditions were unverified at this stage.
 
 The current Mac observation therefore improves confidence that the signing
 key is cached as software-backed key material in the app process, while
@@ -527,12 +534,11 @@ read-only status helper. It also returned `querySucceeded=false`; administrator
 access did not make this simulation interface usable. The private authentication
 file was removed after the command.
 
-The checked disk outputs do not supply a working bridge. The later scoped
-proxy capture provides another possible way to request Drammen coordinates,
-without moving the map UI; coordinate rewriting has not yet been tested.
-Exporting a decrypted result still requires an app interface or a verified
-key-translation path. Keeping Ryde open by itself does not establish either. Private snapshots and
-helper diagnostics are under `mac-session/drammen-bridge-20261102/` outside Git.
+The checked disk outputs did not supply a working bridge. The later scoped
+proxy trial below verified Drammen coordinate rewriting and response-key
+translation without moving the map UI. Keeping Ryde open by itself does not
+export its plaintext. Private snapshots and helper diagnostics from these
+location checks are under `mac-session/drammen-bridge-20261102/` outside Git.
 
 ### Scoped native-app capture succeeded, 3 November
 
@@ -572,16 +578,14 @@ closed. Captures and one-use administrator credentials stayed private; the
 credential files were removed after use. Raw exchanges are mode 0600 outside
 Git under `mac-session/bridge-proxy-20261102/`.
 
-The remaining proposed bridge uses the app for fresh DPoP proofs and substitutes
-a bridge-owned encryption public key during normal session-key rotation. It
-would decrypt responses and re-encrypt them to the app's original public key.
-Offline ECIES translation passed round-trip, wrong-recipient and tampering
-checks. Live key substitution, rollback and Drammen coordinate rewriting remain
-untested. DPoP itself does not bind the request body, as described in
-[RFC 9449 section 11.7](https://www.rfc-editor.org/rfc/rfc9449.html#section-11.7);
-additional Ryde checks may still prevent this approach. Simply removing the
-proxy after a substituted key was accepted could leave the app unable to
-read responses, so a verified restoration path is required before relying on it.
+The bridge uses the app for fresh DPoP proofs and substitutes a bridge-owned
+encryption public key during normal session-key rotation. It decrypts responses
+and re-encrypts them to the app's original public key. Offline ECIES translation
+passed round-trip, wrong-recipient and tampering checks. DPoP does not bind the
+request body, as described in [RFC 9449 section 11.7](https://www.rfc-editor.org/rfc/rfc9449.html#section-11.7).
+The live trials below validate that approach for the tested session. Removing
+the proxy while the bridge key is still bound can leave the app unable to read
+responses; restoration must be verified, not inferred from a rotation's 200.
 
 Static tracing of the installed Apple binary identifies the rotation schedule
 setter: it reads `rotateAfterSeconds`, stores the next Unix timestamp through
@@ -589,12 +593,88 @@ the app's security-data store, and defaults to three days when the field is
 absent. Its observed callers handle successful sign-in, registration and
 rotation. The sign-in path uses a fixed endpoint set; ordinary map responses
 and `modifyUserLogin` are not in it. The ordinary preferences snapshot contained
-no rotation timestamp. An observation-only experiment is prepared to shorten
-the interval in one successful fresh Apple sign-in response and capture the
-following unmodified native rotation. Fixture checks cover successful-login
-selection, the one-change limit, and preservation of the token, keys and
-rotation request/response. This experiment has not yet run; it requires a
-fresh sign-in, beyond the earlier capture-only procedure.
+no rotation timestamp.
+
+The user then approved a fresh-sign-in observation. One successful Apple
+sign-in response's `rotateAfterSeconds` was shortened from 259200 to 1; its
+token and keys were unchanged. Reopening the app subsequently triggered a
+native rotation at `2026-11-03T21:20:17Z`, returning HTTP 200 and JSON
+`{"status":200,"rotateAfterSeconds":259200}`. That rotation request and response
+were passed through unchanged. The app remained signed in, and proxy and trust
+cleanup were independently verified again.
+
+The native rotation form contains `token`, `encJwk`, `ekt`, `dpopProof`,
+`timestamp`, `timeSign` and `userDevice`. The proposed key is a public P-256 JWK;
+its thumbprint equals the request's `ekt` (the new proposed key, rather than the
+previous key). DPoP appears in both a header and the form, and binds the rotation
+URL, method and token hash. Offline verification of the captured ES256 proof
+passed. A substitution test must therefore translate both `encJwk` and `ekt`
+while preserving that proof.
+
+### Live Drammen bridge, 3 November
+
+The user approved a five-minute trial that temporarily substitutes the response
+key, fetches one Drammen map, then restores an app-owned key. A fresh sign-in
+also remained authorized as recovery if the native-key transition failed.
+
+At `2026-11-03T21:37:26Z`, the bridge decrypted a successful map response for
+`cityId=43`, centre `59.744,10.205`, radius 10. It contained **100 scooters and
+zero e-bikes**. All 100 coordinates were within 1.1 km of the requested centre;
+the latitude range was 59.7350–59.7504 and longitude 10.1885–10.2243. The app's
+local log recorded successful decryption of the re-encrypted `key` at the same
+time. This establishes a real Drammen read and app-compatible translation.
+
+The live scooter entries carry `coordinate`, `distance`, `member`,
+`memberByString` and `rawScore`. `member` decodes to the same numeric identifier
+as `memberByString`; all 100 are distinct. These are hardware identifiers, not
+public scooter IDs to publish. The local GeoJSON export replaces them with keyed
+hashes scoped to that snapshot and includes no account or authentication data.
+Battery, range, rental eligibility and independent position timestamps are not
+provided by this observation. Exactly 100 rows suggests a possible cap; citywide
+completeness is unverified and this snapshot must not be called the entire fleet.
+
+The first native restoration request returned status 200, but the following
+map read triggered the app's session-security recovery error `4407` and its
+sign-in screen. The app was recovered through normal sign-in with the proxy
+removed. A 200 from the rotation alone therefore does not prove restoration.
+
+The repeat added key-identifier diagnostics and handling for a map body prepared
+with an older identifier. It also allowed more than a minute between accepting
+the bridge key and the restoration request. At `2026-11-03T21:53:49Z`, another
+fresh Drammen response decrypted to 100 scooters. It shared 99 identifiers with
+the earlier read, with changed coordinates for 22 of those scooters. This is
+repeatable fresh retrieval; it still does not supply a position update timestamp.
+
+At `2026-11-03T21:55:14Z`, native restoration returned status 200 and the normal
+259200-second interval. A following fresh map request already carried the new
+app-owned key identifier; no identifier correction was needed. Its response was
+HTTP 200/application status 200, and its ECIES envelope targeted that same key.
+The guard then restored networking and stopped listeners. This **verifies the
+native binding after restoration** in the repeat. The differing timing may have
+mattered, but the first failure's cause has not been isolated; do not attribute
+the success to the stale-identifier handler that was not exercised live.
+
+Both trials completed certificate/trust removal with user confirmation.
+Independent checks found the original Ethernet proxy configuration restored,
+the exact test certificate and trust entry absent, and localhost ports closed.
+The app remained on its signed-in, interactive map after the successful repeat.
+No ride or payment action was taken. The bridge is currently stopped; no
+persistent trust, LaunchAgent, public endpoint or production feed was enabled.
+
+The private implementation and evidence remain under
+`mac-session/bridge-proxy-20261102/`: `bridge_trial_addon.py`,
+`test_bridge_trial.py`, `export_snapshot.py`, the attended controller/supervisor,
+and archived captures. Six offline tests cover encryption translation,
+proof preservation, scope and stale-proof rejection, failed sign-in/rotation,
+undecryptable replies, and stale identifiers during restoration. Current trial
+state must be archived before a new run. The short-lived certificate must be
+checked for validity; an old approval dialog must never be reused.
+
+Next work is a longer bounded run validating native map cadence, recovery,
+coverage subdivision and stale-data handling, followed by a persistent collector
+with an explicit lifetime and shutdown procedure. The observed app log contains
+roughly minute-spaced successful map decryptions; this is a polling lead, not
+yet an unattended bridge uptime guarantee.
 
 
 Earlier trust-installation attempts timed out while macOS authorization was
@@ -665,9 +745,10 @@ There is also a session-portability requirement beyond obtaining an SMS:
 
 These Android checks establish client paths and server configuration, rather
 than authenticated Android enforcement. The subsequent Mac session confirms
-live DPoP enforcement for its iOS token, as described above. Access to its
-keys, independent decryption and renewal remain unverified; do not promise
-that one phone login will produce a portable bearer token.
+live DPoP enforcement for its iOS token, and the bounded bridge above proved
+response decryption and native key rotation. Exporting its signing key and
+independent proof generation remain unverified; a phone login does not produce
+a portable bearer token.
 
 ## Public sources rechecked on 27 October
 
@@ -784,6 +865,6 @@ evidence.
 
 No OTP was accepted during the emulator attempts. Apple sign-in subsequently
 established the app session described above. No ride, reservation, payment or
-support message was initiated. Request signing and app login are solved
-parts of this investigation; independent proofs, response decryption and
-renewal remain open work.
+support message was initiated. Request signing, app login and bounded bridge
+decryption are solved parts of this investigation; independent proof generation
+and continuous bridge operation remain open work.
