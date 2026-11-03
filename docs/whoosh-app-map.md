@@ -78,11 +78,20 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
 The search returned zero for larger viewports even though contained small
 views had scooters. A 0.05-degree view returned exactly 300. The collector
 therefore covers each ride polygon's envelope with views at most 0.04 degrees
-on either axis and subdivides any response of 300 or more. Disjoint polygons
+on either axis and subdivides any response of 300 or more, down to views
+under 0.0001 degrees (about 11 m) on a side. Disjoint polygons
 do not cause a sweep of the gap between them. Duplicate scooters at shared
 edges are merged. A failed view, persistent cap, unreviewed ride-area expansion,
 or budget of more than 512 requests fails the whole collection; partial results
 never replace the previous snapshot. HTTP-200 application errors also fail.
+
+Until 3 November 2026 the collector stopped after six cuts, at views of about
+70 m. That morning São Paulo's map had 392 scooters within some 36 by 29 m on
+Avenida Brigadeiro Faria Lima, in Pinheiros (no more than 3 at one point), and
+from 08:17 UTC every sweep of the city failed on that view, while its other
+2,600 scooters were spread as usual: 3,006 in all, found by a sweep that cut
+through the cluster. The API still kept each search to its view, and returned
+none outside the ride area (SCOOTRADAR-CACHE-65).
 
 Positions are `state.position.point.{lat,lng}`. Battery is `battery.power`;
 `battery.distanceToCharge.amount` defaults to kilometres in the app's

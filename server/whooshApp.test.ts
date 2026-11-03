@@ -102,6 +102,21 @@ describe('Whoosh map contract', () => {
     expect(counts().maps).toBe(5);
   });
 
+  it('parts a cluster too dense for views of about 70 m, as São Paulo\'s 392 scooters on 3 November 2026', async () => {
+    // 392 scooters within 0.0002 degrees, about 22 m, in one view of the sixth cut (0.018 / 64 degrees),
+    // and one more elsewhere. Like Whoosh, each search returns the scooters in its view, at most 300.
+    const cluster = Array.from({ length: 392 }, (_, i) =>
+      device(i + 10, 1.010041 + (i % 14) * 0.0002 / 14, 2.010041 + Math.floor(i / 14) * 0.0002 / 28));
+    const fleet = [device(1, 1.005, 2.005), ...cluster];
+    const { client } = await fixture({ map: body => {
+      const { upperLeft: a, bottomRight: b } = (body.clientSearchDevicesParams as { visibleArea: {
+        upperLeft: { lat: number; lng: number }; bottomRight: { lat: number; lng: number } } }).visibleArea;
+      return json({ devices: fleet.filter(({ state: { position: { point: p } } }) =>
+        p.lat >= a.lat && p.lat <= b.lat && p.lng >= a.lng && p.lng <= b.lng).slice(0, 300) });
+    } });
+    expect(await client.vehicles(REGION, coverage)).toHaveLength(393);
+  });
+
   it('fails the whole sweep when a later view fails', async () => {
     const { client } = await fixture({ map: (_body, count) => count === 1
       ? json({ devices: Array.from({ length: 300 }, (_, i) => device(i + 10)) }) : json({ error: 'failed' }, 503) });

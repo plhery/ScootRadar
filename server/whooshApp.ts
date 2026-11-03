@@ -14,6 +14,13 @@ const RETRY_MS = 60_000;
 const METADATA_MS = 3600_000;
 const VIEW_SPAN = 0.04;
 const VIEW_LIMIT = 300;
+/**
+ * A capped view is cut in four until it is narrower than this, about 11 m, on either side: on 3
+ * November 2026 São Paulo had 392 scooters within some 36 by 29 m on Avenida Brigadeiro Faria
+ * Lima, which six cuts of 0.04 degrees, views of about 70 m, could not part, and every sweep of
+ * the city failed from then on. A view this small that still holds 300 fails the sweep.
+ */
+const MIN_VIEW_SPAN = 0.0001;
 const REQUEST_BUDGET = 512;
 export const whooshMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
@@ -298,7 +305,7 @@ export class WhooshClient {
     const targets = nearestFirst(whooshMapViews(metadata.areas, coverage), view => view);
     const vehicles = sweep?.found ?? new Map<string, WhooshScooter>();
     let requests = 0;
-    const collect = async (bounds: MapBounds, depth: number): Promise<void> => {
+    const collect = async (bounds: MapBounds): Promise<void> => {
       if (++requests > REQUEST_BUDGET) throw new Error('Whoosh collection exceeds the request budget');
       const data = await this.api('/client/devices/searches', region, { clientSearchDevicesParams: {
         // These are the app's field names: its upperLeft is southwest, bottomRight northeast.
@@ -310,10 +317,12 @@ export class WhooshClient {
       const parsed = parseWhooshVehicles(data);
       if (!Array.isArray(devices)) throw new Error('Invalid Whoosh map response');
       if (devices.length >= VIEW_LIMIT) {
-        if (depth >= 6) throw new Error('Whoosh view remains capped after subdivision');
+        if (Math.min(bounds.north - bounds.south, bounds.east - bounds.west) < MIN_VIEW_SPAN) {
+          throw new Error('Whoosh view remains capped after subdivision');
+        }
         const lat = (bounds.south + bounds.north) / 2, lng = (bounds.west + bounds.east) / 2;
         for (const [south, north] of [[bounds.south, lat], [lat, bounds.north]]) {
-          for (const [west, east] of [[bounds.west, lng], [lng, bounds.east]]) await collect({ south, north, west, east }, depth + 1);
+          for (const [west, east] of [[bounds.west, lng], [lng, bounds.east]]) await collect({ south, north, west, east });
         }
         return;
       }
@@ -327,7 +336,7 @@ export class WhooshClient {
       }
       sweep?.done(bounds);
     };
-    for (const view of targets) await collect(view, 0);
+    for (const view of targets) await collect(view);
     return [...vehicles.values()];
   }
 }
