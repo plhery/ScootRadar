@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooter-neuss',
   topic: 'neuss',
   name: 'E-Scooter Neuss: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Neuss 2026: Anbieter, Regeln, Parkverbote',
-  description: 'E-Scooter Neuss: Voi, Dott, Bolt und Lime, wo du in Innenstadt und Parks nicht parkst, was die Stadt regelt und wie weit Vois Gebiet nach Düsseldorf reicht.',
-  headline: 'E-Scooter Neuss: Anbieter, Parkverbote, Regeln und der Weg nach Düsseldorf',
-  lede: 'Einen E-Scooter in Neuss leihst du ohne Führerschein bei Voi, Dott, Bolt oder Lime. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. Voi markiert laut seinem Datenfeed weite Teile der Innenstadt als Parkverbotszone, von Büchel und Niederstrasse bis zum Markt (Stand 26. Oktober 2026).',
+  title: 'E-Scooter Neuss 2026: Anbieter, Regeln, Parken',
+  description: 'E-Scooter Neuss: Voi, Dott, Bolt und Lime, wo du fährst und parkst, was in Parks gilt, was die Stadt den Anbietern vorgibt und der Weg nach Düsseldorf.',
+  headline: 'E-Scooter Neuss: Anbieter, Parken, Regeln und der Weg nach Düsseldorf',
+  lede: 'Einen E-Scooter in Neuss leihst du ohne Führerschein bei Voi, Dott, Bolt oder Lime. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. Die Stadt erlaubt jedem Anbieter laut eigener Auskunft höchstens 200 Scooter und schreibt vor, auf welchen Flächen sie abgestellt werden dürfen; wo du die Fahrt beenden kannst, zeigt dir die App. In Parks stellst du nach der Grünanlagenordnung keine Fahrzeuge ab.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Neuss',
@@ -16,33 +16,20 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Neuss?',
       blocks: [
-        'Vier Anbieter vermieten im Oktober 2026 E-Scooter in Neuss: **Voi**, **Dott** (früher Tier), **Bolt** und **Lime**. Im Juni 2025 nannte die Stadtverwaltung Tier, Bolt und Lime als die «bisherigen drei Anbieter» und Voi als den «im April 2025 neu hinzugekommenen vierten Anbieter». Voi veröffentlicht seine Daten über NRW.Mobidrom, das Mobilitätsdatenportal des Landes; seine Neusser Scooter stehen dort im Datensatz «Voi Düsseldorf». Dass Ryde, Zeus oder Bird in Neuss fahren, belegt keine offizielle Quelle (Stand 26. Oktober 2026).',
+        'In Neuss vermieten **Voi**, **Dott** (früher Tier), **Bolt** und **Lime** E-Scooter: Am Montag, 26. Oktober 2026, zeigte die [Karte von Neuss](map:de:Neuss) um 7:08 Uhr rund 270 Dott-, 120 Voi- und 190 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntag, 25. Oktober, rund 400 Lime-Scooter nach der letzten Zählung.',
         'Wie das Mieten in der App geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Neuss](map:de:Neuss) zeigt ScootRadar seit dem 24. Oktober 2026 Dott und Voi, seit dem 25. Oktober auch Bolt und Lime: von Dott den Standort, von Voi, Bolt und Lime auch den Akkustand. Am Montag, 26. Oktober, standen um 7:08 Uhr in Neuss rund 270 Dott-, 120 Voi- und 190 Bolt-Scooter. Lime ist eine eigene Zählung: rund 400 Scooter, abgeschlossen am Sonntag, 25. Oktober, um 13:19 Uhr. Das sind Momentaufnahmen, keine Flottengrössen.',
-        'Leihräder zeigt die Karte nicht, auch nicht die E-Bikes, die Tier und Bolt laut Stadt 2025 in Neuss anboten. Ebenso fehlt das Sharing der Stadtwerke an der Mobilstation am Berliner Platz mit «jeweils zwei E-Autos, zwei Elektroroller (sogenannte Scooter)» und zwei E-Fahrrädern (Stadt Neuss, März 2026).',
+        'Den Preis zeigt dir die App vor dem Entsperren; was Falschparken beim Anbieter kostet, steht in seinen Bedingungen in der App.',
+        'Ausser den Leih-Scootern gibt es Sharing der Stadtwerke an ihren Mobilstationen: am Berliner Platz etwa «jeweils zwei E-Autos, zwei Elektroroller (sogenannte Scooter)» und zwei E-Fahrräder (Stadt Neuss, März 2026).',
       ],
     },
     {
-      heading: 'Was kostet ein E-Scooter in Neuss?',
+      heading: 'E-Scooter in Neuss parken: was Stadt und App vorgeben',
       blocks: [
-        'Einen Tarif für Neuss nennt die Stadt nicht. Den Preis zeigt dir die App vor dem Entsperren; was Falschparken beim Anbieter kostet, steht in seinen Bedingungen in der App.',
-      ],
-    },
-    {
-      heading: 'E-Scooter in Neuss parken: Innenstadt, Hauptbahnhof, Abstellzonen',
-      blocks: [
-        'Die Erlaubnisse, die die Stadt den Anbietern heute erteilt, hat sie nicht veröffentlicht. Öffentlich ist nur eine ältere: die Sondernutzungserlaubnis für Spin vom 16. April 2021, gültig bis Ende März 2022; Spin hat den Betrieb laut Stadt Ende Januar 2022 bundesweit eingestellt. Danach durften Scooter unter anderem weder bereitstehen noch eine Miete beginnen oder enden im «Hauptstrassenzug (Oberstrasse ab Peter-Wilhelm-Kallen-Strasse; Büchel, Niederstrasse, Krefelder Strasse)», in Park- und Grünanlagen, Fussgängerzonen ohne Radverkehr, auf Spielplätzen, Friedhöfen und Brücken. Auf dem Gehweg mussten 2,0 m frei bleiben. Ob die heutigen Erlaubnisse dasselbe verlangen, sagt die Stadt nicht.',
-        'Im Frühjahr 2025 richtete die Stadt laut Verwaltung (Juni 2025) am Rand der Geschäftsgebiete drei feste Abstellzonen ein, «in deren Umkreis eine Beendigung des Mietvorgangs nicht möglich ist»: in Gnadental (Parkplatz an der Erft), Grimlinghausen (Kasterstrasse) und Reuschenberg (Erprather Strasse). Zonen in Holzheim und Grefrath prüfte sie damals. Feste Flächen in der Innenstadt hielt die Verwaltung nicht für nötig; dafür müssten nach ihrer Schätzung rund 50 Pkw-Stellplätze wegfallen.',
-        'Dazu kommen die Zonen der Anbieter. Vois Datenfeed markiert einen grossen Teil der Innenstadt als Parkverbotszone (Stand 26. Oktober 2026). Abgeglichen mit dem amtlichen Adressverzeichnis von Geobasis NRW liegen darin:',
+        'Fürs Parken gelten bundesweit die Regeln für Fahrräder: Abstellen auf dem Gehweg ist erlaubt, solange niemand behindert oder gefährdet wird. Ab 1. März 2027 steht das ausdrücklich in der StVO, und Falschparken auf Geh- oder Radweg kostet dann ab 55 €.',
+        'Leih-Scooter darf in Neuss nur aufstellen, wer eine Sondernutzungserlaubnis der Stadt hat. Laut Stadt (Januar 2022) schreibt sie Flächen vor, auf denen die Scooter angeboten und abgestellt werden dürfen. Welche das für deinen Anbieter sind, zeigt dir seine App: Dort endet die Fahrt, anderswo lässt sie dich nicht abschliessen.',
+        'In Parks und anderen Grünanlagen ist das «Parken und Abstellen von Fahrzeugen» nach der Grünanlagenordnung der Stadt ohne ausdrückliche Erlaubnis nicht gestattet; nach unserer Lesart gilt das auch für E-Scooter. Beende die Fahrt am Rand des Parks.',
         {
-          list: [
-            '**Innenstadt:** Büchel und Freithof ganz, Niederstrasse und Krefelder Strasse fast ganz, der grösste Teil des Markts und die Oberstrasse ab Hausnummer 97; vom Münsterplatz die Häuser 23 bis 26a, vom Glockhammer die Häuser 2, 4 und 6.',
-            '**Am Hauptbahnhof:** der Theodor-Heuss-Platz fast ganz und der grösste Teil des Marienkirchplatzes.',
-          ],
-        },
-        'Ob Voi in der Zone feste Abstellpunkte hat, zeigt dir die App. Ausserhalb von Vois Fahrgebiet liegen laut Feed rund drei von zehn Neusser Adressen. Die Zonen von Dott, Bolt und Lime in Neuss zeigt nur deren App.',
-        {
-          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone, und die Miete läuft weiter. Fahr ein Stück weiter: Die App zeigt, wo du abstellen darfst.',
+          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du ausserhalb der Flächen, auf denen dein Anbieter abstellen lässt, und die Miete läuft weiter. Fahr ein Stück weiter: Die App zeigt, wo du abstellen darfst.',
         },
       ],
     },
@@ -76,48 +63,41 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter in Bus und Bahn: Rheinbahn, Stadtwerke Neuss, VRR und DB',
+      heading: 'E-Scooter in Bus und Bahn: Rheinbahn und Stadtwerke Neuss',
       blocks: [
         'Die Rheinbahn fährt mit der U75 und der 709 ab dem Neusser Hauptbahnhof nach Düsseldorf. Ob und wie du einen eigenen E-Scooter in ihren Bahnen und Bussen mitnehmen darfst, fragst du vor der Fahrt bei ihr nach.',
-        'In den Bussen der Stadtwerke Neuss gelten wie im ganzen VRR die Beförderungsbedingungen Nahverkehr NRW (gültig ab 1. Januar 2026): Danach zählt ein «vollständig im kleinstmöglichen Packmass» zusammengeklappter E-Tretroller als Handgepäck. Ein eigenes Verbot nennen die Stadtwerke auf ihrer Website nicht (Stand 26. Oktober 2026).',
-        'Für die Fernzüge gelten die Beförderungsbedingungen der Deutschen Bahn; prüf vor der Fahrt, ob und wie dein eigener E-Scooter mit darf.',
+        'In den Bussen der Stadtwerke Neuss gelten die Beförderungsbedingungen Nahverkehr NRW (gültig ab 1. Januar 2026): Danach zählt ein «vollständig im kleinstmöglichen Packmass» zusammengeklappter E-Tretroller als Handgepäck. Jedes Verkehrsunternehmen darf E-Tretroller aber per Hausrecht ausschliessen; frag vor der Fahrt bei den Stadtwerken nach. Leih-Scooter lassen sich nicht zusammenklappen und zählen damit nicht als Handgepäck.',
+        'Ob ein eigener E-Scooter in S-Bahn, Regional- oder Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
       ],
     },
     {
       heading: 'Mit dem E-Scooter von Neuss nach Düsseldorf: was über die Stadtgrenze gilt',
       blocks: [
-        'Jeder Anbieter zieht die Grenze anders:',
-        {
-          list: [
-            '**Voi:** Vois Fahrgebiet um Neuss reicht auf der linken Rheinseite nach Düsseldorf hinein; Luegallee und Hansaallee etwa liegen darin. Burgplatz, Marktplatz, Königsallee und Konrad-Adenauer-Platz am Düsseldorfer Hauptbahnhof liegen in einem eigenen Voi-Fahrgebiet rechts des Rheins.',
-            '**Dott, Bolt und Lime:** Wo du eine Fahrt über die Stadtgrenze hinweg beenden kannst, zeigt dir die App.',
-          ],
-        },
+        'Neuss und Düsseldorf liegen nah beieinander: Laut Stadt hatten 2021 bei einem einzigen Anbieter 7.500 Fahrten ihren Start oder ihr Ziel in Düsseldorf. Ob du eine Fahrt aus Neuss drüben beenden darfst und wo, zeigt dir die App deines Anbieters; jeder zieht die Grenze anders. Ohne Scooter kommst du mit der U75 und der 709 der Rheinbahn ab dem Neusser Hauptbahnhof hinüber.',
         'Was dich drüben erwartet, steht in [E-Scooter in Düsseldorf](guide:dusseldorf); freie Scooter zeigt die [Karte von Düsseldorf](map:de:Düsseldorf).',
       ],
     },
     {
       heading: 'Was die Stadt Neuss für Leih-Scooter regelt',
       blocks: [
-        'Die Erlaubnis für Spin von 2021 erteilte die Stadt als Sondernutzung nach dem Strassen- und Wegegesetz NRW, für ein Jahr und höchstens 200 Scooter. Im Juni 2025 schrieb die Verwaltung, Tier, Bolt und Lime hätten «ihr jeweiliges Kontingent von maximal 200 Scootern im Wesentlichen ausgeschöpft». Die heutigen Erlaubnisse hat die Stadt nicht veröffentlicht.',
+        'Wer in Neuss Leih-Scooter anbietet, braucht laut Stadt (Januar 2022) eine Sondernutzungserlaubnis, die jeweils auf ein Jahr befristet ist. Sie begrenzt die Zahl auf höchstens 200 Geräte je Anbieter für das Stadtgebiet und schreibt die Flächen vor, auf denen die Scooter angeboten und abgestellt werden dürfen. Wie die Anbieter mit Beschwerden umgehen und wie schnell sie sie beseitigen, beeinflusst laut Stadt, ob die Erlaubnis verlängert wird.',
         'Die Sondernutzungssatzung (Fassung vom 21. Mai 2025) führt für «Aufbauten zum Zwecke der Mobilität ausserhalb von Mobilstationen», darunter E-Scooter, 3 € pro Quadratmeter und Jahr.',
-        'Am 2. Juni 2026 stimmte der Mobilitäts- und Infrastrukturausschuss einstimmig drei Anträgen zu E-Scootern zu. Laut CDU-Antrag soll die Verwaltung über die bestehenden Regeln und ihre Kontrolle berichten und binnen sechs Monaten eine Beschlussvorlage für weitere Regeln vorlegen, vor allem gegen behinderndes Abstellen. Laut FDP/UWG-Antrag soll sie Abstellflächen in der Innenstadt vorschlagen und mit den Anbietern klären, dass die Apps darauf hinweisen. Eine Vorlage dazu fanden wir im Ratsinformationssystem bis zum 26. Oktober 2026 nicht.',
-        '**Nachts und im Winter:** Eine Sperrzeit oder Winterpause nennt die Stadt nicht.',
+        'Damals galt die Hauptkritik Scootern, die sich am Rand des Geschäftsgebiets häuften, etwa in Gnadental, Holzheim oder Grefrath. Gefragt waren sie trotzdem: Ein Anbieter zählte 2021 laut Stadt rund 100.000 Ausleihen; ein Scooter wurde im Schnitt 1,5-mal am Tag gemietet, eine Fahrt war im Schnitt 1,2 km lang.',
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Neuss nutzen?',
-      answer: 'Die von Voi, Dott, Bolt und Lime (Stand Oktober 2026). Einen Führerschein brauchst du nicht; das Mindestalter zeigt die App. Freie Scooter aller vier zeigt auch die [Live-Karte von Neuss](map:de:Neuss).',
+      answer: 'Die von Voi, Dott, Bolt und Lime (Stand Oktober 2026). Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
     },
     {
-      question: 'Was kostet ein E-Scooter in Neuss?',
-      answer: 'Einen Neusser Tarif nennt die Stadt nicht (Stand 26. Oktober 2026); den Preis zeigt dir die App vor dem Entsperren.',
+      question: 'Wie viele E-Scooter darf ein Anbieter in Neuss aufstellen?',
+      answer: 'Laut Stadt (Januar 2022) höchstens 200 je Anbieter. So begrenzt die Sondernutzungserlaubnis, die jeweils für ein Jahr gilt, die Menge; sie schreibt auch die Flächen vor, auf denen Scooter angeboten und abgestellt werden dürfen.',
     },
     {
       question: 'Warum kann ich meine Fahrt in der Neusser Innenstadt nicht beenden?',
-      answer: 'Voi markiert laut seinem Datenfeed Büchel, Freithof, Niederstrasse, Krefelder Strasse, den grössten Teil des Markts und am Hauptbahnhof den Theodor-Heuss-Platz als Parkverbotszone (Stand 26. Oktober 2026). Fahr ein Stück weiter; die App zeigt dir, auch bei Dott, Bolt und Lime, wo du abstellen darfst.',
+      answer: 'Dann stehst du ausserhalb der Flächen, auf denen dein Anbieter das Abstellen erlaubt, und die Miete läuft weiter. Die Sondernutzungserlaubnis der Stadt schreibt vor, wo Scooter abgestellt werden dürfen. Fahr ein Stück weiter; die App zeigt dir, wo du die Fahrt beenden kannst.',
     },
     {
       question: 'Darf ich einen E-Scooter in Rheinbahn oder Bus mitnehmen?',
@@ -125,7 +105,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem Leih-Scooter von Neuss nach Düsseldorf fahren?',
-      answer: 'Mit Voi reicht das Fahrgebiet auf der linken Rheinseite nach Düsseldorf hinein; die Düsseldorfer Innenstadt rechts des Rheins liegt in einem eigenen Voi-Fahrgebiet. Bei Dott, Bolt und Lime zeigt die App, wo du abstellen darfst.',
+      answer: 'Ob du eine Fahrt in Düsseldorf beenden darfst und wo, zeigt dir die App deines Anbieters; jeder zieht die Grenze anders. In Düsseldorf gelten eigene Regeln, mehr in [E-Scooter in Düsseldorf](guide:dusseldorf).',
     },
     {
       question: 'Darf ich im Park mit dem E-Scooter fahren oder ihn dort abstellen?',
@@ -134,19 +114,12 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Stadt Neuss: Wie fährt Neuss mit den E-Scootern? (31. Januar 2022)', url: 'https://www.neuss.de/news/2022/01/31/wie-faehrt-neuss-mit-den-e-scootern' },
-    { title: 'Stadt Neuss, Ratsinformationssystem: Sondernutzungserlaubnis für E-Scooter (16. April 2021, PDF)', url: 'https://ris-neuss.itk-rheinland.de/sessionnetneubi/getfile.asp?id=143127&type=do' },
-    { title: 'Stadt Neuss, Ratsinformationssystem: Niederschrift des Unterausschusses Mobilität vom 3. Juni 2025 (PDF)', url: 'https://ris-neuss.itk-rheinland.de/sessionnetneubi/getfile.asp?id=232715&type=do' },
-    { title: 'Stadt Neuss, Ratsinformationssystem: Antrag der CDU zu E-Scootern im öffentlichen Raum (69/0468/2026, PDF)', url: 'https://ris-neuss.itk-rheinland.de/sessionnetneubi/getfile.asp?id=244835&type=do' },
-    { title: 'Stadt Neuss, Ratsinformationssystem: Antrag der FDP/UWG zum Abstellen von Leih-E-Scootern (22. Mai 2026, PDF)', url: 'https://ris-neuss.itk-rheinland.de/sessionnetneubi/getfile.asp?id=245004&type=do' },
-    { title: 'Stadt Neuss, Ratsinformationssystem (OParl): Mobilitäts- und Infrastrukturausschuss vom 2. Juni 2026, mit Ergebnissen', url: 'https://ris-oparl.itk-rheinland.de/Oparl/bodies/0009/meetings/8068' },
     { title: 'Stadt Neuss: Grünanlagenordnung (29. März 2019, Fassung vom 14. Juli 2025)', url: 'https://www.neuss.de/rathaus/ortsrecht/67/04' },
     { title: 'Stadt Neuss: Sondernutzungssatzung (Fassung vom 21. Mai 2025)', url: 'https://www.neuss.de/rathaus/ortsrecht/69/02' },
     { title: 'Stadt Neuss: Stadtwerke haben weitere fünf Mobilstationen in Betrieb genommen (5. März 2026)', url: 'https://www.neuss.de/news/2026/03/05/stadtwerke-haben-weitere-fuenf-mobilstationen-in-neuss-in-betrieb-genommen' },
     { title: 'Stadt Neuss: Gleisarbeiten der Rheinbahn am Neusser Hauptbahnhof (12. März 2024)', url: 'https://www.neuss.de/news/2024/03/12/gleisarbeiten-der-rheinbahn-am-neusser-hauptbahnhof' },
     { title: 'Stadt Neuss: SB53 mit verkürztem Linienweg (4. August 2025)', url: 'https://www.neuss.de/presse/meldungen/2025/08/04/sb53-mit-verkuerztem-linienweg' },
-    { title: 'Geobasis NRW: Gebäudereferenzen NW, amtliche Adressen (open.nrw)', url: 'https://open.nrw/dataset/172a0ba8-d470-47c1-ac89-b85f8190ac7e' },
     { title: 'Beförderungsbedingungen Nahverkehr NRW, gültig ab 1. Januar 2026 (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
-    { title: 'NRW.Mobidrom: Datensatz «Voi Düsseldorf» der Voi Technology Germany GmbH', url: 'https://www.mobilitaetsdaten.nrw/dataset/voi-duesseldorf' },
   ],
 };
 
