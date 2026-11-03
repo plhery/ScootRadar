@@ -279,6 +279,7 @@ import uppsalaEn from './en/e-scooters-uppsala';
 import orebroEn from './en/e-scooters-orebro';
 import spokaneEn from './en/e-scooters-spokane';
 import charlotteEn from './en/e-scooters-charlotte';
+import winstonSalemEn from './en/e-scooters-winston-salem';
 import sacramentoEn from './en/e-scooters-sacramento';
 import longBeachEn from './en/e-scooters-long-beach';
 import kyotoEn from './en/e-scooters-kyoto';
@@ -654,6 +655,7 @@ export const GUIDES: readonly Guide[] = [
   orebroEn,
   spokaneEn,
   charlotteEn,
+  winstonSalemEn,
   sacramentoEn,
   longBeachEn,
   kyotoEn,
