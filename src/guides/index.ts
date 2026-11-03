@@ -269,6 +269,7 @@ import innsbruckDe from './de/e-scooter-innsbruck';
 import malmoEn from './en/e-scooters-malmo';
 import austinEn from './en/e-scooters-austin';
 import gothenburgEn from './en/e-scooters-gothenburg';
+import halmstadEn from './en/e-scooters-halmstad';
 import sindelfingenDe from './de/e-scooter-sindelfingen';
 import tampereEn from './en/e-scooters-tampere';
 import linkopingEn from './en/e-scooters-linkoping';
@@ -299,6 +300,7 @@ import gavleEn from './en/e-scooters-gavle';
 import boulderEn from './en/e-scooters-boulder';
 import fortCollinsEn from './en/e-scooters-fort-collins';
 import yonkersEn from './en/e-scooters-yonkers';
+import newRochelleEn from './en/e-scooters-new-rochelle';
 import hartfordEn from './en/e-scooters-hartford';
 import nagoyaEn from './en/e-scooters-nagoya';
 import orlandoEn from './en/e-scooters-orlando';
@@ -648,6 +650,7 @@ export const GUIDES: readonly Guide[] = [
   malmoEn,
   austinEn,
   gothenburgEn,
+  halmstadEn,
   sindelfingenDe,
   tampereEn,
   linkopingEn,
@@ -678,6 +681,7 @@ export const GUIDES: readonly Guide[] = [
   boulderEn,
   fortCollinsEn,
   yonkersEn,
+  newRochelleEn,
   hartfordEn,
   nagoyaEn,
   orlandoEn,
