@@ -30,9 +30,9 @@ const guide: Guide = {
     {
       heading: 'Wo darfst du mit dem E-Scooter in Linz fahren?',
       blocks: [
-        'Seit dem 1. Mai 2026 regelt § 68a der Strassenverkehrsordnung (StVO) das «Rollerfahren». Ein E-Scooter mit höchstens 600 Watt und 25 km/h gilt als Klein- und Miniroller (§ 2 Abs. 1 Z 22a StVO), und für dich gelten die Regeln für Radfahrer. Ist er stärker oder schneller, gilt er als Moped.',
+        'Seit dem 1. Mai 2026 regelt § 68a der Strassenverkehrsordnung (StVO) das «Rollerfahren». Ein E-Scooter mit höchstens 600 Watt und 25 km/h gilt als Klein- und Miniroller (§ 2 Abs. 1 Z 22a StVO), und für dich gelten die Regeln für Radfahrer.',
         'Gibt es eine **Radfahranlage**, musst du sie benützen. So heisst in Österreich alles, was für Räder gebaut ist, vom Radweg bis zum Radfahrstreifen. Sonst fährst du auf der Fahrbahn. Auf dem **Gehsteig**, wie der Gehweg an der Strasse in Österreich heisst, und auf reinen Gehwegen darfst du nicht fahren, und über den **Schutzweg**, den Zebrastreifen, schiebst du.',
-        'In eine Fussgängerzone darfst du nur, wo die Behörde sie für Räder und E-Scooter geöffnet hat, und dann im Schritttempo; ebenso langsam fährst du in der Wohnstrasse. In einer **Begegnungszone**, einer Strasse, die sich alle teilen, gilt höchstens 20 km/h, und Fussgänger darfst du nicht gefährden.',
+        'In eine Fussgängerzone darfst du nur, wo die Behörde sie für Räder und E-Scooter geöffnet hat, und dann im Schritttempo; ebenso langsam fährst du in der Wohnstrasse. In einer **Begegnungszone**, einer Strasse, die sich alle teilen, gilt höchstens 20 km/h, ausser die Behörde hat 30 km/h verordnet, und Fussgänger darfst du weder gefährden noch behindern (§ 76c StVO).',
         '**Tempo der Leih-Scooter:** Laut Stadt sind Leih-Scooter im übrigen Stadtgebiet auf 20 km/h begrenzt, in sensiblen Bereichen auf 10 km/h, etwa in Fussgängerzonen und in Parkanlagen, soweit das Fahren dort nicht ohnehin verboten ist. Das ist eine Drosselung, kein Gesetz: In der Fussgängerzone verlangt die StVO Schritttempo.',
       ],
     },
