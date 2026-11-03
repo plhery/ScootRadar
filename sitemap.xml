@@ -177,7 +177,7 @@
 <xhtml:link rel="alternate" hreflang="es" href="https://scootradar.com/es/guias" />
 <xhtml:link rel="alternate" hreflang="is" href="https://scootradar.com/is/leidarvisar" />
 <xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides" />
-<lastmod>2026-11-02T00:00:00.000Z</lastmod>
+<lastmod>2026-11-03T00:00:00.000Z</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.6</priority>
 </url>
@@ -2336,6 +2336,12 @@
 <priority>0.7</priority>
 </url>
 <url>
+<loc>https://scootradar.com/guides/e-scooters-szombathely</loc>
+<lastmod>2026-11-03T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
 <loc>https://scootradar.com/it/guide/monopattini-sharing-rimini</loc>
 <lastmod>2026-10-30T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
@@ -2650,6 +2656,12 @@
 <url>
 <loc>https://scootradar.com/de/ratgeber/e-scooter-meerbusch</loc>
 <lastmod>2026-11-02T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/de/ratgeber/e-scooter-wels</loc>
+<lastmod>2026-11-03T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
