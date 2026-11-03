@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-muenchen',
   topic: 'munich',
-  name: 'E-Scooter München: Anbieter, Preise, Parken',
-  title: 'E-Scooter mieten in München 2026: Anbieter und Preise',
-  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, ab 18 ohne Führerschein. Zehn Minuten kosten bei Dott 4 €. Tabu: Englischer Garten, U-Bahn.',
-  headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
-  lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten nach Dotts veröffentlichtem Tarif (Stand 30. Oktober 2026) 4 €; bei Voi, Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
+  name: 'E-Scooter München: Anbieter, Regeln, Parken',
+  title: 'E-Scooter mieten in München 2026: Anbieter, Parken, Wiesn',
+  description: 'E-Scooter in München leihen: Dott, Lime, Voi, Bolt, ohne Führerschein. Wo du in der Altstadt parkst, was auf der Wiesn gilt. Tabu: Englischer Garten, U-Bahn.',
+  headline: 'E-Scooter München: Anbieter, Abstellflächen und was auf der Wiesn gilt',
+  lede: 'Einen E-Scooter in München mietest du ohne Führerschein bei Dott, Lime, Voi oder Bolt; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'de:München',
@@ -17,45 +17,25 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in München?',
       blocks: [
         'In München vermieten **Dott**, **Lime**, **Voi** und **Bolt** E-Scooter; diese vier Anbieter nennen die Stadt und der Verkehrsverbund MVV. TIER heisst heute Dott.',
-        'ScootRadar zeigt auf der [Karte rund um München](map:de:München) Dott, Voi, Lime und Bolt: am Freitag, 30. Oktober 2026, um 9:27 Uhr rund 3400 Dott-, 6700 Voi- und 3600 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 9400 Lime-Scooter nach der letzten Zählung. Bei Dott zeigt die Karte auch Reichweite und Preis, bei Voi, Bolt und Lime den Akkustand.',
-        'Gemietet wird in der App des Anbieters, bei Dott und Voi auch in der MVGO-App der MVG: registrieren, Zahlungsart hinterlegen, QR-Code scannen. Alle vier vermieten laut ihren Bedingungen nur ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-      ],
-    },
-    {
-      heading: 'Was kostet ein E-Scooter in München?',
-      blocks: [
-        'Du zahlst fürs Entsperren und pro Minute. Dott veröffentlicht seinen Münchner Tarif in einem offenen Datenfeed. Bei Voi, Lime und Bolt zeigt dir die App den Preis für München.',
-        {
-          table: {
-            caption: 'E-Scooter-Preise in München (veröffentlichte Tarife, Stand 30. Oktober 2026)',
-            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
-            rows: [
-              ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
-              ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
-              ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
-              ['Bolt', 'kleine Gebühr, Betrag nicht genannt', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
-            ],
-          },
-        },
-        'Voi schreibt, dass Preise je nach Ort, Zeit und Fahrzeug abweichen können; Lime rechnet laut seinen deutschen Bedingungen jede angefangene Minute voll ab. Verbindlich ist der Preis in der App.',
-        'Wer oft fährt, kann mit Paketen und Abos sparen, in denen das Entsperren inklusive ist: bei Voi Minutenpakete und der Voi Pass, bei Bolt Pässe ab 0,99 € im Monat (Preis für Deutschland).',
+        'Am Freitag, 30. Oktober 2026, um 9:27 Uhr zeigte die [Karte rund um München](map:de:München) rund 3400 Dott-, 6700 Voi- und 3600 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 9400 Lime-Scooter nach der letzten Zählung.',
+        'Gemietet wird in der App des Anbieters: registrieren, Zahlungsart hinterlegen, QR-Code scannen. Das Mindestalter und den Preis zeigt dir die App vor dem Entsperren; das Gesetz erlaubt E-Scooter ab 14. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Wo darf man in München E-Scooter fahren? Altstadt, Englischer Garten, Parks',
       blocks: [
-        'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, auch die zwischen Stachus und Marienplatz (Neuhauser Strasse und Kaufingerstrasse). Bei Dott sind sie und der Viktualienmarkt Fahrverbotszonen: Dort steigst du ab und schiebst.',
+        'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, auch die zwischen Stachus und Marienplatz (Neuhauser Strasse und Kaufingerstrasse): Dort steigst du ab und schiebst.',
         'Im **Englischen Garten** sind E-Scooter als Kraftfahrzeuge nach der Landschaftsschutzverordnung der Stadt verboten. Das gilt laut Bayerischer Schlösserverwaltung «auch für abgestellte E-Scooter». Laut Stadt sind Fahren und Abstellen auch im Schlosspark Nymphenburg, im Hofgarten, in den Maximiliansanlagen und in allen Landschaftsschutzgebieten verboten.',
-        'Dott sperrt auch den Olympiapark weitgehend fürs Fahren, und am Flaucher an der Isar kannst du einen Dott nicht abstellen (Stand 30. Oktober 2026). Jede App zeigt ihre eigenen Sperrzonen.',
+        'Wo ein Anbieter das Fahren oder Abstellen zusätzlich sperrt, etwa in grossen Parks oder an der Isar, zeigt dir seine App.',
         'Unser Rat: Quere Tramschienen möglichst im rechten Winkel, damit das kleine Vorderrad nicht in die Rille rutscht. München ist meist flach; bergauf geht es vor allem an den Isarhängen, etwa am Gasteig oder am Nockherberg.',
       ],
     },
     {
-      heading: 'E-Scooter in München abstellen: Altstadtring und 100-Meter-Zonen',
+      heading: 'E-Scooter in München abstellen: Altstadtring und Gehweg',
       blocks: [
         'Innerhalb des **Altstadtrings** kannst du die Fahrt seit dem 5. August 2022 nur auf ausgewiesenen Abstellflächen beenden, etwa am Stachus, am Rindermarkt, am Sendlinger Tor oder in der Maximilianstrasse. Bei Veranstaltungen kann eine Fläche zeitweise aufgehoben sein; die App zeigt, welche gerade gilt.',
-        'In der ganzen Stadt entstehen geteilte Abstellflächen für Scooter und Leihräder, meist auf früheren Autoparkplätzen: Ende Juni 2026 gab es 365, geplant sind 675. Im Umkreis von 100 m um jede dieser Flächen beendest du die Fahrt nur auf der Fläche selbst. Zoomst du auf der [Karte](map:de:München) hinein, siehst du die Abstellflächen, Park- und Fahrverbotszonen der Stadt und die Zonen von Dott.',
-        'Überall sonst stellst du den Scooter frei ab:',
+        'In der ganzen Stadt baut München Abstellflächen für Leih-Scooter aus: Im April 2024 gab es laut dpa 375, bis 2026 sollten es 675 werden. Zoomst du auf der [Karte](map:de:München) hinein, siehst du die Abstellflächen und die Park- und Fahrverbotszonen der Stadt.',
+        'Ausserhalb der Altstadt stellst du den Scooter frei ab, nach der Selbstverpflichtung der Anbieter so:',
         {
           list: [
             'Auf dem Gehweg lässt du mindestens 1,80 m frei.',
@@ -65,7 +45,7 @@ const guide: Guide = {
           ],
         },
         {
-          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in der Altstadt neben statt auf einer Abstellfläche, im 100-Meter-Umkreis einer Fläche oder in einer Sperrzone des Anbieters. Fahr auf die nächste Fläche oder aus der Zone hinaus: Solange die Fahrt läuft, zahlst du weiter.',
+          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in der Altstadt neben statt auf einer Abstellfläche oder in einer Sperrzone. Fahr auf die nächste Fläche oder aus der Zone hinaus: Solange die Fahrt läuft, zahlst du weiter.',
         },
         'Mach am Ende ein Foto vom abgestellten Scooter, auch wenn die App keins verlangt: Es belegt, wie du ihn hinterlassen hast, falls der Anbieter später eine Gebühr verlangt.',
       ],
@@ -74,19 +54,7 @@ const guide: Guide = {
       heading: 'Was kostet Falschparken mit dem E-Scooter?',
       blocks: [
         'Behinderst du mit dem abgestellten Scooter andere, können die kommunale Verkehrsüberwachung oder die Polizei nach dem allgemeinen Bussgeldkatalog 20 € verlangen, gefährdest du sie, 30 €. Ab 1. März 2027 kostet unzulässiges Parken auf Geh- oder Radweg ab 55 €.',
-        'Dazu kommt, was die Anbieter selbst berechnen:',
-        {
-          table: {
-            caption: 'Was die Anbieter fürs Falschparken berechnen (deutsche Nutzungsbedingungen, Stand Oktober 2026)',
-            head: ['Anbieter', 'Was es kosten kann'],
-            rows: [
-              ['Dott', 'Bis 300 € fürs Einsammeln, wenn du Anweisungen zum Abstellen oder Abschliessen missachtest; Bussgelder der Behörden plus 50 € Bearbeitungsgebühr'],
-              ['Voi', '25 € bei einem Verstoss gegen die Parkregeln, wobei Voi möglichst zuerst mahnen will; Bussgelder und Gebühren der Behörden gibt Voi an dich weiter'],
-              ['Bolt', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs; Bussgelder plus bis 30 € Bearbeitungsgebühr (Bedingungen gültig ab 1. Dezember 2026)'],
-              ['Lime', 'Keine feste Gebühr; Bussgelder, Abschlepp- und Verwahrkosten, die du verursachst, gibt Lime weiter'],
-            ],
-          },
-        },
+        'Was ein Anbieter selbst fürs Falschparken berechnet, steht in seinen Bedingungen; die App zeigt sie dir.',
       ],
     },
     {
@@ -100,22 +68,22 @@ const guide: Guide = {
             '**Von 15 bis 6 Uhr:** Ausleihen nur nach bestandenem Reaktionstest in der App.',
           ],
         },
-        'Die offizielle Seite oktoberfest.de zählt Hackerbrücke, Hauptbahnhof und Stachus zur Sperrzone ab 17 Uhr und rät: «E-Scooter und Wiesn sind keine gute Kombination.» Die Zonen und das Zeitfenster ab 17 Uhr gibt es seit 2019. Rechne 2027 mit ähnlichen Regeln und prüf sie in der App, bevor du losfährst.',
-        'Bei Kontrollen rund um die Wiesn 2022 stellte die Polizei 314 Trunkenheitsfahrten mit E-Scootern fest, 2019 waren es 419. Auf dem Scooter gelten dieselben Promillegrenzen wie im Auto, mit Folgen auch für deinen Autoführerschein (siehe unten).',
+        'Die offizielle Seite oktoberfest.de zählt Hackerbrücke, Hauptbahnhof und Stachus zur Sperrzone ab 17 Uhr und rät: «E-Scooter und Wiesn sind keine gute Kombination.» Rechne 2027 mit ähnlichen Regeln und prüf sie in der App, bevor du losfährst.',
+        'Der Reaktionstest soll laut Stadt daran erinnern, dass auf dem E-Scooter dieselben Promillegrenzen gelten wie im Auto, mit Folgen auch für deinen Autoführerschein (siehe unten).',
       ],
     },
     {
       heading: 'E-Scooter in U-Bahn, Tram und S-Bahn: was MVG und MVV erlauben',
       blocks: [
-        'Seit dem 2. April 2024 verbietet die MVG E-Scooter in U-Bahn, Tram und Stadtbus und in den U-Bahnhöfen, auch zusammengeklappt. Leih-Scooter dürfen auch nicht in S-Bahn und Regionalzug: Sie lassen sich nicht klappen, sind zu gross und zu schwer, und die Anbieter verbieten es.',
+        'In U-Bahn, Tram und Stadtbus der MVG darfst du laut MVV seit April 2024 keinen E-Scooter mitnehmen, auch zusammengeklappt nicht; Grund sind Akkubrände. Leih-Scooter dürfen auch nicht in S-Bahn und Regionalzug: Sie lassen sich nicht klappen und sind zu gross und zu schwer.',
         'Deinen eigenen E-Scooter darfst du zusammengeklappt kostenlos in S-Bahn, Regionalzug und Regionalbus mitnehmen, wenn er höchstens 90 × 80 cm misst und 25 kg wiegt. Mit dem Leih-Scooter heisst Umsteigen: Fahrt vor dem Bahnhof beenden und am Ziel einen neuen mieten.',
-        'Zum Flughafen: Die Terminals liegen ausserhalb von Dotts Geschäftsgebiet (Stand 30. Oktober 2026), rechne dort also nicht mit einem Dott. Nimm zum Flughafen die S-Bahn und den Scooter für die Stadt.',
+        'Zum Flughafen nimmst du die S-Bahn und den Scooter für die Stadt; wo das Geschäftsgebiet endet, zeigt dir die App.',
       ],
     },
     {
       heading: 'MyRadl und MVGO: Leihrad statt E-Scooter',
       blocks: [
-        '**MyRadl**, der Nachfolger von MVG Rad, ist seit dem 7. Mai 2026 das Leihradsystem für München und 36 Orte im Umland, betrieben von nextbike im MVV. Du leihst die Räder an MyRadl-Stationen aus und gibst sie dort auch zurück.',
+        '**MyRadl** ist seit dem 7. Mai 2026 das Leihradsystem für München und 36 Orte im Umland, entstanden aus MVV, Stadt und Landkreisen und betrieben von nextbike. Du leihst die Räder an MyRadl-Stationen aus und gibst sie dort auch zurück.',
         {
           list: [
             '**Fahrrad:** 1 € für 30 Minuten, Tagestarif 9 € pro Fahrt.',
@@ -123,7 +91,7 @@ const guide: Guide = {
             '**Mit MVG-Abo (nicht dem 365-Euro-Ticket für Schüler) oder einem Deutschlandticket aus der MVV-App:** die ersten 30 Minuten auf dem Fahrrad gratis, auf dem E-Bike für 1,50 €.',
           ],
         },
-        'Gebucht wird in der MVV-App, der nextbike-App oder in **MVGO**, wo du mit deinem M-Login auch Scooter von Dott und Voi mietest (Lime und Bolt nicht). Wo Scooter von Dott, Voi, Lime und Bolt in deiner Nähe stehen, zeigt die [Live-Karte von München](map:de:München).',
+        'Gebucht wird in der MVV-App, in **MVGO** oder in der nextbike-App. Freie E-Scooter in deiner Nähe zeigt die [Live-Karte von München](map:de:München).',
       ],
     },
     {
@@ -140,15 +108,15 @@ const guide: Guide = {
           ],
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
-        'In München brauchen die Anbieter bisher keine Genehmigung und zahlen der Stadt keine Gebühren; Nürnberg dagegen verlangt 50 € pro Scooter und Jahr. Alle haben die freiwillige Selbstverpflichtung in der Fassung vom April 2022 unterschrieben: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort, falsch geparkte binnen 24 Stunden einsammeln.',
-        'Die Flotte ist stark gewachsen: Laut Polizei waren es 2019 rund 4000 Leih-Scooter und 2022 rund 12 000; am 19. April 2024 zählte das Mobilitätsreferat laut dpa 18 698. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen. München will die freiwilligen Regeln dann in eine solche Sondernutzung mit Obergrenzen und Gebühren überführen. Der Stadtrat soll laut Mobilitätsreferat (30. Juni 2026) noch 2026 über Eckpunkte beraten; Obergrenzen und Gebührenbeträge stehen noch nicht fest (Stand 30. Oktober 2026).',
+        'Für die Anbieter gilt in München eine freiwillige Selbstverpflichtung, zuletzt in der Fassung vom April 2022: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort im Umkreis von 100 m, falsch geparkte binnen 24 Stunden einsammeln.',
+        'Am 19. April 2024 zählte das Mobilitätsreferat laut dpa 18 698 Leih-Scooter in der Stadt. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen.',
       ],
     },
   ],
   faq: [
     {
       question: 'Ab welchem Alter kann ich in München einen E-Scooter mieten?',
-      answer: 'Ab 18: So steht es in den Bedingungen von Dott, Lime, Voi und Bolt. Das Gesetz erlaubt E-Scooter schon ab 14 und ohne Führerschein, mit 14 bis 17 fährst du aber nur einen eigenen.',
+      answer: 'Das Mindestalter legt der Anbieter fest; es zeigt dir die App vor dem Entsperren. Das Gesetz erlaubt E-Scooter schon ab 14 und ohne Führerschein.',
     },
     {
       question: 'Darf ich mit dem E-Scooter zur Wiesn fahren?',
@@ -156,11 +124,11 @@ const guide: Guide = {
     },
     {
       question: 'Warum kann ich meine Fahrt in der Altstadt nicht beenden?',
-      answer: 'Innerhalb des Altstadtrings geht das nur auf ausgewiesenen Abstellflächen, und im Umkreis von 100 m um jede geteilte Abstellfläche in der Stadt nur auf der Fläche selbst. Fahr zur nächsten Fläche, die die App zeigt.',
+      answer: 'Innerhalb des Altstadtrings geht das nur auf ausgewiesenen Abstellflächen. Fahr zur nächsten Fläche, die die App zeigt; solange die Fahrt läuft, zahlst du.',
     },
     {
-      question: 'Kann ich E-Scooter in der MVGO-App ausleihen?',
-      answer: 'Ja, Scooter von Dott und Voi und Räder von MyRadl, mit deinem M-Login. Lime und Bolt mietest du in ihren eigenen Apps.',
+      question: 'Wo darf ich in München keinen E-Scooter abstellen?',
+      answer: 'Nicht in der Fussgängerzone und nicht in Grünanlagen, nicht näher als 10 m an Bus- und Tramhaltestellen, nicht vor Rampen zu S- und U-Bahn und nicht an Fahrradbügeln. Auf dem Gehweg bleiben mindestens 1,80 m frei.',
     },
     {
       question: 'Darf man im Englischen Garten E-Scooter fahren?',
@@ -168,26 +136,18 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in die Münchner U-Bahn mitnehmen?',
-      answer: 'Nein. Die MVG verbietet E-Scooter seit dem 2. April 2024 in U-Bahn, Tram und Stadtbus, auch zusammengeklappt. In die S-Bahn darf nur ein eigener, zusammengeklappter Scooter, nie ein Leih-Scooter.',
+      answer: 'Nein. In U-Bahn, Tram und Stadtbus der MVG sind E-Scooter seit April 2024 verboten, auch zusammengeklappt. In die S-Bahn darf nur ein eigener, zusammengeklappter Scooter, nie ein Leih-Scooter.',
     },
   ],
   sources: [
     { title: 'Stadt München, Mobilitätsreferat: Elektrotretroller-Sharing', url: 'https://muenchenunterwegs.de/angebote/elektrotretroller-sharing' },
-    { title: 'Mobilitätsreferat München: Antwort zu Abstellflächen und Sondernutzung, 30. Juni 2026', url: 'https://risi.muenchen.de/risi/dokument/v/9784088' },
     { title: 'Stadt München: Sicherheit und Kontrollen auf dem Oktoberfest 2026', url: 'https://stadt.muenchen.de/news/oktoberfest-2026-sicherheit-und-kontrollen.html' },
     { title: 'oktoberfest.de: Mit dem E-Scooter zur Wiesn', url: 'https://www.oktoberfest.de/informationen/service-fuer-besucher/mit-dem-e-scooter-zur-wiesn' },
     { title: 'MVV: Scootersharing in München und Mitnahme in Bus und Bahn', url: 'https://www.mvv-muenchen.de/vernetzte-mobilitaet/shared-mobility/scootersharing/' },
     { title: 'Bayerische Schlösserverwaltung: Englischer Garten, Hinweise für Besucher (PDF)', url: 'https://www.schloesser.bayern.de/deutsch/service/infomat/screen-pdf/engl-garten_dt.pdf' },
     { title: 'muenchen.de: MyRadl, Leihfahrräder für die Region', url: 'https://www.muenchen.de/verkehr/aktuell/myradl-im-mvv-muenchen-leihfahrraeder-fuer-die-region' },
-    { title: 'Dott: Tarif für München im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munich/system_pricing_plans.json' },
-    { title: 'Voi: E-Scooter in München', url: 'https://www.voi.com/city/munich' },
-    { title: 'Polizeipräsidium München: Wiesn-Abschlussbilanz 2022 (PDF)', url: 'https://www.polizei.bayern.de/mam/presse/pp-muenchen/pressebericht_sonderbeilage_abschlussbilanz_wiesn_2022.pdf' },
     { title: 'Stadt München: Freiwillige Selbstverpflichtungserklärung der Sharing-Anbieter, Stand 6. April 2022 (PDF)', url: 'https://muenchenunterwegs.de/content/113/download/weiterentwicklung-freiwillige-selbstverpflichtungserklarung-ekf-sharing-stand-06042022.pdf' },
-    { title: 'Kreisverwaltungsreferat München: E-Scooter im Umgriff des Oktoberfests, 2019', url: 'https://risi.muenchen.de/risi/dokument/v/5679699' },
-    { title: 'Mobilitätsreferat München: Antwort zu MVG Rad und MyRadl, 29. Juni 2026', url: 'https://risi.muenchen.de/risi/dokument/v/9783671' },
     { title: 'dpa in inFranken.de: Nürnberg und München zu Leih-E-Scootern, 26. April 2024', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300,PRINT' },
-    { title: 'Dott: Allgemeine Geschäftsbedingungen für Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
-    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
   ],
 };
 
