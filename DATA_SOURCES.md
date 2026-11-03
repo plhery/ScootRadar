@@ -728,11 +728,38 @@ streets traced on OpenStreetMap, ODbL". The rest of the list is not drawn: the
 lower promenade and the Madeira Drive Boardwalk, which OpenStreetMap names
 only in part or not at all, The Lanes, Churchill Square, The Level's
 crosswalks, Falmer and Stanmer north of The Keep, the skate parks and pump
-tracks, which are areas, the A259 from Black Rock to Saltdean, whose east end
+tracks, areas not yet drawn, the A259 from Black Rock to Saltdean, whose east end
 isn't given, and the timed and temporary zones, whose hours aren't. Beryl's
 GBFS for Brighton outlines 19 zones by name (Boardwalks, Lower Promenade,
 Brighton Marina & Undercliff…) with no rules, so the zone layer draws none of
 them.
+
+Warsaw's roads authority, the Zarząd Dróg Miejskich, has no power to set
+binding rules for e-scooters, so it agrees them with the companies that rent
+them, Bolt, Dott and Lime: since 2021 no riding or parking in "Stare Miasto,
+Ogród Krasińskich, Łazienki Królewskie" and 12 km/h on Krakowskie
+Przedmieście and Nowy Świat "when they are a pedestrian street", Chmielna's
+pedestrian stretch and the Vistula boulevards where they have no separate
+cycle path; and since 22 May 2026 no riding in Park Sowińskiego and Lasek na
+Kole and 12 km/h on "ul. Złota, Zgoda, Bracka, Plac Centralny, most pieszo
+rowerowy"
+([ZDM](https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/),
+22 May 2026), with no map. They are drawn on OpenStreetMap's shapes, ©
+OpenStreetMap contributors under the ODbL, read on 3 November 2026: the
+parks' and the wood's outlines (Łazienki's and Lasek na Kole's in two parts
+each, either side of Agrykola and of a path); for the Old Town, the outline
+of the Historic Centre of Warsaw, its World Heritage site (24.7 ha), less 10 m
+either side of the cycle and foot paths along the Wisłostrada at its edge,
+and not the wider district OpenStreetMap names Stare Miasto, which takes in
+the Wisłostrada and the boulevard below it; Plac Centralny's outline, a slow
+area; the pedestrian and living-street ways of Chmielna, from Marszałkowska to
+Nowy Świat, of Zgoda, and of Złota and Bracka, which are roads of 30 to 50
+km/h beyond them; and the deck of the Kładka Magdaleny Abakanowicz, Warsaw's
+foot and cycle bridge over the Vistula. They are credited "Warsaw ZDM, lines ©
+OpenStreetMap", and Poland's credits add "Warsaw's no-ride areas and slow
+streets traced on OpenStreetMap, ODbL". Krakowskie Przedmieście and Nowy
+Świat are not drawn, as ZDM doesn't give the hours they are pedestrianised,
+nor the boulevards, whose stretches it doesn't name.
 
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as

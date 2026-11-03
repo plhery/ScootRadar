@@ -192,15 +192,16 @@ class SpokenTextTest {
                 node.id to Given(info.isScreenReaderFocusable || info.isFocusable, text, links + named, node.parent?.id)
             }.toMap()
         }
-        val authorities = streets.distinctBy { it.authority }
+        // Each once, the strongest rule's first, as the legend credits them.
+        val authorities = ScooterZoneKind.entries.flatMap { kind -> streets.filter { it.kind == kind } }.distinctBy { it.authority }
         val credit = given.values.single { it.text?.toString() == authorities.joinToString(" · ") { it.authority } }
         assertEquals(authorities.map { it.authority to it.source }, credit.links)
         assertTrue(credit.stops)
         // Nothing else TalkBack is given is a link, or names one otherwise.
         val names = given.values.flatMap { it.links }.map { it.first }.toSet()
         assertEquals(authorities.map { it.authority }.toSet(), names)
-        // It stops on the kind of the streets at all hours, a line for each of the others' hours, and the credit.
-        val kinds = if (streets.any { it.hours.isEmpty() }) 1 else 0
+        // It stops on each kind of the rules at all hours, a line for each of the others' hours, and the credit.
+        val kinds = streets.filter { it.hours.isEmpty() }.map { it.kind }.distinct().size
         val hours = streets.filter { it.hours.isNotEmpty() }.map { it.hours }.distinct().size
         assertEquals(kinds + hours + 1, given.values.count { it.stops })
     }

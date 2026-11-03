@@ -170,6 +170,26 @@ describe('ruleZonesInView', () => {
     expect(only({ south: 50.8228, west: -0.1665, north: 50.8245, east: -0.1645 })).toEqual([]);
   });
 
+  it('gives Warsaw\'s no-ride areas and 12 km/h streets, the new ones from 22 May 2026, credited to ZDM', () => {
+    const now = Date.parse('2026-11-02T23:30:00Z');
+    const at = (lat: number, lng: number, time = now) => ruleZonesInView(
+      { bounds: { south: lat - 0.0005, west: lng - 0.0008, north: lat + 0.0005, east: lng + 0.0008 }, zoom: 16 }, time)
+      .filter(zone => zone.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng)));
+    // The Old Town's market square, and Castle Square; not the cycle path along the Wisłostrada below it.
+    const [rynek] = at(52.2498, 21.0122);
+    expect(rynek).toMatchObject({ id: 'warsaw-stare-miasto', rule: 'noRide', inForce: true, authority: 'Warsaw ZDM, lines © OpenStreetMap' });
+    expect(at(52.2475, 21.0135).map(zone => zone.id)).toEqual(['warsaw-stare-miasto']);
+    expect(at(52.251, 21.0157)).toEqual([]);
+    // Chmielna's pedestrian street at 12 km/h since the 2021 agreements; Park Sowińskiego since 22 May 2026.
+    expect(at(52.2321, 21.0135).map(({ id, rule, maxSpeedKph }) => ({ id, rule, maxSpeedKph })))
+      .toEqual([{ id: 'warsaw-chmielna', rule: 'slow', maxSpeedKph: 12 }]);
+    expect(at(52.2308, 20.948).map(({ id, inForce }) => ({ id, inForce }))).toEqual([{ id: 'warsaw-park-sowinskiego', inForce: true }]);
+    expect(at(52.2308, 20.948, Date.parse('2026-05-21T12:00:00Z')).map(zone => zone.inForce)).toEqual([false]);
+    // Łazienki on both sides of Agrykola; Plac Centralny, a slow square.
+    expect(at(52.2150, 21.0350).map(zone => zone.id)).toEqual(['warsaw-lazienki-krolewskie']);
+    expect(at(52.2319, 21.0075).map(({ id, rule }) => ({ id, rule }))).toEqual([{ id: 'warsaw-plac-centralny', rule: 'slow' }]);
+  });
+
   it('keeps each street and area whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);

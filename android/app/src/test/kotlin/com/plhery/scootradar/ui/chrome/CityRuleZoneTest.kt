@@ -122,7 +122,7 @@ class CityRuleZoneTest {
             assertEquals(listOf(street.source), links(credit))
             if (street.hours.isEmpty()) {
                 assertTrue(ruleLines(shown).isEmpty())
-                assertEquals(listOf(ScooterZoneKind.NoRide), legendKinds(ScooterZoneState.Off, 0, shown, besideNote = false))
+                assertEquals(listOf(street.kind), legendKinds(ScooterZoneState.Off, 0, shown, besideNote = false))
             } else {
                 assertTrue(ruleLines(shown).single().text.startsWith("No riding "))
             }

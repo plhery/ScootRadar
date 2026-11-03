@@ -348,7 +348,7 @@
       "anchorNote": "About the middle of the country, near Łódź.",
       "featuredCities": ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Katowice / Chorzów"],
       "credits": {
-        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
+        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Warsaw's no-ride areas and slow streets traced on OpenStreetMap, ODbL",
         "gbfs": ["Dott", "Hopp"],
         "links": [
           { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },

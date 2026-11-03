@@ -341,7 +341,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   Warszawy with the data's date and the date it was fetched, but ask a reuser
   to tell the city by e-mail of any processing of them (clause 3e). Its
   no-riding and no-parking areas (Stare Miasto, Łazienki Królewskie and three
-  parks) and its 12 km/h streets are text alone. Long Beach's parking drop
+  parks) and its 12 km/h streets are drawn on OpenStreetMap's outlines and
+  ways (DATA_SOURCES.md), but for Krakowskie Przedmieście and Nowy Świat, slow
+  only when pedestrianised, at hours ZDM doesn't give, and the Vistula
+  boulevards without a cycle path, whose stretches it doesn't name. Long Beach's parking drop
   zones, a policy on Populus's public map, are given to the operators alone
   (its rules, 3.2.1), so are not drawn; its other zones, Stavanger's and
   Nashville's, corrals included, are drawn since 1 November 2026

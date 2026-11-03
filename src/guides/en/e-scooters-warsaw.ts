@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Warsaw: Bolt, Dott and Lime, prices, and where you may ride and park',
   lede: 'To rent an e-scooter in Warsaw, use the Bolt, Dott or Lime app: the three companies in the city’s e-scooter agreement of May 2026. Bolt and Dott rent only to riders aged 18 or over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, 25 October 2026); Dott and Lime show prices in the app. Ride on the cycle path at no more than 20 km/h, on the pavement only at walking pace where there’s no other way, and park at a marked rack or the pavement’s outer edge, never in the Old Town or Łazienki Park.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-11-03',
   city: 'pl:Warszawa',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'No law lets Warsaw set binding rules for e-scooters, says its roads authority, Zarząd Dróg Miejskich (ZDM), so the city relies on voluntary agreements: since 2021, and since 22 May 2026 new ones with **Bolt, Dott and Lime**, the three renting here. The companies accept slow and no-go zones, parking places and penalties.',
         'At 13:50 on Sunday 25 October 2026 the [map of Warsaw](map:pl:Warszawa) showed about 11,700 Dott and Bolt e-scooters (5,950 Bolt, 5,800 Dott): a snapshot, not the fleet size. Lime joined the map that evening; a full scan of Lime’s Warsaw zone, finished at 18:12, counted about 8,300, the most of the three. The map builds that total zone by zone, not at one moment, so don’t add it to the others.',
-        'The map shows where each scooter stands, with Bolt’s and Lime’s battery charge where shared, but no prices, zones, parking or hours.',
+        'The map shows where each scooter stands, with Bolt’s and Lime’s battery charge where shared, and from zoom 14 most of the city’s no-go and 12 km/h zones below, but no prices, parking or hours.',
         'At 15:17, 94% of the 11,685 Dott and Bolt scooters then on the map stood inside the city boundary, about 2,340 in Śródmieście, the centre. The other 720 or so were all Dott, mostly in Pruszków (about 310), Marki (130) and Ząbki (80). About a quarter of Lime’s zone also lies outside the city, in Piaseczno, Legionowo, Pruszków and other neighbours.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -58,6 +58,7 @@ const guide: Guide = {
             '**12 km/h:** Krakowskie Przedmieście and Nowy Świat when they’re pedestrianised, the pedestrian part of Chmielna, the Vistula boulevards where there’s no separate cycle path, and since May 2026 Złota, Zgoda, Bracka, Plac Centralny and the pedestrian and cycle bridge over the Vistula.',
           ],
         },
+        'Our [Warsaw map](map:pl:Warszawa) draws them from zoom 14, credited to ZDM, on OpenStreetMap’s outlines and streets: the Old Town as its World Heritage site, without the paths along the Wisłostrada below it, and Złota and Bracka only where they’re pedestrian or living streets. Krakowskie Przedmieście and Nowy Świat aren’t drawn, as ZDM doesn’t give the hours they’re pedestrianised, nor the boulevards, as it doesn’t say which stretches.',
         'In September 2026 the mayor said more places had been added, unnamed (Notes from Poland): check the app before you set off.',
       ],
     },

@@ -259,8 +259,10 @@ class ScooterZoneOverlayTest {
      */
     @Test
     fun everyStreetIsJoinedIntoAShapeOrAFewSoNoneIsDrawnPieceByPiece() {
-        assertFalse(CityRuleZone.all.isEmpty())
-        for (street in CityRuleZone.all) {
+        // The streets: an area is its ring, drawn as it is.
+        val streets = CityRuleZone.all.filter { it.lines.isNotEmpty() }
+        assertFalse(streets.isEmpty())
+        for (street in streets) {
             val zone = CityRuleZone.Shown(street, inForce = true).mapZone
             val shapes = ScooterZoneOverlay(zones = listOf(zone), isDark = false).shapes
             assertTrue("${street.id}: ${zone.polygons.size} pieces merged into ${shapes.size}", shapes.size in 1..street.lines.size)
@@ -277,7 +279,7 @@ class ScooterZoneOverlayTest {
     fun everyStreetsBandCoversItsLinesAndReachesNoFurther() {
         val geometry = GeometryFactory()
         val half = CityRuleZone.bandWidthMeters / 2
-        for (street in CityRuleZone.all) {
+        for (street in CityRuleZone.all.filter { it.lines.isNotEmpty() }) {
             val zone = CityRuleZone.Shown(street, inForce = true).mapZone
             val overlay = ScooterZoneOverlay(zones = listOf(zone), isDark = false)
             // The overlay's shapes are in map points from the corner of its zones.
