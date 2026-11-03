@@ -557,6 +557,31 @@ describe('German and Italian scooter coverage', () => {
     expect(activeSeasonalPause([44.4268, 26.1025], winter)).toBeNull();
     expect(feedPaused('romania:lime_ro_app_bucuresti_000', winter)).toBe(false);
   });
+  it('takes Dott Pietarsaari\'s scooters off from 31 October until 1 April, as Dott took them in on 31 October 2026', () => {
+    const pietarsaari: [number, number] = [63.676, 22.7141];
+    // Finland is two hours ahead of UTC in October: 23:30 on 30 October is still in season; 00:30 on the 31st is not.
+    expect(activeSeasonalPause(pietarsaari, Date.UTC(2026, 9, 30, 21, 30))).toBeNull();
+    expect(activeSeasonalPause(pietarsaari, Date.UTC(2026, 9, 30, 22, 30))).toEqual({ city: 'Pietarsaari', month: 4 });
+    expect(activeSeasonalPause(pietarsaari, Date.UTC(2027, 2, 31, 12))).toEqual({ city: 'Pietarsaari', month: 4 });
+    expect(activeSeasonalPause(pietarsaari, Date.UTC(2027, 3, 1, 12))).toBeNull();
+    const winter = Date.UTC(2027, 0, 15, 12);
+    expect(feedPaused('finland:dott_fi_pietarsaari', winter)).toBe(true);
+    // Dott's Kokkola, 27 km north-east, still runs.
+    expect(activeSeasonalPause([63.8374, 23.1319], winter)).toBeNull();
+    expect(feedPaused('finland:dott_fi_kokkola', winter)).toBe(false);
+  });
+  it('pauses Hopp\'s Faliraki feed from 31 October until 1 April, while Hoppy\'s scooters there run on', () => {
+    const faliraki: [number, number] = [36.3403, 28.202];
+    const winter = Date.UTC(2027, 0, 15, 12);
+    // Greece is two hours ahead of UTC in winter: 00:30 on 31 October is the first half-hour paused.
+    expect(feedPaused('greece:hopp_gr_rhodes', Date.UTC(2026, 9, 30, 21, 30))).toBe(false);
+    expect(feedPaused('greece:hopp_gr_rhodes', Date.UTC(2026, 9, 30, 22, 30))).toBe(true);
+    expect(feedPaused('greece:hopp_gr_rhodes', winter)).toBe(true);
+    expect(feedPaused('greece:hopp_gr_rhodes', Date.UTC(2027, 3, 1, 12))).toBe(false);
+    // Hoppy is not paused, so the town is not shown as away for the season.
+    expect(feedPaused('greece:hoppy_gr_rhodes', winter)).toBe(false);
+    expect(activeSeasonalPause(faliraki, winter)).toBeNull();
+  });
   it('takes Hopp\'s scooters off in Ólafsvík and Hellissandur from 23 October until 1 May, as its feed emptied on 22 October 2026', () => {
     const olafsvik: [number, number] = [64.8959, -23.7084];
     const hellissandur: [number, number] = [64.9172, -23.8825];

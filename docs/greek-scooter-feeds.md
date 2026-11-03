@@ -10,6 +10,16 @@ full-area audit, with about 3,780, 50, 360 and 260 scooters. Kifisia, a
 zone of Lime's Athens region, is a municipality apart, so the map lists it
 as a town. Only scooter pins inside the published service polygons are
 included; see [Lime's map](lime-app-map.md) for the collection and checks.
+
+Update, 3 November 2026: Hopp took its **Faliraki** scooters in (its Rhodes
+feed, `gr-rhodes`) by 31 October. They went from 100 on 26 October to none
+from about 07:41 UTC on the 31st, and the feed has listed none since. Hopp's
+[locations page](https://hopp.bike/locations) and its
+[Rhodes page](https://hopp.bike/in/rhodes) still list Rhodes that morning, so
+it looks like the end of the season, not an exit; Hopp publishes no dates.
+The feed is paused from 31 October until 1 April, Athens time, the date the
+cache's other winter towns use, and stays polled. Hoppy's scooters run on in
+Faliraki and around Rhodes, so the map does not show the town as off season.
 The regions and their public outline documents:
 
 - Athens and Kifisia, `2P3BV6VNODYR4`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json)

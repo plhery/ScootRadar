@@ -5,6 +5,16 @@ map, including Helsinki, Espoo, Vantaa and Tampere. Helsinki, Espoo and Vantaa
 have their municipal weekend-night curfews in both clients. The audit below
 records the original GBFS investigation; see [Dott adapter evidence](dott-app-map.md).
 
+Update, 3 November 2026: Dott took **Pietarsaari**'s scooters in by 31
+October. Its map there went from 88 on 26 October to 24 on the morning of the
+31st and none from about 07:05 UTC that day, and has listed none since, while
+Dott's other Finnish towns ran on (Kokkola, 27 km away, had 415 on 3
+November). Dott's [locations page](https://ridedott.com/locations/) still lists
+the town, as Jakobstad, that morning, so it looks like a winter break, not an
+exit; Dott publishes no season. The town is paused from 31 October until 1
+April, Helsinki time, the date the cache's other winter towns use, and its
+feed stays polled, so scooters back early show at once.
+
 Verified 13 October 2026. Finland's only usable feed is Hopp's, in Mariehamn,
 on Åland. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)

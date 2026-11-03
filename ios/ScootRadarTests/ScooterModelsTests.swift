@@ -1795,11 +1795,13 @@ extension ScooterModelsTests {
         // from 16 November until 30 April, Medicine Hat, Penticton, Pickering and Waterloo Region from 1
         // November and Cochrane, Cranbrook and Okotoks from 2 November until 1 April, Spruce Grove from
         // 29 October until 1 May, Moncton from 15 November until 16 April, Laval from 16 November until
-        // 15 April, Red Deer from 1 November until 16 March, Saskatoon from 1 November until 15 April, and
-        // Târgoviște from 30 October until 1 April, each by its own clock.
+        // 15 April, Red Deer from 1 November until 16 March, Saskatoon from 1 November until 15 April,
+        // Târgoviște from 30 October until 1 April, and Pietarsaari from 31 October until 1 April, each
+        // by its own clock. Hopp's Faliraki pauses from 31 October too, but Hoppy runs on there.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
                        ["fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
-                        "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "is:Stykkishólmur", "us:mn:Winona", "us:ca:South Lake Tahoe",
+                        "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "is:Stykkishólmur", "fi:Pietarsaari",
+                        "us:mn:Winona", "us:ca:South Lake Tahoe",
                         "ca:ab:Leduc", "ca:on:Ottawa", "ca:ab:Cochrane", "ca:bc:Cranbrook", "ca:ab:Medicine Hat", "ca:ab:Okotoks",
                         "ca:bc:Penticton", "ca:on:Pickering", "ca:ab:Spruce Grove",
                         "ca:nb:Moncton", "ca:qc:Laval", "ca:on:Waterloo Region", "ca:ab:Red Deer", "ca:sk:Saskatoon",

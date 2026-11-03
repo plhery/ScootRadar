@@ -95,6 +95,11 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "wKJzXkp45xWilEqv38GZ",
+      "seasonal": {
+        "from": "10-31",
+        "until": "04-01",
+        "timeZone": "Europe/Helsinki"
+      },
       "aliases": [
         "Jakobstad"
       ]

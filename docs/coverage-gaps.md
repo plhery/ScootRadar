@@ -1961,6 +1961,25 @@ Bonaire had feeds to add. Survey files are in
   the date the cache's other winter towns use. The feed stays polled: if the
   scooters are back earlier, move `until` to that day; if Lime's page drops the
   town, take it off the map.
+- **Late March 2027:** Dott Pietarsaari (`dott_fi_pietarsaari`), paused
+  from 31 October until 1 April, Helsinki time: Dott took its scooters in
+  over that week, from 88 on 26 October 2026 to 24 on the morning of the
+  31st and none from about 07:05 UTC that day, and its map listed none there
+  since (the last read on 3 November), while its other Finnish towns ran on,
+  Kokkola, 27 km away, with 415. Dott's locations page still listed the town,
+  as Jakobstad, on 3 November, and Dott publishes no season, so 1 April is
+  the date the cache's other winter towns use. The feed stays polled: if the
+  scooters are back earlier, move `until` to that day; if Dott's page drops
+  the town, take it off the map.
+- **Late March 2027:** Hopp Rhodes (`hopp_gr_rhodes`, in Faliraki), paused
+  from 31 October until 1 April, Athens time: from 100 scooters on 26
+  October 2026 to none from about 07:41 UTC on the 31st, and none since (the
+  last read on 3 November). Hopp's locations page and its Rhodes page still
+  listed Rhodes on 3 November, and Hopp publishes no season. Only Hopp's
+  feed is paused: Hoppy runs on in Faliraki and around Rhodes (154 scooters
+  on 3 November), so the map does not show the town as off season. If Hopp's
+  scooters are back earlier, move `until` to that day; if its page drops
+  Rhodes, take the feed off the map.
 - **1 April 2027:** Hoppy Zakynthos (`hoppy_gr_zakynthos`, ATOM 2198). It
   fell from 33 scooters on 24 October 2026 to none by 27 October, 18:00 UTC,
   as its season ended ([Greek feeds](greek-scooter-feeds.md)), with Kos and
