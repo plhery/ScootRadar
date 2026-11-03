@@ -1,6 +1,7 @@
 package com.plhery.scootradar.app
 
 import android.content.Context
+import android.icu.text.DecimalFormatSymbols
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.provider.Settings
@@ -8,6 +9,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.BuildConfig
 import com.plhery.scootradar.core.model.RidePriceFormatter
+import com.plhery.scootradar.core.model.Scooter
+import com.plhery.scootradar.core.model.ScooterCardContent
+import com.plhery.scootradar.core.model.ScooterCardFigure
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLengthUnit
@@ -183,6 +187,37 @@ class AppContainerTest {
             ScooterLanguage.current = ScooterLanguage.atLaunch
             ScooterLanguage.launchLocale = launch
         }
+    }
+
+    /**
+     * The card's distance and range set their unit smaller than their number in French too, where Android's ICU writes
+     * a narrow no-break space between them ("24\u202Fm"): parted at U+00A0 alone, the figure read "24m" (app-ar). A
+     * space or an apostrophe grouping the digits stays in the number.
+     */
+    @Test
+    fun aLengthsUnitIsApartFromItsNumberAsAndroidWritesIt() {
+        AppContainer(context).setHooks()
+        // Swiss German groups its digits with an apostrophe, typographic or ASCII by ICU version.
+        val swiss = DecimalFormatSymbols.getInstance(Locale.forLanguageTag("de-CH")).groupingSeparator
+        val expectations = listOf(
+            Triple("fr-CH", 24.0, "24" to "m"), Triple("fr-CH", 26_800.0, "26,8" to "km"),
+            Triple("fr-FR", 117.0, "117" to "m"), Triple("fr-FR", 1_234_000.0, "1\u202F234" to "km"),
+            Triple("de-CH", 24.0, "24" to "m"), Triple("de-CH", 1_234_000.0, "1${swiss}234" to "km"),
+            Triple("en-US", 24.0, "80" to "ft"), Triple("en-US", 3_000.0, "1.9" to "mi"),
+            Triple("nb-NO", 24.0, "24" to "m"), Triple("nb-NO", 1_234_000.0, "1\u00A0234" to "km"),
+        )
+        for ((tag, meters, parts) in expectations) {
+            assertEquals("$tag $meters", parts, Scooter.lengthParts(meters, Locale.forLanguageTag(tag)))
+        }
+        // The card's own figure for a scooter 24 m away, in Swiss French.
+        val card = ScooterCardContent(
+            Scooter(provider = "lime", latitude = 47.0, longitude = 8.0),
+            metres = 24.0,
+            quote = null,
+            locale = Locale.forLanguageTag("fr-CH"),
+        )
+        val distance = card.figures.single { it.kind == ScooterCardFigure.Kind.Distance }
+        assertEquals("24" to "m", distance.value to distance.unit)
     }
 
     /**

@@ -118,13 +118,25 @@ data class Scooter(
             return ScooterMeasureFormat.length(value, unit, locale)
         }
 
-        /** The same length with its number and its unit apart, for a figure whose unit is set smaller than its number. */
+        /**
+         * The same length with its number and its unit apart, for a figure whose unit is set smaller than its number,
+         * each as the locale writes it. They are apart at the last space between them: a no-break one where the
+         * locale wrote a plain one, the narrow one French writes ("24 m", U+202F, in ICU as in Foundation), or a thin
+         * one. A space before it is inside the number, grouping its digits, as French and Norwegian do ("1 234 km").
+         * The iPhone splits at U+00A0 alone, so a French unit is not set smaller there (ScooterModels.swift:158).
+         */
         fun lengthParts(meters: Double, locale: Locale = ScooterLanguage.current.locale): Pair<String, String?> {
             val length = formattedLength(meters, locale)
-            val space = length.indexOf('\u00A0')
+            val space = length.indexOfLast { it in UNIT_SPACES }
             if (space <= 0 || space == length.lastIndex) return length to null
-            return length.substring(0, space) to length.substring(space + 1)
+            val unit = length.substring(space + 1)
+            // A locale that wrote its unit first keeps the length whole.
+            if (unit.any(Char::isDigit)) return length to null
+            return length.substring(0, space) to unit
         }
+
+        /** The spaces a locale writes between a number and its unit: no-break, narrow no-break, thin and plain. */
+        private const val UNIT_SPACES = "\u00A0\u202F\u2009 "
     }
 }
 

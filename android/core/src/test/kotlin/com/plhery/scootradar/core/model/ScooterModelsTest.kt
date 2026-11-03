@@ -663,6 +663,40 @@ class ScooterModelsTest {
         assertFalse(Scooter.formattedLength(meters = 300.0, locale = american).contains(" "))
     }
 
+    /**
+     * The card's figure sets its unit smaller than its number at whatever space the locale writes between them:
+     * French writes a narrow no-break space ("24 m", U+202F), which read "24m" as one figure when only U+00A0 split it
+     * (app-ar). A space inside the number, grouping its digits, stays in it, as does Swiss German's apostrophe.
+     */
+    @Test
+    fun aLengthsUnitIsApartFromItsNumberAtTheSpaceTheLocaleWrites() {
+        val expectations = listOf(
+            Triple("fr-CH", 24.0, "24" to "m"), Triple("fr-CH", 26_800.0, "26,8" to "km"),
+            Triple("fr-CH", 1_234_000.0, "1\u202F234" to "km"),
+            Triple("fr-FR", 117.0, "117" to "m"), Triple("fr-FR", 1_234_000.0, "1\u202F234" to "km"),
+            Triple("de-CH", 24.0, "24" to "m"), Triple("de-CH", 1_234_000.0, "1\u2019234" to "km"),
+            Triple("en-US", 24.0, "80" to "ft"), Triple("en-US", 300.0, "1,000" to "ft"), Triple("en-US", 3_000.0, "1.9" to "mi"),
+            Triple("nb-NO", 24.0, "24" to "m"), Triple("nb-NO", 1_234_000.0, "1\u00A0234" to "km"),
+        )
+        for ((tag, meters, parts) in expectations) {
+            assertEquals("$tag $meters", parts, Scooter.lengthParts(meters = meters, locale = Locale.forLanguageTag(tag)))
+        }
+
+        // A thin space parts them too; a unit written before its number, or with no space, keeps the length whole.
+        val length = ScooterMeasureFormat.length
+        val swiss = Locale.forLanguageTag("en-CH")
+        try {
+            ScooterMeasureFormat.length = { value, _, _ -> "${value.toPlainString()}\u2009m" }
+            assertEquals("24" to "m", Scooter.lengthParts(meters = 24.0, locale = swiss))
+            ScooterMeasureFormat.length = { value, _, _ -> "m\u00A0${value.toPlainString()}" }
+            assertEquals("m\u00A024" to null, Scooter.lengthParts(meters = 24.0, locale = swiss))
+            ScooterMeasureFormat.length = { value, _, _ -> "${value.toPlainString()}m" }
+            assertEquals("24m" to null, Scooter.lengthParts(meters = 24.0, locale = swiss))
+        } finally {
+            ScooterMeasureFormat.length = length
+        }
+    }
+
     @Test
     fun theMapShowsItsScaleWhereTheRegionMeasuresInMiles() {
         assertTrue(ScooterMapScalePolicy.showsScale(locale = Locale.forLanguageTag("en-US")))
