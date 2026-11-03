@@ -305,6 +305,7 @@ import kansasCityEn from './en/e-scooters-kansas-city';
 import ashdodEn from './en/e-scooters-ashdod';
 import namurFr from './fr/trottinette-electrique-namur';
 import tulsaEn from './en/e-scooters-tulsa';
+import szekesfehervarEn from './en/e-scooters-szekesfehervar';
 import riminiIt from './it/monopattini-sharing-rimini';
 import dunedinEn from './en/e-scooters-dunedin';
 import lanzaroteEn from './en/e-scooters-lanzarote';
@@ -671,6 +672,7 @@ export const GUIDES: readonly Guide[] = [
   ashdodEn,
   namurFr,
   tulsaEn,
+  szekesfehervarEn,
   riminiIt,
   dunedinEn,
   lanzaroteEn,
