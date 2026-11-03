@@ -54,6 +54,7 @@ import com.plhery.scootradar.core.api.ScooterLoadFailure
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.dock
 import com.plhery.scootradar.core.map.dockAnnouncement
+import com.plhery.scootradar.core.model.Scooter
 import com.plhery.scootradar.core.model.ScooterChromeLayout
 import com.plhery.scootradar.core.model.ScooterCityCatalog
 import com.plhery.scootradar.core.model.ScooterCityDistance
@@ -93,6 +94,7 @@ import com.plhery.scootradar.ui.theme.monospacedDigit
 import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.weight
 import java.time.Instant
+import java.util.Locale
 
 // ScooterControlDock in ios/ScootRadar/Views/ScooterControls.swift: the card at the bottom of a phone's screen, and
 // the card of a large window's panel (ui.md UI-026 to UI-049, UI-097, UI-100, UI-108, UI-109, UI-228).
@@ -443,7 +445,7 @@ private fun DockLeadButton(lead: ScooterDockLead, tint: Color, onClick: () -> Un
     ) {
         val distance = @Composable {
             Text(
-                lead.distance,
+                leadFigure(lead),
                 style = designFont(38f, FontWeight.Black, tracking = -1.5f, tabular = true),
                 color = colors.dockText,
                 maxLines = 1,
@@ -485,6 +487,17 @@ private fun DockLeadButton(lead: ScooterDockLead, tint: Color, onClick: () -> Un
         }
         FixedSymbol(Symbols.chevronRight, 15f, colors.dockQuiet)
     }
+}
+
+/**
+ * The lead's distance as it is drawn, large: its number and its unit apart at a no-break space, as English writes
+ * them ("80 ft", "24 m"). French writes them apart at a narrow one (U+202F, in ICU as in Foundation), which at the
+ * lead's 38, drawn 1.5 closer, reads "24m"; a space inside the number, grouping its digits, stays as the locale
+ * writes it. TalkBack reads the distance as the locale writes it, in the lead's label.
+ */
+internal fun leadFigure(lead: ScooterDockLead, locale: Locale = ScooterLanguage.current.locale): String {
+    val (value, unit) = Scooter.lengthParts(lead.metres, locale)
+    return if (unit == null) value else "$value\u00A0$unit"
 }
 
 /** The data expired and the refresh after it failed: the map is empty, and Try again is the way on. */
