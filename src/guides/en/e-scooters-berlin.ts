@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-berlin',
   topic: 'berlin',
   name: 'Renting an e-scooter in Berlin',
-  title: 'Berlin e-scooter rental: Lime, Bolt, Voi, Dott and prices',
-  description: 'Rent Lime, Bolt, Voi or Dott in Berlin from 18, no licence needed. Dott: €0.75 + €0.29 a minute, about €3.65 for 10 minutes. Plus where to park in Mitte.',
-  headline: 'E-scooters in Berlin: apps, prices, parking zones and the rules',
-  lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you must be 18 and have a payment card, but need no driving licence. Dott charges €0.75 to unlock plus €0.29 a minute, about €3.65 for ten minutes (its rate on 30 October 2026); the others show their price in the app. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
+  title: 'Berlin e-scooter rental: Lime, Bolt, Voi, Dott and parking',
+  description: 'Rent Lime, Bolt, Voi or Dott in Berlin with no licence, and Zeus in two districts: where to park in Mitte, what BVG bans and what comes after March 2027.',
+  headline: 'E-scooters in Berlin: apps, parking zones and the rules',
+  lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you need a payment card but no driving licence, and the app shows its minimum age and price before you unlock. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'de:Berlin',
@@ -24,27 +24,9 @@ const guide: Guide = {
             '**Zeus**: only in the outer districts of Spandau and Reinickendorf.',
           ],
         },
-        'Bird no longer runs in Berlin. Inside the S-Bahn ring, the circle line around the centre, the city allows at most 19,000 rental e-scooters, split evenly among the four operators there; outside it there is no cap for now.',
+        'Inside the S-Bahn ring, the circle line around the centre, the city allows at most 19,000 rental e-scooters, split evenly among the four operators there; outside it there is no cap for now.',
         'At the end of every ride you take a photo of the parked scooter: Berlin’s permits require proof like this. Step-by-step help is in [how to rent an e-scooter](guide:how-to-rent).',
-        'At 16:03 on 30 October 2026 the [map around Berlin](map:de:Berlin) showed about 4,700 Dott, 14,100 Voi and 8,900 Bolt scooters free to rent at that moment, and about 14,500 Lime scooters as last counted. Find Zeus in its own app.',
-      ],
-    },
-    {
-      heading: 'How much does an e-scooter cost in Berlin?',
-      blocks: [
-        'You pay to unlock, then by the minute. Dott publishes its Berlin rate; Bolt gives a starting price for all of Germany.',
-        {
-          table: {
-            caption: 'E-scooter prices in Berlin on 30 October 2026',
-            head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
-            rows: [
-              ['Dott', '€0.75', '€0.29', 'about €3.65', 'about €6.55'],
-              ['Bolt (all of Germany)', 'Small fee', 'From €0.15, varies by location', 'In the app', 'In the app'],
-              ['Lime, Voi, Zeus', 'In the app', 'In the app', 'In the app', 'In the app'],
-            ],
-          },
-        },
-        'The app shows the final price before you unlock; prices on older pages, the city’s English portal included, are out of date. For regular riders there are passes: Bolt sells unlimited unlocks in Germany from €0.99 a month, and Voi sells subscriptions and minute packs.',
+        'At 16:03 on 30 October 2026 the [map around Berlin](map:de:Berlin) showed about 4,700 Dott, 14,100 Voi and 8,900 Bolt scooters free to rent at that moment, and about 14,500 Lime scooters as last counted.',
       ],
     },
     {
@@ -56,26 +38,26 @@ const guide: Guide = {
             caption: 'E-scooter rules in Germany, today and from 1 March 2027',
             head: ['Rule', 'Today', 'From 1 March 2027'],
             rows: [
-              ['Age, licence, helmet', '14 by law, no licence, no helmet required; 18 to rent', 'Unchanged'],
+              ['Age, licence, helmet', '14 by law, no licence, no helmet required', 'Unchanged'],
               ['Where to ride', 'Bike lane or path (Radweg) where there is one, otherwise the road; pedestrian zones only where a sign allows it', 'Bike lanes compulsory where a blue bike sign stands, as for cyclists'],
               ['Pavement (Gehweg)', 'Banned unless a sign allows it: €15', 'Banned unless a sign allows it: €25'],
               ['Passengers', 'Banned', 'Banned: €25'],
               ['Red light', '€60 and 1 point', 'Unchanged'],
-              ['Phone in hand', '€100 and 1 point', 'New rate, not yet officially explained'],
+              ['Phone in hand', '€100 and 1 point', 'Newly regulated'],
               ['Alcohol', '0.5‰: €500, 2 points, one-month driving ban that covers cars too. From 1.1‰: a crime, licence usually lost. Under 21 or in your probationary period as a new driver: 0.0‰', 'Unchanged'],
             ],
           },
         },
         'Riding two up is a common mistake: in 2025 Berlin police recorded 1,087 cases of two or more people riding one e-scooter, more than red-light offences (1,012).',
         '**Stay out of the parks.** Berlin’s public parks (Grünanlagen) are closed to motor vehicles, and in German law an e-scooter is one. Look for the **tulip sign** at the entrance: a triangle with a green border and a tulip. Riding or parking there can cost up to €55 on the spot, which is what TV satirist Jan Böhmermann paid for riding through the Tiergarten, the Berliner Zeitung reported in March 2024. Grün Berlin, which runs Tempelhofer Feld, says motor vehicles are banned there too.',
-        'No zone slows you down automatically: Bolt told the Senate in July 2026 that German law doesn’t currently allow it. Slow down yourself on cobblestones, and cross tram tracks as close to a right angle as you can.',
+        'Slow down on cobblestones, and cross tram tracks as close to a right angle as you can.',
       ],
     },
     {
-      heading: 'E-scooter parking in Berlin: Jelbi bays, red zones and the pavement',
+      heading: 'E-scooter parking in Berlin: Jelbi bays, no-parking zones and the pavement',
       blocks: [
         'If there’s a marked bay nearby, the scooter goes there: a Jelbi point or station run by BVG, or a district bay. Around each bay is a no-parking zone of at least 100 m where the app won’t let you end the ride. In April 2026 no-parking zones covered 28 of the 88 km² inside the S-Bahn ring, almost a third.',
-        'In Lime’s app, for example, bays show a blue P or a yellow Jelbi “J”, and red zones mean no parking. Away from bays you may park on the pavement if 2.30 m stays clear for people walking. These places are always off limits, with at least 1.5 m kept clear before and after each:',
+        'Away from bays you may park on the pavement if 2.30 m stays clear for people walking. These places are always off limits, with at least 1.5 m kept clear before and after each:',
         {
           list: [
             'at a bus or tram stop: 25 m either side of the stop’s sign under the permits since April 2025 (some pages still give the old 15 m);',
@@ -87,7 +69,7 @@ const guide: Guide = {
           ],
         },
         '**Tip:** you may leave the scooter in a car parking space at the kerb, free of charge: a 2022 change to Berlin’s parking-fee rules exempts e-scooters, to get them off the pavement. It works wherever the app lets you end the ride. At events and building sites you may be unable to end a ride for a while; operators must warn you in the app.',
-        { note: 'In a red zone the app won’t let you end the ride, and the minutes keep running. Check the app for the nearest bay before you reach your destination.' },
+        { note: 'In a no-parking zone the app won’t let you end the ride, and the minutes keep running. Check the app for the nearest bay before you reach your destination.' },
       ],
     },
     {
@@ -107,7 +89,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Zoom in on the [live map of Berlin](map:de:Berlin) to see the city’s own zones: about 640 parking places, mostly Jelbi points and stations, and about 2,500 no-parking zones, along with Dott’s no-parking zones and where the scooters are. Each operator programs the zones into its app itself, and they change often, so your app has the final word on where a ride may end.',
+        'Each operator programs the city’s zones into its app itself, and they change often, so your app has the final word on where a ride may end.',
       ],
     },
     {
@@ -122,27 +104,25 @@ const guide: Guide = {
               ['Parked so it obstructs or endangers', '€20 to €30 fine (standard rate)'],
               ['From 1 March 2027: parked on a pavement or bike lane where not allowed', '€55, or €70 if it obstructs'],
               ['Parked or ridden in a park', '€5 to €55 on the spot, fines up to €5,000'],
-              ['Broke the operator’s rules', 'The operator’s own fee (amounts not published), up to an account block'],
               ['Scooter in the way', 'Police or district staff move it, since 24 July 2025 at the operator’s cost'],
             ],
           },
         },
-        'Lime warns you first, then charges a fee and may block your account. Dott blocks repeat offenders for good, and its photo check refuses to end a ride if the scooter is badly parked. To report a scooter in the way, use [Jelbi’s form](https://www.jelbi.de/falschparker-melden/), scooter-melder.de or the hotline on the scooter; by day the operator must move it within four hours.',
+        'To report a scooter in the way, use [Jelbi’s form](https://www.jelbi.de/falschparker-melden/), scooter-melder.de or the hotline on the scooter; by day the operator must move it within four hours.',
       ],
     },
     {
-      heading: 'U-Bahn, Jelbi and BER airport',
+      heading: 'U-Bahn and Jelbi: e-scooters and public transport',
       blocks: [
         'Since 1 May 2024, BVG has banned e-scooters, folded or not, from all its vehicles and stations: U-Bahn, trams, buses and ferries. With a rental, end the ride outside the station and rent another at the other end.',
         '**Jelbi** is BVG’s mobility app: public transport tickets plus Lime, Bolt, Voi and Dott scooters, with a Jelbi account of its own.',
-        '**BER airport:** Dott’s area ends well north of the airport, and BER’s own travel page lists no e-scooter sharing. Take the FEX airport express or the S-Bahn into town and pick up a scooter there.',
         '**Prefer to pedal?** nextbike and DB Call a Bike rent out bikes in Berlin, and so do Lime, Bolt and Voi.',
       ],
     },
     {
       heading: 'Will Berlin ban e-scooters after March 2027?',
       blocks: [
-        'Every operator’s permit ends on 31 March 2027, and what comes next hadn’t been decided by 30 October 2026: the Senate had published no new rules or tender. In July 2026 it told the House of Representatives it was preparing a strict duty to park at stations, without giving a date. In June 2026 an alliance of about 40 organisations called for fixed stations from April 2027.',
+        'Every operator’s permit ends on 31 March 2027. In July 2026 the Senate told the House of Representatives it was preparing a strict duty to park at stations.',
         'The long-term plan is the Sharing Strategy 2035, which the Senate’s transport department completed on 6 May 2026: about 3,000 fixed mobility hubs, added area by area until 2035, where rentals would start and end, with no-parking zones in between. It is a plan, not yet a rule. Nor is it a ban, whatever March 2026 headlines said: the Senate says Berlin can’t ban e-scooters outright.',
       ],
     },
@@ -162,11 +142,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent e-scooters in Berlin?',
-      answer: 'Yes: sign up in the operator’s app with a payment card. You must be 18 but need no driving licence.',
+      answer: 'Yes: sign up in the operator’s app with a payment card. You need no driving licence; the app shows its minimum age and price before you unlock.',
     },
     {
       question: 'Am I insured on a rental e-scooter?',
-      answer: 'Yes, for damage you cause to others: the operator insures each scooter, as the sticker on the back shows. Lime and Bolt add accident cover for the ride; where Dott offers it, it excludes head injuries if you rode without a helmet.',
+      answer: 'Yes, for damage you cause to others: the operator insures each scooter, as the sticker on the back shows.',
     },
     {
       question: 'Can I take an e-scooter on the U-Bahn or S-Bahn?',
@@ -174,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'Why can’t I end my ride here?',
-      answer: 'You’re probably in a red no-parking zone: near a marked bay, in a park or in central Mitte. Ride on to the nearest bay shown in the app; the minutes keep running until the ride ends.',
+      answer: 'You’re probably in a no-parking zone: near a marked bay, in a park or in central Mitte. Ride on to the nearest bay shown in the app; the minutes keep running until the ride ends.',
     },
   ],
   sources: [
@@ -188,11 +168,8 @@ const guide: Guide = {
     { title: 'Mitte district: virtual no-parking zone for rental vehicles, March 2024 (German)', url: 'https://www.berlin.de/ba-mitte/aktuelles/pressemitteilungen/2024/pressemitteilung.1426019.php' },
     { title: 'Berlin Senate: Sharing Strategy 2035 (German)', url: 'https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/geteilte-mobilitaet/sharing-strategie-2035/' },
     { title: 'BVG: ban on e-scooters (German)', url: 'https://www.bvg.de/de/service-und-kontakt/e-tretroller-verbot' },
-    { title: 'Tempelhof-Schöneberg district: public parks and the tulip sign (German)', url: 'https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/strassen-gruenflaechen-verwaltung/artikel.349752.php' },
+    { title: 'Tempelhof-Schöneberg district: public parks and the tulip sign (German)', url: 'https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/unsere-fachbereiche/strassen-und-gruenflaechenverwaltung/artikel.349752.php' },
     { title: 'Jelbi: frequently asked questions (German)', url: 'https://www.jelbi.de/faq-de/' },
-    { title: 'Dott: public price feed for Berlin (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/berlin/system_pricing_plans.json' },
-    { title: 'Bolt: scooter rentals in Germany', url: 'https://bolt.eu/en-de/scooters/' },
-    { title: 'Volksstimme (dpa): alliance calls for fixed e-scooter stations from 2027, 30 June 2026 (German)', url: 'https://www.volksstimme.de/panorama/bundnis-fordert-feste-stationen-fur-e-scooter-ab-2027-4277244' },
     { title: 'Federal Ministry for Transport: questions and answers on e-scooters (German)', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq.html' },
   ],
 };
