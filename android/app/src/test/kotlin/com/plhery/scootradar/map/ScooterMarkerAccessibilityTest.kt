@@ -18,6 +18,7 @@ import com.plhery.scootradar.core.model.ScooterCluster
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScooterParking
+import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -437,6 +438,43 @@ class ScooterMarkerAccessibilityTest {
         // Beside a large window's panel.
         scene.parent = MarkerParent(panelFrame = ScreenRect(0.0, 0.0, 320.0, 844.0))
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 300.0))
+    }
+
+    @Test
+    fun aCountHiddenUnderTheChromeIsNeitherSwipedToNorFoundByAFingerUntilItShowsAgain() {
+        // A count whose disc meets the chrome is hidden and takes no tap (ScooterMarkerScene.clearCounts): TalkBack has
+        // it neither in its list nor under a finger on the part of its view below the search bar, which a double tap
+        // would open (review-app-aq-ar 1).
+        val map = FlatMarkerMap(mapLibreZoom = 7.0)
+        val bar = ScreenRect(16.0, 55.0, 358.0, 56.0)
+        val basel = map.at(195.0, 120.0)
+        val zurich = map.at(195.0, 400.0)
+        scene.parent = MarkerParent(isOverview = true, interactionExclusionFrame = bar)
+        scene.reconcileClusters(
+            listOf(
+                ScooterCluster("city:ch:Basel", basel.latitude, basel.longitude, count = 1_630, providers = mapOf("lime" to 1_630), city = "Basel"),
+                ScooterCluster("city:ch:Zürich", zurich.latitude, zurich.longitude, count = 7_023, providers = mapOf("voi" to 7_023), city = "Zürich"),
+            ),
+            revision = 1,
+        )
+        assertTrue(scene.clearCounts(map))
+        val accessibility = helper(map)
+        fun at(x: Double, y: Double) = accessibility.virtualViewAt((x * density).toFloat(), (y * density).toFloat())
+        val total = accessibility.virtualViews().single()
+        assertEquals("Zürich, 7,023 scooters", accessibility.node(total).contentDescription)
+        // Basel's disc reaches 31 pt below the bar, and its view 33 pt: nothing there to find.
+        assertNull(scene.topCluster(ScreenPoint(195.0, 135.0), map))
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 135.0))
+        assertEquals(total, at(195.0, 400.0))
+
+        // The bar gone, it shows again, and is read and found again once TalkBack is told.
+        scene.parent = MarkerParent(isOverview = true)
+        assertTrue(scene.clearCounts(map))
+        accessibility.refresh()
+        val (city, stayed) = accessibility.virtualViews()
+        assertEquals(total, stayed)
+        assertEquals("Basel, 1,630 scooters", accessibility.node(city).contentDescription)
+        assertEquals(city, at(195.0, 135.0))
     }
 
     @Test

@@ -485,9 +485,13 @@ class ScooterMarkers(
         calloutTitle = callout?.title
         callout?.let { calloutAnchor = it.anchor }
         // The clusters under the chrome are hidden before the source is written: a new one is never seen there.
-        scene.clearCounts(markerMap)
+        val written = writtenMarkers
+        val counts = scene.clearCounts(markerMap)
         writeClearances(style, SystemClock.uptimeMillis() / 1000.0)
         writeMarkers(style)
+        // A count hidden leaves TalkBack's list, as it takes no tap, and comes back to it once shown: only then, not at
+        // every frame of a move. Markers written have told TalkBack already.
+        if (counts && writtenMarkers == written) accessibility.refresh()
         if (scene.lastSeenVersion != writtenLastSeen) {
             writtenLastSeen = scene.lastSeenVersion
             write(style, ScooterMarkerLayers.LAST_SEEN_SOURCE, MarkerFeatures.lastSeen(scene, art))

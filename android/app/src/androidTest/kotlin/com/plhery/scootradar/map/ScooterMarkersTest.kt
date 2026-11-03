@@ -375,6 +375,9 @@ class ScooterMarkersTest {
         waitFor("Basel's total is hidden") { clearance(basel) == 0.0 }
         // Zürich's was never under the chrome: it has no state, and shows whole.
         assertNull(clearance(total))
+        // TalkBack has Zürich's alone: Basel's, hidden, takes no double tap, as it takes no tap (review-app-aq-ar 1).
+        fun read(): List<String> = buttons().map { it.contentDescription.toString() }
+        waitFor("TalkBack has Zürich's total alone") { read().size == 1 && read().none { it.startsWith("Basel") } }
         marked.phone.onMain {
             val layers = marked.phone.map.style!!.layers.map { it.id }
             assertTrue(layers.indexOf(ScooterMarkerLayers.CITIES) > layers.indexOf(ScooterMarkerLayers.RIDER))
@@ -392,10 +395,13 @@ class ScooterMarkersTest {
         marked.phone.onMain { marked.markers.chromeDidChange(MapChrome()) }
         waitFor("Basel's total shows again") { clearance(basel) == 1.0 }
         assertEquals(written, marked.phone.onMain { marked.markers.markersWritten })
+        // And TalkBack is told, the map not having moved: Basel's is back in its list.
+        waitFor("TalkBack has Basel's total again") { read().size == 2 && read().any { it.startsWith("Basel") } }
         // Under the bar again, then gone from the map: its state is set back to whole, not removed, as a removal
         // in the frame of another's set would leave that one as it was drawn.
         marked.phone.onMain { marked.markers.chromeDidChange(MapChrome(top = ScreenRect(16.0, 55.0, 358.0, 56.0))) }
         waitFor("Basel's total is hidden again") { clearance(basel) == 0.0 }
+        waitFor("TalkBack has Zürich's total alone again") { read().size == 1 }
         marked.serve(ScooterResponse(vehicles = emptyList(), clusters = clusters.drop(1), meta = meta)) { it.clusters().size == 1 }
         waitFor("Basel's state is set back to whole") { clearance(basel) == 1.0 }
     }
