@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Scooters eléctricos Santiago de Chile: Whoosh, JET y Lime',
   description: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime comuna por comuna, dónde ver el precio, casco, ciclovía y dónde estacionar.',
   headline: 'Scooters eléctricos en Santiago de Chile: Whoosh, JET y Lime, comuna por comuna, y las reglas para andar',
-  lede: 'Los scooters eléctricos de Santiago de Chile se arriendan con tres apps, Whoosh, GO JET (de JET) y Lime, y cada comuna decide si los permite. El precio lo ves en la app. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, y casco. Whoosh y JET piden 18 años para arrendar.',
+  lede: 'Los scooters eléctricos de Santiago de Chile se arriendan con tres apps, Whoosh, GO JET (de JET) y Lime, y cada comuna decide si los permite. La edad mínima y el precio te los muestra la app antes de desbloquear. Para la ley son ciclos, como las bicicletas: ciclovía o calzada, y casco.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'cl:Santiago',
@@ -24,38 +24,10 @@ const guide: Guide = {
             '**Lime** llegó en 2018 y en junio de 2026 operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, según Forbes Chile.',
           ],
         },
-        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, el [mapa de Santiago](map:cl:Santiago) mostraba unos 9.300 scooters estacionados en las comunas de Santiago: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET, cada uno según su último recuento.',
-        'Según la prensa, JET opera también en Colina y Paine: ahí, búscalos en GO JET.',
-        '**Bicis.** El mapa no muestra las bicicletas eléctricas de Whoosh y JET (en Peñalolén, JET tiene solo bicis), ni las bicis públicas de **Bike Itaú**, con estaciones en comunas como Providencia, Las Condes, Vitacura y Ñuñoa.',
-      ],
-    },
-    {
-      heading: '¿Cuánto cuesta arrendar un scooter en Santiago?',
-      blocks: [
-        'Whoosh y JET no publican su tarifa de Santiago en su web: el precio de cada operador lo ves en su app antes del viaje.',
-        {
-          list: [
-            '**Whoosh** cobra un costo de inicio, que incluye el primer minuto, más un precio por minuto, según la ciudad, la demanda y tu plan o paquete. Puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
-            '**JET** te muestra la tarifa en GO JET antes de que confirmes el arriendo, según sus términos.',
-          ],
-        },
-        'Whoosh puede cobrarte aparte, en pesos chilenos, según sus términos para Chile:',
-        {
-          table: {
-            caption: 'Multas de Whoosh en Chile, según sus términos del 29 de diciembre de 2025',
-            head: ['Qué pasa', 'Multa'],
-            rows: [
-              ['Terminar el viaje fuera de una zona «P»', '$5.000'],
-              ['Salir de la zona permitida, o dejarlo detenido fuera de una zona «P» más de 30 minutos sin terminar el viaje', '$10.000'],
-              ['Subirlo al Metro, a un auto, una micro o un taxi, o llevarlo dentro de un edificio', '$10.000'],
-              ['Dejar que se descargue la batería por completo', '$10.000'],
-              ['No respetar las normas de tránsito', '$20.000'],
-              ['Andar dos en el mismo scooter, o que lo use un menor de 18 años', '$40.000'],
-              ['Manejar bajo los efectos del alcohol o las drogas', '$50.000'],
-            ],
-          },
-        },
-        'Y si el scooter se pierde por una infracción tuya, Whoosh te cobra $1.340.000.',
+        'El domingo 25 de octubre de 2026, entre las 11:47 y las 11:56, había unos 9.300 scooters libres en ese momento en las comunas de Santiago: unos 4.700 de Whoosh, 2.700 de Lime y 1.900 de JET, cada uno según su último recuento. Dónde están, lo ves en el [mapa de Santiago](map:cl:Santiago).',
+        'Según la prensa, JET opera también en Colina y Paine.',
+        '**Bicis.** JET arrienda también bicicletas eléctricas (en Peñalolén, solo bicis), y las bicis públicas de **Bike Itaú** tienen estaciones en comunas como Providencia, Las Condes, Vitacura y Ñuñoa.',
+        'Fuera de la capital hay guías de [Viña del Mar](guide:vina-del-mar), [La Serena](guide:la-serena), [Rancagua](guide:rancagua), [Pucón](guide:pucon), [Puerto Montt](guide:puerto-montt) y [Temuco](guide:temuco).',
       ],
     },
     {
@@ -72,10 +44,9 @@ const guide: Guide = {
               ['Cruces peatonales', 'Detente y crúzalo a velocidad de peatón; si hay mucha gente, bájate', 'Ley 18.290, art. 222'],
               ['Casco', 'Obligatorio para quien maneja y su acompañante', 'Decreto 102, art. 20'],
               ['Luces', 'Blanca o amarilla adelante y roja atrás, de media hora después de la puesta de sol a media hora antes del amanecer, y ropa reflectante', 'Decreto 102, arts. 19 y 21'],
-              ['Velocidad', 'Los JET no pasan de 20 km/h; los Whoosh llegan a 25 km/h, o a 15 km/h en modo principiante', 'Cada empresa'],
+              ['Velocidad', 'El motor deja de impulsar a los 25 km/h; el límite de tu scooter te lo muestra la app', 'Ley 18.290, art. 2'],
               ['Pasajeros', 'Ninguno: solo las personas para las que el vehículo fue diseñado', 'Decreto 102, art. 22'],
               ['Alcohol y drogas', 'Prohibido manejar cualquier vehículo bajo su influencia', 'Ley 18.290, art. 110'],
-              ['Edad', '18 años para arrendar', 'Whoosh y JET'],
             ],
           },
         },
@@ -86,7 +57,7 @@ const guide: Guide = {
     {
       heading: 'Dónde estacionar y qué decide cada comuna',
       blocks: [
-        'En Whoosh, déjalo solo en las zonas «P» de la app, que aprueba la municipalidad; en JET, en un lugar permitido de la zona de GO JET, con una foto si la app te la pide. La Ley de Tránsito pide estacionar las bicicletas de preferencia en lugares habilitados, dejando espacio a los peatones, y prohíbe amarrarlas en zonas de carga y descarga, estacionamientos para personas con discapacidad, paraderos o pasos de peatones. Vitacura pide lo mismo con los scooters.',
+        'Termina el viaje solo donde la app te lo permita. La Ley de Tránsito pide estacionar las bicicletas de preferencia en lugares habilitados, dejando espacio a los peatones, y prohíbe amarrarlas en zonas de carga y descarga, estacionamientos para personas con discapacidad, paraderos o pasos de peatones. Vitacura pide lo mismo con los scooters.',
         'Cada comuna da su permiso o convenio, o licita el servicio:',
         {
           table: {
@@ -94,7 +65,7 @@ const guide: Guide = {
             head: ['Comuna', 'Qué hay'],
             rows: [
               ['San Miguel', 'Whoosh desde el 27 de junio de 2025, por acuerdo con la municipalidad: un piloto de 200 scooters en estacionamientos exclusivos, que crecería a 500. Lime desde octubre de 2025: 200 de libre flotación dentro de un polígono'],
-              ['Renca', 'Whoosh desde mayo de 2026: 400 scooters en más de 250 estaciones; el alcalde anunció 15% de descuento con la Tarjeta Vecino'],
+              ['Renca', 'Whoosh desde mayo de 2026: 400 scooters en más de 250 estaciones'],
               ['Cerrillos', 'JET, en marcha blanca desde el 2 de octubre de 2026: 300 scooters y 200 bicis'],
               ['Lo Barnechea, Las Condes y Vitacura', 'Licitaron juntas el servicio, y El Mercurio informó en septiembre de 2026 que lo ganó Lime (La Voz de Pucón). Lo Barnechea terminó su contrato el 15 de octubre de 2026 y anunciará cuándo vuelve el servicio'],
             ],
@@ -103,26 +74,12 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Metro, micros y trenes',
-      blocks: [
-        {
-          list: [
-            '**Metro.** Con un scooter de arriendo, no: Whoosh lo prohíbe y te cobra $10.000 si lo subes. Termina el viaje en una zona «P» y sigue en Metro.',
-            '**Micros, trenes, autos y taxis.** Tampoco: los términos de Whoosh lo prohíben, con un cobro de $10.000, y los de JET no te dan derecho a transportarlo en un vehículo.',
-          ],
-        },
-        'Fuera de la capital, el mapa también muestra los Whoosh y Lime de [Viña del Mar](guide:vina-del-mar), los Whoosh de [La Serena](guide:la-serena), [Rancagua](guide:rancagua), [Pucón](guide:pucon) y [Puerto Montt](guide:puerto-montt), y los JET de [Temuco](guide:temuco), cada una con su propia guía.',
-      ],
-    },
-    {
       heading: 'Consejos para andar en scooter en Santiago',
       blocks: [
         {
           list: [
-            '**Mira la app antes de partir**: la zona permitida, las zonas «P» y las de velocidad reducida, que Whoosh marca en naranja. Según JET, si sales de su zona, el scooter suena, se detiene y te pide volver.',
+            '**Mira la app antes de partir**: la zona permitida, dónde terminar el viaje y las zonas de velocidad reducida.',
             '**Ojo en la mañana.** La ACHS registró 501 accidentes de trayecto en scooter, los del camino entre la casa y el trabajo, de enero a junio de 2026: un 36,9% más que un año antes. El 57,9% fue entre las 7:00 y las 11:59.',
-            '**Seguro.** El de accidentes de Whoosh no te cubre si andas sin casco o fuera de las comunas cubiertas.',
-            '**Peso.** Whoosh admite hasta 100 kg, y JET, hasta 120 kg.',
           ],
         },
       ],
@@ -143,11 +100,11 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta arrendar un scooter eléctrico en Santiago?',
-      answer: 'Cada app te muestra el precio antes del viaje: Whoosh y JET no publican su tarifa de Santiago en su web. Whoosh cobra un costo de inicio más un precio por minuto.',
+      answer: 'La app de cada empresa te muestra el precio antes de desbloquear.',
     },
     {
       question: '¿Qué app necesito para los scooters de Santiago?',
-      answer: 'Depende de la comuna: Whoosh, GO JET (de JET) o Lime. El mapa te muestra los scooters de las tres en un solo lugar.',
+      answer: 'Depende de la comuna: Whoosh, GO JET (de JET) o Lime. Dónde están, lo ves en el [mapa de Santiago](map:cl:Santiago).',
     },
     {
       question: '¿Es obligatorio el casco para andar en scooter en Chile?',
@@ -155,15 +112,7 @@ const guide: Guide = {
     },
     {
       question: '¿En qué comunas de Santiago hay scooters?',
-      answer: 'En las que dan permiso o convenio. En junio de 2026, Lime operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, y Whoosh en doce comunas, entre ellas Renca, Quinta Normal y Cerro Navia (Forbes Chile); JET, en Huechuraba y, desde octubre, en Cerrillos, entre otras. El mapa te muestra dónde están.',
-    },
-    {
-      question: '¿Puedo subir un scooter de arriendo al Metro?',
-      answer: 'No. Whoosh lo prohíbe y te cobra $10.000 si lo haces: termina el viaje en una zona «P» y sigue en Metro.',
-    },
-    {
-      question: '¿Los scooters de Santiago tienen horario?',
-      answer: 'Los términos de Whoosh y de GO JET no fijan un horario nocturno. Para Lime, mira su app.',
+      answer: 'En las que dan permiso o convenio. En junio de 2026, Lime operaba en Las Condes, Vitacura, San Miguel, La Florida y La Cisterna, y Whoosh en doce comunas, entre ellas Renca, Quinta Normal y Cerro Navia (Forbes Chile); JET, en Huechuraba y, desde octubre, en Cerrillos, entre otras.',
     },
   ],
   sources: [
@@ -171,11 +120,6 @@ const guide: Guide = {
     { title: 'BCN: Ley 21.088 (2018)', url: 'https://www.bcn.cl/leychile/navegar?idNorma=1118358' },
     { title: 'BCN: Decreto 102 de Transportes, seguridad de los ciclos', url: 'https://www.bcn.cl/leychile/navegar?idNorma=1162453' },
     { title: 'SII: valores de la UTM en 2026', url: 'https://www.sii.cl/valores_y_fechas/utm/utm2026.htm' },
-    { title: 'Whoosh: términos para Chile', url: 'https://whoosh.bike/terms_cl/es' },
-    { title: 'Whoosh: preguntas frecuentes', url: 'https://whoosh.bike/faq/es_la' },
-    { title: 'Whoosh: zonas de parking', url: 'https://whoosh.bike/parking_rules/es_la' },
-    { title: 'JET: descarga GO JET', url: 'https://jetshr.com/' },
-    { title: 'GO JET: términos para Chile', url: 'https://static.jetshr.com/jet_website/docs/pdfs/Terminos_Condiciones_Arriendo_Go_Jet_Chile.pdf' },
     { title: 'San Miguel: llega Whoosh (junio de 2025)', url: 'https://web.sanmiguel.cl/san-miguel-suma-flota-de-scooters-electricos/' },
     { title: 'San Miguel: llega Lime (octubre de 2025)', url: 'https://web.sanmiguel.cl/scooters-lime-llegan-a-san-miguel-como-nueva-alternativa-de-movilidad/' },
     { title: 'Lo Barnechea: término del contrato (octubre de 2026)', url: 'https://lobarnechea.cl/Noticias/termino-de-contrato-servicio-de-scooters-y-bicicletas/' },
