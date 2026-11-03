@@ -134,6 +134,7 @@ import halifaxEn from './en/e-scooters-halifax';
 import ajaxEn from './en/e-scooters-ajax';
 import hamiltonOntarioEn from './en/e-scooters-hamilton-ontario';
 import charlottesvilleEn from './en/e-scooters-charlottesville';
+import berkeleyEn from './en/e-scooters-berkeley';
 import konstanzDe from './de/e-scooter-konstanz';
 import tonsbergNb from './nb/elsparkesykkel-tonsberg';
 import sanAntonioEn from './en/e-scooters-san-antonio';
@@ -305,6 +306,7 @@ import kansasCityEn from './en/e-scooters-kansas-city';
 import ashdodEn from './en/e-scooters-ashdod';
 import namurFr from './fr/trottinette-electrique-namur';
 import tulsaEn from './en/e-scooters-tulsa';
+import mobileAlabamaEn from './en/e-scooters-mobile-alabama';
 import szekesfehervarEn from './en/e-scooters-szekesfehervar';
 import szombathelyEn from './en/e-scooters-szombathely';
 import riminiIt from './it/monopattini-sharing-rimini';
@@ -503,6 +505,7 @@ export const GUIDES: readonly Guide[] = [
   ajaxEn,
   hamiltonOntarioEn,
   charlottesvilleEn,
+  berkeleyEn,
   konstanzDe,
   tonsbergNb,
   sanAntonioEn,
@@ -674,6 +677,7 @@ export const GUIDES: readonly Guide[] = [
   ashdodEn,
   namurFr,
   tulsaEn,
+  mobileAlabamaEn,
   szekesfehervarEn,
   szombathelyEn,
   riminiIt,
