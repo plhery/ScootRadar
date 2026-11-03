@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-berlin',
   topic: 'berlin',
-  name: 'E-Scooter Berlin: Anbieter, Parken, Regeln',
+  name: 'E-Scooter Berlin: Anbieter, Preise, Parken',
   title: 'E-Scooter Berlin 2026: Lime, Bolt, Voi, Dott, Zeus, Parken',
-  description: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi, Dott und in zwei Bezirken bei Zeus. Wo du parkst, was die BVG verbietet und was nach März 2027 kommt.',
-  headline: 'E-Scooter Berlin: Anbieter, Parkzonen, Regeln und was du wissen musst',
-  lede: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi oder Dott, in Spandau und Reinickendorf auch bei Zeus: App laden, ohne Führerschein registrieren, QR-Code scannen. Mindestalter und Preis zeigt dir die App vor dem Entsperren. Du fährst auf dem Radweg, nie auf dem Gehweg oder durch Parks, und rund um die Sehenswürdigkeiten in Mitte beendest du die Fahrt nur an markierten Flächen wie den Jelbi-Punkten.',
+  description: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi, Dott und in zwei Bezirken bei Zeus. 10 Minuten: rund 3,19 € mit Voi, 3,65 € mit Dott. Nie auf dem Gehweg.',
+  headline: 'E-Scooter Berlin: Anbieter, Preise, Parkzonen und was du wissen musst',
+  lede: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi oder Dott, in Spandau und Reinickendorf auch bei Zeus: App laden, ohne Führerschein registrieren, QR-Code scannen. Bolt, Dott, Lime und Zeus vermieten erst ab 18. Zehn Minuten kosten bei Voi rund 3,19 € und bei Dott rund 3,65 € (Standardtarife, Stand November 2026); die anderen zeigen den Preis in der App. Du fährst auf dem Radweg, nie auf dem Gehweg oder durch Parks, und rund um die Sehenswürdigkeiten in Mitte beendest du die Fahrt nur an markierten Flächen wie den Jelbi-Punkten.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'de:Berlin',
@@ -30,17 +30,36 @@ const guide: Guide = {
       ],
     },
     {
+      heading: 'Was kostet ein E-Scooter in Berlin?',
+      blocks: [
+        'Du zahlst fürs Entsperren und dann pro Minute.',
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Berlin (Standardtarife, Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
+            rows: [
+              ['Voi', '0,49 €', '0,27 €', 'rund 3,19 €', 'rund 5,89 €'],
+              ['Dott', '0,75 €', '0,29 €', 'rund 3,65 €', 'rund 6,55 €'],
+              ['Bolt (für ganz Deutschland)', 'kleine Gebühr', 'ab 0,15 €, je nach Standort', 'in der App', 'in der App'],
+              ['Lime, Zeus', 'in der App', 'in der App', 'in der App', 'in der App'],
+            ],
+          },
+        },
+        'Den Endpreis zeigt die App, bevor du entsperrst. Für Vielfahrer hat Bolt in Deutschland unbegrenzte Freischaltungen ab 0,99 € im Monat sowie Wochen- und Monatspässe.',
+      ],
+    },
+    {
       heading: 'Wo darf man mit dem E-Scooter in Berlin fahren?',
       blocks: [
         'Du fährst auf dem Radweg, Radfahrstreifen oder Schutzstreifen, und nur wo es keinen gibt, auf der Fahrbahn. Auf dem Gehweg ist Fahren verboten (15 €, ab 1. März 2027 25 €), ebenso in Fussgängerzonen, ausser ein Schild erlaubt es.',
         '**Parks sind tabu.** In Berlins öffentlichen Grünanlagen ist Fahren und Parken mit Kraftfahrzeugen verboten, und ein E-Scooter zählt als Kraftfahrzeug. Du erkennst sie am **Tulpenschild** am Eingang, einem dreieckigen Schild mit grünem Rand und einer Tulpe. Das kann ein Verwarnungsgeld bis 55 € kosten: So viel zahlte laut Berliner Zeitung (März 2024) Jan Böhmermann, als er mit dem E-Scooter durch den Tiergarten fuhr. Auf dem Tempelhofer Feld sind Kraftfahrzeuge nach Angaben von Grün Berlin ebenfalls verboten.',
-        'Auf Kopfsteinpflaster fährst du besser langsamer, und Tramschienen überquerst du möglichst quer.',
+        'In keiner Zone bremst dich der Scooter automatisch ab: Technisch ginge das, schrieb Bolt dem Senat im Juli 2026, das deutsche Recht lasse es derzeit aber nicht zu. Auf Kopfsteinpflaster fährst du also selbst langsamer, und Tramschienen überquerst du möglichst quer.',
         'Die Regeln für ganz Deutschland, kurz:',
         {
           list: [
             'Ab 14 ohne Führerschein, keine Helmpflicht. Nur eine Person pro Scooter: 2025 zählte die Berliner Polizei 1087 Verstösse, weil zwei oder mehr Personen auf einem Scooter fuhren, mehr als Rotlichtverstösse (1012).',
             'Rote Ampel: 60 € und 1 Punkt. Handy in der Hand: heute 100 € und 1 Punkt.',
-            'Alkohol: Grenzen wie im Auto. Ab 0,5 Promille 500 €, 2 Punkte und 1 Monat Fahrverbot, auch fürs Auto; ab 1,1 Promille eine Straftat, und der Führerschein ist in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0 Promille.',
+            'Alkohol: Grenzen wie im Auto. Ab 0,5 Promille 500 €, 2 Punkte und 1 Monat Fahrverbot, auch fürs Auto; ab 1,1 Promille eine Straftat, und der Führerschein ist in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0 Promille. Bolt verlangt zu bestimmten Zeiten einen Reaktionstest in der App, bevor du entsperren kannst.',
             'Versicherung: Jeder E-Scooter braucht eine Versicherungsplakette; den Leih-Scooter versichert der Anbieter.',
           ],
         },
@@ -51,7 +70,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Berlin parken: Jelbi-Punkte, Verbotszonen, Gehweg',
       blocks: [
         'Für alle Anbieter gelten dieselben Auflagen. Gibt es eine markierte Abstellfläche, gehört der Scooter dorthin: an einen Jelbi-Punkt oder eine Jelbi-Station der BVG oder auf eine Fläche des Bezirks. Rund um jede liegt eine Parkverbotszone von mindestens 100 m, in der die App das Beenden der Fahrt sperrt. Im April 2026 war innerhalb des S-Bahn-Rings fast ein Drittel der Fläche Verbotszone: 28 von 88 km².',
-        'Ohne Fläche in der Nähe darfst du auf dem Gehweg parken, wenn 2,30 m für Fussgänger frei bleiben. Tabu sind diese Stellen, und vor und nach jeder bleiben mindestens 1,5 m frei:',
+        'In der Bolt-App etwa sind die Bereiche, in denen du nicht parken darfst, rot markiert. Ohne Fläche in der Nähe darfst du auf dem Gehweg parken, wenn 2,30 m für Fussgänger frei bleiben. Tabu sind diese Stellen, und vor und nach jeder bleiben mindestens 1,5 m frei:',
         {
           list: [
             'an Bus- und Tramhaltestellen: 25 m vor und nach dem Haltestellenschild, so die Genehmigungen seit April 2025 (manche Seiten nennen noch die alten 15 m);',
@@ -98,25 +117,28 @@ const guide: Guide = {
               ['Behindernd oder gefährdend abgestellt', '20 bis 30 € Bussgeld (Regelsatz)'],
               ['Ab 1. März 2027: unzulässig auf Geh- oder Radweg geparkt', '55 €, mit Behinderung 70 €'],
               ['In einer Grünanlage geparkt oder gefahren', 'Verwarnungsgeld 5 bis 55 €, Bussgeld bis 5000 €'],
+              ['Gegen die Regeln des Anbieters verstossen', 'Gebühr des Anbieters, bis zur Kontosperre'],
               ['Scooter steht im Weg', 'Polizei oder Ordnungsamt setzen ihn um, seit 24. Juli 2025 auf Kosten des Anbieters'],
             ],
           },
         },
+        'Dazu kommen Strafen der Anbieter selbst, wie sie dem Senat im Juli 2026 schrieben. Lime erhebt Gebühren nach seinen AGB und kann Konten dauerhaft sperren, etwa wenn zwei auf einem Scooter fahren. Dott verlangt eine Gebühr und sperrt nach einem ersten Verstoss unter Umständen vorübergehend, bei wiederholten Verstössen dauerhaft; seine Foto-Prüfung lässt dich die Fahrt nicht beenden, wenn der Scooter schlecht steht.',
         'Steht dir ein Scooter im Weg, meldest du ihn bei [Jelbi](https://www.jelbi.de/falschparker-melden/), auf scooter-melder.de oder über die Hotline auf dem Scooter. Tagsüber muss der Anbieter ihn innerhalb von vier Stunden wegräumen.',
       ],
     },
     {
-      heading: 'BVG und Jelbi: E-Scooter und Nahverkehr',
+      heading: 'BVG, Jelbi und Flughafen BER: E-Scooter und Nahverkehr',
       blocks: [
         'Seit dem 1. Mai 2024 verbietet die BVG E-Tretroller in all ihren Fahrzeugen und Bahnhöfen, auch zusammengeklappt: in U-Bahn, Tram, Bus und Fähre. Mit dem Leih-Scooter heisst das: Fahrt vor dem Bahnhof beenden und am Ziel einen neuen mieten.',
         '**Jelbi** ist die Mobilitäts-App der BVG: Darin kaufst du VBB-Tickets und buchst E-Scooter von Lime, Bolt, Voi und Dott, mit einem eigenen Jelbi-Konto. Am Hauptbahnhof liegt der Jelbi-Punkt S+U Hauptbahnhof/Heidestrasse.',
+        '**Flughafen BER:** Das Gebiet von Dott endet weit nördlich des Flughafens. Nimm den Flughafen-Express FEX oder die S-Bahn, beide ab dem Bahnhof direkt unter Terminal 1, in die Stadt und steig dort auf den Scooter um.',
         '**Lieber Fahrrad fahren?** Fahrräder verleihen in Berlin nextbike und DB Call a Bike, dazu Lime, Bolt und Voi.',
       ],
     },
     {
       heading: 'E-Scooter-Verbot in Berlin? Was nach März 2027 geplant ist',
       blocks: [
-        'Die Genehmigungen aller fünf Anbieter enden am 31. März 2027. Im Juli 2026 schrieb der Senat dem Abgeordnetenhaus, er bereite eine strikte Pflicht vor, Leihfahrzeuge nur an Stationen abzustellen.',
+        'Die Genehmigungen aller fünf Anbieter enden am 31. März 2027. Im Juli 2026 schrieb der Senat dem Abgeordnetenhaus, er bereite eine strikte Pflicht vor, Leihfahrzeuge nur an Stationen abzustellen. Ein Bündnis aus rund 40 Organisationen forderte im Juni 2026 feste Stationen ab April 2027.',
         'Langfristig gibt es einen Plan: die Sharing-Strategie 2035, die die Senatsverkehrsverwaltung am 6. Mai 2026 vorgestellt hat. Bis 2035 sollen Gebiet für Gebiet rund 3000 feste Mobilitätsstandorte entstehen, mit Parkverbotszonen dazwischen; Mieten und Abstellen ginge dann nur noch dort. Das ist ein Plan, noch keine Regel, und kein Verbot, auch wenn Schlagzeilen im März 2026 so klangen. Ganz verbieten kann das Land Berlin E-Scooter laut Senat gar nicht.',
       ],
     },
@@ -147,12 +169,16 @@ const guide: Guide = {
       answer: 'Nein, die BVG verbietet E-Tretroller seit dem 1. Mai 2024, auch zusammengeklappt. Einen eigenen, zusammengeklappten Scooter darfst du in S-Bahn und Regionalzug mitnehmen; Leih-Scooter bleiben auf der Strasse.',
     },
     {
-      question: 'Ab wie viel Jahren darf man in Berlin E-Scooter fahren?',
-      answer: 'Laut Gesetz ab 14, ohne Führerschein. Mindestalter und Preis fürs Mieten zeigt dir die App vor dem Entsperren.',
+      question: 'Ab wie viel Jahren kann man in Berlin E-Scooter mieten?',
+      answer: 'Bei Bolt, Dott und Zeus ab 18, so steht es in ihren Bedingungen; Lime sperrt Konten, die Minderjährige nutzen, dauerhaft, und auch für Jelbi musst du 18 sein. Fahren darfst du laut Gesetz schon ab 14, ohne Führerschein.',
     },
     {
       question: 'Bin ich auf einem Leih-Scooter versichert?',
-      answer: 'Ja, für Schäden, die du anderen zufügst: Der Anbieter versichert jeden Scooter, das zeigt die Plakette hinten.',
+      answer: 'Ja, für Schäden, die du anderen zufügst: Der Anbieter versichert jeden Scooter, das zeigt die Plakette hinten. Bolt legt laut seiner Versicherungsseite eine private Unfallversicherung für die Zeit der Fahrt dazu; wo Dott eine anbietet, deckt sie Kopfverletzungen ohne Helm nicht.',
+    },
+    {
+      question: 'Kann ich mit dem E-Scooter zum Flughafen BER fahren?',
+      answer: 'Rechne nicht damit: Der BER liegt ausserhalb des Gebiets von Dott. Nimm den FEX oder die S-Bahn, die direkt unter Terminal 1 abfahren.',
     },
   ],
   sources: [
@@ -168,6 +194,15 @@ const guide: Guide = {
     { title: 'BVG: Verbot von E-Tretrollern', url: 'https://www.bvg.de/de/service-und-kontakt/e-tretroller-verbot' },
     { title: 'Jelbi (BVG): Häufige Fragen', url: 'https://www.jelbi.de/faq-de/' },
     { title: 'Bezirksamt Tempelhof-Schöneberg: Grünanlagen und Tulpenschild', url: 'https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/unsere-fachbereiche/strassen-und-gruenflaechenverwaltung/artikel.349752.php' },
+    { title: 'Voi: Berliner Tarif in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/145/netex.xml' },
+    { title: 'Dott: offener Daten-Feed für Berlin, Preise und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/berlin/gbfs.json' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen für Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Bolt: E-Scooter mieten in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Bolt: Versicherung in Deutschland', url: 'https://bolt.eu/de-de/insurance/' },
+    { title: 'Zeus Scooters: Allgemeine Geschäftsbedingungen', url: 'https://zeusscooters.com/terms-and-conditions/' },
+    { title: 'Flughafen BER: Anreise und Abreise', url: 'https://ber.berlin-airport.de/de/orientierung/anreiseundabreise.html' },
+    { title: 'Volksstimme (dpa): Bündnis fordert feste Stationen für E-Scooter ab 2027 (30. Juni 2026)', url: 'https://www.volksstimme.de/panorama/bundnis-fordert-feste-stationen-fur-e-scooter-ab-2027-4277244' },
   ],
 };
 
