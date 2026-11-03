@@ -1259,9 +1259,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     /// A link to the map from the website (ScooterMapLink). A city's centre,
     /// which is what the site's links carry, opens like the city chosen in the
-    /// search; any other point only moves the map there. Either way the first
-    /// fix of the rider's location leaves the map where the link put it, also
-    /// when the link opened the app before locating began.
+    /// search; any other point moves the map there and clears a place searched
+    /// before, so the bar shows its placeholder as for a map the rider moved.
+    /// Either way the first fix of the rider's location leaves the map where
+    /// the link put it, also when the link opened the app before locating began.
     func open(_ link: ScooterMapLink) {
         if let battery = link.minimumBattery { setMinimumBattery(Double(battery)) }
         guard let origin = link.origin else {
@@ -1274,6 +1275,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             choosePlace(city.destination)
         } else {
             ScooterAnalytics.shared.track("link_open", result: "place")
+            // The bar says what the map shows: a place searched before is not
+            // where the map goes, so it leaves the bar (clearAddressSearch).
+            searchedDestination = nil
             focusToken += 1
             focusRequest = .city(origin, token: focusToken)
         }

@@ -3499,6 +3499,27 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.minimumBattery, 60)
     }
 
+    func testALinkToAnyOtherPointClearsTheSearchedPlaceFromTheBar() throws {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let bellecour = MapDestination(title: "Place Bellecour", point: GeoPoint(latitude: 45.7576, longitude: 4.8322))
+        model.focusOnAddress(bellecour)
+        XCTAssertEqual(model.searchBarState, .place(bellecour))
+
+        // Geneva, but not a catalogued centre: the map moves there and the bar no longer names Bellecour.
+        let geneva = GeoPoint(latitude: 46.2044, longitude: 6.1432)
+        XCTAssertNil(ScooterCityCatalog.city(linkedAt: geneva))
+        model.open(ScooterMapLink(origin: geneva))
+        XCTAssertEqual(try XCTUnwrap(model.focusRequest).point, geneva)
+        XCTAssertNil(model.searchedDestination)
+        XCTAssertEqual(model.searchBarState, .empty)
+
+        // A city's centre still opens as the city, in place of the searched one.
+        model.focusOnAddress(bellecour)
+        let bern = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bern" })
+        model.open(ScooterMapLink(origin: GeoPoint(latitude: bern.center.latitude, longitude: bern.center.longitude)))
+        XCTAssertEqual(model.searchBarState, .place(bern.destination))
+    }
+
     func testALinkWithoutAPlaceKeepsTheMapWhereItIs() {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         model.open(ScooterMapLink())
