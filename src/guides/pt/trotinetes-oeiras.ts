@@ -6,46 +6,59 @@ const guide: Guide = {
   topic: 'oeiras',
   name: 'Trotinetes em Oeiras',
   title: 'Trotinetes em Oeiras 2026: Bird, pontos move e regras',
-  description: 'Trotinetes em Oeiras: Bird, Lime e Bolt, os pontos move onde a viagem acaba, o passeio marítimo, Carcavelos, Taguspark, o comboio e as regras de 2026.',
-  headline: 'Trotinetes em Oeiras: Bird, Lime e Bolt, os pontos move, o passeio marítimo e Carcavelos',
-  lede: 'As trotinetes em Oeiras alugam-se nas apps da Bird, da Lime e da Bolt, e cada viagem começa e acaba num ponto move, um lugar sinalizado para as trotinetes. A idade mínima e o preço, a app mostra-os antes de desbloquear. No passeio marítimo, as trotinetes só podem circular nos horários definidos pela Câmara, e nos espaços verdes públicos é proibido entrar com veículos motorizados.',
+  description: 'Trotinetes em Oeiras: Bird, Lime e Bolt, os preços, as 400 estações onde a viagem acaba, o passeio marítimo, Carcavelos, Taguspark e as regras de 2026.',
+  headline: 'Trotinetes em Oeiras: Bird, Lime e Bolt, os preços, os pontos move e as fronteiras com Lisboa e Cascais',
+  lede: 'As trotinetes em Oeiras alugam-se nas apps da Bird, da Lime e da Bolt, e cada viagem começa e acaba num ponto move, um lugar sinalizado para as trotinetes. A Bird pede 18 anos e mostra o preço no ecrã de desbloqueio, antes da viagem. No passeio marítimo, as trotinetes só podem circular nos horários definidos pela Câmara, e nos espaços verdes públicos é proibido entrar com veículos motorizados.',
   published: '2026-10-24',
   updated: '2026-10-26',
   city: 'pt:Oeiras',
   sections: [
     {
-      heading: 'Trotinetes em Oeiras: que operadoras há',
+      heading: 'Trotinetes em Oeiras: que operadoras há e quanto custam',
       blocks: [
         'Em novembro de 2022, a Câmara de Oeiras abriu o concelho às trotinetes partilhadas da Bolt, da Bird e da LINK, com cerca de 200 pontos de partilha; a Lime chegou em junho de 2024. Os pontos têm o nome da marca de mobilidade do município, Oeiras Move, gerida pela Parques Tejo, a empresa municipal que trata também do estacionamento. O regulamento municipal da micromobilidade partilhada, de 2024, só pede às empresas privadas que se coordenem com a Parques Tejo.',
+        {
+          table: {
+            caption: 'Trotinetes partilhadas em Oeiras: quem e a que preço (em novembro de 2026)',
+            head: ['Quem', 'Em Oeiras', 'Preço'],
+            rows: [
+              ['Bird', 'Trotinetes e bicicletas elétricas, em 400 estações', 'No ecrã de desbloqueio da app, antes da viagem; no máximo 100 € por dia'],
+              ['Lime', 'Chegou em junho de 2024', 'Veja na app'],
+              ['Bolt', 'Chegou em novembro de 2022', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio'],
+            ],
+          },
+        },
         'Às 10h13 de sábado, 24 de outubro de 2026, o [mapa de Oeiras](map:pt:Oeiras) mostrava cerca de 390 trotinetes da Bird livres nesse momento; às 12h36 de 30 de outubro, cerca de 30 da Bolt livres nesse momento e cerca de 170 da Lime na última contagem.',
+        '**O preço da Bird.** Pelo contrato de aluguer da Bird para Portugal, na versão de 8 de dezembro de 2021, o preço aparece no ecrã de desbloqueio, antes da viagem, e pode incluir uma taxa de início e uma tarifa por minuto. O contrato exige 18 anos, cativa 5 € no cartão antes de cada viagem e limita o preço a 100 € por dia.',
       ],
     },
     {
       heading: 'Onde apanhar e deixar a trotinete: os pontos move',
       blocks: [
-        'Em Oeiras, a regra vem da Câmara: em janeiro de 2023, a vereadora da Mobilidade explicou à Lusa que o estacionamento em lugar próprio é obrigatório e que a viagem só começa e acaba num ponto move sinalizado.',
-        { note: 'A app não deixa terminar a viagem? Siga até ao ponto move mais próximo: o tempo continua a contar.' },
+        'Em Oeiras, a regra vem da Câmara: em janeiro de 2023, a vereadora da Mobilidade explicou à Lusa que o estacionamento em lugar próprio é obrigatório e que a viagem só começa e acaba num ponto move sinalizado. A Bird aplica-a: a 3 de novembro de 2026, as suas viagens só podiam terminar numa das suas 400 estações, todas no concelho.',
+        'A rede é mais densa em Carnaxide (78 estações), Linda-a-Velha (70), Algés (63) e Oeiras (58), seguidas da zona de Barcarena, Tercena e Queluz de Baixo, de Paço de Arcos (32) e de Cruz Quebrada (21); Porto Salvo, Queijas e Caxias têm menos. Há estações às duas entradas da estação de comboios de Oeiras, uma a cerca de 20 m dos cais de Paço de Arcos e nove a menos de 300 m da estação de Algés.',
+        { note: 'A app não deixa terminar a viagem? Siga até ao ponto move mais próximo: o tempo continua a contar. Pelo contrato da Bird, se não conseguir deixar a trotinete num local válido e pedir à Bird que a vá buscar, a taxa de recolha pode chegar a 120 €.' },
       ],
     },
     {
       heading: 'Passeio marítimo e jardins: onde não pode andar de trotinete',
       blocks: [
         '**Passeio marítimo.** O Passeio Marítimo de Oeiras, que segue a costa de Algés ao Forte de São Julião da Barra, «destina-se especialmente à circulação pedonal», diz o Regulamento de Permissões Administrativas, Taxas e Outras Receitas (RPATOR) da Câmara, em vigor desde 1 de janeiro de 2024, que revogou o regulamento das praias de 2021. O artigo 855.º proíbe aí bicicletas e trotinetes «fora dos horários que sejam expressamente definidos» pela Câmara, afixados no local e publicados no site do município: siga a sinalização e, na dúvida, leve a trotinete à mão. A proibição não vale onde houver uma ciclovia própria. A coima vai de 50 a 3500 € (artigo 881.º).',
-        '**Parque dos Poetas, jardins do Palácio dos Marqueses de Pombal e outros espaços verdes.** Nos espaços verdes públicos, o mesmo regulamento proíbe, no artigo 784.º: «Entrar e circular com qualquer tipo de veículo motorizado», com poucas exceções, como viaturas municipais e de emergência. Proíbe também estacionar sobre relva ou canteiros. A coima vai de 50 a 3500 € (artigo 880.º). A trotinete elétrica tem motor: o nosso conselho é deixá-la num ponto move e entrar a pé.',
+        '**Parque dos Poetas, jardins do Palácio dos Marqueses de Pombal e outros espaços verdes.** Nos espaços verdes públicos, o mesmo regulamento proíbe, no artigo 784.º: «Entrar e circular com qualquer tipo de veículo motorizado», com poucas exceções, como viaturas municipais e de emergência. Proíbe também estacionar sobre relva ou canteiros. A coima vai de 50 a 3500 € (artigo 880.º). A trotinete elétrica tem motor: o nosso conselho é deixá-la num ponto move e entrar a pé. A Bird tem estações à beira do Parque dos Poetas e outra a cerca de 10 m do Palácio.',
         '**Centro histórico de Oeiras.** Valem as regras do Código da Estrada: na ciclovia ou na estrada, junto à direita, e fora do passeio.',
       ],
     },
     {
       heading: 'Nova SBE, Carcavelos e Taguspark',
       blocks: [
-        '**Nova SBE e Carcavelos ficam no concelho de Cascais.** A fronteira passa entre a Praia da Torre, em Oeiras, e a Nova SBE. A ciclovia da Medrosa, de 1,5 km, aberta em setembro de 2023, liga a estação de comboios de Oeiras à Nova SBE e à Praia da Torre. No paredão de Carcavelos valem as regras de Cascais: o regulamento das praias reserva-o aos peões, e a trotinete só circula onde estiver assinalado. Mais em [trotinetes em Cascais](guide:cascais).',
-        '**Taguspark e Lagoas Park** ficam em Porto Salvo. A Ciclovia Empresarial, concluída em 2021, liga a estação de Paço de Arcos à Quinta da Fonte, ao Lagoas Park e ao Taguspark.',
+        '**Nova SBE e Carcavelos ficam no concelho de Cascais.** A fronteira passa entre a Praia da Torre, em Oeiras, e a Nova SBE. A Bird de Oeiras tem uma estação a cerca de 50 m do campus, ainda em Oeiras, e outra na Rua da Medrosa. A ciclovia da Medrosa, de 1,5 km, aberta em setembro de 2023, liga a estação de comboios de Oeiras à Nova SBE e à Praia da Torre. No paredão de Carcavelos valem as regras de Cascais: o regulamento das praias reserva-o aos peões, e a trotinete só circula onde estiver assinalado. Mais em [trotinetes em Cascais](guide:cascais).',
+        '**Taguspark e Lagoas Park** ficam em Porto Salvo: o Taguspark tem seis estações da Bird e o Lagoas Park três. A Ciclovia Empresarial, concluída em 2021, liga a estação de Paço de Arcos à Quinta da Fonte, ao Lagoas Park e ao Taguspark.',
       ],
     },
     {
       heading: 'De Oeiras para Lisboa e Cascais: onde acaba a viagem',
       blocks: [
-        'A viagem acaba num ponto move de Oeiras; em Lisboa e em Cascais valem outras regras, e é a app que mostra onde pode terminar. As trotinetes de Cascais estão no [mapa de Cascais](map:pt:Cascais).',
+        'A zona onde as trotinetes da Bird de Oeiras podem circular vai de Cascais ao centro de Lisboa e até ao Parque das Nações, mas as estações onde a viagem pode acabar ficam todas em Oeiras. Pode atravessar Algés até Belém, ou seguir para Carcavelos, mas para terminar volte a uma estação de Oeiras ou veja na app onde é possível. Cascais tem uma frota da Bird à parte, com estações próprias, no [mapa de Cascais](map:pt:Cascais).',
         '**Lisboa vai acabar com as trotinetes partilhadas?** A 21 de outubro de 2026, a Câmara de Lisboa aprovou a proibição da circulação e do estacionamento das trotinetes partilhadas em todo o concelho, com 60 dias para os operadores as retirarem e 10 para responderem. Se avançar, deixa de poder entrar em Belém com uma trotinete partilhada. Veja [trotinetes em Lisboa](guide:lisbon).',
       ],
     },
@@ -77,7 +90,7 @@ const guide: Guide = {
               ['Álcool', 'Limite de 0,5 g/l; a partir de 1,2 g/l é crime', '125 a 625 € (0,5 a 0,8 g/l); 250 a 1250 € (0,8 a 1,2 g/l)'],
               ['Luzes', 'Acesas do anoitecer ao amanhecer e com pouca visibilidade', '30 a 150 €'],
               ['Capacete', 'Não é obrigatório, mas use-o', 'Nenhuma, por agora'],
-              ['Idade', 'A idade mínima, a app mostra-a antes de desbloquear', '–'],
+              ['Idade', 'A lei não fixa mínimo; a Bird pede 18 anos', '–'],
             ],
           },
         },
@@ -98,8 +111,12 @@ const guide: Guide = {
   ],
   faq: [
     {
+      question: 'Quanto custa uma trotinete em Oeiras?',
+      answer: 'Na Bird, a app mostra o preço no ecrã de desbloqueio, antes da viagem; pelo contrato da Bird, o máximo é 100 € por dia, e o cartão fica com 5 € cativos antes de cada viagem. A Bolt cobra em Portugal a partir de 0,15 € por minuto, mais o desbloqueio (em novembro de 2026).',
+    },
+    {
       question: 'Onde posso deixar a trotinete em Oeiras?',
-      answer: 'Só num ponto move, um dos lugares sinalizados para as trotinetes: a Câmara não permite deixá-las em qualquer sítio. Se a app não deixar terminar a viagem, siga até ao ponto move mais próximo.',
+      answer: 'Só num ponto move, um dos lugares sinalizados para as trotinetes: a Câmara não permite deixá-las em qualquer sítio, e a app da Bird não termina a viagem fora deles. A Bird tem 400 estações no concelho, várias junto às estações de comboio e seis no Taguspark.',
     },
     {
       question: 'Posso andar de trotinete no passeio marítimo de Oeiras?',
@@ -111,16 +128,19 @@ const guide: Guide = {
     },
     {
       question: 'Posso ir de trotinete partilhada de Oeiras para Lisboa?',
-      answer: 'A Câmara de Lisboa aprovou a 21 de outubro de 2026 a proibição das trotinetes partilhadas no concelho, com 60 dias para as retirar; se avançar, Belém fica fora de alcance. Até lá, é a app que mostra onde pode terminar a viagem.',
+      answer: 'Por agora, a zona da Bird de Oeiras chega a Lisboa, mas a viagem tem de acabar numa estação de Oeiras. A Câmara de Lisboa aprovou a 21 de outubro de 2026 a proibição das trotinetes partilhadas no concelho, com 60 dias para as retirar; se avançar, Belém fica fora de alcance.',
     },
   ],
   sources: [
+    { title: 'Bird: dados abertos (GBFS) de Oeiras', url: 'https://mds.bird.co/gbfs/v2/public/provider/bird/oeiras-portugal/gbfs.json' },
+    { title: 'Bird: contrato de aluguer em Portugal (8 de dezembro de 2021)', url: 'https://bird.co/rental-agreements/portugal-pt/' },
     { title: 'Câmara de Oeiras: RPATOR, Regulamento n.º 1320/2023 (Diário da República)', url: 'https://diariodarepublica.pt/dr/detalhe/regulamento/1320-2023-261869040' },
     { title: 'Câmara de Oeiras: Regulamento n.º 292/2024, micromobilidade partilhada', url: 'https://diariodarepublica.pt/dr/detalhe/regulamento/292-2024-855592930' },
     { title: 'Lisboa Para Pessoas: Oeiras Move e os pontos de partilha (20 de abril de 2023)', url: 'https://lisboaparapessoas.pt/2023/04/20/oeiras-move-rede-municipal-de-bicicletas-partilhadas-parques-tejo/' },
     { title: 'Lisboa Para Pessoas: a ciclovia da Medrosa (25 de setembro de 2023)', url: 'https://lisboaparapessoas.pt/2023/09/25/bicicletas-partilhadas-rede-municipal-oeiras-move-parques-tejo/' },
     { title: 'Observador/Lusa: os pontos move de Oeiras (31 de janeiro de 2023)', url: 'https://observador.pt/2023/01/31/trotinetes-sao-mais-do-que-um-mero-meio-ludico-de-transporte-dizem-operadoras/' },
     { title: 'Echo Boomer: a Lime chega a Oeiras (6 de junho de 2024)', url: 'https://echoboomer.pt/trotinetes-lime-em-oeiras/' },
+    { title: 'Bolt: trotinetes partilhadas em Portugal', url: 'https://bolt.eu/pt-pt/scooters/' },
     { title: 'Câmara de Cascais: regulamento das praias (Aviso n.º 25462/2025/2)', url: 'https://www.cascais.pt/sites/default/files/anexos/gerais/new/aviso_n.o_25462_2025_2_dr.pdf' },
     { title: 'CP: transporte de bicicletas e trotinetas', url: 'https://www.cp.pt/info/w/bikes-and-scooters' },
     { title: 'CP: Linha de Cascais, alterações de serviço', url: 'https://www.cp.pt/info/pt/w/linha-de-cascais-servico-rodoviario' },
