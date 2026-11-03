@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { track } from '@/lib/analytics';
 import type { MapBounds } from '@/lib/types';
 import { ZONES_MIN_ZOOM, type MapZone, type ZoneResponse } from '@/lib/zones';
 
@@ -59,14 +60,19 @@ export function useZoneData(query: { bounds: MapBounds; zoom: number } | null, e
     const controller = new AbortController();
     let timer = 0;
     const load = async (retries: number) => {
+      let status = 0;
       try {
         const response = await fetch(`/api/zones?${key}`, { signal: controller.signal, headers: { Accept: 'application/json' } });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) { status = response.status; throw new Error(`HTTP ${response.status}`); }
         const body = await response.json() as ZoneResponse;
         setAnswer({ key, zones: Array.isArray(body.zones) ? body.zones : [], failed: false });
         if (body.meta?.pending && retries > 0) timer = window.setTimeout(() => void load(retries - 1), PENDING_RETRY_MS);
       } catch {
-        if (!controller.signal.aborted) setAnswer(current => ({ key, zones: current?.key === key ? current.zones : [], failed: true }));
+        if (controller.signal.aborted) return;
+        setAnswer(current => ({ key, zones: current?.key === key ? current.zones : [], failed: true }));
+        // The kind of failure alone, neither the area nor anything of the visitor: a status apart
+        // tells the limit the zones share with the scooters (429) from the cache failing (503).
+        track('zones_error', { result: status ? `status_${status}` : 'request_failed' });
       }
     };
     timer = window.setTimeout(() => void load(PENDING_RETRIES), QUERY_DEBOUNCE_MS);

@@ -52,7 +52,7 @@ agent that doesn't name the app.
 | Map/details | `vehicle_select`, `vehicle_dismiss`, `cluster_select`, `parking_select`, `map_zoom` (web), `compass_reset` (web) | provider; zoom direction |
 | Conversion intent | `directions_open`, `rental_open` | provider, vehicle/parking target; for directions on the web, `result`: `route` (drawn on the map) or `maps` (Google Maps); iOS sends it for Directions and for Open in Maps alike, without `result`; for a rental, `result` `app` when the button opens the operator's app rather than the scooter (Lime, Bird and PubliBike, whose feeds link no scooter, and Voi, Dott and Bolt from their rider maps), never whether the app is installed or opened |
 | Walking routes | `route_result`, `route_arrived` | web: `success`/`no_route`/`busy`/`failed`/`too_far`; iOS: `success`/`error`/`too_far`, with provider and vehicle/parking target |
-| Reliability | `refresh`, `refresh_result` (web), `data_error`, `data_expired` (web) | generic outcome only (`success`/`error`; `timeout`/`request_failed`) |
+| Reliability | `refresh`, `refresh_result` (web), `data_error`, `data_expired` (web), `zones_error` (web) | generic outcome only (`success`/`error`; `timeout`/`request_failed`; for `zones_error`, `status_` and the HTTP status, or `request_failed`) |
 | Price tools (iOS) | `ride_duration`, `ride_pass_change` | duration, provider; never pass expiry or financial details |
 | Rating (iOS) | `review_ask` | `result`: the moment the app asked for a rating with Apple's prompt, `rental_return` (back from the operator's app 5 minutes to 2 hours after **Open in**). It counts asks, not prompts shown: iOS decides whether the prompt appears, at most three times a year |
 
@@ -81,6 +81,11 @@ What the events mean on the web:
   waited out and sends nothing. Refreshing is otherwise automatic and sends
   nothing. `data_error` is sent once when loading starts to fail, `data_expired`
   when the positions on screen are removed as out of date.
+- `zones_error` is the operators' zones of an area failing to load, once each
+  time an area is asked for, with the HTTP status of the answer (`status_429`,
+  the minute's limit the zones share with the scooters; `status_503`, the cache
+  failing) or `request_failed` where none came. A request given up as the view
+  moves on sends nothing. The iOS and Android apps don't send it.
 - `provider_filter` comes with `source: quick` from the chips and the desktop
   legend, and with `source: filters` and `enabled` from the Filters sheet.
   `filters_reset` is Reset in that sheet or "Show all" on the card that says

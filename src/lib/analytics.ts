@@ -10,7 +10,7 @@ export type AnalyticsEvent =
   | 'battery_filter' | 'map_style' | 'zones_toggle' | 'language_change' | 'locate' | 'location_result'
   | 'vehicle_select' | 'vehicle_dismiss' | 'cluster_select' | 'parking_select' | 'directions_open' | 'rental_open'
   | 'route_result' | 'route_arrived'
-  | 'map_zoom' | 'compass_reset' | 'refresh' | 'refresh_result' | 'data_error' | 'data_expired'
+  | 'map_zoom' | 'compass_reset' | 'refresh' | 'refresh_result' | 'data_error' | 'data_expired' | 'zones_error'
   | 'app_install' | 'app_open' | 'map_open';
 export interface AnalyticsData {
   provider?: string; enabled?: boolean; source?: 'quick' | 'filters';
