@@ -15,7 +15,7 @@ EIN FINGERTIPP ZUR RICHTIGEN APP
 «In … öffnen» bringt dich zur App des Anbieters. Entsperrt und bezahlt wird dort wie gewohnt. ScootRadar vermietet und reserviert keine Scooter.
 
 WO ES FUNKTIONIERT
-Die Scooter von 39 Anbietern, in über 1.000 Städten und Gemeinden in 56 Ländern: in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Spanien, Polen, Norwegen, Schweden und Finnland, im Vereinigten Königreich und in weiteren Ländern Europas; in den Vereinigten Staaten und Kanada; in Brasilien, Chile und Mexiko; in Japan, Südkorea und Australien; in Israel, in der Türkei, in Neuseeland und anderswo. Darunter sind Berlin, Oslo, Tokio, Chicago, Santiago de Chile, Rom, São Paulo, Stockholm, Seoul und Zürich. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
+Die Scooter von 39 Anbietern, in über 1.000 Städten und Gemeinden in 56 Ländern: in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Spanien, Polen, Norwegen, Schweden und Finnland, im Vereinigten Königreich und in weiteren Ländern Europas; in den Vereinigten Staaten und Kanada; in Brasilien, Chile und Mexiko; in Japan und Südkorea; in Israel, in der Türkei, in Neuseeland und anderswo. Darunter sind Berlin, Oslo, Tokio, Chicago, Santiago de Chile, Rom, São Paulo, Stockholm, Seoul und Zürich. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
 
 PRIVAT VON GRUND AUF
 Kein Konto, keine Werbung. Dein Standort wird auf deinem iPhone genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen; der Server erhält nur den Kartenausschnitt, den du gerade ansiehst. Anonyme Nutzungsstatistiken lassen sich in den Einstellungen ausschalten.
