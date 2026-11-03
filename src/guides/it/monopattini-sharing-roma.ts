@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Noleggio monopattini a Roma 2026: operatori, bando, casco',
   description: 'A Roma Bird, Dott e Lime lavorano in proroga in attesa dei nuovi operatori. Servono 18 anni e il casco, che porti tu. Pacchetti di corse con l’annuale Metrebus.',
   headline: 'Monopattini sharing a Roma: operatori, casco, parcheggio e multe nel 2026',
-  lede: 'I monopattini sharing a Roma, a ottobre 2026, sono quelli di Bird, Dott e Lime: gli unici tre operatori autorizzati dal Comune, che lavorano in proroga mentre è in corso il nuovo bando. Per noleggiarli servono 18 anni e un documento d’identità, e il casco lo porti tu: è obbligatorio per tutti e nessun operatore lo fornisce. Il prezzo te lo mostra l’app prima dello sblocco, e la corsa si chiude solo dove l’app lo consente.',
+  lede: 'I monopattini sharing a Roma, a ottobre 2026, sono quelli di Bird, Dott e Lime: gli unici tre operatori autorizzati dal Comune, che lavorano in proroga mentre è in corso il nuovo bando. Per noleggiarli servono 18 anni e un documento d’identità, e il casco lo porti tu: è obbligatorio per tutti e nessun operatore lo fornisce. Il prezzo te lo mostra l’app prima dello sblocco, e al Colosseo, a Fontana di Trevi o in piazza San Pietro l’app di Bird non ti fa chiudere il noleggio.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'it:Roma',
@@ -49,13 +49,39 @@ const guide: Guide = {
       heading: 'Corse gratis con l’abbonamento Metrebus',
       blocks: [
         'Con un abbonamento **annuale** Metrebus Roma, o Metrebus Lazio con la zona A, ogni operatore ti offre un pacchetto di corse da 30 minuti al massimo, fino a 3 al giorno. Con i biglietti, anche da 24, 48 o 72 ore o settimanali, niente pacchetto.',
-        'Il 6 agosto 2026 l’Antitrust ha multato Bird, Dott e Lime per 2,675 milioni di euro in tutto, soprattutto per aver ostacolato questi pacchetti.',
+        {
+          table: {
+            caption: 'Pacchetti per gli abbonati annuali Metrebus, a novembre 2026',
+            head: ['Operatore', 'Pacchetto'],
+            rows: [
+              ['Bird', 'Gratis: 80 corse al mese o 15 a settimana; si chiede con un modulo'],
+              ['Dott', '80 corse al mese per 1 centesimo, o 15 a settimana per 2 (le condizioni di Dott dicono 90 corse e 2 centesimi)'],
+              ['Lime', 'Gratis: 80 corse al mese o 15 a settimana; nessun rinnovo finché l’abbonamento è valido'],
+            ],
+          },
+        },
+        'Il 6 agosto 2026 l’Antitrust ha multato Bird, Dott e Lime per 2,675 milioni di euro in tutto, soprattutto per aver ostacolato questi pacchetti. Con i nuovi operatori cambieranno: 2 corse al giorno per tipo di mezzo, fino a 20 minuti l’una, per 20 euro al massimo se all’abbonamento restano 9-12 mesi, meno se scade prima. Lo sconto lo applicherà l’app da sola, senza rinnovi, e la tariffa non potrà salire per tutta l’autorizzazione.',
       ],
     },
     {
       heading: 'Dove parcheggiare il monopattino sharing a Roma',
       blocks: [
-        'A Roma il noleggio si chiude solo nelle aree autorizzate indicate nell’app; altrove continui a pagare. Ogni operatore disegna le sue zone, e cambiano: fa fede la mappa dell’app.',
+        'A Roma il noleggio si chiude solo nelle aree autorizzate indicate nell’app; altrove continui a pagare. I dati di Bird del 3 novembre 2026 contano 150 zone dove puoi passare ma non chiudere la corsa. Dott e Lime hanno le loro, forse diverse, e le zone cambiano: fa fede l’app.',
+        {
+          table: {
+            caption: 'Dove Bird non faceva chiudere la corsa il 3 novembre 2026 (dati Bird)',
+            head: ['Zona', 'Luoghi'],
+            rows: [
+              ['Roma antica', 'Piazza del Colosseo; Circo Massimo; piazza Venezia'],
+              ['Piazze e fontane', 'Fontana di Trevi; piazza di Spagna e la scalinata; Pantheon e piazza Navona; Campo de’ Fiori; piazza del Popolo'],
+              ['Vaticano', 'Piazza San Pietro e la zona dell’ingresso dei Musei Vaticani'],
+              ['Ville e parchi', 'Tutta Villa Borghese, Pincio e Galleria Borghese compresi; Villa Doria Pamphili; Villa Ada; Villa Celimontana'],
+              ['Tevere e Trastevere', 'Il cuore di Trastevere; lunghi tratti delle banchine del Tevere, con l’Isola Tiberina, Ponte Sisto e Ponte Milvio'],
+              ['Altro', 'La zona dello Stadio Olimpico'],
+            ],
+          },
+        },
+        'Appena fuori puoi chiudere: quel giorno i dati di Bird non avevano limiti a Termini, largo Argentina, piazza Barberini, via del Corso, Castel Sant’Angelo, via della Conciliazione e Ottaviano. Per San Pietro, lascia il monopattino verso Ottaviano o via della Conciliazione e prosegui a piedi.',
         'Mai sul marciapiede. La legge ti lascia sempre usare gli stalli per bici, motorini e moto, ma la corsa si chiude solo dove lo consente l’app.',
       ],
     },
@@ -81,6 +107,7 @@ const guide: Guide = {
           },
         },
         'A maggio 2026, nella settimana in cui è scattato l’obbligo del contrassegno, la polizia ha fermato a Roma più di 1.000 mezzi e trovato oltre 400 violazioni, soprattutto per il casco, riporta Wanted in Rome. Se paghi entro 5 giorni, di solito la multa si riduce del 30%.',
+        'Le multe accertate dopo, come quelle per la sosta, passano dall’operatore, che sa chi ha guidato: può dare i tuoi dati alla polizia, o pagare e addebitarti la multa con le sue penali. Le condizioni di Dott (versione del 2 dicembre 2025) aggiungono 15 euro di spese se la multa la paga Dott, fino a 5 euro per un parcheggio scorretto, 50 euro per ogni violazione delle condizioni e fino a 300 euro se deve recuperare un mezzo, per esempio sequestrato.',
       ],
     },
     {
@@ -88,8 +115,8 @@ const guide: Guide = {
       blocks: [
         '**Sampietrini e rotaie.** Li indica il Comune stesso: il bando 2026 dà il massimo dei punti alle ruote da 12 pollici in su, «per il superamento in sicurezza delle asperità stradali (es. sanpietrini, rotaie)». Con la pioggia i sampietrini scivolano: rallenta, e attraversa i binari del tram il più possibile ad angolo retto.',
         '**Salite.** Su Aventino, Esquilino, Gianicolo e Pincio il monopattino fatica; in discesa frena per tempo, perché il limite resta 20 km/h.',
-        '**Tevere.** La ciclabile sulle banchine è molto amata. Dopo le piene di fine febbraio 2026 il fango ha bloccato il tratto tra Ponte Sisto e Ponte Garibaldi, con decine di monopattini abbandonati.',
-        '**Aeroporti.** Il monopattino non può andare su strade extraurbane, quindi Fiumicino e Ciampino restano fuori portata: arriva in città in treno o in bus.',
+        '**Tevere.** La ciclabile sulle banchine è molto amata, ma con Bird lì non chiudi la corsa. Dopo le piene di fine febbraio 2026 il fango ha bloccato il tratto tra Ponte Sisto e Ponte Garibaldi, con decine di monopattini abbandonati.',
+        '**Aeroporti.** Fiumicino e Ciampino sono fuori dall’area di Bird, e il monopattino non può andare su strade extraurbane: arriva in città in treno o in bus. Termini è dentro l’area di Bird; l’Appia Antica verso Cecilia Metella è fuori; Ostia ha un’area Bird a parte.',
         '**Alternative.** Le bici elettriche di Dott e Lime (autorizzate fino al 31 ottobre 2026), gli scooter di Cooltra, e metro, bus e tram ATAC.',
       ],
     },
@@ -117,7 +144,7 @@ const guide: Guide = {
     },
     {
       question: 'Perché il noleggio del monopattino non si chiude?',
-      answer: 'Perché sei in una zona dove l’operatore non lo permette: le zone le vedi sulla mappa dell’app. Finché non arrivi in un’area consentita, continui a pagare.',
+      answer: 'Perché sei in una zona dove l’operatore non lo permette: con Bird, per esempio, al Colosseo, a Fontana di Trevi, in piazza San Pietro o in Villa Borghese. Finché non arrivi in un’area consentita, continui a pagare.',
     },
     {
       question: 'Chi paga la multa se il monopattino in sharing non ha la targa?',
@@ -131,9 +158,13 @@ const guide: Guide = {
   sources: [
     { title: 'Roma Servizi per la Mobilità: mobilità in sharing', url: 'https://romamobilita.it/muoversi-a-roma/mobilita-sharing/' },
     { title: 'Roma Servizi per la Mobilità: il bando 2026 per gli operatori in sharing', url: 'https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/' },
+    { title: 'Roma Servizi per la Mobilità: avviso pubblico per la selezione degli operatori, 2026 (PDF)', url: 'https://drive.google.com/file/d/1j7m6Tdu5YViNDKbO-yNZjwftI_DJxC3a/view' },
+    { title: 'Roma Capitale: le linee guida per il nuovo bando (27 agosto 2026)', url: 'https://www.comune.roma.it/web/it/notizia/sharing-monopattini-giunta-ok-linee-guida-nuovo-bando.page' },
     { title: 'Roma Servizi per la Mobilità: pacchetti di corse per gli abbonati Metrebus (PDF)', url: 'https://drive.google.com/file/d/1T1-qRH6_yJx4X5NHkfVSL0pfqbyCb9FC/view' },
     { title: 'Turismo Roma: monopattini in sharing, sosta solo nelle aree autorizzate', url: 'https://turismoroma.it/it/node/81426' },
     { title: 'AGCM: sanzioni a Bird, Dott e Lime sui pacchetti Metrebus (6 agosto 2026, in inglese)', url: 'https://en.agcm.it/en/media/press-releases/2026/8/PS13028-PS13029-PS13030' },
+    { title: 'Bird: zone di geofencing di Roma (dati GBFS pubblici)', url: 'https://mds.bird.co/gbfs/v2/public/rome/geofencing_zones.json' },
+    { title: 'Dott: termini e condizioni per l’Italia', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
     { title: 'Legge 160/2019, art. 1, commi 75 e seguenti, testo vigente (Normattiva)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
   ],
 };

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Rome e-scooter rental apps 2026: Bird, Dott, Lime and rules',
   description: 'Which apps rent e-scooters in Rome (Bird, Dott, Lime), the minimum age of 18, the helmet you must bring, where you can’t park and the fines tourists get.',
   headline: 'E-scooters in Rome: who rents them, the helmet rule, no-parking zones and fines',
-  lede: 'To rent an e-scooter in Rome, use the app of Bird, Dott or Lime, the three operators the city authorises as of October 2026. You must be 18, sign up with an identity document and bring your own helmet: Italian law requires one for every rider, and no operator supplies it. The app shows the price before you unlock, and where you may end the ride.',
+  lede: 'To rent an e-scooter in Rome, use the app of Bird, Dott or Lime, the three operators the city authorises as of October 2026. You must be 18, sign up with an identity document and bring your own helmet: Italian law requires one for every rider, and no operator supplies it. The app shows the price before you unlock, and at the big sights, from the Colosseum to the Trevi Fountain and St Peter’s Square, Bird’s app won’t let you end a ride.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'it:Roma',
@@ -38,6 +38,13 @@ const guide: Guide = {
       ],
     },
     {
+      heading: 'What does an e-scooter cost in Rome?',
+      blocks: [
+        'Trust the price on the unlock screen. Dott’s Italian terms say the unlock fee, the billing model and the charges appear in the app before the ride starts, VAT included, and its passes and subscriptions show their price and ride limits before you buy.',
+        'The free or near-free ride packages you may read about are only for holders of an annual Metrebus pass, not the 24-, 48- and 72-hour or weekly tickets visitors buy: up to three 30-minute rides a day, 80 a month free with Bird and Lime, and for a cent or two with Dott.',
+      ],
+    },
+    {
       heading: 'Italian e-scooter rules for tourists, in one table',
       blocks: [
         'Italy’s rules apply to visitors too.',
@@ -63,10 +70,32 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Where you can end a ride in Rome',
+      heading: 'Where you can’t end a ride: the Colosseum, Trevi and St Peter’s',
       blocks: [
-        'A rental in Rome ends only where the operator allows it; anywhere else the app won’t close it, and you keep paying. Each operator draws its own no-parking zones, and they change: the map in your app is the reference.',
+        'A rental in Rome ends only where the operator allows it; anywhere else the app won’t close it, and you keep paying. On 3 November 2026 Bird had 150 no-parking zones you may ride through; they show on the [map](map:it:Roma) when you zoom in. Dott and Lime draw their own, which may differ, and zones change: the map in your app is the reference.',
+        {
+          table: {
+            caption: 'Where you couldn’t end a Bird ride on 3 November 2026 (Bird’s data)',
+            head: ['Area', 'No-parking zones'],
+            rows: [
+              ['Ancient Rome', 'Piazza del Colosseo; the Circus Maximus; Piazza Venezia'],
+              ['Squares and fountains', 'The Trevi Fountain; Piazza di Spagna and the Spanish Steps; the Pantheon and Piazza Navona; Campo de’ Fiori; Piazza del Popolo'],
+              ['Vatican', 'St Peter’s Square and the area around the Vatican Museums entrance'],
+              ['Parks', 'All of Villa Borghese, the Pincio and Galleria Borghese included; Villa Doria Pamphili; Villa Ada; Villa Celimontana'],
+              ['River and Trastevere', 'Central Trastevere; long stretches of the Tiber embankments, including Isola Tiberina, Ponte Sisto and Ponte Milvio'],
+              ['Other', 'The area around the Stadio Olimpico'],
+            ],
+          },
+        },
+        'Just outside them you can park: that day Bird’s data had no restriction at Termini station, Largo Argentina, Piazza Barberini, Via del Corso, Castel Sant’Angelo, Via della Conciliazione or Ottaviano. For St Peter’s, park around Ottaviano or Via della Conciliazione and walk.',
         'Never park on the pavement. The law always lets you use a bike, moped or motorbike bay, but the ride ends only where the app allows it.',
+      ],
+    },
+    {
+      heading: 'Fines, and the fees operators add',
+      blocks: [
+        'Police fine you on the spot. Anything noticed later, such as bad parking, reaches you through the operator, which knows who was riding: it can pass your details to the police, or pay the fine and charge it to your card with fees of its own.',
+        'Dott’s Italian terms (version of 2 December 2025) add a €15 admin fee when Dott pays a fine for you, up to €5 for bad parking, €50 for any breach of its terms, and up to €300 when it has to recover a scooter, an impounded one for example.',
       ],
     },
     {
@@ -74,8 +103,8 @@ const guide: Guide = {
       blocks: [
         '**Cobbles and tram rails.** The city names them as the hazards: its 2026 tender gives top marks to scooters with wheels of 12 inches or more, to get safely over sampietrini, the cobbles of the centre, and rails. Cobbles are slippery when wet, so slow down in the rain, and cross rails as close to a right angle as you can.',
         '**Hills.** The Aventine, the Esquiline, the Janiculum and the Pincio slow a scooter down on the way up; on the way down, brake early, as the limit is still 20 km/h.',
-        '**The Tiber.** The cycle path along the embankments is a popular ride. After floods in late February 2026, mud blocked the stretch between Ponte Sisto and Ponte Garibaldi, and dozens of scooters were left there.',
-        '**Airports.** E-scooters may not use extra-urban roads, so Fiumicino and Ciampino are out of reach: take the train or bus into town.',
+        '**The Tiber.** The cycle path along the embankments is a popular ride, but you can’t end a Bird ride down there. After floods in late February 2026, mud blocked the stretch between Ponte Sisto and Ponte Garibaldi, and dozens of scooters were left there.',
+        '**Airports.** Fiumicino and Ciampino are outside Bird’s operating area, and e-scooters may not use extra-urban roads anyway. Take the train or bus into town; Termini is inside Bird’s area. The Appia Antica around Cecilia Metella is outside it too, and Ostia has a separate Bird area.',
         '**Other ways around.** Dott and Lime e-bikes (their permits end on 31 October 2026), Cooltra mopeds, and the ATAC metro, buses and trams.',
       ],
     },
@@ -106,11 +135,15 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a driving licence to ride a Lime or Bird scooter in Italy?',
-      answer: 'No. Italian law requires no licence of any kind to ride an e-scooter.',
+      answer: 'No. Italian law requires no licence of any kind to ride an e-scooter, and Dott’s terms ask for one only where local law does.',
     },
     {
       question: 'Can I ride an e-scooter from Fiumicino airport into Rome?',
-      answer: 'No. E-scooters are banned from extra-urban roads and roads signed above 50 km/h. Take the train or bus into the city and rent a scooter there.',
+      answer: 'No. Fiumicino and Ciampino are outside Bird’s operating area, and e-scooters are banned from extra-urban roads and roads signed above 50 km/h. Take the train or bus into the city and rent a scooter there.',
+    },
+    {
+      question: 'Are e-scooters allowed in Villa Borghese?',
+      answer: 'You can ride through, but in Bird’s data the whole park, the Pincio and Galleria Borghese included, is a no-parking zone, so you can’t end your ride there. Dott and Lime set their own zones: check the app.',
     },
     {
       question: 'Who gets fined if a rented scooter has no sticker?',
@@ -125,7 +158,10 @@ const guide: Guide = {
     { title: 'Moto.it: Rome extends shared scooters to 31 October 2026, 1 September 2026 (Italian)', url: 'https://www.moto.it/news/roma-proroga-di-due-mesi-ai-monopattini-in-sharing.html' },
     { title: 'Wanted in Rome: Rome police get tough with electric scooter riders as new rules kick in', url: 'https://www.wantedinrome.com/news/rome-police-get-tough-with-electric-scooter-riders-as-new-rules-kick-in.html' },
     { title: 'SicurAUTO: stickers stripped from shared scooters in Rome, 4 June 2026 (Italian)', url: 'https://www.sicurauto.it/news/codice-della-strada/disastro-annunciato-targhe-monopattini-in-sharing-a-roma-furti-continui/' },
+    { title: 'Roma Servizi per la Mobilità: ride packages for annual Metrebus pass holders (PDF, Italian)', url: 'https://drive.google.com/file/d/1T1-qRH6_yJx4X5NHkfVSL0pfqbyCb9FC/view' },
+    { title: 'Bird: geofencing zones for Rome (public GBFS data)', url: 'https://mds.bird.co/gbfs/v2/public/rome/geofencing_zones.json' },
     { title: 'Italian Law 160/2019, art. 1, paragraphs 75 ff.: the e-scooter rules (Normattiva, Italian)', url: 'https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2019-12-27;160~art1' },
+    { title: 'Dott: terms and conditions for Italy (Italian)', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
   ],
 };
 
