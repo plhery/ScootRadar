@@ -561,7 +561,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   and 97 Street, slow zones on Jasper Avenue, corrals in Mill Woods) are text
   and the operators' apps, Whyte Avenue's drawn from OpenStreetMap's
   carriageways since 2 November 2026 (DATA_SOURCES.md), and its open data's only scooter zones are the
-  operators' operating areas of 2020–21. Culver City gives its operator the
+  operators' operating areas of 2020–21. Its slow zones are not drawn: the
+  City's page names Jasper Avenue "and other high pedestrian areas" and gives
+  neither ends nor a speed for them, only the 10 km/h of slow zones in
+  general (read 3 November 2026). Culver City gives its operator the
   prohibited places on a map for its app alone; Tauranga's and Kloten's
   councils publish none, and Zürich Airport's operator sets rules for
   bicycles alone. Of Lanzarote's councils, Yaiza has shared scooters parked
@@ -569,11 +572,14 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   the operators' apps but not published, and Tías and Teguise have no rules
   for them yet. Neuss sets where shared scooters may be parked in each
   operator's permit, which it doesn't publish, and its open data and GIS hold
-  no scooter layer; Sindelfingen's no-riding and no-parking places (its parks
-  and woods, the pedestrian zone, the Marktplatz, the Wettbachplatz, the
-  station and the bus station) are text on its
+  no scooter layer; Sindelfingen's rules are text on its
   [e-scooter page](https://www.sindelfingen.de/verkehr-mobilitaet/fahrzeuge-teilen/e-scooter),
-  which the operators have undertaken to keep.
+  which the operators have undertaken to keep, and are not drawn: riding is
+  forbidden in all public parks, green spaces and woods, which it doesn't
+  name, and on footways and in the pedestrian zone, as everywhere in Germany;
+  its four named places, the Marktplatz, the Wettbachplatz, the station's
+  surroundings and the bus station on Mercedesstraße, are places a scooter
+  may not be parked, not ridden (read 3 November 2026).
 
 ## No public data, in covered countries
 
