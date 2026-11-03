@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-san-antonio',
   topic: 'san-antonio',
   name: 'E-scooters in San Antonio, Texas',
-  title: 'E-scooters in San Antonio 2026: Bird, Veo and the rules',
-  description: 'E-scooters in San Antonio: Bird and Veo, the Texas and City rules, the River Walk and Alamo bans, parking, VIA buses and the airport.',
-  headline: 'E-scooters in San Antonio: Bird and Veo, the rules and where you can’t ride',
-  lede: 'E-scooters in San Antonio come from two companies, Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026, so the line-up may change. Each app shows its price before you unlock. The City Code sets the riding age at 16, bans riding on sidewalks and keeps scooters off the River Walk, Alamo Plaza, parks and trails.',
+  title: 'E-scooters in San Antonio 2026: Bird, Veo, prices, rules',
+  description: 'E-scooters in San Antonio: Bird and Veo, what a ride costs, the Texas and City rules, the River Walk and Alamo bans, parking, VIA buses and the airport.',
+  headline: 'E-scooters in San Antonio: Bird and Veo, what a ride costs, the rules and where you can’t ride',
+  lede: 'E-scooters in San Antonio come from two companies, Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026, so the line-up may change. As of November 2026 a Veo costs $1 to unlock and $0.43 a minute plus tax, stand-up or seated. The City Code sets the riding age at 16, bans riding on sidewalks and keeps scooters off the River Walk, Alamo Plaza, parks and trails.',
   published: '2026-10-22',
   updated: '2026-10-23',
   city: 'us:tx:San Antonio',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in San Antonio?',
       blocks: [
-        'The City’s Center City Development and Operations department runs the programme. Its contracts with Bird and Veo began on 1 October 2023 and cap each company at 1,000 vehicles, 2,000 in all; in November 2025 the City Council extended them by a year, to 30 September 2026, City staff said. In May 2026 the City sought new bids (RFP 26-077) from two operators with 1,000 vehicles each.',
+        'The City’s Center City Development and Operations department runs the programme. Its contracts with Bird and Veo began on 1 October 2023 and cap each company at 1,000 vehicles, 2,000 in all; in November 2025 the City Council extended them by a year, to 30 September 2026, City staff said. In May 2026 the City sought new bids (RFP 26-077) from two operators with 1,000 vehicles each. Both companies were still running on 3 November 2026: check the apps for any change.',
         {
           list: [
             '**Bird**: stand-up scooters in the Bird app, under contract with the City since January 2020.',
@@ -25,7 +25,27 @@ const guide: Guide = {
           ],
         },
         'At 14:25 on 17 October 2026 the [San Antonio map](map:us:tx:San Antonio) showed about 850 Bird and 295 Veo scooters free to rent at that moment.',
-        '**Visiting?** Install the Bird or Veo app and add a payment card before you set out; the app shows its minimum age and price before you unlock. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Visiting?** Install the Bird or Veo app and add a payment card before you set out. If something goes wrong, Veo’s help line is 1-855-836-2256 and Bird’s support address is hello@bird.co. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+      ],
+    },
+    {
+      heading: 'How much does a scooter cost in San Antonio?',
+      blocks: [
+        'As of November 2026 Veo’s open data gives one rate for its stand-up and seated scooters: $1 to unlock and $0.43 a minute, plus tax. For Bird, check the price in its app before you unlock.',
+        {
+          table: {
+            caption: 'Veo scooter prices in San Antonio as of November 2026, before tax',
+            head: ['Ride', 'Veo, stand-up or seated'],
+            rows: [
+              ['Unlock', '$1'],
+              ['Rate', '$0.43 a minute'],
+              ['10 minutes', '$5.30'],
+              ['20 minutes', '$9.60'],
+              ['30 minutes', '$13.90'],
+            ],
+          },
+        },
+        'Riders on lower incomes can sign up for free or cheaper trips through the City’s equity programmes with the two companies, City staff told a Council committee in October 2025: ask in the app. **Bird Community & Access Pricing** discounts rides for people aged 65 or over, US veterans, Medicaid or SNAP recipients and people on income-based utility discounts.',
       ],
     },
     {
@@ -37,7 +57,7 @@ const guide: Guide = {
             caption: 'Shared e-scooter rules in San Antonio on 22 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '16 to ride; Texas sets no age', 'City Code § 19-661(a)(6)'],
+              ['Age', '16 to ride; Bird’s terms say renters must be over 18; Texas sets no age', 'City Code § 19-661(a)(6); Bird’s terms'],
               ['Helmet', 'Encouraged, not required', 'City Code § 19-661(a)(9)'],
               ['Sidewalks', 'Banned. Texas would allow them, but lets cities say no', 'City Code § 19-661(a)(4); Texas Transportation Code § 551.352(b) and (d)'],
               ['Where to ride', 'In the bike lane when there is one; otherwise on streets posted at 35 mph or less, crossing faster roads only at intersections', 'City Code § 19-661(a)(2) and (3); Texas Transportation Code § 551.352(a)'],
@@ -46,6 +66,7 @@ const guide: Guide = {
               ['Phones', 'No using a phone or other wireless device while riding', 'City Code § 19-661(a)(8)'],
               ['Lights and bell', 'At night, a white front light visible from 500 feet and a red rear reflector or light; a working bell or horn at all times', 'City Code § 19-661(d)'],
               ['Parks, plazas and trails', 'No riding, though you may ride on the public streets that cross them', 'City Code § 19-661(a)(5)'],
+              ['Alcohol and drugs', 'Never ride under the influence', 'Bird’s riding rules'],
               ['Speed', 'In 2023 the City said geofencing would slow scooters near crowds', 'The companies, under their City contracts'],
               ['Night', 'No curfew since the City Council lifted it in December 2019', 'City Council'],
             ],
@@ -58,12 +79,15 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**The River Walk.** The City Code bans riding on it, the Museum Reach and Mission Reach included, and on the city’s trails and creekways: ride on the streets instead.',
-            '**Alamo Plaza and the old plazas.** The City Code names Alamo Plaza, La Villita, Main Plaza and Market Square; you may ride on the public streets that cross them.',
+            '**The River Walk.** The City Code bans riding on it, the Museum Reach and Mission Reach included, and on the city’s trails and creekways: ride on the streets instead. On 3 November 2026 Bird’s open data marked stretches of the downtown River Walk as no-parking zones.',
+            '**Alamo Plaza and the old plazas.** The City Code names Alamo Plaza, La Villita, Main Plaza and Market Square; you may ride on the public streets that cross them. On 3 November 2026 Bird’s data also marked Travis Park and Plaza de Armas, among others, as no-parking.',
             '**Hemisfair.** Its conservancy bans scooters on the sidewalks of its three parks: ride on the district’s streets.',
-            '**The Pearl.** “Pearl is scooter-free”, its FAQ says; its 2019 ban covered the heart of the complex, between West Josephine Street, Avenue A, Newell Avenue and East Elmira Street: park outside and walk in.',
+            '**The Pearl.** “Pearl is scooter-free”, its FAQ says; its 2019 ban covered the heart of the complex, between West Josephine Street, Avenue A, Newell Avenue and East Elmira Street. Bird’s no-parking zones stopped short of it on 3 November 2026, so the app may not warn you: park outside and walk in.',
+            '**The missions.** On 3 November 2026 Mission Concepción lay less than half a mile outside Bird’s area, and the other three missions further out. San Antonio BCycle’s e-bikes, which run around the clock, link the Alamo with all four missions; as of November 2026 a one-hour pass costs $15.',
+            '**Where the areas end.** On 3 November 2026 Bird’s open data showed a main area from about a mile north of Trinity University to just short of Mission Concepción, plus a separate one around UTSA’s main campus. The [live map](map:us:tx:San Antonio) shows where scooters are now.',
           ],
         },
+        'Check the app’s map before you set off: you can’t end a Bird ride in a no-parking zone.',
       ],
     },
     {
@@ -79,15 +103,16 @@ const guide: Guide = {
             'trails, creekways, plazas and parks, the River Walk included, and bike-share docks.',
           ],
         },
-        'A company must move a scooter parked in a banned spot or blocking an ADA ramp within an hour of being told, and fix other faults within two hours; after that the City may impound it and charge the company $100. To report a scooter in the way, call the 24-hour number the City Code makes each company put on every scooter.',
+        'A company must move a scooter parked in a banned spot or blocking an ADA ramp within an hour of being told, and fix other faults within two hours; after that the City may impound it and charge the company $100. Bird asks for a photo when you park and says blocking access “is subject to fees”. To report a scooter in the way, call the 24-hour number the City Code makes each company put on every scooter.',
       ],
     },
     {
       heading: 'VIA buses, the airport (SAT) and event days',
       blocks: [
         '**VIA** bans motorised scooters aboard its vehicles, and its bike racks don’t take rental or app-based e-bikes, so end your ride before you board. A bus ride costs $1.30 and a Day Pass $2.75.',
-        '**San Antonio International Airport (SAT).** VIA’s Route 5 serves the airport about hourly from 5 am to 10:30 pm, and Express Route 7 reaches downtown in about 20 minutes, every 30 minutes on weekdays until 7 pm, for $2.60. The stop is on the lower level outside baggage claim at Terminal B.',
-        '**Event days.** The City may have scooters removed from an area for a special event, and sets when they come back.',
+        '**San Antonio International Airport (SAT)** lay outside Bird’s area on 3 November 2026, about 4 miles beyond its edge. VIA’s Route 5 serves the airport about hourly from 5 am to 10:30 pm, and Express Route 7 reaches downtown in about 20 minutes, every 30 minutes on weekdays until 7 pm, for $2.60. The stop is on the lower level outside baggage claim at Terminal B.',
+        '**Event days.** The Alamodome, where UTSA plays its home football games, lay inside Bird’s area but in a no-parking zone on 3 November 2026, so leave the scooter a few streets away. The Frost Bank Center, on the East Side, lay outside Bird’s area, about 1.4 miles beyond its edge. The City may also have scooters removed from an area for a special event, and sets when they come back.',
+        '**Students.** On 3 November 2026 Bird’s data marked Trinity University’s campus as no-parking; UTSA’s main campus has its own Bird area.',
       ],
     },
     {
@@ -116,6 +141,10 @@ const guide: Guide = {
       answer: 'Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026. At 14:25 on 17 October 2026 the map showed about 850 Bird and 295 Veo scooters free to rent at that moment.',
     },
     {
+      question: 'How much is a Veo scooter in San Antonio?',
+      answer: 'As of November 2026 Veo’s open data gives $1 to unlock and $0.43 a minute, plus tax, stand-up or seated: $5.30 for 10 minutes.',
+    },
+    {
       question: 'Can you ride a scooter on the River Walk?',
       answer: 'No. The City Code bans riding on the River Walk, in Alamo Plaza, La Villita, Main Plaza and Market Square, and on trails and in parks. Ride on the streets instead.',
     },
@@ -125,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be, and do you need a helmet?',
-      answer: 'The City Code sets the riding age at 16, and the app shows its minimum age before you unlock. Helmets are encouraged but not required.',
+      answer: 'The City Code sets the riding age at 16, and Bird’s terms say renters must be over 18. Helmets are encouraged but not required.',
     },
     {
       question: 'Can you take a scooter on a VIA bus?',
@@ -134,16 +163,25 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'City of San Antonio: City Code, Chapter 19, Article XIX: Motor-assisted scooters, electric bicycles and bicycles equipped with GPS (RFP 22-123, Exhibit 10, PDF), 2022', url: 'https://webapp1.sanantonio.gov/RFPFiles/RFP_4944_202209300813060.pdf' },
+    { title: 'City of San Antonio: Transportation and Infrastructure Committee, 7 October 2025 (video and transcript)', url: 'https://sanantoniotx.new.swagit.com/videos/357519' },
     { title: 'City of San Antonio: City Council A Session, 13 November 2025, item 15', url: 'https://sanantoniotx.new.swagit.com/events/43093' },
     { title: 'City of San Antonio: RFP 26-077, Dockless Vehicle Operations on City Right-of-Way (PDF), May 2026', url: 'https://webapp1.sanantonio.gov/RFPFiles/RFP_6189_202605130658060.pdf' },
     { title: 'City of San Antonio: Audit and Accountability Committee, 6 May 2026 (video)', url: 'https://sanantoniotx.new.swagit.com/videos/386063' },
     { title: 'San Antonio Shared Mobility: public dashboard', url: 'https://app.populus.ai/san_antonio/public/routes' },
     { title: 'Texas Transportation Code, Chapter 551', url: 'https://statutes.capitol.texas.gov/Docs/TN/htm/TN.551.htm' },
+    { title: 'Bird: Terms of service', url: 'https://www.bird.co/terms/' },
+    { title: 'Bird: How to ride', url: 'https://www.bird.co/how/' },
+    { title: 'Bird: Access', url: 'https://www.bird.co/access/' },
+    { title: 'Bird: San Antonio open data (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/san-antonio/gbfs.json' },
+    { title: 'Veo: San Antonio open data (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/stx/gbfs' },
     { title: 'VIA Metropolitan Transit: How to ride', url: 'https://www.viainfo.net/how-to-ride/' },
     { title: 'VIA Metropolitan Transit: Fares', url: 'https://www.viainfo.net/rates/' },
     { title: 'VIA Metropolitan Transit: Park and Airport', url: 'https://www.viainfo.net/parkandairport/' },
     { title: 'Hemisfair: Frequently asked questions', url: 'https://hemisfair.org/visit/frequently-asked-questions/' },
     { title: 'Pearl: FAQ', url: 'https://atpearl.com/about/faq/' },
+    { title: 'Alamodome', url: 'https://www.alamodome.com/' },
+    { title: 'San Antonio BCycle', url: 'https://sanantonio.bcycle.com/' },
+    { title: 'San Antonio BCycle: Pass options', url: 'https://sanantonio.bcycle.com/pricing/' },
     { title: 'San Antonio Report: Citing pedestrian safety, the Pearl bans scooters, 29 January 2019', url: 'https://sanantonioreport.org/citing-pedestrian-safety-the-pearl-bans-scooters/' },
     { title: 'TPR: San Antonio to lift ban on late-night scooter riding, 9 December 2019', url: 'https://www.tpr.org/technology-entrepreneurship/2019-12-09/san-antonio-to-lift-ban-on-late-night-scooter-riding-despite-safety-progress' },
     { title: 'San Antonio Report: Bird, Lime, Razor get exclusive contracts to operate in San Antonio, 12 December 2019', url: 'https://sanantonioreport.org/bird-lime-razor-get-exclusive-contracts-to-operate-in-san-antonio/' },
