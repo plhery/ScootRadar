@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-frankfurt',
   topic: 'frankfurt',
-  name: 'E-Scooter Frankfurt: Anbieter, Preise, Parken',
-  title: 'E-Scooter Frankfurt 2026: Anbieter, Preise, Parkzonen',
-  description: 'E-Scooter Frankfurt: die drei Anbieter seit Juli 2026, was eine Fahrt kostet, wo du parkst und was auf Mainbrücken, Zeil, Messe und in der U-Bahn gilt.',
-  headline: 'E-Scooter Frankfurt: Anbieter, Preise, Parkzonen und Verbote',
-  lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ab 18 und ohne Führerschein. Was eine Fahrt kostet, zeigt bei allen dreien die App. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
+  name: 'E-Scooter Frankfurt: Anbieter, Regeln, Parken',
+  title: 'E-Scooter Frankfurt 2026: Anbieter, Regeln, Parkzonen',
+  description: 'E-Scooter Frankfurt: die drei Anbieter seit Juli 2026, wo du parkst, was Falschparken kostet und was auf Mainbrücken, Zeil, Messe und in der U-Bahn gilt.',
+  headline: 'E-Scooter Frankfurt: Anbieter, Parkzonen, Regeln und Verbote',
+  lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ohne Führerschein. Was eine Fahrt kostet und ab welchem Alter du mieten darfst, zeigt bei allen dreien die App. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:Frankfurt',
@@ -16,29 +16,16 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Frankfurt seit Juli 2026?',
       blocks: [
-        'Seit dem 1. Juli 2026 verleihen in Frankfurt nur noch drei Anbieter E-Scooter: **Bolt** (dunkelgrün), **Lime** (grün-weiss) und **Voi** (rot). Die Stadt hat die Genehmigungen in einem Auswahlverfahren vergeben, befristet bis zum 30. Juni 2028. Wer den Zuschlag bekam, sagte die Stadt im Juli 2026 nicht, mit Verweis auf laufende verwaltungsrechtliche Verfahren; alle drei Anbieter bestätigten der hessenschau, dass sie eine Genehmigung haben.',
+        'Seit dem 1. Juli 2026 verleihen in Frankfurt nur noch drei Anbieter E-Scooter: **Bolt** (dunkelgrün), **Lime** (grün-weiss) und **Voi** (rot). Die Stadt hat die Genehmigungen in ihrem Auswahlverfahren E-Scooter-Sharing 2026 vergeben, befristet bis zum 30. Juni 2028. Wer den Zuschlag bekam, sagte die Stadt im Juli 2026 nicht, mit Verweis auf laufende verwaltungsrechtliche Verfahren; alle drei Anbieter bestätigten der hessenschau, dass sie eine Genehmigung haben.',
         'Jeder Anbieter darf im Tagesdurchschnitt höchstens 3500 Scooter aufstellen, zusammen also 10 500 statt bisher 12 000, davon je höchstens 800 im zentralen Innenstadtbereich. Dott, Ryde und RideMovi gingen leer aus und haben den Verleih eingestellt. Tier heisst heute Dott und ist damit ebenfalls weg.',
         'ScootRadar zeigt auf der [Karte von Frankfurt](map:de:Frankfurt) Lime, Voi und Bolt: am Freitag, 30. Oktober 2026, um 9:27 Uhr rund 3300 Lime-, 3100 Voi- und 3000 Bolt-Scooter, die zu diesem Zeitpunkt frei waren. Bei Lime zeigt die Karte auch die Reichweite, bei Voi und Bolt den Akkustand.',
-        'Gemietet wird in der App des Anbieters, laut den Bedingungen aller drei erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Gemietet wird in der App des Anbieters. Das Gesetz erlaubt E-Scooter ab 14; welches Mindestalter der Anbieter verlangt, prüfst du in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Frankfurt?',
       blocks: [
-        'Den Frankfurter Tarif zeigen Voi und Lime in ihrer App; Bolt nennt nur einen Ab-Preis für ganz Deutschland.',
-        {
-          table: {
-            caption: 'E-Scooter-Preise in Frankfurt (veröffentlichte Tarife, Stand 30. Oktober 2026)',
-            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
-            rows: [
-              ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
-              ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
-              ['Bolt', 'kleine Gebühr, Betrag nicht genannt', 'ab 0,15 € (für Deutschland)', 'in der App', 'in der App'],
-            ],
-          },
-        },
-        'Lime rechnet laut seinen deutschen Bedingungen jede angefangene Minute voll ab. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Wer oft fährt, kann mit Paketen und Abos sparen: Voi bietet Minutenpakete und den Voi Pass, Bolt hat ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat (Preis für Deutschland).',
+        'Den Frankfurter Tarif zeigen Bolt, Lime und Voi in ihrer App. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
@@ -85,7 +72,7 @@ const guide: Guide = {
             'auf Spielplätzen und Friedhöfen.',
           ],
         },
-        'Ausserhalb der Zonen darfst du auf dem Gehweg parken, wenn mindestens 1,50 m frei bleiben. Lime bittet, den Scooter parallel an die Bordsteinkante zu stellen statt an die Hauswand, an der sich blinde Menschen orientieren, und ihn nicht näher als 15 m an Bus- und Strassenbahnhaltestellen abzustellen. Bei Lime gehört ein Foto des abgestellten Scooters zum Beenden der Fahrt.',
+        'Ausserhalb der Zonen darfst du auf dem Gehweg parken, wenn mindestens 1,50 m frei bleiben.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du neben statt auf einer Abstellfläche, in deren 100-Meter-Umkreis, an einer vollen Fläche, auf einer Brücke oder in einer Grünanlage. Fahr zur nächsten Fläche, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -94,14 +81,7 @@ const guide: Guide = {
     {
       heading: 'Falsch geparkter E-Scooter in Frankfurt: Kosten und Melden',
       blocks: [
-        'Behinderst du mit dem abgestellten Scooter andere, können Stadt oder Polizei nach dem Bussgeldkatalog des Bundes 20 € verlangen, gefährdest du sie, 30 €. Ab 1. März 2027 kostet unzulässiges Parken auf Geh- oder Radweg ab 55 €. Dazu kommt, was die Anbieter laut ihren deutschen Nutzungsbedingungen berechnen:',
-        {
-          list: [
-            '**Voi:** 25 € bei einem Verstoss gegen die Parkregeln; Bussgelder der Behörden gibt Voi an dich weiter.',
-            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026).',
-            '**Lime:** erst eine Verwarnung, dann eine Strafgebühr, bei Wiederholung die Sperre; Bussgelder und Abschleppkosten gibt Lime weiter.',
-          ],
-        },
+        'Behinderst du mit dem abgestellten Scooter andere, können Stadt oder Polizei nach dem Bussgeldkatalog des Bundes 20 € verlangen, gefährdest du sie, 30 €. Ab 1. März 2027 kostet unzulässiges Parken auf Geh- oder Radweg ab 55 €. Was der Anbieter selbst dafür berechnet, steht in seinen Nutzungsbedingungen.',
         'Wie teuer schon ein paar Meter sind: Die Stadt liess einen Scooter, der in der Goethestrasse auf einem Blindenleitsystem stand, umsetzen, stellte dem Anbieter dafür 74 € in Rechnung, und das Verwaltungsgericht Frankfurt gab ihr im Juli 2024 recht.',
         'Steht dir ein Scooter im Weg, meldest du ihn in der App oder an der Hotline des Anbieters, auf scooter-melder.de oder in der Falschparker-App von Nivel, die die Stadt nutzt. Laut traffiQ ist eine Beschwerde im Schnitt nach zweieinhalb Stunden erledigt.',
       ],
@@ -117,24 +97,17 @@ const guide: Guide = {
             '**Gehweg oder Fussgängerzone:** 15 €, ab 1. März 2027 25 €, mit Behinderung oder Gefährdung mehr.',
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €.',
             '**Rote Ampel:** 60 € und ein Punkt in Flensburg. **Handy in der Hand:** 100 € und ein Punkt.',
-            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot, auch fürs Auto; ab 1,1 Promille eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit 0,0 Promille. Bolt verbietet laut seinem Vertrag jeden Alkohol.',
+            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot, auch fürs Auto; ab 1,1 Promille eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit 0,0 Promille.',
           ],
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
     {
-      heading: 'E-Scooter-Verbot in U-Bahn und Strassenbahn: VGF, RMV und Call a Bike',
+      heading: 'E-Scooter-Verbot in U-Bahn und Strassenbahn: VGF und RMV',
       blocks: [
         'Seit dem 1. Oktober 2024 verbietet die VGF wegen der Brand- und Explosionsgefahr ihrer Akkus E-Tretroller in U-Bahn und Strassenbahn. Das gilt auch für deinen eigenen Scooter; E-Bikes, E-Rollstühle und Seniorenmobile sind nicht betroffen.',
-        'In S-Bahn und Regionalzügen behandelt der RMV einen eigenen E-Scooter wie ein Fahrrad: Er fährt kostenlos mit, wenn Platz ist, einen Anspruch darauf hast du aber nicht, und den Akku darfst du an Bord weder ausbauen noch laden. Für Leih-Scooter hat der RMV keine eigene Regel: Beende die Fahrt am besten vor dem Bahnhof und miete am Ziel einen neuen.',
-        'Lieber Fahrrad? **DB Call a Bike** hat in Frankfurt Stationen, an denen du die Räder ausleihst und zurückgibst:',
-        {
-          list: [
-            '**Starter:** 1 € fürs Entsperren und 0,12 € pro Minute, höchstens 13 € am Tag pro Fahrt.',
-            '**Member Plus:** 8 € im Monat, pro Fahrt 30 Minuten gratis, danach 0,10 € pro Minute.',
-          ],
-        },
+        'Ob und wie du einen eigenen E-Scooter in S-Bahn und Regionalzug mitnehmen darfst, regeln die Beförderungsbedingungen des RMV; frag vor der Fahrt nach. Einen Leih-Scooter stellst du am besten vor dem Bahnhof ab und mietest am Ziel einen neuen.',
       ],
     },
     {
@@ -173,8 +146,8 @@ const guide: Guide = {
       answer: 'Nein, die Zeil ist wie die Fressgass Fussgängerzone: absteigen und schieben. Fahren kostet 15 €, ab 1. März 2027 25 €, und die Polizei kontrolliert dort.',
     },
     {
-      question: 'Darf ich einen E-Scooter in der Frankfurter S-Bahn mitnehmen?',
-      answer: 'Einen eigenen ja: Der RMV behandelt ihn wie ein Fahrrad und nimmt ihn kostenlos mit, wenn Platz ist. In U-Bahn und Strassenbahn verbietet die VGF E-Scooter seit dem 1. Oktober 2024. Für Leih-Scooter hat der RMV keine eigene Regel; beende die Fahrt am besten vor dem Bahnhof.',
+      question: 'Darf ich einen E-Scooter in U-Bahn oder S-Bahn mitnehmen?',
+      answer: 'In U-Bahn und Strassenbahn nicht, auch keinen eigenen: Die VGF verbietet E-Scooter dort seit dem 1. Oktober 2024. Für die S-Bahn gelten die Beförderungsbedingungen des RMV; frag vor der Fahrt nach. Einen Leih-Scooter stellst du am besten vor dem Bahnhof ab.',
     },
     {
       question: 'Gibt es Leih-E-Scooter am Frankfurter Flughafen?',
@@ -182,17 +155,12 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Stadt Frankfurt: Auswahlverfahren E-Scooter-Sharing 2026 (PDF)', url: 'https://frankfurt.de/-/media/frankfurtde/frankfurt-themen/verkehr/pdf/e-scooter/e-scooter_ibv.pdf?dmc=1' },
     { title: 'traffiQ: Frankfurt reguliert E-Scooter-Verleih stärker (26. Februar 2026)', url: 'https://www.traffiq.de/traffiq/medien/presse-informationen/presse-information/mehr-ordnung-und-sicherheit-frankfurt-reguliert-e-scooter-verleih-staerker.html' },
     { title: 'traffiQ: Neue Abstellflächen und Parkverbotszonen (Juni 2026, PDF)', url: 'https://www.traffiq.de/fileadmin/user_upload/pdfs/Presse/2026/traffiQ_2026-113_E-Scooter-Stellplaetze.pdf' },
     { title: 'hessenschau: Nur noch drei E-Scooter-Verleiher in Frankfurt (Juli 2026)', url: 'https://www.hessenschau.de/wirtschaft/nur-noch-drei-e-scooter-verleiher-in-frankfurt-v2,scooter-frankfurt-verleiher-100.html' },
     { title: 'Stadt Frankfurt: Grünanlagensatzung (PDF)', url: 'https://media.frag-den-staat.de/files/foi/487672/Gruenanlagensatzung.pdf' },
     { title: 'VGF: Mitnahmeverbot für E-Tretroller in U-Bahn und Strassenbahn', url: 'https://www.vgf-ffm.de/de/fahrtinfo/mitnahme-verbot-e-tretroller' },
-    { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
     { title: 'Messe Frankfurt: Hausordnung, Stand Juni 2025 (PDF)', url: 'https://eurobike.com/content/dam/messefrankfurt-fairnamic/2026/documents/de/eurobike-2026-hausordnung.pdf' },
-    { title: 'Voi: E-Scooter in Frankfurt', url: 'https://www.voi.com/de/city/frankfurt' },
-    { title: 'DB Call a Bike: Preise', url: 'https://www.callabike.de/de/preise' },
-    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Bussgeldkatalog-Verordnung (BKatV), Anlage', url: 'https://www.gesetze-im-internet.de/bkatv_2013/anlage.html' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
     { title: 'Journal Frankfurt: Kontrolle auf Zeil und Fressgass (11. Juni 2026)', url: 'https://www.journal-frankfurt.de/journal_news/stadtleben-2/Kontrolle-in-Frankfurt-Polizei-stoppt-schnelle-E-Scooter-45781.html' },

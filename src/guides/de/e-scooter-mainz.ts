@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-mainz',
   topic: 'mainz',
-  name: 'E-Scooter Mainz: Anbieter, Preise, Abstellflächen',
-  title: 'E-Scooter Mainz 2026: Anbieter, Preise, Abstellflächen',
-  description: 'E-Scooter Mainz: Bolt, Lime und Voi, was eine Fahrt kostet, wo du fährst und warum du die Fahrt in Alt- und Neustadt nur auf 25 Flächen beendest.',
-  headline: 'E-Scooter Mainz: Anbieter, Preise, Abstellflächen und Verbotszonen',
-  lede: 'E-Scooter in Mainz leihst du bei Bolt, Lime oder Voi, ab 18 und ohne Führerschein: Nur diese drei hat die Stadt seit dem 1. März 2026 zugelassen. Den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. In Alt- und Neustadt beendest du die Fahrt nur auf einer von 25 Abstellflächen, in den übrigen Stadtteilen fast überall, ausser in den Verbotszonen der Stadt, die dir die App zeigt.',
+  name: 'E-Scooter Mainz: Anbieter, Regeln, Abstellflächen',
+  title: 'E-Scooter Mainz 2026: Anbieter, Regeln, Abstellflächen',
+  description: 'E-Scooter Mainz: Bolt, Lime und Voi, wo du fährst, was in Bus und Bahn gilt und warum du die Fahrt in Alt- und Neustadt nur auf 25 Flächen beendest.',
+  headline: 'E-Scooter Mainz: Anbieter, Abstellflächen, Regeln und Verbotszonen',
+  lede: 'E-Scooter in Mainz leihst du bei Bolt, Lime oder Voi, ohne Führerschein: Nur diese drei hat die Stadt seit dem 1. März 2026 zugelassen. Den Preis und das Mindestalter zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg. In Alt- und Neustadt beendest du die Fahrt nur auf einer von 25 Abstellflächen, in den übrigen Stadtteilen fast überall, ausser in den Verbotszonen der Stadt, die dir die App zeigt.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Mainz',
@@ -16,27 +16,16 @@ const guide: Guide = {
     {
       heading: 'E-Scooter mieten in Mainz: Bolt, Lime und Voi',
       blocks: [
-        'In Mainz verleihen drei Anbieter E-Scooter: **Bolt**, **Lime** und **Voi**. «Es wurden 3 Sondernutzungserlaubnisse an die Betreiber Bolt, Lime und Voi erteilt», schrieb die Stadt am 20. März 2026 dem Stadtrat. Du mietest in der App, laut den Bedingungen ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Mainz verleihen drei Anbieter E-Scooter: **Bolt**, **Lime** und **Voi**. «Es wurden 3 Sondernutzungserlaubnisse an die Betreiber Bolt, Lime und Voi erteilt», schrieb die Stadt am 20. März 2026 dem Stadtrat. Du mietest in der App; das Gesetz erlaubt E-Scooter ab 14, welches Mindestalter der Anbieter verlangt, prüfst du in der App: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die Regeln setzt die Stadt, gestützt auf das Landesstrassengesetz Rheinland-Pfalz. Laut ihrer E-Tretroller-Richtlinie vom 2. Juli 2025 dürfen höchstens vier Anbieter zusammen 1200 Scooter aufstellen, mit Genehmigungen für 24 Monate, in denen keine weiteren Anbieter dazukommen. Laut Sondernutzungssatzung zahlen sie der Stadt 7 € pro Scooter und Monat.',
-        '**Dott** (früher TIER) führt Mainz auf seiner Website noch (gelesen am 26. Oktober 2026), hat aber keine der drei Genehmigungen bekommen. Ein Anbieter ohne Genehmigung musste laut Stadt seine Scooter bis Anfang März 2026 abziehen; am 4. März liessen sie sich nicht mehr mieten. Welcher, sagt die Stadt nicht.',
+        '**Dott** (früher TIER) hat keine der drei Genehmigungen bekommen. Ein Anbieter ohne Genehmigung musste laut Stadt seine Scooter bis Anfang März 2026 abziehen; am 4. März liessen sie sich nicht mehr mieten. Welcher, sagt die Stadt nicht.',
         'Die [Karte von Mainz](map:de:Mainz) zeigt die Scooter von Bolt, Lime und Voi mit Standort und Akkustand (bei Bolt, sofern Bolt ihn nicht ausblendet). In der Nacht zum Montag, 26. Oktober 2026, standen gegen 5.30 Uhr in Mainz rund 410 Scooter von Voi und 320 von Bolt. Für Lime gibt es eine eigene Zählung, nur in Mainz: rund 290 Scooter, Stand Sonntag, 25. Oktober, 12.35 Uhr. Das sind Momentaufnahmen, keine Flottengrössen.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Mainz?',
       blocks: [
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt; einen Mainzer Tarif nennt Bolt auf seiner Website nicht. Bolt wirbt für Deutschland mit «ab 0,15 € pro Minute», einer kleinen Freischaltgebühr und einem Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat; der Minutenpreis hängt laut Bolt vom Ort ab (Stand 26. Oktober 2026). Was Falschparken kostet, steht in den deutschen Bedingungen der Anbieter:',
-        {
-          table: {
-            caption: 'E-Scooter-Anbieter in Mainz: Preis und Gebühren (Stand 26. Oktober 2026)',
-            head: ['Anbieter', 'Preis', 'Falsch geparkt (laut Bedingungen)'],
-            rows: [
-              ['Bolt', 'ab 0,15 € pro Minute plus Freischaltgebühr (für Deutschland)', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs'],
-              ['Lime', 'in der App', 'in den Bedingungen in der Lime-App'],
-              ['Voi', 'in der App', 'in den Bedingungen in der Voi-App'],
-            ],
-          },
-        },
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Was Falschparken beim Anbieter kostet, steht in seinen Bedingungen in der App.',
         'Setzt die Stadt einen falsch abgestellten Scooter um oder schleppt ihn ab, zahlt das laut Richtlinie der Anbieter: laut Satzung 70 bis 200 € fürs Umsetzen, 140 bis 300 € fürs Abschleppen.',
       ],
     },
@@ -84,7 +73,7 @@ const guide: Guide = {
             '**Gehweg oder Fussgängerzone:** 15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden; ab 1. März 2027 25 €, bis 40 €.',
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €. **Ohne Versicherungsplakette:** 40 €.',
             '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** heute 100 € und ein Punkt.',
-            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille. Bolt verbietet jeden Alkohol.',
+            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille.',
             '**Fusswege oder Rasen einer städtischen Grünanlage befahren:** laut Grünanlagensatzung bis zu 5000 €, nach unserer Lesart auch mit dem E-Scooter.',
           ],
         },
@@ -101,10 +90,9 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Strassenbahn, Bus und Bahn: Mainzer Mobilität, RMV und DB',
       blocks: [
-        'Mainz gehört zum RMV, und dort gilt: «E-Scooter werden wie Fahrräder behandelt.» Sie fahren kostenlos mit, ohne Anspruch; zusammengeklappt gelten Tretroller als Gepäck. Den Akku darfst du unterwegs weder herausnehmen noch laden.',
-        'Bei der **Mainzer Mobilität** gilt: «Fahrräder (inkl. E-Bikes) und E-Tretroller sind in Bussen und Strassenbahnen gleichberechtigt.» Kostenlos ist die Mitnahme auch innerhalb von Mainz und Wiesbaden. Rollstühle und Kinderwagen haben Vorrang, und «die Entscheidung des Fahrpersonals über die Mitnahme von Fahrrädern und E-Rollern ist bindend».',
-        'Im Fernverkehr der Deutschen Bahn fährt dein eigener Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; in S-Bahn und Regionalzug gilt die RMV-Regel. Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor dem Hauptbahnhof, etwa auf der Abstellfläche an der Westseite, und miete am Ziel neu.',
-        'Unsere Karte zeigt nur stehende E-Scooter, keine Leihräder. **meinRad** der Mainzer Mobilität hat 1450 Räder an rund 210 Stationen in Mainz, Kastel, Kostheim, Amöneburg und Nachbarorten; ein Standardrad kostet 1,20 € pro 30 Minuten, höchstens 9 € in 24 Stunden (Stand 1. April 2026). E-Bikes führt Bolt auf seiner Mainzer Seite nicht (Stand 26. Oktober 2026).',
+        'Bei der **Mainzer Mobilität** gilt: «Fahrräder (inkl. E-Bikes) und E-Tretroller sind in Bussen und Strassenbahnen gleichberechtigt.» Im RMV, zu dem Mainz gehört, ist die Mitnahme laut Mainzer Mobilität grundsätzlich kostenlos, auch innerhalb von Mainz und Wiesbaden. Rollstühle und Kinderwagen haben Vorrang, und «die Entscheidung des Fahrpersonals über die Mitnahme von Fahrrädern und E-Rollern ist bindend».',
+        'Ob und wie dein eigener E-Scooter in S-Bahn und Regionalzug mitfährt, regeln die Beförderungsbedingungen des RMV, in den Fernzügen die der Deutschen Bahn; frag vor der Fahrt nach. Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor dem Hauptbahnhof, etwa auf der Abstellfläche an der Westseite, und miete am Ziel neu.',
+        'Unsere Karte zeigt nur stehende E-Scooter, keine Leihräder. **meinRad** der Mainzer Mobilität hat 1450 Räder an rund 210 Stationen in Mainz, Kastel, Kostheim, Amöneburg und Nachbarorten; ein Standardrad kostet 1,20 € pro 30 Minuten, höchstens 9 € in 24 Stunden (Stand 1. April 2026).',
       ],
     },
     {
@@ -119,11 +107,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Mainz?',
-      answer: 'Bolt, Lime und Voi: Nur sie haben seit März 2026 eine Genehmigung der Stadt. Du mietest in ihrer App, ab 18 und ohne Führerschein. Dott führt Mainz auf seiner Website noch, gehört aber nicht dazu.',
+      answer: 'Bolt, Lime und Voi: Nur sie haben seit März 2026 eine Genehmigung der Stadt. Du mietest in ihrer App, ohne Führerschein; das Mindestalter zeigt die App. Dott gehört nicht dazu.',
     },
     {
       question: 'Was kostet ein E-Scooter in Mainz?',
-      answer: 'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute plus Freischaltgebühr (Stand 26. Oktober 2026).',
+      answer: 'Den Preis zeigt die App des Anbieters vor dem Entsperren; dieser Preis ist verbindlich.',
     },
     {
       question: 'Wo kann ich in der Mainzer Innenstadt einen E-Scooter abstellen?',
@@ -135,7 +123,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich meinen E-Scooter in Strassenbahn und Bus mitnehmen?',
-      answer: 'Ja: Bei der Mainzer Mobilität sind E-Tretroller Fahrrädern gleichgestellt und fahren kostenlos mit, aber ohne Anspruch; Rollstühle und Kinderwagen haben Vorrang, und das Fahrpersonal entscheidet.',
+      answer: 'Ja: Bei der Mainzer Mobilität sind E-Tretroller Fahrrädern gleichgestellt und fahren kostenlos mit; Rollstühle und Kinderwagen haben Vorrang, und das Fahrpersonal entscheidet.',
     },
     {
       question: 'Gelten in Kastel und Kostheim die Mainzer Regeln?',
@@ -161,14 +149,8 @@ const guide: Guide = {
     { title: 'Stadt Mainz: Johannisnacht, Verkehrshinweise und Sperrungen (11. Juni 2026)', url: 'https://www.mainz.de/pressemeldungen/Mainz/2026/juni/mainzer-johannisnacht-verkehrshinweise-und-sperrungen' },
     { title: 'Mainzer Mobilität: Unterwegs mit Fahrrad und E-Tretroller', url: 'https://www.mainzer-mobilitaet.de/service/infos-und-tipps/mit-fahrrad-und-e-roller' },
     { title: 'Mainzer Mobilität: meinRad', url: 'https://www.mainzer-mobilitaet.de/mehr-mobilitaet/meinrad' },
-    { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
-    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: '1. FSV Mainz 05: Anfahrt zur MEWA Arena', url: 'https://www.mainz05.de/mewa-arena-anfahrt' },
     { title: '1. FSV Mainz 05: Stadionordnung 2026/27 (PDF)', url: 'https://www.mainz05.de/getmedia/249bf2f3-f298-43c9-9ad2-35ab40bd2b35/Stadionordnung-MEWA-ARENA-26_27.pdf' },
-    { title: 'Bolt: E-Scooter', url: 'https://bolt.eu/de-de/scooters/' },
-    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
-    { title: 'Bolt: Mainz', url: 'https://bolt.eu/de-de/cities/mainz/' },
-    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'LVermGeo Rheinland-Pfalz: Open Data, Verwaltungsgrenzen', url: 'https://lvermgeo.rlp.de/geodaten-geoshop/open-data' },
     { title: 'HVBG: Verwaltungsgrenzen Hessen', url: 'https://gds.hessen.de/INTERSHOP/web/WFS/HLBG-Geodaten-Site/de_DE/-/EUR/ViewDownloadcenter-Start?path=Liegenschaftskataster/Verwaltungsgrenzen%20Hessen' },
   ],

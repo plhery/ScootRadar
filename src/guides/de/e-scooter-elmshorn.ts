@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Elmshorn 2026: Lime, Abstellorte, Regeln',
   description: 'E-Scooter in Elmshorn leihen: Lime per App oder Uber, die 20 Standorte der Stadt, die Fussgängerzone, die Pläne für 2027 und was in Bus und Bahn gilt.',
   headline: 'E-Scooter Elmshorn: Lime, die Standorte der Stadt und die Regeln',
-  lede: 'Einen E-Scooter in Elmshorn leihst du ab 18 und ohne Führerschein bei Lime, in seiner App oder in der Uber-App. Den Preis zeigt dir die App, bevor du entsperrst. Die Stadt nennt 20 Standorte für E-Scooter, vom Bahnhof bis zum Badepark; zum Start 2022 sperrte sie die Fussgängerzone rund um die Königstrasse, ihre Parks und Gewässer fürs Abstellen. Durch die Fussgängerzone fährst du nicht, und im Stadtbus fährt ein eigener Scooter zusammengeklappt als Handgepäck mit.',
+  lede: 'Einen E-Scooter in Elmshorn leihst du ab 18 und ohne Führerschein bei Lime, in seiner App oder in der Uber-App. Den Preis zeigt dir die App, bevor du entsperrst. Die Stadt nennt 20 Standorte für E-Scooter, vom Bahnhof bis zum Badepark; zum Start 2022 sperrte sie die Fussgängerzone rund um die Königstrasse, ihre Parks und Gewässer fürs Abstellen. Durch die Fussgängerzone fährst du nicht.',
   published: '2026-10-31',
   updated: '2026-10-31',
   city: 'de:Elmshorn',
@@ -19,7 +19,7 @@ const guide: Guide = {
         'In Elmshorn vermietet **Lime** E-Scooter; die Stadt nennt Lime auf ihrer E-Scooter-Seite als Anbieter. Du leihst den Scooter in der Lime-App oder, wie die Stadt schreibt, auch in der Uber-App. Laut der Stadt verlangt Lime in seinen AGB mindestens 18 Jahre, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Leih-Scooter gibt es in Elmshorn seit dem 1. Juli 2022. Zum Start stellten Tier und Lime je 100 Scooter im Stadtgebiet auf, laut einer Mitteilung dazu, die die NORDAKADEMIE veröffentlicht hat.',
         'ScootRadar zeigt auf der [Karte rund um Elmshorn](map:de:Elmshorn) Lime: am Samstag, 31. Oktober 2026, um 14:18 Uhr rund 550 Lime-Scooter nach der letzten Zählung. Die Zahl gilt für Elmshorn; Limes Gebiet reicht an den Rändern nur knapp nach Horst, Kölln-Reisiek und Bokholt-Hanredder hinein, und [Pinneberg](map:de:Pinneberg) hat ein eigenes. Bei Lime zeigt die Karte Standort und Akkustand. Preise, Abstellorte und Parkverbotszonen zeigt sie in Elmshorn nicht: Die stehen in der App.',
-        '**Dott:** Als weiteren Anbieter nennt die Stadt Tier, «zukünftig Firma Dott», und Dott führt Elmshorn unter seinen Standorten. Auf der Karte erscheinen in Elmshorn keine Dott-Scooter; ob Dott hier vermietet, zeigt dir seine App.',
+        '**Dott:** Als weiteren Anbieter nennt die Stadt Tier, «zukünftig Firma Dott». Auf der Karte erscheinen in Elmshorn keine Dott-Scooter; ob Dott hier vermietet, zeigt dir seine App.',
       ],
     },
     {
@@ -63,12 +63,12 @@ const guide: Guide = {
     {
       heading: 'E-Scooter im Bus und am Bahnhof Elmshorn: hvv, AKN, Regionalzug, ICE',
       blocks: [
-        'Der Bahnhof Elmshorn ist laut Stadt Knotenpunkt für Züge nach Hamburg, Kiel, Westerland (Sylt), Flensburg und Henstedt-Ulzburg; dorthin fährt die AKN als A3 bis Ulzburg Süd. Am Zentralen Omnibusbahnhof beginnen zahlreiche Buslinien. Stadtbus und AKN fahren im hvv.',
-        '**Stadtbus:** Den Stadtbus fährt die Kreisverkehrsgesellschaft in Pinneberg (KViP), laut Stadt auf zwölf Linien mit mehr als zwei Millionen Fahrgästen im Jahr. Im hvv darf ein zusammengeklappter E-Tretroller als Handgepäck immer mit; aufgeklappt gilt die Regel für Fahrräder: kostenlos, höchstens zwei pro Bus und nur im Mehrzweckbereich. Das Mitnahmeverbot für E-Tretroller in Bussen, das nah.sh für Schleswig-Holstein festlegt, gilt im hvv nicht.',
-        '**AKN:** Auch hier fährt ein zusammengeklappter E-Tretroller laut hvv als Handgepäck mit; aufgeklappt gilt die Regel für Fahrräder. Die AKN nimmt Fahrräder im hvv-Tarif kostenlos mit, im Schleswig-Holstein-Tarif mit Fahrradkarte, aber montags bis freitags nicht von 6 bis 9 und von 16 bis 18 Uhr. Diese Sperrzeiten entfallen in den Hamburger Sommerferien, laut hvv auch an Feiertagen und am 24. und 31. Dezember.',
-        '**Regionalzüge:** Kleine oder zusammengeklappte E-Tretroller fahren laut hvv und nah.sh in RE und RB kostenlos mit, wenn Platz ist. Für einen in Fahrradgrösse brauchst du ein Fahrradticket: im hvv für 3,50 € den ganzen Tag in den Regionalzügen der Ringe A bis F, im Schleswig-Holstein-Tarif die Fahrradtageskarte für 6 €. Liegen Start und Ziel im hvv, gilt der hvv-Tarif. Einen Anspruch auf Mitnahme gibt es nicht: Im Zweifel entscheidet das Personal, und wer Platz für Rollstuhl oder Kinderwagen braucht, hat Vorrang.',
+        'Der Bahnhof Elmshorn ist laut Stadt Knotenpunkt für Züge nach Hamburg, Kiel, Westerland (Sylt), Flensburg und Henstedt-Ulzburg; dorthin fährt die AKN als A3 bis Ulzburg Süd. Am Zentralen Omnibusbahnhof beginnen zahlreiche Buslinien. Stadtbus und AKN fahren im hvv: Ob und wie du einen eigenen E-Scooter darin mitnehmen darfst, regeln seine Beförderungsbedingungen; frag vor der Fahrt nach.',
+        '**Stadtbus:** Den Stadtbus fährt die Kreisverkehrsgesellschaft in Pinneberg (KViP), laut Stadt auf zwölf Linien mit mehr als zwei Millionen Fahrgästen im Jahr. Das Mitnahmeverbot für E-Tretroller in Bussen, das nah.sh für Schleswig-Holstein festlegt, gilt im hvv nicht.',
+        '**AKN:** Die AKN nimmt Fahrräder im hvv-Tarif kostenlos mit, im Schleswig-Holstein-Tarif mit Fahrradkarte, aber montags bis freitags nicht von 6 bis 9 und von 16 bis 18 Uhr. Diese Sperrzeiten entfallen in den Hamburger Sommerferien.',
+        '**Regionalzüge:** Kleine oder zusammengeklappte E-Tretroller fahren laut nah.sh in RE und RB kostenlos mit, wenn Platz ist. Für einen in Fahrradgrösse brauchst du im Schleswig-Holstein-Tarif die Fahrradtageskarte für 6 €. Liegen Start und Ziel im hvv, gilt der hvv-Tarif. Einen Anspruch auf Mitnahme gibt es nicht, und wer Platz für Rollstuhl oder Kinderwagen braucht, hat Vorrang.',
         '**Leih-Scooter** lassen sich nicht zusammenklappen: Beende die Fahrt am Standort am Ausgang Mühlenstrasse oder auf dem Holstenplatz und miete am Ziel einen neuen.',
-        '**Fernzüge:** In ICE und IC nimmt die Deutsche Bahn einen E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; aufgeklappt gilt er als Traglast und darf nur mit, wenn er sicher untergebracht ist. Den eingebauten Akku darfst du unterwegs weder ausbauen noch laden noch als Powerbank nutzen.',
+        '**Fernzüge:** Für ICE und IC gelten die Beförderungsbedingungen der Deutschen Bahn; prüf vor der Fahrt, ob und wie dein eigener E-Scooter mit darf.',
       ],
     },
     {
@@ -126,7 +126,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter im Bus oder Zug mitnehmen?',
-      answer: 'Einen eigenen ja: Im Stadtbus und in der AKN fährt er nach den Regeln des hvv zusammengeklappt als Handgepäck mit, aufgeklappt wie ein Fahrrad, in der AKN nicht zu den Sperrzeiten. In RE und RB fahren kleine E-Tretroller kostenlos mit, in ICE und IC zusammengeklappt als Handgepäck. Einen Leih-Scooter stellst du vor dem Bahnhof ab.',
+      answer: 'Im Stadtbus und in der AKN regeln das die Beförderungsbedingungen des hvv; frag vor der Fahrt nach. Das Busverbot für E-Tretroller, das nah.sh für Schleswig-Holstein festlegt, gilt im hvv nicht. In RE und RB fahren kleine E-Tretroller laut nah.sh kostenlos mit, wenn Platz ist; für ICE und IC gelten die Beförderungsbedingungen der Deutschen Bahn. Einen Leih-Scooter stellst du vor dem Bahnhof ab.',
     },
   ],
   sources: [
@@ -139,16 +139,12 @@ const guide: Guide = {
     { title: 'CDU Elmshorn: E-Scooter brauchen klare Regeln (6. Oktober 2026)', url: 'https://cdu-elmshorn.de/news/lokal/99/E-Scooter-brauchen-klare-Regeln--Verkehrsraum-darf-nicht-zum-Abstellplatz-werden.html' },
     { title: 'Herzogtum direkt: E-Scooter-Leihsystem für Geesthacht im Gespräch (Pressemitteilung der SPD Geesthacht, 1. April 2026)', url: 'https://herzogtum-direkt.de/index.php/2026/04/01/e-scooter-leihsystem-fuer-geesthacht-im-gespraech/' },
     { title: 'openPetition: Verbot von Miet-E-Scootern in Elmshorn (9. Oktober 2023 bis 8. Januar 2024)', url: 'https://www.openpetition.de/petition/online/verbot-von-miet-e-scootern-in-elmshorn' },
-    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV)', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Bussgeldkatalog-Verordnung, Anlage', url: 'https://www.gesetze-im-internet.de/bkatv_2013/anlage.html' },
     { title: 'Kraftfahrt-Bundesamt: Bundeseinheitlicher Tatbestandskatalog (Datenbank, Stand 8. Oktober 2026)', url: 'https://www.kba.de/DE/Themen/ZentraleRegister/FAER/BT_KAT_OWI/btkat_node.html' },
-    { title: 'hvv: Fragen und Antworten, Scooter', url: 'https://www.hvv.de/de/service/fragen-und-antworten/scooter' },
-    { title: 'hvv: Fragen und Antworten, Fahrrad', url: 'https://www.hvv.de/de/service/fragen-und-antworten/fahrrad' },
     { title: 'nah.sh: Fahrradmitnahme (auch Tretroller und E-Tretroller)', url: 'https://www.nah.sh/de/fahrkarten/fahrradmitnahme/' },
     { title: 'AKN: Fahrpläne (A3 Elmshorn – Ulzburg Süd)', url: 'https://www.akn.de/fahrplaene-tickets/fahrplaene' },
     { title: 'AKN: Häufige Fragen (Fahrradmitnahme)', url: 'https://www.akn.de/services/haeufige-fragen' },
-    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],
 };
 

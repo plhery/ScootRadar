@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-darmstadt',
   topic: 'darmstadt',
-  name: 'E-Scooter Darmstadt: Anbieter, Preise, Parken',
-  title: 'E-Scooter Darmstadt 2026: Anbieter, Preise, Parkzonen',
-  description: 'E-Scooter Darmstadt: Bolt, Dott, Lime und Voi, was eine Fahrt kostet, wo du fährst und parkst und was in Fussgängerzone, Parks und Strassenbahn gilt.',
-  headline: 'E-Scooter Darmstadt: Anbieter, Preise, Parkzonen und Verbote',
-  lede: 'E-Scooter in Darmstadt leihst du bei Bolt, Dott, Lime oder Voi, ab 18 und ohne Führerschein. Den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone am Luisenplatz und nach unserer Lesart auch nicht durch die städtischen Parks. Dort lässt dich die App die Fahrt nicht beenden, am Hauptbahnhof laut Stadt nur auf den Abstellflächen an der Ost- und der Westseite.',
+  name: 'E-Scooter Darmstadt: Anbieter, Regeln, Parken',
+  title: 'E-Scooter Darmstadt 2026: Anbieter, Regeln, Parkzonen',
+  description: 'E-Scooter Darmstadt: Bolt, Dott, Lime und Voi, wo du fährst und parkst, was Verstösse kosten und was in Fussgängerzone, Parks und Strassenbahn gilt.',
+  headline: 'E-Scooter Darmstadt: Anbieter, Parkzonen, Regeln und Verbote',
+  lede: 'E-Scooter in Darmstadt leihst du bei Bolt, Dott, Lime oder Voi, ohne Führerschein. Den Preis und das Mindestalter zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone am Luisenplatz und nach unserer Lesart auch nicht durch die städtischen Parks. Dort lässt dich die App die Fahrt nicht beenden, am Hauptbahnhof laut Stadt nur auf den Abstellflächen an der Ost- und der Westseite.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Darmstadt',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Darmstadt?',
       blocks: [
-        'In Darmstadt verleihen vier Anbieter E-Scooter: **Bolt**, **Dott** (früher TIER), **Lime** und **Voi**. So nennen es die Stadt (gelesen am 26. Oktober 2026) und das städtische Verkehrsunternehmen HEAG mobilo (September 2026); RideMovi, 2024 angekündigt, steht auf keiner der beiden Listen. Du mietest in der App, laut den Bedingungen ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Darmstadt verleihen vier Anbieter E-Scooter: **Bolt**, **Dott** (früher TIER), **Lime** und **Voi**. So nennen es die Stadt (gelesen am 26. Oktober 2026) und das städtische Verkehrsunternehmen HEAG mobilo (September 2026); RideMovi, 2024 angekündigt, steht auf keiner der beiden Listen. Du mietest in der App; das Gesetz erlaubt E-Scooter ab 14, welches Mindestalter der Anbieter verlangt, prüfst du in der App: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Eine Genehmigung brauchen die Anbieter nicht, schrieb der Magistrat im Mai 2023, und auch die Sondernutzungssatzung der Stadt in ihrer Fassung vom Juli 2026 nennt Leih-Scooter nicht. Die Stadt hat mit den Anbietern Absichtserklärungen geschlossen, «nicht rechtlich bindend», über Verteilung, Parken, freizuhaltende Flächen und Kontrollen. Eine Obergrenze ist nur für Bolt in Wixhausen bekannt: «maximal 40 Roller» (2023). HEAG mobilo nennt 370 Fahrzeuge je Anbieter und bis zu 60 000 Fahrten im Monat (September 2026).',
         'Die [Karte von Darmstadt](map:de:Darmstadt) zeigt alle vier mit Standort und, ausser bei Dott, mit Akkustand, sofern Bolt ihn nicht ausblendet. Am Sonntag, 25. Oktober 2026, kurz vor 23 Uhr zeigte sie rund 260 Scooter von Dott, 270 von Voi und 310 von Bolt. Limes Scooter zählt sie getrennt: Der letzte volle Durchlauf durch Limes Gebiet, beendet am selben Sonntag um 9.24 Uhr, fand rund 530. Das sind Momentaufnahmen, keine Flottengrössen. In der Nacht zum Montag gegen 1 Uhr standen alle Dott- und Voi-Scooter, die die Karte bei Darmstadt zählt, in der Stadt, Dott nur in der Kernstadt; von Bolts rund 310 standen rund 10 in Griesheim.',
       ],
@@ -24,19 +24,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Darmstadt?',
       blocks: [
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt für Deutschland mit «ab 0,15 € pro Minute», einer kleinen Freischaltgebühr und einem Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat; der Minutenpreis hängt laut Bolt vom Ort ab (Stand 26. Oktober 2026). Was Falschparken kostet, steht in den deutschen Bedingungen der Anbieter:',
-        {
-          table: {
-            caption: 'E-Scooter-Anbieter in Darmstadt: Preis und Gebühren (Stand 26. Oktober 2026)',
-            head: ['Anbieter', 'Preis', 'Falsch geparkt (laut Bedingungen)'],
-            rows: [
-              ['Bolt', 'ab 0,15 € pro Minute plus Freischaltgebühr (für Deutschland)', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026)'],
-              ['Dott', 'in der App', 'bis 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst; 50 € Verwaltungsgebühr, wenn Dott ein Bussgeld für dich zahlt (Bedingungen vom September 2025)'],
-              ['Lime', 'in der App', 'in den Bedingungen in der Lime-App'],
-              ['Voi', 'in der App', 'in den Bedingungen in der Voi-App'],
-            ],
-          },
-        },
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Was Falschparken beim Anbieter kostet, steht in seinen Bedingungen in der App.',
         'Bussgelder der Behörden kommen dazu. Die Hotlines der Anbieter nennt HEAG mobilo, die von Bolt, Dott und Lime auch die Stadt auf ihrer Seite zur Shared Mobility.',
       ],
     },
@@ -82,7 +70,7 @@ const guide: Guide = {
             '**Gehweg oder Fussgängerzone:** 15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden; ab 1. März 2027 25 €, bis 40 €.',
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €. **Ohne Versicherungsplakette:** 40 €.',
             '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** heute 100 € und ein Punkt.',
-            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille. Bolt verbietet jeden Alkohol.',
+            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille.',
             '**In einer öffentlichen Grünanlage:** laut Grünanlagensatzung der Stadt 5 bis 1000 €.',
           ],
         },
@@ -100,9 +88,8 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Strassenbahn, Bus und Bahn: HEAG mobilo, RMV und DB',
       blocks: [
-        'Darmstadt gehört zum RMV, und dort gilt: «E-Scooter werden wie Fahrräder behandelt.» Sie fahren kostenlos mit, ohne Anspruch; Rollstuhl und Kinderwagen haben Vorrang, und jedes Verkehrsunternehmen darf die Mitnahme einschränken oder ausschliessen. Zusammengeklappt gelten Tretroller als Gepäck. Den Akku darfst du unterwegs weder herausnehmen noch laden.',
         'Für Strassenbahnen und Busse der **HEAG mobilo** schrieb die Stadt im Juli 2025: «Derzeit ist es in den Fahrzeugen der HEAG mobilo nicht gestattet einen E-Tretroller mit sich zu führen.» Auf ihrer eigenen Website nennt HEAG mobilo dazu keine Regel (Stand 26. Oktober 2026).',
-        'In S-Bahn und Regionalzug gilt die RMV-Regel. Im Fernverkehr der Deutschen Bahn fährt dein eigener Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit. Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor dem Bahnhof und miete am Ziel neu. In Frankfurt verbietet die VGF E-Tretroller seit dem 1. Oktober 2024 in U-Bahn und Strassenbahn: [E-Scooter in Frankfurt](guide:frankfurt).',
+        'Darmstadt gehört zum RMV: Ob und wie du einen eigenen E-Scooter in S-Bahn und Regionalzug mitnehmen darfst, regeln seine Beförderungsbedingungen, in den Fernzügen die der Deutschen Bahn; frag vor der Fahrt nach. Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor dem Bahnhof und miete am Ziel neu. In Frankfurt verbietet die VGF E-Tretroller seit dem 1. Oktober 2024 in U-Bahn und Strassenbahn: [E-Scooter in Frankfurt](guide:frankfurt).',
         'Leihräder zeigt unsere Karte nicht: weder Bolts E-Bikes noch Call a Bike, laut HEAG mobilo an knapp 50 Standorten, noch die Lastenräder von Heinerbike und Sigo, die die Stadt nennt.',
       ],
     },
@@ -118,11 +105,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Darmstadt?',
-      answer: 'Bolt, Dott, Lime und Voi: Diese vier nennen die Stadt und HEAG mobilo. Du mietest in ihrer App, ab 18 und ohne Führerschein.',
+      answer: 'Bolt, Dott, Lime und Voi: Diese vier nennen die Stadt und HEAG mobilo. Du mietest in ihrer App, ohne Führerschein; das Mindestalter zeigt die App.',
     },
     {
       question: 'Was kostet ein E-Scooter in Darmstadt?',
-      answer: 'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute plus Freischaltgebühr; einen Darmstädter Tarif veröffentlichen Bolt und Dott nicht.',
+      answer: 'Den Preis zeigt die App des Anbieters vor dem Entsperren; dieser Preis ist verbindlich.',
     },
     {
       question: 'Darf ich mit dem E-Scooter über den Luisenplatz fahren?',
@@ -134,7 +121,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich meinen E-Scooter in der Strassenbahn mitnehmen?',
-      answer: 'In Strassenbahnen und Bussen der HEAG mobilo laut Stadt derzeit nicht. In S-Bahn und Regionalzug behandelt der RMV E-Scooter wie Fahrräder: kostenlos, aber ohne Anspruch.',
+      answer: 'In Strassenbahnen und Bussen der HEAG mobilo laut Stadt derzeit nicht.',
     },
     {
       question: 'Kann ich mit dem E-Scooter nach Griesheim oder Weiterstadt fahren?',
@@ -161,13 +148,8 @@ const guide: Guide = {
     { title: 'HEAG mobilo: Weiterstadt (1. Dezember 2025)', url: 'https://www.heagmobilo.de/pressemeldungen/pilotprojekt-mit-shared-mobility-in-weiterstadt-waechst-bolt-ergaenzt-angebot-um-170-e-tretroller/' },
     { title: 'Stadt Darmstadt: Fahrradstreifen der Stadtpolizei (13. August 2026)', url: 'https://www.darmstadt.de/presseportal/pressemitteilungen/einzelansicht/stadtpolizei-der-wissenschaftsstadt-darmstadt-setzt-auf-fahrradstreifen' },
     { title: 'Stadt Darmstadt: Sperrungen zum Heinerfest 2026', url: 'https://www.darmstadt.de/presseportal/pressemitteilungen/einzelansicht/verkehrssperrungen-und-umleitungen' },
-    { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
-    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'SV Darmstadt 98: Anreise', url: 'https://www.sv98.de/stadion/stadionbesuch/anreise/' },
     { title: 'SV Darmstadt 98: Stadionordnung', url: 'https://www.sv98.de/stadion/stadionbesuch/stadionordnung/' },
-    { title: 'Bolt: E-Scooter', url: 'https://bolt.eu/de-de/scooters/' },
-    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
-    { title: 'Dott: AGB Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'HVBG: Verwaltungsgrenzen Hessen', url: 'https://gds.hessen.de/INTERSHOP/web/WFS/HLBG-Geodaten-Site/de_DE/-/EUR/ViewDownloadcenter-Start?path=Liegenschaftskataster/Verwaltungsgrenzen%20Hessen' },
   ],
 };
