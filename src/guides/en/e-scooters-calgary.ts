@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Calgary: Bird and Lime, where you may ride, the fines and winter riding',
   lede: 'You can rent an e-scooter in Calgary from Bird or Lime, which took over Neuron’s scooters in 2026; both show their prices in the app. You must be 18, a helmet is optional, and you ride at up to 20 km/h on sidewalks, bike lanes, pathways and quiet roads without lane markings. The City has published no season dates for 2026–27: its 2021 rules allowed winter riding only at its discretion, so check the app from November.',
   published: '2026-10-16',
-  updated: '2026-10-16',
+  updated: '2026-11-03',
   city: 'ca:ab:Calgary',
   sections: [
     {
@@ -81,7 +81,7 @@ const guide: Guide = {
             '**Sidewalks.** Keep to the road side; people on foot come first.',
             '**Roads and bike lanes.** Ride only on roads without lane markings, near the right edge, or in a bike lane on any road. Yield when you come off a sidewalk or pathway onto a road.',
             '**Pathways.** The regional pathways along the Bow and Elbow rivers and beyond are open at 20 km/h. Keep right and give an audible signal before you pass. Along the Bow River pathway, keep off the pedestrian path and the walk-only zone: use the bike path or the signed detour.',
-            '**Slow zones.** The scooters slow to 15 km/h on 4 Street S.W. in Mission, 9 Avenue S.E. in Inglewood, 8 Avenue S.W. downtown, Stephen Avenue included, and 10 Street N.W. and Kensington Road in Kensington.',
+            '**Slow zones.** The scooters slow to 15 km/h on 4 Street S.W. in Mission, 9 Avenue S.E. in Inglewood, 8 Avenue S.W. downtown, Stephen Avenue included, and 10 Street N.W. and Kensington Road in Kensington. Our [Calgary map](map:ca:ab:Calgary) draws all but Kensington Road from zoom 14, credited to the City, along OpenStreetMap’s ways: 4 Street from 17 Avenue to the Elbow River, 9 Avenue within Inglewood, 8 Avenue within the Downtown Commercial Core and 10 Street from Memorial Drive to Riley Park. The City gives no ends for Kensington Road.',
           ],
         },
         'A 2019 City bylaw poster marks Stephen Avenue as open to shared e-scooters. In parks such as Prince’s Island, ride only on the pathways.',

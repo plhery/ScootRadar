@@ -170,6 +170,23 @@ describe('ruleZonesInView', () => {
     expect(only({ south: 50.8228, west: -0.1665, north: 50.8245, east: -0.1645 })).toEqual([]);
   });
 
+  it('gives Calgary\'s 15 km/h streets within the communities the City names them by, credited to the City', () => {
+    const now = Date.parse('2026-11-03T00:30:00Z');
+    const at = (lat: number, lng: number) => ruleZonesInView(
+      { bounds: { south: lat - 0.0005, west: lng - 0.0008, north: lat + 0.0005, east: lng + 0.0008 }, zoom: 16 }, now)
+      .filter(zone => zone.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng)))
+      .map(({ id, rule, maxSpeedKph, authority }) => ({ id, rule, maxSpeedKph, authority }));
+    const slow = (id: string) => [{ id, rule: 'slow', maxSpeedKph: 15, authority: 'City of Calgary, lines © OpenStreetMap' }];
+    expect(at(51.033822, -114.071529)).toEqual(slow('calgary-4-street-sw-mission'));
+    expect(at(51.041209, -114.034233)).toEqual(slow('calgary-9-avenue-se-inglewood'));
+    expect(at(51.045864, -114.073737)).toEqual(slow('calgary-8-avenue-sw-downtown'));
+    expect(at(51.055492, -114.085922)).toEqual(slow('calgary-10-street-nw-kensington'));
+    // 4 Street north of 17 Avenue, out of Mission; 10 Street north of Riley Park; Kensington Road, which nothing bounds.
+    expect(at(51.041, -114.07153)).toEqual([]);
+    expect(at(51.0600, -114.0859)).toEqual([]);
+    expect(at(51.05252, -114.0900)).toEqual([]);
+  });
+
   it('gives Warsaw\'s no-ride areas and 12 km/h streets, the new ones from 22 May 2026, credited to ZDM', () => {
     const now = Date.parse('2026-11-02T23:30:00Z');
     const at = (lat: number, lng: number, time = now) => ruleZonesInView(

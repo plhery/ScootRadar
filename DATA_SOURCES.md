@@ -692,6 +692,28 @@ They are credited "City of Edmonton, lines © OpenStreetMap", and Canada's
 credits add "Edmonton's no-ride stretch of Whyte Avenue traced on
 OpenStreetMap, ODbL". Its slow zones and Mill Woods' corrals are not drawn.
 
+Calgary's shared e-scooters and e-bikes slow to 15 km/h "on 4 Street S.W. in
+Mission, 9 Avenue S.E. in Inglewood, 8 Avenue S.W. in the downtown core and
+along 10 Street N.W. and Kensington Road in Kensington"
+([City of Calgary](https://www.calgary.ca/bike-walk-roll/electric-scooters.html),
+read 3 November 2026), which publishes no map of them and gives no ends but
+the communities, whose outlines OpenStreetMap has. The lines are
+OpenStreetMap's, © OpenStreetMap contributors under the ODbL: 4 Street SW
+along Mission, the edge it shares with Cliff Bungalow, from 17 Avenue SW to
+the Elbow River (about 1 km); 9 Avenue SE within Inglewood (2.9 km of
+carriageway, from the Elbow River east, its industrial stretch included); 8
+Avenue SW within the Downtown Commercial Core, Stephen Avenue among it (1.4
+km); and 10 Street NW from Memorial Drive to Riley Park (0.6 km), the stretch
+the City's Main Streets programme gives that main street
+([City of Calgary](https://www.calgary.ca/PDA/pd/Documents/main-streets/what-weve-learned/10StNW.pdf)),
+as Kensington is no community. Kensington Road, which nothing bounds, is
+not drawn. They are credited "City of Calgary, lines © OpenStreetMap", and
+Canada's credits name them beside Edmonton's. Neither operator publishes a
+slow zone there to compare: Bird's GBFS has only no-parking zones in those
+places, and Lime none. The City's other rules, no riding on busier roads like
+Macleod Trail, on the Bow River pathway's walk-only stretch or in the 7
+Avenue transit corridor (its 2021 permit rules), are not drawn.
+
 Tampa's "shared micromobility vehicles shall not be ridden in the following
 locations: Tampa Riverwalk, Bayshore Boulevard, 7th Avenue"
 ([City of Tampa](https://www.tampa.gov/tss-transportation/programs/shared-micromobility-program),
