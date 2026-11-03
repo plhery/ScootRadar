@@ -272,6 +272,7 @@ import gothenburgEn from './en/e-scooters-gothenburg';
 import sindelfingenDe from './de/e-scooter-sindelfingen';
 import tampereEn from './en/e-scooters-tampere';
 import linkopingEn from './en/e-scooters-linkoping';
+import vaxjoEn from './en/e-scooters-vaxjo';
 import osakaEn from './en/e-scooters-osaka';
 import milwaukeeEn from './en/e-scooters-milwaukee';
 import turkuEn from './en/e-scooters-turku';
@@ -650,6 +651,7 @@ export const GUIDES: readonly Guide[] = [
   sindelfingenDe,
   tampereEn,
   linkopingEn,
+  vaxjoEn,
   osakaEn,
   milwaukeeEn,
   turkuEn,
