@@ -484,7 +484,8 @@ class ScooterMarkers(
         val callout = scene.callout(projection)
         calloutTitle = callout?.title
         callout?.let { calloutAnchor = it.anchor }
-        // The clusters under the chrome are hidden before the source is written: a new one is never seen there.
+        // The clusters under the chrome, or on the scooter held in the overview, are hidden before the source is
+        // written: a new one is never seen there.
         val written = writtenMarkers
         val counts = scene.clearCounts(markerMap)
         writeClearances(style, SystemClock.uptimeMillis() / 1000.0)

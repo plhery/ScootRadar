@@ -70,7 +70,8 @@ object MarkerElements {
     /**
      * The markers on the map that TalkBack reads, top to bottom, then left to right (MAP-228, MAP-306). The
      * names speak through their dots, and the faded markers of scooters last seen are not read (MAP-223), nor a
-     * count hidden under the chrome, which a tap does not open either (ScooterMarkerScene.clearCounts).
+     * count hidden under the chrome or off the scooter held in the overview, which a tap does not open either
+     * (ScooterMarkerScene.clearCounts).
      */
     fun of(scene: ScooterMarkerScene, map: MarkerMap): List<MarkerElement> {
         if (!map.isShown) return emptyList()
@@ -83,7 +84,7 @@ object MarkerElements {
         }
         for (bay in scene.parking) elements += MarkerElement.Bay(bay, scene.bayFrame(bay, projection))
         for (cluster in scene.clusters()) {
-            if (cluster.isUnderChrome) continue
+            if (cluster.isHidden) continue
             elements += MarkerElement.Cluster(cluster, square(projection.point(cluster.cluster.coordinate), ScooterMarkerScene.CLUSTER_SIZE))
         }
         val destination = scene.destination
@@ -103,7 +104,7 @@ object MarkerElements {
     /**
      * The marker a finger exploring the map is on: the one a tap there would take, the cluster on top of the
      * others if no dot or bay is meant; else, among the views under it, the one whose middle is nearest. A count
-     * hidden under the chrome is not among them, so it is never found.
+     * hidden (ScooterMarkerScene.clearCounts) is not among them, so it is never found.
      */
     fun at(point: ScreenPoint, among: List<MarkerElement>, scene: ScooterMarkerScene, map: MarkerMap): MarkerElement? {
         val scooter = scene.scooterMark(at = point, map = map)
@@ -135,8 +136,8 @@ object MarkerElements {
 /**
  * TalkBack's view of the markers: one virtual view for each scooter, bay, cluster and city total on the map, with
  * what VoiceOver reads of it. The markers call [refresh] when the map comes to rest, when they change and when a count
- * is hidden under the chrome or shown again, and the views are listed again where they are then; what a view reads,
- * and whether it is selected, is read as TalkBack asks for it.
+ * is hidden or shown again (ScooterMarkerScene.clearCounts), and the views are listed again where they are then; what
+ * a view reads, and whether it is selected, is read as TalkBack asks for it.
  */
 class ScooterMarkerAccessibility(
     host: View,

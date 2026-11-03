@@ -171,10 +171,11 @@ class ClusterMark(cluster: ScooterCluster, members: List<Scooter>?) {
     val sortKey: Float get() = (500 + log10(cluster.count + 1.0) * 60).toFloat()
 
     /**
-     * Its disc meets the chrome over the map, where its number would be read in part: it is hidden, and a tap there
-     * does not open it (ScooterMarkerScene.clearCounts).
+     * Its disc meets the chrome over the map, where its number would be read in part, or in the overview the scooter
+     * held on the map, which it would cover: it is hidden, and neither a tap there nor TalkBack opens it
+     * (ScooterMarkerScene.clearCounts).
      */
-    var isUnderChrome = false
+    var isHidden = false
         internal set
 
     /** Its strength easing from shown to hidden as it goes under the chrome, or back as it comes out. */
@@ -185,7 +186,7 @@ class ClusterMark(cluster: ScooterCluster, members: List<Scooter>?) {
 
     /** How much of it shows at a moment of the uptime clock: 1 clear of the chrome, 0 under it, between as it fades. */
     fun clearance(at: Double): Double {
-        val ease = clearing ?: return if (isUnderChrome) 0.0 else 1.0
+        val ease = clearing ?: return if (isHidden) 0.0 else 1.0
         return ease.from + (ease.to - ease.from) * ease.progress(at)
     }
 
@@ -960,29 +961,47 @@ class ScooterMarkerScene(
     }
 
     /**
-     * Keeps every cluster's number whole or unseen: one whose disc meets the chrome ([countChrome]) fades out over
-     * [PILL_FADE], and back in as the map takes it clear, as a name does; at once with animations off, with the map
-     * off the screen, and for one not placed before. The city totals of the overview, the server's clusters and the
-     * app's own alike; a scooter's dot stays, as under the chrome on the iPhone. Returns whether any went under or
-     * came out.
+     * What else a count keeps off, in the overview: the selected scooter, the one walked to, which stays on the map at
+     * any zoom, its dot in the square of its footprint and its name, in the map's points. The cities' totals are drawn
+     * over the rider's layers there (ScooterMarkerLayers.CITIES), and the rider over the selected dot, as the iPhone
+     * draws it (zPriority .max); the iPhone draws that dot and its name over every total (zPriority 900, above any
+     * total's), so a total that would cover them makes way instead. Elsewhere the clusters are drawn under them.
+     */
+    fun heldScooterFrames(map: MarkerMap): List<ScreenRect> {
+        if (!parent.isOverview) return emptyList()
+        val id = appliedSelectionID ?: return emptyList()
+        val mark = marksByID[id]?.takeIf { id !in clusteredIDs && it.look.state == ScooterDotState.Selected } ?: return emptyList()
+        val centre = dotCentre(mark, map.projection)
+        val side = mark.look.footprint
+        val dot = ScreenRect(centre.x - side / 2, centre.y - side / 2, side, side)
+        val pill = mark.shownPill ?: return listOf(dot)
+        return listOf(dot, ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(pill), ScooterMapLook.pillHeight))
+    }
+
+    /**
+     * Keeps every cluster's number whole or unseen: one whose disc meets the chrome ([countChrome]), or in the
+     * overview the scooter held on the map ([heldScooterFrames]), fades out over [PILL_FADE], and back in as the map
+     * takes it clear, as a name does; at once with animations off, with the map off the screen, and for one not placed
+     * before. The city totals of the overview, the server's clusters and the app's own alike; a scooter's dot stays,
+     * as under the chrome on the iPhone. Returns whether any was hidden or shown again.
      */
     fun clearCounts(map: MarkerMap): Boolean {
         val clusters = clusters()
         if (clusters.isEmpty()) return false
-        val chrome = countChrome(map)
+        val obstacles = countChrome(map) + heldScooterFrames(map)
         val points = map.points(clusters.map { it.cluster.coordinate })
         val time = now()
         val eases = map.isShown && animates()
         var changed = false
         for ((index, cluster) in clusters.withIndex()) {
             val radius = cluster.diameter / 2
-            val isUnder = chrome.any { discMeets(points[index], radius, it) }
+            val hides = obstacles.any { discMeets(points[index], radius, it) }
             val wasPlaced = cluster.isPlaced
             cluster.isPlaced = true
-            if (isUnder == cluster.isUnderChrome) continue
+            if (hides == cluster.isHidden) continue
             val from = cluster.clearance(time)
-            cluster.isUnderChrome = isUnder
-            cluster.clearing = if (wasPlaced && eases) MarkerEase(from, if (isUnder) 0.0 else 1.0, PILL_FADE, slide, time) else null
+            cluster.isHidden = hides
+            cluster.clearing = if (wasPlaced && eases) MarkerEase(from, if (hides) 0.0 else 1.0, PILL_FADE, slide, time) else null
             changed = true
         }
         return changed
@@ -1000,8 +1019,8 @@ class ScooterMarkerScene(
 
     /**
      * The cluster MapKit would select under a point: the one whose 48 pt frame holds it, if no dot's 44 pt square
-     * or bay's balloon there is drawn above it. The selected dot and bay are above everything. One hidden under the
-     * chrome is not there to tap.
+     * or bay's balloon there is drawn above it. The selected dot and bay are above everything. One hidden
+     * ([clearCounts]) is not there to tap.
      */
     fun topCluster(at: ScreenPoint, map: MarkerMap): ClusterMark? {
         val projection = map.projection
@@ -1024,7 +1043,7 @@ class ScooterMarkerScene(
         }
         // Drawn after the dots and the bays, a cluster is above those of the same rank.
         for (cluster in clusters()) {
-            if (cluster.isUnderChrome) continue
+            if (cluster.isHidden) continue
             val point = projection.point(cluster.cluster.coordinate)
             val half = CLUSTER_SIZE / 2
             consider(ScreenRect(point.x - half, point.y - half, CLUSTER_SIZE, CLUSTER_SIZE), cluster.sortKey, cluster)

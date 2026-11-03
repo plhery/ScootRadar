@@ -96,11 +96,11 @@ class CountsClearOfTheChromeTest {
             revision = 1,
         )
         assertTrue(scene.clearCounts(map))
-        val hidden = scene.clusters().filter { it.isUnderChrome }.map { it.id }
+        val hidden = scene.clusters().filter { it.isHidden }.map { it.id }
         assertEquals(listOf("status", "peeks", "notice", "locate", "dock"), hidden)
         // Placed for the first time, each is hidden or shown at once, never seen fading.
         for (cluster in scene.clusters()) {
-            assertEquals(cluster.id, if (cluster.isUnderChrome) 0.0 else 1.0, cluster.clearance(time), 0.0)
+            assertEquals(cluster.id, if (cluster.isHidden) 0.0 else 1.0, cluster.clearance(time), 0.0)
             assertNull(cluster.id, cluster.clearing)
         }
         // Placed again where they are, none changes.
@@ -131,7 +131,7 @@ class CountsClearOfTheChromeTest {
             revision = 1,
         )
         scene.clearCounts(map)
-        assertEquals(listOf("edge", "handle", "corner"), scene.clusters().filter { it.isUnderChrome }.map { it.id })
+        assertEquals(listOf("edge", "handle", "corner"), scene.clusters().filter { it.isHidden }.map { it.id })
     }
 
     @Test
@@ -147,7 +147,7 @@ class CountsClearOfTheChromeTest {
         // The dock rises over it: it fades out over 0.2 s, in and out, as a name does.
         scene.parent = dockAt(610.0)
         assertTrue(scene.clearCounts(map))
-        assertTrue(zurich.isUnderChrome)
+        assertTrue(zurich.isHidden)
         assertEquals(1.0, zurich.clearance(100.0), 1e-9)
         assertEquals(0.5, zurich.clearance(100.1), 1e-3)
         assertEquals(0.0, zurich.clearance(100.2), 1e-9)
@@ -187,9 +187,78 @@ class CountsClearOfTheChromeTest {
         scene.reconcileClusters(listOf(zurich.cluster, cluster("basel", map.at(100.0, 650.0), 300)), revision = 2)
         assertTrue(scene.clearCounts(map))
         assertSame(zurich, mark("zurich"))
-        assertTrue(mark("basel").isUnderChrome)
+        assertTrue(mark("basel").isHidden)
         assertNull(mark("basel").clearing)
         assertEquals(0.0, mark("basel").clearance(time), 0.0)
+    }
+
+    /**
+     * In the overview the totals are drawn over the rider, and the rider over the selected scooter, as on the iPhone:
+     * a total whose disc meets the scooter walked to, which stays on the map at any zoom, or its "N min" name is
+     * hidden instead, takes no tap and is not read; one clear of them, or on the rider alone, stays
+     * (review-app-aq-ar 2).
+     */
+    @Test
+    fun inTheOverviewATotalOnTheScooterWalkedToOrItsNameIsHiddenAndOneClearOfThemStays() {
+        val map = FlatMarkerMap(mapLibreZoom = 9.0)
+        val rider = map.at(195.0, 560.0)
+        val walking = MarkerParent(
+            origin = rider,
+            walkRemainingMetres = 900.0,
+            isWalking = true,
+            usesServerClusters = true,
+            isOverview = true,
+            userLocation = rider,
+        )
+        scene.parent = walking
+        assertTrue(scene.updateClusteringMode(9.0, map))
+        scene.reconcile(listOf(scooter("held", "lime", at = map.at(195.0, 400.0))), revision = 1)
+        scene.applySelection("lime:held", map)
+        val held = scene.mark("lime:held")!!
+        assertTrue(held.shownPill?.time != null)
+        // Its dot, in the square of its footprint, and its name.
+        val (dot, name) = scene.heldScooterFrames(map)
+        val centre = scene.dotCentre(held, map)
+        assertEquals(held.look.footprint, dot.width, 0.0)
+        assertEquals(centre.x, dot.midX, 1e-9)
+        assertEquals(scene.shownPillFrames(map).single().second, name)
+        // Beyond the far end of its name, by less than its radius.
+        val beyond = if (name.midX > centre.x) name.maxX + 12 else name.minX - 12
+        scene.reconcileClusters(
+            listOf(
+                cluster("zurich", map.at(centre.x + 6, centre.y - 6), 7023),
+                cluster("name", map.at(beyond, name.midY), 63),
+                cluster("rider", rider, 247),
+                cluster("winterthur", map.at(195.0, 700.0), 300),
+            ),
+            revision = 1,
+        )
+        assertTrue(scene.clearCounts(map))
+        assertEquals(listOf("zurich", "name"), scene.clusters().filter { it.isHidden }.map { it.id })
+        assertNull(scene.topCluster(map.point(mark("name").cluster.coordinate), map))
+        assertSame(mark("rider"), scene.topCluster(map.point(rider), map))
+        val read = MarkerElements.of(scene, map).filterIsInstance<MarkerElement.Cluster>().map { it.cluster.id }
+        assertEquals(listOf("rider", "winterthur"), read)
+
+        // Away from the overview the clusters are drawn under the selected dot and its name: none makes way.
+        scene.parent = walking.copy(isOverview = false)
+        assertTrue(scene.heldScooterFrames(map).isEmpty())
+        assertTrue(scene.clearCounts(map))
+        assertTrue(scene.clusters().none { it.isHidden })
+
+        // Back in the overview they make way again, and once the walk is over and the scooter has left the map, they
+        // fade back in.
+        scene.parent = walking
+        assertTrue(scene.clearCounts(map))
+        assertEquals(listOf("zurich", "name"), scene.clusters().filter { it.isHidden }.map { it.id })
+        time = 101.0
+        scene.parent = MarkerParent(usesServerClusters = true, isOverview = true, userLocation = rider)
+        scene.applySelection(null, map)
+        scene.reconcile(emptyList(), revision = 2)
+        assertTrue(scene.heldScooterFrames(map).isEmpty())
+        assertTrue(scene.clearCounts(map))
+        assertTrue(scene.clusters().none { it.isHidden })
+        assertEquals(0.5, mark("zurich").clearance(101.1), 1e-3)
     }
 
     @Test

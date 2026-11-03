@@ -272,6 +272,15 @@ class ScooterMarkersTest {
         ScreenPoint(it.exactCenterX().toDouble(), it.exactCenterY().toDouble())
     }
 
+    /** What TalkBack reads of the buttons, in its order. */
+    private fun reads(): List<String> = buttons().map { it.contentDescription.toString() }
+
+    /** How much of a cluster shows, as MapLibre has its feature state: none set, it shows whole. */
+    private fun Marked.clearance(id: String): Double? = phone.onMain {
+        val source = phone.map.style!!.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)!!
+        source.getFeatureState(id)?.get(ScooterMarkerLayers.CLEAR)?.asDouble
+    }
+
     /** Where a point of the map is on the screen, in pixels. */
     private fun Marked.onScreen(point: ScreenPoint): ScreenPoint {
         val origin = phone.onMain { IntArray(2).also { phone.view.getLocationOnScreen(it) } }
@@ -364,20 +373,15 @@ class ScooterMarkersTest {
             val marks = marked.markers.scene.clusters()
             val basel = marks.minBy { it.cluster.coordinate.distance(to = under) }
             val zurich = marks.minBy { it.cluster.coordinate.distance(to = clear) }
-            assertTrue(basel.isUnderChrome)
-            assertTrue(!zurich.isUnderChrome)
+            assertTrue(basel.isHidden)
+            assertTrue(!zurich.isHidden)
             MarkerFeatures.id(basel) to MarkerFeatures.id(zurich)
         }
-        fun clearance(id: String): Double? = marked.phone.onMain {
-            val source = marked.phone.map.style!!.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)!!
-            source.getFeatureState(id)?.get(ScooterMarkerLayers.CLEAR)?.asDouble
-        }
-        waitFor("Basel's total is hidden") { clearance(basel) == 0.0 }
+        waitFor("Basel's total is hidden") { marked.clearance(basel) == 0.0 }
         // Zürich's was never under the chrome: it has no state, and shows whole.
-        assertNull(clearance(total))
+        assertNull(marked.clearance(total))
         // TalkBack has Zürich's alone: Basel's, hidden, takes no double tap, as it takes no tap (review-app-aq-ar 1).
-        fun read(): List<String> = buttons().map { it.contentDescription.toString() }
-        waitFor("TalkBack has Zürich's total alone") { read().size == 1 && read().none { it.startsWith("Basel") } }
+        waitFor("TalkBack has Zürich's total alone") { reads().size == 1 && reads().none { it.startsWith("Basel") } }
         marked.phone.onMain {
             val layers = marked.phone.map.style!!.layers.map { it.id }
             assertTrue(layers.indexOf(ScooterMarkerLayers.CITIES) > layers.indexOf(ScooterMarkerLayers.RIDER))
@@ -393,17 +397,60 @@ class ScooterMarkersTest {
         val written = marked.phone.onMain { marked.markers.markersWritten }
         // The search bar gone, Basel's comes back, without the source written again.
         marked.phone.onMain { marked.markers.chromeDidChange(MapChrome()) }
-        waitFor("Basel's total shows again") { clearance(basel) == 1.0 }
+        waitFor("Basel's total shows again") { marked.clearance(basel) == 1.0 }
         assertEquals(written, marked.phone.onMain { marked.markers.markersWritten })
         // And TalkBack is told, the map not having moved: Basel's is back in its list.
-        waitFor("TalkBack has Basel's total again") { read().size == 2 && read().any { it.startsWith("Basel") } }
+        waitFor("TalkBack has Basel's total again") { reads().size == 2 && reads().any { it.startsWith("Basel") } }
         // Under the bar again, then gone from the map: its state is set back to whole, not removed, as a removal
         // in the frame of another's set would leave that one as it was drawn.
         marked.phone.onMain { marked.markers.chromeDidChange(MapChrome(top = ScreenRect(16.0, 55.0, 358.0, 56.0))) }
-        waitFor("Basel's total is hidden again") { clearance(basel) == 0.0 }
-        waitFor("TalkBack has Zürich's total alone again") { read().size == 1 }
+        waitFor("Basel's total is hidden again") { marked.clearance(basel) == 0.0 }
+        waitFor("TalkBack has Zürich's total alone again") { reads().size == 1 }
         marked.serve(ScooterResponse(vehicles = emptyList(), clusters = clusters.drop(1), meta = meta)) { it.clusters().size == 1 }
-        waitFor("Basel's state is set back to whole") { clearance(basel) == 1.0 }
+        waitFor("Basel's state is set back to whole") { marked.clearance(basel) == 1.0 }
+    }
+
+    /**
+     * The overview on MapLibre with a scooter selected on it, as the one walked to stays: its dot and name are drawn
+     * under the totals' layer, so the total that would cover them is hidden by its feature state, out of TalkBack's
+     * list, and shows again once the scooter is let go (review-app-aq-ar 2).
+     */
+    @Test
+    fun inTheOverviewATotalOnTheSelectedScooterMakesWayForItsDot() = withMarkers(zurich, mapLibreZoom = 9.0) { marked ->
+        val station = marked.at(195.0, 400.0)
+        val far = marked.at(195.0, 650.0)
+        val clusters = listOf(
+            ScooterCluster("city:ch:Zürich", station.latitude, station.longitude, count = 7_023, providers = mapOf("voi" to 7_023), city = "Zürich"),
+            ScooterCluster("city:ch:Winterthur", far.latitude, far.longitude, count = 300, providers = mapOf("lime" to 300), city = "Winterthur"),
+        )
+        val held = scooter("held", "lime", marked.at(200.0, 404.0))
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", overview = true)
+        marked.serve(ScooterResponse(vehicles = listOf(held), clusters = clusters, meta = meta)) { it.clusters().size == 2 && it.marks.size == 1 }
+        val (total, other) = marked.phone.onMain {
+            val marks = marked.markers.scene.clusters()
+            MarkerFeatures.id(marks.minBy { it.cluster.coordinate.distance(to = station) }) to
+                MarkerFeatures.id(marks.minBy { it.cluster.coordinate.distance(to = far) })
+        }
+        // The dot not selected, Zürich's total is drawn over it.
+        waitFor("TalkBack has the totals and the scooter") { reads().size == 3 }
+        assertNull(marked.clearance(total))
+
+        marked.phone.onMain { marked.controller.selectScooter(held.id) }
+        waitFor("Zürich's total makes way for the selected scooter") { marked.clearance(total) == 0.0 }
+        assertNull(marked.clearance(other))
+        waitFor("the selected dot is drawn at its place") {
+            marked.phone.onMain {
+                val point = marked.phone.projection.point(held.coordinate)
+                val pixel = PointF((point.x * marked.ratio).toFloat(), (point.y * marked.ratio).toFloat())
+                marked.phone.map.queryRenderedFeatures(pixel, ScooterMarkerLayers.RAISED).isNotEmpty()
+            }
+        }
+        waitFor("TalkBack has Winterthur's total and the scooter") { reads().size == 2 && reads().none { it.startsWith("Zürich") } }
+        reads().forEach { Log.i(TAG, "TalkBack reads, a scooter selected in the overview: $it") }
+
+        marked.phone.onMain { marked.controller.selectScooter(null) }
+        waitFor("Zürich's total shows again") { marked.clearance(total) == 1.0 }
+        waitFor("TalkBack has Zürich's total again") { reads().size == 3 }
     }
 
     // Frames
