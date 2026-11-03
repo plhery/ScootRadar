@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'trotinetes-lisboa',
   topic: 'lisbon',
   name: 'Trotinetes partilhadas em Lisboa',
-  title: 'Trotinetes em Lisboa 2026: regras, preços e minutos grátis',
-  description: 'Trotinetes em Lisboa: Bolt, Lime e Bird, o limite de 20 km/h, as zonas proibidas, os hotspots e como ter minutos grátis com o passe Navegante.',
-  headline: 'Trotinetes em Lisboa: operadores, zonas proibidas, hotspots e minutos grátis com o Navegante',
-  lede: 'As trotinetes em Lisboa alugam-se nas apps da Bolt, da Lime e da Bird, que mostram o preço antes de desbloquear: nenhuma publica uma tarifa para a cidade. As regras vêm de um acordo entre a Câmara e os operadores: 20 km/h no máximo, nada de passeios, vias BUS, jardins ou praças, e a viagem só termina num hotspot, um local de estacionamento autorizado. Quem vive em Lisboa e tem o passe Navegante mensal tem até 200 minutos grátis por mês, no máximo 10 por viagem. A 21 de outubro de 2026, a Câmara aprovou o fim das trotinetes partilhadas: depois da notificação definitiva, prevista para novembro, os operadores terão 60 dias para as retirar.',
+  title: 'Trotinetes em Lisboa 2026: regras, hotspots e suspensão',
+  description: 'Trotinetes em Lisboa: Bolt, Lime e Bird, as zonas proibidas, os hotspots, o passe Navegante e a suspensão aprovada pela Câmara em outubro de 2026.',
+  headline: 'Trotinetes em Lisboa: operadores, zonas proibidas, hotspots e o fim anunciado',
+  lede: 'As trotinetes em Lisboa alugam-se nas apps da Bolt, da Lime e da Bird; a idade mínima e o preço, a app mostra-os antes de desbloquear. As regras vêm de um acordo entre a Câmara e os operadores: nada de vias BUS, jardins ou zonas pedonais, e a viagem só termina num hotspot, um local de estacionamento autorizado. Quem vive em Lisboa e tem o passe Navegante tem até 200 minutos grátis por mês, no máximo 10 por viagem. A 21 de outubro de 2026, a Câmara aprovou o fim das trotinetes partilhadas: depois da notificação definitiva, prevista para novembro, os operadores terão 60 dias para as retirar.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'pt:Lisboa',
@@ -17,71 +17,45 @@ const guide: Guide = {
       heading: 'Trotinetes partilhadas em Lisboa: Bolt, Lime e Bird',
       blocks: [
         'Em outubro de 2026, há três operadores de trotinetes partilhadas em Lisboa: a **Bolt**, a **Lime** e a **Bird**.',
-        'Lisboa não tem um regulamento para as trotinetes partilhadas: as regras vêm de um acordo de colaboração entre a Câmara e os operadores, de 9 de janeiro de 2023, alterado por uma adenda de 23 de junho de 2025. O acordo fixa também um limite sazonal por operador: até 1750 veículos de 1 de abril a 31 de outubro e até 1500 de 1 de novembro a 31 de março.',
-        'Segundo o vice-presidente da Câmara, Gonçalo Reis, a cidade passou de 15 mil trotinetes para cerca de cinco mil (abril de 2026). Às 23h03 de 30 de outubro de 2026, o [mapa de Lisboa](map:pt:Lisboa) mostrava cerca de 3100 trotinetes da Bolt, 2300 da Lime e 1400 da Bird livres naquele momento, não a frota inteira. Só as livres da Bolt e da Lime já ultrapassam o limite de inverno, 1500 por operador, e as da Bird ficam abaixo; a Câmara não disse se lhes deu as quotas dos operadores que saíram.',
-      ],
-    },
-    {
-      heading: 'Quanto custa andar de trotinete em Lisboa?',
-      blocks: [
-        'A app mostra o preço antes de desbloquear.',
-        {
-          table: {
-            caption: 'Preços das trotinetes em Lisboa publicados pelos operadores (13 de outubro de 2026)',
-            head: ['Operador', 'Desbloqueio', 'Por minuto', 'Passes', 'No mapa a 30 de outubro'],
-            rows: [
-              ['Bolt', 'Um pequeno valor, não indicado', 'A partir de 0,15 € (tarifa da Bolt para Portugal, não de Lisboa)', 'Desbloqueios ilimitados a partir de 0,99 € por mês; passes semanais e mensais', 'Cerca de 3100'],
-              ['Lime', 'Na app', 'Na app', 'Não publicados', 'Cerca de 2300'],
-              ['Bird', 'Na app', 'Na app', 'Não publicados', 'Cerca de 1400'],
-            ],
-          },
-        },
-        'A certas horas, a Bolt pode pedir um teste de reação antes de desbloquear. Se nunca alugou uma trotinete, veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'Lisboa não tem um regulamento para as trotinetes partilhadas: as regras vêm de um acordo de colaboração entre a Câmara e os operadores, de 2023, reforçado em 2025 com novas restrições de circulação e estacionamento.',
+        'Segundo o vice-presidente da Câmara, Gonçalo Reis, a cidade chegou a ter 15 mil trotinetes partilhadas, reduzidas para cerca de cinco mil (outubro de 2026). Às 23h03 de 30 de outubro de 2026, o [mapa de Lisboa](map:pt:Lisboa) mostrava cerca de 3100 trotinetes da Bolt, 2300 da Lime e 1400 da Bird livres naquele momento.',
+        'A idade mínima e o preço, a app mostra-os antes de desbloquear. Se nunca alugou uma trotinete, veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Trotinetes grátis com o passe Navegante: como funciona',
       blocks: [
-        'Desde 2025, quem tem 18 anos ou mais, morada fiscal em Lisboa e o passe Navegante mensal recebe até 66 minutos grátis por mês em cada operador, 200 no total. Só contam os primeiros 10 minutos de cada viagem: o resto paga-se ao preço do operador.',
-        'O benefício ativa-se em cada app:',
-        {
-          list: [
-            '**Bird:** toque no aviso «Viagens Grátis com Navegante» e indique o número do cartão Navegante e o NIF com que comprou o passe.',
-            '**Bolt:** em «2 rodas», abra «Ferramentas de Segurança» e depois «Passe Navegante».',
-            '**Lime:** registe-se em [navegante.li.me](https://navegante.li.me/).',
-          ],
-        },
-        'Os minutos só valem em Lisboa: na Bird, uma viagem que comece ou termine fora da cidade é paga. Turistas e residentes noutros concelhos não têm direito.',
+        'Desde novembro de 2025, quem tem mais de 18 anos, residência fiscal em Lisboa e um passe Navegante válido tem até 66 minutos grátis por mês em cada operador, 200 no total. Só contam os primeiros 10 minutos de cada viagem: o resto paga-se ao preço do operador.',
+        'O benefício ativa-se em cada uma das apps.',
+        'Turistas e residentes noutros concelhos não têm direito.',
       ],
     },
     {
       heading: 'Onde é proibido andar de trotinete em Lisboa',
       blocks: [
-        'As trotinetes partilhadas estão limitadas a **20 km/h**, abaixo dos 25 km/h que a lei admite para uma trotinete. Circule pela ciclovia sempre que exista ou, se não houver, pela faixa de rodagem, junto à direita e nunca em contramão. O acordo e a adenda de 2025 proíbem as trotinetes partilhadas:',
+        'Circule pela ciclovia sempre que exista ou, se não houver, pela faixa de rodagem, junto à direita e nunca em contramão. Desde 2025, a Câmara proíbe as trotinetes partilhadas em «zonas críticas», noticiou o Lisboa para Pessoas:',
         {
           list: [
-            'nos passeios, ruas pedonais, praças, jardins e parques, salvo onde houver sinalização a permiti-lo;',
             'nas vias BUS;',
-            'nas vias de segundo nível do Plano Diretor Municipal, como o eixo central da Avenida da Liberdade;',
-            'nas zonas envolventes de monumentos e praças;',
-            'em túneis, viadutos e pontes rodoviárias.',
+            'nos jardins e nas zonas exclusivamente pedonais;',
+            'nos eixos centrais das avenidas principais, como a Avenida da Liberdade e a Avenida D. João II;',
+            'junto às estações intermodais, como o Cais do Sodré, Entrecampos, Sete Rios e o Oriente;',
+            'à volta dos sítios com muitos peões, como o Terreiro do Paço, o Rossio, o Castelo, o Parque Eduardo VII, o Jardim da Estrela e o Campo Pequeno.',
           ],
         },
-        'A imprensa apontou como zonas proibidas o Terreiro do Paço, o Rossio, o Castelo, o Parque Eduardo VII, o Jardim da Estrela, o Campo Pequeno e a Praça do Império, em Belém, bem como o eixo central da Avenida D. João II e as zonas das estações do Cais do Sodré, Entrecampos, Sete Rios e Oriente.',
-        'As restrições são aplicadas por georreferenciação: nestas zonas, a app impede andar ou terminar a viagem. O mapa de cada app mostra as zonas.',
+        'A Câmara prometeu controlar estas zonas por georreferenciação e reforçar a fiscalização.',
       ],
     },
     {
       heading: 'Onde estacionar a trotinete em Lisboa: só nos hotspots',
       blocks: [
-        'A viagem só pode terminar num hotspot, um local de estacionamento autorizado assinalado na app. A Bird, sozinha, tinha 1754 a 13 de outubro de 2026. É proibido estacionar junto às entradas do Metro, em paragens de transportes públicos, praças de táxis, passadeiras e passeios.',
-        'A Polícia Municipal e a EMEL podem remover as trotinetes mal estacionadas: em 2025, a Polícia Municipal removeu 5505 trotinetes e bicicletas. A remoção é paga pelo operador, mas a Bird passa ao utilizador as coimas e as taxas de remoção, e o acordo obriga os operadores a prever penalizações nos seus termos.',
+        'A viagem só pode terminar num hotspot, um local de estacionamento identificado e georreferenciado: fora destes pontos, não é possível terminar a viagem.',
       ],
     },
     {
       heading: 'Código da Estrada: as regras essenciais para trotinetes',
       blocks: [
-        'A lei trata uma trotinete elétrica até 0,25 kW e 25 km/h como uma bicicleta: não é necessária carta de condução, a lei não fixa idade mínima (os operadores exigem 18 anos) e o seguro não é obrigatório.',
+        'A lei trata uma trotinete elétrica até 0,25 kW e 25 km/h como uma bicicleta: não é necessária carta de condução, e o seguro não é obrigatório.',
         {
           table: {
             caption: 'Regras e coimas para trotinetes elétricas em Portugal (Código da Estrada, outubro de 2026)',
@@ -105,40 +79,20 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Colinas e calçada.** A 20 km/h, as subidas fazem-se devagar, e a calçada portuguesa escorrega com a chuva: abrande nas ruas empedradas da Baixa e dos bairros históricos.',
+            '**Colinas e calçada.** As subidas fazem-se devagar, e a calçada portuguesa escorrega com a chuva: abrande nas ruas empedradas da Baixa e dos bairros históricos.',
             '**Carris do elétrico.** Atravesse os carris do 28 e das outras linhas o mais perpendicularmente possível: as rodas pequenas prendem-se na calha.',
-            '**Aeroporto.** A 13 de outubro de 2026, a Bird tinha hotspots junto ao Terminal 1, na Rua Interior ao Aeroporto da Portela, e nenhum junto ao Terminal 2.',
-            '**Barco para Cacilhas.** Nos barcos da TTSL só embarcam trotinetes que possam ir como bagagem de mão: uma partilhada não pode. Termine a viagem perto do Cais do Sodré, atravesse até Cacilhas e procure uma Lime ou uma Bird no [mapa de Almada](map:pt:Almada). As pontes 25 de Abril e Vasco da Gama são autoestradas e estão vedadas às trotinetes.',
+            '**Barco para Cacilhas.** Nos barcos da TTSL só embarcam trotinetes que possam ir como bagagem de mão: uma partilhada não pode. Termine a viagem perto do Cais do Sodré, atravesse até Cacilhas e procure uma trotinete no [mapa de Almada](map:pt:Almada). As pontes 25 de Abril e Vasco da Gama são autoestradas e estão vedadas às trotinetes.',
             '**Metro e comboio.** O Metro e os comboios urbanos da CP levam trotinetes a bordo, mas a viagem numa trotinete partilhada só pode terminar num hotspot: termine-a perto da estação e entre a pé.',
-            '**Fora de Lisboa.** A Bird também opera em [Oeiras](guide:oeiras) e em [Cascais](guide:cascais), e a Bolt e a Lime (desde 2024) em Oeiras, todas no mapa. O acordo de Lisboa e os minutos do Navegante não se aplicam lá. Para o Porto, veja o guia das [trotinetes no Porto](guide:porto).',
+            '**Fora de Lisboa.** Veja os guias de [Oeiras](guide:oeiras), de [Cascais](guide:cascais) e das [trotinetes no Porto](guide:porto): o acordo de Lisboa e os minutos do Navegante não se aplicam fora da cidade.',
           ],
         },
-      ],
-    },
-    {
-      heading: 'Gira: a alternativa às trotinetes',
-      blocks: [
-        'A Gira, da EMEL, tem mais de 200 estações e mais de 2000 bicicletas, na maioria elétricas. Funciona das 06h00 às 02h00, e as bicicletas levantam-se e entregam-se nas estações.',
-        {
-          table: {
-            caption: 'Passes e preços da Gira (13 de outubro de 2026)',
-            head: ['Passe', 'Preço', 'Viagens até 45 min', '45 a 90 min', 'Cada 45 min a mais'],
-            rows: [
-              ['Passe Diário', '2 € (só MB Way ou cartão de crédito)', 'Grátis', '+2 €', '+2 €'],
-              ['Passe Mensal', '15 €', 'Grátis', '+1 €', '+2 €'],
-              ['Passe Anual', '25 €', 'Grátis', '+1 €', '+2 €'],
-              ['Gira Navegante (residentes em Lisboa, a partir dos 16 anos, com Navegante mensal)', 'Grátis', 'Grátis', '+1 €', '+2 €'],
-            ],
-          },
-        },
-        'Com o Navegante, cada viagem de Gira é grátis até 45 minutos, contra 10 nas trotinetes.',
       ],
     },
     {
       heading: 'As trotinetes partilhadas vão acabar em Lisboa?',
       blocks: [
         'Sim, se nada mudar. A 21 de outubro de 2026, a Câmara aprovou a resolução unilateral, «por razões de interesse público», do acordo de 2023 com os operadores, e a proibição da circulação e do estacionamento das trotinetes partilhadas em todo o concelho. Seguiu-se uma audiência prévia de 10 dias para os operadores responderem por escrito; sem resposta, a deliberação torna-se definitiva. Após a notificação definitiva, que o vice-presidente Gonçalo Reis previa para novembro, terão 60 dias para retirar todas as trotinetes; depois, a Câmara pode removê-las e cobrar-lhes os custos.',
-        'A Câmara invoca o aumento das reclamações e das ocorrências, como a circulação em contramão e nos passeios, apesar de haver menos trotinetes. A 23 de outubro, a Bolt disse-se disponível para discutir com a Câmara um modelo que mantenha as trotinetes.',
+        'A Câmara invoca o aumento das reclamações e das ocorrências, como a circulação em contramão e nos passeios, apesar de haver menos trotinetes.',
         'A Câmara promete também mais estações e bicicletas na rede Gira e um projeto de Regulamento Municipal para a Mobilidade Suave no prazo de um ano. «É uma suspensão em que não prevemos o regresso das trotinetas», disse Gonçalo Reis à RTP Antena 1 a 16 de outubro de 2026; a Câmara conta que já não haja trotinetes partilhadas no fim de janeiro de 2027. Até serem retiradas, as apps funcionam como antes, e o [mapa de Lisboa](map:pt:Lisboa) mostra-as.',
         'A 19 de outubro de 2026, o Automóvel Club de Portugal (ACP) entregou na Assembleia Municipal cerca de 20 mil assinaturas para um referendo local sobre as trotinetes partilhadas.',
       ],
@@ -151,28 +105,19 @@ const guide: Guide = {
     },
     {
       question: 'Porque é que a app não me deixa terminar a viagem?',
-      answer: 'Provavelmente não está num hotspot, ou está numa zona onde é proibido estacionar, como um jardim, uma praça ou a zona de uma estação. Abra o mapa da app, vá até ao hotspot mais próximo e tente de novo.',
+      answer: 'Provavelmente não está num hotspot: fora destes locais identificados, a viagem não termina. Vá até ao hotspot mais próximo e tente de novo.',
     },
     {
       question: 'As trotinetes podem andar no passeio?',
-      answer: 'Não: o Código da Estrada só o permite a crianças até 10 anos, e a coima é de 30 a 150 €. Em Lisboa, as trotinetes partilhadas também não podem andar em ruas pedonais nem em praças.',
+      answer: 'Não: o Código da Estrada só o permite a crianças até 10 anos, e a coima é de 30 a 150 €. Em Lisboa, as trotinetes partilhadas também não podem andar em jardins nem em zonas pedonais.',
     },
     {
       question: 'É obrigatório usar capacete na trotinete elétrica?',
       answer: 'Ainda não (31 de outubro de 2026), mas é muito recomendado. Dois projetos de lei que o tornariam obrigatório, com coima prevista de 30 a 150 €, foram aprovados na generalidade a 30 de setembro de 2026, mas faltam a especialidade e a votação final global.',
     },
-    {
-      question: 'Quanto custa uma trotinete da Bolt em Lisboa?',
-      answer: 'A Bolt anuncia minutos a partir de 0,15 € em Portugal, mais um pequeno valor pelo desbloqueio. Não publica uma tarifa própria para Lisboa: o preço aparece na app antes de desbloquear.',
-    },
   ],
   sources: [
-    { title: 'Câmara Municipal de Lisboa: Acordo de Colaboração com os operadores de trotinetes, 9 de janeiro de 2023 (PDF)', url: 'https://www.lisboa.pt/fileadmin/atualidade/noticias/user_upload/Acordo_de_Colaborac__a__o_OperdoresTrot_09_01_23.pdf' },
-    { title: 'Câmara Municipal de Lisboa: Circulação de trotinetas com novas regras em Lisboa, 23 de junho de 2025', url: 'https://informacao.lisboa.pt/noticias/detalhe/circulacao-de-trotinetas-com-novas-regras-em-lisboa' },
-    { title: 'Bird: benefício do passe Navegante em Lisboa', url: 'https://help.bird.co/hc/pt/articles/48029756932116' },
     { title: 'Lisboa para Pessoas: viagens gratuitas de trotinete com o Navegante, 26 de novembro de 2025', url: 'https://lisboaparapessoas.pt/2025/11/26/lisboa-trotinetas-navegante-viagens-gratuitas/' },
-    { title: 'Bolt: aluguer de trotinetes em Portugal', url: 'https://bolt.eu/pt-pt/scooters/' },
-    { title: 'Gira: passes e tarifários', url: 'https://www.gira-bicicletasdelisboa.pt/passes-e-tarifarios/' },
     { title: 'TTSL: utilização do transporte fluvial', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },
     { title: 'Assembleia da República: Projeto de Lei 622/XVII (PSD), capacete obrigatório', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=356782' },
     { title: 'Código da Estrada, versão consolidada (PGDL)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
@@ -182,7 +127,6 @@ const guide: Guide = {
     { title: 'CP: bicicletas e trotinetes nos comboios (em inglês)', url: 'https://www.cp.pt/info/w/bikes-and-scooters' },
     { title: 'Observador: Câmara de Lisboa aprova suspensão das trotinetes partilhadas, 21 de outubro de 2026', url: 'https://observador.pt/2026/10/21/camara-de-lisboa-aprova-suspensao-das-trotinetes-partilhadas-livre-e-il-votaram-contra/' },
     { title: 'Jornal Económico: «Queremos as trotinetes removidas até ao final de janeiro», afirma Gonçalo Reis, 16 de outubro de 2026', url: 'https://jornaleconomico.sapo.pt/noticias/queremos-as-trotinetes-removidas-ate-ao-final-de-janeiro-afirma-goncalo-reis-que-garante-que-nao-havera-indemnizacoes/' },
-    { title: 'Jornal Económico: Bolt diz estar disponível para discutir com a autarquia modelo para manter as trotinetes em Lisboa, 23 de outubro de 2026', url: 'https://jornaleconomico.sapo.pt/noticias/bolt-diz-estar-disponivel-para-discutir-com-a-autarquia-modelo-para-manter-as-trotinetes-em-lisboa' },
     { title: 'DN/Lusa: ACP satisfeito com suspensão de trotinetes partilhadas em Lisboa, 19 de outubro de 2026', url: 'https://www.dn.pt/local-geral/acp-satisfeito-com-suspenso-de-trotinetes-partilhadas-em-lisboa' },
   ],
 };
