@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter-Sharing Düsseldorf 2026: Anbieter, Regeln, Parken',
   description: 'E-Scooter in Düsseldorf: Bolt, Dott, Lime oder Voi. Warum du in der Altstadt nur an Sharingstationen parkst und was an Karneval und zur Kirmes gilt.',
   headline: 'E-Scooter Düsseldorf: Anbieter, Sharingstationen und was an Karneval und zur Kirmes gilt',
-  lede: 'Einen E-Scooter in Düsseldorf leihst du ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Ab 1. November 2026 sollen es höchstens drei sein; welche das sind, hatte die Stadt am 30. Oktober noch nicht bekannt gegeben. Was eine Fahrt kostet und ab welchem Alter du mieten darfst, zeigt die App. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter.',
+  lede: 'Einen E-Scooter in Düsseldorf leihst du ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Diese vier nennt die Stadt auch am 3. November 2026; ihre Konzession sieht künftig höchstens drei vor. Was eine Fahrt kostet und ab welchem Alter du mieten darfst, zeigt die App. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'de:Düsseldorf',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Connected Mobility Düsseldorf (CMD), der städtischen Mobilitätsgesellschaft, vermieten am 30. Oktober 2026 vier Anbieter E-Scooter: **Bolt**, **Dott**, **Lime** und **Voi**. Dott hiess früher TIER; wer TIER fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Gemietet wird in der App des Anbieters. Das Gesetz erlaubt E-Scooter schon ab 14; welches Mindestalter der Anbieter verlangt, prüfst du in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar alle vier: am Freitag, 30. Oktober 2026, um 13:36 Uhr rund 1600 Dott-, 2100 Voi- und 1800 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 1900 Lime-Scooter nach der letzten Zählung. Die Stadt erlaubt allen Anbietern zusammen bis zu 8400 Fahrzeuge.',
+        'Am Freitag, 30. Oktober 2026, um 13:36 Uhr zeigte die [Karte rund um Düsseldorf](map:de:Düsseldorf) rund 1600 Dott-, 2100 Voi- und 1800 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 1900 Lime-Scooter nach der letzten Zählung. Die Stadt erlaubt allen Anbietern zusammen bis zu 8400 Fahrzeuge.',
         'Mit «E-Roller» sind oft auch Elektro-Mopeds zum Sitzen gemeint: Die brauchen Führerschein und Helm, um sie geht es hier nicht.',
       ],
     },
@@ -85,7 +85,7 @@ const guide: Guide = {
             'zum Kinder- und Jugendumzug (14. Februar) und zum Kö-Treiben (15. Februar) Martin-Luther-Platz, Berliner Allee (Zurheide II) und Graf-Adolf-Platz.',
           ],
         },
-        'Für den 11.11.2026 und für Karneval 2027 (Altweiber ist am 4. Februar) hatte CMD bis zum 30. Oktober noch nichts angekündigt.',
+        'Für den 11.11.2026 und für Karneval 2027 (Altweiber ist am 4. Februar) prüfst du die Stationen vorher in der App oder bei CMD.',
         '**Rheinkirmes:** Zur Kirmes richtet CMD auf den Oberkasseler Rheinwiesen und im Viertel temporäre Stationen ein; 2026 waren es laut CMD zwölf, vom 14. bis 27. Juli, etwa an der Rheinallee und am Barbarossaplatz. 2025 zählte CMD in den zehn Kirmestagen 209 466 Sharing-Fahrten, am Freitag, dem 18. Juli, allein 28 204: so viele wie an keinem anderen Tag des Jahres. Die nächste Rheinkirmes läuft laut Veranstalter vom 16. bis 25. Juli 2027.',
       ],
     },
@@ -115,7 +115,7 @@ const guide: Guide = {
       blocks: [
         'Seit 2022 brauchen die Anbieter eine Sondernutzungserlaubnis nach der Sondernutzungssatzung vom Dezember 2021. Im August 2021 fuhren fünf Anbieter mit 12 700 Scootern; heute gilt eine Obergrenze von 8400, davon 1800 in Altstadt, Carlstadt und Stadtmitte, wo nur Stationen erlaubt sind.',
         'Pro Scooter und Jahr zahlen die Anbieter 50 € in der Innenstadt und den Stadtteilen drumherum (Zonen A und B) und 30 € im Rest der Stadt (Zone C), so der Gebührentarif in der seit 1. Januar 2026 geltenden Fassung. Bis 2021 waren es überall 20 €.',
-        'Im Juni 2026 schrieb die Stadt die Konzession für E-Scooter und Leih-Pedelecs europaweit aus: höchstens drei Anbieter, drei Jahre ab 1. November 2026. Wer den Zuschlag bekommt und was dann für Obergrenze und Gebühren gilt, hatte sie bis zum 30. Oktober 2026 nicht bekannt gegeben; an dem Tag fuhren noch alle vier.',
+        'Im Juni 2026 schrieb die Stadt die Konzession für E-Scooter und Leih-Pedelecs europaweit aus: höchstens drei Anbieter, drei Jahre ab 1. November 2026. Auf ihrer E-Scooter-Seite nennt die Stadt am 3. November 2026 weiter alle vier, Lime, Voi, Bolt und Dott, mit zusammen 8400 Scootern.',
       ],
     },
     {
@@ -134,7 +134,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Düsseldorf nutzen?',
-      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern am 30. Oktober 2026. Ab 1. November sollen es höchstens drei sein; welche, hatte die Stadt da noch nicht bekannt gegeben. Einen Führerschein brauchst du nicht; das Mindestalter zeigt die App. Freie Scooter aller vier zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf).',
+      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi; diese vier nennt die Stadt am 3. November 2026, ihre Konzession sieht künftig höchstens drei vor. Einen Führerschein brauchst du nicht; das Mindestalter zeigt die App. Freie Scooter zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf).',
     },
     {
       question: 'Was kostet ein E-Scooter in Düsseldorf?',
@@ -154,6 +154,7 @@ const guide: Guide = {
     { title: 'Stadt Düsseldorf: 300. Sharingstation eröffnet (13. Juli 2026)', url: 'https://www.duesseldorf.de/aktuelles/news/detailansicht/newsdetail/300-sharingstation-eroeffnet-1' },
     { title: 'Stadt Düsseldorf: E-Scooter-Parken auf der Kö (2022)', url: 'https://www.duesseldorf.de/aktuelles/news/detailansicht/newsdetail/neue-regeln-schraenken-e-scooter-parken-auf-der-koe-ein-1' },
     { title: 'Stadt Düsseldorf: Gebührentarif zur Sondernutzungssatzung', url: 'https://www.duesseldorf.de/stadtrecht/6/66/66-101-1' },
+    { title: 'Landeshauptstadt Düsseldorf: E-Scooter', url: 'https://www.duesseldorf.de/verkehrsmanagement/mobil-in-duesseldorf/clever-unterwegs/e-scooter' },
     { title: 'Landeshauptstadt Düsseldorf: Konzessionsvergabe E-Scooter- und Pedelec-Sharing, EU-Bekanntmachung 461064-2026 (6. Juli 2026, PDF)', url: 'https://ted.europa.eu/de/notice/461064-2026/pdf' },
     { title: 'NRW.Mobidrom: Mobilitätsdaten des Landes NRW, mit Vois offenen Datenfeeds', url: 'https://www.mobilitaetsdaten.nrw' },
     { title: 'CMD: Sharingstationen an Karneval 2026', url: 'https://www.cmd.nrw/blog/duesseldorf-helau-so-kommt-ihr-zu-euren-karnevalsveranstaltungen' },
