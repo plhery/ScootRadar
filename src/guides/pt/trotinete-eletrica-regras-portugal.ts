@@ -22,7 +22,7 @@ const guide: Guide = {
             head: ['Regra', 'O que diz a lei'],
             rows: [
               ['Carta de condução', 'Não é necessária'],
-              ['Idade mínima', 'Nenhuma na lei; nas partilhadas, a app mostra a do operador antes de desbloquear'],
+              ['Idade mínima', 'Nenhuma; a Bird e a Bolt só alugam trotinetes partilhadas a maiores de 18 anos'],
               ['Seguro', 'Não é obrigatório'],
               ['Capacete', 'Não é obrigatório desde 8 de janeiro de 2021'],
               ['Onde circular', 'Na ciclovia, se existir, ou na faixa de rodagem, junto à direita; no passeio, só crianças até aos 10 anos'],
@@ -47,9 +47,9 @@ const guide: Guide = {
       heading: 'Idade mínima, carta de condução e seguro',
       blocks: [
         '**Carta.** Não é necessária: a condução de velocípedes e equiparados «não carece de habilitação legal para conduzir» (artigo 121.º).',
-        '**Idade.** O Código da Estrada não fixa idade mínima; nas partilhadas, a idade mínima e o preço mostra-os a app antes de desbloquear.',
+        '**Idade.** O Código da Estrada não fixa idade mínima; os 18 anos das partilhadas são uma exigência dos operadores, como a Bird e a Bolt.',
         '**Seguro.** Não é obrigatório. O Decreto-Lei n.º 26/2025 alargou o seguro automóvel obrigatório aos veículos com motor que passam dos 25 km/h, ou que pesam mais de 25 kg e passam dos 14 km/h. A 19 de junho de 2025, a ANSR esclareceu que essa obrigação «não se aplica aos utilizadores de trotinetas e de velocípedes». Só uma trotinete com mais de 25 kg fica numa zona cinzenta: se a sua for pesada, confirme com uma seguradora.',
-        'Mesmo sem obrigação, um seguro de responsabilidade civil é prudente, porque quem causa danos responde por eles; o multirriscos da casa pode já o incluir.',
+        'Mesmo sem obrigação, um seguro de responsabilidade civil é prudente, porque quem causa danos responde por eles; o multirriscos da casa pode já o incluir. Nas partilhadas, a Bird inclui seguro de responsabilidade civil e de acidentes pessoais, e os termos da Bolt pedem que tenha o seu próprio seguro de responsabilidade civil; nos outros operadores, veja os termos na app.',
       ],
     },
     {
@@ -145,14 +145,14 @@ const guide: Guide = {
         'Numa trotinete partilhada, a app aplica também as regras da cidade. Os passos estão no guia [como alugar uma trotinete elétrica](guide:how-to-rent).',
         '**Lisboa**: as trotinetes partilhadas não passam dos 20 km/h, só se estacionam nos hotspots, os lugares autorizados, e não podem circular em vias BUS, jardins, praças, túneis, viadutos e pontes. A 21 de outubro de 2026, a Câmara aprovou a sua suspensão em todo o concelho: «É uma suspensão em que não prevemos o regresso das trotinetas», disse o vice-presidente Gonçalo Reis à RTP Antena 1. Mais no guia das [trotinetes em Lisboa](guide:lisbon).',
         '**Porto**: só se estacionam nos pontos de partilha, marcados com tinta azul no chão e um sinal vertical, e não podem circular em passeios, ruas pedonais, praças, jardins, vias BUS, na Circunvalação, na VCI, em túneis nem em algumas pontes. Mais no guia das [trotinetes no Porto](guide:porto).',
-        'Abra o mapa em [Lisboa](map:pt:Lisboa), no [Porto](map:pt:Porto) ou [à sua volta](/map): um botão abre a app do operador, onde desbloqueia e paga.',
+        'A 30 de outubro de 2026, o ScootRadar mostrava trotinetes da Bird em 11 localidades, da Maia a Olhão, da Bolt em 7, de Matosinhos a Faro, e da Lime em 6, de Lisboa e do Porto a Faro. Abra o mapa em [Lisboa](map:pt:Lisboa), no [Porto](map:pt:Porto) ou [à sua volta](/map): um botão abre a app do operador, onde desbloqueia e paga.',
       ],
     },
   ],
   faq: [
     {
       question: 'Qual é a idade mínima para andar de trotinete elétrica?',
-      answer: 'A lei não fixa nenhuma. Nas partilhadas, a app mostra a idade mínima do operador antes de desbloquear. Com uma trotinete própria, as crianças até aos 10 anos podem circular no passeio.',
+      answer: 'A lei não fixa nenhuma. Os operadores de trotinetes partilhadas, como a Bird e a Bolt, só as alugam a maiores de 18 anos. Com uma trotinete própria, as crianças até aos 10 anos podem circular no passeio.',
     },
     {
       question: 'Posso andar de trotinete com auriculares?',
@@ -168,7 +168,7 @@ const guide: Guide = {
     },
     {
       question: 'Qual é a multa por andar de trotinete no passeio?',
-      answer: 'De 30 a 150 €, para quem tem mais de 10 anos. Deixá-la estacionada no passeio custa 15 a 75 €, ou 30 a 150 € se impedir a passagem dos peões.',
+      answer: 'De 30 a 150 €, para quem tem mais de 10 anos. Deixá-la estacionada no passeio custa 15 a 75 €, ou 30 a 150 € se impedir a passagem dos peões. Numa trotinete partilhada, o operador pode passar-lhe as coimas: a Bird, por exemplo, cobra-as a quem a conduzia, tal como as taxas de apreensão.',
     },
   ],
   sources: [
@@ -180,6 +180,8 @@ const guide: Guide = {
     { title: 'Assembleia da República: Projeto de Lei 774/XVII (PS), capacete', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=377254' },
     { title: 'GNR: Sinistralidade com trotinetes a motor (13 de março de 2026)', url: 'https://www.gnr.pt/comunicado.aspx?linha=9448' },
     { title: 'Prevenção Rodoviária Portuguesa: trotinetas em Portugal (25 de setembro de 2026)', url: 'https://prp.pt/trotinetas-portugal-2026/' },
+    { title: 'Bird: contrato de aluguer em Portugal (8 de dezembro de 2021)', url: 'https://bird.co/rental-agreements/portugal-pt/' },
+    { title: 'Bolt: termos dos veículos elétricos em Portugal (15 de setembro de 2024)', url: 'https://bolt.eu/pt-pt/legal/micromobility/new-terms-for-e-vehicles/' },
     { title: 'CP: transporte de bicicletas e trotinetas', url: 'https://www.cp.pt/info/w/transporte-bicicletas' },
     { title: 'Transtejo Soflusa: utilização do transporte fluvial', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },
     { title: 'Metro de Lisboa: como utilizar o metro', url: 'https://www.metrolisboa.pt/viajar/como-utilizar-o-metro/' },
