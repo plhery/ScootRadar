@@ -22,7 +22,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 30 October 2026</p>
+        <p>Last updated: 3 November 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -33,23 +33,23 @@ export default function PrivacyPage() {
         <p>
           If you grant location permission, your browser or device provides your position to the
           app. Your position is used on the device to focus the map and calculate distances, and in
-          the iOS app to tell day from night for its Automatic appearance. The
+          the iOS and Android apps to tell day from night for their Automatic appearance. The
           ScootRadar API receives the visible map bounds needed to find vehicles, but no
           separate user-location coordinate, except for a walking route (see below). These
           values are not stored by the application, except in an error report when a request
           fails (see below).
         </p>
         <p>
-          On the website, the map is drawn on your device from OpenStreetMap data, in tiles requested
-          directly from OpenFreeMap. It receives standard network information such as your IP address,
-          the website origin and the requested tile coordinates. In the iOS app, the map comes from
-          Apple Maps: your device requests the map data directly from Apple, under Apple&apos;s
-          privacy policy.
+          On the website and in the Android app, the map is drawn on your device from OpenStreetMap
+          data, in tiles requested directly from OpenFreeMap. It receives standard network information
+          such as your IP address and the requested tile coordinates, and from the website its origin.
+          In the iOS app, the map comes from Apple Maps: your device requests the map data directly
+          from Apple, under Apple&apos;s privacy policy.
         </p>
 
         <h2>Walking routes</h2>
         <p>
-          When you press Directions on the website, the start of the walk (your location, or the
+          When you press Directions on the website or in the Android app, the start of the walk (your location, or the
           place you searched for) and the scooter or parking bay are sent through the ScootRadar
           API, in the request body, to the Valhalla routing service run by FOSSGIS e.V. in Germany,
           which keeps route requests in its server log. ScootRadar does not send your IP address
@@ -88,11 +88,11 @@ export default function PrivacyPage() {
 
         <h2>Usage analytics</h2>
         <p>
-          The public website and iOS app send page or screen views and actions to our
+          The public website and the iOS and Android apps send page or screen views and actions to our
           self-hosted Umami service at u.plhery.com. These include which page of the website
           you view, a guide for example, and whether you open the map from it; searches (only
           result counts), filters, map selections, directions and rental button taps, settings
-          changes, and generic error outcomes. Events distinguish web, installed web app, and iOS usage.
+          changes, and generic error outcomes. Events distinguish web, installed web app, iOS and Android usage.
           Rental taps do not tell us whether you actually rented a vehicle.
         </p>
         <p>
@@ -110,23 +110,23 @@ export default function PrivacyPage() {
           and do not record your screen or replay sessions.
         </p>
         <p>
-          Usage analytics is on by default. You can turn it off below, or in the iOS app under
+          Usage analytics is on by default. You can turn it off below, or in the iOS and Android apps under
           Settings › About › Privacy.
           The website also respects Do Not Track and Global Privacy Control. This browser
-          preference is saved locally and does not affect your iOS setting.
+          preference is saved locally and does not affect the setting in the apps.
         </p>
         <p><AnalyticsPreference /></p>
 
         <h2>Local storage and service worker</h2>
         <p>
           Appearance, map style, language, filters, the ride length you choose for price
-          estimates and, in the iOS app, the ride passes you enter are stored locally on your
+          estimates and, in the iOS and Android apps, the ride passes you enter are stored locally on your
           device, as is the fact that this device has found
-          your location before (a yes or no, never the position). For its rating prompt the iOS
-          app also keeps the number of days you used it, the time you last tapped
+          your location before (a yes or no, never the position). For its rating prompt each of the iOS
+          and Android apps also keeps the number of days you used it, the time you last tapped
           &ldquo;Open in&rdquo; and when it last asked. Precise map origins are not persisted, and
           the places you choose in the search are kept in memory only, until you close the app.
-          The iOS app keeps on your device the ride and parking zones of the cities it downloads
+          The iOS and Android apps keep on your device the ride and parking zones of the cities they download
           them for, such as Berlin, fetched from ScootRadar&apos;s website the first time the map
           shows the city close up: the request names the city, not a position, and the zones are
           kept until the app or the system clears its cache. A

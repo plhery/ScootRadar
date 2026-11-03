@@ -2571,7 +2571,7 @@ test('publishes a standalone privacy notice', async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: 'Privacy' })).toBeVisible();
   await expect(page.getByText(/has no user accounts/)).toBeVisible();
-  await expect(page.getByText('in the iOS app under Settings › About › Privacy')).toBeVisible();
+  await expect(page.getByText('in the iOS and Android apps under Settings › About › Privacy')).toBeVisible();
   expect(await page.evaluate(() => ({
     controls: getComputedStyle(document.documentElement).colorScheme,
     page: getComputedStyle(document.body).backgroundColor,

@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 30 October 2026
+Last updated: 3 November 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -8,7 +8,7 @@ searches.
 - With permission, the app uses location coordinates on the device to focus the
   map and calculate distance. Its API receives the visible map bounds needed to
   find vehicles, not a separate user-location coordinate.
-- Walking routes on the web: when Directions is pressed, the start (the user's
+- Walking routes on the web and in the Android app: when Directions is pressed, the start (the user's
   location, or the searched place) and the scooter or bay are proxied in a
   non-cacheable request body to the Valhalla routing service run by FOSSGIS e.V.
   in Germany, without the user's IP address. ScootRadar does not log or store
@@ -29,15 +29,15 @@ searches.
   komoot's Photon service in Germany (OpenStreetMap data). Cities in the
   ScootRadar catalogue are found without contacting either; their names still
   go to Geoapify, to find other towns of the same name.
-- OpenFreeMap receives normal map tile requests from the user's device, with the website origin as the referrer (no page path or query string). The tiles hold OpenStreetMap data and are drawn on the device.
+- OpenFreeMap receives normal map tile requests from the user's device: from the website, with its origin as the referrer (no page path or query string), and from the Android app. The iOS app's map comes from Apple Maps. The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, filters, appearance, map style, the ride length chosen for price
-  estimates and, in the iOS app, the ride passes entered are stored locally, as is the fact that the device has found its
-  location before (a yes or no, never the position). For its rating prompt the
-  iOS app also keeps the number of days it was used, the time "Open in" was last
+  estimates and, in the iOS and Android apps, the ride passes entered are stored locally, as is the fact that the device has found its
+  location before (a yes or no, never the position). For its rating prompt each of the
+  iOS and Android apps also keeps the number of days it was used, the time "Open in" was last
   tapped and when it last asked. Precise map origins are not persisted, and the
   places chosen in the search are kept in memory only, until the app is closed.
-  The iOS app keeps on the device the ride and parking zones of the cities it
-  downloads them for, such as Berlin, fetched from ScootRadar's website the first
+  The iOS and Android apps keep on the device the ride and parking zones of the cities
+  they download them for, such as Berlin, fetched from ScootRadar's website the first
   time the map shows the city close up: the request names the city, not a
   position, and the zones are kept until the app or the system clears its cache.
 - Cloudflare hosts and protects the service. Persisted Worker invocation logs
@@ -64,11 +64,11 @@ Questions: `hello@scootradar.com`.
 
 ## Usage analytics
 
-The public web/PWA and native iOS app send page/screen views and named actions
+The public web/PWA and the native iOS and Android apps send page/screen views and named actions
 (the website pages viewed, such as guides, and links to the map followed from them;
 search result counts, filters, selections, directions/rental taps, preferences,
 and generic failures) to our self-hosted Umami at `u.plhery.com`. Platform tags
-separate web, PWA and iOS. With the first page view of a page load, the website
+separate web, PWA, iOS and Android. With the first page view of a page load, the website
 also sends where the visit came from: the referring website's origin alone (no
 path or query) and the link's `utm_source`, `utm_medium` and `utm_campaign` tags.
 We do not collect search text, precise coordinates, vehicle IDs, other URL
@@ -77,6 +77,6 @@ Umami processes IP/user-agent information to derive approximate geography,
 device information and short-lived sessions; it does not store raw IPs. No
 analytics cookies or persistent user IDs are used. Session cache stays in memory.
 Analytics is on by default. Turn it off on the web privacy page or in the iOS
-app under Settings › About › Privacy. Web collection also respects Do Not Track and
-Global Privacy Control. Development/preview web hosts and iOS simulators/tests
+and Android apps under Settings › About › Privacy. Web collection also respects Do Not Track and
+Global Privacy Control. Development/preview web hosts, iOS simulators/tests and Android debug builds
 are excluded by default.
