@@ -316,7 +316,9 @@ fun ScooterMap(
     }
     var creditsSides by remember { mutableStateOf<Pair<Double, Double>?>(null) }
     var creditsHeight by remember { mutableDoubleStateOf(0.0) }
-    var creditsFrame by remember { mutableStateOf<ScreenRect?>(null) }
+    // The credits' frame, which the markers take as it moves, not read in composition: it moves with the dock and the
+    // corner's controls as they spring, and the overlay would be composed again at each of their frames.
+    val creditsFrame = remember { CreditsFrame() }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle, view) {
         // A new observer is brought up to the lifecycle's state at once: ON_CREATE, ON_START, ON_RESUME.
@@ -469,6 +471,8 @@ fun ScooterMap(
         val seen = overDock == null || (margins != null && margins.bottom > 0) ||
             creditsHaveRoom(overDock, creditsHeight, creditsCeiling(chromeTop, safeArea.top, scaleFoot), maxHeight.value.toDouble())
         val density = LocalDensity.current.density
+        val creditsSeen by rememberUpdatedState(seen)
+        val currentMarkers by rememberUpdatedState(markers)
         MapCredits(
             dark = dark || look.satellite,
             imagery = imagery?.credit?.takeIf { look.satellite },
@@ -498,16 +502,23 @@ fun ScooterMap(
                 val bounds = it.boundsInWindow()
                 creditsSides = (bounds.left / density).toDouble() to (bounds.right / density).toDouble()
                 creditsHeight = (bounds.height / density).toDouble()
-                creditsFrame = ScreenRect(
+                val frame = ScreenRect(
                     (bounds.left / density).toDouble(),
                     (bounds.top / density).toDouble(),
                     (bounds.width / density).toDouble(),
                     (bounds.height / density).toDouble(),
                 )
+                creditsFrame.frame = frame
+                // Drawn over the map, the credits cover a count as the chrome does, while they are seen.
+                currentMarkers?.creditsDidChange(frame.takeIf { creditsSeen })
             },
         )
-        // Drawn over the map, the credits cover a count as the chrome does, while they are seen.
-        val shownCredits = creditsFrame?.takeIf { seen }
-        LaunchedEffect(markers, shownCredits) { markers?.creditsDidChange(shownCredits) }
+        // And as they come into sight or go out of it, or the markers are made, where they need not move.
+        LaunchedEffect(markers, seen) { markers?.creditsDidChange(creditsFrame.frame?.takeIf { seen }) }
     }
+}
+
+/** The map's credits' frame where they were last laid out, in the window's points. */
+private class CreditsFrame {
+    var frame: ScreenRect? = null
 }

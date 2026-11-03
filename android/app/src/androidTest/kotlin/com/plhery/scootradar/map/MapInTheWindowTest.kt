@@ -83,6 +83,7 @@ import okhttp3.OkHttpClient
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue
 import org.junit.Before
@@ -664,6 +665,15 @@ class MapInTheWindowTest {
         )
         val margins = onMain { mapView.camera!!.margins }
         Log.i(TAG, "${size()}: credits $creditsFrame, margins $margins")
+        // The markers have them where the screen draws them, as they are laid out: the counts under them are hidden.
+        val forCounts = onMain { mapView.markers!!.credits }
+        assertNotNull("the markers' credits", forCounts)
+        val drawnText = ScreenRect(creditsFrame.minX + 6, creditsFrame.minY + 3, creditsFrame.width - 12, creditsFrame.height - 6)
+        assertTrue(
+            "the markers' credits $forCounts hold their text $drawnText",
+            forCounts!!.minX <= drawnText.minX + 1 && forCounts.maxX >= drawnText.maxX - 1 &&
+                forCounts.minY <= drawnText.minY + 1 && forCounts.maxY >= drawnText.maxY - 1,
+        )
         val part = partInView(chrome, bounds)
         // Their foot is the upright half's, 16 above a tabletop's fold where WindowManager puts it, as iOS's bottom
         // margin keeps Apple's logo (ScooterMapView.swift updateMargins); beside a panel, 4 over the zones' legend and
@@ -760,6 +770,7 @@ class MapInTheWindowTest {
      * wide, their 18 would come within 4 of the search bar or a notice under it.
      */
     private fun assertNoRoomForTheCredits(chrome: MapChrome, bounds: ScreenRect, safe: MapInsets, rightToLeft: Boolean) {
+        assertNull("the markers' credits, out of sight", onMain { mapView.markers!!.credits })
         fun shown(tag: String) = device.findObject(By.res(tag))?.let { inMap(it.visibleBounds) }
         val dock = shown(DOCK_TAG)
         val legend = shown(ZONE_LEGEND_TAG)

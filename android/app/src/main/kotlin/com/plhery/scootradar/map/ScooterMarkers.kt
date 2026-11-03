@@ -89,7 +89,8 @@ class ScooterMarkers(
     private var chrome = MapChrome()
 
     /** The map's credits, while they are seen. */
-    private var credits: ScreenRect? = null
+    internal var credits: ScreenRect? = null
+        private set
 
     /** The uptime the bands are counted from, in seconds: small numbers. */
     private val epoch = SystemClock.uptimeMillis() / 1000.0
