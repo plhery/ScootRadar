@@ -256,6 +256,8 @@
 "No riding" = "Akstur bannaður";
 "No parking" = "Bannað að leggja";
 "Slow" = "Hægur akstur";
+/* Slow with the limit of the slow zones it counts, "6 km/h" or "6–15 km/h" */
+"Slow: %@" = "Hægur akstur: %@";
 "Zoom in to see the zones" = "Þysjaðu inn til að sjá svæðin";
 "No zones published here" = "Engin svæði birt hér";
 "not now" = "ekki núna";

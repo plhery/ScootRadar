@@ -36,7 +36,7 @@ interface RuleZoneCommon {
   /** Who sets it, as the legend names them, with any credit the shapes need: "Seoul, lines © OpenStreetMap", "Bergen kommune". */
   authority: string;
   rule: RuleKind;
-  /** The speed a slow rule sets, when the city gives one, kept for the record: the map doesn't show it yet. */
+  /** The speed a slow rule sets, when the city gives one, which the legend shows: "Slow: 6 km/h". */
   maxSpeedKph?: number;
   /** The local day it starts, "YYYY-MM-DD"; since always when left out. */
   from?: string;

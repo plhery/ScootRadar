@@ -10,6 +10,7 @@ import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
+import com.plhery.scootradar.core.model.ScooterZoneSpeeds
 import com.plhery.scootradar.core.model.ScooterZoneState
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -28,10 +29,12 @@ import java.util.TimeZone
 class CityRuleZoneTest {
     private val locale = Locale.getDefault()
     private val zone = TimeZone.getDefault()
+    private val launchLocale = ScooterLanguage.launchLocale
 
     @After
     fun tearDown() {
         ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterLanguage.launchLocale = launchLocale
         Locale.setDefault(locale)
         TimeZone.setDefault(zone)
         Settings.System.putString(ApplicationProvider.getApplicationContext<android.content.Context>().contentResolver, Settings.System.TIME_12_24, null)
@@ -165,5 +168,111 @@ class CityRuleZoneTest {
         val dimmed = ruleLines(listOf(CityRuleZone.Shown(rule = hongdae, inForce = false))).single()
         assertFalse(dimmed.inForce)
         assertTrue(dimmed.text, dimmed.text.endsWith(" (nu niet)"))
+    }
+
+    /** The speeds of zones, in km/h, as the legend sums them up. */
+    private fun speeds(vararg kph: Double?) = kph.fold(ScooterZoneSpeeds()) { speeds, speed -> speeds + speed }
+
+    /** ICU's spaces, before a unit in French, as plain ones. */
+    private fun plain(text: String) = text.replace('\u00A0', ' ').replace('\u202F', ' ')
+
+    /** A slow street of Warsaw's, at [kph] where the city gives a speed, within [hours] where it has some. */
+    private fun warsaw(id: String, kph: Double?, hours: List<CityRuleZone.Hours> = emptyList()) = CityRuleZone(
+        id = "warsaw-$id", authority = "Warszawa", timeZone = "Europe/Warsaw", kind = ScooterZoneKind.Slow,
+        maxSpeedKph = kph, firstDay = "", hours = hours, source = "https://example.com/warsaw",
+        lines = listOf(listOf(GeoPoint(52.23, 21.0), GeoPoint(52.23, 21.003))),
+    )
+
+    @Test
+    fun slowSaysTheLimitOfTheSlowZonesItCounts() {
+        Locale.setDefault(Locale.forLanguageTag("en-CH"))
+        ScooterLanguage.current = ScooterLanguage.En
+        val swiss = Locale.forLanguageTag("en-CH")
+        // One speed: Linköping's 6 km/h, and 6.4 rounded to the same.
+        assertEquals("Slow: 6 km/h", plain(kindLabel(ScooterZoneKind.Slow, speeds(6.0), swiss)))
+        assertEquals("Slow: 6 km/h", plain(kindLabel(ScooterZoneKind.Slow, speeds(6.0, 6.4), swiss)))
+        // Several: from the least to the greatest.
+        assertEquals("Slow: 6–15 km/h", plain(kindLabel(ScooterZoneKind.Slow, speeds(12.0, 6.0, 15.0), swiss)))
+        // One zone without a speed, or none at all: plain "Slow".
+        assertEquals("Slow", kindLabel(ScooterZoneKind.Slow, speeds(6.0, null, 15.0), swiss))
+        assertEquals("Slow", kindLabel(ScooterZoneKind.Slow, ScooterZoneSpeeds(), swiss))
+        // Only slow says a speed.
+        assertEquals("No riding", kindLabel(ScooterZoneKind.NoRide, speeds(6.0), swiss))
+
+        // The operators' slow zones while their kinds are named, and the cities' at all hours.
+        val city = listOf(CityRuleZone.Shown(rule = warsaw("chmielna", 12.0), inForce = true))
+        assertEquals(10.0..12.0, legendKindSpeeds(ScooterZoneState.Shown, 3, speeds(10.0), city, besideNote = false).known)
+        // The note stands for the operators' kinds: the city's alone.
+        assertEquals(12.0..12.0, legendKindSpeeds(ScooterZoneState.ZoomIn, 0, speeds(10.0), city, besideNote = true).known)
+        assertEquals(12.0..12.0, legendKindSpeeds(ScooterZoneState.Off, 0, speeds(10.0), city, besideNote = false).known)
+        // A city's street without a speed among them: plain "Slow".
+        val without = city + CityRuleZone.Shown(rule = warsaw("zgoda", null), inForce = true)
+        assertNull(legendKindSpeeds(ScooterZoneState.Shown, 3, speeds(10.0), without, besideNote = false).known)
+        // A city's rule with a line of its own, timed or not now, says its speed there, not among the kinds.
+        val apart = listOf(
+            CityRuleZone.Shown(rule = warsaw("zlota", 15.0, hours = listOf(CityRuleZone.Hours(22 * 60, 6 * 60))), inForce = true),
+            CityRuleZone.Shown(rule = warsaw("bracka", 20.0), inForce = false),
+        )
+        assertEquals(10.0..10.0, legendKindSpeeds(ScooterZoneState.Shown, 3, speeds(10.0), apart, besideNote = false).known)
+    }
+
+    @Test
+    fun slowSaysMilesPerHourWhereTheRegionMeasuresInMiles() {
+        // 12.87 km/h is 8 mph and 16.09 is 10, each rounded once converted; 16 and 16.1 are both 10, said once.
+        val us = Locale.forLanguageTag("en-US")
+        assertEquals("8–10 mph", plain(speedText(12.87..16.09, us)))
+        assertEquals("10 mph", plain(speedText(16.0..16.1, Locale.forLanguageTag("en-GB"))))
+        assertEquals("6–15 km/h", plain(speedText(6.0..15.0, Locale.forLanguageTag("en-CH"))))
+        // In the user's region, as the legend writes it.
+        Locale.setDefault(us)
+        ScooterLanguage.launchLocale = { us }
+        ScooterLanguage.current = ScooterLanguage.En
+        assertEquals("Slow: 8–10 mph", plain(kindLabel(ScooterZoneKind.Slow, speeds(16.09, 12.87))))
+    }
+
+    @Test
+    fun aTimedSlowRuleSaysItsSpeedOnItsLine() {
+        val swiss = Locale.forLanguageTag("en-CH")
+        Locale.setDefault(swiss)
+        ScooterLanguage.launchLocale = { swiss }
+        ScooterLanguage.current = ScooterLanguage.En
+        Settings.System.putString(ApplicationProvider.getApplicationContext<android.content.Context>().contentResolver, Settings.System.TIME_12_24, "24")
+        val night = listOf(CityRuleZone.Hours(fromMinute = 22 * 60, untilMinute = 6 * 60))
+        val lines = ruleLines(
+            listOf(
+                CityRuleZone.Shown(rule = warsaw("zlota", 12.0, hours = night), inForce = true),
+                CityRuleZone.Shown(rule = warsaw("bracka", 15.0, hours = night), inForce = true),
+                CityRuleZone.Shown(rule = warsaw("zgoda", null, hours = listOf(CityRuleZone.Hours(7 * 60, 9 * 60))), inForce = true),
+                CityRuleZone.Shown(rule = warsaw("chmielna", 12.0), inForce = false),
+            ),
+        )
+        assertEquals(
+            listOf("Slow: 12–15 km/h 22:00–06:00", "Slow 07:00–09:00", "Slow: 12 km/h (not now)"),
+            lines.map { plain(it.text) },
+        )
+        assertEquals(listOf(true, true, false), lines.map { it.timed })
+    }
+
+    @Test
+    fun slowSaysItsSpeedInEveryLanguage() {
+        val said = mapOf(
+            ScooterLanguage.En to "Slow: 6–15 km/h",
+            ScooterLanguage.De to "Langsam: 6–15 km/h",
+            ScooterLanguage.Fr to "Vitesse réduite : 6–15 km/h",
+            ScooterLanguage.It to "Velocità ridotta: 6–15 km/h",
+            ScooterLanguage.Nl to "Langzaam: 6–15 km/u",
+            ScooterLanguage.Nb to "Lav fart: 6–15 km/t",
+            ScooterLanguage.Pt to "Velocidade reduzida: 6–15 km/h",
+            ScooterLanguage.Es to "Velocidad reducida: 6–15 km/h",
+            ScooterLanguage.Is to "Hægur akstur: 6–15 km/klst.",
+        )
+        assertEquals(ScooterLanguage.entries.toSet(), said.keys)
+        for ((language, label) in said) {
+            val swiss = Locale.forLanguageTag("${language.rawValue}-CH")
+            Locale.setDefault(swiss)
+            ScooterLanguage.launchLocale = { swiss }
+            ScooterLanguage.current = language
+            assertEquals(language.rawValue, label, plain(kindLabel(ScooterZoneKind.Slow, speeds(6.0, 15.0))))
+        }
     }
 }

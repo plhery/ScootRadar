@@ -231,6 +231,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private(set) var mapZoneNotices: [CityZoneDownloads.Notice] = []
     /// How many of mapZones are the operators'.
     private(set) var mapOperatorZoneCount = 0
+    /// The limits of the operators' slow zones among mapZones, which the legend's "Slow" says: "Slow: 6 km/h".
+    private(set) var mapOperatorSlowSpeeds = ScooterZoneSpeeds()
 
     var appearance: ScooterAppearance {
         didSet {
@@ -2372,6 +2374,8 @@ extension ScooterMapModel {
         if rulesInView != mapRuleZones { mapRuleZones = rulesInView }
         if notices != mapZoneNotices { mapZoneNotices = notices }
         if shown.count != mapOperatorZoneCount { mapOperatorZoneCount = shown.count }
+        let slowSpeeds = ScooterZoneSpeeds(slowZonesOf: shown)
+        if slowSpeeds != mapOperatorSlowSpeeds { mapOperatorSlowSpeeds = slowSpeeds }
         let drawn = rules.map(\.mapZone) + shown
         guard drawn != mapZones else { return }
         mapZones = drawn

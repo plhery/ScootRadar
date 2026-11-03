@@ -256,6 +256,8 @@
 "No riding" = "Proibido circular";
 "No parking" = "Proibido estacionar";
 "Slow" = "Velocidade reduzida";
+/* Slow with the limit of the slow zones it counts, "6 km/h" or "6–15 km/h" */
+"Slow: %@" = "Velocidade reduzida: %@";
 "Zoom in to see the zones" = "Aproxime para ver as zonas";
 "No zones published here" = "Sem zonas publicadas aqui";
 "not now" = "agora não";

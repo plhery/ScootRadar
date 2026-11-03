@@ -308,6 +308,31 @@ class ScooterMapZonesTest {
         assertEquals(1, model.mapOperatorZoneCount.value)
     }
 
+    @Test
+    fun theLegendSaysTheLimitsOfTheOperatorsSlowZonesDrawn() = runTest {
+        // Lime's at 15 km/h and Bird's at 20: "Slow: 15–20 km/h", then Lime's alone, and none where one has no limit.
+        fun slow(provider: String, maxSpeedKph: Double?) = ScooterZone(
+            id = "$provider:slow", provider = provider, kind = ScooterZoneKind.Slow, maxSpeedKph = maxSpeedKph,
+            polygons = listOf(listOf(listOf(GeoPoint(47.37, 8.54), GeoPoint(47.38, 8.54), GeoPoint(47.38, 8.55), GeoPoint(47.37, 8.54)))),
+        )
+        val api = ZoneStubAPI(more = listOf(slow("lime", 15.0), slow("bird", 20.0)))
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(porto, zoom = 16)
+        assertTrue(waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Shown })
+
+        assertEquals(15.0..20.0, model.mapOperatorSlowSpeeds.value.known)
+        model.showProviders(setOf(ScooterProvider.Lime))
+        assertEquals(15.0..15.0, model.mapOperatorSlowSpeeds.value.known)
+
+        val without = ZoneStubAPI(more = listOf(slow("lime", 15.0), slow("bird", null)))
+        val other = makeController(without)
+        other.setShowsZones(true)
+        other.updateViewport(porto, zoom = 16)
+        assertTrue(waitUntil { without.zoneAreas.size == 1 && other.zoneState.value == ScooterZoneState.Shown })
+        assertNull(other.mapOperatorSlowSpeeds.value.known)
+    }
+
     // Android's own: where the area the cities' zones are picked over ends, and the zoom they are picked from.
 
     /**
@@ -403,7 +428,8 @@ class ScooterMapZonesTest {
     }
 }
 
-private class ZoneStubAPI : ScooterAPIClient {
+/** Lime's no riding and Bird's no parking, and [more] after them. */
+private class ZoneStubAPI(private val more: List<ScooterZone> = emptyList()) : ScooterAPIClient {
     private var failure: ScooterAPIError? = null
     /** Whether some feeds' zones are still on their way. */
     var pending = false
@@ -425,7 +451,7 @@ private class ZoneStubAPI : ScooterAPIClient {
             zones = listOf(
                 ScooterZone(id = "lime:0", provider = "lime", kind = ScooterZoneKind.NoRide, maxSpeedKph = null, polygons = listOf(listOf(ring))),
                 ScooterZone(id = "bird:0", provider = "bird", kind = ScooterZoneKind.NoParking, maxSpeedKph = null, polygons = listOf(listOf(ring))),
-            ),
+            ) + more,
             pending = pending,
             truncated = false,
         )

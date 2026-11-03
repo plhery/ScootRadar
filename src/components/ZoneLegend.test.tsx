@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
 import { render, screen } from '@testing-library/react';
-import { beforeEach, expect, it } from 'vitest';
-import ZoneLegend from '@/components/ZoneLegend';
+import { beforeEach, expect, it, vi } from 'vitest';
+import ZoneLegend, { formatSpeedLimits } from '@/components/ZoneLegend';
 import { CITY_ZONE_FILES, cityRuleZones, ZONE_CITIES } from '@/lib/cityZones';
 import { I18nProvider } from '@/lib/i18n';
 import { ruleZonesInView, type RuleKind, type RuleZoneShape } from '@/lib/ruleZones';
@@ -11,6 +11,10 @@ const SEOUL_NOON = Date.parse('2026-10-26T03:00:00Z');
 const HONGDAE = { south: 37.55, west: 126.918, north: 37.558, east: 126.93 };
 const SAKAE = { south: 35.165, west: 136.903, north: 35.173, east: 136.915 };
 const STORTORGET = { south: 56.044, west: 12.69, north: 56.049, east: 12.7 };
+// Linköping's Stora torget and the streets off it, where the kommun sets 6 km/h; Gävle's Drottninggatan, where it sets no speed.
+const STORA_TORGET = { south: 58.4098, west: 15.62, north: 58.411, east: 15.6225 };
+const DROTTNINGGATAN = { south: 60.6741, west: 17.1428, north: 60.6751, east: 17.1444 };
+const NOVEMBER = Date.parse('2026-11-03T12:00:00Z');
 const SOURCE = { title: 'Bergen kommune, "Elsparkesykler i Bergen"', url: 'https://www.bergen.kommune.no/elsparkesykler' };
 
 function bergen(id: string, rule: RuleKind): RuleZoneShape {
@@ -18,6 +22,11 @@ function bergen(id: string, rule: RuleKind): RuleZoneShape {
     id, place: id, authority: 'Bergen kommune', rule, timeZone: 'Europe/Oslo', source: SOURCE,
     ring: [[60.395, 5.324], [60.395, 5.326], [60.396, 5.326]], polygons: [], inForce: true,
   };
+}
+
+/** One of Bergen's slow zones, made up: its limit, if it has one, its hours, if any, and whether it holds now. */
+function bergenSlow(id: string, maxSpeedKph: number | undefined, hours?: { from: string; until: string }[], inForce = true): RuleZoneShape {
+  return { ...bergen(id, 'slow'), maxSpeedKph, hours, inForce };
 }
 
 beforeEach(() => localStorage.setItem('scooters-locale', 'en'));
@@ -35,7 +44,7 @@ it('names each of a city\'s kinds once, the strongest first, and credits the cit
     bergen('parking-1', 'parking'), bergen('no-parking-1', 'noParking'), bergen('slow-1', 'slow'),
     bergen('no-parking-2', 'noParking'), bergen('no-ride-1', 'noRide'),
   ];
-  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
   expect(listed(container)).toEqual({ items: ['No riding', 'No parking', 'Slow', 'Parking'], credit: 'Bergen kommune' });
   expect([...container.querySelectorAll('.zone-legend-item .zone-swatch')].map(swatch => swatch.className))
     .toEqual(['noRide', 'noParking', 'slow', 'parking'].map(kind => `zone-swatch zone-swatch-${kind}`));
@@ -48,7 +57,7 @@ it('names a kind the operators and a city both set once, gives a street a line f
     bergen('parking-1', 'parking'), bergen('no-ride-1', 'noRide'),
     ...ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, SEOUL_NOON),
   ];
-  const { container } = render(<I18nProvider><ZoneLegend state="shown" count={2} rules={rules} /></I18nProvider>);
+  const { container } = render(<I18nProvider><ZoneLegend state="shown" zones={[{ kind: 'noRide' }, { kind: 'noParking' }]} rules={rules} /></I18nProvider>);
   expect(listed(container)).toEqual({
     items: ['No riding', 'No parking', 'Slow', 'Parking', 'No riding 12:00–23:00'],
     credit: 'Bergen kommune · Seoul, lines © OpenStreetMap',
@@ -61,7 +70,7 @@ it('names a kind the operators and a city both set once, gives a street a line f
 it('says when a street\'s rule does not hold now, and still names its kind and who sets it', () => {
   const evening = Date.parse('2026-10-26T15:00:00Z');
   const rules = ruleZonesInView({ bounds: HONGDAE, zoom: 15 }, evening);
-  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
   expect(listed(container)).toEqual({ items: ['No riding 12:00–23:00 (not now)'], credit: 'Seoul, lines © OpenStreetMap' });
   expect(container.querySelector('.zone-legend-rule')!.getAttribute('data-in-force')).toBe('false');
 });
@@ -71,7 +80,7 @@ it('names Nagoya\'s pavements once, a line for a swatch, credited to the rules w
   const { default: file } = await CITY_ZONE_FILES.nagoya();
   const rules = ruleZonesInView({ bounds: SAKAE, zoom: 16 }, Date.now(), cityRuleZones(nagoya, file));
   expect(rules.length).toBeGreaterThan(10);
-  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
   expect(listed(container)).toEqual({ items: ['Pavement riding at 6 km/h'], credit: 'Aichi police, data JARTIC' });
   expect(container.querySelector('.zone-legend-item .zone-swatch')!.className).toBe('zone-swatch zone-swatch-pavement');
   const link = screen.getByRole('link', { name: 'Aichi police, data JARTIC' });
@@ -83,8 +92,106 @@ it('names central Helsingborg\'s rule, racks or marked places only, credited to 
   const helsingborg = ZONE_CITIES.find(city => city.id === 'helsingborg')!;
   const { default: file } = await CITY_ZONE_FILES.helsingborg();
   const rules = ruleZonesInView({ bounds: STORTORGET, zoom: 16 }, Date.now(), cityRuleZones(helsingborg, file));
-  const { container } = render(<I18nProvider><ZoneLegend state="off" count={0} rules={rules} /></I18nProvider>);
+  const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
   expect(listed(container)).toEqual({ items: ['Park only in racks or marked places'], credit: 'Helsingborgs stad' });
   expect(container.querySelector('.zone-legend-item .zone-swatch')!.className).toBe('zone-swatch zone-swatch-racksOnly');
   expect(screen.getByRole('link', { name: 'Helsingborgs stad' }).getAttribute('href')).toBe(helsingborg.source.url);
+});
+
+it('says the limit of the slow zones it counts, the operators\' and a city\'s, once where they round to one', () => {
+  const linkoping = ruleZonesInView({ bounds: STORA_TORGET, zoom: 16 }, NOVEMBER);
+  expect(linkoping.length).toBeGreaterThan(1);
+  expect(linkoping.every(zone => zone.rule === 'slow' && zone.maxSpeedKph === 6 && zone.inForce)).toBe(true);
+  // The city's alone, the operators' zones off.
+  const { container, rerender } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={linkoping} /></I18nProvider>);
+  expect(listed(container)).toEqual({ items: ['Slow: 6 km/h'], credit: 'Linköpings kommun, lines © OpenStreetMap' });
+  // With the operators': 6.4 km/h is 6 too. Their other kinds have no limit to say.
+  const zones = [{ kind: 'noRide' as const }, { kind: 'slow' as const, maxSpeedKph: 6 }, { kind: 'slow' as const, maxSpeedKph: 6.4 }];
+  rerender(<I18nProvider><ZoneLegend state="shown" zones={zones} rules={linkoping} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow: 6 km/h']);
+  // The operators' alone, as screen readers read it.
+  rerender(<I18nProvider><ZoneLegend state="shown" zones={zones} /></I18nProvider>);
+  expect(screen.getByRole('group', { name: 'Zones' }).textContent).toBe('No ridingNo parkingSlow: 6 km/h');
+});
+
+it('says the least and the greatest limit where they differ', () => {
+  const linkoping = ruleZonesInView({ bounds: STORA_TORGET, zoom: 16 }, NOVEMBER);
+  const zones = [{ kind: 'slow' as const, maxSpeedKph: 15 }, { kind: 'slow' as const, maxSpeedKph: 10 }];
+  const { container } = render(<I18nProvider><ZoneLegend state="shown" zones={zones} rules={linkoping} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow: 6–15 km/h']);
+});
+
+it('says Slow alone where one of the slow zones it counts has no limit, or there is none', () => {
+  const gavle = ruleZonesInView({ bounds: DROTTNINGGATAN, zoom: 16 }, NOVEMBER);
+  expect(gavle.map(({ id, maxSpeedKph }) => ({ id, maxSpeedKph }))).toEqual([{ id: 'gavle-drottninggatan', maxSpeedKph: undefined }]);
+  const { container, rerender } = render(
+    <I18nProvider><ZoneLegend state="shown" zones={[{ kind: 'slow', maxSpeedKph: 10 }]} rules={gavle} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow']);
+  // An operator's slow zone without one.
+  rerender(<I18nProvider><ZoneLegend state="shown" zones={[{ kind: 'slow', maxSpeedKph: 10 }, { kind: 'slow' }]} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow']);
+  // No slow zone among the operators': their kinds are named all the same.
+  rerender(<I18nProvider><ZoneLegend state="shown" zones={[{ kind: 'noParking' }]} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['No riding', 'No parking', 'Slow']);
+  // Further out, the note stands for the operators' kinds, and their limits go with them.
+  rerender(<I18nProvider><ZoneLegend state="zoomIn" zones={[{ kind: 'slow', maxSpeedKph: 10 }]} rules={[bergenSlow('slow-1', 6)]} /></I18nProvider>);
+  expect(listed(container).items).toEqual(['Slow: 6 km/h']);
+});
+
+it('gives a city\'s slow line, for its hours or as it does not hold yet, the limit of its own zones', () => {
+  const night = [{ from: '22:00', until: '06:00' }];
+  const rules = [
+    bergenSlow('slow-night-1', 12, night), bergenSlow('slow-night-2', 15, night),
+    bergenSlow('slow-morning', undefined, [{ from: '07:00', until: '09:00' }]),
+    bergenSlow('slow-later', 12, undefined, false),
+    bergenSlow('slow-1', 6),
+  ];
+  const { container } = render(<I18nProvider><ZoneLegend state="off" zones={[]} rules={rules} /></I18nProvider>);
+  expect(listed(container).items).toEqual([
+    'Slow: 6 km/h', 'Slow: 12–15 km/h 22:00–06:00', 'Slow 07:00–09:00', 'Slow: 12 km/h (not now)',
+  ]);
+});
+
+it('says the limits in mph where the region measures in miles', async () => {
+  vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-US']);
+  const zones = [{ kind: 'slow' as const, maxSpeedKph: 16.09 }, { kind: 'slow' as const, maxSpeedKph: 12.87 }];
+  const rules = [bergenSlow('slow-night', 16, [{ from: '22:00', until: '06:00' }])];
+  const { container } = render(<I18nProvider><ZoneLegend state="shown" zones={zones} rules={rules} /></I18nProvider>);
+  await vi.waitFor(() => expect(listed(container).items).toEqual([
+    'No riding', 'No parking', 'Slow: 8–10 mph', 'Slow: 10 mph 10:00 PM–6:00 AM',
+  ]));
+});
+
+it('writes a limit in the language, as its region writes it, and in miles where it measures in them', () => {
+  expect(formatSpeedLimits([6], 'en', 'CH')).toBe('6 km/h');
+  expect(formatSpeedLimits([6, 15, 12], 'en', 'CH')).toBe('6–15 km/h');
+  // Rounded once converted, to one where the least and the greatest round alike.
+  expect(formatSpeedLimits([16.09, 12.87], 'en', 'US')).toBe('8–10 mph');
+  expect(formatSpeedLimits([16, 16.1], 'en', 'GB')).toBe('10 mph');
+  expect(formatSpeedLimits([16, 16.1], 'en', 'CH')).toBe('16 km/h');
+  expect(formatSpeedLimits([20], 'en', 'LR')).toBe('12 mph');
+  expect(formatSpeedLimits([20], 'en', 'MM')).toBe('12 mph');
+  expect(formatSpeedLimits([6, 15], 'nl', 'NL')).toBe('6–15 km/u');
+  expect(formatSpeedLimits([6, 15], 'nb', 'NO')).toBe('6–15 km/t');
+  expect(formatSpeedLimits([6], 'is', 'IS')).toBe('6 km/klst.');
+  // French sets a narrow space before the unit.
+  expect(formatSpeedLimits([6], 'fr', 'US')).toBe('4\u202Fmi/h');
+  // None to say.
+  expect(formatSpeedLimits([], 'en', 'CH')).toBeNull();
+  expect(formatSpeedLimits([6, undefined], 'en', 'CH')).toBeNull();
+});
+
+it('says the limit in each language with the kind\'s own name', async () => {
+  for (const [language, said] of [
+    ['de', 'Langsam: 6–15 km/h'], ['fr', 'Vitesse réduite : 6–15 km/h'], ['it', 'Velocità ridotta: 6–15 km/h'],
+    ['nl', 'Langzaam: 6–15 km/u'], ['nb', 'Lav fart: 6–15 km/t'], ['pt', 'Velocidade reduzida: 6–15 km/h'],
+    ['es', 'Velocidad reducida: 6–15 km/h'], ['is', 'Hægur akstur: 6–15 km/klst.'],
+  ]) {
+    localStorage.setItem('scooters-locale', language);
+    vi.spyOn(navigator, 'languages', 'get').mockReturnValue([`${language}-CH`]);
+    const { container, unmount } = render(
+      <I18nProvider><ZoneLegend state="off" zones={[]} rules={[bergenSlow('slow-1', 6), bergenSlow('slow-2', 15)]} /></I18nProvider>);
+    await vi.waitFor(() => expect(listed(container).items.map(item => item?.replace(/\s/g, ' '))).toEqual([said]));
+    unmount();
+  }
 });

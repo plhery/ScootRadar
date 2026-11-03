@@ -158,10 +158,12 @@ class CatalogParityTest {
             val hours = zone.hours.joinToString(", ") { ".init(fromMinute: ${it.fromMinute}, untilMinute: ${it.untilMinute})" }
             // A street forbids riding unless it says otherwise; an area always says.
             val kind = if (zone.kind == ScooterZoneKind.NoRide && zone.lines.isNotEmpty()) "" else " kind: .${zone.kind.rawValue},"
+            // A slow one's speed, where the city gives one, which the legend shows.
+            val speed = zone.maxSpeedKph?.let { " maxSpeedKph: ${number(it)}," } ?: ""
             listOf(
                 "        CityRuleZone(",
                 "            id: ${string(zone.id)}, authority: ${string(zone.authority)},",
-                "            timeZone: ${string(zone.timeZone)},$kind firstDay: ${string(zone.firstDay)}, hours: [$hours],",
+                "            timeZone: ${string(zone.timeZone)},$kind$speed firstDay: ${string(zone.firstDay)}, hours: [$hours],",
                 "            source: URL(string: ${string(zone.source)})!,",
                 "        ),",
             )

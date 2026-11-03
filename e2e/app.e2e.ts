@@ -1286,7 +1286,8 @@ test('the operators\' zones are drawn unless turned off, for the providers shown
 
   await zoomTo(page, 16);
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
-  await expect(kinds).toHaveText(['No riding', 'No parking', 'Slow', 'Parking']);
+  // Bolt's slow zone's limit; Zürich's zones have none of their own.
+  await expect(kinds).toHaveText(['No riding', 'No parking', 'Slow: 10 km/h', 'Parking']);
   await expect(legend.locator('.zone-legend-credit')).toHaveText('Stadt Zürich');
   // One shape and one edge for each kind, the operators' zones and the city's merged, under the scooters.
   await expect(edges).toHaveCount(4);

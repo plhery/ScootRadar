@@ -71,6 +71,38 @@ data class ScooterZone(
     val timed: Boolean = false,
 )
 
+/**
+ * The limits of the slow zones a line of the zones' legend counts, in km/h, as on the web (ZoneLegend.tsx): the least
+ * and the greatest, and whether one of them has none, where the line says "Slow" alone.
+ */
+data class ScooterZoneSpeeds(
+    /** The least limit; null while none is counted. */
+    val least: Double? = null,
+    /** The greatest limit; null while none is counted. */
+    val greatest: Double? = null,
+    /** One of the zones counted has no limit. */
+    val hasZoneWithout: Boolean = false,
+) {
+    /** These and a slow zone's limit, or a slow zone without one. */
+    operator fun plus(speed: Double?): ScooterZoneSpeeds = when {
+        speed == null || !speed.isFinite() -> copy(hasZoneWithout = true)
+        least == null || greatest == null -> copy(least = speed, greatest = speed)
+        else -> copy(least = minOf(least, speed), greatest = maxOf(greatest, speed))
+    }
+
+    /** The least and the greatest where every zone counted has a limit; null where one has none, or none is counted. */
+    val known: ClosedFloatingPointRange<Double>?
+        get() = if (hasZoneWithout || least == null || greatest == null) null else least..greatest
+
+    companion object {
+        /** Those of the slow zones among the [zones]. */
+        fun ofSlowZones(zones: Iterable<ScooterZone>): ScooterZoneSpeeds =
+            zones.fold(ScooterZoneSpeeds()) { speeds, zone ->
+                if (zone.kind == ScooterZoneKind.Slow) speeds + zone.maxSpeedKph else speeds
+            }
+    }
+}
+
 @Serializable(with = ScooterZoneResponse.Serializer::class)
 data class ScooterZoneResponse(
     val zones: List<ScooterZone>,
@@ -254,8 +286,8 @@ object ScooterZoneLook {
  * scooters, from data/city-zones.json, as on the web (src/lib/ruleZones.ts): Seoul's kickboard-free streets, and
  * Bergen's and Porto's zones, credited to the city. Unlike the operators' zones they are the law, so the map draws
  * them from zoom 14 whether or not the zones are on, each as its kind's zones are and dimmer outside its hours, and
- * the legend gives their kind, their hours and who sets them, linked to where they say so. CityRuleZone.all,
- * Seoul's streets, and CityRuleZone.cityZones are generated.
+ * the legend gives their kind, a slow one's speed, their hours and who sets them, linked to where they say so.
+ * CityRuleZone.all, Seoul's streets, and CityRuleZone.cityZones are generated.
  */
 @ConsistentCopyVisibility
 data class CityRuleZone private constructor(
@@ -265,6 +297,8 @@ data class CityRuleZone private constructor(
     val timeZone: String,
     /** What it asks of a scooter: no riding, or riding slowly. */
     val kind: ScooterZoneKind,
+    /** The speed a slow one sets, where the city gives one: Linköping's 6 km/h. A city's zone has none. */
+    val maxSpeedKph: Double?,
     /** The local day it starts, "YYYY-MM-DD"; empty for one that has always held, as a city's zone. */
     val firstDay: String,
     /** Every day; all day when empty. */
@@ -286,13 +320,14 @@ data class CityRuleZone private constructor(
         authority: String,
         timeZone: String,
         kind: ScooterZoneKind = ScooterZoneKind.NoRide,
+        maxSpeedKph: Double? = null,
         firstDay: String,
         hours: List<Hours>,
         source: String,
         lines: List<List<GeoPoint>>,
     ) : this(
-        id = id, authority = authority, timeZone = timeZone, kind = kind, firstDay = firstDay,
-        hours = hours, source = source, lines = lines, bounds = bounds(of = lines.flatten()),
+        id = id, authority = authority, timeZone = timeZone, kind = kind, maxSpeedKph = maxSpeedKph,
+        firstDay = firstDay, hours = hours, source = source, lines = lines, bounds = bounds(of = lines.flatten()),
         polygons = band(of = lines, widthMeters = bandWidthMeters),
     )
 
@@ -305,8 +340,9 @@ data class CityRuleZone private constructor(
         source: String,
         ring: List<GeoPoint>,
     ) : this(
-        id = id, authority = authority, timeZone = timeZone, kind = kind, firstDay = "", hours = emptyList(),
-        source = source, lines = emptyList(), bounds = bounds(of = ring), polygons = listOf(listOf(ring)),
+        id = id, authority = authority, timeZone = timeZone, kind = kind, maxSpeedKph = null, firstDay = "",
+        hours = emptyList(), source = source, lines = emptyList(), bounds = bounds(of = ring),
+        polygons = listOf(listOf(ring)),
     )
 
     /**
@@ -333,7 +369,7 @@ data class CityRuleZone private constructor(
         /** As the map draws it: a zone of its kind, dimmer outside its hours, hatched the other way if it has any. */
         val mapZone: ScooterZone
             get() = ScooterZone(
-                id = "rule:${rule.id}", provider = "city", kind = rule.kind, maxSpeedKph = null,
+                id = "rule:${rule.id}", provider = "city", kind = rule.kind, maxSpeedKph = rule.maxSpeedKph,
                 polygons = rule.polygons, strength = if (inForce) 1.0 else dimmed, timed = rule.hours.isNotEmpty(),
             )
     }
@@ -367,13 +403,15 @@ data class CityRuleZone private constructor(
             authority: String,
             timeZone: String,
             kind: ScooterZoneKind,
+            maxSpeedKph: Double? = null,
             firstDay: String,
             hours: List<Hours>,
             source: String,
             ring: List<GeoPoint>,
         ) = CityRuleZone(
-            id = id, authority = authority, timeZone = timeZone, kind = kind, firstDay = firstDay, hours = hours,
-            source = source, lines = emptyList(), bounds = bounds(of = ring), polygons = listOf(listOf(ring)),
+            id = id, authority = authority, timeZone = timeZone, kind = kind, maxSpeedKph = maxSpeedKph,
+            firstDay = firstDay, hours = hours, source = source, lines = emptyList(), bounds = bounds(of = ring),
+            polygons = listOf(listOf(ring)),
         )
 
         /**

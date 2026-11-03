@@ -256,6 +256,8 @@
 "No riding" = "No riding";
 "No parking" = "No parking";
 "Slow" = "Slow";
+/* Slow with the limit of the slow zones it counts, "6 km/h" or "6–15 km/h" */
+"Slow: %@" = "Slow: %@";
 "Zoom in to see the zones" = "Zoom in to see the zones";
 "No zones published here" = "No zones published here";
 "not now" = "not now";

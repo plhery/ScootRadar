@@ -990,6 +990,7 @@ private fun ZoneLegendOverTheMap(
 ) {
     val state by controller.zoneState.collectAsStateWithLifecycle()
     val count by controller.mapOperatorZoneCount.collectAsStateWithLifecycle()
+    val slowSpeeds by controller.mapOperatorSlowSpeeds.collectAsStateWithLifecycle()
     val rules by controller.mapRuleZones.collectAsStateWithLifecycle()
     val notices by controller.mapZoneNotices.collectAsStateWithLifecycle()
     if (state == ScooterZoneState.Off && rules.isEmpty() && notices.isEmpty()) return
@@ -997,6 +998,7 @@ private fun ZoneLegendOverTheMap(
     ZoneLegend(
         state = state,
         count = count,
+        slowSpeeds = slowSpeeds,
         rules = rules,
         notices = notices,
         modifier = modifier.onGloballyPositioned { chrome.zoneLegend = laidOut?.invoke(it) ?: it.windowFrame(density) },

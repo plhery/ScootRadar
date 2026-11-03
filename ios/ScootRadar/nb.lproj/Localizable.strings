@@ -256,6 +256,8 @@
 "No riding" = "Kjøreforbud";
 "No parking" = "Parkeringsforbud";
 "Slow" = "Lav fart";
+/* Slow with the limit of the slow zones it counts, "6 km/h" or "6–15 km/h" */
+"Slow: %@" = "Lav fart: %@";
 "Zoom in to see the zones" = "Zoom inn for å se sonene";
 "No zones published here" = "Ingen soner publisert her";
 "not now" = "ikke nå";

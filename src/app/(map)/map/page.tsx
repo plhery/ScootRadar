@@ -1043,7 +1043,7 @@ export default function Home() {
 
         <MapCredits />
 
-        {!searchExpanded && <ZoneLegend state={zoneData.state} count={mapZones.length} rules={ruleZones} />}
+        {!searchExpanded && <ZoneLegend state={zoneData.state} zones={mapZones} rules={ruleZones} />}
       </div>
 
       {desktop && <KeyHints />}

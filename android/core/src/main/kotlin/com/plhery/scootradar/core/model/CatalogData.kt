@@ -75,6 +75,7 @@ internal class CatalogData(
                             authority = zone.authority,
                             timeZone = zone.timeZone,
                             kind = kind,
+                            maxSpeedKph = zone.maxSpeedKph,
                             firstDay = zone.firstDay,
                             hours = hours,
                             source = zone.source,
@@ -85,6 +86,7 @@ internal class CatalogData(
                         authority = zone.authority,
                         timeZone = zone.timeZone,
                         kind = kind,
+                        maxSpeedKph = zone.maxSpeedKph,
                         firstDay = zone.firstDay,
                         hours = hours,
                         source = zone.source,
@@ -183,6 +185,8 @@ internal class CatalogData(
         val timeZone: String,
         /** "slow"; left out for no riding. */
         val kind: String = "noRide",
+        /** A slow one's speed, where the city gives one. */
+        val maxSpeedKph: Double? = null,
         val firstDay: String,
         val hours: List<HoursEntry>,
         val source: String,

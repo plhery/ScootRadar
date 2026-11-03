@@ -50,6 +50,7 @@ import com.plhery.scootradar.core.model.ScooterWalkPhase
 import com.plhery.scootradar.core.model.ScooterWalkTarget
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
+import com.plhery.scootradar.core.model.ScooterZoneSpeeds
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.CityZoneCache
@@ -333,6 +334,10 @@ class ScooterMapController(
     /** How many of mapZones are the operators'. */
     internal val _mapOperatorZoneCount = MutableStateFlow(0)
     val mapOperatorZoneCount: StateFlow<Int> = _mapOperatorZoneCount.asStateFlow()
+
+    /** The limits of the operators' slow zones among mapZones, which the legend's "Slow" says: "Slow: 6 km/h". */
+    internal val _mapOperatorSlowSpeeds = MutableStateFlow(ScooterZoneSpeeds())
+    val mapOperatorSlowSpeeds: StateFlow<ScooterZoneSpeeds> = _mapOperatorSlowSpeeds.asStateFlow()
 
     // Day and night until one is chosen in Settings.
     private val _appearance = MutableStateFlow(

@@ -288,7 +288,7 @@ describe('ruleZonesInView, with the areas a city sets', () => {
     expect([...drawnParking.polygons[0][0]].sort()).toEqual([...ring].sort());
   });
 
-  it('draws a slow street as a band of its own kind, its speed kept but not drawn', () => {
+  it('draws a slow street as a band of its own kind, its speed kept for the legend', () => {
     const street = {
       ...parking, id: 'test-slow-street', rule: 'slow' as const, maxSpeedKph: 12, ring: undefined,
       lines: [[[60.3955, 5.322], [60.3955, 5.328]]] as [number, number][][],

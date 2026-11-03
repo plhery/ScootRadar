@@ -1,5 +1,9 @@
 package com.plhery.scootradar.ui.chrome
 
+import android.icu.text.MeasureFormat
+import android.icu.util.Measure
+import android.icu.util.MeasureUnit
+import android.icu.util.ULocale
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
@@ -53,11 +57,15 @@ import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.CityZoneDownloads
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
+import com.plhery.scootradar.core.model.ScooterMeasurementSystem
+import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneLook
+import com.plhery.scootradar.core.model.ScooterZoneSpeeds
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.core.model.measurementSystem
 import com.plhery.scootradar.core.model.stringFormat
 import com.plhery.scootradar.ui.glass.chromeGlass
 import com.plhery.scootradar.ui.spokenPlainly
@@ -67,6 +75,7 @@ import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.weight
 import java.time.Instant
 import java.time.ZoneOffset
+import java.util.Locale
 
 // ZoneLegend and ZoneSwatch in ios/ScootRadar/Views/ScooterControls.swift (ui.md UI-092, UI-093, UI-174, UI-285,
 // UI-348, UI-409).
@@ -74,8 +83,9 @@ import java.time.ZoneOffset
 /**
  * What the colours of the zones mean while they are on, or why none are drawn, at the foot of the map beside the
  * locate button, as on the web (ZoneLegend.tsx). Each kind is named once, the strongest rule first, whether the
- * operators or a city set it; who sets a city's is credited once, small, at the foot. Taps go through it to the map,
- * but where it credits a city, whose name is a link: then it takes them all.
+ * operators or a city set it, and slow with the limit of the slow zones it counts where each has one, "Slow: 6 km/h";
+ * who sets a city's is credited once, small, at the foot. Taps go through it to the map, but where it credits a city,
+ * whose name is a link: then it takes them all.
  */
 @Composable
 fun ZoneLegend(
@@ -94,10 +104,13 @@ fun ZoneLegend(
      * unavailable, so that no zones drawn never reads as none published there.
      */
     notices: List<CityZoneDownloads.Notice> = emptyList(),
+    /** The limits of the operators' slow zones drawn, which "Slow" says, with the cities', while their kinds are named. */
+    slowSpeeds: ScooterZoneSpeeds = ScooterZoneSpeeds(),
 ) {
     val colors = scootColors
     val note = zoneLegendNote(state, count, rules = rules.isNotEmpty(), notices = notices.isNotEmpty())
     val kinds = legendKinds(state, count, rules, besideNote = note != null)
+    val speeds = legendKindSpeeds(state, count, slowSpeeds, rules, besideNote = note != null)
     val lines = ruleLines(rules)
     val credit = zoneCredit(rules, link = colors.dockSecondary, focus = colors.accent)
     val zones = localized("Zones")
@@ -131,7 +144,7 @@ fun ZoneLegend(
             )
         }
         if (kinds.isNotEmpty()) {
-            val labels = kinds.map { it.label }
+            val labels = kinds.map { kindLabel(it, speeds) }
             FlowRow(
                 Modifier.clearAndSetSemantics {
                     contentDescription = zones
@@ -140,7 +153,7 @@ fun ZoneLegend(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                for (kind in kinds) {
+                for ((kind, label) in kinds.zip(labels)) {
                     // As wide as its one line, in the FlowRow's intrinsics too, which pack by an item's least width
                     // (a Text's longest word): the legend's height asked beside the locate button is then the one it
                     // takes (LocateRow, UI-410).
@@ -150,7 +163,7 @@ fun ZoneLegend(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         ZoneSwatch(kind)
-                        Text(kind.label, style = style, color = colors.dockText, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(label, style = style, color = colors.dockText, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
@@ -198,11 +211,56 @@ const val ZONE_LEGEND_TAG = "zoneLegend"
  * ([besideNote]), and those of the cities' [rules] that hold at all hours.
  */
 internal fun legendKinds(state: ScooterZoneState, count: Int, rules: List<CityRuleZone.Shown>, besideNote: Boolean): List<ScooterZoneKind> {
-    val operators = !besideNote && state != ScooterZoneState.Off && !(state == ScooterZoneState.Shown && count == 0)
+    val operators = namesOperatorKinds(state, count, besideNote)
     return ScooterZoneKind.entries.filter { kind ->
         (operators && kind in ScooterZoneKind.operatorKinds) || rules.any { it.rule.kind == kind && it.rule.hours.isEmpty() && it.inForce }
     }
 }
+
+/**
+ * The limits "Slow" says among the kinds: the operators' slow zones' ([slowSpeeds]) while their kinds are named, and
+ * those of the cities' slow [rules] that hold at all hours.
+ */
+internal fun legendKindSpeeds(
+    state: ScooterZoneState,
+    count: Int,
+    slowSpeeds: ScooterZoneSpeeds,
+    rules: List<CityRuleZone.Shown>,
+    besideNote: Boolean,
+): ScooterZoneSpeeds = rules
+    .filter { it.rule.kind == ScooterZoneKind.Slow && it.rule.hours.isEmpty() && it.inForce }
+    .fold(if (namesOperatorKinds(state, count, besideNote)) slowSpeeds else ScooterZoneSpeeds()) { speeds, shown ->
+        speeds + shown.rule.maxSpeedKph
+    }
+
+private fun namesOperatorKinds(state: ScooterZoneState, count: Int, besideNote: Boolean): Boolean =
+    !besideNote && state != ScooterZoneState.Off && !(state == ScooterZoneState.Shown && count == 0)
+
+/**
+ * The kind's name, which TalkBack reads too; a slow one's with the limits of the zones it counts where each has one:
+ * "Slow: 6 km/h", "Slow: 6–15 km/h".
+ */
+internal fun kindLabel(kind: ScooterZoneKind, speeds: ScooterZoneSpeeds, locale: Locale = ScooterLanguage.current.locale): String {
+    val range = speeds.known
+    if (kind != ScooterZoneKind.Slow || range == null) return kind.label
+    return stringFormat(localized("Slow: %@"), speedText(range, locale))
+}
+
+/**
+ * "6 km/h", or from the least to the greatest, "6–15 km/h"; in mph where the region measures distances in miles
+ * ("10 mph"), each rounded to a whole number once converted, as on the web (formatSpeedLimits) and the iPhone.
+ */
+internal fun speedText(range: ClosedFloatingPointRange<Double>, locale: Locale = ScooterLanguage.current.locale): String {
+    val miles = locale.measurementSystem != ScooterMeasurementSystem.Metric
+    val whole = { kph: Double -> Math.round(if (miles) kph / KM_PER_MILE else kph) }
+    val least = whole(range.start)
+    val greatest = whole(range.endInclusive)
+    val unit = if (miles) MeasureUnit.MILE_PER_HOUR else MeasureUnit.KILOMETER_PER_HOUR
+    val withUnit = MeasureFormat.getInstance(ULocale.forLocale(locale), MeasureFormat.FormatWidth.SHORT).format(Measure(greatest, unit))
+    return if (least == greatest) withUnit else "${ScooterNumberFormat.integer(least, locale)}–$withUnit"
+}
+
+private const val KM_PER_MILE = 1.609344
 
 /**
  * What the legend says instead of the kinds: never that no zones are published where a city's are drawn ([rules]), or
@@ -231,23 +289,29 @@ internal class RuleLine(
     val text: String,
 )
 
-/** The lines, the strongest rule first: "No riding 12:00–23:00", "No riding (not now)". */
+/**
+ * The lines, the strongest rule first, a slow one's with the limit of its own zones: "No riding 12:00–23:00",
+ * "Slow: 12 km/h (not now)".
+ */
 internal fun ruleLines(rules: List<CityRuleZone.Shown>): List<RuleLine> {
-    val lines = mutableListOf<RuleLine>()
+    class Line(val key: String, val kind: ScooterZoneKind, val inForce: Boolean, val hours: String, var speeds: ScooterZoneSpeeds)
     // Hundreds of a city's zones may be in view, and make a few lines.
-    val keys = mutableSetOf<String>()
+    val lines = LinkedHashMap<String, Line>()
     for (kind in ScooterZoneKind.entries) {
         for (shown in rules) {
             if (shown.rule.kind != kind || (shown.rule.hours.isEmpty() && shown.inForce)) continue
             val hours = shown.rule.hours.joinToString(", ") { "${wallTime(it.fromMinute)}–${wallTime(it.untilMinute)}" }
             val key = "${kind.rawValue} $hours ${shown.inForce}"
-            if (!keys.add(key)) continue
-            var text = if (hours.isEmpty()) kind.label else "${kind.label} $hours"
-            if (!shown.inForce) text += " (${localized("not now")})"
-            lines += RuleLine(key, kind, shown.inForce, timed = hours.isNotEmpty(), text = text)
+            val line = lines.getOrPut(key) { Line(key, kind, shown.inForce, hours, ScooterZoneSpeeds()) }
+            if (kind == ScooterZoneKind.Slow) line.speeds += shown.rule.maxSpeedKph
         }
     }
-    return lines
+    return lines.values.map { line ->
+        val label = kindLabel(line.kind, line.speeds)
+        var text = if (line.hours.isEmpty()) label else "$label ${line.hours}"
+        if (!line.inForce) text += " (${localized("not now")})"
+        RuleLine(line.key, line.kind, line.inForce, timed = line.hours.isNotEmpty(), text = text)
+    }
 }
 
 /**

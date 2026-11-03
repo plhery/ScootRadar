@@ -256,6 +256,8 @@
 "No riding" = "Rijverbod";
 "No parking" = "Parkeerverbod";
 "Slow" = "Langzaam";
+/* Slow with the limit of the slow zones it counts, "6 km/h" or "6–15 km/h" */
+"Slow: %@" = "Langzaam: %@";
 "Zoom in to see the zones" = "Zoom in om de zones te zien";
 "No zones published here" = "Hier zijn geen zones gepubliceerd";
 "not now" = "nu niet";

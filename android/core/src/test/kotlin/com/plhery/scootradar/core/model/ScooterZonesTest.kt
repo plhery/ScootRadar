@@ -926,6 +926,43 @@ class CityRuleZoneTest {
     }
 
     @Test
+    fun theCatalogCarriesTheSpeedEachCitySetsToTheMapsZones() {
+        // The legend's "Slow: 6 km/h": Linköping's 6, Warsaw's 12 and Calgary's 15 from data/rule-zones.json, and
+        // none where the city gives none, as on Gävle's Drottninggatan.
+        val speeds = CityRuleZone.all.associate { it.id to it.maxSpeedKph }
+        assertEquals(6.0, unwrap(speeds["linkoping-stora-torget"]), 0.0)
+        assertEquals(12.0, unwrap(speeds["warsaw-chmielna"]), 0.0)
+        assertEquals(15.0, unwrap(speeds["calgary-8-avenue-sw-downtown"]), 0.0)
+        assertTrue(speeds.containsKey("gavle-drottninggatan"))
+        assertNull(speeds["gavle-drottninggatan"])
+        assertTrue(CityRuleZone.all.filter { it.maxSpeedKph != null }.all { it.kind == ScooterZoneKind.Slow })
+        assertTrue(CityRuleZone.cityZones.all { it.maxSpeedKph == null })
+        val drawn = CityRuleZone.Shown(rule = CityRuleZone.all.single { it.id == "linkoping-stora-torget" }, inForce = true).mapZone
+        assertEquals(6.0, unwrap(drawn.maxSpeedKph), 0.0)
+    }
+
+    @Test
+    fun theLegendsSpeedsAreTheLeastAndGreatestUnlessAZoneHasNone() {
+        assertNull(ScooterZoneSpeeds().known)
+        assertEquals(6.0..6.0, (ScooterZoneSpeeds() + 6.0).known)
+        assertEquals(6.0..15.0, (ScooterZoneSpeeds() + 12.0 + 6.0 + 15.0).known)
+        // One zone without a speed, and "Slow" says none.
+        assertNull((ScooterZoneSpeeds() + 6.0 + null + 15.0).known)
+        assertNull((ScooterZoneSpeeds() + Double.NaN).known)
+        val ring = listOf(GeoPoint(47.37, 8.54), GeoPoint(47.38, 8.54), GeoPoint(47.38, 8.55))
+        fun zone(id: String, kind: ScooterZoneKind, kph: Double?) =
+            ScooterZone(id = id, provider = id.substringBefore(':'), kind = kind, maxSpeedKph = kph, polygons = listOf(listOf(ring)))
+        val zones = listOf(
+            zone("lime:slow", ScooterZoneKind.Slow, 10.0),
+            zone("lime:0", ScooterZoneKind.NoRide, null),
+            zone("bird:slow", ScooterZoneKind.Slow, 20.0),
+        )
+        assertEquals(10.0..20.0, ScooterZoneSpeeds.ofSlowZones(zones).known)
+        assertNull(ScooterZoneSpeeds.ofSlowZones(zones + zone("voi:slow", ScooterZoneKind.Slow, null)).known)
+        assertEquals(ScooterZoneSpeeds(), ScooterZoneSpeeds.ofSlowZones(zones.filter { it.kind == ScooterZoneKind.NoRide }))
+    }
+
+    @Test
     fun aSlowStreetIsABandOfItsKindAndAnAreaHoldsFromItsFirstDayWithinItsHours() {
         // As Warsaw's 12 km/h streets and its Old Town, where riding is forbidden from 22 May 2026, traced on OpenStreetMap.
         val street = CityRuleZone(

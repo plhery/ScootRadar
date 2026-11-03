@@ -5,6 +5,7 @@ import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.CityZoneDownloads
 import com.plhery.scootradar.core.model.ScooterZone
 import com.plhery.scootradar.core.model.ScooterZoneArea
+import com.plhery.scootradar.core.model.ScooterZoneSpeeds
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.timeIntervalSince
 import java.time.Instant
@@ -152,6 +153,8 @@ internal fun ScooterMapController.rebuildMapZones() {
     if (rulesInView != mapRuleZones.value) _mapRuleZones.value = rulesInView
     if (notices != mapZoneNotices.value) _mapZoneNotices.value = notices
     if (shown.size != mapOperatorZoneCount.value) _mapOperatorZoneCount.value = shown.size
+    val slowSpeeds = ScooterZoneSpeeds.ofSlowZones(shown)
+    if (slowSpeeds != mapOperatorSlowSpeeds.value) _mapOperatorSlowSpeeds.value = slowSpeeds
     val drawn = rules.map { it.mapZone } + shown
     if (drawn == mapZones.value) return
     _mapZones.value = drawn

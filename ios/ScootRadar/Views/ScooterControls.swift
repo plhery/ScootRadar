@@ -2838,12 +2838,15 @@ struct FloatingMapControls: View {
 /// What the colours of the zones mean while they are on, or why none are
 /// drawn, at the foot of the map beside the locate button, as on the web
 /// (ZoneLegend.tsx). Each kind is named once, the strongest rule first, whether
-/// the operators or a city set it; who sets a city's is credited once, small, at
-/// the foot. Taps go through it to the map.
+/// the operators or a city set it, and slow with the limit of the slow zones it
+/// counts where each has one, "Slow: 6 km/h"; who sets a city's is credited once,
+/// small, at the foot. Taps go through it to the map.
 struct ZoneLegend: View {
     let state: ScooterZoneState
     /// The operators' zones drawn.
     let count: Int
+    /// The limits of the operators' slow zones drawn, which "Slow" says, with the cities', while their kinds are named.
+    var slowSpeeds = ScooterZoneSpeeds()
     /// The cities' rules and zones over the map, whether or not the zones are
     /// on: their kinds among the operators', a line for any whose hours set it apart,
     /// and who sets them, linked to where they say so (as on the web, ZoneLegend.tsx).
@@ -2855,6 +2858,7 @@ struct ZoneLegend: View {
     var body: some View {
         let note = note(hasRules: !rules.isEmpty)
         let kinds = kinds(besideNote: note != nil)
+        let speeds = kindSpeeds(besideNote: note != nil)
         let lines = ruleLines
         let credit = credit
         VStack(alignment: .leading, spacing: 4) {
@@ -2869,7 +2873,7 @@ struct ZoneLegend: View {
                     ForEach(kinds, id: \.self) { kind in
                         HStack(spacing: 6) {
                             ZoneSwatch(kind: kind)
-                            Text(kind.label)
+                            Text(Self.label(of: kind, speeds: speeds))
                                 .lineLimit(1)
                         }
                     }
@@ -2877,7 +2881,7 @@ struct ZoneLegend: View {
                 .foregroundStyle(ScooterPalette.dockText)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(String(localized: "Zones"))
-                .accessibilityValue(kinds.map(\.label).joined(separator: ", "))
+                .accessibilityValue(kinds.map { Self.label(of: $0, speeds: speeds) }.joined(separator: ", "))
             }
             ForEach(lines, id: \.key) { line in
                 HStack(spacing: 6) {
@@ -2932,32 +2936,79 @@ struct ZoneLegend: View {
     /// Each kind once, the strongest rule first: the operators' while they are drawn, unless a note
     /// stands for them, and those of the cities' rules that hold at all hours.
     func kinds(besideNote: Bool) -> [ScooterZoneKind] {
-        let operators = !besideNote && state != .off && !(state == .shown && count == 0)
+        let operators = namesOperatorKinds(besideNote: besideNote)
         return ScooterZoneKind.allCases.filter { kind in
             (operators && ScooterZoneKind.operatorKinds.contains(kind))
                 || rules.contains { $0.rule.kind == kind && $0.rule.hours.isEmpty && $0.inForce }
         }
     }
 
+    /// The limits "Slow" says among the kinds: the operators' slow zones' while their kinds are named, and
+    /// those of the cities' slow rules that hold at all hours.
+    func kindSpeeds(besideNote: Bool) -> ScooterZoneSpeeds {
+        var speeds = namesOperatorKinds(besideNote: besideNote) ? slowSpeeds : ScooterZoneSpeeds()
+        for shown in rules where shown.rule.kind == .slow && shown.rule.hours.isEmpty && shown.inForce {
+            speeds.add(shown.rule.maxSpeedKph)
+        }
+        return speeds
+    }
+
+    private func namesOperatorKinds(besideNote: Bool) -> Bool {
+        !besideNote && state != .off && !(state == .shown && count == 0)
+    }
+
     /// A line for each of the cities' rules whose hours set it apart, or that does not hold yet, by kind,
-    /// hours and whether they hold now, the strongest rule first: "No riding 12:00–23:00",
-    /// "No riding (not now)".
+    /// hours and whether they hold now, the strongest rule first, a slow one's with the limit of its own
+    /// zones: "No riding 12:00–23:00", "Slow: 12 km/h (not now)".
     var ruleLines: [(key: String, kind: ScooterZoneKind, inForce: Bool, timed: Bool, text: String)] {
-        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, timed: Bool, text: String)] = []
+        var lines: [(key: String, kind: ScooterZoneKind, inForce: Bool, hours: String, speeds: ScooterZoneSpeeds)] = []
         // Hundreds of a city's zones may be in view, and make a few lines.
-        var keys = Set<String>()
+        var indices: [String: Int] = [:]
         for kind in ScooterZoneKind.allCases {
             for shown in rules where shown.rule.kind == kind && !(shown.rule.hours.isEmpty && shown.inForce) {
                 let hours = shown.rule.hours.map { "\(Self.wallTime($0.fromMinute))–\(Self.wallTime($0.untilMinute))" }
                     .joined(separator: ", ")
                 let key = "\(kind.rawValue) \(hours) \(shown.inForce)"
-                guard keys.insert(key).inserted else { continue }
-                var text = hours.isEmpty ? kind.label : "\(kind.label) \(hours)"
-                if !shown.inForce { text += " (\(String(localized: "not now")))" }
-                lines.append((key, kind, shown.inForce, !hours.isEmpty, text))
+                let index = indices[key] ?? lines.count
+                if index == lines.count {
+                    indices[key] = index
+                    lines.append((key, kind, shown.inForce, hours, ScooterZoneSpeeds()))
+                }
+                if kind == .slow { lines[index].speeds.add(shown.rule.maxSpeedKph) }
             }
         }
-        return lines
+        return lines.map { line in
+            let label = Self.label(of: line.kind, speeds: line.speeds)
+            var text = line.hours.isEmpty ? label : "\(label) \(line.hours)"
+            if !line.inForce { text += " (\(String(localized: "not now")))" }
+            return (line.key, line.kind, line.inForce, !line.hours.isEmpty, text)
+        }
+    }
+
+    /// The kind's name, which VoiceOver reads too; a slow one's with the limits of the zones it counts where
+    /// each has one: "Slow: 6 km/h", "Slow: 6–15 km/h".
+    static func label(of kind: ScooterZoneKind, speeds: ScooterZoneSpeeds, locale: Locale = ScooterLanguage.current.locale) -> String {
+        guard kind == .slow, let range = speeds.known else { return kind.label }
+        return String(format: String(localized: "Slow: %@"), speedText(range, locale: locale))
+    }
+
+    /// "6 km/h", or from the least to the greatest, "6–15 km/h"; in mph where the region measures distances in
+    /// miles ("10 mph"), each rounded to a whole number once converted, as on the web (formatSpeedLimits).
+    static func speedText(_ range: ClosedRange<Double>, locale: Locale = ScooterLanguage.current.locale) -> String {
+        let miles = locale.measurementSystem != .metric
+        let unit: UnitSpeed = miles ? .milesPerHour : .kilometersPerHour
+        let whole = { (kph: Double) in (miles ? kph / 1.609344 : kph).rounded() }
+        let least = whole(range.lowerBound)
+        let greatest = whole(range.upperBound)
+        let formatter = MeasurementFormatter()
+        formatter.locale = locale
+        formatter.unitOptions = .providedUnit
+        // "6 km/h", as the web's short unit; .short writes "6km/h".
+        formatter.unitStyle = .medium
+        formatter.numberFormatter.maximumFractionDigits = 0
+        let withUnit = formatter.string(from: Measurement(value: greatest, unit: unit))
+        guard least != greatest else { return withUnit }
+        return "\(least.formatted(.number.precision(.fractionLength(0)).locale(locale)))–\(withUnit)"
     }
 
     /// Who sets the cities' rules, each once, the strongest rule's first, linked to where they say so:

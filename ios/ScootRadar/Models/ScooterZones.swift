@@ -44,6 +44,36 @@ struct ScooterZone: Equatable, Sendable, Identifiable {
     var timed = false
 }
 
+/// The limits of the slow zones a line of the zones' legend counts, in km/h, as on the web (ZoneLegend.tsx):
+/// the least and the greatest, and whether one of them has none, where the line says "Slow" alone.
+struct ScooterZoneSpeeds: Equatable, Sendable {
+    /// The least and the greatest limit; nil while none is counted.
+    private(set) var range: ClosedRange<Double>?
+    /// One of the zones counted has no limit.
+    private(set) var hasZoneWithout = false
+
+    init() {}
+
+    /// Those of the slow zones among the zones.
+    init(slowZonesOf zones: some Sequence<ScooterZone>) {
+        for zone in zones where zone.kind == .slow { add(zone.maxSpeedKph) }
+    }
+
+    /// Counts a slow zone with its limit, or without one.
+    mutating func add(_ speed: Double?) {
+        guard let speed, speed.isFinite else {
+            hasZoneWithout = true
+            return
+        }
+        range = range.map { min($0.lowerBound, speed) ... max($0.upperBound, speed) } ?? speed ... speed
+    }
+
+    /// The least and the greatest where every zone counted has a limit; nil where one has none, or none is counted.
+    var known: ClosedRange<Double>? {
+        hasZoneWithout ? nil : range
+    }
+}
+
 struct ScooterZoneResponse: Equatable, Sendable {
     var zones: [ScooterZone]
     /// Some feeds' zones are still on their way: ask again in a few seconds.
@@ -229,7 +259,7 @@ enum ScooterZoneLook {
 /// Seoul's kickboard-free streets, Antalya's boulevard, and Bergen's and Porto's zones, credited to the city. Unlike
 /// the operators' zones they are the law, so the map draws them from zoom 14 whether or not the
 /// zones are on, each as its kind's zones are and dimmer outside its hours, and the legend gives
-/// their kind, their hours and who sets them, linked to where they say so. CityRuleZone.all,
+/// their kind, a slow one's speed, their hours and who sets them, linked to where they say so. CityRuleZone.all,
 /// the streets, and CityRuleZone.cityZones are generated, the cities' zones as a JSON file in
 /// the app (CityZoneFile.builtIn).
 struct CityRuleZone: Equatable, Sendable, Identifiable {
@@ -253,7 +283,7 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
         /// As the map draws it: a zone of its kind, dimmer outside its hours, hatched the other way if it has any.
         var mapZone: ScooterZone {
             ScooterZone(
-                id: "rule:\(rule.id)", provider: "city", kind: rule.kind, maxSpeedKph: nil, polygons: rule.polygons,
+                id: "rule:\(rule.id)", provider: "city", kind: rule.kind, maxSpeedKph: rule.maxSpeedKph, polygons: rule.polygons,
                 strength: inForce ? 1 : CityRuleZone.dimmed, timed: !rule.hours.isEmpty
             )
         }
@@ -275,6 +305,8 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     let timeZone: String
     /// What it asks of a scooter: no riding, or riding slowly.
     let kind: ScooterZoneKind
+    /// The speed a slow one sets, where the city gives one: Linköping's 6 km/h. A city's zone has none.
+    let maxSpeedKph: Double?
     /// The local day it starts, "YYYY-MM-DD"; empty for one that has always held, as a city's zone.
     let firstDay: String
     /// Every day; all day when empty.
@@ -293,13 +325,14 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
 
     /// A street where riding is forbidden, or slow.
     init(
-        id: String, authority: String, timeZone: String, kind: ScooterZoneKind = .noRide, firstDay: String, hours: [Hours],
-        source: URL, lines: [[GeoPoint]]
+        id: String, authority: String, timeZone: String, kind: ScooterZoneKind = .noRide, maxSpeedKph: Double? = nil,
+        firstDay: String, hours: [Hours], source: URL, lines: [[GeoPoint]]
     ) {
         self.id = id
         self.authority = authority
         self.timeZone = timeZone
         self.kind = kind
+        self.maxSpeedKph = maxSpeedKph
         self.firstDay = firstDay
         self.hours = hours
         self.source = source
@@ -312,13 +345,14 @@ struct CityRuleZone: Equatable, Sendable, Identifiable {
     /// An area, one ring: one of a city's zones, which holds all day, every day; or an area traced on
     /// OpenStreetMap where a city forbids riding or asks scooters to go slowly, from its first day, within its hours.
     init(
-        id: String, authority: String, timeZone: String, kind: ScooterZoneKind, firstDay: String = "", hours: [Hours] = [],
-        source: URL, ring: [GeoPoint]
+        id: String, authority: String, timeZone: String, kind: ScooterZoneKind, maxSpeedKph: Double? = nil, firstDay: String = "",
+        hours: [Hours] = [], source: URL, ring: [GeoPoint]
     ) {
         self.id = id
         self.authority = authority
         self.timeZone = timeZone
         self.kind = kind
+        self.maxSpeedKph = maxSpeedKph
         self.firstDay = firstDay
         self.hours = hours
         self.source = source

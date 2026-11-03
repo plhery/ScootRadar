@@ -5434,25 +5434,25 @@ extension CityRuleZone {
         ),
         CityRuleZone(
             id: "calgary-4-street-sw-mission", authority: "City of Calgary, lines © OpenStreetMap",
-            timeZone: "America/Edmonton", kind: .slow, firstDay: "", hours: [],
+            timeZone: "America/Edmonton", kind: .slow, maxSpeedKph: 15, firstDay: "", hours: [],
             source: URL(string: "https://www.calgary.ca/bike-walk-roll/electric-scooters.html")!,
             lines: points(calgary4StreetSwMissionLines)
         ),
         CityRuleZone(
             id: "calgary-9-avenue-se-inglewood", authority: "City of Calgary, lines © OpenStreetMap",
-            timeZone: "America/Edmonton", kind: .slow, firstDay: "", hours: [],
+            timeZone: "America/Edmonton", kind: .slow, maxSpeedKph: 15, firstDay: "", hours: [],
             source: URL(string: "https://www.calgary.ca/bike-walk-roll/electric-scooters.html")!,
             lines: points(calgary9AvenueSeInglewoodLines)
         ),
         CityRuleZone(
             id: "calgary-8-avenue-sw-downtown", authority: "City of Calgary, lines © OpenStreetMap",
-            timeZone: "America/Edmonton", kind: .slow, firstDay: "", hours: [],
+            timeZone: "America/Edmonton", kind: .slow, maxSpeedKph: 15, firstDay: "", hours: [],
             source: URL(string: "https://www.calgary.ca/bike-walk-roll/electric-scooters.html")!,
             lines: points(calgary8AvenueSwDowntownLines)
         ),
         CityRuleZone(
             id: "calgary-10-street-nw-kensington", authority: "City of Calgary, lines © OpenStreetMap",
-            timeZone: "America/Edmonton", kind: .slow, firstDay: "", hours: [],
+            timeZone: "America/Edmonton", kind: .slow, maxSpeedKph: 15, firstDay: "", hours: [],
             source: URL(string: "https://www.calgary.ca/bike-walk-roll/electric-scooters.html")!,
             lines: points(calgary10StreetNwKensingtonLines)
         ),
@@ -5542,103 +5542,103 @@ extension CityRuleZone {
         ),
         CityRuleZone(
             id: "warsaw-chmielna", authority: "Warsaw ZDM, lines © OpenStreetMap",
-            timeZone: "Europe/Warsaw", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: 12, firstDay: "", hours: [],
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             lines: points(warsawChmielnaLines)
         ),
         CityRuleZone(
             id: "warsaw-zlota", authority: "Warsaw ZDM, lines © OpenStreetMap",
-            timeZone: "Europe/Warsaw", kind: .slow, firstDay: "2026-05-22", hours: [],
+            timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: 12, firstDay: "2026-05-22", hours: [],
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             lines: points(warsawZlotaLines)
         ),
         CityRuleZone(
             id: "warsaw-zgoda", authority: "Warsaw ZDM, lines © OpenStreetMap",
-            timeZone: "Europe/Warsaw", kind: .slow, firstDay: "2026-05-22", hours: [],
+            timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: 12, firstDay: "2026-05-22", hours: [],
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             lines: points(warsawZgodaLines)
         ),
         CityRuleZone(
             id: "warsaw-bracka", authority: "Warsaw ZDM, lines © OpenStreetMap",
-            timeZone: "Europe/Warsaw", kind: .slow, firstDay: "2026-05-22", hours: [],
+            timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: 12, firstDay: "2026-05-22", hours: [],
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             lines: points(warsawBrackaLines)
         ),
         CityRuleZone(
             id: "warsaw-plac-centralny", authority: "Warsaw ZDM, lines © OpenStreetMap",
-            timeZone: "Europe/Warsaw", kind: .slow, firstDay: "2026-05-22", hours: [],
+            timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: 12, firstDay: "2026-05-22", hours: [],
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             ring: ring(warsawPlacCentralnyRing)
         ),
         CityRuleZone(
             id: "warsaw-kladka-abakanowicz", authority: "Warsaw ZDM, lines © OpenStreetMap",
-            timeZone: "Europe/Warsaw", kind: .slow, firstDay: "2026-05-22", hours: [],
+            timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: 12, firstDay: "2026-05-22", hours: [],
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             lines: points(warsawKladkaAbakanowiczLines)
         ),
         CityRuleZone(
             id: "linkoping-hantverkaregatan", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingHantverkaregatanLines)
         ),
         CityRuleZone(
             id: "linkoping-borgmastaregatan", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingBorgmastaregatanLines)
         ),
         CityRuleZone(
             id: "linkoping-bokhallaregatan", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingBokhallaregatanLines)
         ),
         CityRuleZone(
             id: "linkoping-hospitalsgrand", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingHospitalsgrandLines)
         ),
         CityRuleZone(
             id: "linkoping-stora-badstugatan", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingStoraBadstugatanLines)
         ),
         CityRuleZone(
             id: "linkoping-torggatan", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingTorggatanLines)
         ),
         CityRuleZone(
             id: "linkoping-tanneforsgatan", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             lines: points(linkopingTanneforsgatanLines)
         ),
         CityRuleZone(
             id: "linkoping-stora-torget", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             ring: ring(linkopingStoraTorgetRing)
         ),
         CityRuleZone(
             id: "linkoping-hospitalstorget", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             ring: ring(linkopingHospitalstorgetRing)
         ),
         CityRuleZone(
             id: "linkoping-lilla-torget", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             ring: ring(linkopingLillaTorgetRing)
         ),
         CityRuleZone(
             id: "linkoping-farbror-melins-torg", authority: "Linköpings kommun, lines © OpenStreetMap",
-            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            timeZone: "Europe/Stockholm", kind: .slow, maxSpeedKph: 6, firstDay: "", hours: [],
             source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
             ring: ring(linkopingFarbrorMelinsTorgRing)
         ),

@@ -419,8 +419,8 @@ struct ScooterMapScreen: View {
     private var zoneLegend: some View {
         if model.zoneState != .off || !model.mapRuleZones.isEmpty || !model.mapZoneNotices.isEmpty {
             ZoneLegend(
-                state: model.zoneState, count: model.mapOperatorZoneCount, rules: model.mapRuleZones,
-                notices: model.mapZoneNotices
+                state: model.zoneState, count: model.mapOperatorZoneCount, slowSpeeds: model.mapOperatorSlowSpeeds,
+                rules: model.mapRuleZones, notices: model.mapZoneNotices
             )
                 .onGeometryChange(for: CGRect.self) { geometry in
                     geometry.frame(in: .global)

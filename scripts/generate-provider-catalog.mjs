@@ -475,7 +475,7 @@ function validateRuleZone(zone) {
   if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(zone.id) || ruleZoneIds.has(zone.id)) throw new Error(`Invalid rule zone id: ${zone.id}`);
   ruleZoneIds.add(zone.id);
   if (zone.rule !== 'noRide' && zone.rule !== 'slow') throw new Error(`Unknown rule: ${zone.rule} (${zone.id})`);
-  // The speed a city sets, kept for the record: the apps don't show it yet, nor the website.
+  // The speed a city sets, which the zones' legend shows, on the website and in the apps: "Slow: 6 km/h".
   if (zone.maxSpeedKph !== undefined && (zone.rule !== 'slow' || !Number.isInteger(zone.maxSpeedKph) ||
     zone.maxSpeedKph < 1 || zone.maxSpeedKph > 25)) throw new Error(`Invalid rule zone speed: ${zone.id}`);
   // A rule with no first day, as Chicago's trails, holds since always: the apps read an empty one so.
@@ -502,8 +502,9 @@ function swiftRuleZones() {
     validateRuleZone(zone);
     const hours = (zone.hours ?? []).map(({ from, until }) => `.init(fromMinute: ${time(from)}, untilMinute: ${time(until)})`);
     const head = `        CityRuleZone(\n            id: ${JSON.stringify(zone.id)}, authority: ${JSON.stringify(zone.authority)},\n` +
-      // A street forbids riding unless it says otherwise; an area always says.
+      // A street forbids riding unless it says otherwise; an area always says. A slow one's speed follows, where it has one.
       `            timeZone: ${JSON.stringify(zone.timeZone)},${zone.rule === 'noRide' && !zone.ring ? '' : ` kind: .${zone.rule},`}` +
+      `${zone.maxSpeedKph === undefined ? '' : ` maxSpeedKph: ${zone.maxSpeedKph},`}` +
       ` firstDay: ${JSON.stringify(zone.from ?? '')}, hours: [${hours.join(', ')}],\n` +
       `            source: URL(string: ${JSON.stringify(zone.source.url)})!,\n`;
     if (zone.ring) {
@@ -703,6 +704,7 @@ function kotlinCatalogData() {
       source: zone.source.url,
       // A street's centrelines, or an area's ring.
       ...(zone.rule === 'noRide' ? {} : { kind: zone.rule }),
+      ...(zone.maxSpeedKph === undefined ? {} : { maxSpeedKph: zone.maxSpeedKph }),
       ...(zone.ring ? { ring: zone.ring.flat() } : { lines: zone.lines.map(line => line.flat()) }),
     }))),
     // The zones were checked as the Swift catalog was written.

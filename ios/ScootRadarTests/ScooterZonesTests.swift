@@ -99,6 +99,39 @@ final class ScooterZonesTests: XCTestCase {
     }
 }
 
+extension ScooterZonesTests {
+    func testTheLegendsSpeedsAreTheLeastAndGreatestUnlessAZoneHasNone() {
+        XCTAssertNil(ScooterZoneSpeeds().known)
+        XCTAssertEqual(speeds(6).known, 6 ... 6)
+        XCTAssertEqual(speeds(12, 6, 15).known, 6 ... 15)
+        // One zone without a speed, and "Slow" says none.
+        XCTAssertNil(speeds(6, nil, 15).known)
+        XCTAssertNil(speeds(.nan).known)
+        let ring = [GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.55)]
+        let zones = [
+            ScooterZone(id: "lime:slow", provider: "lime", kind: .slow, maxSpeedKph: 10, polygons: [[ring]]),
+            ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]]),
+            ScooterZone(id: "bird:slow", provider: "bird", kind: .slow, maxSpeedKph: 20, polygons: [[ring]])
+        ]
+        XCTAssertEqual(ScooterZoneSpeeds(slowZonesOf: zones).known, 10 ... 20)
+        let without = ScooterZone(id: "voi:slow", provider: "voi", kind: .slow, maxSpeedKph: nil, polygons: [[ring]])
+        XCTAssertNil(ScooterZoneSpeeds(slowZonesOf: zones + [without]).known)
+        XCTAssertEqual(ScooterZoneSpeeds(slowZonesOf: zones.filter { $0.kind == .noRide }), ScooterZoneSpeeds())
+    }
+}
+
+/// The speeds of zones, in km/h, as the legend sums them up.
+private func speeds(_ kph: Double?...) -> ScooterZoneSpeeds {
+    var speeds = ScooterZoneSpeeds()
+    for speed in kph { speeds.add(speed) }
+    return speeds
+}
+
+/// ICU's spaces, before a unit in French, as plain ones.
+private func plainSpaces(_ text: String) -> String {
+    text.replacingOccurrences(of: "\u{00A0}", with: " ").replacingOccurrences(of: "\u{202F}", with: " ")
+}
+
 final class ScooterZoneOverlayTests: XCTestCase {
     func testTheSameRuleOfSeveralOperatorsIsOneShapeWithinOneEdge() throws {
         let overlay = ScooterZoneOverlay(zones: [
@@ -393,6 +426,39 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertEqual(model.mapOperatorZoneCount, 1)
     }
 
+    func testTheLegendSaysTheLimitsOfTheOperatorsSlowZonesDrawn() async {
+        // Lime's at 15 km/h and Bird's at 20: "Slow: 15–20 km/h", then Lime's alone, and none where one has no limit.
+        let porto = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 41.147, longitude: -8.611),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+        let ring = [
+            GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54),
+            GeoPoint(latitude: 47.38, longitude: 8.55), GeoPoint(latitude: 47.37, longitude: 8.54)
+        ]
+        let slow = { (provider: String, kph: Double?) in
+            ScooterZone(id: "\(provider):slow", provider: provider, kind: .slow, maxSpeedKph: kph, polygons: [[ring]])
+        }
+        let api = ZoneStubAPI(more: [slow("lime", 15), slow("bird", 20)])
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(porto, zoom: 16)
+        let shown = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+
+        XCTAssertEqual(model.mapOperatorSlowSpeeds.known, 15 ... 20)
+        model.showProviders([.lime])
+        XCTAssertEqual(model.mapOperatorSlowSpeeds.known, 15 ... 15)
+
+        let without = ZoneStubAPI(more: [slow("lime", 15), slow("bird", nil)])
+        let other = makeModel(api: without)
+        other.showsZones = true
+        other.updateViewport(porto, zoom: 16)
+        let otherShown = await waitUntil { await without.zoneAreas().count == 1 && other.zoneState == .shown }
+        XCTAssertTrue(otherShown)
+        XCTAssertNil(other.mapOperatorSlowSpeeds.known)
+    }
+
     private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil, now: @escaping () -> Date = Date.init) -> ScooterMapModel {
         ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(), now: now)
     }
@@ -419,9 +485,15 @@ final class ScooterZonesModelTests: XCTestCase {
     }
 }
 
+/// Lime's no riding and Bird's no parking, and `more` after them.
 private actor ZoneStubAPI: ScooterAPIClient {
     private var failure: ScooterAPIError?
     private var areas: [ScooterZoneArea] = []
+    private let more: [ScooterZone]
+
+    init(more: [ScooterZone] = []) {
+        self.more = more
+    }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
         ScooterResponse(vehicles: [])
@@ -437,7 +509,7 @@ private actor ZoneStubAPI: ScooterAPIClient {
         return ScooterZoneResponse(zones: [
             ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]]),
             ScooterZone(id: "bird:0", provider: "bird", kind: .noParking, maxSpeedKph: nil, polygons: [[ring]])
-        ], pending: false, truncated: false)
+        ] + more, pending: false, truncated: false)
     }
 
     func zoneAreas() -> [ScooterZoneArea] { areas }
@@ -646,6 +718,19 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(Set(CityRuleZone.onMap.map(\.id)).count, CityRuleZone.onMap.count)
     }
 
+    func testTheCatalogCarriesTheSpeedEachCitySetsToTheMapsZones() throws {
+        // The legend's "Slow: 6 km/h": Linköping's 6, Warsaw's 12 and Calgary's 15 from data/rule-zones.json, and
+        // none where the city gives none, as on Gävle's Drottninggatan.
+        let rule = { (id: String) in try XCTUnwrap(CityRuleZone.all.first { $0.id == id }, id) }
+        XCTAssertEqual(try rule("linkoping-stora-torget").maxSpeedKph, 6)
+        XCTAssertEqual(try rule("warsaw-chmielna").maxSpeedKph, 12)
+        XCTAssertEqual(try rule("calgary-8-avenue-sw-downtown").maxSpeedKph, 15)
+        XCTAssertNil(try rule("gavle-drottninggatan").maxSpeedKph)
+        XCTAssertTrue(CityRuleZone.all.filter { $0.maxSpeedKph != nil }.allSatisfy { $0.kind == .slow })
+        XCTAssertTrue(CityRuleZone.cityZones.allSatisfy { $0.maxSpeedKph == nil })
+        XCTAssertEqual(CityRuleZone.Shown(rule: try rule("linkoping-stora-torget"), inForce: true).mapZone.maxSpeedKph, 6)
+    }
+
     func testBergensAndPortosZonesAreThereByKind() {
         // Which cities have zones, of which kinds and how many, is data/'s, read again from the cities, and Android's
         // CatalogParityTest holds it to this catalog: here, what holds of every city's. Each zone is its city's, which
@@ -840,6 +925,100 @@ final class CityRuleZoneTests: XCTestCase {
         XCTAssertEqual(zoomIn.kinds(besideNote: true), [.parking])
         // No city: no credit.
         XCTAssertNil(ZoneLegend(state: .shown, count: 12).credit)
+    }
+
+    /// A slow street of Warsaw's, at `kph` where the city gives a speed, within `hours` where it has some.
+    private func warsaw(_ id: String, _ kph: Double?, hours: [CityRuleZone.Hours] = []) throws -> CityRuleZone {
+        CityRuleZone(
+            id: "warsaw-\(id)", authority: "Warszawa", timeZone: "Europe/Warsaw", kind: .slow, maxSpeedKph: kph,
+            firstDay: "", hours: hours, source: try XCTUnwrap(URL(string: "https://example.com/warsaw")),
+            lines: [[GeoPoint(latitude: 52.23, longitude: 21.0), GeoPoint(latitude: 52.23, longitude: 21.003)]]
+        )
+    }
+
+    @MainActor
+    func testSlowSaysTheLimitOfTheSlowZonesItCounts() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        let swiss = Locale(identifier: "en_CH")
+        // One speed: Linköping's 6 km/h, and 6.4 rounded to the same.
+        XCTAssertEqual(ZoneLegend.label(of: .slow, speeds: speeds(6), locale: swiss), "Slow: 6 km/h")
+        XCTAssertEqual(ZoneLegend.label(of: .slow, speeds: speeds(6, 6.4), locale: swiss), "Slow: 6 km/h")
+        // Several: from the least to the greatest.
+        XCTAssertEqual(ZoneLegend.label(of: .slow, speeds: speeds(12, 6, 15), locale: swiss), "Slow: 6–15 km/h")
+        // One zone without a speed, or none at all: plain "Slow".
+        XCTAssertEqual(ZoneLegend.label(of: .slow, speeds: speeds(6, nil, 15), locale: swiss), "Slow")
+        XCTAssertEqual(ZoneLegend.label(of: .slow, speeds: ScooterZoneSpeeds(), locale: swiss), "Slow")
+        // Only slow says a speed.
+        XCTAssertEqual(ZoneLegend.label(of: .noRide, speeds: speeds(6), locale: swiss), "No riding")
+
+        // The operators' slow zones while their kinds are named, and the cities' at all hours.
+        let city = [CityRuleZone.Shown(rule: try warsaw("chmielna", 12), inForce: true)]
+        XCTAssertEqual(ZoneLegend(state: .shown, count: 3, slowSpeeds: speeds(10), rules: city).kindSpeeds(besideNote: false).known, 10 ... 12)
+        // The note stands for the operators' kinds: the city's alone.
+        XCTAssertEqual(ZoneLegend(state: .zoomIn, count: 0, slowSpeeds: speeds(10), rules: city).kindSpeeds(besideNote: true).known, 12 ... 12)
+        XCTAssertEqual(ZoneLegend(state: .off, count: 0, slowSpeeds: speeds(10), rules: city).kindSpeeds(besideNote: false).known, 12 ... 12)
+        // A city's street without a speed among them: plain "Slow".
+        let without = city + [CityRuleZone.Shown(rule: try warsaw("zgoda", nil), inForce: true)]
+        XCTAssertNil(ZoneLegend(state: .shown, count: 3, slowSpeeds: speeds(10), rules: without).kindSpeeds(besideNote: false).known)
+        // A city's rule with a line of its own, timed or not now, says its speed there, not among the kinds.
+        let apart = [
+            CityRuleZone.Shown(rule: try warsaw("zlota", 15, hours: [.init(fromMinute: 22 * 60, untilMinute: 6 * 60)]), inForce: true),
+            CityRuleZone.Shown(rule: try warsaw("bracka", 20), inForce: false)
+        ]
+        XCTAssertEqual(ZoneLegend(state: .shown, count: 3, slowSpeeds: speeds(10), rules: apart).kindSpeeds(besideNote: false).known, 10 ... 10)
+    }
+
+    @MainActor
+    func testSlowSaysMilesPerHourWhereTheRegionMeasuresInMiles() {
+        // 12.87 km/h is 8 mph and 16.09 is 10, each rounded once converted; 16 and 16.1 are both 10, said once.
+        XCTAssertEqual(ZoneLegend.speedText(12.87 ... 16.09, locale: Locale(identifier: "en_US")), "8–10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(16 ... 16.1, locale: Locale(identifier: "en_GB")), "10 mph")
+        XCTAssertEqual(ZoneLegend.speedText(6 ... 15, locale: Locale(identifier: "en_CH")), "6–15 km/h")
+        // French writes a narrow space before the unit.
+        XCTAssertEqual(plainSpaces(ZoneLegend.speedText(6 ... 6, locale: Locale(identifier: "fr_US"))), "4 mi/h")
+    }
+
+    @MainActor
+    func testATimedSlowRuleSaysItsSpeedOnItsLine() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        let night: [CityRuleZone.Hours] = [.init(fromMinute: 22 * 60, untilMinute: 6 * 60)]
+        let legend = ZoneLegend(state: .shown, count: 0, rules: [
+            CityRuleZone.Shown(rule: try warsaw("zlota", 12, hours: night), inForce: true),
+            CityRuleZone.Shown(rule: try warsaw("bracka", 15, hours: night), inForce: true),
+            CityRuleZone.Shown(rule: try warsaw("zgoda", nil, hours: [.init(fromMinute: 7 * 60, untilMinute: 9 * 60)]), inForce: true),
+            CityRuleZone.Shown(rule: try warsaw("chmielna", 12), inForce: false)
+        ])
+        let lines = legend.ruleLines
+        XCTAssertEqual(lines.map(\.timed), [true, true, false])
+        guard lines.count == 3 else { return }
+        // "Slow: 12–15 km/h 22:00–06:00", in the user's units and format.
+        let both = ZoneLegend.label(of: .slow, speeds: speeds(12, 15))
+        XCTAssertEqual(both, "Slow: \(ZoneLegend.speedText(12 ... 15))")
+        XCTAssertTrue(lines[0].text.hasPrefix("\(both) "), lines[0].text)
+        XCTAssertTrue(lines[0].text.dropFirst(both.count).contains("–"), lines[0].text)
+        // Without a speed: "Slow 07:00–09:00".
+        XCTAssertTrue(lines[1].text.hasPrefix("Slow "), lines[1].text)
+        XCTAssertFalse(lines[1].text.hasPrefix("Slow:"), lines[1].text)
+        // Not now: "Slow: 12 km/h (not now)".
+        XCTAssertEqual(lines[2].text, "Slow: \(ZoneLegend.speedText(12 ... 12)) (not now)")
+    }
+
+    @MainActor
+    func testSlowSaysItsSpeedInEveryLanguage() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let said: [ScooterLanguage: String] = [
+            .en: "Slow: 6–15 km/h", .de: "Langsam: 6–15 km/h", .fr: "Vitesse réduite : 6–15 km/h",
+            .it: "Velocità ridotta: 6–15 km/h", .nl: "Langzaam: 6–15 km/u", .nb: "Lav fart: 6–15 km/t",
+            .pt: "Velocidade reduzida: 6–15 km/h", .es: "Velocidad reducida: 6–15 km/h", .`is`: "Hægur akstur: 6–15 km/klst."
+        ]
+        XCTAssertEqual(Set(said.keys), Set(ScooterLanguage.allCases))
+        for (language, label) in said {
+            ScooterLanguage.current = language
+            let swiss = Locale(identifier: "\(language.rawValue)_CH")
+            XCTAssertEqual(plainSpaces(ZoneLegend.label(of: .slow, speeds: speeds(6, 15), locale: swiss)), label, language.rawValue)
+        }
     }
 
     @MainActor
