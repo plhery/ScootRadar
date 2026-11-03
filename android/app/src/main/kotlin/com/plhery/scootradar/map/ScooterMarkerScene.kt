@@ -251,8 +251,9 @@ interface MarkerMap {
     val safeTop: Double get() = safeArea.top
 
     /**
-     * The bars over the map's foot and sides, in points: the navigation bar, at the foot or at a side of a phone held
-     * sideways. Not the display's cutout, which the safe area counts along the whole side it is on ([cutouts]).
+     * The bars that cover the map's foot and sides, in points: the 3-button navigation bar, at the foot or at a side of
+     * a phone held sideways, and a pinned taskbar. Not the gesture handle's strip, see-through but for the handle, nor
+     * the display's cutout, which the safe area counts along the whole side it is on ([cutouts]).
      */
     val bars: MapInsets
 
@@ -969,8 +970,8 @@ class ScooterMarkerScene(
 
     /**
      * What covers the map for a cluster's number, in the map's points: the system's bars, the status bar (with a
-     * tablet's window handle) above the safe area, and the navigation bar, at the foot or at a side; the display's
-     * cutouts, each where it is, not down the side it is on; the search bar and the notices under it, the panel, the
+     * tablet's window handle) above the safe area, and the 3-button navigation bar or a pinned taskbar, at the foot or
+     * at a side, not the gesture handle's strip; the display's cutouts, each where it is, not down the side it is on; the search bar and the notices under it, the panel, the
      * fold, the locate button, the zone legend (or its "Zoom in to see the zones") and the dock; and the map's credits.
      * Each frame of the screen's reaches to a side of the map it stands nearer than any count's disc is wide
      * ([reachingSides]), as a tablet's panel 16 in from its side does: no count shows whole in the strip between.

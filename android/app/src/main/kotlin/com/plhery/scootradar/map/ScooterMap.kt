@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.tappableElement
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
@@ -77,11 +78,12 @@ internal fun mapSafeInsets(): MapInsets = mapSafeArea.inPoints()
 
 /**
  * The bars over the map's foot and sides, in its points, which a count is hidden under (ScooterMarkerScene.countChrome):
- * the system's bars, without the display's cutout, a hole at one place along a side rather than a band down it
- * ([mapCutouts]).
+ * those that cover the map and take taps, the 3-button navigation bar and a pinned taskbar (tappableElement). Not the
+ * gesture handle's strip, see-through but for the thin handle, which the iPhone's home indicator is too; nor the
+ * display's cutout, a hole at one place along a side rather than a band down it ([mapCutouts]).
  */
 @Composable
-internal fun mapBars(): MapInsets = WindowInsets.systemBars.inPoints()
+internal fun mapBars(): MapInsets = WindowInsets.tappableElement.inPoints()
 
 @Composable
 private fun WindowInsets.inPoints(): MapInsets {

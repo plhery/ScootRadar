@@ -72,7 +72,7 @@ class CountsClearOfTheChromeTest {
         assertEquals(listOf(status, wideBar, widePanel, fold, legend, dock, credits), scene.countChrome(map))
         assertEquals(listOf(wideBar, widePanel, fold, legend, dock, credits), scene.countChrome(FlatMarkerMap(safeTop = 0.0)))
 
-        // The navigation bar: its three buttons at the foot, or held sideways at a side; the gesture handle's strip.
+        // The 3-button navigation bar: at the foot, or held sideways at a side. Not the gesture handle's strip.
         scene.parent = MarkerParent()
         val buttons = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 48.0)
         assertEquals(listOf(ScreenRect(0.0, 0.0, 360.0, 24.0), ScreenRect(0.0, 592.0, 360.0, 48.0)), scene.countChrome(buttons))
@@ -80,8 +80,8 @@ class CountsClearOfTheChromeTest {
         assertEquals(listOf(ScreenRect(0.0, 0.0, 640.0, 24.0), ScreenRect(592.0, 0.0, 48.0, 360.0)), scene.countChrome(sideways))
         val leftSideways = FlatMarkerMap(width = 640.0, height = 360.0, safeTop = 24.0, safeLeft = 48.0)
         assertEquals(ScreenRect(0.0, 0.0, 48.0, 360.0), scene.countChrome(leftSideways).last())
-        val gestures = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 16.0)
-        assertEquals(ScreenRect(0.0, 624.0, 360.0, 16.0), scene.countChrome(gestures).last())
+        val gestures = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 16.0, bars = MapInsets.zero)
+        assertEquals(listOf(ScreenRect(0.0, 0.0, 360.0, 24.0)), scene.countChrome(gestures))
     }
 
     /**
@@ -142,10 +142,11 @@ class CountsClearOfTheChromeTest {
     /**
      * Phone_Min's three-button navigation bar, under the dock, hides a count as the dock does. With gesture navigation
      * the dock's foot stands 32 over the window's, over the handle's strip, 16 tall: a count below the dock there, cut by
-     * the window's foot, is hidden too. Beside a tablet's panel the handle's strip is all that stands at the foot.
+     * the window's foot, is hidden as the dock reaches the foot. Beside a tablet's panel the handle's strip, see-through
+     * but for the handle, is all that stands at the foot: a count there stays, as under the iPhone's home indicator.
      */
     @Test
-    fun aCountUnderTheNavigationBarOrInTheGestureHandlesStripIsHidden() {
+    fun aCountUnderTheNavigationBarIsHiddenAndOneInTheGestureHandlesStripStays() {
         val buttons = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 48.0)
         scene.parent = MarkerParent(isOverview = true, bottomChromeTop = 400.0, bottomChromeFrames = listOf(ScreenRect(10.0, 400.0, 340.0, 182.0)))
         scene.reconcileClusters(
@@ -163,7 +164,7 @@ class CountsClearOfTheChromeTest {
         assertEquals(listOf("aboveTheDock"), read)
 
         // Gesture navigation: a count of two digits 20 below the dock's foot, its disc clear of the dock.
-        val gestures = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 16.0)
+        val gestures = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 16.0, bars = MapInsets.zero)
         scene.parent = MarkerParent(isOverview = true, bottomChromeTop = 426.0, bottomChromeFrames = listOf(ScreenRect(10.0, 426.0, 340.0, 182.0)))
         scene.reconcileClusters(
             listOf(cluster("handle", gestures.at(200.0, 628.0), 63), cluster("aboveTheDock", gestures.at(180.0, 300.0), 1207)),
@@ -172,14 +173,18 @@ class CountsClearOfTheChromeTest {
         scene.clearCounts(gestures)
         assertEquals(listOf("handle"), scene.clusters().filter { it.isHidden }.map { it.id })
 
-        // Beside a tablet's panel: a count in the handle's strip is hidden, one clear above it stays.
-        val tablet = FlatMarkerMap(width = 1280.0, height = 720.0, safeTop = 24.0, safeBottom = 20.0)
+        // Beside a tablet's panel: a count in the handle's strip stays, as one clear above it; over a pinned taskbar,
+        // 48 tall, the one in it is hidden.
+        val tablet = FlatMarkerMap(width = 1280.0, height = 720.0, safeTop = 24.0, safeBottom = 20.0, bars = MapInsets.zero)
         scene.parent = MarkerParent(isOverview = true, panelFrame = ScreenRect(16.0, 32.0, 340.0, 640.0))
         scene.reconcileClusters(
-            listOf(cluster("strip", tablet.at(700.0, 690.0), 63), cluster("clear", tablet.at(800.0, 680.0), 63)),
+            listOf(cluster("strip", tablet.at(700.0, 690.0), 63), cluster("clear", tablet.at(800.0, 640.0), 63)),
             revision = 3,
         )
         scene.clearCounts(tablet)
+        assertEquals(emptyList<String>(), scene.clusters().filter { it.isHidden }.map { it.id })
+        val taskbar = FlatMarkerMap(width = 1280.0, height = 720.0, safeTop = 24.0, safeBottom = 48.0)
+        scene.clearCounts(taskbar)
         assertEquals(listOf("strip"), scene.clusters().filter { it.isHidden }.map { it.id })
     }
 
