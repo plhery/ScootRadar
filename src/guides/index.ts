@@ -89,6 +89,7 @@ import munsterDe from './de/e-scooter-muenster';
 import kristiansandNb from './nb/elsparkesykkel-kristiansand';
 import fredrikstadNb from './nb/elsparkesykkel-fredrikstad';
 import leHavreFr from './fr/trottinette-electrique-le-havre';
+import saintQuentinEnYvelinesFr from './fr/trottinette-electrique-saint-quentin-en-yvelines';
 import angersFr from './fr/trottinette-electrique-angers';
 import rhodesEn from './en/e-scooters-rhodes';
 import kosEn from './en/e-scooters-kos';
@@ -305,6 +306,7 @@ import helsingborgEn from './en/e-scooters-helsingborg';
 import kansasCityEn from './en/e-scooters-kansas-city';
 import ashdodEn from './en/e-scooters-ashdod';
 import namurFr from './fr/trottinette-electrique-namur';
+import poitiersFr from './fr/trottinette-electrique-poitiers';
 import tulsaEn from './en/e-scooters-tulsa';
 import mobileAlabamaEn from './en/e-scooters-mobile-alabama';
 import szekesfehervarEn from './en/e-scooters-szekesfehervar';
@@ -439,6 +441,7 @@ export const GUIDES: readonly Guide[] = [
   lilleFr,
   grenobleFr,
   leHavreFr,
+  saintQuentinEnYvelinesFr,
   angersFr,
   brusselsFr,
   charleroiFr,
@@ -676,6 +679,7 @@ export const GUIDES: readonly Guide[] = [
   kansasCityEn,
   ashdodEn,
   namurFr,
+  poitiersFr,
   tulsaEn,
   mobileAlabamaEn,
   szekesfehervarEn,
