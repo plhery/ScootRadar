@@ -9,7 +9,7 @@ import { resetPlayTestViews } from '@/lib/usePlayTest';
 import { PlayTestButton, PlayTestCard, PlayTestSite } from './playTest';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
-// The switch is off until the links exist: these tests are of the invitation as it will be.
+// The invitation as it is when switched on, whatever the switch says.
 vi.mock('@/lib/playTest', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/playTest')>()), PLAY_TEST_ON: true }));
 
 const ANDROID = 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36';

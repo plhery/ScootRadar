@@ -278,6 +278,40 @@ test('the landing page leads to the iPhone app, with its code to scan beside the
   );
 });
 
+test.describe('on Android', () => {
+  // Playwright gives Chromium the client hints its user agent names, so this one names Android 14: Chrome's own,
+  // "Android 10; K" on every phone, would be read as Android 10, which the app does not run on.
+  test.use({ userAgent: 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36' });
+
+  test('a guide and the landing page invite the visitor to test the Android app, from the first paint and under the page’s policy', async ({ page }) => {
+    const heard = complaints(page);
+    await page.goto('/guides/e-scooters-zurich');
+    // Marked by the head's script, which the Worker gives the response's nonce.
+    await expect(page.locator('html')).toHaveAttribute('data-android-test', 'offer');
+    const card = page.getByRole('complementary', { name: 'Try our Android app' });
+    await card.getByRole('button', { name: 'Get it early' }).click();
+    const sheet = page.getByRole('dialog', { name: 'Try our Android app' });
+    await expect(sheet.getByRole('link')).toHaveText(['Join', 'Open', 'Install']);
+    await expect(sheet.getByRole('link', { name: 'Join' })).toHaveAttribute('href', 'https://groups.google.com/g/scootradar-android-testers');
+    await page.keyboard.press('Escape');
+    await expect(sheet).toBeHidden();
+    // × hides it for a week, and says so.
+    await card.getByRole('button', { name: 'Not now' }).click();
+    await expect(card).toBeHidden();
+    await expect(page.getByRole('status')).toContainText('Hidden for a week');
+
+    // The landing page's button stays: it is where the iPhone app's was, with its code.
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-android-test', 'quiet');
+    const hero = page.locator('.hero');
+    await expect(hero.getByRole('link', { name: 'Get the iPhone app' })).toBeHidden();
+    await expect(hero.locator('.app-qr')).toBeHidden();
+    await hero.getByRole('button', { name: /^Try the Android app/ }).click();
+    await expect(page.getByRole('dialog', { name: 'Try our Android app' })).toBeVisible();
+    expect(heard).toEqual([]);
+  });
+});
+
 test('the landing page says it is open source under its first button, with a link to the code', async ({ page }) => {
   await page.goto('/fr');
   const code = 'https://github.com/plhery/ScootRadar';
@@ -377,7 +411,7 @@ test('the landing page is accessible, and its targets are big enough for a finge
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
 
-  for (const link of await page.locator('.pill a:visible, .btn, .note a, .footer a').all()) {
+  for (const link of await page.locator('.pill a:visible, .btn:visible, .note a, .footer a').all()) {
     const box = (await link.boundingBox())!;
     expect(box.height, await link.innerText()).toBeGreaterThanOrEqual(38);
   }

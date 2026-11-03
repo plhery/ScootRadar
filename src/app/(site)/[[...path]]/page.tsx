@@ -255,7 +255,8 @@ function AppStoreQr({ copy }: { copy: LandingCopy }) {
   const quiet = 3;
   const side = APP_STORE_QR.size + 2 * quiet;
   return (
-    <div className="app-qr">
+    // The App Store's code goes with its button where the Android app's test takes its place.
+    <div className="app-qr play-ios">
       <svg viewBox={`${-quiet} ${-quiet} ${side} ${side}`} shapeRendering="crispEdges" aria-hidden="true">
         <path d={APP_STORE_QR.path} />
       </svg>

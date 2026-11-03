@@ -13,8 +13,11 @@
 // first touch, and a row in Settings › About; a guide shows a card under its
 // headline; the landing page's iPhone button becomes an Android one.
 
-/** The switch: off, the site says nothing of the test anywhere. */
-export const PLAY_TEST_ON = false;
+/**
+ * The switch: off, the site says nothing of the test anywhere. On since 3 November 2026, once the
+ * group and Play's opt-in page existed.
+ */
+export const PLAY_TEST_ON = true;
 
 /** Where each step leads. */
 export const PLAY_TEST_LINKS = {
