@@ -173,18 +173,43 @@ class Gains<T extends { gain: number }> {
   }
 }
 
-/** The page smallest of the distances fed to it, to read the last of them: BinBin's tenth. */
+/**
+ * The page-th smallest of the distances fed to it: BinBin's tenth, Bird's 250th. They are kept as
+ * they come and the page-th is selected once, in linear time: kept in order as they came, a town of
+ * 1,900 scooters took 2.4 s of a sweep's plan, each of its 20,000 points shifting 250 distances
+ * hundreds of times (3 November 2026).
+ */
 class Nearest {
-  readonly distances: number[] = [];
+  private distances = new Float64Array(64);
+  private count = 0;
   constructor(private readonly page: number) {}
   add(distance: number) {
-    const distances = this.distances, page = this.page;
-    if (distances.length === page && distance >= distances[page - 1]) return;
-    let index = distances.length < page ? distances.length : page - 1;
-    while (index > 0 && distances[index - 1] > distance) { distances[index] = distances[index - 1]; index--; }
-    distances[index] = distance;
+    if (this.count === this.distances.length) {
+      const grown = new Float64Array(this.count * 2);
+      grown.set(this.distances);
+      this.distances = grown;
+    }
+    this.distances[this.count++] = distance;
   }
-  get last() { return this.distances.length === this.page ? this.distances[this.page - 1] : Infinity; }
+  get last() { return this.count < this.page ? Infinity : select(this.distances, this.count, this.page - 1); }
+}
+
+/** The k-th smallest (from 0) of the first n values, which it reorders: Hoare's selection. */
+function select(values: Float64Array, n: number, k: number): number {
+  let low = 0, high = n - 1;
+  while (low < high) {
+    const pivot = values[(low + high) >> 1];
+    let i = low, j = high;
+    while (i <= j) {
+      while (values[i] < pivot) i++;
+      while (values[j] > pivot) j--;
+      if (i <= j) { const swap = values[i]; values[i] = values[j]; values[j] = swap; i++; j--; }
+    }
+    if (k <= j) high = j;
+    else if (k >= i) low = i;
+    else return values[k];
+  }
+  return values[k];
 }
 // A grid square's key, for squares within 2,048 of the middle each way.
 const square = (i: number, j: number) => (i + 2048) * 4096 + j + 2048;
@@ -233,14 +258,15 @@ export async function planNearestSweep(map: NearestMap, rings: readonly Ring[], 
       const nearest = new Nearest(map.page);
       for (let i = gx - reach; i <= gx + reach; i++) for (let j = gy - reach; j <= gy + reach; j++) {
         const bucket = scooters.get(square(i, j));
-        if (bucket) for (let k = 0; k < bucket.length; k += 2) nearest.add(Math.hypot(bucket[k] - px, bucket[k + 1] - py));
+        if (bucket) for (let k = 0; k < bucket.length; k += 2) nearest.add((bucket[k] - px) ** 2 + (bucket[k + 1] - py) ** 2);
       }
-      // The squares searched hold every scooter nearer than their edge.
-      if (nearest.last <= reach * G) return nearest.last;
+      // The squares searched hold every scooter nearer than their edge. Distances go in squared.
+      const last = Math.sqrt(nearest.last);
+      if (last <= reach * G) return last;
     }
     const nearest = new Nearest(map.page);
-    for (const [sx, sy] of all) nearest.add(Math.hypot(sx - px, sy - py));
-    return Math.min(nearest.last, map.reachM);
+    for (const [sx, sy] of all) nearest.add((sx - px) ** 2 + (sy - py) ** 2);
+    return Math.min(Math.sqrt(nearest.last), map.reachM);
   };
   // The samples by 500 m square, each square counting those no pick reaches yet.
   const S = 500;
@@ -260,10 +286,14 @@ export async function planNearestSweep(map: NearestMap, rings: readonly Ring[], 
     for (let i = Math.floor((px - r) / S); i <= Math.floor((px + r) / S); i++) for (let j = Math.floor((py - r) / S); j <= Math.floor((py + r) / S); j++) {
       const found = squares.get(square(i, j));
       if (!found?.open) continue;
-      const whole = Math.hypot(Math.abs((i + 0.5) * S - px) + S / 2, Math.abs((j + 0.5) * S - py) + S / 2) <= r;
+      const dx = Math.abs((i + 0.5) * S - px), dy = Math.abs((j + 0.5) * S - py);
+      // Squares wholly beyond it, the corners of a wide circle's box, hold none of its samples.
+      if (Math.hypot(Math.max(dx - S / 2, 0), Math.max(dy - S / 2, 0)) > r + 1) continue;
+      const whole = Math.hypot(dx + S / 2, dy + S / 2) <= r;
       if (whole && !mark) { count += found.open; continue; }
-      for (let k = 0; k < found.xs.length; k++) {
-        if (found.reached[k] || (!whole && Math.hypot(found.xs[k] - px, found.ys[k] - py) > r)) continue;
+      const xs = found.xs, ys = found.ys, reached = found.reached, r2 = r * r;
+      for (let k = 0; k < xs.length; k++) {
+        if (reached[k] || (!whole && (xs[k] - px) ** 2 + (ys[k] - py) ** 2 > r2)) continue;
         count++;
         if (mark) { found.reached[k] = 1; found.open--; }
       }
