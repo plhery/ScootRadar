@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'monopattini-sharing-verona',
   topic: 'verona',
   name: 'Monopattini sharing a Verona',
-  title: 'Monopattini sharing Verona 2026: Dott, Lime, prezzi, sosta',
-  description: 'Monopattini sharing a Verona nel 2026: Dott e Lime, prezzi, dove parcheggiare in centro e in piazza Bra, ZTL, Arena, bus ATV, treni e multe.',
-  headline: 'Monopattini sharing a Verona: operatori, prezzi, sosta, bus e multe nel 2026',
-  lede: 'I monopattini sharing a Verona, a ottobre 2026, sono quelli di Dott e Lime, che trovi sulla mappa: due dei tre operatori scelti dal Comune nel 2021. Dott chiede 18 anni e un documento d’identità, e il casco, obbligatorio per tutti, lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app. Si guida su strada e sulle piste ciclabili, mai sul marciapiede; nel centro storico, scrive il Comune, si parcheggia solo negli stalli dedicati o negli spazi scooter autorizzati.',
+  title: 'Monopattini sharing Verona 2026: Dott, Lime, sosta, regole',
+  description: 'Monopattini sharing a Verona nel 2026: Dott e Lime, dove parcheggiare in centro e in piazza Bra, ZTL, Arena, bus ATV, treni e multe.',
+  headline: 'Monopattini sharing a Verona: operatori, sosta, bus e multe nel 2026',
+  lede: 'I monopattini sharing a Verona, a ottobre 2026, sono quelli di Dott e Lime, che trovi sulla mappa: due dei tre operatori scelti dal Comune nel 2021. L’età minima e il prezzo te li mostra l’app prima dello sblocco, e il casco, obbligatorio per tutti, lo porti tu. Si guida su strada e sulle piste ciclabili, mai sul marciapiede; nel centro storico, scrive il Comune, si parcheggia solo negli stalli dedicati o negli spazi scooter autorizzati.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'it:Verona',
@@ -17,20 +17,20 @@ const guide: Guide = {
       heading: 'Quali monopattini in sharing ci sono a Verona',
       blocks: [
         'Con la delibera di Giunta 61 del 16 febbraio 2021 il Comune ha aperto il noleggio di monopattini in free floating: al massimo tre operatori, con «un numero minimo di 300 monopattini per operatore» e «un massimo di 400», per «un tetto massimo complessivo di 1200 dispositivi» in tutto il Comune, che può salire a 1.500 «in occasione di particolari eventi». Con la determina 4458 del 5 ottobre 2021, come ricorda una determina del 2025, ha scelto **Bit Mobility**, **EM Transit**, cioè Dott, e **Lime**. A luglio 2025 il Comune scriveva che Dott era «già attivo a Verona con 400 monopattini».',
-        'Il capitolato prevedeva un servizio di «tre anni, a partire dalla data di attivazione»; proroghe o una data di fine non le abbiamo trovate. Secondo la stampa (SicurAuto, 21 luglio 2026; Avvenire, 7 agosto 2026) il Comune non rinnoverà i contratti e il prossimo bando sarà solo per le bici: al 26 ottobre 2026 un atto del Comune non l’abbiamo trovato.',
-        'Lunedì 26 ottobre 2026 alle 5:53, di notte, sulla [mappa di Verona](map:it:Verona) c’erano circa 300 monopattini Dott: una fotografia di quel momento, non la flotta. Poco dopo, confrontati con i confini dell’Istat, erano tutti nel Comune di Verona tranne 2, appena oltre il confine con San Giovanni Lupatoto. Per Lime c’è un conteggio a parte: domenica 25 ottobre alle 16:26 i suoi monopattini erano circa 360 all’ultimo conteggio.',
+        'Il capitolato prevedeva un servizio di «tre anni, a partire dalla data di attivazione». Secondo la stampa (SicurAuto, 21 luglio 2026; Avvenire, 7 agosto 2026) il Comune non rinnoverà i contratti e il prossimo bando sarà solo per le bici.',
+        'Lunedì 26 ottobre 2026 alle 5:53 la [mappa di Verona](map:it:Verona) mostrava circa 300 monopattini Dott liberi in quel momento; i Lime, domenica 25 ottobre alle 16:26, erano circa 360 all’ultimo conteggio.',
         {
           table: {
-            caption: 'Gli operatori di Verona e dove trovarli, a ottobre 2026',
-            head: ['Operatore', 'Sulla mappa', 'Cosa noleggia a Verona'],
+            caption: 'Gli operatori di Verona, a ottobre 2026',
+            head: ['Operatore', 'Cosa noleggia a Verona'],
             rows: [
-              ['Dott (EM Transit)', 'Sì, dal 24 ottobre 2026: solo la posizione, senza carica né autonomia', 'Monopattini; da luglio 2025 anche e-bike, per un anno di prova, che sulla mappa non compaiono'],
-              ['Lime', 'Sì, dal 25 ottobre 2026, con la carica della batteria', 'Monopattini'],
-              ['Bit Mobility', 'No', 'Scelto nel 2021: se noleggia ancora monopattini non l’abbiamo potuto verificare. Dal 13 agosto 2026 ha in prova 50 scooter elettrici con sella'],
+              ['Dott (EM Transit)', 'Monopattini; da luglio 2025 anche e-bike, per un anno di prova'],
+              ['Lime', 'Monopattini'],
+              ['Bit Mobility', 'Scelto nel 2021 per i monopattini; dal 13 agosto 2026 ha in prova 50 scooter elettrici con sella'],
             ],
           },
         },
-        'Gli scooter con sella di Bit Mobility non sono monopattini: per il Comune si lasciano solo negli stalli per moto. Altri operatori di monopattini, come Bird, Voi o RideMovi, non ne abbiamo trovati.',
+        'Gli scooter con sella di Bit Mobility non sono monopattini: per il Comune si lasciano solo negli stalli per moto.',
       ],
     },
     {
@@ -39,7 +39,7 @@ const guide: Guide = {
         {
           steps: [
             'Cerca un Dott o un Lime sulla [mappa di Verona](map:it:Verona) e aprilo nell’app dell’operatore.',
-            'Iscriviti con una carta di pagamento. Dott chiede almeno 18 anni e, a Verona, verifica un documento d’identità, la patente o il passaporto; i requisiti di Lime li trovi nella sua app.',
+            'Iscriviti con una carta di pagamento: l’età minima e il prezzo te li mostra l’app prima dello sblocco.',
             'Metti il casco: al contrassegno e all’assicurazione, sui mezzi in sharing, ci pensa l’operatore.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',
             'Chiudi la corsa dove l’app lo consente e scatta la foto di fine corsa, che il Comune chiede per ogni noleggio: finché la corsa non è chiusa, paghi.',
@@ -50,26 +50,9 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Noleggio monopattini a Verona: quanto costa',
-      blocks: [
-        'Paghi uno sblocco più una tariffa al minuto. Tariffe di Verona pubblicate non ne abbiamo trovate: il prezzo lo vedi nell’app prima di sbloccare. Il capitolato del 2021 fissava solo un tetto: una «tariffa massima oraria di € 12 non aumentabile per i tre anni».',
-        'Il centro assistenza di Dott (25 agosto 2026) dà solo una forbice per tutte le sue città: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero. Non è il prezzo di Verona.',
-        'Attento anche alle penali. Le condizioni di Dott per l’Italia (2 dicembre 2025) prevedono:',
-        {
-          list: [
-            '«una penale fino a 5 euro nel caso di parcheggio scorretto»;',
-            'la multa più «una commissione amministrativa di 15 EURO», se la paga Dott al posto tuo;',
-            '«una penale di 50 EURO per qualsiasi violazione delle Condizioni»;',
-            '«una penale fino a 300 EURO» se, per un parcheggio o un blocco sbagliato, Dott deve recuperare il mezzo, per esempio dopo un fermo o un sequestro.',
-          ],
-        },
-        'Le condizioni di Lime non le abbiamo potute verificare: leggile nell’app.',
-      ],
-    },
-    {
       heading: 'Dove parcheggiare i monopattini sharing a Verona',
       blocks: [
-        'Le regole di sosta le fissa il Comune, che il 24 luglio 2025 le riassumeva così: «nel centro storico e nella ZPRU - Zona a Particolare Pregio Urbanistico, il parcheggio sarà consentito esclusivamente negli stalli dedicati o negli spazi scooter autorizzati. Nel resto della città si potrà parcheggiare in modalità free floating, sempre nel rispetto del Codice della Strada e delle indicazioni fornite in app». Fuori dalle aree autorizzate il GPS dei mezzi Dott non chiude la corsa.',
+        'Le regole di sosta le fissa il Comune, che il 24 luglio 2025 le riassumeva così: «nel centro storico e nella ZPRU - Zona a Particolare Pregio Urbanistico, il parcheggio sarà consentito esclusivamente negli stalli dedicati o negli spazi scooter autorizzati. Nel resto della città si potrà parcheggiare in modalità free floating, sempre nel rispetto del Codice della Strada e delle indicazioni fornite in app». Fuori dalle aree autorizzate, aggiungeva, il GPS dei mezzi Dott non chiude la corsa.',
         {
           list: [
             '**Stalli per monopattini.** La delibera di Giunta 1343 del 15 dicembre 2023 ne prevede 40, a strisce gialle: tre in piazza Bra, uno in piazzetta Bra Molinari, poi per esempio in via Anfiteatro, piazza San Zeno, piazza Cittadella, sul lungadige San Giorgio e in corso Porta Nuova.',
@@ -77,18 +60,17 @@ const guide: Guide = {
             '**Marciapiede.** Mai, salvo nelle aree riservate ai monopattini: la multa va da 41 a 168 euro. Al 26 giugno 2026, scriveva il Comune, dai marciapiedi erano stati rimossi 134 monopattini, anche in corso Porta Nuova.',
           ],
         },
-        'Un elenco pubblico delle zone con sosta vietata non l’abbiamo trovato: dove chiudere la corsa lo vedi nell’app.',
       ],
     },
     {
       heading: 'Dove si guida: ZTL, piazza Erbe, Arena e parchi',
       blocks: [
-        'Il monopattino va sulle strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo e a 6 km/h nelle aree pedonali; mai sul marciapiede né contromano. Le condizioni di Dott per Verona aggiungono che la circolazione è permessa «nelle strade urbane laddove è consentita per i velocipedi».',
-        '**ZTL.** Nella zona a traffico limitato, l’ansa dell’Adige tra Castelvecchio e ponte Aleardi fino a piazza Bra, le bici «circolano sempre liberamente», scrive il Comune; i monopattini la sua pagina non li nomina.',
-        '**Piazza delle Erbe e Castel San Pietro.** Piazza Erbe è area pedonale dall’ottobre 2024; a gennaio 2025 il Comune annunciava che anche la piazzetta di Castel San Pietro sarebbe diventata del tutto pedonale. Se nelle due piazze possano entrare bici e monopattini i comunicati non lo dicono: segui i cartelli, e in area pedonale vai al massimo a 6 km/h.',
+        'Il monopattino va sulle strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo e a 6 km/h nelle aree pedonali; mai sul marciapiede né contromano.',
+        '**ZTL.** Nella zona a traffico limitato, l’ansa dell’Adige tra Castelvecchio e ponte Aleardi fino a piazza Bra, le bici «circolano sempre liberamente», scrive il Comune.',
+        '**Piazza delle Erbe e Castel San Pietro.** Piazza Erbe è area pedonale dall’ottobre 2024; a gennaio 2025 il Comune annunciava che anche la piazzetta di Castel San Pietro sarebbe diventata del tutto pedonale. Segui i cartelli, e in area pedonale vai al massimo a 6 km/h.',
         '**Arena ed eventi.** Per la stagione lirica, dal 25 marzo al 5 novembre 2026, l’ordinanza 437 del Comune vieta il transito dei veicoli in alcune vie intorno all’Arena, come via Dietro Anfiteatro e via San Nicolò, salvo frontisti, taxi e pochi altri. Per alcune manifestazioni il Comune ferma anche i monopattini: per la Straverona del 17 maggio 2026, dalle 6 alle 14, era «vietato il transito e la sosta dei monopattini su tutta piazza Bra».',
-        '**Parchi.** Nel Parco dell’Adige il regolamento del verde del Comune (2021) vieta i mezzi a motore e vuole bici e monopattini su piste ciclabili e sentieri, fuori dalle zone pedonali, a 15 km/h al massimo; non dice se valga per quelli elettrici. Per gli altri parchi non abbiamo trovato regole.',
-        '**Di notte e d’inverno.** Il capitolato chiede un servizio 24 ore su 24, tutto l’anno, salvo riduzioni decise dal Comune; divieti notturni o pause stagionali non ne abbiamo trovati.',
+        '**Parchi.** Nel Parco dell’Adige il regolamento del verde del Comune (2021) vieta i mezzi a motore e vuole bici e monopattini su piste ciclabili e sentieri, fuori dalle zone pedonali, a 15 km/h al massimo.',
+        '**Di notte e d’inverno.** Il capitolato chiede un servizio 24 ore su 24, tutto l’anno, salvo riduzioni decise dal Comune.',
       ],
     },
     {
@@ -110,7 +92,7 @@ const guide: Guide = {
     {
       heading: 'Regole e multe per il monopattino a Verona',
       blocks: [
-        'A Verona valgono le regole nazionali, spiegate nella [guida alle regole del monopattino elettrico](guide:italian-rules). Si guida dai 14 anni, senza patente, ma per noleggiare Dott ne chiede 18. Quelle che contano per chi noleggia:',
+        'A Verona valgono le regole nazionali, spiegate nella [guida alle regole del monopattino elettrico](guide:italian-rules). Si guida dai 14 anni, senza patente; l’età minima per noleggiare te la mostra l’app prima dello sblocco. Quelle che contano per chi noleggia:',
         {
           table: {
             caption: 'Le regole principali e le multe, a ottobre 2026',
@@ -147,11 +129,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quali monopattini in sharing ci sono a Verona?',
-      answer: 'Quelli di Dott e Lime, che trovi sulla mappa: due dei tre operatori scelti dal Comune nel 2021, con al massimo 400 monopattini ciascuno. Del terzo, Bit Mobility, non abbiamo potuto verificare se noleggia ancora monopattini; da agosto 2026 ha in prova a Verona 50 scooter elettrici con sella.',
-    },
-    {
-      question: 'Quanto costa noleggiare un monopattino a Verona?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire: tariffe di Verona pubblicate non ne abbiamo trovate. La forbice che Dott indica per tutte le sue città (25 agosto 2026) va da circa 0,17 a 0,55 euro al minuto.',
+      answer: 'Quelli di Dott e Lime, che trovi sulla mappa: due dei tre operatori scelti dal Comune nel 2021, con al massimo 400 monopattini ciascuno. Il terzo, Bit Mobility, da agosto 2026 ha in prova a Verona 50 scooter elettrici con sella.',
     },
     {
       question: 'Dove si lascia il monopattino in sharing in centro a Verona?',
@@ -159,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'Si può andare in monopattino in piazza delle Erbe?',
-      answer: 'Piazza Erbe è area pedonale dall’ottobre 2024, e i comunicati del Comune non dicono se bici e monopattini possano entrare: segui i cartelli e, dove puoi passare, vai al massimo a 6 km/h.',
+      answer: 'Piazza Erbe è area pedonale dall’ottobre 2024: segui i cartelli e, dove puoi passare, vai al massimo a 6 km/h.',
     },
     {
       question: 'Si può portare il monopattino sull’autobus ATV?',
@@ -179,12 +157,8 @@ const guide: Guide = {
     { title: 'Comune di Verona: Festival Areniano (30 marzo 2026)', url: 'https://www.comune.verona.it/Novita/Notizie/Festival-Areniano-provvedimenti-viabilistici' },
     { title: 'Comune di Verona: 43ª Straverona', url: 'https://www.comune.verona.it/Novita/Notizie/43a-Straverona-provvedimenti-viabilistici' },
     { title: 'Comune di Verona: regolamento del verde (2021, PDF)', url: 'https://www.comune.verona.it/content/download/2383/43705/file/Regolamento_comunale_per_la_tutela_e_l_incremento_del_verde_pubblico_e_privato.pdf' },
-    { title: 'Istat: confini amministrativi al 1° gennaio 2026', url: 'https://www.istat.it/notizia/confini-delle-unita-amministrative-a-fini-statistici-al-1-gennaio-2018-2/' },
     { title: 'ATV: Carta della mobilità', url: 'https://www.atv.verona.it/flex/cm/pages/ServeBLOB.php/L/IT/IDPagina/161' },
     { title: 'Trenitalia: bici e mezzi elettrici sui regionali', url: 'https://www.trenitalia.com/it/regionale/bici-e-mezzi-elettrici.html' },
-    { title: 'Dott: condizioni generali per l’Italia (2 dicembre 2025)', url: 'https://ridedott.com/it/termini-condizioni/italia/' },
-    { title: 'Dott: perché devo verificare la mia identità? (1° ottobre 2026)', url: 'https://help.ridedott.com/it/articles/187-perche-devo-verificare-la-mia-identita' },
-    { title: 'Dott: quanto costa il servizio (25 agosto 2026)', url: 'https://help.ridedott.com/it/articles/189-quanto-costa-il-servizio' },
     { title: 'SicurAuto: ora tocca a Verona (21 luglio 2026)', url: 'https://www.sicurauto.it/news/attualita-e-curiosita/monopattini-in-sharing-la-grande-fuga-dalle-citta-ora-tocca-a-verona/' },
     { title: 'Avvenire: sempre meno monopattini (7 agosto 2026)', url: 'https://www.avvenire.it/attualita/nelle-citta-italiane-si-vedono-sempre-meno-monopattini-elettrici_111776' },
   ],
