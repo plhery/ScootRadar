@@ -166,7 +166,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'CETRAN-PR Resolution 106 of 14 July 2026: guidelines for e-bikes and e-scooters in Paraná, Portuguese', url: 'https://www.cetran.pr.gov.br/sites/cetran/arquivos_restritos/files/documento/2026-07/resolucao_106-26_dispoe_sobre_as_diretrizes_para_a_regulamentacao_da_circulacao_de_ciclomotores.pdf' },
-    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf' },
+    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf/@@download/file' },
     { title: 'Tribuna PR: Curitiba’s Decree 1.520 on e-bikes and scooters (18 September 2026), Portuguese', url: 'https://www.tribunapr.com.br/noticias/curitiba-regiao/curitiba-regulamenta-bicicletas-eletricas-e-patinetes-veja-o-que-muda-no-transito/' },
     { title: 'Folha de Curitiba: what the decree says (23 September 2026), Portuguese', url: 'https://folhadecuritiba.com.br/curitiba-regulamenta-circulacao-de-patinetes-e-bicicletas-eletricas-especialista-analisa-novas-regras/' },
     { title: 'HojePR: the decree, and a second operator accredited (18 September 2026), Portuguese', url: 'https://hojepr.com/curitiba-proibe-patinetes-nas-calcadas-e-define-onde-veiculos-eletricos-podem-circular/' },

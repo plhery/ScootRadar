@@ -178,7 +178,7 @@ const guide: Guide = {
     { title: 'EPTC: riding advice on the Orla (16 November 2024), Portuguese', url: 'https://prefeitura.poa.br/eptc/noticias/atividade-educativa-na-orla-orienta-sobre-uso-de-patinetes-eletricas' },
     { title: 'SMMU: riding school with Whoosh (3 April 2025), Portuguese', url: 'https://prefeitura.poa.br/smmu/noticias/escola-de-direcao-de-patinetes-destaca-educacao-e-seguranca-no-uso-dos-equipamentos' },
     { title: 'Jornal do Comércio: e-scooters change Porto Alegre’s mobility (15 July 2025), Portuguese', url: 'https://www.jornaldocomercio.com/colunas/pensar-a-cidade/2025/07/1209610-patinetes-eletricas-mudam-cenario-da-mobilidade-urbana-de-porto-alegre.html' },
-    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf' },
+    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf/@@download/file' },
     { title: 'JET Brazil: cities, FAQ and riding rules', url: 'https://jetshr.com/br' },
     { title: 'Go Jet Brazil: rental terms, revised August 2026, Portuguese', url: 'https://static.jetshr.com/jet_website/docs/pdfs/Termos%20Condicoes%20Locacao%20GoJet%20Brasil%20-%20Revisado%20%28Ago26%29.pdf' },
     { title: 'Whoosh Brazil: FAQ, Portuguese', url: 'https://whoosh.bike/faq/br' },

@@ -178,7 +178,7 @@ const guide: Guide = {
     { title: 'Diario de Pernambuco: court refuses to suspend the scooters (21 May 2026), Portuguese', url: 'https://www.diariodepernambuco.com.br/vida-urbana/2026/05/11714741-justica-nega-pedido-de-liminar-de-vereador-para-suspender-patinetes-eletricos-no-recife.html' },
     { title: 'Diario de Pernambuco: Avenida Boa Viagem’s limit (31 July 2026), Portuguese', url: 'https://www.diariodepernambuco.com.br/vida-urbana/2026/07/11719972-limite-de-velocidade-da-avenida-boa-viagem-sera-reduzido-para-50-km-h-apos-obras-na-orla.html' },
     { title: 'Folha de Pernambuco: FlipOn’s scooters arrive in Recife (17 November 2021), Portuguese', url: 'https://www.folhape.com.br/economia/roxinhos-patinetes-eletricos-desembarcam-no-recife-mas-nao-podem-ser/205979/' },
-    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf' },
+    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf/@@download/file' },
     { title: 'Chamber of Deputies: Brazilian Traffic Code (Law 9.503 of 1997), Portuguese', url: 'https://www2.camara.leg.br/legin/fed/lei/1997/lei-9503-23-setembro-1997-372348-normaatualizada-pl.html' },
     { title: 'JET Brazil: FAQ and riding rules', url: 'https://jetshr.com/br' },
     { title: 'Go Jet Brazil: rental terms, revised August 2026, Portuguese', url: 'https://static.jetshr.com/jet_website/docs/pdfs/Termos%20Condicoes%20Locacao%20GoJet%20Brasil%20-%20Revisado%20%28Ago26%29.pdf' },

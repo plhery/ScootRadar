@@ -184,7 +184,7 @@ const guide: Guide = {
     { title: 'Imasul: the park’s regulation (2012), Portuguese', url: 'https://www.imasul.ms.gov.br/wp-content/uploads/2026/04/Regulamento-Parque-das-Nacoes-Indigenas.pdf' },
     { title: 'UFMS: scooters for the Cidade Universitária (8 December 2022), Portuguese', url: 'https://www.ufms.br/cidade-universitaria-tera-patinetes-eletricos-como-alternativa-para-mobilidade-sustentavel/' },
     { title: 'Consórcio Guaicurus: Campo Grande’s buses, Portuguese', url: 'https://www.consorcioguaicurus.com.br/' },
-    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf' },
+    { title: 'CONTRAN Resolution 996 of 15 June 2023, Portuguese', url: 'https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-contran/resolucoes/Resolucao9962023.pdf/@@download/file' },
     { title: 'Chamber of Deputies: Brazilian Traffic Code (Law 9.503 of 1997), Portuguese', url: 'https://www2.camara.leg.br/legin/fed/lei/1997/lei-9503-23-setembro-1997-372348-normaatualizada-pl.html' },
     { title: 'Go Jet Brazil: rental terms, revised August 2026, Portuguese', url: 'https://static.jetshr.com/jet_website/docs/pdfs/Termos%20Condicoes%20Locacao%20GoJet%20Brasil%20-%20Revisado%20%28Ago26%29.pdf' },
     { title: 'Whoosh Brazil: terms and fines (updated 21 March 2025)', url: 'https://whoosh.bike/terms_br/pt' },
