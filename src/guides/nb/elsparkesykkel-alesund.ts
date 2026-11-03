@@ -48,7 +48,7 @@ const guide: Guide = {
     {
       heading: 'Nattestenging og sesong i Ålesund',
       blocks: [
-        'Ålesund har ingen fast nattestenging. Forskriften sier i § 7 f: «Utleige kan skje alle dagar, heile dagen.» Utleie er altså lov hele døgnet, og Rydes åpne data viser det samme. Ryde skriver likevel i vilkårene at tjenesten noen ganger kan være stengt om natten, så sjekk appen hvis du skal hjem sent.',
+        'Ålesund har ingen fast nattestenging. Forskriften sier i § 7 f: «Utleige kan skje alle dagar, heile dagen.» Utleie er altså lov hele døgnet, men Rydes åpne data stenger tjenesten kl. 00–05 natt til lørdag og natt til søndag (per 3. november 2026). Ryde skriver også i vilkårene at tjenesten noen ganger kan være stengt om natten, så sjekk appen hvis du skal hjem sent.',
         'Kommunen kan stenge sparkesyklene i bestemte soner og tidsrom, for eksempel ved store arrangementer. Under Jugendfest på Aksla stadion i august 2026 var Rydes sparkesykler utilgjengelige på Aspøya og Nørvøya både fredag 21. og lørdag 22. august, fra kl. 17 til 05 neste morgen. Ifølge kommunen skjedde det i samråd med politiet, av hensyn til trafikksikkerheten.',
         'Forskriften har heller ingen fast vintersesong. Kommunen kan likevel kreve sparkesyklene fjernet når den har drifts- og vedlikeholdsoppgaver, for eksempel vinterdrift, vårrengjøring og veiarbeid. Tillatelsen gjelder «for sesongen 2026», men 18. oktober 2026 hadde verken kommunen eller Ryde kunngjort når sesongen slutter. Følg med i Ryde-appen og på kommunens side om leie av elsparkesykkel.',
       ],
@@ -173,6 +173,7 @@ const guide: Guide = {
     { title: 'Ålesund kommune: Trafikk ved cruiseanløp', url: 'https://alesund.kommune.no/veg-vatn-og-avlop/veg/trafikk-ved-cruiseanlop/' },
     { title: 'Ålesund kommune, innsyn: arkivsak 2023/7053, løyve til elsparkesykkelutleie', url: 'https://alesund.kommune.no/innsyn/sok-og-postliste/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde Ålesund: åpne data med åpningstider (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeaalesund/system_information' },
     { title: 'Ålesund havn: Cruiseanløp', url: 'https://alesund.havn.no/skipstrafikk/cruiseanlop/' },
     { title: 'Fjord Norge: Byfjellet Aksla i Ålesund', url: 'https://www.fjordnorway.com/no/se-og-gjore/aksla-utsiktspunkt' },
     { title: 'Store norske leksikon: Ålesundsbrannen', url: 'https://snl.no/%C3%85lesundsbrannen' },
