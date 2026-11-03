@@ -82,4 +82,22 @@ describe('the Android app’s links', () => {
   it('matches what the app reads from a link', () => {
     expect(listed(/val parameters: List<String> = listOf\(([^)]+)\)/)).toEqual([...CLIENT_PARAMETERS]);
   });
+
+  // The site's side, which verifies the filter: Play App Signing's certificate (Play Console › App signing), the one
+  // every copy from Google Play is signed with. The application id can never change once the app is on Play.
+  it('is verified by the site for the app Gradle builds, signed by Google Play', () => {
+    const links = JSON.parse(readFileSync('public/.well-known/assetlinks.json', 'utf8')) as {
+      relation: string[];
+      target: { namespace: string; package_name: string; sha256_cert_fingerprints: string[] };
+    }[];
+    const gradle = readFileSync('android/app/build.gradle.kts', 'utf8');
+    expect(links).toHaveLength(1);
+    expect(links[0].relation).toEqual(['delegate_permission/common.handle_all_urls']);
+    expect(links[0].target.namespace).toBe('android_app');
+    expect(links[0].target.package_name).toBe(/applicationId = "([^"]+)"/.exec(gradle)?.[1]);
+    expect(links[0].target.sha256_cert_fingerprints).toEqual([
+      '2B:7A:F8:0C:CC:BC:0D:07:BA:DB:DD:7A:74:27:4B:20:A8:B6:DD:BB:93:D1:82:1E:33:0F:45:D9:6F:95:DB:6E',
+    ]);
+    expect(readFileSync('public/_headers', 'utf8')).toMatch(/\/\.well-known\/assetlinks\.json\n {2}Content-Type: application\/json/);
+  });
 });

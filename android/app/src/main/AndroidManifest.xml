@@ -39,8 +39,9 @@
             </intent-filter>
             <!-- scootradar.com's links to the map open in the app, as the iPhone's universal links do (UI-377, X-AD08):
                  /map, and "/", where the map was before the landing page. MainActivity hands a "/" without an origin
-                 on to the browser, as the iPhone's apple-app-site-association leaves it on the web. Verified once the
-                 site has the app's assetlinks.json (NEEDS-USER #9). -->
+                 on to the browser, as the iPhone's apple-app-site-association leaves it on the web. Verified by the
+                 site's public/.well-known/assetlinks.json, which names Play App Signing's certificate: copies from
+                 Google Play open these links, a build signed with another key leaves them to the browser. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

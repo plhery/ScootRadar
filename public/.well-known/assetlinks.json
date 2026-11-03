@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.plhery.scootradar",
+      "sha256_cert_fingerprints": [
+        "2B:7A:F8:0C:CC:BC:0D:07:BA:DB:DD:7A:74:27:4B:20:A8:B6:DD:BB:93:D1:82:1E:33:0F:45:D9:6F:95:DB:6E"
+      ]
+    }
+  }
+]
