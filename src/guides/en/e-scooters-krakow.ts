@@ -16,10 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Kraków?',
       blocks: [
-        'Three companies’ scooters are on our map of Kraków: **Bolt**, **Dott** and **Lime**. Bolt and Lime have been in the city’s parking scheme since it began in August 2023.',
-        'Traficar, a car-sharing company, joined the scheme in March 2024, but on 25 October 2026 its website listed only cars. ZTP’s scooter page says “several operators” work in Kraków but names none; any other company’s scooters are only in its own app.',
-        'At 13:50 on Sunday 25 October 2026 the [Kraków map](map:pl:Kraków) showed about 4,100 Bolt and Dott scooters (about 3,200 Bolt, 900 Dott): a snapshot, not a fleet size. Matched to the official commune boundaries at about 19:20, after dark, all but 23 of the 4,080 then on the map stood inside the city; the 23, still in the map’s Kraków total, stood in Zielonki, to the north. Skawina, to the south-west, has [its own map](map:pl:Skawina): about 100 Dott scooters that afternoon.',
-        'Lime joined the map that evening. A full scan of Lime’s Kraków zone, almost all inside the city, finished at 17:07 that day and found about 1,300 Lime scooters: a separate count, not part of the snapshot above.',
+        'Three companies rent e-scooters in Kraków: **Bolt**, **Dott** and **Lime**. Bolt and Lime have been in the city’s parking scheme since it began in August 2023.',
+        'Traficar, a car-sharing company, joined the scheme in March 2024, ZTP said then. ZTP’s scooter page says “several operators” work in Kraków without naming them.',
+        'At 13:50 on Sunday 25 October 2026 the [Kraków map](map:pl:Kraków) showed about 4,100 Bolt and Dott scooters free to rent at that moment. Skawina, to the south-west, has [its own map](map:pl:Skawina).',
         'Kraków’s Wavelo bike-share is gone; the city now has LajkBike, rented by the month, and Park-e-Bike.',
         'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Poznań](guide:poznan), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
@@ -76,9 +75,8 @@ const guide: Guide = {
       heading: 'The Old Town, Wawel, Kazimierz and the river',
       blocks: [
         '**Wawel Hill.** Wawel Royal Castle, the state museum that manages the hill, bans visitors from bringing in or riding “bicycles, scooters, roller blades or skates, skate boards, or any other wheeled vehicles or electric wheeled vehicles” (hill rules of 24 February 2021).',
-        '**The Old Town and the Main Square (Rynek Główny).** We found no official list of no-ride or slow zones: krakow.pl didn’t respond when we checked, and ZTP’s page names none. But no parking point stands within 300 metres of the Cloth Hall (Sukiennice) in the middle of the square, so you can’t end a ride in the heart of the Old Town; that evening the map showed no Bolt or Dott scooter within 200 metres of it.',
-        '**Kazimierz, the Vistula and Błonia.** There are points at Plac Nowy and Plac Wolnica in Kazimierz, at Bulwar Poleski and Bulwar Wołyński on the river, and at Cracovia Błonia by the meadow. We found no official rule there beyond the national ones.',
-        '**The universities.** We found no scooter rule published by the Jagiellonian University, and couldn’t check AGH’s.',
+        '**The Old Town and the Main Square (Rynek Główny).** No ZTP parking point stands within 300 metres of the Cloth Hall (Sukiennice), in the middle of the square, so you can’t end a ride in the heart of the Old Town.',
+        '**Kazimierz, the Vistula and Błonia.** There are points at Plac Nowy and Plac Wolnica in Kazimierz, at Bulwar Poleski and Bulwar Wołyński on the river, and at Cracovia Błonia by the meadow.',
       ],
     },
     {
@@ -86,14 +84,14 @@ const guide: Guide = {
       blocks: [
         '**Trams and buses (MPK).** The city council’s carriage rules don’t name e-scooters: hand luggage is allowed if it doesn’t block the aisle, soil others’ clothes or limit the driver’s view, and the driver may refuse bulky luggage in a crowd (§ 9, as amended in November 2023).',
         '**Koleje Małopolskie**, the regional trains. Its carriage rules, in force since 11 September 2026, carry a folded scooter, “including an electric scooter”, free as luggage; an unfolded one needs a PLN 6 ticket and a marked space, and staff may refuse it at busy times.',
-        '**Kraków Główny.** The main station is run by PKP S.A., the state railway company. Its rules ban riding a scooter “on the platform, the way to the platform, in the hall, waiting room … underpass, on the footbridge … and near the track less than 3 metres from the outer rail” without its consent, and leaving rental scooters “except in the places meant for them” (§ 3, January 2025). City points nearby include Dworzec Główny Wschód 1 and 2. Galeria Krakowska, the shopping centre beside it, publishes no scooter rule.',
-        '**Kraków Airport (Balice).** It lies in Zabierzów, outside the city; no scooter on the map stood within 3 km of it that evening. Its internal road rules (2018) set 20 km/h for all vehicles and don’t mention scooters. The airport train, Koleje Małopolskie’s SKA1, runs from Kraków Główny for PLN 20 single, the airport says.',
+        '**Kraków Główny.** The city’s parking points by the main station include Dworzec Główny Wschód 1 and 2.',
+        '**Kraków Airport (Balice).** It lies in Zabierzów, outside the city. Its internal road rules (2018) set 20 km/h for all vehicles and don’t mention scooters. The airport train, Koleje Małopolskie’s SKA1, runs from Kraków Główny for PLN 20 single, the airport says.',
       ],
     },
     {
-      heading: 'Caps, hours and winter',
+      heading: 'What the operators pay, all year',
       blocks: [
-        'We found no cap on scooter numbers. In March 2024 ZTP said the operators’ combined fee would rise from April to PLN 23,582.99 a month, for 303 points.',
+        'In March 2024 ZTP said the operators’ combined fee would rise from April to PLN 23,582.99 a month, for 303 points.',
         'The operators’ fees are charged all year, and from December 2023 to February 2024 scooters had to be moved only 58 times, ZTP said.',
       ],
     },
@@ -113,7 +111,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Kraków?',
-      answer: 'Bolt, Dott and Lime, all three on [our map](map:pl:Kraków). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Kraków map](map:pl:Kraków). Check the fare and the company’s minimum age for renting in its app before you unlock.',
     },
     {
       question: 'How much does electric scooter rental cost in Krakow?',
@@ -153,15 +151,12 @@ const guide: Guide = {
     { title: 'Kraków Airport: by train (Polish)', url: 'https://krakowairport.pl/pl/pasazer/transport/dojazd/z-do-krakow-airport/dojazd-pociag' },
     { title: 'Kraków Airport: internal road rules (Polish, PDF)', url: 'https://krakowairport.pl/storage/2021-01/regulamin-wuk-2018-net-1612101406Aa88p.pdf' },
     { title: 'Wawel Royal Castle: Wawel Hill visitor policies', url: 'https://wawel.krakow.pl/en/wawel-hill-visitor-policies' },
-    { title: 'PKP S.A.: station rules (Polish)', url: 'https://www.pkp.pl/images/bezpieczenstwo/Zasady.pdf' },
     { title: 'Dziennik Ustaw: Road Traffic Act, 2024 (Polish)', url: 'https://dziennikustaw.gov.pl/D2024000125101.pdf' },
     { title: 'Dziennik Ustaw: amending act of 17 October 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/DU/2025/1676' },
     { title: 'Dziennik Ustaw: Act on vehicle drivers, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000122601.pdf' },
     { title: 'Dziennik Ustaw: Code of Petty Offences, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000073401.pdf' },
     { title: 'Dziennik Ustaw: fines tariff from 1 January 2022 (Polish)', url: 'https://dziennikustaw.gov.pl/D2021000248401.pdf' },
     { title: 'Dziennik Ustaw: sobriety act (Polish)', url: 'https://dziennikustaw.gov.pl/D2023000215101.pdf' },
-    { title: 'Traficar: fleet (Polish)', url: 'https://traficar.pl/flota/' },
-    { title: 'GUGiK: State Register of Boundaries, PRG (Polish)', url: 'https://www.geoportal.gov.pl/pl/dane/panstwowy-rejestr-granic-prg/' },
   ],
 };
 

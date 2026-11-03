@@ -16,10 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Gdańsk, Gdynia and Sopot?',
       blocks: [
-        'Three companies’ scooters are on our map of the Tricity: **Bolt**, **Dott** and **Lime**. Gdańsk (April 2023) and Gdynia (July 2022) named Lime among the companies renting scooters there.',
+        'Three companies rent e-scooters in the Tricity: **Bolt**, **Dott** and **Lime**. Gdańsk (April 2023) and Gdynia (July 2022) named Lime among the companies renting scooters there.',
         'No city publishes a current list of operators; any other company’s scooters are only in its own app.',
-        'At about 15:30 on Sunday 25 October 2026 the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot) showed about 4,800 Bolt and Dott scooters: a snapshot, not a fleet size. Matched to the official commune boundaries, about 3,550 stood in Gdańsk (2,070 Bolt, 1,480 Dott), 365 in Gdynia (all but 2 of them Dott) and 330 in Sopot (all but 4 of them Bolt). The other 540 or so, all Dott, stood in Rumia, Reda and Wejherowo to the north-west, and in Kolbudy and the rural commune of Pruszcz Gdański to the south. The town of Pruszcz Gdański has [its own map](map:pl:Pruszcz Gdański): about 200 Dott scooters that afternoon.',
-        'Lime joined the map that evening. A full scan of Lime’s Tricity zone, finished at 16:40 that day, found about 1,470 Lime scooters: a separate count, not part of the snapshot above.',
+        'At about 15:30 on Sunday 25 October 2026 the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot) showed about 4,800 Bolt and Dott scooters free to rent at that moment. The town of Pruszcz Gdański, to the south, has [its own map](map:pl:Pruszcz Gdański).',
         'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Poznań](guide:poznan), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
       ],
@@ -78,16 +77,14 @@ const guide: Guide = {
     {
       heading: 'Gdynia: agreements and parking places',
       blocks: [
-        'Gdynia has had agreements with the scooter operators since 2020 and, by July 2022, had marked about 3,500 parking places for them, its roads authority said then, naming Lime, Tier, Dott, Bolt and Quick as operators. The municipal police tow scooters that are badly parked and put people at risk. We found no newer city page on the scheme (October 2026).',
-        'At about 15:30 that Sunday about 40 of the 365 Bolt and Dott scooters the map showed in Gdynia stood within 300 metres of Gdynia Główna station.',
+        'Gdynia has had agreements with the scooter operators since 2020 and, by July 2022, had marked about 3,500 parking places for them, its roads authority said then, naming Lime, Tier, Dott, Bolt and Quick as operators. The municipal police tow scooters that are badly parked and put people at risk.',
       ],
     },
     {
-      heading: 'Trams, buses and the airport',
+      heading: 'Trams and buses in the Tricity',
       blocks: [
         '**Gdańsk’s trams and buses (ZTM Gdańsk).** The city council’s carriage rules ban scooters that are neither folded nor carried as hand luggage, e-bikes, and any bike or scooter from a rental fleet; breaking ZTM’s luggage rules costs an extra PLN 96. End your ride and park before you board.',
         '**Gdynia’s buses and trolleybuses (ZKM Gdynia).** The city council’s rules let you take your own e-scooter as luggage if it doesn’t block the aisle or the ticket validators, put anyone at risk, delay the service or block the driver’s view.',
-        '**The airport.** At about 15:30 on 25 October the nearest Bolt or Dott scooter on the map stood more than 5 km from the terminal of Gdańsk Lech Wałęsa Airport. We found no e-scooter rule published by the airport, the Museum of the Second World War (which runs Westerplatte), the University of Gdańsk or Gdańsk Tech.',
       ],
     },
     {
@@ -97,7 +94,6 @@ const guide: Guide = {
           list: [
             '**Poland raised the minimum age for e-scooters from 10 to 13** on 3 March 2026.',
             '**Sopot charges entry to its pier** in season: PLN 10 in 2026.',
-            '**Dott’s Tricity scooters reach Wejherowo**, about 20 km north-west of Gdynia: about 130 stood there that Sunday.',
           ],
         },
       ],
@@ -106,7 +102,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Gdańsk?',
-      answer: 'Bolt, Dott and Lime, all three on [our map](map:pl:Gdańsk / Gdynia / Sopot). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot). Check the fare and the company’s minimum age for renting in its app before you unlock.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Poland?',
@@ -148,7 +144,6 @@ const guide: Guide = {
     { title: 'City of Sopot: pier tickets from 10 April 2026 (Polish)', url: 'https://www.sopot.pl/aktualnosc/13081/od-10-kwietnia-na-sopockie-molo-z-biletem' },
     { title: 'Gdynia roads authority: scooters on the pavement, 20 July 2022 (Polish)', url: 'https://www.zdiz.gdynia.pl/nie-zostawiaj-hulajnogi-na-chodniku/' },
     { title: 'ZKM Gdynia: carriage rules (Polish)', url: 'https://zkmgdynia.pl/taryfa/przepisy-porzadkowe-regulamin-przewozow/' },
-    { title: 'GUGiK: commune boundaries (ULDK)', url: 'https://uldk.gugik.gov.pl/' },
   ],
 };
 

@@ -16,10 +16,9 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Poznań?',
       blocks: [
-        'Three companies’ scooters are on our map of Poznań: **Bolt**, **Dott** and **Lime**, which the city roads authority lists as “Uber/Lime”.',
+        'Three companies rent e-scooters in Poznań: **Bolt**, **Dott** and **Lime**, which the city roads authority lists as “Uber/Lime”.',
         'By March 2023 the city had signed a cooperation agreement (porozumienie o współpracy) with all three.',
-        'At 19:59 on Sunday 25 October 2026 the [Poznań map](map:pl:Poznań) showed about 3,400 Bolt and Dott scooters (about 2,200 Dott, 1,200 Bolt): a snapshot, not a fleet size. Matched to GUGiK’s official commune boundaries at about 21:00, 3,132 of the 3,381 then on the map, every Bolt included, stood inside the city. The other 249, all Dott, stood in Luboń (133), Komorniki, which takes in Plewiska (56), Suchy Las (46) and Dopiewo (14).',
-        'A full scan of Lime’s Poznań zone, wholly inside the city, finished at 17:32 that day and found about 1,500 Lime scooters: a separate count, not part of that snapshot.',
+        'At 19:59 on Sunday 25 October 2026 the [Poznań map](map:pl:Poznań) showed about 3,400 Bolt and Dott scooters free to rent at that moment.',
         'Zoomed in, the map draws ZDM’s Hop & Go points and the paid parking zones where a ride must end at one. Poznań dropped its city bike-share when rentals fell (in July 2026 the council asked for a new one).',
         'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
@@ -75,7 +74,7 @@ const guide: Guide = {
     {
       heading: 'Stary Rynek, Cytadela, Malta and the parks',
       blocks: [
-        '**Stary Rynek, Śródka and the river.** We found no city rule closing the Old Market Square (Stary Rynek), Śródka or the Warta boulevards to e-scooters or slowing them there; the square and Śródka are in the Hop & Go area. At about 21:00 that evening the nearest Bolt or Dott scooter stood about 150 metres from the town hall, with 63 within 300 metres.',
+        '**Stary Rynek and Śródka.** The Old Market Square (Stary Rynek) and Śródka are in the Hop & Go area, so a shared scooter’s ride there must end at a point.',
         '**Cytadela.** The city council set Poznań’s park rules park by park in 2009, and they are still in force. The rules for Cytadela ban riding “any vehicles” (wszelkimi pojazdami) on its paths, except bicycles, wheelchairs and authorised vehicles. Polish traffic law counts e-scooters as vehicles, and the rules make no exception for them.',
         '**The other parks.** Park Maltański, by the lake, has the same rule. In Park Mickiewicza and many others only “children’s bikes” (rowerki dziecięce), wheelchairs and authorised vehicles are exempt. Wilson Park’s rules, rewritten in 2020, ban riding scooters (hulajnogi) on its paths by name.',
         '**Malta.** POSiR, the city’s sports centres, runs the lake’s grounds; its rules (since 1 March 2020) apply the Road Traffic Act there but don’t mention scooters.',
@@ -85,17 +84,14 @@ const guide: Guide = {
       heading: 'Universities, the trade fair and Stary Browar',
       blocks: [
         '**Adam Mickiewicz University (UAM).** Since 15 January 2024 only vehicles UAM authorises, city services and MPK may enter or park on its Morasko campus from 21:00 to 06:00. Its notice is about cars.',
-        '**Poznań University of Technology.** We found no scooter rule for its Piotrowo campus, in the Hop & Go area.',
         '**The trade fair grounds (MTP).** The Poznań International Fair’s rules for fair participants (from 1 July 2024), which bind its exhibitors, ban bringing bicycles, Segways, skateboards “and similar equipment” on to its grounds unless a fair’s own terms allow it.',
         '**Stary Browar.** The shopping and arts centre’s house rules (18 September 2021) ban riding in on bicycles, skateboards, roller skates, scooters and Segways without the management’s consent.',
       ],
     },
     {
-      heading: 'Trams, buses, the main station and the airport',
+      heading: 'Trams and buses in Poznań',
       blocks: [
         '**Trams and buses (ZTM Poznań).** The city council’s public transport rules, in force since 20 November 2023, ban carrying “scooters and bicycles fitted with a motor”, “scooters and bicycles of shared systems” and personal transport devices; only a folded scooter without a motor may board. So no e-scooter, yours or a rental, folded or not, may go on a tram or bus. Taking a banned item aboard costs a PLN 350 surcharge, PLN 175 if paid at once or within 7 days.',
-        '**Poznań Główny.** The main station is one of PKP S.A.’s, the state railway company. Its rules ban riding a scooter “on the platform, the way to the platform, in the hall, waiting room … underpass, on the footbridge … and near the track less than 3 metres from the outer rail” without its consent, and leaving rental scooters “except in the places meant for them” (§ 3, January 2025). That evening about 110 Bolt and Dott scooters stood within 300 metres of its address, ul. Dworcowa 2.',
-        '**Poznań–Ławica airport.** Its websites refused our requests, so we couldn’t check its rules.',
       ],
     },
     {
@@ -113,7 +109,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Poznań?',
-      answer: 'Bolt, Dott and Lime, all three on [our map](map:pl:Poznań). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Poznań map](map:pl:Poznań). Check the fare and the company’s minimum age for renting in its app before you unlock.',
     },
     {
       question: 'How much does electric scooter rental cost in Poznan?',
@@ -152,8 +148,6 @@ const guide: Guide = {
     { title: 'UAM: Morasko campus traffic, January 2024 (Polish)', url: 'https://amu.edu.pl/dla-mediow/komunikaty-prasowe/nowa-organizacja-ruchu-na-kampusie-morasko' },
     { title: 'MTP: rules for fair participants, 2024 (Polish, PDF)', url: 'https://reg.mtp.pl/terms/Regulamin-dla-uczestnikow-targow.pdf' },
     { title: 'Stary Browar: house rules, 2021 (Polish, PDF)', url: 'https://starybrowar5050.com/wp-content/uploads/2021/09/Regulamin-Starego-Browaru-w-Poznaniu-18_09_2021.pdf' },
-    { title: 'PKP S.A.: station rules (Polish)', url: 'https://www.pkp.pl/images/bezpieczenstwo/Zasady.pdf' },
-    { title: 'PKP S.A.: Poznań Główny (Polish)', url: 'https://www.pkp.pl/pl/dworce/poznan-glowny-informacje-dla-podroznych' },
     { title: 'Muzeum Poznania: the town hall (Polish)', url: 'https://mnp.art.pl/ratusz-muzeum-poznania' },
     { title: 'Dziennik Ustaw: Road Traffic Act, 2024 (Polish)', url: 'https://dziennikustaw.gov.pl/D2024000125101.pdf' },
     { title: 'Dziennik Ustaw: amending act of 17 October 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/DU/2025/1676' },
@@ -161,7 +155,6 @@ const guide: Guide = {
     { title: 'Dziennik Ustaw: Code of Petty Offences, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000073401.pdf' },
     { title: 'Dziennik Ustaw: fines tariff from 1 January 2022 (Polish)', url: 'https://dziennikustaw.gov.pl/D2021000248401.pdf' },
     { title: 'Dziennik Ustaw: sobriety act (Polish)', url: 'https://dziennikustaw.gov.pl/D2023000215101.pdf' },
-    { title: 'GUGiK: State Register of Boundaries and addresses, PRG (Polish)', url: 'https://www.geoportal.gov.pl/pl/dane/panstwowy-rejestr-granic-prg/' },
   ],
 };
 
