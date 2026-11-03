@@ -62,7 +62,7 @@ const guide: Guide = {
               ['Pavements', 'Never: use the road and cycle lanes', '£50 fixed penalty'],
               ['One rider', 'No passengers, and nobody else riding on your account: they wouldn’t be insured', 'A suspension or a permanent ban from Bolt'],
               ['Phone', 'Not in your hand while riding', '£200 and 6 points'],
-              ['Drink and drugs', 'Drink-drive law applies; at night the app makes you pass a reaction test first', 'Court, a driving ban, possibly prison'],
+              ['Drink and drugs', 'Drink-drive law applies. The app may ask for a reaction test before you unlock: at night, says the council; at peak hours, says Bolt', 'Court, a driving ban, possibly prison'],
               ['Speed', 'The app shows the limit, lower in slow zones and for your first five rides', 'The scooter slows itself'],
               ['Helmet', 'Recommended, not compulsory', '–'],
             ],
@@ -163,7 +163,7 @@ const guide: Guide = {
     },
     {
       question: 'Is Bolt open 24 hours in Liverpool?',
-      answer: 'Yes. Bolt’s e-scooters and e-bikes run around the clock, while Voi’s ran from 6am to midnight. At night Bolt makes you pass a short reaction test in the app before each ride, and drink-drive law applies at any hour.',
+      answer: 'Yes. Bolt’s e-scooters and e-bikes run around the clock, while Voi’s ran from 6am to midnight. Before some rides the app makes you pass a short reaction test: at night, says the council, and at peak hours, says Bolt’s UK page. Drink-drive law applies at any hour.',
     },
     {
       question: 'Can I ride my own e-scooter in Liverpool?',

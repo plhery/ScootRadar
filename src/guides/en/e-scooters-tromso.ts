@@ -91,7 +91,7 @@ const guide: Guide = {
     {
       heading: 'Tromsø Bridge, the Arctic Cathedral and Fjellheisen',
       blocks: [
-        'Tromsø Bridge (Tromsøbrua), about a kilometre long, links the island with Tromsdalen on the mainland. From 7 April to 1 November 2026 it is closed to cars while its northern cycle path is widened; walkers and cyclists can cross day and night.',
+        'Tromsø Bridge (Tromsøbrua), about a kilometre long, links the island with Tromsdalen on the mainland. From 7 April until 27 November 2026 at the latest it is closed to cars while its northern cycle path is widened; walkers and cyclists can cross day and night.',
         'Ride on the **cycle path**: signs at both ends ban cyclists and e-scooters from the roadway. Ryde lets you ride across, but you can’t end your ride on the bridge.',
         'On the far side is the **Arctic Cathedral** (Ishavskatedralen), and uphill behind it, in Solliveien, the lower station of **Fjellheisen**, the cable car. Both are inside Ryde’s area, so you can end your ride by the cathedral or at the cable car.',
         { note: 'Never ride into a road tunnel. Signs ban e-scooters, cyclists and walkers from the Tromsøysund tunnel under the strait (E8) and from the Langnes and Sentrumstangenten tunnels, which link underground with the Breivika tunnel. Treat every road tunnel in Tromsø as closed to you: riding past the sign costs NOK 1,950.' },
@@ -186,6 +186,7 @@ const guide: Guide = {
     { title: 'Ryde help: Vipps', url: 'https://www.ryde-technology.com/help/do-you-offer-vipps' },
     { title: 'Ryde: open data for Tromsø (GBFS, via Entur, 3 November 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs' },
     { title: 'Svipper: bus fares (Norwegian)', url: 'https://svipper.no/meny/billetter-og-priser/busspriser/' },
+    { title: 'Troms County: Fv. 862 Tromsø Bridge project (updated 29 October 2026, Norwegian)', url: 'https://www.tromsfylke.no/tjenester/samferdsel/fylkesvei/veiprosjekter/fv-862-tromsobrua.66973.aspx' },
     { title: 'Troms County: Tromsø Bridge closure Q&A, 2026 (Norwegian)', url: 'https://www.tromsfylke.no/_f/p1/i1031d413-b9af-485f-8d30-a57e9a5f7457/sporsmal_svar_tromsobrua.pdf' },
     { title: 'Svipper: bikes and e-scooters on buses and boats (Norwegian)', url: 'https://svipper.no/meny/reise/nyttig-informasjon/sykkel/' },
     { title: 'Visit Tromsø: getting around (Norwegian)', url: 'https://www.visittromso.no/no/reise-rundt' },

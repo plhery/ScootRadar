@@ -53,7 +53,7 @@ const guide: Guide = {
       heading: 'E-scooter parking in Munich: old-town bays and 100-metre zones',
       blocks: [
         'Since 5 August 2022, inside the Altstadtring, the ring road around the old town, you can end a ride only at a marked bay, such as at Stachus, Rindermarkt, Sendlinger Tor or on Maximilianstrasse. Bays may close during events; the app shows which you can use.',
-        'Across the city, Munich is adding parking bays for rental scooters: 375 in April 2024, according to dpa, with 675 planned by 2026. Dott draws a 100 m circle around many bays outside the old town, and inside it you can end a ride only in the bay itself (Dott’s zones, as of November 2026).',
+        'Across the city, Munich is adding shared parking bays for rental scooters and bikes: on 30 June 2026 its Mobility Department counted 365, aiming for 675. Dott draws a 100 m circle around many bays outside the old town, and inside it you can end a ride only in the bay itself (Dott’s zones, as of November 2026).',
         'Elsewhere you may park freely, as long as you follow the operators’ commitment to the city:',
         {
           list: [
@@ -178,6 +178,7 @@ const guide: Guide = {
     { title: 'MVV: scooter sharing in Munich and taking scooters on buses and trains (German)', url: 'https://www.mvv-muenchen.de/vernetzte-mobilitaet/shared-mobility/scootersharing/' },
     { title: 'Bavarian Palace Administration: English Garden, notes for visitors (PDF, German)', url: 'https://www.schloesser.bayern.de/deutsch/service/infomat/screen-pdf/engl-garten_dt.pdf' },
     { title: 'muenchen.de: MyRadl, rental bikes for the Munich region (German)', url: 'https://www.muenchen.de/verkehr/aktuell/myradl-im-mvv-muenchen-leihfahrraeder-fuer-die-region' },
+    { title: 'City of Munich, Mobility Department: reply on extending the old-town parking plan for e-scooters, 30 June 2026 (PDF, German)', url: 'https://risi.muenchen.de/risi/dokument/v/9784088' },
     { title: 'dpa in inFranken.de: Nuremberg and Munich on rental e-scooters, 26 April 2024 (German)', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300,PRINT' },
     { title: 'MVG: MVGO app and its sharing features (German)', url: 'https://www.mvg.de/services/unsere-apps/mvgo.html' },
     { title: 'Dott: open data feed for Munich with prices and zones (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munich/gbfs.json' },

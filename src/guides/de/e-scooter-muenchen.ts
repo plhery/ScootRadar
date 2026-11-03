@@ -52,7 +52,7 @@ const guide: Guide = {
       heading: 'E-Scooter in München abstellen: Altstadtring und 100-Meter-Zonen',
       blocks: [
         'Innerhalb des **Altstadtrings** kannst du die Fahrt seit dem 5. August 2022 nur auf ausgewiesenen Abstellflächen beenden, etwa am Stachus, am Rindermarkt, am Sendlinger Tor oder in der Maximilianstrasse. Bei Veranstaltungen kann eine Fläche zeitweise aufgehoben sein; die App zeigt, welche gerade gilt.',
-        'In der ganzen Stadt baut München Abstellflächen für Leih-Scooter aus: Im April 2024 gab es laut dpa 375, bis 2026 sollten es 675 werden. Dott zieht um viele Abstellflächen ausserhalb der Altstadt einen Kreis von 100 m: Darin beendest du die Fahrt nur auf der Fläche selbst (laut Dotts Zonen, Stand November 2026). Zoomst du auf der [Karte](map:de:München) hinein, siehst du die Abstellflächen, die Park- und Fahrverbotszonen der Stadt und die Zonen von Dott.',
+        'In der ganzen Stadt baut München geteilte Abstellflächen für Leih-Scooter und Leihräder aus: Am 30. Juni 2026 zählte das Mobilitätsreferat 365, das Ziel sind 675. Dott zieht um viele Abstellflächen ausserhalb der Altstadt einen Kreis von 100 m: Darin beendest du die Fahrt nur auf der Fläche selbst (laut Dotts Zonen, Stand November 2026). Zoomst du auf der [Karte](map:de:München) hinein, siehst du die Abstellflächen, die Park- und Fahrverbotszonen der Stadt und die Zonen von Dott.',
         'Ausserhalb der Altstadt stellst du den Scooter frei ab, nach der Selbstverpflichtung der Anbieter so:',
         {
           list: [
@@ -176,6 +176,7 @@ const guide: Guide = {
     { title: 'Bayerische Schlösserverwaltung: Englischer Garten, Hinweise für Besucher (PDF)', url: 'https://www.schloesser.bayern.de/deutsch/service/infomat/screen-pdf/engl-garten_dt.pdf' },
     { title: 'muenchen.de: MyRadl, Leihfahrräder für die Region', url: 'https://www.muenchen.de/verkehr/aktuell/myradl-im-mvv-muenchen-leihfahrraeder-fuer-die-region' },
     { title: 'Stadt München: Freiwillige Selbstverpflichtungserklärung der Sharing-Anbieter, Stand 6. April 2022 (PDF)', url: 'https://muenchenunterwegs.de/content/113/download/weiterentwicklung-freiwillige-selbstverpflichtungserklarung-ekf-sharing-stand-06042022.pdf' },
+    { title: 'Stadt München, Mobilitätsreferat: Antwort zum Antrag „E-Scooter: Abstellkonzept Altstadt ausweiten“, 30. Juni 2026 (PDF)', url: 'https://risi.muenchen.de/risi/dokument/v/9784088' },
     { title: 'dpa in inFranken.de: Nürnberg und München zu Leih-E-Scootern, 26. April 2024', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300,PRINT' },
     { title: 'MVG: MVGO, Sharing-Funktionen', url: 'https://www.mvg.de/services/unsere-apps/mvgo.html' },
     { title: 'Dott: offener Datenfeed für München mit Tarif und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munich/gbfs.json' },

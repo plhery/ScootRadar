@@ -80,7 +80,7 @@ const guide: Guide = {
     {
       heading: 'Tromsøbrua, tunnelene og Kvaløya',
       blocks: [
-        'Tromsøbrua er stengt for biltrafikk fra 7. april til 1. november 2026, mens gang- og sykkelveien på nordsiden blir 0,5 meter bredere. Gående og syklende kan bruke brua hele døgnet, og bussene kjører over kl. 07–17, unntatt fra 19. juni til 17. august.',
+        'Tromsøbrua er stengt for biltrafikk fra 7. april til senest 27. november 2026, mens gang- og sykkelveien på nordsiden blir 0,5 meter bredere. Gående og syklende kan bruke brua hele døgnet, og bussene kjører over kl. 07–17.',
         'Kjør på gang- og sykkelveien, ikke i kjørebanen: Skilt i begge ender forbyr syklende og elsparkesykler der. Ryde lar deg kjøre over, men du kan ikke avslutte turen på brua.',
         'På den andre siden ligger Ishavskatedralen, og bak den, i bakken opp Solliveien, Fjellheisens nedre stasjon. Begge ligger innenfor Rydes område, så du kan avslutte turen ved katedralen eller ved Fjellheisen.',
         '**Tunnelene er forbudt for elsparkesykler.** Det står forbudsskilt ved begge innkjøringene til Tromsøysundtunnelen (E8) og ved Langnestunnelen og Sentrumstangenten, som henger sammen med Breiviktunnelen under jorda. Hold deg unna alle biltunnelene. Å kjøre der skilt forbyr det, koster 1950 kr.',
@@ -189,6 +189,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Tromsø kommune: Råd og regler om bruk av elsparkesykler', url: 'https://www.tromso.kommune.no/tema/vei-broyting-og-kosting/rad-og-regler-om-bruk-av-elsparkesykler' },
+    { title: 'Troms fylkeskommune: Fv. 862 Tromsøbrua (oppdatert 29. oktober 2026)', url: 'https://www.tromsfylke.no/tjenester/samferdsel/fylkesvei/veiprosjekter/fv-862-tromsobrua.66973.aspx' },
     { title: 'Troms fylkeskommune: Spørsmål og svar om Tromsøbrua (2026)', url: 'https://www.tromsfylke.no/_f/p1/i1031d413-b9af-485f-8d30-a57e9a5f7457/sporsmal_svar_tromsobrua.pdf' },
     { title: 'Troms fylkeskommune: Tromsøbrua, utvidelse av sykkelvegen (folkemøte 25. februar 2026)', url: 'https://www.tromsfylke.no/_f/p1/i51806429-a7a5-4d83-a5c4-565078724863/tromsobrua-utvidelse-sykkelveg-orientering-folkemote-250226.pdf' },
     { title: 'Visit Tromsø: Reise rundt i Tromsø', url: 'https://www.visittromso.no/no/reise-rundt' },

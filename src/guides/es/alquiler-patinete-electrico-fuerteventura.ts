@@ -190,7 +190,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 8 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'BOP de Las Palmas, 29 de julio de 2019: ordenanza de vehículos de movilidad personal de Antigua', url: 'https://www.boplaspalmas.net/boletines/2019/29-7-19/29-7-19.pdf' },
     { title: 'Ayuntamiento de Pájara: Ordenanza nº 51 sobre vehículos de movilidad personal', url: 'https://www.pajara.es/51-ordenanza-sobre-el-uso-y-la-circulacion-de-vehiculos-de-movilidad-personal-y-de-bicicletas-de-pedales-con-pedaleo-asistido-del-municipio-de-pajara/' },
     { title: 'Corralejo Kite Fest: 39.ª edición del Festival Internacional de Cometas', url: 'https://corralejokitefest.com/' },
