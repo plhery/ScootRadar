@@ -276,8 +276,10 @@ class ScooterMarkersTest {
     private fun reads(): List<String> = buttons().map { it.contentDescription.toString() }
 
     /** How much of a cluster shows, as MapLibre has its feature state: none set, it shows whole. */
-    private fun Marked.clearance(id: String): Double? = phone.onMain {
-        val source = phone.map.style!!.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)!!
+    private fun Marked.clearance(id: String): Double? = phone.clearance(id)
+
+    private fun PhoneMap.clearance(id: String): Double? = onMain {
+        val source = map.style!!.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)!!
         source.getFeatureState(id)?.get(ScooterMarkerLayers.CLEAR)?.asDouble
     }
 
@@ -491,6 +493,83 @@ class ScooterMarkersTest {
         marked.phone.onMain { marked.controller.selectScooter(null) }
         waitFor("Zürich's total shows again") { marked.clearance(total) == 1.0 }
         waitFor("TalkBack has Zürich's total again") { reads().size == 3 }
+    }
+
+    /** Basel's total under a search bar 55 down a phone's map, Zürich's clear of it, as the overview has them. */
+    private fun overview(under: GeoPoint, clear: GeoPoint) = ScooterResponse(
+        vehicles = emptyList(),
+        clusters = listOf(
+            ScooterCluster("city:ch:Basel", under.latitude, under.longitude, count = 1_288, providers = mapOf("lime" to 1_288), city = "Basel"),
+            ScooterCluster("city:ch:Zürich", clear.latitude, clear.longitude, count = 7_023, providers = mapOf("voi" to 7_023), city = "Zürich"),
+        ),
+        meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", overview = true),
+    )
+
+    private val searchBar = MapChrome(top = ScreenRect(16.0, 55.0, 358.0, 56.0))
+
+    /**
+     * The markers made on a map whose totals the controller has already, their states set before MapLibre draws a
+     * frame with the scooters' source, as at a launch whose first frames take long: MapLibre drops a feature state
+     * set before then, its renderer having no such source yet (RenderOrchestrator.setFeatureState), and counts under
+     * the status bar, the notice and the locate button showed whole until the map moved. Here MapLibre draws nothing
+     * while the map is stopped. The states are written again once a frame with the source has begun.
+     */
+    @Test
+    fun aCountsStateSetBeforeMapLibreDrawsTheScootersSourceIsWrittenAgain() {
+        val camera = CameraPosition.Builder().target(LatLng(zurich.latitude, zurich.longitude)).zoom(7.0).build()
+        withPhoneMap(camera) { phone ->
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+            try {
+                val under = phone.onMain { phone.projection.coordinate(ScreenPoint(195.0, 120.0)) }
+                val clear = phone.onMain { phone.projection.coordinate(ScreenPoint(195.0, 400.0)) }
+                served = overview(under, clear)
+                val controller = phone.onMain {
+                    testController(scope, api).also {
+                        val level = MapZoom.level(on = phone.projection)
+                        it.updateViewport(MapZoom.region(of = phone.projection.visibleMapRect), MapZoom.apiZoom(level), level)
+                        it.refresh()
+                    }
+                }
+                waitFor("the controller has the totals") { phone.onMain { controller.mapClusters.value.size == 2 } }
+                // MapLibre draws no frame while the map is stopped: the source is added and the states set before its next.
+                val markers = phone.onMain {
+                    phone.view.onStop()
+                    ScooterMarkers(phone.map, phone.view, controller, analytics = null, scope = scope, move = {}).also {
+                        it.chromeDidChange(searchBar)
+                    }
+                }
+                try {
+                    val basel = phone.onMain { markers.scene.clusters().single { it.isHidden }.featureID }
+                    // Its fade over, its state set, and dropped.
+                    SystemClock.sleep(500)
+                    assertNull(phone.clearance(basel))
+                    phone.onMain { phone.view.onStart() }
+                    waitFor("Basel's total is hidden") { phone.clearance(basel) == 0.0 }
+                } finally {
+                    phone.onMain { markers.close() }
+                }
+            } finally {
+                scope.cancel()
+            }
+        }
+    }
+
+    /**
+     * The map given another size, its camera where it was: what it shows moves on the screen, a total under the search
+     * bar now, though MapLibre says nothing of a move. It is hidden.
+     */
+    @Test
+    fun aCountTheMapsNewSizeTakesUnderTheChromeIsHidden() = withMarkers(zurich, mapLibreZoom = 7.0) { marked ->
+        // 200 down a map 844 tall; 122 higher once it is 600 tall, under the search bar's foot at 111.
+        val under = marked.at(195.0, 200.0)
+        val clear = marked.at(195.0, 600.0)
+        marked.phone.onMain { marked.markers.chromeDidChange(searchBar) }
+        marked.serve(overview(under, clear)) { it.clusters().size == 2 }
+        val basel = marked.phone.onMain { marked.markers.scene.clusters().minBy { it.cluster.coordinate.distance(to = under) }.featureID }
+        assertNull(marked.clearance(basel))
+        marked.phone.resize(390, 600)
+        waitFor("the map has its new size") { marked.phone.onMain { marked.phone.view.height == (600 * marked.ratio).toInt() } }
+        waitFor("Basel's total is hidden") { marked.clearance(basel) == 0.0 }
     }
 
     // Frames

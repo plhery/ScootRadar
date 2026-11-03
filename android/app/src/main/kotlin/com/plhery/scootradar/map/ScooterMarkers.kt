@@ -350,13 +350,26 @@ class ScooterMarkers(
 
     private val frame = Choreographer.FrameCallback { onFrame() }
 
+    /**
+     * A renderer made again, as MapLibre makes one on a lost GL context, has none of the feature states set before: the
+     * counts' clearances are written again as it starts.
+     */
+    private val rendererStarts = MapView.OnWillStartRenderingMapListener { writeClearancesAgain() }
+
     init {
         map.getStyle { loaded ->
             if (style != null) return@getStyle
             style = loaded
             addLayers(loaded)
+            // The counts' clearances set before MapLibre begins a frame with the scooters' source are dropped: they are
+            // written again from the second frame begun after it was added, the first having perhaps begun before.
+            whenBegun {
+                map.triggerRepaint()
+                whenBegun { writeClearancesAgain() }
+            }
             update()
         }
+        view.addOnWillStartRenderingMapListener(rendererStarts)
         map.addOnCameraMoveListener(moved)
         map.addOnCameraIdleListener(idle)
         view.tap = { x, y -> tap(x, y) }
@@ -394,6 +407,7 @@ class ScooterMarkers(
         ViewCompat.setAccessibilityDelegate(view, null)
         view.removeOnSourceChangedListener(sourceChanged)
         view.removeOnTileActionListener(tiles)
+        view.removeOnWillStartRenderingMapListener(rendererStarts)
         main.removeCallbacksAndMessages(null)
         queued.clear()
         begun.clear()
@@ -674,7 +688,7 @@ class ScooterMarkers(
         var source: GeoJsonSource? = null
         fun write(id: String, clearance: Double) {
             val into = source ?: style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)?.also { source = it } ?: return
-            into.setFeatureState(id, JsonObject().apply { addProperty(ScooterMarkerLayers.CLEAR, clearance) })
+            into.setFeatureState(id, clearState(clearance))
             if (clearance == 1.0) clearances.remove(id) else clearances[id] = clearance
         }
         val gone = if (clearances.isEmpty()) null else HashSet(clearances.keys)
@@ -687,6 +701,20 @@ class ScooterMarkers(
         gone?.forEach { write(it, 1.0) }
         return fades
     }
+
+    /**
+     * Writes again every clearance written but whole, which writeClearances, writing only those that change, would
+     * not: MapLibre's renderer drops a feature state set before it has begun a frame with the scooters' source
+     * (RenderOrchestrator.setFeatureState finds no source to keep it on), and a new renderer has none. Counts under the
+     * Tablet's status bar, its notice and its locate button showed whole at a launch, until the map moved (app-at).
+     */
+    private fun writeClearancesAgain() {
+        if (clearances.isEmpty()) return
+        val source = style?.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE) ?: return
+        for ((id, clearance) in clearances) source.setFeatureState(id, clearState(clearance))
+    }
+
+    private fun clearState(clearance: Double) = JsonObject().apply { addProperty(ScooterMarkerLayers.CLEAR, clearance) }
 
     /**
      * Writes the names if they changed, and at every frame while one slides to another side or goes with its dot
