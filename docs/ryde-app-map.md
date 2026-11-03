@@ -555,10 +555,24 @@ signed Ryde executable, TLS server authentication and `api.ryde.vip`; the PAC
 routes only that hostname through localhost. The original proxy configuration
 is backed up, and an independent guard is prepared to restore it and remove the
 certificate after one map capture, a TLS failure or five minutes. The user
-approved this scoped capture on 3 November 2026. Activation remains unperformed
-after the renewed administrator-authentication request timed out. No system
-certificate or proxy setting was changed, no native-app exchange was intercepted, and no
-session-key rotation was attempted. Unused local listeners were stopped.
+approved this scoped capture on 3 November 2026.
+
+An administrator-authenticated activation attempt on 3 November reached
+macOS's separate certificate-trust authorization, but that step did not finish
+within the controller's original 30-second command timeout. The certificate
+had been added to the System keychain; cleanup removed it and verified that
+neither the certificate nor its trust entry remained. The PAC was never
+enabled, and the original proxy configuration was verified unchanged. No
+native-app exchange was intercepted and no session-key rotation was attempted.
+
+The prepared retry allows up to 180 seconds for certificate authorization while
+retaining the independent five-minute cleanup limit. The desktop-control tool
+does not permit access to macOS SecurityAgent, so the user must complete that
+OS dialog. The capture addon now saves at most one map exchange and excludes
+the sibling hostname, non-map routes and oversized requests; those boundaries
+passed fixture checks. The fresh private administrator request for that retry
+timed out, so the retry was not activated. Both listeners were stopped and
+cleanup was verified. This remains a prepared experiment, not a working bridge.
 
 ## Recheck: model spoofing, attestation and session keys
 
