@@ -412,14 +412,18 @@ class MarkerMotionTest {
         assertEquals("[\"has\",\"raised\"]", specs.getValue(ScooterMarkerLayers.MOVING_RAISED).filter)
         // The scooters' own layers leave the dots easing to them by a paint property reading their feature state, not
         // by a filter or a property written to their source, which MapLibre would lay out again.
-        assertEquals("[\"!\",[\"has\",\"raised\"]]", specs.getValue(ScooterMarkerLayers.MARKERS).filter)
+        // The cities' totals of the overview are the layer's over the rider's.
+        assertEquals("[\"!\",[\"any\",[\"has\",\"raised\"],[\"has\",\"over\"]]]", specs.getValue(ScooterMarkerLayers.MARKERS).filter)
         assertEquals("[\"has\",\"raised\"]", specs.getValue(ScooterMarkerLayers.RAISED).filter)
-        val handedOver = "[\"case\",[\"boolean\",[\"feature-state\",\"moving\"],false],0,[\"get\",\"opacity\"]]"
+        // A cluster under the chrome is hidden the same way, by a state of its own (CountsClearOfTheChromeTest).
+        val cleared = "[\"*\",[\"number\",[\"feature-state\",\"clear\"],1],[\"get\",\"opacity\"]]"
+        val handedOver = "[\"case\",[\"boolean\",[\"feature-state\",\"moving\"],false],0,$cleared]"
         for (id in listOf(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED)) {
             assertEquals(SymbolLayerSpec.Json(handedOver), specs.getValue(id).paint["icon-opacity"])
         }
         assertEquals(
-            "[\"case\",[\"boolean\",[\"feature-state\",\"moving\"],false],0,[\"case\",[\"has\",\"band\"],0,[\"get\",\"opacity\"]]]",
+            "[\"case\",[\"boolean\",[\"feature-state\",\"moving\"],false],0," +
+                "[\"*\",[\"number\",[\"feature-state\",\"clear\"],1],[\"case\",[\"has\",\"band\"],0,[\"get\",\"opacity\"]]]]",
             ScooterMarkerLayers.MARKERS_STRENGTH_BESIDE_BANDS,
         )
 

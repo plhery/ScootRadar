@@ -2,6 +2,7 @@ package com.plhery.scootradar.map
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.PointF
 import android.graphics.Rect
 import android.os.Debug
 import android.os.Handler
@@ -342,6 +343,61 @@ class ScooterMarkersTest {
         val zoom = marked.phone.onMain { marked.phone.map.cameraPosition.zoom }
         assertTrue(total.performAction(AccessibilityNodeInfo.ACTION_CLICK))
         waitFor("the map zooms in on the city") { marked.phone.onMain { marked.phone.map.cameraPosition.zoom } > zoom + 1 }
+    }
+
+    /**
+     * The Europe view on MapLibre: a city's total half under the search bar is hidden by its feature state, the source
+     * not written for it, and shows again once the bar is gone; the totals are drawn by their layer over the rider's.
+     */
+    @Test
+    fun aCityTotalUnderTheSearchBarIsHiddenAndTheTotalsAreDrawnOverTheRider() = withMarkers(zurich, mapLibreZoom = 7.0) { marked ->
+        val under = marked.at(195.0, 120.0)
+        val clear = marked.at(195.0, 400.0)
+        val clusters = listOf(
+            ScooterCluster("city:ch:Basel", under.latitude, under.longitude, count = 1_288, providers = mapOf("lime" to 1_288), city = "Basel"),
+            ScooterCluster("city:ch:Zürich", clear.latitude, clear.longitude, count = 7_023, providers = mapOf("voi" to 7_023), city = "Zürich"),
+        )
+        marked.phone.onMain { marked.markers.chromeDidChange(MapChrome(top = ScreenRect(16.0, 55.0, 358.0, 56.0))) }
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", overview = true)
+        marked.serve(ScooterResponse(vehicles = emptyList(), clusters = clusters, meta = meta)) { it.clusters().size == 2 }
+        val (basel, total) = marked.phone.onMain {
+            val marks = marked.markers.scene.clusters()
+            val basel = marks.minBy { it.cluster.coordinate.distance(to = under) }
+            val zurich = marks.minBy { it.cluster.coordinate.distance(to = clear) }
+            assertTrue(basel.isUnderChrome)
+            assertTrue(!zurich.isUnderChrome)
+            MarkerFeatures.id(basel) to MarkerFeatures.id(zurich)
+        }
+        fun clearance(id: String): Double? = marked.phone.onMain {
+            val source = marked.phone.map.style!!.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)!!
+            source.getFeatureState(id)?.get(ScooterMarkerLayers.CLEAR)?.asDouble
+        }
+        waitFor("Basel's total is hidden") { clearance(basel) == 0.0 }
+        // Zürich's was never under the chrome: it has no state, and shows whole.
+        assertNull(clearance(total))
+        marked.phone.onMain {
+            val layers = marked.phone.map.style!!.layers.map { it.id }
+            assertTrue(layers.indexOf(ScooterMarkerLayers.CITIES) > layers.indexOf(ScooterMarkerLayers.RIDER))
+        }
+        // Drawn by the totals' layer, above the rider's.
+        waitFor("Zürich's total is in the cities' layer") {
+            marked.phone.onMain {
+                val point = marked.phone.projection.point(clear)
+                val pixel = PointF((point.x * marked.ratio).toFloat(), (point.y * marked.ratio).toFloat())
+                marked.phone.map.queryRenderedFeatures(pixel, ScooterMarkerLayers.CITIES).isNotEmpty()
+            }
+        }
+        val written = marked.phone.onMain { marked.markers.markersWritten }
+        // The search bar gone, Basel's comes back, without the source written again.
+        marked.phone.onMain { marked.markers.chromeDidChange(MapChrome()) }
+        waitFor("Basel's total shows again") { clearance(basel) == 1.0 }
+        assertEquals(written, marked.phone.onMain { marked.markers.markersWritten })
+        // Under the bar again, then gone from the map: its state is set back to whole, not removed, as a removal
+        // in the frame of another's set would leave that one as it was drawn.
+        marked.phone.onMain { marked.markers.chromeDidChange(MapChrome(top = ScreenRect(16.0, 55.0, 358.0, 56.0))) }
+        waitFor("Basel's total is hidden again") { clearance(basel) == 0.0 }
+        marked.serve(ScooterResponse(vehicles = emptyList(), clusters = clusters.drop(1), meta = meta)) { it.clusters().size == 1 }
+        waitFor("Basel's state is set back to whole") { clearance(basel) == 1.0 }
     }
 
     // Frames

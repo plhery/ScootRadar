@@ -170,6 +170,25 @@ class ClusterMark(cluster: ScooterCluster, members: List<Scooter>?) {
     /** Where totals touch, as neighbouring countries do zoomed out, the larger is drawn over the smaller. */
     val sortKey: Float get() = (500 + log10(cluster.count + 1.0) * 60).toFloat()
 
+    /**
+     * Its disc meets the chrome over the map, where its number would be read in part: it is hidden, and a tap there
+     * does not open it (ScooterMarkerScene.clearCounts).
+     */
+    var isUnderChrome = false
+        internal set
+
+    /** Its strength easing from shown to hidden as it goes under the chrome, or back as it comes out. */
+    internal var clearing: MarkerEase<Double>? = null
+
+    /** Placed against the chrome before: one that first comes under it is hidden at once, never seen fading. */
+    internal var isPlaced = false
+
+    /** How much of it shows at a moment of the uptime clock: 1 clear of the chrome, 0 under it, between as it fades. */
+    fun clearance(at: Double): Double {
+        val ease = clearing ?: return if (isUnderChrome) 0.0 else 1.0
+        return ease.from + (ease.to - ease.from) * ease.progress(at)
+    }
+
     fun update(with: ScooterCluster, members: List<Scooter>?): Boolean {
         if (cluster == with && this.members == members) return false
         cluster = with
@@ -217,6 +236,9 @@ interface MarkerMap {
 
     /** The top of the map's safe area, in points. */
     val safeTop: Double
+
+    /** Where the map shows each of the coordinates, in its own points: on MapLibre, asked all at once. */
+    fun points(coordinates: List<GeoPoint>): List<ScreenPoint> = coordinates.map(projection::point)
 }
 
 /**
@@ -228,6 +250,8 @@ data class MarkerParent(
     val walkRemainingMetres: Double? = null,
     val isWalking: Boolean = false,
     val usesServerClusters: Boolean = false,
+    /** The map shows the cities' totals (the response's overview): they are drawn over the rider. */
+    val isOverview: Boolean = false,
     val language: ScooterLanguage = ScooterLanguage.En,
     /** The rider's place, while the rider is shown: names keep off it. */
     val userLocation: GeoPoint? = null,
@@ -268,6 +292,11 @@ class ScooterMarkerScene(
     private val animates: () -> Boolean = { ValueAnimator.areAnimatorsEnabled() },
 ) {
     var parent = MarkerParent()
+        set(value) {
+            // The cities' totals go over the rider, or back under it with the other clusters.
+            if (value.isOverview != field.isOverview) markersVersion += 1
+            field = value
+        }
 
     /** Dark appearance, and the satellite picture in either appearance. */
     var isDark = false
@@ -915,8 +944,64 @@ class ScooterMarkerScene(
     }
 
     /**
+     * What covers the map for a cluster's number, in the map's points: the status bar above the safe area (with a
+     * tablet's window handle), the search bar and the notices under it, the panel, the fold, and the locate button,
+     * the zone legend (or its "Zoom in to see the zones") and the dock.
+     */
+    fun countChrome(map: MarkerMap): List<ScreenRect> {
+        val bounds = map.projection.bounds
+        val chrome = ArrayList<ScreenRect>(parent.bottomChromeFrames.size + 4)
+        if (map.safeTop > bounds.minY) chrome += ScreenRect(bounds.minX, bounds.minY, bounds.width, map.safeTop - bounds.minY)
+        parent.interactionExclusionFrame?.let { chrome += it }
+        parent.panelFrame?.let { chrome += it }
+        parent.foldFrame?.let { chrome += it }
+        chrome += parent.bottomChromeFrames
+        return chrome.filter { !it.isEmpty }
+    }
+
+    /**
+     * Keeps every cluster's number whole or unseen: one whose disc meets the chrome ([countChrome]) fades out over
+     * [PILL_FADE], and back in as the map takes it clear, as a name does; at once with animations off, with the map
+     * off the screen, and for one not placed before. The city totals of the overview, the server's clusters and the
+     * app's own alike; a scooter's dot stays, as under the chrome on the iPhone. Returns whether any went under or
+     * came out.
+     */
+    fun clearCounts(map: MarkerMap): Boolean {
+        val clusters = clusters()
+        if (clusters.isEmpty()) return false
+        val chrome = countChrome(map)
+        val points = map.points(clusters.map { it.cluster.coordinate })
+        val time = now()
+        val eases = map.isShown && animates()
+        var changed = false
+        for ((index, cluster) in clusters.withIndex()) {
+            val radius = cluster.diameter / 2
+            val isUnder = chrome.any { discMeets(points[index], radius, it) }
+            val wasPlaced = cluster.isPlaced
+            cluster.isPlaced = true
+            if (isUnder == cluster.isUnderChrome) continue
+            val from = cluster.clearance(time)
+            cluster.isUnderChrome = isUnder
+            cluster.clearing = if (wasPlaced && eases) MarkerEase(from, if (isUnder) 0.0 else 1.0, PILL_FADE, slide, time) else null
+            changed = true
+        }
+        return changed
+    }
+
+    /** Ends the clusters' fades that are over. Returns whether any still fades. */
+    fun settleClearings(at: Double): Boolean {
+        var fades = false
+        for (cluster in clusters()) {
+            val ease = cluster.clearing ?: continue
+            if (ease.isOver(at)) cluster.clearing = null else fades = true
+        }
+        return fades
+    }
+
+    /**
      * The cluster MapKit would select under a point: the one whose 48 pt frame holds it, if no dot's 44 pt square
-     * or bay's balloon there is drawn above it. The selected dot and bay are above everything.
+     * or bay's balloon there is drawn above it. The selected dot and bay are above everything. One hidden under the
+     * chrome is not there to tap.
      */
     fun topCluster(at: ScreenPoint, map: MarkerMap): ClusterMark? {
         val projection = map.projection
@@ -939,6 +1024,7 @@ class ScooterMarkerScene(
         }
         // Drawn after the dots and the bays, a cluster is above those of the same rank.
         for (cluster in clusters()) {
+            if (cluster.isUnderChrome) continue
             val point = projection.point(cluster.cluster.coordinate)
             val half = CLUSTER_SIZE / 2
             consider(ScreenRect(point.x - half, point.y - half, CLUSTER_SIZE, CLUSTER_SIZE), cluster.sortKey, cluster)
@@ -1095,12 +1181,15 @@ class ScooterMarkerScene(
         /** Half of the 44 pt a target needs. */
         const val TAP_REACH = 22.0
 
-        /** The dots' light-up, the names' fade after it, and a name's fade as it comes or its slide to another side. */
+        /**
+         * The dots' light-up, the names' fade after it, and a name's fade as it comes or its slide to another side,
+         * which a count's fade under the chrome and out of it takes too.
+         */
         const val LIGHT_UP = 0.62
         const val NAME_IN = 0.52
         const val PILL_FADE = 0.2
 
-        /** UIView.animate's ease in, ease out, which slides a name. */
+        /** UIView.animate's ease in, ease out, which slides a name and fades a count under the chrome. */
         private val slide = IosMotion.easeInOut.easing
 
         /** The side of the marker of a scooter, MapKit's annotation view: far larger than its dot. */
@@ -1127,6 +1216,13 @@ class ScooterMarkerScene(
 
         /** A cluster's disc grows with the digits of its number. */
         fun clusterDiameter(count: Int): Double = if (count < 100) 36.0 else if (count < 1_000) 40.0 else 44.0
+
+        /** Whether a disc and a rectangle overlap: more than touch, its edge inside the rectangle by any amount. */
+        fun discMeets(centre: ScreenPoint, radius: Double, rect: ScreenRect): Boolean {
+            val dx = centre.x - centre.x.coerceIn(rect.minX, rect.maxX)
+            val dy = centre.y - centre.y.coerceIn(rect.minY, rect.maxY)
+            return dx * dx + dy * dy < radius * radius
+        }
 
         /** Metres across one point in the middle of the map, whatever its tilt. */
         fun metresPerPoint(projection: ScooterMapProjection): Double? {

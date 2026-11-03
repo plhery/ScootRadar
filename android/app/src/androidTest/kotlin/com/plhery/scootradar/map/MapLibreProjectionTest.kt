@@ -67,6 +67,30 @@ class MapLibreProjectionTest {
         }
     }
 
+    @Test
+    fun theCountsArePlacedAllAtOnceWhereEachAloneIs() {
+        // The Europe view of the phone's screenshot, turned, and a map across the antimeridian.
+        val cases = listOf(
+            flat(GeoPoint(47.75, 8.3), 5.2, 30.0) to listOf(GeoPoint(47.3769, 8.5417), GeoPoint(48.8566, 2.3522), GeoPoint(52.52, 13.405), GeoPoint(41.9, 12.5)),
+            flat(GeoPoint(-17.7, 179.9), 6.0, 0.0) to listOf(GeoPoint(-17.7, -179.8), GeoPoint(-18.1, 178.4), GeoPoint(-16.5, 179.99)),
+        )
+        withPhoneMap { phone ->
+            phone.onMain {
+                val projection = phone.projection
+                assertTrue(projection.points(emptyList()).isEmpty())
+                for ((camera, coordinates) in cases) {
+                    phone.map.moveCamera(CameraUpdateFactory.newCameraPosition(camera))
+                    val together = projection.points(coordinates)
+                    for ((index, coordinate) in coordinates.withIndex()) {
+                        val alone = projection.point(coordinate)
+                        assertEquals("$coordinate x", alone.x, together[index].x, 0.01)
+                        assertEquals("$coordinate y", alone.y, together[index].y, 0.01)
+                    }
+                }
+            }
+        }
+    }
+
     private fun flat(center: GeoPoint, zoom: Double, heading: Double): CameraPosition =
         CameraPosition.Builder().target(LatLng(center.latitude, center.longitude)).zoom(zoom).bearing(heading).tilt(0.0).build()
 }

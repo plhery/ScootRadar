@@ -55,6 +55,24 @@ class MapLibreProjection(private val map: MapLibreMap, private val view: MapView
         return ScreenPoint(pixel.x / density, pixel.y / density)
     }
 
+    /**
+     * Where the map shows each of the coordinates, as [point] does, from one call to MapLibre for them all: the
+     * clusters are placed against the chrome at every frame of a move.
+     */
+    fun points(coordinates: List<GeoPoint>): List<ScreenPoint> {
+        if (coordinates.isEmpty()) return emptyList()
+        val centre = map.cameraPosition.target!!.longitude
+        val latLngs = DoubleArray(coordinates.size * 2)
+        for ((index, coordinate) in coordinates.withIndex()) {
+            latLngs[2 * index] = coordinate.latitude
+            latLngs[2 * index + 1] = coordinate.longitude + 360.0 * ((centre - coordinate.longitude) / 360.0).roundToInt()
+        }
+        val pixels = DoubleArray(latLngs.size)
+        map.projection.toScreenLocations(latLngs, pixels)
+        val density = density
+        return List(coordinates.size) { ScreenPoint(pixels[2 * it] / density, pixels[2 * it + 1] / density) }
+    }
+
     override fun coordinate(point: ScreenPoint): GeoPoint {
         val latLng = map.projection.fromScreenLocation(PointF((point.x * density).toFloat(), (point.y * density).toFloat()))
         val wrapped = latLng.wrap()

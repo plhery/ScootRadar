@@ -69,7 +69,7 @@ class ScooterFilteringTest {
         // The marker is far larger than its dot, and no larger than a target needs.
         assertEquals(44.0, ScooterMarkerScene.MARKER_SIZE, 0.0)
         assertTrue(ScooterMarkerScene.MARKER_SIZE < 46)
-        for (spec in ScooterMarkerLayers.specs) {
+        for (spec in ScooterMarkerLayers.specs + ScooterMarkerLayers.cities) {
             // Every marker is drawn, whatever it overlaps: MapKit's required display priority, without collisions.
             assertEquals(spec.id, true, spec.layout["icon-allow-overlap"])
             assertEquals(spec.id, true, spec.layout["icon-ignore-placement"])
@@ -230,15 +230,16 @@ class ScooterFilteringTest {
     @Test
     fun userLocationAlwaysRendersAboveScooterMarkers() {
         val order = ScooterMarkerLayers.order
-        assertEquals(ScooterMarkerLayers.RIDER, order.last())
         for (layer in listOf(ScooterMarkerLayers.MARKERS, ScooterMarkerLayers.RAISED, ScooterMarkerLayers.PILLS)) {
             assertTrue(layer, order.indexOf(ScooterMarkerLayers.RIDER) > order.indexOf(layer))
         }
-        assertEquals(order, ScooterMarkerLayers.specs.map { it.id } + ScooterMarkerLayers.riderLayers)
+        // Above every scooter, bay, cluster and name; under the cities' totals of the overview alone, which it would
+        // otherwise hide the digits of (CountsClearOfTheChromeTest).
+        assertEquals(order, ScooterMarkerLayers.specs.map { it.id } + ScooterMarkerLayers.riderLayers + ScooterMarkerLayers.CITIES)
         // The rider's halo, beam and ring under its dot, all above the names (ScooterRider).
         assertEquals(
             listOf(ScooterMarkerLayers.RIDER_HALO, ScooterMarkerLayers.RIDER_BEAM, ScooterMarkerLayers.RIDER_RING, ScooterMarkerLayers.RIDER),
-            order.takeLast(4),
+            order.dropLast(1).takeLast(4),
         )
 
         // While they light up, the dots are drawn by bands over their layer, in the order of their priorities,

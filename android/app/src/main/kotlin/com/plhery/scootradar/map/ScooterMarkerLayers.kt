@@ -32,6 +32,8 @@ class MarkerFeature(
     val isRaised: Boolean = false,
     /** The picture's scale: other than 1 only for a dot easing, in the movers' layers. */
     val size: Double = 1.0,
+    /** Over the rider: a city's total, in the overview. */
+    val isOver: Boolean = false,
 )
 
 /** What each layer draws, from the scene's marks: the iPhone's annotation views, drawn by MapLibre. */
@@ -54,7 +56,7 @@ object MarkerFeatures {
                 isRaised = isSelected,
             )
         }
-        for (cluster in clusters) features += cluster(cluster, scene.isDark, art)
+        for (cluster in clusters) features += cluster(cluster, scene.isDark, art, over = scene.parent.isOverview)
         scene.destination?.let { place ->
             val isDark = scene.isDark
             features += MarkerFeature(
@@ -69,17 +71,24 @@ object MarkerFeatures {
         return features
     }
 
-    /** A cluster's disc, glowing in its leading provider's colour, with its number written in it. */
-    fun cluster(cluster: ClusterMark, isDark: Boolean, art: ScooterMarkerArt): MarkerFeature {
+    /**
+     * A cluster's disc, glowing in its leading provider's colour, with its number written in it; [over] the rider
+     * while the map shows the cities' totals.
+     */
+    fun cluster(cluster: ClusterMark, isDark: Boolean, art: ScooterMarkerArt, over: Boolean = false): MarkerFeature {
         val key = ScooterMarkerArt.ClusterKey(cluster.provider, cluster.diameter, isDark, "${cluster.cluster.count}")
         return MarkerFeature(
-            id = (if (cluster.isServer) "g:" else "c:") + cluster.id,
+            id = id(cluster),
             coordinate = cluster.cluster.coordinate,
             image = key.id,
             picture = { art.clusterImage(key) },
             sortKey = cluster.sortKey,
+            isOver = over,
         )
     }
+
+    /** A cluster's feature: "g:" and the server's id, or "c:" and the app's own. */
+    fun id(cluster: ClusterMark): String = (if (cluster.isServer) "g:" else "c:") + cluster.id
 
     /** The dot of a scooter, with its ring and its glow, where its spread puts it. */
     fun dot(mark: ScooterMark, art: ScooterMarkerArt): MarkerFeature {
@@ -185,6 +194,7 @@ object MarkerFeatures {
             append(",\"opacity\":")
             number(feature.opacity)
             if (feature.isRaised) append(",\"raised\":true")
+            if (feature.isOver) append(",\"over\":true")
             if (feature.size != 1.0) {
                 append(",\"size\":")
                 number(feature.size)
@@ -230,9 +240,10 @@ data class SymbolLayerSpec(
 /**
  * The markers' layers, above the whole ground, bottom to top: the faded markers under everything (MKAnnotation's
  * zPriority min), the dots and the bays in the order of their zPriority, the selected one above them, the names,
- * and the rider above all (prioritizeUserLocationView). Every one keeps every marker, overlapping or not: MapKit's
- * required display priority, without collisions (MAP-267). The dots easing are drawn meanwhile by the movers'
- * layers, above the others of theirs, and the scooters' own layers leave them unseen.
+ * the rider above them (prioritizeUserLocationView), and the cities' totals of the overview above all, where the
+ * iPhone draws the rider over its city's. Every one keeps every marker, overlapping or not: MapKit's required
+ * display priority, without collisions (MAP-267). The dots easing are drawn meanwhile by the movers' layers, above
+ * the others of theirs, and the scooters' own layers leave them unseen.
  */
 object ScooterMarkerLayers {
     const val LAST_SEEN = "scooters-last-seen"
@@ -246,6 +257,13 @@ object ScooterMarkerLayers {
      */
     const val MOVING = "scooters-moving"
     const val MOVING_RAISED = "scooters-moving-selected"
+
+    /**
+     * The cities' totals of the overview, over the rider: at the zooms where they show, the rider's dot stands on
+     * the total of the city it is in, and would hide its digits. The dot keeps its place, under the total, its beam
+     * showing past it.
+     */
+    const val CITIES = "scooter-cities"
 
     /** The rider's accuracy halo, compass beam and white ring, under its blue dot, [RIDER] (ScooterRider). */
     const val RIDER_HALO = "rider-halo"
@@ -276,6 +294,16 @@ object ScooterMarkerLayers {
     /** A strength of the scooters' layers, none for a dot the movers' draw. */
     fun handedOver(strength: String): String = "[\"case\",[\"boolean\",[\"feature-state\",\"$HANDED_OVER\"],false],0,$strength]"
 
+    /**
+     * The feature state of a cluster under the chrome, or fading as it goes under or comes out: how much of it
+     * shows, from 0 to 1 (ScooterMarkerScene.clearCounts). Set as the camera moves, never written to the source, so
+     * nothing is laid out again; a cluster without it shows whole.
+     */
+    const val CLEAR = "clear"
+
+    /** A strength, times how much of a cluster shows clear of the chrome. */
+    fun cleared(strength: String): String = "[\"*\",[\"number\",[\"feature-state\",\"$CLEAR\"],1],$strength]"
+
     /** The order they are drawn in: MapLibre draws each sort key on its own. */
     const val SORT = "[\"get\",\"sort\"]"
 
@@ -289,9 +317,12 @@ object ScooterMarkerLayers {
     const val STRENGTH_BESIDE_BANDS = "[\"case\",[\"has\",\"band\"],0,$STRENGTH]"
     const val SORT_BESIDE_BANDS = "[\"case\",[\"has\",\"band\"],-1,$SORT]"
 
-    /** The scooters' layers' strengths, at rest and while bands fade, with the dots easing left to the movers'. */
-    val MARKERS_STRENGTH = handedOver(STRENGTH)
-    val MARKERS_STRENGTH_BESIDE_BANDS = handedOver(STRENGTH_BESIDE_BANDS)
+    /**
+     * The scooters' layers' strengths, at rest and while bands fade, with the dots easing left to the movers' and
+     * the clusters under the chrome hidden.
+     */
+    val MARKERS_STRENGTH = handedOver(cleared(STRENGTH))
+    val MARKERS_STRENGTH_BESIDE_BANDS = handedOver(cleared(STRENGTH_BESIDE_BANDS))
 
     /** A band's filter once its markers are handed back to their layer, until its own is taken out. */
     const val NOTHING = "[\"boolean\",false]"
@@ -299,7 +330,7 @@ object ScooterMarkerLayers {
     /** The rider's layers, bottom to top, which ScooterRider adds above the markers'. */
     val riderLayers = listOf(RIDER_HALO, RIDER_BEAM, RIDER_RING, RIDER)
 
-    val order = listOf(LAST_SEEN, MARKERS, MOVING, RAISED, MOVING_RAISED, PILLS) + riderLayers
+    val order = listOf(LAST_SEEN, MARKERS, MOVING, RAISED, MOVING_RAISED, PILLS) + riderLayers + CITIES
 
     /** What every marker layer shares: a picture of its own at its place, never hidden, never turned or tilted. */
     private fun pictures(anchor: String) = mapOf(
@@ -318,7 +349,7 @@ object ScooterMarkerLayers {
         SymbolLayerSpec(
             MARKERS,
             MARKERS_SOURCE,
-            filter = "[\"!\",[\"has\",\"raised\"]]",
+            filter = "[\"!\",[\"any\",[\"has\",\"raised\"],[\"has\",\"over\"]]]",
             layout = pictures("center"),
             paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(MARKERS_STRENGTH)),
         ),
@@ -344,6 +375,15 @@ object ScooterMarkerLayers {
             paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH)),
         ),
         SymbolLayerSpec(PILLS, PILLS_SOURCE, layout = pictures("top-left"), paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(STRENGTH))),
+    )
+
+    /** The cities' totals' layer, added over the rider's: those of the scooters' source written over it. */
+    val cities = SymbolLayerSpec(
+        CITIES,
+        MARKERS_SOURCE,
+        filter = "[\"has\",\"over\"]",
+        layout = pictures("center"),
+        paint = mapOf("icon-opacity" to SymbolLayerSpec.Json(cleared(STRENGTH))),
     )
 
     /**

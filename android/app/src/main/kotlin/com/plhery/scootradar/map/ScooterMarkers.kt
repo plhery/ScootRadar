@@ -20,6 +20,7 @@ import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.map.isWalking
 import com.plhery.scootradar.core.map.mapOrigin
 import com.plhery.scootradar.core.map.walkRemainingMetres
+import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterMapProjection
 import com.plhery.scootradar.core.model.ScreenPoint
 import com.plhery.scootradar.core.model.ScreenRect
@@ -198,6 +199,12 @@ class ScooterMarkers(
      */
     private val handedOver = HashSet<String>()
 
+    /**
+     * How much shows of each cluster under the chrome or fading, as MapLibre has it by feature state: those not here
+     * show whole, with no state or one set back to 1.
+     */
+    private val clearances = HashMap<String, Double>()
+
     /** The scooters' source's writes: what a light-up or an ease costs MapLibre. */
     internal var markersWritten = 0
         private set
@@ -295,6 +302,7 @@ class ScooterMarkers(
         override val heading: Double get() = map.cameraPosition.bearing
         override val isShown: Boolean get() = view.isAttachedToWindow && view.windowVisibility == View.VISIBLE
         override val safeTop: Double get() = safeArea.top
+        override fun points(coordinates: List<GeoPoint>): List<ScreenPoint> = this@ScooterMarkers.projection.points(coordinates)
     }
 
     /** TalkBack's virtual views of the markers. */
@@ -383,6 +391,7 @@ class ScooterMarkers(
         moversTaking = null
         moversQueued = null
         handedOver.clear()
+        clearances.clear()
         style = null
     }
 
@@ -433,6 +442,7 @@ class ScooterMarkers(
             walkRemainingMetres = controller.walkRemainingMetres,
             isWalking = controller.isWalking,
             usesServerClusters = controller.responseMetadata.value?.mode == "clusters",
+            isOverview = controller.responseMetadata.value?.overview == true,
             language = controller.language.value,
             userLocation = controller.userLocation.value,
             interactionExclusionFrame = chrome.top,
@@ -474,6 +484,9 @@ class ScooterMarkers(
         val callout = scene.callout(projection)
         calloutTitle = callout?.title
         callout?.let { calloutAnchor = it.anchor }
+        // The clusters under the chrome are hidden before the source is written: a new one is never seen there.
+        scene.clearCounts(markerMap)
+        writeClearances(style, SystemClock.uptimeMillis() / 1000.0)
         writeMarkers(style)
         if (scene.lastSeenVersion != writtenLastSeen) {
             writtenLastSeen = scene.lastSeenVersion
@@ -549,8 +562,9 @@ class ScooterMarkers(
         // So are the dots easing, at every frame.
         style.addSource(GeoJsonSource(ScooterMarkerLayers.MOVING_SOURCE, GeoJsonOptions().withSynchronousUpdate(true)))
         for (spec in ScooterMarkerLayers.specs) addLayer(style, spec)
-        // The rider above them all.
+        // The rider above them all, but for the cities' totals.
         ScooterRider.addLayers(style)
+        addLayer(style, ScooterMarkerLayers.cities)
     }
 
     private fun addLayer(style: Style, spec: SymbolLayerSpec, below: String? = null) {
@@ -608,7 +622,37 @@ class ScooterMarkers(
             style.getLayer(ScooterMarkerLayers.LAST_SEEN)?.setProperties(PaintPropertyValue("icon-opacity", strength))
         }
         val moves = moveDots(style, now)
-        return fades || breathes || moves || slides
+        val clears = writeClearances(style, now)
+        return fades || breathes || moves || slides || clears
+    }
+
+    /**
+     * Sets how much shows of each cluster going under the chrome, coming out or fading between, as a feature state
+     * its layer reads (ScooterMarkerLayers.CLEAR): MapLibre draws it from its next frame without the source written
+     * or anything laid out again, and a cluster new to the source has it before its first frame. A cluster gone from
+     * the map is set back to whole, should it come back clear of the chrome. Set, never removed, as handBack's: with
+     * removals, a city's total on the Tablet stayed half faded after a pinch out, a removal in the same frame as the
+     * fade's last set having left it as it was drawn. Returns whether any still fades.
+     */
+    private fun writeClearances(style: Style, now: Double): Boolean {
+        val fades = scene.settleClearings(now)
+        val clusters = scene.clusters()
+        if (clusters.isEmpty() && clearances.isEmpty()) return fades
+        var source: GeoJsonSource? = null
+        fun write(id: String, clearance: Double) {
+            val into = source ?: style.getSourceAs<GeoJsonSource>(ScooterMarkerLayers.MARKERS_SOURCE)?.also { source = it } ?: return
+            into.setFeatureState(id, JsonObject().apply { addProperty(ScooterMarkerLayers.CLEAR, clearance) })
+            if (clearance == 1.0) clearances.remove(id) else clearances[id] = clearance
+        }
+        val gone = if (clearances.isEmpty()) null else HashSet(clearances.keys)
+        for (cluster in clusters) {
+            val id = MarkerFeatures.id(cluster)
+            gone?.remove(id)
+            val clearance = cluster.clearance(now)
+            if (clearance != (clearances[id] ?: 1.0)) write(id, clearance)
+        }
+        gone?.forEach { write(it, 1.0) }
+        return fades
     }
 
     /**
