@@ -52,6 +52,40 @@ private data class MinimumScale(val size: TextUnit, val factor: Float) : TextAut
     }
 }
 
+/**
+ * One line where the text fits on one at the style's size, or else at the largest size, a quarter of a dp at a time
+ * below it, down to `factor` of it, that does; where it fits on one line at none of them, it wraps whole at the style's
+ * size. Never cut: a text with more lines than one is laid out with as many as it needs. The factor is of the size
+ * drawn, as in [shrinking].
+ */
+internal fun oneLineShrinkingTo(style: TextStyle, factor: Float): TextAutoSize = OneLineOrWrapping(style.fontSize, factor)
+
+private data class OneLineOrWrapping(val size: TextUnit, val factor: Float) : TextAutoSize {
+    override fun TextAutoSizeLayoutScope.getFontSize(constraints: Constraints, text: AnnotatedString): TextUnit {
+        fun fits(px: Float) = performLayout(constraints, text, px.toSp()).let { it.lineCount <= 1 && !it.overflows() }
+        val largest = size.toPx()
+        if (fits(largest)) return size
+        val smallest = shrunk(size, factor, this).toPx()
+        if (!fits(smallest)) return size
+        val step = 0.25.dp.toPx()
+        val steps = floor((largest - smallest) / step).toInt()
+        // The fewest steps down that fit on one line; the floor, which does, if none of them does.
+        var fewest = steps + 1
+        var low = 1
+        var high = steps
+        while (low <= high) {
+            val middle = (low + high) / 2
+            if (fits(largest - middle * step)) {
+                fewest = middle
+                high = middle - 1
+            } else {
+                low = middle + 1
+            }
+        }
+        return if (fewest <= steps) (largest - fewest * step).toSp() else shrunk(size, factor, this)
+    }
+}
+
 /** Whether the text was cut short with "…", or else took more room than it has, as StepBased judges it. */
 private fun TextLayoutResult.overflows(): Boolean =
     if (layoutInput.overflow == TextOverflow.Ellipsis && lineCount > 0) {

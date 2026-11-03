@@ -39,6 +39,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -90,6 +91,7 @@ import com.plhery.scootradar.ui.theme.TextSize
 import com.plhery.scootradar.ui.theme.animation
 import com.plhery.scootradar.ui.theme.designFont
 import com.plhery.scootradar.ui.theme.hairline
+import com.plhery.scootradar.ui.theme.oneLineShrinkingTo
 import com.plhery.scootradar.ui.theme.scootColors
 import com.plhery.scootradar.ui.theme.weight
 import kotlinx.coroutines.launch
@@ -177,7 +179,7 @@ private fun CardHeader(controller: ScooterMapController, scooter: Scooter, conte
                 ) {
                     ProviderTile(scooter, Modifier.clearAndSetSemantics {})
                     TitleBlock(scooter.providerName, Modifier.weight(1f, fill = false)) {
-                        content.facts?.let { Text(it, style = designFont(12.5f, tabular = true), color = colors.dockQuiet) }
+                        content.facts?.let { FactsLine(it) }
                     }
                 }
             } else {
@@ -202,6 +204,46 @@ private fun CardHeader(controller: ScooterMapController, scooter: Scooter, conte
         DockCloseButton(localized("Close scooter details"), onClick = { controller.selectScooter(null) })
     }
 }
+
+/**
+ * The battery and the range under the name. At the standard text size and below they keep to one line: they may run
+ * on into the gap before the close button, which sits beside the name, and then shrink to 0.85 of their size, as
+ * "100 % de batería, 26,8 km de autonomía" needs 243 points and a 360-point phone gives the title 191 (and a 7-inch
+ * tablet's panel 231); they wrap whole only where even that is too narrow. With larger text they wrap in their own
+ * width, as the iPhone's always do: its titleBlock lets the line wrap, and its Spacer keeps the gap
+ * (ScooterControls.swift:1553-1556, 1600, 1623-1634).
+ */
+@Composable
+private fun FactsLine(facts: String) {
+    val style = designFont(12.5f, tabular = true)
+    val oneLine = !TextSize.isAboveLarge
+    Text(
+        facts,
+        style = style,
+        color = scootColors.dockQuiet,
+        autoSize = if (oneLine) oneLineShrinkingTo(style, FACTS_MINIMUM_SCALE) else null,
+        modifier = Modifier.testTag(CARD_FACTS_TAG).then(if (oneLine) Modifier.reaching(FACTS_REACH) else Modifier),
+    )
+}
+
+/**
+ * Lays the content out up to [reach] wider than its room, drawn on past its end, while it takes no more than its room
+ * in the layout: the gap at the end stays the row's.
+ */
+private fun Modifier.reaching(reach: Dp): Modifier = layout { measurable, constraints ->
+    val wider = if (constraints.hasBoundedWidth) constraints.copy(maxWidth = constraints.maxWidth + reach.roundToPx()) else constraints
+    val placeable = measurable.measure(wider)
+    layout(minOf(placeable.width, constraints.maxWidth), placeable.height) { placeable.placeRelative(0, 0) }
+}
+
+/** How small the facts under the name may get before they wrap, at the standard text size. */
+internal const val FACTS_MINIMUM_SCALE = 0.85f
+
+/** How far into the 26 points before the close button the facts may run on one line: 8 stay between them. */
+internal val FACTS_REACH = 18.dp
+
+/** The facts' tag, by which the tests find the line. */
+internal const val CARD_FACTS_TAG = "cardFacts"
 
 /** The provider's colour with its initials, in the ink that reads on it: 40 points, whatever the text size. */
 @Composable
