@@ -97,6 +97,15 @@ describe('the United States', () => {
     expect(activeSeasonalPause(tahoe, Date.UTC(2027, 4, 1, 7, 30))).toBeNull();
   });
 
+  it('pauses Winona from 16 November until 15 March, by its clock', () => {
+    // City Code 61.53(d)(3): a scooter licence runs from 15 March and expires on 15 November.
+    const winona: [number, number] = [44.04907, -91.64608];
+    expect(activeSeasonalPause(winona, Date.UTC(2026, 10, 16, 5, 30))).toBeNull();
+    expect(activeSeasonalPause(winona, Date.UTC(2026, 10, 16, 6, 30))).toEqual({ city: 'Winona, MN', month: 3 });
+    expect(activeSeasonalPause(winona, Date.UTC(2027, 2, 14, 12))).toEqual({ city: 'Winona, MN', month: 3 });
+    expect(activeSeasonalPause(winona, Date.UTC(2027, 2, 15, 5, 30))).toBeNull();
+  });
+
   it('keeps Spin\'s University of Utah scooters, on the campus inside Salt Lake City\'s outline, under Salt Lake City', () => {
     const spin = system('spin_us_salt_lake_city');
     expect(spin.discoveryUrl).toBe('https://gbfs.spin.pm/api/gbfs/v2_3/university_of_utah/gbfs');
@@ -128,8 +137,10 @@ describe('the United States', () => {
         vehicles: [{ provider: 'lime', vehicle_id: `${index}`, lat, lng, battery: 80, range_m: null, deep_link: null, distance_m: 0 }],
         observedAt: now, attemptedAt: now, collectedAt: now, stale: false, failed: false, skipped: false };
     });
-    const counted = Object.fromEntries(buildCityOverview(feeds, now).cities.filter(city => city.id.startsWith('us:id:'))
-      .map(city => [city.id, city.batteries.lime?.reduce((sum, count) => sum + count, 0) ?? 0]));
+    // Idaho's other towns, Moscow among them (Spin's), have no Lime scooters here.
+    const counted = Object.fromEntries(buildCityOverview(feeds, now).cities
+      .filter(city => city.id.startsWith('us:id:') && city.batteries.lime)
+      .map(city => [city.id, city.batteries.lime!.reduce((sum, count) => sum + count, 0)]));
     expect(counted).toEqual({ 'us:id:Boise': 4, 'us:id:Garden City': 2 });
   });
 
@@ -400,7 +411,8 @@ describe('the United States', () => {
     ['NC State', 'Raleigh, NC'], ['Saint Paul', 'St. Paul, MN'], ['NYC', 'Bronx, NY'], ['New York', 'Bronx, NY'],
     ['University of Utah', 'Salt Lake City, UT'], ['U of U', 'Salt Lake City, UT'], ['UofU', 'Salt Lake City, UT'],
     ['UCSB', 'Isla Vista, CA'], ['UC Santa Barbara', 'Isla Vista, CA'], ['Lake Tahoe', 'South Lake Tahoe, CA'],
-    ['Stateline', 'South Lake Tahoe, CA'],
+    ['Stateline', 'South Lake Tahoe, CA'], ['SDSU', 'San Diego, CA'], ['Kent State', 'Kent, OH'], ['LSU', 'Baton Rouge, LA'],
+    ['Washington State University', 'Pullman, WA'], ['University of Idaho', 'Moscow, ID'],
   ])('finds the town of a campus or a borough by its other name: "%s"', (query, title) => {
     expect(namedCities(query)[0].city.title).toBe(title);
   });

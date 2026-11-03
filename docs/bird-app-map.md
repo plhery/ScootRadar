@@ -1,15 +1,19 @@
 # Bird rider map
 
-Since 28 October 2026 the Node cache reads Bird's rider map, signed in, in 21
-towns where Bird publishes no feed ([`server/birdApp.ts`](../server/birdApp.ts)):
-in the United States Austin, Bloomington, IN, Charlotte, Jacksonville,
-Mankato, Sacramento, Wilmington, NC, and Yonkers, and in Canada Brampton,
-Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat, Mississauga,
-Okotoks, Oshawa, Penticton, Spruce Grove (with Stony Plain), St. Albert and
-Vernon. The user asked for it on 27
+Since 28 October 2026 the Node cache reads Bird's rider map, signed in, where
+Bird or Spin publishes no feed ([`server/birdApp.ts`](../server/birdApp.ts)),
+37 areas since 3 November. Bird's scooters in the United States: Austin,
+Bloomington, IN, Charlotte, Coral Gables, Harrisonburg, Jacksonville,
+Knoxville, Mankato, Mesa, Ogden, Sacramento, Scottsdale, Wilmington, NC,
+Winona and Yonkers. Spin's: Auburn, AL, Baton Rouge, Canton, OH, Greeley,
+Kent, OH, Moscow, ID, Pullman and San Diego State. Bird's in Canada:
+Brampton, Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat,
+Mississauga, Okotoks, Oshawa, Penticton, Pickering, Spruce Grove (with
+Stony Plain), St. Albert and Vernon. The user asked for it on 27
 October 2026, after [the research reader](../scripts/bird-app-map.mjs) had
 shown the map's decoys could be told from real replies. Everything Bird
-publishes stays read from its public feeds at `mds.bird.co`.
+and Spin publish stays read from their public feeds at `mds.bird.co` and
+`gbfs.spin.pm`.
 
 ## What the cache reads
 
@@ -22,7 +26,8 @@ BinBin's ([`server/nearestSweep.ts`](../server/nearestSweep.ts)): until every
 point of its outline lies within a reply that listed every vehicle that near.
 A sweep is planned from the positions the last one published. Only the
 system's own brand is kept, inside the outline: Bird's app shows Spin's fleet
-too, which Spin's public feeds already supply. Each scooter keeps its battery
+too, which a Spin system (`spin_us_app_*`) keeps where Spin has no public
+feed, and Spin's public feeds supply elsewhere. Each scooter keeps its battery
 charge and range. The map gives no position time, so the observation time is
 the sweep's start.
 
@@ -45,8 +50,8 @@ about half what it took. An area nobody looks at is swept once a day
 (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
 ten minutes after a day without a sweep. A request keeps an area watched for
 three minutes, and a watched area is swept again as soon as its sweep ends.
-The 23 areas took about 180 requests, so a day's round of them all takes
-about 90 of the client's 1,440 minutes.
+The 37 areas took about 250 requests, so a day's round of them all takes
+about 125 of the client's 1,440 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
 cache waits two minutes, while the cache it replaces may still be sweeping.
 
@@ -80,9 +85,24 @@ session the cache holds.
 | Brampton | 135 | 11 | 300 s | 23:17 UTC |
 | Mississauga | 103 | 17 | 510 s | 23:22 UTC |
 | Pickering | 36 | 12 | 330 s | 15:14 UTC, 1 November |
-| Oklahoma City | 43 | 9 | 270 s | 15:19 UTC, 1 November |
+| Knoxville | 303 | 8 | 240 s | 23:03 UTC, 2 November |
+| Baton Rouge (Spin, LSU) | 165 | 1 | 30 s | 23:04 UTC, 2 November |
+| Coral Gables | 189 | 5 | 150 s | 23:13 UTC, 2 November |
+| Harrisonburg | 238 | 4 | 120 s | 23:19 UTC, 2 November |
+| Ogden | 108 | 4 | 120 s | 23:27 UTC, 2 November |
+| Auburn, AL (Spin, Auburn University) | 120 | 1 | 30 s | 23:27 UTC, 2 November |
+| Greeley (Spin) | 16 | 1 | 30 s | 23:29 UTC, 2 November |
+| Canton, OH (Spin) | 14 | 4 | 120 s | 23:31 UTC, 2 November |
+| Mesa | 90 | 10 | 300 s | 23:36 UTC, 2 November |
+| Scottsdale | 170 | 28 | 840 s | 23:53 UTC, 2 November |
+| Kent, OH (Spin, Kent State) | 140 | 2 | 60 s | 23:54 UTC, 2 November |
+| San Diego State (Spin) | 195 | 1 | 30 s | 23:54 UTC, 2 November |
+| Pullman (Spin, Washington State) | 262 | 5 | 150 s | 23:57 UTC, 2 November |
+| Winona | 28 | 2 | 60 s | 23:58 UTC, 2 November |
+| Moscow, ID (Spin, University of Idaho) | 107 | 2 | 60 s | 00:01 UTC, 3 November |
 
-These were swept with the production code on 27 October 2026, the first four a
+The last fifteen were swept with the production code on the research
+account, a request every 30 seconds, in the ride check below. The others were swept with the production code on 27 October 2026, the first four a
 request every six seconds, the others at the production pace after Bird's map
 had answered real scooters again at 22:04 UTC: 165 requests in 87 minutes
 from then, the town search below included, and every reply checked. In Indianapolis, which Bird also publishes, its public feed
@@ -147,13 +167,93 @@ further, and a search must read every 8 km or so.
 On 1 November 2026, on the research account, the areas left unchecked were
 swept whole with the production code: 94 requests from 15:08 to 15:55 UTC.
 Pickering's held 36 scooters, in the town's south, and Oklahoma City's 43,
-downtown, each missed by the read at its area's centre; both are in the table
-above. Airdrie's, Chestermere's, Vancouver's two, Chula Vista's, San Jose's
+downtown, each missed by the read at its area's centre; both went on the
+map, and Oklahoma City's came off on 3 November, as its scooters were hardly
+ridden (below). Airdrie's, Chestermere's, Vancouver's two, Chula Vista's, San Jose's
 two, Washington's own, Alexandria's (3 on 27 October) and Montréal's held
 none. An unnamed area of 60 km around Washington held 150, around George
 Mason University, 144 of them inside Bird's public Fairfax feed: no new town.
 Houston's and Toronto's areas are a few hundred metres across, so their
 centre reads cleared them, and Seattle's permit is revoked, so it was left out.
+
+From 16:07 UTC on 1 November 2026 to 16:23 on 2 November, the research
+account read the area list at 3,598 towns from GeoNames, every American town
+of 15,000 people or more and every Canadian one of 8,000, largest first,
+skipping a town within 8 km of a point already read: 2,241 reads, 30 seconds
+apart. They listed 265 operating areas outside our Bird and Spin feeds. A
+scooter read at each one's centre found scooters in 38. The areas at least
+1.5 km across where it found some, and those at least 6 km across where it
+found none, were then swept whole with the production code, 97 areas in all:
+62 held no scooter, 8 held one to six, and 27 held ten or more, which went to
+the ride check below. One reply in Columbia, Missouri, listed a scooter of a
+third brand (`71ccde24…`, a Bird partner's): the check stopped the search for
+15 minutes, as it should, and the brand is accepted by the research reader
+since, though not by the cache, which keeps only Bird's and Spin's.
+
+## Which fleets are ridden
+
+A fleet on the map is not always one people ride. On 16 October 2026, in 71
+minutes, 7.5% of Atlanta's Bird scooters and 12.3% of Indianapolis' left
+their places, but 0.4% of Orlando's and 1.8% of UCF's, which were left out
+then. The bar is that riders use a fleet at all, not its size. Between two
+whole sweeps of an area, scooters are matched one to one within 30 m: one
+without a match has left, and one that turns up more than 150 m from any
+scooter of the first sweep was ridden or taken there.
+
+The 27 areas with ten scooters or more were swept twice on Monday 2
+November 2026, from 16:30 and from 23:00 UTC (6.5 hours):
+
+| Area | Scooters | Left | Arrived over 150 m away | Added |
+| --- | ---: | ---: | ---: | --- |
+| Knoxville | 301 → 303 | 90 (30%) | 14 | yes |
+| Baton Rouge (Spin) | 170 → 165 | 71 (42%) | 19 | yes |
+| Harrisonburg | 253 → 238 | 94 (37%) | 20 | yes |
+| Canton, OH (Spin) | 17 → 14 | 7 (41%) | 2 | yes |
+| Coral Gables | 197 → 189 | 57 (29%) | 8 | yes |
+| Moscow, ID (Spin) | 113 → 107 | 32 (28%) | 6 | yes |
+| Mesa | 99 → 90 | 27 (27%) | 8 | yes |
+| San Diego State (Spin) | 202 → 195 | 53 (26%) | 2 | yes |
+| Kent, OH (Spin) | 115 → 140 | 29 (25%) | 17 | yes |
+| Pullman (Spin) | 257 → 262 | 59 (23%) | 5 | yes |
+| Auburn, AL (Spin) | 125 → 120 | 24 (19%) | 6 | yes |
+| Greeley (Spin) | 16 → 16 | 3 (19%) | 3 | yes |
+| Winona | 28 → 28 | 5 (18%) | 3 | yes |
+| Scottsdale | 180 → 170 | 31 (17%) | 9 | yes |
+| Ogden | 112 → 108 | 17 (15%) | 7 | yes |
+| Alafaya (UCF) | 346 → 339 | 54 (16%) | 1 | no |
+| Chandler | 63 → 63 | 8 (13%) | 3 | no |
+| South Miami | 24 → 22 | 3 (13%) | 1 | no |
+| West Minneapolis (Spin) | 13 → 13 | 1 (8%) | 1 | no |
+| Wheeling | 45 → 44 | 3 (7%) | 2 | no |
+| Idaho Falls | 129 → 127 | 8 (6%) | 2 | no |
+| Owatonna | 67 → 67 | 4 (6%) | 2 | no |
+| St. Petersburg (Spin) | 174 → 169 | 8 (5%) | 0 | no |
+| Bismarck | 214 → 214 | 9 (4%) | 7 | no |
+| Sheboygan | 174 → 172 | 7 (4%) | 2 | no |
+| Bridgewater, VA | 28 → 28 | 0 | 0 | no |
+| Bakersfield | 75 → 75 | 0 | 0 | no |
+
+The fifteen where 15% or more left and at least two turned up far from any
+earlier scooter went on the map on 3 November. On the Sunday before, 4.5
+hours apart, Knoxville (21% left) and Baton Rouge (18%) already moved more
+than St. Petersburg (8%) and Chandler (4%), and an overnight window had
+Harrisonburg, Mesa, Auburn and Greeley moving too. UCF's scooters stirred
+within 150 m of where they stood; St. Petersburg's Spin fleet, beside the
+city's public feeds, and Bakersfield's barely moved. Coral Gables' area
+reaches east into Miami's Coconut Grove, where Bird's public Miami feed,
+left out as unridden in October, lists a few scooters: both sides moved, 42
+of 163 west of Douglas Road and 15 of 34 east of it.
+
+Bird's earlier areas, read through production a day apart (1 to 2
+November), were ridden too: Austin 36% left, Charlotte 40%, Jacksonville
+32%, Mankato 57%, Sacramento 35%, Wilmington 60% and Yonkers 38%, and in
+Canada Brampton 51%, Kamloops 17%, Lethbridge 22%, Mississauga 19%, St.
+Albert 16% and Vernon 48%. Bloomington's re-read on 3 November found 58 of
+278 gone since its last daily sweep. Cochrane, Cranbrook and Okotoks had
+emptied for the winter, and Oshawa fell from 38 to 11. Oklahoma City's
+scooters, 3 of 43 leaving in about 20 hours and 7 of 57 the next day, came
+off. Recheck the left-out areas in spring, when fleets and riders come
+back ([coverage gaps](coverage-gaps.md)).
 
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.

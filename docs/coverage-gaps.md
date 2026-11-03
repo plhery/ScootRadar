@@ -53,7 +53,7 @@ were added.
 | **Voi official GBFS access** | The user authorized an authenticated rider-map adapter on 24 October 2026; it adds 72 regions, including 17 in the UK ([evidence](voi-app-map.md)). Official access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
 | **Rider sign-in for JET** | JET's separate Central Asian app needs a rider account, with phone and SMS verification, for Almaty, Ulaanbaatar, Tashkent and Tbilisi. No guest session was found (24 October 2026). Beam's Google sign-in is complete, with a [54-region collector](beam-app-map.md) across Australia, Malaysia, South Korea and Türkiye. LUUP's [19-city collector](luup-app-map.md) and Whoosh's [25-region collector](whoosh-app-map.md) are integrated too. Go Jet's [signed-out adapter](gojet-app-map.md) supplies 54 regions in six countries without a rider sign-in. See [the evidence](jet-whoosh-beam-luup-app-maps.md) |
 | **Rider sign-ins for six ATOM apps** | IslaRide (Tenerife), wer2 (Doha), Reby (Dakar), IZZY (Tashkent), Silk Road Samarkand and e-moob (Tamarindo) answer their map only to a signed-in rider, and each needs its own phone and SMS sign-in, as MoVe's did. On 25 October 2026 the user chose to leave them for another day. Reby also refused a sign-in from a Swiss IP (error `11-6`), and e-moob's Aruba fleet stays out, since Aruba banned e-scooters from public roads in July 2026. See [the apps](atom-operator-apps.md) |
-| **Bird's rider app** | Since 28 October 2026 it supplies 23 towns where Bird publishes no feed, signed in, each area swept whole, at one request every 30 seconds for all of them: nine American ones, from Austin to Yonkers, and fourteen Canadian ones, from Lethbridge to Mississauga. Its map made up scooters twice on 27 October 2026, both times after about 200 requests, so the request limit, not published, is the constraint: the cache stays near half of it. Beyond the 33 largest US and Canadian towns, only the 25 where Bird was said to run have been searched. Swept whole on 1 November, Pickering's and Oklahoma City's areas held scooters, and the others left unchecked none. See [requests, limits and evidence](bird-app-map.md) |
+| **Bird's rider app** | Since 28 October 2026 it supplies the areas where Bird or Spin publishes no feed, signed in, each area swept whole, at one request every 30 seconds for all of them: 37 since 3 November, 23 American ones, from Austin to Yonkers, 8 of them Spin's, and fourteen Canadian ones, from Lethbridge to Mississauga. Its map made up scooters twice on 27 October 2026, both times after about 200 requests, so the request limit, not published, is the constraint: the cache stays near half of it. On 1 and 2 November 2026 a search read the area list at every American town of 15,000 people or more and every Canadian one of 8,000, and swept whole each area a read at its centre couldn't clear: the 15 fleets found ridden went on the map on 3 November, Oklahoma City's, hardly ridden, came off, and 12 others with ten scooters or more barely moved and wait for spring. See [requests, limits and evidence](bird-app-map.md) |
 | **Boulder's parking corrals** (Colorado) | The City of Boulder publishes its Lime Groves (parking corrals) and Lime zones in the `trans/LimeScooterLocations` map service on gis.bouldercolorado.gov, which holds proposed Groves beside the active ones. Since at least 29 October 2026 the server has answered scripts with HTTP 403 and a Cloudflare challenge, from Switzerland and from Germany, and no copy of the layer is on ArcGIS Online. The zones are drawn from Lime's public zone file instead, since 29 October 2026, with the user's leave (`DATA_SOURCES.md`); the corrals are not in that file, so the Mandatory Parking Zone, most of central Boulder, where a ride ends at one, is not drawn either. The City's 2023 PDF maps of Downtown and University Hill are pictures only |
 | **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Both operators' scooters there come from their rider maps since 25 October 2026, [Bolt's](bolt-app-map.md) and [Lime's](lime-app-map.md), so their NRW.Mobidrom feeds are not needed |
 
@@ -1121,8 +1121,18 @@ banned shared scooters, and feeds that were empty when checked.
       5. Still without one: smaller towns.
     - **Bird:** its rider map has supplied Austin, Bloomington, IN, Charlotte,
       Jacksonville, Mankato, Sacramento, Wilmington, NC, and Yonkers since 28
-      October 2026, and Oklahoma City since 1 November
-      ([Bird's rider app](bird-app-map.md)). Bird in **Long Beach** is one
+      October 2026, and since 3 November Coral Gables, Harrisonburg,
+      Knoxville, Mesa, Ogden, Scottsdale and Winona, and Spin's fleets in
+      Auburn, AL, Baton Rouge, Canton, OH, Greeley, Kent, OH, Moscow, ID,
+      Pullman and at San Diego State, where Spin publishes no feed
+      ([Bird's rider app](bird-app-map.md)). Oklahoma City's area, on the map
+      from 1 to 3 November, came off: its scooters were hardly ridden. Bird's
+      and Spin's areas left out for that reason, with ten scooters or more on
+      2 November: Alafaya (UCF), Chandler, South Miami, Wheeling, Idaho Falls,
+      Owatonna, Bismarck, Sheboygan, Bridgewater, VA, Bakersfield, and Spin's
+      in West Minneapolis and St. Petersburg. Areas with one to six: North
+      Kansas City, Kansas City, KS, Liberty, MO, South Ogden, two by Mesa, and
+      one by Sheboygan. Bird in **Long Beach** is one
       of the City's two permitted operators, with Lime (Public Works memo of
       5 March 2026; the
       [program page](https://longbeach.gov/goactivelb/programs/micro-mobility-program/)
@@ -1155,6 +1165,12 @@ banned shared scooters, and feeds that were empty when checked.
     scooters, half last week's, lost none from their places and gained two
     elsewhere, while Bird Indianapolis lost about 120 an hour. Miami, Orlando
     and UCF are checked on 15 January 2027, and East Lansing on 15 April 2027.
+    Bird Miami's scooters are on the map since 3 November 2026 all the same:
+    Bird's operating area for Coral Gables reaches east into Coconut Grove,
+    and the public feed's 25 scooters on 3 November all lay inside it, 22 of
+    them within 50 m of one its sweep had found the evening before. That side
+    was ridden on 2 November, 15 of its 34 scooters leaving their places in
+    6.5 hours and 3 turning up far from any earlier one.
   - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
     scooter inside the outline of a town where its operator has no area, so
     Veo Santa Monica's 1 or 2 in Culver City, Lime Oakland's 1 in Emeryville
@@ -1873,10 +1889,18 @@ Bonaire had feeds to add. Survey files are in
   after midnight on 21 October despite the city code's ban from midnight to
   02:30, needs no recheck.
 - **15 January 2027:** Bird Orlando and Bird University of Central Florida,
-  live but unridden on 14 and 16 October 2026, and Bird Miami, unridden on
-  the evening of 21 October. Poll each on a weekday
+  live but unridden on 14 and 16 October 2026. Poll each on a weekday
   afternoon beside a Bird feed on the map, matching scooters by place, and
-  add it if its scooters leave their spots about as often.
+  add it if its scooters leave their spots about as often. Bird Miami's
+  scooters are on the map since 3 November 2026 inside Coral Gables' area,
+  so its feed needs no recheck.
+- **15 April 2027:** Bird's and Spin's rider-map areas left out on 3
+  November 2026 as barely ridden ([Bird's rider app](bird-app-map.md#which-fleets-are-ridden)):
+  Alafaya (UCF), Chandler, South Miami, Wheeling, Idaho Falls, Owatonna,
+  Bismarck, Sheboygan, Bridgewater, VA, Bakersfield, and Spin's West
+  Minneapolis and St. Petersburg. Sweep each twice, 6 hours apart on a
+  weekday, on the research account, and add those where 15% or more of the
+  scooters leave and some turn up far from any earlier one.
 - **15 January 2027:** Hopp Las Terrenas (`do-las-terrenas`), in the
   Dominican Republic: 2 scooters, none available, on 15 October 2026. Add it
   if it holds about ten available scooters that are ridden. Hopp Accra

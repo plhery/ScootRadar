@@ -51,6 +51,10 @@ const GULFPORT_FL: [number, number] = [27.7484, -82.7034];
 // Uptown Charlotte, and the Belk Tower on UNC Charlotte's campus.
 const CHARLOTTE: [number, number] = [35.2271, -80.8431];
 const UNC_CHARLOTTE: [number, number] = [35.3071, -80.7352];
+// Kent State's campus, Stow next door, and San Diego State's campus.
+const KENT_STATE: [number, number] = [41.149, -81.3415];
+const STOW_OH: [number, number] = [41.1595, -81.4404];
+const SAN_DIEGO_STATE: [number, number] = [32.7757, -117.0719];
 const ILE_SAINTE_HELENE: [number, number] = [45.5146, -73.534];
 const ILE_NOTRE_DAME: [number, number] = [45.505, -73.525];
 const MONTREAL: [number, number] = [45.5017, -73.5673];
@@ -243,6 +247,13 @@ describe('activeCurfew', () => {
     expect(activeCurfew(CHARLOTTE, at('2026-10-27T05:29:00Z'))).toBeNull();
     expect(activeCurfew(CHARLOTTE, at('2026-10-27T05:30:00Z'))).toEqual({ city: 'Charlotte', until: at('2026-10-27T09:00:00Z'), timeZone: 'America/New_York' });
     expect(activeCurfew(UNC_CHARLOTTE, at('2026-10-27T05:30:00Z'))).toBeNull();
+    // Kent from midnight to 05:00, Eastern time, on Kent State's campus and across the city, and not in Stow.
+    expect(activeCurfew(KENT_STATE, at('2026-11-10T04:59:00Z'))).toBeNull();
+    expect(activeCurfew(KENT_STATE, at('2026-11-10T05:00:00Z'))).toEqual({ city: 'Kent', until: at('2026-11-10T10:00:00Z'), timeZone: 'America/New_York' });
+    expect(activeCurfew(KENT_STATE, at('2026-10-27T04:00:00Z'))?.until).toBe(at('2026-10-27T09:00:00Z'));
+    expect(activeCurfew(STOW_OH, at('2026-11-10T05:00:00Z'))).toBeNull();
+    // San Diego's code hours bind the city's contract holders, not San Diego State's Spin partnership.
+    expect(activeCurfew(SAN_DIEGO_STATE, at('2026-11-10T08:30:00Z'))).toBeNull();
   });
 
   it('closes Parc Jean-Drapeau from 23:00 to 06:00, on both its islands, and not Montréal\'s streets', () => {

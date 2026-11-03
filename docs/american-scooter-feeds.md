@@ -180,7 +180,7 @@ of county inside its limits that the ban never reached.
 ## Bird supplement — 28 October 2026
 
 Bird publishes no feed for Austin, Bloomington, Indiana, Charlotte,
-Jacksonville, Mankato, Oklahoma City, Sacramento, Wilmington, North Carolina,
+Jacksonville, Mankato, Sacramento, Wilmington, North Carolina,
 or Yonkers, so its rider map, signed in, supplies them: each of Bird's operating areas there
 is swept whole, a request every 30 seconds for all of Bird's areas, and once a
 day while nobody looks ([Bird's rider app](bird-app-map.md)). On the evening
@@ -196,15 +196,38 @@ public feed 586 inside the same outline, 582 of them within 50 m of one the
 sweep found. Spin's scooters, which Bird's app also shows, are left to
 Spin's public feeds. Oklahoma City followed on 1 November 2026, with 43
 scooters downtown, beside Lime's, when its area, 26 km across, was first
-swept whole.
+swept whole, and came off on 3 November: 3 of its 43 scooters left their
+places in about 20 hours, and 7 of 57 the next day, so riders hardly use them.
 
-None of the nine towns sets a season by rule. Bird kept Bloomington's
+On 3 November 2026 fifteen more areas joined, found by a search of every
+American and Canadian town and kept because their scooters are ridden
+([Bird's rider app](bird-app-map.md#which-fleets-are-ridden)). Bird's are
+in Coral Gables, Harrisonburg, Knoxville and Scottsdale, each beside
+Lime's, Mesa, Ogden and Winona. Spin's are where Spin publishes no feed:
+Auburn, Alabama (Auburn University), Baton Rouge (LSU's campus), Canton,
+Ohio, Greeley, Kent, Ohio (Kent State), Moscow, Idaho (the University of
+Idaho), Pullman (Washington State) and San Diego State, which the map
+puts under San Diego beside UC San Diego's public Spin feed. Each system
+keeps its own brand: Bird's app shows both, sometimes in one area.
+
+None of the first eight towns sets a season by rule. Bird kept Bloomington's
 scooters in from 24 November 2025 to 18 March 2026 by its own choice
 ([B Square Bulletin](https://bsquarebulletin.com/bloomington-electric-scooter-ridership-drops-82-city-prepares-new-licensing-round/),
 18 July 2026), and Mankato's have been stored each November, so either
 area may empty this winter: pause it then, as Leduc's was
 ([Canada](canadian-scooter-feeds.md#winter)). Bloomington's night hours
 are under [Night bans](#night-bans).
+
+Winona's does. Its code licenses scooters for "a period of use commencing
+March 15 and expiring November 15 of each year", which the city manager may
+extend in writing to 31 December (City Code 61.53(d)(3)); Bird's licence
+agreement for 2026, before the council on 20 April
+([packet](https://pub-winona.escribemeetings.com/filestream.ashx?DocumentId=13221)),
+runs its period of use from 21 April to 15 November. So the map pauses
+Winona from 16 November until 15 March, Central time, as it does South Lake
+Tahoe. None of the other new
+towns sets a season, and their night hours are under
+[Night bans](#night-bans).
 
 ## Washington, DC
 
@@ -874,6 +897,7 @@ Lime's map bore out on 26 October.
 | St. Petersburg, FL | Every night, 02:00–05:00 | [Scooter Share program report](https://cms5.revize.com/revize/stpete/2025-05-08%20HLUT%20Agenda%20Packet.pdf), Housing, Land Use and Transportation Committee, 8 May 2025 |
 | Jacksonville, FL | Every night, 00:00–05:00 | [Dockless Mobility Program](https://dia.jacksonville.gov/resources/dockless-mobility-program), Downtown Investment Authority |
 | Charlotte, NC | Every night, 01:30–05:00 (unconfirmed since 29 October 2026), outside UNC Charlotte's campus | [Shared-Use Mobility System Permit Requirements](https://www.charlottenc.gov/files/sharedassets/city/v/1/city-government/departments/documents/cdot/smp/charlotte-shared-use-mobility-system-permit-requirements_07_01_25.pdf), 1 July 2025, § 5.C |
+| Kent, OH | Every night, 00:00–05:00 | [SPIN KSU](https://www.kent.edu/recwell/spin-ksu), Kent State Recreation and Wellness Services |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -1055,6 +1079,30 @@ Rules that read like bans but are not, or that no primary source confirms:
   a contract with the city (§ 83.0304); the campus fleet is the university's
   [partnership with Spin](https://ipps.ucsd.edu/cpp/partners/spin.html), and
   its riders aren't stopped at midnight, so the map shows no ban there.
+  San Diego State's Spin fleet, under San Diego on the map since 3 November
+  2026, is a university partnership too, with the university's own prices,
+  and its [page](https://transportation.sdsu.edu/commuting/micromobility)
+  (updated 17 June 2026) sets no hours, so the map shows no ban there
+  either. Unlike UC San Diego's, it hasn't been watched past midnight.
+- **Kent:** Kent State's page on Spin, whose scooters run "on campus and
+  within the City of Kent", read on 2 November 2026: "Devices deactivated
+  during curfew hours (12 a.m. - 5 a.m.)". The map holds it within the
+  city's census line. Spin also switches them off "during inclement weather,
+  holidays and other special dates", which a nightly window can't hold. The
+  city code (§ 371.14) sets no hours.
+- **Auburn, Alabama:** Spin's contract with Auburn University began on 16
+  January 2023, and by The Auburn Plainsman of 16 December 2022 the
+  university said its scooters would be "available from 5 a.m. until
+  midnight every day". The contract isn't published, the university's
+  release is gone, and the city code has no scooter article. Left out:
+  unconfirmed.
+- **Pullman:** the city code bars riding a motorized foot scooter from half
+  an hour after sunset to half an hour before sunrise (PMC 12.11.020(4)),
+  but the council suspended that in August 2023, and Resolution R-48-25 of
+  18 November 2025, which approved Spin's contract through 2026, extended the
+  suspension to 30 June 2026. What the council decided after that wasn't
+  read: the code site refuses scripts. Left out: unconfirmed, and a window
+  set by the sun is no nightly one. Washington State sets no hours.
 - **Toledo:** the city's release of 25 March 2022 moved the curfew to
   02:00–05:00, and UToledo's Veo page says midnight to 05:00, but no rule in
   force today repeats either, and the city's
@@ -1099,8 +1147,13 @@ Rules that read like bans but are not, or that no primary source confirms:
 - **Washington, DC, Los Angeles, Santa Monica, Culver City, San Francisco,
   Oakland, San Jose, Seattle, Colorado Springs, Tempe, Indianapolis, Kansas
   City, Lexington, San Antonio, Arlington, Fairfax, Norfolk, Eau Claire,
-  Sacramento, Mankato, Wilmington, Oklahoma City and Spokane Valley:** no hours in their
-  rules. In Sacramento a councilmember's proposal on the "Regulation and
+  Sacramento, Mankato, Wilmington, Spokane Valley, Coral Gables, Harrisonburg,
+  Mesa, Greeley, Canton and Moscow, Idaho:** no hours in their rules. Nor in
+  Knoxville's code (ch. 16, art. XVI, of 2024), though the rules and permits
+  it allows weren't found, nor in Baton Rouge's (title 9, ch. 24, whose
+  07:00 to 19:00 is for removing damaged scooters), where LSU, whose campus
+  holds Spin's fleet, has "no set policy" (LSU Reveille, 27 August 2026).
+  Ogden's code has no chapter on shared scooters. In Sacramento a councilmember's proposal on the "Regulation and
   Enforcement of E-Bikes, E-Scooters, E-motos, and Plug-in Electric
   Two-wheelers" (file
   [2026-01811](https://webapi.legistar.com/v1/sacramento/matters/21827), introduced

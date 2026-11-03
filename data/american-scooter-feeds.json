@@ -845,6 +845,46 @@
       "birdAppArea": "dd881fcd-5c53-4555-ade0-73bcaf012ab0"
     },
     {
+      "id": "bird_us_app_coral_gables",
+      "country": "US",
+      "provider": "bird",
+      "city": "Coral Gables",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        25.74651,
+        -80.25849
+      ],
+      "bounds": {
+        "south": 25.62063,
+        "north": 25.77191,
+        "west": -80.3013,
+        "east": -80.19393
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "98ad6c78-97ad-4a66-af5d-7ab9a9254965"
+    },
+    {
+      "id": "bird_us_app_harrisonburg",
+      "country": "US",
+      "provider": "bird",
+      "city": "Harrisonburg",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "center": [
+        38.43681,
+        -78.87257
+      ],
+      "bounds": {
+        "south": 38.4014,
+        "north": 38.4857,
+        "west": -78.92703,
+        "east": -78.82064
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "5aa56aaa-8d48-4db5-84bb-58033e737449"
+    },
+    {
       "id": "bird_us_app_jacksonville",
       "country": "US",
       "provider": "bird",
@@ -863,6 +903,26 @@
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
       "birdAppArea": "cd24d948-382f-43de-9edd-5612db43d207"
+    },
+    {
+      "id": "bird_us_app_knoxville",
+      "country": "US",
+      "provider": "bird",
+      "city": "Knoxville",
+      "region": "TN",
+      "timeZone": "America/New_York",
+      "center": [
+        35.95607,
+        -83.92894
+      ],
+      "bounds": {
+        "south": 35.94225,
+        "north": 35.99398,
+        "west": -83.95537,
+        "east": -83.87826
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "fbbbacc5-cf8f-4a3d-95fd-e4d1c842f722"
     },
     {
       "id": "bird_us_app_mankato",
@@ -885,24 +945,44 @@
       "birdAppArea": "b96664dd-8003-4947-bb74-6b10e98af3a9"
     },
     {
-      "id": "bird_us_app_oklahoma_city",
+      "id": "bird_us_app_mesa",
       "country": "US",
       "provider": "bird",
-      "city": "Oklahoma City",
-      "region": "OK",
-      "timeZone": "America/Chicago",
+      "city": "Mesa",
+      "region": "AZ",
+      "timeZone": "America/Phoenix",
       "center": [
-        35.46756,
-        -97.51643
+        33.41272,
+        -111.8662
       ],
       "bounds": {
-        "south": 35.43414,
-        "north": 35.60918,
-        "west": -97.65796,
-        "east": -97.45825
+        "south": 33.30609,
+        "north": 33.48454,
+        "west": -111.89443,
+        "east": -111.63431
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "f9da155a-3335-4f84-8bdc-f97e3e3f4cc1"
+      "birdAppArea": "13f99996-5908-451e-bc9b-945318e4e1b8"
+    },
+    {
+      "id": "bird_us_app_ogden",
+      "country": "US",
+      "provider": "bird",
+      "city": "Ogden",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "center": [
+        41.2226,
+        -111.97166
+      ],
+      "bounds": {
+        "south": 41.16056,
+        "north": 41.28555,
+        "west": -112.02518,
+        "east": -111.92081
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "17b628e4-e7ff-43ab-a8b5-538923df2551"
     },
     {
       "id": "bird_us_app_sacramento",
@@ -925,6 +1005,26 @@
       "birdAppArea": "74518038-d8f6-40b7-a40a-2a02124a5131"
     },
     {
+      "id": "bird_us_app_scottsdale",
+      "country": "US",
+      "provider": "bird",
+      "city": "Scottsdale",
+      "region": "AZ",
+      "timeZone": "America/Phoenix",
+      "center": [
+        33.49297,
+        -111.92567
+      ],
+      "bounds": {
+        "south": 33.45087,
+        "north": 33.91083,
+        "west": -111.98245,
+        "east": -111.7461
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "ee223aa6-b3fa-458c-ac6a-9bfce86fe45d"
+    },
+    {
       "id": "bird_us_app_wilmington",
       "country": "US",
       "provider": "bird",
@@ -943,6 +1043,31 @@
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
       "birdAppArea": "7953758a-b61b-4dff-869f-22a88dd17f62"
+    },
+    {
+      "id": "bird_us_app_winona",
+      "country": "US",
+      "provider": "bird",
+      "city": "Winona",
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "center": [
+        44.04907,
+        -91.64608
+      ],
+      "bounds": {
+        "south": 44.01998,
+        "north": 44.07044,
+        "west": -91.72073,
+        "east": -91.59954
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "134dd3c2-f953-479f-ac1f-267dfc384b5b",
+      "seasonal": {
+        "from": "11-16",
+        "until": "03-15",
+        "timeZone": "America/Chicago"
+      }
     },
     {
       "id": "bird_us_app_yonkers",
@@ -1955,6 +2080,192 @@
         "University of Utah",
         "U of U",
         "UofU"
+      ]
+    },
+    {
+      "id": "spin_us_app_auburn",
+      "country": "US",
+      "provider": "spin",
+      "city": "Auburn",
+      "region": "AL",
+      "timeZone": "America/Chicago",
+      "center": [
+        32.60167,
+        -85.49299
+      ],
+      "bounds": {
+        "south": 32.58395,
+        "north": 32.60637,
+        "west": -85.5076,
+        "east": -85.48183
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "499ad6b6-58c6-4b4f-b5f7-09893be85a07",
+      "aliases": [
+        "Auburn University"
+      ]
+    },
+    {
+      "id": "spin_us_app_baton_rouge",
+      "country": "US",
+      "provider": "spin",
+      "city": "Baton Rouge",
+      "region": "LA",
+      "timeZone": "America/Chicago",
+      "center": [
+        30.41184,
+        -91.1794
+      ],
+      "bounds": {
+        "south": 30.38115,
+        "north": 30.42332,
+        "west": -91.20035,
+        "east": -91.15229
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "a8a1e9e4-860e-4728-931a-387b5e92c4e8",
+      "aliases": [
+        "LSU",
+        "Louisiana State University"
+      ]
+    },
+    {
+      "id": "spin_us_app_canton",
+      "country": "US",
+      "provider": "spin",
+      "city": "Canton",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        40.81936,
+        -81.37274
+      ],
+      "bounds": {
+        "south": 40.76526,
+        "north": 40.86006,
+        "west": -81.42658,
+        "east": -81.3024
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "2f87c7df-58b0-4ef4-bca3-d764c4f539e3"
+    },
+    {
+      "id": "spin_us_app_greeley",
+      "country": "US",
+      "provider": "spin",
+      "city": "Greeley",
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "center": [
+        40.41033,
+        -104.69142
+      ],
+      "bounds": {
+        "south": 40.39208,
+        "north": 40.4382,
+        "west": -104.73525,
+        "east": -104.68322
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "3df340b7-4a1c-4989-90c6-0c95a4f09d4c",
+      "aliases": [
+        "University of Northern Colorado"
+      ]
+    },
+    {
+      "id": "spin_us_app_kent",
+      "country": "US",
+      "provider": "spin",
+      "city": "Kent",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        41.15014,
+        -81.34192
+      ],
+      "bounds": {
+        "south": 41.1351,
+        "north": 41.16732,
+        "west": -81.39524,
+        "east": -81.31165
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "c76f3952-1d29-40a6-a625-e1ca8efcf3f6",
+      "aliases": [
+        "Kent State",
+        "Kent State University"
+      ]
+    },
+    {
+      "id": "spin_us_app_moscow",
+      "country": "US",
+      "provider": "spin",
+      "city": "Moscow",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        46.72743,
+        -117.00844
+      ],
+      "bounds": {
+        "south": 46.70669,
+        "north": 46.75943,
+        "west": -117.0395,
+        "east": -116.93684
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "e60b44be-6f6d-4f95-8917-d8ca87cd0378",
+      "aliases": [
+        "University of Idaho"
+      ]
+    },
+    {
+      "id": "spin_us_app_pullman",
+      "country": "US",
+      "provider": "spin",
+      "city": "Pullman",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        46.73233,
+        -117.16249
+      ],
+      "bounds": {
+        "south": 46.70453,
+        "north": 46.76195,
+        "west": -117.22207,
+        "east": -117.08557
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "20257092-f978-4284-be58-6bd431276dd1",
+      "aliases": [
+        "WSU",
+        "Washington State University"
+      ]
+    },
+    {
+      "id": "spin_us_app_sdsu",
+      "country": "US",
+      "provider": "spin",
+      "city": "San Diego",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        32.77473,
+        -117.07042
+      ],
+      "bounds": {
+        "south": 32.76793,
+        "north": 32.7811,
+        "west": -117.08796,
+        "east": -117.05571
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "e3766c61-0297-4483-b355-59c05c8020d0",
+      "aliases": [
+        "SDSU",
+        "San Diego State University",
+        "College Area"
       ]
     },
     {
