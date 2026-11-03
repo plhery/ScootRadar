@@ -22,7 +22,7 @@ const guide: Guide = {
             head: ['Regra', 'O que diz a lei'],
             rows: [
               ['Carta de condução', 'Não é necessária'],
-              ['Idade mínima', 'Nenhuma; os operadores de trotinetes partilhadas exigem 18 anos'],
+              ['Idade mínima', 'Nenhuma na lei; nas partilhadas, a app mostra a do operador antes de desbloquear'],
               ['Seguro', 'Não é obrigatório'],
               ['Capacete', 'Não é obrigatório desde 8 de janeiro de 2021'],
               ['Onde circular', 'Na ciclovia, se existir, ou na faixa de rodagem, junto à direita; no passeio, só crianças até aos 10 anos'],
@@ -47,9 +47,9 @@ const guide: Guide = {
       heading: 'Idade mínima, carta de condução e seguro',
       blocks: [
         '**Carta.** Não é necessária: a condução de velocípedes e equiparados «não carece de habilitação legal para conduzir» (artigo 121.º).',
-        '**Idade.** O Código da Estrada não fixa idade mínima; os 18 anos das partilhadas são uma exigência dos operadores.',
+        '**Idade.** O Código da Estrada não fixa idade mínima; nas partilhadas, a idade mínima e o preço mostra-os a app antes de desbloquear.',
         '**Seguro.** Não é obrigatório. O Decreto-Lei n.º 26/2025 alargou o seguro automóvel obrigatório aos veículos com motor que passam dos 25 km/h, ou que pesam mais de 25 kg e passam dos 14 km/h. A 19 de junho de 2025, a ANSR esclareceu que essa obrigação «não se aplica aos utilizadores de trotinetas e de velocípedes». Só uma trotinete com mais de 25 kg fica numa zona cinzenta: se a sua for pesada, confirme com uma seguradora.',
-        'Mesmo sem obrigação, um seguro de responsabilidade civil é prudente, porque quem causa danos responde por eles; o multirriscos da casa pode já o incluir. Nas partilhadas, a Bird inclui seguro de responsabilidade civil e de acidentes pessoais; nos outros operadores, veja os termos na app.',
+        'Mesmo sem obrigação, um seguro de responsabilidade civil é prudente, porque quem causa danos responde por eles; o multirriscos da casa pode já o incluir.',
       ],
     },
     {
@@ -89,7 +89,7 @@ const guide: Guide = {
       heading: 'Álcool, telemóvel, auriculares e passageiros',
       blocks: [
         '**Álcool.** O limite é o dos automobilistas, **0,5 g/l**. De 0,5 a menos de 0,8 g/l, a coima é de 125 a 625 € (grave); de 0,8 a menos de 1,2 g/l, de 250 a 1250 € (muito grave). A partir de 1,2 g/l é crime, punido com prisão até 1 ano ou multa até 120 dias (artigo 292.º do Código Penal). O crime vale para qualquer «veículo, com ou sem motor», até uma bicicleta.',
-        'Os condutores em regime probatório têm um limite de 0,2 g/l, e a lei não diz se vale na trotinete. Na dúvida, não beba. Quanto às drogas: coima de 250 a 1250 € (muito grave), e crime se a pessoa não estiver em condições de conduzir.',
+        'Os condutores em regime probatório têm um limite de 0,2 g/l; na trotinete, o mais seguro é não beber. Quanto às drogas: coima de 250 a 1250 € (muito grave), e crime se a pessoa não estiver em condições de conduzir.',
         '**Telemóvel e auscultadores.** Usá-los durante a condução custa **125 a 625 €**, metade do que num carro, e é grave. Um único auricular é permitido; dois não.',
         '**Passageiros.** Uma trotinete leva uma só pessoa: andar a dois custa 60 a 300 € (artigo 91.º).',
         '**Manobras.** Andar sem mãos (salvo para sinalizar), tirar os pés da plataforma, ir a reboque ou empinar a trotinete custa 30 a 150 €.',
@@ -109,7 +109,7 @@ const guide: Guide = {
               ['Circular em sentido contrário', '125 a 625 €', 'Grave'],
               ['Levar um passageiro', '60 a 300 €', 'Leve'],
               ['Sem mãos, sem pés na plataforma, a reboque', '30 a 150 €', 'Leve'],
-              ['Sem luzes à noite ou com pouca visibilidade', '30 a 150 €', 'Leve ou grave (a lei não é clara)'],
+              ['Sem luzes à noite ou com pouca visibilidade', '30 a 150 €', 'Leve ou grave'],
               ['Telemóvel ou auscultadores (dois auriculares)', '125 a 625 €', 'Grave'],
               ['Álcool de 0,5 a menos de 0,8 g/l', '125 a 625 €', 'Grave'],
               ['Álcool de 0,8 a menos de 1,2 g/l', '250 a 1250 €', 'Muito grave'],
@@ -123,7 +123,7 @@ const guide: Guide = {
           },
         },
         'Passar um sinal vermelho ou desobedecer à ordem de paragem de um agente é muito grave, como para qualquer condutor.',
-        'Quem não tem carta não perde pontos: nas graves e muito graves, a inibição de conduzir é substituída pela apreensão do veículo pelo mesmo período (artigo 147.º), de 1 mês a 1 ano nas graves e de 2 meses a 2 anos nas muito graves. Para quem tem carta, a lei não diz se uma infração cometida de trotinete tira pontos.',
+        'Quem não tem carta não perde pontos: nas graves e muito graves, a inibição de conduzir é substituída pela apreensão do veículo pelo mesmo período (artigo 147.º), de 1 mês a 1 ano nas graves e de 2 meses a 2 anos nas muito graves.',
       ],
     },
     {
@@ -145,14 +145,14 @@ const guide: Guide = {
         'Numa trotinete partilhada, a app aplica também as regras da cidade. Os passos estão no guia [como alugar uma trotinete elétrica](guide:how-to-rent).',
         '**Lisboa**: as trotinetes partilhadas não passam dos 20 km/h, só se estacionam nos hotspots, os lugares autorizados, e não podem circular em vias BUS, jardins, praças, túneis, viadutos e pontes. A 21 de outubro de 2026, a Câmara aprovou a sua suspensão em todo o concelho: «É uma suspensão em que não prevemos o regresso das trotinetas», disse o vice-presidente Gonçalo Reis à RTP Antena 1. Mais no guia das [trotinetes em Lisboa](guide:lisbon).',
         '**Porto**: só se estacionam nos pontos de partilha, marcados com tinta azul no chão e um sinal vertical, e não podem circular em passeios, ruas pedonais, praças, jardins, vias BUS, na Circunvalação, na VCI, em túneis nem em algumas pontes. Mais no guia das [trotinetes no Porto](guide:porto).',
-        'A 30 de outubro de 2026, o ScootRadar mostrava trotinetes da Bird em 11 localidades, da Maia a Olhão, da Bolt em 7, de Matosinhos a Faro, e da Lime em 6, de Lisboa e do Porto a Faro. Abra o mapa em [Lisboa](map:pt:Lisboa), no [Porto](map:pt:Porto) ou [à sua volta](/map): um botão abre a app do operador, onde desbloqueia e paga.',
+        'Abra o mapa em [Lisboa](map:pt:Lisboa), no [Porto](map:pt:Porto) ou [à sua volta](/map): um botão abre a app do operador, onde desbloqueia e paga.',
       ],
     },
   ],
   faq: [
     {
       question: 'Qual é a idade mínima para andar de trotinete elétrica?',
-      answer: 'A lei não fixa nenhuma. Os operadores de trotinetes partilhadas, como a Bird, só as alugam a maiores de 18 anos. Com uma trotinete própria, as crianças até aos 10 anos podem circular no passeio.',
+      answer: 'A lei não fixa nenhuma. Nas partilhadas, a app mostra a idade mínima do operador antes de desbloquear. Com uma trotinete própria, as crianças até aos 10 anos podem circular no passeio.',
     },
     {
       question: 'Posso andar de trotinete com auriculares?',
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Quando passa o capacete a ser obrigatório nas trotinetes?',
-      answer: 'Ainda não há data. Os projetos do PSD e do PS foram aprovados na generalidade a 30 de setembro de 2026 e estão na comissão parlamentar; falta a votação final global e a publicação em Diário da República. Pelos textos aprovados na generalidade, a obrigação começaria 30 dias depois da publicação, com coima de 30 a 150 €.',
+      answer: 'Só depois da votação final global e da publicação em Diário da República. Os projetos do PSD e do PS foram aprovados na generalidade a 30 de setembro de 2026 e estão na comissão parlamentar. Pelos textos aprovados na generalidade, a obrigação começaria 30 dias depois da publicação, com coima de 30 a 150 €.',
     },
     {
       question: 'A polícia pode apreender a minha trotinete?',
@@ -168,7 +168,7 @@ const guide: Guide = {
     },
     {
       question: 'Qual é a multa por andar de trotinete no passeio?',
-      answer: 'De 30 a 150 €, para quem tem mais de 10 anos. Deixá-la estacionada no passeio custa 15 a 75 €, ou 30 a 150 € se impedir a passagem dos peões. Numa trotinete partilhada, o operador pode passar-lhe as coimas: a Bird, por exemplo, cobra-as a quem a conduzia, tal como as despesas de remoção.',
+      answer: 'De 30 a 150 €, para quem tem mais de 10 anos. Deixá-la estacionada no passeio custa 15 a 75 €, ou 30 a 150 € se impedir a passagem dos peões.',
     },
   ],
   sources: [
@@ -180,7 +180,6 @@ const guide: Guide = {
     { title: 'Assembleia da República: Projeto de Lei 774/XVII (PS), capacete', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=377254' },
     { title: 'GNR: Sinistralidade com trotinetes a motor (13 de março de 2026)', url: 'https://www.gnr.pt/comunicado.aspx?linha=9448' },
     { title: 'Prevenção Rodoviária Portuguesa: trotinetas em Portugal (25 de setembro de 2026)', url: 'https://prp.pt/trotinetas-portugal-2026/' },
-    { title: 'Bird: contrato de aluguer em Portugal', url: 'https://bird.co/rental-agreements/portugal-pt/' },
     { title: 'CP: transporte de bicicletas e trotinetas', url: 'https://www.cp.pt/info/w/transporte-bicicletas' },
     { title: 'Transtejo Soflusa: utilização do transporte fluvial', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },
     { title: 'Metro de Lisboa: como utilizar o metro', url: 'https://www.metrolisboa.pt/viajar/como-utilizar-o-metro/' },
