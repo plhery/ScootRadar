@@ -290,6 +290,14 @@ Region market from 1 November until 1 April, Toronto time (the pause is in
 `data/lime-app-regions.json`, which writes the catalog's Lime entries):
 check in late March 2027.
 
+Cochrane, Cranbrook and Okotoks set no dates (below), and Bird took its
+scooters in from all three at once: on 1 November 2026 their rider-map areas
+held 54, 23 and 21, and none in the sweeps of the afternoon of 2 November,
+Edmonton time. So the catalog pauses each from 2 November until 1 April,
+Edmonton time (Cranbrook keeps Alberta's clock): Cranbrook's season began on
+1 April in 2026 and Okotoks's runs "from April to October". Cochrane gives no
+date for their return, so check all three in late March 2027.
+
 Pickering's [pilot page](https://www.pickering.ca/property-roads-safety/parking-roads-and-driveways/shared-e-scooter-pilot-program/)
 says it runs "annually from April through the end of October (weather
 permitting)", with rentals from 1 April in 2026, so the catalog pauses Bird's
@@ -366,11 +374,13 @@ above):
 - **Cranbrook:** "2026 Scooter season begins April 1, 2026, and will run
   through the fall of 2026"
   ([city page](https://cranbrook.ca/our-city/city-departments/public-works/e-scooter-pilot-program/));
-  the 2024 and 2025 seasons ended on 1 November.
+  the 2024 and 2025 seasons ended on 1 November. Paused from 2 November 2026
+  (above).
 - **Okotoks:** "A typical e-Scooter season runs from April to October,
   weather permitting", and on 14 October 2026 the town's
   [page](https://www.okotoks.ca/your-community/living-okotoks/shared-e-scooters)
-  said the scooters "will soon be removed for the season".
+  said the scooters "will soon be removed for the season". Paused from 2
+  November 2026 (above).
 - **Medicine Hat:** Bird stores its scooters for the winter and brings them
   back in April, by its own choice; they left on 1 November in 2024. The
   bylaws set no dates. Paused from 1 November 2026 (above).
@@ -378,7 +388,8 @@ above):
   April to 16 November in 2025; the 2026 season opened on 1 April with no
   end date. **Oshawa**'s ran from April to 1 December in 2023 and 2024, and
   Bird "paused for the cold, snowy months" in 2025.
-- **Cochrane** runs "through the warmer months, weather permitting";
+- **Cochrane** runs "through the warmer months, weather permitting" (paused
+  from 2 November 2026, above);
   **Vernon** ran from March to October in 2025; **Lethbridge**'s pilot had an
   "Option for year-round operation"; **Spruce Grove** and **Stony Plain**
   publish no season (paused from 29 October 2026, above).

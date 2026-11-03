@@ -210,7 +210,12 @@
         "east": -114.41933
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "e02643b3-04f5-4802-a779-7e1d903bf34f"
+      "birdAppArea": "e02643b3-04f5-4802-a779-7e1d903bf34f",
+      "seasonal": {
+        "from": "11-02",
+        "until": "04-01",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_app_cranbrook",
@@ -230,7 +235,12 @@
         "east": -115.72808
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "7ef3864a-8c09-4835-b86b-f93e15b93390"
+      "birdAppArea": "7ef3864a-8c09-4835-b86b-f93e15b93390",
+      "seasonal": {
+        "from": "11-02",
+        "until": "04-01",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_app_kamloops",
@@ -335,7 +345,12 @@
         "east": -113.92864
       },
       "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
-      "birdAppArea": "46071490-cdde-4573-810e-93ff5a0d2c03"
+      "birdAppArea": "46071490-cdde-4573-810e-93ff5a0d2c03",
+      "seasonal": {
+        "from": "11-02",
+        "until": "04-01",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_app_oshawa",

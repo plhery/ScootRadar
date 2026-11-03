@@ -1735,7 +1735,10 @@ Bonaire had feeds to add. Survey files are in
   from that day until 1 April. On the evening of 1 November, Kamloops held
   145 (its city has the scooters stored by 1 December), Cranbrook 23,
   Okotoks 21, Vernon 106, Oshawa 117, Brampton 103, Cochrane 54, Bloomington
-  228 and Mankato 30.
+  228 and Mankato 30. Cochrane, Cranbrook and Okotoks held none in the sweeps
+  of the afternoon of 2 November, and are paused from that day until 1 April.
+  On 2 November Kamloops held 143, Vernon 94, Oshawa 50, Brampton 56,
+  Bloomington 239 and Mankato 38.
 - **November 2026:** Holon, Israel. The city decided to ban shared scooters
   from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));

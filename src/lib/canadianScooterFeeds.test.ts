@@ -187,7 +187,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s, Pickering\'s, Medicine Hat\'s and Waterloo Region\'s from 1 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, Laval\'s until 15 April, Leduc\'s from 22 October and Spruce Grove\'s from 29 October until 1 May, Penticton\'s, Pickering\'s, Medicine Hat\'s and Waterloo Region\'s from 1 November and Cochrane\'s, Cranbrook\'s and Okotoks\'s from 2 November until 1 April, and Red Deer\'s and Saskatoon\'s from 1 November, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -235,6 +235,17 @@ describe('Canada', () => {
     expect(activeSeasonalPause(medicineHat, Date.UTC(2027, 2, 31, 18))).toEqual({ city: 'Medicine Hat, AB', month: 4 });
     expect(activeSeasonalPause(medicineHat, Date.UTC(2027, 3, 1, 18))).toBeNull();
     expect(feedPaused('canada:bird_ca_app_medicine_hat', winter)).toBe(true);
+    // Bird's Cochrane, Cranbrook and Okotoks areas held 54, 23 and 21 scooters on 1 November 2026 and none in the sweeps of
+    // the afternoon of the 2nd; the window is that winter's. Cranbrook keeps Alberta's clock.
+    for (const [city, point, feed] of [['Cochrane, AB', [51.1894, -114.4676], 'cochrane'],
+      ['Cranbrook, BC', [49.5097, -115.7688], 'cranbrook'], ['Okotoks, AB', [50.7256, -113.9749], 'okotoks']] as const) {
+      // 23:30 on 1 November in Alberta (UTC-6) is still in season; 00:30 on the 2nd is not.
+      expect(activeSeasonalPause([...point], Date.UTC(2026, 10, 2, 5, 30)), city).toBeNull();
+      expect(activeSeasonalPause([...point], Date.UTC(2026, 10, 2, 6, 30)), city).toEqual({ city, month: 4 });
+      expect(activeSeasonalPause([...point], Date.UTC(2027, 2, 31, 18)), city).toEqual({ city, month: 4 });
+      expect(activeSeasonalPause([...point], Date.UTC(2027, 3, 1, 18)), city).toBeNull();
+      expect(feedPaused(`canada:bird_ca_app_${feed}`, winter), city).toBe(true);
+    }
     // Lime took Waterloo Region's scooters in on 1 November 2026, every group of its map there; the Region's season runs
     // from April to October.
     const waterlooRegion: [number, number] = [43.45161, -80.49253];
@@ -273,8 +284,8 @@ describe('Canada', () => {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
-      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:ab:Medicine Hat', 'ca:bc:Penticton', 'ca:on:Pickering', 'ca:ab:Spruce Grove',
-        'ca:nb:Moncton', 'ca:qc:Laval', 'ca:on:Waterloo Region', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:ab:Cochrane', 'ca:bc:Cranbrook', 'ca:ab:Medicine Hat', 'ca:ab:Okotoks',
+        'ca:bc:Penticton', 'ca:on:Pickering', 'ca:ab:Spruce Grove', 'ca:nb:Moncton', 'ca:qc:Laval', 'ca:on:Waterloo Region', 'ca:ab:Red Deer', 'ca:sk:Saskatoon']);
   });
 
   it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {

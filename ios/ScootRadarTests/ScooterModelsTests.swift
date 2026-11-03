@@ -1791,15 +1791,17 @@ extension ScooterModelsTests {
         // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
         // 1 March, Bodø from 1 December until 1 April, Dalvík from 21 October, Leduc from 22 October
         // and Ólafsvík with Hellissandur from 23 October and Stykkishólmur from 26 October until 1 May,
-        // Winona from 16 November until 15 March, South Lake Tahoe from 1 November until 1 May, Ottawa from 16 November until 30 April,
-        // Medicine Hat, Penticton, Pickering and Waterloo Region from 1 November until 1 April, Spruce Grove
-        // from 29 October until 1 May, Moncton from 15 November until 16 April, Laval from 16 November until
+        // Winona from 16 November until 15 March, South Lake Tahoe from 1 November until 1 May, Ottawa
+        // from 16 November until 30 April, Medicine Hat, Penticton, Pickering and Waterloo Region from 1
+        // November and Cochrane, Cranbrook and Okotoks from 2 November until 1 April, Spruce Grove from
+        // 29 October until 1 May, Moncton from 15 November until 16 April, Laval from 16 November until
         // 15 April, Red Deer from 1 November until 16 March, and Saskatoon from 1 November until 15 April,
         // each by its own clock.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
                        ["fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
                         "is:Dalvík", "is:Ólafsvík", "is:Hellissandur", "is:Stykkishólmur", "us:mn:Winona", "us:ca:South Lake Tahoe",
-                        "ca:ab:Leduc", "ca:on:Ottawa", "ca:ab:Medicine Hat", "ca:bc:Penticton", "ca:on:Pickering", "ca:ab:Spruce Grove",
+                        "ca:ab:Leduc", "ca:on:Ottawa", "ca:ab:Cochrane", "ca:bc:Cranbrook", "ca:ab:Medicine Hat", "ca:ab:Okotoks",
+                        "ca:bc:Penticton", "ca:on:Pickering", "ca:ab:Spruce Grove",
                         "ca:nb:Moncton", "ca:qc:Laval", "ca:on:Waterloo Region", "ca:ab:Red Deer", "ca:sk:Saskatoon"])
         let tignes = GeoPoint(latitude: 45.4687, longitude: 6.9063)
         XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", back: .month(6)))
