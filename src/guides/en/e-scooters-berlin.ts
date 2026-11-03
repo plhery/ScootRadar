@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-berlin',
   topic: 'berlin',
   name: 'Renting an e-scooter in Berlin',
-  title: 'Berlin e-scooter rental: Lime, Bolt, Voi, Dott and parking',
-  description: 'Rent Lime, Bolt, Voi or Dott in Berlin with no licence, and Zeus in two districts: where to park in Mitte, what BVG bans and what comes after March 2027.',
-  headline: 'E-scooters in Berlin: apps, parking zones and the rules',
-  lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you need a payment card but no driving licence, and the app shows its minimum age and price before you unlock. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
+  title: 'Berlin e-scooter rental: Lime, Bolt, Voi, Dott and prices',
+  description: 'Rent Lime, Bolt, Voi or Dott in Berlin, no licence needed. Ten minutes cost about €3.19 with Voi and €3.65 with Dott. Plus where to park in Mitte.',
+  headline: 'E-scooters in Berlin: apps, prices, parking zones and the rules',
+  lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you need a payment card but no driving licence, and Bolt, Dott and Lime rent only to over-18s. Ten minutes cost about €3.19 with Voi and €3.65 with Dott at their standard rates (as of November 2026); the others show their price in the app. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
   published: '2026-10-12',
   updated: '2026-10-25',
   city: 'de:Berlin',
@@ -30,6 +30,25 @@ const guide: Guide = {
       ],
     },
     {
+      heading: 'How much does an e-scooter cost in Berlin?',
+      blocks: [
+        'You pay to unlock, then by the minute.',
+        {
+          table: {
+            caption: 'E-scooter prices in Berlin (standard rates, as of November 2026)',
+            head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
+            rows: [
+              ['Voi', '€0.49', '€0.27', 'about €3.19', 'about €5.89'],
+              ['Dott', '€0.75', '€0.29', 'about €3.65', 'about €6.55'],
+              ['Bolt (all of Germany)', 'Small fee', 'From €0.15, varies by location', 'In the app', 'In the app'],
+              ['Lime, Zeus', 'In the app', 'In the app', 'In the app', 'In the app'],
+            ],
+          },
+        },
+        'The app shows the final price before you unlock. Prices on older pages are out of date: the city’s English portal, for one, still gives Bolt at five cents a minute with no unlock fee. For regular riders, Bolt sells unlimited unlocks in Germany from €0.99 a month, and weekly and monthly passes.',
+      ],
+    },
+    {
       heading: 'Berlin e-scooter rules: where to ride, parks and the law',
       blocks: [
         'The German rules in brief. Under a federal regulation of January 2026, e-scooters will be treated much like bicycles from 1 March 2027.',
@@ -38,7 +57,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in Germany, today and from 1 March 2027',
             head: ['Rule', 'Today', 'From 1 March 2027'],
             rows: [
-              ['Age, licence, helmet', '14 by law, no licence, no helmet required', 'Unchanged'],
+              ['Age, licence, helmet', '14 by law, no licence, no helmet required; Bolt, Dott and Lime rent from 18', 'Unchanged'],
               ['Where to ride', 'Bike lane or path (Radweg) where there is one, otherwise the road; pedestrian zones only where a sign allows it', 'Bike lanes compulsory where a blue bike sign stands, as for cyclists'],
               ['Pavement (Gehweg)', 'Banned unless a sign allows it: €15', 'Banned unless a sign allows it: €25'],
               ['Passengers', 'Banned', 'Banned: €25'],
@@ -50,14 +69,14 @@ const guide: Guide = {
         },
         'Riding two up is a common mistake: in 2025 Berlin police recorded 1,087 cases of two or more people riding one e-scooter, more than red-light offences (1,012).',
         '**Stay out of the parks.** Berlin’s public parks (Grünanlagen) are closed to motor vehicles, and in German law an e-scooter is one. Look for the **tulip sign** at the entrance: a triangle with a green border and a tulip. Riding or parking there can cost up to €55 on the spot, which is what TV satirist Jan Böhmermann paid for riding through the Tiergarten, the Berliner Zeitung reported in March 2024. Grün Berlin, which runs Tempelhofer Feld, says motor vehicles are banned there too.',
-        'Slow down on cobblestones, and cross tram tracks as close to a right angle as you can.',
+        'No zone slows you down automatically: Bolt told the Senate in July 2026 that German law doesn’t currently allow it. Slow down yourself on cobblestones, and cross tram tracks as close to a right angle as you can.',
       ],
     },
     {
       heading: 'E-scooter parking in Berlin: Jelbi bays, no-parking zones and the pavement',
       blocks: [
         'If there’s a marked bay nearby, the scooter goes there: a Jelbi point or station run by BVG, or a district bay. Around each bay is a no-parking zone of at least 100 m where the app won’t let you end the ride. In April 2026 no-parking zones covered 28 of the 88 km² inside the S-Bahn ring, almost a third.',
-        'Away from bays you may park on the pavement if 2.30 m stays clear for people walking. These places are always off limits, with at least 1.5 m kept clear before and after each:',
+        'In Bolt’s app, for example, areas marked in red are no-parking zones. Away from bays you may park on the pavement if 2.30 m stays clear for people walking. These places are always off limits, with at least 1.5 m kept clear before and after each:',
         {
           list: [
             'at a bus or tram stop: 25 m either side of the stop’s sign under the permits since April 2025 (some pages still give the old 15 m);',
@@ -104,25 +123,27 @@ const guide: Guide = {
               ['Parked so it obstructs or endangers', '€20 to €30 fine (standard rate)'],
               ['From 1 March 2027: parked on a pavement or bike lane where not allowed', '€55, or €70 if it obstructs'],
               ['Parked or ridden in a park', '€5 to €55 on the spot, fines up to €5,000'],
+              ['Broke the operator’s rules', 'The operator’s own fee, up to an account block'],
               ['Scooter in the way', 'Police or district staff move it, since 24 July 2025 at the operator’s cost'],
             ],
           },
         },
-        'To report a scooter in the way, use [Jelbi’s form](https://www.jelbi.de/falschparker-melden/), scooter-melder.de or the hotline on the scooter; by day the operator must move it within four hours.',
+        'The operators add penalties of their own, they told the Senate in July 2026. Lime charges fees under its terms and can block an account for good, for riding two up, for example. Dott charges a fee and may block you for a while after one offence, and for good after repeated ones; its photo check won’t let you end the ride if the scooter is badly parked. To report a scooter in the way, use [Jelbi’s form](https://www.jelbi.de/falschparker-melden/), scooter-melder.de or the hotline on the scooter; by day the operator must move it within four hours.',
       ],
     },
     {
-      heading: 'U-Bahn and Jelbi: e-scooters and public transport',
+      heading: 'U-Bahn, Jelbi and BER airport',
       blocks: [
         'Since 1 May 2024, BVG has banned e-scooters, folded or not, from all its vehicles and stations: U-Bahn, trams, buses and ferries. With a rental, end the ride outside the station and rent another at the other end.',
         '**Jelbi** is BVG’s mobility app: public transport tickets plus Lime, Bolt, Voi and Dott scooters, with a Jelbi account of its own.',
+        '**BER airport:** Dott’s area ends well north of the airport. Take the FEX airport express or the S-Bahn, both from the station under Terminal 1, into town and pick up a scooter there.',
         '**Prefer to pedal?** nextbike and DB Call a Bike rent out bikes in Berlin, and so do Lime, Bolt and Voi.',
       ],
     },
     {
       heading: 'Will Berlin ban e-scooters after March 2027?',
       blocks: [
-        'Every operator’s permit ends on 31 March 2027. In July 2026 the Senate told the House of Representatives it was preparing a strict duty to park at stations.',
+        'Every operator’s permit ends on 31 March 2027. In July 2026 the Senate told the House of Representatives it was preparing a strict duty to park at stations. In June 2026 an alliance of about 40 organisations called for scooters to be parked only at fixed stations from April 2027.',
         'The long-term plan is the Sharing Strategy 2035, which the Senate’s transport department completed on 6 May 2026: about 3,000 fixed mobility hubs, added area by area until 2035, where rentals would start and end, with no-parking zones in between. It is a plan, not yet a rule. Nor is it a ban, whatever March 2026 headlines said: the Senate says Berlin can’t ban e-scooters outright.',
       ],
     },
@@ -142,11 +163,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent e-scooters in Berlin?',
-      answer: 'Yes: sign up in the operator’s app with a payment card. You need no driving licence; the app shows its minimum age and price before you unlock.',
+      answer: 'Yes: sign up in the operator’s app with a payment card. You need no driving licence, but Bolt, Dott and Lime rent only to over-18s, and you must be 18 to use Jelbi.',
     },
     {
       question: 'Am I insured on a rental e-scooter?',
-      answer: 'Yes, for damage you cause to others: the operator insures each scooter, as the sticker on the back shows.',
+      answer: 'Yes, for damage you cause to others: the operator insures each scooter, as the sticker on the back shows. Bolt’s insurance page for Germany also lists accident cover for the time you use one of its vehicles. Dott’s terms say that where it covers your own injuries, head injuries aren’t covered if you rode without a helmet.',
     },
     {
       question: 'Can I take an e-scooter on the U-Bahn or S-Bahn?',
@@ -170,6 +191,15 @@ const guide: Guide = {
     { title: 'BVG: ban on e-scooters (German)', url: 'https://www.bvg.de/de/service-und-kontakt/e-tretroller-verbot' },
     { title: 'Tempelhof-Schöneberg district: public parks and the tulip sign (German)', url: 'https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/unsere-fachbereiche/strassen-und-gruenflaechenverwaltung/artikel.349752.php' },
     { title: 'Jelbi: frequently asked questions (German)', url: 'https://www.jelbi.de/faq-de/' },
+    { title: 'Voi: tariff for Berlin in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/145/netex.xml' },
+    { title: 'Dott: public data feed for Berlin, prices and zones (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/berlin/gbfs.json' },
+    { title: 'Dott: terms and conditions for Germany (German)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Bolt: scooter rentals in Germany', url: 'https://bolt.eu/en-de/scooters/' },
+    { title: 'Bolt: terms for e-vehicles in Germany (German)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Bolt: insurance in Germany', url: 'https://bolt.eu/en-de/insurance/' },
+    { title: 'Berlin.de (English): Bolt e-scooter sharing', url: 'https://www.berlin.de/en/getting-around/electric-scooter-sharing/6654721-5887714-bolt.en.html' },
+    { title: 'BER airport: getting here', url: 'https://ber.berlin-airport.de/en/orientation/getting-here.html' },
+    { title: 'Volksstimme (dpa): alliance calls for fixed e-scooter stations from 2027, 30 June 2026 (German)', url: 'https://www.volksstimme.de/panorama/bundnis-fordert-feste-stationen-fur-e-scooter-ab-2027-4277244' },
     { title: 'Federal Ministry for Transport: questions and answers on e-scooters (German)', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq.html' },
   ],
 };
