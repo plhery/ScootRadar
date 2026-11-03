@@ -710,9 +710,32 @@ as Kensington is no community. Kensington Road, which nothing bounds, is
 not drawn. They are credited "City of Calgary, lines © OpenStreetMap", and
 Canada's credits name them beside Edmonton's. Neither operator publishes a
 slow zone there to compare: Bird's GBFS has only no-parking zones in those
-places, and Lime none. The City's other rules, no riding on busier roads like
-Macleod Trail, on the Bow River pathway's walk-only stretch or in the 7
-Avenue transit corridor (its 2021 permit rules), are not drawn.
+places, and Lime none.
+
+No one in Calgary may "use or operate any … e-bike, e-scooter or a similar
+e-transport vehicle" while "in the 7th Avenue transit corridor"
+([Transit Bylaw 4M81](https://publicaccess.calgary.ca/lldm01/livelink.exe?func=ccpa.general&msgID=PyAccATqyZ&msgAction=Download),
+14(14), read 3 November 2026), "the street, sidewalks, stations and platforms
+on 7th Avenue South" between "the western boundary of 4th Street East" and
+"the eastern boundary of 11th Street West" (2(n)). The City's 2021 permit
+rules for shared e-scooters make it a no-riding and no-parking zone, "all the
+sidewalks along 7 Avenue Transit Corridor between 4 Street east and 11 Street
+west" included
+([City of Calgary](https://www.calgary.ca/content/dam/www/transportation/tp/documents/cycling/cycling-strategy/electric-scooter-program-framework-appendices.pdf),
+25 March 2021). It is drawn as a no-ride street on OpenStreetMap's way of the
+transit mall, 7 Avenue S, read the same day, from the eastern carriageway of
+11 Street SW to 4 Street SE (2.5 km), credited "City of Calgary, lines ©
+OpenStreetMap", and Canada's credits name it with the slow streets. Two of the
+City's other rules are not drawn. Its page says "E-Scooters are not permitted
+on busier roadways like Macleod Trail" and, "as per Bylaw 26M96", that they
+"are not allowed to ride on busy roadways such as Macleod Trail, or busy
+sidewalks": Macleod Trail is an example, and the Traffic Bylaw's rule is that
+"a person shall not operate an e-scooter along any section of road where the
+roadway has lane markings unless within an exclusive bicycle lane" (44(3.2)),
+on any such road, its sidewalks still open, so no stretch of it is bounded.
+And it asks riders to "stay off the pedestrian path and walk only zone along
+the Bow River pathway", which neither the page nor the Parks and Pathways
+Bylaw 11M2019 bounds.
 
 Tampa's "shared micromobility vehicles shall not be ridden in the following
 locations: Tampa Riverwalk, Bayshore Boulevard, 7th Avenue"

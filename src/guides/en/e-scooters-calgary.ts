@@ -85,7 +85,7 @@ const guide: Guide = {
           ],
         },
         'A 2019 City bylaw poster marks Stephen Avenue as open to shared e-scooters. In parks such as Prince’s Island, ride only on the pathways.',
-        '**No riding** in the 7 Avenue transit corridor, where the CTrain crosses downtown between 4 Street S.E. and 11 Street S.W., sidewalks and platforms included, or at CTrain stations and other transit property. The City’s 2021 permit rules also rule out bus zones, buildings, the +15 skyways and City parkades.',
+        '**No riding** in the 7 Avenue transit corridor, where the CTrain crosses downtown between 4 Street S.E. and 11 Street S.W., sidewalks and platforms included, or at CTrain stations and other transit property. The City’s 2021 permit rules also rule out bus zones, buildings, the +15 skyways and City parkades. Our [Calgary map](map:ca:ab:Calgary) draws the corridor as a no-riding band from zoom 14, credited to the City, along OpenStreetMap’s 7 Avenue. It doesn’t draw Macleod Trail, which the City names only as an example of a busy road, or the Bow River pathway’s walk-only zone, whose ends the City doesn’t give.',
       ],
     },
     {

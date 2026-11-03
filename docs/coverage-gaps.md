@@ -532,8 +532,12 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   has published no rules for shared scooters. Calgary names its slow streets
   on its [e-scooter page](https://www.calgary.ca/bike-walk-roll/electric-scooters.html),
   drawn on OpenStreetMap's ways (DATA_SOURCES.md) but for Kensington Road,
-  which it bounds by no street; Open Calgary's micromobility dataset is the
-  operators' scooters, not zones.
+  which it bounds by no street, and its Transit Bylaw's 7 Avenue transit
+  corridor, from 11 Street SW to 4 Street SE, likewise since 3 November 2026;
+  Macleod Trail, an example of the busier roads it keeps scooters off, and the
+  Bow River pathway's walk-only zone, which it bounds by nothing, are not
+  drawn. Open Calgary's micromobility dataset is the operators' scooters, not
+  zones.
   Winterthur's operating area is an unpublished annex to its concession
   contracts (Voi's alone runs past 2025), and St. Gallen's no-parking and
   slow areas are its operator's geofencing; its open data holds only the

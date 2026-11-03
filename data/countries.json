@@ -559,7 +559,7 @@
       "anchorNote": "Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities from Vancouver to Halifax, and north of the United States' total.",
       "featuredCities": ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
       "credits": {
-        "attribution": "Canada: Bird, Lime GBFS; MoVe app; Lime authenticated rider map; Bird authenticated rider map; Pickering's and Parc Jean-Drapeau's night-ban outlines from OpenStreetMap, ODbL; Edmonton's no-ride stretch of Whyte Avenue and Calgary's slow streets traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "Canada: Bird, Lime GBFS; MoVe app; Lime authenticated rider map; Bird authenticated rider map; Pickering's and Parc Jean-Drapeau's night-ban outlines from OpenStreetMap, ODbL; Edmonton's no-ride stretch of Whyte Avenue and Calgary's slow streets and 7 Avenue transit corridor traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bird", "Lime"],
         "links": [{ "label": "CA: MoVe rider map", "href": "https://move-mobility.app.link/" },
           { "label": "CA: Lime map", "href": "https://www.li.me/" },

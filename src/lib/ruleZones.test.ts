@@ -207,6 +207,21 @@ describe('ruleZonesInView', () => {
     expect(at(51.05252, -114.0900)).toEqual([]);
   });
 
+  it('gives Calgary\'s 7 Avenue transit corridor from 11 Street SW to 4 Street SE at all hours, as the Transit Bylaw bounds it', () => {
+    const night = Date.parse('2026-11-03T09:30:00Z');
+    const at = (lat: number, lng: number) => ruleZonesInView(
+      { bounds: { south: lat - 0.0005, west: lng - 0.0008, north: lat + 0.0005, east: lng + 0.0008 }, zoom: 16 }, night)
+      .filter(zone => zone.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng)))
+      .map(({ id, rule, inForce, authority }) => ({ id, rule, inForce, authority }));
+    const corridor = [{ id: 'calgary-7-avenue-transit-corridor', rule: 'noRide', inForce: true, authority: 'City of Calgary, lines © OpenStreetMap' }];
+    expect(at(51.047097, -114.084073)).toEqual(corridor);
+    expect(at(51.046709, -114.070458)).toEqual(corridor);
+    expect(at(51.046277, -114.05532)).toEqual(corridor);
+    // 7 Avenue east of 4 Street SE and west of 11 Street SW, out of the corridor.
+    expect(at(51.04613, -114.0515)).toEqual([]);
+    expect(at(51.0469, -114.0905)).toEqual([]);
+  });
+
   it('gives Warsaw\'s no-ride areas and 12 km/h streets, the new ones from 22 May 2026, credited to ZDM', () => {
     const now = Date.parse('2026-11-02T23:30:00Z');
     const at = (lat: number, lng: number, time = now) => ruleZonesInView(
