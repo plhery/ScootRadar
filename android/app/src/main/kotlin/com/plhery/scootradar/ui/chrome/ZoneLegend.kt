@@ -8,12 +8,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -36,6 +33,13 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.layout.IntrinsicMeasurable
+import androidx.compose.ui.layout.IntrinsicMeasureScope
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasurePolicy
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -50,8 +54,10 @@ import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.constrainHeight
+import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.CityZoneDownloads
@@ -145,25 +151,16 @@ fun ZoneLegend(
         }
         if (kinds.isNotEmpty()) {
             val labels = kinds.map { kindLabel(it, speeds) }
-            FlowRow(
+            KindsFlow(
                 Modifier.clearAndSetSemantics {
                     contentDescription = zones
                     stateDescription = labels.joinToString(", ")
                 },
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 for ((kind, label) in kinds.zip(labels)) {
-                    // As wide as its one line, in the FlowRow's intrinsics too, which pack by an item's least width
-                    // (a Text's longest word): the legend's height asked beside the locate button is then the one it
-                    // takes (LocateRow, UI-410).
-                    Row(
-                        Modifier.width(IntrinsicSize.Max),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
                         ZoneSwatch(kind)
-                        Text(label, style = style, color = colors.dockText, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(label, style = style, color = colors.dockText)
                     }
                 }
             }
@@ -202,6 +199,90 @@ private fun Modifier.scrollsWhereShort(state: ScrollState, scrolls: Boolean, onS
         val placeable = measurable.measure(bounded)
         layout(placeable.width, placeable.height) { placeable.place(0, 0) }
     }.then(if (scrolls) Modifier.verticalScroll(state) else Modifier)
+
+/**
+ * The kinds one after another as FlowRow lays them out, 12 apart and 4 between their lines, each in a line at most: a
+ * name longer than the line wraps beside its swatch, where the iPhone's `.lineLimit(1)` cuts it short
+ * (ScooterControls.swift:2877; "Stationnement int…" on ScootRadar_Phone_Min in French). Its intrinsic height at a width is the one it takes there,
+ * a wrapped name's lines too, so the locate row's choice (LocateRow, UI-410) and the scroll's ([scrollsWhereShort]) see
+ * the legend as it is drawn: FlowRow asks an item's height at its least width, which for a name kept to one line is
+ * that line, however much wider than the row.
+ */
+@Composable
+private fun KindsFlow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    Layout(content, modifier, KindsFlowPolicy)
+}
+
+private object KindsFlowPolicy : MeasurePolicy {
+    private val gap = 12.dp
+    private val lineGap = 4.dp
+
+    override fun MeasureScope.measure(measurables: List<Measurable>, constraints: Constraints): MeasureResult {
+        // Each as wide as its one line, or the whole line where that is narrower.
+        val placeables = measurables.map { it.measure(Constraints(maxWidth = constraints.maxWidth)) }
+        val lines = lines(placeables.map { it.width }, placeables.map { it.height }, constraints.maxWidth, gap.roundToPx())
+        val height = lines.sumOf { it.height } + lineGap.roundToPx() * (lines.size - 1).coerceAtLeast(0)
+        return layout(constraints.constrainWidth(lines.maxOfOrNull { it.width } ?: 0), constraints.constrainHeight(height)) {
+            var y = 0
+            for (line in lines) {
+                var x = 0
+                for (index in line.items) {
+                    placeables[index].placeRelative(x, y)
+                    x += placeables[index].width + gap.roundToPx()
+                }
+                y += line.height + lineGap.roundToPx()
+            }
+        }
+    }
+
+    override fun IntrinsicMeasureScope.maxIntrinsicHeight(measurables: List<IntrinsicMeasurable>, width: Int): Int =
+        intrinsicHeight(measurables, width) { maxIntrinsicHeight(it) }
+
+    override fun IntrinsicMeasureScope.minIntrinsicHeight(measurables: List<IntrinsicMeasurable>, width: Int): Int =
+        intrinsicHeight(measurables, width) { minIntrinsicHeight(it) }
+
+    /** All on one line. */
+    override fun IntrinsicMeasureScope.maxIntrinsicWidth(measurables: List<IntrinsicMeasurable>, height: Int): Int =
+        measurables.sumOf { it.maxIntrinsicWidth(Constraints.Infinity) } + gap.roundToPx() * (measurables.size - 1).coerceAtLeast(0)
+
+    /** The widest of the kinds at its narrowest, its name wrapped at each space. */
+    override fun IntrinsicMeasureScope.minIntrinsicWidth(measurables: List<IntrinsicMeasurable>, height: Int): Int =
+        measurables.maxOfOrNull { it.minIntrinsicWidth(Constraints.Infinity) } ?: 0
+
+    private fun IntrinsicMeasureScope.intrinsicHeight(
+        measurables: List<IntrinsicMeasurable>,
+        width: Int,
+        heightAt: IntrinsicMeasurable.(Int) -> Int,
+    ): Int {
+        val widths = measurables.map { minOf(it.maxIntrinsicWidth(Constraints.Infinity), width) }
+        val heights = measurables.mapIndexed { index, it -> it.heightAt(widths[index]) }
+        val lines = lines(widths, heights, width, gap.roundToPx())
+        return lines.sumOf { it.height } + lineGap.roundToPx() * (lines.size - 1).coerceAtLeast(0)
+    }
+
+    private class Line(val items: List<Int>, val width: Int, val height: Int)
+
+    /** The items in lines of [maxWidth] at most, as FlowRow breaks them: the next goes on a new line where it doesn't fit. */
+    private fun lines(widths: List<Int>, heights: List<Int>, maxWidth: Int, gap: Int): List<Line> {
+        val lines = mutableListOf<Line>()
+        var items = mutableListOf<Int>()
+        var width = 0
+        var height = 0
+        for (index in widths.indices) {
+            if (items.isNotEmpty() && width.toLong() + gap + widths[index] > maxWidth) {
+                lines += Line(items, width, height)
+                items = mutableListOf()
+                width = 0
+                height = 0
+            }
+            width += (if (items.isEmpty()) 0 else gap) + widths[index]
+            height = maxOf(height, heights[index])
+            items += index
+        }
+        if (items.isNotEmpty()) lines += Line(items, width, height)
+        return lines
+    }
+}
 
 /** The legend's tag, by which the tests find its frame on the screen. */
 const val ZONE_LEGEND_TAG = "zoneLegend"

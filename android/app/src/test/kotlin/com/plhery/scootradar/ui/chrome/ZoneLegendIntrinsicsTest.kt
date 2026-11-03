@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
+import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.ui.theme.PHONE
@@ -27,7 +28,8 @@ import org.robolectric.annotation.GraphicsMode
  * width it may have beside the locate button or over it, at each font scale: the phone's locate row decides by that
  * answer whether the legend goes over the button (ScooterMapScreen.kt's LocateRow, UI-410). The operators' kinds,
  * packed by their least width, a Text's longest word, once counted a row too few at about one width in nine, up to
- * 33 dp at font scale 2.0, which beside the button would have reached under the search bar (review-app-ap).
+ * 33 dp at font scale 2.0, which beside the button would have reached under the search bar (review-app-ap); and a
+ * name wrapped in a line narrower than it, as French ones are, would have been counted one line.
  */
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -37,7 +39,10 @@ class ZoneLegendIntrinsicsTest {
     val compose = createComposeRule()
 
     @After
-    fun tearDown() = resetFontScale()
+    fun tearDown() {
+        resetFontScale()
+        ScooterLanguage.current = ScooterLanguage.atLaunch
+    }
 
     @Test
     fun theHeightAskedIsTheHeightTakenAtTheDefaultSize() = assertHeightsAsAsked(1f)
@@ -48,8 +53,16 @@ class ZoneLegendIntrinsicsTest {
     @Test
     fun theHeightAskedIsTheHeightTakenAtTheLargestText() = assertHeightsAsAsked(2f)
 
-    private fun assertHeightsAsAsked(scale: Float) {
+    /** French names, which wrap where they are longer than the legend's line ("Stationnement interdit"). */
+    @Test
+    fun inFrenchTheHeightAskedIsTheHeightTakenAtTheDefaultSize() = assertHeightsAsAsked(1f, ScooterLanguage.Fr)
+
+    @Test
+    fun inFrenchTheHeightAskedIsTheHeightTakenAtTheLargestText() = assertHeightsAsAsked(2f, ScooterLanguage.Fr)
+
+    private fun assertHeightsAsAsked(scale: Float, language: ScooterLanguage = ScooterLanguage.En) {
         useFontScale(scale)
+        ScooterLanguage.current = language
         val wrong = mutableListOf<String>()
         var looked = 0
         compose.setContent {
@@ -75,7 +88,7 @@ class ZoneLegendIntrinsicsTest {
         }
         compose.waitForIdle()
         assertEquals(cases.size * WIDTHS.count(), looked)
-        assertEquals("at font scale $scale", emptyList<String>(), wrong)
+        assertEquals("in $language at font scale $scale", emptyList<String>(), wrong)
     }
 
     private companion object {

@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.plhery.scootradar.StubScooterAPI
+import com.plhery.scootradar.TestCatalog
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.ScooterAPIClient
@@ -24,6 +25,7 @@ import com.plhery.scootradar.core.model.CityZoneDownloads
 import com.plhery.scootradar.core.model.GeoBounds
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.ScooterAppearance
+import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterResponse
 import com.plhery.scootradar.core.model.ScooterZone
@@ -288,17 +290,6 @@ class ZoneLegendInPlaceScreenshotTest(private val look: Look) {
         compose.screenshot("zones/inPlace_${look.suffix}")
     }
 
-    /** The stub's scooters, and the zones it is given for any area. */
-    private class ZonedAPI(private val scooters: StubScooterAPI, private val zones: List<ScooterZone>) : ScooterAPIClient by scooters {
-        var zoneCalls = 0
-            private set
-
-        override suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse {
-            zoneCalls += 1
-            return ScooterZoneResponse(zones = zones, pending = false, truncated = false)
-        }
-    }
-
     companion object {
         /** A square of 0.002° a side in Zürich's centre, `east` east of it. */
         private fun zurichZone(id: String, kind: ScooterZoneKind, east: Double): ScooterZone {
@@ -317,3 +308,103 @@ class ZoneLegendInPlaceScreenshotTest(private val look: Look) {
 
 /** The map's ground, light or dark, without its streets. */
 private fun standIn(dark: Boolean): Color = if (dark) Color(0xFF2B2D30) else Color(0xFFF1EFEA)
+
+/** The stub's scooters, and the zones it is given for any area. */
+private class ZonedAPI(private val scooters: StubScooterAPI, private val zones: List<ScooterZone>) : ScooterAPIClient by scooters {
+    var zoneCalls = 0
+        private set
+
+    override suspend fun zonesIn(area: ScooterZoneArea): ScooterZoneResponse {
+        zoneCalls += 1
+        return ScooterZoneResponse(zones = zones, pending = false, truncated = false)
+    }
+}
+
+/**
+ * The legend in its place on ScootRadar_Phone_Min, beside "Near me" before the first location, naming every kind:
+ * Zürich's operators' slow zones at 6 km/h, their no-parking and no-riding zones, and a city's parking places. In the
+ * languages whose names run longest, at font scale 1.0 and 1.3: a name longer than its room wraps whole, where it read
+ * "Stationnement int…" (briefs/app-aq.md, 4).
+ */
+@RunWith(ParameterizedRobolectricTestRunner::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(qualifiers = "w360dp-h640dp-xhdpi")
+class ZoneLegendLongLabelsScreenshotTest(private val language: String, private val fontScale: Float) {
+    @get:Rule
+    val compose = createComposeRule()
+
+    private val controllers = TestControllers()
+    private val locale = Locale.getDefault()
+    private val launchLocale = ScooterLanguage.launchLocale
+
+    @After
+    fun tearDown() {
+        controllers.close()
+        resetFontScale()
+        ScooterLanguage.current = ScooterLanguage.atLaunch
+        ScooterLanguage.launchLocale = launchLocale
+        Locale.setDefault(locale)
+    }
+
+    @Test
+    fun longLabels() {
+        val region = Locale.forLanguageTag(language)
+        ScooterLanguage.launchLocale = { region }
+        ScooterLanguage.current = checkNotNull(ScooterLanguage.fromRawValue(region.language))
+        Locale.setDefault(region)
+        val clock = TestClock()
+        val api = ZonedAPI(
+            StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "voi", latitude = 47.3772, longitude = 8.5421)))),
+            zones = listOf(
+                zurichZone("slow", ScooterZoneKind.Slow, 0.0, maxSpeedKph = 6.0),
+                zurichZone("parking", ScooterZoneKind.NoParking, 0.002),
+                zurichZone("riding", ScooterZoneKind.NoRide, 0.004),
+            ),
+        )
+        val places = CityRuleZone(
+            id = "zurich-parking",
+            authority = "Stadt Zürich",
+            timeZone = "Europe/Zurich",
+            kind = ScooterZoneKind.Parking,
+            source = "https://example.com/zurich",
+            ring = listOf(
+                GeoPoint(47.3765, 8.5430), GeoPoint(47.3765, 8.5432), GeoPoint(47.3767, 8.5432), GeoPoint(47.3767, 8.5430),
+                GeoPoint(47.3765, 8.5430),
+            ),
+        )
+        val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = listOf(places))
+        val model = controllers.make(api, clock, catalog = catalog)
+        model.updateViewport(zurichRegion, zoom = 16)
+        model.setShowsZones(true)
+        assertTrue(
+            controllers.waitUntil {
+                model.zoneState.value == ScooterZoneState.Shown && model.mapRuleZones.value.isNotEmpty() && !model.isLoading.value
+            },
+        )
+        useFontScale(fontScale)
+        compose.setContent {
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                ScooterMapScreen(controller = model, map = { dark -> Box(Modifier.fillMaxSize().background(standIn(dark))) }, glassBlurs = false)
+            }
+        }
+        compose.waitForIdle()
+        val scale = if (fontScale == 1f) "1.0" else fontScale.toString()
+        compose.onNodeWithTag(ZONE_LEGEND_TAG)
+            .captureRoboImage("src/test/screenshots/zones/longLabels_${language}_$scale.png", roborazziOptions = screenshotOptions)
+    }
+
+    companion object {
+        /** A square of 0.002° a side in Zürich's centre, `east` east of it. */
+        private fun zurichZone(id: String, kind: ScooterZoneKind, east: Double, maxSpeedKph: Double? = null): ScooterZone {
+            val (lat, lon) = 47.3760 to 8.5400 + east
+            val ring = listOf(
+                GeoPoint(lat, lon), GeoPoint(lat, lon + 0.002), GeoPoint(lat + 0.002, lon + 0.002), GeoPoint(lat + 0.002, lon), GeoPoint(lat, lon),
+            )
+            return ScooterZone(id = id, provider = "voi", kind = kind, maxSpeedKph = maxSpeedKph, polygons = listOf(listOf(ring)))
+        }
+
+        @JvmStatic
+        @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1}")
+        fun parameters(): List<Array<Any>> = listOf("fr-CH", "pt-PT").flatMap { language -> listOf(1f, 1.3f).map { arrayOf(language, it) } }
+    }
+}
