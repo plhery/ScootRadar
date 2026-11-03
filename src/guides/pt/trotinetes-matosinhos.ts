@@ -134,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'A que horas se pode andar de trotinete partilhada em Matosinhos?',
-      answer: 'Das 6h00 às 22h00, pelo regulamento municipal e pelas condições das licenças, salvo outro horário autorizado pela Câmara. Não encontrámos nenhum publicado: confirme na app antes de sair à noite.',
+      answer: 'Das 6h00 às 22h00, pelo regulamento municipal e pelas condições das licenças, salvo outro horário autorizado pela Câmara. Confirme na app antes de sair à noite.',
     },
     {
       question: 'Posso andar de trotinete na marginal de Matosinhos e em Leça da Palmeira?',
