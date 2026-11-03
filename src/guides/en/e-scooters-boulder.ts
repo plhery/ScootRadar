@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'boulder',
   name: 'E-scooters in Boulder, Colorado',
   title: 'E-scooters in Boulder 2026: Lime, rules, where to ride',
-  description: 'E-scooters in Boulder: renting Lime and LimeGliders, the price, Colorado rules, sidewalks, the Pearl Street Mall, parking corrals, CU’s campus and RTD.',
+  description: 'E-scooters in Boulder: renting Lime and LimeGliders, discounts, Colorado rules, sidewalks, the Pearl Street Mall, parking corrals, CU’s campus and RTD.',
   headline: 'E-scooters in Boulder: Lime, the rules, the paths and where to park',
-  lede: 'You can rent e-scooters in Boulder from Lime, the City’s only scooter partner, which kept its contract after a competitive bid in 2026 and now rents seated LimeGliders as well as stand-up scooters. CU Boulder’s transportation office lists Lime’s standard price as $1 to unlock plus $0.45 a minute (checked on 29 October 2026); the Lime app shows the current price before you ride. You must be 18, scooters are held to 15 mph and lose power on the Pearl Street Mall, and in central Boulder a ride must end in a marked Lime corral.',
+  lede: 'You can rent e-scooters in Boulder from Lime, the City’s only scooter partner, which kept its contract after a competitive bid in 2026 and now rents seated LimeGliders as well as stand-up scooters. The Lime app shows the price before you unlock. You must be 18, the City says, scooters are held to 15 mph and lose power on the Pearl Street Mall, and in central Boulder a ride must end in a marked Lime corral.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:co:Boulder',
@@ -18,26 +18,20 @@ const guide: Guide = {
       blocks: [
         'Electric scooter rental in Boulder means **Lime**. The City’s Shared Micromobility Program has two partners: Lime for e-scooters and BCycle for e-bikes, which you take from and return to its docking stations. After a competitive bid in 2026 the City chose both again, announcing the renewed contracts on 6 August 2026. CU Boulder calls Lime “Boulder’s lone e-scooter company”.',
         'The renewed programme allows Lime 900 stand-up scooters, as before, and up to 200 seated **LimeGliders**, brought in gradually from mid-August 2026, mainly for neighbourhoods near the city limits, the City said on 6 August 2026. Both follow the same rules.',
-        'For Lime the map shows each scooter’s position and charge; scooters on a ride aren’t shown, and BCycle’s e-bikes aren’t on it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        'At 11:05 a.m. on Thursday 29 October 2026 the [Boulder map](map:us:co:Boulder) showed about 790 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. The total covers Lime’s whole Boulder area, which reaches no neighbouring town: about 95% of that area lies within the city limits, the rest in pockets of unincorporated Boulder County.',
+        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 11:05 a.m. on Thursday 29 October 2026, about 790 Lime scooters on the [Boulder map](map:us:co:Boulder) were free to rent.',
       ],
     },
     {
-      heading: 'How much does a Lime scooter cost in Boulder?',
+      heading: 'Discounts on Lime rides in Boulder',
       blocks: [
-        'CU Boulder, a partner in the programme, lists the fares on its Parking and Transportation Services scooter page (checked on 29 October 2026). These are CU’s figures: the Lime app shows the current price before you unlock.',
+        'The Lime app shows the current price before you unlock. Three discounts come with the programme:',
         {
-          table: {
-            caption: 'Lime prices and discounts in Boulder, as CU Boulder and the City give them (checked on 29 October 2026)',
-            head: ['Ride', 'Price', 'Source'],
-            rows: [
-              ['Standard ride', '$1 to unlock plus $0.45 a minute', 'CU Boulder Parking and Transportation Services'],
-              ['Eligible CU riders', '50% off with an @colorado.edu address: $0.50 to unlock and about $0.23 a minute', 'CU Boulder Parking and Transportation Services'],
-              ['LimePrime', '$5.99 a month: no unlock fees and 25% off the per-minute price', 'CU Boulder Parking and Transportation Services'],
-              ['Near frequent transit', '25% off rides that start in high-frequency transit areas, announced with the new contracts', 'City of Boulder, 6 August 2026'],
-              ['Lime Access', 'Free rides of up to 30 minutes for income-qualified riders, Pell Grant recipients among them', 'City of Boulder; CU Boulder'],
-            ],
-          },
+          list: [
+            '**Near frequent transit:** 25% off rides that start in high-frequency transit areas, announced with the new contracts on 6 August 2026, the City says.',
+            '**Lime Access:** free rides of up to 30 minutes for income-qualified riders, Pell Grant recipients among them, say the City and CU Boulder.',
+            '**CU riders:** 50% off with an @colorado.edu address, CU Boulder’s transportation office says.',
+          ],
         },
       ],
     },
@@ -50,9 +44,9 @@ const guide: Guide = {
             caption: 'E-scooter rules in Boulder on 29 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '18 to ride Lime; Colorado sets no minimum age for e-scooters', 'City of Boulder and Lime; C.R.S. § 42-4-1412'],
+              ['Age', '18 or older to sign up for Lime or BCycle', 'City of Boulder'],
               ['Registration', 'None: an e-scooter isn’t a motor vehicle and is exempt from registration', 'Colorado, C.R.S. §§ 42-1-102, 42-3-103 (HB19-1221)'],
-              ['Helmet', 'Not required by law: Colorado’s helmet rule covers only under-18s on class 3 e-bikes; the City tells riders to always wear one', 'Colorado, C.R.S. § 42-4-1412; City of Boulder'],
+              ['Helmet', 'The City tells riders to always wear one; the helmet rule on its e-micromobility page covers 16- and 17-year-olds on class 3 e-bikes', 'City of Boulder'],
               ['Where to ride', 'In the street or bike lane, as far right as is safe, and on multi-use paths; no more than two abreast outside a bike lane', 'C.R.S. § 42-4-1412; City of Boulder'],
               ['Sidewalks', 'Not beside a street with a speed limit of 20 mph or less, beside most residential streets, or where there is a bike lane; allowed beside non-residential streets without one; never in a dismount zone', 'City of Boulder'],
               ['Speed', 'Lime holds its scooters to 15 mph, less in slow zones; 15 mph on multi-use paths, 8 mph in crosswalks', 'City of Boulder and Lime'],
@@ -60,8 +54,6 @@ const guide: Guide = {
               ['Passengers', 'One person per ride', 'City of Boulder'],
               ['Hands', 'At least one hand on the handlebars at all times', 'C.R.S. § 42-4-1412'],
               ['Lights', 'At night, a white light in front and a red one behind', 'City of Boulder'],
-              ['Alcohol', 'Colorado’s DUI law covers any vehicle, e-scooters included', 'C.R.S. § 42-4-1301'],
-              ['Night', 'The City’s pages set no riding hours, night ban or winter pause', 'City of Boulder'],
             ],
           },
         },
@@ -74,7 +66,7 @@ const guide: Guide = {
         {
           list: [
             '**The Pearl Street Mall.** It is a no-go zone: a Lime scooter loses power there, as it does in cemeteries and on ball fields. On and around the mall, and in the University Hill commercial area, riding any wheeled device on the sidewalk is banned except for accessibility, and you must walk through the marked dismount zones. Streets crossing the mall and 13th Street on University Hill are slow zones.',
-            '**The Boulder Creek Path.** This 5.5-mile multi-use path runs from Boulder Canyon through downtown, past the Main Library and the Dushanbe Teahouse, to the Stazio Ballfields east of 55th Street. Its page, from Parks and Recreation, sets no rule of its own for e-scooters; the City’s rules let them ride every multi-use path: 15 mph at most, keep right, and give an audible signal before passing.',
+            '**The Boulder Creek Path.** This 5.5-mile multi-use path runs from Boulder Canyon through downtown, past the Main Library and the Dushanbe Teahouse, to the Stazio Ballfields east of 55th Street. The City’s rules let e-scooters ride every multi-use path: 15 mph at most, keep right, and give an audible signal before passing.',
             '**Open Space and Mountain Parks.** E-scooters are banned on every OSMP trail, paved ones included, even where class 1 and 2 e-bikes may ride. You may ride a Lime to a trailhead and park it there only in a designated area, OSMP says.',
           ],
         },
@@ -134,7 +126,7 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Lime scooter in Boulder?',
-      answer: 'CU Boulder’s transportation office gives the standard price as $1 to unlock plus $0.45 a minute (checked on 29 October 2026); the Lime app shows the current price before you ride. The City announced 25% off rides that start in high-frequency transit areas, and riders with a CU email address get 50% off, CU says.',
+      answer: 'The Lime app shows the current price before you ride. The City announced 25% off rides that start in high-frequency transit areas, and riders with a CU email address get 50% off, CU says.',
     },
     {
       question: 'Can you ride a scooter on the Pearl Street Mall?',
@@ -150,6 +142,8 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Colorado General Assembly: HB19-1221, Regulation of Electric Scooters (2019 session law, chapter 271)', url: 'https://leg.colorado.gov/bills/hb19-1221' },
+    { title: 'Colorado General Assembly: HB22-1028, Statewide Regulation of Controlled Intersections (2022)', url: 'https://leg.colorado.gov/bills/hb22-1028' },
     { title: 'City of Boulder: Shared E-Scooters and E-Bikes (Shared Micromobility Program)', url: 'https://bouldercolorado.gov/services/shared-micromobility-program' },
     { title: 'City of Boulder: Boulder renews contract with BCycle and Lime, expands Shared Micromobility Program, 6 August 2026', url: 'https://bouldercolorado.gov/news/boulder-renews-contract-bcycle-and-lime-expands-shared-micromobility-program' },
     { title: 'City of Boulder: E-micromobility: e-bikes, e-scooters and more', url: 'https://bouldercolorado.gov/services/e-micromobility' },
