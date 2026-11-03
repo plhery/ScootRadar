@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Dortmund 2026: Anbieter, Parkzonen, Regeln',
   description: 'E-Scooter Dortmund: die Anbieter, wo du in der Innenstadt-West parkst, wo du nicht fährst und warum Scooter nicht in Bus und Stadtbahn von DSW21 dürfen.',
   headline: 'E-Scooter Dortmund: Anbieter, Parkzonen, Sperrzonen und was bei DSW21 gilt',
-  lede: 'Einen E-Scooter in Dortmund leihst du ohne Führerschein, etwa bei Voi, Dott oder Lime. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. In der Innenstadt-West leihst du seit dem 1. Oktober 2026 nur noch auf einer der 86 markierten Parkzonen aus und gibst dort auch zurück. In Bussen und Stadtbahnen von DSW21 sind E-Scooter seit dem 1. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Dortmund leihst du ohne Führerschein, etwa bei Voi, Dott, Lime oder Ryde. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. In der Innenstadt-West leihst du seit dem 1. Oktober 2026 nur noch auf einer der 86 markierten Parkzonen aus und gibst dort auch zurück. In Bussen und Stadtbahnen von DSW21 sind E-Scooter seit dem 1. März 2024 verboten.',
   published: '2026-10-24',
   updated: '2026-10-26',
   city: 'de:Dortmund',
@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Dortmund?',
       blocks: [
-        'In Dortmund vermieten im Oktober 2026 unter anderem **Voi**, **Dott** (früher Tier) und **Lime** E-Scooter. Lime führt auch NRW.Mobidrom, das Mobilitätsdatenportal des Landes, seit April 2026 als E-Scooter-Anbieter in Dortmund.',
+        'In Dortmund vermieten im Oktober 2026 unter anderem **Voi**, **Dott** (früher Tier) und **Lime** E-Scooter, laut Radio Bochum spätestens seit Juni 2026 auch **Ryde** aus Norwegen. Lime führt auch NRW.Mobidrom, das Mobilitätsdatenportal des Landes, seit April 2026 als E-Scooter-Anbieter in Dortmund.',
         'Im Dezember 2023 zählte die Stadt bei Bolt, Voi, Lime und Tier zusammen 3650 Leih-Scooter; jeder wurde im Schnitt zwei- bis dreimal am Tag ausgeliehen.',
         'Gemietet wird in der App; dort siehst du vor dem Entsperren auch den Preis. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Dortmund](map:de:Dortmund) rund 1400 Voi- und 360 Dott-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter nach der letzten Zählung.',
@@ -122,7 +122,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Dortmund nutzen?',
-      answer: 'Unter anderem die von Voi, Dott und Lime (Stand Oktober 2026). Einen Führerschein brauchst du nicht; ab welchem Alter du mieten darfst und was die Fahrt kostet, zeigt dir die App. Freie Scooter zeigt auch die [Live-Karte von Dortmund](map:de:Dortmund).',
+      answer: 'Unter anderem die von Voi, Dott, Lime und Ryde (Stand Oktober 2026). Einen Führerschein brauchst du nicht; ab welchem Alter du mieten darfst und was die Fahrt kostet, zeigt dir die App. Freie Scooter zeigt auch die [Live-Karte von Dortmund](map:de:Dortmund).',
     },
     {
       question: 'Wo darf ich in Dortmund nicht mit dem E-Scooter fahren?',
@@ -160,6 +160,7 @@ const guide: Guide = {
     { title: 'DSW21: H-Bahn', url: 'https://www.bus-und-bahn.de/h-bahn' },
     { title: 'mobil.nrw: Mobilitätsgarantie NRW', url: 'https://www.mobil.nrw/fahren/mobigarantie.html' },
     { title: 'NRW.Mobidrom: Mobilitätsdatenportal des Landes NRW', url: 'https://www.mobilitaetsdaten.nrw' },
+    { title: 'Radio Bochum: Neuer E-Scooter-Anbieter in Bochum gestartet (16. Juni 2026)', url: 'https://www.radiobochum.de/artikel/neuer-e-scooter-anbieter-in-bochum-gestartet-2670400' },
   ],
 };
 
