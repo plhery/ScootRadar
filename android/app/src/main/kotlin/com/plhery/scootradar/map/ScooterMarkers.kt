@@ -77,8 +77,14 @@ class ScooterMarkers(
 
     private var style: Style? = null
 
-    /** The safe area, whose top the names keep clear of, and whose bars the counts. */
+    /** The safe area, whose top the names and the counts keep clear of. */
     internal var safeArea = MapInsets.zero
+        private set
+
+    /** The bars over the map's foot and sides, and the display's cutouts, which the counts keep clear of. */
+    internal var bars = MapInsets.zero
+        private set
+    internal var cutouts = emptyList<ScreenRect>()
         private set
     private var chrome = MapChrome()
 
@@ -305,6 +311,8 @@ class ScooterMarkers(
         override val heading: Double get() = map.cameraPosition.bearing
         override val isShown: Boolean get() = view.isAttachedToWindow && view.windowVisibility == View.VISIBLE
         override val safeArea: MapInsets get() = this@ScooterMarkers.safeArea
+        override val bars: MapInsets get() = this@ScooterMarkers.bars
+        override val cutouts: List<ScreenRect> get() = this@ScooterMarkers.cutouts
         override fun points(coordinates: List<GeoPoint>): List<ScreenPoint> = this@ScooterMarkers.projection.points(coordinates)
     }
 
@@ -432,6 +440,14 @@ class ScooterMarkers(
         if (insets == safeArea) return
         safeArea = insets
         scene.movePills(markerMap)
+        flush()
+    }
+
+    /** The bars over the map's foot and sides, and the display's cutouts, in the map's points: counts keep clear of them. */
+    fun barsDidChange(bars: MapInsets, cutouts: List<ScreenRect>) {
+        if (bars == this.bars && cutouts == this.cutouts) return
+        this.bars = bars
+        this.cutouts = cutouts
         flush()
     }
 

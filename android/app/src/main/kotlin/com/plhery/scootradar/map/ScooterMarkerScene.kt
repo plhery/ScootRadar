@@ -250,6 +250,15 @@ interface MarkerMap {
     /** The top of the map's safe area, in points. */
     val safeTop: Double get() = safeArea.top
 
+    /**
+     * The bars over the map's foot and sides, in points: the navigation bar, at the foot or at a side of a phone held
+     * sideways. Not the display's cutout, which the safe area counts along the whole side it is on ([cutouts]).
+     */
+    val bars: MapInsets
+
+    /** The display's cutouts over the map, a camera's punch hole or notch, in the map's points. */
+    val cutouts: List<ScreenRect>
+
     /** Where the map shows each of the coordinates, in its own points: on MapLibre, asked all at once. */
     fun points(coordinates: List<GeoPoint>): List<ScreenPoint> = coordinates.map(projection::point)
 }
@@ -959,21 +968,23 @@ class ScooterMarkerScene(
     }
 
     /**
-     * What covers the map for a cluster's number, in the map's points: the system's bars outside the safe area, the
-     * status bar (with a tablet's window handle) and the navigation bar, at the foot or at a side; the search bar and
-     * the notices under it, the panel, the fold, the locate button, the zone legend (or its "Zoom in to see the zones")
-     * and the dock; and the map's credits. Each frame of the screen's reaches to a side of the map it stands nearer
-     * than any count's disc is wide ([reachingSides]), as a tablet's panel 16 in from its side does: no count shows
-     * whole in the strip between.
+     * What covers the map for a cluster's number, in the map's points: the system's bars, the status bar (with a
+     * tablet's window handle) above the safe area, and the navigation bar, at the foot or at a side; the display's
+     * cutouts, each where it is, not down the side it is on; the search bar and the notices under it, the panel, the
+     * fold, the locate button, the zone legend (or its "Zoom in to see the zones") and the dock; and the map's credits.
+     * Each frame of the screen's reaches to a side of the map it stands nearer than any count's disc is wide
+     * ([reachingSides]), as a tablet's panel 16 in from its side does: no count shows whole in the strip between.
      */
     fun countChrome(map: MarkerMap): List<ScreenRect> {
         val bounds = map.projection.bounds
-        val safe = map.safeArea
-        val chrome = ArrayList<ScreenRect>(parent.bottomChromeFrames.size + 8)
-        if (safe.top > bounds.minY) chrome += ScreenRect(bounds.minX, bounds.minY, bounds.width, safe.top - bounds.minY)
-        if (safe.bottom > 0) chrome += ScreenRect(bounds.minX, bounds.maxY - safe.bottom, bounds.width, safe.bottom)
-        if (safe.left > 0) chrome += ScreenRect(bounds.minX, bounds.minY, safe.left, bounds.height)
-        if (safe.right > 0) chrome += ScreenRect(bounds.maxX - safe.right, bounds.minY, safe.right, bounds.height)
+        val top = map.safeArea.top
+        val bars = map.bars
+        val chrome = ArrayList<ScreenRect>(parent.bottomChromeFrames.size + map.cutouts.size + 8)
+        if (top > bounds.minY) chrome += ScreenRect(bounds.minX, bounds.minY, bounds.width, top - bounds.minY)
+        if (bars.bottom > 0) chrome += ScreenRect(bounds.minX, bounds.maxY - bars.bottom, bounds.width, bars.bottom)
+        if (bars.left > 0) chrome += ScreenRect(bounds.minX, bounds.minY, bars.left, bounds.height)
+        if (bars.right > 0) chrome += ScreenRect(bounds.maxX - bars.right, bounds.minY, bars.right, bounds.height)
+        chrome += map.cutouts
         val frames = listOfNotNull(parent.interactionExclusionFrame, parent.panelFrame, parent.foldFrame) +
             parent.bottomChromeFrames + listOfNotNull(parent.creditsFrame)
         for (frame in frames) if (!frame.isEmpty) chrome += frame.reachingSides(bounds)

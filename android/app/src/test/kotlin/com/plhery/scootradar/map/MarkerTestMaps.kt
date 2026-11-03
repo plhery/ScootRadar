@@ -20,9 +20,12 @@ class FlatMarkerMap(
     safeTop: Double = 47.0,
     /** The navigation bar's, at the foot: none on an iPhone's map, whose home indicator the dock stands over. */
     safeBottom: Double = 0.0,
-    /** The navigation bar's at a side, of a phone held sideways. */
+    /** The navigation bar's at a side, of a phone held sideways, or a cutout's. */
     safeLeft: Double = 0.0,
     safeRight: Double = 0.0,
+    /** The bars over the foot and sides: the safe area's there, unless a cutout's is in it. */
+    override val bars: MapInsets = MapInsets(top = 0.0, left = safeLeft, bottom = safeBottom, right = safeRight),
+    override val cutouts: List<ScreenRect> = emptyList(),
 ) : MarkerMap, ScooterMapProjection {
     override val safeArea = MapInsets(top = safeTop, left = safeLeft, bottom = safeBottom, right = safeRight)
 

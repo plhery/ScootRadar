@@ -34,6 +34,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -72,17 +73,45 @@ internal val mapSafeArea: WindowInsets
 
 /** [mapSafeArea] in the map's points, as its camera and its markers take it. */
 @Composable
-internal fun mapSafeInsets(): MapInsets {
+internal fun mapSafeInsets(): MapInsets = mapSafeArea.inPoints()
+
+/**
+ * The bars over the map's foot and sides, in its points, which a count is hidden under (ScooterMarkerScene.countChrome):
+ * the system's bars, without the display's cutout, a hole at one place along a side rather than a band down it
+ * ([mapCutouts]).
+ */
+@Composable
+internal fun mapBars(): MapInsets = WindowInsets.systemBars.inPoints()
+
+@Composable
+private fun WindowInsets.inPoints(): MapInsets {
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
-    val safe = mapSafeArea
     val points = density.density.toDouble()
     return MapInsets(
-        top = safe.getTop(density) / points,
-        left = safe.getLeft(density, direction) / points,
-        bottom = safe.getBottom(density) / points,
-        right = safe.getRight(density, direction) / points,
+        top = getTop(density) / points,
+        left = getLeft(density, direction) / points,
+        bottom = getBottom(density) / points,
+        right = getRight(density, direction) / points,
     )
+}
+
+/**
+ * The display's cutouts over the map, a camera's punch hole or notch, each as its own rectangle in the window's points,
+ * which the map's are: a count under one is hidden, one beside it along the same side stays. Read again as the cutout's
+ * inset changes, as the phone turns.
+ */
+@Composable
+internal fun mapCutouts(): List<ScreenRect> {
+    val view = LocalView.current
+    val inset = WindowInsets.displayCutout.inPoints()
+    val points = LocalDensity.current.density.toDouble()
+    return remember(view, inset, points) {
+        val cutout = view.rootWindowInsets?.displayCutout ?: return@remember emptyList()
+        cutout.boundingRects.filter { !it.isEmpty }.map {
+            ScreenRect(it.left / points, it.top / points, it.width() / points, it.height() / points)
+        }
+    }
 }
 
 /**
@@ -233,6 +262,10 @@ fun ScooterMap(
     val zoom by controller.zoomRequest.collectAsStateWithLifecycle()
     LaunchedEffect(camera, safeArea) { camera?.safeAreaDidChange(safeArea) }
     LaunchedEffect(markers, safeArea) { markers?.safeAreaDidChange(safeArea) }
+    // A count is hidden under the bars that cover the map and under a cutout, not down the whole side a cutout is on.
+    val bars = mapBars()
+    val cutouts = mapCutouts()
+    LaunchedEffect(markers, bars, cutouts) { markers?.barsDidChange(bars, cutouts) }
     // The chrome over the map, as the screen measures it: the map keeps its names and the places it shows clear of it.
     val chrome = LocalMapChrome.current
     LaunchedEffect(camera, markers, chrome) {

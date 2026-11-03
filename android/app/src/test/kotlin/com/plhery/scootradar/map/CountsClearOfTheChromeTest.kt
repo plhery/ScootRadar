@@ -84,6 +84,42 @@ class CountsClearOfTheChromeTest {
         assertEquals(ScreenRect(0.0, 624.0, 360.0, 16.0), scene.countChrome(gestures).last())
     }
 
+    /**
+     * A punch-hole phone held sideways, its camera's hole on the left: the safe area counts the cutout down the whole
+     * side, 34 in, but only the hole covers the map. A count on the hole is hidden; one near that side above or below
+     * it, its disc within the cutout's inset but clear of the hole, stays, as on the iPhone. The 3-button bar on the
+     * other side still hides a count under it.
+     */
+    @Test
+    fun aCountNearACutoutsSideButClearOfTheHoleStays() {
+        val hole = ScreenRect(0.0, 160.0, 34.0, 40.0)
+        val map = FlatMarkerMap(
+            width = 640.0,
+            height = 360.0,
+            safeTop = 24.0,
+            safeLeft = 34.0,
+            safeRight = 48.0,
+            bars = MapInsets(top = 0.0, left = 0.0, bottom = 0.0, right = 48.0),
+            cutouts = listOf(hole),
+        )
+        assertEquals(
+            listOf(ScreenRect(0.0, 0.0, 640.0, 24.0), ScreenRect(592.0, 0.0, 48.0, 360.0), hole),
+            scene.countChrome(map),
+        )
+        scene.parent = MarkerParent(isOverview = true)
+        scene.reconcileClusters(
+            listOf(
+                cluster("above", map.at(24.0, 90.0), 63),
+                cluster("onTheHole", map.at(24.0, 180.0), 63),
+                cluster("below", map.at(24.0, 280.0), 63),
+                cluster("underTheButtons", map.at(616.0, 180.0), 63),
+            ),
+            revision = 1,
+        )
+        scene.clearCounts(map)
+        assertEquals(listOf("onTheHole", "underTheButtons"), scene.clusters().filter { it.isHidden }.map { it.id }.sorted())
+    }
+
     @Test
     fun aFrameReachesTheSideItStandsNearerThanACountIsWideAndOnlyGrows() {
         val bounds = ScreenRect(0.0, 0.0, 1280.0, 720.0)

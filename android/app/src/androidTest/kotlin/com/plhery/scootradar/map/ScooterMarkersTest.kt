@@ -425,6 +425,7 @@ class ScooterMarkersTest {
         )
         marked.phone.onMain {
             marked.markers.safeAreaDidChange(MapInsets(top = 24.0, left = 0.0, bottom = 48.0, right = 0.0))
+            marked.markers.barsDidChange(MapInsets(top = 24.0, left = 0.0, bottom = 48.0, right = 0.0), cutouts = emptyList())
             marked.markers.creditsDidChange(ScreenRect(200.0, 392.0, 230.0, 18.0))
         }
         val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", overview = true)
@@ -442,6 +443,7 @@ class ScooterMarkersTest {
         marked.phone.onMain {
             marked.markers.creditsDidChange(null)
             marked.markers.safeAreaDidChange(MapInsets.zero)
+            marked.markers.barsDidChange(MapInsets.zero, cutouts = emptyList())
         }
         waitFor("Basel's total shows again") { marked.clearance(basel) == 1.0 }
         waitFor("Zürich's total shows again") { marked.clearance(zurich) == 1.0 }
