@@ -77,7 +77,7 @@ class ScooterMarkerAccessibilityTest {
         override val projection: ScooterMapProjection get() = shown
         override val heading: Double get() = shown.heading
         override val isShown: Boolean get() = shown.isShown
-        override val safeTop: Double get() = shown.safeTop
+        override val safeArea: MapInsets get() = shown.safeArea
     }
 
     private fun helper(map: MarkerMap) = ScooterMarkerAccessibility(host, scene, map, density) { changes += 1 }

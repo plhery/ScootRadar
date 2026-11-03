@@ -17,8 +17,15 @@ class FlatMarkerMap(
     width: Double = 390.0,
     height: Double = 844.0,
     override val isShown: Boolean = true,
-    override val safeTop: Double = 47.0,
+    safeTop: Double = 47.0,
+    /** The navigation bar's, at the foot: none on an iPhone's map, whose home indicator the dock stands over. */
+    safeBottom: Double = 0.0,
+    /** The navigation bar's at a side, of a phone held sideways. */
+    safeLeft: Double = 0.0,
+    safeRight: Double = 0.0,
 ) : MarkerMap, ScooterMapProjection {
+    override val safeArea = MapInsets(top = safeTop, left = safeLeft, bottom = safeBottom, right = safeRight)
+
     /** Map points across a point of the screen. */
     private val perPoint = MapPoint.worldSize / (512 * 2.0.pow(mapLibreZoom))
     private val middle = MapPoint(centre)

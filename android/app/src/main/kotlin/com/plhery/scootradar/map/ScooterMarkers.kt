@@ -77,10 +77,13 @@ class ScooterMarkers(
 
     private var style: Style? = null
 
-    /** The safe area, whose top the names keep clear of. */
+    /** The safe area, whose top the names keep clear of, and whose bars the counts. */
     internal var safeArea = MapInsets.zero
         private set
     private var chrome = MapChrome()
+
+    /** The map's credits, while they are seen. */
+    private var credits: ScreenRect? = null
 
     /** The uptime the bands are counted from, in seconds: small numbers. */
     private val epoch = SystemClock.uptimeMillis() / 1000.0
@@ -301,7 +304,7 @@ class ScooterMarkers(
         override val projection: ScooterMapProjection get() = this@ScooterMarkers.projection
         override val heading: Double get() = map.cameraPosition.bearing
         override val isShown: Boolean get() = view.isAttachedToWindow && view.windowVisibility == View.VISIBLE
-        override val safeTop: Double get() = safeArea.top
+        override val safeArea: MapInsets get() = this@ScooterMarkers.safeArea
         override fun points(coordinates: List<GeoPoint>): List<ScreenPoint> = this@ScooterMarkers.projection.points(coordinates)
     }
 
@@ -432,6 +435,14 @@ class ScooterMarkers(
         flush()
     }
 
+    /** The map's credits in its corner, in the map's points, or null while they are not seen: counts keep clear of them. */
+    fun creditsDidChange(frame: ScreenRect?) {
+        if (frame == credits) return
+        credits = frame
+        scene.parent = scene.parent.copy(creditsFrame = frame)
+        flush()
+    }
+
     /** What updateUIView does for the markers, in its order. */
     private fun update() {
         if (style == null) return
@@ -450,6 +461,7 @@ class ScooterMarkers(
             bottomChromeFrames = chrome.bottomFrames,
             panelFrame = chrome.panel,
             foldFrame = chrome.fold,
+            creditsFrame = credits,
         )
         scene.applyDestination(controller.searchedDestination.value)
         val level = MapZoom.level(on = projection)

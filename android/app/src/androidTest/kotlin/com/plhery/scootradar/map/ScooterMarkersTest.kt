@@ -411,6 +411,44 @@ class ScooterMarkersTest {
     }
 
     /**
+     * The Europe view on MapLibre: a city's total in the navigation bar at the map's foot, and one under the map's
+     * credits, are hidden by their feature state, and show again once the bar and the credits are gone.
+     */
+    @Test
+    fun aCityTotalInTheNavigationBarOrUnderTheCreditsIsHidden() = withMarkers(zurich, mapLibreZoom = 7.0) { marked ->
+        val foot = marked.phone.onMain { marked.phone.projection.bounds.maxY }
+        val inTheBar = marked.at(100.0, foot - 10)
+        val underTheCredits = marked.at(250.0, 400.0)
+        val clusters = listOf(
+            ScooterCluster("city:ch:Basel", inTheBar.latitude, inTheBar.longitude, count = 1_288, providers = mapOf("lime" to 1_288), city = "Basel"),
+            ScooterCluster("city:ch:Zürich", underTheCredits.latitude, underTheCredits.longitude, count = 7_023, providers = mapOf("voi" to 7_023), city = "Zürich"),
+        )
+        marked.phone.onMain {
+            marked.markers.safeAreaDidChange(MapInsets(top = 24.0, left = 0.0, bottom = 48.0, right = 0.0))
+            marked.markers.creditsDidChange(ScreenRect(200.0, 392.0, 230.0, 18.0))
+        }
+        val meta = ScooterResponseMetadata(partial = false, failedSources = emptyList(), mode = "clusters", overview = true)
+        marked.serve(ScooterResponse(vehicles = emptyList(), clusters = clusters, meta = meta)) { it.clusters().size == 2 }
+        val (basel, zurich) = marked.phone.onMain {
+            val marks = marked.markers.scene.clusters()
+            marks.minBy { it.cluster.coordinate.distance(to = inTheBar) }.featureID to
+                marks.minBy { it.cluster.coordinate.distance(to = underTheCredits) }.featureID
+        }
+        waitFor("Basel's total in the navigation bar is hidden") { marked.clearance(basel) == 0.0 }
+        waitFor("Zürich's total under the credits is hidden") { marked.clearance(zurich) == 0.0 }
+        waitFor("TalkBack has neither") { reads().isEmpty() }
+
+        // The credits out of sight and the bar gone, both show again.
+        marked.phone.onMain {
+            marked.markers.creditsDidChange(null)
+            marked.markers.safeAreaDidChange(MapInsets.zero)
+        }
+        waitFor("Basel's total shows again") { marked.clearance(basel) == 1.0 }
+        waitFor("Zürich's total shows again") { marked.clearance(zurich) == 1.0 }
+        waitFor("TalkBack has both again") { reads().size == 2 }
+    }
+
+    /**
      * The overview on MapLibre with a scooter selected on it, as the one walked to stays: its dot and name are drawn
      * under the totals' layer, so the total that would cover them is hidden by its feature state, out of TalkBack's
      * list, and shows again once the scooter is let go (review-app-aq-ar 2).

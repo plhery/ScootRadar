@@ -241,8 +241,14 @@ interface MarkerMap {
     /** The map is in a window: what changes on it eases in only there. */
     val isShown: Boolean
 
+    /**
+     * The map's safe area, in points: the status bar at its top, and the navigation bar, its three buttons or the
+     * gesture handle's strip, at its foot, or at a side of a phone held sideways; a cutout's too.
+     */
+    val safeArea: MapInsets
+
     /** The top of the map's safe area, in points. */
-    val safeTop: Double
+    val safeTop: Double get() = safeArea.top
 
     /** Where the map shows each of the coordinates, in its own points: on MapLibre, asked all at once. */
     fun points(coordinates: List<GeoPoint>): List<ScreenPoint> = coordinates.map(projection::point)
@@ -272,6 +278,8 @@ data class MarkerParent(
     val panelFrame: ScreenRect? = null,
     /** The fold of a partly open foldable. */
     val foldFrame: ScreenRect? = null,
+    /** The map's credits in its corner, while they are seen. */
+    val creditsFrame: ScreenRect? = null,
 )
 
 /** The pin's callout: the searched place's [title], and the top of the pin it points at, in the map's points. */
@@ -951,18 +959,24 @@ class ScooterMarkerScene(
     }
 
     /**
-     * What covers the map for a cluster's number, in the map's points: the status bar above the safe area (with a
-     * tablet's window handle), the search bar and the notices under it, the panel, the fold, and the locate button,
-     * the zone legend (or its "Zoom in to see the zones") and the dock.
+     * What covers the map for a cluster's number, in the map's points: the system's bars outside the safe area, the
+     * status bar (with a tablet's window handle) and the navigation bar, at the foot or at a side; the search bar and
+     * the notices under it, the panel, the fold, the locate button, the zone legend (or its "Zoom in to see the zones")
+     * and the dock; and the map's credits. Each frame of the screen's reaches to a side of the map it stands nearer
+     * than any count's disc is wide ([reachingSides]), as a tablet's panel 16 in from its side does: no count shows
+     * whole in the strip between.
      */
     fun countChrome(map: MarkerMap): List<ScreenRect> {
         val bounds = map.projection.bounds
-        val chrome = ArrayList<ScreenRect>(parent.bottomChromeFrames.size + 4)
-        if (map.safeTop > bounds.minY) chrome += ScreenRect(bounds.minX, bounds.minY, bounds.width, map.safeTop - bounds.minY)
-        parent.interactionExclusionFrame?.let { chrome += it }
-        parent.panelFrame?.let { chrome += it }
-        parent.foldFrame?.let { chrome += it }
-        chrome += parent.bottomChromeFrames
+        val safe = map.safeArea
+        val chrome = ArrayList<ScreenRect>(parent.bottomChromeFrames.size + 8)
+        if (safe.top > bounds.minY) chrome += ScreenRect(bounds.minX, bounds.minY, bounds.width, safe.top - bounds.minY)
+        if (safe.bottom > 0) chrome += ScreenRect(bounds.minX, bounds.maxY - safe.bottom, bounds.width, safe.bottom)
+        if (safe.left > 0) chrome += ScreenRect(bounds.minX, bounds.minY, safe.left, bounds.height)
+        if (safe.right > 0) chrome += ScreenRect(bounds.maxX - safe.right, bounds.minY, safe.right, bounds.height)
+        val frames = listOfNotNull(parent.interactionExclusionFrame, parent.panelFrame, parent.foldFrame) +
+            parent.bottomChromeFrames + listOfNotNull(parent.creditsFrame)
+        for (frame in frames) if (!frame.isEmpty) chrome += frame.reachingSides(bounds)
         return chrome.filter { !it.isEmpty }
     }
 
@@ -1241,6 +1255,21 @@ class ScooterMarkerScene(
 
         /** A cluster's disc grows with the digits of its number. */
         fun clusterDiameter(count: Int): Double = if (count < 100) 36.0 else if (count < 1_000) 40.0 else 44.0
+
+        /**
+         * The frame, reaching to each side of the map's [bounds] it stands nearer than the smallest count's disc is
+         * wide, 36: a count in the strip between would be cut by the window's edge, never whole. A tablet's panel
+         * stands 16 in from its side, the search bar and the dock 10 to 16 in from a phone's. The map's open edges,
+         * where no chrome stands, keep the counts the rider pans in.
+         */
+        fun ScreenRect.reachingSides(bounds: ScreenRect): ScreenRect {
+            val narrowest = clusterDiameter(0)
+            val left = if (minX - bounds.minX < narrowest) min(minX, bounds.minX) else minX
+            val top = if (minY - bounds.minY < narrowest) min(minY, bounds.minY) else minY
+            val right = if (bounds.maxX - maxX < narrowest) max(maxX, bounds.maxX) else maxX
+            val bottom = if (bounds.maxY - maxY < narrowest) max(maxY, bounds.maxY) else maxY
+            return ScreenRect(left, top, right - left, bottom - top)
+        }
 
         /** Whether a disc and a rectangle overlap: more than touch, its edge inside the rectangle by any amount. */
         fun discMeets(centre: ScreenPoint, radius: Double, rect: ScreenRect): Boolean {

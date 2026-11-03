@@ -48,23 +48,166 @@ class CountsClearOfTheChromeTest {
     }
 
     @Test
-    fun theChromeIsTheStatusBarTheSearchBarThePanelTheFoldAndWhatFloatsAtTheFoot() {
+    fun theChromeIsTheSystemsBarsTheSearchBarThePanelTheFoldWhatFloatsAtTheFootAndTheCredits() {
         val map = FlatMarkerMap()
         val bar = ScreenRect(16.0, 55.0, 358.0, 56.0)
-        val panel = ScreenRect(16.0, 55.0, 340.0, 500.0)
+        val panel = ScreenRect(16.0, 55.0, 300.0, 500.0)
         val fold = ScreenRect(0.0, 420.0, 390.0, 4.0)
         val legend = ScreenRect(120.0, 620.0, 190.0, 36.0)
         val dock = ScreenRect(0.0, 670.0, 390.0, 174.0)
+        val credits = ScreenRect(60.0, 590.0, 230.0, 18.0)
         scene.parent = MarkerParent(
             interactionExclusionFrame = bar,
             panelFrame = panel,
             foldFrame = fold,
             bottomChromeFrames = listOf(ScreenRect(318.0, 600.0, 0.0, 0.0), legend, dock),
+            creditsFrame = credits,
         )
         // The status bar, a tablet's window handle in it, is all above the safe area; a frame of nothing is left out.
+        // The search bar and the panel, 16 in from the map's sides, reach to them; the legend and the credits, further
+        // in, stay as they are.
         val status = ScreenRect(0.0, 0.0, 390.0, 47.0)
-        assertEquals(listOf(status, bar, panel, fold, legend, dock), scene.countChrome(map))
-        assertEquals(listOf(bar, panel, fold, legend, dock), scene.countChrome(FlatMarkerMap(safeTop = 0.0)))
+        val wideBar = ScreenRect(0.0, 55.0, 390.0, 56.0)
+        val widePanel = ScreenRect(0.0, 55.0, 316.0, 500.0)
+        assertEquals(listOf(status, wideBar, widePanel, fold, legend, dock, credits), scene.countChrome(map))
+        assertEquals(listOf(wideBar, widePanel, fold, legend, dock, credits), scene.countChrome(FlatMarkerMap(safeTop = 0.0)))
+
+        // The navigation bar: its three buttons at the foot, or held sideways at a side; the gesture handle's strip.
+        scene.parent = MarkerParent()
+        val buttons = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 48.0)
+        assertEquals(listOf(ScreenRect(0.0, 0.0, 360.0, 24.0), ScreenRect(0.0, 592.0, 360.0, 48.0)), scene.countChrome(buttons))
+        val sideways = FlatMarkerMap(width = 640.0, height = 360.0, safeTop = 24.0, safeLeft = 0.0, safeRight = 48.0)
+        assertEquals(listOf(ScreenRect(0.0, 0.0, 640.0, 24.0), ScreenRect(592.0, 0.0, 48.0, 360.0)), scene.countChrome(sideways))
+        val leftSideways = FlatMarkerMap(width = 640.0, height = 360.0, safeTop = 24.0, safeLeft = 48.0)
+        assertEquals(ScreenRect(0.0, 0.0, 48.0, 360.0), scene.countChrome(leftSideways).last())
+        val gestures = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 16.0)
+        assertEquals(ScreenRect(0.0, 624.0, 360.0, 16.0), scene.countChrome(gestures).last())
+    }
+
+    @Test
+    fun aFrameReachesTheSideItStandsNearerThanACountIsWideAndOnlyGrows() {
+        val bounds = ScreenRect(0.0, 0.0, 1280.0, 720.0)
+        with(ScooterMarkerScene) {
+            // A tablet's panel, 16 in from the leading side and from the top, 48 above the foot.
+            assertEquals(ScreenRect(0.0, 0.0, 356.0, 672.0), ScreenRect(16.0, 32.0, 340.0, 640.0).reachingSides(bounds))
+            // In from the trailing side, as a right-to-left panel stands.
+            assertEquals(ScreenRect(924.0, 0.0, 356.0, 672.0), ScreenRect(924.0, 32.0, 340.0, 640.0).reachingSides(bounds))
+            // 36 in, a two-digit count's width, stays.
+            val apart = ScreenRect(36.0, 100.0, 300.0, 100.0)
+            assertEquals(apart, apart.reachingSides(bounds))
+            // One measured past the map's edge, as a dock laid out before the map turned, is never cut down to it.
+            val below = ScreenRect(300.0, 730.0, 560.0, 200.0)
+            assertEquals(below, below.reachingSides(bounds))
+            val above = ScreenRect(16.0, -245.0, 358.0, 56.0)
+            assertEquals(ScreenRect(0.0, -245.0, 374.0, 56.0), above.reachingSides(bounds))
+        }
+    }
+
+    /**
+     * Phone_Min's three-button navigation bar, under the dock, hides a count as the dock does. With gesture navigation
+     * the dock's foot stands 32 over the window's, over the handle's strip, 16 tall: a count below the dock there, cut by
+     * the window's foot, is hidden too. Beside a tablet's panel the handle's strip is all that stands at the foot.
+     */
+    @Test
+    fun aCountUnderTheNavigationBarOrInTheGestureHandlesStripIsHidden() {
+        val buttons = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 48.0)
+        scene.parent = MarkerParent(isOverview = true, bottomChromeTop = 400.0, bottomChromeFrames = listOf(ScreenRect(10.0, 400.0, 340.0, 182.0)))
+        scene.reconcileClusters(
+            listOf(
+                cluster("bar", buttons.at(125.0, 615.0), 3344),
+                cluster("aboveTheDock", buttons.at(180.0, 300.0), 1207),
+            ),
+            revision = 1,
+        )
+        scene.clearCounts(buttons)
+        assertEquals(listOf("bar"), scene.clusters().filter { it.isHidden }.map { it.id })
+        assertNull(scene.topCluster(buttons.point(mark("bar").cluster.coordinate), buttons))
+        // Read by TalkBack no more than tapped.
+        val read = MarkerElements.of(scene, buttons).filterIsInstance<MarkerElement.Cluster>().map { it.cluster.id }
+        assertEquals(listOf("aboveTheDock"), read)
+
+        // Gesture navigation: a count of two digits 20 below the dock's foot, its disc clear of the dock.
+        val gestures = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0, safeBottom = 16.0)
+        scene.parent = MarkerParent(isOverview = true, bottomChromeTop = 426.0, bottomChromeFrames = listOf(ScreenRect(10.0, 426.0, 340.0, 182.0)))
+        scene.reconcileClusters(
+            listOf(cluster("handle", gestures.at(200.0, 628.0), 63), cluster("aboveTheDock", gestures.at(180.0, 300.0), 1207)),
+            revision = 2,
+        )
+        scene.clearCounts(gestures)
+        assertEquals(listOf("handle"), scene.clusters().filter { it.isHidden }.map { it.id })
+
+        // Beside a tablet's panel: a count in the handle's strip is hidden, one clear above it stays.
+        val tablet = FlatMarkerMap(width = 1280.0, height = 720.0, safeTop = 24.0, safeBottom = 20.0)
+        scene.parent = MarkerParent(isOverview = true, panelFrame = ScreenRect(16.0, 32.0, 340.0, 640.0))
+        scene.reconcileClusters(
+            listOf(cluster("strip", tablet.at(700.0, 690.0), 63), cluster("clear", tablet.at(800.0, 680.0), 63)),
+            revision = 3,
+        )
+        scene.clearCounts(tablet)
+        assertEquals(listOf("strip"), scene.clusters().filter { it.isHidden }.map { it.id })
+    }
+
+    /**
+     * The map's credits, drawn over it in its corner beside a tablet's panel, hide a count under them, which fades back
+     * as they go out of sight; a count by them, clear of their frame, stays.
+     */
+    @Test
+    fun aCountUnderTheMapsCreditsIsHiddenWhileTheyAreSeen() {
+        val map = FlatMarkerMap(width = 1280.0, height = 720.0, safeTop = 24.0, safeBottom = 24.0)
+        val panel = ScreenRect(16.0, 32.0, 340.0, 640.0)
+        val credits = ScreenRect(372.0, 670.0, 330.0, 18.0)
+        val beside = MarkerParent(isOverview = true, panelFrame = panel)
+        scene.parent = beside.copy(creditsFrame = credits)
+        scene.reconcileClusters(
+            listOf(cluster("under", map.at(500.0, 668.0), 581), cluster("above", map.at(500.0, 620.0), 699)),
+            revision = 1,
+        )
+        scene.clearCounts(map)
+        assertEquals(listOf("under"), scene.clusters().filter { it.isHidden }.map { it.id })
+
+        // Out of sight, where the chrome leaves them no room, they cover nothing: it fades back in.
+        scene.parent = beside
+        assertTrue(scene.clearCounts(map))
+        assertFalse(mark("under").isHidden)
+        assertEquals(0.5, mark("under").clearance(time + 0.1), 1e-3)
+    }
+
+    /**
+     * Beside a tablet's panel the strip to the window's side, 16 wide, is the panel's: a count there, which no disc
+     * fits in, fades as one under the panel does, in either direction. Below the panel the side is open: a count the
+     * rider pans in there stays, cut by the window's edge, as at any open edge of the map.
+     */
+    @Test
+    fun theStripBesideAPanelIsThePanelsAndTheMapsOpenEdgesKeepTheirCounts() {
+        val map = FlatMarkerMap(width = 1280.0, height = 720.0, safeTop = 24.0)
+        scene.parent = MarkerParent(isOverview = true, panelFrame = ScreenRect(16.0, 32.0, 340.0, 640.0))
+        scene.reconcileClusters(
+            listOf(
+                // Its disc from -22 to 14: clear of the panel, cut by the window's side.
+                cluster("strip", map.at(-4.0, 300.0), 63),
+                cluster("belowThePanel", map.at(-4.0, 700.0), 63),
+                cluster("trailingEdge", map.at(1284.0, 300.0), 63),
+                cluster("foot", map.at(700.0, 716.0), 63),
+            ),
+            revision = 1,
+        )
+        scene.clearCounts(map)
+        assertEquals(listOf("strip"), scene.clusters().filter { it.isHidden }.map { it.id })
+
+        // Right to left, the panel down the trailing side.
+        scene.parent = MarkerParent(isOverview = true, panelFrame = ScreenRect(924.0, 32.0, 340.0, 640.0))
+        scene.clearCounts(map)
+        assertEquals(listOf("trailingEdge"), scene.clusters().filter { it.isHidden }.map { it.id })
+
+        // A phone's search bar, 12 in from its sides: a count cut beside it is hidden; one at the open side below stays.
+        val phone = FlatMarkerMap(width = 360.0, height = 640.0, safeTop = 24.0)
+        scene.parent = MarkerParent(isOverview = true, interactionExclusionFrame = ScreenRect(12.0, 32.0, 336.0, 56.0))
+        scene.reconcileClusters(
+            listOf(cluster("besideTheBar", phone.at(-6.0, 60.0), 63), cluster("open", phone.at(-6.0, 300.0), 63)),
+            revision = 2,
+        )
+        scene.clearCounts(phone)
+        assertEquals(listOf("besideTheBar"), scene.clusters().filter { it.isHidden }.map { it.id })
     }
 
     @Test
