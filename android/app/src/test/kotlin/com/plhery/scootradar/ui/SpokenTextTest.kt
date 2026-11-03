@@ -200,8 +200,9 @@ class SpokenTextTest {
         // Nothing else TalkBack is given is a link, or names one otherwise.
         val names = given.values.flatMap { it.links }.map { it.first }.toSet()
         assertEquals(authorities.map { it.authority }.toSet(), names)
-        // It stops on each kind of the rules at all hours, a line for each of the others' hours, and the credit.
-        val kinds = streets.filter { it.hours.isEmpty() }.map { it.kind }.distinct().size
+        // It stops on the row of the kinds of the rules at all hours, one stop however many kinds it names, a line for
+        // each of the others' hours, and the credit.
+        val kinds = if (streets.any { it.hours.isEmpty() }) 1 else 0
         val hours = streets.filter { it.hours.isNotEmpty() }.map { it.hours }.distinct().size
         assertEquals(kinds + hours + 1, given.values.count { it.stops })
     }

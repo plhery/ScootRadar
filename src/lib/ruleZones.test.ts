@@ -207,6 +207,26 @@ describe('ruleZonesInView', () => {
     expect(at(52.2319, 21.0075).map(({ id, rule }) => ({ id, rule }))).toEqual([{ id: 'warsaw-plac-centralny', rule: 'slow' }]);
   });
 
+  it('gives Linköping\'s 6 km/h streets and squares and Gävle\'s slow streets, credited to each kommun', () => {
+    const now = Date.parse('2026-11-03T00:30:00Z');
+    const at = (lat: number, lng: number) => ruleZonesInView(
+      { bounds: { south: lat - 0.0005, west: lng - 0.0008, north: lat + 0.0005, east: lng + 0.0008 }, zoom: 16 }, now)
+      .filter(zone => zone.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng)))
+      .map(({ id, rule, maxSpeedKph, authority, inForce }) => ({ id, rule, maxSpeedKph, authority, inForce }));
+    const linkoping = (id: string) => [{ id, rule: 'slow', maxSpeedKph: 6, authority: 'Linköpings kommun, lines © OpenStreetMap', inForce: true }];
+    expect(at(58.410233, 15.62076)).toEqual(linkoping('linkoping-torggatan'));
+    expect(at(58.410282, 15.623002)).toEqual(linkoping('linkoping-tanneforsgatan'));
+    expect(at(58.410743, 15.621615)).toEqual(linkoping('linkoping-stora-torget'));
+    expect(at(58.412121, 15.626654)).toEqual(linkoping('linkoping-farbror-melins-torg'));
+    // Gävle gives no speed.
+    const gavle = (id: string) => [{ id, rule: 'slow', maxSpeedKph: undefined, authority: 'Gävle kommun, lines © OpenStreetMap', inForce: true }];
+    expect(at(60.67464, 17.143611)).toEqual(gavle('gavle-drottninggatan'));
+    expect(at(60.675639, 17.150355)).toEqual(gavle('gavle-centralplan'));
+    // Nygatan, whose parts it doesn't name; the 50 km/h Drottninggatan east of the railway.
+    expect(at(60.67419, 17.13862)).toEqual([]);
+    expect(at(60.6775, 17.1545)).toEqual([]);
+  });
+
   it('keeps each street and area whole, with a source and hours', () => {
     for (const zone of RULE_ZONES) {
       expect(zone.source.url).toMatch(/^https:\/\//);

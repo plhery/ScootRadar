@@ -1,6 +1,6 @@
 {
   "verifiedOn": "2026-11-03",
-  "about": "Streets where a city or its police forbids riding e-scooters or asks them to ride slowly, and areas where it forbids riding, at the hours given, by the clock of the zone's time zone. Each street is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. Antalya's has no map: UKOME's decisions name the road and place parcels and hotels on it, and its lines are OpenStreetMap's two carriageways from the edge of Kemerağzı, where the ban starts, to Trendy Lara in Kundu, the last place a decision puts on it; the 0.9 km on to Kumköy, which no decision names, is left out. Chicago's three have no map either: the Chicago Department of Transportation's page names the Lakefront Trail, The 606 and the Chicago Riverwalk, and their lines are OpenStreetMap's ways of those names, both of the Lakefront Trail's where it has a bike and a walking trail, the Riverwalk on the Main Branch's south bank alone. Edmonton's has none: the City's page names Whyte Avenue from 112 to 97 Street, and its lines are OpenStreetMap's carriageways between those streets. Calgary's have none: the City's page names four streets by the community each is in, and their lines are OpenStreetMap's carriageways of 4 Street SW along Mission's edge, of 9 Avenue SE within its outline of Inglewood and of 8 Avenue SW within its outline of the Downtown Commercial Core, and of 10 Street NW from Memorial Drive to Riley Park, the stretch the City's Main Streets programme gives that main street; Kensington Road, which it bounds by no street, is left out. Warsaw's have none: the Zarząd Dróg Miejskich names the areas and streets its agreements with the operators set, and they are OpenStreetMap's outlines of the parks, the wood and Plac Centralny, its outline of the Historic Centre of Warsaw for the Old Town, less the paths along the Wisłostrada at its edge, and its ways of the streets' pedestrian and living-street stretches and of the footbridge's deck. The map draws the streets as bands and the areas as they are, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers this layer only, slow streets and no-ride areas too since 3 November 2026. A slow rule's speed, where its authority gives one, is kept for the record: no map shows it yet. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2). Antalya's covers every public area of the boulevard, its pavements and cycle path too, at all hours. Chicago's are the rules CDOT sets the riders of its shared scooters, at all hours. Edmonton's is the City's for shared e-scooters and e-bikes, which may neither ride nor park there. Calgary's are the City's for shared e-scooters and e-bikes, slowed to 15 km/h there. Tampa's are the City's for shared micromobility vehicles, at all hours. Brighton & Hove's are the council's for the e-scooters hired in its trial, at all hours. Warsaw's are the rules its agreements with Bolt, Dott and Lime set their hired e-scooters: no riding or parking in the areas, 12 km/h on the streets, at all hours.",
+  "about": "Streets where a city or its police forbids riding e-scooters or asks them to ride slowly, and areas where it forbids riding, at the hours given, by the clock of the zone's time zone. Each street is a set of centrelines, [lat, lng] points, traced from the map its authority published once that map was laid over OpenFreeMap's roads (© OpenStreetMap contributors, ODbL): Hongdae's and Daechi-dong's follow the line drawn, Banpo's are the roads under it. Antalya's has no map: UKOME's decisions name the road and place parcels and hotels on it, and its lines are OpenStreetMap's two carriageways from the edge of Kemerağzı, where the ban starts, to Trendy Lara in Kundu, the last place a decision puts on it; the 0.9 km on to Kumköy, which no decision names, is left out. Chicago's three have no map either: the Chicago Department of Transportation's page names the Lakefront Trail, The 606 and the Chicago Riverwalk, and their lines are OpenStreetMap's ways of those names, both of the Lakefront Trail's where it has a bike and a walking trail, the Riverwalk on the Main Branch's south bank alone. Edmonton's has none: the City's page names Whyte Avenue from 112 to 97 Street, and its lines are OpenStreetMap's carriageways between those streets. Calgary's have none: the City's page names four streets by the community each is in, and their lines are OpenStreetMap's carriageways of 4 Street SW along Mission's edge, of 9 Avenue SE within its outline of Inglewood and of 8 Avenue SW within its outline of the Downtown Commercial Core, and of 10 Street NW from Memorial Drive to Riley Park, the stretch the City's Main Streets programme gives that main street; Kensington Road, which it bounds by no street, is left out. Warsaw's have none: the Zarząd Dróg Miejskich names the areas and streets its agreements with the operators set, and they are OpenStreetMap's outlines of the parks, the wood and Plac Centralny, its outline of the Historic Centre of Warsaw for the Old Town, less the paths along the Wisłostrada at its edge, and its ways of the streets' pedestrian and living-street stretches and of the footbridge's deck. Linköping's have none: Linköpings kommun names seven streets and four squares, and they are OpenStreetMap's ways of the streets and its outlines of the squares; the central parts of Nygatan, Ågatan, Platensgatan, Klostergatan and Repslagaregatan, which it also names but bounds by no street, are left out. Gävle's have none: Gävle kommun names Drottninggatan, parts of Nygatan and Centralplan among its slow zones, and they are OpenStreetMap's pedestrian ways of Drottninggatan and its ways of Centralplan; the parts of Nygatan, which it doesn't say, are left out. The map draws the streets as bands and the areas as they are, and the legend credits OpenStreetMap after the authority. Where and when each rule holds comes from its authority alone; only the lines are OpenStreetMap's. Map rules otherwise don't rest on OpenStreetMap: this file is the user's exception (1 November 2026), and it covers this layer only, slow streets and no-ride areas too since 3 November 2026. A slow rule's speed, where its authority gives one, is kept for the record: no map shows it yet. Seoul's apply to e-scooters, two-wheel self-balancing devices and e-bikes that run on the motor alone (Road Traffic Act, Article 2, 19-2). Antalya's covers every public area of the boulevard, its pavements and cycle path too, at all hours. Chicago's are the rules CDOT sets the riders of its shared scooters, at all hours. Edmonton's is the City's for shared e-scooters and e-bikes, which may neither ride nor park there. Calgary's are the City's for shared e-scooters and e-bikes, slowed to 15 km/h there. Tampa's are the City's for shared micromobility vehicles, at all hours. Brighton & Hove's are the council's for the e-scooters hired in its trial, at all hours. Warsaw's are the rules its agreements with Bolt, Dott and Lime set their hired e-scooters: no riding or parking in the areas, 12 km/h on the streets, at all hours. Linköping's are the municipality's agreement with the companies renting e-scooters there: 6 km/h on the streets and squares, at all hours. Gävle's are the municipality's for the e-scooters and e-bikes hired there, slowed to the speed allowed, which it doesn't give, at all hours.",
   "zones": [
     {
       "id": "seoul-hongdae-red-road",
@@ -4725,6 +4725,441 @@
           [52.245416, 21.023449],
           [52.245644, 21.024194],
           [52.245732, 21.024533]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-hantverkaregatan",
+      "place": "Hantverkaregatan, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Hantverkaregatan",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.411659, 15.621752],
+          [58.411351, 15.621831],
+          [58.411169, 15.621878],
+          [58.411144, 15.621853],
+          [58.411115, 15.621847],
+          [58.410812, 15.621958],
+          [58.41073, 15.621988],
+          [58.410708, 15.621996],
+          [58.410665, 15.622035]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-borgmastaregatan",
+      "place": "Borgmästaregatan, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Borgmästaregatan",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.411346, 15.624302],
+          [58.411316, 15.623832],
+          [58.411239, 15.622765],
+          [58.411229, 15.622634],
+          [58.411213, 15.62244],
+          [58.411169, 15.621878]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-bokhallaregatan",
+      "place": "Bokhållaregatan, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Bokhållaregatan",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.409618, 15.621825],
+          [58.410004, 15.621685],
+          [58.41007, 15.621661],
+          [58.410138, 15.621636],
+          [58.410344, 15.621562]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-hospitalsgrand",
+      "place": "Hospitalsgränd, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Hospitalsgränd",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.408495, 15.622584],
+          [58.408538, 15.622567],
+          [58.40875, 15.622483],
+          [58.408775, 15.622473],
+          [58.409, 15.622386],
+          [58.409225, 15.622218],
+          [58.409233, 15.622214],
+          [58.409415, 15.622142],
+          [58.409521, 15.622114],
+          [58.409646, 15.622069]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-stora-badstugatan",
+      "place": "Stora Badstugatan, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Stora Badstugatan",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.409233, 15.623431],
+          [58.409257, 15.623694],
+          [58.409274, 15.623886],
+          [58.409287, 15.624039],
+          [58.409305, 15.624241],
+          [58.409354, 15.624868],
+          [58.409362, 15.624964]
+        ],
+        [
+          [58.409312, 15.623405],
+          [58.409327, 15.623243],
+          [58.409376, 15.622933],
+          [58.409443, 15.622556],
+          [58.409521, 15.622114]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-torggatan",
+      "place": "Torggatan, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Torggatan",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.410344, 15.621562],
+          [58.410335, 15.621439],
+          [58.410321, 15.621298],
+          [58.410245, 15.620833],
+          [58.410221, 15.620687],
+          [58.410197, 15.620546],
+          [58.410173, 15.620393],
+          [58.410164, 15.620336],
+          [58.410078, 15.619812]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-tanneforsgatan",
+      "place": "Tanneforsgatan, a pedestrian street in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's ways of Tanneforsgatan",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "lines": [
+        [
+          [58.409874, 15.624021],
+          [58.41012, 15.623483],
+          [58.410173, 15.623353],
+          [58.410265, 15.623081],
+          [58.410299, 15.622922],
+          [58.410328, 15.62272],
+          [58.41039, 15.622223],
+          [58.410391, 15.622144]
+        ]
+      ]
+    },
+    {
+      "id": "linkoping-stora-torget",
+      "place": "Stora torget, a square in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the square; the outline is OpenStreetMap's of Stora torget",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "ring": [
+        [58.410576, 15.621196],
+        [58.410531, 15.621214],
+        [58.410321, 15.621298],
+        [58.410335, 15.621439],
+        [58.410344, 15.621562],
+        [58.410391, 15.622144],
+        [58.410594, 15.622068],
+        [58.410665, 15.622035],
+        [58.410708, 15.621996],
+        [58.41073, 15.621988],
+        [58.410812, 15.621958],
+        [58.411115, 15.621847],
+        [58.411144, 15.621853],
+        [58.411169, 15.621878],
+        [58.411139, 15.621464],
+        [58.411104, 15.620975],
+        [58.411075, 15.620986],
+        [58.410621, 15.621177]
+      ]
+    },
+    {
+      "id": "linkoping-hospitalstorget",
+      "place": "Hospitalstorget, a square in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the square; the outline is OpenStreetMap's of Hospitalstorget",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "ring": [
+        [58.40918, 15.621754],
+        [58.409233, 15.622214],
+        [58.409415, 15.622142],
+        [58.409521, 15.622114],
+        [58.409646, 15.622069],
+        [58.409618, 15.621825],
+        [58.409588, 15.621582]
+      ]
+    },
+    {
+      "id": "linkoping-lilla-torget",
+      "place": "Lilla torget, a square in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the square; the outline is OpenStreetMap's of Lilla torget",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "ring": [
+        [58.410147, 15.626116],
+        [58.410434, 15.626002],
+        [58.410439, 15.626047],
+        [58.410444, 15.626091],
+        [58.410321, 15.626138],
+        [58.410336, 15.626285],
+        [58.410356, 15.626474],
+        [58.410381, 15.626713],
+        [58.410401, 15.626907],
+        [58.410404, 15.626939],
+        [58.410417, 15.627064],
+        [58.410427, 15.627171],
+        [58.410269, 15.627232],
+        [58.410202, 15.62715],
+        [58.41014, 15.627176],
+        [58.410139, 15.627165],
+        [58.410128, 15.627081],
+        [58.410081, 15.626623],
+        [58.410031, 15.626164],
+        [58.410088, 15.626139]
+      ]
+    },
+    {
+      "id": "linkoping-farbror-melins-torg",
+      "place": "Farbror Melins torg, a square in the city centre",
+      "country": "SE",
+      "authority": "Linköpings kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "maxSpeedKph": 6,
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Linköpings kommun, \"Elsparkcyklar\" (updated 17 June 2026), its summary of the agreement the companies renting them signed: \"Elsparkcykelföretaget ska se till att elsparkcykeln max kan köras i sex km/h på sträckor och platser där hastighetsbegränsning har angivits av kommunen. Följande gator har hastighetsbegränsning: Gator: Hantverkaregatan, Borgmästaregatan, Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och Tanneforsgatan … Torg: Stora torget, Hospitalstorget, Lilla torget och Farbror Melins torg\"",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the square; the outline is OpenStreetMap's of Farbror Melins torg",
+        "url": "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar"
+      },
+      "ring": [
+        [58.412295, 15.626974],
+        [58.412241, 15.626442],
+        [58.412236, 15.626393],
+        [58.411931, 15.626512],
+        [58.411935, 15.626557],
+        [58.412089, 15.627044]
+      ]
+    },
+    {
+      "id": "gavle-drottninggatan",
+      "place": "Drottninggatan, its pedestrian street from Vågskrivargatan to Centralplan",
+      "country": "SE",
+      "authority": "Gävle kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Gävle kommun, \"Hyr elsparkcykel och elcykel i Gävle\" (updated 11 September 2026): \"Det finns låghastighetszoner i Gävle. I dessa zoner reglerar fordonet hastigheten automatiskt, för att hålla den godkända hastighetsgränsen. Det gäller bland annat Drottninggatan, delar av Nygatan och Centralplan.\"",
+        "url": "https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the street; the lines are OpenStreetMap's pedestrian ways of Drottninggatan, from Vågskrivargatan to Centralplan",
+        "url": "https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/"
+      },
+      "lines": [
+        [
+          [60.6761007, 17.1499192],
+          [60.6761515, 17.1497746],
+          [60.6762068, 17.1496174],
+          [60.6760151, 17.1488842],
+          [60.6760016, 17.1488318],
+          [60.6759008, 17.1484249],
+          [60.6757577, 17.1478783],
+          [60.6755141, 17.1469483],
+          [60.6752353, 17.1458838],
+          [60.6749747, 17.1448889],
+          [60.6749469, 17.1447852],
+          [60.6749247, 17.1446979],
+          [60.6749136, 17.1446553],
+          [60.6747621, 17.1440769],
+          [60.6747456, 17.1440142],
+          [60.6747177, 17.1439075],
+          [60.6746903, 17.1438031],
+          [60.6746483, 17.1436423],
+          [60.6746318, 17.1435794],
+          [60.6746163, 17.1435199],
+          [60.6745776, 17.1433716],
+          [60.6745384, 17.1432216],
+          [60.6744961, 17.1430599],
+          [60.6744586, 17.142916],
+          [60.6744543, 17.1428997],
+          [60.6744486, 17.1428782],
+          [60.6742174, 17.142],
+          [60.6741162, 17.1416154],
+          [60.6741068, 17.1415726],
+          [60.6739162, 17.1408472],
+          [60.6736481, 17.1398235],
+          [60.673395, 17.1388573],
+          [60.6733762, 17.1387843],
+          [60.6733706, 17.138769],
+          [60.6733506, 17.1387142],
+          [60.6731628, 17.1380732],
+          [60.6731362, 17.1378323]
+        ],
+        [
+          [60.6731628, 17.1380732],
+          [60.6730875, 17.1379043],
+          [60.6730844, 17.1378974]
+        ]
+      ]
+    },
+    {
+      "id": "gavle-centralplan",
+      "place": "Centralplan, the square before the railway station",
+      "country": "SE",
+      "authority": "Gävle kommun, lines © OpenStreetMap",
+      "rule": "slow",
+      "timeZone": "Europe/Stockholm",
+      "source": {
+        "title": "Gävle kommun, \"Hyr elsparkcykel och elcykel i Gävle\" (updated 11 September 2026): \"Det finns låghastighetszoner i Gävle. I dessa zoner reglerar fordonet hastigheten automatiskt, för att hålla den godkända hastighetsgränsen. Det gäller bland annat Drottninggatan, delar av Nygatan och Centralplan.\"",
+        "url": "https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/"
+      },
+      "map": {
+        "title": "No map: the municipality's page names the square; the lines are OpenStreetMap's ways of Centralplan",
+        "url": "https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/"
+      },
+      "lines": [
+        [
+          [60.6761007, 17.1499192],
+          [60.6760268, 17.1498908],
+          [60.6756697, 17.1502743],
+          [60.6756076, 17.1504356],
+          [60.6756997, 17.1504223],
+          [60.6760552, 17.1500226],
+          [60.6761007, 17.1499192]
+        ],
+        [
+          [60.6754642, 17.1504488],
+          [60.6756076, 17.1504356],
+          [60.6756657, 17.1506694],
+          [60.6761321, 17.1501674],
+          [60.6761007, 17.1499192],
+          [60.6761573, 17.1499313],
+          [60.6762853, 17.1500062],
+          [60.6763948, 17.1500703],
+          [60.6765101, 17.1499979]
         ]
       ]
     }

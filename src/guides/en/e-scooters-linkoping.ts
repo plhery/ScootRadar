@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Linköping: Voi, Qick and Ryde, and where to ride and park',
   lede: 'E-scooters in Linköping are rented from Voi, Qick and Ryde, all three linked on the kommun’s (the municipality’s) e-scooter page, which says the companies renting in town have signed its letter of intent. Our map shows Voi and Qick, not Ryde, and each app shows the price before you unlock. Ride on cycle lanes or the road, never on the pavement, and expect hire scooters to slow to 6 km/h on named streets and squares in the centre. End your ride in a cycle rack or a marked bay, never on a footway or cycle lane.',
   published: '2026-10-29',
-  updated: '2026-10-29',
+  updated: '2026-11-03',
   city: 'se:Linköping',
   sections: [
     {
@@ -28,7 +28,7 @@ const guide: Guide = {
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 01:50 on Thursday 29 October 2026 the [map of Linköping](map:se:Linköping) showed about 2,410 Voi scooters as they stood at that moment and about 1,540 Qick scooters as last counted: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking. The map’s area isn’t cut to Linköping’s boundaries: its count is what the two companies’ data place in and around the town.',
+        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 01:50 on Thursday 29 October 2026 the [map of Linköping](map:se:Linköping) showed about 2,410 Voi scooters as they stood at that moment and about 1,540 Qick scooters as last counted: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, the companies’ zones or parking; from zoom 14 it draws most of the kommun’s slow streets and squares below. The map’s area isn’t cut to Linköping’s boundaries: its count is what the two companies’ data place in and around the town.',
         'Bolt, which rents scooters in Stockholm and Malmö, isn’t among the companies the kommun links.',
       ],
     },
@@ -74,6 +74,7 @@ const guide: Guide = {
             '**Squares:** Stora torget, Hospitalstorget, Lilla torget and Farbror Melins torg.',
           ],
         },
+        'Our [Linköping map](map:se:Linköping) draws the seven streets and four squares as 6 km/h zones from zoom 14, credited to the kommun, on OpenStreetMap’s streets and outlines. The central parts of Nygatan, Ågatan, Platensgatan, Klostergatan and Repslagaregatan aren’t drawn, as the kommun doesn’t say where they start and end.',
         'The companies must also make sure you **can’t end a ride** in the Trädgårdsföreningen park or in Järnvägsparken, on either side of Järnvägsavenyn, on Hospitalstorget, on the square in front of the main entrance of Konsert & Kongress, the concert and congress hall, in S:t Larsparken or Domkyrkoparken, the cathedral park, or on Lilla torget and Farbror Melins torg. The kommun says these zones and streets are usually marked in the companies’ apps.',
       ],
     },

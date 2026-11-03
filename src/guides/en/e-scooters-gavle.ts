@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooters Gävle 2026: Voi, the season and the rules',
   description: 'E-scooters in Gävle: Voi, the only company allowed, its usual May–October season, slow zones, where to ride and park, X-trafik buses and Sweden’s fines.',
   headline: 'E-scooters in Gävle: Voi’s season, and where to ride and park',
-  lede: 'E-scooters in Gävle are rented from Voi alone: it won the municipality’s procurement and is the only company allowed to put out hire scooters, and they are normally out from May to October, Gävle kommun says (September 2026). Voi scooters were still on our map on 29 October 2026, and we found no end date for this season: check the Voi app. The map shows where they stand, but no prices or zones. Ride on the cycle lane or the road, never on the pavement, and end your ride at an approved parking place, such as a cycle rack.',
+  lede: 'E-scooters in Gävle are rented from Voi alone: it won the municipality’s procurement and is the only company allowed to put out hire scooters, and they are normally out from May to October, Gävle kommun says (September 2026). Voi scooters were still on our map on 29 October 2026, and we found no end date for this season: check the Voi app. The map shows where they stand, and from zoom 14 two of the slow zones, but no prices or other zones. Ride on the cycle lane or the road, never on the pavement, and end your ride at an approved parking place, such as a cycle rack.',
   published: '2026-10-29',
-  updated: '2026-10-29',
+  updated: '2026-11-03',
   city: 'se:Gävle',
   sections: [
     {
@@ -27,7 +27,7 @@ const guide: Guide = {
             ],
           },
         },
-        'At 15:55 on Thursday 29 October 2026 the [map of Gävle](map:se:Gävle) showed about 940 Voi scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones, parking places or Voi’s e-bikes.',
+        'At 15:55 on Thursday 29 October 2026 the [map of Gävle](map:se:Gävle) showed about 940 Voi scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, parking places or Voi’s e-bikes; of the zones it draws only the slow ones on Drottninggatan and Centralplan, from zoom 14.',
         'That total takes in the whole town, Valbo and Furuvik, in an area that also reaches into Skutskär, in neighbouring Älvkarleby municipality, and into the east of Sandviken municipality, short of Sandviken town.',
       ],
     },
@@ -50,6 +50,7 @@ const guide: Guide = {
             '**Removals:** Voi’s operations team watches the fleet every day and moves scooters and e-bikes that are badly parked, outside the operating area or bunched together, most of them in the mornings and evenings.',
           ],
         },
+        'Our [Gävle map](map:se:Gävle) draws Drottninggatan’s pedestrian street, from Vågskrivargatan to Centralplan, and Centralplan as slow zones from zoom 14, credited to the municipality, on OpenStreetMap’s streets; the municipality gives no speed for them, nor says which parts of Nygatan, which aren’t drawn.',
         'On 5 May 2026 the municipality said the scooters were back for the season. They were still on our map on 29 October 2026; we found no end date for this season, so check the Voi app. We also found no published cap and no night ban, night speed limit or other night rule for riders.',
         'On those 2+1+1 terms, 2026 is the last season the agreement can cover. We found no decision by the municipality on what follows, so check its page before next spring.',
       ],

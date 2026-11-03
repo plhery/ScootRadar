@@ -5544,6 +5544,84 @@ extension CityRuleZone {
             source: URL(string: "https://zdm.waw.pl/aktualnosci/warszawa-wprowadza-nowe-zasady-dla-e-hulajnog-na-wynajem/")!,
             lines: points(warsawKladkaAbakanowiczLines)
         ),
+        CityRuleZone(
+            id: "linkoping-hantverkaregatan", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingHantverkaregatanLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-borgmastaregatan", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingBorgmastaregatanLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-bokhallaregatan", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingBokhallaregatanLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-hospitalsgrand", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingHospitalsgrandLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-stora-badstugatan", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingStoraBadstugatanLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-torggatan", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingTorggatanLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-tanneforsgatan", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            lines: points(linkopingTanneforsgatanLines)
+        ),
+        CityRuleZone(
+            id: "linkoping-stora-torget", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            ring: ring(linkopingStoraTorgetRing)
+        ),
+        CityRuleZone(
+            id: "linkoping-hospitalstorget", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            ring: ring(linkopingHospitalstorgetRing)
+        ),
+        CityRuleZone(
+            id: "linkoping-lilla-torget", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            ring: ring(linkopingLillaTorgetRing)
+        ),
+        CityRuleZone(
+            id: "linkoping-farbror-melins-torg", authority: "Linköpings kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar")!,
+            ring: ring(linkopingFarbrorMelinsTorgRing)
+        ),
+        CityRuleZone(
+            id: "gavle-drottninggatan", authority: "Gävle kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/")!,
+            lines: points(gavleDrottninggatanLines)
+        ),
+        CityRuleZone(
+            id: "gavle-centralplan", authority: "Gävle kommun, lines © OpenStreetMap",
+            timeZone: "Europe/Stockholm", kind: .slow, firstDay: "", hours: [],
+            source: URL(string: "https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/")!,
+            lines: points(gavleCentralplanLines)
+        ),
     ]
 
     /// Each line as latitude, longitude, latitude, longitude…
@@ -5588,6 +5666,19 @@ extension CityRuleZone {
     private static let warsawBrackaLines: [[Double]] = [[52.232165, 21.01586, 52.23219, 21.01583, 52.232246, 21.015763, 52.232419, 21.015557, 52.232474, 21.015491], [52.231298, 21.017776, 52.231335, 21.017708, 52.231343, 21.017693, 52.231415, 21.017558, 52.231443, 21.017501, 52.23145, 21.017485, 52.231467, 21.017444, 52.231472, 21.017433, 52.231481, 21.017409, 52.231535, 21.017272, 52.231574, 21.017171, 52.23158, 21.017158, 52.231633, 21.017022, 52.231676, 21.01691, 52.231733, 21.016764, 52.231771, 21.016668, 52.231782, 21.016639, 52.231813, 21.01656, 52.231854, 21.016454, 52.231879, 21.01639, 52.2319, 21.016337, 52.231907, 21.016319, 52.231925, 21.016293, 52.231937, 21.016274, 52.231946, 21.016255, 52.231948, 21.016251, 52.231975, 21.016184, 52.231997, 21.01613, 52.232018, 21.016078]]
     private static let warsawPlacCentralnyRing: [Double] = [52.23151, 21.007741, 52.231495, 21.007675, 52.231487, 21.007638, 52.231483, 21.007622, 52.231477, 21.007598, 52.231513, 21.007575, 52.231505, 21.007543, 52.231539, 21.007523, 52.231508, 21.007391, 52.231473, 21.007233, 52.23144, 21.007251, 52.231433, 21.007217, 52.231397, 21.007238, 52.231379, 21.007159, 52.231372, 21.007164, 52.231336, 21.007011, 52.231331, 21.006985, 52.231562, 21.006848, 52.231568, 21.006873, 52.231646, 21.006826, 52.231656, 21.00682, 52.231657, 21.006823, 52.231661, 21.006821, 52.231662, 21.006823, 52.231671, 21.006817, 52.23167, 21.006815, 52.231674, 21.006812, 52.231674, 21.006809, 52.231683, 21.006804, 52.231704, 21.006791, 52.231713, 21.006829, 52.231754, 21.007006, 52.231763, 21.007, 52.231929, 21.006901, 52.232101, 21.006798, 52.232108, 21.006794, 52.232059, 21.006577, 52.232083, 21.006563, 52.232119, 21.006542, 52.2322, 21.006495, 52.232194, 21.006471, 52.232211, 21.006461, 52.232369, 21.006366, 52.232423, 21.006334, 52.232449, 21.00645, 52.232463, 21.00651, 52.232456, 21.006514, 52.232474, 21.006594, 52.232442, 21.006613, 52.232437, 21.006615, 52.232445, 21.00665, 52.232411, 21.006671, 52.232425, 21.006732, 52.232448, 21.00683, 52.232478, 21.006962, 52.232511, 21.006943, 52.232518, 21.006973, 52.232554, 21.006952, 52.23256, 21.006978, 52.232563, 21.006992, 52.232571, 21.007031, 52.232594, 21.007016, 52.23261, 21.007088, 52.232508, 21.007143, 52.232505, 21.007222, 52.232547, 21.007435, 52.232592, 21.007677, 52.232594, 21.007691, 52.232597, 21.007706, 52.232608, 21.007852, 52.23261, 21.007865, 52.232613, 21.007877, 52.232651, 21.008065, 52.232656, 21.00809, 52.232651, 21.008094, 52.232723, 21.008386, 52.23272, 21.008389, 52.232751, 21.008519, 52.232748, 21.008521, 52.232772, 21.008612, 52.232877, 21.008546, 52.23288, 21.008559, 52.232883, 21.008572, 52.232927, 21.008774, 52.232931, 21.008789, 52.232634, 21.008966, 52.232593, 21.00899, 52.232598, 21.009013, 52.232601, 21.009026, 52.232604, 21.009038, 52.232717, 21.009542, 52.232563, 21.009632, 52.23249, 21.009676, 52.232481, 21.009681, 52.232473, 21.009686, 52.232431, 21.009711, 52.232391, 21.009734, 52.232385, 21.009737, 52.23238, 21.00974, 52.232374, 21.009714, 52.232371, 21.009705, 52.232267, 21.009245, 52.232194, 21.009287, 52.232155, 21.00931, 52.232101, 21.00934, 52.232098, 21.009326, 52.232095, 21.009313, 52.232096, 21.009312, 52.232084, 21.009255, 52.232078, 21.009226, 52.232075, 21.009218, 52.232071, 21.009211, 52.232067, 21.009205, 52.232062, 21.009198, 52.232056, 21.009194, 52.232052, 21.009192, 52.232047, 21.00919, 52.232041, 21.00919, 52.232035, 21.009191, 52.232029, 21.009193, 52.231972, 21.009228, 52.231965, 21.009195, 52.231851, 21.009262, 52.231847, 21.009243, 52.231843, 21.009224, 52.231841, 21.009217, 52.231839, 21.009208, 52.231904, 21.009168, 52.231963, 21.009132, 52.231961, 21.00912, 52.23191, 21.00888, 52.231904, 21.008853, 52.231898, 21.008823, 52.2319, 21.008822, 52.231839, 21.008536, 52.231837, 21.008537, 52.231818, 21.008549, 52.231778, 21.008366, 52.231772, 21.008341, 52.231657, 21.008404, 52.231653, 21.008387, 52.231652, 21.008382, 52.231647, 21.008362, 52.231623, 21.00825, 52.231577, 21.008047, 52.231575, 21.008039, 52.231558, 21.007957, 52.231545, 21.007896, 52.231525, 21.007807]
     private static let warsawKladkaAbakanowiczLines: [[Double]] = [[52.245285, 21.023625, 52.245587, 21.024247, 52.245732, 21.024533, 52.245973, 21.02503, 52.246024, 21.02513, 52.246081, 21.025238, 52.246617, 21.026001, 52.247305, 21.027002, 52.247357, 21.027083, 52.247416, 21.02718, 52.247641, 21.02764, 52.247768, 21.02789, 52.248053, 21.028457], [52.245416, 21.023449, 52.245644, 21.024194, 52.245732, 21.024533]]
+    private static let linkopingHantverkaregatanLines: [[Double]] = [[58.411659, 15.621752, 58.411351, 15.621831, 58.411169, 15.621878, 58.411144, 15.621853, 58.411115, 15.621847, 58.410812, 15.621958, 58.41073, 15.621988, 58.410708, 15.621996, 58.410665, 15.622035]]
+    private static let linkopingBorgmastaregatanLines: [[Double]] = [[58.411346, 15.624302, 58.411316, 15.623832, 58.411239, 15.622765, 58.411229, 15.622634, 58.411213, 15.62244, 58.411169, 15.621878]]
+    private static let linkopingBokhallaregatanLines: [[Double]] = [[58.409618, 15.621825, 58.410004, 15.621685, 58.41007, 15.621661, 58.410138, 15.621636, 58.410344, 15.621562]]
+    private static let linkopingHospitalsgrandLines: [[Double]] = [[58.408495, 15.622584, 58.408538, 15.622567, 58.40875, 15.622483, 58.408775, 15.622473, 58.409, 15.622386, 58.409225, 15.622218, 58.409233, 15.622214, 58.409415, 15.622142, 58.409521, 15.622114, 58.409646, 15.622069]]
+    private static let linkopingStoraBadstugatanLines: [[Double]] = [[58.409233, 15.623431, 58.409257, 15.623694, 58.409274, 15.623886, 58.409287, 15.624039, 58.409305, 15.624241, 58.409354, 15.624868, 58.409362, 15.624964], [58.409312, 15.623405, 58.409327, 15.623243, 58.409376, 15.622933, 58.409443, 15.622556, 58.409521, 15.622114]]
+    private static let linkopingTorggatanLines: [[Double]] = [[58.410344, 15.621562, 58.410335, 15.621439, 58.410321, 15.621298, 58.410245, 15.620833, 58.410221, 15.620687, 58.410197, 15.620546, 58.410173, 15.620393, 58.410164, 15.620336, 58.410078, 15.619812]]
+    private static let linkopingTanneforsgatanLines: [[Double]] = [[58.409874, 15.624021, 58.41012, 15.623483, 58.410173, 15.623353, 58.410265, 15.623081, 58.410299, 15.622922, 58.410328, 15.62272, 58.41039, 15.622223, 58.410391, 15.622144]]
+    private static let linkopingStoraTorgetRing: [Double] = [58.410576, 15.621196, 58.410531, 15.621214, 58.410321, 15.621298, 58.410335, 15.621439, 58.410344, 15.621562, 58.410391, 15.622144, 58.410594, 15.622068, 58.410665, 15.622035, 58.410708, 15.621996, 58.41073, 15.621988, 58.410812, 15.621958, 58.411115, 15.621847, 58.411144, 15.621853, 58.411169, 15.621878, 58.411139, 15.621464, 58.411104, 15.620975, 58.411075, 15.620986, 58.410621, 15.621177]
+    private static let linkopingHospitalstorgetRing: [Double] = [58.40918, 15.621754, 58.409233, 15.622214, 58.409415, 15.622142, 58.409521, 15.622114, 58.409646, 15.622069, 58.409618, 15.621825, 58.409588, 15.621582]
+    private static let linkopingLillaTorgetRing: [Double] = [58.410147, 15.626116, 58.410434, 15.626002, 58.410439, 15.626047, 58.410444, 15.626091, 58.410321, 15.626138, 58.410336, 15.626285, 58.410356, 15.626474, 58.410381, 15.626713, 58.410401, 15.626907, 58.410404, 15.626939, 58.410417, 15.627064, 58.410427, 15.627171, 58.410269, 15.627232, 58.410202, 15.62715, 58.41014, 15.627176, 58.410139, 15.627165, 58.410128, 15.627081, 58.410081, 15.626623, 58.410031, 15.626164, 58.410088, 15.626139]
+    private static let linkopingFarbrorMelinsTorgRing: [Double] = [58.412295, 15.626974, 58.412241, 15.626442, 58.412236, 15.626393, 58.411931, 15.626512, 58.411935, 15.626557, 58.412089, 15.627044]
+    private static let gavleDrottninggatanLines: [[Double]] = [[60.6761007, 17.1499192, 60.6761515, 17.1497746, 60.6762068, 17.1496174, 60.6760151, 17.1488842, 60.6760016, 17.1488318, 60.6759008, 17.1484249, 60.6757577, 17.1478783, 60.6755141, 17.1469483, 60.6752353, 17.1458838, 60.6749747, 17.1448889, 60.6749469, 17.1447852, 60.6749247, 17.1446979, 60.6749136, 17.1446553, 60.6747621, 17.1440769, 60.6747456, 17.1440142, 60.6747177, 17.1439075, 60.6746903, 17.1438031, 60.6746483, 17.1436423, 60.6746318, 17.1435794, 60.6746163, 17.1435199, 60.6745776, 17.1433716, 60.6745384, 17.1432216, 60.6744961, 17.1430599, 60.6744586, 17.142916, 60.6744543, 17.1428997, 60.6744486, 17.1428782, 60.6742174, 17.142, 60.6741162, 17.1416154, 60.6741068, 17.1415726, 60.6739162, 17.1408472, 60.6736481, 17.1398235, 60.673395, 17.1388573, 60.6733762, 17.1387843, 60.6733706, 17.138769, 60.6733506, 17.1387142, 60.6731628, 17.1380732, 60.6731362, 17.1378323], [60.6731628, 17.1380732, 60.6730875, 17.1379043, 60.6730844, 17.1378974]]
+    private static let gavleCentralplanLines: [[Double]] = [[60.6761007, 17.1499192, 60.6760268, 17.1498908, 60.6756697, 17.1502743, 60.6756076, 17.1504356, 60.6756997, 17.1504223, 60.6760552, 17.1500226, 60.6761007, 17.1499192], [60.6754642, 17.1504488, 60.6756076, 17.1504356, 60.6756657, 17.1506694, 60.6761321, 17.1501674, 60.6761007, 17.1499192, 60.6761573, 17.1499313, 60.6762853, 17.1500062, 60.6763948, 17.1500703, 60.6765101, 17.1499979]]
 }
 
 /// The zones cities set for shared scooters, as src/lib/ruleZones.ts reads data/city-zones.json: where to
@@ -5761,7 +5852,7 @@ enum ScooterCountryCatalog {
         ("KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),
         ("KR: Alpaca map", "https://alpaca.kr/"),
-        ("CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/US/CA/IL/NZ/AU/TR/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("CH/FR/DE/IT/BE/UK/PT/ES/SE/PL/FI/UA/US/CA/IL/NZ/AU/TR/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
         ("DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map", "https://bolt.eu/"),
         ("TR/MK/BA/XK: BinBin map", "https://www.binbin.tech/"),
         ("CH/DE/AT/IT/BE/NO/UK/PT/DK/LV/PL/HU/GR/CY/UA/US/CA/AE/IL/NZ/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),

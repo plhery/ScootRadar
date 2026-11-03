@@ -746,7 +746,7 @@ OpenStreetMap names Hove Promenade, from Hove Lagoon to Medina Terrace (about
 1.8 km). The promenade on east of Medina Terrace, by Hove Lawns, is unnamed
 there and not drawn. They are credited "Brighton & Hove City Council, lines ©
 OpenStreetMap", and the United Kingdom's credits add "Brighton & Hove's no-ride
-streets traced on OpenStreetMap, ODbL". The rest of the list is not drawn: the
+streets traced on OpenStreetMap, ODbL" and the OpenStreetMap link. The rest of the list is not drawn: the
 lower promenade and the Madeira Drive Boardwalk, which OpenStreetMap names
 only in part or not at all, The Lanes, Churchill Square, The Level's
 crosswalks, Falmer and Stanmer north of The Keep, the skate parks and pump
@@ -782,6 +782,34 @@ OpenStreetMap", and Poland's credits add "Warsaw's no-ride areas and slow
 streets traced on OpenStreetMap, ODbL". Krakowskie Przedmieście and Nowy
 Świat are not drawn, as ZDM doesn't give the hours they are pedestrianised,
 nor the boulevards, whose stretches it doesn't name.
+
+Linköping's agreement with the companies that rent e-scooters there has them
+keep their scooters to 6 km/h on "Hantverkaregatan, Borgmästaregatan,
+Bokhållaregatan, Hospitalsgränd, Stora Badstugatan, Torggatan och
+Tanneforsgatan samt centrala delar av Nygatan, Ågatan, Platensgatan,
+Klostergatan och Repslagaregatan" and on "Stora torget, Hospitalstorget, Lilla
+torget och Farbror Melins torg"
+([Linköpings kommun](https://www.linkoping.se/stadsplanering-och-trafik/cykla-och-ga/elsparkcyklar),
+updated 17 June 2026), with no map. The seven streets are drawn on
+OpenStreetMap's ways of those names, © OpenStreetMap contributors under the
+ODbL, read on 3 November 2026: short pedestrian streets in the centre, 80 to
+170 m each, all of each name's ways; the four squares on OpenStreetMap's
+outlines of them, as slow areas. The central parts of the other five streets
+are not drawn, as the page doesn't say where they start and end. They are
+credited "Linköpings kommun, lines © OpenStreetMap".
+
+Gävle's hired scooters slow to "den godkända hastighetsgränsen" in low-speed
+zones that include "Drottninggatan, delar av Nygatan och Centralplan"
+([Gävle kommun](https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/),
+updated 11 September 2026), with no map and no speed. Drottninggatan is drawn
+on OpenStreetMap's pedestrian ways of it, from Vågskrivargatan to Centralplan
+(about 750 m), not the 30 km/h block on to Drottningbron nor the 50 km/h
+street of that name east of the railway; Centralplan on its ways, the living
+street before the station, 7 km/h for cars, and a parking aisle. The parts of Nygatan, which the
+page doesn't name, are not drawn. They are credited "Gävle kommun, lines ©
+OpenStreetMap", and Sweden's credits add "Linköping's and Gävle's slow streets
+traced on OpenStreetMap, ODbL" and the OpenStreetMap link. Our map has no
+operator zones in either town to compare them with.
 
 The zones cities set for shared e-scooters, in `data/city-zones.json`, are
 drawn the same way, from zoom 14 whether the layer is on or not, each kind as

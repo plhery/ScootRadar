@@ -416,10 +416,13 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   or map of the ports its wards agree with operators. Innsbruck's 34 parking
   areas and the centre where a ride ends only at one are conditions the city
   set its operators, not published; Linköping's places where a ride may not
-  end, its 6 km/h streets and three painted boxes are text alone, shown in
-  the operators' apps. Gävle's, Örebro's and Viña
+  end and three painted boxes are text alone, shown in the operators' apps,
+  and its 6 km/h streets and squares too, drawn on OpenStreetMap's
+  (DATA_SOURCES.md) but for the central parts of five streets, which it
+  bounds by none. Gävle's, Örebro's and Viña
   del Mar's parking places are shown only in the operators' apps, as the
-  cities say: Gävle's slow streets are in text alone, and its CC0 bicycle
+  cities say: Gävle's slow streets are in text alone, drawn on
+  OpenStreetMap's but for the parts of Nygatan, and its CC0 bicycle
   parking points are not said to be the places; Örebro allows scooters only
   in bicycle parking and marked places; Viña del Mar's agreement with Whoosh
   sets 75 points, which the city has not published.
