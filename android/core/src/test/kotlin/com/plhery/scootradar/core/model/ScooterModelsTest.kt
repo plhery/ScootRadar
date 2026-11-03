@@ -993,6 +993,29 @@ class ScooterModelsTest {
         assertTrue(RidePriceFormatter.string(minorUnits = 27_350, currency = "HUF").endsWith("274"))
     }
 
+    /**
+     * The card's figure is written as the fare beside it writes money, without the symbol: Swiss French money takes
+     * a point where its numbers take a comma, so "5.00" beside "1.00 CHF", where France writes "5,00" beside
+     * "1,00 €". A currency without cents has no decimals.
+     */
+    @Test
+    fun aBareAmountIsWrittenAsTheLocaleWritesMoney() {
+        fun amount(tag: String, minorUnits: Int, currency: String): String {
+            ScooterLanguage.launchLocale = { Locale.forLanguageTag(tag) }
+            ScooterLanguage.current = ScooterLanguage.atLaunch
+            return RidePriceFormatter.amount(minorUnits, currency)
+        }
+        assertEquals("5.00", amount("fr-CH", 500, "CHF"))
+        assertEquals("5.00", amount("de-CH", 500, "chf"))
+        assertEquals("5,00", amount("fr-FR", 500, "EUR"))
+        assertEquals("5.00", amount("en-US", 500, "USD"))
+        assertEquals("1,234.50", amount("en-US", 123_450, "USD"))
+        assertEquals("350", amount("is-IS", 35_000, "ISK"))
+        assertEquals("350", amount("en-US", 35_000, "ISK"))
+        // A code that names no currency is written as money all the same.
+        assertEquals("5,00", amount("fr-FR", 500, "XYZ"))
+    }
+
     @Test
     fun passExpiryEndsADayAfterTheExpiryDayStartedWhereItsMidnightIsSkipped() {
         // Santiago skips from 00:00 to 01:00 on 6 September 2026: that day starts at 01:00, and Calendar's

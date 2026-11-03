@@ -84,7 +84,7 @@ class AppContainer(private val context: Context) {
     /** Sets what :core reads from the platform, before anything is shown. */
     fun setHooks() {
         ScooterNumberFormat.integer = formats::integer
-        ScooterNumberFormat.decimal = formats::decimal
+        ScooterNumberFormat.amount = formats::amount
         ScooterNumberFormat.currency = formats::currency
         ScooterMeasureFormat.length = formats::length
         ScooterDateFormat.skeleton = formats::skeleton

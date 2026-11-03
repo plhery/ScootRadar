@@ -26,13 +26,22 @@ class AndroidFormats(private val context: Context) {
     /** A whole number with the locale's grouping, and its minimum grouping digits: 1005 but 12.345 in Spanish. */
     fun integer(number: Long, locale: Locale): String = NumberFormatter.withLocale(locale).format(number).toString()
 
-    /** A decimal with that many digits after its point, halves going to the even neighbour. */
-    fun decimal(number: BigDecimal, fractionDigits: Int, locale: Locale): String =
-        NumberFormatter.withLocale(locale)
+    /**
+     * An amount of the currency of that ISO code without its symbol, with that many digits after its point: the
+     * currency's own format with its unit hidden, so its separators are money's ("5.00" in Swiss French, where a
+     * plain number has a comma). Any code not of three capital letters takes the locale's own currency, and a
+     * locale without one writes a plain number.
+     */
+    fun amount(amount: BigDecimal, code: String, fractionDigits: Int, locale: Locale): String {
+        val currency = if (Regex("[A-Z]{3}").matches(code)) Currency.getInstance(code) else Currency.getInstance(locale)
+        return NumberFormatter.withLocale(locale)
+            .let { if (currency != null) it.unit(currency).unitWidth(NumberFormatter.UnitWidth.HIDDEN) else it }
             .precision(Precision.fixedFraction(fractionDigits))
             .roundingMode(RoundingMode.HALF_EVEN)
-            .format(number)
+            .format(amount)
             .toString()
+            .trim()
+    }
 
     /**
      * An amount of the currency of that ISO code, with that many digits after its point: a code of three

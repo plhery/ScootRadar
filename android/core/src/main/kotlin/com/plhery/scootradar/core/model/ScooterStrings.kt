@@ -82,16 +82,28 @@ object ScooterNumberFormat {
     var integer: (Long, Locale) -> String = { number, locale -> NumberFormat.getIntegerInstance(locale).format(number) }
 
     /**
-     * A decimal with that many digits after its point, as `.formatted(.number.precision(.fractionLength(digits)))`
-     * writes it in the locale: "1,032", "5.20", "5,20". Halves go to the even neighbour.
+     * An amount of the currency of that ISO code without its symbol, for a figure whose label names the currency:
+     * as the [currency] format writes it in the locale, with that many digits after its point, halves going to the
+     * even neighbour, so it reads as the prices beside it do. Money may not take the locale's own separators for
+     * numbers: "5.00" in Swiss French, whose money has a point where its numbers have a comma ("26,8 km"), beside
+     * "1.00 CHF"; "5,00" in French as France writes it; "350" for a currency without cents when asked for no digits.
      */
     @Volatile
-    var decimal: (number: BigDecimal, fractionDigits: Int, locale: Locale) -> String = { number, digits, locale ->
-        NumberFormat.getNumberInstance(locale).apply {
+    var amount: (amount: BigDecimal, code: String, fractionDigits: Int, locale: Locale) -> String = { amount, code, digits, locale ->
+        val format = NumberFormat.getCurrencyInstance(locale)
+        runCatching { Currency.getInstance(code) }.getOrNull()?.let { format.currency = it }
+        // The currency's pattern and separators, with an empty symbol: the spaces the symbol stood in go too.
+        if (format is DecimalFormat) {
+            format.decimalFormatSymbols = format.decimalFormatSymbols.apply {
+                currencySymbol = ""
+                internationalCurrencySymbol = ""
+            }
+        }
+        format.apply {
             minimumFractionDigits = digits
             maximumFractionDigits = digits
             roundingMode = RoundingMode.HALF_EVEN
-        }.format(number)
+        }.format(amount).trim()
     }
 
     /**

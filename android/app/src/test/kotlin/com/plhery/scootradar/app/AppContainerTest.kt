@@ -48,7 +48,7 @@ class AppContainerTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     private val integer = ScooterNumberFormat.integer
-    private val decimal = ScooterNumberFormat.decimal
+    private val amount = ScooterNumberFormat.amount
     private val currency = ScooterNumberFormat.currency
     private val length = ScooterMeasureFormat.length
     private val skeleton = ScooterDateFormat.skeleton
@@ -60,7 +60,7 @@ class AppContainerTest {
 
     // Hooks that are not the container's, which it must replace.
     private val noInteger: (Long, Locale) -> String = { _, _ -> "" }
-    private val noDecimal: (BigDecimal, Int, Locale) -> String = { _, _, _ -> "" }
+    private val noAmount: (BigDecimal, String, Int, Locale) -> String = { _, _, _, _ -> "" }
     private val noCurrency: (BigDecimal, String, Int, Locale) -> String? = { _, _, _, _ -> null }
     private val noLength: (BigDecimal, ScooterLengthUnit, Locale) -> String = { _, _, _ -> "" }
     private val noSkeleton: (String, Instant, ZoneId, Locale) -> String = { _, _, _, _ -> "" }
@@ -71,7 +71,7 @@ class AppContainerTest {
     @Before
     fun setUp() {
         ScooterNumberFormat.integer = noInteger
-        ScooterNumberFormat.decimal = noDecimal
+        ScooterNumberFormat.amount = noAmount
         ScooterNumberFormat.currency = noCurrency
         ScooterMeasureFormat.length = noLength
         ScooterDateFormat.skeleton = noSkeleton
@@ -84,7 +84,7 @@ class AppContainerTest {
     @After
     fun tearDown() {
         ScooterNumberFormat.integer = integer
-        ScooterNumberFormat.decimal = decimal
+        ScooterNumberFormat.amount = amount
         ScooterNumberFormat.currency = currency
         ScooterMeasureFormat.length = length
         ScooterDateFormat.skeleton = skeleton
@@ -101,7 +101,7 @@ class AppContainerTest {
         AppContainer(context).setHooks()
 
         assertNotSame(noInteger, ScooterNumberFormat.integer)
-        assertNotSame(noDecimal, ScooterNumberFormat.decimal)
+        assertNotSame(noAmount, ScooterNumberFormat.amount)
         assertNotSame(noCurrency, ScooterNumberFormat.currency)
         assertNotSame(noLength, ScooterMeasureFormat.length)
         assertNotSame(noSkeleton, ScooterDateFormat.skeleton)
@@ -120,8 +120,8 @@ class AppContainerTest {
         // Spanish groups from five digits on, as CLDR has it and Foundation writes it.
         assertEquals("1005", ScooterNumberFormat.integer(1005, spain))
         assertEquals("12.345", ScooterNumberFormat.integer(12_345, spain))
-        assertEquals("5,20", ScooterNumberFormat.decimal(BigDecimal("5.2"), 2, spain))
-        assertEquals("0.12", ScooterNumberFormat.decimal(BigDecimal("0.125"), 2, us))
+        assertEquals("5,20", ScooterNumberFormat.amount(BigDecimal("5.2"), "EUR", 2, spain))
+        assertEquals("0.12", ScooterNumberFormat.amount(BigDecimal("0.125"), "USD", 2, us))
         assertEquals("$0.42", ScooterNumberFormat.currency(BigDecimal("0.42"), "USD", 2, us))
         // A code that names no currency is written as itself; another gives the locale's.
         assertTrue(ScooterNumberFormat.currency(BigDecimal("1"), "XYZ", 2, us)!!.startsWith("XYZ"))
@@ -142,6 +142,47 @@ class AppContainerTest {
         Settings.System.putString(context.contentResolver, Settings.System.TIME_12_24, null)
         assertEquals("16:13", ScooterDateFormat.skeleton("jm", time, zurich, Locale.forLanguageTag("en-CH")))
         assertEquals("4:13\u202FPM", ScooterDateFormat.skeleton("jm", time, zurich, us))
+    }
+
+    /**
+     * A bare amount, whose currency the label under the card's figure names, is written as the fare beside it writes
+     * money, without the symbol: Swiss French money takes a point where its numbers take a comma ("26,8 km"), so the
+     * figure reads "5.00" beside "1.00 CHF", not "5,00". Lengths keep the locale's own decimal.
+     */
+    @Test
+    fun aBareAmountReadsAsThePricesBesideIt() {
+        AppContainer(context).setHooks()
+        val swissFrench = Locale.forLanguageTag("fr-CH")
+        val swissGerman = Locale.forLanguageTag("de-CH")
+        val french = Locale.forLanguageTag("fr-FR")
+        val icelandic = Locale.forLanguageTag("is-IS")
+        val five = BigDecimal("5.00")
+
+        assertEquals("5.00", ScooterNumberFormat.amount(five, "CHF", 2, swissFrench))
+        assertEquals("1.00\u00A0CHF", ScooterNumberFormat.currency(BigDecimal("1"), "CHF", 2, swissFrench))
+        assertEquals("26,8\u202Fkm", ScooterMeasureFormat.length(BigDecimal("26.8"), ScooterLengthUnit.Kilometers, swissFrench))
+        assertEquals("5.00", ScooterNumberFormat.amount(five, "CHF", 2, swissGerman))
+        assertEquals("CHF\u00A01.00", ScooterNumberFormat.currency(BigDecimal("1"), "CHF", 2, swissGerman))
+        assertEquals("5,00", ScooterNumberFormat.amount(five, "EUR", 2, french))
+        assertEquals("1,00\u00A0€", ScooterNumberFormat.currency(BigDecimal("1"), "EUR", 2, french))
+        assertEquals("5.00", ScooterNumberFormat.amount(five, "USD", 2, Locale.US))
+        assertEquals("1,234.50", ScooterNumberFormat.amount(BigDecimal("1234.5"), "USD", 2, Locale.US))
+        // A currency without cents, which RidePriceFormatter asks for with no digits.
+        assertEquals("350", ScooterNumberFormat.amount(BigDecimal("350.00"), "ISK", 0, icelandic))
+        assertEquals("350", ScooterNumberFormat.amount(BigDecimal("350.00"), "ISK", 0, Locale.US))
+
+        // The card's figure, through RidePriceFormatter, in French as a phone in Switzerland has it.
+        val launch = ScooterLanguage.launchLocale
+        ScooterLanguage.launchLocale = { swissFrench }
+        ScooterLanguage.current = ScooterLanguage.Fr
+        try {
+            assertEquals("5.00", RidePriceFormatter.amount(minorUnits = 500, currency = "chf"))
+            assertEquals("1.00\u00A0CHF", RidePriceFormatter.string(minorUnits = 100, currency = "CHF"))
+            assertEquals("350", RidePriceFormatter.amount(minorUnits = 35_000, currency = "ISK"))
+        } finally {
+            ScooterLanguage.current = ScooterLanguage.atLaunch
+            ScooterLanguage.launchLocale = launch
+        }
     }
 
     /**

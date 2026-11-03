@@ -12,10 +12,16 @@ import java.time.ZoneOffset
 object RidePriceFormatter {
     private val isoDay = Regex("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})")
 
-    /** "5.20": the amount without its currency, which the label under a figure names. */
+    /**
+     * "5.20": the amount without its currency, which the label under a figure names. It is written as [string]
+     * writes money in the locale, without the symbol, so the figure and the fare beside it read one way: "5.00" in
+     * Swiss French, beside "1.00 CHF pour déverrouiller", where a plain number has a comma (the iPhone writes the
+     * figure as a plain number there, "5,00").
+     */
     fun amount(minorUnits: Int, currency: String): String =
-        ScooterNumberFormat.decimal(
+        ScooterNumberFormat.amount(
             BigDecimal.valueOf(minorUnits.toLong(), 2),
+            currency.uppercase(),
             fractionDigits(currency),
             ScooterLanguage.current.locale,
         )
