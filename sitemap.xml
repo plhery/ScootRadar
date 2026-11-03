@@ -2114,6 +2114,12 @@
 <priority>0.7</priority>
 </url>
 <url>
+<loc>https://scootradar.com/guides/e-scooters-halmstad</loc>
+<lastmod>2026-11-03T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
 <loc>https://scootradar.com/de/ratgeber/e-scooter-sindelfingen</loc>
 <lastmod>2026-10-29T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
@@ -2290,6 +2296,12 @@
 <url>
 <loc>https://scootradar.com/guides/e-scooters-yonkers</loc>
 <lastmod>2026-10-29T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/guides/e-scooters-new-rochelle</loc>
+<lastmod>2026-11-03T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
