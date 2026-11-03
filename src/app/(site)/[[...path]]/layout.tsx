@@ -3,8 +3,11 @@ import type { Metadata, Viewport } from 'next';
 import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
+import { PLAY_TEST_ON, PLAY_TEST_SCRIPT } from '@/lib/playTest';
+import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { SITE_URL } from '@/lib/site';
 import { sitePageOf, sitePagePath, sitePaths, type SitePage } from '@/lib/sitePages';
+import { PlayTestSite } from '../playTest';
 import '../landing.css';
 
 // One family in two cuts: Display for the headlines and the figures, Text for
@@ -89,13 +92,20 @@ export default async function LandingLayout({
       lang={page.locale}
       className={`${display.variable} ${text.variable}`}
       data-theme={followsSystem(page) ? 'auto' : 'dark'}
+      // The head's script below marks an Android visitor invited to test the app.
+      suppressHydrationWarning
     >
       <head>
         {/* The map was at "/" before this page: what still looks for it here is sent on. */}
         <script dangerouslySetInnerHTML={{ __html: MOVED_MAP_SCRIPT }} />
+        {/* Before the first paint, so that a guide's card or the landing page's Android button moves nothing. */}
+        {PLAY_TEST_ON && page.kind !== 'guides' && <script dangerouslySetInnerHTML={{ __html: PLAY_TEST_SCRIPT }} />}
       </head>
       <body>
         {children}
+        {PLAY_TEST_ON && page.kind !== 'guides' && (
+          <PlayTestSite copy={PLAY_TEST_COPY[page.locale]} place={page.kind === 'landing' ? 'landing' : 'guide'} />
+        )}
         <PageView path={sitePagePath(page)} title={countedTitle(page)} />
       </body>
     </html>

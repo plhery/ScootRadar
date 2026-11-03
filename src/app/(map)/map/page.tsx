@@ -17,6 +17,8 @@ import MapNotices from '@/components/MapNotices';
 import SearchIsland from '@/components/SearchIsland';
 import ControlSheet from '@/components/ControlSheet';
 import LocationHelpSheet from '@/components/LocationHelpSheet';
+import PlayTestChip from '@/components/PlayTestChip';
+import PlayTestSheet from '@/components/PlayTestSheet';
 import ZoneLegend from '@/components/ZoneLegend';
 import { selectionFeedback } from '@/lib/feedback';
 import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
@@ -63,6 +65,7 @@ import { WALK_ROUTE_MAX_M } from '@/lib/walkRoute';
 import type { WalkFrom } from '@/lib/walkState';
 import { requestHeadingPermission, type HeadingPermission } from '@/lib/deviceHeading';
 import { deviceTimeZone, startCity } from '@/lib/startPlace';
+import { PLAY_TEST_ON } from '@/lib/playTest';
 
 // Where the map opens for a time zone that has no covered city near: all of Switzerland.
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
@@ -222,6 +225,7 @@ export default function Home() {
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [locationHelpOpen, setLocationHelpOpen] = useState(false);
+  const [playTestOpen, setPlayTestOpen] = useState(false);
   const [activePanel, setActivePanel] = useState<'filters' | 'settings'>('filters');
   const [locatedOnce, setLocatedOnce] = useState<boolean | null>(null);
   const [locationNoticeDismissed, setLocationNoticeDismissed] = useState(false);
@@ -867,7 +871,7 @@ export default function Home() {
   // The keys listed in the corner of the desktop layout.
   const handleShortcut = useEffectEvent((event: KeyboardEvent) => {
     // A sheet is a modal dialog: it closes itself with Escape and keeps the other keys from the map.
-    if (panelOpen || locationHelpOpen) return;
+    if (panelOpen || locationHelpOpen || playTestOpen) return;
     const shortcut = shortcutFor(event);
     if (!shortcut) return;
     if (searchExpanded) {
@@ -974,7 +978,9 @@ export default function Home() {
         // Searching is the answer to the card, as in the iOS app: it does not come back with the place.
         onSearchPlace={() => { setLocationNoticeDismissed(true); openSearch(); }}
         onDismissLocation={() => { setLocationNoticeDismissed(true); focusSearchBar(); }}
-      />
+      >
+        {PLAY_TEST_ON && <PlayTestChip onOpen={() => setPlayTestOpen(true)} />}
+      </MapNotices>
 
       <BottomSheet
         dock={dock}
@@ -1076,6 +1082,7 @@ export default function Home() {
       />
 
       <LocationHelpSheet open={locationHelpOpen} onClose={() => setLocationHelpOpen(false)} />
+      {PLAY_TEST_ON && <PlayTestSheet open={playTestOpen} onClose={() => setPlayTestOpen(false)} />}
     </div>
   );
 }

@@ -18,8 +18,11 @@ import {
 } from '@/lib/guides';
 import { DEFAULT_LANDING_LOCALE, LANDING_COPY, LANDING_LOCALES, SOURCE_URL, landingPath, type LandingLocale } from '@/lib/landingCopy';
 import { MAP_PATH, mapAt } from '@/lib/mapAddress';
+import { PLAY_TEST_ON } from '@/lib/playTest';
+import { PLAY_TEST_COPY } from '@/lib/playTestCopy';
 import { OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, guideOpenGraphLocale, shareImage } from '@/lib/site';
 import { AppLink, SiteBar, SiteFooter } from './chrome';
+import { PlayTestCard } from './playTest';
 
 // The guides, src/lib/guides.ts: one page each, and the list of a language's
 // guides. They are read at length, in one column: on the night of the landing
@@ -302,6 +305,8 @@ export function GuidePage({ guide }: { guide: Guide }) {
               <span>{copy.reading(readingMinutes(guide))}</span>
             </p>
           </header>
+
+          {PLAY_TEST_ON && <PlayTestCard copy={PLAY_TEST_COPY[locale]} />}
 
           <nav className="contents" aria-labelledby="contents">
             <h2 id="contents">{copy.contents}</h2>

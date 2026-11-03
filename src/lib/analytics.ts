@@ -11,13 +11,18 @@ export type AnalyticsEvent =
   | 'vehicle_select' | 'vehicle_dismiss' | 'cluster_select' | 'parking_select' | 'directions_open' | 'rental_open'
   | 'route_result' | 'route_arrived'
   | 'map_zoom' | 'compass_reset' | 'refresh' | 'refresh_result' | 'data_error' | 'data_expired' | 'zones_error'
-  | 'app_install' | 'app_open' | 'map_open';
+  | 'app_install' | 'app_open' | 'map_open'
+  // The invitation to test the Android app (src/lib/playTest.ts): shown, opened, each step's link followed,
+  // hidden for a week, never again. Each says where: the map's chip, a guide's card, the landing page's
+  // button, or the map's Settings.
+  | 'invite_view' | 'invite_open' | 'invite_group' | 'invite_optin' | 'invite_install' | 'invite_dismiss' | 'invite_never';
 export interface AnalyticsData {
   provider?: string; enabled?: boolean; source?: 'quick' | 'filters';
   value?: number; count?: number; result?: string; style?: string;
   language?: string; target?: 'vehicle' | 'parking'; direction?: 'in' | 'out';
+  place?: 'map' | 'guide' | 'landing' | 'settings';
 }
-const keys = new Set(['provider', 'enabled', 'source', 'value', 'count', 'result', 'style', 'language', 'target', 'direction']);
+const keys = new Set(['provider', 'enabled', 'source', 'value', 'count', 'result', 'style', 'language', 'target', 'direction', 'place']);
 
 export function safeAnalyticsData(data: AnalyticsData): Record<string, string | number | boolean> {
   return Object.fromEntries(Object.entries(data).filter(([key, value]) => keys.has(key) && (
@@ -92,13 +97,17 @@ export function visitSource(referrer: string, search: string): { referrer: strin
 
 let cache: string | undefined;
 let landing = true;
+// The page of the site last counted, under which its events are counted too.
+let sitePage: CountedPage | undefined;
 let disabledByServer = false;
 let pending = 0;
 let chain = Promise.resolve();
 
 export function track(event?: AnalyticsEvent, data: AnalyticsData = {}, page?: CountedPage): void {
   if (!analyticsEnabled() || disabledByServer || pending >= 30) return;
-  const counted = page && SITE_PATH.test(page.path) ? page : undefined;
+  if (!event && page) sitePage = page;
+  const given = page ?? sitePage;
+  const counted = given && SITE_PATH.test(given.path) ? given : undefined;
   const platform = window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
   const source = !event && landing ? visitSource(document.referrer, window.location.search) : undefined;

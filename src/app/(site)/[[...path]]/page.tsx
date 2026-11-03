@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { AppLink, Linked, SiteBar, SiteFooter } from '../chrome';
 import { GuideIndex, GuidePage, guideIndexMetadata, guideMetadata } from '../guides';
+import { PlayTestButton } from '../playTest';
 import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
 import { APP_STORE_QR } from '@/generated/appStoreQr';
@@ -28,6 +29,8 @@ import {
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
+import { PLAY_TEST_ON } from '@/lib/playTest';
+import { PLAY_TEST_COPY, type PlayTestCopy } from '@/lib/playTestCopy';
 import { inkOn } from '@/lib/providerColor';
 import { OPEN_GRAPH_ALTERNATE_LOCALES, OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
 import { sitePageOf, sitePagePath, type SitePage } from '@/lib/sitePages';
@@ -261,9 +264,13 @@ function AppStoreQr({ copy }: { copy: LandingCopy }) {
   );
 }
 
-/** The two ways in: the map, and the iPhone app, each link to it counted where it is. */
-function Actions({ copy, campaign, qr = false }: {
+/**
+ * The two ways in: the map, and the iPhone app, each link to it counted where it is.
+ * On Android, the iPhone app's button gives way to the Android app's test (src/lib/playTest.ts).
+ */
+function Actions({ copy, android, campaign, qr = false }: {
   copy: LandingCopy;
+  android: PlayTestCopy;
   campaign: 'web-hero' | 'web-closing';
   /** With the QR code of the App Store link beside them. */
   qr?: boolean;
@@ -271,7 +278,8 @@ function Actions({ copy, campaign, qr = false }: {
   return (
     <div className="cta-row">
       <AppLink className="btn btn--solid" href={MAP_PATH}>{copy.openMap}</AppLink>
-      <a className="btn btn--line" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>
+      <a className="btn btn--line play-ios" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>
+      {PLAY_TEST_ON && <PlayTestButton copy={android} />}
       {qr && <AppStoreQr copy={copy} />}
     </div>
   );
@@ -326,7 +334,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         <section className="hero">
           <h1 className="display">{copy.hero.title(nearby)}</h1>
           <p className="lede">{copy.hero.lede}</p>
-          <Actions copy={copy} campaign="web-hero" qr />
+          <Actions copy={copy} android={PLAY_TEST_COPY[locale]} campaign="web-hero" qr />
           <p className="note">
             {copy.hero.note}{' '}
             <a href={SOURCE_URL}><GitHubMark />{copy.hero.openSource}</a>.
@@ -512,7 +520,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         <section className="closing" style={glow}>
           <div className="orb orb--closing" aria-hidden="true" />
           <h2 className="display">{copy.closing.title}</h2>
-          <Actions copy={copy} campaign="web-closing" />
+          <Actions copy={copy} android={PLAY_TEST_COPY[locale]} campaign="web-closing" />
           <p className="note"><Linked sentence={copy.closing.note} links={{ source: SOURCE_URL }} /></p>
         </section>
       </main>

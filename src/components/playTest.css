@@ -1,0 +1,454 @@
+/* The invitation to test the Android app, src/lib/playTest.ts: its steps, the
+   same on the map and on the site, each in its own colours; the map's chip;
+   the site's card, sheet and button. */
+
+/* The site's colours (landing.css), and the map's (globals.css) inside the app. */
+.play-steps,
+.play-note,
+.play-intro,
+.play-dismiss {
+  --play-ink: var(--text);
+  --play-quiet: var(--quiet);
+  --play-raised: var(--panel);
+  --play-line: var(--line);
+  --play-fill: color-mix(in srgb, var(--quiet) 22%, transparent);
+  --play-accent: #0070eb;
+}
+.app-shell :is(.play-steps, .play-note, .play-intro, .play-dismiss) {
+  --play-ink: var(--ink);
+  --play-quiet: var(--ink-2);
+  --play-raised: var(--raised-bg);
+  --play-line: var(--hairline);
+  --play-fill: var(--fill-tertiary);
+}
+
+/* The steps */
+
+.play-intro {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 2px 0 14px;
+}
+.play-intro img {
+  flex-shrink: 0;
+  border-radius: 14px;
+  box-shadow: 0 0 0 0.5px var(--play-line);
+}
+.play-intro p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--play-quiet);
+}
+
+.play-steps {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 20px;
+  background: var(--play-raised);
+  box-shadow: inset 0 0 0 1px var(--play-line);
+  color: var(--play-ink);
+}
+.play-steps li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px 12px 14px;
+}
+.play-steps li + li {
+  border-top: 1px solid var(--play-line);
+}
+.play-step-number {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--play-fill);
+  font-size: 13px;
+  font-weight: 700;
+}
+.play-steps [data-state='next'] .play-step-number {
+  background: var(--play-accent);
+  color: #fff;
+}
+.play-steps [data-state='done'] .play-step-number {
+  background: var(--success-bg, rgba(52, 199, 89, 0.16));
+  color: var(--success-ink, #4cd36f);
+}
+.play-step-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex-grow: 1;
+  min-width: 0;
+}
+.play-step-copy strong {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.play-step-copy > span {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--play-quiet);
+}
+.play-step-action {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  background: var(--play-fill);
+  color: var(--play-ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.play-steps [data-state='next'] .play-step-action {
+  background: var(--play-accent);
+  color: #fff;
+}
+.play-note {
+  margin: 12px 4px 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--play-quiet);
+}
+
+.play-dismiss {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.play-dismiss button {
+  min-height: 48px;
+  border: 0;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--play-ink);
+}
+.play-not-now {
+  flex-grow: 1;
+  border-radius: 24px;
+  background: var(--play-fill);
+}
+.play-dismiss .play-never {
+  padding: 0 12px;
+  background: transparent;
+  color: var(--play-quiet);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The badge beside the name */
+
+.play-badge {
+  flex-shrink: 0;
+  padding: 3px 7px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--blue) 12%, transparent);
+  color: var(--blue-ink, #9cc7ff);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* The map's chip, under the search bar with what went wrong there (MapNotices) */
+
+.play-chip {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0 2px 0 6px;
+  border-radius: 22px;
+  color: var(--ink);
+  pointer-events: auto;
+  animation: content-in 260ms var(--spring);
+}
+.play-chip-open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 8px 0 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 600;
+}
+.play-chip-open > span:first-of-type,
+.play-chip-words {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.play-chip-icon {
+  flex-shrink: 0;
+  border-radius: 8px;
+  box-shadow: 0 0 0 0.5px var(--hairline);
+}
+.play-chip-rule {
+  flex-shrink: 0;
+  width: 1px;
+  height: 22px;
+  background: var(--hairline);
+}
+.play-chip-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-2);
+}
+.play-chip-words {
+  padding: 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.play-thanks-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-right: 4px;
+  border-radius: 50%;
+  background: var(--success-bg);
+  color: var(--success-ink);
+}
+.play-chip-status {
+  display: flex;
+  justify-content: center;
+  align-self: stretch;
+}
+.play-chip + .play-chip-status:not(:empty) {
+  margin-top: 8px;
+}
+.play-toast {
+  padding: 0 6px 0 14px;
+}
+.play-toast .play-chip-words {
+  font-weight: 500;
+}
+.play-toast-never {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--blue-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+@media (prefers-reduced-motion: reduce) {
+  .play-chip {
+    animation: none;
+  }
+}
+
+/* The site: a guide's card under the headline, the landing page's button, and
+   the sheet both open. Each is in the page as built, and shown by the attribute
+   the head's script sets (PLAY_TEST_SCRIPT), so nothing moves as it loads. */
+
+.play-card,
+.play-android {
+  display: none;
+}
+html[data-android-test='offer'] .play-card {
+  display: flex;
+}
+html[data-android-test] .play-android {
+  display: flex;
+}
+html[data-android-test] .play-ios {
+  display: none;
+}
+
+.play-card {
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 16px 8px 16px 16px;
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+html[data-android-test='offer'] .play-card + .contents,
+.play-toast-site + .contents {
+  margin-top: 16px;
+}
+.play-card > img {
+  flex-shrink: 0;
+  border-radius: 11px;
+}
+.play-card-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex-grow: 1;
+  min-width: 0;
+}
+.play-card-copy h2 {
+  margin: 0;
+  font: 700 18px/1.25 var(--display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.play-card-copy p {
+  margin: 3px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--quiet);
+}
+.play-card-open {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 22px;
+  background: #0070eb;
+  color: #fff;
+  font: 600 15px var(--body);
+}
+.play-card-close,
+.play-sheet-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  margin-top: -8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--quiet);
+}
+
+.play-toast-site {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 28px;
+  padding: 4px 6px 4px 18px;
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 15px;
+}
+.play-toast-site button {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--focus);
+  font: 700 15px var(--body);
+}
+
+.play-android {
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.play-android .btn {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.play-android .play-badge {
+  background: rgba(47, 123, 255, 0.18);
+  color: #9cc7ff;
+  font-family: var(--body);
+}
+.play-android small {
+  font-size: 13.5px;
+  color: var(--quiet);
+}
+
+.play-sheet {
+  box-sizing: border-box;
+  position: fixed;
+  inset: auto 0 0;
+  width: min(520px, 100%);
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  margin: 0 auto;
+  padding: 0;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+  font-family: var(--body);
+}
+.play-sheet-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px max(22px, env(safe-area-inset-bottom));
+}
+.play-sheet::backdrop {
+  background: rgba(9, 11, 16, 0.55);
+}
+.play-sheet-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.play-sheet-head img {
+  flex-shrink: 0;
+  border-radius: 14px;
+}
+.play-sheet-head div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-grow: 1;
+  padding-top: 2px;
+}
+.play-sheet-head h2 {
+  margin: 0;
+  font: 800 23px/1.1 var(--display);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.play-sheet-head p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--quiet);
+}
+.play-sheet-close {
+  margin: -6px -10px 0 0;
+}
+.play-sheet .play-note {
+  margin-top: 0;
+}
+@media (min-width: 640px) {
+  .play-sheet {
+    inset: 0;
+    margin: auto;
+    border-radius: 28px;
+  }
+}

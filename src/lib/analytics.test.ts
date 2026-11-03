@@ -91,6 +91,20 @@ describe('analytics privacy boundary', () => {
     expect(outside).toMatchObject({ url: '/map', title: 'ScootRadar' });
     expect(query).toMatchObject({ url: '/map', title: 'ScootRadar' });
   });
+  it('counts the events of a page of the site under that page, and says where the invitation to test was', async () => {
+    const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    vi.stubGlobal('fetch', fetcher);
+    const { track } = await import('./analytics');
+    vi.stubGlobal('location', { ...location, pathname: '/de/ratgeber/e-scooter-frankfurt' });
+    const guide = { path: '/de/ratgeber/e-scooter-frankfurt', title: 'E-Scooter Frankfurt — ScootRadar' };
+    track(undefined, {}, guide);
+    track('invite_view', { place: 'guide' });
+    track('invite_group', { place: 'guide' });
+    await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(3));
+    const [, view, group] = fetcher.mock.calls.map(call => JSON.parse(call[1].body).payload);
+    expect(view).toMatchObject({ url: guide.path, title: guide.title, name: 'invite_view', data: { place: 'guide', platform: 'web' } });
+    expect(group).toMatchObject({ url: guide.path, name: 'invite_group', data: { place: 'guide' } });
+  });
   it('sends where a visit came from with its first page view only: the linking site by its origin, and the campaign tags', async () => {
     const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
     vi.stubGlobal('fetch', fetcher);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { selectionFeedback } from '@/lib/feedback';
 import { useI18n } from '@/lib/i18n';
 import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
@@ -21,6 +21,8 @@ interface MapNoticesProps {
   onSeeHow: () => void;
   onSearchPlace: () => void;
   onDismissLocation: () => void;
+  /** Under them, while nothing went wrong: the invitation to test the Android app. */
+  children?: ReactNode;
 }
 
 /** What went wrong, under the search bar: scooters that did not load, a location that is off or not found. */
@@ -34,6 +36,7 @@ export default function MapNotices({
   onSeeHow,
   onSearchPlace,
   onDismissLocation,
+  children,
 }: MapNoticesProps) {
   const { t } = useI18n();
   const stackRef = useRef<HTMLDivElement>(null);
@@ -118,6 +121,7 @@ export default function MapNotices({
           </div>
         )}
       </div>
+      {!loadFailure && !locationError && children}
     </div>
   );
 }
