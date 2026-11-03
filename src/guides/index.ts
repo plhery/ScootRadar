@@ -306,6 +306,7 @@ import ashdodEn from './en/e-scooters-ashdod';
 import namurFr from './fr/trottinette-electrique-namur';
 import tulsaEn from './en/e-scooters-tulsa';
 import szekesfehervarEn from './en/e-scooters-szekesfehervar';
+import szombathelyEn from './en/e-scooters-szombathely';
 import riminiIt from './it/monopattini-sharing-rimini';
 import dunedinEn from './en/e-scooters-dunedin';
 import lanzaroteEn from './en/e-scooters-lanzarote';
@@ -359,6 +360,7 @@ import klagenfurtDe from './de/e-scooter-klagenfurt';
 import sanktAugustinDe from './de/e-scooter-sankt-augustin';
 import pinnebergDe from './de/e-scooter-pinneberg';
 import meerbuschDe from './de/e-scooter-meerbusch';
+import welsDe from './de/e-scooter-wels';
 import szegedEn from './en/e-scooters-szeged';
 import athensEn from './en/e-scooters-athens';
 import thessalonikiEn from './en/e-scooters-thessaloniki';
@@ -673,6 +675,7 @@ export const GUIDES: readonly Guide[] = [
   namurFr,
   tulsaEn,
   szekesfehervarEn,
+  szombathelyEn,
   riminiIt,
   dunedinEn,
   lanzaroteEn,
@@ -726,6 +729,7 @@ export const GUIDES: readonly Guide[] = [
   sanktAugustinDe,
   pinnebergDe,
   meerbuschDe,
+  welsDe,
   szegedEn,
   athensEn,
   thessalonikiEn,
