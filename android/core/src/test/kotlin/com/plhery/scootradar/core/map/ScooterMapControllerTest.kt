@@ -71,6 +71,7 @@ import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.core.model.ScreenSize
 import com.plhery.scootradar.core.model.UserInterfaceStyle
 import com.plhery.scootradar.core.model.addingTimeInterval
+import com.plhery.scootradar.core.model.city
 import com.plhery.scootradar.core.model.formatted
 import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
@@ -3071,6 +3072,29 @@ class ScooterMapControllerTest {
         assertFalse(focus.keepsZoom)
         assertNull(model.searchedDestination.value)
         assertEquals(60.0, model.minimumBattery.value, 0.0)
+    }
+
+    @Test
+    fun aLinkToAnyOtherPointClearsTheSearchedPlaceFromTheBar() = runTest {
+        val model = makeController(StubScooterAPI(ScooterResponse(vehicles = emptyList())))
+        val bellecour = MapDestination(title = "Place Bellecour", point = GeoPoint(45.7576, 4.8322))
+        model.focusOnAddress(bellecour)
+        assertEquals(ScooterSearchBarState.Place(bellecour), model.searchBarState)
+
+        // Geneva, but not a catalogued centre: the map moves there and the bar no longer names Bellecour.
+        val geneva = GeoPoint(latitude = 46.2044, longitude = 6.1432)
+        assertNull(ScooterCityCatalog.city(linkedAt = geneva))
+        assertNull(ScooterCityCatalog.city(linkedAt = geneva, among = TestCatalog.catalog.cities))
+        model.open(ScooterMapLink(origin = geneva))
+        assertEquals(geneva, unwrap(model.focusRequest.value).point)
+        assertNull(model.searchedDestination.value)
+        assertEquals(ScooterSearchBarState.Empty, model.searchBarState)
+
+        // A city's centre still opens as the city, in place of the searched one.
+        model.focusOnAddress(bellecour)
+        val bern = TestCatalog.bern
+        model.open(ScooterMapLink(origin = GeoPoint(latitude = bern.center.latitude, longitude = bern.center.longitude)))
+        assertEquals(ScooterSearchBarState.Place(bern.destination), model.searchBarState)
     }
 
     @Test

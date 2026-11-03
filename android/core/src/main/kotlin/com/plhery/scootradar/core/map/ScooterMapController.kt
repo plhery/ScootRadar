@@ -1013,7 +1013,8 @@ class ScooterMapController(
 
     /**
      * A link to the map from the website (ScooterMapLink). A city's centre, which is what the site's links
-     * carry, opens like the city chosen in the search; any other point only moves the map there. Either way
+     * carry, opens like the city chosen in the search; any other point moves the map there and clears a
+     * place searched before, so the bar shows its placeholder as for a map the rider moved. Either way
      * the first fix of the rider's location leaves the map where the link put it, also when the link opened
      * the app before locating began.
      */
@@ -1031,6 +1032,9 @@ class ScooterMapController(
             choosePlace(city.destination)
         } else {
             analytics?.track("link_open", result = "place")
+            // The bar says what the map shows: a place searched before is not where the map goes, so it
+            // leaves the bar, as when the rider moves the map (clearAddressSearch).
+            setSearchedDestination(null)
             focusToken += 1
             _focusRequest.value = MapFocusRequest.city(origin, token = focusToken)
         }
