@@ -277,6 +277,7 @@ import milwaukeeEn from './en/e-scooters-milwaukee';
 import turkuEn from './en/e-scooters-turku';
 import uppsalaEn from './en/e-scooters-uppsala';
 import orebroEn from './en/e-scooters-orebro';
+import eskilstunaEn from './en/e-scooters-eskilstuna';
 import spokaneEn from './en/e-scooters-spokane';
 import charlotteEn from './en/e-scooters-charlotte';
 import winstonSalemEn from './en/e-scooters-winston-salem';
@@ -290,6 +291,7 @@ import ramatGanEn from './en/e-scooters-ramat-gan';
 import sanJoseEn from './en/e-scooters-san-jose';
 import albuquerqueEn from './en/e-scooters-albuquerque';
 import vasterasEn from './en/e-scooters-vasteras';
+import borasEn from './en/e-scooters-boras';
 import norrkopingEn from './en/e-scooters-norrkoping';
 import vinaDelMarEs from './es/scooters-electricos-vina-del-mar';
 import gavleEn from './en/e-scooters-gavle';
@@ -653,6 +655,7 @@ export const GUIDES: readonly Guide[] = [
   turkuEn,
   uppsalaEn,
   orebroEn,
+  eskilstunaEn,
   spokaneEn,
   charlotteEn,
   winstonSalemEn,
@@ -666,6 +669,7 @@ export const GUIDES: readonly Guide[] = [
   sanJoseEn,
   albuquerqueEn,
   vasterasEn,
+  borasEn,
   norrkopingEn,
   vinaDelMarEs,
   gavleEn,
