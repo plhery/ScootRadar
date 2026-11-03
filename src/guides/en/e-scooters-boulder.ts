@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Boulder?',
       blocks: [
-        'Electric scooter rental in Boulder means **Lime**. The City’s Shared Micromobility Program has two partners: Lime for e-scooters and BCycle for e-bikes, which you take from and return to its docking stations. After a competitive bid in 2026 the City chose both again, announcing the renewed contracts on 6 August 2026. CU Boulder calls Lime “Boulder’s lone e-scooter company”, and we found no other.',
+        'Electric scooter rental in Boulder means **Lime**. The City’s Shared Micromobility Program has two partners: Lime for e-scooters and BCycle for e-bikes, which you take from and return to its docking stations. After a competitive bid in 2026 the City chose both again, announcing the renewed contracts on 6 August 2026. CU Boulder calls Lime “Boulder’s lone e-scooter company”.',
         'The renewed programme allows Lime 900 stand-up scooters, as before, and up to 200 seated **LimeGliders**, brought in gradually from mid-August 2026, mainly for neighbourhoods near the city limits, the City said on 6 August 2026. Both follow the same rules.',
         'For Lime the map shows each scooter’s position and charge; scooters on a ride aren’t shown, and BCycle’s e-bikes aren’t on it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
         'At 11:05 a.m. on Thursday 29 October 2026 the [Boulder map](map:us:co:Boulder) showed about 790 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. The total covers Lime’s whole Boulder area, which reaches no neighbouring town: about 95% of that area lies within the city limits, the rest in pockets of unincorporated Boulder County.',
@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'How much does a Lime scooter cost in Boulder?',
       blocks: [
-        'We found no fares on the City’s pages. CU Boulder, a partner in the programme, lists them on its Parking and Transportation Services scooter page (checked on 29 October 2026). These are CU’s figures: the Lime app shows the current price before you unlock.',
+        'CU Boulder, a partner in the programme, lists the fares on its Parking and Transportation Services scooter page (checked on 29 October 2026). These are CU’s figures: the Lime app shows the current price before you unlock.',
         {
           table: {
             caption: 'Lime prices and discounts in Boulder, as CU Boulder and the City give them (checked on 29 October 2026)',
@@ -44,24 +44,24 @@ const guide: Guide = {
     {
       heading: 'Scooter rules in Colorado and Boulder',
       blocks: [
-        'Colorado law treats an e-scooter as a vehicle but not a motor vehicle: it needs no registration, and on the road you have a driver’s rights and duties. Boulder’s Revised Code calls it a “lightweight electric vehicle” and sets where it may go.',
+        'Since HB19-1221, a 2019 act, Colorado law treats an e-scooter as a vehicle but not a motor vehicle: it needs no registration, and on the road you have a driver’s rights and duties. Boulder’s Revised Code calls it a “lightweight electric vehicle” and sets where it may go.',
         {
           table: {
             caption: 'E-scooter rules in Boulder on 29 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Age', '18 to ride Lime; Colorado sets no minimum age for e-scooters', 'City of Boulder and Lime; C.R.S. § 42-4-1412'],
-              ['Registration', 'None: an e-scooter isn’t a motor vehicle and is exempt from registration', 'Colorado, C.R.S. §§ 42-1-102, 42-3-103'],
+              ['Registration', 'None: an e-scooter isn’t a motor vehicle and is exempt from registration', 'Colorado, C.R.S. §§ 42-1-102, 42-3-103 (HB19-1221)'],
               ['Helmet', 'Not required by law: Colorado’s helmet rule covers only under-18s on class 3 e-bikes; the City tells riders to always wear one', 'Colorado, C.R.S. § 42-4-1412; City of Boulder'],
               ['Where to ride', 'In the street or bike lane, as far right as is safe, and on multi-use paths; no more than two abreast outside a bike lane', 'C.R.S. § 42-4-1412; City of Boulder'],
               ['Sidewalks', 'Not beside a street with a speed limit of 20 mph or less, beside most residential streets, or where there is a bike lane; allowed beside non-residential streets without one; never in a dismount zone', 'City of Boulder'],
               ['Speed', 'Lime holds its scooters to 15 mph, less in slow zones; 15 mph on multi-use paths, 8 mph in crosswalks', 'City of Boulder and Lime'],
-              ['Stop signs and red lights', 'From age 15, or younger with an adult, you may treat a stop sign as a yield sign at up to 10 mph, and at a red light stop and yield, then go straight or turn right', 'C.R.S. § 42-4-1412.5'],
+              ['Stop signs and red lights', 'From age 15, or younger with an adult, you may treat a stop sign as a yield sign at up to 10 mph, and at a red light stop and yield, then go straight or turn right', 'C.R.S. § 42-4-1412.5 (HB22-1028)'],
               ['Passengers', 'One person per ride', 'City of Boulder'],
               ['Hands', 'At least one hand on the handlebars at all times', 'C.R.S. § 42-4-1412'],
               ['Lights', 'At night, a white light in front and a red one behind', 'City of Boulder'],
               ['Alcohol', 'Colorado’s DUI law covers any vehicle, e-scooters included', 'C.R.S. § 42-4-1301'],
-              ['Night', 'The City’s pages give no riding hours; we found no night ban or winter pause', 'No rule found'],
+              ['Night', 'The City’s pages set no riding hours, night ban or winter pause', 'City of Boulder'],
             ],
           },
         },
@@ -106,7 +106,7 @@ const guide: Guide = {
         {
           list: [
             '**No Lime on RTD.** RTD doesn’t allow shared scooters on board any of its buses or trains, or riding in its transit lanes and platform areas. At its stations, park one upright beside the bike racks, in a stencilled area where there is one, with at least three feet of sidewalk clear.',
-            '**Downtown Boulder Station,** at 1800 14th Street near Walnut, is RTD’s bus station, served by 18 routes. We found no scooter rule of its own: RTD’s rules for all its stations apply.',
+            '**Downtown Boulder Station,** at 1800 14th Street near Walnut, is RTD’s bus station, served by 18 routes. RTD’s rules for all its stations apply there.',
             '**Your own e-scooter** can travel on a bus’s front rack: the racks hold two bicycles, e-bikes or e-scooters of up to 55 pounds.',
             '**Going to Denver?** Lime no longer rents there: Veo has been Denver’s only scooter operator since mid-May 2026. See [e-scooters in Denver](guide:denver).',
           ],
@@ -166,8 +166,6 @@ const guide: Guide = {
     { title: 'RTD: Park your bike or scooter (shared dockless bikes and scooters)', url: 'https://www.rtd-denver.com/how-to-ride/bike-n-ride/bike-scooter-parking' },
     { title: 'RTD: Bikes and scooters on buses', url: 'https://www.rtd-denver.com/how-to-ride/bike-n-ride/bikes-scooters-on-buses' },
     { title: 'RTD: Downtown Boulder Station', url: 'https://app.rtd-denver.com/facilities/downtown-boulder-station' },
-    { title: 'Colorado General Assembly: HB19-1221, Regulation of Electric Scooters, signed act (PDF)', url: 'https://leg.colorado.gov/bill_files/63091/download' },
-    { title: 'Colorado General Assembly: HB22-1028, Statewide Regulation of Controlled Intersections, signed act (PDF)', url: 'https://leg.colorado.gov/bill_files/99252/download' },
   ],
 };
 
