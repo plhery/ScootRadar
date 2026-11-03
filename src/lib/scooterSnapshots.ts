@@ -512,8 +512,13 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const counted = relevant.filter(feed => !options.idleInView?.has(feed.id) || showsPositions(feed, now));
   const meta = healthFor(counted, now, undefined, options.refreshing);
   const showing = (feed: FeedSnapshot) => showsPositions(feed, now);
-  // Collected again for this request, but quiet in its pause: it is not said to be on its way.
-  const coming = relevant.filter(feed => !feed.skipped && options.refreshing?.has(feed.id) && !quietInPause(feed, now, showing));
+  // Collected again for this request, but quiet in its pause: it is not said to be on its way. Nor is a slow
+  // feed whose positions still show: its sweep shows nothing until it ends, and the next request at the
+  // usual pace finds it. Watched, it is collected again every minute, so said to be on its way, it kept a
+  // map left open on Zürich from 23:37 UTC on 31 October 2026 asking every 3 seconds for 14 hours,
+  // about 1,250 requests an hour, by Lime's, Bolt's, Dott's and Bird's rider maps there.
+  const coming = relevant.filter(feed => !feed.skipped && options.refreshing?.has(feed.id) && !quietInPause(feed, now, showing) &&
+    !(collectsSlowly(feed) && showsPositions(feed, now)));
   const refreshing = coming.length > 0;
   // A city whose every feed is in its seasonal pause has nothing to show, which is no failure.
   const asked = counted.filter(feed => !feed.skipped && !quietInPause(feed, now, showing));

@@ -276,6 +276,21 @@ describe('feeds collected on demand', () => {
       expect(querySnapshot(snapshot([old, voi]), query, 16, now).meta.followUpMs).toBeUndefined();
     });
 
+    it('is not said to be on its way while its positions still show, as its sweep shows nothing until it ends', () => {
+      // Watched, it is collected again every minute: a map left open would otherwise ask every 3 seconds.
+      const shown = lime({ observedAt: now - minutes(2) });
+      const response = querySnapshot(snapshot([shown, voi]), query, 16, now, refreshing(shown));
+      expect(response.meta.refreshing).toBeUndefined();
+      expect(response.meta.followUpMs).toBeUndefined();
+      expect(response.meta.refreshAfterSeconds).toBe(60);
+      expect(response.vehicles.map(item => item.vehicle_id).sort()).toEqual(['north', 'south', 'three']);
+      expect(scooterResponseHeaders(response)['Cache-Control']).not.toBe('no-store');
+      // A quick feed collected again is still asked for soon: it is in within seconds.
+      const quick = feed({ observedAt: now - minutes(2) });
+      expect(querySnapshot(snapshot([quick, voi]), query, 16, now, refreshing(quick)).meta)
+        .toMatchObject({ refreshing: true, followUpMs: 3_000 });
+    });
+
     it('shows its sweep under way, and last-seen scooters only where the sweep has yet to look', () => {
       const southHalf = { south: 45.70, west: 4.7, north: 45.8, east: 5.0 };
       const sweeping = lime({ vehicles: [scooter('north', 45.85), scooter('south', 45.72), scooter('gone', 45.71), scooter('moved', 45.88)],
