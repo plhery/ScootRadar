@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-lanzarote',
   topic: 'lanzarote',
   name: 'Renting an e-scooter on Lanzarote',
-  title: 'E-scooters on Lanzarote: Hoppy in Puerto del Carmen, rules',
-  description: 'Electric scooter rental on Lanzarote: Hoppy in Puerto del Carmen, the helmet rule, the promenade, the beaches and the bus from the airport.',
-  headline: 'E-scooters on Lanzarote: Hoppy in Puerto del Carmen, the promenade, the airport and Spain’s rules',
-  lede: 'On Lanzarote you can rent Hoppy’s shared e-scooters in one resort, Puerto del Carmen; the app shows the price and the minimum age before you unlock. Since 1 October 2026 Spanish law requires a helmet on every e-scooter, rentals included, so bring one. You can’t ride on the promenade, the pavements or the beach, and Tías’s police remove rental scooters left on pavements, promenades and pedestrian areas.',
+  title: 'E-scooters on Lanzarote: Hoppy in Puerto del Carmen, prices',
+  description: 'Electric scooter rental on Lanzarote: Hoppy charges €1.20 plus €0.35–0.37 a minute in Puerto del Carmen, €4.70–4.90 for ten minutes. Bring a helmet.',
+  headline: 'E-scooters on Lanzarote: Hoppy in Puerto del Carmen, what a ride costs, the promenade, the airport and Spain’s rules',
+  lede: 'On Lanzarote you can rent Hoppy’s shared e-scooters in one resort, Puerto del Carmen, along about 6 km of coast, from just west of the old harbour to Matagorda, beside the airport. As of November 2026 a ride costs €1.20 to unlock plus €0.35–0.37 a minute, so ten minutes cost €4.70–4.90. You must be 18 to rent, and since 1 October 2026 Spanish law requires a helmet on every e-scooter, rentals included, so bring your own. Rides start and end only at Hoppy’s marked spots, and you can’t ride on the promenade, the pavements or the beach.',
   published: '2026-10-31',
   updated: '2026-10-31',
   city: 'es:Puerto del Carmen',
@@ -16,18 +16,63 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter app works on Lanzarote?',
       blocks: [
-        'At 00:03 local time on Saturday 31 October 2026, 205 **Hoppy** scooters on the [map of Puerto del Carmen](map:es:Puerto del Carmen) were free to rent at that moment, in the resort in the municipality of Tías. You need **no driving licence** for an e-scooter in Spain, and the law lets you ride from 15; the app shows the price and its own minimum age before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Hoppy** rents shared e-scooters in Puerto del Carmen, in the municipality of Tías. In Spain your contract is with Hoppylectrico S.L. of Elche.',
+        'At 00:03 local time on Saturday 31 October 2026, 205 Hoppy scooters on the [map of Puerto del Carmen](map:es:Puerto del Carmen) were free to rent at that moment, across Hoppy’s area, which runs along the seafront from just west of the old harbour to Matagorda.',
+        '**Dott** also lists Lanzarote among its locations; if you see one of its scooters, its app has the details.',
         'In Puerto del Carmen, Tías Town Hall said on 18 July 2024 that the company renting out scooters there had no municipal permit to operate in Tías, and on 20 July 2026 that its police would go on removing the scooters and the companies would pay the fines. Other councils remove rental scooters that lack a municipal permit too: Yaiza’s police took 82 shared scooters off Playa Blanca’s streets on 9–13 May 2026, and Teguise’s were removing unauthorised ones in Costa Teguise later that month.',
       ],
     },
     {
-      heading: 'Riding and parking in Puerto del Carmen: the promenade, the bike lane, the beaches',
+      heading: 'How much does a Hoppy scooter cost in Puerto del Carmen?',
+      blocks: [
+        'Hoppy charges €1.20 to unlock plus €0.35 or €0.37 a minute, depending on the scooter, and most are on the higher rate; the app shows the rate before you unlock.',
+        {
+          table: {
+            caption: 'Hoppy in Puerto del Carmen, as of November 2026',
+            head: ['Ride', 'At €0.35 a minute', 'At €0.37 a minute'],
+            rows: [
+              ['5 minutes', '€2.95', '€3.05'],
+              ['10 minutes', '€4.70', '€4.90'],
+              ['20 minutes', '€8.20', '€8.60'],
+              ['30 minutes', '€11.70', '€12.30'],
+            ],
+          },
+        },
+        'You pay for every minute the scooter is unlocked, moving or not, until you end the ride at a spot. A rental can last up to 24 hours and costs at most €361.',
+        '**Signing up.** You need a phone and a credit or debit card, which Hoppy asks for before you can register; it then tops up your balance automatically unless you turn that off. You need **no driving licence**: you confirm in the app that you’re 18, the age Hoppy requires, although Spanish law lets you ride from 15. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+      ],
+    },
+    {
+      heading: 'Where to start and end a ride: Hoppy’s 63 spots',
+      blocks: [
+        'A Hoppy ride can start and end only at one of its marked parking spots: 63 along the resort on 3 November 2026. Elsewhere you can ride, outside the two no-ride areas below, but not end the ride, so find the nearest spot in the app before you set off: you pay until the ride ends. Park inside the marked area, upright and out of people’s way.',
+        'Tías’s police remove rental scooters left on pavements, promenades and pedestrian areas and keep them in the municipal depot.',
+        {
+          table: {
+            caption: 'What Hoppy charges in Spain for bad parking and other breaches (its terms, November 2026)',
+            head: ['Breach', 'Charge'],
+            rows: [
+              ['Riding in a prohibited area', 'Up to €50'],
+              ['Leaving the scooter in one', '€100 to collect it'],
+              ['Parking it where Hoppy can’t reach it', 'Up to €100'],
+              ['Abandoning it', 'A €150 fee, plus all costs until it’s found'],
+              ['Not ending the ride within 24 hours', 'It counts as lost: up to €1,290'],
+              ['Damage to others, under Hoppy’s insurance', 'An excess of up to €1,000 a claim'],
+              ['A fine or depot fee caused by your riding or parking', 'Passed on to you'],
+            ],
+          },
+        },
+      ],
+    },
+    {
+      heading: 'Can you ride on the Avenida de las Playas promenade?',
       blocks: [
         'No. Spanish law bans all vehicles from pavements and lets e-scooters into other pedestrian areas, promenades included, only where a town’s bylaw allows it. In July 2026 Tías had only commissioned a consultancy to draft its e-scooter bylaw (La Voz de Lanzarote), so the seafront promenade is for walking.',
         {
           list: [
             '**The bike lane.** A bike lane runs along the Avenida de las Playas, the seafront avenue. Spanish law lets e-scooters use a bike lane only where signs allow them; otherwise ride on the road or walk the scooter.',
-            '**Parking.** End the ride where the app allows, upright and out of people’s way. Tías’s police remove rental scooters left on pavements, promenades and pedestrian areas and keep them in the municipal depot.',
+            '**The old town by the harbour.** Hoppy won’t let you ride through, start or end a ride in a small no-ride area around the old harbour, El Varadero.',
+            '**Inland.** A large Hoppy no-ride area covers the land behind the resort, up towards Tías village. The seafront at Playa Grande, Los Pocillos and Matagorda lies outside both no-ride areas.',
             '**The beaches.** Tías’s beaches bylaw bans vehicles of any kind from its beaches and bathing areas, and from the strip of coast that must stay free for people on foot. Riding or parking one on a beach is a serious offence, fined €750.01–1,500.',
           ],
         },
@@ -36,12 +81,12 @@ const guide: Guide = {
     {
       heading: 'The airport, Arrecife and the guaguas',
       blocks: [
-        'Interurban roads, here the LZ-2 above all, are closed to e-scooters.',
+        'Interurban roads, here the LZ-2 above all, are closed to e-scooters, and all of Hoppy’s spots lie in the resort: you can’t end a ride at the airport, in Puerto Calero, in Tías village or in Arrecife.',
         {
           list: [
-            '**The airport.** César Manrique-Lanzarote airport lies beside Matagorda; on 31 October 2026 the nearest free scooter stood about 2 km from the terminal. Intercity Bus line 161 leaves Terminal 1 every 30–60 minutes from 07:30 to 21:30 (timetable of 31 October 2026) and reaches Matagorda in about 6 minutes, then runs along the resort to Puerto Calero, Yaiza and Playa Blanca. It doesn’t carry passengers between two stops within Puerto del Carmen.',
+            '**The airport.** César Manrique-Lanzarote airport lies beside Matagorda, but you can’t end a ride there: on 31 October 2026 the nearest free scooter stood about 2 km from the terminal. Intercity Bus line 161 leaves Terminal 1 every 30–60 minutes from 07:30 to 21:30 (timetable of 31 October 2026) and reaches Matagorda in about 6 minutes, then runs along the resort to Puerto Calero, Yaiza and Playa Blanca. It doesn’t carry passengers between two stops within Puerto del Carmen.',
             '**Arrecife.** Line 2 links the capital with Puerto del Carmen.',
-            '**Your own scooter on the guagua.** Intercity Bus Lanzarote, which runs the island’s buses (guaguas), carries bikes and e-scooters only folded in the luggage hold, never inside, one per person, on buses that have a hold. A rental scooter stays behind: end the ride before you board.',
+            '**Your own scooter on the guagua.** Intercity Bus Lanzarote, which runs the island’s buses (guaguas), carries bikes and e-scooters only folded in the luggage hold, never inside, one per person, on buses that have a hold. A Hoppy must end its ride at one of its spots, so it can’t go on the bus.',
           ],
         },
       ],
@@ -50,14 +95,14 @@ const guide: Guide = {
       heading: 'Spain’s e-scooter rules for visitors',
       blocks: [
         'Spain’s rules changed on 1 October 2026 and apply here as everywhere else. On a rental, the operator handles registration and insurance.',
-        { note: 'A helmet has been compulsory for every e-scooter rider in Spain since 1 October 2026, on rental scooters too: €200, and the police may immobilise the scooter. Pack your own.' },
+        { note: 'A helmet has been compulsory for every e-scooter rider in Spain since 1 October 2026, on rental scooters too: €200, and the police may immobilise the scooter. Hoppy’s terms also require a CE-marked helmet on every ride, so pack your own.' },
         {
           table: {
             caption: 'E-scooter rules and fines in Spain, October 2026',
             head: ['Rule', 'What to do', 'Fine'],
             rows: [
               ['Helmet', 'Certified and fastened, at any age, on every ride', '€200, and the scooter may be immobilised'],
-              ['Licence and age', 'No licence. Legal minimum age 15', '–'],
+              ['Licence and age', 'No licence. Legal minimum age 15; Hoppy rents only to over-18s', '–'],
               ['After dark or in poor visibility', 'A certified reflective or luminous item visible at 150 m', '€200'],
               ['Pavements and pedestrian areas', 'Never on pavements; in pedestrian areas only where the town’s bylaw allows it', 'Set by the town; €200 for pavements before October 2026'],
               ['Out of town', 'Not on interurban roads or motorways, such as the LZ-2', '–'],
@@ -71,14 +116,16 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Sun, weather and the other islands',
+      heading: 'Hours, range, sun and the other islands',
       blocks: [
         {
           list: [
+            '**Round the clock.** Hoppy gives its Puerto del Carmen hours as 24/7. After dark, wear the reflective item the law requires.',
             '**Sun.** At Lanzarote airport, beside Matagorda, the average daily high ranges from 20.7 °C in January to 29.1 °C in August, with 2,986 hours of sunshine and about 19 rainy days a year (AEMET, 1981–2010).',
+            '**Range.** Hoppy’s scooters can go up to 60 km on a full battery.',
           ],
         },
-        'Hoppy scooters stand on Fuerteventura too, in Caleta de Fuste and Corralejo: see [e-scooters in Fuerteventura](guide:fuerteventura). Going on to Tenerife? See [e-scooters in Tenerife](guide:tenerife).',
+        'Hoppy also runs on Fuerteventura, in Caleta de Fuste and Corralejo: see [e-scooters in Fuerteventura](guide:fuerteventura). Going on to Tenerife? See [e-scooters in Tenerife](guide:tenerife).',
       ],
     },
     {
@@ -101,12 +148,16 @@ const guide: Guide = {
       answer: 'Hoppy, in Puerto del Carmen. The [map of Puerto del Carmen](map:es:Puerto del Carmen) shows where its free scooters are; you unlock and pay in the Hoppy app, which shows the price first.',
     },
     {
+      question: 'How much does scooter hire in Puerto del Carmen cost?',
+      answer: 'On a Hoppy, as of November 2026, €1.20 to unlock plus €0.35 or €0.37 a minute, depending on the scooter. Ten minutes cost €4.70–4.90, and twenty €8.20–8.60.',
+    },
+    {
       question: 'Do I need a helmet or a driving licence for an e-scooter on Lanzarote?',
-      answer: 'A helmet, yes: since 1 October 2026 Spanish law requires one on every e-scooter, rentals included, and the fine is €200. A licence, no: Spanish law lets you ride from 15 without one, and the app shows its own minimum age before you unlock.',
+      answer: 'A helmet, yes: since 1 October 2026 Spanish law requires one on every e-scooter, rentals included, and the fine is €200. A licence, no: you need to be 18, with a phone and a payment card.',
     },
     {
       question: 'Can I ride a Hoppy from Lanzarote airport to Puerto del Carmen?',
-      answer: 'No: the LZ-2 is closed to e-scooters, and on 31 October 2026 the nearest free scooter stood about 2 km from the terminal. Take Intercity Bus line 161 from Terminal 1, or a taxi.',
+      answer: 'No. Hoppy has no spot at the airport (on 31 October 2026 the nearest free scooter stood about 2 km from the terminal), and the LZ-2 is closed to e-scooters. Take Intercity Bus line 161 from Terminal 1, or a taxi.',
     },
     {
       question: 'Can I ride an e-scooter on the promenade in Puerto del Carmen?',
@@ -117,6 +168,9 @@ const guide: Guide = {
     { title: 'BOE: Royal Decree 518/2026, reform of Spain’s General Traffic Regulations (Spanish)', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
     { title: 'BOE: Royal Decree 52/2026, the register of light personal vehicles (Spanish)', url: 'https://www.boe.es/eli/es/rd/2026/01/28/52' },
     { title: 'DGT: personal mobility vehicles (VMP), updated 29 October 2026 (Spanish)', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'Hoppy: open data for Puerto del Carmen (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1776/v3.0/gbfs' },
+    { title: 'Hoppy: terms and conditions, with those for Spain (Spanish)', url: 'https://behoppy.eu/es/terminos-y-condiciones/' },
+    { title: 'Dott: locations', url: 'https://ridedott.com/locations/' },
     { title: 'Tías Town Hall: bylaw on the public use of beaches and bathing areas (PDF, Spanish)', url: 'https://www.ayuntamientodetias.es/wp-content/uploads/2020/04/ORDENANZA-MUNICIPAL-REGULADORA-DEL-USO-PuBLICO-DE-LAS.pdf' },
     { title: 'Tías Town Hall: prior public consultation on a personal mobility vehicle bylaw, 5 August 2021 (PDF, Spanish)', url: 'https://www.ayuntamientodetias.es/wp-content/uploads/2021/08/Anuncio-consulta-previa-VMP.pdf' },
     { title: 'Tías Town Hall: rental scooters removed from Puerto del Carmen; the company has no municipal permit, 18 July 2024 (Spanish)', url: 'https://www.ayuntamientodetias.es/tias-retira-de-la-via-publica-los-patinetes-de-alquiler/' },
