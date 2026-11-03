@@ -14,6 +14,9 @@ The successful repeat also verified restoration to an app-owned key. This is
 a working prototype, not an enabled production collector or an unattended
 service; see [the live bridge result](#live-drammen-bridge-3-november). Exporting
 the app's signing key for an independent server reader remains unsolved.
+Later tests in the same session returned Göteborg and Hannover as well;
+[coverage limits and persistent transport](#multi-city-limits-and-persistent-transport-3-november)
+remain separate from production readiness.
 On 1 November a separate diagnostic companion on the physical Pixel obtained
 a Google Integrity token for a fresh Ryde challenge and subsequently a
 reCAPTCHA token with the working RideMovi package-context setup. Normal Google
@@ -44,7 +47,7 @@ No additional SMS was requested during the 27 October recheck.
 
 Bergen is covered through Skyss since 28 October 2026, at the user's request
 of 27 October, and Larvik through Entur's `rydelarvik` since 31 October. The
-direct rider bridge has now returned Drammen scooters. Continuous collection,
+direct rider bridge has now returned Drammen, Göteborg and Hannover scooters. Continuous collection,
 coverage completeness, controlled shutdown and longer-lived session behavior
 still need validation before enabling it for Drammen, Kristiansand or Göteborg.
 Its signing dependency remains the official app running on the Mac.
@@ -675,6 +678,81 @@ coverage subdivision and stale-data handling, followed by a persistent collector
 with an explicit lifetime and shutdown procedure. The observed app log contains
 roughly minute-spaced successful map decryptions; this is a polling lead, not
 yet an unattended bridge uptime guarantee.
+
+### Multi-city limits and persistent transport, 3 November
+
+A later bounded trial returned fresh decrypted scooter maps for three cities
+using the same account session and bridge key:
+
+| Query centre | City ID | Scooters | Farthest returned scooter |
+| --- | --- | --- | --- |
+| Drammen | 43 | 100 | 1.10 km |
+| Göteborg | 32 | 100 | 0.82 km |
+| Hannover | 94 | 134 | 10.00 km |
+
+Each requested radius was 10; there were no e-bikes in these replies. All
+coordinates were within the requested radius, with ascending distance order.
+This proves cross-city and cross-country use of the session, and disproves a
+universal 100-row response limit. It does not prove complete coverage of any
+city or establish whether selection limits vary by city. The earlier one-map
+stop was the experiment's own limit, not an observed upstream quota.
+
+An additional direct request reused Drammen's body and proof after 1.57 seconds
+and received HTTP 200/application status 401. **This does not establish that
+proofs are single-use:** the first probe omitted the native cookie and Ryde's
+platform/version/build headers. The batch stopped after that rejection.
+Following fresh native proofs succeeded for Göteborg and Hannover. The
+corrected probe preserves the native client/authentication headers, excludes
+transport-managed headers, and requests identity content encoding. Its offline
+header-preservation check passed; its live run is still pending.
+
+The three captured native map requests were separated by 48.2 and 174.2 seconds,
+with UI interactions during the test. Neither a reliable minute cadence nor a
+maximum request rate was established. Small map moves and returning from the
+profile screen did not reliably force a request. Native key restoration and a
+following map response were verified again before the test proxy stopped.
+The old test certificate/trust and proxy settings were fully cleaned up.
+
+Ryde's [official locations page](https://www.ryde-technology.com/Locations),
+checked on 3 November, lists 83 cities: 23 in Norway, 25 in Sweden, 15 in Finland
+and 20 in Germany. All matched the cached app city metadata. ScootRadar has 18
+Ryde feed entries in Norway, naming 19 of those cities when Sandnes's existing
+partial area is included. That leaves 64 listed cities without an existing
+entry or named area, **not 64 verified bridge feeds**. The Norwegian gaps are
+Drammen, Kristiansand, Moss and Sola; Sandnes also needs a coverage review.
+The cached app list includes test/warehouse entries and Warsaw, which is absent
+from the public location list. Do not turn the whole cached list into a catalog.
+
+The user then explicitly authorized persistent proxy/trust to avoid repeated
+administrator prompts. This transport is installed under
+`~/.local/share/scootradar/ryde-bridge/`, with the normal-user LaunchAgent
+`com.scootradar.ryde-bridge`. Its self-signed leaf is not a CA; trust is limited
+to the signed Ryde executable, SSL and `api.ryde.vip`, and expires on
+3 December 2026. The PAC sends only that host through localhost with a `DIRECT`
+fallback. There is no background root service. Installation and eventual
+removal need administrator authorization; ordinary experiments do not.
+
+At the user's pause request, the transport was **idle**, with no experiment
+running and no captures being saved. The server binding had been restored to
+an app-owned key. The persistent certificate and PAC intentionally remain
+installed. All one-use administrator credential files were deleted. The
+transport runs as the user, its private files remain outside Git, and an
+experiment has a separate deadline of at most 15 minutes. Completed or partially
+executed experiments are not silently replayed after a supervisor restart.
+No continuous collector, public endpoint or new production feed is enabled.
+
+Resume with the corrected-header request-reuse check, then the prepared radius,
+offset-centre and city-ID controls and the additional city samples. Retain valid
+parent observations when comparing smaller queries; do not infer completeness
+from an uncapped response alone. If reuse is rejected with the complete native
+context, isolate fresh direct transport from replay enforcement before naming
+the cause, and measure reliable app-generated request cadence. Then validate
+city-wide coverage, renewal, app/background/restart behavior and stale-data
+handling. The integration should preserve existing Entur/Skyss coverage and
+send only normalized, pseudonymized observations from the Mac to the cache,
+with their actual observation ages. Account credentials and raw hardware IDs
+stay on the Mac. Decide rollout breadth from those checks rather than the
+number of cities listed in metadata.
 
 
 Earlier trust-installation attempts timed out while macOS authorization was
