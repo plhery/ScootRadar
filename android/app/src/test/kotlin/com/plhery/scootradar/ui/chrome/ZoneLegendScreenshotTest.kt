@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import com.plhery.scootradar.TestCatalog
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.api.ScooterAPIClient
+import com.plhery.scootradar.core.map.ScooterLocationFix
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.CityZoneDownload
 import com.plhery.scootradar.core.model.CityZoneDownloads
@@ -55,6 +57,7 @@ import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import java.time.Instant
 import java.util.Locale
 
 /**
@@ -324,12 +327,13 @@ private class ZonedAPI(private val scooters: StubScooterAPI, private val zones: 
  * The legend in its place on ScootRadar_Phone_Min, beside "Near me" before the first location, naming every kind:
  * Zürich's operators' slow zones at 6 km/h, their no-parking and no-riding zones, and a city's parking places. In the
  * languages whose names run longest, at font scale 1.0 and 1.3: a name longer than its room wraps whole, where it read
- * "Stationnement int…" (briefs/app-aq.md, 4).
+ * "Stationnement int…" (briefs/app-aq.md, 4). And once [located], beside the round locate button, where in Portuguese
+ * at 1.3 the slow zones' name wraps before its speed, where it broke inside it ("6 km/" over "h").
  */
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(qualifiers = "w360dp-h640dp-xhdpi")
-class ZoneLegendLongLabelsScreenshotTest(private val language: String, private val fontScale: Float) {
+class ZoneLegendLongLabelsScreenshotTest(private val language: String, private val fontScale: Float, private val located: Boolean) {
     @get:Rule
     val compose = createComposeRule()
 
@@ -374,6 +378,10 @@ class ZoneLegendLongLabelsScreenshotTest(private val language: String, private v
         )
         val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = listOf(places))
         val model = controllers.make(api, clock, catalog = catalog)
+        if (located) {
+            model.locationsUpdated(listOf(ScooterLocationFix(GeoPoint(47.3769, 8.5417), horizontalAccuracy = 5.0, timestamp = Instant.now())))
+            assertTrue(controllers.waitUntil { model.hasLocatedOnce.value })
+        }
         model.updateViewport(zurichRegion, zoom = 16)
         model.setShowsZones(true)
         assertTrue(
@@ -389,8 +397,13 @@ class ZoneLegendLongLabelsScreenshotTest(private val language: String, private v
         }
         compose.waitForIdle()
         val scale = if (fontScale == 1f) "1.0" else fontScale.toString()
-        compose.onNodeWithTag(ZONE_LEGEND_TAG)
-            .captureRoboImage("src/test/screenshots/zones/longLabels_${language}_$scale.png", roborazziOptions = screenshotOptions)
+        val legend = compose.onNodeWithTag(ZONE_LEGEND_TAG)
+        // Beside the round button, the row's 340 less its 64 and the gap between them.
+        if (located) assertTrue("the legend beside the button", legend.getUnclippedBoundsInRoot().let { it.right - it.left } < 280.dp)
+        legend.captureRoboImage(
+            "src/test/screenshots/zones/longLabels_${language}_$scale${if (located) "_located" else ""}.png",
+            roborazziOptions = screenshotOptions,
+        )
     }
 
     companion object {
@@ -404,7 +417,9 @@ class ZoneLegendLongLabelsScreenshotTest(private val language: String, private v
         }
 
         @JvmStatic
-        @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1}")
-        fun parameters(): List<Array<Any>> = listOf("fr-CH", "pt-PT").flatMap { language -> listOf(1f, 1.3f).map { arrayOf(language, it) } }
+        @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1} {2}")
+        fun parameters(): List<Array<Any>> =
+            listOf("fr-CH", "pt-PT").flatMap { language -> listOf(1f, 1.3f).map { arrayOf<Any>(language, it, false) } } +
+                listOf(arrayOf<Any>("pt-PT", 1.3f, true))
     }
 }

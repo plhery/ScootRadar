@@ -1,5 +1,7 @@
 package com.plhery.scootradar.ui.chrome
 
+import android.icu.text.BreakIterator
+import android.icu.util.ULocale
 import android.provider.Settings
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -173,8 +175,8 @@ class CityRuleZoneTest {
     /** The speeds of zones, in km/h, as the legend sums them up. */
     private fun speeds(vararg kph: Double?) = kph.fold(ScooterZoneSpeeds()) { speeds, speed -> speeds + speed }
 
-    /** ICU's spaces, before a unit in French, as plain ones. */
-    private fun plain(text: String) = text.replace('\u00A0', ' ').replace('\u202F', ' ')
+    /** ICU's spaces, before a unit in French, as plain ones, and without the joiners that keep a speed whole. */
+    private fun plain(text: String) = text.replace('\u00A0', ' ').replace('\u202F', ' ').replace("\u2060", "")
 
     /** A slow street of Warsaw's, at [kph] where the city gives a speed, within [hours] where it has some. */
     private fun warsaw(id: String, kph: Double?, hours: List<CityRuleZone.Hours> = emptyList()) = CityRuleZone(
@@ -251,6 +253,35 @@ class CityRuleZoneTest {
             lines.map { plain(it.text) },
         )
         assertEquals(listOf(true, true, false), lines.map { it.timed })
+    }
+
+    /**
+     * A slow zone's speed is never broken across lines where the legend wraps its name: beside the locate button in
+     * Portuguese at font scale 1.3 on ScootRadar_Phone_Min it read "Velocidade reduzida: 5 km/" over "h". A line may
+     * break only before it, as the line breaker the text's layout uses finds the places.
+     */
+    @Test
+    fun aSpeedIsNeverBrokenAcrossLines() {
+        for (language in ScooterLanguage.entries) {
+            for (region in listOf("CH", "US")) {
+                val locale = Locale.forLanguageTag("${language.rawValue}-$region")
+                Locale.setDefault(locale)
+                ScooterLanguage.launchLocale = { locale }
+                ScooterLanguage.current = language
+                for (range in listOf(5.0..5.0, 6.0..15.0)) {
+                    val speed = speedText(range, locale)
+                    val label = kindLabel(ScooterZoneKind.Slow, speeds(range.start, range.endInclusive), locale)
+                    val start = label.indexOf(speed)
+                    assertTrue("$locale: \"$label\" says \"$speed\"", start >= 0)
+                    val lines = BreakIterator.getLineInstance(ULocale.forLocale(locale)).apply { setText(label) }
+                    var at = lines.first()
+                    while (at != BreakIterator.DONE) {
+                        assertFalse("$locale: \"${plain(label)}\" may break at $at, in its speed", at > start && at < start + speed.length)
+                        at = lines.next()
+                    }
+                }
+            }
+        }
     }
 
     @Test

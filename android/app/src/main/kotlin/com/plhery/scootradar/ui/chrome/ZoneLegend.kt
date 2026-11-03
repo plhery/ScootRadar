@@ -329,7 +329,10 @@ internal fun kindLabel(kind: ScooterZoneKind, speeds: ScooterZoneSpeeds, locale:
 
 /**
  * "6 km/h", or from the least to the greatest, "6–15 km/h"; in mph where the region measures distances in miles
- * ("10 mph"), each rounded to a whole number once converted, as on the web (formatSpeedLimits) and the iPhone.
+ * ("10 mph"), each rounded to a whole number once converted, as on the web (formatSpeedLimits) and the iPhone. Whole on
+ * its line: where the legend wraps a slow zone's name, it breaks before the speed, never in it, where a line may break
+ * after "/" or "–" ("Velocidade reduzida: 5 km/" over "h" beside the locate button, Portuguese at font scale 1.3 on
+ * ScootRadar_Phone_Min).
  */
 internal fun speedText(range: ClosedFloatingPointRange<Double>, locale: Locale = ScooterLanguage.current.locale): String {
     val miles = locale.measurementSystem != ScooterMeasurementSystem.Metric
@@ -338,8 +341,12 @@ internal fun speedText(range: ClosedFloatingPointRange<Double>, locale: Locale =
     val greatest = whole(range.endInclusive)
     val unit = if (miles) MeasureUnit.MILE_PER_HOUR else MeasureUnit.KILOMETER_PER_HOUR
     val withUnit = MeasureFormat.getInstance(ULocale.forLocale(locale), MeasureFormat.FormatWidth.SHORT).format(Measure(greatest, unit))
-    return if (least == greatest) withUnit else "${ScooterNumberFormat.integer(least, locale)}–$withUnit"
+    val speed = if (least == greatest) withUnit else "${ScooterNumberFormat.integer(least, locale)}–$withUnit"
+    return speed.replace(' ', '\u00A0').replace("/", "/$WORD_JOINER").replace("–", "–$WORD_JOINER")
 }
+
+/** No line breaks on either side of it, and nothing drawn. */
+private const val WORD_JOINER = '\u2060'
 
 private const val KM_PER_MILE = 1.609344
 
