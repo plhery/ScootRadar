@@ -61,7 +61,7 @@ sealed interface MarkerElement {
 
     /** A cluster or a city total, in its view of 48 pt. */
     class Cluster(val cluster: ClusterMark, override val frame: ScreenRect) : MarkerElement {
-        override val key: String get() = (if (cluster.isServer) "g:" else "c:") + cluster.id
+        override val key: String get() = cluster.featureID
         override val description: MarkerDescription get() = MarkerDescriptions.of(cluster.cluster)
     }
 }
@@ -112,7 +112,7 @@ object MarkerElements {
         val key = when {
             bay != null -> "p:${bay.id}"
             scooter != null -> "v:${scooter.first.scooter.id}"
-            else -> scene.topCluster(at = point, map = map)?.let { (if (it.isServer) "g:" else "c:") + it.id }
+            else -> scene.topCluster(at = point, map = map)?.featureID
         }
         return among.firstOrNull { it.key == key }
             ?: among.filter { it.frame.contains(point) }.minByOrNull { hypot(it.frame.midX - point.x, it.frame.midY - point.y) }

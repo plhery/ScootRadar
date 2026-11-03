@@ -163,6 +163,12 @@ class ClusterMark(cluster: ScooterCluster, members: List<Scooter>?) {
     val id: String get() = cluster.id
     val isServer: Boolean get() = members == null
 
+    /**
+     * Its feature on the map, and its view for TalkBack: "g:" and the server's id, or "c:" and the app's own. Made
+     * once, not at every frame of a move: a mark keeps its id and its kind for as long as it lives.
+     */
+    val featureID: String = (if (members == null) "g:" else "c:") + cluster.id
+
     /** The provider with the most scooters in it lends its colour to the glow. */
     val provider: ScooterProvider? get() = ScooterMarkerScene.leadingProvider(cluster.providers)
     val diameter: Double get() = ScooterMarkerScene.clusterDiameter(cluster.count)

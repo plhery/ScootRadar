@@ -78,7 +78,7 @@ object MarkerFeatures {
     fun cluster(cluster: ClusterMark, isDark: Boolean, art: ScooterMarkerArt, over: Boolean = false): MarkerFeature {
         val key = ScooterMarkerArt.ClusterKey(cluster.provider, cluster.diameter, isDark, "${cluster.cluster.count}")
         return MarkerFeature(
-            id = id(cluster),
+            id = cluster.featureID,
             coordinate = cluster.cluster.coordinate,
             image = key.id,
             picture = { art.clusterImage(key) },
@@ -86,9 +86,6 @@ object MarkerFeatures {
             isOver = over,
         )
     }
-
-    /** A cluster's feature: "g:" and the server's id, or "c:" and the app's own. */
-    fun id(cluster: ClusterMark): String = (if (cluster.isServer) "g:" else "c:") + cluster.id
 
     /** The dot of a scooter, with its ring and its glow, where its spread puts it. */
     fun dot(mark: ScooterMark, art: ScooterMarkerArt): MarkerFeature {

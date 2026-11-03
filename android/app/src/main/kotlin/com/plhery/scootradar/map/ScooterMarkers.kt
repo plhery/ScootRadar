@@ -651,7 +651,7 @@ class ScooterMarkers(
         }
         val gone = if (clearances.isEmpty()) null else HashSet(clearances.keys)
         for (cluster in clusters) {
-            val id = MarkerFeatures.id(cluster)
+            val id = cluster.featureID
             gone?.remove(id)
             val clearance = cluster.clearance(now)
             if (clearance != (clearances[id] ?: 1.0)) write(id, clearance)

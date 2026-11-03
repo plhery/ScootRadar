@@ -375,7 +375,7 @@ class ScooterMarkersTest {
             val zurich = marks.minBy { it.cluster.coordinate.distance(to = clear) }
             assertTrue(basel.isHidden)
             assertTrue(!zurich.isHidden)
-            MarkerFeatures.id(basel) to MarkerFeatures.id(zurich)
+            basel.featureID to zurich.featureID
         }
         waitFor("Basel's total is hidden") { marked.clearance(basel) == 0.0 }
         // Zürich's was never under the chrome: it has no state, and shows whole.
@@ -428,8 +428,8 @@ class ScooterMarkersTest {
         marked.serve(ScooterResponse(vehicles = listOf(held), clusters = clusters, meta = meta)) { it.clusters().size == 2 && it.marks.size == 1 }
         val (total, other) = marked.phone.onMain {
             val marks = marked.markers.scene.clusters()
-            MarkerFeatures.id(marks.minBy { it.cluster.coordinate.distance(to = station) }) to
-                MarkerFeatures.id(marks.minBy { it.cluster.coordinate.distance(to = far) })
+            marks.minBy { it.cluster.coordinate.distance(to = station) }.featureID to
+                marks.minBy { it.cluster.coordinate.distance(to = far) }.featureID
         }
         // The dot not selected, Zürich's total is drawn over it.
         waitFor("TalkBack has the totals and the scooter") { reads().size == 3 }
