@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-dubai',
   topic: 'dubai',
   name: 'Renting an e-scooter in Dubai',
-  title: 'E-scooter Dubai 2026: permit, rules, fines, prices, apps',
-  description: 'E-scooter Dubai guide: Dott, Lime and Skurtt, the free RTA permit and who needs it, where you may ride, the AED fines, prices and the Metro rule.',
-  headline: 'E-scooters in Dubai: the RTA permit, where you may ride, the fines and what a rental costs',
-  lede: 'You can rent an e-scooter in Dubai from Dott, Lime or Skurtt, all approved by the RTA, but only on its designated tracks and districts. Dott charges AED 3.50 to unlock plus AED 1.50 a minute (published rate, 16 October 2026). You must be 16, and unless you hold a UAE or international driving licence, you need the RTA’s free online e-scooter permit, on a rental too. Wear a helmet and a reflective vest: Dubai Police seized 13,657 e-scooters for traffic violations in the first eight months of 2026.',
+  title: 'E-scooter Dubai 2026: permit, rules, fines, apps',
+  description: 'E-scooter Dubai guide: Dott, Lime and Skurtt, the free RTA permit and who needs it, where you may ride, the AED fines, the heat and the Metro rule.',
+  headline: 'E-scooters in Dubai: the RTA permit, where you may ride and the fines',
+  lede: 'You can rent an e-scooter in Dubai from Dott, Lime or Skurtt, all approved by the RTA, but only on its designated tracks and districts. You must be 16, and unless you hold a UAE or international driving licence, you need the RTA’s free online e-scooter permit, on a rental too. Wear a helmet and a reflective vest: Dubai Police seized 13,657 e-scooters for traffic violations in the first eight months of 2026.',
   published: '2026-10-16',
   updated: '2026-10-16',
   city: 'ae:Dubai',
@@ -19,32 +19,15 @@ const guide: Guide = {
         'Dubai’s Roads and Transport Authority (RTA) has approved four rental operators, as of October 2026:',
         {
           list: [
-            '**Dott**, which replaced Tier on the list. Its open data cover Dubai Marina and JLT through Downtown and Business Bay to Karama, Al Rigga, Al Qusais and Al Khawaneej, plus Dubai Hills.',
-            '**Lime**, which lists Dubai (and Abu Dhabi) among its cities.',
+            '**Dott**, which replaced Tier on the list;',
+            '**Lime**;',
             '**Skurtt**, a local operator (the RTA also writes Skurrt).',
-            '**Arnab**, a local operator. It’s still listed, but the RTA’s renting instructions name only the other three, and its page no longer shows Arnab’s phone number.',
+            '**Arnab**, a local operator. It’s still listed, but the RTA’s renting instructions name only the other three.',
           ],
         },
-        'The [map of Dubai](map:ae:Dubai) shows only Dott, the one operator here that publishes open data: about 1,700 scooters on the evening of 16 October 2026, about 90 of them in Dubai Hills (a count on the map, not a fleet size). For Lime, Skurtt and Arnab, open their apps: the RTA doesn’t publish which operator serves which district.',
-        'Abu Dhabi sets its own rules and zones. Its [map](map:ae:Abu Dhabi) showed about 500 Dott scooters, at AED 3.20 to unlock plus AED 1.20 a minute.',
-      ],
-    },
-    {
-      heading: 'How much does an e-scooter cost in Dubai?',
-      blocks: [
-        {
-          table: {
-            caption: 'E-scooter prices in Dubai (published rates, 16 October 2026)',
-            head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
-            rows: [
-              ['Dott, most of Dubai', 'AED 3.50', 'AED 1.50', 'AED 18.50', 'AED 33.50'],
-              ['Dott, Dubai Hills', 'AED 3.00', 'AED 1.20', 'AED 15.00', 'AED 27.00'],
-              ['Lime, Skurtt, Arnab', 'In the app', 'In the app', 'In the app', 'In the app'],
-            ],
-          },
-        },
-        'Dott charges from unlock to lock, stops included; the app shows the final price. The RTA says every authorised operator’s app accepts a **nol card**, the Metro card: link it by NFC, then buy hourly, daily or monthly packages.',
-        'Dott’s UAE terms allow up to €300 to recover a scooter you didn’t park as told, and Lime’s Dubai terms up to AED 440 to fetch one left out of reach. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'On the evening of 16 October 2026 the [map of Dubai](map:ae:Dubai) showed about 1,700 Dott scooters free to rent at that moment, about 90 of them in Dubai Hills.',
+        'The RTA says every authorised operator’s app accepts a **nol card**, the Metro card: link it by NFC, then buy hourly, daily or monthly packages. Each app shows its price before you unlock; new to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Abu Dhabi sets its own rules and zones; its [map](map:ae:Abu Dhabi) showed about 500 Dott scooters free to rent at that moment.',
       ],
     },
     {
@@ -58,7 +41,7 @@ const guide: Guide = {
             'a driving licence from one of the “exception countries” whose licences the UAE accepts (the RTA’s licence-exchange page lists them).',
           ],
         },
-        'Dott’s UAE terms agree: a driving licence or the permit, carried on the ride. The minimum age is 16, as Dubai’s resolution, the RTA and Dott say; a December 2025 Media Office release said 17, but the RTA’s copy of it says 16. Lime’s Dubai terms set 18.',
+        'The minimum age is 16, as Dubai’s resolution and the RTA say.',
         '**Getting the permit as a tourist.** It’s free and, the RTA says, takes about an hour:',
         {
           steps: [
@@ -74,14 +57,14 @@ const guide: Guide = {
     {
       heading: 'Where are e-scooters allowed in Dubai?',
       blocks: [
-        'Only on the tracks and in the districts the RTA designates, marked by signs and red road markings. Dubai’s rules allow e-scooters on cycle lanes designated for them, at up to 20 km/h, and on the shared streets of designated “flexible mobility” areas. On a rental, stay inside the area the app shows: Dott may disable a scooter that leaves it. The RTA’s list in October 2026:',
+        'Only on the tracks and in the districts the RTA designates, marked by signs and red road markings. Dubai’s rules allow e-scooters on cycle lanes designated for them, at up to 20 km/h, and on the shared streets of designated “flexible mobility” areas. On a rental, stay inside the area the app shows. The RTA’s list in October 2026:',
         {
           list: [
             '**Cycle tracks:** Dubai Marina, JLT, Dubai Internet City, the Greens, Jumeirah, City Walk, Downtown (Mohammed bin Rashid Boulevard), Business Bay and the Dubai Water Canal, 2nd of December Street, Al Rigga and Al Muraqqabat, Al Shindagha Museum, the Mohammed bin Rashid Library, Al Mamzar, and Al Khawaneej with Mushrif Park and Al Warqa. The RTA’s December 2025 permit notice also names Palm Jumeirah.',
             '**Residential districts with shared streets:** Al Mankhool, Al Karama, Al Qusais 1, Al Garhoud, Umm Hurair 1, Muhaisnah 3, Umm Suqeim 3, Al Safa 2, Al Barsha 3, Al Barsha South 2, and Al Tawar 1, 2 and 4.',
           ],
         },
-        'Rentals started in 10 districts on 13 April 2022 and reached 21 in 2023. Today’s list no longer names Al Quoz 4 or Nad Al Sheba 1, which some articles still list.',
+        'Rentals started in 10 districts on 13 April 2022 and reached 21 in 2023.',
         '**Where you can’t ride:**',
         {
           list: [
@@ -92,7 +75,7 @@ const guide: Guide = {
             'Pedestrian crossings: get off and walk the scooter across, or pay AED 200.',
           ],
         },
-        '**Parking.** The RTA has set aside spaces for shared scooters along the tracks, at tourist spots and around stations: park only there, blocking no one, or pay AED 200. Dott’s open data list about 350 such spots, and its terms require you to end the ride at one.',
+        '**Parking.** The RTA has set aside spaces for shared scooters along the tracks, at tourist spots and around stations: park only there, blocking no one, or pay AED 200.',
       ],
     },
     {
@@ -104,10 +87,10 @@ const guide: Guide = {
             caption: 'E-scooter rules and fines in Dubai (Resolution No. 13 of 2022, as of October 2026)',
             head: ['Rule', 'What applies', 'Fine'],
             rows: [
-              ['Age', '16 or over; Lime sets 18', '–'],
+              ['Age', '16 or over', '–'],
               ['Permit', 'RTA permit, unless your driving licence counts', 'AED 200'],
               ['Helmet and reflective vest', 'Both required', 'AED 200'],
-              ['Speed', '20 km/h on e-scooter tracks, or lower where signs say; Dott’s terms set 20 km/h everywhere', 'AED 100'],
+              ['Speed', '20 km/h on e-scooter tracks, or lower where signs say', 'AED 100'],
               ['Where to ride', 'Designated tracks and streets only, with the traffic', 'AED 200'],
               ['Passengers', 'One rider only, and nothing that unbalances you', 'AED 300'],
               ['Reckless riding', 'No zigzagging, riding one-handed or holding on to a vehicle', 'AED 300'],
@@ -118,7 +101,7 @@ const guide: Guide = {
           },
         },
         'Commit the same dangerous violation twice within a year and the RTA can impound the scooter for 30 days or ban you from riding; for riders under 18, the parent or guardian pays. The RTA also asks you not to wear headphones in both ears or use your phone while riding.',
-        'Don’t ride after drinking: Dott’s and Lime’s terms forbid it. No published rule sets an alcohol limit for e-scooters, but Dubai’s resolution tells riders to obey the traffic laws, and the UAE’s federal traffic law punishes driving a vehicle under the influence with prison, a fine of AED 20,000 to 100,000, or both.',
+        'Don’t ride after drinking: Dubai’s resolution tells riders to obey the traffic laws, and the UAE’s federal traffic law punishes driving a vehicle under the influence with prison, a fine of AED 20,000 to 100,000, or both.',
         '**The 2026 crackdown.** Since 1 May 2026 a joint RTA and Dubai Police unit has patrolled tracks, main roads and soft mobility zones, checking gear, speed, reckless riding, riding two to a scooter and riding off the tracks, and impounding scooters. Its focus areas include the Jumeirah Beach track, Mohammed bin Rashid Boulevard, the Dubai Water Canal, Business Bay, Dubai Marina, Al Mankhool, Al Karama and Al Muraqqabat. [Dubai Police](https://www.dubaipolice.gov.ae/app/home/media/news/news-details?id=hqpd6zp6dfz6t85lfcz5r5nl) seized 13,657 e-scooters in the first eight months of 2026, singling out riders on roads over 60 km/h, on pavements and in markets; a campaign around the Gold Souk, announced on 5 October, seized 300 more.',
       ],
     },
@@ -127,14 +110,13 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Heat.** Dubai’s average daily high is about 40.5 °C in July and August, 35 °C in October and 24 °C in January; an August night averages 29 °C (UAE National Center of Meteorology, via the WMO). Neither the RTA nor Dott publishes riding hours or a summer pause, so from May to October ride early or after sunset, and carry water.',
+            '**Heat.** Dubai’s average daily high is about 40.5 °C in July and August, 35 °C in October and 24 °C in January; an August night averages 29 °C (UAE National Center of Meteorology, via the WMO). From May to October, ride early or after sunset, and carry water.',
             '**At night.** Your scooter needs a white front and red rear light, and the RTA asks you to wear bright, light colours.',
             '**Metro and tram.** Since October 2024 the RTA allows folding e-scooters without a seat, at most 120 × 70 × 40 cm and 20 kg, folded from the station entrance and switched off. That’s for your own scooter: end a rental at a parking spot outside, and never ride in a station.',
             '**Dubai International (DXB).** The Metro Red Line leaves from Terminals 1 and 3, 05:00 to midnight most days (to 01:00 on Friday nights, from 08:00 on Sundays). Al Garhoud, beside the airport, is an e-scooter district.',
             '**Al Maktoum International (DWC).** No Metro: bus F55 runs to Expo Metro station and N55 to Ibn Battuta, each every 30 minutes, or take a taxi.',
           ],
         },
-        'The [Dubai map](map:ae:Dubai) shows the nearest Dott scooter, its battery and the walk to it.',
       ],
     },
     {
@@ -144,7 +126,6 @@ const guide: Guide = {
           list: [
             '**Tourists and visitors held 29% of the first permits:** 11,206 of 38,102 in the platform’s first three months from 28 April 2022.',
             '**Dubai counted 32.3 million e-scooter trips in 2024**, up from 30 million in 2023, according to the RTA.',
-            '**Dott parks scooters in Hatta too.** Its open data list 14 parking spots there, nearly 100 km east of the city centre as the crow flies.',
           ],
         },
       ],
@@ -153,7 +134,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent an e-scooter in Dubai?',
-      answer: 'Yes. Bring a valid international driving licence or a licence the UAE accepts; otherwise get the free RTA permit online first, with your passport and a UAE mobile number. You must be 16, or 18 with Lime.',
+      answer: 'Yes. Bring a valid international driving licence or a licence the UAE accepts; otherwise get the free RTA permit online first, with your passport and a UAE mobile number. You must be 16.',
     },
     {
       question: 'Is the RTA e-scooter permit free, and how long is it valid?',
@@ -173,20 +154,18 @@ const guide: Guide = {
     },
     {
       question: 'What is the e-scooter speed limit in Dubai?',
-      answer: '20 km/h on e-scooter tracks, or lower where signs say so, and Dott’s terms set 20 km/h for its scooters everywhere. Streets shared with cars in the residential districts have a 30 km/h limit. Speeding costs AED 100.',
+      answer: '20 km/h on e-scooter tracks, or lower where signs say so. Streets shared with cars in the residential districts have a 30 km/h limit. Speeding costs AED 100.',
     },
   ],
   sources: [
     { title: 'RTA: e-scooters in Dubai (locations, operators, safety rules)', url: 'https://www.rta.ae/wps/portal/rta/ae/home/about-rta/escooter' },
     { title: 'RTA: apply for an electrical scooter driving permit, updated 24 July 2026', url: 'https://www.rta.ae/wps/portal/rta/ae/home/rta-services/service-details?serviceId=141' },
     { title: 'RTA: e-scooter permits via the RTA Dubai and Dubai Now apps, 30 December 2025', url: 'https://www.rta.ae/wps/portal/rta/ae/home/news-and-media/all-news/NewsDetails/providing-e-scooter-permits-via-rta-dubai-and-dubai-now-apps' },
-    { title: 'Executive Council Resolution No. 13 of 2022 regulating the use of cycles in Dubai (PDF)', url: 'https://www.rta.ae/wps/wcm/connect/rta/14f85ce1-1c95-4803-bfb4-85e3c2feef22/Executive-Council-Resolution-13-2022-en.pdf?MOD=AJPERES' },
+    { title: 'Dubai Legal Portal: Executive Council Resolution No. 13 of 2022 regulating the use of cycles in Dubai', url: 'https://dlp.dubai.gov.ae/Legislation%20Reference/2022/Executive%20Council%20Resolution%20No.%20%2813%29%20of%202022%20Regulating%20the%20Use%20of%20Cycles.html' },
     { title: 'Dubai Legal Portal: Administrative Resolution No. 654 of 2022, the implementing bylaw', url: 'https://dlp.dubai.gov.ae/Legislation%20Reference/2022/Administrative%20Resolution%20No.%20(654)%20of%202022%20Issuing%20the%20Implementing%20Bylaw.html' },
     { title: 'Dubai Media Office: RTA and Dubai Police launch the Personal Mobility Monitoring Unit, 27 April 2026', url: 'https://mediaoffice.ae/en/news/2026/april/27-04/rta-and-dubai-police-launch' },
     { title: 'Dubai Police: 13,657 electric scooters seized in eight months, 3 September 2026', url: 'https://www.dubaipolice.gov.ae/app/home/media/news/news-details?id=hqpd6zp6dfz6t85lfcz5r5nl' },
     { title: 'RTA: requirements for carrying e-scooters on the Metro and tram (PDF)', url: 'https://rta.ae/links/rail//Requirements-for-carrying-E-Scooters.pdf' },
-    { title: 'Dott: terms and conditions, United Arab Emirates', url: 'https://ridedott.com/terms-and-conditions/uae/' },
-    { title: 'Lime: user agreement, Dubai', url: 'https://www.li.me/en-ae/user-agreement-dubai' },
     { title: 'Dubai Airports: Metro at DXB', url: 'https://dubaiairports.ae/transport/metro' },
     { title: 'WMO World Weather Information Service: climate of Dubai', url: 'https://worldweather.wmo.int/en/city.html?cityId=1190' },
   ],
