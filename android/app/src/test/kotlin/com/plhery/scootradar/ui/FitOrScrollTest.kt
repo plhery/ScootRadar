@@ -24,6 +24,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.ui.theme.ScootTheme
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -64,9 +65,10 @@ class FitOrScrollTest {
         tall = true
         // Recomposition sees the change in the next frame, as the app's own changes are seen.
         Snapshot.sendApplyNotifications()
+        // Above the foot's fade, which comes with the scroll, a quarter of the 50 here.
         val grown = List(3) {
             compose.mainClock.advanceTimeByFrame()
-            pixel(48) to pixel(52)
+            pixel(36) to pixel(52)
         }
         assertEquals("cut at the limit, frame by frame", List(3) { Color.Red to Color.White }, grown)
         assertEquals("tall, it scrolls the 120 in 50", 70f, scrollRange().maxValue())
@@ -102,6 +104,31 @@ class FitOrScrollTest {
         limit = 50.dp
         compose.waitForIdle()
         assertEquals("in 50 again, from the top", 0f, scrollRange().value())
+    }
+
+    /**
+     * While it scrolls, the content fades out at the scroll's foot where more is below, and at its head where some has
+     * gone up past it: in a 7-inch tablet's panel the providers' list ended at Voi, PubliBike's row under it showing
+     * only its blank top, and nothing said there was more. Here over a quarter of the 100, the most past each edge.
+     */
+    @Test
+    fun aScrollFadesWhereItsContentGoesOnPastItsEdges() {
+        compose.setContent {
+            ScootTheme(dark = false, reduceMotion = false) {
+                Box(Modifier.fillMaxSize().background(Color.White).testTag(PLACE)) {
+                    FitOrScroll(100.dp) { Box(Modifier.size(100.dp, 300.dp).background(Color.Red)) }
+                }
+            }
+        }
+        compose.waitForIdle()
+        assertEquals("at the top, its head plain", Color.Red, pixel(1))
+        assertEquals("above the foot's fade", Color.Red, pixel(70))
+        assertTrue("its foot faded to the white under it: ${pixel(99)}", pixel(99).green > 0.8f)
+        compose.onNode(scroll).performSemanticsAction(SemanticsActions.ScrollBy) { it(0f, 200f) }
+        compose.waitForIdle()
+        assertTrue("at the end, its head faded: ${pixel(0)}", pixel(0).green > 0.8f)
+        assertEquals("below the head's fade", Color.Red, pixel(30))
+        assertEquals("its foot plain", Color.Red, pixel(99))
     }
 
     /** The colour in the middle of the content's width, [y] dp down. */
