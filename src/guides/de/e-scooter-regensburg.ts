@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-regensburg',
   topic: 'regensburg',
-  name: 'E-Scooter Regensburg: Anbieter, Preise, Parken',
-  title: 'E-Scooter Regensburg 2026: Preise, Parken, Altstadt',
-  description: 'E-Scooter Regensburg: was Zeus pro Minute kostet, wo du in Altstadt und Stadtamhof abstellen musst und was an Uni, OTH, Bahnhof und im RVV-Bus gilt.',
-  headline: 'E-Scooter Regensburg: Preise, Abstellflächen in der Altstadt und was an Uni und Bahnhof gilt',
-  lede: 'Einen E-Scooter in Regensburg leihst du ab 18 und ohne Führerschein, laut Stadt (Stand November 2025) bei Lime, Voi, Dott oder Zeus; unsere Karte zeigt alle vier. Zeus verlangte laut Datenfeed am 23. Oktober 2026 je nach Scooter 0 €, 0,50 € oder 1 € fürs Entsperren und immer 0,23 € pro Minute. In der Altstadt, auf den Wöhrden, in Stadtamhof und am Bahnhof stellst du einen Leih-Scooter seit Juli 2024 nur auf einer der rund 40 markierten Abstellflächen ab, und durch die Fussgängerzone fährst du bis Ende Februar 2027 nicht. Ein Nachtverbot nennen weder die Stadt noch Zeus.',
+  name: 'E-Scooter Regensburg: Anbieter, Regeln, Parken',
+  title: 'E-Scooter Regensburg 2026: Parken, Altstadt, Uni',
+  description: 'E-Scooter Regensburg: die vier Anbieter, wo du in Altstadt und Stadtamhof abstellen musst und was an Uni, OTH, Bahnhof und im RVV-Bus gilt.',
+  headline: 'E-Scooter Regensburg: Abstellflächen in der Altstadt und was an Uni und Bahnhof gilt',
+  lede: 'Einen E-Scooter in Regensburg leihst du ohne Führerschein, laut Stadt (Stand November 2025) bei Lime, Voi, Dott oder Zeus; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. In der Altstadt, auf den Wöhrden, in Stadtamhof und am Bahnhof stellst du einen Leih-Scooter seit Juli 2024 nur auf einer der rund 40 markierten Abstellflächen ab, und durch die Fussgängerzone fährst du bis Ende Februar 2027 nicht.',
   published: '2026-10-23',
   updated: '2026-10-25',
   city: 'de:Regensburg',
@@ -16,28 +16,8 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Regensburg?',
       blocks: [
-        'Leih-Scooter gibt es in Regensburg seit 2019. Laut Stadt stellen vier Firmen zusammen über 1100 Scooter auf: **Lime**, **Voi**, **Dott** (früher TIER) und **Zeus**. Diese Liste ist vom November 2025. Zeus fährt hier laut einer Vorlage der Stadt seit 2020, Voi laut eigener Mitteilung seit 1. Mai 2025, zum Start mit rund 250 Scootern. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Regensburg](map:de:Regensburg) zeigt Zeus, seit dem 24. Oktober 2026 auch Dott und Voi und seit dem 25. Oktober Lime: Am Samstag, 24. Oktober, standen dort kurz vor 16 Uhr rund 190 Zeus-, 250 Dott- und 290 Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 300 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        'Die Scooter von Dott, Voi und Lime zeigt unsere Karte, ihre Preise aber nur ihre Apps.',
-      ],
-    },
-    {
-      heading: 'Was kostet ein E-Scooter in Regensburg?',
-      blocks: [
-        'Zeus rechnet in Regensburg laut Datenfeed mit drei Tarifen ab, die sich nur beim Entsperren unterscheiden; jedem Scooter ist einer davon zugeordnet. Am Nachmittag des 23. Oktober kostete das Entsperren bei knapp der Hälfte 0,50 €, bei rund 40 % 1 € und bei gut jedem achten nichts.',
-        {
-          table: {
-            caption: 'Zeus-Preise in Regensburg laut Datenfeed vom 23. Oktober 2026',
-            head: ['Tarif im Feed', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
-            rows: [
-              ['Simple rate gold', '0,00 €', '0,23 €', '2,30 €', '4,60 €'],
-              ['Simple rate silver', '0,50 €', '0,23 €', '2,80 €', '5,10 €'],
-              ['Simple rate standard', '1,00 €', '0,23 €', '3,30 €', '5,60 €'],
-            ],
-          },
-        },
-        'Auf seiner Website wirbt Zeus mit «Golden Scooters»: Sie tragen in der App ein goldenes Symbol, und die Fahrt kostet 20 % weniger (Beiträge vom September und Oktober 2025). Ob der Tarif «gold» im Feed genau das ist und was «silver» bedeutet, erklärt Zeus nicht. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Pässe nennt Zeus auf seiner Website ab 4,99 €, ohne Datum und für alle Städte; ob es sie in Regensburg gibt, zeigt die App. Voi startete im Mai 2025 laut eigener Mitteilung mit 0,17 € pro Minute ohne Entsperrgebühr; ob das noch gilt, konnten wir nicht prüfen.',
+        'Leih-Scooter gibt es in Regensburg seit 2019. Laut Stadt stellen vier Firmen zusammen über 1100 Scooter auf: **Lime**, **Voi**, **Dott** (früher TIER) und **Zeus**. Diese Liste ist vom November 2025. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Regensburg](map:de:Regensburg) rund 190 Zeus-, 250 Dott- und 290 Voi-Scooter, die zu diesem Zeitpunkt frei waren, am Sonntagmittag, 25. Oktober, rund 300 Lime-Scooter.',
       ],
     },
     {
@@ -53,15 +33,13 @@ const guide: Guide = {
               ['Altstadt, Wöhrde, Stadtamhof, Bahnhofsumfeld', 'Nur auf markierten Abstellflächen', 'Stadt Regensburg'],
               ['Dom, Altes Rathaus, Haidplatz, Neupfarrplatz', 'Keine Fläche, nächste am Ring nehmen', 'Stadt Regensburg'],
               ['Steinerne Brücke', 'In der Verbotszone, keine Fläche', 'Stadt Regensburg'],
-              ['Stadtpark, Jahnstadion', 'Laut Datenfeed kein Fahrtende', 'Zeus'],
-              ['Mitte des Uni-Campus, Universitätsstrasse am Eisbuckel, Teil des OTH-Campus an der Seybothstrasse', 'Laut Datenfeed kein Fahrtende', 'Zeus'],
               ['Übrige Stadt', 'Frei abstellen, ohne jemanden zu behindern', 'Bundesrecht (StVO)'],
             ],
           },
         },
         'Die Anbieter hinterlegen die Flächen laut Stadt in ihren Apps. Weil GPS in den engen Gassen ungenau ist, steht ein Scooter manchmal neben der Fläche. Für einen eigenen E-Scooter gilt die Pflicht nicht: Du stellst ihn ab, wo es erlaubt ist und niemanden behindert.',
         {
-          note: 'Lässt dich die App in der Altstadt nicht abschliessen, stehst du nicht auf einer Abstellfläche. Schieb den Scooter zur nächsten: Bis du die Fahrt beendest, zahlst du weiter. Stellst du falsch ab, kann Zeus laut AGB bis zu 24 Stunden weiterrechnen; lässt du den Scooter ausserhalb des Geschäftsgebiets stehen, kann Zeus 120 € verlangen.',
+          note: 'Lässt dich die App in der Altstadt nicht abschliessen, stehst du nicht auf einer Abstellfläche. Schieb den Scooter zur nächsten: Bis du die Fahrt beendest, zahlst du weiter.',
         },
       ],
     },
@@ -78,14 +56,14 @@ const guide: Guide = {
             '**Wohnverkehrsstrassen** wie die Gesandtenstrasse sind als gemeinsame Geh- und Radwege beschildert: Dort darfst du fahren, musst aber die Einbahnregeln beachten, etwa in Ludwigstrasse, Gesandtenstrasse und Rote-Hahnen-Gasse.',
           ],
         },
-        'Zur Steinernen Brücke sagt die Stadt auf dieser Seite nichts: Fahren darfst du dort, wenn die Schilder es erlauben. Einen Leih-Scooter stellst du auf der Brücke nicht ab, denn sie liegt in der Verbotszone und hat keine Fläche.',
+        'Auf der Steinernen Brücke fährst du, wo die Schilder es erlauben. Einen Leih-Scooter stellst du auf der Brücke nicht ab, denn sie liegt in der Verbotszone und hat keine Fläche.',
         'Ab 1. März 2027 gilt «Radverkehr frei» auch für E-Scooter: Auf so beschilderten Gehwegen und in Fussgängerzonen fährst du dann im Schritttempo. Die Stadt kann E-Scooter per Schild trotzdem ausschliessen. Den Radweg musst du dann nur noch nehmen, wo ein blaues Radwegschild steht.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln und Bussgelder in Regensburg',
       blocks: [
-        'Die Verkehrsregeln setzt der Bund, nicht Bayern oder die Stadt. E-Scooter fährst du ab 14 ohne Führerschein, höchstens 20 km/h und immer allein; Leih-Scooter vermieten die Anbieter erst ab 18. Eine Helmpflicht gibt es nicht; die Stadt rät dringend zum Helm, die Uni bittet darum.',
+        'Die Verkehrsregeln setzt der Bund, nicht Bayern oder die Stadt. E-Scooter fährst du ab 14 ohne Führerschein, höchstens 20 km/h und immer allein. Eine Helmpflicht gibt es nicht; die Stadt rät dringend zum Helm, die Uni bittet darum.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -100,15 +78,15 @@ const guide: Guide = {
             ],
           },
         },
-        'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, und der Führerschein ist in der Regel weg; wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar. Unter 21 oder in der Probezeit gilt 0,0. Zeus verbietet in seinen AGB das Fahren unter Alkohol- oder Drogeneinfluss.',
+        'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, und der Führerschein ist in der Regel weg; wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar. Unter 21 oder in der Probezeit gilt 0,0.',
         'Seit 1. Oktober 2026 haftet der Halter bei Unfällen auch ohne Verschulden, beim Leih-Scooter also der Anbieter. Die Seite der Stadt sagt noch das Gegenteil; in diesem Punkt ist sie überholt. Mehr in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
     {
       heading: 'Mit dem E-Scooter zur Uni, zur OTH und zum Hauptbahnhof',
       blocks: [
-        'Laut **Universität Regensburg** eignen sich E-Scooter für kurze Wege, etwa vom Bahnhof zum Campus oder vom Campus zum Standort Bajuwarenstrasse. Sie bittet, Parkzonen und Abstellverbote einzuhalten und nie barrierefreie Eingänge zuzustellen. Eine Zeus-Fahrt beendest du am Rand des Campus, in der Mitte laut Datenfeed nicht.',
-        'An der **OTH Regensburg** beendest du laut Zeus-Feed in einem Teil des Campus an der Seybothstrasse keine Fahrt. In den Gebäuden der OTH sind Roller und Ähnliches laut Hausordnung vom Juli 2025 tabu; Fahrräder gehören an die dafür vorgesehenen Plätze, nicht in oder vor die Eingänge.',
+        'Laut **Universität Regensburg** eignen sich E-Scooter für kurze Wege, etwa vom Bahnhof zum Campus oder vom Campus zum Standort Bajuwarenstrasse. Sie bittet, Parkzonen und Abstellverbote einzuhalten und nie barrierefreie Eingänge zuzustellen. Wo du auf dem Campus abstellen darfst, zeigt die App.',
+        'An der **OTH Regensburg** sind Roller und Ähnliches in den Gebäuden laut Hausordnung vom Juli 2025 tabu; Fahrräder gehören an die dafür vorgesehenen Plätze, nicht in oder vor die Eingänge.',
         'Der **Hauptbahnhof** liegt in der Abstellverbotszone. Flächen gibt es laut Planliste der Stadt am Bahnhofsvorplatz und an der Maximilianstrasse, laut Geoportal auch südlich der Gleise, etwa an der Friedenstrasse bei den Arcaden.',
       ],
     },
@@ -116,15 +94,15 @@ const guide: Guide = {
       heading: 'E-Scooter im RVV-Bus und in der Bahn',
       blocks: [
         'In den Bussen des Regensburger Verkehrsverbunds (RVV) gelten zusammengeklappte E-Tretroller als Handgepäck (Beförderungsbedingungen, Stand 1. Januar 2026). Ein Leih-Scooter lässt sich in der Regel nicht klappen; stell ihn vor der Fahrt auf einer Fläche ab.',
-        'Im Fernverkehr der Deutschen Bahn fährt ein eigener E-Scooter zusammengeklappt kostenlos als Handgepäck mit.',
+        'Ob ein eigener E-Scooter in Regional- oder Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
       ],
     },
     {
-      heading: 'Wie Regensburg E-Scooter regelt: Bund, Bayern, Stadt',
+      heading: 'Wie Regensburg E-Scooter regelt: Sondernutzung und Abstellflächen',
       blocks: [
-        'Die Abstellflächen sind eine Sondernutzung: Nur die Anbieter bekommen dafür eine Erlaubnis und zahlen eine Gebühr, deren Höhe die Stadt nicht veröffentlicht. Eine Obergrenze für Scooter oder Anbieter hat Regensburg nicht festgelegt, schreibt das Münchner Mobilitätsreferat am 1. Juli 2026.',
-        'Das liegt am Landesrecht: In Bayern gilt das Aufstellen von Leih-Scootern bisher als genehmigungsfreier Gemeingebrauch, verbindliche Obergrenzen sind rechtlich unsicher. Ab 1. März 2027 gilt das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung nicht mehr als Parken. Die Städte dürfen es dann nur unter Auflagen erlauben, etwa auf ausgewiesenen Flächen, und können das in Sondernutzungsvereinbarungen regeln. Wie München damit umgeht: [E-Scooter in München](guide:munich).',
-        'Am 18. Februar 2025 beauftragte derselbe Ausschuss die Verwaltung, die Abstellregel mit den Anbietern auf bestehende Brennpunkte im übrigen Stadtgebiet auszuweiten. Ein Nachtverbot oder eine Winterpause nennen weder die Stadt noch Zeus in seinen AGB.',
+        'Die Abstellflächen sind eine Sondernutzung: Nur die Anbieter bekommen dafür laut Stadt eine Erlaubnis und zahlen für dieses exklusive Nutzungsrecht eine Sondernutzungsgebühr. Für private E-Scooter gelten die Flächen deshalb nicht.',
+        'Ab 1. März 2027 gilt das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung nicht mehr als Parken. Die Städte dürfen es dann nur unter Auflagen erlauben, etwa auf ausgewiesenen Flächen, und können das in Sondernutzungsvereinbarungen regeln. Wie München damit umgeht: [E-Scooter in München](guide:munich).',
+        'Am 18. Februar 2025 beauftragte derselbe Ausschuss die Verwaltung, die Abstellregel mit den Anbietern auf bestehende Brennpunkte im übrigen Stadtgebiet auszuweiten.',
       ],
     },
     {
@@ -142,11 +120,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Regensburg?',
-      answer: 'Die von Zeus, Lime, Voi oder Dott: Diese vier nennt die Stadt (Stand November 2025). Die [Live-Karte von Regensburg](map:de:Regensburg) zeigt alle vier. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Zeus, Lime, Voi oder Dott: Diese vier nennt die Stadt (Stand November 2025). Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren. Freie Scooter zeigt die [Live-Karte von Regensburg](map:de:Regensburg).',
     },
     {
-      question: 'Was kostet ein Zeus-Scooter in Regensburg?',
-      answer: 'Laut Datenfeed vom 23. Oktober 2026 je nach Scooter 0 €, 0,50 € oder 1 € fürs Entsperren und 0,23 € pro Minute. Zehn Minuten kosten also 2,30 € bis 3,30 €. Den verbindlichen Preis zeigt die App vor dem Entsperren.',
+      question: 'Wo stelle ich einen Leih-Scooter am Hauptbahnhof ab?',
+      answer: 'Nur auf einer markierten Fläche, denn der Bahnhof liegt in der Abstellverbotszone. Flächen gibt es laut Planliste der Stadt am Bahnhofsvorplatz und an der Maximilianstrasse, laut Geoportal auch südlich der Gleise an der Friedenstrasse bei den Arcaden.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Regensburger Altstadt fahren?',
@@ -157,8 +135,8 @@ const guide: Guide = {
       answer: 'Weil du in der Altstadt nur auf den markierten Abstellflächen abstellen darfst und es rund um Dom, Altes Rathaus, Haidplatz und Neupfarrplatz keine gibt. Die nächsten liegen am Ring, etwa am Bismarckplatz oder am Fischmarkt. Bis du dort abschliesst, läuft die Miete.',
     },
     {
-      question: 'Gibt es in Regensburg ein Nachtverbot für E-Scooter?',
-      answer: 'Nein. Weder die Stadt noch Zeus nennen ein Nachtverbot oder eine Winterpause (Stand Oktober 2026).',
+      question: 'Muss ich meinen eigenen E-Scooter in der Altstadt auf einer Fläche abstellen?',
+      answer: 'Nein: Die Pflicht gilt nur für Leih-Scooter und Leih-Räder. Deinen eigenen stellst du ab, wo es nicht verboten ist und niemanden behindert.',
     },
     {
       question: 'Darf ich einen E-Scooter im RVV-Bus mitnehmen?',
@@ -171,16 +149,9 @@ const guide: Guide = {
     { title: 'Stadt Regensburg: Ausschussbeschluss Abstellplätze Innenstadt (19. September 2023)', url: 'https://srv19.regensburg.de/bi/to020.asp?TOLFDNR=59517' },
     { title: 'Stadt Regensburg: Ausschussbeschluss Hotspots (18. Februar 2025)', url: 'https://srv19.regensburg.de/bi/to020.asp?TOLFDNR=62718' },
     { title: 'Stadt Regensburg: Umfrage zu Mobilität, Ergebnisse (ZISteM)', url: 'https://www.regensburg.de/leben/verkehr-u-mobilitaet/elektromobilitaet/e-roller-e-scooter/umfrage-zu-mobilitaet-ergebnisse' },
-    { title: 'Mobilitätsreferat München: Antwort zu «E-Scooter-Chaos beenden» (1. Juli 2026)', url: 'https://risi.muenchen.de/risi/dokument/v/9788061' },
     { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
     { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
     { title: 'Strassenverkehrs-Ordnung, Anlage 2 (Vorschriftzeichen), aktuelle Fassung', url: 'https://www.gesetze-im-internet.de/stvo_2013/anlage_2.html' },
-    { title: 'Zeus: Datenfeed Regensburg (GBFS)', url: 'https://zeus.city/api/v1/mds/gbfs/regensburg/gbfs.json' },
-    { title: 'Zeus: Preise und Pässe', url: 'https://zeusscooters.com/' },
-    { title: 'Zeus: Golden Scooters (September 2025)', url: 'https://zeusscooters.com/2025/09/make-every-hour-golden-with-zeus-scooters/' },
-    { title: 'Zeus: Allgemeine Geschäftsbedingungen', url: 'https://zeusscooters.com/terms-and-conditions/' },
-    { title: 'Voi: E-Scooter-Anbieter Voi startet in Regensburg (April 2025)', url: 'https://storage.mfn.se/7985fb60-e679-4774-acb8-42a86e1b5711/e-scooter-anbieter-voi-startet-in-regensburg.pdf' },
-    { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
     { title: 'Universität Regensburg: Sharing-Angebote', url: 'https://www.uni-regensburg.de/universitaet/organisation/kontakt/sharing-angebote' },
     { title: 'OTH Regensburg: Hausordnung (9. Juli 2025)', url: 'https://www.oth-regensburg.de/fileadmin/Bereiche/Organisation/Rechtliche_Grundlagen/Satzungen_Ordnungen/2025/Hausordnung_der_OTH_Regensburg_09_07_2025_final.pdf' },
     { title: 'RVV: Beförderungsbedingungen (Stand 1. Januar 2026)', url: 'https://www.rvv.de/12288-befoerderung-tarif-2026-01-01' },
