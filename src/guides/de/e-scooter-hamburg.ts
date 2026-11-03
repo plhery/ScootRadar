@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut der Behörde für Verkehr und Mobilitätswende (BVM) vermieten fünf Anbieter in Hamburg E-Scooter: **Bolt**, **Dott**, **Lime**, **Ryde** und **Voi**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde ist neu: Im Februar 2025 nannte die Stadt erst vier Anbieter.',
         'Du leihst den Scooter in der App des Anbieters; ab welchem Alter, steht in seinen Bedingungen, auch wenn das Gesetz E-Scooter schon ab 14 erlaubt. Voi buchst du auch in **hvv switch**, der Mobilitäts-App der Hochbahn, in Hamburg und Pinneberg. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Hamburg](map:de:Hamburg) rund 3500 Dott- und 6800 Voi-Scooter, die zu diesem Zeitpunkt frei waren; am Sonntag, 25. Oktober, kurz vor 14 Uhr rund 5600 freie Bolt-Scooter und am Vormittag rund 5900 Lime-Scooter nach der letzten Zählung.',
+        'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Hamburg](map:de:Hamburg) rund 3500 Dott- und 6800 Voi-Scooter, die zu diesem Zeitpunkt frei waren; am Sonntag, 25. Oktober, kurz vor 14 Uhr rund 5600 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, und am Vormittag rund 5900 Lime-Scooter nach der letzten Zählung.',
         'Laut Vertrag dürfen alle Anbieter zusammen innerhalb des Ring 2 höchstens 5000 E-Scooter und 5000 E-Bikes aufstellen. Die Stadt teilt sie gleichmässig auf: Bei vier Anbietern nennt der Vertrag je 1250, bei fünf wären es rechnerisch je 1000. Ausserhalb gibt es keine Obergrenze, und die Stadt wünscht sich ausdrücklich Scooter in Vierteln, in denen Bus und Bahn seltener fahren.',
       ],
     },
