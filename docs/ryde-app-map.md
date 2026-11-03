@@ -527,73 +527,86 @@ read-only status helper. It also returned `querySucceeded=false`; administrator
 access did not make this simulation interface usable. The private authentication
 file was removed after the command.
 
-The checked disk outputs therefore do not supply a working bridge. Moving the
-map remains a prerequisite for the Drammen test; exporting its decrypted result
-also requires an app interface or another verified access path. Keeping Ryde
-open by itself has not demonstrated either capability. Private snapshots and
+The checked disk outputs do not supply a working bridge. The later scoped
+proxy capture provides another possible way to request Drammen coordinates,
+without moving the map UI; coordinate rewriting has not yet been tested.
+Exporting a decrypted result still requires an app interface or a verified
+key-translation path. Keeping Ryde open by itself does not establish either. Private snapshots and
 helper diagnostics are under `mac-session/drammen-bridge-20261102/` outside Git.
 
-### Prepared local proxy bridge experiment
+### Scoped native-app capture succeeded, 3 November
 
-A different bridge design could let the unmodified app generate fresh DPoP
-proofs while a local proxy substitutes a bridge-owned encryption public key
-during normal session-key rotation. The proxy would then decrypt the server's
-envelopes and re-encrypt them to the app's original public key. This depends on
-live acceptance of the substituted key and correct key-id translation; neither
-has been tested. DPoP alone does not bind the request body, as described in
-[RFC 9449 section 11.7](https://www.rfc-editor.org/rfc/rfc9449.html#section-11.7).
-Additional Ryde checks may still prevent this approach.
+The unmodified, signed Mac-compatible Ryde app accepted a local proxy with a
+short-lived, self-signed leaf certificate (not a CA). Administrator trust was
+verified to contain exactly one setting constrained to the signed Ryde
+executable, SSL and `api.ryde.vip`. The PAC routed only that hostname through
+localhost. The user approved an attended procedure: network routing stops
+automatically, while certificate-trust installation and removal may require
+separate macOS confirmations.
 
-A first, capture-only test was prepared under
-`mac-session/bridge-proxy-20261102/`, outside Git. Its local TLS handshake worked
-with an explicitly trusted test client. Offline ECIES translation passed the
-existing Ryde decryptor, including wrong-recipient and tampering rejection.
-These checks do not establish compatibility with the actual Mac app.
+At `2026-11-03T20:45:31Z`, the proxy captured a fresh official-app
+`POST /appRyde/getNearScootersNew`: HTTP 200, application status 200, and no TLS
+failures. Its ES256 DPoP proof had the same issuance second and bound the
+method, URL and token hash. The request carried the app's token, authorization
+and encryption-key identifier. This establishes working native-app transport
+and fresh authenticated map capture. It does **not** establish an independently
+signed request, decrypted fleet export or production bridge.
 
-The prepared leaf certificate is not a CA. Proposed trust is restricted to the
-signed Ryde executable, TLS server authentication and `api.ryde.vip`; the PAC
-routes only that hostname through localhost. The original proxy configuration
-is backed up, and an independent guard is prepared to restore it and remove the
-certificate after one map capture, a TLS failure or five minutes. The user
-approved this scoped capture on 3 November 2026.
+The request was for Zürich (`cityId=0`, radius 10), not Drammen. Its response
+contained an `ECDH-ES+A256GCM` envelope, with `alg`, `data`, `ekt`, `epk` and `iv`.
+The response key identifier matched the request. The app's encryption private
+key remains unavailable to the bridge.
 
-Two administrator-authenticated activation attempts on 3 November timed out
-while installing trust, first after 30 seconds and then after 180 seconds.
-The certificate was added to the System keychain each time and removed by
-cleanup. The PAC was never enabled, and the original proxy configuration was
-verified unchanged. No native-app exchange was intercepted and no session-key
-rotation was attempted. Both listeners were stopped.
+A second one-response check at `2026-11-03T21:00:43Z` omitted only the
+`Ryde-API-Security-Version: 2` header from a fresh native map request. Its body,
+authorization and DPoP proof were unchanged. It again returned HTTP 200,
+application status 200 and the same ECIES format. Omitting that header did not
+enable the parser's older AES format; this does not test every possible legacy
+profile. Neither capture changed session keys.
 
-The second attempt supplied a more precise diagnosis on macOS 27.2 (26B123).
-`authd` granted the command-line client's `com.apple.trust-settings.admin`
-request, but the first attempt's separate authorization by `trustd` remained
-pending. The retry stalled at `SecTrustSettingsXPCWrite`, without reaching a
-new server-side authorization. Apple's
-[trust-settings implementation](https://github.com/apple-oss-distributions/Security/blob/main/trust/trustd/SecTrustSettingsServer.c)
-serializes writes and checks authorization inside the trust service, consistent
-with the retry waiting behind that first request. Killing the client command
-did not establish that its queued server-side write was cancelled.
+Both successful runs stopped routing and listeners after the first map
+response. Trust removal and certificate deletion completed, and independent
+checks confirmed that the exact original Ethernet proxy settings were restored,
+the test certificate and trust entry were absent, and both localhost ports were
+closed. Captures and one-use administrator credentials stayed private; the
+credential files were removed after use. Raw exchanges are mode 0600 outside
+Git under `mac-session/bridge-proxy-20261102/`.
 
-The test certificate and trust entry are currently absent, but the pending
-write must also be cancelled before treating cleanup as complete. A bounded
-administrator helper is prepared to sample and restart the stuck trust service
-and verify the original settings; it cannot enable capture. The local
-`authenticate-admin` rule has `allow-root=false` and `timeout=0`. Automatic
-removal of successfully installed trust has not been verified, so the original
-five-minute trust-cleanup guarantee must not be treated as established. The
-desktop-control tool refuses access to SecurityAgent; any required OS dialogs
-must be completed by the user.
+The remaining proposed bridge uses the app for fresh DPoP proofs and substitutes
+a bridge-owned encryption public key during normal session-key rotation. It
+would decrypt responses and re-encrypt them to the app's original public key.
+Offline ECIES translation passed round-trip, wrong-recipient and tampering
+checks. Live key substitution, rollback and Drammen coordinate rewriting remain
+untested. DPoP itself does not bind the request body, as described in
+[RFC 9449 section 11.7](https://www.rfc-editor.org/rfc/rfc9449.html#section-11.7);
+additional Ryde checks may still prevent this approach. Simply removing the
+proxy after a substituted key was accepted could leave the app unable to
+read responses, so a verified restoration path is required before relying on it.
 
-The cleanup helper's authentication request timed out without execution. The
-user cannot access the Mac until later and paused the investigation. Ryde was
-reopened normally. On resumption, cancel any expired authorization dialogs and
-clear the pending requests before starting another trust operation; do not
-approve an old capture prompt after its cleanup window has ended. The old
-activation command is blocked in configuration until cleanup is resolved.
+Static tracing of the installed Apple binary identifies the rotation schedule
+setter: it reads `rotateAfterSeconds`, stores the next Unix timestamp through
+the app's security-data store, and defaults to three days when the field is
+absent. Its observed callers handle successful sign-in, registration and
+rotation. The sign-in path uses a fixed endpoint set; ordinary map responses
+and `modifyUserLogin` are not in it. The ordinary preferences snapshot contained
+no rotation timestamp. An observation-only experiment is prepared to shorten
+the interval in one successful fresh Apple sign-in response and capture the
+following unmodified native rotation. Fixture checks cover successful-login
+selection, the one-change limit, and preservation of the token, keys and
+rotation request/response. This experiment has not yet run; it requires a
+fresh sign-in, beyond the earlier capture-only procedure.
 
-The capture addon saves at most one map exchange and excludes the sibling
-hostname, non-map routes and oversized requests; those boundaries passed
-fixture checks. This remains a prepared experiment, not a working bridge.
+
+Earlier trust-installation attempts timed out while macOS authorization was
+pending. Apple's [trust-settings implementation](https://github.com/apple-oss-distributions/Security/blob/main/trust/trustd/SecTrustSettingsServer.c)
+serializes writes and checks authorization in the trust service; killing the
+command-line client did not cancel its queued write. The user cancelled the old
+prompts before the attended runs. The corrected controller starts its five-minute
+network window and normal-user listeners only after trust installation succeeds.
+A delayed-approval fixture verified that ordering, and a stopped run cannot
+subsequently enable routing. The old activation command remains blocked. Do not
+claim that trust removal is unattended on this Mac: the local authorization rule
+requires confirmation, and the desktop-control tool cannot operate SecurityAgent.
 
 ## Recheck: model spoofing, attestation and session keys
 
@@ -703,8 +716,8 @@ Base64 formatting and trims it, then takes MD5. Decoded constants, APKs and
 raw diagnostics stay outside the repository.
 
 The nearby response model carries encrypted `key`/`key2` fields. Its parser
-supports an ECIES envelope and an older AES fallback; the actual format
-returned after a successful current login remains unverified. The decrypted
+supports an ECIES envelope and an older AES fallback. The authenticated Mac
+captures above confirm ECIES for the current iOS session. The decrypted
 static model has separate scooter and e-bike arrays with coordinates and QR
 codes. Battery, range and an independent position timestamp are absent from
 that nearby model. Availability, identity stability and completeness still
