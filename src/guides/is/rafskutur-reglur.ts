@@ -21,7 +21,7 @@ const guide: Guide = {
             caption: 'Helstu reglur um rafskútur í október 2026',
             head: ['Efni', 'Reglan', 'Heimild'],
             rows: [
-              ['Aldurstakmark', '13 ár. Hopp krefst 18 ára aldurs', '3. mgr. 44. gr. umferðarlaga'],
+              ['Aldurstakmark', '13 ár. Aldurstakmark leigunnar sérðu í appinu', '3. mgr. 44. gr. umferðarlaga'],
               ['Hjálmur', 'Skylda fyrir börn yngri en 16 ára, mælt með honum fyrir alla', '1. mgr. 79. gr.'],
               ['Gangstétt og göngustígur', 'Leyft, en gangandi vegfarendur eiga forgang', '1.–3. mgr. 43. gr.'],
               ['Göngugata', 'Leyft, en ekki hraðar en á eðlilegum gönguhraða', '4. mgr. 10. gr.'],
@@ -77,10 +77,9 @@ const guide: Guide = {
     {
       heading: 'Mega tveir vera á rafskútu? Farþegar, sími, ljós og stæði',
       blocks: [
-        'Nei. Samgöngustofa svarar spurningunni „Má vera með farþega?“ neitandi, og Hopp bannar það líka.',
+        'Nei. Samgöngustofa svarar spurningunni „Má vera með farþega?“ neitandi.',
         'Þú mátt ekki nota farsíma, snjalltæki eða önnur raftæki á ferð nema með handfrjálsum búnaði (57. gr.). Samgöngustofa segir að stöðva eigi áður en síminn er notaður.',
         'Í ljósaskiptum, myrkri og slæmu skyggni eiga ljósin að vera kveikt (2. mgr. 34. gr.). Samgöngustofa mælir með sterku hvítu ljósi að framan, rauðu að aftan og endurskini bæði að framan og aftan. Á íslenskum vetri á þetta við stóran hluta dagsins.',
-        'Engar sérstakar vetrarreglur gilda um rafskútur, hvorki um nagladekk né akstur í hálku. Veturinn 2023–2024 minnkaði Hopp þjónustusvæðið og hafði allar rafskútur vetrarins á negldum dekkjum.',
         'Rafskútu á að leggja þannig að hvorki stafi hætta né truflun af henni (6. mgr. 42. gr.). Samgöngustofa biður fólk að leggja rafskútum ekki á miðri gangstétt eða stíg, á skábrautum, við innganga húsa eða á gangbrautum. Bann umferðarlaga við því að leggja ökutækjum á gangstétt (3. mgr. 28. gr.) gildir aðeins um skráningarskyld ökutæki, og rafskútur falla ekki undir það.',
       ],
     },
@@ -89,18 +88,17 @@ const guide: Guide = {
       blocks: [
         'Samkvæmt 7. mgr. 49. gr. umferðarlaga telst sá sem er með meira en 0,5‰ vínanda í blóði, eða meira en 0,25 milligrömm í hverjum lítra útöndunarlofts, ekki geta stjórnað smáfarartæki örugglega. Það er refsivert. Fyrir bílstjóra eru mörkin 0,2‰, svo á rafskútu eru þau 2,5 sinnum hærri. Víða er sagt að sömu mörk gildi og á bíl, en það er rangt.',
         'Fíkniefni og lyf eru líka bönnuð: þú mátt ekki vera á rafskútu undir áhrifum ólöglegra fíkniefna eða lyfja sem skerða hæfni þína til að stjórna henni (50. gr.). Þér ber að gangast undir öndunarpróf ef lögreglan biður um það (1. mgr. 52. gr.).',
-        'Brot á áfengisreglunni varða sektum eða fangelsi allt að tveimur árum (95. gr.). Samgöngustofa segir að búast megi við sektum ef áfengismagn í blóði er yfir 0,5 prómill. Hve há sektin er liggur ekki fyrir, því sektareglugerðin hefur ekki verið uppfærð með sérstakri sekt fyrir ölvun á smáfarartæki.',
+        'Brot á áfengisreglunni varða sektum eða fangelsi allt að tveimur árum (95. gr.). Samgöngustofa segir að búast megi við sektum ef áfengismagn í blóði er yfir 0,5 prómill. Sektareglugerðin er eldri en smáfarartækjaflokkurinn, svo fyrir ölvun á rafskútu gildir almennur rammi hennar, 20.000–500.000 kr. (1. gr.).',
         'Ökuréttindin eru hins vegar ekki í húfi. Innviðaráðuneytið tók fram árið 2024 að akstur undir áhrifum áfengis á smáfarartæki varði ekki sviptingu ökuréttar. Til samanburðar fær bílstjóri sem mælist með 0,5–0,6‰ í fyrsta sinn 90.000 kr. sekt og er sviptur ökurétti í tvo mánuði.',
         {
           note: '**0,5‰ er ekki öruggt mark.** Af þeim 31 sem slösuðust alvarlega eða létust á rafskútum árið 2021 lentu 12 í slysi milli kl. 23 og 4 aðfaranótt laugardags eða sunnudags. Enginn af þeim 25 hjólreiðamönnum sem slösuðust alvarlega það ár slasaðist á þeim tíma. Árið 2020 voru 40% fullorðinna sem leituðu á bráðamóttöku Landspítala eftir slys á rafskútu undir áhrifum.',
         },
-        'Hopp gengur lengra en lögin: samkvæmt skilmálum fyrirtækisins má alls ekki nota rafskúturnar undir áhrifum áfengis eða annarra vímuefna.',
       ],
     },
     {
       heading: 'Sektir fyrir brot á rafskútu',
       blocks: [
-        'Sektir fyrir umferðarlagabrot eru í reglugerð nr. 1240/2019, sem er eldri en smáfarartækjaflokkurinn. Þar er enginn liður sem nefnir smáfarartæki, en þar sem reiðhjólareglurnar gilda líka um þau eru sektir hjólreiðamanna besta vísbendingin. Samgöngustofa segir einfaldlega að sekt fyrir brot sé 20.000 kr.',
+        'Sektir fyrir umferðarlagabrot eru í reglugerð nr. 1240/2019, sem er eldri en smáfarartækjaflokkurinn. Þar sem reiðhjólareglurnar gilda líka um smáfarartæki eru sektir hjólreiðamanna besta vísbendingin. Samgöngustofa segir einfaldlega að sekt fyrir brot sé 20.000 kr.',
         {
           table: {
             caption: 'Sektir í reglugerð nr. 1240/2019 sem helst eiga við um rafskútur, í október 2026',
@@ -112,36 +110,27 @@ const guide: Guide = {
               ['Ljós ekki kveikt þegar birta er ófullnægjandi', '20.000 kr.', '2. mgr. 34. gr.'],
               ['Ljósum, glitmerkjum eða hemlum áfátt', '20.000 kr. fyrir hvert atriði', '69. gr.'],
               ['Farsími notaður án handfrjáls búnaðar', '40.000 kr.', '57. gr.'],
-              ['Ölvun yfir 0,5‰, akstur á götu þar sem hámarkshraðinn er yfir 30 km/klst., breytt rafskúta', 'Engin föst upphæð. Fyrir brot sem reglugerðin telur ekki upp eru sektir 20.000–500.000 kr.', '1. gr. reglugerðarinnar'],
-              ['Barn yngra en 13 ára á rafskútu, eða yngra en 16 ára án hjálms', 'Engin sekt í reglugerðinni. Börnum yngri en 15 ára er ekki refsað', '3. mgr. 44. gr., 79. gr.'],
+              ['Ölvun yfir 0,5‰, akstur á götu þar sem hámarkshraðinn er yfir 30 km/klst., breytt rafskúta', '20.000–500.000 kr., almennur rammi reglugerðarinnar', '1. gr. reglugerðarinnar'],
+              ['Barn yngra en 13 ára á rafskútu, eða yngra en 16 ára án hjálms', 'Börnum yngri en 15 ára er ekki refsað', '3. mgr. 44. gr., 79. gr.'],
             ],
           },
         },
-        'Ef þú greiðir sektina að fullu innan 30 daga lækkar hún um 25%, svo 20.000 kr. verða 15.000 kr. Brjótirðu fleiri en eina reglu í einu eru sektirnar lagðar saman. Hvaða liði lögreglan notar fyrir brot á rafskútu hefur ekki verið birt.',
+        'Ef þú greiðir sektina að fullu innan 30 daga lækkar hún um 25%, svo 20.000 kr. verða 15.000 kr. Brjótirðu fleiri en eina reglu í einu eru sektirnar lagðar saman.',
       ],
     },
     {
       heading: 'Tryggingar: hver ber ábyrgð ef slys verður?',
       blocks: [
         'Engin tryggingaskylda er á rafskútum. Lög um ökutækjatryggingar ná aðeins til skráningarskyldra ökutækja, og smáfarartæki eru undanþegin skráningu. Samgöngustofa hvetur eigendur til að leita ráða hjá tryggingafélögum um ábyrgðartryggingu. Ef þú veldur öðrum tjóni getur kostnaðurinn lent á þér, svo spurðu tryggingafélagið þitt hvort heimilistryggingin nái yfir akstur á rafskútu.',
-        'Í skilmálum Hopp segir að meðan engin tryggingaskylda sé í landinu sé tjón á eignum annarra og líkamstjón alltaf á ábyrgð notandans. Notandinn ber líka ábyrgð á skemmdum á rafskútunni, sem geta kostað allt að 2.000 evrur.',
         'Bætur eru heldur ekki sjálfgefnar þótt leigð rafskúta bili. Í apríl 2023 kastaðist ökumaður af leigðri rafskútu sem stöðvaðist skyndilega vegna bilunar og hlaut 7% varanlega örorku. Úrskurðarnefnd í vátryggingamálum staðfesti að ekki þyrfti að greiða bætur úr ábyrgðartryggingu fyrirtækisins, því ökumaðurinn hefði ekki sýnt fram á gáleysi þess (DV, 9. ágúst 2025).',
       ],
     },
     {
-      heading: 'Rafskútuleiga: reglur Hopp eru strangari en lögin',
+      heading: 'Rafskútuleiga: skilmálar bætast við lögin',
       blocks: [
-        'Þegar þú leigir rafskútu gilda bæði umferðarlögin og skilmálar fyrirtækisins. Skilmálarnir eru ekki lög, en þeir ganga oft lengra. Þetta eru helstu reglur Hopp á Íslandi:',
-        {
-          list: [
-            '**18 ára aldurstakmark.** Lögin leyfa 13 ára börnum að keyra rafskútu, en Hopp krefst 18 ára aldurs og ráðleggur yngra fólki að bíða.',
-            '**Ekkert áfengi.** Bannað er að nota rafskúturnar undir áhrifum áfengis eða annarra vímuefna, ekki aðeins yfir 0,5‰.',
-            '**Einn á hverri rafskútu**, með báðar hendur á stýrinu. Mælt er með hjálmi.',
-            '**Mynd í lok ferðar.** Hopp krefst myndar af rafskútunni þar sem henni er lagt og getur rukkað 30 evrur, eða sambærilega upphæð í krónum, ef engin mynd er tekin. Leggi yfirvöld sekt á Hopp vegna þess hvernig rafskútunni var lagt rukkar fyrirtækið notandann um hana.',
-          ],
-        },
-        'Bolt hóf líka að leigja út rafskútur í Reykjavík 9. ágúst 2024 og borgin nefndi fyrirtækið sem rekstraraðila í júlí 2025, en við höfum ekki fengið staðfest að Bolt sé enn með rafskútur í október 2026. Zolo hætti starfsemi í byrjun árs 2025. Leigirðu hjá öðru fyrirtæki en Hopp gilda skilmálar þess, og aldurstakmarkið sérðu í appinu. Engin landslög banna rafskútuleigu á nóttunni; takmarkanir um helgarnætur voru ræddar 2021–2022 en ekki settar. Hvað gildir sérstaklega í borginni lestu í [leiðarvísinum um rafskútur í Reykjavík](guide:reykjavik).',
-        'Á [korti ScootRadar](/map) voru 13. október 2026 um 2.800 rafskútur frá Hopp í 18 bæjum: um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík) og um 180 á [Akureyri](map:is:Akureyri). Kortið sýnir aðeins fyrirtæki sem birta opin gögn. Birt verð Hopp þann dag var 115 kr. í upphafsgjald og 45 kr. á mínútu; endanlegt verð sérðu í appinu. Hvernig þú leigir rafskútu, skref fyrir skref, lestu í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
+        'Þegar þú leigir rafskútu gilda bæði umferðarlögin og skilmálar fyrirtækisins. Skilmálarnir eru ekki lög, en þeir ganga oft lengra; aldurstakmarkið og verðið sérðu í appinu áður en þú opnar rafskútuna.',
+        'Hvað gildir sérstaklega í borginni, til dæmis um stæði og hægakstursgötur, lestu í [leiðarvísinum um rafskútur í Reykjavík](guide:reykjavik).',
+        'Þann 13. október 2026 voru um 2.800 rafskútur frá Hopp lausar til leigu á þeim tíma í 18 bæjum, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík) og um 180 á [Akureyri](map:is:Akureyri). Hvernig þú leigir rafskútu, skref fyrir skref, lestu í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
       ],
     },
   ],
@@ -156,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvað þarf barn að vera gamalt til að mega keyra rafskútu?',
-      answer: 'Barnið þarf að vera orðið 13 ára, og þar til það verður 16 ára er hjálmur skylda. Leigufyrirtæki geta sett hærri mörk: Hopp krefst 18 ára aldurs.',
+      answer: 'Barnið þarf að vera orðið 13 ára, og þar til það verður 16 ára er hjálmur skylda. Leigufyrirtæki geta sett hærri mörk; þau sérðu í appinu.',
     },
     {
       question: 'Þarf að tryggja rafskútu?',
@@ -176,7 +165,6 @@ const guide: Guide = {
     { title: 'Alþingi: Lög um ökutækjatryggingar nr. 30/2019', url: 'https://www.althingi.is/lagas/nuna/2019030.html' },
     { title: 'Alþingi: Almenn hegningarlög nr. 19/1940', url: 'https://www.althingi.is/lagas/nuna/1940019.html' },
     { title: 'RÚV: Aldurstakmark á rafhlaupahjól sett af ástæðu en ekki virt að fullu (8. júní 2026)', url: 'https://www.ruv.is/frettir/innlent/2026-06-08-aldurstakmark-a-rafhlaupahjol-sett-af-astaedu-en-ekki-virt-ad-fullu-477414' },
-    { title: 'Hopp: Skilmálar', url: 'https://hopp.bike/is/tos' },
   ],
 };
 
