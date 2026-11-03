@@ -1,4 +1,5 @@
 import com.android.build.api.artifact.SingleArtifact
+import java.util.Properties
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
@@ -20,17 +21,35 @@ android {
         minSdk = 31
         targetSdk = 37
         versionCode = 1
-        versionName = "1.2.0"
+        // The iPhone app's version (MARKETING_VERSION); versionCode goes up by one with each upload to Play.
+        versionName = "1.3.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // The upload key for Play, which Play App Signing re-signs with the app's own key. It is kept outside the repo, in
+    // a properties file named by the Gradle property scootradar.uploadKey: storeFile, keyAlias and passwordFile, a
+    // file holding the store's and the key's one password. Without it, as on CI, the release build is unsigned.
+    val uploadKey = providers.gradleProperty("scootradar.uploadKey").orNull?.let(::File)
+    if (uploadKey != null) {
+        val properties = Properties().apply { uploadKey.inputStream().use(::load) }
+        fun path(name: String) = uploadKey.resolveSibling(checkNotNull(properties.getProperty(name)) { "no $name in $uploadKey" })
+        val password = path("passwordFile").readText().trim()
+        signingConfigs.create("upload") {
+            storeFile = path("storeFile")
+            storePassword = password
+            keyAlias = checkNotNull(properties.getProperty("keyAlias")) { "no keyAlias in $uploadKey" }
+            keyPassword = password
+        }
+    }
+
     buildTypes {
-        // The build for Play: shrunk, optimised and obfuscated by R8, its unused resources taken out. It has no
-        // signing config: its key waits for the user (NEEDS-USER #9), so assembleRelease makes an unsigned APK.
+        // The build for Play: shrunk, optimised and obfuscated by R8, its unused resources taken out, and signed with
+        // the upload key where one is given.
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.findByName("upload")
         }
     }
 
