@@ -543,6 +543,20 @@ describe('German and Italian scooter coverage', () => {
     expect(activeSeasonalPause([65.6835, -18.0878], winter)).toBeNull();
     expect(feedPaused('iceland:hopp_is_akureyri', winter)).toBe(false);
   });
+  it('takes Lime Târgoviște\'s scooters off from 30 October until 1 April, as Lime took them in on 30 October 2026', () => {
+    const targoviste: [number, number] = [44.92543, 25.4567];
+    // Romania is two hours ahead of UTC in October: 23:30 on 29 October is still in season; 00:30 on the 30th is not.
+    expect(activeSeasonalPause(targoviste, Date.UTC(2026, 9, 29, 21, 30))).toBeNull();
+    expect(activeSeasonalPause(targoviste, Date.UTC(2026, 9, 29, 22, 30))).toEqual({ city: 'Târgoviște', month: 4 });
+    expect(activeSeasonalPause(targoviste, Date.UTC(2027, 2, 31, 12))).toEqual({ city: 'Târgoviște', month: 4 });
+    expect(activeSeasonalPause(targoviste, Date.UTC(2027, 3, 1, 12))).toBeNull();
+    const winter = Date.UTC(2027, 0, 15, 12);
+    expect(feedPaused('romania:lime_ro_app_targoviste_000', winter)).toBe(true);
+    expect(feedPaused('romania:lime_ro_app_targoviste_001', winter)).toBe(true);
+    // Lime's Bucharest, 75 km south-east, still runs.
+    expect(activeSeasonalPause([44.4268, 26.1025], winter)).toBeNull();
+    expect(feedPaused('romania:lime_ro_app_bucuresti_000', winter)).toBe(false);
+  });
   it('takes Hopp\'s scooters off in Ólafsvík and Hellissandur from 23 October until 1 May, as its feed emptied on 22 October 2026', () => {
     const olafsvik: [number, number] = [64.8959, -23.7084];
     const hellissandur: [number, number] = [64.9172, -23.8825];

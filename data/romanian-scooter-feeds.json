@@ -331,6 +331,11 @@
       ],
       "timeZone": "Europe/Bucharest",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "seasonal": {
+        "from": "10-30",
+        "until": "04-01",
+        "timeZone": "Europe/Bucharest"
+      },
       "limeAppMap": true,
       "limeAppRegion": "KGBBKPKB7DAUM",
       "limeMapGrid": {

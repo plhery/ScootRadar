@@ -1952,6 +1952,15 @@ Bonaire had feeds to add. Survey files are in
   move `until` to that day; in October 2027, set `from` by the city's notice.
   Bird Pickering likewise, its pilot's page saying April to the end of
   October: check that the pilot comes back in 2027.
+- **Late March 2027:** Lime Târgoviște (`lime_ro_app_targoviste`), paused
+  from 30 October until 1 April, Bucharest time: Lime took its 106 scooters
+  in on 30 October 2026, between 10:20 and 10:30 UTC, and its map listed none
+  there since (the last read at 07:34 UTC on 3 November), while its other
+  Romanian towns ran on. Lime's locations page still listed Târgoviște on 3
+  November, and neither Lime nor the city publishes a season, so 1 April is
+  the date the cache's other winter towns use. The feed stays polled: if the
+  scooters are back earlier, move `until` to that day; if Lime's page drops the
+  town, take it off the map.
 - **1 April 2027:** Hoppy Zakynthos (`hoppy_gr_zakynthos`, ATOM 2198). It
   fell from 33 scooters on 24 October 2026 to none by 27 October, 18:00 UTC,
   as its season ended ([Greek feeds](greek-scooter-feeds.md)), with Kos and

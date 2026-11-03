@@ -2161,7 +2161,12 @@
       ],
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Targoviste_851_exclude_new_type.json"
-      ]
+      ],
+      "seasonal": {
+        "from": "10-30",
+        "until": "04-01",
+        "timeZone": "Europe/Bucharest"
+      }
     },
     {
       "country": "RO",

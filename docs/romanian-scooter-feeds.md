@@ -12,6 +12,17 @@ them in București. Lime's Arad, Brașov, Constanța and Galați markets held no
 scooter in their whole scooter zones that day, and Oradea's a single one;
 check Constanța, on the Black Sea, again in summer.
 
+Update, 3 November 2026: Lime took **Târgoviște**'s scooters in on 30
+October. Both groups of its map there went from 106 (61 and 45) to none
+between 10:20 and 10:30 UTC that day, and have listed none since, the last
+read at 07:34 UTC on 3 November, while Lime's other Romanian towns ran on.
+Lime's [locations page](https://www.li.me/locations) still lists Târgoviște
+that morning, so it looks like a winter break, not an exit; neither Lime nor
+the city publishes a season. The town is paused from 30 October until 1 April,
+Bucharest time, the date the cache's other winter towns use, and its feed
+stays polled, so scooters back early show at once. The same page no longer
+lists Brașov, Constanța or Galați, which held no scooter on 25 October.
+
 The regions and their public outline documents:
 
 - Deva, `E7CO5RS5CDCVW`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Deva_250_exclude_new_type.json)
