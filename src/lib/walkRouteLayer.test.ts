@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
-import { ROUTE_FIT_MAX_ZOOM, routeFit, type Frame } from '@/lib/walkRouteLayer';
+import { drawingClock, ROUTE_FIT_MAX_ZOOM, routeFit, type Frame } from '@/lib/walkRouteLayer';
 
 type ScreenPoint = { x: number; y: number };
 
@@ -97,5 +97,31 @@ describe('routeFit', () => {
     expect(fit(points, { frame: { ...frame, right: frame.left + 79 } })).toBeNull();
     expect(fit(points, { frame: { ...frame, bottom: frame.top + 80 } })).not.toBeNull();
     expect(fit([])).toBeNull();
+  });
+});
+
+describe('drawingClock', () => {
+  it('runs on the frames: 700 ms of them at 60 a second draw the whole way', () => {
+    const progress = drawingClock(700, 50);
+    const shares = Array.from({ length: 44 }, (_, frame) => progress(1_000 + frame * 1000 / 60));
+    expect(shares[0]).toBe(0);
+    expect(shares[21]).toBeCloseTo(0.5, 1);
+    expect(shares[41]).toBeLessThan(1);
+    expect(shares[43]).toBe(1);
+  });
+
+  it('starts at its first frame, however late that comes, and a slow frame moves it on by 50 ms at most', () => {
+    // As on mobile WebKit on CI: the first frame 600 ms after the flight ended, then another slow one.
+    const progress = drawingClock(700, 50);
+    expect(progress(1_600)).toBe(0);
+    expect(progress(2_050)).toBeCloseTo(50 / 700);
+    expect(progress(2_066)).toBeCloseTo(66 / 700);
+  });
+
+  it('stays put when a frame comes with an earlier time', () => {
+    const progress = drawingClock(700, 50);
+    progress(100);
+    expect(progress(140)).toBeCloseTo(40 / 700);
+    expect(progress(120)).toBeCloseTo(40 / 700);
   });
 });

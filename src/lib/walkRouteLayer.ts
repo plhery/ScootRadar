@@ -22,6 +22,8 @@ export interface Frame {
 // Closer than this, a short way would fill the screen with a few dots.
 export const ROUTE_FIT_MAX_ZOOM = 18;
 const DRAW_MS = 700;
+// A frame moves the drawing on by the time since the one before, this much at most (drawingClock).
+const DRAW_STEP_MAX_MS = 50;
 const FLY_S = 0.6;
 // The flight that frames a way ends with a moveend; the line is drawn then, or after this at the latest.
 const FLIGHT_WAIT_MS = 1_200;
@@ -64,6 +66,23 @@ export function routeFit({ points, frame, size, zoom, minZoom, maxZoom }: {
   };
 }
 
+/**
+ * How far a drawing has got at each of its frames, from 0 to 1. Its clock starts at its first frame,
+ * and a frame moves it on by the time since the one before, `maxStepMs` at most: after a slow frame,
+ * such as the map's first at a new zoom, the line goes on growing instead of jumping to its end.
+ * Timed from the end of the flight, mobile WebKit on CI showed 91 to 99% of the line in its first
+ * frame, in two runs on 3 Nov 2026: the frames after a flight came 400 to 600 ms late.
+ */
+export function drawingClock(durationMs = DRAW_MS, maxStepMs = DRAW_STEP_MAX_MS): (now: number) => number {
+  let last: number | null = null;
+  let elapsed = 0;
+  return now => {
+    if (last !== null) elapsed += Math.min(Math.max(now - last, 0), maxStepMs);
+    last = now;
+    return Math.min(1, elapsed / durationMs);
+  };
+}
+
 const pathOf = (line: Point[]): WalkPath => walkPath(line, line[0], line[line.length - 1]);
 const easeOut = (t: number) => 1 - (1 - t) ** 3;
 
@@ -95,7 +114,7 @@ export function createRouteLayer(map: L.Map, frame: () => Frame | null): RouteLa
   let lines: { casing: L.Polyline; dots: L.Polyline } | null = null;
   let shownId: number | null = null;
   let latest: { line: Point[]; path: WalkPath } | null = null;
-  let drawing: { start: number; frame: number } | null = null;
+  let drawing: { frame: number } | null = null;
   let waiting: { timer: number; onMoveEnd: () => void } | null = null;
   let leaveTimer = 0;
 
@@ -127,16 +146,17 @@ export function createRouteLayer(map: L.Map, frame: () => Frame | null): RouteLa
       draw(latest.line);
       return;
     }
+    const progress = drawingClock();
     const step = (now: number) => {
       if (!drawing || !latest) return;
-      const t = Math.min(1, (now - drawing.start) / DRAW_MS);
+      const t = progress(now);
       // Your steps change the way while it is drawn: the share drawn is of the way as it is now.
       draw(pathUpTo(latest.path, latest.path.lengthM * easeOut(t)));
       if (t < 1) drawing.frame = requestAnimationFrame(step);
       else finishDrawing();
     };
     draw([]);
-    drawing = { start: performance.now(), frame: requestAnimationFrame(step) };
+    drawing = { frame: requestAnimationFrame(step) };
     map.on('zoomstart', finishDrawing);
   };
 
