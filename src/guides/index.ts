@@ -293,6 +293,7 @@ import norrkopingEn from './en/e-scooters-norrkoping';
 import vinaDelMarEs from './es/scooters-electricos-vina-del-mar';
 import gavleEn from './en/e-scooters-gavle';
 import boulderEn from './en/e-scooters-boulder';
+import fortCollinsEn from './en/e-scooters-fort-collins';
 import yonkersEn from './en/e-scooters-yonkers';
 import hartfordEn from './en/e-scooters-hartford';
 import nagoyaEn from './en/e-scooters-nagoya';
@@ -304,6 +305,7 @@ import tucsonEn from './en/e-scooters-tucson';
 import petahTikvaEn from './en/e-scooters-petah-tikva';
 import helsingborgEn from './en/e-scooters-helsingborg';
 import kansasCityEn from './en/e-scooters-kansas-city';
+import manhattanKansasEn from './en/e-scooters-manhattan-kansas';
 import ashdodEn from './en/e-scooters-ashdod';
 import namurFr from './fr/trottinette-electrique-namur';
 import poitiersFr from './fr/trottinette-electrique-poitiers';
@@ -666,6 +668,7 @@ export const GUIDES: readonly Guide[] = [
   vinaDelMarEs,
   gavleEn,
   boulderEn,
+  fortCollinsEn,
   yonkersEn,
   hartfordEn,
   nagoyaEn,
@@ -677,6 +680,7 @@ export const GUIDES: readonly Guide[] = [
   petahTikvaEn,
   helsingborgEn,
   kansasCityEn,
+  manhattanKansasEn,
   ashdodEn,
   namurFr,
   poitiersFr,
