@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-hannover',
   topic: 'hanover',
-  name: 'E-Scooter Hannover: Anbieter, Parken, Regeln',
-  title: 'E-Scooter Hannover 2026: Anbieter, Parken, Regeln, ÜSTRA',
-  description: 'E-Scooter Hannover: die fünf Anbieter, wo du in der City parkst, was fürs Fahren gilt, warum die ÜSTRA keine Scooter mitnimmt und was der Rat neu regelt.',
-  headline: 'E-Scooter Hannover: Anbieter, Parkzonen und was die neuen Regeln ändern',
-  lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde; den Preis zeigt dir die App vor dem Entsperren. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
+  name: 'E-Scooter Hannover: Anbieter, Preise, Parken',
+  title: 'E-Scooter Hannover 2026: Anbieter, Preise, Parken, ÜSTRA',
+  description: 'E-Scooter Hannover: die fünf Anbieter, was zehn Minuten kosten, wo du in der City parkst, warum die ÜSTRA keine Scooter mitnimmt und was der Rat neu regelt.',
+  headline: 'E-Scooter Hannover: Anbieter, Preise, Parkzonen und was die neuen Regeln ändern',
+  lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde. Zehn Minuten kosten im Standardtarif bei Voi 2,20 € und bei Dott 3,90 € (Stand November 2026); verbindlich ist bei allen der Preis in der App. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'de:Hannover',
@@ -19,22 +19,56 @@ const guide: Guide = {
         'Laut Stadt vermieten fünf Anbieter in Hannover E-Scooter: **Bolt**, **Dott**, **Lime**, **Voi** und **Ryde**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde aus Norwegen ist erst seit Mai 2026 in der Stadt.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Freitag, 30. Oktober 2026, um 8:27 Uhr standen rund um Hannover rund 2100 Dott-, 2800 Voi- und 900 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, dazu rund 2200 Lime-Scooter nach der letzten Zählung. Wo gerade einer steht, siehst du auf der [Karte rund um Hannover](map:de:Hannover).',
+        'Dotts Gebiet reicht laut seinem Datenfeed über die Stadtgrenze hinaus bis Langenhagen, Laatzen und Garbsen.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Hannover?',
+      blocks: [
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Hannover im Standardtarif (laut den offenen Daten von Voi und Dott, Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
+            rows: [
+              ['Voi', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
+              ['Dott', '1,00 €', '0,29 €', '3,90 €', '6,80 €'],
+            ],
+          },
+        },
+        'Dott ist damit im Standardtarif teurer als Voi: Zehn Minuten kosten 1,70 € mehr. Bolt, Lime und Ryde zeigen ihren Preis für Hannover in der App.',
+        'Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
       heading: 'Wo darf man in Hannover mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahrstreifen oder in der Fahrradstrasse und nur dort, wo es nichts davon gibt, auf der Fahrbahn. Gehwege sind tabu.',
-        '**Fussgängerzonen:** Auch die Fussgängerzonen der Innenstadt sind tabu, etwa Bahnhofstrasse, Georgstrasse zwischen Steintor und Ständehausstrasse und Lister Meile ab dem Weisskreuzplatz. Dort gilt: absteigen und schieben.',
+        '**Fussgängerzonen:** Auch die Fussgängerzonen der Innenstadt sind tabu, etwa Bahnhofstrasse, Georgstrasse zwischen Steintor und Ständehausstrasse und Lister Meile ab dem Weisskreuzplatz. Die Dott-App bremst dich dort nicht aus, trotzdem gilt: absteigen und schieben.',
         '**Parks:** In der Eilenriede, im Maschpark und im Georgengarten fährst du nach den Vorgaben der Stadt nur auf ausgeschilderten Radwegen, nie über Wiesen oder Grünstreifen. Den Grossen Garten und den Berggarten in Herrenhausen besuchst du am besten zu Fuss.',
-        '**Schienen:** Die Stadtbahn fährt vielerorts auf der Strasse: Schienen querst du am besten im rechten Winkel, damit das Vorderrad nicht in die Rille rutscht.',
+        '**Tempo und Schienen:** Langsamfahr- oder Fahrverbotszonen hat Dott in Hannover laut Datenfeed nicht; seine Scooter fahren überall höchstens 19 km/h. Die Stadtbahn fährt vielerorts auf der Strasse: Schienen querst du am besten im rechten Winkel, damit das Vorderrad nicht in die Rille rutscht.',
       ],
     },
     {
-      heading: 'E-Scooter in Hannover abstellen: Innenstadt, Gehweg, Bussgeld',
+      heading: 'E-Scooter in Hannover abstellen: Innenstadt, Hauptbahnhof, Parks',
       blocks: [
         'In der Innenstadt hat die Stadt 2024 und 2025 rund 60 feste Abstellflächen markiert, jede für mindestens 20 Scooter. Sonst darfst du auf dem Gehweg parken, wenn niemand behindert wird: Laut der Vereinbarung der Stadt mit den Anbietern müssen mindestens 2 m frei bleiben; die Stadt rät zu 2,5 m. Zum Wartebereich von Haltestellen hältst du 10 m Abstand. Tabu sind Radwege, Kreuzungen, Ampeln und Überwege, abgesenkte Bordsteine, Blindenleitstreifen und Grünanlagen.',
-        'Wo du die Fahrt beenden darfst, zeigt die Karte in deiner App.',
+        {
+          table: {
+            caption: 'Fahrt beenden an bekannten Orten (laut Dotts Zonen, Stand November 2026)',
+            head: ['Ort', 'Fahrt beenden'],
+            rows: [
+              ['Hauptbahnhof und Ernst-August-Platz, Bahnhofstrasse, Kröpcke, Raschplatz', 'Nur an markierten Flächen, etwa am «Mobility HUB» am Ernst-August-Platz oder in der Kurt-Schumacher-Strasse'],
+              ['Marktkirche, Neues Rathaus, Steintor, Klagesmarkt', 'Nur an markierten Flächen'],
+              ['Opernplatz, Ballhofplatz, mittlere Lister Meile', 'Gar nicht'],
+              ['Eilenriede mit Zoo und Lister Turm, Maschsee-Ufer, Maschpark', 'Gar nicht'],
+              ['Grosser Garten, Berggarten, Georgengarten, Limmerstrasse, Ihme-Zentrum', 'Gar nicht'],
+              ['Heinz-von-Heiden-Arena, Schützenplatz, Messegelände', 'Gar nicht'],
+              ['Expo Plaza, Bahnhof Hannover Messe/Laatzen', 'Ja, wenn niemand behindert wird'],
+              ['Flughafen Hannover-Langenhagen', 'Gar nicht: ausserhalb von Dotts Gebiet'],
+            ],
+          },
+        },
+        'Andere Anbieter ziehen ihre Zonen womöglich anders; massgeblich ist die Karte in deiner App.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder neben statt auf einer markierten Fläche. Fahr zur nächsten Fläche, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -69,18 +103,18 @@ const guide: Guide = {
     {
       heading: 'Maschseefest, Schützenfest, Messe: E-Scooter bei Grossveranstaltungen',
       blocks: [
-        'Bei den grossen Terminen rund um Schützenplatz, Arena, Maschsee-Ufer und Messegelände stellst du den Scooter am besten vorher ab, läufst das letzte Stück und prüfst vor dem Fest die Zonen in der App.',
+        'Schützenplatz, Arena, Maschsee-Ufer und Messegelände liegen das ganze Jahr in Dotts Parkverbotszonen: Dort beendest du keine Dott-Fahrt. Stell den Scooter vorher ab, lauf das letzte Stück und prüf vor dem Fest die Zonen in der App.',
         {
           table: {
-            caption: 'Grosse Termine in Hannover (laut Stadt und Veranstaltern)',
-            head: ['Veranstaltung', 'Nächster Termin'],
+            caption: 'Grosse Termine in Hannover (laut Stadt und Veranstaltern) und wo du die Fahrt beendest (laut Dotts Daten)',
+            head: ['Veranstaltung', 'Nächster Termin', 'Fahrt beenden'],
             rows: [
-              ['Weihnachtsmarkt in der Altstadt', '23. November bis 22. Dezember 2026'],
-              ['Frühlingsfest, Schützenplatz', '27. März bis 18. April 2027'],
-              ['Hannover Messe; Agritechnica', '5. bis 8. April 2027; 14. bis 20. November 2027'],
-              ['Schützenfest, Schützenplatz', '2. bis 11. Juli 2027'],
-              ['Maschseefest', '28. Juli bis 15. August 2027'],
-              ['Heimspiele von Hannover 96', 'laut Spielplan'],
+              ['Weihnachtsmarkt in der Altstadt', '23. November bis 22. Dezember 2026', 'An der Marktkirche nur an markierten Flächen'],
+              ['Frühlingsfest, Schützenplatz', '27. März bis 18. April 2027', 'Ausserhalb des Schützenplatzes'],
+              ['Hannover Messe; Agritechnica', '5. bis 8. April 2027; 14. bis 20. November 2027', 'Am Bahnhof Hannover Messe/Laatzen oder an der Expo Plaza'],
+              ['Schützenfest, Schützenplatz', '2. bis 11. Juli 2027', 'Ausserhalb des Schützenplatzes'],
+              ['Maschseefest', '28. Juli bis 15. August 2027', 'Abseits der Ufer'],
+              ['Heimspiele von Hannover 96', 'laut Spielplan', 'Ausserhalb von Arena und Schützenplatz'],
             ],
           },
         },
@@ -91,8 +125,14 @@ const guide: Guide = {
       blocks: [
         'Seit dem 1. April 2024 darfst du E-Tretroller nicht mehr in Stadtbahnen und Bussen der **ÜSTRA** und der **regiobus** mitnehmen, auch nicht zusammengeklappt; Grund ist die Brandgefahr der Akkus. Elektromobile für Menschen mit Behinderung sind etwas anderes und dürfen unter Bedingungen mit.',
         'In S-Bahn und Regionalzügen gilt ein eigener, zusammengeklappter E-Tretroller laut GVH-Tarif als Handgepäck. Leih-Scooter lassen sich nicht klappen und dürfen nie mit: Fahrt vor der Haltestelle beenden, am Ziel einen neuen mieten.',
-        '**Zum Flughafen:** Nimm die S5 ab Hauptbahnhof: Laut Flughafen braucht sie etwa 18 Minuten bis zur Station unter Terminal C.',
-        '**sprintRad**, das Leihrad der ÜSTRA, läuft über die App von Donkey Republic: laut ÜSTRA 1100 Fahrräder in Hannover und Ronnenberg. Den Preis zeigt die App.',
+        '**Zum Flughafen:** Er liegt ausserhalb von Dotts Gebiet; für die anderen Anbieter schau in deren App. Nimm die S5 ab Hauptbahnhof: Laut Flughafen braucht sie etwa 18 Minuten bis zur Station unter Terminal C.',
+        '**sprintRad**, das Leihrad der ÜSTRA, läuft über die App von Donkey Republic: laut ÜSTRA 1100 Fahrräder in Hannover und Ronnenberg.',
+        {
+          list: [
+            '**Mit ÜSTRA-Abo, Deutschlandticket, Jobticket oder Deutschland-Semesterticket:** die ersten 30 Minuten jeder Fahrt gratis, so oft du willst.',
+            '**Ohne Abo:** Den Preis zeigt die App von Donkey Republic.',
+          ],
+        },
       ],
     },
     {
@@ -127,6 +167,10 @@ const guide: Guide = {
       answer: 'Die von Bolt, Dott, Lime, Voi oder Ryde: Diese fünf Anbieter vermieten laut Stadt in Hannover E-Scooter. Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Wo gerade ein freier Scooter steht, zeigt die [Live-Karte von Hannover](map:de:Hannover).',
     },
     {
+      question: 'Was kostet ein E-Scooter in Hannover?',
+      answer: 'Im Standardtarif laut den offenen Daten der Anbieter (Stand November 2026) bei Voi 0,22 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,20 €, bei Dott 1 € plus 0,29 € pro Minute, also 3,90 €. Bolt, Lime und Ryde zeigen ihren Preis in der App.',
+    },
+    {
       question: 'Darf ich meinen E-Scooter in der ÜSTRA mitnehmen?',
       answer: 'Nein. Seit dem 1. April 2024 sind E-Tretroller in Stadtbahnen und Bussen der ÜSTRA und der regiobus verboten, auch zusammengeklappt. In der S-Bahn darf ein eigener, zusammengeklappter Scooter als Handgepäck mit, ein Leih-Scooter nie.',
     },
@@ -135,8 +179,8 @@ const guide: Guide = {
       answer: 'Nein, aber neue Regeln: Der Rat hat am 24. September 2026 beschlossen, künftig nur noch drei Anbieter mit zusammen höchstens 7500 Scootern zuzulassen. Wer bleibt und ab wann, steht noch nicht fest. Verboten sind das Fahren auf Gehwegen und in Fussgängerzonen sowie die Mitnahme in Stadtbahnen und Bussen der ÜSTRA.',
     },
     {
-      question: 'Wie komme ich vom Flughafen Hannover in die Stadt?',
-      answer: 'Mit der S5: Laut Flughafen braucht sie etwa 18 Minuten zwischen der Station unter Terminal C und dem Hauptbahnhof. Auf einen Scooter steigst du erst in der Stadt.',
+      question: 'Kann ich mit dem E-Scooter zum Flughafen Hannover fahren?',
+      answer: 'Mit einem Dott nicht: Der Flughafen liegt ausserhalb seines Gebiets, dort kannst du keine Fahrt beenden. Nimm die S5 ab Hauptbahnhof, laut Flughafen etwa 18 Minuten bis unter Terminal C, und steig erst in der Stadt auf einen Scooter um.',
     },
   ],
   sources: [
@@ -148,6 +192,8 @@ const guide: Guide = {
     { title: 'ÜSTRA: sprintRad', url: 'https://www.uestra.de/service-und-mobilitaet/mobilitaetsangebote/sprintrad/' },
     { title: 'Flughafen Hannover: Anreise mit der S-Bahn', url: 'https://www.hannover-airport.de/verkehrsanbindung/anreise/' },
     { title: 'Polizeidirektion Hannover: Verkehrssicherheitsbericht 2025', url: 'https://www.pd-h.polizei-nds.de/verkehr/verkehrssicherheitsbericht-2025-der-polizeidirektion-hannover-116779.html' },
+    { title: 'Dott: offener Datenfeed für Hannover mit Tarif und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/hannover/gbfs.json' },
+    { title: 'Voi: Tarif für Hannover in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/292/netex.xml' },
   ],
 };
 
