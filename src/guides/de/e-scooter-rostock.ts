@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-rostock',
   topic: 'rostock',
-  name: 'E-Scooter Rostock: Anbieter, Preise, Parken',
-  title: 'E-Scooter Rostock 2026: Anbieter, Preise, Parken, RSAG',
-  description: 'E-Scooter Rostock: Voi, Dott und MOIN, was über Preise bekannt ist, wo du fährst und parkst und was in Warnemünde, in Parks und in der Strassenbahn gilt.',
+  name: 'E-Scooter Rostock: Anbieter, Regeln, Parken',
+  title: 'E-Scooter Rostock 2026: Anbieter, Parken, RSAG',
+  description: 'E-Scooter Rostock: Voi, Dott und MOIN, wo du fährst und parkst und was in Warnemünde, in Parks, am Strand und in der Strassenbahn gilt.',
   headline: 'E-Scooter Rostock: drei Anbieter, Sperrzonen am Wasser und was in Warnemünde gilt',
-  lede: 'E-Scooter in Rostock leihst du bei Voi, Dott oder MOIN; alle drei vermieten erst ab 18, einen Führerschein brauchst du nicht. Unsere Karte zeigt Voi und Dott, MOIN fehlt dort. Einen Rostocker Tarif nennt keiner der drei offen, den Preis zeigt die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzonen der Innenstadt. In Parks, am Warnowufer und in Fussgängerzonen lässt sich die Fahrt laut Stadt nicht beenden; durch städtische Parks und den IGA Park schiebst du nach unserer Lesart, am Strand ist Fahren verboten. Zusammengeklappt fährt dein eigener Scooter in Strassenbahn, Bus, S-Bahn und Fähre kostenlos mit.',
+  lede: 'E-Scooter in Rostock leihst du ohne Führerschein bei Voi, Dott oder MOIN; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzonen der Innenstadt. In Parks, am Warnowufer und in Fussgängerzonen lässt sich die Fahrt laut Stadt nicht beenden; durch städtische Parks und den IGA Park schiebst du nach unserer Lesart, am Strand ist Fahren verboten. Zusammengeklappt fährt dein eigener Scooter in Strassenbahn, Bus, S-Bahn und Fähre kostenlos mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Rostock',
@@ -17,27 +17,9 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Rostock?',
       blocks: [
         'In Rostock verleihen drei Anbieter E-Scooter: **Voi**, **Dott** und **MOIN**. Die Stadt schliesst mit ihnen freiwillige Vereinbarungen, etwa über Parkverbotszonen und höchstens fünf Scooter je Standort.',
-        '**MOIN** ist ein Angebot der MIR Solutions GmbH aus Rostock. Laut einem Bericht der Stadt vom Mai 2022 startete es 2020; laut eigener Seite (Stand November 2025) fährt es auch in [Schwerin](guide:schwerin), Greifswald, Stralsund und Neubrandenburg. **Dott** führt Rostock auf seiner Standortliste; Vertragspartner ist laut AGB die TIER Mobility SE, und TIER kam laut demselben Bericht 2021. **Voi** zählte laut eigener Mitteilung bis Mai 2025 rund eine Million Fahrten in Rostock. Bolt und Ryde führen Rostock nicht unter ihren Städten (gelesen am 25. Oktober 2026).',
+        '**MOIN** ist ein Rostocker Angebot: Laut einem Bericht der Stadt vom Mai 2022 startete es 2020, TIER, heute Dott, kam 2021. Den Preis zeigt dir die App vor dem Entsperren; verbindlich ist, was sie dort anzeigt.',
         'Wie du per App leihst, zeigt Schritt für Schritt [E-Scooter mieten](guide:how-to-rent).',
-        'Die [Karte von Rostock](map:de:Rostock) zeigt Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 790 Scooter, die zu diesem Zeitpunkt frei waren, etwa 450 Voi und 340 Dott. Am Sonntag gegen 6:30 Uhr standen alle rund 820 in der Stadt, rund 75 davon in Warnemünde und Diedrichshagen. **MOIN fehlt auf unserer Karte**; seine Scooter zeigt nur die MOIN-App. Die Karte zeigt Standort und bei Voi den Akkustand, und zoomst du hinein, die 15 markierten Abstellflächen der Stadt Rostock (offene Daten, CC0). Preise und Sperrzonen zeigt die App des Anbieters.',
-      ],
-    },
-    {
-      heading: 'Was kostet ein E-Scooter in Rostock?',
-      blocks: [
-        'Einen Rostocker Tarif nennt keiner der drei Anbieter offen. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Offen stehen nur Gebühren:',
-        {
-          table: {
-            caption: 'Was die Anbieter offen nennen (gelesen am 25. Oktober 2026)',
-            head: ['Anbieter', 'Fahrpreis', 'Gebühren laut Bedingungen', 'Auf der Karte'],
-            rows: [
-              ['Voi', 'Nur in der App', 'Nicht offen angegeben', 'Ja'],
-              ['Dott', 'Nur in der App, nach Dauer, eventuell plus Freischaltgebühr', 'Bis zu 300 € Rückholkosten, wenn du falsch parkst oder nicht richtig sperrst; ein Bussgeld, das Dott für dich zahlt, plus 50 € Verwaltungsgebühr (AGB, letzte Aktualisierung 23. September 2025)', 'Ja'],
-              ['MOIN', 'Entsperrgebühr und Minutenpreis «siehe App», minutengenau abgerechnet', '«Scooter falsch geparkt, kein Foto am Fahrtende gemacht»: 35 €; Abstellen ausserhalb des Nutzungsgebiets: 70 €; Abschleppen: 100 € plus Kosten der Abschleppfirma; Bussgeld plus 29,75 € Bearbeitung', 'Nein'],
-            ],
-          },
-        },
-        'Eine nicht beendete MOIN-Fahrt deckelt die Gebührenordnung auf «Max. 29,00€». Bei einem Schaden trägst du eine Selbstbeteiligung von «Max. 300,00€» und dazu 100 € Bearbeitungsgebühr.',
+        'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Rostock](map:de:Rostock) rund 450 Voi- und 340 Dott-Scooter, die zu diesem Zeitpunkt frei waren.',
       ],
     },
     {
@@ -48,15 +30,13 @@ const guide: Guide = {
         '**Einbahnstrassen:** Bei «Radverkehr frei» ist die Lage bis Ende Februar 2027 widersprüchlich: Die StVO lässt dich mitfahren, die eKFV verlangt «Elektrokleinstfahrzeuge frei». Die Stadt schreibt knapp, «Rad frei» gelte nicht für E-Tretroller. Ab 1. März 2027 ist die Gegenrichtung erlaubt, wo «Radverkehr frei» sie öffnet.',
         '**Parks:** Die Grünflächensatzung von 2009 verbietet in städtischen Grün- und Parkanlagen, sie «mit Kraftfahrzeugen zu befahren» und Fahrzeuge abzustellen (§ 4), bei 5 bis 1000 € Geldbusse (§ 11). E-Scooter nennt sie nicht, laut eKFV sind sie aber Kraftfahrzeuge. Für uns heisst das: In den Wallanlagen und anderen städtischen Parks schiebst du, auch auf den Wegen.',
         '**IGA Park:** Die Parkordnung (Februar 2025) verbietet «das Befahren mit Kraftfahrzeugen sowie das Abstellen dieser auf Wegen und Grünflächen»; «das Fahrradfahren erfolgt auf eigene Gefahr». Bei Verstössen darf das Personal ein «erhöhtes Nutzungsentgelt» von 20 € kassieren. Auch hier schiebst du nach unserer Lesart.',
-        '**Strand:** Die Strandsatzung von 2026 verbietet an den Stränden von Diedrichshagen, Warnemünde, Hohe Düne, Markgrafenheide und der Rostocker Heide «das Abstellen und Fahren von Fahrzeugen, auch von Fahrrädern und Booten», bei bis zu 1000 € Geldbusse. Für Strandpromenade und Alten Strom fanden wir keine eigene E-Scooter-Regel; dort gelten die Schilder.',
-        '**Nacht und Saison:** Ein Nachtfahrverbot oder eine Saisonpause nennt die Stadt nicht (Stand Oktober 2026).',
+        '**Strand:** Die Strandsatzung von 2026 verbietet an den Stränden von Diedrichshagen, Warnemünde, Hohe Düne, Markgrafenheide und der Rostocker Heide «das Abstellen und Fahren von Fahrzeugen, auch von Fahrrädern und Booten», bei bis zu 1000 € Geldbusse. Auf der Strandpromenade und am Alten Strom gelten die Schilder.',
       ],
     },
     {
       heading: 'E-Scooter in Rostock abstellen: Sperrzonen, Abstellflächen, Obergrenzen',
       blocks: [
         'Laut Stadt sperren die Anbieter das Fahrtende per Geofencing in Parkverbotszonen, etwa in Grün- und Parkanlagen, an den Uferbereichen der Warnow und in den Fussgängerzonen. Welche gelten, zeigt die App.',
-        '**Feste Abstellflächen:** Ihre markierten Abstellflächen veröffentlicht die Stadt in ihren offenen Daten. Wo eine Gemeinde Parkplätze ausweist, parkst du laut Dotts Bedingungen nur dort.',
         'Sonst gelten die Regeln für Fahrräder: Abstellen auf dem Gehweg ist erlaubt, solange niemand behindert oder gefährdet wird.',
         {
           table: {
@@ -75,14 +55,14 @@ const guide: Guide = {
         '**Obergrenzen:** Laut Stadt dürfen seit dem Winter 2021 höchstens 2000 Leih-Scooter in Rostock stehen, je Anbieter 660, in der Innenstadt zusammen 500 und in Warnemünde 120, höchstens fünf je Anbieter an einem Ort.',
         '**Kontrolle:** Laut Stadt ahnden Ordnungsdienst und Polizei Verstösse gegen die StVO; für die Parkverbotszonen sind die Anbieter selbst verantwortlich. Blockiert ein Scooter den Gehweg, muss der Anbieter ihn sofort entfernen, sonst lässt ihn die Stadt kostenpflichtig wegräumen.',
         {
-          note: 'MOIN verlangt am Fahrtende ein vollständiges Foto des korrekt geparkten Scooters, Dott kann eines anfordern. Mach es deutlich.',
+          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Parkverbotszone, und die Miete läuft weiter. Fahr ein Stück weiter, aus dem Park, vom Ufer oder aus der Fussgängerzone hinaus.',
         },
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Rostock: Bussgelder und Alkohol',
       blocks: [
-        'In Rostock gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, die Stadt rät aber dringend zum Helm; bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Leih-Scooter bekommst du bei den Anbietern erst ab 18.',
+        'In Rostock gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, die Stadt rät aber dringend zum Helm; bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -112,33 +92,26 @@ const guide: Guide = {
             '**Immer:** In Fahrzeugen und auf Bahn- und Fähranlagen fährst du nicht. Einen Anspruch auf Mitnahme hast du nicht, im Zweifel entscheidet das Personal.',
           ],
         },
-        '**Leih-Scooter** lassen sich nicht zusammenklappen. Beende die Fahrt vor der Haltestelle und halte die Zugänge frei. Im Fernverkehr der Deutschen Bahn fährt dein eigener Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit; lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst.',
+        '**Leih-Scooter** lassen sich nicht zusammenklappen. Beende die Fahrt vor der Haltestelle und halte die Zugänge frei. Ob ein eigener E-Scooter im Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
       ],
     },
     {
-      heading: 'Warnemünde, Hanse Sail, Ostseestadion und Kurioses',
+      heading: 'Warnemünde, Hanse Sail und Ostseestadion',
       blocks: [
         '**Warnemünde:** Auch auf der Warnowfähre der Weissen Flotte nach Hohe Düne gilt der VVW-Tarif: Zusammengeklappt fährt dein eigener Scooter kostenlos mit.',
-        '**Hanse Sail:** Die nächste läuft vom 5. bis 8. August 2027 in Rostock und Warnemünde. Im August 2024 bat die Tourismuszentrale, Räder und E-Scooter ausserhalb des Veranstaltungsgeländes jenseits der L22 abzustellen; was in Fluchtwegen steht, wird entfernt. Eine E-Scooter-Regel fanden wir nicht.',
+        '**Hanse Sail:** Die nächste läuft vom 5. bis 8. August 2027 in Rostock und Warnemünde. Im August 2024 bat die Tourismuszentrale, Räder und E-Scooter ausserhalb des Veranstaltungsgeländes jenseits der L22 abzustellen; was in Fluchtwegen steht, wird entfernt.',
         '**Ostseestadion:** Die Stadionordnung vom August 2025 verbietet, ohne Erlaubnis der Stadiongesellschaft oder des Veranstalters «das Stadiongelände mit Fahrzeugen aller Art zu befahren». Freie Scooter nach dem Abpfiff zeigt die [Live-Karte von Rostock](map:de:Rostock).',
-        {
-          list: [
-            '**Rekord im Warnstreik:** Am 17. März 2025, einem Tag mit Warnstreik bei den Rostocker Verkehrsbetrieben, zählte Voi laut eigener Mitteilung rund 2500 Fahrten binnen 24 Stunden.',
-            '**Quer durch die Stadt:** Eine Voi-Fahrt am 1. Mai 2024 mass 32,3 km, von Toitenwinkel über die Innenstadt nach Warnemünde, und endete nach über zwei Stunden.',
-            '**Strom von der Ostsee:** MOIN lädt seine Rostocker Scooter laut eigener Seite mit «grünem Ostsee-Strom» der Stadtwerke Rostock.',
-          ],
-        },
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Rostock?',
-      answer: 'Voi, Dott und MOIN. Die ScootRadar-Karte zeigt Voi und Dott; MOIN findest du nur in seiner App. Bolt und Ryde führen Rostock nicht unter ihren Städten.',
+      answer: 'Voi, Dott und MOIN. Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
     },
     {
-      question: 'Was kostet ein E-Scooter in Rostock?',
-      answer: 'Einen Rostocker Tarif nennt kein Anbieter offen; verbindlich ist der Preis in der App. Falschparken kann bei Dott bis zu 300 € Rückholkosten bringen; MOIN nennt 35 € für «falsch geparkt, kein Foto am Fahrtende gemacht».',
+      question: 'Wie viele Leih-Scooter darf es in Rostock geben?',
+      answer: 'Laut Stadt seit dem Winter 2021 höchstens 2000, je Anbieter 660, in der Innenstadt zusammen 500 und in Warnemünde 120, mit höchstens fünf je Anbieter an einem Ort.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Kröpeliner Strasse fahren?',
@@ -160,7 +133,6 @@ const guide: Guide = {
   sources: [
     { title: 'Stadt Rostock: E-Tretroller und Elektrokleinstfahrzeuge in Rostock', url: 'https://rathaus.rostock.de/de/leih_e_scooter/323713' },
     { title: 'Stadt Rostock: Nutzerbefragung Leih-E-Tretroller, Bericht vom Mai 2022 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.4984.de/datei/Bericht%20Nutzerbefragung%20Leih-E-Tretroller%20Rostock%202021.pdf' },
-    { title: 'Stadt Rostock: Abstellflächen für E-Tretroller (offene Daten, CC0)', url: 'https://www.opendata-hro.de/dataset/abstellflaechen_e_tretroller' },
     { title: 'Stadt Rostock: Abstellverbotszonen für E-Tretroller, Innenstadt, Juli 2021 (PDF)', url: 'https://rathaus.rostock.de/media/rostock_01.a.4984.de/datei/Zonen%20e-Tretroller-Verleiher%20-%20Innenstadt%20-%20Juli21.pdf' },
     { title: 'Stadt Rostock: Grünflächensatzung von 2009 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.1107.de/datei/7_04.46475.pdf' },
     { title: 'Stadt Rostock: Strandsatzung von 2026 (PDF)', url: 'https://rathaus.rostock.de/sixcms/media.php/rostock_01.a.1107.de/datei/3%2003%20%28P005382930%29.pdf' },
@@ -170,13 +142,6 @@ const guide: Guide = {
     { title: 'VVW: Verbundtarif, gültig ab 1. Dezember 2025 (PDF)', url: 'https://www.rsag-online.de/fileadmin/media/PDF_Download/Verbundtarif_g%C3%BCltig_ab_01.12.2025.pdf' },
     { title: 'RSAG: Mitnahme von Sachen', url: 'https://www.rsag-online.de/tickets/mitnahme-von-sachen' },
     { title: 'Weisse Flotte: Fahrpreise Warnow-Fähre', url: 'https://www.frs-weisse-flotte.de/fahrpreise/warnow-faehre' },
-    { title: 'MOIN. Scooters & Cars', url: 'https://moin-sharing.app/' },
-    { title: 'MOIN. Scooters: Gebührenordnung, AGB und Datenschutz', url: 'https://moin-sharing.app/gebuehrenordnung-agb-moin-scooters' },
-    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
-    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
-    { title: 'Voi: Pressemitteilung zu Rostock, 14. Mai 2025 (PDF)', url: 'https://storage.mfn.se/eb7643d5-5917-445f-974f-f0bfc3b35122/3-jahre-voi-in-rostock.pdf' },
-    { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
-    { title: 'Ryde: Locations', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Hanse Sail Rostock 2027', url: 'https://www.hansesail.com/' },
     { title: 'Ostseestadion: Stadionordnung, August 2025 (PDF)', url: 'https://www.fch.de/files/pdf/Sicherheit/Stadionordnung_August%202025.pdf' },
   ],
