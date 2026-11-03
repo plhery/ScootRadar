@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'santa-cruz-de-tenerife',
   name: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife',
   title: 'Alquiler patinete eléctrico Santa Cruz de Tenerife: Dott',
-  description: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife con Dott: la ordenanza de 1985, el casco obligatorio, nada de aceras, el tranvía y el clima.',
-  headline: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife: Dott, la ordenanza, el casco y el tranvía',
-  lede: 'Para el alquiler de patinete eléctrico en Santa Cruz de Tenerife tienes Dott: a las 22:23 del 1 de noviembre de 2026, el mapa mostraba unos 150 patinetes suyos libres en ese momento. El precio y la edad mínima para alquilar, míralos en la app antes de desbloquear. Desde el 1 de octubre de 2026 el casco es obligatorio: lleva el tuyo. Y el patinete no sube al tranvía, donde, según Metrotenerife, está «prohibido transportar patinetas eléctricas a bordo».',
+  description: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife con Dott: cómo aparcar, sus multas, el casco obligatorio, la ordenanza de 1985 y el tranvía.',
+  headline: 'Alquiler de patinete eléctrico en Santa Cruz de Tenerife: Dott, sus normas, la ordenanza, el casco y el tranvía',
+  lede: 'Para el alquiler de patinete eléctrico en Santa Cruz de Tenerife tienes Dott: a las 22:23 del 1 de noviembre de 2026, el mapa mostraba unos 150 patinetes suyos libres en ese momento. Dott te muestra su precio en la app, antes de desbloquear. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: lleva el tuyo. Y el patinete no sube al tranvía, donde, según Metrotenerife, está «prohibido transportar patinetas eléctricas a bordo».',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'es:Santa Cruz de Tenerife',
@@ -17,20 +17,48 @@ const guide: Guide = {
       heading: '¿Qué patinetes de alquiler hay en Santa Cruz de Tenerife?',
       blocks: [
         'Esta guía va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos; no de los scooters de movilidad reducida ni de las motos.',
-        'En Santa Cruz alquila **Dott**. A las 22:23 (hora canaria) del 1 de noviembre de 2026, el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife) mostraba unos 150 patinetes de Dott libres en ese momento.',
+        'En Santa Cruz alquila **Dott**, que incluye la ciudad en su lista de sedes de España. A las 22:23 (hora canaria) del 1 de noviembre de 2026, el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife) mostraba unos 150 patinetes de Dott libres en ese momento.',
+        'La app de ISLA Ride, publicada en diciembre de 2025, anuncia también patinetas eléctricas de alquiler en Tenerife.',
       ],
     },
     {
       heading: '¿Dónde puedes circular y aparcar?',
       blocks: [
-        'Dónde puedes circular y terminar el viaje te lo marca la app de Dott: míralo antes de salir. La calle es tu sitio: por la calzada, por el centro del carril, o por el carril bici donde se permita.',
+        'Dónde puedes circular y terminar el viaje te lo dice la app. Las condiciones de Dott para España dicen que su área operativa «siempre estará visible dentro del mapa de la Aplicación», y que si sales de ella pueden inutilizar el patinete y cobrarte una multa si no lo devuelves. Si el Ayuntamiento fija zonas de aparcamiento para patinetes, la app te las marca, y solo puedes dejarlo en ellas.',
+        'La calle es tu sitio: por la calzada, por el centro del carril, o por el carril bici donde se permita.',
         { note: 'Por la acera, nunca, y por calles y zonas peatonales, solo si el Ayuntamiento lo permite: si no, bájate y llévalo a pie.' },
       ],
     },
     {
-      heading: '¿Cuánto cuesta y cómo se alquila?',
+      heading: 'Precio, aparcamiento y multas de Dott',
       blocks: [
-        'Dott te muestra la tarifa en la app antes de desbloquear, y allí ves también la edad mínima que pide para alquilar. Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent).',
+        'Dott te muestra la tarifa en la app antes de desbloquear. Pagas desde que lo desbloqueas hasta que cierras el viaje y la app te lo confirma; si lo dejas sin cerrar, sigues pagando.',
+        {
+          steps: [
+            '**Descarga la app de Dott**, regístrate y añade un método de pago; al aceptar sus condiciones, declaras tener al menos 18 años.',
+            '**Mira el mapa de la app** antes de salir: el área donde puedes circular y, si las hay, las zonas donde tienes que aparcar.',
+            '**Ponte el casco** y desbloquea el patinete desde la app.',
+            '**Termina el viaje en la app** y espera la confirmación; si te la piden, haz una foto del patinete bien aparcado.',
+          ],
+        },
+        'Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent).',
+        {
+          table: {
+            caption: 'Lo que dicen las condiciones de Dott para España, en noviembre de 2026 (versión del 23 de septiembre de 2025)',
+            head: ['Tema', 'Qué dicen'],
+            rows: [
+              ['Edad', 'Al menos 18 años'],
+              ['Velocidad', 'Hasta 20 km/h, o menos donde la autoridad local lo fije'],
+              ['Zona', 'Solo dentro del área que ves en la app; si sales, pueden inutilizar el patinete, y multarte si no vuelves a ella'],
+              ['Aparcar', 'En las zonas designadas, si las hay; si no, donde la ley lo permita, sin tapar entradas ni estorbar en la acera o la calzada. Pueden pedirte una foto'],
+              ['Aparcar mal', 'Hasta 300 € por recoger el patinete, y 50 € por cualquier incumplimiento de las condiciones'],
+              ['Multas', 'Las pagas tú, y Dott puede dar tu nombre a la autoridad; si las adelanta, te cobra además 50 € de gestión'],
+              ['Pasajeros', 'Ninguno: quien desbloquea es el único usuario del patinete'],
+              ['Casco y seguro', 'Te exigen el casco donde la ley lo pide; su seguro de accidentes, donde lo da, no cubre lesiones en la cabeza si vas sin él'],
+            ],
+          },
+        },
+        'Las multas del Ayuntamiento van aparte.',
       ],
     },
     {
@@ -44,7 +72,7 @@ const guide: Guide = {
             head: ['Norma', 'Qué tienes que saber'],
             rows: [
               ['Casco', 'Obligatorio desde el 1 de octubre de 2026, también en los de alquiler: 200 €, y los agentes pueden inmovilizar el patinete'],
-              ['Edad', 'La ley permite conducir desde los 15; la edad mínima para alquilar, mírala en la app'],
+              ['Edad', '18 años para alquilar; la ley permite conducir desde los 15'],
               ['De noche o con poca visibilidad', 'Un elemento reflectante o luminoso homologado, visible a 150 metros: 200 €'],
               ['Acera y zonas peatonales', 'Nunca por la acera, y por zonas peatonales solo si el ayuntamiento lo permite; si no, bájate y llévalo a pie. Ve por la calzada, por el centro del carril, o por el carril bici donde se permita'],
               ['Carretera', 'Prohibidas las autopistas, las autovías y las carreteras interurbanas'],
@@ -63,7 +91,7 @@ const guide: Guide = {
         {
           list: [
             '**Tranvía.** Une Santa Cruz y La Laguna. Metrotenerife deja subir bicicletas «cuando el estado de ocupación lo permita», pero en el tranvía está «prohibido transportar patinetas eléctricas a bordo».',
-            '**Guagua y barco.** Si viajas con un patinete propio, consulta antes de viajar las normas de TITSA o de tu naviera.',
+            '**Guagua y barco.** Si viajas con un patinete propio, consulta antes de viajar las normas de TITSA o de tu naviera. El de Dott no puede salir de su área.',
             '**Aeropuerto de Tenerife Norte.** Está en La Laguna: la AEMET sitúa allí su estación del aeropuerto, a 632 metros de altitud. Consulta antes de viajar cómo llegar y qué puedes llevar.',
           ],
         },
@@ -93,19 +121,19 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete eléctrico en Santa Cruz de Tenerife?',
-      answer: 'Dott te muestra la tarifa en la app antes de desbloquear: consúltala allí cada vez, porque es la empresa la que la fija.',
+      answer: 'Dott te muestra la tarifa en la app antes de desbloquear: consúltala allí cada vez. Pagas hasta que cierras el viaje; si lo dejas sin cerrar, sigues pagando.',
     },
     {
       question: '¿Es obligatorio el casco en patinete en Santa Cruz de Tenerife?',
-      answer: 'Sí. Desde el 1 de octubre de 2026 es obligatorio en toda España, a cualquier edad y también en los de alquiler. Sin casco, la multa es de 200 €, y los agentes pueden inmovilizar el patinete.',
+      answer: 'Sí. Desde el 1 de octubre de 2026 es obligatorio en toda España, a cualquier edad y también en los de alquiler. Sin casco, la multa es de 200 € y los agentes pueden inmovilizar el patinete; además, el seguro de accidentes de Dott, donde lo da, no cubre las lesiones en la cabeza.',
     },
     {
       question: '¿Puedo ir en patinete de Santa Cruz a La Laguna?',
-      answer: 'Mira en la app de Dott hasta dónde puedes llegar antes de salir. Por el camino rigen las normas de toda España: casco, nada de aceras y nunca por carreteras interurbanas.',
+      answer: 'Con un Dott, solo dentro de su área, que ves en la app; si sales, pueden inutilizar el patinete, y multarte si no vuelves a ella. Por el camino rigen las normas de toda España: casco, nada de aceras y nunca por carreteras interurbanas.',
     },
     {
       question: '¿Puedo subir un patinete al tranvía o a la guagua?',
-      answer: 'Al tranvía, no: está «prohibido transportar patinetas eléctricas a bordo», según Metrotenerife; las bicicletas sí, si la ocupación lo permite. Para la guagua, consulta antes de viajar las normas de TITSA.',
+      answer: 'Al tranvía, no: está «prohibido transportar patinetas eléctricas a bordo», según Metrotenerife; las bicicletas sí, si la ocupación lo permite. Para la guagua, consulta antes de viajar las normas de TITSA. Uno de Dott no puede salir de su área.',
     },
     {
       question: '¿Tiene Santa Cruz de Tenerife una ordenanza de patinetes?',
@@ -116,6 +144,9 @@ const guide: Guide = {
     { title: 'DGT: vehículos de movilidad personal (VMP), página actualizada el 29 de octubre de 2026', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
     { title: 'BOE: Real Decreto 518/2026, reforma del Reglamento General de Circulación', url: 'https://www.boe.es/eli/es/rd/2026/06/24/518' },
     { title: 'Ayuntamiento de Santa Cruz de Tenerife, sede electrónica: Ordenanza municipal de circulación (BOP nº 96, 12 de agosto de 1985), vigente a 1 de noviembre de 2026', url: 'https://sede.santacruzdetenerife.es/sede/normativa/n647' },
+    { title: 'Dott: términos y condiciones para España (23 de septiembre de 2025)', url: 'https://ridedott.com/es/terminos-condiciones/espana/' },
+    { title: 'Dott: nuestras sedes', url: 'https://ridedott.com/es/nuestras-sedes/' },
+    { title: 'ISLA Ride en el App Store', url: 'https://apps.apple.com/es/app/isla-ride/id6756137443' },
     { title: 'Metrotenerife: guía del usuario del tranvía', url: 'https://metrotenerife.com/guia-del-usuario/' },
     { title: 'AEMET: valores climatológicos normales de Santa Cruz de Tenerife', url: 'https://www.aemet.es/es/serviciosclimaticos/datosclimatologicos/valoresclimatologicos?l=C449C&k=coo' },
     { title: 'AEMET: valores climatológicos normales del aeropuerto de Tenerife Norte', url: 'https://www.aemet.es/es/serviciosclimaticos/datosclimatologicos/valoresclimatologicos?l=C447A&k=coo' },
