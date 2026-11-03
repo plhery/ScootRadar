@@ -557,22 +557,43 @@ is backed up, and an independent guard is prepared to restore it and remove the
 certificate after one map capture, a TLS failure or five minutes. The user
 approved this scoped capture on 3 November 2026.
 
-An administrator-authenticated activation attempt on 3 November reached
-macOS's separate certificate-trust authorization, but that step did not finish
-within the controller's original 30-second command timeout. The certificate
-had been added to the System keychain; cleanup removed it and verified that
-neither the certificate nor its trust entry remained. The PAC was never
-enabled, and the original proxy configuration was verified unchanged. No
-native-app exchange was intercepted and no session-key rotation was attempted.
+Two administrator-authenticated activation attempts on 3 November timed out
+while installing trust, first after 30 seconds and then after 180 seconds.
+The certificate was added to the System keychain each time and removed by
+cleanup. The PAC was never enabled, and the original proxy configuration was
+verified unchanged. No native-app exchange was intercepted and no session-key
+rotation was attempted. Both listeners were stopped.
 
-The prepared retry allows up to 180 seconds for certificate authorization while
-retaining the independent five-minute cleanup limit. The desktop-control tool
-does not permit access to macOS SecurityAgent, so the user must complete that
-OS dialog. The capture addon now saves at most one map exchange and excludes
-the sibling hostname, non-map routes and oversized requests; those boundaries
-passed fixture checks. The fresh private administrator request for that retry
-timed out, so the retry was not activated. Both listeners were stopped and
-cleanup was verified. This remains a prepared experiment, not a working bridge.
+The second attempt supplied a more precise diagnosis on macOS 27.2 (26B123).
+`authd` granted the command-line client's `com.apple.trust-settings.admin`
+request, but the first attempt's separate authorization by `trustd` remained
+pending. The retry stalled at `SecTrustSettingsXPCWrite`, without reaching a
+new server-side authorization. Apple's
+[trust-settings implementation](https://github.com/apple-oss-distributions/Security/blob/main/trust/trustd/SecTrustSettingsServer.c)
+serializes writes and checks authorization inside the trust service, consistent
+with the retry waiting behind that first request. Killing the client command
+did not establish that its queued server-side write was cancelled.
+
+The test certificate and trust entry are currently absent, but the pending
+write must also be cancelled before treating cleanup as complete. A bounded
+administrator helper is prepared to sample and restart the stuck trust service
+and verify the original settings; it cannot enable capture. The local
+`authenticate-admin` rule has `allow-root=false` and `timeout=0`. Automatic
+removal of successfully installed trust has not been verified, so the original
+five-minute trust-cleanup guarantee must not be treated as established. The
+desktop-control tool refuses access to SecurityAgent; any required OS dialogs
+must be completed by the user.
+
+The cleanup helper's authentication request timed out without execution. The
+user cannot access the Mac until later and paused the investigation. Ryde was
+reopened normally. On resumption, cancel any expired authorization dialogs and
+clear the pending requests before starting another trust operation; do not
+approve an old capture prompt after its cleanup window has ended. The old
+activation command is blocked in configuration until cleanup is resolved.
+
+The capture addon saves at most one map exchange and excludes the sibling
+hostname, non-map routes and oversized requests; those boundaries passed
+fixture checks. This remains a prepared experiment, not a working bridge.
 
 ## Recheck: model spoofing, attestation and session keys
 
