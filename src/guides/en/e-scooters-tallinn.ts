@@ -5,7 +5,7 @@ const guide: Guide = {
   slug: 'e-scooters-tallinn',
   topic: 'tallinn',
   name: 'Renting an e-scooter in Tallinn',
-  title: 'E-scooters Tallinn 2026: Bolt, prices, rules and parking',
+  title: 'E-scooters Tallinn 2026: Bolt, rules, parking and trams',
   description: 'E-scooters in Tallinn: Bolt, Estonia’s age and helmet rules, where to ride slowly and park in the Old Town, trams and trains, and winter.',
   headline: 'E-scooters in Tallinn: Bolt, Estonia’s rules, the Old Town’s speed limits and where to park',
   lede: 'E-scooters in Tallinn are rented from Bolt: check the price in its app before you unlock. Estonian law lets e-scooters use cycle tracks and pavements, at walking pace near pedestrians, and asks for a helmet only under 16. In the Old Town and the city centre you can end a ride only in a marked parking area, and the Old Town is limited to 10 km/h.',
@@ -14,17 +14,10 @@ const guide: Guide = {
   city: 'ee:Tallinn',
   sections: [
     {
-      heading: 'E-scooters in Tallinn: Bolt and the other apps',
+      heading: 'E-scooters in Tallinn: renting from Bolt',
       blocks: [
-        'Bolt rents stand-up e-scooters across the city, and two other apps list Tallinn:',
-        {
-          list: [
-            '**Bolt**, in the same app as its taxis.',
-            '**Ride**, which calls itself an e-bike sharing service. Its Estonian page (read 25 October 2026) lists Tallinn among its cities without saying which vehicles it has there, and its FAQ sets 18 as the minimum age. Open the Ride app to see what stands near you.',
-            '**Rekola** lists Tallinn for its shared bikes.',
-          ],
-        },
-        'At 20:59 on Sunday 25 October 2026 the [map of Tallinn](map:ee:Tallinn) showed 4,032 Bolt scooters free to rent at that moment.',
+        'Bolt rents stand-up e-scooters across the city, in the same app as its taxis; the app shows the price and the minimum age before you unlock.',
+        'At 20:59 on Sunday 25 October 2026, 4,032 Bolt scooters on the [map of Tallinn](map:ee:Tallinn) were free to rent.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -123,7 +116,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Tallinn?',
-      answer: 'Bolt rents stand-up e-scooters across Tallinn, and [our map](map:ee:Tallinn) shows them. Ride lists Tallinn among its cities, and Rekola lists it for shared bikes: open their apps to see what stands near you.',
+      answer: 'Bolt rents stand-up e-scooters across Tallinn; the free ones are on the [map of Tallinn](map:ee:Tallinn).',
     },
     {
       question: 'How much does a Bolt scooter cost in Tallinn?',
@@ -131,7 +124,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Tallinn?',
-      answer: 'Estonian law sets no age limit off the road; on the carriageway children ride alone from 10, and 10–15-year-olds need a cycling licence. Ride rents only to riders of 18 and over; Bolt’s app shows its own limit.',
+      answer: 'Estonian law sets no age limit off the road; on the carriageway children ride alone from 10, and 10–15-year-olds need a cycling licence. Bolt’s app shows its own minimum age before you unlock.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Estonia?',
@@ -152,9 +145,6 @@ const guide: Guide = {
     { title: 'Riigi Teataja: Tallinn regulation no. 12 of 15 April 2025 on rental scooters, with maps (Estonian)', url: 'https://www.riigiteataja.ee/akt/418042025002' },
     { title: 'Riigi Teataja: Tallinn public transport fares (Estonian)', url: 'https://www.riigiteataja.ee/akt/428062026013' },
     { title: 'Riigi Teataja: Pirita river valley landscape reserve, protection rules (Estonian)', url: 'https://www.riigiteataja.ee/akt/130042019007' },
-    { title: 'Ride Mobility: Estonia (Estonian)', url: 'https://ridemobility.eu/ee/' },
-    { title: 'Ride Mobility: frequently asked questions (Estonian)', url: 'https://ridemobility.eu/kkk/' },
-    { title: 'Rekola (Czech)', url: 'https://www.rekola.cz/' },
     { title: 'Tallinn Airport: public transport', url: 'https://airport.ee/en/public-transport/' },
     { title: 'Port of Tallinn: terminal D (Estonian)', url: 'https://www.ts.ee/d-terminal/' },
     { title: 'TLT: frequently asked questions (Estonian)', url: 'https://tlt.ee/ettevottest/korduma-kippuvad-kusimused/' },
