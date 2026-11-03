@@ -509,8 +509,10 @@ A city's public zone layers are drawn, credited to the city, since 28 October
   go-slow and no-go zones are Beryl's geofencing. Brighton & Hove names its
   no-go places and its go-slow area by the Palace Pier in text alone; four of
   them (Cranbourne Street, Kensington Gardens, the Undercliff Walk, Hove
-  Promenade) are drawn from OpenStreetMap's ways since 2 November 2026
-  (DATA_SOURCES.md), the rest being areas, unnamed in OpenStreetMap or without
+  Promenade) are drawn from OpenStreetMap's ways since 2 November 2026, and its
+  skate parks from OpenStreetMap's outlines since 3 November 2026, but for the
+  wheeled sports area by Hove Lagoon, with the pump track, a point alone there
+  (DATA_SOURCES.md); the rest are areas, unnamed in OpenStreetMap or without
   ends or hours, and Beryl's GBFS outlines its zones with no rules. Its GIS's
   cycle hire bays don't say which are scooter hubs. Birmingham's
   parking areas, Lime's since April 2026, are shown in its app, as TfWM says,

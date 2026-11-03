@@ -186,7 +186,7 @@
       "featuredCities": ["gb:Bristol", "gb:Liverpool", "gb:Nottingham", "gb:Leeds", "gb:Brighton", "gb:Bournemouth"],
       "credits": {
         "code": "UK",
-        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; Brighton & Hove's no-ride streets traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; Brighton & Hove's no-ride streets and skate parks traced on OpenStreetMap, ODbL; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bolt", "Dott"],
         "links": [
           { "label": "UK: Beryl · CDLA-Permissive-2.0", "href": "https://cdla.dev/permissive-2-0/" },

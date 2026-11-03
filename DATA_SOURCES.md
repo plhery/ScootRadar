@@ -744,14 +744,30 @@ ODbL: Cranbourne Street and Kensington Gardens, two short pedestrian streets;
 the Undercliff Walk from the Marina to Saltdean (about 5.4 km); and the ways
 OpenStreetMap names Hove Promenade, from Hove Lagoon to Medina Terrace (about
 1.8 km). The promenade on east of Medina Terrace, by Hove Lawns, is unnamed
-there and not drawn. They are credited "Brighton & Hove City Council, lines ©
-OpenStreetMap", and the United Kingdom's credits add "Brighton & Hove's no-ride
-streets traced on OpenStreetMap, ODbL" and the OpenStreetMap link. The rest of the list is not drawn: the
-lower promenade and the Madeira Drive Boardwalk, which OpenStreetMap names
-only in part or not at all, The Lanes, Churchill Square, The Level's
-crosswalks, Falmer and Stanmer north of The Keep, the skate parks and pump
-tracks, areas not yet drawn, the A259 from Black Rock to Saltdean, whose east end
-isn't given, and the timed and temporary zones, whose hours aren't. Beryl's
+there and not drawn. The list also bars "all skate parks and bike pump
+tracks" (read 3 November 2026). They are drawn as no-ride areas on
+OpenStreetMap's outlines, read the same day: the four outdoor skateparks the
+council's [skateparks page](https://www.brighton-hove.gov.uk/libraries-leisure-and-arts/sport-and-activity/skateparks-brighton-hove)
+names, at The Level, Hollingdean, Woodingdean and Saltdean Oval, and a
+concrete skate area of about 60 m² in Woodingdean Central Park, which
+OpenStreetMap maps as one but the council's list doesn't name. The Hove
+wheeled sports area by Hove Lagoon, its skate plaza and the city's one bike
+pump track, opened in September 2024, is a point alone in OpenStreetMap, whose
+outline there is still the old Hove Lagoon skatepark, closed that month
+([Brighton and Hove News](https://www.brightonandhovenews.org/2024/09/13/new-skatepark-pump-track-and-roller-area-now-open/)),
+so neither is drawn. Nor are BYC's indoor skatepark, "upstairs at Brighton
+Youth Centre", which OpenStreetMap places outside the building, Hollingdean's
+old ramps, which it marks abandoned, or a playground in Knoll Recreation
+Ground, Hove, which it tags for skateboarding but maps as a playground, not a
+skate park, and the council doesn't name. They
+are all credited "Brighton & Hove City Council, lines © OpenStreetMap", and
+the United Kingdom's credits add "Brighton & Hove's no-ride streets and skate
+parks traced on OpenStreetMap, ODbL" and the OpenStreetMap link. The rest of
+the list is not drawn: the lower promenade and the Madeira Drive Boardwalk,
+which OpenStreetMap names only in part or not at all, The Lanes, Churchill
+Square, The Level's crosswalks, Falmer and Stanmer north of The Keep, the A259
+from Black Rock to Saltdean, whose east end isn't given, and the timed and
+temporary zones, whose hours aren't. Beryl's
 GBFS for Brighton outlines 19 zones by name (Boardwalks, Lower Promenade,
 Brighton Marina & Undercliff…) with no rules, so the zone layer draws none of
 them.

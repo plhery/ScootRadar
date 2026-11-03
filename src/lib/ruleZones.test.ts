@@ -170,6 +170,26 @@ describe('ruleZonesInView', () => {
     expect(only({ south: 50.8228, west: -0.1665, north: 50.8245, east: -0.1645 })).toEqual([]);
   });
 
+  it('gives Brighton & Hove\'s skate parks as no-ride areas at all hours, credited to the council', () => {
+    const night = Date.parse('2026-11-03T03:30:00Z');
+    const at = (lat: number, lng: number) => ruleZonesInView(
+      { bounds: { south: lat - 0.0005, west: lng - 0.0008, north: lat + 0.0005, east: lng + 0.0008 }, zoom: 16 }, night)
+      .filter(zone => zone.polygons.some(([outer]) => polygonContainsPoint(outer, lat, lng)))
+      .map(({ id, rule, inForce, authority }) => ({ id, rule, inForce, authority }));
+    const noRide = (id: string) => [{ id, rule: 'noRide', inForce: true, authority: 'Brighton & Hove City Council, lines © OpenStreetMap' }];
+    expect(at(50.83081, -0.1333)).toEqual(noRide('brighton-the-level-skatepark'));
+    expect(at(50.8474, -0.12586)).toEqual(noRide('brighton-hollingdean-skatepark'));
+    expect(at(50.83897, -0.06349)).toEqual(noRide('brighton-woodingdean-skatepark'));
+    expect(at(50.83447, -0.06746)).toEqual(noRide('brighton-woodingdean-central-park-skate-area'));
+    expect(at(50.8038, -0.04055)).toEqual(noRide('brighton-saltdean-oval-skatepark'));
+    // The Level's grass beside its skatepark; the old Hove Lagoon skatepark, closed in September 2024; the indoor
+    // skatepark at Brighton Youth Centre; Hollingdean's old skate ramps, abandoned.
+    expect(at(50.8302, -0.1340)).toEqual([]);
+    expect(at(50.82651, -0.19582)).toEqual([]);
+    expect(at(50.82244, -0.13072)).toEqual([]);
+    expect(at(50.84857, -0.12527)).toEqual([]);
+  });
+
   it('gives Calgary\'s 15 km/h streets within the communities the City names them by, credited to the City', () => {
     const now = Date.parse('2026-11-03T00:30:00Z');
     const at = (lat: number, lng: number) => ruleZonesInView(

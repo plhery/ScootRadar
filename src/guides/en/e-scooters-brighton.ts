@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in Brighton and Hove: Beryl’s prices, hours and where you can ride',
   lede: 'You can hire an e-scooter in Brighton and Hove from Beryl, in a council trial that began on 24 July 2026. It costs £1 to unlock and 20p a minute on weekdays or 22p at weekends, so 15 minutes cost £4.00 or £4.30. You can’t start a hire between midnight and 5am, any night of the week. You must be 18 or over with a driving licence, keep off the pavements, the promenades and The Lanes, and end every ride in a Beryl bay.',
   published: '2026-10-23',
-  updated: '2026-11-02',
+  updated: '2026-11-03',
   city: 'gb:Brighton',
   sections: [
     {
@@ -93,12 +93,12 @@ const guide: Guide = {
               ['Gardner Street; George Street, Hove', 'No-go at set times', 'The app shows when'],
               ['The Undercliff from the Marina to Saltdean; the A259 from Black Rock to Saltdean', 'No-go, 24 hours', 'The path below the cliffs and the coast road east of the Marina'],
               ['Falmer and Stanmer north of The Keep', 'No-go, 24 hours', 'Both universities keep their e-scooter bans, the council says'],
-              ['The Level’s crossing paths, skate parks and pump tracks', 'No-go, 24 hours', '–'],
+              ['The Level’s crossing paths; all skate parks and bike pump tracks', 'No-go, 24 hours', 'The skateparks at The Level, Hollingdean, Woodingdean and Saltdean Oval, and the skatepark and pump track by Hove Lagoon'],
               ['Preston Park, Madeira Drive, New Road, Marine Parade, St James’s Street', 'No-go during festivals and parades', 'Check the app on event days'],
             ],
           },
         },
-        'Our [Brighton map](map:gb:Brighton) draws four of them as no-riding bands from zoom 14, credited to the council, along OpenStreetMap’s ways: Cranbourne Street, Kensington Gardens, the Undercliff Walk from the Marina to Saltdean, and Hove Promenade from Hove Lagoon to Medina Terrace. The rest, Hove Lawns’ stretch of the promenade among them, are in the app alone: Beryl’s open data outlines them without saying what each allows.',
+        'Our [Brighton map](map:gb:Brighton) draws four of them as no-riding bands from zoom 14, credited to the council, along OpenStreetMap’s ways: Cranbourne Street, Kensington Gardens, the Undercliff Walk from the Marina to Saltdean, and Hove Promenade from Hove Lagoon to Medina Terrace. It draws the skateparks at The Level, Hollingdean, Woodingdean and Saltdean Oval, and a small skate area in Woodingdean Central Park, as no-riding areas on OpenStreetMap’s outlines. The rest, Hove Lawns’ stretch of the promenade among them, are in the app alone: Beryl’s open data outlines them without saying what each allows. So is the skatepark and pump track by Hove Lagoon, which OpenStreetMap marks only as a point.',
       ],
     },
     {
