@@ -365,6 +365,10 @@ class ScooterMarkerScene(
     /** The dots without a name around each named one, from its centre. */
     private var pillNeighbours = HashMap<String, List<ScreenRect>>()
 
+    /** The marks of the last look's pass, and the order of their ids: [inOrderOfIDs]. */
+    private var orderedMarks: List<ScooterMark> = emptyList()
+    private var idOrder = IntArray(0)
+
     /** The dots light up once, the first time they appear. */
     private var lightUpEnds: Double? = null
 
@@ -656,9 +660,12 @@ class ScooterMarkerScene(
         val scale = exp(inputs.scaleStep * SCALE_STEP)
         val pointsPerMapPoint = metresPerMapPoint(map.projection.centerCoordinate.latitude) / scale
         val turn = -heading * PI / 180
-        val looks = HashMap<String, ScooterDotLook>(marks.size)
+        val cosine = cos(turn)
+        val sine = sin(turn)
+        // Each mark's look, in the order of the marks: a step of a zoom works out hundreds at every frame.
+        val looks = arrayOfNulls<ScooterDotLook>(marks.size)
         val dots = ArrayList<ScooterSpreadDot>(if (inputs.isStreetLevel) marks.size else 0)
-        for (mark in marks) {
+        for ((index, mark) in marks.withIndex()) {
             val id = mark.scooter.id
             val state = when {
                 id == inputs.selectedID -> ScooterDotState.Selected
@@ -666,17 +673,17 @@ class ScooterMarkerScene(
                 else -> ScooterDotState.Plain
             }
             val look = ScooterMapLook.look(metres = mark.metres, state = state, metresPerPoint = scale)
-            looks[id] = look
+            looks[index] = look
             if (!inputs.isStreetLevel) continue
             val x = mark.mapPoint.x * pointsPerMapPoint
             val y = mark.mapPoint.y * pointsPerMapPoint
             dots += ScooterSpreadDot(
                 id = id,
-                point = ScreenPoint(x * cos(turn) - y * sin(turn), x * sin(turn) + y * cos(turn)),
+                point = ScreenPoint(x * cosine - y * sine, x * sine + y * cosine),
                 footprint = look.footprint,
             )
         }
-        val offsets = ScooterMapLook.spread(dots)
+        val offsets = ScooterMapLook.spread(inOrderOfIDs(marks, dots))
 
         pillNeighbours = HashMap()
         for (namedDot in dots.filter { it.id in namedSet }) {
@@ -696,9 +703,11 @@ class ScooterMarkerScene(
         val changed = mutableListOf<ScooterMark>()
         // A scooter drawn for the first time has no earlier look to ease from.
         val fresh = HashSet<String>()
-        for (mark in marks) {
+        for ((index, mark) in marks.withIndex()) {
             val id = mark.scooter.id
-            val look = looks[id]?.copy(offset = offsets[id] ?: ScreenPoint.zero) ?: continue
+            // A look is made without an offset: only a spread dot's takes one.
+            val sized = looks[index] ?: continue
+            val look = offsets[id]?.let { sized.copy(offset = it) } ?: sized
             if (!mark.isStyled) {
                 mark.isStyled = true
                 fresh += id
@@ -741,6 +750,20 @@ class ScooterMarkerScene(
             val moves = eased && mark.scooter.id !in clusteredIDs && isNear(dotCentre(mark, map.projection), bounds)
             refreshLook(mark, eased, moves = moves)
         }
+    }
+
+    /**
+     * The dots in the order of their scooters' ids, which the spread groups them in: the marks are sorted once while
+     * they stay the same, so that at a step of a zoom the spread finds its hundreds of dots in order, and its own
+     * sort only goes through them once (app-ax). [dots] are the [marks]', in their order, or none.
+     */
+    private fun inOrderOfIDs(marks: List<ScooterMark>, dots: List<ScooterSpreadDot>): List<ScooterSpreadDot> {
+        if (dots.size != marks.size) return dots
+        if (marks.size != orderedMarks.size || marks.indices.any { marks[it] !== orderedMarks[it] }) {
+            orderedMarks = marks
+            idOrder = marks.indices.sortedBy { marks[it].scooter.id }.toIntArray()
+        }
+        return List(dots.size) { dots[idOrder[it]] }
     }
 
     /**
