@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Yonkers 2026: Bird scooters and NY rules',
   description: 'E-scooters in Yonkers: renting Bird, the City’s own 2025 scooter code and New York’s rules on age, helmets, 15 mph, sidewalks, trails and parking.',
   headline: 'E-scooters in Yonkers: renting a Bird scooter, New York’s rules, and where you can ride',
-  lede: 'E-scooters in Yonkers come from Bird, which began New York State’s first shared e-scooter pilot here in August 2020 and still rents in October 2026; it is the only company our Yonkers map counts. The Bird app shows the price before you unlock. State law and the City’s own code, adopted in February 2025, set the rules: 16 or older (18 for Bird, the City said in 2020), a helmet at 16 and 17, 15 mph at most, bike lanes and streets posted at 30 mph or less, and never the sidewalk.',
+  lede: 'E-scooters in Yonkers come from Bird, which began New York State’s first shared e-scooter pilot here in August 2020 and still rents in October 2026. The Bird app shows the price before you unlock. State law and the City’s own code, adopted in February 2025, set the rules: 16 or older (18 for Bird, the City said in 2020), a helmet at 16 and 17, 15 mph at most, bike lanes and streets posted at 30 mph or less, and never the sidewalk.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:ny:Yonkers',
@@ -17,15 +17,15 @@ const guide: Guide = {
       heading: 'Electric scooter rental in Yonkers: who runs it?',
       blocks: [
         '**Bird** has rented scooters in Yonkers since August 2020. On 31 July 2020 Mayor Mike Spano named it the City’s partner for a one-year pilot, the first in New York State: Bird would start with up to 200 scooters in southwest Yonkers, the Downtown-Waterfront area included, with room for up to 500 if riders wanted them. In June 2023 the Yonkers Times, reporting on the City’s Climate Action Plan, wrote that Yonkers “currently hosts” the state’s first dockless shared e-scooter programme.',
-        'We found no current agreement or permit: nothing in the City Council’s records from 2024 to 2026 says how long Bird may stay, how many scooters it may run, or where. Bird was still renting here in October 2026, across almost the whole city rather than just the southwest.',
-        'At 1:05 p.m. on Thursday 29 October 2026 the [Yonkers map](map:us:ny:Yonkers) showed about 780 Bird scooters as last counted, so some may have moved since: the map’s count, not Bird’s fleet. The total covers Bird’s whole Yonkers area, which follows the city line closely: about 94% of that area lies within the city, the rest in thin slivers over its eastern and northern edges. It stops at the Bronx line.',
-        'The map also shows 11 or 12 Lime scooters standing in Yonkers just north of the Bronx line; they count under the Bronx, and we found no City permit for Lime here. For Bird the map shows each scooter’s position, charge and range; scooters on a ride aren’t shown, nor are e-bikes. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Bird was still renting here in October 2026, across almost the whole city rather than just the southwest.',
+        'At 1:05 p.m. on Thursday 29 October 2026 the [Yonkers map](map:us:ny:Yonkers) showed about 780 Bird scooters as last counted, so some may have moved since: the map’s count, not Bird’s fleet.',
+        'The map also shows 11 or 12 Lime scooters standing in Yonkers just north of the Bronx line. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Bird scooter cost in Yonkers?',
       blocks: [
-        'We found no current published rate, so the Bird app shows your price before you unlock. When the pilot was announced in July 2020, the City gave Bird’s price as $1 to start and 30 cents a minute; the Yonkers Times repeated it in August 2021.',
+        'The Bird app shows your price before you unlock. When the pilot was announced in July 2020, the City gave Bird’s price as $1 to start and 30 cents a minute; the Yonkers Times repeated it in August 2021.',
         '**Low-income plan.** In 2020 Bird offered unlimited 30-minute rides for $5 a month to anyone enrolled in, or eligible for, a state or federal assistance programme, the City said. Check in the app whether it still does.',
         '**Age.** In 2020 the City set the minimum age for Bird riders in Yonkers at 18, above the state’s 16.',
       ],
@@ -54,19 +54,19 @@ const guide: Guide = {
           },
         },
         { note: '**Yonkers’ own fines are steeper.** Since February 2025 the City Code can punish riding on the sidewalk, on a multiuse path not posted for scooters or with headphones in both ears with a fine of up to $250, up to 10 days in jail, or both. State law’s civil fines stop at $50.' },
-        '**New York City’s extras stop at the city line.** The $100 sidewalk fine in our New York guide is New York City code, and Beginner Mode, corrals and Access discounts belong to its own programme. We found no Yonkers night curfew, winter pause or City slow or no-ride zone; check the Bird app before you ride.',
+        '**New York City’s extras stop at the city line.** The $100 sidewalk fine in our New York guide is New York City code, and Beginner Mode, corrals and Access discounts belong to its own programme.',
       ],
     },
     {
       heading: 'Can you ride on the sidewalk, in parks or on the trails?',
       blocks: [
         '**Sidewalks: no.** State law bans scooters there unless a city allows them, and Yonkers doesn’t: its code keeps them off sidewalks and any path kept for people walking. In August 2021 Yonkers Police warned that sidewalk riders get a traffic summons.',
-        '**Parks, greenways and trails: only where posted.** State law keeps e-scooters off public land other than streets, greenways included, unless a state agency, or the city, town or village in charge, has designated it for them and posted it. Yonkers’ code adds that you may ride a multiuse path only where it is posted for that, and never on public landscaping. We found no such designation in Yonkers.',
+        '**Parks, greenways and trails: only where posted.** State law keeps e-scooters off public land other than streets, greenways included, unless a state agency, or the city, town or village in charge, has designated it for them and posted it. Yonkers’ code adds that you may ride a multiuse path only where it is posted for that, and never on public landscaping.',
         {
           list: [
             '**Untermyer Gardens**, 945 North Broadway: free and open daily from 9 a.m. Its rules say no bicycles or recreational scooters; you may chain a bike to the rack at the entrance. End your Bird ride on the street outside.',
             '**The South County Trailway**: motorized and battery-powered vehicles may not use the County’s paved bike paths and trailways, which are for cyclists, joggers and walkers, Westchester County Police said in August 2024 when they patrolled it (Yonkers Times).',
-            '**The Old Croton Aqueduct trail**, a State Historic Park running from Van Cortlandt Park, on the Yonkers–Bronx line, north to the Croton Dam: we found no state designation for e-scooters on it.',
+            '**The Old Croton Aqueduct trail**, a State Historic Park running from Van Cortlandt Park, on the Yonkers–Bronx line, north to the Croton Dam: ride it only where it is posted for e-scooters.',
             '**The Hudson waterfront**: ride the streets, not the riverside paths, and park on the street.',
           ],
         },
@@ -86,10 +86,9 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Metro-North, Bee-Line buses and riding into the Bronx',
+      heading: 'Metro-North and riding into the Bronx',
       blocks: [
-        '**Metro-North.** The Hudson Line’s Yonkers and Ludlow stations are handy places to end a ride: leave the scooter on the street nearby, clear of the entrance. For your own scooter, check Metro-North’s rules before you board; we found none to quote.',
-        '**Bee-Line buses.** We found no Westchester County rule on scooters aboard; ask before you board with your own.',
+        '**Metro-North.** The Hudson Line’s Yonkers and Ludlow stations are handy places to end a ride: leave the scooter on the street nearby, clear of the entrance. For your own scooter, check Metro-North’s rules before you board.',
         '**The Bronx.** In January 2021 Mayor Spano wrote that, for the moment, shared e-scooters were permitted only within Yonkers’ city limits. Bird’s Yonkers area still stops at the Bronx line, so end your ride in Yonkers. Over the line, New York City’s own programme runs in the East Bronx and eastern Queens with Bird, Lime and Veo, under its own rules: see [e-scooters in New York City](guide:new-york) and the [Bronx map](map:us:ny:Bronx).',
       ],
     },
@@ -110,11 +109,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Yonkers?',
-      answer: 'Bird, which the City chose for its pilot in 2020 and which still rents here in October 2026; the Yonkers map counts Bird alone. We found no City permit for any other company. The few Lime scooters standing just north of the Bronx line count under the Bronx on the map.',
+      answer: 'Bird, which the City chose for its pilot in 2020 and which still rents here in October 2026. Find one on the [Yonkers map](map:us:ny:Yonkers).',
     },
     {
       question: 'How much does a Bird scooter cost in Yonkers?',
-      answer: 'The Bird app shows your price before you unlock; we found no current published rate. In 2020 the City gave it as $1 to start and 30 cents a minute, with a $5-a-month plan of unlimited 30-minute rides for anyone on state or federal assistance.',
+      answer: 'The Bird app shows your price before you unlock. In 2020 the City gave it as $1 to start and 30 cents a minute, with a $5-a-month plan of unlimited 30-minute rides for anyone on state or federal assistance.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Yonkers?',

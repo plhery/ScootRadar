@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Spokane 2026: Lime, rules, where to ride',
   description: 'E-scooters in Spokane: renting Lime, the downtown sidewalk ban, helmets, winter riding, parking, Riverfront Park, the Centennial Trail and STA buses.',
   headline: 'E-scooters in Spokane: Lime, the rules, and where to ride and park',
-  lede: 'You can rent e-scooters in Spokane from Lime, which holds the City’s only scooter contract (Spokesman-Review, May 2026) and is the only operator on the map; the Lime app shows the price before you unlock. Ride in the street or a bike lane at up to 15 mph, never on a downtown sidewalk, where the City bans it, the paper reports. Lime ran through the winter for the first time in 2025–26, but its contract runs only to the end of 2026 unless extended, and we found no word yet on this winter.',
+  lede: 'You can rent e-scooters in Spokane from Lime, which holds the City’s only scooter contract (Spokesman-Review, May 2026); the Lime app shows the price before you unlock. Ride in the street or a bike lane at up to 15 mph, never on a downtown sidewalk, where the City bans it, the paper reports. Lime ran through the winter for the first time in 2025–26, but its contract runs only to the end of 2026 unless extended.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:wa:Spokane',
@@ -16,23 +16,23 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Spokane?',
       blocks: [
-        'Electric scooter rental in Spokane means **Lime**, here since a 2018 pilot. On 3 June 2024 the City Council voted 5–2 for a new contract with Neutron Holdings, the company behind Lime, in effect until December 2026 unless ended early; it keeps Lime the only company renting e-scooters in the city, the Spokesman-Review reported (June 2024, May 2026). Bird asked the City in 2023 to let its scooters in, a council member said then; we found no other company renting scooters here in October 2026.',
-        'Under that contract Lime may put out up to **1,500 vehicles** and pays the City $17,000 a year plus 75 cents per vehicle per day on the street (Spokesman-Review, 14 May 2026). Lime then asked for 2,000 vehicles in 2026 and 2,250 from 2027, for a half-bike, half-scooter it calls the Glider, and to run every winter, paying 33 cents a vehicle a day then instead of 75. We found no open record of the City’s decision by 29 October 2026: read these as Lime’s requests, not rules.',
+        'Electric scooter rental in Spokane means **Lime**, here since a 2018 pilot. On 3 June 2024 the City Council voted 5–2 for a new contract with Neutron Holdings, the company behind Lime, in effect until December 2026 unless ended early; it keeps Lime the only company renting e-scooters in the city, the Spokesman-Review reported (June 2024, May 2026). Bird asked the City in 2023 to let its scooters in, a council member said then.',
+        'Under that contract Lime may put out up to **1,500 vehicles** and pays the City $17,000 a year plus 75 cents per vehicle per day on the street (Spokesman-Review, 14 May 2026). Lime then asked for 2,000 vehicles in 2026 and 2,250 from 2027, for a half-bike, half-scooter it calls the Glider, and to run every winter, paying 33 cents a vehicle a day then instead of 75.',
         'At 11:51 p.m. on Wednesday 28 October 2026 the [Spokane map](map:us:wa:Spokane) showed about 1,745 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. Most stand inside the city limits. The total also takes in Lime’s scooters on unincorporated county land just north of the city, around Country Homes, Town and Country and Mead, about 120 that night, where the City’s contract and code don’t apply. [Spokane Valley](map:us:wa:Spokane Valley), a separate city, has its own total: about 110 Lime scooters, as last counted at the same time.',
-        'For Lime the map shows each scooter’s position and charge; scooters on a ride aren’t shown. **Not everything is on the map:** ScootRadar shows e-scooters only, so Lime’s e-bikes aren’t on it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Lime rents **e-bikes** in Spokane too. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime scooter cost in Spokane?',
       blocks: [
-        'We found no open official page with Lime’s Spokane price on 29 October 2026: check the rate in the Lime app, which shows it before every ride.',
+        'Check the rate in the Lime app, which shows it before every ride.',
         'Bad parking can cost you more. At the City’s request Lime fines riders who leave a scooter blocking the sidewalk: a warning the first time, rising to $40 for a fourth offence, and a fifth should lock you out of Lime, the Spokesman-Review reported in August 2025. Lime keeps the fines; it told the paper in May 2026 that it issued nearly 1,900 warnings and 62 fines in 2025.',
       ],
     },
     {
       heading: 'Scooter rules in Spokane and Washington: sidewalks, speed, helmets',
       blocks: [
-        'Washington law (the Revised Code of Washington, RCW) calls an e-scooter a motorized foot scooter, one that can do no more than 20 mph on level ground, and lets cities decide where shared ones run. Spokane’s code and contract add to it; the City’s rules below are as the Spokesman-Review reported them.',
+        'Washington law (the Revised Code of Washington, RCW) calls an e-scooter a motorized foot scooter, one that can do no more than 20 mph on level ground, and lets cities decide where shared ones run. Spokane’s code and contract add to it.',
         {
           table: {
             caption: 'E-scooter rules in Spokane, and who sets them (checked on 29 October 2026)',
@@ -57,8 +57,8 @@ const guide: Guide = {
       heading: 'Winter, nights and the end of 2026',
       blocks: [
         'Lime used to run from March to November. In 2025–26 its scooters and bikes stayed out through the winter for the first time, under an agreement with the City. Lime is to work to remove them before snow or ice, the City’s contact for the programme wrote, though Lime said it would take them all in only for “major” weather events (Spokesman-Review, 4 January 2026).',
-        'For the winter of 2026–27, what we know: in May 2026 Lime asked to make winter service permanent, and its contract runs to the end of 2026 unless extended (Spokesman-Review, 14 May 2026). What we don’t: whether the City agreed, or whether Lime will stay out this winter; we found no City or Lime statement by 29 October 2026. The map counts only scooters standing for hire, so it shows at a glance whether Lime is out after a snowfall.',
-        'We found no night ban or riding hours in what we could read of Spokane’s rules, so the map shows Lime’s scooters at every hour. The Centennial Trail keeps hours of its own: 6:30 a.m. to dusk all year, Washington State Parks says.',
+        'In May 2026 Lime asked to make winter service permanent; its contract runs to the end of 2026 unless extended (Spokesman-Review, 14 May 2026).',
+        'The Centennial Trail is open from 6:30 a.m. to dusk all year, Washington State Parks says.',
       ],
     },
     {
@@ -78,10 +78,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Riverfront Park.** Lime’s scooters run at a lower speed in the park, the Spokesman-Review reported in May 2026. We couldn’t check the City parks department’s own rules: follow the signs.',
-            '**The Centennial Trail.** The Spokane River Centennial State Park Trail runs 40 miles from Nine Mile Recreation Area through downtown to the Idaho border, Washington State Parks says; its page lists no e-scooter rule. State law keeps scooters off trails built or kept up with federal highway funds and allows them on others only where signed (RCW 46.61.710), so follow the signs. The trail’s speed limit is 15 mph (Spokesman-Review, August 2026).',
-            '**Gonzaga University.** We couldn’t check Gonzaga’s own scooter rules. Ride and park as campus signs say.',
-            '**WSU Spokane.** Washington State University’s scooter rules in the state code (WAC 504-15) cover its Pullman campus only; we found none for the Spokane campus.',
+            '**Riverfront Park.** Lime’s scooters run at a lower speed in the park, the Spokesman-Review reported in May 2026. Follow the park’s signs.',
+            '**The Centennial Trail.** The Spokane River Centennial State Park Trail runs 40 miles from Nine Mile Recreation Area through downtown to the Idaho border, Washington State Parks says. State law keeps scooters off trails built or kept up with federal highway funds and allows them on others only where signed (RCW 46.61.710), so follow the signs. The trail’s speed limit is 15 mph (Spokesman-Review, August 2026).',
+            '**WSU Spokane.** Washington State University’s scooter rules in the state code (WAC 504-15) cover its Pullman campus only.',
             '**Whitworth and EWU.** Whitworth University, north of the city, and Eastern Washington University in Cheney lie outside Spokane’s city limits, and so outside its rules, but inside Lime’s Spokane area.',
           ],
         },
@@ -92,9 +91,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**STA buses and the City Line.** We found no Spokane Transit rule on scooters that we could check. End your Lime ride before you board, clear of the stop.',
+            '**STA buses and the City Line.** End your Lime ride before you board, clear of the stop.',
             '**Spokane International Airport.** The airport is inside the city but outside Lime’s Spokane area, so don’t plan to ride a Lime there. STA buses link the terminal with the STA Plaza downtown and the West Plains Transit Center, from stops at the C Concourse curb and the ground transportation center, the airport says.',
-            '**Amtrak.** The Empire Builder, the only passenger train in eastern Washington, stops in Spokane, WSDOT’s State Rail Plan says. We found no Amtrak rule on scooters that we could check; a shared one stays in Spokane. Heading west? See [e-scooters in Seattle](guide:seattle) and [Portland](guide:portland).',
+            '**Amtrak.** The Empire Builder, the only passenger train in eastern Washington, stops in Spokane, WSDOT’s State Rail Plan says. A shared scooter stays in Spokane. Heading west? See [e-scooters in Seattle](guide:seattle) and [Portland](guide:portland).',
           ],
         },
       ],
@@ -116,7 +115,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Spokane?',
-      answer: 'We found no open official page with Lime’s Spokane price on 29 October 2026, so check the Lime app before you unlock. Leave a scooter blocking a sidewalk and Lime may warn or fine you, up to $40 for a fourth offence.',
+      answer: 'Check the rate in the Lime app before you unlock. Leave a scooter blocking a sidewalk and Lime may warn or fine you, up to $40 for a fourth offence.',
     },
     {
       question: 'Can you ride a Lime scooter on the sidewalk in Spokane?',
@@ -128,11 +127,11 @@ const guide: Guide = {
     },
     {
       question: 'Do Lime scooters run in winter in Spokane?',
-      answer: 'They did in 2025–26, for the first time, though Lime may pull them before snow or ice. Lime asked in May 2026 to run every winter; we found no decision, and no word from the City or Lime on 2026–27, so check the app or the map.',
+      answer: 'They did in 2025–26, for the first time, though Lime may pull them before snow or ice. Lime asked in May 2026 to run every winter, and its contract runs to the end of 2026 unless extended, so check the app or the map.',
     },
     {
       question: 'Which scooter companies operate in Spokane?',
-      answer: 'Only Lime. Its City contract, approved in June 2024 and running to the end of 2026 unless extended, keeps it the only company renting e-scooters in the city, the Spokesman-Review reported. Bird approached the City in 2023; we found no sign that it ever ran here.',
+      answer: 'Only Lime. Its City contract, approved in June 2024 and running to the end of 2026 unless extended, keeps it the only company renting e-scooters in the city, the Spokesman-Review reported. Bird approached the City in 2023.',
     },
   ],
   sources: [

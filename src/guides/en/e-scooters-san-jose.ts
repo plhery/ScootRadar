@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in San Jose, CA 2026: Lime, rules, parking',
   description: 'E-scooters in San Jose, California: Lime under the City’s 2026 permit, prices in the app, California rules, San José State, VTA, Caltrain and the trail.',
   headline: 'E-scooters in San Jose, California: Lime, the rules, where to ride and where to park',
-  lede: 'You can rent e-scooters in San Jose, California from Lime, the one company we found with a City permit in 2026, and its scooters are on the map. We found no open page with Lime’s San Jose price, so check the app before you unlock. California law asks for a driving licence or instruction permit and a helmet under 18, caps scooters at 15 mph and bans sidewalk riding. San José State’s campus is a dismount zone: leave the scooter at its edge.',
+  lede: 'You can rent e-scooters in San Jose, California from Lime, which the City granted a permit in March 2026, and its scooters are on the map. Check Lime’s price in the app before you unlock. California law asks for a driving licence or instruction permit and a helmet under 18, caps scooters at 15 mph and bans sidewalk riding. San José State’s campus is a dismount zone: leave the scooter at its edge.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:ca:San Jose',
@@ -17,18 +17,17 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in San Jose?',
       blocks: [
         'Electric scooter rental in San Jose needs a City permit. The Department of Transportation runs the Shared Micro-Mobility Device Permit Program under chapter 11.92 of the Municipal Code, which the City Council set up in December 2018, and sets each permit’s terms, such as how many scooters a company may and must put out.',
-        '**Lime** is the company renting in 2026. Its scooters came back in early March, and the Department of Transportation announced on 10 March 2026 that Lime had been granted a permit, the Spartan Daily, San José State’s student paper, reported on 26 March. We found no 2026 permit for any other company, and the map shows Lime only: Bird, which ran here until 2024, and Spin aren’t on it.',
-        'The gap before Lime explains the new terms. From September 2024 to August 2025 Spin was the City’s only operator, allowed up to 1,000 scooters and required to keep at least 500. It fell short, the City didn’t renew its permit, and Spin stopped on 27 August 2025, San José Spotlight reported. A call for a new operator, open from 25 August to 12 September 2025, drew no applicant, so on 13 January 2026 the City Council cut the City’s yearly fee from $139 to $100 a scooter, with effect from 1 January; staff had aimed to issue a new permit by 1 March.',
-        'The [San Jose map](map:us:ca:San Jose) showed 925 Lime scooters at 3:55 a.m. on Thursday 29 October 2026: what stood there at that moment, not Lime’s fleet. That total covers Lime’s San Jose area as a whole, so it takes in a few scooters just over the city line in Santa Clara and in Burbank, an unincorporated pocket inside San Jose. We found no riding hours in the City’s Council records, and the map shows scooters at every hour.',
-        'For Lime the map shows each scooter’s position and range, but not scooters on a ride, and it draws no zones in San Jose: the app has them. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Lime** is the company renting in 2026. Its scooters came back in early March, and the Department of Transportation announced on 10 March 2026 that Lime had been granted a permit, the Spartan Daily, San José State’s student paper, reported on 26 March.',
+        'The gap before Lime explains the new terms. Bird ran here until 2024; from September 2024 to August 2025 Spin was the City’s only operator, allowed up to 1,000 scooters and required to keep at least 500. It fell short, the City didn’t renew its permit, and Spin stopped on 27 August 2025, San José Spotlight reported. A call for a new operator, open from 25 August to 12 September 2025, drew no applicant, so on 13 January 2026 the City Council cut the City’s yearly fee from $139 to $100 a scooter, with effect from 1 January; staff had aimed to issue a new permit by 1 March.',
+        'The [San Jose map](map:us:ca:San Jose) showed 925 Lime scooters at 3:55 a.m. on Thursday 29 October 2026: what stood there at that moment, not Lime’s fleet. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime scooter cost in San Jose?',
       blocks: [
-        'We found no open page with Lime’s San Jose price on 29 October 2026, so check the rate in the app before you unlock.',
+        'Check the rate in the Lime app before you unlock.',
         '**Riders on low incomes** can ride for less. The City’s programme requires the company to run a low-income plan, renewed each year, that waives any deposit and gives either at least 50% off or unlimited rides under 30 minutes to people earning up to twice the federal poverty level, the Department of Transportation wrote in November 2025. You can qualify through a programme such as Medi-Cal, or with recent pay stubs or a tax return, and the plan’s materials must come in English, Spanish, Vietnamese and Mandarin at least.',
-        '**Prefer a bike?** Bay Wheels, Lyft’s bike share, rents e-bikes from dozens of stations in San Jose, San José Spotlight reported in September 2025; the map doesn’t show them.',
+        '**Prefer a bike?** Bay Wheels, Lyft’s bike share, rents e-bikes from dozens of stations in San Jose, San José Spotlight reported in September 2025.',
       ],
     },
     {
@@ -54,7 +53,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The City has set tighter limits for shared scooters before: in 2019 its permit had the companies cap them at 12 mph citywide and check in the app that riders were 18 or over, a City report said. We found no record of the limits in Lime’s 2026 permit, so the app has the final word on age and speed.',
+        'The City has set tighter limits for shared scooters before: in 2019 its permit had the companies cap them at 12 mph citywide and check in the app that riders were 18 or over, a City report said. For today’s minimum age and top speed, check the app.',
         { note: '**Stay off the sidewalk.** State law bans riding a scooter on it, except to enter or leave an adjacent property. Ride in the bike lane, or on a street posted at 25 mph or less.' },
         'State law is the same across California, though city rules differ: see [e-scooters in San Francisco](guide:san-francisco) and [e-scooters in Sacramento](guide:sacramento).',
       ],
@@ -63,7 +62,7 @@ const guide: Guide = {
       heading: 'Where to park a scooter in San Jose',
       blocks: [
         'In 2019 San Jose let riders park shared scooters on the sidewalk, in the **furniture zone**: the strip by the curb with the trees, poles and benches. A scooter there must not block the space wheelchair users need, people on foot, access to transit, or utilities and emergency services, and the companies had two hours to move a badly parked one after a report, a City report said in November 2019.',
-        'We found no newer City page on parking, so check the app, which shows where you may end your ride.',
+        'Check the app too: it shows where you may end your ride.',
       ],
     },
     {
@@ -72,7 +71,7 @@ const guide: Guide = {
         {
           list: [
             '**San José State University (SJSU).** The campus is a dismount zone for electric and motorised scooters: ride to campus, then leave the scooter at a drop-off zone on its edge or in a bicycle enclosure, the university says on a page last updated in July 2024. Shared e-scooters may not be ridden on campus, and the companies use a geofence to shut them down there. A scooter left unattended on campus counts as abandoned and can be impounded, and riders can be cited under the Vehicle Code and the student conduct code.',
-            '**The Guadalupe River Trail.** This 11-mile class I bike path runs north–south along the river to Alviso. The City runs it as a public trail, much of it on Valley Water’s flood-control levees, and it had over 433,000 users in 2025, the Department of Transportation wrote in March 2026. Its low points at the major undercrossings often flood in the wet season and can be impassable with standing water, mud and debris. State law allows scooters on bike paths unless they’re banned there, and we found no City or Valley Water rule on scooters on this trail: follow the signs at each entrance. The airport says you can reach the trail from Airport Parkway.',
+            '**The Guadalupe River Trail.** This 11-mile class I bike path runs north–south along the river to Alviso. The City runs it as a public trail, much of it on Valley Water’s flood-control levees, and it had over 433,000 users in 2025, the Department of Transportation wrote in March 2026. Its low points at the major undercrossings often flood in the wet season and can be impassable with standing water, mud and debris. State law allows scooters on bike paths unless they’re banned there: follow the signs at each entrance. The airport says you can reach the trail from Airport Parkway.',
           ],
         },
       ],
@@ -82,9 +81,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**VTA buses and light rail.** We found no VTA rule on scooters aboard. Its rules for riders say don’t ride bicycles, skateboards or rollerblades on VTA property; every bus has an outside rack for three bikes, and each light rail car takes up to six. End a rental before you board, clear of the stop.',
+            '**VTA buses and light rail.** VTA’s rules for riders say don’t ride bicycles, skateboards or rollerblades on VTA property; every bus has an outside rack for three bikes, and each light rail car takes up to six. End a rental before you board, clear of the stop.',
             '**Caltrain at San Jose Diridon.** You may bring your own scooter, at no charge: a folding one folded, at your seat or under it; a non-folding one, electric or not, in the bike car, parallel to the racks and held by a bungee. Don’t ride in stations or on platforms and ramps, and don’t take a scooter on an escalator, Caltrain says. With a rented scooter, end the ride outside the station. Off the train, the [San Jose map](map:us:ca:San Jose) shows the nearest Lime.',
-            '**Mineta San José International Airport (SJC).** The airport names no scooter rule. VTA’s Route 60, the Airport Flyer, free when you board at the airport, links both terminals with the Metro/Airport light rail station, Milpitas BART and, for Caltrain, the Santa Clara Transit Center, the airport says. It has bike racks and lockers at both terminals; there is no foot or bike access along Skyport Drive.',
+            '**Mineta San José International Airport (SJC).** VTA’s Route 60, the Airport Flyer, free when you board at the airport, links both terminals with the Metro/Airport light rail station, Milpitas BART and, for Caltrain, the Santa Clara Transit Center, the airport says. It has bike racks and lockers at both terminals; there is no foot or bike access along Skyport Drive.',
           ],
         },
       ],
@@ -106,11 +105,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in San Jose?',
-      answer: 'We found no open page with Lime’s San Jose price on 29 October 2026, so check the app before you unlock. The City’s programme requires the company to offer riders on low incomes at least 50% off, or unlimited rides under 30 minutes, the Department of Transportation wrote in November 2025.',
+      answer: 'Check the rate in the Lime app before you unlock. The City’s programme requires the company to offer riders on low incomes at least 50% off, or unlimited rides under 30 minutes, the Department of Transportation wrote in November 2025.',
     },
     {
       question: 'Which scooter companies operate in San Jose, California?',
-      answer: 'Lime, which the City granted a permit in March 2026; its scooters are on the map. Spin was the City’s only operator from September 2024 to August 2025, and Bird ran here until 2024; we found no 2026 permit for either, or for any other company.',
+      answer: 'Lime, which the City granted a permit in March 2026; its scooters are on the map. Spin was the City’s only operator from September 2024 to August 2025, and Bird ran here until 2024.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in San Jose?',
@@ -126,7 +125,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you take a scooter on Caltrain or VTA?',
-      answer: 'Caltrain takes your own scooter free: folded at your seat, or in the bike car if it doesn’t fold. We found no VTA rule on scooters aboard. End a rental before you board.',
+      answer: 'Caltrain takes your own scooter free: folded at your seat, or in the bike car if it doesn’t fold. End a rental before you board.',
     },
   ],
   sources: [

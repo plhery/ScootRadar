@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Omaha 2026: Lime, rules, where to ride',
   description: 'E-scooters in Omaha: renting Lime, the price, Nebraska and City rules, sidewalks, the RiverFront, the Bob Kerrey bridge, Council Bluffs and Metro.',
   headline: 'E-scooters in Omaha: Lime, the rules, the riverfront and Council Bluffs',
-  lede: 'You can rent e-scooters in Omaha from Lime, whose area reaches into Iowa: Carter Lake and, across the Missouri River, Council Bluffs. We found no other scooter company renting there in October 2026. No open official source gives Lime’s Omaha price, so check the app before you unlock. As Omaha Police and the local press reported the City’s rules in 2019–2021, you must be 18, may not ride on sidewalks or on roads with a speed limit over 35 mph, and can be fined $100.',
+  lede: 'You can rent e-scooters in Omaha from Lime, whose area reaches into Iowa: Carter Lake and, across the Missouri River, Council Bluffs. Check the price in the Lime app before you unlock. As Omaha Police and the local press reported the City’s rules in 2019–2021, you must be 18, may not ride on sidewalks or on roads with a speed limit over 35 mph, and can be fined $100.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'us:ne:Omaha',
@@ -16,21 +16,21 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Omaha?',
       blocks: [
-        'Electric scooter rental in Omaha means **Lime**. After pilots in 2019 and 2020, the City Council voted unanimously in May 2021 to keep Lime and Spin for a year, with the option of four more, WOWT reported. On 22 October 2024 the Council’s agenda held a vote on an agreement between Omaha, Council Bluffs and Lime to extend the programme another year, with a 10-year option, WOWT reported; we found no report of the outcome. Lime is the only company the item named, and the only one we found renting in Omaha or Council Bluffs in October 2026.',
-        'At 9:27 p.m. on Thursday 29 October 2026 the [Omaha map](map:us:ne:Omaha) showed about 700 Lime scooters inside the city line as last counted, so some may have moved since: the map’s count, not Lime’s fleet. Lime’s area runs on into Iowa, to Carter Lake and, across the Missouri River, Council Bluffs; the map counts a few more scooters there, under each town’s own name.',
-        'For each Lime scooter the map shows its position and charge, but no price. It draws the City of Omaha’s no-ride zones: the City allows neither riding nor parking in them, and a scooter that enters one shuts off and must be walked out before the ride goes on, the City’s New Mobility Hub says. Lime’s own zones are in its app. Lime also rents e-bikes in Omaha, WOWT reported on 23 October 2026; they aren’t on the map, nor are Heartland Bike Share’s bikes. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Electric scooter rental in Omaha means **Lime**. After pilots in 2019 and 2020, the City Council voted unanimously in May 2021 to keep Lime and Spin for a year, with the option of four more, WOWT reported. On 22 October 2024 the Council’s agenda held a vote on an agreement between Omaha, Council Bluffs and Lime to extend the programme another year, with a 10-year option, WOWT reported. Lime is the only company the item named.',
+        'At 9:27 p.m. on Thursday 29 October 2026 the [Omaha map](map:us:ne:Omaha) showed about 700 Lime scooters inside the city line as last counted, so some may have moved since: the map’s count, not Lime’s fleet. Lime’s area runs on into Iowa, to Carter Lake and, across the Missouri River, Council Bluffs; the map counts a few more scooters there.',
+        'The map draws the City of Omaha’s no-ride zones: the City allows neither riding nor parking in them, and a scooter that enters one shuts off and must be walked out before the ride goes on, the City’s New Mobility Hub says. Lime’s own zones are in its app. Lime also rents e-bikes in Omaha, WOWT reported on 23 October 2026. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime scooter cost in Omaha?',
       blocks: [
-        'We found no open official source for Lime’s Omaha fares in 2026. The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts.',
+        'The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts.',
       ],
     },
     {
       heading: 'Scooter rules in Nebraska and Omaha',
       blocks: [
-        'Omaha’s Municipal Code covers motorized scooters, and Nebraska’s Department of Motor Vehicles lists electric scooters among the vehicles exempt from registration. We couldn’t read Nebraska’s statutes or the City’s code and scooter pages in October 2026, so the table gives each rule as UNO, Omaha Police or the local press last stated it, with the date. Most date from 2019–2021 and may have changed since.',
+        'Omaha’s Municipal Code covers motorized scooters, and Nebraska’s Department of Motor Vehicles lists electric scooters among the vehicles exempt from registration. Most of the City’s rules below were last stated in 2019–2021, by Omaha Police or the local press.',
         {
           table: {
             caption: 'E-scooter rules in Omaha as last stated, and by whom',
@@ -57,8 +57,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a Lime scooter at night in Omaha?',
       blocks: [
-        'In 2020 the City’s rules let rental scooters be ridden only from 5 a.m. to 10:30 p.m. every day, WOWT reported. We found no 2026 source that confirms those hours, so check the Lime app before a late ride.',
-        'We found no rule that pauses Lime’s scooters in winter.',
+        'In 2020 the City’s rules let rental scooters be ridden only from 5 a.m. to 10:30 p.m. every day, WOWT reported. Check the Lime app before a late ride.',
       ],
     },
     {
@@ -67,8 +66,8 @@ const guide: Guide = {
         {
           list: [
             '**The RiverFront.** Its three parks, Gene Leahy Mall, Heartland of America Park and Lewis & Clark Landing, are open daily from 5 a.m. to 11 p.m. Their rules ban riding bicycles, skateboards, rollerblades or scooters on the parks’ pedestrian ways, which take in every interior walkway, path and amenity unless signs say otherwise: walk your Lime through. Posted signs override the park’s website.',
-            '**The Bob Kerrey Pedestrian Bridge.** The 3,000-foot footbridge over the Missouri is managed by the cities of Omaha and Council Bluffs and open 24 hours a day, the National Park Service says. It closed at times in the week of 24 November 2025 for its annual inspection, Omaha’s Parks and Recreation Department said. We found no rule of either city on e-scooters there: follow the signs at each end and the Lime app, and yield to people walking.',
-            '**The Old Market and downtown.** We found no current rule of their own for e-scooters; the City’s sidewalk ban applies there too. During the College World Series in June 2021, Omaha Police said geofencing kept riders away from the busiest areas, where a scooter had to be pushed: check the Lime app for slow and no-ride zones.',
+            '**The Bob Kerrey Pedestrian Bridge.** The 3,000-foot footbridge over the Missouri is managed by the cities of Omaha and Council Bluffs and open 24 hours a day, the National Park Service says. It closed at times in the week of 24 November 2025 for its annual inspection, Omaha’s Parks and Recreation Department said. Follow the signs at each end and the Lime app, and yield to people walking.',
+            '**The Old Market and downtown.** The City’s sidewalk ban applies there too. During the College World Series in June 2021, Omaha Police said geofencing kept riders away from the busiest areas, where a scooter had to be pushed: check the Lime app for slow and no-ride zones.',
           ],
         },
       ],
@@ -90,7 +89,7 @@ const guide: Guide = {
       heading: 'Riding a Lime into Council Bluffs, Iowa',
       blocks: [
         'Lime’s Omaha area reaches across the Missouri into Council Bluffs, which the agreement on the Omaha City Council’s agenda in October 2024 also named, WOWT reported. Find scooters on both banks on the [Omaha map](map:us:ne:Omaha).',
-        'Iowa law is different. Its code counts any device you stand or sit on with an electric motor of less than 750 watts as a “pedestrian conveyance”: its rider is a pedestrian, not the driver of a vehicle (Iowa Code § 321.1, 2026). We couldn’t confirm a Lime’s motor rating or find a Council Bluffs rule on e-scooters: follow the signs and the Lime app, and yield to people walking.',
+        'Iowa law is different. Its code counts any device you stand or sit on with an electric motor of less than 750 watts as a “pedestrian conveyance”: its rider is a pedestrian, not the driver of a vehicle (Iowa Code § 321.1, 2026). Follow the signs and the Lime app, and yield to people walking.',
       ],
     },
     {
@@ -100,7 +99,7 @@ const guide: Guide = {
           list: [
             '**No Lime on Metro.** Metro Transit doesn’t allow non-foldable scooters aboard any of its vehicles, ORBT’s rapid buses included, or on its bus bike racks, which don’t take electric scooters. A foldable scooter of your own may come aboard, kept out of the aisle and the wheelchair area, but you may not ride it on board or at Metro’s facilities.',
             '**University of Nebraska Omaha.** UNO’s policy for personal transportation devices, in force since 2 December 2025, lets motorized scooters use campus sidewalks: keep to paved surfaces, give people walking 3 feet, dismount when it’s crowded, and park at a bicycle rack. No motorized device may be used, stored or charged inside a university building, housing included, UNO reminded riders in March 2026.',
-            '**Creighton University.** We found no rule of Creighton’s own for e-scooters: its 2024 commuting guide lists buses, bike racks and Heartland Bike Share, not scooters. The City’s sidewalk ban applies on the streets around campus.',
+            '**Creighton University.** Its 2024 commuting guide points to buses, bike racks and Heartland Bike Share. The City’s sidewalk ban applies on the streets around campus.',
           ],
         },
       ],
@@ -121,11 +120,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Omaha?',
-      answer: 'Lime. In October 2024 the City Council’s agenda held an agreement between Omaha, Council Bluffs and Lime to extend the City’s scooter programme, WOWT reported. We found no other scooter company renting in Omaha in October 2026. Find a Lime scooter on the [Omaha map](map:us:ne:Omaha).',
+      answer: 'Lime. In October 2024 the City Council’s agenda held an agreement between Omaha, Council Bluffs and Lime to extend the City’s scooter programme, WOWT reported. Find a Lime scooter on the [Omaha map](map:us:ne:Omaha).',
     },
     {
       question: 'How much is a Lime scooter in Omaha?',
-      answer: 'No open official source gives Lime’s Omaha price in 2026: the Lime app shows the unlock fee and the rate per minute before you ride.',
+      answer: 'The Lime app shows the unlock fee and the rate per minute before you ride.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Omaha?',
@@ -137,11 +136,7 @@ const guide: Guide = {
     },
     {
       question: 'What time do Lime scooters stop in Omaha?',
-      answer: 'In 2020 the City’s rules allowed rides from 5 a.m. to 10:30 p.m., WOWT reported. We found no 2026 source that confirms those hours, so check the Lime app before a late ride.',
-    },
-    {
-      question: 'Can you ride a scooter across the Bob Kerrey Pedestrian Bridge?',
-      answer: 'We found no rule of Omaha or Council Bluffs on e-scooters on this footbridge. Follow the signs at each end and the Lime app, and yield to people walking.',
+      answer: 'In 2020 the City’s rules allowed rides from 5 a.m. to 10:30 p.m., WOWT reported. Check the Lime app before a late ride.',
     },
   ],
   sources: [

@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'kansas-city',
   name: 'E-scooters in Kansas City, Missouri',
   title: 'E-scooters in Kansas City, Missouri 2026: Bird, the rules',
-  description: 'E-scooters in Kansas City, Missouri: renting Bird, the price, Missouri and City rules, the new limits from late November, the streetcar, the Plaza and UMKC.',
+  description: 'E-scooters in Kansas City, Missouri: renting Bird, Missouri and City rules, the new limits from late November, the streetcar, the Plaza and UMKC.',
   headline: 'E-scooters in Kansas City, Missouri: Bird, the rules and the new limits',
-  lede: 'You can rent e-scooters in Kansas City, Missouri, from Bird, under a cooperative agreement the City Council authorised through 31 December 2026; we found no other scooter company renting there in October 2026. No open official source gives Bird’s price, so check the app before you unlock. Missouri’s statutes don’t define an electric scooter, but a City ordinance that takes effect from about 27 November 2026 sets speed limits, a minimum age of 16 for the fastest devices and helmets for riders under 18. Kansas City, Kansas, across the state line, is a separate city with its own rules.',
+  lede: 'You can rent e-scooters in Kansas City, Missouri, from Bird, under a cooperative agreement the City Council authorised through 31 December 2026. Check Bird’s price in the app before you unlock. A City ordinance that takes effect from about 27 November 2026 sets speed limits, a minimum age of 16 for the fastest devices and helmets for riders under 18. Kansas City, Kansas, across the state line, is a separate city with its own rules.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'us:mo:Kansas City',
@@ -16,17 +16,17 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Kansas City?',
       blocks: [
-        'Electric scooter rental in Kansas City means **Bird**. In 2019 the City chose four operators to rent shared e-scooters; by 2024 the others had stopped, and on 15 August 2024 the City Council authorised a cooperative agreement with Bird to keep its scooters running through 31 December 2026. The agreement is non-exclusive, Public Works told the Council’s transportation committee that month, but we found no other company, Lime, Spin or Veo, renting scooters in Kansas City in October 2026.',
-        'At 5:34 p.m. on Thursday 29 October 2026 the [Kansas City map](map:us:mo:Kansas City) showed about 645 Bird scooters: what stood there at that moment, not Bird’s fleet. That total takes in Bird’s whole Kansas City area, which reaches west across the state line into Kansas.',
-        'For each Bird the map shows its position, charge and range left, plus Bird’s no-ride and no-parking zones at street zoom, but no price. Scooters on a ride aren’t shown. **First ride?** Get the Bird app and scan the QR code on the handlebars: see [how to rent an e-scooter](guide:how-to-rent).',
-        '**Bikes aren’t on the map.** ScootRadar shows standing e-scooters only. Bike Share KC, run by BikeWalkKC, rents e-assist and pedal bikes around the clock in its own app.',
+        'Electric scooter rental in Kansas City means **Bird**. In 2019 the City chose four operators to rent shared e-scooters; by 2024 the others had stopped, and on 15 August 2024 the City Council authorised a cooperative agreement with Bird to keep its scooters running through 31 December 2026. The agreement is non-exclusive, Public Works told the Council’s transportation committee that month.',
+        'At 5:34 p.m. on Thursday 29 October 2026 the [Kansas City map](map:us:mo:Kansas City) showed about 645 Bird scooters: what stood there at that moment, not Bird’s fleet.',
+        '**First ride?** Get the Bird app and scan the QR code on the handlebars: see [how to rent an e-scooter](guide:how-to-rent).',
+        '**Prefer a bike?** Bike Share KC, run by BikeWalkKC, rents e-assist and pedal bikes around the clock in its own app.',
       ],
     },
     {
       heading: 'How much does a Bird scooter cost in Kansas City?',
       blocks: [
-        'We found no open official source for Bird’s Kansas City fares in 2026. The Bird app shows the unlock fee and the rate per minute before you start, and that is the price that counts.',
-        'When Bird opened in Kansas City, Kansas, in April 2021, the Unified Government said Bird’s Community Pricing Program gave 50% off to low-income riders, Pell Grant recipients, veterans and senior citizens, among others, FOX4 reported. We found no 2026 source for such a plan in Kansas City, Missouri: ask Bird in the app.',
+        'The Bird app shows the unlock fee and the rate per minute before you start, and that is the price that counts.',
+        'When Bird opened in Kansas City, Kansas, in April 2021, the Unified Government said Bird’s Community Pricing Program gave 50% off to low-income riders, Pell Grant recipients, veterans and senior citizens, among others, FOX4 reported. In Kansas City, Missouri, ask Bird in the app whether it offers one.',
       ],
     },
     {
@@ -41,7 +41,7 @@ const guide: Guide = {
               ['Status', 'A scooter rider has the rights and duties of a bicycle rider', 'Ordinance 260508, § 70-707(a)'],
               ['Age', 'Under 16, you may not ride, or ride as a passenger on, a device that can go faster than 20 mph', '§ 70-707(d)'],
               ['Helmet', 'Under 18, you must wear an approved bicycle helmet, fitted and fastened', '§ 70-707(k)'],
-              ['Sidewalks', 'Where sidewalk riding is allowed, no faster than 15 mph; it doesn’t say where that is', '§ 70-707(c)'],
+              ['Sidewalks', 'Where sidewalk riding is allowed, no faster than 15 mph', '§ 70-707(c)'],
               ['Bike lanes, paths and trails', 'No faster than 20 mph', '§ 70-707(b)'],
               ['Streets', 'The posted speed limit; never an interstate highway', 'The ordinance’s summary table; § 70-707(j)'],
               ['Passengers', 'None, unless the device is built for one', '§ 70-707(f)'],
@@ -51,14 +51,8 @@ const guide: Guide = {
             ],
           },
         },
-        'When a rider under 16 breaks these rules, the ordinance deals with the parent or guardian in steps: a warning first, then a citation that a safety class can waive, then a citation with a fine of up to $500. On sidewalks, the latest word is older: Kansas City Police told KSHB in July 2018 that scooters must not be ridden on the sidewalk and that riders can be ticketed for it. Ride in the street or a bike lane.',
+        'When a rider under 16 breaks these rules, the ordinance deals with the parent or guardian in steps: a warning first, then a citation that a safety class can waive, then a citation with a fine of up to $500. On sidewalks, Kansas City Police told KSHB in July 2018 that scooters must not be ridden on the sidewalk and that riders can be ticketed for it. Ride in the street or a bike lane.',
         { note: '**New rules from 27 November 2026.** Under Ordinance 260508, passed on 30 July 2026, riders under 18 will have to wear a helmet, nobody under 16 may ride a device that goes faster than 20 mph, and scooters will be limited to 20 mph in bike lanes and on trails and 15 mph wherever sidewalk riding is allowed.' },
-      ],
-    },
-    {
-      heading: 'Can you ride a Bird at night or in winter?',
-      blocks: [
-        'Neither the 2024 agreement ordinance nor Ordinance 260508 sets riding hours, and we found no rule that pauses Bird’s scooters in winter. The Bird app shows whether a scooter can be rented at that moment.',
       ],
     },
     {
@@ -68,7 +62,7 @@ const guide: Guide = {
         {
           list: [
             '**Parking in the app.** In August 2024 Public Works listed a virtual parking system to control clutter at the end of rides, and photo audits carried out by Bird, among the agreement’s improvements: end your ride where the app accepts it.',
-            '**Union Station.** Its policy lets no bicycle be parked or stored inside the building; you may walk one through only to reach Amtrak or the Freight House Bridge, which the station’s site said was closed to the public on 30 October 2026. Bike racks stand on the east and west sides. We found no rule of Union Station’s own for e-scooters: leave a Bird outside.',
+            '**Union Station.** Its policy lets no bicycle be parked or stored inside the building; you may walk one through only to reach Amtrak or the Freight House Bridge, which the station’s site said was closed to the public on 30 October 2026. Bike racks stand on the east and west sides. Leave a Bird outside.',
           ],
         },
       ],
@@ -79,10 +73,10 @@ const guide: Guide = {
         {
           list: [
             '**KC Streetcar.** Scooters are allowed on board, the streetcar says, but don’t leave one behind or on a stop platform. Cross the tracks at a 90-degree angle so a wheel can’t catch in the rail, and watch the transit-only lanes on Main Street between Pershing Road and 51st Street.',
-            '**RideKC buses.** The bus racks hold two bikes each; motor-powered bikes and mopeds can’t go on them. We found no RideKC rule on scooters on board.',
-            '**Country Club Plaza.** We found no rule of the Plaza’s own on e-scooters in 2026. In August 2018 its management asked Bird to pause there, citing safety incidents, and Bird made the district a no-ride zone, KCUR reported: follow the zones in the Bird app.',
+            '**RideKC buses.** The bus racks hold two bikes each; motor-powered bikes and mopeds can’t go on them.',
+            '**Country Club Plaza.** In August 2018 its management asked Bird to pause there, citing safety incidents, and Bird made the district a no-ride zone, KCUR reported: follow the zones in the Bird app.',
             '**UMKC.** Scooters may be ridden or left on the city streets that run through or connect to campus, but not on University of Missouri–Kansas City property or in its buildings: park on city property next to campus, its scooter policy of October 2018 says.',
-            '**Berkley Riverfront Park and the riverfront trails.** We found no rule of their owners on e-scooters. From about 27 November the City’s 20 mph limit applies on trails; yield to people walking.',
+            '**Berkley Riverfront Park and the riverfront trails.** From about 27 November the City’s 20 mph limit applies on trails; yield to people walking.',
           ],
         },
       ],
@@ -90,7 +84,7 @@ const guide: Guide = {
     {
       heading: 'Across the state line: Kansas City, Kansas',
       blocks: [
-        'Bird’s area crosses the state line into Kansas, and the total on the [Kansas City map](map:us:mo:Kansas City) includes any Bird standing on the Kansas side. When Bird began renting in Kansas City, Kansas, in April 2021, the Unified Government said its scooters could be ridden on roads and in bike lanes, must be parked out of the way of pedestrians and never across a driveway, and that riders had to be 18, FOX4 reported. We found no later source on Bird’s terms there.',
+        'Bird’s area crosses the state line into Kansas. When Bird began renting in Kansas City, Kansas, in April 2021, the Unified Government said its scooters could be ridden on roads and in bike lanes, must be parked out of the way of pedestrians and never across a driveway, and that riders had to be 18, FOX4 reported.',
         'Kansas law differs from Missouri’s. It names the “electric-assisted scooter”, applies the traffic rules for bicycles to it, bans it from interstate, federal and state highways, though it may cross a federal or state highway, and lets each city or county restrict or ban it on any street or sidewalk (K.S.A. 8-15,113). Kansas City, Missouri’s new ordinance stops at the state line.',
       ],
     },
@@ -111,11 +105,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Kansas City, Missouri?',
-      answer: 'Bird, under a cooperative agreement the City Council authorised on 15 August 2024 that runs through 31 December 2026. The other operators the City chose in 2019 had stopped renting scooters by 2024, and we found no other scooter company there in October 2026. Find a Bird on the [Kansas City map](map:us:mo:Kansas City).',
+      answer: 'Bird, under a cooperative agreement the City Council authorised on 15 August 2024 that runs through 31 December 2026. The other operators the City chose in 2019 had stopped renting scooters by 2024. Find a Bird on the [Kansas City map](map:us:mo:Kansas City).',
     },
     {
       question: 'How much is a Bird scooter in Kansas City?',
-      answer: 'No open official source gives Bird’s Kansas City price in 2026: the Bird app shows the unlock fee and the rate per minute before you ride.',
+      answer: 'The Bird app shows the unlock fee and the rate per minute before you ride.',
     },
     {
       question: 'Do you need a helmet to ride a scooter in Kansas City?',
@@ -123,7 +117,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Kansas City?',
-      answer: 'Kansas City Police told KSHB in July 2018 that scooters must not be ridden on the sidewalk and that riders can be ticketed. From about 27 November 2026 a new ordinance limits scooters to 15 mph where sidewalk riding is allowed, without saying where that is: ride in the street or a bike lane.',
+      answer: 'Kansas City Police told KSHB in July 2018 that scooters must not be ridden on the sidewalk and that riders can be ticketed. From about 27 November 2026 a new ordinance limits scooters to 15 mph where sidewalk riding is allowed. Ride in the street or a bike lane.',
     },
     {
       question: 'What are the scooter rules in Missouri?',

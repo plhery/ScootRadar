@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Ashdod 2026: Lime, Bird, rules and parking',
   description: 'E-scooters in Ashdod: Lime and Bird, the City’s tender, prices in the app, the licence or test, helmet fines, the marina, the beaches and the train.',
   headline: 'E-scooters in Ashdod: Lime and Bird, the licence rule, the marina, the beaches and the train',
-  lede: 'You can rent e-scooters in Ashdod with Lime or Bird, both on our map, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. Both were picked in the City’s 2022 call for scooter companies, the local news site Kan Darom reported then; we found no later terms.',
+  lede: 'You can rent e-scooters in Ashdod with Lime or Bird, and each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024. Both were picked in the City’s 2022 call for scooter companies, the local news site Kan Darom reported then.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'il:Ashdod',
@@ -17,36 +17,33 @@ const guide: Guide = {
       heading: 'Which e-scooter apps work in Ashdod?',
       blocks: [
         'At 01:34 Israel time on Friday 30 October 2026 the [Ashdod map](map:il:Ashdod) showed about 630 scooters: some 265 Bird at that moment, and about 370 Lime as last counted. The total is what the two companies list for Ashdod, not the size of their fleets.',
-        'For Bird the map shows each scooter’s position, charge and range, and Bird’s no-parking zones; for Lime, position and charge. Scooters on a ride aren’t shown, nor are e-bikes. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Lime’s e-bikes** aren’t on our map: Lime brought 120 to Ashdod in June 2025, alongside its scooters, the news site Walla reported. **Wind**, the third company the City picked in 2022, had left Ashdod by March 2023, the local news site Ashdodi reported. **Dott**, which rents in Tel Aviv and six other towns, didn’t list Ashdod among them on 25 October 2026, the news site Kipa reported, and we found no other company renting e-scooters in Ashdod.',
+        '**Lime also rents e-bikes**: it brought 120 to Ashdod in June 2025, alongside its scooters, the news site Walla reported. **Wind**, the third company the City picked in 2022, had left Ashdod by March 2023, the local news site Ashdodi reported. **Dott** rents in Tel Aviv and six other towns, Ashdod not among them, the news site Kipa reported on 25 October 2026. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
           table: {
             caption: 'Who rents e-scooters in Ashdod, 30 October 2026',
-            head: ['Company', 'On our map at 01:34', 'Price', 'The City’s scheme'],
+            head: ['Company', 'On our map at 01:34', 'The City’s scheme'],
             rows: [
-              ['Bird', 'Yes: about 265, at that moment', 'In the app', 'Picked in 2022, Kan Darom reported'],
-              ['Lime', 'Yes: about 370, as last counted', 'In the app', 'Picked in 2022, Kan Darom reported'],
-              ['Lime e-bikes', 'No', 'In the app', 'Brought in June 2025, Walla reported'],
-              ['Wind', 'No', '–', 'Picked in 2022; gone by March 2023, Ashdodi reported'],
-              ['Dott', 'No', '–', 'Ashdod not in its list of towns, October 2026'],
+              ['Bird', 'About 265, at that moment', 'Picked in 2022, Kan Darom reported'],
+              ['Lime', 'About 370, as last counted', 'Picked in 2022, Kan Darom reported'],
+              ['Lime e-bikes', '–', 'Brought in June 2025, Walla reported'],
+              ['Wind', '–', 'Picked in 2022; gone by March 2023, Ashdodi reported'],
             ],
           },
         },
       ],
     },
     {
-      heading: 'Ashdod’s scooter tender: what we could find',
+      heading: 'Ashdod’s scooter tender',
       blocks: [
         'In 2022 the City called for shared-scooter companies and, after a professional committee weighed the bids, picked three for a pilot: Bird, Wind and Lime, Kan Darom reported in August 2022. The call set how many scooters each company could keep and where in the city it should place them, and the official running the scheme said it let the City fix parking spots for them.',
-        'In November 2022 Ice reported, in a piece that reads as Bird’s own announcement, that Bird had scored highest in the tender. Wind had left by March 2023, Ashdodi reported. We found no later tender, no term and no news of a renewal, so we can’t say on what terms Lime and Bird rent now.',
+        'In November 2022 Ice reported, in a piece that reads as Bird’s own announcement, that Bird had scored highest in the tender. Wind had left by March 2023, Ashdodi reported.',
         'Lime added its e-bikes in June 2025 at the mayor’s push, Walla reported: Dr Yehiel Lasri said Ashdod’s infrastructure suited them and was still growing.',
-        'We found no published list of parking spots, and no caps, hours, or no-ride or slow zones. Each app shows where you may ride and end your ride, and the map shows Bird’s no-parking zones (see below).',
       ],
     },
     {
       heading: 'Electric scooter rental in Ashdod: what does it cost?',
       blocks: [
-        'We found no current Ashdod price published by Lime, Bird or the City, so compare them in their apps: each shows the unlock fee and the rate before you start.',
+        'Compare Lime and Bird in their apps: each shows the unlock fee and the rate before you start.',
         'Fines cost far more than rides. Since 1 August 2024 every e-scooter in Israel has had to be registered and carry an ID plate, a duty that falls on its owner, Ice reported, so on a shared scooter it’s the company’s. On a scooter of your own, riding without a plate has cost ₪750 since 1 September 2026, Maariv reported.',
       ],
     },
@@ -54,7 +51,6 @@ const guide: Guide = {
       heading: 'Do you need a licence for an e-scooter in Ashdod?',
       blocks: [
         'Yes. Israel’s rules ask every rider for a driving licence or, without one, a passed riding or theory test, Ice reported in 2024. Riding without either has carried a ₪750 fine since 2022, Srugim reported.',
-        'We found no news report on whether a visitor’s foreign licence counts, and no page from Lime or Bird on how they check one, so carry your licence and follow what your app asks for.',
         { note: '**Carry your driving licence and wear a helmet.** Since 2022 municipal inspectors, not only the police, can fine you for riding without either, Srugim reported.' },
         'The minimum age is 16; riding younger costs ₪1,000, Srugim reported in 2022.',
       ],
@@ -88,17 +84,17 @@ const guide: Guide = {
       blocks: [
         'Ride on a bike path; where a street has none, ride on the road, never on the sidewalk, dpa reported in 2019, and Ice repeated in 2024 that riding on the sidewalk is banned.',
         'Ashdod has a good start: its bike paths ran to about 45 km in 2025, and in 2022 it ranked among Israel’s five best-networked cities, Walla reported. The City and the Transport Ministry plan to take the network to about 165 km, with two-way paths along the main roads, so expect new paths and roadworks.',
-        '**Zones on the map.** At street zoom the [Ashdod map](map:il:Ashdod) draws Bird’s no-parking zones: the marina and the beach around it, a stretch of shore south of it, a few small spots near the sea, and a large area in the east of the city, north of Ashdod Ad Halom station. Lime’s zones aren’t on the map, and for both companies the app has the final word.',
-        '**Parking.** We found no published City parking rules for shared scooters. End your ride where the app allows it, upright and out of the way: not across a doorway, a crossing or a bus stop.',
+        '**Bird’s no-parking zones.** At street zoom the [Ashdod map](map:il:Ashdod) draws them: the marina and the beach around it, a stretch of shore south of it, a few small spots near the sea, and a large area in the east of the city, north of Ashdod Ad Halom station. Lime shows its zones in its app, and for both companies the app has the final word.',
+        '**Parking.** End your ride where the app allows it, upright and out of the way: not across a doorway, a crossing or a bus stop.',
       ],
     },
     {
       heading: 'The marina, the beaches, the port and Ashdod Ad Halom station',
       blocks: [
         '**The marina.** Ashdod Marina sits in the middle of the city’s beaches, close to the centre. Bird’s no-parking zone covers the marina and the beach around it, so end a Bird ride on the streets behind them and walk the last stretch.',
-        '**The promenade and the beaches.** We found no City rule on e-scooters on the beachfront promenade or the beaches, but municipal police check riders there. On 29 May 2026 they were stopping riders along the promenade, with fines of up to ₪1,000 and some e-bikes and scooters seized, and such checks run all week, the local news site Ashdod Online reported. Ride on a path or the road, as everywhere, and check your app before you end a ride by the sea.',
-        '**The port.** The Port of Ashdod, in the north of the city, is a working cargo port run by a government company, the Ashdod Port Company; we found no rule from it on e-scooters.',
-        '**The train.** Israel Railways has one station in the city, Ashdod Ad Halom, in the Ad Halom area near the city’s south-eastern entrance, next to the BIG Terminal bus station. Trains run north to Tel Aviv and south to Ashkelon and Beersheba. We found no Israel Railways rule on e-scooters, so end your ride before you go in.',
+        '**The promenade and the beaches.** Municipal police check riders on the beachfront promenade: on 29 May 2026 they were stopping riders there, with fines of up to ₪1,000 and some e-bikes and scooters seized, and such checks run all week, the local news site Ashdod Online reported. Ride on a path or the road, as everywhere, and check your app before you end a ride by the sea.',
+        '**The port.** The Port of Ashdod, in the north of the city, is a working cargo port run by a government company, the Ashdod Port Company.',
+        '**The train.** Israel Railways has one station in the city, Ashdod Ad Halom, in the Ad Halom area near the city’s south-eastern entrance, next to the BIG Terminal bus station. Trains run north to Tel Aviv and south to Ashkelon and Beersheba. End your ride before you go in.',
         '**Tel Aviv.** For Tel Aviv, take the train and rent again there: see the [Tel Aviv guide](guide:tel-aviv), where the centre has bays only.',
       ],
     },
@@ -119,15 +115,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Ashdod?',
-      answer: 'Lime and Bird, both on our [Ashdod map](map:il:Ashdod): about 630 scooters at 01:34 on 30 October 2026, some 265 Bird at that moment and about 370 Lime as last counted. Dott didn’t list Ashdod among its towns in October 2026.',
+      answer: 'Lime and Bird, both on our [Ashdod map](map:il:Ashdod): about 630 scooters at 01:34 on 30 October 2026, some 265 Bird at that moment and about 370 Lime as last counted. Dott rented in Tel Aviv and six other towns in October 2026, Ashdod not among them, Kipa reported.',
     },
     {
       question: 'How much does a Lime or Bird scooter cost in Ashdod?',
-      answer: 'We found no published Ashdod price, so the app shows the unlock fee and the rate before you start. Compare Lime and Bird there.',
+      answer: 'Each app shows its unlock fee and rate before you start, so compare Lime and Bird there.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Ashdod as a tourist?',
-      answer: 'Yes. Every rider needs a driving licence or, without one, a passed test, Ice reported in 2024. We found no report on whether a foreign licence counts, so carry yours and follow what the app asks for.',
+      answer: 'Yes. Every rider needs a driving licence or, without one, a passed test, Ice reported in 2024: carry yours and follow what the app asks for.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Ashdod?',
@@ -139,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Who runs Ashdod’s shared scooters?',
-      answer: 'Bird and Lime. The City picked them, with Wind, in its 2022 call for scooter companies, Kan Darom reported; Wind had left by March 2023, Ashdodi reported. We found no later tender, and no published terms, caps or hours.',
+      answer: 'Bird and Lime. The City picked them, with Wind, in its 2022 call for scooter companies, Kan Darom reported; Wind had left by March 2023, Ashdodi reported.',
     },
   ],
   sources: [

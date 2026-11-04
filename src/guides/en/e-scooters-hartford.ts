@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Hartford 2026: Veo scooters and CT rules',
   description: 'E-scooters in Hartford: renting Veo, what a ride costs, the City’s no-ride zones and Connecticut’s rules on helmets, sidewalks, lights and parking.',
   headline: 'E-scooters in Hartford: renting a Veo scooter, Connecticut’s rules, and where you can ride',
-  lede: 'E-scooters in Hartford come from Veo, brought in by the City and the Capitol Region Council of Governments (CRCOG) in August 2024 after the Link scooters left; it is the only company our Hartford map counts. Veo’s published rate on 29 October 2026 was $1 to unlock and 36 cents a minute, plus tax, and the City set the riding age at 18. Connecticut law treats you much like a cyclist, with a helmet under 18 and a light after dark, and the City’s 2024 plan made Pratt Street, the Riverwalk and the CTfastrak busway no-ride zones.',
+  lede: 'E-scooters in Hartford come from Veo, brought in by the City and the Capitol Region Council of Governments (CRCOG) in August 2024 after the Link scooters left. Veo’s published rate on 29 October 2026 was $1 to unlock and 36 cents a minute, plus tax, and the City set the riding age at 18. Connecticut law treats you much like a cyclist, with a helmet under 18 and a light after dark, and the City’s 2024 plan made Pratt Street, the Riverwalk and the CTfastrak busway no-ride zones.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:ct:Hartford',
@@ -17,9 +17,8 @@ const guide: Guide = {
       heading: 'Electric scooter rental in Hartford: who runs it?',
       blocks: [
         '**Veo** has rented stand-up scooters in Hartford since 28 August 2024. From 2021 to 2023 the City and the Capitol Region Council of Governments (CRCOG) hosted Link scooters, run by Superpedestrian, until the company stopped its US operations at the end of 2023. CRCOG then reviewed other companies and chose Veo; as a member town, Hartford hosts Veo under CRCOG’s regional agreement.',
-        'The City set this out in its text of 28 August 2024, which the Hartford Chamber of Commerce reposted on 10 December 2024. Its plan began with 220 stand-up scooters downtown, then up to 600 across the city from late September; from December to February the fleet would shrink with the weather and demand, and in spring return to up to 600, perhaps with bikes. We found no later agreement, cap or end date, so these 2024 figures may have changed.',
-        'At 2:06 p.m. on Thursday 29 October 2026 the [Hartford map](map:us:ct:Hartford) showed about 760 Veo scooters at that moment: a snapshot, not a fleet size. The total is not a count within the city limits: it takes in a few scooters just over the line in West Hartford and Bloomfield, but not the 8 to 10 that stand at one spot in an industrial park in East Hartford, across the river, most likely a depot.',
-        'The map shows each scooter’s position, range and price. Scooters on a ride aren’t shown, nor Veo’s zones or parking spots, nor any Veo bikes. We found no other company with a City agreement in 2026. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'The City set this out in its text of 28 August 2024, which the Hartford Chamber of Commerce reposted on 10 December 2024. Its plan began with 220 stand-up scooters downtown, then up to 600 across the city from late September; from December to February the fleet would shrink with the weather and demand, and in spring return to up to 600, perhaps with bikes.',
+        'At 2:06 p.m. on Thursday 29 October 2026 the [Hartford map](map:us:ct:Hartford) showed about 760 Veo scooters at that moment: a snapshot, not a fleet size. A few stood just over the city line, in West Hartford and Bloomfield. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -40,7 +39,7 @@ const guide: Guide = {
           },
         },
         '**Low-income plan.** At the launch, Mayor Arunan Arulampalam described a $5-a-month subscription for low-income residents that gives 30 minutes of riding a day, WFSB reported on 30 August 2024. Check in the app whether it still runs and whether you qualify.',
-        '**Age.** Riders must be 18, the City’s 2024 text said. We found no minimum age in Connecticut law.',
+        '**Age.** Riders must be 18, the City’s 2024 text said.',
       ],
     },
     {
@@ -52,7 +51,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in Hartford on 29 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '18 to ride a Veo; no state minimum found', 'City of Hartford (2024)'],
+              ['Age', '18 to ride a Veo', 'City of Hartford (2024)'],
               ['Helmet', 'Under 18s must wear one on any road and in any park, since 1 October 2025. Not an offence: police may warn a parent. Recommended for everyone', 'CGS § 14-286d'],
               ['Where to ride', 'When slower than traffic, keep as far right as is safe, except to pass, turn left, avoid hazards or use a bike lane; on a one-way street you may keep left. No more than two abreast, within one lane', 'CGS § 14-286b'],
               ['Sidewalks and crosswalks', 'Allowed unless a town ordinance or a state traffic rule bans it; give way to people walking and warn them before you pass', 'CGS § 14-286'],
@@ -60,25 +59,23 @@ const guide: Guide = {
               ['Hands', 'At least one hand on the handlebars; carry nothing that stops you using both', 'CGS § 14-286b'],
               ['Hitching a ride', 'Never hold on to a moving vehicle', 'CGS § 14-286b'],
               ['Lights', 'From half an hour after sunset to half an hour before sunrise, and in rain, snow, fog or poor light: a white front light seen from 500 feet. A rear reflector, reflective material on both sides and a working brake at all times', 'CGS §§ 14-288 and 14-96a'],
-              ['Alcohol', 'No rule written for e-scooters found; on the road you have a driver’s duties, so don’t ride after drinking', 'No e-scooter rule found; CGS § 14-286a'],
               ['Penalties', 'Breaking the riding, sidewalk, parking or lighting rules is an infraction', 'CGS §§ 14-286, 14-286b, 14-288'],
             ],
           },
         },
         { note: '**Hartford’s no-ride zones.** The City’s plan of August 2024 made highway ramps, the CTfastrak busway, Pratt Street, parking garages, Heaven Skate Park and the Riverwalk no-ride zones for shared scooters, and parks and Constitution Plaza slow-ride zones. Any of these can also be no-parking, so end your ride outside. The Veo app shows the zones in force now.' },
-        'We found no night curfew. The City’s 2024 plan expected a smaller fleet in winter rather than a pause.',
+        'The City’s 2024 plan expected a smaller fleet in winter rather than a pause.',
       ],
     },
     {
       heading: 'Can you ride on the sidewalk, in Bushnell Park or by the river?',
       blocks: [
-        '**Sidewalks: best not.** State law allows riding on a sidewalk unless the town bans it, as long as you give way to people walking and warn them before passing. We found no Hartford rule either way; the City’s 2024 text tells Veo riders to follow the standard rules of the road, so use the street or a bike lane.',
+        '**Sidewalks: best not.** State law allows riding on a sidewalk unless the town bans it, as long as you give way to people walking and warn them before passing. The City’s 2024 text tells Veo riders to follow the standard rules of the road, so use the street or a bike lane.',
         {
           list: [
-            '**Bushnell Park**: the Bushnell Park Foundation allows bikes on the park’s paths, with care and giving way to people on foot, and on the Bushnell promenade along its northern edge. Its page sets no rule for scooters. The City’s 2024 plan made parks slow-ride zones. Bike racks stand by the Pump House, the Carousel and Corning Fountain.',
+            '**Bushnell Park**: the Bushnell Park Foundation allows bikes on the park’s paths, with care and giving way to people on foot, and on the Bushnell promenade along its northern edge. The City’s 2024 plan made parks slow-ride zones. Bike racks stand by the Pump House, the Carousel and Corning Fountain.',
             '**The Riverwalk and Riverfront Recapture’s parks**: the City’s 2024 plan made the Riverwalk a no-ride zone. Riverfront Recapture’s rules ban unauthorised motorized vehicles on every path and walkway, tell cyclists to give way to people walking, and open the parks from sunrise to sunset.',
             '**Constitution Plaza**: slow-ride; **Pratt Street** and **Heaven Skate Park**: no-ride, in the City’s 2024 plan.',
-            '**Trinity College**: we found no college rule on e-scooters on its campus.',
             '**UConn Hartford**: since 31 August 2023 UConn has banned storing, charging or servicing lithium-ion scooters and e-bikes in its buildings, at every campus. Leave a Veo outside.',
           ],
         },
@@ -102,8 +99,8 @@ const guide: Guide = {
       heading: 'CTtransit buses, Union Station and the Hartford Line',
       blocks: [
         '**CTtransit.** Folding scooters and bikes may ride on board: folded, held by you, out of the aisles and exits, and not in the wheelchair area. Non-folding ones may not, and the outside racks take only two-wheeled bikes up to 55 lb, so a Veo stays on the street.',
-        '**Union Station.** Hartford Union Station stands across the street from Bushnell Park and serves CTrail’s Hartford Line and CTfastrak routes 101, 102 and 128. Don’t ride on the busway: the City’s 2024 plan made it a no-ride zone. We found no rule from the station on scooters.',
-        '**Hartford Line trains.** CTrail’s trains take standard bikes in their bike areas, as the conductor directs, and folding bikes folded, space permitting; its rules name no scooters, so ask the conductor before boarding with your own. Amtrak’s trains on the line need a bike reservation. Bike lockers stand in the Spruce Street lot, on the station’s west side.',
+        '**Union Station.** Hartford Union Station stands across the street from Bushnell Park and serves CTrail’s Hartford Line and CTfastrak routes 101, 102 and 128. Don’t ride on the busway: the City’s 2024 plan made it a no-ride zone.',
+        '**Hartford Line trains.** CTrail’s trains take standard bikes in their bike areas, as the conductor directs, and folding bikes folded, space permitting; ask the conductor before boarding with a scooter of your own. Amtrak’s trains on the line need a bike reservation. Bike lockers stand in the Spruce Street lot, on the station’s west side.',
       ],
     },
     {
@@ -124,7 +121,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Hartford?',
-      answer: 'Veo, which Hartford has hosted since August 2024 under the Capitol Region Council of Governments’ agreement, the City said that month; the Hartford map counts Veo alone. We found no other company with a City agreement in 2026. The Link scooters left at the end of 2023.',
+      answer: 'Veo, which Hartford has hosted since August 2024 under the Capitol Region Council of Governments’ agreement, the City said that month. The Link scooters left at the end of 2023.',
     },
     {
       question: 'How much does a Veo scooter cost in Hartford?',
@@ -136,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Hartford?',
-      answer: 'State law allows it unless a town bans it, provided you give way to people walking and warn them before passing. We found no Hartford rule either way, and the City’s 2024 text tells Veo riders to follow the rules of the road, so stay in the street or a bike lane.',
+      answer: 'State law allows it unless a town bans it, provided you give way to people walking and warn them before passing. The City’s 2024 text tells Veo riders to follow the rules of the road, so stay in the street or a bike lane.',
     },
     {
       question: 'Can I take an e-scooter on a CTtransit bus?',
@@ -144,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Do Veo scooters run in winter in Hartford?',
-      answer: 'The City’s plan of August 2024 kept them running in winter, but expected fewer from December to February, depending on the weather and demand, and more again in spring. We found no newer plan, and no night curfew.',
+      answer: 'The City’s plan of August 2024 kept them running in winter, but expected fewer from December to February, depending on the weather and demand, and more again in spring.',
     },
   ],
   sources: [
