@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it, vi } from 'vitest';
 import { MAP_PATH } from '@/lib/mapAddress';
 import { SITE_URL as SITE } from '@/lib/site';
+import AccessibilityPage from './(map)/accessibility/page';
 import PrivacyPage from './(map)/privacy/page';
 import sitemap from './sitemap';
 
@@ -30,6 +31,11 @@ it('dates the privacy notice by the day it says it was updated, and the live map
   const shown = /Last updated: ([^<]+)</.exec(renderToStaticMarkup(PrivacyPage()))![1];
   expect(at('/privacy').lastModified).toEqual(new Date(`${shown} UTC`));
   expect(at(MAP_PATH)).not.toHaveProperty('lastModified');
+});
+
+it('dates the accessibility page by the day it says it was updated', () => {
+  const shown = /Last updated ([^<]+)</.exec(renderToStaticMarkup(AccessibilityPage()))![1];
+  expect(at('/accessibility').lastModified).toEqual(new Date(`${shown} UTC`));
 });
 
 it('describes the map in no more than the 160 characters a search engine shows', async () => {

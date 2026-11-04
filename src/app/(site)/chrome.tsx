@@ -221,6 +221,7 @@ export function SiteFooter({ locale, languages }: { locale: LandingLocale; langu
         <p>{copy.footer.text}</p>
         <nav aria-label={copy.footer.links}>
           <AppLink href="/privacy" hrefLang="en">{copy.footer.privacy}</AppLink>
+          <AppLink href="/accessibility" hrefLang="en">{copy.footer.accessibility}</AppLink>
           <a href={SOURCE_URL}>{copy.footer.source}</a>
         </nav>
       </div>

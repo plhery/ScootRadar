@@ -215,7 +215,7 @@ test('the landing page tells a search engine where each language is', async ({ p
   await expect(page.locator('meta[property="og:locale:alternate"]')).toHaveAttribute('content', 'fr_CA');
 
   const listed = await (await page.request.get('/sitemap.xml')).text();
-  for (const address of ['/', '/de', '/fr', '/it', '/map', '/privacy']) expect(listed).toContain(`<loc>${site}${address}</loc>`);
+  for (const address of ['/', '/de', '/fr', '/it', '/map', '/privacy', '/accessibility']) expect(listed).toContain(`<loc>${site}${address}</loc>`);
   expect(listed).not.toContain(`${site}/en`);
 });
 
@@ -232,6 +232,7 @@ test('the landing page leads to the map, and to the map of a city', async ({ pag
   await expect(cities.getByRole('link', { name: 'Zürich', exact: true })).toHaveAttribute('href', /^\/map\?origin=47\.\d+,8\.\d+$/);
   await expect(cities.getByRole('link', { name: 'Roma', exact: true })).toHaveAttribute('href', /^\/map\?origin=41\.\d+,12\.\d+$/);
   await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy');
+  await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Accessibility' })).toHaveAttribute('href', '/accessibility');
 
   // The map is another document, with its own layout: the link loads it whole.
   await page.getByRole('link', { name: 'Open the map' }).first().click();

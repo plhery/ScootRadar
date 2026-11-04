@@ -69,5 +69,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    {
+      url: `${SITE}/accessibility`,
+      // The day the page says it was last updated.
+      lastModified: new Date('2026-11-04'),
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
   ];
 }

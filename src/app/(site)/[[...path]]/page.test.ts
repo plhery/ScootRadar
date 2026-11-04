@@ -7,6 +7,7 @@ import { MAP_PATH } from '@/lib/mapAddress';
 import { SITE_URL } from '@/lib/site';
 import { sitePageOf, sitePagePath, sitePaths, type SitePage } from '@/lib/sitePages';
 import { metadata as mapMetadata } from '../../(map)/layout';
+import { metadata as accessibilityMetadata } from '../../(map)/accessibility/page';
 import { metadata as privacyMetadata } from '../../(map)/privacy/page';
 import sitemap from '../../sitemap';
 import { metadata as siteMetadata } from './layout';
@@ -91,12 +92,12 @@ describe('the links between a page and its translations', () => {
     expect(guideOn('oslo', 'nb').languages?.en).toBe(guideOn('oslo', 'en').canonical);
   });
 
-  it('are none on the map and the privacy notice, which are in one language at one address', () => {
-    for (const { alternates } of [mapMetadata, privacyMetadata]) expect(alternates?.languages).toBeUndefined();
+  it('are none on the map, the privacy notice and the accessibility page, which are in one language at one address', () => {
+    for (const { alternates } of [mapMetadata, privacyMetadata, accessibilityMetadata]) expect(alternates?.languages).toBeUndefined();
   });
 
   it('are the ones the sitemap gives each page, and it lists every page built', () => {
-    const single = [address(MAP_PATH), address('/privacy')];
+    const single = [address(MAP_PATH), address('/privacy'), address('/accessibility')];
     const entries = sitemap();
     expect(entries.map(entry => entry.url).filter(url => !single.includes(url)).sort()).toEqual([...byAddress.keys()].sort());
     for (const { url, alternates } of entries) expect(alternates?.languages, url).toEqual(byAddress.get(url)?.languages);

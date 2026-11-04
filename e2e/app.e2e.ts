@@ -2580,6 +2580,16 @@ test('publishes a standalone privacy notice', async ({ page }) => {
   }))).toEqual({ controls: 'normal', page: 'rgb(245, 244, 241)', bars: ['#f5f4f1'] });
 });
 
+test('publishes an accessibility page for the apps on the App Store, accessible itself', async ({ page }) => {
+  await page.goto('/accessibility');
+
+  await expect(page.getByRole('heading', { level: 1, name: 'Accessibility' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Works today', 'In the next update', 'Still working on', 'Report a problem']);
+  await expect(page.getByRole('link', { name: 'hello@scootradar.com' })).toHaveAttribute('href', 'mailto:hello@scootradar.com');
+  const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+  expect(accessibility.violations).toEqual([]);
+});
+
 test('compass rotates the map, preserves marker interaction and resets north', async ({ page }) => {
   await page.goto('/map');
   await focusFixtureArea(page);

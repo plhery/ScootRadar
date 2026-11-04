@@ -17,7 +17,7 @@ API/admin secret is shipped. The Umami admin dashboard remains protected
 independently of its existing public collector. In ScootRadar, filter by **Tag**
 (`web`, `pwa`) to tell a browser from the installed web app; everything in ScootRadar
 iOS has the tag `ios`. Named events also carry `platform` in event data. Web page
-views contain only `/map`, `/privacy` and the pages of the site, each under its own
+views contain only `/map`, `/privacy`, `/accessibility` and the pages of the site, each under its own
 address: the landing page of a language (`/` for English, `/de`, `/fr`, `/it`…), each
 guide (`/guides/e-scooters-bristol`, `/de/ratgeber/…`) and each language's list of
 guides (`/guides`, `/de/ratgeber`…). The app's screen views are `/` (the map),

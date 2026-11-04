@@ -43,6 +43,7 @@ export function analyticsEnabled(): boolean {
 const PUBLIC_PAGES = new Map([
   [MAP_PATH, 'ScootRadar'],
   ['/privacy', 'Privacy — ScootRadar'],
+  ['/accessibility', 'Accessibility — ScootRadar'],
   ['/', 'About — ScootRadar'],
   ['/de', 'About — ScootRadar'],
   ['/fr', 'About — ScootRadar'],

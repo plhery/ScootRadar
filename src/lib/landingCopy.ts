@@ -174,6 +174,8 @@ export interface LandingCopy {
     text: string;
     links: string;
     privacy: string;
+    /** The link to the accessibility page, which is in English. */
+    accessibility: string;
     source: string;
     /** The heading of the guides, src/lib/guides.ts, and their name in the trail above a guide. */
     guides: string;
@@ -308,6 +310,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar is independent and not affiliated with the providers; their names are trademarks of their owners. Positions come from the providers’ public data feeds and can be a few minutes old. Prices are estimates; the provider’s app shows the final price.',
       links: 'More links',
       privacy: 'Privacy',
+      accessibility: 'Accessibility',
       source: 'Source on GitHub',
       guides: 'Guides',
       maker: 'By the <maker>maker</maker> of <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> and the <peek>Peek parcel tracker</peek>.',
@@ -439,6 +442,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. Die Positionen stammen aus den öffentlichen Datenfeeds der Anbieter und können einige Minuten alt sein. Preise sind Schätzungen; den Endpreis zeigt die App des Anbieters.',
       links: 'Weitere Links',
       privacy: 'Datenschutz',
+      accessibility: 'Barrierefreiheit',
       source: 'Quellcode auf GitHub',
       guides: 'Ratgeber',
       maker: 'Vom <maker>Macher</maker> von <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> und der <peek>Paketverfolgung Peek</peek>.',
@@ -570,6 +574,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar est indépendant et n’est pas affilié aux opérateurs ; leurs noms sont des marques de leurs propriétaires respectifs. Les positions proviennent des flux de données publics des opérateurs et peuvent dater de quelques minutes. Les prix sont des estimations ; le prix final est celui qu’affiche l’app de l’opérateur.',
       links: 'Autres liens',
       privacy: 'Confidentialité',
+      accessibility: 'Accessibilité',
       source: 'Code source sur GitHub',
       guides: 'Guides',
       maker: 'Par le <maker>créateur</maker> de <horoscope>X Horoscope</horoscope>, d’<monkey>UnfollowMonkey</monkey> et du <peek>suivi de colis Peek</peek>.',
@@ -701,6 +706,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar è un’app indipendente, non affiliata agli operatori; i loro nomi sono marchi dei rispettivi titolari. Le posizioni provengono dai feed di dati pubblici degli operatori e possono risalire a qualche minuto fa. I prezzi sono stime; il prezzo finale è quello dell’app dell’operatore.',
       links: 'Altri link',
       privacy: 'Privacy',
+      accessibility: 'Accessibilità',
       source: 'Codice sorgente su GitHub',
       guides: 'Guide',
       maker: 'Dal <maker>creatore</maker> di <horoscope>X Horoscope</horoscope>, di <monkey>UnfollowMonkey</monkey> e di <peek>Peek, l’app per tracciare i pacchi</peek>.',
@@ -832,6 +838,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar er uavhengig og ikke tilknyttet operatørene; navnene deres er varemerker som tilhører eierne. Posisjonene kommer fra operatørenes offentlige datastrømmer og kan være noen minutter gamle. Prisene er anslag; operatørens app viser endelig pris.',
       links: 'Flere lenker',
       privacy: 'Personvern',
+      accessibility: 'Tilgjengelighet',
       source: 'Kildekode på GitHub',
       guides: 'Guider',
       maker: 'Fra <maker>skaperen</maker> av <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> og <peek>pakkesporingen Peek</peek>.',
@@ -963,6 +970,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar is onafhankelijk en niet verbonden aan de aanbieders; hun namen zijn handelsmerken van hun eigenaars. De posities komen uit de openbare datafeeds van de aanbieders en kunnen een paar minuten oud zijn. Prijzen zijn schattingen; de eindprijs zie je in de app van de aanbieder.',
       links: 'Meer links',
       privacy: 'Privacy',
+      accessibility: 'Toegankelijkheid',
       source: 'Broncode op GitHub',
       guides: 'Gidsen',
       maker: 'Door de <maker>maker</maker> van <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> en de <peek>pakkettracker Peek</peek>.',
@@ -1093,6 +1101,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'O ScootRadar é independente e não tem qualquer ligação aos operadores; os nomes destes são marcas dos respetivos titulares. As posições vêm dos dados abertos dos operadores e podem ter alguns minutos de atraso. Os preços são estimativas; o preço final é o que aparece na app do operador.',
       links: 'Mais ligações',
       privacy: 'Privacidade',
+      accessibility: 'Acessibilidade',
       source: 'Código-fonte no GitHub',
       guides: 'Guias',
       maker: 'Do <maker>criador</maker> do <horoscope>X Horoscope</horoscope>, do <monkey>UnfollowMonkey</monkey> e do <peek>Peek, para seguir encomendas</peek>.',
@@ -1223,6 +1232,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar es independiente y no está vinculado a los operadores; sus nombres son marcas de sus respectivos titulares. Las posiciones proceden de los datos abiertos de los operadores y pueden tener unos minutos de retraso. Los precios son estimaciones; el precio final lo muestra la app del operador.',
       links: 'Más enlaces',
       privacy: 'Privacidad',
+      accessibility: 'Accesibilidad',
       source: 'Código fuente en GitHub',
       guides: 'Guías',
       maker: 'Del <maker>creador</maker> de <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> y <peek>Peek, la app de seguimiento de paquetes</peek>.',
@@ -1356,6 +1366,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       text: 'ScootRadar er óháð þjónusta, ótengd fyrirtækjunum; nöfn þeirra eru vörumerki eigenda sinna. Staðsetningar koma úr opnum gagnastraumum fyrirtækjanna og geta verið nokkurra mínútna gamlar. Verð eru áætluð; endanlegt verð sérðu í appi fyrirtækisins.',
       links: 'Fleiri tenglar',
       privacy: 'Persónuvernd',
+      accessibility: 'Aðgengi',
       source: 'Frumkóði á GitHub',
       guides: 'Leiðarvísar',
       maker: 'Frá <maker>höfundi</maker> <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> og <peek>pakkarakningarappsins Peek</peek>.',
