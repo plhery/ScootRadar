@@ -3212,6 +3212,61 @@ extension ScooterMapModelTests {
         XCTAssertLessThanOrEqual(dock.maxY, window.bounds.maxY, "The dock \(dock) past the window's foot")
     }
 
+    func testTheNamesOnTheMapGrowWithVeryLargeTextAndKeepTheirSizeOtherwise() async throws {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        func map(in view: UIView) -> MKMapView? {
+            (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
+        }
+        for (size, height) in [(DynamicTypeSize.large, ScooterMapLook.pillHeight), (.accessibility3, 2 * ScooterMapLook.pillHeight)] {
+            // In the upper half of the map: with very large text the buttons,
+            // the legend and the dock cover the lower half, and a name that
+            // has no room there is left out.
+            let near = Scooter(
+                provider: "voi", latitude: 47.3803, longitude: 8.5417, battery: 82, rangeMeters: 24_000,
+                vehicleID: "near", deepLink: nil,
+                rentalURIs: ScooterRentalURIs(ios: "https://voi.com/ride", android: nil, web: nil),
+                distanceMeters: 0,
+                pricing: ScooterRidePricing(currency: "CHF", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 35)
+            )
+            let api = StubScooterAPI(response: ScooterResponse(vehicles: [near]))
+            let model = makeModel(api: api)
+            model.userLocation = GeoPoint(latitude: 47.3779, longitude: 8.5417)
+            model.updateViewport(zurichRegion, zoom: 16)
+            let loaded = await waitUntil { await api.snapshot().calls >= 1 && model.lastUpdated != nil && !model.isLoading }
+            XCTAssertTrue(loaded)
+
+            let window = UIWindow(windowScene: scene)
+            window.frame = CGRect(x: 0, y: 0, width: 402, height: 874)
+            window.rootViewController = UIHostingController(
+                rootView: ScooterMapScreen(model: model).environment(\.dynamicTypeSize, size)
+            )
+            window.isHidden = false
+            defer { window.isHidden = true }
+            window.layoutIfNeeded()
+            let mapView = try XCTUnwrap(map(in: window))
+            // At street level, where the nearest scooter of each provider carries its name.
+            let street = MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417),
+                latitudinalMeters: 500,
+                longitudinalMeters: 500
+            )
+            ScooterMapCameraPolicy.setRegionPreservingPerspective(street, on: mapView, animated: false)
+            try await Task.sleep(for: .seconds(1))
+            let coordinator = try XCTUnwrap(mapView.delegate as? ScooterMapView.Coordinator)
+            let names = mapView.annotations
+                .compactMap { mapView.view(for: $0) as? ScooterAnnotationView }
+                .compactMap { view in view.pillFrame.map { view.convert($0, to: nil) } }
+            XCTAssertEqual(names.map(\.height), [height], "\(size), \(mapView.region.span)")
+            // Clear of what floats over the map.
+            let chrome = coordinator.parent.bottomChromeFrames + [coordinator.parent.interactionExclusionFrame]
+            for name in names {
+                for frame in chrome where !frame.isNull {
+                    XCTAssertFalse(name.intersects(frame), "\(size): the name \(name) under \(frame)")
+                }
+            }
+        }
+    }
+
     func testMapOpensSlightlyTiltedAndKeepsItsTiltWhenTheAppMovesIt() throws {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         let window = try window(showing: ScooterMapScreen(model: model))

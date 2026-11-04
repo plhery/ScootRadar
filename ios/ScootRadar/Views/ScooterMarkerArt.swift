@@ -276,15 +276,24 @@ final class ScooterNamePillView: UIView {
         let time: String?
         let isFilled: Bool
         let isDark: Bool
+        /// Larger text draws a larger pill: `ScooterMapLook.textScale(for:)`.
+        var textScale: CGFloat = 1
 
         @MainActor
         var width: CGFloat {
-            var width = leading + ScooterNamePillView.dotSize + gap + ceil(textWidth(name, ScooterNamePillView.nameFont))
+            var width = leading + ScooterNamePillView.dotSize + gap + ceil(textWidth(name, nameFont))
             if let time {
-                width += gap + ceil(textWidth(time, ScooterNamePillView.timeFont))
+                width += gap + ceil(textWidth(time, timeFont))
             }
             return width + trailing
         }
+
+        var height: CGFloat {
+            (ScooterMapLook.pillHeight * textScale).rounded()
+        }
+
+        fileprivate var nameFont: UIFont { .systemFont(ofSize: 12 * textScale, weight: .bold) }
+        fileprivate var timeFont: UIFont { .systemFont(ofSize: 12 * textScale, weight: .semibold) }
 
         fileprivate var leading: CGFloat { 8 }
         fileprivate var trailing: CGFloat { 10 }
@@ -296,8 +305,6 @@ final class ScooterNamePillView: UIView {
     }
 
     fileprivate static let dotSize: CGFloat = 7
-    fileprivate static let nameFont = UIFont.systemFont(ofSize: 12, weight: .bold)
-    fileprivate static let timeFont = UIFont.systemFont(ofSize: 12, weight: .semibold)
 
     private let material = UIVisualEffectView(effect: nil)
     private let dot = UIView()
@@ -319,14 +326,12 @@ final class ScooterNamePillView: UIView {
         isUserInteractionEnabled = false
         // The marker speaks for its pill.
         isAccessibilityElement = false
-        layer.cornerRadius = ScooterMapLook.pillHeight / 2
         layer.cornerCurve = .continuous
         layer.borderWidth = 1
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowRadius = 7
         layer.shadowOffset = CGSize(width: 0, height: 4)
 
-        material.layer.cornerRadius = ScooterMapLook.pillHeight / 2
         material.layer.cornerCurve = .continuous
         material.clipsToBounds = true
         addSubview(material)
@@ -334,8 +339,6 @@ final class ScooterNamePillView: UIView {
         dot.layer.cornerRadius = Self.dotSize / 2
         addSubview(dot)
 
-        nameLabel.font = Self.nameFont
-        timeLabel.font = Self.timeFont
         addSubview(nameLabel)
         addSubview(timeLabel)
     }
@@ -352,6 +355,8 @@ final class ScooterNamePillView: UIView {
             ? UIColor(red: 0.639, green: 0.659, blue: 0.702, alpha: 1)
             : UIColor(red: 0.4, green: 0.439, blue: 0.502, alpha: 1)
 
+        nameLabel.font = content.nameFont
+        timeLabel.font = content.timeFont
         nameLabel.text = content.name
         timeLabel.text = content.time
         timeLabel.isHidden = content.time == nil
@@ -377,7 +382,9 @@ final class ScooterNamePillView: UIView {
         }
         layer.shadowOpacity = content.isDark ? 0.3 : 0.16
 
-        bounds = CGRect(x: 0, y: 0, width: content.width, height: ScooterMapLook.pillHeight)
+        bounds = CGRect(x: 0, y: 0, width: content.width, height: content.height)
+        layer.cornerRadius = content.height / 2
+        material.layer.cornerRadius = content.height / 2
         setNeedsLayout()
     }
 

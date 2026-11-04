@@ -61,6 +61,8 @@ struct ScooterPillRequest: Equatable, Sendable {
     /// How far the dot reaches from its centre, rings included.
     let reach: CGFloat
     let width: CGFloat
+    /// Taller with larger text.
+    var height: CGFloat = ScooterMapLook.pillHeight
     /// The side the pill is on now. It stays there while that side is free,
     /// so a pill does not hop about as the map moves.
     var preferred: ScooterPillSide?
@@ -79,6 +81,19 @@ struct ScooterPillPlacement: Equatable, Sendable {
 enum ScooterMapLook {
     static let plainDiameter: CGFloat = 10
     static let pillHeight: CGFloat = 26
+    /// The text drawn on the map grows with the reader's text size up to
+    /// twice its own, the 200% of Larger Text: beyond that a name would
+    /// cover the dots around it.
+    static let largestTextScale: CGFloat = 2
+
+    /// How much larger than at the standard size the names, walking times
+    /// and counts on the map are drawn. They don't shrink below their own size.
+    static func textScale(for category: UIContentSizeCategory) -> CGFloat {
+        let traits = UITraitCollection(preferredContentSizeCategory: category)
+        let scaled = UIFontMetrics(forTextStyle: .caption1).scaledValue(for: 12, compatibleWith: traits)
+        return min(largestTextScale, max(1, scaled / 12))
+    }
+
     /// At this scale and closer a dot is a disc with its provider's initials.
     /// Bolt and Lime are nearly the same green: close up they name themselves.
     static let closeUpMetresPerPoint = 0.5
@@ -288,7 +303,12 @@ enum ScooterMapLook {
 
     /// Where a pill sits on one side of its dot: its top left corner, from
     /// the centre of the dot.
-    static func pillOrigin(_ side: ScooterPillSide, width: CGFloat, reach: CGFloat) -> CGPoint {
+    static func pillOrigin(
+        _ side: ScooterPillSide,
+        width: CGFloat,
+        height pillHeight: CGFloat = ScooterMapLook.pillHeight,
+        reach: CGFloat
+    ) -> CGPoint {
         let beside = reach + 2
         let over = reach + 5
         let corner = reach - 2
@@ -327,12 +347,12 @@ enum ScooterMapLook {
 
         func box(_ index: Int, _ side: ScooterPillSide) -> CGRect {
             let request = requests[index]
-            let origin = pillOrigin(side, width: request.width, reach: request.reach)
+            let origin = pillOrigin(side, width: request.width, height: request.height, reach: request.reach)
             return CGRect(
                 x: request.anchor.x + origin.x,
                 y: request.anchor.y + origin.y,
                 width: request.width,
-                height: pillHeight
+                height: request.height
             ).insetBy(dx: -3, dy: -3)
         }
         func cost(_ index: Int, _ box: CGRect) -> CGFloat {
@@ -393,33 +413,43 @@ enum ScooterMapLook {
             return ScooterPillPlacement(
                 id: request.id,
                 side: side,
-                origin: pillOrigin(side, width: request.width, reach: request.reach)
+                origin: pillOrigin(side, width: request.width, height: request.height, reach: request.reach)
             )
         }
     }
 
     /// Whether a pill shows enough of itself: at least two thirds inside
     /// what is visible and clear of what floats over the map.
-    static func pillCanBeRead(_ frame: CGRect, inside visible: CGRect, under chrome: [CGRect]) -> Bool {
+    /// With larger text, `whole`: a large name cut by an edge loses whole
+    /// letters, so it shows entirely or not at all.
+    static func pillCanBeRead(
+        _ frame: CGRect,
+        inside visible: CGRect,
+        under chrome: [CGRect],
+        whole: Bool = false
+    ) -> Bool {
         let hidden = area(frame) - area(visible.intersection(frame)) +
             chrome.reduce(0) { $0 + area($1.intersection(visible).intersection(frame)) }
-        return hidden * 3 <= area(frame)
+        return whole ? hidden < 1 : hidden * 3 <= area(frame)
     }
 
     /// The names to leave out of those placed, the first of them counting
     /// most: one cut by the edge of the map or by what floats over it, and
     /// one lying on a name that stays. Where there is no room, a name less
-    /// is better than two that cannot be read.
+    /// is better than two that cannot be read. With larger text, `whole`:
+    /// nothing may cover a name at all.
     static func unreadablePills(
         _ pills: [(id: String, frame: CGRect)],
         inside visible: CGRect,
-        under chrome: [CGRect]
+        under chrome: [CGRect],
+        whole: Bool = false
     ) -> Set<String> {
         var unreadable: Set<String> = []
         var shown: [CGRect] = []
         for pill in pills {
             let covered = shown.reduce(0) { $0 + area($1.intersection(pill.frame)) }
-            if pillCanBeRead(pill.frame, inside: visible, under: chrome), covered * 10 <= area(pill.frame) {
+            let clear = whole ? covered < 1 : covered * 10 <= area(pill.frame)
+            if pillCanBeRead(pill.frame, inside: visible, under: chrome, whole: whole), clear {
                 shown.append(pill.frame)
             } else {
                 unreadable.insert(pill.id)

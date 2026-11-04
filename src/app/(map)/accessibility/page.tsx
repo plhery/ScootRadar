@@ -54,7 +54,9 @@ export default function AccessibilityPage() {
             <strong>Larger Text:</strong> at twice the standard text size and above, the zone legend
             stays between the search bar and the scooter&apos;s card, and scrolls when it doesn&apos;t
             fit, so the card stays on the screen. In Filters, providers&apos; names no longer break
-            inside a word.
+            inside a word. On the map, the names and walking times grow with the text size up to
+            twice their size, and the counts grow as far as their circles allow. A name with no room
+            to show whole is left out rather than cut off.
           </li>
           <li>
             <strong>Icons:</strong> icons grow with the text size.
@@ -63,10 +65,6 @@ export default function AccessibilityPage() {
 
         <h2>Still working on</h2>
         <ul>
-          <li>
-            <strong>Larger Text:</strong> the names, walking times and counts drawn on the map stay
-            the same size.
-          </li>
           <li>
             <strong>VoiceOver and Voice Control:</strong> testing on a device, keeping VoiceOver on
             the search while it is open, and describing the map&apos;s zones to someone who

@@ -339,8 +339,8 @@ struct ScooterMapView: UIViewRepresentable {
         #endif
         context.coordinator.installCompass(on: mapView)
         context.coordinator.installScale(on: mapView)
-        // The dots and the names are drawn for one appearance.
-        mapView.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+        // The dots and the names are drawn for one appearance and one text size.
+        mapView.registerForTraitChanges([UITraitUserInterfaceStyle.self, UITraitPreferredContentSizeCategory.self]) {
             [coordinator = context.coordinator] (mapView: MKMapView, _) in
             coordinator.updateLook(on: mapView)
             coordinator.updateTrailLook(on: mapView)
@@ -465,6 +465,8 @@ struct ScooterMapView: UIViewRepresentable {
             let scaleStep: Int
             let headingStep: Int
             let language: ScooterLanguage
+            /// The names grow with the reader's text size.
+            let textScale: CGFloat
         }
 
         init(parent: ScooterMapView) {
@@ -1239,7 +1241,8 @@ struct ScooterMapView: UIViewRepresentable {
                 usesServerClusters: parent.usesServerClusters,
                 scaleStep: Int((log(metresPerPoint) / Self.scaleStep).rounded()),
                 headingStep: Int((Self.heading(of: mapView) / 3).rounded()),
-                language: parent.language
+                language: parent.language,
+                textScale: ScooterMapLook.textScale(for: mapView.traitCollection.preferredContentSizeCategory)
             )
             guard inputs != appliedLook else { return }
             let previous = appliedLook
@@ -1355,7 +1358,8 @@ struct ScooterMapView: UIViewRepresentable {
                         String(format: String(localized: "%lld min"), Int64($0))
                     },
                     isFilled: id == inputs.selectedID,
-                    isDark: inputs.isDark
+                    isDark: inputs.isDark,
+                    textScale: inputs.textScale
                 ) : nil
                 guard annotation.look != look || annotation.usesDarkArt != inputs.isDark || annotation.pill != pill else {
                     continue
@@ -1443,6 +1447,7 @@ struct ScooterMapView: UIViewRepresentable {
                     anchor: anchor,
                     reach: annotation.look.footprint / 2,
                     width: pill.width,
+                    height: pill.height,
                     preferred: pillSides[id]
                 ))
                 neighbours += (pillNeighbours[id] ?? []).map { $0.offsetBy(dx: anchor.x, dy: anchor.y) }
@@ -1473,7 +1478,7 @@ struct ScooterMapView: UIViewRepresentable {
                     x: request.anchor.x + placement.origin.x,
                     y: request.anchor.y + placement.origin.y,
                     width: request.width,
-                    height: ScooterMapLook.pillHeight
+                    height: request.height
                 )))
                 guard let annotation = annotationsByID[placement.id],
                       annotation.pillOrigin != placement.origin else { continue }
@@ -1482,7 +1487,12 @@ struct ScooterMapView: UIViewRepresentable {
             }
             // Nor does a name that would be cut by the edge of the map or by
             // the dock, or that found no place but on another name.
-            covered.formUnion(ScooterMapLook.unreadablePills(frames, inside: visible, under: chrome))
+            covered.formUnion(ScooterMapLook.unreadablePills(
+                frames,
+                inside: visible,
+                under: chrome,
+                whole: (appliedLook?.textScale ?? 1) > 1
+            ))
             for id in namedIDs {
                 guard let annotation = annotationsByID[id],
                       annotation.pillIsCovered != covered.contains(id) else { continue }
@@ -2434,7 +2444,7 @@ final class ScooterAnnotationView: MKAnnotationView {
             x: bounds.midX + origin.x,
             y: bounds.midY + origin.y,
             width: content.width,
-            height: ScooterMapLook.pillHeight
+            height: content.height
         )
         guard let pillView else {
             let pill = ScooterNamePillView()
@@ -2538,11 +2548,13 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
         layer.addSublayer(discLayer)
 
         countLabel.textAlignment = .center
-        countLabel.font = .monospacedDigitSystemFont(ofSize: 13, weight: .bold)
         // Four digits fit; a larger city total shrinks instead of being cut off.
         countLabel.adjustsFontSizeToFitWidth = true
-        countLabel.minimumScaleFactor = 0.6
         countLabel.baselineAdjustment = .alignCenters
+        Self.sizeCount(countLabel, for: traitCollection)
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (view: ScooterClusterAnnotationView, _) in
+            Self.sizeCount(view.countLabel, for: view.traitCollection)
+        }
         addSubview(countLabel)
 
         isAccessibilityElement = true
@@ -2636,6 +2648,16 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
         count < 100 ? 36 : count < 1_000 ? 40 : 44
     }
 
+    /// The count grows with the reader's text size as far as its disc
+    /// allows; the disc keeps its size, so the map is laid out as before.
+    /// A long number shrinks to fit, but never below its smallest size at
+    /// the standard text size.
+    static func sizeCount(_ label: UILabel, for traits: UITraitCollection) {
+        let scale = ScooterMapLook.textScale(for: traits.preferredContentSizeCategory)
+        label.font = .monospacedDigitSystemFont(ofSize: 13 * scale, weight: .bold)
+        label.minimumScaleFactor = 0.6 / scale
+    }
+
     static func countColor(isDark: Bool) -> UIColor {
         isDark
             ? UIColor(red: 0.957, green: 0.961, blue: 0.969, alpha: 1)
@@ -2719,10 +2741,12 @@ final class ScooterLastSeenView: MKAnnotationView {
         content.layer.masksToBounds = false
         content.layer.addSublayer(artLayer)
         countLabel.textAlignment = .center
-        countLabel.font = .monospacedDigitSystemFont(ofSize: 13, weight: .bold)
         countLabel.adjustsFontSizeToFitWidth = true
-        countLabel.minimumScaleFactor = 0.6
         countLabel.baselineAdjustment = .alignCenters
+        ScooterClusterAnnotationView.sizeCount(countLabel, for: traitCollection)
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (view: ScooterLastSeenView, _) in
+            ScooterClusterAnnotationView.sizeCount(view.countLabel, for: view.traitCollection)
+        }
         content.addSubview(countLabel)
         addSubview(content)
 

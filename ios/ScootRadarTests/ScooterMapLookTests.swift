@@ -355,6 +355,30 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertTrue(ScooterMapLook.pillCanBeRead(whole.offsetBy(dx: 0, dy: 280), inside: visible, under: [dock]))
     }
 
+    func testWithLargerTextANameShowsWholeOrNotAtAll() {
+        let visible = CGRect(x: 0, y: 100, width: 390, height: 700)
+        let dock = CGRect(x: 10, y: 600, width: 370, height: 180)
+        let whole = CGRect(x: 100, y: 300, width: 160, height: 52)
+
+        XCTAssertTrue(ScooterMapLook.pillCanBeRead(whole, inside: visible, under: [dock], whole: true))
+        // Cut by the edge of the map or by the dock by a point, it would lose letters.
+        let pastTheEdge = whole.offsetBy(dx: 131, dy: 0)
+        XCTAssertTrue(ScooterMapLook.pillCanBeRead(pastTheEdge, inside: visible, under: [dock]))
+        XCTAssertFalse(ScooterMapLook.pillCanBeRead(pastTheEdge, inside: visible, under: [dock], whole: true))
+        XCTAssertFalse(ScooterMapLook.pillCanBeRead(whole.offsetBy(dx: 0, dy: 249), inside: visible, under: [dock], whole: true))
+        XCTAssertTrue(ScooterMapLook.pillCanBeRead(whole.offsetBy(dx: 0, dy: 248), inside: visible, under: [dock], whole: true))
+        // And on another name.
+        XCTAssertEqual(
+            ScooterMapLook.unreadablePills(
+                [("a", whole), ("b", whole.offsetBy(dx: 150, dy: 0)), ("c", whole.offsetBy(dx: 0, dy: 52))],
+                inside: visible,
+                under: [dock],
+                whole: true
+            ),
+            ["b"]
+        )
+    }
+
     func testOfTwoNamesOnEachOtherTheFirstStays() {
         let visible = CGRect(x: 0, y: 100, width: 390, height: 700)
         let first = CGRect(x: 100, y: 300, width: 90, height: 26)
@@ -394,6 +418,38 @@ final class ScooterMapLookTests: XCTestCase {
             ),
             ["a"]
         )
+    }
+
+    func testTheTextOnTheMapFollowsLargerTextUpToTwiceItsSize() {
+        XCTAssertEqual(ScooterMapLook.textScale(for: .large), 1, "The standard size")
+        XCTAssertEqual(ScooterMapLook.textScale(for: .extraSmall), 1, "Smaller text leaves the map as it is")
+        let larger = ScooterMapLook.textScale(for: .extraExtraExtraLarge)
+        XCTAssertGreaterThan(larger, 1)
+        XCTAssertLessThan(larger, 2)
+        XCTAssertEqual(ScooterMapLook.textScale(for: .accessibilityExtraLarge), 2, "200% at AX3")
+        XCTAssertEqual(ScooterMapLook.textScale(for: .accessibilityExtraExtraExtraLarge), 2, "And no more at AX5")
+    }
+
+    @MainActor
+    func testALargerNameIsTallerAndKeepsClearOfWhatItWouldNowCover() throws {
+        let standard = ScooterNamePillView.Content(
+            provider: .voi, name: "Voi", time: "5 min", isFilled: false, isDark: false
+        )
+        var larger = standard
+        larger.textScale = 2
+        XCTAssertEqual(standard.height, ScooterMapLook.pillHeight)
+        XCTAssertEqual(larger.height, 2 * ScooterMapLook.pillHeight)
+        XCTAssertGreaterThan(larger.width, standard.width * 1.4)
+
+        // A mark just below the right of the dot: clear of a standard name, under a larger one.
+        let mark = CGRect(x: 110, y: 120, width: 40, height: 10)
+        let short = ScooterPillRequest(id: "a", anchor: CGPoint(x: 100, y: 100), reach: 5, width: 80, preferred: .right)
+        var tall = short
+        tall.height = 2 * ScooterMapLook.pillHeight
+        XCTAssertEqual(ScooterMapLook.placePills([short], avoiding: [mark]).first?.side, .right)
+        let placed = try XCTUnwrap(ScooterMapLook.placePills([tall], avoiding: [mark]).first)
+        XCTAssertNotEqual(placed.side, .right)
+        XCTAssertFalse(frame(placed, of: tall).insetBy(dx: -3, dy: -3).intersects(mark), "\(placed.side)")
     }
 
     func testNamesSitFurtherOutAroundLargerDots() {
@@ -763,7 +819,7 @@ final class ScooterMapLookTests: XCTestCase {
             x: request.anchor.x + placement.origin.x,
             y: request.anchor.y + placement.origin.y,
             width: request.width,
-            height: ScooterMapLook.pillHeight
+            height: request.height
         )
     }
 

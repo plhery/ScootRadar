@@ -83,9 +83,13 @@ and pushed the card past the foot of the screen; the fix of 4 November 2026
 keeps the legend between the two, scrolling. Declare Larger Text on iPhone and
 iPad only once the version with the fix is live on the App Store, and move the
 page's Larger Text line from "In the next update" to "Works today" in the same
-change. Decide first about one gap that remains: the text drawn on the map (the
-scooters' names and walking times, the clusters' counts) stays 12–13 pt at
-every size. The same names, times and counts are in the dock at full size.
+change. The text drawn on the map follows the text size too since the same
+build: the scooters' names and walking times grow up to twice their size (AX3
+and above stay at 24 pt, their pills 52 pt tall), and the clusters' counts grow
+as far as their discs allow, which keep their size so the map is laid out as
+before (`ScooterMapLook.textScale(for:)`). A larger name shows whole or not at
+all: on an iPhone at AX3 the controls cover most of the map, so few names show
+there, and the card names the nearest scooter at full size.
 
 ## Screenshots
 
