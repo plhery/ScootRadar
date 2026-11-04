@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Phoenix 2026: Spin, Lime, rules and parking',
   description: 'E-scooters in Phoenix: Spin and Lime, what a ride costs, the age and sidewalk rules, downtown parking, ASU, the canals, light rail and Sky Harbor.',
   headline: 'E-scooters in Phoenix: Spin and Lime, prices, the rules, and where to ride and park',
-  lede: 'E-scooters in Phoenix come from Spin and Lime, the two companies with City contracts, which run to January 2028. Neither publishes a Phoenix price in its open data, so the app shows it before you unlock, and both rent only to riders 18 or over, although City Code lets you ride from 16. Phoenix bans scooters from sidewalks, and downtown you must end your ride in a designated parking spot.',
+  lede: 'E-scooters in Phoenix come from Spin and Lime, the two companies with City contracts, which run to January 2028. The app shows the price before you unlock, and both companies rent only to riders 18 or over, although City Code lets you ride from 16. Phoenix bans scooters from sidewalks, and downtown you must end your ride in a designated parking spot.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'us:az:Phoenix',
@@ -23,14 +23,14 @@ const guide: Guide = {
             '**Lime**: in the Lime app.',
           ],
         },
-        'Both contracts cover e-scooters, e-bikes, pedal bikes and adaptive vehicles. At 4:14 pm on Friday 23 October 2026 the [Phoenix map](map:us:az:Phoenix) showed about 400 Spin scooters: what was on the map at that moment, not the fleet. It shows no Lime, because Lime publishes no open data for Phoenix: open the Lime app to find its scooters there.',
+        'Both contracts cover e-scooters, e-bikes, pedal bikes and adaptive vehicles. At 4:14 pm on Friday 23 October 2026 the [Phoenix map](map:us:az:Phoenix) showed about 400 Spin scooters: what was on the map at that moment, not the fleet. Look for Lime’s scooters in the Lime app.',
         '**Visiting?** Install the Spin or Lime app and add a way to pay before you set out. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in Phoenix?',
       blocks: [
-        'Neither company publishes a Phoenix price in its open data and the City lists no fares, so check the app before you unlock. Two discounts are worth knowing:',
+        'The app shows the price before you unlock. Two discounts are worth knowing:',
         {
           list: [
             '**30% off** for people who get federal, state or local support, such as Medicaid, SNAP, Social Security, Housing Authority help or a Reduced Transit Pass, the City says. Apply with Lime or Spin.',
@@ -85,24 +85,24 @@ const guide: Guide = {
             '**No-ride spots downtown.** Inside the core, Spin’s data marked Chase Field, Footprint Center, parts of CityScape, City Hall, the courts and county buildings, and Heritage and Science Park as no-ride.',
             '**ASU Downtown Phoenix.** ASU’s Campus Transportation Code applies to anyone on university property and bans motorised scooters from the campus and its buildings. Spin’s data marked the Beus Center for Law and Society, the Cronkite building, Gordon Commons and the Mercado as no-ride. Public streets through the campus, such as Central Avenue, follow state and City rules.',
             '**Roosevelt Row.** The arts district lies inside the downtown core, so end your ride in a corral. Its monthly First Friday Art Walk and A.R.T.S. Market draws over 20,000 people, the district says.',
-            '**Grand Avenue.** The diagonal avenue’s downtown end, from 7th Avenue and Van Buren Street, lies inside the core. Further northwest Spin’s data set no zone on it.',
+            '**Grand Avenue.** The diagonal avenue’s downtown end, from 7th Avenue and Van Buren Street, lies inside the core.',
           ],
         },
-        'The [live map](map:us:az:Phoenix) shows where Spin scooters stand now. These zones are our reading of Spin’s open data on 23 October 2026, not City rules, and can change: the app shows the exact edges.',
+        'The [live map](map:us:az:Phoenix) shows where Spin scooters stand now. These are Spin’s zones as its open data set them on 23 October 2026, not City rules, and they can change: the app shows the exact edges.',
       ],
     },
     {
       heading: 'Parks and canal paths',
       blocks: [
-        'City parks keep posted hours, and the Parks and Recreation code of conduct bans e-bikes and other motorised vehicles on trails and off the park roads in desert parks and mountain preserves. Spin’s data adds no-ride zones over Hance Park, Civic Space Park, Encanto Park and the Phoenix Art Museum grounds; Papago Park and the zoo lie outside its service area. It marked no zone in Steele Indian School Park.',
+        'City parks keep posted hours, and the Parks and Recreation code of conduct bans e-bikes and other motorised vehicles on trails and off the park roads in desert parks and mountain preserves. Spin’s data adds no-ride zones over Hance Park, Civic Space Park, Encanto Park and the Phoenix Art Museum grounds; Papago Park and the zoo lie outside its service area.',
         'Salt River Project (SRP) operates the canals, and the 12-mile Grand Canalscape along the Grand Canal is a City path for walking and cycling, built with SRP. Arizona law lets e-scooters use multi-use paths unless the authority in charge bans them. On 23 October 2026 Spin’s data marked the Grand Canalscape no-ride from the west edge of its area to about 20th Street, street crossings apart, but left the stretch from 24th Street to 44th Street open. Check the app, and obey the signs on any canal bank.',
       ],
     },
     {
       heading: 'Light rail, buses and Phoenix Sky Harbor Airport',
       blocks: [
-        '**Valley Metro.** We couldn’t read Valley Metro’s rules, so our advice: end a shared scooter ride before you board. ASU’s transport office says a folded scooter of your own may ride the light rail under the seat; that is ASU’s note, not a Valley Metro rule.',
-        '**Sky Harbor (PHX).** The terminals lie outside Spin’s service area. Ride to the 44th Street PHX Sky Train station at 44th and Washington streets, on the area’s eastern edge, end the ride where the app allows, and take the free Sky Train, which runs 24 hours a day to the terminals and the Rental Car Center. At 7:16 pm on 23 October 2026 Spin’s open data showed just one rentable scooter within a mile of that station, so the light rail is the surer bet.',
+        '**Light rail.** ASU’s transport office says a folded scooter of your own may ride under the seat. End a shared scooter ride before you board.',
+        '**Sky Harbor (PHX).** The terminals lie outside Spin’s service area. Ride to the 44th Street PHX Sky Train station at 44th and Washington streets, on the area’s eastern edge, end the ride where the app allows, and take the free Sky Train, which runs 24 hours a day to the terminals and the Rental Car Center.',
       ],
     },
     {
@@ -133,11 +133,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does a scooter cost in Phoenix?',
-      answer: 'Neither Spin nor Lime publishes a Phoenix price in its open data, so the app shows the price before you unlock. People on Medicaid, SNAP or other public support can get 30% off, the City says, and Spin Access offers cheaper rides on a limited income.',
+      answer: 'The app shows the price before you unlock. People on Medicaid, SNAP or other public support can get 30% off, the City says, and Spin Access offers cheaper rides on a limited income.',
     },
     {
       question: 'Are there Lime scooters in Phoenix?',
-      answer: 'Yes. Lime holds one of the City’s two contracts, with Spin, until January 2028. ScootRadar’s map doesn’t show Lime in Phoenix because Lime publishes no open data there, so use the Lime app to find one.',
+      answer: 'Yes. Lime holds one of the City’s two contracts, with Spin, until January 2028. Look for its scooters in the Lime app.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Phoenix?',

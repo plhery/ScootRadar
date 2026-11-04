@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Örebro 2026: Qick, Voi, Ryde and rules',
   description: 'E-scooters in Örebro: Qick, Voi and Ryde, the police permit, where to ride and park, removal fees, Länstrafiken buses, trains and Sweden’s fines.',
   headline: 'E-scooters in Örebro: Qick, Voi and Ryde, and where to ride and park',
-  lede: 'E-scooters in Örebro are rented from Qick, Voi and Ryde, the three companies the municipality lists (October 2026). Our map shows where Qick and Voi scooters stand, but not Ryde’s, and no prices or parking areas: each app shows those. Ride on the cycle lane or the road, never on the pavement, and end your ride in cycle parking or an area set aside for cycles, never on a footway or a shared foot-and-cycle path. The municipality moves dangerously parked scooters and charges the company SEK 1,514 each time, a cost Qick and Ryde may pass on to you.',
+  lede: 'E-scooters in Örebro are rented from Qick, Voi and Ryde, the three companies the municipality lists (October 2026), and each app shows the price and the parking areas. Ride on the cycle lane or the road, never on the pavement, and end your ride in cycle parking or an area set aside for cycles, never on a footway or a shared foot-and-cycle path. The municipality moves dangerously parked scooters and charges the company SEK 1,514 each time, a cost Qick and Ryde may pass on to you.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Örebro',
@@ -16,26 +16,14 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Örebro: Qick, Voi and Ryde',
       blocks: [
-        'Electric scooter rental in Örebro has needed a permit from the police to use public land since 2023, says Örebro kommun (the municipality). Its e-scooter page gives contacts for three rental companies (updated 2 October 2026, read 29 October 2026):',
-        {
-          table: {
-            caption: 'E-scooter companies in Örebro and what the map shows, October 2026',
-            head: ['Company', 'On the municipality’s list', 'On the ScootRadar map'],
-            rows: [
-              ['Qick', 'Yes', 'Yes, with battery'],
-              ['Voi', 'Yes', 'Yes, with battery'],
-              ['Ryde', 'Yes, and Ryde lists Örebro among its towns', 'No: check the Ryde app'],
-            ],
-          },
-        },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 05:51 on Thursday 29 October 2026 the [map of Örebro](map:se:Örebro) showed about 770 Voi scooters as they stood at that moment and about 1,110 Qick scooters as last counted: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking.',
-        'The map has no outline for Örebro: its total is everything the two companies’ data assign to the town, in an area up to about 12 km across, so it isn’t a count within the town’s boundaries. Bolt and Lime aren’t on the municipality’s list.',
+        'Electric scooter rental in Örebro has needed a permit from the police to use public land since 2023, says Örebro kommun (the municipality). Its e-scooter page gives contacts for three rental companies (updated 2 October 2026, read 29 October 2026): **Qick**, **Voi** and **Ryde**, which also lists Örebro among its towns.',
+        'At 05:51 on Thursday 29 October 2026 the [map of Örebro](map:se:Örebro) showed about 770 Voi scooters as they stood at that moment and about 1,110 Qick scooters as last counted: a snapshot, not the fleet size. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
       heading: 'How much does a Qick or Voi scooter cost in Örebro?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Örebro price on an open official page, and neither Qick’s nor Ryde’s website lists one.',
+        '**The app shows the price** before you unlock.',
         'Qick rents only to riders aged 18 or over, its website and terms say, and Ryde’s Swedish terms let you ride from 15 (October 2026). Check the Voi app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -43,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'Örebro’s rules for hire scooters: the permit and removals',
       blocks: [
-        'The municipality’s page (2 October 2026) names no cap on the number of scooters, no night rule and no winter pause. The companies move badly placed scooters, and the municipality moves those it finds parked dangerously, charging the company **SEK 1,514** for each in 2026, under fees the municipal council set on 22 October 2025.',
+        'The companies move badly placed scooters, and the municipality moves those it finds parked dangerously, charging the company **SEK 1,514** for each in 2026, under fees the municipal council set on 22 October 2025.',
         'If the municipality picks up a Qick scooter you parked wrongly, Qick’s terms let it charge you up to SEK 1,500; to avoid that, your end-of-ride photo must clearly show the scooter in a cycle rack or other cycle parking. Ryde’s Swedish terms say that if you send no parking photo and a municipality charges Ryde, you pay what Ryde reckons the cost to be (both read 29 October 2026).',
       ],
     },
@@ -73,7 +61,7 @@ const guide: Guide = {
     {
       heading: 'Where to park an e-scooter in Örebro',
       blocks: [
-        'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Örebro’s technical committee allowed one outside the city centre’s parking zone 1 and the travel centre until the end of 2022, then extended it to mid-2023, the municipality’s parking review of January 2023 says. The municipality’s page today makes no such exception (2 October 2026).',
+        'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Örebro’s technical committee allowed one outside the city centre’s parking zone 1 and the travel centre until the end of 2022, then extended it to mid-2023, the municipality’s parking review of January 2023 says.',
         'On the municipality’s land you may park only in **cycle parking or areas set aside for cycles**, which the companies must mark clearly in their apps. Parking is banned on footways and pavements, on shared foot-and-cycle paths and anywhere else without cycle parking, and those areas must be marked in the apps too. Never leave a scooter where it blocks the way or endangers others: people on foot, cyclists, buses, other traffic or the emergency services. On private land, the owner decides.',
         'To report a badly parked scooter, tell the company that owns it, with a photo and the position, the municipality asks: Qick at support@qickscooters.com, Ryde on 077-588 80 12 and Voi on 021-665 59 22.',
         {
@@ -87,16 +75,15 @@ const guide: Guide = {
         'Ride on the cycle lane or the road. You may also ride on a shared foot-and-cycle path (gemensam gång- och cykelbana); on a pavement you may only wheel the scooter, or cross the pavement to reach the road or a parking place, the municipality says. Örebro has 360 km of separate foot-and-cycle paths, 30 km of them main cycle routes linking the districts with the centre, and in winter it sweeps and salts some routes, shown on its web map (21 November 2025).',
         {
           table: {
-            caption: 'Rules on land owned by others, as each owner states them, October 2026',
+            caption: 'What the owners of these places say, October 2026',
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
-              ['Örebro Central', 'Jernhusen, the station’s owner', 'No e-scooter rule on its station page; the station is open 04:30–22:30 on weekdays, 06:15–22:30 on Saturdays and 08:00–22:30 on Sundays'],
+              ['Örebro Central', 'Jernhusen, the station’s owner', 'The station is open 04:30–22:30 on weekdays, 06:15–22:30 on Saturdays and 08:00–22:30 on Sundays'],
               ['Campus Örebro', 'Örebro University', 'E-scooters go in the stands set aside for them; the cycle racks with a hoop to lock to are for bicycles only (19 August 2026)'],
               ['University buildings', 'Örebro University', 'No riding or storing e-scooters indoors (8 April 2026), and no handling, storing or charging lithium-ion batteries for private vehicles there (19 August 2026)'],
             ],
           },
         },
-        'We found no e-scooter rule of its own for Örebro Castle or the paths along the Svartån river (October 2026).',
       ],
     },
     {
@@ -123,7 +110,7 @@ const guide: Guide = {
     {
       heading: 'Linköping and the map',
       blocks: [
-        'Qick, Voi and Ryde also rent scooters in Linköping: see our [Linköping guide](guide:linkoping). The map shows standing e-scooters only, not bikes. To see what is standing near you now, open the [Örebro map](map:se:Örebro).',
+        'Qick, Voi and Ryde also rent scooters in Linköping: see our [Linköping guide](guide:linkoping). To see what is standing near you now, open the [Örebro map](map:se:Örebro).',
       ],
     },
     {
@@ -143,7 +130,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Örebro?',
-      answer: 'The municipality lists Qick, Voi and Ryde (2 October 2026). The ScootRadar map shows Qick and Voi; Ryde’s scooters are only in its app.',
+      answer: 'The municipality lists Qick, Voi and Ryde (2 October 2026). Find Qick’s and Voi’s on the [Örebro map](map:se:Örebro) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Can I park an e-scooter on the pavement in Örebro?',
@@ -156,14 +143,6 @@ const guide: Guide = {
     {
       question: 'Can I take an e-scooter on the bus in Örebro?',
       answer: 'Only your own, folded and no longer than 120 cm, on Länstrafiken’s buses if there is room. Hire e-scooters aren’t allowed on board, Länstrafiken says.',
-    },
-    {
-      question: 'Is there a cap on e-scooters in Örebro?',
-      answer: 'The municipality’s page (2 October 2026) names none. Each company needs a permit from the police to put scooters on public land; we found no published limit on numbers.',
-    },
-    {
-      question: 'Are e-scooters banned at night or in winter in Örebro?',
-      answer: 'No. The municipality’s page (2 October 2026) names no night ban, night speed limit or winter pause.',
     },
   ],
   sources: [

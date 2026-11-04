@@ -110,7 +110,7 @@ const guide: Guide = {
     {
       heading: 'Wie Sindelfingen und Böblingen E-Scooter regeln: Selbstverpflichtung statt Sondernutzung',
       blocks: [
-        'In Böblingen legte die Selbstverpflichtungserklärung, die die Stadt zum Start 2022 aufsetzte und die Anbieter unterschrieben, Geschäftsgebiet und Sperrzonen fest, dazu eine Obergrenze: höchstens 100 Scooter je Anbieter zu Beginn jedes Geschäftstags, in der Innenstadt 50, mehr nur mit Zustimmung der Stadt. Eine erste Auswertung war zum 1. Juli 2022 vorgesehen. Sie ersetzte ausdrücklich keine Sondernutzungserlaubnis, sollte hinfällig werden, sobald die Stadt eine Sondernutzungspflicht feststellt, und keine Seite konnte ein Entgelt verlangen. Die Stadt verlinkt sie noch.',
+        'In Böblingen legte die Selbstverpflichtungserklärung, die die Stadt zum Start 2022 aufsetzte und die Anbieter unterschrieben, Geschäftsgebiet und Sperrzonen fest, dazu eine Obergrenze: höchstens 100 Scooter je Anbieter zu Beginn jedes Geschäftstags, in der Innenstadt 50, mehr nur mit Zustimmung der Stadt. Eine erste Auswertung war zum 1. Juli 2022 vorgesehen. Die Erklärung ersetzte ausdrücklich keine Sondernutzungserlaubnis, sollte hinfällig werden, sobald die Stadt eine Sondernutzungspflicht feststellt, und keine Seite konnte ein Entgelt verlangen. Die Stadt verlinkt sie noch.',
         'In Sindelfingen verpflichteten sich die Anbieter laut Stadt selbst, für ordentliches Abstellen zu sorgen.',
         {
           list: [

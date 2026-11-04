@@ -17,14 +17,14 @@ const guide: Guide = {
       heading: 'Quali monopattini in sharing ci sono a Padova',
       blocks: [
         'Con la delibera di Giunta 763 del 17 dicembre 2024 il Comune ha chiuso la sperimentazione e scelto un servizio di sharing di **36 mesi**, con un solo operatore per bici, e-bike e monopattini, a Padova e in 11 Comuni della Co.Me.Pa. Quell’operatore è **Dott**: lo dicono l’Università di Padova («monopattini in sharing a flusso libero, gestiti da Dott») e il Comune di Rubano, che il 30 luglio 2026 annunciava Dott «dopo il completamento della flotta a Padova».',
-        'Per Padova la delibera fissa al massimo 2.200 mezzi: 700 monopattini, 1.000 e-bike e 500 bici o altri mezzi, che i Comuni possono aumentare fino al 20%. Altri operatori di monopattini autorizzati non ne abbiamo trovati.',
-        'Domenica 25 ottobre 2026 alle 7:47 sulla [mappa di Padova](map:it:Padova) c’erano circa 880 monopattini Dott. La cifra comprende anche i Comuni vicini serviti da Dott, da Selvazzano Dentro a Vigonza e Ponte San Nicolò, ed è una fotografia di quel momento, non la flotta. Dott a Padova noleggia anche bici ed e-bike, che sulla mappa non compaiono.',
+        'Per Padova la delibera fissa al massimo 2.200 mezzi: 700 monopattini, 1.000 e-bike e 500 bici o altri mezzi, che i Comuni possono aumentare fino al 20%.',
+        'Domenica 25 ottobre 2026 alle 7:47 sulla [mappa di Padova](map:it:Padova) c’erano circa 880 monopattini Dott. La cifra comprende anche i Comuni vicini serviti da Dott, da Selvazzano Dentro a Vigonza e Ponte San Nicolò, ed è una fotografia di quel momento, non la flotta. Dott a Padova noleggia anche bici ed e-bike.',
         {
           table: {
             caption: 'Lo sharing a Padova, a ottobre 2026',
             head: ['Operatore', 'Situazione'],
             rows: [
-              ['Dott (EM Transit)', 'Unico operatore del servizio del Comune e di 11 Comuni vicini: monopattini, bici ed e-bike; i monopattini sono sulla mappa'],
+              ['Dott (EM Transit)', 'Unico operatore del servizio del Comune e di 11 Comuni vicini: monopattini, bici ed e-bike'],
               ['Bit Mobility', 'Scelto con Dott dopo l’avviso sperimentale del 2020; il nuovo servizio ammette un solo operatore'],
             ],
           },
@@ -50,7 +50,7 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattini a Padova: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto. Dott non pubblica le tariffe di Padova: il prezzo lo vedi nell’app, prima di sbloccare il mezzo. Il suo centro assistenza (25 agosto 2026) dà solo una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero. Non è il prezzo di Padova.',
+        'Paghi uno sblocco più una tariffa al minuto, e il prezzo lo vedi nell’app prima di sbloccare il mezzo. Il centro assistenza di Dott (25 agosto 2026) dà una forbice valida per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, con i minuti iniziati contati per intero.',
         'Il Comune ha chiesto abbonamenti per chi usa spesso il servizio e sconti agli under 26. Per chi è **residente** a Padova o in uno degli 11 Comuni della Co.Me.Pa., Dott offre due pass mensili (pagina aggiornata il 15 ottobre 2026):',
         {
           table: {
@@ -77,7 +77,7 @@ const guide: Guide = {
             '**Aree sensibili**: in zone come la stazione, gli ospedali e il centro storico, gli esempi che fa il Comune, è ammesso solo un numero massimo di mezzi in sosta.',
           ],
         },
-        'L’operatore deve anche realizzare 50 aree di sosta scelte dal Comune. Un elenco pubblico delle aree, o dei divieti in Prato della Valle e nelle piazze delle Erbe, dei Frutti e dei Signori, non l’abbiamo trovato: li vedi nell’app. E per legge mai sul marciapiede, salvo nelle aree riservate ai monopattini.',
+        'L’operatore deve anche realizzare 50 aree di sosta scelte dal Comune: aree e divieti li vedi nell’app. E per legge mai sul marciapiede, salvo nelle aree riservate ai monopattini.',
         'Se lo lasci nel posto sbagliato, paghi. Le condizioni di Dott per l’Italia (2 dicembre 2025) prevedono:',
         {
           list: [
@@ -94,8 +94,8 @@ const guide: Guide = {
       blocks: [
         'Il monopattino va sulle strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo e a 6 km/h nelle aree pedonali; mai sul marciapiede. Le condizioni di Dott per Padova ammettono i monopattini sulle strade urbane dove possono andare le bici, e i mezzi, dice l’Università, rallentano da soli nelle aree pedonali.',
         '**Ztl.** Nella zona a traffico limitato del centro storico biciclette e monopattini entrano liberamente, «salvo indicazioni diverse e rispettando la segnaletica», dice la pagina del Comune; in tutta la Ztl il limite è 30 km/h, e in monopattino restano i 20.',
-        '**Aree pedonali.** Quelle dentro la Ztl le regola un’ordinanza del Comune (464 del 25 maggio 2023): ammette le bici a passo d’uomo, salvo divieti, e sul Liston solo a mano, ma i monopattini non li nomina; per Prato della Valle e i parchi non abbiamo trovato regole del Comune. Per legge, in area pedonale vai al massimo a 6 km/h: segui i cartelli.',
-        '**Di notte e d’inverno.** Il Comune chiede un servizio attivo 24 ore su 24, tutto l’anno, e non abbiamo trovato divieti notturni né stop stagionali. Di sera servono luci accese e giubbotto retroriflettente.',
+        '**Aree pedonali.** Quelle dentro la Ztl le regola un’ordinanza del Comune (464 del 25 maggio 2023): ammette le bici a passo d’uomo, salvo divieti, e sul Liston solo a mano. Per legge, in area pedonale in monopattino vai al massimo a 6 km/h: segui i cartelli.',
+        '**Di notte e d’inverno.** Il Comune chiede un servizio attivo 24 ore su 24, tutto l’anno. Di sera servono luci accese e giubbotto retroriflettente.',
       ],
     },
     {
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'Quanto costa il monopattino Dott a Padova?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire: Dott non pubblica il prezzo di Padova, e la sua forbice, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città. I residenti di Padova e della Co.Me.Pa. possono chiedere un pass mensile da 15 corse di 30 minuti, con 0,50 euro di attivazione, 0,35 sotto i 26 anni.',
+      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire; la forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città. I residenti di Padova e della Co.Me.Pa. possono chiedere un pass mensile da 15 corse di 30 minuti, con 0,50 euro di attivazione, 0,35 sotto i 26 anni.',
     },
     {
       question: 'Dove si lascia il monopattino in sharing a Padova?',

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Helsingborg 2026: Voi, Ryde and the rules',
   description: 'E-scooters in Helsingborg: Voi and Ryde, the City’s slow zones and fees, where to park in the centre, Skånetrafiken, the Helsingør ferry and Sweden’s fines.',
   headline: 'E-scooters in Helsingborg: Voi and Ryde, and where to ride and park',
-  lede: 'E-scooters in Helsingborg are rented from Voi and Ryde, the two companies Helsingborgs stad names (October 2026). Our map shows where Voi scooters stand, but not Ryde’s, nor prices or the companies’ slow zones: each app shows those. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h on pedestrian streets and in Stadsparken. In central Helsingborg, end your ride in a cycle rack or a marked e-scooter place, never on a footway or cycle lane.',
+  lede: 'E-scooters in Helsingborg are rented from Voi and Ryde, the two companies Helsingborgs stad names (October 2026), and each app shows the price before you unlock. Ride on the cycle lane or the road, never on the pavement; hire scooters slow to 10 km/h on pedestrian streets and in Stadsparken. In central Helsingborg, end your ride in a cycle rack or a marked e-scooter place, never on a footway or cycle lane.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'se:Helsingborg',
@@ -16,19 +16,8 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Helsingborg: Voi and Ryde',
       blocks: [
-        'Electric scooter rental in Helsingborg is run by private companies under agreements with Helsingborgs stad (the City of Helsingborg). Its e-scooter page names two of them (updated 6 March 2026, read 30 October 2026):',
-        {
-          table: {
-            caption: 'E-scooter companies in Helsingborg and what the map shows, October 2026',
-            head: ['Company', 'On the City’s page', 'On the ScootRadar map'],
-            rows: [
-              ['Voi', 'Yes', 'Yes, with battery'],
-              ['Ryde', 'Yes, and Ryde lists Helsingborg among its towns', 'No: check the Ryde app'],
-            ],
-          },
-        },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 00:34 on Friday 30 October 2026 the [map of Helsingborg](map:se:Helsingborg) showed about 760 Voi scooters free to rent at that moment. Scooters on a ride aren’t shown, nor prices; zoomed in, the map draws central Helsingborg, where Helsingborgs stad’s local traffic rule has you park in a cycle rack or a marked place.',
-        'That total takes in the town from Råå in the south almost to Laröd in the north, an area about 11 km long, but not Ödåkra, Påarp or Helsingør across the Sound. Bolt, Dott and Lime aren’t on the City’s list.',
+        'Electric scooter rental in Helsingborg is run by private companies under agreements with Helsingborgs stad (the City of Helsingborg). Its e-scooter page names two of them (updated 6 March 2026, read 30 October 2026): **Voi** and **Ryde**, which also lists Helsingborg among its towns.',
+        'At 00:34 on Friday 30 October 2026 the [map of Helsingborg](map:se:Helsingborg) showed about 760 Voi scooters free to rent at that moment. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
@@ -51,7 +40,6 @@ const guide: Guide = {
           ],
         },
         'These are the City’s charges to the companies, not to riders. Under its fee schedule for public land (section 6.14, revised 27 August 2024), a company setting up pays SEK 200,000, then a daily charge per scooter on the most scooters it says it will run from May to October and from November to April: SEK 4 a scooter for a fleet of up to 300, SEK 2 for 301 to 700 and SEK 8 for more than 700, indexed yearly.',
-        'We found no published cap on numbers, and neither the City’s page nor the fee schedule names a night ban, a night speed limit or a winter pause for riders (October 2026).',
       ],
     },
     {
@@ -92,19 +80,8 @@ const guide: Guide = {
     {
       heading: 'Where to ride: Knutpunkten, Stortorget, Kullagatan and Campus Helsingborg',
       blocks: [
-        'E-scooters follow the same rules as bicycles, the City says, so ride on the cycle lane where there is one, otherwise the road. On pedestrian streets such as Kullagatan, between Stortorget and S:t Jörgens plats, the law allows only walking pace and gives people on foot priority, and hire scooters slow to 10 km/h. For Stortorget itself and the harbour front we found no e-scooter rule of the City’s beyond the parking zone and the slow zones.',
-        {
-          table: {
-            caption: 'Rules at stations and campus, as each owner states them, October 2026',
-            head: ['Place', 'Who says so', 'What it says'],
-            rows: [
-              ['Helsingborg C (Knutpunkten)', 'Jernhusen, on its station page', 'No e-scooter rule (read 30 October 2026)'],
-              ['Station platforms', 'Skånetrafiken', 'No riding or parking cycles on platforms'],
-              ['Campus Helsingborg', 'Lund University', 'No e-scooter rule found; the campus is at Universitetsplatsen 2, in the centre (read 30 October 2026)'],
-              ['Stadsparken', 'Helsingborgs stad', 'Hire scooters slow to 10 km/h'],
-            ],
-          },
-        },
+        'E-scooters follow the same rules as bicycles, the City says, so ride on the cycle lane where there is one, otherwise the road. On pedestrian streets such as Kullagatan, between Stortorget and S:t Jörgens plats, the law allows only walking pace and gives people on foot priority, and hire scooters slow to 10 km/h.',
+        'On station platforms Skånetrafiken allows no riding or parking of cycles. Lund University’s Campus Helsingborg is at Universitetsplatsen 2, in the centre.',
       ],
     },
     {
@@ -119,13 +96,13 @@ const guide: Guide = {
           ],
         },
         'A hire scooter stays on the street: end your ride near Knutpunkten before you board.',
-        'Öresundslinjen runs the ferry to Helsingør; the old ForSea address now opens its website. It lets you bring a bicycle or moped free with a standard foot-passenger ticket, but we found no e-scooter rule on its prices page or in its terms (read 30 October 2026). A hire scooter must stay in its operating area, so end your ride before you board.',
+        'Öresundslinjen runs the ferry to Helsingør. It lets you bring a bicycle or moped free with a standard foot-passenger ticket (read 30 October 2026). A hire scooter must stay in its operating area, so end your ride before you board.',
       ],
     },
     {
       heading: 'Malmö and the map',
       blocks: [
-        'Down the coast, Ryde, Voi, Lime and Bolt rent scooters in Malmö: see our [Malmö guide](guide:malmo). The map shows standing e-scooters only, not bikes. To see what is standing near you now, open the [Helsingborg map](map:se:Helsingborg).',
+        'Down the coast, Ryde, Voi, Lime and Bolt rent scooters in Malmö: see our [Malmö guide](guide:malmo). To see what is standing near you now, open the [Helsingborg map](map:se:Helsingborg).',
       ],
     },
     {
@@ -145,7 +122,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Helsingborg?',
-      answer: 'Voi and Ryde, the two companies Helsingborgs stad names (read 30 October 2026). The ScootRadar map shows Voi; Ryde’s scooters are only in its app.',
+      answer: 'Voi and Ryde, the two companies Helsingborgs stad names (read 30 October 2026). Find Voi’s on the [Helsingborg map](map:se:Helsingborg) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Where can I park a hire scooter in Helsingborg?',
@@ -161,11 +138,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I take an e-scooter on the ferry to Helsingør?',
-      answer: 'Öresundslinjen lets foot passengers with a standard ticket bring a bicycle or moped free, but we found no e-scooter rule in its terms. A hire scooter must stay in its operating area in Helsingborg, so end your ride before you board.',
-    },
-    {
-      question: 'Are e-scooters banned at night or in winter in Helsingborg?',
-      answer: 'No. Neither the City’s page nor its fee schedule names a night ban, a night speed limit or a winter pause for riders (October 2026).',
+      answer: 'Öresundslinjen lets foot passengers with a standard ticket bring a bicycle or moped free. A hire scooter must stay in its operating area in Helsingborg, so end your ride before you board.',
     },
   ],
   sources: [
@@ -181,7 +154,6 @@ const guide: Guide = {
     { title: 'Riksdagen: Trafikförordningen (1998:1276)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/trafikforordning-19981276_sfs-1998-1276/' },
     { title: 'Åklagarmyndigheten: Fixed fines, annex 1A (1 November 2025)', url: 'https://www.aklagare.se/globalassets/dokument/ordningsbotskatalog/bilaga-1a.pdf' },
     { title: 'Skånetrafiken: On board', url: 'https://www.skanetrafiken.se/sa-reser-du-med-oss/sa-funkar-det-ombord/' },
-    { title: 'Jernhusen: Helsingborg Central Station', url: 'https://www.jernhusen.se/hitta-din-station/helsingborg-centralstation/' },
     { title: 'Lund University: Campus Helsingborg, contact and parking', url: 'https://www.ch.lu.se/kontakt' },
     { title: 'Öresundslinjen: Prices, Helsingborg–Helsingør', url: 'https://www.oresundslinjen.se/priser' },
     { title: 'Öresundslinjen: Terms', url: 'https://www.oresundslinjen.se/om-oresundslinjen/villkor' },

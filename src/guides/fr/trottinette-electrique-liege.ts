@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trottinette électrique Liège : Dott, Pony, Bolt, prix',
   description: 'Trottinette électrique à Liège : Dott, Pony et Bolt, prix, Smartparking, piétonnier au pas, Boverie, Sart-Tilman, Guillemins et règles belges.',
   headline: 'Trottinette électrique à Liège : Dott, Pony et Bolt, prix, stationnement et zones lentes en 2026',
-  lede: 'Pour louer une trottinette électrique à Liège, vous avez **Dott**, **Pony** et **Bolt**, tous trois sur notre carte. Le 25 octobre 2026, Dott publiait 1 € au déverrouillage et 0,35 € la minute, Pony 1 € et 0,26 € ; Bolt donne ses prix dans son app. Dans le centre (zone « Smartparking »), vous garez la trottinette à un emplacement dédié ou près d’arceaux vélos ; dans le piétonnier, vous roulez au pas.',
+  lede: 'Pour louer une trottinette électrique à Liège, vous avez **Dott**, **Pony** et **Bolt**. Le 25 octobre 2026, Dott publiait 1 € au déverrouillage et 0,35 € la minute, Pony 1 € et 0,26 € ; Bolt donne ses prix dans son app. Dans le centre (zone « Smartparking »), vous garez la trottinette à un emplacement dédié ou près d’arceaux vélos ; dans le piétonnier, vous roulez au pas.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'be:Liège',
@@ -18,8 +18,8 @@ const guide: Guide = {
       blocks: [
         'Un règlement communal du 15 janvier 2024 encadre les trottinettes partagées à Liège. Chaque opérateur doit détenir une licence wallonne et un avis positif de la Ville, valable trois ans. Le règlement admet trois opérateurs au plus, 400 trottinettes chacun et 1 200 en tout.',
         'Les trois opérateurs en place, **Dott**, **Pony** et **Bolt**, ont chacun une licence wallonne et, depuis le 27 mai 2024, une convention avec la Ville ; l’avis positif de Bolt court jusqu’au 2 mai 2027 inclus. Les trottinettes partagées sont arrivées à Liège en 2019, encadrées d’abord par une charte communale.',
-        'Le dimanche 25 octobre 2026 vers 13 h 50, notre [carte de Liège](map:be:Liège) montrait environ 1 200 trottinettes des trois opérateurs, presque toutes sur le territoire communal : un relevé d’un moment, pas la taille des flottes. [Herstal](map:be:Herstal), où roulent aussi Dott et Pony, a son propre compteur : environ 140 au même moment.',
-        'Pour Dott et Pony, la carte montre l’emplacement, la batterie et l’autonomie de chaque trottinette ; pour Bolt, l’emplacement et la batterie. Pour les zones, le stationnement et le prix, l’app de l’opérateur fait foi. Dott loue aussi des vélos électriques, que la carte ne montre pas. Toutes les étapes : [comment louer une trottinette](guide:how-to-rent).',
+        'Le dimanche 25 octobre 2026 vers 13 h 50, notre [carte de Liège](map:be:Liège) montrait environ 1 200 trottinettes des trois opérateurs : un relevé d’un moment, pas la taille des flottes. À [Herstal](map:be:Herstal), où roulent aussi Dott et Pony, il y en avait environ 140 au même moment.',
+        'Pour les zones, le stationnement et le prix, l’app de l’opérateur fait foi. Dott loue aussi des vélos électriques. Toutes les étapes : [comment louer une trottinette](guide:how-to-rent).',
       ],
     },
     {
@@ -33,11 +33,10 @@ const guide: Guide = {
             rows: [
               ['Dott', '1,00 €', '0,35 €', '4,50 €', '8,00 €'],
               ['Pony', '1,00 €', '0,26 €', '3,60 €', '6,20 €'],
-              ['Bolt', 'Dans l’app', 'Dans l’app', 'Dans l’app', 'Dans l’app'],
             ],
           },
         },
-        'Seul compte le prix affiché dans l’app avant le déverrouillage.',
+        'Bolt affiche son prix dans l’app. Chez les trois, seul compte le prix affiché avant le déverrouillage.',
         'La loi autorise la trottinette dès 16 ans, mais Dott et Bolt ne louent qu’à partir de **18 ans** en Belgique. Pony, selon ses conditions belges du 21 août 2025, loue dès **16 ans**.',
         'Gardez de la batterie pour les montées : le règlement de la Ville rappelle les fortes pentes entre la Meuse et les quartiers hauts, et les pavés fréquents.',
       ],
@@ -55,7 +54,7 @@ const guide: Guide = {
     {
       heading: 'Piétonnier, Carré, Boverie : où rouler au ralenti ?',
       blocks: [
-        'Dans les zones piétonnes du centre, un règlement communal du 2 septembre 2024 admet les trottinettes motorisées **à l’allure du pas** : cédez le passage aux piétons et descendez quand il y a foule. La Ville fait aussi brider les trottinettes partagées à 12 km/h dans les piétonniers, les parcs et plusieurs places ; Dott bride à 10 km/h dans le Carré, et Pony ne publie aucune zone lente. Même bridée, la trottinette doit rouler au pas en zone piétonne, sous peine de 191 €.',
+        'Dans les zones piétonnes du centre, un règlement communal du 2 septembre 2024 admet les trottinettes motorisées **à l’allure du pas** : cédez le passage aux piétons et descendez quand il y a foule. La Ville fait aussi brider les trottinettes partagées à 12 km/h dans les piétonniers, les parcs et plusieurs places ; Dott bride à 10 km/h dans le Carré. Même bridée, la trottinette doit rouler au pas en zone piétonne, sous peine de 191 €.',
         'Dans les parcs et jardins publics, un règlement de 2017 réserve aux allées aménagées les vélos et autres engins plus rapides que la marche. Au parc de la Boverie, le règlement du 25 juin 2018 les cantonne aux allées tracées en rose sur son plan et prévoit une amende administrative jusqu’à 350 €.',
         {
           table: {
@@ -63,7 +62,7 @@ const guide: Guide = {
             head: ['Lieu', 'Règle de la Ville', 'Dans les apps'],
             rows: [
               ['Le Carré, Pont d’Avroy, Vinâve d’Île, place de la Cathédrale', 'Piétonnier : au pas, bridage à 12 km/h', 'Dott 10 km/h'],
-              ['Féronstrée, place du Marché, En Neuvice, rues Roture et des Grignoux', 'Piétonnier : au pas, bridage à 12 km/h', 'Pas de zone lente chez Dott'],
+              ['Féronstrée, place du Marché, En Neuvice, rues Roture et des Grignoux', 'Piétonnier : au pas, bridage à 12 km/h', '–'],
               ['Parc de la Boverie', '12 km/h, stationnement interdit', 'Dott 10 km/h ; Pony interdit le stationnement'],
               ['Parc et boulevard d’Avroy (Foire), jusqu’au 16 novembre 2026', 'Circulation et stationnement interdits', 'Dott interdit d’y rouler'],
               ['Esplanade des Guillemins', '12 km/h, stationnement interdit', 'Dott 10 km/h sans stationnement ; Pony interdit le stationnement'],
@@ -82,7 +81,7 @@ const guide: Guide = {
           list: [
             '**Foire d’octobre :** parc et boulevard d’Avroy interdits à la circulation et au stationnement du 26 septembre au 16 novembre 2026.',
             '**Fêtes du XV août en Outremeuse :** environ 36 ha interdits du 14 au 17 août 2026.',
-            '**Village de Noël 2025 :** place Saint-Lambert, place du Marché, place de la Cathédrale et Vinâve d’Île interdits du 24 novembre 2025 au 4 janvier 2026 ; la zone 2026 n’était pas encore publiée le 25 octobre.',
+            '**Village de Noël 2025 :** place Saint-Lambert, place du Marché, place de la Cathédrale et Vinâve d’Île interdits du 24 novembre 2025 au 4 janvier 2026.',
           ],
         },
         'Garez la trottinette avant la zone et finissez à pied.',
@@ -92,7 +91,7 @@ const guide: Guide = {
       heading: 'Sart-Tilman, CHU et RAVeL : campus et voies lentes',
       blocks: [
         'Sur le domaine universitaire du Sart-Tilman, l’ULiège fixe ses propres règles. Selon sa page du 14 octobre 2022, les trottinettes partagées roulent dans la partie nord du campus (Village, Agora, Polytech, Urbanistes) et la location ne s’y termine qu’à un point de stationnement. Certaines zones très fréquentées sont limitées à 6 km/h ; les boulevards et la réserve naturelle sont interdits.',
-        'Pour monter de la ville, l’ULiège indique que les opérateurs autorisent la rue de la Belle Jardinière. Le 25 octobre 2026, Dott comptait une cinquantaine d’emplacements sur le plateau, dont un nommé « CHU », et Pony une trentaine autour de l’Agora ; selon ses données, la zone de Pony n’atteint pas ce « CHU ». Nous n’avons trouvé aucune règle du CHU de Liège sur les trottinettes.',
+        'Pour monter de la ville, l’ULiège indique que les opérateurs autorisent la rue de la Belle Jardinière. Le 25 octobre 2026, Dott comptait une cinquantaine d’emplacements sur le plateau, dont un nommé « CHU », et Pony une trentaine autour de l’Agora ; selon ses données, la zone de Pony n’atteint pas ce « CHU ».',
         'Selon le SPW (5 juillet 2022), les moins de 16 ans peuvent rouler en trottinette électrique sur le RAVeL, le réseau wallon de voies lentes, ou dans une rue réservée au jeu. Ralentissez en croisant les piétons.',
       ],
     },
@@ -101,7 +100,7 @@ const guide: Guide = {
       blocks: [
         'La gare des Guillemins est la plus fréquentée de Wallonie, selon la Ville. Sur l’esplanade, vous ne pouvez pas vous garer ; Dott a des emplacements rue et place des Guillemins, et la [carte de Liège](map:be:Liège) montre la trottinette la plus proche.',
         'Le [tram de Liège](https://www.liege.be/mes-services/mobilite/se-deplacer/en-transport-en-commun/en-tram-et-en-bus) roule depuis juin 2025 : 11,7 km et 23 stations, du centre aux Guillemins, à Coronmeuse et à Sclessin. Depuis 2026, le bus à haut niveau de service B2 relie aussi les Guillemins au Sart-Tilman. Terminez la location à un emplacement avant de monter.',
-        'Avec votre propre trottinette, le [dépliant « Vélo et Bus, mode d’emploi » du TEC](https://cdn.uc.assets.prezly.com/d55d1ce8-fb0d-44d5-b8ec-57adeccf25b8/-/inline/no/D%C3%A9pliant%20V%C3%A9lo%20et%20Bus%20_Mode%20d%27emploi.pdf) (2022) précise que les trottinettes pliantes restent avec le voyageur à bord du bus. Pour le tram et le train, nous n’avons pas pu vérifier les règles : renseignez-vous auprès du TEC et de la SNCB.',
+        'Avec votre propre trottinette, le [dépliant « Vélo et Bus, mode d’emploi » du TEC](https://cdn.uc.assets.prezly.com/d55d1ce8-fb0d-44d5-b8ec-57adeccf25b8/-/inline/no/D%C3%A9pliant%20V%C3%A9lo%20et%20Bus%20_Mode%20d%27emploi.pdf) (2022) précise que les trottinettes pliantes restent avec le voyageur à bord du bus. Pour le tram et le train, renseignez-vous auprès du TEC et de la SNCB.',
       ],
     },
     {
@@ -130,7 +129,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelles trottinettes partagées trouve-t-on à Liège ?',
-      answer: 'Dott, Pony et Bolt, tous trois sur notre carte et titulaires d’une licence wallonne ; la Ville en admet trois au plus. Dott et Bolt louent dès 18 ans, Pony dès 16 ans.',
+      answer: 'Dott, Pony et Bolt, tous trois titulaires d’une licence wallonne ; la Ville en admet trois au plus. Dott et Bolt louent dès 18 ans, Pony dès 16 ans.',
     },
     {
       question: 'Combien coûte une trottinette électrique à Liège ?',

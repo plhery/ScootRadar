@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trottinette électrique à Angers en 2026 : Pony, prix, zones',
   description: 'Trottinette électrique à Angers : Pony, 1 € puis 0,26 € la minute, dès 16 ans. Où se garer, centre piéton, tram Irigo, gare, amendes et VéloCité.',
   headline: 'Trottinette électrique à Angers : Pony, prix, stationnement et règles en 2026',
-  lede: 'Pour louer une trottinette électrique à Angers, vous passerez par **Pony**, l’opérateur angevin, le seul que nous ayons trouvé. Comptez 1 € pour déverrouiller, puis 0,26 € la minute, soit 3,60 € les 10 minutes, selon ses données du 16 octobre 2026 ; il faut avoir 16 ans. La location se termine près d’un « P » bleu de l’app, jamais sur les rives de la Maine, et la Ville a durci le ton en 2026.',
+  lede: 'Pour louer une trottinette électrique à Angers, vous passerez par **Pony**, l’opérateur angevin. Comptez 1 € pour déverrouiller, puis 0,26 € la minute, soit 3,60 € les 10 minutes, selon ses données du 16 octobre 2026 ; il faut avoir 16 ans. La location se termine près d’un « P » bleu de l’app, jamais sur les rives de la Maine, et la Ville a durci le ton en 2026.',
   published: '2026-10-16',
   updated: '2026-10-16',
   city: 'fr:Angers',
@@ -16,10 +16,9 @@ const guide: Guide = {
     {
       heading: 'Trottinette électrique en libre-service à Angers : Pony',
       blocks: [
-        'En octobre 2026, **Pony** est le seul opérateur de trottinettes en libre-service que nous ayons trouvé à Angers : le portail national des données de transport n’y publie aucun autre flux, et nous n’avons trouvé ni appel d’offres ni licence de la Ville.',
-        'Seul texte connu : une **convention d’occupation du domaine public du 14 octobre 2021** entre la Ville d’Angers et Pony, qui l’autorise à stationner ses vélos et trottinettes sur les trottoirs. Nous ne la connaissons que par un arrêté des Ponts-de-Cé de janvier 2023 qui la cite : nous n’en avons trouvé ni le texte ni la durée, et ignorons si elle est toujours en vigueur.',
-        'Le service couvre Angers et sept communes voisines : Avrillé, Beaucouzé, Écouflant, Les Ponts-de-Cé, Saint-Barthélemy-d’Anjou, Sainte-Gemmes-sur-Loire et Trélazé.',
-        'Le 16 octobre 2026 au soir, la [carte d’Angers](map:fr:Angers) de ScootRadar affichait **environ 600 trottinettes Pony** : un relevé, pas la taille de la flotte, et sans les vélos. Un bouton ouvre l’app Pony pour déverrouiller et payer.',
+        'En octobre 2026, **Pony** loue ses trottinettes en libre-service à Angers et dans sept communes voisines : Avrillé, Beaucouzé, Écouflant, Les Ponts-de-Cé, Saint-Barthélemy-d’Anjou, Sainte-Gemmes-sur-Loire et Trélazé.',
+        'Un arrêté des Ponts-de-Cé de janvier 2023 cite une **convention d’occupation du domaine public du 14 octobre 2021** par laquelle la Ville d’Angers a autorisé Pony à stationner ses vélos et trottinettes sur les trottoirs.',
+        'Le 16 octobre 2026 au soir, la [carte d’Angers](map:fr:Angers) de ScootRadar affichait **environ 600 trottinettes Pony** : un relevé, pas la taille de la flotte. Un bouton ouvre l’app Pony pour déverrouiller et payer.',
       ],
     },
     {
@@ -42,17 +41,17 @@ const guide: Guide = {
           },
         },
         'À 1 € le déverrouillage, le pass journée est amorti au cinquième trajet du jour, le pass mois au dixième trajet du mois.',
-        '**Étudiants.** La page angevine de Pony n’affiche aucun tarif étudiant : vérifiez dans l’app. Un numéro de téléphone suffit pour s’inscrire. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
+        'Un numéro de téléphone suffit pour s’inscrire. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Où garer sa trottinette Pony à Angers',
       blocks: [
-        'Pas de stationnement libre : la location se termine **près d’un « P » bleu** de l’app, arceau à vélos ou « hub » de mobilité (gare, arrêt de tram), photo à l’appui. Laissée dans une zone rouge, la trottinette vous vaut une « franchise de ramassage », selon les conditions de Pony. Ses données comptaient plus de 1 300 « P » le 16 octobre 2026 ; d’après nos calculs :',
+        'Pas de stationnement libre : la location se termine **près d’un « P » bleu** de l’app, arceau à vélos ou « hub » de mobilité (gare, arrêt de tram), photo à l’appui. Laissée dans une zone rouge, la trottinette vous vaut une « franchise de ramassage », selon les conditions de Pony. Ses données comptaient plus de 1 300 « P » le 16 octobre 2026 :',
         {
           list: [
             '**Château** : 8 emplacements à moins de 200 m, mais les quais de la Maine sont interdits au stationnement.',
-            '**Place du Ralliement** : interdite au stationnement Pony ; aucun emplacement à moins de 100 m, 8 à moins de 200 m.',
+            '**Place du Ralliement** : interdite au stationnement Pony ; 8 emplacements entre 100 et 200 m.',
             '**Lac de Maine** : une grande partie du lac et de ses rives est en zone rouge, et la moitié des rives est à plus de 300 m d’un « P ».',
           ],
         },
@@ -73,14 +72,14 @@ const guide: Guide = {
             ],
           },
         },
-        '**La Ville va plus loin que l’app.** Depuis le 15 avril 2022, un arrêté municipal impose de rouler au pas dans toutes les aires piétonnes, et de mettre pied à terre quand il y a foule. Son dossier de presse du 25 septembre 2026 range aussi parmi les mesures de 2026 l’**interdiction des trottinettes et autres EDPM sur le plateau piétonnier**, fermé aux deux-roues thermiques depuis 2021. Au 16 octobre 2026, nous n’en avons trouvé ni l’arrêté ni la date : dans les rues piétonnes, descendez et poussez.',
+        '**La Ville va plus loin que l’app.** Depuis le 15 avril 2022, un arrêté municipal impose de rouler au pas dans toutes les aires piétonnes, et de mettre pied à terre quand il y a foule. Son dossier de presse du 25 septembre 2026 range aussi parmi les mesures de 2026 l’**interdiction des trottinettes et autres EDPM sur le plateau piétonnier**, fermé aux deux-roues thermiques depuis 2021. Dans les rues piétonnes, descendez et poussez.',
       ],
     },
     {
       heading: 'Âge, casque, amendes : les règles à Angers',
       blocks: [
         '**L’âge.** Pony exige **16 ans** dans ses conditions de location du 29 mai 2026 ; la loi autorise la trottinette personnelle dès 14 ans.',
-        '**Le casque.** Au 16 octobre 2026, nous n’avons pas trouvé d’arrêté préfectoral l’imposant en Maine-et-Loire, sans pouvoir l’exclure, car le site de la [préfecture](https://www.maine-et-loire.gouv.fr/) était inaccessible : vérifiez-y. La proposition de loi n° 3256 du 6 octobre 2026, qui l’imposerait partout en France, n’a pas encore été examinée. Le casque reste fortement recommandé.',
+        '**Le casque.** La proposition de loi n° 3256 du 6 octobre 2026, qui l’imposerait partout en France, n’a pas encore été examinée. Le casque reste fortement recommandé.',
         {
           table: {
             caption: 'Trottinette électrique à Angers : les règles nationales qui coûtent le plus cher (octobre 2026)',
@@ -104,7 +103,7 @@ const guide: Guide = {
     {
       heading: 'Trottinette dans le tram et le bus à Angers (Irigo)',
       blocks: [
-        'Sur le réseau Irigo, **les trottinettes ne montent que pliées**, dans le tram, le bus ou irigoFlex : une Pony, qui ne se plie pas, reste dehors, et nous n’avons trouvé aucune offre combinant Irigo et Pony. Terminez la location près de l’arrêt : à St-Serge Université (trams A et B), 13 emplacements sont à moins de 100 m.',
+        'Sur le réseau Irigo, **les trottinettes ne montent que pliées**, dans le tram, le bus ou irigoFlex : une Pony, qui ne se plie pas, reste dehors. Terminez la location près de l’arrêt : à St-Serge Université (trams A et B), 13 emplacements sont à moins de 100 m.',
         '**Attention aux rails.** Traversez-les le plus perpendiculairement possible, et ne roulez jamais dedans.',
       ],
     },
@@ -115,7 +114,7 @@ const guide: Guide = {
           list: [
             '**La gare Saint-Laud** (trams A et C, arrêt Les Gares). Son parvis est interdit au stationnement Pony, mais 8 emplacements sont à moins de 200 m, dont l’arceau du parking Marengo.',
             '**Les campus.** À Belle-Beille, terminus des trams B et C, un arceau de la rue Lakanal est à moins de 70 m de l’arrêt Belle-Beille Campus, mais les espaces verts du quartier sont en zone rouge. À l’UCO, trois arceaux sont à une centaine de mètres.',
-            '**Les Accroche-cœurs.** Depuis 1999, ce festival des arts de la rue investit chaque septembre les deux rives de la Maine ; la 26e édition s’est tenue du 11 au 13 septembre 2026, et les dates de 2027 ne sont pas encore annoncées. Dans la foule, poussez.',
+            '**Les Accroche-cœurs.** Depuis 1999, ce festival des arts de la rue investit chaque septembre les deux rives de la Maine ; la 26e édition s’est tenue du 11 au 13 septembre 2026. Dans la foule, poussez.',
             '**Soleils d’hiver.** Les festivités de fin d’année reviennent chaque hiver dans le centre-ville ; en 2026, le marché de Noël du jardin du Mail est prévu du 25 novembre au 3 janvier 2027, selon un avis de la Ville. Or le jardin est en zone rouge.',
             '**En cas d’accident.** Mettez-vous en sécurité, appelez le 112 si besoin, puis prévenez Pony. En cas de blessure ou de dégât, ses conditions exigent une déclaration à la police sous 24 heures ; sauf exception, elles incluent une responsabilité civile et une assurance individuelle accident.',
           ],
@@ -148,11 +147,11 @@ const guide: Guide = {
     },
     {
       question: 'Quelle application pour une trottinette en libre-service à Angers ?',
-      answer: 'Celle de Pony, le seul opérateur que nous ayons trouvé ; il faut avoir 16 ans. Notre [carte d’Angers](map:fr:Angers) montre les trottinettes disponibles et ouvre l’app, où vous payez par carte bancaire, Apple Pay ou Google Pay.',
+      answer: 'Celle de Pony ; il faut avoir 16 ans. Notre [carte d’Angers](map:fr:Angers) montre les trottinettes disponibles et ouvre l’app, où vous payez par carte bancaire, Apple Pay ou Google Pay.',
     },
     {
       question: 'Peut-on rouler en trottinette dans les rues piétonnes d’Angers ?',
-      answer: 'Au pas seulement, et pied à terre quand il y a foule, selon un arrêté municipal de 2022 ; Pony y bride ses trottinettes à 6 km/h. La Ville a aussi annoncé en septembre 2026 leur interdiction sur le plateau piétonnier, dont nous n’avons trouvé ni l’arrêté ni la date : descendez et poussez.',
+      answer: 'Au pas seulement, et pied à terre quand il y a foule, selon un arrêté municipal de 2022 ; Pony y bride ses trottinettes à 6 km/h. La Ville a aussi annoncé en septembre 2026 leur interdiction sur le plateau piétonnier : descendez et poussez.',
     },
     {
       question: 'Peut-on prendre le tram avec une trottinette à Angers ?',
@@ -160,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Angers ?',
-      answer: 'Pas à notre connaissance au 16 octobre 2026 : nous n’avons pas trouvé d’arrêté préfectoral en Maine-et-Loire, sans pouvoir l’exclure, et la proposition de loi n° 3256 n’a pas été examinée. Le gilet ou un équipement réfléchissant est obligatoire la nuit et par mauvaise visibilité (35 €).',
+      answer: 'Pas au niveau national : la proposition de loi n° 3256, qui l’imposerait partout en France, n’a pas encore été examinée. Il reste fortement recommandé. Le gilet ou un équipement réfléchissant est obligatoire la nuit et par mauvaise visibilité (35 €).',
     },
     {
       question: 'Peut-on encore « adopter » un pony ?',

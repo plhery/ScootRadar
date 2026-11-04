@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trotinetes em Cascais 2026: Bird, estações e paredão',
   description: 'Trotinetes em Cascais: a Bird e as 157 estações onde a viagem acaba, o paredão, o centro histórico, a ciclovia do Guincho, o comboio e as regras de 2026.',
   headline: 'Trotinetes em Cascais: a Bird, as estações, o paredão e a ciclovia do Guincho',
-  lede: 'As trotinetes partilhadas em Cascais são da Bird, a única operadora no concelho em outubro de 2026, e apanham-se e deixam-se numa das 157 estações de mobilidade partilhada. A Bird não publica tarifas para Cascais: a app mostra o preço antes de desbloquear. O paredão, entre a Conceição e a Azarujinha, é para peões, e a app não deixa circular em cinco zonas do centro histórico, junto à baía. Para o Guincho, há ciclovia ao longo da costa.',
+  lede: 'As trotinetes partilhadas em Cascais são da Bird, a única operadora no concelho em outubro de 2026, e apanham-se e deixam-se numa das 157 estações de mobilidade partilhada. A app da Bird mostra o preço antes de desbloquear. O paredão, entre a Conceição e a Azarujinha, é para peões, e a app não deixa circular em cinco zonas do centro histórico, junto à baía. Para o Guincho, há ciclovia ao longo da costa.',
   published: '2026-10-16',
   updated: '2026-10-26',
   city: 'pt:Cascais',
@@ -16,26 +16,24 @@ const guide: Guide = {
     {
       heading: 'Que trotinetes partilhadas há em Cascais?',
       blocks: [
-        'Segundo a MobiCascais, o serviço de mobilidade da Câmara, as 157 estações de mobilidade partilhada do concelho servem veículos «propriedade de uma empresa externa». É a **Bird**, cujos dados abertos para Cascais listam também 157 estações, com trotinetes e bicicletas elétricas. Não há regulamento municipal para as trotinetes: em 2018, a Câmara fez acordos com as empresas «mediante regras e condições muito claras».',
+        'Segundo a MobiCascais, o serviço de mobilidade da Câmara, as 157 estações de mobilidade partilhada do concelho servem veículos «propriedade de uma empresa externa». É a **Bird**, cujos dados abertos para Cascais listam também 157 estações, com trotinetes e bicicletas elétricas. Em 2018, a Câmara fez acordos com as empresas «mediante regras e condições muito claras».',
         {
           table: {
             caption: 'Trotinetes em Cascais: quem as aluga e a que preço (16 de outubro de 2026)',
-            head: ['Quem', 'Em Cascais', 'Preço', 'No nosso mapa'],
+            head: ['Quem', 'Em Cascais', 'Preço'],
             rows: [
-              ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Não publicado: veja na app', 'Sim, só as trotinetes'],
-              ['Lime', 'Não: está em Lisboa, Almada e Oeiras', '–', 'Em Lisboa, Almada e Oeiras'],
-              ['Bolt', 'Não: está em Lisboa e Oeiras', '–', 'Em Lisboa e Oeiras'],
-              ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos', 'Não'],
+              ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Na app, antes de desbloquear'],
+              ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 640 no [mapa de Cascais](map:pt:Cascais) na manhã de 24 de outubro de 2026. As bicicletas elétricas da Bird não aparecem no mapa. Ao lado, o [mapa de Oeiras](map:pt:Oeiras) mostra as trotinetes da Bird, da Lime e da Bolt. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'Na manhã de 24 de outubro de 2026, o [mapa de Cascais](map:pt:Cascais) mostrava cerca de 640 trotinetes da Bird. Ao lado, o [mapa de Oeiras](map:pt:Oeiras) mostra as trotinetes da Bird, da Lime e da Bolt. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Quanto custa: a Bird e as viagens grátis do Cartão Viver Cascais',
       blocks: [
-        'A Bird não publica as tarifas de Cascais: a app mostra o preço antes de começar. O contrato de aluguer da Bird para Portugal (de 8 de dezembro de 2021, o ainda publicado) exige 18 anos, prevê uma cativação de 5 € no cartão antes de cada viagem e fixa o preço máximo em 100 € por dia.',
+        'A app da Bird mostra o preço antes de começar. O contrato de aluguer da Bird para Portugal (de 8 de dezembro de 2021, o ainda publicado) exige 18 anos, prevê uma cativação de 5 € no cartão antes de cada viagem e fixa o preço máximo em 100 € por dia.',
         '**Trotinetes grátis?** Não. Desde 17 de julho de 2026, quem tem o Cartão Viver Cascais (residentes, estudantes e trabalhadores no concelho) anda de graça nas **bicicletas elétricas** da Bird, até 60 minutos por viagem, sem limite diário, dentro do concelho. O benefício «aplica-se exclusivamente às bicicletas elétricas Bird»: nas trotinetes, paga o preço normal. O desbloqueio não está incluído. Para ativar:',
         {
           steps: [
@@ -76,9 +74,9 @@ const guide: Guide = {
     {
       heading: 'Paredão, centro histórico e Marina: onde não pode andar de trotinete',
       blocks: [
-        '**Paredão.** O regulamento municipal das praias, na versão publicada em outubro de 2025, reserva os passeios marítimos de Cascais e de Carcavelos à «circulação pedonal». O mesmo artigo só deixa circular bicicletas e trotinetes, elétricas incluídas, «nos locais destinados para o efeito e devidamente assinalados». Não encontrámos nenhum troço do paredão assinalado para trotinetes: entre a Praia da Conceição e a Azarujinha (2,75 km) e em Carcavelos, leve-a à mão. A infração é uma contraordenação ambiental leve, e a lei para que o regulamento remete fixa a coima em 200 a 2000 €, ou 400 a 4000 € se for intencional. A app da Bird pode não a travar aqui: a regra vale na mesma.',
-        '**Centro histórico.** Os dados públicos da Bird marcam cinco zonas no centro onde a trotinete não pode circular, nem de passagem. No mapa do OpenStreetMap, cobrem a Praia da Ribeira, o Largo Luís de Camões e boa parte da Rua Frederico Arouca, o Largo da Praia da Rainha, a Praça 5 de Outubro, junto à Câmara, e o Largo da Assunção, junto à Igreja Matriz. Aí, leve-a à mão; a app mostra os limites.',
-        '**Marina, Cidadela e Boca do Inferno.** Não são zonas proibidas nos dados da Bird em outubro de 2026, mas valem as regras gerais: nunca no passeio e, na estrada, sempre junto à direita.',
+        '**Paredão.** O regulamento municipal das praias, na versão publicada em outubro de 2025, reserva os passeios marítimos de Cascais e de Carcavelos à «circulação pedonal». O mesmo artigo só deixa circular bicicletas e trotinetes, elétricas incluídas, «nos locais destinados para o efeito e devidamente assinalados». Fora desses locais, leve-a à mão no paredão, entre a Praia da Conceição e a Azarujinha (2,75 km), e em Carcavelos. A infração é uma contraordenação ambiental leve, e a lei para que o regulamento remete fixa a coima em 200 a 2000 €, ou 400 a 4000 € se for intencional. A app da Bird pode não a travar aqui: a regra vale na mesma.',
+        '**Centro histórico.** Os dados públicos da Bird marcam cinco zonas no centro onde a trotinete não pode circular, nem de passagem. Cobrem a Praia da Ribeira, o Largo Luís de Camões e boa parte da Rua Frederico Arouca, o Largo da Praia da Rainha, a Praça 5 de Outubro, junto à Câmara, e o Largo da Assunção, junto à Igreja Matriz. Aí, leve-a à mão; a app mostra os limites.',
+        '**Marina, Cidadela e Boca do Inferno.** Valem as regras gerais: nunca no passeio e, na estrada, sempre junto à direita.',
       ],
     },
     {
@@ -109,7 +107,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Ainda não são lei: em outubro de 2026, estavam em discussão na especialidade. Não encontrámos em Cascais nenhum horário noturno nem limite de velocidade municipal para as trotinetes. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules).',
+        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Ainda não são lei: em outubro de 2026, estavam em discussão na especialidade. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules).',
       ],
     },
     {
@@ -147,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'Posso andar de trotinete no paredão de Cascais?',
-      answer: 'Só onde um sinal o permita, e não encontrámos nenhum. O regulamento municipal das praias reserva o paredão a quem anda a pé, e a infração dá coima de 200 a 2000 €, ou de 400 a 4000 € se for intencional. Leve a trotinete à mão.',
+      answer: 'Só onde um sinal o permita. O regulamento municipal das praias reserva o paredão a quem anda a pé, e a infração dá coima de 200 a 2000 €, ou de 400 a 4000 € se for intencional. Leve a trotinete à mão.',
     },
     {
       question: 'Posso levar a trotinete no comboio de Lisboa para Cascais?',
@@ -155,7 +153,7 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Lime ou Bolt em Cascais?',
-      answer: 'Não, em outubro de 2026. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa e em Oeiras. Em Cascais, as trotinetes partilhadas são da Bird.',
+      answer: 'Em outubro de 2026, as trotinetes partilhadas em Cascais são da Bird. A Lime opera em Lisboa, em Almada e em Oeiras, onde chegou em 2024; a Bolt, em Lisboa e em Oeiras.',
     },
   ],
   sources: [

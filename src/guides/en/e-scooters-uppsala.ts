@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Uppsala 2026: Voi, Lime, Ryde and rules',
   description: 'E-scooters in Uppsala: Voi, Lime and Ryde, the 4,500 cap, 15 km/h and a reaction test at night, where to ride and park, buses, trains and fines.',
   headline: 'E-scooters in Uppsala: Voi, Lime and Ryde, the night rules and where to park',
-  lede: 'E-scooters in Uppsala are rented from Voi, Lime and Ryde, the three companies the municipality lists; our map shows Voi and Lime, not Ryde. Ride on cycle lanes or the road, never on the pavement, and from 23:00 to 05:00 expect hire scooters in the centre to slow to 15 km/h and to ask for a reaction test. End your ride in a cycle rack or e-scooter parking, and photograph the scooter.',
+  lede: 'E-scooters in Uppsala are rented from Voi, Lime and Ryde, the three companies the municipality lists. Ride on cycle lanes or the road, never on the pavement, and from 23:00 to 05:00 expect hire scooters in the centre to slow to 15 km/h and to ask for a reaction test. End your ride in a cycle rack or e-scooter parking, and photograph the scooter.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'se:Uppsala',
@@ -16,34 +16,22 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Uppsala: Voi, Lime and Ryde',
       blocks: [
-        'Electric scooter rental in Uppsala needs a permit to use public land, granted by the police for a year at a time, and Uppsala kommun (the municipality) backs an application only if the company meets its local conditions. Its e-scooter page lists three rental companies (read 29 October 2026):',
-        {
-          table: {
-            caption: 'E-scooter companies in Uppsala and what the map shows, October 2026',
-            head: ['Company', 'On the municipality’s list', 'On the ScootRadar map'],
-            rows: [
-              ['Voi', 'Yes', 'Yes, with battery'],
-              ['Lime', 'Yes', 'Yes'],
-              ['Ryde', 'Yes, and Ryde lists Uppsala among its towns', 'No: check the Ryde app'],
-            ],
-          },
-        },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as all the scooters in town. At 04:51 on Thursday 29 October 2026 the [map of Uppsala](map:se:Uppsala) showed about 1,250 Voi and about 700 Lime scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking. The map’s area isn’t cut to the city limits: its total is everything the two companies’ data assign to Uppsala, which can include scooters just outside town.',
-        'Bolt isn’t on the municipality’s list.',
+        'Electric scooter rental in Uppsala needs a permit to use public land, granted by the police for a year at a time, and Uppsala kommun (the municipality) backs an application only if the company meets its local conditions. Its e-scooter page lists three rental companies (read 29 October 2026): **Voi**, **Lime** and **Ryde**, which also lists Uppsala among its towns.',
+        'At 04:51 on Thursday 29 October 2026 the [map of Uppsala](map:se:Uppsala) showed about 1,250 Voi and about 700 Lime scooters as they stood at that moment: a snapshot, not the fleet size. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
       heading: 'How much does a Voi or Lime scooter cost in Uppsala?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Uppsala price on an open official page, and Ryde’s website lists none.',
-        'The municipality sets no minimum age, and Ryde’s Swedish terms let you ride from 15. Check each app for its own age limit and fees.',
+        '**The app shows the price** before you unlock.',
+        'Ryde’s Swedish terms let you ride from 15. Check each app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Uppsala’s permit conditions: the cap, night rules and weather',
       blocks: [
-        'The municipality’s street and urban environment committee (gatu- och samhällsmiljönämnden) adopted new conditions for renting out e-scooters on public land on 22 April 2026. The minutes give no start date; Upsala Nya Tidning, the local paper, reported on 27 April 2026 that they would apply from 1 July. The municipality’s page gives them as today’s rules (read 29 October 2026):',
+        'The municipality’s street and urban environment committee (gatu- och samhällsmiljönämnden) adopted new conditions for renting out e-scooters on public land on 22 April 2026. Upsala Nya Tidning, the local paper, reported on 27 April 2026 that they would apply from 1 July. The municipality’s page gives them as today’s rules (read 29 October 2026):',
         {
           table: {
             caption: 'Uppsala’s conditions for hire e-scooters, adopted 22 April 2026',
@@ -88,7 +76,7 @@ const guide: Guide = {
     {
       heading: 'Where to park an e-scooter in Uppsala',
       blocks: [
-        'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Gothenburg still lets scooters stand on the pavement outside its old centre where they block no one (see our [Gothenburg guide](guide:gothenburg)); we found no such exception in Uppsala’s local traffic rules (29 October 2026). The municipality asks you to park in **cycle parking or parking meant for e-scooters**, never in anyone’s way or where the scooter puts others in danger. The companies must also keep scooters off the tactile paths that guide blind people (ledstråk).',
+        'Since 1 September 2022 Swedish law has banned leaving an e-scooter on a footway or cycle lane except in a marked parking place or a cycle rack, though a town may allow exceptions. Gothenburg still lets scooters stand on the pavement outside its old centre where they block no one (see our [Gothenburg guide](guide:gothenburg)). Uppsala kommun asks you to park in **cycle parking or parking meant for e-scooters**, never in anyone’s way or where the scooter puts others in danger. The companies must also keep scooters off the tactile paths that guide blind people (ledstråk).',
         'The companies must make you photograph the parked scooter at the end of every ride. Ryde’s Swedish terms say that if you send no photo and the municipality charges Ryde for that scooter, you pay the cost.',
         'The municipality regularly moves scooters parked dangerously or in the way, though not from private land. To report a badly parked scooter, tell the company that owns it first, the municipality asks: Lime on 08-580 975 13, Ryde on 0775-888 012 and Voi on 020-088 35 14.',
         {
@@ -103,10 +91,10 @@ const guide: Guide = {
         'Since 22 September 2026 three streets have been cycle streets (cykelgata), under local traffic rules decided on 10 June 2026: Svartbäcksgatan between S:t Olofsgatan and Eddagatan, Östra Ågatan between Hamnesplanaden and Bäverns gränd, and part of Västra Ågatan. There no vehicle may go faster than 30 km/h, drivers must adapt to cyclists, and you may park only in marked places.',
         {
           table: {
-            caption: 'Rules on land owned by others, as each owner states them, October 2026',
+            caption: 'What the owners of these places say, October 2026',
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
-              ['Uppsala Central', 'Jernhusen, the station’s owner', 'No e-scooter rule on its station page; the station is open from 05:00 to 00:40'],
+              ['Uppsala Central', 'Jernhusen, the station’s owner', 'The station is open from 05:00 to 00:40'],
               ['Uppsala University', 'The university', 'Since 1 October 2024 e-bike and e-scooter batteries may not be brought into, stored or charged in its buildings, except its cycle garages; leaving your scooter in a campus cycle rack is fine'],
             ],
           },
@@ -130,7 +118,7 @@ const guide: Guide = {
     {
       heading: 'Stockholm and the map',
       blocks: [
-        'Heading south? Since 1 July 2026 only Voi and Bolt have permits to rent scooters in Stockholm: see the [map of Stockholm](map:se:Stockholm). The map shows standing e-scooters only, not bikes. To see what is standing near you now, open the [Uppsala map](map:se:Uppsala).',
+        'Heading south? Since 1 July 2026 only Voi and Bolt have permits to rent scooters in Stockholm: see the [map of Stockholm](map:se:Stockholm). To see what is standing near you now, open the [Uppsala map](map:se:Uppsala).',
       ],
     },
     {
@@ -150,7 +138,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Uppsala?',
-      answer: 'The municipality lists Voi, Lime and Ryde (October 2026). The ScootRadar map shows Voi and Lime; Ryde’s scooters are only in its app.',
+      answer: 'The municipality lists Voi, Lime and Ryde (October 2026). Find Voi’s and Lime’s on the [Uppsala map](map:se:Uppsala) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Is there a speed limit for e-scooters at night in Uppsala?',
@@ -169,8 +157,8 @@ const guide: Guide = {
       answer: 'Only your own, folded, no longer than 120 cm and no heavier than 15 kg, on UL’s city and regional buses; a hire scooter stays on the street.',
     },
     {
-      question: 'Are e-scooters banned at night or in winter in Uppsala?',
-      answer: 'No. We found no night ban or winter pause (October 2026). The centre has a night speed limit and a reaction test, and scooters are switched off during orange or red SMHI weather warnings.',
+      question: 'Are hire scooters switched off in bad weather in Uppsala?',
+      answer: 'Yes, during an orange or red SMHI weather warning for ice, snow or heavy rain: the municipality’s conditions make the companies switch their scooters off.',
     },
   ],
   sources: [

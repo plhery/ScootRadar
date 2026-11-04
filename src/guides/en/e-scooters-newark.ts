@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Newark, NJ 2026: Bird, Veo, prices, rules',
   description: 'E-scooters in Newark, NJ: where Bird and Veo run, what a ride costs, the sidewalk, speed and parking rules, and why you can’t take one into Penn Station.',
   headline: 'E-scooters in Newark, New Jersey: Bird and Veo, what a ride costs, and where to ride and park',
-  lede: 'E-scooters in Newark are rented from Bird and Veo, the two companies holding the City’s NewarkGo permits since 2024. Veo charges $1 to unlock plus $0.45 a minute plus tax (its published rate, 25 October 2026); Bird publishes no price, so check its app. City rules keep shared scooters off most sidewalks, and Bird requires riders to be 18.',
+  lede: 'E-scooters in Newark are rented from Bird and Veo, the two companies holding the City’s NewarkGo permits since 2024. Veo charges $1 to unlock plus $0.45 a minute plus tax (its published rate, 25 October 2026), and Bird’s app shows the price before you unlock. City rules keep shared scooters off most sidewalks, and Bird requires riders to be 18.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'us:nj:Newark',
@@ -24,15 +24,15 @@ const guide: Guide = {
             '**Adaptive vehicles.** The 2023 ordinance encourages the operators to offer, where they can, vehicles adapted for people with disabilities, such as recumbent bikes, tricycles and hand cycles.',
           ],
         },
-        'On the afternoon of Sunday 25 October 2026 the [Newark map](map:us:nj:Newark) showed about 900 scooters, roughly 590 Bird and 320 Veo: what stood there at that moment, not the fleets. That evening, all but a handful stood inside the city: about 360 in the Central Ward, 210 in the East Ward, 110 each in the North and West Wards and 100 in the South Ward, by the Census Bureau’s 2020 ward lines.',
-        '**Veo also rents e-bikes.** That evening Veo’s open data listed about 820 vehicles in Newark that it classes as electric bikes, against about 320 stand-up scooters. ScootRadar shows standing e-scooters only, so Veo’s e-bikes aren’t on the map: open the Veo app to find one.',
+        'On the afternoon of Sunday 25 October 2026 the [Newark map](map:us:nj:Newark) showed about 900 scooters, roughly 590 Bird and 320 Veo: what stood there at that moment, not the fleets. That evening about 360 stood in the Central Ward, 210 in the East Ward, 110 each in the North and West Wards and 100 in the South Ward.',
+        '**Veo also rents e-bikes.** That evening Veo’s open data listed about 820 vehicles in Newark that it classes as electric bikes, against about 320 stand-up scooters: open the Veo app to find one.',
         '**First ride?** Get the Bird or Veo app and scan the QR code on the handlebars; you need no driving licence. See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Bird or Veo scooter cost in Newark?',
       blocks: [
-        'The City doesn’t set fares, but its 2023 ordinance makes each operator tell the City before raising prices and give riders 30 days’ notice. Veo publishes its Newark rates in its open data; Bird publishes none there, so its app shows the price before you unlock.',
+        'The City’s 2023 ordinance makes each operator tell the City before raising prices and give riders 30 days’ notice. Veo publishes its Newark rates in its open data; Bird’s app shows the price before you unlock.',
         {
           table: {
             caption: 'Veo’s published prices in Newark, 25 October 2026 (plus tax)',
@@ -76,7 +76,7 @@ const guide: Guide = {
       blocks: [
         'NewarkGo’s permits cover only the City’s own right-of-way: the streets, sidewalks, paths and other public ways “within the City of Newark’s control”, as its 2023 ordinance puts it.',
         '**No-ride ground in Bird’s data.** Bird’s zone data marks Port Newark and the industrial streets around Doremus Avenue as areas a scooter won’t even ride through. Ivy Hill Park and the terminals of Newark Liberty International Airport lie outside its service area.',
-        'Veo publishes no zone data, so check the map in its app before you set off.',
+        'Veo’s zones are in its app: check its map before you set off.',
       ],
     },
     {
@@ -96,7 +96,7 @@ const guide: Guide = {
     {
       heading: 'Parks, NJIT and Newark Penn Station',
       blocks: [
-        '**Branch Brook Park**, Essex County’s 360 acres in the North Ward, was the first county park opened to the public in the United States and is known for its cherry blossoms. Bird’s zone data lets you ride through most of it but not end a ride there. **Weequahic Park**, 311 acres with an 80-acre lake in the South Ward, has no Bird zone. Essex County Parks’ pages give no scooter rule for either: follow the signs.',
+        '**Branch Brook Park**, Essex County’s 360 acres in the North Ward, was the first county park opened to the public in the United States and is known for its cherry blossoms. Bird’s zone data lets you ride through most of it but not end a ride there. Follow the park’s signs.',
         'Bird’s data also bars ending a ride in Independence Park, Jesse Allen Park, Hayes Park West and Founders Park, across much of the NJIT campus, and in a small area at Newark Penn Station.',
         { note: '**Don’t take a shared scooter into a station or onto a train.** NJ Transit bars Bird and other shared or rented vehicles from all its trains, buses, light rail and property, and PATH’s rules ban riding a scooter anywhere in its system. End the ride outside, clear of entrances and bus stops.' },
         {
@@ -105,7 +105,7 @@ const guide: Guide = {
             '**PATH**, to Jersey City and Manhattan: the Port Authority counts the lithium-ion batteries of e-scooters among the hazardous materials barred from the system, so leave your own scooter at home too.',
           ],
         },
-        'The [Newark map](map:us:nj:Newark) shows the nearest Bird or Veo scooter to the station and the walk to it. The map also shows Veo in [New Brunswick](map:us:nj:New Brunswick), and Bird, Lime and Veo in New York City’s [Bronx](map:us:ny:Bronx): see [e-scooters in New York City](guide:new-york).',
+        'To find the Bird or Veo scooter nearest the station and the walk to it, open the [Newark map](map:us:nj:Newark). The map also shows Veo in [New Brunswick](map:us:nj:New Brunswick), and Bird, Lime and Veo in New York City’s [Bronx](map:us:ny:Bronx): see [e-scooters in New York City](guide:new-york).',
       ],
     },
     {
@@ -131,7 +131,7 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Veo scooter in Newark?',
-      answer: '$1 to unlock plus $0.45 a minute plus tax, Veo’s published rate on 25 October 2026, so a 10-minute ride costs about $5.50 before tax. Veo’s e-bikes cost $0.50 a minute. Bird publishes no Newark price, so check its app before you unlock.',
+      answer: '$1 to unlock plus $0.45 a minute plus tax, Veo’s published rate on 25 October 2026, so a 10-minute ride costs about $5.50 before tax. Veo’s e-bikes cost $0.50 a minute. Bird’s app shows the price before you unlock.',
     },
     {
       question: 'How old do you have to be to ride a Bird scooter in Newark?',
@@ -140,10 +140,6 @@ const guide: Guide = {
     {
       question: 'Can I take a Bird or Veo scooter on NJ Transit or PATH?',
       answer: 'No. NJ Transit bars shared vehicles such as Bird from all its vehicles and property, and PATH bans riding a scooter in its system. End your ride outside the station, clear of entrances and bus stops.',
-    },
-    {
-      question: 'Is there a curfew for e-scooters in Newark?',
-      answer: 'The City’s 2023 ordinance sets no curfew. Check the Bird or Veo app for any hours of its own.',
     },
     {
       question: 'Can you ride a shared scooter from Newark to the airport or Jersey City?',
@@ -167,8 +163,6 @@ const guide: Guide = {
     { title: 'PATH: rules and regulations, effective 20 December 2015 (PDF)', url: 'https://www.panynj.gov/content/dam/path/documents/path-rules-regulations.pdf' },
     { title: 'Port Authority: PATH reminds riders of its rules on wheeled vehicles, 17 May 2019', url: 'https://www.panynj.gov/port-authority/en/press-room/press-release-archives/2019_press_releases/travel_advisory_-ase-scootersrollintohobokenpathremindsridersofi.html' },
     { title: 'Essex County Parks: Branch Brook Park', url: 'https://essexcountyparks.org/parks/branch-brook-park' },
-    { title: 'Essex County Parks: Weequahic Park', url: 'https://essexcountyparks.org/parks/weequahic-park' },
-    { title: 'US Census Bureau: TIGERweb, 2020 voting districts', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/15' },
     { title: 'ABC7: Newark launches NewarkGo pilot, 13 July 2021', url: 'https://abc7ny.com/post/newark-newarkgo-bird-rides-veoride/10884768/' },
     { title: 'Patch: e-scooters and bikeshare are here to stay in Newark, 22 May 2023', url: 'https://patch.com/new-jersey/newarknj/newark-plans-make-shared-e-scooter-bike-program-permanent' },
     { title: 'Roads & Bridges: City of Newark launches shared dockless bike, e-scooter pilot program, 15 July 2021', url: 'https://www.roadsbridges.com/public-transportation/news/10654184/city-of-newark-nj-launches-shared-dockless-bike-e-scooter-pilot-program' },

@@ -17,9 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Reutlingen?',
       blocks: [
         'Leih-Scooter gibt es in Reutlingen laut Stadt seit Mitte Dezember 2020. Heute vermieten hier **Voi** und **Bolt**, beide mit offenem Datenfeed im Landesportal MobiData BW. Voi kam laut eigener Mitteilung am 21. März 2025 dazu. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        '[Auf der ScootRadar-Karte](map:de:Reutlingen) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 340 freie Scooter in Reutlingen: rund 180 von Voi und rund 165 von Bolt. Das ist eine Momentaufnahme, nicht die Grösse der Flotten. Die Selbstverpflichtung der Anbieter nennt «zunächst höchstens 150» Scooter je Anbieter, mehr nur «in beiderseitigem Einvernehmen»; im Januar 2026 nannte die Verwaltung eine «Obergrenze von 150 Rollern je Verleihfirma». Eine Anhebung hat die Stadt nicht veröffentlicht.',
-        'Im Januar 2026 schrieb die Verwaltung dem Gemeinderat: «Aktuell gibt es in Reutlingen fünf Anbieter mit insgesamt bis zu 750 E-Scootern»; welche, sagt sie nicht. **Dott** führt Reutlingen und Pfullingen in seiner Standortliste, hat hier aber keinen offenen Datenfeed. Unsere Karte zeigt seine Scooter seit dem 24. Oktober 2026: an diesem Samstag um 13:26 Uhr rund 140. Den Preis zeigt nur die Dott-App.',
-        '**Zeus** hat einen Datenfeed für Reutlingen, doch keiner der 17 Scooter darin war am 24. Oktober 2026 mietbar; die letzte Meldung stammt vom Juni 2025. Limes Feed bei MobiData BW zeigte am selben Tag kein Fahrzeug in der Stadt.',
+        '[Auf der ScootRadar-Karte](map:de:Reutlingen) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 340 freie Scooter in Reutlingen: rund 180 von Voi und rund 165 von Bolt. Das ist eine Momentaufnahme, nicht die Grösse der Flotten. Die Selbstverpflichtung der Anbieter nennt «zunächst höchstens 150» Scooter je Anbieter, mehr nur «in beiderseitigem Einvernehmen»; im Januar 2026 nannte die Verwaltung eine «Obergrenze von 150 Rollern je Verleihfirma».',
+        'Im Januar 2026 schrieb die Verwaltung dem Gemeinderat: «Aktuell gibt es in Reutlingen fünf Anbieter mit insgesamt bis zu 750 E-Scootern». **Dott** führt Reutlingen und Pfullingen in seiner Standortliste. Die Karte zeigt seine Scooter seit dem 24. Oktober 2026: an diesem Samstag um 13:26 Uhr rund 140. Den Preis zeigt die Dott-App.',
       ],
     },
     {
@@ -35,7 +34,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Die Seite der Stadt nennt noch einen Euro Startgebühr, die Feeds nennen keine. Voi warb zum Start im März 2025 mit «Tarifen ab 17 Cent pro Minute» und Pässen ab 4,99 €. Pässe und den verbindlichen Preis zeigt die App.',
+        'Die Seite der Stadt nennt noch einen Euro Startgebühr, die Feeds 0,00 €. Voi warb zum Start im März 2025 mit «Tarifen ab 17 Cent pro Minute» und Pässen ab 4,99 €. Pässe und den verbindlichen Preis zeigt die App.',
         'In [Tübingen](map:de:Tübingen) nannten die Feeds von Voi und Bolt am 23. und 24. Oktober 2026 denselben Tarif, in [Stuttgart](map:de:Stuttgart) Vois Feed am 23. Oktober dagegen 0,49 € plus 0,24 € pro Minute.',
       ],
     },
@@ -45,9 +44,9 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und in Fahrradstrassen; nur wo es keinen Radweg gibt, auf der Fahrbahn. Gehwege sind tabu, ausser das Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es, ab 1. März 2027 auch «Radverkehr frei»; dann fährst du im Schritttempo. Ob du Einbahnstrassen, die «Radverkehr frei» für Radfahrende in Gegenrichtung öffnet, schon heute mit dem E-Scooter gegen die Einbahnrichtung fahren darfst, regelt der Bund widersprüchlich: Die Strassenverkehrs-Ordnung erlaubt es, die E-Scooter-Verordnung verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es eindeutig erlaubt.',
         '**Fussgängerzone:** Fahrräder dürfen laut Stadt von 19 bis 10 Uhr im Schritttempo durch die Fussgängerzone der Altstadt; das Zusatzschild, das die Stadt dazu zeigt, gilt nur für Fahrräder. Die Selbstverpflichtung der Anbieter erlaubt E-Scootern in Wilhelmstrasse, Katharinenstrasse, Marktplatz, Nikolaiplatz, Albtorplatz und Weibermarkt dieselben Zeiten, «analog» zu Fahrrädern. Nach Bundesrecht gilt die Freigabe für Fahrräder heute aber nicht für E-Scooter, wie auch das Faltblatt der Stadt schreibt: Ohne «Elektrokleinstfahrzeuge frei» schiebst du. Ab 1. März 2027 gilt sie auch für dich, im Schritttempo, sofern die Stadt E-Scooter nicht eigens ausschliesst.',
         '**Parks:** In Grünanlagen fährst du laut Stadt nur auf beschilderten Radwegen.',
-        '**Geschäftsgebiet:** So lesen wir die Zonen in den Feeds vom 23. und 24. Oktober 2026: Voi und Bolt decken die Kernstadt, Betzingen, Orschel-Hagen, Sondelfingen und das Industriegebiet West ab, Bolt zusätzlich Rommelsbach. Die meisten Bezirksgemeinden wie Ohmenhausen, Gönningen, Altenburg und Mittelstadt liegen ausserhalb, ebenso Pfullingen und Eningen. Ausserhalb seines Gebiets lässt Voi laut Feed nicht einmal das Weiterfahren zu. Die genauen Grenzen zeigt die App.',
+        '**Geschäftsgebiet:** Laut ihren Feeds vom 23. und 24. Oktober 2026 decken Voi und Bolt die Kernstadt, Betzingen, Orschel-Hagen, Sondelfingen und das Industriegebiet West ab, Bolt zusätzlich Rommelsbach. Die meisten Bezirksgemeinden wie Ohmenhausen, Gönningen, Altenburg und Mittelstadt liegen ausserhalb, ebenso Pfullingen und Eningen. Ausserhalb seines Gebiets lässt Voi laut Feed nicht einmal das Weiterfahren zu. Die genauen Grenzen zeigt die App.',
         '**Nach Tübingen:** Zwischen den Gebieten liegen Kilometer; mit Voi kommst du laut Feed nicht in einer Fahrt hinüber. Mehr im [Ratgeber für Tübingen](guide:tubingen).',
-        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h, Bolts Feed enthält keine Langsamzonen. Ein Nachtfahrverbot oder eine Winterpause nennen weder die Stadt noch die Anbieter; beide Feeds geben «24/7» an.',
+        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h; als Betriebszeit geben beide Feeds «24/7» an.',
       ],
     },
     {
@@ -56,14 +55,14 @@ const guide: Guide = {
         'Die Grundregeln stehen in der Selbstverpflichtung, die alle Anbieter der Stadt gegeben haben: Keine Fahrt endet in Fussgängerzonen und in Grün- und Parkanlagen. Frei bleiben Rettungswege, Einfahrten, Bahnsteige, Bushaltestellen, Brücken und Schulgelände. Auf dem Gehweg bleiben mindestens 2 m frei.',
         {
           table: {
-            caption: 'Fahrt beenden in Reutlingen: unsere Auswertung der Datenfeeds von Voi (23. Oktober) und Bolt (24. Oktober 2026)',
+            caption: 'Fahrt beenden in Reutlingen: Datenfeeds von Voi (23. Oktober) und Bolt (24. Oktober 2026)',
             head: ['Ort', 'Abstellen', 'Wer es regelt'],
             rows: [
               ['Altstadt: Wilhelmstrasse, Marktplatz, Katharinenstrasse, Nikolaiplatz, Weibermarkt', 'Verboten bei Voi und Bolt, nur einzelne Seitengassen sind frei', 'Stadt, umgesetzt von den Anbietern'],
               ['Pomologie, Volkspark, Stadtgarten', 'Im Kern verboten bei beiden; Voi sperrt mehr Fläche als Bolt', 'Stadt, Anbieter'],
               ['Echaz in der Innenstadt', 'Bolt sperrt die Ufer weitgehend, Voi in Abschnitten; Brücken immer frei lassen', 'Anbieter, Stadt'],
               ['Hauptbahnhof', 'Am Bahnhofsvorplatz erlaubt; den Listplatz mit den Bushaltestellen sperrt Bolt ganz, Voi zum Teil', 'Anbieter, Stadt'],
-              ['Hochschule Reutlingen, Alteburgstrasse', 'Mit Voi erlaubt; mit Bolt nicht, der Campus ist Sperrzone oder ausserhalb', 'Anbieter; eine Campusregel der Hochschule fanden wir nicht'],
+              ['Hochschule Reutlingen, Alteburgstrasse', 'Mit Voi erlaubt; mit Bolt nicht, der Campus ist Sperrzone oder ausserhalb', 'Anbieter'],
             ],
           },
         },
@@ -85,7 +84,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -101,18 +100,18 @@ const guide: Guide = {
         'Reutlingen gehört zum Verkehrsverbund naldo. Laut dessen Beförderungsbedingungen (Stand 1. April 2026) fährt ein eigener E-Scooter als Handgepäck kostenlos mit, wenn er zusammengeklappt ist, weniger als 15 kg wiegt und kürzer als 1,15 m ist. Ein schwererer, längerer oder nicht geklappter Scooter wird wie ein Fahrrad behandelt. Ob Fahrräder in den Bus dürfen, entscheidet das Verkehrsunternehmen, im Einzelfall das Fahrpersonal.',
         '**Stadtbus (RSV):** Laut Reutlinger Stadtverkehr fahren Fahrräder auf allen RSV-Linien kostenlos mit, höchstens zwei je Stellfläche, im Kleinbus eines. Montags bis freitags von 7 bis 10 Uhr nehmen die Stadtbusse und der Schnellbus eXpresso keine Fahrräder mit, und Kinderwagen, Rollstühle und Rollatoren haben immer Vorrang. Für einen grossen Scooter gilt dasselbe.',
         '**Zug:** Mit naldo-Fahrschein fährt ein Fahrrad und damit ein grosser Scooter im Zug kostenlos mit; nur montags bis freitags von 6 bis 9 Uhr brauchst du dafür einen Kinderfahrschein.',
-        '**Leih-Scooter** nennen naldo und RSV nicht eigens; laut Verbraucherzentrale werden sie im Nahverkehr nicht mitgenommen. Beende die Fahrt am Bahnhofsvorplatz und miete am Ziel neu. Zur Hochschule fahren vom Listplatz vor dem Bahnhof die Buslinien 4 und 8.',
+        '**Leih-Scooter** werden laut Verbraucherzentrale im Nahverkehr nicht mitgenommen. Beende die Fahrt am Bahnhofsvorplatz und miete am Ziel neu. Zur Hochschule fahren vom Listplatz vor dem Bahnhof die Buslinien 4 und 8.',
       ],
     },
     {
       heading: 'Wie Reutlingen E-Scooter regelt: Selbstverpflichtung statt Sondernutzung',
       blocks: [
-        'Eine Sondernutzungserlaubnis oder Gebühr verlangt Reutlingen bisher nicht; eine Sondernutzung behält sich die Stadt nur vor. Stattdessen geben die Anbieter ihr seit Dezember 2020 eine freiwillige Selbstverpflichtung; die Fassung vom November 2025 stimmt mit der von 2020 überein. Darin sagen sie zu, bei der täglichen Verteilung höchstens fünf Scooter an einen Ort zu stellen, mit mindestens 50 m Abstand zum nächsten.',
-        'Im Januar 2026 beantragten alle Bezirksgemeinden einjährige Verträge, Abstellen nur auf ausgewiesenen Flächen, eine Jahresgebühr je Scooter und ein Angebot im ganzen Stadtgebiet. Die Verwaltung antwortete, der Antrag werde «ausserhalb des Haushalts weiterverfolgt»; sie werde «neue Rahmenbedingungen erarbeiten und anschliessend auf die entsprechenden Vertragspartner zugehen». Am 26. März 2026 stellte der Gemeinderat fest, dass der Antrag so weiterverfolgt wird. Erste Pläne für Abstellflächen nannte die Verwaltung im Januar; einen Beschluss über Verträge, Flächen oder Gebühren fanden wir bis 24. Oktober 2026 nicht.',
+        'Statt einer Sondernutzungserlaubnis geben die Anbieter der Stadt seit Dezember 2020 eine freiwillige Selbstverpflichtung; eine Sondernutzung behält sich die Stadt vor. Die Fassung vom November 2025 stimmt mit der von 2020 überein. Darin sagen sie zu, bei der täglichen Verteilung höchstens fünf Scooter an einen Ort zu stellen, mit mindestens 50 m Abstand zum nächsten.',
+        'Im Januar 2026 beantragten alle Bezirksgemeinden einjährige Verträge, Abstellen nur auf ausgewiesenen Flächen, eine Jahresgebühr je Scooter und ein Angebot im ganzen Stadtgebiet. Die Verwaltung antwortete, der Antrag werde «ausserhalb des Haushalts weiterverfolgt»; sie werde «neue Rahmenbedingungen erarbeiten und anschliessend auf die entsprechenden Vertragspartner zugehen». Am 26. März 2026 stellte der Gemeinderat fest, dass der Antrag so weiterverfolgt wird. Erste Pläne für Abstellflächen nannte die Verwaltung im Januar.',
         {
           list: [
             '**Bund:** Verkehrsregeln und Bussgelder. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen.',
-            '**Land Baden-Württemberg:** das Strassengesetz für Sondernutzungen; eigene Landesregeln für Leih-Scooter fanden wir nicht.',
+            '**Land Baden-Württemberg:** das Strassengesetz für Sondernutzungen.',
             '**Stadt Reutlingen:** Selbstverpflichtung mit Höchstzahl, Sperrzonen in Fussgängerzonen und Grünanlagen und Regeln zum Abstellen.',
             '**Voi und Bolt:** Preise, Geschäftsgebiet und Sperrzonen in der App.',
             '**naldo und RSV:** die Mitnahme in Bus und Bahn.',
@@ -140,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Reutlingen?',
-      answer: 'Voi, Bolt und Dott, alle drei auf der Karte. Die Stadt sprach im Januar 2026 von fünf Anbietern, ohne sie zu nennen.',
+      answer: 'Voi, Bolt und Dott. Die Stadt sprach im Januar 2026 von fünf Anbietern.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Wilhelmstrasse fahren?',
@@ -156,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Reutlingen ein Nachtfahrverbot für E-Scooter?',
-      answer: 'Nein. Weder die Stadt noch Voi oder Bolt nennen ein nächtliches Fahrverbot oder eine Winterpause; beide Feeds geben «24/7» an (Stand 24. Oktober 2026).',
+      answer: 'Bei Voi und Bolt nicht: Beide Datenfeeds geben als Betriebszeit «24/7» an (Stand 24. Oktober 2026).',
     },
   ],
   sources: [
@@ -174,7 +173,6 @@ const guide: Guide = {
     { title: 'MobiData BW: Tarife von Bolt (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_reutlingen_tuebingen/system_pricing_plans' },
     { title: 'MobiData BW: Zonen von Bolt (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_reutlingen_tuebingen/geofencing_zones' },
     { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
-    { title: 'Zeus: Datenfeed für Reutlingen (GBFS)', url: 'https://zeus.city/api/v1/mds/gbfs/reutlingen/gbfs.json' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Voi: Voi startet E-Scooter-Sharing in Reutlingen (18. März 2025)', url: 'https://storage.mfn.se/b7b13d6e-917b-4600-bc2b-4665f96ff08c/e-scooter-anbieter-voi-startet-in-reutlingen.pdf' },
     { title: 'naldo: Anlagen zu den Beförderungsbedingungen (1. April 2026)', url: 'https://www.naldo.de/fileadmin/media/tickets/TB-BB/2026-04-01-Anlagen_Befoerderungsbedingungen.pdf' },

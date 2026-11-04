@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Quali monopattini in sharing ci sono a Torino',
       blocks: [
         'Dal 16 aprile 2024 il Comune autorizza quattro operatori di monopattini, **Bird**, **Dott**, **Lime** e **Voi**, con al massimo 750 mezzi ciascuno (determinazione 1635/2024), e la sua pagina, aggiornata al 10 febbraio 2026, li elenca ancora. Le autorizzazioni sono scadute il 31 ottobre 2025 e sono state prorogate alle stesse condizioni fino all’avvio del nuovo servizio (determinazione 6850/2025).',
-        'Il nuovo servizio della Città metropolitana copre Torino e altri 15 Comuni per 36 mesi: il 7 agosto 2026 ha autorizzato per i monopattini i primi due in graduatoria, EM Transit, cioè Dott, e Voi; Lime e Bird, terzo e quarto, restano fuori. Il suo disciplinare prevede 3.000 monopattini a Torino e 1.580 negli altri Comuni, metà per operatore: 2.290 a testa. Ogni operatore deve partire entro 90 giorni, con date concordate Comune per Comune: per Torino una data non l’abbiamo trovata.',
-        'Lunedì 26 ottobre 2026 alle 9:37 la [mappa di Torino](map:it:Torino) mostrava circa 1.370 monopattini Dott nel Comune. Altri 690 circa erano nei Comuni della cintura, che la mappa conta a parte: [Collegno](map:it:Collegno) 130, [Moncalieri](map:it:Moncalieri) 130, Settimo Torinese e Nichelino 120 ciascuno, Rivoli 70, Grugliasco 60 e Borgaro Torinese 50. È una fotografia di quel momento, non la flotta. Da domenica 25 ottobre la mappa mostra anche i Lime, letti dalla mappa della sua app: quel giorno verso le 16:20 erano circa 1.400, sulla zona di Lime. Voi e Bird non pubblicano dati che possiamo leggere: li trovi solo nelle loro app. Le bici di Dott sulla mappa non compaiono.',
+        'Il nuovo servizio della Città metropolitana copre Torino e altri 15 Comuni per 36 mesi: il 7 agosto 2026 ha autorizzato per i monopattini i primi due in graduatoria, EM Transit, cioè Dott, e Voi; Lime e Bird, terzo e quarto, restano fuori. Il suo disciplinare prevede 3.000 monopattini a Torino e 1.580 negli altri Comuni, metà per operatore: 2.290 a testa. Ogni operatore deve partire entro 90 giorni, con date concordate Comune per Comune.',
+        'Lunedì 26 ottobre 2026 alle 9:37 la [mappa di Torino](map:it:Torino) mostrava circa 1.370 monopattini Dott nel Comune. Altri 690 circa erano nei Comuni della cintura: [Collegno](map:it:Collegno) 130, [Moncalieri](map:it:Moncalieri) 130, Settimo Torinese e Nichelino 120 ciascuno, Rivoli 70, Grugliasco 60 e Borgaro Torinese 50. È una fotografia di quel momento, non la flotta. Da domenica 25 ottobre la mappa mostra anche i Lime: quel giorno verso le 16:20 erano circa 1.400, sulla zona di Lime. Voi e Bird li trovi nelle loro app.',
         {
           table: {
             caption: 'Gli operatori di monopattini a Torino, a ottobre 2026',
@@ -52,10 +52,10 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattino a Torino: quanto costa',
       blocks: [
-        'Paghi uno sblocco più una tariffa al minuto. Dott non pubblica le tariffe di Torino: il prezzo lo vedi nell’app prima di sbloccarlo. Quelli di Voi, Bird e Lime li trovi nelle loro app.',
-        'Il centro assistenza di Dott (25 agosto 2026) dà solo una forbice per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, più lo sblocco. Non è il prezzo di Torino.',
+        'Paghi uno sblocco più una tariffa al minuto, e ogni operatore ti mostra il prezzo nella sua app prima di sbloccare il mezzo.',
+        'Il centro assistenza di Dott (25 agosto 2026) dà una forbice valida per tutte le sue città, in Italia e all’estero: da circa 0,17 a 0,55 euro al minuto, più lo sblocco.',
         'I pass di Dott cambiano da città a città, sono nell’app e valgono in tutte le sue città italiane, da Torino a [Milano](guide:milan).',
-        'Per il lancio nei Comuni della cintura, a ottobre 2026 Dott offriva ai nuovi utenti una corsa gratis da 30 minuti con il codice CIAODOTT (TorinoToday, 22 ottobre 2026). Il disciplinare del nuovo servizio chiede agli operatori un buono di almeno 3 euro al mese per chi ha l’abbonamento annuale al trasporto pubblico: come e da quando, non l’abbiamo ancora trovato.',
+        'Per il lancio nei Comuni della cintura, a ottobre 2026 Dott offriva ai nuovi utenti una corsa gratis da 30 minuti con il codice CIAODOTT (TorinoToday, 22 ottobre 2026). Il disciplinare del nuovo servizio chiede agli operatori un buono di almeno 3 euro al mese per chi ha l’abbonamento annuale al trasporto pubblico.',
       ],
     },
     {
@@ -63,7 +63,7 @@ const guide: Guide = {
       blocks: [
         'Con l’ordinanza 1953 del 3 aprile 2025 il Comune ha creato 214 aree «da utilizzarsi in modo esclusivo alla sosta dei monopattini elettrici», fuori dal traffico e segnate a terra con il simbolo del monopattino; l’ordinanza 7144 del 26 novembre 2025 ne ha aggiunte altre. Sul marciapiede, fuori da queste aree, la sosta è vietata e la polizia può rimuovere il mezzo. Puoi usare anche gli stalli per bici, motorini e moto.',
         'Le aree sono sulla [mappa delle aree di sosta](https://www.muoversiatorino.it/it/aree-sosta-monopattini/) di Muoversi a Torino. Le condizioni di Dott per Torino aggiungono che in alcune zone si parcheggia solo nei punti indicati nell’app.',
-        'In centro il disciplinare del Comune del 2022, che vale anche con la proroga, vieta di iniziare o chiudere la corsa in piazza San Giovanni e nelle piazze auliche: San Carlo, Castello, Vittorio Veneto, Carlo Alberto, Carignano e Palazzo di Città. Lì si sosta solo nelle aree delimitate, e per ogni mezzo trovato fuori l’operatore rischia 50 euro. Il disciplinare del nuovo servizio tiene il divieto «nelle piazze auliche delle città», salvo nelle aree di sosta apposite, ma non le elenca.',
+        'In centro il disciplinare del Comune del 2022, che vale anche con la proroga, vieta di iniziare o chiudere la corsa in piazza San Giovanni e nelle piazze auliche: San Carlo, Castello, Vittorio Veneto, Carlo Alberto, Carignano e Palazzo di Città. Lì si sosta solo nelle aree delimitate, e per ogni mezzo trovato fuori l’operatore rischia 50 euro. Il disciplinare del nuovo servizio tiene il divieto «nelle piazze auliche delle città», salvo nelle aree di sosta apposite.',
         'Se lo lasci nel posto sbagliato, paghi:',
         {
           list: [
@@ -78,17 +78,16 @@ const guide: Guide = {
       heading: 'Dove si guida: centro, Valentino e Murazzi',
       blocks: [
         'Il monopattino va sulle strade urbane con limite fino a 50 km/h e sulle piste ciclabili, a 20 km/h al massimo e a 6 km/h nelle aree pedonali; mai sul marciapiede. Il disciplinare del Comune del 2022 chiede agli operatori di rallentare da soli i mezzi a 6 km/h nelle aree pedonali.',
-        'Sotto i portici di via Roma la polizia locale controlla i monopattini: lì il transito «è vietato e comporta sanzioni da 50 a 250 euro», riportava TorinoCronaca il 6 agosto 2026. Un’ordinanza sui portici non l’abbiamo trovata.',
-        'Su OpenStreetMap sono segnate come pedonali, almeno in parte, via Garibaldi, via Roma, via Lagrange, via Carlo Alberto, via Mercanti e i Murazzi del Po. Non è un elenco del Comune: fanno fede i cartelli.',
-        '**Parchi.** Il regolamento del verde del Comune, in vigore dal 21 luglio 2026, vieta in tutti gli spazi verdi «l’accesso, la circolazione e la sosta di veicoli a motore» e ammette «biciclette e velocipedi in genere», a velocità moderata, su viali, strade e percorsi pedonali, dando la precedenza ai pedoni. I monopattini non li nomina. Quello del Valentino classifica il parco come «zona pedonale», tiene le bici sui viali e sulle piste ciclabili, fuori dai prati, e chiede agli «altri veicoli atipici» la stessa prudenza e la precedenza ai pedoni. Per i Murazzi non abbiamo trovato regole: segui i cartelli.',
-        'Non abbiamo trovato divieti notturni né stop stagionali per lo sharing a Torino.',
+        'Sotto i portici di via Roma la polizia locale controlla i monopattini: lì il transito «è vietato e comporta sanzioni da 50 a 250 euro», riportava TorinoCronaca il 6 agosto 2026.',
+        'Su OpenStreetMap sono segnate come pedonali, almeno in parte, via Garibaldi, via Roma, via Lagrange, via Carlo Alberto, via Mercanti e i Murazzi del Po: fanno fede i cartelli.',
+        '**Parchi.** Il regolamento del verde del Comune, in vigore dal 21 luglio 2026, vieta in tutti gli spazi verdi «l’accesso, la circolazione e la sosta di veicoli a motore» e ammette «biciclette e velocipedi in genere», a velocità moderata, su viali, strade e percorsi pedonali, dando la precedenza ai pedoni. Quello del Valentino classifica il parco come «zona pedonale», tiene le bici sui viali e sulle piste ciclabili, fuori dai prati, e chiede agli «altri veicoli atipici» la stessa prudenza e la precedenza ai pedoni. Ai Murazzi, come nei parchi, segui i cartelli.',
       ],
     },
     {
       heading: 'Monopattino su bus, tram, metro e treno a Torino',
       blocks: [
         'Su **bus e tram GTT** il tuo monopattino sale solo «ripiegato su se stesso», come bagaglio: il regolamento, letto il 24 ottobre 2026, ammette gratis fino a due bagagli a persona, al massimo 80×50×50 cm.',
-        'Il regolamento della **metropolitana** ammette come bagaglio solo «le biciclette pieghevoli» e non nomina i monopattini: prima di portare il tuo in stazione, chiedi a GTT.',
+        'Il regolamento della **metropolitana** ammette come bagaglio solo «le biciclette pieghevoli»: prima di portare il tuo monopattino in stazione, chiedi a GTT.',
         'Sui **treni regionali Trenitalia** il monopattino viaggia gratis fino a 120×80×45 cm: spento e chiuso prima di salire, va sotto il sedile o tra i posti vis-à-vis.',
         'Un monopattino in sharing non si piega e, finché non chiudi la corsa, paghi: chiudila prima della fermata o della stazione.',
       ],
@@ -144,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'Quanto costa il monopattino Dott a Torino?',
-      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire: Dott non pubblica il prezzo di Torino. La sua forbice, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città, in Italia e all’estero.',
+      answer: 'Uno sblocco più una tariffa al minuto, che vedi nell’app prima di partire. La forbice di Dott, da circa 0,17 a 0,55 euro al minuto, vale per tutte le sue città, in Italia e all’estero.',
     },
     {
       question: 'Dove si lascia il monopattino in sharing a Torino?',
@@ -152,11 +151,11 @@ const guide: Guide = {
     },
     {
       question: 'Si può portare il monopattino sul bus o in metro a Torino?',
-      answer: 'Su bus e tram GTT sì, se è tuo e piegato, come bagaglio fino a 80×50×50 cm. Il regolamento della metro nomina solo le bici pieghevoli: chiedi a GTT. Sui treni regionali Trenitalia viaggia gratis, spento e chiuso. Un mezzo in sharing non si piega: chiudi la corsa prima.',
+      answer: 'Su bus e tram GTT sì, se è tuo e piegato, come bagaglio fino a 80×50×50 cm. Il regolamento della metro ammette come bagaglio solo le bici pieghevoli: chiedi a GTT. Sui treni regionali Trenitalia viaggia gratis, spento e chiuso. Un mezzo in sharing non si piega: chiudi la corsa prima.',
     },
     {
       question: 'Si può andare in monopattino al parco del Valentino?',
-      answer: 'Il regolamento del verde non nomina i monopattini. Vieta i veicoli a motore e ammette bici e velocipedi sui viali, piano e dando la precedenza ai pedoni; quello del Valentino classifica il parco come zona pedonale e chiede agli altri veicoli la stessa prudenza. Segui i cartelli.',
+      answer: 'Il regolamento del verde vieta i veicoli a motore e ammette bici e velocipedi sui viali, piano e dando la precedenza ai pedoni; quello del Valentino classifica il parco come zona pedonale e chiede agli altri veicoli la stessa prudenza. Segui i cartelli.',
     },
   ],
   sources: [

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in San Diego 2026: Spin, prices, where to ride',
   description: 'E-scooters in San Diego: Spin at UC San Diego and SDSU, what a ride costs, why rentals left the city, the boardwalk ban, sidewalks and parking.',
   headline: 'E-scooters in San Diego: Spin on campus, what a ride costs, and where you can’t ride',
-  lede: 'E-scooters in San Diego are for rent on two campuses only, as far as we could find: Spin runs them at UC San Diego and San Diego State, and the City’s contractors had all pulled out by November 2023. At UC San Diego a ride costs $1 to unlock plus $0.30 a minute with a campus email; others see the price in the app. State law asks for a driving licence and caps scooters at 15 mph, sidewalks are off limits, and the City bans every motorised scooter, rented or owned, from its beach boardwalks.',
+  lede: 'In San Diego, Spin rents e-scooters on two campuses, UC San Diego and San Diego State, and the City’s contractors had all pulled out by November 2023. At UC San Diego a ride costs $1 to unlock plus $0.30 a minute with a campus email; others see the price in the app. State law asks for a driving licence and caps scooters at 15 mph, sidewalks are off limits, and the City bans every motorised scooter, rented or owned, from its beach boardwalks.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'us:ca:San Diego',
@@ -17,14 +17,14 @@ const guide: Guide = {
       heading: 'Where can you rent e-scooters in San Diego?',
       blocks: [
         'Since 27 July 2022 the City’s code has required a scooter company to sign a contract with the City and pay an annual operator fee, a daily fee per scooter and a Climate Equity Fee. That July four companies were allowed to run up to 8,000 devices. On 8 November 2023 NBC 7 reported that Bird, the last of them, was pulling out, at least for a while; the City said its programme was “not concluding”.',
-        'A plan to soften the rules was withdrawn in January 2024, and in April 2026 the City’s Mobility Board was still urging the Council to waive operator fees and ease the geofencing and parking rules. We found no citywide operator, and no new City contract, in October 2026. The campus fleets carry on:',
+        'A plan to soften the rules was withdrawn in January 2024, and in April 2026 the City’s Mobility Board was still urging the Council to waive operator fees and ease the geofencing and parking rules. The campus fleets carry on:',
         {
           list: [
             '**UC San Diego**: about 800 Spin scooters and 24 e-bikes, meant for students, faculty and staff on campus. Take one off campus and bring it back the same day.',
             '**San Diego State**: “Spin @ SDSU”, with its own prices and parking spots.',
           ],
         },
-        'At 4:14 p.m. on Friday 23 October 2026 the [San Diego map](map:us:ca:San Diego) showed about 670 Spin scooters, all on and around the UC San Diego campus: what was on the map at that moment, not the fleet. ScootRadar shows standing scooters from companies with a public data feed, with positions that can be a few minutes old, and can’t book or unlock one. Spin’s SDSU scooters aren’t in its open data: look for them in the app.',
+        'At 4:14 p.m. on Friday 23 October 2026 the [San Diego map](map:us:ca:San Diego) showed about 670 Spin scooters, all on and around the UC San Diego campus: what was on the map at that moment, not the fleet. Look for Spin’s SDSU scooters in the app.',
         '**Which app?** Spin has belonged to Bird since September 2023. UC San Diego says to sign up in the Spin app with your @ucsd.edu address; SDSU points to the “Bird/Spin app”. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
         { note: '**No rental scooters downtown or at the beaches.** On 23 October 2026 Spin’s open data placed every scooter around UC San Diego and marked most of the city as an area you may ride through but not end a ride in. For the Gaslamp, Balboa Park or Pacific Beach, take the trolley, a bus or your own scooter.' },
       ],
@@ -47,7 +47,7 @@ const guide: Guide = {
           },
         },
         'UC San Diego’s rates are for @ucsd.edu accounts, e-bikes included; new students get $5 off with the code TRITON5. Spin Access covers Pell Grant and CalFresh recipients, among others, and lets you unlock without a smartphone. At SDSU, $0.25 comes off a ride when you park correctly and another $0.25 for a helmet selfie, and Admissions gives visitors ride credits.',
-        'Spin publishes no price in its open data or on its website: the app shows yours before you ride.',
+        'The app shows the price before you unlock.',
       ],
     },
     {
@@ -75,7 +75,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The night rule has bound the City’s contractors since 27 July 2022; UC San Diego, SDSU and Spin don’t say whether the campus fleets follow it.',
+        'The night rule has bound the City’s contractors since 27 July 2022.',
       ],
     },
     {
@@ -85,7 +85,7 @@ const guide: Guide = {
           list: [
             '**The beach boardwalks.** Since 29 February 2020 no motorised scooter, e-bike or other motorised device, rented or owned, may ride on Ocean Front Walk from the South Mission Beach Jetty to Law Street in Pacific Beach, on Bayside Walk along west Mission Bay, on the east Mission Bay walkway from De Anza Road to South Shores, or on the La Jolla Shores boardwalk to Kellogg Park. People with disabilities using a mobility device are exempt. The City’s parks code also limits anything on wheels to 8 mph on Mission Bay Park’s paths at Bonita Cove, Ventura Cove, Bahia Point and Sail Bay.',
             '**The Embarcadero and the bayfront.** The Port of San Diego runs the tidelands round the bay. Since December 2023 its code has kept motorised scooters, shared or owned, off its sidewalks, promenades, multi-use paths, nature trails, piers, plazas, parking garages and parks: ride on its roads, parking lots and bike lanes.',
-            '**Slow zones for the City’s contractors.** A company under contract with the City must slow its scooters to 3 mph, and stop rides ending, on the North and South Embarcadero walk, the Martin Luther King Promenade, Little Italy’s Piazza della Famiglia, Ellen Browning Scripps Park’s walkway and the Children’s Pool plaza in La Jolla. On the walkways of Balboa Park, Liberty Station’s NTC Park and Spanish Landing, and around Petco Park, the limit is 8 mph. No company held such a contract in October 2026, as far as we could find.',
+            '**Slow zones for the City’s contractors.** A company under contract with the City must slow its scooters to 3 mph, and stop rides ending, on the North and South Embarcadero walk, the Martin Luther King Promenade, Little Italy’s Piazza della Famiglia, Ellen Browning Scripps Park’s walkway and the Children’s Pool plaza in La Jolla. On the walkways of Balboa Park, Liberty Station’s NTC Park and Spanish Landing, and around Petco Park, the limit is 8 mph.',
           ],
         },
         'The boardwalk, parks and Port rules bind every rider, on a rented scooter or your own. In the Gaslamp, as everywhere, keep off the sidewalks.',
@@ -109,8 +109,8 @@ const guide: Guide = {
     {
       heading: 'The trolley, buses and San Diego airport',
       blocks: [
-        'The UC San Diego Blue Line trolley serves the La Jolla campus, the Green Line San Diego State. MTS’s website didn’t answer us, so we couldn’t confirm its rules for scooters aboard: ask MTS before you bring your own.',
-        '**San Diego International Airport (SAN).** Spin’s open data showed no scooters near the airport on 23 October 2026, and the trolley doesn’t reach it. MTS Route 992 stops at Terminals 1 and 2 every 15 minutes from 4:15 a.m. to midnight, and the free San Diego Flyer shuttle runs to Old Town Transit Center, where the Blue Line leaves for UC San Diego.',
+        'The UC San Diego Blue Line trolley serves the La Jolla campus, the Green Line San Diego State.',
+        '**San Diego International Airport (SAN).** The trolley doesn’t reach the airport. MTS Route 992 stops at Terminals 1 and 2 every 15 minutes from 4:15 a.m. to midnight, and the free San Diego Flyer shuttle runs to Old Town Transit Center, where the Blue Line leaves for UC San Diego.',
         'Heading north? Our [Los Angeles guide](guide:los-angeles) and the [Los Angeles map](map:us:ca:Los Angeles) cover the scooters there.',
       ],
     },
@@ -130,7 +130,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Are there Bird or Lime scooters in San Diego?',
-      answer: 'Not citywide. Bird, the City’s last contractor, pulled out in November 2023, and we found no return by October 2026. Spin, owned by Bird, runs scooters at UC San Diego and San Diego State.',
+      answer: 'Bird, the City’s last contractor, pulled out in November 2023. Spin, owned by Bird, runs scooters at UC San Diego and San Diego State.',
     },
     {
       question: 'How much does a Spin scooter cost at UC San Diego?',
@@ -147,10 +147,6 @@ const guide: Guide = {
     {
       question: 'Do you need a licence or a helmet to ride an e-scooter in San Diego?',
       answer: 'A licence, yes: California asks for a valid driving licence or instruction permit. A helmet only under 18, and Spin rents only to riders 18 or over.',
-    },
-    {
-      question: 'Can you rent a scooter at San Diego airport?',
-      answer: 'No: on 23 October 2026 there were no shared scooters near the airport. Take MTS Route 992, or the free San Diego Flyer to the trolley at Old Town.',
     },
   ],
   sources: [
