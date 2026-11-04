@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-heidelberg',
   topic: 'heidelberg',
-  name: 'E-Scooter Heidelberg: Anbieter, Parken, Regeln',
-  title: 'E-Scooter Heidelberg 2026: Anbieter, Abstellflächen, Bahn',
-  description: 'E-Scooter Heidelberg: Dott, Voi und Bolt, wo du in der Altstadt abstellen darfst, was die Stadt den Anbietern erlaubt und was in Strassenbahn und Bergbahn gilt.',
-  headline: 'E-Scooter Heidelberg: Anbieter, Abstellflächen und Regeln von der Altstadt bis zur Bergbahn',
-  lede: 'Einen E-Scooter in Heidelberg leihst du ohne Führerschein bei Dott, Voi oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis März 2028; Mindestalter und Preis zeigt dir die App vor dem Entsperren. In der Altstadt beendest du die Fahrt nur auf markierten Abstellflächen. In Strassenbahn, Bus und Bergbahn nimmst du keinen Leih-Scooter mit.',
+  name: 'E-Scooter Heidelberg: Anbieter, Preise, Parken',
+  title: 'E-Scooter Heidelberg 2026: Anbieter, Preise, Abstellflächen',
+  description: 'E-Scooter Heidelberg: Dott, Voi und Bolt, was zehn Minuten kosten, wo du in der Altstadt abstellen darfst und was in Strassenbahn und Bergbahn gilt.',
+  headline: 'E-Scooter Heidelberg: Anbieter, Preise, Abstellflächen und Verbotszonen von der Altstadt bis ins Neuenheimer Feld',
+  lede: 'Einen E-Scooter in Heidelberg leihst du ohne Führerschein bei Dott, Voi oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis März 2028; Dott und Bolt vermieten ab 18. Voi kostet 0,25 € pro Minute ohne Entsperrgebühr, Dott 1 € plus 0,32 € pro Minute (Stand November 2026). In der Altstadt beendest du die Fahrt nur auf markierten Abstellflächen, auf der Neckarwiese bei Dott und Voi gar nicht. In Strassenbahn, Bus und Bergbahn nimmst du keinen Leih-Scooter mit.',
   published: '2026-10-17',
   updated: '2026-10-25',
   city: 'de:Heidelberg',
@@ -19,8 +19,25 @@ const guide: Guide = {
         'Seit 1. April 2026 dürfen in Heidelberg nur noch drei Anbieter Leih-Scooter aufstellen: **Dott**, das früher TIER hiess, **Bolt** und, neu in der Stadt, **Voi**. Die Stadt hat sie in einem Auswahlverfahren bestimmt; ihre Erlaubnisse laufen bis 31. März 2028. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, standen rund um Heidelberg kurz vor 16 Uhr rund 360 Dott- und 300 Voi-Scooter, die zu diesem Zeitpunkt frei waren, am Sonntag kurz vor 14 Uhr rund 370 von Bolt. Wo gerade einer steht, siehst du auf der [Karte von Heidelberg](map:de:Heidelberg).',
         'Preise und Zonen siehst du in der App des Anbieters.',
-        '**Lime und Zeus** gehören seit April 2026 nicht mehr zu den Heidelberger Anbietern. In Leimen, südlich der Stadt, standen am selben Nachmittag rund 70 Scooter, die zu diesem Zeitpunkt frei waren, 60 davon von Zeus: siehe die [Karte von Leimen](map:de:Leimen).',
-        '**Leihrad:** VRNnextbike, das Leihrad im Verkehrsverbund Rhein-Neckar, hatte laut Stadt im März 2026 in Heidelberg 42 Stationen mit rund 360 Rädern. Der Vertrag mit nextbike läuft Ende Februar 2027 aus; die Stadt will das Leihrad ab März 2027 nahtlos weiterführen.',
+        '**Lime und Zeus** gehören seit April 2026 nicht mehr zu den Heidelberger Anbietern. Zeus vermietet weiter südlich der Stadt, vor allem in Leimen, dazu in Walldorf und Wiesloch. In Leimen standen am selben Nachmittag rund 70 Scooter, die zu diesem Zeitpunkt frei waren, 60 davon von Zeus, der Rest von Dott, das auch in der Mitte Leimens ein eigenes kleines Gebiet hat: siehe die [Karte von Leimen](map:de:Leimen).',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Heidelberg?',
+      blocks: [
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Heidelberg (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
+            rows: [
+              ['Voi', '0,00 €', '0,25 €', '2,50 €', '5,00 €'],
+              ['Dott', '1,00 €', '0,32 €', '4,20 €', '7,40 €'],
+              ['Bolt', 'in der App', 'in der App', 'in der App', 'in der App'],
+            ],
+          },
+        },
+        'In Leimen kostet Zeus 1 € plus 0,25 € pro Minute, höchstens 45 € pro Fahrt (Stand November 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Günstiger ist **VRNnextbike**, das Leihrad im Verkehrsverbund Rhein-Neckar: 1 € pro 15 Minuten, höchstens 12 € in 24 Stunden. Im Monats-Abo für 10 € sind die ersten 30 Minuten jeder Fahrt inklusive (Stand November 2026). In Heidelberg gab es laut Stadt im März 2026 42 Stationen mit rund 360 Rädern. Der Vertrag mit nextbike läuft Ende Februar 2027 aus; die Stadt will das Leihrad ab März 2027 nahtlos weiterführen.',
       ],
     },
     {
@@ -28,9 +45,10 @@ const guide: Guide = {
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur, wo es keinen gibt, auf der Fahrbahn. Auf Gehwegen und in Fussgängerzonen fährst du nicht, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es. Ein Nachtverbot gibt es nicht: Laut Stadt kannst du rund um die Uhr mieten.',
         '**Hauptstrasse:** Die Einkaufsstrasse der Altstadt ist Fussgängerzone. Dort steigst du ab und schiebst. Ob du ab 1. März 2027 dort fahren darfst, hängt von den Schildern ab: Ein «Radverkehr frei» gilt dann auch für E-Scooter, im Schritttempo.',
-        '**Schloss:** Hinauf fährt vom Kornmarkt die Bergbahn; den Scooter stellst du vorher in der Altstadt auf einer der markierten Abstellflächen ab.',
-        '**Zur Uni:** Am Universitätsplatz in der Altstadt nimmst du die Abstellfläche in der Grabengasse.',
-        'In Mannheim fahren Voi, Dott und Bolt mit eigenen Regeln, siehe [E-Scooter in Mannheim](guide:mannheim) und die [Karte rund um Mannheim](map:de:Mannheim).',
+        '**Alte Brücke und Philosophenweg:** Beide liegen ausserhalb von Dotts Gebiet, ebenso der Zoo, Ziegelhausen, Emmertsgrund, Boxberg, das Patrick-Henry-Village und der Königstuhl. Dort beendest du keine Dott-Fahrt. Die Dott-Station «Alte Brücke» liegt am Altstadt-Ende der Brücke.',
+        '**Schloss:** Am Schloss endet keine Dott-Fahrt: Es liegt in einer Zone, in der du nur an Stationen abstellst, und dort gibt es keine. Die nächsten liegen in der Altstadt nahe dem Kornmarkt, etwa in der Heiliggeiststrasse und der Neuen Schlossstrasse. Vom Kornmarkt fährt die Bergbahn hinauf.',
+        '**Zur Uni:** Im Neuenheimer Feld mit Uniklinikum und Mathematikon stellst du Dott-Scooter frei ab, nur nicht auf den Sportflächen; am Universitätsplatz in der Altstadt nimmst du die Abstellfläche in der Grabengasse.',
+        'Nach Mannheim kommst du mit Dott nicht: Sein Heidelberger Gebiet endet im Westen bei Wieblingen und am Rand von Eppelheim. In Mannheim fahren Voi, Dott und Bolt mit eigenen Regeln, siehe [E-Scooter in Mannheim](guide:mannheim) und die [Karte rund um Mannheim](map:de:Mannheim).',
       ],
     },
     {
@@ -38,6 +56,23 @@ const guide: Guide = {
       blocks: [
         'Die Stadt ordnet das Abstellen von innen nach aussen. In der **Altstadt** hat sie 2024 insgesamt 15 markierte Abstellflächen für je rund zwölf Scooter eingerichtet, etwa an Neckarstaden, Marstallstrasse, Karlstor, Akademiestrasse, Grabengasse, Seminarstrasse, Krahnenplatz und Oberer Neckarstrasse. Dort beendest du die Fahrt nur auf einer dieser Flächen.',
         'So soll es nach und nach in der ganzen Kernzone werden, mit bis zu 90 Flächen. Ist ein Stadtteil umgestellt, gilt dort laut Stadt ausserhalb der Flächen Abstellverbot: Die Fahrt lässt sich nicht beenden, und die Miete läuft weiter. Im November 2025 stellte die Stadt rund 25 Flächen für Bergheim und rund 15 für die Bahnstadt vor, im April 2026 kündigte sie die nächsten bis zu 15 in Bergheim, Weststadt, Bahnstadt und Neuenheim an.',
+        'Dott hat eigene Zonen, auch rund um Bismarckplatz, Weststadt und Gadamerplatz:',
+        {
+          table: {
+            caption: 'Dotts Zonen an bekannten Orten (Stand November 2026)',
+            head: ['Ort', 'Was gilt'],
+            rows: [
+              ['Altstadt vom Bismarckplatz bis zum Karlstor, mit Hauptstrasse, Universitätsplatz, Marktplatz, Kornmarkt und Schlossberg', 'Nur an Stationen'],
+              ['Bismarckplatz, Seegarten, Kurfürsten-Anlage, Römerkreis', 'Nur an Stationen'],
+              ['Gadamerplatz in der Bahnstadt, S-Bahnhof Weststadt/Südstadt', 'Nur an Stationen'],
+              ['Vorplatz des Hauptbahnhofs', 'Verbotszone, ausser an der Station am Taxistand'],
+              ['Neckarwiese, Theodor-Heuss- und Ernst-Walz-Brücke', 'Verbotszone'],
+              ['Zollhofgarten, Botanischer Garten, Sportgelände der Universität im Neuenheimer Feld', 'Verbotszone'],
+              ['Alte Brücke, Philosophenweg, Zoo, Königstuhl', 'Ausserhalb des Gebiets'],
+              ['Neuenheimer Feld, Handschuhsheim, Rohrbach, Kirchheim, Wieblingen', 'Frei abstellen, ohne zu behindern'],
+            ],
+          },
+        },
         'Die Regeln der Stadt gelten für alle drei Anbieter; ihre eigenen Zonen zeigt dir die App. Wo du frei abstellst, darfst du niemanden behindern oder gefährden. Tabu sind laut VRN ausserdem Fussgängerzonen, Grünanlagen und Strassenbegleitgrün, die Rampen von Bahnabgängen und öffentliche Fahrradständer.',
         'Zum **Weihnachtsmarkt** vom 23. November bis 22. Dezember 2026 stehen laut Stadt rund 140 Buden und Stände auf sechs Plätzen der Altstadt. Stell den Scooter dann am Rand der Altstadt ab, etwa nahe dem Bismarckplatz oder am Karlstor, und geh zu Fuss weiter.',
         {
@@ -48,7 +83,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Heidelberg: Bussgelder und Promille',
       blocks: [
-        'In Heidelberg gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Ein eigener Scooter braucht eine Versicherungsplakette. Die Verkehrsregeln sind Bundesrecht; die Stadt regelt, wie viele Leih-Scooter es gibt und wo sie stehen dürfen.',
+        'In Heidelberg gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott und Bolt ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Ein eigener Scooter braucht eine Versicherungsplakette. Die Verkehrsregeln sind Bundesrecht; die Stadt regelt, wie viele Leih-Scooter es gibt und wo sie stehen dürfen.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -99,11 +134,19 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Heidelberg?',
-      answer: 'Die von Dott, Voi oder Bolt; TIER heisst heute Dott. Lime und Zeus gehören seit April 2026 nicht mehr dazu. Einen Führerschein brauchst du nicht; Mindestalter und Preis zeigt dir die App vor dem Entsperren. Wo gerade ein freier Scooter steht, zeigt die [Live-Karte von Heidelberg](map:de:Heidelberg).',
+      answer: 'Die von Dott, Voi oder Bolt; TIER heisst heute Dott. Lime und Zeus gehören seit April 2026 nicht mehr dazu. Bei Dott und Bolt musst du 18 sein, Vois Mindestalter zeigt dir die App vor dem Entsperren; einen Führerschein brauchst du nicht. Wo gerade ein freier Scooter steht, zeigt die [Live-Karte von Heidelberg](map:de:Heidelberg).',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Heidelberg?',
+      answer: 'Bei Voi 0,25 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2,50 €; bei Dott 1 € plus 0,32 € pro Minute, zehn Minuten 4,20 € (Stand November 2026). Bolt zeigt den Preis nur in der App.',
     },
     {
       question: 'Warum kann ich in der Altstadt die Fahrt nicht beenden?',
       answer: 'Weil die Fahrt dort nur auf einer der markierten Abstellflächen endet, etwa in der Grabengasse, der Akademiestrasse oder am Karlstor. Fahr zur nächsten Fläche, die die App zeigt; bis dahin läuft die Miete weiter.',
+    },
+    {
+      question: 'Komme ich mit dem Leih-Scooter zum Schloss oder auf den Philosophenweg?',
+      answer: 'Am Schloss gibt es keine Dott-Station; stell den Scooter in der Altstadt nahe dem Kornmarkt ab und nimm die Bergbahn. Alte Brücke und Philosophenweg liegen ausserhalb von Dotts Gebiet: Dort beendest du keine Dott-Fahrt.',
     },
     {
       question: 'Darf ich einen E-Scooter in Strassenbahn oder Bergbahn mitnehmen?',
@@ -111,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'Wo melde ich einen falsch abgestellten E-Scooter?',
-      answer: 'Beim Anbieter über seine App oder beim Amt für Mobilität der Stadt unter nahmobilitaet@heidelberg.de.',
+      answer: 'Beim Anbieter: Bolt unter germany@bolt.eu, Dott unter support@ridedott.com, Voi unter support@voiapp.io. Oder beim Amt für Mobilität der Stadt unter nahmobilitaet@heidelberg.de.',
     },
   ],
   sources: [
@@ -121,11 +164,18 @@ const guide: Guide = {
     { title: 'Stadt Heidelberg: Abstellflächen für Miet-E-Tretroller in der Bahnstadt (27. November 2025)', url: 'https://www.heidelberg.de/HD/Presse/27_11_2025+stadt+heidelberg+plant+abstellflaechen+fuer+miet-e-tretroller+in+der+bahnstadt.html' },
     { title: 'Stadt Heidelberg: Neue Gebühren für Anbieter von E-Tretrollern (10. April 2025)', url: 'https://www.heidelberg.de/7071_34581_34869_284696_1219308_5668136_5667961.html' },
     { title: 'Stadt Heidelberg: Regeln für den E-Scooter (26. September 2019)', url: 'https://www.heidelberg.de/26_09_2019+regeln+fuer+den+e-scooter.html' },
+    { title: 'MobiData BW: Datenfeed von Dott in Heidelberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heidelberg/gbfs' },
+    { title: 'MobiData BW: Datenfeed von Zeus (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_leimen_walldorf_wiesloch/gbfs' },
+    { title: 'Voi: Tarif und Zonen für Heidelberg in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/404/netex.xml' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Bolt: Bolt in Heidelberg', url: 'https://bolt.eu/de-de/cities/heidelberg/' },
+    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'rnv: Beförderungsbedingungen', url: 'https://www.rnv-online.de/fahrtinfo/sicher-unterwegs/befoerderungsbedingungen/' },
     { title: 'VRN: Beförderungsbedingungen, Anlage 3: Mitnahme von E-Tretrollern', url: 'https://www.vrn.de/tickets/tarifsystem/befoerderungsbedingungen/artikel/011912/index.html' },
     { title: 'VRN: E-Tretroller von Dott', url: 'https://www.vrn.de/mobilitaet/e-tretroller/dott/index.html' },
     { title: 'Heidelberger Bergbahnen: Beförderungsbedingungen', url: 'https://www.bergbahn-heidelberg.de/de/Hinweise/Befoerderungsbedingungen/' },
     { title: 'Heidelberger Bergbahnen: Chronik', url: 'https://www.bergbahn-heidelberg.de/de/Technik__Geschichte/Chronik-auf-einen-Blick/' },
+    { title: 'VRNnextbike: Tarife', url: 'https://www.vrnnextbike.de/de/' },
     { title: 'Stadt Heidelberg: Heidelberg erweitert VRNnextbike-Angebot (5. März 2026)', url: 'https://www.heidelberg.de/HD/Presse/05_03_2026+heidelberg+erweitert+zusammen+mit+nachbarkommunen+vrnnextbike-angebot.html' },
     { title: 'Stadt Heidelberg: Fahrradvermietsystem ab 2027 (30. Juli 2025)', url: 'https://www.heidelberg.de/HD/Presse/30_07_2025+gemeinderat+beschliesst+fortfuehrung+des+regionalen+fahrradvermietsystems+ab+2027.html' },
     { title: 'Stadt Heidelberg: Veranstaltungen und Festivals', url: 'https://www.heidelberg.de/HD/Leben/Veranstaltungen%20_%20Festivals.html' },
