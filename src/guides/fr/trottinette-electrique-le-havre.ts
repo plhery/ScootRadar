@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trottinette électrique au Havre en 2026 : Voi, prix, zones',
   description: 'Trottinette électrique au Havre : Voi, seul opérateur, 1 € puis 0,22 € la minute. Où se garer, zones interdites, tram, funiculaire, gare et LiAvélos.',
   headline: 'Trottinette électrique au Havre : Voi, prix, zones et stationnement en 2026',
-  lede: 'Pour louer une trottinette électrique au Havre, il n’y a qu’un opérateur : **Voi**, qui a succédé à Lime le 15 janvier 2025. Comptez 1 € pour déverrouiller, puis 0,22 € la minute, soit 3,20 € les 10 minutes (novembre 2026) ; la Ville indique un âge minimum de 16 ans. La location ne se termine que sur un emplacement Voi. En octobre 2026, de nouvelles zones interdites entourent aussi plusieurs lycées et l’Hôtel de Ville.',
+  lede: 'Pour louer une trottinette électrique au Havre, il n’y a qu’un opérateur : **Voi**, qui a succédé à Lime le 15 janvier 2025. Comptez 1 € pour déverrouiller, puis 0,22 € la minute, soit 3,20 € les 10 minutes (novembre 2026). La location ne se termine que sur un emplacement Voi. En octobre 2026, de nouvelles zones interdites entourent aussi plusieurs lycées et l’Hôtel de Ville.',
   published: '2026-10-14',
   updated: '2026-10-15',
   city: 'fr:Le Havre',
@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'Location de trottinette électrique au Havre : Voi, seul opérateur depuis 2025',
       blocks: [
-        'Depuis le **15 janvier 2025**, **Voi** est le seul opérateur de trottinettes et de vélos électriques en libre-service du Havre. La Communauté urbaine Le Havre Seine Métropole l’a choisi après un appel à manifestation d’intérêt, pour un an renouvelable trois fois, soit **jusqu’à début 2029** au plus tard.',
-        'Le 14 octobre 2026 à 14 h 41, la [carte du Havre](map:fr:Le Havre) de ScootRadar affichait **758 trottinettes Voi**, libres à ce moment-là, sur une flotte annoncée à plus de 1 000. Un bouton ouvre l’app Voi, où vous déverrouillez et payez.',
+        'Depuis le **15 janvier 2025**, **Voi** est le seul opérateur de trottinettes et de vélos électriques en libre-service du Havre. La Communauté urbaine Le Havre Seine Métropole l’a retenu à l’automne 2024 pour un an, renouvelable trois fois, soit **jusqu’à début 2029** au plus tard.',
+        'Le 14 octobre 2026 à 14 h 41, la [carte du Havre](map:fr:Le Havre) de ScootRadar affichait **758 trottinettes Voi**, libres à ce moment-là, sur une flotte annoncée de 1 000. Un bouton ouvre l’app Voi, où vous déverrouillez et payez.',
         '**Et Lime ?** Il a exploité le service de juillet 2021 à janvier 2025.',
         '**Quelles communes ?** Le Havre, sauf le port industriel, et Octeville-sur-Mer (22 emplacements). Sainte-Adresse est hors zone, à part un emplacement au bout nord de la plage, sur la limite des deux communes ; Harfleur, Montivilliers et Gonfreville-l’Orcher ne sont pas desservies. Hors du périmètre, impossible de circuler.',
       ],
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: 'Zones lentes et zones interdites : où rouler au Havre',
       blocks: [
-        'Les trottinettes Voi roulent à **25 km/h** au plus. La Communauté urbaine annonce 6 km/h dans les aires piétonnes ; les zones lentes de Voi vont de 5 à 13 km/h, et l’app arrête la trottinette dans les zones interdites. Exemples :',
+        'Comme toute trottinette électrique en France, une Voi roule à **25 km/h** au plus. Ses zones lentes vont de 5 à 13 km/h, et l’app arrête la trottinette dans les zones interdites. Exemples :',
         {
           table: {
             caption: 'Zones lentes et interdites de Voi au Havre, exemples du 14 octobre 2026',
@@ -66,14 +66,13 @@ const guide: Guide = {
             ],
           },
         },
-        'Les routes départementales à plus de 50 km/h sans aménagement cyclable, surtout à Octeville, sont interdites : la trottinette s’y désactive, selon la Communauté urbaine.',
         { note: 'Nouveau en octobre 2026 : 11 zones interdites autour de plusieurs lycées, de la place de l’Hôtel de Ville et du campus Lebon, et 56 emplacements en moins, dont 45 dans ces zones. Vérifiez la carte de l’app avant de partir.' },
       ],
     },
     {
       heading: 'Âge, casque, amendes : les règles au Havre',
       blocks: [
-        '**L’âge.** La Ville et la Communauté urbaine indiquent **16 ans** minimum, et Voi fait scanner une pièce d’identité pour le vérifier. Une trottinette personnelle se conduit dès 14 ans.',
+        '**L’âge.** Voi annonçait **16 ans** minimum à son arrivée, en janvier 2025, et fait scanner une pièce d’identité pour le vérifier. Une trottinette personnelle se conduit dès 14 ans.',
         '**Le casque.** Au 15 octobre 2026, aucun arrêté préfectoral ne l’impose en Seine-Maritime. La loi nationale ne l’exige que sur les routes à 80 km/h ouvertes aux trottinettes. Voi en distribue pourtant, à son Voi Store.',
         {
           table: {
@@ -137,7 +136,7 @@ const guide: Guide = {
         {
           list: [
             '**Le premier Voi Store au monde** a ouvert au Havre en 2025, 21 rue Édouard-Herriot : casques, gilets et petites réparations de vos trottinettes et vélos.',
-            '**Octeville-sur-Mer, pionnière.** Le 13 avril 2022, Lime y déployait une soixantaine de trottinettes, « une première mondiale dans une commune de moins de 6 000 habitants », selon la Communauté urbaine.',
+            '**Octeville-sur-Mer, pionnière.** En avril 2022, Lime y installait 60 trottinettes sur 20 emplacements : une première mondiale pour une commune périurbaine de moins de 10 000 habitants, selon Tendance Ouest.',
             '**La capitale normande de la trottinette.** Selon la DREAL Normandie, Le Havre comptait 3 000 à 4 000 trajets par jour en 2023, mais aussi 30 % des accidents corporels de trottinettes et autres EDPM de la région en 2024.',
           ],
         },
@@ -159,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'À partir de quel âge peut-on louer une trottinette au Havre ?',
-      answer: '16 ans selon la Ville et la Communauté urbaine ; Voi vérifie votre âge avec une pièce d’identité. Une trottinette personnelle se conduit dès 14 ans.',
+      answer: '16 ans, selon Voi à son arrivée en janvier 2025 ; il vérifie votre âge avec une pièce d’identité. Une trottinette personnelle se conduit dès 14 ans.',
     },
     {
       question: 'Le casque est-il obligatoire en trottinette au Havre ?',
@@ -171,8 +170,6 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Le Havre Seine Métropole : le choix de Voi (10 octobre 2024)', url: 'https://www.lehavreseinemetropole.fr/sites/default/files/media/downloads/20241010-cp_trottinettesvelos.pdf' },
-    { title: 'Ville du Havre : vélos, trottinettes', url: 'https://lehavre.fr/services-au-quotidien/deplacements-stationnement-voirie/velos-trottinettes' },
     { title: 'Voi : tarif et zones du Havre (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/336/netex.xml' },
     { title: 'Voi : flux de données public (GBFS) du Havre', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/336/gbfs.json' },
     { title: 'LiA : règlement public d’exploitation (2026)', url: 'https://www.transports-lia.fr/uploads/Reglement_public_d_exploitation_4a0e31f6d1.pdf' },
@@ -183,6 +180,7 @@ const guide: Guide = {
     { title: 'DREAL Normandie : les trottinettes électriques (2026)', url: 'https://www.normandie.developpement-durable.gouv.fr/IMG/pdf/onde_2026_-_les_trottinettes_electriques.pdf' },
     { title: 'Le Havre Seine Développement : le Voi Store (21 août 2025)', url: 'https://lehavreseinedeveloppement.com/implantation-dentreprises/voi-technology-implante-son-1er-voi-store-au-havre/' },
     { title: 'Tendance Ouest : ce qui change avec Voi (15 janvier 2025)', url: 'https://www.tendanceouest.com/actualite-425445-photos-le-havre-tarifs-velos-autonomie-ce-qui-change-avec-voi-le-nouvel-operateur-de-trottinettes' },
+    { title: 'Tendance Ouest : Octeville-sur-Mer, 60 trottinettes pour 6 000 habitants (15 avril 2022)', url: 'https://www.tendanceouest.com/actualite-396687-octeville-sur-mer-60-trottinettes-electriques-pour-6-000-habitants-une-premiere-mondiale' },
   ],
 };
 

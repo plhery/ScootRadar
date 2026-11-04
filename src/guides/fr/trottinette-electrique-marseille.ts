@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Location de trottinette à Marseille : Lime, Voi et leurs prix',
       blocks: [
-        'Depuis le **23 octobre 2023**, la Ville n’autorise plus que **Lime** et **Voi**, avec **1 500 trottinettes chacun** ; Bird, le troisième opérateur, n’a pas été retenu. En septembre, le maire, Benoît Payan, avait annoncé le retrait de 1 500 des quelque 4 000 trottinettes de la ville.',
+        'Depuis le **23 octobre 2023**, la Ville n’autorise plus que **Lime** et **Voi**, avec **1 500 trottinettes chacun** ; Bird, le troisième opérateur, n’a pas été retenu. En septembre, le maire, Benoît Payan, avait annoncé le retrait de 1 500 des quelque 4 000 trottinettes de la ville. Chez Voi, il faut être majeur : l’inscription passe par une double vérification d’identité et un questionnaire sur le code de la route.',
         {
           table: {
             caption: 'Prix d’un trajet à Marseille en trottinette ou en vélo électrique (Voi : novembre 2026 ; levélo : 13 octobre 2026)',
@@ -36,8 +36,8 @@ const guide: Guide = {
     {
       heading: 'Où garer sa trottinette électrique à Marseille',
       blocks: [
-        'Vous terminez la location **uniquement sur un emplacement indiqué dans l’app** : Voi en comptait 1 240 le 13 octobre 2026. Ils sont définis avec la Ville. Certains sont tracés au sol, plutôt sur la chaussée ; fin 2025, d’autres n’existaient encore que dans l’app. Repérez-en un avant de partir.',
-        '**Mal se garer coûte cher.** Les opérateurs se sont engagés à facturer un supplément à qui laisse son véhicule hors des emplacements ; en 2023, la Ville leur a imposé 25 € de pénalité par infraction constatée. Côté police, le stationnement gênant coûte 35 €, fourrière possible. Une trottinette bloque le trottoir ? Signalez-la à Allô Mairie, au 3013.',
+        'Vous terminez la location **uniquement sur un emplacement indiqué dans l’app** : Voi en comptait 1 240 le 13 octobre 2026. Ils sont définis avec la Ville, et certains sont marqués au sol. Repérez-en un avant de partir.',
+        '**Mal se garer coûte cher.** Qui abandonne sa trottinette en pleine rue paie 25 € de pénalité, selon La Provence (août 2026) ; en 2023, la Ville a aussi imposé aux opérateurs 25 € de pénalité par infraction constatée. Côté police, le stationnement gênant coûte 35 €, fourrière possible.',
         { note: 'Ne laissez jamais une trottinette au bord d’un quai. « Je les retrouve dans l’eau, je les retrouve dans le Vieux-Port », disait le maire en janvier 2026.' },
       ],
     },
@@ -113,7 +113,7 @@ const guide: Guide = {
         {
           list: [
             '**Octobre 2023** : la Ville retient Lime et Voi pour deux ans renouvelables, et impose des clignotants sur chaque trottinette.',
-            '**22 octobre 2025** : les autorisations sont prolongées jusqu’en 2027.',
+            '**Octobre 2025** : les autorisations sont prolongées jusqu’en 2027.',
             '**Janvier 2026** : en campagne, Benoît Payan annonce qu’il ne les renouvellera pas : « C’est la dernière fois qu’ils ont le marché. » Les trottinettes personnelles ne sont pas visées.',
             '**22 mars 2026** : Benoît Payan est réélu.',
             '**Août 2026** : « Le maire penche pour l’interdiction, mais nous nous donnons jusqu’à l’été 2027 pour prendre une décision », explique Nicolas Hue, conseiller municipal délégué aux mobilités douces.',
@@ -142,7 +142,6 @@ const guide: Guide = {
         {
           list: [
             '**Des plongeurs les repêchent.** En 2019, les bénévoles de la Société nautique de la Corniche ont sorti de 150 à 200 trottinettes de la mer, entre l’anse de Malmousque et le Vieux-Port.',
-            '**Les épaves viennent surtout d’opérateurs partis.** En décembre 2025, une plongée avec Lime en a remonté 18 : selon Lime, surtout d’anciens modèles de Bird et de Circ, datant de 2019 ou d’avant.',
             '**Un record en pleine campagne.** Voi a compté 210 000 trajets en février 2026, 50 % de plus qu’un an plus tôt, quelques semaines après l’annonce du maire.',
             '**Des zones pour les grèves lycéennes.** Le 13 octobre 2026, Voi comptait environ 17 zones interdites intitulées « NRZ grèves lycéens » ou « Demande mairie Grève Lycée », autour de lycées marseillais.',
           ],
@@ -153,7 +152,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelle appli pour louer une trottinette à Marseille ?',
-      answer: 'Celle de Lime ou celle de Voi, les deux seuls opérateurs autorisés. Notre [carte de Marseille](map:fr:Marseille) montre les deux, et un bouton ouvre la bonne app.',
+      answer: 'Celle de Lime ou celle de Voi, les deux seuls opérateurs autorisés ; Voi refuse les mineurs. Notre [carte de Marseille](map:fr:Marseille) montre les deux, et un bouton ouvre la bonne app.',
     },
     {
       question: 'Quel est le tarif d’une trottinette Voi à Marseille ?',
@@ -179,9 +178,12 @@ const guide: Guide = {
   sources: [
     { title: 'Voi : tarif et zones de Marseille (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/66/netex.xml' },
     { title: 'Voi : flux de données public (GBFS) de Marseille', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/66/gbfs.json' },
-    { title: 'Mairie des 1er et 7e arrondissements : trottinettes et vélos en libre-service', url: 'https://mairie1-7.marseille.fr/pages/les-trottinettes-et-velos-en-libre-service' },
     { title: 'Banque des Territoires (AFP) : Marseille retire 1 500 trottinettes en libre-service de l’espace public (11 septembre 2023)', url: 'https://www.banquedesterritoires.fr/marseille-retire-1500-trottinettes-en-libre-service-de-lespace-public' },
     { title: 'Banque des Territoires (AFP) : trottinettes en libre-service, Marseille n’autorise plus que deux opérateurs (11 octobre 2023)', url: 'https://www.banquedesterritoires.fr/trottinettes-en-libre-service-marseille-nautorise-plus-que-deux-operateurs' },
+    { title: 'Made in Marseille : Lime et Voi continueront à déployer 3 000 trottinettes à Marseille pendant 2 ans (11 octobre 2023)', url: 'https://madeinmarseille.net/actualite/145866-lime-et-voi-continueront-a-deployer-3-000-trottinettes-a-marseille-pendant-2-ans/' },
+    { title: 'Marsactu : les trottinettes électriques en libre-service rouleront à Marseille encore pendant deux ans (14 octobre 2025)', url: 'https://marsactu.fr/bref/les-trottinettes-electriques-en-libre-service-rouleront-a-marseille-encore-pendant-deux-ans/' },
+    { title: 'Made in Marseille : record d’utilisation des trottinettes à Marseille malgré une campagne électorale défavorable (9 mars 2026)', url: 'https://madeinmarseille.net/actualite/198033-record-dutilisation-des-trottinettes-a-marseille-malgre-une-campagne-electorale-defavorable/' },
+    { title: 'L’info durable (AFP) : à Marseille, le fléau des trottinettes jetées à la mer (24 juillet 2019)', url: 'https://www.linfodurable.fr/marseille-le-fleau-des-trottinettes-jetees-la-mer-12936' },
     { title: 'Made in Marseille : la prolongation des trottinettes à Marseille en questions (20 octobre 2025)', url: 'https://madeinmarseille.net/actualite/marseille/188967-nuisances-securite-pollution-la-prolongation-des-trottinettes-a-marseille-en-questions/' },
     { title: 'Sud Radio : trottinettes électriques à Marseille, fin du libre-service pour 2027 (16 janvier 2026)', url: 'https://www.sudradio.fr/sud-radio/trottinettes-electriques-a-marseille-fin-du-libre-service-pour-2027' },
     { title: 'La Provence : les trottinettes en libre-service toujours dans le viseur de la mairie (19 août 2026)', url: 'https://www.laprovence.com/article/region/98187379716061/vitesse-stationnement-anarchique-les-trottinettes-en-libre-service-toujours-dans-le-viseur-de-la-mairie-de-marseille' },
