@@ -247,14 +247,20 @@ internal val FACTS_REACH = 18.dp
 /** The facts' tag, by which the tests find the line. */
 internal const val CARD_FACTS_TAG = "cardFacts"
 
-/** The provider's colour with its initials, in the ink that reads on it: 40 points, whatever the text size. */
+/**
+ * The provider's colour with its initials, in the ink that reads on it: 40 points at the standard text size, growing
+ * with the text as the body does up to 56, as the close button beside it does, its initials and corners in
+ * proportion (ddd8e672).
+ */
 @Composable
 private fun ProviderTile(scooter: Scooter, modifier: Modifier = Modifier) {
     val colors = scootColors
     val provider = scooter.providerInfo
-    val size = with(LocalDensity.current) { 14.dp.toSp() }
+    val side = minOf(bodyMetric(40f), 56.dp)
+    // 14 points in the 40-point tile at the standard size.
+    val size = with(LocalDensity.current) { (side * 0.35f).toSp() }
     Box(
-        modifier.size(40.dp).clip(SquircleShape(12.dp)).background(colors.dot(provider)),
+        modifier.size(side).clip(SquircleShape(side * 0.3f)).background(colors.dot(provider)),
         contentAlignment = Alignment.Center,
     ) {
         Text(

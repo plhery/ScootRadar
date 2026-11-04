@@ -288,19 +288,24 @@ internal fun DockCardHeader(symbol: ImageVector, tint: Color, title: String, mes
     }
 }
 
-/** A symbol on a tile of its tint: 44 points in the cards, 40 in the location card. */
+/**
+ * A symbol on a tile of its tint, [size] at the standard text size: 44 points in the cards, 40 in the location card.
+ * It grows with the text as the body does, up to nearly half as large again, 64 points in the cards and 58 in the
+ * location card, its symbol and corners in proportion (ddd8e672).
+ */
 @Composable
 internal fun DockSymbolTile(symbol: ImageVector, foreground: Color, tint: Color, modifier: Modifier = Modifier, size: Dp = 44.dp) {
+    val side = size * (minOf(bodyMetric(44f), 64.dp) / 44.dp)
     Box(
         modifier
-            .size(size)
-            .clip(SquircleShape(size / 3))
+            .size(side)
+            .clip(SquircleShape(side / 3))
             .background(tint.copy(alpha = 0.16f))
             .clearAndSetSemantics {},
         contentAlignment = Alignment.Center,
     ) {
-        // `.system(size: size × 0.43)`, which does not grow with the text.
-        SymbolIcon(symbol, size * 0.43f * SYMBOL_FRAME, foreground)
+        // `.system(size: side × 0.43)`.
+        SymbolIcon(symbol, side * 0.43f * SYMBOL_FRAME, foreground)
     }
 }
 

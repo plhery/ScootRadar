@@ -71,10 +71,11 @@ import com.plhery.scootradar.core.search.SwissAddressSearchModel
 import com.plhery.scootradar.core.search.SwissAddressSearchStatus
 import com.plhery.scootradar.ui.Announcer
 import com.plhery.scootradar.ui.FitOrScroll
-import com.plhery.scootradar.ui.dock.FixedSymbol
+import com.plhery.scootradar.ui.dock.SYMBOL_FRAME
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.SymbolIcon
+import com.plhery.scootradar.ui.dock.bodyMetric
 import com.plhery.scootradar.ui.dock.plainButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.keepsSecondaryClicks
@@ -484,7 +485,10 @@ private fun NoDataTag() {
     )
 }
 
-/** The small rounded tile in front of the search bar's text and of a place row. */
+/**
+ * The small rounded tile in front of the search bar's text and of a place row: 34 points at the standard text size,
+ * growing with the text as the body does up to 50, its symbol and corners in proportion (ddd8e672).
+ */
 @Composable
 internal fun SearchSymbolTile(
     symbol: ImageVector,
@@ -492,14 +496,16 @@ internal fun SearchSymbolTile(
     isAccented: Boolean = true,
 ) {
     val colors = scootColors
+    val side = minOf(bodyMetric(34f), 50.dp)
     Box(
         Modifier
-            .size(34.dp)
-            .clip(SquircleShape(11.dp))
+            .size(side)
+            .clip(SquircleShape(side * 11f / 34f))
             .background(if (isAccented) colors.actionText.copy(alpha = 0.12f) else colors.label.copy(alpha = 0.06f))
             .clearAndSetSemantics {},
         contentAlignment = Alignment.Center,
     ) {
-        FixedSymbol(symbol, 15f, if (isAccented) colors.actionText else colors.secondaryLabel)
+        // 15 points in the 34-point tile at the standard size.
+        SymbolIcon(symbol, side * 15f / 34f * SYMBOL_FRAME, if (isAccented) colors.actionText else colors.secondaryLabel)
     }
 }

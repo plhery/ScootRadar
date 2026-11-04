@@ -114,17 +114,20 @@ internal fun ParkingBayCard(controller: ScooterMapController, parking: ScooterPa
 }
 
 /**
- * The bay's "P" on the window's ground, ringed in its provider's colour: 48 points, whatever the text size. SF's
- * rounded design has no Inter of its own, so the letter is Inter's.
+ * The bay's "P" on the window's ground, ringed in its provider's colour: 48 points at the standard text size, growing
+ * with the text as the body does up to 64, its letter and corners in proportion (ddd8e672). SF's rounded design has
+ * no Inter of its own, so the letter is Inter's.
  */
 @Composable
 private fun BayTile(parking: ScooterParking) {
     val colors = scootColors
-    val shape = SquircleShape(14.dp)
-    val size = with(LocalDensity.current) { 23.dp.toSp() }
+    val side = minOf(bodyMetric(48f), 64.dp)
+    val shape = SquircleShape(side * 14f / 48f)
+    // 23 points in the 48-point badge at the standard size.
+    val size = with(LocalDensity.current) { (side * 23f / 48f).toSp() }
     Box(
         Modifier
-            .size(48.dp)
+            .size(side)
             .clip(shape)
             .background(colors.systemBackground)
             .border(3.dp, colors.providerAccent(parking.providerInfo), shape)
