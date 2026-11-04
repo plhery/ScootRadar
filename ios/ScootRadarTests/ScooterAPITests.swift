@@ -196,6 +196,32 @@ final class ScooterAPITests: XCTestCase {
         }
     }
 
+    func testAConnectionLostOnTheWayIsAskedAgainOnceBeforeThePhoneIsTakenToBeOffline() async throws {
+        // A kept-alive connection closed under a phone still online: the second request gets the answer.
+        let recovering = StubNetworkSession(mode: .lostOnce(statusCode: 200, data: Data("zones".utf8)))
+        let data = try await ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: recovering).cityZoneFile("zurich.json")
+        XCTAssertEqual(data, Data("zones".utf8))
+        let recoveringCalls = await recovering.calls
+        XCTAssertEqual(recoveringCalls, 2)
+
+        // Lost again: offline, after two requests and no more.
+        let lost = StubNetworkSession(mode: .urlError(.networkConnectionLost))
+        do {
+            _ = try await ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: lost).cityZoneFile("zurich.json")
+            XCTFail("Expected the phone to be taken to be offline")
+        } catch {
+            XCTAssertEqual(ScooterLoadFailure(error), .offline)
+        }
+        let lostCalls = await lost.calls
+        XCTAssertEqual(lostCalls, 2)
+
+        // With no network at all it is not asked again.
+        let offline = StubNetworkSession(mode: .urlError(.notConnectedToInternet))
+        _ = try? await ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: offline).cityZoneFile("zurich.json")
+        let offlineCalls = await offline.calls
+        XCTAssertEqual(offlineCalls, 1)
+    }
+
     func testTheClockOffsetComesFromTheDateHeaderOfTheResponse() async throws {
         let sentAt = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-12T10:00:00Z"))
         let header = "Mon, 12 Oct 2026 10:00:00 GMT"
@@ -757,11 +783,14 @@ private actor StubNetworkSession: ScooterNetworkSession {
     enum Mode: Sendable {
         case response(statusCode: Int, data: Data)
         case urlError(URLError.Code)
+        /// The connection lost on the first request, the answer on those after.
+        case lostOnce(statusCode: Int, data: Data)
     }
 
     let mode: Mode
     let headers: [String: String]
     private(set) var lastRequest: URLRequest?
+    private(set) var calls = 0
 
     init(mode: Mode, headers: [String: String] = [:]) {
         self.mode = mode
@@ -770,7 +799,11 @@ private actor StubNetworkSession: ScooterNetworkSession {
 
     func scooterData(for request: URLRequest) async throws -> (Data, URLResponse) {
         lastRequest = request
+        calls += 1
         switch mode {
+        case let .lostOnce(statusCode, data):
+            if calls == 1 { throw URLError(.networkConnectionLost) }
+            return (data, HTTPURLResponse(url: request.url!, statusCode: statusCode, httpVersion: "HTTP/1.1", headerFields: headers)!)
         case let .response(statusCode, data):
             let response = HTTPURLResponse(
                 url: request.url!,

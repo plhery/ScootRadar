@@ -94,6 +94,17 @@ actor ScooterAPI: ScooterAPIClient {
         try await get("zones/v1/\(name)", query: []).0
     }
 
+    /// A connection lost on the way (networkConnectionLost) is most often one kept alive that the server or a change
+    /// of network closed, under a phone still online: it is asked again at once, on a new one, as Android's client does
+    /// (OkHttp's retryOnConnectionFailure). Lost twice, the phone is taken to be offline, as it is with no network.
+    private static func fetch(_ request: URLRequest, from session: any ScooterNetworkSession) async throws -> (Data, URLResponse) {
+        do {
+            return try await session.scooterData(for: request)
+        } catch let error as URLError where error.code == .networkConnectionLost {
+            return try await session.scooterData(for: request)
+        }
+    }
+
     /// A GET to the app's server, with what went wrong told apart as the dock reports it.
     private func get(_ path: String, query: [URLQueryItem]) async throws -> (Data, HTTPURLResponse) {
         var components = URLComponents(
@@ -113,7 +124,7 @@ actor ScooterAPI: ScooterAPIClient {
         let data: Data
         let response: URLResponse
         do {
-            (data, response) = try await session.scooterData(for: request)
+            (data, response) = try await Self.fetch(request, from: session)
         } catch is CancellationError {
             throw CancellationError()
         } catch let error as URLError {
