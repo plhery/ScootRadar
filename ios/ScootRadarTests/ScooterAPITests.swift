@@ -347,6 +347,10 @@ final class AddressSearchAPITests: XCTestCase {
             (429, ["Retry-After": "60"], .rateLimited(retryAfter: .seconds(60))),
             (429, [:], .rateLimited(retryAfter: nil)),
             (429, ["Retry-After": "Wed, 21 Oct 2026 07:28:00 GMT"], .rateLimited(retryAfter: nil)),
+            // Waits Duration cannot hold, which used to crash the app.
+            (429, ["Retry-After": "inf"], .rateLimited(retryAfter: nil)),
+            (429, ["Retry-After": "nan"], .rateLimited(retryAfter: nil)),
+            (429, ["Retry-After": "1e300"], .rateLimited(retryAfter: .seconds(86_400))),
             (503, ["Retry-After": "30"], .invalidResponse)
         ]
         for (statusCode, headers, expected) in expectations {

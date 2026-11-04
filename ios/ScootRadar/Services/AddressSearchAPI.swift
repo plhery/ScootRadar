@@ -159,8 +159,10 @@ actor AddressSearchAPI: AddressSearchAPIClient {
         }
         if httpResponse.statusCode == 429 {
             let seconds = httpResponse.value(forHTTPHeaderField: "Retry-After").flatMap(Double.init)
+            // Duration traps on a wait it cannot hold ("inf", or about 1.7e20 seconds and more): one past a day is a
+            // day, longer than the search ever waits, and one that is no number of seconds is none.
             throw AddressSearchAPIError.rateLimited(
-                retryAfter: seconds.flatMap { $0 >= 0 ? Duration.seconds($0) : nil }
+                retryAfter: seconds.flatMap { $0.isFinite && $0 >= 0 ? Duration.seconds(min($0, 86_400)) : nil }
             )
         }
         guard (200 ... 299).contains(httpResponse.statusCode) else {
