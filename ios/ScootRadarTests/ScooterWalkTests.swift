@@ -467,6 +467,35 @@ final class ScooterWalkTests: XCTestCase {
         }
     }
 
+    func testAPlainCardStaysOnItsScooterUnderANewIDAndClosesWhenItIsTaken() async throws {
+        let target = scooter("s1", at: point(east: 300, north: 0))
+        let neighbour = scooter("s2", at: point(east: 308, north: 0))
+        let h = try await harness(vehicles: [target, neighbour], rider: rider)
+        h.model.selectScooter(target.id)
+        let choices = h.model.scooterChoices
+
+        // Its feed gives every scooter a new id on each read, as Bird's does: the new one standing where it stood is
+        // it, not the neighbour listed before, even nearer it.
+        let renamed = scooter("s1-new", at: point(east: 303, north: 0))
+        let movedNeighbour = scooter("s2", at: point(east: 301, north: 0))
+        await h.api.setResponse(ScooterResponse(vehicles: [renamed, movedNeighbour]))
+        h.model.refresh()
+        let renamedLoaded = await waitUntil { await h.api.calls == 2 && !h.model.isLoading }
+        XCTAssertTrue(renamedLoaded)
+        XCTAssertEqual(h.model.selectedScooterID, renamed.id)
+        XCTAssertEqual(h.model.dock, .scooter(renamed))
+        XCTAssertEqual(h.model.scooterChoices, choices, "The same choice: the dock neither animates nor ticks")
+        XCTAssertNil(h.model.walk)
+
+        // Taken: the scooter listed before that stands there is another one, and the card closes.
+        await h.api.setResponse(ScooterResponse(vehicles: [movedNeighbour]))
+        h.model.refresh()
+        let takenLoaded = await waitUntil { await h.api.calls == 3 && !h.model.isLoading }
+        XCTAssertTrue(takenLoaded)
+        XCTAssertNil(h.model.selectedScooter)
+        XCTAssertNotEqual(h.model.dock, .scooter(movedNeighbour))
+    }
+
     // MARK: Map and card
 
     func testTheMapKeepsTheScooterWalkedToSelectedAndDrawsItsTrail() throws {

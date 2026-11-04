@@ -200,7 +200,8 @@ struct ScooterMapScreen: View {
                     .presentationDragIndicator(.visible)
             }
         }
-        .sensoryFeedback(.selection, trigger: model.selectedScooterID)
+        // A card that follows its scooter to a new id is no new choice.
+        .sensoryFeedback(.selection, trigger: model.scooterChoices)
         .sensoryFeedback(.selection, trigger: model.selectedParkingID)
         .background {
             KeyCommandButtons(

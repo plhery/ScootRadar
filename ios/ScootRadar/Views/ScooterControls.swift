@@ -211,10 +211,10 @@ struct ScooterControlDock: View {
         }
         .animation(
             reduceMotion ? nil : .snappy(duration: 0.28, extraBounce: 0.06),
-            value: content.kind
+            value: DockChange(kind: content.kind, scooterChoice: model.scooterChoices)
         )
         .animation(reduceMotion ? nil : .snappy(duration: 0.3), value: isFolded)
-        .onChange(of: content.kind) {
+        .onChange(of: DockChange(kind: content.kind, scooterChoice: model.scooterChoices)) {
             // A card opens down here while VoiceOver is still on the marker,
             // and the out-of-date card replaces the count unasked.
             guard UIAccessibility.isVoiceOverRunning, let announcement = model.dockAnnouncement else { return }
@@ -231,6 +231,13 @@ struct ScooterControlDock: View {
     }
 
     private static let shape = RoundedRectangle(cornerRadius: 28, style: .continuous)
+
+    /// What the dock shows, a card's scooter counted by the rider's choice rather than its id, which some feeds change
+    /// on every read.
+    private struct DockChange: Equatable {
+        let kind: String
+        let scooterChoice: Int
+    }
 
     /// Under the content of the panel's card, the room its grabber takes.
     static let panelFoot: CGFloat = 34
@@ -664,7 +671,7 @@ private extension ScooterDockContent {
     /// What the dock shows, without its details: a change of kind animates.
     var kind: String {
         switch self {
-        case let .scooter(scooter): "scooter:\(scooter.id)"
+        case .scooter: "scooter"
         case let .parking(parking): "parking:\(parking.id)"
         case .outOfDate: "outOfDate"
         case .finding: "finding"

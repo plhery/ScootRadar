@@ -154,9 +154,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     var selectedScooterID: String? {
         didSet {
             if selectedScooterID != nil { selectedParkingID = nil }
-            if selectedScooterID != oldValue { endWalkIfTargetLeftSelection() }
+            guard selectedScooterID != oldValue else { return }
+            if !isFollowingScooter { scooterChoices += 1 }
+            endWalkIfTargetLeftSelection()
         }
     }
+    /// Counts each scooter chosen and each card closed, but not a card that follows its scooter to a new id, which is
+    /// the same choice: the dock animates, VoiceOver reads the card and the phone ticks on it, not on the id.
+    private(set) var scooterChoices = 0
+    @ObservationIgnored private var isFollowingScooter = false
     /// Selecting a bay clears the selected scooter, and the other way round.
     private(set) var selectedParkingID: String? {
         didSet {
@@ -1500,6 +1506,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 // Accept healthy cities even when another operator is unavailable.
                 // A response is shown whatever its own timestamps say.
                 let receivedAt = clock()
+                // The card's scooter as it was, unless a walk holds it (followWalkTarget), and the ids listed before.
+                let cardScooter = selectedScooter.flatMap { scooter in
+                    walk.map { $0.holdsCard && $0.target == .scooter(scooter) } == true ? nil : scooter
+                }
+                let previousIDs = cardScooter == nil ? [] : Set(vehiclesByID.keys)
                 isApplyingResponse = true
                 vehicles = response.vehicles
                 clusters = response.clusters
@@ -1513,6 +1524,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 queryMinimumBattery = requestMinimumBattery
                 rebuildVehicleIndex()
                 followWalkTarget(in: response.meta, loadedFor: bounds)
+                if let cardScooter { followCardScooter(cardScooter, previousIDs: previousIDs) }
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()
@@ -2154,16 +2166,10 @@ extension ScooterMapModel {
         guard walk.isUnderway, Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else {
             return
         }
-        let successor = vehicles
-            .filter { $0.provider == scooter.provider }
-            .map { (scooter: $0, metres: $0.distance(from: point)) }
-            .filter { $0.metres <= WalkRoute.rebindDistance }
-            .min { $0.metres < $1.metres }?
-            .scooter
-        if let successor {
+        if let successor = successor(of: scooter) {
             walk.target = .scooter(successor)
             self.walk = walk
-            selectedScooterID = successor.id
+            follow(to: successor.id)
             if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
             return
         }
@@ -2172,6 +2178,34 @@ extension ScooterMapModel {
         walk.route = nil
         self.walk = walk
         announceWalk(ScooterWalkNote.gone.text)
+    }
+
+    /// A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on
+    /// each read, others after each ride: one of its provider within a few metres of where it stood, listed under an
+    /// id that wasn't before, is that scooter, and the card stays open on it. A scooter that was already listed there
+    /// is another one, and the card closes as it did.
+    private func followCardScooter(_ scooter: Scooter, previousIDs: Set<String>) {
+        guard selectedScooterID == scooter.id, vehiclesByID[scooter.id] == nil,
+              let successor = successor(of: scooter, among: vehicles.filter { !previousIDs.contains($0.id) }) else { return }
+        follow(to: successor.id)
+    }
+
+    /// The nearest scooter of the same provider within a few metres of where `scooter` stood.
+    private func successor(of scooter: Scooter, among candidates: [Scooter]? = nil) -> Scooter? {
+        let point = GeoPoint(scooter.coordinate)
+        return (candidates ?? vehicles)
+            .filter { $0.provider == scooter.provider }
+            .map { (scooter: $0, metres: $0.distance(from: point)) }
+            .filter { $0.metres <= WalkRoute.rebindDistance }
+            .min { $0.metres < $1.metres }?
+            .scooter
+    }
+
+    /// Moves the selection to the scooter's new id, the same choice.
+    private func follow(to id: String) {
+        isFollowingScooter = true
+        selectedScooterID = id
+        isFollowingScooter = false
     }
 
     /// Whether data would list the scooter if it were still there: single
