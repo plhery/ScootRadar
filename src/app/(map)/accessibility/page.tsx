@@ -61,6 +61,16 @@ export default function AccessibilityPage() {
           <li>
             <strong>Icons:</strong> icons grow with the text size.
           </li>
+          <li>
+            <strong>Sufficient Contrast:</strong> on a provider&apos;s colour, the selected
+            scooter&apos;s name, the initials on the dots and on the card, and the parking
+            &ldquo;P&rdquo; are written in white or near black, whichever reads better, at least 4.5
+            to 1. The small grey text in Settings is darker.
+          </li>
+          <li>
+            <strong>Differentiate Without Color Alone:</strong> the chosen tile in Settings shows a
+            checkmark.
+          </li>
         </ul>
 
         <h2>Still working on</h2>
@@ -75,8 +85,7 @@ export default function AccessibilityPage() {
             differ only by colour.
           </li>
           <li>
-            <strong>Sufficient Contrast:</strong> the pills on the map, the parking &ldquo;P&rdquo; and
-            the dots in light mode.
+            <strong>Sufficient Contrast:</strong> the dots on the light map.
           </li>
         </ul>
 

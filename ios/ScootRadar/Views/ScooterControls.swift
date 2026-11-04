@@ -2349,7 +2349,7 @@ struct ScooterSettingsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Appearance") {
+                Section {
                     SettingsTileRow(title: String(localized: "Appearance")) {
                         ForEach(ScooterAppearance.allCases) { appearance in
                             SettingsTile(title: appearance.label, isSelected: model.appearance == appearance) {
@@ -2359,6 +2359,9 @@ struct ScooterSettingsSheet: View {
                             }
                         }
                     }
+                } header: {
+                    Text("Appearance")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
 
                 Section {
@@ -2374,11 +2377,13 @@ struct ScooterSettingsSheet: View {
                     Toggle("Ride and parking zones", isOn: $model.showsZones)
                 } header: {
                     Text("Map")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 } footer: {
                     Text("A preview: where operators forbid riding or parking, or slow scooters down, as their feeds publish it. Each operator’s app has the final word.")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
 
-                Section("Language") {
+                Section {
                     // The sheet reads the language here, so its titles are
                     // written again when another is chosen.
                     NavigationLink {
@@ -2386,6 +2391,9 @@ struct ScooterSettingsSheet: View {
                     } label: {
                         languageRow
                     }
+                } header: {
+                    Text("Language")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
 
                 Section {
@@ -2405,14 +2413,14 @@ struct ScooterSettingsSheet: View {
                                         Text(provider.name)
                                         Text(passStatus(for: provider))
                                             .font(.subheadline)
-                                            .foregroundStyle(.secondary)
+                                            .foregroundStyle(ScooterPalette.secondaryText)
                                     }
                                 } else {
                                     Text(provider.name)
                                     Spacer(minLength: 8)
                                     Text(passStatus(for: provider))
                                         .font(.subheadline)
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(ScooterPalette.secondaryText)
                                         .multilineTextAlignment(.trailing)
                                         .lineLimit(2)
                                 }
@@ -2421,8 +2429,10 @@ struct ScooterSettingsSheet: View {
                     }
                 } header: {
                     Text("Passes")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 } footer: {
                     Text("Pass benefits are used only for estimates. Free-minute balances are not reduced automatically.")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
 
                 Section {
@@ -2455,8 +2465,10 @@ struct ScooterSettingsSheet: View {
                     }
                 } header: {
                     Text("About")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 } footer: {
                     Text(String(localized: "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter."))
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
             }
             // As a string: a title given as a key stays in the language it was first shown in.
@@ -2489,7 +2501,7 @@ struct ScooterSettingsSheet: View {
                 if let automatic {
                     Text(automatic)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
             }
         } else {
@@ -2499,7 +2511,7 @@ struct ScooterSettingsSheet: View {
                 if let automatic {
                     Text(automatic)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
             }
         }
@@ -2542,10 +2554,11 @@ struct ScooterLanguageSettings: View {
                     Text(String(localized: "Automatic (language)"))
                     Text(String(format: String(localized: "%@, the language of your iPhone"), model.iPhoneLanguage.name))
                         .font(.subheadline)
-                        .foregroundStyle(Color.secondary)
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
             } footer: {
                 Text(String(localized: "Follows your iPhone’s language, if you change it there."))
+                    .foregroundStyle(ScooterPalette.secondaryText)
             }
 
             Section {
@@ -2557,7 +2570,7 @@ struct ScooterLanguageSettings: View {
                         if let name = language.name(in: model.language) {
                             Text(name)
                                 .font(.subheadline)
-                                .foregroundStyle(Color.secondary)
+                                .foregroundStyle(ScooterPalette.secondaryText)
                         }
                     }
                 }
@@ -2624,6 +2637,7 @@ struct ScooterPrivacySettings: View {
                 ))
             } footer: {
                 Text("Helps improve ScootRadar. No addresses or precise locations are sent.")
+                    .foregroundStyle(ScooterPalette.secondaryText)
             }
 
             Section {
@@ -2758,10 +2772,11 @@ private struct ProviderRidePassEditor: View {
                 Toggle("I have a pass", isOn: passBinding(\.enabled))
             } footer: {
                 Text("Your pass details stay on this iPhone.")
+                    .foregroundStyle(ScooterPalette.secondaryText)
             }
 
             if pass.enabled {
-                Section("Pass benefits") {
+                Section {
                     Toggle("Free unlock", isOn: passBinding(\.freeUnlock))
 
                     Stepper(
@@ -2773,10 +2788,13 @@ private struct ProviderRidePassEditor: View {
                             Text("Free minutes available")
                             Spacer()
                             Text(pass.freeMinutes, format: .number)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(ScooterPalette.secondaryText)
                                 .monospacedDigit()
                         }
                     }
+                } header: {
+                    Text("Pass benefits")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
 
                 Section {
@@ -2797,15 +2815,17 @@ private struct ProviderRidePassEditor: View {
                     }
                 } header: {
                     Text("Expiry")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 } footer: {
                     Text("Benefits remain active through the end of the selected day.")
+                        .foregroundStyle(ScooterPalette.secondaryText)
                 }
             }
 
             Section {
                 Text("Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(ScooterPalette.secondaryText)
             }
         }
         .navigationTitle(String(format: String(localized: "%@ pass"), provider.name))

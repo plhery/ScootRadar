@@ -472,9 +472,16 @@ final class ScooterMapLookTests: XCTestCase {
                     between: ScooterMapLook.ink(on: provider, isDark: isDark),
                     and: ScooterMapLook.dotColor(provider, isDark: isDark)
                 )
-                // White stands out from every colour: least from Lime's green, at 2.1 to 1.
-                XCTAssertGreaterThanOrEqual(ratio, 2, "\(provider.name), dark: \(isDark)")
+                // White or near black, whichever reads better: at least 4.5 to 1
+                // (Elerent's olive, the least, is 4.56), where white alone was 2.1 on Lime's green.
+                XCTAssertGreaterThanOrEqual(ratio, 4.5, "\(provider.name), dark: \(isDark)")
             }
+            // A bay's "P" on the provider's own colour, which its marker keeps in the dark.
+            let bay = ScooterMapLook.contrastRatio(
+                between: ScooterMapLook.ink(on: provider.uiColor),
+                and: provider.uiColor
+            )
+            XCTAssertGreaterThanOrEqual(bay, 4.5, "\(provider.name)'s bay")
         }
     }
 

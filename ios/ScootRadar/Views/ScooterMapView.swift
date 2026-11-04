@@ -1572,8 +1572,11 @@ struct ScooterMapView: UIViewRepresentable {
                 let view = mapView.dequeueReusableAnnotationView(
                     withIdentifier: ScooterParkingAnnotation.reuseIdentifier, for: parking
                 ) as! MKMarkerAnnotationView
-                view.markerTintColor = parking.parking.providerInfo?.uiColor ?? .systemBlue
+                let tint = parking.parking.providerInfo?.uiColor ?? .systemBlue
+                view.markerTintColor = tint
                 view.glyphText = "P"
+                // In the ink that reads on the provider's colour, as its initials are.
+                view.glyphTintColor = ScooterMapLook.ink(on: tint)
                 view.glyphImage = nil
                 // The bay opens in the dock, like a scooter.
                 view.canShowCallout = false

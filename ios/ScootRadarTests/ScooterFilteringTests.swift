@@ -446,13 +446,17 @@ final class ScooterFilteringTests: XCTestCase {
     @MainActor
     func testProviderInitialsAreWrittenInTheInkOfTheirColour() {
         let white = UIColor.white
-        let nearBlack: [ScooterProvider] = [.bird, .swing]
-        for provider in ScooterProvider.allCases where !nearBlack.contains(provider) {
+        // White on the darker colours, near black on the bright ones.
+        for provider in [ScooterProvider.publibike, .ride_mobility, .yoio, .jet] {
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
         }
+        for provider in [ScooterProvider.lime, .bolt, .voi, .dott, .hopp] {
+            XCTAssertNotEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
+            XCTAssertNotEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
+        }
         // Bird and Swing are near black by day and almost white on a dark map.
-        for provider in nearBlack {
+        for provider in [ScooterProvider.bird, .swing] {
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
             XCTAssertNotEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
         }

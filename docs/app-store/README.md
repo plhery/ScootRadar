@@ -74,7 +74,7 @@ The description's ALSO list names only declared features too.
 | Reduced Motion | Yes, since 4 November 2026 | Tested in 1.3.0 on the iPhone and iPad simulators: with Reduce Motion on, the map moves without animating |
 | Larger Text | Not yet: waits for the next version | See below |
 | VoiceOver, Voice Control | No | Not tested on a device yet |
-| Differentiate Without Color Alone, Sufficient Contrast | No | Some providers' dots differ only by colour; the selected pills' text, the parking "P" and the light map's dots are below the contrast Apple asks |
+| Differentiate Without Color Alone, Sufficient Contrast | No | Some providers' dots differ only by colour, and the light map's dots are below the contrast Apple asks. From the build after 1.3.0, what is written on a provider's colour (the selected pill, the initials, the parking "P") reads at 4.5:1 or better (`ScooterMapLook.ink(on:)`), and Settings' grey text is darker: 5.4:1 on the fully open sheet, about 4.3:1 where the half-open glass sheet lets the light map through |
 | Captions, Audio Descriptions | No | The app has no video or audio |
 
 **Larger Text waits for the build after 1.3.0.** In 1.3.0, at twice the standard

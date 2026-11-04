@@ -39,11 +39,19 @@ struct SettingsTile<Picture: View>: View {
                     .frame(maxWidth: .infinity)
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .accessibilityHidden(true)
-                Text(verbatim: title)
-                    .font(.footnote.weight(.semibold))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.75)
-                    .padding(.horizontal, 2)
+                // The chosen tile says so by more than its colour.
+                HStack(spacing: 3) {
+                    if isSelected {
+                        Image(systemName: "checkmark.circle.fill")
+                            .imageScale(.small)
+                            .accessibilityHidden(true)
+                    }
+                    Text(verbatim: title)
+                }
+                .font(.footnote.weight(.semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .padding(.horizontal, 2)
             }
             .padding(EdgeInsets(top: 4, leading: 4, bottom: 10, trailing: 4))
             .settingsTile(isSelected: isSelected, cornerRadius: 17)

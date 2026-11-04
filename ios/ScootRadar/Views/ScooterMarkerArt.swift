@@ -366,7 +366,7 @@ final class ScooterNamePillView: UIView {
             layer.borderColor = UIColor.clear.cgColor
             dot.backgroundColor = ink
             nameLabel.textColor = ink
-            timeLabel.textColor = ink.withAlphaComponent(0.8)
+            timeLabel.textColor = ink
         } else {
             material.isHidden = false
             material.effect = UIBlurEffect(style: content.isDark ? .systemThinMaterialDark : .systemThinMaterialLight)
