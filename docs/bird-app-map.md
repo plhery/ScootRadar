@@ -2,11 +2,12 @@
 
 Since 28 October 2026 the Node cache reads Bird's rider map, signed in, where
 Bird or Spin publishes no feed ([`server/birdApp.ts`](../server/birdApp.ts)),
-37 areas since 3 November. Bird's scooters in the United States: Austin,
+39 areas since 4 November. Bird's scooters in the United States: Austin,
 Bloomington, IN, Charlotte, Coral Gables, Harrisonburg, Jacksonville,
 Knoxville, Mankato, Mesa, Ogden, Sacramento, Scottsdale, Wilmington, NC,
 Winona and Yonkers. Spin's: Auburn, AL, Baton Rouge, Canton, OH, Greeley,
-Kent, OH, Moscow, ID, Pullman and San Diego State. Bird's in Canada:
+Greenwood Village, CO, Kent, OH, Moscow, ID, Pullman, San Diego State and
+Santa Monica. Bird's in Canada:
 Brampton, Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat,
 Mississauga, Okotoks, Oshawa, Penticton, Pickering, Spruce Grove (with
 Stony Plain), St. Albert and Vernon. The user asked for it on 27
@@ -25,7 +26,8 @@ nearest a point within 5 km, nearest first, so the cache sweeps an area as
 BinBin's ([`server/nearestSweep.ts`](../server/nearestSweep.ts)): until every
 point of its outline lies within a reply that listed every vehicle that near.
 A sweep is planned from the positions the last one published. Only the
-system's own brand is kept, inside the outline: Bird's app shows Spin's fleet
+system's own brand is kept, inside the outline and the system's service
+areas (its `areas`, or its bounds): Bird's app shows Spin's fleet
 too, which a Spin system (`spin_us_app_*`) keeps where Spin has no public
 feed, and Spin's public feeds supply elsewhere. Each scooter keeps its battery
 charge and range. The map gives no position time, so the observation time is
@@ -254,6 +256,46 @@ emptied for the winter, and Oshawa fell from 38 to 11. Oklahoma City's
 scooters, 3 of 43 leaving in about 20 hours and 7 of 57 the next day, came
 off. Recheck the left-out areas in spring, when fleets and riders come
 back ([coverage gaps](coverage-gaps.md)).
+
+### Where an area meets our feeds, November 2026
+
+The searches above left aside the areas our Bird and Spin feeds cover. On 3
+November 2026 the research account read a centre of each of those areas
+and matched the map's scooters to the cache's, 40 m apart. Three held
+scooters the cache lacked, and each was swept whole twice, from 21:54 UTC
+on 3 November and from 04:25 UTC on 4 November (6.5 hours):
+
+| Area | Scooters | Left | Arrived over 150 m away | Added |
+| --- | ---: | ---: | ---: | --- |
+| Santa Monica (Spin) | 364 → 341 | 121 (33%) | 31 | yes |
+| Greenwood Village (Spin) | 96 → 94 | 15 (16%) | 9 | yes |
+| Long Beach | 968 → 932 | 126 (13%) | 14 | not yet |
+
+- **Santa Monica:** Bird's area holds Bird's fleet, which Bird's public
+  Santa Monica feed gives (all but 21 of 318 within 40 m of the cache's), and
+  Spin's, which Spin's public Santa Monica feed lists none of: 364 scooters,
+  361 in the city and 3 in Pacific Palisades. Bird's own left at the same
+  rate, 31%. The City moved its shared-mobility program from contracts to
+  permits in July 2025, and Spin has been one of its operators, permitted
+  700 scooters
+  ([Santa Monica Daily Press](https://www.smdp.com/city-hall-could-allow-fewer-scooter-companies-to-operate-in-santa-monica)).
+- **Greenwood Village:** the area of Spin's Meridian, CO, runs from
+  Meridian north to Belleview Avenue. Spin's public Meridian feed lists the
+  scooters south of County Line Road (39.566° N), the Douglas County line,
+  and none of the 96 north of it, about the Denver Tech Center: 68 in
+  Greenwood Village and 28 in unincorporated Arapahoe County, by
+  OpenStreetMap. Denver South and five metro districts started a $1-a-ride
+  Spin pilot there in October 2026, through September 2027
+  ([Axios](https://www.axios.com/local/arapahoe/2026/10/26/denver-south-electric-scooter-pilot)).
+  `spin_us_app_greenwood_village` sweeps the whole area and keeps, by its
+  one service area, the scooters north of 39.567° N; Meridian's stay with
+  Spin's feed. The service area's bounds are the outline's from that line
+  north, set by hand: the update script sets a system's own bounds only.
+- **Long Beach:** Bird is one of the City's two permitted operators, with
+  Lime ([coverage gaps](coverage-gaps.md)). Its 968 scooters, which no
+  feed of ours has, moved: 126 left and 14 turned up far from any earlier
+  one. That is under the bar, though, so the area is swept again 24 hours
+  after its first sweep before it goes on the map.
 
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.

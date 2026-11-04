@@ -3,7 +3,7 @@ import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import areaCatalog from '../data/bird-app-areas.json';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
-import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
+import { serviceAreas, type RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { daytimeSweeps } from './appMapCadence';
@@ -297,13 +297,17 @@ export type PreviousPositions = (feedId: string) => readonly Published[] | undef
 
 /**
  * A complete sweep of a Bird area's outline (sweepNearestArea), planned from where its scooters
- * last stood. Only the brand of the system's provider is published, inside the outline.
+ * last stood. Only the brand of the system's provider is published, inside the outline and one of
+ * the system's service areas: Spin's Greenwood Village system keeps the north of an area whose
+ * south is Spin's public Meridian feed.
  */
 export async function collectBirdArea(system: RegionalScooterSystem, previous: readonly Published[],
   api: Pick<BirdClient, 'nearest'>, limits?: SweepLimits): Promise<SourceVehicles> {
   const rings = system.birdAppArea ? AREAS.get(system.birdAppArea) : undefined;
   if (!rings || (system.provider !== 'bird' && system.provider !== 'spin')) throw new Error('Not a Bird app map area');
-  const inside = (scooter: BirdScooter) => scooter.brand === system.provider && boundsContainPoint(system.bounds, scooter.lat, scooter.lng) &&
+  const areas = serviceAreas(system);
+  const inside = (scooter: BirdScooter) => scooter.brand === system.provider &&
+    areas.some(area => boundsContainPoint(area.bounds, scooter.lat, scooter.lng)) &&
     rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng));
   const published = (scooters: Iterable<BirdScooter>): Vehicle[] => [...scooters].filter(inside).map(scooter => ({
     // By the operator's own id, which the map keeps, so a scooter where two areas meet is shown once.

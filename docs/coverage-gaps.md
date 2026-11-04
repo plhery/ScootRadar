@@ -1246,7 +1246,10 @@ banned shared scooters, and feeds that were empty when checked.
     Salt Lake City hold 1 and 2 scooters. Spin lists none in Tempe, Tucson, Los
     Angeles, Santa Monica, Chicago, Lansing, Dayton, Dallas, San Marcos,
     Alexandria, Arlington (VA), Milwaukee or Cheyenne, and only e-bikes at Penn
-    State; its UCF feed answers 404. Veo lists no scooter in Colorado Springs,
+    State; its UCF feed answers 404. Spin's Santa Monica scooters, about 360,
+    are read from Bird's rider map since 4 November 2026
+    ([Bird rider map](bird-app-map.md#where-an-area-meets-our-feeds-november-2026)).
+    Veo lists no scooter in Colorado Springs,
     Pensacola, Indianapolis, Memphis, Austin or Seattle, at College Station
     one, and only its seated or pedal vehicles at the University of Alabama,
     Orlando, Urbana-Champaign, Bend and Oregon State; its `lac`, `san` and `spe`

@@ -413,6 +413,7 @@ describe('the United States', () => {
     ['UCSB', 'Isla Vista, CA'], ['UC Santa Barbara', 'Isla Vista, CA'], ['Lake Tahoe', 'South Lake Tahoe, CA'],
     ['Stateline', 'South Lake Tahoe, CA'], ['SDSU', 'San Diego, CA'], ['Kent State', 'Kent, OH'], ['LSU', 'Baton Rouge, LA'],
     ['Washington State University', 'Pullman, WA'], ['University of Idaho', 'Moscow, ID'],
+    ['Denver Tech Center', 'Greenwood Village, CO'], ['DTC', 'Greenwood Village, CO'],
   ])('finds the town of a campus or a borough by its other name: "%s"', (query, title) => {
     expect(namedCities(query)[0].city.title).toBe(title);
   });

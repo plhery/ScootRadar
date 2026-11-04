@@ -2173,6 +2173,46 @@
       ]
     },
     {
+      "id": "spin_us_app_greenwood_village",
+      "country": "US",
+      "provider": "spin",
+      "city": "Greenwood Village",
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "center": [
+        39.60044,
+        -104.89026
+      ],
+      "bounds": {
+        "south": 39.52692,
+        "north": 39.624,
+        "west": -104.90671,
+        "east": -104.83944
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "cacbfe09-2695-4aaa-901c-a9d20e019671",
+      "areas": [
+        {
+          "city": "Greenwood Village",
+          "aliases": [
+            "Denver Tech Center",
+            "DTC",
+            "Centennial"
+          ],
+          "center": [
+            39.60044,
+            -104.89026
+          ],
+          "bounds": {
+            "south": 39.567,
+            "north": 39.624,
+            "west": -104.90671,
+            "east": -104.8394
+          }
+        }
+      ]
+    },
+    {
       "id": "spin_us_app_kent",
       "country": "US",
       "provider": "spin",
@@ -2242,6 +2282,26 @@
         "WSU",
         "Washington State University"
       ]
+    },
+    {
+      "id": "spin_us_app_santa_monica",
+      "country": "US",
+      "provider": "spin",
+      "city": "Santa Monica",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        34.0195,
+        -118.4912
+      ],
+      "bounds": {
+        "south": 33.96423,
+        "north": 34.0504,
+        "west": -118.54425,
+        "east": -118.44368
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "adb86add-ab95-4e05-a4af-2c406949fda4"
     },
     {
       "id": "spin_us_app_sdsu",

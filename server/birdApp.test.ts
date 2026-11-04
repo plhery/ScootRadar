@@ -275,6 +275,16 @@ describe('Bird areas in the cache', () => {
     }
   });
 
+  it('keeps only the scooters inside its service areas, when it has some, as where a public feed has the rest of the outline', async () => {
+    const [lat, lng] = system.center;
+    const brand = system.provider === 'bird' ? BIRD : SPIN;
+    const vehicles = [{ id: id(), brand_id: brand, lat, lng }, { id: id(), brand_id: brand, lat: lat + 0.002, lng }];
+    expect((await collectBirdArea(system, [], simulated(() => vehicles).api)).vehicles).toHaveLength(2);
+    const north = { city: system.city, center: [lat + 0.002, lng] as [number, number], bounds: { ...system.bounds, south: lat + 0.001 } };
+    const result = await collectBirdArea({ ...system, areas: [north] }, [], simulated(() => vehicles).api);
+    expect(result.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual([`${system.provider}:${vehicles[1].id}`]);
+  });
+
   it('refuses a system that is not a Bird area', async () => {
     const { api } = simulated(() => []);
     await expect(collectBirdArea({ ...system, birdAppArea: undefined }, [], api)).rejects.toThrow('Not a Bird app map area');

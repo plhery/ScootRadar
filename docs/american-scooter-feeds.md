@@ -698,7 +698,11 @@ polls after, to 22:14 EDT, found nothing more outside them.
   (17:29 to 17:45 MDT), none of Spin's scooters stood there (the northernmost
   at 39.564° N), and Veo's 7 a poll there counted under Denver, their own
   feed's town: 5 in Denver, 2 in Greenwood Village. Of Spin's 68 to 71,
-  about 61 stood in Meridian and 9 in unincorporated Douglas County.
+  about 61 stood in Meridian and 9 in unincorporated Douglas County. Spin's
+  feed leaves out its scooters north of County Line Road, about 96 around
+  the Denver Tech Center on 3 November 2026, which come from Bird's rider map
+  since 4 November as Greenwood Village's
+  ([Bird rider map](bird-app-map.md#where-an-area-meets-our-feeds-november-2026)).
 
 **Left out.** Outside every box of their own feed, in the survey's and the
 evening's polls:

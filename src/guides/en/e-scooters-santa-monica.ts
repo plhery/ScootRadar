@@ -6,21 +6,22 @@ const guide: Guide = {
   topic: 'santa-monica',
   name: 'E-scooters in Santa Monica, California',
   title: 'E-scooters in Santa Monica 2026: Bird, Veo, rules, the Pier',
-  description: 'E-scooters in Santa Monica: Bird and Veo, what a ride costs, the licence and sidewalk rules, and why you can’t ride on the Pier or the beach path.',
+  description: 'E-scooters in Santa Monica: Bird, Spin and Veo, what a ride costs, the licence and sidewalk rules, and why you can’t ride on the Pier or the beach path.',
   headline: 'E-scooters in Santa Monica: Bird, Veo, the rules and the beach path',
-  lede: 'E-scooters in Santa Monica come in two apps, Bird and Veo: those are the companies on our map, while the City names Spin and Veo as its operators. Veo charges $1 to unlock plus $0.50 a minute plus tax (its published rate on 22 October 2026); Bird shows its price in the app. California asks for a valid driving licence or permit and caps scooters at 15 mph, and Bird rents only to over-18s. Sidewalks are off limits, and the City keeps e-scooters off the beach bike path, Ocean Front Walk, the Pier, the Third Street Promenade and its parks, where shared ones shut off or slow to 1 mph.',
+  lede: 'E-scooters in Santa Monica come from Bird, Spin and Veo, the companies on our map: the City names Spin and Veo as its operators, and Bird owns Spin. Veo charges $1 to unlock plus $0.50 a minute plus tax (its published rate on 22 October 2026); Bird shows its price in the app. California asks for a valid driving licence or permit and caps scooters at 15 mph, and Bird rents only to over-18s. Sidewalks are off limits, and the City keeps e-scooters off the beach bike path, Ocean Front Walk, the Pier, the Third Street Promenade and its parks, where shared ones shut off or slow to 1 mph.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-11-04',
   city: 'us:ca:Santa Monica',
   sections: [
     {
       heading: 'Which apps rent e-scooters in Santa Monica?',
       blocks: [
         'Santa Monica permits shared scooters and e-bikes itself. Its programme left the pilot phase on 26 September 2024 and, under the rules for operators updated on 7 November 2025, continues indefinitely, with permits under continuous review. Up to four companies may hold one, and at launch their combined fleet, e-bikes included, was capped at a daily average of 2,200 devices.',
-        'The City names Spin and Veo as its current operators; both have held permits since July 2021. The Santa Monica Daily Press reported in 2023 that Bird had bought Spin. On 22 October 2026 Spin’s open data for Santa Monica listed no vehicles and named Bird Rides, Inc. as its operator, while Bird’s own Santa Monica data listed about 490 scooters and 160 e-bikes.',
+        'The City names Spin and Veo as its current operators; both have held permits since July 2021. The Santa Monica Daily Press reported in 2023 that Bird had bought Spin. On 22 October 2026 Spin’s open data for Santa Monica listed no vehicles and named Bird Rides, Inc. as its operator, while Bird’s own Santa Monica data listed about 490 scooters and 160 e-bikes. Spin’s scooters are on Bird’s rider app, though: it listed about 360 in Santa Monica on 3 November 2026, and our map shows them since 4 November.',
         {
           list: [
             '**Bird**: stand-up scooters and e-bikes, in the Bird app.',
+            '**Spin**: stand-up scooters, which the Bird app shows beside Bird’s own.',
             '**Veo**: stand-up scooters and e-bikes, in the Veo app.',
           ],
         },
@@ -126,7 +127,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Santa Monica?',
-      answer: 'The City names Spin and Veo. On 22 October 2026 Spin’s open data listed no vehicles and named Bird Rides, Inc. as its operator, and at 11:18 a.m. the map showed about 460 Bird and 350 Veo scooters.',
+      answer: 'The City names Spin and Veo. On 22 October 2026 Spin’s open data listed no vehicles and named Bird Rides, Inc. as its operator, and at 11:18 a.m. the map showed about 460 Bird and 350 Veo scooters. Bird’s rider app listed about 360 Spin scooters in Santa Monica on 3 November 2026, on our map since 4 November.',
     },
     {
       question: 'How much does a scooter cost in Santa Monica?',
