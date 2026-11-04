@@ -586,6 +586,35 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(restoredModel.enabledProviders, [.hopp, .publibike])
     }
 
+    func testProvidersAddedSinceALegacyChoiceAreShownAndTheChoiceIsKeptAsThoseTurnedOff() {
+        let defaults = isolatedDefaults()
+        func makeModel() -> ScooterMapModel {
+            ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: CLLocationManager(),
+                defaults: defaults
+            )
+        }
+        // As 1.2.0 kept "Lime only": RideMovi, which came in 1.3.0, was missing from it.
+        defaults.set(["lime"], forKey: "enabled-providers")
+        let migrated = makeModel()
+        XCTAssertTrue(migrated.enabledProviders.contains(.lime))
+        XCTAssertTrue(migrated.enabledProviders.contains(.ridemovi))
+        XCTAssertFalse(migrated.enabledProviders.contains(.bolt))
+        XCTAssertFalse(migrated.enabledProviders.contains(.publibike))
+
+        // A choice since keeps the providers turned off, and drops the legacy list.
+        migrated.toggle(provider: .bolt)
+        XCTAssertNil(defaults.array(forKey: "enabled-providers"))
+        let disabled = defaults.array(forKey: "disabled-providers") as? [String]
+        XCTAssertEqual(disabled, ["bird", "dott", "hopp", "pony", "publibike", "voi"])
+        XCTAssertEqual(makeModel().enabledProviders, migrated.enabledProviders)
+
+        // A list naming a provider the catalog no longer has is read without it.
+        defaults.set(["voi", "gone"], forKey: "disabled-providers")
+        XCTAssertEqual(makeModel().enabledProviders, Set(ScooterProvider.allCases).subtracting([.voi]))
+    }
+
     func testAppearanceGoesByTheSunUntilOneIsChosenAndIsKept() throws {
         let defaults = isolatedDefaults()
         let clock = TestClock()

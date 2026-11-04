@@ -137,10 +137,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private var locationIssueDismissed = false
     private(set) var enabledProviders = Set(ScooterProvider.allCases) {
         didSet {
+            // The providers turned off, as Android keeps them: one the catalog adds later is on until turned off.
             defaults.set(
-                enabledProviders.map(\.rawValue).sorted(),
-                forKey: Self.enabledProvidersKey
+                ScooterProvider.allCases.filter { !enabledProviders.contains($0) }.map(\.rawValue).sorted(),
+                forKey: Self.disabledProvidersKey
             )
+            defaults.removeObject(forKey: Self.legacyEnabledProvidersKey)
             rebuildMapScooters()
             rebuildMapClusters()
             rebuildMapLastSeen()
@@ -388,7 +390,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let mapStyleKey = "apple-map-style"
     private static let showsZonesKey = "map-zones"
     private static let appearanceKey = "appearance"
-    private static let enabledProvidersKey = "enabled-providers"
+    private static let disabledProvidersKey = "disabled-providers"
+    /// Until 4 November 2026 the app kept the providers that were on, so those the catalog added after a rider's
+    /// last change of the filters stayed off: RideMovi, new in 1.3.0, for everyone who had changed them in 1.2.0.
+    private static let legacyEnabledProvidersKey = "enabled-providers"
+    /// The catalog's providers until 11 October 2026, the only ones a rider could have turned off in every version.
+    private static let providersBefore11October2026: Set<ScooterProvider> = [.bird, .bolt, .dott, .hopp, .lime, .pony, .publibike, .voi]
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
     private static let ridePassesKey = "provider-ride-passes-v1"
     private static let hasLocatedOnceKey = "has-located-once"
@@ -462,10 +469,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         rideEstimateMinutes = RideEstimateDuration.normalized(savedEstimateMinutes)
         ridePasses = Self.loadRidePasses(from: defaults)
 
-        if let savedProviderIDs = defaults.array(forKey: Self.enabledProvidersKey) as? [String] {
+        if let disabledIDs = defaults.array(forKey: Self.disabledProvidersKey) as? [String] {
+            enabledProviders = Set(ScooterProvider.allCases).subtracting(disabledIDs.compactMap(ScooterProvider.init(rawValue:)))
+        } else if let savedProviderIDs = defaults.array(forKey: Self.legacyEnabledProvidersKey) as? [String] {
+            // A legacy list of those on turns off only the providers of before 11 October 2026 it lacks: it also lacks
+            // those added after it was written, which the rider never saw.
             let savedProviders = Set(savedProviderIDs.compactMap(ScooterProvider.init(rawValue:)))
             if savedProviders.count == savedProviderIDs.count {
-                enabledProviders = savedProviders
+                enabledProviders = Set(ScooterProvider.allCases)
+                    .subtracting(Self.providersBefore11October2026.subtracting(savedProviders))
             }
         }
 
