@@ -103,7 +103,8 @@ def query(job, root=ROOT, timeout=60):
 def call(config, method, path, value=None):
     request=urllib.request.Request(config['url'].rstrip('/')+path,
         data=json.dumps(value).encode() if value is not None else None,
-        headers={'Authorization':'Bearer '+config['token'],'Content-Type':'application/json'},method=method)
+        headers={'Authorization':'Bearer '+config['token'],'Content-Type':'application/json',
+                 'User-Agent':'ScootRadar-Ryde-Worker/1.0'},method=method)
     # No redirects: never forward worker credentials to a different endpoint.
     class NoRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self,*args): return None

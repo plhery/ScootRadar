@@ -47,7 +47,7 @@ request cost and city-by-city completeness remain production observations.
   fallback for api.ryde.vip so a proxy restart cannot silently move a key rotation
   outside the bridge. Existing connections/PAC caches remain a live-test concern.
 - `worker.py`: one process lock, query deadline, app trigger, private result spool,
-  outbound authenticated HTTPS broker polling, idempotent submission, held state
+  outbound authenticated HTTPS broker polling (ScootRadar-Ryde-Worker client identifier), idempotent submission, held state
   on failure. Native key-renewal opportunities continue through idle relaunches.
 - `shadow.py`: bounded local sampler (maximum 24 hours, minimum 120 seconds
   spacing); stops on its first failed sample and never publishes production data.
@@ -332,3 +332,15 @@ identity, operating rings, saturation behaviour and sweep cost, then sum the
 account-wide budget including interactive work and recovery overhead. If it does
 not fit, improve reliable request generation, adjust idle cadences or add justified
 producer capacity. Increasing concurrency alone does not establish upstream quota.
+
+## First production connection, 4 November
+
+The CI-gated rollout loaded 2,356 refresh groups for all 64 additional cities.
+Native results were accepted and positive scooter snapshots published in Germany,
+Sweden and Finland through the same supervised Mac session. The first connection
+exposed Cloudflare rejecting Python's default User-Agent on our cache hostname;
+the worker now identifies itself as `ScootRadar-Ryde-Worker/1.0`. Authentication
+remains the dedicated broker token. Startup jobs that expired before the worker
+connected were rejected without refreshing snapshots. The background fill and
+normal client-driven refreshes continue in production; the separate shadow
+sampler and its auto-start have been removed.
