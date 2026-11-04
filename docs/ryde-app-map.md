@@ -1123,3 +1123,21 @@ native map response. Reattachment after verified restoration archives the old
 private key before a new login can bind another one. Apple requested the
 operator's password for this reattachment; the finer independent coverage scan
 and overnight sampler are waiting for it. The source remains disabled.
+
+
+### Finer coverage test and overnight start, 4 November
+
+The operator completed the new Apple sign-in. A different 1,000 m grid completed
+66 spatial queries with zero unfinished cells and retained 1,023 scooter
+observations. It contained all 90 stationary reference observations eligible for
+the reviewed operating area. The raw reference had 91: one point outside all
+operating rings was intentionally excluded, not omitted by the scan. Eight IDs
+were unique to each of the two scans, consistent with changing observations;
+these remain samples, not a guaranteed fleet total.
+
+Drammen's coverage gate now records that empirical review and the tested grid.
+A separate uptime gate remains false. The 12-hour normal-user shadow LaunchAgent
+started on 4 November at 21:09:53 Europe/Zurich and is due to end around 09:09:53
+on 5 November. Its first sample and native renewal succeeded. Review the completed
+pilot before enabling a source; no production feed was enabled here. See the
+[runbook](ryde-bridge.md) for private evidence paths and acceptance criteria.

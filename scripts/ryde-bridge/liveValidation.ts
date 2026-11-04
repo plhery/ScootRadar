@@ -6,7 +6,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import catalog from '../../data/ryde-bridge-areas.json';
 import { RydeBroker, type RydeQuery, type RydeResult } from '../../server/rydeBridge';
-import { scanRydeArea, type RydeArea } from '../../server/rydeApp';
+import { checkRydeReference, scanRydeArea, type RydeArea } from '../../server/rydeApp';
 import { createSnapshotServer } from '../../server/snapshotServer';
 
 const root=join(homedir(),'.local/share/scootradar/ryde-bridge');
@@ -52,11 +52,10 @@ try {
   if(!Number.isSafeInteger(requests)||requests<1||requests>120)throw new Error('Invalid validation budget');
   const scan=await scanRydeArea(area,api,{requests,milliseconds:10*60_000,depth:3});
   const after=await api.query(central);
-  const found=new Set(scan.observations.map(row=>row.id));
-  const stable=before.scooters.filter(a=>after.scooters.some(b=>a.id===b.id&&Math.abs(a.lat-b.lat)<0.00001&&Math.abs(a.lng-b.lng)<0.00001));
+  const reference=checkRydeReference(area,before.scooters,after.scooters,scan.observations);
   const summary={at:Date.now(),directory,cellM:area.cellM,requests:scan.requests,unfinished:scan.unfinished,complete:scan.complete,
     scooters:scan.observations.length,oldestObservedAt:scan.observedAt,referenceBefore:before.scooters.length,
-    referenceAfter:after.scooters.length,stationaryReference:stable.length,stationaryMissing:stable.filter(row=>!found.has(row.id)).length,
+    referenceAfter:after.scooters.length,...reference,
     broker:broker.stats,history};
   await writeFile(join(directory,'scan.json'),JSON.stringify(scan),{mode:0o600});
   await writeFile(join(directory,'summary.json'),JSON.stringify(summary,null,2),{mode:0o600});

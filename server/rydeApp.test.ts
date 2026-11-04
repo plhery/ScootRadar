@@ -1,8 +1,8 @@
 import { describe,expect,it } from 'vitest';
-import { scanRydeArea,withRydeAppCollectors,collectRydeArea,type RydeArea } from './rydeApp';
+import { checkRydeReference,scanRydeArea,withRydeAppCollectors,collectRydeArea,type RydeArea } from './rydeApp';
 import type { RydeQuery } from './rydeBridge';
 const area:RydeArea={id:'test',city:'Test',cityId:43,country:'NO',bounds:{south:59.74,north:59.741,west:10.2,east:10.201},
-  rings:[[[59.74,10.2],[59.74,10.201],[59.741,10.201],[59.741,10.2]]],geometryEvidence:'fixture',coverageEvidence:'fixture',coverageValidated:false,saturationCount:2,cellM:1000};
+  rings:[[[59.74,10.2],[59.74,10.201],[59.741,10.201],[59.741,10.2]]],geometryEvidence:'fixture',coverageEvidence:'fixture',coverageValidated:false,uptimeEvidence:'',uptimeValidated:false,saturationCount:2,cellM:1000};
 const api=(scooters:{id:string;lat:number;lng:number}[])=>({query:async(q:RydeQuery)=>({version:1 as const,id:'a'.repeat(32),query:{...q,version:1 as const,id:'a'.repeat(32),expiresAt:200},observedAt:100,coverage:'unknown' as const,scooters})});
 describe('Ryde coverage gates',()=>{
   it('retains parent observations and marks a saturated budget-limited scan incomplete',async()=>{
@@ -36,8 +36,21 @@ it('skips gaps outside disconnected operating rings',async()=>{
 it('publishes positive partial observations without claiming any completed area',async()=>{
   const {withinCollection}=await import('./sweeps');
   const progress:{vehicles:number;bounds:number}[]=[];
-  const approved={...area,coverageValidated:true};
+  const approved={...area,coverageValidated:true,uptimeValidated:true,uptimeEvidence:'fixture'};
   await withinCollection({urgent:()=>true,focus:()=>undefined,progress:(vehicles,bounds)=>{progress.push({vehicles:vehicles.length,bounds:bounds.length});}},
     ()=>collectRydeArea(approved,api([{id:'a',lat:59.7405,lng:10.2005}])));
   expect(progress).toEqual([{vehicles:1,bounds:0}]);
+});
+
+it('requires the independent overnight acceptance even after coverage review',async()=>{
+  const covered={...area,coverageValidated:true};
+  await expect(collectRydeArea(covered,api([]))).rejects.toThrow('uptime');
+});
+
+it('distinguishes intentionally filtered reference points from missing in-area scooters',()=>{
+  const inside={id:'in',lat:59.7405,lng:10.2005},outside={id:'out',lat:59.75,lng:10.3};
+  expect(checkRydeReference(area,[inside,outside],[inside,outside],[inside])).toEqual({
+    stationaryReference:2,stationaryEligible:1,stationaryOutside:1,stationaryMissing:1,stationaryMissingEligible:0,
+  });
+  expect(checkRydeReference(area,[inside,outside],[inside,outside],[]).stationaryMissingEligible).toBe(1);
 });

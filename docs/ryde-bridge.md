@@ -14,8 +14,8 @@ scooter observations, included all 89 stationary before/after reference scooters
 and left three cells unfinished. It is a partial scan, not a validated complete
 feed. Geometry pruning and a finer independent scan are the next coverage check.
 The explicit clean-stop test also restored an app-owned key and verified a fresh
-map response. Apple requires the operator's password for the next reattachment;
-independent coverage and the overnight pilot are waiting for that sign-in.
+map response. The operator then completed Apple sign-in for the independent
+coverage test and overnight pilot.
 
 The exercise exposed a second race: publishing a job before quitting the app
 let a spontaneous map request claim it immediately before being cancelled by
@@ -128,10 +128,11 @@ bounded `--once` and shadow runs. Do not start two workers.
   successful native collection. Feed expiry remains the existing cache contract.
 
 `RYDE_BRIDGE_AREAS` is an explicit comma-separated allowlist. An area also needs
-`geometryEvidence`, `coverageEvidence` and `coverageValidated: true` in
+`geometryEvidence`, `coverageEvidence`, `coverageValidated: true`,
+`uptimeEvidence` and `uptimeValidated: true` in
 `data/ryde-bridge-areas.json`. Unknown or unreviewed areas fail startup. Existing
-Ryde feeds with overlapping coverage prevent additions. The present catalog has
-**no coverage-validated area**, so it cannot enable a feed yet. Once enabled,
+Ryde feeds with overlapping coverage prevent additions. Drammen has passed the bounded empirical coverage review. The present catalog
+has **no uptime-validated area**, so it cannot enable a feed yet. Once enabled,
 normal ScootRadar refresh demand reaches the same collector and shared broker;
 no new web/iOS refresh control is required. City/catalog presentation must be
 reviewed with each rollout, alongside geometry and source ownership.
@@ -230,3 +231,50 @@ This installs the normal-user `com.scootradar.ryde-shadow` LaunchAgent, takes th
 exclusive worker lock, samples every two minutes and stops on failure. It records
 sample ages, native renewals and process RSS. It never publishes a production feed.
 The source remains gated until both the soak and coverage evidence are reviewed.
+
+## Finer scan and overnight pilot, 4–5 November
+
+The second scan used a different, 1,000 m grid and skipped cells outside the
+reviewed operating rings. It completed all planned cells in 66 spatial reads
+plus two reference reads, retaining 1,023 distinct observations. There were no
+broker expiries or rejected results. All 90 stationary reference scooters inside
+the operating area were present. One additional stationary reference point was
+outside the operating rings and was intentionally filtered; the raw reference
+count was 91, not 90. The reference helper now reports that distinction explicitly.
+
+The first and second scans retained the same number of scooters, with eight IDs
+present only in each scan. Availability/position changes between observations
+remain possible. This is empirical validation within the reviewed operating
+area and the observed 100-result saturation behaviour. It does not establish a
+universal nearest-N rule, an upstream quota, or a guaranteed total fleet count.
+Observation age and unknown provider position timestamps retain their existing
+meaning. The tested 1,000 m grid is now the Drammen configuration.
+
+Private evidence: `producer/validation-20261104T200153530Z/summary.json`,
+`scan.json`, and `reference-analysis.json`. The latter records zero missing
+eligible reference observations and the one intentionally excluded point.
+
+The normal-user `com.scootradar.ryde-shadow` LaunchAgent started at
+**4 November 21:09:53 Europe/Zurich**, ending after 12 hours at about
+**5 November 09:09:53 Europe/Zurich**. Its first Drammen sample succeeded and
+included an accepted native renewal. It samples Drammen and Göteborg every two
+minutes and stops at its first failure. The Mac's actual AC configuration has
+`sleep=0`; no power setting was changed. The operator waived lock-screen testing
+because this Mac is operated unlocked.
+
+Check `producer/shadow-status.json` and `producer/shadow.jsonl` after the pilot.
+Require a completed run with no held state, expected sample spacing, successful
+renewals and bounded resource use before setting `uptimeValidated` and its
+evidence. Review interruptions rather than averaging them away. The collector
+now enforces uptime review independently of coverage review. No broker token,
+worker origin or production area has been enabled by this pilot.
+
+Idle waits in both workers observe a stop request within one second, rather than
+holding the worker lock through the full two-minute sample interval. The existing
+clean-stop command can then acquire the lock and verify native-key restoration.
+
+An automatic, one-off review is scheduled in the existing work context for
+**5 November at 09:15 Europe/Zurich**, after the sampler's expected finish.
+It will disable its own timer before auditing the results and continuing the
+already-authorized rollout work. The timer's private identifier is in the runtime
+resume status; it is not an instruction to enable a feed without reviewing the run.

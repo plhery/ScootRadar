@@ -20,6 +20,15 @@ def save(path, value):
         json.dump(value,f);f.flush();os.fsync(f.fileno())
     temp.replace(path)
 
+def wait_interval(seconds, stop_path):
+    """Back off without making an operator stop wait for the entire idle interval."""
+    deadline=time.monotonic()+seconds
+    while not stop_path.exists():
+        remaining=deadline-time.monotonic()
+        if remaining<=0:return False
+        time.sleep(min(1,remaining))
+    return True
+
 def relaunch(root=ROOT, after_quit=None):
     config=json.loads((root/'config.json').read_text())
     helper=root/'ryde-lifecycle'
@@ -143,9 +152,9 @@ def main():
             elif time.time()-last_trigger>90:
                 relaunch();last_trigger=time.time() # allow due native key renewals
             save(base/'worker-status.json',{'state':'ready','at':time.time()})
-            time.sleep(5)
+            wait_interval(5,base/'stop.json')
         except Exception as error:
             save(base/'worker-status.json',{'state':'held','reason':type(error).__name__,'at':time.time()})
-            time.sleep(60)
+            wait_interval(60,base/'stop.json')
 
 if __name__=='__main__': main()

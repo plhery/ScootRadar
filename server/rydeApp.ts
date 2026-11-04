@@ -11,6 +11,7 @@ export interface RydeArea {
   id: string; cityId: number; country: 'NO' | 'SE' | 'FI' | 'DE'; city: string;
   bounds: MapBounds; rings: [number, number][][];
   geometryEvidence: string; coverageEvidence: string; coverageValidated: boolean;
+  uptimeEvidence: string; uptimeValidated: boolean;
   saturationCount: number; cellM: number;
 }
 interface Cell { bounds: MapBounds; depth: number }
@@ -65,13 +66,30 @@ export async function scanRydeArea(area: RydeArea, api: Pick<RydeBroker, 'query'
     requests,unfinished:queue.length+unresolved,complete:area.coverageValidated && queue.length+unresolved===0};
 }
 
+/** Compare like-for-like: reference scooters outside the published area are filtered intentionally. */
+export function checkRydeReference(area: RydeArea, before: readonly RydeObservation[], after: readonly RydeObservation[],
+  observations: readonly RydeObservation[]) {
+  const last=new Map(after.map(row=>[row.id,row]));
+  const stable=before.filter(row=>{
+    const next=last.get(row.id);
+    return next && Math.abs(row.lat-next.lat)<.00001 && Math.abs(row.lng-next.lng)<.00001;
+  });
+  const eligible=(row: RydeObservation)=>boundsContainPoint(area.bounds,row.lat,row.lng) &&
+    area.rings.some(ring=>polygonContainsPoint(ring,row.lat,row.lng));
+  const found=new Set(observations.map(row=>row.id));
+  const missing=stable.filter(row=>!found.has(row.id));
+  return {stationaryReference:stable.length,stationaryEligible:stable.filter(eligible).length,
+    stationaryOutside:stable.filter(row=>!eligible(row)).length,stationaryMissing:missing.length,
+    stationaryMissingEligible:missing.filter(eligible).length};
+}
+
 export function rydeVehicles(scan: RydeScan): Vehicle[] {
   return scan.observations.map(row=>({provider:'ryde',vehicle_id:`ryde-app:${row.id}`,lat:row.lat,lng:row.lng,
     battery:null,range_m:null,distance_m:null,deep_link:null,
     rental_uris:{ios:'https://new-web-platform.ryde.vip/app/ios.html',android:'https://new-web-platform.ryde.vip/app/android.html',web:null}}));
 }
 export async function collectRydeArea(area: RydeArea, api: Pick<RydeBroker,'query'>): Promise<SourceVehicles> {
-  if (!area.geometryEvidence || !area.coverageEvidence || !area.coverageValidated) throw new Error('Ryde coverage has not passed review');
+  if (!area.geometryEvidence || !area.coverageEvidence || !area.coverageValidated || !area.uptimeValidated || !area.uptimeEvidence) throw new Error('Ryde coverage and uptime have not passed review');
   const scan=await scanRydeArea(area,api,undefined,Date.now,partial=>currentCollection()?.progress(rydeVehicles(partial),[]));
   if (!scan.complete) throw new Error('Ryde scan is incomplete; preserve previous observations');
   // The oldest retained observation sets the feed's age. Partial views never delete an old snapshot.
@@ -83,7 +101,7 @@ export function withRydeAppCollectors(feeds: CollectableScooterFeed[], broker: R
   const selected=new Set(enabled.split(','));
   const sources={NO:'norway',SE:'sweden',FI:'finland',DE:'germany'} as const;
   const additions: CollectableScooterFeed[]=areas.filter(area=>selected.has(area.id)).map(area=>{
-    if (!area.geometryEvidence || !area.coverageEvidence || !area.coverageValidated) throw new Error('Unreviewed Ryde area enabled');
+    if (!area.geometryEvidence || !area.coverageEvidence || !area.coverageValidated || !area.uptimeValidated || !area.uptimeEvidence) throw new Error('Unreviewed Ryde area enabled');
     if (feeds.some(f=>f.provider==='ryde' && f.coverage.some(b=>b.south<=area.bounds.north && b.north>=area.bounds.south && b.west<=area.bounds.east && b.east>=area.bounds.west))) {
       throw new Error('Ryde bridge would overlap existing coverage');
     }

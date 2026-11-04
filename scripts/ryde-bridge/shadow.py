@@ -7,7 +7,7 @@ import uuid
 import fcntl
 import subprocess
 import os
-from worker import ROOT, query, save
+from worker import ROOT, query, save, wait_interval
 
 
 def main():
@@ -40,13 +40,13 @@ def main():
             last_event_at=time.time()
             event={'at':time.time(),'rssKiB':resources,'nativeRenewals':renewals,'startedAt':started,'endsAt':end,'state':'observed','cityId':city,'scooters':len(result['scooters']),'seconds':time.time()-began,'coverage':'unknown'}
         except Exception as error:
-            event={'at':time.time(),'state':'held','reason':type(error).__name__}
+            event={'at':time.time(),'state':'stopped' if (base/'stop.json').exists() else 'held','reason':type(error).__name__}
             save(base/'shadow-status.json',event)
             # Operator intervention is needed; don't keep relaunching after a failed test.
             raise SystemExit('Shadow pilot held; inspect private session status')
         with (base/'shadow.jsonl').open('a') as f:f.write(json.dumps(event)+'\n')
         save(base/'shadow-status.json',event);turns+=1
-        time.sleep(min(args.interval,max(0,end-time.time())))
+        wait_interval(min(args.interval,max(0,end-time.time())),base/'stop.json')
     save(base/'shadow-status.json',{'at':time.time(),'state':'completed','observations':turns})
 
 if __name__=='__main__':main()

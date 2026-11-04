@@ -3259,10 +3259,12 @@
         ]
       ],
       "geometryEvidence": "docs/ryde-app-map.md: native getCityFences city 43, 4 November; APK map/a.java calculateCityPolygon uses fenceType=4 for CITY_BOUND interiors. Six rings; cityRange empty.",
-      "coverageEvidence": "",
-      "coverageValidated": false,
+      "coverageEvidence": "docs/ryde-bridge.md: 4 November finer 1000m grid, 66 reads, zero unfinished cells; all 90 stationary in-area reference observations retained. Empirical coverage within reviewed rings; no nearest-N completeness assumption.",
+      "coverageValidated": true,
+      "uptimeValidated": false,
+      "uptimeEvidence": "",
       "saturationCount": 100,
-      "cellM": 1500
+      "cellM": 1000
     }
   ],
   "candidates": [

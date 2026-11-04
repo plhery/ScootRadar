@@ -6,9 +6,19 @@ import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
-from worker import relaunch,save
+from worker import relaunch,save,wait_interval
 
 class WorkerTests(unittest.TestCase):
+    def test_long_idle_backoff_yields_to_an_operator_stop(self):
+        with tempfile.TemporaryDirectory() as name:
+            stop=Path(name)/'stop.json'
+            sleeps=[]
+            def sleep(seconds):
+                sleeps.append(seconds);stop.write_text('{}')
+            with patch('worker.time.sleep',side_effect=sleep):
+                self.assertTrue(wait_interval(120,stop))
+            self.assertEqual(len(sleeps),1);self.assertLessEqual(sleeps[0],1)
+
     def test_job_becomes_visible_after_quit_and_before_open(self):
         with tempfile.TemporaryDirectory() as name:
             root=Path(name);(root/'producer').mkdir()
