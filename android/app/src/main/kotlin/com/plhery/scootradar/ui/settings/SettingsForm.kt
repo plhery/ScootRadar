@@ -206,7 +206,7 @@ internal fun FormRow(
 internal fun FormNavigationRow(onClick: () -> Unit, label: @Composable RowScope.() -> Unit) {
     FormRow(onClick = onClick) {
         label()
-        FixedSymbol(Symbols.chevronRight, 13f, scootColors.tertiaryLabel, Modifier.clearAndSetSemantics { })
+        FixedSymbol(Symbols.chevronRightSystem, 13f, scootColors.tertiaryLabel, Modifier.clearAndSetSemantics { })
     }
 }
 

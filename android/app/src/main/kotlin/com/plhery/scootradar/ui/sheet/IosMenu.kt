@@ -176,7 +176,7 @@ private fun MenuRow(title: String, checked: Boolean, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(title, style = ScootType.body, color = colors.label, modifier = Modifier.weight(1f))
-        if (checked) SymbolIcon(Symbols.check, textSymbolSize(17f), colors.label)
+        if (checked) SymbolIcon(Symbols.checkSystem, textSymbolSize(17f), colors.label)
     }
 }
 

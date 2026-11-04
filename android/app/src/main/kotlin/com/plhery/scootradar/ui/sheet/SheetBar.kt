@@ -146,7 +146,7 @@ internal fun SheetDoneButton(title: String, onClick: () -> Unit, modifier: Modif
             .size(44.dp),
         contentAlignment = Alignment.Center,
     ) {
-        FixedSymbol(Symbols.check, 17f, Color.White)
+        FixedSymbol(Symbols.checkSystem, 17f, Color.White)
     }
 }
 
@@ -167,7 +167,7 @@ internal fun SheetBackButton(onClick: () -> Unit, modifier: Modifier = Modifier)
         contentAlignment = Alignment.Center,
     ) {
         // chevron.backward: Material's forward chevron, mirrored.
-        FixedSymbol(Symbols.chevronRight, 17f, scootColors.label, Modifier.scale(scaleX = -1f, scaleY = 1f))
+        FixedSymbol(Symbols.chevronRightSystem, 17f, scootColors.label, Modifier.scale(scaleX = -1f, scaleY = 1f))
     }
 }
 

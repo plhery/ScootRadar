@@ -47,7 +47,7 @@ class BoldTextSymbolsTest {
 
     /**
      * Under Bold Text each symbol is drawn heavier, at weight 700, the heaviest Material Symbols has: more of its
-     * box is ink. The six iOS draws bold already stay as they are.
+     * box is ink. The six iOS draws bold, drawn at 600 for SF's bold, are heavier too, as SF's bold is under it.
      */
     @Test
     fun underBoldTextEverySymbolUnderWeight700IsDrawnHeavier() {
@@ -67,7 +67,6 @@ class BoldTextSymbolsTest {
         }
 
         val notHeavier = mutableListOf<String>()
-        val changed = mutableListOf<String>()
         for ((name, symbol) in symbols) {
             shown = symbol
             // The frame drawn on the window's surface, which the capture takes: one coming too soon after the last
@@ -75,14 +74,9 @@ class BoldTextSymbolsTest {
             compose.drawWindowAgain()
             val regular = ink(compose.onNodeWithTag(REGULAR).captureToImage())
             val bold = ink(compose.onNodeWithTag(BOLD).captureToImage())
-            if (name in ALREADY_BOLD) {
-                if (abs(bold - regular) > 0.001 * regular) changed += name
-            } else if (bold < regular * 1.03) {
-                notHeavier += "$name (${"%.3f".format(bold / regular)})"
-            }
+            if (bold < regular * 1.03) notHeavier += "$name (${"%.3f".format(bold / regular)})"
         }
         assertEquals("the symbols drawn no heavier under Bold Text", emptyList<String>(), notHeavier)
-        assertEquals("the symbols iOS draws bold already, changed under Bold Text", emptyList<String>(), changed)
     }
 
     /** Automatic's picture in Appearance draws its sun and moon heavier under Bold Text, as iOS's SF Symbols are. */
@@ -132,8 +126,5 @@ class BoldTextSymbolsTest {
     private companion object {
         const val REGULAR = "regular"
         const val BOLD = "bold"
-
-        /** At weight 700 already: Try again's, the close button's, Directions', Open in's and a provider row's tick. */
-        val ALREADY_BOLD = setOf("refresh", "close", "walk", "scooterBold", "mapBold", "checkBold")
     }
 }
