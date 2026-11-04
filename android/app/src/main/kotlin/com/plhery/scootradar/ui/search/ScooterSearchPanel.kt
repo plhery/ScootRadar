@@ -28,7 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.autofill.ContentDataType
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusDirection
@@ -49,7 +49,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.contentDataType
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -230,7 +230,11 @@ private fun SearchField(model: SwissAddressSearchModel, focus: FocusRequester, o
                 .focusRequester(focus)
                 // A right click opens its edit menu, as UITextField's on an iPad (X-AD22).
                 .keepsSecondaryClicks()
-                .semantics { contentType = ContentType.AddressStreet }
+                // No autofill, as the iPhone's field asks for none since 4 November (a905f8d8). Typed as a street
+                // address, it had autofill services offer the rider's own addresses, in a list that at large text
+                // sizes covered Cancel under the field; the search finds places by itself. A field of no type is
+                // still offered autofill on the services' guesses, so it is marked as holding no data.
+                .semantics { contentDataType = ContentDataType.None }
                 // A hardware keyboard's Tab goes on to the next button and Shift+Tab back, as on the iPhone; Enter
                 // searches.
                 .onPreviewKeyEvent { event ->

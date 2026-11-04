@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentDataType
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -174,6 +175,20 @@ class SearchPanelTest {
         field.performKeyInput { pressKey(Key.Enter) }
         compose.waitForIdle()
         assertEquals(listOf("Bahnhofstrasse"), chosen.map { it.title })
+    }
+
+    /**
+     * The field asks for no autofill, as the iPhone's asks for no address AutoFill since 4 November (a905f8d8): no
+     * content type, where it was a street address, and no data type, without which Compose tells the autofill
+     * services of the focused field all the same, so they offer nothing over Cancel. Typing in it still searches.
+     */
+    @Test
+    fun theFieldAsksForNoAutofill() {
+        show("Bahnhof")
+        val field = compose.onNodeWithTag(SEARCH_FIELD_TAG).fetchSemanticsNode().config
+        assertFalse(SemanticsProperties.ContentType in field)
+        assertEquals(ContentDataType.None, field[SemanticsProperties.ContentDataType])
+        compose.onNodeWithText("Bahnhofstrasse", substring = true).assertExists()
     }
 
     /** Where the keyboard goes is SearchAndLanguageTest's, on a phone: Robolectric's window is never in touch mode. */
