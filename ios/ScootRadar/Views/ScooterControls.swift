@@ -1476,6 +1476,7 @@ private struct DockLeadButton: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(lead.accessibilityLabel)
+        .accessibilityHint(String(localized: "Shows scooter details"))
         // Voice Control answers to what it shows: "62 m to the nearest scooter".
         .voiceControlNames([
             "\(lead.distance) \(String(localized: "to the nearest scooter"))",
@@ -1703,13 +1704,14 @@ private struct ScooterCard: View {
         .buttonStyle(.plain)
         .accessibilityLabel(rideEstimateLabel)
         .accessibilityValue(priceLabel(quote))
+        .accessibilityHint(String(localized: "Changes the ride duration"))
         // Voice Control answers to what the cell shows: "4.50 CHF, 10 min".
         .voiceControlNames(["\(figure.value) \(figure.label)", figure.label, rideEstimateLabel])
     }
 
     private var rideEstimateLabel: String {
         String(
-            format: String(localized: "Ride estimate, %lld minutes. Change duration."),
+            format: String(localized: "Ride estimate, %lld minutes"),
             Int64(model.rideEstimateMinutes)
         )
     }

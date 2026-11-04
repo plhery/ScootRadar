@@ -1480,14 +1480,19 @@ extension ScooterModelsTests {
         XCTAssertEqual(served.subtitle, String(localized: "Scooters near this place"))
         XCTAssertNotEqual(served.subtitle, neutral)
 
-        // Where no operator shares data the bar keeps to the neutral line, also for VoiceOver.
+        // Where no operator shares data the bar keeps to the neutral line, and VoiceOver to the place.
         let unserved = ScooterSearchBarState.place(lungern)
         XCTAssertEqual(unserved.subtitle, neutral)
-        XCTAssertEqual(unserved.accessibilityLabel, "Paradeplatz. \(neutral)")
+        XCTAssertEqual(unserved.accessibilityLabel, "Paradeplatz")
         XCTAssertEqual(
             served.accessibilityLabel,
-            String(format: String(localized: "Showing scooters near %@. Search another place."), "Zürich HB")
+            String(format: String(localized: "Showing scooters near %@"), "Zürich HB")
         )
+        // What a tap does is the hint, not part of the label.
+        XCTAssertEqual(served.accessibilityHint, String(localized: "Searches for another place"))
+        XCTAssertEqual(unserved.accessibilityHint, served.accessibilityHint)
+        XCTAssertNil(ScooterSearchBarState.empty.accessibilityHint)
+        XCTAssertNil(ScooterSearchBarState.locating.accessibilityHint)
 
         // The search's own answer wins over the bundled areas, and a covered city is always served.
         let reportedUnserved = MapDestination(title: "Zürich HB", point: zurich.point, isCovered: false)

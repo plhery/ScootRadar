@@ -45,6 +45,7 @@
 "About" = "Om";
 "Live" = "Sanntid";
 "Filters, active" = "Filtre, på";
+"Active (filters)" = "På";
 "%lld percent or more" = "Minst %lld prosent";
 "All providers" = "Alle operatører";
 "Shows only this provider" = "Viser bare denne operatøren";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Elsparkesykler nær dette stedet";
 "Clear place" = "Fjern sted";
 "Showing scooters near %@. Search another place." = "Viser elsparkesykler nær %@. Søk etter et annet sted.";
+"Showing scooters near %@" = "Viser elsparkesykler nær %@";
+"Searches for another place" = "Søker etter et annet sted";
 
 /* UX alignment: search panel */
 "Cancel" = "Avbryt";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "Fra %1$@ for %2$lld min";
 "Price shown in the %@ app" = "Prisen vises i %@-appen";
 "Ride estimate, %lld minutes. Change duration." = "Anslått pris for turen, %lld minutter. Endre varighet.";
+"Ride estimate, %lld minutes" = "Anslått pris for turen, %lld minutter";
+"Changes the ride duration" = "Endrer varigheten på turen";
 "%lld min" = "%lld min";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "til nærmeste elsparkesykkel";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld min til fots";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Nærmeste elsparkesykkel: %1$@, %2$@ unna, %3$lld min til fots. Vis detaljer.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Nærmeste elsparkesykkel: %1$@, %2$@ unna, %3$lld min til fots";
 "min" = "min";
 "on foot" = "til fots";
 "from %@" = "fra %@";

@@ -45,6 +45,7 @@
 "About" = "Información";
 "Live" = "En directo";
 "Filters, active" = "Filtros activos";
+"Active (filters)" = "Activos";
 "%lld percent or more" = "%lld por ciento o más";
 "All providers" = "Todos los operadores";
 "Shows only this provider" = "Muestra solo este operador";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Patinetes cerca de este lugar";
 "Clear place" = "Quitar lugar";
 "Showing scooters near %@. Search another place." = "Patinetes cerca de %@. Buscar otro lugar.";
+"Showing scooters near %@" = "Patinetes cerca de %@";
+"Searches for another place" = "Busca otro lugar";
 
 /* UX alignment: search panel */
 "Cancel" = "Cancelar";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "Desde %1$@ por %2$lld min";
 "Price shown in the %@ app" = "Precio indicado en la app de %@";
 "Ride estimate, %lld minutes. Change duration." = "Precio estimado del trayecto, %lld minutos. Cambiar duración.";
+"Ride estimate, %lld minutes" = "Precio estimado del trayecto, %lld minutos";
+"Changes the ride duration" = "Cambia la duración del trayecto";
 "%lld min" = "%lld min";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "hasta el patinete más cercano";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld min a pie";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Patinete más cercano: %1$@, a %2$@, %3$lld min a pie. Ver detalles.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Patinete más cercano: %1$@, a %2$@, %3$lld min a pie";
 "min" = "min";
 "on foot" = "a pie";
 "from %@" = "desde %@";

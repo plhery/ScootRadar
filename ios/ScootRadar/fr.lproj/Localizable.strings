@@ -45,6 +45,7 @@
 "About" = "À propos";
 "Live" = "En direct";
 "Filters, active" = "Filtres actifs";
+"Active (filters)" = "Actifs";
 "%lld percent or more" = "%lld pour cent ou plus";
 "All providers" = "Tous les opérateurs";
 "Shows only this provider" = "Affiche uniquement cet opérateur";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Trottinettes près de ce lieu";
 "Clear place" = "Effacer le lieu";
 "Showing scooters near %@. Search another place." = "Lieu : %@. Affichage des trottinettes à proximité. Rechercher un autre lieu.";
+"Showing scooters near %@" = "Lieu : %@. Affichage des trottinettes à proximité";
+"Searches for another place" = "Recherche un autre lieu";
 
 /* UX alignment: search panel */
 "Cancel" = "Annuler";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "À partir de %1$@ pour %2$lld min";
 "Price shown in the %@ app" = "Prix indiqué dans l’app %@";
 "Ride estimate, %lld minutes. Change duration." = "Estimation du trajet, %lld minutes. Modifier la durée.";
+"Ride estimate, %lld minutes" = "Estimation du trajet, %lld minutes";
+"Changes the ride duration" = "Modifie la durée du trajet";
 "%lld min" = "%lld min";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "Trottinette la plus proche";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld min à pied";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Trottinette la plus proche : %1$@, à %2$@, %3$lld min à pied. Afficher les détails.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Trottinette la plus proche : %1$@, à %2$@, %3$lld min à pied";
 "min" = "min";
 "on foot" = "à pied";
 "from %@" = "depuis %@";

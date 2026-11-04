@@ -45,6 +45,7 @@
 "About" = "Um appið";
 "Live" = "Í beinni";
 "Filters, active" = "Síur, virkar";
+"Active (filters)" = "Virkar";
 "%lld percent or more" = "%lld prósent eða meira";
 "All providers" = "Öll fyrirtæki";
 "Shows only this provider" = "Sýnir aðeins þetta fyrirtæki";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Rafskútur nálægt þessum stað";
 "Clear place" = "Fjarlægja stað";
 "Showing scooters near %@. Search another place." = "Valinn staður: %@. Sýnir rafskútur í nágrenninu. Leita að öðrum stað.";
+"Showing scooters near %@" = "Valinn staður: %@. Sýnir rafskútur í nágrenninu";
+"Searches for another place" = "Leitar að öðrum stað";
 
 /* UX alignment: search panel */
 "Cancel" = "Hætta við";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "Frá %1$@ fyrir %2$lld mín.";
 "Price shown in the %@ app" = "Verðið sést í %@-appinu";
 "Ride estimate, %lld minutes. Change duration." = "Áætlað verð ferðar, %lld mínútur. Breyta lengd.";
+"Ride estimate, %lld minutes" = "Áætlað verð ferðar, %lld mínútur";
+"Changes the ride duration" = "Breytir lengd ferðarinnar";
 "%lld min" = "%lld mín.";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "að næstu rafskútu";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld mín. gangandi";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Næsta rafskúta: %1$@, %2$@ í burtu, %3$lld mín. gangandi. Sjá nánar.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Næsta rafskúta: %1$@, %2$@ í burtu, %3$lld mín. gangandi";
 "min" = "mín.";
 "on foot" = "gangandi";
 "from %@" = "frá: %@";

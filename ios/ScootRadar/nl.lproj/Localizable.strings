@@ -45,6 +45,7 @@
 "About" = "Over";
 "Live" = "Live";
 "Filters, active" = "Filters, actief";
+"Active (filters)" = "Actief";
 "%lld percent or more" = "%lld procent of meer";
 "All providers" = "Alle aanbieders";
 "Shows only this provider" = "Toont alleen deze aanbieder";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Deelsteps rond deze plaats";
 "Clear place" = "Plaats wissen";
 "Showing scooters near %@. Search another place." = "Je ziet deelsteps rond %@. Zoek een andere plaats.";
+"Showing scooters near %@" = "Je ziet deelsteps rond %@";
+"Searches for another place" = "Zoekt een andere plaats";
 
 /* UX alignment: search panel */
 "Cancel" = "Annuleren";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "Vanaf %1$@ voor %2$lld min";
 "Price shown in the %@ app" = "Prijs in de app van %@";
 "Ride estimate, %lld minutes. Change duration." = "Geschatte ritprijs, %lld minuten. Duur wijzigen.";
+"Ride estimate, %lld minutes" = "Geschatte ritprijs, %lld minuten";
+"Changes the ride duration" = "Wijzigt de ritduur";
 "%lld min" = "%lld min";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "tot de dichtstbijzijnde deelstep";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld min te voet";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Dichtstbijzijnde deelstep: %1$@, op %2$@, %3$lld min te voet. Details tonen.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Dichtstbijzijnde deelstep: %1$@, op %2$@, %3$lld min te voet";
 "min" = "min";
 "on foot" = "te voet";
 "from %@" = "vanaf %@";

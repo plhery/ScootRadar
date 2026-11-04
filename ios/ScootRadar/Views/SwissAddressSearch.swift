@@ -101,6 +101,7 @@ struct ScooterSearchIsland: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(state.accessibilityLabel)
+            .accessibilityHint(state.accessibilityHint ?? "")
             // Voice Control answers to what the bar shows, the place's name.
             .voiceControlNames([state.title, state.accessibilityLabel])
 
@@ -137,7 +138,9 @@ struct ScooterSearchIsland: View {
                     .contentTransition(.symbolEffect(.replace))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(filtersLabel)
+            .accessibilityLabel(String(localized: "Filters"))
+            // That some are on is the button's state, not its name.
+            .accessibilityValue(hasActiveFilters ? String(localized: "Active (filters)") : "")
             .accessibilityShowsLargeContentViewer {
                 Label(filtersLabel, systemImage: filtersSymbol)
             }
@@ -161,6 +164,7 @@ struct ScooterSearchIsland: View {
         hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle"
     }
 
+    /// The large content viewer's title, which says the state in words.
     private var filtersLabel: String {
         hasActiveFilters ? String(localized: "Filters, active") : String(localized: "Filters")
     }
@@ -543,7 +547,8 @@ struct ScooterSearchPanel: View {
     private func resultRows(_ results: [AddressSearchResult]) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(results) { result in
-                // Return chooses the first place, so it is shown as chosen.
+                // Return chooses the first place, so it is tinted. It is only
+                // the default, not selected, so it has no selected trait.
                 let isFirst = result.id == results.first?.id
 
                 Button {
@@ -561,7 +566,6 @@ struct ScooterSearchPanel: View {
                     )
                 }
                 .buttonStyle(.plain)
-                .accessibilityAddTraits(isFirst ? .isSelected : [])
 
                 if result.id != results.last?.id {
                     rowDivider

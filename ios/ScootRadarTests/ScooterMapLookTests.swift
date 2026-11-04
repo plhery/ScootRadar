@@ -692,7 +692,7 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(lead.detail, "PubliBike, 1 min on foot")
         XCTAssertEqual(
             lead.accessibilityLabel(locale: Self.swiss),
-            "Nearest scooter: PubliBike / Velospot, 62\u{00A0}m away, 1 min on foot. Show details."
+            "Nearest scooter: PubliBike / Velospot, 62\u{00A0}m away, 1 min on foot"
         )
         XCTAssertEqual(ScooterDockLead(scooter: scooter(), metres: 161).minutes, 3)
     }

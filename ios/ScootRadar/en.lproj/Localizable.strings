@@ -45,6 +45,7 @@
 "About" = "About";
 "Live" = "Live";
 "Filters, active" = "Filters, active";
+"Active (filters)" = "Active";
 "%lld percent or more" = "%lld percent or more";
 "All providers" = "All providers";
 "Shows only this provider" = "Shows only this provider";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Scooters near this place";
 "Clear place" = "Clear place";
 "Showing scooters near %@. Search another place." = "Showing scooters near %@. Search another place.";
+"Showing scooters near %@" = "Showing scooters near %@";
+"Searches for another place" = "Searches for another place";
 
 /* UX alignment: search panel */
 "Cancel" = "Cancel";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "From %1$@ for %2$lld min";
 "Price shown in the %@ app" = "Price shown in the %@ app";
 "Ride estimate, %lld minutes. Change duration." = "Ride estimate, %lld minutes. Change duration.";
+"Ride estimate, %lld minutes" = "Ride estimate, %lld minutes";
+"Changes the ride duration" = "Changes the ride duration";
 "%lld min" = "%lld min";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "to the nearest scooter";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld min on foot";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot";
 "min" = "min";
 "on foot" = "on foot";
 "from %@" = "from %@";

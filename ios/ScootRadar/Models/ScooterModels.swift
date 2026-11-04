@@ -2051,12 +2051,19 @@ enum ScooterSearchBarState: Equatable, Sendable {
     var accessibilityLabel: String {
         switch self {
         case let .place(destination) where destination.isCovered:
-            String(format: String(localized: "Showing scooters near %@. Search another place."), destination.title.isolated)
-        case let .place(destination):
-            // No scooters to announce: the place, then the same neutral line as on screen.
-            "\(destination.title.isolated). \(String(localized: "Tap to search a city or address"))"
-        case .empty, .locating:
+            String(format: String(localized: "Showing scooters near %@"), destination.title.isolated)
+        case .place, .empty, .locating:
+            // Where no operator shares data, the place alone: no scooters to announce.
             title
+        }
+    }
+
+    /// What tapping the bar does, for VoiceOver to say after its label; nil
+    /// where the label says it, as "Search city or address" does.
+    var accessibilityHint: String? {
+        switch self {
+        case .place: String(localized: "Searches for another place")
+        case .empty, .locating: nil
         }
     }
 }

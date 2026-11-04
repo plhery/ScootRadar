@@ -45,6 +45,7 @@
 "About" = "Über";
 "Live" = "Live";
 "Filters, active" = "Filter, aktiv";
+"Active (filters)" = "Aktiv";
 "%lld percent or more" = "%lld Prozent oder mehr";
 "All providers" = "Alle Anbieter";
 "Shows only this provider" = "Zeigt nur diesen Anbieter";
@@ -94,6 +95,8 @@
 "Scooters near this place" = "Scooter in der Nähe dieses Orts";
 "Clear place" = "Ort entfernen";
 "Showing scooters near %@. Search another place." = "Scooter in der Nähe von %@ werden angezeigt. Anderen Ort suchen.";
+"Showing scooters near %@" = "Scooter in der Nähe von %@ werden angezeigt";
+"Searches for another place" = "Sucht einen anderen Ort";
 
 /* UX alignment: search panel */
 "Cancel" = "Abbrechen";
@@ -165,6 +168,8 @@
 "From %1$@ for %2$lld min" = "Ab %1$@ für %2$lld Min.";
 "Price shown in the %@ app" = "Preis in der %@-App";
 "Ride estimate, %lld minutes. Change duration." = "Fahrtkostenschätzung, %lld Minuten. Dauer ändern.";
+"Ride estimate, %lld minutes" = "Fahrtkostenschätzung, %lld Minuten";
+"Changes the ride duration" = "Ändert die Fahrtdauer";
 "%lld min" = "%lld Min.";
 
 /* UX alignment: parking bay */
@@ -209,6 +214,7 @@
 "to the nearest scooter" = "bis zum nächsten Scooter";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld Min. zu Fuss";
 "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Nächster Scooter: %1$@, %2$@ entfernt, %3$lld Min. zu Fuss. Details anzeigen.";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot" = "Nächster Scooter: %1$@, %2$@ entfernt, %3$lld Min. zu Fuss";
 "min" = "Min.";
 "on foot" = "zu Fuss";
 "from %@" = "ab %@";

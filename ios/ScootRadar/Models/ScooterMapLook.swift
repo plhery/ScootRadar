@@ -539,7 +539,7 @@ struct ScooterDockLead: Equatable, Sendable {
 
     func accessibilityLabel(locale: Locale) -> String {
         String(
-            format: String(localized: "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details."),
+            format: String(localized: "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot"),
             providerName,
             distance(locale: locale),
             Int64(minutes)
