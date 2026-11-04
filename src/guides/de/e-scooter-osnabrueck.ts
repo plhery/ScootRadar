@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-osnabrueck',
   topic: 'osnabrueck',
-  name: 'E-Scooter Osnabrück: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Osnabrück 2026: Anbieter, Parken, Bus',
-  description: 'E-Scooter Osnabrück: Dott und Voi, wo du in Fussgängerzone und Parks fahren und parken darfst und was im Bus der Stadtwerke gilt.',
-  headline: 'E-Scooter Osnabrück: Anbieter, Regeln und warum du durch die Fussgängerzone schiebst',
-  lede: 'E-Scooter in Osnabrück leihst du ohne Führerschein bei Dott oder Voi; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf dem Radweg, nicht auf dem Gehweg und bis Ende Februar 2027 nicht durch die Fussgängerzone, auch abends nicht, wenn dort Räder fahren dürfen. Durch städtische Parks wie den Bürgerpark schiebst du: Die Grünflächensatzung verbietet dort das Fahren mit Kraftfahrzeugen. Zusammengeklappt fährt dein eigener Scooter kostenlos im Bus mit.',
+  name: 'E-Scooter Osnabrück: Anbieter, Preise, Parken',
+  title: 'E-Scooter Osnabrück 2026: Anbieter, Preise, Parken',
+  description: 'E-Scooter Osnabrück: Dott und Voi, was eine Fahrt kostet, wo du in Fussgängerzone und Parks fahren und parken darfst und was im Bus gilt.',
+  headline: 'E-Scooter Osnabrück: Anbieter, Preise und warum du durch die Fussgängerzone schiebst',
+  lede: 'E-Scooter in Osnabrück leihst du ohne Führerschein bei Dott oder Voi; Dott vermietet ab 18. Bei Voi kostet das Entsperren 0,49 € und die Minute 0,24 €, zehn Minuten also 2,89 € (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und bis Ende Februar 2027 nicht durch die Fussgängerzone, auch abends nicht, wenn dort Räder fahren dürfen. Durch städtische Parks wie den Bürgerpark schiebst du: Die Grünflächensatzung verbietet dort das Fahren mit Kraftfahrzeugen. Zusammengeklappt fährt dein eigener Scooter kostenlos im Bus mit.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Osnabrück',
@@ -17,9 +17,27 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Osnabrück?',
       blocks: [
         'In Osnabrück verleihen zwei Anbieter E-Scooter: **Dott** und **Voi**. Den Betrieb regelt die Stadt über Sondernutzungserlaubnisse, schreibt die Polizeiinspektion Osnabrück in ihrer Unfallstatistik 2025. Diese Erlaubnis verlangt die Stadt seit 2020, «im Gegensatz zu vielen anderen Städten», damit sie Regeln aufstellen und die Zahl der Scooter begrenzen kann; damals liess sie TIER und Lime mit je 580 Scootern fahren.',
-        '**Dott** fährt hier als Nachfolger von TIER: TIER startete laut Polizei am 3. Juni 2020 mit 350 Scootern und fusionierte 2024 mit Dott; laut Hasepost begann die Umstellung auf Dott Mitte Oktober 2024. Lime hat Osnabrück laut Hasepost am 20. Mai 2024 verlassen.',
-        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        '**Dott** führt Osnabrück auf seiner Standortliste und fährt hier als Nachfolger von TIER: TIER startete laut Polizei am 3. Juni 2020 mit 350 Scootern und fusionierte 2024 mit Dott; laut Hasepost begann die Umstellung auf Dott Mitte Oktober 2024. **Voi** fährt laut seiner Startmitteilung seit dem 16. Juni 2025 in Osnabrück, zum Start mit 500 Scootern; es war Vois 50. Stadt in Deutschland und nach Hannover und Braunschweig die dritte in Niedersachsen.',
+        'Lime hat Osnabrück laut Hasepost am 20. Mai 2024 verlassen; die Mobilitätsseite der Stadt verlinkt trotzdem noch Lime und Tier.',
+        'Du leihst den Scooter in der App des Anbieters, ohne Führerschein; Dott vermietet laut seinen AGB ab 18, das Mindestalter bei Voi zeigt dir die App. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Osnabrück](map:de:Osnabrück) etwa 600 Voi- und knapp 380 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Wo du nicht parken darfst, zeigt dir die App des Anbieters.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Osnabrück?',
+      blocks: [
+        'Bei Voi kostet das Entsperren 0,49 € und jede Minute 0,24 €: zehn Minuten kosten 2,89 €, eine Viertelstunde 4,09 € (Stand November 2026). Zum Start im Juni 2025 waren es 0,20 € pro Minute ohne Entsperrgebühr. Bei Dott siehst du den Preis in der App vor dem Entsperren.',
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Osnabrück (Stand November 2026)',
+            head: ['Anbieter', 'Preis', 'Pässe'],
+            rows: [
+              ['Voi', 'Entsperren 0,49 €, dann 0,24 € pro Minute; 10 Minuten 2,89 €', 'Zum Start 2025 nannte Voi Tages-, Wochen- und Monatspässe'],
+              ['Dott', 'In der App', 'In einigen Städten Pässe und Abos laut AGB, Preis in der App'],
+            ],
+          },
+        },
+        'Teuer wird Falschparken: Dott kann laut AGB vom September 2025 bis zu 300 € für die Rückholung berechnen, wenn du seine Park- und Sperranweisungen nicht befolgst. Zahlt Dott ein Bussgeld für dich, verlangt es den Betrag zurück und 50 € Verwaltungsgebühr dazu.',
       ],
     },
     {
@@ -35,7 +53,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Osnabrück abstellen: Gehweg, Sperrzonen, Parks',
       blocks: [
-        'Wo die Sperrzonen liegen, in denen du die Fahrt nicht beenden kannst, zeigt dir die App des Anbieters.',
+        'Voi-Scooter darfst du laut Startmitteilung im Geschäftsgebiet «flexibel im öffentlichen Raum» abstellen, «ausgenommen sind definierte Sperrzonen, die gemeinsam mit der Stadt festgelegt wurden». Bei Voi endet die Fahrt zum Beispiel nicht im Bürgerpark und nicht im Schlossgarten (Stand November 2026). Rund um sein Gebiet sperrt Voi das Fahren, auch in Belm, Wallenhorst, Hasbergen und Bissendorf. Dotts Zonen siehst du in der App.',
         'Sonst gelten die Regeln für Fahrräder: Auf dem Gehweg darfst du den Scooter abstellen, solange niemand behindert oder gefährdet wird und er nicht umkippen kann. Die Stadt nennt mindestens 1,60 m freien Gehweg. Für die Einhaltung ihrer Hinweise macht sie die Anbieter verantwortlich; Bussgelder für falsch abgestellte Roller geben die Verleiher «ggf. an die Kunden weiter», schrieb die Stadt 2020.',
         {
           table: {
@@ -51,6 +69,7 @@ const guide: Guide = {
             ],
           },
         },
+        '**Stationen wie in Münster?** Im Mai 2023 kündigte die Stadt im Bürgerforum Innenstadt an zu prüfen, ob ein stationsgebundenes System wie in Münster oder Braunschweig sinnvoll und rechtlich möglich ist. Einen Voi stellst du weiter frei ab, wo die App es erlaubt, auch am Hauptbahnhof.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Sperrzone oder ausserhalb des Gebiets. Fahr ein Stück weiter zu einer erlaubten Stelle; solange die Fahrt läuft, zahlst du. Verlangt die App ein Foto, mach es deutlich.',
         },
@@ -59,7 +78,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Osnabrück: Bussgelder, Alkohol, Unfälle',
       blocks: [
-        'In Osnabrück gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Osnabrück gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -91,21 +110,26 @@ const guide: Guide = {
             '**Im Einzelfall** entscheidet das Fahrpersonal, ob Sicherheit und Ordnung es zulassen.',
           ],
         },
-        '**Leih-Scooter** lassen sich nicht zusammenklappen. Beende die Fahrt vor der Haltestelle und halte die Zugänge zum Bus frei. Ob ein eigener E-Scooter in Regional- oder Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
+        '**Leih-Scooter** lassen sich nicht zusammenklappen. Beende die Fahrt vor der Haltestelle und halte die Zugänge zum Bus frei. In allen Fernzügen der Deutschen Bahn fährt dein eigener Scooter zusammengeklappt kostenlos als Handgepäck mit; den Akku darfst du unterwegs weder laden noch herausnehmen.',
         '**Ohne Scooter:** Die Stadtwerke verleihen unter dem Namen stat>rad zwei E-Lastenräder, die du über das Carsharing stadtteilauto buchst und bei einem Partner abholst.',
       ],
     },
     {
-      heading: 'VfL Osnabrück: mit dem E-Scooter zur Bremer Brücke',
+      heading: 'VfL und Maiwoche: mit dem E-Scooter zu Spiel und Fest',
       blocks: [
         '**Bremer Brücke:** Für grössere Gruppen von Gästefans fahren laut VfL kostenlose Shuttlebusse vom Hauptbahnhof. Freie Scooter nach dem Abpfiff zeigt die [Live-Karte von Osnabrück](map:de:Osnabrück); Parks und Grünstreifen rund ums Stadion bleiben tabu.',
+        '**Maiwoche:** Ab dem zweiten Freitag im Mai wird die Innenstadt zehn Tage lang zur Bühne, mit mehr als 150 Acts auf fünf Bühnen; die 53. Maiwoche läuft vom 14. bis 23. Mai 2027. Durch die Fussgängerzone schiebst du ohnehin.',
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Osnabrück?',
-      answer: 'Dott (früher TIER) und Voi, beide mit einer Sondernutzungserlaubnis der Stadt. Lime hat sich im Mai 2024 zurückgezogen. Das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
+      answer: 'Dott (früher TIER) und Voi, beide mit einer Sondernutzungserlaubnis der Stadt. Lime hat sich im Mai 2024 zurückgezogen. Dott vermietet laut AGB ab 18.',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Osnabrück?',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 € (Stand November 2026). Zum Start im Juni 2025 waren es 0,20 € pro Minute ohne Entsperrgebühr. Bei Dott steht der Preis in der App.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Bürgerpark fahren?',
@@ -117,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Warum kann ich meine Fahrt nicht beenden?',
-      answer: 'Du stehst in einer Sperrzone oder ausserhalb des Gebiets. Fahr ein Stück weiter; solange die Fahrt läuft, zahlst du.',
+      answer: 'Du stehst in einer Sperrzone, bei Voi laut Anbieter mit der Stadt festgelegt, etwa im Bürgerpark oder im Schlossgarten, oder ausserhalb des Gebiets. Fahr ein Stück weiter; solange die Fahrt läuft, zahlst du.',
     },
     {
       question: 'Darf ich einen E-Scooter im Bus mitnehmen?',
@@ -133,13 +157,23 @@ const guide: Guide = {
     { title: 'Polizeiinspektion Osnabrück: Verkehrsunfallstatistik 2024 (PDF)', url: 'https://www.pd-os.polizei-nds.de/download/77305' },
     { title: 'Stadt Osnabrück: Zweiter E-Scooter-Anbieter geht in Osnabrück an den Start (29. September 2020)', url: 'https://www.presse-service.de/data.aspx/static/1054754.html' },
     { title: 'Stadt Osnabrück: Änderung der Radverkehrs-, Liefer- und Ladezeiten in Fussgängerzonen (29. Januar 2020)', url: 'https://www.presse-service.de/data.aspx/static/1035739.html' },
+    { title: 'Stadt Osnabrück: Bürgerforum Innenstadt, Protokoll vom 31. Mai 2023 (PDF)', url: 'https://demokratisch.osnabrueck.de/fileadmin/demokratisch/Protokolle_Buergerforen/innenstadt/Buergerforum_Innenstadt__39__31.05.2023_Protokoll_P025139899_.PDF' },
+    { title: 'Stadt Osnabrück: Verkehrsmittel', url: 'https://mobil.osnabrueck.de/de/smart-unterwegs/verkehrsmittel/' },
+    { title: 'Stadt Osnabrück: Grünflächensatzung (PDF)', url: 'https://demokratisch.osnabrueck.de/fileadmin/demokratisch/Ortsrecht/VIII_Oeffentliche_Einrichtungen/VIII_6.pdf' },
+    { title: 'Stadt Osnabrück: Friedhofssatzung vom 27. Juni 2023 (PDF)', url: 'https://demokratisch.osnabrueck.de/fileadmin/demokratisch/Ortsrecht/VIII_Oeffentliche_Einrichtungen/VIII_2_01.pdf' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
     { title: 'VOS: Tarifbestimmungen und Beförderungsbedingungen, gültig ab August 2026 (PDF)', url: 'https://www.vos.info/fileadmin/user_upload/2026/ticket-tarifbestimmung/tarifbestimmungen-und-befoerderungesbedingungen-august-2026.pdf' },
     { title: 'VOS: Ticket- und Tarifbroschüre, gültig ab Januar 2026 (PDF)', url: 'https://www.vos.info/fileadmin/user_upload/2026/ticket-tarifbestimmung/ticket-tarifbroschuere-.pdf' },
     { title: 'Stadtwerke Osnabrück: E-Lastenrad stat>rad', url: 'https://www.stadtwerke-osnabrueck.de/mobilitaet/fahrrad/e-lastenrad' },
+    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
+    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Voi: Start in Osnabrück (Pressemitteilung vom 13. Mai 2025, PDF)', url: 'https://storage.mfn.se/1a97fdba-a2e5-4c63-b351-56d8b0d61a6b/e-scooter-anbieter-voi-startet-in-osnabruck.pdf' },
+    { title: 'Voi: Tarif und Zonen für Osnabrück (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/378/netex.xml' },
     { title: 'Hasepost: Lime stellt Betrieb in Osnabrück ein (15. Mai 2024)', url: 'https://hasepost.de/e-scooter-anbieter-lime-stellt-betrieb-in-osnabrueck-ein-474349/' },
     { title: 'Hasepost: Roller von Tier verschwinden, jetzt kommt Dott (4. Oktober 2024)', url: 'https://hasepost.de/roller-von-tier-verschwinden-aus-osnabrueck-jetzt-kommt-dot-520812/' },
     { title: 'VfL Osnabrück: Informationen für Gästefans 2026/27 (PDF)', url: 'https://res.cloudinary.com/diheptxu2/image/upload/v1786030965/Informationen_f%C3%BCr_Gaestefans_26_27_u1nyrc.pdf' },
+    { title: 'Stadt Osnabrück: Maiwoche', url: 'https://erleben.osnabrueck.de/en/experience-city/city-events/maiwoche/' },
   ],
 };
 
