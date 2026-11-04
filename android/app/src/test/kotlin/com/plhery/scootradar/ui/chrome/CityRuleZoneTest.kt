@@ -14,6 +14,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterZoneKind
 import com.plhery.scootradar.core.model.ScooterZoneSpeeds
 import com.plhery.scootradar.core.model.ScooterZoneState
+import com.plhery.scootradar.core.model.localized
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -106,6 +107,21 @@ class CityRuleZoneTest {
         assertEquals(listOf(ScooterZoneKind.Parking), legendKinds(ScooterZoneState.ZoomIn, 0, portoOnly, besideNote = true))
         // No city: no credit.
         assertNull(zoneCredit(emptyList(), link = Color.Blue))
+    }
+
+    /**
+     * A street outside its hours: no kind of its own among the operators', and a line saying it is not now (5949217d).
+     * The iPhone's test reads the catalog's Hongdae; this one has its own (LOG-370).
+     */
+    @Test
+    fun aStreetOutsideItsHoursHasALineSayingSo() {
+        Locale.setDefault(Locale.forLanguageTag("en-CH"))
+        ScooterLanguage.current = ScooterLanguage.En
+        val shown = listOf(CityRuleZone.Shown(rule = hongdae, inForce = false))
+        assertEquals(ScooterZoneKind.operatorKinds, legendKinds(ScooterZoneState.Shown, 12, shown, besideNote = false))
+        val line = ruleLines(shown).first()
+        assertFalse(line.inForce)
+        assertTrue(line.text, line.text.endsWith(" (${localized("not now")})"))
     }
 
     /**
