@@ -104,12 +104,23 @@ sealed interface ScooterSearchBarState {
     val accessibilityLabel: String
         get() = when (this) {
             is Place -> if (destination.isCovered) {
-                stringFormat(localized("Showing scooters near %@. Search another place."), destination.title.isolated)
+                stringFormat(localized("Showing scooters near %@"), destination.title.isolated)
             } else {
-                // No scooters to announce: the place, then the same neutral line as on screen.
-                "${destination.title.isolated}. ${localized("Tap to search a city or address")}"
+                // Where no operator shares data, the place alone: no scooters to announce.
+                title
             }
             Empty, Locating -> title
+        }
+
+    /**
+     * What tapping the bar does, for TalkBack to say after its label; null where the label says it, as "Search city or
+     * address" does. The iPhone's hint, "Searches for another place", in the words TalkBack puts after its own for a
+     * double tap, "Double-tap to search for another place" (ui.md UI-327).
+     */
+    val accessibilityHint: String?
+        get() = when (this) {
+            is Place -> localized("search for another place")
+            Empty, Locating -> null
         }
 }
 

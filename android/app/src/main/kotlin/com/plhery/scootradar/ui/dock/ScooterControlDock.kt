@@ -439,7 +439,7 @@ private fun DockLeadButton(lead: ScooterDockLead, tint: Color, onClick: () -> Un
         Modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
-            .plainButton(label = label, onClick = onClick),
+            .plainButton(label = label, hint = localized("show scooter details"), onClick = onClick),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

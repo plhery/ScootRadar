@@ -41,6 +41,7 @@ import com.plhery.scootradar.ui.theme.ScootTheme
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -110,19 +111,20 @@ class SearchPanelTest {
     }
 
     /**
-     * The first result, which Return chooses, reads "Selected", as VoiceOver reads its selected trait: a state, not
-     * Compose's selected, which makes it a toggle that TalkBack hints "Double-tap to toggle" (app-ai's TalkBack pass).
+     * The first result, which Return chooses, is tinted but not selected: TalkBack reads no state for any row, as
+     * VoiceOver reads no selected trait for it since 4 November (ee9874f6). It read "Selected" from app-ai's TalkBack
+     * pass.
      */
     @Test
-    fun onlyTheFirstResultIsSelectedForTalkBack() {
+    fun noResultIsSelectedForTalkBack() {
         show("Bahnhof")
         compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.Selected)).assertCountEquals(0)
-        val selected = compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Selected")).fetchSemanticsNodes()
-        assertEquals(1, selected.size)
-        assertTrue(hasText("Bahnhofstrasse", substring = true).matches(selected.single()))
-        val info = view.accessibilityNodeProvider.createAccessibilityNodeInfo(selected.single().id)!!
+        compose.onAllNodes(SemanticsMatcher.keyIsDefined(SemanticsProperties.StateDescription)).assertCountEquals(0)
+        val first = compose.onNode(hasText("Bahnhofstrasse", substring = true)).fetchSemanticsNode()
+        val info = view.accessibilityNodeProvider.createAccessibilityNodeInfo(first.id)!!
         assertFalse(info.isCheckable)
-        assertEquals("Selected", info.stateDescription)
+        assertNull(info.stateDescription)
+        assertTrue(info.isClickable)
     }
 
     /**

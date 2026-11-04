@@ -22,6 +22,8 @@
 "hide this provider" = "masquer cet opérateur";
 "add this provider" = "ajouter cet opérateur";
 "center this scooter on the map" = "centrer la carte sur cette trottinette";
+"change the ride duration" = "modifier la durée du trajet";
+"search for another place" = "rechercher un autre lieu";
 /* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
 "Compass" = "Boussole";
 /* The rider's dot on the map, read by TalkBack by MapKit's own words for VoiceOver's element (map.md MAP-224). */

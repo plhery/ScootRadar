@@ -240,7 +240,7 @@ class FocusReturnTest {
 
     /** The price cell, which reads the length chosen now. */
     private fun price(minutes: Long) =
-        compose.onNode(hasContentDescription(stringFormat(localized("Ride estimate, %lld minutes. Change duration."), minutes)) and hasClickAction())
+        compose.onNode(hasContentDescription(stringFormat(localized("Ride estimate, %lld minutes"), minutes)) and hasClickAction())
 
     /**
      * The search closed by a place chosen, or by Cancel, puts the focus on the bar, which reads the place chosen:
@@ -266,7 +266,7 @@ class FocusReturnTest {
         compose.waitForIdle()
         compose.onNode(hasText("8001 Zürich, Switzerland") and hasClickAction()).focusedByTalkBack().doubleTapped()
         compose.onNodeWithTag(SEARCH_FIELD_TAG).assertDoesNotExist()
-        val bar = button(stringFormat(localized("Showing scooters near %@. Search another place."), "Zürich HB".isolated))
+        val bar = button(stringFormat(localized("Showing scooters near %@"), "Zürich HB".isolated))
         assertTrue("TalkBack's focus on the bar, a place chosen", bar.isFocusedByTalkBack())
 
         bar.doubleTapped()

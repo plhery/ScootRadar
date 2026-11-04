@@ -509,7 +509,7 @@ data class ScooterDockLead(val scooter: Scooter, val metres: Double) {
     fun distance(locale: Locale): String = Scooter.formattedLength(metres, locale)
 
     fun accessibilityLabel(locale: Locale): String = stringFormat(
-        localized("Nearest scooter: %1\$@, %2\$@ away, %3\$lld min on foot. Show details."),
+        localized("Nearest scooter: %1\$@, %2\$@ away, %3\$lld min on foot"),
         providerName,
         distance(locale),
         minutes.toLong(),

@@ -251,7 +251,7 @@ private fun CollapsedBar(
             Modifier
                 .weight(1f)
                 .testTag(SEARCH_BAR_TAG)
-                .plainButton(label = state.accessibilityLabel, onClick = onOpen)
+                .plainButton(label = state.accessibilityLabel, hint = state.accessibilityHint, onClick = onOpen)
                 .padding(vertical = COLLAPSED_PADDING)
                 .heightIn(min = if (isAccessibility) 60.dp else 50.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -275,7 +275,9 @@ private fun CollapsedBar(
         }
 
         BarButton(
-            label = localized(if (hasActiveFilters) "Filters, active" else "Filters"),
+            label = localized("Filters"),
+            // That some are on is the button's state, not its name (ee9874f6).
+            state = if (hasActiveFilters) localized("Active (filters)") else null,
             onClick = onShowFilters,
             modifier = Modifier.onGloballyPositioned { onFiltersFrameChange(it.boundsInWindow()) },
         ) {
@@ -308,10 +310,16 @@ private fun CollapsedBar(
 
 /** A symbol's button in the bar: 44 points square, reaching the glass's edges above and under it. */
 @Composable
-private fun BarButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+private fun BarButton(
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    state: String? = null,
+    content: @Composable () -> Unit,
+) {
     Box(
         modifier
-            .plainButton(label = label, onClick = onClick)
+            .plainButton(label = label, state = state, onClick = onClick)
             .padding(vertical = COLLAPSED_PADDING)
             .size(44.dp),
         contentAlignment = Alignment.Center,

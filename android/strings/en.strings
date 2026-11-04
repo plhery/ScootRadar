@@ -8,8 +8,8 @@
 "Sheet Grabber" = "Sheet Grabber";
 "Sheet at half screen" = "Half screen";
 "Sheet expanded" = "Expanded";
-/* What VoiceOver reads of an element with the selected trait, a state and not a toggle: the search's first result,
-   which Return chooses, and a menu's chosen row (app-ai's TalkBack pass). In each language the iPhone's VoiceOver's
+/* What VoiceOver reads of an element with the selected trait, a state and not a toggle: a menu's chosen row (app-ai's
+   TalkBack pass; the search's first result, which Return chooses, lost the trait on 4 November). In each language the iPhone's VoiceOver's
    own word, its element.selected.text (VoiceOverTouch, iOS 27.1): "Auswahl", "markert" (review-app-ai R5). */
 "Selected" = "Selected";
 /* The iPad menu bar's View menu, which iPadOS names: a group of Android's keyboard shortcut helper (ui.md UI-102). */
@@ -25,6 +25,8 @@
 "hide this provider" = "hide this provider";
 "add this provider" = "add this provider";
 "center this scooter on the map" = "center this scooter on the map";
+"change the ride duration" = "change the ride duration";
+"search for another place" = "search for another place";
 /* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
 "Compass" = "Compass";
 /* The rider's dot on the map, read by TalkBack by MapKit's own words for VoiceOver's element (map.md MAP-224). */

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasText
@@ -108,33 +109,40 @@ class SearchAccessibilityTest {
         SemanticsMatcher.keyIsDefined(SemanticsActions.OnClick) and
         SemanticsMatcher("has nothing inside it") { it.children.isEmpty() }
 
-    /** UI-252: the bar is one button, labelled by what it shows; its icon, tile or spinner is not read. */
+    /**
+     * UI-252: the bar is one button, labelled by what it shows; its icon, tile or spinner is not read. With a place,
+     * what a double tap does is its hint, "Double-tap to search for another place", not part of its label; a place no
+     * operator serves is read alone, as VoiceOver reads them since 4 November (ee9874f6).
+     */
     @Test
     fun theBarIsOneButtonLabelledByWhatItShows() {
         show()
-        compose.onNodeWithContentDescription("Search city or address").assert(button)
+        compose.onNodeWithContentDescription("Search city or address").assert(button and hasHint(null))
 
         compose.runOnIdle { state = ScooterSearchBarState.Locating }
-        compose.onNodeWithContentDescription("Finding your location…").assert(button)
+        compose.onNodeWithContentDescription("Finding your location…").assert(button and hasHint(null))
 
         compose.runOnIdle { state = place("Bahnhofplatz", isCovered = true) }
-        compose.onNodeWithContentDescription("Showing scooters near Bahnhofplatz. Search another place.").assert(button)
+        compose.onNodeWithContentDescription("Showing scooters near Bahnhofplatz").assert(button and hasHint("search for another place"))
 
         compose.runOnIdle { state = place("Lyngen", isCovered = false) }
-        compose.onNodeWithContentDescription("Lyngen. Tap to search a city or address").assert(button)
+        compose.onNodeWithContentDescription("Lyngen").assert(button and hasHint("search for another place"))
 
         // A title in right-to-left letters is isolated, so the sentence around it keeps its order.
         compose.runOnIdle { state = place("\u05EA\u05DC \u05D0\u05D1\u05D9\u05D1", isCovered = true) }
         compose.onNodeWithContentDescription(
-            "Showing scooters near \u2068\u05EA\u05DC \u05D0\u05D1\u05D9\u05D1\u2069. Search another place.",
+            "Showing scooters near \u2068\u05EA\u05DC \u05D0\u05D1\u05D9\u05D1\u2069",
         ).assert(button)
     }
 
-    /** UI-253 and UI-254: Clear place with a place only, and Filters says when filters are active. */
+    /**
+     * UI-253 and UI-254: Clear place with a place only, and Filters says when filters are active: as its state,
+     * "Filters, Active", not in its name, as VoiceOver reads its value since 4 November (ee9874f6).
+     */
     @Test
     fun clearPlaceAndFiltersSayWhatTheyDo() {
         show()
-        compose.onNodeWithContentDescription("Filters").assert(button)
+        compose.onNodeWithContentDescription("Filters").assert(button and hasState(null))
         compose.onNodeWithContentDescription("Clear place", useUnmergedTree = true).assertDoesNotExist()
 
         compose.runOnIdle {
@@ -142,10 +150,15 @@ class SearchAccessibilityTest {
             hasActiveFilters = true
         }
         compose.onNodeWithContentDescription("Clear place").assert(button)
-        compose.onNodeWithContentDescription("Filters, active").assert(button)
-        compose.onNodeWithContentDescription("Filters", useUnmergedTree = true).assertDoesNotExist()
+        compose.onNodeWithContentDescription("Filters").assert(button and hasState("Active"))
         compose.onNodeWithContentDescription("Settings").assert(button)
     }
+
+    /** What TalkBack says a double tap does, after its own words for it; none, [label] null. */
+    private fun hasHint(label: String?) = SemanticsMatcher("hint $label") { it.config.getOrNull(SemanticsActions.OnClick)?.label == label }
+
+    /** What TalkBack reads after the name, where VoiceOver reads a value. */
+    private fun hasState(value: String?) = SemanticsMatcher("state $value") { it.config.getOrNull(SemanticsProperties.StateDescription) == value }
 
     /** UI-258: "Recent" and "Cities with scooters" are headings. */
     @Test

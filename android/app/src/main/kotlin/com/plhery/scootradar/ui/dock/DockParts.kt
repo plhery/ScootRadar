@@ -58,6 +58,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
@@ -92,13 +93,15 @@ import kotlin.math.roundToInt
  * `.buttonStyle(.plain)`: the label itself is the button, and dims while it is pressed, with no ripple, and a little
  * under a mouse's pointer, ringed while a keyboard has its focus (UI-251). Its semantics are a button's, which TalkBack names from the label unless [label] says
  * otherwise; [hint] is what a double tap does, which TalkBack says in a sentence of its own where iOS reads its
- * accessibility hint (UI-327). [focusRing] is the ring's shape, and white on the tint. A button that answers the
- * finger otherwise doesn't [dim], and gives the [interaction] it watches.
+ * accessibility hint (UI-327), and [state] what it reads after the name where iOS reads an accessibility value.
+ * [focusRing] is the ring's shape, and white on the tint. A button that answers the finger otherwise doesn't [dim],
+ * and gives the [interaction] it watches.
  */
 internal fun Modifier.plainButton(
     enabled: Boolean = true,
     label: String? = null,
     hint: String? = null,
+    state: String? = null,
     focusRing: FocusRing = FocusRing(),
     interaction: MutableInteractionSource? = null,
     dim: Boolean = true,
@@ -118,6 +121,7 @@ internal fun Modifier.plainButton(
             if (label != null) {
                 Modifier.clearAndSetSemantics {
                     contentDescription = label
+                    if (state != null) stateDescription = state
                     role = Role.Button
                     if (enabled) onClick(label = hint) { onClick(); true }
                 }

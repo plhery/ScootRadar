@@ -406,19 +406,21 @@ private fun PriceCell(controller: ScooterMapController, figure: ScooterCardFigur
     val colors = scootColors
     val minutes = controller.rideEstimateMinutes.collectAsState().value
     var isOpen by remember { mutableStateOf(false) }
-    val label = stringFormat(localized("Ride estimate, %lld minutes. Change duration."), minutes.toLong())
+    val label = stringFormat(localized("Ride estimate, %lld minutes"), minutes.toLong())
+    // What a double tap does, the iPhone's hint "Changes the ride duration" (ee9874f6, UI-327).
+    val hint = localized("change the ride duration")
     val value = priceLabel(quote)
     // The row measures each cell at its tallest neighbour's height: the cell under the menu takes it too.
     Box(propagateMinConstraints = true) {
         CardFigureCell(
             figure,
             Modifier
-                .plainButton { isOpen = true }
+                .plainButton(hint = hint) { isOpen = true }
                 .clearAndSetSemantics {
                     contentDescription = label
                     stateDescription = value
                     role = Role.DropdownList
-                    onClick { isOpen = true; true }
+                    onClick(label = hint) { isOpen = true; true }
                 },
             tint = if (quote.passApplied) colors.good else null,
             symbol = if (quote.passApplied) Symbols.ticketFill else null,

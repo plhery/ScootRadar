@@ -135,7 +135,7 @@ class PriceMenuTest {
 
     /** Taps the price cell, which reads the length chosen now. */
     private fun open(minutes: Long) {
-        val label = stringFormat(localized("Ride estimate, %lld minutes. Change duration."), minutes)
+        val label = stringFormat(localized("Ride estimate, %lld minutes"), minutes)
         compose.onNode(hasContentDescription(label) and hasClickAction()).performClick()
         compose.waitForIdle()
         compose.onNodeWithTag(MENU_TAG).assertExists()

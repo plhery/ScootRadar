@@ -22,6 +22,8 @@
 "hide this provider" = "å skjule denne operatøren";
 "add this provider" = "å legge til denne operatøren";
 "center this scooter on the map" = "å sentrere kartet på denne elsparkesykkelen";
+"change the ride duration" = "å endre varigheten på turen";
+"search for another place" = "å søke etter et annet sted";
 /* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
 "Compass" = "Kompass";
 /* The rider's dot on the map, read by TalkBack by MapKit's own words for VoiceOver's element (map.md MAP-224). */

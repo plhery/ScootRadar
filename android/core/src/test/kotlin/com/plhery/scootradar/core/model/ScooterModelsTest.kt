@@ -1777,14 +1777,19 @@ class ScooterModelsTest {
         assertEquals(localized("Scooters near this place"), served.subtitle)
         assertNotEquals(neutral, served.subtitle)
 
-        // Where no operator shares data the bar keeps to the neutral line, also for TalkBack.
+        // Where no operator shares data the bar keeps to the neutral line, and TalkBack to the place.
         val unserved = ScooterSearchBarState.Place(atlantic)
         assertEquals(neutral, unserved.subtitle)
-        assertEquals("Atlantic. $neutral", unserved.accessibilityLabel)
+        assertEquals("Atlantic", unserved.accessibilityLabel)
         assertEquals(
-            stringFormat(localized("Showing scooters near %@. Search another place."), "Zürich HB"),
+            stringFormat(localized("Showing scooters near %@"), "Zürich HB"),
             served.accessibilityLabel,
         )
+        // What a tap does is the hint, not part of the label: Android's words after TalkBack's own for a double tap.
+        assertEquals(localized("search for another place"), served.accessibilityHint)
+        assertEquals(served.accessibilityHint, unserved.accessibilityHint)
+        assertNull(ScooterSearchBarState.Empty.accessibilityHint)
+        assertNull(ScooterSearchBarState.Locating.accessibilityHint)
 
         // The search's own answer wins over the bundled areas, and a covered city is always served.
         val reportedUnserved = MapDestination(title = "Zürich HB", point = zurich.point, isCovered = false)

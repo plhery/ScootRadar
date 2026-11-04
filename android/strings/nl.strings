@@ -23,6 +23,8 @@
 "hide this provider" = "verbergen";
 "add this provider" = "tonen";
 "center this scooter on the map" = "centreren op de kaart";
+"change the ride duration" = "wisselen van ritduur";
+"search for another place" = "zoeken naar een andere plaats";
 /* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
 "Compass" = "Kompas";
 /* The rider's dot on the map, read by TalkBack by MapKit's own words for VoiceOver's element (map.md MAP-224). */

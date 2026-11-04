@@ -52,7 +52,6 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -378,7 +377,8 @@ private fun ResultRows(results: List<AddressSearchResult>, onChoose: (AddressSea
     val actionText = scootColors.actionText
     Column {
         results.forEachIndexed { index, result ->
-            // Return chooses the first place, so it is shown as chosen.
+            // Return chooses the first place, so it is tinted. It is only the default, not selected, so TalkBack
+            // reads no state for it, as VoiceOver reads no selected trait since 4 November (ee9874f6).
             val isFirst = index == 0
             SearchPlaceRow(
                 title = result.title,
@@ -387,9 +387,6 @@ private fun ResultRows(results: List<AddressSearchResult>, onChoose: (AddressSea
                 showsNoData = !result.isCovered,
                 modifier = Modifier
                     .plainButton { onChoose(result) }
-                    // "Selected" on the first only, as VoiceOver reads its trait: Compose's selected would make it a
-                    // toggle, "Double-tap to toggle", and read the others as "Not selected".
-                    .then(if (isFirst) Modifier.semantics { stateDescription = localized("Selected") } else Modifier)
                     .then(if (isFirst) Modifier.background(actionText.copy(alpha = 0.08f), SquircleShape(14.dp)) else Modifier),
             )
             if (index < results.lastIndex) RowDivider()

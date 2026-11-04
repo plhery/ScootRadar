@@ -802,7 +802,7 @@ class ScooterMapLookTest {
         assertEquals(Scooter.formattedLength(meters = 62.0), lead.distance)
         assertEquals("PubliBike, 1 min on foot", lead.detail)
         assertEquals(
-            "Nearest scooter: PubliBike / Velospot, 62\u00A0m away, 1 min on foot. Show details.",
+            "Nearest scooter: PubliBike / Velospot, 62\u00A0m away, 1 min on foot",
             lead.accessibilityLabel(locale = swiss),
         )
         assertEquals(3, ScooterDockLead(scooter = scooter(), metres = 161.0).minutes)

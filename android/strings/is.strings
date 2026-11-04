@@ -22,6 +22,8 @@
 "hide this provider" = "fela þetta fyrirtæki";
 "add this provider" = "bæta þessu fyrirtæki við";
 "center this scooter on the map" = "færa rafskútuna á mitt kortið";
+"change the ride duration" = "breyta lengd ferðarinnar";
+"search for another place" = "leita að öðrum stað";
 /* The compass MapKit adds to the map, which VoiceOver reads by MapKit's own word (map.md MAP-225). */
 "Compass" = "Áttaviti";
 /* The rider's dot on the map, read by TalkBack by MapKit's own words for VoiceOver's element (map.md MAP-224). */

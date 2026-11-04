@@ -298,7 +298,7 @@ class RightClickTest {
     fun aRightClickOutsideTheMenuLeavesItOpen() {
         val controller = show()
         onMain { controller.selectScooter(scooter.id) }
-        val price = hasContentDescription(stringFormat(localized("Ride estimate, %lld minutes. Change duration."), controller.rideEstimateMinutes.value.toLong()))
+        val price = hasContentDescription(stringFormat(localized("Ride estimate, %lld minutes"), controller.rideEstimateMinutes.value.toLong()))
         compose.waitUntil(5_000) { shown(price) }
         Thread.sleep(1_500)
         val menu = hasTestTag(MENU_TAG)

@@ -575,7 +575,7 @@ enum class MatrixScene(
     /** The card's price cell tapped: the menu of ride lengths. */
     PriceMenu(DockState.ScooterCard, pictured = foldAndTablet) {
         override fun open(compose: MatrixCompose) {
-            val label = stringFormat(localized("Ride estimate, %lld minutes. Change duration."), 10L)
+            val label = stringFormat(localized("Ride estimate, %lld minutes"), 10L)
             compose.onNode(hasContentDescription(label) and hasClickAction()).performClick()
             compose.waitForIdle()
         }

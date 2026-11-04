@@ -148,7 +148,7 @@ enum class IosLook(val state: DockState, val increasedContrast: Boolean = false)
     PriceMenu(DockState.ScooterCard) {
         @OptIn(ExperimentalRoborazziApi::class)
         override fun take(compose: ComposeContentTestRule, name: String) {
-            val label = stringFormat(localized("Ride estimate, %lld minutes. Change duration."), 10L)
+            val label = stringFormat(localized("Ride estimate, %lld minutes"), 10L)
             compose.onNode(hasContentDescription(label) and hasClickAction()).performClick()
             compose.waitForIdle()
             // The menu is a window of its own, over the screen's.
