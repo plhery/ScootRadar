@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Malmö 2026: Ryde, Voi, Lime, Bolt and rules',
   description: 'E-scooters in Malmö: Ryde, Voi, Lime and Bolt, the City’s cap, where to ride, the parking stands in the centre, trains to Copenhagen and Sweden’s fines.',
   headline: 'E-scooters in Malmö: Ryde, Voi, Lime and Bolt, and where to ride and park',
-  lede: 'E-scooters in Malmö are rented from four companies with permits, Ryde, Voi, Lime and Bolt, up to 2,800 scooters between them until 31 March 2027; our map shows all but Ryde. Each app shows the price before you unlock. Ride on cycle lanes or the road, never on the pavement, and in the centre end your ride in a marked e-scooter stand. Swedish law applies, not Denmark’s.',
+  lede: 'E-scooters in Malmö are rented from four companies with permits, Ryde, Voi, Lime and Bolt, up to 2,800 scooters between them until 31 March 2027. As of November 2026 a Voi costs SEK 2.50 a minute, with no unlock fee. Ride on cycle lanes or the road, never on the pavement, and in the centre end your ride in a marked e-scooter stand. Swedish law applies, not Denmark’s.',
   published: '2026-10-28',
   updated: '2026-10-28',
   city: 'se:Malmö',
@@ -19,25 +19,25 @@ const guide: Guide = {
         'Electric scooter rental in Malmö needs a permit from the Swedish Police Authority (Polismyndigheten) to use public land, and the City of Malmö (Malmö stad) gives the police its view, including how many scooters each company should have. On 8 September 2026 the City’s traffic committee (tekniska nämndens trafikutskott) shared out its cap of **2,800 e-scooters** for 1 October 2026 to 31 March 2027. It ranked the companies on how they did from February to August, and keeping to the parking rules weighed most:',
         {
           table: {
-            caption: 'E-scooters the City allows each company, 1 October 2026 to 31 March 2027, and what the map shows',
-            head: ['Company', 'Scooters allowed', 'On the ScootRadar map'],
+            caption: 'E-scooters the City allows each company, 1 October 2026 to 31 March 2027',
+            head: ['Company', 'Scooters allowed'],
             rows: [
-              ['Ryde', '1,000', 'No: check the Ryde app'],
-              ['Voi', '800', 'Yes'],
-              ['Lime', '500', 'Yes'],
-              ['Bolt', '500', 'Yes'],
+              ['Ryde', '1,000'],
+              ['Voi', '800'],
+              ['Lime', '500'],
+              ['Bolt', '500'],
             ],
           },
         },
-        '**Ryde has the largest share but isn’t on our map**, so look for its scooters in its own app. At 21:50 on Wednesday 28 October 2026 the [map of Malmö](map:se:Malmö) showed about 640 Voi and 440 Bolt scooters free to rent at that moment, and about 435 Lime scooters as last counted.',
+        'At 21:50 on Wednesday 28 October 2026 the [map of Malmö](map:se:Malmö) showed about 640 Voi and 440 Bolt scooters free to rent at that moment, and about 435 Lime scooters as last counted.',
         'Before January 2024, when the cap began, Malmö had up to about 6,500 scooters, the City’s streets office (fastighets- och gatukontoret) wrote in January 2026. Within the cap the City also limits the centre: on a daily average, no more than 600 scooters in the inner centre and 800 in the outer centre, limits it kept for this period (September 2026).',
       ],
     },
     {
       heading: 'How much does a Voi, Lime, Bolt or Ryde scooter cost in Malmö?',
       blocks: [
-        '**The app shows the price** before you unlock, and prices can change, so check it before each ride.',
-        'Each company sets its own minimum age and its own fees, including for a scooter left outside its parking area: check them in the app before your first ride.',
+        '**The app shows the price** before you unlock, and prices can change, so check it before each ride. As of November 2026 Voi charges SEK 2.50 a minute in Malmö, with no fee to unlock. Bolt’s Swedish website gives prices in euros for the whole of Sweden rather than for Malmö (as of November 2026): from €0.15 a minute plus a small unlock fee, both varying from place to place; unlimited unlocks from €0.99 a month; and passes that make each minute cheaper the more minutes you buy.',
+        'Bolt rents only to riders aged 18 or over, its Swedish terms say. If you leave a Bolt scooter outside its permitted parking area, it may charge up to SEK 1,000 to collect it and up to SEK 1,000 for the unpermitted parking. From 1 December 2026, new terms add a SEK 60 fee if the photo the app asks for at the end of a ride shows the scooter wrongly parked. Check each of the other apps for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -58,7 +58,7 @@ const guide: Guide = {
               ['Helmet', 'Compulsory under 15, recommended for all', 'The law', 'No fine for the rider'],
               ['Alcohol', 'No fixed limit, but you may not ride if drink or drugs stop you riding safely', 'The law', '–'],
               ['Slow zones', 'The City sets zones where hire scooters go slower; the apps show them', 'The City', '–'],
-              ['Parking', 'In the centre only in e-scooter stands; never on a footway or cycle lane except in a stand or cycle rack', 'The City; the law since 1 September 2022', 'The City may remove it'],
+              ['Parking', 'In the centre only in e-scooter stands; never on a footway or cycle lane except in a stand or cycle rack', 'The City; the law since 1 September 2022', 'The City may remove it; Bolt may charge you'],
             ],
           },
         },
@@ -130,15 +130,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Malmö?',
-      answer: 'Ryde, Voi, Lime and Bolt hold permits from 1 October 2026 to 31 March 2027, with up to 1,000, 800, 500 and 500 scooters. The ScootRadar map shows Voi, Lime and Bolt; Ryde’s scooters are only in its app.',
+      answer: 'Ryde, Voi, Lime and Bolt hold permits from 1 October 2026 to 31 March 2027, with up to 1,000, 800, 500 and 500 scooters.',
     },
     {
       question: 'How much does an e-scooter cost in Malmö?',
-      answer: 'Each app shows the price before you unlock, and the companies’ prices can change.',
+      answer: 'As of November 2026 Voi charges SEK 2.50 a minute with no unlock fee, and Bolt from €0.15 a minute plus an unlock fee. Each app shows the price before you unlock, and prices can change.',
     },
     {
       question: 'Do I need a helmet to ride an e-scooter in Malmö?',
-      answer: 'Only if you are under 15: Swedish law requires a helmet for younger riders, and the Swedish Transport Agency recommends one for everyone. The companies set their own minimum age: check the app.',
+      answer: 'Only if you are under 15: Swedish law requires a helmet for younger riders, and the Swedish Transport Agency recommends one for everyone. Bolt rents only to riders aged 18 or over.',
     },
     {
       question: 'Where can I leave a hire scooter in Malmö?',
@@ -150,7 +150,7 @@ const guide: Guide = {
     },
     {
       question: 'Are e-scooters banned at night in Malmö?',
-      answer: 'No. The City sets no night ban or winter pause for hire scooters, and its night driving bans on Bergsgatan and Stora Nygatan don’t cover cycles, e-scooters included (October 2026).',
+      answer: 'No. The City sets no night ban or winter pause for hire scooters, and its night driving bans on Bergsgatan and Stora Nygatan don’t cover cycles, e-scooters included (October 2026). Bolt’s terms from 1 December 2026 tell riders not to ride in snow or ice.',
     },
   ],
   sources: [
@@ -169,6 +169,10 @@ const guide: Guide = {
     { title: 'Riksdagen: Trafikförordningen (1998:1276)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/trafikforordning-19981276_sfs-1998-1276/' },
     { title: 'Åklagarmyndigheten: Fixed fines, annex 1A (1 November 2025)', url: 'https://www.aklagare.se/globalassets/dokument/ordningsbotskatalog/bilaga-1a.pdf' },
     { title: 'Skånetrafiken: On board', url: 'https://www.skanetrafiken.se/sa-reser-du-med-oss/sa-funkar-det-ombord/' },
+    { title: 'Bolt: Terms for e-vehicles in Sweden (from 1 February 2023)', url: 'https://bolt.eu/sv-se/legal/micromobility/new-terms-for-e-vehicles/' },
+    { title: 'Bolt: Terms for e-vehicles in Sweden (from 1 December 2026)', url: 'https://bolt.eu/sv-se/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Bolt: E-scooters in Sweden', url: 'https://bolt.eu/sv-se/scooters/' },
+    { title: 'Voi: Malmö rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/7/netex.xml' },
     { title: 'Jernhusen: Malmö Central Station', url: 'https://www.jernhusen.se/hitta-din-station/malmo-centralstation' },
   ],
 };
