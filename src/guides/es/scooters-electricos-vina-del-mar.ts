@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta arrendar un scooter en Viña del Mar?',
       blocks: [
-        'Whoosh no publica su tarifa de Viña del Mar en su web: el precio de Whoosh y el de Lime los ves en cada app antes del viaje. Whoosh cobra un costo de inicio más un precio por minuto, según la ciudad, la demanda y tu plan o paquete, y puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
+        'El precio de Whoosh y el de Lime los ves en cada app antes del viaje. Whoosh cobra un costo de inicio más un precio por minuto, según la ciudad, la demanda y tu plan o paquete, y puedes reservar un scooter gratis 10 minutos, o 20 con un plan.',
         'Whoosh puede cobrarte aparte, en pesos chilenos, según sus términos para Chile. Son cobros de la empresa, no multas de la ley:',
         {
           table: {
@@ -48,7 +48,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Si el scooter se pierde por una infracción tuya, Whoosh te cobra $1.340.000. Sus términos no fijan horario, pero Whoosh puede terminar el arriendo a las cuatro horas.',
+        'Si el scooter se pierde por una infracción tuya, Whoosh te cobra $1.340.000. Según sus términos, Whoosh puede terminar el arriendo a las cuatro horas.',
       ],
     },
     {
@@ -141,11 +141,11 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta arrendar un scooter eléctrico en Viña del Mar?',
-      answer: 'Cada app te muestra el precio antes del viaje: Whoosh no publica su tarifa de Viña del Mar en su web. Whoosh cobra un costo de inicio más un precio por minuto, que cambia según la demanda y tu plan.',
+      answer: 'Cada app te muestra el precio antes del viaje. Whoosh cobra un costo de inicio más un precio por minuto, que cambia según la demanda y tu plan.',
     },
     {
       question: '¿Qué app necesito para los scooters de Viña del Mar?',
-      answer: 'Whoosh o Lime, las dos empresas que arriendan scooters en la ciudad en octubre de 2026. El mapa te muestra los de ambas en un solo lugar.',
+      answer: 'Whoosh o Lime, las dos empresas que arriendan scooters en la ciudad en octubre de 2026. Encuéntralos en el [mapa de Viña del Mar](map:cl:Viña del Mar).',
     },
     {
       question: '¿Es obligatorio el casco para andar en scooter en Viña del Mar?',
@@ -158,10 +158,6 @@ const guide: Guide = {
     {
       question: '¿Puedo subir un scooter de arriendo al tren Limache-Puerto?',
       answer: 'Un Whoosh, no: Whoosh prohíbe subirlo a un tren, una micro o un auto, y te cobra $10.000 si lo haces. Termina el viaje en una zona «P» y sigue en tren.',
-    },
-    {
-      question: '¿Los scooters de Viña del Mar tienen horario?',
-      answer: 'Los términos de Whoosh no fijan horario, aunque Whoosh puede terminar un arriendo a las cuatro horas. Para Lime, mira su app.',
     },
   ],
   sources: [

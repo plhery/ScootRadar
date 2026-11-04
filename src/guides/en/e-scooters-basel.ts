@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Basel?',
       blocks: [
-        'Six brands rent out e-scooters in Basel: Lime, Voi, Dott (formerly Tier), Bird, Bolt and Hopp, which arrived on 17 March 2026. ScootRadar shows all six. Check Hopp’s age limit and insurance in its app: we found no Swiss terms for it.',
+        'Six brands rent out e-scooters in Basel: Lime, Voi, Dott (formerly Tier), Bird, Bolt and Hopp, which arrived on 17 March 2026. Check Hopp’s age limit and insurance in its app.',
         'Basel issues no permits and charges no fees. Instead, since October 2025 every operator must follow the canton’s usage rules: at most **200 scooters or bikes per operator** on public ground in the city (a monthly average), and a photo of the parked scooter at the end of every ride. An operator that keeps breaking them risks a ban on its whole fleet.',
         'On the morning of 12 October 2026 the [map around Basel](map:ch:basel) showed about 1,300 vehicles from the other five brands, suburbs included, and Hopp’s feed listed about 220 more. Renting one takes three steps:',
         {
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'What does an e-scooter cost in Basel?',
       blocks: [
-        'You pay to unlock, then by the minute. Five of the six brands publish their Basel rates in open data feeds; here they are as of 23 October 2026. Rates can vary by zone and time (Bolt says so itself), and the app shows the final price before you unlock.',
+        'You pay to unlock, then by the minute. Dott, Voi, Bolt, Hopp and Lime publish their Basel rates in open data feeds; here they are as of 23 October 2026. Rates can vary by zone and time (Bolt says so itself), and the app shows the final price before you unlock.',
         {
           table: {
             caption: 'Published e-scooter rates in Basel (operators’ data feeds, 23 October 2026)',
@@ -42,7 +42,6 @@ const guide: Guide = {
               ['Bolt', 'CHF 1.00', 'CHF 0.45', 'CHF 5.50', 'CHF 10.00'],
               ['Hopp', 'CHF 1.00', 'CHF 0.45', 'CHF 5.50', 'CHF 10.00'],
               ['Lime', 'CHF 1.00', 'CHF 0.46', 'CHF 5.60', 'CHF 10.20'],
-              ['Bird', 'Not published', 'Not published', 'Price in the app', 'Price in the app'],
             ],
           },
         },
@@ -105,7 +104,7 @@ const guide: Guide = {
             rows: [
               ['Herbstmesse (autumn fair)', '24 October to 8 November 2026; on Petersplatz until 10 November', 'Petersplatz is a no-go zone all year; the app shows any extra zones'],
               ['Fasnacht', 'Morgestraich at 4 a.m. on Monday 15 February 2027', 'Temporary zones in the centre: no parking there, and possibly no riding'],
-              ['Art Basel', '17 to 20 June 2027', 'Messeplatz has no permanent zone; temporary zones are possible, so check the app'],
+              ['Art Basel', '17 to 20 June 2027', 'Temporary zones are possible, so check the app'],
             ],
           },
         },
@@ -138,7 +137,6 @@ const guide: Guide = {
             '**Carvelo** rents cargo bikes.',
           ],
         },
-        'PubliBike runs no e-scooters in Basel.',
       ],
     },
     {
@@ -148,7 +146,7 @@ const guide: Guide = {
           list: [
             'Lime arrived in Basel in October 2018 with about 50 scooters. Three months later it pulled its Swiss fleets, 250 scooters in Basel, to fix a software fault that switched off the display and engaged the front brake at speed.',
             'On 14 October 2021 the canton counted 1,008 e-scooters from six firms, against a theoretical maximum of 1,200. Asked whether it knew why one operator had left Basel, the government answered in full: “Nein” (no).',
-            'Basel’s four Rhine ferries, Wild Maa, Leu, Vogel Gryff and Ueli, have no engine: they hang on a steel cable and the current pushes them across. A bike rides along for CHF 0.80. No source we found says whether a scooter may board, so end your ride on the street and walk on.',
+            'Basel’s four Rhine ferries, Wild Maa, Leu, Vogel Gryff and Ueli, have no engine: they hang on a steel cable and the current pushes them across. A bike rides along for CHF 0.80.',
           ],
         },
       ],
@@ -157,7 +155,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent an e-scooter in Basel?',
-      answer: 'Yes, from 18. None of the Swiss operator terms we read asks for Swiss residence: you sign up in the app and pay by card. If you don’t live in Switzerland, though, you pay any police fine on the spot or leave a deposit.',
+      answer: 'Yes, from 18: you sign up in the app and pay by card. If you don’t live in Switzerland, though, you pay any police fine on the spot or leave a deposit.',
     },
     {
       question: 'Can I take a rental e-scooter to EuroAirport Basel-Mulhouse?',
@@ -169,7 +167,7 @@ const guide: Guide = {
     },
     {
       question: 'Am I insured on a rental e-scooter?',
-      answer: 'Lime, Bolt and Voi include third-party liability insurance in the price, but it pays only after your own private liability insurance. Dott’s last published cover paid only beyond your other insurance. Bird names no amounts, and we found no Swiss terms for Hopp. Passengers are never covered.',
+      answer: 'Lime, Bolt and Voi include third-party liability insurance in the price, but it pays only after your own private liability insurance. Dott’s last published cover paid only beyond your other insurance. Check Hopp’s cover in its app. Passengers are never covered.',
     },
   ],
   sources: [

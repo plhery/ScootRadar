@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trottinette électrique Cherbourg 2026 : Bird, prix, zones',
   description: 'Trottinette électrique à Cherbourg : Bird, 1 € puis 0,23 € la minute, dès 18 ans. Où se garer, zones interdites, casque obligatoire, bus, ferry, vélos.',
   headline: 'Trottinette électrique à Cherbourg : Bird, prix, stationnement et casque en 2026',
-  lede: 'Pour louer une trottinette électrique à Cherbourg-en-Cotentin, vous passerez par **Bird**, présent depuis 2022 et seul opérateur que nous ayons trouvé. Comptez 1 € pour déverrouiller, puis 0,23 € la minute, soit 3,30 € les 10 minutes, selon la Ville en août 2026 ; l’app affiche le prix en vigueur, et il faut avoir 18 ans. La location ne se termine que sur un emplacement Bird marqué au sol, et depuis le 1er septembre 2026, le casque et le gilet réfléchissant sont obligatoires dans la Manche, location comprise.',
+  lede: 'Pour louer une trottinette électrique à Cherbourg-en-Cotentin, vous passerez par **Bird**, présent depuis 2022. Comptez 1 € pour déverrouiller, puis 0,23 € la minute, soit 3,30 € les 10 minutes, selon la Ville en août 2026 ; l’app affiche le prix en vigueur, et il faut avoir 18 ans. La location ne se termine que sur un emplacement Bird marqué au sol, et depuis le 1er septembre 2026, le casque et le gilet réfléchissant sont obligatoires dans la Manche, location comprise.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'fr:Cherbourg-en-Cotentin',
@@ -16,16 +16,15 @@ const guide: Guide = {
     {
       heading: 'Trottinette électrique en libre-service à Cherbourg : Bird',
       blocks: [
-        'Bird a déployé ses trottinettes à Cherbourg-en-Cotentin en 2022 : la Ville a mis son domaine public à sa disposition, en partenariat avec l’association Fil et Terre, selon l’Office de tourisme du Cotentin en juillet 2022. Nous n’avons trouvé ni le texte de cette autorisation, ni sa durée, ni redevance, ni plafond de flotte. La Ville ne présente que Bird, et la DREAL Normandie ne cite aucun autre opérateur à Cherbourg.',
+        'Bird a déployé ses trottinettes à Cherbourg-en-Cotentin en 2022 : la Ville a mis son domaine public à sa disposition, en partenariat avec l’association Fil et Terre, selon l’Office de tourisme du Cotentin en juillet 2022.',
         'Selon ICI Cotentin, Bird disposait en septembre 2026 de 500 trottinettes, et revendiquait plus d’un million de trajets depuis 2022. Le samedi 24 octobre 2026 à 13 h 26, la [carte de Cherbourg](map:fr:Cherbourg-en-Cotentin) de ScootRadar en affichait **environ 490** : un relevé, pas la taille de la flotte. Un bouton ouvre l’app Bird, où vous déverrouillez et payez par carte bancaire ou PayPal.',
         '**Quels quartiers ?** Les cinq communes déléguées ont des emplacements : Cherbourg-Octeville, Tourlaville, Équeurdreville-Hainneville, La Glacerie et Querqueville. Selon Bird, ses trottinettes ne peuvent pas sortir de Cherbourg-en-Cotentin ; la Ville les dit bridées à **25 km/h**.',
-        '**Et les vélos Bird ?** Le 24 octobre 2026, les données de Bird ne listaient que des trottinettes ; les vélos en libre-service sont ceux de Cap Cotentin (voir plus bas).',
       ],
     },
     {
       heading: 'Prix Bird à Cherbourg : tarif à la minute et forfaits',
       blocks: [
-        'Bird ne publie pas ses prix dans ses données ouvertes ; voici ceux qu’affiche la Ville :',
+        'Voici les prix qu’affiche la Ville :',
         {
           table: {
             caption: 'Prix d’une trottinette Bird à Cherbourg, selon la Ville (page du 6 août 2026)',
@@ -47,11 +46,11 @@ const guide: Guide = {
       heading: 'Où garer sa trottinette Bird à Cherbourg',
       blocks: [
         'Pas de stationnement libre : avec la Ville, Bird a défini des **emplacements obligatoires**, marqués au sol et visibles dans l’app. Vous ne pouvez terminer le trajet que lorsque votre téléphone et la trottinette sont dans l’emplacement. Laissée ailleurs, la trottinette continue d’être facturée, Bird vous pénalise, et en cas de récidive, il peut vous exclure du service.',
-        'Le flux de Bird comptait **170 emplacements** le 24 octobre 2026. D’après nos calculs :',
+        'Le flux de Bird comptait **170 emplacements** le 24 octobre 2026 :',
         {
           list: [
             '**Où ils sont proches** : à quelques dizaines de mètres du parvis de la gare ; à moins de 100 m de l’Hôtel de Ville, de la capitainerie du port Chantereyne, de la plage de Collignon et des mairies de Tourlaville et d’Équeurdreville.',
-            '**Où ils manquent** : aucun à moins de 250 m de la place Général-de-Gaulle (le plus proche est place de la Fontaine), ni à moins de 300 m de la Cité de la Mer.',
+            '**Où ils sont plus loin** : à plus de 250 m de la place Général-de-Gaulle (le plus proche est place de la Fontaine) et à 300 m environ de la Cité de la Mer.',
           ],
         },
         '**Les frais.** Si vous terminez la location dans un lieu privé ou inaccessible, le contrat de Bird prévoit jusqu’à 120 € de frais d’enlèvement.',
@@ -60,7 +59,7 @@ const guide: Guide = {
     {
       heading: 'Zones interdites et zones lentes : où rouler à Cherbourg',
       blocks: [
-        'Avec la Ville, Bird a interdit certaines « zones sensibles », abords de la mer compris, et ralenti la trottinette dans d’autres : quand elle y entre, elle décélère, voire s’arrête. Ses données publiques du 24 octobre 2026 listaient 28 zones interdites ; exemples situés par nos soins :',
+        'Avec la Ville, Bird a interdit certaines « zones sensibles », abords de la mer compris, et ralenti la trottinette dans d’autres : quand elle y entre, elle décélère, voire s’arrête. Ses données publiques du 24 octobre 2026 listaient 28 zones interdites ; en voici des exemples :',
         {
           table: {
             caption: 'Zones interdites de Bird à Cherbourg-en-Cotentin, exemples du 24 octobre 2026',
@@ -72,14 +71,14 @@ const guide: Guide = {
             ],
           },
         },
-        '**Les zones lentes** ne figurent pas dans ces données : seule l’app les montre. En 2022, l’Office de tourisme annonçait 10 km/h dans les zones piétonnes et le centre-ville. La montée des Résistants, vers le fort du Roule et son musée de la Libération, n’est pas en zone interdite.',
+        '**Les zones lentes** sont dans l’app de Bird. En 2022, l’Office de tourisme annonçait 10 km/h dans les zones piétonnes et le centre-ville. La montée des Résistants, vers le fort du Roule et son musée de la Libération, n’est pas en zone interdite.',
         '**Les rues piétonnes du centre** (Grande-Rue, rues des Portes, du Château et des Fossés) ne sont pas en zone interdite, mais la loi s’applique : dans une aire piétonne, vous roulez au pas, sans gêner les piétons.',
       ],
     },
     {
       heading: 'Casque, gilet, âge, amendes : les règles à Cherbourg',
       blocks: [
-        { note: 'Depuis le 1er septembre 2026, un arrêté du préfet de la Manche impose à tout usager de trottinette électrique, location comprise, un casque homologué et un gilet rétroréfléchissant, de jour comme de nuit. Le 7 septembre, Bird disait vouloir une dérogation ; au 24 octobre 2026, nous n’en avons trouvé aucune. Prévoyez casque et gilet avant de déverrouiller.' },
+        { note: 'Depuis le 1er septembre 2026, un arrêté du préfet de la Manche impose à tout usager de trottinette électrique, location comprise, un casque homologué et un gilet rétroréfléchissant, de jour comme de nuit. Le 7 septembre, Bird disait vouloir une dérogation. Prévoyez casque et gilet avant de déverrouiller.' },
         '**L’âge.** Bird et la Ville exigent **18 ans** ; une trottinette personnelle se conduit dès 14 ans.',
         {
           table: {
@@ -98,15 +97,15 @@ const guide: Guide = {
             ],
           },
         },
-        'La Ville affiche la règle sur sa page consacrée à Bird ; les montants sont ceux que donnait ICI Cotentin le 7 septembre 2026, et nous n’avons pas pu lire l’arrêté lui-même. Assurance, débridage, équipement : le reste est dans notre guide de la [réglementation de la trottinette électrique en France](guide:french-rules).',
+        'La Ville affiche la règle sur sa page consacrée à Bird ; les montants sont ceux que donnait ICI Cotentin le 7 septembre 2026. Assurance, débridage, équipement : le reste est dans notre guide de la [réglementation de la trottinette électrique en France](guide:french-rules).',
         '**En cas d’accident.** L’assurance de Bird couvre vos blessures si vous êtes responsable ou si le responsable n’est pas identifié ; déclarez blessure, dégât ou vol à la police sous 24 heures.',
       ],
     },
     {
       heading: 'Trottinette dans le bus Cap Cotentin et le train',
       blocks: [
-        'Dans les bus et cars Cap Cotentin, « **seuls les vélos et trottinettes pliants sont acceptés à bord** », tenus à la main, selon le règlement d’exploitation du 8 juillet 2025. Cap Cotentin le met à jour le 2 novembre 2026, mais n’en avait pas publié le texte au 24 octobre. Une Bird, qui ne se plie pas, reste dehors : terminez la location près de l’arrêt.',
-        'Le trajet en bus coûte **1 €** (ticket valable une heure, 1,50 € s’il est acheté à bord). Avec un titre Cap Cotentin, le train entre Cherbourg et Valognes coûte aussi 1 €, mais ces titres ne sont vendus ni en gare ni à bord. Pour une trottinette pliée dans le train, renseignez-vous auprès de la SNCF.',
+        'Dans les bus et cars Cap Cotentin, « **seuls les vélos et trottinettes pliants sont acceptés à bord** », tenus à la main, selon le règlement d’exploitation du 8 juillet 2025. Cap Cotentin le met à jour le 2 novembre 2026. Une Bird, qui ne se plie pas, reste dehors : terminez la location près de l’arrêt.',
+        'Le trajet en bus coûte **1 €** (ticket valable une heure, 1,50 € s’il est acheté à bord). Avec un titre Cap Cotentin, le train entre Cherbourg et Valognes coûte aussi 1 €, mais ces titres ne sont vendus ni en gare ni à bord.',
       ],
     },
     {

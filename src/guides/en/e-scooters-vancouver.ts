@@ -19,13 +19,13 @@ const guide: Guide = {
         'Only one: **Lime**. The City made it its exclusive operator in 2024. You rent in the Lime app or, through Lime’s partnership with Uber, in the Uber app.',
         {
           list: [
-            '**Prices.** Lime’s open data carries no Vancouver fares, so check the app, which shows the price before you unlock.',
+            '**Prices.** The Lime app shows the price before you unlock.',
             '**Discounts.** When the City picked it in 2024, Lime promised a $20 discounted annual pass for marginalized groups, Cities Today reported.',
             '**Age.** Lime riders must be 18, Global News reported at the launch: older than the Province’s minimum of 16.',
           ],
         },
         'All prices on this page are in Canadian dollars. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
-        'Around 10:25 am on 17 October 2026 the [map of Vancouver](map:ca:bc:Vancouver) showed about 1,190 Lime scooters: a snapshot, not the fleet. Our map doesn’t show e-bikes or the City’s Mobi bike share, and can’t unlock a scooter.',
+        'Around 10:25 am on 17 October 2026 the [map of Vancouver](map:ca:bc:Vancouver) showed about 1,190 Lime scooters: a snapshot, not the fleet.',
       ],
     },
     {
@@ -37,10 +37,10 @@ const guide: Guide = {
           list: [
             '**12 September 2024:** 100 scooters in Hastings-Sunrise and Grandview-Woodland.',
             '**June 2025:** downtown and the West End.',
-            '**17 October 2026:** Lime’s open data listed 245 stations, from Trafalgar Street in Kitsilano east to Boundary Road and south to about 47th Avenue on the east side. There were none at UBC or Jericho Beach, and none on the west side south of about 10th Avenue.',
+            '**17 October 2026:** Lime’s open data listed 245 stations, from Trafalgar Street in Kitsilano east to Boundary Road and south to about 47th Avenue on the east side.',
           ],
         },
-        'We found no published fleet cap. Lime told CBC it operated about 700 scooters in October 2025.',
+        'Lime told CBC it operated about 700 scooters in October 2025.',
       ],
     },
     {
@@ -82,7 +82,7 @@ const guide: Guide = {
         {
           list: [
             '**The seawall.** Its paths run 28 km, from Coal Harbour around Stanley Park and False Creek to Spanish Banks, with separate lanes for walking and cycling. Until April 2024 e-scooters were technically illegal on parts of it. In 2024 the City planned zones where scooters slow down or stop, Global News reported: check the app for those in force.',
-            '**Stanley Park.** The park’s section of the seawall is about 9 km, and its bike lane runs one way, counterclockwise. Lime had no station in the park on 17 October 2026, so you pay for the whole loop and end in the West End, at Morton Street and Denman Street by English Bay, for instance.',
+            '**Stanley Park.** The park’s section of the seawall is about 9 km, and its bike lane runs one way, counterclockwise. A Lime station at Morton Street and Denman Street, by English Bay in the West End, makes a handy start and end for the loop.',
             '**Granville Island.** One Lime station stands on West Anderson Street, near the Public Market.',
             '**Slow and no-ride zones.** Lime’s system has both: in 2025 it slowed scooters on Commercial Drive, in parts of Yaletown and along East Hastings, Vancity Lookout reported. Check the app.',
           ],
@@ -101,15 +101,14 @@ const guide: Guide = {
             'have brakes, a bell or horn, and lights for night riding.',
           ],
         },
-        'Hoverboards, electric unicycles and e-skateboards don’t count: the VPD says they aren’t street legal. The pilot covers only the towns that joined: 40 on the Province’s list in September 2026, including Burnaby, Richmond, Coquitlam, both North Vancouvers, West Vancouver, Kelowna and Victoria. Surrey, New Westminster and Delta weren’t on it, so you may not ride on their public roads.',
+        'Hoverboards, electric unicycles and e-skateboards don’t count: the VPD says they aren’t street legal. The pilot covers only the towns that joined: 40 on the Province’s list in September 2026, including Burnaby, Richmond, Coquitlam, both North Vancouvers, West Vancouver, Kelowna and Victoria. Elsewhere you may not ride your own e-scooter on public roads.',
       ],
     },
     {
       heading: 'SkyTrain, SeaBus, YVR and riding through winter',
       blocks: [
-        '**On transit.** TransLink lets you take a folding e-scooter, folded, on buses, SkyTrain (Canada Line included), the SeaBus and the West Coast Express, at the operator’s discretion; seated e-scooters aren’t allowed. A Lime ride must end at a station, so end it before you board. Lime has stations near most SkyTrain stops in its area, but none on the Canada Line south of Broadway–City Hall.',
+        '**On transit.** TransLink lets you take a folding e-scooter, folded, on buses, SkyTrain (Canada Line included), the SeaBus and the West Coast Express, at the operator’s discretion; seated e-scooters aren’t allowed. A Lime ride must end at a station, so end it before you board. Lime has stations near most SkyTrain stops in its area.',
         '**YVR airport.** The airport sits on Sea Island in Richmond, outside Lime’s Vancouver area. Take the Canada Line to downtown; trips from the airport into the city pay a $6.50 AddFare on top of the fare, with some exemptions.',
-        '**Season and night.** We found no winter break or night ban announced for Vancouver.',
         '**No scooter nearby?** Mobi by Rogers, the City’s bike share, rents e-bikes at $2.00 to unlock and $0.39 a minute, plus tax.',
       ],
     },
@@ -119,10 +118,10 @@ const guide: Guide = {
         'Around Vancouver, Lime’s offer changes from town to town:',
         {
           list: [
-            '**Richmond, Coquitlam and Port Moody:** Lime runs e-scooters and e-bikes in central Richmond, where it started in May 2022, and in Coquitlam’s City Centre and Port Moody, whose areas join up. Since 26 October 2026 our map shows its scooters in [Richmond](map:ca:bc:Richmond), [Coquitlam](map:ca:bc:Coquitlam) and [Port Moody](map:ca:bc:Port Moody).',
+            '**Richmond, Coquitlam and Port Moody:** Lime runs e-scooters and e-bikes in central Richmond, where it started in May 2022, and in Coquitlam’s City Centre and Port Moody, whose areas join up. Find its scooters on the maps of [Richmond](map:ca:bc:Richmond), [Coquitlam](map:ca:bc:Coquitlam) and [Port Moody](map:ca:bc:Port Moody).',
             '**Burnaby:** Lime e-bikes only, since 25 June 2026. In May 2026 the city banned e-scooters from major roads without a separated bike lane or path alongside, and from parks not designated for them.',
-            '**North Vancouver and West Vancouver:** no shared scooters. Lime ran the North Shore’s e-bike share until 30 June 2025, when BCAA’s Evolve took over. Private scooters are allowed, and folding ones ride the SeaBus.',
-            '**Kelowna:** about 750 Lime scooters, and no other operator’s, were on the [Kelowna map](map:ca:bc:Kelowna) at the same moment. Kelowna RCMP said in 2023 that you may not ride in City Park or along the downtown waterfront, or downtown after 10:30 pm.',
+            '**North Vancouver and West Vancouver:** Lime ran the North Shore’s e-bike share until 30 June 2025, when BCAA’s Evolve took over. Private scooters are allowed, and folding ones ride the SeaBus.',
+            '**Kelowna:** about 750 Lime scooters were on the [Kelowna map](map:ca:bc:Kelowna) at the same moment. Kelowna RCMP said in 2023 that you may not ride in City Park or along the downtown waterfront, or downtown after 10:30 pm.',
           ],
         },
       ],
@@ -148,7 +147,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in Vancouver?',
-      answer: 'Check the Lime app, which shows the fare before you unlock: Lime’s open data carries no Vancouver fares.',
+      answer: 'The Lime app shows the fare before you unlock.',
     },
     {
       question: 'Do you need a helmet for an e-scooter in Vancouver?',
@@ -156,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride an e-scooter on the Stanley Park seawall?',
-      answer: 'Yes, since April 2024, on the bike lane and one way, counterclockwise, around the 9 km loop. Lime has no station in the park, so you end your ride in the West End.',
+      answer: 'Yes, since April 2024, on the bike lane and one way, counterclockwise, around the 9 km loop. A Lime ride starts and ends at a station, such as the one at Morton Street and Denman Street by English Bay.',
     },
     {
       question: 'Are private e-scooters legal in Vancouver?',

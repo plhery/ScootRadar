@@ -16,12 +16,12 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Zürich?',
       blocks: [
-        'ScootRadar shows e-scooters from seven brands in Zürich: Bird, Bolt, Dott, Hopp, Lime, Voi and PubliBike. The city publishes no list of operators; in March 2025 it counted seven with permits, for e-scooters, e-bikes and e-mopeds together. Worth knowing about four of them:',
+        'Seven brands rent out e-scooters in Zürich: Bird, Bolt, Dott, Hopp, Lime, Voi and PubliBike. In March 2025 the city counted seven operators with permits, for e-scooters, e-bikes and e-mopeds together. Worth knowing about four of them:',
         {
           list: [
             '**Lime**: in Zürich you can also rent one through the Uber app.',
             '**Dott** merged with Tier in 2024; Tier riders now use the Dott app.',
-            '**Hopp** (Iceland, run through local franchises): its Swiss terms aren’t on its website, so check the age limit and insurance in its app.',
+            '**Hopp** (Iceland, run through local franchises): check the age limit and insurance in its app.',
             '**PubliBike**, the Swiss firm behind Züri Velo: e-scooters since 26 February 2026, with a permit for up to 400. They can’t be left at Züri Velo stations.',
           ],
         },
@@ -51,25 +51,24 @@ const guide: Guide = {
               ['Bolt', 'CHF 1.00', 'CHF 0.42 (a few at CHF 0.48)', 'CHF 5.20'],
               ['Voi', 'CHF 1.00', 'CHF 0.42 (some at CHF 0.39)', 'CHF 5.20'],
               ['Lime', 'CHF 1.00', 'CHF 0.40 to CHF 0.49, changing through the day', 'CHF 5.00 to CHF 5.90'],
-              ['Bird', 'Not published', 'Not published', 'Rate shown in its app'],
             ],
           },
         },
-        'Bird publishes no rates, so check its price in the app before you unlock. Lime’s feed marks its rates as excluding tax, so the map gives no estimate for Lime; its app shows the final price. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate. The average Zürich rental ride is about 1.5 km and 10 minutes long, says the city’s head of traffic safety. To compare with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Bird’s app shows its price before you unlock. Lime’s feed marks its rates as excluding tax; its app shows the final price. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate. The average Zürich rental ride is about 1.5 km and 10 minutes long, says the city’s head of traffic safety. To compare with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {
       heading: 'How Zürich’s permit system and caps work',
       blocks: [
         'Since 1 April 2019, anyone renting out more than 30 two-wheelers in Zürich without fixed stations needs a city permit. One permit covers up to 800 vehicles of one type, at CHF 10 per vehicle a month, plus a CHF 50 deposit per vehicle and a CHF 1,500 yearly control fee.',
-        'Operators must remove a badly parked scooter within 24 hours, or at once if it blocks the way, and share their usage data with the city. There is no cap on the number of operators yet: anyone who meets the conditions gets a permit. On 26 August 2026 the city put the number of shared vehicles on its streets at 7,350, e-bikes and e-mopeds included.',
+        'Operators must remove a badly parked scooter within 24 hours, or at once if it blocks the way, and share their usage data with the city. For now, anyone who meets the conditions gets a permit. On 26 August 2026 the city put the number of shared vehicles on its streets at 7,350, e-bikes and e-mopeds included.',
       ],
     },
     {
       heading: 'Zürich’s plan: three operators and 3,000 vehicles',
       blocks: [
         'On 26 August 2026 the city government told the city parliament that it wants three operators and 3,000 shared vehicles in total, chosen by public tender. In the centre, at the main station and at other busy places you would then park only at fixed, marked stations; elsewhere free-floating would stay. New rules and the tender still have to come first.',
-        'No official date exists yet. Councillors spoke of a tender in autumn 2026 and a restart in spring 2027; until the new system starts, today’s rules and zones apply. The city has cited Winterthur as a model: according to SRF, Voi has been the only operator there since early 2026.',
+        'Councillors spoke of a tender in autumn 2026 and a restart in spring 2027; until the new system starts, today’s rules and zones apply. The city has cited Winterthur as a model: according to SRF, Voi has been the only operator there since early 2026.',
       ],
     },
     {
@@ -121,7 +120,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**18+** with every operator whose Swiss terms we checked. The law itself: 16 without a licence, 14 with a category M licence.',
+            '**18+** at Lime, Bolt, Bird, Voi, Dott and PubliBike; check Hopp in its app. The law itself: 16 without a licence, 14 with a category M licence.',
             '**Bike lane or path** if there is one, otherwise the road. **Never the pavement**: CHF 40.',
             '**One rider**, no passengers.',
             '**Lights on**, by day too: CHF 20 without them in daylight.',
@@ -137,15 +136,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent e-scooters in Zürich?',
-      answer: 'Yes, from 18. None of the Swiss operator terms we read asks for Swiss residence: you sign up in the app and pay by card. Without a Swiss residence, though, you must pay a police fine on the spot or leave a deposit.',
+      answer: 'Yes, from 18: you sign up in the app and pay by card. Without a Swiss residence, though, you must pay a police fine on the spot or leave a deposit.',
     },
     {
       question: 'Am I insured on a rental e-scooter?',
-      answer: 'Lime, Bolt, Voi and Dott include third-party liability insurance in the price, but it only pays after your own private liability insurance. Bird’s terms say its scooters carry liability insurance but name no amounts. PubliBike includes none: under its terms, insurance is the rider’s business. Passengers are never covered.',
+      answer: 'Lime, Bolt, Voi and Dott include third-party liability insurance in the price, but it only pays after your own private liability insurance. Bird’s terms say its scooters carry liability insurance. PubliBike includes none: under its terms, insurance is the rider’s business. Passengers are never covered.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Zürich?',
-      answer: 'No, Swiss law doesn’t require one, but the BFU, the Swiss accident prevention body, strongly recommends it, and Dott warns that head injuries may not be covered without one. In August 2026 the Federal Council said it was ready to put an e-scooter helmet requirement up for consultation at its next revision of the rules; there is no draft or date yet.',
+      answer: 'No, Swiss law doesn’t require one, but the BFU, the Swiss accident prevention body, strongly recommends it, and Dott warns that head injuries may not be covered without one. In August 2026 the Federal Council said it was ready to put an e-scooter helmet requirement up for consultation at its next revision of the rules.',
     },
     {
       question: 'How many e-scooters are there in Zürich?',

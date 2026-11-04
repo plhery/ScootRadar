@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in St. Paul 2026: Lime, Spin, rules, season',
   description: 'E-scooters in St. Paul, MN: Lime and Spin, the season to mid-November, no sidewalks, boulevard parking, Spin’s no-parking zones, parks and light rail.',
   headline: 'E-scooters in St. Paul: Lime and Spin, the rules, the season and where to park',
-  lede: 'E-scooters in St. Paul come from Lime and Spin, the two companies the City Council approved for the 2026 season, and both are on the map. Neither the City nor Spin’s open data lists a price, so check it in the app. The season typically runs from mid-April to mid-November, with no night ban; Minnesota law keeps scooters off sidewalks, and you park in the boulevard, the strip between the sidewalk and the curb.',
+  lede: 'E-scooters in St. Paul come from Lime and Spin, the two companies the City Council approved for the 2026 season. The app shows the price before you unlock. The season typically runs from mid-April to mid-November; Minnesota law keeps scooters off sidewalks, and you park in the boulevard, the strip between the sidewalk and the curb.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:mn:St. Paul',
@@ -18,15 +18,15 @@ const guide: Guide = {
       blocks: [
         'Electric scooter rental in St. Paul runs on yearly agreements with the City, which its Legislative Code requires (§ 141.02). On 6 May 2026 the City Council approved agreements with **Lime** and **Spin** for e-scooters and e-bikes for the 2026 season, with two optional one-year renewals. The City’s scooters page, last edited in April 2025, names the same two companies for 2025. Spin’s open data names Bird Rides, Inc. as its operator.',
         'The agreements set a floor and a ceiling for each company in the city: 500 to 1,100 scooters for Lime, 300 to 1,000 for Spin, and 200 to 600 e-bikes each. At least 30% of each fleet must be spread through lower-income census tracts.',
-        'At 4:13 p.m. on Monday 26 October 2026 the [St. Paul map](map:us:mn:St. Paul) showed about 940 scooters: roughly 40 Spin as they stood at that moment, and 900 Lime as last counted. That is a snapshot, not the fleets. At 4:21 p.m. every scooter and e-bike in Spin’s St. Paul open data stood inside the city, by the Census Bureau’s boundaries, and none of Spin’s Minneapolis vehicles stood in St. Paul.',
-        'For Spin the map shows each scooter’s position, charge and range, and its zones (see below); for Lime, position and charge. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Not everything is on the map.** ScootRadar shows standing e-scooters only. Besides 39 scooters for hire and 5 out of service, Spin’s open data listed 2 e-bikes that afternoon, and Lime’s agreement has it run e-bikes too: none of them is on the map. The City’s page names no other bike share.',
+        'At 4:13 p.m. on Monday 26 October 2026 the [St. Paul map](map:us:mn:St. Paul) showed about 940 scooters: roughly 40 Spin as they stood at that moment, and 900 Lime as last counted. That is a snapshot, not the fleets.',
+        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Besides 39 scooters for hire and 5 out of service, Spin’s open data listed 2 e-bikes that afternoon; Lime runs e-bikes too, under its agreement.',
       ],
     },
     {
       heading: 'How much does a Lime or Spin scooter cost in St. Paul?',
       blocks: [
-        'On 26 October 2026 neither the City’s page nor Spin’s open data gave a St. Paul price, so check it in the Lime or Spin app before you unlock. “The city does not regulate rental rates,” the City says, and “if the scooter or bike trip starts or ends in a park there could be an additional fee.” Under the 2026 agreements each company pays the City $0.15 for every trip that starts or ends in the city, and $0.27 more when a trip starts or ends on parkland.',
+        'The Lime or Spin app shows the price before you unlock. “The city does not regulate rental rates,” the City says, and “if the scooter or bike trip starts or ends in a park there could be an additional fee.” Under the 2026 agreements each company pays the City $0.15 for every trip that starts or ends in the city, and $0.27 more when a trip starts or ends on parkland.',
         'Riders with limited incomes may get cheaper rides through each company’s Access programme, the City says. **Spin Access** gives discounted fares once you send documents showing your status, and approved riders without a smartphone can unlock by text message.',
       ],
     },
@@ -40,7 +40,6 @@ const guide: Guide = {
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Season', 'Estimated from about 15 April to about 15 November; with a winter plan, the City may let a company run to 31 December', 'City agreements 2026, § 3; City page'],
-              ['Hours', 'None set: no night ban', 'City agreements 2026; City page'],
               ['Sidewalks', 'Banned, except to enter or leave the property beside them', 'Minnesota law; City page'],
               ['Where to ride', 'On the street as close to the right-hand curb as is practicable, or on a bike lane, path or trail unless it is reserved for nonmotorized traffic; local authorities may set stricter rules', 'Minnesota law; City page'],
               ['Left turns', 'Stop and get off at the right-hand curb, then cross the road on foot', 'Minnesota law, as the Mankato Free Press quoted it'],
@@ -58,10 +57,9 @@ const guide: Guide = {
     {
       heading: 'When does the scooter season end in St. Paul?',
       blocks: [
-        'The City’s page says the season runs “typically from mid-April to mid-November each year”. The 2026 agreements estimate the first scooters “on or around April 15th” and the end “on or around November 15th”, and the City may move either date with notice. A company that wants to run later must send the City a winter plan by 1 November 2026; the City may then let it run to 31 December. As of 26 October 2026 we found no word of one.',
+        'The City’s page says the season runs “typically from mid-April to mid-November each year”. The 2026 agreements estimate the first scooters “on or around April 15th” and the end “on or around November 15th”, and the City may move either date with notice. A company that wants to run later must send the City a winter plan by 1 November 2026; the City may then let it run to 31 December.',
         'In 2024 Lime kept about 100 scooters out into December as an informal winter test, until it stopped on 18 December, the day before the City’s first snow emergency, the City’s report says.',
-        'There is no night ban, and the map marks none in St. Paul. The map counts only scooters standing for hire, so it shows at a glance who is still out, and none once the fleets are put away for the winter.',
-        'Minneapolis next door has rules of its own, among them, under its 2025 licence, a switch-off from midnight to 4 a.m., which the map marks there: see [e-scooters in Minneapolis](guide:minneapolis) and the [Minneapolis map](map:us:mn:Minneapolis).',
+        'Minneapolis next door has rules of its own, among them, under its 2025 licence, a switch-off from midnight to 4 a.m.: see [e-scooters in Minneapolis](guide:minneapolis) and the [Minneapolis map](map:us:mn:Minneapolis).',
       ],
     },
     {
@@ -92,7 +90,7 @@ const guide: Guide = {
             '**a strip along the Intercampus Transitway**, from the Minneapolis line to Como Avenue, and an area on University Avenue at the Minneapolis line.',
           ],
         },
-        'Spin’s St. Paul riding area covers the city and reaches over the city line into Minneapolis and a sliver of Falcon Heights. Its open data held no slow zones, so the map doesn’t show the 10 mph park areas, and it doesn’t show Lime’s zones: check the app.',
+        'Spin’s St. Paul riding area covers the city and reaches over the city line into Minneapolis and a sliver of Falcon Heights. The 10 mph park areas and Lime’s zones are in the apps.',
       ],
     },
     {
@@ -102,7 +100,7 @@ const guide: Guide = {
           list: [
             '**City parks.** Under the 2026 agreements, on park land you park at signed scooter parking or, if there is none, near bike parking, a parking lot or a transit stop, but never in the stop, its shelter or its waiting area. Each company may place at most 75 scooters in Harriet Island Regional Park and on Raspberry Island.',
             '**Downtown.** The companies must spread their scooters across the city: each may place at most 250 in the Downtown Entertainment District.',
-            '**State Capitol and the University.** We couldn’t read the scooter rules for the State Capitol grounds or for the University of Minnesota’s St. Paul campus: follow signs there and the app.',
+            '**State Capitol and the University.** On the State Capitol grounds and the University of Minnesota’s St. Paul campus, follow the signs and the app.',
           ],
         },
       ],
@@ -128,7 +126,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in St. Paul, MN?',
-      answer: 'On 26 October 2026 neither the City nor Spin’s open data listed a St. Paul price, so check the Lime or Spin app before you unlock. The City doesn’t regulate rates, and says a trip that starts or ends in a park could cost extra.',
+      answer: 'The Lime or Spin app shows the price before you unlock. The City doesn’t regulate rates, and says a trip that starts or ends in a park could cost extra.',
     },
     {
       question: 'Can you ride a Lime or Spin scooter in St. Paul in winter?',
@@ -163,7 +161,6 @@ const guide: Guide = {
     { title: 'Spin: safety', url: 'https://www.spin.app/safety' },
     { title: 'Spin: Spin Access', url: 'https://www.spin.app/spin-access' },
     { title: 'City of Saint Paul (ArcGIS): City Parks layer', url: 'https://services1.arcgis.com/9meaaHE3uiba0zr8/arcgis/rest/services/CityParks/FeatureServer/0' },
-    { title: 'US Census Bureau: TIGERweb boundaries', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
   ],
 };
 

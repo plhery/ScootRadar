@@ -24,14 +24,14 @@ const guide: Guide = {
           ],
         },
         'A third firm the city had authorised by April 2024, Adventure, a start-up from Rio Grande do Sul with orange scooters, had stopped running in Porto Alegre by July 2025, the Jornal do Comércio reported.',
-        'Whoosh and JET came in under a 2019 city decree. Decree 23.782 of 19 May 2026 replaced it: every operator now needs accreditation (credenciamento) from the urban mobility department, the Secretaria Municipal de Mobilidade Urbana (SMMU), and the city’s transport and traffic company, EPTC (Empresa Pública de Transporte e Circulação). The call, announced on 8 October 2026, stays open for 60 months, and firms already running must sign up; by 25 October the city had named no accredited firm. The decree sets no cap on scooters and leaves the price to each operator.',
+        'Whoosh and JET came in under a 2019 city decree. Decree 23.782 of 19 May 2026 replaced it: every operator now needs accreditation (credenciamento) from the urban mobility department, the Secretaria Municipal de Mobilidade Urbana (SMMU), and the city’s transport and traffic company, EPTC (Empresa Pública de Transporte e Circulação). The call, announced on 8 October 2026, stays open for 60 months, and firms already running must sign up. The decree leaves the price to each operator.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does electric scooter rental in Porto Alegre cost?',
       blocks: [
-        'Each app shows the price before you start, and neither operator publishes a Porto Alegre rate on its website. Prices change with demand, and JET charges paused time like riding time.',
+        'Each app shows the price before you start. Prices change with demand, and JET charges paused time like riding time.',
         'The last figure the city published is Whoosh’s pay-as-you-go rate, in an EPTC notice of 17 July 2024: R$2 to unlock plus R$0.80 a minute, or R$10 for a 10-minute ride. That is over two years old. Whoosh adds accident insurance unless you switch it off. A Whoosh Pass (7 days, 30 days or a year) removes the unlock fee, not the per-minute price.',
         {
           table: {
@@ -48,7 +48,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Go Jet’s terms (revised August 2026) make you liable for fines, seizures and removal costs, but set no amounts.',
+        'Go Jet’s terms (revised August 2026) make you liable for fines, seizures and removal costs.',
       ],
     },
     {
@@ -105,7 +105,7 @@ const guide: Guide = {
               ['Riding style', 'No racing, stunts or riding that threatens pedestrians or drivers', 'City (Decree 23.848)'],
               ['The scooter', 'Up to 1,000 W and 32 km/h by design, at most 70 cm wide, with a speed display or limiter, a bell and lights at the front, rear and sides', 'National (CONTRAN Resolution 996)'],
               ['Registration and plates', 'None needed', 'National (CONTRAN Resolution 996)'],
-              ['Hours', 'None set: no night ban, and EPTC said in July 2024 that JET’s scooters run 24 hours a day', 'City decrees; EPTC (July 2024)'],
+              ['Hours', 'JET’s scooters run 24 hours a day, EPTC said in July 2024', 'EPTC (July 2024)'],
             ],
           },
         },
@@ -115,17 +115,17 @@ const guide: Guide = {
     {
       heading: 'Where to find JET and Whoosh scooters in Porto Alegre',
       blocks: [
-        'At 12:51 local time on Sunday 25 October 2026 the [map of Porto Alegre](map:br:Porto Alegre) showed about 3,100 standing scooters: 1,700 JET and 1,400 Whoosh. That is a snapshot, not the size of either fleet, and scooters on a ride don’t appear.',
-        'On the Prefeitura’s official bairro (district) boundaries, every one stood inside the city, in 33 of its 94 bairros, and none in Canoas, Alvorada, Viamão or Cachoeirinha. More than two in five stood in the Centro Histórico (about 700) and Praia de Belas (610); then came Cidade Baixa (180), Moinhos de Vento and Cristal (150 each), Rio Branco (140) and Menino Deus (130). Whoosh reached further north-east: about 130 of its scooters in Boa Vista, Jardim Europa, Três Figueiras, Cristo Redentor and Passo da Areia, against four of JET’s.',
-        'The map shows Go Jet and Whoosh: each Whoosh scooter’s charge and range, and each JET scooter’s charge. It shows no prices, stations, zones or hours; the apps do. At the end of the Trensurb line it also shows JET in [Novo Hamburgo](map:br:Novo Hamburgo). Both operators run in São Paulo too: see [e-scooters in São Paulo](guide:sao-paulo).',
+        'At 12:51 local time on Sunday 25 October 2026 the [map of Porto Alegre](map:br:Porto Alegre) showed about 3,100 standing scooters: 1,700 JET and 1,400 Whoosh. That is a snapshot, not the size of either fleet.',
+        'They stood in 33 of the city’s 94 bairros (districts). More than two in five stood in the Centro Histórico (about 700) and Praia de Belas (610); then came Cidade Baixa (180), Moinhos de Vento and Cristal (150 each), Rio Branco (140) and Menino Deus (130). Whoosh reached further north-east: about 130 of its scooters in Boa Vista, Jardim Europa, Três Figueiras, Cristo Redentor and Passo da Areia, against four of JET’s.',
+        'At the end of the Trensurb line, the map also shows JET in [Novo Hamburgo](map:br:Novo Hamburgo). Both operators run in São Paulo too: see [e-scooters in São Paulo](guide:sao-paulo).',
       ],
     },
     {
       heading: 'The Orla, the Trensurb and the city’s bikes',
       blocks: [
-        'The Orla do Guaíba is the waterfront park along Avenida Edvaldo Pereira Paiva. Its first stretch, the Orla Moacyr Scliar, runs 1.3 km from the Usina do Gasômetro to the Rótula das Cuias with a cycle track and a footway; in 2021 the city handed it, with Parque Harmonia, to GAM3 Parks on a 35-year concession. The Orla’s limit is 10 km/h; in parks such as Parque Farroupilha (Redenção) and Parcão (Parque Moinhos de Vento) it is 6 km/h, and riders must be at least 14. We found no park or concessionaire with stricter rules.',
+        'The Orla do Guaíba is the waterfront park along Avenida Edvaldo Pereira Paiva. Its first stretch, the Orla Moacyr Scliar, runs 1.3 km from the Usina do Gasômetro to the Rótula das Cuias with a cycle track and a footway; in 2021 the city handed it, with Parque Harmonia, to GAM3 Parks on a 35-year concession. The Orla’s limit is 10 km/h; in parks such as Parque Farroupilha (Redenção) and Parcão (Parque Moinhos de Vento) it is 6 km/h, and riders must be at least 14.',
         'Trensurb’s metro line, from Mercado in the centre to Novo Hamburgo, takes your own e-scooter on the same terms as a bike: on weekdays 05:00–05:30, 09:00–16:00 and 19:00–23:00, all day at weekends and on holidays, in the second car; folded, at any time. Not a shared one: Whoosh charges R$80 for taking its scooter on the metro.',
-        'BikePOA, the city’s docked bike share, is run by Tembici: you rent its bikes in the Bike Itaú app or, since June 2023, the Uber app. In October 2023 it reached 100 stations and 1,000 bikes, half of them e-bikes assisted up to 25 km/h. The map doesn’t show it.',
+        'BikePOA, the city’s docked bike share, is run by Tembici: you rent its bikes in the Bike Itaú app or, since June 2023, the Uber app. In October 2023 it reached 100 stations and 1,000 bikes, half of them e-bikes assisted up to 25 km/h.',
       ],
     },
     {
@@ -144,11 +144,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which companies rent e-scooters in Porto Alegre?',
-      answer: 'Whoosh and JET, in its Go Jet app. The map shows both. A third authorised firm, Adventure, had left by July 2025.',
+      answer: 'Whoosh and JET, in its Go Jet app. A third authorised firm, Adventure, had left by July 2025.',
     },
     {
       question: 'How much does an e-scooter cost in Porto Alegre?',
-      answer: 'The app shows the price before you ride, and it changes with demand. The last rate the city published, in July 2024, was Whoosh’s R$2 to unlock plus R$0.80 a minute; JET publishes no Porto Alegre rate.',
+      answer: 'The app shows the price before you ride, and it changes with demand. The last rate the city published, in July 2024, was Whoosh’s R$2 to unlock plus R$0.80 a minute.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Porto Alegre?',
@@ -190,7 +190,6 @@ const guide: Guide = {
     { title: 'Trensurb: bikes and scooters on the metro (15 October 2025), Portuguese', url: 'https://www.gov.br/trensurb/pt-br/servicos/servicos-especiais/ciclista-trensurb' },
     { title: 'SMMU: BikePOA reaches 100 stations with 500 e-bikes (21 October 2023), Portuguese', url: 'https://prefeitura.poa.br/smmu/noticias/capital-recebe-500-bikes-eletricas-e-chega-100-estacoes' },
     { title: 'SMMU: BikePOA bikes in the Uber app (5 June 2023), Portuguese', url: 'https://prefeitura.poa.br/smmu/noticias/bicicletas-compartilhadas-poderao-ser-alugadas-por-aplicativo' },
-    { title: 'Porto Alegre open data: official bairro boundaries', url: 'https://dadosabertos.poa.br/dataset/bairros-lc-12-112-16' },
   ],
 };
 

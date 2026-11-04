@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Bucharest 2026: Bolt, Lime, rules and parks',
   description: 'E-scooters in Bucharest: Bolt, Lime and Splash, what a ride costs, the age and helmet rules, where to ride and park, the park ban and fines in lei.',
   headline: 'E-scooters in Bucharest: Bolt, Lime and Splash, the rules, the park ban and where to ride',
-  lede: 'E-scooters in Bucharest are rented mainly through three apps, Bolt, Lime and Splash; our map shows Bolt and Lime, and Splash is only in its app. Bolt’s Romanian rate starts at €0.15 a minute plus a small unlock fee. Romanian law lets you ride from 14 with no licence (Bolt rents from 18) and makes a helmet compulsory only under 16. Ride in the cycle lane where there is one, otherwise on a road with a 50 km/h limit, never on the pavement unless a cycle lane is marked on it. Rental scooters stop at the park gates.',
+  lede: 'E-scooters in Bucharest are rented mainly through three apps, Bolt, Lime and Splash. Bolt’s Romanian rate starts at €0.15 a minute plus a small unlock fee. Romanian law lets you ride from 14 with no licence (Bolt rents from 18) and makes a helmet compulsory only under 16. Ride in the cycle lane where there is one, otherwise on a road with a 50 km/h limit, never on the pavement unless a cycle lane is marked on it. Rental scooters stop at the park gates.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'ro:București',
@@ -21,18 +21,18 @@ const guide: Guide = {
           list: [
             '**Bolt**, in the same app as its taxis.',
             '**Lime**, which had already blocked its scooters in four big parks, PMB said.',
-            '**Splash**, in its own app; our map doesn’t show its scooters.',
+            '**Splash**, in its own app.',
           ],
         },
-        'At 19:41 on Sunday 25 October 2026 the [map of Bucharest](map:ro:București) showed about 4,300 Bolt scooters: a snapshot, not the fleet, and one that reaches past the city limits. In a count later that evening, matched to the official boundaries of ANCPI, Romania’s land registry agency, nearly 4,000 stood in the six sectors, the most in Sector 1 (about 1,100), and about 240 in three towns of Ilfov county: Voluntari, Chiajna and Popești-Leordeni.',
-        'A full scan of Lime’s Bucharest zone, finished at 23:13 that day, found about 5,000: a separate count, not part of the Bolt snapshot. Lime’s zone, too, edges a little into Ilfov.',
-        'Prefer a bike? i’velo’s bikes, rented in its app and returned to its stations, aren’t on our map. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 19:41 on Sunday 25 October 2026 the [map of Bucharest](map:ro:București) showed about 4,300 Bolt scooters: a snapshot, not the fleet. Later that evening nearly 4,000 stood in the six sectors, the most in Sector 1 (about 1,100), and about 240 in three towns of Ilfov county: Voluntari, Chiajna and Popești-Leordeni.',
+        'At 23:13 that day the map showed about 5,000 Lime scooters, as last counted.',
+        'Prefer a bike? i’velo rents bikes through its app, to be returned to its stations. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Bucharest?',
       blocks: [
-        'Bolt publishes no Bucharest price. Its Romanian scooter page advertises pay-as-you-go “starting from €0.15 per minute”, a national figure, and says the total “includes a small unlock fee and a per-minute rate that may vary depending on your location”. We couldn’t check a price for Lime or Splash. Every app shows its price before you unlock.',
+        'Bolt’s Romanian scooter page advertises pay-as-you-go “starting from €0.15 per minute”, a national figure, and says the total “includes a small unlock fee and a per-minute rate that may vary depending on your location”. Every app shows its price before you unlock.',
         'Bolt’s terms for Romania add fees in lei:',
         {
           table: {
@@ -75,7 +75,7 @@ const guide: Guide = {
         'The law’s regulation, HG 1391/2006, also bans riding two abreast or with one hand, holding on to another vehicle, riding on black ice, ice or snow, and riding across a pedestrian crossing: get off and walk. Motorways and expressways are closed to e-scooters.',
         'Expect to share the road: Bucharest’s cycle masterplan, approved in spring 2025, plans 150 km of cycle lanes on main roads and 400 km on side streets, PMB said in June 2026.',
         '**Parking.** End your ride where the app allows, upright and out of the way. The regulation bans leaving an e-scooter standing on the carriageway at night. Bolt asks for an end-of-ride photo, and if you park badly or the photo isn’t clear it may charge 30 lei.',
-        '**No city scheme yet.** Bucharest has no rental-scooter regulation in force: we found no permits, fleet caps, operator fees or night ban. On 7 July 2026 PMB put draft rules out for consultation: riders of 18 and over, no pavements or parks, and parking only in app-marked spots that PMB has authorised. A draft regulation for the rental service was on the General Council’s agenda on 30 September 2026, wasn’t adopted, and is back on it for 27 October 2026: until a vote, these are proposals, not rules.',
+        '**No city scheme yet.** Bucharest has no rental-scooter regulation in force. On 7 July 2026 PMB put draft rules out for consultation: riders of 18 and over, no pavements or parks, and parking only in app-marked spots that PMB has authorised. A draft regulation for the rental service was on the General Council’s agenda on 30 September 2026, wasn’t adopted, and is back on it for 27 October 2026: until a vote, these are proposals, not rules.',
       ],
     },
     {
@@ -107,18 +107,17 @@ const guide: Guide = {
             ],
           },
         },
-        'None of the road law’s 2025–2026 amendments touched these e-scooter rules; the class III list has stood since 29 June 2024.',
+        'The class III list has stood since 29 June 2024.',
       ],
     },
     {
-      heading: 'The metro, buses, the airport and landmarks',
+      heading: 'The metro, buses and landmarks',
       blocks: [
-        '**Metro.** Metrorex said on 10 July 2026, as Capital reported, that bikes and scooters may travel on weekdays from 20:00 to 23:00 and all day at weekends and on public holidays, in the first carriage, boarding by its first door. A trial adding 11:00–14:00 on weekdays ran from 15 July to 15 September 2026. Metrorex’s website didn’t answer us: check at the station.',
-        '**Buses, trams and trolleybuses.** The Bucharest–Ilfov transport rules on STB’s website don’t mention e-scooters. Bulky luggage that fits within 60 × 60 cm takes an extra fare; anything larger breaks the rules and can be fined.',
-        '**Henri Coandă Airport (Otopeni).** On the evening of 25 October 2026 the map had no Bolt or Lime scooter in Otopeni, and the airport’s website refused our requests. Pick up a scooter in the city instead.',
+        '**Metro.** Metrorex said on 10 July 2026, as Capital reported, that bikes and scooters may travel on weekdays from 20:00 to 23:00 and all day at weekends and on public holidays, in the first carriage, boarding by its first door. A trial adding 11:00–14:00 on weekdays ran from 15 July to 15 September 2026. Check the times at the station.',
+        '**Buses, trams and trolleybuses.** Under the Bucharest–Ilfov transport rules on STB’s website, bulky luggage that fits within 60 × 60 cm takes an extra fare; anything larger breaks the rules and can be fined.',
         '**Palace of the Parliament.** The Chamber of Deputies’ access rules (18 March 2022) let vehicles into the guarded courtyard only with an access and parking pass: ride round it, not into the grounds.',
         '**Universities.** Politehnica’s (UPB) campus roads are private and “closed to public traffic”, with a 30 km/h limit; visitors walk in through the gates, with ID.',
-        'The [Bucharest map](map:ro:București) shows the nearest Bolt or Lime scooter and the walk to it.',
+        'Find the nearest Bolt or Lime scooter on the [Bucharest map](map:ro:București).',
       ],
     },
     {
@@ -137,7 +136,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter companies operate in Bucharest?',
-      answer: 'Bolt, Lime and Splash, the operators the city hall named on 4 September 2026. [Our map](map:ro:București) shows Bolt and Lime: about 4,300 Bolt at 19:41 on 25 October 2026 and, in a separate full scan of Lime’s zone finished at 23:13, about 5,000 Lime. Splash is only in its app.',
+      answer: 'Bolt, Lime and Splash, the operators the city hall named on 4 September 2026. The [Bucharest map](map:ro:București) showed about 4,300 Bolt at 19:41 on 25 October 2026 and about 5,000 Lime at 23:13, as last counted. Look for Splash’s scooters in the Splash app.',
     },
     {
       question: 'How much does an e-scooter cost in Bucharest?',
@@ -171,7 +170,6 @@ const guide: Guide = {
     { title: 'Bucharest City Hall: the cycle masterplan, 3 June 2026 (Romanian)', url: 'https://www.pmb.ro/interes-public/arhiva/get-press-releases-menu/2026/2060' },
     { title: 'General Council: agenda of 30 September 2026 (Romanian)', url: 'https://www3.pmb.ro/wwwt/institutii/CGMB/sedinte/ordinea_de_zi/590' },
     { title: 'General Council: agenda of 27 October 2026 (Romanian)', url: 'https://www3.pmb.ro/wwwt/institutii/CGMB/sedinte/ordinea_de_zi/592' },
-    { title: 'ANCPI: official administrative boundaries (Romanian)', url: 'https://data.gov.ro/dataset/unitati-administrativ-teritoriale-api' },
     { title: 'Bolt: scooters in Romania', url: 'https://bolt.eu/en-ro/scooters/' },
     { title: 'Bolt: scooters in Romania (Romanian)', url: 'https://bolt.eu/ro-ro/scooters/' },
     { title: 'Bolt: e-vehicle terms in force until 30 November 2026', url: 'https://bolt.eu/en-ro/legal/micromobility/new-terms-for-bolt-e-vehicles-old-en/' },

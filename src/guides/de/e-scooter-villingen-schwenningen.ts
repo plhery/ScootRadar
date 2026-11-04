@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Villingen-Schwenningen 2026: Preise, Parken',
   description: 'E-Scooter Villingen-Schwenningen: was Zeus pro Minute kostet, wo du in Altstadt, Muslen und Parks fahren und parken darfst und ob der Scooter in den Bus darf.',
   headline: 'E-Scooter Villingen-Schwenningen: Preise, Abstellen in beiden Innenstädten und was in Parks, Bus und Hochschule gilt',
-  lede: 'Einen E-Scooter in Villingen-Schwenningen leihst du ab 18 und ohne Führerschein bei Zeus, dem einzigen Anbieter der Doppelstadt. Laut Datenfeed vom 24. Oktober 2026 kostet eine Fahrt 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €. Du fährst auf dem Radweg oder der Fahrbahn, nicht durch die Fussgängerzonen, nicht auf Gehwegen und nicht auf Parkwegen. Abstellen darfst du wie ein Fahrrad; am Münsterplatz, an der Ringanlage um die Villinger Altstadt und in den Parks lässt dich Zeus laut Feed aber keine Fahrt beenden, an beiden Bahnhöfen schon. In Bus und Bahn darf nur ein eigener Scooter.',
+  lede: 'Einen E-Scooter in Villingen-Schwenningen leihst du ab 18 und ohne Führerschein bei Zeus, dem Anbieter, den die Stadt nennt. Laut Datenfeed vom 24. Oktober 2026 kostet eine Fahrt 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €. Du fährst auf dem Radweg oder der Fahrbahn, nicht durch die Fussgängerzonen, nicht auf Gehwegen und nicht auf Parkwegen. Abstellen darfst du wie ein Fahrrad; am Münsterplatz, an der Ringanlage um die Villinger Altstadt und in den Parks lässt dich Zeus laut Feed aber keine Fahrt beenden, an beiden Bahnhöfen schon. In Bus und Bahn darf nur ein eigener Scooter.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'de:Villingen-Schwenningen',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter gibt es in Villingen-Schwenningen?',
       blocks: [
         'Auf ihrer E-Scooter-Seite nennt die Stadt einen Anbieter: **Zeus**, gebucht über die Zeus-App. Zeus fährt hier seit März 2021, anfangs mit 100 Scootern in einem Pilotprojekt mit der Stadt. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Villingen-Schwenningen](map:de:Villingen-Schwenningen) zeigte am 23. Oktober 2026 um 15:18 Uhr rund 340 Zeus-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Andere Anbieter fanden wir nicht: Im Landesportal MobiData BW hat hier nur Zeus einen Datenfeed, und in den Städtelisten von Bolt und Dott fehlt die Stadt (Stand 24. Oktober 2026).',
+        'Die [Karte von Villingen-Schwenningen](map:de:Villingen-Schwenningen) zeigte am 23. Oktober 2026 um 15:18 Uhr rund 340 Zeus-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
       ],
     },
     {
@@ -36,7 +36,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Im ersten Jahr dauerte eine Fahrt laut Stadt im Schnitt 14 Minuten und war 2,2 km lang; das wären heute 4,50 €. Für die gut 5 km Luftlinie von Bahnhof zu Bahnhof schätzen wir 20 bis 25 Minuten, also 6 bis 7,25 €. Pässe nennt der Feed nicht; verbindlich ist der Preis in der App vor dem Entsperren.',
+        'Im ersten Jahr dauerte eine Fahrt laut Stadt im Schnitt 14 Minuten und war 2,2 km lang; das wären heute 4,50 €. Für die gut 5 km Luftlinie von Bahnhof zu Bahnhof schätzen wir 20 bis 25 Minuten, also 6 bis 7,25 €. Verbindlich ist der Preis in der App vor dem Entsperren.',
       ],
     },
     {
@@ -53,7 +53,7 @@ const guide: Guide = {
           ],
         },
         'Laut OpenStreetMap sind Obere und Niedere Strasse, Riet- und Bickenstrasse in Villingen für Radfahrende freigegeben. Ab 1. März 2027 gilt «Radverkehr frei» auch für E-Scooter: Dort fährst du dann im Schritttempo, sofern die Stadt E-Scooter nicht eigens ausschliesst. Massgeblich ist das Schild vor Ort.',
-        'So lesen wir den Zeus-Feed vom 24. Oktober 2026: Zwischen den Stadtbezirken sind die Felder um den Natzentalweg und die Bertholdshöfe sogar fürs Durchfahren gesperrt, die Schwenninger Strasse nicht. Die genauen Grenzen zeigt die App.',
+        'Laut Zeus-Feed vom 24. Oktober 2026 sind zwischen den Stadtbezirken die Felder um den Natzentalweg und die Bertholdshöfe sogar fürs Durchfahren gesperrt, die Schwenninger Strasse nicht. Die genauen Grenzen zeigt die App.',
       ],
     },
     {
@@ -62,7 +62,7 @@ const guide: Guide = {
         'Ausserhalb der Sperrzonen stellst du einen E-Scooter ab wie ein Fahrrad, ohne jemanden zu behindern. Laut Kooperationsvertrag mit der Stadt (2021) bleiben auf dem Gehweg 2 m frei, wo er breit genug ist; umgeworfene Scooter stellt Zeus laut Stadt nach Meldung in der Regel binnen sechs Stunden um. Falsch abgestellte Scooter meldest du direkt Zeus.',
         {
           table: {
-            caption: 'Fahrt beenden in Villingen-Schwenningen: unsere Auswertung des Zeus-Feeds vom 24. Oktober 2026 und die Regeln der Stadt',
+            caption: 'Fahrt beenden in Villingen-Schwenningen: der Zeus-Feed vom 24. Oktober 2026 und die Regeln der Stadt',
             head: ['Ort', 'Was gilt', 'Wer das festlegt'],
             rows: [
               ['Münsterplatz (Villingen)', 'Laut Feed kein Fahrtende; an Markttagen Fahrverbot', 'Zeus; Stadt (Wochenmarktsatzung)'],
@@ -74,7 +74,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Laut Stadt war die Rückgabe in den Fussgängerzonen 2022 «nicht zulässig»; ob das noch gilt, sagt sie nicht, und der Feed vom 24. Oktober 2026 sperrt dort nur den Münsterplatz. Hineinfahren darfst du ohnehin nicht: Stell den Scooter etwa am Bahnhof Villingen ab, keine 500 m Luftlinie vom Latschariplatz.',
+        'Laut Stadt war die Rückgabe in den Fussgängerzonen 2022 «nicht zulässig»; der Feed vom 24. Oktober 2026 sperrt dort nur den Münsterplatz. Hineinfahren darfst du ohnehin nicht: Stell den Scooter etwa am Bahnhof Villingen ab, keine 500 m Luftlinie vom Latschariplatz.',
         {
           note: 'Lässt dich die App nicht abschliessen, stehst du in einer Sperrzone. Schieb den Scooter weiter, aus dem Park auf die nächste Strasse: Bis du die Fahrt beendest, zahlst du weiter.',
         },
@@ -92,7 +92,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt; länger als 1 Sekunde rot: 100 €, 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Falsch abgestellt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'Unzulässig auf Geh- oder Radweg 55 €, mit Behinderung 70 €'],
             ],
@@ -105,7 +105,7 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter zur HFU, zur DHBW und zum Bahnhof',
       blocks: [
-        'Eigene E-Scooter-Regeln fanden wir weder bei der **Hochschule Furtwangen** (HFU) noch bei der **DHBW**. Der HFU-Campus Schwenningen in der Jakob-Kienzle-Strasse liegt laut Hochschule wenige Meter vom Bahnhof Schwenningen. Laut Feed lässt Zeus dort an allen Gebäuden, auch an Bibliothek und Mensa, das Fahrtende zu, an der DHBW in der Friedrich-Ebert-Strasse fast überall.',
+        'Der Campus Schwenningen der **Hochschule Furtwangen** (HFU) in der Jakob-Kienzle-Strasse liegt laut Hochschule wenige Meter vom Bahnhof Schwenningen. Laut Feed lässt Zeus dort an allen Gebäuden, auch an Bibliothek und Mensa, das Fahrtende zu, an der **DHBW** in der Friedrich-Ebert-Strasse fast überall.',
         'Die **Bahnhöfe** sind die wichtigsten Startpunkte: Im ersten Jahr begannen laut Stadt rund 35.000 Fahrten nahe einer Bus- oder Bahnhaltestelle, rund 6.000 allein am Bahnhof Villingen. Dort beendest du die Fahrt laut Feed auf dem Vorplatz, nicht an den Bahnsteigen und nicht im Grünzug an der Brigach. In Schwenningen geht es am Bahnhof und am Busbahnhof, ausserdem am Schwarzwald-Baar-Klinikum.',
       ],
     },
@@ -127,17 +127,17 @@ const guide: Guide = {
       heading: 'Wie Villingen-Schwenningen E-Scooter regelt: Kooperationsvertrag mit Zeus',
       blocks: [
         'Zeus startete im März 2021 mit einem **Kooperationsvertrag** mit der Stadt: laut Stadt Sammelflächen mit höchstens zehn Scootern, ohne Kosten für die Stadt. 2022 plante die Verwaltung, die Testphase zu verlängern und den Ratsgremien Kriterien für Verträge oder Sondernutzungen zum Beschluss vorzulegen, etwa zu Zahl der Scooter, Gebühren und Abstellflächen.',
-        'Im Energiepolitischen Arbeitsprogramm 2023 bis 2026 steht als Massnahme ein Auswahlverfahren mit Sondernutzungssatzung und festen E-Scooter-Parkplätzen; Stand Dezember 2025: «Prozess gestartet». Eine solche Satzung, eine Gebühr oder eine aktuelle Obergrenze fanden wir in den Ratsunterlagen nicht (Stand 24. Oktober 2026). Wie Obergrenze und Gebühr anderswo aussehen, zeigt [Konstanz](guide:konstanz).',
+        'Im Energiepolitischen Arbeitsprogramm 2023 bis 2026 steht als Massnahme ein Auswahlverfahren mit Sondernutzungssatzung und festen E-Scooter-Parkplätzen; Stand Dezember 2025: «Prozess gestartet». Wie Obergrenze und Gebühr anderswo aussehen, zeigt [Konstanz](guide:konstanz).',
         {
           list: [
             '**Bund:** Verkehrsregeln, Alter, Tempo und Bussgelder. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen.',
-            '**Land Baden-Württemberg:** das Strassengesetz für Sondernutzungen; eigene Landesregeln für Leih-Scooter fanden wir nicht.',
+            '**Land Baden-Württemberg:** das Strassengesetz für Sondernutzungen.',
             '**Stadt Villingen-Schwenningen:** Kooperationsvertrag mit Zeus, Fahrverbot auf Parkwegen und auf dem Wochenmarkt.',
             '**Zeus:** Preis, Geschäftsgebiet und Sperrzonen in App und Feed.',
             '**Move:** die Mitnahme in Bus und Bahn.',
           ],
         },
-        'Ein Nachtverbot oder eine Winterpause nennen weder die Stadt noch Zeus; der Feed nennt «24/7». Zeus fährt in der Region auch in [Singen](map:de:Singen) und [Tuttlingen](map:de:Tuttlingen).',
+        'Als Betriebszeit gibt Zeus im Feed «24/7» an. Zeus fährt in der Region auch in [Singen](map:de:Singen) und [Tuttlingen](map:de:Tuttlingen).',
       ],
     },
     {
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-App brauche ich in Villingen-Schwenningen?',
-      answer: 'Die von Zeus, dem einzigen Anbieter, den die Stadt nennt und den die [Live-Karte von Villingen-Schwenningen](map:de:Villingen-Schwenningen) zeigt. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Zeus: Die Stadt nennt ihn als Anbieter, und die [Live-Karte von Villingen-Schwenningen](map:de:Villingen-Schwenningen) zeigt seine Scooter. Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Villinger Altstadt fahren?',
@@ -175,8 +175,8 @@ const guide: Guide = {
       answer: 'Einen eigenen ja: zusammengeklappt als Handgepäck, sonst wie ein Fahrrad mit FahrradTicket für 5,20 €, und nur, wenn das Personal zustimmt. Einen Leih-Scooter nimmst du laut Verbraucherzentrale nicht mit.',
     },
     {
-      question: 'Gibt es in Villingen-Schwenningen ein Nachtverbot für E-Scooter?',
-      answer: 'Nein. Weder die Stadt noch Zeus nennen ein Nachtverbot oder eine Winterpause; Zeus gibt im Feed «24/7» an (Stand 24. Oktober 2026).',
+      question: 'Kann ich in Villingen-Schwenningen nachts einen E-Scooter leihen?',
+      answer: 'Ja: Als Betriebszeit gibt Zeus im Feed «24/7» an (Stand 24. Oktober 2026).',
     },
   ],
   sources: [
@@ -193,9 +193,6 @@ const guide: Guide = {
     { title: 'Stadt Villingen-Schwenningen: Bahnhofsareal Schwenningen', url: 'https://www.villingen-schwenningen.de/tourismus-erleben/vs-erleben/stadtbezirk-schwenningen/bahnhofsareal/' },
     { title: 'MobiData BW: Datenfeed von Zeus in Villingen-Schwenningen (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_villingen_schwenningen/gbfs' },
     { title: 'MobiData BW: Zonen von Zeus in Villingen-Schwenningen (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_villingen_schwenningen/geofencing_zones' },
-    { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
-    { title: 'Bolt: Städte in Deutschland', url: 'https://bolt.eu/de-de/cities/' },
-    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Move: Beförderungsbedingungen (ab 1. April 2026)', url: 'https://mein-move.de/wp-content/uploads/2026/03/20260401_BB_Move.pdf' },
     { title: 'Move: Tarifbestimmungen (ab 1. April 2026)', url: 'https://mein-move.de/wp-content/uploads/2026/03/20260401_TB_Move.pdf' },
     { title: 'Verbraucherzentrale: E-Scooter, diese Regeln gelten (Stand 15. April 2026)', url: 'https://www.verbraucherzentrale.de/wissen/energie/emobilitaet/escooter-diese-regeln-gelten-fuer-elektrotretroller-35716' },

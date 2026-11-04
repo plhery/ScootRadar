@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Lahti 2026: Dott, Ryde, night ban and parking',
   description: 'E-scooters in Lahti: Dott and Ryde under the City’s 2026 permit, the weekend night ban, 20 km/h, bay-only parking in the centre and the season.',
   headline: 'E-scooters in Lahti: Dott and Ryde, the weekend night ban, where to park and when the season ends',
-  lede: 'E-scooters in Lahti are rented from Dott and Ryde, and every company needs the City’s micromobility permit; each app shows its price, and our map shows Dott, not Ryde. No one can rent a scooter from 00:00 to 05:00 on Friday and Saturday nights. From 15 you ride on the cycle path or the road at up to 20 km/h, in the centre you park in a marked bay, and the season runs, as a rule, to 15 November.',
+  lede: 'E-scooters in Lahti are rented from Dott and Ryde, and every company needs the City’s micromobility permit; each app shows its price. No one can rent a scooter from 00:00 to 05:00 on Friday and Saturday nights. From 15 you ride on the cycle path or the road at up to 20 km/h, in the centre you park in a marked bay, and the season runs, as a rule, to 15 November.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Lahti',
@@ -17,24 +17,24 @@ const guide: Guide = {
       heading: 'E-scooters in Lahti: Dott and Ryde under the City’s permit',
       blocks: [
         'Since 1 January 2026 renting out e-scooters in Lahti has needed the City’s micromobility permit (mikroliikennelupa), on terms adopted on 16 December 2025 and updated on 17 February 2026. The first permits run for one season. There is no cap on scooters “for the time being”, and the companies may run anywhere in the city.',
-        'The City publishes no list of permit holders. In December 2025 it counted two e-scooter companies in Lahti, and Dott and Ryde commented on its draft terms; both list Lahti on their own pages:',
+        'In December 2025 the City counted two e-scooter companies in Lahti, and Dott and Ryde commented on its draft terms; both list Lahti on their own pages:',
         {
           table: {
-            caption: 'E-scooter companies in Lahti and what the map shows, October 2026',
-            head: ['Company', 'In Lahti', 'Rider’s terms', 'On the ScootRadar map'],
+            caption: 'E-scooter companies in Lahti, October 2026',
+            head: ['Company', 'In Lahti', 'Rider’s terms'],
             rows: [
-              ['Dott', 'Lists Lahti and Hollola (July 2026)', 'TIER Mobility Finland Oy; 18 and over', 'Yes, position only'],
-              ['Ryde', 'Lists Lahti (October 2026)', 'In the app', 'No: check the Ryde app'],
+              ['Dott', 'Lists Lahti and Hollola (July 2026)', 'TIER Mobility Finland Oy; 18 and over'],
+              ['Ryde', 'Lists Lahti (October 2026)', 'In the app'],
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as every scooter in town. At 22:23 Lahti time on Thursday 29 October 2026 the [Lahti map](map:fi:Lahti) showed about 810 Dott scooters as they stood at that moment: a snapshot, not a fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking. The total takes in all of Dott’s scooters in its Lahti area, which isn’t cut to the city limits and may take in parts of Hollola, to the west.',
+        'At 22:23 Lahti time on Thursday 29 October 2026 the [Lahti map](map:fi:Lahti) showed about 810 Dott scooters as they stood at that moment: a snapshot, not a fleet size. Look for Ryde’s scooters in the Ryde app.',
       ],
     },
     {
       heading: 'Electric scooter rental in Lahti: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock: we found no Lahti price on an open official or company page (29 October 2026).',
+        '**The app shows the price** before you unlock.',
         'Dott’s terms for Finland (last updated 23 September 2025) set its extra charges: up to €300 for recovering a scooter you parked or locked against its instructions, €50 for any breach of its terms, and a €50 admin fee if Dott pays a fine for you; fines and impounding costs are yours. Check Ryde’s fees and age limit in its app. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -42,7 +42,7 @@ const guide: Guide = {
       heading: 'When can you ride? The night ban, speed limits and the season',
       blocks: [
         '**The night ban.** The permit bans renting e-scooters from 00:00 to 05:00 across the whole city on the nights from Friday to Saturday and from Saturday to Sunday, and on weekday holidays, “such as” the nights from Maundy Thursday to Good Friday, from Vappu Eve to May Day and from the day before Midsummer Eve to Midsummer Eve. The list is open: the City’s December 2025 decision bans weekend and weekday-holiday nights, so the nights into Easter Monday and Ascension Day may be banned too.',
-        'In February 2026, after points raised by an operator, City staff proposed swapping the ban for a 15 km/h limit every night; the urban environment committee voted unanimously to keep it, the City reported on 19 February. From midnight on the weekend nights and the three named holiday nights the [map](map:fi:Lahti) marks the ban and says when renting starts again; on other holiday nights, check the app.',
+        'In February 2026, after points raised by an operator, City staff proposed swapping the ban for a 15 km/h limit every night; the urban environment committee voted unanimously to keep it, the City reported on 19 February.',
         {
           table: {
             caption: 'Night ban, speed limits and the reaction test for rental e-scooters in Lahti, October 2026',
@@ -56,7 +56,7 @@ const guide: Guide = {
             ],
           },
         },
-        '**The season.** The City’s basic season runs from 1 April to 15 November, but the weather decides. The companies may open earlier once the streets are free of ice and snow and the 10-day forecast stays above freezing. In autumn they may run until at least 15 November; after that, once the forecast turns to frost and snow, they must clear their scooters within 48 hours of the City’s notice. On 29 October we found no City notice about the end of the 2026 season.',
+        '**The season.** The City’s basic season runs from 1 April to 15 November, but the weather decides. The companies may open earlier once the streets are free of ice and snow and the 10-day forecast stays above freezing. In autumn they may run until at least 15 November; after that, once the forecast turns to frost and snow, they must clear their scooters within 48 hours of the City’s notice.',
       ],
     },
     {
@@ -99,8 +99,8 @@ const guide: Guide = {
             head: ['Place', 'What applies', 'Who says so'],
             rows: [
               ['Market square (Kauppatori)', 'No riding; 15 km/h in the centre’s busiest walking areas', 'City of Lahti, December 2025'],
-              ['The harbour (satama)', 'No rule of its own found. The City’s 15 km/h map seems to cover a strip of the Lake Vesijärvi shore, but it names no places', 'City of Lahti map, December 2025'],
-              ['The Sports Centre and the Salpausselkä ridge', 'No rule of the Sports Centre’s own found. The City’s no-riding map seems to cover the stadium, the ski-jump hill and the wooded ridge west of them, but it names no places', 'City of Lahti map, December 2025'],
+              ['The harbour (satama)', 'The City’s 15 km/h map seems to cover a strip of the Lake Vesijärvi shore', 'City of Lahti map, December 2025'],
+              ['The Sports Centre and the Salpausselkä ridge', 'The City’s no-riding map seems to cover the stadium, the ski-jump hill and the wooded ridge west of them', 'City of Lahti map, December 2025'],
             ],
           },
         },
@@ -118,7 +118,7 @@ const guide: Guide = {
           ],
         },
         'On VR’s trains from Lahti station, at the Travel Centre, small or foldable scooters up to 80 × 60 × 40 cm and 20 kg travel free as hand luggage; a large one that won’t fold needs a paid, booked bike space, and you mustn’t attach it to the train or charge it on board. With a hire scooter, end the ride in a bay before you board.',
-        'Lahti also has city bikes, Mankeli. Our map shows standing e-scooters only, not bikes.',
+        'Lahti also has city bikes, Mankeli.',
       ],
     },
     {
@@ -137,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Lahti?',
-      answer: 'Dott and Ryde, which both list Lahti among their towns; since 1 January 2026 they need the City’s permit. [Our map](map:fi:Lahti) shows Dott; Ryde’s scooters are only in its app.',
+      answer: 'Dott and Ryde, which both list Lahti among their towns; since 1 January 2026 they need the City’s permit. Find Dott’s scooters on the [Lahti map](map:fi:Lahti) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Can you ride an e-scooter at night in Lahti?',

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Istanbul 2026: BinBin, Martı, Hop and the rules',
   description: 'E-scooters in Istanbul: BinBin, Martı and Hop, how prices work, the age and pavement rules, where to park, the Bosphorus bridges and 2026 fines.',
   headline: 'E-scooters in İstanbul: BinBin, Martı and Hop, prices, where to ride and park, and Turkey’s 2026 rules',
-  lede: 'E-scooters in İstanbul are rented through three apps: BinBin, Martı and Hop. None publishes an İstanbul price on its website; the app shows the unlock fee and the price a minute before you start. Turkish law lets you ride from 15 without a licence: in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, never on the pavement and never over the Bosphorus bridges. End your ride only where the app allows; red areas on its map are no-parking zones.',
+  lede: 'E-scooters in İstanbul are rented through three apps, BinBin, Martı and Hop, and the app shows the unlock fee and the price a minute before you start. Turkish law lets you ride from 15 without a licence: in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, never on the pavement and never over the Bosphorus bridges. End your ride only where the app allows; red areas on its map are no-parking zones.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'tr:İstanbul',
@@ -24,14 +24,14 @@ const guide: Guide = {
             '**Hop** lists İstanbul among its cities and rents e-scooters and e-bikes; its rules ask riders to be over 15.',
           ],
         },
-        'At 15:50 on Sunday 25 October 2026 the [İstanbul map](map:tr:İstanbul) showed 6,024 BinBin scooters: a snapshot, not the fleet. That evening, at 21:32, about 2,500 stood on the European side and 3,350 on the Asian side. By district, on the state land registry’s boundaries, Fatih (about 950) and Kadıköy (about 930) led, ahead of Üsküdar, Pendik and Bakırköy; Beyoğlu, around Taksim, had about 50. About 150 of them stood across the provincial line, in Darıca, Gebze and Çayırova in Kocaeli.',
-        'The map shows only BinBin’s scooters, with their position and battery: no prices, zones or parking, and not BinBin’s small area at İstanbul Airport. Martı’s and Hop’s scooters are only in their apps, and it shows no e-bikes, mopeds or İBB’s İsbike bikes. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 15:50 on Sunday 25 October 2026 the [İstanbul map](map:tr:İstanbul) showed 6,024 BinBin scooters: a snapshot, not the fleet. That evening, at 21:32, about 2,500 stood on the European side and 3,350 on the Asian side. By district, Fatih (about 950) and Kadıköy (about 930) led, ahead of Üsküdar, Pendik and Bakırköy; Beyoğlu, around Taksim, had about 50. About 150 of them stood across the provincial line, in Darıca, Gebze and Çayırova in Kocaeli.',
+        'Look for Martı’s and Hop’s scooters in their own apps. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in İstanbul?',
       blocks: [
-        'None of the three operators publishes an İstanbul price on its website (checked 25 October 2026). BinBin shows the unlock fee and the price a minute when you pick a scooter, and since June 2026 the national regulation has made every operator show its prices in its app or on its website. BinBin charges your card or prepaid balance at the end of the ride.',
+        'BinBin shows the unlock fee and the price a minute when you pick a scooter, and since June 2026 the national regulation has made every operator show its prices in its app or on its website. BinBin charges your card or prepaid balance at the end of the ride.',
         {
           table: {
             caption: 'E-scooters in İstanbul at a glance, 25 October 2026, and who says so',
@@ -42,7 +42,6 @@ const guide: Guide = {
               ['What does a ride cost?', 'An unlock fee plus a price a minute, shown in the app', 'BinBin; the national regulation'],
               ['Passes?', 'BinPass: prepaid minutes, rides or free unlocks, by credit card only', 'BinBin'],
               ['Who can ride?', '15 and over, no licence; Martı asks for 16', 'The traffic law; Martı'],
-              ['Night ban?', 'None found', 'The law; UKOME’s reported decisions; the operators'],
               ['Where does a ride end?', 'Where the app allows, never in a red area', 'BinBin; Martı'],
             ],
           },
@@ -62,7 +61,7 @@ const guide: Guide = {
           ],
         },
         '**The Bosphorus bridges are out.** All three carry motorways (the O-1, O-2 and O-7 on the motorway map of KGM, the state highways agency), which the law closes to e-scooters. BinBin runs the two sides as separate areas: end your ride, cross by ferry or Marmaray, and rent again on the other side.',
-        '**No-go and slow zones are UKOME’s.** Under the national regulation, its decisions list where scooters may not run and how fast they may go, at most 25 km/h. İBB’s and UKOME’s websites didn’t answer us on 25 October 2026, so we can’t give today’s list. The latest decision we found cut the limit from 20 to 12.5 km/h in Kadıköy, Şişli, Beşiktaş, Beyoğlu and Fatih, which takes in the historic peninsula and Sultanahmet, Hürriyet Daily News reported on 20 November 2023. Since June 2026 the regulation has made operators enforce these zones: a warning sounds as you near a no-go zone, and inside one the scooter slows gradually to 6 km/h.',
+        '**No-go and slow zones are UKOME’s.** Under the national regulation, its decisions list where scooters may not run and how fast they may go, at most 25 km/h. A decision reported by Hürriyet Daily News on 20 November 2023 cut the limit from 20 to 12.5 km/h in Kadıköy, Şişli, Beşiktaş, Beyoğlu and Fatih, which takes in the historic peninsula and Sultanahmet. Since June 2026 the regulation has made operators enforce these zones: a warning sounds as you near a no-go zone, and inside one the scooter slows gradually to 6 km/h.',
         'The law bans scooters from pedestrian streets such as İstiklal Caddesi: walk the scooter there. On the seafront, ride in the cycle path where there is one, not on the promenade.',
       ],
     },
@@ -118,33 +117,20 @@ const guide: Guide = {
             'Both rules end “Metrobüs excepted”, and double-deckers and the Princes’ Islands buses take no scooters.',
           ],
         },
-        'Metro İstanbul’s website didn’t answer us, and the Marmaray operator’s and the Şehir Hatları ferry sites refused our requests, so we can’t quote their rules: ask staff before boarding.',
+        'On the metro, Marmaray and the Şehir Hatları ferries, ask staff before you board with your own scooter.',
       ],
     },
     {
-      heading: 'İstanbul Airport, the palaces, campuses and parks',
+      heading: 'İstanbul’s airports, campuses and parks',
       blocks: [
-        'Under the national regulation, airports, university campuses, hospitals and national parks decide about shared scooters on their land:',
-        {
-          table: {
-            caption: 'Rules on land owned by others, as each owner states them, 25 October 2026',
-            head: ['Place', 'Owner', 'What it says'],
-            rows: [
-              ['İstanbul Airport', 'İGA, the airport operator', 'Nothing on scooters in its transport pages. BinBin says it is with you “everywhere, airports and shopping centres included”'],
-              ['Sabiha Gökçen Airport', 'The airport operator', 'Nothing on scooters in its transport page'],
-              ['Topkapı, Dolmabahçe, Beylerbeyi and Yıldız palaces', 'The National Palaces Administration (Milli Saraylar), under the Presidency', 'Its visitor rules ban weapons; nothing on scooters'],
-              ['Boğaziçi University, İstanbul Technical University (İTÜ)', 'Each university', 'No scooter rule found: follow the signs and the app'],
-              ['Gülhane, Emirgan and Yıldız parks', 'Their managers', 'No rule found: follow the signs and the app'],
-            ],
-          },
-        },
+        'Under the national regulation, airports, university campuses, hospitals and national parks decide about shared scooters on their land. On campuses and in parks such as Gülhane, Emirgan and Yıldız, follow the signs and the app. BinBin says it is with you “everywhere, airports and shopping centres included”.',
       ],
     },
     {
       heading: 'Winter, rain and riding at night',
       blocks: [
-        'We found no night ban, but at night you must wear a reflective vest. From November to February the operators may keep as few as 40% of their permitted scooters out, against 70% the rest of the year, so there may be fewer in winter. UKOME’s 2021 directive also lets them switch scooters off in bad weather, Yeni Şafak reported.',
-        'The [map of İstanbul](map:tr:İstanbul) shows which BinBin scooters stand near you and how charged they are.',
+        'At night you must wear a reflective vest. From November to February the operators may keep as few as 40% of their permitted scooters out, against 70% the rest of the year, so there may be fewer in winter. UKOME’s 2021 directive also lets them switch scooters off in bad weather, Yeni Şafak reported.',
+        'Find the nearest BinBin scooter on the [map of İstanbul](map:tr:İstanbul).',
       ],
     },
     {
@@ -163,11 +149,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps can I use in İstanbul?',
-      answer: 'BinBin, Martı and Hop. Our [İstanbul map](map:tr:İstanbul) shows BinBin’s scooters; Martı’s and Hop’s are only in their own apps.',
+      answer: 'BinBin, Martı and Hop. Find BinBin’s scooters on the [İstanbul map](map:tr:İstanbul), and Martı’s and Hop’s in their own apps.',
     },
     {
       question: 'How much does a BinBin scooter cost in İstanbul?',
-      answer: 'BinBin publishes no İstanbul price. The app shows the unlock fee and the price a minute before you start.',
+      answer: 'The app shows the unlock fee and the price a minute before you start.',
     },
     {
       question: 'Do I need a driving licence to ride an e-scooter in Turkey?',
@@ -206,8 +192,6 @@ const guide: Guide = {
     { title: 'BirGün (AA): UKOME on parking areas (30 July 2026), Turkish', url: 'https://www.birgun.net/haber/ukome-den-yeni-ulasim-kararlari-eds-kadikoy-hatlari-ve-scooter-duzenlemesi-726546' },
     { title: 'Hürriyet Daily News: lower limit in five districts (20 November 2023)', url: 'https://www.hurriyetdailynews.com/speed-limit-reduced-for-e-scooters-in-istanbuls-5-districts-187959' },
     { title: 'Yeni Şafak: UKOME’s e-scooter directive (4 June 2021), Turkish', url: 'https://www.yenisafak.com/gundem/istanbulda-elektrikli-scooter-duzenlemesi-yas-siniri-ve-kaldirim-yasagi-getirildi-3636592' },
-    { title: 'Milli Saraylar: Topkapı Palace, Turkish', url: 'https://www.millisaraylar.gov.tr/Lokasyon/2/topkapi-sarayi' },
-    { title: 'TKGM (land registry): Parsel Sorgu, district boundaries, Turkish', url: 'https://parselsorgu.tkgm.gov.tr/' },
   ],
 };
 

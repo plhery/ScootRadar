@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trottinette électrique Charleroi : Dott, Pony, prix, zones',
   description: 'Trottinette électrique à Charleroi : Dott, Pony et Bolt, prix, où se garer, Ville Basse au ralenti, gare, aéroport et règles belges.',
   headline: 'Trottinette électrique à Charleroi : Dott, Pony et Bolt, prix, stationnement, zones lentes et aéroport en 2026',
-  lede: 'Pour louer une trottinette électrique à Charleroi, vous avez **Dott**, **Pony** et **Bolt**, tous trois cités par la Ville et la Région et visibles sur notre carte. Le 17 octobre 2026, Dott affichait 1 € au déverrouillage et 0,35 € la minute, Pony 0,50 € et 0,26 €. Chez Dott, la location se termine sur un de ses emplacements ; dans plusieurs rues de la Ville Basse, les apps brident les trottinettes à 7 ou 8 km/h, et Dott interdit de rouler autour de la gare de Charleroi-Central et des terminaux de l’aéroport.',
+  lede: 'Pour louer une trottinette électrique à Charleroi, vous avez **Dott**, **Pony** et **Bolt**, tous trois cités par la Ville et la Région. Le 17 octobre 2026, Dott affichait 1 € au déverrouillage et 0,35 € la minute, Pony 0,50 € et 0,26 €. Chez Dott, la location se termine sur un de ses emplacements ; dans plusieurs rues de la Ville Basse, les apps brident les trottinettes à 7 ou 8 km/h, et Dott interdit de rouler autour de la gare de Charleroi-Central et des terminaux de l’aéroport.',
   published: '2026-10-17',
   updated: '2026-10-25',
   city: 'be:Charleroi',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Sur sa page trottinette, mise à jour en août 2024, la Ville de Charleroi cite trois opérateurs autorisés : **Dott**, présent depuis juin 2021, **Pony** et **Bolt**. Tous trois détiennent une licence wallonne, et la carte du cyclopartage du SPW Mobilité (données de janvier 2026) les place toujours à Charleroi. La charte de la Ville limite le total à 1 500 engins partagés, vélos compris, et à 500 par opérateur.',
         'Vers 3 h 30 dans la nuit du 17 octobre 2026, notre [carte de Charleroi](map:be:Charleroi) montrait environ 660 trottinettes garées, dont quelque 430 Dott et 230 Pony : un relevé d’une seule nuit, pas la taille des flottes.',
-        { note: 'Depuis le 25 octobre 2026, la carte montre aussi Bolt, avec l’emplacement et le niveau de batterie de chaque trottinette : environ 120 ce dimanche-là vers 13 h 50, là encore un simple relevé. Ses prix et ses zones ne se voient que dans son app.' },
+        { note: 'Le dimanche 25 octobre 2026 vers 13 h 50, la carte montrait aussi environ 120 trottinettes Bolt, avec l’emplacement et le niveau de batterie de chacune : là encore un simple relevé. Les zones de Bolt sont dans son app.' },
         'Pour louer une trottinette :',
         {
           steps: [
@@ -45,7 +45,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ces prix excluent pass et promotions ; seul compte le prix affiché dans l’app avant le déverrouillage. Bolt ne publie pas ses tarifs pour Charleroi : consultez-les dans son app. À [Bruxelles](guide:brussels), où les trottinettes partagées disparaîtront le 1er janvier 2027, Dott facture 0,37 € la minute.',
+        'Ces prix excluent pass et promotions ; seul compte le prix affiché dans l’app avant le déverrouillage. Chez Bolt, l’app affiche le prix avant le déverrouillage. À [Bruxelles](guide:brussels), où les trottinettes partagées disparaîtront le 1er janvier 2027, Dott facture 0,37 € la minute.',
         'La loi autorise la trottinette dès 16 ans, mais Dott et Bolt ne louent qu’à partir de **18 ans** en Belgique. Pony, selon ses conditions belges du 21 août 2025, loue dès **16 ans**.',
       ],
     },
@@ -103,8 +103,8 @@ const guide: Guide = {
       heading: 'Gare, bus TEC et campus : la trottinette au quotidien',
       blocks: [
         'Avant de prendre le train, le bus ou le métro léger, terminez la location à un emplacement. La gare de Charleroi-Central est interdite de circulation chez Dott, mais Dott et Pony ont chacun un emplacement à une centaine de mètres.',
-        'Avec votre propre trottinette, le [dépliant « Vélo et Bus, mode d’emploi » du TEC](https://cdn.uc.assets.prezly.com/d55d1ce8-fb0d-44d5-b8ec-57adeccf25b8/-/inline/no/D%C3%A9pliant%20V%C3%A9lo%20et%20Bus%20_Mode%20d%27emploi.pdf) (2022) précise que les trottinettes pliantes restent avec le voyageur à bord du bus ; seuls les vélos standards vont dans les soutes et sur les porte-vélos. Pour le métro léger, ou une règle plus récente, renseignez-vous auprès du TEC.',
-        'Étudiant au CampusUCharleroi, boulevard Solvay, dans la Ville Haute ? Dott et Pony y ont chacun un emplacement à moins de 50 m. À la HELHa de Gilly et à la Haute École Condorcet de Marcinelle, Dott a un emplacement à moins de 100 m ; Pony n’y en a pas, mais ces campus sont dans sa zone.',
+        'Avec votre propre trottinette, le [dépliant « Vélo et Bus, mode d’emploi » du TEC](https://cdn.uc.assets.prezly.com/d55d1ce8-fb0d-44d5-b8ec-57adeccf25b8/-/inline/no/D%C3%A9pliant%20V%C3%A9lo%20et%20Bus%20_Mode%20d%27emploi.pdf) (2022) précise que les trottinettes pliantes restent avec le voyageur à bord du bus ; seuls les vélos standards vont dans les soutes et sur les porte-vélos.',
+        'Étudiant au CampusUCharleroi, boulevard Solvay, dans la Ville Haute ? Dott et Pony y ont chacun un emplacement à moins de 50 m. À la HELHa de Gilly et à la Haute École Condorcet de Marcinelle, Dott a un emplacement à moins de 100 m ; ces campus sont aussi dans la zone de Pony.',
       ],
     },
     {
@@ -126,8 +126,8 @@ const guide: Guide = {
             ],
           },
         },
-        'En Wallonie, les opérateurs de trottinettes et de vélos partagés ont besoin d’une licence de la Région (décret du 8 juillet 2021, arrêté du 28 août 2023), et chaque commune fixe les conditions d’exploitation sur son territoire. Les règles de conduite restent fédérales : nous n’avons trouvé aucune règle wallonne qui change l’âge, la vitesse ou les amendes.',
-        'Charleroi encadre les opérateurs par sa charte de 2022 : chacun déclare son activité, la Ville rend un avis reconduit chaque année, et l’opérateur assure la responsabilité civile des usagers pendant leurs trajets. Le 25 juillet 2026, La DH titrait que Charleroi ne voulait pas interdire les trottinettes partagées, contrairement à Bruxelles ; son chapô, sur un point fait avec l’échevine de la Mobilité, Alicia Monard, ajoutait que « les règles doivent évoluer ». Au 17 octobre 2026, le conseil communal n’avait adopté aucun règlement remplaçant la charte.',
+        'En Wallonie, les opérateurs de trottinettes et de vélos partagés ont besoin d’une licence de la Région (décret du 8 juillet 2021, arrêté du 28 août 2023), et chaque commune fixe les conditions d’exploitation sur son territoire. Les règles de conduite restent fédérales.',
+        'Charleroi encadre les opérateurs par sa charte de 2022 : chacun déclare son activité, la Ville rend un avis reconduit chaque année, et l’opérateur assure la responsabilité civile des usagers pendant leurs trajets. Le 25 juillet 2026, La DH titrait que Charleroi ne voulait pas interdire les trottinettes partagées, contrairement à Bruxelles ; son chapô, sur un point fait avec l’échevine de la Mobilité, Alicia Monard, ajoutait que « les règles doivent évoluer ».',
       ],
     },
     {
@@ -146,7 +146,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelles trottinettes partagées peut-on louer à Charleroi ?',
-      answer: 'Dott, Pony et Bolt, cités par la Ville (2024) et la Région (janvier 2026) et visibles sur notre carte, Bolt depuis le 25 octobre 2026. Dott et Bolt demandent 18 ans, Pony 16 ans.',
+      answer: 'Dott, Pony et Bolt, cités par la Ville (2024) et la Région (janvier 2026). Dott et Bolt demandent 18 ans, Pony 16 ans.',
     },
     {
       question: 'Combien coûte une trottinette à Charleroi ?',
@@ -162,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'Charleroi va-t-elle interdire les trottinettes partagées comme Bruxelles ?',
-      answer: 'Rien ne l’annonce. Le 25 juillet 2026, La DH titrait que Charleroi ne voulait pas les interdire, tout en notant que les règles devaient évoluer. Au 17 octobre 2026, la charte de 2022 restait en vigueur.',
+      answer: 'Le 25 juillet 2026, La DH titrait que Charleroi ne voulait pas les interdire, tout en notant que les règles devaient évoluer.',
     },
   ],
   sources: [

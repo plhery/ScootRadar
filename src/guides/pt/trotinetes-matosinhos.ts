@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trotinetes em Matosinhos 2026: Bird, pontos e horário',
   description: 'Trotinetes em Matosinhos: a Bird e a Bolt, o preço, os pontos de partilha onde a viagem acaba, o horário das 6h00 às 22h00, a marginal, Leça e o metro.',
   headline: 'Trotinetes em Matosinhos: operadoras, preço, pontos de partilha e onde andar na marginal e em Leça da Palmeira',
-  lede: 'As trotinetes em Matosinhos alugam-se nas apps da Bird e da Bolt, as duas operadoras com licença municipal desde 2024; o nosso mapa mostra ambas. A Bird não publica tarifas: a app mostra o preço antes de desbloquear. Pelas regras da Câmara, a viagem acaba sempre num ponto de partilha sinalizado, o serviço só pode funcionar das 6h00 às 22h00 e as trotinetes partilhadas não circulam em passeios, praças, jardins nem ruas pedonais, salvo na Rua de Brito Capelo.',
+  lede: 'As trotinetes em Matosinhos alugam-se nas apps da Bird e da Bolt, as duas operadoras com licença municipal desde 2024. A app da Bird mostra o preço antes de desbloquear. Pelas regras da Câmara, a viagem acaba sempre num ponto de partilha sinalizado, o serviço só pode funcionar das 6h00 às 22h00 e as trotinetes partilhadas não circulam em passeios, praças, jardins nem ruas pedonais, salvo na Rua de Brito Capelo.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'pt:Matosinhos',
@@ -19,15 +19,15 @@ const guide: Guide = {
         'Em abril de 2024, a Câmara de Matosinhos leiloou duas licenças para trotinetes e bicicletas elétricas partilhadas, válidas por cinco anos e não renováveis. Ficaram com elas a Bird e a Bolt: segundo a Câmara, no início de junho de 2024 já circulavam no concelho 800 veículos, três trotinetes por cada bicicleta. Cada licença permite 400 veículos, ou até 700 com acordo escrito do Município.',
         {
           table: {
-            caption: 'Trotinetes partilhadas em Matosinhos: quem, a que preço e no mapa (24 de outubro de 2026)',
-            head: ['Quem', 'Em Matosinhos', 'Preço', 'No nosso mapa'],
+            caption: 'Trotinetes partilhadas em Matosinhos: quem e a que preço (24 de outubro de 2026)',
+            head: ['Quem', 'Em Matosinhos', 'Preço'],
             rows: [
-              ['Bird', 'Licença desde 2024; trotinetes e bicicletas elétricas, em 185 estações', 'Não publicado: veja na app', 'Sim: cerca de 240 trotinetes'],
-              ['Bolt', 'Licença desde 2024', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio', 'Sim, desde 25 de outubro de 2026'],
+              ['Bird', 'Licença desde 2024; trotinetes e bicicletas elétricas, em 185 estações', 'Na app, antes de desbloquear'],
+              ['Bolt', 'Licença desde 2024', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 240 no [mapa de Matosinhos](map:pt:Matosinhos) às 10h13 de sábado, 24 de outubro de 2026. É o que o mapa mostrava nesse momento, não o tamanho da frota; as bicicletas não aparecem. A Bolt não tem uma página de Matosinhos no seu site, mas o mapa mostra-a desde 25 de outubro de 2026: cerca de 140 trotinetes às 12h50 desse dia. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'O [mapa de Matosinhos](map:pt:Matosinhos) mostrava cerca de 240 trotinetes da Bird, com a bateria de cada uma, às 10h13 de sábado, 24 de outubro de 2026, e cerca de 140 da Bolt às 12h50 de 25 de outubro. É o que o mapa mostrava nesse momento, não o tamanho da frota. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
         '**O preço da Bird.** O contrato de aluguer da Bird para Portugal (atualizado a 8 de dezembro de 2021) diz que o preço aparece no ecrã de desbloqueio, antes da viagem, e pode incluir uma taxa de início e uma tarifa por minuto. Exige 18 anos e cativa 5 € no cartão antes de cada viagem. Se se esquecer de terminar a viagem, paga no máximo 100 € por 24 horas.',
       ],
     },
@@ -54,13 +54,13 @@ const guide: Guide = {
           ],
         },
         'As condições das licenças de 2024 acrescentam os parques de lazer, salvo sinalização em contrário, e obrigam as operadoras a limitar as trotinetes a 20 km/h. É uma condição da licença da Câmara, não uma regra nacional: o Código da Estrada só exige que a trotinete não passe dos 25 km/h por construção. A Câmara pode ainda fechar outras ruas por obras, festas e eventos.',
-        '**Marginal e Leça da Palmeira.** Não encontrámos nenhuma zona proibida própria da marginal de Matosinhos nem de Leça da Palmeira, nem no regulamento nem nos dados da Bird: valem as regras gerais acima. O mapa da Câmara marca percursos cicláveis à beira-mar: a Ciclovia Marginal de Matosinhos (0,8 km), a da Avenida da Liberdade, em Leça (2,6 km), a da Orla Costeira (2,9 km) e a da Ponte Móvel, que liga as duas margens do porto de Leixões. Fora deles, siga pela estrada, junto à direita.',
+        '**Marginal e Leça da Palmeira.** O mapa da Câmara marca percursos cicláveis à beira-mar: a Ciclovia Marginal de Matosinhos (0,8 km), a da Avenida da Liberdade, em Leça (2,6 km), a da Orla Costeira (2,9 km) e a da Ponte Móvel, que liga as duas margens do porto de Leixões. Fora deles, siga pela estrada, junto à direita.',
       ],
     },
     {
       heading: 'Horário das trotinetes em Matosinhos: das 6h00 às 22h00',
       blocks: [
-        'Pelo artigo 20.º do regulamento municipal, «os serviços de partilha poderão estar disponíveis para os utilizadores entre as 6h00 e as 22h00». As condições das licenças de 2024 repetem o horário, salvo outro que o Município autorize a pedido fundamentado da operadora, e em abril de 2024 a Câmara esclareceu que os titulares das licenças «apenas se encontram autorizados a funcionar neste intervalo horário». Não encontrámos nenhum outro horário autorizado. A Câmara pode ainda alargar ou restringir o horário em festas e eventos.',
+        'Pelo artigo 20.º do regulamento municipal, «os serviços de partilha poderão estar disponíveis para os utilizadores entre as 6h00 e as 22h00». As condições das licenças de 2024 repetem o horário, salvo outro que o Município autorize a pedido fundamentado da operadora, e em abril de 2024 a Câmara esclareceu que os titulares das licenças «apenas se encontram autorizados a funcionar neste intervalo horário». A Câmara pode ainda alargar ou restringir o horário em festas e eventos.',
         'Fora do horário, o nosso mapa assinala a proibição e a hora a que volta a ser possível alugar.',
       ],
     },
@@ -72,20 +72,15 @@ const guide: Guide = {
             '**Porto.** A zona de circulação da Bird de Matosinhos entra pelo Porto, mas nenhuma das suas estações fica lá: antes de acabar a viagem no Porto, confirme na app se é possível. A Bird do Porto é outra frota, com pontos de partilha próprios, no [mapa do Porto](map:pt:Porto). As regras do Porto proíbem andar de trotinete partilhada no Parque da Cidade: contorne-o pela marginal. Mais em [trotinetes no Porto](guide:porto).',
             '**Maia.** A Bird opera na [Maia](map:pt:Maia) com outra frota, sem estações.',
             '**Aeroporto.** O terminal do Aeroporto Francisco Sá Carneiro fica no concelho da Maia, dentro da zona da Bird, mas a estação mais próxima da frota de Matosinhos está a cerca de 2 km. Com uma trotinete de Matosinhos, não conte acabar a viagem no terminal: vá de metro até à estação Aeroporto.',
-            '**Terminal de cruzeiros.** O Terminal de Cruzeiros do Porto de Leixões fica no Molhe Sul, e a estação da Bird mais próxima está a cerca de 740 m, na Avenida General Norton de Matos, junto à praia. Na página do terminal, a APDL, que gere o porto, não fala de trotinetes; indica o metro, linha A, e o táxi, por cerca de 15 € até quatro pessoas.',
+            '**Terminal de cruzeiros.** O Terminal de Cruzeiros do Porto de Leixões fica no Molhe Sul, e a estação da Bird mais próxima está a cerca de 740 m, na Avenida General Norton de Matos, junto à praia. Na página do terminal, a APDL, que gere o porto, indica o metro, linha A, e o táxi, por cerca de 15 € até quatro pessoas.',
           ],
         },
       ],
     },
     {
-      heading: 'Trotinete no metro e nos autocarros da STCP',
+      heading: 'Trotinete no metro',
       blocks: [
-        {
-          list: [
-            '**Metro.** Com uma trotinete partilhada, termine a viagem num ponto junto à estação antes de entrar. As condições gerais de transporte da Metro do Porto só falam de bicicletas, «com ou sem motor elétrico»: entram pela porta traseira, no máximo quatro por veículo, de segunda a sexta-feira das 10h00 às 17h00 e das 19h00 à 1h00, e a qualquer hora aos sábados, domingos e feriados. Trotinetes não são referidas: não conte com levar a sua.',
-            '**Autocarros.** Não encontrámos no site da STCP nenhuma regra sobre levar bicicletas ou trotinetes a bordo (a 24 de outubro de 2026). Com uma trotinete própria, pergunte ao motorista antes de entrar.',
-          ],
-        },
+        'Com uma trotinete partilhada, termine a viagem num ponto junto à estação antes de entrar. As condições gerais de transporte da Metro do Porto admitem bicicletas, «com ou sem motor elétrico»: entram pela porta traseira, no máximo quatro por veículo, de segunda a sexta-feira das 10h00 às 17h00 e das 19h00 à 1h00, e a qualquer hora aos sábados, domingos e feriados.',
       ],
     },
     {
@@ -126,7 +121,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quanto custa uma trotinete em Matosinhos?',
-      answer: 'A Bird não publica tarifas: a app mostra o preço no ecrã de desbloqueio, antes da viagem, e cativa 5 € no cartão. A Bolt anuncia trotinetes em Portugal a partir de 0,15 € por minuto, mais o desbloqueio.',
+      answer: 'A app da Bird mostra o preço no ecrã de desbloqueio, antes da viagem, e cativa 5 € no cartão. A Bolt anuncia trotinetes em Portugal a partir de 0,15 € por minuto, mais o desbloqueio.',
     },
     {
       question: 'Onde posso deixar a trotinete em Matosinhos?',
@@ -142,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'Posso levar uma trotinete no metro em Matosinhos?',
-      answer: 'Com uma partilhada, termine antes a viagem num ponto junto à estação. As condições da Metro do Porto só falam de bicicletas; as trotinetes não são referidas.',
+      answer: 'Com uma partilhada, termine antes a viagem num ponto junto à estação. As condições da Metro do Porto regulam o transporte de bicicletas, com ou sem motor elétrico.',
     },
   ],
   sources: [

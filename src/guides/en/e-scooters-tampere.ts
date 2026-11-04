@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Tampere 2026: Voi, Dott, Ryde, rules and parking',
   description: 'E-scooters in Tampere: Voi, Dott and Ryde under the City’s licence, the night speed limit, the reaction test, parking in the centre and the season.',
   headline: 'E-scooters in Tampere: Voi, Dott and Ryde, the night rules, where to park and when the season ends',
-  lede: 'E-scooters in Tampere are rented from Voi, Dott and Ryde, the three companies the City lists; each app shows its price, and our map shows Voi and Dott, not Ryde. From 15 you ride on the cycle path or the road, never the pavement. There is no night ban, but on Wednesday to Saturday nights rental scooters slow to 15 km/h from 23:00 to 05:00, and in the centre you park in a marked bay. The season runs, as a rule, to 14 November.',
+  lede: 'E-scooters in Tampere are rented from Voi, Dott and Ryde, the three companies the City lists; each app shows its price. From 15 you ride on the cycle path or the road, never the pavement. There is no night ban, but on Wednesday to Saturday nights rental scooters slow to 15 km/h from 23:00 to 05:00, and in the centre you park in a marked bay. The season runs, as a rule, to 14 November.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'fi:Tampere',
@@ -19,30 +19,30 @@ const guide: Guide = {
         'Since 1 October 2025 renting out e-scooters in Tampere has required the City’s micromobility licence (mikroliikennelupa). The first licences run to the end of the 2026 season, and for now the City charges no fee. Its e-scooter page lists three companies:',
         {
           table: {
-            caption: 'E-scooter companies in Tampere and what the map shows, October 2026',
-            head: ['Company', 'On the City’s list', 'Rider’s terms', 'On the ScootRadar map'],
+            caption: 'E-scooter companies in Tampere, October 2026',
+            head: ['Company', 'On the City’s list', 'Rider’s terms'],
             rows: [
-              ['Voi', 'Yes', 'In the app', 'Yes, with battery'],
-              ['Dott', 'Yes, as Dott (Tier)', 'TIER Mobility Finland Oy; 18 and over', 'Yes, position only'],
-              ['Ryde', 'Yes', 'In the app', 'No: check the Ryde app'],
+              ['Voi', 'Yes', 'In the app'],
+              ['Dott', 'Yes, as Dott (Tier)', 'TIER Mobility Finland Oy; 18 and over'],
+              ['Ryde', 'Yes', 'In the app'],
             ],
           },
         },
-        '**Ryde isn’t on our map**, so look for its scooters in its own app, and don’t read the map’s total as every scooter in town. At 02:50 Tampere time on Thursday 29 October 2026 the [Tampere map](map:fi:Tampere) showed about 2,240 Voi and 1,080 Dott scooters as they stood at that moment: a snapshot, not a fleet size. Scooters on a ride aren’t shown, nor prices, zones or parking. The map’s area isn’t cut to the city limits and may take in edges of Pirkkala, Kangasala or Ylöjärvi; the town of Nokia, to the west, is counted on its own.',
-        'The licence sets no cap for the whole city, but the centre may hold at most 1,500 rental scooters in all, split equally between the companies.',
+        'At 02:50 Tampere time on Thursday 29 October 2026 the [Tampere map](map:fi:Tampere) showed about 2,240 Voi and 1,080 Dott scooters as they stood at that moment: a snapshot, not a fleet size. Look for Ryde’s scooters in the Ryde app.',
+        'The centre may hold at most 1,500 rental scooters in all, split equally between the companies, the licence says.',
       ],
     },
     {
       heading: 'Electric scooter rental in Tampere: what it costs',
       blocks: [
-        '**The app shows the price** before you unlock: we found no Tampere price on an open official or company page (29 October 2026).',
+        '**The app shows the price** before you unlock.',
         'Dott’s terms for Finland (last updated 23 September 2025) set its extra charges: up to €300 for recovering a scooter you parked or locked against its instructions, €50 for any breach of its terms, and a €50 admin fee if Dott pays a fine for you; fines and impounding costs are yours. Check Voi’s and Ryde’s fees and age limits in their apps. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'When can you ride? The season, the night limit and the reaction test',
       blocks: [
-        '**The season.** The City’s licence sets a basic season from 15 April to 14 November; outside it the companies need the City’s written consent. In 2026 the City let them start early, on 16 March, because of the mild weather. In such extra time the City can order them off the streets on 72 hours’ notice if the weather turns for good. On 29 October we found no word of the 2026 season running past 14 November.',
+        '**The season.** The City’s licence sets a basic season from 15 April to 14 November; outside it the companies need the City’s written consent. In 2026 the City let them start early, on 16 March, because of the mild weather. In such extra time the City can order them off the streets on 72 hours’ notice if the weather turns for good.',
         '**No night ban.** Tampere doesn’t switch the scooters off at night. In May 2026 the City was weighing a weekend night ban after accidents, Yle reported; in June it chose more slow zones and an earlier weekend reaction test instead, to keep night riding possible, and will review them before next season.',
         {
           table: {
@@ -57,7 +57,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Fail the reaction test and the scooter won’t unlock. The City’s pages still give the test as Thursday to Saturday, but its community committee added Wednesday nights to the night limit and the test when it adopted the licence on 2 September 2025. The City didn’t say when the weekend test from 20:00 ends.',
+        'Fail the reaction test and the scooter won’t unlock. The City’s pages still give the test as Thursday to Saturday, but its community committee added Wednesday nights to the night limit and the test when it adopted the licence on 2 September 2025.',
       ],
     },
     {
@@ -116,9 +116,8 @@ const guide: Guide = {
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
               ['Nokia Arena', 'The arena', 'No bike parking on the Deck or Sorinsilta; racks about 250 metres away, by Vuolteenkatu, Tuomiokirkonkatu, Sorinkatu and Ratapihankatu, where “kick and electric scooters can also be parked”'],
-              ['Särkänniemi', 'The amusement park', 'Bike parking and city bikes by the ticket booths at the main entrance; tram line 3 stops at the park; no e-scooter rule found'],
-              ['Tampere University and TAMK', 'Tampere University', 'No e-scooter rule on its campus parking page (22 September 2026)'],
-              ['Pyynikki and the parks', 'The City', 'No rule naming Pyynikki found; the licence lets the City bar riding on nature-reserve paths, sports fields and skate parks'],
+              ['Särkänniemi', 'The amusement park', 'Bike parking and city bikes by the ticket booths at the main entrance; tram line 3 stops at the park'],
+              ['Pyynikki and the parks', 'The City', 'The licence lets the City bar riding on nature-reserve paths, sports fields and skate parks'],
             ],
           },
         },
@@ -128,7 +127,7 @@ const guide: Guide = {
     {
       heading: 'City bikes in Tampere',
       blocks: [
-        'Tampere has 700 city bikes at about 170 stations, rented through the Tampere Bike Sharing app, the City says (June 2026). Our map shows standing e-scooters only, not bikes. To see what stands near you now, open the [Tampere map](map:fi:Tampere).',
+        'Tampere has 700 city bikes at about 170 stations, rented through the Tampere Bike Sharing app, the City says (June 2026). To find an e-scooter near you, open the [Tampere map](map:fi:Tampere).',
       ],
     },
     {
@@ -147,7 +146,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Tampere?',
-      answer: 'Voi, Dott and Ryde, the three companies the City lists; since 1 October 2025 renting out scooters there requires the City’s licence. [Our map](map:fi:Tampere) shows Voi and Dott; Ryde’s scooters are only in its app.',
+      answer: 'Voi, Dott and Ryde, the three companies the City lists; since 1 October 2025 renting out scooters there requires the City’s licence. Find Voi’s and Dott’s scooters on the [Tampere map](map:fi:Tampere) and Ryde’s in the Ryde app.',
     },
     {
       question: 'Can you ride an e-scooter at night in Tampere?',
@@ -184,7 +183,6 @@ const guide: Guide = {
     { title: 'VR: Bikes and scooters on trains', url: 'https://www.vr.fi/en/facilities-and-services/bikes-on-trains' },
     { title: 'Nokia Arena: How to get to the arena', url: 'https://nokiaarena.fi/en/directions/how-to-get-to-the-arena/' },
     { title: 'Särkänniemi: Arrival and parking', url: 'https://sarkanniemi.fi/en/arrival-and-parking' },
-    { title: 'Tampere University: Campus parking (updated 22 September 2026)', url: 'https://opiskelijanopas.tuni.fi/en/tampere-university/university/campus/campus-parking' },
     { title: 'Dott: Terms and conditions for Finland', url: 'https://ridedott.com/terms-and-conditions/finland/' },
     { title: 'Yle: How e-scooter rules differ from city to city, 28 May 2026 (Finnish)', url: 'https://yle.fi/a/74-20228186' },
   ],

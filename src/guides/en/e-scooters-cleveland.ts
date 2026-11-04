@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Cleveland 2026: Bird, Veo, prices, rules',
   description: 'E-scooters in Cleveland: Bird and Veo, what a ride costs, the City rules, hub-only parking downtown and in University Circle, the Towpath and the RTA.',
   headline: 'E-scooters in Cleveland: Bird and Veo, what a ride costs, the rules and where to park',
-  lede: 'E-scooters in Cleveland come from Bird and Veo, the two companies the City lists as permit holders (26 October 2026). A Veo costs $1 to unlock and $0.39 a minute plus tax; Bird publishes no price, so check its app. You must be 18 to ride a Bird, the City tells riders to keep off the sidewalk, and downtown, in Ohio City and in University Circle you must end your ride at a hub.',
+  lede: 'E-scooters in Cleveland come from Bird and Veo, the two companies the City lists as permit holders (26 October 2026). A Veo costs $1 to unlock and $0.39 a minute plus tax; Bird’s app shows its price before you unlock. You must be 18 to ride a Bird, the City tells riders to keep off the sidewalk, and downtown, in Ohio City and in University Circle you must end your ride at a hub.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:oh:Cleveland',
@@ -17,15 +17,15 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Cleveland?',
       blocks: [
         'Electric scooter rental in Cleveland runs on three-year City permits under Chapter 517 of the Codified Ordinances and on vendor rules the City last published on 27 March 2026; the current permit cycle began in 2024. Its Shared Mobility page names two companies: **Bird** (silver and blue or black scooters, blue e-bikes) and **Veo** (black scooters and e-bikes with blue accents).',
-        'At 11:41 a.m. on Monday 26 October 2026 the [Cleveland map](map:us:oh:Cleveland) showed about 540 scooters free to rent at that moment, roughly 330 Bird and 210 Veo. It counted another 23 Veo scooters in [Cleveland Heights](map:us:oh:Cleveland Heights), 15 in South Euclid and 9 in University Heights, which it treats as towns of their own. All but three of the Birds stood within Cleveland’s city limits; neither company had any in Lakewood.',
-        'For Bird the map shows each scooter’s position, charge and range, and its zones (see below); for Veo, position and range. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Bikes aren’t on the map.** ScootRadar shows standing e-scooters only. That morning the two companies’ open data also listed about 320 Veo and 140 Bird e-bikes in and around Cleveland: open their apps to find one. The City’s page names no other bike share.',
+        'At 11:41 a.m. on Monday 26 October 2026 the [Cleveland map](map:us:oh:Cleveland) showed about 540 scooters free to rent at that moment, roughly 330 Bird and 210 Veo. Another 23 Veo scooters stood in [Cleveland Heights](map:us:oh:Cleveland Heights), 15 in South Euclid and 9 in University Heights.',
+        '**First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'That morning the two companies’ open data also listed about 320 Veo and 140 Bird e-bikes in and around Cleveland: open their apps to find one.',
       ],
     },
     {
       heading: 'How much does a Bird or Veo scooter cost in Cleveland?',
       blocks: [
-        'On 26 October 2026 Veo’s open data gave one rate for scooters and e-bikes: $1 to unlock and $0.39 a minute, plus tax. Bird’s held none, so check the Bird app before you unlock. The City’s page says most rides cost $1 to start and then $0.40 to $0.50 a minute.',
+        'On 26 October 2026 Veo’s open data gave one rate for scooters and e-bikes: $1 to unlock and $0.39 a minute, plus tax. Bird’s app shows its price before you unlock. The City’s page says most rides cost $1 to start and then $0.40 to $0.50 a minute.',
         {
           table: {
             caption: 'What a Veo ride costs in Cleveland, before tax (Veo’s published rate, 26 October 2026)',
@@ -69,7 +69,7 @@ const guide: Guide = {
       heading: 'Parking a Bird or Veo scooter in Cleveland: hubs only in Zone 1',
       blocks: [
         'The City splits Cleveland in two. **Zone 1** covers its planning areas of Downtown, Ohio City and University Circle, where “devices are required to be in either a physical or geofenced hub if not ridden”: end the ride at a hub the app shows. In **Zone 2**, the rest of the city, you may also park in the tree lawn or the furniture zone of the sidewalk, and the companies must reward riders who end at a hub.',
-        'In 2025 the City installed more than 70 hubs, each with blue bike racks and a sign. Zoomed in, the map draws the 95 hubs in the City’s open data (ODbL), but not Zone 1’s boundary. Other good spots are marked with two parallel white lines on the sidewalk. Wherever you park:',
+        'In 2025 the City installed more than 70 hubs, each with blue bike racks and a sign. Zoomed in, the map draws the 95 hubs in the City’s open data (ODbL). Other good spots are marked with two parallel white lines on the sidewalk. Wherever you park:',
         {
           list: [
             '**Upright, off the roadway** and not within 3 feet of the curb.',
@@ -77,7 +77,7 @@ const guide: Guide = {
             '**At least 5 feet of clear sidewalk** must be left for people walking; the City’s page asks for 6.',
           ],
         },
-        'Bird’s open data held 18 no-ride and 34 no-parking zones on 26 October 2026, and the map draws them at street zoom. Downtown is one large no-parking zone with about 180 small spots where a ride may end, several near Public Square; about 3.9 km² around Case Western Reserve’s campus and 2.8 km² around the West Side Market are no-parking too. Thirteen small no-ride zones lie west of Public Square, between West 3rd Street and Old River Road; others cover the block between Carnegie Avenue, Ontario Street and East 9th Street, and parts of Case Western Reserve’s and John Carroll’s campuses. Veo publishes no zones, so check its app.',
+        'Bird’s open data held 18 no-ride and 34 no-parking zones on 26 October 2026, and the map draws them at street zoom. Downtown is one large no-parking zone with about 180 small spots where a ride may end, several near Public Square; about 3.9 km² around Case Western Reserve’s campus and 2.8 km² around the West Side Market are no-parking too. Thirteen small no-ride zones lie west of Public Square, between West 3rd Street and Old River Road; others cover the block between Carnegie Avenue, Ontario Street and East 9th Street, and parts of Case Western Reserve’s and John Carroll’s campuses. Veo’s zones are in its app.',
         'A company must fix a badly parked device within two hours of being told. Call Bird on 1-866-205-2442 or Veo on 1-855-836-2256, or report it in the app.',
       ],
     },
@@ -99,9 +99,9 @@ const guide: Guide = {
         {
           list: [
             '**Towpath Trail.** Canalway Partners, whose work supports the trail’s management, says electric scooters are allowed on the Towpath, as are Class 1 and 2 e-bikes in Cuyahoga County and in Cuyahoga Valley National Park, and that speeds should not exceed 15 mph.',
-            '**Public Square.** Its own site gives park hours of 5 a.m. to midnight and states no scooter rule.',
+            '**Public Square.** Its own site gives park hours of 5 a.m. to midnight.',
             '**RTA trains and buses.** GCRTA lets a 100% electric e-bike or scooter onto its trains, in the area for ADA mobility devices, bikes and strollers, without blocking the aisle; passengers with disabilities come first. Its bus policy covers only folded e-bikes. End a shared ride before you board.',
-            '**Cleveland Hopkins International Airport.** The airport says RTA’s Red Line reaches Tower City downtown in under 30 minutes, every 15 minutes for most of the day. Bird’s service area includes the airport, but at 11:58 a.m. on 26 October the nearest scooter, a Veo, stood about 8 km away.',
+            '**Cleveland Hopkins International Airport.** The airport says RTA’s Red Line reaches Tower City downtown in under 30 minutes, every 15 minutes for most of the day. Bird’s service area includes the airport.',
           ],
         },
       ],
@@ -131,7 +131,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Cleveland?',
-      answer: 'On 26 October 2026 Veo’s open data gave $1 to unlock and $0.39 a minute, plus tax: $4.90 for 10 minutes. Bird publishes no Cleveland price, so check its app.',
+      answer: 'On 26 October 2026 Veo’s open data gave $1 to unlock and $0.39 a minute, plus tax: $4.90 for 10 minutes. Bird’s app shows its price before you unlock.',
     },
     {
       question: 'Can you ride a scooter on the sidewalk in Cleveland?',
@@ -169,7 +169,6 @@ const guide: Guide = {
     { title: 'Public Square: about the park', url: 'https://www.clevelandpublicsquare.com/about-the-park' },
     { title: 'GCRTA: Bike and Ride', url: 'https://www.riderta.com/bikenride' },
     { title: 'Cleveland Hopkins Airport: public transportation', url: 'https://www.clevelandairport.com/parking-transportation/ground-transportation/public-transportation' },
-    { title: 'US Census Bureau: TIGERweb boundaries', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
     { title: 'News 5 Cleveland: City renews contracts for e-scooters and e-bikes, 22 June 2021', url: 'https://www.news5cleveland.com/news/local-news/cleveland-metro/city-of-cleveland-renews-contracts-for-e-scooters-and-e-bikes' },
     { title: '13abc: Ohio lawmakers propose statewide e-bike regulations, 7 October 2026', url: 'https://www.13abc.com/2026/10/08/ohio-lawmakers-propose-statewide-e-bike-regulations/' },
   ],

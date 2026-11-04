@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Fayetteville, AR: Veo, Spin, prices, rules',
   description: 'E-scooters in Fayetteville, AR: renting from Veo and Spin, what a ride costs, the sidewalk and trail rules, and parking at the University of Arkansas.',
   headline: 'E-scooters in Fayetteville, Arkansas: Veo and Spin, what a ride costs, and where to ride and park',
-  lede: 'E-scooters in Fayetteville are rented from Veo and Spin, the two operators the University of Arkansas names for the city and its campus. Veo charges $1 to unlock plus $0.38 a minute plus tax (its published rate on 26 October 2026); Spin publishes no price, so check its app. Arkansas law holds e-scooters to 15 mph and riders to 16 or over, Spin requires 18, and no one may ride on a sidewalk that abuts a building.',
+  lede: 'E-scooters in Fayetteville are rented from Veo and Spin, the two operators the University of Arkansas names for the city and its campus. Veo charges $1 to unlock plus $0.38 a minute plus tax (its published rate on 26 October 2026); Spin’s app shows its price before you unlock. Arkansas law holds e-scooters to 15 mph and riders to 16 or over, Spin requires 18, and no one may ride on a sidewalk that abuts a building.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'us:ar:Fayetteville',
@@ -21,18 +21,18 @@ const guide: Guide = {
           list: [
             '**Spin** started in November 2019 with 250 scooters, and has belonged to Bird since September 2023. It still trades as Spin, though its open data names Bird Rides as the operator and links the Bird app.',
             '**Veo** ran 440 bikes from autumn 2018 and added 250 e-scooters in March 2020, University news reported.',
-            '**Fleet size.** The City first allowed 500 shared scooters. By December 2020 the two operators had 1,000 between them, City staff told the Council, and since January 2021 the City may let an operator add up to 250 at each renewal. The Council’s records give no later total.',
+            '**Fleet size.** The City first allowed 500 shared scooters. By December 2020 the two operators had 1,000 between them, City staff told the Council, and since January 2021 the City may let an operator add up to 250 at each renewal.',
           ],
         },
-        'On the evening of Sunday 25 October 2026 the [Fayetteville map](map:us:ar:Fayetteville) showed about 860 scooters, roughly 650 Veo and 210 Spin: what stood there at that moment, not the fleets. An hour later every scooter on the map stood inside the city limits as the Census Bureau draws them, none in Springdale, Johnson or Farmington, and about 240 stood on the University of Arkansas campus as the Bureau maps it.',
-        '**Veo rents more than stand-up scooters.** On 26 October Veo’s open data listed about 220 vehicles it classes as electric bikes, besides about 660 stand-up scooters. The map shows standing e-scooters only, so open the Veo app to find one of the others.',
+        'On the evening of Sunday 25 October 2026 the [Fayetteville map](map:us:ar:Fayetteville) showed about 860 scooters, roughly 650 Veo and 210 Spin: what stood there at that moment, not the fleets. An hour later about 240 stood on the University of Arkansas campus.',
+        '**Veo rents more than stand-up scooters.** On 26 October Veo’s open data listed about 220 vehicles it classes as electric bikes, besides about 660 stand-up scooters: open the Veo app to find one.',
         '**First ride?** Get the Veo or Spin app and scan the scooter’s QR code. See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Veo or Spin scooter cost in Fayetteville?',
       blocks: [
-        'Since January 2021 the City Code has required every price an operator charges, promotions included, to be approved by the City. Veo publishes its rates in its open data, the same for every vehicle; Spin publishes none, so check its app before you unlock.',
+        'Since January 2021 the City Code has required every price an operator charges, promotions included, to be approved by the City. Veo publishes its rates in its open data, the same for every vehicle; Spin’s app shows its price before you unlock.',
         {
           table: {
             caption: 'Veo’s published prices in Fayetteville, 26 October 2026 (plus tax)',
@@ -59,7 +59,7 @@ const guide: Guide = {
             rows: [
               ['Age', '16 or over; Spin requires 18. Check Veo’s terms in its app', 'Ark. Code § 27-51-1903; Spin'],
               ['Insurance', 'The operators must carry it', 'Ark. Code § 27-51-1904'],
-              ['Helmet', 'Not required, but the University strongly recommends one', 'The state’s scooter law sets none; University'],
+              ['Helmet', 'Not required by the state’s scooter law, but the University strongly recommends one', 'Act 1015 of 2019; University'],
               ['Speed', '15 mph at most; shared scooters slow to 6 mph in slow zones, such as the campus core', 'Ark. Code § 27-51-1903; University'],
               ['Where to ride', 'Where bikes may: bike lanes, paved trails and the right-hand side of the road, with the traffic', 'City Code § 71.170; City rules as the University sets them out'],
               ['Sidewalks', 'Allowed, but not on one that abuts a building, where riding would endanger people walking, or where a sign forbids it. Yield and give an audible signal before you pass', 'City rule as the University sets it out'],
@@ -76,12 +76,12 @@ const guide: Guide = {
     {
       heading: 'Where you can ride a shared scooter in Fayetteville',
       blocks: [
-        'Each app draws its own service area. Spin’s open data also marks 18 no-ride zones, most of them small and seven on the campus, where its terms say a scooter can be slowed to 0 mph. Zoomed in to the streets, the map draws Spin’s no-ride and no-parking zones; Veo publishes no zones, so check its app before you set off.',
+        'Each app draws its own service area. Spin’s open data also marks 18 no-ride zones, most of them small and seven on the campus, where its terms say a scooter can be slowed to 0 mph. Zoomed in to the streets, the map draws Spin’s no-ride and no-parking zones; Veo’s zones are in its app, so check it before you set off.',
         {
           list: [
             '**Streets and bike lanes.** Keep to the right-hand lane, as far right as is safe; you may move out to pass, turn left or avoid a hazard. Where a bike lane runs, you may ride in it.',
             '**Trails.** The City Code allows e-scooters on the City’s shared-use paved trails “only when their use does not create a safety hazard for other trail users”. Along a trail, park only at a trailhead or another spot set aside for it.',
-            '**The Razorback Greenway**, 40 miles of paved trail through seven communities from Fayetteville to Bella Vista, has a 15 mph limit, and its website lists scooting among the ways to use it. The map showed shared scooters in Fayetteville only, so plan to end your ride in town.',
+            '**The Razorback Greenway**, 40 miles of paved trail through seven communities from Fayetteville to Bella Vista, has a 15 mph limit, and its website lists scooting among the ways to use it.',
             '**The campus core** is a slow zone, where scooters drop to 6 mph.',
           ],
         },
@@ -107,9 +107,9 @@ const guide: Guide = {
       heading: 'Scooters at the University of Arkansas, on the buses and beyond',
       blocks: [
         'Spin and Veo both run on the campus, under the University’s own rules: leave a scooter only near a bike rack or in a designated area, such as the marked corrals the apps show, and never on a street or in a parking lot without the University’s permission. This forced parking began as a pilot in spring 2022. Spin’s open data marks most of the central campus, about 0.6 square miles, as a zone you may ride through but not park in.',
-        { note: '**Don’t take a shared scooter onto a bus.** Ozark Regional Transit’s conduct policy of April 2026 bars “the boarding, operating, riding or other use of any wheeled transportation device” in its buses and facilities, mobility devices aside. Razorback Transit’s rider guide has no scooter rule but bars any object too large to fit between the seats or that blocks the aisle. End your ride before you board.' },
+        { note: '**Don’t take a shared scooter onto a bus.** Ozark Regional Transit’s conduct policy of April 2026 bars “the boarding, operating, riding or other use of any wheeled transportation device” in its buses and facilities, mobility devices aside. Razorback Transit’s rider guide bars any object too large to fit between the seats or that blocks the aisle. End your ride before you board.' },
         'Both bus networks are fare-free: ORT’s fixed routes cost “$0 Fare for now”, and anyone may ride Razorback Transit, on the campus and around town, free. The [Fayetteville map](map:us:ar:Fayetteville) shows the scooters nearest your stop.',
-        'That evening no shared scooter stood beyond Fayetteville’s city limits, so none waits at Northwest Arkansas National Airport. Farther afield, the map shows Veo in [Norman](map:us:ok:Norman) and Spin in [Stillwater](map:us:ok:Stillwater), Oklahoma. Columbus, Ohio, has both operators too: see [e-scooters in Columbus](guide:columbus).',
+        'Farther afield, the map shows Veo in [Norman](map:us:ok:Norman) and Spin in [Stillwater](map:us:ok:Stillwater), Oklahoma. Columbus, Ohio, has both operators too: see [e-scooters in Columbus](guide:columbus).',
       ],
     },
     {
@@ -133,23 +133,19 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Veo scooter in Fayetteville?',
-      answer: '$1 to unlock plus $0.38 a minute plus tax, Veo’s published rate on 26 October 2026, so a 10-minute ride costs $4.80 before tax. Its other vehicles cost the same. Spin publishes no price, so check its app before you unlock.',
+      answer: '$1 to unlock plus $0.38 a minute plus tax, Veo’s published rate on 26 October 2026, so a 10-minute ride costs $4.80 before tax. Its other vehicles cost the same. Spin’s app shows its price before you unlock.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Fayetteville?',
-      answer: '16, under Arkansas law. Spin requires riders to be 18; check Veo’s terms in its app. The state’s scooter law sets no helmet rule, but the University strongly recommends one.',
+      answer: '16, under Arkansas law. Spin requires riders to be 18; check Veo’s terms in its app. The state’s scooter law doesn’t require a helmet, but the University strongly recommends one.',
     },
     {
       question: 'Can you ride a scooter on the Razorback Greenway?',
-      answer: 'Yes. The City Code allows e-scooters on Fayetteville’s paved trails, and the Greenway has a 15 mph limit. Park along a trail only at a trailhead, and end your ride in Fayetteville, where the map showed every shared scooter.',
+      answer: 'Yes. The City Code allows e-scooters on Fayetteville’s paved trails, and the Greenway has a 15 mph limit. Park along a trail only at a trailhead.',
     },
     {
       question: 'Where can you park a scooter at the University of Arkansas?',
       answer: 'Only near a bike rack or in a designated area such as a marked scooter corral, and never on a street or in a parking lot without the University’s permission. The apps show the campus parking spots, and scooters slow to 6 mph in the campus core.',
-    },
-    {
-      question: 'Is there a curfew for e-scooters in Fayetteville?',
-      answer: 'No. Arkansas’s scooter law sets no riding hours, and neither do the rules the University sets out, which match the City’s. The app shows whether scooters are available late at night.',
     },
   ],
   sources: [
@@ -174,7 +170,6 @@ const guide: Guide = {
     { title: 'Spin: Fayetteville open data (GBFS)', url: 'https://gbfs.spin.pm/api/gbfs/v2_3/fayetteville/gbfs' },
     { title: 'Spin: US terms of use, updated 23 March 2024', url: 'https://www.spin.app/policies/terms-us' },
     { title: 'Spin: Spin joins Bird, September 2023', url: 'https://www.spin.app/blog-posts/spin-joins-bird-will-continue-to-operate-as-independent-subsidiary-under-spin-brand' },
-    { title: 'US Census Bureau: TIGERweb, places and colleges', url: 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb' },
   ],
 };
 

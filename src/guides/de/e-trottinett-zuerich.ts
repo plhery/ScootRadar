@@ -16,12 +16,12 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter kannst du in Zürich mieten?',
       blocks: [
-        'ScootRadar zeigt in Zürich E-Trottinette von sieben Marken: Bird, Bolt, Dott, Hopp, Lime, Voi und PubliBike. Eine Liste der Anbieter veröffentlicht die Stadt nicht; im März 2025 zählte sie sieben Anbieter mit Bewilligung, E-Trottinette, E-Bikes und E-Mopeds zusammengenommen. Gut zu wissen bei vier von ihnen:',
+        'In Zürich mietest du E-Trottinette von sieben Marken: Bird, Bolt, Dott, Hopp, Lime, Voi und PubliBike. Die Stadt zählte im März 2025 sieben Anbieter mit Bewilligung, E-Trottinette, E-Bikes und E-Mopeds zusammengenommen. Gut zu wissen bei vier von ihnen:',
         {
           list: [
             '**Lime**: In Zürich kannst du Lime auch über die Uber-App mieten.',
             '**Dott** hat 2024 mit Tier fusioniert; wer früher Tier fuhr, nutzt heute die Dott-App.',
-            '**Hopp** (Island, arbeitet mit lokalen Franchisenehmern): Schweizer Bedingungen stehen nicht auf der Website, Mindestalter und Versicherung prüfst du darum in der App.',
+            '**Hopp** (Island, arbeitet mit lokalen Franchisenehmern): Mindestalter und Versicherung zeigt dir die App.',
             '**PubliBike**, die Schweizer Firma hinter Züri Velo: seit dem 26. Februar 2026 mit E-Trottinetten unterwegs, bewilligt sind bis zu 400. An Züri-Velo-Stationen darfst du sie nicht abstellen.',
           ],
         },
@@ -51,25 +51,24 @@ const guide: Guide = {
               ['Bolt', 'CHF 1.–', '42 Rappen (einzelne zu 48 Rappen)', 'CHF 5.20'],
               ['Voi', 'CHF 1.–', '42 Rappen (einige zu 39 Rappen)', 'CHF 5.20'],
               ['Lime', 'CHF 1.–', '40 bis 49 Rappen, je nach Tageszeit', 'CHF 5.– bis CHF 5.90'],
-              ['Bird', 'nicht veröffentlicht', 'nicht veröffentlicht', 'Tarif in der App'],
             ],
           },
         },
-        'Bird veröffentlicht keine Tarife: Den Preis siehst du in der App, bevor du entsperrst. Lime kennzeichnet seine Tarife im Feed als Preise ohne Steuern, darum schätzt die Karte bei Lime keinen Preis; den Endpreis zeigt die App. Das Jahresabo von PubliBike für CHF 69.– macht seine E-Trottinette nicht günstiger. Eine durchschnittliche Fahrt ist in Zürich rund 1,5 km lang und dauert etwa 10 Minuten, sagt der Chef der städtischen Verkehrssicherheit. Wie Zürich im Vergleich zu anderen Städten abschneidet, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
+        'Bei Bird siehst du den Preis in der App, bevor du entsperrst. Lime kennzeichnet seine Tarife im Feed als Preise ohne Steuern; den Endpreis zeigt die App. Das Jahresabo von PubliBike für CHF 69.– macht seine E-Trottinette nicht günstiger. Eine durchschnittliche Fahrt ist in Zürich rund 1,5 km lang und dauert etwa 10 Minuten, sagt der Chef der städtischen Verkehrssicherheit. Wie Zürich im Vergleich zu anderen Städten abschneidet, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },
     {
       heading: 'Bewilligung und Obergrenzen: So regelt Zürich das Sharing',
       blocks: [
         'Wer in Zürich mehr als 30 Zweiräder ohne feste Stationen vermietet, braucht seit dem 1. April 2019 eine Bewilligung der Stadt. Sie gilt für höchstens 800 Fahrzeuge desselben Typs und kostet CHF 10.– pro Fahrzeug und Monat, dazu kommen CHF 50.– Kaution pro Fahrzeug und eine Kontrollgebühr von CHF 1500.– im Jahr.',
-        'Falsch parkierte Trottis müssen die Anbieter innert 24 Stunden wegräumen, solche, die behindern, sofort. Ausserdem müssen sie der Stadt ihre Nutzungsdaten liefern. Eine Obergrenze für die Zahl der Anbieter gibt es noch nicht: Wer die Auflagen erfüllt, bekommt eine Bewilligung. Am 26. August 2026 waren laut Stadt 7350 Sharing-Fahrzeuge unterwegs, E-Bikes und E-Mopeds eingerechnet.',
+        'Falsch parkierte Trottis müssen die Anbieter innert 24 Stunden wegräumen, solche, die behindern, sofort. Ausserdem müssen sie der Stadt ihre Nutzungsdaten liefern. Wer die Auflagen erfüllt, bekommt eine Bewilligung. Am 26. August 2026 waren laut Stadt 7350 Sharing-Fahrzeuge unterwegs, E-Bikes und E-Mopeds eingerechnet.',
       ],
     },
     {
       heading: 'Der Plan der Stadt: drei Anbieter, 3000 Fahrzeuge',
       blocks: [
         'Am 26. August 2026 legte der Stadtrat im Gemeinderat seinen Plan dar: drei Anbieter und insgesamt 3000 Sharing-Fahrzeuge, vergeben per öffentlicher Ausschreibung. In der Innenstadt, am Hauptbahnhof und an anderen belebten Orten würdest du dann nur noch an festen, markierten Stationen parkieren; anderswo bliebe Free-Floating erlaubt. Zuerst braucht es dafür neue Regeln und die Ausschreibung.',
-        'Ein offizielles Datum gibt es noch nicht. Im Gemeinderat war von einer Ausschreibung im Herbst 2026 und einem Neustart im Frühling 2027 die Rede; bis das neue System gilt, bleiben die heutigen Regeln und Zonen. Als Vorbild nennt die Stadt Winterthur, wo laut SRF seit Anfang 2026 nur noch Voi unterwegs ist.',
+        'Im Gemeinderat war von einer Ausschreibung im Herbst 2026 und einem Neustart im Frühling 2027 die Rede; bis das neue System gilt, bleiben die heutigen Regeln und Zonen. Als Vorbild nennt die Stadt Winterthur, wo laut SRF seit Anfang 2026 nur noch Voi unterwegs ist.',
       ],
     },
     {
@@ -121,7 +120,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Ab 18** bei allen Anbietern, deren Schweizer Bedingungen wir geprüft haben. Das Gesetz selbst: ab 16 ohne Führerausweis, ab 14 mit Führerausweis der Kategorie M.',
+            '**Ab 18** bei Lime, Bolt, Bird, Voi, Dott und PubliBike, laut ihren Schweizer Bedingungen. Das Gesetz selbst: ab 16 ohne Führerausweis, ab 14 mit Führerausweis der Kategorie M.',
             '**Velostreifen oder Veloweg**, wo es einen gibt, sonst die Strasse. **Nie aufs Trottoir**: CHF 40.– Busse.',
             '**Nur eine Person**, niemand fährt mit.',
             '**Licht an**, auch am Tag: Ohne kostet es tagsüber CHF 20.–.',
@@ -137,11 +136,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Können Touristen in Zürich ein E-Trottinett mieten?',
-      answer: 'Ja, ab 18. Keine der Schweizer Anbieterbedingungen, die wir gelesen haben, verlangt einen Wohnsitz in der Schweiz: Du registrierst dich in der App und zahlst mit Karte. Ohne Wohnsitz in der Schweiz musst du eine Ordnungsbusse allerdings sofort bezahlen oder eine Kaution hinterlegen.',
+      answer: 'Ja, ab 18: Du registrierst dich in der App und zahlst mit Karte. Ohne Wohnsitz in der Schweiz musst du eine Ordnungsbusse allerdings sofort bezahlen oder eine Kaution hinterlegen.',
     },
     {
       question: 'Bin ich auf einem Miet-Trotti versichert?',
-      answer: 'Lime, Bolt, Voi und Dott haben eine Haftpflichtversicherung im Preis, sie zahlt aber erst nach deiner eigenen Privathaftpflicht. Bird schreibt in seinen Bedingungen, die Trottis seien haftpflichtversichert, nennt aber keine Beträge. PubliBike versichert nichts: Laut AGB ist die Versicherung Sache der Kundschaft. Mitfahrende sind nie gedeckt.',
+      answer: 'Lime, Bolt, Voi und Dott haben eine Haftpflichtversicherung im Preis, sie zahlt aber erst nach deiner eigenen Privathaftpflicht. Bird schreibt in seinen Bedingungen, die Trottis seien haftpflichtversichert. PubliBike versichert nichts: Laut AGB ist die Versicherung Sache der Kundschaft. Mitfahrende sind nie gedeckt.',
     },
     {
       question: 'Gilt in Zürich eine Helmpflicht für E-Trottinette?',

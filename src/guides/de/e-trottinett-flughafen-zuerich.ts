@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Darf man mit dem E-Trottinett zum Flughafen Zürich fahren?',
       blocks: [
         'Mit einem Miet-Trotti nicht. Der Stadtrat von Kloten hält in einem Beschluss vom 18. März 2025 fest, die Zufahrt zum Flughafen Zürich sei für E-Scooter «auf Verlangen der Flughafen Zürich AG gesperrt». Die Velos von PubliBike dürfen dagegen hinfahren.',
-        'Die Sperrzone steckt in den Daten der Anbieter. Bei Bird, Bolt und Voi ist es dieselbe Fläche von gut einem halben Quadratkilometer. Laut unserer Auswertung vom 22. Oktober 2026 reicht sie vom Bahnhof Flughafen mit der Tram- und Bushaltestelle über das Airport Center und die Vorfahrten von Check-in 1 und 2 bis zu The Circle, zum Parkhaus P6, zur Haltestelle Fracht und zum Aussichtspunkt Butzenbüel. Auch Lime und Hopp sperren den Flughafen, und Dotts Gebiet endet vor dem Flughafen.',
+        'Die Sperrzone steckt in den Daten der Anbieter. Bei Bird, Bolt und Voi ist es dieselbe Fläche von gut einem halben Quadratkilometer. Am 22. Oktober 2026 reichte sie vom Bahnhof Flughafen mit der Tram- und Bushaltestelle über das Airport Center und die Vorfahrten von Check-in 1 und 2 bis zu The Circle, zum Parkhaus P6, zur Haltestelle Fracht und zum Aussichtspunkt Butzenbüel. Auch Lime und Hopp sperren den Flughafen, und Dotts Gebiet endet vor dem Flughafen.',
         { note: 'In einer Fahrverbotszone fährt das Trotti nicht weiter, und beenden kannst du die Fahrt dort auch nicht: Die Minuten laufen weiter. Beende die Fahrt also vor der Sperrzone und nimm für das letzte Stück Bus, Tram oder Zug.' },
         'Das letzte Stück ist kurz: Ab Kloten Bahnhof fährt der Bus in rund 6 Minuten an den Flughafen, ab Glattbrugg das Tram 10 oder 12 in 5 bis 6 Minuten und ab Zürich Oerlikon der Zug in 4 bis 6 Minuten (Fahrplan, Oktober 2026).',
       ],
@@ -36,8 +36,8 @@ const guide: Guide = {
             ],
           },
         },
-        'Opfikon hat alle vier Plätze vergeben, nennt die Anbieter aber nicht. Opfikons Zonen stehen in den Daten von Dott, Voi, Bolt und Lime; Hopp führt Opfikon in seinen Daten nicht als Gebiet.',
-        'In Kloten nannte die Stadt im März 2025 Voi, Bird, Bolt, Lime und Dott. Hopp fehlt in dieser Liste. Limes Trottis in Kloten stehen in keinem offenen Datenfeed; seit dem 28. Oktober 2026 liest ScootRadar sie aus der Karte in Limes App. Alle anderen Anbieter liest ScootRadar aus ihren offenen Daten, und die Karte zeigt nur Trottis, keine E-Bikes. Bolt, Bird, Dott, Lime und Voi vermieten ab 18; gemietet wird in der App des Anbieters, jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
+        'Opfikon hat alle vier Plätze vergeben. Opfikons Zonen stehen in den Daten von Dott, Voi, Bolt und Lime.',
+        'In Kloten nannte die Stadt im März 2025 Voi, Bird, Bolt, Lime und Dott. Bolt, Bird, Dott, Lime und Voi vermieten ab 18; gemietet wird in der App des Anbieters, jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
       ],
     },
     {
@@ -54,8 +54,6 @@ const guide: Guide = {
               ['Voi', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
               ['Hopp (Kloten)', 'CHF 1.–', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
               ['Lime (Opfikon)', 'CHF 1.–', 'Meist 49 Rappen, einzelne Trottis 42, ohne Steuern', 'in der App', 'in der App'],
-              ['Lime (Kloten)', 'nicht veröffentlicht', 'in der App', 'in der App', 'in der App'],
-              ['Bird (Kloten)', 'nicht veröffentlicht', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
@@ -65,7 +63,7 @@ const guide: Guide = {
     {
       heading: 'Sperrzonen und Langsamfahrzonen: Flughafen, Bahnhöfe, Glatt',
       blocks: [
-        'Kloten gibt den Anbietern seine Zonen über die Plattform Vianova vor, Opfikon mit einer eigenen Karte vom 21. September 2026. Die Tabelle fasst beides mit unserer Auswertung der Anbieterdaten vom 22. Oktober 2026 zusammen; massgebend sind die Farben in der App.',
+        'Kloten gibt den Anbietern seine Zonen über die Plattform Vianova vor, Opfikon mit einer eigenen Karte vom 21. September 2026. Die Tabelle fasst beides mit den Anbieterdaten vom 22. Oktober 2026 zusammen; massgebend sind die Farben in der App.',
         {
           table: {
             caption: 'Zonen rund um den Flughafen Zürich, Stand 22. Oktober 2026',
@@ -164,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche Anbieter dürfen in Opfikon und Glattbrugg vermieten?',
-      answer: 'Höchstens vier Anbieter mit einer Vereinbarung; laut Stadt sind alle Plätze vergeben. Die Namen nennt sie nicht, Opfikons Zonen stehen aber in den Daten von Dott, Voi, Bolt und Lime.',
+      answer: 'Höchstens vier Anbieter mit einer Vereinbarung; laut Stadt sind alle Plätze vergeben. Opfikons Zonen stehen in den Daten von Dott, Voi, Bolt und Lime.',
     },
     {
       question: 'Kann ich mit dem Trotti von Glattbrugg nach Zürich Oerlikon fahren?',
