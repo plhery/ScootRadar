@@ -67,7 +67,7 @@ const guide: Guide = {
       blocks: [
         'Du kan ikke leie elsparkesykkel i Oslo mellom kl. 23 og 05. Det gjelder hver natt, også i helgene, og står i kommunens utleieforskrift. Byrådet kan korte inn eller oppheve stengingen; i oktober 2026 gjaldt den fortsatt.',
         'Stengingen kom i september 2021, og den første måneden ble det registrert 8 skader på elsparkesykkel om natten, mot knapt 100 i august.',
-        'Nabokommunene har egne åpningstider. [Bærum](map:no:Bærum) har ingen nattestenging, og ifølge Ruter er Ryde og Voi døgnåpne der, men Vois åpne data viser stengt fra midnatt til kl. 05 natt til søndag (3. november 2026). I Lørenskog og Lillestrøm er utleien åpen hele natten på de fleste hverdager. Skal du videre etter kl. 23 i Oslo, kan du ta Oslo Bysykkel fram til kl. 01. Tidene i resten av landet finner du i guiden [åpningstider for elsparkesykkel](guide:opening-hours).',
+        'Nabokommunene har egne åpningstider. [Bærum](map:no:Bærum) har ingen nattestenging: Ryde er døgnåpen der, ifølge Ruter, mens Voi stenger fra midnatt til kl. 05 natt til søndag (per november 2026). I Lørenskog og Lillestrøm er utleien åpen hele natten på de fleste hverdager. Skal du videre etter kl. 23 i Oslo, kan du ta Oslo Bysykkel fram til kl. 01. Tidene i resten av landet finner du i guiden [åpningstider for elsparkesykkel](guide:opening-hours).',
         'På 17. mai og ved store arrangementer kan kommunen slå av sparkesyklene i sentrum. Under kvartfinalen i fotball-VM mellom Norge og England 11. juli 2026 var det kjøreforbud fra Jernbanetorget til Uranienborg og fra Tjuvholmen til Hausmannskvartalet, de samme sonene som på 17. mai. Sonene varsles hver gang, og appen viser dem.',
       ],
     },
