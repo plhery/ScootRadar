@@ -1619,6 +1619,11 @@ class ScooterModelsTest {
 
         val later = updated.addingTimeInterval(600.0)
         assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(delayed = true).status(at = later))
+        // Delayed from five minutes: younger, it reads like any other data.
+        assertEquals(ScooterDockStatus.Live, summary(delayed = true).status(at = updated.addingTimeInterval(60.0)))
+        assertEquals(ScooterDockStatus.UpdatedMinutesAgo(4), summary(delayed = true).status(at = updated.addingTimeInterval(299.0)))
+        assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(delayed = true).status(at = updated.addingTimeInterval(300.0)))
+        assertEquals(ScooterDockStatus.CityTotals, summary(overview = true, delayed = true).status(at = updated.addingTimeInterval(60.0)))
         assertEquals(ScooterDockStatus.CityTotals, summary(overview = true).status(at = later))
         assertEquals(ScooterDockStatus.Delayed(showing = updated), summary(overview = true, delayed = true).status(at = later))
         assertEquals(

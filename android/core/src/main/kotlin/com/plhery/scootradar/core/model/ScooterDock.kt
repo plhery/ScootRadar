@@ -85,13 +85,14 @@ data class ScooterDockSummary(
         }
         // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
         if (lastSeenAt != null) return ScooterDockStatus.Updating(seenAt = lastSeenAt)
-        // Delayed data says so at every zoom, city totals included.
-        if (isDelayed) return ScooterDockStatus.Delayed(showing = lastUpdated)
+        val age = maxOf(0.0, at.timeIntervalSince(lastUpdated))
+        // Delayed data says so at every zoom, city totals included, once it is late:
+        // before that its age or its time says enough.
+        if (isDelayed && age >= ScooterDockStatus.delayedAfter) return ScooterDockStatus.Delayed(showing = lastUpdated)
         if (isOverview) return ScooterDockStatus.CityTotals
         // "Live", or an age, would be of no scooters at all.
         if (everyProviderDown) return null
 
-        val age = maxOf(0.0, at.timeIntervalSince(lastUpdated))
         if (age < ScooterDockStatus.liveWindow) return ScooterDockStatus.Live
         if (age < 3_600) return ScooterDockStatus.UpdatedMinutesAgo((age / 60).toInt())
         return ScooterDockStatus.UpdatedAt(lastUpdated)
@@ -147,6 +148,9 @@ sealed interface ScooterDockStatus {
     companion object {
         /** Data younger than this, in seconds, reads "Live". */
         const val liveWindow: Double = 90.0
+
+        /** Data the server could not renew reads "Data delayed" from this age, in seconds (DELAYED_MIN_AGE_MS on the web). */
+        const val delayedAfter: Double = 5 * 60.0
 
         /**
          * "14:02", the time of day in the user's format. For a place in another time zone, given, the time

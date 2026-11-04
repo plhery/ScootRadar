@@ -36,6 +36,7 @@ import com.plhery.scootradar.core.model.isolated
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.roundedAwayFromZero
 import com.plhery.scootradar.core.model.stringFormat
+import com.plhery.scootradar.core.model.timeIntervalSince
 import java.time.Instant
 
 // What the screen reads of ios/ScootRadar/ViewModels/ScooterMapModel.swift: the selection, the dock and its cards, and the walk to each.
@@ -304,6 +305,7 @@ val ScooterMapController.cardStatus: ScooterDockStatus?
         }
         val lastUpdated = lastUpdated.value
         if (responseMetadata.value?.stale != true || lastUpdated == null || (isFilling && lastSeenAt.value != null)) return null
+        if (clock().timeIntervalSince(lastUpdated) < ScooterDockStatus.delayedAfter) return null
         return ScooterDockStatus.Delayed(showing = lastUpdated)
     }
 

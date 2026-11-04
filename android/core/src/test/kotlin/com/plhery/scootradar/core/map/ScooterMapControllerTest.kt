@@ -1894,7 +1894,11 @@ class ScooterMapControllerTest {
         assertTrue(loaded)
         val lastUpdated = unwrap(model.lastUpdated.value)
         val summary = summaryOf(model.dock)
-        assertEquals(ScooterDockStatus.Delayed(showing = lastUpdated), summary.status(at = lastUpdated))
+        assertEquals(ScooterDockStatus.Live, summary.status(at = lastUpdated))
+        assertEquals(
+            ScooterDockStatus.Delayed(showing = lastUpdated),
+            summary.status(at = lastUpdated.addingTimeInterval(ScooterDockStatus.delayedAfter)),
+        )
         assertFalse(summary.showsTryAgain)
     }
 
@@ -2219,6 +2223,8 @@ class ScooterMapControllerTest {
         val delayed = waitUntil { api.calls == 4 && model.loadIssue.value == null && !model.isLoading.value }
         assertTrue(delayed)
         val delayedAt = unwrap(model.lastUpdated.value)
+        assertNull("Stale data is not called delayed while it is recent", model.cardStatus)
+        clock.advance(ScooterDockStatus.delayedAfter)
         assertEquals(ScooterDockStatus.Delayed(showing = delayedAt), model.cardStatus)
     }
 
@@ -2515,10 +2521,14 @@ class ScooterMapControllerTest {
         assertNull(model.cardStatus)
         model.clearSelection()
 
-        // With the faded ones hidden by the filters, the delay is said again.
+        // With the faded ones hidden by the filters, the delay is said again, once the data is late.
         model.showProviders(setOf(Lime))
         val filtered = summaryOf(model.dock)
-        assertEquals(ScooterDockStatus.Delayed(showing = shownAt), filtered.status(at = clock.now))
+        assertEquals(ScooterDockStatus.Live, filtered.status(at = clock.now))
+        assertEquals(
+            ScooterDockStatus.Delayed(showing = shownAt),
+            filtered.status(at = shownAt.addingTimeInterval(ScooterDockStatus.delayedAfter)),
+        )
         model.resetFilters()
 
         // A failed refresh is said before anything else.
