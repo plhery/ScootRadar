@@ -404,7 +404,9 @@ struct ScooterSearchPanel: View {
 
             TextField("City or address", text: $searchModel.query)
                 .focused($fieldIsFocused)
-                .textContentType(.fullStreetAddress)
+                // No address content type: with one, iOS offered the rider's
+                // own addresses in an AutoFill callout that covered Cancel at
+                // large text sizes. The search does not need them.
                 .textInputAutocapitalization(.words)
                 .autocorrectionDisabled()
                 .submitLabel(.search)
