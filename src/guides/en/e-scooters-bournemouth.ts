@@ -143,7 +143,7 @@ const guide: Guide = {
         {
           list: [
             '**Bournemouth had the longest e-scooter trips of England’s trials.** To the end of 2021 its average trip was 3.8 km and 35 minutes, against 2.2 km and 14 minutes across all trials, the Department for Transport’s evaluation found.',
-            '**The River Stour was the first boundary.** In December 2020 the council called it “a clear, easily understandable boundary”, which left Christchurch out of the trial at the start.',
+            '**Hills shaped the first zone.** The trial started in Bournemouth and Poole only, for their hillier streets, ideal for e-scooters, and their greater demand; Christchurch could follow later, BCP Council said in December 2020.',
             '**Half the journeys are on e-scooters.** In January 2024 they made 50.6% of the journeys in Beryl’s BCP scheme, bikes included, Beryl said.',
           ],
         },
@@ -189,7 +189,6 @@ const guide: Guide = {
     { title: 'BCP Council: Beryl e-scooter share', url: 'https://bcpcouncil.gov.uk/roads-and-travel/travel-and-transport/beryl-e-scooter-share' },
     { title: 'BCP Council: Use of bikes, skates, skateboards and e-scooters on the seafront', url: 'https://bcpcouncil.gov.uk/beaches-and-seafront/what-you-need-to-know-before-visiting-one-of-our-beaches/use-of-bikes-skates-skateboards-and-e-scooters-on-the-seafront' },
     { title: 'BCP Council: Department for Transport approval for e-scooter rental trial (December 2020)', url: 'https://bcpcouncil.gov.uk/news-hub/news-articles/bcp-council-gains-department-for-transport-approval-for-e-scooter-rental-trial' },
-    { title: 'BCP Council: Officer Decision Record on the e-scooter trial (December 2020)', url: 'https://democracy.bcpcouncil.gov.uk/documents/s24085/Officer%20Decision%20Record.pdf' },
     { title: 'BCP Council: BCP Council extends Beryl partnership (December 2023)', url: 'https://bcpcouncil.gov.uk/news-hub/news-articles/bcp-council-extends-beryl-partnership' },
     { title: 'Beryl: Third anniversary of the BCP e-scooter trial (January 2024)', url: 'https://beryl.cc/news/2024/01/24/third-anniversary-successful-bcp-e-scooter-trial' },
     { title: 'Department for Transport: National evaluation of e-scooter trials, findings report (December 2022)', url: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1128454/national-evaluation-of-e-scooter-trials-findings-report.pdf' },

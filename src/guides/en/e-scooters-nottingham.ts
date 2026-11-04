@@ -115,7 +115,7 @@ const guide: Guide = {
     {
       heading: 'Trams, buses, the station and East Midlands Airport',
       blocks: [
-        '**No e-scooters on the tram, NCT buses or trains.** NET’s conditions of carriage ban using scooters on the tram system and taking unfolded ones on board. Under NCT’s conditions of 15 February 2026, its buses can’t carry e-scooters or e-bikes, and East Midlands Railway bans e-scooters from its trains and stations, Nottingham included.',
+        '**No e-scooters on the tram or East Midlands Railway.** NET’s conditions of carriage ban using scooters on the tram system and taking unfolded ones on board. East Midlands Railway, which manages Nottingham station, has banned e-scooters from all its trains and stations since 19 December 2022. Check NCT’s own rules before you take one on a bus.',
         '**Nottingham station:** the forecourt is open and part of Station Street slow; the nearest bay is about 70 metres away, with eight within 300 metres. Part of the Broad Marsh bus station area is a no-go zone; use the bay on Carrington Street.',
         '**East Midlands Airport is outside the scheme**, more than 7 miles from the nearest bay. Take the Skylink Nottingham bus (every 20 minutes by day and hourly at night, around the clock) or the Skylink Express (every half hour, 4am to 11pm). Heading elsewhere? See [e-scooter hire in the UK](guide:uk-hire) for the other trial areas.',
       ],
@@ -182,10 +182,15 @@ const guide: Guide = {
     { title: 'University of Nottingham: E-bike and e-scooter hire', url: 'https://www.nottingham.ac.uk/sustainability/transport/cycling/e-bike-and-e-scooter-hire.aspx' },
     { title: 'Dott: Terms and conditions, UK', url: 'https://ridedott.com/terms-and-conditions/uk/' },
     { title: 'Dott: open data for Nottingham', url: 'https://gbfs.api.ridedott.com/public/v2/nottingham/gbfs.json' },
-    { title: 'Nottinghamshire Police: Advice on e-scooters', url: 'https://www.nottinghamshire.police.uk/advice/advice-and-information/rs/road-safety/advice-escooters/' },
+    { title: 'GOV.UK: Riding an electric scooter: the rules', url: 'https://www.gov.uk/electric-scooter-rules' },
+    { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
+    { title: 'GOV.UK: Driving without insurance', url: 'https://www.gov.uk/vehicle-insurance/driving-without-insurance' },
+    { title: 'GOV.UK: Using your phone while driving: the law', url: 'https://www.gov.uk/using-mobile-phones-when-driving-the-law' },
+    { title: 'The Fixed Penalty Order 2000, Schedule 1', url: 'https://www.legislation.gov.uk/uksi/2000/2792/schedule' },
     { title: 'Nottinghamshire PCC: Crackdown on e-bikes and e-scooters (July 2026)', url: 'https://nottinghamshire.pcc.police.uk/news/crackdown-on-e-bikes-and-e-scooters-praised-by-pcc' },
-    { title: 'East Midlands Railway: E-scooters', url: 'https://www.eastmidlandsrailway.co.uk/trains-stations/on-board-the-train/travel/escooters' },
-    { title: 'NCT: Conditions of carriage', url: 'https://www.nctx.co.uk/conditions-of-carriage' },
+    { title: 'NET: Conditions of Carriage (updated 22 August 2022)', url: 'https://www.thetram.net/hubfs/Conditions%20of%20Carriage%20UPDATE%20October%202022.pdf' },
+    { title: 'East Midlands Railway news: EMR to ban all e-scooters, hoverboards and e-skateboards from its trains and stations (14 December 2022)', url: 'https://news.eastmidlandsrailway.co.uk/news/emr-to-ban-all-e-scooters-hoverboards-and-e-skateboards-from-its-trains-and-stations' },
+    { title: 'National Rail: Nottingham station', url: 'https://www.nationalrail.co.uk/stations/nottingham/' },
   ],
 };
 

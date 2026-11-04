@@ -197,7 +197,6 @@ const guide: Guide = {
     { title: 'La Libre: Bolt is already preparing for life after scooters in Brussels (6 October 2026, French)', url: 'https://www.lalibre.be/economie/entreprises-startup/2026/10/06/bolt-prepare-deja-lapres-trottinette-a-bruxelles-F2OGCLOIUBHITDRHIAMV5W5A6U/' },
     { title: 'Brussels government decree of 13 July 2023 on shared vehicles (wegcode.be, Dutch)', url: 'https://www.wegcode.be/nl/regelgeving/2023043869~u3gajpiwqf' },
     { title: 'City of Brussels open data: drop zones for free-floating shared vehicles (French)', url: 'https://opendata.bruxelles.be/explore/assets/dropzones-vbx/' },
-    { title: 'BX1: ID checks compulsory for shared e-scooters in Brussels (3 December 2025, French)', url: 'https://bx1.be/categories/news/verification-didentite-obligatoire-pour-les-trottinettes-partagees-a-bruxelles-des-aujourdhui/' },
     { title: 'VRT NWS: e-scooter ban in drug-dealing hotspots and a possible curfew in Brussels (21 October 2026, Dutch)', url: 'https://www.vrt.be/vrtnws/nl/2026/10/21/plan-voor-aanpak-drugsgeweld-brussels-gewest/' },
     { title: 'VRT NWS: shared-scooter users in Brussels must now scan their ID, against drug dealing (3 December 2025, French)', url: 'https://www.vrt.be/vrtnws/fr/2025/12/03/lutte-contre-le-narcotrafic-les-utilisateurs-de-trottinettes-p/' },
     { title: 'BRUZZ: Lime’s scooters stay in Brussels on a taken-over licence (8 July 2025, Dutch)', url: 'https://www.bruzz.be/actua/mobiliteit/lime-vecht-terug-steps-blijven-brussel-met-overgenomen-licentie-2025-07-08' },
