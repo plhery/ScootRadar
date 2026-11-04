@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'rafskutur-reykjavik',
   topic: 'reykjavik',
   name: 'Rafskútur til leigu í Reykjavík',
-  title: 'Rafskútur í Reykjavík 2026: Hopp, Bolt, reglur og stæði',
-  description: 'Rafskútur í Reykjavík: Hopp og Bolt, aldur og hjálmur, nýjar reglur borgarinnar frá 2026, hvar má ekki leggja, safnstæðin, veturinn og strætó.',
-  headline: 'Rafskútur í Reykjavík: Hopp og Bolt, reglur borgarinnar og hvar má leggja',
-  lede: 'Rafskútur í Reykjavík leigirðu hjá Hopp eða Bolt, og appið sýnir verðið og aldurstakmarkið áður en þú leggur af stað. Lögin leyfa akstur frá 13 ára aldri. Frá 4. febrúar 2026 gilda nýjar reglur borgarinnar: fyrirtækin eiga að takmarka hraðann við 10 km/klst. á grunnskólalóðum og í göngugötum, á sumum svæðum má hvorki aka né leggja og þú tekur mynd af rafskútunni eftir hverja ferð.',
+  title: 'Rafskútur í Reykjavík 2026: Hopp, verð, reglur og stæði',
+  description: 'Rafskútur í Reykjavík: verðið hjá Hopp, aldur og hjálmur, nýjar reglur borgarinnar frá 2026, hvar má ekki leggja, safnstæðin, veturinn og nágrannabæirnir.',
+  headline: 'Rafskútur í Reykjavík: Hopp, verð, reglur borgarinnar og hvar má leggja',
+  lede: 'Rafskútur í Reykjavík leigirðu hjá Hopp eða Bolt. Hjá Hopp kostar ferðin 115 kr. í upphafsgjald og 45 kr. á mínútu, svo tíu mínútur kosta 565 kr. (verð í nóvember 2026), og þú þarft að vera 18 ára, þótt lögin leyfi akstur frá 13 ára aldri. Frá 4. febrúar 2026 gilda nýjar reglur borgarinnar: fyrirtækin eiga að takmarka hraðann við 10 km/klst. á grunnskólalóðum og í göngugötum, á sumum svæðum má hvorki aka né leggja og þú tekur mynd af rafskútunni eftir hverja ferð.',
   published: '2026-10-13',
   updated: '2026-10-25',
   city: 'is:Reykjavík',
@@ -16,8 +16,26 @@ const guide: Guide = {
     {
       heading: 'Hver leigir út rafskútur í Reykjavík? Hopp og Bolt',
       blocks: [
-        '**Hopp**, sem rekur líka leigubíla, og **Bolt** leigja bæði út rafskútur í Reykjavík. Hvort fyrirtæki ákveður sitt verð: appið sýnir upphafsgjaldið og mínútuverðið áður en þú leggur af stað.',
+        '**Hopp** hefur leigt út rafskútur í Reykjavík frá árinu 2019. Þjónustusvæðið nær yfir allt höfuðborgarsvæðið, frá Mosfellsbæ til Hafnarfjarðar, og í sama appi eru líka deilibílar og leigubílar Hopp. **Bolt** leigir líka út rafskútur í Reykjavík, á eigin verði sem appið sýnir áður en þú leggur af stað.',
         'Að morgni 13. október 2026 voru um 2.200 Hopp-rafskútur lausar til leigu á [kortinu yfir höfuðborgarsvæðið](map:is:Reykjavík), og upp úr hádegi 25. október 2026 voru um 850 rafskútur frá Bolt lausar, samkvæmt síðustu talningu. Hvernig þú leigir rafskútu stendur í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
+      ],
+    },
+    {
+      heading: 'Hvað kostar að leigja rafskútu hjá Hopp?',
+      blocks: [
+        'Þú greiðir upphafsgjald og síðan fyrir hverja mínútu. Endanlegt verð sérðu í appinu.',
+        {
+          table: {
+            caption: 'Verð á rafskútum í Reykjavík í nóvember 2026',
+            head: ['Fyrirtæki', 'Upphafsgjald', 'Á mínútu', '10 mínútur', '20 mínútur'],
+            rows: [
+              ['Hopp', '115 kr.', '45 kr.', '565 kr.', '1.015 kr.'],
+              ['Bolt', 'Sjá appið', 'Sjá appið', '–', '–'],
+            ],
+          },
+        },
+        'Stakt fargjald fullorðinna í strætó er 690 kr., svo stutt ferð á rafskútu er ódýrari en strætó en tuttugu mínútna ferð dýrari.',
+        'Með **Hopp-passa** kaupirðu mínútur fyrir fram á lægra verði og sleppur við upphafsgjaldið. Passarnir fást í appinu, sem sýnir verðið og hvar hver passi gildir.',
       ],
     },
     {
@@ -42,6 +60,15 @@ const guide: Guide = {
         'Notaðu hjólastíg þar sem hann er. Á gangstétt og göngustíg hafa gangandi alltaf forgang, og á götu máttu aðeins aka þar sem hámarkshraði er 30 km/klst. eða lægri.',
         'Árið 2020 urðu þrjár götur í miðborginni varanlegar göngugötur: **Laugavegur** frá Klapparstíg að Þingholtsstræti, **Skólavörðustígur** frá Bergstaðastræti að Laugavegi og **Vegamótastígur** frá Laugavegi að Grettisgötu. Þar máttu ekki fara hraðar en á eðlilegum gönguhraða. Borgin krefst þess líka að fyrirtækin takmarki hraðann í göngugötum við 10 km/klst., svo appið getur hægt á rafskútunni.',
         'Borgin getur bætt við lághraðasvæðum og bannsvæðum, og fyrirtækin eiga að koma þeim upp innan fimm virkra daga. Appið sýnir svæðin, svo líttu á það áður en þú leggur af stað.',
+        'Í appi Hopp eru svæðin merkt með litum: á **rauðu** svæði má hvorki aka né ljúka ferð, á **hvítu** má ekki leggja, á **gulu** eða appelsínugulu hægir rafskútan á sér, oftast niður í 15 km/klst., og á **grænu** færðu afslátt ef þú lýkur ferðinni þar. **Blátt** er utan þjónustusvæðisins, og í Reykjavík lýkur ferðinni ef þú ferð út af svæðinu.',
+        'Meðal bannsvæða Hopp 4. nóvember 2026 voru:',
+        {
+          list: [
+            'lóðir um 20 grunnskóla, til dæmis Hagaskóla og Rimaskóla í Reykjavík, Kársnesskóla í Kópavogi, Lækjarskóla í Hafnarfirði og Lágafellsskóla í Mosfellsbæ;',
+            'Hólavallagarður, gamli kirkjugarðurinn við Suðurgötu;',
+            'Nesvöllur og friðlandið við Bakkatjörn á Seltjarnarnesi.',
+          ],
+        },
       ],
     },
     {
@@ -49,9 +76,10 @@ const guide: Guide = {
       blocks: [
         'Leggðu rafskútunni þannig að hún hindri engan: ekki á miðri gangstétt eða stíg, ekki á hjólastíg eða skábraut og ekki við inngang, gangbraut eða gatnamót.',
         'Samkvæmt reglum borgarinnar má ekki leggja leigurafskútu í göngugötu, á hjólastíg, á vatnsverndarsvæði eða nær munna undirganga en 15 metra.',
+        'Á hvítum svæðum Hopp máttu aka en ekki ljúka ferð. Þann 4. nóvember 2026 voru slík svæði meðal annars við Hörpu og Sjóminjasafnið á Granda, á stígnum meðfram Sæbraut austur frá Sólfarinu, á torginu við Hallgrímskirkju, í Hljómskálagarðinum við Tjörnina, við BSÍ, í Öskjuhlíð og Fossvogskirkjugarði og í Grasagarðinum í Laugardal. Skarfabakki og Grótta eru utan þjónustusvæðisins.',
         '**Safnstæði:** vorið 2026 voru níu safnstæði fyrir rafskútur á borgarlandi. Í tillögu sem kynnt var umhverfis- og skipulagsráði 6. maí 2026 eru tuttugu stæði fyrir smáfarartæki, ný eða endurgerð, meðal annars á Lækjartorgi og Ingólfstorgi, við Hlemm, á Skólavörðuholti og við Laugardalslaug og Vesturbæjarlaug, og stefnt er að 20 til 30 nýjum stæðum á ári í fimm ár. Óvíst er hvort þau séu öll komin upp.',
-        'Fyrirtækin eiga að umbuna þér fyrir að leggja í merkt stæði, með afslætti, inneign eða niðurfelldu upphafsgjaldi, og merkja stæðin með **P** á kortinu í appinu.',
-        { note: 'Taktu mynd af rafskútunni þegar þú lýkur ferð. Það er skylda samkvæmt reglum borgarinnar, og myndin á að sýna hvar og hvernig rafskútan var skilin eftir.' },
+        'Fyrirtækin eiga að umbuna þér fyrir að leggja í merkt stæði, með afslætti, inneign eða niðurfelldu upphafsgjaldi, og merkja stæðin með **P** á kortinu í appinu. Hjá Hopp er rautt **P** stæði sem þú átt að leggja í og blátt **%** Hopp Spot með afslætti.',
+        { note: 'Taktu mynd af rafskútunni þegar þú lýkur ferð. Það er skylda samkvæmt reglum borgarinnar, og myndin á að sýna hvar og hvernig rafskútan var skilin eftir. Hopp getur rukkað 30 evrur ef myndina vantar. Skiljirðu rafskútuna eftir utan þjónustusvæðisins getur það kostað 50 evrur innan 20 km frá því og allt að 500 evrur lengra í burtu.' },
       ],
     },
     {
@@ -63,9 +91,9 @@ const guide: Guide = {
             caption: 'Helstu reglur um rafskútur á Íslandi, október 2026',
             head: ['Regla', 'Hvað gildir'],
             rows: [
-              ['Aldur', '13 ár samkvæmt lögum; aldurstakmark leigunnar gildir líka'],
+              ['Aldur', '13 ár samkvæmt lögum; 18 ár til að leigja hjá Hopp'],
               ['Hjálmur', 'Skylda undir 16 ára aldri; mælt með hjálmi fyrir alla'],
-              ['Áfengi', 'Refsivert yfir 0,5 prómill í blóði (á bíl: 0,2)'],
+              ['Áfengi', 'Refsivert yfir 0,5 prómill í blóði (á bíl: 0,2); Hopp bannar allan akstur undir áhrifum'],
               ['Gata', 'Aðeins þar sem hámarkshraði er 30 km/klst. eða lægri'],
               ['Gangstétt og göngustígur', 'Leyfilegt, en gangandi hafa forgang; notaðu hjólastíg ef hann liggur samhliða'],
               ['Göngugata', 'Ekki hraðar en eðlilegur gönguhraði'],
@@ -73,7 +101,7 @@ const guide: Guide = {
               ['Farþegar', 'Bannaðir'],
               ['Sími', 'Aðeins með handfrjálsum búnaði'],
               ['Ljós', 'Hvítt að framan og rautt að aftan þegar dimmt er'],
-              ['Trygging', 'Engin tryggingaskylda'],
+              ['Trygging', 'Engin tryggingaskylda; samkvæmt skilmálum Hopp berðu ábyrgð á tjóni sem þú veldur'],
             ],
           },
         },
@@ -87,7 +115,7 @@ const guide: Guide = {
         {
           list: [
             '**Veturinn:** hvert fyrirtæki ákveður hvort og hvar rafskútur þess eru úti á veturna; appið sýnir svæðið.',
-            '**Hálka og rok:** farðu hægar í hálku. Á opnum stígum við sjóinn, meðfram Sæbraut og Ægisíðu, getur blásið hressilega.',
+            '**Hálka og rok:** samkvæmt skilmálum Hopp áttu að haga hraða og hemlun eftir aðstæðum, til dæmis í hálku, rigningu og snjó, og í appinu geturðu valið stillingu sem takmarkar hraðann við 15 km/klst. Á opnum stígum við sjóinn, meðfram Sæbraut og Ægisíðu, getur blásið hressilega.',
             '**Myrkrið:** í kringum vetrarsólstöður kemur sólin upp laust fyrir hálftólf og sest um hálffjögur.',
             '**Menningarnótt:** laugardaginn 22. ágúst 2026 var hámarkshraði rafskútanna lækkaður í miðborginni, og aðeins mátti hefja og ljúka ferðum á ákveðnum stæðum, til dæmis við BSÍ, í Vatnsmýri og við Skúlagötu 6. Reiknaðu með svipuðu fyrirkomulagi, en staðirnir geta breyst milli ára.',
             '**Gamlárskvöld:** haltu rafskútunni fjarri mannfjöldanum og flugeldunum á Skólavörðuholti.',
@@ -98,17 +126,18 @@ const guide: Guide = {
     {
       heading: 'Nágrannabæirnir, Keflavíkurflugvöllur og strætó',
       blocks: [
-        'Verklagsreglur Reykjavíkur gilda aðeins á borgarlandi Reykjavíkur. Í nágrannabæjunum gilda landslögin, og appið sýnir svæðin.',
+        'Þjónustusvæði Hopp nær yfir öll sex sveitarfélög höfuðborgarsvæðisins, svo þú getur farið milli bæja í sömu ferð. Verklagsreglur Reykjavíkur gilda þó aðeins á borgarlandi Reykjavíkur; í nágrannabæjunum gilda landslögin, og appið sýnir svæðin.',
         'Utan höfuðborgarsvæðisins voru um 580 Hopp-rafskútur lausar í 17 bæjum til viðbótar 13. október 2026, flestar á [Akureyri](map:is:Akureyri) (178), á Selfossi (100) og í [Reykjanesbæ](map:is:Reykjanesbær) (79).',
-        '**Keflavíkurflugvöllur** er um 50 km frá Reykjavík, og þangað kemstu ekki á rafskútu. Visit Reykjavík bendir á Flugrútuna, strætó nr. 55, leigubíla, meðal annars Hopp, og bílaleigubíla.',
+        '**Keflavíkurflugvöllur** er um 50 km frá Reykjavík, og þangað kemstu ekki á rafskútu. Hopp er með rafskútur í Reykjanesbæ, en flugstöðin og bílastæðin við hana eru utan svæðisins. Visit Reykjavík bendir á Flugrútuna, strætó nr. 55, leigubíla, meðal annars Hopp, og bílaleigubíla.',
         '**Strætó:** samkvæmt reglum Strætó áttu að geta borið farangurinn um borð án aðstoðar, og reiðhjól eru leyfð meðan pláss leyfir. Ljúktu því ferðinni á leigurafskútunni áður en þú ferð um borð. Miðinn gildir í 75 mínútur.',
       ],
     },
     {
-      heading: 'Vissir þú? Reglur borgarinnar í tölum',
+      heading: 'Vissir þú? Rafskútur í Reykjavík í tölum',
       blocks: [
         {
           list: [
+            '**579 sinnum í kringum jörðina.** Frá árinu 2019 hafa verið farnar 11,5 milljónir ferða á rafskútum og deilibílum Hopp í Reykjavík, samtals 23,2 milljónir kílómetra, samkvæmt tölum fyrirtækisins frá október 2026.',
             '**200 metrar.** Samkvæmt reglum borgarinnar telst notkun rafskútu aðeins ferð ef farnir eru að minnsta kosti 200 metrar.',
             '**60 klukkustundir.** Leigurafskútu sem hefur staðið ónotuð á borgarlandi í 60 klukkustundir á fyrirtækið að fjarlægja og koma fyrir í stæði eða þar sem hún veldur ekki ónæði.',
             '**Ljósin kvikna þegar hún dettur.** Ljós leigurafskútu eiga að blikka eða lýsa ef hún fellur á hliðina, og hún á sjálfkrafa að senda fyrirtækinu merki.',
@@ -120,11 +149,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Hvað þarf maður að vera gamall til að leigja rafskútu?',
-      answer: 'Aldurstakmark leigunnar sérðu í appinu áður en þú leggur af stað. Lögin leyfa akstur rafskútu frá 13 ára aldri, og undir 16 ára aldri er hjálmur skylda.',
+      answer: 'Hjá Hopp þarftu að vera 18 ára samkvæmt skilmálum fyrirtækisins, og aldurstakmark Bolt sérðu í appinu. Lögin leyfa akstur rafskútu frá 13 ára aldri, og undir 16 ára aldri er hjálmur skylda.',
     },
     {
       question: 'Má keyra rafskútu eftir að hafa drukkið áfengi?',
-      answer: 'Mörkin eru 0,5 prómill í blóði, en 0,2 hjá ökumönnum bíla. Brot getur varðað sekt eða fangelsi en kostar þig ekki ökuréttindin. Samgöngustofa segir að ekki megi nota rafskútu undir áhrifum áfengis.',
+      answer: 'Mörkin eru 0,5 prómill í blóði, en 0,2 hjá ökumönnum bíla. Brot getur varðað sekt eða fangelsi en kostar þig ekki ökuréttindin. Skilmálar Hopp banna hins vegar allan akstur undir áhrifum áfengis.',
     },
     {
       question: 'Má hjóla á rafskútu á Laugavegi?',
@@ -146,8 +175,17 @@ const guide: Guide = {
     { title: 'Reykjavíkurborg: Menningarnótt 2026, upplýsingar', url: 'https://reykjavik.is/menningarnott/upplysingar' },
     { title: 'Ísland.is (Samgöngustofa): Rafmagnshlaupahjól', url: 'https://island.is/rafmagnshlaupahjol' },
     { title: 'Alþingi: Umferðarlög nr. 77/2019', url: 'https://www.althingi.is/lagas/nuna/2019077.html' },
+    { title: 'Hopp Reykjavík: verð og fréttir', url: 'https://hopp.bike/is/in/reykjavik' },
+    { title: 'Hopp Reykjavík: 7 ár saman og við erum rétt að byrja (október 2026)', url: 'https://hopp.bike/is/in/reykjavik/7-ar-saman-og-vid-erum-rett-ad-byrja' },
+    { title: 'Hopp: skilmálar fyrir Ísland (rafskútuhlutinn á ensku)', url: 'https://hopp.bike/is/tos?group=39lJdAWCMXoGMP394YylB' },
+    { title: 'Hopp: svæðin og kortið í appinu (á ensku)', url: 'https://support.hopp.bike/en/articles/114001-zones-area-and-map' },
+    { title: 'Hopp: Hopp-passar (á ensku)', url: 'https://support.hopp.bike/en/articles/258925-hopp-passes' },
+    { title: 'Hopp: hraðatakmörkun í appinu, cruising mode (á ensku)', url: 'https://support.hopp.bike/en/articles/109689-cruising-mode-on-scooters' },
+    { title: 'Hopp: svæði og verð á höfuðborgarsvæðinu (GBFS)', url: 'https://api.hopp.bike/gbfs/reykjavik/gbfs.json' },
+    { title: 'Hopp: svæði í Reykjanesbæ (GBFS)', url: 'https://api.hopp.bike/gbfs/is-reykjanesbaer/gbfs.json' },
     { title: 'Visit Reykjavík: frá Keflavíkurflugvelli til Reykjavíkur (á ensku)', url: 'https://visitreykjavik.is/kef-reykjavik' },
     { title: 'Strætó: reglur og skilmálar', url: 'https://www.straeto.is/notendaupplysingar/reglur-skilmalar' },
+    { title: 'Strætó: gjaldskrá', url: 'https://www.straeto.is/verslun/gjaldskra' },
   ],
 };
 
