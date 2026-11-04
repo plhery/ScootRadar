@@ -156,13 +156,18 @@ def main():
                 validate_job(job)
                 # Result remains private on disk, so a rejected submission can be retried without a new Ryde request.
                 path=base/'results'/f"{job['id']}.json"
-                result=json.loads(path.read_text()) if path.exists() else query(job)
+                try:
+                    result=json.loads(path.read_text()) if path.exists() else query(job)
+                    if 'error' in result:raise RuntimeError('Cached native map failed')
+                except Exception:
+                    call(config,'POST','/internal/ryde/result',{'version':1,'id':job['id'],'query':job,'error':'worker_failed'})
+                    raise
                 call(config,'POST','/internal/ryde/result',result)
                 last_trigger=time.time()
             elif time.time()-last_trigger>90:
                 relaunch();last_trigger=time.time() # allow due native key renewals
             save(base/'worker-status.json',{'state':'ready','at':time.time()})
-            wait_interval(5,base/'stop.json')
+            wait_interval(0 if job else 2,base/'stop.json')
         except Exception as error:
             save(base/'worker-status.json',{'state':'held','reason':type(error).__name__,'at':time.time()})
             wait_interval(60,base/'stop.json')

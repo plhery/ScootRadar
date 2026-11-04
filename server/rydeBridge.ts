@@ -7,7 +7,7 @@ export interface RydeQuery { cityId: number; latitude: number; longitude: number
 export interface RydeJob extends RydeQuery { version: 1; id: string; expiresAt: number }
 export interface RydeObservation { id: string; lat: number; lng: number }
 export interface RydeResult {
-  version: 1; id: string; query: RydeJob; observedAt: number; coverage: 'unknown'; scooters: RydeObservation[];
+  version: 1; id: string; query: RydeJob; observedAt: number; coverage: 'unknown'; scooters: RydeObservation[]; returnedCount?: number;
 }
 interface Entry { job: RydeJob; key: string; urgent: boolean; leasedUntil: number; promise: Promise<RydeResult>;
   resolve(value: RydeResult): void; reject(error: Error): void; timer: ReturnType<typeof setTimeout> }
@@ -28,7 +28,7 @@ export class RydeBroker {
   private urgentTurns = 0;
   private nextAt = 0;
   private readonly hash: Buffer;
-  readonly stats = { queued: 0, completed: 0, expired: 0, rejected: 0, lastWorkerAt: 0 };
+  readonly stats = { queued: 0, completed: 0, expired: 0, failed: 0, rejected: 0, lastWorkerAt: 0 };
   constructor(token: string, private readonly now = Date.now, private readonly intervalMs = 5_000,
     private readonly deadlineMs = 120_000, private readonly maxQueue = 64) {
     if (token.length < 32) throw new Error('RYDE_BRIDGE_TOKEN must have at least 32 characters');
@@ -43,21 +43,21 @@ export class RydeBroker {
     let resolve!: Entry['resolve'], reject!: Entry['reject'];
     const promise = new Promise<RydeResult>((yes, no) => { resolve = yes; reject = no; });
     const job: RydeJob = { ...q, version: 1, id: randomBytes(16).toString('hex'), expiresAt: (this.now() + this.deadlineMs) / 1000 };
-    const timer = setTimeout(() => this.fail(job.id, 'Ryde worker deadline exceeded'), this.deadlineMs);
+    const timer = setTimeout(() => this.fail(job.id, 'Ryde worker deadline exceeded',true), this.deadlineMs);
     timer.unref?.();
     this.entries.push({ job, key, urgent, leasedUntil: 0, promise, resolve, reject, timer });
     this.stats.queued++;
     return promise;
   }
-  private fail(id: string, reason: string) {
+  private fail(id: string, reason: string, expired=false) {
     const entry = this.entries.find(e => e.job.id === id);
     if (!entry) return;
     this.entries = this.entries.filter(e => e !== entry); clearTimeout(entry.timer);
-    this.stats.expired++; entry.reject(new Error(reason));
+    if(expired)this.stats.expired++;else this.stats.failed++; entry.reject(new Error(reason));
   }
   lease(): RydeJob | null {
     const now = this.now(); this.stats.lastWorkerAt = now;
-    for (const e of [...this.entries]) if (e.job.expiresAt * 1000 <= now) this.fail(e.job.id, 'Ryde job expired');
+    for (const e of [...this.entries]) if (e.job.expiresAt * 1000 <= now) this.fail(e.job.id, 'Ryde job expired',true);
     const running = this.entries.find(e => e.leasedUntil > 0);
     if (running) {
       if (running.leasedUntil > now) return null;
@@ -65,7 +65,7 @@ export class RydeBroker {
     }
     if (now < this.nextAt) return null;
     const routine = this.entries.find(e => !e.urgent);
-    const entry = (routine && this.urgentTurns >= 3 ? routine : this.entries.find(e => e.urgent)) ?? this.entries[0];
+    const entry = (routine && this.urgentTurns >= 1 ? routine : this.entries.find(e => e.urgent)) ?? this.entries[0];
     if (!entry) return null;
     this.urgentTurns = entry.urgent && routine ? this.urgentTurns + 1 : 0;
     entry.leasedUntil = now + 50_000; this.nextAt = now + this.intervalMs;
@@ -78,13 +78,23 @@ export class RydeBroker {
     const fingerprint = createHash('sha256').update(JSON.stringify(input)).digest('hex');
     if (this.completed.get(result.id) === fingerprint) return;
     const entry = this.entries.find(e => e.job.id === result.id);
+    if((input as {error?:unknown}).error==='worker_failed'){
+      const failed=input as {id:string;query:RydeJob};
+      if(!entry || !entry.leasedUntil || entry.job.expiresAt*1000<=this.now() || !failed.query || !sameQuery(entry.job,failed.query) ||
+        Object.keys(failed.query).some(k=>!['version','id','expiresAt','cityId','latitude','longitude','radius'].includes(k)) ||
+        Object.keys(failed).some(k=>!['version','id','query','error'].includes(k)))throw new Error('Invalid Ryde worker failure');
+      this.completed.set(result.id,fingerprint);
+      if(this.completed.size>256)this.completed.delete(this.completed.keys().next().value!);
+      this.fail(result.id,'Ryde worker could not complete the map request');return;
+    }
     if (!entry || !entry.leasedUntil || entry.job.expiresAt * 1000 <= this.now() || !result.query || !sameQuery(entry.job, result.query) ||
       !validNumber(result.observedAt) || result.observedAt * 1000 > this.now() + 5_000 ||
       result.observedAt * 1000 < entry.job.expiresAt * 1000 - this.deadlineMs || result.coverage !== 'unknown' ||
       Object.keys(result.query).some(k => !['version','id','expiresAt','cityId','latitude','longitude','radius'].includes(k)) ||
-      !Array.isArray(result.scooters) || result.scooters.length > 10000 || Object.keys(result).some(k => !['version','id','query','observedAt','coverage','scooters'].includes(k))) {
+      !Array.isArray(result.scooters) || result.scooters.length > 10000 || Object.keys(result).some(k => !['version','id','query','observedAt','coverage','scooters','returnedCount'].includes(k))) {
       throw new Error('Mismatched, expired or invalid Ryde result');
     }
+    if(result.returnedCount !== undefined && (!Number.isSafeInteger(result.returnedCount) || result.returnedCount<result.scooters.length || result.returnedCount>10000))throw new Error('Invalid Ryde raw count');
     const ids = new Set<string>();
     for (const row of result.scooters) {
       if (!row || !/^[a-f0-9]{32}$/.test(row.id) || ids.has(row.id) || !validNumber(row.lat) || Math.abs(row.lat) > 85 ||
@@ -120,6 +130,7 @@ export class RydeBroker {
     return `scootradar_ryde_bridge_jobs_total{outcome="queued"} ${this.stats.queued}\n` +
       `scootradar_ryde_bridge_jobs_total{outcome="completed"} ${this.stats.completed}\n` +
       `scootradar_ryde_bridge_jobs_total{outcome="expired"} ${this.stats.expired}\n` +
+      `scootradar_ryde_bridge_jobs_total{outcome="failed"} ${this.stats.failed}\n` +
       `scootradar_ryde_bridge_results_rejected_total ${this.stats.rejected}\n` +
       `scootradar_ryde_bridge_pending_jobs ${this.entries.length}\n` +
       `scootradar_ryde_bridge_worker_last_seen_seconds ${this.stats.lastWorkerAt ? this.stats.lastWorkerAt / 1000 : 0}\n`;

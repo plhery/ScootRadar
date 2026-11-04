@@ -521,6 +521,656 @@
       ]
     },
     {
+      "id": "ryde_app_se_borlange",
+      "provider": "ryde",
+      "city": "Borlänge",
+      "center": [
+        60.484304,
+        15.433969
+      ],
+      "bounds": {
+        "south": 60.46005232937591,
+        "north": 60.523125974891066,
+        "west": 15.3675394,
+        "east": 15.4847941
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-borlange",
+      "rydeMapGrid": {
+        "south": 60.460052,
+        "west": 15.367539,
+        "north": 60.523126,
+        "east": 15.484794,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018220203170743826,
+        "cells": "0,3-5,7-12,15-19,22-25,29-34,36-40,43-44,50"
+      }
+    },
+    {
+      "id": "ryde_app_se_boras",
+      "provider": "ryde",
+      "city": "Borås",
+      "center": [
+        57.72102,
+        12.93985
+      ],
+      "bounds": {
+        "south": 57.6982849,
+        "north": 57.7592076,
+        "west": 12.8981228,
+        "east": 12.9893787
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-boras",
+      "rydeMapGrid": {
+        "south": 57.698285,
+        "west": 12.898123,
+        "north": 57.759208,
+        "east": 12.989379,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01681041816066666,
+        "cells": "1-4,6-10,12-23,25-27,32-33,38-39"
+      }
+    },
+    {
+      "id": "ryde_app_se_eskilstuna",
+      "provider": "ryde",
+      "city": "Eskilstuna",
+      "center": [
+        59.37059,
+        16.50816
+      ],
+      "bounds": {
+        "south": 59.351170425839825,
+        "north": 59.39843132418933,
+        "west": 16.45213655717236,
+        "east": 16.558675744400478
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-eskilstuna",
+      "rydeMapGrid": {
+        "south": 59.35117,
+        "west": 16.452137,
+        "north": 59.398431,
+        "east": 16.558676,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01762172604187261,
+        "cells": "0-5,7-12,14-26,29-33,36-37"
+      }
+    },
+    {
+      "id": "ryde_app_se_falun",
+      "provider": "ryde",
+      "city": "Falun",
+      "center": [
+        60.6092578,
+        15.6273677
+      ],
+      "bounds": {
+        "south": 60.5789339,
+        "north": 60.6284816,
+        "west": 15.588453055650318,
+        "east": 15.701946083883778
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-falun",
+      "rydeMapGrid": {
+        "south": 60.578934,
+        "west": 15.588453,
+        "north": 60.628482,
+        "east": 15.701946,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018287198933027743,
+        "cells": "1-3,8-19,21-25,28-31,35-37"
+      }
+    },
+    {
+      "id": "ryde_app_se_goteborg",
+      "provider": "ryde",
+      "city": "Göteborg",
+      "center": [
+        57.70787,
+        11.97344
+      ],
+      "bounds": {
+        "south": 57.6091762014673,
+        "north": 57.7668559,
+        "west": 11.8400379,
+        "east": 12.0575131
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-goteborg",
+      "rydeMapGrid": {
+        "south": 57.609176,
+        "west": 11.840038,
+        "north": 57.766856,
+        "east": 12.057513,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.016769186393635234,
+        "cells": "2-3,5-6,15-16,18-19,28-33,41-46,53-59,65-71,78-84,92-102,107-114,120-127,133-141,146-155,159-168,172-180,188-193,202-206,216-220,232-233"
+      }
+    },
+    {
+      "id": "ryde_app_se_halmstad",
+      "provider": "ryde",
+      "city": "Halmstad",
+      "center": [
+        56.6739,
+        12.85782
+      ],
+      "bounds": {
+        "south": 56.635649852399354,
+        "north": 56.70549611160937,
+        "west": 12.728199502572792,
+        "east": 12.930985585700787
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-halmstad",
+      "rydeMapGrid": {
+        "south": 56.63565,
+        "west": 12.7282,
+        "north": 56.705496,
+        "east": 12.930986,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01633408325538002,
+        "cells": "0,9-10,13-14,20-24,27-31,33-37,44-50,56-64,69-77,85-89,98-99"
+      }
+    },
+    {
+      "id": "ryde_app_se_helsingborg",
+      "provider": "ryde",
+      "city": "Helsingborg",
+      "center": [
+        56.04654,
+        12.69456
+      ],
+      "bounds": {
+        "south": 55.99546259082763,
+        "north": 56.09278021786512,
+        "west": 12.668880080214082,
+        "east": 12.761789072529023
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-helsingborg",
+      "rydeMapGrid": {
+        "south": 55.995463,
+        "west": 12.66888,
+        "north": 56.09278,
+        "east": 12.761789,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.016062538082276607,
+        "cells": "3-4,8-10,14-17,20-23,25-40,42-46,48-52,55-58,64-65"
+      }
+    },
+    {
+      "id": "ryde_app_se_hoganas",
+      "provider": "ryde",
+      "city": "Höganäs",
+      "center": [
+        56.1997,
+        12.558
+      ],
+      "bounds": {
+        "south": 56.139026,
+        "north": 56.289391,
+        "west": 12.486204,
+        "east": 12.593969648456174
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-hoganas",
+      "rydeMapGrid": {
+        "south": 56.139026,
+        "west": 12.486204,
+        "north": 56.289391,
+        "east": 12.59397,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01612246974077515,
+        "cells": "5-6,11-13,18-20,25-26,32-33,39-41,45-48,52-55,59-60,66,73,79-80,86-87,93,100,105-106,112-113"
+      }
+    },
+    {
+      "id": "ryde_app_se_jonkoping",
+      "provider": "ryde",
+      "city": "Jönköping",
+      "center": [
+        57.7814,
+        14.1562
+      ],
+      "bounds": {
+        "south": 57.760450841756104,
+        "north": 57.79796265746801,
+        "west": 14.123703631549063,
+        "east": 14.232461379847757
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-jonkoping",
+      "rydeMapGrid": {
+        "south": 57.760451,
+        "west": 14.123704,
+        "north": 57.797963,
+        "east": 14.232461,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01683932753109,
+        "cells": "0-4,7-22,26-29"
+      }
+    },
+    {
+      "id": "ryde_app_se_karlstad",
+      "provider": "ryde",
+      "city": "Karlstad",
+      "center": [
+        59.382621,
+        13.503615
+      ],
+      "bounds": {
+        "south": 59.35931028904753,
+        "north": 59.42347716105884,
+        "west": 13.416072867125054,
+        "east": 13.596162908696554
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-karlstad",
+      "rydeMapGrid": {
+        "south": 59.35931,
+        "west": 13.416073,
+        "north": 59.423477,
+        "east": 13.596163,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017625952223780907,
+        "cells": "1-5,7,11-19,22-30,33-40,42,48-54,58-65,69-70,72-75,80"
+      }
+    },
+    {
+      "id": "ryde_app_se_kristianstad",
+      "provider": "ryde",
+      "city": "Kristianstad",
+      "center": [
+        56.02944,
+        14.15667
+      ],
+      "bounds": {
+        "south": 56.006137,
+        "north": 56.063784,
+        "west": 14.10963,
+        "east": 14.208388
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-kristianstad",
+      "rydeMapGrid": {
+        "south": 56.006137,
+        "west": 14.10963,
+        "north": 56.063784,
+        "east": 14.208388,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.016066975234839145,
+        "cells": "2-3,7-12,14-20,23-26,30-33,37-40,44-45"
+      }
+    },
+    {
+      "id": "ryde_app_se_linkoping",
+      "provider": "ryde",
+      "city": "Linköping",
+      "center": [
+        58.41081,
+        15.62207
+      ],
+      "bounds": {
+        "south": 58.35930049526846,
+        "north": 58.43569605586925,
+        "west": 15.543632036994644,
+        "east": 15.717489345744253
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-linkoping",
+      "rydeMapGrid": {
+        "south": 58.3593,
+        "west": 15.543632,
+        "north": 58.435696,
+        "east": 15.717489,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017124036105057142,
+        "cells": "8-9,12-13,16-24,27-42,44-53,55-62,66-74,78-82,84-86,89-92,95-96"
+      }
+    },
+    {
+      "id": "ryde_app_se_lulea",
+      "provider": "ryde",
+      "city": "Luleå",
+      "center": [
+        65.58459,
+        22.1536
+      ],
+      "bounds": {
+        "south": 65.54827658100642,
+        "north": 65.6480443,
+        "west": 21.9869519,
+        "east": 22.273372
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-lulea",
+      "rydeMapGrid": {
+        "south": 65.548277,
+        "west": 21.986952,
+        "north": 65.648044,
+        "east": 22.273372,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.021702197358725493,
+        "cells": "6,19-20,23,32-34,36-40,46-55,62-68,75-81,88-93,100-107,114-115,117-122,126-128,135-136,140-141,154"
+      }
+    },
+    {
+      "id": "ryde_app_se_lund",
+      "provider": "ryde",
+      "city": "Lund",
+      "center": [
+        55.70439,
+        13.19184
+      ],
+      "bounds": {
+        "south": 55.686680365525376,
+        "north": 55.73075171050071,
+        "west": 13.150855846252444,
+        "east": 13.235262190421189
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-lund",
+      "rydeMapGrid": {
+        "south": 55.68668,
+        "west": 13.150856,
+        "north": 55.730752,
+        "east": 13.235262,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.015935468484224617,
+        "cells": "1-23,26-28"
+      }
+    },
+    {
+      "id": "ryde_app_se_malmo",
+      "provider": "ryde",
+      "city": "Malmö",
+      "center": [
+        55.5938,
+        13.0053
+      ],
+      "bounds": {
+        "south": 55.5020828143824,
+        "north": 55.63936003863945,
+        "west": 12.887957617407304,
+        "east": 13.151730886796988
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-malmo",
+      "rydeMapGrid": {
+        "south": 55.502083,
+        "west": 12.887958,
+        "north": 55.63936,
+        "east": 13.151731,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.015860678037066055,
+        "cells": "2-9,17-27,34-47,52-66,69-83,85-99,102-152,154-169,171-186,191-203,209-216,226-232,244-249,261-264"
+      }
+    },
+    {
+      "id": "ryde_app_se_norrkoping",
+      "provider": "ryde",
+      "city": "Norrköping",
+      "center": [
+        58.58614,
+        16.19179
+      ],
+      "bounds": {
+        "south": 58.55917419967058,
+        "north": 58.62318401606451,
+        "west": 16.125080352648418,
+        "east": 16.22335063997866
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-norrkoping",
+      "rydeMapGrid": {
+        "south": 58.559174,
+        "west": 16.12508,
+        "north": 58.623184,
+        "east": 16.223351,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017221639194198633,
+        "cells": "1-28,30-33,37-38,43"
+      }
+    },
+    {
+      "id": "ryde_app_se_sundsvall",
+      "provider": "ryde",
+      "city": "Sundsvall",
+      "center": [
+        62.39114,
+        17.305655
+      ],
+      "bounds": {
+        "south": 62.36778656821837,
+        "north": 62.46215101433908,
+        "west": 17.201229704090647,
+        "east": 17.38476836100556
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-sundsvall",
+      "rydeMapGrid": {
+        "south": 62.367787,
+        "west": 17.20123,
+        "north": 62.462151,
+        "east": 17.384768,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.019368745096494607,
+        "cells": "2-8,12-18,22-27,31-38,40-48,50-57,60-61,66-67,76-79,86-88,97-98,107-108"
+      }
+    },
+    {
+      "id": "ryde_app_se_umea",
+      "provider": "ryde",
+      "city": "Umeå",
+      "center": [
+        63.826225,
+        20.264915
+      ],
+      "bounds": {
+        "south": 63.79386718724022,
+        "north": 63.863866504661985,
+        "west": 20.15074283845302,
+        "east": 20.373097934935494
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-umea",
+      "rydeMapGrid": {
+        "south": 63.793867,
+        "west": 20.150743,
+        "north": 63.863867,
+        "east": 20.373098,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.020342104228660028,
+        "cells": "5-10,12-13,15-21,24-31,35-41,44-53,55-59,61-64,66,68-69,72-75,84-86"
+      }
+    },
+    {
+      "id": "ryde_app_se_uppsala",
+      "provider": "ryde",
+      "city": "Uppsala",
+      "center": [
+        59.86033,
+        17.63795
+      ],
+      "bounds": {
+        "south": 59.80090526784345,
+        "north": 59.9043500501698,
+        "west": 17.5800489,
+        "east": 17.7113016287208
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-uppsala",
+      "rydeMapGrid": {
+        "south": 59.800905,
+        "west": 17.580049,
+        "north": 59.90435,
+        "east": 17.711302,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017858845578183496,
+        "cells": "2-3,9-12,17-20,25-28,32-38,40-47,49-55,57-63,65-70,75-77,83-84,90"
+      }
+    },
+    {
+      "id": "ryde_app_se_varberg",
+      "provider": "ryde",
+      "city": "Varberg",
+      "center": [
+        57.10557,
+        12.25078
+      ],
+      "bounds": {
+        "south": 57.066676,
+        "north": 57.14142,
+        "west": 12.239264,
+        "east": 12.305965
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-varberg",
+      "rydeMapGrid": {
+        "south": 57.066676,
+        "west": 12.239264,
+        "north": 57.14142,
+        "east": 12.305965,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.016523318367912796,
+        "cells": "1-2,5-7,10-12,15-18,20-23,25-34,36-37,42-43"
+      }
+    },
+    {
+      "id": "ryde_app_se_vasteras",
+      "provider": "ryde",
+      "city": "Västerås",
+      "center": [
+        59.60783,
+        16.54903
+      ],
+      "bounds": {
+        "south": 59.59076317078253,
+        "north": 59.64358723868858,
+        "west": 16.447624470621207,
+        "east": 16.618590397997284
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-vasteras",
+      "rydeMapGrid": {
+        "south": 59.590763,
+        "west": 16.447624,
+        "north": 59.643587,
+        "east": 16.61859,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017747124296761715,
+        "cells": "0-5,7-39,41-49,54-58"
+      }
+    },
+    {
+      "id": "ryde_app_se_vaxjo",
+      "provider": "ryde",
+      "city": "Växjö",
+      "center": [
+        56.87845,
+        14.80613
+      ],
+      "bounds": {
+        "south": 56.833671602497525,
+        "north": 56.92232315693361,
+        "west": 14.732782506745309,
+        "east": 14.86784533055347
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-vaxjo",
+      "rydeMapGrid": {
+        "south": 56.833672,
+        "west": 14.732783,
+        "north": 56.922323,
+        "east": 14.867845,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01642036522006973,
+        "cells": "3-5,12-15,22-24,30-33,36-43,45-52,54-59,63-70,72,74-80,83-86,88"
+      }
+    },
+    {
+      "id": "ryde_app_se_ahus",
+      "provider": "ryde",
+      "city": "Åhus",
+      "center": [
+        55.9250391,
+        14.2979949
+      ],
+      "bounds": {
+        "south": 55.902409,
+        "north": 55.950996,
+        "west": 14.270022,
+        "east": 14.327989
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-ahus",
+      "rydeMapGrid": {
+        "south": 55.902409,
+        "west": 14.270022,
+        "north": 55.950996,
+        "east": 14.327989,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01602398287036234,
+        "cells": "0-2,4-21"
+      }
+    },
+    {
+      "id": "ryde_app_se_orebro",
+      "provider": "ryde",
+      "city": "Örebro",
+      "center": [
+        59.27228,
+        15.21438
+      ],
+      "bounds": {
+        "south": 59.232949,
+        "north": 59.305377,
+        "west": 15.145858816195096,
+        "east": 15.277039
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-orebro",
+      "rydeMapGrid": {
+        "south": 59.232949,
+        "west": 15.145859,
+        "north": 59.305377,
+        "east": 15.277039,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017560614762207234,
+        "cells": "0-2,5,8-13,16-37,40-45,48-53,56-61,66,69"
+      }
+    },
+    {
+      "id": "ryde_app_se_ostersund",
+      "provider": "ryde",
+      "city": "Östersund",
+      "center": [
+        63.179647,
+        14.63533
+      ],
+      "bounds": {
+        "south": 63.13429676540711,
+        "north": 63.2215141,
+        "west": 14.51607,
+        "east": 14.7641911
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "se-ostersund",
+      "rydeMapGrid": {
+        "south": 63.134297,
+        "west": 14.51607,
+        "north": 63.221514,
+        "east": 14.764191,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01987850365728863,
+        "cells": "11-12,21-25,32-61,68-73,80-85,96-97,109-111,121-122"
+      }
+    },
+    {
       "id": "lime_se_app_goteborg",
       "provider": "lime",
       "city": "Göteborg",
@@ -569,5 +1219,7 @@
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Gothenburg_410_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Malmo_269_exclude_new_type.json"
-  ]
+  ],
+  "rydeVerifiedOn": "2026-11-04",
+  "rydeSource": "https://www.ryde-technology.com/Locations"
 }

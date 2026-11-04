@@ -1,7 +1,7 @@
 import { CATALOG_SYSTEMS } from '@/generated/countryCatalogs';
 import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
 import type { ProviderKey } from '@/generated/providers';
-import { limeGridGroups, type LimeMapGrid, type LimeMarketTown } from '@/lib/limeGrid';
+import { limeGridGroups, rydeGridGroups, type LimeMapGrid, type LimeMarketTown } from '@/lib/limeGrid';
 import { searchText, searchWords } from '@/lib/searchText';
 import type { SeasonalPause } from '@/lib/seasonalPauses';
 import type { MapBounds } from '@/lib/types';
@@ -48,6 +48,10 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   voiAppZone?: string;
   /** RideMovi's reviewed operating area, swept through its private rider session by the Node cache. */
   ridemoviAppArea?: string;
+  /** Official Ryde rider-map market, collected by the authenticated Mac producer. */
+  rydeAppArea?: string;
+  rydeMapGrid?: LimeMapGrid;
+  rydeMapTiles?: MapBounds[];
   /** Bounded scooter viewports, collected completely using the cache's private Lime session. */
   limeAppMap?: true;
   /** ATOM rider-map account, whose app identifiers and rider token are private to the Node cache. */
@@ -148,12 +152,12 @@ export const feedBase = (system: Pick<RegionalScooterSystem, 'discoveryUrl' | 'f
   new URL(system.feedBaseUrl ?? '.', system.discoveryUrl).toString();
 
 // Reviewed service regions and endpoints, never an unvalidated runtime registry download.
-export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSystem[]).flatMap(limeGridGroups);
+export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSystem[]).flatMap(limeGridGroups).flatMap(rydeGridGroups);
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
     system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.birdAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
-    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea);
+    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.skyssAppZone || system.boltAppCity || system.ridemoviAppArea || system.rydeAppArea);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {
@@ -167,7 +171,7 @@ export function isRegionalSource(source: string): source is RegionalSource {
 const APP_MAP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(isAppMapSystem).map(system => `${regionalSource(system)}:${system.id}`));
 /** Whether the feed is an operator's app map, read in views as its app does (DATA_SOURCES.md). */
 export const isAppMapFeed = (feed: { id: string }) => APP_MAP_FEEDS.has(feed.id) ||
-  /^(norway|sweden|finland|germany):ryde_app_[a-z0-9-]+$/.test(feed.id);
+  /^(norway|sweden|finland|germany):ryde_app_[a-z0-9_-]+$/.test(feed.id);
 const LIME_GROUP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.limeMapTiles).map(system => `${regionalSource(system)}:${system.id}`));
 /** Whether the feed is one of the refresh groups of a Lime market's grid (limeGridGroups). */
 export const isLimeGroupFeed = (feed: { id: string }) => LIME_GROUP_FEEDS.has(feed.id);

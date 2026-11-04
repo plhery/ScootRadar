@@ -75,6 +75,15 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(self.producer.pending,second['id'])
         self.producer.response(b);self.assertIsNone(self.producer.pending)
 
+    def test_nearly_identical_duplicate_rows_are_collapsed_without_losing_saturation_count(self):
+        job=self.job()
+        rows=[{'memberByString':'123456789012345','coordinate':{'latitude':59.744,'longitude':10.205}},
+              {'memberByString':'123456789012345','coordinate':{'latitude':59.74402,'longitude':10.205}}]
+        self.map(rows=rows)
+        result=json.loads((self.root/'results'/f"{job['id']}.json").read_text())
+        self.assertEqual(len(result['scooters']),1);self.assertEqual(result['returnedCount'],2)
+        self.assertFalse(self.producer.paused)
+
     def test_renewal_and_stop_restore_new_app_key(self):
         next_app=ec.generate_private_key(ec.SECP256R1());self.rotate(next_app)
         self.assertTrue(self.producer.bound);self.assertFalse(self.producer.restored)

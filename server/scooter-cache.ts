@@ -1,5 +1,5 @@
 import { RydeBroker } from './rydeBridge';
-import { withRydeAppCollectors } from './rydeApp';
+import { loadRydeRuntimeConfig, withRydeAppCollectors } from './rydeApp';
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
@@ -47,7 +47,8 @@ import { skyssMapRequests, withSkyssAppCollectors } from './skyssApp';
 import { ridemoviMapRequests, withRidemoviAppCollectors } from './ridemoviApp';
 import { readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps } from './swissAppMaps';
 
-const rydeBridge = process.env.RYDE_BRIDGE_TOKEN ? new RydeBroker(process.env.RYDE_BRIDGE_TOKEN) : undefined;
+const rydeConfig=loadRydeRuntimeConfig();
+const rydeBridge=rydeConfig ? new RydeBroker(rydeConfig.token) : undefined;
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
   withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
@@ -60,7 +61,7 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withRidemoviAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
   withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
-  (current: CollectableScooterFeed[]) => withRydeAppCollectors(current, rydeBridge),
+  (current: CollectableScooterFeed[]) => withRydeAppCollectors(current,rydeBridge,rydeConfig?.areas,undefined,REGIONAL_SCOOTER_SYSTEMS,rydeConfig?.productionPilot),
   (current: CollectableScooterFeed[]) => withLimeStandby(current, id => records.get(id)),
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 

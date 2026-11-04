@@ -106,3 +106,17 @@ export function limeGridGroups<T extends LimeMarketEntry>(system: T): T[] {
   }
   return groups;
 }
+
+/** Ryde shares the compact grid representation; two views keep a watched group quick to refresh. */
+export function rydeGridGroups<T extends { id: string; city: string; center: [number,number]; rydeMapGrid?: LimeMapGrid }>(system: T): T[] {
+  const {rydeMapGrid:grid,...market}=system;
+  if(!grid)return [system];
+  const tiles=limeGridTiles(grid),groups:T[]=[];
+  for(let i=0;i<tiles.length;i+=2){
+    const group=tiles.slice(i,i+2);
+    groups.push({...market,id:`${market.id}_${String(i/2).padStart(3,'0')}`,
+      bounds:{south:Math.min(...group.map(b=>b.south)),north:Math.max(...group.map(b=>b.north)),west:Math.min(...group.map(b=>b.west)),east:Math.max(...group.map(b=>b.east))},
+      areas:group.map(bounds=>({city:market.city,center:market.center,bounds})),rydeMapTiles:group} as unknown as T);
+  }
+  return groups;
+}

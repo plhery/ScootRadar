@@ -1,5 +1,6 @@
 """Fresh native requests only. Uses the already installed, scoped bridge protocol."""
 import hashlib
+import math
 import json
 import os
 import time
@@ -90,7 +91,9 @@ class Producer(BridgeTrial):
                 if 'userCityId' in fields: fields['userCityId']=str(target['cityId'])
                 if 'gpsLa' in fields: fields['gpsLa']=str(target['latitude'])
                 if 'gpsLo' in fields: fields['gpsLo']=str(target['longitude'])
+                fields.pop('mapVersion',None) # request complete geometry, not a cached delta
                 flow.request.content=urlencode(fields).encode()
+            flow.metadata['fenceCityId']=fields.get('cityId',fields.get('userCityId'))
         if path == MAP: flow.metadata['nativeRecipient'] = fields.get('ekt')
         renewal = path == ROTATE and self.bound and self.stage == 'bridge-active' and not (ROOT/'stop.json').exists()
         if renewal:
@@ -190,20 +193,28 @@ class Producer(BridgeTrial):
                 rows = payload['scooters']
                 if not isinstance(rows, list) or len(rows)>10000: raise ValueError('invalid scooter array')
                 id_key = (ROOT/'id-key').read_bytes()
-                scooters=[]; seen=set()
+                scooters=[]; seen={}
                 for row in rows:
                     identity=row['memberByString']; coord=row['coordinate']
                     lat=coord['latitude']; lng=coord['longitude']
                     import math
                     if not isinstance(identity,str) or not identity.isdigit() or not 1<=len(identity)<=32: raise ValueError('identity')
                     if type(lat) not in (int,float) or type(lng) not in (int,float) or not math.isfinite(lat+lng) or abs(lat)>85 or abs(lng)>180: raise ValueError('position')
-                    if identity in seen: raise ValueError('duplicate')
-                    seen.add(identity)
+                    if identity in seen:
+                        old=seen[identity]
+                        metres=math.hypot((lat-old[0])*111195,(lng-old[1])*111195*math.cos(math.radians(lat)))
+                        if metres>5:raise ValueError('duplicate conflicting position')
+                        continue
+                    seen[identity]=(lat,lng)
                     import hmac
                     scooters.append({'id':hmac.new(id_key,identity.encode(),hashlib.sha256).hexdigest()[:32], 'lat':lat,'lng':lng})
-                result['scooters']=scooters
+                result['scooters']=scooters;result['returnedCount']=len(rows)
+                if len(rows)>len(scooters):self.event('duplicate-map-rows-collapsed',count=len(rows)-len(scooters))
             except Exception as error:
-                result['error']=type(error).__name__; self.paused=True
+                result['error']=type(error).__name__;result['reason']=str(error)[:160]; self.paused='payload' not in locals()
+                if 'payload' in locals() and (ROOT/'capture-parser-error').exists():
+                    private_json(ROOT/'parser-error-map.json',{'cityId':job['cityId'],'payload':payload},replace=True)
+                    (ROOT/'capture-parser-error').unlink()
             private_json(ROOT/'results'/f"{job['id']}.json", result, replace=True)
             if self.pending==job['id']: self.pending=None
             self.status()
@@ -216,7 +227,12 @@ class Producer(BridgeTrial):
                         if envelope.get('ekt')==thumbprint(self.key): reply['decrypted']=json.loads(decrypt_envelope(self.key,envelope))
                     # Only metadata response, never request headers, token or proof.
                     reply.pop('token',None)
-                    private_json(ROOT/('native-'+origin_path(flow).rsplit('/',1)[1]+'.json'),{'path':origin_path(flow),'at':time.time(),'reply':reply},replace=True)
+                    captured={'path':origin_path(flow),'at':time.time(),'reply':reply}
+                    private_json(ROOT/('native-'+origin_path(flow).rsplit('/',1)[1]+'.json'),captured,replace=True)
+                    city=flow.metadata.get('fenceCityId')
+                    if city and str(city).isdigit():
+                        directory=ROOT/'city-metadata';directory.mkdir(mode=0o700,exist_ok=True)
+                        private_json(directory/(str(city)+'-'+origin_path(flow).rsplit('/',1)[1]+'.json'),captured,replace=True)
             except (ValueError,TypeError): self.event('fence-response-unreadable')
         super().response(flow)
         if flow.metadata.get('bridgeAction') == 'bind' and self.bound:

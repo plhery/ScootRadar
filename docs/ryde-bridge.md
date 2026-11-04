@@ -1,27 +1,37 @@
 # Ryde bridge implementation and rollout
 
-Status on 4 November 2026: implementation is undergoing live acceptance;
-**no production Ryde bridge feed is enabled**. The operator returned in the
-evening and authorized resuming the outstanding tests. Apple sign-in completed
-without a password prompt. Drammen → Göteborg → Drammen succeeded on one session,
-and the sequence still worked after killing the proxy and recovering its durable
-state. The Mac is operated unlocked; the operator explicitly waived lock-screen
-testing for this deployment.
+Status on 4 November 2026: **production rollout to all 83 official Ryde cities**.
+The operator explicitly waived the separate overnight gate: production is the
+continued uptime test. Existing public feeds keep 19 named city areas; the Mac
+bridge adds the other 64 (4 Norway, 25 Sweden, 15 Finland, 20 Germany). Each
+additional city returned a fresh native map and matching city metadata on the
+same signed-in account. No per-city login is required.
 
-A full local HTTP broker/worker exercise completed 82 native reads without an
-expired or rejected broker result. The 80-query spatial budget retained 1,023
-scooter observations, included all 89 stationary before/after reference scooters,
-and left three cells unfinished. It is a partial scan, not a validated complete
-feed. Geometry pruning and a finer independent scan are the next coverage check.
-The explicit clean-stop test also restored an app-owned key and verified a fresh
-map response. The operator then completed Apple sign-in for the independent
-coverage test and overnight pilot.
+The collection envelopes come from native cityRange/type-4 operating rings.
+Sola has only a city-selection envelope: it bounds collection and is not
+advertised as a riding boundary. Native observations inside an existing public
+Ryde feed's catalog coverage are excluded to avoid two identity namespaces for
+the same scooters. No riding zones or parking are inferred from these envelopes.
 
-The exercise exposed a second race: publishing a job before quitting the app
-let a spontaneous map request claim it immediately before being cancelled by
-that quit. Jobs now become visible only after graceful termination. An abandoned
-in-flight slot also expires after 30 seconds, and late responses cannot clear a
-newer pending job. Both transitions have regression tests.
+The 1 km grids (2.5 km for Sola's envelope) contain 4,679 initial views in
+2,356 independently refreshed groups. At five seconds between job starts, plus
+native launch overhead, a full round needs roughly eight hours before adaptive
+subdivision. The initial idle interval is about 16 hours, reserving half the shared
+account turns for watched areas. A watched group has at most two initial views;
+it uses the normal one-minute active refresh cadence and a two-minute watch.
+The queue coalesces identical work and alternates urgent/routine turns while
+both wait. These are conservative operating settings, not an upstream quota.
+Saturated cells subdivide within request/depth/time budgets; unresolved groups
+fail and preserve prior observations. Coverage and uptime flags remain truthful:
+the explicit private productionPilot setting authorizes this rollout without
+claiming every city has independently passed Drammen's reference scan.
+
+Drammen's independent 1,000 m scan completed 66 queries with zero unfinished
+cells and retained all 90 stationary reference observations eligible for its
+operating rings. Cross-city collection, proxy recovery, native key renewals,
+app restart and clean restoration have passed live tests. The Mac is operated
+unlocked; lock-screen testing was explicitly waived. Continuous uptime, adaptive
+request cost and city-by-city completeness remain production observations.
 
 ## Components
 
@@ -42,12 +52,12 @@ newer pending job. Both transitions have regression tests.
 - `shadow.py`: bounded local sampler (maximum 24 hours, minimum 120 seconds
   spacing); stops on its first failed sample and never publishes production data.
 - `server/rydeBridge.ts`: account-wide bounded queue. Coalesces identical queries,
-  leases one job at a time, reserves every fourth contested turn for routine work,
+  leases one job at a time, reserves every second contested turn for routine work,
   spaces new jobs five seconds apart initially, and expires them after two minutes.
   These are conservative configuration defaults, not measured upstream quotas.
 - `server/rydeApp.ts`: bounded overlapping scans, adaptive subdivision, retained
   parent observations, stable pseudonyms and a separate coverage-validation gate.
-  An unfinished or unreviewed scan fails collection, preserving the old snapshot.
+  An unfinished scan fails collection, preserving the old snapshot. The private production pilot explicitly bypasses preproduction coverage/uptime gates.
 
 The worker's current client is synchronous: one account and one active native
 request. Add account parallelism only after measured need and separate authorized
@@ -109,13 +119,27 @@ verified unbound state it can return to idle without another login.
 
 ## Broker configuration
 
-The cache reads dedicated `RYDE_BRIDGE_TOKEN` (at least 32 random characters).
-Without it, worker routes return 404. It is distinct from the public snapshot API
-and metrics tokens. Configure the same value and the cache's HTTPS origin in
-`producer/worker-config.json` (mode 0600): keys `url` and `token`. Do not put actual
-values in shell history, docs or Git. Start `worker.py` with no flags under the
-Mac's normal-user service manager once live acceptance passes. Until then use
-bounded `--once` and shadow runs. Do not start two workers.
+The cache reads mode-0600 `/data/ryde-bridge.json`, on the persistent snapshot
+volume, owned by Node UID 1000 (`RYDE_BRIDGE_CONFIG_PATH` overrides it). Its
+version-1 object contains a random dedicated `token` (at least 32 characters),
+`areas` (`"*"` for the reviewed catalog) and `productionPilot: true`. This token
+is distinct from the snapshot and metrics tokens. Without configuration, worker
+routes return 404. Legacy `RYDE_BRIDGE_TOKEN`/`RYDE_BRIDGE_AREAS` environment
+configuration retains strict coverage/uptime gating.
+
+The Mac's private `producer/worker-config.json` contains `url` (the cache HTTPS
+origin) and the same `token`, mode 0600. It contains no Ryde credential. Install
+and supervise the production worker with:
+
+```sh
+python3 scripts/ryde-bridge/install.py --worker
+```
+
+This starts normal-user `com.scootradar.ryde-worker`, stops the shadow sampler
+and takes the same exclusive worker lock. Do not run live research alongside
+production. To pause production, boot out that worker LaunchAgent first. To
+unbind the native key, use the clean-stop procedure above; retain the supervised
+proxy until restoration is verified.
 
 - `GET /internal/ryde/job`: one lease or JSON null.
 - `POST /internal/ryde/result`: version 1 normalized observations, exact query and
@@ -127,15 +151,11 @@ bounded `--once` and shadow runs. Do not start two workers.
   pending jobs and the worker's last poll time. A poll proves connectivity, not
   successful native collection. Feed expiry remains the existing cache contract.
 
-`RYDE_BRIDGE_AREAS` is an explicit comma-separated allowlist. An area also needs
-`geometryEvidence`, `coverageEvidence`, `coverageValidated: true`,
-`uptimeEvidence` and `uptimeValidated: true` in
-`data/ryde-bridge-areas.json`. Unknown or unreviewed areas fail startup. Existing
-Ryde feeds with overlapping coverage prevent additions. Drammen has passed the bounded empirical coverage review. The present catalog
-has **no uptime-validated area**, so it cannot enable a feed yet. Once enabled,
-normal ScootRadar refresh demand reaches the same collector and shared broker;
-no new web/iOS refresh control is required. City/catalog presentation must be
-reviewed with each rollout, alongside geometry and source ownership.
+`scripts/generate-ryde-app-feeds.mjs` derives compact grids and country catalog
+entries from `data/ryde-bridge-areas.json`. `generate:providers` and
+`check:providers` include it. Web/iOS catalog generation expands the same
+independently refreshed groups. Existing refresh demand reaches their collector
+and shared broker; no new client refresh control is required.
 
 ## Drammen geometry and coverage
 
@@ -152,24 +172,10 @@ Drammen cityRange is empty; its six type-4 polygons supply the collection rings
 zone is advertised as an operating area. The geometry is recorded in the staged
 catalog; a geometry outline alone does not establish complete vehicle retrieval.
 
-Next live validation after reattachment:
-
-1. Repeat a reference viewport immediately before and after the scan. Keep its
-   timestamps; compare only sufficiently stable observations.
-2. Scan the six operating rings with overlapping queries and subdivision where
-   counts reach the observed saturation candidate. Keep parent observations and
-   newest observations of each scooter. A low count does not independently prove
-   completeness; a depth/request/time limit leaves explicit unfinished work.
-3. Compare repeated shifted/finer scans against the first union and investigate
-   interior omissions. Establish a defensible coverage rule; do not reuse the
-   nearest-N completeness assumption from other adapters without Ryde evidence.
-4. Measure cold/warm cost, queue wait and total sweep age. Split into independently
-   refreshed groups if a sweep cannot fit the feed's freshness window.
-5. Run shadow mode overnight, backgrounded and locked, and exercise network loss,
-   sleep/wake and app/proxy/worker restarts. Confirm normal stop and restoration.
-6. Only after those pass, record evidence and enable Drammen. Validate Kristiansand
-   and Göteborg next, then Helsinki/Hannover. Other official cities remain survey
-   candidates, not automatically enabled feeds.
+The independent finer scan and operational recovery tests passed. The planned
+separate overnight sampler was stopped at the operator's request on 4 November;
+it is no longer a condition for production. Additional city coverage and uptime
+are evaluated through the production feeds and normal expiry reporting.
 
 The scanner publishes positive observations progressively with no certified
 swept bounds while the selection rule is unknown. It skips cells outside all
@@ -230,7 +236,7 @@ python3 scripts/ryde-bridge/install.py --shadow-hours 12
 This installs the normal-user `com.scootradar.ryde-shadow` LaunchAgent, takes the
 exclusive worker lock, samples every two minutes and stops on failure. It records
 sample ages, native renewals and process RSS. It never publishes a production feed.
-The source remains gated until both the soak and coverage evidence are reviewed.
+This is optional diagnostic tooling; the operator waived its use as a rollout gate.
 
 ## Finer scan and overnight pilot, 4–5 November
 

@@ -49,3 +49,12 @@ describe('Lime market grids', () => {
     expect('towns' in first).toBe(false);
   });
 });
+
+it('splits Ryde grids into two-view refresh groups with individual coverage areas',async()=>{
+  const {rydeGridGroups}=await import('./limeGrid');
+  const market={id:'ryde_app_test',city:'Test',center:[0,0] as [number,number],rydeAppArea:'test',rydeMapGrid:grid('0-4')};
+  const groups=rydeGridGroups(market) as (typeof market & {rydeMapTiles:unknown[];areas:unknown[]})[];
+  expect(groups.map(g=>g.id)).toEqual(['ryde_app_test_000','ryde_app_test_001','ryde_app_test_002']);
+  expect(groups.map(g=>g.rydeMapTiles.length)).toEqual([2,2,1]);
+  expect(groups.every(g=>g.areas.length===g.rydeMapTiles.length && g.rydeAppArea==='test' && !('rydeMapGrid' in g))).toBe(true);
+});

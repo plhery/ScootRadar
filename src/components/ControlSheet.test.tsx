@@ -447,6 +447,7 @@ describe('ControlSheet settings', () => {
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
+      'DE/NO/SE/FI: Ryde map',
       'US: GCOO map and zones',
       'CA: MoVe rider map',
       'US/CA: Bird map',

@@ -27,13 +27,13 @@ describe('Ryde account broker',()=>{
     let now=100000;const b=broker('x'.repeat(32),()=>now,0);
     const p=b.query(q);p.catch(()=>{});const job=b.lease();now+=50001;expect(b.lease()).toEqual(job);
   });
-  it('keeps a routine turn after three urgent queries',async()=>{
+  it('keeps a routine turn after each urgent query',async()=>{
     const b=broker('x'.repeat(32),()=>100000,0);const promises=[];
     promises.push(b.query({...q,cityId:6},false));
     for(let n=1;n<=4;n++) promises.push(b.query({...q,radius:n},true));
     const order=[];
     for(let n=0;n<5;n++){const job=b.lease()!;order.push(job.cityId);b.accept({version:1,id:job.id,query:job,coverage:'unknown',observedAt:100,scooters:[]});}
-    expect(order).toEqual([43,43,43,6,43]);await Promise.all(promises);
+    expect(order).toEqual([43,6,43,43,43]);await Promise.all(promises);
   });
 });
 
@@ -54,4 +54,12 @@ describe('worker HTTP boundary',()=>{
       expect(submitted.status).toBe(204);await p;
     } finally {await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
   });
+});
+
+it('a failed city job releases the account queue immediately',async()=>{
+  const b=broker('x'.repeat(32),()=>100000,0);
+  const one=b.query(q);const rejected=expect(one).rejects.toThrow('could not complete');
+  const two=b.query({...q,cityId:32});two.catch(()=>{});
+  const job=b.lease()!;b.accept({version:1,id:job.id,query:job,error:'worker_failed'});
+  await rejected;expect(b.lease()!.cityId).toBe(32);expect(b.stats.failed).toBe(1);
 });

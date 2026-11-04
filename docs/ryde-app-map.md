@@ -1,5 +1,11 @@
 # Ryde map readers and rider app investigation
 
+**Current rollout, 4 November 2026:** the Mac bridge adds 64 cities alongside
+19 existing public-feed city areas, covering all 83 official locations. The
+operator waived a separate overnight gate and chose production for the ongoing
+uptime test. See the [production runbook](ryde-bridge.md) for cadence, limits
+and recovery; the investigation entries below record earlier states.
+
 **Ryde's scooters in Bergen are on the map since 28 October 2026**, from
 the map Skyss's travel app shows signed out. The scooter cache reads it with
 [`server/skyssApp.ts`](../server/skyssApp.ts), as the system

@@ -948,6 +948,110 @@
       "skyssAppZone": "BERGEN"
     },
     {
+      "id": "ryde_app_no_drammen",
+      "provider": "ryde",
+      "city": "Drammen",
+      "center": [
+        59.74542,
+        10.20293
+      ],
+      "bounds": {
+        "south": 59.706625950754216,
+        "north": 59.770798818801666,
+        "west": 9.987863901790103,
+        "east": 10.267095653760547
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "drammen",
+      "rydeMapGrid": {
+        "south": 59.706626,
+        "west": 9.987864,
+        "north": 59.770799,
+        "east": 10.267096,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01780851935114405,
+        "cells": "13,15,28-31,43-46,48-50,56-62,64-67,69-78,80-84,86-104,109-110,116-117"
+      }
+    },
+    {
+      "id": "ryde_app_no_kristiansand",
+      "provider": "ryde",
+      "city": "Kristiansand",
+      "center": [
+        58.157936684325,
+        8.02381219649191
+      ],
+      "bounds": {
+        "south": 58.10112165753945,
+        "north": 58.19221456513693,
+        "west": 7.916415418328877,
+        "east": 8.107906
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "no-kristiansand",
+      "rydeMapGrid": {
+        "south": 58.101122,
+        "west": 7.916415,
+        "north": 58.192215,
+        "east": 8.107906,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.016999891540242677,
+        "cells": "0-4,12-16,24-27,32-33,36-41,44-46,48-58,60-71,75-83,87-91,93-95,99,101-103,105-107,114-115,117-118,126-127"
+      }
+    },
+    {
+      "id": "ryde_app_no_moss",
+      "provider": "ryde",
+      "city": "Moss",
+      "center": [
+        59.433312,
+        10.660661
+      ],
+      "bounds": {
+        "south": 59.40471315929493,
+        "north": 59.47817409773012,
+        "west": 10.608398489764417,
+        "east": 10.70673302101608
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "no-moss",
+      "rydeMapGrid": {
+        "south": 59.404713,
+        "west": 10.608398,
+        "north": 59.478174,
+        "east": 10.706733,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.017649568647394722,
+        "cells": "2-5,8-11,13-29,34-35,40-41,46,52"
+      }
+    },
+    {
+      "id": "ryde_app_no_sola",
+      "provider": "ryde",
+      "city": "Sola",
+      "center": [
+        58.88844,
+        5.65342
+      ],
+      "bounds": {
+        "south": 58.86168054373962,
+        "north": 58.97573649802381,
+        "west": 5.074555053691716,
+        "east": 5.697476390158873
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "no-sola",
+      "rydeMapGrid": {
+        "south": 58.861681,
+        "west": 5.074555,
+        "north": 58.975736,
+        "east": 5.697476,
+        "latStep": 0.022457779374775423,
+        "lngStep": 0.04342975067340388,
+        "cells": "0-58,60-72,75-76"
+      }
+    },
+    {
       "id": "lime_no_app_bergen",
       "provider": "lime",
       "city": "Bergen",
@@ -973,5 +1077,7 @@
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Bergen_1930_exclude_new_type.json"
-  ]
+  ],
+  "rydeVerifiedOn": "2026-11-04",
+  "rydeSource": "https://www.ryde-technology.com/Locations"
 }

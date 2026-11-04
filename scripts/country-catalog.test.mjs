@@ -98,6 +98,7 @@ describe('the countries of data/countries.json', () => {
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
+      'DE/NO/SE/FI: Ryde map',
       'BY: Whoosh map', 'CH/DE/AT/IT/BE/NO/UK/PT/DK/SE/PL/HU/GR/RO/CZ: Lime map', 'TR: Beam map',
       // Where the last country to give it gives it: Turkey, for Antalya's boulevard.
       'CH/FR/DE/IT/BE/UK/PT/ES/SE/PL/FI/UA/TR: OpenStreetMap boundaries · ODbL',

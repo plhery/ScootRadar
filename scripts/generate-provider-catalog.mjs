@@ -25,10 +25,10 @@ const readJson = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
 // A catalog's Lime market is one entry there, and a system for each of its refresh groups
 // everywhere else, as src/lib/regionalScooterSystems.ts reads it.
 const { code: limeGrid } = await transform(readFileSync(resolve(root, 'src/lib/limeGrid.ts'), 'utf8'), { loader: 'ts', format: 'esm' });
-const { limeGridGroups } = await import(`data:text/javascript;base64,${Buffer.from(limeGrid).toString('base64')}`);
+const { limeGridGroups, rydeGridGroups } = await import(`data:text/javascript;base64,${Buffer.from(limeGrid).toString('base64')}`);
 const readCatalog = path => {
   const catalog = readJson(path);
-  return { ...catalog, systems: catalog.systems.flatMap(limeGridGroups) };
+  return { ...catalog, systems: catalog.systems.flatMap(limeGridGroups).flatMap(rydeGridGroups) };
 };
 const providers = JSON.parse(readFileSync(sourcePath, 'utf8'));
 const swissAreas = readJson('data/swiss-scooter-areas.json');

@@ -45,7 +45,7 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map; Ryde rider map",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
           { "label": "DE: MobiData BW e-scooter data", "href": "https://mobidata-bw.de/dataset/escootch" },
@@ -57,7 +57,8 @@
           { "label": "DE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "DE: Bolt map", "href": "https://bolt.eu/" },
           { "label": "DE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
-          { "label": "DE: Lime map", "href": "https://www.li.me/" }
+          { "label": "DE: Lime map", "href": "https://www.li.me/" },
+          { "label": "DE: Ryde map", "href": "https://www.ryde-technology.com/" }
         ]
       }
     },
@@ -154,14 +155,15 @@
       "anchor": [61, 9.5],
       "featuredCities": ["no:Oslo", "no:Trondheim", "no:Stavanger", "no:Kristiansand", "no:Bærum", "no:Tromsø"],
       "credits": {
-        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0",
+        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; Lime authenticated rider map; Skyss anonymous app map, Ryde's scooters in Bergen; GeoNames city coordinates, CC BY 4.0; Ryde rider map",
         "links": [
           { "label": "NO: Entur AS · NLOD", "href": "https://data.norge.no/nlod/en/2.0" },
           { "label": "NO: Kartverket boundaries · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" },
           { "label": "NO: Voi map", "href": "https://www.voi.com/" },
           { "label": "NO: Lime map", "href": "https://www.li.me/" },
           { "label": "NO: Skyss map", "href": "https://www.skyss.no/" },
-          { "label": "NO: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+          { "label": "NO: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
+          { "label": "NO: Ryde map", "href": "https://www.ryde-technology.com/" }
         ]
       }
     },
@@ -309,14 +311,15 @@
       "anchorNote": "Inland, between Uppsala and Kiruna, and clear of Norway's total.",
       "featuredCities": ["se:Stockholm", "se:Uppsala", "se:Malmö", "se:Lund", "se:Kiruna"],
       "credits": {
-        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; Lime authenticated rider map; Linköping's and Gävle's slow streets traced on OpenStreetMap, ODbL",
+        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; Lime authenticated rider map; Linköping's and Gävle's slow streets traced on OpenStreetMap, ODbL; Ryde rider map",
         "gbfs": ["Lime", "Hopp"],
         "links": [
           { "label": "SE: Voi map", "href": "https://www.voi.com/" },
           { "label": "SE: Qick map", "href": "https://www.qickscooters.com/" },
           { "label": "SE: Bolt map", "href": "https://bolt.eu/" },
           { "label": "SE: Lime map", "href": "https://www.li.me/" },
-          { "label": "SE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "SE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "SE: Ryde map", "href": "https://www.ryde-technology.com/" }
         ]
       }
     },
@@ -427,10 +430,11 @@
       "anchorNote": "Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as Stockholm's, and near the largest Dott fleets in Helsinki and Tampere.",
       "featuredCities": ["fi:Mariehamn"],
       "credits": {
-        "attribution": "Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map",
+        "attribution": "Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map; Ryde rider map",
         "gbfs": ["Hopp"],
         "links": [{ "label": "FI: Dott map", "href": "https://ridedott.com/" }, { "label": "FI: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
-          { "label": "FI: Voi map", "href": "https://www.voi.com/" }
+          { "label": "FI: Voi map", "href": "https://www.voi.com/" },
+          { "label": "FI: Ryde map", "href": "https://www.ryde-technology.com/" }
         ]
       }
     },

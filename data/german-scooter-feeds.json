@@ -4264,6 +4264,526 @@
       "ridemoviAppArea": "1286"
     },
     {
+      "id": "ryde_app_de_aachen",
+      "provider": "ryde",
+      "city": "Aachen",
+      "center": [
+        50.775555,
+        6.083611
+      ],
+      "bounds": {
+        "south": 50.740122,
+        "north": 50.80291971014309,
+        "west": 6.041936,
+        "east": 6.18148
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-aachen",
+      "rydeMapGrid": {
+        "south": 50.740122,
+        "west": 6.041936,
+        "north": 50.80292,
+        "east": 6.18148,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014194944056846629,
+        "cells": "7-9,11-14,17-38,40-58,64-68"
+      }
+    },
+    {
+      "id": "ryde_app_de_augsburg",
+      "provider": "ryde",
+      "city": "Augsburg",
+      "center": [
+        48.366512,
+        10.894446
+      ],
+      "bounds": {
+        "south": 48.3118758026728,
+        "north": 48.40488,
+        "west": 10.835754,
+        "east": 10.953751622684464
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-augsburg",
+      "rydeMapGrid": {
+        "south": 48.311876,
+        "west": 10.835754,
+        "north": 48.40488,
+        "east": 10.953752,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.013506903591787247,
+        "cells": "3-5,12-14,19-23,26,28-35,37-44,46-70,72-79,82-88,92-94"
+      }
+    },
+    {
+      "id": "ryde_app_de_bad_schwartau",
+      "provider": "ryde",
+      "city": "Bad Schwartau",
+      "center": [
+        53.91956156,
+        10.71185582
+      ],
+      "bounds": {
+        "south": 53.915069556621056,
+        "north": 53.94319930526631,
+        "west": 10.688978270798444,
+        "east": 10.72142110173929
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-bad-schwartau",
+      "rydeMapGrid": {
+        "south": 53.91507,
+        "west": 10.688978,
+        "north": 53.943199,
+        "east": 10.721421,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.015251882083416298,
+        "cells": "1-2,6,9"
+      }
+    },
+    {
+      "id": "ryde_app_de_bochum",
+      "provider": "ryde",
+      "city": "Bochum",
+      "center": [
+        51.481846,
+        7.216236
+      ],
+      "bounds": {
+        "south": 51.435163,
+        "north": 51.565513,
+        "west": 7.130421589950577,
+        "east": 7.288849
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-bochum",
+      "rydeMapGrid": {
+        "south": 51.435163,
+        "west": 7.130422,
+        "north": 51.565513,
+        "east": 7.288849,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01440987147793904,
+        "cells": "4-10,15-21,25-32,37-42,44-53,55-63,69-74,76,80-87,89-94,96-98,100-105,107-109,111-117,122-131,133-142,148-152,160-163"
+      }
+    },
+    {
+      "id": "ryde_app_de_bonn",
+      "provider": "ryde",
+      "city": "Bonn",
+      "center": [
+        50.733334,
+        7.1
+      ],
+      "bounds": {
+        "south": 50.650278,
+        "north": 50.763518,
+        "west": 7.029056591760803,
+        "east": 7.198186
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-bonn",
+      "rydeMapGrid": {
+        "south": 50.650278,
+        "west": 7.029057,
+        "north": 50.763518,
+        "east": 7.198186,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014167779877049666,
+        "cells": "10-11,21-23,31-35,42-46,49-50,53-58,61-62,64-69,72-82,84-94,96-105,109-116,120-130,132-142,145-148"
+      }
+    },
+    {
+      "id": "ryde_app_de_braunschweig",
+      "provider": "ryde",
+      "city": "Braunschweig",
+      "center": [
+        52.266666,
+        10.516667
+      ],
+      "bounds": {
+        "south": 52.22377598798733,
+        "north": 52.317219,
+        "west": 10.464263,
+        "east": 10.605249
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-braunschweig",
+      "rydeMapGrid": {
+        "south": 52.223776,
+        "west": 10.464263,
+        "north": 52.317219,
+        "east": 10.605249,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014664410838336724,
+        "cells": "3-5,10-17,20-27,30-37,41-47,50-57,60-69,71-79,82-87,91-95,102-103"
+      }
+    },
+    {
+      "id": "ryde_app_de_dortmund",
+      "provider": "ryde",
+      "city": "Dortmund",
+      "center": [
+        51.514244,
+        7.468429
+      ],
+      "bounds": {
+        "south": 51.45377829215398,
+        "north": 51.57558077238635,
+        "west": 7.307979,
+        "east": 7.632783720706251
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-dortmund",
+      "rydeMapGrid": {
+        "south": 51.453778,
+        "west": 7.307979,
+        "north": 51.575581,
+        "east": 7.632784,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014415746643170864,
+        "cells": "10-13,30-36,50-60,72-79,81-85,93-110,115-118,120-133,138-140,142-156,161-163,165-181,188-206,211-214,216-219,221-222,227-229,234-237,239-246,257-259,262-269,279-282,290-291,302-304,313-314"
+      }
+    },
+    {
+      "id": "ryde_app_de_duisburg",
+      "provider": "ryde",
+      "city": "Duisburg",
+      "center": [
+        51.43511,
+        6.76048
+      ],
+      "bounds": {
+        "south": 51.358256,
+        "north": 51.5502448,
+        "west": 6.671365,
+        "east": 6.8161079
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-duisburg",
+      "rydeMapGrid": {
+        "south": 51.358256,
+        "west": 6.671365,
+        "north": 51.550245,
+        "east": 6.816108,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014385665261702995,
+        "cells": "3-8,14-19,26-29,34-41,45-47,49-52,55-62,66-69,71-74,79-86,91-97,99-101,104-107,110-115,122-129,134-140,144-145,147-152,158-163,170-175,181-185,191-195,201-205,212-215,222-224,233-234"
+      }
+    },
+    {
+      "id": "ryde_app_de_essen",
+      "provider": "ryde",
+      "city": "Essen",
+      "center": [
+        51.450832,
+        7.013056
+      ],
+      "bounds": {
+        "south": 51.4068937,
+        "north": 51.534718664482405,
+        "west": 6.9427895,
+        "east": 7.11229474643253
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-essen",
+      "rydeMapGrid": {
+        "south": 51.406894,
+        "west": 6.942789,
+        "north": 51.534719,
+        "east": 7.112295,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014400961427667256,
+        "cells": "2-6,15-19,26-31,37-44,46-47,49-70,72-82,84-89,98-101,112-113,123-125,135-136,147-149,160-161,172-173"
+      }
+    },
+    {
+      "id": "ryde_app_de_garbsen",
+      "provider": "ryde",
+      "city": "Garbsen",
+      "center": [
+        52.4272509,
+        9.5955146
+      ],
+      "bounds": {
+        "south": 52.41063773260281,
+        "north": 52.4525837,
+        "west": 9.5744934,
+        "east": 9.6363584
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-garbsen",
+      "rydeMapGrid": {
+        "south": 52.410638,
+        "west": 9.574493,
+        "north": 52.452584,
+        "east": 9.636358,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014726459770240277,
+        "cells": "0-3,5-8,10-13,16-19,21-24"
+      }
+    },
+    {
+      "id": "ryde_app_de_hagen",
+      "provider": "ryde",
+      "city": "Hagen",
+      "center": [
+        51.366669,
+        7.483333
+      ],
+      "bounds": {
+        "south": 51.300237,
+        "north": 51.414253,
+        "west": 7.3894467,
+        "east": 7.5872742
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-hagen",
+      "rydeMapGrid": {
+        "south": 51.300237,
+        "west": 7.389447,
+        "north": 51.414253,
+        "east": 7.587274,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014367474835543934,
+        "cells": "9-10,23,47-48,56-59,62-63,67-79,82-83,85-93,95-97,102-106,109-111,114-121,128-135,145-148,159-160,173-174"
+      }
+    },
+    {
+      "id": "ryde_app_de_hamburg",
+      "provider": "ryde",
+      "city": "Hamburg",
+      "center": [
+        53.550677999,
+        9.99697
+      ],
+      "bounds": {
+        "south": 53.414696,
+        "north": 53.68193827625504,
+        "west": 9.793067728836066,
+        "east": 10.263673
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-hamburg",
+      "rydeMapGrid": {
+        "south": 53.414696,
+        "west": 9.793068,
+        "north": 53.681938,
+        "east": 10.263673,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.015071856244607678,
+        "cells": "12-13,42-46,73-78,100-101,104-110,132-133,136-142,160-166,169-174,193-203,205-206,216-219,221-223,227-231,237-239,247-253,268-271,276-285,300-303,308-310,313-316,332-335,339-340,344-348,364-372,375-377,379,396,398-408,427,429-439,451-471,482-501,514-534,545-567,576-600,611-634,643-666,676-698,709-729,742-747,749-761,774-780,782-794,807-811,813-826,839,845-858,877-885,887-890,909-915,917-919,941-946,949-951"
+      }
+    },
+    {
+      "id": "ryde_app_de_hannover",
+      "provider": "ryde",
+      "city": "Hannover",
+      "center": [
+        52.37052,
+        9.73322
+      ],
+      "bounds": {
+        "south": 52.309731,
+        "north": 52.432453,
+        "west": 9.600614884853576,
+        "east": 9.866106
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-hannover",
+      "rydeMapGrid": {
+        "south": 52.309731,
+        "west": 9.600615,
+        "north": 52.432453,
+        "east": 9.866106,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014692868367156931,
+        "cells": "12-16,24-26,30-36,43-46,48-55,62-73,79-92,98-113,117-131,136-151,155-169,175-191,193-207,209-224,230-244,254,259-262"
+      }
+    },
+    {
+      "id": "ryde_app_de_herne",
+      "provider": "ryde",
+      "city": "Herne",
+      "center": [
+        51.5537815,
+        7.2019625
+      ],
+      "bounds": {
+        "south": 51.55350352436032,
+        "north": 51.55405862865947,
+        "west": 7.201089668051608,
+        "east": 7.20283488519205
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-herne",
+      "rydeMapGrid": {
+        "south": 51.553504,
+        "west": 7.20109,
+        "north": 51.554059,
+        "east": 7.202835,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01444732939351223,
+        "cells": "0"
+      }
+    },
+    {
+      "id": "ryde_app_de_koln",
+      "provider": "ryde",
+      "city": "Köln",
+      "center": [
+        50.935173,
+        6.953101
+      ],
+      "bounds": {
+        "south": 50.845828,
+        "north": 51.007715,
+        "west": 6.815189338578778,
+        "east": 7.111574
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-koln",
+      "rydeMapGrid": {
+        "south": 50.845828,
+        "west": 6.815189,
+        "north": 51.007715,
+        "east": 7.111574,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014227082648568097,
+        "cells": "18-20,33-37,39-41,53-62,73-83,96-98,100-103,113-124,132-144,152-160,164-166,170-229,231-250,252-267,274-291,296-312,317-321,323-333,341-352,363-364,368-369,371-373,392"
+      }
+    },
+    {
+      "id": "ryde_app_de_lubeck",
+      "provider": "ryde",
+      "city": "Lübeck",
+      "center": [
+        53.86972,
+        10.686389
+      ],
+      "bounds": {
+        "south": 53.821822,
+        "north": 53.977782,
+        "west": 10.598251018524172,
+        "east": 10.884004542327874
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-lubeck",
+      "rydeMapGrid": {
+        "south": 53.821822,
+        "west": 10.598251,
+        "north": 53.977782,
+        "east": 10.884005,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.015217919542187664,
+        "cells": "3-8,20-28,39-48,57-67,76-85,95-104,116-122,125-127,134-141,144-146,153-162,164-166,174-177,180-185,194-196,202-205,213-216,223-224,233-235,281-283,300-303,320-322,340-341"
+      }
+    },
+    {
+      "id": "ryde_app_de_oberhausen",
+      "provider": "ryde",
+      "city": "Oberhausen",
+      "center": [
+        51.47351,
+        6.86036
+      ],
+      "bounds": {
+        "south": 51.458567,
+        "north": 51.529951,
+        "west": 6.821435,
+        "east": 6.892938
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-oberhausen",
+      "rydeMapGrid": {
+        "south": 51.458567,
+        "west": 6.821435,
+        "north": 51.529951,
+        "east": 6.892938,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014417259142397618,
+        "cells": "1-3,5-9,11-14,17-19,23-24,26-29,31-34,37-38"
+      }
+    },
+    {
+      "id": "ryde_app_de_stockelsdorf",
+      "provider": "ryde",
+      "city": "Stockelsdorf",
+      "center": [
+        53.90398756,
+        10.64779471
+      ],
+      "bounds": {
+        "south": 53.8920356,
+        "north": 53.90695561832764,
+        "west": 10.5961703,
+        "east": 10.65368928990412
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-stockelsdorf",
+      "rydeMapGrid": {
+        "south": 53.892036,
+        "west": 10.59617,
+        "north": 53.906956,
+        "east": 10.653689,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.015243474853910637,
+        "cells": "0,6-7"
+      }
+    },
+    {
+      "id": "ryde_app_de_witten",
+      "provider": "ryde",
+      "city": "Witten",
+      "center": [
+        51.4438926,
+        7.353197
+      ],
+      "bounds": {
+        "south": 51.412769,
+        "north": 51.460881,
+        "west": 7.269919,
+        "east": 7.418041
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-witten",
+      "rydeMapGrid": {
+        "south": 51.412769,
+        "west": 7.269919,
+        "north": 51.460881,
+        "east": 7.418041,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014402811961596583,
+        "cells": "0-1,4-5,11-16,22-30,34-42,47-54,62,64-65"
+      }
+    },
+    {
+      "id": "ryde_app_de_wuppertal",
+      "provider": "ryde",
+      "city": "Wuppertal",
+      "center": [
+        51.256214,
+        7.150764
+      ],
+      "bounds": {
+        "south": 51.213711,
+        "north": 51.2935716,
+        "west": 7.052615,
+        "east": 7.258176
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "de-wuppertal",
+      "rydeMapGrid": {
+        "south": 51.213711,
+        "west": 7.052615,
+        "north": 51.293572,
+        "east": 7.258176,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.014340459313853828,
+        "cells": "0-2,15-17,21,30-33,36-37,46-52,63-68,78-87,93-104,109-119,126-128,130-133"
+      }
+    },
+    {
       "id": "lime_de_app_augsburg",
       "provider": "lime",
       "city": "Augsburg",
@@ -5145,5 +5665,7 @@
     "https://assets.lime.bike/zones_attributes/Mainz_14676_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Nuremberg_4154_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Regensburg_216_exclude_new_type.json"
-  ]
+  ],
+  "rydeVerifiedOn": "2026-11-04",
+  "rydeSource": "https://www.ryde-technology.com/Locations"
 }

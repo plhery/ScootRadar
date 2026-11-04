@@ -266,7 +266,7 @@ describe('address search results', () => {
     // A town whose name starts as typed comes before a street: "Muen" is on its way to München, and to Münster...
     expect(await answers('Muen', [street('Muenzgasse'), town('München', 48.1372, 11.5756)])).toEqual(['München', 'Münster', 'Muenzgasse']);
     // ...but "Joe" is not on its way to Johannisberg, as it was when "oe" was read as "o".
-    expect(await answers('Joe', [town('Johannisberg', 49.99, 7.98), street('Joe-Kaeser-Weg')])).toEqual(['Joe-Kaeser-Weg', 'Johannisberg']);
+    expect(await answers('Joe', [town('Johannisberg', 49.99, 7.98), street('Joe-Kaeser-Weg')])).toEqual(['Joensuu', 'Joe-Kaeser-Weg', 'Johannisberg']);
   });
 
   it('ranks an address typed with ß as the same address typed with ss, and asks for it as typed', async () => {

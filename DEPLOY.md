@@ -599,3 +599,9 @@ not every 20 minutes, and expires after two hours and ten minutes without one: a
 feed that sets its own idle interval, as GCOO, Alpaca, DART, Skyss, ATOM, Whoosh and BinBin do
 (`APP_MAP_IDLE_INTERVAL_MS`), Bird (`BIRD_IDLE_INTERVAL_MS`, a day) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
 ten minutes after it, read from the feed itself.
+
+Ryde's native Mac bridge reads mode-0600 `/data/ryde-bridge.json`, owned by Node
+UID 1000, from the persistent snapshot volume. It contains only a dedicated
+broker token, version 1, enabled areas and the explicit production-pilot flag.
+The Mac worker connects outbound over HTTPS; native credentials and encryption
+keys stay on the Mac. See [the rollout and recovery runbook](docs/ryde-bridge.md).

@@ -54,3 +54,49 @@ it('distinguishes intentionally filtered reference points from missing in-area s
   });
   expect(checkRydeReference(area,[inside,outside],[inside,outside],[]).stationaryMissingEligible).toBe(1);
 });
+
+it('enables only catalogued groups through an explicit production pilot and leaves public feeds alone',async()=>{
+  const {independentCollectableFeeds}=await import('../src/lib/scooterFeeds');
+  const {REGIONAL_SCOOTER_SYSTEMS}=await import('../src/lib/regionalScooterSystems');
+  const feeds=independentCollectableFeeds();
+  const wrapped=withRydeAppCollectors(feeds,api([]) as never,'*',undefined,REGIONAL_SCOOTER_SYSTEMS,true);
+  expect(wrapped).toHaveLength(feeds.length);
+  const groups=REGIONAL_SCOOTER_SYSTEMS.filter(s=>s.rydeAppArea);
+  expect(new Set(groups.map(s=>s.rydeAppArea)).size).toBe(64);
+  for(const system of groups){
+    const feed=wrapped.find(f=>f.id.endsWith(':'+system.id))!;
+    expect(feed.paced).toBe(true);expect(feed.keepsIdleTurns).toBe(true);
+    expect(feed.idleIntervalMs).toBeGreaterThanOrEqual(2*60*60_000);
+    expect(system.rydeMapTiles!.length).toBeLessThanOrEqual(2);
+  }
+  for(let i=0;i<feeds.length;i++)if(!feeds[i].id.includes(':ryde_app_'))expect(wrapped[i]).toBe(feeds[i]);
+});
+
+it('collects only planned views, filters public coverage, and retains raw saturation after deduplication',async()=>{
+  const inside={id:'a',lat:59.7405,lng:10.2005};
+  const pilot={...area,tiles:[area.bounds],excludeBounds:[area.bounds]};
+  expect((await collectRydeArea(pilot,api([inside]),true)).vehicles).toEqual([]);
+  let calls=0;
+  const scan=await scanRydeArea({...area,tiles:[area.bounds]}, {query:async q=>{
+    calls++;return {...await api([inside]).query(q),returnedCount:2};
+  }},{requests:1,milliseconds:1000,depth:2});
+  expect(calls).toBe(1);expect(scan.unfinished).toBe(4);expect(scan.complete).toBe(false);
+  expect((await collectRydeArea({...area,tiles:[area.bounds]},api([inside]),true)).vehicles).toHaveLength(1);
+  expect(area.coverageValidated).toBe(false);expect(area.uptimeValidated).toBe(false);
+});
+
+it('loads a dedicated private runtime manifest and rejects a readable or malformed one',async()=>{
+  const {mkdtempSync,writeFileSync,chmodSync,rmSync}=await import('node:fs');
+  const {tmpdir}=await import('node:os');const {join}=await import('node:path');
+  const {loadRydeRuntimeConfig}=await import('./rydeApp');
+  const dir=mkdtempSync(join(tmpdir(),'ryde-config-')),path=join(dir,'bridge.json');
+  try{
+    expect(loadRydeRuntimeConfig(path)).toBeUndefined();
+    const config={version:1,token:'a'.repeat(64),areas:'*',productionPilot:true};
+    writeFileSync(path,JSON.stringify(config),{mode:0o600});
+    expect(loadRydeRuntimeConfig(path)).toMatchObject(config);
+    chmodSync(path,0o644);expect(()=>loadRydeRuntimeConfig(path)).toThrow('private');
+    chmodSync(path,0o600);writeFileSync(path,JSON.stringify({...config,token:'short'}));
+    expect(()=>loadRydeRuntimeConfig(path)).toThrow('Invalid');
+  }finally{rmSync(dir,{recursive:true,force:true});}
+});

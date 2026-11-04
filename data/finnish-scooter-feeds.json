@@ -470,6 +470,398 @@
       "timeZone": "Europe/Helsinki",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=49&include_suggestion=false",
       "voiAppZone": "49"
+    },
+    {
+      "id": "ryde_app_fi_espoo",
+      "provider": "ryde",
+      "city": "Espoo",
+      "center": [
+        60.1654,
+        24.76443
+      ],
+      "bounds": {
+        "south": 60.144805316585405,
+        "north": 60.194708324284996,
+        "west": 24.720309166628372,
+        "east": 24.84022335759456
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-espoo",
+      "rydeMapGrid": {
+        "south": 60.144805,
+        "west": 24.720309,
+        "north": 60.194708,
+        "east": 24.840223,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01804527339384984,
+        "cells": "0-2,7-11,14-36,39,41"
+      }
+    },
+    {
+      "id": "ryde_app_fi_helsinki",
+      "provider": "ryde",
+      "city": "Helsinki",
+      "center": [
+        60.1874,
+        24.9136
+      ],
+      "bounds": {
+        "south": 60.146578,
+        "north": 60.2876309,
+        "west": 24.794341,
+        "east": 25.1600149
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-helsinki",
+      "rydeMapGrid": {
+        "south": 60.146578,
+        "west": 24.794341,
+        "north": 60.287631,
+        "east": 25.160015,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01804624631129361,
+        "cells": "3-9,23-30,33-35,45,47-56,65-66,69-77,86-99,108-115,117-120,122-124,126,129-136,138-157,160-166,168-187,189-205,211-215,217-222,224-226,233-243,246-247,254-260,263-265,275-277,283-286,296-298,304-307,317-318,327-328"
+      }
+    },
+    {
+      "id": "ryde_app_fi_hameenlinna",
+      "provider": "ryde",
+      "city": "Hämeenlinna",
+      "center": [
+        60.99529,
+        24.46237
+      ],
+      "bounds": {
+        "south": 60.9705236276943,
+        "north": 61.023334242971224,
+        "west": 24.36719595305466,
+        "east": 24.534311
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-hameenlinna",
+      "rydeMapGrid": {
+        "south": 60.970524,
+        "west": 24.367196,
+        "north": 61.023334,
+        "east": 24.534311,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018511974767963478,
+        "cells": "0-6,10-17,21-27,30-37,41-49,52-54,56-58"
+      }
+    },
+    {
+      "id": "ryde_app_fi_joensuu",
+      "provider": "ryde",
+      "city": "Joensuu",
+      "center": [
+        62.59964,
+        29.76123
+      ],
+      "bounds": {
+        "south": 62.56968642293508,
+        "north": 62.63643869764671,
+        "west": 29.657866489959307,
+        "east": 29.86962135918102
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-joensuu",
+      "rydeMapGrid": {
+        "south": 62.569686,
+        "west": 29.657866,
+        "north": 62.636439,
+        "east": 29.869621,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01950012497872553,
+        "cells": "6-8,14,16-18,25-30,36-42,45-53,56-68,70-79"
+      }
+    },
+    {
+      "id": "ryde_app_fi_jyvaskyla",
+      "provider": "ryde",
+      "city": "Jyväskylä",
+      "center": [
+        62.24341,
+        25.74594
+      ],
+      "bounds": {
+        "south": 62.20270722865009,
+        "north": 62.29832087412067,
+        "west": 25.65285834652788,
+        "east": 25.8762918
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-jyvaskyla",
+      "rydeMapGrid": {
+        "south": 62.202707,
+        "west": 25.652858,
+        "north": 62.298321,
+        "east": 25.876292,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01926280907909312,
+        "cells": "3,5-6,13-20,25-32,36-44,49-59,61-68,70-71,74-79,86-93,98-104,111-113,115-116,123-125,127-128"
+      }
+    },
+    {
+      "id": "ryde_app_fi_kuopio",
+      "provider": "ryde",
+      "city": "Kuopio",
+      "center": [
+        62.89286,
+        27.68058
+      ],
+      "bounds": {
+        "south": 62.82540977803627,
+        "north": 62.94003574457092,
+        "west": 27.597549440207068,
+        "east": 27.725284879046008
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-kuopio",
+      "rydeMapGrid": {
+        "south": 62.82541,
+        "west": 27.597549,
+        "north": 62.940036,
+        "east": 27.725285,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01966946388451566,
+        "cells": "2-5,8-12,16-19,22-26,28-32,35-38,40,42-47,49-54,57-62,64-68,71-75,78,80-81,85-88"
+      }
+    },
+    {
+      "id": "ryde_app_fi_lahti",
+      "provider": "ryde",
+      "city": "Lahti",
+      "center": [
+        60.98314,
+        25.65921
+      ],
+      "bounds": {
+        "south": 60.950128662792686,
+        "north": 61.022851728877306,
+        "west": 25.500022086462128,
+        "east": 25.7193830159254
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-lahti",
+      "rydeMapGrid": {
+        "south": 60.950129,
+        "west": 25.500022,
+        "north": 61.022852,
+        "east": 25.719383,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018500110149763403,
+        "cells": "8-9,16,18-22,28-38,40-59,64-65,67-71,79-81,83,91-93,104"
+      }
+    },
+    {
+      "id": "ryde_app_fi_lappeenranta",
+      "provider": "ryde",
+      "city": "Lappeenranta",
+      "center": [
+        61.05596,
+        28.19258
+      ],
+      "bounds": {
+        "south": 61.0357046,
+        "north": 61.09302619819937,
+        "west": 28.082698099615072,
+        "east": 28.33171797699121
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-lappeenranta",
+      "rydeMapGrid": {
+        "south": 61.035705,
+        "west": 28.082698,
+        "north": 61.093026,
+        "east": 28.331718,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01855001129292381,
+        "cells": "0-2,4-8,14-23,28-38,42-43,45-53,59-61,65-69,72-73,81,83,86-87"
+      }
+    },
+    {
+      "id": "ryde_app_fi_oulu",
+      "provider": "ryde",
+      "city": "Oulu",
+      "center": [
+        65.012333,
+        25.470949
+      ],
+      "bounds": {
+        "south": 64.97630252521256,
+        "north": 65.09323014766875,
+        "west": 25.391168422066368,
+        "east": 25.59821512714521
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-oulu",
+      "rydeMapGrid": {
+        "south": 64.976303,
+        "west": 25.391168,
+        "north": 65.09323,
+        "east": 25.598215,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.021237018928440737,
+        "cells": "4-6,12-17,22-27,32-38,42-48,51-58,61-69,71-75,77-79,81-85,90-95,100-103,110-113,120-123,132"
+      }
+    },
+    {
+      "id": "ryde_app_fi_pori",
+      "provider": "ryde",
+      "city": "Pori",
+      "center": [
+        61.48324,
+        21.7946
+      ],
+      "bounds": {
+        "south": 61.45111381656993,
+        "north": 61.519299241913615,
+        "west": 21.694722275927063,
+        "east": 21.87676019754946
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-pori",
+      "rydeMapGrid": {
+        "south": 61.451114,
+        "west": 21.694722,
+        "north": 61.519299,
+        "east": 21.87676,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.01879672238254666,
+        "cells": "4-7,15-49,54-59,64-69,77-79"
+      }
+    },
+    {
+      "id": "ryde_app_fi_seinajoki",
+      "provider": "ryde",
+      "city": "Seinäjoki",
+      "center": [
+        62.7877,
+        22.85042
+      ],
+      "bounds": {
+        "south": 62.733245271772084,
+        "north": 62.80860120229648,
+        "west": 22.770860084139038,
+        "east": 22.93286669912302
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-seinajoki",
+      "rydeMapGrid": {
+        "south": 62.733245,
+        "west": 22.77086,
+        "north": 62.808601,
+        "east": 22.932867,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.019608049794103907,
+        "cells": "4-5,11-14,20-23,29-33,38-42,45-62,65-70,77-78"
+      }
+    },
+    {
+      "id": "ryde_app_fi_tampere",
+      "provider": "ryde",
+      "city": "Tampere",
+      "center": [
+        61.49849,
+        23.77221
+      ],
+      "bounds": {
+        "south": 61.429404078890414,
+        "north": 61.53807031880078,
+        "west": 23.607664554561357,
+        "east": 23.916792881917285
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-tampere",
+      "rydeMapGrid": {
+        "south": 61.429404,
+        "west": 23.607665,
+        "north": 61.53807,
+        "east": 23.916793,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018783641873486086,
+        "cells": "10-14,24,26-32,35-36,40-43,45-54,56-60,62-83,90-99,108-117,122-135,138-149,155-157,161-163,165,171-176,189-193,207"
+      }
+    },
+    {
+      "id": "ryde_app_fi_turku",
+      "provider": "ryde",
+      "city": "Turku",
+      "center": [
+        60.45058,
+        22.26306
+      ],
+      "bounds": {
+        "south": 60.39512933716924,
+        "north": 60.49630284826684,
+        "west": 22.126248717534235,
+        "east": 22.388857580457113
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-turku",
+      "rydeMapGrid": {
+        "south": 60.395129,
+        "west": 22.126249,
+        "north": 60.496303,
+        "east": 22.388858,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018183855707622876,
+        "cells": "13-14,20-21,23-29,35-44,50-59,64-73,77-88,90-102,107-117,123-131,139-145,153-160,170"
+      }
+    },
+    {
+      "id": "ryde_app_fi_vaasa",
+      "provider": "ryde",
+      "city": "Vaasa",
+      "center": [
+        63.09559,
+        21.61586
+      ],
+      "bounds": {
+        "south": 63.06897024231681,
+        "north": 63.13684421164681,
+        "west": 21.55642837589105,
+        "east": 21.731827712953415
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-vaasa",
+      "rydeMapGrid": {
+        "south": 63.06897,
+        "west": 21.556428,
+        "north": 63.136844,
+        "east": 21.731828,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.019833875692708388,
+        "cells": "4-26,28-35,37-42,46-51,55-57,64-65"
+      }
+    },
+    {
+      "id": "ryde_app_fi_vantaa",
+      "provider": "ryde",
+      "city": "Vantaa",
+      "center": [
+        60.30817,
+        25.04006
+      ],
+      "bounds": {
+        "south": 60.26696985981644,
+        "north": 60.338279789362836,
+        "west": 24.939966923803695,
+        "east": 25.083267949141607
+      },
+      "discoveryUrl": "https://api.ryde.vip/appRyde/getNearScootersNew",
+      "rydeAppArea": "fi-vantaa",
+      "rydeMapGrid": {
+        "south": 60.26697,
+        "west": 24.939967,
+        "north": 60.33828,
+        "east": 25.083268,
+        "latStep": 0.008983111749910169,
+        "lngStep": 0.018112597313273016,
+        "cells": "1,8-10,13-14,16-22,24-33,36-38,44-47,53-55,62-63"
+      }
     }
-  ]
+  ],
+  "rydeVerifiedOn": "2026-11-04",
+  "rydeSource": "https://www.ryde-technology.com/Locations"
 }
