@@ -5,6 +5,7 @@ package com.plhery.scootradar.baselineprofile
 // views (ScooterMarkerAccessibility): a cluster reads "617 scooters", a scooter "Voi scooter, Battery: 84 percent".
 // The phone's language is English, as the lane's emulators are.
 
+import android.graphics.Point
 import androidx.benchmark.macro.MacrobenchmarkScope
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.BySelector
@@ -76,6 +77,9 @@ fun MacrobenchmarkScope.openSearch() {
     device.pressBack()
     device.waitForIdle()
 }
+
+/** Where the markers on the map are now, in the screen's pixels. */
+fun MacrobenchmarkScope.markerCentres(): List<Point> = device.findObjects(MARKER).map { it.visibleCenter }
 
 /** Of [objects], the one nearest the middle of the screen, among those in its middle half. */
 private fun MacrobenchmarkScope.middleMost(objects: List<UiObject2>): UiObject2? {
