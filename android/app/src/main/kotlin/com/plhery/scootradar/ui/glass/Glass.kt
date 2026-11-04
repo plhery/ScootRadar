@@ -30,6 +30,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.graphicsLayer
@@ -59,7 +60,8 @@ private val blurRadius = 24.dp
 /**
  * `.chromeGlass(in:)`: the map under the element, blurred, frosted and tinted as the iPhone's glass, where the
  * blur may run and [live] asks for it (the dock and the search bar); elsewhere, and whenever the blur can't run,
- * a translucent fill. With Increase Contrast, its edge.
+ * a translucent fill. With Increase Contrast, its edge. What the glass holds, and all that follows in the chain, is
+ * [heldInLayer].
  */
 fun Modifier.chromeGlass(shape: Shape, live: Boolean = false): Modifier = composed {
     val glass = LocalGlass.current
@@ -69,8 +71,17 @@ fun Modifier.chromeGlass(shape: Shape, live: Boolean = false): Modifier = compos
         clip(shape).mapBlur(backdrop, blurRadius).background(colors.glassFrost).background(colors.glassTint).glassEdge(shape)
     } else {
         clip(shape).background(colors.glassFill).glassEdge(shape)
-    }
+    }.heldInLayer()
 }
+
+/**
+ * Draws what follows into a layer of its own, which the renderer keeps until what is in it changes. Under a shape
+ * that is no rounded rectangle, as the continuous corners are, Android's renderer cuts each drawing by a mask it
+ * makes on the CPU and uploads, at every frame the window draws: while the map moves, every frame. Held in a layer,
+ * the glass's text and icons are cut as one picture, and drawn again only when they change, not for each frame of
+ * the map's (app-av, on Phone_Min: 41 masks a frame of a zoom before, 14 after; the render thread's time halved).
+ */
+private fun Modifier.heldInLayer(): Modifier = graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
 
 /**
  * The solid outline Liquid Glass takes with Increase Contrast, which sets it apart from what is under it (UI-186):
