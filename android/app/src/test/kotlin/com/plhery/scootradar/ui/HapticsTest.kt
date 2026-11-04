@@ -8,6 +8,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
 import com.plhery.scootradar.core.generated.ScooterProvider
@@ -17,9 +18,13 @@ import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.core.model.ScooterDateFormat
 import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterLanguageChoice
+import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.scooter
 import com.plhery.scootradar.ui.dock.DockState
+import com.plhery.scootradar.zurichRegion
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,8 +33,8 @@ import org.robolectric.annotation.Config
 import java.time.ZoneId
 import java.util.Locale
 
-// `.sensoryFeedback(.selection, trigger:)` in ScooterControls.swift:218, 2020-2021 and 2400-2402 (ui.md UI-216 to
-// UI-218), as the screen asks Android for its segment tick.
+// `.sensoryFeedback(.selection, trigger:)` in ScooterMapScreen.swift:204 and ScooterControls.swift:218, 2020-2021 and
+// 2400-2402 (ui.md UI-213, UI-216 to UI-218), as the screen asks Android for its segment tick.
 
 /** The selection tick: once for each choice changed while its sheet is open, never as a sheet first shows. */
 @RunWith(AndroidJUnit4::class)
@@ -121,6 +126,35 @@ class HapticsTest {
         change { model.setLanguageChoice(ScooterLanguageChoice.Language(ScooterLanguage.Fr)) }
         assertEquals(3, haptics.ticks)
         assertEquals(listOf(HapticFeedbackType.SegmentTick), haptics.types.distinct())
+    }
+
+    /**
+     * UI-213: a scooter chosen and its card closed tick; the card following its scooter to the new id its feed gives
+     * it, as Bird's and Pony's do on each read, is no new choice and doesn't (d6c90d97).
+     */
+    @Test
+    fun aCardThatFollowsItsScooterToANewIdDoesntTick() {
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        val model = controllers.make(api)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        compose.setContent {
+            CompositionLocalProvider(LocalHapticFeedback provides haptics) {
+                ScooterMapScreen(controller = model, map = { }, glassBlurs = false)
+            }
+        }
+        compose.waitForIdle()
+
+        change { model.selectScooter("lime:a") }
+        assertEquals(1, haptics.ticks)
+        api.setResponse(ScooterResponse(vehicles = listOf(scooter(id = "b", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        change { model.refresh() }
+        assertTrue(controllers.waitUntil { api.calls == 2 && !model.isLoading.value })
+        compose.waitForIdle()
+        assertEquals("lime:b", model.selectedScooterID.value)
+        assertEquals("the same choice", 1, haptics.ticks)
+        change { model.clearSelection() }
+        assertEquals(2, haptics.ticks)
     }
 }
 

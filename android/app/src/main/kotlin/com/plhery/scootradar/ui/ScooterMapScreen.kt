@@ -487,13 +487,14 @@ private fun DockChrome(
     onShowSettings: () -> Unit,
 ) {
     val language by controller.language.collectAsStateWithLifecycle()
-    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
+    val scooterChoices by controller.scooterChoices.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
     val loadIssue by controller.loadIssue.collectAsStateWithLifecycle()
     val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
     // Only a first load that failed is reported under the search bar; later failures are the dock's to report.
     val firstLoadFailure = (loadIssue as? ScooterLoadIssue.FirstLoadFailed)?.failure
-    SelectionFeedback(selectedScooter)
+    // A card that follows its scooter to a new id is no new choice.
+    SelectionFeedback(scooterChoices)
     SelectionFeedback(selectedParking)
 
     val density = LocalDensity.current
@@ -811,12 +812,13 @@ private fun PanelChrome(
     onFiltersButtonFrame: (Rect) -> Unit,
 ) {
     val language by controller.language.collectAsStateWithLifecycle()
-    val selectedScooter by controller.selectedScooterID.collectAsStateWithLifecycle()
+    val scooterChoices by controller.scooterChoices.collectAsStateWithLifecycle()
     val selectedParking by controller.selectedParkingID.collectAsStateWithLifecycle()
     val loadIssue by controller.loadIssue.collectAsStateWithLifecycle()
     val locationIssue by controller.locationIssue.collectAsStateWithLifecycle()
     val firstLoadFailure = (loadIssue as? ScooterLoadIssue.FirstLoadFailed)?.failure
-    SelectionFeedback(selectedScooter)
+    // A card that follows its scooter to a new id is no new choice.
+    SelectionFeedback(scooterChoices)
     SelectionFeedback(selectedParking)
 
     val density = LocalDensity.current

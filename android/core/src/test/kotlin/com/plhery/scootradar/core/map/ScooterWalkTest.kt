@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -570,6 +571,7 @@ class ScooterWalkTest {
     fun aScooterUnderANewIDIsStillTheOneWalkedTo() = runTest {
         val target = scooter("s1", at = point(east = 300, north = 0))
         val h = shownWalk(to = target)
+        val choices = h.model.scooterChoices.value
         val renamed = scooter("s1-new", at = point(east = 305, north = 0))
         h.api.setResponse(ScooterResponse(vehicles = listOf(renamed)))
 
@@ -581,6 +583,8 @@ class ScooterWalkTest {
         assertEquals(ScooterWalkTarget.Scooter(renamed), h.model.walk.value?.target)
         assertEquals(ScooterDockContent.Scooter(renamed), h.model.dock)
         assertEquals(ScooterDirectionsControl.HideRoute, h.model.directionsControl(ScooterWalkTarget.Scooter(renamed)))
+        // The same choice, as for a plain card (d6c90d97's message; its test checks only the plain card).
+        assertEquals("The same choice: the dock neither animates nor ticks", choices, h.model.scooterChoices.value)
     }
 
     @Test
@@ -607,6 +611,36 @@ class ScooterWalkTest {
             assertEquals(target, h.model.selectedScooter)
             assertTrue(h.model.mapScooters.value.contains(target))
         }
+    }
+
+    @Test
+    fun aPlainCardStaysOnItsScooterUnderANewIDAndClosesWhenItIsTaken() = runTest {
+        val target = scooter("s1", at = point(east = 300, north = 0))
+        val neighbour = scooter("s2", at = point(east = 308, north = 0))
+        val h = harness(vehicles = listOf(target, neighbour), rider = rider)
+        h.model.selectScooter(target.id)
+        val choices = h.model.scooterChoices.value
+
+        // Its feed gives every scooter a new id on each read, as Bird's does: the new one standing where it stood is
+        // it, not the neighbour listed before, even nearer it.
+        val renamed = scooter("s1-new", at = point(east = 303, north = 0))
+        val movedNeighbour = scooter("s2", at = point(east = 301, north = 0))
+        h.api.setResponse(ScooterResponse(vehicles = listOf(renamed, movedNeighbour)))
+        h.model.refresh()
+        val renamedLoaded = waitUntil { h.api.calls == 2 && !h.model.isLoading.value }
+        assertTrue(renamedLoaded)
+        assertEquals(renamed.id, h.model.selectedScooterID.value)
+        assertEquals(ScooterDockContent.Scooter(renamed), h.model.dock)
+        assertEquals("The same choice: the dock neither animates nor ticks", choices, h.model.scooterChoices.value)
+        assertNull(h.model.walk.value)
+
+        // Taken: the scooter listed before that stands there is another one, and the card closes.
+        h.api.setResponse(ScooterResponse(vehicles = listOf(movedNeighbour)))
+        h.model.refresh()
+        val takenLoaded = waitUntil { h.api.calls == 3 && !h.model.isLoading.value }
+        assertTrue(takenLoaded)
+        assertNull(h.model.selectedScooter)
+        assertNotEquals(ScooterDockContent.Scooter(movedNeighbour), h.model.dock)
     }
 
     // Helpers

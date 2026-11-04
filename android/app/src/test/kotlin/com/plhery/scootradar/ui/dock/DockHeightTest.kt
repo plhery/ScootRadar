@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -41,10 +42,10 @@ import java.util.Locale
 import kotlin.math.abs
 
 /**
- * The card's height as what the dock shows changes. The iPhone animates the dock by its kind alone,
- * `.animation(.snappy(duration: 0.28, extraBounce: 0.06), value: content.kind)` (ScooterControls.swift:200), so a
- * summary that gains its status row is its new height in the frame it changes, and a card of another kind springs to
- * its height (UI-202).
+ * The card's height as what the dock shows changes. The iPhone animates the dock by its kind and the rider's choice of
+ * scooter alone, `.animation(.snappy(duration: 0.28, extraBounce: 0.06), value: DockChange(kind: content.kind,
+ * scooterChoice: model.scooterChoices))` (ScooterControls.swift:212-215), so a summary that gains its status row is its
+ * new height in the frame it changes, and a card of another kind springs to its height (UI-202).
  */
 @RunWith(AndroidJUnit4::class)
 @Config(qualifiers = "w411dp-h891dp-mdpi")
@@ -155,6 +156,41 @@ class DockHeightTest {
         // The spring taken up again where it was, a pixel at most apart.
         val apart = alone.zip(refreshed) { a, b -> abs(a - b) }
         assertTrue("the card's heights $refreshed with a refresh landing 3 frames in, $alone without", apart.all { it <= 1 })
+    }
+
+    /**
+     * A card that follows its scooter to the new id its feed gives it, as Bird's and Pony's do on each read, is the same
+     * card: not faded into another as a scooter chosen after another is, the iPhone's dock animating by the rider's
+     * choice, not the scooter's id (ScooterControls.swift:212-215, d6c90d97).
+     */
+    @Test
+    fun aCardThatFollowsItsScooterToANewIdIsTheSameCard() {
+        val neighbour = scooter("s2", "lime", latitude = 47.3772)
+        api.setResponse(ScooterResponse(vehicles = listOf(scooter("s1", "lime"), neighbour)))
+        val model = shown()
+        model.selectScooter("lime:s1")
+        assertTrue(controllers.waitUntil { model.dock is ScooterDockContent.Scooter })
+        compose.mainClock.advanceTimeBy(2_000)
+        model.selectScooter(neighbour.id)
+        val chosen = cards(10)
+        assertTrue("the one card fading into the other: $chosen", chosen.count { it == 2 } >= 3)
+        compose.mainClock.advanceTimeBy(2_000)
+
+        api.setResponse(ScooterResponse(vehicles = listOf(scooter("s1", "lime"), scooter("s2-new", "lime", latitude = 47.3772))))
+        model.refresh()
+        assertTrue(controllers.waitUntil { api.calls == 2 && !model.isLoading.value })
+        assertEquals("lime:s2-new", model.selectedScooterID.value)
+        assertEquals("one card throughout", List(10) { 1 }, cards(10))
+    }
+
+    /** How many scooters' cards the dock holds in each of [count] frames: two while one fades into another. */
+    private fun cards(count: Int): List<Int> {
+        Snapshot.sendApplyNotifications()
+        return List(count) {
+            compose.mainClock.advanceTimeByFrame()
+            compose.onAllNodes(hasContentDescription("Close scooter details") and hasAnyAncestor(hasTestTag(DOCK_TAG)), useUnmergedTree = true)
+                .fetchSemanticsNodes().size
+        }
     }
 
     /** The card's heights over 30 frames as lime:s1's card opens, with [during] done after the third. */

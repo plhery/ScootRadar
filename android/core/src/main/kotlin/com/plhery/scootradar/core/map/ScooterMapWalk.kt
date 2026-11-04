@@ -307,15 +307,10 @@ internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata
     if (!walk.isUnderway || !listsEveryScooter(scooter.provider, at = point, meta = meta, loadedFor = loadedFor)) {
         return
     }
-    val successor = vehicles.value
-        .filter { it.provider == scooter.provider }
-        .map { it to it.distance(from = point) }
-        .filter { it.second <= WalkRoute.rebindDistance }
-        .minByOrNull { it.second }
-        ?.first
+    val successor = successor(of = scooter)
     if (successor != null) {
         setWalk(walk.copy(target = ScooterWalkTarget.Scooter(successor)))
-        setSelectedScooterID(successor.id)
+        follow(to = successor.id)
         val userLocation = userLocation.value
         if (walkTargetLeftRoute && walk.origin == ScooterWalkOrigin.Rider && userLocation != null) rerouteIfAllowed(userLocation)
         return
@@ -323,6 +318,29 @@ internal fun ScooterMapController.followWalkTarget(meta: ScooterResponseMetadata
     cancelRouteRequest()
     setWalk(walk.copy(phase = ScooterWalkPhase.Gone, route = null))
     announceWalk(ScooterWalkNote.Gone.text)
+}
+
+/**
+ * A plain card's scooter that the data no longer lists under its id. Bird and Pony give every scooter a new id on
+ * each read, others after each ride: one of its provider within a few metres of where it stood, listed under an id
+ * that wasn't before, is that scooter, and the card stays open on it. A scooter that was already listed there is
+ * another one, and the card closes as it did.
+ */
+internal fun ScooterMapController.followCardScooter(scooter: Scooter, previousIDs: Set<String>) {
+    if (selectedScooterID.value != scooter.id || vehiclesByID[scooter.id] != null) return
+    val successor = successor(of = scooter, among = vehicles.value.filter { it.id !in previousIDs }) ?: return
+    follow(to = successor.id)
+}
+
+/** The nearest scooter of the same provider within a few metres of where [scooter] stood. */
+private fun ScooterMapController.successor(of: Scooter, among: List<Scooter> = vehicles.value): Scooter? {
+    val point = of.coordinate
+    return among
+        .filter { it.provider == of.provider }
+        .map { it to it.distance(from = point) }
+        .filter { it.second <= WalkRoute.rebindDistance }
+        .minByOrNull { it.second }
+        ?.first
 }
 
 /**

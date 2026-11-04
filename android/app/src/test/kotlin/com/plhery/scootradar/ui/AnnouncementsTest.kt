@@ -104,6 +104,33 @@ class AnnouncementsTest {
     }
 
     /**
+     * A card that follows its scooter to the new id its feed gives it, as Bird's and Pony's do on each read, is no new
+     * choice: TalkBack doesn't hear it again, as VoiceOver doesn't (d6c90d97).
+     */
+    @Test
+    fun aCardThatFollowsItsScooterToANewIdIsNotHeardAgain() {
+        val target = scooter(id = "a", provider = "lime", latitude = 47.3772, longitude = 8.5421)
+        val api = StubScooterAPI(ScooterResponse(vehicles = listOf(target)))
+        val model = controllers.make(api)
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { model.lastUpdated.value != null && !model.isLoading.value })
+        compose.setContent {
+            ScooterMapScreen(controller = model, map = { AndroidView(::View, Modifier.fillMaxSize()) }, glassBlurs = false)
+        }
+        compose.runOnIdle { model.selectScooter(target.id) }
+        compose.waitForIdle()
+        val card = model.dockAnnouncement
+        assertEquals(listOf(card), talkBack.sent())
+
+        api.setResponse(ScooterResponse(vehicles = listOf(scooter(id = "b", provider = "lime", latitude = 47.3772, longitude = 8.5421))))
+        compose.runOnIdle { model.refresh() }
+        assertTrue(controllers.waitUntil { api.calls == 2 && !model.isLoading.value })
+        compose.waitForIdle()
+        assertEquals("lime:b", model.selectedScooterID.value)
+        assertEquals(listOf(card), talkBack.sent())
+    }
+
+    /**
      * A walk with no location brings the location card and the dock's "Couldn’t find your location." in one change: the
      * card is said first, as it comes, and the dock's words a recomposition after they change (review-lead-1nov-c 2).
      */

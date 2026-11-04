@@ -38,7 +38,7 @@ private fun ScooterMapController.chromeStates(): List<StateFlow<*>> = listOf(
     viewport, viewportZoom, viewportZoomLevel,
     isLoading, isLocating, loadIssue, lastUpdated, responseMetadata,
     userLocation, hasLocatedOnce, locationIssue,
-    enabledProviders, selectedScooterID, selectedParkingID, isPanelCollapsed,
+    enabledProviders, selectedScooterID, scooterChoices, selectedParkingID, isPanelCollapsed,
     searchedDestination, recentPlaces,
     walk, walkAnnouncement, reviewMoments,
     minimumBattery, mapStyle, showsZones, zoneState, mapZones, mapZonesRevision, mapRuleZones, mapZoneNotices,

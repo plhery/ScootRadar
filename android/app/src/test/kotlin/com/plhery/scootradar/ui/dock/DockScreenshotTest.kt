@@ -235,7 +235,7 @@ enum class DockState {
             OutOfDate -> "outOfDate"
             OutsideCoverage -> "outsideCoverage"
             Waiting -> "waiting"
-            ScooterCard -> "scooter:lime:a"
+            ScooterCard -> "scooter"
             ParkingBay -> "parking:dott:bay"
         }
 }

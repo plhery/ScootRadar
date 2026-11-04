@@ -237,6 +237,14 @@ class ScooterMapController(
     private val _selectedScooterID = MutableStateFlow<String?>(null)
     val selectedScooterID: StateFlow<String?> = _selectedScooterID.asStateFlow()
 
+    /**
+     * Counts each scooter chosen and each card closed, but not a card that follows its scooter to a new id, which is
+     * the same choice: the dock animates, TalkBack reads the card and the phone ticks on it, not on the id.
+     */
+    private val _scooterChoices = MutableStateFlow(0)
+    val scooterChoices: StateFlow<Int> = _scooterChoices.asStateFlow()
+    private var isFollowingScooter = false
+
     /** Selecting a bay clears the selected scooter, and the other way round. */
     private val _selectedParkingID = MutableStateFlow<String?>(null)
     val selectedParkingID: StateFlow<String?> = _selectedParkingID.asStateFlow()
@@ -527,7 +535,16 @@ class ScooterMapController(
         val oldValue = _selectedScooterID.value
         _selectedScooterID.value = value
         if (value != null) setSelectedParkingID(null)
-        if (value != oldValue) endWalkIfTargetLeftSelection()
+        if (value == oldValue) return
+        if (!isFollowingScooter) _scooterChoices.value += 1
+        endWalkIfTargetLeftSelection()
+    }
+
+    /** Moves the selection to the scooter's new id, the same choice. */
+    internal fun follow(to: String) {
+        isFollowingScooter = true
+        setSelectedScooterID(to)
+        isFollowingScooter = false
     }
 
     private fun setSelectedParkingID(value: String?) {
@@ -1240,6 +1257,11 @@ class ScooterMapController(
                 // The backend preserves recent successful feeds independently. Accept healthy cities even when
                 // another operator is unavailable. A response is shown whatever its own timestamps say.
                 val receivedAt = clock()
+                // The card's scooter as it was, unless a walk holds it (followWalkTarget), and the ids listed before.
+                val cardScooter = selectedScooter?.takeUnless { scooter ->
+                    walk.value?.let { it.holdsCard && it.target == ScooterWalkTarget.Scooter(scooter) } == true
+                }
+                val previousIDs = if (cardScooter == null) emptySet() else vehiclesByID.keys.toSet()
                 _vehicles.value = response.vehicles
                 _clusters.value = response.clusters
                 _lastSeenVehicles.value = response.lastSeenVehicles
@@ -1251,6 +1273,7 @@ class ScooterMapController(
                 queryMinimumBattery = requestMinimumBattery
                 rebuildVehicleIndex()
                 followWalkTarget(response.meta, loadedFor = bounds)
+                if (cardScooter != null) followCardScooter(cardScooter, previousIDs = previousIDs)
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildMapLastSeen()

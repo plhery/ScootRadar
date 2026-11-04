@@ -119,6 +119,9 @@ fun ScooterControlDock(
 ) {
     val changes = rememberControllerChanges(controller)
     val content = remember(controller, changes) { controller.dock }
+    // Read with the content, so that a choice and the card it opens are one change.
+    val scooterChoice = remember(controller, changes) { controller.scooterChoices.value }
+    val shown = DockShown(content, scooterChoice)
     val colors = scootColors
     val shape = SquircleShape(DOCK_RADIUS)
     val reduceMotion = LocalReduceMotion.current
@@ -138,7 +141,7 @@ fun ScooterControlDock(
                 .testTag(DOCK_TAG),
         ) {
             when (layout) {
-                ScooterChromeLayout.Dock -> DockCards(controller, content, layout, PaddingValues(16.dp), maximumContentHeight, onEditFilters)
+                ScooterChromeLayout.Dock -> DockCards(controller, shown, layout, PaddingValues(16.dp), maximumContentHeight, onEditFilters)
                 ScooterChromeLayout.Panel -> {
                     // The card folds to its line, and opens again, as the one fades into the other; under Reduce
                     // Motion the one is the other in the frame it folds (UI-184).
@@ -158,7 +161,7 @@ fun ScooterControlDock(
                         } else {
                             DockCards(
                                 controller,
-                                content,
+                                shown,
                                 layout,
                                 PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = PANEL_FOOT),
                                 maximumContentHeight,
@@ -171,7 +174,7 @@ fun ScooterControlDock(
             // A card opens down here while TalkBack is still on the marker, and the out-of-date card replaces the
             // count unasked. The walking route is drawn on the map, away from the button that asked for it, and the
             // walk can end on its own.
-            Announcer(rememberAnnouncementOnChange(content.kind) { controller.dockAnnouncement })
+            Announcer(rememberAnnouncementOnChange(shown.change) { controller.dockAnnouncement })
             val walkAnnouncement = controller.walkAnnouncement.collectAsState().value
             Announcer(rememberAnnouncementOnChange(walkAnnouncement) { walkAnnouncement?.text })
         }
@@ -199,15 +202,15 @@ private val GRABBER_OVERHANG = 10.dp
 /**
  * What the card holds, inside [padding]: all of the content, a plain stack while it fits in [maximumContentHeight]
  * and a scroll when taller ([FitOrScroll]).
- * A change of kind springs the card to its new height while the old content fades out and the new fades in; under
- * Reduce Motion the new one is there at once. The iPhone animates the dock by its kind alone (ScooterControls.swift:
- * 200), so within a kind, as the summary gains its status row, the card is its new height in the frame it changes;
- * a walk's note grows by its own animation (UI-202).
+ * A change of kind, or of the scooter chosen, springs the card to its new height while the old content fades out and
+ * the new fades in; under Reduce Motion the new one is there at once. The iPhone animates the dock by these alone
+ * (ScooterControls.swift:212-215), so within a kind, as the summary gains its status row or a card follows its scooter
+ * to a new id, the card is its new height in the frame it changes; a walk's note grows by its own animation (UI-202).
  */
 @Composable
 private fun DockCards(
     controller: ScooterMapController,
-    content: ScooterDockContent,
+    shown: DockShown,
     layout: ScooterChromeLayout,
     padding: PaddingValues,
     maximumContentHeight: Dp,
@@ -217,29 +220,30 @@ private fun DockCards(
     val shape = SquircleShape(DOCK_RADIUS)
     val spring = IosMotion.snappy(duration = 0.28, extraBounce = 0.06)
     val reduceMotion = LocalReduceMotion.current
-    val transition = updateTransition(content, label = "dock")
+    val transition = updateTransition(shown, label = "dock")
     // Under Reduce Motion the new kind's card in the frame the dock changes (UI-184).
     transition.ChangingContent(
         atOnce = reduceMotion,
-        contentKey = { it.kind },
+        contentKey = { it.change },
         contentAlignment = Alignment.TopStart,
         transitionSpec = {
             // From rest a change within a kind takes no size animation, not even a snap, which would leave the card its
             // old height for a frame. One that comes while a change is under way goes on with its spring, as the
             // iPhone's snappy runs on under an unanimated change: without a SizeTransform AnimatedContent would run
             // the rest of the way on its own (review-lead-1nov-e 2).
-            val atRest = initialState.kind == targetState.kind && !transition.isRunning
+            val atRest = initialState.change == targetState.change && !transition.isRunning
             val resize = if (atRest) null else SizeTransform(clip = false) { _, _ -> spring.animation() }
             fadeIn(spring.animation()) togetherWith fadeOut(spring.animation()) using resize
         },
-    ) { shown ->
+    ) { state ->
+        val content = state.content
         FitOrScroll(
             maximumContentHeight,
-            (if (shown is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(shown.scooter.providerInfo), shape) else Modifier)
+            (if (content is ScooterDockContent.Scooter) Modifier.cardGlow(colors.providerAccent(content.scooter.providerInfo), shape) else Modifier)
                 .fillMaxWidth()
                 .padding(padding),
         ) {
-            DockContent(controller, shown, layout, onEditFilters)
+            DockContent(controller, content, layout, onEditFilters)
         }
     }
 }
@@ -250,10 +254,21 @@ const val DOCK_TAG = "dock"
 /** The radius of the dock's continuous corners, past whose curve the map's credits keep under it. */
 internal val DOCK_RADIUS = 28.dp
 
+/** What the dock shows, with the rider's choice of scooter it shows it for. */
+private data class DockShown(val content: ScooterDockContent, val scooterChoice: Int) {
+    /**
+     * What the dock shows, a card's scooter counted by the rider's choice rather than its id, which some feeds change
+     * on every read: a change animates, and TalkBack hears the dock anew.
+     */
+    val change: DockChange get() = DockChange(content.kind, scooterChoice)
+}
+
+private data class DockChange(val kind: String, val scooterChoice: Int)
+
 /** What the dock shows, without its details: a change of kind animates. */
 internal val ScooterDockContent.kind: String
     get() = when (this) {
-        is ScooterDockContent.Scooter -> "scooter:${scooter.id}"
+        is ScooterDockContent.Scooter -> "scooter"
         is ScooterDockContent.Parking -> "parking:${parking.id}"
         is ScooterDockContent.OutOfDate -> "outOfDate"
         is ScooterDockContent.Finding -> "finding"
