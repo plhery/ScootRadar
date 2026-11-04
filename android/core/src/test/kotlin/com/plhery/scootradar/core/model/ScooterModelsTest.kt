@@ -661,6 +661,12 @@ class ScooterModelsTest {
         assertEquals("1,000", parts.first)
         assertEquals("ft", parts.second)
         assertFalse(Scooter.formattedLength(meters = 300.0, locale = american).contains(" "))
+        // French puts a narrow no-break space before the unit; the figure still splits from it.
+        for ((meters, value, unit) in listOf(Triple(300.0, "300", "m"), Triple(1_300.0, "1,3", "km"), Triple(61_000.0, "61", "km"))) {
+            val french = Scooter.lengthParts(meters = meters, locale = Locale.forLanguageTag("fr-FR"))
+            assertEquals("$meters m", value, french.first)
+            assertEquals("$meters m", unit, french.second)
+        }
     }
 
     /**

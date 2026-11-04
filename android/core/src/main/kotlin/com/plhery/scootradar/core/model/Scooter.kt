@@ -123,7 +123,8 @@ data class Scooter(
          * each as the locale writes it. They are apart at the last space between them: a no-break one where the
          * locale wrote a plain one, the narrow one French writes ("24 m", U+202F, in ICU as in Foundation), or a thin
          * one. A space before it is inside the number, grouping its digits, as French and Norwegian do ("1 234 km").
-         * The iPhone splits at U+00A0 alone, so a French unit is not set smaller there (ScooterModels.swift:158).
+         * The iPhone splits at the last U+00A0 or U+202F (ScooterModels.swift:153-162), the only spaces its lengths
+         * have there; the thin and plain ones, and a unit written first, are this one's own guards.
          */
         fun lengthParts(meters: Double, locale: Locale = ScooterLanguage.current.locale): Pair<String, String?> {
             val length = formattedLength(meters, locale)
