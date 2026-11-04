@@ -133,7 +133,8 @@ fun ZoneLegend(
             .chromeGlass(SquircleShape(16.dp))
             .then(if (credit == null) Modifier else Modifier.overTheMap())
             // Inside the glass, as tall as the room it is given at most, and scrolled where it is taller (the locate
-            // row's ceiling under the search bar, UI-410): a tap or a drag goes to the map under it until then.
+            // row's ceiling under the search bar, UI-410; the iPhone's maximumHeight, ScooterControls.swift:2955-2969):
+            // a tap or a drag goes to the map under it until then.
             .scrollsWhereShort(scroll, scrolls) { scrolls = it }
             .padding(horizontal = 12.dp, vertical = 7.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -202,11 +203,11 @@ private fun Modifier.scrollsWhereShort(state: ScrollState, scrolls: Boolean, onS
 
 /**
  * The kinds one after another as FlowRow lays them out, 12 apart and 4 between their lines, each in a line at most: a
- * name longer than the line wraps beside its swatch, where the iPhone's `.lineLimit(1)` cuts it short
- * (ScooterControls.swift:2877; "Stationnement int…" on ScootRadar_Phone_Min in French). Its intrinsic height at a width is the one it takes there,
- * a wrapped name's lines too, so the locate row's choice (LocateRow, UI-410) and the scroll's ([scrollsWhereShort]) see
- * the legend as it is drawn: FlowRow asks an item's height at its least width, which for a name kept to one line is
- * that line, however much wider than the row.
+ * name longer than the line wraps beside its swatch, as the iPhone's has since f80a9728 (ScooterControls.swift:3002;
+ * its `.lineLimit(1)` cut it short, "No park…", and "Stationnement int…" on ScootRadar_Phone_Min in French). Its
+ * intrinsic height at a width is the one it takes there, a wrapped name's lines too, so the locate row's choice
+ * (LocateRow, UI-410) and the scroll's ([scrollsWhereShort]) see the legend as it is drawn: FlowRow asks an item's
+ * height at its least width, which for a name kept to one line is that line, however much wider than the row.
  */
 @Composable
 private fun KindsFlow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {

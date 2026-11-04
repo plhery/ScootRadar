@@ -329,26 +329,35 @@ private fun ProviderRow(entry: ScooterProviderEntry, onClick: () -> Unit) {
                 autoSize = shrinking(initials, 0.4f),
             )
         }
+        // With very large text the count goes under the provider's name, which then has the row's width: beside it
+        // "PubliBike / Velospot" broke inside "Velospot" (f80a9728).
+        val countUnderName = TextSize.isAccessibility
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
             Text(title, style = ScootType.body.weight(IosWeight.medium), color = if (entry.isDown) colors.secondaryText else colors.label)
             if (entry.isDown) {
                 Text(localized("Not sharing data right now"), style = ScootType.caption, color = colors.warning)
+            } else if (countUnderName) {
+                ProviderCount(entry)
             }
         }
         // Spacer(minLength: 8), between the row's own spacing.
         Spacer(Modifier.width(8.dp))
-        if (!entry.isDown) {
-            // `.contentTransition(.numericText())` rolls a number only when it changes inside an animation, and
-            // nothing in the iPhone's sheet animates the counts: they change in place there, as here.
-            Text(
-                ScooterNumberFormat.integer(entry.count.toLong(), ScooterLanguage.current.locale),
-                style = ScootType.subheadline.monospacedDigit(),
-                color = colors.secondaryText,
-                maxLines = 1,
-            )
-        }
+        if (!entry.isDown && !countUnderName) ProviderCount(entry)
         ProviderCheck(entry)
     }
+}
+
+/** How many of the provider's scooters the map shows, in grey digits of one width. */
+@Composable
+private fun ProviderCount(entry: ScooterProviderEntry) {
+    // `.contentTransition(.numericText())` rolls a number only when it changes inside an animation, and nothing in the
+    // iPhone's sheet animates the counts: they change in place there, as here.
+    Text(
+        ScooterNumberFormat.integer(entry.count.toLong(), ScooterLanguage.current.locale),
+        style = ScootType.subheadline.monospacedDigit(),
+        color = scootColors.secondaryText,
+        maxLines = 1,
+    )
 }
 
 /**

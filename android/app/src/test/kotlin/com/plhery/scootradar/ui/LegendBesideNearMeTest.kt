@@ -8,39 +8,48 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.click
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeUp
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.plhery.scootradar.FakeLocationManager
 import com.plhery.scootradar.StubScooterAPI
 import com.plhery.scootradar.TestCatalog
 import com.plhery.scootradar.TestClock
 import com.plhery.scootradar.TestControllers
-import com.plhery.scootradar.FakeLocationManager
+import com.plhery.scootradar.core.api.ScooterAPIClient
 import com.plhery.scootradar.core.map.ScooterAuthorizationStatus
 import com.plhery.scootradar.core.map.ScooterLocationFix
-import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.CityRuleZone
 import com.plhery.scootradar.core.model.GeoPoint
 import com.plhery.scootradar.core.model.InMemoryScooterDefaults
 import com.plhery.scootradar.core.model.ScooterCatalog
 import com.plhery.scootradar.core.model.ScooterChromeLayout
+import com.plhery.scootradar.core.model.ScooterLocationIssue
+import com.plhery.scootradar.core.model.ScooterRentalURIs
 import com.plhery.scootradar.core.model.ScooterResponse
+import com.plhery.scootradar.core.model.ScooterRidePricing
+import com.plhery.scootradar.core.model.ScooterZone
+import com.plhery.scootradar.core.model.ScooterZoneArea
+import com.plhery.scootradar.core.model.ScooterZoneKind
+import com.plhery.scootradar.core.model.ScooterZoneResponse
+import com.plhery.scootradar.core.model.ScooterZoneState
 import com.plhery.scootradar.core.model.ScreenRect
 import com.plhery.scootradar.map.LocalMapChrome
 import com.plhery.scootradar.map.MapChromeFrames
-import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
 import com.plhery.scootradar.scooter
+import com.plhery.scootradar.ui.chrome.ZONE_LEGEND_TAG
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.screenshot
 import com.plhery.scootradar.ui.theme.useFontScale
 import com.plhery.scootradar.zurichRegion
+import java.time.Instant
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -50,7 +59,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import java.time.Instant
 
 // UI-410 on ScootRadar_Phone_Min: the locate row over the dock, ScooterMapScreen.swift:263-276.
 
@@ -148,8 +156,9 @@ class LegendBesideNearMeTest {
     /**
      * On the smallest phone in landscape at font scale 2.0, once located, the line wraps the same over the round button
      * as beside it, and over it would only reach higher, up to the status bar: it stays beside it, the iPhone's row. It
-     * ran up behind the search bar, to 4 from the window's top, its first lines hidden there; it is 64 tall, the floor,
-     * 2 more than the room under the bar, and scrolls (review-app-ap R2).
+     * ran up behind the search bar, to 4 from the window's top, its first lines hidden there; it is 62 tall, the room
+     * 8 under the bar, and scrolls (review-app-ap R2). The floor was 64, a banner's, 2 more than that room; it is the
+     * iPhone's 44 since f80a9728.
      */
     @Test
     @Config(qualifiers = PHONE_MIN_LANDSCAPE)
@@ -159,14 +168,15 @@ class LegendBesideNearMeTest {
         assertBeside(scrolls = true)
         val legend = frame(frames.zoneLegend, "legend")
         val bar = frame(frames.top, "search bar")
-        assertEquals("the legend $legend 64 tall, the floor", 64.0, legend.height, 0.5)
-        assertTrue("the legend $legend at most 2 above 8 under the bar $bar", legend.minY >= bar.maxY + 8 - 2 - 0.5)
+        assertEquals("the legend $legend 62 tall, its room", 62.0, legend.height, 0.5)
+        assertEquals("the legend $legend 8 under the bar $bar", bar.maxY + 8, legend.minY, 0.5)
     }
 
     /**
-     * The same row before the first location, "Near me" the wide pill: over it, the legend would be the floor's 64 over
-     * the button, from 61, under the search bar's foot at 80, its first line never in view. Beside it the legend stands
-     * 8 under the bar, as tall as its room there, and scrolls (review-legend-cap B2).
+     * The same row before the first location, "Near me" the wide pill: over it, the legend would be at least the floor
+     * over the button, 44 (the iPhone's, f80a9728; 64 before, from 61, under the search bar's foot at 80), with no gap
+     * under the bar. Beside it the legend stands 8 under the bar, as tall as its room there, and scrolls
+     * (review-legend-cap B2).
      */
     @Test
     @Config(qualifiers = PHONE_MIN_LANDSCAPE)
@@ -216,6 +226,31 @@ class LegendBesideNearMeTest {
         // Each line is taller than the room left to the legend: its foot is in view.
         val last = compose.onNodeWithText("Gangnam-gu", substring = true).getUnclippedBoundsInRoot()
         assertTrue("the last line's foot $last in the legend $shown", last.bottom <= shown.bottom && last.bottom > shown.top + 7.dp)
+    }
+
+    /**
+     * With very large text the zones' legend over a tall card keeps between the card and the search bar, and scrolls
+     * there: at font scale 2.0, Zürich's kinds, a slow zone's speed and the city's credit over the card of a scooter
+     * with its battery, range and price. Taller than that room, the iPhone's went up under the search bar, and the
+     * chrome, taller than the window, pushed the dock past the window's foot (f80a9728, 4 November 2026). Android's
+     * keeps to the locate row's ceiling, as it did (UI-410); app-ay's capture card-dark-font2.png shows it scrolled,
+     * its credit cut at its own foot, 10 above the card.
+     */
+    @Test
+    @Config(qualifiers = PHONE_MIN)
+    fun theZonesLegendKeepsBetweenTheSearchBarAndATallCardWithVeryLargeText() {
+        useFontScale(2f)
+        showTallCard()
+        val search = frame(frames.top, "search bar")
+        val legend = frame(frames.zoneLegend, "legend")
+        val dock = frame(frames.dock, "dock")
+        assertTrue("The legend $legend under the search bar $search", legend.minY >= search.maxY)
+        assertTrue("The legend $legend over the dock $dock", legend.maxY <= dock.minY)
+        assertTrue("The dock $dock past the window's foot", dock.maxY <= 640.0)
+        // Its lines are taller than that room, and scroll in it.
+        val range = compose.onNodeWithTag(ZONE_LEGEND_TAG).fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
+        assertTrue("more below, ${range.maxValue()} px", range.maxValue() > 0f)
+        compose.screenshot("zones/overATallCard_lightLargeText")
     }
 
     /**
@@ -334,6 +369,66 @@ class LegendBesideNearMeTest {
         assertEquals("the located state", located, model.hasLocatedOnce.value)
     }
 
+    /**
+     * Zürich at a street's zoom, the rider beside its centre, the operators' zones of every kind and a slow one's
+     * speed, the city's parking places, and the card of a Voi with its battery, range and price open: the iPhone's test
+     * of a tall card under Zürich's legend.
+     */
+    private fun showTallCard() {
+        val clock = TestClock()
+        val tall = scooter(
+            id = "tall",
+            provider = "voi",
+            latitude = 47.3769,
+            longitude = 8.5417,
+            battery = 28,
+            rangeMeters = 22_000,
+            rentalURIs = ScooterRentalURIs(ios = "https://voi.com/ride", android = null, web = null),
+            pricing = ScooterRidePricing(currency = "CHF", unlockFeeMinorUnits = 100, minuteFeeMinorUnits = 35),
+        )
+        val zones = ScooterZoneKind.operatorKinds.mapIndexed { index, kind ->
+            ScooterZone(
+                id = "voi:$index",
+                provider = "voi",
+                kind = kind,
+                polygons = listOf(listOf(square(GeoPoint(47.3760 + index * 0.0003, 8.5400), 0.0002))),
+                maxSpeedKph = if (kind == ScooterZoneKind.Slow) 10.0 else null,
+            )
+        }
+        val city = CityRuleZone(
+            id = "zurich-parking-1",
+            authority = "Stadt Zürich",
+            timeZone = "Europe/Zurich",
+            kind = ScooterZoneKind.Parking,
+            source = "https://example.com/zurich",
+            ring = square(GeoPoint(47.3769, 8.5417), 0.0001),
+        )
+        val api = ZonedAPI(StubScooterAPI(ScooterResponse(vehicles = listOf(tall))), zones)
+        val catalog = (TestCatalog.catalog as ScooterCatalog.Listed).copy(ruleZones = listOf(city))
+        val model = controllers.make(api, clock, defaults = InMemoryScooterDefaults(), catalog = catalog)
+        model.locationsUpdated(listOf(ScooterLocationFix(GeoPoint(47.3779, 8.5417), horizontalAccuracy = 5.0, timestamp = Instant.now())))
+        assertTrue(controllers.waitUntil { model.hasLocatedOnce.value })
+        model.updateViewport(zurichRegion, zoom = 16)
+        assertTrue(controllers.waitUntil { api.calls >= 1 && model.lastUpdated.value != null && !model.isLoading.value })
+        assertTrue(controllers.waitUntil { model.zoneState.value == ScooterZoneState.Shown && model.mapRuleZones.value.isNotEmpty() })
+        model.selectScooter("voi:tall")
+        compose.setContent {
+            CompositionLocalProvider(LocalClock provides { clock.now }) {
+                ScooterMapScreen(controller = model, map = { frames = LocalMapChrome.current!! }, glassBlurs = false)
+            }
+        }
+        compose.waitForIdle()
+        assertEquals(ScooterChromeLayout.Dock, frames.layout)
+        assertTrue("the scooter's card", model.selectedScooterID.value == "voi:tall")
+    }
+
+    /** The stub's scooters, and the zones it is given for any area. */
+    private class ZonedAPI(private val scooters: StubScooterAPI, private val zones: List<ScooterZone>) : ScooterAPIClient by scooters {
+        val calls: Int get() = scooters.calls
+
+        override suspend fun zonesIn(area: ScooterZoneArea) = ScooterZoneResponse(zones = zones, pending = false, truncated = false)
+    }
+
     private companion object {
         const val SEOUL = "Seoul, lines © OpenStreetMap"
         const val GANGNAM = "Gangnam-gu, lines © OpenStreetMap"
@@ -346,5 +441,10 @@ class LegendBesideNearMeTest {
 
         /** ScootRadar_Tablet: 2560 × 1600 px at 320 dpi. */
         const val TABLET = "w1280dp-h800dp-xhdpi"
+
+        fun square(at: GeoPoint, side: Double) = listOf(
+            at, GeoPoint(at.latitude, at.longitude + side), GeoPoint(at.latitude + side, at.longitude + side),
+            GeoPoint(at.latitude + side, at.longitude), at,
+        )
     }
 }
