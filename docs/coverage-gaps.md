@@ -1705,6 +1705,17 @@ Bonaire had feeds to add. Survey files are in
   Rome's lists mopeds and e-bikes. Check the ranking, any act on the current
   permits, and whether the winners publish; until then Bird's count in the
   cache is the daily signal.
+- **18 November 2026:** Hopp Złotów (`hopp_pl_zlotow`). Its daily high fell
+  from 7 scooters on 20 October 2026 to none on 3 November, one at a time,
+  with none charged again; on 4 November its feed listed 22, all disabled at
+  0 % battery and range, at 22 spots about town rather than in a depot. No
+  break was found on Hopp's pages or elsewhere, but Hopp's locations page no
+  longer lists Złotów (its Polish towns: Września, Piła, Oborniki, Wągrowiec,
+  Silesia and Gliwice), and `hopp.bike/in/zlotow` answers 404. Knurów (7 of
+  18 enabled) and Września (11 of 20) still run. The town stays listed and
+  polled; its "feed empty" alert is silenced in Grafana until 18 November,
+  08:00 UTC. Then read the feed and Hopp's pages: if none is charged again,
+  take it off the map.
 - **Mid-November 2026, an evening in Riyadh:** Dott Riyadh, in Boulevard
   City (`riyadh`): 93 to 99 scooters and about 10 rides on 15 October 2026.
   On Friday 23 October, with Riyadh Season open there, it held 44 or 45, and
