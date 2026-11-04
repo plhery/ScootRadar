@@ -75,15 +75,18 @@ internal fun SettingsTileRow(title: String, count: Int, tile: @Composable (index
         isTraversalGroup = true
     }
     if (TextSize.isAccessibility) {
-        Column(group, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Column(group, verticalArrangement = Arrangement.spacedBy(TILE_SPACING)) {
             repeat(count) { tile(it, Modifier.fillMaxWidth()) }
         }
     } else {
-        Row(group, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(group, horizontalArrangement = Arrangement.spacedBy(TILE_SPACING)) {
             repeat(count) { tile(it, Modifier.weight(1f)) }
         }
     }
 }
+
+/** The room between two tiles: SettingsTileRow's stack spacing on the iPhone. */
+internal val TILE_SPACING = 10.dp
 
 /**
  * A choice as a tile: its picture over its name, in a hairline frame around a faint fill, blue once chosen. It dims

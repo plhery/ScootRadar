@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -23,7 +24,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -106,13 +106,11 @@ internal fun FormSection(
         }
         bare?.invoke(this)
         if (rows.isNotEmpty()) {
-            // Each row of a list draws its own ground, rounded where it ends the section: under a clear row, the
-            // next one's top corners stay square.
-            val shape = if (bare != null) {
-                RoundedCornerShape(bottomStart = SECTION_RADIUS, bottomEnd = SECTION_RADIUS)
-            } else {
-                SquircleShape(SECTION_RADIUS)
-            }
+            // Under the tiles the rows stand apart, as far as the tiles stand from each other, and round all four
+            // corners. On the iPhone a Form's clear row runs into the next one's square top corners, which the
+            // rider found had no margin (app-aw).
+            if (bare != null) Spacer(Modifier.height(TILE_SPACING))
+            val shape = SquircleShape(SECTION_RADIUS)
             Column(Modifier.fillMaxWidth().clip(shape).background(colors.secondarySystemGroupedBackground)) {
                 rows.forEachIndexed { index, row ->
                     val part = SectionRowShape(shape, first = index == 0, last = index == rows.lastIndex)

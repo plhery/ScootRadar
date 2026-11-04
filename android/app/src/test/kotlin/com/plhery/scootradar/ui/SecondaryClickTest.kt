@@ -28,6 +28,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performMouseInput
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.rightClick
 import androidx.compose.ui.platform.LocalView
@@ -330,7 +331,8 @@ class SecondaryClickTest {
         compose.onNodeWithContentDescription(localized("Settings")).performClick()
         val zones = hasText(localized("Ride and parking zones"))
         compose.waitUntil { compose.onAllNodes(zones).fetchSemanticsNodes().isNotEmpty() }
-        val row = compose.onNode(zones)
+        // At the sheet's medium height the row ends past its bottom edge, where a click doesn't reach it.
+        val row = compose.onNode(zones).performScrollTo()
         val window = compose.onRoot().fetchSemanticsNode().size
         assertTrue("the row in the window", row.fetchSemanticsNode().boundsInRoot.center.y < window.height)
         val shows = controller.showsZones.value
