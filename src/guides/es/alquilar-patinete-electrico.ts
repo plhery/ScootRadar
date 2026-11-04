@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Cómo alquilar un patinete eléctrico con app en España: paso a paso, precios y dónde quedan',
   lede: 'Para alquilar un patinete eléctrico con app, descarga la del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. En octubre de 2026 no hay patinetes compartidos en Madrid, Barcelona, Valencia, Sevilla ni Málaga: quedan sobre todo en Gijón, Getafe, Canarias (Tenerife, Fuerteventura y Lanzarote) y la Costa Blanca, con Hoppy, Bird, Hopp o Dott. Pagas un desbloqueo más cada minuto: en Torrevieja, en noviembre de 2026, diez minutos salen por 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-11-04',
   sections: [
     {
       heading: '¿Hay patinetes de alquiler en Madrid? Dónde quedan en España',
@@ -20,12 +20,12 @@ const guide: Guide = {
         {
           list: [
             '**Hoppy:** el sur de Tenerife, de Los Cristianos a Costa Adeje; Fuerteventura (Caleta de Fuste y Corralejo); Lanzarote (Puerto del Carmen); y, en la Costa Blanca, Torrevieja y la Marina Baixa (Altea, L’Albir, L’Alfàs del Pi y La Nucía).',
-            '**Bird:** [Gijón](map:es:Gijón), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
+            '**Bird:** [Gijón](map:es:Gijón), [Oviedo](map:es:Oviedo), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
             '**Hopp:** [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada, en la Costa Blanca; Jávea (y Dénia, según su web), en la Marina Alta; y el sur de Tenerife, en [Playa de las Américas](map:es:Playa de las Américas) y Golf del Sur.',
             '**Dott:** el sur de Tenerife, Santa Cruz de Tenerife (desde 2024, según el Ayuntamiento) y [Estepona](map:es:Estepona), en la Costa del Sol. Tiene condiciones y seguro para España y Canarias.',
           ],
         },
-        'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',
+        'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos; nuestro mapa los muestra desde el 4 de noviembre de 2026.',
         'Dónde hay uno libre ahora, lo ves en [el mapa](/map).',
       ],
     },

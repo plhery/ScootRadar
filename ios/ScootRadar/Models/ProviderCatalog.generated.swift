@@ -1424,8 +1424,9 @@ enum ScooterProviderCoverage {
         systems.append((.lime, GeoBounds(south: 41.16588934, west: -8.69173, north: 41.179364, east: -8.57775)))
         systems.append((.lime, GeoBounds(south: 41.179364, west: -8.65594624, north: 41.18459, east: -8.57775)))
         systems.append((.bird, GeoBounds(south: 28.3622, west: -13.8857, north: 28.4199, east: -13.8442)))
-        systems.append((.bird, GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545)))
+        systems.append((.bird, GeoBounds(south: 40.26635, west: -3.76173, north: 40.33257, east: -3.637)))
         systems.append((.bird, GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986)))
+        systems.append((.bird, GeoBounds(south: 43.34644, west: -5.89141, north: 43.39243, east: -5.81202)))
         systems.append((.bird, GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029)))
         systems.append((.bird, GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967)))
         systems.append((.bird, GeoBounds(south: 28.0407, west: -16.763, north: 28.115, east: -16.6956)))
@@ -3935,7 +3936,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1099)
+        cities.reserveCapacity(1100)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -4291,8 +4292,9 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "pt:Faro", name: "Faro", countryCode: "PT", center: GeoPoint(latitude: 37.01869, longitude: -7.92716), bounds: GeoBounds(south: 36.9832, west: -8.0113, north: 37.0521, east: -7.9084), feeds: [ScooterCityFeed(id: "portugal:bolt_pt_app_828"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_000"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_001"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_002"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_003")]))
         cities.append(ScooterCity(id: "pt:Santarém", name: "Santarém", countryCode: "PT", center: GeoPoint(latitude: 39.23379, longitude: -8.68617), bounds: GeoBounds(south: 39.2063, west: -8.7047, north: 39.2562, east: -8.6675), feeds: [ScooterCityFeed(id: "portugal:bolt_pt_app_837")]))
         cities.append(ScooterCity(id: "es:Caleta de Fuste", name: "Caleta de Fuste", countryCode: "ES", center: GeoPoint(latitude: 28.3983, longitude: -13.8602), bounds: GeoBounds(south: 28.3622, west: -13.8885, north: 28.4207, east: -13.8412), feeds: [ScooterCityFeed(id: "spain:bird_es_caleta_de_fuste"), ScooterCityFeed(id: "spain:hoppy_es_caleta_de_fuste")]))
-        cities.append(ScooterCity(id: "es:Getafe", name: "Getafe", countryCode: "ES", center: GeoPoint(latitude: 40.3179, longitude: -3.6871), bounds: GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545), feeds: [ScooterCityFeed(id: "spain:bird_es_getafe")]))
+        cities.append(ScooterCity(id: "es:Getafe", name: "Getafe", countryCode: "ES", center: GeoPoint(latitude: 40.3057, longitude: -3.7329), bounds: GeoBounds(south: 40.26635, west: -3.76173, north: 40.33257, east: -3.637), feeds: [ScooterCityFeed(id: "spain:bird_es_app_getafe")]))
         cities.append(ScooterCity(id: "es:Gijón", name: "Gijón", countryCode: "ES", center: GeoPoint(latitude: 43.5449, longitude: -5.6627), bounds: GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986), feeds: [ScooterCityFeed(id: "spain:bird_es_gijon")]))
+        cities.append(ScooterCity(id: "es:Oviedo", name: "Oviedo", countryCode: "ES", center: GeoPoint(latitude: 43.3614, longitude: -5.8494), bounds: GeoBounds(south: 43.34644, west: -5.89141, north: 43.39243, east: -5.81202), feeds: [ScooterCityFeed(id: "spain:bird_es_app_oviedo")]))
         cities.append(ScooterCity(id: "es:Costa Calma", name: "Costa Calma", countryCode: "ES", center: GeoPoint(latitude: 28.1608, longitude: -14.2301), bounds: GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]))
         cities.append(ScooterCity(id: "es:Morro Jable", name: "Morro Jable", countryCode: "ES", center: GeoPoint(latitude: 28.0502, longitude: -14.3522), bounds: GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]))
         cities.append(ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901), feeds: [ScooterCityFeed(id: "spain:bird_es_playa_de_las_americas"), ScooterCityFeed(id: "spain:hopp_es_tenerife"), ScooterCityFeed(id: "spain:hoppy_es_tenerife_sur"), ScooterCityFeed(id: "spain:dott_es_playa_de_las_americas")]))
@@ -5040,7 +5042,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1099
+    static let cityCount = 1100
     static let countryCount = 58
 
     /// Cities by distance from the point to their centre, nearest first.

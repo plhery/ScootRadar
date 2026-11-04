@@ -859,8 +859,9 @@ banned shared scooters, and feeds that were empty when checked.
     held a scooter in its full-area audit on the night of 25 October 2026.
   - Dott now covers Estepona, Playa de las Américas and Santa Cruz de Tenerife
     through its app map. Its other discovered Spanish regions had no available
-    scooter. Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
-    public feed. Neither has Islaride (Grupo Tambor, "more than 500"
+    scooter. Bird's Oviedo scooters come from its rider map since 4 November
+    2026 ([Bird rider map](bird-app-map.md#europe-november-2026)); Las
+    Palmas's public Sítyneta scooters have no public feed. Neither has Islaride (Grupo Tambor, "more than 500"
     scooters on several Canary Islands): it runs on ATOM Mobility, whose
     system id for it isn't public (18 October 2026).
   - Hopp Benidorm, Cartagena, Dénia, Fuengirola and Marbella are empty.

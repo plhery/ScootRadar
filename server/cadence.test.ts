@@ -81,7 +81,7 @@ describe('the feeds whose data may be kept 15 minutes', () => {
 
   it("are Bird's, Spin's and Bolt's own, collected every 13 minutes while idle; the others every 20", () => {
     const capped = feeds.filter(feed => cap(feed.id) !== undefined);
-    expect(capped).toHaveLength(90);
+    expect(capped).toHaveLength(89);
     expect(new Set(capped.map(feed => feed.host))).toEqual(new Set(['mds.bird.co', 'gbfs.spin.pm', 'mds.bolt.eu']));
     expect(new Set(capped.map(feed => feed.idleIntervalMs))).toEqual(new Set([13 * MINUTE]));
     expect(capped.every(feed => cap(feed.id) === 15 * MINUTE)).toBe(true);
@@ -142,7 +142,7 @@ describe('the feeds whose data may be kept 15 minutes', () => {
     const counts = () => true;
     const all = REGIONAL_SCOOTER_SYSTEMS.map((system, index) => systemFeed(system, now - (index % 20) * 30_000, index % 7 === 3));
     const capped = all.filter(feed => cap(feed.id) !== undefined);
-    expect(capped).toHaveLength(90);
+    expect(capped).toHaveLength(89);
     expect(capped.some(feed => feed.failed) && all.some(feed => feed.failed && cap(feed.id) === undefined)).toBe(true);
     const together = buildCityOverview(all, now, counts, cap);
     const apart = joinCityOverviews(buildCityOverview(all.filter(feed => cap(feed.id) === undefined), now, counts, cap),

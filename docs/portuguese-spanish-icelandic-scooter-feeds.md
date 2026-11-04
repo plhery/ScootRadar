@@ -18,18 +18,22 @@ Lime's scooters in Porto, Faro and Oeiras, about 430, 280 and 180, were added
 on 25 October 2026 from its authenticated rider map, each market whole after
 a clean full-area audit; see
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+Bird's scooters in Oviedo and Getafe, about 360 and 190, come from its
+rider map since 4 November 2026: Oviedo has no public feed, and Bird's
+public Getafe feed listed fewer than half of Getafe's; see
+[Bird's rider map](bird-app-map.md#europe-november-2026).
 The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
 | Portugal | Bird | 10 | Lisboa, Porto, Cascais, Oeiras, Almada (with Costa da Caparica), Coimbra, Maia, Matosinhos, Portimão, Olhão | 4,350 |
 | Portugal | Lime | 2 | Lisboa, Almada (with Costa da Caparica) | 2,300 |
-| Spain | Bird | 5 | Gijón, Getafe, Playa de las Américas (Tenerife), Caleta de Fuste and Pájara (Fuerteventura) | 1,250 |
+| Spain | Bird | 4 | Gijón, Playa de las Américas (Tenerife), Caleta de Fuste and Pájara (Fuerteventura) | 1,150 |
 | Spain | Hopp | 3 | Torrevieja and Pilar de la Horadada, Jávea, Playa de las Américas and Golf del Sur (Tenerife) | 550 |
 | Spain | Hoppy | 6 | Puerto del Carmen (Lanzarote), Playa de las Américas (Tenerife), Corralejo and Caleta de Fuste (Fuerteventura), Altea, L'Albir, L'Alfàs del Pi and La Nucía (Marina Baixa), Torrevieja | 2,350 |
 | Iceland | Hopp | 15 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and nine smaller towns | 2,750 |
 
-Portugal has 11 cities, Spain 16 and Iceland 19, once multi-town feeds are
+Portugal has 11 cities, Spain 17 and Iceland 19, once multi-town feeds are
 routed per town. The bounds, discovery URLs and aliases are in
 [`portuguese-scooter-feeds.json`](../data/portuguese-scooter-feeds.json),
 [`spanish-scooter-feeds.json`](../data/spanish-scooter-feeds.json) and
@@ -223,9 +227,11 @@ pauses Stykkishólmur from 26 October until 1 May; check in late April 2027.
 
 ## Data handling
 
-- **Bird's "madrid" feed is Getafe.** Its scooters stand in Getafe's
+- **Bird's "madrid" feed was Getafe's.** Its scooters stand in Getafe's
   industrial estates, where Bird has run with the council since June 2025, so
-  the catalog names it Getafe. Its "adeje" feed also covers Arona, and is named
+  the catalog named it Getafe. On 4 November 2026 it listed 80 scooters,
+  while Bird's rider map listed about 185 across the town, so Getafe comes
+  from the rider map since then. Bird's "adeje" feed also covers Arona, and is named
   Playa de las Américas, where Hopp's Tenerife feed overlaps it. Its bounds
   reach 28.115 N and 16.763 W since 14 October 2026, about half a kilometre
   beyond Bird's ride zone (to 28.1108 N, 16.7587 W): the old ones stopped at
@@ -404,6 +410,7 @@ the dock and each scooter's card state the ban and when renting resumes.
     2024 seems to have ended.
   - Bird runs Oviedo (200 scooters and 100 e-bikes, on a four-year concession
     from June 2025, after Bolt's) with no public system: `oviedo` answers 404.
+    Its scooters come from Bird's rider map since 4 November 2026.
   - Las Palmas de Gran Canaria's public Sítyneta (87 scooters at 13 stations,
     run by Sagulpa and booked in the Moxsi app) isn't in nextbike's feeds,
     which list bicycles only.

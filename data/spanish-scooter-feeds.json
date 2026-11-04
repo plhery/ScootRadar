@@ -26,21 +26,23 @@
       ]
     },
     {
-      "id": "bird_es_getafe",
+      "id": "bird_es_app_getafe",
       "country": "ES",
       "provider": "bird",
       "city": "Getafe",
+      "timeZone": "Europe/Madrid",
       "center": [
-        40.3179,
-        -3.6871
+        40.3057,
+        -3.7329
       ],
       "bounds": {
-        "south": 40.3098,
-        "north": 40.3377,
-        "west": -3.7197,
-        "east": -3.6545
+        "south": 40.26635,
+        "north": 40.33257,
+        "west": -3.76173,
+        "east": -3.637
       },
-      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/madrid/gbfs.json"
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "6bf1c4fa-7b8f-4ad4-a9fa-742554ebacb2"
     },
     {
       "id": "bird_es_gijon",
@@ -62,6 +64,29 @@
         "Gijon",
         "Xixón",
         "Xixon"
+      ]
+    },
+    {
+      "id": "bird_es_app_oviedo",
+      "country": "ES",
+      "provider": "bird",
+      "city": "Oviedo",
+      "timeZone": "Europe/Madrid",
+      "center": [
+        43.3614,
+        -5.8494
+      ],
+      "bounds": {
+        "south": 43.34644,
+        "north": 43.39243,
+        "west": -5.89141,
+        "east": -5.81202
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "66af929c-d0a8-43eb-b518-d1357ffe224e",
+      "aliases": [
+        "Uviéu",
+        "Uvieu"
       ]
     },
     {
