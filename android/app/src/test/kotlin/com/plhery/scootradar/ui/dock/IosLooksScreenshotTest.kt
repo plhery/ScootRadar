@@ -29,7 +29,6 @@ import com.plhery.scootradar.ui.LocalClock
 import com.plhery.scootradar.ui.ScooterMapScreen
 import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.theme.Look
-import com.plhery.scootradar.ui.theme.drawnArtOptions
 import com.plhery.scootradar.ui.theme.PHONE
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import com.plhery.scootradar.ui.theme.resetFontScale
@@ -154,7 +153,7 @@ enum class IosLook(val state: DockState, val increasedContrast: Boolean = false)
             compose.waitForIdle()
             // The menu is a window of its own, over the screen's.
             compose.putFramesOnSurfaces()
-            captureScreenRoboImage("src/test/screenshots/$name.png", roborazziOptions = drawnArtOptions)
+            captureScreenRoboImage("src/test/screenshots/$name.png", roborazziOptions = screenshotOptions)
         }
     },
     ;
@@ -162,7 +161,7 @@ enum class IosLook(val state: DockState, val increasedContrast: Boolean = false)
     val fileName: String get() = name.replaceFirstChar { it.lowercase() }
 
     open fun take(compose: ComposeContentTestRule, name: String) =
-        compose.screenshot(name, if (increasedContrast) drawnArtOptions else screenshotOptions)
+        compose.screenshot(name)
 
     /**
      * Holds a finger on what [touch] reaches, by its leading end, for 80 ms of the clock, about half of the swell's

@@ -76,10 +76,10 @@ import com.plhery.scootradar.ui.search.SEARCH_ISLAND_TAG
 import com.plhery.scootradar.ui.sheet.FORM_SHEET_TAG
 import com.plhery.scootradar.ui.sheet.POPOVER_TAG
 import com.plhery.scootradar.ui.theme.Look
-import com.plhery.scootradar.ui.theme.drawnArtOptions
 import com.plhery.scootradar.ui.theme.putFramesOnSurfaces
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.screenshot
+import com.plhery.scootradar.ui.theme.screenshotOptions
 import com.plhery.scootradar.ui.theme.useFontScale
 import com.plhery.scootradar.zurichRegion
 import java.io.IOException
@@ -228,7 +228,7 @@ class DeviceMatrixTest(private val look: Look) {
                     if (scene == MatrixScene.PriceMenu) {
                         // The menu is a window of its own, over the screen's.
                         compose.putFramesOnSurfaces()
-                        captureScreenRoboImage("src/test/screenshots/$name.png", roborazziOptions = drawnArtOptions)
+                        captureScreenRoboImage("src/test/screenshots/$name.png", roborazziOptions = screenshotOptions)
                     } else {
                         compose.screenshot(name)
                     }

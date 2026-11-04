@@ -11,7 +11,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.plhery.scootradar.R
-import com.plhery.scootradar.ui.theme.drawnArtOptions
+import com.plhery.scootradar.ui.theme.screenshotOptions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -58,7 +58,7 @@ class AppIconTest {
         assertNear(0xF4F5F7, drawn.pixel(wheelTop))
         val dark = drawn.pixel(night)
         assertTrue(Integer.toHexString(dark), Color.red(dark) < 0x30 && Color.green(dark) < 0x30 && Color.blue(dark) < 0x40)
-        drawn.captureRoboImage("src/test/screenshots/app/icon.png", drawnArtOptions)
+        drawn.captureRoboImage("src/test/screenshots/app/icon.png", screenshotOptions)
 
         // The layer alone, at the size the icon draws it: the scooter, its deck white as the rest, nothing around it.
         val themed = createBitmap(size, size)
@@ -66,7 +66,7 @@ class AppIconTest {
         assertNear(0xFFFFFF, themed.pixel(deck))
         assertNear(0xFFFFFF, themed.pixel(wheelTop))
         assertEquals(0, Color.alpha(themed.pixel(night)))
-        themed.captureRoboImage("src/test/screenshots/app/icon_monochrome.png", drawnArtOptions)
+        themed.captureRoboImage("src/test/screenshots/app/icon_monochrome.png", screenshotOptions)
     }
 
     private fun Bitmap.pixel(at: Pair<Int, Int>) = getPixel(at.first, at.second)

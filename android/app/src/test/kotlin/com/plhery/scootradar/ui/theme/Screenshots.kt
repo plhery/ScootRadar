@@ -27,22 +27,16 @@ enum class Look(val dark: Boolean, val fontScale: Float) {
 }
 
 /**
- * The comparison CI makes against the baselines recorded on the Mac: no pixel may differ beyond Roborazzi's colour
- * tolerance. Linux draws them the same, and a share of 0.2% let a changed digit at font scale 1.0 through.
+ * The comparison CI makes against the baselines recorded on the Mac: every pixel within 0.03 of the colour distance
+ * (differ's, over the four channels from 0 to 1), none beyond. Linux's Skia lays the coverage of a glyph's edge, a
+ * squircle's, a gradient's or a shadow's a few levels apart from the Mac's, and since the glass draws what it holds
+ * in a layer of its own (6df7499f) it does on most screens: on CI at 455a454c, 58 baselines differed, by 4/255 at
+ * most in a channel and 0.021 of the distance, at up to 258,000 pixels of a screen. A changed colour is far more
+ * (the glass's tint 0.15 to 0.1 is 0.09), as is a changed digit or a beam turned a degree; a share of changed
+ * pixels, Roborazzi's own threshold, let a digit through at 0.2%.
  */
 val screenshotOptions = RoborazziOptions(
-    compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f),
-)
-
-/**
- * The comparison for art drawn straight into a bitmap, as the rider's, and for screens with Increase Contrast's
- * edges or the price menu's shadow: Linux's Skia lays an edge's and a gradient's coverage a level or two apart from
- * the Mac's (1,561 pixels of 160,000 off by 2/255 at most, on CI; the contrast edges' some 900 and the menu's shadow
- * 43,590 pixels, 2/255 at most). A pixel may be that much off in each channel, 0.02 of the colour distance; a
- * changed colour or a beam turned a degree is far more.
- */
-val drawnArtOptions = RoborazziOptions(
-    compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f, imageComparator = SimpleImageComparator(maxDistance = 0.02f)),
+    compareOptions = RoborazziOptions.CompareOptions(changeThreshold = 0f, imageComparator = SimpleImageComparator(maxDistance = 0.03f)),
 )
 
 /** Sets the font scale for what is composed next, as the phone's Settings does; [resetFontScale] after. */
