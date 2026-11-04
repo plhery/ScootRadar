@@ -93,6 +93,8 @@ struct ScooterMapScreen: View {
                     lastSeenRevision: model.mapLastSeenRevision
                 )
                 .ignoresSafeArea()
+                // The open search is over it: VoiceOver reads the search alone.
+                .accessibilityHidden(searchIsExpanded)
 
                 switch layout {
                 case .dock:
@@ -410,6 +412,9 @@ struct ScooterMapScreen: View {
             }
         }
         .padding(16)
+        // Beside the open search they stay in view, but VoiceOver reads the
+        // search alone, as the map's.
+        .accessibilityHidden(searchIsExpanded)
         .id(model.language)
     }
 

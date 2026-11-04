@@ -361,6 +361,9 @@ struct ScooterSearchPanel: View {
         .onChange(of: searchModel.status) { _, status in
             announce(status)
         }
+        // VoiceOver's scrub closes it, as Cancel does.
+        .accessibilityElement(children: .contain)
+        .accessibilityAction(.escape, onCancel)
     }
 
     private var cancelButton: some View {
