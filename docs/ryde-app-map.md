@@ -1073,3 +1073,23 @@ established the app session described above. No ride, reservation, payment or
 support message was initiated. Request signing, app login and bounded bridge
 decryption are solved parts of this investigation; independent proof generation
 and continuous bridge operation remain open work.
+
+### Recoverable producer implementation, 4 November
+
+The implementation and acceptance checklist are in [ryde-bridge.md](ryde-bridge.md).
+The restricted NSWorkspace helper was explicitly authorized and successfully
+triggered fresh Drammen and Göteborg requests (100 scooters each), using the same
+login. A proxy restart near renewal exposed DIRECT fallback: the app rotated to
+its own key while the proxy was unavailable. Subsequent native map responses
+were successful and app-owned; collection was held for operator reattachment.
+The operator left for the day and requested password-free work only. The fix
+removes host-specific DIRECT fallback and adds an addon-ready PID handshake;
+its live recovery repeat and overnight acceptance remain pending. No bridge
+source was enabled in production.
+
+The proper native metadata flow also succeeded: getCityFences returned Drammen
+city ID 43 with 170 fences, and getFencesInfo returned nine dynamic parking/cluster
+entries. APK map/a.java places type-4 rings into CITY_BOUND interiors; cityRange
+was empty. Six operating rings (808 vertices) were exported without raw metadata
+or operational notes. They are staged with coverage validation false. This
+supersedes the earlier inability to retrieve metadata through independent HTTP.

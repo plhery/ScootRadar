@@ -1,3 +1,4 @@
+import type { RydeBroker } from './rydeBridge';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
@@ -43,6 +44,7 @@ export const COLD_WAIT_MS = 3_000;
 export const JOIN_WAIT_MS = 300;
 
 interface ServerOptions {
+  rydeBridge?: RydeBroker;
   snapshot: () => MobilitySnapshot | undefined;
   token?: string;
   production?: boolean;
@@ -95,6 +97,10 @@ export function createSnapshotServer(options: ServerOptions) {
     let url: URL;
     try { url = new URL(request.url ?? '/', 'http://localhost'); }
     catch { response.writeHead(400); response.end('{"error":"Invalid request URL"}'); return; }
+    if (url.pathname.startsWith('/internal/ryde/')) {
+      if (!options.rydeBridge) { response.writeHead(404); response.end('{}'); return; }
+      await options.rydeBridge.handle(request, response); return;
+    }
     const method = url.pathname === GEOCODE_USAGE_PATH ? 'POST' : 'GET';
     if (request.method !== method) { response.writeHead(405, { Allow: method }); response.end('{}'); return; }
     if (url.pathname === GEOCODE_USAGE_PATH) {
@@ -148,7 +154,7 @@ export function createSnapshotServer(options: ServerOptions) {
         response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return;
       }
       response.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4; charset=utf-8' });
-      response.end(options.metrics.render(snapshot, now, url.searchParams.get('only') === 'counters'));
+      response.end(options.metrics.render(snapshot, now, url.searchParams.get('only') === 'counters') + (options.rydeBridge?.metrics() ?? ''));
       return;
     }
     const zones = url.pathname === ZONES_PATH && options.zones;

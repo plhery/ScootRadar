@@ -1,3 +1,5 @@
+import { RydeBroker } from './rydeBridge';
+import { withRydeAppCollectors } from './rydeApp';
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
@@ -45,6 +47,7 @@ import { skyssMapRequests, withSkyssAppCollectors } from './skyssApp';
 import { ridemoviMapRequests, withRidemoviAppCollectors } from './ridemoviApp';
 import { readsSwissAppMap, standingDown, withLimeStandby, withSwissAppMaps } from './swissAppMaps';
 
+const rydeBridge = process.env.RYDE_BRIDGE_TOKEN ? new RydeBroker(process.env.RYDE_BRIDGE_TOKEN) : undefined;
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
   withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
@@ -57,6 +60,7 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
     withRidemoviAppCollectors(current, systems, id => records.get(id)?.vehicles),
   withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withAlpacaAppCollectors, withDartAppCollectors,
   withSkyssAppCollectors, withBoltAppCollectors, withSwissAppMaps,
+  (current: CollectableScooterFeed[]) => withRydeAppCollectors(current, rydeBridge),
   (current: CollectableScooterFeed[]) => withLimeStandby(current, id => records.get(id)),
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
@@ -142,7 +146,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   limeAccountRequests,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
     evictions: upstreamJsonCache.evictions }) });
-const server = createSnapshotServer({ snapshot: () => snapshot,
+const server = createSnapshotServer({ rydeBridge, snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
   zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),

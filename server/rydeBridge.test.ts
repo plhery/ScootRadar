@@ -1,0 +1,57 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { RydeBroker, type RydeJob } from './rydeBridge';
+const brokers: RydeBroker[]=[];
+const broker=(...args: ConstructorParameters<typeof RydeBroker>)=>{const b=new RydeBroker(...args);brokers.push(b);return b;};
+const q={cityId:43,latitude:59.744,longitude:10.205,radius:1};
+afterEach(()=>{for(const b of brokers) b.close();brokers.length=0;vi.useRealTimers();});
+describe('Ryde account broker',()=>{
+  it('coalesces refreshes and serializes native reads, with exact result binding and idempotent acknowledgements',async()=>{
+    let now=100000;const b=broker('a'.repeat(32),()=>now,0);
+    const a=b.query(q), duplicate=b.query(q);expect(a).toBe(duplicate);
+    const other=b.query({...q,cityId:32});const job=b.lease()!;expect(b.lease()).toBeNull();
+    const result={version:1,id:job.id,query:job,coverage:'unknown',observedAt:now/1000,scooters:[{id:'b'.repeat(32),lat:q.latitude,lng:q.longitude}]};
+    expect(()=>b.accept({...result,query:{...job,cityId:6}})).toThrow();
+    expect(()=>b.accept({...result,scooters:[{...result.scooters[0],token:'private'}]})).toThrow();
+    b.accept(result);b.accept(result);expect((await a).scooters).toHaveLength(1);
+    const next=b.lease()!;expect(next.cityId).toBe(32);now++;
+    b.accept({...result,id:next.id,query:next,observedAt:now/1000,scooters:[]});await other;
+    expect(b.stats.completed).toBe(2);
+  });
+  it('expires jobs and rejects late results without freshening the previous snapshot',async()=>{
+    vi.useFakeTimers();const b=broker('x'.repeat(32),Date.now,0,1000);
+    const promise=b.query(q);const rejection=expect(promise).rejects.toThrow('deadline');const job=b.lease()!;
+    await vi.advanceTimersByTimeAsync(1001);await rejection;
+    expect(()=>b.accept({version:1,id:job.id,query:job,coverage:'unknown',observedAt:Date.now()/1000,scooters:[]})).toThrow();
+  });
+  it('releases a lost lease using the same job instead of generating another request',async()=>{
+    let now=100000;const b=broker('x'.repeat(32),()=>now,0);
+    const p=b.query(q);p.catch(()=>{});const job=b.lease();now+=50001;expect(b.lease()).toEqual(job);
+  });
+  it('keeps a routine turn after three urgent queries',async()=>{
+    const b=broker('x'.repeat(32),()=>100000,0);const promises=[];
+    promises.push(b.query({...q,cityId:6},false));
+    for(let n=1;n<=4;n++) promises.push(b.query({...q,radius:n},true));
+    const order=[];
+    for(let n=0;n<5;n++){const job=b.lease()!;order.push(job.cityId);b.accept({version:1,id:job.id,query:job,coverage:'unknown',observedAt:100,scooters:[]});}
+    expect(order).toEqual([43,43,43,6,43]);await Promise.all(promises);
+  });
+});
+
+describe('worker HTTP boundary',()=>{
+  it('requires its own token and accepts one normalized result through the snapshot server',async()=>{
+    const {createSnapshotServer}=await import('./snapshotServer');
+    const b=broker('worker-token-'.repeat(4),()=>100000,0);
+    const server=createSnapshotServer({snapshot:()=>undefined,token:'public-api-token',rydeBridge:b});
+    await new Promise<void>(resolve=>server.listen(0,'127.0.0.1',resolve));
+    try {
+      const address=server.address() as {port:number};const url=`http://127.0.0.1:${address.port}`;
+      const unauthorized=await fetch(url+'/internal/ryde/job',{headers:{Authorization:'Bearer public-api-token'}});
+      expect(unauthorized.status).toBe(401);
+      const p=b.query(q);
+      const response=await fetch(url+'/internal/ryde/job',{headers:{Authorization:'Bearer '+'worker-token-'.repeat(4)}});
+      const job=await response.json() as RydeJob;
+      const submitted=await fetch(url+'/internal/ryde/result',{method:'POST',headers:{Authorization:'Bearer '+'worker-token-'.repeat(4)},body:JSON.stringify({version:1,id:job.id,query:job,observedAt:100,coverage:'unknown',scooters:[]})});
+      expect(submitted.status).toBe(204);await p;
+    } finally {await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
+  });
+});
