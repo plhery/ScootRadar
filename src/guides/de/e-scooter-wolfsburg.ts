@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-wolfsburg',
   topic: 'wolfsburg',
-  name: 'E-Scooter Wolfsburg: Anbieter, Parken, Regeln',
-  title: 'E-Scooter Wolfsburg 2026: Anbieter, Parken, Autostadt',
-  description: 'E-Scooter Wolfsburg: Dott und Bolt, wo du fährst und parkst, die mobiSTATIONEN, was in Autostadt und Allerpark gilt und wann der Scooter in den Bus darf.',
-  headline: 'E-Scooter Wolfsburg: Anbieter, Parken und was in Autostadt und Allerpark gilt',
-  lede: 'E-Scooter in Wolfsburg leihst du bei Dott oder Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (Stand August 2026). Einen Führerschein brauchst du nicht; Mindestalter und Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Porschestrasse, in Grünanlagen laut Stadt nur auf ausgewiesenen Radwegen. Dein eigener Scooter fährt zusammengeklappt kostenlos im Bus mit, ein Leih-Scooter nicht.',
+  name: 'E-Scooter Wolfsburg: Anbieter, Preise, Parken',
+  title: 'E-Scooter Wolfsburg 2026: Anbieter, Preise, Parken',
+  description: 'E-Scooter Wolfsburg: Dott und Bolt, was eine Fahrt kostet, wo du fährst und parkst, was in Autostadt und Allerpark gilt und wann der Scooter in den Bus darf.',
+  headline: 'E-Scooter Wolfsburg: Anbieter, Preise, Parken und was in Autostadt und Allerpark gilt',
+  lede: 'E-Scooter in Wolfsburg leihst du bei Dott oder Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (Stand August 2026). Sie vermieten erst ab 18, einen Führerschein brauchst du nicht; den Preis zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Porschestrasse, in Grünanlagen laut Stadt nur auf ausgewiesenen Radwegen. Dein eigener Scooter fährt zusammengeklappt kostenlos im Bus mit, ein Leih-Scooter nicht.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Wolfsburg',
@@ -16,10 +16,29 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Wolfsburg?',
       blocks: [
-        'In Wolfsburg fahren **Dott** und **Bolt**. «Die e-Scooter-Dienste von Bolt und Dott findest du im markierten Parkbereich», schreibt die Stadt auf ihrer Seite zu den mobiSTATIONEN (neueste Meldung dort vom 17. August 2026). Mindestalter und Preis zeigt dir die App vor dem Entsperren. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Wolfsburg fahren **Dott** und **Bolt**. «Die e-Scooter-Dienste von Bolt und Dott findest du im markierten Parkbereich», schreibt die Stadt auf ihrer Seite zu den mobiSTATIONEN (neueste Meldung dort vom 17. August 2026). Beide führen Wolfsburg auch auf ihren eigenen Seiten (Stand November 2026). Mieten kannst du laut den Bedingungen beider ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '**TIER** ist mit Dott fusioniert: Laut regionalHeute vom 1. Oktober 2024 sollten alle TIER-Scooter in den folgenden Wochen das Dott-Logo bekommen.',
         'Am Sonntag, 25. Oktober 2026, standen rund um Wolfsburg kurz vor 9 Uhr rund 600 Dott-Scooter und kurz vor 14 Uhr rund 430 von Bolt, die zu diesem Zeitpunkt frei waren. Wo gerade einer steht, siehst du auf der [Karte von Wolfsburg](map:de:Wolfsburg).',
         'Der Betrieb eines Verleihs ist laut Stadt «grundsätzlich» nicht genehmigungspflichtig. Geschäftsgebiet und Parkverbotszonen legen die Anbieter laut Stadt mit ihr fest. Dazu hat die Stadt eine freiwillige Selbstverpflichtung für die Anbieter formuliert (Vorlage von 2020): Eine Erhöhung der Flotte «bedarf der Absprache mit der Stadt Wolfsburg», und falsch abgestellte Scooter soll der Anbieter binnen 24 Stunden umstellen oder entfernen. Diese Pflichten treffen die Anbieter, nicht dich.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Wolfsburg?',
+      blocks: [
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. «In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott; sparen kannst du dort mit Pässen für einen Tag, eine Woche oder einen Monat. Bolt wirbt bundesweit mit «ab 0,15 € pro Minute» plus einer «kleinen Freischaltungsgebühr»; der Minutentarif variiert laut Bolt je nach Standort, unbegrenzte Freischaltungen kosten ab 0,99 € im Monat, dazu kommen Wochen- und Monatspässe (Stand November 2026).',
+        {
+          table: {
+            caption: 'Was Dott und Bolt laut ihren Bedingungen verlangen (Stand November 2026; Dott: AGB vom 23. September 2025; Bolt: Bedingungen gültig ab 1. Dezember 2026)',
+            head: ['Fall', 'Dott', 'Bolt'],
+            rows: [
+              ['Falsch geparkt oder nicht richtig gesperrt', 'Bis zu 300 € Rückholkosten', '15 € Parkgebühr, wenn der Scooter falsch steht und kein deutliches Foto am Fahrtende das Gegenteil belegt; bis zu 100 € Abholgebühr ausserhalb des zulässigen Parkbereichs'],
+              ['Bussgeld, das der Anbieter für dich zahlt', 'Bussgeld plus 50 € Verwaltungsgebühr', 'Bussgeld plus bis zu 30 € Verwaltungsgebühr'],
+              ['Verstoss gegen die Bedingungen', 'Dott kann 50 € verlangen', '–'],
+              ['Alkohol', 'Nicht fahren, wenn er dich am sicheren Fahren hindern könnte', 'Striktes Verbot, 0,0 Promille'],
+            ],
+          },
+        },
+        'Wo eine Gemeinde Parkplätze ausweist, parkst du laut Dott-AGB nur dort; was in Wolfsburg dazu zählt, zeigt die App.',
       ],
     },
     {
@@ -67,7 +86,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Wolfsburg: Bussgelder und Alkohol',
       blocks: [
-        'In Wolfsburg gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Wolfsburg gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Bei Bolt fährst du deine ersten 5 Fahrten mit höchstens 15 km/h.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -83,7 +102,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Auf dem Scooter gelten die Promillegrenzen fürs Auto. Wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar, ab 1,1 Promille in jedem Fall; der Führerschein ist dann in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0 Promille.',
+        'Auf dem Scooter gelten die Promillegrenzen fürs Auto. Wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar, ab 1,1 Promille in jedem Fall; der Führerschein ist dann in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0 Promille. Bolt verlangt zu bestimmten Zeiten einen kurzen Reaktionstest in der App, bevor du entsperren kannst.',
         'Ab 1. März 2027 gilt: Stellt ein Anbieter seine Leih-Scooter auf, ist das kein Parken; stellst du einen nach der Fahrt ab, schon. Alles Weitere steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
@@ -108,7 +127,7 @@ const guide: Guide = {
       blocks: [
         '**Hauptbahnhof und phaeno:** Das phaeno liegt «direkt neben dem Hauptbahnhof»; zur Autostadt führt die Stadtbrücke, auf der du laut Hausordnung schiebst.',
         '**Volkswagen Arena:** Laut Vorlage der Selbstverpflichtung kann die Stadt bei Grossveranstaltungen wie Fussballspielen zeitweise Regeln fürs Abstellen und Fahren festlegen. Nach Heimspielen fahren laut WVG Sonderbusse ab der Haltestelle PlazaBrücke in die Stadtteile.',
-        '**Gifhorn:** Am Sonntagmorgen, 25. Oktober 2026, standen dort rund 85 Scooter, die zu diesem Zeitpunkt frei waren; wo gerade einer steht, zeigt die [Karte von Gifhorn](map:de:Gifhorn).',
+        '**Gifhorn:** Dott führt auch Gifhorn unter seinen Standorten. Am Sonntagmorgen, 25. Oktober 2026, standen dort rund 85 Scooter, die zu diesem Zeitpunkt frei waren; wo gerade einer steht, zeigt die [Karte von Gifhorn](map:de:Gifhorn).',
         '**Drei Anbieter in 15 Monaten:** Nach TIER (März 2020) und Lime (November 2020) sollte Bolt am 1. Juni 2021 mit bis zu 300 Scootern folgen; die Stadt zählte damals rund 1000 Ausleihen am Tag (regionalHeute, 28. Mai 2021).',
       ],
     },
@@ -117,6 +136,10 @@ const guide: Guide = {
     {
       question: 'Welche E-Scooter gibt es in Wolfsburg?',
       answer: 'Dott und Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (August 2026). Wo gerade ein freier Scooter steht, zeigt die [Karte von Wolfsburg](map:de:Wolfsburg).',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Wolfsburg?',
+      answer: 'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt bundesweit mit «ab 0,15 € pro Minute» plus einer «kleinen Freischaltungsgebühr», der Minutentarif variiert je nach Standort; Dott bietet Pässe für einen Tag, eine Woche oder einen Monat (Stand November 2026).',
     },
     {
       question: 'Darf ich mit dem E-Scooter in die Autostadt?',
@@ -145,6 +168,12 @@ const guide: Guide = {
     { title: 'VRB: Rad, E-Roller und Co.', url: 'https://www.vrb-online.de/de/service/rad-e-roller-co' },
     { title: 'WVG: Fahrpläne VfL Wolfsburg', url: 'https://www.wvg.de/netz-plaene/fahrplaene-vfl-wolfsburg' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
+    { title: 'Bolt in Wolfsburg', url: 'https://bolt.eu/de-de/cities/wolfsburg/' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
+    { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'phaeno: Anreise und Parken', url: 'https://www.phaeno.de/anreise-parken/' },
     { title: 'regionalHeute: Wolfsburg weitet Angebot für Elektro-Tretroller aus (28. Mai 2021)', url: 'https://regionalheute.de/wolfsburg/wolfsburg-weitet-angebot-fuer-elektro-tretroller-aus-wolfsburg-1622193562/' },
     { title: 'regionalHeute: Keine TIER-Scooter mehr (1. Oktober 2024)', url: 'https://regionalheute.de/das-koennte-das-stadtbild-veraendern-keine-e-scooter-der-marke-tier-mehr-braunschweig-gifhorn-goslar-harz-helmstedt-peine-salzgitter-wolfenbuettel-wolfsburg-1727811096/' },
