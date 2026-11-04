@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-tuebingen',
   topic: 'tubingen',
-  name: 'E-Scooter Tübingen: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Tübingen 2026: Anbieter, Parken, TüBus',
-  description: 'E-Scooter Tübingen: Voi, Bolt und Dott, wo du in Altstadt, Parks und am Neckar nicht fährst und parkst und was im TüBus und in naldo-Zügen gilt.',
-  headline: 'E-Scooter Tübingen: Anbieter, Parken und was von der Altstadt bis auf den Schnarrenberg gilt',
-  lede: 'Einen E-Scooter in Tübingen leihst du ohne Führerschein bei Voi, Bolt oder Dott; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. In der Fussgängerzone der Altstadt und in Parks und Grünanlagen fährst du nicht und stellst nicht ab. Einen eigenen, zusammengeklappten Scooter unter 15 kg nimmt der TüBus kostenlos mit.',
+  name: 'E-Scooter Tübingen: Anbieter, Preise, Parken',
+  title: 'E-Scooter Tübingen 2026: Anbieter, Preise, Verbotszonen',
+  description: 'E-Scooter Tübingen: Voi, Bolt und Dott, was zehn Minuten kosten, wo du an Altstadt, Neckar und Uni nicht abstellst und was im TüBus gilt.',
+  headline: 'E-Scooter Tübingen: Anbieter, Preise und Verbotszonen von der Altstadt bis auf den Schnarrenberg',
+  lede: 'Einen E-Scooter in Tübingen leihst du ohne Führerschein bei Voi, Bolt oder Dott, bei Bolt und Dott ab 18. Voi und Bolt kosten 0,20 € pro Minute ohne Entsperrgebühr (Stand November 2026). In der Fussgängerzone der Altstadt und in Parks und Grünanlagen fährst du nicht und stellst nicht ab, und an Marktplatz, Holzmarkt, Neckarfront und Platanenallee endet bei Voi und Bolt keine Fahrt. Einen eigenen, zusammengeklappten Scooter unter 15 kg nimmt der TüBus kostenlos mit.',
   published: '2026-10-18',
   updated: '2026-10-24',
   city: 'de:Tübingen',
@@ -17,7 +17,25 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Tübingen?',
       blocks: [
         'Seit Frühjahr 2022 stehen in Tübingen Leih-Scooter. Die Stadt nennt vier Anbieter: **Voi**, **Bolt**, **Dott**, das früher TIER hiess, und **Zeus** (gelesen im Oktober 2026); **Lime** hat Tübingen laut Stadt Mitte 2023 verlassen. Jeder Anbieter darf laut Stadt höchstens 200 Scooter aufstellen, im Umkreis von 100 Metern höchstens fünf an einem Ort. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Am 17. Oktober 2026 um 19:25 Uhr zeigte die [Karte von Tübingen](map:de:Tübingen) rund 200 Voi- und rund 180 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, am Samstag, 24. Oktober, um 13:26 Uhr rund 130 von Dott.',
+        'Am 17. Oktober 2026 um 19:25 Uhr zeigte die [Karte von Tübingen](map:de:Tübingen) rund 200 Voi- und rund 180 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, am Samstag, 24. Oktober, um 13:26 Uhr rund 130 von Dott. Voi ist seit 20. März 2025 in der Stadt und startete mit 200 Scootern.',
+        '**Zeus**, den die Stadt als vierten Anbieter nennt, vermietet in Tübingen derzeit keine Scooter.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Tübingen?',
+      blocks: [
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Tübingen (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
+            rows: [
+              ['Voi', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
+              ['Bolt', '0,00 €', '0,20 €', '2,00 €', '4,00 €'],
+              ['Dott', 'in der App', 'in der App', 'in der App', 'in der App'],
+            ],
+          },
+        },
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute», der Tarif variiert aber je nach Standort; in Tübingen und Reutlingen sind es 0,20 €. Vielfahrer sparen bei Bolt mit Wochen- und Monatspässen. Voi startete im März 2025 mit 17 Cent pro Minute und Pässen ab 4,99 €.',
       ],
     },
     {
@@ -25,8 +43,24 @@ const guide: Guide = {
       blocks: [
         'Die Stadt gibt die Grundregeln vor: In Fussgängerzonen und Parkanlagen dürfen E-Scooter weder fahren noch abgestellt werden. Rettungswege, Einfahrten, Bushaltestellen, Brücken, Schulgelände sowie Natur- und Landschaftsschutzgebiete bleiben frei. Fast die ganze Altstadt ist Fussgängerzone.',
         'Seit 1. Oktober 2025 verbietet zudem die Polizeiliche Umweltschutzverordnung der Stadt, in Grünanlagen zu fahren oder Fahrzeuge abzustellen, wenn kein Verkehrszeichen etwas anderes regelt. Dazu zählen auch Rasen, Pflanzungen, Grünstreifen an Strassen sowie Spiel- und Sportplätze. Ein Verstoss kann 5 bis 5000 € kosten.',
-        'Wo genau sich die Fahrt nicht beenden lässt, zeigt dir die App des Anbieters.',
-        'Wo die App das Abstellen erlaubt, gelten trotzdem die Regeln der Stadt: nicht auf Rasen, an Haltestellen oder Einfahrten, und niemand darf behindert werden. Der Kommunale Ordnungsdienst verwarnt falsch oder behindernd abgestellte Scooter. Feste Abstellflächen gibt es kaum: Im April 2024 nannte die Stadt eine einzige, in der Zwehrenbühlstrasse, und Pflicht ist sie nicht.',
+        'Voi und Bolt setzen das mit Verbotszonen in ihren Apps um, in denen sich die Fahrt nicht beenden lässt. An bekannten Orten gilt:',
+        {
+          table: {
+            caption: 'Wo Voi und Bolt eine Fahrt enden lassen (Stand November 2026)',
+            head: ['Ort', 'Voi', 'Bolt'],
+            rows: [
+              ['Marktplatz, Holzmarkt, Kirchgasse, Neckargasse, Schloss Hohentübingen', 'Verbotszone', 'Verbotszone'],
+              ['Eberhardsbrücke, Neckarfront mit Hölderlinturm, Platanenallee und Neckarinsel, Anlagensee', 'Verbotszone', 'Verbotszone'],
+              ['Hauptbahnhof', 'Verbotszone, ausser an der Voi-Station auf dem Europaplatz', 'Erlaubt, nur nicht direkt am Bahnhofsgebäude'],
+              ['Europaplatz mit ZOB', 'Am ZOB vor dem Bahnhof Verbotszone, an seinen Enden erlaubt', 'Meist erlaubt'],
+              ['Neue Aula, Universitätsbibliothek, Kupferbau, Mensa Wilhelmstrasse', 'Erlaubt', 'Verbotszone'],
+              ['Morgenstelle, Universitätsklinikum und BG Klinik auf dem Schnarrenberg', 'Teils Verbotszone; an Mensa Morgenstelle, CRONA und BG Klinik erlaubt', 'Fast überall Verbotszone'],
+              ['Waldhäuser Ost, Sand, Lustnau, Derendingen, Südstadt', 'Meist erlaubt', 'Meist erlaubt'],
+              ['Hagelloch, Pfrondorf, Bebenhausen, Hirschau, Unterjesingen', 'Ausserhalb des Gebiets', 'Ausserhalb des Gebiets'],
+            ],
+          },
+        },
+        'Kleinere Verbotszonen zeigt die App auch in Wohngebieten. Wo sie das Abstellen erlaubt, gelten trotzdem die Regeln der Stadt: nicht auf Rasen, an Haltestellen oder Einfahrten, und niemand darf behindert werden. Der Kommunale Ordnungsdienst verwarnt falsch oder behindernd abgestellte Scooter. Feste Abstellflächen gibt es kaum: Im April 2024 nannte die Stadt eine einzige, in der Zwehrenbühlstrasse, und Pflicht ist sie nicht.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder ausserhalb des Gebiets. Schieb den Scooter aus der Fussgängerzone oder vom Neckarufer weg, bis die App das Abstellen erlaubt: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -35,16 +69,16 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter zur Uni, auf den Berg und zum Bahnhof',
       blocks: [
-        'Für Studierende der Eberhard Karls Universität zählt vor allem, wo die Fahrt enden darf. Das Universitätsgelände gehört nicht der Stadt, die es 2022 zu den Sperrflächen fürs Abstellen zählte; ob du dort heute abstellen darfst, zeigt die App.',
-        'Die Morgenstelle, das Universitätsklinikum mit dem CRONA, die BG Klinik und Waldhäuser Ost liegen auf den Höhen nördlich der Altstadt. An den Kliniken hältst du Rettungswege und Einfahrten frei, wie die Stadt es verlangt; bergauf hilft der TüBus, der einen eigenen Scooter auf festen Abschnitten mitnimmt.',
-        'Am **Hauptbahnhof** und am ZOB auf dem Europaplatz gilt: nicht an die Bussteige, Haltestellen müssen laut Stadt frei bleiben. Wo am Bahnhof Abstellen erlaubt ist, zeigt die App.',
+        'Für Studierende der Eberhard Karls Universität zählt vor allem, wo die Fahrt enden darf. Das Universitätsgelände gehört nicht der Stadt, die es 2022 zu den Sperrflächen fürs Abstellen zählte. Heute sperrt Bolt das Fahrtende rund um Neue Aula, Universitätsbibliothek, Kupferbau und Mensa Wilhelmstrasse, Voi nicht.',
+        'Die Morgenstelle, das Universitätsklinikum mit dem CRONA, die BG Klinik und Waldhäuser Ost liegen auf den Höhen nördlich der Altstadt. Bolt sperrt oben das Abstellen auf der Morgenstelle und fast überall an den Kliniken, Voi nur Teile der Morgenstelle. In Waldhäuser Ost geht es bei beiden. Neue Bolt-Nutzer fahren laut Bolt die ersten fünf Fahrten mit höchstens 15 km/h.',
+        'Am **Hauptbahnhof** stellst du einen Bolt fast überall ab, nur nicht direkt am Bahnhofsgebäude. Voi sperrt den Bahnhof und den ZOB direkt davor, hat dort aber eine Station, die die App zeigt. Am ZOB gilt: nicht an die Bussteige, Haltestellen müssen laut Stadt frei bleiben.',
       ],
     },
     {
       heading: 'E-Scooter-Regeln in Tübingen: wo du fährst, Bussgelder, Promille',
       blocks: [
-        'Es gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur, wo es keinen gibt, auf der Fahrbahn. Auf Gehwegen und in der Fussgängerzone fährst du nicht. Der Kommunale Ordnungsdienst kontrolliert laut Stadt (Juni 2023) gezielt Räder und E-Scooter auf Gehwegen und darf dich anhalten und verwarnen; die Bussgelder legt aber der bundesweite Bussgeldkatalog fest.',
-        'Manche Gassen der Altstadt öffnet ein Zusatzschild für den Radverkehr. Für E-Scooter gilt es heute nicht. Ab 1. März 2027 gibt «Radverkehr frei» auch E-Scooter frei, im Schritttempo: Ob du dann durch eine Altstadtgasse fahren darfst, hängt vom Schild ab.',
+        'Es gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Bolt und Dott ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter. Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur, wo es keinen gibt, auf der Fahrbahn. Auf Gehwegen und in der Fussgängerzone fährst du nicht. Der Kommunale Ordnungsdienst kontrolliert laut Stadt (Juni 2023) gezielt Räder und E-Scooter auf Gehwegen und darf dich anhalten und verwarnen; die Bussgelder legt aber der bundesweite Bussgeldkatalog fest.',
+        'Manche Gassen der Altstadt öffnet ein Zusatzschild für den Radverkehr. Für E-Scooter gilt es heute nicht. Ab 1. März 2027 gibt «Radverkehr frei» auch E-Scooter frei, im Schritttempo: Ob du dann durch eine Altstadtgasse fahren darfst, hängt vom Schild ab. Voi und Bolt vermieten rund um die Uhr.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -74,15 +108,15 @@ const guide: Guide = {
     {
       heading: 'Nach Reutlingen und Stuttgart',
       blocks: [
-        'Die [Karte von Reutlingen](map:de:Reutlingen) zeigte am 17. Oktober 2026 um 19:25 Uhr rund 170 Voi- und rund 150 Bolt-Scooter, die zu diesem Zeitpunkt frei waren. Was dort gilt, steht in [E-Scooter in Reutlingen](guide:reutlingen).',
-        'Zwischen den beiden Städten liegen mehrere Kilometer, und beenden kannst du eine Fahrt nur im Geschäftsgebiet, das dir die App zeigt. Von Stadt zu Stadt nimmst du also Zug oder Bus und mietest drüben neu.',
+        'Die [Karte von Reutlingen](map:de:Reutlingen) zeigte am 17. Oktober 2026 um 19:25 Uhr rund 170 Voi- und rund 150 Bolt-Scooter, die zu diesem Zeitpunkt frei waren. Was dort gilt, steht in [E-Scooter in Reutlingen](guide:reutlingen). Dott nennt neben Tübingen auch Reutlingen und Pfullingen als Standorte.',
+        'Bei Bolt gilt in Tübingen und Reutlingen derselbe Tarif. Die beiden Gebiete liegen aber mehrere Kilometer auseinander, und eine Fahrt beendest du nur in einem von ihnen. Voi sperrt sogar das Weiterfahren dazwischen, etwa bei Kusterdingen und Kirchentellinsfurt. Von Stadt zu Stadt nimmst du also Zug oder Bus und mietest drüben neu.',
         'In Stuttgart fahren neben Voi und Bolt auch Dott und Lime; in der City endet die Fahrt dort nur auf markierten Flächen: [E-Scooter in Stuttgart](guide:stuttgart).',
       ],
     },
     {
       heading: 'Wie Tübingen E-Scooter regelt: Kooperationsvertrag statt Sondernutzung',
       blocks: [
-        'Tübingen vergibt keine Sondernutzungserlaubnis. 2022 unterschrieben alle damaligen Anbieter einen freiwilligen Kooperationsvertrag über Flottengrösse, Verteilung, Abstellen und Ansprechpartner; im April 2024 bestätigte die Verwaltung diese Vereinbarung. Laut einem Antrag aus dem Gemeinderat nutzten die Anbieter den öffentlichen Raum 2022 kostenfrei.',
+        'Tübingen vergibt für Leih-Scooter keine Sondernutzungserlaubnis, wie sie die Sondernutzungsrichtlinien der Stadt (Fassung vom 24. März 2026) etwa für Plakate, Aussengastronomie und Carsharing-Stellplätze vorsehen. 2022 unterschrieben alle damaligen Anbieter einen freiwilligen Kooperationsvertrag über Flottengrösse, Verteilung, Abstellen und Ansprechpartner; im April 2024 bestätigte die Verwaltung diese Vereinbarung. Laut einem Antrag aus dem Gemeinderat nutzten die Anbieter den öffentlichen Raum 2022 kostenfrei.',
         'Im April 2024 zog die Verwaltung Bilanz: Die Lage habe sich «ganz deutlich verbessert», es gebe weniger als 15 Beschwerden im Jahr. Die Verbotszonen legen die Anbieter auf Anweisung der Stadt fest. Einen eigenen Plan mit Sperrzonen und markierten Abstellflächen kündigte die Stadt im November 2022 an. Im April 2024 war er für empfindliche Stellen wie ZOB, Neckarbrücke und Mühlstrasse «in Arbeit», und im Oktober 2026 schreibt die Stadt, sie erarbeite ihn derzeit.',
       ],
     },
@@ -101,7 +135,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Tübingen?',
-      answer: 'Die von Voi, Bolt oder Dott; TIER heisst heute Dott. Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren. Freie Scooter zeigt auch die [Live-Karte von Tübingen](map:de:Tübingen).',
+      answer: 'Die von Voi, Bolt oder Dott; TIER heisst heute Dott. Bei Bolt und Dott musst du 18 sein, das Mindestalter bei Voi zeigt dir die App; einen Führerschein brauchst du nicht. Freie Scooter zeigt auch die [Live-Karte von Tübingen](map:de:Tübingen).',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Tübingen?',
+      answer: 'Bei Voi und Bolt 0,20 € pro Minute ohne Entsperrgebühr, zehn Minuten also 2 € (Stand November 2026). Dott zeigt seinen Preis in der App.',
     },
     {
       question: 'Wie viele Leih-Scooter darf es in Tübingen geben?',
@@ -113,7 +151,7 @@ const guide: Guide = {
     },
     {
       question: 'Komme ich mit dem Leih-Scooter von Tübingen nach Reutlingen?',
-      answer: 'Plane es nicht ein: Beenden kannst du eine Fahrt nur im Geschäftsgebiet, das dir die App zeigt, und zwischen den Städten liegen mehrere Kilometer. Nimm Zug oder Bus und miete in Reutlingen neu.',
+      answer: 'Nicht in einer Fahrt. Bolt beendet Fahrten nur innerhalb eines der beiden Gebiete, Voi sperrt das Fahren dazwischen. Nimm Zug oder Bus und miete in Reutlingen neu.',
     },
     {
       question: 'Darf ich einen E-Scooter im TüBus mitnehmen?',
@@ -133,6 +171,17 @@ const guide: Guide = {
     { title: 'Stadt Tübingen: Vorlage 528a/2023, E-Scooter (30. April 2024)', url: 'https://www.tuebingen.de/gemeinderat/getfile.asp?id=92948&type=do' },
     { title: 'Stadt Tübingen: Gehwege sind für Fahrräder und E-Scooter tabu (20. Juni 2023)', url: 'https://www.tuebingen.de/pressemitteilungen/38784/40091.html' },
     { title: 'Stadt Tübingen: Polizeiliche Umweltschutzverordnung (Fassung vom 29. September 2025)', url: 'https://www.tuebingen.de/verwaltung/formular/431.pdf' },
+    { title: 'Stadt Tübingen: Sondernutzungsrichtlinien (Fassung vom 24. März 2026)', url: 'https://www.tuebingen.de/verwaltung/formular/440.pdf' },
+    { title: 'MobiData BW: offene Daten von Bolt in Reutlingen und Tübingen (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_reutlingen_tuebingen/gbfs' },
+    { title: 'MobiData BW: offene Daten von Voi in Baden-Württemberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
+    { title: 'Voi: Tarif und Zonen für Tübingen in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/366/netex.xml' },
+    { title: 'Voi: Voi startet E-Scooter-Sharing in Tübingen (18. März 2025)', url: 'https://storage.mfn.se/4931c250-01d7-4021-b9b4-5a4779445eae/e-scooter-anbieter-voi-startet-in-tubingen.pdf' },
+    { title: 'Bolt: Tübingen', url: 'https://bolt.eu/de-de/cities/tubingen/' },
+    { title: 'Bolt: E-Scooter mieten', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Zeus: offene Daten für Tübingen (GBFS)', url: 'https://zeus.city/api/v1/mds/gbfs/tubingen/gbfs.json' },
     { title: 'naldo: Anlagen zu den Beförderungsbedingungen (1. April 2026)', url: 'https://www.naldo.de/fileadmin/media/tickets/TB-BB/2026-04-01-Anlagen_Befoerderungsbedingungen.pdf' },
     { title: 'naldo: Tarifbestimmungen (1. August 2026)', url: 'https://www.naldo.de/fileadmin/media/tickets/TB-BB/2026-08-01-Tarifbestimmungen.pdf' },
     { title: 'TüBus: Mitnahmeregeln', url: 'https://www.tuebus.de/tickets/mitnahmeregeln.html' },
