@@ -132,6 +132,13 @@ private struct ChromeGlass<S: Shape>: ViewModifier {
 }
 
 extension View {
+    /// The names Voice Control answers to: first what the control shows,
+    /// then what VoiceOver reads, each once.
+    func voiceControlNames(_ names: [String]) -> some View {
+        var seen = Set<String>()
+        return accessibilityInputLabels(names.filter { !$0.isEmpty && seen.insert($0).inserted })
+    }
+
     func chromeGlass(in shape: some Shape, isInteractive: Bool = false) -> some View {
         modifier(ChromeGlass(shape: shape, isInteractive: isInteractive))
     }
@@ -1458,6 +1465,12 @@ private struct DockLeadButton: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(lead.accessibilityLabel)
+        // Voice Control answers to what it shows: "62 m to the nearest scooter".
+        .voiceControlNames([
+            "\(lead.distance) \(String(localized: "to the nearest scooter"))",
+            String(localized: "to the nearest scooter"),
+            lead.accessibilityLabel
+        ])
     }
 }
 
@@ -1677,11 +1690,17 @@ private struct ScooterCard: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(String(
+        .accessibilityLabel(rideEstimateLabel)
+        .accessibilityValue(priceLabel(quote))
+        // Voice Control answers to what the cell shows: "4.50 CHF, 10 min".
+        .voiceControlNames(["\(figure.value) \(figure.label)", figure.label, rideEstimateLabel])
+    }
+
+    private var rideEstimateLabel: String {
+        String(
             format: String(localized: "Ride estimate, %lld minutes. Change duration."),
             Int64(model.rideEstimateMinutes)
-        ))
-        .accessibilityValue(priceLabel(quote))
+        )
     }
 
     /// "≈ CHF 4.50 for 10 min", or "From USD 5.50 for 10 min" where the minute fee is the lowest
@@ -2082,12 +2101,16 @@ struct ScooterFilterSheet: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(
-            preset == 0
-                ? String(localized: "Any")
-                : String(format: String(localized: "%lld percent or more"), Int64(preset))
-        )
+        .accessibilityLabel(batteryPresetLabel(preset))
+        // Voice Control answers to "30%+" as shown, and to the spoken name.
+        .voiceControlNames([ScooterBatteryFilter.label(for: preset), batteryPresetLabel(preset)])
         .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+
+    private func batteryPresetLabel(_ preset: Int) -> String {
+        preset == 0
+            ? String(localized: "Any")
+            : String(format: String(localized: "%lld percent or more"), Int64(preset))
     }
 
     /// How far the label of a battery preset may shrink to stay on one line.

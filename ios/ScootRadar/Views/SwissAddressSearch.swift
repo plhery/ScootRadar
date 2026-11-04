@@ -101,6 +101,8 @@ struct ScooterSearchIsland: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(state.accessibilityLabel)
+            // Voice Control answers to what the bar shows, the place's name.
+            .voiceControlNames([state.title, state.accessibilityLabel])
 
             if case .place = state {
                 Button {
