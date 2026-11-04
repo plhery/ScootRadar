@@ -3871,6 +3871,10 @@ enum ScooterProviderCoverage {
         systems.append((.binbin, GeoBounds(south: 41.96769, west: 21.35828, north: 42.0227, east: 21.48485)))
         systems.append((.binbin, GeoBounds(south: 43.8064, west: 18.27265, north: 43.8825, east: 18.43433)))
         systems.append((.binbin, GeoBounds(south: 42.62866, west: 21.10128, north: 42.68756, east: 21.22488)))
+        systems.append((.hopp, GeoBounds(south: 26.185, west: 50.535, north: 26.252, east: 50.616)))
+        systems.append((.hopp, GeoBounds(south: 26.274, west: 50.642, north: 26.31, east: 50.69)))
+        systems.append((.hopp, GeoBounds(south: 25.975, west: 50.448, north: 26.07, east: 50.505)))
+        systems.append((.hopp, GeoBounds(south: 18.4362, west: -68.454, north: 18.5303, east: -68.366)))
         return systems
     }
 
@@ -3931,7 +3935,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(1095)
+        cities.reserveCapacity(1099)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -5027,13 +5031,17 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "mk:Skopje", name: "Skopje", countryCode: "MK", center: GeoPoint(latitude: 41.99646, longitude: 21.43141), bounds: GeoBounds(south: 41.96769, west: 21.35828, north: 42.0227, east: 21.48485), feeds: [ScooterCityFeed(id: "northmacedonia:binbin_mk_skopje")]))
         cities.append(ScooterCity(id: "ba:Sarajevo", name: "Sarajevo", countryCode: "BA", center: GeoPoint(latitude: 43.84864, longitude: 18.35644), bounds: GeoBounds(south: 43.8064, west: 18.27265, north: 43.8825, east: 18.43433), feeds: [ScooterCityFeed(id: "bosnia:binbin_ba_sarajevo")]))
         cities.append(ScooterCity(id: "xk:Pristina", name: "Pristina", countryCode: "XK", center: GeoPoint(latitude: 42.67272, longitude: 21.16688), bounds: GeoBounds(south: 42.62866, west: 21.10128, north: 42.68756, east: 21.22488), feeds: [ScooterCityFeed(id: "kosovo:binbin_xk_pristina")]))
+        cities.append(ScooterCity(id: "bh:Manama", name: "Manama", countryCode: "BH", center: GeoPoint(latitude: 26.2235, longitude: 50.5822), bounds: GeoBounds(south: 26.185, west: 50.535, north: 26.252, east: 50.616), feeds: [ScooterCityFeed(id: "bahrain:hopp_bh_bahrain")]))
+        cities.append(ScooterCity(id: "bh:Amwaj Islands", name: "Amwaj Islands", countryCode: "BH", center: GeoPoint(latitude: 26.2947, longitude: 50.6664), bounds: GeoBounds(south: 26.274, west: 50.642, north: 26.31, east: 50.69), feeds: [ScooterCityFeed(id: "bahrain:hopp_bh_bahrain")]))
+        cities.append(ScooterCity(id: "bh:Zallaq", name: "Zallaq", countryCode: "BH", center: GeoPoint(latitude: 26.0485, longitude: 50.487), bounds: GeoBounds(south: 25.975, west: 50.448, north: 26.07, east: 50.505), feeds: [ScooterCityFeed(id: "bahrain:hopp_bh_bahrain")]))
+        cities.append(ScooterCity(id: "do:Punta Cana", name: "Punta Cana", countryCode: "DO", center: GeoPoint(latitude: 18.5044, longitude: -68.383), bounds: GeoBounds(south: 18.4362, west: -68.454, north: 18.5303, east: -68.366), feeds: [ScooterCityFeed(id: "dominicanrepublic:hopp_do_punta_cana")]))
         return cities
     }
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 1095
-    static let countryCount = 56
+    static let cityCount = 1099
+    static let countryCount = 58
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -5894,13 +5902,20 @@ enum ScooterCountryCatalog {
         "ba": (44.17, 17.79),
         // About the middle of the country, near Drenas, west of Pristina.
         "xk": (42.6, 20.9),
+        // At Isa Town, in the middle of the main island: between Manama and the Amwaj Islands in the
+        // north and Zallaq in the south-west, where Bahrain's scooters are.
+        "bh": (26.17, 50.55),
+        // At Higüey, the seat of the municipality Punta Cana and Cap Cana belong to, 35 km inland
+        // from them: in the island's east, where all of the Dominican Republic's scooters are, away
+        // from Haiti.
+        "do": (18.62, -68.71),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
     static let credits: [(title: String, url: String)] = [
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
-        ("US/CA/CR/BQ: Bird, Bolt, Lime, Veo, Spin, Lyft, Hopp", "https://github.com/MobilityData/gbfs"),
-        ("AE/SA/IL: Dott, SAHAM, Bird, Lime", "https://github.com/MobilityData/gbfs"),
+        ("US/CA/CR/BQ/DO: Bird, Bolt, Lime, Veo, Spin, Lyft, Hopp", "https://github.com/MobilityData/gbfs"),
+        ("AE/SA/IL/BH: Dott, SAHAM, Bird, Lime, Hopp", "https://github.com/MobilityData/gbfs"),
         ("NZ: Flamingo, JOLT", "https://github.com/MobilityData/gbfs"),
         ("DE: MobiData BW e-scooter data", "https://mobidata-bw.de/dataset/escootch"),
         ("DE: MobiData BW · dl-de/by-2-0, modified", "https://www.govdata.de/dl-de/by-2-0"),

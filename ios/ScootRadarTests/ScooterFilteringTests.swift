@@ -793,7 +793,7 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertTrue(sources.contains { $0.title == "JP: LUUP map" })
         XCTAssertTrue(sources.contains { $0.title == "BR: IBGE boundaries" })
         XCTAssertTrue(sources.contains { $0.title == "KR: Alpaca map" })
-        XCTAssertTrue(sources.contains { $0.title == "AE/SA/IL: Dott, SAHAM, Bird, Lime" })
+        XCTAssertTrue(sources.contains { $0.title == "AE/SA/IL/BH: Dott, SAHAM, Bird, Lime, Hopp" })
         XCTAssertTrue(sources.contains { $0.title == "NZ: Flamingo · CC BY 4.0" })
         XCTAssertTrue(sources.contains { $0.title == "BR/CL/MX/KZ/AZ/GE: JET map" })
         XCTAssertTrue(sources.contains { $0.title == "BR/CL/MX/KZ/CO/BY: Whoosh map" })

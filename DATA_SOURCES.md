@@ -2494,3 +2494,31 @@ BinBin publishes no data licence. The map's credits link its site as
 centres are GeoNames's, under CC BY 4.0. See the
 [coverage audit](docs/north-macedonian-bosnian-kosovar-scooter-feeds.md) for
 the systems, the town names, the gaps and the recheck command.
+
+## Bahrain
+
+The reviewed catalog lives in `data/bahraini-scooter-feeds.json`: 1 feed,
+Hopp's `bh-bahrain`, whose scooters stand in three places: Manama, the Amwaj
+Islands and Zallaq, each an area of the feed. It is Hopp's own public GBFS
+feed, not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answers at the address Hopp uses for its other towns. Its prices are in
+US dollars, with no tax added.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line for Asia. See the [coverage audit](docs/bahraini-scooter-feeds.md)
+for the system, the towns, the rules, the gaps and the recheck command.
+
+## Dominican Republic
+
+The reviewed catalog lives in `data/dominican-scooter-feeds.json`: 1 feed,
+Hopp's `do-punta-cana`, whose scooters stand in Cap Cana. It is Hopp's own
+public GBFS feed, not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answers at the address Hopp uses for its other towns. Its prices are in
+US dollars, with no tax added.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line for North America. See the
+[coverage audit](docs/dominican-scooter-feeds.md) for the system, the town,
+the rules, the gaps and the recheck command.

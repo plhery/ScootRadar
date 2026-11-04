@@ -1434,6 +1434,20 @@ banned shared scooters, and feeds that were empty when checked.
   ([guide](caribbean-netherlands-scooter-feeds.md#known-gaps)): Hopp on
   Bonaire, in Kralendijk, is covered. Nothing was found on Sint Eustatius or
   Saba.
+- **Bahrain** ([guide](bahraini-scooter-feeds.md#known-gaps)): Hopp's
+  `bh-bahrain`, in Manama, the Amwaj Islands and Zallaq, is covered since
+  4 November 2026, a small fleet (13 scooters) under the App Store rule
+  (Desk [288]). The rest of Hopp's zone, Riffa, Isa Town, Sitra and Muharraq
+  among them, held no scooter and is outside the bounds.
+  - **Spiders, Fenix and BSKL** publish no feed; none was confirmed running in
+    Bahrain. data.gov.bh has no scooter data. Since Resolution 58 of 2026,
+    scooters may ride only in designated zones.
+- **Dominican Republic** ([guide](dominican-scooter-feeds.md#known-gaps)):
+  Hopp's `do-punta-cana`, in Cap Cana, is covered since 4 November 2026 (27
+  scooters, 25 available), under the App Store rule (Desk [288]).
+  - **Hopp Las Terrenas** (`do-las-terrenas`) held 2 scooters, none
+    available, on 15 October 2026: check again on 15 January 2027.
+  - **HappyVolts,** in Santo Domingo, is a company's staff fleet.
 - **Turkey** ([guide](turkish-scooter-feeds.md#known-gaps)): BinBin's 13
   service areas in 12 cities are covered by its guest app map since 24
   October 2026 ([the collector](binbin-app-map.md)). No public GBFS was found,
@@ -1606,7 +1620,6 @@ a licence. Neither is published by its operator:
 | Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled". Loop, Dart, OWLO, Fenix and Falcon Ride publish no feed; OTORide, which runs OWLO, answers 404 on every `/gbfs` path. data.gov.qa has no scooter data. Dott's Qatari terms (changed 23 September 2025) name TIER Mobility Doha, but Dott lists no Qatari region and its Qatari slugs answer 404 (18 October 2026). Loop had over 500 scooters in 2020 and wer2 over 700 in 2022. wer2, or ATOM, would have to switch the feed on; no one has asked |
 | Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL, Rabbit, Rent it (on OTORide) and e-Fly Scooters and More (on Joyride) publish no feed. E-scooters have been banned on Kuwait's public roads since 31 October 2020. eFly, or ATOM, would have to switch the feed on; no one has asked |
 | Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled", and `biko.rideatom.com` no longer resolves. Salik, which ran the transport ministry's trial at Knowledge Oasis Muscat, is ATOM system 1118 and answers "GBFS disabled" too. Biko, Salik or ATOM would have to switch the feed on; no one has asked |
-| Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026, and still 14 on 18 October: too few. Spiders, Fenix and BSKL publish no feed; data.gov.bh has no scooter data. Since Resolution 58 of 2026, scooters may ride only in designated zones |
 | Egypt | Rabbit, in Cairo, Giza and Alexandria (about 700 scooters in 2024, the last count), publishes no feed, and Cairo's governor ordered e-scooters seized |
 | South Africa | Zippy's [authorized rider map](south-african-scooter-feeds.md) now supplies Langebaan's Club Mykonos area. Its systems 2028, 2075 and 2318 still do not provide public GBFS. Cape Town has app polygons but no available scooters were observed |
 | Senegal | Reby Mobility runs e-scooters in Dakar (Mermoz, Ouakam, Almadies, Ngor) on ATOM Mobility (`reby-mobility.rideatom.com`). Its system id isn't public, so no feed was found (18 October 2026) |
@@ -1632,7 +1645,6 @@ a licence. Neither is published by its operator:
 | Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others, and on 24 October 2026 its app had no active region there |
 | Puerto Rico, US Virgin Islands | Bird's four Puerto Rico feeds (`san-juan-puerto-rico`, `guaynabo-puerto-rico`, `mayaguez-puerto-rico`, `ponce-puerto-rico`) publish their zones but no vehicle, with a timestamp of 0. Skootel, on OTORide, and KICK RIDE PR publish no feed; VIBES has left the US Virgin Islands. Check again on 1 April 2027. A feed there would need a decision: under the United States as a region (`PR`, `VI`), which needs `timeZoneProblem()` in `scripts/country-catalog.mjs` to accept America/Puerto_Rico and America/St_Thomas there, and gives prices before tax (Puerto Rico's IVU is 11.5%), or as a country of its own |
 | Aruba, Curaçao | e-moob, in Aruba (150+ scooters), is on ATOM Mobility, but its systems 1688 and 2319 answer "GBFS disabled", and so does Smart Wheels's 1875, in Curaçao. Aruba banned e-scooters from public roads in July 2026, and the courts upheld it. Check again on 1 April 2027. Each would be a country of its own (AW, CW), as Bonaire is |
-| Dominican Republic | Hopp `do-punta-cana` held 24 available scooters of 26, in Cap Cana, but none was ridden on the evening of 15 October 2026, nor on Sunday 18 October from 08:47 to 12:57 Dominican time (27 polls, 10 minutes apart: the same 23 of 25 available, none moved more than 6 m). Check again on 19 December 2026. Hopp `do-las-terrenas` held 2 scooters, none available: check again on 15 January 2027. HappyVolts, in Santo Domingo, is a company's staff fleet |
 | Argentina, Uruguay and the rest of Latin America and the Caribbean | No scooter feed found: also Paraguay, Bolivia, Ecuador, Venezuela, Central America outside Costa Rica, Jamaica, Cuba, Haiti, Trinidad and Tobago, Barbados, the Cayman Islands, the Turks and Caicos Islands, Sint Maarten and the French Antilles. Lime has left Argentina, Uruguay's last operator left by December 2025, and Guayaquil's transit agency seizes scooters. Breeze, in the Bahamas, runs on OTORide and publishes no feed |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
@@ -1864,11 +1876,6 @@ Bonaire had feeds to add. Survey files are in
   the town centre's access rules up again on 17 December
   ([the city's statement](https://data.europa.eu/data/datasets/3611ae56-5be2-426b-8e6c-da35ba95b0bb),
   on data.gv.at, CC BY 4.0). Nothing is drawn until it decides.
-- **19 December 2026:** Hopp Punta Cana (`do-punta-cana`), unridden on the
-  evening of 15 October and on the morning of Sunday 18 October 2026: poll
-  it by day. If its scooters are ridden, add the Dominican Republic, naming
-  the town for Cap Cana, where the scooters stand, or for Punta Cana, with
-  the other as an alias.
 - **20 December 2026:** Costa Rica's Ley 10834, which adds "movilidad
   activa" to the traffic law twelve months after it was published (Alcance
   164 to La Gaceta 239, 19 December 2025). Read its official text, and
@@ -1931,8 +1938,9 @@ Bonaire had feeds to add. Survey files are in
   weekday, on the research account, and add those where 15% or more of the
   scooters leave and some turn up far from any earlier one.
 - **15 January 2027:** Hopp Las Terrenas (`do-las-terrenas`), in the
-  Dominican Republic: 2 scooters, none available, on 15 October 2026. Add it
-  if it holds about ten available scooters that are ridden. Hopp Accra
+  Dominican Republic, whose Punta Cana feed is covered: 2 scooters, none
+  available, on 15 October 2026. Add it if it holds about ten available
+  scooters that are ridden. Hopp Accra
   (`gh-accra`) too, whose 13 scooters were all disabled on 18 October.
 - **January 2027:** Ballarat, whose Neuron scheme ended on 31 March 2026,
   chooses a new operator, and Rio de Janeiro accredits its operators under
@@ -2030,9 +2038,8 @@ Bonaire had feeds to add. Survey files are in
   disabled" on 15 and 18 October 2026. If either answers with scooters,
   Uzbekistan needs its time zones (`Asia/Tashkent`, `Asia/Samarkand`) and
   prices in UZS. The Gulf's ATOM systems too: wer2 (1824 and the rest,
-  Qatar), eFly (2253 and 2340, Kuwait), Salik (1118) and Biko (Oman), and
-  Hopp `bh-bahrain`, which held 14 scooters on three sites. Sweden's Qick
-  (5, 10, 53 and 104) too.
+  Qatar), eFly (2253 and 2340, Kuwait), Salik (1118) and Biko (Oman).
+  Sweden's Qick (5, 10, 53 and 104) too.
 - **1 April 2027:** Latin America and the Caribbean: Bird's four Puerto Rico
   feeds; ATOM Mobility's e-moob (1688 and 2319, Aruba and Tamarindo) and
   Smart Wheels (1875, Curaçao), which answered "GBFS disabled"; Whoosh's feed

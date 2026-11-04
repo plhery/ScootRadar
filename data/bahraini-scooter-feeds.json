@@ -1,0 +1,78 @@
+{
+  "verifiedOn": "2026-11-04",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_bh_bahrain",
+      "country": "BH",
+      "provider": "hopp",
+      "city": "Manama",
+      "timeZone": "Asia/Bahrain",
+      "center": [
+        26.2235,
+        50.5822
+      ],
+      "bounds": {
+        "south": 25.975,
+        "north": 26.31,
+        "west": 50.448,
+        "east": 50.69
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/bh-bahrain/gbfs.json",
+      "areas": [
+        {
+          "city": "Manama",
+          "center": [
+            26.2235,
+            50.5822
+          ],
+          "bounds": {
+            "south": 26.185,
+            "north": 26.252,
+            "west": 50.535,
+            "east": 50.616
+          },
+          "aliases": [
+            "Al Manamah",
+            "المنامة"
+          ]
+        },
+        {
+          "city": "Amwaj Islands",
+          "center": [
+            26.2947,
+            50.6664
+          ],
+          "bounds": {
+            "south": 26.274,
+            "north": 26.31,
+            "west": 50.642,
+            "east": 50.69
+          },
+          "aliases": [
+            "Amwaj",
+            "جزر أمواج"
+          ]
+        },
+        {
+          "city": "Zallaq",
+          "center": [
+            26.0485,
+            50.487
+          ],
+          "bounds": {
+            "south": 25.975,
+            "north": 26.07,
+            "west": 50.448,
+            "east": 50.505
+          },
+          "aliases": [
+            "Az Zallaq",
+            "Al Jazayer",
+            "الزلاق"
+          ]
+        }
+      ]
+    }
+  ]
+}

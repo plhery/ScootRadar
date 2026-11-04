@@ -37,6 +37,10 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   // Bonaire and Curaçao have no postcodes; their addresses are written the Dutch way: "Kaya Grandi 22".
   BQ: { townLine: '{town}' },
   CW: { townLine: '{town}' },
+  // The Dominican Republic's five-digit postcode comes after the town, as Costa Rica's: "Santo Domingo 10210".
+  DO: { townLine: '{town} {postcode}', postcode: /\d{5}/ },
+  // Bahrain writes building, road and block numbers; what OpenStreetMap tags as its postcode is the block ("0319").
+  BH: { numberFirst: true, townLine: '{town}' },
   // Japan Post's Latin-script order: block number and neighborhood, town/prefecture, seven-digit postcode.
   JP: { numberFirst: true, townLine: '{town}, {region} {postcode}', postcode: /\d{3}-?\d{4}/ },
   // Correios writes the municipality and state before the eight-digit CEP.

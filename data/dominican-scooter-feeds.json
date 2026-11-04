@@ -1,0 +1,27 @@
+{
+  "verifiedOn": "2026-11-04",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_do_punta_cana",
+      "country": "DO",
+      "provider": "hopp",
+      "city": "Punta Cana",
+      "timeZone": "America/Santo_Domingo",
+      "center": [
+        18.5044,
+        -68.383
+      ],
+      "bounds": {
+        "south": 18.4362,
+        "north": 18.5303,
+        "west": -68.454,
+        "east": -68.366
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/do-punta-cana/gbfs.json",
+      "aliases": [
+        "Cap Cana"
+      ]
+    }
+  ]
+}

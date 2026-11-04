@@ -34,6 +34,8 @@ describe('the address formats', () => {
     expect(streetAddress('SA', 'King Fahd Road', '2')).toBe('2 King Fahd Road');
     expect(streetAddress('CR', 'Calle Central', '5')).toBe('Calle Central 5');
     expect(streetAddress('BQ', 'Kaya Grandi', '22')).toBe('Kaya Grandi 22');
+    expect(streetAddress('DO', 'Calle El Conde', '101')).toBe('Calle El Conde 101');
+    expect(streetAddress('BH', 'Road 2209', '1234')).toBe('1234 Road 2209');
     expect(streetAddress('JP', 'Kasumigaseki', '1-3-2')).toBe('1-3-2 Kasumigaseki');
     expect(streetAddress('KR', 'Sejong-daero', '209')).toBe('209 Sejong-daero');
     expect(streetAddress('XX', 'Main Street', '3')).toBe('Main Street 3');
@@ -56,6 +58,8 @@ describe('the address formats', () => {
     expect(townLine('AE', { town: 'Dubai', postcode: '', region: region('Dubai') })).toBe('Dubai');
     expect(townLine('CR', { town: 'Tamarindo', postcode: '50309', region: region('Guanacaste') })).toBe('Tamarindo 50309');
     expect(townLine('BQ', { town: 'Kralendijk', postcode: '', region: region('Nederland') })).toBe('Kralendijk');
+    expect(townLine('DO', { town: 'Santo Domingo', postcode: '10210', region: region('Distrito Nacional') })).toBe('Santo Domingo 10210');
+    expect(townLine('BH', { town: 'Manama', postcode: '0319', region: region('Capital') })).toBe('Manama');
     expect(townLine('JP', { town: 'Chiyoda-ku', postcode: '100-8798', region: region('Tokyo') })).toBe('Chiyoda-ku, Tokyo 100-8798');
     expect(townLine('BR', { town: 'São Paulo', postcode: '01310-100', region: region('SP') })).toBe('São Paulo, SP 01310-100');
     expect(townLine('CL', { town: 'Santiago', postcode: '8340457', region: region('') })).toBe('8340457 Santiago');

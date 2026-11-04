@@ -1750,6 +1750,36 @@
           { "label": "XK: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
+    },
+    {
+      "code": "BH",
+      "continent": "asia",
+      "catalog": "data/bahraini-scooter-feeds.json",
+      "source": "bahrain",
+      "names": { "en": "Bahrain", "de": "Bahrain", "fr": "Bahreïn", "it": "Bahrein", "nl": "Bahrein", "nb": "Bahrain", "pt": "Barém", "es": "Baréin", "is": "Barein" },
+      "searchWords": ["bahrain", "bahrein", "barem", "barein", "البحرين"],
+      "anchor": [26.17, 50.55],
+      "anchorNote": "At Isa Town, in the middle of the main island: between Manama and the Amwaj Islands in the north and Zallaq in the south-west, where Bahrain's scooters are.",
+      "featuredCities": ["bh:Manama"],
+      "credits": {
+        "attribution": "Bahrain: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
+    },
+    {
+      "code": "DO",
+      "continent": "north-america",
+      "catalog": "data/dominican-scooter-feeds.json",
+      "source": "dominicanrepublic",
+      "names": { "en": "Dominican Republic", "de": "Dominikanische Republik", "fr": "République dominicaine", "it": "Repubblica Dominicana", "nl": "Dominicaanse Republiek", "nb": "Den dominikanske republikk", "pt": "República Dominicana", "es": "República Dominicana", "is": "Dóminíska lýðveldið" },
+      "searchWords": ["dominican republic", "dominikanische republik", "republique dominicaine", "repubblica dominicana", "dominicaanse republiek", "den dominikanske republikk", "dominikanske republikk", "republica dominicana", "dominiska lydveldid"],
+      "anchor": [18.62, -68.71],
+      "anchorNote": "At Higüey, the seat of the municipality Punta Cana and Cap Cana belong to, 35 km inland from them: in the island's east, where all of the Dominican Republic's scooters are, away from Haiti.",
+      "featuredCities": ["do:Punta Cana"],
+      "credits": {
+        "attribution": "Dominican Republic: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
     }
   ]
 }
