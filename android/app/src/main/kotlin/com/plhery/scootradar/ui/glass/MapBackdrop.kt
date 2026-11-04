@@ -5,6 +5,8 @@ import android.graphics.Canvas
 import android.graphics.RenderEffect
 import android.graphics.RenderNode
 import android.graphics.Shader
+import android.os.SystemClock
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -60,6 +62,17 @@ class MapBackdrop(context: Context) : FrameLayout(context) {
         return location
     }
 
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        touchedAt = SystemClock.uptimeMillis()
+        return super.dispatchTouchEvent(event)
+    }
+
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        // A mouse's wheel or a trackpad's two fingers zoom the map; a pointer only passing over it doesn't move it.
+        if (event.actionMasked == MotionEvent.ACTION_SCROLL) touchedAt = SystemClock.uptimeMillis()
+        return super.dispatchGenericMotionEvent(event)
+    }
+
     override fun onDescendantInvalidated(child: View, target: View) {
         super.onDescendantInvalidated(child, target)
         frames.intValue += 1
@@ -75,6 +88,16 @@ class MapBackdrop(context: Context) : FrameLayout(context) {
             node.endRecording()
         }
         canvas.drawRenderNode(node)
+    }
+
+    companion object {
+        /**
+         * When a hand, a mouse's wheel or a trackpad was last on the map, in uptime milliseconds: the glass, once
+         * slow frames have stopped its blur, waits for the map to rest before it tries it again.
+         */
+        @Volatile
+        var touchedAt = 0L
+            private set
     }
 }
 

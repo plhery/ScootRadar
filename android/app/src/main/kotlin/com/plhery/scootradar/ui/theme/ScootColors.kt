@@ -56,13 +56,20 @@ data class ScootColors(
     val zoneNoRiding: Color,
     val zoneNoParking: Color,
     val zoneSlow: Color,
-    /** What the chrome's glass is tinted with, so small text stays readable over the map. */
+    /**
+     * What the chrome's glass is tinted with, so small text stays readable over the map. With [glassFrost], 40% of
+     * the blurred map shows through by day and 45% by night (app-aw): the text on the glass keeps 4.5:1, and its
+     * secondary text 3:1, over the darkest the blurred map gets by day (a no riding zone over water, a cluster of
+     * near-black dots) and the lightest by night (a no riding zone over a main street, a cluster of near-white dots).
+     */
     val glassTint: Color,
     /** The frost of Liquid Glass itself, under the tint: how much lighter the blurred map is made. */
     val glassFrost: Color,
     /**
      * The glass where there is no blur: a translucent fill, tuned to the App Store screenshots' dock (about
-     * #FBFEF8 over a cream map by day, #1A1C29 over a dark one by night).
+     * #FBFEF8 over a cream map by day, #1A1C29 over a dark one by night). 14% of the map shows through, as much as
+     * keeps its text at 4.5:1 and secondary text at 3:1 over anything sharp under it, black by day and white by
+     * night.
      */
     val glassFill: Color,
     /** Whether these are [withIncreasedContrast]'s colours. */
@@ -171,9 +178,9 @@ data class ScootColors(
             zoneNoRiding = Color(0xFFD92D20),
             zoneNoParking = Color(0xFFC05600),
             zoneSlow = Color(0xFF3E63DD),
-            glassTint = Color.White.copy(alpha = 0.15f),
-            glassFrost = Color.White.copy(alpha = 0.7f),
-            glassFill = Color.White.copy(alpha = 0.9f),
+            glassTint = Color.White.copy(alpha = 0.1f),
+            glassFrost = Color.White.copy(alpha = 0.55f),
+            glassFill = Color.White.copy(alpha = 0.86f),
         )
 
         val Dark = ScootColors(
@@ -210,9 +217,9 @@ data class ScootColors(
             zoneNoRiding = Color(0xFFFF6961),
             zoneNoParking = Color(0xFFFFB340),
             zoneSlow = Color(0xFF7C9CFF),
-            glassTint = Color.Black.copy(alpha = 0.62f),
-            glassFrost = Color.White.copy(alpha = 0.14f),
-            glassFill = Color(0xFF1A1C29).copy(alpha = 0.94f),
+            glassTint = Color.Black.copy(alpha = 0.5f),
+            glassFrost = Color.White.copy(alpha = 0.1f),
+            glassFill = Color(0xFF1A1C29).copy(alpha = 0.86f),
         )
     }
 }
