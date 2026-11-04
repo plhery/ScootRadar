@@ -84,7 +84,9 @@ import kotlin.math.roundToInt
 
 /**
  * A section of a form: its [header], what stands on the sheet itself ([bare], the tiles), the rounded group of
- * [rows] with a hairline between them that starts where their text does, [separatorInset] in, and its [footer].
+ * [rows] with a hairline between them that starts where their text does, [separatorInset] in, and its [footer]. The
+ * header and the footer are in the darker grey that reads at 4.5 to 1 on the sheet, as the iPhone's are since
+ * 357f0c2c (ScooterPalette.secondaryText).
  */
 @Composable
 internal fun FormSection(
@@ -100,7 +102,7 @@ internal fun FormSection(
             Text(
                 header,
                 style = ScootType.subheadline.weight(IosWeight.semibold),
-                color = colors.secondaryLabel,
+                color = colors.secondaryText,
                 modifier = Modifier.padding(start = ROW_PADDING, end = ROW_PADDING, bottom = 8.dp).semantics { heading() },
             )
         }
@@ -123,7 +125,7 @@ internal fun FormSection(
             Text(
                 footer,
                 style = ScootType.footnote,
-                color = colors.secondaryLabel,
+                color = colors.secondaryText,
                 modifier = Modifier.padding(start = ROW_PADDING, end = ROW_PADDING, top = 8.dp),
             )
         }
@@ -270,13 +272,15 @@ internal fun FormText(
             Text(
                 detail,
                 style = if (detailStyle == Detail.Footnote) ScootType.footnote else ScootType.subheadline,
-                color = scootColors.secondaryLabel,
+                // Under a choice in the darker grey, as the iPhone's since 357f0c2c; under a link the system's grey,
+                // as its ExternalLinkRow keeps.
+                color = if (detailStyle == Detail.Footnote) scootColors.secondaryLabel else scootColors.secondaryText,
             )
         }
     }
 }
 
-/** The size of the grey line under a row's text: footnote under a link, subheadline under a choice. */
+/** The size and grey of the line under a row's text: footnote under a link, subheadline under a choice. */
 internal enum class Detail { Footnote, Subheadline }
 
 /** ExternalLinkRow: a row that leaves the app, its text and an arrow that says so. */
@@ -358,7 +362,7 @@ internal fun FormStepperRow(title: String, value: Int, valueText: String, range:
         },
     ) {
         Text(title, style = ScootType.body, color = colors.label, modifier = Modifier.weight(1f).clearAndSetSemantics { })
-        Text(valueText, style = ScootType.body.monospacedDigit(), color = colors.secondaryLabel, modifier = Modifier.clearAndSetSemantics { })
+        Text(valueText, style = ScootType.body.monospacedDigit(), color = colors.secondaryText, modifier = Modifier.clearAndSetSemantics { })
         Row(
             Modifier
                 .padding(start = 8.dp)

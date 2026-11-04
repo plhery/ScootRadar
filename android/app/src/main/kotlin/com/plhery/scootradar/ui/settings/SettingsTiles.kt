@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
@@ -49,7 +50,9 @@ import com.plhery.scootradar.core.model.AppleMapStyle
 import com.plhery.scootradar.core.model.ScooterAppearance
 import com.plhery.scootradar.map.GroundPalette
 import com.plhery.scootradar.map.GroundPalettes
+import com.plhery.scootradar.ui.dock.SymbolIcon
 import com.plhery.scootradar.ui.dock.hoveredAlpha
+import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.theme.FocusRing
 import com.plhery.scootradar.ui.theme.IosWeight
 import com.plhery.scootradar.ui.theme.ScootType
@@ -89,9 +92,9 @@ internal fun SettingsTileRow(title: String, count: Int, tile: @Composable (index
 internal val TILE_SPACING = 10.dp
 
 /**
- * A choice as a tile: its picture over its name, in a hairline frame around a faint fill, blue once chosen. It dims
- * under the finger, as a plain button, and a little under a mouse's pointer; TalkBack reads it as one of the group's
- * choices.
+ * A choice as a tile: its picture over its name, in a hairline frame around a faint fill, blue and checked once
+ * chosen. It dims under the finger, as a plain button, and a little under a mouse's pointer; TalkBack reads it as one
+ * of the group's choices.
  */
 @Composable
 internal fun SettingsTile(
@@ -119,18 +122,32 @@ internal fun SettingsTile(
             Modifier.fillMaxWidth().height(64.dp).clip(SquircleShape(12.dp)).clearAndSetSemantics { },
         ) { picture() }
         val style = ScootType.footnote.weight(IosWeight.semibold)
-        Text(
-            title,
-            style = style,
-            color = if (isSelected) colors.actionText else colors.label,
-            maxLines = 1,
-            softWrap = false,
-            // `.lineLimit(1)`: what doesn't fit at three quarters of its size ends with "…", not at the tile's edge.
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-            autoSize = shrinking(style, 0.75f),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
-        )
+        val ink = if (isSelected) colors.actionText else colors.label
+        // The chosen tile says so by more than its colour: a check before its name, the two centred together, as the
+        // iPhone's since 357f0c2c (ScooterSettingsTiles.swift:42-54), hidden from TalkBack, which reads the tile as
+        // selected. The name has the room the check leaves.
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 2.dp),
+            horizontalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (isSelected) {
+                // `checkmark.circle.fill` in the footnote, `.imageScale(.small)`.
+                SymbolIcon(Symbols.checkCircleFill, textSymbolSize(13f) * 0.8f, ink, Modifier.clearAndSetSemantics { })
+            }
+            Text(
+                title,
+                style = style,
+                color = ink,
+                maxLines = 1,
+                softWrap = false,
+                // `.lineLimit(1)`: what doesn't fit at three quarters of its size ends with "…", not at the tile's edge.
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                autoSize = shrinking(style, 0.75f),
+                modifier = Modifier.weight(1f, fill = false),
+            )
+        }
     }
 }
 

@@ -405,13 +405,15 @@ class ScooterMarkerArt(
 
     /**
      * MapKit's marker balloon, as it draws it on the Mac (MAP-300): a disc in the tint inside a white rim, lighter
-     * at its top, on a short point, with the glyph in white. Selected, it is larger, on a longer point, over a small
-     * dot where the bay is. The picture is as tall above the bay as below it, so that it hangs from its middle.
+     * at its top, on a short point, with the glyph in the ink that reads on the tint, as the provider's initials
+     * are (ScooterMapView.swift:1575-1579). Selected, it is larger, on a longer point, over a small dot where the
+     * bay is. The picture is as tall above the bay as below it, so that it hangs from its middle.
      */
     private fun draw(key: BayKey): Bitmap {
         val shape = BayShape.of(key.isSelected)
-        return balloon(key.provider?.color ?: SYSTEM_BLUE, shape) { x, centre ->
-            val paint = textPaint(TextFace(fonts.bold, shape.glyph.toFloat()), Color.WHITE)
+        val tint = key.provider?.color ?: SYSTEM_BLUE
+        return balloon(tint, shape) { x, centre ->
+            val paint = textPaint(TextFace(fonts.bold, shape.glyph.toFloat()), ScooterMapLook.ink(on = tint).toInt())
             text("P", paint, x - paint.measureText("P") / 2.0, centre - lineHeight(paint) / 2)
         }
     }
@@ -534,7 +536,8 @@ class ScooterMarkerArt(
             val nameLeft = PILL_LEADING + PILL_DOT + PILL_GAP
             text(content.name, name, nameLeft, (height - lineHeight(name)) / 2)
             content.time?.let { time ->
-                val paint = textPaint(timeFont, if (content.isFilled) ink.withAlpha(0.8) else quiet.toInt())
+                // On the provider's colour in the full ink, which reads at 4.5 to 1 (ScooterMarkerArt.swift:369).
+                val paint = textPaint(timeFont, if (content.isFilled) ink.toInt() else quiet.toInt())
                 val left = nameLeft + ceil(name.measureText(content.name).toDouble()) + PILL_GAP
                 text(time, paint, left, (height - lineHeight(paint)) / 2)
             }

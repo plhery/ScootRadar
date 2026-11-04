@@ -529,7 +529,7 @@ private fun SettingsRoot(
                         Text(
                             automatic,
                             style = ScootType.subheadline,
-                            color = scootColors.secondaryLabel,
+                            color = scootColors.secondaryText,
                             textAlign = TextAlign.End,
                             modifier = Modifier.weight(1f),
                         )
@@ -562,7 +562,7 @@ private fun SettingsRoot(
                         Text(
                             status,
                             style = ScootType.subheadline,
-                            color = scootColors.secondaryLabel,
+                            color = scootColors.secondaryText,
                             textAlign = TextAlign.End,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
@@ -716,7 +716,7 @@ private fun PassEditor(controller: ScooterMapController, provider: ScooterProvid
                 Text(
                     localized("Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding."),
                     style = ScootType.footnote,
-                    color = scootColors.secondaryLabel,
+                    color = scootColors.secondaryText,
                 )
             }
         },

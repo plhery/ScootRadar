@@ -2,9 +2,11 @@ package com.plhery.scootradar.ui.settings
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
@@ -78,8 +80,9 @@ class SettingsTileNameTest {
     /**
      * `.minimumScaleFactor(0.75)`: a name that doesn't fit its tile at its size is drawn smaller first, at the largest
      * size that fits, down to three quarters of it, and only cut short with "…" at three quarters. The size drawn is
-     * read from the span of the name's first four letters, against theirs laid out at its size, at the largest that
-     * fits and at three quarters of it: the layout TalkBack is handed keeps the style asked for, not the size drawn.
+     * read from the span of the name's first four letters (fewer if "…" comes sooner), against theirs laid out at its
+     * size, at the largest that fits and at three quarters of it: the layout TalkBack is handed keeps the style asked
+     * for, not the size drawn.
      * The app shrinks a quarter of a dp at a time, so the largest that fits is drawn up to a quarter of a dp under; a
      * shrink straight to three quarters is drawn under it (review-app-ah 3).
      */
@@ -96,7 +99,9 @@ class SettingsTileNameTest {
             fun laidOut(style: TextStyle) = measurer.measure(input.text, style, softWrap = false, maxLines = 1)
             val own = laidOut(input.style)
             val threeQuarters = laidOut(input.style.copy(fontSize = with(input.density) { (input.style.fontSize.toDp() * 0.75f).toSp() }))
-            fun TextLayoutResult.span(): Float = getBoundingBox(minOf(4, name.length) - 1).right - getBoundingBox(0).left
+            // Of the letters left before a "…": Automatic beside the check keeps three.
+            val letters = minOf(4, name.length, layout.getLineEnd(0, visibleEnd = true))
+            fun TextLayoutResult.span(): Float = getBoundingBox(letters - 1).right - getBoundingBox(0).left
             val drawn = layout.span()
             val fits = own.size.width <= layout.size.width
             val cutShort = layout.isLineEllipsized(0)
@@ -132,9 +137,47 @@ class SettingsTileNameTest {
         assertTrue("a name shrunk to fit, not cut short: $seen", shrunk > 0)
     }
 
+    /**
+     * The chosen tile says so by more than its colour: a check before its name, the two centred together, so that
+     * its name stands right of the tile's middle by half the check and its gap, 3 (357f0c2c,
+     * ScooterSettingsTiles.swift:42-54). The others' names are centred.
+     */
+    @Test
+    @Config(qualifiers = "w360dp-h1000dp-xhdpi") // Tall enough for the medium detent to show the map's tiles.
+    fun theChosenTileShowsACheckBeforeItsName() {
+        showSettings()
+        val tiles = compose.onAllNodes(isSelectable(), useUnmergedTree = true).fetchSemanticsNodes()
+        val (chosen, others) = tiles.partition { it.config[SemanticsProperties.Selected] }
+        assertEquals("an appearance and a map chosen", 2, chosen.size)
+        assertTrue("${others.size} tiles not chosen", others.size >= 3)
+        val density = compose.density.density
+        // `checkmark.circle.fill` in the footnote, 13 points, at `.imageScale(.small)`: 13 × 1.2 × 0.8.
+        val check = 13 * 1.2f * 0.8f
+        fun offset(tile: SemanticsNode): Pair<String, Float> {
+            val name = tile.children.single { SemanticsProperties.Text in it.config }
+            assertTrue("${name.config[SemanticsProperties.Text]} on the screen", name.boundsInRoot.width > 0)
+            return name.config[SemanticsProperties.Text].joinToString() to (name.boundsInRoot.center.x - tile.boundsInRoot.center.x) / density
+        }
+        for ((name, offset) in chosen.map(::offset)) assertEquals(name, (check + 3) / 2, offset, 0.5f)
+        for ((name, offset) in others.map(::offset)) assertEquals(name, 0f, offset, 0.5f)
+    }
+
     /** The tiles' names laid out under Automatic at font scale 1.3, each with its layout. */
     private fun tilesNames(): List<Pair<String, TextLayoutResult>> {
         useFontScale(1.3f)
+        showSettings()
+        return NAMES.flatMap { name ->
+            compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.Text, listOf(AnnotatedString(name))), useUnmergedTree = true)
+                .fetchSemanticsNodes()
+                .map { node ->
+                    val results = mutableListOf<TextLayoutResult>()
+                    node.config.getOrNull(SemanticsActions.GetTextLayoutResult)?.action?.invoke(results)
+                    name to results.single()
+                }
+        }
+    }
+
+    private fun showSettings() {
         compose.setContent {
             ScootTheme(dark = false, reduceMotion = true) {
                 // As the phone's dock opens it, at the medium detent.
@@ -152,15 +195,6 @@ class SettingsTileNameTest {
             }
         }
         compose.waitForIdle()
-        return NAMES.flatMap { name ->
-            compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.Text, listOf(AnnotatedString(name))), useUnmergedTree = true)
-                .fetchSemanticsNodes()
-                .map { node ->
-                    val results = mutableListOf<TextLayoutResult>()
-                    node.config.getOrNull(SemanticsActions.GetTextLayoutResult)?.action?.invoke(results)
-                    name to results.single()
-                }
-        }
     }
 
     private companion object {

@@ -490,11 +490,17 @@ object ScooterMapLook {
 
     /**
      * The colour of what is written on the provider's colour: the initials on a dot or on the card's tile, and
-     * the name on a filled pill. White, as on the badge of an app; dark only on Bird's and Swing's near white of
-     * a dark map.
+     * the name on a filled pill.
      */
-    fun ink(on: ScooterProvider?, isDark: Boolean): Long =
-        if (on != null && on in nearBlack && isDark) nearBlackInk else white
+    fun ink(on: ScooterProvider?, isDark: Boolean): Long = ink(on = dotColor(on, isDark))
+
+    /**
+     * White or near black, whichever reads better [on] the ground: at least 4.5 to 1 on every provider's colour,
+     * where white alone fell to 2.1 on Lime's green (ScooterMapLook.swift:483-494). Of two that read as well,
+     * white.
+     */
+    fun ink(on: Long): Long =
+        if (contrastRatio(white, on) >= contrastRatio(nearBlackInk, on)) white else nearBlackInk
 
     fun contrastRatio(between: Long, and: Long): Double {
         val firstLuminance = relativeLuminance(between)

@@ -248,13 +248,17 @@ class ScooterFilteringTest {
     @Test
     fun providerInitialsAreWrittenInTheInkOfTheirColour() {
         val white = 0xFFFFFFFF
-        val nearBlack = listOf(ScooterProvider.Bird, ScooterProvider.Swing)
-        for (provider in ScooterProvider.entries.filter { it !in nearBlack }) {
+        // White on the darker colours, near black on the bright ones (357f0c2c).
+        for (provider in listOf(ScooterProvider.Publibike, ScooterProvider.RideMobility, ScooterProvider.Yoio, ScooterProvider.Jet)) {
             assertEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = false))
             assertEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = true))
         }
+        for (provider in listOf(ScooterProvider.Lime, ScooterProvider.Bolt, ScooterProvider.Voi, ScooterProvider.Dott, ScooterProvider.Hopp)) {
+            assertNotEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = false))
+            assertNotEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = true))
+        }
         // Bird and Swing are near black by day and almost white on a dark map.
-        for (provider in nearBlack) {
+        for (provider in listOf(ScooterProvider.Bird, ScooterProvider.Swing)) {
             assertEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = false))
             assertNotEquals(provider.displayName, white, ScooterMapLook.ink(on = provider, isDark = true))
         }

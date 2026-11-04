@@ -545,10 +545,29 @@ class ScooterMapLookTest {
                     between = ScooterMapLook.ink(on = provider, isDark = isDark),
                     and = ScooterMapLook.dotColor(provider, isDark = isDark),
                 )
-                // White stands out from every colour: least from Lime's green, at 2.1 to 1.
-                assertTrue("${provider.displayName}, dark: $isDark", ratio >= 2)
+                // White or near black, whichever reads better: at least 4.5 to 1 (Elerent's olive, the least, is
+                // 4.56), where white alone was 2.1 on Lime's green (357f0c2c).
+                assertTrue("${provider.displayName}, dark: $isDark: $ratio", ratio >= 4.5)
+            }
+            // A bay's "P" on the provider's own colour, which its marker keeps in the dark.
+            val bay = ScooterMapLook.contrastRatio(between = ScooterMapLook.ink(on = provider.color), and = provider.color)
+            assertTrue("${provider.displayName}'s bay: $bay", bay >= 4.5)
+        }
+    }
+
+    /** What the report and the accessibility page quote: the least ratio, and white's on Lime before 357f0c2c. */
+    @Test
+    fun theLeastInkContrastIsElerentsOlive() {
+        val ratios = ScooterProvider.entries.flatMap { provider ->
+            listOf(false, true).map { isDark ->
+                val ground = ScooterMapLook.dotColor(provider, isDark)
+                Triple(provider, isDark, ScooterMapLook.contrastRatio(between = ScooterMapLook.ink(on = ground), and = ground))
             }
         }
+        val least = ratios.minBy { it.third }
+        assertEquals(ScooterProvider.Elerent, least.first)
+        assertEquals(4.56, least.third, 0.005)
+        assertEquals(2.1, ScooterMapLook.contrastRatio(between = ScooterMapLook.white, and = ScooterProvider.Lime.color), 0.05)
     }
 
     @Test
