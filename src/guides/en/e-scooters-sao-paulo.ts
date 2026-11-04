@@ -23,15 +23,15 @@ const guide: Guide = {
             '**JET**, running since January 2025 (accredited as Easyjet Mobilidade Ltda). For Brazil, JET’s website sends you to its newer app, **Go Jet**, run by JETSHR LTDA. JET says you need no driving licence.',
           ],
         },
-        'Both rent only to adults. JET checks your age against a CPF, the Brazilian taxpayer number, when you sign up, and Whoosh’s terms list the CPF among the details it may ask for. Neither says what a visitor without one should do.',
+        'Both rent only to adults. JET checks your age against a CPF, the Brazilian taxpayer number, when you sign up, and Whoosh’s terms list the CPF among the details it may ask for.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does electric scooter rental in São Paulo cost?',
       blocks: [
-        'Both apps show the price before you start, and both may change it: Whoosh prices each scooter in the app, and JET says its rates vary by city, day of the week and demand. Neither publishes a São Paulo rate on its website.',
-        'The one published figure is Whoosh’s launch price, which its chief executive gave when the Prefeitura announced the service on 13 December 2024: R$2 to unlock plus R$0.67 a minute, or R$8.70 for a 10-minute ride. That was nearly two years ago, so check the app for today’s rate. Whoosh may also add personal accident insurance to each ride’s price unless you switch it off before you start. A Whoosh Pass, for a week, a month or a year, removes the unlock fee but not the price per minute. Whoosh takes cards, Pix, Apple Pay and Google Pay. JET charges paused time like riding time.',
+        'Both apps show the price before you start, and both may change it: Whoosh prices each scooter in the app, and JET says its rates vary by city, day of the week and demand.',
+        'Whoosh’s launch price, which its chief executive gave when the Prefeitura announced the service on 13 December 2024, was R$2 to unlock plus R$0.67 a minute, or R$8.70 for a 10-minute ride. That was nearly two years ago, so check the app for today’s rate. Whoosh may also add personal accident insurance to each ride’s price unless you switch it off before you start. A Whoosh Pass, for a week, a month or a year, removes the unlock fee but not the price per minute. Whoosh takes cards, Pix, Apple Pay and Google Pay. JET charges paused time like riding time.',
         {
           table: {
             caption: 'What Whoosh charges in Brazil when a ride goes wrong (terms updated 21 March 2025)',
@@ -50,7 +50,7 @@ const guide: Guide = {
             ],
           },
         },
-        'JET’s Brazilian terms (revised August 2026) make you answer for fines, seizures and removal costs too, without fixed amounts; JET says every ride is insured.',
+        'JET’s Brazilian terms (revised August 2026) make you answer for fines, seizures and removal costs too; JET says every ride is insured.',
       ],
     },
     {
@@ -105,7 +105,6 @@ const guide: Guide = {
               ['Speed', '20 km/h; 15 km/h on a new rider’s first ten rides; 6 km/h on shared pavement cycle lanes', 'City (Portaria 23; CMUV Resolution 22)'],
               ['The scooter', 'Up to 1,000 W and 32 km/h by design, at most 70 cm wide, with a speed display or limiter, a bell and lights at the front, rear and sides', 'National (CONTRAN Resolution 996)'],
               ['Registration and plates', 'None needed', 'National (CONTRAN Resolution 996)'],
-              ['Hours', 'None set', '–'],
             ],
           },
         },
@@ -115,17 +114,16 @@ const guide: Guide = {
     {
       heading: 'Where to find JET and Whoosh scooters in São Paulo',
       blocks: [
-        'Between 11:34 and 11:48 on Sunday 25 October 2026 the [map of São Paulo](map:br:São Paulo) showed about 6,300 standing scooters: 3,500 JET and 2,800 Whoosh. That is a snapshot, not the size of either fleet, and scooters on a ride don’t appear.',
-        'Matched to the Prefeitura’s own boundaries (GeoSampa), nearly 6,000 stood in the city of São Paulo and about 340, all JET’s, over the boundary in Santo André, which the map counts with São Paulo. None stood in São Caetano do Sul or Diadema.',
+        'Between 11:34 and 11:48 on Sunday 25 October 2026 the [map of São Paulo](map:br:São Paulo) showed about 6,300 standing scooters: 3,500 JET and 2,800 Whoosh. That is a snapshot, not the size of either fleet.',
         'The busiest districts were Pinheiros (about 870), Itaim Bibi (600), Moema (550), Bela Vista (350) and Santo Amaro (340). More than half of Whoosh’s scooters stood in the Subprefeitura de Pinheiros, which covers Pinheiros, Itaim Bibi, Jardim Paulista and Alto de Pinheiros; the rest spread from the centre and Vila Mariana to Barra Funda, Mooca, Tatuapé and the north. More than half of JET’s scooters in the city stood in the south, from Moema, Vila Mariana and Saúde to Santo Amaro and Ipiranga.',
-        'The map shows Go Jet and Whoosh: each Whoosh scooter’s charge and range, and each JET scooter’s charge. It shows no prices, stations, zones or hours; the apps do. It also shows both operators in [Curitiba](map:br:Curitiba) and Whoosh in [Rio de Janeiro](map:br:Rio de Janeiro).',
+        'The map also shows both operators in [Curitiba](map:br:Curitiba) and Whoosh in [Rio de Janeiro](map:br:Rio de Janeiro).',
       ],
     },
     {
       heading: 'The metro and the city’s bikes',
       blocks: [
-        'The São Paulo Metro (Metrô) carries bicycles on weekdays from 10:00 to 16:00 and from 21:00 to closing, and all day at weekends and on holidays, at most four a train in the last car; folded bikes in a bag go at any time. Its rules say nothing about scooters. Line 4-Yellow, run by Motiva (formerly ViaQuatro), takes scooters at any hour only if they fold, and turns away any that don’t. Whoosh charges R$80 for taking its scooter on the metro, so leave it at a bay near the station, never on the pavement in front of the entrance.',
-        'The city’s docked bike share, Bike Sampa, is run by Tembici and sponsored by Itaú, which brands it Bike Itaú; it added docked e-bikes in June 2022. The map doesn’t show it.',
+        'The São Paulo Metro (Metrô) carries bicycles on weekdays from 10:00 to 16:00 and from 21:00 to closing, and all day at weekends and on holidays, at most four a train in the last car; folded bikes in a bag go at any time. Line 4-Yellow, run by Motiva (formerly ViaQuatro), takes scooters at any hour only if they fold, and turns away any that don’t. Whoosh charges R$80 for taking its scooter on the metro, so leave it at a bay near the station, never on the pavement in front of the entrance.',
+        'The city’s docked bike share, Bike Sampa, is run by Tembici and sponsored by Itaú, which brands it Bike Itaú; it added docked e-bikes in June 2022.',
       ],
     },
     {
@@ -148,7 +146,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does an e-scooter cost in São Paulo?',
-      answer: 'The app shows the price before you ride. Whoosh charged R$2 to unlock plus R$0.67 a minute at its launch in December 2024; JET publishes no São Paulo rate.',
+      answer: 'The app shows the price before you ride. Whoosh charged R$2 to unlock plus R$0.67 a minute at its launch in December 2024.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in São Paulo?',
@@ -164,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'Can tourists rent e-scooters in São Paulo?',
-      answer: 'If they are 18 or over, with a phone number and a payment method. JET checks your age against a CPF, the Brazilian taxpayer number, and Whoosh may ask for one; neither says what a visitor without a CPF should do.',
+      answer: 'If they are 18 or over, with a phone number and a payment method. JET checks your age against a CPF, the Brazilian taxpayer number, and Whoosh may ask for one.',
     },
   ],
   sources: [

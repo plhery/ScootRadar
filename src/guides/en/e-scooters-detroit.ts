@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Detroit 2026: Lime, Spin, rules and RiverWalk',
   description: 'E-scooters in Detroit: Lime and Spin, the Michigan and City rules, sidewalks, the RiverWalk and Belle Isle, curfews, parking, the QLINE, DTW and Windsor.',
   headline: 'E-scooters in Detroit: Lime and Spin, the rules, the RiverWalk and where you can’t ride',
-  lede: 'Detroit’s shared e-scooters come from Lime and from Spin, which Bird runs through its own app. Neither company’s open data gives Detroit prices, so check the app before you unlock. Michigan law lets you ride on the sidewalk if you yield to people on foot, and riders under 19 must wear a helmet. Spin’s data bars riding in the middle of Campus Martius Park, and the RiverWalk’s rules bar e-scooters going over 7 mph.',
+  lede: 'Detroit’s shared e-scooters come from Lime and from Spin, which Bird runs through its own app. Check the price in the app before you unlock. Michigan law lets you ride on the sidewalk if you yield to people on foot, and riders under 19 must wear a helmet. Spin’s data bars riding in the middle of Campus Martius Park, and the RiverWalk’s rules bar e-scooters going over 7 mph.',
   published: '2026-10-18',
   updated: '2026-10-23',
   city: 'us:mi:Detroit',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which scooter apps work in Detroit?',
       blocks: [
-        'The City’s Office of Mobility Innovation (OMI) runs Detroit’s dockless e-scooter programme, and the Department of Public Works (DPW) issues the permits under Chapter 47 of the City Code. The City’s 2026–2027 permit round set a two-year term, from 15 April 2026 to 14 April 2028, with up to three permits, no more than 4,000 scooters in all, at least 1,000 out even in the slow seasons and at least 4% of each company’s scooters in each of the seven Council districts. We found no published list of the winners.',
+        'The City’s Office of Mobility Innovation (OMI) runs Detroit’s dockless e-scooter programme, and the Department of Public Works (DPW) issues the permits under Chapter 47 of the City Code. The City’s 2026–2027 permit round set a two-year term, from 15 April 2026 to 14 April 2028, with up to three permits, no more than 4,000 scooters in all, at least 1,000 out even in the slow seasons and at least 4% of each company’s scooters in each of the seven Council districts.',
         {
           list: [
             '**Lime**: in the Lime app you unlock a scooter by scanning its QR code or entering its plate number.',
             '**Spin**: its open data names Bird Rides as the operator and sends riders to the Bird app, so that is the app you need.',
-            '**Bird**: the City’s page, written before the 2026 permit round, names “Lime, Bird, and Spin”. Bird’s own Detroit open data listed no scooters on 17 October 2026: the Bird-run scooters we can see are Spin’s.',
+            '**Bird**: the City’s page, written before the 2026 permit round, names “Lime, Bird, and Spin”; in October 2026 the Bird-run scooters in Detroit were Spin’s.',
           ],
         },
-        'At 15:25 on 17 October 2026 the [Detroit map](map:us:mi:Detroit) showed about 1,960 Lime and 295 Spin scooters: what was on the map at that moment, not the fleets. The map shows only companies with open data. The Bird scooters you may see across the river are in [Windsor, Ontario](map:ca:on:Windsor): another country, with its own scheme.',
-        '**Prices** appear only in the apps. All three companies offer cheaper rides to residents on low incomes, OMI says, each with its own programme.',
+        'At 15:25 on 17 October 2026 the [Detroit map](map:us:mi:Detroit) showed about 1,960 Lime and 295 Spin scooters: what was on the map at that moment, not the fleets. The Bird scooters you may see across the river are in [Windsor, Ontario](map:ca:on:Windsor): another country, with its own scheme.',
+        '**Prices**: check the rate in the app before you unlock. All three companies offer cheaper rides to residents on low incomes, OMI says, each with its own programme.',
         '**Visiting?** Get the Lime or Bird app before you set out; Bird’s terms say riders must be “over the age of 18”. With that slow-season minimum, scooters stay out through the winter. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -43,11 +43,12 @@ const guide: Guide = {
               ['Helmet', 'Required under 19', 'Michigan, MCL 257.658(4)'],
               ['Speed', 'The City sets the companies’ top speeds and slower zones through geofencing; no e-scooters “over 7mph” on the RiverWalk', 'City (DPW permit terms, OMI); Detroit Riverfront Conservancy’s rules'],
               ['Where to ride', 'As near the right side of the road as you can, no more than two abreast', 'Michigan, MCL 257.660'],
+              ['Roads', 'Only those with a speed limit of 25 mph or less; a scooter with handlebars may cross one with a limit of up to 45 mph', 'Michigan, MCL 257.660'],
               ['Sidewalks', 'Allowed: yield to pedestrians and sound a warning before you pass', 'Michigan, MCL 257.660, which lets cities regulate sidewalk riding'],
               ['Passengers', 'None: one rider per scooter', 'Michigan, MCL 257.658(3)'],
               ['Lights', 'After dark, a white front light visible from 500 feet, and a rear reflector', 'Michigan, MCL 257.662(1)'],
               ['Alcohol and drugs', 'Michigan’s drunk-driving law covers e-scooters, a 2015 appeals court ruling held', 'Michigan, MCL 257.625'],
-              ['Night', 'The City’s geofencing includes “safety curfews”, but no hours are published', 'City (OMI)'],
+              ['Night', 'The City’s geofencing includes “safety curfews”', 'City (OMI)'],
             ],
           },
         },
@@ -59,9 +60,9 @@ const guide: Guide = {
         {
           list: [
             '**The RiverWalk and the Dequindre Cut.** The Detroit Riverfront Conservancy runs them and nearby parks such as Cullen Plaza. Its rules prohibit “E-scooters, e-bikes, & other electric personal transporters over 7mph”, so keep to 7 mph or less there, or walk. The riverfront is open from 6 am to 10 pm.',
-            '**Belle Isle** has been a state park, run by the Michigan DNR, since February 2014. The DNR can regulate scooters off the island’s roads, which are state highways, the Detroit Greenways Coalition notes. Spin’s open data lets you ride through but not start or end a ride there, yet at 18:34 on 17 October 2026 Lime’s showed about a dozen scooters parked there. We couldn’t reach the DNR’s current rules: follow the park’s signs.',
-            '**Wayne State, Greektown and the stadiums.** On 17 October 2026 Spin’s open data marked dozens of small no-ride blocks across Wayne State’s campus in Midtown and downtown: around Campus Martius, Greektown, Ford Field and Comerica Park, Little Caesars Arena and the riverfront east of the Renaissance Center. Near Michigan Central in Corktown you can ride a Spin through but not end there. These are Spin’s own zones, not City Code rules; Lime shows its zones only in its app.',
-            '**Game days and events.** The City’s permit terms make the companies follow its geofencing requests for special events. We found no fixed game-day rule, and Spin’s data had no zone at Eastern Market.',
+            '**Belle Isle** has been a state park, run by the Michigan DNR, since February 2014. The DNR can regulate scooters off the island’s roads, which are state highways, the Detroit Greenways Coalition notes. Spin’s open data lets you ride through but not start or end a ride there, yet at 18:34 on 17 October 2026 Lime’s showed about a dozen scooters parked there. Follow the park’s signs.',
+            '**Wayne State, Greektown and the stadiums.** On 17 October 2026 Spin’s open data marked dozens of small no-ride blocks across Wayne State’s campus in Midtown and downtown: around Campus Martius, Greektown, Ford Field and Comerica Park, Little Caesars Arena and the riverfront east of the Renaissance Center. Near Michigan Central in Corktown you can ride a Spin through but not end there. These are Spin’s own zones, not City Code rules; Lime’s zones are in its app.',
+            '**Game days and events.** The City’s permit terms make the companies follow its geofencing requests for special events, so check the app on game days.',
           ],
         },
       ],
@@ -69,22 +70,22 @@ const guide: Guide = {
     {
       heading: 'Is there a scooter curfew in Detroit?',
       blocks: [
-        'OMI says the City’s geofencing includes “safety curfews”, but it publishes no hours. In May 2022 Detroit police announced a curfew from 9 pm to 6 am on Friday and Saturday nights in the Central Business District, inside the Lodge, I-75, I-375 and the river. Outlier Media reported then that the City hadn’t decided how long it would last; we found nothing since on whether it still applies.',
-        'Police can also have scooters locked at short notice. On 12 August 2026 Lime’s were locked downtown from about 7 pm, a one-off precaution after social media posts urged teenagers to gather near Campus Martius, ClickOnDetroit reported. Our map shows no night ban for Detroit because no official hours are published: if a scooter won’t start downtown after dark, a curfew may be why.',
+        'OMI says the City’s geofencing includes “safety curfews”. In May 2022 Detroit police announced a curfew from 9 pm to 6 am on Friday and Saturday nights in the Central Business District, inside the Lodge, I-75, I-375 and the river; Outlier Media reported then that the City hadn’t decided how long it would last.',
+        'Police can also have scooters locked at short notice. On 12 August 2026 Lime’s were locked downtown from about 7 pm, a one-off precaution after social media posts urged teenagers to gather near Campus Martius, ClickOnDetroit reported. If a scooter won’t start downtown after dark, a curfew may be why.',
       ],
     },
     {
       heading: 'Parking a scooter in Detroit',
       blocks: [
-        'Detroit’s 2023 ordinance set parking standards for shared scooters and made abandoning one a violation, Council President Mary Sheffield’s newsletter said when it passed. We couldn’t read its current text. Lime asks riders to park clear of walkways, driveways and access ramps, and the City’s permit asks each company how it will cut clutter on sidewalks and keep the clearance the ADA requires. Spin’s data also marks places where you can’t end a ride, such as Belle Isle, so check the app before you park.',
+        'Detroit’s 2023 ordinance set parking standards for shared scooters and made abandoning one a violation, Council President Mary Sheffield’s newsletter said when it passed. Lime asks riders to park clear of walkways, driveways and access ramps, and the City’s permit asks each company how it will cut clutter on sidewalks and keep the clearance the ADA requires. Spin’s data also marks places where you can’t end a ride, such as Belle Isle, so check the app before you park.',
       ],
     },
     {
       heading: 'QLINE, People Mover, buses and DTW airport',
       blocks: [
         '**The QLINE** streetcar is free and runs along Woodward Avenue between downtown and New Center, from 8 am to midnight Monday to Saturday and from 8 am to 9 pm on Sundays. It takes personal scooters that can be stowed in the car, but not hung on the bike racks, and no shared Lime, Bird or Spin scooters: end your rental before you board. QLINE also asks riders to cross the tracks at a right angle, and never in front of a moving streetcar.',
-        '**The People Mover**, with 13 stations downtown, is free too; we found no rule on scooters aboard.',
-        '**Detroit Metro Airport (DTW).** No shared scooter reaches it: on 17 October 2026 neither Lime nor Spin had one within 3 miles. The Detroit Air Xpress (DAX) bus runs direct to downtown throughout the day, the City says.',
+        '**The People Mover**, with 13 stations downtown, is free too.',
+        '**Detroit Metro Airport (DTW).** The Detroit Air Xpress (DAX) bus runs direct to downtown throughout the day, the City says.',
       ],
     },
     {
@@ -92,7 +93,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Windsor**, across the river, is in Canada, with Bird scooters under its own scheme. The Ambassador Bridge’s sidewalk closed after the 9/11 attacks. Since 5 August 2026 the new Gordie Howe International Bridge has had a path for walking and cycling, which opened with summer hours of 8 am to 8 pm (last entry 7 pm). Bring a passport or other border documents. E-bikes were barred for its first weeks and we couldn’t confirm that e-scooters are allowed, so plan to walk.',
+            '**Windsor**, across the river, is in Canada, with Bird scooters under its own scheme. The Ambassador Bridge’s sidewalk closed after the 9/11 attacks. Since 5 August 2026 the new Gordie Howe International Bridge has had a path for walking and cycling, which opened with summer hours of 8 am to 8 pm (last entry 7 pm). Bring a passport or other border documents. E-bikes were barred for its first weeks.',
             '**Ann Arbor** has its own scheme and rules. At 15:25 on 17 October 2026 the [Ann Arbor map](map:us:mi:Ann Arbor) showed about 290 Spin scooters. The D2A2 express bus links downtown Detroit and Ann Arbor.',
           ],
         },
@@ -118,7 +119,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a scooter cost in Detroit?',
-      answer: 'Neither Lime’s nor Spin’s open data gives Detroit prices, so check the rate in the app before you unlock. Each offers cheaper rides to residents on low incomes.',
+      answer: 'Check the rate in the Lime or Bird app before you unlock. Each company offers cheaper rides to residents on low incomes, the City says.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Detroit?',
@@ -134,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Is there a scooter curfew in downtown Detroit?',
-      answer: 'The City’s geofencing includes “safety curfews”, but no hours are published. Police set a 9 pm to 6 am weekend curfew downtown in May 2022; we found nothing saying whether it still applies.',
+      answer: 'The City’s geofencing includes “safety curfews”. Police set a 9 pm to 6 am weekend curfew downtown in May 2022, and on 12 August 2026 they had Lime’s scooters locked downtown from about 7 pm as a one-off precaution.',
     },
   ],
   sources: [

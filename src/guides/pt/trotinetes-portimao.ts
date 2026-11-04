@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trotinetes em Portimão 2026: Bird, Praia da Rocha e regras',
   description: 'Trotinetes em Portimão: a Bird, onde não pode andar nem estacionar na Praia da Rocha, na Ribeirinha e em Alvor, os passadiços e as regras de 2026.',
   headline: 'Trotinetes em Portimão: a Bird, a Praia da Rocha, Alvor e as regras que a Câmara prepara',
-  lede: 'As trotinetes partilhadas em Portimão são da Bird, em outubro de 2026, e o preço só aparece na app, antes de desbloquear. A zona da Bird vai do centro à Praia da Rocha e a Alvor, mas não se termina a viagem junto às praias da Rocha e do Vau, nem se anda nas zonas pedonais do centro, junto ao rio e em Alvor. Nos passadiços das praias, as trotinetes são proibidas, e a Câmara começou em agosto de 2026 a preparar regras próprias.',
+  lede: 'As trotinetes partilhadas em Portimão são da Bird, em outubro de 2026, e a app mostra o preço antes de desbloquear. A zona da Bird vai do centro à Praia da Rocha e a Alvor, mas não se termina a viagem junto às praias da Rocha e do Vau, nem se anda nas zonas pedonais do centro, junto ao rio e em Alvor. Nos passadiços das praias, as trotinetes são proibidas, e a Câmara começou em agosto de 2026 a preparar regras próprias.',
   published: '2026-10-18',
   updated: '2026-10-26',
   city: 'pt:Portimão',
@@ -16,27 +16,17 @@ const guide: Guide = {
     {
       heading: 'Que trotinetes partilhadas há em Portimão?',
       blocks: [
-        'Em outubro de 2026, quem aluga trotinetes em Portimão é a **Bird**, que tem também bicicletas elétricas na mesma app. Não encontrámos outra empresa: a página da Bolt para o Algarve só tem viagens de carro, e nas deliberações da Câmara desde 2024 só aparece a Bird.',
-        {
-          table: {
-            caption: 'Trotinetes partilhadas em Portimão: quem as aluga e a que preço (17 de outubro de 2026)',
-            head: ['Quem', 'Em Portimão', 'Preço', 'No nosso mapa'],
-            rows: [
-              ['Bird', 'Trotinetes e bicicletas elétricas', 'Não publicado: veja na app', 'Sim: cerca de 450 trotinetes'],
-              ['Bolt, Lime e outras', 'Não encontrámos nenhuma', '–', 'Não'],
-            ],
-          },
-        },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 450 no [mapa de Portimão](map:pt:Portimão) às 18h25 de 17 de outubro de 2026, de Alvor à Praia da Rocha. São as que estavam paradas e livres, não a frota da Bird. As bicicletas elétricas da Bird, cerca de 100 nos dados abertos da madrugada seguinte, não aparecem no mapa.',
-        '**Preço.** A Bird não publica as tarifas de Portimão, nem no site nem nos dados abertos: a app mostra o preço no ecrã de desbloqueio. Pelo contrato da Bird para Portugal (versão de 8 de dezembro de 2021), o preço pode juntar uma taxa de início, um valor por minuto ou por distância e um mínimo, há passes, e o máximo por dia de calendário é de 100 €. É preciso ter 18 anos. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'Em outubro de 2026, quem aluga trotinetes em Portimão é a **Bird**, que tem também bicicletas elétricas na mesma app.',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 450 no [mapa de Portimão](map:pt:Portimão) às 18h25 de 17 de outubro de 2026, de Alvor à Praia da Rocha. São as que estavam paradas e livres, não a frota da Bird. Nos dados abertos da Bird da madrugada seguinte havia ainda cerca de 100 bicicletas elétricas.',
+        '**Preço.** A app da Bird mostra o preço no ecrã de desbloqueio. Pelo contrato da Bird para Portugal (versão de 8 de dezembro de 2021), o preço pode juntar uma taxa de início, um valor por minuto ou por distância e um mínimo, há passes, e o máximo por dia de calendário é de 100 €. É preciso ter 18 anos. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
-      heading: 'As regras da Câmara de Portimão: ainda sem regulamento',
+      heading: 'As regras da Câmara de Portimão: um regulamento em preparação',
       blocks: [
-        'Portimão não tem regulamento municipal para as trotinetes partilhadas, em outubro de 2026. Nas deliberações publicadas, o único acordo com a Bird é um projeto-piloto de **bicicletas** elétricas partilhadas, aprovado a 18 de setembro de 2024, com uma segunda fase em agosto de 2025. Não encontrámos a deliberação que enquadra as trotinetes, nem limites de frota ou taxas.',
         'A 19 de agosto de 2026, numa proposta do PSD, a Câmara aprovou o início do procedimento de regulamentação municipal da micromobilidade partilhada (Deliberação n.º 650/26). Segundo a imprensa, a proposta não cria já um regulamento nem prevê proibir as trotinetes. Antes, haverá um diagnóstico técnico do estacionamento, da circulação e dos conflitos com os passeios e os percursos acessíveis, ouvindo a EMARP, a polícia, os operadores e o comércio.',
-        'Até 18 de outubro de 2026, não encontrámos um projeto de regulamento em consulta pública. Desde março de 2026, a Câmara põe sinais de proibição de bicicletas e trotinetes nas zonas pedonais mais movimentadas da cidade e de Alvor, como as da zona ribeirinha e do centro histórico, onde se andava «muitas vezes a velocidades elevadas». Aí, tem de desmontar e levar a trotinete pela mão.',
+        'Desde março de 2026, a Câmara põe sinais de proibição de bicicletas e trotinetes nas zonas pedonais mais movimentadas da cidade e de Alvor, como as da zona ribeirinha e do centro histórico, onde se andava «muitas vezes a velocidades elevadas». Aí, tem de desmontar e levar a trotinete pela mão.',
+        'Com a Bird, a Câmara aprovou a 18 de setembro de 2024 um projeto-piloto de **bicicletas** elétricas partilhadas, com uma segunda fase em agosto de 2025.',
       ],
     },
     {
@@ -67,7 +57,7 @@ const guide: Guide = {
     {
       heading: 'Onde estacionar a trotinete em Portimão',
       blocks: [
-        'Fora das zonas acima, a app da Bird deixa terminar a viagem na maior parte da cidade: nos dados abertos da Bird, Portimão não tem estações. A Bird pede que pare numa zona de estacionamento permitida, baixe o descanso, deixe livres passeios, rampas e entradas, e tire a fotografia na app.',
+        'Fora das zonas acima, a app da Bird deixa terminar a viagem na maior parte da cidade, sem estações fixas. A Bird pede que pare numa zona de estacionamento permitida, baixe o descanso, deixe livres passeios, rampas e entradas, e tire a fotografia na app.',
         { note: 'A app não deixa terminar a viagem à beira-mar? Siga até à Avenida Tomás Cabreira ou à Estrada do Vau e pare fora do passeio: enquanto a viagem não acaba, continua a pagar.' },
         'Uma trotinete própria estacionada no passeio ou na ciclovia dá coima de 15 a 75 €, ou de 30 a 150 € se impedir a passagem de peões. Numa partilhada, o contrato da Bird passa as coimas e as despesas a quem a conduzia, e uma trotinete que não seja devolvida em 48 horas pode custar até 500 €.',
       ],
@@ -92,7 +82,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Ainda não são lei. Não encontrámos em Portimão nenhum horário noturno nem regra de verão para as trotinetes. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules).',
+        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Ainda não são lei. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules).',
       ],
     },
     {
@@ -110,10 +100,9 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E no resto do Algarve? Faro, Lagos, Lagoa, Albufeira e Olhão',
+      heading: 'E no resto do Algarve? Faro e Olhão',
       blocks: [
-        '**Faro.** Em fevereiro de 2025, a Câmara de Faro atribuiu duas licenças em exclusividade, em vigor desde 15 de abril de 2025, por dois anos renováveis até quatro: uma à Lime, com 350 trotinetes e 100 bicicletas, e outra à Bolt, com 350 trotinetes. A página da Bolt para Faro não mostrava trotinetes em outubro de 2026, mas o [mapa de Faro](map:pt:Faro) mostra-as desde 25 de outubro, e as da Lime desde 26.',
-        '**Lagos, Lagoa e Albufeira.** Não encontrámos trotinetes partilhadas em outubro de 2026.',
+        '**Faro.** Em fevereiro de 2025, a Câmara de Faro atribuiu duas licenças em exclusividade, em vigor desde 15 de abril de 2025, por dois anos renováveis até quatro: uma à Lime, com 350 trotinetes e 100 bicicletas, e outra à Bolt, com 350 trotinetes. O [mapa de Faro](map:pt:Faro) mostra as trotinetes da Bolt desde 25 de outubro de 2026, e as da Lime desde 26.',
         '**Olhão.** O [mapa de Olhão](map:pt:Olhão) mostrava cerca de 160 trotinetes da Bird às 18h25 de 17 de outubro de 2026.',
       ],
     },
@@ -133,7 +122,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quanto custa andar de trotinete em Portimão?',
-      answer: 'A Bird não publica preços para Portimão: a app mostra o preço no ecrã de desbloqueio, antes de começar. Pelo contrato da Bird, o máximo por dia de calendário é de 100 €.',
+      answer: 'A app da Bird mostra o preço no ecrã de desbloqueio, antes de começar. Pelo contrato da Bird, o máximo por dia de calendário é de 100 €.',
     },
     {
       question: 'Posso andar de trotinete na Praia da Rocha?',
@@ -149,11 +138,11 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Bolt ou Lime em Portimão?',
-      answer: 'Não encontrámos, em outubro de 2026: em Portimão, as trotinetes partilhadas são da Bird. A Lime e a Bolt têm licenças em Faro desde 2025.',
+      answer: 'Em outubro de 2026, as trotinetes partilhadas em Portimão são da Bird. A Lime e a Bolt têm licenças em Faro desde 2025.',
     },
     {
       question: 'A Câmara de Portimão vai proibir as trotinetes?',
-      answer: 'Não há decisão nesse sentido. A 19 de agosto de 2026, a Câmara aprovou o início de um procedimento para criar regras para a micromobilidade partilhada, que, para já, não prevê a proibição.',
+      answer: 'A 19 de agosto de 2026, a Câmara aprovou o início de um procedimento para criar regras para a micromobilidade partilhada, a começar por um diagnóstico técnico do estacionamento e da circulação; segundo a imprensa, a proposta não prevê proibir as trotinetes.',
     },
   ],
   sources: [
@@ -168,8 +157,6 @@ const guide: Guide = {
     { title: 'Diário da República: Aviso n.º 2549/2024, regulamento das praias de Portimão', url: 'https://diariodarepublica.pt/dr/detalhe/aviso/2549-2024-839799680' },
     { title: 'Câmara de Portimão: projeto-piloto de bicicletas elétricas partilhadas (Deliberação n.º 692/24)', url: 'https://webatas.cm-portimao.pt/pages/deliberacoes.php?id=69871' },
     { title: 'Câmara de Portimão: fase 2 do projeto-piloto (Deliberação n.º 625/25)', url: 'https://webatas.cm-portimao.pt/pages/deliberacoes.php?id=80680' },
-    { title: 'Bolt no Algarve: serviços disponíveis', url: 'https://bolt.eu/pt-pt/cities/algarve/' },
-    { title: 'Bolt em Faro: serviços disponíveis', url: 'https://bolt.eu/pt-pt/cities/faro/' },
     { title: 'Câmara de Faro: Edital n.º 335/2024, hasta pública das licenças', url: 'https://www.cm-faro.pt/upload_files/client_id_1/website_id_1/EDITAIS%20E%20AVISOS/Editais/hastas_publicas/Hasta_publica_micromobilidade_site_final.pdf' },
     { title: 'Câmara de Faro: Edital n.º 97/2025, adjudicação das licenças', url: 'https://www.cm-faro.pt/upload_files/client_id_1/website_id_1/EDITAIS%20E%20AVISOS/Editais/Deliberacoes%20com%20eficacia%20externa/Edital%20n%C2%BA%2097-2025%20-%20Ef.%20Ext.%20RC-24-02-2025.pdf' },
     { title: 'Barlavento: Faro tem novos operadores licenciados para trotinetes e bicicletas (15 de abril de 2025)', url: 'https://www.barlavento.pt/faro-tem-novos-operadores-licenciados-para-trotinetes-e-bicicletas-partilhadas/' },

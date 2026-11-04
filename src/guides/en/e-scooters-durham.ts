@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Durham, NC 2026: Lime, Spin, Duke rules',
   description: 'E-scooters in Durham, NC: Lime and Spin, prices, the City’s sidewalk and greenway rules, Duke’s 6 a.m. to 11 p.m. campus rule, NC Central and GoDurham.',
   headline: 'E-scooters in Durham, North Carolina: Lime and Spin, Duke’s campus rules, and where to ride and park',
-  lede: 'E-scooters in Durham come from Lime and Spin, the two operators the City’s micromobility dashboard lists as active in October 2026. In 2018 and 2019, as INDY Week and ABC11 reported, the City’s rules kept scooters off sidewalks and greenway trails. Duke University allows scooters on its campus only from 6 a.m. to 11 p.m. and wants every ride to start and end next to a bike rack; no citywide hours could be confirmed. Check the price in the app before you unlock.',
+  lede: 'E-scooters in Durham come from Lime and Spin, the two operators the City’s micromobility dashboard lists as active in October 2026. In 2018 and 2019, as INDY Week and ABC11 reported, the City’s rules kept scooters off sidewalks and greenway trails. Duke University allows scooters on its campus only from 6 a.m. to 11 p.m. and wants every ride to start and end next to a bike rack. Check the price in the app before you unlock.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:nc:Durham',
@@ -16,23 +16,22 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Durham?',
       blocks: [
-        'For electric scooter rental in Durham, the public dashboard of the City’s Transportation Department, run by Ride Report, lists two active operators in October 2026: **Lime** and **Spin**. Spin’s open data names Bird Rides, Inc. as the operator of its Durham system. Under the City’s 2018 ordinance, companies needed a City permit, ABC11 reported; which permits run in 2026 couldn’t be checked.',
-        'At 7:45 a.m. on Tuesday 27 October 2026 the [Durham map](map:us:nc:Durham) showed 230 Lime and 157 Spin scooters as they stood at that moment; over the day before, it showed between 209 and 237 Lime and between 150 and 159 Spin. Each figure is a snapshot, not a fleet. At 8:11 a.m. every one of Spin’s 156 available scooters stood inside the city of Durham, by the Census Bureau’s boundaries.',
-        'For Spin the map shows each scooter’s position, charge and range, and Spin’s zones (see below); for Lime, position and range. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**E-bikes and seated scooters aren’t on the map.** ScootRadar shows standing e-scooters only. Spin’s open data listed 30 available e-bikes at 8:11 a.m. on 27 October, and the City’s dashboard counted 2,600 e-bike trips and 7,500 seated-scooter trips from July to September 2026, beside 41,400 scooter trips. It doesn’t say which company runs the seated scooters.',
+        'For electric scooter rental in Durham, the public dashboard of the City’s Transportation Department, run by Ride Report, lists two active operators in October 2026: **Lime** and **Spin**. Spin’s open data names Bird Rides, Inc. as the operator of its Durham system. Under the City’s 2018 ordinance, companies needed a City permit, ABC11 reported.',
+        'At 7:45 a.m. on Tuesday 27 October 2026 the [Durham map](map:us:nc:Durham) showed 230 Lime and 157 Spin scooters as they stood at that moment; over the day before, it showed between 209 and 237 Lime and between 150 and 159 Spin. Each figure is a snapshot, not a fleet.',
+        '**E-bikes and seated scooters** are for hire too. Spin’s open data listed 30 available e-bikes at 8:11 a.m. on 27 October, and the City’s dashboard counted 2,600 e-bike trips and 7,500 seated-scooter trips from July to September 2026, beside 41,400 scooter trips. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime or Spin scooter cost in Durham?',
       blocks: [
-        'No Durham price could be checked on an open page in October 2026, and Spin’s open data held none on 27 October. What can be checked is Duke’s figure from 2024: when Spin added e-scooters and e-bikes on campus with Duke Parking and Transportation Services, Duke Today wrote on 30 August 2024, “Rentals cost $1 to start and 46 cents per minute.” Prices change, so check the rate in the Lime or Spin app before you unlock.',
+        'When Spin added e-scooters and e-bikes on Duke’s campus with Duke Parking and Transportation Services, Duke Today wrote on 30 August 2024: “Rentals cost $1 to start and 46 cents per minute.” Prices change, so check the rate in the Lime or Spin app before you unlock.',
         '**Spin Access** offers cheaper rides to people with limited incomes, Spin says, and riders without a smartphone who hold an Access code can unlock a scooter by text message.',
       ],
     },
     {
       heading: 'Durham scooter rules: sidewalks, greenways, age and hours',
       blocks: [
-        'NCDOT’s report Micromobility in North Carolina (2024, published in April 2025) says e-scooters “are not currently defined by the North Carolina general statutes” and that municipalities “bear the brunt of overseeing the development of micromobility regulations”. The City’s rules below are as INDY Week and ABC11 reported the Shared Active Transportation ordinance the City Council passed unanimously on 15 October 2018, and as ABC11 reported the City’s rules when scooters arrived in June 2019; no newer City text could be checked.',
+        'NCDOT’s report Micromobility in North Carolina (2024, published in April 2025) says e-scooters “are not currently defined by the North Carolina general statutes” and that municipalities “bear the brunt of overseeing the development of micromobility regulations”. The City’s rules below are as INDY Week and ABC11 reported the Shared Active Transportation ordinance the City Council passed unanimously on 15 October 2018, and as ABC11 reported the City’s rules when scooters arrived in June 2019.',
         {
           table: {
             caption: 'E-scooter rules in Durham, and who sets them (as published by 27 October 2026)',
@@ -43,25 +42,25 @@ const guide: Guide = {
               ['Age', '16 or older under the City’s rules, as reported in 2018 and 2019; 18 to ride a Spin; check Lime’s terms in its app', 'City, as reported; Spin’s terms'],
               ['Helmet', 'Required under the 2018 ordinance, as reported; in June 2019 riders were “encouraged” to wear one', 'City, as INDY Week and ABC11 reported it'],
               ['Parking', 'Upright, out of the way of pedestrians and moving vehicles', 'City, June 2019, as ABC11 reported it'],
-              ['Hours', 'No City hours confirmed for 2026; on Duke’s campus, 6 a.m. to 11 p.m.', 'Duke Parking & Transportation, for its campus'],
+              ['Hours', 'On Duke’s campus, 6 a.m. to 11 p.m.', 'Duke Parking & Transportation, for its campus'],
               ['Duke’s campus', '16 or older with a valid driver’s licence, only where bicycles may go, never on sidewalks', 'Duke Parking & Transportation'],
             ],
           },
         },
-        { note: '**On Duke’s campus, ride only from 6 a.m. to 11 p.m.** Duke Parking & Transportation says “Scooters may only be operated between 6am-11pm.” That is Duke’s rule. Across Durham the map showed scooters through the night of 26 to 27 October; in June 2019 ABC11 reported they would “generally be available from 6 a.m. to 11 p.m. daily”, but no City hours could be confirmed for 2026.' },
+        { note: '**On Duke’s campus, ride only from 6 a.m. to 11 p.m.** Duke Parking & Transportation says “Scooters may only be operated between 6am-11pm.” That is Duke’s rule. Across Durham the map showed scooters through the night of 26 to 27 October; in June 2019 ABC11 reported they would “generally be available from 6 a.m. to 11 p.m. daily”.' },
       ],
     },
     {
       heading: 'Parking a scooter in Durham, and the zones on the map',
       blocks: [
-        'Park upright and out of the way, the City said in 2019, as ABC11 reported; on Duke’s campus and at Duke Gardens, next to a bike rack. Spin published three no-ride and five no-parking zones in its open data on 27 October 2026, which the map draws at street zoom. Matched to NC OneMap’s statewide parcel map:',
+        'Park upright and out of the way, the City said in 2019, as ABC11 reported; on Duke’s campus and at Duke Gardens, next to a bike rack. Spin published three no-ride and five no-parking zones in its open data on 27 October 2026, which the map draws at street zoom:',
         {
           list: [
             '**No riding** across the **American Tobacco Campus** and the land beside it on Willard Street, just south of Durham Station, with two small patches: one in Durham Central Park and one on Duke’s West Campus.',
             '**No parking** on nearly all of Duke’s **East Campus** and most of **West Campus**, on parts of Duke’s golf course and the Washington Duke Inn’s grounds, on a residential block at Oakwood Avenue and North Queen Street, and on a small patch of the 700 block of Ninth Street.',
           ],
         },
-        'Even so, 23 of Spin’s available scooters stood inside the two Duke zones at 8:11 a.m. on 27 October. Whatever the app accepts, Duke wants every ride to end next to a bike rack. The map doesn’t show Lime’s zones: check its app.',
+        'Even so, 23 of Spin’s available scooters stood inside the two Duke zones at 8:11 a.m. on 27 October. Whatever the app accepts, Duke wants every ride to end next to a bike rack. Lime’s zones are in its app.',
       ],
     },
     {
@@ -76,14 +75,14 @@ const guide: Guide = {
             '**Duke Gardens and Duke Forest.** Duke Gardens doesn’t allow scooters on its grounds, open from 8 a.m. to sunset; park at a bike rack, such as those at the main entrance. Duke Forest bars motorised vehicles, e-bikes included, except for pre-approved uses, and is closed after sunset.',
           ],
         },
-        'At 8:11 a.m. on 27 October, 23 of Spin’s 156 available scooters stood on Duke’s campus, by the Census Bureau’s college boundaries; around 8 a.m. the map showed no more than five Lime scooters there.',
+        'At 8:11 a.m. on 27 October, 23 of Spin’s 156 available scooters stood on Duke’s campus; around 8 a.m. the map showed no more than five Lime scooters there.',
         '**North Carolina Central University.** At the same moment 52 of Spin’s scooters, a third of the total, stood on NC Central’s campus, against no more than seven of Lime’s. NCCU’s residential policy POL 40.13.5, in force since 1 February 2026, bars e-scooters and e-bikes from every residence hall and university apartment, rooms, hallways and storage rooms included.',
       ],
     },
     {
       heading: 'The American Tobacco Trail and the greenways',
       blocks: [
-        'The **American Tobacco Trail** starts downtown at the corner of Morehead and Blackwell Streets. The City’s Parks & Recreation department describes its Durham section as 11.0 miles of paved, 10-foot-wide trail to the Chatham County line, used by walkers, joggers, cyclists and roller bladers, who must keep below 10 mph. Its page names no scooters, but ABC11 reported in 2018 that the City’s new ordinance barred scooters from greenway trails.',
+        'The **American Tobacco Trail** starts downtown at the corner of Morehead and Blackwell Streets. The City’s Parks & Recreation department describes its Durham section as 11.0 miles of paved, 10-foot-wide trail to the Chatham County line, used by walkers, joggers, cyclists and roller bladers, who must keep below 10 mph. ABC11 reported in 2018 that the City’s new ordinance barred scooters from greenway trails.',
       ],
     },
     {
@@ -93,7 +92,7 @@ const guide: Guide = {
           list: [
             '**GoDurham buses and Durham Station.** GoDurham’s conduct policy lists “use of scooters on buses and/or at Durham Station” as inappropriate conduct: “Scooters may not be used inside the building or on the platforms. Rented scooters/bicycles must be used outside of the station.” Its buses are fare-free through June 2027, under the City’s 2026–2027 budget.',
             '**Duke Transit.** A scooter that folds to fit under the seat and isn’t gasoline-powered may be carried onto a Duke Transit bus, van or ADA vehicle and stowed there, Duke says.',
-            '**Raleigh-Durham International Airport (RDU)** lies outside the city, in unincorporated Wake County, by the Census Bureau’s boundaries; at 8:11 a.m. the nearest available Spin scooter stood about 9 miles away. GoTriangle’s Route 700 runs from Durham Station to the Regional Transit Center every 30 minutes; there, change to the RDU Shuttle (Monday to Saturday, 6 a.m. to 6 p.m.) or to Route 100 after 6 p.m. and all day on Sunday.',
+            '**Raleigh-Durham International Airport (RDU)** lies outside the city, in unincorporated Wake County. GoTriangle’s Route 700 runs from Durham Station to the Regional Transit Center every 30 minutes; there, change to the RDU Shuttle (Monday to Saturday, 6 a.m. to 6 p.m.) or to Route 100 after 6 p.m. and all day on Sunday.',
           ],
         },
         'Raleigh, Durham’s neighbour, has rules of its own: see [e-scooters in Raleigh](guide:raleigh) and the [Raleigh map](map:us:nc:Raleigh).',
@@ -115,7 +114,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'What time do scooters stop in Durham?',
-      answer: 'No City hours could be confirmed for 2026, and the map showed scooters through the night of 26 to 27 October. On Duke’s campus scooters may only be ridden from 6 a.m. to 11 p.m., Duke says.',
+      answer: 'On Duke’s campus scooters may only be ridden from 6 a.m. to 11 p.m., Duke says. Elsewhere in Durham the map showed scooters through the night of 26 to 27 October.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Durham?',
@@ -123,7 +122,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Spin scooter cost in Durham?',
-      answer: 'Duke Today gave $1 to start and 46 cents a minute in August 2024. No newer published price could be checked, for Spin or Lime, so check the rate in the app before you unlock.',
+      answer: 'Duke Today gave $1 to start and 46 cents a minute in August 2024. Prices change, so check the rate in the Spin or Lime app before you unlock.',
     },
     {
       question: 'Can you ride a scooter at Duke?',

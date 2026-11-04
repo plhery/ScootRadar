@@ -17,14 +17,14 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Erfurt?',
       blocks: [
         'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Erfurt: **Yoio** und **Dott**. Yoio gehört der YourCar GmbH aus Göttingen. Dott ist das frühere Tier: Im Oktober 2024 kündigte das Unternehmen an, alle Tier-Scooter auf die Dott-App umzustellen, und Dott führt Erfurt auf seiner Städteliste. Bolt bietet in Erfurt laut eigener Website nur Fahrten mit Fahrer und Taxis an. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Zur Flottengrösse sagt die Stadt nur: 2025 nannte sie für die beiden Anbieter 130 und 280 Fahrzeuge im durchschnittlichen täglichen Einsatz.',
-        '**Yoio und Dott auf unserer Karte.** Die [Karte von Erfurt](map:de:Erfurt) zeigt beide Anbieter, Dott seit dem 24. Oktober 2026. An diesem Samstag standen dort um 13:26 Uhr rund 280 Dott- und rund 210 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Einen Preis für Erfurt nennt Dott nicht: Den siehst du nur in der Dott-App.',
+        '2025 nannte die Stadt für die beiden Anbieter 130 und 280 Fahrzeuge im durchschnittlichen täglichen Einsatz.',
+        '**Yoio und Dott auf unserer Karte.** Die [Karte von Erfurt](map:de:Erfurt) zeigt beide Anbieter, Dott seit dem 24. Oktober 2026. An diesem Samstag standen dort um 13:26 Uhr rund 280 Dott- und rund 210 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Dotts Preis siehst du in der Dott-App.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Erfurt?',
       blocks: [
-        'Yoio veröffentlicht seine Tarife in seinen offenen Daten. Am 23. Oktober 2026 listeten sie für jeden Scooter 1,09 € fürs Entsperren, den Minutenpreis aber je Scooter: 0,25 € für rund 180, 0,21 € für 20. Was die zwei Stufen bedeuten, erklärt Yoio nicht; seine Gebührenordnung nennt gar keine Minutenpreise und verweist auf die App. Laut Yoios Hilfe kann der Minutenpreis variieren und steht in der App auf dem Button «Fahrt starten».',
+        'Yoio veröffentlicht seine Tarife in seinen offenen Daten. Am 23. Oktober 2026 listeten sie für jeden Scooter 1,09 € fürs Entsperren, den Minutenpreis aber je Scooter: 0,25 € für rund 180, 0,21 € für 20. Für die Minutenpreise verweist Yoios Gebührenordnung auf die App. Laut Yoios Hilfe kann der Minutenpreis variieren und steht in der App auf dem Button «Fahrt starten».',
         {
           table: {
             caption: 'E-Scooter-Preise in Erfurt (offene Daten von Yoio, 23. Oktober 2026)',
@@ -32,7 +32,6 @@ const guide: Guide = {
             rows: [
               ['Yoio, die meisten Scooter', '1,09 €', '0,25 €', '3,59 €', '6,09 €'],
               ['Yoio, einzelne Scooter', '1,09 €', '0,21 €', '3,19 €', '5,29 €'],
-              ['Dott', 'Nur in der App', 'Nur in der App', 'Nur in der App', 'Nur in der App'],
             ],
           },
         },
@@ -42,7 +41,7 @@ const guide: Guide = {
     {
       heading: 'Wo darf man in Erfurt mit dem E-Scooter fahren?',
       blocks: [
-        'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. Eigene Fahrregeln für E-Scooter haben weder Thüringen noch Erfurt.',
+        'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es.',
         '**Anger:** Der Anger ist Erfurts Fussgängerzone: Steig ab und schieb.',
         '**Ab 1. März 2027** gilt eine Freigabe mit dem Zusatzschild «Radverkehr frei» laut Bundesverkehrsministerium auch für E-Scooter, im Schritttempo. Die Kommunen können E-Scooter aber eigens verbieten.',
         '**Skateparks:** In den Skateparks im Nordpark, am Alten Nordhäuser Bahnhof (Domizil) und im Südpark sowie auf einer kleinen Fläche an der Rosa-Luxemburg-Strasse darfst du mit Yoio laut seinen offenen Daten weder starten noch beenden noch durchfahren.',
@@ -80,8 +79,8 @@ const guide: Guide = {
       blocks: [
         'Die Verkehrsregeln setzt der Bund. Wo Leih-Scooter stehen dürfen, entscheiden laut Bundesverkehrsministerium die Kommunen. Gebiet, Zonen, Preise und Gebühren legt der Anbieter fest; die Verbotszonen der Altstadt sperrt er auf Wunsch der Stadt in der App.',
         'Erfurt behandelt den Verleih bisher als Gemeingebrauch, also ohne Erlaubnis, und regelt ihn über eine freiwillige Selbstverpflichtung, die alle Anbieter unterschrieben haben: Gebiet, Flottengrösse, Parkverbotszonen. Für die Innenstadt nannte die Stadt 2025 eine «bisherige Obergrenze von 100 E-Scootern». Das Abstellen kontrolliert der Vollzugsdienst der städtischen Ordnungsbehörde, das Fahren die Polizei.',
-        'Die Wirkung der Selbstverpflichtung nennt die Stadt «mässig» (2025). Sie bevorzugt eine Regelung als Sondernutzung, mit festen Abstellflächen in der Innenstadt und freiem Abstellen im übrigen Stadtgebiet; rund 60 mögliche Standorte hat sie vorgeprüft. Die Sondernutzungsgebühr für gewerbliche E-Scooter liegt laut Stadt bei 0 €, ausgewiesen ist bisher keine Fläche.',
-        'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüft und den Ausschuss bis Ende September 2026 informiert. Diesen Bericht und eine Vorlage zu Sondernutzung und Vergabe, die die Verwaltung für das erste Quartal 2026 angekündigt hatte, enthielt das Ratsinformationssystem bis zum 23. Oktober 2026 nicht. Feste Abstellflächen, Gebühren oder eine Auswahl der Anbieter sind also nicht beschlossen.',
+        'Die Wirkung der Selbstverpflichtung nennt die Stadt «mässig» (2025). Sie bevorzugt eine Regelung als Sondernutzung, mit festen Abstellflächen in der Innenstadt und freiem Abstellen im übrigen Stadtgebiet; rund 60 mögliche Standorte hat sie vorgeprüft. Die Sondernutzungsgebühr für gewerbliche E-Scooter liegt laut Stadt bei 0 €.',
+        'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüft und den Ausschuss bis Ende September 2026 informiert. Eine Vorlage zu Sondernutzung und Vergabe hatte die Verwaltung für das erste Quartal 2026 angekündigt.',
       ],
     },
     {
@@ -96,7 +95,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Falsch abgestellt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'Auf Geh- oder Radweg 55 €, mit Behinderung 70 €'],
             ],
@@ -112,7 +111,7 @@ const guide: Guide = {
         '**Strassenbahn und Bus:** Die EVAG schliesst E-Scooter von der Mitnahme aus, weil sie versicherungspflichtig sind; das gilt auch für deinen eigenen. Fahrräder dürfen mit, ausser montags bis freitags von 7 bis 10 und von 14 bis 18 Uhr. Wo die Beförderungsbedingungen «E-Scooter» mit Siegel erlauben, meinen sie rollstuhlähnliche Elektromobile.',
         '**Ankunft am Hauptbahnhof:** Auf dem Willy-Brandt-Platz vor dem Bahnhof beendest du eine Yoio-Fahrt, aber nicht direkt am Eingang.',
         '**Uni, FH, egapark und Messe:** An der Universität und am FH-Hauptcampus endest du direkt. Am FH-Standort Leipziger Strasse, am egapark und an der Messe stellst du gut 100 m entfernt ab.',
-        '**Ausflüge:** Thüringer Zoopark, Nordstrand und Flughafen liegen ausserhalb des Gebiets. Eine Fahrt dorthin könntest du nicht beenden. Yoio vermietet laut seinen offenen Daten rund um die Uhr; eine Nachtsperre oder Wintersaison nennen weder Stadt noch Yoio.',
+        '**Ausflüge:** Thüringer Zoopark, Nordstrand und Flughafen liegen ausserhalb des Gebiets. Eine Fahrt dorthin könntest du nicht beenden. Yoio vermietet laut seinen offenen Daten rund um die Uhr.',
       ],
     },
     {

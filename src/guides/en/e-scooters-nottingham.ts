@@ -19,7 +19,7 @@ const guide: Guide = {
         'One company, **Dott**, runs Nottingham’s shared e-scooters, under a contract with Nottingham City Council; its UK arm, TIER Operations Ltd, provides the rides, Dott’s terms say. Dott launched on 26 March 2025 with around 1,300 e-scooters, the council’s figure, and added e-bikes on 17 July 2026. **Lime** runs e-bikes only: there are no Lime e-scooters in Nottingham.',
         '**Wind** launched the trial in October 2020, and its fleet switched to **Superpedestrian’s LINK** scooters in December 2021. The scheme was withdrawn in December 2023, when Superpedestrian shut down its UK operations, Cities Today reported, leaving Nottingham without hire scooters for about 15 months.',
         'The council describes Dott’s contract as a five-year deal with a break clause in May 2028, when the national trials are due to end. Pages that still say the trial ends in May 2026 are out of date.',
-        'On the afternoon of 14 October 2026 the [map of Nottingham](map:gb:Nottingham) showed about 750 Dott e-scooters: a snapshot, not the fleet size. It doesn’t show e-bikes. Tap a scooter to open the Dott app, where you unlock and pay.',
+        'On the afternoon of 14 October 2026 the [map of Nottingham](map:gb:Nottingham) showed about 750 Dott e-scooters: a snapshot, not the fleet size. Tap a scooter to open the Dott app, where you unlock and pay.',
       ],
     },
     {
@@ -38,7 +38,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Passes change, and only the app shows the current ones. Once you’ve paid for Flex, any ride of 7 minutes or more costs less than paying by the minute. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Passes change: check the current ones in the app. Once you’ve paid for Flex, any ride of 7 minutes or more costs less than paying by the minute. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'The council lists four discounted rates; contact Dott if you qualify:',
         {
           table: {
@@ -107,9 +107,9 @@ const guide: Guide = {
     {
       heading: 'Dott Nottingham parking: bays only',
       blocks: [
-        'A ride can only end in a **parking bay** shown in the app: about 300 by the council’s count, 387 in Dott’s data on 15 October 2026. Busy bays can be capped, and the app nudges you towards emptier ones. Find the bay nearest your destination before you set off: the [map](map:gb:Nottingham) shows the scooters, not the bays.',
+        'A ride can only end in a **parking bay** shown in the app: about 300 by the council’s count, 387 in Dott’s data on 15 October 2026. Busy bays can be capped, and the app nudges you towards emptier ones. Find the bay nearest your destination in the Dott app before you set off.',
         'In a shared rack, Dott goes on the **left** and Lime on the right; racks for e-bikes only are Lime’s.',
-        'The council warns that riders who park badly will be fined and repeat offenders banned. It publishes no amount, but Dott’s UK terms allow a £50 charge for breaking them and up to £300 to recover a badly parked scooter. To report one, call Dott on 0800 048 8993, around the clock.',
+        'The council warns that riders who park badly will be fined and repeat offenders banned. Dott’s UK terms allow a £50 charge for breaking them and up to £300 to recover a badly parked scooter. To report one, call Dott on 0800 048 8993, around the clock.',
       ],
     },
     {
@@ -126,8 +126,8 @@ const guide: Guide = {
         {
           list: [
             '**Nottingham Forest**’s City Ground and **Trent Bridge** cricket ground are in West Bridgford, outside the area. End your ride at the bay on Victoria Embankment, beside Trent Bridge, and walk over the bridge: about 500 metres to either ground.',
-            '**Notts County**’s Meadow Lane is inside the area, with a bay by the ground. We found no match-day restrictions; check the app before kick-off.',
-            '**Goose Fair** fills the Forest Recreation Ground for ten days around the start of October. The ground is open for riding, with bays on the Rec itself and on Gregory Boulevard. The 2026 fair, from 25 September to 4 October, drew a record 586,356 visitors, the council estimates; the 2027 dates hadn’t been announced by 15 October 2026.',
+            '**Notts County**’s Meadow Lane is inside the area, with a bay by the ground; check the app before kick-off.',
+            '**Goose Fair** fills the Forest Recreation Ground for ten days around the start of October. The ground is open for riding, with bays on the Rec itself and on Gregory Boulevard. The 2026 fair, from 25 September to 4 October, drew a record 586,356 visitors, the council estimates.',
           ],
         },
       ],
@@ -136,7 +136,7 @@ const guide: Guide = {
       heading: 'Dott and Lime e-bikes in Nottingham',
       blocks: [
         'Since 17 July 2026 **Dott** has also rented e-bikes here: no unlock fee and 25p a minute, from **16** and with no driving licence. **Lime**’s e-bikes, in a separate council scheme since April 2023, cost £1 to unlock and 17p a minute (October 2026), so Dott is cheaper for rides of up to 12 minutes and Lime for longer ones.',
-        'Neither is on our map: use the Dott or Lime app. The council’s Ride app also covers Lime’s e-bikes and Dott’s scooters, alongside buses and trams.',
+        'Hire them in the Dott or Lime app; the council’s Ride app also covers Lime’s e-bikes and Dott’s scooters, alongside buses and trams.',
       ],
     },
     {

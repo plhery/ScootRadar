@@ -17,15 +17,14 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Raleigh?',
       blocks: [
         'Electric scooter rental in Raleigh runs under agreements with the City. A City Manager’s Update of 4 September 2026 names the two companies: **Lime** and **Spin**. NC State’s student paper, the Technician, reported on 11 September 2026 that Spin is the university’s contracted provider, while Lime works through its agreement with the City. A new shared micromobility agreement, from a request for proposals issued in March 2026, is on track to start by 1 January 2027, the City says, so the line-up may change.',
-        'At 12:29 p.m. on Monday 26 October 2026 the [Raleigh map](map:us:nc:Raleigh) showed 577 Spin scooters as they stood at that moment; Lime’s count at 10:05 p.m. on Sunday 25 October was 566. Each is a snapshot, not a fleet. At 10:33 p.m. on 26 October every one of Spin’s 554 available scooters stood inside the city of Raleigh, by the Census Bureau’s boundaries.',
-        'For Spin the map shows each scooter’s position, charge and range, and Spin’s zones (see below); for Lime, position and charge. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Bikes aren’t on the map.** ScootRadar shows standing e-scooters only. Spin and Lime also rent e-bikes in Raleigh: the Downtown Raleigh Alliance describes the City’s dockless bikeshare pilot as more than 200 electric-assist bikes with Spin and Lime, and Spin’s open data listed 133 available e-bikes at 10:33 p.m. on 26 October.',
+        'At 12:29 p.m. on Monday 26 October 2026 the [Raleigh map](map:us:nc:Raleigh) showed 577 Spin scooters as they stood at that moment; Lime’s count at 10:05 p.m. on Sunday 25 October was 566. Each is a snapshot, not a fleet.',
+        'Spin and Lime also rent **e-bikes** in Raleigh: the Downtown Raleigh Alliance describes the City’s dockless bikeshare pilot as more than 200 electric-assist bikes with Spin and Lime, and Spin’s open data listed 133 available e-bikes at 10:33 p.m. on 26 October. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Spin or Lime scooter cost in Raleigh?',
       blocks: [
-        'NC State’s Transportation department lists the “NC State Rate” for Spin rides that start on campus, and on 11 September 2026 the Technician quoted a university planner giving the same $1 to unlock and 30 cents a minute. Spin’s open data held no Raleigh price on 27 October 2026, so for rides that start off campus, and for Lime, check the rate in the app before you unlock.',
+        'NC State’s Transportation department lists the “NC State Rate” for Spin rides that start on campus, and on 11 September 2026 the Technician quoted a university planner giving the same $1 to unlock and 30 cents a minute. For rides that start off campus, and for Lime, check the rate in the app before you unlock.',
         {
           table: {
             caption: 'Spin’s NC State Rate, for rides that start on NC State’s campus (NC State Transportation; page updated 12 August 2022, prices “subject to change”)',
@@ -76,8 +75,8 @@ const guide: Guide = {
             '**Fines come from the companies.** Since January 2025 the third and fourth parking violations each cost $15, after two warnings, and a fifth brings an account review and possible suspension.',
           ],
         },
-        'Spin published 74 no-ride and 41 no-parking zones in its open data on 27 October 2026, which the map draws at street zoom. Matched to Wake County’s parcel map, two no-parking zones cover the downtown core around Fayetteville Street and Glenwood South along Glenwood Avenue: there, a ride ends only in a corral, and the corrals themselves aren’t in Spin’s data. Another covers Dorothea Dix Park. No-ride zones take in Capitol Square, Moore Square, Nash Square, Pullen Park, land around Lake Johnson, Meredith College, William Peace University and parts of NC State’s Centennial Campus. The map doesn’t show Lime’s zones: check its app.',
-        'The map also draws the City’s own zones from its policies on Populus, credited to the City: Pullen Park, where you may neither ride nor park, and Glenwood South’s mandatory parking zone, the 100 metres round its 13 corrals, with the corrals left open. The City’s other mandatory zones downtown aren’t on its public map, so the map doesn’t draw them: look for the painted corral.',
+        'Spin published 74 no-ride and 41 no-parking zones in its open data on 27 October 2026, which the map draws at street zoom. Two no-parking zones cover the downtown core around Fayetteville Street and Glenwood South along Glenwood Avenue: there, a ride ends only in a corral. Another covers Dorothea Dix Park. No-ride zones take in Capitol Square, Moore Square, Nash Square, Pullen Park, land around Lake Johnson, Meredith College, William Peace University and parts of NC State’s Centennial Campus. Lime’s zones are in its app.',
+        'The map also draws two of the City’s own zones, credited to the City: Pullen Park, where you may neither ride nor park, and Glenwood South’s mandatory parking zone, the 100 metres round its 13 corrals, with the corrals left open. Elsewhere downtown, look for the painted corral.',
       ],
     },
     {
@@ -85,10 +84,10 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**NC State.** Spin deploys on North, Central, South and Centennial campuses, its Transportation department says, and shows the no-ride zones in its app. At 10:33 p.m. on 26 October, 263 of Spin’s 554 available scooters in Raleigh stood on NC State’s campus, by the Census Bureau’s boundaries.',
+            '**NC State.** Spin deploys on North, Central, South and Centennial campuses, its Transportation department says, and shows the no-ride zones in its app. At 10:33 p.m. on 26 October, 263 of Spin’s 554 available scooters in Raleigh stood on NC State’s campus.',
             '**Campus sidewalks.** NC State’s Parking and Transportation Ordinances, last revised in April 2026, make every sidewalk, pathway, plaza and walkway a pedestrian safety zone, where e-scooter riders “must either ride at the walking pace of nearby pedestrians or dismount”. They also bar e-scooters from the greenway, and no one may ride inside a building.',
             '**Spin or Lime?** The Technician found that Lime restricts parking between Main and Centennial campuses much more than Spin, and that Lime’s area doesn’t reach the Centennial Biomedical Campus, where Spin has a separate area.',
-            '**Other colleges.** Spin’s no-ride zones cover most of the land of Meredith College, William Peace University and Saint Augustine’s University, on Wake County’s parcel map; a no-parking zone covers part of Shaw University’s.',
+            '**Other colleges.** Spin’s no-ride zones cover most of the land of Meredith College, William Peace University and Saint Augustine’s University; a no-parking zone covers part of Shaw University’s.',
           ],
         },
       ],
@@ -107,7 +106,7 @@ const guide: Guide = {
         {
           list: [
             '**GoRaleigh buses.** Its mobility device policy bars “Shared fleet e-scooters, such as Lime or Spin”, and shared e-bikes, from its buses and their bike racks. A personal e-scooter may come aboard only folded.',
-            '**Raleigh-Durham International Airport (RDU)** lies outside the city, in unincorporated Wake County, by the Census Bureau’s boundaries. At 10:33 p.m. on 26 October the nearest available Spin scooter stood about 7 miles away. GoTriangle’s RDU Shuttle runs from the Regional Transit Center, Monday to Saturday from 6 a.m. to 6 p.m.; its Route 100 runs direct from downtown Raleigh after 6:30 p.m. on those days and all day on Sunday.',
+            '**Raleigh-Durham International Airport (RDU)** lies outside the city, in unincorporated Wake County. GoTriangle’s RDU Shuttle runs from the Regional Transit Center, Monday to Saturday from 6 a.m. to 6 p.m.; its Route 100 runs direct from downtown Raleigh after 6:30 p.m. on those days and all day on Sunday.',
           ],
         },
         'Durham has scooters of its own: see [e-scooters in Durham](guide:durham) and the [Durham map](map:us:nc:Durham). Further north, [e-scooters in Richmond](guide:richmond) covers another city with Spin and Lime and a night stop.',

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Chemnitz 2026: Dott, Preise, Parken, Regeln',
   description: 'E-Scooter Chemnitz: Dott verleiht, den Preis zeigt die App. Wo du fährst und parkst, was Verstösse kosten und warum Tram und Bus der CVAG tabu sind.',
   headline: 'E-Scooter Chemnitz: Anbieter, Preise, Parken und was in Strassenbahn, Bus und Zug gilt',
-  lede: 'E-Scooter in Chemnitz verleiht Dott: Du mietest ab 18 und ohne Führerschein, den Preis zeigt dir die App vor dem Entsperren. Andere Anbieter nennt keine offizielle Quelle. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg, und stellst den Scooter ab wie ein Fahrrad, ohne jemanden zu behindern. In Strassenbahnen und Bussen der CVAG darfst du keinen E-Scooter mitnehmen, auch keinen zusammengeklappten.',
+  lede: 'E-Scooter in Chemnitz verleiht Dott: Du mietest ab 18 und ohne Führerschein, den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg, und stellst den Scooter ab wie ein Fahrrad, ohne jemanden zu behindern. In Strassenbahnen und Bussen der CVAG darfst du keinen E-Scooter mitnehmen, auch keinen zusammengeklappten.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Chemnitz',
@@ -17,15 +17,14 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Chemnitz?',
       blocks: [
         'In Chemnitz verleiht **Dott** (früher Tier) E-Scooter, auch E-Roller genannt: Dott führt Chemnitz auf seiner Website unter seinen Standorten (Stand 26. Oktober 2026). Mieten darfst du laut Dotts Geschäftsbedingungen ab 18 Jahren, einen Führerschein brauchst du nicht.',
-        'Die [Karte von Chemnitz](map:de:Chemnitz) zeigt die freien Dott-Scooter, aber nur ihren Standort: keinen Akkustand, keine Preise, Zonen oder Abstellflächen. Am Montag, 26. Oktober 2026, waren es gegen 17.30 Uhr knapp 30. Nach den amtlichen Grenzen (GeoSN) standen alle in Chemnitz selbst: 18 in der Gemarkung Chemnitz, zu der auch der Hauptbahnhof gehört, 3 in Reichenhain, je 2 in Altchemnitz und Adelsberg, je einer in Gablenz und Altendorf. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        'Ganz Chemnitz deckt die Karte allerdings nicht ab. Nach den amtlichen Gemarkungsgrenzen (GeoSN) liegen gut 70 Prozent der Stadtfläche ausserhalb ihres Gebiets: ganz oder fast ganz Grüna, Mittelbach, Reichenbrand, Siegmar, Neustadt sowie Ober- und Niederrabenstein im Westen, Röhrsdorf, Wittgensdorf, Heinersdorf, Glösa, Draisdorf und Ebersdorf im Norden, Euba, Kleinolbersdorf und Altenhain im Osten, Einsiedel, Harthau, Berbisdorf und Klaffenbach im Süden, dazu der grösste Teil von Rottluff und Adelsberg. Ob dort Dott-Scooter stehen, siehst du in der Dott-App.',
-        'Dass Bolt, Voi, Lime, Zeus oder Bird in Chemnitz vermieten, nennt keine offizielle Quelle; Scooter anderer Anbieter fändest du nur in deren Apps. Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Die [Karte von Chemnitz](map:de:Chemnitz) zeigt die freien Dott-Scooter: Am Montag, 26. Oktober 2026, waren es gegen 17.30 Uhr knapp 30. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        'Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Chemnitz?',
       blocks: [
-        'Den Preis zeigt dir die Dott-App vor dem Entsperren. So steht es in Dotts Geschäftsbedingungen: «Die Gebühren werden in Ihrem Benutzerkonto … angezeigt, bevor Sie ein Fahrzeug freischalten.» Einen Tarif für Chemnitz nennt keine offizielle Quelle. Teuer wird es für dich, wenn du falsch abstellst oder Dott ein Bussgeld für dich zahlt:',
+        'Den Preis zeigt dir die Dott-App vor dem Entsperren. So steht es in Dotts Geschäftsbedingungen: «Die Gebühren werden in Ihrem Benutzerkonto … angezeigt, bevor Sie ein Fahrzeug freischalten.» Teuer wird es für dich, wenn du falsch abstellst oder Dott ein Bussgeld für dich zahlt:',
         {
           table: {
             caption: 'Gebühren laut Dotts Geschäftsbedingungen für Deutschland (Stand 23. September 2025)',
@@ -49,7 +48,7 @@ const guide: Guide = {
             head: ['Ort', 'Was gilt', 'Wer es regelt'],
             rows: [
               ['Hauptbahnhof', 'Die Hausordnung der DB; beende die Fahrt vor dem Bahnhof', 'DB'],
-              ['Gelände der TU Chemnitz', 'StVO auf dem ganzen Gelände; in den Gebäuden und auf ausgewiesenen Flächen nicht fahren; nach unserer Lesart nicht auf Fusswegen, vor Hydranten und auf Grünanlagen abstellen', 'TU Chemnitz (Hausordnung vom 4. März 2026)'],
+              ['Gelände der TU Chemnitz', 'StVO auf dem ganzen Gelände; in den Gebäuden und auf ausgewiesenen Flächen nicht fahren; Fahrzeuge aller Art nicht auf Fusswegen, vor Hydranten und auf Grünanlagen abstellen', 'TU Chemnitz (Hausordnung vom 4. März 2026)'],
               ['Strassenbahnen und Busse der CVAG', 'Kein E-Scooter, auch nicht zusammengeklappt', 'VMS (laut CVAG seit 1. August 2024)'],
             ],
           },
@@ -70,7 +69,7 @@ const guide: Guide = {
         {
           list: [
             '**Hauptbahnhof:** Beende die Fahrt vor dem Bahnhof; was dort fürs Abstellen gilt, regelt die Hausordnung der DB.',
-            '**TU Chemnitz:** Die Hausordnung untersagt «das Abstellen von Fahrrädern und Fahrzeugen aller Art auf Fusswegen, vor Hydranten und auf den Grünanlagen». Widerrechtlich und verkehrsbehindernd abgestellte «Fahrzeuge jeglicher Art» kann die Universität auf Kosten des Halters abschleppen lassen. E-Scooter nennt sie dabei nicht; nach unserer Lesart gilt beides auch für sie.',
+            '**TU Chemnitz:** Die Hausordnung untersagt «das Abstellen von Fahrrädern und Fahrzeugen aller Art auf Fusswegen, vor Hydranten und auf den Grünanlagen». Widerrechtlich und verkehrsbehindernd abgestellte «Fahrzeuge jeglicher Art» kann die Universität auf Kosten des Halters abschleppen lassen.',
           ],
         },
         {
@@ -90,7 +89,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit gefahren', '10 €', '25 €'],
               ['Rote Ampel', '60 € und 1 Punkt; länger als 1 Sekunde rot: 100 € und 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'Unverändert'],
               ['Unzulässig auf Geh- oder Radweg geparkt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', '55 €, mit Behinderung 70 €'],
               ['Ohne gültige Versicherungsplakette', '40 €', 'Unverändert'],
@@ -133,7 +132,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Chemnitz?',
-      answer: 'Die von Dott (Stand Oktober 2026). Du musst 18 sein, einen Führerschein brauchst du nicht. Dass Bolt, Voi, Lime, Zeus oder Bird in Chemnitz vermieten, nennt keine offizielle Quelle.',
+      answer: 'Die von Dott (Stand Oktober 2026). Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet ein E-Scooter in Chemnitz?',
@@ -145,17 +144,12 @@ const guide: Guide = {
     },
     {
       question: 'Wo darf ich in Chemnitz einen Leih-Scooter abstellen?',
-      answer: 'Wie ein Fahrrad, ohne jemanden zu behindern. Hat die Stadt Parkplätze für Leih-Scooter ausgewiesen, verlangt Dott, dass du dort parkst. Am Hauptbahnhof gilt die Hausordnung der DB, auf dem Gelände der TU nach unserer Lesart ihrer Hausordnung nicht auf Fusswegen, vor Hydranten und auf Grünanlagen.',
-    },
-    {
-      question: 'Zeigt die Karte alle E-Scooter in Chemnitz?',
-      answer: 'Nein. Sie zeigt nur die Standorte der freien Dott-Scooter, und gut 70 Prozent der Stadtfläche liegen ausserhalb ihres Gebiets, etwa Grüna, Wittgensdorf, Einsiedel und Euba. Was dort steht, siehst du in der Dott-App.',
+      answer: 'Wie ein Fahrrad, ohne jemanden zu behindern. Hat die Stadt Parkplätze für Leih-Scooter ausgewiesen, verlangt Dott, dass du dort parkst. Am Hauptbahnhof gilt die Hausordnung der DB; auf dem Gelände der TU verbietet ihre Hausordnung, Fahrzeuge aller Art auf Fusswegen, vor Hydranten und auf Grünanlagen abzustellen.',
     },
   ],
   sources: [
     { title: 'Dott: Unsere Standorte (Stand 26. Oktober 2026)', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
-    { title: 'GeoSN: ALKIS-WFS, Verwaltungseinheiten und Gemarkungen (Stand 15. Oktober 2026)', url: 'https://www.geodaten.sachsen.de/alkis-wfs-4968.html' },
     { title: 'CVAG: Häufige Fragen zu Mitnahmeregelungen', url: 'https://www.cvag.de/faq/haeufige-fragen-zu-mitnahmeregelungen' },
     { title: 'CVAG: Beförderungsbedingungen', url: 'https://www.cvag.de/fahrtinfo/befoerderungsbedingungen' },
     { title: 'VVO: Das Kleingedruckte, mit den Einheitlichen Beförderungsbedingungen des MDV, VMS, VVO, VVV und ZVON (Stand 1. August 2026, PDF)', url: 'https://www.vvo-online.de/doc/VVO-Broschuere-VVO-Kleingedrucktes.pdf' },
