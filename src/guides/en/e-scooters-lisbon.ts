@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Lisbon?',
       blocks: [
         'As of October 2026, three operators run shared e-scooters in Lisbon: **Lime**, **Bolt** and **Bird**. Lime also rents e-bikes. LINK, still listed in older guides, has left Portugal.',
-        'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended on 23 June 2025, which the council voted on 21 October 2026 to end. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
+        'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended in June 2025, which the council voted on 21 October 2026 to end. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
         'At 04:27 on 30 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 3,200 Bolt, 2,400 Lime and 1,400 Bird scooters free to rent at that moment, with each one’s battery or range. Bolt’s and Lime’s free scooters alone are over each operator’s cap, and Bird’s are under it.',
       ],
     },
@@ -43,17 +43,17 @@ const guide: Guide = {
     {
       heading: 'Where you can’t ride an e-scooter in Lisbon',
       blocks: [
-        'Shared scooters here are limited to **20 km/h**, below the 25 km/h the law allows for an e-scooter. Ride in the cycle lane where there is one, otherwise on the road, keeping right and never against the traffic. The agreement and its 2025 addendum keep shared scooters out of:',
+        'Shared scooters here are limited to **20 km/h**, below the 25 km/h the law allows for an e-scooter. Ride in the cycle lane where there is one, otherwise on the road, keeping right and never against the traffic. The agreement and the “critical zones” its 2025 addendum added keep shared scooters out of:',
         {
           list: [
             'pavements, pedestrian streets, squares, gardens and parks, unless a sign allows it;',
             'bus lanes;',
-            'the roads the city plan classes as “second-level”, such as the central carriageway of Avenida da Liberdade;',
-            'the areas around monuments and squares;',
+            'the central carriageways of the main avenues, such as Avenida da Liberdade and Avenida D. João II;',
+            'the areas around the big interchange stations, such as Cais do Sodré, Entrecampos, Sete Rios and Oriente;',
+            'the areas around busy landmarks such as Praça do Comércio, Rossio, the Castelo de São Jorge, Parque Eduardo VII, Jardim da Estrela and Campo Pequeno;',
             'tunnels, viaducts and road bridges.',
           ],
         },
-        'The press has named Praça do Comércio, Rossio, the Castelo de São Jorge, Parque Eduardo VII, Jardim da Estrela and Belém’s Praça do Império among the no-go areas, along with the areas around the Cais do Sodré, Entrecampos, Sete Rios and Oriente stations.',
         'Geofencing enforces this: in these zones the app stops you riding or ending your ride. Each app shows the zones on its map, and the [map of Lisbon](map:pt:Lisboa) draws Bird’s no-parking zones when you zoom in.',
       ],
     },
@@ -176,10 +176,12 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Lisbon City Council: collaboration agreement with the e-scooter operators, 9 January 2023 (PDF, Portuguese)', url: 'https://www.lisboa.pt/fileadmin/atualidade/noticias/user_upload/Acordo_de_Colaborac__a__o_OperdoresTrot_09_01_23.pdf' },
-    { title: 'Lisbon City Council: new rules for e-scooters, 23 June 2025 (Portuguese)', url: 'https://informacao.lisboa.pt/noticias/detalhe/circulacao-de-trotinetas-com-novas-regras-em-lisboa' },
     { title: 'Lime: free minutes for monthly Navegante pass holders (Portuguese)', url: 'https://navegante.li.me/' },
-    { title: 'ECO/Lusa: Lisbon makes shared e-scooters free for residents with a Navegante pass, 26 June 2025 (Portuguese)', url: 'https://eco.sapo.pt/2025/06/26/lisboa-cria-novas-zonas-proibidas-a-trotinetas-e-torna-utilizacao-gratuita-para-alfacinhas-com-passe-navegante/' },
+    { title: 'ECO/Lusa: Lisbon adds no-go zones for e-scooters and makes them free for residents with a Navegante pass, 26 June 2025 (Portuguese)', url: 'https://eco.sapo.pt/2025/06/26/lisboa-cria-novas-zonas-proibidas-a-trotinetas-e-torna-utilizacao-gratuita-para-alfacinhas-com-passe-navegante/' },
+    { title: 'Lisboa para Pessoas: free e-scooter rides with the Navegante pass and the 2025 no-go zones, 26 November 2025 (Portuguese)', url: 'https://lisboaparapessoas.pt/2025/11/26/lisboa-trotinetas-navegante-viagens-gratuitas/' },
+    { title: 'Correio da Manhã: Lisbon council clears “obsolete bicycles” from public space, 2 February 2026 (Portuguese)', url: 'https://www.cmjornal.pt/sociedade/detalhe/camara-de-lisboa-promove-retirada-de-bicicletas-obsoletas-do-espaco-publico' },
     { title: 'Echo Boomer: the Navegante pass gives 200 minutes of e-scooter riding a month, 26 June 2025 (Portuguese)', url: 'https://echoboomer.pt/passe-navegante-200-minutos-trotinete-mes-lisboa/' },
+    { title: 'Bird: rental agreement for Portugal (8 December 2021, Portuguese)', url: 'https://bird.co/rental-agreements/portugal-pt/' },
     { title: 'Bolt: scooter rentals in Portugal (Portuguese)', url: 'https://bolt.eu/pt-pt/scooters/' },
     { title: 'Gira: passes and prices (Portuguese)', url: 'https://www.gira-bicicletasdelisboa.pt/passes-e-tarifarios/' },
     { title: 'TTSL: bikes and scooters on the Lisbon ferries (Portuguese)', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },
