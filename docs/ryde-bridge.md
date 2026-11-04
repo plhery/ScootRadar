@@ -278,3 +278,51 @@ An automatic, one-off review is scheduled in the existing work context for
 It will disable its own timer before auditing the results and continuing the
 already-authorized rollout work. The timer's private identifier is in the runtime
 resume status; it is not an instruction to enable a feed without reviewing the run.
+
+## First soak held and restart, 4 November
+
+The initial overnight run stopped after three successful samples. Its failure
+status at 21:16:45 was `TimeoutExpired` in the local app-control/diagnostic path.
+The lifecycle journal ended after termination, while later authenticated native
+map responses still succeeded. The exact timed-out helper operation was not
+retained by that version; the evidence does not show an upstream rate-limit or
+expired session.
+
+Status collection is now best-effort. A LaunchServices open-completion timeout
+waits for the authenticated native map response instead of immediately aborting
+or restarting the app again. The one fallback trigger waits longer for startup,
+and local job deadlines match the broker's two-minute budget. A regression test
+covers a timed-out callback followed by a successful native reply. A live map
+request then succeeded without another sign-in.
+
+Each new shadow run has its own `runId`, preserved in terminal status and journal
+entries. Filter the journal by the current run ID when judging completion or
+sample gaps. Retained earlier failed runs must not count toward the new soak.
+The restart began on 4 November at 21:27:45 Europe/Zurich, ending about 09:27:45
+on 5 November. Automatic review moved to **09:33 Europe/Zurich**. Earlier start,
+finish and review times above describe the failed first attempt.
+
+## Capacity and multi-city scheduling
+
+The finer Drammen sweep took 66 spatial reads in 355 seconds. Its API job latency
+median was 5.128 seconds, with a 12.068-second outlier. The broker currently spaces
+new jobs at least five seconds apart: a nominal maximum of 12 reads/minute or
+1,440 per two hours, shared by all cities and watched requests. This is configured
+capacity, not a measured upstream quota or a sustained two-hour guarantee.
+
+At the same cost as Drammen, 64 full sweeps would require 4,224 reads. Other cities
+may cost much less or more; do not extrapolate that example into a measured
+coverage promise. Existing Entur/Skyss areas remain on their existing feeds.
+
+The production plan is the existing app-map scheduling pattern: independently
+refreshed spatial groups, a two-hour idle target where measured costs fit, and
+watched viewport groups prioritized for approximately 30–60-second refreshes
+under available capacity. Coalesce viewers of the same group, publish positive
+observations progressively, and retain old ages/last-seen data elsewhere. Reserve
+routine turns so interactive traffic cannot starve background coverage.
+
+Before promising this cadence for every candidate city, survey its current
+identity, operating rings, saturation behaviour and sweep cost, then sum the
+account-wide budget including interactive work and recovery overhead. If it does
+not fit, improve reliable request generation, adjust idle cadences or add justified
+producer capacity. Increasing concurrency alone does not establish upstream quota.

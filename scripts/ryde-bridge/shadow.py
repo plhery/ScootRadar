@@ -18,12 +18,13 @@ def main():
     started=time.time();end=started+args.hours*3600
     last_event_at=started
     targets=[(43,59.744,10.205),(32,57.70787,11.97344),(43,59.744,10.205)]
-    turns=0
+    turns=0;run_id=uuid.uuid4().hex
+    save(base/'shadow-status.json',{'at':started,'state':'starting','runId':run_id,'startedAt':started,'endsAt':end,'observations':0})
     while time.time()<end:
         if (base/'stop.json').exists():
-            save(base/'shadow-status.json',{'at':time.time(),'state':'stopped','observations':turns});return
+            save(base/'shadow-status.json',{'at':time.time(),'state':'stopped','observations':turns,'runId':run_id,'startedAt':started,'endsAt':end});return
         city,lat,lng=targets[turns%len(targets)];began=time.time()
-        job={'version':1,'id':uuid.uuid4().hex,'cityId':city,'latitude':lat,'longitude':lng,'radius':10,'expiresAt':time.time()+60}
+        job={'version':1,'id':uuid.uuid4().hex,'cityId':city,'latitude':lat,'longitude':lng,'radius':10,'expiresAt':time.time()+120}
         try:
             result=query(job)
             resources={}
@@ -38,15 +39,17 @@ def main():
             status=json.loads((base/'session/status.json').read_text())
             renewals=sum(e['event']=='native-renewal-accepted' and e['at']>last_event_at for e in status['events'])
             last_event_at=time.time()
-            event={'at':time.time(),'rssKiB':resources,'nativeRenewals':renewals,'startedAt':started,'endsAt':end,'state':'observed','cityId':city,'scooters':len(result['scooters']),'seconds':time.time()-began,'coverage':'unknown'}
+            event={'at':time.time(),'runId':run_id,'rssKiB':resources,'nativeRenewals':renewals,'startedAt':started,'endsAt':end,'state':'observed','cityId':city,'scooters':len(result['scooters']),'seconds':time.time()-began,'coverage':'unknown'}
         except Exception as error:
-            event={'at':time.time(),'state':'stopped' if (base/'stop.json').exists() else 'held','reason':type(error).__name__}
+            event={'at':time.time(),'runId':run_id,'startedAt':started,'endsAt':end,'observations':turns,'operation':(error.cmd[1] if isinstance(error,subprocess.TimeoutExpired) and isinstance(error.cmd,list) and len(error.cmd)>1 and error.cmd[1] in {'open','quit','status'} else None),'state':'stopped' if (base/'stop.json').exists() else 'held','reason':type(error).__name__}
             save(base/'shadow-status.json',event)
+            with (base/'shadow.jsonl').open('a') as f:f.write(json.dumps(event)+'\n')
+            if (base/'stop.json').exists():return
             # Operator intervention is needed; don't keep relaunching after a failed test.
             raise SystemExit('Shadow pilot held; inspect private session status')
         with (base/'shadow.jsonl').open('a') as f:f.write(json.dumps(event)+'\n')
         save(base/'shadow-status.json',event);turns+=1
         wait_interval(min(args.interval,max(0,end-time.time())),base/'stop.json')
-    save(base/'shadow-status.json',{'at':time.time(),'state':'completed','observations':turns})
+    save(base/'shadow-status.json',{'at':time.time(),'state':'completed','observations':turns,'runId':run_id,'startedAt':started,'endsAt':end})
 
 if __name__=='__main__':main()

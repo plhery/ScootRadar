@@ -43,15 +43,25 @@ def relaunch(root=ROOT, after_quit=None):
         time.sleep(.25)
     else: raise RuntimeError('Recovered proxy is not ready; Ryde was not relaunched')
     def lifecycle_event(phase):
-        observed=subprocess.run([str(helper),'status'],check=True,capture_output=True,text=True,timeout=5)
-        value={'at':time.time(),'phase':phase,**json.loads(observed.stdout)}
+        try:
+            observed=subprocess.run([str(helper),'status'],check=True,capture_output=True,text=True,timeout=5)
+            value={'at':time.time(),'phase':phase,**json.loads(observed.stdout)}
+        except (subprocess.TimeoutExpired,subprocess.CalledProcessError,ValueError) as error:
+            # Diagnostics must not invalidate an otherwise successful native map.
+            value={'at':time.time(),'phase':phase,'statusUnavailable':type(error).__name__}
         with (root/'producer/lifecycle.jsonl').open('a') as handle: handle.write(json.dumps(value)+'\n')
     lifecycle_event('before-quit')
     subprocess.run([str(helper),'quit'],check=True,timeout=12)
     lifecycle_event('after-quit')
     if after_quit is not None: after_quit()
     time.sleep(2)
-    subprocess.run([str(helper),'open',str(Path(config['appBinary']).parent)],check=True,timeout=15)
+    try:
+        subprocess.run([str(helper),'open',str(Path(config['appBinary']).parent)],check=True,timeout=15)
+    except subprocess.TimeoutExpired:
+        # LaunchServices can start Ryde before its completion callback returns.
+        # Wait for the authenticated native response; don't kill/reopen it again.
+        lifecycle_event('open-callback-late')
+        return
     lifecycle_event('after-open')
 
 def validate_job(job):
@@ -63,7 +73,7 @@ def validate_job(job):
         if type(value) not in (int,float) or not math.isfinite(value) or abs(value)>limit or (name=='radius' and value<=0): raise ValueError('Invalid query geography')
     if type(job['expiresAt']) not in (int,float) or not time.time()<job['expiresAt']<=time.time()+180: raise ValueError('Expired or excessive broker deadline')
 
-def query(job, root=ROOT, timeout=45):
+def query(job, root=ROOT, timeout=60):
     validate_job(job)
     base=root/'producer'
     state=json.loads((base/'session/status.json').read_text())
@@ -74,7 +84,7 @@ def query(job, root=ROOT, timeout=45):
     relaunch(root,lambda:save(base/'job.json',job))
     end=min(time.time()+timeout,job['expiresAt'])
     path=base/'results'/f"{job['id']}.json"
-    retry_at=time.time()+12;retried=False
+    retry_at=time.time()+30;retried=False
     while time.time()<end:
         status=json.loads((base/'session/status.json').read_text())
         if status['bridgeStage']=='needs-sign-in': raise RuntimeError('Ryde bridge needs operator sign-in')
@@ -131,7 +141,7 @@ def main():
             relaunch();time.sleep(15)
         raise SystemExit('Restoration still pending; transport retained for recovery')
     if args.once:
-        job={'version':1,'id':uuid.uuid4().hex,'cityId':args.city,'latitude':args.lat,'longitude':args.lng,'radius':args.radius,'expiresAt':time.time()+60}
+        job={'version':1,'id':uuid.uuid4().hex,'cityId':args.city,'latitude':args.lat,'longitude':args.lng,'radius':args.radius,'expiresAt':time.time()+120}
         r=query(job);print(json.dumps({'id':r['id'],'scooters':len(r['scooters']),'observedAt':r['observedAt'],'coverage':r['coverage']}));return
     config_path=base/'worker-config.json'
     if config_path.stat().st_mode & 0o077: raise SystemExit('Worker config must be 0600')
