@@ -63,6 +63,7 @@ def main():
         if not worker_config['url'].startswith('https://') or len(worker_config['token'])<32:raise SystemExit('Private HTTPS worker config required')
         label='com.scootradar.ryde-worker';uid='gui/'+str(os.getuid())
         subprocess.run(['launchctl','bootout',uid+'/com.scootradar.ryde-shadow'],capture_output=True)
+        (Path.home()/'Library/LaunchAgents/com.scootradar.ryde-shadow.plist').unlink(missing_ok=True)
         target=Path.home()/('Library/LaunchAgents/'+label+'.plist')
         value={'Label':label,'ProgramArguments':['/usr/bin/python3',str(root/'worker.py')],
             'RunAtLoad':True,'KeepAlive':True,'ThrottleInterval':30,'ProcessType':'Background','WorkingDirectory':str(root),
