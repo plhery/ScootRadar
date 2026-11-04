@@ -1,5 +1,6 @@
 package com.plhery.scootradar.ui.theme
 
+import android.icu.text.BreakIterator
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.text.modifiers.TextAutoSizeLayoutScope
 import androidx.compose.runtime.Composable
@@ -21,6 +22,10 @@ import kotlin.math.floor
  * Android's nonlinear font scale, `factor` of the size in sp is drawn larger than that (at 2.0, 0.8 of 18 sp is 0.88
  * of the 30 dp 18 sp are drawn at). TextAutoSize.StepBased counts its steps up from the smallest size, so with such a
  * floor a text that fits would not be drawn at its own size.
+ *
+ * On more lines than one, SwiftUI counts a word broken in the middle, one longer than the line, as not fitting, as it
+ * does a text cut short: the search bar's "Bahnhofstrasse" at the accessibility sizes is drawn smaller, on one line
+ * where it fits so, and else broken at `factor` of its size (SwiftUI's own layout, drawn with ImageRenderer, app-bb).
  */
 internal fun shrinking(style: TextStyle, factor: Float): TextAutoSize = MinimumScale(style.fontSize, factor)
 
@@ -29,7 +34,8 @@ internal fun shrunk(size: TextUnit, factor: Float, density: Density): TextUnit =
 
 private data class MinimumScale(val size: TextUnit, val factor: Float) : TextAutoSize {
     override fun TextAutoSizeLayoutScope.getFontSize(constraints: Constraints, text: AnnotatedString): TextUnit {
-        fun fits(px: Float) = !performLayout(constraints, text, px.toSp()).overflows()
+        val breaks = lazy { BreakIterator.getLineInstance().apply { setText(text.text) } }
+        fun fits(px: Float) = performLayout(constraints, text, px.toSp()).let { !it.overflows() && !it.breaksAWord(breaks) }
         val largest = size.toPx()
         if (fits(largest)) return size
         val smallest = shrunk(size, factor, this).toPx()
@@ -83,6 +89,18 @@ private data class OneLineOrWrapping(val size: TextUnit, val factor: Float) : Te
             }
         }
         return if (fewest <= steps) (largest - fewest * step).toSp() else shrunk(size, factor, this)
+    }
+}
+
+/**
+ * Whether a line ends inside a word: where no line may break, as only a word too long for the line is broken. [breaks]
+ * are the text's own places where a line may break.
+ */
+private fun TextLayoutResult.breaksAWord(breaks: Lazy<BreakIterator>): Boolean {
+    val length = layoutInput.text.length
+    return (0 until lineCount - 1).any { line ->
+        val end = getLineEnd(line)
+        end in 1 until length && !breaks.value.isBoundary(end)
     }
 }
 
