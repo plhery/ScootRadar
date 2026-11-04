@@ -137,6 +137,7 @@ class ScooterMarkerArt(
     }
 
     private val dots = HashMap<Key, Bitmap>()
+    private val dotIDs = HashMap<Key, String>()
     private val clusters = HashMap<ClusterKey, Bitmap>()
     private val lastSeenDots = HashMap<LastSeenKey, Bitmap>()
     private val lastSeenClusters = HashMap<ClusterKey, Bitmap>()
@@ -146,6 +147,16 @@ class ScooterMarkerArt(
     private val pillWidths = HashMap<PillContent, Double>()
 
     fun image(key: Key): Bitmap = dots.kept(key) { draw(it) }
+
+    /**
+     * A dot's picture's name, made once for each look: at a step of a zoom hundreds of dots share a few dozen, and the
+     * scooters' source is written with them all (app-ax).
+     */
+    fun id(key: Key): String {
+        dotIDs[key]?.let { return it }
+        if (dotIDs.size >= MAXIMUM_DOTS) dotIDs.clear()
+        return key.id.also { dotIDs[key] = it }
+    }
 
     /** Every count is a picture of its own, so they are not all kept either. */
     fun clusterImage(key: ClusterKey): Bitmap = clusters.kept(key) { draw(it) }

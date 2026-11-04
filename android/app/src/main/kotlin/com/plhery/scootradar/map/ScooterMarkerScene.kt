@@ -53,6 +53,13 @@ class ScooterMark(scooter: Scooter) {
     var scooter: Scooter = scooter
         private set
 
+    /**
+     * Its scooter's id, which a mark keeps for as long as it lives, and its feature's on the map: made once, not each
+     * time a step of a zoom reads them, hundreds of times at every frame (app-ax).
+     */
+    val id: String = scooter.id
+    val featureID: String = "v:$id"
+
     var mapPoint: MapPoint = MapPoint(scooter.coordinate)
         private set
 
@@ -641,7 +648,7 @@ class ScooterMarkerScene(
         // A name needs single scooters to stand beside and an origin to be near.
         val heads = if (inputs.isStreetLevel) {
             ScooterMapLook.heads(
-                among = marks.mapNotNull { mark -> mark.metres?.let { ScooterDistance(mark.scooter.id, mark.scooter.provider, it) } },
+                among = marks.mapNotNull { mark -> mark.metres?.let { ScooterDistance(mark.id, mark.scooter.provider, it) } },
                 countedInGroups = inputs.usesServerClusters,
             )
         } else {
@@ -666,7 +673,7 @@ class ScooterMarkerScene(
         val looks = arrayOfNulls<ScooterDotLook>(marks.size)
         val dots = ArrayList<ScooterSpreadDot>(if (inputs.isStreetLevel) marks.size else 0)
         for ((index, mark) in marks.withIndex()) {
-            val id = mark.scooter.id
+            val id = mark.id
             val state = when {
                 id == inputs.selectedID -> ScooterDotState.Selected
                 id in headIDs -> ScooterDotState.Head
@@ -704,7 +711,7 @@ class ScooterMarkerScene(
         // A scooter drawn for the first time has no earlier look to ease from.
         val fresh = HashSet<String>()
         for ((index, mark) in marks.withIndex()) {
-            val id = mark.scooter.id
+            val id = mark.id
             // A look is made without an offset: only a spread dot's takes one.
             val sized = looks[index] ?: continue
             val look = offsets[id]?.let { sized.copy(offset = it) } ?: sized
@@ -743,11 +750,11 @@ class ScooterMarkerScene(
             previous.headingStep == inputs.headingStep && map.isShown && animates()
         val bounds = map.projection.bounds
         for (mark in changed.distinct()) {
-            val eased = animated && mark.scooter.id !in fresh
+            val eased = animated && mark.id !in fresh
             // Only the dots on the map ease, as only theirs have views; the others, and those in the app's own
             // clusters, take their look at once. Where none eases, as at a step of a zoom, none is looked for on
             // the map: MapLibre would be asked where each of them is, at every step (app-ax).
-            val moves = eased && mark.scooter.id !in clusteredIDs && isNear(dotCentre(mark, map.projection), bounds)
+            val moves = eased && mark.id !in clusteredIDs && isNear(dotCentre(mark, map.projection), bounds)
             refreshLook(mark, eased, moves = moves)
         }
     }
@@ -761,7 +768,7 @@ class ScooterMarkerScene(
         if (dots.size != marks.size) return dots
         if (marks.size != orderedMarks.size || marks.indices.any { marks[it] !== orderedMarks[it] }) {
             orderedMarks = marks
-            idOrder = marks.indices.sortedBy { marks[it].scooter.id }.toIntArray()
+            idOrder = marks.indices.sortedBy { marks[it].id }.toIntArray()
         }
         return List(dots.size) { dots[idOrder[it]] }
     }
@@ -787,7 +794,7 @@ class ScooterMarkerScene(
         ) {
             // The scooters' source takes the dot's new look with the change: the movers' layers draw it meanwhile.
             mark.motion = DotMotion(drawn, mark.drawnOffset).also { it.go(drawing, offset, now(), animated = true) }
-            movingIDs += mark.scooter.id
+            movingIDs += mark.id
         }
         mark.drawnDot = drawing
         mark.drawnOffset = offset
@@ -843,7 +850,7 @@ class ScooterMarkerScene(
         if (movingIDs.isEmpty()) return emptyList()
         val settled = movingIDs.mapNotNull { marksByID[it] }.filter { it.motion?.isOver(at) != false }
         for (mark in settled) mark.motion = null
-        movingIDs.removeAll(settled.mapTo(HashSet()) { it.scooter.id })
+        movingIDs.removeAll(settled.mapTo(HashSet()) { it.id })
         return settled
     }
 
@@ -1167,7 +1174,7 @@ class ScooterMarkerScene(
             val centre = dotCentre(mark, projection)
             // MapKit keeps views only for the scooters on the map.
             if (!isNear(centre, bounds)) continue
-            dots += ScooterMapLook.TouchableDot(mark.scooter.id, centre, max(TAP_REACH, mark.look.footprint / 2 + 6))
+            dots += ScooterMapLook.TouchableDot(mark.id, centre, max(TAP_REACH, mark.look.footprint / 2 + 6))
         }
         ScooterMapLook.nearestDot(to = at, among = dots)?.let { nearest ->
             marksByID[nearest.id]?.let { return it to nearest.distance }
@@ -1180,7 +1187,7 @@ class ScooterMarkerScene(
 
     /** The scooters drawn as dots of their own: all but those in the app's own clusters. */
     fun drawnMarks(): Collection<ScooterMark> =
-        if (clusteredIDs.isEmpty()) marksByID.values else marksByID.values.filter { it.scooter.id !in clusteredIDs }
+        if (clusteredIDs.isEmpty()) marksByID.values else marksByID.values.filter { it.id !in clusteredIDs }
 
     /** Where a dot is drawn on the map: at its scooter, moved by its spread. */
     fun dotCentre(mark: ScooterMark, projection: ScooterMapProjection): ScreenPoint {
@@ -1211,7 +1218,7 @@ class ScooterMarkerScene(
     }
 
     private fun publishSelection(mark: ScooterMark) {
-        val id = mark.scooter.id
+        val id = mark.id
         if (appliedSelectionID == id) return
         appliedSelectionID = id
         onSelectionChange(id)

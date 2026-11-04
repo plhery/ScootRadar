@@ -91,9 +91,9 @@ object MarkerFeatures {
     fun dot(mark: ScooterMark, art: ScooterMarkerArt): MarkerFeature {
         val key = mark.art
         return MarkerFeature(
-            id = "v:${mark.scooter.id}",
+            id = mark.featureID,
             coordinate = mark.scooter.coordinate,
-            image = key.id,
+            image = art.id(key),
             picture = { art.image(key) },
             offset = mark.look.offset,
             sortKey = mark.look.zPriority,
@@ -114,9 +114,9 @@ object MarkerFeatures {
         val drawing = motion?.drawing(at) ?: DotDrawing(mark.art, mark.look.diameter, mark.look.strength)
         val key = drawing.art
         return MarkerFeature(
-            id = "v:${mark.scooter.id}",
+            id = mark.featureID,
             coordinate = mark.scooter.coordinate,
-            image = key.id,
+            image = art.id(key),
             picture = { art.image(key) },
             offset = motion?.offset(at) ?: mark.look.offset,
             sortKey = mark.look.zPriority,
@@ -139,7 +139,7 @@ object MarkerFeatures {
         val dot = mark.motion?.offset(at) ?: mark.look.offset
         val origin = mark.pillOrigin(at)
         return MarkerFeature(
-            id = "n:${mark.scooter.id}",
+            id = "n:${mark.id}",
             coordinate = mark.scooter.coordinate,
             image = content.id,
             picture = { art.pillImage(content) },

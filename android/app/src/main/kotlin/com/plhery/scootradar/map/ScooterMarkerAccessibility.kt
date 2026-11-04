@@ -34,7 +34,7 @@ sealed interface MarkerElement {
 
     /** A scooter, in a square of 44 pt around its dot (MAP-233). */
     class Dot(val mark: ScooterMark, override val frame: ScreenRect) : MarkerElement {
-        override val key: String get() = "v:${mark.scooter.id}"
+        override val key: String get() = mark.featureID
         override val description: MarkerDescription get() = MarkerDescriptions.of(mark)
     }
 
@@ -99,7 +99,7 @@ object MarkerElements {
 
     /** The trait VoiceOver reads of a scooter while it is selected (setSelected). */
     fun isSelected(element: MarkerElement, scene: ScooterMarkerScene): Boolean =
-        element is MarkerElement.Dot && element.mark.scooter.id == scene.appliedSelectionID
+        element is MarkerElement.Dot && element.mark.id == scene.appliedSelectionID
 
     /**
      * The marker a finger exploring the map is on: the one a tap there would take, the cluster on top of the
@@ -111,7 +111,7 @@ object MarkerElements {
         val bay = scene.bay(at = point, beside = scooter, map = map)
         val key = when {
             bay != null -> "p:${bay.id}"
-            scooter != null -> "v:${scooter.first.scooter.id}"
+            scooter != null -> scooter.first.featureID
             else -> scene.topCluster(at = point, map = map)?.featureID
         }
         return among.firstOrNull { it.key == key }
