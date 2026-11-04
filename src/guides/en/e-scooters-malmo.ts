@@ -85,7 +85,6 @@ const guide: Guide = {
             caption: 'Rules on land owned by others, as each owner states them, October 2026',
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
-              ['Malmö Central Station', 'Jernhusen, the station’s owner', 'No e-scooter rule on its station page (28 October 2026)'],
               ['Station platforms', 'Skånetrafiken', 'No riding or parking cycles on platforms'],
             ],
           },
@@ -173,7 +172,6 @@ const guide: Guide = {
     { title: 'Bolt: Terms for e-vehicles in Sweden (from 1 December 2026)', url: 'https://bolt.eu/sv-se/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Bolt: E-scooters in Sweden', url: 'https://bolt.eu/sv-se/scooters/' },
     { title: 'Voi: Malmö rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/7/netex.xml' },
-    { title: 'Jernhusen: Malmö Central Station', url: 'https://www.jernhusen.se/hitta-din-station/malmo-centralstation' },
   ],
 };
 

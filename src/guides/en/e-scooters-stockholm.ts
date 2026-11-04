@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Stockholm 2026: Voi, Bolt, prices and rules',
   description: 'E-scooters in Stockholm with Voi and Bolt: the price, who can ride, where to ride and park, Gamla stan, the metro ban and Sweden’s fines.',
   headline: 'E-scooters in Stockholm: Voi, Bolt, prices and where to ride and park',
-  lede: 'E-scooters in Stockholm are rented from Voi and Bolt, the only two companies with permits since 1 July 2026. Each app shows the price before you unlock. Ride on cycle lanes or the road, never on the pavement, and park in one of about 700 bays or a city cycle rack. You can’t take an e-scooter into the metro, even folded.',
+  lede: 'E-scooters in Stockholm are rented from Voi and Bolt, the only two companies with permits since 1 July 2026. As of November 2026 a Voi costs SEK 10 to unlock and SEK 3 a minute, and Bolt rents only to riders aged 18 or over. Ride on cycle lanes or the road, never on the pavement, and park in one of about 700 bays or a city cycle rack. You can’t take an e-scooter into the metro, even folded.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'se:Stockholm',
@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'E-scooters in Stockholm: Voi and Bolt',
       blocks: [
-        '**Voi** and **Bolt** are the only companies renting out e-scooters in the City of Stockholm. On 11 December 2025 the city’s traffic committee (trafiknämnden) limited e-scooter operators to two from 1 July 2026, and in June 2026 the city chose Voi and Bolt, the local paper Mitt i reported. Lime had to leave and said it would appeal.',
-        'The city allows up to **12,000** rental e-scooters, a cap it kept in December 2025; Voi and Bolt now share it. Each company needs a permit from the Swedish Police Authority (Polismyndigheten) to use public land, granted only if the city agrees, and pays the city SEK 1,400 a scooter a year, the city’s traffic office wrote in October 2025. Neither the committee’s decision nor that report sets a separate cap for the inner city; from 1 July 2026 the city’s criteria for sharing out scooters reward companies that reach the outer districts.',
+        '**Voi** and **Bolt** are the only companies renting out e-scooters in the City of Stockholm. On 11 December 2025 the city’s traffic committee (trafiknämnden) limited e-scooter operators to two from 1 July 2026, and in June 2026 the city chose Voi and Bolt, Bolt and the local paper Mitt i reported. Lime had to leave and said it would appeal.',
+        'The city allows up to **12,000** rental e-scooters, a cap it kept in December 2025; Voi and Bolt now share it, and Bolt says its permit covers up to 6,000 of them for about two years. Each company needs a permit from the Swedish Police Authority (Polismyndigheten) to use public land, granted only if the city agrees, and pays the city SEK 1,400 a scooter a year, the city’s traffic office wrote in October 2025. Neither the committee’s decision nor that report sets a separate cap for the inner city; from 1 July 2026 the city’s criteria for sharing out scooters reward companies that reach the outer districts.',
         'At about 15:20 on Sunday 25 October 2026 the [map of Stockholm](map:se:Stockholm) showed about 10,950 Voi and Bolt e-scooters free to rent at that moment within the City of Stockholm. Zoomed in, it draws Stockholms stad’s e-scooter bays (open data, CC0), but not its no-parking areas.',
         'Voi and Bolt also rent out **e-bikes** here, up to 1,500 each since 1 January 2026, Mitt i reported in June 2026, citing the city.',
       ],
@@ -25,20 +25,22 @@ const guide: Guide = {
     {
       heading: 'How much does a Voi or Bolt e-scooter cost in Stockholm?',
       blocks: [
-        '**The app shows the price** before you unlock, and prices can change, so check it before each ride.',
+        '**The app shows the price** before you unlock, and prices can change, so check it before each ride. As of November 2026 Voi charges SEK 10 to unlock and then SEK 3 a minute in Stockholm. Bolt’s Swedish website gives prices in euros for the whole of Sweden rather than for Stockholm (as of November 2026): from €0.15 a minute plus a small unlock fee, both varying from place to place; unlimited unlocks from €0.99 a month; and passes that make each minute cheaper the more minutes you buy.',
         {
           table: {
             caption: 'Voi and Bolt in Stockholm at a glance, October 2026, and who says so',
             head: ['Question', 'Answer', 'Who says so'],
             rows: [
-              ['Who rents e-scooters?', 'Voi and Bolt, the only two since 1 July 2026', 'The traffic committee (11 December 2025); Mitt i (2 June 2026)'],
+              ['Who rents e-scooters?', 'Voi and Bolt, the only two since 1 July 2026', 'The traffic committee (11 December 2025); Bolt and Mitt i (2 June 2026)'],
+              ['What does a ride cost?', 'Voi: SEK 10 to unlock, then SEK 3 a minute (as of November 2026). Bolt: from €0.15 a minute plus an unlock fee, across Sweden', 'Voi’s open data (4 November 2026); Bolt’s Swedish website (November 2026)'],
+              ['How old must you be?', 'Bolt: 18 or over. Voi: shown in its app', 'Bolt’s terms for Sweden (from 1 February 2023, and from 1 December 2026)'],
               ['How many scooters?', 'Up to 12,000 in the city', 'The City of Stockholm (21 October 2026)'],
               ['When can you ride?', 'No hours, night ban or winter pause', 'None set on the city’s e-scooter pages (21 October 2026)'],
               ['Where does a ride end?', 'In a bay or city cycle rack, outside the no-parking areas', 'The City of Stockholm (21 October 2026)'],
             ],
           },
         },
-        'Each company sets its own minimum age and its own fees, including for a scooter left outside its parking area: check them in the app before your first ride.',
+        'If you leave a Bolt scooter outside its permitted parking area, Bolt’s Swedish terms allow two fees of up to SEK 1,000 each: one to collect it and one for the unpermitted parking. From 1 December 2026, new terms let it charge SEK 60 if the photo the app asks for at the end of a ride shows the scooter wrongly parked. Check Voi’s app for its own age limit and fees.',
         'New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -59,7 +61,7 @@ const guide: Guide = {
               ['Helmet', 'Compulsory under 15, recommended for all', 'The law', 'No fine for the rider'],
               ['Alcohol', 'No fixed limit, but you may not ride if drink or drugs stop you riding safely', 'The law', '–'],
               ['Slow zones', 'In some places, such as outdoor café areas, hire scooters slow to walking pace by themselves', 'The city', '–'],
-              ['Parking', 'Never on a footway or cycle lane except in a bay or cycle rack', 'The law, since 1 September 2022', 'The city may remove it'],
+              ['Parking', 'Never on a footway or cycle lane except in a bay or cycle rack', 'The law, since 1 September 2022', 'The city may remove it; Bolt may charge you'],
             ],
           },
         },
@@ -94,18 +96,16 @@ const guide: Guide = {
     {
       heading: 'Gamla stan, Djurgården, campuses and the airport',
       blocks: [
-        'All streets in inner Gamla stan, the Old Town, are pedestrian streets, and the city bans all vehicle traffic there from 11:00 to 06:00 without a permit (8 October 2026); its page names no exception for cycles. On a pedestrian street the law requires riders to keep to walking pace and give way to people on foot.',
+        'All streets in inner Gamla stan, the Old Town, are pedestrian streets, and the city bans all vehicle traffic there from 11:00 to 06:00 without a permit (8 October 2026). On a pedestrian street the law requires riders to keep to walking pace and give way to people on foot.',
         {
           table: {
             caption: 'Rules on land owned by others, as each owner states them, October 2026',
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
-              ['Royal Djurgården', 'Kungliga Djurgårdsförvaltningen (the Royal Djurgården Administration)', 'No e-scooter rule on its visitor pages (25 October 2026); it calls the bicycle an excellent way to explore the park'],
-              ['Skeppsholmen', 'Statens fastighetsverk (the National Property Board)', 'No e-scooter rule on its Skeppsholmen page (25 October 2026)'],
+              ['Royal Djurgården', 'Kungliga Djurgårdsförvaltningen (the Royal Djurgården Administration)', 'Calls the bicycle an excellent way to explore the park (25 October 2026)'],
               ['KTH campus', 'Akademiska Hus, the campus owner', 'Built separate e-scooter parking areas because scooters were crowding the cycle racks (17 October 2022)'],
               ['Stockholm University', 'The university', 'Cycle racks near many entrances; e-scooter batteries may not be brought into, stored or charged on its premises (24 September 2026)'],
-              ['Stockholm Central Station', 'Jernhusen, the station’s owner', 'No e-scooter rule on its station page (25 October 2026)'],
-              ['Arlanda Airport', 'Swedavia', 'Free bicycle parking by the terminals and at SkyCity; nothing on e-scooters (25 October 2026)'],
+              ['Arlanda Airport', 'Swedavia', 'Free bicycle parking by the terminals and at SkyCity (25 October 2026)'],
             ],
           },
         },
@@ -139,6 +139,7 @@ const guide: Guide = {
         {
           list: [
             '**Fault reports rising.** The city’s traffic office received just over 3,000 fault reports about e-scooters in 2024, and over 4,000 in 2025 by September.',
+            '**A camera for pavements.** Bolt has launched 100 of its sixth-generation scooters, Bolt 6, in Stockholm, with an AI camera that detects pavement riding and checks parking, it said on 2 June 2026.',
             '**Alcohol and helmets.** A Chalmers University of Technology study, published on 2 July 2026, looked at fatal e-scooter crashes from 2016 to 2024: 8 of the 18 riders killed were under the influence of alcohol and none wore a helmet, and nearly nine in ten of the alcohol-related deaths were on privately owned scooters.',
           ],
         },
@@ -152,11 +153,11 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Voi or Bolt e-scooter cost in Stockholm?',
-      answer: 'The app shows the price before you unlock, and prices can change, so check it before each ride.',
+      answer: 'As of November 2026 Voi charges SEK 10 to unlock and then SEK 3 a minute in Stockholm, and Bolt from €0.15 a minute plus an unlock fee; prices can change.',
     },
     {
       question: 'Do I need a helmet to ride an e-scooter in Stockholm?',
-      answer: 'Only if you are under 15: Swedish law requires a helmet for younger riders, and the Swedish Transport Agency recommends one for everyone. The companies set their own minimum age: check the app.',
+      answer: 'Only if you are under 15: Swedish law requires a helmet for younger riders, and the Swedish Transport Agency recommends one for everyone. Bolt rents only to riders aged 18 or over.',
     },
     {
       question: 'Can I ride an e-scooter on the pavement in Stockholm?',
@@ -168,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter in Stockholm in winter?',
-      answer: 'The city’s e-scooter pages set no winter pause or night ban (October 2026). Take care in snow and ice, and check the app for scooters near you.',
+      answer: 'The city’s e-scooter pages set no winter pause or night ban (October 2026). Bolt’s terms from 1 December 2026 tell riders not to ride in snow, ice or sleet; check the app for scooters near you.',
     },
   ],
   sources: [
@@ -179,7 +180,12 @@ const guide: Guide = {
     { title: 'Trafiknämnden: Minutes, § 31 (11 December 2025)', url: 'https://insynsverige.se/documentHandler.ashx?did=2064027' },
     { title: 'Trafikkontoret: Report on rental e-scooters and bikes (22 October 2025)', url: 'https://insynsverige.se/documentHandler.ashx?did=2063931' },
     { title: 'Riksdagen: Ordningslagen (1993:1617)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/ordningslag-19931617_sfs-1993-1617/' },
+    { title: 'Bolt: Permit for e-scooters in Stockholm (2 June 2026)', url: 'https://bolt.eu/sv-se/blog/elsparkcykel-tillstand-stockholm/' },
     { title: 'Mitt i: Voi and Bolt take over the e-scooters (2 June 2026)', url: 'https://www.mitti.se/nyheter/de-tar-over-elsparkcyklarna-i-stan-6.3.368726.b4c13ac4fc' },
+    { title: 'Voi: Stockholm rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/1/netex.xml' },
+    { title: 'Bolt: E-scooters in Sweden', url: 'https://bolt.eu/sv-se/scooters/' },
+    { title: 'Bolt: Terms for e-vehicles in Sweden (from 1 February 2023)', url: 'https://bolt.eu/sv-se/legal/micromobility/new-terms-for-e-vehicles/' },
+    { title: 'Bolt: Terms for e-vehicles in Sweden (from 1 December 2026)', url: 'https://bolt.eu/sv-se/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Transportstyrelsen: Elsparkcykel (updated 14 August 2026)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/fordon/fordonsregler/regler-for-olika-fordonsslag/elsparkcykel/' },
     { title: 'Transportstyrelsen: Traffic rules for cyclists (updated 22 December 2025)', url: 'https://www.transportstyrelsen.se/sv/vagtrafik/trafikregler-och-vagmarken/trafikregler/trafikregler-for-dig-som-cyklar/' },
     { title: 'Riksdagen: Trafikförordningen (1998:1276)', url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/trafikforordning-19981276_sfs-1998-1276/' },
@@ -187,10 +193,8 @@ const guide: Guide = {
     { title: 'SL: Bikes and e-scooters on board', url: 'https://sl.se/reseplanering/att-resa-med-sl/vad-du-far-ta-med-pa-resan/cykel' },
     { title: 'Region Stockholm: New rules on SL (25 November 2024)', url: 'https://www.regionstockholm.se/nyheter/2024/11/nya-regler-for-cyklar-och-elsparkcyklar-i-sl-trafiken/' },
     { title: 'Kungliga Djurgården: Maps and cycling', url: 'https://www.kungligaslotten.se/vara-besoksmal/kungliga-djurgarden/infor-besoket/kartor.html' },
-    { title: 'Statens fastighetsverk: Skeppsholmen and Kastellholmen', url: 'https://www.sfv.se/vara-fastigheter/sverige/stockholms-lan/skepps-och-kastellholmen/skeppsholmen-och-kastellholmen' },
     { title: 'Akademiska Hus: E-scooter parking at KTH (17 October 2022)', url: 'https://www.akademiskahus.se/campus--fastigheter/stockholm/kth-campus/issues/3032' },
     { title: 'Stockholm University: Bicycle parking (24 September 2026)', url: 'https://medarbetare.su.se/en/support-and-service/campus-and-premises/staff-parking/bicycle-parking' },
-    { title: 'Jernhusen: Stockholm Central Station', url: 'https://www.jernhusen.se/hitta-din-station/stockholms-centralstation/' },
     { title: 'Swedavia: Motorcycle and bicycle parking at Arlanda', url: 'https://www.swedavia.com/arlanda/parking/motorcycle-bicycle-parking/' },
     { title: 'Solna stad: E-scooters in Solna (updated 2 July 2026)', url: 'https://www.solna.se/bygga-bo--miljo/trafik-och-framkomlighet/cykla-i-solna/elsparkcyklar-i-solna' },
     { title: 'Nacka kommun: E-scooters (updated 10 July 2026)', url: 'https://www.nacka.se/stadsutveckling-trafik/cykla-i-nacka/elsparkcyklar/' },
