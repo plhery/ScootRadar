@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-krakow',
   topic: 'krakow',
   name: 'Renting an e-scooter in Kraków',
-  title: 'E-scooters Kraków 2026: Bolt, Dott, Lime, parking and rules',
-  description: 'E-scooters in Kraków: Bolt, Dott and Lime, where you may park in the centre, the ban on Wawel Hill, and Poland’s age, helmet and alcohol rules.',
-  headline: 'E-scooters in Kraków: Bolt, Dott and Lime, parking points and the places you can’t ride',
-  lede: 'You can rent an e-scooter in Kraków (Krakow) with Bolt, Dott or Lime; check the fare and the company’s minimum age in its app. In the centre you may end a ride only at one of the city’s 342 parking points, and Polish law sends you to the cycle path at up to 20 km/h.',
+  title: 'E-scooters Kraków 2026: Bolt, Dott, Lime, prices and rules',
+  description: 'E-scooters in Kraków: Bolt, Dott and Lime, what a ride costs, where you may park in the centre, the ban on Wawel Hill, and Poland’s rules.',
+  headline: 'E-scooters in Kraków: Bolt, Dott and Lime, prices, parking points and the places you can’t ride',
+  lede: 'You can rent an e-scooter in Kraków (Krakow) with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show prices in the app. In the centre you may end a ride only at one of the city’s 342 parking points, and Polish law sends you to the cycle path at up to 20 km/h.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'pl:Kraków',
@@ -16,12 +16,40 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Kraków?',
       blocks: [
-        'Three companies rent e-scooters in Kraków: **Bolt**, **Dott** and **Lime**. Bolt and Lime have been in the city’s parking scheme since it began in August 2023.',
-        'Traficar, a car-sharing company, joined the scheme in March 2024, ZTP said then. ZTP’s scooter page says “several operators” work in Kraków without naming them.',
+        'Three companies rent e-scooters in Kraków:',
+        {
+          list: [
+            '**Bolt**, in the same app as its taxis. Its Polish terms require you to be 18, and new riders are capped at 15 km/h for their first five rides.',
+            '**Dott**, whose terms for Poland also require 18; in Kraków its app has replaced Tier’s.',
+            '**Lime**, which shows its prices in its app.',
+          ],
+        },
+        'Bolt and Lime have been in the city’s parking scheme since it began in August 2023. Traficar, a car-sharing company, joined it in March 2024, ZTP said then; its fleet page lists cars and vans. ZTP’s scooter page says “several operators” work in Kraków without naming them.',
         'At 13:50 on Sunday 25 October 2026 the [Kraków map](map:pl:Kraków) showed about 4,100 Bolt and Dott scooters free to rent at that moment. Skawina, to the south-west, has [its own map](map:pl:Skawina).',
         'Kraków’s Wavelo bike-share is gone; the city now has LajkBike, rented by the month, and Park-e-Bike.',
-        'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Poznań](guide:poznan), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
+      ],
+    },
+    {
+      heading: 'How much does an e-scooter cost in Kraków?',
+      blocks: [
+        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes and, like Lime, shows its prices in the app.',
+        'Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one. Bolt’s and Dott’s terms set the extra charges:',
+        {
+          table: {
+            caption: 'Extra charges in Bolt’s and Dott’s terms for Poland, as of November 2026',
+            head: ['Operator', 'Charge', 'When'],
+            rows: [
+              ['Bolt', 'PLN 30', 'Parking against its rules or without a clear end-of-ride photo'],
+              ['Bolt', 'Up to PLN 460', 'Leaving the scooter outside an allowed parking place'],
+              ['Bolt', 'Up to PLN 560, plus ride charges until it’s found', 'Abandoning the scooter without telling Bolt'],
+              ['Bolt', 'Up to PLN 140', 'Admin fee for handling a breach'],
+              ['Dott', 'Up to €300', 'Recovering a scooter parked or locked against its instructions'],
+              ['Dott', '€50', 'Any breach of its terms, and again as an admin fee on a fine it pays for you'],
+            ],
+          },
+        },
       ],
     },
     {
@@ -35,7 +63,7 @@ const guide: Guide = {
             '**Outside the area**, follow the national rule: in a marked place, or else at the pavement’s outer edge, parallel to it, leaving 1.5 m for pedestrians.',
           ],
         },
-        { note: 'A scooter left in the way can be towed at its owner’s cost on the orders of the municipal police (Straż Miejska) or the Police: in 2026, PLN 175 plus PLN 33 a day in the pound (city council resolution of 19 November 2025). For a rental that’s the company: check its terms in the app for what it may charge you.' },
+        { note: 'A scooter left in the way can be towed at its owner’s cost on the orders of the municipal police (Straż Miejska) or the Police: in 2026, PLN 175 plus PLN 33 a day in the pound (city council resolution of 19 November 2025). For a rental that’s the company, and Bolt’s and Dott’s terms let them pass it on to you.' },
       ],
     },
     {
@@ -84,15 +112,15 @@ const guide: Guide = {
       blocks: [
         '**Trams and buses (MPK).** The city council’s carriage rules don’t name e-scooters: hand luggage is allowed if it doesn’t block the aisle, soil others’ clothes or limit the driver’s view, and the driver may refuse bulky luggage in a crowd (§ 9, as amended in November 2023).',
         '**Koleje Małopolskie**, the regional trains. Its carriage rules, in force since 11 September 2026, carry a folded scooter, “including an electric scooter”, free as luggage; an unfolded one needs a PLN 6 ticket and a marked space, and staff may refuse it at busy times.',
-        '**Kraków Główny.** The city’s parking points by the main station include Dworzec Główny Wschód 1 and 2.',
+        '**Kraków Główny.** The main station is run by PKP S.A., the state railway company. Its rules ban riding a scooter “on the platform, the way to the platform, in the hall, waiting room … underpass, on the footbridge … and near the track less than 3 metres from the outer rail” without its consent, and leaving rental scooters “except in the places meant for them” (§ 3, January 2025). The city’s parking points by the station include Dworzec Główny Wschód 1 and 2.',
         '**Kraków Airport (Balice).** It lies in Zabierzów, outside the city. Its internal road rules (2018) set 20 km/h for all vehicles and don’t mention scooters. The airport train, Koleje Małopolskie’s SKA1, runs from Kraków Główny for PLN 20 single, the airport says.',
       ],
     },
     {
-      heading: 'What the operators pay, all year',
+      heading: 'Winter, bad weather and what the operators pay',
       blocks: [
         'In March 2024 ZTP said the operators’ combined fee would rise from April to PLN 23,582.99 a month, for 303 points.',
-        'The operators’ fees are charged all year, and from December 2023 to February 2024 scooters had to be moved only 58 times, ZTP said.',
+        'The operators’ fees are charged all year, and from December 2023 to February 2024 scooters had to be moved only 58 times, ZTP said. Bolt’s terms rule out riding in snow, hail, ice, sleet, freezing rain or thunderstorms, and set a 95 kg maximum load.',
       ],
     },
     {
@@ -111,11 +139,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Kraków?',
-      answer: 'Bolt, Dott and Lime: see the [Kraków map](map:pl:Kraków). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Kraków map](map:pl:Kraków). Bolt and Dott rent only to riders of 18 and over.',
     },
     {
       question: 'How much does electric scooter rental cost in Krakow?',
-      answer: 'Each company sets its own fare and shows it in its app: check it before you unlock.',
+      answer: 'Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026). Dott and Lime show their prices in the app.',
     },
     {
       question: 'Where can you park an e-scooter in Kraków?',
@@ -151,12 +179,20 @@ const guide: Guide = {
     { title: 'Kraków Airport: by train (Polish)', url: 'https://krakowairport.pl/pl/pasazer/transport/dojazd/z-do-krakow-airport/dojazd-pociag' },
     { title: 'Kraków Airport: internal road rules (Polish, PDF)', url: 'https://krakowairport.pl/storage/2021-01/regulamin-wuk-2018-net-1612101406Aa88p.pdf' },
     { title: 'Wawel Royal Castle: Wawel Hill visitor policies', url: 'https://wawel.krakow.pl/en/wawel-hill-visitor-policies' },
+    { title: 'PKP S.A.: station rules (Polish)', url: 'https://www.pkp.pl/images/bezpieczenstwo/Zasady.pdf' },
+    { title: 'PKP S.A.: Kraków Główny (Polish)', url: 'https://www.pkp.pl/pl/dworce/krakow-glowny-informacje-dla-podroznych' },
     { title: 'Dziennik Ustaw: Road Traffic Act, 2024 (Polish)', url: 'https://dziennikustaw.gov.pl/D2024000125101.pdf' },
     { title: 'Dziennik Ustaw: amending act of 17 October 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/DU/2025/1676' },
     { title: 'Dziennik Ustaw: Act on vehicle drivers, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000122601.pdf' },
     { title: 'Dziennik Ustaw: Code of Petty Offences, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000073401.pdf' },
     { title: 'Dziennik Ustaw: fines tariff from 1 January 2022 (Polish)', url: 'https://dziennikustaw.gov.pl/D2021000248401.pdf' },
     { title: 'Dziennik Ustaw: sobriety act (Polish)', url: 'https://dziennikustaw.gov.pl/D2023000215101.pdf' },
+    { title: 'Bolt: scooters in Poland (Polish)', url: 'https://bolt.eu/pl-pl/scooters/' },
+    { title: 'Bolt: scooters in Poland (English)', url: 'https://bolt.eu/en-pl/scooters/' },
+    { title: 'Bolt: terms for Poland from 8 May 2026 (Polish)', url: 'https://bolt.eu/pl-pl/legal/micromobility/tnc-micromobility-old/' },
+    { title: 'Dott: terms and conditions for Poland', url: 'https://ridedott.com/terms-and-conditions/poland/' },
+    { title: 'Dott: passes (Polish)', url: 'https://ridedott.com/pl/jedz-z-dottem/' },
+    { title: 'Traficar: fleet (Polish)', url: 'https://traficar.pl/flota/' },
   ],
 };
 

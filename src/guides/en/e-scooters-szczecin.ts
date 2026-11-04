@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Szczecin 2026: Bolt, Dott, rules and parking',
   description: 'E-scooters in Szczecin: Bolt and Dott, 15 km/h on the Oder boulevards, BikeS zones, Poland’s age, helmet and pavement rules, towing, trams and trains.',
   headline: 'E-scooters in Szczecin: Bolt and Dott, the boulevards’ 15 km/h, where to ride and park, and trams and trains',
-  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Szczecin with Bolt or Dott; check the fare and the company’s minimum age in its app. In December 2022 the city and the scooter companies then operating agreed to slow scooters to 15 km/h on the Oder boulevards and to block riding and parking where the city asks during big outdoor events, the city hall said in April 2025. Polish law limits you to 20 km/h and puts you on the cycle path where there is one, otherwise on a road limited to 30 km/h, a limit that covers whole quarters of Szczecin’s centre.',
+  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Szczecin with Bolt or Dott; both rent only to riders of 18 and over, and Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026). In December 2022 the city and the scooter companies then operating agreed to slow scooters to 15 km/h on the Oder boulevards and to block riding and parking where the city asks during big outdoor events, the city hall said in April 2025. Polish law limits you to 20 km/h and puts you on the cycle path where there is one, otherwise on a road limited to 30 km/h, a limit that covers whole quarters of Szczecin’s centre.',
   published: '2026-11-02',
   updated: '2026-11-02',
   city: 'pl:Szczecin',
@@ -16,10 +16,16 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Szczecin?',
       blocks: [
-        'Two companies’ scooters are on our map of Szczecin: **Bolt** and **Dott**.',
+        'Two companies’ scooters are on our map of Szczecin:',
+        {
+          list: [
+            '**Bolt**, in the same app as its taxis. Its terms for Poland require you to be 18, and its Polish page says new riders are held to 15 km/h for their first five rides.',
+            '**Dott**, whose terms for Poland also require 18; in Szczecin its app has replaced Tier’s.',
+          ],
+        },
         'Szczecin had three scooter rental companies in 2022, Tier, Bolt and Quick, and two in 2024, Tier and Bolt, the city hall (Urząd Miasta Szczecin) said on 17 April 2025, answering a request for public information.',
         'At 02:47 on Monday 2 November 2026, Polish time, the [Szczecin map](map:pl:Szczecin) showed 1,639 Bolt and Dott scooters free to rent at that moment.',
-        'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026). Dott sells day, week and month passes and shows its prices in the app. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'The same national rules apply in our guides to [Poznań](guide:poznan), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun). Coming over from Germany? Its rules differ: see the [Berlin guide](guide:berlin).',
       ],
     },
@@ -96,15 +102,15 @@ const guide: Guide = {
             ],
           },
         },
-        'For a rental, the owner is the scooter company: check its terms in the app to see what it may charge you.',
+        'For a rental, the owner is the scooter company, and Bolt’s and Dott’s terms let them pass it on to you.',
       ],
     },
     {
       heading: 'Trams, buses and trains',
       blocks: [
         '**Trams and buses (ZDiTM).** The city council’s rules for ZDiTM’s trams and buses (24 March 2015, last amended in 2026) don’t name e-scooters. They ban using a skateboard, a scooter (hulajnoga) or similar equipment inside a vehicle, and let you carry hand luggage only if it doesn’t block the aisle or the driver’s view or put other passengers at risk, up to 100 × 50 × 100 cm, 250 cm in all; bicycles are exempt from that size limit and go in the marked spaces. Anything larger is excluded from carriage, and ZDiTM charges a PLN 240 surcharge for it, or PLN 480 if paid after 7 days. With a rental, end your ride and park before you board.',
-        '**Trains.** POLREGIO’s REGIO trains serve Szczecin and its region, and the Szczecin Metropolitan Ticket (Szczeciński Bilet Metropolitalny), a monthly ticket sold by ZDiTM and POLREGIO, covers them along with the city’s trams and buses. Check the carrier’s rules before you take a scooter aboard.',
-        '**Szczecin Główny and the airport.** Ask staff before you ride or bring a scooter into the main station or Szczecin-Goleniów airport.',
+        '**Trains.** POLREGIO’s REGIO trains serve Szczecin and its region, and the Szczecin Metropolitan Ticket (Szczeciński Bilet Metropolitalny), a monthly ticket sold by ZDiTM and POLREGIO, covers them along with the city’s trams and buses. POLREGIO’s carriage rules (consolidated text from 1 September 2026) let you take a folded scooter free as hand luggage, as one of up to three items. An unfolded one counts as a bulky item, allowed only if it is easy to load and doesn’t block the aisle: buy a luggage ticket for it and put it only in a compartment or space marked for large items, one per passenger. The rules also ban leaving scooters unattended outside the places set for them.',
+        '**Szczecin Główny and the airport.** The main station is one of PKP S.A.’s, the state railway company. Its rules ban riding a scooter “on the platform, the way to the platform, in the hall, waiting room … underpass, on the footbridge … and near the track less than 3 metres from the outer rail” without its consent, and leaving rental scooters “except in the places meant for them” (§ 3, January 2025). At Szczecin-Goleniów airport, ask staff before you ride or bring a scooter in.',
       ],
     },
     {
@@ -123,7 +129,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Szczecin?',
-      answer: 'Bolt and Dott, both on [our map](map:pl:Szczecin). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt and Dott, both on [our map](map:pl:Szczecin). Both rent only to riders of 18 and over.',
     },
     {
       question: 'How fast can you ride an e-scooter on Szczecin’s boulevards?',
@@ -131,7 +137,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Poland?',
-      answer: '13 by law since 3 March 2026, with a bicycle card or a suitable licence until 18. The rental companies set their own minimum age: check it in the app.',
+      answer: '13 by law since 3 March 2026, with a bicycle card or a suitable licence until 18. Bolt and Dott rent only to riders of 18 and over.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Poland?',
@@ -143,7 +149,7 @@ const guide: Guide = {
     },
     {
       question: 'What does it cost if an e-scooter is towed in Szczecin?',
-      answer: 'In 2026, PLN 179 for the tow plus PLN 35 for each day in the pound, charged to the owner, which for a rental is the scooter company. Check its terms for what it may charge you.',
+      answer: 'In 2026, PLN 179 for the tow plus PLN 35 for each day in the pound, charged to the owner, which for a rental is the scooter company; Bolt’s and Dott’s terms let them pass it on to you.',
     },
   ],
   sources: [
@@ -154,6 +160,9 @@ const guide: Guide = {
     { title: 'ZDiTM Szczecin: carrying luggage (Polish)', url: 'https://www.zditm.szczecin.pl/pl/pasazer/bilety-i-oplaty/przewoz-bagazu' },
     { title: 'ZDiTM Szczecin: surcharges (Polish)', url: 'https://www.zditm.szczecin.pl/pl/pasazer/bilety-i-oplaty/oplaty-dodatkowe' },
     { title: 'ZDiTM Szczecin: Szczecin Metropolitan Ticket (Polish)', url: 'https://www.zditm.szczecin.pl/pl/pasazer/szczecinski-bilet-metropolitalny' },
+    { title: 'POLREGIO: carriage rules, consolidated text from 1 September 2026 (Polish, PDF)', url: 'https://polregio.pl/media/29636/jednolity-tekst-zm-nr-16-rpr-od-01092026.pdf' },
+    { title: 'PKP S.A.: station rules (Polish)', url: 'https://www.pkp.pl/images/bezpieczenstwo/Zasady.pdf' },
+    { title: 'PKP S.A.: Szczecin Główny (Polish)', url: 'https://www.pkp.pl/pl/dworce/szczecin-glowny-informacje-dla-podroznych' },
     { title: 'KRBRD: helmets compulsory under 16, 3 June 2026 (Polish)', url: 'https://www.krbrd.gov.pl/obowiazkowe-kaski-ochronne-dla-dzieci-do-16-roku-zycia/' },
     { title: 'Dziennik Ustaw: Road Traffic Act, consolidated text 2024 (Polish)', url: 'https://dziennikustaw.gov.pl/D2024000125101.pdf' },
     { title: 'Dziennik Ustaw: act of 17 October 2025 amending it (Polish)', url: 'https://dziennikustaw.gov.pl/DU/2025/1676' },
@@ -161,6 +170,10 @@ const guide: Guide = {
     { title: 'Dziennik Ustaw: Code of Petty Offences, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000073401.pdf' },
     { title: 'Dziennik Ustaw: fines tariff from 1 January 2022 (Polish)', url: 'https://dziennikustaw.gov.pl/D2021000248401.pdf' },
     { title: 'Dziennik Ustaw: act on sobriety, alcohol limits (Polish)', url: 'https://dziennikustaw.gov.pl/D2023000215101.pdf' },
+    { title: 'Bolt: scooters in Poland (Polish)', url: 'https://bolt.eu/pl-pl/scooters/' },
+    { title: 'Bolt: terms for Poland from 8 May 2026 (Polish)', url: 'https://bolt.eu/pl-pl/legal/micromobility/tnc-micromobility-old/' },
+    { title: 'Dott: terms and conditions for Poland', url: 'https://ridedott.com/terms-and-conditions/poland/' },
+    { title: 'Dott: passes (Polish)', url: 'https://ridedott.com/pl/jedz-z-dottem/' },
   ],
 };
 

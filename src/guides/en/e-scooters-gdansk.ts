@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'gdansk',
   name: 'Renting an e-scooter in Gdańsk, Gdynia and Sopot',
   title: 'E-scooters Gdańsk, Gdynia, Sopot 2026: Bolt, Dott and Lime',
-  description: 'E-scooters in Gdańsk, Gdynia and Sopot: Bolt, Dott and Lime, where to ride and park, the Main Town’s summer ban, and Poland’s age, helmet and alcohol rules.',
-  headline: 'E-scooters in Gdańsk, Gdynia and Sopot: Bolt, Dott and Lime, Poland’s rules and the places you can’t ride',
-  lede: 'You can rent an e-scooter in Gdańsk, Gdynia and Sopot, the Tricity (Trójmiasto), with Bolt, Dott or Lime; check the fare and the company’s minimum age in its app. Polish law sends you to the cycle path at up to 20 km/h and allows the pavement only beside a fast road, at walking pace, and you may not ride on Sopot’s Monte Cassino street or its pier.',
+  description: 'E-scooters in Gdańsk, Gdynia and Sopot: Bolt, Dott and Lime, what a ride costs, where to ride and park, the Main Town’s summer ban, and Poland’s rules.',
+  headline: 'E-scooters in Gdańsk, Gdynia and Sopot: Bolt, Dott and Lime, prices, Poland’s rules and the places you can’t ride',
+  lede: 'You can rent an e-scooter in Gdańsk, Gdynia and Sopot, the Tricity (Trójmiasto), with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show their prices in the app. Polish law sends you to the cycle path at up to 20 km/h and allows the pavement only beside a fast road, at walking pace, and you may not ride on Sopot’s Monte Cassino street or its pier.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'pl:Gdańsk / Gdynia / Sopot',
@@ -16,11 +16,39 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Gdańsk, Gdynia and Sopot?',
       blocks: [
-        'Three companies rent e-scooters in the Tricity: **Bolt**, **Dott** and **Lime**. Gdańsk (April 2023) and Gdynia (July 2022) named Lime among the companies renting scooters there.',
+        'Three companies rent e-scooters in the Tricity:',
+        {
+          list: [
+            '**Bolt**, in the same app as its taxis. Its Polish terms require you to be 18, and new riders are capped at 15 km/h for their first five rides.',
+            '**Dott**, whose terms for Poland also require 18.',
+            '**Lime**, which Gdańsk (April 2023) and Gdynia (July 2022) named among the companies renting scooters there.',
+          ],
+        },
         'No city publishes a current list of operators; any other company’s scooters are only in its own app.',
         'At about 15:30 on Sunday 25 October 2026 the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot) showed about 4,800 Bolt and Dott scooters free to rent at that moment. The town of Pruszcz Gdański, to the south, has [its own map](map:pl:Pruszcz Gdański).',
-        'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Poznań](guide:poznan), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
+      ],
+    },
+    {
+      heading: 'How much does an e-scooter cost in the Tricity?',
+      blocks: [
+        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes and, like Lime, shows its prices in the app.',
+        'Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one. Bolt’s and Dott’s terms set the extra charges:',
+        {
+          table: {
+            caption: 'Extra charges in Bolt’s and Dott’s terms for Poland, as of November 2026',
+            head: ['Operator', 'Charge', 'When'],
+            rows: [
+              ['Bolt', 'PLN 30', 'Parking against its rules or without a clear end-of-ride photo'],
+              ['Bolt', 'Up to PLN 460', 'Leaving the scooter outside an allowed parking place'],
+              ['Bolt', 'Up to PLN 560, plus ride charges until it’s found', 'Abandoning the scooter without telling Bolt'],
+              ['Bolt', 'Up to PLN 140', 'Admin fee for handling a breach'],
+              ['Dott', 'Up to €300', 'Recovering a scooter parked or locked against its instructions'],
+              ['Dott', '€50', 'Any breach of its terms, and again as an admin fee on a fine it pays for you'],
+            ],
+          },
+        },
       ],
     },
     {
@@ -62,7 +90,7 @@ const guide: Guide = {
         '**The summer ban in the Main Town (Główne Miasto).** From 26 June to 30 August 2026, as the year before, the city had the operators block riding and parking inside Długie Pobrzeże, Długi Targ and Długa, Targ Węglowy, Targ Drzewny and Podwale Staromiejskie. During St Dominic’s Fair (24 July to 16 August) the zone also took in Ołowianka island and three Old Town streets. Scooters lost power there and rides couldn’t end, so the clock kept running. Check the app next summer.',
         '**A slow zone.** In April 2023 the city said its agreements with the operators had capped scooters at 12 km/h in the Main Town, Ołowianka and the north of Granary Island (Wyspa Spichrzów) since 2021. The app shows whether that still applies.',
         '**Parking bays.** From 1 May 2023, under updated agreements, marked bays became the only places to end a ride in the Main Town, along al. Grunwaldzka through Wrzeszcz and Oliwa, and along the seaside; the city then had 350 bay locations. The app shows where you may park now; elsewhere, follow the national pavement rule.',
-        '**Towing.** Since 1 January 2026, under a city council resolution, a badly parked scooter can be towed for PLN 179, plus PLN 35 for each day in the pound, charged to the owner: for a rental, the operator. Check its terms in the app for what it may charge you.',
+        '**Towing.** Since 1 January 2026, under a city council resolution, a badly parked scooter can be towed for PLN 179, plus PLN 35 for each day in the pound, charged to the owner: for a rental, the operator, whose terms let it pass the cost on.',
         '**Checks.** Gdańsk’s municipal police (Straż Miejska) wrote 1,450 tickets to cyclists and e-scooter riders from January to mid-August 2026, and the city’s “Give way to pedestrians” campaign (24 September to 30 November 2026) adds joint checks with the police.',
       ],
     },
@@ -81,10 +109,11 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Trams and buses in the Tricity',
+      heading: 'Trams, buses and trains in the Tricity',
       blocks: [
         '**Gdańsk’s trams and buses (ZTM Gdańsk).** The city council’s carriage rules ban scooters that are neither folded nor carried as hand luggage, e-bikes, and any bike or scooter from a rental fleet; breaking ZTM’s luggage rules costs an extra PLN 96. End your ride and park before you board.',
         '**Gdynia’s buses and trolleybuses (ZKM Gdynia).** The city council’s rules let you take your own e-scooter as luggage if it doesn’t block the aisle or the ticket validators, put anyone at risk, delay the service or block the driver’s view.',
+        '**Trains.** POLREGIO, which runs the trains on the PKM line, carries a folded scooter free as hand luggage; an unfolded one needs a luggage ticket and a space marked for bulky items (its rules from 1 September 2026).',
       ],
     },
     {
@@ -102,11 +131,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Gdańsk?',
-      answer: 'Bolt, Dott and Lime: see the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Tricity map](map:pl:Gdańsk / Gdynia / Sopot). Bolt and Dott rent only to riders of 18 and over.',
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Poland?',
-      answer: '13 by law since 3 March 2026, with a bicycle card or a suitable licence until 18. The rental companies set their own minimum age: check it in the app.',
+      answer: '13 by law since 3 March 2026, with a bicycle card or a suitable licence until 18. Bolt and Dott rent only to riders of 18 and over.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Poland?',
@@ -144,6 +173,13 @@ const guide: Guide = {
     { title: 'City of Sopot: pier tickets from 10 April 2026 (Polish)', url: 'https://www.sopot.pl/aktualnosc/13081/od-10-kwietnia-na-sopockie-molo-z-biletem' },
     { title: 'Gdynia roads authority: scooters on the pavement, 20 July 2022 (Polish)', url: 'https://www.zdiz.gdynia.pl/nie-zostawiaj-hulajnogi-na-chodniku/' },
     { title: 'ZKM Gdynia: carriage rules (Polish)', url: 'https://zkmgdynia.pl/taryfa/przepisy-porzadkowe-regulamin-przewozow/' },
+    { title: 'POLREGIO: carriage rules from 1 September 2026 (Polish, PDF)', url: 'https://polregio.pl/media/29636/jednolity-tekst-zm-nr-16-rpr-od-01092026.pdf' },
+    { title: 'PKM: passenger FAQ (Polish)', url: 'https://www.pkm-sa.pl/dla-pasazera/f-a-q/' },
+    { title: 'Bolt: scooters in Poland (Polish)', url: 'https://bolt.eu/pl-pl/scooters/' },
+    { title: 'Bolt: scooters in Poland (English)', url: 'https://bolt.eu/en-pl/scooters/' },
+    { title: 'Bolt: terms for e-vehicles from 8 May 2026 (Polish)', url: 'https://bolt.eu/pl-pl/legal/micromobility/tnc-micromobility-old/' },
+    { title: 'Dott: terms and conditions for Poland', url: 'https://ridedott.com/terms-and-conditions/poland/' },
+    { title: 'Dott: passes (Polish)', url: 'https://ridedott.com/pl/jedz-z-dottem/' },
   ],
 };
 

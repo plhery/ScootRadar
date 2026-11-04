@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-poznan',
   topic: 'poznan',
   name: 'Renting an e-scooter in Poznań',
-  title: 'E-scooters Poznań 2026: Bolt, Dott, Lime, parking and rules',
-  description: 'E-scooters in Poznań: Bolt, Dott and Lime, the Hop & Go points where central rides must end, and Poland’s age, helmet and alcohol rules.',
-  headline: 'E-scooters in Poznań: Bolt, Dott and Lime, parking and where you can’t ride',
-  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Poznań (Poznan) with Bolt, Dott or Lime; check the fare and the company’s minimum age in its app. In and around the centre a ride may end only at a Hop & Go point. Polish law puts you on the cycle path where there is one, at no more than 20 km/h, and ZTM’s rules keep every e-scooter off trams and buses.',
+  title: 'E-scooters Poznań 2026: Bolt, Dott, Lime, prices and rules',
+  description: 'E-scooters in Poznań: Bolt, Dott and Lime, what a ride costs, the Hop & Go points where central rides must end, and Poland’s age, helmet and alcohol rules.',
+  headline: 'E-scooters in Poznań: Bolt, Dott and Lime, prices, parking and where you can’t ride',
+  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Poznań (Poznan) with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show prices in the app. In and around the centre a ride may end only at a Hop & Go point. Polish law puts you on the cycle path where there is one, at no more than 20 km/h, and ZTM’s rules keep every e-scooter off trams and buses.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'pl:Poznań',
@@ -16,12 +16,40 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Poznań?',
       blocks: [
-        'Three companies rent e-scooters in Poznań: **Bolt**, **Dott** and **Lime**, which the city roads authority lists as “Uber/Lime”.',
+        'Three companies rent e-scooters in Poznań:',
+        {
+          list: [
+            '**Bolt**, in the same app as its taxis. Its terms for Poland require you to be 18, and its Polish page says new riders are held to 15 km/h for their first five rides.',
+            '**Dott**, whose terms for Poland also require 18; its website lists Poznań and neighbouring Luboń.',
+            '**Lime**, which the city roads authority lists as “Uber/Lime”.',
+          ],
+        },
         'By March 2023 the city had signed a cooperation agreement (porozumienie o współpracy) with all three.',
         'At 19:59 on Sunday 25 October 2026 the [Poznań map](map:pl:Poznań) showed about 3,400 Bolt and Dott scooters free to rent at that moment.',
         'Zoomed in, the map draws ZDM’s Hop & Go points and the paid parking zones where a ride must end at one. Poznań dropped its city bike-share when rentals fell (in July 2026 the council asked for a new one).',
-        'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Our guides to [Warsaw](guide:warsaw), [Kraków](guide:krakow), [Wrocław](guide:wroclaw), [Łódź](guide:lodz), [Gdańsk, Gdynia and Sopot](guide:gdansk), [Szczecin](guide:szczecin), [Katowice and Chorzów](guide:katowice), [Bydgoszcz](guide:bydgoszcz) and [Toruń](guide:torun) cover the same national rules.',
+      ],
+    },
+    {
+      heading: 'How much does an e-scooter cost in Poznań?',
+      blocks: [
+        'Bolt’s Polish page quotes one starting price for the whole country: scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026); its English page says from €0.15. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott sells day, week and month passes and, like Lime, shows its prices in the app.',
+        'Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one. Bolt’s and Dott’s terms set the extra charges:',
+        {
+          table: {
+            caption: 'Extra charges in Bolt’s and Dott’s terms for Poland, as of November 2026',
+            head: ['Operator', 'Charge', 'When'],
+            rows: [
+              ['Bolt', 'PLN 30', 'Parking against its rules or without a clear end-of-ride photo'],
+              ['Bolt', 'Up to PLN 460', 'Leaving the scooter outside an allowed parking place'],
+              ['Bolt', 'Up to PLN 560, plus ride charges until it’s found', 'Abandoning the scooter without telling Bolt'],
+              ['Bolt', 'Up to PLN 140', 'Admin fee for handling a breach'],
+              ['Dott', 'Up to €300', 'Recovering a scooter parked or locked against its instructions'],
+              ['Dott', '€50', 'Any breach of its terms, and again as an admin fee on a fine it pays for you'],
+            ],
+          },
+        },
       ],
     },
     {
@@ -35,7 +63,7 @@ const guide: Guide = {
             '**Report a badly parked scooter** to its company; ZDM’s parking page lists each one’s contacts.',
           ],
         },
-        { note: 'The police or the municipal police (Straż Miejska) can have a scooter left in the way towed at its owner’s cost: in 2026, PLN 170 plus PLN 33 a day in the pound, or PLN 153 if the tow is called off once the truck has arrived (city council resolution of 14 October 2025). For a rental that’s the company: check its terms in the app for what it may charge you.' },
+        { note: 'The police or the municipal police (Straż Miejska) can have a scooter left in the way towed at its owner’s cost: in 2026, PLN 170 plus PLN 33 a day in the pound, or PLN 153 if the tow is called off once the truck has arrived (city council resolution of 14 October 2025). For a rental that’s the company, and Bolt’s and Dott’s terms let them pass it on to you.' },
       ],
     },
     {
@@ -68,7 +96,7 @@ const guide: Guide = {
             ],
           },
         },
-        'All are national rules. The tickets come from the government’s fines tariff in force since 1 January 2022, and the helmet fine from the Code of Petty Offences.',
+        'All are national rules. The tickets come from the government’s fines tariff in force since 1 January 2022, and the helmet fine from the Code of Petty Offences. Bolt’s terms add their own: no riding in snow, hail, ice, sleet, freezing rain or thunderstorms, and a 95 kg maximum load.',
       ],
     },
     {
@@ -89,9 +117,10 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Trams and buses in Poznań',
+      heading: 'Trams, buses and the main station',
       blocks: [
         '**Trams and buses (ZTM Poznań).** The city council’s public transport rules, in force since 20 November 2023, ban carrying “scooters and bicycles fitted with a motor”, “scooters and bicycles of shared systems” and personal transport devices; only a folded scooter without a motor may board. So no e-scooter, yours or a rental, folded or not, may go on a tram or bus. Taking a banned item aboard costs a PLN 350 surcharge, PLN 175 if paid at once or within 7 days.',
+        '**Poznań Główny.** The main station is one of PKP S.A.’s, the state railway company. Its rules ban riding a scooter “on the platform, the way to the platform, in the hall, waiting room … underpass, on the footbridge … and near the track less than 3 metres from the outer rail” without its consent, and leaving rental scooters “except in the places meant for them” (§ 3, January 2025).',
       ],
     },
     {
@@ -109,11 +138,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Poznań?',
-      answer: 'Bolt, Dott and Lime: see the [Poznań map](map:pl:Poznań). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Poznań map](map:pl:Poznań). Bolt and Dott rent only to riders of 18 and over.',
     },
     {
       question: 'How much does electric scooter rental cost in Poznan?',
-      answer: 'Each company sets its own fare and shows it in its app: check it before you unlock.',
+      answer: 'Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026). Dott and Lime show their prices in the app.',
     },
     {
       question: 'Where can you park an e-scooter in Poznań?',
@@ -148,13 +177,20 @@ const guide: Guide = {
     { title: 'UAM: Morasko campus traffic, January 2024 (Polish)', url: 'https://amu.edu.pl/dla-mediow/komunikaty-prasowe/nowa-organizacja-ruchu-na-kampusie-morasko' },
     { title: 'MTP: rules for fair participants, 2024 (Polish, PDF)', url: 'https://reg.mtp.pl/terms/Regulamin-dla-uczestnikow-targow.pdf' },
     { title: 'Stary Browar: house rules, 2021 (Polish, PDF)', url: 'https://starybrowar5050.com/wp-content/uploads/2021/09/Regulamin-Starego-Browaru-w-Poznaniu-18_09_2021.pdf' },
-    { title: 'Muzeum Poznania: the town hall (Polish)', url: 'https://mnp.art.pl/ratusz-muzeum-poznania' },
+    { title: 'PKP S.A.: station rules (Polish)', url: 'https://www.pkp.pl/images/bezpieczenstwo/Zasady.pdf' },
+    { title: 'PKP S.A.: Poznań Główny (Polish)', url: 'https://www.pkp.pl/pl/dworce/poznan-glowny-informacje-dla-podroznych' },
     { title: 'Dziennik Ustaw: Road Traffic Act, 2024 (Polish)', url: 'https://dziennikustaw.gov.pl/D2024000125101.pdf' },
     { title: 'Dziennik Ustaw: amending act of 17 October 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/DU/2025/1676' },
     { title: 'Dziennik Ustaw: Act on vehicle drivers, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000122601.pdf' },
     { title: 'Dziennik Ustaw: Code of Petty Offences, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000073401.pdf' },
     { title: 'Dziennik Ustaw: fines tariff from 1 January 2022 (Polish)', url: 'https://dziennikustaw.gov.pl/D2021000248401.pdf' },
     { title: 'Dziennik Ustaw: sobriety act (Polish)', url: 'https://dziennikustaw.gov.pl/D2023000215101.pdf' },
+    { title: 'Bolt: scooters in Poland (Polish)', url: 'https://bolt.eu/pl-pl/scooters/' },
+    { title: 'Bolt: scooters in Poland (English)', url: 'https://bolt.eu/en-pl/scooters/' },
+    { title: 'Bolt: terms for Poland from 8 May 2026 (Polish)', url: 'https://bolt.eu/pl-pl/legal/micromobility/tnc-micromobility-old/' },
+    { title: 'Dott: locations', url: 'https://ridedott.com/locations/' },
+    { title: 'Dott: terms and conditions for Poland', url: 'https://ridedott.com/terms-and-conditions/poland/' },
+    { title: 'Dott: passes (Polish)', url: 'https://ridedott.com/pl/jedz-z-dottem/' },
   ],
 };
 
