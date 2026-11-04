@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'vienna',
   name: 'E-Scooter Wien: Anbieter, Abstellen, Regeln',
   title: 'E-Scooter Wien 2026: Anbieter, Abstellflächen, Regeln',
-  description: 'E-Scooter Wien: wer verleiht, wo du fahren und abstellen darfst, was in Parks, U-Bahn und Bim gilt und welche Regeln seit Mai 2026 in Österreich gelten.',
-  headline: 'E-Scooter Wien: Anbieter, Abstellflächen, Sperrzonen und die Regeln seit Mai 2026',
-  lede: 'Einen E-Scooter in Wien leihst du im Oktober 2026 bei Voi, dessen Scooter in allen 23 Bezirken stehen, oder bei Lime; Konzessionen vergibt die Stadt nur noch an zwei Betreiber. Gefahren wird wie mit dem Fahrrad auf dem Radweg oder der Fahrbahn, nie auf dem Gehsteig. Abgestellt wird auf einer der rund 400 rot markierten Abstellflächen oder, weiter weg davon, in der Parkspur. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
+  description: 'E-Scooter Wien: wer verleiht, was eine Fahrt kostet, wo du fahren und abstellen darfst und was in Parks, U-Bahn und Bim gilt, mit den Regeln seit Mai 2026.',
+  headline: 'E-Scooter Wien: Anbieter, Preise, Abstellflächen, Sperrzonen und die Regeln seit Mai 2026',
+  lede: 'Einen E-Scooter in Wien leihst du im Oktober 2026 bei Voi, dessen Scooter in allen 23 Bezirken stehen, oder bei Lime; Konzessionen vergibt die Stadt nur noch an zwei Betreiber. Voi verlangt 1 € fürs Entsperren und 0,30 € pro Minute (Stand November 2026). Gefahren wird wie mit dem Fahrrad auf dem Radweg oder der Fahrbahn, nie auf dem Gehsteig. Abgestellt wird auf einer der rund 400 rot markierten Abstellflächen oder, weiter weg davon, in der Parkspur. Seit dem 1. Mai 2026 gelten in ganz Österreich eine Helmpflicht unter 16 und eine Grenze von 0,5 Promille.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'at:Wien',
@@ -17,14 +17,22 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Wien?',
       blocks: [
         'Leih-E-Scooter darf in Wien laut der E-Scooter-Verordnung des Magistrats, die seit dem 1. Juli 2023 gilt, nur aufstellen, wer mit der Stadt einen Konzessionsvertrag über höchstens drei Jahre hat. Ausgeschrieben werden die Konzessionen für die Bezirke 1 bis 9 und 20; anderswo bekommt jeder Betreiber, der die Bedingungen erfüllt, einen Vertrag. Laut ihrer Infoseite vergibt die Stadt Scooter-Konzessionen «nur noch an 2 ausgewählte Betreiber»; Namen nennt sie dort keine.',
-        'Die Ausschreibung von 2023 gewannen laut dem Pressedienst der Stadt Bird, Lime, Link und Voi. Am Sonntag, 25. Oktober 2026, um 1 Uhr nachts standen rund 1860 Voi-Scooter, die zu diesem Zeitpunkt frei waren, in allen 23 Bezirken, die meisten in der Donaustadt, in Floridsdorf und in Favoriten, in der Inneren Stadt nur rund 70. Von Lime waren es am Abend desselben Tages, gegen 19 Uhr, rund 1950 nach der letzten Zählung. Wo gerade einer steht, siehst du auf der [Karte von Wien](map:at:Wien).',
+        'Die Ausschreibung von 2023 gewannen laut dem Pressedienst der Stadt Bird, Lime, Link und Voi. Bird und Link waren danach nicht mehr auszuleihen: Seit Februar 2024 sind laut «Standard», den die «Autorevue» zitiert, nur noch Lime und Voi übrig, und dieselben zwei nennt die «Autorevue» mit Stand April 2025. Bolt bietet in Wien laut eigener Seite nur Autofahrten an. Dott führt auf seiner Seite Orte im Umland, etwa Mödling, Baden und Korneuburg, aber nicht Wien (beides Stand November 2026); seine Scooter siehst du auf der [Karte von Mödling](map:at:Mödling).',
+        'Am Sonntag, 25. Oktober 2026, um 1 Uhr nachts standen rund 1860 Voi-Scooter, die zu diesem Zeitpunkt frei waren, in allen 23 Bezirken, die meisten in der Donaustadt, in Floridsdorf und in Favoriten, in der Inneren Stadt nur rund 70. Von Lime waren es am Abend desselben Tages, gegen 19 Uhr, rund 1950 nach der letzten Zählung. Wo gerade einer steht, siehst du auf der [Karte von Wien](map:at:Wien).',
         {
           steps: [
             'Den nächsten Scooter auf der [Live-Karte von Wien](map:at:Wien) suchen und die App des Anbieters öffnen.',
-            'Registrieren und ein Zahlungsmittel hinterlegen; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
+            'Registrieren und ein Zahlungsmittel hinterlegen. Laut «Autorevue» musst du dafür mindestens 18 sein; verbindlich sind die Bedingungen in der App.',
             'QR-Code scannen, losfahren und die Fahrt auf einer Abstellfläche beenden. Jeden Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
           ],
         },
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Wien?',
+      blocks: [
+        'Voi verlangt in Wien 1 € fürs Entsperren und 0,30 € pro Minute; zehn Minuten kosten also 4 € (Stand November 2026). Laut «Autorevue» gibt es bei Voi auch Tagestickets und Abos, bei Lime Minutenpakete und ein Abo. Limes Preis zeigt dir seine App vor dem Start.',
+        'Mit dem Programm «Lime Access» bekommt laut «Autorevue» dauerhaft 50 % Rabatt, wer einen gültigen Mobilpass hat, den die Stadt Wien Menschen mit geringem Einkommen ausstellt.',
       ],
     },
     {
@@ -35,7 +43,7 @@ const guide: Guide = {
         'In eine Fussgängerzone darfst du nur, wo die Behörde sie für Räder und E-Scooter geöffnet hat, und dann im Schritttempo; ebenso langsam fährst du in der Wohnstrasse. In einer **Begegnungszone**, einer Strasse, die sich alle teilen, gilt höchstens 20 km/h, ausser die Behörde hat 30 km/h verordnet, und Fussgänger darfst du weder gefährden noch behindern (§ 76c StVO). Bei Leih-Scootern setzt die Stadt das technisch durch:',
         {
           table: {
-            caption: 'Zonen für Leih-E-Scooter in Wien (offene Daten der Stadt, Stand 25. Oktober 2026)',
+            caption: 'Zonen für Leih-E-Scooter in Wien (Stadt Wien, Stand 25. Oktober 2026)',
             head: ['Zone', 'Was gilt', 'Wo, zum Beispiel'],
             rows: [
               ['Fahr- und Abstellverbot (899 Zonen)', 'Fahren und Fahrt beenden technisch gesperrt', '592 Parks, darunter der Stadtpark; 210 Anlagen von Wiener Wohnen; Fussgängerzonen wie Graben, Kärntner Strasse und Schwedenplatz; 25 Märkte wie Naschmarkt, Brunnenmarkt und Karmelitermarkt; das AKH; der Würstelprater'],
@@ -97,17 +105,18 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in U-Bahn, Bim, Bus und Zug',
       blocks: [
-        'Seit dem 1. September 2026 gelten bei den Wiener Linien neue Beförderungsbedingungen, laut dem Pressedienst der Stadt vom 30. August 2026:',
+        'Seit dem 1. September 2026 gelten bei den Wiener Linien für E-Scooter dieselben Mitnahmeregeln wie für Fahrräder, laut den Wiener Linien und wie ORF Wien und der Pressedienst der Stadt am 30. August 2026 berichteten:',
         {
           list: [
-            '**U-Bahn:** deinen eigenen E-Scooter nimmst du nur ausserhalb der Stosszeiten mit, Montag bis Freitag von 9 bis 15 Uhr und ab 18.30 Uhr bis Betriebsschluss, an Wochenenden und Feiertagen ganztags.',
+            '**U-Bahn:** deinen eigenen E-Scooter nimmst du nur ausserhalb der Stosszeiten mit, Montag bis Freitag von 9 bis 15 Uhr und ab 18.30 Uhr bis Betriebsschluss, an Wochenenden und Feiertagen ganztags. Pro Einstiegsraum dürfen höchstens zwei Fahrräder oder E-Scooter mit, Rollstühle und Kinderwagen haben Vorrang; ist kein Platz, wartest du auf den nächsten Zug.',
             '**Bim und Bus:** keine E-Scooter mehr, auch nicht zusammengeklappt, und auch keine Falt-E-Bikes. «Bim» sagt man in Wien zur Strassenbahn.',
             '**Tretroller ohne Motor** darfst du zusammengeklappt jederzeit in allen Fahrzeugen mitnehmen.',
-            '**Strafe:** 50 €. Wer am Bahnsteig fährt, kann ebenfalls gestraft werden.',
+            '**In den Stationen** schiebst du den Scooter, und auf die Rolltreppe darf er nicht. Wer am Bahnsteig fährt, kann gestraft werden.',
+            '**Strafe:** 50 € für einen Verstoss gegen die Beförderungsbedingungen, etwa einen E-Scooter in der Bim.',
           ],
         },
         'Einen Leih-Scooter stellst du am besten auf einer Abstellfläche vor der Station ab; viele liegen an WienMobil-Stationen.',
-        'Ob ein eigener E-Scooter in S-Bahn, Regional- oder Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
+        '**ÖBB:** Zusammengeklappt fährt dein eigener Scooter laut ÖBB-Handbuch (gültig ab 15. Oktober 2026) in allen ÖBB-Zügen kostenlos mit, auch in der S-Bahn, wenn er höchstens 90 × 60 × 40 cm misst; bis 110 × 80 × 40 cm darf er ins Mehrzweckabteil der Nahverkehrszüge und in die gekennzeichneten Gepäckregale von Railjet und Railjet Express. Grössere gelten als Fahrrad. Klapp ihn schon vor dem Einsteigen zusammen; der Akku muss fest montiert sein und darf im Zug nicht laden.',
         'Ohne Scooter kommst du mit WienMobil Rad weiter, dem Bikesharing der Wiener Linien, das laut Stadt Stationen in allen 23 Bezirken hat.',
       ],
     },
@@ -123,7 +132,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich meinen E-Scooter in die U-Bahn mitnehmen?',
-      answer: 'Ja, aber laut Stadt seit dem 1. September 2026 nur ausserhalb der Stosszeiten: Montag bis Freitag von 9 bis 15 Uhr und ab 18.30 Uhr, am Wochenende und an Feiertagen ganztags. In Bim und Bus sind E-Scooter verboten, auch zusammengeklappt. Ein Verstoss kostet laut Stadt 50 €.',
+      answer: 'Ja, aber laut Wiener Linien seit dem 1. September 2026 nur ausserhalb der Stosszeiten: Montag bis Freitag von 9 bis 15 Uhr und ab 18.30 Uhr, am Wochenende und an Feiertagen ganztags. In Bim und Bus sind E-Scooter verboten, auch zusammengeklappt. Ein Verstoss kostet 50 €. In ÖBB-Zügen fährt er zusammengeklappt kostenlos mit, bis 90 × 60 × 40 cm in jedem Zug.',
     },
     {
       question: 'Wie viel Promille sind auf dem E-Scooter in Österreich erlaubt?',
@@ -152,7 +161,14 @@ const guide: Guide = {
     { title: 'Bundesgärten: Parkordnung Belvedere (PDF, 2014)', url: 'https://www.bundesgaerten.at/dam/jcr:40067720-b549-4c10-8274-70e3bfac58ae/Belvedere_Parkordnung.pdf' },
     { title: 'Bundesgärten: Parkordnung Augarten (PDF, 2014)', url: 'https://www.bundesgaerten.at/dam/jcr:7def3e7e-b1e0-407a-a88c-dcb5b75c7160/Augarten_Parkordnung.pdf' },
     { title: 'RIS: Wiener Grünanlagenverordnung, ABl. 2008/28 (PDF)', url: 'https://www.ris.bka.gv.at/Dokumente/Gemeinderecht/GEMRE_WI_90101_L470_000_2008/GEMRE_WI_90101_L470_000_2008.pdf' },
+    { title: 'Wiener Linien: Neue Regeln für E-Scooter in den Öffis (ab 1.9.2026)', url: 'https://www.wienerlinien.at/news/e-scooter-befoerderungsbedingungen-neu-ab-september-2026' },
+    { title: 'ORF Wien: E-Scooter-Mitnahme eingeschränkt (30.8.2026)', url: 'https://wien.orf.at/stories/3369060/' },
     { title: 'Stadt Wien, Presse: Wiener Linien schränken E-Scooter-Mitnahme ein (30.8.2026)', url: 'https://presse.wien.gv.at/presse/2026/08/30/mehr-platz-in-den-oeffis-wiener-linien-schraenken-die-mitnahme-von-e-scootern-ein' },
+    { title: 'ÖBB: Handbuch für Reisen in Österreich (gültig ab 15.10.2026)', url: 'https://www.oebb.at/static/tarife/de/handbuch_fuer_reisen_mit_den_oebb_in_oesterreich/index.html' },
+    { title: 'Voi: Tarif für Wien in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/317/netex.xml' },
+    { title: 'Autorevue: E-Scooter in Wien, Anbieter und Preise im Vergleich', url: 'https://www.autorevue.at/ratgeber/e-scooter-wien-vergleich' },
+    { title: 'Bolt: Wien', url: 'https://bolt.eu/de-at/cities/vienna/' },
+    { title: 'Dott: Städte', url: 'https://ridedott.com/locations/' },
   ],
 };
 
