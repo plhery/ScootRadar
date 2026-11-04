@@ -711,15 +711,19 @@ struct SearchSymbolTile: View {
     let systemImage: String
     /// Blue for your location and places with scooter data; grey otherwise.
     var isAccented = true
+    /// 34 pt across at the standard text size; it grows with the text, up to 50.
+    @ScaledMetric(relativeTo: .body) private var tileSide: CGFloat = 34
 
     var body: some View {
+        let side = min(tileSide, 50)
         Image(systemName: systemImage)
-            .font(.system(size: 15, weight: .semibold))
+            // 15 pt in the 34 pt tile at the standard size.
+            .font(.system(size: side * 15 / 34, weight: .semibold))
             .foregroundStyle(isAccented ? ScooterPalette.actionText : Color.secondary)
-            .frame(width: 34, height: 34)
+            .frame(width: side, height: side)
             .background(
                 isAccented ? ScooterPalette.actionText.opacity(0.12) : Color.primary.opacity(0.06),
-                in: RoundedRectangle(cornerRadius: 11, style: .continuous)
+                in: RoundedRectangle(cornerRadius: side * 11 / 34, style: .continuous)
             )
     }
 }

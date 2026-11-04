@@ -870,16 +870,20 @@ private struct DockSymbolTile: View {
     let systemImage: String
     var foreground: Color = .primary
     let tint: Color
+    /// The side at the standard text size. It grows with the text, up to
+    /// nearly half as large again: 44 pt up to 64.
     var size: CGFloat = 44
+    @ScaledMetric(relativeTo: .body) private var scaledReference: CGFloat = 44
 
     var body: some View {
+        let side = size * min(scaledReference, 64) / 44
         Image(systemName: systemImage)
-            .font(.system(size: size * 0.43, weight: .semibold))
+            .font(.system(size: side * 0.43, weight: .semibold))
             .foregroundStyle(foreground)
-            .frame(width: size, height: size)
+            .frame(width: side, height: side)
             .background(
                 tint.opacity(0.16),
-                in: RoundedRectangle(cornerRadius: size / 3, style: .continuous)
+                in: RoundedRectangle(cornerRadius: side / 3, style: .continuous)
             )
             .accessibilityHidden(true)
     }
@@ -1491,6 +1495,9 @@ private struct ScooterCard: View {
     let scooter: Scooter
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    /// The provider's tile, 40 pt across at the standard text size; it grows
+    /// with the text up to 56, as the close button beside it does.
+    @ScaledMetric(relativeTo: .body) private var tileSide: CGFloat = 40
 
     var body: some View {
         let content = model.cardContent(for: scooter)
@@ -1634,13 +1641,15 @@ private struct ScooterCard: View {
     private var tile: some View {
         let provider = scooter.providerInfo
         let isDark = colorScheme == .dark
+        let side = min(tileSide, 56)
         return Text(verbatim: provider?.shortName ?? "?")
-            .font(.system(size: 14, weight: .heavy))
+            // 14 pt in the 40 pt tile at the standard size.
+            .font(.system(size: side * 0.35, weight: .heavy))
             .foregroundStyle(Color(uiColor: ScooterMapLook.ink(on: provider, isDark: isDark)))
-            .frame(width: 40, height: 40)
+            .frame(width: side, height: side)
             .background(
                 Color(uiColor: ScooterMapLook.dotColor(provider, isDark: isDark)),
-                in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+                in: RoundedRectangle(cornerRadius: side * 0.3, style: .continuous)
             )
             .accessibilityHidden(true)
     }
@@ -1858,6 +1867,9 @@ private struct ParkingBayCard: View {
     let model: ScooterMapModel
     let parking: ScooterParking
     @Environment(\.colorScheme) private var colorScheme
+    /// The "P" badge, 48 pt across at the standard text size; it grows with
+    /// the text, up to 64.
+    @ScaledMetric(relativeTo: .body) private var badgeSide: CGFloat = 48
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -1865,15 +1877,17 @@ private struct ParkingBayCard: View {
 
             HStack(spacing: 12) {
                 HStack(spacing: 12) {
+                    let side = min(badgeSide, 64)
                     Text(verbatim: "P")
-                        .font(.system(size: 23, weight: .heavy, design: .rounded))
-                        .frame(width: 48, height: 48)
+                        // 23 pt in the 48 pt badge at the standard size.
+                        .font(.system(size: side * 23 / 48, weight: .heavy, design: .rounded))
+                        .frame(width: side, height: side)
                         .background(
                             Color(uiColor: .systemBackground),
-                            in: RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            in: RoundedRectangle(cornerRadius: side * 14 / 48, style: .continuous)
                         )
                         .overlay {
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            RoundedRectangle(cornerRadius: side * 14 / 48, style: .continuous)
                                 .strokeBorder(
                                     providerAccent(parking.providerInfo, colorScheme: colorScheme),
                                     lineWidth: 3
