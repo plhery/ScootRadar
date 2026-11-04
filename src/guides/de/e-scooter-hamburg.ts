@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-hamburg',
   topic: 'hamburg',
-  name: 'E-Scooter Hamburg: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Hamburg 2026: Anbieter, Regeln, Parken',
-  description: 'E-Scooter Hamburg: die fünf Anbieter, wo du in City, HafenCity und an der Alster parkst, was an Ufern und in Parks gilt und was sich 2027 ändert.',
-  headline: 'E-Scooter Hamburg: Anbieter, Parkverbotszonen, Regeln und der Vertrag bis 2027',
-  lede: 'E-Scooter in Hamburg leihst du ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Ryde oder Voi. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf dem Radweg, nie auf dem Gehweg. Am Jungfernstieg, am Hauptbahnhof, an der Elbphilharmonie und in Parks beendest du keine Fahrt; nimm die markierten oder digitalen Abstellflächen in der Nähe.',
+  name: 'E-Scooter Hamburg: Anbieter, Preise, Parken',
+  title: 'E-Scooter Hamburg 2026: Anbieter, Preise, Parken, hvv',
+  description: 'E-Scooter Hamburg: die fünf Anbieter, was Voi und Bolt kosten, wo du in City, HafenCity und an der Alster parkst und welcher Scooter in Bus und Bahn darf.',
+  headline: 'E-Scooter Hamburg: Anbieter, Preise, Parkverbotszonen und was im hvv gilt',
+  lede: 'E-Scooter in Hamburg leihst du ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Ryde oder Voi; Bolt, Dott, Ryde und Voi vermieten ab 18. Voi verlangt 0,30 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 3,00 € (Stand November 2026); Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Entsperrgebühr. Du fährst auf dem Radweg, nie auf dem Gehweg. Am Jungfernstieg, am Hauptbahnhof, an der Elbphilharmonie und in Parks beendest du keine Fahrt; nimm die markierten oder digitalen Abstellflächen in der Nähe. In die U-Bahn darf kein E-Scooter.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Hamburg',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Hamburg?',
       blocks: [
         'Laut der Behörde für Verkehr und Mobilitätswende (BVM) vermieten fünf Anbieter in Hamburg E-Scooter: **Bolt**, **Dott**, **Lime**, **Ryde** und **Voi**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde ist neu: Im Februar 2025 nannte die Stadt erst vier Anbieter.',
-        'Du leihst den Scooter in der App des Anbieters; ab welchem Alter, steht in seinen Bedingungen, auch wenn das Gesetz E-Scooter schon ab 14 erlaubt. Voi buchst du auch in **hvv switch**, der Mobilitäts-App der Hochbahn, in Hamburg und Pinneberg. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
+        'Du leihst den Scooter in der App des Anbieters; Voi buchst du auch in **hvv switch**, der Mobilitäts-App der Hochbahn, in Hamburg und Pinneberg. Bolt, Dott und Ryde vermieten laut ihren Bedingungen ab 18, Voi laut hvv switch ebenso, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt; Limes Mindestalter zeigt dir seine App. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Hamburg](map:de:Hamburg) rund 3500 Dott- und 6800 Voi-Scooter, die zu diesem Zeitpunkt frei waren; am Sonntag, 25. Oktober, kurz vor 14 Uhr rund 5600 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, und am Vormittag rund 5900 Lime-Scooter nach der letzten Zählung.',
         'Laut Vertrag dürfen alle Anbieter zusammen innerhalb des Ring 2 höchstens 5000 E-Scooter und 5000 E-Bikes aufstellen. Die Stadt teilt sie gleichmässig auf: Bei vier Anbietern nennt der Vertrag je 1250, bei fünf wären es rechnerisch je 1000. Ausserhalb gibt es keine Obergrenze, und die Stadt wünscht sich ausdrücklich Scooter in Vierteln, in denen Bus und Bahn seltener fahren.',
       ],
@@ -25,8 +25,22 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Hamburg?',
       blocks: [
-        'Den Preis zeigt dir die App des Anbieters vor dem Entsperren. Voi buchst du auch in hvv switch.',
-        'Teuer wird Falschparken. Ein Verwarnungsgeld der Stadt müssen die Anbieter laut ihrem Vertrag mit Hamburg voll an dich weitergeben. Lässt die Stadt einen Scooter umstellen oder abschleppen, zahlt der Anbieter 30 € oder 100 €; laut Verbraucherzentrale Hamburg verlangen die Anbieter das je nach Aufwand von dir zurück. Was dein Anbieter berechnet, steht in seinen Bedingungen in der App.',
+        {
+          table: {
+            caption: 'E-Scooter-Preise in Hamburg (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', 'Buchen in'],
+            rows: [
+              ['Voi', '0,00 €', '0,30 €', '3,00 €', 'Voi-App, hvv switch'],
+              ['Bolt', 'kleine Gebühr', 'deutschlandweit ab 0,15 €', 'in der App', 'Bolt-App'],
+              ['Dott', 'in der App', 'in der App', 'in der App', 'Dott-App'],
+              ['Lime', 'in der App', 'in der App', 'in der App', 'Lime-App'],
+              ['Ryde', 'in der App', 'in der App', 'in der App', 'Ryde-App'],
+            ],
+          },
+        },
+        'Bei Voi kostet eine Viertelstunde damit 4,50 €. Bolts 0,15 € sind ein Ab-Preis für ganz Deutschland; der Minutenpreis hängt laut Bolt vom Standort ab.',
+        'Wer oft fährt, spart womöglich mit Pässen: Bolt nennt Wochen- und Monatspässe und unbegrenztes Entsperren ab 0,99 € im Monat, Dott Pässe und Abos in einigen Städten.',
+        'Teuer wird Falschparken. Ein Verwarnungsgeld der Stadt müssen die Anbieter laut ihrem Vertrag mit Hamburg voll an dich weitergeben. Lässt die Stadt einen Scooter umstellen oder abschleppen, zahlt der Anbieter 30 € oder 100 €; laut Verbraucherzentrale Hamburg verlangen die Anbieter das je nach Aufwand von dir zurück. Dott berechnet laut seinen Bedingungen (September 2025) bis zu 300 €, wenn du seine Park- und Sperranweisungen nicht befolgst und er den Scooter zurückholen muss.',
         'Den nächsten Scooter findest du auf der [Live-Karte von Hamburg](map:de:Hamburg).',
       ],
     },
@@ -48,7 +62,7 @@ const guide: Guide = {
         'Seit März 2026 gibt es rund 370 digitale Abstellflächen an 100 Haltestellen von U-Bahn, S-Bahn und Bus, etwa an den Landungsbrücken. Sie sind nicht auf dem Boden markiert, und neben ihnen beendest du an diesen Haltestellen keine Fahrt mehr. Mit den 54 festen Flächen sind es 424.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (unsere Auswertung der offenen Daten der Stadt, Stand 24. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (Parkverbotszonen und Abstellflächen der Stadt, Stand 24. Oktober 2026)',
             head: ['Ort', 'Fahrt beenden'],
             rows: [
               ['Jungfernstieg, Rathausmarkt, Ballindamm', 'Nur ausserhalb der Verbotszone, etwa am Neuen Wall 5 oder auf den Flächen der Haltestellen Jungfernstieg und Rathaus'],
@@ -74,7 +88,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Hamburg: Bussgelder, Alkohol, Unfälle',
       blocks: [
-        'In Hamburg gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Hamburg gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Bolt, Dott, Ryde und Voi ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -96,10 +110,11 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter in Bus und Bahn, hvv switch und StadtRAD',
+      heading: 'E-Scooter im hvv: U-Bahn, S-Bahn, Bus, Fähre und StadtRAD',
       blocks: [
-        '**U-Bahn, S-Bahn, AKN, Bus und Fähre:** Ob und wie du einen eigenen E-Scooter mitnehmen darfst, fragst du vor der Fahrt beim hvv nach.',
-        '**Leih-Scooter:** Beende die Fahrt vor der Haltestelle, an vielen Stationen auf einer digitalen Fläche, und miete am Ziel einen neuen.',
+        '**U-Bahn:** E-Tretroller dürfen laut hvv nicht mit; die Ausnahme für zusammengeklappte gilt nur in S-Bahn, AKN, Bus und Fähre.',
+        '**S-Bahn, AKN, Bus und Fähre:** Einen zusammengeklappten E-Scooter darfst du als Handgepäck immer mitnehmen, auch auf die Fähren. Für nicht zusammengeklappte gilt die Fahrradregel: in S-Bahn und AKN nicht montags bis freitags von 6 bis 9 und von 16 bis 18 Uhr; frei am Wochenende, an Feiertagen, in den Hamburger Sommerferien und am 24. und 31. Dezember; auf Autobahnabschnitten einiger Buslinien nie. Am Ende entscheidet das Personal.',
+        '**Leih-Scooter:** Sie lassen sich nicht klappen. In die U-Bahn dürfen sie nie, und in S-Bahn oder Bus liefe die Miete weiter. Einfacher: Fahrt vor der Haltestelle beenden, an vielen Stationen auf einer digitalen Fläche, und am Ziel einen neuen mieten.',
         '**hvv switch:** Dort buchst du hvv-Tickets, Carsharing und Voi-Scooter, aber nur einen pro Konto. Die Stellplätze an den hvv-switch-Punkten sind dem Carsharing vorbehalten.',
         '**StadtRAD:** Der Radverleih nennt rund 4200 Räder und 56 Lastenpedelecs in Hamburg (Oktober 2026), rund um die Uhr buchbar in der StadtRAD-App oder, ohne Lastenpedelecs, in hvv switch.',
       ],
@@ -132,11 +147,15 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Hamburg?',
-      answer: 'Den Preis zeigt dir die App des Anbieters vor dem Entsperren. Teuer wird Falschparken: Ein Verwarnungsgeld der Stadt geben die Anbieter laut Vertrag voll an dich weiter.',
+      answer: 'Bei Voi 0,30 € pro Minute ohne Entsperrgebühr, zehn Minuten also 3,00 €; Bolt nennt deutschlandweit ab 0,15 € pro Minute plus Entsperrgebühr (Stand November 2026). Teuer wird Falschparken: Ein Verwarnungsgeld der Stadt geben die Anbieter laut Vertrag voll an dich weiter.',
     },
     {
       question: 'Wo darf ich in Hamburg einen E-Scooter abstellen?',
       answer: 'Auf dem Gehweg oder am Fahrbahnrand, wenn 1,60 m frei bleiben, aber nicht in den roten Verbotszonen der App, etwa am Jungfernstieg, am Hauptbahnhof, an der Elbphilharmonie, in Parks und an Ufern. Dort nutzt du die Abstellflächen in der Nähe.',
+    },
+    {
+      question: 'Darf ich einen E-Scooter in die U-Bahn mitnehmen?',
+      answer: 'Nein, laut hvv ist die Mitnahme von E-Tretrollern in der U-Bahn nicht erlaubt. Nur in S-Bahn, AKN, Bus und Fähre darf ein eigener, zusammengeklappter Scooter als Handgepäck mit. Einen Leih-Scooter stellst du vor der Haltestelle ab.',
     },
     {
       question: 'Darf ich durch Planten un Blomen oder an der Alster fahren?',
@@ -153,9 +172,16 @@ const guide: Guide = {
     { title: 'Transparenzportal Hamburg: Rahmenvertrag Sondernutzung Sharing-E-Scooter und -E-Bikes', url: 'https://suche.transparenz.hamburg.de/dataset/2025-01-01-oeffentl-rechtl-rahmenvertrag-sondernutzung-sharing-e-scooter-und-e-bikes-blankovers' },
     { title: 'BVM: Digitale Lösung für E-Roller-Abstellflächen in Hamburg (März 2026)', url: 'https://www.hamburg.de/politik-und-verwaltung/behoerden/bvm/aktuelles/pressemeldungen/neue-parkzonen-an-100-haltestellen-1158442' },
     { title: 'Transparenzportal Hamburg: Abstellflächen und Parkverbotszonen E-Scooter', url: 'https://suche.transparenz.hamburg.de/dataset/abstellflaechen-und-parkverbotszonen-e-scooter-hamburg6' },
+    { title: 'hvv: Fragen und Antworten zu Scootern', url: 'https://www.hvv.de/de/service/fragen-und-antworten/scooter' },
+    { title: 'hvv: Fahrrad, Mitnahme in Bahn, Bus und Fähre', url: 'https://www.hvv.de/de/fahrrad' },
     { title: 'hvv switch: FAQ E-Scooter', url: 'https://www.hvv-switch.de/de/faq/kategorie/e-scooter/' },
     { title: 'StadtRAD Hamburg', url: 'https://stadtrad.hamburg.de' },
     { title: 'Planten un Blomen: Parkordnung', url: 'https://plantenunblomen.hamburg.de/park-service/parkordnung-622780' },
+    { title: 'Voi: Tarif für Hamburg (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/151/netex.xml' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Ryde: Nutzungsbedingungen Deutschland', url: 'https://www.ryde-technology.com/terms-conditions-germany' },
     { title: 'Verbraucherzentrale Hamburg: E-Scooter fahren', url: 'https://www.vzhh.de/themen/umwelt-nachhaltigkeit/mobilitaet/e-scooter-fahren-das-sollten-sie-wissen' },
     { title: 'Behörde für Inneres und Sport: Verkehrssicherheitsbilanz 2025', url: 'https://www.hamburg.de/politik-und-verwaltung/behoerden/behoerde-fuer-inneres-und-sport/presseservice/pressemeldungen/verkehrssicherheitsbilanz-2025-1148718' },
   ],
