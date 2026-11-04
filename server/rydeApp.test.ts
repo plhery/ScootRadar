@@ -100,3 +100,12 @@ it('loads a dedicated private runtime manifest and rejects a readable or malform
     expect(()=>loadRydeRuntimeConfig(path)).toThrow('Invalid');
   }finally{rmSync(dir,{recursive:true,force:true});}
 });
+
+it('gives a scan time for its reads at the pace a busy shared worker answers them (SCOOTRADAR-CACHE-66)',async()=>{
+  // Central Turku on 4 November 2026: a read about every 26 seconds, some 34 needed.
+  let clock=0;
+  const tiles=Array.from({length:34},(_,i)=>({south:59.74,north:59.741,west:10.2+i*0.00002,east:10.2+(i+1)*0.00002}));
+  const slow={query:async(q:RydeQuery)=>{clock+=26_000;return api([]).query(q);}};
+  const scan=await scanRydeArea({...area,coverageValidated:true,tiles},slow,undefined,()=>clock);
+  expect(scan.requests).toBe(34);expect(scan.unfinished).toBe(0);expect(scan.complete).toBe(true);
+});

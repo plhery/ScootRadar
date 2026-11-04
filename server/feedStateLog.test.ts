@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ALWAYS_FAST, createFeedStateLog, expiredReportDelay, feedState, parkingUp, waitOutCurfew, type FeedCadence,
+import { ALWAYS_FAST, createFeedStateLog, expiredBeside, expiredReportDelay, feedState, parkingUp, waitOutCurfew, type FeedCadence,
   type FeedStateEntry, type StillExpired } from './feedStateLog';
 import { feedCurfewed } from '../src/lib/seasonalPauses';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
@@ -342,4 +342,13 @@ it('monitors a quota-limited idle scan at its declared cadence and keeps the act
   expect(feedState(lime, now + 71 * minute, idle)).toBe('expired');
   expect(feedState(lime, now + 40 * minute, { ...idle, fastSince: () => now })).toBe('expired');
   expect(feedState({ ...lime, id: 'germany:public' }, now + 31 * minute, idle)).toBe('expired');
+});
+
+it('lists beside an expiry only the feeds collected before, not those a deploy added and none reached yet', () => {
+  // 22:15 UTC on 4 November 2026: Ryde's report listed some 300 groups still warming up (SCOOTRADAR-CACHE-66).
+  const now = 1_000_000_000;
+  expect(expiredBeside(feed({ id: 'finland:ryde_app_fi_helsinki_000' }), now)).toBe(false);
+  expect(expiredBeside(feed({ id: 'italy:skipped', skipped: true, attemptedAt: now - VEHICLE_MAX_AGE_MS * 2 }), now)).toBe(false);
+  expect(expiredBeside(feed({ id: 'finland:ryde_app_fi_turku_030', failed: true, attemptedAt: now - 3_000 }), now)).toBe(true);
+  expect(expiredBeside(feed({ observedAt: now - 60_000, attemptedAt: now - 30_000 }), now)).toBe(false);
 });

@@ -18,7 +18,7 @@ import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readFeedStates, readSnapshot, writeFeedStates, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
+import { createFeedStateLog, expiredBeside, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence, type FeedStateEntry } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportDiscoveryFailing, reportError, reportFeedExpired } from './errorReporting';
@@ -428,7 +428,7 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     // Without one, the feed is out of the catalog, and so are the others listed with it.
     const host = hostOf.get(feed.id);
     const alsoExpired = (snapshot?.feeds ?? []).filter(other => other.id !== feed.id && hostOf.get(other.id) === host &&
-      !snapshotPaused(other, now) && feedState(other, now, cadence) === 'expired').map(other => other.id).sort();
+      !snapshotPaused(other, now) && expiredBeside(other, now, cadence)).map(other => other.id).sort();
     reportFeedExpired(change, feed, lastErrors.get(feed.id), host, alsoExpired);
   } }, restoredFeedStates);
 const persistenceTimer = setInterval(() => {

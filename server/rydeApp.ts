@@ -23,9 +23,16 @@ export interface RydeScan {
   observations: (RydeObservation & { observedAt: number })[]; observedAt: number;
   requests: number; unfinished: number; complete: boolean;
 }
+/**
+ * A scan's budget. Its reads share the one worker with every other group being swept, so the reads
+ * bound its cost and the time only stops one that outlasts any fair share of them. On 4 November 2026
+ * the worker answered about nine reads a minute; central Turku's group got one every 26 seconds or so,
+ * and had made 24 of the 34 or so reads it needed when its ten minutes ran out (SCOOTRADAR-CACHE-66).
+ */
+export const RYDE_SCAN_LIMITS = { requests: 80, milliseconds: 30 * 60_000, depth: 3 };
 /** Overlapping circles cover each cell geometrically. Selection completeness is a separate rollout gate. */
 export async function scanRydeArea(area: RydeArea, api: Pick<RydeBroker, 'query'>,
-  limits = { requests: 80, milliseconds: 10 * 60_000, depth: 3 }, now = Date.now, onProgress?: (scan: RydeScan) => void): Promise<RydeScan> {
+  limits = RYDE_SCAN_LIMITS, now = Date.now, onProgress?: (scan: RydeScan) => void): Promise<RydeScan> {
   if (!Number.isSafeInteger(area.saturationCount) || area.saturationCount < 1 || area.cellM < 250 || area.cellM > 5000 ||
     !area.rings.length || ![area.bounds.south,area.bounds.north,area.bounds.west,area.bounds.east].every(Number.isFinite) ||
     area.bounds.south >= area.bounds.north || area.bounds.west >= area.bounds.east) throw new Error('Invalid Ryde area');

@@ -44,6 +44,17 @@ export function feedState(feed: FeedSnapshot, now: number, cadence: FeedCadence 
   return feed.failed ? 'failing' : 'ok';
 }
 
+/**
+ * Whether an expiry report lists the feed among its host's other expired feeds. One not attempted
+ * yet, as a feed a deploy adds, has no success to its name, so feedState calls it expired; it is
+ * warming up, as the log and /feeds say. At 22:15 UTC on 4 November 2026, half an hour into Ryde's
+ * 2,356 new groups, the report of two expired feeds listed some 300 Finnish groups the cache had not
+ * reached yet (SCOOTRADAR-CACHE-66).
+ */
+export function expiredBeside(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): boolean {
+  return !feed.skipped && feed.attemptedAt !== 0 && feedState(feed, now, cadence) === 'expired';
+}
+
 /** Whether the feed's parking availability is as fresh as its cadence promises. */
 export function parkingUp(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): boolean {
   if (!feed.parking || feed.parking.stale) return false;

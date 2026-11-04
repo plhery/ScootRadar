@@ -21,8 +21,13 @@ account turns for watched areas. A watched group has at most two initial views;
 it uses the normal one-minute active refresh cadence and a two-minute watch.
 The queue coalesces identical work and alternates urgent/routine turns while
 both wait. These are conservative operating settings, not an upstream quota.
-Saturated cells subdivide within request/depth/time budgets; unresolved groups
-fail and preserve prior observations. Coverage and uptime flags remain truthful:
+Saturated cells subdivide within request/depth/time budgets (80 reads, three
+halvings, 30 minutes: `RYDE_SCAN_LIMITS`); unresolved groups fail and preserve
+prior observations. The reads bound a scan's cost; the time only stops one that
+outlasts any fair share of the worker, which every group being swept shares. It
+was ten minutes until 5 November 2026: the worker then answered about nine reads
+a minute, central Turku's group got one every 26 seconds or so and failed after
+24 of the 34 or so it needed (SCOOTRADAR-CACHE-66). Coverage and uptime flags remain truthful:
 the explicit private productionPilot setting authorizes this rollout without
 claiming every city has independently passed Drammen's reference scan.
 
