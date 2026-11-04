@@ -672,7 +672,7 @@ class ScooterMapController(
 
     private fun setEnabledProviders(value: Set<ScooterProvider>) {
         _enabledProviders.value = value
-        // The providers turned off, not those on as iOS keeps them, so that one a later catalog adds shows.
+        // The providers turned off, as the iPhone keeps them since 17118b3b: one a later catalog adds shows.
         defaults.set((ScooterProvider.entries - value).map { it.rawValue }.sorted(), forKey = DISABLED_PROVIDERS_KEY)
         rebuildMapScooters()
         rebuildMapClusters()
@@ -1666,9 +1666,10 @@ class ScooterMapController(
 
         /**
          * The saved provider choice: every provider but those turned off, of which one this version doesn't know is
-         * passed over. iOS keeps those turned on and ignores the whole list when it names one the catalog has since
-         * dropped (ScooterMapModel.swift:449-454), so a rider who had that one on finds every provider on again; this
-         * list never names one the rider had on, and the choice of the others stays (PLAN §0, LOG-288's fix).
+         * passed over, as on the iPhone since 17118b3b (ScooterMapModel.swift:478-479; PLAN §0, LOG-288's fix). The
+         * iPhone also reads its old list of those turned on, enabled-providers, until the filters next change, turning
+         * off only the eight providers of before 11 October 2026 it lacks (:480-487); no Android build that reached a
+         * rider wrote that list, so there is none to read here.
          */
         private fun savedProviders(defaults: ScooterDefaults): Set<ScooterProvider>? {
             val disabledIDs = defaults.stringArray(forKey = DISABLED_PROVIDERS_KEY) ?: return null
