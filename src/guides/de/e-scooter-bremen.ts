@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Bremen?',
       blocks: [
         'Wer in Bremen Leih-Scooter auf die Strasse stellt, braucht eine Sondernutzungserlaubnis des Ordnungsamts. Seit einem Konzept von 2021 vergibt die Stadt höchstens zwei. Nach dem neuen Konzept, das der Senat im Oktober 2024 beschloss, entscheidet unter den geeigneten Bewerbern das Los. Am 5. Juni 2025 zog die Stadt laut Senat unter sechs geeigneten Bewerbern **Tier Mobility** und **LimeBike Germany**. Ihre Erlaubnisse gelten drei Jahre ab dem 1. August 2025. Neu vergeben wird laut Innenbehörde erst im Sommer 2028 (Landesteilhabebeirat, 19. November 2025).',
-        'Im April 2025 waren es noch **Bolt** und **Lime** (Beirat Neustadt). **Lime** bot im Oktober 2025 dem Beirat Hemelingen ein Gespräch an.',
+        'Im April 2025 waren es noch **Bolt** und **Lime** (Beirat Neustadt). Bolts Bremen-Seite nennt heute nur Fahrten mit Fahrer und Taxis (Stand November 2026). **Lime** bot im Oktober 2025 dem Beirat Hemelingen ein Gespräch an.',
         'Tier ist mit Dott fusioniert; Dotts Bedingungen nennen die TIER Mobility SE als Vertragspartner. ScootRadar zeigt auf der [Karte von Bremen](map:de:Bremen) beide: am Sonntag, 25. Oktober 2026, um 7:47 Uhr rund 650 Dott-Scooter, die zu diesem Zeitpunkt frei waren, dazu gegen 9 Uhr rund 1250 Lime-Scooter nach der letzten Zählung.',
         'Gemietet wird in der App, bei Dott laut Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
@@ -138,7 +138,7 @@ const guide: Guide = {
           list: [
             '**Strassenbahn und Bus der BSAG:** kein E-Scooter, auch nicht zusammengeklappt. Zusammengeklappt kostenlos fahren Falträder und Tretroller ohne Motor mit, E-Scooter nicht. Genauso streng ist die ÜSTRA in [Hannover](guide:hanover).',
             '**Regionalzug und Regio-S-Bahn:** E-Scooter dürfen mit, ins Fahrrad- oder Mehrzweckabteil, mit einem FahrradTicket für jede Fahrt und nur, solange Platz ist. Bei der NordWestBahn gehören sie auch zusammengeklappt in den Mehrzweckbereich.',
-            '**IC und EC:** Für die Mitnahme gelten laut VBN die Bestimmungen und Preise der Deutschen Bahn.',
+            '**IC, EC und ICE:** Es gelten die Bestimmungen und Preise der Deutschen Bahn, für IC und EC auch laut VBN. Zusammengeklappt und sicher verstaut fährt dein eigener E-Scooter dort kostenlos als Handgepäck mit, aufgeklappt nur, wenn er sicher untergebracht ist; den eingebauten Akku darfst du unterwegs weder herausnehmen noch laden.',
             '**Akku:** nur ein vom Hersteller freigegebener mit CE-Zeichen, nicht sichtbar beschädigt; laden ist verboten.',
           ],
         },
@@ -161,7 +161,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Bremen?',
-      answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost.',
+      answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost. Bolt, im April 2025 noch dabei, nennt auf seiner Bremen-Seite heute nur Fahrten mit Fahrer und Taxis.',
     },
     {
       question: 'Was kostet ein E-Scooter in Bremen?',
@@ -196,6 +196,8 @@ const guide: Guide = {
     { title: 'VBN: Tarifbestimmungen und Beförderungsbedingungen 2026 (PDF)', url: 'https://www.vbn.de/fileadmin/content/_Tickets/Tarifbestimmungen/Tarifbestimmungen_und_Befoerderungsbedingungen_2026.pdf' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
+    { title: 'Bolt: Bremen', url: 'https://bolt.eu/de-de/cities/bremen/' },
+    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],
 };
 

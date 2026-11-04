@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Freiburg 2026: Zeus, Yoio, Preise, Altstadt',
   description: 'E-Scooter Freiburg: was Zeus und Yoio kosten, warum du in der Altstadt weder fährst noch parkst, was an der Dreisam gilt und wann dein Scooter in die Bahn darf.',
   headline: 'E-Scooter Freiburg: Zeus und Yoio, Preise, Parkzonen und was in der Altstadt gilt',
-  lede: 'Einen E-Scooter in Freiburg im Breisgau leihst du ab 18 und ohne Führerschein bei Zeus oder Yoio. Zehn Minuten kosten nach den Tarifen in ihren offenen Datenfeeds (Stand 14. Oktober 2026) 3,50 € bei Zeus und 3,59 € oder 3,99 € bei Yoio, je nach Scooter. In der Fussgängerzone der Altstadt darfst du nicht fahren, und beenden kannst du die Fahrt dort ebenso wenig wie in Parks oder näher als 50 m an der Dreisam. Deinen eigenen E-Scooter nimmt die VAG in Strassenbahn und Bus sogar aufgeklappt mit, einen Leih-Scooter nie.',
+  lede: 'Einen E-Scooter in Freiburg im Breisgau leihst du ab 18 und ohne Führerschein bei Zeus oder Yoio. Zehn Minuten kosten 3,50 € bei Zeus und 3,59 € oder 3,99 € bei Yoio, je nach Scooter (Stand November 2026). In der Fussgängerzone der Altstadt darfst du nicht fahren, und beenden kannst du die Fahrt dort ebenso wenig wie in Parks oder näher als 50 m an der Dreisam. Deinen eigenen E-Scooter nimmt die VAG in Strassenbahn und Bus sogar aufgeklappt mit, einen Leih-Scooter nie.',
   published: '2026-10-14',
   updated: '2026-10-23',
   city: 'de:Freiburg im Breisgau',
@@ -18,17 +18,17 @@ const guide: Guide = {
       blocks: [
         'Die Stadt nennt zwei Anbieter von E-Scootern: **Zeus** und **Yoio**. Yoio von der YourCar GmbH aus Göttingen kam im Dezember 2020 als erster, mit 150 Scootern; mehr erlaubte die Stadt damals nicht. Zeus folgte im April 2023. Roxy Mobility, 2022 noch dabei, steht nicht mehr auf der Liste der Stadt.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt beide auf der [Karte rund um Freiburg](map:de:Freiburg im Breisgau): Am Nachmittag des 14. Oktober 2026 standen dort rund 530 Scooter, knapp 290 von Zeus und gut 240 von Yoio.',
+        'ScootRadar zeigt beide auf der [Karte rund um Freiburg](map:de:Freiburg im Breisgau): Am Nachmittag des 14. Oktober 2026 standen dort rund 530 Scooter, die zu diesem Zeitpunkt frei waren: knapp 290 von Zeus und gut 240 von Yoio.',
         'Der dritte Anbieter auf der Liste der Stadt, **Freib-e** von Süwag, verleiht Elektro-Motorroller, für die du Führerschein und Helm brauchst.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Freiburg?',
       blocks: [
-        'Beide Anbieter veröffentlichen ihre Tarife in offenen Datenfeeds; bei Yoio hängt der Minutenpreis vom Scooter ab.',
+        'Beide rechnen mit Entsperrgebühr und Minutenpreis; bei Yoio hängt der Minutenpreis vom Scooter ab.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Freiburg (Datenfeeds, Stand 14. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Freiburg (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Zeus', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
@@ -50,7 +50,7 @@ const guide: Guide = {
         {
           note: 'Die Apps lassen dich durch die Altstadt fahren und sperren dort nur das Abstellen. Das Fahrverbot steht auf den Schildern: In der Fussgängerzone steigst du ab und schiebst. Wer fährt, zahlt heute 15 bis 30 €, ab März 2027 25 bis 40 €.',
         },
-        'Radfahrer dürfen durch manche Gassen und über die KaJo, dort werktags von 20 bis 9 Uhr und sonn- und feiertags; für dich gilt das heute nicht. Ab 1. März 2027 gibt ein Schild «Radverkehr frei» eine Fussgängerzone auch für E-Scooter frei, im Schritttempo. Welche Schilder in der Altstadt stehen, hat die Stadt nicht veröffentlicht.',
+        'Radfahrer dürfen durch manche Gassen und über die KaJo, dort werktags von 20 bis 9 Uhr und sonn- und feiertags; für dich gilt das heute nicht. Ab 1. März 2027 gibt ein Schild «Radverkehr frei» eine Fussgängerzone auch für E-Scooter frei, im Schritttempo.',
         '**Gleise und Bächle:** Die Strassenbahn fährt mitten durch die Altstadt, und in vielen Gassen laufen die Bächle, die offenen Wasserrinnen, teils direkt neben den Gleisen. Quere Schienen möglichst im rechten Winkel: Ein kleines Vorderrad in Rille oder Bächle bringt dich schnell zu Fall.',
         '**Parks:** In Stadtgarten, Colombipark, Seepark, Dietenbachpark, in der Grünanlage Moosweiher und im Park am Sandfang erlaubt die Parkanlagensatzung nur Inliner, Skateboards und Kinderfahrzeuge, nach ihrem Wortlaut also keine E-Scooter. Fahr dort nur auf ausgeschilderten Radwegen, sonst schieb.',
         '**Schlossberg und Stadtrand:** Den Schlossberg (456 m) direkt über der Altstadt sparen beide Anbieter aus, ebenso Günterstal, Kappel, den Mundenhof und die Ortschaften westlich der A5 wie Opfingen und Tiengen.',
@@ -70,16 +70,18 @@ const guide: Guide = {
         'Beide Apps ziehen deshalb ein Parkverbotsband entlang der Dreisam, und die Altstadt ist bei beiden Parkverbotszone. Yoio verlangt am Ende der Fahrt ein Foto vom abgestellten Scooter.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (unsere Auswertung der Datenfeeds, Stand 14. Oktober 2026)',
+            caption: 'Wo Zeus und Yoio eine Fahrt enden lassen (Stand November 2026)',
             head: ['Ort', 'Zeus', 'Yoio'],
             rows: [
               ['Münsterplatz, Bertoldsbrunnen, Rathausplatz, Martinstor, Schwabentor', 'Nein', 'Nein'],
               ['Hauptbahnhof', 'Nein; markierte Flächen rund 100 m östlich an der Bismarckallee', 'Nur auf einer kleinen Fläche östlich des Bahnhofs; westlich der Gleise im Stühlinger ja'],
               ['Kollegiengebäude I, Universitätsbibliothek', 'Nein; kleine markierte Flächen in der Nähe', 'Nein'],
-              ['Uniklinik, Vauban (Paula-Modersohn-Platz), Rieselfeld', 'Ja', 'Ja'],
+              ['Uniklinik, Rieselfeld', 'Ja', 'Ja'],
+              ['Vauban', 'Ja', 'Im Norden des Viertels ja, am Paula-Modersohn-Platz nicht'],
               ['Messe (Neuer Messplatz)', 'Ja', 'Nein: ausserhalb der Zonen'],
-              ['Europa-Park Stadion', 'Nur im Bereich der Haltestelle', 'Nein: ausserhalb der Zonen'],
-              ['Seepark, Dreisamufer in der Innenstadt', 'Nein', 'Nein'],
+              ['Europa-Park Stadion', 'Nein: Fahrverbotszone', 'Nur auf einem Streifen an der Südwestseite des Stadions'],
+              ['Seepark', 'Nein, ausser am Nordwestrand', 'Nein'],
+              ['Dreisamufer in der Innenstadt', 'Nein', 'Nein'],
               ['Schlossberg, Günterstal, Kappel, Mundenhof, Ortschaften westlich der A5', 'Nein: Fahrverbotszone', 'Nein: ausserhalb der Zonen, am Mundenhof Fahrverbot'],
             ],
           },
@@ -89,7 +91,7 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter-Regeln in Freiburg: Bussgelder und Alkohol',
+      heading: 'E-Scooter-Regeln in Freiburg: Bussgelder, Alkohol, Unfälle',
       blocks: [
         'In Freiburg gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
@@ -106,7 +108,8 @@ const guide: Guide = {
             ],
           },
         },
-        'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0. Yoio verbietet in seinen Bedingungen jeden Alkohol (0,0 Promille).',
+        'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Ab 1,1 Promille ist es eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit gilt 0,0. Yoio verbietet in seinen Bedingungen jeden Alkohol (0,0 Promille), Zeus das Fahren unter Alkoholeinfluss.',
+        '2025 zählte die Polizei in der Stadt Freiburg 82 Unfälle mit E-Scootern und anderen Elektrokleinstfahrzeugen, fast doppelt so viele wie 2024 (47). Getötet wurde auf ihnen seit 2021 niemand.',
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
@@ -134,17 +137,17 @@ const guide: Guide = {
       heading: 'E-Scooter bei Herbstmess, SC-Spielen, Weihnachtsmarkt und ZMF',
       blocks: [
         '**Freiburger Herbstmess**, jeden Herbst auf dem Neuen Messplatz, 2026 vom 16. bis 26. Oktober: Mit Zeus stellst du an der Messe ab, mit Yoio nicht. Die VAG fährt die Linie 4 dann ab 21 Uhr bis Messeschluss alle 15 Minuten.',
-        '**Heimspiele des SC Freiburg:** Am Europa-Park Stadion beendest du eine Fahrt bei Zeus nur im Bereich der Haltestelle, bei Yoio gar nicht. Nach dem Spiel fahren Sonderzüge der VAG, etwa am Abend des 25. Oktober 2026.',
+        '**Heimspiele des SC Freiburg:** Am Europa-Park Stadion ist bei Zeus Fahrverbotszone; bei Yoio beendest du die Fahrt auf einem Streifen an der Südwestseite des Stadions. Nach dem Spiel fahren Sonderzüge der VAG, etwa am Abend des 25. Oktober 2026.',
         '**Weihnachtsmarkt**, jedes Jahr vor Weihnachten, 2026 vom 19. November bis 23. Dezember: Seine neun Plätze in und um die Altstadt liegen alle in den Parkverbotszonen. Stell den Scooter am Rand ab und geh zu Fuss.',
-        '**Zelt-Musik-Festival (ZMF)**, jeden Sommer am Mundenhof, 2027 vom 14. Juli bis 1. August: Dort sperren beide Anbieter das Fahren. Das ZMF empfiehlt das Fahrrad, mit virtueller Frelo-Station, oder die Strassenbahnlinien 3 und 5 und einen Sonderbus.',
+        '**Zelt-Musik-Festival (ZMF)**, jeden Sommer am Mundenhof, 2027 vom 14. Juli bis 1. August: Dort endet bei keinem der beiden Anbieter eine Fahrt, und Zeus sperrt das Fahren. Das ZMF empfiehlt das Fahrrad, mit virtueller Frelo-Station, oder die Strassenbahnlinien 3 und 5 und einen Sonderbus.',
       ],
     },
     {
       heading: 'Wie Freiburg E-Scooter regelt: Vereinbarung statt Ausschreibung',
       blocks: [
         'Freiburg vergibt keine Erlaubnisse in einem Auswahlverfahren. Seit einem Beschluss des Gemeinderats vom 30. Juni 2020 schliesst die Stadt mit jedem Anbieter eine freiwillige Vereinbarung über Geschäftsgebiet, Parkverbotszonen, Zahl der Scooter je Stadtteil, Laden mit Ökostrom und Daten.',
-        'Obergrenzen und Laufzeit dieser Vereinbarungen hat die Stadt bis zum 14. Oktober 2026 nicht veröffentlicht. Im Doppelhaushalt 2025/2026 plante der Gemeinderat eine Gebühr von 10 € pro Scooter und Monat ein; der Antrag dazu verweist auf [Stuttgart](guide:stuttgart), wo die Anbieter schon pro Scooter zahlen. Ob Freiburg die Gebühr erhebt, ist offen: Die geltende Gebührensatzung nennt E-Scooter nicht.',
-        'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Städte können es dann als Sondernutzung erlauben und an Auflagen knüpfen. Ob Freiburg danach etwas ändert, hat die Stadt nicht angekündigt.',
+        'Im Doppelhaushalt 2025/2026 plante der Gemeinderat eine Gebühr von 10 € pro Scooter und Monat ein; der Antrag dazu verweist auf [Stuttgart](guide:stuttgart), wo die Anbieter schon pro Scooter zahlen.',
+        'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Städte können es dann als Sondernutzung erlauben und an Auflagen knüpfen.',
       ],
     },
     {
@@ -163,11 +166,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Freiburg?',
-      answer: 'Zeus und Yoio, die beiden Anbieter, die die Stadt für E-Scooter nennt. Lime, Voi, Bolt und Dott stehen nicht auf ihrer Liste, und die Datenfeeds von Lime und Voi zeigten am 14. Oktober 2026 keinen Scooter in Freiburg. Freie Scooter von Zeus und Yoio zeigt die [Live-Karte von Freiburg](map:de:Freiburg im Breisgau).',
+      answer: 'Zeus und Yoio, die beiden Anbieter, die die Stadt für E-Scooter nennt. Freie Scooter von Zeus und Yoio zeigt die [Live-Karte von Freiburg](map:de:Freiburg im Breisgau).',
     },
     {
       question: 'Was kostet Yoio in Freiburg?',
-      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,29 € pro Minute, laut Yoios Datenfeed vom 14. Oktober 2026. Zehn Minuten kosten damit 3,59 € oder 3,99 €.',
+      answer: '1,09 € fürs Entsperren und je nach Scooter 0,25 € oder 0,29 € pro Minute (Stand November 2026). Zehn Minuten kosten damit 3,59 € oder 3,99 €.',
     },
     {
       question: 'Darf man mit dem E-Scooter durch die Freiburger Altstadt fahren?',
@@ -181,14 +184,16 @@ const guide: Guide = {
   sources: [
     { title: 'Stadt Freiburg: E-Roller-Sharing', url: 'https://www.freiburg.de/pb/2045706.html' },
     { title: 'Stadt Freiburg: Ortsrecht (Parkanlagensatzung, Fussgängerbereich)', url: 'https://www.freiburg.de/pb/,Lde/206280.html' },
-    { title: 'Zeus: Datenfeed für Freiburg (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_freiburg/gbfs' },
-    { title: 'Yoio: Datenfeed für Freiburg (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/yoio_freiburg/gbfs' },
+    { title: 'MobiData BW: offene Daten von Zeus Freiburg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_freiburg/gbfs' },
+    { title: 'MobiData BW: offene Daten von Yoio Freiburg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/yoio_freiburg/gbfs' },
     { title: 'Yoio: Gebührenordnung (PDF)', url: 'https://yourcar-carsharing.de/images/Yoio-Gebuehrenordnung.pdf' },
+    { title: 'Zeus: Allgemeine Geschäftsbedingungen (aktualisiert 14. April 2023)', url: 'https://zeusscooters.com/terms-and-conditions/' },
     { title: 'VAG Freiburg: Beförderungsbedingungen', url: 'https://www.vag-freiburg.de/befoerderungsbedingungen-vag' },
     { title: 'Frelo: Tarife', url: 'https://www.frelo.de/de/' },
     { title: 'visit.freiburg.de: Top-Events in Freiburg', url: 'https://visit.freiburg.de/events/top-10-events' },
     { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
     { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
+    { title: 'Polizeipräsidium Freiburg: Unfallbarometer 2025, Stadtkreis Freiburg (PDF)', url: 'https://www.presseportal.de/download/document/6995b7d5270000fd2cbf70e0-unfallbarometer2025freiburg.pdf' },
   ],
 };
 
