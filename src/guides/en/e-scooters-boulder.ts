@@ -148,8 +148,8 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Colorado General Assembly: HB19-1221, Regulation of Electric Scooters (2019 session law, chapter 271)', url: 'https://leg.colorado.gov/bills/hb19-1221' },
-    { title: 'Colorado General Assembly: HB22-1028, Statewide Regulation of Controlled Intersections (2022)', url: 'https://leg.colorado.gov/bills/hb22-1028' },
+    { title: 'Colorado General Assembly: HB19-1221, Regulation of Electric Scooters, signed act (PDF)', url: 'https://leg.colorado.gov/bill_files/63091/download' },
+    { title: 'Colorado General Assembly: HB22-1028, Statewide Regulation of Controlled Intersections, signed act (PDF)', url: 'https://leg.colorado.gov/bill_files/99252/download' },
     { title: 'City of Boulder: Shared E-Scooters and E-Bikes (Shared Micromobility Program)', url: 'https://bouldercolorado.gov/services/shared-micromobility-program' },
     { title: 'City of Boulder: Boulder renews contract with BCycle and Lime, expands Shared Micromobility Program, 6 August 2026', url: 'https://bouldercolorado.gov/news/boulder-renews-contract-bcycle-and-lime-expands-shared-micromobility-program' },
     { title: 'City of Boulder: E-micromobility: e-bikes, e-scooters and more', url: 'https://bouldercolorado.gov/services/e-micromobility' },

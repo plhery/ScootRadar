@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Durham?',
       blocks: [
-        'For electric scooter rental in Durham, the public dashboard of the City’s Transportation Department, run by Ride Report, lists two active operators in October 2026: **Lime** and **Spin**. CBS 17 reported on 11 December 2024 that Lime scooters were now available in Durham, and Spin’s open data names Bird Rides, Inc. as the operator of its Durham system. Under the City’s 2018 ordinance, companies needed a City permit, ABC11 reported; which permits run in 2026 couldn’t be checked.',
+        'For electric scooter rental in Durham, the public dashboard of the City’s Transportation Department, run by Ride Report, lists two active operators in October 2026: **Lime** and **Spin**. Spin’s open data names Bird Rides, Inc. as the operator of its Durham system. Under the City’s 2018 ordinance, companies needed a City permit, ABC11 reported; which permits run in 2026 couldn’t be checked.',
         'At 7:45 a.m. on Tuesday 27 October 2026 the [Durham map](map:us:nc:Durham) showed 230 Lime and 157 Spin scooters as they stood at that moment; over the day before, it showed between 209 and 237 Lime and between 150 and 159 Spin. Each figure is a snapshot, not a fleet. At 8:11 a.m. every one of Spin’s 156 available scooters stood inside the city of Durham, by the Census Bureau’s boundaries.',
         'For Spin the map shows each scooter’s position, charge and range, and Spin’s zones (see below); for Lime, position and range. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
         '**E-bikes and seated scooters aren’t on the map.** ScootRadar shows standing e-scooters only. Spin’s open data listed 30 available e-bikes at 8:11 a.m. on 27 October, and the City’s dashboard counted 2,600 e-bike trips and 7,500 seated-scooter trips from July to September 2026, beside 41,400 scooter trips. It doesn’t say which company runs the seated scooters.',
@@ -144,7 +144,6 @@ const guide: Guide = {
     { title: 'INDY Week: Durham Approves Rules for Electric Scooters, 15 October 2018', url: 'https://indyweek.com/news/city-council-scooters/' },
     { title: 'ABC11: Durham approves scooters, with restrictions, 16 October 2018', url: 'https://abc11.com/post/durham-approves-scooters-with-restrictions/4496114/' },
     { title: 'ABC11: Hundreds of scooters arriving in Durham along with new rules, 7 June 2019', url: 'https://abc11.com/post/city-of-durham-approves-permits-for-800-scooters/5335921/' },
-    { title: 'CBS 17: Durham launches Lime scooters, 11 December 2024 (video)', url: 'https://www.cbs17.com/video/durham-launches-lime-scooters/10289845/' },
     { title: 'Duke Parking & Transportation: Scooters', url: 'https://parking.duke.edu/alternative-transportation/scooters/' },
     { title: 'Duke Parking & Transportation: parking fine schedule', url: 'https://parking.duke.edu/citations/parking-fine-schedule/' },
     { title: 'Duke Today: A Personal Mobility Option to Get Around Campus, 30 August 2024', url: 'https://today.duke.edu/2024/08/personal-mobility-option-get-around-campus' },

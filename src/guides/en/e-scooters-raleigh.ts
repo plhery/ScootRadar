@@ -44,15 +44,15 @@ const guide: Guide = {
     {
       heading: 'Raleigh scooter rules: hours, sidewalks, greenways and age',
       blocks: [
-        'This guide doesn’t summarise North Carolina state law. The City’s riding rules below are as CBS 17 and ABC11 reported the ordinance the City Council passed on 20 November 2018, which moved scooters off sidewalks and into bike lanes; the parking rules are from the City’s own report of September 2026.',
+        'The City’s riding rules below are as ABC11 reported the ordinance the City Council passed in November 2018, which moved scooters off sidewalks and into bike lanes; the parking rules are from the City’s own report of September 2026.',
         {
           table: {
             caption: 'E-scooter rules in Raleigh, and who sets them (as published by 27 October 2026)',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
               ['Hours', 'Spin: 6 a.m. to 11 p.m., seven days a week; check Lime’s in its app', 'NC State Transportation, for Spin'],
-              ['Where to ride', 'In bike lanes, not on City sidewalks, greenway trails or multi-use paths. Yield to people on foot, and when entering or crossing a street', 'City ordinance, 20 November 2018, as CBS 17 and ABC11 reported it'],
-              ['Sidewalk fine', 'Up to $50; ABC11 reported in 2019 that the citation carries no driver’s licence or insurance points', 'City ordinance, as reported'],
+              ['Where to ride', 'In bike lanes, not on City sidewalks, greenway trails or multi-use paths. Yield to people on foot, and when entering or crossing a street', 'City ordinance, November 2018, as ABC11 reported it'],
+              ['Sidewalk fine', '$50, with no driver’s licence or insurance points, ABC11 reported in 2019', 'City ordinance, as reported'],
               ['Greenway trails', '“Motorized vehicles are prohibited on trails”; trails are open dawn to dusk, with a 10 mph speed limit', 'City greenway map, March 2018 (Parks, Recreation and Cultural Resources)'],
               ['Age', '18 to ride a Spin; check Lime’s terms in its app', 'Spin’s terms'],
               ['Helmet', 'Spin and NC State tell every rider to wear one', 'Spin; NC State Transportation'],
@@ -72,8 +72,7 @@ const guide: Guide = {
         'Under the City’s agreements, a scooter must be parked upright, out of the pedestrian path, and in a designated amenity or planting zone, or in a mandatory corral where there is one. The company must move a badly parked one within two hours of being told; report it through AskRaleigh, the City’s request portal, or in the company’s app.',
         {
           list: [
-            '**Corrals downtown.** After a pilot on Glenwood South, the City is painting more than 70 mandatory corrals at the busiest downtown intersections by the end of 2026. Riders ending a trip within 320 feet (100 metres) of a painted corral must use it. CBS 17 reported on 16 September 2026 that the apps won’t let you end a ride there unless you are in one, and redirect you to one.',
-            '**Elsewhere,** CBS 17 reported, you may park anywhere that doesn’t block a sidewalk or an ADA ramp, and never on private property.',
+            '**Corrals downtown.** After a pilot on Glenwood South, the City is painting more than 70 mandatory corrals at the busiest downtown intersections by the end of 2026. Once the work is done, riders ending a trip within 320 feet (100 metres) of a painted corral must use it; the companies will explain the change in their apps, the City says.',
             '**Fines come from the companies.** Since January 2025 the third and fourth parking violations each cost $15, after two warnings, and a fifth brings an account review and possible suspension.',
           ],
         },
@@ -134,7 +133,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a scooter on the sidewalk in Raleigh?',
-      answer: 'No. The City Council’s 2018 ordinance, as CBS 17 and ABC11 reported it, keeps scooters off City sidewalks, greenway trails and multi-use paths and allows them in bike lanes, with a fine of up to $50. On NC State’s campus, ride at walking pace on sidewalks and plazas or get off.',
+      answer: 'No. The City Council’s 2018 ordinance, as ABC11 reported it, keeps scooters off City sidewalks, greenway trails and multi-use paths and allows them in bike lanes; riding on a sidewalk costs a $50 fine. On NC State’s campus, ride at walking pace on sidewalks and plazas or get off.',
     },
     {
       question: 'How much does a Spin scooter cost at NC State?',
@@ -142,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Where do you park a scooter in downtown Raleigh?',
-      answer: 'In a painted corral if one is within 320 feet; the apps steer you to one. Elsewhere, park upright, out of the walkway, and never on private property. Repeat violations bring $15 fines.',
+      answer: 'In a painted corral if one is within 320 feet. Elsewhere, park upright and out of the walkway, in the amenity or planting strip. Repeat violations bring $15 fines.',
     },
     {
       question: 'Are there Lime scooters in Raleigh?',
@@ -159,10 +158,8 @@ const guide: Guide = {
     { title: 'NC State Transportation: Spin E-Scooters & E-Bikes', url: 'https://transportation.ncsu.edu/spin-e-scooters-e-bikes/' },
     { title: 'NC State: POL 07.60.01, Parking and Transportation Ordinances', url: 'https://policies.ncsu.edu/policy/pol-07-60-01/' },
     { title: 'Technician: Park it here? E-bike and scooter rules differ across NC State, 11 September 2026', url: 'https://technicianonline.com/162505/news/park-it-here-e-bike-and-scooter-rules-differ-across-nc-state/' },
-    { title: 'CBS 17: Raleigh approves ordinance aimed to get scooters off sidewalks, 20 November 2018', url: 'https://www.cbs17.com/news/local-news/wake-county-news/raleigh-approves-ordinance-aimed-to-get-scooters-off-sidewalks/' },
     { title: 'ABC11: Raleigh City Council allows motorized scooters in bike lanes, 21 November 2018', url: 'https://abc11.com/post/raleigh-city-council-allows-motorized-scooters-in-bike-lanes/4728140/' },
     { title: 'ABC11: riding scooters while drunk, 14 August 2019', url: 'https://abc11.com/post/riding-scooters-while-drunk-a-loophole-in-the-law/5467574/' },
-    { title: 'CBS 17: Raleigh implements mandatory parking zones for bikes, scooters, 16 September 2026', url: 'https://www.cbs17.com/news/driving-you-crazy/whats-driving-you-crazy-raleigh-implements-mandatory-parking-zones-for-bike-scooters/' },
     { title: 'Spin: Raleigh open data (GBFS)', url: 'https://gbfs.spin.pm/api/gbfs/v2_3/raleigh/gbfs' },
     { title: 'Spin: NC State open data (GBFS)', url: 'https://gbfs.spin.pm/api/gbfs/v2_3/nc_state/gbfs' },
     { title: 'Spin: terms of use (US)', url: 'https://www.spin.app/policies/terms-us' },

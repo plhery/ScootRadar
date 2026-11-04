@@ -32,7 +32,7 @@ const guide: Guide = {
     {
       heading: 'Detroit scooter rules: age, helmets, speed and sidewalks',
       blocks: [
-        'Michigan’s Vehicle Code calls a stand-up e-scooter an “electric skateboard”. It isn’t a motor vehicle, so you need no licence, registration or insurance, but on the road you take on a driver’s duties. Detroit’s 2023 scooter ordinance adds parking, conduct and operating standards for shared scooters. Breaking the state’s riding rules is generally a civil infraction, the Michigan State Police said in 2018, but its drunk-driving law covers you too.',
+        'Michigan’s Vehicle Code calls a stand-up e-scooter an “electric skateboard”. It isn’t a motor vehicle, so you need no licence, registration or insurance, but on the road you take on a driver’s duties. Detroit’s 2023 scooter ordinance adds parking, conduct and operating standards for shared scooters, and Michigan’s drunk-driving law covers you too.',
         {
           table: {
             caption: 'Shared e-scooter rules in Detroit on 23 October 2026, and who sets them',
@@ -45,7 +45,7 @@ const guide: Guide = {
               ['Where to ride', 'As near the right side of the road as you can, no more than two abreast', 'Michigan, MCL 257.660'],
               ['Sidewalks', 'Allowed: yield to pedestrians and sound a warning before you pass', 'Michigan, MCL 257.660, which lets cities regulate sidewalk riding'],
               ['Passengers', 'None: one rider per scooter', 'Michigan, MCL 257.658(3)'],
-              ['Lights', 'A white front light visible from 500 feet and a red rear reflector', 'Michigan, MCL 257.662(1)'],
+              ['Lights', 'After dark, a white front light visible from 500 feet, and a rear reflector', 'Michigan, MCL 257.662(1)'],
               ['Alcohol and drugs', 'Michigan’s drunk-driving law covers e-scooters, a 2015 appeals court ruling held', 'Michigan, MCL 257.625'],
               ['Night', 'The City’s geofencing includes “safety curfews”, but no hours are published', 'City (OMI)'],
             ],
@@ -142,7 +142,8 @@ const guide: Guide = {
     { title: 'City of Detroit DPW: 2026–2027 Dockless Electric Scooter Permit Application (PDF)', url: 'https://detroitmi.gov/sites/detroitmi.localhost/files/2025-12/FINAL%202026-2027%20Dockless%20Electric%20Scooter%20Permit%20Application%20.pdf' },
     { title: 'Detroit City Council President Mary Sheffield: Newsletter, March 2023 (PDF)', url: 'https://detroitmi.gov/sites/detroitmi.localhost/files/2023-03/March%202023%20Newsletter_0.pdf' },
     { title: 'Detroit City Council, Legislative Policy Division: Electric scooters, 15 August 2022, with its October 2018 report (PDF)', url: 'https://detroitmi.gov/sites/detroitmi.localhost/files/2022-08/Report%20on%20Electronic%20Scooter%20Ordinance.pdf' },
-    { title: 'Michigan State Police: Legal Update No. 134, October 2018 (PDF)', url: 'https://www.michigan.gov/-/media/Project/Websites/msp/legal-archive-02/msp_legal_update_no_134.pdf' },
+    { title: 'Cascade Township and Kent County Sheriff’s Office: Understanding e-bikes, e-scooters and e-motos, August 2026 (PDF)', url: 'https://cascadetwp.muniweb.com/media/0inlwdxa/ebikes-escooters-emotos-3.pdf' },
+    { title: 'Michigan Auto Law: Michigan electric skateboard laws, 20 March 2026', url: 'https://www.michiganautolaw.com/blog/2026/03/20/michigan-electric-skateboard-laws/' },
     { title: 'Michigan Judicial Institute: Criminal Proceedings Benchbook, glossary', url: 'https://www.courts.michigan.gov/4a8152/siteassets/publications/benchbooks/criminal/crimpttresponsivehtml5.zip/Crim_PTT/Glossary/Glossary.htm' },
     { title: 'Michigan Judicial Institute: Traffic Benchbook, § 9.4 Operating While Intoxicated', url: 'https://www.courts.michigan.gov/4a816c/siteassets/publications/benchbooks/tbb/tbbresponsivehtml5.zip/TBB/Ch_9_Section_625_Offenses/Operating_While_Intoxicated_(OWI)Section_625(1)-u103a.htm' },
     { title: 'Bird: Terms of service, 28 October 2024', url: 'https://www.bird.co/terms/' },
