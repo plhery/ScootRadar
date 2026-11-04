@@ -26,7 +26,6 @@ const guide: Guide = {
           ],
         },
         'La préfecture a annoncé une période de pédagogie avant des contrôles stricts, sans en donner la fin. L’arrêté cite un chiffre qui parle : dans le Rhône, la nuit concentre 38 % des accidents de trottinettes et d’engins semblables, mais 64 % des morts.',
-        { note: 'Ne comptez pas sur Dott pour le casque : selon l’opérateur, les boîtes à casque essayées ailleurs coûtaient cher, servaient peu et se faisaient voler. Prenez le vôtre, et un gilet.' },
       ],
     },
     {
@@ -50,7 +49,7 @@ const guide: Guide = {
         },
         'Ce tarif vient du flux de données public de Dott, hors pass et promotions ; l’app affiche le prix final. Pour la marche à suivre, lisez notre guide [louer une trottinette électrique](guide:how-to-rent).',
         'Le 12 octobre 2026, ScootRadar affichait environ 3 500 trottinettes Dott sur la [carte autour de Lyon](map:fr:Lyon) ; un bouton ouvre l’app Dott, où vous déverrouillez et payez.',
-        '**Et après février 2027 ?** L’autorisation de Dott arrive à échéance fin février 2027, selon Laurent Bosetti, adjoint au maire chargé des mobilités. La Ville a annoncé un nouvel appel à projets, prévu selon lui entre septembre et décembre 2026 ; au 12 octobre 2026, nous ne l’avions pas vu publié. L’opérateur peut donc changer en 2027.',
+        '**Et après février 2027 ?** En juillet 2026, Laurent Bosetti, adjoint au maire chargé des mobilités, a annoncé que la Ville relançait son appel à manifestation d’intérêt, pour un nouveau contrat dès février 2027 et un cahier des charges renforcé sur la sécurité routière et le stationnement. L’opérateur peut donc changer en 2027.',
       ],
     },
     {
@@ -107,7 +106,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Rouler à deux est l’infraction propre aux trottinettes la plus relevée en France. À Lyon, 1 000 trottinettes de la nouvelle flotte Dott testent un détecteur de passager : la trottinette ralentit et un message invite le passager à louer la sienne. Le reste des règles nationales est dans notre guide de la [réglementation de la trottinette électrique en France](guide:french-rules).',
+        'À Lyon, 800 à 1 000 trottinettes de la nouvelle flotte Dott, déployée depuis avril 2026, testent un système qui détecte la conduite à deux. Le reste des règles nationales est dans notre guide de la [réglementation de la trottinette électrique en France](guide:french-rules).',
       ],
     },
     {
@@ -179,7 +178,7 @@ const guide: Guide = {
     },
     {
       question: 'Que deviennent les trottinettes à Lyon après février 2027 ?',
-      answer: 'L’autorisation de Dott arrive à échéance fin février 2027, selon l’adjoint au maire chargé des mobilités, et la Ville a annoncé un nouvel appel à projets, que nous n’avions pas vu publié au 12 octobre 2026. L’opérateur peut donc changer.',
+      answer: 'Un nouveau contrat doit commencer dès février 2027 : en juillet 2026, l’adjoint au maire chargé des mobilités a annoncé que la Ville relançait son appel à manifestation d’intérêt. L’opérateur peut donc changer.',
     },
   ],
   sources: [
@@ -190,7 +189,8 @@ const guide: Guide = {
     { title: 'Dott : flux de données public (GBFS) de Lyon, tarif, emplacements et zones', url: 'https://gbfs.api.ridedott.com/public/v2/lyon/' },
     { title: 'Vélo’v (Métropole de Lyon) : offres et tarifs', url: 'https://velov.grandlyon.com/fr/offers/groups' },
     { title: 'Visit Lyon : la trottinette Dott, communes desservies et stationnement', url: 'https://www.visiterlyon.com/sejourner/venir-et-se-deplacer-a-lyon/transport-et-transfert/dott' },
-    { title: 'Tribune de Lyon : Dott, la sécurité des trottinettes et la fin de l’autorisation en 2027 (7 mai 2026)', url: 'https://tribunedelyon.fr/transports/lyon-dott-trottinettes-securite/' },
+    { title: 'Lyon Capitale : « Faire toujours mieux », Dott renforce la sécurité de ses nouvelles trottinettes (4 mai 2026)', url: 'https://www.lyoncapitale.fr/actualite/faire-toujours-mieux-a-lyon-dott-renforce-la-securite-de-ses-nouvelles-trottinettes' },
+    { title: 'Lyon Capitale : la police renforce ses contrôles des trottinettes cet été, nouveau contrat en février 2027 (3 juillet 2026)', url: 'https://www.lyoncapitale.fr/actualite/lyon-la-police-renforce-ses-operations-de-controles-des-trottinettes-electriques-cet-ete' },
     { title: 'Lyon Capitale : la Ville de Lyon conserve un opérateur unique de trottinettes en libre-service (19 décembre 2024)', url: 'https://www.lyoncapitale.fr/actualite/trottinettes-en-libre-service-la-ville-de-lyon-conserve-un-operateur-unique-sans-nouvel-appel-a-projets' },
     { title: 'LyonMag : Villeurbanne garde son interdiction des trottinettes en libre-service (28 août 2026)', url: 'https://www.lyonmag.com/article/153741/' },
     { title: 'TCL : Règlement du réseau TCL unifié (article 6.1)', url: 'https://www.tcl.fr/a-propos-de-tcl/reglement-du-reseau' },

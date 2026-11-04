@@ -36,10 +36,10 @@ const guide: Guide = {
     {
       heading: 'Vélib’ et vélos électriques en libre-service : les prix à Paris',
       blocks: [
-        '**Vélib’ Métropole**, ce sont 20 000 vélos, dont environ 40 % électriques, dans un peu moins de 1 500 stations à Paris et dans 66 communes voisines. À Paris, il y en a une tous les 300 mètres.',
+        '**Vélib’ Métropole**, ce sont plus de 20 000 vélos, dont 40 % électriques, dans plus de 1 500 stations réparties sur 65 communes du Grand Paris.',
         {
           table: {
-            caption: 'Tarifs Vélib’ Métropole au 12 octobre 2026',
+            caption: 'Tarifs Vélib’ Métropole : tickets et passes (juillet 2025)',
             head: ['Offre', 'Prix', 'Ce qui est inclus'],
             rows: [
               ['Ticket-V', '3 €', 'Un trajet de 45 min, vélo mécanique ou électrique'],
@@ -49,11 +49,11 @@ const guide: Guide = {
             ],
           },
         },
-        'Au-delà du temps compris, comptez 1 € (mécanique) ou 2 € (électrique) par demi-heure. Tickets et passes s’achètent sur le site ou l’app Vélib’, ou dans l’app Île-de-France Mobilités, qui permet ensuite de déverrouiller le vélo avec un passe Navigo ; les passes, aussi dans Bonjour RATP.',
+        'Au-delà du temps compris, comptez 1 € (mécanique) ou 2 € (électrique) par demi-heure. Tickets et passes s’achètent sur le site ou l’app Vélib’, ou à la borne d’une station.',
         '**Lime, Dott et Voi** font chacun rouler 3 000 à 6 000 vélos électriques sans station, sous une convention de quatre ans entrée en vigueur le 1er octobre 2025.',
         {
           table: {
-            caption: 'Vélo en libre-service à Paris : prix d’un trajet (tarifs publiés au 12 octobre 2026)',
+            caption: 'Vélo en libre-service à Paris : prix d’un trajet (tarifs publiés au 12 octobre 2026 ; Vélib’ : juillet 2025)',
             head: ['Service', 'Déverrouillage', 'Par minute', '10 min', '20 min'],
             rows: [
               ['Voi', '0 €', '0,29 €', '2,90 €', '5,80 €'],
@@ -136,7 +136,7 @@ const guide: Guide = {
     {
       heading: 'Trottinette dans le métro, le RER, le bus et le tram',
       blocks: [
-        'Sur tout le réseau RATP (métro, RER sur ses tronçons RATP, bus, tram, funiculaire de Montmartre), une trottinette pliante doit rester pliée et tenue à la main en permanence dans les véhicules. Rouler dans un couloir, une correspondance ou sur un quai, ou la garder dépliée à bord, coûte 150 €, plus 50 € de frais de dossier sans paiement immédiat. « Un engin déplié, même immobile, n’est pas en règle », prévient la RATP.',
+        'Dans le métro, le RER, le bus et le tram de la RATP, une trottinette n’est admise que pliable et pliée, et doit rester en permanence entre les mains de son propriétaire. Depuis septembre 2023, rouler sur un quai ou dans un couloir, ou garder sa trottinette dépliée à bord, peut coûter 150 €, plus 50 € de frais sans paiement immédiat.',
         'Dans les trains SNCF, faites de même et vérifiez les conditions de la SNCF avant de partir.',
       ],
     },
@@ -182,9 +182,10 @@ const guide: Guide = {
     { title: 'Ville de Paris : Vélo en libre-service, bientôt un troisième opérateur à Paris (1er octobre 2025)', url: 'https://www.paris.fr/pages/velo-en-libre-service-bientot-un-troisieme-operateur-a-paris-31482' },
     { title: 'Ville de Paris : Trottinettes électriques, de nouvelles règles de circulation (mise à jour du 10 août 2026)', url: 'https://www.paris.fr/pages/trottinettes-electriques-de-nouvelles-regles-de-circulation-7249' },
     { title: 'Préfecture de police : arrêté n° 2026-00969 du 7 août 2026 (casque et gilet à Paris et en petite couronne)', url: 'https://cdn.paris.fr/paris/2026/08/10/arrete-2026_00969_07082026-1-nPt1.pdf' },
-    { title: 'Vélib’ Métropole : offres et tarifs', url: 'https://www.velib-metropole.fr/offers' },
-    { title: 'RATP : Puis-je emporter mon vélo ou ma trottinette ?', url: 'https://www.ratp.fr/aide-contact/questions/preparer-mon-trajet/voyage-en-regle/emporter-velo-trottinette' },
-    { title: 'RATP : Le réseau en trottinette', url: 'https://www.ratp.fr/services-aux-voyageurs/services-de-mobilite/le-reseau-en-trottinette' },
+    { title: 'AGEMOB : le service public Vélib’ Métropole (stations, vélos, communes)', url: 'https://agemob.fr/velib-metropole/le-velo-partage/' },
+    { title: 'Secrets of Paris : utiliser Vélib’, tickets et passes (en anglais, mis à jour en juillet 2025)', url: 'https://secretsofparis.com/practical/using-the-velib-bike-service-in-paris/' },
+    { title: 'Sortir à Paris : certains objets sont interdits dans le métro parisien (20 janvier 2026)', url: 'https://www.sortiraparis.com/arts-culture/histoire-patrimoine/articles/340245-le-saviez-vous-certains-objets-sont-interdits-dans-le-metro-parisien' },
+    { title: 'Journal du Geek : la RATP sanctionne les trottinettes non pliées, 150 € d’amende (15 septembre 2023)', url: 'https://www.journaldugeek.com/2023/09/15/attention-a-cette-grosse-amende-dans-les-transports-si-vous-ne-respectez-pas-cette-regle-avec-votre-trottinette-electrique/' },
     { title: 'Ville de Meulan-en-Yvelines : les trottinettes Voi dans le Grand Paris Seine et Oise', url: 'https://ville-meulan.fr/print/pdf/node/2348' },
     { title: 'Préfecture des Yvelines : arrêté n° 78-2026-09-07-00004 sur le casque et le gilet (copie publiée par Bois-d’Arcy)', url: 'https://www.boisdarcy.fr/arrete-pref.pdf' },
     { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },

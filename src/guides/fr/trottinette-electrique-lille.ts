@@ -86,7 +86,7 @@ const guide: Guide = {
     {
       heading: 'Casque obligatoire dans le Nord : âge, vitesse et amendes',
       blocks: [
-        '**Le casque.** Depuis le **1er septembre 2026**, un arrêté du préfet du Nord du 30 juillet 2026 impose un casque aux normes et attaché à tout conducteur de trottinette électrique ou d’engin semblable, **trottinettes Lime comprises**, de jour comme de nuit, pistes cyclables comprises. Les vélos électriques ne sont pas concernés. Selon le SAMU du Nord, la réanimation neurochirurgicale du CHU de Lille reçoit « au moins un patient par semaine » après un accident de trottinette.',
+        '**Le casque.** Depuis le **1er septembre 2026**, un arrêté du préfet du Nord du 30 juillet 2026 impose un casque aux normes et attaché à tout conducteur de trottinette électrique ou d’engin semblable, **trottinettes Lime comprises**, de jour comme de nuit, pistes cyclables comprises. Les vélos électriques ne sont pas concernés.',
         'L’arrêté en fait une contravention de 2e classe : **35 €**, jusqu’à 150 € devant le juge, et non 135 € comme l’écrit la Ville de Lille.',
         { note: 'Selon la page de la MEL, non datée, les Lime ont un casque intégré ; Lime n’en dit rien et nous n’avons pas pu le vérifier : prenez le vôtre.' },
         '**L’âge et la vitesse.** Selon Lime, ses trottinettes sont réservées aux majeurs ; la page de la MEL indique 16 ans. L’app fait foi. Une trottinette personnelle, elle, se conduit dès 14 ans. Selon la MEL, les Lime sont bridées à 20 km/h, et à 6 km/h dans certaines zones très fréquentées ; l’app affiche les zones lentes et interdites.',
@@ -127,7 +127,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Métro, tram et bus.** Ilévia n’admet les trottinettes que « repliées dès l’entrée sur le réseau ». Une Lime ne se plie pas : rendez-la dans une station près de l’arrêt.',
+            '**Métro, tram et bus.** Pour continuer en transports, rendez la Lime dans une station près de l’arrêt : le compteur tourne tant qu’elle n’y est pas garée.',
             '**Lille-Flandres et Lille-Europe.** Aucune trottinette à la descente du TGV ou de l’Eurostar : le 13 octobre 2026, la plus proche était à 1,8 km. Prenez un V’Lille, à moins de 100 m de chacune des deux gares, ou un vélo Lime : ce soir-là, 85 attendaient à moins de 500 m de Lille-Flandres.',
             '**Aéroport de Lille-Lesquin.** Aucune trottinette devant l’aérogare : les plus proches étaient à 1,2 km environ. La navette rejoint les gares en une vingtaine de minutes, pour 7,99 € en ligne ou 9 € à bord ; le bus Ilévia 68 va jusqu’au métro 4 Cantons-Stade Pierre-Mauroy.',
             '**Marché de Noël.** Il s’installe place Rihour du 18 novembre au 30 décembre 2026 : on y met pied à terre tous les jours de 11 h à 20 h.',
@@ -138,12 +138,12 @@ const guide: Guide = {
     {
       heading: 'V’Lille ou vélo Lime : l’alternative dans Lille',
       blocks: [
-        '**V’Lille**, le vélo classique en libre-service d’Ilévia, compte 266 stations dans 21 communes, accessibles jour et nuit dès 14 ans. Tarifs d’Ilévia au 13 octobre 2026 :',
+        '**V’Lille**, le vélo classique en libre-service d’Ilévia, compte 266 stations dans la métropole et se loue dès 14 ans. Tarifs en vigueur depuis le 1er août 2026 :',
         {
           list: [
             '**Formules** : 1,90 € les 24 heures, 8,30 € les 7 jours, 43 € l’année.',
             '**Chaque trajet** : 30 premières minutes gratuites, puis 1,20 € la demi-heure supplémentaire.',
-            '**Gratuit** pour les moins de 18 ans qui habitent la MEL ; caution de 200 € pour les usagers occasionnels.',
+            '**Gratuit** de 14 à 17 ans, et sur demande pour les abonnés Ilévia longue durée, qui versent une caution de 200 €.',
           ],
         },
         'Les **vélos électriques Lime** se louent dans l’app Lime, se garent sur des emplacements dédiés et se paient comme les trottinettes : pour 20 minutes, comptez 4,60 à 5,40 €, contre 1,90 € la journée en V’Lille.',
@@ -176,12 +176,8 @@ const guide: Guide = {
       answer: 'Oui : un arrêté du préfet du Nord l’impose depuis le 1er septembre 2026 à tout conducteur de trottinette électrique, location comprise, de jour comme de nuit. L’amende est de 35 €, jusqu’à 150 € devant le juge. Les vélos électriques ne sont pas concernés.',
     },
     {
-      question: 'Peut-on prendre une trottinette dans le métro à Lille ?',
-      answer: 'Seulement si elle est pliée dès l’entrée dans le réseau Ilévia, métro, tram et bus compris. Une Lime ne se plie pas : terminez la location dans une station près de l’arrêt.',
-    },
-    {
       question: 'Combien coûte un V’Lille ?',
-      answer: '1,90 € les 24 heures, 8,30 € les 7 jours, 43 € l’année, selon Ilévia au 13 octobre 2026. Chaque trajet est gratuit 30 minutes, puis coûte 1,20 € la demi-heure supplémentaire.',
+      answer: '1,90 € les 24 heures, 8,30 € les 7 jours, 43 € l’année, aux tarifs d’Ilévia en vigueur depuis le 1er août 2026. Chaque trajet est gratuit 30 minutes, puis coûte 1,20 € la demi-heure supplémentaire.',
     },
   ],
   sources: [
@@ -194,12 +190,12 @@ const guide: Guide = {
     { title: 'Ville de Lille : arrêté n° 17822 du 22 janvier 2026 sur le pied à terre (bulletin officiel du 22 janvier 2026, p. 114-117)', url: 'https://www.lille.fr/content/download/391481/3928997/file/BO+VDL+du+22+janvier+2026.pdf' },
     { title: 'Ville de Lille : arrêté n° 1412 du 4 septembre 2026 instituant les aires piétonnes (bulletin officiel du 4 septembre 2026, p. 4-9)', url: 'https://www.lille.fr/content/download/420156/4099680/file/BO+VDL+du+04+septembre+2026.pdf' },
     { title: 'Ville de Lille : « À pied, à vélo : plus de sécurité » (2026)', url: 'https://www.lille.fr/Actualites/A-pied-a-velo-plus-de-securite' },
-    { title: 'La Voix du Nord : le casque sera obligatoire pour tous les usagers de trottinettes (8 juillet 2026)', url: 'https://www.lavoixdunord.fr/1719726/article/2026-07-08/trottinettes-electriques-le-port-du-casque-sera-obligatoire-pour-tous-les' },
     { title: 'Préfet du Nord : arrêté du 30 juillet 2026 portant obligation du port du casque pour tout conducteur d’EDPM (copie publiée par la commune de Linselles)', url: 'https://www.linselles.fr/wp-content/uploads/2026/08/Arrete-prefectoral-portant-obligation-du-port-du-casque-pour-tout-conducteur-dengin-de-deplacement-personnel-motorise-EDPM-dans-le-departement-du-Nord.pdf' },
     { title: 'MEL : note de synthèse du conseil du 9 octobre 2026 (délibération 26-C-0137, micromobilités)', url: 'https://www.lillemetropole.fr/sites/default/files/2026-10/C0910_NOTE_SYNTHESE.pdf' },
     { title: 'actu.fr : Lime annonce 1 000 vélos et trottinettes électriques de plus dans la métropole (30 septembre 2025)', url: 'https://actu.fr/hauts-de-france/lille_59350/metropole-de-lille-lime-annonce-larrivee-de-1000-velos-et-trottinettes-electriques-supplementaires_63234891.html' },
-    { title: 'Ilévia : vélos et trottinettes à bord du métro, du tram et du bus', url: 'https://www.ilevia.fr/faq/pendant-mon-voyage' },
-    { title: 'Ilévia : V’Lille, offres et tarifs', url: 'https://www.ilevia.fr/boutique/v-lille' },
+    { title: 'Le Bonbon Lille : les nouveaux tarifs Ilévia et V’Lille au 1er août 2026 (4 août 2026)', url: 'https://www.lebonbon.fr/lille/news/prendre-metro-a-lille-coute-desormais-plus-cher-voici-nouveaux-tarifs-ilevia/' },
+    { title: 'Le Bonbon Lille : que valent les nouveaux V’Lille ? (24 septembre 2025)', url: 'https://www.lebonbon.fr/lille/news/que-valent-nouveaux-v-lille/' },
+    { title: 'Le Bonbon Lille : le V’Lille gratuit pour les abonnés Ilévia longue durée (29 juillet 2025)', url: 'https://www.lebonbon.fr/lille/news/1er-aout-abonnes-ilevia-pedaler-gratuitement-lille/' },
   ],
 };
 

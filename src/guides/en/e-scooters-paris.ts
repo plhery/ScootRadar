@@ -42,10 +42,10 @@ const guide: Guide = {
     {
       heading: 'What to ride instead: Vélib’ and shared e-bikes',
       blocks: [
-        '**Vélib’ Métropole** has 20,000 docked bikes, about 40% of them electric, at a little under 1,500 stations in Paris and 66 nearby towns. In Paris there is one every 300 metres.',
+        '**Vélib’ Métropole** has more than 20,000 docked bikes, 40% of them electric, at more than 1,500 stations across 65 towns of Greater Paris.',
         {
           table: {
-            caption: 'Vélib’ tickets and passes for visitors (velib-metropole.fr, 12 October 2026)',
+            caption: 'Vélib’ tickets and passes for visitors (July 2025)',
             head: ['Ticket or pass', 'Price', 'What you get'],
             rows: [
               ['Ticket-V', '€3', 'One 45-minute ride on a classic or electric bike'],
@@ -55,11 +55,11 @@ const guide: Guide = {
             ],
           },
         },
-        'Beyond the time included, you pay €1 (classic) or €2 (electric) per 30 minutes. Buy them on the Vélib’ website or app, or in the Île-de-France Mobilités app, which then lets you unlock with a Navigo card; passes are also sold in the Bonjour RATP app.',
+        'Beyond the time included, you pay €1 (classic) or €2 (electric) per 30 minutes. Buy them on the Vélib’ website or app, or at a station terminal.',
         '**Lime, Dott and Voi** e-bikes are dockless: unlock one in the app and end the ride at a bike bay.',
         {
           table: {
-            caption: 'Shared bikes in Paris: what a ride costs (published rates on 12 October 2026)',
+            caption: 'Shared bikes in Paris: what a ride costs (published rates on 12 October 2026; Vélib’: July 2025)',
             head: ['Service', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi', '€0', '€0.29', '€2.90', '€5.80'],
@@ -136,7 +136,7 @@ const guide: Guide = {
       heading: 'Parking and taking your e-scooter on the metro',
       blocks: [
         'Since a mayoral order of 30 July 2019, e-scooters may not park on the pavement, in pedestrian areas or on the road. Use the motorbike and moped bays, where e-scooters park for free. Leave it anywhere else and you can be fined; the city does not publish the amount.',
-        'On the RATP network (the metro, the RATP-run parts of the RER, buses, trams and the Montmartre funicular), a folding e-scooter must stay folded and held in your hand at all times on board. Riding it anywhere in the network, or keeping it unfolded on board, costs €150, plus €50 in fees if you don’t pay on the spot. On SNCF trains, do the same and check SNCF’s conditions.',
+        'On RATP’s metro, RER, buses and trams, an e-scooter is allowed only if it folds, and it must stay folded and in your hands the whole time. Since September 2023, riding it on a platform or in a corridor, or keeping it unfolded on board, can cost €150, plus €50 in fees if you don’t pay on the spot. On SNCF trains, do the same and check SNCF’s conditions.',
       ],
     },
     {
@@ -181,9 +181,10 @@ const guide: Guide = {
     { title: 'City of Paris: shared bikes, a third operator from 1 October 2025 (French)', url: 'https://www.paris.fr/pages/velo-en-libre-service-bientot-un-troisieme-operateur-a-paris-31482' },
     { title: 'City of Paris: e-scooter traffic rules, updated 10 August 2026 (French)', url: 'https://www.paris.fr/pages/trottinettes-electriques-de-nouvelles-regles-de-circulation-7249' },
     { title: 'Paris police prefecture: order 2026-00969 of 7 August 2026 on helmets and vests (PDF, French)', url: 'https://cdn.paris.fr/paris/2026/08/10/arrete-2026_00969_07082026-1-nPt1.pdf' },
-    { title: 'Vélib’ Métropole: tickets, passes and subscriptions', url: 'https://www.velib-metropole.fr/offers' },
-    { title: 'RATP: can I take my bike or scooter on the network? (French)', url: 'https://www.ratp.fr/aide-contact/questions/preparer-mon-trajet/voyage-en-regle/emporter-velo-trottinette' },
-    { title: 'RATP: travelling the network with a scooter (French)', url: 'https://www.ratp.fr/services-aux-voyageurs/services-de-mobilite/le-reseau-en-trottinette' },
+    { title: 'AGEMOB: the Vélib’ Métropole public service, stations, bikes and towns (French)', url: 'https://agemob.fr/velib-metropole/le-velo-partage/' },
+    { title: 'Secrets of Paris: using the Vélib’ bike service, tickets and passes (updated July 2025)', url: 'https://secretsofparis.com/practical/using-the-velib-bike-service-in-paris/' },
+    { title: 'Sortir à Paris: some items are not allowed on the Paris metro (20 January 2026)', url: 'https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/340245-did-you-know-certain-items-are-not-allowed-on-the-paris-metro' },
+    { title: 'Journal du Geek: RATP fines riders who don’t fold their e-scooters €150, 15 September 2023 (French)', url: 'https://www.journaldugeek.com/2023/09/15/attention-a-cette-grosse-amende-dans-les-transports-si-vous-ne-respectez-pas-cette-regle-avec-votre-trottinette-electrique/' },
     { title: 'Meulan-en-Yvelines: Voi e-scooters in Grand Paris Seine & Oise (French)', url: 'https://ville-meulan.fr/print/pdf/node/2348' },
     { title: 'Yvelines prefecture: order 78-2026-09-07-00004 on helmets and vests, copy published by Bois-d’Arcy (PDF, French)', url: 'https://www.boisdarcy.fr/arrete-pref.pdf' },
     { title: 'Vauhallan town hall: new rules for e-scooters across Essonne, 12 October 2026 (French)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
