@@ -1135,6 +1135,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     func refresh() {
         scheduleFetch(for: viewport.expanded(by: 0.25), zoom: viewportZoom, debounce: false)
+        askAgainForFailedZones()
     }
 
     /// "Try again" and "Refresh": a manual refresh, fetched at once.
@@ -2351,6 +2352,14 @@ extension ScooterMapModel {
             }
             setZones(state: answer.failed ? .failed : .shown)
         }
+    }
+
+    /// A failed answer for the zones stands while the map stays in its area, so each refresh of the scooters, on
+    /// its own or asked for, asks for them again: after a load lost to the network they come back with the scooters,
+    /// instead of staying unavailable until the map leaves the area. What was drawn stays drawn meanwhile.
+    fileprivate func askAgainForFailedZones() {
+        guard showsZones, zoneTaskArea == nil, let answer = zoneAnswer, answer.failed else { return }
+        requestZones(in: answer.area, after: .zero, retries: Self.zonePendingRetries)
     }
 
     private func cancelZoneRequest() {

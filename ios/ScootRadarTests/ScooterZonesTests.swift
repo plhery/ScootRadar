@@ -342,6 +342,29 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertTrue(operatorZones(model).isEmpty)
     }
 
+    func testAFailedAnswerIsAskedForAgainWithTheScootersSoTheZonesComeBackWithThem() async throws {
+        let api = ZoneStubAPI()
+        await api.setFailure(.offline)
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let failed = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .failed }
+        XCTAssertTrue(failed)
+
+        // Still within the area, the failure no longer stands once the network is back.
+        await api.setFailure(nil)
+        model.retryLoad()
+        let shown = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(shown, "A refresh asks for the zones again with the scooters")
+        XCTAssertEqual(operatorZones(model).count, 2)
+
+        // A whole answer at hand is not asked for again.
+        model.refresh()
+        try await Task.sleep(for: .milliseconds(400))
+        let areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 2)
+    }
+
     func testACitysRulesAreDrawnFromZoom14WithTheZonesOffAndDimmerOutsideTheirHours() {
         let hongdae = MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 37.5545, longitude: 126.9245),
