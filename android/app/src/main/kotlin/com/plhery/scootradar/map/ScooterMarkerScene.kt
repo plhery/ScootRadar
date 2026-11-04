@@ -891,6 +891,7 @@ class ScooterMarkerScene(
                 anchor = anchor,
                 reach = mark.look.footprint / 2,
                 width = art.pillWidth(pill),
+                height = art.pillHeight,
                 preferred = pillSides[id],
             )
             neighbours += pillNeighbours[id].orEmpty().map { it.offsetBy(anchor.x, anchor.y) }
@@ -913,7 +914,7 @@ class ScooterMarkerScene(
                 request.anchor.x + placement.origin.x,
                 request.anchor.y + placement.origin.y,
                 request.width,
-                ScooterMapLook.pillHeight,
+                request.height,
             )
             val mark = marksByID[placement.id] ?: continue
             if (mark.pillOrigin == placement.origin) continue
@@ -921,8 +922,8 @@ class ScooterMarkerScene(
             moved += mark
         }
         // Nor does a name that would be cut by the edge of the map or by the dock, or that found no place but on
-        // another name.
-        covered += ScooterMapLook.unreadablePills(frames, inside = visible, under = chrome)
+        // another name. A larger name loses whole letters there: it shows whole or not at all.
+        covered += ScooterMapLook.unreadablePills(frames, inside = visible, under = chrome, whole = art.textScale > 1)
         for (id in namedIDs) {
             val mark = marksByID[id] ?: continue
             if (mark.pillIsCovered == (id in covered)) continue
@@ -1038,7 +1039,7 @@ class ScooterMarkerScene(
         val side = mark.look.footprint
         val dot = ScreenRect(centre.x - side / 2, centre.y - side / 2, side, side)
         val pill = mark.shownPill ?: return listOf(dot)
-        return listOf(dot, ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(pill), ScooterMapLook.pillHeight))
+        return listOf(dot, ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(pill), art.pillHeight))
     }
 
     /**
@@ -1180,7 +1181,7 @@ class ScooterMarkerScene(
             marksByID[nearest.id]?.let { return it to nearest.distance }
         }
 
-        // A name is 26 pt high; its target is 44.
+        // A name is 26 pt high, its target 44; a larger name's is as much taller.
         pills.firstOrNull { it.second.insetBy(-4.0, -9.0)?.contains(at) == true }?.let { return it.first to 0.0 }
         return null
     }
@@ -1200,7 +1201,7 @@ class ScooterMarkerScene(
         val mark = marksByID[id] ?: return@mapNotNull null
         val pill = mark.shownPill ?: return@mapNotNull null
         val centre = dotCentre(mark, projection)
-        mark to ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(pill), ScooterMapLook.pillHeight)
+        mark to ScreenRect(centre.x + mark.pillOrigin.x, centre.y + mark.pillOrigin.y, art.pillWidth(pill), art.pillHeight)
     }
 
     /** The bay under a point: its balloon, the selected one first, as it is drawn above the others. */

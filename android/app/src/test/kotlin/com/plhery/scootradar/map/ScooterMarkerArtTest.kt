@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.plhery.scootradar.core.generated.ScooterProvider
 import com.plhery.scootradar.core.model.ScooterDotState
+import com.plhery.scootradar.core.model.ScooterMapLook
 import com.plhery.scootradar.ui.theme.resetFontScale
 import com.plhery.scootradar.ui.theme.useFontScale
 import org.junit.After
@@ -95,9 +96,11 @@ class ScooterMarkerArtTest {
     }
 
     @Test
-    fun namesAndCountsStayTwelveAndThirteenPointsAtTheLargestTextSize() {
-        // MAP-312 (ScooterMarkerArt.swift:298-300): the pills' and the counts' text is of a fixed size, as the
-        // iPhone's, whatever text size the person chose; the dock and the cards grow instead.
+    fun namesAndCountsAreTwelveAndThirteenPointsAtTheStandardSizeWhateverTheFontScaleSaysElsewhere() {
+        // MAP-312: at the standard size the pills' and the counts' text is 12 and 13 points, as the iPhone's. Since
+        // 4f64d247 they grow with the text size (MapTextGrowsTest), by the text scale the art is made with as the map
+        // is made (mapTextScale), never by the font scale the art might otherwise read: art made at 1 draws the same
+        // pictures at font scale 2.0.
         val pills = listOf(
             ScooterMarkerArt.PillContent(ScooterProvider.fromRawValue("voi"), "Voi", "3 min", isFilled = false, isDark = false),
             ScooterMarkerArt.PillContent(ScooterProvider.fromRawValue("lime"), "Lime", null, isFilled = true, isDark = true),
@@ -117,7 +120,9 @@ class ScooterMarkerArtTest {
         assertEquals(widths, pills.map { largest.pillWidth(it) })
         for ((index, picture) in drawn(largest).withIndex()) assertTrue("picture $index", picture.sameAs(pictures[index]))
 
-        // The name is measured at 12 points of Inter Bold, and the walking time at 12 of Inter SemiBold.
+        // The name is measured at 12 points of Inter Bold, and the walking time at 12 of Inter SemiBold; the pill is 26
+        // high.
+        assertEquals(ScooterMapLook.pillHeight, largest.pillHeight, 0.0)
         val fonts = MarkerFonts.of(ApplicationProvider.getApplicationContext())
         fun width(text: String, paint: Paint) = ceil(paint.measureText(text).toDouble())
         val bold = Paint().apply { typeface = fonts.bold; textSize = 12f; isSubpixelText = true }

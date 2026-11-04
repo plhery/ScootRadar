@@ -67,6 +67,8 @@ data class ScooterPillRequest(
     /** How far the dot reaches from its centre, rings included. */
     val reach: Double,
     val width: Double,
+    /** Taller with larger text. */
+    val height: Double = ScooterMapLook.pillHeight,
     /** The side the pill is on now. It stays there while that side is free, so a pill does not hop about as the map moves. */
     val preferred: ScooterPillSide? = null,
 )
@@ -85,6 +87,19 @@ data class ScooterPillPlacement(
 object ScooterMapLook {
     const val plainDiameter: Double = 10.0
     const val pillHeight: Double = 26.0
+
+    /**
+     * The text drawn on the map grows with the reader's text size up to twice its own, the iPhone's 200% of Larger
+     * Text: beyond that a name would cover the dots around it.
+     */
+    const val largestTextScale: Double = 2.0
+
+    /**
+     * How much larger than at the standard size the names, walking times and counts on the map are drawn, given
+     * how large the text style the iPhone scales them as, its 12-point caption, is at the reader's text size. They
+     * don't shrink below their own size (ScooterMapLook.swift:88-95).
+     */
+    fun textScale(caption: Double): Double = min(largestTextScale, max(1.0, caption / 12))
 
     /**
      * At this scale and closer a dot is a disc with its provider's initials. Bolt and Lime are nearly the same
@@ -298,18 +313,18 @@ object ScooterMapLook {
     }
 
     /** Where a pill sits on one side of its dot: its top left corner, from the centre of the dot. */
-    fun pillOrigin(side: ScooterPillSide, width: Double, reach: Double): ScreenPoint {
+    fun pillOrigin(side: ScooterPillSide, width: Double, height: Double = pillHeight, reach: Double): ScreenPoint {
         val beside = reach + 2
         val over = reach + 5
         val corner = reach - 2
         val nearCorner = reach + 1
         return when (side) {
-            ScooterPillSide.Right -> ScreenPoint(beside, -pillHeight / 2)
-            ScooterPillSide.Left -> ScreenPoint(-beside - width, -pillHeight / 2)
-            ScooterPillSide.Above -> ScreenPoint(-width / 2, -over - pillHeight)
+            ScooterPillSide.Right -> ScreenPoint(beside, -height / 2)
+            ScooterPillSide.Left -> ScreenPoint(-beside - width, -height / 2)
+            ScooterPillSide.Above -> ScreenPoint(-width / 2, -over - height)
             ScooterPillSide.Below -> ScreenPoint(-width / 2, over)
-            ScooterPillSide.AboveRight -> ScreenPoint(corner, -nearCorner - pillHeight)
-            ScooterPillSide.AboveLeft -> ScreenPoint(-corner - width, -nearCorner - pillHeight)
+            ScooterPillSide.AboveRight -> ScreenPoint(corner, -nearCorner - height)
+            ScooterPillSide.AboveLeft -> ScreenPoint(-corner - width, -nearCorner - height)
             ScooterPillSide.BelowRight -> ScreenPoint(corner, nearCorner)
             ScooterPillSide.BelowLeft -> ScreenPoint(-corner - width, nearCorner)
         }
@@ -338,8 +353,8 @@ object ScooterMapLook {
 
         fun box(index: Int, side: ScooterPillSide): ScreenRect? {
             val request = requests[index]
-            val origin = pillOrigin(side, request.width, request.reach)
-            return ScreenRect(request.anchor.x + origin.x, request.anchor.y + origin.y, request.width, pillHeight)
+            val origin = pillOrigin(side, request.width, request.height, request.reach)
+            return ScreenRect(request.anchor.x + origin.x, request.anchor.y + origin.y, request.width, request.height)
                 .insetBy(-3.0, -3.0)
         }
 
@@ -405,28 +420,38 @@ object ScooterMapLook {
         return requests.indices.map { index ->
             val request = requests[index]
             val side = sides[index]!!
-            ScooterPillPlacement(request.id, side, pillOrigin(side, request.width, request.reach))
+            ScooterPillPlacement(request.id, side, pillOrigin(side, request.width, request.height, request.reach))
         }
     }
 
-    /** Whether a pill shows enough of itself: at least two thirds inside what is visible and clear of what floats over the map. */
-    fun pillCanBeRead(frame: ScreenRect, inside: ScreenRect, under: List<ScreenRect>): Boolean {
+    /**
+     * Whether a pill shows enough of itself: at least two thirds inside what is visible and clear of what floats over
+     * the map. With larger text, [whole]: a large name cut by an edge loses whole letters, so it shows entirely or not
+     * at all.
+     */
+    fun pillCanBeRead(frame: ScreenRect, inside: ScreenRect, under: List<ScreenRect>, whole: Boolean = false): Boolean {
         val hidden = area(frame) - area(inside.intersection(frame)) +
             under.fold(0.0) { sum, chrome -> sum + area(common(chrome.intersection(inside), frame)) }
-        return hidden * 3 <= area(frame)
+        return if (whole) hidden < 1 else hidden * 3 <= area(frame)
     }
 
     /**
      * The names to leave out of those placed, the first of them counting most: one cut by the edge of the map
      * or by what floats over it, and one lying on a name that stays. Where there is no room, a name less is
-     * better than two that cannot be read.
+     * better than two that cannot be read. With larger text, [whole]: nothing may cover a name at all.
      */
-    fun unreadablePills(pills: List<Pair<String, ScreenRect>>, inside: ScreenRect, under: List<ScreenRect>): Set<String> {
+    fun unreadablePills(
+        pills: List<Pair<String, ScreenRect>>,
+        inside: ScreenRect,
+        under: List<ScreenRect>,
+        whole: Boolean = false,
+    ): Set<String> {
         val unreadable = LinkedHashSet<String>()
         val shown = mutableListOf<ScreenRect>()
         for ((id, frame) in pills) {
             val covered = shown.fold(0.0) { sum, rect -> sum + area(rect.intersection(frame)) }
-            if (pillCanBeRead(frame, inside, under) && covered * 10 <= area(frame)) {
+            val clear = if (whole) covered < 1 else covered * 10 <= area(frame)
+            if (pillCanBeRead(frame, inside, under, whole) && clear) {
                 shown += frame
             } else {
                 unreadable += id

@@ -18,6 +18,8 @@ import android.graphics.Typeface
 import android.graphics.fonts.Font
 import android.graphics.fonts.FontFamily
 import android.util.DisplayMetrics
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.PathParser
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
@@ -31,6 +33,7 @@ import com.plhery.scootradar.ui.theme.SEARCH_PATH
 import kotlin.math.acos
 import kotlin.math.ceil
 import kotlin.math.exp
+import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
@@ -42,7 +45,7 @@ import kotlin.math.sqrt
  * Under Bold Text an iPhone draws its system font heavier, the markers' text with it, and the pin's symbol (UI-187).
  * Android's Bold Text adds 300 to every weight (Configuration.fontWeightAdjustment), which Compose's text follows:
  * each face here takes it too, up to Inter's heaviest, 900, and [boldText] has the pin's symbol drawn at weight 700.
- * Read once, as the map is made: an iPhone reads the pill's faces once a run (static, ScooterMarkerArt.swift:299-300)
+ * Read once, as the map is made: an iPhone reads the pill's faces as it fills a pill (ScooterMarkerArt.swift:295-296)
  * and the others as it draws a marker it hasn't kept, and Android makes the activity, and the map, again for a change.
  */
 class MarkerFonts(val semibold: Typeface, val bold: Typeface, val heavy: Typeface, val boldText: Boolean) {
@@ -74,6 +77,16 @@ class MarkerFonts(val semibold: Typeface, val bold: Typeface, val heavy: Typefac
 }
 
 /**
+ * How much larger than at the standard size the map's names, walking times and counts are drawn: as much as the app's
+ * 12 sp caption is at the phone's font size, from 1 to twice (ScooterMapLook.textScale; the iPhone's
+ * UIFontMetrics(.caption1), ScooterMapLook.swift:84-95). The app's text grows by Android's nonlinear font scaling, and
+ * the caption with it. Read once, as the map is made, as [MarkerFonts] are: a new font size makes the activity, and
+ * the map with its pictures, again.
+ */
+fun mapTextScale(context: Context): Double =
+    ScooterMapLook.textScale(caption = with(Density(context)) { 12.sp.toDp().value.toDouble() })
+
+/**
  * The pictures of the markers. A glow drawn live under several hundred markers would make the map stutter while
  * it moves, so each picture is drawn once, with its ring and its glow, and shared by every marker that looks the
  * same: the map's style holds it under its [id]. They are drawn at the map's pixel ratio, sized in points as on
@@ -84,6 +97,11 @@ class ScooterMarkerArt(
     /** Pixels to a point: the map's pixel ratio. */
     val density: Float,
     private val fonts: MarkerFonts,
+    /**
+     * How much larger than at the standard size the names, walking times and counts are drawn: [mapTextScale]. 1 at
+     * the standard size, where every picture is what it was.
+     */
+    val textScale: Double = 1.0,
 ) {
     data class Key(
         val provider: ScooterProvider?,
@@ -177,6 +195,9 @@ class ScooterMarkerArt(
         return draw(key).also { put(key, it) }
     }
 
+    /** The height of a pill in points: 26, taller with larger text, rounded half up (ScooterMarkerArt.swift:291-293). */
+    val pillHeight: Double = floor(ScooterMapLook.pillHeight * textScale + 0.5)
+
     /** The width of the pill in points, which its placement needs: its text is measured in the app's font. */
     fun pillWidth(content: PillContent): Double = pillWidths.getOrPut(content) {
         if (pillWidths.size >= MAXIMUM_DOTS) pillWidths.clear()
@@ -185,8 +206,8 @@ class ScooterMarkerArt(
         width + PILL_TRAILING
     }
 
-    private val nameFont = TextFace(fonts.bold, 12f)
-    private val timeFont = TextFace(fonts.semibold, 12f)
+    private val nameFont = TextFace(fonts.bold, (12 * textScale).toFloat())
+    private val timeFont = TextFace(fonts.semibold, (12 * textScale).toFloat())
 
     private class TextFace(val typeface: Typeface, val size: Float, val tabular: Boolean = false)
 
@@ -367,15 +388,18 @@ class ScooterMarkerArt(
 
     /**
      * The count, in bold digits of one width at 13 points, made smaller down to 0.6 of that to fit 8 points inside
-     * the disc, as UIKit fits a label's text to its width.
+     * the disc, as UIKit fits a label's text to its width. With larger text it grows as far as its disc allows; the
+     * disc keeps its size, and a long number shrinks no further than at the standard size (sizeCount,
+     * ScooterMapView.swift:2651-2659).
      */
     private fun Canvas.count(key: ClusterKey, x: Float, y: Float) {
-        val face = TextFace(fonts.bold, 13f, tabular = true)
+        val size = (13 * textScale).toFloat()
+        val face = TextFace(fonts.bold, size, tabular = true)
         val color = if (key.isDark) COUNT_ON_DARK else COUNT_ON_LIGHT
         val natural = textPaint(face, color).measureText(key.count)
         val box = (key.diameter - 8).toFloat()
-        val scale = if (natural > box) max(0.6f, box / natural) else 1f
-        val paint = textPaint(face, color, size = 13f * scale)
+        val scale = if (natural > box) max((0.6 / textScale).toFloat(), box / natural) else 1f
+        val paint = textPaint(face, color, size = size * scale)
         text(key.count, paint, x - paint.measureText(key.count) / 2.0, y - lineHeight(paint) / 2)
     }
 
@@ -474,7 +498,7 @@ class ScooterMarkerArt(
 
     private fun draw(content: PillContent): Bitmap {
         val width = pillWidth(content)
-        val height = ScooterMapLook.pillHeight
+        val height = pillHeight
         val color = ScooterMapLook.dotColor(content.provider, content.isDark)
         val ink = ScooterMapLook.ink(content.provider, content.isDark)
         val text = if (content.isDark) PILL_TEXT_ON_DARK else PILL_TEXT_ON_LIGHT

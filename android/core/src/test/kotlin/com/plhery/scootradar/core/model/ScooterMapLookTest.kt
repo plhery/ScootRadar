@@ -426,6 +426,60 @@ class ScooterMapLookTest {
         assertTrue(ScooterMapLook.pillCanBeRead(whole.offsetBy(dx = 0.0, dy = 280.0), inside = visible, under = listOf(dock)))
     }
 
+    /** ScooterMapLookTests.testWithLargerTextANameShowsWholeOrNotAtAll (4f64d247). */
+    @Test
+    fun withLargerTextANameShowsWholeOrNotAtAll() {
+        val visible = ScreenRect(x = 0.0, y = 100.0, width = 390.0, height = 700.0)
+        val dock = ScreenRect(x = 10.0, y = 600.0, width = 370.0, height = 180.0)
+        val whole = ScreenRect(x = 100.0, y = 300.0, width = 160.0, height = 52.0)
+
+        assertTrue(ScooterMapLook.pillCanBeRead(whole, inside = visible, under = listOf(dock), whole = true))
+        // Cut by the edge of the map or by the dock by a point, it would lose letters.
+        val pastTheEdge = whole.offsetBy(dx = 131.0, dy = 0.0)
+        assertTrue(ScooterMapLook.pillCanBeRead(pastTheEdge, inside = visible, under = listOf(dock)))
+        assertFalse(ScooterMapLook.pillCanBeRead(pastTheEdge, inside = visible, under = listOf(dock), whole = true))
+        assertFalse(ScooterMapLook.pillCanBeRead(whole.offsetBy(dx = 0.0, dy = 249.0), inside = visible, under = listOf(dock), whole = true))
+        assertTrue(ScooterMapLook.pillCanBeRead(whole.offsetBy(dx = 0.0, dy = 248.0), inside = visible, under = listOf(dock), whole = true))
+        // And on another name.
+        assertEquals(
+            setOf("b"),
+            ScooterMapLook.unreadablePills(
+                listOf("a" to whole, "b" to whole.offsetBy(dx = 150.0, dy = 0.0), "c" to whole.offsetBy(dx = 0.0, dy = 52.0)),
+                inside = visible,
+                under = listOf(dock),
+                whole = true,
+            ),
+        )
+    }
+
+    /**
+     * ScooterMapLookTests.testTheTextOnTheMapFollowsLargerTextUpToTwiceItsSize (4f64d247), given the caption's size: 12
+     * at the standard size, smaller below it, about 17 at the iPhone's xxxLarge, 24 and more at AX3 and past it. On
+     * Android it is the 12 sp caption at the phone's font scale, in dp (TextScaleTest).
+     */
+    @Test
+    fun theTextOnTheMapFollowsLargerTextUpToTwiceItsSize() {
+        assertEquals("The standard size", 1.0, ScooterMapLook.textScale(caption = 12.0), 0.0)
+        assertEquals("Smaller text leaves the map as it is", 1.0, ScooterMapLook.textScale(caption = 11.0), 0.0)
+        val larger = ScooterMapLook.textScale(caption = 17.0)
+        assertTrue("$larger", larger > 1 && larger < 2)
+        assertEquals("200% at AX3", 2.0, ScooterMapLook.textScale(caption = 24.0), 0.0)
+        assertEquals("And no more at AX5", 2.0, ScooterMapLook.textScale(caption = 32.0), 0.0)
+    }
+
+    /** The placement half of ScooterMapLookTests.testALargerNameIsTallerAndKeepsClearOfWhatItWouldNowCover (4f64d247). */
+    @Test
+    fun aLargerNameIsTallerAndKeepsClearOfWhatItWouldNowCover() {
+        // A mark just below the right of the dot: clear of a standard name, under a larger one.
+        val mark = ScreenRect(x = 110.0, y = 120.0, width = 40.0, height = 10.0)
+        val short = ScooterPillRequest(id = "a", anchor = ScreenPoint(x = 100.0, y = 100.0), reach = 5.0, width = 80.0, preferred = ScooterPillSide.Right)
+        val tall = short.copy(height = 2 * ScooterMapLook.pillHeight)
+        assertEquals(ScooterPillSide.Right, ScooterMapLook.placePills(listOf(short), avoiding = listOf(mark)).first().side)
+        val placed = ScooterMapLook.placePills(listOf(tall), avoiding = listOf(mark)).first()
+        assertNotEquals(ScooterPillSide.Right, placed.side)
+        assertFalse("${placed.side}", frame(placed, of = tall).insetBy(dx = -3.0, dy = -3.0)!!.intersects(mark))
+    }
+
     @Test
     fun ofTwoNamesOnEachOtherTheFirstStays() {
         val visible = ScreenRect(x = 0.0, y = 100.0, width = 390.0, height = 700.0)
@@ -875,7 +929,7 @@ class ScooterMapLookTest {
             x = of.anchor.x + placement.origin.x,
             y = of.anchor.y + placement.origin.y,
             width = of.width,
-            height = ScooterMapLook.pillHeight,
+            height = of.height,
         )
 
     private fun price(minorUnits: Int): String = RidePriceFormatter.string(minorUnits = minorUnits, currency = "CHF")

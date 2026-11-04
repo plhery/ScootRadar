@@ -65,7 +65,7 @@ class ScooterMarkers(
     animates: () -> Boolean = { ValueAnimator.areAnimatorsEnabled() },
 ) {
     private val projection = MapLibreProjection(map, view)
-    val art = ScooterMarkerArt(view.pixelRatio, MarkerFonts.of(view.context))
+    val art = ScooterMarkerArt(view.pixelRatio, MarkerFonts.of(view.context), mapTextScale(view.context))
     val scene = ScooterMarkerScene(
         art,
         onSelectionChange = controller::selectScooter,
