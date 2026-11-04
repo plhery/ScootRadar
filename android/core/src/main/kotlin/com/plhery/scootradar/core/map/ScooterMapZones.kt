@@ -109,6 +109,18 @@ private fun ScooterMapController.requestZones(area: ScooterZoneArea, after: Dura
     }
 }
 
+/**
+ * A failed answer for the zones stands while the map stays in its area, so each refresh of the scooters, on its own or
+ * asked for, asks for them again: after a load lost to the network they come back with the scooters, instead of
+ * staying unavailable until the map leaves the area. What was drawn stays drawn meanwhile.
+ */
+internal fun ScooterMapController.askAgainForFailedZones() {
+    if (!showsZones.value || zoneTaskArea != null) return
+    val answer = zoneAnswer ?: return
+    if (!answer.failed) return
+    requestZones(answer.area, after = Duration.ZERO, retries = ScooterMapController.zonePendingRetries)
+}
+
 private fun ScooterMapController.cancelZoneRequest() {
     zoneTask?.cancel()
     zoneTask = null

@@ -149,6 +149,30 @@ class ScooterMapZonesTest {
     }
 
     @Test
+    fun aFailedAnswerIsAskedForAgainWithTheScootersSoTheZonesComeBackWithThem() = runTest {
+        val api = ZoneStubAPI()
+        api.setFailure(ScooterAPIError.Offline())
+        val model = makeController(api)
+        model.setShowsZones(true)
+        model.updateViewport(zurich, zoom = 16)
+        val failed = waitUntil { api.zoneAreas.size == 1 && model.zoneState.value == ScooterZoneState.Failed }
+        assertTrue(failed)
+
+        // Still within the area, the failure no longer stands once the network is back.
+        api.setFailure(null)
+        model.retryLoad()
+        val shown = waitUntil { api.zoneAreas.size == 2 && model.zoneState.value == ScooterZoneState.Shown }
+        assertTrue("A refresh asks for the zones again with the scooters", shown)
+        assertEquals(2, model.mapZones.value.filter { it.provider != "city" }.size)
+
+        // A whole answer at hand is not asked for again.
+        model.refresh()
+        advanceTimeBy(400)
+        runCurrent()
+        assertEquals(2, api.zoneAreas.size)
+    }
+
+    @Test
     fun zonesWaitAQuarterSecondAndAPendingAnswerIsAskedForAgainEveryThreeSecondsThreeTimes() = runTest {
         val api = ZoneStubAPI()
         api.pending = true

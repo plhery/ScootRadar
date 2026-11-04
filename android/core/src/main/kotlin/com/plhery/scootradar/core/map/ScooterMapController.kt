@@ -888,6 +888,7 @@ class ScooterMapController(
 
     fun refresh() {
         scheduleFetch(viewport.value.expanded(by = 0.25), zoom = viewportZoom.value, debounce = false)
+        askAgainForFailedZones()
     }
 
     /** "Try again" and "Refresh": a manual refresh, fetched at once. */
