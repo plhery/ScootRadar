@@ -25,7 +25,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Frankfurt?',
       blocks: [
-        'Du zahlst fürs Entsperren und pro Minute. Voi veröffentlicht seinen Frankfurter Standardtarif in offenen Daten, Bolt nennt einen Ab-Preis für ganz Deutschland, und Lime zeigt den Preis in der App.',
+        'Du zahlst fürs Entsperren und pro Minute. Voi nennt seinen Frankfurter Standardtarif, Bolt einen Ab-Preis für ganz Deutschland, und Lime zeigt den Preis in der App.',
         {
           table: {
             caption: 'E-Scooter-Preise in Frankfurt (Standardtarif laut Voi und Bolt, Stand November 2026)',
@@ -174,7 +174,7 @@ const guide: Guide = {
     { title: 'VGF: Mitnahmeverbot für E-Tretroller in U-Bahn und Strassenbahn', url: 'https://www.vgf-ffm.de/de/fahrtinfo/mitnahme-verbot-e-tretroller' },
     { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
     { title: 'Messe Frankfurt: Hausordnung, Stand Juni 2025 (PDF)', url: 'https://eurobike.com/content/dam/messefrankfurt-fairnamic/2026/documents/de/eurobike-2026-hausordnung.pdf' },
-    { title: 'Voi: Tarif für Frankfurt in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/192/netex.xml' },
+    { title: 'Voi: Tarif für Frankfurt (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/192/netex.xml' },
     { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'DB Call a Bike: Preise', url: 'https://www.callabike.de/de/preise' },

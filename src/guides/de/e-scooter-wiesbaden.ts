@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-wiesbaden',
   topic: 'wiesbaden',
-  name: 'E-Scooter Wiesbaden: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Wiesbaden 2026: Anbieter, Regeln, Parkzonen',
-  description: 'E-Scooter Wiesbaden: Bolt, Dott und Voi, wo du fährst und parkst, was Verstösse kosten und was im Fünfeck, im Kurpark und auf dem Weg nach Mainz gilt.',
-  headline: 'E-Scooter Wiesbaden: Anbieter, Parkzonen, Regeln und Verbote',
-  lede: 'E-Scooter in Wiesbaden leihst du bei Bolt, Dott oder Voi, ohne Führerschein. Den Preis und das Mindestalter zeigt die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone und nicht durch den Kurpark. Am Hauptbahnhof und im Historischen Fünfeck beendest du die Fahrt nur auf einer markierten Abstellfläche, sonst meist am Rand des Gehwegs.',
+  name: 'E-Scooter Wiesbaden: Anbieter, Preise, Parken',
+  title: 'E-Scooter Wiesbaden 2026: Anbieter, Preise, Parkzonen',
+  description: 'E-Scooter Wiesbaden: Bolt, Dott und Voi, was eine Fahrt kostet, wo du fährst und parkst und was im Fünfeck, im Kurpark, in Mainz und im ESWE-Bus gilt.',
+  headline: 'E-Scooter Wiesbaden: Anbieter, Preise, Parkzonen und Verbote',
+  lede: 'E-Scooter in Wiesbaden leihst du bei Bolt, Dott oder Voi, ohne Führerschein. Bei Voi kostet eine Fahrt 0,49 € fürs Entsperren und 0,24 € pro Minute, Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Freischaltgebühr (Stand November 2026); bei Dott zeigt dir die App den Preis. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone und nicht durch den Kurpark. Am Hauptbahnhof und im Historischen Fünfeck beendest du die Fahrt nur auf einer markierten Abstellfläche, sonst meist am Rand des Gehwegs.',
   published: '2026-10-24',
   updated: '2026-10-26',
   city: 'de:Wiesbaden',
@@ -16,24 +16,24 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Wiesbaden?',
       blocks: [
-        'In Wiesbaden verleihen laut Stadt «aktuell» drei Anbieter E-Scooter: **Bolt**, **Dott** und **Voi** (undatierte Seite, gelesen am 24. Oktober 2026). Lime steht nicht darauf. Gemietet wird in der App des Anbieters. Das Gesetz erlaubt E-Scooter ab 14; welches Mindestalter der Anbieter verlangt, prüfst du in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Jeder Anbieter braucht eine Sondernutzungserlaubnis der Stadt, die er laut Stadt «quartalsweise» beantragt und die an Auflagen gebunden ist. Dafür zahlt er laut Gebührenverzeichnis der Sondernutzungssatzung (Fassung seit 1. Januar 2024) für die «gewerbliche Nutzung von E-Tretrollern» 7,50 € «pro Quartal und Roller». Eine feste Obergrenze für die Zahl der Scooter nennt die Stadt nicht.',
-        'Die [Karte von Wiesbaden](map:de:Wiesbaden) zeigt Dott, Voi und seit dem 25. Oktober Bolt, mit Standort und Akkustand: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1650 Scooter, gut 1200 von Dott und rund 400 von Voi, am Sonntag kurz vor 14 Uhr rund 400 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen. Die Zahl umfasst Wiesbaden samt Kastel, Kostheim und Amöneburg und kaum Scooter aus Mainz, mit einer Ausnahme: Die Voi- und Bolt-Scooter in Kastel und Kostheim zählt die Karte bei Mainz mit, in der Nacht zum 26. Oktober rund 130. Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
+        'In Wiesbaden verleihen laut Stadt «aktuell» drei Anbieter E-Scooter: **Bolt**, **Dott** und **Voi** (undatierte Seite, gelesen am 24. Oktober 2026). Lime steht nicht darauf. Gemietet wird in der App des Anbieters. Das Gesetz erlaubt E-Scooter ab 14, Bolt und Dott vermieten laut ihren Bedingungen aber erst ab 18; bei Voi zeigt dir die App das Mindestalter. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Jeder Anbieter braucht eine Sondernutzungserlaubnis der Stadt, die er laut Stadt «quartalsweise» beantragt und die an Auflagen gebunden ist. Dafür zahlt er laut Gebührenverzeichnis der Sondernutzungssatzung (Fassung seit 1. Januar 2024) für die «gewerbliche Nutzung von E-Tretrollern» 7,50 € «pro Quartal und Roller».',
+        'Die [Karte von Wiesbaden](map:de:Wiesbaden) zeigt Dott, Voi und seit dem 25. Oktober Bolt, mit Standort und Akkustand: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1650 Scooter, gut 1200 von Dott und rund 400 von Voi, am Sonntag kurz vor 14 Uhr rund 400 von Bolt.',
         'Nicht verwechseln: Die «Wies-e»-Roller von Süwag2GO sind Elektro-Mopeds bis 45 km/h, für die du einen Führerschein der Klasse B oder AM brauchst.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Wiesbaden?',
       blocks: [
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Was Falschparken beim Anbieter kostet, steht in seinen Bedingungen in der App.',
+        'Du zahlst fürs Entsperren und pro Minute. Voi verlangt in Wiesbaden und Mainz denselben Tarif. Bolt wirbt für Deutschland mit «ab 0,15 € pro Minute», einer kleinen Freischaltgebühr und einem Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat; der Minutenpreis hängt laut Bolt vom Standort ab. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Was Falschparken kostet, steht in den deutschen Bedingungen der Anbieter:',
         {
           table: {
-            caption: 'E-Scooter-Anbieter in Wiesbaden: Hotline (Stand 24. Oktober 2026)',
-            head: ['Anbieter', 'Hotline laut Stadt'],
+            caption: 'E-Scooter-Anbieter in Wiesbaden: Preis, Gebühren und Hotline (Stand November 2026)',
+            head: ['Anbieter', 'Preis', 'Falsch geparkt (laut Bedingungen)', 'Hotline laut Stadt (24. Oktober 2026)'],
             rows: [
-              ['Bolt', '+49 30 568 373 989'],
-              ['Dott', '+49 30 466 90 493'],
-              ['Voi', '+49 157 35993270'],
+              ['Voi', '0,49 € fürs Entsperren plus 0,24 € pro Minute, 10 Minuten also 2,89 €', 'in den Bedingungen in der Voi-App', '+49 157 35993270'],
+              ['Bolt', 'ab 0,15 € pro Minute plus Freischaltgebühr (für Deutschland)', '15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026)', '+49 30 568 373 989'],
+              ['Dott', 'in der App', 'bis 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst; 50 € Verwaltungsgebühr, wenn Dott ein Bussgeld für dich zahlt (Bedingungen vom 23. September 2025)', '+49 30 466 90 493'],
             ],
           },
         },
@@ -56,7 +56,6 @@ const guide: Guide = {
             ],
           },
         },
-        'Ein Nachtfahrverbot oder eine Winterpause für Leih-Scooter nennt die Stadt nicht (Stand 24. Oktober 2026).',
       ],
     },
     {
@@ -64,7 +63,7 @@ const guide: Guide = {
       blocks: [
         'Am Hauptbahnhof und im **Historischen Fünfeck**, der Kerninnenstadt, gibst du einen Leih-Scooter laut Stadt «ausschliesslich» auf den farbig markierten Abstellflächen zurück, die sie eingerichtet hat; ausserhalb davon lässt sich die Miete nicht beenden. Das Fünfeck liegt zwischen Rheinstrasse, Schwalbacher Strasse, Röderstrasse, Taunusstrasse und Wilhelmstrasse. Die ersten Flächen entstanden 2023 am Hauptbahnhof, Ende 2024 kamen rund 30 im Fünfeck dazu.',
         'Es wirkt: Die Beschwerden über falsch abgestellte Scooter in den Zonen sind laut Magistrat «nahezu vollständig zurückgegangen» (Antwort auf eine Anfrage der SPD, September 2025).',
-        'Ausserhalb der Zonen parkst du frei, meist auf dem Gehweg, parallel am Rand, sodass niemand behindert wird. Nicht abstellen darfst du laut Stadt:',
+        'Ausserhalb der Zonen parkst du frei, meist auf dem Gehweg, parallel am Rand, sodass niemand behindert wird; Bolt verlangt laut seinen Bedingungen (gültig ab 1. Dezember 2026), dass auf dem Gehweg mindestens 1,6 m für Fussgänger frei bleiben. Nicht abstellen darfst du laut Stadt:',
         {
           list: [
             'auf Radwegen, an Kreuzungen und in Ein- und Ausfahrten;',
@@ -91,7 +90,7 @@ const guide: Guide = {
             '**Gehweg oder Fussgängerzone:** 15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden; ab 1. März 2027 25 €, bis 40 €.',
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €. **Ohne Versicherungsplakette:** 40 €.',
             '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** 100 € und ein Punkt.',
-            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille.',
+            '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille. Bolt verbietet laut seinen Bedingungen (gültig ab 1. Dezember 2026) jeden Alkohol.',
           ],
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
@@ -101,21 +100,21 @@ const guide: Guide = {
       heading: 'Über den Rhein: Kastel, Kostheim und Mainz',
       blocks: [
         'Mainz-Kastel, Mainz-Kostheim und Mainz-Amöneburg gehören trotz ihres Namens zu Wiesbaden; dort gelten die Wiesbadener Regeln. Jenseits der Theodor-Heuss-Brücke beginnt Mainz, und dort gelten andere.',
-        'Mainz begrenzt Leih-Scooter laut seiner Richtlinie vom 2. Juli 2025 auf höchstens 1200; seit dem 1. März 2026 verleihen dort drei Anbieter, mit Genehmigungen für 24 Monate. In der Innenstadt, also Alt- und Neustadt, dürfen Leih-Scooter nur auf 25 Abstellflächen stehen, zusammen höchstens 300; in Teilen der Altstadt ist das Abstellen ganz verboten. Eine Genehmigung haben laut Stadt Mainz Bolt, Lime und Voi (20. März 2026); Dott hat keine.',
-        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, zeigt die App des Anbieters. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime (am Sonntagmittag rund 290 Scooter) und Bolt, dessen Scooter in Kastel und Kostheim sie ebenfalls bei Mainz zählt.',
+        'Mainz begrenzt Leih-Scooter laut seiner Richtlinie vom 2. Juli 2025 auf höchstens 1200; seit dem 1. März 2026 verleihen dort drei Anbieter, mit Genehmigungen für 24 Monate. In der Innenstadt, also Alt- und Neustadt, dürfen Leih-Scooter nur auf 25 Abstellflächen stehen, zusammen höchstens 300; in Teilen der Altstadt ist das Abstellen ganz verboten. Eine Genehmigung haben laut Stadt Mainz Bolt, Lime und Voi (20. März 2026); Dott führt Mainz auf seiner Website, hat aber keine.',
+        'Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt; Dott kann den Scooter dann abschalten. Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, zeigt die App des Anbieters. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime (am Sonntagmittag rund 290 Scooter) und Bolt, dessen Scooter in Kastel und Kostheim sie ebenfalls bei Mainz zählt.',
       ],
     },
     {
       heading: 'E-Scooter im Bus und Leihräder: ESWE, RMV, nextbike, meinRad',
       blocks: [
-        'Wiesbaden gehört zum RMV: Ob und wie du einen eigenen E-Scooter in Bus, S-Bahn und Regionalzug mitnehmen darfst, regeln seine Beförderungsbedingungen; frag vor der Fahrt nach. In ESWE-Bussen dürfen laut den Beförderungsbedingungen des Verkehrsverbunds Mainz-Wiesbaden (ab 1. Januar 2026) höchstens vier Fahrräder mit; im Zweifel entscheidet das Fahrpersonal.',
-        'Ein Verbot wie bei der VGF in Frankfurt, die E-Scooter seit Oktober 2024 aus U-Bahn und Strassenbahn verbannt, hat ESWE nicht veröffentlicht (Stand 24. Oktober 2026). Einen Leih-Scooter regelt ESWE nicht eigens: Beende die Fahrt vor der Haltestelle, aber nicht unmittelbar an ihr, und miete am Ziel neu. Wer nach Frankfurt pendelt: [E-Scooter in Frankfurt](guide:frankfurt).',
+        'Wiesbaden gehört zum RMV, und dort gilt: «E-Scooter werden wie Fahrräder behandelt.» In Bus, S-Bahn und Regionalzug fahren sie kostenlos mit, ein Anspruch besteht aber nicht; Fahrgäste mit Rollstuhl oder Kinderwagen haben Vorrang, und bei wenig Platz entscheidet das Personal. Zusammengeklappte Tretroller gelten als Gepäck und dürfen jederzeit mit. Den Akku darfst du unterwegs weder herausnehmen noch laden. In ESWE-Bussen dürfen laut den Beförderungsbedingungen des Verkehrsverbunds Mainz-Wiesbaden (ab 1. Januar 2026) höchstens vier Fahrräder mit; im Zweifel entscheidet das Fahrpersonal.',
+        'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor der Haltestelle, aber nicht unmittelbar an ihr, und miete am Ziel neu. Wer nach Frankfurt pendelt: [E-Scooter in Frankfurt](guide:frankfurt).',
         'Lieber Fahrrad? Die Stadt nennt mehrere Leihsysteme:',
         {
           list: [
             '**nextbike:** rund 200 Räder; Studierende der Hochschule RheinMain fahren pro Ausleihe bis zu 60 Minuten gratis.',
             '**meinRad** aus Mainz, auch in Kastel, Kostheim und Amöneburg: 1,20 € pro 30 Minuten, höchstens 9 € in 24 Stunden (Stand 1. April 2026).',
-            '**DB Call a Bike** am Hauptbahnhof.',
+            '**DB Call a Bike** am Hauptbahnhof: Das Abo Member kostet 10 € im Jahr, Member Plus 8 € im Monat mit 30 Freiminuten pro Fahrt (Stand November 2026).',
           ],
         },
       ],
@@ -125,7 +124,7 @@ const guide: Guide = {
       blocks: [
         '**Kurhaus und Kurpark:** Hinter dem Kurhaus zieht sich der Kurpark über 5 km bis nach Sonnenberg. Den Scooter stellst du ausserhalb ab und gehst zu Fuss weiter. Der Park ist von Mai bis September von 5 bis 23 Uhr offen, von Oktober bis April von 5 bis 20 Uhr.',
         '**Neroberg:** Die Nerobergbahn fährt seit 1888 mit Wasserballast hinauf; Fahrräder nimmt sie aus Sicherheitsgründen nicht mit, RMV-Tickets gelten dort nicht. Oben sind die Wege laut ESWE durchweg mit Kopfsteinpflaster belegt, für die kleinen Räder eines Scooters keine gute Strecke.',
-        '**Theatrium:** Beim Wilhelmstrassenfest, das nächste Mal vom 11. bis 13. Juni 2027, wird die Wilhelmstrasse zur kilometerlangen Festmeile. Eine eigene Scooter-Regel nennt die Stadt dafür nicht; durch die Menge schiebst du.',
+        '**Theatrium:** Beim Wilhelmstrassenfest, das nächste Mal vom 11. bis 13. Juni 2027, wird die Wilhelmstrasse zur kilometerlangen Festmeile. Durch die Menge schiebst du.',
         '**Hauptbahnhof:** Die Fahrt endet nur auf einer markierten Fläche. Freie Scooter zeigt die [Live-Karte von Wiesbaden](map:de:Wiesbaden).',
       ],
     },
@@ -133,11 +132,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Wiesbaden?',
-      answer: 'Bolt, Dott und Voi: Diese drei Anbieter nennt die Stadt (Stand Oktober 2026). Du mietest in ihrer App, ohne Führerschein; das Mindestalter zeigt die App. Alle drei zeigt auch unsere Live-Karte.',
+      answer: 'Bolt, Dott und Voi: Diese drei Anbieter nennt die Stadt (Stand Oktober 2026). Du mietest in ihrer App, ohne Führerschein; Bolt und Dott vermieten laut ihren Bedingungen erst ab 18. Alle drei zeigt auch unsere Live-Karte.',
     },
     {
       question: 'Was kostet ein E-Scooter in Wiesbaden?',
-      answer: 'Den Preis zeigt die App des Anbieters vor dem Entsperren; dieser Preis ist verbindlich.',
+      answer: 'Bei Voi 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten also 2,89 €; Bolt wirbt deutschlandweit mit ab 0,15 € pro Minute plus Freischaltgebühr, und Dott zeigt den Preis in der App (Stand November 2026). Verbindlich ist, was die App vor dem Entsperren anzeigt.',
     },
     {
       question: 'Wo parke ich einen E-Scooter in der Wiesbadener Innenstadt?',
@@ -153,11 +152,11 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem E-Scooter nach Mainz fahren?',
-      answer: 'Ob Mainz zum Gebiet deines Anbieters gehört und ob die Fahrt dort enden darf, zeigt seine App. In der Mainzer Innenstadt geht das seit März 2026 nur an einer von 25 Abstellflächen. Kastel und Kostheim gehören ohnehin zu Wiesbaden.',
+      answer: 'Bolt und Dott verbieten, das Gebiet zu verlassen, das ihre App zeigt; ob Mainz dazugehört und ob die Fahrt dort enden darf, siehst du dort. In der Mainzer Innenstadt geht das seit März 2026 nur an einer von 25 Abstellflächen. Kastel und Kostheim gehören ohnehin zu Wiesbaden.',
     },
     {
       question: 'Darf ich meinen E-Scooter im ESWE-Bus mitnehmen?',
-      answer: 'Ein Verbot hat ESWE nicht veröffentlicht (Stand 24. Oktober 2026). Ob und wie dein Scooter mitfährt, regeln die Beförderungsbedingungen des RMV; frag vor der Fahrt nach.',
+      answer: 'Ja, wenn Platz ist: Der RMV behandelt E-Scooter wie Fahrräder und nimmt sie kostenlos mit, zusammengeklappte Tretroller gelten als Gepäck. Einen Anspruch hast du aber nicht, Rollstühle und Kinderwagen haben Vorrang, und im Zweifel entscheidet das Fahrpersonal.',
     },
   ],
   sources: [
@@ -169,9 +168,16 @@ const guide: Guide = {
     { title: 'Wiesbadenaktuell: Abstellchaos passé dank Zonen (27. September 2025)', url: 'https://wiesbadenaktuell.de/2025/09/27/e-scooter-in-wiesbaden-abstellchaos-passe-dank-smarter-zonen/' },
     { title: 'TriWiCon: Kurparkordnung, Stand Juni 2021 (PDF)', url: 'https://kurhaus.wiesbaden.de/downloads/kurpark/20210618_Kurparkordnung.pdf' },
     { title: 'Stadt Mainz: Neuordnung der Parkregelung für E-Tretroller (27. Februar 2026)', url: 'https://www.mainz.de/pressemeldungen/Mainz/2026/februar/neuordnung-der-parkregelegung-fuer-e-tretroller' },
+    { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
     { title: 'ESWE Verkehr: Besondere Beförderungsbedingungen VMW (PDF)', url: 'https://www.eswe-verkehr.de/fileadmin/Rechtliches/Besondere_Befoerderungsbedingungen_VMW.pdf' },
     { title: 'ESWE Verkehr: Häufige Fragen', url: 'https://www.eswe-verkehr.de/faq.html' },
+    { title: 'Voi: Tarif und Zonen für Mainz und Wiesbaden (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/305/netex.xml' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge, gültig ab 1. Dezember 2026', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Stadt Wiesbaden: Bikesharing', url: 'https://www.wiesbaden.de/leben-wohnen/mobilitaet/sharing-dienst/bikesharing' },
+    { title: 'DB Call a Bike: Preise', url: 'https://www.callabike.de/de/preise' },
   ],
 };
 
