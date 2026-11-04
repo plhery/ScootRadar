@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter prices in Switzerland 2026: what a ride costs',
   description: 'E-scooter prices in Switzerland: unlock fees and per-minute rates by operator and city, what 5, 10 and 20 minutes cost, passes and the fees that surprise you.',
   headline: 'E-scooter prices in Switzerland: what a shared e-scooter costs, city by city',
-  lede: 'E-scooter prices in Switzerland are almost always an unlock fee plus a rate per minute: CHF 1.00 to unlock, then CHF 0.39 to CHF 0.48 a minute at the rates Bolt, Hopp and Voi published on 12 October 2026. Ten minutes therefore cost CHF 4.90 to CHF 5.80. PubliBike is cheaper in Zürich and Biel, at CHF 1 plus CHF 0.20 a minute on its price page (October 2026). Dott charges CHF 1.00 to CHF 1.50 to unlock, depending on the town, and every operator’s app shows the final price before you unlock.',
+  lede: 'E-scooter prices in Switzerland are almost always an unlock fee plus a rate per minute: CHF 1.00 to unlock, then CHF 0.39 to CHF 0.48 a minute at Bolt’s, Hopp’s and Voi’s rates as of November 2026. Ten minutes therefore cost CHF 4.90 to CHF 5.80. PubliBike is cheaper in Zürich and Biel, at CHF 1 plus CHF 0.20 a minute on its price page (October 2026). Dott charges CHF 1.00 to CHF 1.50 to unlock, depending on the town, and every operator’s app shows the final price before you unlock.',
   published: '2026-10-12',
   updated: '2026-10-23',
   sections: [
@@ -16,7 +16,7 @@ const guide: Guide = {
       heading: 'How much does an e-scooter cost in Switzerland?',
       blocks: [
         'Almost every shared e-scooter in Switzerland is priced the same way: a fee to unlock it, then a rate for each minute it stays unlocked, whether you’re riding, waiting at a red light or looking for a place to park.',
-        'Rates aren’t national. The same operator charges one rate in Basel and another in Bern, and Lime says its prices can also change with the time of day. Lime rounds each ride up to the next full minute and keeps charging until the app confirms the ride has ended, not when you step off.',
+        'Rates aren’t national. The same operator charges one rate in Basel and another in Bern.',
       ],
     },
     {
@@ -24,20 +24,20 @@ const guide: Guide = {
       blocks: [
         {
           table: {
-            caption: 'Published rates on 12 October 2026 (Voi: as of November 2026; Dott: 23 October; Lime outside Basel: 15 October): unlock fee and price per minute',
+            caption: 'Unlock fee and price per minute, as of November 2026 (Dott: 23 October 2026)',
             head: ['Area', 'Operator', 'Unlock', 'Per minute'],
             rows: [
               ['Zürich area', 'Voi', 'CHF 1.00', 'CHF 0.42 (Illnau-Effretikon: CHF 0.39)'],
               ['Zürich area', 'Bolt', 'CHF 1.00', 'CHF 0.42 (a few at CHF 0.48)'],
               ['Zürich area', 'Hopp', 'CHF 1.00', 'CHF 0.40 (Kloten: CHF 0.42)'],
               ['Zürich area', 'Dott', 'CHF 1.00', 'CHF 0.41'],
-              ['Zürich area', 'Lime', 'CHF 1.00', 'CHF 0.40 to CHF 0.49, changing through the day (Uster: CHF 0.49)'],
+              ['Zürich area', 'Lime', 'CHF 1.00 plus VAT', 'CHF 0.42 plus VAT (Uster: CHF 0.49)'],
               ['Winterthur and Frauenfeld', 'Voi', 'CHF 1.00', 'CHF 0.42'],
               ['Bern', 'Voi', 'CHF 1.00', 'CHF 0.42'],
               ['Basel', 'Voi', 'CHF 1.00', 'CHF 0.39'],
               ['Basel', 'Bolt', 'CHF 1.00', 'CHF 0.45'],
               ['Basel', 'Hopp', 'CHF 1.00', 'CHF 0.45'],
-              ['Basel', 'Lime', 'CHF 1.00', 'CHF 0.46'],
+              ['Basel', 'Lime', 'CHF 1.00 plus VAT', 'CHF 0.46 plus VAT'],
               ['Basel', 'Dott', 'CHF 1.00', 'CHF 0.39'],
               ['Basel', 'Bird', 'Shown in the app', 'Shown in the app'],
               ['Biel/Bienne', 'Voi', 'CHF 1.00', 'CHF 0.39'],
@@ -51,7 +51,7 @@ const guide: Guide = {
             ],
           },
         },
-        'So Voi charges CHF 0.39 a minute in Basel and Biel but CHF 0.42 in Bern, Bolt CHF 0.42, 0.45 or 0.48 depending on the area, and Dott’s unlock fee runs from CHF 1.00 in Basel and Zürich to CHF 1.50 in Romanshorn. Even within one area a few scooters carry another rate, and Lime’s change through the day: at 6:30 on 15 October every Lime scooter in Zürich charged CHF 0.42 a minute, at 8:20 a third charged CHF 0.49 and a quarter CHF 0.40. The price in the app is the one that counts.',
+        'So Voi charges CHF 0.39 a minute in Basel and Biel but CHF 0.42 in Bern, Bolt CHF 0.42, 0.45 or 0.48 depending on the area, and Dott’s unlock fee runs from CHF 1.00 in Basel and Zürich to CHF 1.50 in Romanshorn. Even within one area a few scooters carry another rate, so the price in the app is the one that counts.',
         'In Schaffhausen, Voi charges no unlock fee (as of November 2026), so ten minutes cost CHF 3.90 there. The Zeus scooters the map shows near Schaffhausen stand across the border in Singen, Germany, and charge in euros.',
         'PubliBike’s standard tariff (B-Quick National) is CHF 1 plus CHF 0.20 a minute for its e-scooters in Zürich and Biel/Bienne, as of October 2026. In Ticino you can’t rent them on that tariff: you need PubliBike’s B-Fit Local subscription for Ticino (CHF 69 a year), and then every 15 minutes cost CHF 3.',
       ],
@@ -62,7 +62,7 @@ const guide: Guide = {
         'Add the unlock fee to the minutes times the rate: CHF 1 + 10 × 0.42 = CHF 5.20 for ten minutes on Voi in Bern. The table counts whole minutes and adds nothing for zones or other fees.',
         {
           table: {
-            caption: 'What a ride costs at the rates published on 12 October 2026 (Voi: as of November 2026; Dott: 23 October; Lime outside Basel: 15 October; PubliBike: price page, October 2026)',
+            caption: 'What a ride costs at the rates as of November 2026 (Dott: 23 October 2026; PubliBike: price page, October 2026)',
             head: ['Rate (where)', '5 minutes', '10 minutes', '20 minutes'],
             rows: [
               ['PubliBike, CHF 1 + 0.20 (Zürich, Biel)', 'CHF 2.00', 'CHF 3.00', 'CHF 5.00'],
@@ -71,15 +71,13 @@ const guide: Guide = {
               ['Dott, CHF 1 + 0.41 (Zürich)', 'CHF 3.05', 'CHF 5.10', 'CHF 9.20'],
               ['Voi or Bolt, CHF 1 + 0.42 (Zürich; Voi also in Winterthur, Frauenfeld and Bern)', 'CHF 3.10', 'CHF 5.20', 'CHF 9.40'],
               ['Bolt or Hopp, CHF 1 + 0.45 (Basel)', 'CHF 3.25', 'CHF 5.50', 'CHF 10.00'],
-              ['Lime, CHF 1 + 0.46 (Basel)', 'CHF 3.30', 'CHF 5.60', 'CHF 10.20'],
               ['Dott, CHF 1.20 + 0.45 (St. Gallen, Rorschach, Wil and more)', 'CHF 3.45', 'CHF 5.70', 'CHF 10.20'],
               ['Bolt, CHF 1 + 0.48 (Wädenswil, Richterswil)', 'CHF 3.40', 'CHF 5.80', 'CHF 10.60'],
-              ['Lime, CHF 1 + 0.49 (Uster; Zürich at times)', 'CHF 3.45', 'CHF 5.90', 'CHF 10.80'],
               ['Dott, CHF 1.50 + 0.45 (Romanshorn)', 'CHF 3.75', 'CHF 6.00', 'CHF 10.50'],
             ],
           },
         },
-        'The average rental ride in Zürich lasts about 10 minutes, according to the city’s head of traffic safety. On short rides the unlock fee weighs most: it’s CHF 1 of the CHF 3.10 for five minutes on Voi in Bern. On long rides the rate decides: 20 minutes on Lime at CHF 0.49, its top rate around Zürich, cost CHF 2.00 more than on Voi in Basel.',
+        'The average rental ride in Zürich lasts about 10 minutes, according to the city’s head of traffic safety. On short rides the unlock fee weighs most: it’s CHF 1 of the CHF 3.10 for five minutes on Voi in Bern. On long rides the rate decides: 20 minutes on Bolt at CHF 0.48 in Wädenswil cost CHF 1.80 more than on Voi in Basel.',
       ],
     },
     {
@@ -88,7 +86,6 @@ const guide: Guide = {
         'If you ride often, unlock fees add up first: two rides a day on 20 working days is CHF 40 a month in unlocks alone.',
         {
           list: [
-            '**Lime:** LimePass minute bundles give free unlocks and a lower rate per minute. They last up to 30 days and are valid only in the country where you bought them.',
             '**Dott:** its Swiss terms provide for subscriptions, paid by credit card only.',
             '**PubliBike:** the B-Fit Local subscription (CHF 69 a year) doesn’t lower the e-scooter rate in Zürich or Biel, and the CHF 29 day pass covers bikes and e-bikes only.',
           ],
@@ -109,7 +106,6 @@ const guide: Guide = {
             head: ['Operator', 'Parked badly or outside the area', 'A fine sent to the operator'],
             rows: [
               ['Bolt', 'Pick-up fee up to CHF 100', 'Passed on, plus up to CHF 30'],
-              ['Lime', 'A penalty; pick-up and handling up to CHF 125 each', 'Passed on, plus a “reasonable” fee'],
               ['Dott', 'Up to EUR 300 to recover it if you ignore parking or locking instructions; a fee for leaving the area', 'Passed on, plus EUR 50'],
               ['Bird', 'Relocation costs passed on', 'Passed on'],
               ['PubliBike', 'CHF 30, then CHF 50 from the second time', '–'],
@@ -117,7 +113,7 @@ const guide: Guide = {
           },
         },
         'The police can also fine you directly. Leaving a scooter on the pavement with less than 1.50 m free for pedestrians, or where parking is banned, costs CHF 20; riding on the pavement costs CHF 40. The other fines are in [the Swiss e-scooter rules](guide:swiss-rules).',
-        'Expect a hold on your card too: Bolt and Bird may place an authorisation hold. Lime caps a rental at CHF 195 per 24 hours, and a PubliBike rental lasts 24 hours at most.',
+        'Expect a hold on your card too: Bolt and Bird may place an authorisation hold. A PubliBike rental lasts 24 hours at most.',
       ],
     },
     {
@@ -125,7 +121,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Compare before you walk.** The nearest scooter saves you walking, not money. In Basel, ten minutes cost CHF 4.90 on Voi and CHF 5.50 on Bolt at the rates published on 12 October 2026. The [map of Basel](map:ch:basel) shows both, each with its estimate.',
+            '**Compare before you walk.** The nearest scooter saves you walking, not money. In Basel, ten minutes cost CHF 4.90 on Voi and CHF 5.50 on Bolt (as of November 2026). The [map of Basel](map:ch:basel) shows both, each with its estimate.',
             '**Look for PubliBike in Zürich and Biel.** Ten minutes on its e-scooters cost CHF 3.00, against CHF 5.20 at CHF 0.42 a minute. On the [map of Zürich](map:ch:zurich) they stand among the others.',
             '**Pick a charged scooter.** If the battery runs out halfway, the next scooter costs a second unlock.',
             '**Know where you’ll park.** Stopping just outside a no-parking zone is cheaper than circling it with the meter running.',
@@ -145,27 +141,28 @@ const guide: Guide = {
   faq: [
     {
       question: 'Is there a monthly pass for e-scooters in Switzerland?',
-      answer: 'Dott’s Swiss terms provide for subscriptions, and Lime describes minute bundles with free unlocks that last up to 30 days on its website. The app is where you see what’s on offer. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate in Zürich or Biel.',
+      answer: 'Dott’s Swiss terms provide for subscriptions; the app is where you see what’s on offer. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate in Zürich or Biel.',
     },
     {
       question: 'Why did my ride cost more than the estimate?',
-      answer: 'Usually because of time and place. Lime rounds each ride up to the next full minute and charges until the app confirms the end, rates can change by zone or time of day, and Lime says some places add a city permit fee or local costs. Minutes spent looking for a spot outside a no-parking zone count too.',
+      answer: 'Usually because of time and place: rates can vary by zone, and minutes spent looking for a spot outside a no-parking zone count too.',
     },
     {
       question: 'Is insurance included in the price of a rental e-scooter?',
-      answer: 'Lime, Bolt and Dott include third-party liability insurance in the price, but it comes second: your own private liability insurance pays first. PubliBike includes none and leaves accident and liability cover to you. Passengers are never covered, and every operator allows one rider only.',
+      answer: 'Bolt and Dott include third-party liability insurance in the price, but it comes second: your own private liability insurance pays first. PubliBike includes none and leaves accident and liability cover to you. Passengers are never covered, and every operator allows one rider only.',
     },
     {
       question: 'Can I pay for an e-scooter with TWINT?',
-      answer: 'Dott names TWINT in its general help as a method you may see depending on where you are. They all take credit and debit cards, and Lime also lists Apple Pay, Google Pay, PayPal and Klarna in selected places. The app shows what works when you add a payment method.',
+      answer: 'Dott names TWINT in its general help as a method you may see depending on where you are. They all take credit and debit cards. The app shows what works when you add a payment method.',
     },
   ],
   sources: [
     { title: 'PubliBike: Prices and subscriptions (Preise & Abos)', url: 'https://www.publibike.ch/de/abos' },
-    { title: 'Lime Help Center: Ride costs and rates', url: 'https://help.li.me/hc/en-us/articles/115004914208' },
-    { title: 'Lime Help Center: What is LimePass?', url: 'https://help.li.me/hc/en-us/articles/21280766615963-What-is-LimePass' },
-    { title: 'Lime: User agreement for Switzerland', url: 'https://www.li.me/de-ch/user-agreement' },
     { title: 'MobiData BW: Voi Switzerland’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: Bolt’s and Lime’s Swiss rates and Zeus’s in Singen (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
+    { title: 'Hopp: rates in Zürich (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-zurich/gbfs.json' },
+    { title: 'Hopp: rates in Kloten (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-kloten/gbfs.json' },
+    { title: 'Hopp: rates in Basel (GBFS)', url: 'https://api.hopp.bike/gbfs/ch-basel/gbfs.json' },
     { title: 'Bolt: Terms for e-vehicles in Switzerland', url: 'https://bolt.eu/de-ch/legal/micromobility/terms-for-e-vehicles-pdf/' },
     { title: 'Dott: Terms and conditions for Switzerland', url: 'https://ridedott.com/terms-and-conditions/switzerland/' },
     { title: 'City of Zürich: report on shared e-scooters and their zones (GR No. 2025/210)', url: 'https://www.gemeinderat-zuerich.ch/dokumente/9c8a7ffaed6e4f3ca6234611a78f2946-332' },

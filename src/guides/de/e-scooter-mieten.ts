@@ -18,7 +18,7 @@ const guide: Guide = {
         'Jeder Anbieter hat seine eigene App, und du brauchst ein Konto bei dem, dessen E-Scooter oder E-Trottinett du fahren willst. Die Schritte sind fast überall gleich:',
         {
           steps: [
-            '**App laden und registrieren**, mit Handynummer und SMS-Code oder mit E-Mail; bei Lime auch mit einem Apple- oder Google-Konto.',
+            '**App laden und registrieren**, mit Handynummer und SMS-Code oder mit E-Mail.',
             '**Zahlungsart hinterlegen**, meist eine Karte, und einen Ausweis scannen, wenn die App danach fragt: In manchen Städten musst du dein Alter so bestätigen.',
             '**Preis prüfen:** Tippe in der App auf den Scooter, um Entsperrgebühr und Minutenpreis zu sehen.',
             '**QR-Code am Lenker scannen** oder die Nummer darunter eintippen.',
@@ -40,7 +40,6 @@ const guide: Guide = {
             caption: 'Was die Anbieter in der Schweiz und in Deutschland verlangen, Stand Oktober 2026',
             head: ['Anbieter', 'Alter und Ausweis', 'Zahlungsarten'],
             rows: [
-              ['Lime', '18; in manchen Städten Ausweis-Scan', 'Kredit-, Debit- und Prepaid-Karte; an ausgewählten Orten Apple Pay, Google Pay, PayPal, Klarna'],
               ['Bolt', '18; kann ein Foto von Führerschein oder Ausweis verlangen', 'Visa, Mastercard, American Express nur in Euro-Ländern; in Deutschland auch PayPal und Klarna'],
               ['Dott', '18; Ausweis nur auf Anfrage', 'Karte, PayPal, Apple Pay, Revolut Pay; je nach Ort weitere, darunter TWINT'],
               ['Bird', '18; Ausweis auf Anfrage', 'Karte; in manchen Städten Apple Pay, Google Pay, PayPal'],
@@ -56,10 +55,10 @@ const guide: Guide = {
     {
       heading: 'E-Scooter mieten: Was kostet eine Fahrt?',
       blocks: [
-        'Du zahlst fürs Entsperren und für jede Minute, in der der Scooter entsperrt ist, ob er fährt oder steht. Lime und Dott runden auf die nächste volle Minute auf, und die Tarife wechseln von Stadt zu Stadt.',
+        'Du zahlst fürs Entsperren und für jede Minute, in der der Scooter entsperrt ist, ob er fährt oder steht. Dott rundet auf die nächste volle Minute auf, und die Tarife wechseln von Stadt zu Stadt.',
         {
           table: {
-            caption: 'Veröffentlichte Tarife vom 12. Oktober 2026 und was eine Fahrt damit kostet (Voi: Stand November 2026; PubliBike: Preisliste, Oktober 2026)',
+            caption: 'Tarife, Stand November 2026, und was eine Fahrt damit kostet (PubliBike: Preisliste, Oktober 2026)',
             head: ['Anbieter und Ort', 'Tarif', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi, Bern', 'CHF 1.– + 42 Rp./Min.', 'CHF 5.20', 'CHF 9.40'],
@@ -80,9 +79,9 @@ const guide: Guide = {
         'Wer oft fährt, zahlt die Entsperrgebühr jedes Mal neu. Dagegen helfen Pässe; was es in deiner Stadt gibt und zu welchem Preis, zeigt die App:',
         {
           list: [
-            '**Minutenpakete:** LimePass mit Gratis-Entsperrungen, höchstens 30 Tage gültig; Dott in manchen Städten.',
+            '**Minutenpakete:** bei Dott in manchen Städten.',
             '**Tagespässe** für 24 Stunden bei Dott.',
-            '**Monatsabos:** LimePrime mit Festpreis für Fahrten bis 20 Minuten und Bolt-Pässe für unbegrenzte Entsperrungen, laut deutscher Website «ab 0,99 €» im Monat.',
+            '**Monatsabos:** Bolt-Pässe für unbegrenzte Entsperrungen, laut deutscher Website «ab 0,99 €» im Monat.',
           ],
         },
         '**Der blockierte Betrag:** Zu Beginn einer Fahrt blockiert die App einen kleinen Betrag auf deiner Karte, bei Dott CHF 3.– in der Schweiz und 2,50 € in Deutschland. Nach der Fahrt wird er freigegeben, deine Bank zeigt das aber womöglich erst Tage später.',
@@ -94,13 +93,11 @@ const guide: Guide = {
         'Reservieren ist teils gratis, Pausieren fast nie: Die Minuten laufen weiter.',
         {
           list: [
-            '**Lime:** 10 Minuten gratis reservieren, mit LimePrime oder LimePass 30; bis 15 Minuten pausieren, kostenpflichtig.',
             '**Dott:** 10 Minuten gratis reservieren, laut Dott (Mai 2025) in über 400 Städten; bis 30 Minuten pausieren, zum normalen Minutenpreis.',
             '**Bird:** bis 30 Minuten reservieren und bis 75 Minuten sperren, beides pro Minute bezahlt.',
             '**Bolt:** Reservieren geht, Dauer und Preis zeigt die App; pausieren nur auf blauen Abstellplätzen, pro Minute bezahlt.',
           ],
         },
-        'Geh nie weg, ohne zu pausieren oder zu beenden: Wird der Scooter gestohlen, kannst du laut Lime für die zusätzliche Zeit haften.',
       ],
     },
     {
@@ -119,7 +116,6 @@ const guide: Guide = {
             rows: [
               ['Bolt', 'Deutschland: 15 € (Bedingungen seit 2023, auch ab 1. Dezember 2026)', 'Abholen ausserhalb des Gebiets: bis CHF 100.– oder 100 €'],
               ['Dott', 'bis 300 € laut Hilfe-Seite', 'Weitergeleitetes Bussgeld: plus 50 € Bearbeitung'],
-              ['Lime', 'Strafgebühr', 'Schweiz: Abholung und Bearbeitung je bis CHF 125.–'],
             ],
           },
         },
@@ -138,8 +134,7 @@ const guide: Guide = {
             'Gib vor Ort keine Schuld zu, rät Dott.',
           ],
         },
-        '**Versicherung:** Eine Haftpflicht ist im Mietpreis inbegriffen, mit Grenzen. In der Schweiz zahlt sie bei Lime und Bolt erst nach deiner eigenen Privathaftpflicht, und PubliBike versichert gar nichts. In Deutschland trägt der Anbieter die Versicherungsplakette, Lime und Bolt legen eine Unfallversicherung dazu. Wer zu zweit fährt, verliert bei Dott den Versicherungsschutz, und Kopfverletzungen ohne Helm deckt Dott nicht.',
-        'Schäden am Scooter, die du verursachst, zahlst du selbst, bei Lime in der Schweiz bis CHF 1540.–.',
+        '**Versicherung:** Eine Haftpflicht ist im Mietpreis inbegriffen, mit Grenzen. In der Schweiz zahlt sie bei Bolt erst nach deiner eigenen Privathaftpflicht, und PubliBike versichert gar nichts. In Deutschland trägt der Anbieter die Versicherungsplakette, Bolt legt eine Unfallversicherung dazu. Wer zu zweit fährt, verliert bei Dott den Versicherungsschutz, und Kopfverletzungen ohne Helm deckt Dott nicht.',
       ],
     },
     {
@@ -148,7 +143,7 @@ const guide: Guide = {
         'Dein Konto reist mit, deine Pässe und dein Guthaben meist nicht:',
         {
           list: [
-            '**Pässe gelten in einem Land:** LimePass, LimePrime und die Pässe von Dott nur im Land, in dem du sie gekauft hast, ein Bolt-Pass nur in seiner Stadt.',
+            '**Pässe gelten in einem Land:** die Pässe von Dott nur im Land, in dem du sie gekauft hast, ein Bolt-Pass nur in seiner Stadt.',
             '**Guthaben gilt in einer Währung:** Bird, Dott und Bolt führen es pro Währung getrennt. Mit Franken-Guthaben zahlst du keine Fahrt in Euro.',
           ],
         },
@@ -185,7 +180,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Kann man einen E-Scooter ohne Kreditkarte mieten?',
-      answer: 'Meist ja. Die meisten Anbieter nehmen auch Debitkarten, Lime zudem Prepaid-Karten, und Lime, Dott, Bird und Zeus bieten PayPal an, Lime und Bird nur an ausgewählten Orten. Bolt nimmt PayPal nur in Deutschland.',
+      answer: 'Meist ja. Die meisten Anbieter nehmen auch Debitkarten, und Dott, Bird und Zeus bieten PayPal an, Bird nur an ausgewählten Orten. Bolt nimmt PayPal nur in Deutschland.',
     },
     {
       question: 'Ab welchem Alter kann man einen E-Scooter ausleihen?',
@@ -197,7 +192,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mehrere E-Scooter mit einem Konto mieten?',
-      answer: 'Ja, mit einer Gruppenfahrt: bei Lime bis zu fünf Scooter, bei Dott meist drei, bei Bird bis zu vier zusätzliche. Du zahlst für alle und trägst die Verantwortung, und alle müssen mindestens 18 sein.',
+      answer: 'Ja, mit einer Gruppenfahrt: bei Dott meist drei Scooter, bei Bird bis zu vier zusätzliche. Du zahlst für alle und trägst die Verantwortung, und alle müssen mindestens 18 sein.',
     },
     {
       question: 'Die Fahrt lässt sich nicht beenden oder das Handy ist leer: Was tun?',
@@ -205,8 +200,9 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Lime Help Center: Fahrtkosten und Tarife (englisch)', url: 'https://help.li.me/hc/en-us/articles/115004914208' },
     { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'MobiData BW: Tarif von Bolt in Basel (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_basel/gbfs' },
+    { title: 'MobiData BW: Tarif von Bolt in Reutlingen und Tübingen (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_reutlingen_tuebingen/gbfs' },
     { title: 'Voi: Tarif und Zonen für Stuttgart (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/175/netex.xml' },
     { title: 'Voi: Tarif und Zonen für Tübingen (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/366/netex.xml' },
     { title: 'Voi: Tarif und Zonen für Reutlingen (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/367/netex.xml' },

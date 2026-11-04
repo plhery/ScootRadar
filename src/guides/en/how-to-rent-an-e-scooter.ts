@@ -58,10 +58,10 @@ const guide: Guide = {
     {
       heading: 'How much does e-scooter rental cost?',
       blocks: [
-        'You pay an unlock fee plus a rate for every minute the scooter is unlocked, moving or not. Lime and Dott round each ride up to the next full minute, and rates vary by city, sometimes by time of day.',
+        'You pay an unlock fee plus a rate for every minute the scooter is unlocked, moving or not. Dott rounds each ride up to the next full minute, and rates vary by city.',
         {
           table: {
-            caption: 'Pay-as-you-go rates (Voi: as of November 2026; Bolt: published on 12 October 2026), and what a ride costs',
+            caption: 'Pay-as-you-go rates as of November 2026, and what a ride costs',
             head: ['Operator and city', 'Rate', '5 minutes', '10 minutes', '20 minutes'],
             rows: [
               ['Voi, Bern', 'CHF 1 + CHF 0.42 a minute', 'CHF 3.10', 'CHF 5.20', 'CHF 9.40'],
@@ -73,7 +73,7 @@ const guide: Guide = {
         },
         '**A worked example.** You ride a Voi in Bern for 9 minutes 20 seconds. That’s billed as 10 minutes: CHF 1 + 10 × CHF 0.42 = CHF 5.20. Spend two more minutes looking for a spot outside a no-parking zone and it’s 12 minutes, or CHF 6.04.',
         'Lime’s and Dott’s rates change from city to city, but like every operator they show the price in the app before you unlock. Swiss rates by city, Dott’s and Lime’s included, are in [e-scooter prices in Switzerland](guide:swiss-prices).',
-        '**Passes** pay off if you ride often. Minute bundles (LimePass, Dott), day passes (Dott) and monthly passes (LimePrime, Bolt) cut or waive the unlock fee.',
+        '**Passes** pay off if you ride often. Minute bundles and day passes (Dott) and monthly passes (Bolt) cut or waive the unlock fee.',
         '**The hold.** At the start of a ride the app reserves a small sum on your card: about CHF 3, £2.25 or €2.50 to €3 at Dott. It’s released when the ride ends, though your bank may take days to show it.',
       ],
     },
@@ -83,13 +83,11 @@ const guide: Guide = {
         'Usually, yes. Reserving is sometimes free; pausing almost never is.',
         {
           list: [
-            '**Lime:** reserve for up to 10 minutes free (30 with LimePrime or a LimePass); pause for up to 15 minutes, still charged.',
             '**Dott:** reserve for 10 minutes free, in more than 400 cities (Dott, May 2025); pause for up to 30 minutes at the full rate.',
             '**Bird:** reserve for up to 30 minutes and lock for up to 75, both charged per minute.',
             '**Bolt:** reserve in advance, at the length and cost the app shows; pause only in blue parking spots, charged per minute.',
           ],
         },
-        'Never just walk away. Lime warns that if you leave without pausing or ending the ride and the scooter is stolen, you may pay for the extra time.',
       ],
     },
     {
@@ -108,7 +106,6 @@ const guide: Guide = {
               ['Bolt', 'Up to £40 in the UK; €15 in Germany under its terms from 1 December 2026', 'Up to £100, €100 or CHF 100 to fetch one left outside the area'],
               ['Dott', 'Up to €300', '£50 or €50 to pass on a fine'],
               ['Beryl', '£5 or £10 outside a bay', '£80 if not back within 24 hours'],
-              ['Lime', 'A penalty, amount not published', 'Pick-up and handling up to CHF 125 each in Switzerland'],
             ],
           },
         },
@@ -127,8 +124,7 @@ const guide: Guide = {
             'Don’t admit liability on the spot, as Dott advises.',
           ],
         },
-        'Liability insurance comes with the ride at the big operators, with limits. In Switzerland, Lime and Bolt pay only after your own private liability insurance, and PubliBike includes none. A passenger voids Dott’s cover, and Dott doesn’t insure head injuries without a helmet. Beryl’s UK cover is third-party only.',
-        'Damage you cause to the scooter is billed to you: up to CHF 1,540 under Lime’s Swiss terms.',
+        'Liability insurance comes with the ride at the big operators, with limits. In Switzerland, Bolt pays only after your own private liability insurance, and PubliBike includes none. A passenger voids Dott’s cover, and Dott doesn’t insure head injuries without a helmet. Beryl’s UK cover is third-party only.',
       ],
     },
     {
@@ -137,7 +133,7 @@ const guide: Guide = {
         'Your account travels with you. Your passes and credit mostly don’t:',
         {
           list: [
-            '**Passes stay in one country.** LimePass, LimePrime and Dott’s passes work only in the country where you bought them, and Bolt’s only in the city.',
+            '**Passes stay in one country.** Dott’s passes work only in the country where you bought them, and Bolt’s only in the city.',
             '**Credit stays in one currency.** At Bird and Dott you need a new wallet for each currency, and Bolt Balance works only in the currency it was issued in.',
             '**Rules change at the border.** The UK wants a driving licence: a full EU or EEA one, or another country’s full licence if you entered the UK in the last 12 months, never a foreign provisional one. Brussels makes you scan your ID once, Italy requires a helmet you bring yourself, and Oslo stops rentals from 23:00 to 05:00.',
             '**Cards:** Bolt takes American Express only in euro-zone countries.',
@@ -171,11 +167,11 @@ const guide: Guide = {
     },
     {
       question: 'Can two people ride one rental e-scooter?',
-      answer: 'No: every operator allows one rider per scooter. To ride together, start a group ride, where one account unlocks up to five scooters at Lime, usually three at Dott and up to four extra at Bird. The host pays for every scooter, and every rider must be old enough, usually 18.',
+      answer: 'No: every operator allows one rider per scooter. To ride together, start a group ride, where one account unlocks usually three scooters at Dott and up to four extra at Bird. The host pays for every scooter, and every rider must be old enough, usually 18.',
     },
     {
       question: 'Can you rent an e-scooter without a credit card?',
-      answer: 'Usually, yes. Most operators take debit cards, Lime also takes prepaid cards, and several offer PayPal, Apple Pay or Google Pay in many places. Bolt takes PayPal only in Germany.',
+      answer: 'Usually, yes. Most operators take debit cards, and several offer PayPal, Apple Pay or Google Pay in many places. Bolt takes PayPal only in Germany.',
     },
     {
       question: 'What happens if my phone dies during a ride?',
@@ -184,12 +180,10 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'GOV.UK: Using a rental e-scooter (updated 7 July 2026)', url: 'https://www.gov.uk/guidance/e-scooter-trials-guidance-for-users' },
-    { title: 'Lime Help Center: Ride costs and rates', url: 'https://help.li.me/hc/en-us/articles/115004914208' },
-    { title: 'Lime Help Center: Payment methods', url: 'https://help.li.me/hc/en-us/articles/115004914608' },
-    { title: 'Lime Help Center: How to end a ride and park', url: 'https://help.li.me/hc/en-us/articles/115004745967' },
     { title: 'MobiData BW: Voi Switzerland’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
     { title: 'Voi: Stuttgart rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/175/netex.xml' },
     { title: 'Entur: Voi’s open data for Oslo (GBFS)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voioslo/gbfs' },
+    { title: 'Bolt: Liverpool rates (GBFS)', url: 'https://mds.bolt.eu/gbfs/3/412/gbfs' },
     { title: 'Ruter: operators, prices and age limits (Norwegian)', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/operatorer' },
     { title: 'Dott Help: Payment methods', url: 'https://help.ridedott.com/en/articles/209' },
     { title: 'Dott: Reserve a vehicle for free', url: 'https://ridedott.com/reservations/' },

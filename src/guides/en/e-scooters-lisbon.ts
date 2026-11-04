@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Lisbon e-scooters 2026: Lime, Bolt, Bird, rules and the ban',
   description: 'Lisbon voted on 21 October 2026 to ban shared e-scooters, likely gone by the end of January 2027. Until then: Lime, Bolt or Bird, no-go zones, hotspot parking.',
   headline: 'E-scooters in Lisbon: Lime, Bolt and Bird, the no-go zones, and why your ride ends only at a hotspot',
-  lede: 'You can rent an e-scooter in Lisbon from Lime, Bolt or Bird in their apps, which show the price before you unlock: none of them publishes a Lisbon rate. Shared scooters are capped at 20 km/h, banned from pavements, bus lanes, parks and big squares such as Praça do Comércio and Rossio, and a ride can only end at a designated parking spot, a “hotspot”. Free minutes with the Navegante pass are for Lisbon residents only; visitors pay the app price, or ride Gira bikes for €2 a day. On 21 October 2026 the city council voted to end shared e-scooters, which it expects gone by the end of January 2027.',
+  lede: 'You can rent an e-scooter in Lisbon from Lime, Bolt or Bird in their apps, which show the price before you unlock. Shared scooters are capped at 20 km/h, banned from pavements, bus lanes, parks and big squares such as Praça do Comércio and Rossio, and a ride can only end at a designated parking spot, a “hotspot”. Free minutes with the Navegante pass are for Lisbon residents only; visitors pay the app price, or ride Gira bikes for €2 a day. On 21 October 2026 the city council voted to end shared e-scooters, which it expects gone by the end of January 2027.',
   published: '2026-10-13',
   updated: '2026-10-26',
   city: 'pt:Lisboa',
@@ -18,26 +18,26 @@ const guide: Guide = {
       blocks: [
         'As of October 2026, three operators run shared e-scooters in Lisbon: **Lime**, **Bolt** and **Bird**. Lime also rents e-bikes. LINK, still listed in older guides, has left Portugal.',
         'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended on 23 June 2025, which the council voted on 21 October 2026 to end. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
-        'At 04:27 on 30 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 3,200 Bolt, 2,400 Lime and 1,400 Bird scooters free to rent at that moment, not the whole fleet, with each one’s battery or range. Bolt’s and Lime’s free scooters alone are over each operator’s cap, and Bird’s are under it; the council has not said whether it gave them the quotas of operators that left.',
+        'At 04:27 on 30 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 3,200 Bolt, 2,400 Lime and 1,400 Bird scooters free to rent at that moment, with each one’s battery or range. Bolt’s and Lime’s free scooters alone are over each operator’s cap, and Bird’s are under it.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Lisbon?',
       blocks: [
-        'None of the three publishes Lisbon prices, so the map shows none here. Each app shows the price before you unlock.',
+        'Each app shows the price before you unlock.',
         {
           table: {
             caption: 'E-scooter prices in Lisbon, as the operators publish them (30 October 2026)',
             head: ['Operator', 'Unlock', 'Per minute', 'Passes', 'On the map, 30 Oct 2026'],
             rows: [
-              ['Bolt', 'A small fee, amount not published', 'From €0.15 (Bolt’s rate for Portugal, not a Lisbon rate)', 'Unlimited unlocks from €0.99 a month; weekly and monthly passes', 'About 3,200'],
-              ['Lime', 'In the app', 'In the app', 'Not published', 'About 2,400'],
-              ['Bird', 'In the app', 'In the app', 'Not published', 'About 1,400'],
+              ['Bolt', 'A small fee', 'From €0.15 (Bolt’s rate for Portugal)', 'Unlimited unlocks from €0.99 a month; weekly and monthly passes', 'About 3,200'],
+              ['Lime', 'In the app', 'In the app', '–', 'About 2,400'],
+              ['Bird', 'In the app', 'In the app', '–', 'About 1,400'],
             ],
           },
         },
         'At certain hours Bolt may ask you to pass a reaction test before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Free minutes for residents.** If you live in Lisbon, are 18 or over and hold a monthly Navegante transport pass, each operator gives you up to 66 free minutes a month, 200 in all across the three. Only the first 10 minutes of a ride are free. You activate it in each app (for Lime, at [navegante.li.me](https://navegante.li.me/)). Visitors can’t use it.',
+        '**Free minutes for residents.** If you live in Lisbon and hold a monthly Navegante transport pass, the scooters are free for up to 200 minutes a month, and only the first 10 minutes of a ride are free. Lime gives 66 of those minutes a month: you sign up at [navegante.li.me](https://navegante.li.me/) with your pass and Portuguese tax number. Visitors can’t use it.',
       ],
     },
     {
@@ -151,7 +151,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in Lisbon?',
-      answer: 'Lime doesn’t publish its Lisbon prices, and nor does Bird: the app shows the unlock fee and price per minute before you unlock. Bolt advertises minutes from €0.15 across Portugal, plus a small unlock fee.',
+      answer: 'Lime’s and Bird’s apps show the unlock fee and price per minute before you unlock. Bolt advertises minutes from €0.15 across Portugal, plus a small unlock fee.',
     },
     {
       question: 'Can I ride an e-scooter from Lisbon airport?',
@@ -171,13 +171,15 @@ const guide: Guide = {
     },
     {
       question: 'Can tourists get free minutes on Lisbon’s scooters?',
-      answer: 'No. They are for Lisbon residents aged 18 or over with a monthly Navegante pass, who register with their pass and Portuguese tax number. Visitors pay the app price, or ride Gira bikes with a €2 day pass.',
+      answer: 'No. They are for Lisbon residents with a monthly Navegante pass, who register with their pass and Portuguese tax number. Visitors pay the app price, or ride Gira bikes with a €2 day pass.',
     },
   ],
   sources: [
     { title: 'Lisbon City Council: collaboration agreement with the e-scooter operators, 9 January 2023 (PDF, Portuguese)', url: 'https://www.lisboa.pt/fileadmin/atualidade/noticias/user_upload/Acordo_de_Colaborac__a__o_OperdoresTrot_09_01_23.pdf' },
     { title: 'Lisbon City Council: new rules for e-scooters, 23 June 2025 (Portuguese)', url: 'https://informacao.lisboa.pt/noticias/detalhe/circulacao-de-trotinetas-com-novas-regras-em-lisboa' },
-    { title: 'Bird: Lisbon Navegante pass benefit', url: 'https://help.bird.co/hc/en-us/articles/48029756932116-Lisbon-Navegante-Pass-Benefit-Help-Center-Article' },
+    { title: 'Lime: free minutes for monthly Navegante pass holders (Portuguese)', url: 'https://navegante.li.me/' },
+    { title: 'ECO/Lusa: Lisbon makes shared e-scooters free for residents with a Navegante pass, 26 June 2025 (Portuguese)', url: 'https://eco.sapo.pt/2025/06/26/lisboa-cria-novas-zonas-proibidas-a-trotinetas-e-torna-utilizacao-gratuita-para-alfacinhas-com-passe-navegante/' },
+    { title: 'Echo Boomer: the Navegante pass gives 200 minutes of e-scooter riding a month, 26 June 2025 (Portuguese)', url: 'https://echoboomer.pt/passe-navegante-200-minutos-trotinete-mes-lisboa/' },
     { title: 'Bolt: scooter rentals in Portugal (Portuguese)', url: 'https://bolt.eu/pt-pt/scooters/' },
     { title: 'Gira: passes and prices (Portuguese)', url: 'https://www.gira-bicicletasdelisboa.pt/passes-e-tarifarios/' },
     { title: 'TTSL: bikes and scooters on the Lisbon ferries (Portuguese)', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },

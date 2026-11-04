@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Trottinette électrique à Marseille en 2026 : Lime, Voi, prix',
   description: 'Trottinette électrique à Marseille : prix de Lime et Voi, où se garer, zones lentes et interdites, métro RTM, levélo et la décision attendue d’ici l’été 2027.',
   headline: 'Trottinette électrique à Marseille : Lime, Voi, prix, zones et stationnement en 2026',
-  lede: 'Pour louer une trottinette électrique à Marseille, vous avez le choix entre **Lime** et **Voi**, autorisés à en déployer 1 500 chacun ; il faut avoir 18 ans. Chez Voi, comptez 1 € pour déverrouiller puis 0,27 € la minute, soit 3,70 € les 10 minutes (tarif publié le 13 octobre 2026) ; Lime affiche son prix dans l’app. La location se termine sur un emplacement indiqué dans l’app, et Voi bride la vitesse au Vieux-Port ou au Panier. Les autorisations courent jusqu’en 2027 : la mairie doit trancher d’ici l’été 2027, et le maire penche pour l’interdiction.',
+  lede: 'Pour louer une trottinette électrique à Marseille, vous avez le choix entre **Lime** et **Voi**, autorisés à en déployer 1 500 chacun. Chez Voi, comptez 1 € pour déverrouiller puis 0,27 € la minute, soit 3,70 € les 10 minutes (novembre 2026) ; Lime affiche son prix dans l’app. La location se termine sur un emplacement indiqué dans l’app, et Voi bride la vitesse au Vieux-Port ou au Panier. Les autorisations courent jusqu’en 2027 : la mairie doit trancher d’ici l’été 2027, et le maire penche pour l’interdiction.',
   published: '2026-10-13',
   updated: '2026-10-13',
   city: 'fr:Marseille',
@@ -16,10 +16,10 @@ const guide: Guide = {
     {
       heading: 'Location de trottinette à Marseille : Lime, Voi et leurs prix',
       blocks: [
-        'Depuis le **23 octobre 2023**, la Ville n’autorise plus que **Lime** et **Voi**, avec **1 500 trottinettes chacun** ; Bird, le troisième opérateur, n’a pas été retenu. En septembre, le maire, Benoît Payan, avait annoncé le retrait de 1 500 des quelque 4 000 trottinettes de la ville. Chez les deux, il faut avoir **18 ans**.',
+        'Depuis le **23 octobre 2023**, la Ville n’autorise plus que **Lime** et **Voi**, avec **1 500 trottinettes chacun** ; Bird, le troisième opérateur, n’a pas été retenu. En septembre, le maire, Benoît Payan, avait annoncé le retrait de 1 500 des quelque 4 000 trottinettes de la ville.',
         {
           table: {
-            caption: 'Prix d’un trajet à Marseille en trottinette ou en vélo électrique (tarifs publiés au 13 octobre 2026)',
+            caption: 'Prix d’un trajet à Marseille en trottinette ou en vélo électrique (Voi : novembre 2026 ; levélo : 13 octobre 2026)',
             head: ['Service', 'Déverrouillage', 'Par minute', '10 min', '20 min'],
             rows: [
               ['Voi (trottinette ou vélo électrique)', '1 €', '0,27 €', '3,70 €', '6,40 €'],
@@ -28,30 +28,23 @@ const guide: Guide = {
             ],
           },
         },
-        'Pour les forfaits de minutes et le Pass Voi, voyez les prix dans l’app. Lime ne publie pas de tarif marseillais : son app l’affiche avant le déverrouillage.',
+        'Chez Voi, vous pouvez aussi prendre un Pass 24 h ou un abonnement aux trajets illimités de 45 minutes, selon la RTM.',
         '**Les réductions.** Avec l’offre « Voi pour Tous », les abonnés RTM au tarif solidarité ont 80 % de réduction sur les abonnements mensuels de Voi. En 2023, la Ville avait aussi exigé des tarifs réduits pour les demandeurs d’emploi et les étudiants boursiers : renseignez-vous auprès de l’opérateur.',
-        'Le 13 octobre 2026, la [carte de Marseille](map:fr:Marseille) de ScootRadar montrait environ 1 200 trottinettes Voi et autant de Lime : un relevé, pas la taille des flottes. Un bouton ouvre l’app de l’opérateur, où vous déverrouillez et payez. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
+        'Le 13 octobre 2026, la [carte de Marseille](map:fr:Marseille) de ScootRadar montrait environ 1 200 trottinettes Voi et autant de Lime, libres à ce moment-là. Un bouton ouvre l’app de l’opérateur, où vous déverrouillez et payez. Première fois ? Voyez [comment louer une trottinette électrique](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Où garer sa trottinette électrique à Marseille',
       blocks: [
-        'Vous terminez la location **uniquement sur un emplacement indiqué dans l’app** : Voi en publiait 1 240 le 13 octobre 2026. Ils sont définis avec la Ville. Certains sont tracés au sol, plutôt sur la chaussée ; fin 2025, d’autres n’existaient encore que dans l’app. Repérez-en un avant de partir :',
-        {
-          list: [
-            '**Vieux-Port, quai des Belges** : 8 emplacements Voi à moins de 200 m.',
-            '**Cours d’Estienne d’Orves** : 11 à moins de 200 m ; **place de Lenche** (Le Panier) et **gare Saint-Charles** : 7 chacune.',
-            '**MuCEM** : un seul à moins de 200 m ; **stade Vélodrome** et **parc Borély** : aucun.',
-          ],
-        },
-        '**Mal se garer coûte cher.** Les opérateurs se sont engagés à facturer un supplément, au montant non publié, à qui laisse son véhicule hors des emplacements ; en 2023, la Ville leur a imposé 25 € de pénalité par infraction constatée. Côté police, le stationnement gênant coûte 35 €, fourrière possible. Une trottinette bloque le trottoir ? Signalez-la à Allô Mairie, au 3013.',
+        'Vous terminez la location **uniquement sur un emplacement indiqué dans l’app** : Voi en comptait 1 240 le 13 octobre 2026. Ils sont définis avec la Ville. Certains sont tracés au sol, plutôt sur la chaussée ; fin 2025, d’autres n’existaient encore que dans l’app. Repérez-en un avant de partir.',
+        '**Mal se garer coûte cher.** Les opérateurs se sont engagés à facturer un supplément à qui laisse son véhicule hors des emplacements ; en 2023, la Ville leur a imposé 25 € de pénalité par infraction constatée. Côté police, le stationnement gênant coûte 35 €, fourrière possible. Une trottinette bloque le trottoir ? Signalez-la à Allô Mairie, au 3013.',
         { note: 'Ne laissez jamais une trottinette au bord d’un quai. « Je les retrouve dans l’eau, je les retrouve dans le Vieux-Port », disait le maire en janvier 2026.' },
       ],
     },
     {
       heading: 'Zones lentes et zones interdites : où rouler en trottinette à Marseille',
       blocks: [
-        'L’app de Voi ralentit la trottinette, ou l’empêche de rouler, à certains endroits. Ces zones changent souvent : **l’app fait foi**. Exemples relevés dans ses données le 13 octobre 2026 ; Lime ne publie pas les siennes.',
+        'L’app de Voi ralentit la trottinette, ou l’empêche de rouler, à certains endroits. Ces zones changent souvent : **l’app fait foi**. Exemples du 13 octobre 2026.',
         {
           table: {
             caption: 'Zones lentes et interdites de l’app Voi à Marseille (exemples du 13 octobre 2026)',
@@ -64,13 +57,13 @@ const guide: Guide = {
             ],
           },
         },
-        'L’app suit aussi l’actualité : le 13 octobre 2026, les données de Voi contenaient encore une zone interdite de 73 hectares, « Cortège 6/10 », sur le Vieux-Port, La Canebière et Noailles. Un jour de manifestation, regardez l’app avant de descendre en ville. Et dans une aire piétonne, roulez au pas, quoi que permette l’app.',
+        'L’app suit aussi l’actualité : le 13 octobre 2026, Voi avait encore une zone interdite de 73 hectares, « Cortège 6/10 », sur le Vieux-Port, La Canebière et Noailles. Un jour de manifestation, regardez l’app avant de descendre en ville. Et dans une aire piétonne, roulez au pas, quoi que permette l’app.',
       ],
     },
     {
       heading: 'Casque, trottoir, amendes : les règles à Marseille',
       blocks: [
-        '**Le casque.** Au 13 octobre 2026, nous n’avons pas trouvé d’arrêté préfectoral imposant le casque dans les Bouches-du-Rhône, comme il en existe à Paris ou dans le Rhône, sans pouvoir l’exclure : vérifiez sur le site de la [préfecture](https://www.bouches-du-rhone.gouv.fr/). Il reste fortement recommandé.',
+        '**Le casque.** Des arrêtés préfectoraux l’imposent à Paris ou dans le Rhône : vérifiez sur le site de la [préfecture](https://www.bouches-du-rhone.gouv.fr/) s’il en existe un dans les Bouches-du-Rhône. Il reste fortement recommandé.',
         {
           table: {
             caption: 'Trottinette électrique à Marseille : les règles nationales qui coûtent le plus cher (octobre 2026)',
@@ -94,7 +87,7 @@ const guide: Guide = {
       heading: 'Trottinette dans le métro, le tram et le bus de la RTM',
       blocks: [
         'Une trottinette en libre-service ne monte pas dans le métro, le tram ou le bus : le règlement de la RTM interdit d’y entrer en trottinette et n’admet à bord que les objets de 80 cm au plus, tenus à la main. Une trottinette personnelle pliée doit, elle aussi, respecter cette limite. Terminez donc la location près de la station.',
-        '**L’aéroport Marseille-Provence**, à Marignane, est à environ 14 km de l’emplacement Voi le plus proche. La navette de la ligne 91 relie l’aéroport à la gare Saint-Charles, côté gare routière : 15 € l’aller, selon l’office de tourisme (juillet 2026).',
+        '**L’aéroport Marseille-Provence**, à Marignane, est relié à la gare Saint-Charles, côté gare routière, par la navette de la ligne 91 : 15 € l’aller, selon l’office de tourisme (juillet 2026).',
       ],
     },
     {
@@ -140,7 +133,7 @@ const guide: Guide = {
             '**Abonnement** : 6 € par mois sur 12 mois, 3 € avant 26 ans ; gratuit avec certains abonnements RTM ou Métropole.',
           ],
         },
-        'Depuis le **1er juillet 2026**, les vélos électriques des opérateurs privés sont ceux de **Voi**, au tarif de ses trottinettes, et de **Pony**, qui en propose à deux places ; Lime a retiré les siens. Notre carte ne montre que les trottinettes, pas ces vélos ni les levélo.',
+        'Depuis le **1er juillet 2026**, les vélos électriques des opérateurs privés sont ceux de **Voi**, au tarif de ses trottinettes, et de **Pony**, qui en propose à deux places ; Lime a retiré les siens.',
       ],
     },
     {
@@ -151,7 +144,7 @@ const guide: Guide = {
             '**Des plongeurs les repêchent.** En 2019, les bénévoles de la Société nautique de la Corniche ont sorti de 150 à 200 trottinettes de la mer, entre l’anse de Malmousque et le Vieux-Port.',
             '**Les épaves viennent surtout d’opérateurs partis.** En décembre 2025, une plongée avec Lime en a remonté 18 : selon Lime, surtout d’anciens modèles de Bird et de Circ, datant de 2019 ou d’avant.',
             '**Un record en pleine campagne.** Voi a compté 210 000 trajets en février 2026, 50 % de plus qu’un an plus tôt, quelques semaines après l’annonce du maire.',
-            '**Des zones pour les grèves lycéennes.** Le 13 octobre 2026, les données de Voi comptaient environ 17 zones interdites intitulées « NRZ grèves lycéens » ou « Demande mairie Grève Lycée », autour de lycées marseillais.',
+            '**Des zones pour les grèves lycéennes.** Le 13 octobre 2026, Voi comptait environ 17 zones interdites intitulées « NRZ grèves lycéens » ou « Demande mairie Grève Lycée », autour de lycées marseillais.',
           ],
         },
       ],
@@ -160,19 +153,19 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelle appli pour louer une trottinette à Marseille ?',
-      answer: 'Celle de Lime ou celle de Voi, les deux seuls opérateurs autorisés, à partir de 18 ans. Notre [carte de Marseille](map:fr:Marseille) montre les deux, et un bouton ouvre la bonne app.',
+      answer: 'Celle de Lime ou celle de Voi, les deux seuls opérateurs autorisés. Notre [carte de Marseille](map:fr:Marseille) montre les deux, et un bouton ouvre la bonne app.',
     },
     {
       question: 'Quel est le tarif d’une trottinette Voi à Marseille ?',
-      answer: '1 € pour déverrouiller, puis 0,27 € la minute, selon le tarif publié par Voi le 13 octobre 2026 : 3,70 € les 10 minutes, 6,40 € les 20 minutes, hors forfaits.',
+      answer: '1 € pour déverrouiller, puis 0,27 € la minute, en novembre 2026 : 3,70 € les 10 minutes, 6,40 € les 20 minutes, hors forfaits.',
     },
     {
       question: 'Combien coûte une trottinette Lime à Marseille ?',
-      answer: 'Lime ne publie pas son tarif marseillais : l’app l’affiche avant le déverrouillage. Selon Lime, le prix à la minute peut varier selon le lieu et l’heure, et chaque minute commencée est facturée.',
+      answer: 'L’app de Lime affiche son tarif avant le déverrouillage.',
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Marseille ?',
-      answer: 'Pas à notre connaissance au 13 octobre 2026 : nous n’avons pas trouvé d’arrêté préfectoral dans les Bouches-du-Rhône, mais vérifiez auprès de la préfecture. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire partout (35 €).',
+      answer: 'La loi nationale ne l’impose que sur les routes à 80 km/h ouvertes aux trottinettes ; vérifiez auprès de la préfecture si un arrêté l’impose dans les Bouches-du-Rhône. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire partout (35 €).',
     },
     {
       question: 'Peut-on prendre une trottinette dans le métro à Marseille ?',
@@ -184,7 +177,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Voi : la trottinette électrique à Marseille (tarifs, âge, stationnement)', url: 'https://www.voi.com/fr/city/marseille' },
+    { title: 'Voi : tarif et zones de Marseille (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/66/netex.xml' },
     { title: 'Voi : flux de données public (GBFS) de Marseille', url: 'https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/66/gbfs.json' },
     { title: 'Mairie des 1er et 7e arrondissements : trottinettes et vélos en libre-service', url: 'https://mairie1-7.marseille.fr/pages/les-trottinettes-et-velos-en-libre-service' },
     { title: 'Banque des Territoires (AFP) : Marseille retire 1 500 trottinettes en libre-service de l’espace public (11 septembre 2023)', url: 'https://www.banquedesterritoires.fr/marseille-retire-1500-trottinettes-en-libre-service-de-lespace-public' },
