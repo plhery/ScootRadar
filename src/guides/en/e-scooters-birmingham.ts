@@ -6,7 +6,7 @@ const guide: Guide = {
   topic: 'birmingham',
   name: 'E-scooter hire in Birmingham',
   title: 'E-scooters Birmingham 2026: Lime hire, prices and rules',
-  description: 'E-scooters in Birmingham with Lime: the price, who can ride, where to ride and park, and the rules on campuses, canal towpaths, buses and trains.',
+  description: 'E-scooters in Birmingham with Lime: the price, who can ride, where to ride and park, and the rules on campuses, buses and trains.',
   headline: 'E-scooters in Birmingham: Lime hire, prices and where you can ride and park',
   lede: 'E-scooters in Birmingham are hired from Lime, the only operator, which has run the West Midlands scheme for Transport for West Midlands since 1 April 2026. A ride costs £1 to unlock plus 20p a minute, and you must be 18 or over with a valid UK driving licence. Ride on roads and in cycle lanes, never on pavements, and end your ride in a parking area shown in the app.',
   published: '2026-10-25',
@@ -19,7 +19,7 @@ const guide: Guide = {
         '**Lime** is the only company hiring out e-scooters in Birmingham. It has run the region’s cycle and e-scooter hire scheme since 1 April 2026 for Transport for West Midlands (TfWM), part of the West Midlands Combined Authority, which said in January 2026 that “for the first time the scheme will operate at no cost to the taxpayer”. Birmingham City Council, the highway authority, decides on Lime’s parking stands in the street.',
         'Hire e-scooters are legal here because the West Midlands is one of England’s 21 trial areas, which run until May 2028. Voi ran the trial in Birmingham from September 2020 until its scheme ended in February 2023. Beryl’s e-scooters followed on 2 August 2023; its bikes and scooters were removed in stages in February and March 2026, TfWM said, to make way for Lime.',
         'In January 2026 the combined authority said Lime’s e-scooters would be “available in Birmingham and on the University of Warwick campus only”, and TfWM adds that “the service area may expand over time”. **Lime also hires out e-bikes** in the same app, in Birmingham, Coventry and Solihull, and in March 2026 the combined authority said they would soon reach Wolverhampton, Sandwell, Dudley and Walsall.',
-        'At 07:47 on Sunday 25 October 2026 the [map of Birmingham](map:gb:Birmingham) showed about 1,340 Lime e-scooters: a snapshot, not the fleet size. It shows where they stand and their battery, not prices, zones, parking, hours or Lime’s e-bikes. At 08:54 all of the roughly 1,090 it showed stood inside the city boundary: about a third within 1.5 km of Victoria Square, the rest spread from Perry Barr to Cotteridge.',
+        'At 07:47 on Sunday 25 October 2026 the [map of Birmingham](map:gb:Birmingham) showed about 1,340 Lime e-scooters: a snapshot, not the fleet size. At 08:54 about a third of the roughly 1,090 it showed stood within 1.5 km of Victoria Square, the rest spread from Perry Barr to Cotteridge.',
       ],
     },
     {
@@ -35,7 +35,7 @@ const guide: Guide = {
               ['What does a ride cost?', '£1 to unlock, then 20p a minute', 'TfWM; the city council (10 April 2026)'],
               ['Passes?', '30 minutes £2.99, 60 minutes £5.99, 120 minutes £9.99, 300 minutes £19.90', 'TfWM; the council gives £19.99 for 300 minutes'],
               ['Who can ride?', '18 or over, with a valid UK driving licence', 'TfWM'],
-              ['When?', 'No night ban found; Lime proposed seven days a week, 00:00 to 24:00', 'Lime’s application for street stands, published by the council (July 2026)'],
+              ['When?', 'Lime proposed seven days a week, 00:00 to 24:00', 'Lime’s application for street stands, published by the council (July 2026)'],
               ['Where does a ride end?', 'Only in a parking area shown in the app', 'TfWM; the city council'],
             ],
           },
@@ -56,8 +56,8 @@ const guide: Guide = {
               ['One rider', 'No passengers, and no towing', 'The law', '–'],
               ['Speed', '15.5 mph at most, and slower in slow zones', 'The law; Lime and TfWM', 'The scooter limits its speed'],
               ['No-go and slow zones', 'Shown in the app', 'Lime and TfWM', 'The scooter slows down or stops'],
-              ['Operating zone', 'Stay inside the area shown in the app', 'Lime and TfWM', 'A possible charge; the amount isn’t published'],
-              ['Parking', 'Only in a designated area shown in the app', 'TfWM and the city council', 'A fine; the amount isn’t published'],
+              ['Operating zone', 'Stay inside the area shown in the app', 'Lime and TfWM', 'A possible charge'],
+              ['Parking', 'Only in a designated area shown in the app', 'TfWM and the city council', 'A fine'],
               ['Phone', 'Not in your hand while riding', 'The law', '£200 and 6 points'],
               ['Drink and drugs', 'Drink-drive law applies', 'The law', 'Court'],
               ['Helmet', 'Recommended, not compulsory', 'The law', '–'],
@@ -74,34 +74,33 @@ const guide: Guide = {
       heading: 'Where can you ride a Lime in Birmingham?',
       blocks: [
         'TfWM lets you ride on roads, in cycle lanes and in “other areas where cycling is allowed”, but: “You must not ride on pavements.” The scooters have speed limits and “geofencing to control where scooters can be used and parked”, TfWM says, and the University of Birmingham warns that “certain zones may also be designated as no-go or slow-speed zones”.',
-        'We found no public list of those zones for New Street, Broad Street or Centenary Square, so check the app’s map before you set off.',
-        'We found no night ban. The only hours we found are in Lime’s application for street stands, which the council published in July 2026: “seven days a week, Monday to Sunday, 00:00–24:00”.',
+        'Lime’s zones are in its app: check its map before you set off.',
+        'Lime’s application for street stands, which the council published in July 2026, gives its hours as “seven days a week, Monday to Sunday, 00:00–24:00”.',
       ],
     },
     {
       heading: 'Where to park a Lime e-scooter in Birmingham',
       blocks: [
-        '“You must park in designated areas shown in the app,” TfWM says, and the city council warns: “If you fail to park at an official parking spot, you will be fined.” TfWM adds that riders may be charged if they park outside a permitted area or don’t end the ride correctly. Neither publishes the amounts.',
+        '“You must park in designated areas shown in the app,” TfWM says, and the city council warns: “If you fail to park at an official parking spot, you will be fined.” TfWM adds that riders may be charged if they park outside a permitted area or don’t end the ride correctly.',
         'The parking spots are the existing docking stations plus new “virtual-only” locations in the app, the council says. The University of Birmingham adds that they are “clearly marked in the Lime app and on the ground”, and asks you to stand the scooter “upright, in-line with other vehicles”.',
-        'In July 2026 the council asked for comments on Lime’s application for stands at 13 places on the highway, among them Colmore Row, Colmore Circus, Old Square, Edgbaston Street, Smallbrook Queensway and Jennens Road, each for bikes and scooters. They are proposals: we found no decision by 25 October 2026.',
+        'In July 2026 the council asked for comments on Lime’s application for stands at 13 places on the highway, among them Colmore Row, Colmore Circus, Old Square, Edgbaston Street, Smallbrook Queensway and Jennens Road, each for bikes and scooters.',
       ],
     },
     {
-      heading: 'Campuses, canals, parks and hospitals',
+      heading: 'Campuses, parks, hospitals and the Bullring',
       blocks: [
         'Landowners set their own rules:',
         {
           table: {
-            caption: 'Rules on land owned by others, as each owner states them, October 2026',
+            caption: 'What the owners of these places say, October 2026',
             head: ['Place', 'Owner', 'What it says'],
             rows: [
               ['Edgbaston campus and halls', 'University of Birmingham', 'Lime’s vehicles “can’t currently be used on campus”; there are “dozens of locations” near it; private e-scooters “are not allowed on campus or in student accommodation” (October 2026)'],
               ['Warwick campus', 'University of Warwick', 'Lime e-scooters are available; private ones “cannot be used, stored, or charged within the University” (6 July 2026)'],
-              ['Sutton Park', 'Birmingham City Council', '“Cycling and horse riding are only allowed on the bridleways” (31 March 2026); nothing on e-scooters'],
-              ['Cannon Hill Park and other parks', 'Birmingham City Council', 'No e-scooter rule found; activities “must not put other people at risk, cause a nuisance” (4 September 2026)'],
-              ['Queen Elizabeth Hospital', 'University Hospitals Birmingham', 'Its staff travel page points to Lime, “available across much of Birmingham” (9 July 2026); no site rule found'],
+              ['Sutton Park', 'Birmingham City Council', '“Cycling and horse riding are only allowed on the bridleways” (31 March 2026)'],
+              ['Cannon Hill Park and other parks', 'Birmingham City Council', 'Activities “must not put other people at risk, cause a nuisance” (4 September 2026)'],
+              ['Queen Elizabeth Hospital', 'University Hospitals Birmingham', 'Its staff travel page points to Lime, “available across much of Birmingham” (9 July 2026)'],
               ['Bullring', 'The centre’s owners', 'No bikes, and “electric powered scooters … must not be used within the centre” (visitor guide, October 2026)'],
-              ['Aston University, Birmingham City University', 'Each university', 'We found no published rule: follow the signs and the app'],
             ],
           },
         },
@@ -111,13 +110,13 @@ const guide: Guide = {
     {
       heading: 'Can you take an e-scooter on a train, tram or bus?',
       blocks: [
-        'None of the transport companies we could check lets an e-scooter on board:',
+        'On Birmingham’s buses and trains:',
         {
           list: [
             '**National Express West Midlands buses** will not carry e-scooters, e-bikes or bikes “under any circumstances”, though a folded bicycle in a carrying bag is fine (conditions of carriage, 10 March 2026).',
             '**Avanti West Coast**, from New Street: “electric scooters are not permitted on our trains or anywhere on our stations”.',
             '**Chiltern Railways**, which manages Moor Street: check its own rules before you take any e-scooter to its trains.',
-            '**Trams and other trains:** check the rules of West Midlands Metro, West Midlands Railway (which manages Snow Hill), London Northwestern or CrossCountry; Network Rail’s New Street page doesn’t mention e-scooters.',
+            '**Trams and other trains:** check the rules of West Midlands Metro, West Midlands Railway (which manages Snow Hill), London Northwestern or CrossCountry.',
           ],
         },
         'For schemes elsewhere in the UK, see [e-scooter hire in the UK](guide:uk-hire).',
@@ -143,7 +142,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a Lime e-scooter at night in Birmingham?',
-      answer: 'Yes, as far as we know: we found no night ban, and Lime’s application for street stands (July 2026) describes a service running 00:00–24:00, seven days a week. The rules on pavements, phones and drink apply at any hour.',
+      answer: 'Lime’s application for street stands (July 2026) describes a service running 00:00–24:00, seven days a week. The rules on pavements, phones and drink apply at any hour.',
     },
     {
       question: 'Can I ride a Lime e-scooter in Coventry, Solihull or Wolverhampton?',

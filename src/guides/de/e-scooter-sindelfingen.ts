@@ -16,10 +16,9 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Sindelfingen und Böblingen?',
       blocks: [
-        'Die Stadt Sindelfingen nennt auf ihrer E-Scooter-Seite drei Anbieter: **Lime**, **Dott** und **Voi**. In Böblingen startete das E-Scooter-Sharing laut Stadt am 1. Februar 2022. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Am Mittwoch, 28. Oktober 2026, um 23:50 Uhr zählte unsere Karte [für Sindelfingen](map:de:Sindelfingen) rund 160 Scooter von Dott und 90 von Voi, dazu rund 90 von Lime nach unserer letzten Zählung, die einige Tage alt sein kann. [Für Böblingen](map:de:Böblingen) waren es rund 110 von Voi und, ebenfalls nach letzter Zählung, 100 von Lime. Die Summen folgen der Zuordnung in den Daten der Anbieter, nicht genau den Stadtgrenzen, und sind Momentaufnahmen, keine Flottengrössen.',
-        '**Dott in Böblingen:** Dott führt Böblingen in seiner Standortliste, doch unsere Karte zählt Dotts Scooter aus beiden Städten unter Sindelfingen: Die rund 160 schliessen Böblingen ein, in Böblingens Summe fehlt Dott.',
-        'Die Seite der Stadt Böblingen nennt noch TIER und Bolt. TIER heisst heute Dott; in Dotts deutschen Geschäftsbedingungen (23. September 2025) ist die TIER Mobility SE Vertragspartner. Bolts Datenfeed für die Region Stuttgart zeigte am 28. Oktober 2026 in beiden Städten keinen Scooter, und **Zeus** fährt laut seinem Feed nur im nahen Renningen. Leih-Räder und Pedelecs gibt es in Böblingen laut Stadt bei RegioRadStuttgart; unsere Karte zeigt nur E-Scooter.',
+        'Die Stadt Sindelfingen nennt auf ihrer E-Scooter-Seite drei Anbieter: **Lime**, **Dott** und **Voi**. In Böblingen startete das E-Scooter-Sharing laut Stadt am 1. Februar 2022; Dott führt Böblingen in seiner Standortliste. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Am Mittwoch, 28. Oktober 2026, um 23:50 Uhr zählte unsere Karte [für Sindelfingen](map:de:Sindelfingen) rund 160 Scooter von Dott, Böblingen eingeschlossen, und 90 von Voi, dazu rund 90 von Lime nach unserer letzten Zählung, die einige Tage alt sein kann. [Für Böblingen](map:de:Böblingen) waren es rund 110 von Voi und, ebenfalls nach letzter Zählung, 100 von Lime. Die Summen sind Momentaufnahmen, keine Flottengrössen.',
+        'Die Seite der Stadt Böblingen nennt noch TIER, das heute Dott heisst: In Dotts deutschen Geschäftsbedingungen (23. September 2025) ist die TIER Mobility SE Vertragspartner. **Zeus** fährt laut seinem Feed im nahen Renningen. Leih-Räder und Pedelecs gibt es in Böblingen laut Stadt bei RegioRadStuttgart.',
       ],
     },
     {
@@ -31,12 +30,10 @@ const guide: Guide = {
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi (Datenfeed bei MobiData BW, 28. Oktober 2026)', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
-              ['Dott', 'nur in der App', 'nur in der App', '–', '–'],
-              ['Lime', 'nur in der App', 'nur in der App', '–', '–'],
             ],
           },
         },
-        'Das ist derselbe Tarif wie in [Stuttgart](guide:stuttgart): Vois Scooter hier gehören in seinem Feed zur Region Stuttgart. Für Dott und Lime fanden wir keinen offenen, datierten Tarif; Dott bietet auch Pässe für Tag, Woche und Monat.',
+        'Das ist derselbe Tarif wie in [Stuttgart](guide:stuttgart): Vois Scooter hier gehören in seinem Feed zur Region Stuttgart. Bei Dott und Lime zeigt die App den Preis; Dott bietet auch Pässe für Tag, Woche und Monat.',
         'Die Böblinger Stadtseite nennt, ohne Datum, noch 1 € Grundgebühr und 0,19 bis 0,25 € pro Minute. Verbindlich ist, was die App vor dem Entsperren zeigt.',
       ],
     },
@@ -45,10 +42,10 @@ const guide: Guide = {
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und in Fahrradstrassen; nur wo es keinen Radweg gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser das Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es, ab 1. März 2027 auch «Radverkehr frei»; dann fährst du im Schritttempo. Laut Stadt Böblingen gilt das Verbot auch mit ausgeschaltetem Motor.',
         '**Einbahnstrassen:** Öffnet das Zusatzschild «Radfahrer frei» unter dem Schild «Verbot der Einfahrt» eine Einbahnstrasse in Gegenrichtung, gilt das laut Stadt Sindelfingen auch für E-Scooter. Das Bundesrecht ist hier bis Ende Februar 2027 widersprüchlich: Die Strassenverkehrs-Ordnung lässt E-Scooter mit diesem Schild einfahren, die E-Scooter-Verordnung verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es eindeutig erlaubt.',
-        '**Parks und Wald:** In Sindelfingen ist das Fahren in allen öffentlichen Grünanlagen und im Wald verboten, «auch dann, wenn der Weg wie ein öffentlicher Radweg aussieht», schreibt die Stadt. Das gilt am Klostersee, im Sommerhofenpark und im Stadthallenpark. Für Böblingen fanden wir eine solche Fahrregel nicht; abstellen darfst du in Parks aber auch dort nicht.',
+        '**Parks und Wald:** In Sindelfingen ist das Fahren in allen öffentlichen Grünanlagen und im Wald verboten, «auch dann, wenn der Weg wie ein öffentlicher Radweg aussieht», schreibt die Stadt. Das gilt am Klostersee, im Sommerhofenpark und im Stadthallenpark. Auch in Böblingen darfst du in Parks nicht abstellen.',
         '**Geschäftsgebiet:** Laut Vois Feed vom 28. Oktober 2026 reicht sein Gebiet von Maichingen über beide Innenstädte und das Flugfeld bis zur Hulb. Darmsheim und Dagersheim liegen ausserhalb, bei Voi wie laut Limes App (Stand 24. Oktober 2026) bei Lime; das Krankenhaus Sindelfingen liegt nur bei Lime im Gebiet, Maichingen nur bei Voi.',
         '**Nach Stuttgart:** Vois Gebiet ist hier laut Feed vom Stuttgarter getrennt, und dazwischen lässt Voi nicht weiterfahren. Nimm die S-Bahn; die [Karte von Stuttgart](map:de:Stuttgart) zeigt die Scooter dort.',
-        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h. Ein Nachtfahrverbot oder eine Winterpause nennt keine der beiden Städte; Böblingen schreibt «rund um die Uhr», Vois Feed «24/7».',
+        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h. Zu den Zeiten schreibt Böblingen «rund um die Uhr», Vois Feed «24/7».',
       ],
     },
     {
@@ -58,15 +55,15 @@ const guide: Guide = {
         '**Böblingen:** Laut Stadt stellst du ab wie ein Fahrrad, ohne jemanden zu behindern: Gehwege, Zugänge, Haltestellen und Fussgängerüberwege bleiben frei, Grünflächen, Parks, Gärten und Wälder sind tabu, und in stark besuchten Fussgängerbereichen endet keine Fahrt. Die Selbstverpflichtung von 2022 verlangte zudem 2 m freien Gehweg und schloss eigens Fussgängerzonen, Spielplätze, Friedhöfe, die Zugänge zu S-Bahn, Schönbuchbahn und Regionalbahn, die Fussgängerunterführung am Bahnhof und Fahrradständer aus.',
         {
           table: {
-            caption: 'Fahrt beenden: Regeln der Städte und unsere Auswertung von Vois Datenfeed vom 28. Oktober 2026',
+            caption: 'Fahrt beenden: Regeln der Städte und Vois Datenfeed vom 28. Oktober 2026',
             head: ['Ort', 'Abstellen', 'Wer es regelt'],
             rows: [
               ['Marktplatz und Wettbachplatz, Sindelfingen', 'Verboten laut Stadt; Voi sperrt den Marktplatz selbst, nicht alle Gassen daneben', 'Stadt, umgesetzt von den Anbietern'],
               ['Bahnhof und ZOB Sindelfingen', 'Verboten laut Stadt; Voi sperrt das Umfeld weitgehend', 'Stadt, Anbieter'],
               ['Bahnhof Böblingen', 'Nicht an Haltestellen, Zugängen und in der Unterführung; Voi sperrt die Haltestelle «Böblingen Bf» weitgehend, an «Böblingen Bahnhof (Flugfeld)» ist mehr frei', 'Stadt, Anbieter'],
               ['Elbenplatz und Postplatz, Innenstadt Böblingen', 'Elbenplatz bei Voi weitgehend gesperrt, Postplatz weitgehend frei', 'Stadt (Obergrenze von 2022), Anbieter'],
-              ['Flugfeld und Motorworld', 'Mit Voi meist erlaubt, am Graf-Zeppelin-Platz weitgehend gesperrt', 'Anbieter; eine Regel des Zweckverbands Flugfeld oder der Motorworld fanden wir nicht'],
-              ['Mercedes-Benz-Werk, Tor 1', 'Mit Voi davor fast überall erlaubt; 10 m Abstand zur Haltestelle verlangt die Stadt', 'Anbieter, Stadt; eine Regel von Mercedes-Benz fanden wir nicht'],
+              ['Flugfeld und Motorworld', 'Mit Voi meist erlaubt, am Graf-Zeppelin-Platz weitgehend gesperrt', 'Anbieter'],
+              ['Mercedes-Benz-Werk, Tor 1', 'Mit Voi davor fast überall erlaubt; 10 m Abstand zur Haltestelle verlangt die Stadt', 'Anbieter, Stadt'],
             ],
           },
         },
@@ -87,7 +84,7 @@ const guide: Guide = {
             rows: [
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -107,14 +104,14 @@ const guide: Guide = {
             '**Nicht zusammengeklappt** zählt er als Fahrrad: In S-Bahn und Regionalzug brauchst du montags bis freitags von 6 bis 9 Uhr ein Kinderticket, sonst fährt er kostenlos. Die Busse im Landkreis Böblingen nehmen Fahrräder montags bis freitags erst ab 18:30 Uhr mit, am Wochenende und an Feiertagen ganztags, höchstens zwei je Bus und nicht in Kleinbussen, Ruftaxis oder Ersatzbussen.',
           ],
         },
-        '**Leih-Scooter** nennt der VVS nicht eigens; laut Verbraucherzentrale werden sie im Nahverkehr nicht mitgenommen. Am Bahnhof Sindelfingen und an den Böblinger Bahnhofszugängen darfst du nicht abstellen: Beende die Fahrt ein Stück davor und miete am Ziel neu.',
+        '**Leih-Scooter** werden laut Verbraucherzentrale im Nahverkehr nicht mitgenommen. Am Bahnhof Sindelfingen und an den Böblinger Bahnhofszugängen darfst du nicht abstellen: Beende die Fahrt ein Stück davor und miete am Ziel neu.',
       ],
     },
     {
       heading: 'Wie Sindelfingen und Böblingen E-Scooter regeln: Selbstverpflichtung statt Sondernutzung',
       blocks: [
-        'In Böblingen legte die Selbstverpflichtungserklärung, die die Stadt zum Start 2022 aufsetzte und die Anbieter unterschrieben, Geschäftsgebiet und Sperrzonen fest, dazu eine Obergrenze: höchstens 100 Scooter je Anbieter zu Beginn jedes Geschäftstags, in der Innenstadt 50, mehr nur mit Zustimmung der Stadt. Eine erste Auswertung war zum 1. Juli 2022 vorgesehen. Sie ersetzte ausdrücklich keine Sondernutzungserlaubnis, sollte hinfällig werden, sobald die Stadt eine Sondernutzungspflicht feststellt, und keine Seite konnte ein Entgelt verlangen. Die Stadt verlinkt sie noch; eine neuere Fassung fanden wir nicht.',
-        'In Sindelfingen verpflichteten sich die Anbieter laut Stadt selbst, für ordentliches Abstellen zu sorgen; den Text, eine Sondernutzungserlaubnis, Gebühr oder Höchstzahl fanden wir nicht.',
+        'In Böblingen legte die Selbstverpflichtungserklärung, die die Stadt zum Start 2022 aufsetzte und die Anbieter unterschrieben, Geschäftsgebiet und Sperrzonen fest, dazu eine Obergrenze: höchstens 100 Scooter je Anbieter zu Beginn jedes Geschäftstags, in der Innenstadt 50, mehr nur mit Zustimmung der Stadt. Eine erste Auswertung war zum 1. Juli 2022 vorgesehen. Sie ersetzte ausdrücklich keine Sondernutzungserlaubnis, sollte hinfällig werden, sobald die Stadt eine Sondernutzungspflicht feststellt, und keine Seite konnte ein Entgelt verlangen. Die Stadt verlinkt sie noch.',
+        'In Sindelfingen verpflichteten sich die Anbieter laut Stadt selbst, für ordentliches Abstellen zu sorgen.',
         {
           list: [
             '**Bund:** Verkehrsregeln und Bussgelder. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Städte können es dann als Sondernutzung genehmigen.',
@@ -144,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Sindelfingen und Böblingen?',
-      answer: 'Voi, Dott und Lime, alle drei auf der Karte, Dott für beide Städte unter Sindelfingen. Die Böblinger Stadtseite nennt noch TIER, heute Dott, und Bolt, dessen Feed am 28. Oktober 2026 in beiden Städten keinen Scooter zeigte.',
+      answer: 'Laut Stadt Sindelfingen Voi, Dott und Lime. Die Böblinger Stadtseite nennt noch TIER, das heute Dott heisst.',
     },
     {
       question: 'Darf ich mit dem E-Scooter am Klostersee fahren?',
@@ -160,7 +157,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Sindelfingen oder Böblingen ein Nachtfahrverbot für E-Scooter?',
-      answer: 'Nein. Keine der beiden Städte nennt ein Nachtfahrverbot oder eine Winterpause; Vois Feed gibt «24/7» an (Stand 28. Oktober 2026).',
+      answer: 'Bei Voi nicht: Sein Feed gibt «24/7» an (Stand 28. Oktober 2026), und die Stadt Böblingen schreibt «rund um die Uhr».',
     },
   ],
   sources: [
@@ -171,7 +168,6 @@ const guide: Guide = {
     { title: 'MobiData BW: Tarife von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/system_pricing_plans' },
     { title: 'MobiData BW: Zonen von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/geofencing_zones' },
     { title: 'MobiData BW: Systeminformation von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/system_information' },
-    { title: 'MobiData BW: Fahrzeuge von Bolt in der Region Stuttgart (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_stuttgart/vehicle_status' },
     { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },

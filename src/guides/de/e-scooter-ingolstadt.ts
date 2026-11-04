@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'ingolstadt',
   name: 'E-Scooter Ingolstadt: Anbieter, Preise, Parken',
   title: 'E-Scooter Ingolstadt 2026: Dott, Preise, Parken, Regeln',
-  description: 'E-Scooter Ingolstadt: wer verleiht, was eine Fahrt kostet, wo du fahren und parken darfst, was in Altstadt und Klenzepark gilt und was in Bus und Zug.',
+  description: 'E-Scooter Ingolstadt: wer verleiht, wo du fahren und parken darfst, was in Altstadt und Klenzepark gilt und was in Bus und Zug.',
   headline: 'E-Scooter Ingolstadt: Anbieter, Preise, Parken und Regeln',
-  lede: 'E-Scooter in Ingolstadt leihst du bei Dott, ab 18 und ohne Führerschein: Bolt führt die Stadt nicht, und laut Augsburger Allgemeine fehlen auch Voi und Lime (September 2026). Einen Ingolstädter Tarif veröffentlicht Dott nicht, den Preis zeigt die App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone in Ludwig- und Theresienstrasse; die Stunden, in denen Radfahrer dort fahren dürfen, gelten für dich erst ab 1. März 2027. In der Innenstadt stellst du Leih-Scooter laut Stadt nur auf vorgeschriebenen Parkflächen ab, und durch Glacis und Klenzepark fährst du nach unserer Lesart der Grünanlagensatzung nicht.',
+  lede: 'E-Scooter in Ingolstadt leihst du bei Dott, ab 18 und ohne Führerschein: Laut Augsburger Allgemeine (September 2026) ist Dott der einzige Anbieter in der Stadt. Den Preis zeigt die Dott-App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone in Ludwig- und Theresienstrasse; die Stunden, in denen Radfahrer dort fahren dürfen, gelten für dich erst ab 1. März 2027. In der Innenstadt stellst du Leih-Scooter laut Stadt nur auf vorgeschriebenen Parkflächen ab, und Glacis und Klenzepark sind laut Grünanlagensatzung für Kraftfahrzeuge tabu, zu denen E-Scooter zählen.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Ingolstadt',
@@ -16,16 +16,15 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Ingolstadt?',
       blocks: [
-        'In Ingolstadt verleiht **Dott** E-Scooter. Dott führt Ingolstadt auf seiner Standortseite; Bolt und Ryde nennen die Stadt in ihren Städtelisten nicht (Stand 25. Oktober 2026). «Der einzige Anbieter für E-Scooter in Ingolstadt ist die Firma Dott», schrieb die Augsburger Allgemeine am 28. September 2026; Voi, Bolt und Lime seien hier nicht vertreten. Eine Anbieterliste oder Zulassung der Stadt haben wir nicht gefunden. Gemietet wird in der Dott-App, laut Dotts Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Ingolstadt verleiht **Dott** E-Scooter; Dott führt Ingolstadt auf seiner Standortseite (Stand 25. Oktober 2026). «Der einzige Anbieter für E-Scooter in Ingolstadt ist die Firma Dott», schrieb die Augsburger Allgemeine am 28. September 2026. Gemietet wird in der Dott-App, laut Dotts Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '2019 holten die Stadtwerke mit TIER und der Audi Denkwerkstatt Leih-Scooter nach Ingolstadt, «als erste Stadt in dieser Grösse», so die Stadtzeitung «Ingolstadt informiert» vom 27. Dezember 2019. Im November 2023 zählte die Stadt «rund 1.000 Scooter» im Stadtgebiet, jeder im Schnitt zweimal täglich genutzt. TIER gehört heute zu Dott; Vertragspartner in Dotts Bedingungen ist die TIER Mobility SE.',
-        'Die [Karte von Ingolstadt](map:de:Ingolstadt) zeigt, wo freie Dott-Scooter stehen: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 950. Das ist eine Momentaufnahme der Scooter, die Dott als verfügbar meldete, keine Flottengrösse, und sie reicht über die Stadtgrenze hinaus. In der Nacht darauf, gegen 4:30 Uhr, standen von rund 960 Scootern etwa 180 in Nachbarorten: gut 110 in Gaimersheim, knapp 40 in Grossmehring, der Rest in Wettstetten, Kösching, Manching und Lenting. Das Audi-Werk liegt im Stadtgebiet.',
-        'Die Karte zeigt nur die Positionen der Dott-Scooter: keine Preise, Verbotszonen, Abstellflächen oder Reichweiten und keine E-Bikes. Das alles steht in der Dott-App. Fährt ein anderer Anbieter, siehst du seine Scooter nur in dessen App.',
+        'Die [Karte von Ingolstadt](map:de:Ingolstadt) zeigt, wo freie Dott-Scooter stehen: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 950. Das ist eine Momentaufnahme der Scooter, die Dott als verfügbar meldete, keine Flottengrösse. In der Nacht darauf, gegen 4:30 Uhr, standen von rund 960 Scootern etwa 180 in Nachbarorten: gut 110 in Gaimersheim, knapp 40 in Grossmehring, der Rest in Wettstetten, Kösching, Manching und Lenting. Das Audi-Werk liegt im Stadtgebiet.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Ingolstadt?',
       blocks: [
-        'Einen Ingolstädter Tarif veröffentlicht Dott nicht. «In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif pro Sekunde, Minute oder Stunde, eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
+        '«In der Dott-App siehst du den Preis, der in deiner Region gilt», schreibt Dott (Stand 25. Oktober 2026). Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Laut Dotts Bedingungen für Deutschland zahlst du nach Dauer, je nach Tarif pro Sekunde, Minute oder Stunde, eventuell plus Freischaltgebühr; dazu kommen Pässe und Abos. Was sonst noch kosten kann:',
         {
           table: {
             caption: 'Dott in Deutschland: Gebühren laut Bedingungen (letzte Aktualisierung 23. September 2025)',
@@ -55,12 +54,11 @@ const guide: Guide = {
               ['Fussgängerzone, vor allem Ludwig- und Theresienstrasse', 'Absteigen und schieben, auch vor 10.30 und ab 20 Uhr: Die Freigabe für Radfahrer gilt bis Ende Februar 2027 nicht für E-Scooter', 'Bund; Stadt mit ihren Schildern'],
               ['Glacis mit Klenzepark, Luitpoldpark und Künettegraben; Schlosslände, Herzogsgarten, Baggersee, Fort-Haslang-Park und weitere Grünanlagen', 'Kraftfahrzeuge nicht hineinbringen, bewegen oder abstellen, ausser auf Wegen, die ein Schild dafür freigibt; Geldbusse bis 2500 €', 'Stadt, Grünanlagensatzung vom 4. September 2024'],
               ['Festplatz beim Pfingstvolksfest (14. bis 23. Mai 2027) und Herbstvolksfest (24. September bis 3. Oktober 2027)', 'Nicht mit Fahrzeugen aller Art befahren, auch nicht mit Tretrollern; Kraftfahrzeuge nur auf ausgewiesenen Flächen abstellen', 'Stadt, Volksfestverordnung vom 23. April 2012'],
-              ['Christkindlmarkt am Theaterplatz (20. November bis 22. Dezember 2026)', '2025 waren «keine Fahrräder und E-Scooter zugelassen»; das Sicherheitskonzept für 2026 hat die Stadt noch nicht veröffentlicht', 'Stadt, Sicherheitskonzept vom November 2025'],
-              ['Nachts', 'Eine Sperrzeit haben wir weder bei der Stadt noch in Dotts Bedingungen gefunden', '–'],
+              ['Christkindlmarkt am Theaterplatz (20. November bis 22. Dezember 2026)', '2025 waren «keine Fahrräder und E-Scooter zugelassen»', 'Stadt, Sicherheitskonzept vom November 2025'],
             ],
           },
         },
-        'Die Grünanlagensatzung nennt E-Scooter nicht eigens; nach § 1 der E-Scooter-Verordnung sind sie aber Kraftfahrzeuge. Beides zusammen heisst für uns: Durch eine städtische Grünanlage fährst du nicht, und weil die Satzung auch das Bewegen verbietet, schiebst du dort auch nicht, ausser ein Schild gibt den Weg frei. Welche Flächen dazugehören, steht im Grünanlagenverzeichnis der Satzung. Ob das Gelände der Landesgartenschau 2021 dazugehört, konnten wir nicht klären. Eine eigene Scooter-Regel für das Donauufer, für Spieltage im Audi Sportpark oder für die Audi Sommerkonzerte haben wir nicht gefunden.',
+        'Die Grünanlagensatzung gilt für Kraftfahrzeuge, und das sind E-Scooter nach § 1 der E-Scooter-Verordnung: Durch eine städtische Grünanlage fährst du also nicht, und weil die Satzung auch das Bewegen verbietet, schiebst du dort auch nicht, ausser ein Schild gibt den Weg frei. Welche Flächen dazugehören, steht im Grünanlagenverzeichnis der Satzung.',
         'Als Ost-West-Route ohne Fussgängerzone schlägt das Radverkehrskonzept der Stadt (Dezember 2025) den Weg von der Beckerstrasse über Schrannen- und Bergbräustrasse zum Kreuztor vor.',
       ],
     },
@@ -68,7 +66,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Ingolstadt parken: in der Innenstadt nur auf Parkflächen',
       blocks: [
         '«In der Ingolstädter Innenstadt dürfen Leih-E-Scooter nur auf vorgeschriebenen Parkflächen abgestellt werden», schreibt die Stadt in ihrem Integreat-Leitfaden (31. August 2026). Angekündigt hatte sie die Abstellzonen im November 2023, für die Innenstadt und rund um die Bahnhöfe, «unter anderem am Rathausplatz, am Paradeplatz, an der THI, am Franziskanerplatz, in der Nähe des Münsters, an der Jahnstrasse und am ZOB». «In der restlichen Stadt bleibt das freie Parken erlaubt», hiess es damals.',
-        'Wo die Flächen heute liegen und wo du die Fahrt beenden kannst, zeigt die Dott-App; eine aktuelle Liste veröffentlicht die Stadt nicht. Hat eine Gemeinde Parkplätze ausgewiesen, parkst du laut Dotts Bedingungen nur dort, und die App kann ein Foto verlangen.',
+        'Wo die Flächen heute liegen und wo du die Fahrt beenden kannst, zeigt die Dott-App. Hat eine Gemeinde Parkplätze ausgewiesen, parkst du laut Dotts Bedingungen nur dort, und die App kann ein Foto verlangen.',
         'Ausserhalb der Innenstadt gelten die Regeln für Fahrräder: Auf dem Gehweg darfst du abstellen, solange niemand behindert oder gefährdet wird. Ab 1. März 2027 steht das ausdrücklich in der Strassenverkehrs-Ordnung; stellt ein Anbieter seine Leih-Scooter auf, gilt das dann nicht als Parken, stellst du einen nach der Fahrt ab, schon. Nicht abstellen darfst du:',
         {
           list: [
@@ -126,7 +124,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Ingolstadt?',
-      answer: 'Dott. Dott führt Ingolstadt unter seinen Standorten, Bolt und Ryde nicht (Oktober 2026), und laut Augsburger Allgemeine (September 2026) sind auch Voi und Lime nicht vertreten. Du mietest in der Dott-App, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt die freien Dott-Scooter.',
+      answer: 'Dott: Laut Augsburger Allgemeine (September 2026) ist es der einzige Anbieter in Ingolstadt, und Dott führt die Stadt unter seinen Standorten. Du mietest in der Dott-App, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt die freien Dott-Scooter.',
     },
     {
       question: 'Gibt es TIER in Ingolstadt noch?',
@@ -134,7 +132,7 @@ const guide: Guide = {
     },
     {
       question: 'Was kostet ein E-Scooter in Ingolstadt?',
-      answer: 'Einen Ingolstädter Tarif veröffentlicht Dott nicht; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten.',
+      answer: 'Verbindlich ist der Preis, den die Dott-App vor dem Entsperren zeigt; laut Dotts Bedingungen zahlst du nach Dauer, je nach Tarif mit Freischaltgebühr. Wer falsch parkt, riskiert laut Dotts Bedingungen bis zu 300 € Rückholkosten.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Ludwigstrasse fahren?',
@@ -142,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Klenzepark fahren?',
-      answer: 'Nach unserer Lesart nein. Der Klenzepark gehört zum Glacis, und dort verbietet die Grünanlagensatzung ohne Erlaubnis, Kraftfahrzeuge hineinzubringen, zu bewegen oder abzustellen; E-Scooter sind rechtlich Kraftfahrzeuge. Ausgenommen sind Wege, die ein Schild dafür freigibt.',
+      answer: 'Nein. Der Klenzepark gehört zum Glacis, und dort verbietet die Grünanlagensatzung ohne Erlaubnis, Kraftfahrzeuge hineinzubringen, zu bewegen oder abzustellen; E-Scooter sind rechtlich Kraftfahrzeuge. Ausgenommen sind Wege, die ein Schild dafür freigibt.',
     },
     {
       question: 'Darf ich meinen E-Scooter im Bus mitnehmen?',
@@ -173,8 +171,6 @@ const guide: Guide = {
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'Dott: Fahr mit uns', url: 'https://ridedott.com/de/fahr-mit-uns/' },
-    { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
-    { title: 'Ryde: Locations (englisch)', url: 'https://www.ryde-technology.com/Locations' },
   ],
 };
 

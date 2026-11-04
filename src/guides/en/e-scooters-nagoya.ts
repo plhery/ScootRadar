@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Nagoya 2026: LUUP, rules and where to park',
   description: 'E-scooters in Nagoya: LUUP’s ports and prices, who may ride (16 or over, no licence), the 6 km/h pavement mode and the City’s ¥5,000 removal fee.',
   headline: 'E-scooters in Nagoya: renting LUUP, who may ride, where to ride and where to park',
-  lede: 'You rent e-scooters in Nagoya from LUUP, at its ports: it is the one company the map shows there. Japanese law lets anyone 16 or over ride the 20 km/h class without a driving licence, and asks riders only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port: the City removes e-scooters left in its no-parking zones, Sakae’s among them, and charges ¥5,000 to give one back.',
+  lede: 'You rent e-scooters in Nagoya from LUUP, at its ports. Japanese law lets anyone 16 or over ride the 20 km/h class without a driving licence, and asks riders only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, and end the ride at a LUUP port: the City removes e-scooters left in its no-parking zones, Sakae’s among them, and charges ¥5,000 to give one back.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'jp:Nagoya',
@@ -16,9 +16,8 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Nagoya: LUUP on the map',
       blocks: [
-        'The map shows one company’s e-scooters in Nagoya, **LUUP**, counted at its ports: each port on the [Nagoya map](map:jp:Nagoya) shows how many scooters stand there, without their charge or range, and ports closed at the time are left off. At 03:06 on Friday 30 October 2026, Nagoya time, the map’s Nagoya figure was about 830 LUUP scooters free to rent at that moment. Zoomed in, the website draws the pavements the Aichi police open to bicycles, and so to the 6 km/h mode (JARTIC open data).',
-        'That figure takes in LUUP’s Nagoya service as a whole, not the city alone: any of its ports just over the city line, in neighbouring cities such as Kiyosu, Kitanagoya, Kasugai, Owariasahi, Nagakute, Nisshin or Toyoake, count as Nagoya too.',
-        'ScootRadar shows standing e-scooters only: not LUUP’s e-bikes or seated scooters, nor any bike share. Nor does it show **Su_i** (スーイ), the e-scooter share of Crystal, a Nagoya company: it ran in the Nagoya area in August 2024, Space Connect reported, and we couldn’t confirm it still does. We found no other company renting e-scooters in Nagoya.',
+        '**LUUP** rents e-scooters in Nagoya from its ports, and each port on the [Nagoya map](map:jp:Nagoya) shows how many scooters stand there. At 03:06 on Friday 30 October 2026, Nagoya time, the map’s Nagoya figure was about 830 LUUP scooters free to rent at that moment. Zoomed in, the website draws the pavements the Aichi police open to bicycles, and so to the 6 km/h mode (JARTIC open data).',
+        'LUUP also rents e-bikes and seated scooters. **Su_i** (スーイ), the e-scooter share of Crystal, a Nagoya company, ran in the Nagoya area in August 2024, Space Connect reported.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -37,7 +36,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The 2026 report doesn’t say which rate Nagoya pays: LUUP’s app shows the price before you ride.',
+        'LUUP’s app shows the price before you ride.',
         'Since April 2020 Nagoya City has provided public land for share ports, as a trial. On 10 September 2026 it chose four partners for the permanent scheme, with agreements due to run from 1 November 2026 to 31 March 2031: LUUP, Charichari, Meitetsu Kyosho and a consortium of Enephant and Open Street (HELLO CYCLING). The scheme is for bicycles, e-assist ones included, not e-scooters.',
         'Japan’s guideline for rental companies asks them to make riders return the scooter to a rental point (貸出拠点); the app shows where a ride may end. Japanese law sets no night ban.',
       ],
@@ -71,8 +70,7 @@ const guide: Guide = {
       blocks: [
         '**Don’t leave it on the street.** Nagoya City’s ordinance on abandoned bicycles (名古屋市自転車等の放置の防止に関する条例) covers e-scooters as mopeds. Anything left in one of its no-parking zones (放置禁止区域) may be removed at once, and getting an e-scooter back costs ¥5,000, in cash, with ID; after a month it is disposed of. The depots hand nothing back on public holidays or from 29 December to 3 January.',
         '**Sakae** is a no-parking zone as a whole area, set in April 2023 and March 2024 and widened on 1 October 2024. Scooters removed west of Hisaya-odori Park, and around Osu Kannon, Fushimi and Marunouchi, go to the Rokutan depot; those from the park and east of it, to the Sakae depot (both daily, 14:00 to 20:00). Around **Nagoya Station** they go to the Shukuato depot in Nakamura ward (Monday to Saturday, 14:00 to 19:00).',
-        '**Hisaya-odori Park.** In its north and TV Tower areas, run since 18 September 2020 as Hisaya-odori Park, the City bans riding a bicycle (get off and push it), skateboards and roller skates. It doesn’t name e-scooters: push one through as cyclists must.',
-        '**Nagoya Castle and Osu.** We found no e-scooter rule of their own from Nagoya Castle or Osu’s shopping streets: the road rules above apply.',
+        '**Hisaya-odori Park.** In its north and TV Tower areas, run since 18 September 2020 as Hisaya-odori Park, the City bans riding a bicycle (get off and push it), skateboards and roller skates. Push an e-scooter through as cyclists must.',
       ],
     },
     {
@@ -104,7 +102,7 @@ const guide: Guide = {
       heading: 'Taking your own e-scooter on Nagoya’s trains',
       blocks: [
         'Kintetsu, whose trains to Osaka leave from Kintetsu Nagoya, lets e-scooters aboard only as it does bicycles: taken apart or folded and packed in a bag made for them (rules as of 6 August 2026). You may bring two free items, each within 250 cm in length, width and height added together, 2 m long and 30 kg.',
-        'Meitetsu and JR Central set the same limits and let bicycles aboard only taken apart or folded and bagged; neither names e-scooters (JR Central’s passenger rules, art. 308). We found no e-scooter rule from Nagoya City’s subway and buses.',
+        'Meitetsu and JR Central set the same limits and let bicycles aboard only taken apart or folded and bagged (JR Central’s passenger rules, art. 308).',
         'A shared scooter ends its ride at a port instead; to find one near your station, open the [Nagoya map](map:jp:Nagoya).',
       ],
     },
@@ -125,11 +123,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Nagoya?',
-      answer: 'LUUP’s, shown on the map at its ports. Crystal’s Su_i ran in the Nagoya area in 2024; we couldn’t confirm it still does.',
+      answer: 'LUUP’s, from its ports: find them on the [Nagoya map](map:jp:Nagoya). Crystal’s Su_i ran in the Nagoya area in 2024, Space Connect reported.',
     },
     {
       question: 'How much does LUUP cost in Nagoya?',
-      answer: 'Impress Watch gave LUUP’s standard fare in Japan as ¥50 to start and ¥20 a minute on 8 July 2026, adding that some areas differ; it didn’t say which Nagoya pays. The app shows the price before you ride.',
+      answer: 'Impress Watch gave LUUP’s standard fare in Japan as ¥50 to start and ¥20 a minute on 8 July 2026, adding that some areas differ. The app shows the price before you ride.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Nagoya?',
@@ -141,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you take an e-scooter on the train in Nagoya?',
-      answer: 'Your own, on Kintetsu, only folded or taken apart and bagged, within its carry-on limits. Meitetsu’s and JR Central’s rules name only bicycles, on the same terms.',
+      answer: 'Your own, on Kintetsu, only folded or taken apart and bagged, within its carry-on limits. Meitetsu’s and JR Central’s rules take bicycles on the same terms.',
     },
   ],
   sources: [

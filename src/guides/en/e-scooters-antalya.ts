@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Antalya 2026: BinBin, Beam, Martı, Hop and rules',
   description: 'E-scooters in Antalya: BinBin, Beam, Martı and Hop, how prices work, where to ride and park, Kaleiçi, the tram, Alanya and Side, and Turkey’s 2026 fines.',
   headline: 'E-scooters in Antalya: BinBin, Beam, Martı, Hop and Turkey’s 2026 rules',
-  lede: 'E-scooters in Antalya are rented through four apps: BinBin, Beam, Martı and Hop. BinBin publishes no Antalya price; the app shows the unlock fee and the price a minute before you start. Turkish law lets you ride from 15 without a licence: in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, and never on the pavement. On Yaşar Sobutay Bulvarı, the Lara tourist road through Kundu, scooters are banned outright.',
+  lede: 'E-scooters in Antalya are rented through four apps: BinBin, Beam, Martı and Hop. BinBin’s app shows the unlock fee and the price a minute before you start. Turkish law lets you ride from 15 without a licence: in the cycle lane where there is one, otherwise on roads with a limit of 50 km/h or less, and never on the pavement. On Yaşar Sobutay Bulvarı, the Lara tourist road through Kundu, scooters are banned outright.',
   published: '2026-10-26',
   updated: '2026-11-02',
   city: 'tr:Antalya',
@@ -25,15 +25,15 @@ const guide: Guide = {
             '**Hop** lists Antalya among its cities; its rules ask riders to be over 15.',
           ],
         },
-        'At 22:40 on Sunday 25 October 2026 the [Antalya map](map:tr:Antalya) showed about 3,500 scooters: about 2,330 BinBin in the city and about 1,190 Beam across the province. That is a snapshot, not the fleet. In a night count at about 03:00 on Monday 26 October, on the state land registry’s district boundaries, Muratpaşa had about 1,360, Kepez 750 and Konyaaltı 720. Manavgat had 125, all Beam and about 50 of them in Side, and Kemer 46, all Beam, though Beam’s website doesn’t list Kemer. None stood in Aksu, which takes in Kundu, or in Döşemealtı.',
-        'Alanya had about 980 that night: about 530 BinBin and about 460 Beam. Since 26 October [Alanya’s map](map:tr:Alanya) counts both, and Beam’s scooters in Manavgat and Kemer count under those towns, not in Antalya’s total.',
-        'The map shows BinBin’s and Beam’s scooters with their position and battery: no prices, zones, parking or hours. Martı’s and Hop’s scooters are only in their apps, and it shows no e-bikes or mopeds. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 22:40 on Sunday 25 October 2026 the [Antalya map](map:tr:Antalya) showed about 3,500 scooters: about 2,330 BinBin in the city and about 1,190 Beam across the province. That is a snapshot, not the fleet. In a night count at about 03:00 on Monday 26 October, Muratpaşa had about 1,360, Kepez 750 and Konyaaltı 720. Manavgat had 125, all Beam and about 50 of them in Side, and Kemer 46, all Beam.',
+        'Alanya had about 980 that night: about 530 BinBin and about 460 Beam; see [Alanya’s map](map:tr:Alanya).',
+        'Look for Martı’s and Hop’s scooters in their own apps. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Antalya?',
       blocks: [
-        'BinBin’s locations page leaves the Antalya price blank (checked 26 October 2026). Its app shows the unlock fee and the price a minute when you pick a scooter, and since June 2026 the national regulation has made every operator show its prices in its app or on its website. BinBin charges your card or prepaid balance at the end of the ride.',
+        'BinBin’s app shows the unlock fee and the price a minute when you pick a scooter, and since June 2026 the national regulation has made every operator show its prices in its app or on its website. BinBin charges your card or prepaid balance at the end of the ride.',
         {
           table: {
             caption: 'E-scooters in Antalya at a glance, 26 October 2026, and who says so',
@@ -44,7 +44,6 @@ const guide: Guide = {
               ['What does a ride cost?', 'An unlock fee plus a price a minute, shown in the app', 'BinBin; the national regulation'],
               ['Who can ride?', '15 and over, no licence; Martı asks for 16', 'The traffic law; Martı'],
               ['Banned streets?', 'Yaşar Sobutay Bulvarı in Kemerağzı and Kundu', 'UKOME, 30 September 2025 and 30 June 2026'],
-              ['Night ban?', 'None found', 'The law; UKOME’s published decisions; the operators'],
               ['Where does a ride end?', 'Where the app allows, never in a red area', 'BinBin; Martı'],
             ],
           },
@@ -64,8 +63,8 @@ const guide: Guide = {
           ],
         },
         '**Not on the Lara tourist road in Kemerağzı and Kundu.** Since 30 September 2025 UKOME has banned scooters, Roadpet and Ginger vehicles from all public areas of Yaşar Sobutay Bulvarı in Kemerağzı and Kundu, its pavements and cycle path included, at all hours; on 30 June 2026 it added three- and four-wheeled mopeds. The [map](map:tr:Antalya) draws the boulevard from Kemerağzı to Trendy Lara as a no-riding street from zoom 14. West of Kemerağzı, in Güzeloba, the same boulevard is open to scooters.',
-        '**No-go and slow zones are UKOME’s.** Under the national regulation, its decisions list where scooters may not run and how fast they may go, at most 25 km/h. In 2022 it set a top speed of 20 km/h for e-scooters in Antalya and told the operators to block them, through their apps, on the tram line, in the old town (Kaleiçi), on Konyaaltı Kent Meydanı, on Kapalıyol (Kazım Özalp Caddesi) and on Liman Caddesi in Kemer. Its decisions online, which run to June 2026, don’t change these, but we couldn’t confirm the operators still apply them: your app shows the zones. Since June 2026 the regulation has made operators enforce zones: a warning sounds as you near a no-go zone, and inside one the scooter slows gradually to 6 km/h.',
-        '**The seafront.** On Konyaaltı’s seafront (Akdeniz Bulvarı) and in Konyaaltı Beach Park, a UKOME decision of June 2022 keeps the pedestrian areas for people on foot and the cycle paths for pedal bikes and e-scooters only. Elsewhere, as on the Lara seafront, we found only the national rules: ride in the cycle path where there is one, never on the promenade, and walk the scooter in pedestrian streets.',
+        '**No-go and slow zones are UKOME’s.** Under the national regulation, its decisions list where scooters may not run and how fast they may go, at most 25 km/h. In 2022 it set a top speed of 20 km/h for e-scooters in Antalya and told the operators to block them, through their apps, on the tram line, in the old town (Kaleiçi), on Konyaaltı Kent Meydanı, on Kapalıyol (Kazım Özalp Caddesi) and on Liman Caddesi in Kemer. Your app shows the zones. Since June 2026 the regulation has made operators enforce zones: a warning sounds as you near a no-go zone, and inside one the scooter slows gradually to 6 km/h.',
+        '**The seafront.** On Konyaaltı’s seafront (Akdeniz Bulvarı) and in Konyaaltı Beach Park, a UKOME decision of June 2022 keeps the pedestrian areas for people on foot and the cycle paths for pedal bikes and e-scooters only. Elsewhere, as on the Lara seafront, the national rules apply: ride in the cycle path where there is one, never on the promenade, and walk the scooter in pedestrian streets.',
       ],
     },
     {
@@ -111,26 +110,15 @@ const guide: Guide = {
     {
       heading: 'AntRay trams, the airport and the university',
       blocks: [
-        '**AntRay.** Antalya Ulaşım’s tram rules ban riding a scooter in stations and on trams, and allow on board only a folding scooter, carried folded for the whole trip and pushed, not ridden, through the station: end a rental before you board. Folding bikes travel in a bag during all service hours, other bikes outside 07:00–09:30 and 16:00–20:00 on weekdays and Saturdays, and all day on Sundays. We found no scooter rule for the city buses.',
-        'Under the national regulation, airports, university campuses, hospitals and national parks handle the scooter permits on their own land:',
-        {
-          table: {
-            caption: 'Rules on land owned by others, as each owner states them, 26 October 2026',
-            head: ['Place', 'Owner', 'What it says'],
-            rows: [
-              ['Antalya Airport', 'Fraport TAV, the airport operator', 'Nothing on scooters in its transport pages. AntRay links the airport with the centre, the intercity bus station and Fatih'],
-              ['Akdeniz University', 'The university', 'No scooter rule found; BinBin lists its main campus'],
-              ['Karaalioğlu Park', 'Its manager', 'No rule found: follow the signs and the app'],
-            ],
-          },
-        },
+        '**AntRay.** Antalya Ulaşım’s tram rules ban riding a scooter in stations and on trams, and allow on board only a folding scooter, carried folded for the whole trip and pushed, not ridden, through the station: end a rental before you board. Folding bikes travel in a bag during all service hours, other bikes outside 07:00–09:30 and 16:00–20:00 on weekdays and Saturdays, and all day on Sundays.',
+        'Under the national regulation, airports, university campuses, hospitals and national parks handle the scooter permits on their own land. AntRay links Antalya Airport, run by Fraport TAV, with the centre, the intercity bus station and Fatih, the airport says, and BinBin’s area takes in Akdeniz University’s main campus.',
       ],
     },
     {
       heading: 'Winter and riding at night',
       blocks: [
-        'We found no night ban, but at night you must wear a reflective vest. From November to February the operators may keep as few as 40% of their permitted scooters out in each district, against 70% the rest of the year, so there may be fewer in winter.',
-        'The [map of Antalya](map:tr:Antalya) shows which BinBin and Beam scooters stand near you and how charged they are.',
+        'At night you must wear a reflective vest. From November to February the operators may keep as few as 40% of their permitted scooters out in each district, against 70% the rest of the year, so there may be fewer in winter.',
+        'To see which scooters stand near you now, open the [map of Antalya](map:tr:Antalya).',
       ],
     },
     {
@@ -149,11 +137,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps can you use in Antalya?',
-      answer: 'BinBin, Beam, Martı and Hop. Our [Antalya map](map:tr:Antalya) shows BinBin’s and Beam’s scooters; Martı’s and Hop’s are only in their own apps.',
+      answer: 'BinBin, Beam, Martı and Hop. Find BinBin’s and Beam’s on the [Antalya map](map:tr:Antalya) and Martı’s and Hop’s in their own apps.',
     },
     {
       question: 'How much does a BinBin scooter cost in Antalya?',
-      answer: 'BinBin publishes no Antalya price. The app shows the unlock fee and the price a minute before you start.',
+      answer: 'BinBin’s app shows the unlock fee and the price a minute before you start.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Turkey?',
@@ -194,7 +182,6 @@ const guide: Guide = {
     { title: 'Martı: micromobility, Turkish', url: 'https://www.marti.tech/tr/hizmetler/mikromobilite' },
     { title: 'Hop: rules', url: 'https://hoplagit.com/' },
     { title: 'Hop: cities, Turkish', url: 'https://hoplagit.com/tr/location-list' },
-    { title: 'TKGM (land registry): Parsel Sorgu, district and neighbourhood boundaries, Turkish', url: 'https://parselsorgu.tkgm.gov.tr/' },
   ],
 };
 

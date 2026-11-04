@@ -18,7 +18,6 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt bieten in Pforzheim derzeit **Voi** und **Lime** E-Scooter an. Die ersten Leih-Scooter brachte im Dezember 2020 Zeus. Im Oktober 2024 nannte die Verwaltung vier Betreiber: Tier-Dott (bis 10. November 2024), Lime, Voi und Zeus; im Juli 2025 waren es Lime, Voi und Bolt mit zusammen rund 450 Scootern. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '[Auf der ScootRadar-Karte](map:de:Pforzheim) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 190 Voi-Scooter in Pforzheim, am Sonntagmittag, 25. Oktober, rund 200 Lime-Scooter. Das ist eine Momentaufnahme der freien Fahrzeuge, nicht die Grösse der Flotte.',
-        '**Lime zeigt die Karte seit dem 25. Oktober 2026**, obwohl in Limes offenem Feed im Landesportal MobiData BW am 23. Oktober kein Fahrzeug in der Stadt stand. Dass Lime hier fährt, sagen auch die Seite der Stadt und ein Bericht der Pforzheimer Zeitung vom 2. September 2026. Bolt, das in [Karlsruhe](map:de:Karlsruhe) fährt, und Dott führen Pforzheim nicht unter ihren Städten, und das Landesportal zeigte von beiden dort kein Fahrzeug.',
       ],
     },
     {
@@ -30,11 +29,10 @@ const guide: Guide = {
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi (Datenfeed bei MobiData BW, 23. Oktober 2026)', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
-              ['Lime', 'nur in der App', 'nur in der App', '–', '–'],
             ],
           },
         },
-        'Den Tarif nennt Voi selbst in seinem offenen Datenfeed im Landesportal; die Stadt nennt keinen Preis. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Den Tarif nennt Voi selbst in seinem offenen Datenfeed im Landesportal, Limes Preis zeigt die Lime-App. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
         'Derselbe Feed nannte am selben Tag für [Stuttgart](map:de:Stuttgart) ebenfalls 0,49 € plus 0,24 € pro Minute, für Karlsruhe 0,99 € plus 0,25 € (mehr im [Ratgeber für Karlsruhe](guide:karlsruhe)).',
       ],
     },
@@ -42,10 +40,10 @@ const guide: Guide = {
       heading: 'Wo darf man in Pforzheim mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und in Fahrradstrassen; nur wo es keinen Radweg gibt, auf der Fahrbahn. Gehwege sind tabu, ausser das Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es, ab 1. März 2027 auch «Radverkehr frei»; dann fährst du im Schritttempo. Ob du Einbahnstrassen, die «Radverkehr frei» für Radfahrende in Gegenrichtung öffnet, schon heute mit dem E-Scooter gegen die Einbahnrichtung fahren darfst, regelt der Bund widersprüchlich: Die Strassenverkehrs-Ordnung erlaubt es, die E-Scooter-Verordnung verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es eindeutig erlaubt.',
-        '**Fussgängerzone:** Hier fährst du heute nur, wo das Zusatzschild «Elektrokleinstfahrzeuge frei» es erlaubt; ab 1. März 2027 genügt «Radverkehr frei», im Schritttempo und sofern die Stadt E-Scooter nicht eigens ausschliesst. Sonst steigst du ab und schiebst. Die Freigabe von Bahnhof- und Leopoldstrasse für Fahrräder und Busse auf E-Scooter zu erweitern, hat der Jugendgemeinderat im November 2025 nur beantragt; eine Entscheidung fanden wir nicht. Das Fahren kontrolliert laut Stadt die Verkehrspolizei.',
-        '**An Enz und Nagold:** Laut Vois Datenfeed vom 23. Oktober 2026 liegen die Flussläufe der Innenstadt samt Ufern und Brücken wie Rossbrücke und Altstädter Brücke ausserhalb des Geschäftsgebiets, ebenso der Stadtgarten: Dort endet keine Fahrt. Ob du über die Brücken weiterfahren kannst, geht aus dem Feed nicht eindeutig hervor; das zeigt dir die App.',
+        '**Fussgängerzone:** Hier fährst du heute nur, wo das Zusatzschild «Elektrokleinstfahrzeuge frei» es erlaubt; ab 1. März 2027 genügt «Radverkehr frei», im Schritttempo und sofern die Stadt E-Scooter nicht eigens ausschliesst. Sonst steigst du ab und schiebst. Die Freigabe von Bahnhof- und Leopoldstrasse für Fahrräder und Busse auf E-Scooter zu erweitern, hat der Jugendgemeinderat im November 2025 beantragt. Das Fahren kontrolliert laut Stadt die Verkehrspolizei.',
+        '**An Enz und Nagold:** Laut Vois Datenfeed vom 23. Oktober 2026 liegen die Flussläufe der Innenstadt samt Ufern und Brücken wie Rossbrücke und Altstädter Brücke ausserhalb des Geschäftsgebiets, ebenso der Stadtgarten: Dort endet keine Fahrt. Ob du über die Brücken weiterfahren kannst, zeigt dir die App.',
         '**Geschäftsgebiet:** Laut Feed vom 23. Oktober 2026 deckt es die Kernstadt mit Brötzingen, Wilferdinger Höhe, Buckenberg, Haidach und Teilen von Eutingen ab. Dillweissenstein, Huchenfeld, Würm, Büchenbronn, Sonnenhof, Wildpark und Enzauenpark liegen ausserhalb: Dort beginnst und beendest du keine Fahrt.',
-        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h, Langsamzonen enthält er nicht. Ein nächtliches Fahrverbot oder eine Winterpause nennen weder die Stadt noch Voi, der Feed gibt «24/7» an.',
+        '**Tempo und Zeiten:** Vois Feed setzt überall die bauartbedingten 20 km/h und gibt als Betriebszeit «24/7» an.',
       ],
     },
     {
@@ -62,7 +60,7 @@ const guide: Guide = {
               ['Hauptbahnhof', 'Nur auf den Flächen, am nächsten an der Westlichen Bahnhofunterführung, rund 100 bis 200 m vom Bahnhofsvorplatz', 'Stadt, Anbieter'],
               ['Ufer von Enz und Nagold, Brücken, Stadtgarten mit Schmuckmuseum', 'Verboten: Sperrzone der Stadt, ausserhalb von Vois Geschäftsgebiet', 'Stadt, Voi'],
               ['Weststadtpark, Oststadtpark, viele Schulen', 'Verboten: Sperrzonen der Stadt', 'Stadt'],
-              ['Hochschule, Tiefenbronner Strasse und Holzgartenstrasse', 'Auf der Strasse erlaubt, wenn niemand behindert wird', 'Bundesrecht, Voi; eine Campusregel der Hochschule fanden wir nicht'],
+              ['Hochschule, Tiefenbronner Strasse und Holzgartenstrasse', 'Auf der Strasse erlaubt, wenn niemand behindert wird', 'Bundesrecht, Voi'],
               ['Hochschule, Studiengang Mode, Östliche Karl-Friedrich-Strasse', 'Nur auf den Flächen, etwa am Technischen Rathaus nebenan', 'Stadt, Anbieter'],
             ],
           },
@@ -85,7 +83,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
-              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
               ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
@@ -107,12 +105,12 @@ const guide: Guide = {
     {
       heading: 'Wie Pforzheim E-Scooter regelt: Selbstverpflichtung statt Vertrag',
       blocks: [
-        'Eine Ausschreibung, Sondernutzungserlaubnis oder Gebühr für Leih-Scooter hat Pforzheim nicht veröffentlicht. Laut einer Vorlage der Verwaltung von 2020 ist das Abstellen nach einem Urteil des Oberverwaltungsgerichts Hamburg «zweckmässiger Gemeingebrauch», den Kommunen «grundsätzlich nicht untersagen» können. Deshalb unterschreiben die Anbieter seit Dezember 2020 eine **Selbstverpflichtungserklärung** der Stadt zu Höchstzahl, Geschäftsgebiet, Verkehrssicherheit und Abstellen; ihren Text hat die Stadt nicht veröffentlicht. Die Vorlage nahm ein Ausschuss nur zur Kenntnis, einen Ratsbeschluss dazu fanden wir nicht.',
-        'Im Oktober 2024 nannte die Verwaltung dem Planungs- und Umweltausschuss höchstens 175 Scooter pro Betreiber; eine neuere Obergrenze hat die Stadt nicht veröffentlicht. Die ersten Abstellflächen markierte sie im ersten Halbjahr 2026, seit 21. September 2026 gelten sie. Beschwerden über falsch abgestellte Scooter richtest du laut Stadt direkt an den Anbieter.',
+        'Laut einer Vorlage der Verwaltung von 2020 ist das Abstellen nach einem Urteil des Oberverwaltungsgerichts Hamburg «zweckmässiger Gemeingebrauch», den Kommunen «grundsätzlich nicht untersagen» können. Deshalb unterschreiben die Anbieter seit Dezember 2020 eine **Selbstverpflichtungserklärung** der Stadt zu Höchstzahl, Geschäftsgebiet, Verkehrssicherheit und Abstellen. Ein Ausschuss nahm die Vorlage zur Kenntnis.',
+        'Im Oktober 2024 nannte die Verwaltung dem Planungs- und Umweltausschuss höchstens 175 Scooter pro Betreiber. Die ersten Abstellflächen markierte sie im ersten Halbjahr 2026, seit 21. September 2026 gelten sie. Beschwerden über falsch abgestellte Scooter richtest du laut Stadt direkt an den Anbieter.',
         {
           list: [
             '**Bund:** Verkehrsregeln und Bussgelder. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen.',
-            '**Land Baden-Württemberg:** das Strassengesetz für Sondernutzungen; eigene Landesregeln für Leih-Scooter fanden wir nicht.',
+            '**Land Baden-Württemberg:** das Strassengesetz für Sondernutzungen.',
             '**Stadt Pforzheim:** Selbstverpflichtung, Abstellflächen, Sperrzonen und Angebotsgebiet; die Anbieter setzen sie in ihren Apps um.',
             '**Voi und Lime:** Preise, Geschäftsgebiet und Sperrzonen in der App.',
             '**VPE:** die Mitnahme in Bus und Bahn.',
@@ -136,11 +134,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Was kostet ein E-Scooter in Pforzheim?',
-      answer: 'Bei Voi laut dessen Datenfeed im Landesportal MobiData BW am 23. Oktober 2026 0,49 € zum Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 €. Den Preis von Lime zeigt nur die Lime-App. Verbindlich ist, was die App vor dem Entsperren zeigt.',
+      answer: 'Bei Voi laut dessen Datenfeed im Landesportal MobiData BW am 23. Oktober 2026 0,49 € zum Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 €. Den Preis von Lime zeigt die Lime-App. Verbindlich ist, was die App vor dem Entsperren zeigt.',
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Pforzheim?',
-      answer: 'Laut Stadt Voi und Lime; unsere Karte zeigt seit dem 25. Oktober 2026 beide. Bolt und Dott führen Pforzheim nicht unter ihren Städten (Stand 23. Oktober 2026).',
+      answer: 'Laut Stadt Voi und Lime. Du mietest in deren Apps, ab 18 und ohne Führerschein.',
     },
     {
       question: 'Wo darf ich in der Pforzheimer Innenstadt einen E-Scooter abstellen?',
@@ -156,7 +154,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Pforzheim ein Nachtfahrverbot für E-Scooter?',
-      answer: 'Nein. Weder die Stadt noch Voi nennen ein nächtliches Fahrverbot oder eine Winterpause; Vois Feed gibt «24/7» an (Stand 23. Oktober 2026).',
+      answer: 'Bei Voi nicht: Sein Datenfeed gibt als Betriebszeit «24/7» an (Stand 23. Oktober 2026).',
     },
   ],
   sources: [
@@ -171,9 +169,6 @@ const guide: Guide = {
     { title: 'Stadt Pforzheim: Tourismus', url: 'https://www.pforzheim.de/freizeit/tourismus.html' },
     { title: 'MobiData BW: Tarife von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/system_pricing_plans' },
     { title: 'MobiData BW: Zonen von Voi (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/geofencing_zones' },
-    { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
-    { title: 'Bolt: Städte in Deutschland', url: 'https://bolt.eu/de-de/cities/' },
-    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
     { title: 'VPE: Gemeinschaftstarif, gültig ab 14. Dezember 2025 (PDF)', url: 'https://vpe.de/pdf/tarif/gemeinschaftstarif.pdf' },
     { title: 'KVV: Gemeinschaftstarif (PDF)', url: 'https://www.kvv.de/fileadmin/user_upload/kvv/Dateien/Flyer/2026-07-15_KVV_brs_Gemeinschaftstarif_A5_bf.pdf' },
     { title: 'Hochschule Pforzheim: Anfahrt und Standorte', url: 'https://www.hs-pforzheim.de/hochschule/kontakt/anfahrtskizze' },

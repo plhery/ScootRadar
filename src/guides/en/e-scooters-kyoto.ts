@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Kyoto 2026: LUUP, rules and where to park',
   description: 'E-scooters in Kyoto: LUUP’s ports, who may ride (16 or over, no licence), the 6 km/h pavement mode, the Kamo River ban and the City’s ¥5,000 removal fee.',
   headline: 'E-scooters in Kyoto: renting LUUP, who may ride, where to ride and where to park',
-  lede: 'You rent e-scooters in Kyoto from LUUP, at its ports: it is the one company the map shows there, and we found no other. Japanese law lets anyone 16 or over ride the 20 km/h class without a driving licence, and asks riders only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, stay off the Kamo River banks, and end the ride at a LUUP port.',
+  lede: 'You rent e-scooters in Kyoto from LUUP, one of Kyoto City’s four share partners, at its ports. Japanese law lets anyone 16 or over ride the 20 km/h class without a driving licence, and asks riders only to try to wear a helmet. Keep to the left edge of the road, use the pavement only where a sign lets bicycles on it and only in the 6 km/h mode, stay off the Kamo River banks, and end the ride at a LUUP port.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'jp:Kyoto',
@@ -16,9 +16,8 @@ const guide: Guide = {
     {
       heading: 'Electric scooter rental in Kyoto: LUUP on the map',
       blocks: [
-        'The map shows one company’s e-scooters in Kyoto, **LUUP**, counted at its ports: each port on the [Kyoto map](map:jp:Kyoto) shows how many scooters stand there, without their charge or range, and ports closed at the time are left off. At 15:51 on Thursday 29 October 2026, Kyoto time, the map’s Kyoto figure was about 1,450 LUUP scooters: a snapshot, not a fleet size.',
-        'That figure is the map’s count for LUUP’s Kyoto service as a whole, not for the city alone: any ports the service has beyond the city limits count as Kyoto too. We couldn’t confirm whether it has any in the neighbouring cities of Muko, Nagaokakyo, Uji or Otsu.',
-        'ScootRadar shows standing e-scooters only: not LUUP’s e-bikes or seated scooters, nor the bicycles of the City’s three other share partners, HELLO CYCLING (Open Street), Clew and Charichari. We found no other company renting e-scooters in Kyoto.',
+        '**LUUP** rents e-scooters in Kyoto from its ports, and each port on the [Kyoto map](map:jp:Kyoto) shows how many scooters stand there. At 15:51 on Thursday 29 October 2026, Kyoto time, the map’s Kyoto figure was about 1,450 LUUP scooters: a snapshot, not a fleet size.',
+        'LUUP also rents e-bikes and seated scooters, and the City’s three other share partners, HELLO CYCLING (Open Street), Clew and Charichari, rent bicycles.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -26,7 +25,7 @@ const guide: Guide = {
       heading: 'LUUP in Kyoto: where it runs and where to end a ride',
       blocks: [
         'Kyoto City has had agreements with share operators since January 2023, and since April 2023 has rented them public land for ports. LUUP is one of the four partners it lists.',
-        'The City counted 2,086 share ports in March 2026, for all four operators, against 690 in April 2023; it doesn’t say how many take scooters.',
+        'The City counted 2,086 share ports in March 2026, for all four operators, against 690 in April 2023.',
         'Japan’s guideline for rental companies asks them to oblige riders, in their terms, to return the scooter to a rental point (貸出拠点); the app shows where a ride may end.',
         '**Don’t leave it on the street.** Kyoto City removes abandoned e-scooters as it does bicycles: getting one back costs ¥5,000, at the Sanjo-Senbon depot (noon to 21:00 daily, except over New Year).',
         'Japanese law sets no night ban for e-scooters.',
@@ -62,8 +61,8 @@ const guide: Guide = {
       blocks: [
         '**Not on the Kamo River banks.** Kyoto Prefecture’s Kamo River ordinance (京都府鴨川条例) bans riding mopeds onto the banks of the Kamo along most of its course through the city, and of the Takano below Uma bridge (馬橋); bridges and other roads are left out. E-scooters count as mopeds, the prefecture says, and it kept the ban for the new class in 2023; breaking it can bring a fine of up to ¥50,000.',
         'LUUP announced on 23 June 2026 that its scooters slow down and stop by themselves, after a spoken warning, on about 4 km of the banks, where riders had gone several times, Kyodo reported that day.',
-        '**Temples, shrines, Arashiyama and Gion.** We found no e-scooter rule of their own from Kyoto’s temples and shrines, or for Arashiyama or Gion’s Hanamikoji: on their streets the road rules above apply.',
-        '**Kyoto University.** Its campus traffic rules count mopeds as motor vehicles: riding one onto its Yoshida campuses needs permission from the department in charge, and you may park only where allowed. They don’t name e-scooters, but the Road Transport Vehicle Act counts them as mopeds.',
+        '**Temples, shrines, Arashiyama and Gion.** On the streets around the temples and shrines, in Arashiyama and on Gion’s Hanamikoji, the road rules above apply.',
+        '**Kyoto University.** Its campus traffic rules count mopeds as motor vehicles: riding one onto its Yoshida campuses needs permission from the department in charge, and you may park only where allowed. The Road Transport Vehicle Act counts e-scooters as mopeds.',
       ],
     },
     {
@@ -95,7 +94,7 @@ const guide: Guide = {
       heading: 'Taking your own e-scooter on Kyoto’s trains and buses',
       blocks: [
         'Kintetsu, whose line to Nara starts at Kyoto Station, and Keihan let e-scooters aboard only as they do bicycles: taken apart or folded and packed in a bag made for them (Kintetsu’s rules as of 6 August 2026, Keihan’s read on 29 October 2026). Each passenger may bring two free items, each within 250 cm in length, width and height added together, 2 m long and 30 kg.',
-        'JR West’s passenger rules set the same limits and let bicycles aboard only taken apart or folded and bagged; they don’t name e-scooters (art. 308). We found no e-scooter rule from Kyoto City Bus and Subway; their guide says drivers and station staff may refuse very large or many items.',
+        'JR West’s passenger rules set the same limits and let bicycles aboard only taken apart or folded and bagged (art. 308). Kyoto City Bus and Subway’s guide says drivers and station staff may refuse very large or many items.',
         'A shared scooter ends its ride at a port instead; to find one near your station, open the [Kyoto map](map:jp:Kyoto).',
       ],
     },
@@ -121,11 +120,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Kyoto?',
-      answer: 'LUUP’s, shown on the map at its ports, though not its e-bikes or seated scooters. We found no other company renting e-scooters in Kyoto; the City’s other share partners rent bicycles.',
+      answer: 'LUUP’s, from its ports: find them on the [Kyoto map](map:jp:Kyoto). The City’s other share partners rent bicycles.',
     },
     {
       question: 'How much does LUUP cost in Kyoto?',
-      answer: 'LUUP’s app shows the price before you start the ride. ScootRadar shows where LUUP’s scooters stand, not its prices.',
+      answer: 'LUUP’s app shows the price before you start the ride.',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Kyoto?',
@@ -137,7 +136,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you take an e-scooter on the train in Kyoto?',
-      answer: 'Your own, on Kintetsu and Keihan, only folded or taken apart and bagged, within their carry-on limits; JR West’s rules name only bicycles, on the same terms.',
+      answer: 'Your own, on Kintetsu and Keihan, only folded or taken apart and bagged, within their carry-on limits; JR West’s rules take bicycles on the same terms.',
     },
   ],
   sources: [

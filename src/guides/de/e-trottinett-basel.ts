@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Trottinett-Anbieter gibt es in Basel?',
       blocks: [
-        'In Basel mietest du E-Trottinette von sechs Marken: Lime, Voi, Dott (früher Tier), Bird, Bolt und seit dem 17. März 2026 auch Hopp. ScootRadar zeigt alle sechs. Schweizer Nutzungsbedingungen von Hopp haben wir nicht gefunden; Mindestalter und Versicherung prüfst du darum in der Hopp-App.',
+        'In Basel mietest du E-Trottinette von sechs Marken: Lime, Voi, Dott (früher Tier), Bird, Bolt und seit dem 17. März 2026 auch Hopp.',
         'Eine Bewilligung braucht in Basel kein Anbieter, und Gebühren zahlt keiner. Seit Oktober 2025 muss sich aber jeder an die Nutzungsordnung des Kantons halten: im Monatsmittel höchstens **200 Velos oder Trottis pro Anbieter** auf öffentlichem Grund der Stadt und ein Foto des parkierten Trottis am Ende jeder Fahrt. Wer die Regeln wiederholt bricht, riskiert, dass der Kanton die ganze Flotte vom öffentlichen Grund verbannt.',
         'Am Morgen des 12. Oktober 2026 zeigte die [Karte rund um Basel](map:ch:basel) etwa 1300 Fahrzeuge von Lime, Voi, Dott, Bird und Bolt, Riehen und die Vororte eingerechnet; dazu kamen rund 220 von Hopp. So kommst du zu deinem Trotti:',
         {
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Basel?',
       blocks: [
-        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Fünf der sechs Anbieter veröffentlichen ihre Basler Tarife in offenen Datenfeeds. Je nach Zone und Tageszeit können sie abweichen; Bolt nennt seinen Minutenpreis selbst variabel. Den Endpreis zeigt dir die App, bevor du entsperrst.',
+        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Lime, Voi, Dott, Bolt und Hopp veröffentlichen ihre Basler Tarife in offenen Datenfeeds. Je nach Zone und Tageszeit können sie abweichen; Bolt nennt seinen Minutenpreis selbst variabel. Den Endpreis zeigt dir die App, bevor du entsperrst.',
         {
           table: {
             caption: 'Veröffentlichte Tarife für E-Trottinette in Basel (Datenfeeds der Anbieter vom 23. Oktober 2026)',
@@ -42,7 +42,6 @@ const guide: Guide = {
               ['Bolt', 'CHF 1.–', '45 Rappen', 'CHF 5.50', 'CHF 10.–'],
               ['Hopp', 'CHF 1.–', '45 Rappen', 'CHF 5.50', 'CHF 10.–'],
               ['Lime', 'CHF 1.–', '46 Rappen', 'CHF 5.60', 'CHF 10.20'],
-              ['Bird', 'nicht veröffentlicht', 'nicht veröffentlicht', 'Tarif in der App', 'Tarif in der App'],
             ],
           },
         },
@@ -149,7 +148,7 @@ const guide: Guide = {
           list: [
             'Lime startete im Oktober 2018 mit rund 50 Trottis in Basel. Drei Monate später holte die Firma ihre Schweizer Flotten von der Strasse, in Basel 250 Stück: Ein Softwarefehler schaltete die Displays aus und löste während der Fahrt die Vorderbremse aus.',
             'Am 14. Oktober 2021 zählte der Kanton 1008 E-Trottinette von sechs Firmen, bei einem theoretischen Maximum von 1200. Ob er wisse, warum ein Anbieter Basel verlassen habe? Die ganze Antwort der Regierung: «Nein.»',
-            'Die vier Rheinfähren Wild Maa, Leu, Vogel Gryff und Ueli haben keinen Motor: Sie hängen an einem Stahlseil, und die Strömung treibt sie ans andere Ufer. Ein Velo fährt für 80 Rappen mit. Ob ein Trotti mitdarf, sagt keine Quelle, die wir gefunden haben: Beende die Fahrt vorher auf der Strasse und geh zu Fuss an Bord.',
+            'Die vier Rheinfähren Wild Maa, Leu, Vogel Gryff und Ueli haben keinen Motor: Sie hängen an einem Stahlseil, und die Strömung treibt sie ans andere Ufer. Ein Velo fährt für 80 Rappen mit. Mit dem Trotti beendest du die Fahrt vorher auf der Strasse und gehst zu Fuss an Bord.',
           ],
         },
       ],
@@ -170,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'Bin ich auf einem Miet-Trotti versichert?',
-      answer: 'Lime, Bolt und Voi schliessen eine Haftpflichtversicherung im Preis ein, sie zahlt aber erst nach deiner eigenen Privathaftpflicht. Dotts zuletzt veröffentlichte Deckung zahlte nur, was deine anderen Versicherungen nicht deckten. Bird nennt keine Beträge, und für Hopp haben wir keine Schweizer Bedingungen gefunden. Mitfahrende sind nie versichert.',
+      answer: 'Lime, Bolt und Voi schliessen eine Haftpflichtversicherung im Preis ein, sie zahlt aber erst nach deiner eigenen Privathaftpflicht. Dotts zuletzt veröffentlichte Deckung zahlte nur, was deine anderen Versicherungen nicht deckten. Mitfahrende sind nie versichert.',
     },
   ],
   sources: [

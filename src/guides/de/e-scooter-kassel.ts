@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'kassel',
   name: 'E-Scooter Kassel: Anbieter, Preise, Parken',
   title: 'E-Scooter Kassel 2026: Anbieter, Preise, Abstellregeln',
-  description: 'E-Scooter Kassel: Qick, Bolt und Dott, was eine Fahrt kostet, wo du seit April 2026 parkst und was im Bergpark, in der Karlsaue und in der Tram gilt.',
+  description: 'E-Scooter Kassel: Qick, Bolt und Dott, wo du seit April 2026 parkst und was im Bergpark, in der Karlsaue und in der Tram gilt.',
   headline: 'E-Scooter Kassel: Anbieter, Preise und wo du seit April 2026 parken darfst',
-  lede: 'E-Scooter in Kassel leihst du bei Qick, Bolt oder Dott, ab 18 und ohne Führerschein; auch Zeus steht auf der Anbieterliste der Stadt. Einen Kasseler Tarif veröffentlicht keiner der Anbieter: Den Preis zeigt die App vor dem Entsperren (Stand 25. Oktober 2026). Seit dem 1. April 2026 beendest du die Fahrt nur an einem Radbügel oder auf einer markierten Abstellfläche, innerhalb des Innenstadtrings nur auf einer von 27 Flächen. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone der Königsstrasse und weder im Bergpark Wilhelmshöhe noch in der Karlsaue.',
+  lede: 'E-Scooter in Kassel leihst du bei Qick, Bolt oder Dott, ab 18 und ohne Führerschein; auch Zeus steht auf der Anbieterliste der Stadt. Den Preis zeigt die App vor dem Entsperren. Seit dem 1. April 2026 beendest du die Fahrt nur an einem Radbügel oder auf einer markierten Abstellfläche, innerhalb des Innenstadtrings nur auf einer von 27 Flächen. Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone der Königsstrasse und weder im Bergpark Wilhelmshöhe noch in der Karlsaue.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Kassel',
@@ -16,15 +16,15 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Kassel?',
       blocks: [
-        'Seit dem 1. April 2026 lässt die Stadt Kassel nur noch Anbieter zu, die mit ihr einen Sondernutzungsvertrag haben. Als Ansprechpartner nennt sie vier: **Qick**, **Bolt**, **Dott** (früher TIER) und **Zeus**. Laut HNA waren im Juli 2026 rund 2950 Leih-Scooter von Bolt, Qick und Dott unterwegs; Zeus hatte nach Angaben der Stadt eine Erlaubnis, aber noch keine Scooter aufgestellt (HNA, 23. Juli 2026). Ob Zeus inzwischen fährt, wissen wir nicht.',
+        'Seit dem 1. April 2026 lässt die Stadt Kassel nur noch Anbieter zu, die mit ihr einen Sondernutzungsvertrag haben. Als Ansprechpartner nennt sie vier: **Qick**, **Bolt**, **Dott** (früher TIER) und **Zeus**. Laut HNA waren im Juli 2026 rund 2950 Leih-Scooter von Bolt, Qick und Dott unterwegs; Zeus hatte nach Angaben der Stadt eine Erlaubnis, aber noch keine Scooter aufgestellt (HNA, 23. Juli 2026).',
         'Qick kommt aus Schweden und verleiht auch in Göttingen: [E-Scooter in Göttingen](guide:goettingen). Bolt führt Kassel im Oktober 2026 auf seiner Stadtseite mit E-Scootern, Dott in seiner Liste der Standorte. Gemietet wird in der App des Anbieters, bei allen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Kassel](map:de:Kassel) zeigt Qick und seit dem 25. Oktober 2026 auch Bolt, mit Standort und Akkustand: in der Nacht zum Sonntag, 25. Oktober, rund 1500 Qick-Scooter, um 0 und um 1 Uhr gezählt, am Sonntag kurz vor 14 Uhr rund 200 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen. Preise, Zonen und Abstellorte zeigen nur die Apps; Dott und Zeus findest du nur dort.',
+        'Auf der [Karte von Kassel](map:de:Kassel) standen in der Nacht zum Sonntag, 25. Oktober 2026, rund 1500 Qick-Scooter, um 0 und um 1 Uhr gezählt, am Sonntag kurz vor 14 Uhr rund 200 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Kassel?',
       blocks: [
-        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt; einen Kasseler Tarif nennt kein Anbieter. Bolt wirbt für ganz Deutschland mit «ab 0,15 € pro Minute» plus Freischaltgebühr (Stand 25. Oktober 2026); der Minutenpreis hängt laut Bolt vom Ort ab. Teuer wird es vor allem beim Parken:',
+        'Verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Bolt wirbt für ganz Deutschland mit «ab 0,15 € pro Minute» plus Freischaltgebühr (Stand 25. Oktober 2026); der Minutenpreis hängt laut Bolt vom Ort ab. Teuer wird es vor allem beim Parken:',
         {
           table: {
             caption: 'E-Scooter-Anbieter in Kassel: Preis und Gebühren (Stand 25. Oktober 2026)',
@@ -33,7 +33,6 @@ const guide: Guide = {
               ['Qick', 'in der App', 'bis 150 €, wenn die Stadt einen falsch geparkten Scooter entfernt; davor schützt ein Foto am Ende jeder Fahrt, das ihn am Fahrradständer oder auf einer Abstellfläche zeigt (Bedingungen ohne Datum)'],
               ['Bolt', 'bundesweit beworben: ab 0,15 € pro Minute plus Freischaltgebühr', '15 €, wenn der Scooter falsch steht und kein deutliches Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des zulässigen Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026)'],
               ['Dott', 'in der App', 'bis 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst; 50 € Verwaltungsgebühr, wenn Dott ein Bussgeld für dich zahlt (Bedingungen vom 23. September 2025)'],
-              ['Zeus', 'in der App', 'in den Bedingungen in der Zeus-App'],
             ],
           },
         },
@@ -54,7 +53,7 @@ const guide: Guide = {
     {
       heading: 'Wo darf man in Kassel mit dem E-Scooter fahren?',
       blocks: [
-        'Du fährst auf Radwegen, Radfahr- und Schutzstreifen und, wo es nichts davon gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es. Solche Freigaben gibt es in Kassel laut Stadt nicht, und sie sind auch nicht vorgesehen; das schrieb sie 2021, Neueres haben wir nicht gefunden. Gegen die Fahrtrichtung einer Einbahnstrasse ist es bei «Radverkehr frei» widersprüchlich: Die StVO lässt dich mitfahren, die eKFV verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es erlaubt, wo «Radverkehr frei» sie öffnet. Diese Regeln setzt der Bund.',
+        'Du fährst auf Radwegen, Radfahr- und Schutzstreifen und, wo es nichts davon gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es. Solche Freigaben gibt es in Kassel laut Stadt nicht, und sie sind auch nicht vorgesehen, schrieb sie 2021. Gegen die Fahrtrichtung einer Einbahnstrasse ist es bei «Radverkehr frei» widersprüchlich: Die StVO lässt dich mitfahren, die eKFV verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es erlaubt, wo «Radverkehr frei» sie öffnet. Diese Regeln setzt der Bund.',
         {
           table: {
             caption: 'Wo in Kassel was gilt (Stand 25. Oktober 2026)',
@@ -68,20 +67,20 @@ const guide: Guide = {
             ],
           },
         },
-        'Ein Nachtfahrverbot oder eine Winterpause nennt die Stadt nicht; laut Qick sind seine Scooter je nach Wetter und Saison nicht rund um die Uhr verfügbar.',
+        'Laut Qick sind seine Scooter je nach Wetter und Saison nicht rund um die Uhr verfügbar.',
       ],
     },
     {
       heading: 'Bergpark Wilhelmshöhe und Karlsaue: E-Scooter verboten',
       blocks: [
-        'Beide Parks unterhält das Land Hessen, verwaltet werden sie von Hessen Kassel Heritage. Ihre Parkordnungen (undatiert, PDFs von 2023) sagen: «Das Befahren der Wege und Strassen mit anderen als den hierfür zugelassenen Fahrzeugen ist nicht erlaubt», und «die Benutzung von Pedelecs und Segways usw.» ist verboten. Rad fahren darf man im Bergpark nur auf dem ausgewiesenen Herkules-Wartburg-Fernradweg, in der Karlsaue auch auf der Strasse «An der Karlsaue»; E-Scooter nennen die Parkordnungen dabei nicht. Verstösse können mit einem Bussgeld bis zu 10 000 € geahndet werden.',
+        'Beide Parks unterhält das Land Hessen, verwaltet werden sie von Hessen Kassel Heritage. Ihre Parkordnungen (undatiert, PDFs von 2023) sagen: «Das Befahren der Wege und Strassen mit anderen als den hierfür zugelassenen Fahrzeugen ist nicht erlaubt», und «die Benutzung von Pedelecs und Segways usw.» ist verboten. Rad fahren darf man im Bergpark nur auf dem ausgewiesenen Herkules-Wartburg-Fernradweg, in der Karlsaue auch auf der Strasse «An der Karlsaue». Verstösse können mit einem Bussgeld bis zu 10 000 € geahndet werden.',
         'Die Stadt schrieb 2021: «Verboten ist u.a. das Fahren oder Abstellen von E-Scootern im Bergpark Wilhelmshöhe oder in der Karlsaue.»',
         {
           list: [
             '**Zum Herkules und zum Schloss:** Der Bergpark liegt an einem steilen Hang: Stell den Scooter vorher an einem Radbügel ab und nimm ab dem Bahnhof Wilhelmshöhe die Tram 1 bis Wilhelmshöhe (Park) oder die Buslinie 24 der KVG: Seit Dezember 2025 fährt sie täglich von 10 bis 18 Uhr alle 30 Minuten bis zum Schloss Wilhelmshöhe.',
             '**Wasserspiele:** jedes Jahr vom 1. Mai bis 3. Oktober mittwochs, sonntags und feiertags ab 14:30 Uhr; die nächste Saison beginnt am 1. Mai 2027.',
             '**Karlsaue:** Der ebene Park an der Fulda grenzt an die Innenstadt: Scooter dort abstellen, wo die App es erlaubt, dann zu Fuss weiter.',
-            '**documenta 16:** vom 12. Juni bis 19. September 2027. Eine eigene Scooter-Regel dafür hat die Stadt nicht veröffentlicht; am Fridericianum gilt heute die Innenstadtregel mit festen Flächen.',
+            '**documenta 16:** vom 12. Juni bis 19. September 2027. Am Fridericianum gilt heute die Innenstadtregel mit festen Flächen.',
           ],
         },
       ],
@@ -100,7 +99,7 @@ const guide: Guide = {
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 € und 1 Punkt; länger als 1 Sekunde rot: 100 € und 1 Punkt', 'Unverändert'],
-              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
+              ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt'],
             ],
           },
         },
@@ -110,7 +109,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Tram, Bus und RegioTram: KVG und NVV',
       blocks: [
-        'Auf allen Linien des NVV gelten dessen Beförderungsbedingungen, also auch in den Trams, Bussen und RegioTrams der KVG; eigene E-Scooter-Regeln der KVG haben wir nicht gefunden. Dort steht (Stand 1. Januar 2026): Nach der eKFV zugelassene E-Scooter «dürfen mitgenommen werden, sofern sie zusammengeklappt sind». Die Akkus darfst du unterwegs weder herausnehmen noch laden noch als Powerbank nutzen. Ein Anspruch auf Mitnahme besteht nicht, das Personal entscheidet im Einzelfall; laut Tarifbestimmungen ist sie kostenlos.',
+        'Auf allen Linien des NVV gelten dessen Beförderungsbedingungen, also auch in den Trams, Bussen und RegioTrams der KVG. Dort steht (Stand 1. Januar 2026): Nach der eKFV zugelassene E-Scooter «dürfen mitgenommen werden, sofern sie zusammengeklappt sind». Die Akkus darfst du unterwegs weder herausnehmen noch laden noch als Powerbank nutzen. Ein Anspruch auf Mitnahme besteht nicht, das Personal entscheidet im Einzelfall; laut Tarifbestimmungen ist sie kostenlos.',
         'Einen Leih-Scooter kannst du nicht zusammenklappen, er darf also nicht mit: Beende die Fahrt an einem Radbügel nahe der Haltestelle und miete am Ziel neu.',
         'Lieber Fahrrad? **nextbike** verleiht in Kassel Räder an festen Stationen:',
         {

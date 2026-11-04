@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Ulm 2026: Dott, Preise, Parken, Neu-Ulm',
   description: 'E-Scooter Ulm: Dott fährt in Ulm und Neu-Ulm, laut den Städten für 0,20 € pro Minute. Wo du fahren und parken darfst und was in Bus und Zug gilt.',
   headline: 'E-Scooter Ulm: Anbieter, Preise, Parken und Regeln in Ulm und Neu-Ulm',
-  lede: 'E-Scooter in Ulm und Neu-Ulm leihst du bei Dott, ohne Führerschein und laut Dotts Bedingungen erst ab 18: Seit Juli 2026 hat Dott die Konzession beider Städte, einen anderen Anbieter haben wir nicht gefunden. Laut den Städten (1. Juli 2026) kostet die Minute 0,20 € ohne Freischaltgebühr, und unter anderem ÖPNV-Abonnenten zahlen die Hälfte; den aktuellen Preis zeigt die App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In beiden Innenstädten führen die Städte schrittweise Parkverbotszonen ein: Dort beendest du die Fahrt dann nur noch auf ausgewiesenen Parkinseln, die die App zeigt.',
+  lede: 'E-Scooter in Ulm und Neu-Ulm leihst du bei Dott, ohne Führerschein und laut Dotts Bedingungen erst ab 18: Seit Juli 2026 hat Dott die Konzession beider Städte. Laut den Städten (1. Juli 2026) kostet die Minute 0,20 € ohne Freischaltgebühr, und unter anderem ÖPNV-Abonnenten zahlen die Hälfte; den aktuellen Preis zeigt die App. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In beiden Innenstädten führen die Städte schrittweise Parkverbotszonen ein: Dort beendest du die Fahrt dann nur noch auf ausgewiesenen Parkinseln, die die App zeigt.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Ulm',
@@ -16,16 +16,15 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Ulm und Neu-Ulm?',
       blocks: [
-        'In Ulm und Neu-Ulm verleiht **Dott** E-Scooter und E-Bikes. Laut ihrer gemeinsamen Mitteilung vom 1. Juli 2026 haben beide Städte erstmals eine Konzession für E-Scooter- und E-Bike-Sharing vergeben: «Den Zuschlag erhielt erneut Dott.» Sie ersetzt die frühere Kooperationsvereinbarung. Laut der Konzession darf Dott in Ulm bis zu 600 E-Scooter und 200 Pedelecs einsetzen, in Neu-Ulm bis zu 300 E-Scooter und 100 Pedelecs. Eine Laufzeit nennen die Städte nicht. Neu-Ulms Sondernutzungsgebührensatzung (in Kraft seit 6. Juni 2026) setzt 30 € pro Leih-E-Scooter und Jahr an; die Gebühr und die eigenen Regeln der Stadt Ulm konnten wir nicht prüfen.',
-        'Dott führt Ulm und Neu-Ulm auf seiner Standortseite, Bolt nennt die Städte in seiner Liste nicht, und in den offenen Sharing-Daten des Landes (MobiData BW) stand um Ulm weder ein Voi- noch ein Lime-Scooter (alles Stand 25. Oktober 2026). Leih-Scooter gibt es hier laut Stadt Neu-Ulm seit Juli 2020; die früheren TIER-Fahrzeuge mietest du laut Schwäbischer Zeitung seit Oktober 2024 nur noch in der Dott-App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Ulm](map:de:Ulm) zeigt, wo freie Dott-Scooter stehen: am Sonntag, 25. Oktober 2026, um 8:47 Uhr rund 600. Das ist eine Momentaufnahme, keine Flottengrösse. Sie schliesst das bayerische Neu-Ulm ein, für das die Karte keine eigene Summe zeigt: Von rund 590 Scootern gegen 13:30 Uhr standen nach amtlichen Gemeindegrenzen rund 370 in Ulm, gut 200 in Neu-Ulm, knapp 15 im ebenfalls bayerischen Elchingen und einer in Blaustein.',
-        'Die Karte zeigt nur die Positionen der Dott-Scooter: keine Preise, Verbotszonen, Parkinseln oder Reichweiten und keine E-Bikes oder Pedelecs. Das alles zeigt die Dott-App.',
+        'In Ulm und Neu-Ulm verleiht **Dott** E-Scooter und E-Bikes. Laut ihrer gemeinsamen Mitteilung vom 1. Juli 2026 haben beide Städte erstmals eine Konzession für E-Scooter- und E-Bike-Sharing vergeben: «Den Zuschlag erhielt erneut Dott.» Sie ersetzt die frühere Kooperationsvereinbarung. Laut der Konzession darf Dott in Ulm bis zu 600 E-Scooter und 200 Pedelecs einsetzen, in Neu-Ulm bis zu 300 E-Scooter und 100 Pedelecs. Neu-Ulms Sondernutzungsgebührensatzung (in Kraft seit 6. Juni 2026) setzt 30 € pro Leih-E-Scooter und Jahr an.',
+        'Dott führt Ulm und Neu-Ulm auf seiner Standortseite (Stand 25. Oktober 2026). Leih-Scooter gibt es hier laut Stadt Neu-Ulm seit Juli 2020; die früheren TIER-Fahrzeuge mietest du laut Schwäbischer Zeitung seit Oktober 2024 nur noch in der Dott-App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Die [Karte von Ulm](map:de:Ulm) zeigt, wo freie Dott-Scooter stehen: am Sonntag, 25. Oktober 2026, um 8:47 Uhr rund 600. Das ist eine Momentaufnahme, keine Flottengrösse. Von rund 590 Scootern gegen 13:30 Uhr standen rund 370 in Ulm, gut 200 im bayerischen Neu-Ulm, knapp 15 im ebenfalls bayerischen Elchingen und einer in Blaustein.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Ulm?',
       blocks: [
-        'Die Preise haben die Städte mit der Konzession vereinbart (Mitteilung vom 1. Juli 2026): Die Freischaltgebühr «entfällt vollständig», die Minute kostet 0,20 € statt bisher 0,38 €, und «unter anderem ÖPNV-Abonnentinnen und -Abonnenten» bekommen 50 % Rabatt. Wer sonst noch Rabatt bekommt und wie du ihn nachweist, schreiben die Städte nicht. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Die Preise haben die Städte mit der Konzession vereinbart (Mitteilung vom 1. Juli 2026): Die Freischaltgebühr «entfällt vollständig», die Minute kostet 0,20 € statt bisher 0,38 €, und «unter anderem ÖPNV-Abonnentinnen und -Abonnenten» bekommen 50 % Rabatt. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
         {
           table: {
             caption: 'Fahrpreise laut den Städten, ohne Freischaltgebühr (1. Juli 2026)',
@@ -65,19 +64,16 @@ const guide: Guide = {
               ['Innenstädte von Ulm und Neu-Ulm', 'Parkverbotszonen, schrittweise eingeführt: Fahrt dort nur auf ausgewiesenen Parkinseln beenden', 'Städte Ulm und Neu-Ulm, Konzession'],
               ['Münsterplatz', 'Ausschlusszone: Die App lässt dich die Fahrt hier nicht beenden (undatierte Seite der Stadt Neu-Ulm)', 'Städte Ulm und Neu-Ulm'],
               ['Grünanlagen in Neu-Ulm, etwa das Glacis und Flächen am Donauufer', 'Verboten, «Kraftfahrzeuge zu fahren, zu parken, abzustellen», ausser auf Wegen und Flächen, die ein Schild freigibt; bei Vorsatz Geldbusse', 'Stadt Neu-Ulm, Grünanlagensatzung, zuletzt geändert am 9. Juli 2026'],
-              ['Hirschstrasse, Fischerviertel, Friedrichsau, Ulmer Donauufer', 'Eine eigene Regel der Stadt Ulm konnten wir nicht prüfen: Achte auf die Schilder und die App', 'Stadt Ulm'],
-              ['Schwörmontag, Nabada, Weihnachtsmarkt', 'Eine eigene Scooter-Regel haben wir nicht gefunden', '–'],
-              ['Nachts', 'Keine Sperrzeit gefunden, weder bei den Städten noch bei Dott', '–'],
             ],
           },
         },
-        'Neu-Ulms Grünanlagensatzung (§ 4 Abs. 3 Nr. 12) nennt E-Scooter nicht eigens; nach § 1 der E-Scooter-Verordnung sind sie aber Kraftfahrzeuge. Für uns heisst das: Durch Neu-Ulmer Grünanlagen wie das Glacis schiebst du, auch auf den Wegen, ausser ein Schild gibt den Weg frei, und abstellen darfst du dort nicht. Welche Flächen dazugehören, zeigt der Übersichtslageplan vom 27. April 2026. Ulms eigene Parkregeln konnten wir nicht prüfen.',
+        'Neu-Ulms Grünanlagensatzung (§ 4 Abs. 3 Nr. 12) gilt für Kraftfahrzeuge, und das sind E-Scooter nach § 1 der E-Scooter-Verordnung: Durch Neu-Ulmer Grünanlagen wie das Glacis schiebst du also, auch auf den Wegen, ausser ein Schild gibt den Weg frei, und abstellen darfst du dort nicht. Welche Flächen dazugehören, zeigt der Übersichtslageplan vom 27. April 2026.',
       ],
     },
     {
       heading: 'E-Scooter in Ulm parken: Parkinseln, Verbotszonen und Foto',
       blocks: [
-        'In den Innenstädten von Ulm und Neu-Ulm führen die Städte laut ihrer Mitteilung vom 1. Juli 2026 schrittweise Parkverbotszonen ein. «Das Abstellen der Fahrzeuge wird dort künftig ausschliesslich auf ausgewiesenen Parkinseln möglich sein», schreiben sie; ausserhalb der Innenstädte bleibt das freie Abstellen. Welche Strassen dazugehören und wo die Parkinseln liegen, haben wir nicht gefunden: Wo du die Fahrt beenden kannst, zeigt die Dott-App.',
+        'In den Innenstädten von Ulm und Neu-Ulm führen die Städte laut ihrer Mitteilung vom 1. Juli 2026 schrittweise Parkverbotszonen ein. «Das Abstellen der Fahrzeuge wird dort künftig ausschliesslich auf ausgewiesenen Parkinseln möglich sein», schreiben sie; ausserhalb der Innenstädte bleibt das freie Abstellen. Wo du die Fahrt beenden kannst, zeigt die Dott-App.',
         'Die Seite der Stadt Neu-Ulm zu E-Tretrollern ist undatiert und älter als die Konzession: Sie erlaubt das Abstellen «fast überall», auch in Fussgängerzonen; für die Innenstädte gilt die neuere Mitteilung. Laut der Seite haben beide Städte Ausschlusszonen festgelegt, um das Abstellen «an ungewünschten Plätzen wie beispielsweise dem Münsterplatz» zu verhindern. Gehwege und Hofeinfahrten lassen sich wegen der ungenauen GPS-Ortung nicht sperren; dort achtest du selbst darauf, niemanden zu behindern.',
         'Am Ende jeder Fahrt lädst du ein Foto des abgestellten Scooters hoch, das laut den Städten automatisch in Echtzeit geprüft wird. Verstösse werden «dokumentiert und sanktioniert – von Verwarnungen und Strafgebühren bis hin zur Sperrung des Benutzerkontos».',
         'Ausserhalb der Innenstädte gelten die Regeln für Fahrräder: Auf dem Gehweg darfst du abstellen, solange niemand behindert oder gefährdet wird. Ab 1. März 2027 steht das ausdrücklich in der Strassenverkehrs-Ordnung; stellt ein Anbieter seine Leih-Scooter auf, gilt das dann nicht als Parken, stellst du einen nach der Fahrt ab, schon. Nicht abstellen darfst du:',
@@ -101,7 +97,7 @@ const guide: Guide = {
           list: [
             '**Gehweg oder Fussgängerzone:** 15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden; ab 1. März 2027 25 €, bis 40 €.',
             '**Zu zweit:** 10 €, ab 1. März 2027 25 €. **Ohne Versicherungsplakette:** 40 €.',
-            '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** 100 € und ein Punkt; ab März 2027 neu geregelt, der Betrag ist noch nicht offiziell erläutert.',
+            '**Rote Ampel:** 60 € und ein Punkt, länger als 1 Sekunde rot 100 € und ein Punkt. **Handy in der Hand:** 100 € und ein Punkt; ab März 2027 neu geregelt.',
             '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot; ab 1,1 Promille eine Straftat; unter 21 oder in der Probezeit 0,0 Promille.',
             '**Falsch geparkt auf Geh- oder Radweg:** behindernd 20 €, gefährdend 30 €; ab 1. März 2027 55 €, mit Behinderung 70 €.',
           ],
@@ -125,7 +121,7 @@ const guide: Guide = {
         {
           list: [
             '**Hauptbahnhof:** rund 10 im Umkreis von 200 m um den Bahnhofplatz, rund 35 im Umkreis von 500 m.',
-            '**Münsterplatz und Hirschstrasse:** In der Mitte des Platzes stand keiner, an seinem Rand Gruppen von bis zu acht Scootern, rund 20 im Umkreis von 200 m; an der Hirschstrasse keiner näher als rund 30 m an einem Haus.',
+            '**Münsterplatz und Hirschstrasse:** In der Mitte des Platzes stand keiner, an seinem Rand Gruppen von bis zu acht Scootern, rund 20 im Umkreis von 200 m.',
             '**Universität:** Um die Albert-Einstein-Allee 11 standen im Umkreis von 500 m nur 2, im Umkreis von 1 km 4.',
             '**Friedrichsau:** im Umkreis von 200 m keiner, im Umkreis von 500 m 9.',
           ],
@@ -137,7 +133,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Ulm?',
-      answer: 'Dott: Ulm und Neu-Ulm haben Dott im Juli 2026 die Konzession gegeben; einen anderen Anbieter haben wir nicht gefunden. Du mietest in der Dott-App, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt die freien Dott-Scooter.',
+      answer: 'Dott: Ulm und Neu-Ulm haben Dott im Juli 2026 die Konzession gegeben. Du mietest in der Dott-App, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt die freien Dott-Scooter.',
     },
     {
       question: 'Was kostet ein E-Scooter in Ulm?',
@@ -145,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Fahren die E-Scooter auch in Neu-Ulm?',
-      answer: 'Ja. Die Konzession gilt für beide Städte, und am 25. Oktober 2026 stand gut ein Drittel der Dott-Scooter auf unserer Karte in Neu-Ulm. Durch Neu-Ulmer Grünanlagen wie das Glacis schiebst du nach unserer Lesart der Grünanlagensatzung, ausser ein Schild gibt den Weg frei.',
+      answer: 'Ja. Die Konzession gilt für beide Städte, und am 25. Oktober 2026 stand gut ein Drittel der Dott-Scooter auf unserer Karte in Neu-Ulm. Durch Neu-Ulmer Grünanlagen wie das Glacis schiebst du, ausser ein Schild gibt den Weg frei: Die Grünanlagensatzung verbietet dort das Fahren von Kraftfahrzeugen, und dazu zählen E-Scooter.',
     },
     {
       question: 'Wo darf ich in der Ulmer Innenstadt parken?',
@@ -172,8 +168,6 @@ const guide: Guide = {
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
-    { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
-    { title: 'MobiData BW: Sharing-Daten (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
     { title: 'Schwäbische Zeitung: Tier-E-Scooter in Ulm und Neu-Ulm künftig nur noch über die Dott-App (28. Oktober 2024)', url: 'https://www.schwaebische.de/regional/ulm-alb-donau/ulm/xs-ul-tier-e-scooter-und-e-bikes-in-ulm-und-neu-ulm-ab-morgen-ueber-dott-verfuegbar-3025025' },
     { title: 'LGL Baden-Württemberg: Open GeoData', url: 'https://opengeodata.lgl-bw.de/' },
     { title: 'Bayern: Open Data, Verwaltungsgebiete', url: 'https://geodaten.bayern.de/opengeodata/OpenDataDetail.html?pn=verwaltung' },
