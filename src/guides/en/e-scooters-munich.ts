@@ -53,7 +53,7 @@ const guide: Guide = {
       heading: 'E-scooter parking in Munich: old-town bays and 100-metre zones',
       blocks: [
         'Since 5 August 2022, inside the Altstadtring, the ring road around the old town, you can end a ride only at a marked bay, such as at Stachus, Rindermarkt, Sendlinger Tor or on Maximilianstrasse. Bays may close during events; the app shows which you can use.',
-        'Across the city, Munich is adding shared parking bays for rental scooters and bikes: on 30 June 2026 its Mobility Department counted 365, aiming for 675. Dott draws a 100 m circle around many bays outside the old town, and inside it you can end a ride only in the bay itself (Dott’s zones, as of November 2026).',
+        'Across the city, Munich is adding shared parking bays for rental scooters and bikes, mostly on former car parking spaces: on 30 June 2026 its Mobility Department counted 365, aiming for 675. Within 100 m of each, the department says, you can end a ride only in the bay itself; Dott draws this circle around many bays outside the old town (as of November 2026).',
         'Elsewhere you may park freely, as long as you follow the operators’ commitment to the city:',
         {
           list: [
@@ -64,7 +64,7 @@ const guide: Guide = {
           ],
         },
         {
-          note: 'If the app won’t end your ride, you’re in the old town outside a bay, inside one of Dott’s 100 m circles around a bay, or in an operator’s no-parking zone. Ride on to a bay or out of the zone: the minutes keep running.',
+          note: 'If the app won’t end your ride, you’re in the old town outside a bay, within 100 m of a bay, or in an operator’s no-parking zone. Ride on to a bay or out of the zone: the minutes keep running.',
         },
         'Take a photo of the parked scooter even if the app doesn’t ask: it shows how you left it if the operator later charges a fee.',
       ],
@@ -98,8 +98,8 @@ const guide: Guide = {
             '**From 3 pm to 6 am:** renting only after passing a reaction test in the app.',
           ],
         },
-        'The official site oktoberfest.de puts Hackerbrücke, the Hauptbahnhof (main station) and Stachus in the 5 pm zone and is blunt: e-scooters and the Wiesn don’t go together. Expect similar rules next time and check the app.',
-        '**Plan your way home without a scooter.** The reaction test, the city says, is there to remind riders that a car’s alcohol limits apply, and a drunk ride can cost you your driving licence too (see the rules below).',
+        'The official site oktoberfest.de puts Hackerbrücke, the Hauptbahnhof (main station) and Stachus in the 5 pm zone and is blunt: e-scooters and the Wiesn don’t go together. Zones with a 5 pm cut-off date back to 2019, so expect similar rules next time and check the app.',
+        '**Plan your way home without a scooter.** During the 2022 Wiesn, police checks across the city found 314 drunk e-scooter rides, down from 419 in 2019. The reaction test, the city says, is there to remind riders that a car’s alcohol limits apply, and a drunk ride can cost you your driving licence too (see the rules below).',
       ],
     },
     {
@@ -113,7 +113,7 @@ const guide: Guide = {
     {
       heading: 'MyRadl and MVGO: rent a bike instead',
       blocks: [
-        '**MyRadl** has been the bike-sharing scheme for Munich and 36 towns around it since 7 May 2026, set up by MVV, the city and the surrounding districts and run by nextbike. You pick up and return the bikes at MyRadl stations.',
+        '**MyRadl**, the successor to MVG Rad, has been the bike-sharing scheme for Munich and 36 towns around it since 7 May 2026, set up by MVV, the city and the surrounding districts and run by nextbike. You pick up and return the bikes at MyRadl stations.',
         {
           list: [
             '**Bike:** €1 per 30 minutes; day rate €9 per ride.',
@@ -144,8 +144,8 @@ const guide: Guide = {
           },
         },
         'Riding in Berlin too? Its parking rules differ: see [e-scooters in Berlin](guide:berlin).',
-        '**A voluntary commitment, for now.** Operators in Munich have signed one with the city, revised in April 2022: at most 100 scooters each in the old town and 1,000 more inside the Mittlerer Ring, the middle ring road; no more than four in one spot within 100 m; badly parked ones collected within 24 hours.',
-        'On 19 April 2024 the city’s Mobility Department counted 18,698 rental e-scooters, according to dpa. From 1 March 2027, setting out rental scooters stops counting as parking under German road rules, and cities can then require a permit for it.',
+        '**No permit and no binding cap, for now.** In Munich, operators need no city permit and pay the city no fees; Nuremberg, by contrast, charges €50 per scooter a year. Operators in Munich have signed a voluntary commitment with the city, revised in April 2022: at most 100 scooters each in the old town and 1,000 more inside the Mittlerer Ring, the middle ring road; no more than four in one spot within 100 m; badly parked ones collected within 24 hours.',
+        'The fleet has grown fast: police counted about 4,000 rental e-scooters in 2019 and about 12,000 in 2022; on 19 April 2024 the city’s Mobility Department counted 18,698, according to dpa. From 1 March 2027, setting out rental scooters stops counting as parking under German road rules, and cities can then require a special-use permit for it. Munich wants to turn the voluntary commitment into such a permit, with fleet caps and fees; on 30 June 2026 the Mobility Department said the council would discuss the key points during 2026.',
       ],
     },
   ],
@@ -164,7 +164,7 @@ const guide: Guide = {
     },
     {
       question: 'Why can’t I end my ride in Munich’s old town?',
-      answer: 'Inside the Altstadtring you can end a ride only at a marked bay, and with Dott also within 100 m of many bays elsewhere in the city. Ride to the nearest bay in the app: the minutes keep running until you do.',
+      answer: 'Inside the Altstadtring you can end a ride only at a marked bay, and within 100 m of any shared bay in the city only in the bay itself. Ride to the nearest bay in the app: the minutes keep running until you do.',
     },
     {
       question: 'Can you ride e-scooters in the English Garden?',
@@ -179,7 +179,11 @@ const guide: Guide = {
     { title: 'Bavarian Palace Administration: English Garden, notes for visitors (PDF, German)', url: 'https://www.schloesser.bayern.de/deutsch/service/infomat/screen-pdf/engl-garten_dt.pdf' },
     { title: 'muenchen.de: MyRadl, rental bikes for the Munich region (German)', url: 'https://www.muenchen.de/verkehr/aktuell/myradl-im-mvv-muenchen-leihfahrraeder-fuer-die-region' },
     { title: 'City of Munich, Mobility Department: reply on extending the old-town parking plan for e-scooters, 30 June 2026 (PDF, German)', url: 'https://risi.muenchen.de/risi/dokument/v/9784088' },
+    { title: 'City of Munich, Mobility Department: reply on MVG Rad, MyRadl and the 100 m zones around bays, 29 June 2026 (PDF, German)', url: 'https://risi.muenchen.de/risi/dokument/v/9783671' },
+    { title: 'City of Munich, District Administration Department: e-scooters around the Oktoberfest, 2019 (PDF, German)', url: 'https://risi.muenchen.de/risi/dokument/v/5679699' },
+    { title: 'Munich police: Oktoberfest 2022 final report (PDF, German)', url: 'https://www.polizei.bayern.de/mam/presse/pp-muenchen/pressebericht_sonderbeilage_abschlussbilanz_wiesn_2022.pdf' },
     { title: 'dpa in inFranken.de: Nuremberg and Munich on rental e-scooters, 26 April 2024 (German)', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300,PRINT' },
+    { title: 'Nuremberg City Council: special-use fees from 1 January 2026, decided 20 November 2025 (German)', url: 'https://online-service2.nuernberg.de/buergerinfo/to0050.asp?__ktonr=104885' },
     { title: 'MVG: MVGO app and its sharing features (German)', url: 'https://www.mvg.de/services/unsere-apps/mvgo.html' },
     { title: 'Dott: open data feed for Munich with prices and zones (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munich/gbfs.json' },
     { title: 'Voi: Munich rates in its open data (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/150/netex.xml' },

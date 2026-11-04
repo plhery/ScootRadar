@@ -52,7 +52,7 @@ const guide: Guide = {
       heading: 'E-Scooter in München abstellen: Altstadtring und 100-Meter-Zonen',
       blocks: [
         'Innerhalb des **Altstadtrings** kannst du die Fahrt seit dem 5. August 2022 nur auf ausgewiesenen Abstellflächen beenden, etwa am Stachus, am Rindermarkt, am Sendlinger Tor oder in der Maximilianstrasse. Bei Veranstaltungen kann eine Fläche zeitweise aufgehoben sein; die App zeigt, welche gerade gilt.',
-        'In der ganzen Stadt baut München geteilte Abstellflächen für Leih-Scooter und Leihräder aus: Am 30. Juni 2026 zählte das Mobilitätsreferat 365, das Ziel sind 675. Dott zieht um viele Abstellflächen ausserhalb der Altstadt einen Kreis von 100 m: Darin beendest du die Fahrt nur auf der Fläche selbst (laut Dotts Zonen, Stand November 2026). Zoomst du auf der [Karte](map:de:München) hinein, siehst du die Abstellflächen, die Park- und Fahrverbotszonen der Stadt und die Zonen von Dott.',
+        'In der ganzen Stadt baut München geteilte Abstellflächen für Leih-Scooter und Leihräder aus, vor allem auf früheren Autoparkplätzen: Am 30. Juni 2026 zählte das Mobilitätsreferat 365, das Ziel sind 675. Im Umkreis von 100 m um jede dieser Flächen beendest du die Fahrt laut Mobilitätsreferat nur auf der Fläche selbst; Dott zieht diesen Kreis um viele Flächen ausserhalb der Altstadt (Stand November 2026). Zoomst du auf der [Karte](map:de:München) hinein, siehst du die Abstellflächen, die Park- und Fahrverbotszonen der Stadt und die Zonen von Dott.',
         'Ausserhalb der Altstadt stellst du den Scooter frei ab, nach der Selbstverpflichtung der Anbieter so:',
         {
           list: [
@@ -63,7 +63,7 @@ const guide: Guide = {
           ],
         },
         {
-          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in der Altstadt neben statt auf einer Abstellfläche, bei Dott im 100-Meter-Kreis um eine Fläche oder in einer Sperrzone des Anbieters. Fahr auf die nächste Fläche oder aus der Zone hinaus: Solange die Fahrt läuft, zahlst du weiter.',
+          note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in der Altstadt neben statt auf einer Abstellfläche, im 100-Meter-Umkreis einer Fläche oder in einer Sperrzone des Anbieters. Fahr auf die nächste Fläche oder aus der Zone hinaus: Solange die Fahrt läuft, zahlst du weiter.',
         },
         'Mach am Ende ein Foto vom abgestellten Scooter, auch wenn die App keins verlangt: Es belegt, wie du ihn hinterlassen hast, falls der Anbieter später eine Gebühr verlangt.',
       ],
@@ -97,8 +97,8 @@ const guide: Guide = {
             '**Von 15 bis 6 Uhr:** Ausleihen nur nach bestandenem Reaktionstest in der App.',
           ],
         },
-        'Die offizielle Seite oktoberfest.de zählt Hackerbrücke, Hauptbahnhof und Stachus zur Sperrzone ab 17 Uhr und rät: «E-Scooter und Wiesn sind keine gute Kombination.» Rechne 2027 mit ähnlichen Regeln und prüf sie in der App, bevor du losfährst.',
-        'Der Reaktionstest soll laut Stadt daran erinnern, dass auf dem E-Scooter dieselben Promillegrenzen gelten wie im Auto, mit Folgen auch für deinen Autoführerschein (siehe unten).',
+        'Die offizielle Seite oktoberfest.de zählt Hackerbrücke, Hauptbahnhof und Stachus zur Sperrzone ab 17 Uhr und rät: «E-Scooter und Wiesn sind keine gute Kombination.» Die Zonen und das Zeitfenster ab 17 Uhr gibt es seit 2019. Rechne 2027 mit ähnlichen Regeln und prüf sie in der App, bevor du losfährst.',
+        'Während der Wiesn 2022 stellte die Polizei bei Kontrollen in der Stadt 314 Trunkenheitsfahrten mit E-Scootern fest, 2019 waren es 419. Der Reaktionstest soll laut Stadt daran erinnern, dass auf dem E-Scooter dieselben Promillegrenzen gelten wie im Auto, mit Folgen auch für deinen Autoführerschein (siehe unten).',
       ],
     },
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
     {
       heading: 'MyRadl und MVGO: Leihrad statt E-Scooter',
       blocks: [
-        '**MyRadl** ist seit dem 7. Mai 2026 das Leihradsystem für München und 36 Orte im Umland, entstanden aus MVV, Stadt und Landkreisen und betrieben von nextbike. Du leihst die Räder an MyRadl-Stationen aus und gibst sie dort auch zurück.',
+        '**MyRadl**, der Nachfolger von MVG Rad, ist seit dem 7. Mai 2026 das Leihradsystem für München und 36 Orte im Umland, entstanden aus MVV, Stadt und Landkreisen und betrieben von nextbike. Du leihst die Räder an MyRadl-Stationen aus und gibst sie dort auch zurück.',
         {
           list: [
             '**Fahrrad:** 1 € für 30 Minuten, Tagestarif 9 € pro Fahrt.',
@@ -137,8 +137,8 @@ const guide: Guide = {
           ],
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
-        'Für die Anbieter gilt in München eine freiwillige Selbstverpflichtung, zuletzt in der Fassung vom April 2022: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort im Umkreis von 100 m, falsch geparkte binnen 24 Stunden einsammeln.',
-        'Am 19. April 2024 zählte das Mobilitätsreferat laut dpa 18 698 Leih-Scooter in der Stadt. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen.',
+        'In München brauchen die Anbieter bisher keine Genehmigung und zahlen der Stadt keine Gebühren; Nürnberg dagegen verlangt 50 € pro Scooter und Jahr. Für die Anbieter gilt in München eine freiwillige Selbstverpflichtung, zuletzt in der Fassung vom April 2022: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort im Umkreis von 100 m, falsch geparkte binnen 24 Stunden einsammeln.',
+        'Die Flotte ist stark gewachsen: Laut Polizei waren es 2019 rund 4000 Leih-Scooter und 2022 rund 12 000; am 19. April 2024 zählte das Mobilitätsreferat laut dpa 18 698. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen. München will die Selbstverpflichtung dann in eine solche Sondernutzung mit Obergrenzen für die Flotten und Gebühren überführen; über die Eckpunkte soll der Stadtrat laut Mobilitätsreferat (30. Juni 2026) noch 2026 beraten.',
       ],
     },
   ],
@@ -153,7 +153,7 @@ const guide: Guide = {
     },
     {
       question: 'Warum kann ich meine Fahrt in der Altstadt nicht beenden?',
-      answer: 'Innerhalb des Altstadtrings geht das nur auf ausgewiesenen Abstellflächen, und bei Dott auch im Umkreis von 100 m um viele Flächen in der übrigen Stadt nur auf der Fläche selbst. Fahr zur nächsten Fläche, die die App zeigt; solange die Fahrt läuft, zahlst du.',
+      answer: 'Innerhalb des Altstadtrings geht das nur auf ausgewiesenen Abstellflächen, und im Umkreis von 100 m um jede geteilte Abstellfläche in der Stadt nur auf der Fläche selbst. Fahr zur nächsten Fläche, die die App zeigt; solange die Fahrt läuft, zahlst du.',
     },
     {
       question: 'Wo darf ich in München keinen E-Scooter abstellen?',
@@ -177,7 +177,11 @@ const guide: Guide = {
     { title: 'muenchen.de: MyRadl, Leihfahrräder für die Region', url: 'https://www.muenchen.de/verkehr/aktuell/myradl-im-mvv-muenchen-leihfahrraeder-fuer-die-region' },
     { title: 'Stadt München: Freiwillige Selbstverpflichtungserklärung der Sharing-Anbieter, Stand 6. April 2022 (PDF)', url: 'https://muenchenunterwegs.de/content/113/download/weiterentwicklung-freiwillige-selbstverpflichtungserklarung-ekf-sharing-stand-06042022.pdf' },
     { title: 'Stadt München, Mobilitätsreferat: Antwort zum Antrag „E-Scooter: Abstellkonzept Altstadt ausweiten“, 30. Juni 2026 (PDF)', url: 'https://risi.muenchen.de/risi/dokument/v/9784088' },
+    { title: 'Stadt München, Mobilitätsreferat: Antwort zu MVG Rad, MyRadl und den 100-Meter-Zonen um Abstellflächen, 29. Juni 2026 (PDF)', url: 'https://risi.muenchen.de/risi/dokument/v/9783671' },
+    { title: 'Kreisverwaltungsreferat München: E-Scooter im Umgriff des Oktoberfests, 2019 (PDF)', url: 'https://risi.muenchen.de/risi/dokument/v/5679699' },
+    { title: 'Polizeipräsidium München: Wiesn-Abschlussbilanz 2022 (PDF)', url: 'https://www.polizei.bayern.de/mam/presse/pp-muenchen/pressebericht_sonderbeilage_abschlussbilanz_wiesn_2022.pdf' },
     { title: 'dpa in inFranken.de: Nürnberg und München zu Leih-E-Scootern, 26. April 2024', url: 'https://www.infranken.de/lk/nuernberg/nuernberg-stadt-ergreift-massnahmen-wegen-e-scootern-kommt-ein-verbot-art-5860300,PRINT' },
+    { title: 'Stadtrat Nürnberg: Sondernutzungsgebühren ab 1. Januar 2026, Beschluss vom 20. November 2025', url: 'https://online-service2.nuernberg.de/buergerinfo/to0050.asp?__ktonr=104885' },
     { title: 'MVG: MVGO, Sharing-Funktionen', url: 'https://www.mvg.de/services/unsere-apps/mvgo.html' },
     { title: 'Dott: offener Datenfeed für München mit Tarif und Zonen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munich/gbfs.json' },
     { title: 'Voi: Tarif für München in den offenen Daten (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/150/netex.xml' },

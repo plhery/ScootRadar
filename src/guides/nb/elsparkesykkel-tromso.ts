@@ -160,6 +160,7 @@ const guide: Guide = {
             '**Tromsøbrua var Norges første fritt frambygde bru.** Statsminister Einar Gerhardsen åpnet den 3. juli 1960. Brua er 1016 meter lang, fikk gang- og sykkelvei i 1981 og ble fredet i 2008.',
             '**Fjellheisen åpnet 22. februar 1961**, noen måneder etter at Tromsøbrua var ferdig. Den tar deg fra 50 til 421 meter over havet på fire minutter.',
             '**Over 550 turer om dagen i sentrum.** Sommeren 2024 ble det i snitt kjørt mellom 542 og 572 turer om dagen med Ryde i sentrum, viser kommunens rapport.',
+            '**Over 2000 gebyrer på én sesong.** Tromsø Parkering hadde skrevet ut 2122 gebyrer for feilparkerte elsparkesykler innen 26. september 2025, ifølge iTromsø.',
           ],
         },
       ],
@@ -188,6 +189,7 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Lovdata: Tromsøs utleieforskrift for små elektriske kjøretøy', url: 'https://lovdata.no/dokument/LF/forskrift/2025-09-03-1800' },
     { title: 'Tromsø kommune: Råd og regler om bruk av elsparkesykler', url: 'https://www.tromso.kommune.no/tema/vei-broyting-og-kosting/rad-og-regler-om-bruk-av-elsparkesykler' },
     { title: 'Troms fylkeskommune: Fv. 862 Tromsøbrua (oppdatert 29. oktober 2026)', url: 'https://www.tromsfylke.no/tjenester/samferdsel/fylkesvei/veiprosjekter/fv-862-tromsobrua.66973.aspx' },
     { title: 'Troms fylkeskommune: Spørsmål og svar om Tromsøbrua (2026)', url: 'https://www.tromsfylke.no/_f/p1/i1031d413-b9af-485f-8d30-a57e9a5f7457/sporsmal_svar_tromsobrua.pdf' },
@@ -203,6 +205,7 @@ const guide: Guide = {
     { title: 'Ryde: Beløpet nye kunder betaler (på engelsk)', url: 'https://www.ryde-technology.com/help/new-account-verification' },
     { title: 'Ryde: Åpne data for Tromsø (GBFS via Entur, 3. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs' },
     { title: 'Fjellheisen: Om oss', url: 'https://fjellheisen.no/om-oss' },
+    { title: 'iTromsø: 2122 bøter ga penger i kassa (26. september 2025)', url: 'https://www.itromso.no/nyheter/n/bmRjBA/saa-mange-boeter-har-de-faatt-til-naa' },
   ],
 };
 
