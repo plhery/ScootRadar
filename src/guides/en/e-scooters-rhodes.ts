@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-rhodes',
   topic: 'rhodes',
   name: 'Renting an e-scooter in Rhodes',
-  title: 'E-scooter Rhodes 2026: Hoppy, Hopp, rules and the Old Town',
-  description: 'E-scooter Rhodes guide: Hoppy and Hopp from Rhodes town to Faliraki and Kolymbia, Greece’s helmet law, the buses and why the Old Town is off-limits.',
-  headline: 'E-scooters in Rhodes: Hoppy and Hopp, Greece’s rules, and why you can’t ride in the Old Town',
-  lede: 'You can hire an e-scooter in Rhodes with Hoppy along the coast from Rhodes town to Faliraki and Kolymbia, and with Hopp in Faliraki. You need no driving licence, but Greek law sets the minimum age at 17 and requires a helmet, so bring your own. You can’t ride in the lanes of the Old Town, and for the airport and Lindos you take the bus.',
+  title: 'E-scooter Rhodes 2026: Hoppy, Hopp, prices and the Old Town',
+  description: 'E-scooter Rhodes guide: Hoppy and Hopp from Rhodes town to Faliraki and Kolymbia, what a ride costs, Greece’s helmet law and why the Old Town is off-limits.',
+  headline: 'E-scooters in Rhodes: Hoppy and Hopp, what a ride costs, and why you can’t ride in the Old Town',
+  lede: 'You can hire an e-scooter in Rhodes with Hoppy along the coast from Rhodes town and Ixia to Faliraki and Kolymbia, and with Hopp in Faliraki. Both charge €1 to unlock plus €0.33–0.35 a minute as of November 2026 and need no driving licence, but they ask for riders of 18 and over, and Greek law requires a helmet, so bring your own. You can’t ride or park inside the walls of the Old Town, and no scooter zone reaches the airport or Lindos: take the bus.',
   published: '2026-10-14',
   updated: '2026-10-15',
   city: 'gr:Rhodes',
@@ -16,40 +16,79 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work on Rhodes?',
       blocks: [
-        'Two operators hire out shared e-scooters on Rhodes, the stand-up kind you unlock and pay for with an app. (Most “scooter rental” shops on Rhodes hire mopeds and quads, which need a driving licence.)',
+        'Two operators hire out shared e-scooters on Rhodes, the stand-up kind you unlock with an app and pay for by the minute. (Most “scooter rental” shops on Rhodes hire mopeds and quads, which need a driving licence.)',
         {
           list: [
-            '**Hoppy**, along the north and east coast from Rhodes town to Faliraki and [Kolymbia](map:gr:Kolymbia).',
-            '**Hopp**, in **Faliraki only**.',
+            '**Hoppy**, a Belgian company whose app is called **Hoppy Mobility**. It covers the north and east coast: Rhodes town, Ixia and Ialysos, Kallithea, Faliraki, the coast below Afantou, and [Kolymbia](map:gr:Kolymbia).',
+            '**Hopp**, an Icelandic brand run here by a franchise, in **Faliraki only**, out to the edges of Kallithea and Kalythies.',
           ],
         },
         'On the afternoon of 14 October 2026, a stormy day, the [map of Rhodes town](map:gr:Rhodes) showed 241 Hoppy scooters free to rent at that moment, and the [Faliraki map](map:gr:Faliraki) another 134 Hopps.',
-        'The map shows the nearest scooter and the walk to it, and a button opens the right app. Check the price in the app before you unlock, and read where you may end the ride.',
+        'The map shows the nearest scooter and the walk to it, and a button opens the right app. A third operator may follow: Scoot, which runs in Patras and on Kos, lists Rhodes among its cities “coming next” (November 2026).',
       ],
     },
     {
-      heading: 'Licence, age and ID: what Greek law asks',
+      heading: 'Does it work with a foreign phone and card?',
       blocks: [
-        'You need no driving licence. The legal minimum age is 17, and the app may set a higher one. Carry your passport or ID card when you ride: Greek law asks e-scooter riders for ID, and the operator’s insurance certificate can stay in the app. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Yes: both apps take an ordinary card, and Hopp takes a phone number from any country.',
+        {
+          list: [
+            '**Hoppy Mobility** needs a valid credit or debit card in the app before your first ride.',
+            '**Hopp** lets you sign up with an Apple or Google account, or with a mobile number: pick your country code and a PIN arrives by text, or by an automated call if the text doesn’t come. It takes debit and credit cards, Apple Pay and Google Pay.',
+          ],
+        },
+        'You need no driving licence. The legal minimum age is 17, but Hopp’s terms ask for 18. Hoppy’s App Store page says riders must be 18 or over, although one clause of its terms allows 16 or the local legal age. Carry your passport or ID card when you ride: Greek law asks e-scooter riders for ID, and the operator’s insurance certificate can stay in the app. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Since July 2026 third-party insurance has been compulsory for every e-scooter; on a shared scooter it’s the operator’s.',
+      ],
+    },
+    {
+      heading: 'How much does an e-scooter cost in Rhodes?',
+      blocks: [
+        'Both operators charge €1 to unlock, then by the minute. Hoppy sets its rate scooter by scooter, so it can vary within one area; the app shows yours before you unlock.',
+        {
+          table: {
+            caption: 'E-scooter prices on Rhodes, as of November 2026',
+            head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
+            rows: [
+              ['Hoppy: most scooters', '€1', '€0.35', '€4.50', '€8.00'],
+              ['Hoppy: some scooters, in Ialysos for example', '€1', '€0.33', '€4.30', '€7.60'],
+              ['Hopp: Faliraki', '€1', '€0.33', '€4.30', '€7.60'],
+            ],
+          },
+        },
+        'Hopp’s list of locations still shows Rhodes at €0.28 a minute, but its Rhodes page says €0.33: go by the app.',
+        'Hoppy’s terms add two costs worth knowing: an insurance excess of up to €1,000 per claim if you cause damage to others, and €50 if an under-age rider is caught.',
       ],
     },
     {
       heading: 'Can you ride an e-scooter in Rhodes Old Town?',
       blocks: [
-        '**No: the lanes of the Medieval Town are closed to e-scooters.** Two separate rules say so:',
+        '**No: you can’t ride or park inside the walls of the Medieval Town.** Three separate rules say so:',
         {
           list: [
+            '**The app.** Hoppy makes the walled town a no-ride zone: you can’t start a ride there, end one or ride through. Hopp’s area doesn’t reach Rhodes town at all.',
             '**The town.** Council decision 140/2025 closes Ippoton (the Street of the Knights), Sokratous down to Hippocrates Square, Ermou, Aristotelous and other lanes to every vehicle from 09:00 to 01:00, 1 April to 31 October.',
             '**The law.** Greece bans e-scooters on pedestrian streets, squares and pavements: €350 and 30 days’ licence removal.',
           ],
         },
-        'Leave the scooter outside the walls and walk in. Don’t leave one at the entrance to a pedestrian street: that costs €150. Wherever you are in pedestrians’ way or putting them at risk, the law says to get off and walk the scooter.',
+        'Hopp’s website invites riders through the island’s “storied streets, from the Palace of the Grand Master to sun-soaked beaches”. You can’t ride to the Palace on any shared scooter: it stands inside Hoppy’s no-ride zone, and Hopp’s scooters work only in Faliraki.',
+        'Leave the scooter outside and walk in. Hoppy has parking zones just outside the no-ride area, less than 100 metres from Hippocrates Square, and more along Mandraki. Don’t leave one at the entrance to a pedestrian street: that costs €150. Wherever you are in pedestrians’ way or putting them at risk, the law says to get off and walk the scooter.',
       ],
     },
     {
-      heading: 'Where you can ride and park on Rhodes',
+      heading: 'Mandraki, Elli and the coast: where you can ride and park',
       blocks: [
+        'Outside the no-ride zones Hoppy lets you ride anywhere, but rides start and end only in its parking zones, 152 of them from Ialysos to Kolymbia. Hopp’s rides end inside its Faliraki area.',
+        {
+          list: [
+            '**Mandraki.** You can ride along the harbour, but Hoppy slows you to 18 km/h on the seafront and won’t let you start or end a ride on the quay itself. There’s a zone right by the RODA town-bus terminus.',
+            '**Elli beach.** A parking zone sits about 50 metres from the beach. In the streets behind it, around G. Amarantou Street in Neochori, Hoppy limits you to 15 km/h.',
+            '**Ixia and Ialysos.** Both covered, with parking zones out towards Kremasti.',
+            '**Kallithea and Faliraki.** The only stretch where you can choose between Hoppy and Hopp. Anthony Quinn Bay, south of Faliraki, is a no-ride zone in Hoppy’s app and lies outside Hopp’s area, so neither lets you end a ride there.',
+            '**Kolymbia.** Hoppy’s southernmost area, with 27 parking zones.',
+            '**Villages.** The centres of Afantou and Koskinou are no-ride zones.',
+          ],
+        },
         'Greek law treats an e-scooter rather like a bicycle, with three rules that matter most along the coast:',
         {
           list: [
@@ -59,13 +98,13 @@ const guide: Guide = {
           ],
         },
         'As for cyclists, the Highway Code asks you to ride in single file, never two or more abreast, and to keep both hands on the handlebar unless you are giving a signal. Don’t let another vehicle tow you, and don’t carry anything that gets in the way of riding. Each is a €30 fine.',
-        'End your ride only where the app allows: its map shows where a ride may end. Greek law adds its own limits wherever you stop: no parking on a pedestrian crossing or within 5 metres of one, within 12 metres of a bus stop, or on ramps and disabled bays. The fine is €30, or €150 for ramps, disabled bays and the entrances to pedestrian streets.',
+        'Greek law adds its own limits wherever you stop: no parking on a pedestrian crossing or within 5 metres of one, within 12 metres of a bus stop, or on ramps and disabled bays. The fine is €30, or €150 for ramps, disabled bays and the entrances to pedestrian streets.',
       ],
     },
     {
-      heading: 'Airport, Lindos and the ferry port: take the bus',
+      heading: 'Airport, Lindos and the ferry port: where the scooters stop',
       blocks: [
-        'For the airport and Lindos, take the bus. Greek law bans e-scooters on any road where the limit is over 50 km/h.',
+        'No scooter zone reaches Rhodes airport or Lindos. Hoppy’s app also blocks the main Rhodes–Lindos road outside town, and Hopp’s blocks it around Faliraki; wherever its limit is over 50 km/h, Greek law bans e-scooters there anyway. Take the bus instead:',
         {
           table: {
             caption: 'Buses to the airport, Lindos and the coast (KTEL Rodou timetable for 1–15 October 2026, some runs not on Sundays; RODA timetable from August 2026)',
@@ -79,9 +118,9 @@ const guide: Guide = {
             ],
           },
         },
-        '**The airport.** Take line 25 to Faliraki, or the town’s RODA bus or a taxi into Rhodes town. KTEL Rodou publishes its timetable a few weeks at a time, so check its website for the one after 15 October.',
-        '**Lindos.** Take the bus all the way: in the first half of October 2026 it left Rhodes town 19 times a day.',
-        '**The ferry port.** End your ride before the quay and walk to the boat: Greek law bans parking an e-scooter in port zones where passengers board.',
+        '**The airport.** The nearest Hoppy zone is about 3.6 km away in a straight line, so take line 25 to Faliraki, or the town’s RODA bus or a taxi into Rhodes town. KTEL Rodou publishes its timetable a few weeks at a time, so check its website for the one after 15 October.',
+        '**Lindos.** It lies about 18 km beyond Hoppy’s last zone at Kolymbia: take the bus all the way. In the first half of October 2026 it left Rhodes town 19 times a day.',
+        '**The ferry port.** Most of the central port lies in Hoppy’s no-ride zone. End your ride in one of the parking zones about 100 metres from the harbour and walk to the boat: Greek law bans parking an e-scooter in port zones where passengers board.',
         'Island-hopping? A shared scooter can’t come on the ferry, but Hoppy runs on Kos too: see our [Kos guide](guide:kos).',
       ],
     },
@@ -123,7 +162,7 @@ const guide: Guide = {
             '**Storms.** On 14 October 2026 heavy rain closed schools and stopped the town buses.',
             '**Alcohol.** The limit is the drivers’ one, 0.5 g/l in the blood or 0.25 mg/l in breath, and the fine starts at €350. After an evening out, walk or take a taxi.',
             '**At night.** Wear something reflective, as the law requires, and keep to lit streets you know.',
-            '**Off season.** Check the app before an autumn or winter trip.',
+            '**Off season.** Hoppy says it runs 24/7, but check both apps before an autumn or winter trip.',
           ],
         },
       ],
@@ -150,11 +189,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which app do I need for e-scooters in Rhodes?',
-      answer: 'Hoppy, from Rhodes town to Kolymbia, and Hopp, in Faliraki. [Our map](map:gr:Rhodes) shows both, and a button opens the right app.',
+      answer: 'Hoppy Mobility covers most of the scooter areas, from Rhodes town and Ixia to Kolymbia; Hopp works only in Faliraki. Both charge €1 to unlock plus €0.33–0.35 a minute as of November 2026. [Our map](map:gr:Rhodes) shows both, and a button opens the right app.',
     },
     {
       question: 'Can I ride a scooter to the Palace of the Grand Master?',
-      answer: 'No. The Palace stands inside the walled Old Town, whose lanes are pedestrian streets where Greek law bans e-scooters (€350). Park outside the walls and walk in.',
+      answer: 'No. The Palace stands inside the walled Old Town, a no-ride zone in Hoppy’s app, and its lanes are pedestrian streets where Greek law bans e-scooters (€350). Park outside the walls, for example along Mandraki, and walk in.',
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in Greece?',
@@ -162,11 +201,11 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a driving licence to hire an e-scooter on Rhodes?',
-      answer: 'No. Greek law sets the minimum age at 17, and the app may ask riders to be older; carry a passport or ID card. Mopeds are different: hiring one needs a licence.',
+      answer: 'No. Greek law sets the minimum age at 17, but Hopp’s terms and Hoppy’s App Store page ask for 18; carry a passport or ID card. Mopeds are different: hiring one needs a licence.',
     },
     {
-      question: 'How do I get from Rhodes airport to Faliraki or Rhodes town?',
-      answer: 'By bus: KTEL line 25 runs from the airport to Faliraki for €3.50 (timetable for 1–15 October 2026); for Rhodes town, take a RODA municipal bus or a taxi.',
+      question: 'Can I get from Rhodes airport to my hotel by e-scooter?',
+      answer: 'No: the nearest Hoppy zone is about 3.6 km from the airport. KTEL line 25 runs from the airport to Faliraki for €3.50 (timetable for 1–15 October 2026); for Rhodes town, take a RODA municipal bus or a taxi.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Rhodes?',
@@ -177,6 +216,16 @@ const guide: Guide = {
     { title: 'Municipality of Rhodes: decision 140/2025 on the Old Town’s pedestrian streets (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/6%CE%93%CE%A0%CE%A3%CE%A91%CE%A1-%CE%97%CE%A5%CE%A4' },
     { title: 'Municipality of Rhodes: decision 167/2026 on the e-bike sharing scheme (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/%CE%A8%CE%A0%CE%A55%CE%A91%CE%A1-%CE%9A6%CE%94' },
     { title: 'Municipality of Rhodes: decision 355/2026, the Medieval Town patrol tender (Diavgeia, Greek)', url: 'https://diavgeia.gov.gr/doc/92%CE%A11%CE%A91%CE%A1-758' },
+    { title: 'Hoppy: open data for Rhodes (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1487/v3.0/gbfs' },
+    { title: 'Hoppy: terms and conditions', url: 'https://behoppy.eu/terms-conditions/' },
+    { title: 'Hoppy Mobility on the App Store (Greece)', url: 'https://apps.apple.com/gr/app/hoppy-mobility/id6444032052' },
+    { title: 'Hopp: open data for Rhodes (GBFS)', url: 'https://api.hopp.bike/gbfs/gr-rhodes/gbfs.json' },
+    { title: 'Hopp: Rhodes', url: 'https://hopp.bike/in/rhodes' },
+    { title: 'Hopp: locations and prices', url: 'https://hopp.bike/locations' },
+    { title: 'Hopp: terms of service for Greece', url: 'https://hopp.bike/tos?group=1SqLO4EXRh4k141hsd0F2P' },
+    { title: 'Hopp support: signing up and logging in', url: 'https://support.hopp.bike/en/articles/109145-signing-up-and-logging-in' },
+    { title: 'Hopp support: using the wallet', url: 'https://support.hopp.bike/en/articles/109686-using-the-wallet' },
+    { title: 'Scoot: Scoot Sharing, prices and cities', url: 'https://scoot.ltd/en/sharing' },
     { title: 'KTEL Rodou: east-coast and airport bus timetable, 1–15 October 2026 (PDF, Greek)', url: 'https://www.ktelrodou.gr/wp-content/uploads/2024/01/GENIKO-40.pdf' },
     { title: 'Municipality of Rhodes: RODA town and west-coast bus timetables (Greek)', url: 'https://www.rhodes.gr/sygkinonies-metafores-stin-poli-ke-sto-nisi/' },
   ],
