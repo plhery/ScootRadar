@@ -4,11 +4,11 @@ const guide: Guide = {
   locale: 'de',
   slug: 'e-scooter-augsburg',
   topic: 'augsburg',
-  name: 'E-Scooter Augsburg: Anbieter, Regeln, Parken',
-  title: 'E-Scooter Augsburg 2026: Anbieter, Parken, Tram',
-  description: 'E-Scooter Augsburg: wer verleiht, wo du fahren und parken darfst, was in Innenstadt und Parks gilt und warum die Tram für E-Scooter tabu ist.',
-  headline: 'E-Scooter Augsburg: Anbieter, Parken, Parks und Regeln',
-  lede: 'E-Scooter in Augsburg leihst du ohne Führerschein bei Voi, Lime oder Bolt; was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Einen eigenen E-Scooter darfst du ab 14 fahren. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du nach unserer Lesart der Grünanlagensatzung nicht.',
+  name: 'E-Scooter Augsburg: Anbieter, Preise, Parken',
+  title: 'E-Scooter Augsburg 2026: Anbieter, Preise, Parken, Tram',
+  description: 'E-Scooter Augsburg: wer verleiht, was eine Fahrt kostet, wo du fahren und parken darfst, was in Innenstadt und Parks gilt und warum die Tram tabu ist.',
+  headline: 'E-Scooter Augsburg: Anbieter, Preise, Parken und Regeln',
+  lede: 'E-Scooter in Augsburg leihst du ohne Führerschein bei Voi, Lime oder Bolt; Bolt vermietet erst ab 18, einen eigenen E-Scooter darfst du schon ab 14 fahren. Auch Hopp führt Augsburg auf seiner Website. Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du nach unserer Lesart der Grünanlagensatzung nicht.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Augsburg',
@@ -17,7 +17,26 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Augsburg?',
       blocks: [
         'In Augsburg verleihen **Voi**, **Lime** und **Bolt** E-Scooter: Am Samstag, 24. Oktober 2026, kurz vor 16 Uhr zeigte die [Karte von Augsburg](map:de:Augsburg) rund 680 Voi-Scooter, die zu diesem Zeitpunkt frei waren, am Sonntag gegen 14 Uhr rund 790 Bolt-Scooter, die zu diesem Zeitpunkt frei waren, und am Sonntagmorgen rund 960 Lime-Scooter nach der letzten Zählung.',
-        'Steht ein Scooter falsch, schickt die Stadt laut eigener Seite Umparkaufträge «an alle Anbieter». Den Preis zeigt dir die App vor dem Entsperren; verbindlich ist, was sie dort anzeigt. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Im April 2025 zählte Voi Augsburg zu seinen sieben Städten in Bayern. **Bolt** nennt auf seiner Augsburg-Seite unter «Verfügbare Dienste in Augsburg» «E-Scooter auf Abruf». **Hopp** führt auf seiner Standortseite den Franchise-Betrieb «Hopp Augsburg» mit E-Scootern (Stand November 2026).',
+        'Gemietet wird in der App des Anbieters, bei Bolt und Hopp laut ihren Bedingungen erst ab 18. Steht ein Scooter falsch, schickt die Stadt laut eigener Seite Umparkaufträge «an alle Anbieter». Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Augsburg?',
+      blocks: [
+        'Voi und Hopp nennen ihren Augsburger Tarif:',
+        {
+          table: {
+            caption: 'Preise in Augsburg (Stand November 2026)',
+            head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '15 Minuten'],
+            rows: [
+              ['Voi', '0,00 €', '0,21 €', '2,10 €', '3,15 €'],
+              ['Hopp', '0,50 €', '0,20 €', '2,50 €', '3,50 €'],
+            ],
+          },
+        },
+        'Bolt nennt für Deutschland Minutenpreise ab 0,15 € plus eine kleine Freischaltungsgebühr; der Minutentarif hängt vom Ort ab. Dazu verkauft Bolt Wochen- und Monatspässe und ein Abo mit unbegrenzten Freischaltungen ab 0,99 € im Monat. Bei Lime und Bolt siehst du den Augsburger Preis in der App; verbindlich ist bei allen, was die App vor dem Entsperren zeigt.',
+        'Teuer wird es bei Bolt, wenn du falsch parkst: 15 € Parkgebühr, wenn der Scooter nicht nach Bolts Fahrregeln steht und kein deutliches Foto am Fahrtende das belegt, und bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026).',
       ],
     },
     {
@@ -38,8 +57,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Die Satzung gilt für Parks und Grünflächen der Stadt samt ihren Wegen, nicht für Wald, Zoo, Friedhöfe, Sport- und Schulgelände oder Grün an Strassen. E-Scooter nennt sie nicht eigens, nach § 1 eKFV sind sie aber Kraftfahrzeuge. Für uns heisst das: In einem städtischen Park schiebst du, auch auf den Wegen, ausser ein Schild gibt den Weg frei, und stellst keinen Scooter ab; an Lech und Wertach gilt das, soweit die Ufer städtische Anlagen sind.',
-        'Eine eigene E-Scooter-Regel für Plärrer, Universität, Technische Hochschule oder Maximilianstrasse und eine Sperrzeit oder Winterpause haben wir weder bei der Stadt noch bei den Anbietern gefunden.',
+        'Die Satzung gilt für Parks und Grünflächen der Stadt samt ihren Wegen, nicht für Wald, Zoo, Friedhöfe, Sport- und Schulgelände oder Grün an Strassen. E-Scooter nennt sie nicht eigens, nach § 1 eKFV sind sie aber Kraftfahrzeuge. Das heisst: In einem städtischen Park schiebst du, auch auf den Wegen, ausser ein Schild gibt den Weg frei, und stellst keinen Scooter ab; an Lech und Wertach gilt das, soweit die Ufer städtische Anlagen sind.',
       ],
     },
     {
@@ -80,9 +98,9 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Tram, Bus und Zug: was AVV, swa und Bahn erlauben',
       blocks: [
-        'In den Trams und Bussen der Stadtwerke Augsburg (swa) und in den Regionalbussen des Augsburger Verkehrs- und Tarifverbunds (AVV) fährt kein E-Scooter mit. Der AVV-Gemeinschaftstarif sagt in § 11 Abs. 5: «Die Mitnahme von Elektro-Tretroller und Erwachsenen-Roller ist in Regional-, Stadtbussen und Strassenbahnen ausgeschlossen.» Eine Ausnahme für zusammengeklappte E-Scooter nennt er nicht. So steht es seit der Tarifänderung vom 1. Januar 2025 im Tarif (Stand August 2025).',
-        'Für Züge verweist der AVV auf den Deutschlandtarif und den Tarif der Bayerischen Regiobahn (BRB). Nach dem Deutschlandtarif (Stand Juni 2026) darfst du einen eigenen E-Scooter zusammengeklappt als Handgepäck kostenlos mitnehmen, einen pro Person; der Akku bleibt drin und wird nur geladen, wo ein Schild im Zug es erlaubt. Das gilt in den Regionalzügen von DB Regio, BRB und Arverio Bayern.',
-        'Ob ein eigener E-Scooter im Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
+        'In den Trams und Bussen der Stadtwerke Augsburg (swa) und in den Regionalbussen des Augsburger Verkehrs- und Tarifverbunds (AVV) fährt kein E-Scooter mit. Der AVV-Gemeinschaftstarif sagt in § 11 Abs. 5: «Die Mitnahme von Elektro-Tretroller und Erwachsenen-Roller ist in Regional-, Stadtbussen und Strassenbahnen ausgeschlossen.» So steht es seit der Tarifänderung vom 1. Januar 2025 im Tarif (Stand August 2025).',
+        'Für Züge verweist der AVV auf den Deutschlandtarif und den Tarif der Bayerischen Regiobahn (BRB). Nach dem Deutschlandtarif (Stand Juni 2026) darfst du einen eigenen E-Scooter zusammengeklappt als Handgepäck kostenlos mitnehmen, einen pro Person; der Akku bleibt drin und wird nur geladen, wo ein Schild im Zug es erlaubt. Das gilt in den Regionalzügen von DB Regio, BRB und Arverio Bayern. Die BRB nimmt E-Scooter nur mit fest verbautem Akku mit und lässt sie nicht an den Steckdosen im Zug laden.',
+        'Im Fernverkehr der Deutschen Bahn (ICE, IC/EC) fährt dein eigener E-Scooter zusammengeklappt und sicher verstaut kostenlos als Handgepäck mit. Den Akku darfst du unterwegs weder herausnehmen noch laden. Lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst, etwa im Gepäckregal.',
         'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor der Haltestelle oder dem Bahnhof und miete am Ziel neu. Fährst du weiter nach München: [E-Scooter in München](guide:munich).',
       ],
     },
@@ -97,7 +115,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Augsburg?',
-      answer: 'Die von Voi, Lime und Bolt (Stand Oktober 2026). Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
+      answer: 'Die von Voi, Lime und Bolt; Hopp führt auf seiner Website «Hopp Augsburg» mit E-Scootern (Stand November 2026). Einen Führerschein brauchst du nicht, Bolt und Hopp vermieten aber erst ab 18.',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Augsburg?',
+      answer: 'Voi verlangt 0,21 € pro Minute ohne Entsperrgebühr, Hopp 0,50 € zum Start und 0,20 € pro Minute (Stand November 2026). Bolt nennt für Deutschland ab 0,15 € pro Minute plus eine kleine Freischaltungsgebühr.',
     },
     {
       question: 'Darf ich mit dem E-Scooter in die WWK Arena?',
@@ -113,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich meinen E-Scooter in Tram oder Bus mitnehmen?',
-      answer: 'Nein. Der AVV-Tarif schliesst E-Tretroller in Strassenbahnen, Stadt- und Regionalbussen aus, ohne Ausnahme für zusammengeklappte. In Regionalzügen darf ein eigener E-Scooter nach dem Deutschlandtarif zusammengeklappt als Handgepäck mit; für den Fernzug fragst du vor der Fahrt nach. Leih-Scooter lassen sich nicht zusammenklappen.',
+      answer: 'Nein. Der AVV-Tarif schliesst E-Tretroller in Strassenbahnen, Stadt- und Regionalbussen aus, ohne Ausnahme für zusammengeklappte. In Regionalzügen und im Fernverkehr der Bahn darf ein eigener E-Scooter zusammengeklappt als Handgepäck mit. Leih-Scooter lassen sich nicht zusammenklappen.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch den Wittelsbacher Park oder an der Wertach fahren?',
@@ -134,6 +156,15 @@ const guide: Guide = {
     { title: 'AVV: Gemeinschaftstarif, Stand 1. August 2025 (PDF)', url: 'https://www.sw-augsburg.de/fileadmin/content/6_pdf_Downloadcenter/3_Mobilitaet/Gemeinschaftstarif/AVV_Gemeinschaftstarif_Stand_01.08.2025_inkl._Deutschlandticket_und_bayer._Ermaessigungsticket.pdf' },
     { title: 'swa: swabi, das Leihrad', url: 'https://www.sw-augsburg.de/privatkunden/mobilitaet/swabi' },
     { title: 'Deutschlandtarif: Tarifbedingungen, Teil A, Stand 14. Juni 2026 (PDF)', url: 'https://www.deutschlandtarifverbund.de/wp-content/uploads/2026/06/20260528_A-1-TB-DT-Grundsaetze_Juni2026.pdf' },
+    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
+    { title: 'Bayerische Regiobahn: Fahrradmitnahme', url: 'https://www.brb.de/de/tickets/fahrradmitnahme' },
+    { title: 'Voi: Tarif und Zonen für Augsburg (NeTEx, Stand 4. November 2026)', url: 'https://api.voiapp.io/gbfs/open/v1/162/netex.xml' },
+    { title: 'Voi: Voi startet in Regensburg (29. April 2025, PDF)', url: 'https://storage.mfn.se/7985fb60-e679-4774-acb8-42a86e1b5711/e-scooter-anbieter-voi-startet-in-regensburg.pdf' },
+    { title: 'Bolt: Augsburg', url: 'https://bolt.eu/de-de/cities/augsburg/' },
+    { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },
+    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Hopp: Locations (englisch)', url: 'https://hopp.bike/locations' },
+    { title: 'Hopp: Terms of Service für Deutschland (englisch)', url: 'https://hopp.bike/tos?group=389FGQfb9eqWNoxBiQlENu' },
   ],
 };
 
