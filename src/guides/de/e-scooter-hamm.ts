@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'hamm',
   name: 'E-Scooter Hamm: Anbieter, Regeln, Parken',
   title: 'E-Scooter Hamm 2026: Dott, Parken, Regeln',
-  description: 'E-Scooter Hamm: Dott verleiht, den Preis zeigt die App. Wo du fährst und parkst, was in Grünanlagen und am Kanal gilt und was im Bus der Stadtwerke.',
-  headline: 'E-Scooter Hamm: Dott, Parken, Grünanlagen, Kanal und was im Bus gilt',
-  lede: 'E-Scooter in Hamm verleiht Dott: Du mietest ohne Führerschein, und was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone an Weststrasse und Bahnhofstrasse. Abstellen darfst du wie ein Fahrrad, solange du niemanden behinderst; wo die Stadt mit dem Anbieter Parkverbotszonen festgelegt hat, zeigt die App.',
+  description: 'E-Scooter Hamm: Dott verleiht ab 18, den Preis zeigt die App. Wo du fährst und parkst, was in Grünanlagen und am Kanal gilt und was in Bus und Bahn.',
+  headline: 'E-Scooter Hamm: Dott, Parken, Grünanlagen, Kanal und was in Bus und Bahn gilt',
+  lede: 'E-Scooter in Hamm verleiht Dott: Du mietest ab 18 und ohne Führerschein, den Preis zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone an Weststrasse und Bahnhofstrasse. Abstellen darfst du wie ein Fahrrad, solange du niemanden behinderst; wo die Stadt mit dem Anbieter Parkverbotszonen festgelegt hat, zeigt die App.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Hamm',
@@ -16,9 +16,25 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Hamm?',
       blocks: [
-        'In Hamm verleiht **Dott** (früher Tier) E-Scooter, auch E-Roller genannt: Am Montag, 26. Oktober 2026, zeigte die [Karte von Hamm](map:de:Hamm) gegen 16.40 Uhr rund 360 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Den Preis zeigt dir die Dott-App vor dem Entsperren; verbindlich ist, was sie dort anzeigt. Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'In Hamm verleiht **Dott** (früher Tier) E-Scooter, auch E-Roller genannt; Dott führt Hamm auf seiner Website unter seinen Standorten (Stand November 2026). Am Montag, 26. Oktober 2026, zeigte die [Karte von Hamm](map:de:Hamm) gegen 16.40 Uhr rund 360 Dott-Scooter, die zu diesem Zeitpunkt frei waren. Wie das Mieten geht, steht in [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Anbieter und Stadt haben laut Stadt eine Qualitätsvereinbarung unterzeichnet, die unter anderem die Höchstzahl der Scooter und die Standorte regelt, an denen sie aufgestellt werden. Seit dem 1. September 2022 gilt das Aufstellen zudem als Sondernutzung: Der Anbieter braucht eine Genehmigung des Tiefbauamts und zahlt laut Stadt 30 € je Roller und Jahr, nicht du. Nach der Sondernutzungssatzung, zuletzt 2022 geändert, kann die Stadt die Zahl der Scooter und der Anbieter beschränken.',
         'Leihräder gibt es beim metropolradruhr, laut Stadt etwa am Hauptbahnhof, am Rathaus und am Campus der Hochschule Hamm-Lippstadt.',
+      ],
+    },
+    {
+      heading: 'Was kostet ein E-Scooter in Hamm?',
+      blocks: [
+        'Den Preis zeigt dir die Dott-App vor dem Entsperren; verbindlich ist, was sie dort anzeigt. So steht es auch in Dotts Geschäftsbedingungen: «Die Gebühren werden in Ihrem Benutzerkonto … angezeigt, bevor Sie ein Fahrzeug freischalten.» Teuer wird es für dich, wenn du falsch abstellst:',
+        {
+          table: {
+            caption: 'Gebühren laut Dotts Geschäftsbedingungen für Deutschland vom 23. September 2025 (Stand November 2026)',
+            head: ['Fall', 'Was Dott berechnen kann'],
+            rows: [
+              ['Park- und Sperranweisungen nicht befolgt', 'bis zu 300 € für die Rückholung des Scooters'],
+              ['Dott zahlt ein Bussgeld für dich', 'das Bussgeld und 50 € Verwaltungsgebühr'],
+            ],
+          },
+        },
       ],
     },
     {
@@ -33,13 +49,14 @@ const guide: Guide = {
               ['Fussgängerzone an Weststrasse und Bahnhofstrasse', 'Nicht fahren, solange kein Schild es erlaubt', 'Bund (eKFV)'],
               ['Gehwege in Grünanlagen und Alleen', 'Befahren nur mit Krankenfahrstuhl, Kinderwagen oder Kinderfahrzeug; nach unserer Lesart gilt das Verbot auch für E-Scooter', 'Stadt (Strassen- und Anlagenordnung von 2021)'],
               ['Betriebswege am Datteln-Hamm-Kanal', 'Frei nur für Fussgänger und Fahrräder; nach unserer Lesart ist der E-Scooter als Kraftfahrzeug ausgeschlossen', 'Bund (Wasserstrassen-Betriebsanlagenverordnung)'],
+              ['Hauptbahnhof', 'Im Bahnhof nicht fahren, nur schieben oder tragen; nicht an Zugängen oder auf Bahnsteigen abstellen', 'DB (Hausordnung der Bahnhöfe)'],
               ['Hochschule Hamm-Lippstadt', 'StVO und Schrittgeschwindigkeit auf dem Gelände; E-Roller in den Gebäuden nur in einer Tasche', 'Hochschule (Hausordnung, zuletzt geändert am 20. Januar 2025)'],
             ],
           },
         },
         {
           list: [
-            '**Fussgängerzone:** Die Sondernutzungssatzung nennt sie «die Fussgängerzone im Bereich der Weststrasse und der Bahnhofstrasse». Hier steigst du ab und schiebst, solange kein Zusatzschild «Elektrokleinstfahrzeuge frei» das Fahren erlaubt; das Schild «Radfahrer frei» gilt laut Stadt nicht für E-Scooter. Die Fussgängerzone nennt die Stadt auch als Beispiel für eine Parkverbotszone.',
+            '**Fussgängerzone:** Die Sondernutzungssatzung nennt sie «die Fussgängerzone im Bereich der Weststrasse und der Bahnhofstrasse». Hier steigst du ab und schiebst, solange kein Zusatzschild «Elektrokleinstfahrzeuge frei» das Fahren erlaubt; das Schild «Radfahrer frei» gilt laut Stadt nicht für E-Scooter. Die Fussgängerzone nennt die Stadt auch als Beispiel für eine Parkverbotszone. Am 14. Oktober 2026 kontrollierte die Polizei Hamm in der Fussgängerzone, auf der Martin-Luther-Strasse und rund um das Beisenkamp-Gymnasium und stellte insgesamt 99 Verstösse fest, «vor allem bei jungen E-Scooter-Fahrenden»: auf der falschen Strassenseite, gegen die Fahrtrichtung auf Gehwegen, zu mehreren auf einem Fahrzeug. Weitere Kontrollen hat sie angekündigt.',
             '**Grünanlagen:** Die Strassen- und Anlagenordnung der Stadt vom 14. Dezember 2021 verbietet, «die Gehwege in den Anlagen mit anderen Fahrzeugen als Krankenfahrstühlen, Kinderwagen oder Kinderfahrzeugen (Roller, Dreirad, Skateboard, Kinderfahrrad, Rollschuhe u.ä.) zu befahren». Als Anlagen zählt sie unter anderem die allgemein zugänglichen Grünanlagen und Alleen, die Wälder der Stadt, Friedhöfe und Spielplätze. E-Scooter nennt die Verordnung nicht; nach unserer Lesart gilt das Verbot auch für sie.',
             '**Datteln-Hamm-Kanal:** Der Kanal ist eine Wasserstrasse des Bundes. Auf den bundeseigenen Ufergrundstücken und Betriebswegen verbietet die Wasserstrassen-Betriebsanlagenverordnung das «Befahren mit Kraftfahrzeugen»; erlaubt sind nur Fussgänger und auf den Betriebswegen Fahrräder. E-Scooter nennt sie nicht, sie sind aber Kraftfahrzeuge: Nach unserer Lesart fährst du dort nicht.',
             '**Hochschule Hamm-Lippstadt:** Laut Hausordnung, zuletzt am 20. Januar 2025 geändert, fährst du in den Gebäuden nicht mit dem E-Roller; dort ist er «in einer Tasche zu transportieren». Auf dem Gelände gilt die StVO, und «es ist Schrittgeschwindigkeit einzuhalten». Abstellen dürfen «Kraftfahrzeuge und Fahrräder» nur auf gekennzeichneten Flächen; nach unserer Lesart gilt das auch für E-Scooter.',
@@ -54,7 +71,7 @@ const guide: Guide = {
         'In ihrem Antragsformular für Verleiher verlangt die Stadt, dass der Anbieter «durch technische Vorkehrungen» das Abstellen in der Fussgängerzone, in öffentlichen Grünanlagen («Gärten, Wald, Parkanlagen, Uferbereiche usw.»), auf schmalen Gehwegen, an Gleisanlagen und vor stark besuchten Einrichtungen verhindert, «z. B. HBF und Tierpark». Dazu soll er den Plan der Stadt mit diesen Rückgabeverbotszonen in seine Buchungs-Software einbauen. Auf Geh- und Radwegen sollen 1,50 m frei bleiben, Rettungswege, Einfahrten und Bushaltestellen ganz, und bei Veranstaltungen soll der Anbieter auf Verlangen von Stadt oder Polizei Bereiche freihalten.',
         {
           list: [
-            '**Hauptbahnhof und Tierpark:** Beide nennt die Stadt im Antragsformular als stark besuchte Einrichtungen, vor denen der Anbieter das Abstellen verhindern soll. Beende die Fahrt mit etwas Abstand, so dass Eingänge, Einfahrten und Bushaltestellen frei bleiben.',
+            '**Hauptbahnhof und Tierpark:** Beide nennt die Stadt im Antragsformular als stark besuchte Einrichtungen, vor denen der Anbieter das Abstellen verhindern soll. Beende die Fahrt mit etwas Abstand, so dass Eingänge, Einfahrten und Bushaltestellen frei bleiben. Im Bahnhof selbst schiebst oder trägst du den Scooter; so verlangt es die Hausordnung der DB.',
             '**Falsch abgestellt oder kaputt?** Wende dich laut Stadt zuerst direkt an den Anbieter. An jedem Scooter stehen eine eindeutige Seriennummer und der Name des Betreibers mit seinen Kontaktdaten.',
           ],
         },
@@ -66,7 +83,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Hamm: Bussgelder und Alkohol',
       blocks: [
-        'In Hamm gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person. Ein eigener Scooter braucht eine Versicherungsplakette.',
+        'In Hamm gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person. Ein eigener Scooter braucht eine Versicherungsplakette.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -87,13 +104,14 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter in Bus und Bahn: Was bei den Stadtwerken Hamm gilt',
+      heading: 'E-Scooter in Bus und Bahn: Stadtwerke Hamm, Westfalentarif und DB',
       blocks: [
-        'Für ihre Busse verweisen die Stadtwerke Hamm auf die Beförderungsbedingungen des Westfalentarifs. Das sind die Beförderungsbedingungen für Nahverkehr in NRW (gültig ab 1. Januar 2026).',
+        'Für ihre Busse verweisen die Stadtwerke Hamm auf die Beförderungsbedingungen des Westfalentarifs. Das sind die Beförderungsbedingungen für Nahverkehr in NRW (gültig ab 1. Januar 2026); sie gelten in allen Verbund- und Gemeinschaftstarifen in NRW, auch in den Nahverkehrszügen.',
         {
           list: [
             '**Bus der Stadtwerke Hamm:** Dein eigener E-Scooter zählt als Handgepäck, wenn er «handelsüblich vollständig im kleinstmöglichen Packmass gefaltet bzw. zusammengeklappt» ist. Jedes Verkehrsunternehmen darf E-Tretroller aber per Hausrecht ausschliessen, auch zusammengeklappte. Die «Regelung zu E-Scootern» in den FAQ der Stadtwerke betrifft Elektromobile und Elektro-Rollstühle, nicht E-Tretroller; frag vor der Fahrt bei den Stadtwerken nach, ob sie deinen Scooter mitnehmen.',
-            '**S-Bahn, Regional- und Fernzug:** Ob ein eigener E-Scooter in S-Bahn, Regional- oder Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
+            '**Regionalzug:** Zusammengeklappt gilt dasselbe. Aufgeklappt zählt ein E-Tretroller wie ein Fahrrad und fährt nur im gekennzeichneten Abstellbereich mit, wenn dort Platz ist. Auch hier darf ihn jedes Verkehrsunternehmen per Hausrecht ausschliessen.',
+            '**IC und ICE der Deutschen Bahn:** Zusammengeklappt und sicher verstaut fährt dein eigener E-Scooter dort kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden.',
           ],
         },
         'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Miete in der Nähe der Haltestelle, ohne den Zugang zu versperren, und leih dir am Ziel einen neuen.',
@@ -111,7 +129,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Hamm?',
-      answer: 'Die von Dott (Stand Oktober 2026). Einen Führerschein brauchst du nicht; das Mindestalter und den Preis zeigt dir die App vor dem Entsperren.',
+      answer: 'Die von Dott (Stand Oktober 2026). Du musst 18 sein, einen Führerschein brauchst du nicht.',
+    },
+    {
+      question: 'Was kostet ein E-Scooter in Hamm?',
+      answer: 'Den Preis zeigt dir die Dott-App vor dem Entsperren. Teuer wird Falschparken: Befolgst du Dotts Park- und Sperranweisungen nicht, kann Dott bis zu 300 € für die Rückholung berechnen.',
     },
     {
       question: 'Darf ich mit dem E-Scooter am Datteln-Hamm-Kanal fahren?',
@@ -123,7 +145,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Weststrasse fahren?',
-      answer: 'Nein, nicht in der Fussgängerzone an Weststrasse und Bahnhofstrasse, solange kein Zusatzschild «Elektrokleinstfahrzeuge frei» es erlaubt; «Radfahrer frei» gilt laut Stadt nicht für E-Scooter. Das kostet heute 15 bis 30 €, ab 1. März 2027 25 bis 40 €.',
+      answer: 'Nein, nicht in der Fussgängerzone an Weststrasse und Bahnhofstrasse, solange kein Zusatzschild «Elektrokleinstfahrzeuge frei» es erlaubt; «Radfahrer frei» gilt laut Stadt nicht für E-Scooter. Das kostet heute 15 bis 30 €, ab 1. März 2027 25 bis 40 €. Am 14. Oktober 2026 kontrollierte die Polizei Hamm unter anderem dort und stellte insgesamt 99 Verstösse fest, vor allem bei jungen E-Scooter-Fahrenden.',
     },
     {
       question: 'Darf ich einen E-Scooter im Bus der Stadtwerke Hamm mitnehmen?',
@@ -136,6 +158,10 @@ const guide: Guide = {
     { title: 'Stadt Hamm: Antrag auf Ausbringung und Nutzung von E-Scootern, mit Checkliste (PDF)', url: 'https://www.hamm.de/fileadmin/user_upload/Medienarchiv_neu/Dokumente/Tiefbau_und_Gruenflaechenamt/Antrag-E_Scooter.pdf' },
     { title: 'Stadt Hamm: Strassen- und Anlagenordnung vom 14. Dezember 2021, geändert am 7. Juni 2023', url: 'https://www.hamm.de/satzungen/satzungen/detail/291' },
     { title: 'Stadt Hamm: metropolradruhr', url: 'https://www.hamm.de/metropolradruhr' },
+    { title: 'Dott: Unsere Standorte', url: 'https://ridedott.com/de/unsere-standorte/' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Polizei Hamm: «Zweiradfahren im Blick», 99 Verstösse (15. Oktober 2026)', url: 'https://www.presseportal.de/blaulicht/pm/65844/6371645' },
+    { title: 'Deutsche Bahn: Hausordnung der Bahnhöfe', url: 'https://www.bahnhof.de/hausordnung' },
     { title: 'Hochschule Hamm-Lippstadt: 3. Änderung der Hausordnung vom 20. Januar 2025 (PDF)', url: 'https://www.hshl.de/assets/02-Hochschule/Veroeffentlichungen/Hausordnung/250127_Verkuendungsblatt-Nr.-03_25_JG-17_3.-Aenderung-der-Hausordnung-der-Hochschule-Hamm-Lippstadt-vom-10.06.2010-vom-20.01.2025.pdf' },
     { title: 'Wasserstrassen-Betriebsanlagenverordnung (WaStrBAV), § 2', url: 'https://www.gesetze-im-internet.de/wastrbav/BJNR704350016.html' },
     { title: 'Bundeswasserstrassengesetz, Anlage 1: Binnenwasserstrassen des Bundes', url: 'https://www.gesetze-im-internet.de/wastrg/anlage_1.html' },
@@ -144,6 +170,7 @@ const guide: Guide = {
     { title: 'Stadtwerke Hamm: FAQ zum Busverkehr', url: 'https://www.stadtwerke-hamm.de/privatkunden/verkehr/faq' },
     { title: 'mobil.nrw: Mobilitätsgarantie NRW', url: 'https://www.mobil.nrw/fahren/mobigarantie.html' },
     { title: 'Westfalentarif: Beförderungsbedingungen für Nahverkehr in NRW (gültig ab 1. Januar 2026, PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
+    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
   ],
 };
 
