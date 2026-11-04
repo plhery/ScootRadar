@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'wroclaw',
   name: 'Renting an e-scooter in Wrocław',
   title: 'E-scooters Wrocław 2026: Bolt, Dott, Lime, parking and rules',
-  description: 'E-scooters in Wrocław: Bolt, Dott and Lime, where to park, the zoo and Centennial Hall, the tram and bus ban, and Poland’s age, helmet and alcohol rules.',
-  headline: 'E-scooters in Wrocław: Bolt, Dott and Lime, parking and the tram ban',
-  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Wrocław (Wroclaw) with Bolt, Dott or Lime; check the fare and the company’s minimum age in its app before you unlock. The city asks you to leave your scooter at a bike rack where there is one, and since 29 April 2026 MPK’s rules have kept every e-scooter, shared or your own, off its trams and buses.',
+  description: 'E-scooters in Wrocław: Bolt, Dott and Lime, what a ride costs, where to park, the zoo and Centennial Hall, the tram and bus ban, and Poland’s rules.',
+  headline: 'E-scooters in Wrocław: Bolt, Dott and Lime, prices, parking and the tram ban',
+  lede: 'You can rent an e-scooter (hulajnoga elektryczna) in Wrocław (Wroclaw) with Bolt, Dott or Lime; Bolt and Dott rent only to riders of 18 and over. Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026); Dott and Lime show prices in the app. The city asks you to leave your scooter at a bike rack where there is one, and since 29 April 2026 MPK’s rules have kept every e-scooter, shared or your own, off its trams and buses.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'pl:Wrocław',
@@ -16,9 +16,37 @@ const guide: Guide = {
     {
       heading: 'Which e-scooter apps work in Wrocław?',
       blocks: [
-        'The city’s page on rental scooters (October 2025) names three operators: **Bolt**, **Dott** and **Lime**.',
+        'The city’s page on rental scooters (October 2025) names three operators:',
+        {
+          list: [
+            '**Bolt**, in the same app as its taxis. Its terms for Poland require you to be 18.',
+            '**Dott**, whose terms for Poland also require 18. Its website also lists nearby Siechnice, Oława and Trzebnica.',
+            '**Lime**, whose prices and rules are in its app.',
+          ],
+        },
         'At 20:40 on Sunday 25 October 2026 the [Wrocław map](map:pl:Wrocław) showed about 3,200 Bolt and Dott scooters free to rent at that moment.',
-        'Check the fare, and the company’s minimum age for renting, in its app before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+      ],
+    },
+    {
+      heading: 'How much does an e-scooter cost in Wrocław?',
+      blocks: [
+        'Bolt’s Polish page advertises scooters “from PLN 0.22 a minute” plus a small unlock fee, with rates that can vary by place (as of November 2026). It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one.',
+        'Dott sells day, week and month passes and, like Lime, shows its prices in the app. Bolt’s and Dott’s terms set the extra charges:',
+        {
+          table: {
+            caption: 'Extra charges in Bolt’s and Dott’s terms for Poland, as of November 2026',
+            head: ['Operator', 'Charge', 'When'],
+            rows: [
+              ['Bolt', 'PLN 30', 'Parking against its rules or without a clear end-of-ride photo'],
+              ['Bolt', 'Up to PLN 460', 'Leaving the scooter outside an allowed parking place'],
+              ['Bolt', 'Up to PLN 560, plus ride charges until it’s found', 'Abandoning the scooter without telling Bolt'],
+              ['Bolt', 'Up to PLN 140', 'Admin fee for handling a breach'],
+              ['Dott', 'Up to €300', 'Recovering a scooter parked or locked against its instructions'],
+              ['Dott', '€50', 'Any breach of its terms, and again as an admin fee on a fine it pays for you'],
+            ],
+          },
+        },
       ],
     },
     {
@@ -34,7 +62,7 @@ const guide: Guide = {
           ],
         },
         'Spots where scooters are always left badly can be flagged in a city survey; the city passes them on and proposes that the operators’ apps stop rides ending there. To report one in the way, contact its operator (the city’s page lists how) or the municipal police (Straż Miejska) on 986.',
-        { note: 'The police or the municipal police can have a scooter left where it’s banned and in the way towed at its owner’s cost: in 2026, PLN 160 plus PLN 20 a day in the pound (city council resolution of 20 November 2025). For a rental that’s the company: check its terms in the app for what it may charge you.' },
+        { note: 'The police or the municipal police can have a scooter left where it’s banned and in the way towed at its owner’s cost: in 2026, PLN 160 plus PLN 20 a day in the pound (city council resolution of 20 November 2025). For a rental that’s the company, and Bolt’s and Dott’s terms let them pass it on to you.' },
       ],
     },
     {
@@ -78,17 +106,18 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Trams, buses, trains and the airport',
+      heading: 'Trams, buses, trains, the main station and the airport',
       blocks: [
         '**Trams and buses (MPK).** MPK’s carriage rules, in force since the mayor approved them on 29 April 2026, ban carrying “personal transport devices (UTO), including electric scooters”, e-skateboards, e-unicycles and e-bikes. The city sums it up: don’t board with anything that has a battery, electric wheelchairs excepted. A scooter without a motor may travel folded. After an e-unicycle filled an MPK bus with smoke on 23 September 2026, MPK said it would enforce the ban.',
         '**Koleje Dolnośląskie**, the regional trains. Its carriage rules, as amended from 1 July 2026, take one unfolded e-scooter for the bike fare if a space is on sale; staff may refuse one at busy times, and you may not charge its battery on board.',
+        '**Wrocław Główny.** The main station is run by PKP S.A., the state railway company. Its rules ban riding a scooter “on the platform, the way to the platform, in the hall, waiting room … underpass, on the footbridge … and near the track less than 3 metres from the outer rail” without its consent, and leaving rental scooters “except in the places meant for them” (§ 3, January 2025).',
         '**Wrocław Airport.** Bus 106 from ul. Dworcowa and the Wro Airport Express from the bus station link it with Wrocław Główny, PKP says.',
       ],
     },
     {
       heading: 'Night, winter and New Year’s Eve',
       blocks: [
-        'Lime ended its 2024 season on 1 December, the city said, but in November 2025 Lime said its scooters would stay through the winter in Wrocław and its other Polish cities, with zones that might shrink in bad weather, iMagazine reported. Bolt’s scooters run in autumn and winter, but Bolt may switch them off for a few days when the weather turns, the city said on 31 December 2024. We found no plans from either for this winter by 26 October 2026.',
+        'Lime ended its 2024 season on 1 December, the city said, but in November 2025 Lime said its scooters would stay through the winter in Wrocław and its other Polish cities, with zones that might shrink in bad weather, iMagazine reported. Bolt’s scooters run in autumn and winter, but Bolt may switch them off for a few days when the weather turns, the city said on 31 December 2024.',
         'For New Year’s Eve 2024 Bolt announced it would switch its Wrocław scooters off from 22:00 until 08:00, much as it had the year before.',
       ],
     },
@@ -108,11 +137,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Wrocław?',
-      answer: 'Bolt, Dott and Lime: see the [Wrocław map](map:pl:Wrocław). Check the fare and the company’s minimum age for renting in its app before you unlock.',
+      answer: 'Bolt, Dott and Lime: see the [Wrocław map](map:pl:Wrocław). Bolt and Dott rent only to riders of 18 and over.',
     },
     {
       question: 'How much does electric scooter rental cost in Wroclaw?',
-      answer: 'Each company sets its own fare and shows it in its app: check it before you unlock.',
+      answer: 'Bolt charges from PLN 0.22 a minute plus an unlock fee (its rate for Poland, as of November 2026). Dott and Lime show their prices in the app.',
     },
     {
       question: 'Where can you park an e-scooter in Wrocław?',
@@ -144,6 +173,7 @@ const guide: Guide = {
     { title: 'iMagazine: Lime stays for the winter (4 November 2025, Polish)', url: 'https://imagazine.pl/2025/11/04/hulajnogi-lime-zostaja-na-zime-operator-oglasza-caloroczna-dostepnosc-w-polsce/' },
     { title: 'Koleje Dolnośląskie: carriage rules from 1 July 2026 (Polish, PDF)', url: 'https://kolejedolnoslaskie.pl/wp-content/uploads/2026/06/RP-KD_2026-07-01_t.j.pdf' },
     { title: 'PKP S.A.: Wrocław Główny (Polish)', url: 'https://www.pkp.pl/pl/dworce/wroclaw-glowny-informacje-dla-podroznych' },
+    { title: 'PKP S.A.: station rules (Polish)', url: 'https://www.pkp.pl/images/bezpieczenstwo/Zasady.pdf' },
     { title: 'ZOO Wrocław: visitor rules (Polish, PDF)', url: 'https://zoo.wroclaw.pl/wp-content/uploads/2025/06/Regulamin-zwiedzania-Zoo-Wroclaw-2025.pdf' },
     { title: 'Hala Stulecia: rules of the complex (Polish)', url: 'https://halastulecia.pl/regulamin-kompleksu-hali-stulecia/' },
     { title: 'Wrocławski Rower Miejski: prices (Polish)', url: 'https://wroclawskirower.pl/cennik/' },
@@ -153,6 +183,12 @@ const guide: Guide = {
     { title: 'Dziennik Ustaw: Code of Petty Offences, 2025 (Polish)', url: 'https://dziennikustaw.gov.pl/D2025000073401.pdf' },
     { title: 'Dziennik Ustaw: fines tariff from 1 January 2022 (Polish)', url: 'https://dziennikustaw.gov.pl/D2021000248401.pdf' },
     { title: 'Dziennik Ustaw: sobriety act (Polish)', url: 'https://dziennikustaw.gov.pl/D2023000215101.pdf' },
+    { title: 'Bolt: scooters in Poland (Polish)', url: 'https://bolt.eu/pl-pl/scooters/' },
+    { title: 'Bolt: scooters in Poland (English)', url: 'https://bolt.eu/en-pl/scooters/' },
+    { title: 'Bolt: terms for Poland from 8 May 2026 (Polish)', url: 'https://bolt.eu/pl-pl/legal/micromobility/tnc-micromobility-old/' },
+    { title: 'Dott: terms and conditions for Poland', url: 'https://ridedott.com/terms-and-conditions/poland/' },
+    { title: 'Dott: passes (Polish)', url: 'https://ridedott.com/pl/jedz-z-dottem/' },
+    { title: 'Dott: locations', url: 'https://ridedott.com/locations/' },
   ],
 };
 
