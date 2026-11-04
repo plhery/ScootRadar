@@ -89,28 +89,33 @@ enum ScooterPalette {
 }
 
 /// A size from the design of the dock, in points at the standard text size.
-/// It grows and shrinks with the text size the rider has set.
+/// It grows and shrinks with the text size the rider has set, up to
+/// `maximum` where what is around it keeps its size, as an icon in a button
+/// of the search bar.
 private struct DesignFont: ViewModifier {
     @ScaledMetric private var size: CGFloat
     private let weight: Font.Weight
+    private let maximum: CGFloat
 
-    init(size: CGFloat, weight: Font.Weight, relativeTo style: Font.TextStyle) {
+    init(size: CGFloat, weight: Font.Weight, relativeTo style: Font.TextStyle, maximum: CGFloat) {
         _size = ScaledMetric(wrappedValue: size, relativeTo: style)
         self.weight = weight
+        self.maximum = maximum
     }
 
     func body(content: Content) -> some View {
-        content.font(.system(size: size, weight: weight))
+        content.font(.system(size: min(size, maximum), weight: weight))
     }
 }
 
-private extension View {
+extension View {
     func designFont(
         _ size: CGFloat,
         _ weight: Font.Weight = .regular,
-        relativeTo style: Font.TextStyle = .body
+        relativeTo style: Font.TextStyle = .body,
+        maximum: CGFloat = .infinity
     ) -> some View {
-        modifier(DesignFont(size: size, weight: weight, relativeTo: style))
+        modifier(DesignFont(size: size, weight: weight, relativeTo: style, maximum: maximum))
     }
 }
 
@@ -999,13 +1004,16 @@ private extension View {
 private struct DockCloseButton: View {
     let accessibilityLabel: String
     let action: () -> Void
+    /// 40 pt across at the standard text size; it grows with the text, up to 56.
+    @ScaledMetric(relativeTo: .body) private var diameter: CGFloat = 40
 
     var body: some View {
+        let side = min(diameter, 56)
         Button(action: action) {
             Image(systemName: "xmark")
-                .font(.system(size: 13, weight: .bold))
+                .designFont(13, .bold, relativeTo: .body, maximum: 18)
                 .foregroundStyle(ScooterPalette.dockQuiet)
-                .frame(width: 40, height: 40)
+                .frame(width: side, height: side)
                 .background(ScooterPalette.dockTile, in: Circle())
                 .overlay {
                     Circle().strokeBorder(ScooterPalette.dockHairline, lineWidth: 1)
@@ -1017,6 +1025,9 @@ private struct DockCloseButton: View {
         .buttonStyle(.plain)
         .padding(-2)
         .accessibilityLabel(accessibilityLabel)
+        .accessibilityShowsLargeContentViewer {
+            Label(accessibilityLabel, systemImage: "xmark")
+        }
     }
 }
 
@@ -1456,7 +1467,7 @@ private struct DockLeadButton: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 15, weight: .semibold))
+                    .designFont(15, .semibold, relativeTo: .body, maximum: 28)
                     .foregroundStyle(ScooterPalette.dockQuiet)
             }
             .frame(minHeight: 44)
@@ -2004,6 +2015,8 @@ struct ScooterFilterSheet: View {
     var inPopover = false
     /// The list's height with the title bar and the button above and below it.
     @State private var wholeHeight: CGFloat = 620
+    /// A provider's check, 26 pt at the standard text size, grows with the text up to 44.
+    @ScaledMetric(relativeTo: .body) private var checkSide: CGFloat = 26
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.colorScheme) private var colorScheme
@@ -2194,7 +2207,7 @@ struct ScooterFilterSheet: View {
                 }
 
                 providerCheck(entry)
-                    .frame(width: 26, height: 26)
+                    .frame(width: checkFrame, height: checkFrame)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
@@ -2212,7 +2225,7 @@ struct ScooterFilterSheet: View {
     private func providerCheck(_ entry: ScooterProviderEntry) -> some View {
         if !entry.isEnabled {
             Image(systemName: "circle")
-                .font(.system(size: 22))
+                .font(.system(size: checkGlyph))
                 .foregroundStyle(ScooterPalette.secondaryText)
         } else if entry.isDown {
             Circle()
@@ -2220,10 +2233,14 @@ struct ScooterFilterSheet: View {
                 .padding(2)
         } else {
             Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 22))
+                .font(.system(size: checkGlyph))
                 .foregroundStyle(ScooterPalette.actionFill)
         }
     }
+
+    private var checkFrame: CGFloat { min(checkSide, 44) }
+    /// 22 pt in the 26 pt frame at the standard text size.
+    private var checkGlyph: CGFloat { checkFrame * 22 / 26 }
 
     private var showResultsButton: some View {
         Button {
@@ -2237,8 +2254,11 @@ struct ScooterFilterSheet: View {
         .tint(ScooterPalette.actionFill)
         .font(.headline)
         .controlSize(.large)
-        // The button stays over the list, so its text stops growing before it covers it.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+        // The button stays over the list. Its text grows through the third
+        // accessibility size and stops there, so that on a phone, the sheet at
+        // half height, a long title ("Afficher 1 704 trottinettes") still
+        // leaves part of the list in view.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility3)
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
         // The list ends above the button instead of showing through and under it.
@@ -2811,17 +2831,25 @@ private struct ProviderRidePassEditor: View {
 struct FloatingMapControls: View {
     let model: ScooterMapModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// The round button's side, 50 pt at the standard text size; it grows
+    /// with the text up to 64, over a map it would hide more of.
+    @ScaledMetric(relativeTo: .body) private var buttonSide: CGFloat = 50
 
     var body: some View {
         Group {
             if model.hasLocatedOnce {
+                let side = min(buttonSide, 64)
                 Button(action: model.focusOnUser) {
                     indicator
-                        .font(.system(size: 18, weight: .semibold))
-                        .frame(width: 50, height: 50)
+                        // 18 pt at the standard size.
+                        .font(.system(size: side * 0.36, weight: .semibold))
+                        .frame(width: side, height: side)
                 }
                 .buttonStyle(.glass)
                 .accessibilityLabel(String(localized: "Go to my location"))
+                .accessibilityShowsLargeContentViewer {
+                    Label(String(localized: "Go to my location"), systemImage: "location.fill")
+                }
             } else {
                 Button(action: model.focusOnUser) {
                     HStack(spacing: 8) {
@@ -3281,13 +3309,16 @@ struct LocationIssueCard: View {
 
             Button(action: onDismiss) {
                 Image(systemName: "xmark")
-                    .font(.system(size: 13, weight: .bold))
+                    .designFont(13, .bold, relativeTo: .body, maximum: 22)
                     .foregroundStyle(ScooterPalette.secondaryText)
                     .frame(width: 44, height: 44)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "Dismiss"))
+            .accessibilityShowsLargeContentViewer {
+                Label(String(localized: "Dismiss"), systemImage: "xmark")
+            }
         }
         .padding(.leading, 12)
         .padding(.trailing, 4)

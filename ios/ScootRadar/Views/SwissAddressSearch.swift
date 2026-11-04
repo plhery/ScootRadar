@@ -110,7 +110,9 @@ struct ScooterSearchIsland: View {
                     onClear()
                 } label: {
                     Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 18, weight: .semibold))
+                        // The bar's buttons keep their 44 pt; their icons
+                        // grow with the text as far as they fit in it.
+                        .designFont(18, .semibold, relativeTo: .body, maximum: 26)
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(.secondary)
                         .frame(width: 44, height: 44)
@@ -118,13 +120,14 @@ struct ScooterSearchIsland: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(String(localized: "Clear place"))
+                .accessibilityShowsLargeContentViewer {
+                    Label(String(localized: "Clear place"), systemImage: "xmark.circle.fill")
+                }
             }
 
             Button(action: onShowFilters) {
-                Image(systemName: hasActiveFilters
-                    ? "line.3.horizontal.decrease.circle.fill"
-                    : "line.3.horizontal.decrease.circle")
-                    .font(.system(size: 20, weight: .semibold))
+                Image(systemName: filtersSymbol)
+                    .designFont(20, .semibold, relativeTo: .body, maximum: 28)
                     // Idle, it is as dark as the Settings icon beside it; the
                     // layered blue is kept for filters that are active.
                     .symbolRenderingMode(hasActiveFilters ? .hierarchical : .monochrome)
@@ -134,22 +137,32 @@ struct ScooterSearchIsland: View {
                     .contentTransition(.symbolEffect(.replace))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(
-                hasActiveFilters
-                    ? String(localized: "Filters, active")
-                    : String(localized: "Filters")
-            )
+            .accessibilityLabel(filtersLabel)
+            .accessibilityShowsLargeContentViewer {
+                Label(filtersLabel, systemImage: filtersSymbol)
+            }
 
             Button(action: onShowSettings) {
                 Image(systemName: "ellipsis.circle")
-                    .font(.system(size: 20, weight: .semibold))
+                    .designFont(20, .semibold, relativeTo: .body, maximum: 28)
                     .foregroundStyle(.primary)
                     .frame(width: 44, height: 44)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "Settings"))
+            .accessibilityShowsLargeContentViewer {
+                Label(String(localized: "Settings"), systemImage: "ellipsis.circle")
+            }
         }
+    }
+
+    private var filtersSymbol: String {
+        hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle"
+    }
+
+    private var filtersLabel: String {
+        hasActiveFilters ? String(localized: "Filters, active") : String(localized: "Filters")
     }
 
     /// What leads the bar: a search icon, a tile for the place, or a spinner
@@ -159,7 +172,7 @@ struct ScooterSearchIsland: View {
         switch state {
         case .empty:
             Image(systemName: "magnifyingglass")
-                .font(.system(size: 17, weight: .semibold))
+                .designFont(17, .semibold, relativeTo: .body, maximum: 26)
                 .foregroundStyle(ScooterPalette.secondaryText)
                 .frame(width: 34, height: 34)
         case .place:
@@ -559,6 +572,8 @@ struct ScooterSearchPanel: View {
         Text(title)
             .font(.footnote.weight(.semibold))
             .foregroundStyle(ScooterPalette.secondaryText)
+            // With very large text it takes two lines rather than "Cities with scoote…".
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, 6)
             .padding(.top, 12)
             .padding(.bottom, 6)
