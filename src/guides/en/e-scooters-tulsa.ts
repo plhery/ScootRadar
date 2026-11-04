@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'tulsa',
   name: 'E-scooters in Tulsa, Oklahoma',
   title: 'E-scooters in Tulsa 2026: Lime, rules, where to ride',
-  description: 'E-scooters in Tulsa: renting Lime, Oklahoma and City rules, sidewalks downtown, the River Parks trails, the University of Tulsa and MetroLink buses.',
-  headline: 'E-scooters in Tulsa: Lime, the rules and River Parks',
-  lede: 'You can rent e-scooters in Tulsa from Lime; check the price in the app before you unlock. Oklahoma law asks for no licence or helmet and sets a minimum age of 14, but keeps scooters off roads with a speed limit over 25 mph, and Tulsa bans them from the sidewalks downtown, on Cherry Street and in Brookside.',
+  description: 'E-scooters in Tulsa: renting Lime, Oklahoma and City rules, sidewalks downtown, River Parks, the Gathering Place, TU and MetroLink buses.',
+  headline: 'E-scooters in Tulsa: Lime, the rules, River Parks and the Gathering Place',
+  lede: 'You can rent e-scooters in Tulsa from Lime, which has rented there since October 2018: Beam told the City in December 2025 that it was ceasing operations, KTUL reported. Oklahoma law asks for no licence or helmet and sets a minimum age of 14, but keeps scooters off roads with a speed limit over 25 mph, and Tulsa bans them from the sidewalks downtown, on Cherry Street and in Brookside.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'us:ok:Tulsa',
@@ -16,15 +16,14 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Tulsa?',
       blocks: [
-        'Electric scooter rental in Tulsa means **Lime**.',
-        'At 9:27 p.m. on Thursday 29 October 2026 the [Tulsa map](map:us:ok:Tulsa) showed about 600 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. That total takes in Lime’s whole Tulsa area, inside the city limits or not, except its zone in Jenks, to the south, whose scooters the map counts under Jenks: 28 more at that time.',
-        'For each Lime scooter the map shows its position and charge, but no price and no zones. Only scooters are on it: if Lime rents anything else in Tulsa, the app shows it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Electric scooter rental in Tulsa means **Lime**. Lime started renting on 26 October 2018, days after the City Council passed rules for electric scooters and bicycles, News On 6 reported. By February 2019 Bird and Lime had each asked to place 400 scooters, and each company paid the City $50 per scooter a year, KTUL reported. Beam rented in Tulsa too, until it gave the City notice on 20 December 2025 that it was ceasing operations, city officials told KTUL in February 2026; Lime then wrote to riders that “other e-scooter operators” had recently left Tulsa.',
+        'At 9:27 p.m. on Thursday 29 October 2026 the [Tulsa map](map:us:ok:Tulsa) showed about 600 Lime scooters as last counted, and 28 more in Lime’s zone in Jenks, to the south. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime scooter cost in Tulsa?',
       blocks: [
-        'The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts.',
+        'The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts. After Beam left, Lime offered riders three free trips through the beginning of March 2026, KTUL reported.',
       ],
     },
     {
@@ -36,7 +35,7 @@ const guide: Guide = {
             caption: 'E-scooter rules in Tulsa in October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '14 or over, unless a local ordinance sets an older age. Lime’s terms, which you accept in its app, set its own', 'Oklahoma, 47 O.S. § 1-133.3; Lime'],
+              ['Age', '14 or over, unless a local ordinance sets an older age; in October 2019 the City tabled a proposed minimum age of 16, KTUL reported. Lime’s terms, which you accept in its app, set its own', 'Oklahoma, 47 O.S. § 1-133.3; Lime'],
               ['Licence, insurance, registration', 'No registration; no driver licence or insurance unless a local ordinance requires them', 'Oklahoma, § 1-133.3'],
               ['Helmet', 'Not required: Title 47’s helmet rules cover motorcycles and all-terrain vehicles, not scooters', 'Oklahoma, Title 47'],
               ['Speed and fast roads', 'Never over 25 mph, and never on a road with a posted speed limit over 25 mph', 'Oklahoma, § 11-805'],
@@ -56,7 +55,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a Lime scooter at night in Tulsa?',
       blocks: [
-        'Check the Lime app for its hours before a late ride. Parks set their own: River Parks closes from 11 p.m. to 5 a.m.',
+        'Check the Lime app for its hours before a late ride. Parks set their own: River Parks closes from 11 p.m. to 5 a.m., and the Gathering Place, as of November 2026, from 7 p.m. to 7 a.m.',
         'Title 47 sets night-lighting rules for bicycles but none of its own for motorized scooters; River Parks encourages cyclists to use a light after dark.',
       ],
     },
@@ -74,9 +73,14 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'River Parks',
+      heading: 'River Parks and the Gathering Place',
       blocks: [
-        'The River Parks Authority treats e-scooters “such as Lime and Bird” the same as bicycles on its trails, and bans other motorized vehicles and gasoline-powered scooters. Where the trail is split, as on the east bank from 11th Street to Joe Creek, the lane nearest the river is for people walking and pushing strollers, the lane nearest the street for scooters, skaters and cyclists. The parks close from 11 p.m. to 5 a.m., and most of River Parks is policed by the Tulsa Police Department.',
+        {
+          list: [
+            '**River Parks.** The River Parks Authority treats e-scooters “such as Lime and Bird” the same as bicycles on its trails, and bans other motorized vehicles and gasoline-powered scooters. Where the trail is split, as on the east bank from 11th Street to Joe Creek, the lane nearest the river is for people walking and pushing strollers, the lane nearest the street for scooters, skaters and cyclists. The parks close from 11 p.m. to 5 a.m., and most of River Parks is policed by the Tulsa Police Department.',
+            '**The Gathering Place.** Inside the park, scooters, bicycles, skates and powered ride vehicles are allowed only on the Skate Park, the BMX pump tracks and the Midland Valley and Riverside Trails, the Gathering Place says; mobility vehicles for guests who need them are the exception. The park opens at 7 a.m. and, as of November 2026, closes at 7 p.m.; it stays open to 9 p.m. over the holidays, from 19 December to 2 January except on Christmas Day, and to 9 p.m. or later from 27 February. Find a Lime nearby on the [Tulsa map](map:us:ok:Tulsa).',
+          ],
+        },
       ],
     },
     {
@@ -95,6 +99,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
+            '**The mayor rode first.** The day before Lime started, on 25 October 2018, Mayor G.T. Bynum posted a video of himself riding a scooter through City Hall, thanking Bird and Lime for working with the City on “a model ordinance for other cities”, News On 6 reported.',
+            '**600,000 rides in a year.** In the scooters’ first year in Tulsa, almost 140,000 people took more than 600,000 rides, the City’s Nick Doctor told KTUL in October 2019.',
+            '**A point guard on a Lime.** By 29 October 2019, a year after Lime arrived, a University of Tulsa point guard had taken close to 630 Lime trips, the most of any rider in Tulsa, Lime told KTUL.',
             '**A trail from Sand Springs to Jenks.** River Parks follows the Arkansas River from Sand Springs through Tulsa to Jenks, and most of its trail lights go off shortly after the 11 p.m. curfew, the River Parks Authority says.',
           ],
         },
@@ -104,7 +111,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Tulsa?',
-      answer: 'Lime. Find a Lime scooter on the [Tulsa map](map:us:ok:Tulsa).',
+      answer: 'Lime. Beam told the City in December 2025 that it was ceasing operations, KTUL reported. Find a Lime scooter on the [Tulsa map](map:us:ok:Tulsa).',
     },
     {
       question: 'How much is a Lime scooter in Tulsa?',
@@ -128,10 +135,17 @@ const guide: Guide = {
     },
   ],
   sources: [
+    { title: 'Oklahoma Legislature: Oklahoma Statutes, Title 47, Motor Vehicles (§§ 1-133.3, 11-805, 11-1201 to 11-1206), RTF', url: 'https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os47.rtf' },
     { title: 'City of Tulsa: Safety and Mobility FAQs (where to ride a scooter)', url: 'https://www.cityoftulsa.org/safety-mobility-resources/learning-and-resources/safety-and-mobility-faqs/' },
     { title: 'City of Tulsa: Walk Bike Tulsa guidelines and tips', url: 'https://www.cityoftulsa.org/walkbiketulsa/guidelines-and-tips/' },
     { title: 'Tulsa City Council: Council adopted updates to Tulsa’s laws regarding electric scooters, 3 December 2019', url: 'https://www.tulsacouncil.org/post/council-adopted-updates-to-tulsa-s-laws-regarding-electric-scooters' },
+    { title: 'KTUL: Beam e-scooters cease operations in Tulsa, 11 February 2026', url: 'https://ktul.com/news/local/beam-e-scooters-cease-operations-in-tulsa' },
+    { title: 'News On 6: Electric scooters arrive in Tulsa, 26 October 2018', url: 'https://www.newson6.com/story/5e35d5122f69d76f62018b7d/electric-scooters-arrive-in-tulsa' },
+    { title: 'KTUL: Scooters attract thousands of riders, bring in money to improve city infrastructure, 24 February 2019', url: 'https://ktul.com/news/local/scooters-attract-thousands-of-riders-bring-in-money-to-improve-city-infrastructure' },
+    { title: 'KTUL: City drops idea to place an age minimum on electric scooter users, 24 October 2019', url: 'https://ktul.com/news/local/city-drops-idea-to-place-an-age-minimum-on-rented-scooter-users' },
+    { title: 'KTUL: Tulsa’s top Lime scooter user hits 630 rides, 29 October 2019', url: 'https://ktul.com/news/local/tulsas-top-lime-scooter-user-hits-630-rides' },
     { title: 'River Parks Authority: Park rules and FAQs', url: 'https://www.riverparks.org/about/park-rules-and-faqs' },
+    { title: 'Gathering Place: FAQs (park hours and rules)', url: 'https://www.gatheringplace.org/faqs' },
     { title: 'MetroLink Tulsa: Code of conduct, policies updated 6 January 2025', url: 'https://www.metrolinkok.org/rider-guides/how-to-ride-metrolink/code-of-conduct/' },
     { title: 'The University of Tulsa: Parking regulations (bicycles and micromobility devices)', url: 'https://utulsa.edu/about/offices/parking/parking-regulations/' },
   ],

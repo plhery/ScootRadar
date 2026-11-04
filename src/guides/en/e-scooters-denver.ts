@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'denver',
   name: 'E-scooters in Denver',
   title: 'Veo scooters Denver 2026: prices, Resident Pass, rules',
-  description: 'Veo is Denver’s only scooter app: $1 to unlock and $0.39 a minute, or $0.25 with the Resident Pass. Stay off most sidewalks and the 16th Street Mall.',
+  description: 'Veo is Denver’s only scooter app: as of November 2026, $1 to unlock and $0.39 a minute plus tax, or $0.25 with the Resident Pass. You must be 18.',
   headline: 'E-scooters in Denver: Veo, what a ride costs, the rules, and where you can’t ride',
-  lede: 'Since mid-May 2026 Veo has been the only scooter app in Denver: Lime and Bird left when their agreements with the City ended. A ride costs $1 to unlock and $0.39 a minute, or $0.25 a minute with Veo’s Denver Resident Pass. Scooters are banned on most sidewalks and on the 16th Street Mall, and by 31 December 2026 rides around Union Station will have to end in a marked corral.',
+  lede: 'Since mid-May 2026 Veo has been the only scooter app in Denver: Lime and Bird left when their agreements with the City ended. A ride costs $1 to unlock and $0.39 a minute plus tax as of November 2026, or $0.25 a minute with Veo’s Denver Resident Pass, and you must be 18. Scooters are banned on most sidewalks and on the 16th Street Mall, and by 31 December 2026 rides around Union Station will have to end in a marked corral.',
   published: '2026-10-17',
   updated: '2026-10-23',
   city: 'us:co:Denver',
@@ -24,16 +24,16 @@ const guide: Guide = {
           ],
         },
         'At 11:25 on 17 October 2026 the [Denver map](map:us:co:Denver) showed about 3,460 Veo scooters free to rent at that moment.',
-        '**Visiting?** Get the Veo app before you set out. The City’s code makes Veo test every rider on the local rules before their first scooter ride. DOTI has announced no winter break or night curfew. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Visiting?** Get the Veo app before you set out. The City’s code makes Veo test every rider on the local rules before their first scooter ride. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Veo scooter cost in Denver?',
       blocks: [
-        'Veo’s 2026 licence agreement with the City sets its prices for May 2026 to May 2027: $1 to unlock and $0.39 a minute. Denver residents pay $0.25 a minute with the Denver Resident Pass. People on income-based programmes such as SNAP or Medicaid can join Veo Access: 60 free minutes a day, then $0.15 a minute with no unlock fee.',
+        'Veo’s open data gives one rate for every vehicle as of November 2026: $1 to unlock and $0.39 a minute, plus tax, the rate its 2026 licence agreement with the City sets for May 2026 to May 2027. Denver residents pay $0.25 a minute with the Denver Resident Pass. People on income-based programmes such as SNAP or Medicaid can join Veo Access: 60 free minutes a day, then $0.15 a minute with no unlock fee.',
         {
           table: {
-            caption: 'Veo prices in Denver from May 2026 to May 2027, as its licence agreement with the City sets them',
+            caption: 'Veo prices in Denver as of November 2026, before tax, from Veo’s open data and its licence agreement with the City',
             head: ['Ride', 'Standard', 'Denver Resident Pass', 'Veo Access'],
             rows: [
               ['Unlock', '$1', '$1', 'None'],
@@ -56,9 +56,9 @@ const guide: Guide = {
             caption: 'Shared e-scooter rules in Denver on 17 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', 'Colorado sets no minimum age for e-scooters', 'C.R.S. § 42-4-1412'],
+              ['Age', '18 to rent a Veo: its policy bars minors, Westword reported in July 2026; Colorado sets no minimum age for e-scooters', 'Veo’s policy; C.R.S. § 42-4-1412'],
               ['Registration', 'None: an e-scooter isn’t a motor vehicle and is exempt from registration', 'Colorado, C.R.S. §§ 42-1-102, 42-3-103 (HB19-1221)'],
-              ['Helmet', 'Not required by law: Colorado’s helmet rule covers only under-18s on class 3 e-bikes', 'Colorado, C.R.S. § 42-4-1412'],
+              ['Helmet', 'Not required by law: Colorado’s helmet rule covers only under-18s on class 3 e-bikes; DOTI and Veo tell riders to wear one', 'Colorado, C.R.S. § 42-4-1412; DOTI and Veo'],
               ['Speed', 'Veo’s vehicles top out at 15 mph; 6 mph on a sidewalk where riding is allowed; elsewhere no faster than is safe, and never above the posted limit; 15 mph on park trails', 'DOTI’s 2026 licence agreement with Veo; DRMC § 54-619; Denver Parks rules'],
               ['Where to ride', 'In the street or bike lane, as far right as is safe; no more than two abreast outside a bike lane', 'C.R.S. § 42-4-1412; DRMC § 54-618'],
               ['Sidewalks', 'Banned, except where the sidewalk is part of a designated bike route, or on the block where you start or end the ride; always yield to pedestrians', 'DRMC § 54-621'],
@@ -71,8 +71,8 @@ const guide: Guide = {
             ],
           },
         },
-        { note: '**Stay off the sidewalk.** Since 1 July 2026 the City can fine Veo for its riders’ offences. Veo says its scooters detect sidewalk riding: riders have had warnings since 10 August 2026.' },
-        'Breaking the state’s scooter riding rules is a class 2 misdemeanour traffic offence.',
+        { note: '**Stay off the sidewalk.** Since 1 July 2026 the City can fine Veo for its riders’ offences. Veo says its scooters detect sidewalk riding: riders have had warnings since 10 August 2026. Under the schedule DOTI and Veo gave City Council in September 2026, a first and a second offence bring a warning, a third a $5 fine and a fourth a $10 fine and a suspended account.' },
+        'Breaking the state’s scooter riding rules is a class 2 misdemeanour traffic offence, though Denver police wrote only nine scooter tickets from 2018 to 2024, Westword reported.',
       ],
     },
     {
@@ -101,7 +101,7 @@ const guide: Guide = {
           ],
         },
         'Never park on a bike path or private property, block a bus stop, curb ramp, driveway or hydrant, or leave a Veo in a transit station or garage, at a building’s entrance or on rail tracks. The app won’t let you end a ride in a banned area, and walking away without ending it keeps the meter running.',
-        '**Mandatory parking zones.** By 31 December 2026 a ride that ends in the Union Station neighbourhood must end in a marked corral, and the Central Business District follows by 1 July 2027; the code adds parts of Five Points, without a date. Veo said in August 2026 that over 280 corrals were in its app, with more than 150 to come.',
+        '**Mandatory parking zones.** By 31 December 2026 a ride that ends in the Union Station neighbourhood must end in a marked corral, and the Central Business District and parts of Five Points follow by 1 July 2027. Veo said in August 2026 that over 280 corrals were in its app, with more than 150 to come.',
       ],
     },
     {
@@ -128,7 +128,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Denver’s programme has logged over 34 million rides since it began in 2019**, DOTI told City Council in September 2026, and 21 August 2026 set the one-day record: nearly 35,000 trips.',
+            '**Denver’s programme has logged over 34 million rides since it began in 2019**, DOTI told City Council in September 2026, and 21 August 2026 set Veo’s one-day record: nearly 35,000 trips.',
             '**More than four in ten rides are taken through Veo Access.** In May and June 2026 its riders made 567,000 of the 1.34 million trips, DOTI’s quarterly report shows.',
             '**Rebuilding the 16th Street Mall took three years and about $175 million.** It reopened in full on 4 October 2025 as plain “16th Street”, 43 years after the mall first opened.',
           ],
@@ -143,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Veo scooter cost in Denver?',
-      answer: '$1 to unlock and $0.39 a minute under Veo’s licence agreement with the City, so a 10-minute ride costs $4.90. Denver residents pay $0.25 a minute with the Resident Pass, and income-qualified riders get 60 free minutes a day with Veo Access.',
+      answer: '$1 to unlock and $0.39 a minute plus tax as of November 2026, so a 10-minute ride costs $4.90 before tax. Denver residents pay $0.25 a minute with the Resident Pass, and income-qualified riders get 60 free minutes a day with Veo Access.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Denver?',
@@ -155,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet to ride an e-scooter in Denver?',
-      answer: 'No. Colorado’s helmet rule covers only under-18s on class 3 e-bikes. An e-scooter isn’t a motor vehicle and needs no registration.',
+      answer: 'No. Colorado’s helmet rule covers only under-18s on class 3 e-bikes, though DOTI and Veo tell riders to wear one. An e-scooter isn’t a motor vehicle and needs no registration. You must be 18 to rent a Veo.',
     },
     {
       question: 'Can you take a scooter to Denver airport?',
@@ -167,10 +167,16 @@ const guide: Guide = {
     { title: 'DOTI: Shared Bike and Scooter Program, 2026 Q2 report (PDF)', url: 'https://denvergov.org/files/assets/public/v/1/doti/documents/programsservices/micromobility/2026-q2-program-report.pdf' },
     { title: 'Denver Parks and Recreation: Park Use Rules and Regulations, revised December 2022 (PDF)', url: 'https://denvergov.org/files/assets/public/v/3/parks-and-recreation/documents/dpr_parkuserulesregulations.pdf' },
     { title: 'Denver Parks and Recreation: Trail safety, rules and etiquette', url: 'https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Parks-Recreation/Urban-Parks-Trails/Trails/Trail-Safety-Rules-and-Etiquette' },
+    { title: 'Colorado General Assembly: HB19-1221, Regulation of Electric Scooters, signed act (PDF)', url: 'https://leg.colorado.gov/bill_files/63091/download' },
+    { title: 'Colorado General Assembly: HB22-1028, Statewide Regulation of Controlled Intersections, signed act (PDF)', url: 'https://leg.colorado.gov/bill_files/99252/download' },
     { title: 'CDOT: Colorado Bicycling Manual (PDF)', url: 'https://www.codot.gov/programs/bikeped/documents/colorado-bicycling-manual-english' },
     { title: 'CDOT: E-Bike Safety Campaign', url: 'https://www.codot.gov/programs/innovativemobility/mobility-services/e-bike-safety-campaign' },
+    { title: 'Denver City Council: CB19-0784, operation of electric scooters, signed ordinance, 2019 (PDF)', url: 'https://denver.legistar1.com/denver/attachments/716d56d6-1c0f-4d34-8a1f-ee28ab754d5e.pdf' },
     { title: 'Denver City Council: CR26-0326, approving the Veo agreement, 2026', url: 'https://denver.legistar.com/LegislationDetail.aspx?ID=7946052&GUID=502079D0-27ED-4EE8-81B3-98FFB2B2CA97' },
+    { title: 'DOTI: licence agreement with Veo, 2026 (PDF)', url: 'https://denver.legistar1.com/denver/attachments/469459e6-313a-433c-b959-8e674b4a1d7d.pdf' },
     { title: 'Denver City Council: CB25-0599, rules for bike and scooter rental companies, 2025', url: 'https://denver.legistar.com/LegislationDetail.aspx?ID=7351398&GUID=7100D803-247F-4CB2-99E9-F7A85DD1FF05' },
+    { title: 'DOTI and Veo: Shared Bike & Scooter Program, Veo 2026 launch and Q2 report to City Council committee, 2 September 2026 (PDF)', url: 'https://denver.legistar1.com/denver/attachments/2cfcc530-4b5d-4a8b-84b9-b54b9e4c5eb0.pdf' },
+    { title: 'Veo: Denver open data (GBFS), pricing plans', url: 'https://cluster-prod.veoride.com/api/shares/name/den/gbfs/system_pricing_plans' },
     { title: 'RTD: Bikes and scooters on rail', url: 'https://www.rtd-denver.com/how-to-ride/bike-n-ride/bikes-scooters-on-rail' },
     { title: 'RTD: Bikes and scooters on buses', url: 'https://www.rtd-denver.com/how-to-ride/bike-n-ride/bikes-scooters-on-buses' },
     { title: 'RTD: Fares', url: 'https://www.rtd-denver.com/fares-passes/fares' },
@@ -178,6 +184,8 @@ const guide: Guide = {
     { title: 'CDOT: Bustang for summer travel season, 27 June 2024', url: 'https://www.codot.gov/news/2024/june/bustang-for-summer-travel-season' },
     { title: 'City of Boulder: Shared Micromobility Program', url: 'https://bouldercolorado.gov/services/shared-micromobility-program' },
     { title: 'City of Aurora: Shared Mobility Program', url: 'https://www.auroragov.org/residents/transportation___mobility_resources/shared_mobility_program' },
+    { title: 'Westword: The fight for Denver’s e-scooter contract, 7 April 2026', url: 'https://www.westword.com/news/denver-e-scooter-provider-battle-40866170/' },
+    { title: 'Westword: Denver teenage boy killed in Veo e-bike crash, 1 July 2026', url: 'https://www.westword.com/news/denver-teenager-killed-veo-e-bike-crash-40906109/' },
     { title: 'Denver7: Denver micromobility trips rise as Veo introduces sidewalk speed reductions, 20 August 2026', url: 'https://www.denver7.com/news/on-two-wheels/denver-micromobility-trips-rise-as-veo-introduces-sidewalk-speed-reductions' },
     { title: 'Denver7: Denver moves toward mandatory parking zones for scooters and bikes, 3 September 2026', url: 'https://www.denver7.com/news/local-news/denver-moves-toward-mandatory-parking-zones-for-scooters-bikes-as-complaints-over-sidewalk-riding-pile-up' },
     { title: 'Denver7: After 3 years of construction, Denver’s 16th Street is officially reopened, 4 October 2025', url: 'https://www.denver7.com/news/local-news/after-3-years-of-construction-denvers-16th-street-is-officially-reopened' },

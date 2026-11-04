@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'boulder',
   name: 'E-scooters in Boulder, Colorado',
   title: 'E-scooters in Boulder 2026: Lime, rules, where to ride',
-  description: 'E-scooters in Boulder: renting Lime and LimeGliders, discounts, Colorado rules, sidewalks, the Pearl Street Mall, parking corrals, CU’s campus and RTD.',
+  description: 'E-scooters in Boulder: renting Lime and LimeGliders, the price, Colorado rules, sidewalks, the Pearl Street Mall, parking corrals, CU’s campus and RTD.',
   headline: 'E-scooters in Boulder: Lime, the rules, the paths and where to park',
-  lede: 'You can rent e-scooters in Boulder from Lime, the City’s only scooter partner, which kept its contract after a competitive bid in 2026 and now rents seated LimeGliders as well as stand-up scooters. The Lime app shows the price before you unlock. You must be 18, the City says, scooters are held to 15 mph and lose power on the Pearl Street Mall, and in central Boulder a ride must end in a marked Lime corral.',
+  lede: 'You can rent e-scooters in Boulder from Lime, the City’s only scooter partner, which kept its contract after a competitive bid in 2026 and now rents seated LimeGliders as well as stand-up scooters. CU Boulder’s transportation office lists Lime’s standard price as $1 to unlock plus $0.45 a minute as of November 2026. You must be 18, the City says, scooters are held to 15 mph and lose power on the Pearl Street Mall, and in central Boulder a ride must end in a marked Lime corral.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:co:Boulder',
@@ -23,15 +23,21 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Discounts on Lime rides in Boulder',
+      heading: 'How much does a Lime scooter cost in Boulder?',
       blocks: [
-        'The Lime app shows the current price before you unlock. Three discounts come with the programme:',
+        'CU Boulder, a partner in the programme, lists Lime’s fares on its Parking and Transportation Services scooter page. These are CU’s figures, as of November 2026: the Lime app shows the current price before you unlock.',
         {
-          list: [
-            '**Near frequent transit:** 25% off rides that start in high-frequency transit areas, announced with the new contracts on 6 August 2026, the City says.',
-            '**Lime Access:** free rides of up to 30 minutes for income-qualified riders, Pell Grant recipients among them, say the City and CU Boulder.',
-            '**CU riders:** 50% off with an @colorado.edu address, CU Boulder’s transportation office says.',
-          ],
+          table: {
+            caption: 'Lime prices and discounts in Boulder as of November 2026, as CU Boulder and the City give them',
+            head: ['Ride', 'Price', 'Source'],
+            rows: [
+              ['Standard ride', '$1 to unlock plus $0.45 a minute', 'CU Boulder Parking and Transportation Services'],
+              ['Eligible CU riders', '50% off with an @colorado.edu address: $0.50 to unlock and about $0.23 a minute', 'CU Boulder Parking and Transportation Services'],
+              ['LimePrime', '$5.99 a month: no unlock fees and 25% off the per-minute price', 'CU Boulder Parking and Transportation Services'],
+              ['Near frequent transit', '25% off rides that start in high-frequency transit areas, announced with the new contracts on 6 August 2026', 'City of Boulder'],
+              ['Lime Access', 'Free rides of up to 30 minutes for income-qualified riders, Pell Grant recipients among them', 'City of Boulder; CU Boulder'],
+            ],
+          },
         },
       ],
     },
@@ -126,7 +132,7 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Lime scooter in Boulder?',
-      answer: 'The Lime app shows the current price before you ride. The City announced 25% off rides that start in high-frequency transit areas, and riders with a CU email address get 50% off, CU says.',
+      answer: 'CU Boulder’s transportation office gives the standard price as $1 to unlock plus $0.45 a minute as of November 2026. The City announced 25% off rides that start in high-frequency transit areas, and riders with a CU email address get 50% off, CU says.',
     },
     {
       question: 'Can you ride a scooter on the Pearl Street Mall?',
