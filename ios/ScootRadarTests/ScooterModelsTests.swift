@@ -303,6 +303,12 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertEqual(parts.value, "1,000")
         XCTAssertEqual(parts.unit, "ft")
         XCTAssertFalse(Scooter.formattedLength(meters: 300, locale: american).contains(" "))
+        // French puts a narrow no-break space before the unit; the figure still splits from it.
+        for (meters, value, unit) in [(300.0, "300", "m"), (1_300, "1,3", "km"), (61_000, "61", "km")] {
+            let french = Scooter.lengthParts(meters: meters, locale: Locale(identifier: "fr_FR"))
+            XCTAssertEqual(french.value, value, "\(meters) m")
+            XCTAssertEqual(french.unit, unit, "\(meters) m")
+        }
     }
 
     func testTheMapShowsItsScaleWhereTheRegionMeasuresInMiles() {

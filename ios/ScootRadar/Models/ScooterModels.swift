@@ -155,9 +155,10 @@ struct Scooter: Identifiable, Hashable, Sendable {
         locale: Locale = ScooterLanguage.current.locale
     ) -> (value: String, unit: String?) {
         let length = formattedLength(meters: meters, locale: locale)
-        let parts = length.split(separator: "\u{00A0}", maxSplits: 1)
-        guard parts.count == 2 else { return (length, nil) }
-        return (String(parts[0]), String(parts[1]))
+        // The unit follows the last no-break space: a narrow one (U+202F) in French, which also groups thousands
+        // there, as U+00A0 does in Norwegian.
+        guard let gap = length.lastIndex(where: { $0 == "\u{00A0}" || $0 == "\u{202F}" }) else { return (length, nil) }
+        return (String(length[..<gap]), String(length[length.index(after: gap)...]))
     }
 }
 
