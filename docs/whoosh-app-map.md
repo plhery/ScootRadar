@@ -93,6 +93,16 @@ from 08:17 UTC every sweep of the city failed on that view, while its other
 through the cluster. The API still kept each search to its view, and returned
 none outside the ride area (SCOOTRADAR-CACHE-65).
 
+Each region's bounds are the reviewed coverage: its ride polygons' envelope and
+0.001 degrees (about 110 m) on each side. On 4 November 2026, between 12:56 and
+14:55 UTC, Whoosh moved Recife's ride polygon's southern edge 555 m south, by
+the airport, where it straddles the town line with Jaboatão dos Guararapes
+(three of its 173 points); every sweep then failed on the unreviewed expansion,
+the feed expired at 15:06 UTC and Sentry was told at 15:36 (SCOOTRADAR-CACHE-65
+again). The region was still active, its season not over, and its other 23
+regions collected as usual. Its south bound went from -8.14695 to -8.15296; a
+scooter past the town line counts under Jaboatão, as JET's do.
+
 Positions are `state.position.point.{lat,lng}`. Battery is `battery.power`;
 `battery.distanceToCharge.amount` defaults to kilometres in the app's
 amount-unit mapper. The collector excludes known bike models and retains
