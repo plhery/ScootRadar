@@ -241,6 +241,8 @@ class CityRuleZoneTest {
         assertEquals("8–10 mph", plain(speedText(12.87..16.09, us)))
         assertEquals("10 mph", plain(speedText(16.0..16.1, Locale.forLanguageTag("en-GB"))))
         assertEquals("6–15 km/h", plain(speedText(6.0..15.0, Locale.forLanguageTag("en-CH"))))
+        // French writes a narrow space before the unit.
+        assertEquals("4 mi/h", plain(speedText(6.0..6.0, Locale.forLanguageTag("fr-US"))))
         // In the user's region, as the legend writes it.
         Locale.setDefault(us)
         ScooterLanguage.launchLocale = { us }
