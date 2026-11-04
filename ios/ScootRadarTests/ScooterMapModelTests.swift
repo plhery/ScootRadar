@@ -3256,7 +3256,9 @@ extension ScooterMapModelTests {
             let names = mapView.annotations
                 .compactMap { mapView.view(for: $0) as? ScooterAnnotationView }
                 .compactMap { view in view.pillFrame.map { view.convert($0, to: nil) } }
-            XCTAssertEqual(names.map(\.height), [height], "\(size), \(mapView.region.span)")
+            // Converted to the window, a frame's height may be off in its last digits.
+            XCTAssertEqual(names.count, 1, "\(size), \(mapView.region.span)")
+            XCTAssertEqual(names.first?.height ?? 0, height, accuracy: 0.01, "\(size)")
             // Clear of what floats over the map.
             let chrome = coordinator.parent.bottomChromeFrames + [coordinator.parent.interactionExclusionFrame]
             for name in names {
