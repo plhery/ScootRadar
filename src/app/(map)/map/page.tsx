@@ -23,6 +23,7 @@ import ZoneLegend from '@/components/ZoneLegend';
 import { selectionFeedback } from '@/lib/feedback';
 import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import { PROVIDERS } from '@/lib/types';
+import { LEGACY_PROVIDERS_STORAGE_KEY, PROVIDERS_OFF_STORAGE_KEY, providersOffToSave, savedProvidersOff } from '@/lib/providerFilterStorage';
 import {
   parseClientParams,
   parseStoredClientParams,
@@ -88,7 +89,6 @@ const SAME_SCOOTER_M = 15;
 const THEME_COLOR = { light: '#eef0f4', dark: '#0b0e14' };
 
 const STORAGE_KEY = 'scooters-params';
-const PROVIDERS_STORAGE_KEY = 'scooters-providers';
 // Only the fact that locating has worked once on this device; never a position.
 const LOCATED_ONCE_STORAGE_KEY = 'scooters-located-once';
 
@@ -265,10 +265,8 @@ export default function Home() {
     initializedRef.current = true;
 
     try {
-      const saved: unknown = JSON.parse(localStorage.getItem(PROVIDERS_STORAGE_KEY) ?? 'null');
-      if (Array.isArray(saved) && saved.every(key => typeof key === 'string' && Object.hasOwn(PROVIDERS, key))) {
-        setEnabledProviders(new Set(saved));
-      }
+      const off = savedProvidersOff(key => localStorage.getItem(key), Object.keys(PROVIDERS));
+      if (off) setEnabledProviders(new Set(Object.keys(PROVIDERS).filter(provider => !off.has(provider))));
     } catch {}
     let located = false;
     try { located = localStorage.getItem(LOCATED_ONCE_STORAGE_KEY) === '1'; } catch {}
@@ -304,7 +302,10 @@ export default function Home() {
 
   useEffect(() => {
     if (!preferencesReady) return;
-    try { localStorage.setItem(PROVIDERS_STORAGE_KEY, JSON.stringify([...enabledProviders].sort())); } catch {}
+    try {
+      localStorage.setItem(PROVIDERS_OFF_STORAGE_KEY, providersOffToSave(Object.keys(PROVIDERS), enabledProviders));
+      localStorage.removeItem(LEGACY_PROVIDERS_STORAGE_KEY);
+    } catch {}
   }, [enabledProviders, preferencesReady]);
 
   // Sync state to URL + localStorage

@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import type { MapBounds, ParkingLocation, ScooterResponse, Vehicle } from '@/lib/types';
+import { PROVIDERS } from '@/lib/types';
 import Home from './page';
 import { track as sendEvent } from '@/lib/analytics';
 import { I18nProvider } from '@/lib/i18n';
@@ -119,6 +120,10 @@ function stubSlowGeolocation() {
 }
 
 const dockCount = () => document.querySelector('.sheet-count');
+
+/** Keeps the providers given on and every other off, as the filters store them. */
+const keepOnly = (...on: string[]) =>
+  localStorage.setItem('scooters-providers-off', JSON.stringify(Object.keys(PROVIDERS).filter(provider => !on.includes(provider)).sort()));
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -1051,7 +1056,7 @@ it('explains an area without scooter data and makes the closest city the place',
 });
 
 it('says how many scooters the filters hide and brings them back', async () => {
-  localStorage.setItem('scooters-providers', JSON.stringify(['hopp']));
+  keepOnly('hopp');
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
@@ -1517,19 +1522,31 @@ it('restores a chosen appearance and map style from the link', async () => {
 });
 
 it('restores and saves provider preferences without overwriting them during hydration', async () => {
-  localStorage.setItem('scooters-providers', JSON.stringify(['lime']));
+  keepOnly('lime');
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
   const first = mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByRole('button', { name: 'Lime, 1. Shown.' })).toHaveClass('chip-selected');
   expect(screen.getByRole('button', { name: 'Bolt, 0. Hidden.' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Lime, 1. Shown.' }));
-  const saved = localStorage.getItem('scooters-providers');
-  expect(JSON.parse(saved!)).toContain('bird');
+  // The providers turned off are kept: none now.
+  const saved = localStorage.getItem('scooters-providers-off');
+  expect(JSON.parse(saved!)).toEqual([]);
   first.unmount();
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
-  expect(localStorage.getItem('scooters-providers')).toBe(saved);
+  expect(localStorage.getItem('scooters-providers-off')).toBe(saved);
+});
+
+it('shows the providers added since the first visit, which the list of those on kept off until 4 November 2026', async () => {
+  // As every visit before 11 October 2026 wrote it, filters touched or not.
+  localStorage.setItem('scooters-providers', JSON.stringify(['bird', 'bolt', 'dott', 'hopp', 'lime', 'pony', 'publibike', 'voi']));
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+  expect(JSON.parse(localStorage.getItem('scooters-providers-off')!)).toEqual([]);
+  expect(localStorage.getItem('scooters-providers')).toBeNull();
 });
 
 /** A wide window with a mouse: the layout of src/lib/useDesktopLayout.ts. */
@@ -1586,7 +1603,7 @@ it('on a desktop a legend row behaves like its chip: alone on the first click, e
   expect(row(/^Lime, 1\./)).toHaveAttribute('aria-pressed', 'true');
   expect(row(/^Bolt, 0\./)).toHaveAttribute('aria-pressed', 'false');
   expect(row(/^Bolt, 0\./)).toHaveAccessibleName('Bolt, 0. Hidden.');
-  expect(JSON.parse(localStorage.getItem('scooters-providers')!)).toEqual(['lime']);
+  expect(JSON.parse(localStorage.getItem('scooters-providers-off')!)).toEqual(Object.keys(PROVIDERS).filter(provider => provider !== 'lime').sort());
 
   fireEvent.click(row(/^Lime, 1\./));
   expect(row(/^Bolt, 0\./)).toHaveAttribute('aria-pressed', 'true');

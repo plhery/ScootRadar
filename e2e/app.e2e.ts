@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { COUNTRY_CREDIT_LINKS } from '../src/generated/countries';
+import { PROVIDER_KEYS } from '../src/generated/providers';
 import { visitFromSwitzerland } from './swissVisitor';
 
 const coarsePointer = (page: Page) => page.evaluate(() => matchMedia('(pointer: coarse)').matches);
@@ -711,10 +712,11 @@ test('the search bar does not promise scooters near a searched place without sco
 });
 
 test('says how many scooters the filters hide, and shows them again or opens the filters', async ({ page }) => {
-  await page.addInitScript(() => {
-    if (!sessionStorage.getItem('seeded')) localStorage.setItem('scooters-providers', JSON.stringify(['hopp']));
+  // Every provider but Hopp turned off, as the filters keep them.
+  await page.addInitScript(off => {
+    if (!sessionStorage.getItem('seeded')) localStorage.setItem('scooters-providers-off', JSON.stringify(off));
     sessionStorage.setItem('seeded', 'true');
-  });
+  }, PROVIDER_KEYS.filter(provider => provider !== 'hopp'));
   await page.goto('/map?origin=47.3769,8.5417');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: '3 scooters hidden by your filters' })).toBeVisible();
