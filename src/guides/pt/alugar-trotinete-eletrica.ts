@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alugar trotinete elétrica: como funcionam as trotinetes partilhadas, da app ao fim da viagem',
   lede: 'Para alugar uma trotinete elétrica partilhada em Portugal, descarregue a app do operador, adicione um cartão, leia o código QR do guiador e, no fim, estacione onde a app deixar e tire uma fotografia. A Bird e a Bolt só alugam a maiores de 18 anos, e a lei não exige carta de condução. Paga um valor pelo desbloqueio e um preço por minuto, que a app mostra antes de desbloquear: em novembro de 2026, a Bolt anuncia minutos a partir de 0,15 €. Em Lisboa, o passe Navegante dá minutos grátis, mas a Câmara aprovou a 21 de outubro de 2026 suspender as trotinetes partilhadas: os operadores têm de as retirar até ao fim do ano.',
   published: '2026-10-13',
-  updated: '2026-10-26',
+  updated: '2026-11-05',
   sections: [
     {
       heading: 'Como alugar uma trotinete elétrica, passo a passo',
@@ -56,7 +56,7 @@ const guide: Guide = {
         'Em Portugal, as trotinetes partilhadas são da Lime, da Bird e da Bolt.',
         {
           table: {
-            caption: 'Operadores de trotinetes partilhadas por cidade (outubro de 2026)',
+            caption: 'Operadores de trotinetes partilhadas por cidade (novembro de 2026)',
             head: ['Onde', 'Operadores', 'O que saber'],
             rows: [
               ['Lisboa', 'Bolt, Lime e Bird', 'A viagem só termina num hotspot; 20 km/h no máximo; minutos grátis com o Navegante; a Câmara aprovou a 21 de outubro de 2026 suspendê-las, e os operadores têm de as retirar até ao fim do ano'],
@@ -64,7 +64,7 @@ const guide: Guide = {
               ['Matosinhos', 'Bird e Bolt', 'As duas têm licença da Câmara desde 2024; o regulamento municipal de 2022 só permite alugar das 6h00 às 22h00'],
               ['Oeiras', 'Bird, Lime e Bolt', 'A viagem só começa e acaba num ponto move sinalizado'],
               ['Almada e Costa da Caparica', 'Bird e Lime', 'Siga as zonas do mapa da app'],
-              ['Cascais, Maia, Portimão e Olhão', 'Bird', '–'],
+              ['Cascais, Maia, Portimão, Olhão e Covilhã', 'Bird', '–'],
               ['Coimbra', 'Bird e Bolt', 'Em agosto de 2026, a presidente da Câmara disse que a cidade «não tem condições» para elas e que prepara uma concessão e um regulamento: confirme na app'],
               ['Santarém', 'Bolt', 'A Câmara renovou o acordo com a Bolt em 2024: 20 km/h no máximo, 15 km/h em zonas do centro histórico'],
               ['Faro', 'Lime e Bolt', 'Só elas têm licença da Câmara, desde abril de 2025, com 350 trotinetes cada; a Lime tem também bicicletas'],

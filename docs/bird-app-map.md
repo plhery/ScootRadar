@@ -2,15 +2,16 @@
 
 Since 28 October 2026 the Node cache reads Bird's rider map, signed in, where
 Bird or Spin publishes no feed ([`server/birdApp.ts`](../server/birdApp.ts)),
-41 areas since 4 November. Bird's scooters in the United States: Austin,
+43 areas since 5 November. Bird's scooters in the United States: Austin,
 Bloomington, IN, Charlotte, Coral Gables, Harrisonburg, Jacksonville,
-Knoxville, Mankato, Mesa, Ogden, Sacramento, Scottsdale, Wilmington, NC,
+Knoxville, Long Beach, Mankato, Mesa, Ogden, Sacramento, Scottsdale, Wilmington, NC,
 Winona and Yonkers. Spin's: Auburn, AL, Baton Rouge, Canton, OH, Greeley,
 Greenwood Village, CO, Kent, OH, Moscow, ID, Pullman, San Diego State and
 Santa Monica. Bird's in Canada:
 Brampton, Cochrane, Cranbrook, Kamloops, Lethbridge, Medicine Hat,
 Mississauga, Okotoks, Oshawa, Penticton, Pickering, Spruce Grove (with
 Stony Plain), St. Albert and Vernon. Bird's in Spain: Getafe and Oviedo.
+Bird's in Portugal: Covilhã.
 The user asked for it on 27
 October 2026, after [the research reader](../scripts/bird-app-map.mjs) had
 shown the map's decoys could be told from real replies. Everything Bird
@@ -54,8 +55,8 @@ about half what it took. An area nobody looks at is swept once a day
 (`BIRD_IDLE_INTERVAL_MS`), between 08:00 and 21:00 in its town, and expires
 ten minutes after a day without a sweep. A request keeps an area watched for
 three minutes, and a watched area is swept again as soon as its sweep ends.
-The 41 areas took about 280 requests, so a day's round of them all takes
-about 140 of the client's 1,440 minutes.
+The 43 areas took about 300 requests, so a day's round of them all takes
+about 150 of the client's 1,440 minutes.
 While it is, its last positions, up to a day old, stand faded. A starting
 cache waits two minutes, while the cache it replaces may still be sweeping.
 
@@ -108,8 +109,10 @@ session the cache holds.
 | Santa Monica (Spin, with Bird's) | 616 | 14 | 420 s | 04:40 UTC, 4 November |
 | Oviedo | 359 | 9 | 240 s | 14:59 UTC, 4 November |
 | Getafe | 190 | 4 | 120 s | 15:07 UTC, 4 November |
+| Long Beach | 974 | 18 | 510 s | 21:59 UTC, 4 November |
+| Covilhã | 184 | 1 | 30 s | 22:01 UTC, 4 November |
 
-The last nineteen were swept with the production code on the research
+The last twenty-one were swept with the production code on the research
 account, a request every 30 seconds, in the ride checks below. The others were swept with the production code on 27 October 2026, the first four a
 request every six seconds, the others at the production pace after Bird's map
 had answered real scooters again at 22:04 UTC: 165 requests in 87 minutes
@@ -275,7 +278,7 @@ on 3 November and from 04:25 UTC on 4 November (6.5 hours):
 | --- | ---: | ---: | ---: | --- |
 | Santa Monica (Spin) | 364 → 341 | 121 (33%) | 31 | yes |
 | Greenwood Village (Spin) | 96 → 94 | 15 (16%) | 9 | yes |
-| Long Beach | 968 → 932 | 126 (13%) | 14 | not yet |
+| Long Beach | 968 → 932 | 126 (13%) | 14 | yes, after 24 hours |
 
 - **Santa Monica:** Bird's area holds Bird's fleet, which Bird's public
   Santa Monica feed gives (all but 21 of 318 within 40 m of the cache's), and
@@ -300,8 +303,12 @@ on 3 November and from 04:25 UTC on 4 November (6.5 hours):
 - **Long Beach:** Bird is one of the City's two permitted operators, with
   Lime ([coverage gaps](coverage-gaps.md)). Its 968 scooters, which no
   feed of ours has, moved: 126 left and 14 turned up far from any earlier
-  one. That is under the bar, though, so the area is swept again 24 hours
-  after its first sweep before it goes on the map.
+  one. That was under the bar, so the area was swept again 24 hours after
+  its first sweep, from 21:50 UTC on 4 November: 219 of the 968 (23%) had
+  left and 27 of the 974 turned up far from any earlier one, so
+  `bird_us_app_long_beach` reads it since 5 November. Its outline overlaps
+  the box of Bird's public Los Angeles feed, which lists none of its
+  scooters.
 
 ### Europe, November 2026
 
@@ -310,13 +317,17 @@ at 11 European towns where Bird was said to run without a public feed. From
 04:41 UTC on the 4th it reads every town of 15,000 people or more in Spain,
 Portugal, Italy, France, Switzerland and Israel, largest first, as the
 American search did, and compares each new area's scooters with the cache's
-within 40 m: 1,015 towns and 162 new areas by 15:14 UTC. The candidates were
-swept whole twice, from 08:30 and 14:55 UTC on 4 November (6.4 hours):
+within 40 m: all 2,151 towns, with 164 new areas, by 16:56 UTC. The
+candidates were swept whole twice, from 08:30 and 14:55 UTC on 4 November
+(6.4 hours), and the two found later, Vichy and Covilhã, from 15:09 and
+15:37 UTC and again at 22:01 UTC (6.9 and 6.4 hours):
 
 | Area | Scooters | Left | Arrived over 150 m away | Added |
 | --- | ---: | ---: | ---: | --- |
 | Oviedo | 327 → 359 | 50 (15%) | 21 | yes |
 | Getafe | 183 → 190 | 30 (16%) | 5 | yes |
+| Covilhã | 183 → 184 | 28 (15%) | 6 | yes |
+| Vichy | 282 → 282 | 32 (11%) | 8 | no |
 | Funchal | 188 → 201 | 5 (3%) | 1 | no |
 | Murcia | 3 → 3 | | | no |
 | Lausanne | 0 → 0 | | | no |
@@ -332,16 +343,23 @@ swept whole twice, from 08:30 and 14:55 UTC on 4 November (6.4 hours):
   arrivals were not in the feed. Of the feed's 81 at 15:10 UTC, 14 were not
   on the map, 5 of them on one spot, as at a depot. `bird_es_app_getafe`
   reads the area whole, in place of the feed.
+- **Covilhã:** Bird's area holds the town, 183 scooters on 4 November,
+  none in a feed of ours, and Bird publishes no feed for it. It just cleared
+  the bar: 28 left and 6 turned up far from any earlier one. We found no
+  council or press notice of the service.
 - **Funchal** was hardly ridden in early November; recheck it in spring.
 - **Rota:** Bird's public `rota-spain` feed, which MobilityData's list
   lacks, listed 273 to 283 scooters on 3 and 4 November 2026, but in 17.5
   hours 28 left and 1 turned up far from any earlier one, so it stays out.
-  The rider map has its area too ("Cadiz - Operational Zone", 250 scooters or
-  more on 3 November): sweep it with a read of the feed, to see whether the
-  feed's positions are current.
-- **Vichy:** Bird's public Vichy feed listed 108 scooters on 4 November while
-  the rider map held 282 in its area; it is swept again at about 22:00 UTC,
-  as Getafe was.
+  The rider map has its area too ("Cadiz - Operational Zone"). Swept whole
+  at 22:03 UTC on 4 November it held 282 scooters, and 277 of them stood
+  within 40 m of one of the feed's 278 at 23:30 UTC: the feed is current,
+  and Rota is quiet in November. Recheck it in spring.
+- **Vichy:** Bird's public Vichy feed listed 105 to 108 scooters on 4
+  November while the rider map held 282 in its area. Unlike Getafe's, the
+  feed lists the ridden ones: read at 21:58 and 22:00 UTC, it had 17 of the
+  32 scooters that arrived since 15:09, against 86 of the 250 that stayed,
+  so the 179 it left out barely moved (15 arrived). Vichy keeps its feed.
 
 [`scripts/update-bird-areas.mjs`](../scripts/update-bird-areas.mjs) refreshes
 the stored outlines, a request per area, with a private session.

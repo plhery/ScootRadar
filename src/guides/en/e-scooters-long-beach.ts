@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Long Beach: Lime and Bird, the rules, the beach path and where to park',
   lede: 'You can rent e-scooters in Long Beach from Lime and Bird, the two companies the City names as its permitted operators. Check the price in the app before you unlock. California law asks for a driving licence or instruction permit and caps scooters at 15 mph; the City adds a minimum age of 18, bans riding on every sidewalk and keeps shared scooters out of parks, the Port and the airport.',
   published: '2026-10-29',
-  updated: '2026-10-29',
+  updated: '2026-11-05',
   city: 'us:ca:Long Beach',
   sections: [
     {
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Electric scooter rental in Long Beach runs under the City’s Shared Micromobility Program, in place since August 2020. The City may permit up to four e-scooter companies, for a year from each 1 October, under regulations last updated in August 2026.',
         'Two companies run under them: **Lime** and **Bird**. A Public Works memo of 5 March 2026 called them the City’s permitted operators, and the City’s programme page still listed both on 29 October 2026.',
         'The City caps the programme at 3,000 e-scooters, shared out among the companies as it decides. Each company pays $25,000 a year for its permit, $75 a scooter a year and 25 cents a trip, and must keep at least 20% of its fleet in each of three areas of the city. A permit covers the city only: companies may not place scooters in Lakewood, Seal Beach or Signal Hill.',
-        'At 11:51 p.m. on Wednesday 28 October 2026 the [Long Beach map](map:us:ca:Long Beach) showed about 1,480 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. About a quarter of Lime’s Long Beach area lies in San Pedro and Wilmington, in [Los Angeles](map:us:ca:Los Angeles). **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 11:51 p.m. on Wednesday 28 October 2026 the [Long Beach map](map:us:ca:Long Beach) showed about 1,480 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. About a quarter of Lime’s Long Beach area lies in San Pedro and Wilmington, in [Los Angeles](map:us:ca:Los Angeles). Bird publishes no feed for Long Beach; since 5 November 2026 the map shows its scooters too, from Bird’s own app map, about 970 on the afternoon of 4 November. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {

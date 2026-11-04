@@ -285,6 +285,26 @@
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/los-angeles/gbfs.json"
     },
     {
+      "id": "bird_us_app_long_beach",
+      "country": "US",
+      "provider": "bird",
+      "city": "Long Beach",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        33.76696,
+        -118.18923
+      ],
+      "bounds": {
+        "south": 33.71549,
+        "north": 33.88461,
+        "west": -118.24877,
+        "east": -118.06286
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "bec758f5-3b48-418a-8deb-ee5d8412e3ce"
+    },
+    {
       "id": "bird_us_santa_monica",
       "country": "US",
       "provider": "bird",

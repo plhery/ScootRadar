@@ -20,8 +20,9 @@ a clean full-area audit; see
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 Bird's scooters in Oviedo and Getafe, about 360 and 190, come from its
 rider map since 4 November 2026: Oviedo has no public feed, and Bird's
-public Getafe feed listed fewer than half of Getafe's; see
-[Bird's rider map](bird-app-map.md#europe-november-2026).
+public Getafe feed listed fewer than half of Getafe's. Bird's in Covilhã,
+about 180, come from it since 5 November, as Bird publishes no feed there;
+see [Bird's rider map](bird-app-map.md#europe-november-2026).
 The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |

@@ -838,7 +838,9 @@ banned shared scooters, and feeds that were empty when checked.
     Portugal's access point; its scooters there and in Matosinhos and
     Santarém come from its [rider map](bolt-app-map.md) since 25 October
     2026. Lime has no public feed for Porto or Faro; its scooters there and
-    in Oeiras come from its rider map since the same day.
+    in Oeiras come from its rider map since the same day. Bird publishes no
+    feed for Covilhã: its scooters there come from its rider map since 5
+    November 2026 ([Bird rider map](bird-app-map.md#europe-november-2026)).
   - Porto's FIWARE broker, which states no licence, still holds its shared
     scooters as they were on 8 October 2026 (checked 29 October), so they stay
     off the map. The city's 230 sharing points on it, last updated on 28
@@ -1149,8 +1151,9 @@ banned shared scooters, and feeds that were empty when checked.
       of the City's two permitted operators, with Lime (Public Works memo of
       5 March 2026; the
       [program page](https://longbeach.gov/goactivelb/programs/micro-mobility-program/)
-      on 29 October 2026), but publishes no feed there and its rider map is
-      not read there, so only Lime's Long Beach scooters are on the map. In
+      on 29 October 2026), but publishes no feed there: its scooters come
+      from its rider map since 5 November 2026
+      ([Bird's rider app](bird-app-map.md#where-an-area-meets-our-feeds-november-2026)). In
       **San Jose** the City permitted Lime, its Department of Transportation
       said on 10 March 2026
       ([Spartan Daily](https://spartanmediagroup.net/9517/spartan-daily/lime-e-scooters-make-comeback-to-downtown-sj/),

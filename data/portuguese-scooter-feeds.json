@@ -87,6 +87,28 @@
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/coimbra-portugal/gbfs.json"
     },
     {
+      "id": "bird_pt_app_covilha",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Covilhã",
+      "timeZone": "Europe/Lisbon",
+      "center": [
+        40.2806,
+        -7.5045
+      ],
+      "bounds": {
+        "south": 40.26282,
+        "north": 40.29181,
+        "west": -7.51768,
+        "east": -7.48669
+      },
+      "discoveryUrl": "https://api-bird.prod.birdapp.com/bird/nearby",
+      "birdAppArea": "2f1cc0c5-c8f3-420c-ac3a-5c39ad3d64ca",
+      "aliases": [
+        "Covilha"
+      ]
+    },
+    {
       "id": "bird_pt_lisboa",
       "country": "PT",
       "provider": "bird",
