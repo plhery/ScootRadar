@@ -52,12 +52,10 @@ class MapChromeFrames {
     var captionButtons by mutableStateOf(emptyList<ScreenRect>())
 
     /**
-     * The open search over the map, in either layout: a finger exploring it with TalkBack finds its rows, not the
-     * markers under them. The other frames keep the closed bar's, as the iPhone's do.
+     * Filters, Settings or the open search over the map, in either layout, which TalkBack then hears none of, as
+     * VoiceOver hears nothing under a sheet, nor under the search since 4 November (ScooterMapScreen.swift:96-97). The
+     * frames keep the closed bar's, as the iPhone's do.
      */
-    var search by mutableStateOf<ScreenRect?>(null)
-
-    /** Filters or Settings over the map, which TalkBack then hears none of, as VoiceOver hears nothing under a sheet. */
     var covered by mutableStateOf(false)
 
     val chrome: MapChrome

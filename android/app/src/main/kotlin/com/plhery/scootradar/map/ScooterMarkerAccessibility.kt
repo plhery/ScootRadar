@@ -158,8 +158,8 @@ class ScooterMarkerAccessibility(
     private var isCurrent = false
 
     /**
-     * A sheet over the map, or the phone's search over all of it: none of the markers shows, and TalkBack hears none
-     * of them, as VoiceOver hears nothing under a sheet.
+     * A sheet or the open search over the map, in either layout: TalkBack hears none of the markers, as VoiceOver hears
+     * nothing under a sheet, nor under the search since 4 November (ScooterMapScreen.swift:96-97).
      */
     var covered = false
         set(value) {
@@ -167,9 +167,6 @@ class ScooterMarkerAccessibility(
             field = value
             refresh()
         }
-
-    /** The open search over the map, in either layout: a finger on it finds its rows. */
-    var search: ScreenRect? = null
 
     /** The markers have moved or changed: TalkBack is told, and they are listed again when it asks. */
     fun refresh() {
@@ -234,18 +231,11 @@ class ScooterMarkerAccessibility(
     }
 
     // A finger exploring the map finds what is in front, as VoiceOver's does: on the chrome, the chrome's own elements,
-    // which Compose finds after the map has had the finger, and never a marker under them. The open search is in front
-    // then, with a large window's corner beside the panel: the dock, the notices and a panel's card make way, and on a
-    // phone the legend and the locate button too, hidden from VoiceOver as ScooterMapScreen.swift hides them; their
-    // frames, kept for the map's names, hold no finger back.
+    // which Compose finds after the map has had the finger, and never a marker under them; with a sheet or the search
+    // open, none at all.
     override fun getVirtualViewAt(x: Float, y: Float): Int {
         val point = ScreenPoint(x / ratio.toDouble(), y / ratio.toDouble())
-        val parent = scene.parent
-        val inFront = when (val open = search) {
-            null -> parent.isUnderChrome(point)
-            else -> open.contains(point) || parent.panelFrame != null && parent.bottomChromeFrames.any { !it.isEmpty && it.contains(point) }
-        }
-        if (covered || inFront) return INVALID_ID
+        if (covered || scene.parent.isUnderChrome(point)) return INVALID_ID
         val element = MarkerElements.at(point, current(), scene, map)
         return element?.let { ids[it.key] } ?: INVALID_ID
     }

@@ -314,11 +314,15 @@ fun ScooterMapScreen(
                     chrome.fold = fold
                     chrome.isSearching = searchIsExpanded
                     chrome.captionButtons = captionButtons
-                    chrome.covered = sheetOpen
+                    chrome.covered = sheetOpen || searchIsExpanded
                 }
                 // A sheet, a popover and a form are modal: TalkBack reads them alone, as VoiceOver does.
                 Box(Modifier.fillMaxSize().then(if (sheetOpen) Modifier.clearAndSetSemantics { } else Modifier)) {
-                    map(dark)
+                    // The open search is over it: TalkBack reads the search alone, its markers, its compass and its
+                    // credits none, as VoiceOver reads the iPhone's (4810e235).
+                    Box(Modifier.fillMaxSize().unheard(searchIsExpanded)) {
+                        map(dark)
+                    }
                     // Before the chrome is hidden from TalkBack under what opens.
                     val onShowFilters = {
                         focusReturn.opening()
@@ -515,7 +519,6 @@ private fun DockChrome(
         onDispose {
             chrome.top = null
             chrome.dock = null
-            chrome.search = null
         }
     }
 
@@ -827,7 +830,6 @@ private fun PanelChrome(
     DisposableEffect(chrome) {
         onDispose {
             chrome.panel = null
-            chrome.search = null
         }
     }
 
@@ -910,17 +912,16 @@ private fun PanelChrome(
                         // The window's bottom, inside its safe area.
                         bottomLimit = windowHeight - safeBottom,
                         onCollapsedHeightChange = { if (!isSearching) searchBarHeight.intValue = it },
-                        modifier = (beside?.let { Modifier.besideCaption(it, bar) } ?: Modifier).onGloballyPositioned {
-                            chrome.search = if (isSearching) it.windowFrame(density.density) else null
-                        },
+                        modifier = beside?.let { Modifier.besideCaption(it, bar) } ?: Modifier,
                         onFiltersFrameChange = onFiltersButtonFrame,
                     )
                 }
 
                 // The legend against the locate button, in the map's trailing corner, 10 in from the leading side
                 // at the most, the iPad's spacing after its Spacer (ScooterMapScreen.swift:401-404).
+                // Beside the open search they stay in view, but TalkBack reads the search alone, as the map's.
                 Row(
-                    Modifier.align(Alignment.BottomEnd).padding(16.dp).padding(start = 10.dp),
+                    Modifier.align(Alignment.BottomEnd).padding(16.dp).padding(start = 10.dp).unheard(isSearching),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.Bottom,
                 ) {
@@ -1142,7 +1143,6 @@ private fun TopStack(
                 },
                 modifier = searchBarModifier.onGloballyPositioned {
                     if (!isSearching) barFrame = it.windowFrame(density.density)
-                    chrome.search = if (isSearching) it.windowFrame(density.density) else null
                 },
             )
             AppearingContent(

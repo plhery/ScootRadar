@@ -444,10 +444,9 @@ class ScooterMarkers(
         flush()
     }
 
-    /** Filters or Settings over the map, and the open search over it: what TalkBack may hear of the markers. */
-    fun heardDidChange(covered: Boolean, search: ScreenRect?) {
+    /** Filters, Settings or the open search over the map: TalkBack hears none of the markers. */
+    fun heardDidChange(covered: Boolean) {
         accessibility.covered = covered
-        accessibility.search = search
     }
 
     /** The safe area, whose top the names stay below. */

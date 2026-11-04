@@ -427,13 +427,13 @@ class ScooterMarkerAccessibilityTest {
         // Swiped to, the markers under the chrome are read all the same, as VoiceOver reads MapKit's in its order.
         assertEquals(3, accessibility.virtualViews().size)
 
-        // The open search over the map, whose rows a finger finds. The dock has made way for it, hidden from VoiceOver
-        // as the iPhone hides it: the marker where it was is found (review-app-ai R4).
-        val docked = accessibility.virtualViews().single { it != free && accessibility.node(it).bounds().centerY() > 600 * density }
-        accessibility.search = ScreenRect(16.0, 50.0, 358.0, 400.0)
+        // The open search over the map, which TalkBack reads alone as VoiceOver reads the iPhone's since 4 November:
+        // no marker is found, nor swiped to.
+        accessibility.covered = true
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 300.0))
-        assertEquals("under the dock that made way", docked, at(195.0, 700.0))
-        accessibility.search = null
+        assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 700.0))
+        assertEquals(emptyList<Int>(), accessibility.virtualViews())
+        accessibility.covered = false
         assertEquals(free, at(195.0, 300.0))
         assertEquals(ExploreByTouchHelper.INVALID_ID, at(195.0, 700.0))
 
@@ -480,10 +480,11 @@ class ScooterMarkerAccessibilityTest {
     }
 
     @Test
-    fun besideAPanelTheOpenSearchAndTheCornerAreInFront() {
-        // Beside a large window's panel the open search is over the panel, whose card makes way, hidden from VoiceOver
-        // as the iPhone hides it: a finger finds the marker where the card was. The legend and the locate button in the
-        // map's corner stay, in front of the markers under them (review-lead-1nov-b B1).
+    fun besideAPanelTheOpenSearchIsReadAlone() {
+        // Beside a large window's panel, the panel and the legend and the locate button in the map's corner are in
+        // front of the markers under them (review-lead-1nov-b B1). The open search over the panel is read alone, as
+        // VoiceOver reads the iPhone's since 4 November: the corner stays in view, but no marker is found, nor swiped
+        // to.
         val map = FlatMarkerMap()
         scene.reconcile(
             listOf(
@@ -503,10 +504,13 @@ class ScooterMarkerAccessibilityTest {
         assertEquals("under the card", ExploreByTouchHelper.INVALID_ID, at(160.0, 600.0))
         assertEquals("under the corner", ExploreByTouchHelper.INVALID_ID, at(355.0, 805.0))
 
-        accessibility.search = ScreenRect(16.0, 16.0, 288.0, 400.0)
+        accessibility.covered = true
         assertEquals("under the open search", ExploreByTouchHelper.INVALID_ID, at(160.0, 200.0))
-        assertNotEquals("where the card was", ExploreByTouchHelper.INVALID_ID, at(160.0, 600.0))
+        assertEquals("where the card was", ExploreByTouchHelper.INVALID_ID, at(160.0, 600.0))
         assertEquals("under the corner, which stays", ExploreByTouchHelper.INVALID_ID, at(355.0, 805.0))
+        assertEquals("beside the search", ExploreByTouchHelper.INVALID_ID, at(355.0, 300.0))
+        assertEquals(emptyList<Int>(), accessibility.virtualViews())
+        accessibility.covered = false
         assertEquals(free, at(355.0, 300.0))
     }
 
