@@ -46,8 +46,8 @@ const guide: Guide = {
         '**Kaiserstrasse und Marktplatz:** Beide sind laut Stadt «auch für E-Tretroller verbotene Zonen». Zwischen Europaplatz und Kronenplatz ist die Kaiserstrasse Fussgängerzone, gesperrt auch für Fahrräder; die Strassenbahn fährt dort seit 2021 im Tunnel. Keine App sperrt oder bremst dich dort: Die Regel ist die der Stadt, durchgesetzt von Ordnungsdienst und Polizei. Steig ab und schieb. Östlich vom Kronenplatz ist die Kaiserstrasse eine normale Strasse mit Strassenbahn.',
         '**Andere Fussgängerzonen** sind ebenfalls tabu, auch wenn ein Schild Fahrräder durchlässt. Ab 1. März 2027 gilt «Radverkehr frei» auch für E-Scooter, im Schritttempo; auf Kaiserstrasse und Marktplatz, wo kein Fahrrad fahren darf, ändert das nichts.',
         '**Parks:** In städtischen Grünanlagen wie Stadtgarten, Günther-Klotz-Anlage oder Otto-Dullenkopf-Park fährst du nur auf Wegen, die dafür ausgeschildert sind.',
-        '**Durlach und Turmberg:** Am Durlacher Marktplatz kannst du bei Voi und Bolt die Fahrt beenden, am Bahnhof Durlach nur bei Voi. Der Turmberg liegt ausserhalb von Bolts Gebiet, bei Voi hält der Scooter dort an. Hinauf bringt dich auch die Turmbergbahn nicht: Sie fährt seit Ende 2024 nicht mehr. Laut VBK beginnt der Neubau voraussichtlich Ende 2026 und dauert 15 bis 18 Monate.',
-        '**Stadtrand:** Knielingen und Neureut liegen nur im Gebiet von Voi, der Rheinhafen nur in dem von Bolt. Die Messe in Rheinstetten, der KIT Campus Nord, Ettlingen und Rüppurr liegen ausserhalb beider; ein Voi hält an der Gebietsgrenze an.',
+        '**Durlach und Turmberg:** Am Durlacher Marktplatz und auf dem Vorplatz des Bahnhofs Durlach kannst du bei Voi und Bolt die Fahrt beenden. Der Turmberg liegt ausserhalb von Bolts Gebiet, bei Voi hält der Scooter dort an. Hinauf bringt dich auch die Turmbergbahn nicht: Sie fährt seit Ende 2024 nicht mehr. Laut VBK beginnt der Neubau voraussichtlich Ende 2026 und dauert 15 bis 18 Monate.',
+        '**Stadtrand:** Knielingen liegt in den Gebieten von Voi und Bolt, bei Bolt mit grossen Parkverbotszonen; Neureut liegt nur im Gebiet von Voi. Der Rheinhafen, die Messe in Rheinstetten, der KIT Campus Nord, Ettlingen und fast ganz Rüppurr liegen ausserhalb beider; ein Voi hält an der Gebietsgrenze an.',
       ],
     },
     {
@@ -56,15 +56,15 @@ const guide: Guide = {
         'Rund um die Fussgängerzone Kaiserstrasse und am Hauptbahnhof stellst du nur auf markierten Abstellflächen ab, erkennbar an Schildern oder Bodenmarkierungen. Im Umkreis von 100 m um jede Fläche lässt dich die App nur auf der Fläche abstellen; stellst du daneben ab, läuft laut Stadt die Uhr weiter. Massgeblich ist die Karte in deiner App.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (Zonen von Bolt und Voi, Stand 14. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (Zonen von Bolt und Voi, Stand November 2026)',
             head: ['Ort', 'Bolt', 'Voi'],
             rows: [
               ['Kaiserstrasse (Europaplatz bis Adlerstrasse), Marktplatz, Friedrichsplatz, Stephanplatz, Ettlinger Tor', 'Nur auf markierten Flächen', 'Nur auf markierten Flächen'],
-              ['Hauptbahnhof, Nordseite (Bahnhofplatz)', 'Nur auf markierten Flächen', 'Nur auf markierten Flächen'],
-              ['Hauptbahnhof, Südausgang (Victor-Gollancz-Strasse); Durlacher Tor, KIT Campus Süd', 'Frei', 'Frei'],
-              ['Kronenplatz, ZKM', 'Frei', 'Nur an Stationen'],
-              ['Schlossplatz, Schlossgarten, Wildparkstadion', 'Gar nicht: ausserhalb des Gebiets', 'Nur an Stationen'],
-              ['Günther-Klotz-Anlage, Europahalle', 'Gar nicht: Verbotszone', 'Nur an Stationen'],
+              ['Hauptbahnhof, Nordseite (Bahnhofplatz) und Südausgang (Victor-Gollancz-Strasse)', 'Nur auf markierten Flächen', 'Nur auf markierten Flächen'],
+              ['Durlacher Tor, KIT Campus Süd, ZKM', 'Frei', 'Frei'],
+              ['Kronenplatz', 'Frei', 'Nur an Stationen'],
+              ['Schlossplatz, Schlossgarten, Wildparkstadion', 'Gar nicht: ausserhalb des Gebiets', 'Gar nicht: Verbotszone'],
+              ['Günther-Klotz-Anlage, Europahalle', 'Gar nicht: Verbotszone', 'Gar nicht: Verbotszone, der Westen der Anlage liegt ausserhalb des Gebiets'],
             ],
           },
         },
@@ -102,9 +102,9 @@ const guide: Guide = {
       heading: 'E-Scooter zum Christkindlesmarkt, zu DAS FEST und zum KSC',
       blocks: [
         'Der nächste **Christkindlesmarkt** läuft vom 23. November bis 23. Dezember 2026 auf Marktplatz, Friedrichsplatz und Stephanplatz, alle in der Zone mit markierten Abstellflächen. 2019 richteten die Anbieter für den Markt zusätzliche Parkverbotszonen ein; ob es wieder welche gibt, zeigt die App.',
-        '**DAS FEST** in der Günther-Klotz-Anlage findet jeden Sommer statt, das nächste Mal vom 22. bis 25. Juli 2027. Dort beendest du bei Bolt das ganze Jahr keine Fahrt, bei Voi nur an Stationen. Der Veranstalter empfiehlt Bahn und Bus (das Ticket gilt im KVV), das Fahrrad oder 20 Minuten zu Fuss vom Hauptbahnhof.',
+        '**DAS FEST** in der Günther-Klotz-Anlage findet jeden Sommer statt, das nächste Mal vom 22. bis 25. Juli 2027. Dort beendest du das ganze Jahr weder bei Bolt noch bei Voi eine Fahrt, und der Westen der Anlage liegt ausserhalb von Vois Gebiet. Der Veranstalter empfiehlt Bahn und Bus (das Ticket gilt im KVV), das Fahrrad oder 20 Minuten zu Fuss vom Hauptbahnhof.',
         'Die **Schlosslichtspiele** bespielen seit 2015 jeden Sommer die rund 170 m lange Fassade des Schlosses, das nächste Mal vom 12. August bis 13. September 2027.',
-        'Am Schlossplatz und am Wildparkstadion des **KSC** beendest du bei Bolt keine Fahrt, bei Voi nur an Stationen. In Sonderverkehren zum Stadion und im Messe-Express nimmt der KVV keine Fahrräder und damit auch keine E-Scooter mit.',
+        'Am Schlossplatz und am Wildparkstadion des **KSC** beendest du weder bei Bolt noch bei Voi eine Fahrt. In Sonderverkehren zum Stadion und im Messe-Express nimmt der KVV keine Fahrräder und damit auch keine E-Scooter mit.',
       ],
     },
     {
@@ -178,6 +178,7 @@ const guide: Guide = {
     { title: 'Voi: Tarif und Zonen für Karlsruhe (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/178/netex.xml' },
     { title: 'MobiData BW: Voi-Tarife in Baden-Württemberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/system_pricing_plans' },
     { title: 'Bolt: Tarif für Karlsruhe im offenen Datenfeed (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_karlsruhe/system_pricing_plans' },
+    { title: 'Bolt: Zonen für Karlsruhe im offenen Datenfeed (GBFS, MobiData BW, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_karlsruhe/geofencing_zones' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
     { title: 'DAS FEST: Anreise', url: 'https://www.dasfest.de/info/anreise' },

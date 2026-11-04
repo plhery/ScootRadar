@@ -56,14 +56,13 @@ const guide: Guide = {
         'In stark besuchten Bereichen stellst du den Scooter laut Stadt nur auf gekennzeichneten Flächen ab. In der City liegen sie etwa in der Kronprinz-, Gymnasium- oder Marktstrasse. Bei Lime sind fast die ganze Königstrasse und der Schillerplatz Parkverbotszone, der Marktplatz nicht.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (Zonen der vier Anbieter, Stand 13. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (Zonen der vier Anbieter, Stand November 2026)',
             head: ['Ort', 'Fahrt beenden'],
             rows: [
-              ['Königstrasse, Schillerplatz, Marktplatz, Theodor-Heuss-Strasse', 'Nur an markierten Flächen'],
+              ['Königstrasse, Schillerplatz, Marktplatz, Theodor-Heuss-Strasse', 'Nur an markierten Flächen; bei Lime am Marktplatz und in der Theodor-Heuss-Strasse frei'],
               ['Hauptbahnhof, Vorplatz (Arnulf-Klett-Platz)', 'Nicht auf dem Vorplatz; markierte Flächen rund 170 bis 230 m entfernt, etwa in der Kriegsberg- und der Kronenstrasse'],
               ['Bahnhof Bad Cannstatt', 'An markierten Flächen, etwa in der Frösner- und der Seelbergstrasse'],
-              ['Schlossgarten, Rosensteinpark, Wilhelma, Killesberg', 'Gar nicht'],
-              ['König-Karls- und Rosensteinbrücke, Wasen-Festplatz', 'Gar nicht, bei Voi nur an Stationen'],
+              ['Schlossgarten, Rosensteinpark, Wilhelma, Killesberg, König-Karls- und Rosensteinbrücke, Wasen-Festplatz', 'Gar nicht'],
               ['Flughafen, Messe, Fernsehturm', 'Gar nicht: ausserhalb der Gebiete aller vier Anbieter'],
             ],
           },
