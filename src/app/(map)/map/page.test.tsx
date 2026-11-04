@@ -977,6 +977,29 @@ it('follows the scooter walked to when its app gives it a new id a few metres aw
   expect(walks).toHaveLength(1);
 });
 
+it('keeps a card on its scooter when its app gives it a new id, and closes it when someone takes it', async () => {
+  const neighbour: Vehicle = { ...FAR, vehicle_id: 'neighbour', lat: FAR.lat + 0.00009 };
+  let vehicles = [FAR, neighbour];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  const card = scooterCard();
+
+  // Every scooter under a new id, as Bird's are on each read: the Lime newly listed some 9 m on is it, not the one
+  // listed before that now stands where it stood.
+  const renamed: Vehicle = { ...FAR, vehicle_id: 'renamed', lat: FAR.lat + 0.00008 };
+  vehicles = [renamed, { ...neighbour, lat: FAR.lat }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:renamed');
+  expect(scooterCard()).toBe(card);
+
+  // Gone, with only the scooter listed before beside it: it was taken.
+  vehicles = [{ ...neighbour, lat: FAR.lat }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+});
+
 it('leaves a walk of more than 10 km to Google Maps', async () => {
   const walks = stubServer(() => data([FAR]));
   mount();

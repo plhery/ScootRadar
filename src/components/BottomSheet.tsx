@@ -352,7 +352,8 @@ export default function BottomSheet({
   let content: ReactNode;
   if (selectedVehicle && !desktop) {
     const { vehicle } = selectedVehicle;
-    const key = `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
+    // The card stays the same card while it follows its scooter under new ids.
+    const key = selectedVehicle.choice ?? `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
     content = (
       <DockSelection
         label={t('marker.scooter', { name: PROVIDERS[vehicle.provider]?.name ?? vehicle.provider })}

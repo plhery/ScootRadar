@@ -22,6 +22,8 @@ export interface SelectedVehicle {
   walk: WalkEstimate | null;
   /** The night ban of the city the scooter is in, while it holds. */
   curfew?: ActiveCurfew | null;
+  /** The scooter as it was chosen, by its key then: the same while the card follows it under new ids. */
+  choice?: string;
 }
 
 interface ScooterCardProps {

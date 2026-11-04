@@ -104,6 +104,21 @@ function vehicleKey(vehicle: Vehicle): string {
   return vehicle.vehicle_id ? `${vehicle.provider}:${vehicle.vehicle_id}` : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`;
 }
 
+/** The nearest of `candidates` of the scooter's app within SAME_SCOOTER_M of where it stood, if any. */
+function nearestOfItsApp(scooter: Vehicle, candidates: readonly Vehicle[]): Vehicle | null {
+  let nearest: Vehicle | null = null;
+  let nearestM = SAME_SCOOTER_M;
+  for (const candidate of candidates) {
+    if (candidate.provider !== scooter.provider) continue;
+    const distanceM = haversineM(scooter.lat, scooter.lng, candidate.lat, candidate.lng);
+    if (distanceM <= nearestM) {
+      nearest = candidate;
+      nearestM = distanceM;
+    }
+  }
+  return nearest;
+}
+
 // Along the way on the map, once there is one: what is left of it, not the straight line.
 function alongRoute(estimate: WalkEstimate | null, remainingM: number | null): WalkEstimate | null {
   return estimate && remainingM !== null ? { ...estimate, distanceM: remainingM } : estimate;
@@ -231,6 +246,9 @@ export default function Home() {
   const [locationNoticeDismissed, setLocationNoticeDismissed] = useState(false);
   // A scooter or a parking bay, never both: selecting one clears the other.
   const [selectedVehicleKey, setSelectedVehicleKey] = useState<string | null>(null);
+  // The scooter as it was chosen: its card stays the same card while it follows the scooter under the new ids its
+  // app gives it.
+  const [chosenVehicleKey, setChosenVehicleKey] = useState<string | null>(null);
   const [selectedParkingId, setSelectedParkingId] = useState<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const initializedRef = useRef(false);
@@ -599,6 +617,25 @@ export default function Home() {
   // The pin is kept as fresh as the data, for when the data has nothing to say of it.
   if (liveWalkedVehicle && pinnedVehicle && pinnedVehicle !== liveWalkedVehicle) setWalkPin({ vehicle: liveWalkedVehicle });
   if (liveWalkedVehicle && vehicleKey(liveWalkedVehicle) !== selectedVehicleKey) setSelectedVehicleKey(vehicleKey(liveWalkedVehicle));
+  // Bird and Pony give every scooter a new id on each read, other apps after each ride. A card not walked to follows
+  // its scooter too, but only to one listed under a key that wasn't there before: one already listed beside it is
+  // another scooter, the first taken, and the card closes.
+  const [listedVehicles, setListedVehicles] = useState(vehicles);
+  let followedCard = false;
+  if (listedVehicles !== vehicles) {
+    setListedVehicles(vehicles);
+    const card = !walkHolds && selectedVehicleKey !== null && !vehicles.some(vehicle => vehicleKey(vehicle) === selectedVehicleKey)
+      ? listedVehicles.find(vehicle => vehicleKey(vehicle) === selectedVehicleKey)
+      : undefined;
+    if (card) {
+      const listedKeys = new Set(listedVehicles.map(vehicleKey));
+      const successor = nearestOfItsApp(card, vehicles.filter(vehicle => !listedKeys.has(vehicleKey(vehicle))));
+      if (successor) {
+        setSelectedVehicleKey(vehicleKey(successor));
+        followedCard = true;
+      }
+    }
+  }
   const walkedVehicle = liveWalkedVehicle ?? pinnedVehicle;
   const walkedParking = liveWalkedParking ?? pinnedParking;
   const routeRemainingM = walk.view?.phase === 'shown' ? walk.view.remainingM : null;
@@ -621,8 +658,9 @@ export default function Home() {
       vehicle,
       walk: alongRoute(walkEstimate(walkOrigin, vehicle.lat, vehicle.lng), routeRemainingM),
       curfew: activeCurfew([vehicle.lat, vehicle.lng], now),
+      choice: chosenVehicleKey ?? selectedVehicleKey,
     };
-  }, [enabledProviders, now, routeRemainingM, selectedVehicleKey, viewportData.visibleVehicles, walkOrigin, walkedVehicle]);
+  }, [chosenVehicleKey, enabledProviders, now, routeRemainingM, selectedVehicleKey, viewportData.visibleVehicles, walkOrigin, walkedVehicle]);
 
   // The scooter that leads the dock: the nearest one shown, while single scooters are.
   const nearestVehicle = useMemo(() => {
@@ -640,7 +678,10 @@ export default function Home() {
     track('vehicle_select', { provider: vehicle.provider });
     selectionFeedback();
     const key = vehicleKey(vehicle);
-    if (key !== selectedVehicleKey) endWalk();
+    if (key !== selectedVehicleKey) {
+      endWalk();
+      setChosenVehicleKey(key);
+    }
     setSelectedParkingId(null);
     setSelectedVehicleKey(key);
   };
@@ -656,7 +697,7 @@ export default function Home() {
   // What closes a card clears the selection, as in the iOS app: a scooter or a
   // bay that left the view, lost its provider or went with new data does not
   // open again by itself once it is back.
-  if (selectedVehicleKey !== null && !selectedVehicle) setSelectedVehicleKey(null);
+  if (selectedVehicleKey !== null && !selectedVehicle && !followedCard) setSelectedVehicleKey(null);
   if (selectedParkingId !== null && !selectedParking) setSelectedParkingId(null);
 
   // A walk belongs to its card: it ends with it, whatever closed it.
@@ -851,7 +892,7 @@ export default function Home() {
           }),
           content: (
             <ScooterCard
-              key={selectedVehicleKey}
+              key={selectedVehicle.choice}
               selection={selectedVehicle}
               onClose={closeCard}
               onLocate={handleLocateFromCard}
