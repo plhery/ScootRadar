@@ -1,18 +1,27 @@
 # Ryde bridge implementation and rollout
 
-Status on 4 November 2026: implementation is staged; **no production Ryde bridge
-feed is enabled**. Two fully automated native requests succeeded (Drammen and
-Göteborg, 100 scooters each) using the same Apple sign-in. A proxy restart near
-a native rotation exposed a direct-connection race. Ryde rotated back to its own
-key and continued returning native map responses. Reattachment needs a new
-operator Apple sign-in. The operator has left for the day and explicitly asked
-that subsequent work require no password. Do not sign out or prompt again in
-this session.
+Status on 4 November 2026: implementation is undergoing live acceptance;
+**no production Ryde bridge feed is enabled**. The operator returned in the
+evening and authorized resuming the outstanding tests. Apple sign-in completed
+without a password prompt. Drammen → Göteborg → Drammen succeeded on one session,
+and the sequence still worked after killing the proxy and recovering its durable
+state. The Mac is operated unlocked; the operator explicitly waived lock-screen
+testing for this deployment.
 
-The fixes for proxy readiness and direct fallback, durable recovery, native
-renewal and clean restoration have offline tests. They still need a live repeat;
-do not equate passing fixtures with demonstrated unattended operation. No
-locked-Mac, sleep/wake or overnight uptime claim has passed yet.
+A full local HTTP broker/worker exercise completed 82 native reads without an
+expired or rejected broker result. The 80-query spatial budget retained 1,023
+scooter observations, included all 89 stationary before/after reference scooters,
+and left three cells unfinished. It is a partial scan, not a validated complete
+feed. Geometry pruning and a finer independent scan are the next coverage check.
+The explicit clean-stop test also restored an app-owned key and verified a fresh
+map response. Apple requires the operator's password for the next reattachment;
+independent coverage and the overnight pilot are waiting for that sign-in.
+
+The exercise exposed a second race: publishing a job before quitting the app
+let a spontaneous map request claim it immediately before being cancelled by
+that quit. Jobs now become visible only after graceful termination. An abandoned
+in-flight slot also expires after 30 seconds, and late responses cannot clear a
+newer pending job. Both transitions have regression tests.
 
 ## Components
 
@@ -161,8 +170,9 @@ Next live validation after reattachment:
    and Göteborg next, then Helsinki/Hannover. Other official cities remain survey
    candidates, not automatically enabled feeds.
 
-The current scanner intentionally reports no certified swept bounds while the
-selection rule is unknown. Failure and incomplete scans use the normal collector
+The scanner publishes positive observations progressively with no certified
+swept bounds while the selection rule is unknown. It skips cells outside all
+operating rings, including cells in the gaps between disconnected areas. Failure and incomplete scans use the normal collector
 failure path, preserving the prior feed's age and vehicles. No delayed upload or
 partial scan may make an old city appear freshly collected.
 
@@ -194,3 +204,29 @@ npx tsc --noEmit --incremental false
 The protocol tests are offline and use generated test keys and synthetic tokens.
 They cover durable recovery, fresh-proof preservation, app-readable translation,
 renewal, restoration, rejection holds and detecting a rotation outside the proxy.
+
+## Evening live validation artifacts
+
+The local harness `scripts/ryde-bridge/liveValidation.ts` exercises the same HTTP
+broker and native worker with a temporary loopback-only broker token, removed on
+exit. It sends no native credential out of the Mac and enables no feed. Bundle it
+with esbuild for Node, and run the bundle on the Mac. Optional
+`RYDE_VALIDATION_CELL_M` and `RYDE_VALIDATION_REQUESTS` bound its grid and budget.
+It records before/after reference observations and private, pseudonymized scan
+results beneath `producer/validation-<UTC>/`; no raw hardware IDs are exported.
+
+The first complete bounded run is `validation-20261104T194256153Z`. Its summary
+records 80 scan queries, 3 unfinished cells, 1,023 observations and no omissions
+among 89 stationary reference observations. Earlier short failed runs are retained
+privately as diagnostics; they are not coverage evidence.
+
+For a supervised overnight sample after the acceptance checks pass:
+
+```sh
+python3 scripts/ryde-bridge/install.py --shadow-hours 12
+```
+
+This installs the normal-user `com.scootradar.ryde-shadow` LaunchAgent, takes the
+exclusive worker lock, samples every two minutes and stops on failure. It records
+sample ages, native renewals and process RSS. It never publishes a production feed.
+The source remains gated until both the soak and coverage evidence are reviewed.

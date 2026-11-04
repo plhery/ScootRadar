@@ -19,6 +19,7 @@ class Producer(BridgeTrial):
         super().status(phase)
         public=json.loads((self.directory/'status.json').read_text())
         public.pop('expiresAt',None);public['lifetime']='supervised'
+        public['pendingJob']=getattr(self,'pending',None);public['pendingUntil']=getattr(self,'pending_deadline',0);public['paused']=getattr(self,'paused',False)
         private_json(self.directory/'status.json',public,replace=True)
         state = json.loads((self.directory/'bridge-state.json').read_text())
         state['paused'] = getattr(self, 'paused', False)
@@ -46,6 +47,7 @@ class Producer(BridgeTrial):
         self._initializing = False
         self.map_requested = True
         self.pending = None
+        self.pending_deadline = 0
         self.pending_public = saved.get('pendingPublic') if saved else None
         self.paused = bool(saved and saved.get('paused'))
         if saved and saved.get('bindingSent') and not saved.get('restoreVerified'):
@@ -56,6 +58,9 @@ class Producer(BridgeTrial):
             if saved.get('restored'):
                 self.restored=True;self.stage='awaiting-restored-map'
             self.event('recovered-session')
+        elif saved and saved.get('restoreVerified'):
+            self.stage='native-restored';self.restore_verified=True;self.restored=True
+            self.restore_public=saved.get('restorePublic');self.status()
         elif saved and saved.get('stage') == 'needs-sign-in':
             self.stage='needs-sign-in';self.status()
         elif saved and saved.get('stage') == 'awaiting-first-rotation':
@@ -119,6 +124,9 @@ class Producer(BridgeTrial):
         super().request(flow)
         # Disable the experimental hard-coded first Drammen query.
         flow.metadata.pop('drammenRequest', None)
+        if self.pending and time.time() >= self.pending_deadline:
+            self.event('abandoned-native-request-expired')
+            self.pending=None
         if path != MAP or flow.metadata.get('bridgeAction') != 'translate' or self.pending or self.paused or (ROOT/'stop.json').exists(): return
         try: job = json.loads((ROOT/'job.json').read_text())
         except FileNotFoundError: return
@@ -128,15 +136,19 @@ class Producer(BridgeTrial):
         flow.request.content = urlencode(fields).encode()
         flow.metadata['producerJob'] = job
         self.pending = job['id']
+        self.pending_deadline=min(job['expiresAt'],time.time()+30)
+        self.event('job-assigned',jobId=job['id'],flowId=flow.id)
 
     def error(self, flow):
         job=flow.metadata.get('producerJob')
+        self.event('native-flow-error',flowId=flow.id,jobId=job.get('id') if job else None)
         if job:
             private_json(ROOT/'results'/f"{job['id']}.json",{'version':1,'id':job['id'],'error':'TransportError'},replace=True)
-            self.pending=None;self.paused=True;self.event('native-transport-failed')
+            if self.pending==job['id']: self.pending=None
+            self.paused=True;self.event('native-transport-failed')
 
     def response(self, flow):
-        if origin_path(flow)==LOGIN and self.stage=='needs-sign-in':
+        if origin_path(flow)==LOGIN and self.stage in {'needs-sign-in','native-restored'}:
             reply=json.loads(flow.response.content)
             if success(flow,reply):
                 # The previous native session was independently verified app-owned.
@@ -146,10 +158,11 @@ class Producer(BridgeTrial):
                 self.stage='awaiting-login';self.key=None;self.app_public=None;self.restore_public=None
                 self.bound=False;self.binding_sent=False;self.restored=False;self.restore_verified=False
                 self.done=False;self.paused=False;self.token_hash=None
+                self.pending=None;self.pending_deadline=0;self.pending_public=None
         if origin_path(flow) == MAP:
             try:
                 summary=json.loads(flow.response.content)
-                self.event('native-map-response',httpStatus=flow.response.status_code,appStatus=summary.get('status'),action=flow.metadata.get('bridgeAction'),bridgeRecipient=bool(self.key and isinstance(summary.get('key'),str) and json.loads(summary['key']).get('ekt')==thumbprint(self.key)))
+                self.event('native-map-response',httpStatus=flow.response.status_code,appStatus=summary.get('status'),action=flow.metadata.get('bridgeAction'),flowId=flow.id,jobId=(flow.metadata.get('producerJob') or {}).get('id'),bridgeRecipient=bool(self.key and isinstance(summary.get('key'),str) and json.loads(summary['key']).get('ekt')==thumbprint(self.key)))
             except (ValueError,AttributeError): pass
         if origin_path(flow)==MAP and self.bound and not flow.metadata.get('bridgeAction'):
             try:
@@ -192,7 +205,7 @@ class Producer(BridgeTrial):
             except Exception as error:
                 result['error']=type(error).__name__; self.paused=True
             private_json(ROOT/'results'/f"{job['id']}.json", result, replace=True)
-            self.pending=None
+            if self.pending==job['id']: self.pending=None
             self.status()
         if origin_path(flow) in FENCES and flow.response:
             try:

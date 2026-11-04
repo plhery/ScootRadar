@@ -20,7 +20,7 @@ def save(path, value):
         json.dump(value,f);f.flush();os.fsync(f.fileno())
     temp.replace(path)
 
-def relaunch(root=ROOT):
+def relaunch(root=ROOT, after_quit=None):
     config=json.loads((root/'config.json').read_text())
     helper=root/'ryde-lifecycle'
     deadline=time.time()+20
@@ -33,9 +33,17 @@ def relaunch(root=ROOT):
         except (FileNotFoundError,ProcessLookupError): pass
         time.sleep(.25)
     else: raise RuntimeError('Recovered proxy is not ready; Ryde was not relaunched')
+    def lifecycle_event(phase):
+        observed=subprocess.run([str(helper),'status'],check=True,capture_output=True,text=True,timeout=5)
+        value={'at':time.time(),'phase':phase,**json.loads(observed.stdout)}
+        with (root/'producer/lifecycle.jsonl').open('a') as handle: handle.write(json.dumps(value)+'\n')
+    lifecycle_event('before-quit')
     subprocess.run([str(helper),'quit'],check=True,timeout=12)
+    lifecycle_event('after-quit')
+    if after_quit is not None: after_quit()
     time.sleep(2)
     subprocess.run([str(helper),'open',str(Path(config['appBinary']).parent)],check=True,timeout=15)
+    lifecycle_event('after-open')
 
 def validate_job(job):
     if not isinstance(job,dict) or job.get('version')!=1 or not re.fullmatch('[a-f0-9]{32}',str(job.get('id',''))): raise ValueError('Invalid broker job')
@@ -50,18 +58,26 @@ def query(job, root=ROOT, timeout=45):
     validate_job(job)
     base=root/'producer'
     state=json.loads((base/'session/status.json').read_text())
-    if state['bridgeStage']=='needs-sign-in': raise RuntimeError('Ryde bridge needs operator sign-in')
-    save(base/'job.json',job)
-    relaunch(root)
+    if state['bridgeStage'] not in {'bridge-active','awaiting-first-rotation'}: raise RuntimeError('Ryde bridge needs a completed operator sign-in')
+    if state.get('paused'): raise RuntimeError('Ryde bridge held after an upstream failure')
+    # Arm after termination: a spontaneous request just before quit could otherwise
+    # consume the job and be cancelled by that very quit.
+    relaunch(root,lambda:save(base/'job.json',job))
     end=min(time.time()+timeout,job['expiresAt'])
     path=base/'results'/f"{job['id']}.json"
+    retry_at=time.time()+12;retried=False
     while time.time()<end:
         status=json.loads((base/'session/status.json').read_text())
         if status['bridgeStage']=='needs-sign-in': raise RuntimeError('Ryde bridge needs operator sign-in')
+        if status.get('paused'): raise RuntimeError('Ryde bridge held after an upstream failure')
         if path.exists():
             result=json.loads(path.read_text())
             if 'error' in result: raise RuntimeError('Native map rejected or invalid; inspect local status')
             return result
+        if not retried and time.time()>=retry_at and (not status.get('pendingJob') or status.get('pendingUntil',0)<=time.time()):
+            # A client-cancelled request may never produce a response/error hook.
+            # Retrigger once only when no live job is in flight; never retry a denial.
+            retried=True;relaunch(root,lambda:save(base/'job.json',job))
         time.sleep(.25)
     raise TimeoutError('No fresh native map within job deadline')
 
@@ -79,7 +95,7 @@ def call(config, method, path, value=None):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--once',action='store_true');p.add_argument('--stop',action='store_true');p.add_argument('--arm',action='store_true')
-    p.add_argument('--city',type=int,default=43);p.add_argument('--lat',type=float,default=59.744);p.add_argument('--lng',type=float,default=10.205)
+    p.add_argument('--city',type=int,default=43);p.add_argument('--lat',type=float,default=59.744);p.add_argument('--lng',type=float,default=10.205);p.add_argument('--radius',type=float,default=10)
     args=p.parse_args();base=ROOT/'producer'
     lock=(base/'worker.lock').open('a')
     if args.stop: save(base/'stop.json',{'at':time.time()})
@@ -106,7 +122,7 @@ def main():
             relaunch();time.sleep(15)
         raise SystemExit('Restoration still pending; transport retained for recovery')
     if args.once:
-        job={'version':1,'id':uuid.uuid4().hex,'cityId':args.city,'latitude':args.lat,'longitude':args.lng,'radius':10,'expiresAt':time.time()+60}
+        job={'version':1,'id':uuid.uuid4().hex,'cityId':args.city,'latitude':args.lat,'longitude':args.lng,'radius':args.radius,'expiresAt':time.time()+60}
         r=query(job);print(json.dumps({'id':r['id'],'scooters':len(r['scooters']),'observedAt':r['observedAt'],'coverage':r['coverage']}));return
     config_path=base/'worker-config.json'
     if config_path.stat().st_mode & 0o077: raise SystemExit('Worker config must be 0600')

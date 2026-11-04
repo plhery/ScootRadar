@@ -25,3 +25,19 @@ it('classifies staged Ryde feeds as slow app maps without parking collection',as
   expect(isAppMapFeed({id:'norway:ryde_app_drammen'})).toBe(true);
   expect(collectsParking({id:'norway:ryde_app_drammen',source:'norway'})).toBe(false);
 });
+
+it('skips gaps outside disconnected operating rings',async()=>{
+  let calls=0;
+  const scattered={...area,bounds:{...area.bounds,east:10.301},rings:[area.rings[0],area.rings[0].map(([lat,lng])=>[lat,lng+.1] as [number,number])]};
+  const scan=await scanRydeArea(scattered,{query:async q=>{calls++;return api([]).query(q);}});
+  expect(calls).toBe(2);expect(scan.unfinished).toBe(0);
+});
+
+it('publishes positive partial observations without claiming any completed area',async()=>{
+  const {withinCollection}=await import('./sweeps');
+  const progress:{vehicles:number;bounds:number}[]=[];
+  const approved={...area,coverageValidated:true};
+  await withinCollection({urgent:()=>true,focus:()=>undefined,progress:(vehicles,bounds)=>{progress.push({vehicles:vehicles.length,bounds:bounds.length});}},
+    ()=>collectRydeArea(approved,api([{id:'a',lat:59.7405,lng:10.2005}])));
+  expect(progress).toEqual([{vehicles:1,bounds:0}]);
+});

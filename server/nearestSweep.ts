@@ -56,6 +56,11 @@ function relate(rings: readonly Ring[], cell: Cell): 'outside' | 'inside' | 'acr
   return 'outside';
 }
 
+/** Whether any operating ring meets a query cell, including an edge crossing with no corner inside. */
+export function ringsMeetBounds(rings: readonly Ring[], bounds: MapBounds): boolean {
+  return relate(rings,{...bounds,inside:false,asked:false}) !== 'outside';
+}
+
 /** The certified circles of a sweep, bucketed by where they reach. */
 class Discs {
   private readonly buckets = new Map<string, Disc[]>();

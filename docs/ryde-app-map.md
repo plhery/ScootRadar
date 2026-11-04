@@ -1093,3 +1093,33 @@ entries. APK map/a.java places type-4 rings into CITY_BOUND interiors; cityRange
 was empty. Six operating rings (808 vertices) were exported without raw metadata
 or operational notes. They are staged with coverage validation false. This
 supersedes the earlier inability to retrieve metadata through independent HTTP.
+
+### Evening live acceptance, 4 November
+
+After the operator returned, Apple sign-in initially completed without a password
+prompt. Drammen → Göteborg → Drammen succeeded on one session. Killing the proxy
+and recovering its durable state also preserved working cross-city retrieval.
+Repeated native key renewals succeeded during sustained collection. The operator
+confirmed this Mac is never locked, so lock-screen acceptance was waived for this
+deployment.
+
+The first local end-to-end broker/worker scan completed 82 authenticated map reads
+with no broker expiry or rejected result. Its spatial budget was 80 reads: 1,023
+distinct pseudonymized scooter observations, three unfinished cells and no missing
+observations among 89 stationary central reference scooters. This is partial
+coverage, not a complete fleet claim. The private summary is
+`producer/validation-20261104T194256153Z/summary.json` in the installed runtime.
+
+The scan exposed a request-trigger race: making a job visible before quitting the
+app allowed a spontaneous map request to consume it and then be cancelled by the
+quit. The worker now publishes the job between verified termination and reopen.
+Abandoned slots expire, and late replies cannot clear a newer slot. Offline
+regression tests cover both cases. Collection also skips query cells outside the
+operating polygons and publishes positive observations progressively without
+certifying swept bounds or absence.
+
+The explicit stop test then restored an app-owned key and verified a subsequent
+native map response. Reattachment after verified restoration archives the old
+private key before a new login can bind another one. Apple requested the
+operator's password for this reattachment; the finer independent coverage scan
+and overnight sampler are waiting for it. The source remains disabled.

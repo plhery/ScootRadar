@@ -60,6 +60,21 @@ class ProducerTests(unittest.TestCase):
         self.assertEqual(len(result['scooters']),1);self.assertNotIn('123456789012345',json.dumps(result))
         self.assertEqual(json.loads(decrypt_envelope(self.app,json.loads(json.loads(f.response.content)['key'])))['scooters'][0]['memberByString'],'123456789012345')
         self.assertEqual((self.root/'session/recovery.json').stat().st_mode&0o077,0)
+    def test_abandoned_request_expires_and_late_reply_preserves_new_pending_job(self):
+        first=self.job()
+        a=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(a)
+        self.producer.pending_deadline=time.time()-1
+        second=self.job()
+        b=self.flow(MAP,{'ekt':thumbprint(self.app)})
+        self.producer.request(b)
+        self.assertEqual(self.producer.pending,second['id'])
+        for flow in [a,b]:
+            flow.response=Response.make(200,json.dumps({'status':200,'key':json.dumps(encrypt_envelope(self.producer.key.public_key(),b'{"scooters":[]}'))}).encode())
+        self.producer.response(a)
+        self.assertEqual(self.producer.pending,second['id'])
+        self.producer.response(b);self.assertIsNone(self.producer.pending)
+
     def test_renewal_and_stop_restore_new_app_key(self):
         next_app=ec.generate_private_key(ec.SECP256R1());self.rotate(next_app)
         self.assertTrue(self.producer.bound);self.assertFalse(self.producer.restored)
@@ -77,6 +92,14 @@ class ProducerTests(unittest.TestCase):
         self.producer.request(f)
         f.response=Response.make(200,json.dumps({'status':200,'key':json.dumps(encrypt_envelope(native.public_key(),b'{}'))}).encode())
         self.producer.response(f);self.assertTrue(self.producer.restore_verified)
+
+    def test_fresh_login_after_verified_restoration_archives_the_old_private_key(self):
+        self.producer.restore_verified=True;self.producer.stage='complete';self.producer.status()
+        self.producer=self.module.Producer();self.assertEqual(self.producer.stage,'native-restored')
+        self.producer.response(self.flow(LOGIN,reply={'status':200,'token':self.token,'rotateAfterSeconds':259200}))
+        self.assertEqual(self.producer.stage,'awaiting-first-rotation')
+        self.assertEqual(len(list(self.root.glob('session-archive-*'))),1)
+        self.rotate(self.app);self.assertTrue(self.producer.bound)
 
     def test_rejection_holds_queue_but_does_not_block_restoration(self):
         q=self.job();self.map(status=429)

@@ -8,10 +8,12 @@ import shutil
 import subprocess
 import sys
 
-FILES=['producer_addon.py','producer_runner.py','native_protocol.py','bridge_crypto.py','worker.py']
+FILES=['producer_addon.py','producer_runner.py','native_protocol.py','bridge_crypto.py','worker.py','shadow.py']
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--restart',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--restart',action='store_true');p.add_argument('--shadow-hours',type=float);args=p.parse_args()
+    os.umask(0o077)
+    if args.shadow_hours is not None and not 0<args.shadow_hours<=24:raise SystemExit('Shadow duration must be 0–24 h')
     root=Path.home()/'.local/share/scootradar/ryde-bridge'
     config=json.loads((root/'config.json').read_text())
     if not config.get('persistentTransportApproved'): raise SystemExit('Install the authorized scoped transport first')
@@ -30,6 +32,23 @@ def main():
             if result.returncode==0: break
             time.sleep(.25)
         else: raise SystemExit('LaunchAgent did not restart; inspect supervisor.log')
+    if args.shadow_hours is not None:
+        import fcntl
+        lock=(root/'producer/worker.lock').open('a')
+        try: fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:raise SystemExit('Finish the active worker/validation before starting the shadow pilot')
+        state=json.loads((root/'producer/session/status.json').read_text())
+        if state['bridgeStage']!='bridge-active' or state.get('paused'):raise SystemExit('Verify the live bridge before starting a pilot')
+        label='com.scootradar.ryde-shadow'
+        target=Path.home()/('Library/LaunchAgents/'+label+'.plist')
+        value={'Label':label,'ProgramArguments':['/usr/bin/python3',str(root/'shadow.py'),'--hours',str(args.shadow_hours),'--interval','120'],
+            'RunAtLoad':True,'KeepAlive':False,'ProcessType':'Background','WorkingDirectory':str(root),
+            'StandardOutPath':str(root/'producer/shadow.log'),'StandardErrorPath':str(root/'producer/shadow.log')}
+        target.write_bytes(plistlib.dumps(value))
+        subprocess.run(['launchctl','bootout','gui/'+str(os.getuid())+'/'+label],capture_output=True)
+        fcntl.flock(lock,fcntl.LOCK_UN)
+        subprocess.run(['launchctl','bootstrap','gui/'+str(os.getuid()),str(target)],check=True)
+        print('Bounded shadow pilot started; results stay private and no feed is published.')
     print('Producer installed. No certificate, account credential or proxy setting changed.')
 
 if __name__=='__main__':main()

@@ -3,7 +3,8 @@ import { boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
-import { takeNearest } from './sweeps';
+import { ringsMeetBounds } from './nearestSweep';
+import { currentCollection, takeNearest } from './sweeps';
 import { RydeBroker, type RydeObservation } from './rydeBridge';
 
 export interface RydeArea {
@@ -19,18 +20,21 @@ export interface RydeScan {
 }
 /** Overlapping circles cover each cell geometrically. Selection completeness is a separate rollout gate. */
 export async function scanRydeArea(area: RydeArea, api: Pick<RydeBroker, 'query'>,
-  limits = { requests: 80, milliseconds: 10 * 60_000, depth: 3 }, now = Date.now): Promise<RydeScan> {
+  limits = { requests: 80, milliseconds: 10 * 60_000, depth: 3 }, now = Date.now, onProgress?: (scan: RydeScan) => void): Promise<RydeScan> {
   if (!Number.isSafeInteger(area.saturationCount) || area.saturationCount < 1 || area.cellM < 250 || area.cellM > 5000 ||
     !area.rings.length || ![area.bounds.south,area.bounds.north,area.bounds.west,area.bounds.east].every(Number.isFinite) ||
     area.bounds.south >= area.bounds.north || area.bounds.west >= area.bounds.east) throw new Error('Invalid Ryde area');
   const began = now(), queue: Cell[] = [], found = new Map<string, RydeObservation & { observedAt: number }>();
   const dy = area.cellM / 111_195, dx = dy / Math.cos((area.bounds.south + area.bounds.north) / 2 * Math.PI / 180);
+  if(Math.ceil((area.bounds.north-area.bounds.south)/dy)*Math.ceil((area.bounds.east-area.bounds.west)/dx)>2000) throw new Error('Ryde area needs smaller refresh groups');
   for (let south = area.bounds.south; south < area.bounds.north; south += dy) {
     for (let west = area.bounds.west; west < area.bounds.east; west += dx) {
       if (queue.length >= 500) throw new Error('Ryde area needs smaller independently refreshed groups');
-      queue.push({ bounds: { south, west, north: Math.min(south+dy,area.bounds.north), east: Math.min(west+dx,area.bounds.east) }, depth:0 });
+      const bounds={south,west,north:Math.min(south+dy,area.bounds.north),east:Math.min(west+dx,area.bounds.east)};
+      if (ringsMeetBounds(area.rings,bounds)) queue.push({bounds,depth:0});
     }
   }
+  if(!queue.length)throw new Error('Ryde bounds do not meet the operating rings');
   let requests=0, unresolved=0;
   while (queue.length && requests < limits.requests && now()-began < limits.milliseconds) {
     const cell=takeNearest(queue,c=>c.bounds)!;
@@ -46,12 +50,15 @@ export async function scanRydeArea(area: RydeArea, api: Pick<RydeBroker, 'query'
       if ((found.get(row.id)?.observedAt ?? 0) <= at) found.set(row.id,{...row,observedAt:at});
     }
     if (result.scooters.length >= area.saturationCount) {
-      if (cell.depth >= limits.depth) { unresolved++; continue; }
-      for (const [a,b] of [[south,latitude],[latitude,north]]) for (const [c,d] of [[west,longitude],[longitude,east]]) {
-        queue.push({bounds:{south:a,north:b,west:c,east:d},depth:cell.depth+1});
+      if (cell.depth >= limits.depth) unresolved++;
+      else for (const [a,b] of [[south,latitude],[latitude,north]]) for (const [c,d] of [[west,longitude],[longitude,east]]) {
+        const bounds={south:a,north:b,west:c,east:d};
+        if(ringsMeetBounds(area.rings,bounds)) queue.push({bounds,depth:cell.depth+1});
       }
     }
-    // No swept bounds are reported: a geometric query doesn't certify all vehicles within it.
+    // Publish positive observations without certifying absence anywhere.
+    const observations=[...found.values()];
+    onProgress?.({observations,observedAt:observations.reduce((at,row)=>Math.min(at,row.observedAt),now()),requests,unfinished:queue.length+unresolved,complete:false});
   }
   const observations=[...found.values()];
   return {observations,observedAt:observations.length ? Math.min(...observations.map(r=>r.observedAt)) : began,
@@ -65,7 +72,7 @@ export function rydeVehicles(scan: RydeScan): Vehicle[] {
 }
 export async function collectRydeArea(area: RydeArea, api: Pick<RydeBroker,'query'>): Promise<SourceVehicles> {
   if (!area.geometryEvidence || !area.coverageEvidence || !area.coverageValidated) throw new Error('Ryde coverage has not passed review');
-  const scan=await scanRydeArea(area,api);
+  const scan=await scanRydeArea(area,api,undefined,Date.now,partial=>currentCollection()?.progress(rydeVehicles(partial),[]));
   if (!scan.complete) throw new Error('Ryde scan is incomplete; preserve previous observations');
   // The oldest retained observation sets the feed's age. Partial views never delete an old snapshot.
   return {vehicles:rydeVehicles(scan),observedAt:scan.observedAt,stale:false};

@@ -1,9 +1,16 @@
 import AppKit
+import CoreGraphics
 // Deliberately restricted: no arbitrary app, AppleScript, accessibility or input events.
 let args = CommandLine.arguments
 let bundleID = "com.ryde.NewRyde"
 let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
-if args.count == 2 && args[1] == "quit" {
+if args.count == 2 && args[1] == "status" {
+    let session = CGSessionCopyCurrentDictionary() as? [String: Any]
+    let status: [String: Any] = ["locked": session?["CGSSessionScreenIsLocked"] as? Bool ?? false,
+        "pids": apps.map { Int($0.processIdentifier) }]
+    let data = try! JSONSerialization.data(withJSONObject: status, options: [.sortedKeys])
+    print(String(data: data, encoding: .utf8)!)
+} else if args.count == 2 && args[1] == "quit" {
     for app in apps { _ = app.terminate() }
     let deadline = Date().addingTimeInterval(10)
     while apps.contains(where: { !$0.isTerminated }) && Date() < deadline {
