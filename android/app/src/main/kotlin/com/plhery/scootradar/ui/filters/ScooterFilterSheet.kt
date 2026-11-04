@@ -56,7 +56,9 @@ import com.plhery.scootradar.core.model.ScooterNumberFormat
 import com.plhery.scootradar.core.model.ScooterProviderEntry
 import com.plhery.scootradar.core.model.localized
 import com.plhery.scootradar.core.model.stringFormat
-import com.plhery.scootradar.ui.dock.FixedSymbol
+import com.plhery.scootradar.ui.dock.SYMBOL_FRAME
+import com.plhery.scootradar.ui.dock.SymbolIcon
+import com.plhery.scootradar.ui.dock.bodyMetric
 import com.plhery.scootradar.ui.dock.chipAccessibilityLabel
 import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.dock.plainButton
@@ -71,7 +73,6 @@ import com.plhery.scootradar.ui.theme.SelectionFeedback
 import com.plhery.scootradar.ui.theme.SquircleShape
 import com.plhery.scootradar.ui.theme.Symbols
 import com.plhery.scootradar.ui.theme.TextSize
-import com.plhery.scootradar.ui.theme.TextSizeUpToAX1
 import com.plhery.scootradar.ui.theme.iosShadow
 import com.plhery.scootradar.ui.theme.monospacedDigit
 import com.plhery.scootradar.ui.theme.scootColors
@@ -346,21 +347,26 @@ private fun ProviderRow(entry: ScooterProviderEntry, onClick: () -> Unit) {
                 maxLines = 1,
             )
         }
-        ProviderCheck(entry, Modifier.size(26.dp))
+        ProviderCheck(entry)
     }
 }
 
-/** A check for a provider that is shown, an empty circle for one that is hidden, a dashed circle for one chosen that shares no data. */
+/**
+ * A check for a provider that is shown, an empty circle for one that is hidden, a dashed circle for one chosen that
+ * shares no data: 26 points at the standard text size, growing with the text up to 44, the glyph 22 in 26 (9d12300b).
+ */
 @Composable
-private fun ProviderCheck(entry: ScooterProviderEntry, modifier: Modifier) {
+private fun ProviderCheck(entry: ScooterProviderEntry) {
     val colors = scootColors
-    Box(modifier, contentAlignment = Alignment.Center) {
+    val frame = minOf(bodyMetric(26f), 44.dp)
+    val glyph = frame * (22f / 26f) * SYMBOL_FRAME
+    Box(Modifier.size(frame), contentAlignment = Alignment.Center) {
         when {
-            !entry.isEnabled -> FixedSymbol(Symbols.circleRegular, 22f, colors.secondaryText)
+            !entry.isEnabled -> SymbolIcon(Symbols.circleRegular, glyph, colors.secondaryText)
             entry.isDown -> Box(
                 Modifier
+                    .fillMaxSize()
                     .padding(2.dp)
-                    .size(22.dp)
                     .drawBehind {
                         val width = 1.5.dp.toPx()
                         drawCircle(
@@ -370,31 +376,30 @@ private fun ProviderCheck(entry: ScooterProviderEntry, modifier: Modifier) {
                         )
                     },
             )
-            else -> FixedSymbol(Symbols.checkCircleFillRegular, 22f, colors.actionFill)
+            else -> SymbolIcon(Symbols.checkCircleFillRegular, glyph, colors.actionFill)
         }
     }
 }
 
 @Composable
 private fun ShowResultsButton(title: String, onClick: () -> Unit) {
-    // The button stays over the list, so its text stops growing before it covers it.
-    TextSizeUpToAX1 {
-        Box(
-            Modifier
-                .padding(horizontal = 20.dp, vertical = 8.dp)
-                .fillMaxWidth()
-                .heightIn(min = 50.dp)
-                .glassButton(
-                    CapsuleShape,
-                    glass = Modifier.background(scootColors.actionFill, CapsuleShape),
-                    focusRing = FocusRing(CapsuleShape, onTint = true),
-                    onClick = onClick,
-                )
-                .padding(horizontal = 20.dp, vertical = 14.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(title, style = ScootType.headline, color = Color.White, textAlign = TextAlign.Center)
-        }
+    // The button stays over the list. The iPhone's text grows through the third accessibility size and stops there,
+    // 40 points against 17 (9d12300b), which Android's largest font scale, 2.0, stays under: it grows all the way.
+    Box(
+        Modifier
+            .padding(horizontal = 20.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .heightIn(min = 50.dp)
+            .glassButton(
+                CapsuleShape,
+                glass = Modifier.background(scootColors.actionFill, CapsuleShape),
+                focusRing = FocusRing(CapsuleShape, onTint = true),
+                onClick = onClick,
+            )
+            .padding(horizontal = 20.dp, vertical = 14.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(title, style = ScootType.headline, color = Color.White, textAlign = TextAlign.Center)
     }
 }
 

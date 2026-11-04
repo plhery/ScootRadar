@@ -491,7 +491,7 @@ private fun DockLeadButton(lead: ScooterDockLead, tint: Color, onClick: () -> Un
                 words(Modifier.weight(1f))
             }
         }
-        FixedSymbol(Symbols.chevronRight, 15f, colors.dockQuiet)
+        BodySymbol(Symbols.chevronRight, 15f, maximum = 28f, colors.dockQuiet)
     }
 }
 

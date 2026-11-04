@@ -55,7 +55,7 @@ import com.plhery.scootradar.core.search.SwissAddressSearchModel
 import com.plhery.scootradar.ui.LocalAnalytics
 import com.plhery.scootradar.ui.LocalScreenState
 import com.plhery.scootradar.ui.chrome.overTheMap
-import com.plhery.scootradar.ui.dock.FixedSymbol
+import com.plhery.scootradar.ui.dock.BodySymbol
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.plainButton
@@ -270,7 +270,8 @@ private fun CollapsedBar(
                     onClear()
                 },
             ) {
-                FixedSymbol(Symbols.clearFill, 18f, colors.secondaryLabel)
+                // The bar's buttons keep their 44 points; their icons grow with the text as far as they fit in it.
+                BodySymbol(Symbols.clearFill, 18f, maximum = 26f, colors.secondaryLabel)
             }
         }
 
@@ -295,15 +296,15 @@ private fun CollapsedBar(
                 label = "filtersIcon",
             ) { active ->
                 if (active) {
-                    FixedSymbol(Symbols.filterCircleFill, 20f, colors.actionText)
+                    BodySymbol(Symbols.filterCircleFill, 20f, maximum = 28f, colors.actionText)
                 } else {
-                    FixedSymbol(Symbols.filterCircle, 20f, colors.label)
+                    BodySymbol(Symbols.filterCircle, 20f, maximum = 28f, colors.label)
                 }
             }
         }
 
         BarButton(label = localized("Settings"), onClick = onShowSettings) {
-            FixedSymbol(Symbols.ellipsisCircle, 20f, colors.label)
+            BodySymbol(Symbols.ellipsisCircle, 20f, maximum = 28f, colors.label)
         }
     }
 }
@@ -333,7 +334,7 @@ private fun BarButton(
 private fun BarIndicator(state: ScooterSearchBarState) {
     when (state) {
         ScooterSearchBarState.Empty -> Box(Modifier.size(34.dp), contentAlignment = Alignment.Center) {
-            FixedSymbol(Symbols.search, 17f, scootColors.secondaryText)
+            BodySymbol(Symbols.search, 17f, maximum = 26f, scootColors.secondaryText)
         }
         is ScooterSearchBarState.Place -> SearchSymbolTile(Symbols.mapPin)
         ScooterSearchBarState.Locating -> Box(Modifier.size(34.dp), contentAlignment = Alignment.Center) {

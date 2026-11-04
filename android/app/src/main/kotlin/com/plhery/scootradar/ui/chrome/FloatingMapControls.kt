@@ -31,10 +31,11 @@ import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
 import com.plhery.scootradar.core.model.localized
-import com.plhery.scootradar.ui.dock.FixedSymbol
+import com.plhery.scootradar.ui.dock.SYMBOL_FRAME
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.SymbolIcon
+import com.plhery.scootradar.ui.dock.bodyMetric
 import com.plhery.scootradar.ui.dock.glassButton
 import com.plhery.scootradar.ui.dock.textSymbolSize
 import com.plhery.scootradar.ui.glass.chromeGlass
@@ -87,10 +88,14 @@ fun FloatingMapControls(controller: ScooterMapController, modifier: Modifier = M
  */
 private val glassInset = 8.dp
 
-/** The round glass button, after the first fix: the arrow, 18 points, in the app's blue. */
+/**
+ * The round glass button, after the first fix: the arrow, 18 points, in the app's blue, on a side of 50 at the standard
+ * text size; it grows with the text up to 64, over a map it would hide more of (9d12300b).
+ */
 @Composable
 private fun GoToMyLocation(isLocating: Boolean, onClick: () -> Unit) {
     val colors = scootColors
+    val side = minOf(bodyMetric(50f), 64.dp)
     val label = localized("Go to my location")
     val value = if (isLocating) localized("Finding your location…") else ""
     Box(
@@ -104,10 +109,11 @@ private fun GoToMyLocation(isLocating: Boolean, onClick: () -> Unit) {
                 onClick { onClick(); true }
             }
             .padding(glassInset)
-            .size(50.dp),
+            .size(side),
         contentAlignment = Alignment.Center,
     ) {
-        Indicator(isLocating) { FixedSymbol(Symbols.locationFill, 18f, colors.accent) }
+        // 18 points at the standard size.
+        Indicator(isLocating) { SymbolIcon(Symbols.locationFill, side * 0.36f * SYMBOL_FRAME, colors.accent) }
     }
 }
 

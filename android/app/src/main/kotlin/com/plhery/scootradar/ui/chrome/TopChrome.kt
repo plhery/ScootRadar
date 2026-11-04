@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.plhery.scootradar.core.model.ScooterLocationIssue
 import com.plhery.scootradar.core.model.localized
+import com.plhery.scootradar.ui.dock.BodySymbol
 import com.plhery.scootradar.ui.dock.DockSymbolTile
-import com.plhery.scootradar.ui.dock.FixedSymbol
 import com.plhery.scootradar.ui.dock.Spinner
 import com.plhery.scootradar.ui.dock.SpinnerSize
 import com.plhery.scootradar.ui.dock.SymbolIcon
@@ -225,7 +225,8 @@ fun LocationIssueCard(
             Modifier.size(44.dp).plainButton(label = localized("Dismiss"), onClick = onDismiss),
             contentAlignment = Alignment.Center,
         ) {
-            FixedSymbol(Symbols.close, 13f, colors.secondaryText)
+            // It grows with the text as far as it fits in the button's 44 points.
+            BodySymbol(Symbols.close, 13f, maximum = 22f, colors.secondaryText)
         }
     }
 }

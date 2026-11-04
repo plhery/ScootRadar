@@ -210,6 +210,13 @@ internal fun textSymbolSize(points: Float): Dp = with(LocalDensity.current) { po
 @Composable
 internal fun scaledMetric(value: Float, points: Float): Dp = with(LocalDensity.current) { points.sp.toDp() } * (value / points)
 
+/** `@ScaledMetric(relativeTo: .body)`: [value] grown as the body, 17 points, grows with the font scale. */
+@Composable
+internal fun bodyMetric(value: Float): Dp = scaledMetric(value, BODY_POINTS)
+
+/** The body text style's size at the standard text size, the one `relativeTo: .body` scales with. */
+internal const val BODY_POINTS = 17f
+
 /**
  * The status line under the count, and at the top of a card while data is failing. It wraps rather than lose the
  * time at its end.
@@ -307,6 +314,15 @@ internal const val SYMBOL_FRAME = 1.2f
 @Composable
 internal fun FixedSymbol(symbol: ImageVector, points: Float, color: Color, modifier: Modifier = Modifier) {
     SymbolIcon(symbol, (points * SYMBOL_FRAME).dp, color, modifier)
+}
+
+/**
+ * A symbol set with `.designFont(points, relativeTo: .body, maximum:)`: [points] at the standard text size, growing
+ * with the text as the body does, up to [maximum] points, where the button around it keeps its size (9d12300b).
+ */
+@Composable
+internal fun BodySymbol(symbol: ImageVector, points: Float, maximum: Float, color: Color, modifier: Modifier = Modifier) {
+    SymbolIcon(symbol, minOf(bodyMetric(points), maximum.dp) * SYMBOL_FRAME, color, modifier)
 }
 
 /**
@@ -422,10 +438,14 @@ internal fun DockActionRow(
     }
 }
 
-/** The close button of a card: 40 points to look at, 44 to touch, and no bigger in the layout than 40. */
+/**
+ * The close button of a card: 40 points to look at, 44 to touch, and no bigger in the layout than 40, at the standard
+ * text size; it grows with the text up to 56, its cross from 13 points up to 18 (9d12300b).
+ */
 @Composable
 internal fun DockCloseButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val colors = scootColors
+    val side = minOf(bodyMetric(40f), 56.dp)
     Box(
         modifier
             .layout { measurable, constraints ->
@@ -436,13 +456,13 @@ internal fun DockCloseButton(label: String, onClick: () -> Unit, modifier: Modif
             }
             .plainButton(label = label, onClick = onClick)
             .padding(2.dp)
-            .size(40.dp)
+            .size(side)
             .clip(CapsuleShape)
             .background(colors.dockTile)
             .hairline(CapsuleShape, colors.dockHairline),
         contentAlignment = Alignment.Center,
     ) {
-        FixedSymbol(Symbols.close, 13f, colors.dockQuiet)
+        BodySymbol(Symbols.close, 13f, maximum = 18f, colors.dockQuiet)
     }
 }
 
