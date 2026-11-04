@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Leie elsparkesykkel i Kristiansand: Voi og Ryde',
       blocks: [
-        'Kristiansand kommune har avtale med to operatører: **Voi og Ryde**. Agder kollektivtrafikk (AKT) administrerer avtalen. Bolt, som hadde tillatelse fra 2022 til mars 2024, leier ikke lenger ut i byen.',
+        'Kristiansand kommune har avtale med to operatører: **Voi og Ryde**. Agder kollektivtrafikk (AKT) administrerer avtalen.',
         'Siden 1. april 2024 gjelder en ny utleieforskrift. Den åpner for opptil to operatører, valgt etter en konkurranse som AKT gjennomfører, og en tillatelse gjelder i tre år om gangen. Hver operatør får ha maks **150** kjøretøy i Kvadraturen (sone 1) og **350** i sone 2, mens det ikke er noe tak i resten av kommunen.',
-        'De første utleide sparkesyklene kom i 2019. Kommunen ville ha flere utenfor sentrum, og det har den fått: 14. oktober 2026 viste kommunens eget kart rundt 1320 elsparkesykler fra Voi og 1230 fra Ryde, de aller fleste utenfor sentrum.',
+        '14. oktober 2026 viste kommunens eget kart rundt 1320 elsparkesykler fra Voi og 1230 fra Ryde, de aller fleste utenfor sentrum.',
         'På [kartet over Kristiansand](map:no:Kristiansand) viste ScootRadar rundt 1150 Voi-sparkesykler 14. oktober 2026. Rydes sparkesykler ser du i Ryde-appen eller i AKT Billett-appen. AKT Billett viser begge operatørene og sender deg videre til appen deres, der du låser opp og betaler.',
         'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
@@ -54,7 +54,6 @@ const guide: Guide = {
           ],
         },
         'Kort sagt: **Voi stenger kl. 23 fredag og lørdag kveld og åpner igjen kl. 05.** I [Stavanger](guide:stavanger), med samme nattestenging i forskriften, holder Voi åpent til midnatt. For Ryde sjekker du appen.',
-        'Stengetiden har blitt kortere over tid: Med den første forskriften i 2022 kunne du bare leie fra kl. 05 til 23, og siden april 2024 er det bare stengt natt til lørdag og natt til søndag.',
       ],
     },
     {
@@ -90,11 +89,10 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Parkering i Kvadraturen: 39 stasjoner',
+      heading: 'Parkering i Kvadraturen: bare på oppmerkede plasser',
       blocks: [
-        'Kvadraturen fikk sitt strengt rettvinklede gatenett da Christian 4. grunnla byen i 1641. I dag er det sone 1 i forskriften, og siden sommeren 2023 er det **tvungen parkering** for leide elsparkesykler i deler av sentrum: Du kan bare avslutte turen på de oppmerkede plassene.',
-        'Det er 39 parkeringsstasjoner i Kvadraturen, med plass til rundt 500 kjøretøy. Ordningen dekker blant annet Torvet, Markens gate, Fiskebrygga og Gravane, Bystranda og Tangen, Kilden og området rundt stasjonen. Kommunen satte taket på 150 per operatør ut fra parkeringskapasiteten og hvor mange sparkesykler som sto der sommeren 2023, og 14. oktober 2026 viste kommunens kart 100 sparkesykler fra Voi og 82 fra Ryde i sone 1.',
-        'Appen lar deg ikke avslutte turen før sparkesykkelen står på en oppmerket plass, men GPS-en kan bomme med noen meter. Er stasjonen full, kan du sette sparkesykkelen like utenfor, så lenge den ikke er til hinder for gående eller annen ferdsel. Utenfor Kvadraturen skal den stå slik at den ikke er til hinder.',
+        'Kvadraturen fikk sitt strengt rettvinklede gatenett da Christian 4. grunnla byen i 1641. I dag er det sone 1 i forskriften, og i deler av sentrum er det **tvungen parkering** for leide elsparkesykler: Du kan bare avslutte turen på de oppmerkede plassene.',
+        '14. oktober 2026 viste kommunens kart 100 sparkesykler fra Voi og 82 fra Ryde i sone 1, der taket er 150 per operatør. Utenfor Kvadraturen skal sparkesykkelen stå slik at den ikke er til hinder for gående eller annen ferdsel.',
         'Hos Voi må du også parkere på stasjon i enkelte områder utenfor Kvadraturen, for eksempel på Gimle, Lund, Kongsgård, Sødal og Hånes. Appen viser hvor du kan parkere.',
         { note: 'Feilparkering kan gi 900 kr i parkeringsgebyr, og ifølge Ryde skriver kommunen ut slike gebyrer på leide sparkesykler. Etter vilkårene kan Ryde sende regningen videre hvis du ikke har tatt bilde av parkeringen, med et beløp etter egen vurdering. At appen lar deg avslutte turen, betyr ikke at du har parkert lovlig.' },
       ],
@@ -166,8 +164,6 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Lovdata: Kristiansands forskrift om utleie av små elektriske kjøretøy', url: 'https://lovdata.no/dokument/LF/forskrift/2024-01-24-148' },
-    { title: 'Kristiansand kommune: Elsparkesykler', url: 'https://www.kristiansand.kommune.no/navigasjon/bolig-kart-og-eiendom/vei-og-trafikk/sykkel/bysykkel-og-elsparkesykler/' },
-    { title: 'Kristiansand kommune: Parkering av elsparkesykler', url: 'https://www.kristiansand.kommune.no/navigasjon/bolig-kart-og-eiendom/parkering/parkeringsplasser-priser-kristiansand/parkering-elsparkesykkel/' },
     { title: 'AKT: Elsparkesykler og bysykler', url: 'https://www.akt.no/planlegg-reisen/mobilitet-pa-agder/elsparkesykler-og-bysykler/' },
     { title: 'AKT: Å reise med sykkel, elsykkel og elsparkesykkel på bussen', url: 'https://www.akt.no/planlegg-reisen/reise-med-sykkel-barnevogn-rullestol-og-reisegods/' },
     { title: 'Entur: Vois åpne data for Kristiansand (GBFS: priser, åpningstider og soner, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voikristiansand/gbfs' },

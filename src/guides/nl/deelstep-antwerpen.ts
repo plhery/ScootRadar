@@ -127,8 +127,8 @@ const guide: Guide = {
     {
       heading: 'Velo Antwerpen: de deelfiets als alternatief',
       blocks: [
-        '**Velo**, het fietsdeelsysteem van de stad, heeft meer dan 300 stations: je neemt een fiets aan het ene station en zet hem terug aan om het even welk ander. Op 13 oktober 2026 kostte een dagpas € 5, een weekpas € 12 en een jaarkaart € 58. Elke rit tot 30 minuten zit erin; tot een uur betaal je € 0,50 extra.',
-        'Een dagpas kost dus minder dan één rit van 20 minuten op een Voi-step. De concessie van Velo loopt eind februari 2027 af en de stad bereidt een nieuwe aanbesteding voor: prijzen en uitbater kunnen dan veranderen.',
+        '**Velo**, het fietsdeelsysteem van de stad, heeft meer dan 300 stations: je neemt een fiets aan het ene station en zet hem terug aan om het even welk ander. Een dagpas kost € 5, een weekpas € 12 en een jaarabonnement € 58 (november 2026). Elke rit tot 30 minuten zit erin.',
+        'Een dagpas kost dus minder dan één rit van 20 minuten op een Voi-step. Het contract met de huidige uitbater van Velo loopt in 2027 af en de stad schrijft een nieuwe aanbesteding uit: prijzen en uitbater kunnen dan veranderen.',
         'Toch liever een step? Op de [kaart van Antwerpen](map:be:Antwerpen) zie je de dichtstbijzijnde Voi, Lime of Bolt.',
       ],
     },
@@ -179,7 +179,8 @@ const guide: Guide = {
     { title: 'Slim naar Antwerpen: Voetgangers- en fietstunnel onder de Schelde', url: 'https://www.slimnaarantwerpen.be/nl/fiets/voetgangers-en-fietstunnel-onder-de-schelde' },
     { title: 'Slim naar Antwerpen: Asbest vertraagt de renovatie van de premetrotunnel (29 september 2026)', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/bijkomende-asbestverwijdering-zorgt-voor-vertraging-renovatiewerken-aan-antwerpse-metrotunnel' },
     { title: 'De Lijn: Algemene reisvoorwaarden', url: 'https://www.delijn.be/nl/content/algemene-reisvoorwaarden' },
-    { title: 'Velo Antwerpen: Tarieven', url: 'https://www.velo-antwerpen.be/nl/tarieven' },
+    { title: 'Velo Antwerpen in de App Store: tarieven en stations (gelezen op 4 november 2026)', url: 'https://apps.apple.com/be/app/velo-antwerpen/id534476508?l=nl' },
+    { title: 'VRT NWS: Recordjaar voor deelfietsensysteem Velo in Antwerpen (18 februari 2025)', url: 'https://www.vrt.be/vrtnws/nl/2025/02/18/recordjaar-voor-deelfietsensysteem-velo-in-antwerpen-meest-gebr/' },
   ],
 };
 

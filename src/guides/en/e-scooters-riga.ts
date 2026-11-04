@@ -67,10 +67,10 @@ const guide: Guide = {
       heading: 'Where can you ride and park in Riga’s Old Town?',
       blocks: [
         'Riga’s rules for shared scooters (RD-24-261-sn, in force since 1 May 2024 and amended in 2025) set speed and parking zones.',
-        '**Parking: only at a marked spot in the historic centre.** The no-parking zone covers about 1.2 km² of the Old Town, the canal parks and the boulevards up to Elizabetes iela, from Dome Square, Town Hall Square and Riga Castle to the Opera, Bastejkalns, Esplanāde and the Freedom Monument. It holds 84 marked spots, out of 121 across the city, such as Kaļķu iela 1, Smilšu iela 20, Grēcinieku iela 34, 11. novembra krastmala and Brīvības bulvāris by Esplanāde. The app shows them.',
-        'Elsewhere, end a ride where the app allows, but never on a pedestrian crossing, a cycle path or a bridge, on a pavement narrower than 1.5 metres, in Mežaparks or in the grounds of two big hospitals. If a scooter is badly parked, the municipal police order the operator to move it within 3 hours, and Ride’s terms pass the cost on to you.',
-        '**Speed: 20 km/h** for shared scooters in a zone of about 13.7 km² over the centre: the Old Town, the boulevard ring, the Art Nouveau quarter around Alberta iela and Elizabetes iela, the Central Market, the station, Skanste and the Vanšu, Stone and Island bridges. Elsewhere the national 25 km/h applies.',
-        'The Central Market, the station, Spīķeri and Alberta iela are in the slow zone but outside the city’s no-parking zone, so the city asks for no marked spot there; Ride, though, doesn’t let you end a ride around the station and the Central Market except at its spots. Ride doesn’t let you end a ride on most of Ķīpsala, across the Vanšu bridge, though you can ride through.',
+        '**Parking: only at a marked spot in the historic centre.** Since 1 May 2024 you may leave a shared scooter in the Old Town only at a marked spot, such as those on the embankment, Kaļķu iela, Aspazijas bulvāris and Meierovica bulvāris, and the city set out to widen the zone to Elizabetes iela and then the whole historic centre. The app shows the spots.',
+        'Elsewhere, end a ride where the app allows. If a scooter stands in a no-parking zone, the municipal police order the operator to move it within 3 hours, and Ride’s terms pass the cost on to you.',
+        '**Speed: 20 km/h** for shared scooters in the historic centre. Ride’s slow zone covers the Old Town, the boulevard ring, the Art Nouveau quarter around Alberta iela, the Central Market, the station, Spīķeri and Skanste. Elsewhere the national 25 km/h applies.',
+        'Ride doesn’t let you end a ride around the station and the Central Market except at its spots, nor on most of Ķīpsala, across the Vanšu bridge, though you can ride through.',
         'Many Old Town lanes are cobbled and busy with people on foot: give way to them and slow to walking pace. Events change the zones too: for Riga’s birthday in mid-August 2026 the city banned scooter riding and parking in the Old Town and on 11. novembra krastmala.',
       ],
     },
@@ -103,7 +103,7 @@ const guide: Guide = {
     {
       heading: 'From Riga airport, to Jūrmala and on the tram',
       blocks: [
-        '**The airport.** Ride doesn’t let you end a ride there: the terminal lies outside its zones. Take **bus 22** from the P1 car park, between arrival exits E and C, to the Old Town (11. novembra krastmala), the bus and railway stations and the Central Market in about 30 minutes. It runs 05:25–00:10, 5–8 buses an hour on weekdays. A 90-minute ticket costs €1.50 from the machine at the stop or Narvesen in the terminal, or €1.81 from the driver, by bank card only.',
+        '**The airport.** Ride doesn’t let you end a ride there: the terminal lies outside its zones. Take **bus 22** to the Grēcinieku iela stop by the Old Town or to the bus station, a short walk from the railway station, in about 40 minutes. A ticket costs €1.50 bought beforehand from Narvesen, a ticket machine at the airport or the Mobilly or Timey app, or €1.81 from the driver by bank card. After the last 22, the N22 night bus leaves the airport every hour from 00:30 to 04:30.',
         '**Jūrmala.** Ride has an area of its own along the coast, from Lielupe through Bulduri, Dzintari and Majori to beyond Dubulti. Riding there from Riga is long: take the Vivi train on the Tukums line and pick up a scooter there; the area starts by Majori station. On Jomas iela, the pedestrian street, walk the scooter when it’s busy.',
         '**Trams, trolleybuses and buses.** Since January 2026 Rīgas satiksme’s rules let you take a bicycle or your own e-scooter on board free of charge, if it can’t roll or tip over; give up the pram and wheelchair space when someone needs it.',
       ],
@@ -159,14 +159,14 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter from Riga airport to the city?',
-      answer: 'Not with Ride: the terminal lies outside its zones. Take bus 22 from the P1 car park: it reaches the Old Town, the station and the Central Market in about 30 minutes, for €1.50 with a 90-minute ticket from the machine at the stop.',
+      answer: 'Not with Ride: the terminal lies outside its zones. Take bus 22: it reaches the Old Town and the bus station in about 40 minutes, for €1.50 with a ticket bought beforehand at the airport or in an app, or €1.81 from the driver.',
     },
   ],
   sources: [
     { title: 'Road Traffic Law (Ceļu satiksmes likums), Latvian', url: 'https://likumi.lv/ta/id/45467' },
     { title: 'Road Traffic Regulations (Ceļu satiksmes noteikumi), chapter 22 from 31 March 2026, Latvian', url: 'https://likumi.lv/ta/id/274865' },
     { title: 'Riga City Council: shared vehicle rules RD-24-261-sn, Latvian', url: 'https://likumi.lv/ta/id/350955' },
-    { title: 'GeoRīga: e-scooter speed and parking zones (open data)', url: 'https://georiga.lv/server/rest/services/Mikromobilitates_ierobezojumi/MapServer' },
+    { title: 'LSM: 26 scooter and bike parking spots marked in the Old Town, 26 April 2024, Latvian', url: 'https://www.lsm.lv/raksts/zinas/latvija/26.04.2024-vecriga-iezimetas-26-elektroskrejritenu-un-velo-novietosanas-zonas.a552006/' },
     { title: 'CSDD: foreign driving licences in Latvia, Latvian', url: 'https://www.csdd.lv/transportlidzekla-vaditajs/arvalstu-vaditaja-apliecibas-izmantosana/' },
     { title: 'Riga Municipal Police: spring 2026 checks, Latvian', url: 'https://www.riga.lv/lv/jaunums/rpp-konstatejusi-vairak-ka-600-mikromobilitates-parkapumus' },
     { title: 'State Police: e-scooter crashes, Latvian', url: 'https://www.vp.gov.lv/lv/jaunums/pargalviba-reibums-un-risks-kapec-elektroskrejritenu-braucieni-beidzas-ar-traumam' },
@@ -180,7 +180,8 @@ const guide: Guide = {
     { title: 'Bolt: E-Vehicles terms of service for Latvia, effective 1 January 2026', url: 'https://bolt.eu/en-lv/legal/micromobility/terms-for-e-vehicles/' },
     { title: 'Skok on the App Store (Latvia)', url: 'https://apps.apple.com/lv/app/skok/id1480384239' },
     { title: 'PTAC: rental scooter and bike checks, 12 January 2026 (LV portāls), Latvian', url: 'https://lvportals.lv/dienaskartiba/384791-ptac-ir-parbaudijis-elektrisko-skrejritenu-un-velosipedu-nomas-pakalpojumus-2026' },
-    { title: 'Riga Airport: public transport', url: 'https://www.riga-airport.com/en/public-transport' },
+    { title: 'Live Riga: how to get from Riga Airport to the city centre (read on 4 November 2026)', url: 'https://www.liveriga.com/en/13353-how-to-get-from-riga-airport-to-the-city-center' },
+    { title: 'Live Riga: public transport and tickets (read on 4 November 2026)', url: 'https://www.liveriga.com/en/17-public-transportation' },
   ],
 };
 
