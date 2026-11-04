@@ -11,12 +11,15 @@ A bounded Mac bridge test **decrypted 100 Ryde scooters in central Drammen on
 3 November 2026**, and a second fresh read reproduced it. The unmodified app
 generated the proofs; a scoped local proxy translated the response encryption.
 The successful repeat also verified restoration to an app-owned key. This is
-a working prototype, not an enabled production collector or an unattended
-service; see [the live bridge result](#live-drammen-bridge-3-november). Exporting
+a working prototype; production and unattended collection remain unverified.
+See [the live bridge result](#live-drammen-bridge-3-november). Exporting
 the app's signing key for an independent server reader remains unsolved.
 Later tests in the same session returned Göteborg and Hannover as well;
 [coverage limits and persistent transport](#multi-city-limits-and-persistent-transport-3-november)
 remain separate from production readiness.
+The [4 November tests](#proof-replay-and-spatial-controls-4-november) also returned
+Kristiansand and Helsinki, established proof replay enforcement, and found
+241 distinct Drammen scooters across three query centres.
 On 1 November a separate diagnostic companion on the physical Pixel obtained
 a Google Integrity token for a fresh Ryde challenge and subsequently a
 reCAPTCHA token with the working RideMovi package-context setup. Normal Google
@@ -47,7 +50,8 @@ No additional SMS was requested during the 27 October recheck.
 
 Bergen is covered through Skyss since 28 October 2026, at the user's request
 of 27 October, and Larvik through Entur's `rydelarvik` since 31 October. The
-direct rider bridge has now returned Drammen, Göteborg and Hannover scooters. Continuous collection,
+direct rider bridge has now returned Drammen, Kristiansand, Göteborg, Helsinki
+and Hannover scooters. Continuous collection,
 coverage completeness, controlled shutdown and longer-lived session behavior
 still need validation before enabling it for Drammen, Kristiansand or Göteborg.
 Its signing dependency remains the official app running on the Mac.
@@ -753,6 +757,129 @@ send only normalized, pseudonymized observations from the Mac to the cache,
 with their actual observation ages. Account credentials and raw hardware IDs
 stay on the Mac. Decide rollout breadth from those checks rather than the
 number of cities listed in metadata.
+
+### Proof replay and spatial controls, 4 November
+
+The persistent transport was healthy after the overnight pause. A corrected
+direct repeat preserved the native cookie, platform/version/build and other
+client headers. The body and proof were unchanged; the proof was 1.57 seconds
+old. Ryde returned HTTP/application status 403 and `code=DPOP_PROOF_REPLAY`.
+The message explicitly said the business operation was not executed and a fresh
+proof was required. The batch stopped at that first rejection. This resolves
+the earlier ambiguous 401: captured proofs cannot be reused for map polling.
+
+A second test assigned one planned query to each fresh native map request.
+It completed 14 observations with 14 distinct proofs, all HTTP/application
+status 200. The same account and bridge binding worked across all four operating
+countries. A 10 km view at each tested operating city returned:
+
+| City | City ID | Scooters | Separate e-bike array |
+| --- | --- | --- | --- |
+| Drammen | 43 | 100 | 0 |
+| Kristiansand | 6 | 100 | 100 |
+| Göteborg | 32 | 100 | 0 |
+| Helsinki | 31 | 300 | 0 |
+| Hannover | 94 | 133 | 0 |
+
+These are sampled map results, not fleet totals. The e-bike array must not be
+flattened into scooter markers. The live map rows still supply no battery,
+range, independent position timestamp or separately verified rental eligibility.
+
+The Drammen controls establish useful spatial behavior:
+
+- A repeated central 10 km query returned the same 100 identifiers.
+- A 250 m query returned 11 scooters. It exactly matched the preceding view's
+  vehicles within 250 m, read 0.377 seconds earlier.
+- Central queries of 1, 10 and 50 km each returned 100 scooters; the farthest was
+  about 715 m away. Increasing the radius did not recover the wider fleet.
+- Two shifted centres also returned 100 each. Their union with the central view
+  contained **241 distinct scooters**. Valid parent observations must be retained
+  while adding narrower or shifted queries.
+- The same Drammen coordinates with city ID 0 returned none, as did city ID 6
+  (Kristiansand). Correct Kristiansand coordinates and ID 6 returned a nonempty
+  response. A successful empty response therefore does not establish absence
+  until the city ID and geographic binding have been checked.
+
+This supports a capped nearby selection in Drammen, with city-dependent limits;
+Helsinki's 300 is another saturation candidate, not a verified universal cap.
+It does not yet prove a complete nearest-neighbour selection rule. Comparing
+the overlapping views found one later-observed candidate closer than the first
+view's cutoff, while the shifted views had none with a 25 m margin. Availability
+or positions could have changed between reads. The final central repeat was
+not collected: native restoration became due first. Do not turn this incomplete
+before/after reference into a completeness proof.
+
+Warsaw's exploratory metadata city ID 117 returned empty. It is still absent
+from the reviewed official location list and is not a rollout candidate on this
+evidence. No rate-limit rejection was observed in the native query plan; this
+small sample does not establish an upstream quota or sustainable rate.
+
+The app generated fresh requests around controlled native restarts. The observed
+14-request span was about 234 seconds, including tool/UI delays; pairs as close
+as 0.38 seconds apart rule out treating the average as a server-enforced quota.
+Hiding and raising the app did not reliably produce a request. A separate
+180-second observation-only run, with no key or response mutation, saw one
+successful authenticated map request on relaunch and none during the following
+75 seconds with the app left open. This Mac was outside Ryde's operating
+area. Automatic in-area polling and background/locked-Mac behavior remain open.
+A single process sample was 122.2 MiB RSS for Ryde, 42.3 for the proxy and 11.0
+for its supervisor; it excludes shared macOS services and is not a peak-memory
+or long-run benchmark.
+
+A low-volume `getFencesInfo` check returned application 401 with an empty token;
+using the legitimate native token in memory, but no reused map proof, returned
+403. It stopped after that first rejection. This did not establish independent
+metadata retrieval; capture the proper native fence flow to obtain reviewed
+operating polygons before planning complete sweeps.
+
+Both key-substitution runs verified an app-owned restoration and a following
+successful map response addressed to that key. The persistent transport returned
+to **idle**. Its scoped trust and PAC intentionally remain installed; no
+administrator prompt was needed for the day's experiments. Runtime tests cover
+fresh-proof preservation, one query per native request, stopping a failed plan,
+late-binding restoration budgets, read-only observation and rejection cleanup.
+
+Private evidence is under `~/.local/share/scootradar/ryde-bridge/runs/`:
+`coverage-20261104t085334z-1ff6` (explicit replay rejection),
+`coverage-20261104t091332z-c379` (geographic plan),
+`coverage-20261104t092356z-d2c0` (cadence observation), and
+`coverage-20261104t093706z-aaee` (metadata rejection). The geographic run's
+analysis and spatial validation contain no raw identifiers. A mode-0600 GeoJSON
+at `~/.cache/scootradar/exports/ryde-five-city-evidence-20261104.geojson`
+contains 874 sampled scooters across five cities, with identifiers replaced
+by keyed hashes scoped to that export. It preserves each point's observation
+time and unknown position-update time; it is archived evidence, not a live feed.
+
+### Integration decision after the 4 November tests
+
+Use one supervised Mac producer for the account, with a shared queue across
+cities. Every query consumes a fresh app-generated proof. Establish a reliable
+request trigger and verify background/locked-Mac operation before promising
+unattended collection. Persist key-transition state before sending a changed
+public key, and validate crash recovery, renewal and controlled restoration;
+the installed transport alone is not that producer.
+
+Pilot Drammen first: obtain its actual ride polygons, retain observations across
+overlapping local views, validate coverage against stable before/after references,
+and measure the warm sweep cost. Prioritize the viewport someone is watching,
+as the cache's existing app-map queues do. If a city's sweep exceeds freshness
+budgets, split it into independently refreshed spatial groups rather than
+marking an unfinished city current. A single large-radius response is not an
+acceptable city snapshot.
+
+Publish only normalized, pseudonymized scooter observations from the Mac to the
+Node cache. Preserve observation ages; unknown battery/range/position-update
+times stay unknown. Never publish credentials, bridge keys or hardware IDs.
+Preserve the last valid result on refresh failure and use the existing stale-data
+and feed-health contracts. Keep the source behind configuration until uptime,
+coverage, stopping and recovery checks pass.
+
+Expand the pilot to Kristiansand and Göteborg, then the positively sampled
+Finnish and German markets after their coverage checks. Survey the remaining
+officially listed candidates with the same city-ID and coordinate validation.
+Keep Entur and Skyss coverage in place; the bridge fills missing areas. The
+reviewed list's 64 uncovered entries/areas remain candidates, not 64 promised
+new feeds. No production feed or continuous collector was enabled by these tests.
 
 
 Earlier trust-installation attempts timed out while macOS authorization was
