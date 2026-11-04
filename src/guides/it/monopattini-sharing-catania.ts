@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'monopattini-sharing-catania',
   topic: 'catania',
   name: 'Monopattini in sharing a Catania',
-  title: 'Monopattini in sharing a Catania 2026: Elerent, Lime, regole',
-  description: 'Monopattini in sharing a Catania nel 2026: Elerent e Lime, casco da portare, via Etnea, dove lasciarli, metro, aeroporto e Sant’Agata.',
-  headline: 'Monopattini in sharing a Catania: Elerent e Lime, zone e regole nel 2026',
-  lede: 'I monopattini in sharing a Catania, a ottobre 2026, sono quelli di Elerent e Lime; anche Bolt ha vinto la gara, ma a maggio, secondo l’assessore alla Mobilità, non aveva dato notizie al Comune. L’età minima e il prezzo te li mostra l’app prima dello sblocco. Ti serve il casco, obbligatorio per tutti, che porti tu. Su via Etnea, chiusa al traffico privato, nel tratto pedonale si va a 6 km/h.',
+  title: 'Monopattini in sharing a Catania 2026: Elerent, Lime, prezzi',
+  description: 'Monopattini in sharing a Catania nel 2026: Elerent e Lime, prezzi, casco da portare, via Etnea, dove lasciarli, metro, aeroporto e Sant’Agata.',
+  headline: 'Monopattini in sharing a Catania: Elerent e Lime, prezzi, zone e regole nel 2026',
+  lede: 'I monopattini in sharing a Catania, a ottobre 2026, sono quelli di Elerent e Lime; anche Bolt ha vinto la gara, ma a maggio, secondo l’assessore alla Mobilità, non aveva dato notizie al Comune. A novembre 2026 Elerent costa 1 euro di sblocco più 0,23-0,25 euro al minuto, secondo il modello; Lime mostra il prezzo nell’app. Ti serve il casco, obbligatorio per tutti, che porti tu. Su via Etnea, chiusa al traffico privato, nel tratto pedonale si va a 6 km/h, e tra piazza Duomo e piazza Università con Elerent la corsa non si chiude.',
   published: '2026-10-14',
   updated: '2026-10-25',
   city: 'it:Catania',
@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Quali monopattini in sharing ci sono a Catania',
       blocks: [
         'Con la determina del 12 febbraio 2026 il Comune ha affidato il servizio a **Bolt** (400 monopattini), **Lime** (300) ed **Elerent Ragusa** (300), che usa l’app Elerent: mille in tutto, come prima (La Sicilia, 16 febbraio 2026). Elerent è entrata dopo la rinuncia di Bit Mobility, prima in graduatoria.',
-        'Di Bolt, a maggio 2026, il Comune non aveva notizie, disse a La Sicilia l’assessore alla Mobilità Luca Sangiorgio: «al massimo rimoduleremo». In strada ci sono Elerent e Lime.',
+        'Di Bolt, a maggio 2026, il Comune non aveva notizie, disse a La Sicilia l’assessore alla Mobilità Luca Sangiorgio: «al massimo rimoduleremo». In strada ci sono Elerent, che noleggia a qualunque ora, e Lime.',
         'Il 14 ottobre 2026 c’erano circa 130 monopattini Elerent liberi in quel momento. Dove ce n’è uno libero adesso, lo vedi sulla [mappa di Catania](map:it:Catania).',
         'Helbiz e Dott, in città dalla fine del 2021, non ci sono più.',
       ],
@@ -28,7 +28,7 @@ const guide: Guide = {
         {
           steps: [
             'Scarica l’app di Elerent o di Lime; i monopattini liberi li vedi anche sulla [mappa di Catania](map:it:Catania).',
-            'Registrati e aggiungi un mezzo di pagamento; l’età minima e il prezzo te li mostra l’app prima dello sblocco.',
+            'Registrati e aggiungi un mezzo di pagamento; l’età minima te la mostra l’app prima dello sblocco.',
             'Metti il casco e controlla freni, luci e batteria.',
             'Inquadra il QR code e parti piano. Sale una persona sola.',
             'Fermati dove l’app consente la sosta, chiudi la corsa e, se l’app la chiede, scatta la foto di fine corsa.',
@@ -39,24 +39,53 @@ const guide: Guide = {
       ],
     },
     {
+      heading: 'Noleggio monopattino a Catania: quanto costa',
+      blocks: [
+        'A novembre 2026 Elerent fa pagare 1 euro allo sblocco e, secondo il modello, da 0,23 a 0,25 euro al minuto. Fa fede l’app, che ti mostra il prezzo prima di sbloccare; quello di Lime lo vedi nella sua app.',
+        {
+          table: {
+            caption: 'Quanto costa una corsa con Elerent a Catania, a novembre 2026',
+            head: ['Sblocco', 'Al minuto', '10 minuti', '20 minuti'],
+            rows: [
+              ['1 euro', 'Da 0,23 a 0,25 euro', 'Da 3,30 a 3,50 euro', 'Da 5,60 a 6 euro'],
+            ],
+          },
+        },
+      ],
+    },
+    {
       heading: 'Via Etnea in monopattino: 6 km/h, salita e pietra lavica',
       blocks: [
         'Via Etnea, il rettifilo di circa 3 km che dal Duomo punta verso l’Etna, è chiusa al traffico privato fino a Villa Bellini. Nelle aree pedonali il limite nazionale è di **6 km/h**: nel dubbio, tieni quel passo fino alla villa.',
+        'Con Elerent, da piazza Duomo fin quasi a piazza Università la corsa non si chiude: lascia il monopattino più su, in piazza Università, in piazza Stesicoro o su via Etnea davanti a Villa Bellini, non dentro la villa.',
         '**La salita.** Da piazza Duomo (circa 18 m) a Tondo Gioeni (circa 105 m) si sale di circa 87 metri, secondo una nostra stima approssimativa: in lieve pendenza fino a piazza Cavour, al Borgo, poi intorno al 5-6% nell’ultimo chilometro, dove il monopattino rallenta.',
         '**La pietra lavica.** Il selciato è di pietra lavica dell’Etna, che bagnata scivola: con la pioggia vai piano e frena in anticipo.',
-        'Anche intorno al Castello Ursino c’è un’area pedonale: 6 km/h.',
+        'Anche intorno al Castello Ursino c’è un’area pedonale: 6 km/h, ma con Elerent la corsa si chiude.',
       ],
     },
     {
-      heading: 'Dove lasciare il monopattino a Catania',
+      heading: 'Dove lasciare il monopattino a Catania: le zone di Elerent',
       blocks: [
         'Mai sul marciapiede: la multa va da 41 a 168 euro. Gli stalli per bici, motorini e moto vanno sempre bene, ma la corsa si chiude solo dove lo consente l’app.',
         'Se il monopattino blocca marciapiedi, passi carrai, strade o corsie dei bus, la corsa non si chiude, ha detto l’assessore Sangiorgio a La Sicilia nel maggio 2026. Le multe per i mezzi lasciati male il Comune le fa alla società, che poi può rivalersi su di te.',
-        'Le zone cambiano: prima di partire e di chiudere la corsa fa fede la mappa dell’app.',
+        {
+          table: {
+            caption: 'Dove si chiude la corsa con Elerent, a novembre 2026',
+            head: ['Luoghi', 'Si chiude la corsa?'],
+            rows: [
+              ['Piazza Università, piazza Stesicoro, via Etnea davanti a Villa Bellini, piazza Cavour, Tondo Gioeni, Teatro Massimo, Castello Ursino', 'Sì'],
+              ['Piazza Giovanni XXIII davanti alla stazione, corso Italia, piazza Europa, il lungomare fino a Ognina, Lido Azzurro', 'Sì'],
+              ['Piazza Duomo e via Etnea fin quasi a piazza Università, via Crociferi, l’interno di Villa Bellini, Villa Pacini, San Berillo, Policlinico, stadio Massimino, San Giovanni Li Cuti, stazione Centrale', 'No, ma ci passi'],
+              ['Binari della stazione Centrale, porto e Stazione Marittima', 'No, e con due modelli su tre non si circola'],
+              ['Aeroporto, Librino, Barriera (via Etnea oltre Tondo Gioeni)', 'No: fuori dall’area'],
+            ],
+          },
+        },
+        'Le zone cambiano: prima di partire e di chiudere la corsa fa fede la mappa dell’app. Quelle di Lime le vedi nella sua app.',
       ],
     },
     {
-      heading: 'Monopattino in metro, in treno e verso l’aeroporto',
+      heading: 'Monopattino in metro, stazione Centrale, porto e aeroporto',
       blocks: [
         {
           table: {
@@ -69,16 +98,18 @@ const guide: Guide = {
             ],
           },
         },
-        '**Aeroporto.** Il terminal di Fontanarossa è a poco più di 4 km dal centro. Con la valigia prendi l’Alibus dell’AMTS o il treno dalla fermata Catania Aeroporto Fontanarossa, collegata al terminal da una navetta, e usa il monopattino in città.',
+        '**Catania Centrale.** In stazione con Elerent la corsa non si chiude, e lungo i binari due modelli su tre non circolano; in piazza Giovanni XXIII, proprio davanti, si parte e si chiude la corsa.',
+        '**Porto.** Al porto, Stazione Marittima compresa, con Elerent la corsa non si chiude, e con due modelli su tre non si circola: se arrivi in traghetto o in crociera, esci a piedi fino alla prima zona consentita.',
+        '**Aeroporto.** Il terminal di Fontanarossa, a poco più di 4 km dal centro, è fuori dall’area di Elerent. Con due modelli su tre la corsa si chiude anche in due piccole aree a Villaggio Santa Maria Goretti, la più vicina a circa 300 metri in linea d’aria dal terminal; con l’altro, le zone più vicine sono a più di un chilometro. Con la valigia prendi l’Alibus dell’AMTS (4 euro a novembre 2026) o il treno dalla fermata Catania Aeroporto Fontanarossa, collegata al terminal da una navetta, e usa il monopattino in città.',
       ],
     },
     {
       heading: 'Sant’Agata, partite al Massimino ed eventi: le chiusure',
       blocks: [
-        '**Sant’Agata.** La festa della patrona riempie il centro dal 3 al 5 febbraio; la prossima è nel 2027. Le strade chiuse le decide il Comune con un’ordinanza: con il centro pieno di gente, scendi e vai a piedi.',
-        '**Partite.** Nei giorni delle partite in casa al Massimino le strade intorno allo stadio si riempiono: lascia il monopattino prima e arriva a piedi o in metro, fermata Cibali.',
+        '**Sant’Agata.** La festa della patrona riempie il centro dal 3 al 5 febbraio; la prossima è nel 2027. Il 5 febbraio 2026, da mezzogiorno, il percorso della processione è stato chiuso a tutti i veicoli finché non è stata tolta la cera dei ceri. Alla riapertura un’ordinanza ha vietato bici, moto e monopattini, finché necessario, in piazza Duomo, su via Etnea fino a piazza Cavour, in piazza Stesicoro, in piazza Cavour e in altre vie. Nel 2027 può ripetersi: controlla le ordinanze del Comune.',
+        '**Partite.** Per le partite in casa al Massimino un’ordinanza chiude a tutti i veicoli le strade intorno allo stadio, circa tre ore prima del fischio d’inizio: per Catania–Crotone del 3 ottobre 2026, alle 20:30, dalle 17:30 a mezzanotte, in via Cifali, via Cantone e dintorni. Il divieto vale anche per il monopattino, che la legge tratta come una bici. Lascia il monopattino prima (con Elerent, intorno allo stadio la corsa non si chiude) e arriva a piedi o in metro, fermata Cibali.',
         '**Altri eventi.** Pride, corse podistiche e manifestazioni su via Etnea hanno ciascuno la sua ordinanza: davanti alle transenne, scendi e porta il monopattino a mano.',
-        '**Alternative.** Restano metropolitana e bus AMTS.',
+        '**Alternative.** Restano metropolitana e bus AMTS. Per le bici a pedalata assistita in sharing il Comune ha approvato un avviso il 12 ottobre 2026, corretto il 27 ottobre: gli operatori li sceglierà una commissione.',
       ],
     },
     {
@@ -131,22 +162,28 @@ const guide: Guide = {
     },
     {
       question: 'A che età si può noleggiare un monopattino a Catania? Serve la patente?',
-      answer: 'Per la legge si guida dai 14 anni, senza patente. L’età minima per noleggiare e il prezzo te li mostra l’app prima dello sblocco.',
+      answer: 'Per la legge si guida dai 14 anni, senza patente. L’età minima per noleggiare te la mostra l’app prima dello sblocco.',
     },
     {
       question: 'Si può portare il monopattino in metro a Catania?',
       answer: 'Il tuo sì, su metropolitana e Circumetnea, se non intralcia il servizio e non c’è troppa gente; sui regionali Trenitalia viaggia gratis se piegato e spento, fino a 120×80×45 cm. Quello in sharing no.',
     },
     {
-      question: 'Come arrivo dall’aeroporto di Catania al centro?',
-      answer: 'Il terminal di Fontanarossa è a poco più di 4 km dal centro: con la valigia prendi l’Alibus dell’AMTS o il treno dalla fermata Catania Aeroporto Fontanarossa, collegata al terminal da una navetta, e usa il monopattino in città.',
+      question: 'Si arriva in monopattino all’aeroporto di Catania?',
+      answer: 'Al terminal no: è fuori dall’area di Elerent. Con due modelli Elerent su tre la corsa si chiude a Villaggio Santa Maria Goretti, a circa 300 metri in linea d’aria; le zone di Lime sono nella sua app. Con la valigia, meglio l’Alibus (4 euro a novembre 2026) o il treno.',
     },
   ],
   sources: [
+    { title: 'Elerent: feed GBFS di Catania (tariffe, orari e zone)', url: 'https://elerent.rideatom.com/gbfs/2166/v3.0/gbfs' },
+    { title: 'Comune di Catania: ordinanza n. 88 del 2 febbraio 2026 (Sant’Agata, 5 febbraio)', url: 'https://servizionline.comune.catania.it/urbi/progs/urp/ur2DE001.sto?StwEvent=101&DB_NAME=wt00041571&IdDelibere=62121' },
+    { title: 'Comune di Catania: ordinanza n. 103 del 5 febbraio 2026 (Sant’Agata, riapertura delle strade)', url: 'https://servizionline.comune.catania.it/urbi/progs/urp/ur2DE001.sto?StwEvent=101&DB_NAME=wt00041571&IdDelibere=62331' },
+    { title: 'Comune di Catania: ordinanza n. 1105 del 30 settembre 2026 (Catania–Crotone al Massimino)', url: 'https://servizionline.comune.catania.it/urbi/progs/urp/ur2DE001.sto?StwEvent=101&DB_NAME=wt00041571&IdDelibere=80910' },
+    { title: 'Comune di Catania: determina n. 12407 del 27 ottobre 2026 (avviso per le bici a pedalata assistita in sharing)', url: 'https://servizionline.comune.catania.it/urbi/progs/urp/ur2DE001.sto?StwEvent=101&DB_NAME=wt00041571&IdDelibere=82315' },
     { title: 'La Sicilia: mille monopattini, casco obbligatorio e tolleranza zero sugli abbandoni (16 febbraio 2026)', url: 'https://www.lasicilia.it/news/cronaca/3018256/monopattini-catania-ci-scommette-ancora-mille-mezzi-casco-obbligatorio-e-tolleranza-zero-sugli-abbandoni.html' },
     { title: 'La Sicilia: in estate altri operatori, ma il casco è un problema (14 maggio 2026)', url: 'https://www.lasicilia.it/news/cronaca/3039976/monopattini-in-estate-a-catania-altri-operatori-per-lo-sharing-ma-il-casco-e-un-problema.html' },
     { title: 'QdS: aggiudicata la nuova gara, cambiano due concessionari su tre (31 ottobre 2025)', url: 'https://qds.it/monopattini-aggiudicata-la-nuova-gara-cambiano-due-concessionari-su-tre-a-catania/' },
     { title: 'FCE: norme e condizioni di viaggio', url: 'https://www.circumetnea.it/download/norme-e-condizioni/' },
+    { title: 'AMTS: Alibus', url: 'https://www.amts.ct.it/alibus' },
     { title: 'AMTS: consigli per il viaggio (PDF)', url: 'https://www.amts.ct.it/wp-content/uploads/2020/03/Consigli-per-il-viaggio.pdf' },
     { title: 'Trenitalia: bici e mezzi elettrici sui regionali', url: 'https://www.trenitalia.com/it/regionale/bici-e-mezzi-elettrici.html' },
     { title: 'La Sicilia: 837 multe per il casco (7 ottobre 2026)', url: 'https://www.lasicilia.it/news/cronaca/3079474/monopattini-in-pochi-mesi-837-multe-per-gli-indisciplinati-senza-casco-a-catania.html' },
