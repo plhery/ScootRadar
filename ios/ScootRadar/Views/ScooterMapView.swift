@@ -703,12 +703,13 @@ struct ScooterMapView: UIViewRepresentable {
             guard selectedID != appliedSelectionID else { return }
             appliedSelectionID = selectedID
 
+            let animated = !UIAccessibility.isReduceMotionEnabled
             for annotation in mapView.selectedAnnotations where annotation is ScooterMapAnnotation {
-                mapView.deselectAnnotation(annotation, animated: true)
+                mapView.deselectAnnotation(annotation, animated: animated)
             }
 
             if let selectedID, let annotation = annotationsByID[selectedID] {
-                mapView.selectAnnotation(annotation, animated: true)
+                mapView.selectAnnotation(annotation, animated: animated)
             }
             updateLook(on: mapView)
         }
@@ -2048,14 +2049,16 @@ struct ScooterMapView: UIViewRepresentable {
 
         /// A cluster opens onto its scooters. Beside a panel or a fold they
         /// are fitted like a route into the part of the map left visible; on
-        /// a phone MapKit shows them, as it always has.
+        /// a phone MapKit shows them, as it always has. With Reduce Motion
+        /// the map cuts there instead of zooming.
         private func showMembers(of cluster: MKClusterAnnotation, on mapView: MKMapView) {
             focusUnderWay = nil
+            let animated = !UIAccessibility.isReduceMotionEnabled
             guard movedMargins != nil else {
-                mapView.showAnnotations(cluster.memberAnnotations, animated: true)
+                mapView.showAnnotations(cluster.memberAnnotations, animated: animated)
                 return
             }
-            fit(cluster.memberAnnotations.map(\.coordinate), on: mapView, animated: !UIAccessibility.isReduceMotionEnabled)
+            fit(cluster.memberAnnotations.map(\.coordinate), on: mapView, animated: animated)
         }
 
         private func fit(_ coordinates: [CLLocationCoordinate2D], on mapView: MKMapView, animated: Bool) {
