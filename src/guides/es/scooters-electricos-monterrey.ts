@@ -55,7 +55,7 @@ const guide: Guide = {
     {
       heading: '¿Por dónde puedes andar en scooter? Banqueta, ciclovía y calle',
       blocks: [
-        'En Nuevo León, cada municipio pone sus reglas de tránsito en su reglamento. Según el alcalde de San Pedro, Mauricio Farah, hoy a los scooters los regula la Ley de Movilidad del estado, «medio escueta» (ABC Noticias, agosto de 2026). En septiembre, el secretario del Ayuntamiento de Monterrey dijo que ningún municipio del área metropolitana tiene todavía un reglamento para ellos (ABC Noticias). Mientras tanto, estas son las reglas de las empresas:',
+        'En Nuevo León, hoy a los scooters los regula la Ley de Movilidad del estado, «medio escueta» según el alcalde de San Pedro, Mauricio Farah, cuyo municipio ajusta su reglamento de movilidad para armonizarlo con ella (ABC Noticias, agosto de 2026). En septiembre, el secretario del Ayuntamiento de Monterrey dijo que ningún municipio del área metropolitana tiene todavía un reglamento para ellos (ABC Noticias). Mientras tanto, estas son las reglas de las empresas:',
         {
           table: {
             caption: 'Reglas para andar en scooter de renta en Monterrey y San Pedro, al 25 de octubre de 2026',

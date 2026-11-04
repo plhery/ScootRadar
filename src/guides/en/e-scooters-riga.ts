@@ -71,7 +71,7 @@ const guide: Guide = {
         'Elsewhere, end a ride where the app allows. If a scooter stands in a no-parking zone, the municipal police order the operator to move it within 3 hours, and Ride’s terms pass the cost on to you.',
         '**Speed: 20 km/h** for shared scooters in the historic centre. Ride’s slow zone covers the Old Town, the boulevard ring, the Art Nouveau quarter around Alberta iela, the Central Market, the station, Spīķeri and Skanste. Elsewhere the national 25 km/h applies.',
         'Ride doesn’t let you end a ride around the station and the Central Market except at its spots, nor on most of Ķīpsala, across the Vanšu bridge, though you can ride through.',
-        'Many Old Town lanes are cobbled and busy with people on foot: give way to them and slow to walking pace. Events change the zones too: for Riga’s birthday in mid-August 2026 the city banned scooter riding and parking in the Old Town and on 11. novembra krastmala.',
+        'Many Old Town lanes are cobbled and busy with people on foot: give way to them and slow to walking pace. Events change the zones too: for Riga’s birthday on 15 and 16 August 2026, the city banned scooter riding in the Old Town, on 11. novembra krastmala and at the other event sites, and closed the parking spots in the Old Town and on the embankment.',
       ],
     },
     {
@@ -101,11 +101,10 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'From Riga airport, to Jūrmala and on the tram',
+      heading: 'From Riga airport and to Jūrmala',
       blocks: [
         '**The airport.** Ride doesn’t let you end a ride there: the terminal lies outside its zones. Take **bus 22** to the Grēcinieku iela stop by the Old Town or to the bus station, a short walk from the railway station, in about 40 minutes. A ticket costs €1.50 bought beforehand from Narvesen, a ticket machine at the airport or the Mobilly or Timey app, or €1.81 from the driver by bank card. After the last 22, the N22 night bus leaves the airport every hour from 00:30 to 04:30.',
         '**Jūrmala.** Ride has an area of its own along the coast, from Lielupe through Bulduri, Dzintari and Majori to beyond Dubulti. Riding there from Riga is long: take the Vivi train on the Tukums line and pick up a scooter there; the area starts by Majori station. On Jomas iela, the pedestrian street, walk the scooter when it’s busy.',
-        '**Trams, trolleybuses and buses.** Since January 2026 Rīgas satiksme’s rules let you take a bicycle or your own e-scooter on board free of charge, if it can’t roll or tip over; give up the pram and wheelchair space when someone needs it.',
       ],
     },
     {
@@ -182,6 +181,7 @@ const guide: Guide = {
     { title: 'PTAC: rental scooter and bike checks, 12 January 2026 (LV portāls), Latvian', url: 'https://lvportals.lv/dienaskartiba/384791-ptac-ir-parbaudijis-elektrisko-skrejritenu-un-velosipedu-nomas-pakalpojumus-2026' },
     { title: 'Live Riga: how to get from Riga Airport to the city centre (read on 4 November 2026)', url: 'https://www.liveriga.com/en/13353-how-to-get-from-riga-airport-to-the-city-center' },
     { title: 'Live Riga: public transport and tickets (read on 4 November 2026)', url: 'https://www.liveriga.com/en/17-public-transportation' },
+    { title: 'LV portāls: Riga City Council on traffic limits for Riga’s birthday, 13 August 2026, Latvian', url: 'https://lvportals.lv/dienaskartiba/393197-rigas-dzimsanas-dienas-svinibu-laika-sestdien-satiksmei-slegs-vecrigu-ierobezota-transporta-parvietosanas-pilsetas-centra-2026' },
   ],
 };
 

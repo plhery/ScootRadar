@@ -60,7 +60,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter parking in Lisbon: rides end only at hotspots',
       blocks: [
-        'A ride can only end at a hotspot, a designated parking spot marked in the app. Bird alone had 1,754 of them on 13 October 2026. Parking is banned at Metro entrances, bus and tram stops, crossings, taxi ranks and monument entrances.',
+        'A ride can only end at a hotspot, a designated parking spot marked in the app. Bird alone had 1,753 of them on 4 November 2026. Parking is banned at Metro entrances, bus and tram stops, crossings, taxi ranks and monument entrances.',
         { note: 'If the app won’t let you end your ride, you are outside a hotspot or in a no-parking zone. Move to the nearest spot the app shows: since the ride can only end there, you keep paying by the minute until you get there.' },
         'The municipal police and EMEL, the city’s parking company, can remove badly parked scooters: in 2025 the police removed 5,505 scooters and bicycles, about 15 a day. The operator pays, but the agreement requires operators to set penalties for bad parking and riding in their terms, and Bird passes fines and pound fees on to the rider.',
         'At the big stations, end the ride at a hotspot outside the station area and walk: Bird has 19 hotspots within 300 m of Cais do Sodré and 4 within 300 m of Santa Apolónia.',
@@ -182,6 +182,7 @@ const guide: Guide = {
     { title: 'Correio da Manhã: Lisbon council clears “obsolete bicycles” from public space, 2 February 2026 (Portuguese)', url: 'https://www.cmjornal.pt/sociedade/detalhe/camara-de-lisboa-promove-retirada-de-bicicletas-obsoletas-do-espaco-publico' },
     { title: 'Echo Boomer: the Navegante pass gives 200 minutes of e-scooter riding a month, 26 June 2025 (Portuguese)', url: 'https://echoboomer.pt/passe-navegante-200-minutos-trotinete-mes-lisboa/' },
     { title: 'Bird: rental agreement for Portugal (8 December 2021, Portuguese)', url: 'https://bird.co/rental-agreements/portugal-pt/' },
+    { title: 'Bird: Lisbon hotspots (GBFS open data, read on 4 November 2026)', url: 'https://mds.bird.co/gbfs/v2/public/lisbon/station_information.json' },
     { title: 'Bolt: scooter rentals in Portugal (Portuguese)', url: 'https://bolt.eu/pt-pt/scooters/' },
     { title: 'Gira: passes and prices (Portuguese)', url: 'https://www.gira-bicicletasdelisboa.pt/passes-e-tarifarios/' },
     { title: 'TTSL: bikes and scooters on the Lisbon ferries (Portuguese)', url: 'https://ttsl.pt/passageiros/utilizacao-do-transporte-fluvial/' },

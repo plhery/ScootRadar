@@ -129,7 +129,7 @@ const guide: Guide = {
           list: [
             '**Métro, tram et bus.** Pour continuer en transports, rendez la Lime dans une station près de l’arrêt : le compteur tourne tant qu’elle n’y est pas garée.',
             '**Lille-Flandres et Lille-Europe.** Aucune trottinette à la descente du TGV ou de l’Eurostar : le 13 octobre 2026, la plus proche était à 1,8 km. Prenez un V’Lille, à moins de 100 m de chacune des deux gares, ou un vélo Lime : ce soir-là, 85 attendaient à moins de 500 m de Lille-Flandres.',
-            '**Aéroport de Lille-Lesquin.** Aucune trottinette devant l’aérogare : les plus proches étaient à 1,2 km environ. La navette rejoint les gares en une vingtaine de minutes, pour 7,99 € en ligne ou 9 € à bord ; le bus Ilévia 68 va jusqu’au métro 4 Cantons-Stade Pierre-Mauroy.',
+            '**Aéroport de Lille-Lesquin.** La navette rejoint les gares en une vingtaine de minutes, pour 7,99 € en ligne ou à la borne et 9 € auprès du chauffeur (novembre 2026) ; le bus Ilévia 68 va jusqu’au métro 4 Cantons-Stade Pierre-Mauroy.',
             '**Marché de Noël.** Il s’installe place Rihour du 18 novembre au 30 décembre 2026 : on y met pied à terre tous les jours de 11 h à 20 h.',
           ],
         },
@@ -193,6 +193,8 @@ const guide: Guide = {
     { title: 'Préfet du Nord : arrêté du 30 juillet 2026 portant obligation du port du casque pour tout conducteur d’EDPM (copie publiée par la commune de Linselles)', url: 'https://www.linselles.fr/wp-content/uploads/2026/08/Arrete-prefectoral-portant-obligation-du-port-du-casque-pour-tout-conducteur-dengin-de-deplacement-personnel-motorise-EDPM-dans-le-departement-du-Nord.pdf' },
     { title: 'MEL : note de synthèse du conseil du 9 octobre 2026 (délibération 26-C-0137, micromobilités)', url: 'https://www.lillemetropole.fr/sites/default/files/2026-10/C0910_NOTE_SYNTHESE.pdf' },
     { title: 'actu.fr : Lime annonce 1 000 vélos et trottinettes électriques de plus dans la métropole (30 septembre 2025)', url: 'https://actu.fr/hauts-de-france/lille_59350/metropole-de-lille-lime-annonce-larrivee-de-1000-velos-et-trottinettes-electriques-supplementaires_63234891.html' },
+    { title: 'Aéroport de Lille : la navette aéroport–centre de Lille, tarifs (lu le 4 novembre 2026)', url: 'https://www.lille.aeroport.fr/acceder-a-l-aeroport/navette/' },
+    { title: 'Aéroport de Lille : rejoindre l’aéroport en bus, ligne Ilévia 68 (lu le 4 novembre 2026)', url: 'https://www.lille.aeroport.fr/acceder-a-l-aeroport/transports-en-commun/' },
     { title: 'Le Bonbon Lille : les nouveaux tarifs Ilévia et V’Lille au 1er août 2026 (4 août 2026)', url: 'https://www.lebonbon.fr/lille/news/prendre-metro-a-lille-coute-desormais-plus-cher-voici-nouveaux-tarifs-ilevia/' },
     { title: 'Le Bonbon Lille : que valent les nouveaux V’Lille ? (24 septembre 2025)', url: 'https://www.lebonbon.fr/lille/news/que-valent-nouveaux-v-lille/' },
     { title: 'Le Bonbon Lille : le V’Lille gratuit pour les abonnés Ilévia longue durée (29 juillet 2025)', url: 'https://www.lebonbon.fr/lille/news/1er-aout-abonnes-ilevia-pedaler-gratuitement-lille/' },

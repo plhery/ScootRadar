@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Reglur um rafskútur 2026: aldur, hjálmur, áfengi og sektir',
   description: 'Reglur um rafskútur á Íslandi 2026: 13 ára aldurstakmark, hjálmaskylda undir 16 ára, gangstétt og gata, 0,5‰ áfengismörk, sektir og tryggingar.',
   headline: 'Reglur um rafskútur og rafhlaupahjól á Íslandi: aldur, hjálmur, áfengi og sektir',
-  lede: 'Reglur um rafskútur á Íslandi standa í umferðarlögum, þar sem rafskútur og rafhlaupahjól heita smáfarartæki, og hafa gilt óbreyttar frá sumrinu 2024. Aldurstakmarkið er 13 ár og börn yngri en 16 ára verða að nota hjálm. Þú mátt keyra á gangstétt, þar sem gangandi vegfarendur eiga forgang, og á götu þar sem hámarkshraðinn er 30 km/klst. eða lægri, en ekki á hraðari götum. Áfengismörkin eru 0,5‰, ekki 0,2‰ eins og á bíl, og þú mátt ekki vera með farþega.',
+  lede: 'Reglur um rafskútur á Íslandi standa í umferðarlögum, þar sem rafskútur og rafhlaupahjól heita smáfarartæki, og hafa gilt óbreyttar frá sumrinu 2024. Aldurstakmarkið er 13 ár og börn yngri en 16 ára verða að nota hjálm. Þú mátt keyra á gangstétt, þar sem gangandi vegfarendur eiga forgang, og á götu þar sem hámarkshraðinn er 30 km/klst. eða lægri, en ekki á hraðari götum. Áfengismörkin eru 0,5‰, ekki 0,2‰ eins og á bíl, og á leigurafskútum Hopp og Bolt máttu ekki vera með farþega.',
   published: '2026-10-13',
   updated: '2026-10-13',
   sections: [
@@ -28,7 +28,7 @@ const guide: Guide = {
               ['Gata', 'Aðeins þar sem hámarkshraðinn er 30 km/klst. eða lægri', '6. mgr. 43. gr.'],
               ['Hraði rafskútunnar', 'Hönnuð fyrir 6–25 km/klst. Bannað er að breyta henni svo hún fari hraðar', '33. tölul. 3. gr., 69. gr.'],
               ['Áfengi', 'Bannað yfir 0,5‰ í blóði eða 0,25 mg/l í útöndunarlofti. Á bíl eru mörkin 0,2‰', '7. mgr. 49. gr.'],
-              ['Farþegar', 'Ekki leyfðir', 'Samgöngustofa'],
+              ['Farþegar', 'Bannaðir á leigurafskútum Hopp og Bolt', 'Skilmálar Hopp og Bolt'],
               ['Sími', 'Bannaður nema með handfrjálsum búnaði', '57. gr.'],
               ['Ljós', 'Kveikt í ljósaskiptum, myrkri og slæmu skyggni', '2. mgr. 34. gr.'],
               ['Trygging', 'Engin tryggingaskylda', 'Samgöngustofa'],
@@ -77,8 +77,8 @@ const guide: Guide = {
     {
       heading: 'Mega tveir vera á rafskútu? Farþegar, sími, ljós og stæði',
       blocks: [
-        'Nei. Samgöngustofa svarar spurningunni „Má vera með farþega?“ neitandi, og Hopp bannar það líka.',
-        'Þú mátt ekki nota farsíma, snjalltæki eða önnur raftæki á ferð nema með handfrjálsum búnaði (57. gr.). Samgöngustofa segir að stöðva eigi áður en síminn er notaður.',
+        'Ekki á leigurafskútu: skilmálar bæði Hopp og Bolt banna farþega (nóvember 2026). Umferðarlögin fela ráðherra að setja reglur um flutning farþega og farms á reiðhjólum og smáfarartækjum (5. mgr. 42. gr.).',
+        'Þú mátt ekki nota farsíma, snjalltæki eða önnur raftæki á ferð nema með handfrjálsum búnaði (57. gr.).',
         'Í ljósaskiptum, myrkri og slæmu skyggni eiga ljósin að vera kveikt (2. mgr. 34. gr.). Samgöngustofa mælir með sterku hvítu ljósi að framan, rauðu að aftan og endurskini bæði að framan og aftan. Á íslenskum vetri á þetta við stóran hluta dagsins.',
         'Engar sérstakar vetrarreglur gilda um rafskútur í lögunum, hvorki um nagladekk né akstur í hálku. Í skilmálum Hopp segir þó að þú eigir að laga hraða og hemlun að aðstæðum, til dæmis í hálku, rigningu og snjó, og skilmálar Bolt banna akstur í snjókomu, hagléli, hálku og slyddu.',
         'Rafskútu á að leggja þannig að hvorki stafi hætta né truflun af henni (6. mgr. 42. gr.). Samgöngustofa biður fólk að leggja rafskútum ekki á miðri gangstétt eða stíg, á skábrautum, við innganga húsa eða á gangbrautum. Bann umferðarlaga við því að leggja ökutækjum á gangstétt (3. mgr. 28. gr.) gildir aðeins um skráningarskyld ökutæki, og rafskútur falla ekki undir það.',
@@ -100,7 +100,7 @@ const guide: Guide = {
     {
       heading: 'Sektir fyrir brot á rafskútu',
       blocks: [
-        'Sektir fyrir umferðarlagabrot eru í reglugerð nr. 1240/2019, sem er eldri en smáfarartækjaflokkurinn. Þar sem reiðhjólareglurnar gilda líka um smáfarartæki eru sektir hjólreiðamanna besta vísbendingin. Samgöngustofa segir einfaldlega að sekt fyrir brot sé 20.000 kr.',
+        'Sektir fyrir umferðarlagabrot eru í reglugerð nr. 1240/2019, sem er eldri en smáfarartækjaflokkurinn. Þar sem reiðhjólareglurnar gilda líka um smáfarartæki eru sektir hjólreiðamanna besta vísbendingin. Samgöngustofa segir einfaldlega að sekt fyrir brot sé 20.000 kr. (nóvember 2026).',
         {
           table: {
             caption: 'Sektir í reglugerð nr. 1240/2019 sem helst eiga við um rafskútur, í október 2026',
@@ -173,6 +173,7 @@ const guide: Guide = {
     { title: 'Stjórnartíðindi: Lög nr. 92/2024 um breytingu á umferðarlögum, smáfarartæki o.fl. (4. júlí 2024)', url: 'https://island.is/stjornartidindi/nr/fa202b69-5d84-4dd3-a497-d2261c6bf261' },
     { title: 'Ísland.is: Reglugerð nr. 1240/2019 um sektir og önnur viðurlög vegna brota á umferðarlögum', url: 'https://island.is/reglugerdir/nr/1240-2019' },
     { title: 'Samgöngustofa: Rafmagnshlaupahjól', url: 'https://island.is/rafmagnshlaupahjol' },
+    { title: 'Samgöngustofa: Electric scooter wheels, um sektir (á ensku, lesið 4. nóvember 2026)', url: 'https://island.is/en/electric-scooter-wheels' },
     { title: 'Stjórnarráðið: Sérstakar reglur um smáfarartæki í umferðarlögum hafa tekið gildi (25. júní 2024)', url: 'https://www.stjornarradid.is/efst-a-baugi/frettir/stok-frett/2024/06/25/Serstakar-reglur-um-smafarartaeki-i-umferdarlogum-hafa-tekid-gildi/' },
     { title: 'Stjórnarráðið: Lokaskýrsla starfshóps um smáfarartæki (10. júní 2022)', url: 'https://www.stjornarradid.is/gogn/rit-og-skyrslur/stakt-rit/2022/06/10/Lokaskyrsla-starfshops-um-smafarartaeki/' },
     { title: 'Stjórnarráðið: Þingmálaskrá 158. löggjafarþings 2026–2027', url: 'https://www.stjornarradid.is/rikisstjorn/thingmalaskra/' },
