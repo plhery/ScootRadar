@@ -11,6 +11,7 @@ import com.plhery.scootradar.core.model.ScooterLanguage
 import com.plhery.scootradar.core.model.ScooterStartPlace
 import com.plhery.scootradar.core.model.ScooterZoneArea
 import java.io.IOException
+import java.net.InetAddress
 import java.net.MalformedURLException
 import java.net.SocketException
 import java.net.SocketTimeoutException
@@ -43,9 +44,11 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.doubleOrNull
 import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
+import mockwebserver3.SocketEffect
 import okhttp3.Cache
 import okhttp3.Cookie
 import okhttp3.CookieJar
+import okhttp3.Dns
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
@@ -334,6 +337,63 @@ class ScooterAPITest {
         } finally {
             h2.close()
         }
+    }
+
+    /**
+     * A connection lost on the way is asked again before the phone is taken to be offline (9afd4b2a), as OkHttp's
+     * retryOnConnectionFailure does, which the scooters' client keeps: a kept-alive connection found closed is asked
+     * again on a new one. OkHttp asks again by connection and route, not by the error, so a server that ends every
+     * connection is asked three times where the iPhone stops at two; and lost again while online the request has
+     * failed where the iPhone says offline, as Android can't tell a connection the network lost from one the server
+     * ended (LOG-009). With no network at all it is not asked again.
+     */
+    @Test
+    fun aConnectionLostOnTheWayIsAskedAgainOnceBeforeThePhoneIsTakenToBeOffline() = runBlocking<Unit> {
+        assertTrue(ScooterAPI().http.retryOnConnectionFailure)
+        // The server's own address only, whatever else the host calls localhost.
+        val dns = object : Dns {
+            override fun lookup(hostname: String): List<InetAddress> = listOf(server.socketAddress.address)
+        }
+        fun lost() = MockResponse.Builder().onResponseStart(SocketEffect.CloseSocket()).build()
+
+        // A kept-alive connection closed under a phone still online: the second request gets the answer.
+        server.enqueue(answer(200, "index"))
+        server.enqueue(lost())
+        server.enqueue(answer(200, "zones"))
+        val recovering = ScooterAPI(baseURL = server.url("/"), client = OkHttpClient.Builder().dns(dns).build())
+        recovering.cityZoneFile("index.json")
+        assertEquals("zones", recovering.cityZoneFile("zurich.json").decodeToString())
+        assertEquals("the connection kept, then a new one", listOf(0, 0, 1), List(3) { server.takeRequest().connectionIndex })
+
+        // Lost on every connection: failed while online, offline where the phone says so.
+        for ((offline, expected) in listOf(false to ScooterLoadFailure.Failed, true to ScooterLoadFailure.Offline)) {
+            server.enqueue(answer(200, "index"))
+            repeat(3) { server.enqueue(lost()) }
+            val api = ScooterAPI(baseURL = server.url("/"), client = OkHttpClient.Builder().dns(dns).build(), isOffline = { offline })
+            api.cityZoneFile("index.json")
+            val before = server.requestCount
+            val error = failure { api.cityZoneFile("zurich.json") }
+            assertEquals("offline: $offline", expected, error?.let { ScooterLoadFailure(it) })
+            assertEquals("offline: $offline", 3, server.requestCount - before)
+        }
+
+        // With no network at all it is not asked again.
+        val lookups = AtomicInteger()
+        val offline = ScooterAPI(
+            baseURL = server.url("/"),
+            client = OkHttpClient.Builder().dns(object : Dns {
+                override fun lookup(hostname: String): List<InetAddress> {
+                    lookups.incrementAndGet()
+                    throw UnknownHostException(hostname)
+                }
+            }).build(),
+            isOffline = { true },
+        )
+        val before = server.requestCount
+        val error = failure { offline.cityZoneFile("zurich.json") }
+        assertEquals(ScooterLoadFailure.Offline, error?.let { ScooterLoadFailure(it) })
+        assertEquals(1, lookups.get())
+        assertEquals(before, server.requestCount)
     }
 
     /**
