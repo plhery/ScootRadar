@@ -38,6 +38,8 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.text
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -234,11 +236,15 @@ private fun BatteryPreset(preset: Int, selected: Boolean, modifier: Modifier, on
                 onClick = { onChoose(preset) },
             )
             .semantics {
-                contentDescription = if (preset == 0) {
+                val label = if (preset == 0) {
                     localized("Any")
                 } else {
                     stringFormat(localized("%lld percent or more"), preset.toLong())
                 }
+                contentDescription = label
+                // Voice Access answers to "30%+" as shown, as Voice Control does (b55719d0); TalkBack reads the label.
+                val shown = batteryPresetLabel(preset)
+                if (shown != label) text = AnnotatedString(shown)
             },
         contentAlignment = Alignment.Center,
     ) {

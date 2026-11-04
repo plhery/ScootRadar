@@ -223,7 +223,7 @@ class SpokenTextTest {
 
         compose.runOnIdle { model.selectScooter("lime:a") }
         compose.waitForIdle()
-        compose.onNode(hasText("CHF", substring = true)).assertExists()
+        compose.onNode(hasText("to unlock, then", substring = true)).assertExists()
         assertEquals("a scooter's card", emptyList<String>(), styledTexts())
 
         compose.runOnIdle {

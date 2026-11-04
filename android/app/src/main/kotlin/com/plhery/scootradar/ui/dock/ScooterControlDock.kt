@@ -439,7 +439,13 @@ private fun DockLeadButton(lead: ScooterDockLead, tint: Color, onClick: () -> Un
         Modifier
             .fillMaxWidth()
             .heightIn(min = 44.dp)
-            .plainButton(label = label, hint = localized("show scooter details"), onClick = onClick),
+            .plainButton(
+                label = label,
+                hint = localized("show scooter details"),
+                // Voice Access answers to what it shows: "62 m to the nearest scooter".
+                shows = "${lead.distance} ${localized("to the nearest scooter")}",
+                onClick = onClick,
+            ),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

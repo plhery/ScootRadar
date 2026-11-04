@@ -251,7 +251,7 @@ private fun CollapsedBar(
             Modifier
                 .weight(1f)
                 .testTag(SEARCH_BAR_TAG)
-                .plainButton(label = state.accessibilityLabel, hint = state.accessibilityHint, onClick = onOpen)
+                .plainButton(label = state.accessibilityLabel, hint = state.accessibilityHint, shows = state.title, onClick = onOpen)
                 .padding(vertical = COLLAPSED_PADDING)
                 .heightIn(min = if (isAccessibility) 60.dp else 50.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp),

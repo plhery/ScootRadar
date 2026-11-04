@@ -94,7 +94,8 @@ class FiltersAccessibilityTest {
 
     /**
      * UI-289: the presets are a group of choices under the "Battery" heading, each read by its label alone, "Any"
-     * or "30 percent or more", and the chosen one selected.
+     * or "30 percent or more", and the chosen one selected. What each shows, "30%+", is its text, which Voice Access
+     * answers to as Voice Control answers to the iPhone's (b55719d0), and TalkBack leaves for the label.
      */
     @Test
     fun theBatteryPresetsAreAGroupOfChoicesReadByTheirLabels() {
@@ -105,8 +106,11 @@ class FiltersAccessibilityTest {
             presets.map { it.config[SemanticsProperties.ContentDescription].single() },
         )
         assertEquals(listOf(false, true, false, false), presets.map { it.config[SemanticsProperties.Selected] })
-        // "30%+" drawn is not read beside the label.
-        assertTrue(presets.none { SemanticsProperties.Text in it.config })
+        // "30%+" drawn, once, on the preset: none for "Any", which shows its label.
+        assertEquals(
+            listOf(null, "30%+", "60%+", "80%+"),
+            presets.map { preset -> preset.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text } },
+        )
         // Their group, with no stop of its own.
         val groups = presets.map { preset ->
             generateSequence(preset.parent) { it.parent }.first { SemanticsProperties.SelectableGroup in it.config }

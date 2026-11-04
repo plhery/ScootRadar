@@ -47,6 +47,8 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.text
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -419,6 +421,8 @@ private fun PriceCell(controller: ScooterMapController, figure: ScooterCardFigur
                 .clearAndSetSemantics {
                     contentDescription = label
                     stateDescription = value
+                    // Voice Access answers to what the cell shows, "4.50 CHF, 10 min", as Voice Control does (b55719d0).
+                    text = AnnotatedString("${figure.value} ${figure.label}")
                     role = Role.DropdownList
                     onClick(label = hint) { isOpen = true; true }
                 },

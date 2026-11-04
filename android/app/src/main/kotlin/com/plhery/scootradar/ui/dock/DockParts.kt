@@ -59,6 +59,8 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.text
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
@@ -94,6 +96,8 @@ import kotlin.math.roundToInt
  * under a mouse's pointer, ringed while a keyboard has its focus (UI-251). Its semantics are a button's, which TalkBack names from the label unless [label] says
  * otherwise; [hint] is what a double tap does, which TalkBack says in a sentence of its own where iOS reads its
  * accessibility hint (UI-327), and [state] what it reads after the name where iOS reads an accessibility value.
+ * [shows] is the text it shows where [label] says it otherwise: its text for Voice Access to answer to, as Voice
+ * Control answers to the iPhone's input labels (b55719d0), which TalkBack, reading the label, leaves unread.
  * [focusRing] is the ring's shape, and white on the tint. A button that answers the finger otherwise doesn't [dim],
  * and gives the [interaction] it watches.
  */
@@ -102,6 +106,7 @@ internal fun Modifier.plainButton(
     label: String? = null,
     hint: String? = null,
     state: String? = null,
+    shows: String? = null,
     focusRing: FocusRing = FocusRing(),
     interaction: MutableInteractionSource? = null,
     dim: Boolean = true,
@@ -122,6 +127,7 @@ internal fun Modifier.plainButton(
                 Modifier.clearAndSetSemantics {
                     contentDescription = label
                     if (state != null) stateDescription = state
+                    if (shows != null && shows != label) text = AnnotatedString(shows)
                     role = Role.Button
                     if (enabled) onClick(label = hint) { onClick(); true }
                 }

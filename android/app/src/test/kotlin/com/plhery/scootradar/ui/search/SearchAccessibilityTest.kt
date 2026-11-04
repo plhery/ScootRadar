@@ -112,21 +112,24 @@ class SearchAccessibilityTest {
     /**
      * UI-252: the bar is one button, labelled by what it shows; its icon, tile or spinner is not read. With a place,
      * what a double tap does is its hint, "Double-tap to search for another place", not part of its label; a place no
-     * operator serves is read alone, as VoiceOver reads them since 4 November (ee9874f6).
+     * operator serves is read alone, as VoiceOver reads them since 4 November (ee9874f6). Where the label is a
+     * sentence, the place's name it shows is its text too, which Voice Access answers to as Voice Control answers to
+     * the iPhone's (b55719d0).
      */
     @Test
     fun theBarIsOneButtonLabelledByWhatItShows() {
         show()
-        compose.onNodeWithContentDescription("Search city or address").assert(button and hasHint(null))
+        compose.onNodeWithContentDescription("Search city or address").assert(button and hasHint(null) and shows(null))
 
         compose.runOnIdle { state = ScooterSearchBarState.Locating }
-        compose.onNodeWithContentDescription("Finding your location…").assert(button and hasHint(null))
+        compose.onNodeWithContentDescription("Finding your location…").assert(button and hasHint(null) and shows(null))
 
         compose.runOnIdle { state = place("Bahnhofplatz", isCovered = true) }
-        compose.onNodeWithContentDescription("Showing scooters near Bahnhofplatz").assert(button and hasHint("search for another place"))
+        compose.onNodeWithContentDescription("Showing scooters near Bahnhofplatz")
+            .assert(button and hasHint("search for another place") and shows("Bahnhofplatz"))
 
         compose.runOnIdle { state = place("Lyngen", isCovered = false) }
-        compose.onNodeWithContentDescription("Lyngen").assert(button and hasHint("search for another place"))
+        compose.onNodeWithContentDescription("Lyngen").assert(button and hasHint("search for another place") and shows(null))
 
         // A title in right-to-left letters is isolated, so the sentence around it keeps its order.
         compose.runOnIdle { state = place("\u05EA\u05DC \u05D0\u05D1\u05D9\u05D1", isCovered = true) }
@@ -156,6 +159,11 @@ class SearchAccessibilityTest {
 
     /** What TalkBack says a double tap does, after its own words for it; none, [label] null. */
     private fun hasHint(label: String?) = SemanticsMatcher("hint $label") { it.config.getOrNull(SemanticsActions.OnClick)?.label == label }
+
+    /** The text a button shows besides its label, for Voice Access; none, [text] null. */
+    private fun shows(text: String?) = SemanticsMatcher("shows $text") {
+        it.config.getOrNull(SemanticsProperties.Text)?.joinToString { line -> line.text } == text
+    }
 
     /** What TalkBack reads after the name, where VoiceOver reads a value. */
     private fun hasState(value: String?) = SemanticsMatcher("state $value") { it.config.getOrNull(SemanticsProperties.StateDescription) == value }
