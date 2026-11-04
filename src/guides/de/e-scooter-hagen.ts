@@ -7,8 +7,8 @@ const guide: Guide = {
   name: 'E-Scooter Hagen: Lime, Regeln, Parken',
   title: 'E-Scooter Hagen 2026: Lime, Regeln, Parken',
   description: 'E-Scooter Hagen: Lime mieten, wo du fahren und abstellen darfst, was an den Seen und Hochschulen gilt und warum die HST-Busse keine E-Scooter mitnehmen.',
-  headline: 'E-Scooter Hagen: Lime, Regeln, Seen, Hochschulen und was bei der HST gilt',
-  lede: 'Einen E-Scooter in Hagen leihst du ohne Führerschein bei Lime. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Innenstadt. Abstellen darfst du den Scooter wie ein Fahrrad, ohne jemanden zu behindern, und nur dort, wo die Lime-App das Fahrtende erlaubt. In den Bussen der Hagener Strassenbahn (HST) sind E-Scooter seit dem 15. April 2024 verboten.',
+  headline: 'E-Scooter Hagen: Lime, Regeln, Seen, Hochschulen und was bei HST, VRR und DB gilt',
+  lede: 'Einen E-Scooter in Hagen leihst du ohne Führerschein bei Lime. Was die Fahrt kostet und ab welchem Alter du mieten darfst, zeigt dir die App vor dem Entsperren. Du fährst auf Radweg oder Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone der Innenstadt um die Elberfelder Strasse. Abstellen darfst du den Scooter wie ein Fahrrad, ohne jemanden zu behindern, und nur dort, wo die Lime-App das Fahrtende erlaubt. In den Bussen der Hagener Strassenbahn (HST) sind E-Scooter seit dem 15. April 2024 verboten.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'de:Hagen',
@@ -34,7 +34,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, auch mit ausgeschaltetem Motor, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. Diese Regeln setzt der Bund in der Elektrokleinstfahrzeuge-Verordnung (eKFV).',
         {
           list: [
-            '**Innenstadt:** In der Fussgängerzone steigst du ab und schiebst, solange kein Zusatzschild das Fahren erlaubt; wie weit sie reicht, zeigen die Schilder vor Ort. Ab 1. März 2027 öffnet auch «Radverkehr frei» eine Fussgängerzone für E-Scooter, im Schritttempo.',
+            '**Innenstadt:** Die Elberfelder Strasse liegt in der Fussgängerzone der Innenstadt; so beschreibt es die Polizei Hagen in Meldungen vom Juni 2025 und vom Februar 2026. Wie weit die Zone reicht, zeigen die Schilder vor Ort. Dort steigst du ab und schiebst, solange kein Zusatzschild das Fahren erlaubt. Ab 1. März 2027 öffnet auch «Radverkehr frei» eine Fussgängerzone für E-Scooter, im Schritttempo.',
             '**Hengsteysee und Harkortsee:** Für die Ufer gilt eine Verordnung, die die Bezirksregierung Arnsberg als Landesbehörde am 21. Februar 2020 im Einvernehmen mit dem Ruhrverband, dem Eigentümer der Seen, erlassen hat: «Das Befahren der Uferrandstreifen mit Kraftfahrzeugen und das Parken von Kraftfahrzeugen auf Uferrandstreifen sind verboten.» Der Uferrandstreifen ist 5 m breit. E-Scooter nennt die Verordnung nicht. Rechtlich ist ein E-Scooter aber ein Kraftfahrzeug (§ 1 eKFV), und nach unserer Lesart gilt das Verbot auch für ihn.',
             '**Radweg am Hengsteysee gesperrt:** Unterhalb der Wehranlage sichert der Ruhrverband auf der Hagener Seite rund 140 m Uferböschung. Den angrenzenden Radweg sperrt er dafür «ab dem 26. Oktober» voll; eine Umleitung wird eingerichtet. Die Arbeiten sollen voraussichtlich bis Ende März 2027 dauern (Mitteilung vom 19. Oktober 2026).',
             '**FernUniversität:** Ihre Hausordnung vom 11. Mai 2022 gilt für alle Gebäude und Flächen der Universität: «Die Benutzung jeglicher Fortbewegungsmittel wie z.B. Fahrräder, E-Scooter, Hoover-Boards, Inline-Skates u. ä. ist innerhalb der Gebäude der FernUniversität in Hagen nicht gestattet.»',
@@ -61,7 +61,7 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'E-Scooter-Regeln in Hagen: Bussgelder und Alkohol',
+      heading: 'E-Scooter-Regeln in Hagen: Bussgelder, Alkohol, Kontrollen',
       blocks: [
         'In Hagen gelten die deutschen Regeln: ab 14 ohne Führerschein, keine Helmpflicht, bauartbedingt höchstens 20 km/h. Ein eigener Scooter braucht eine Versicherungsplakette.',
         {
@@ -79,15 +79,17 @@ const guide: Guide = {
           },
         },
         'Auf dem Scooter gelten die Promillegrenzen fürs Auto: Wer unsicher fährt, macht sich schon ab 0,3 Promille strafbar, ab 1,1 Promille in jedem Fall, und der Führerschein ist dann in der Regel weg. Unter 21 oder in der Probezeit gilt 0,0 Promille.',
+        'Die Polizei Hagen kontrolliert auch E-Scooter. Am 20. Mai 2026 hielt ihr Verkehrsdienst zwei Fahrer an, deren Versicherungskennzeichen abgelaufen waren, und untersagte ihnen die Weiterfahrt; die Kennzeichen verlieren laut Polizei «jedes Jahr zum 28. Februar ihre Gültigkeit». Am 4. Oktober 2026 stellten Beamte einen Mann, der unter Alkohol und Drogen «entlang des Märkischen Rings in Richtung Hauptbahnhof verbotswidrig auf dem Gehweg» gefahren war.',
+        'Zu zweit und auf dem Gehweg waren laut Polizei auch die beiden Jugendlichen unterwegs, die am 19. Juli 2026 mit einem Lime-Scooter auf der Friedensstrasse in Altenhagen ein siebenjähriges Kind anfuhren. Das Kind wurde leicht verletzt, die beiden fuhren weiter.',
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
       ],
     },
     {
-      heading: 'E-Scooter in Bus und Bahn: Was bei der HST gilt',
+      heading: 'E-Scooter in Bus und Bahn: Was bei HST, VRR und DB gilt',
       blocks: [
         'In den Bussen der Hagener Strassenbahn (HST) dürfen seit Montag, 15. April 2024, «bis auf Weiteres keine E-Tretroller (sogenannte E-Scooter) mehr mitgenommen werden». Die HST folgt damit einer Empfehlung des Verbands Deutscher Verkehrsunternehmen (VDV) und begründet das mit der Brandgefahr der Akkus. Wieder erlaubt werden sollen sie, «sobald die Hersteller das bestehende Risiko beseitigt haben». Eine Ausnahme für zusammengeklappte Scooter nennt die HST nicht. Pedelecs, Elektro-Rollstühle und vierrädrige Elektromobile für mobilitätseingeschränkte Menschen sind nicht betroffen.',
         'Trotz ihres Namens betreibt die HST heute nur Busse: Die letzte Strassenbahn fuhr laut HST am 29. Mai 1976, und 38 Buslinien verbinden die Hagener Stadtteile. Den Leih-Scooter stellst du also vor dem Einsteigen ab.',
-        'Ob ein eigener E-Scooter in S-Bahn, Regional- oder Fernzug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
+        'Im VRR-Tarif zählt ein «vollständig im kleinstmöglichen Packmass» zusammengeklappter E-Scooter als Handgepäck, doch jedes Verkehrsunternehmen darf ihn per Hausrecht ausschliessen, auch zusammengeklappt (Tarifhandbuch, Stand 1. Juli 2026). In den Fernzügen der Deutschen Bahn fährt dein eigener E-Scooter zusammengeklappt kostenlos als Handgepäck mit. Fahren darfst du damit im Zug nicht, und die Akkus dürfen laut den Beförderungsbedingungen (Stand 26. Oktober 2026) unterwegs «weder entnommen, geladen noch anderweitig (z.B. als Powerbank) genutzt werden». Leih-Scooter lassen sich nicht zusammenklappen.',
         '**Mobilitätsgarantie NRW:** Fährt dein Bus oder Zug mindestens 20 Minuten später ab als geplant, darfst du auf ein Sharing-Angebot umsteigen, auch auf einen E-Scooter. Erstattet werden bis zu 30 € bei geplanter Abfahrt zwischen 5 und 19:59 Uhr, sonst bis zu 60 €, gegen dein Ticket und den Beleg des Anbieters. Den Antrag stellst du binnen 14 Tagen beim Verkehrsunternehmen der Linie, auch online über mobil.nrw.',
       ],
     },
@@ -115,8 +117,8 @@ const guide: Guide = {
       answer: 'Den Preis zeigt dir die Lime-App vor dem Entsperren. Fährt dein Bus mindestens 20 Minuten später ab als geplant, erstattet dir die Mobilitätsgarantie NRW eine Scooter-Fahrt bis 30 €, abends und nachts bis 60 €.',
     },
     {
-      question: 'Darf ich in Hagen mit dem E-Scooter durch die Fussgängerzone fahren?',
-      answer: 'Nein. Dort verbietet die eKFV des Bundes das Fahren, solange kein Zusatzschild es erlaubt: Du steigst ab und schiebst. Fahren kostet heute 15 €, ab 1. März 2027 25 €.',
+      question: 'Darf ich mit dem E-Scooter durch die Elberfelder Strasse fahren?',
+      answer: 'Nein. Sie liegt laut Polizei Hagen in der Fussgängerzone der Innenstadt, und dort verbietet die eKFV des Bundes das Fahren, solange kein Zusatzschild es erlaubt: Du steigst ab und schiebst. Fahren kostet heute 15 €, ab 1. März 2027 25 €.',
     },
     {
       question: 'Wo darf ich einen Leih-Scooter in Hagen abstellen?',
@@ -124,10 +126,15 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter im Bus der HST mitnehmen?',
-      answer: 'Nein, seit dem 15. April 2024 nicht; eine Ausnahme für zusammengeklappte nennt die HST nicht. Ob ein eigener Scooter in S-Bahn oder Zug mitfahren darf, fragst du vor der Fahrt beim Verkehrsunternehmen der Linie nach.',
+      answer: 'Nein, seit dem 15. April 2024 nicht; eine Ausnahme für zusammengeklappte nennt die HST nicht. In den Fernzügen der Deutschen Bahn fährt ein eigener, zusammengeklappter E-Scooter als Handgepäck mit.',
     },
   ],
   sources: [
+    { title: 'Polizei Hagen: Jugendliche fahren Kind mit E-Scooter an und flüchten (20. Juli 2026)', url: 'https://www.presseportal.de/blaulicht/pm/30835/6317585' },
+    { title: 'Polizei Hagen: Stark alkoholisierter Hagener belästigt Passanten in der Innenstadt, Elberfelder Strasse (23. Juni 2025)', url: 'https://www.presseportal.de/blaulicht/pm/30835/6060424' },
+    { title: 'Polizei Hagen: Mann bedroht einen Passanten in der Fussgängerzone, Elberfelder Strasse (20. Februar 2026)', url: 'https://www.presseportal.de/blaulicht/pm/30835/6220431' },
+    { title: 'Polizei Hagen: Abgelaufene Versicherungskennzeichen an E-Scootern (21. Mai 2026)', url: 'https://www.presseportal.de/blaulicht/pm/30835/6279400' },
+    { title: 'Polizei Hagen: Auf Flucht vor Kontrolle, Polizisten stellen E-Scooter-Fahrer (5. Oktober 2026)', url: 'https://www.presseportal.de/blaulicht/pm/30835/6364735' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 1: Elektrokleinstfahrzeuge sind Kraftfahrzeuge', url: 'https://www.gesetze-im-internet.de/ekfv/__1.html' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 10: Zulässige Verkehrsflächen', url: 'https://www.gesetze-im-internet.de/ekfv/__10.html' },
     { title: 'Bezirksregierung Arnsberg: Verordnung über den Gemeingebrauch an Hengstey- und Harkortsee (Amtsblatt 7/2020, PDF)', url: 'https://www.bra.nrw.de/system/files/media/document/file/abl_07_20.pdf' },
@@ -139,6 +146,9 @@ const guide: Guide = {
     { title: 'Hagener Strassenbahn: HST schliesst E-Tretroller von der Mitnahme aus', url: 'https://www.hst-hagen.de/unsere-leistungen/hst-schliesst-e-tretroller-von-der-mitnahme-aus' },
     { title: 'Hagener Strassenbahn: Kurzportrait', url: 'https://www.hst-hagen.de/hagener-strassenbahn/unternehmen/kurzportrait' },
     { title: 'Hagener Strassenbahn: Geschichte der Hagener Strassenbahn AG (PDF)', url: 'https://www.hst-hagen.de/fileadmin/user_upload/HST_Bilder/125_Jahre_HST/125HST.pdf' },
+    { title: 'VRR: Handbuch Tarif und Vertrieb (Stand 1. Juli 2026, PDF)', url: 'https://www.vrr.de/fileadmin/user_upload/pdf/service/downloads/Tarifhandbuch/VRR_Handbuch_2026.pdf' },
+    { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },
+    { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'mobil.nrw: Mobilitätsgarantie NRW', url: 'https://www.mobil.nrw/fahren/mobigarantie.html' },
   ],
 };
