@@ -63,17 +63,17 @@ const guide: Guide = {
       heading: 'Hvor kan du kjøre? Kjøreforbud i Gamlebyen og på Isegran',
       blocks: [
         'Kjør i sykkelfeltet eller på sykkelveien der det finnes, ellers i veibanen. På fortauet er det lov når det er lite folk og du ikke er til fare eller hinder, men forbi gående holder du gangfart, aldri over 6 km/t. Du får ikke kjøre på motorvei, motortrafikkvei eller veier som er skiltet forbudt for syklende.',
-        'For leide elsparkesykler har Fredrikstad kommune **kjøreforbud** i Gamlebyen og på Isegran, på kirkegårder, fotballbaner, idrettsanlegg og golfbaner. I bykjernen oppgir kommunen en fartsgrense på **6 km/t**. I operatørenes soner er det bare Gangbrua hos Ryde som har 6 km/t (oktober 2026), så i resten av sentrum må du selv holde farten nede.',
+        'For leide elsparkesykler har Fredrikstad kommune **kjøreforbud** i Gamlebyen og på Isegran, på kirkegårder, fotballbaner, idrettsanlegg og golfbaner. I bykjernen oppgir kommunen en fartsgrense på **6 km/t**. I operatørenes soner er det bare Gangbrua hos Ryde som har 6 km/t (november 2026), så i resten av sentrum må du selv holde farten nede.',
         'I tillegg har operatørene egne soner, og de er ikke helt like:',
         {
           table: {
-            caption: 'Operatørenes soner 17. oktober 2026 (det er appen som gjelder)',
+            caption: 'Operatørenes soner i november 2026 (det er appen som gjelder)',
             head: ['Sted', 'Voi', 'Ryde'],
             rows: [
               ['Gamlebyen', 'Kjøreforbud', 'Kjøreforbud'],
               ['Isegran', 'Kjøreforbud', 'Du kan kjøre gjennom, men ikke starte eller avslutte turen'],
               ['Stortorvet og gatene rundt', 'Parkering bare ved Voi-stasjon', 'Parkering bare på Rydes oppmerkede plasser'],
-              ['Bryggepromenaden', '16 km/t, parkering bare ved Voi-stasjon', '16 km/t'],
+              ['Bryggepromenaden', '16 km/t', '16 km/t'],
               ['Gangbrua', '12 km/t', '6 km/t'],
               ['Fredrikstad stasjon og Jernbaneparken', 'Voi-stasjoner like ved', 'Parkeringsforbud'],
               ['Cicignon fergeleie', 'Voi-stasjon ved fergeleiet', 'Parkeringsforbud i Cicignonparken'],
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel i Gamlebyen?',
-      answer: 'Ikke på en leid elsparkesykkel. Fredrikstad kommune har kjøreforbud for leide elsparkesykler i Gamlebyen og på Isegran, og i appene har både Voi og Ryde kjøreforbud i Gamlebyen. På Isegran lar Ryde deg kjøre gjennom, men ikke starte eller avslutte turen (oktober 2026). Ta ferga fra Cicignon, eller gå det siste stykket.',
+      answer: 'Ikke på en leid elsparkesykkel. Fredrikstad kommune har kjøreforbud for leide elsparkesykler i Gamlebyen og på Isegran, og i appene har både Voi og Ryde kjøreforbud i Gamlebyen. På Isegran lar Ryde deg kjøre gjennom, men ikke starte eller avslutte turen (november 2026). Ta ferga fra Cicignon, eller gå det siste stykket.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel fra Fredrikstad til Sarpsborg?',
@@ -181,7 +181,8 @@ const guide: Guide = {
     { title: 'Fredrikstad bystyre: sak 200/25 om gebyr for feilparkerte elsparkesykler (13. november 2025)', url: 'https://api.einnsyn.no/dokumentobjekt/do_01kb3sbc3bf6ptkaw4sn2kxv45/download' },
     { title: 'Fredrikstad kommune: 17. mai i Fredrikstad', url: 'https://www.fredrikstad.kommune.no/tjenester/kunst-og-kultur/arrangement/17-mai-i-fredrikstad/' },
     { title: 'Entur: Vois åpne data for Fredrikstad og Sarpsborg (GBFS: priser, åpningstider og soner, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voifredrikstad/gbfs' },
-    { title: 'Entur: Rydes åpne data for Fredrikstad (GBFS: priser, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydefredrikstad/gbfs' },
+    { title: 'Entur: Rydes åpne data for Fredrikstad (GBFS: priser og soner, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydefredrikstad/gbfs' },
+    { title: 'Entur: Rydes åpne data for Sarpsborg (GBFS: soner, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydesarpsborg/gbfs' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Fredriksstad Blad: Sesongstart for elsparkesyklene (27. februar 2025)', url: 'https://www.f-b.no/sesongstart-for-elsparkesyklene/s/5-59-3531810' },
     { title: 'Fredriksstad Blad: Over 720 000 elsparkesykkelturer i fjor (9. januar 2026)', url: 'https://www.f-b.no/over-720-000-elsparkesykkel-turer-i-fjor-ny-rekord/s/5-59-3795627' },
