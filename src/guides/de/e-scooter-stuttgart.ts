@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Stuttgart 2026: Anbieter, Preise, Parken, Wasen',
   description: 'E-Scooter Stuttgart: die vier Anbieter, was zehn Minuten kosten, wo du in der City parkst, was auf dem Wasen gilt und welcher Scooter in Bus und Bahn darf.',
   headline: 'E-Scooter Stuttgart: Anbieter, Preise, Parkzonen und was auf dem Wasen gilt',
-  lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) zwischen 2,89 € bei Voi und 3,29 € bei Dott. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
+  lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt. Zehn Minuten kosten zwischen 2,89 € bei Voi und 3,39 € bei Dott (Stand November 2026). In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
   published: '2026-10-13',
   updated: '2026-10-23',
   city: 'de:Stuttgart',
@@ -25,16 +25,15 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Stuttgart?',
       blocks: [
-        'Voi nennt seinen Stuttgarter Tarif auf seiner Website, Dott, Bolt und Lime nur in ihren offenen Datenfeeds.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Stuttgart (veröffentlichte Tarife, Stand 13. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Stuttgart (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
               ['Bolt', '0,99 €', '0,22 €', '3,19 €', '5,39 €'],
-              ['Lime (nur laut Datenfeed)', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
-              ['Dott', '0,99 €', '0,23 €', '3,29 €', '5,59 €'],
+              ['Lime', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
+              ['Dott', '0,99 €', '0,24 €', '3,39 €', '5,79 €'],
             ],
           },
         },
@@ -46,18 +45,18 @@ const guide: Guide = {
       heading: 'Wo darf man in Stuttgart mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. «Gehwege und Fussgängerzonen sind tabu», schreibt die Stadt.',
-        '**Königstrasse:** Die grosse Einkaufsstrasse ist Fussgängerzone, ebenso Nebenstrassen wie Schulstrasse und Calwer Strasse. Laut den Anbieterdaten sperrt keine App sie oder bremst dich dort. Absteigen und schieben musst du trotzdem, sonst kostet es 15 bis 30 €.',
+        '**Königstrasse:** Die grosse Einkaufsstrasse ist Fussgängerzone, ebenso Nebenstrassen wie Schulstrasse und Calwer Strasse. Keine App sperrt sie oder bremst dich dort. Absteigen und schieben musst du trotzdem, sonst kostet es 15 bis 30 €.',
         '**Parks:** Im Schlossgarten, im Rosensteinpark und in anderen Grünanlagen darfst du keinen Scooter abstellen. Fahren darfst du dort laut Polizeiverordnung der Stadt nur auf freigegebenen und gekennzeichneten Wegen.',
-        '**Kessel:** «Den Kessel und die Halbhöhe verbinden unzählige Treppen», schreibt die Stadt, und über die Stäffele kommst du mit keinem Scooter. Nach Degerloch oder in die Halbhöhe fährst du deshalb auf Umwegen über die Strasse. Schau vorher auf den Akku, nimm dir bergauf Zeit und brems bergab früh. Dott begrenzt seine Scooter laut Datenfeed auf 19 km/h.',
+        '**Kessel:** «Den Kessel und die Halbhöhe verbinden unzählige Treppen», schreibt die Stadt, und über die Stäffele kommst du mit keinem Scooter. Nach Degerloch oder in die Halbhöhe fährst du deshalb auf Umwegen über die Strasse. Schau vorher auf den Akku, nimm dir bergauf Zeit und brems bergab früh. Dott begrenzt seine Scooter in Stuttgart auf 19 km/h.',
       ],
     },
     {
       heading: 'E-Scooter in Stuttgart abstellen: City, Hauptbahnhof, Parks',
       blocks: [
-        'In stark besuchten Bereichen stellst du den Scooter laut Stadt nur auf gekennzeichneten Flächen ab. In der City liegen sie laut den Daten der Anbieter etwa in der Kronprinz-, Gymnasium- oder Marktstrasse. In Limes Datenfeed sind fast die ganze Königstrasse und der Schillerplatz Parkverbotszone, der Marktplatz nicht.',
+        'In stark besuchten Bereichen stellst du den Scooter laut Stadt nur auf gekennzeichneten Flächen ab. In der City liegen sie etwa in der Kronprinz-, Gymnasium- oder Marktstrasse. Bei Lime sind fast die ganze Königstrasse und der Schillerplatz Parkverbotszone, der Marktplatz nicht.',
         {
           table: {
-            caption: 'Fahrt beenden an bekannten Orten (unsere Auswertung der Daten der vier Anbieter, Stand 13. Oktober 2026)',
+            caption: 'Fahrt beenden an bekannten Orten (Zonen der vier Anbieter, Stand 13. Oktober 2026)',
             head: ['Ort', 'Fahrt beenden'],
             rows: [
               ['Königstrasse, Schillerplatz, Marktplatz, Theodor-Heuss-Strasse', 'Nur an markierten Flächen'],
@@ -73,7 +72,7 @@ const guide: Guide = {
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder neben statt auf einer markierten Fläche. Fahr zur nächsten Fläche, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
-        'Behindert ein abgestellter Scooter andere, kann die Stadt ihn entfernen, und dem Verursacher droht eine Strafgebühr oder ein Bussgeld. Dazu kommen die Gebühren der Anbieter laut ihren deutschen Bedingungen: Dott bis 300 € fürs Einsammeln, Voi 25 €, Bolt 15 € ohne klares Abstellfoto; Lime gibt Bussgelder und Abschleppkosten weiter.',
+        'Behindert ein abgestellter Scooter andere, kann die Stadt ihn entfernen, und dem Verursacher droht eine Strafgebühr oder ein Bussgeld. Dazu kommen die Gebühren der Anbieter laut ihren deutschen Bedingungen: Dott bis 300 € fürs Einsammeln, Bolt 15 € ohne klares Abstellfoto (Bedingungen gültig ab 1. Dezember 2026).',
         'Steht dir ein Scooter im Weg, darfst du ihn laut Stadt ein paar Meter umstellen oder an der Hotline melden, die auf dem Scooter steht.',
       ],
     },
@@ -127,7 +126,7 @@ const guide: Guide = {
             '**Leih-Scooter** lassen sich nicht klappen und dürfen laut Stadt nie mit: Fahrt vor der Haltestelle beenden, am Ziel einen neuen mieten.',
           ],
         },
-        'Die **Zacke** vom Marienplatz nach Degerloch schiebt bergauf einen Wagen für Fahrräder; «andere Fahrzeuge scheiden aus», schreibt die SSB. Ein E-Scooter kommt also nicht auf den Radwagen. Oben in Degerloch beendest du laut den Daten der Anbieter eine Fahrt bei Bolt, Lime und Voi, nicht aber bei Dott.',
+        'Die **Zacke** vom Marienplatz nach Degerloch schiebt bergauf einen Wagen für Fahrräder; «andere Fahrzeuge scheiden aus», schreibt die SSB. Ein E-Scooter kommt also nicht auf den Radwagen. Oben in Degerloch beendest du eine Fahrt bei Bolt, Lime und Voi, nicht aber bei Dott.',
         '**Flughafen und Messe** liegen ausserhalb der Gebiete aller vier Anbieter: Dort endet keine Fahrt, und ein Voi bremst an der Gebietsgrenze ab. Nimm die S-Bahn oder die Stadtbahn.',
         '**RegioRadStuttgart**, das Leihrad von DB Connect, ist für kurze Wege günstiger (Fahrrad, Stand 13. Oktober 2026):',
         {
@@ -144,7 +143,7 @@ const guide: Guide = {
       heading: 'Obergrenze und Erlaubnis: Wer verleiht ab 2027 in Stuttgart E-Scooter?',
       blocks: [
         'Seit einem Beschluss des Gemeinderats vom 22. Juni 2023 brauchen die Anbieter eine Sondernutzungserlaubnis der Stadt. Erlaubt sind höchstens 6000 Leih-Scooter, 1500 je Anbieter, davon je Anbieter höchstens 100 in der Kernstadt. Pro Scooter und angefangenem Monat zahlen sie laut dem seit Januar 2026 geltenden Gebührenverzeichnis 7,50 € in der Kernstadt, 6 € in den übrigen Innenstadtbezirken und 4,50 € im Rest der Stadt, damit die Scooter auch in die Stadtteile kommen.',
-        'Die aktuellen Erlaubnisse vergab die Stadt im Dezember 2024 nach einem Auswahlverfahren; sie gelten vom 1. Januar 2025 bis zum 31. Dezember 2026. Danach vergibt die Stadt sie laut einer Antwort an den Landtag vom September 2025 in einem neuen Auswahlverfahren, bei dem sich bisherige und neue Anbieter aus ganz Deutschland bewerben können. Eine Ausschreibung oder Gewinner hatte die Stadt bis zum 14. Oktober 2026 nicht veröffentlicht: Wer ab 2027 in Stuttgart E-Scooter verleiht, ist noch offen.',
+        'Die aktuellen Erlaubnisse vergab die Stadt im Dezember 2024 nach einem Auswahlverfahren; sie gelten vom 1. Januar 2025 bis zum 31. Dezember 2026. Danach vergibt die Stadt sie laut einer Antwort an den Landtag vom September 2025 in einem neuen Auswahlverfahren, bei dem sich bisherige und neue Anbieter aus ganz Deutschland bewerben können.',
         'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr, sodass die Städte es als Sondernutzung erlauben können; Stuttgart behandelt es schon heute so.',
       ],
     },
@@ -168,11 +167,11 @@ const guide: Guide = {
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Stuttgart am günstigsten?',
-      answer: 'Für Fahrten bis etwa 25 Minuten Voi: 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand 13. Oktober 2026). Bei längeren Fahrten sind Bolt und Lime mit 0,22 € pro Minute günstiger. Noch billiger fährst du mit dem Leihrad RegioRad.',
+      answer: 'Für Fahrten bis etwa 25 Minuten Voi: 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand November 2026). Bei längeren Fahrten sind Bolt und Lime mit 0,22 € pro Minute günstiger. Noch billiger fährst du mit dem Leihrad RegioRad.',
     },
     {
       question: 'Was kostet Lime in Stuttgart?',
-      answer: 'Auf seiner Stuttgart-Seite nennt Lime keinen Preis. Sein offener Datenfeed nennt am 13. Oktober 2026 für fast alle Scooter 1,00 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten kämen also auf 3,20 €. Verbindlich ist der Preis in der Lime-App.',
+      answer: 'Fast alle Lime-Scooter in Stuttgart kosten 1,00 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 3,20 € (Stand November 2026). Verbindlich ist der Preis in der Lime-App.',
     },
     {
       question: 'Darf ich einen E-Scooter in der S-Bahn in Stuttgart mitnehmen?',
@@ -195,7 +194,12 @@ const guide: Guide = {
     { title: 'VVS: Fahrradmitnahme', url: 'https://www.vvs.de/fahrradmitnahme' },
     { title: 'SSB: Regeln für die Zahnradbahn (PDF)', url: 'https://www.ssb-ag.de/fileadmin/Images/News/Presse/Regeln_Zahnradbahn.pdf' },
     { title: 'RegioRadStuttgart: Tarife', url: 'https://www.regioradstuttgart.de/de/start' },
-    { title: 'Voi: E-Scooter in Stuttgart', url: 'https://www.voi.com/de/city/stuttgart' },
+    { title: 'Voi: Tarif und Zonen für Stuttgart (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/175/netex.xml' },
+    { title: 'MobiData BW: Datenfeed von Bolt in Stuttgart (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_stuttgart/gbfs' },
+    { title: 'MobiData BW: Datenfeed von Dott in Stuttgart (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/dott_stuttgart/gbfs' },
+    { title: 'MobiData BW: Datenfeed von Lime in Baden-Württemberg (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/lime_bw/gbfs' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
   ],
 };
 

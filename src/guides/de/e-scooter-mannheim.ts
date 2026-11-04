@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'mannheim',
   name: 'E-Scooter Mannheim: Anbieter, Preise, Parken',
   title: 'E-Scooter Mannheim 2026: Voi, Dott, Bolt, Preise, Parken',
-  description: 'E-Scooter in Mannheim mieten: Voi, Dott oder Bolt, ab 18 ohne Führerschein. Zehn Minuten Voi: 2,69 €. Hauptbahnhof und Wasserturm: nur feste Abstellflächen.',
+  description: 'E-Scooter in Mannheim mieten: Voi, Dott oder Bolt, ohne Führerschein. Zehn Minuten Voi: 2,69 €. Hauptbahnhof und Wasserturm: nur feste Abstellflächen.',
   headline: 'E-Scooter Mannheim: Anbieter, Preise, feste Abstellflächen und Verbotszonen von den Quadraten bis Ludwigshafen',
-  lede: 'Einen E-Scooter in Mannheim leihst du ab 18 und ohne Führerschein bei Voi, Dott oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis Ende 2026. Voi kostet 0,49 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 2,69 € (Stand 17. Oktober 2026). Rund um Hauptbahnhof und Wasserturm stellst du nur auf markierten Flächen ab, auf Brücken, am Neckarufer und in Parks gar nicht. In Strassenbahn und Bus nimmst du nur einen kleinen, zusammengeklappten Scooter mit, keinen Leih-Scooter.',
+  lede: 'Einen E-Scooter in Mannheim leihst du ohne Führerschein bei Voi, Dott oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis Ende 2026; Dott und Bolt vermieten ab 18. Voi kostet 0,49 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 2,69 € (Stand November 2026). Rund um Hauptbahnhof und Wasserturm stellst du nur auf markierten Flächen ab, auf Brücken, am Neckarufer und in Parks gar nicht. In Strassenbahn und Bus nimmst du nur einen kleinen, zusammengeklappten Scooter mit, keinen Leih-Scooter.',
   published: '2026-10-17',
   updated: '2026-10-25',
   city: 'de:Mannheim',
@@ -16,19 +16,18 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Mannheim?',
       blocks: [
-        'Die Stadt hat zum 1. Januar 2025 drei Anbieter zugelassen: **Dott**, das früher TIER hiess, **Voi** und **Bolt**. Ihre Erlaubnisse laufen bis Ende 2026. Gemietet wird in der App des Anbieters, ab 18 und ohne Führerschein. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Mannheim](map:de:Mannheim) Voi, Dott und seit dem 25. Oktober 2026 Bolt. Der Kartenausschnitt reicht über den Rhein bis Ludwigshafen; am Samstag, 24. Oktober 2026, kurz vor 16 Uhr standen darin rund 650 Voi- und 780 Dott-Scooter, davon rund 500 Voi- und 650 Dott-Scooter auf der Mannheimer Seite. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        'Für Bolt zählte die Karte am Sonntag, 25. Oktober, kurz vor 14 Uhr rund 550 Scooter in Mannheim, auch das eine Momentaufnahme. Sie zeigt Standort und Akkustand; Preise und Zonen zeigt nur die Bolt-App.',
-        '**Lime** gibt es in Mannheim nicht; die Stadt fehlt auf Limes Städteliste. Nebenan zeigt die [Karte von Heidelberg](map:de:Heidelberg) Dott und Voi.',
+        'Die Stadt hat zum 1. Januar 2025 drei Anbieter zugelassen: **Dott**, das früher TIER hiess, **Voi** und **Bolt**. Ihre Erlaubnisse laufen bis Ende 2026. Gemietet wird in der App des Anbieters, ohne Führerschein; Dott und Bolt vermieten ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'ScootRadar zeigt auf der [Karte rund um Mannheim](map:de:Mannheim) Voi, Dott und seit dem 25. Oktober 2026 Bolt. Der Kartenausschnitt reicht über den Rhein bis Ludwigshafen; am Samstag, 24. Oktober 2026, kurz vor 16 Uhr standen darin rund 650 Voi- und 780 Dott-Scooter, die zu diesem Zeitpunkt frei waren, davon rund 500 Voi- und 650 Dott-Scooter auf der Mannheimer Seite.',
+        'Für Bolt zählte die Karte am Sonntag, 25. Oktober, kurz vor 14 Uhr rund 550 Scooter in Mannheim, die zu diesem Zeitpunkt frei waren.',
+        'Nebenan zeigt die [Karte von Heidelberg](map:de:Heidelberg) Dott und Voi.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Mannheim?',
       blocks: [
-        'Nur Voi veröffentlicht seinen Mannheimer Tarif.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Mannheim (veröffentlichte Tarife, Stand 17. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Mannheim (Stand November 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,49 €', '0,22 €', '2,69 €', '4,89 €'],
@@ -47,7 +46,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur, wo es keinen gibt, auf der Fahrbahn. Auf Gehwegen und in Fussgängerzonen fährst du nicht, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es. Der Ordnungsdienst der Stadt achtet bei seinen täglichen Kontrollen in der Innenstadt auch auf E-Scooter.',
         '**Die Quadrate:** In der Innenstadt tragen die Blöcke statt Strassennamen Buchstabe und Zahl, etwa A 1, N 2 oder O 7.',
         '**Planken und Breite Strasse:** Die beiden Einkaufsstrassen gehören zur Fussgängerzone Innenstadt, durch die auch die Strassenbahn fährt. Dort ist das Fahren mit E-Scootern laut Stadt verboten: Steig ab und schieb. Fahrräder dürfen dort laut Satzung der Stadt von 20 bis 8 Uhr und an Sonn- und Feiertagen fahren. Ab 1. März 2027 gilt ein Schild «Radverkehr frei» auch für E-Scooter, im Schritttempo.',
-        '**Über den Rhein nach Ludwigshafen:** Voi führt Mannheim und Ludwigshafen in seinem Datenfeed als ein Gebiet. In Ludwigshafen stellst du Leih-Scooter laut Wochenblatt seit 1. Januar 2024 nur auf festgelegten Abstellflächen ab, die die App anzeigt. Stehst du nicht auf oder direkt an einer, lässt sich die Fahrt nicht beenden, und die Miete läuft weiter. Im Datenfeed von Voi sind es rund 190 Flächen (Stand 17. Oktober 2026). Die [Karte von Ludwigshafen](map:de:Ludwigshafen am Rhein) zeigte in derselben Nacht rund 150, Mannheims Rheinufer eingeschlossen.',
+        '**Über den Rhein nach Ludwigshafen:** Bei Voi bilden Mannheim und Ludwigshafen ein Gebiet. In Ludwigshafen stellst du Leih-Scooter laut Wochenblatt seit 1. Januar 2024 nur auf festgelegten Abstellflächen ab, die die App anzeigt. Stehst du nicht auf oder direkt an einer, lässt sich die Fahrt nicht beenden, und die Miete läuft weiter. Voi führt dort rund 190 solcher Flächen (Stand November 2026).',
       ],
     },
     {
@@ -84,7 +83,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Regeln in Mannheim: Bussgelder und Promille',
       blocks: [
-        'In Mannheim gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
+        'In Mannheim gelten die deutschen Regeln: ab 14 ohne Führerschein, Leih-Scooter bei Dott und Bolt ab 18, keine Helmpflicht, bauartbedingt höchstens 20 km/h, nur eine Person pro Scooter.',
         {
           table: {
             caption: 'Bussgelder für E-Scooter-Fahrer (Regelsätze, Stand Oktober 2026)',
@@ -125,7 +124,7 @@ const guide: Guide = {
       blocks: [
         'Seit 1. Januar 2025 ist das Verleihen von E-Scootern in Mannheim eine Sondernutzung der Strasse nach dem Strassengesetz Baden-Württemberg; der Gemeinderat beschloss das Konzept am 14. Mai 2024. Die Anbieter zahlen 6 € pro Scooter und Monat.',
         'Stadtweit sind höchstens 2000 Leih-Scooter erlaubt, ein gutes Drittel weniger als zuvor: Je nach Saison standen bis dahin 3000 bis 3500 in der Stadt. Die Anbieter dürfen höchstens 25 % ihrer Flotte in der Innenstadt samt Jungbusch aufstellen und 40 % in den Stadtteilen drumherum, in den Vororten ohne Grenze. An einer Stelle stehen höchstens fünf Scooter eines Anbieters, und defekte holt er binnen sechs Stunden ab.',
-        'Die Erlaubnisse laufen bis Ende 2026. Auf eine Anfrage aus dem Gemeinderat zog die Verwaltung am 18. März 2026 ein «positives Zwischenfazit»: Die Beschwerden hätten deutlich abgenommen, vor der Auswertung Ende 2026 seien keine weiteren Regeln geplant. Wie es ab 2027 weitergeht, hat die Stadt bis zum 17. Oktober 2026 nicht veröffentlicht.',
+        'Die Erlaubnisse laufen bis Ende 2026. Auf eine Anfrage aus dem Gemeinderat zog die Verwaltung am 18. März 2026 ein «positives Zwischenfazit»: Die Beschwerden hätten deutlich abgenommen, vor der Auswertung Ende 2026 seien keine weiteren Regeln geplant.',
       ],
     },
     {
@@ -144,11 +143,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Mannheim?',
-      answer: 'Die von Voi, Dott oder Bolt; TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte rund um Mannheim](map:de:Mannheim) zeigt alle drei.',
+      answer: 'Die von Voi, Dott oder Bolt; TIER heisst heute Dott. Bei Dott und Bolt musst du 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte rund um Mannheim](map:de:Mannheim) zeigt alle drei.',
     },
     {
       question: 'Was kostet Voi in Mannheim?',
-      answer: '0,49 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 2,69 € (Stand 17. Oktober 2026). Dott und Bolt zeigen ihren Preis nur in der App.',
+      answer: '0,49 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 2,69 € (Stand November 2026). Bei Dott und Bolt siehst du den Preis in der App.',
     },
     {
       question: 'Warum kann ich am Hauptbahnhof oder am Wasserturm die Fahrt nicht beenden?',
@@ -181,7 +180,9 @@ const guide: Guide = {
     { title: 'Stadt Mannheim: Satzung über Sondernutzungen in der Fussgängerzone Innenstadt (PDF)', url: 'https://www.mannheim.de/sites/default/files/2025-11/s06-10.pdf' },
     { title: 'VRN: Beförderungsbedingungen, Anlage 3: Mitnahme von E-Tretrollern', url: 'https://www.vrn.de/tickets/tarifsystem/befoerderungsbedingungen/artikel/011912/index.html' },
     { title: 'VRN: E-Tretroller von Dott', url: 'https://www.vrn.de/mobilitaet/e-tretroller/dott/index.html' },
-    { title: 'Voi: E-Scooter in Mannheim', url: 'https://www.voi.com/de/city/mannheim' },
+    { title: 'Voi: Tarif und Zonen für Mannheim (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/356/netex.xml' },
+    { title: 'Dott: Allgemeine Geschäftsbedingungen Deutschland (23. September 2025)', url: 'https://ridedott.com/de/allgemeine/deutschland/' },
+    { title: 'Bolt: Allgemeine Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Wochenblatt Ludwigshafen: Stadt markiert Abstellflächen für E-Roller (25. März 2024)', url: 'https://www.wochenblatt-reporter.de/ludwigshafen/c-lokales/stadt-beendet-abstellchaos-bei-e-rollern-und-markiert-abstellflaechen_a543395' },
     { title: 'SAP Arena: Anreise und Parken', url: 'https://saparena.de/besucherservice/anreise-parken/' },
     { title: 'Maimarkt Mannheim: Termine 2027', url: 'https://www.maimarkt.de/' },

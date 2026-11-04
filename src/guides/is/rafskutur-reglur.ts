@@ -21,7 +21,7 @@ const guide: Guide = {
             caption: 'Helstu reglur um rafskútur í október 2026',
             head: ['Efni', 'Reglan', 'Heimild'],
             rows: [
-              ['Aldurstakmark', '13 ár. Aldurstakmark leigunnar sérðu í appinu', '3. mgr. 44. gr. umferðarlaga'],
+              ['Aldurstakmark', '13 ár. Hopp og Bolt krefjast 18 ára aldurs', '3. mgr. 44. gr. umferðarlaga'],
               ['Hjálmur', 'Skylda fyrir börn yngri en 16 ára, mælt með honum fyrir alla', '1. mgr. 79. gr.'],
               ['Gangstétt og göngustígur', 'Leyft, en gangandi vegfarendur eiga forgang', '1.–3. mgr. 43. gr.'],
               ['Göngugata', 'Leyft, en ekki hraðar en á eðlilegum gönguhraða', '4. mgr. 10. gr.'],
@@ -77,9 +77,10 @@ const guide: Guide = {
     {
       heading: 'Mega tveir vera á rafskútu? Farþegar, sími, ljós og stæði',
       blocks: [
-        'Nei. Samgöngustofa svarar spurningunni „Má vera með farþega?“ neitandi.',
+        'Nei. Samgöngustofa svarar spurningunni „Má vera með farþega?“ neitandi, og Hopp bannar það líka.',
         'Þú mátt ekki nota farsíma, snjalltæki eða önnur raftæki á ferð nema með handfrjálsum búnaði (57. gr.). Samgöngustofa segir að stöðva eigi áður en síminn er notaður.',
         'Í ljósaskiptum, myrkri og slæmu skyggni eiga ljósin að vera kveikt (2. mgr. 34. gr.). Samgöngustofa mælir með sterku hvítu ljósi að framan, rauðu að aftan og endurskini bæði að framan og aftan. Á íslenskum vetri á þetta við stóran hluta dagsins.',
+        'Engar sérstakar vetrarreglur gilda um rafskútur í lögunum, hvorki um nagladekk né akstur í hálku. Í skilmálum Hopp segir þó að þú eigir að laga hraða og hemlun að aðstæðum, til dæmis í hálku, rigningu og snjó, og skilmálar Bolt banna akstur í snjókomu, hagléli, hálku og slyddu.',
         'Rafskútu á að leggja þannig að hvorki stafi hætta né truflun af henni (6. mgr. 42. gr.). Samgöngustofa biður fólk að leggja rafskútum ekki á miðri gangstétt eða stíg, á skábrautum, við innganga húsa eða á gangbrautum. Bann umferðarlaga við því að leggja ökutækjum á gangstétt (3. mgr. 28. gr.) gildir aðeins um skráningarskyld ökutæki, og rafskútur falla ekki undir það.',
       ],
     },
@@ -93,6 +94,7 @@ const guide: Guide = {
         {
           note: '**0,5‰ er ekki öruggt mark.** Af þeim 31 sem slösuðust alvarlega eða létust á rafskútum árið 2021 lentu 12 í slysi milli kl. 23 og 4 aðfaranótt laugardags eða sunnudags. Enginn af þeim 25 hjólreiðamönnum sem slösuðust alvarlega það ár slasaðist á þeim tíma. Árið 2020 voru 40% fullorðinna sem leituðu á bráðamóttöku Landspítala eftir slys á rafskútu undir áhrifum.',
         },
+        'Hopp gengur lengra en lögin: samkvæmt skilmálum fyrirtækisins má alls ekki nota rafskúturnar undir áhrifum áfengis eða annarra vímuefna.',
       ],
     },
     {
@@ -122,15 +124,24 @@ const guide: Guide = {
       heading: 'Tryggingar: hver ber ábyrgð ef slys verður?',
       blocks: [
         'Engin tryggingaskylda er á rafskútum. Lög um ökutækjatryggingar ná aðeins til skráningarskyldra ökutækja, og smáfarartæki eru undanþegin skráningu. Samgöngustofa hvetur eigendur til að leita ráða hjá tryggingafélögum um ábyrgðartryggingu. Ef þú veldur öðrum tjóni getur kostnaðurinn lent á þér, svo spurðu tryggingafélagið þitt hvort heimilistryggingin nái yfir akstur á rafskútu.',
+        'Í skilmálum Hopp segir að meðan engin tryggingaskylda sé í landinu sé tjón á eignum annarra og líkamstjón alltaf á ábyrgð notandans. Notandinn ber líka ábyrgð á skemmdum á rafskútunni, sem geta kostað allt að 2.000 evrur.',
         'Bætur eru heldur ekki sjálfgefnar þótt leigð rafskúta bili. Í apríl 2023 kastaðist ökumaður af leigðri rafskútu sem stöðvaðist skyndilega vegna bilunar og hlaut 7% varanlega örorku. Úrskurðarnefnd í vátryggingamálum staðfesti að ekki þyrfti að greiða bætur úr ábyrgðartryggingu fyrirtækisins, því ökumaðurinn hefði ekki sýnt fram á gáleysi þess (DV, 9. ágúst 2025).',
       ],
     },
     {
-      heading: 'Rafskútuleiga: skilmálar bætast við lögin',
+      heading: 'Rafskútuleiga: reglur Hopp eru strangari en lögin',
       blocks: [
-        'Þegar þú leigir rafskútu gilda bæði umferðarlögin og skilmálar fyrirtækisins. Skilmálarnir eru ekki lög, en þeir ganga oft lengra; aldurstakmarkið og verðið sérðu í appinu áður en þú opnar rafskútuna.',
-        'Hvað gildir sérstaklega í borginni, til dæmis um stæði og hægakstursgötur, lestu í [leiðarvísinum um rafskútur í Reykjavík](guide:reykjavik).',
-        'Þann 13. október 2026 voru um 2.800 rafskútur frá Hopp lausar til leigu á þeim tíma í 18 bæjum, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík) og um 180 á [Akureyri](map:is:Akureyri). Hvernig þú leigir rafskútu, skref fyrir skref, lestu í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
+        'Þegar þú leigir rafskútu gilda bæði umferðarlögin og skilmálar fyrirtækisins. Skilmálarnir eru ekki lög, en þeir ganga oft lengra. Þetta eru helstu reglur Hopp á Íslandi:',
+        {
+          list: [
+            '**18 ára aldurstakmark.** Lögin leyfa 13 ára börnum að keyra rafskútu, en Hopp krefst 18 ára aldurs og ráðleggur yngra fólki að bíða.',
+            '**Ekkert áfengi.** Bannað er að nota rafskúturnar undir áhrifum áfengis eða annarra vímuefna, ekki aðeins yfir 0,5‰.',
+            '**Einn á hverri rafskútu**, með báðar hendur á stýrinu. Mælt er með hjálmi.',
+            '**Mynd í lok ferðar.** Hopp krefst myndar af rafskútunni þar sem henni er lagt og getur rukkað 30 evrur, eða sambærilega upphæð í krónum, ef engin mynd er tekin. Leggi yfirvöld sekt á Hopp vegna þess hvernig rafskútunni var lagt rukkar fyrirtækið notandann um hana.',
+          ],
+        },
+        'Bolt leigir líka út rafskútur í Reykjavík og krefst sömuleiðis 18 ára aldurs í íslenskum skilmálum sínum. Hvað gildir sérstaklega í borginni, til dæmis um stæði og hægakstursgötur, lestu í [leiðarvísinum um rafskútur í Reykjavík](guide:reykjavik).',
+        'Þann 13. október 2026 voru um 2.800 rafskútur frá Hopp lausar til leigu á þeim tíma í 18 bæjum, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík) og um 180 á [Akureyri](map:is:Akureyri). Í nóvember 2026 kostaði ferð með Hopp 115 kr. í upphafsgjald og 45 kr. á mínútu. Hvernig þú leigir rafskútu, skref fyrir skref, lestu í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
       ],
     },
   ],
@@ -145,7 +156,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvað þarf barn að vera gamalt til að mega keyra rafskútu?',
-      answer: 'Barnið þarf að vera orðið 13 ára, og þar til það verður 16 ára er hjálmur skylda. Leigufyrirtæki geta sett hærri mörk; þau sérðu í appinu.',
+      answer: 'Barnið þarf að vera orðið 13 ára, og þar til það verður 16 ára er hjálmur skylda. Leigufyrirtæki geta sett hærri mörk: Hopp og Bolt krefjast 18 ára aldurs.',
     },
     {
       question: 'Þarf að tryggja rafskútu?',
@@ -165,6 +176,10 @@ const guide: Guide = {
     { title: 'Alþingi: Lög um ökutækjatryggingar nr. 30/2019', url: 'https://www.althingi.is/lagas/nuna/2019030.html' },
     { title: 'Alþingi: Almenn hegningarlög nr. 19/1940', url: 'https://www.althingi.is/lagas/nuna/1940019.html' },
     { title: 'RÚV: Aldurstakmark á rafhlaupahjól sett af ástæðu en ekki virt að fullu (8. júní 2026)', url: 'https://www.ruv.is/frettir/innlent/2026-06-08-aldurstakmark-a-rafhlaupahjol-sett-af-astaedu-en-ekki-virt-ad-fullu-477414' },
+    { title: 'Hopp: skilmálar fyrir Ísland (rafskútuhlutinn á ensku)', url: 'https://hopp.bike/is/tos?group=39lJdAWCMXoGMP394YylB' },
+    { title: 'Hopp: öryggi (á ensku)', url: 'https://hopp.bike/is/safety' },
+    { title: 'Hopp Reykjavík: verð', url: 'https://hopp.bike/is/in/reykjavik' },
+    { title: 'Bolt: Skilmálar fyrir rafknúin ökutæki á Íslandi (gilda frá 6. ágúst 2024)', url: 'https://bolt.eu/is-is/legal/micromobility/tnc-bolt-e-vehicles/' },
   ],
 };
 
