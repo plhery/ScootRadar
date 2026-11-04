@@ -16,11 +16,14 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.unit.Dp
+import kotlin.math.ceil
+import kotlin.math.max
 
 // The backdrop of ChromeGlass in ios/ScootRadar/Views/ScooterControls.swift: Liquid Glass sees the map under it.
 // The spike's MapBackdrop (branch spike/android-map, PLAN §4 "Glass").
@@ -114,7 +117,10 @@ private class BlurredMap {
     private var width = -1
     private var height = -1
 
-    /** Blurs by [px] the map's [frame] drawn [left] and [top] of the glass, [width] by [height]; false if it already was. */
+    /**
+     * Blurs by [px], in the shrunk map's pixels, the map's [frame] drawn [left] and [top] of the glass, [width] by
+     * [height]; false if it already was.
+     */
     fun blur(px: Float, frame: Int, left: Float, top: Float, width: Int, height: Int): Boolean {
         if (frame == this.frame && px == radius && left == this.left && top == this.top && width == this.width && height == this.height) return false
         node.setRenderEffect(RenderEffect.createBlurEffect(px, px, Shader.TileMode.CLAMP))
@@ -128,23 +134,43 @@ private class BlurredMap {
     }
 }
 
+/**
+ * Draws the map under the glass at [SHRINK] times smaller, blurs it there as much, and draws the blur back at the
+ * glass's size. A blur this wide keeps nothing finer than a few pixels, so the glass looks the same, with a
+ * sixteenth of the pixels to draw and blur at each frame of the map's.
+ */
 private fun DrawScope.drawBlurred(backdrop: MapBackdrop, frame: Int, glass: BlurredMap, at: Offset, radius: Dp) {
     val origin = backdrop.positionInWindow()
     val left = origin[0] - at.x
     val top = origin[1] - at.y
     val width = size.width.toInt()
     val height = size.height.toInt()
-    glass.node.setPosition(0, 0, width, height)
-    if (glass.blur(radius.toPx(), frame, left, top, width, height)) backdrop.blurs += 1
+    glass.node.setPosition(0, 0, ceil(width / SHRINK).toInt(), ceil(height / SHRINK).toInt())
+    if (glass.blur(shrunk(radius.toPx()), frame, left, top, width, height)) backdrop.blurs += 1
     val recording = glass.node.beginRecording()
     try {
+        recording.scale(1 / SHRINK, 1 / SHRINK)
         recording.translate(left, top)
         recording.drawRenderNode(backdrop.node)
     } finally {
         glass.node.endRecording()
     }
-    drawIntoCanvas { canvas ->
-        val native = canvas.nativeCanvas
-        if (native.isHardwareAccelerated) native.drawRenderNode(glass.node)
+    scale(SHRINK, pivot = Offset.Zero) {
+        drawIntoCanvas { canvas ->
+            val native = canvas.nativeCanvas
+            if (native.isHardwareAccelerated) native.drawRenderNode(glass.node)
+        }
     }
 }
+
+/** How many times smaller than the glass the map is blurred. */
+private const val SHRINK = 4f
+
+/**
+ * The radius that blurs the map drawn [SHRINK] times smaller as [px] blurs it at its size: Android blurs a
+ * RenderEffect's radius r by a bell of sigma 0.57735 r + 0.5 pixels (Blur::convertRadiusToSigma), and the sigma
+ * shrinks with the map.
+ */
+private fun shrunk(px: Float): Float = max(0f, (SIGMA_PER_RADIUS * px + 0.5f) / SHRINK - 0.5f) / SIGMA_PER_RADIUS
+
+private const val SIGMA_PER_RADIUS = 0.57735f
