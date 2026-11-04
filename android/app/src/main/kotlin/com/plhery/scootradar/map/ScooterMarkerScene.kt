@@ -736,9 +736,10 @@ class ScooterMarkerScene(
         for (mark in changed.distinct()) {
             val eased = animated && mark.scooter.id !in fresh
             // Only the dots on the map ease, as only theirs have views; the others, and those in the app's own
-            // clusters, take their look at once.
-            val shown = mark.scooter.id !in clusteredIDs && isNear(dotCentre(mark, map.projection), bounds)
-            refreshLook(mark, eased, moves = eased && shown)
+            // clusters, take their look at once. Where none eases, as at a step of a zoom, none is looked for on
+            // the map: MapLibre would be asked where each of them is, at every step (app-ax).
+            val moves = eased && mark.scooter.id !in clusteredIDs && isNear(dotCentre(mark, map.projection), bounds)
+            refreshLook(mark, eased, moves = moves)
         }
     }
 
