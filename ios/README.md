@@ -140,7 +140,7 @@ Maps**. Closing the card or choosing another scooter or bay ends the walk; until
 then the scooter stays selected wherever the map goes. When fresh data no longer
 lists it, the card stays open with no actions and says someone may have taken it.
 
-**Ride and parking zones.** A preview, off until turned on under Settings ›
+**Ride and parking zones.** A preview, on unless turned off under Settings ›
 Map, as on the website: from zoom 14 the map draws the zones the operators
 publish, above the roads and under their names, the route and the scooters. No
 riding is hatched red within a solid edge, no parking orange within a dashed

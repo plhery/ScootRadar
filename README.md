@@ -48,8 +48,10 @@ web app, or get the iPhone app on the
   for a ride of 5 to 30 minutes, before you walk over.
 - **Where can I leave it?** At street zoom, the operators' parking bays show as
   **P** markers, with the rules each operator publishes, and closed bays are
-  left out. Settings can also show the ride and parking zones. Coverage
-  depends on each operator's feed, so check its app before ending a ride.
+  left out. Zoomed in, the map also draws the ride and parking zones, with a
+  legend: those the operators publish, which Settings can turn off, and those
+  a city sets. Coverage depends on each operator's feed, so check its app
+  before ending a ride.
 - **Then what?** One tap opens the provider's own app, where you unlock and pay
   as usual. Opening it doesn't reserve the scooter.
 - **What if something's off?** The map says so in plain words: a provider that
