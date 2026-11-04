@@ -15,7 +15,7 @@ ONE TAP TO THE RIGHT APP
 "Open in" takes you to the operator's own app, where you unlock and pay as usual. ScootRadar doesn't hire out or reserve scooters.
 
 WHERE IT WORKS
-The scooters of 39 operators, in more than 1,000 towns and cities in 56 countries: Switzerland, France, Germany, Italy, the United Kingdom, Belgium, Spain, Poland, Norway, Sweden, Finland and more of Europe; the United States and Canada; Brazil, Chile and Mexico; Japan and South Korea; Israel, Turkey, New Zealand and others. Among them are Berlin, Oslo, Tokyo, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul and Zürich. Where no operator publishes its data, the map says so and shows the closest cities that do.
+The scooters of 39 operators, in more than 1,000 towns and cities in 58 countries: Switzerland, France, Germany, Italy, the United Kingdom, Belgium, Spain, Poland, Norway, Sweden, Finland and more of Europe; the United States and Canada; Brazil, Chile and Mexico; Japan and South Korea; Israel, Turkey, New Zealand and others. Among them are Berlin, Oslo, Tokyo, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul and Zürich. Where no operator publishes its data, the map says so and shows the closest cities that do.
 
 PRIVATE BY DESIGN
 No account and no ads. Your location is used on your iPhone to centre the map and work out walking times; the server only receives the part of the map you are looking at. Anonymous usage statistics can be turned off in Settings.

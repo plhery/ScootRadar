@@ -158,9 +158,9 @@ user in App Store Connect.
 The storefronts are the account holder's choice, set with the `availability`
 command below or on the web (Pricing and Availability).
 
-Since 4 November 2026 the app is offered in 160 of Apple's 175 storefronts.
+Since 4 November 2026 the app is offered in 162 of Apple's 175 storefronts.
 That is every storefront except China, where an app needs an ICP filing, and
-the 14 where shared e-scooters are known to run but the map shows about half
+the 12 where shared e-scooters are known to run but the map shows about half
 of them or fewer, so a local rider would find it thin or empty there. Countries
 with no known shared e-scooters are in, since there is nothing there for the
 map to miss; the map shows e-scooters, so shared bikes or mopeds alone don't
@@ -170,13 +170,11 @@ on its own.
 Left out, as of 4 November 2026, with the operators the map misses:
 - **Europe:** Russia (Whoosh, Urent, Yandex).
 - **Middle East and Africa:** Saudi Arabia (SAHAM only, of several), Qatar
-  (Lime only, of several), Bahrain (Hopp's small fleet, below the map's bar),
-  Jordan (E-Ride) and Egypt (Rabbit).
+  (Lime only, of several), Jordan (E-Ride) and Egypt (Rabbit).
 - **Asia:** China (the ICP filing), the Philippines (Moovr), Uzbekistan,
   Kyrgyzstan, Mongolia and Armenia (JET, Yandex, Whoosh, Urent and local
   operators).
-- **Oceania and the Americas:** Australia (Neuron), Colombia (Yango) and the
-  Dominican Republic (Hopp's Punta Cana fleet).
+- **Oceania and the Americas:** Australia (Neuron) and Colombia (Yango).
 
 Added on 24 October 2026, once the app maps put them at "Almost": the United
 Kingdom, Italy, Sweden, Finland, Austria and Hungary, Japan, Brazil and Chile.
@@ -193,12 +191,13 @@ Added on 4 November 2026, as their shared e-scooters are all or mostly on
 the map, or they have none: Czechia, Croatia, Ireland, the Netherlands and
 Luxembourg, Kuwait, Oman, South Africa and Rwanda, Malaysia, Indonesia,
 Singapore, Thailand, Vietnam, India, Hong Kong and Taiwan, Costa Rica, Peru
-and Argentina.
+and Argentina. Later that day, once Hopp's feeds for them were on the map:
+Bahrain and the Dominican Republic.
 
 A country joins once the map covers it, by adding its code to the list:
 
 ```
---territories AFG,AGO,AIA,ALB,ARE,ARG,ATG,AUT,AZE,BEL,BEN,BFA,BGR,BHS,BIH,BLR,BLZ,BMU,BOL,BRA,BRB,BRN,BTN,BWA,CAN,CHE,CHL,CIV,CMR,COD,COG,CPV,CRI,CYM,CYP,CZE,DEU,DMA,DNK,DZA,ECU,ESP,EST,FIN,FJI,FRA,FSM,GAB,GBR,GEO,GHA,GMB,GNB,GRC,GRD,GTM,GUY,HKG,HND,HRV,HUN,IDN,IND,IRL,IRQ,ISL,ISR,ITA,JAM,JPN,KAZ,KEN,KHM,KNA,KOR,KWT,LAO,LBN,LBR,LBY,LCA,LKA,LTU,LUX,LVA,MAC,MAR,MDA,MDG,MDV,MEX,MKD,MLI,MLT,MMR,MNE,MOZ,MRT,MSR,MUS,MWI,MYS,NAM,NER,NGA,NIC,NLD,NOR,NPL,NRU,NZL,OMN,PAK,PAN,PER,PLW,PNG,POL,PRT,PRY,ROU,RWA,SEN,SGP,SLB,SLE,SLV,SRB,STP,SUR,SVK,SVN,SWE,SWZ,SYC,TCA,TCD,THA,TJK,TKM,TON,TTO,TUN,TUR,TWN,TZA,UGA,UKR,URY,USA,VCT,VEN,VGB,VNM,VUT,XKS,YEM,ZAF,ZMB,ZWE
+--territories AFG,AGO,AIA,ALB,ARE,ARG,ATG,AUT,AZE,BEL,BEN,BFA,BGR,BHR,BHS,BIH,BLR,BLZ,BMU,BOL,BRA,BRB,BRN,BTN,BWA,CAN,CHE,CHL,CIV,CMR,COD,COG,CPV,CRI,CYM,CYP,CZE,DEU,DMA,DNK,DOM,DZA,ECU,ESP,EST,FIN,FJI,FRA,FSM,GAB,GBR,GEO,GHA,GMB,GNB,GRC,GRD,GTM,GUY,HKG,HND,HRV,HUN,IDN,IND,IRL,IRQ,ISL,ISR,ITA,JAM,JPN,KAZ,KEN,KHM,KNA,KOR,KWT,LAO,LBN,LBR,LBY,LCA,LKA,LTU,LUX,LVA,MAC,MAR,MDA,MDG,MDV,MEX,MKD,MLI,MLT,MMR,MNE,MOZ,MRT,MSR,MUS,MWI,MYS,NAM,NER,NGA,NIC,NLD,NOR,NPL,NRU,NZL,OMN,PAK,PAN,PER,PLW,PNG,POL,PRT,PRY,ROU,RWA,SEN,SGP,SLB,SLE,SLV,SRB,STP,SUR,SVK,SVN,SWE,SWZ,SYC,TCA,TCD,THA,TJK,TKM,TON,TTO,TUN,TUR,TWN,TZA,UGA,UKR,URY,USA,VCT,VEN,VGB,VNM,VUT,XKS,YEM,ZAF,ZMB,ZWE
 ```
 
 Apple has no storefront for Bonaire (Caribbean Netherlands), so it cannot be
