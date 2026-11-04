@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Milwaukee 2026: Lime, rules, where to ride',
   description: 'E-scooters in Milwaukee: Lime is the only operator, no sidewalks or Riverwalk, 5 mph slow zones, night and winter rides, parking, Marquette, UWM and MCTS.',
   headline: 'E-scooters in Milwaukee: Lime, the rules, where to ride and where to park',
-  lede: 'You can rent e-scooters in Milwaukee from Lime, the only company in the City’s scooter programme since Spin left in spring 2026, and the only one on the map. Check the price in the Lime app before you unlock. City rules keep scooters off every sidewalk and the Riverwalk. Lime may run around the clock and all year; DPW slows scooters to 5 mph in busy areas and planned night no-ride zones downtown for 2026.',
+  lede: 'You can rent e-scooters in Milwaukee from Lime, the only company in the City’s scooter programme since Spin left in spring 2026. Check the price in the Lime app before you unlock. City rules keep scooters off every sidewalk and the Riverwalk. Lime may run around the clock and all year; DPW slows scooters to 5 mph in busy areas and planned night no-ride zones downtown for 2026.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:wi:Milwaukee',
@@ -16,17 +16,15 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Milwaukee?',
       blocks: [
-        'Electric scooter rental in Milwaukee runs under a City programme. The Common Council set it up in March 2024: the Department of Public Works (DPW) runs it with **at most two companies**, and the City code lets a company put scooters on the street only within it. **Lime** and Spin started under it on 17 May 2024. Spin pulled out in spring 2026, and on 2 July 2026 Urban Milwaukee reported that Lime was the only company running; DPW said Lime’s agreement, signed in May 2024, had been extended through 2027. We found no other company renting scooters in the city in October 2026.',
+        'Electric scooter rental in Milwaukee runs under a City programme. The Common Council set it up in March 2024: the Department of Public Works (DPW) runs it with **at most two companies**, and the City code lets a company put scooters on the street only within it. **Lime** and Spin started under it on 17 May 2024. Spin pulled out in spring 2026, and on 2 July 2026 Urban Milwaukee reported that Lime was the only company running; DPW said Lime’s agreement, signed in May 2024, had been extended through 2027.',
         'Under DPW’s agreement terms (the 2024 version, filed with the Council in July 2026), a company may put out **up to 1,000 scooters** and apply, at most every 30 days, for up to 200 more (250 with a low-income plan). It must keep at least 500 out from May to September and 250 in April and October, at least 5% of them with seats, and the terms cover the whole city. A company pays the City $100 a scooter a year and 25 cents a trip; the programme brought the City about $728,000 in 2025, Urban Milwaukee reported.',
-        'At 12:51 a.m. on Thursday 29 October 2026 the [Milwaukee map](map:us:wi:Milwaukee) showed about 2,730 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. The map has no outline for Milwaukee, so its total also takes in any Lime scooters standing in Wauwatosa, West Allis and West Milwaukee next door, where Milwaukee’s code and agreement don’t apply.',
-        'For Lime the map shows each scooter’s position and charge. Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Not everything is on the map.** ScootRadar shows e-scooters only: Bublr Bikes, Greater Milwaukee’s non-profit bike share, isn’t on it.',
+        'At 12:51 a.m. on Thursday 29 October 2026 the [Milwaukee map](map:us:wi:Milwaukee) showed about 2,730 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime scooter cost in Milwaukee?',
       blocks: [
-        'We found no open page with Lime’s Milwaukee price on 29 October 2026, so check the rate in the Lime app before you unlock. The City’s terms make a company show its fees clearly before a ride and charge only for actual use, **with no deposit or sign-up fee**. For comparison, Bublr Bikes charged 25 cents a minute on 29 October 2026, plus $1 to unlock an e-bike, from station to station.',
+        'Check the rate in the Lime app before you unlock. The City’s terms make a company show its fees clearly before a ride and charge only for actual use, **with no deposit or sign-up fee**. For comparison, Bublr Bikes, Greater Milwaukee’s non-profit bike share, charged 25 cents a minute on 29 October 2026, plus $1 to unlock an e-bike, from station to station.',
         'Riders on low incomes can get cheaper rides through **Lime Access**: 50% off in September 2024, DPW reported. Rides starting in the City’s equity zones got 40% off in 2025 and 2026, Shepherd Express reported in July 2026. Check the app for today’s offer.',
         'Ride by the rules: Lime fines its own riders. It issued 4,991 fines to Milwaukee riders in 2025 and suspended or banned about 450, Urban Milwaukee reported in July 2026.',
       ],
@@ -34,7 +32,7 @@ const guide: Guide = {
     {
       heading: 'Scooter rules in Milwaukee and Wisconsin: sidewalks, speed, age',
       blocks: [
-        'Wisconsin’s e-scooter law was signed in Milwaukee on 8 July 2019, WPR reported. Under state law an e-scooter is a vehicle and follows the same traffic laws, and local ordinances may add rules, as Milwaukee’s do. The state rules below are as the Wisconsin Department of Transportation (WisDOT) and the State Patrol set them out.',
+        'Wisconsin’s e-scooter law was signed in Milwaukee on 8 July 2019, WPR reported. Under state law an e-scooter is a vehicle and follows the same traffic laws, and local ordinances may add rules, as Milwaukee’s do.',
         {
           table: {
             caption: 'E-scooter rules in Milwaukee, and who sets them (checked on 29 October 2026)',
@@ -44,9 +42,9 @@ const guide: Guide = {
               ['The Riverwalk', 'No riding or parking on it', 'City agreement terms'],
               ['Where to ride', 'On the street, in the same direction as traffic, or in a bike lane', 'Wisconsin law, as the State Patrol puts it; City code § 102-3 (bike lanes)'],
               ['Speed', '15 mph at most; 5 mph in DPW’s slow zones', 'City agreement terms; state law, as WPR reported it (2019); DPW'],
-              ['Age', 'No minimum set by the City; Lime requires riders to be 18', 'Lime, as Urban Milwaukee reported (July 2026)'],
+              ['Age', 'Lime requires riders to be 18', 'Lime, as Urban Milwaukee reported (July 2026)'],
               ['Licence and registration', 'No driver’s licence needed; scooters can’t be titled or registered', 'WisDOT'],
-              ['Helmet', 'No helmet rule found; each shared scooter must carry a notice encouraging one, and the State Patrol advises one', 'City agreement terms; State Patrol'],
+              ['Helmet', 'Encouraged: each shared scooter must carry a notice saying so, and the State Patrol advises wearing one', 'City agreement terms; State Patrol'],
               ['Equipment', 'Front and rear brakes, a bell, and the equipment state law requires', 'City agreement terms'],
               ['Alcohol', 'Never ride impaired', 'State Patrol advice (March 2026)'],
               ['Sidewalk fine', '$10 to $20 (June 2026); a rise to $100–$200 has been held in committee since 2 July 2026', 'City code § 102-13; Council file 260349'],
@@ -67,9 +65,9 @@ const guide: Guide = {
             'from 1 June, the Water Street corridor and Brady Street, 10 p.m. to 4 a.m.',
           ],
         },
-        'We found no record that the zones were put in place, or that they still apply, so check the app before a late ride downtown.',
+        'Check the app before a late ride downtown.',
         'DPW does slow scooters to **5 mph** in busy areas, among them Martin Luther King Drive, the Deer District and the streets around the Milwaukee Public Market, Fox6 reported in July 2026, and Council papers confirm such zones. Council proposals for more 5 mph areas downtown, and for ending Lime’s agreement and negotiating a new one, were still in committee on 29 October 2026.',
-        '**Winter.** Scooters have run in winter: DPW counted 24,869 trips in December 2024. The terms set no minimum fleet from November to March, and a company may take its scooters off the street in snow, extreme cold or other severe weather. We found no word on the winter of 2026–27; the map counts only scooters standing for hire, so it shows at a glance whether Lime is out.',
+        '**Winter.** Scooters have run in winter: DPW counted 24,869 trips in December 2024. A company may take its scooters off the street in snow, extreme cold or other severe weather.',
       ],
     },
     {
@@ -95,7 +93,7 @@ const guide: Guide = {
           list: [
             '**The Riverwalk.** No riding or parking on it, under the City’s terms.',
             '**The lakefront and Summerfest.** DPW sets lower limits and no-ride zones on the lakefront, Urban Milwaukee reported in July 2026. For Summerfest in 2026 you could ride a scooter there and park it at set spots near the North and Mid Gates, Fox6 reported.',
-            '**Trails.** On the Hank Aaron State Trail e-scooters “are not posted as being allowed”, its Friends group says. We couldn’t check Milwaukee County Parks’ rules for the Oak Leaf Trail: follow the signs.',
+            '**Trails.** On the Hank Aaron State Trail e-scooters “are not posted as being allowed”, its Friends group says. On the Oak Leaf Trail, follow Milwaukee County Parks’ signs.',
             '**Marquette University.** All motorized scooters, Lime’s included, are banned from campus property, its walkways and sidewalks too, and campus police may enforce the City’s sidewalk ban (Marquette Today, October 2024).',
             '**UW–Milwaukee.** Scooters aren’t allowed on campus or its sidewalks, and shared ones are set to shut down if ridden there. Park in the scooter parking on streets near campus (UWM, August 2025).',
           ],
@@ -107,9 +105,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**MCTS buses.** Every bus has a front rack for two bikes; we found no MCTS rule on scooters, so end your ride before you board, clear of the stop.',
-            '**The Hop streetcar.** Bikes can be rolled aboard and hung inside the doors; The Hop says nothing about scooters. Never park one on a Hop stop or platform.',
-            '**Amtrak.** The Hiawatha runs six round trips a day to Chicago from the Milwaukee Intermodal Station, 433 West St. Paul Avenue, which has bike racks, WisDOT says. We couldn’t check Amtrak’s rule on scooters; a shared one stays in Milwaukee. Riding on in Chicago? See [e-scooters in Chicago](guide:chicago) and the [Chicago map](map:us:il:Chicago).',
+            '**MCTS buses.** Every bus has a front rack for two bikes. End your ride before you board, clear of the stop.',
+            '**The Hop streetcar.** Bikes can be rolled aboard and hung inside the doors. Never park a scooter on a Hop stop or platform.',
+            '**Amtrak.** The Hiawatha runs six round trips a day to Chicago from the Milwaukee Intermodal Station, 433 West St. Paul Avenue, which has bike racks, WisDOT says. A shared scooter stays in Milwaukee. Riding on in Chicago? See [e-scooters in Chicago](guide:chicago) and the [Chicago map](map:us:il:Chicago).',
           ],
         },
       ],
@@ -130,7 +128,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Milwaukee?',
-      answer: 'We found no open page with Lime’s Milwaukee price on 29 October 2026, so check the Lime app before you unlock. The City’s terms bar deposits and sign-up fees.',
+      answer: 'Check the rate in the Lime app before you unlock. The City’s terms bar deposits and sign-up fees.',
     },
     {
       question: 'Can you ride a scooter on the sidewalk in Milwaukee?',
@@ -142,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to ride a Lime scooter in Milwaukee?',
-      answer: 'Lime requires riders to be at least 18, Urban Milwaukee reported in July 2026. The City sets no minimum age, and Wisconsin requires no driver’s licence for an e-scooter.',
+      answer: 'Lime requires riders to be at least 18, Urban Milwaukee reported in July 2026. Wisconsin requires no driver’s licence for an e-scooter.',
     },
     {
       question: 'Can you ride scooters at Marquette or UW–Milwaukee?',
@@ -150,7 +148,7 @@ const guide: Guide = {
     },
     {
       question: 'Which scooter companies operate in Milwaukee?',
-      answer: 'Only Lime, as far as we found in October 2026. The City allows two, but Spin left in spring 2026; Lime’s agreement runs through 2027, DPW said in July 2026.',
+      answer: 'Lime, the only company in the City’s programme since Spin left in spring 2026, Urban Milwaukee reported. The City allows two; Lime’s agreement runs through 2027, DPW said in July 2026.',
     },
   ],
   sources: [

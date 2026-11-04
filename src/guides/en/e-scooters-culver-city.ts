@@ -6,9 +6,9 @@ const guide: Guide = {
   topic: 'culver-city',
   name: 'E-scooters in Culver City, California',
   title: 'E-scooters in Culver City, CA 2026: Bird, rules, parking',
-  description: 'E-scooters in Culver City, CA: Bird’s City agreement, prices, no sidewalks, where to park, Ballona Creek, the E Line and West LA College.',
+  description: 'E-scooters in Culver City, CA: Bird’s City agreement, no sidewalks, where to park, Ballona Creek, the E Line and West LA College.',
   headline: 'E-scooters in Culver City, California: Bird, the City’s rules, and where to ride and park',
-  lede: 'E-scooters in Culver City come from Bird, which holds the City’s only operating agreement (July 2026 to June 2027). Lime’s app draws its Los Angeles area over the city, but we found no City agreement with Lime since 2020, and our map doesn’t show Lime here. The agreement sets no hours. Bird’s riders must be 18 with a driving licence, keep to 15 mph, stay off sidewalks and park upright in the furniture zone. Bird’s open data gives no Culver City price: the app shows it.',
+  lede: 'E-scooters in Culver City come from Bird, which holds the City’s only operating agreement (July 2026 to June 2027). Lime’s app draws its Los Angeles area over the city too. Bird’s riders must be 18 with a driving licence, keep to 15 mph, stay off sidewalks and park upright in the furniture zone. The Bird app shows the price before you unlock.',
   published: '2026-10-27',
   updated: '2026-10-27',
   city: 'us:ca:Culver City',
@@ -17,36 +17,34 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Culver City?',
       blocks: [
         'Electric scooter rental in Culver City runs under one agreement: the City’s Dockless Shared Micromobility Pilot Program is with **Bird**, from 1 July 2026 to 30 June 2027, approved unanimously by the City Council on 26 May 2026. It isn’t exclusive, but on 30 June 2026 the Council’s Mobility Subcommittee heard that Bird is the sole provider. City staff plan a competitive procurement for operators from July 2027.',
-        '**Lime** isn’t on our Culver City map. Lime’s app draws its Los Angeles area over all of Culver City (as of 24 October 2026), but the City’s only agreement is with Bird, so we leave Lime’s scooters out here. The City’s first pilot, from July 2018 to March 2020, had interim agreements with Bird and Lime, a City staff report of May 2026 says; we found no City agreement with Lime since.',
-        'At 9:58 a.m. on Saturday 31 October 2026 the [Culver City map](map:us:ca:Culver City) showed 193 Bird scooters. That is a snapshot, not the fleets. At 10:44 a.m. on 27 October 243 of Bird’s available scooters stood inside the city, by the Census Bureau’s boundaries, 28 of them within a quarter mile (400 m) of City Hall. The agreement has Bird deploy at least 50 vehicles a day and, at first, no more than 250; the City Manager may change that.',
-        'The map shows each Bird scooter’s position, charge and range, and Bird’s zones (see below). Scooters on a ride aren’t shown. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
-        '**Bikes aren’t on the map.** ScootRadar shows standing e-scooters only. Bird’s Culver City data list an e-bike model, though none showed on 27 October. LA Metro’s Metro Bike Share had no station inside the city that day; the nearest stands just over the line in Los Angeles.',
+        '**Lime’s** app draws its Los Angeles area over all of Culver City (as of 24 October 2026), but the City’s only agreement is with Bird. The City’s first pilot, from July 2018 to March 2020, had interim agreements with Bird and Lime, a City staff report of May 2026 says.',
+        'At 9:58 a.m. on Saturday 31 October 2026 the [Culver City map](map:us:ca:Culver City) showed 193 Bird scooters. That is a snapshot, not the fleets. At 10:44 a.m. on 27 October 243 of Bird’s available scooters stood inside the city, 28 of them within a quarter mile (400 m) of City Hall. The agreement has Bird deploy at least 50 vehicles a day and, at first, no more than 250; the City Manager may change that. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Bikes.** Bird’s Culver City data list an e-bike model, and LA Metro’s nearest Metro Bike Share station stands just over the city line in Los Angeles.',
       ],
     },
     {
       heading: 'How much does a Bird scooter cost in Culver City?',
       blocks: [
-        'Bird’s open data held no Culver City price on 27 October 2026, and we found none published for Lime. The City’s agreement makes Bird show its rates before each ride, have them approved by the City and give 14 days’ notice of any change, and it requires low-income rates. Bird’s US rental agreement (updated 30 August 2024) says a ride may include a start fee, a charge by time or distance, and a minimum fee. Check the app before you unlock.',
+        'The City’s agreement makes Bird show its rates before each ride, have them approved by the City and give 14 days’ notice of any change, and it requires low-income rates. Bird’s US rental agreement (updated 30 August 2024) says a ride may include a start fee, a charge by time or distance, and a minimum fee. Check the app before you unlock.',
       ],
     },
     {
       heading: 'Culver City scooter rules, and who sets them',
       blocks: [
-        'California’s Vehicle Code (CVC) sets the basics, as UCLA’s Transportation department summarises them (updated September 2026); Culver City adds its own through its agreement with Bird, in the Council’s records (we couldn’t read the City’s website).',
+        'California’s Vehicle Code (CVC) sets the basics, as UCLA’s Transportation department summarises them (updated September 2026); Culver City adds its own through its agreement with Bird.',
         {
           table: {
             caption: 'E-scooter rules in Culver City, and who sets them (City agreement with Bird, 1 July 2026 to 30 June 2027)',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Hours', 'None set for renting or riding', 'City agreement'],
               ['Age', '18 or over to ride a Bird; state law sets 16, the DMV says', 'City agreement; Bird’s terms; state'],
               ['Licence', 'A valid driving licence or instruction permit; Bird must check yours', 'State (CVC § 21235); City agreement'],
-              ['Helmet', 'Required under 18, UCLA says; the DMV’s and CHP’s pages say required, without an age. Wear one', 'State (CVC § 21235); City agreement'],
+              ['Helmet', 'Required under 18, UCLA says; the DMV’s and CHP’s pages say riders must wear one, so wear one', 'State (CVC § 21235); City agreement'],
               ['Speed', '15 mph at most; Bird’s scooters must be capped at 15 mph', 'State (CVC § 22411); City agreement'],
               ['Sidewalks', 'Never, except to enter or leave a property', 'State (CVC § 21235); City agreement'],
               ['Where to ride', 'Streets, bike lanes and bike paths; on a street posted above 25 mph, only in a bike lane or protected bike lane', 'City agreement; state (CVC § 21235)'],
               ['Riders', 'One per scooter; no riding under the influence; no stunts', 'State; City agreement'],
-              ['Slow areas', 'Scooters stop or slow to 1 mph where the City says; Bird’s data held no slow zone on 27 October 2026', 'City agreement; Bird'],
+              ['Slow areas', 'Scooters stop or slow to 1 mph where the City says', 'City agreement; Bird'],
               ['Parking', 'Upright in the sidewalk’s furniture zone, by a bike rack or in a drop zone, with a photo in the app', 'City agreement'],
             ],
           },
@@ -65,7 +63,7 @@ const guide: Guide = {
             '**Off the street only with permission:** parks, plazas, parking lots, transit stations and private property only where the owner has agreed and a sign or the app says so.',
           ],
         },
-        'Bird’s open data listed 13 small no-parking zones inside Culver City on 27 October 2026, and the map draws them at street zoom. On Los Angeles County’s parcel map they cover Veterans Memorial Park, government land along Culver Boulevard by Elenda Street and just east of City Hall, and a handful of blocks of homes, shops and offices. You may ride through them, but not start or end a ride there.',
+        'Bird’s open data listed 13 small no-parking zones inside Culver City on 27 October 2026, and the map draws them at street zoom. They cover Veterans Memorial Park, government land along Culver Boulevard by Elenda Street and just east of City Hall, and a handful of blocks of homes, shops and offices. You may ride through them, but not start or end a ride there.',
         'The same data mark a no-ride area of about 15 square miles (40 km²), mostly in Los Angeles and Marina del Rey, which takes in Culver City’s western tip along Washington Boulevard; the map draws it too. Yet at 10:44 a.m. 16 available Birds stood in that tip and some 560 in the Los Angeles part. Follow the Bird app there.',
       ],
     },
@@ -74,9 +72,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Ballona Creek Bike Path.** Los Angeles County’s trails site describes the 6.7-mile path as connecting the Pacific Ocean at Marina del Rey with Culver City, says in a reply to a rider that County Public Works and the City of Los Angeles run it, and says nothing of scooters. State law allows them on a bike path “unless prohibited”, the California Highway Patrol says, and the City’s agreement tells riders to yield to bicycles there. Bird’s data set no limits on its 2.5 miles in Culver City, but about 1.4 miles at its Marina del Rey end lie in the no-ride area above. Don’t leave a scooter on it: at the Council’s 26 May 2026 meeting a cyclist raised “Bird scooters discarded on the Bike Path”, the minutes record.',
-            '**Baldwin Hills Scenic Overlook.** California State Parks gives its entrance as 6300 Hetzler Road, off Jefferson Boulevard, and the park’s hours as 8 a.m. to sunset daily. Its page states no scooter rule: unless the app shows a parking spot there, end your ride outside.',
-            '**City parks.** Veterans Memorial Park is a no-parking zone in Bird’s data; Culver City Park has none. We couldn’t read the City’s park rules: follow the signs.',
+            '**Ballona Creek Bike Path.** Los Angeles County’s trails site describes the 6.7-mile path as connecting the Pacific Ocean at Marina del Rey with Culver City, and says in a reply to a rider that County Public Works and the City of Los Angeles run it. State law allows scooters on a bike path “unless prohibited”, the California Highway Patrol says, and the City’s agreement tells riders to yield to bicycles there. The path’s 2.5 miles in Culver City are open to Bird’s scooters, but about 1.4 miles at its Marina del Rey end lie in the no-ride area above. Don’t leave a scooter on it: at the Council’s 26 May 2026 meeting a cyclist raised “Bird scooters discarded on the Bike Path”, the minutes record.',
+            '**Baldwin Hills Scenic Overlook.** California State Parks gives its entrance as 6300 Hetzler Road, off Jefferson Boulevard, and the park’s hours as 8 a.m. to sunset daily. Unless the app shows a parking spot there, end your ride outside.',
+            '**City parks.** Veterans Memorial Park is a no-parking zone in Bird’s data. In the City’s parks, follow the signs.',
           ],
         },
       ],
@@ -86,10 +84,10 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Metro E Line.** Metro’s Customer Code of Conduct (amended June 2023) says wheeled devices, kick scooters included, “may not be ridden in Metro facilities or vehicles”. End your ride on the street outside Culver City station: at 10:44 a.m. 27 available Birds stood within a quarter mile of it, 11 of them on the Culver City side. We couldn’t read Culver CityBus’s rules.',
-            '**The studio lots.** Sony Pictures Studios, at 10202 West Washington Boulevard, and The Culver Studios, at 9336, lie inside the city but are private. We found no studio rule on scooters; the agreement keeps Bird’s scooters off private land unless the owner agrees, so end your ride outside the gate.',
-            '**Westfield Culver City**, at 6000 Sepulveda Boulevard, is inside the city, by the County’s parcel map and the Census Bureau’s outline, and private too: end your ride on the street outside.',
-            '**West Los Angeles College**, at 9000 Overland Avenue, is outside the city: the County’s parcel map puts its campus in unincorporated Ladera Heights, where the City’s agreement doesn’t apply. We couldn’t read the college’s own rules.',
+            '**Metro E Line.** Metro’s Customer Code of Conduct (amended June 2023) says wheeled devices, kick scooters included, “may not be ridden in Metro facilities or vehicles”. End your ride on the street outside Culver City station: at 10:44 a.m. 27 available Birds stood within a quarter mile of it, 11 of them on the Culver City side.',
+            '**The studio lots.** Sony Pictures Studios, at 10202 West Washington Boulevard, and The Culver Studios, at 9336, lie inside the city but are private. The agreement keeps Bird’s scooters off private land unless the owner agrees, so end your ride outside the gate.',
+            '**Westfield Culver City**, at 6000 Sepulveda Boulevard, is inside the city, and private too: end your ride on the street outside.',
+            '**West Los Angeles College**, at 9000 Overland Avenue, is outside the city, in unincorporated Ladera Heights, where the City’s agreement doesn’t apply.',
           ],
         },
       ],
@@ -97,7 +95,7 @@ const guide: Guide = {
     {
       heading: 'Crossing into Los Angeles and Santa Monica',
       blocks: [
-        'By the Census Bureau’s boundaries, Los Angeles lies across about four-fifths of Culver City’s line, and unincorporated Ladera Heights across the rest. Bird’s data give its Culver City, Los Angeles and Santa Monica scooters one riding area of about 185 square miles (480 km²) over west Los Angeles, so a ride may end across the line, where LA’s rules apply: see [e-scooters in Los Angeles](guide:los-angeles) and the [Los Angeles map](map:us:ca:Los Angeles). Santa Monica has its own rules: see [e-scooters in Santa Monica](guide:santa-monica).',
+        'Los Angeles lies across about four-fifths of Culver City’s line, and unincorporated Ladera Heights across the rest. Bird’s data give its Culver City, Los Angeles and Santa Monica scooters one riding area of about 185 square miles (480 km²) over west Los Angeles, so a ride may end across the line, where LA’s rules apply: see [e-scooters in Los Angeles](guide:los-angeles) and the [Los Angeles map](map:us:ca:Los Angeles). Santa Monica has its own rules: see [e-scooters in Santa Monica](guide:santa-monica).',
       ],
     },
     {
@@ -120,23 +118,19 @@ const guide: Guide = {
     },
     {
       question: 'Are there Lime scooters in Culver City?',
-      answer: 'Lime’s app area covers the whole city, and 19 Lime scooters stood inside it on 31 October 2026. But the City’s agreement is with Bird, and we found none with Lime since the City’s first pilot ended in March 2020, so our map doesn’t show them here.',
+      answer: 'Lime’s app area covers the whole city, and 19 Lime scooters stood inside it on 31 October 2026. But the City’s only agreement is with Bird (July 2026 to June 2027); Lime held an interim one in the City’s first pilot, which ended in March 2020.',
     },
     {
       question: 'How much does a Bird scooter cost in Culver City?',
-      answer: 'Bird’s open data gives no Culver City price, so check the app before you unlock. Its US terms allow a start fee, a time or distance charge and a minimum fee.',
-    },
-    {
-      question: 'What time do scooters stop in Culver City?',
-      answer: 'The City’s agreement with Bird sets no hours for renting or riding. Some places close: State Parks opens the Baldwin Hills Scenic Overlook from 8 a.m. to sunset.',
+      answer: 'The Bird app shows the rate before you unlock, and the City must approve it. Bird’s US terms allow a start fee, a time or distance charge and a minimum fee.',
     },
     {
       question: 'Can you ride a scooter on the Ballona Creek Bike Path?',
-      answer: 'State law allows scooters on bike paths unless prohibited, and the County’s trail page names no ban. Bird’s data mark the path’s Marina del Rey end as no-ride. Yield to bicycles, keep to 15 mph and never leave a scooter on the path.',
+      answer: 'State law allows scooters on bike paths unless prohibited. Bird’s data mark the path’s Marina del Rey end as no-ride. Yield to bicycles, keep to 15 mph and never leave a scooter on the path.',
     },
     {
       question: 'Is West Los Angeles College in Culver City?',
-      answer: 'No. Los Angeles County’s parcel map puts its campus in unincorporated Ladera Heights, so Culver City’s agreement with Bird doesn’t apply there.',
+      answer: 'No. Its campus lies in unincorporated Ladera Heights, so Culver City’s agreement with Bird doesn’t apply there.',
     },
   ],
   sources: [

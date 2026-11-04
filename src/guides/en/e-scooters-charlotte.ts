@@ -16,15 +16,14 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Charlotte?',
       blocks: [
-        'Electric scooter rental in Charlotte means **Bird** and **Lime**, the two operators the City of Charlotte’s public micromobility dashboard, run by Ride Report, lists as active in October 2026. Under the City Code (Chapter 19, adopted in January 2019), no company may run shared scooters in the public right-of-way without a permit from the City’s transportation director, who sets the permit’s terms, the most and fewest vehicles allowed and the fees. We couldn’t read the City’s current permit terms, so their caps, fees, hours and equity areas aren’t given here.',
-        'At 12:51 a.m. on Thursday 29 October 2026 the [Charlotte map](map:us:nc:Charlotte) showed about 1,620 scooters: roughly 850 Bird and 770 Lime, both as last counted, so some may have moved since. A snapshot, not the fleets. That total is every scooter in Bird’s and Lime’s Charlotte service areas, not a count within the city limits, though both areas lie almost entirely inside them, by the Census Bureau’s boundary, and Bird’s takes in UNC Charlotte’s campus too. Lime runs the campus as an area of its own: the [UNC Charlotte map](map:us:nc:UNC Charlotte) showed about 90 Lime scooters, as last counted at the same time.',
-        'For Bird the map shows each scooter’s position, charge and range; for Lime, position and charge. Scooters on a ride aren’t shown. **Not everything is on the map:** ScootRadar shows e-scooters only, so e-bikes, such as Lime’s on UNC Charlotte’s campus, aren’t on it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Electric scooter rental in Charlotte means **Bird** and **Lime**, the two operators the City of Charlotte’s public micromobility dashboard, run by Ride Report, lists as active in October 2026. Under the City Code (Chapter 19, adopted in January 2019), no company may run shared scooters in the public right-of-way without a permit from the City’s transportation director, who sets the permit’s terms, the most and fewest vehicles allowed and the fees.',
+        'At 12:51 a.m. on Thursday 29 October 2026 the [Charlotte map](map:us:nc:Charlotte) showed about 1,620 scooters: roughly 850 Bird and 770 Lime, both as last counted, so some may have moved since. A snapshot, not the fleets. Lime runs UNC Charlotte’s campus as an area of its own: the [UNC Charlotte map](map:us:nc:UNC Charlotte) showed about 90 Lime scooters, as last counted at the same time. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Bird or Lime scooter cost in Charlotte?',
       blocks: [
-        'We found no open official page with Bird’s or Lime’s Charlotte price on 29 October 2026: the app shows the rate before you unlock. The one published price we found is UNC Charlotte’s, for Lime on its campus. Signing up with a @charlotte.edu email address gets reduced-rate pricing, the university says.',
+        'The Bird or Lime app shows the rate before you unlock. On its campus, UNC Charlotte publishes Lime’s price. Signing up with a @charlotte.edu email address gets reduced-rate pricing, the university says.',
         {
           table: {
             caption: 'Lime on UNC Charlotte’s campus (Parking and Transportation Services, page updated 24 August 2026)',
@@ -55,7 +54,7 @@ const guide: Guide = {
               ['Riders', 'One person per scooter', 'City Code § 14-255'],
               ['Helmet', 'Required under 16, and a parent may not knowingly let a child ride without one', 'City Code § 14-10'],
               ['Parking', 'Allowed on the sidewalk, unlike cars', 'City Code § 14-216(a)(9)'],
-              ['Night', 'From 1:30 to 5 a.m. the map shows no Charlotte scooter for rent; we found no open copy of the City’s current hours', 'Not confirmed: check the app'],
+              ['Night', 'From 1:30 to 5 a.m. the map shows no Charlotte scooter for rent; on UNC Charlotte’s campus Lime rents around the clock', 'The Bird or Lime app has the final word; UNC Charlotte'],
               ['Age', '18 or older on UNC Charlotte’s campus; elsewhere, check the app’s terms', 'UNC Charlotte’s transportation policies'],
             ],
           },
@@ -66,14 +65,14 @@ const guide: Guide = {
     {
       heading: 'When do scooters stop in Charlotte?',
       blocks: [
-        'Open the map between 1:30 and 5 a.m. and it tells you Charlotte’s scooters can’t be rented until 5 a.m. We found no open copy of the City’s current rules for its operators, nor any report of them, to confirm those hours, so the Bird or Lime app has the final word.',
-        '**UNC Charlotte is different.** The university says Lime rents on its campus “24 hours a day, seven days a week”, under the university’s own contract, on its own land. The City’s permit covers shared scooters in the public right-of-way, under the City Code; the campus programme is the university’s. The map shows the same night hours on campus as elsewhere in the city, so from 1:30 to 5 a.m. it may show campus scooters as unavailable when the Lime app would rent them: check the app.',
+        'Open the map between 1:30 and 5 a.m. and it tells you Charlotte’s scooters can’t be rented until 5 a.m.; the Bird or Lime app has the final word.',
+        '**UNC Charlotte is different.** The university says Lime rents on its campus “24 hours a day, seven days a week”, under the university’s own contract, on its own land. The City’s permit covers shared scooters in the public right-of-way, under the City Code; the campus programme is the university’s, so at night on campus, check the Lime app.',
       ],
     },
     {
       heading: 'Parking a scooter in Charlotte',
       blocks: [
-        'The City Code lets you leave a scooter on the sidewalk, but the City’s permit says where, and we couldn’t read its current terms. The Bird or Lime app tells you where a ride may end today; the map draws no parking or no-ride zones in Charlotte (checked on 29 October 2026).',
+        'The City Code lets you leave a scooter on the sidewalk, and the City’s permit says where. The Bird or Lime app tells you where a ride may end today.',
         'The City’s draft terms of January 2019, filed with the Council (not today’s rules), wanted scooters upright, with at least six feet of sidewalk left clear for people walking, and never in a traffic lane or bike lane, at a street corner, or beside bus shelters, benches or accessible parking. Still a considerate way to park. Charlotte tracks where scooters are used and parked, to decide where to put scooter corrals, NCDOT said in 2025.',
       ],
     },
@@ -94,7 +93,7 @@ const guide: Guide = {
       heading: 'Uptown, South End and the Rail Trail',
       blocks: [
         '**Uptown.** In the sidewalk-ban blocks around Trade and Tryon Streets, ride in the street or a bike lane.',
-        '**The Rail Trail.** South End’s neighbourhood site describes the Rail Trail as a 3.5-mile linear park beside the LYNX Blue Line, reached from any South End station, and welcomes “scootering” on it. We found no posted scooter rule for the trail: slow down where it is crowded, and park clear of it.',
+        '**The Rail Trail.** South End’s neighbourhood site describes the Rail Trail as a 3.5-mile linear park beside the LYNX Blue Line, reached from any South End station, and welcomes “scootering” on it. Slow down where it is crowded, and park clear of it.',
       ],
     },
     {
@@ -102,9 +101,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**CATS buses, the LYNX Blue Line and the CityLYNX Gold Line.** We couldn’t check CATS’s own rules on scooters aboard. End your ride and park clear of the stop or station before you board.',
+            '**CATS buses, the LYNX Blue Line and the CityLYNX Gold Line.** End your ride and park clear of the stop or station before you board.',
             '**Light rail to UNC Charlotte.** Three stations serve the university, it says: UNC Charlotte Main (Cameron Boulevard) and J.W. Clay/UNC Charlotte (North Tryon Street) at the main campus, and 9th Street, near its uptown Dubois Center.',
-            '**Charlotte Douglas International Airport.** The airport lies inside the city limits but outside Bird’s and Lime’s Charlotte service areas, so don’t plan to ride there. Its ground transportation page lists rental cars, taxis, ride apps, shuttles and the CATS Sprinter bus, and no scooters.',
+            '**Charlotte Douglas International Airport.** The airport lies inside the city limits but outside Bird’s and Lime’s Charlotte service areas, so don’t plan to ride there. Its ground transportation page lists rental cars, taxis, ride apps, shuttles and the CATS Sprinter bus.',
           ],
         },
         'Elsewhere in North Carolina, cities set rules of their own: see [e-scooters in Raleigh](guide:raleigh) and [Durham](guide:durham).',
@@ -115,7 +114,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**A couch on two scooters.** In late September 2026 police stopped two men riding a small couch laid across two Lime scooters on South Tryon Street; they didn’t say whether either was cited (WBTV, 1 October 2026).',
+            '**A couch on two scooters.** In late September 2026 police stopped two men riding a small couch laid across two Lime scooters on South Tryon Street (WBTV, 1 October 2026).',
             '**4.7 million trips.** The City’s dashboard counts 4,694,200 trips on shared scooters and e-bikes from 13 June 2019 to 30 September 2026. From July to September 2026 scooters alone made 288,400, and half lasted about seven minutes or less.',
             '**A 9 p.m. curfew in 2019.** When the Council passed its scooter rules in January 2019, WBTV reported that every scooter would have to be shut down by 9 p.m.; the City’s draft permit terms said no trip could start after 9 p.m.',
             '**Parking priced by place.** Charlotte charges scooter companies according to the zone where they place their scooters, rather than a flat fee, to steer scooters to spots such as transit stops, NCDOT says.',
@@ -127,7 +126,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'What time do scooters stop in Charlotte?',
-      answer: 'Open the map between 1:30 and 5 a.m. and it tells you Charlotte’s scooters can’t be rented until 5 a.m. We found no open copy of the City’s current hours, so the Bird or Lime app has the final word. On UNC Charlotte’s campus the university says Lime rents 24 hours a day.',
+      answer: 'Open the map between 1:30 and 5 a.m. and it tells you Charlotte’s scooters can’t be rented until 5 a.m.; the Bird or Lime app has the final word. On UNC Charlotte’s campus the university says Lime rents 24 hours a day.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Charlotte?',
@@ -139,11 +138,11 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in Charlotte?',
-      answer: 'On UNC Charlotte’s campus, $1 to unlock and 29 cents a minute, the university says (August 2026). We found no open official page with Bird’s or Lime’s price elsewhere in the city, so check the app before you unlock.',
+      answer: 'On UNC Charlotte’s campus, $1 to unlock and 29 cents a minute, the university says (August 2026). Elsewhere in the city, the Bird or Lime app shows the price before you unlock.',
     },
     {
       question: 'Which scooter companies operate in Charlotte?',
-      answer: 'Bird and Lime: the City’s micromobility dashboard lists them as its active operators in October 2026, and the map shows both. On UNC Charlotte’s campus Lime runs the university’s own programme.',
+      answer: 'Bird and Lime: the City’s micromobility dashboard lists them as its active operators in October 2026. On UNC Charlotte’s campus Lime runs the university’s own programme.',
     },
     {
       question: 'Can you ride a scooter to Charlotte Douglas airport?',

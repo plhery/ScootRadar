@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Seoul 2026: Beam, Kickgoing, licence and rules',
   description: 'E-scooters in Seoul: Beam, Kickgoing, Xingxing and Swing, the driving licence and helmet Korean law requires, towing, kickboard-free streets and the parks.',
   headline: 'E-scooters in Seoul: who rents them, the licence you need, where to ride and what gets towed',
-  lede: 'E-scooters in Seoul, the “kickboards” (킥보드) of Korean signs, are rented from Beam, Kickgoing, Xingxing and Swing, and each app shows its price. Korean law asks more than many renters expect: a driving licence that covers motorised bicycles (mopeds), a helmet and no passenger. A visitor’s International Driving Permit counts only for the classes written on it, and we found no official word on which class covers an e-scooter, so check with the operator first. Ride on the cycle path or at the right-hand edge of the road, never on the pavement, and leave the scooter in a parking zone or a side street: one left on the pavement or where parking is banned can be towed as soon as someone reports it.',
+  lede: 'E-scooters in Seoul, the “kickboards” (킥보드) of Korean signs, are rented from Beam, Kickgoing, Xingxing and Swing, and each app shows its price. Korean law asks more than many renters expect: a driving licence that covers motorised bicycles (mopeds), a helmet and no passenger. A visitor’s International Driving Permit counts only for the classes written on it, so check with the operator first. Ride on the cycle path or at the right-hand edge of the road, never on the pavement, and leave the scooter in a parking zone or a side street: one left on the pavement or where parking is banned can be towed as soon as someone reports it.',
   published: '2026-10-26',
   updated: '2026-10-26',
   city: 'kr:Seoul',
@@ -25,9 +25,8 @@ const guide: Guide = {
             '**Swing**, with about 560, nearly all in Geumcheon-gu.',
           ],
         },
-        'That made about 15,700 on the [Seoul map](map:kr:Seoul) at 02:41 on Monday 26 October 2026, Seoul time: a snapshot, not a fleet size. Matched to Statistics Korea’s district boundaries between 04:00 and 04:15, most stood in Gangnam (about 3,900), Songpa (2,900), Mapo (2,400), Seocho (1,500) and Gangdong (1,200); the map showed next to none in Jongno, Jung, Yongsan and Seongdong, and few in the north-east.',
-        'The areas the map reads leave some scooters out: Beam’s north of about Gwanghwamun, in the far west and along the southern edge; Kickgoing’s in Gangdong, where the night’s count found about 1,000 Xingxing and 200 Beam scooters but no Kickgoing, and in most of Songpa; Xingxing’s in most of Gangseo; and every company’s in the far north of Dobong and Nowon. Battery levels show for Beam, Kickgoing and Xingxing; Swing gives only a rough band.',
-        'ScootRadar shows standing e-scooters only, not Seoul’s Ttareungyi (따릉이) bikes or the e-bikes Swing and others rent. The newest official count we found is from June 2021: 14 companies and 55,499 shared e-scooters. Any other company’s scooters are only in its own app.',
+        'That made about 15,700 on the [Seoul map](map:kr:Seoul) at 02:41 on Monday 26 October 2026, Seoul time: a snapshot, not a fleet size. Between 04:00 and 04:15 most stood in Gangnam (about 3,900), Songpa (2,900), Mapo (2,400), Seocho (1,500) and Gangdong (1,200).',
+        'Seoul also has its Ttareungyi (따릉이) public bikes, and Swing and others rent e-bikes. In June 2021 the city counted 14 companies running 55,499 shared e-scooters.',
         'New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -41,21 +40,21 @@ const guide: Guide = {
             '**an International Driving Permit** under the 1949 Geneva or 1968 Vienna convention, or a foreign licence that Korea recognises by treaty. It counts for a year from your arrival, and only for the classes written on it.',
           ],
         },
-        'We found no official word on which permit class covers a PM, so check with the operator before you ride: riding without a valid licence costs ₩100,000. Children under 13 may not ride, and a parent or guardian who lets them can be fined ₩100,000.',
+        'Check with the operator before you ride: riding without a valid licence costs ₩100,000. Children under 13 may not ride, and a parent or guardian who lets them can be fined ₩100,000.',
         'The operators check too. Kickgoing’s terms (in force since 1 September 2024) ask for a licence check and a mobile number and payment card in your own name; Beam’s Korean terms ask under-19s for a parent’s consent. Xingxing’s and Swing’s conditions are in their apps.',
       ],
     },
     {
       heading: 'How much does an e-scooter cost in Seoul?',
       blocks: [
-        'None of the four publishes a Seoul price on an open web page we could read on 25 or 26 October 2026 (Swing’s site didn’t answer; Beam’s terms leave prices to the app). The app shows the unlock fee and per-minute rate before you start.',
+        'The app shows the unlock fee and per-minute rate before you start.',
         'Bad parking can cost more than the ride: Seoul’s districts charge the operator ₩40,000 to tow a scooter plus ₩700 per 30 minutes in storage, and Kickgoing’s terms pass such fees, and any fine, on to you.',
       ],
     },
     {
       heading: 'Where can you ride in Seoul? Cycle paths, kickboard-free streets and the Han River',
       blocks: [
-        '**On the road.** Use the cycle path where there is one; where there is none, keep to the right-hand edge of the road. The pavement is for pedestrians unless a sign lets bicycles on it: riding there otherwise costs ₩30,000. Don’t ride two abreast, and get off and walk the scooter over a pedestrian crossing; the law sets no fine for either.',
+        '**On the road.** Use the cycle path where there is one; where there is none, keep to the right-hand edge of the road. The pavement is for pedestrians unless a sign lets bicycles on it: riding there otherwise costs ₩30,000. Don’t ride two abreast, and get off and walk the scooter over a pedestrian crossing.',
         '**Kickboard-free streets** (킥보드 없는 거리). Seoul and the Seoul Metropolitan Police Agency ban e-scooters, self-balancing boards and throttle-only e-bikes from five crowded streets, signed with the section and hours. Riding through costs ₩30,000 and 15 penalty points (₩60,000 and 30 points in a children’s protection zone), though officers may just warn you, and scooters left nearby where parking is banned are towed:',
         {
           list: [
@@ -97,22 +96,20 @@ const guide: Guide = {
           },
         },
         { note: '**No licence, no ride.** Korean law treats an e-scooter like a moped: without a licence or permit that covers one you can’t ride it legally, however short the trip.' },
-        'We found no night ban or season for e-scooters in Seoul, from the city, a district or an operator.',
       ],
     },
     {
       heading: 'The subway, the palaces and the airports',
       blocks: [
-        '**Seoul Metro.** Its terms for lines 1 to 8, amended on 7 March 2026, bar any lithium-battery vehicle except mobility aids from stations and trains from 1 July 2026, with a ₩10,000 surcharge; riding a PM there is banned too. We couldn’t check Korail’s rules for its lines.',
-        '**The royal palaces** (Gyeongbokgung and the others, and Jongmyo). The Korea Heritage Service’s visiting rules name no e-scooter, but let staff turn away anyone carrying sports or play equipment or anything that could disturb other visitors, hold the item or end the visit.',
-        '**Incheon Airport** bans riding bicycles, skateboards, kickboards and other personal mobility devices inside its passenger terminals. **Gimpo Airport**’s pages said nothing on scooters on 25 October 2026.',
-        '**Universities** published no campus rule we could find on 25 October 2026: follow the signs on campus.',
+        '**Seoul Metro.** Its terms for lines 1 to 8, amended on 7 March 2026, bar any lithium-battery vehicle except mobility aids from stations and trains from 1 July 2026, with a ₩10,000 surcharge; riding a PM there is banned too.',
+        '**The royal palaces** (Gyeongbokgung and the others, and Jongmyo). The Korea Heritage Service’s visiting rules let staff turn away anyone carrying sports or play equipment or anything that could disturb other visitors, hold the item or end the visit.',
+        '**Incheon Airport** bans riding bicycles, skateboards, kickboards and other personal mobility devices inside its passenger terminals.',
       ],
     },
     {
       heading: 'Goyang, Seongnam, Bucheon and Hanam',
       blocks: [
-        'The towns around Seoul belong to Gyeonggi Province and are counted apart. At 02:41 on 26 October the map showed about 4,900 scooters in [Goyang](map:kr:Goyang), 4,000 in [Seongnam](map:kr:Seongnam), 3,600 in Bucheon and 2,500 in [Hanam](map:kr:Hanam). The same national law applies there; Seoul’s towing rules and kickboard-free streets stop at the city limits.',
+        'The towns around Seoul belong to Gyeonggi Province. At 02:41 on 26 October the map showed about 4,900 scooters in [Goyang](map:kr:Goyang), 4,000 in [Seongnam](map:kr:Seongnam), 3,600 in Bucheon and 2,500 in [Hanam](map:kr:Hanam). The same national law applies there; Seoul’s towing rules and kickboard-free streets stop at the city limits.',
       ],
     },
     {
@@ -122,7 +119,6 @@ const guide: Guide = {
           list: [
             '**Seoul opened Korea’s first kickboard-free streets** on 16 May 2025. That August, 98.4% of 500 people surveyed around them wanted more.',
             '**In a city poll of 1,000 residents in September 2024, 75.6% backed a ban on rental e-scooters in Seoul.** That November the city announced towing without a grace period and plans for kickboard-free streets.',
-            '**Seoul has no e-scooter night ban or season**, unlike [Helsinki](guide:helsinki), where rental scooters stop on Friday and Saturday nights and run, in principle, from 1 April to 30 November.',
           ],
         },
       ],
@@ -131,7 +127,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooters can you rent in Seoul?',
-      answer: 'Beam, Kickgoing, Xingxing and Swing, all four on our map. Kickgoing and Xingxing belong to the same company, PUMP.',
+      answer: 'Beam, Kickgoing, Xingxing and Swing; Kickgoing and Xingxing belong to the same company, PUMP. Find them on the [Seoul map](map:kr:Seoul).',
     },
     {
       question: 'Do you need a driving licence to ride an e-scooter in Seoul?',
@@ -139,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Can tourists rent an e-scooter in Seoul?',
-      answer: 'Only with an International Driving Permit or a recognised foreign licence, for up to a year after arriving and only for the classes written on it. We found no official word on which class covers an e-scooter, so ask the operator first. Kickgoing checks your licence and wants a mobile number and card in your own name.',
+      answer: 'Only with an International Driving Permit or a recognised foreign licence, for up to a year after arriving and only for the classes written on it. Ask the operator before you ride. Kickgoing checks your licence and wants a mobile number and card in your own name.',
     },
     {
       question: 'Is a helmet compulsory on an e-scooter in Korea?',
@@ -166,7 +162,6 @@ const guide: Guide = {
     { title: 'Seoul Metropolitan Government: e-scooter towing from 15 July 2021 (Korean)', url: 'https://news.seoul.go.kr/traffic/archives/506074' },
     { title: 'Seoul Metropolitan Government: PM parking zones (modified 12 February 2026, Korean)', url: 'https://news.seoul.go.kr/traffic/human/personal-mobilty-pkspot' },
     { title: 'Seoul Open Data: e-scooter towing records, July to December 2025 (Korean)', url: 'https://data.seoul.go.kr/dataList/OA-21304/F/1/datasetView.do' },
-    { title: 'Statistics Korea SGIS: district boundaries, 30 June 2025 (Public Data Portal, Korean)', url: 'https://www.data.go.kr/data/15129688/fileData.do' },
     { title: 'Seoul ordinance on the Han River parks, as in force 1 October 2026 (Korean)', url: 'https://www.law.go.kr/LSW/ordinInfoP.do?ordinSeq=2171805' },
     { title: 'Seoul Metro: passenger terms for lines 1 to 8, amended 7 March 2026 (Korean)', url: 'https://www.seoulmetro.co.kr/kr/page.do?menuIdx=528' },
     { title: 'Korea Heritage Service: royal palaces visiting rules (Korean)', url: 'https://royal.khs.go.kr/ROYAL/contents/R704000000.do' },

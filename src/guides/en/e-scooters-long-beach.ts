@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Long Beach 2026: Lime, Bird, rules, parking',
   description: 'E-scooters in Long Beach: Lime and Bird under City permits, prices in the app, California rules, the beach bike path, CSULB, parking and no-ride areas.',
   headline: 'E-scooters in Long Beach: Lime and Bird, the rules, the beach path and where to park',
-  lede: 'You can rent e-scooters in Long Beach from Lime and Bird, the two companies the City names as its permitted operators. Only Lime’s scooters are on our map: look for Bird’s in the Bird app. We found no open page with their Long Beach prices, so check the app before you unlock. California law asks for a driving licence or instruction permit and caps scooters at 15 mph; the City adds a minimum age of 18, bans riding on every sidewalk and keeps shared scooters out of parks, the Port and the airport.',
+  lede: 'You can rent e-scooters in Long Beach from Lime and Bird, the two companies the City names as its permitted operators. Check the price in the app before you unlock. California law asks for a driving licence or instruction permit and caps scooters at 15 mph; the City adds a minimum age of 18, bans riding on every sidewalk and keeps shared scooters out of parks, the Port and the airport.',
   published: '2026-10-29',
   updated: '2026-10-29',
   city: 'us:ca:Long Beach',
@@ -17,16 +17,15 @@ const guide: Guide = {
       heading: 'Which e-scooters can you rent in Long Beach?',
       blocks: [
         'Electric scooter rental in Long Beach runs under the City’s Shared Micromobility Program, in place since August 2020. The City may permit up to four e-scooter companies, for a year from each 1 October, under regulations last updated in August 2026.',
-        'Two companies run under them: **Lime** and **Bird**. A Public Works memo of 5 March 2026 called them the City’s permitted operators, and the City’s programme page still listed both on 29 October 2026. Bird rents here but isn’t on our map, and we found no other company renting scooters.',
+        'Two companies run under them: **Lime** and **Bird**. A Public Works memo of 5 March 2026 called them the City’s permitted operators, and the City’s programme page still listed both on 29 October 2026.',
         'The City caps the programme at 3,000 e-scooters, shared out among the companies as it decides. Each company pays $25,000 a year for its permit, $75 a scooter a year and 25 cents a trip, and must keep at least 20% of its fleet in each of three areas of the city. A permit covers the city only: companies may not place scooters in Lakewood, Seal Beach or Signal Hill.',
-        'At 11:51 p.m. on Wednesday 28 October 2026 the [Long Beach map](map:us:ca:Long Beach) showed about 1,480 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. About a quarter of Lime’s Long Beach area lies in San Pedro and Wilmington, and the map counts scooters there under [Los Angeles](map:us:ca:Los Angeles). The Long Beach total covers the rest: more than nine-tenths of it inside the city limits, most of the remainder in Signal Hill, the small city Long Beach surrounds.',
-        'For Lime the map shows each scooter’s position and charge, seated scooters included if it has any here, but not those on a ride. E-bikes and the City’s zones aren’t on it: the apps have them. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 11:51 p.m. on Wednesday 28 October 2026 the [Long Beach map](map:us:ca:Long Beach) showed about 1,480 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. About a quarter of Lime’s Long Beach area lies in San Pedro and Wilmington, in [Los Angeles](map:us:ca:Los Angeles). **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime or Bird scooter cost in Long Beach?',
       blocks: [
-        'We found no open page with Lime’s or Bird’s Long Beach price on 29 October 2026. Each company sets its own price, usually a fee to start plus a charge per minute, the City says: check the app before you unlock.',
+        'Each company sets its own price, usually a fee to start plus a charge per minute, the City says: check the app before you unlock.',
         '**Riders on low incomes** can ride for less: the City makes every company run a reduced-rate plan, and lists Lime Access and Bird Community Pricing. Companies must also reward riders who park in a marked drop zone.',
         '**Prefer a bike?** Long Beach Bike Share rents bikes from hubs across the city; in October 2026 the City Council was choosing its next operator.',
       ],
@@ -77,9 +76,9 @@ const guide: Guide = {
       heading: 'The beach bike path, the Shoreline and downtown',
       blocks: [
         '**The beach bike path.** After a 6–1 City Council vote in April 2025, a 12-month pilot opened the Shoreline Pedestrian Bike Path between Alamitos Avenue and 54th Place to e-scooters, shared and owned, from 24 May 2025. Ride on the bike side only, never on the walkway; keep under 15 mph and slow to 5 mph near people. Shared scooters slow to 5 mph by themselves near the concessions, the restrooms and Belmont Pier, and can only end a ride in one of 16 corrals.',
-        'Is it still open? On 29 October 2026 the City’s programme page still said the pilot “is active as of May 24, 2025”, though its 12 months ran to May 2026. We found no final report and no decision to keep or end it, and the City’s undated page of scooter laws still lists the old ban. Follow the app: it slows or stops a shared scooter where the City says.',
+        'Is it still open? On 29 October 2026 the City’s programme page still said the pilot “is active as of May 24, 2025”, though its 12 months ran to May 2026, and the City’s undated page of scooter laws still lists the old ban. Follow the app: it slows or stops a shared scooter where the City says.',
         '**Downtown and the Shoreline.** The City’s rules keep shared scooters out of public parks and the Long Beach Convention Center, and off the waiting and boarding areas of transit stops, such as the 1st Street Transit Gallery. Its geofence map bans riding near the entrance to the Aquarium of the Pacific, caps speed at 5 mph around it, and sets a slow zone of 6 to 8 mph in Bluff Park.',
-        '**Night and events.** The City’s August 2026 regulations set no riding hours, and the map shows scooters at every hour; the app has the final word. For the Grand Prix in April, Pride in May or June, the Jazz Festival in August, the Marathon in October and Beach Streets, the City can close areas to scooters and set temporary parking zones.',
+        '**Events.** For the Grand Prix in April, Pride in May or June, the Jazz Festival in August, the Marathon in October and Beach Streets, the City can close areas to scooters and set temporary parking zones.',
       ],
     },
     {
@@ -89,9 +88,9 @@ const guide: Guide = {
           list: [
             '**Cal State Long Beach (CSULB).** The campus is a dismount zone: you may ride a rented scooter to campus but must leave it at a drop-off zone on its edge, the university says, and personal e-scooters aren’t allowed on campus at all. Lime’s Long Beach area takes in the campus, but the City’s rules keep a company’s scooters geofenced off it unless CSULB grants that company access.',
             '**Metro’s A Line.** Metro’s Customer Code of Conduct bans riding any scooter in its stations and trains: walk one through. The City’s rules keep shared scooters off Metro property altogether.',
-            '**Long Beach Transit buses.** Bikes ride on the front racks; we found no Long Beach Transit rule on scooters.',
+            '**Long Beach Transit buses.** Bikes ride on the front racks; park a shared scooter at least 10 feet from the stop before you board.',
             '**Long Beach Airport (LGB).** The City’s rules bar shared scooters from the airport. The airport lists Long Beach Transit routes 102, 104, 111 and 405, and the A Line’s Wardlow station as the nearest rail stop.',
-            '**The Port and the Queen Mary.** The City’s rules also keep shared scooters out of the Port of Long Beach; we found no rule of the Port’s own. The no-ride area the map draws over the harbour and Terminal Island is Bird’s, from its Los Angeles service. The Queen Mary, across the harbour, lies outside Lime’s Long Beach area, and its FAQ names no scooter rule.',
+            '**The Port and the Queen Mary.** The City’s rules also keep shared scooters out of the Port of Long Beach. Bird’s Los Angeles service marks the harbour and Terminal Island as a no-ride area, which the map draws. The Queen Mary, across the harbour, lies outside Lime’s Long Beach area.',
           ],
         },
       ],
@@ -113,11 +112,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'How much does an electric scooter rental cost in Long Beach?',
-      answer: 'We found no open page with Lime’s or Bird’s Long Beach price on 29 October 2026, so check the app before you unlock. Both offer reduced fares to riders on low incomes: Lime Access and Bird Community Pricing.',
+      answer: 'Each company sets its own price, usually a fee to start plus a charge per minute, the City says: check the app before you unlock. Both offer reduced fares to riders on low incomes: Lime Access and Bird Community Pricing.',
     },
     {
       question: 'Which scooter companies operate in Long Beach?',
-      answer: 'Lime and Bird, under City permits: the City named them as its permitted operators in March 2026 and still listed both on 29 October 2026. Only Lime’s scooters are on our map; Bird’s are in the Bird app.',
+      answer: 'Lime and Bird, under City permits: the City named them as its permitted operators in March 2026 and still listed both on 29 October 2026.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Long Beach?',
@@ -125,7 +124,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a scooter on the Long Beach beach bike path?',
-      answer: 'Since 24 May 2025 a City pilot has let e-scooters use the bike side of the path between Alamitos Avenue and 54th Place, at up to 15 mph and 5 mph near people. The pilot was set for 12 months; on 29 October 2026 the City still called it active, and we found no decision to keep or end it, so follow the app.',
+      answer: 'Since 24 May 2025 a City pilot has let e-scooters use the bike side of the path between Alamitos Avenue and 54th Place, at up to 15 mph and 5 mph near people. The pilot was set for 12 months; on 29 October 2026 the City still called it active. Follow the app.',
     },
     {
       question: 'How old do you have to be to rent a scooter in Long Beach?',

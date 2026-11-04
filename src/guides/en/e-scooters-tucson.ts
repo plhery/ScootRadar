@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters in Tucson 2026: Lime, rules, where to ride',
   description: 'E-scooters in Tucson: renting Lime, Arizona and City rules, sidewalks, parking near the UA, its campus ban, The Loop, Sun Link and Sun Tran.',
   headline: 'E-scooters in Tucson: Lime, the rules, the UA campus and The Loop',
-  lede: 'You can rent e-scooters in Tucson from Lime, which replaced Spin in mid-August 2025 and rents under the City’s shared mobility permit; we found no other scooter company renting there in October 2026. No open official source gives Lime’s Tucson price, so check the app before you unlock. Arizona law treats you much like a cyclist and asks for no licence or helmet, but stay off the sidewalk, and keep your scooter off the University of Arizona campus and The Loop, which both ban e-scooters.',
+  lede: 'You can rent e-scooters in Tucson from Lime, which replaced Spin in mid-August 2025 and rents under the City’s shared mobility permit. Check the price in the app before you unlock. Arizona law treats you much like a cyclist and asks for no licence or helmet, but stay off the sidewalk, and keep your scooter off the University of Arizona campus and The Loop, which both ban e-scooters.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'us:az:Tucson',
@@ -16,15 +16,14 @@ const guide: Guide = {
     {
       heading: 'Which e-scooters can you rent in Tucson?',
       blocks: [
-        'Electric scooter rental in Tucson means **Lime**. The City’s scooter pilot began in September 2019 with two companies, Bird and Razor, as the University of Arizona noted that month, and in August 2021 the City’s Department of Transportation and Mobility made the programme permanent with Spin and Razor, BizTucson reported. In mid-August 2025 Lime replaced Spin, KVOA reported, and since then it has rented scooters under the City’s shared mobility permit, KOLD reported in March 2026. We found no other company renting scooters in Tucson in October 2026.',
-        'At 3:34 p.m. on Thursday 29 October 2026 the [Tucson map](map:us:az:Tucson) showed about 650 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. That total takes in Lime’s whole Tucson area, which runs beyond the city line into the separate City of South Tucson. Tucson International Airport lies outside it.',
-        'For each Lime scooter the map shows its position and charge, but no price and no zones. Only scooters are on it: if Lime rents anything else in Tucson, the app shows it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
+        'Electric scooter rental in Tucson means **Lime**. The City’s scooter pilot began in September 2019 with two companies, Bird and Razor, as the University of Arizona noted that month, and in August 2021 the City’s Department of Transportation and Mobility made the programme permanent with Spin and Razor, BizTucson reported. In mid-August 2025 Lime replaced Spin, KVOA reported, and since then it has rented scooters under the City’s shared mobility permit, KOLD reported in March 2026.',
+        'At 3:34 p.m. on Thursday 29 October 2026 the [Tucson map](map:us:az:Tucson) showed about 650 Lime scooters as last counted, so some may have moved since: the map’s count, not Lime’s fleet. Lime’s Tucson area runs beyond the city line into the separate City of South Tucson; Tucson International Airport lies outside it. **First ride?** See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a Lime scooter cost in Tucson?',
       blocks: [
-        'We found no open official source for Lime’s Tucson fares in 2026. The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts. When Lime arrived in 2025 it offered free unlocks for a few weeks, KVOA reported in September that year.',
+        'The Lime app shows the unlock fee and the rate per minute before you start, and any offer that applies, and that is the price that counts. When Lime arrived in 2025 it offered free unlocks for a few weeks, KVOA reported in September that year.',
       ],
     },
     {
@@ -67,12 +66,11 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'The University of Arizona, Pima Community College and The Loop',
+      heading: 'The University of Arizona and The Loop',
       blocks: [
         {
           list: [
             '**University of Arizona.** E-scooters, your own or a shared company’s, are banned on campus unless the University expressly approves them, and unauthorised scooters face fines and impoundment, its Parking & Transportation Services says. It has set aside scooter parking around the edge of campus, so park there and walk in. Riders with a mobility disability may use a scooter registered with the Disability Resource Center and PTS.',
-            '**Pima Community College.** We found no e-scooter rule of the College’s own: follow the signs on each campus.',
             '**The Loop.** Pima County’s Chuck Huckelberry Loop, more than 138 miles of paved paths and bike lanes linking the Santa Cruz, Rillito, Pantano and Cañada del Oro river parks, bans every motorised vehicle or device, scooters included; only ADA mobility devices and official vehicles are exempt. It is open from sunrise to sunset, and a rider who breaks the rule risks a citation under Pima County Park Rule 1.070, a Class 2 misdemeanour. Arizona law lets the County ban scooters there (A.R.S. § 28-819(D)).',
           ],
         },
@@ -89,7 +87,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a Lime scooter at night in Tucson?',
       blocks: [
-        'We found no open source for Lime’s riding hours in Tucson in 2026, so check the Lime app before a late ride. The Loop is open from sunrise to sunset only, and Pima County bans night-time use. After dark Arizona law requires a white front light visible from 500 feet and a red rear reflector.',
+        'Check the Lime app before a late ride. The Loop is open from sunrise to sunset only, and Pima County bans night-time use. After dark Arizona law requires a white front light visible from 500 feet and a red rear reflector.',
       ],
     },
     {
@@ -110,11 +108,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which scooter companies operate in Tucson?',
-      answer: 'Lime, which replaced Spin in mid-August 2025, KVOA reported, and rents scooters under the City’s shared mobility permit, KOLD reported in March 2026. We found no other scooter company renting in Tucson in October 2026. Find a Lime scooter on the [Tucson map](map:us:az:Tucson).',
+      answer: 'Lime, which replaced Spin in mid-August 2025, KVOA reported, and rents scooters under the City’s shared mobility permit, KOLD reported in March 2026. Find a Lime scooter on the [Tucson map](map:us:az:Tucson).',
     },
     {
       question: 'How much is a Lime scooter in Tucson?',
-      answer: 'No open official source gives Lime’s Tucson price in 2026: the Lime app shows the unlock fee and the rate per minute before you ride.',
+      answer: 'The Lime app shows the unlock fee and the rate per minute before you ride.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Tucson?',

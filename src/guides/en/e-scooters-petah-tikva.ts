@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Petah Tikva 2026: Lime, Dott, rules and parking',
   description: 'E-scooters in Petah Tikva: Lime and Dott, the City’s permit terms, prices, the licence or test, helmet fines, parking bays and the Red Line.',
   headline: 'E-scooters in Petah Tikva: Lime and Dott, the City’s tenders, parking bays, the Red Line and Shabbat',
-  lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott, both on our map. Each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
+  lede: 'You can rent e-scooters in Petah Tikva with Lime or Dott. Each app shows its price before you unlock. Israeli rules let you ride from 16, with a helmet and a driving licence or a passed test, and never on the sidewalk, the Israeli news site Ice reported in 2024.',
   published: '2026-10-30',
   updated: '2026-10-30',
   city: 'il:Petah Tikva',
@@ -18,15 +18,14 @@ const guide: Guide = {
       blocks: [
         'At 04:27 Israel time on Friday 30 October 2026 the [Petah Tikva map](map:il:Petah Tikva) showed 1,066 scooters inside the city’s boundary: 671 Lime and 395 Dott. That’s what stood there at that moment, not the size of the fleets.',
         'In September 2025 **Dott** and **Lime** were the two companies running shared scooters in Petah Tikva, the local news site PTNews reported, and on 25 October 2026 the news site Kipa listed Petah Tikva among the seven towns where Dott ran them.',
-        '**Bird**, which rents in Ramat Gan and Tel Aviv, didn’t win the 2023 tender and wasn’t one of the two companies PTNews named in 2025; our Petah Tikva map doesn’t show it. ScootRadar shows e-scooters only, not e-bikes or bike share. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Bird**, which rents in Ramat Gan and Tel Aviv, didn’t win the 2023 tender and wasn’t one of the two companies PTNews named in 2025. New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         {
           table: {
             caption: 'Who rents e-scooters in Petah Tikva, 30 October 2026',
             head: ['Company', 'On our map at 04:27', 'Price', 'City permit'],
             rows: [
-              ['Lime', 'Yes: 671', 'In the app', 'Won the 2023 tender'],
-              ['Dott', 'Yes: 395', '₪5 to unlock, ₪1.25 a minute, on the map', 'Won the 2023 tender'],
-              ['Bird', 'No', '–', 'Won in 2021, not in 2023'],
+              ['Lime', '671', 'In the app', 'Won the 2023 tender'],
+              ['Dott', '395', '₪5 to unlock, ₪1.25 a minute, on the map', 'Won the 2023 tender'],
             ],
           },
         },
@@ -36,12 +35,12 @@ const guide: Guide = {
       heading: 'Petah Tikva’s scooter tenders: who won, and on what terms',
       blocks: [
         'Petah Tikva’s shared scooters have run under permits from the Petah Tikva Development Company (HaHevra LePituah Petah Tikva), a company the City owns and has authorised to choose operators. Bird and Lime won the City’s 2021 call for operators, Bahazit reported, and Lime and Dott won its 2023 tender, Ice reported.',
-        'The 2023 permits ran from 1 May 2023 to 30 April 2024, and the Development Company could extend them a year at a time, to 30 April 2026 at the latest. On 26 August 2026 it published a new tender for up to two permits, each for at least 200 scooters and no more than 800 vehicles, up to 200 of them e-bikes. Bids closed on 5 October 2026. We found no result by 29 October, nor anything on what has applied since April, so we can’t say who holds a permit now.',
+        'The 2023 permits ran from 1 May 2023 to 30 April 2024, and the Development Company could extend them a year at a time, to 30 April 2026 at the latest. On 26 August 2026 it published a new tender for up to two permits, each for at least 200 scooters and no more than 800 vehicles, up to 200 of them e-bikes. Bids closed on 5 October 2026.',
         'The 2023 contract set the companies’ terms, and the 2026 tender’s draft contract repeats them. Each company had to:',
         {
           list: [
             'keep renting 24 hours a day, 364 days a year, with no rentals on Yom Kippur, though the Development Company may limit hours or areas;',
-            'make its scooters obey the no-ride zones and 15 km/h slow zones the Development Company sets (we found no published list: watch the app);',
+            'make its scooters obey the no-ride zones and 15 km/h slow zones the Development Company sets: watch the app for them;',
             'equip at least 75% of its scooters with a helmet, and show in the app which ones have one;',
             'scan each rider’s ID at sign-up to check their age, with one person per account and one scooter at a time;',
             'in areas set as bays-only, stop riders ending a ride outside a marked bay: the meter keeps running, and the app warns of a fine.',
@@ -52,7 +51,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Petah Tikva?',
       blocks: [
-        'Our map shows Dott’s price in Petah Tikva: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. We found no current Petah Tikva price published by Lime or the City, so check Lime’s app: it shows the unlock fee and the rate before you start.',
+        'Our map shows Dott’s price in Petah Tikva: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026. Lime’s app shows its unlock fee and rate before you start.',
         'Fines cost far more than rides. Since 1 August 2024 every e-scooter in Israel has had to be registered and carry an ID plate, a duty that falls on its owner, Ice reported, so on a shared scooter it’s the company’s. On a scooter of your own, riding without a plate has cost ₪750 since 1 September 2026, Maariv reported.',
       ],
     },
@@ -60,7 +59,6 @@ const guide: Guide = {
       heading: 'Do you need a licence for an e-scooter in Petah Tikva?',
       blocks: [
         'Yes. Israel’s rules ask every rider for a driving licence or, without one, a passed riding or theory test, Ice reported in 2024. Riding without either has carried a ₪750 fine since 2022, Srugim reported.',
-        'We found no news report on whether a visitor’s foreign licence counts, and no page from Lime or Dott on how they check one, so carry your licence and follow what your app asks for.',
         { note: '**Carry your driving licence and wear a helmet.** Since 2022 municipal inspectors, not only the police, can fine you for riding without either, Srugim reported.' },
         'The minimum age is 16; riding younger costs ₪1,000, Srugim reported in 2022.',
       ],
@@ -102,8 +100,8 @@ const guide: Guide = {
       heading: 'The Red Line, trains, Beilinson and Shabbat',
       blocks: [
         '**The Red Line.** Tel Aviv’s light rail starts at its Central Station stop, by Petah Tikva’s Central Bus Station, and runs west along Jabotinsky Road at street level, stopping at Pinsker, Krol, Dankner, Beilinson, Shacham and Shenkar before it drops into a tunnel at Highway 4; a branch serves Kiryat Arye. When it opened in August 2023, scooters and bikes could board only if they fold and are folded, Walla reported. A shared scooter doesn’t fold: end your ride near the stop, in a bay if there is one, and walk in.',
-        '**Trains.** Israel Railways has two stations in the city. Petah Tikva–Kiryat Arye stands in the northern business district by HaMoshava Stadium, with the Red Line’s Kiryat Arye stop across the tracks through a pedestrian tunnel; Petah Tikva–Segula is in the north-east, across from the Segula industrial zone. We found no Israel Railways rule on e-scooters, so end your ride before you go in.',
-        '**Beilinson.** Rabin Medical Center, home to Beilinson Hospital and Schneider children’s hospital, stands by the Red Line’s Beilinson stop, which has bays on both sides. We found no hospital rule on e-scooters: end your ride in a bay and walk in.',
+        '**Trains.** Israel Railways has two stations in the city. Petah Tikva–Kiryat Arye stands in the northern business district by HaMoshava Stadium, with the Red Line’s Kiryat Arye stop across the tracks through a pedestrian tunnel; Petah Tikva–Segula is in the north-east, across from the Segula industrial zone. End your ride before you go in.',
+        '**Beilinson.** Rabin Medical Center, home to Beilinson Hospital and Schneider children’s hospital, stands by the Red Line’s Beilinson stop, which has bays on both sides. End your ride in a bay and walk in.',
         '**Shabbat.** Trains don’t run on Shabbat or Jewish holidays. The Red Line’s last train on Friday leaves about three hours before Shabbat begins, and it doesn’t run on Saturday until sundown. The 2023 contract had the companies rent around the clock, Shabbat included, with no rentals on Yom Kippur; check the app.',
       ],
     },
@@ -130,15 +128,15 @@ const guide: Guide = {
   faq: [
     {
       question: 'Which e-scooter apps work in Petah Tikva?',
-      answer: 'Lime and Dott are both on our [Petah Tikva map](map:il:Petah Tikva): 671 Lime and 395 Dott scooters inside the city at 04:27 on 30 October 2026.',
+      answer: 'Lime and Dott, the two companies PTNews named in September 2025. The [Petah Tikva map](map:il:Petah Tikva) showed 671 Lime and 395 Dott scooters inside the city at 04:27 on 30 October 2026.',
     },
     {
       question: 'How much does a Lime scooter cost in Petah Tikva?',
-      answer: 'We found no published Petah Tikva price for Lime, so its app shows the unlock fee and the rate before you start. Dott’s is on our map: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026.',
+      answer: 'Lime’s app shows its unlock fee and rate before you start. Dott’s price is on our map: ₪5 to unlock, then ₪1.25 a minute, on 30 October 2026.',
     },
     {
       question: 'Do I need a licence to ride an e-scooter in Petah Tikva as a tourist?',
-      answer: 'Yes. Every rider needs a driving licence or, without one, a passed test, Ice reported in 2024. We found no report on whether a foreign licence counts, so carry yours and follow what the app asks for.',
+      answer: 'Yes. Every rider needs a driving licence or, without one, a passed test, Ice reported in 2024: carry yours and follow what the app asks for.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Petah Tikva?',

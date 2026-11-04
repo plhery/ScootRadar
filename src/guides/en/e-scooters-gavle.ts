@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooters Gävle 2026: Voi, the season and the rules',
   description: 'E-scooters in Gävle: Voi, the only company allowed, its usual May–October season, slow zones, where to ride and park, X-trafik buses and Sweden’s fines.',
   headline: 'E-scooters in Gävle: Voi’s season, and where to ride and park',
-  lede: 'E-scooters in Gävle are rented from Voi alone: it won the municipality’s procurement and is the only company allowed to put out hire scooters, and they are normally out from May to October, Gävle kommun says (September 2026). Voi scooters were still on our map on 29 October 2026, and we found no end date for this season: check the Voi app. The map shows where they stand, and from zoom 14 two of the slow zones, but no prices or other zones. Ride on the cycle lane or the road, never on the pavement, and end your ride at an approved parking place, such as a cycle rack.',
+  lede: 'E-scooters in Gävle are rented from Voi alone: it won the municipality’s procurement and is the only company allowed to put out hire scooters, and they are normally out from May to October, Gävle kommun says (September 2026); they were still on the streets on 29 October 2026, so check the Voi app. Ride on the cycle lane or the road, never on the pavement, and end your ride at an approved parking place, such as a cycle rack.',
   published: '2026-10-29',
   updated: '2026-11-03',
   city: 'se:Gävle',
@@ -19,22 +19,21 @@ const guide: Guide = {
         'Gävle chose its e-scooter company by public procurement. Voi won it, and Gävle kommun (the Municipality of Gävle) says Voi is the only provider allowed to put out hire e-scooters and e-bikes in the town (page updated 11 September 2026):',
         {
           table: {
-            caption: 'E-scooter companies in Gävle and what the map shows, October 2026',
-            head: ['Company', 'Allowed in Gävle, as the municipality says', 'On the ScootRadar map'],
+            caption: 'E-scooter companies in Gävle, October 2026',
+            head: ['Company', 'Allowed in Gävle, as the municipality says'],
             rows: [
-              ['Voi', 'Yes, the only one, under the agreement it won', 'Yes, with battery'],
-              ['Bolt, Lime, Qick, Ryde and others', 'No', 'No'],
+              ['Voi', 'Yes, the only one, under the agreement it won'],
+              ['Bolt, Lime, Qick, Ryde and others', 'No'],
             ],
           },
         },
-        'At 15:55 on Thursday 29 October 2026 the [map of Gävle](map:se:Gävle) showed about 940 Voi scooters as they stood at that moment: a snapshot, not the fleet size. Scooters on a ride aren’t shown, nor prices, parking places or Voi’s e-bikes; of the zones it draws only the slow ones on Drottninggatan and Centralplan, from zoom 14.',
-        'That total takes in the whole town, Valbo and Furuvik, in an area that also reaches into Skutskär, in neighbouring Älvkarleby municipality, and into the east of Sandviken municipality, short of Sandviken town.',
+        'At 15:55 on Thursday 29 October 2026 the [map of Gävle](map:se:Gävle) showed about 940 Voi scooters as they stood at that moment: a snapshot, not the fleet size.',
       ],
     },
     {
       heading: 'How much does a Voi scooter cost in Gävle?',
       blocks: [
-        '**The app shows the price** before you unlock. We found no Gävle price on an open official page, and the municipality’s page names none.',
+        '**The app shows the price** before you unlock.',
         'Check the Voi app for its age limit and fees too. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -50,9 +49,9 @@ const guide: Guide = {
             '**Removals:** Voi’s operations team watches the fleet every day and moves scooters and e-bikes that are badly parked, outside the operating area or bunched together, most of them in the mornings and evenings.',
           ],
         },
-        'Our [Gävle map](map:se:Gävle) draws Drottninggatan’s pedestrian street, from Vågskrivargatan to Centralplan, and Centralplan as slow zones from zoom 14, credited to the municipality, on OpenStreetMap’s streets; the municipality gives no speed for them, nor says which parts of Nygatan, which aren’t drawn.',
-        'On 5 May 2026 the municipality said the scooters were back for the season. They were still on our map on 29 October 2026; we found no end date for this season, so check the Voi app. We also found no published cap and no night ban, night speed limit or other night rule for riders.',
-        'On those 2+1+1 terms, 2026 is the last season the agreement can cover. We found no decision by the municipality on what follows, so check its page before next spring.',
+        'Our [Gävle map](map:se:Gävle) draws Drottninggatan’s pedestrian street, from Vågskrivargatan to Centralplan, and Centralplan as slow zones from zoom 14, credited to the municipality, on OpenStreetMap’s streets.',
+        'On 5 May 2026 the municipality said the scooters were back for the season. They were still out on 29 October 2026, so check the Voi app.',
+        'On those 2+1+1 terms, 2026 is the last season the agreement can cover, so check the municipality’s page before next spring.',
       ],
     },
     {
@@ -96,13 +95,12 @@ const guide: Guide = {
         'Ride on the cycle lane, or the road, and expect your scooter to slow down on Drottninggatan, parts of Nygatan and Centralplan. Outside central Gävle you can’t end a ride just anywhere, so check the app before you ride out to Furuvik. Each landowner below sets its own rules:',
         {
           table: {
-            caption: 'Rules on land owned by others, as each owner states them, October 2026',
+            caption: 'What the owners of these places say, October 2026',
             head: ['Place', 'Who says so', 'What it says'],
             rows: [
-              ['Gävle Central', 'Jernhusen, the station’s owner', 'No e-scooter rule on its station page (read 29 October 2026); some of the municipality’s racks are near the station'],
-              ['University of Gävle (Högskolan i Gävle), Kungsbäcksvägen 47', 'The university', 'No e-scooters, bicycles or other wheeled transport indoors: you may not ride or use them in its buildings, and for fire safety no bike batteries may be taken in (11 June 2026); we found no outdoor rule. Some of the municipality’s racks are near Kungsbäck'],
-              ['Boulognerskogen', 'Gävle kommun', 'Cycling in the park is fine, on pedestrians’ terms, along the signposted foot-and-cycle paths (October 2025); no e-scooter rule of its own'],
-              ['Furuviksparken', 'Furuvik', 'About 10 km south of Gävle, reached by an asphalted, lit cycle path all the way from town, by bus 501 or by train, whose platform is just outside the main entrance; no e-scooter rule on its pages or in its FAQ'],
+              ['University of Gävle (Högskolan i Gävle), Kungsbäcksvägen 47', 'The university', 'No e-scooters, bicycles or other wheeled transport indoors: you may not ride or use them in its buildings, and for fire safety no bike batteries may be taken in (11 June 2026). Some of the municipality’s racks are near Kungsbäck'],
+              ['Boulognerskogen', 'Gävle kommun', 'Cycling in the park is fine, on pedestrians’ terms, along the signposted foot-and-cycle paths (October 2025)'],
+              ['Furuviksparken', 'Furuvik', 'About 10 km south of Gävle, reached by an asphalted, lit cycle path all the way from town, by bus 501 or by train, whose platform is just outside the main entrance'],
             ],
           },
         },
@@ -118,7 +116,7 @@ const guide: Guide = {
     {
       heading: 'Finding a Voi scooter in Gävle on the map',
       blocks: [
-        'The map shows standing e-scooters only, not Voi’s e-bikes. To see what is standing near you now, open the [Gävle map](map:se:Gävle).',
+        'To see what is standing near you now, open the [Gävle map](map:se:Gävle).',
       ],
     },
     {
@@ -142,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you rent an e-scooter in Gävle in winter?',
-      answer: 'Normally not: the municipality says hire scooters are out in the snow-free season, May to October. They were still on our map on 29 October 2026, and we found no end date for this season: check the Voi app.',
+      answer: 'Normally not: the municipality says hire scooters are out in the snow-free season, May to October. They were still out on 29 October 2026, so check the Voi app.',
     },
     {
       question: 'Where can I park a hire scooter in Gävle?',
@@ -156,10 +154,6 @@ const guide: Guide = {
       question: 'Can I take an e-scooter on an X-trafik bus in Gävle?',
       answer: 'Only one that folds, kept fully folded, no larger than 120 cm and no heavier than 15 kg, if there is room. An e-scooter that doesn’t fold may not come aboard.',
     },
-    {
-      question: 'Are e-scooters banned at night in Gävle?',
-      answer: 'We found no night ban, night speed limit or other night rule for riders in Gävle.',
-    },
   ],
   sources: [
     { title: 'Gävle kommun: Hyr elsparkcykel och elcykel i Gävle, renting an e-scooter (updated 11 September 2026)', url: 'https://www.gavle.se/bygga-trafik-och-miljo/cykla-i-gavle/hyr-elsparkcykel-och-elcykel-i-gavle/' },
@@ -171,7 +165,6 @@ const guide: Guide = {
     { title: 'Åklagarmyndigheten: Fixed fines, annex 1A (1 November 2025)', url: 'https://www.aklagare.se/globalassets/dokument/ordningsbotskatalog/bilaga-1a.pdf' },
     { title: 'X-trafik: Cykel i kollektivtrafiken, bikes and e-scooters on board (read 29 October 2026)', url: 'https://xtrafik.se/cykel-i-kollektivtrafiken' },
     { title: 'SJ: Luggage rules', url: 'https://www.sj.se/en/about-sj/terms-and-conditions/luggage-rules' },
-    { title: 'Jernhusen: Gävle Centralstation', url: 'https://www.jernhusen.se/hitta-din-station/gavle-centralstation/' },
     { title: 'Högskolan i Gävle: Ordningsregler på campus, campus rules (11 June 2026)', url: 'https://www.hig.se/student/din-studiemiljo/ditt-campus/ordningsregler-pa-campus' },
     { title: 'Högskolan i Gävle: Contact and maps (11 September 2026)', url: 'https://www.hig.se/om-hogskolan/kontakt-och-kartor' },
     { title: 'Furuvik: Hitta hit, getting there (read 29 October 2026)', url: 'https://www.furuvik.se/hitta-hit' },
