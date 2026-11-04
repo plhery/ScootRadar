@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Scooters eléctricos Monterrey y San Pedro: Whoosh y JET',
   description: 'Scooters eléctricos en Monterrey y San Pedro Garza García: Whoosh, JET y Lime, dónde están, cuánto cuesta la renta y dónde puedes andar y estacionar.',
   headline: 'Scooters eléctricos en Monterrey y San Pedro: Whoosh, JET y Lime, dónde encontrarlos y las reglas para andar',
-  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. En Monterrey rentan Whoosh y Lime, y en San Pedro, Whoosh y JET. En Monterrey, el reglamento de tránsito prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
+  lede: 'Los scooters eléctricos de Monterrey y San Pedro Garza García se rentan con tres apps: Whoosh, GO JET (de JET) y Lime. En Monterrey rentan Whoosh y Lime, y en San Pedro, Whoosh y JET. Whoosh prohíbe andar por la banqueta, y Whoosh y JET piden ser mayor de edad.',
   published: '2026-10-25',
   updated: '2026-10-26',
   city: 'mx:Monterrey',
@@ -32,7 +32,7 @@ const guide: Guide = {
       heading: '¿Cuánto cuesta la renta de scooters en Monterrey?',
       blocks: [
         'Ninguna empresa publica en su web su tarifa de Monterrey o San Pedro: el precio lo ves en la app antes de desbloquear. JET te lo muestra en GO JET antes de que confirmes la renta, según sus términos para México del 7 de abril de 2026.',
-        '**Whoosh en Monterrey.** Al lanzarlo, el 28 de junio de 2026, el Gobierno de Monterrey anunció $8.00 por desbloquear y de $2.49 a $3.00 por minuto, más un pase mensual de $49.99 que quita el desbloqueo. Era el precio de lanzamiento: según sus términos, las tarifas de Whoosh cambian con la demanda y la batería del scooter.',
+        '**Whoosh en Monterrey.** Al llegar, a finales de junio de 2026, cobraba $8.00 por desbloquear y de $2.49 a $3.00 por minuto, con un pase mensual de $49.99 que quita el desbloqueo (Publimetro). Era el precio de lanzamiento: según sus términos, las tarifas de Whoosh cambian con la demanda y la batería del scooter.',
         'Whoosh puede retener hasta $70 MXN en tu tarjeta al empezar, y cobrarte multas según sus términos para México:',
         {
           table: {
@@ -55,16 +55,14 @@ const guide: Guide = {
     {
       heading: '¿Por dónde puedes andar en scooter? Banqueta, ciclovía y calle',
       blocks: [
-        'En Nuevo León, cada municipio pone sus reglas de tránsito en su reglamento. Según el alcalde de San Pedro, Mauricio Farah, hoy a los scooters los regula la Ley de Movilidad del estado, «medio escueta» (ABC Noticias, agosto de 2026). El reglamento de tránsito de Monterrey no menciona los scooters eléctricos, pero prohíbe andar por la banqueta en vehículos motorizados:',
+        'En Nuevo León, cada municipio pone sus reglas de tránsito en su reglamento. Según el alcalde de San Pedro, Mauricio Farah, hoy a los scooters los regula la Ley de Movilidad del estado, «medio escueta» (ABC Noticias, agosto de 2026). En septiembre, el secretario del Ayuntamiento de Monterrey dijo que ningún municipio del área metropolitana tiene todavía un reglamento para ellos (ABC Noticias). Mientras tanto, estas son las reglas de las empresas:',
         {
           table: {
             caption: 'Reglas para andar en scooter de renta en Monterrey y San Pedro, al 25 de octubre de 2026',
             head: ['Regla', 'Qué dice', 'Quién la pone'],
             rows: [
-              ['Banqueta', 'Prohibido andar por ella en bicicleta, patines, patineta o vehículos motorizados', 'Reglamento de Tránsito de Monterrey, art. 105, fracc. XV'],
-              ['Peatones', 'Van primero en la jerarquía de la calle, antes que los ciclistas', 'Reglamento de Tránsito de Monterrey, art. 2'],
-              ['Ciclovía', 'Es exclusiva para ciclistas; el reglamento no dice nada de los scooters', 'Reglamento de Tránsito de Monterrey, art. 4, fracc. XII'],
-              ['Por dónde', 'En el sentido de la circulación, señalando tus vueltas con el brazo; bájate y camina en andadores y zonas peatonales', 'Whoosh (términos para México)'],
+              ['Banqueta', 'Prohibido andar por ella; en andadores y zonas peatonales, bájate y camina', 'Whoosh (términos para México)'],
+              ['Por dónde', 'En el sentido de la circulación, señalando tus vueltas con el brazo y dando el paso a los peatones', 'Whoosh (términos para México)'],
               ['Velocidad', 'Hasta 25 km/h, o 15 km/h en el modo principiante, que puedes activar en tus tres primeros viajes; menos en las zonas que marca la app', 'Whoosh'],
               ['Edad', 'Mayor de edad para rentar; nadie menor de 18 años puede manejarlo', 'Whoosh y JET'],
               ['Pasajeros', 'Una sola persona; en Whoosh, sin niños ni animales y hasta 100 kg con todo lo que cargues', 'Whoosh y JET'],
@@ -73,7 +71,7 @@ const guide: Guide = {
             ],
           },
         },
-        '**Casco.** El reglamento de tránsito de Monterrey no menciona los scooters, y a los ciclistas solo les dice que pueden usarlo «de preferencia» (art. 34). Úsalo de todos modos.',
+        '**Casco.** San Pedro propone exigirlo a los menores de edad, y en Monterrey lo plantearon integrantes del Cabildo, como verás abajo. Úsalo de todos modos.',
         'Los dos municipios preparan reglas propias, aún no vigentes:',
         {
           list: [
@@ -144,7 +142,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta rentar un scooter eléctrico en Monterrey?',
-      answer: 'Lo ves en la app antes de desbloquear. Al lanzar Whoosh, el 28 de junio de 2026, el Gobierno de Monterrey anunció $8 por desbloquear y de $2.49 a $3 por minuto. JET y Lime muestran su tarifa en sus apps.',
+      answer: 'Lo ves en la app antes de desbloquear. Al llegar, a finales de junio de 2026, Whoosh cobraba $8 por desbloquear y de $2.49 a $3 por minuto, según Publimetro. JET y Lime muestran su tarifa en sus apps.',
     },
     {
       question: '¿Qué app necesito para los scooters de San Pedro Garza García?',
@@ -152,11 +150,11 @@ const guide: Guide = {
     },
     {
       question: '¿Puedo andar en scooter por la banqueta en Monterrey?',
-      answer: 'No. El Reglamento de Tránsito y Vialidad de Monterrey prohíbe andar por la banqueta en bicicleta, patines, patineta o vehículos motorizados. Ve por la calle, en el sentido de la circulación.',
+      answer: 'No en un Whoosh: sus términos para México lo prohíben y piden bajarte y caminar en andadores y zonas peatonales. Ve por la calle, en el sentido de la circulación.',
     },
     {
       question: '¿Es obligatorio el casco en Monterrey?',
-      answer: 'El reglamento de tránsito de Monterrey no menciona los scooters, y a los ciclistas solo les dice que pueden usarlo «de preferencia». San Pedro propone exigirlo a los menores de edad, y en Monterrey lo plantearon integrantes del Cabildo. Úsalo de todos modos.',
+      answer: 'Según el secretario del Ayuntamiento de Monterrey, ningún municipio del área metropolitana tiene todavía un reglamento para los scooters (septiembre de 2026). San Pedro propone exigir el casco a los menores de edad, y en Monterrey lo plantearon integrantes del Cabildo. Úsalo de todos modos.',
     },
     {
       question: '¿Hay scooters de renta en el centro de Monterrey?',
@@ -168,8 +166,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Monterrey: llega Whoosh (junio de 2026)', url: 'https://www.monterrey.gob.mx/noticias/ampl%C3%ADa-monterrey-oferta-de-micro-movilidad-sustentable/' },
-    { title: 'Monterrey: Reglamento de Tránsito y Vialidad', url: 'https://www.monterrey.gob.mx/pdf/portaln/reglamentos/Reglamento%20de%20Transito%20y%20Vialidad%20del%20Municipio%20de%20Monterrey.pdf' },
+    { title: 'Publimetro: llega Whoosh a Monterrey (junio de 2026)', url: 'https://www.publimetro.com.mx/nuevo-leon/2026/06/28/mas-scooters-menos-contaminacion-y-congestionamiento-vial/' },
     { title: 'Whoosh: términos para México', url: 'https://whoosh.bike/terminos/mx' },
     { title: 'Whoosh: zonas de parking', url: 'https://whoosh.bike/parking_rules/es_la' },
     { title: 'GO JET: términos para México', url: 'https://static.jetshr.com/jet_website/docs/pdfs/Terms_and_Conditions_Mexico.pdf' },

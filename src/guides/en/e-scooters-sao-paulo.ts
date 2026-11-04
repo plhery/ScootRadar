@@ -190,7 +190,7 @@ const guide: Guide = {
     { title: 'Prefeitura de São Paulo: new Bike Sampa system, run by Tembici (30 January 2018), Portuguese', url: 'https://prefeitura.sp.gov.br/w/noticia/prefeitura-de-sao-paulo-inaugura-novo-sistema-do-bike-sampa-comecando-com-25-estacoes' },
     { title: 'Prefeitura de São Paulo: shared e-bikes join the system (3 June 2022), Portuguese', url: 'https://prefeitura.sp.gov.br/w/noticia/no-dia-mundial-da-bicicleta-cidade-inicia-projeto-com-modal-eletrico-compartilhado' },
     { title: 'CicloVivo: Bike Itaú turns 15 (13 October 2026), Portuguese', url: 'https://ciclovivo.com.br/arq-urb/mobilidade/bike-itau-completa-15-anos-de-mobilidade-sustentavel/' },
-    { title: 'GeoSampa: district, subprefeitura and municipal boundaries (WFS)', url: 'https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/wfs' },
+    { title: 'GeoSampa: district, subprefeitura and municipal boundaries (WFS)', url: 'https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/wfs?service=WFS&request=GetCapabilities' },
   ],
 };
 

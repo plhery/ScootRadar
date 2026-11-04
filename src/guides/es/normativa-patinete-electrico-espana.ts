@@ -132,7 +132,7 @@ const guide: Guide = {
       blocks: [
         '**Renfe.** Desde el 7 de septiembre de 2026 puedes volver a subir tu patinete a Cercanías, Media Distancia y Larga Distancia. Debe tener certificado, estar inscrito y asegurado, llevar a la vista la etiqueta y la placa, y no medir más de 120 × 50 × 55 cm. Tiene que ir plegado y apagado desde el andén, en la zona de equipajes, y no puedes cargarlo a bordo.',
         'Los de alquiler no pueden subir. Y hay líneas que siguen sin admitirlos, como Rodalies de Catalunya, Cercanías Bilbao y Cercanías San Sebastián: consulta la [página de equipajes de Renfe](https://www.renfe.com/es/es/viajar/informacion-util/equipajes/bicicletas-y-patinetes) antes de viajar.',
-        '**Madrid.** Desde el 4 de noviembre de 2023, tras explotar la batería de un patinete en el Metro, no puedes llevar el tuyo en el Metro, los autobuses ni el Metro Ligero. La Comunidad prorrogó la prohibición hasta 2027 y la revisará cuando todos los patinetes tengan que estar certificados. Cercanías Madrid sigue las normas de Renfe.',
+        '**Madrid.** Desde el 4 de noviembre de 2023, tras explotar la batería de un patinete en un tren del Metro, no puedes llevar el tuyo en el Metro, los autobuses ni el resto de la red del Consorcio Regional de Transportes. En mayo de 2024, el Consorcio hizo definitiva la prohibición y la revisará en enero de 2027, cuando solo podrán circular patinetes certificados. Cercanías Madrid sigue las normas de Renfe.',
         '**Cataluña.** Según la prensa, están prohibidos en metro, autobús, tranvía, FGC y Rodalies desde 2023, de forma indefinida, con multas de 200 €. En otras ciudades, consulta las normas de tu red.',
       ],
     },
@@ -191,7 +191,7 @@ const guide: Guide = {
     },
     {
       question: '¿Puedo subir el patinete al tren o al metro?',
-      answer: 'Al tren de Renfe, sí: desde el 7 de septiembre de 2026 puedes subir el tuyo si está inscrito y asegurado y va plegado y apagado, pero no uno de alquiler. En el Metro y los autobuses de Madrid está prohibido hasta 2027, y en el transporte público de Cataluña, según la prensa, de forma indefinida.',
+      answer: 'Al tren de Renfe, sí: desde el 7 de septiembre de 2026 puedes subir el tuyo si está inscrito y asegurado y va plegado y apagado, pero no uno de alquiler. En el Metro y los autobuses de Madrid está prohibido, al menos hasta que se revise en enero de 2027, y en el transporte público de Cataluña, según la prensa, de forma indefinida.',
     },
   ],
   sources: [
@@ -204,8 +204,9 @@ const guide: Guide = {
     { title: 'DGT: Instrucción 2019/S-149 TV-108 sobre vehículos de movilidad personal', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/muevete-con-seguridad/normas-de-trafico/S-sanciones/Intruccion-VMP-y-otros-vehiculos-ligeros.pdf' },
     { title: 'DGT: Informe anual de siniestralidad vial 2024', url: 'https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/dgt-en-cifras/publicaciones/Principales_Cifras_Siniestralidad/INF_ANUAL_2024_v4_FINAL.pdf' },
     { title: 'Renfe: vuelta del patinete eléctrico a sus trenes (septiembre de 2026)', url: 'https://grupo.renfe.com/es/es/sala-de-prensa/noticias/2026/09/renfe-permitira-acceder-patinete-electrico' },
-    { title: 'Comunidad de Madrid: prórroga hasta 2027 de la prohibición de patinetes en el transporte público (31 de mayo de 2024)', url: 'https://www.comunidad.madrid/node/69127' },
-    { title: 'Ayuntamiento de Madrid: revocación de las autorizaciones de patinetes de alquiler (5 de septiembre de 2024)', url: 'https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/Madrid-revoca-las-autorizaciones-de-patinetes-de-alquiler-y-ya-no-podran-circular-por-sus-calles/?vgnextfmt=default&vgnextoid=27c2dbbe991c1910VgnVCM1000001d4a900aRCRD&vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD' },
+    { title: 'Última Hora (Europa Press): la Comunidad de Madrid impedirá el acceso de patinetes al transporte público desde el 4 de noviembre (27 de octubre de 2023)', url: 'https://www.ultimahora.es/noticias/comunidades/2023/10/27/2039155/comunidad-madrid-prohibe-acceso-patinetes-electricos-transporte-publico.html' },
+    { title: 'Consorcio Regional de Transportes de Madrid: acuerdo que hace definitiva la prohibición de patinetes (31 de mayo de 2024)', url: 'https://crtm.es/media/gccozqco/2024-05-31-certificado-ratificaci%C3%B3n-prohibici%C3%B3n-patinetes-el%C3%A9ctricos.pdf' },
+    { title: 'elDiario.es: Almeida prohíbe los patinetes de alquiler en Madrid (5 de septiembre de 2024)', url: 'https://www.eldiario.es/madrid/somos/almeida-prohibe-patinetes-alquiler-madrid_1_11630578.html' },
   ],
 };
 

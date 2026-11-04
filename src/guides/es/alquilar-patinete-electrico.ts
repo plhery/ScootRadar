@@ -15,7 +15,7 @@ const guide: Guide = {
     {
       heading: '¿Hay patinetes de alquiler en Madrid? Dónde quedan en España',
       blocks: [
-        'Antes de descargar ninguna app, comprueba si en tu ciudad quedan patinetes. En **Madrid** no hay desde octubre de 2024: el Ayuntamiento revocó en septiembre los permisos de Lime, Dott y Tier (6000 patinetes) y no concederá otros nuevos. Según la prensa, tampoco los hay en **Barcelona**, que nunca los autorizó, ni en **Valencia, Sevilla, Málaga, Palma ni Bilbao**, y Tarragona se quedó sin ellos en septiembre de 2026.',
+        'Antes de descargar ninguna app, comprueba si en tu ciudad quedan patinetes. En **Madrid** no hay desde febrero de 2025: el Ayuntamiento revocó en septiembre de 2024 los permisos de Lime, Dott y Tier (6000 patinetes), que siguieron unos meses más gracias a unas medidas cautelares, y no concederá otros nuevos. Según la prensa, tampoco los hay en **Barcelona**, que nunca los autorizó, ni en **Valencia, Sevilla, Málaga, Palma ni Bilbao**, y Tarragona se quedó sin ellos en septiembre de 2026.',
         'Esta guía va del alquiler con app, por minutos, del patinete que coges en la calle, no de las tiendas que alquilan por horas o por meses. En octubre de 2026, los patinetes compartidos quedan sobre todo en ciudades medianas y zonas turísticas:',
         {
           list: [
@@ -171,7 +171,7 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Por qué no hay patinetes de alquiler en Madrid?',
-      answer: 'Porque el Ayuntamiento revocó en septiembre de 2024 los permisos de Lime, Dott y Tier por incumplir las condiciones del servicio, y ha dicho que no concederá otros nuevos. Desde octubre de 2024 no queda ninguno en la ciudad. En la Comunidad de Madrid quedan en Getafe, con Bird.',
+      answer: 'Porque el Ayuntamiento revocó en septiembre de 2024 los permisos de Lime, Dott y Tier por incumplir las condiciones del servicio, y ha dicho que no concederá otros nuevos. Las empresas siguieron unos meses gracias a unas medidas cautelares, hasta que la justicia las anuló: desde febrero de 2025 no queda ninguno en la ciudad. En la Comunidad de Madrid quedan en Getafe, con Bird.',
     },
     {
       question: '¿Se puede alquilar un patinete eléctrico con 16 años?',
@@ -188,7 +188,8 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'DGT: reforma del Reglamento General de Circulación (30 de septiembre de 2026)', url: 'https://www.dgt.es/comunicacion/notas-de-prensa/20260930-reforma-del-reglamento-de-circulacion-usuarios-vulnerables/' },
-    { title: 'Ayuntamiento de Madrid: revocación de los patinetes de alquiler (5 de septiembre de 2024)', url: 'https://www.madrid.es/portales/munimadrid/es/Inicio/Actualidad/Noticias/Madrid-revoca-las-autorizaciones-de-patinetes-de-alquiler-y-ya-no-podran-circular-por-sus-calles/?vgnextfmt=default&vgnextoid=27c2dbbe991c1910VgnVCM1000001d4a900aRCRD&vgnextchannel=a12149fa40ec9410VgnVCM100000171f5a0aRCRD' },
+    { title: 'elDiario.es: Almeida prohíbe los patinetes de alquiler en Madrid (5 de septiembre de 2024)', url: 'https://www.eldiario.es/madrid/somos/almeida-prohibe-patinetes-alquiler-madrid_1_11630578.html' },
+    { title: 'Última Hora (Europa Press): las empresas de alquiler de patinetes eléctricos dejan de operar en Madrid (4 de febrero de 2025)', url: 'https://www.ultimahora.es/noticias/comunidades/2025/02/04/2319299/empresas-alquiler-patinetes-electricos-dejan-operar-madrid.html' },
     { title: 'Bird: contrato de alquiler para España', url: 'https://bird.co/rental-agreements/spain-es/' },
     { title: 'Hoppy: condiciones generales, con las de España', url: 'https://behoppy.eu/es/terminos-y-condiciones/' },
     { title: 'Hoppy: cómo funciona y dónde terminar el viaje', url: 'https://behoppy.eu/es/antes-del-viaje/' },
