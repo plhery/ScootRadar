@@ -109,7 +109,7 @@ const guide: Guide = {
             '**The airport:** Bern Airport in Belp is outside Voi’s area, so take the bus or train.',
           ],
         },
-        'Staying overnight in the city of Bern? The free Bern-Ticket covers trams, buses and trains in Libero zones 100 and 101, the Gurten and Marzili funiculars and the Münsterplattform lift, and the trip to the airport on arrival and departure days. Your host gives you the code.',
+        'Staying overnight in the city of Bern? The free Bern-Ticket covers trams and buses in Libero zones 100 and 101, the Gurten and Marzili funiculars and the Münsterplattform lift, and the trip to the airport on arrival and departure days. Your host gives it to you at check-in.',
       ],
     },
     {
@@ -179,7 +179,8 @@ const guide: Guide = {
     { title: 'City of Winterthur: sharing services, with Voi’s minimum age of 18 (in German)', url: 'https://stadt.winterthur.ch/themen/mobilitaet/oev-taxi-sharing/sharing-angebote' },
     { title: 'City of Bern: launch of Velo Region Bern (in German)', url: 'https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/betriebsstart-des-dichtesten-leihvelo-netzes-der-schweiz' },
     { title: 'PubliBike: prices and passes (in German)', url: 'https://www.publibike.ch/de/abos' },
-    { title: 'Bern Welcome: Bern-Ticket for overnight guests', url: 'https://bern.com/en/inform/bern-ticket/bern-ticket-for-overnight-guests' },
+    { title: 'Bern Welcome: Bern-Ticket factsheet for accommodation providers, 2026 (PDF, in German)', url: 'https://a.storyblok.com/f/272028/x/796bec4fa1/2026_factsheet_bern-ticket-beherbergungsbetriebe.pdf' },
+    { title: 'City of Bern: getting around Bern (in German)', url: 'https://www.bern.ch/zu-gast-in-bern/unterwegs-in-bern' },
     { title: 'Fixed Penalties Ordinance (OBV), list of fines (in German)', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
   ],
 };

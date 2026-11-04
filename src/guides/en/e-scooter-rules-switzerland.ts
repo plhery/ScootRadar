@@ -81,7 +81,7 @@ const guide: Guide = {
             '**Footpaths and pedestrian zones:** only where a plate allows bicycles, at walking pace in pedestrian zones. Otherwise push (CHF 30).',
             '**Shared-space zones (Begegnungszonen):** allowed, at up to 20 km/h, with pedestrians first.',
             '**Bus lanes:** only where signed (CHF 30). **Motorways and expressways:** never.',
-            '**Stations:** SBB bans riding anywhere in the station, platforms, ramps and underpasses included: push your scooter.',
+            '**Stations:** SBB bans riding on its station premises, scooters included: push yours.',
           ],
         },
         'Since 1 July 2025 an “except bicycles” plate under a one-way or no-entry sign lets e-scooters through too, and the “no mopeds” sign no longer applies to them; the sign banning bicycles and mopeds still does. You may turn right on red only where a small yellow plate with a bicycle and an arrow says so.',
@@ -138,6 +138,7 @@ const guide: Guide = {
       heading: 'Can you take an e-scooter on the train?',
       blocks: [
         'Your own e-scooter travels **free on SBB trains if its largest wheel is under 12 inches (30.5 cm)**; fold it when space is tight. From 12 inches it counts as a bicycle and needs a bike ticket and, where required, a bike reservation. Staff may refuse it on a full train.',
+        'The rule is in the common tariff of Swiss public transport (T600), so it also applies on the buses and trams of the regional fare networks; a transport company may restrict it further.',
         'A shared e-scooter stays behind. Rides must end inside the operator’s zone, Voi caps a rental at one hour, and a scooter not returned within 48 hours costs up to CHF 500 at Bolt or CHF 1,540 at Lime. End the ride at the station, in its sharing zone if it has one, and rent again when you arrive.',
       ],
     },
@@ -167,7 +168,7 @@ const guide: Guide = {
             '**Helmet:** a consultation is promised, with no draft or date yet (see above).',
             '**Plate and insurance:** a motion of 15 June 2026 asks for both. The Federal Council proposed rejecting it on 19 August; parliament has not voted yet.',
             '**Tuning:** the Federal Council intends to make the rules on tuned scooters more specific; no draft yet.',
-            '**Trains:** the transport staff union SEV wants a ticket for scooters; SBB’s rule is unchanged.',
+            '**Trains:** train staff in the SEV union want clearer rules for bikes and scooters (June 2026).',
             '**Zürich:** the city plans to cut shared vehicles from 7,350 to 3,000, with three operators chosen by tender and fixed stations in the centre, from a date not yet set. See [e-scooters in Zürich](guide:zurich).',
           ],
         },
@@ -206,7 +207,9 @@ const guide: Guide = {
     { title: 'BFU: Rules for e-scooters and other electric light vehicles (fact sheet, PDF)', url: 'https://www.bfu.ch/media/fffpzk2f/bfu_factsheet_e-langsamverkehr_regeln.pdf' },
     { title: 'Swiss Parliament: Motion 26.3637, registration and liability insurance for e-scooters', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263637' },
     { title: 'Swiss Parliament: Motion 26.3010, helmet and licence for e-mopeds and similar vehicles', url: 'https://www.parlament.ch/de/ratsbetrieb/suche-curia-vista/geschaeft?AffairId=20263010' },
-    { title: 'SBB: Bikes and scooters as hand luggage (in German)', url: 'https://www.sbb.ch/de/reiseinformationen/individuelle-beduerfnisse/reisen-mit-velos/velo-als-handgepaeck.html' },
+    { title: 'Alliance SwissPass: Tariff T600, common tariff provisions, sections 6 and 7 (edition of 1 June 2026, PDF, in German)', url: 'https://www.allianceswisspass.ch/de/asp/Downloads?download=2666' },
+    { title: 'Nau.ch: SBB hands biscuits to cyclists who push their bikes in stations (20 August 2022, in German)', url: 'https://www.nau.ch/news/good-news/sbb-verteilt-kekse-an-vorzeige-velofahrer-66245670' },
+    { title: 'SEV union: train staff under pressure, delegates’ meeting of 10 June 2026 (in German)', url: 'https://sev-online.ch/de/aktuell/kontakt.sev/2026/zugpersonal-unter-druck-202608-146425/' },
   ],
 };
 

@@ -109,7 +109,7 @@ const guide: Guide = {
             '**Flughafen:** Bern-Belp liegt ausserhalb von Vois Gebiet; nimm Bus oder Zug.',
           ],
         },
-        'Übernachtest du in der Stadt Bern, fährst du mit dem Bern-Ticket gratis Tram, Bus und Zug in den Libero-Zonen 100 und 101, dazu Gurtenbahn, Marzilibahn und den Lift zur Münsterplattform; am An- und Abreisetag gilt es bis zum Flughafen. Den Code gibt dir die Unterkunft.',
+        'Übernachtest du in der Stadt Bern, fährst du mit dem Bern-Ticket gratis Tram und Bus in den Libero-Zonen 100 und 101, dazu Gurtenbahn, Marzilibahn und den Lift zur Münsterplattform; am An- und Abreisetag gilt es bis zum Flughafen. Das Ticket bekommst du beim Check-in von der Unterkunft.',
       ],
     },
     {
@@ -179,7 +179,8 @@ const guide: Guide = {
     { title: 'Stadt Winterthur: Sharing-Angebote, mit Vois Mindestalter von 18 Jahren', url: 'https://stadt.winterthur.ch/themen/mobilitaet/oev-taxi-sharing/sharing-angebote' },
     { title: 'Stadt Bern: Betriebsstart des dichtesten Leihvelo-Netzes der Schweiz', url: 'https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/betriebsstart-des-dichtesten-leihvelo-netzes-der-schweiz' },
     { title: 'PubliBike: Preise & Abos', url: 'https://www.publibike.ch/de/abos' },
-    { title: 'Bern Welcome: Bern-Ticket für Übernachtungsgäste (englisch)', url: 'https://bern.com/en/inform/bern-ticket/bern-ticket-for-overnight-guests' },
+    { title: 'Bern Welcome: Factsheet Bern-Ticket für Beherbergungsbetriebe, 2026 (PDF)', url: 'https://a.storyblok.com/f/272028/x/796bec4fa1/2026_factsheet_bern-ticket-beherbergungsbetriebe.pdf' },
+    { title: 'Stadt Bern: Unterwegs in Bern', url: 'https://www.bern.ch/zu-gast-in-bern/unterwegs-in-bern' },
     { title: 'Ordnungsbussenverordnung (OBV), Bussenliste', url: 'https://www.fedlex.admin.ch/eli/cc/2019/93/de' },
   ],
 };
