@@ -23,7 +23,7 @@ const guide: Guide = {
             '**Lime**, in the Lime app, under the five-year permit the City awarded to Neuron in May 2026. Lime Canada bought Neuron Mobility Canada, the City’s other operator since 2021, in July 2026 and took over its Calgary and Airdrie operations; by September the City listed Lime in Neuron’s place.',
           ],
         },
-        'Each app shows its price before you unlock. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'The City leaves fares to each operator. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         '**Free 10-minute rides at CTrain stations.** From 15 May 2026 the operators fund free 10-minute trips from dedicated parking at eight LRT stations: Bird at Heritage, Southland, 45th Street and Crowfoot; Neuron, now Lime, at Barlow/Max Bell, Franklin, Rundle and Saddletowne. After 10 minutes the normal rate applies.',
         'Around midday on 16 October 2026 the [map of Calgary](map:ca:ab:Calgary) showed about 960 Bird scooters free to rent at that moment, and about 820 Lime scooters as last counted. Lime also runs in **Airdrie**, the separate city just north, under that city’s own rules: about 240 of its scooters were on the [Airdrie map](map:ca:ab:Airdrie) that day.',
       ],
@@ -40,6 +40,7 @@ const guide: Guide = {
             '**September 2026:** a City memo, quoted on the [Ward 2 councillor’s page](https://www.calgary.ca/council/ward-2/articles/an-update-on-e-mobility-.html), counted 210 pathway speeding tickets in a month, 45 of them to riders of private e-scooters. A bylaw review is expected to report to Council in early 2027.',
           ],
         },
+        'Each of the two operators may run up to 750 scooters, 1,500 in all, and the City says it keeps that cap under review to match demand and keep sidewalks clear.',
       ],
     },
     {
@@ -90,7 +91,8 @@ const guide: Guide = {
     {
       heading: 'Where to park a rental scooter in Calgary',
       blocks: [
-        'Park upright in the sidewalk’s furniture zone, in line with the trees, bike racks and bins, or in a painted share-and-go zone. Where there’s no furniture zone, leave at least 2 m of sidewalk clear. The app shows the no-parking zones, where you can ride through but not end a ride.',
+        'Park upright in the sidewalk’s furniture zone, in line with the trees, bike racks and bins, or in a painted share-and-go zone. Where there’s no furniture zone, leave at least 2 m of sidewalk clear. The operators may fine you for bad parking.',
+        'Each app shows where you may end a ride. As of 4 November 2026 Bird bars parking in 241 zones, which you can still ride through. They include Stampede Park, the BMO Centre included; the riverbank through East Village, St. Patrick’s Island and the Calgary Zoo; Nose Hill Park; and the City Hall and Calgary Tower blocks.',
       ],
     },
     {
@@ -105,7 +107,7 @@ const guide: Guide = {
       heading: 'CTrain, YYC airport and the Calgary Stampede',
       blocks: [
         '**On the CTrain.** Riding an e-scooter at a station, on a platform or aboard a bus or train can cost C$250 under the Transit Bylaw. The bylaw doesn’t ban carrying one aboard, but the City’s 2021 permit rules allowed shared scooters on trains only off-peak. End your ride outside the station, or in the scooter parking at the eight free-ride stations.',
-        '**YYC Calgary International Airport.** Take [Route 100](https://www.yyc.com/en-us/transportation/public-transit) to Saddletowne station on the Blue Line, or the Route 500 express downtown.',
+        '**YYC Calgary International Airport.** The terminals lie about 5 km outside Bird’s service area. Take [Route 100](https://www.yyc.com/en-us/transportation/public-transit) to Saddletowne station on the Blue Line, or the Route 500 express downtown.',
         '**The Calgary Stampede**, next held 9–18 July 2027. In 2026 there was scooter-only parking at 13 Avenue and Stampede Trail, at the north end, and bike and scooter parking at Lot 7/8 and Lot 10/11. CTrains ran 24 hours a day to Erlton/Stampede and Victoria Park/Stampede stations.',
       ],
     },
@@ -126,6 +128,10 @@ const guide: Guide = {
     {
       question: 'Can you ride an e-scooter on the sidewalk in Calgary?',
       answer: 'Yes, a rental one, unless a sign forbids it. Keep to the side nearest the road and don’t get in people’s way: the fines are C$75 where a sign forbids it and C$150 for getting in the way. Private e-scooters may not use sidewalks.',
+    },
+    {
+      question: 'How much does a Lime or Bird scooter cost in Calgary?',
+      answer: 'The City leaves fares to each operator, and the app shows the price before you unlock. From 15 May 2026 the operators offered free 10-minute rides from the scooter parking at eight CTrain stations; after 10 minutes the regular fees apply.',
     },
     {
       question: 'Do you need a helmet or a licence for a rental e-scooter in Calgary?',
@@ -150,8 +156,11 @@ const guide: Guide = {
     { title: 'City of Calgary: using e-bikes and e-scooters, rules and fines', url: 'https://www.calgary.ca/roads/safety/escooter-safety.html' },
     { title: 'City of Calgary: e-scooter program framework, appendices (2021)', url: 'https://www.calgary.ca/content/dam/www/transportation/tp/documents/cycling/cycling-strategy/electric-scooter-program-framework-appendices.pdf' },
     { title: 'City of Calgary: electric micromobility information sheet (2024)', url: 'https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf' },
+    { title: 'Alberta Traffic Safety Act', url: 'https://kings-printer.alberta.ca/documents/Acts/T06.pdf' },
     { title: 'Global News: Lime to take over Neuron in Canada (6 July 2026)', url: 'https://globalnews.ca/news/11954622/lime-to-take-over-some-e-scooter-operations-in-canada-from-neuron-amid-acquisition/' },
     { title: 'Calgary Stampede: getting to Stampede 2026', url: 'https://news.calgarystampede.com/releases/fast-track-to-fun-your-guide-to-getting-to-stampede-2026' },
+    { title: 'Bird: open data for Calgary (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/calgary/gbfs.json' },
+    { title: 'Lime: open data for Calgary (GBFS)', url: 'https://data.lime.bike/api/partners/v2/gbfs/calgary/gbfs.json' },
   ],
 };
 
