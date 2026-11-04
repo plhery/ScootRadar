@@ -3160,6 +3160,58 @@ extension ScooterMapModelTests {
         XCTAssertLessThanOrEqual(dockTops.count, 1, "Heights of the dock once the card was open: \(dockTops)")
     }
 
+    /// With very large text the zones' legend over a tall card keeps between the card and the
+    /// search bar, and scrolls there. Taller than that room, it went up under the search bar, and
+    /// the chrome, taller than the window, pushed the dock past the window's foot (4 November 2026).
+    func testTheZonesLegendKeepsBetweenTheSearchBarAndATallCardWithVeryLargeText() async throws {
+        let tall = Scooter(
+            provider: "publibike", latitude: 47.3769, longitude: 8.5417, battery: 82, rangeMeters: 24_000,
+            vehicleID: "tall", deepLink: nil,
+            rentalURIs: ScooterRentalURIs(ios: "https://publibike.ch/ride", android: nil, web: nil),
+            distanceMeters: 0,
+            pricing: ScooterRidePricing(currency: "CHF", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 35)
+        )
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: [tall]))
+        // With Zürich's own zones, which the legend names and credits.
+        let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: isolatedDefaults())
+        model.userLocation = GeoPoint(latitude: 47.3779, longitude: 8.5417)
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls >= 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        XCTAssertFalse(model.mapRuleZones.isEmpty, "Zürich's zones, for the legend")
+
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: 402, height: 874)
+        window.rootViewController = UIHostingController(
+            rootView: ScooterMapScreen(model: model).environment(\.dynamicTypeSize, .accessibility3)
+        )
+        window.isHidden = false
+        defer { window.isHidden = true }
+        window.layoutIfNeeded()
+        try await Task.sleep(for: .milliseconds(600))
+        func map(in view: UIView) -> MKMapView? {
+            (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
+        }
+        let mapView = try XCTUnwrap(map(in: window))
+        let coordinator = try XCTUnwrap(mapView.delegate as? ScooterMapView.Coordinator)
+
+        let watchdog = MainThreadWatchdog("The map screen froze while a tall card opened under the zones' legend")
+        defer { watchdog.cancel() }
+        model.selectScooter("publibike:tall")
+        try await Task.sleep(for: .seconds(1))
+        guard case .scooter = model.dock else { return XCTFail("Expected the scooter card") }
+
+        let search = coordinator.parent.interactionExclusionFrame
+        let frames = coordinator.parent.bottomChromeFrames
+        XCTAssertEqual(frames.count, 3, "The locate button, the legend and the dock")
+        let legend = frames[1], dock = frames[2]
+        XCTAssertFalse(legend.isNull, "The legend shown")
+        XCTAssertGreaterThanOrEqual(legend.minY, search.maxY, "The legend \(legend) under the search bar \(search)")
+        XCTAssertLessThanOrEqual(legend.maxY, dock.minY, "The legend \(legend) over the dock \(dock)")
+        XCTAssertLessThanOrEqual(dock.maxY, window.bounds.maxY, "The dock \(dock) past the window's foot")
+    }
+
     func testMapOpensSlightlyTiltedAndKeepsItsTiltWhenTheAppMovesIt() throws {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         let window = try window(showing: ScooterMapScreen(model: model))

@@ -19,6 +19,7 @@ in `screenshots/<locale>/`.
 | Support URL | https://scootradar.com/privacy#contact |
 | Marketing URL | https://scootradar.com |
 | Privacy policy URL | https://scootradar.com/privacy |
+| Accessibility URL | https://scootradar.com/accessibility (see Accessibility) |
 | Copyright | 2026 Paul-Louis Hery |
 | Version | 1.3.0 |
 | Devices | iPhone and iPad (`TARGETED_DEVICE_FAMILY = "1,2"`), iOS 26 or newer. iPhones keep the app upright; iPads turn it every way |
@@ -59,6 +60,32 @@ sensitive info. `ios/ScootRadar/PrivacyInfo.xcprivacy` declares the same, with
 no tracking domains, and the required-reason APIs the app calls: UserDefaults
 (`CA92.1`) and the system uptime (`35F9.1`, for time between events). The app
 links no third-party SDK.
+
+## Accessibility
+
+The App Store's accessibility labels are declared through the API, the same on
+iPhone and iPad. The Accessibility URL's page (`src/app/(map)/accessibility/page.tsx`)
+lists under "Works today" exactly the features declared: change the two together.
+The description's ALSO list names only declared features too.
+
+| Feature | Declared | Why |
+| --- | --- | --- |
+| Dark Interface | Yes | Settings › Appearance › Dark, and System in Dark Mode |
+| Reduced Motion | Yes, since 4 November 2026 | Tested in 1.3.0 on the iPhone and iPad simulators: with Reduce Motion on, the map moves without animating |
+| Larger Text | Not yet: waits for the next version | See below |
+| VoiceOver, Voice Control | No | Not tested on a device yet |
+| Differentiate Without Color Alone, Sufficient Contrast | No | Some providers' dots differ only by colour; the selected pills' text, the parking "P" and the light map's dots are below the contrast Apple asks |
+| Captions, Audio Descriptions | No | The app has no video or audio |
+
+**Larger Text waits for the build after 1.3.0.** In 1.3.0, at twice the standard
+text size (AX3), the zone legend over a tall card went up under the search bar
+and pushed the card past the foot of the screen; the fix of 4 November 2026
+keeps the legend between the two, scrolling. Declare Larger Text on iPhone and
+iPad only once the version with the fix is live on the App Store, and move the
+page's Larger Text line from "In the next update" to "Works today" in the same
+change. Decide first about one gap that remains: the text drawn on the map (the
+scooters' names and walking times, the clusters' counts) stays 12–13 pt at
+every size. The same names, times and counts are in the dock at full size.
 
 ## Screenshots
 

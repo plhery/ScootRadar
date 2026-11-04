@@ -2207,6 +2207,8 @@ struct ScooterFilterSheet: View {
                         Text("Not sharing data right now")
                             .font(.caption)
                             .foregroundStyle(ScooterPalette.warning)
+                    } else if countUnderName {
+                        providerCount(entry)
                     }
                 }
                 .multilineTextAlignment(.leading)
@@ -2214,12 +2216,8 @@ struct ScooterFilterSheet: View {
 
                 Spacer(minLength: 8)
 
-                if !entry.isDown {
-                    Text(entry.count, format: .number)
-                        .font(.subheadline)
-                        .foregroundStyle(ScooterPalette.secondaryText)
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
+                if !entry.isDown, !countUnderName {
+                    providerCount(entry)
                 }
 
                 providerCheck(entry)
@@ -2255,6 +2253,19 @@ struct ScooterFilterSheet: View {
     }
 
     private var checkFrame: CGFloat { min(checkSide, 44) }
+
+    /// With very large text the count goes under the provider's name, which then has the row's width:
+    /// beside it "PubliBike / Velospot" broke inside "Velospot".
+    private var countUnderName: Bool { dynamicTypeSize.isAccessibilitySize }
+
+    private func providerCount(_ entry: ScooterProviderEntry) -> some View {
+        Text(entry.count, format: .number)
+            .font(.subheadline)
+            .foregroundStyle(ScooterPalette.secondaryText)
+            .monospacedDigit()
+            .contentTransition(.numericText())
+    }
+
     /// 22 pt in the 26 pt frame at the standard text size.
     private var checkGlyph: CGFloat { checkFrame * 22 / 26 }
 
@@ -2921,8 +2932,33 @@ struct ZoneLegend: View {
     /// The cities over the map whose zones are downloaded and not drawn: a line for each, that they are on
     /// their way or unavailable, so that no zones drawn never reads as none published there.
     var notices: [CityZoneDownloads.Notice] = []
+    /// The most it may take, glass included. A phone's map screen gives it the room between the
+    /// search bar and the dock (ScooterMapScreen); with very large text over a tall card that is
+    /// less than its lines take, and they scroll there.
+    var maximumHeight: CGFloat = .infinity
 
     var body: some View {
+        HeightLimit(maximum: maximumHeight) {
+            ViewThatFits(in: .vertical) {
+                glass(entries)
+                    // Only the credit has anything to tap: who sets a city's zones.
+                    .allowsHitTesting(credit != nil)
+                // Scrolled, it takes the touches that scroll it.
+                glass(ScrollView(.vertical) { entries })
+            }
+        }
+    }
+
+    private func glass(_ content: some View) -> some View {
+        content
+            .font(.caption.weight(.medium))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .chromeGlass(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    @ViewBuilder
+    private var entries: some View {
         let note = note(hasRules: !rules.isEmpty)
         let kinds = kinds(besideNote: note != nil)
         let speeds = kindSpeeds(besideNote: note != nil)
@@ -2941,7 +2977,9 @@ struct ZoneLegend: View {
                         HStack(spacing: 6) {
                             ZoneSwatch(kind: kind)
                             Text(Self.label(of: kind, speeds: speeds))
-                                .lineLimit(1)
+                                // Wider than the legend with the largest text, it wraps rather than
+                                // being cut short: "No park…".
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
@@ -2973,12 +3011,6 @@ struct ZoneLegend: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .font(.caption.weight(.medium))
-        .padding(.horizontal, 12)
-        .padding(.vertical, 7)
-        .chromeGlass(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        // Only the credit has anything to tap: who sets a city's zones.
-        .allowsHitTesting(credit != nil)
     }
 
     /// What it says instead of the operators' kinds: never that no zones are published where a city's are drawn,

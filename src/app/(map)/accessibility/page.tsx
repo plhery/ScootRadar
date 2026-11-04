@@ -51,6 +51,12 @@ export default function AccessibilityPage() {
             the battery presets answer to the words they show.
           </li>
           <li>
+            <strong>Larger Text:</strong> at twice the standard text size and above, the zone legend
+            stays between the search bar and the scooter&apos;s card, and scrolls when it doesn&apos;t
+            fit, so the card stays on the screen. In Filters, providers&apos; names no longer break
+            inside a word.
+          </li>
+          <li>
             <strong>Icons:</strong> icons grow with the text size.
           </li>
         </ul>
@@ -58,7 +64,8 @@ export default function AccessibilityPage() {
         <h2>Still working on</h2>
         <ul>
           <li>
-            <strong>Larger Text:</strong> the zone legend, at the largest text sizes.
+            <strong>Larger Text:</strong> the names, walking times and counts drawn on the map stay
+            the same size.
           </li>
           <li>
             <strong>VoiceOver and Voice Control:</strong> testing on a device, keeping VoiceOver on

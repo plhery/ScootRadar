@@ -12,6 +12,8 @@ struct ScooterMapScreen: View {
     @State private var searchBarHeight: CGFloat = 62
     @State private var locateButtonHeight: CGFloat = 52
     @State private var topChromeFrame = CGRect.null
+    /// The height of a phone's search bar and what sits under it, while the search is closed.
+    @State private var searchChromeHeight: CGFloat = 62
     @State private var bottomChromeTop: CGFloat?
     @State private var locateButtonFrame = CGRect.null
     @State private var dockFrame = CGRect.null
@@ -246,6 +248,7 @@ struct ScooterMapScreen: View {
                 geometry.frame(in: .global)
             } action: { frame in
                 topChromeFrame = frame
+                if !searchIsExpanded { searchChromeHeight = frame.height }
             }
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: firstLoadFailure)
             .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: model.locationIssue)
@@ -263,7 +266,7 @@ struct ScooterMapScreen: View {
         VStack {
             Spacer()
             HStack(alignment: .bottom, spacing: 10) {
-                zoneLegend
+                zoneLegend(maximumHeight: zoneLegendHeightLimit(in: proxy, below: chromeTop))
                     .padding(.leading, 2)
                 Spacer(minLength: 0)
                 FloatingMapControls(model: model)
@@ -402,7 +405,7 @@ struct ScooterMapScreen: View {
             Spacer()
             HStack(alignment: .bottom, spacing: 10) {
                 Spacer(minLength: 0)
-                zoneLegend
+                zoneLegend()
                 FloatingMapControls(model: model)
                     .onGeometryChange(for: CGRect.self) { geometry in
                         geometry.frame(in: .global)
@@ -421,11 +424,11 @@ struct ScooterMapScreen: View {
     /// What the zones' colours mean, while they are on, and the cities' rules and zones over
     /// the map; the names on the map keep clear of it.
     @ViewBuilder
-    private var zoneLegend: some View {
+    private func zoneLegend(maximumHeight: CGFloat = .infinity) -> some View {
         if model.zoneState != .off || !model.mapRuleZones.isEmpty || !model.mapZoneNotices.isEmpty {
             ZoneLegend(
                 state: model.zoneState, count: model.mapOperatorZoneCount, slowSpeeds: model.mapOperatorSlowSpeeds,
-                rules: model.mapRuleZones, notices: model.mapZoneNotices
+                rules: model.mapRuleZones, notices: model.mapZoneNotices, maximumHeight: maximumHeight
             )
                 .onGeometryChange(for: CGRect.self) { geometry in
                     geometry.frame(in: .global)
@@ -512,6 +515,17 @@ struct ScooterMapScreen: View {
         let room = proxy.size.height - chromeTop - 8 - searchBarHeight - 8 - 8 - locateButtonHeight - dockAndGap
         // Never less than a banner, or the title of a card.
         return max(64, room)
+    }
+
+    /// The room between the search bar, with what sits under it, and the dock, which the zones' legend
+    /// keeps to on a phone. With very large text a tall card left less than the legend's lines took:
+    /// it went up under the search bar, and the chrome, taller than the window, pushed the dock past
+    /// the window's foot. Its lines scroll instead.
+    private func zoneLegendHeightLimit(in proxy: GeometryProxy, below chromeTop: CGFloat) -> CGFloat {
+        let dockAndGap = dockHeight + max(proxy.safeAreaInsets.bottom, 8) + 10
+        let room = proxy.size.height - chromeTop - 8 - searchChromeHeight - 8 - dockAndGap
+        // Never less than a line of it.
+        return max(44, room)
     }
 
     /// The room in the panel under the search bar, which the notices and the dock share.
