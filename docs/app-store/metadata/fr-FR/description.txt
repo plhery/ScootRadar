@@ -23,7 +23,7 @@ Sans compte et sans pub. Votre position est utilisée sur votre iPhone, pour cen
 ET AUSSI
 • Apparence claire et sombre, et les styles de carte Standard, Épuré et Satellite
 • Emplacements de stationnement là où un opérateur les impose
-• Dynamic Type, VoiceOver et Réduire les animations
+• Réduire les animations
 • Français, allemand, italien, anglais, néerlandais, norvégien, portugais, espagnol et islandais
 
 Les positions proviennent des opérateurs et des autorités, et peuvent dater de quelques minutes. Selon la ville, la carte montre notamment Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, RideMovi, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe et Zippy.

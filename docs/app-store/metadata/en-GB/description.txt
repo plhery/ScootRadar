@@ -23,7 +23,7 @@ No account and no ads. Your location is used on your iPhone to centre the map an
 ALSO
 • Light and dark appearance, and Standard, Quiet and Satellite maps
 • Parking bays where an operator requires them
-• Dynamic Type, VoiceOver and Reduce Motion
+• Reduce Motion
 • English, German, French, Italian, Dutch, Norwegian, Portuguese, Spanish and Icelandic
 
 Positions come from the operators and public authorities, and can be a few minutes old. Operators on the map include Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, RideMovi, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe and Zippy, depending on the city.

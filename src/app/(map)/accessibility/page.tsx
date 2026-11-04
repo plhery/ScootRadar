@@ -29,26 +29,23 @@ export default function AccessibilityPage() {
         <p>This page is about the ScootRadar app on the App Store, for iPhone and iPad.</p>
 
         <h2>Works today</h2>
-        <p>The App Store lists one accessibility feature for ScootRadar, on iPhone and iPad:</p>
+        <p>The App Store lists two accessibility features for ScootRadar, on iPhone and iPad:</p>
         <ul>
           <li>
             <strong>Dark Interface:</strong> Settings › Appearance › Dark keeps the whole app dark,
             and so does System when the device is in Dark Mode. The default, Automatic, follows the
             sun: light by day, dark at night.
           </li>
+          <li>
+            <strong>Reduced Motion:</strong> with Reduce Motion on, the map goes straight to its new
+            place without zooming or sliding there: when you tap a cluster, pick a scooter, show the
+            walk to it or go back to where you are.
+          </li>
         </ul>
 
         <h2>In the next update</h2>
         <p>These fixes are built, but not released yet. They come with the version after 1.3.0.</p>
         <ul>
-          <li>
-            <strong>Reduced Motion:</strong> with Reduce Motion on, the map no longer zooms or
-            animates when you tap a cluster or pick a scooter.
-          </li>
-          <li>
-            <strong>VoiceOver:</strong> while the search is open, VoiceOver reads only the search,
-            and the escape gesture closes it.
-          </li>
           <li>
             <strong>Voice Control:</strong> the search bar, the nearest-scooter button, the price and
             the battery presets answer to the words they show.
@@ -64,8 +61,9 @@ export default function AccessibilityPage() {
             <strong>Larger Text:</strong> the zone legend, at the largest text sizes.
           </li>
           <li>
-            <strong>VoiceOver and Voice Control:</strong> testing on a device, and describing the
-            map&apos;s zones to someone who can&apos;t see them.
+            <strong>VoiceOver and Voice Control:</strong> testing on a device, keeping VoiceOver on
+            the search while it is open, and describing the map&apos;s zones to someone who
+            can&apos;t see them.
           </li>
           <li>
             <strong>Differentiate Without Color Alone:</strong> on the map, some providers&apos; dots

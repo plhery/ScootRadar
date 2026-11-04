@@ -23,7 +23,7 @@ Sin cuenta y sin anuncios. Tu ubicación se usa en tu iPhone, para centrar el ma
 ADEMÁS
 • Aspecto claro y oscuro, y los mapas Estándar, Sencillo y Satélite
 • Zonas de estacionamiento donde un operador las exige
-• Dynamic Type, VoiceOver y Reducir movimiento
+• Reducir movimiento
 • Español, inglés, alemán, francés, italiano, neerlandés, noruego, portugués e islandés
 
 Las posiciones vienen de los operadores y las autoridades, y pueden tener unos minutos de retraso. En el mapa están, entre otros, Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, RideMovi, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe y Zippy, según la ciudad.

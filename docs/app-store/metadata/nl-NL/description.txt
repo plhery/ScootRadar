@@ -23,7 +23,7 @@ Geen account en geen reclame. Je locatie wordt op je iPhone gebruikt, om de kaar
 OOK
 • Lichte en donkere weergave, en de kaarten Standaard, Rustig en Satelliet
 • Parkeerplekken waar een aanbieder die verplicht stelt
-• Dynamic Type, VoiceOver en Verminder beweging
+• Verminder beweging
 • Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans en IJslands
 
 De posities komen van de aanbieders en overheden, en kunnen een paar minuten oud zijn. Op de kaart staan onder meer Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, RideMovi, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe en Zippy, afhankelijk van de stad.

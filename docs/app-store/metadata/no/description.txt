@@ -23,7 +23,7 @@ Ingen konto og ingen reklame. Posisjonen din brukes på iPhonen din, for å sent
 OGSÅ
 • Lyst og mørkt utseende, og kartene Standard, Rolig og Satellitt
 • Parkeringsplasser der en operatør krever det
-• Dynamic Type, VoiceOver og Reduser bevegelse
+• Reduser bevegelse
 • Norsk, engelsk, tysk, fransk, italiensk, nederlandsk, portugisisk, spansk og islandsk
 
 Posisjonene kommer fra operatørene og myndighetene, og kan være noen minutter gamle. På kartet finner du blant annet Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Deer, Xingxing, Alpaca, DART, RideMovi, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe og Zippy, avhengig av byen.
