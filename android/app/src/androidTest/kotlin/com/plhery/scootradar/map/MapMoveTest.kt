@@ -64,11 +64,11 @@ class MapMoveTest {
     }
 
     /**
-     * With animations off a phone still shows a cluster's scooters in motion, as MapKit's showAnnotations does, but
-     * fits a route at once, and beside a panel the cluster too (MAP-327).
+     * With animations off a cluster's scooters are shown at once on a phone, as the iPhone's map cuts to them under
+     * Reduce Motion since 4 November, a route too, and beside a panel the cluster as before (MAP-327).
      */
     @Test
-    fun withAnimationsOffAPhonesClusterOpensInMotionAndTheRestAtOnce() = withPhoneMap { phone ->
+    fun withAnimationsOffAClusterAndARouteAreShownAtOnce() = withPhoneMap { phone ->
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val frames = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
         val camera = phone.onMain {
@@ -88,14 +88,14 @@ class MapMoveTest {
         }
         try {
             phone.onMain { phone.map.addOnCameraMoveListener { steps += SystemClock.uptimeMillis() } }
-            moved(CameraMove.Fit(scooters, ofCluster = true)).let { assertTrue("$it steps", it >= 10) }
+            moved(CameraMove.Fit(scooters)).let { assertTrue("$it steps", it <= 2) }
             moved(CameraMove.Fit(route)).let { assertTrue("$it steps", it <= 2) }
             phone.onMain {
                 val height = phone.projection.bounds.height
                 camera.chromeDidChange(MapChrome(panel = ScreenRect(x = 16.0, y = 16.0, width = 160.0, height = height - 32)))
             }
             settle()
-            moved(CameraMove.Fit(scooters, ofCluster = true)).let { assertTrue("$it steps", it <= 2) }
+            moved(CameraMove.Fit(scooters)).let { assertTrue("$it steps", it <= 2) }
         } finally {
             phone.onMain { camera.close() }
             frames.cancel()

@@ -164,6 +164,12 @@ class MarkerMotionTest {
         val dot = MarkerFeatures.dot(mark, art)
         assertEquals(mark.art.id, dot.image)
         assertEquals(ScooterDotState.Selected, mark.look.state)
+        // Let go at once too, as the iPhone's map selects and deselects a scooter without animating under Reduce
+        // Motion since 4 November (5314fc64).
+        scene.applySelection(null, map)
+        assertNull(mark.motion)
+        assertNotEquals(ScooterDotState.Selected, mark.look.state)
+        scene.applySelection("voi:far", map)
 
         val spot = map.at(195.0, 600.0)
         scene.reconcile(scene.marks.map { it.scooter } + scooter("one", "bolt", at = spot), revision = 2)

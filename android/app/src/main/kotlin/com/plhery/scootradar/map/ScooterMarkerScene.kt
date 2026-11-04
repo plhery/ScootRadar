@@ -218,10 +218,10 @@ sealed interface CameraMove {
 
     /**
      * Places fitted in the part of the map left visible, as a route is fitted (MAP-052, MAP-302, MAP-176); at once
-     * where it is not [animated], as a route fitted while the map is off the screen is. A cluster's scooters
-     * ([ofCluster]) are shown in motion on a phone even with animations off, as MapKit shows them (MAP-327).
+     * where it is not [animated], as a route fitted while the map is off the screen is, and with animations off, a
+     * cluster's scooters too (MAP-327).
      */
-    data class Fit(val coordinates: List<GeoPoint>, val animated: Boolean = true, val ofCluster: Boolean = false) : CameraMove
+    data class Fit(val coordinates: List<GeoPoint>, val animated: Boolean = true) : CameraMove
 }
 
 /** A marker coming up from nothing: from a moment of the uptime clock, in seconds, over a length, along a curve. */
@@ -1125,7 +1125,7 @@ class ScooterMarkerScene(
         track("cluster_select", null)
         val members = cluster.members
         if (members != null) {
-            move(CameraMove.Fit(members.map { it.coordinate }, ofCluster = true))
+            move(CameraMove.Fit(members.map { it.coordinate }))
             return
         }
         val projection = map.projection

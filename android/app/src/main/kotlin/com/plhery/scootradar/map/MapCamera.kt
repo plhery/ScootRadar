@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.os.SystemClock
 import android.view.View
 import androidx.compose.animation.core.Animatable
-import androidx.compose.ui.MotionDurationScale
 import androidx.compose.animation.core.tween
 import com.plhery.scootradar.core.IosMotion
 import com.plhery.scootradar.core.map.ScooterMapController
@@ -32,7 +31,6 @@ import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.maps.MapLibreMap
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.ceil
@@ -284,8 +282,9 @@ class MapCamera(
                     visible = visibleRect(),
                 ),
             )
-            // On a phone MapKit shows a cluster's scooters in motion whatever Reduce Motion says (MAP-327).
-            is CameraMove.Fit -> fit(move.coordinates, move.animated, inMotion = move.ofCluster && movedMargins == null)
+            // At once with animations off, a cluster's scooters on a phone too, as the iPhone's map cuts to them under
+            // Reduce Motion since 4 November (MAP-327).
+            is CameraMove.Fit -> fit(move.coordinates, move.animated)
         }
     }
 
@@ -304,7 +303,7 @@ class MapCamera(
      * the map, tilted and turned as the map is: the iPhone's fit of a route, which a phone's cluster takes here in
      * place of MapKit's showAnnotations, whose insets are its own (MAP-176, MAP-177, MAP-302).
      */
-    private fun fit(coordinates: List<GeoPoint>, animated: Boolean, inMotion: Boolean = false) {
+    private fun fit(coordinates: List<GeoPoint>, animated: Boolean) {
         val first = coordinates.firstOrNull() ?: return
         val bounds = projection.bounds
         // The map shows its centre in the middle of its margins, which a panel moves past it: the rect is fitted
@@ -336,7 +335,6 @@ class MapCamera(
                 .zoom(min(MapZoom.maximum, max(MapZoom.minimum, zoom)))
                 .build(),
             animated,
-            inMotion,
         )
     }
 
@@ -605,15 +603,12 @@ class MapCamera(
         view.post { controller.updateViewport(region, zoom, zoomLevel) }
     }
 
-    /**
-     * Moves the camera, in MapKit's time and curve, or at once where it is asked to or the phone has animations off,
-     * unless the move is [inMotion] whatever they say: then in MapKit's time still, at full speed.
-     */
-    private fun animate(to: CameraPosition, animated: Boolean = true, inMotion: Boolean = false) {
+    /** Moves the camera, in MapKit's time and curve, or at once where it is asked to or the phone has animations off. */
+    private fun animate(to: CameraPosition, animated: Boolean = true) {
         stopMotion()
         // A tilt the camera can't keep where it lands is the most it can (MAP-322).
         val target = CameraPosition.Builder(to).tilt(min(to.tilt, MapZoom.mostTilt(to.zoom, to.target!!.latitude, mapKit))).build()
-        if (!animated || !(inMotion || animationsOn())) {
+        if (!animated || !animationsOn()) {
             jump(target)
             regionDidChange(animated = false)
             return
@@ -623,7 +618,7 @@ class MapCamera(
         moving = true
         landing = target
         memory.position = target
-        motion = scope.launch(if (inMotion) FullSpeed else EmptyCoroutineContext) {
+        motion = scope.launch {
             Animatable(0f).animateTo(1f, tween(millis, easing = easeInEaseOut)) { jump(between(from, target, value.toDouble())) }
             moving = false
             motion = null
@@ -826,9 +821,4 @@ class MapCamera(
                 .build()
         }
     }
-}
-
-/** A move at full speed, whatever the phone's animator duration scale, which Compose reads as its motion's. */
-private object FullSpeed : MotionDurationScale {
-    override val scaleFactor = 1f
 }
