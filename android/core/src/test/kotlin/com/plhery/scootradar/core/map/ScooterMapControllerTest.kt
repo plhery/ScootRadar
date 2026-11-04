@@ -736,8 +736,9 @@ class ScooterMapControllerTest {
 
     @Test
     fun aProviderNeverTurnedOffShowsWhenItComesLater() = runTest {
-        // Saved by an older version, which had no Hopp: the rider turned off Bird and a provider since dropped. iOS
-        // keeps the providers turned on, so it would hide Hopp (PLAN §0, LOG-288).
+        // Saved by an older version, which had no Hopp: the rider turned off Bird and a provider since dropped. The
+        // iPhone keeps those turned off too since 17118b3b, and reads its older list of those turned on until the
+        // filters next change, which Android never wrote (testProvidersAddedSinceALegacyChoice…, LOG-288).
         val defaults = InMemoryScooterDefaults()
         defaults.set(listOf("bird", "gone-since"), forKey = "disabled-providers")
 
