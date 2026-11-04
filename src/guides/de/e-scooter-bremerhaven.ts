@@ -150,7 +150,7 @@ const guide: Guide = {
     { title: 'Hochschule Bremerhaven: Kontakt, Campusplan und Anreise (2. November 2026)', url: 'https://www.hs-bremerhaven.de/kontakt' },
     { title: 'Weserfähre: Umzug des Anlegers in Bremerhaven und Sonderfahrplan (ab 2. November 2026)', url: 'https://weserfaehre.de/startseite' },
     { title: 'Landesamt GeoInformation Bremen: WFS ATKIS Verwaltungsgrenzen Land Bremen, Ortsteile Bremerhaven (CC BY 4.0)', url: 'https://geodienste.bremen.de/wfs_verwaltungsgrenzen' },
-    { title: 'BKG: WFS Verwaltungsgebiete 1:250 000. © BKG (2026) dl-de/by-2-0, Datenquellen: https://sg.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg_nuts.pdf', url: 'https://sg.geodatenzentrum.de/wfs_vg250' },
+    { title: 'BKG: WFS Verwaltungsgebiete 1:250 000. © BKG (2026) dl-de/by-2-0, Datenquellen: https://sg.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg_nuts.pdf', url: 'https://sg.geodatenzentrum.de/wfs_vg250?service=WFS&request=GetCapabilities' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV)', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Bussgeldkatalog-Verordnung, Anlage', url: 'https://www.gesetze-im-internet.de/bkatv_2013/anlage.html' },
     { title: 'Kraftfahrt-Bundesamt: Bundeseinheitlicher Tatbestandskatalog (Datenbank, Stand 8. Oktober 2026)', url: 'https://www.kba.de/DE/Themen/ZentraleRegister/FAER/BT_KAT_OWI/btkat_node.html' },

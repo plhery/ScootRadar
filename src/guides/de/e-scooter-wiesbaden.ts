@@ -107,7 +107,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter im Bus und Leihräder: ESWE, RMV, nextbike, meinRad',
       blocks: [
-        'Wiesbaden gehört zum RMV, und dort gilt: «E-Scooter werden wie Fahrräder behandelt.» In Bus, S-Bahn und Regionalzug fahren sie kostenlos mit, ein Anspruch besteht aber nicht; Fahrgäste mit Rollstuhl oder Kinderwagen haben Vorrang, und bei wenig Platz entscheidet das Personal. Zusammengeklappte Tretroller gelten als Gepäck und dürfen jederzeit mit. Den Akku darfst du unterwegs weder herausnehmen noch laden. In ESWE-Bussen dürfen laut den Beförderungsbedingungen des Verkehrsverbunds Mainz-Wiesbaden (ab 1. Januar 2026) höchstens vier Fahrräder mit; im Zweifel entscheidet das Fahrpersonal.',
+        'Wiesbaden gehört zum RMV, und dort gilt: «E-Scooter werden wie Fahrräder behandelt.» In Bus, S-Bahn und Regionalzug fahren sie kostenlos mit, ein Anspruch besteht aber nicht; Fahrgäste mit Rollstuhl oder Kinderwagen haben Vorrang, und bei wenig Platz entscheidet das Personal. Zusammengeklappte Tretroller gelten als Gepäck und dürfen jederzeit mit. Den Akku darfst du unterwegs weder herausnehmen noch laden.',
         'Einen Leih-Scooter kannst du nicht zusammenklappen: Beende die Fahrt vor der Haltestelle, aber nicht unmittelbar an ihr, und miete am Ziel neu. Wer nach Frankfurt pendelt: [E-Scooter in Frankfurt](guide:frankfurt).',
         'Lieber Fahrrad? Die Stadt nennt mehrere Leihsysteme:',
         {
@@ -169,7 +169,6 @@ const guide: Guide = {
     { title: 'TriWiCon: Kurparkordnung, Stand Juni 2021 (PDF)', url: 'https://kurhaus.wiesbaden.de/downloads/kurpark/20210618_Kurparkordnung.pdf' },
     { title: 'Stadt Mainz: Neuordnung der Parkregelung für E-Tretroller (27. Februar 2026)', url: 'https://www.mainz.de/pressemeldungen/Mainz/2026/februar/neuordnung-der-parkregelegung-fuer-e-tretroller' },
     { title: 'RMV: Mitnahme von Fahrrädern, E-Scootern und Co.', url: 'https://www.rmv.de/c/de/tickets/regeln/tarifinformationen/mitnahme-von-fahrraedern-e-scootern-und-co' },
-    { title: 'ESWE Verkehr: Besondere Beförderungsbedingungen VMW (PDF)', url: 'https://www.eswe-verkehr.de/fileadmin/Rechtliches/Besondere_Befoerderungsbedingungen_VMW.pdf' },
     { title: 'ESWE Verkehr: Häufige Fragen', url: 'https://www.eswe-verkehr.de/faq.html' },
     { title: 'Voi: Tarif und Zonen für Mainz und Wiesbaden (NeTEx)', url: 'https://api.voiapp.io/gbfs/open/v1/305/netex.xml' },
     { title: 'Bolt: E-Scooter in Deutschland', url: 'https://bolt.eu/de-de/scooters/' },

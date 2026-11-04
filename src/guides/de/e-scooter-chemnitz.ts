@@ -50,7 +50,7 @@ const guide: Guide = {
             rows: [
               ['Hauptbahnhof', 'Die Hausordnung der DB; beende die Fahrt vor dem Bahnhof', 'DB'],
               ['Gelände der TU Chemnitz', 'StVO auf dem ganzen Gelände; in den Gebäuden und auf ausgewiesenen Flächen nicht fahren; nach unserer Lesart nicht auf Fusswegen, vor Hydranten und auf Grünanlagen abstellen', 'TU Chemnitz (Hausordnung vom 4. März 2026)'],
-              ['Strassenbahnen und Busse der CVAG', 'Kein E-Scooter, auch nicht zusammengeklappt', 'VMS (Beförderungsbedingungen, gültig ab 1. April 2026)'],
+              ['Strassenbahnen und Busse der CVAG', 'Kein E-Scooter, auch nicht zusammengeklappt', 'VMS (laut CVAG seit 1. August 2024)'],
             ],
           },
         },
@@ -104,12 +104,11 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Strassenbahn, Bus und Zug: CVAG, VMS und DB',
       blocks: [
-        'Für ihre Strassenbahnen und Busse verweist die CVAG auf die Beförderungsbedingungen des Verkehrsverbunds Mittelsachsen (VMS, gültig ab 1. April 2026). Ihr allgemeiner Teil, «Einheitliche Beförderungsbedingungen des MDV, VMS, VVO, VVV und ZVON», erlaubt zusammengeklappte elektrische Tretroller, «wenn die Voraussetzungen zur Beförderung dazu gegeben sind». Für Busse und Strassenbahnen macht der VMS davon aber eine Ausnahme.',
+        'Für ihre Strassenbahnen und Busse verweist die CVAG auf die Beförderungsbedingungen des Verkehrsverbunds Mittelsachsen (VMS), die verbundweit gelten. Ihr allgemeiner Teil, «Einheitliche Beförderungsbedingungen des MDV, VMS, VVO, VVV und ZVON», erlaubt zusammengeklappte elektrische Tretroller, «wenn die Voraussetzungen zur Beförderung dazu gegeben sind». Für Busse und Strassenbahnen macht der VMS davon aber eine Ausnahme.',
         {
           list: [
-            '**Strassenbahn und Bus der CVAG:** In den Fahrzeugen der Bus- und Strassenbahnunternehmen, die der VMS in seiner Anlage 1 aufzählt, ist «abweichend zu Teil A die Mitnahme von E-Tretrollern ausgeschlossen». Dazu gehören die CVAG, REGIOBUS Mittelsachsen, der Regionalverkehr Erzgebirge, der Regionalverkehr Westsachsen und die Städtischen Verkehrsbetriebe Zwickau. Laut CVAG gilt das seit dem 1. August 2024: «In Bussen und Strassenbahnen im VMS dürfen keine E-Tretroller (bzw. E-Roller/ E-Scooter) mehr mitgenommen werden.» Elektro-Rollstühle, E-Bikes und Pedelecs sowie vierrädrige Elektromobile für Menschen mit eingeschränkter Mobilität betrifft das Verbot nicht.',
-            '**Regionalzug:** Die Eisenbahnunternehmen führt der VMS in Anlage 1 eigens auf, darunter DB Regio, die Erzgebirgsbahn und die Mitteldeutsche Regiobahn; für sie gilt das Verbot nicht. Auch laut CVAG werden zusammengeklappte E-Tretroller im Schienenpersonennahverkehr «weiterhin» befördert. Dein eigener darf dort also zusammengeklappt mit, wenn die Voraussetzungen gegeben sind; «das Betriebspersonal entscheidet im Einzelfall». Den eingebauten Akku darfst du laut VMS während der Fahrt weder herausnehmen noch laden.',
-            '**City-Bahn Chemnitz:** Der VMS führt sie in Anlage 1 bei den Eisenbahnunternehmen, sein Verbot nennt nur die Bus- und Strassenbahnunternehmen. Die CVAG schreibt dagegen allgemein von «Bussen und Strassenbahnen im VMS» und nennt die City-Bahn nicht. Frag im Zweifel das Personal; laut VMS entscheidet es ohnehin im Einzelfall, was mitfährt.',
+            '**Strassenbahn und Bus der CVAG:** Laut CVAG gilt seit dem 1. August 2024: «In Bussen und Strassenbahnen im VMS dürfen keine E-Tretroller (bzw. E-Roller/ E-Scooter) mehr mitgenommen werden.» Grund ist die Brandgefahr der Akkus. Elektro-Rollstühle, E-Bikes und Pedelecs sowie vierrädrige Elektromobile für Menschen mit eingeschränkter Mobilität betrifft das Verbot nicht.',
+            '**Regionalzug:** Laut CVAG werden zusammengeklappte E-Tretroller im Schienenpersonennahverkehr, also bei den Eisenbahnunternehmen, «weiterhin» befördert. Dein eigener darf dort also zusammengeklappt mit, wenn die Voraussetzungen gegeben sind; «das Betriebspersonal entscheidet im Einzelfall».',
             '**IC und ICE der Deutschen Bahn:** Zusammengeklappt und sicher verstaut fährt dein eigener E-Scooter dort kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden.',
           ],
         },
@@ -121,7 +120,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Zwickau:** Dott führt auch Zwickau unter seinen Standorten (Stand 26. Oktober 2026), und die [Karte von Zwickau](map:de:Zwickau) zeigte am selben Montag gegen 17.30 Uhr knapp 20 Dott-Scooter. Die Städtischen Verkehrsbetriebe Zwickau zählt der VMS zu den Bus- und Strassenbahnunternehmen: In ihren Strassenbahnen und Bussen darf kein E-Scooter mit.',
+            '**Zwickau:** Dott führt auch Zwickau unter seinen Standorten (Stand 26. Oktober 2026), und die [Karte von Zwickau](map:de:Zwickau) zeigte am selben Montag gegen 17.30 Uhr knapp 20 Dott-Scooter. Der Landkreis Zwickau gehört zum VMS: Auch in Strassenbahnen und Bussen in Zwickau darf kein E-Scooter mit.',
             '**Drahtseilbahn Augustusburg und Fichtelbergbahn:** Zusammengeklappt fährt dein eigener E-Scooter dort laut CVAG weiterhin mit.',
             '**Leipzig:** Dort verleihen Dott und Voi, und abstellen darfst du nur an markierten Stationen; die [Karte von Leipzig](map:de:Leipzig) zeigt beide. In Strassenbahnen und Bussen der LVB darf seit dem 1. Mai 2024 kein E-Scooter mehr mit. Mehr steht in [E-Scooter in Leipzig](guide:leipzig).',
             '**Dresden:** Laut Stadt verleihen dort RideMovi und Bolt, Voi soll «ab Herbst 2026» dazukommen; die [Karte von Dresden](map:de:Dresden) zeigt Bolt. Im VVO rund um Dresden fährt dein eigener E-Scooter zusammengeklappt auch in Strassenbahn und Bus mit.',
@@ -142,7 +141,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in der Strassenbahn in Chemnitz mitnehmen?',
-      answer: 'In Strassenbahnen und Bussen der CVAG nicht, auch keinen zusammengeklappten: Die Beförderungsbedingungen des VMS schliessen E-Tretroller dort aus, laut CVAG seit dem 1. August 2024. Im Regionalzug darf dein eigener zusammengeklappt mit, wenn das Personal ihn zulässt. Die City-Bahn führt der VMS bei den Eisenbahnunternehmen, die CVAG spricht dagegen von «Bussen und Strassenbahnen im VMS»: Frag dort im Zweifel das Personal. Einen Leih-Scooter kannst du nicht zusammenklappen.',
+      answer: 'In Strassenbahnen und Bussen der CVAG nicht, auch keinen zusammengeklappten: Im VMS sind E-Tretroller dort laut CVAG seit dem 1. August 2024 ausgeschlossen. Im Regionalzug darf dein eigener zusammengeklappt mit, wenn das Personal ihn zulässt. Einen Leih-Scooter kannst du nicht zusammenklappen.',
     },
     {
       question: 'Wo darf ich in Chemnitz einen Leih-Scooter abstellen?',
@@ -159,7 +158,7 @@ const guide: Guide = {
     { title: 'GeoSN: ALKIS-WFS, Verwaltungseinheiten und Gemarkungen (Stand 15. Oktober 2026)', url: 'https://www.geodaten.sachsen.de/alkis-wfs-4968.html' },
     { title: 'CVAG: Häufige Fragen zu Mitnahmeregelungen', url: 'https://www.cvag.de/faq/haeufige-fragen-zu-mitnahmeregelungen' },
     { title: 'CVAG: Beförderungsbedingungen', url: 'https://www.cvag.de/fahrtinfo/befoerderungsbedingungen' },
-    { title: 'VMS: Beförderungsbedingungen und Tarifbestimmungen, gültig ab 1. April 2026 (PDF)', url: 'https://www.vms.de/wp-content/uploads/2026/09/BR-BefBedTarifbestimmungen-VMS-Tarif-09_2026-WEB.pdf' },
+    { title: 'VVO: Das Kleingedruckte, mit den Einheitlichen Beförderungsbedingungen des MDV, VMS, VVO, VVV und ZVON (Stand 1. August 2026, PDF)', url: 'https://www.vvo-online.de/doc/VVO-Broschuere-VVO-Kleingedrucktes.pdf' },
     { title: 'TU Chemnitz: Hausordnung vom 4. März 2026 (PDF)', url: 'https://www.tu-chemnitz.de/verwaltung/technik/documents/public/Hausordnung.pdf' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern (FAQ)', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'Deutsche Bahn: Beförderungsbedingungen (Stand 26. Oktober 2026), A.7.1', url: 'https://www.bahn.de/agb' },

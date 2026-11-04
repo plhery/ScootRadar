@@ -173,7 +173,7 @@ const guide: Guide = {
     { title: 'Hasepost: Lime stellt Betrieb in Osnabrück ein (15. Mai 2024)', url: 'https://hasepost.de/e-scooter-anbieter-lime-stellt-betrieb-in-osnabrueck-ein-474349/' },
     { title: 'Hasepost: Roller von Tier verschwinden, jetzt kommt Dott (4. Oktober 2024)', url: 'https://hasepost.de/roller-von-tier-verschwinden-aus-osnabrueck-jetzt-kommt-dot-520812/' },
     { title: 'VfL Osnabrück: Informationen für Gästefans 2026/27 (PDF)', url: 'https://res.cloudinary.com/diheptxu2/image/upload/v1786030965/Informationen_f%C3%BCr_Gaestefans_26_27_u1nyrc.pdf' },
-    { title: 'Stadt Osnabrück: Maiwoche', url: 'https://erleben.osnabrueck.de/en/experience-city/city-events/maiwoche/' },
+    { title: 'Stadt Osnabrück: Maiwoche', url: 'https://erleben.osnabrueck.de/de/stadt-erleben/city-events/maiwoche/' },
   ],
 };
 

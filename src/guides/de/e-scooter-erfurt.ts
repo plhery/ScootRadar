@@ -16,7 +16,7 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Erfurt?',
       blocks: [
-        'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Erfurt: **Yoio** und **Dott**. Yoio gehört der YourCar GmbH aus Göttingen und kam laut Stadt im Mai 2021, angekündigt mit rund 200 Scootern. Tier folgte im Mai 2022 mit rund 150. Tier heisst heute Dott: Im Oktober 2024 kündigte das Unternehmen an, alle Tier-Scooter auf die Dott-App umzustellen, und Dott führt Erfurt auf seiner Städteliste. Bolt bietet in Erfurt laut eigener Website nur Fahrten mit Fahrer und Taxis an. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Erfurt: **Yoio** und **Dott**. Yoio gehört der YourCar GmbH aus Göttingen. Dott ist das frühere Tier: Im Oktober 2024 kündigte das Unternehmen an, alle Tier-Scooter auf die Dott-App umzustellen, und Dott führt Erfurt auf seiner Städteliste. Bolt bietet in Erfurt laut eigener Website nur Fahrten mit Fahrer und Taxis an. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Zur Flottengrösse sagt die Stadt nur: 2025 nannte sie für die beiden Anbieter 130 und 280 Fahrzeuge im durchschnittlichen täglichen Einsatz.',
         '**Yoio und Dott auf unserer Karte.** Die [Karte von Erfurt](map:de:Erfurt) zeigt beide Anbieter, Dott seit dem 24. Oktober 2026. An diesem Samstag standen dort um 13:26 Uhr rund 280 Dott- und rund 210 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Einen Preis für Erfurt nennt Dott nicht: Den siehst du nur in der Dott-App.',
       ],
@@ -43,8 +43,8 @@ const guide: Guide = {
       heading: 'Wo darf man in Erfurt mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. Eigene Fahrregeln für E-Scooter haben weder Thüringen noch Erfurt.',
-        '**Altstadt:** Die Fussgängerzone reicht laut Stadt vom Anger über Bahnhofstrasse und Schlösserstrasse, Fischmarkt und Marktstrasse bis zum Domplatz, zum Wenigemarkt und zur Krämerbrücke. Mit den verkehrsberuhigten Gassen ringsum nennt die Stadt das Gebiet «Begegnungszone», ein Arbeitstitel, kein Verkehrszeichen. Fahrräder dürfen über den Anger montags bis samstags von 18:30 bis 9 Uhr und sonntags fahren, im westlichen Anger bis zur Borngasse rund um die Uhr. Für E-Scooter gilt diese Freigabe heute nicht: Steig ab und schieb.',
-        '**Ab 1. März 2027** gilt eine Freigabe mit dem Zusatzschild «Radverkehr frei» laut Bundesverkehrsministerium auch für E-Scooter, im Schritttempo. Die Kommunen können E-Scooter aber eigens verbieten. Ob Erfurt das am Anger tut, hat die Stadt bisher nicht gesagt (Stand Oktober 2026); sonst dürftest du dort zu denselben Zeiten fahren wie Fahrräder.',
+        '**Anger:** Der Anger ist Erfurts Fussgängerzone: Steig ab und schieb.',
+        '**Ab 1. März 2027** gilt eine Freigabe mit dem Zusatzschild «Radverkehr frei» laut Bundesverkehrsministerium auch für E-Scooter, im Schritttempo. Die Kommunen können E-Scooter aber eigens verbieten.',
         '**Skateparks:** In den Skateparks im Nordpark, am Alten Nordhäuser Bahnhof (Domizil) und im Südpark sowie auf einer kleinen Fläche an der Rosa-Luxemburg-Strasse darfst du mit Yoio laut seinen offenen Daten weder starten noch beenden noch durchfahren.',
         '**egapark:** Die Parkordnung der Betreiberin, der Erfurter Garten- und Ausstellungs gGmbH, sagt unter Punkt 4.6: «Das Mitbringen und Nutzen von Fahrzeugen, Fahrrädern und Fortbewegungsmitteln jeglicher Art ist im egapark nicht gestattet.» Auch hineinschieben darfst du einen E-Scooter also nicht.',
       ],
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Erfurt abstellen: wo die App das Fahrtende sperrt',
       blocks: [
-        'Laut Stadt gilt nach einer freiwilligen Selbstverpflichtung aller Anbieter ein Abstellverbot in historisch sensiblen Bereichen, etwa am Anger, auf der Krämerbrücke, in «Venedig», am Fischmarkt, am Domplatz, am Wenigemarkt und am Benediktsplatz. Dort lässt sich die Miete technisch nicht beenden (Stand 2025). Die meisten dieser Plätze gehören zur Fussgängerzone, dort fährst du ohnehin nicht.',
+        'Laut Stadt gilt nach einer freiwilligen Selbstverpflichtung aller Anbieter ein Abstellverbot in historisch sensiblen Bereichen, etwa am Anger, auf der Krämerbrücke, in «Venedig», am Fischmarkt, am Domplatz, am Wenigemarkt und am Benediktsplatz. Dort lässt sich die Miete technisch nicht beenden (Stand 2025).',
         'Yoios offene Daten vom 23. Oktober 2026 zeigen weitere Parkverbotszonen: entlang der Gera und ihrer Arme durch die Altstadt, am Petersberg, entlang der Gleise am Hauptbahnhof und im Stadtpark. Den Domplatz deckte die Verbotszone nur zu etwa drei Vierteln ab. Halte dich an die Liste der Stadt, auch wenn die App am Rand des Platzes das Fahrtende erlaubt.',
         {
           table: {
@@ -78,8 +78,8 @@ const guide: Guide = {
     {
       heading: 'Wer regelt was? Bund, Thüringen, Stadt und Yoio',
       blocks: [
-        'Die Verkehrsregeln setzt der Bund. Wo Leih-Scooter stehen dürfen, entscheiden laut Bundesverkehrsministerium die Kommunen. Ihre Satzung über die Sondernutzung öffentlicher Strassen stützt die Stadt auf das Thüringer Strassengesetz. Gebiet, Zonen, Preise und Gebühren legt der Anbieter fest; die Verbotszonen der Altstadt sperrt er auf Wunsch der Stadt in der App.',
-        'Erfurt behandelt den Verleih bisher als Gemeingebrauch, also ohne Erlaubnis, und regelt ihn über eine freiwillige Selbstverpflichtung, die alle Anbieter unterschrieben haben: Gebiet, Flottengrösse, Parkverbotszonen. Für die Innenstadt nannte die Stadt 2025 eine «bisherige Obergrenze von 100 E-Scootern». Die Obergrenze für das ganze Stadtgebiet, 2021 mit dem Stadtratsausschuss festgelegt, hat sie nicht veröffentlicht. Das Abstellen kontrolliert der Vollzugsdienst der städtischen Ordnungsbehörde, das Fahren die Polizei.',
+        'Die Verkehrsregeln setzt der Bund. Wo Leih-Scooter stehen dürfen, entscheiden laut Bundesverkehrsministerium die Kommunen. Gebiet, Zonen, Preise und Gebühren legt der Anbieter fest; die Verbotszonen der Altstadt sperrt er auf Wunsch der Stadt in der App.',
+        'Erfurt behandelt den Verleih bisher als Gemeingebrauch, also ohne Erlaubnis, und regelt ihn über eine freiwillige Selbstverpflichtung, die alle Anbieter unterschrieben haben: Gebiet, Flottengrösse, Parkverbotszonen. Für die Innenstadt nannte die Stadt 2025 eine «bisherige Obergrenze von 100 E-Scootern». Das Abstellen kontrolliert der Vollzugsdienst der städtischen Ordnungsbehörde, das Fahren die Polizei.',
         'Die Wirkung der Selbstverpflichtung nennt die Stadt «mässig» (2025). Sie bevorzugt eine Regelung als Sondernutzung, mit festen Abstellflächen in der Innenstadt und freiem Abstellen im übrigen Stadtgebiet; rund 60 mögliche Standorte hat sie vorgeprüft. Die Sondernutzungsgebühr für gewerbliche E-Scooter liegt laut Stadt bei 0 €, ausgewiesen ist bisher keine Fläche.',
         'Am 18. Dezember 2025 beschloss der Stadtrat, dass die Stadt mit den Anbietern, der EVAG und dem City-Management markierte Abstellzonen in der Altstadt prüft und den Ausschuss bis Ende September 2026 informiert. Diesen Bericht und eine Vorlage zu Sondernutzung und Vergabe, die die Verwaltung für das erste Quartal 2026 angekündigt hatte, enthielt das Ratsinformationssystem bis zum 23. Oktober 2026 nicht. Feste Abstellflächen, Gebühren oder eine Auswahl der Anbieter sind also nicht beschlossen.',
       ],
@@ -121,7 +121,6 @@ const guide: Guide = {
         {
           list: [
             '**Die Krämerbrücke ist Parkverbotszone auf ganzer Länge.** Sie ist laut Erfurt Tourismus die längste durchgehend mit Häusern bebaute und bewohnte Brücke Europas: 120 m, heute 32 Häuser, aus Stein seit 1325.',
-            '**Strassenbahn mitten in der Fussgängerzone:** Am Anger kreuzen sich laut Stadt alle Stadtbahnlinien, und Fussgängerzone ist er seit den 1970er-Jahren.',
             '**Yoio gibt es nur in drei Städten:** Ausser in Erfurt verleiht die YourCar GmbH E-Scooter nur in Göttingen und [Freiburg](guide:freiburg).',
           ],
         },
@@ -143,7 +142,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter über den Anger fahren?',
-      answer: 'Nein, er ist Fussgängerzone. Fahrräder dürfen dort montags bis samstags von 18:30 bis 9 Uhr und sonntags fahren, E-Scooter heute nicht. Ab 1. März 2027 gilt eine Freigabe für Fahrräder grundsätzlich auch für E-Scooter, im Schritttempo, sofern die Stadt sie nicht eigens ausschliesst.',
+      answer: 'Nein, er ist Fussgängerzone: Steig ab und schieb. Ab 1. März 2027 gilt eine Freigabe für Fahrräder mit «Radverkehr frei» grundsätzlich auch für E-Scooter, im Schritttempo, sofern die Stadt sie nicht eigens ausschliesst.',
     },
     {
       question: 'Darf ich einen E-Scooter in der Strassenbahn mitnehmen?',
@@ -151,13 +150,10 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Stadt Erfurt: E-Scooter-Verleih von Yoio startet (17. Mai 2021)', url: 'https://www.erfurt.de/ef/de/service/aktuelles/pm/2021/138403.html' },
-    { title: 'Stadt Erfurt: Tier startet E-Scooter-Verleih (20. Mai 2022)', url: 'https://www.erfurt.de/ef/de/service/aktuelles/pm/2022/141535.html' },
     { title: 'Stadt Erfurt: Antwort auf die Anfrage DS 1204/25 zu E-Scootern (2025, PDF)', url: 'https://buergerinfo.erfurt.de/getfile.asp?id=952588&type=do' },
     { title: 'Stadt Erfurt: Antrag DS 2626/25, E-Roller-Abstellzonen in der Innenstadt', url: 'https://buergerinfo.erfurt.de/vo0050.asp?__kvonr=63019' },
     { title: 'Stadt Erfurt: Niederschrift der Stadtratssitzung vom 18. Dezember 2025 (PDF)', url: 'https://buergerinfo.erfurt.de/getfile.asp?id=993706&type=do' },
-    { title: 'Stadt Erfurt: Begegnungszone', url: 'https://www.erfurt.de/ef/de/leben/planen/verkehr/begegnungszone/index.html' },
-    { title: 'Stadt Erfurt: Sondernutzungssatzung (PDF)', url: 'https://www.erfurt.de/mam/ef/rathaus/stadtrecht/6/6814.pdf' },
+    { title: 'ADAC Maps: Anger, Erfurt (gelesen am 4. November 2026)', url: 'https://maps.adac.de/show/anger' },
     { title: 'Yoio: offene Daten für Erfurt (GBFS)', url: 'https://yoio.rideatom.com/gbfs/159/v3.0/gbfs' },
     { title: 'Yoio: E-Scooter-Sharing in Göttingen, Freiburg und Erfurt', url: 'https://yoio.app/' },
     { title: 'Yoio: Gebührenordnung (PDF)', url: 'https://yourcar-carsharing.de/images/Yoio-Gebuehrenordnung.pdf' },

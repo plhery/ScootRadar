@@ -142,7 +142,7 @@ const guide: Guide = {
             'Bei Streik, Unwetter, Naturgewalten oder Bombendrohung gilt die Garantie nicht.',
           ],
         },
-        '**Flughafen Münster/Osnabrück (FMO):** Er liegt rund 15 km ausserhalb von Dotts Gebiet. Zum Hauptbahnhof fahren die Busse S50 (Schnellbus) und R51.',
+        '**Flughafen Münster/Osnabrück (FMO):** Er liegt rund 15 km ausserhalb von Dotts Gebiet. Zum Hauptbahnhof fahren regelmässig die Buslinien S50, R51 und D50.',
         '**Leihräder:** Räder, E-Bikes und Lastenräder verleiht die Radstation am Hauptbahnhof, E-Bikes auch Bolt.',
       ],
     },
@@ -210,7 +210,7 @@ const guide: Guide = {
     { title: 'Stadtwerke Münster: Fragen rund um Mobilität', url: 'https://www.stadtwerke-muenster.de/hilfe/mobilitaet/faq-rund-um-mobilitaet' },
     { title: 'Beförderungsbedingungen Nahverkehr NRW ab 1. Januar 2026, Mobilitätsgarantie (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
     { title: 'Polizei Münster: Verkehrsunfallstatistik 2025 (PDF)', url: 'https://muenster.polizei.nrw/sites/default/files/2026-03/Infobroschuere_VUS_2025_Polizei_Muenster.pdf' },
-    { title: 'Flughafen Münster/Osnabrück: Anreise', url: 'https://www.fmo.de/anreise' },
+    { title: 'Universität Münster, Landschaftsökologie: Anreise (gelesen am 4. November 2026)', url: 'https://www.uni-muenster.de/Ecohydrology/Anfahrt.html' },
   ],
 };
 
