@@ -171,15 +171,16 @@ object MarkerFeatures {
      * thousands of objects. Those fading carry the index of their band, whose layer draws them meanwhile.
      */
     fun json(features: List<MarkerFeature>, bands: Map<MarkerFeature, Int> = emptyMap()): String = buildString(features.size * 200 + 40) {
+        val kept = numbers.get()!!
         append("{\"type\":\"FeatureCollection\",\"features\":[")
         for ((index, feature) in features.withIndex()) {
             if (index > 0) append(',')
             append("{\"type\":\"Feature\",\"id\":")
             string(feature.id)
             append(",\"geometry\":{\"type\":\"Point\",\"coordinates\":[")
-            number(GeoBounds.wrapped(feature.coordinate.longitude))
+            number(GeoBounds.wrapped(feature.coordinate.longitude), kept)
             append(',')
-            number(feature.coordinate.latitude)
+            number(feature.coordinate.latitude, kept)
             append("]},\"properties\":{\"image\":")
             string(feature.image)
             append(",\"offset\":[")
@@ -187,9 +188,9 @@ object MarkerFeatures {
             append(',')
             number(feature.offset.y)
             append("],\"sort\":")
-            number(feature.sortKey.toDouble())
+            number(feature.sortKey.toDouble(), kept)
             append(",\"opacity\":")
-            number(feature.opacity)
+            number(feature.opacity, kept)
             if (feature.isRaised) append(",\"raised\":true")
             if (feature.isOver) append(",\"over\":true")
             if (feature.size != 1.0) {
@@ -203,20 +204,81 @@ object MarkerFeatures {
     }
 
     private fun StringBuilder.number(value: Double) {
-        append(if (value.isFinite()) value.toString() else "0")
+        append(
+            when {
+                // Most dots have no offset, and no ease writes a size.
+                value.toRawBits() == 0L -> "0.0"
+                value.isFinite() -> value.toString()
+                else -> "0"
+            },
+        )
+    }
+
+    /** A number written before, as its places, sort keys and strengths are at every step of a zoom, as it was then. */
+    private fun StringBuilder.number(value: Double, kept: NumberTexts) {
+        append(if (value.isFinite()) kept.of(value) else "0")
     }
 
     private fun StringBuilder.string(text: String) {
         append('"')
-        for (character in text) {
-            when {
-                character == '"' -> append("\\\"")
-                character == '\\' -> append("\\\\")
-                character < ' ' -> append("\\u").append(character.code.toString(16).padStart(4, '0'))
-                else -> append(character)
+        if (text.none { it == '"' || it == '\\' || it < ' ' }) {
+            append(text)
+        } else {
+            for (character in text) {
+                when {
+                    character == '"' -> append("\\\"")
+                    character == '\\' -> append("\\\\")
+                    character < ' ' -> append("\\u").append(character.code.toString(16).padStart(4, '0'))
+                    else -> append(character)
+                }
             }
         }
         append('"')
+    }
+
+    /** Each thread's numbers written lately: the main thread's are the layers'. */
+    private val numbers = ThreadLocal.withInitial { NumberTexts() }
+}
+
+/**
+ * The text of numbers written lately, by their bits. Double.toString takes long to find the shortest text of a number
+ * of 16 or 17 digits, as a scooter's place, its sort key from a Float and its strength mostly are, and a step of a
+ * zoom writes the same ones again for hundreds of scooters at every frame (app-ax). The text is Double.toString's,
+ * so what is written is the same. A table open on its own slots, emptied once three quarters full.
+ */
+internal class NumberTexts {
+    private val keys = LongArray(SIZE)
+    private val texts = arrayOfNulls<String>(SIZE)
+    private var count = 0
+
+    fun of(value: Double): String {
+        val bits = value.toRawBits()
+        var slot = slot(bits)
+        while (true) {
+            val text = texts[slot] ?: break
+            if (keys[slot] == bits) return text
+            slot = (slot + 1) and (SIZE - 1)
+        }
+        val text = value.toString()
+        if (count >= SIZE / 4 * 3) {
+            texts.fill(null)
+            count = 0
+            slot = slot(bits)
+        }
+        keys[slot] = bits
+        texts[slot] = text
+        count += 1
+        return text
+    }
+
+    private fun slot(bits: Long): Int = ((bits xor (bits ushr 31)) * MIX ushr (64 - BITS)).toInt()
+
+    private companion object {
+        const val BITS = 13
+        const val SIZE = 1 shl BITS
+
+        /** 2^64 over the golden ratio: Fibonacci hashing spreads close numbers over the table. */
+        const val MIX = -7046029254386353131L
     }
 }
 
