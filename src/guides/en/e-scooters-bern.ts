@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter Bern 2026: Voi prices, no-ride zones, parking',
   description: 'Rent an e-scooter in Bern: only Voi holds a permit. What ten minutes cost, where the Old Town is off-limits, where to park, and when an e-bike is cheaper.',
   headline: 'E-scooters in Bern: renting a Voi, prices, no-ride zones and where to park',
-  lede: 'To rent an e-scooter in Bern, you need the Voi app: since 1 May 2024 the city has licensed Voi alone, for five years and up to 300 scooters. You must be at least 18 and pay CHF 1.00 to unlock plus CHF 0.42 a minute, so ten minutes cost CHF 5.20 (published rate on 12 October 2026). You can’t ride in the Old Town between Spitalgasse and Gerechtigkeitsgasse; in the rest of the centre, at the station or on Bundesplatz for example, you can end a ride only at a Voi parking spot; and Köniz and the Gurten are no-riding zones.',
+  lede: 'To rent an e-scooter in Bern, you need the Voi app: since 1 May 2024 the city has licensed Voi alone, for five years and up to 300 scooters. You must be at least 18 and pay CHF 1.00 to unlock plus CHF 0.42 a minute, so ten minutes cost CHF 5.20 (as of November 2026). You can’t ride in the Old Town between Spitalgasse and Gerechtigkeitsgasse; in the rest of the centre, at the station or on Bundesplatz for example, you can end a ride only at a Voi parking spot; and Köniz and the Gurten are no-riding zones.',
   published: '2026-10-12',
   updated: '2026-10-12',
   city: 'ch:bern',
@@ -32,10 +32,10 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in Bern?',
       blocks: [
-        'Voi charges CHF 1.00 to unlock and CHF 0.42 a minute: the rate on its website and in its open data feed on 12 October 2026. Prices can vary with place, time and vehicle; the app shows the final one. Compared with Velo Region Bern’s rental bikes:',
+        'Voi charges CHF 1.00 to unlock and CHF 0.42 a minute (as of November 2026); the app shows the final price. Compared with Velo Region Bern’s rental bikes:',
         {
           table: {
-            caption: 'Prices in Bern (Voi: published rate on 12 October 2026; PubliBike: publibike.ch, October 2026)',
+            caption: 'Prices in Bern (Voi: as of November 2026; PubliBike: publibike.ch, October 2026)',
             head: ['Option', 'Base fare', 'After that, per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi e-scooter', 'CHF 1.00 to unlock', 'CHF 0.42', 'CHF 5.20', 'CHF 9.40'],
@@ -45,7 +45,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Five minutes on a Voi cost CHF 3.10, half an hour CHF 13.60. The average ride lasted about ten minutes when the city measured it in 2021, typically from the station to Breitenrain or Länggasse. Minute bundles and a 30-day Voi Pass valid across Switzerland are priced only in the app. In Basel and Biel, Voi charges CHF 0.39 a minute: see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Five minutes on a Voi cost CHF 3.10, half an hour CHF 13.60. The average ride lasted about ten minutes when the city measured it in 2021, typically from the station to Breitenrain or Länggasse. In Basel and Biel, Voi charges CHF 0.39 a minute: see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {
@@ -54,7 +54,7 @@ const guide: Guide = {
         'Voi and the city set the zones, and they change, with temporary ones for events, so the colours in the Voi app are what count.',
         {
           table: {
-            caption: 'Voi’s zones in Bern (our analysis of its open data on 12 October 2026)',
+            caption: 'Voi’s zones in Bern, as of November 2026',
             head: ['Zone', 'What applies', 'Where'],
             rows: [
               ['Old Town no-riding zone', 'No riding, not even through, and no parking', 'Spitalgasse, Marktgasse, the Zytglogge, Kramgasse, Gerechtigkeitsgasse, the Minster and the Münsterplattform'],
@@ -67,17 +67,17 @@ const guide: Guide = {
           },
         },
         'The Old Town has been a UNESCO World Heritage Site since 1983, and its arcades, the Lauben, are for walking: riding there is riding on a walkway, which is fined CHF 30 to 40. Yet in May 2026 city councillors complained about people racing down the arcades on scooters and bikes.',
-        'In 2021 the city said scooters slowed from 20 to 5 km/h in no-riding zones; Voi’s data doesn’t say whether they slow down or stop today, so plan your route around the Old Town. The Gurten, Bern’s local mountain, lies in Köniz and is off-limits too: take the Gurtenbahn up.',
+        'In 2021 the city said scooters slowed from 20 to 5 km/h in no-riding zones; plan your route around the Old Town. The Gurten, Bern’s local mountain, lies in Köniz and is off-limits too: take the Gurtenbahn up.',
         { note: 'In the centre and the no-parking zones a ride ends only at a Voi parking spot, in a no-riding zone not at all, and until then the minutes keep counting. Find the nearest spot in the app before you arrive.' },
       ],
     },
     {
       heading: 'Where to park an e-scooter in Bern: station, Bundesplatz, Bärenplatz',
       blocks: [
-        'The app shows Voi’s parking spots: we counted about 500 in and around Bern in Voi’s data, some 120 of them in the centre. The nearest to key places:',
+        'The app shows Voi’s parking spots: about 500 in and around Bern, some 90 of them in the centre (as of November 2026). The nearest to key places:',
         {
           table: {
-            caption: 'Voi parking spots near landmarks (names as in Voi’s data, 12 October 2026)',
+            caption: 'Voi parking spots near landmarks, as of November 2026',
             head: ['Place', 'Nearby Voi parking spots'],
             rows: [
               ['Station (Bahnhofplatz)', '“Bahnhofplatz 2” (about 90 m), “Bahnhofplatz”, “Bollwerk”, “Velostation PostParc”, “Velostation Welle 7”, “Velostation Schanzenbrücke”'],
@@ -92,7 +92,7 @@ const guide: Guide = {
           },
         },
         'Elsewhere, park as you would a bike: on the pavement only if 1.50 m stays free for pedestrians (or pay CHF 20), and never on tactile guide lines for blind people, across entrances or on a pedestrian crossing. Leave Velo Region Bern’s stations free.',
-        'Bad parking costs you too: Voi’s Swiss terms let it charge CHF 25, after warnings. Report a scooter in the way at [report.voi.com](https://report.voi.com/de) or [trotti-melder.ch](https://trotti-melder.ch); Voi clears dangerously parked ones within 30 minutes on average, the city government reported in 2025.',
+        'Report a scooter in the way at [report.voi.com](https://report.voi.com/de) or [trotti-melder.ch](https://trotti-melder.ch); Voi clears dangerously parked ones within 30 minutes on average, the city government reported in 2025.',
       ],
     },
     {
@@ -117,7 +117,6 @@ const guide: Guide = {
       blocks: [
         'Velo Region Bern, run by PubliBike, relaunched on 16 January 2026 with more than 300 stations in 17 municipalities, Köniz, Ostermundigen, Ittigen, Zollikofen and Belp among them, and about 70% e-bikes. The city calls it the densest bike-share network in Switzerland.',
         'Unlock with the PubliBike app or your SwissPass. Besides single rides and the B-Fit Local Bern annual pass for CHF 69, there’s a 24-hour day pass for CHF 29. From ten minutes on, an e-bike is cheaper than a Voi, even without a pass.',
-        'ScootRadar doesn’t show these bikes: its map shows only PubliBike’s e-scooters, and PubliBike has none in Bern. Find free bikes and stations in the PubliBike app.',
       ],
     },
     {
@@ -161,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride an e-scooter to Ostermundigen, Köniz or the airport?',
-      answer: 'Not with Voi. In Voi’s data on 12 October 2026, Köniz, Wabern and the Gurten were a no-riding zone, and rides couldn’t end in Ostermundigen, Ittigen, Zollikofen, Bremgarten or at the airport; the Voi app has the current zones. Take the bus, the train or a Velo Region Bern bike.',
+      answer: 'Not with Voi. Köniz, Wabern and the Gurten are a no-riding zone, and rides can’t end in Ostermundigen, Ittigen, Zollikofen, Bremgarten or at the airport (as of November 2026); the Voi app has the current zones. Take the bus, the train or a Velo Region Bern bike.',
     },
     {
       question: 'Can I use my SwissPass for PubliBike in Bern?',
@@ -176,9 +175,8 @@ const guide: Guide = {
     { title: 'City of Bern: city government report on e-scooters as obstacles, 23 April 2025 (in German)', url: 'https://ris.bern.ch/de/dokumente/67b2469b3610416eb307755ff94c94ce-332' },
     { title: 'City of Bern: e-scooter rental permit conditions, 2020 (PDF, in German)', url: 'https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/gemeinderat-will-e-trottinett-verleih-geordnet-zulassen/dokuemente/allgemeine-bestimmungen-zu-e-trottinett.pdf/download' },
     { title: 'City of Bern: e-scooter rental information sheet, May 2021 (PDF, in German)', url: 'https://www.bern.ch/velohauptstadt/partizipation/resultate/velo-offensive-dienstleistungs-foerdermassnahmen/20210707_InfoblattETrottinettVerleihsysteme.pdf' },
-    { title: 'Voi: e-scooters in Bern, prices and minimum age', url: 'https://www.voi.com/city/bern' },
-    { title: 'Voi: terms of use for Switzerland (in German)', url: 'https://www.voi.com/de/rechtliche-hinweise/nutzungsbestimmungen/schweiz' },
-    { title: 'sharedmobility.ch (Federal Office of Energy): Voi’s open data on prices, zones and parking spots', url: 'https://sharedmobility.ch/v2/gbfs/voiscooters.com/gbfs' },
+    { title: 'MobiData BW: Voi Switzerland’s open data (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'City of Winterthur: sharing services, with Voi’s minimum age of 18 (in German)', url: 'https://stadt.winterthur.ch/themen/mobilitaet/oev-taxi-sharing/sharing-angebote' },
     { title: 'City of Bern: launch of Velo Region Bern (in German)', url: 'https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/betriebsstart-des-dichtesten-leihvelo-netzes-der-schweiz' },
     { title: 'PubliBike: prices and passes (in German)', url: 'https://www.publibike.ch/de/abos' },
     { title: 'Bern Welcome: Bern-Ticket for overnight guests', url: 'https://bern.com/en/inform/bern-ticket/bern-ticket-for-overnight-guests' },

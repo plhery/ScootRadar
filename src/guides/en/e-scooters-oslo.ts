@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Electric scooter Oslo 2026: rental prices, curfew and rules',
   description: 'Rent an e-scooter in Oslo from Bolt, Ryde or Voi: NOK 10–10.90 to unlock, NOK 2.50 a minute, age 16, the 11 pm to 5 am curfew and where you can’t ride or park.',
   headline: 'E-scooters in Oslo: operators, prices, the night curfew and where to ride',
-  lede: 'To rent an e-scooter in Oslo, use the app of Bolt, Ryde or Voi, the three companies with city permits, or Ruter’s public transport app. Unlocking costs NOK 10 (NOK 10.90 with Ryde), then NOK 2.50 a minute, so ten minutes come to about NOK 35 (published rates on 30 October 2026). You must be 16 to rent from any of them, and nobody can rent between 11 pm and 5 am. Many squares, parks and stations ban riding or parking, and bad parking can cost NOK 900.',
+  lede: 'To rent an e-scooter in Oslo, use the app of Bolt, Ryde or Voi, the three companies with city permits, or Ruter’s public transport app. Unlocking costs NOK 10 (NOK 10.90 with Ryde), then NOK 2.50 a minute, so ten minutes come to about NOK 35 (as of November 2026). You must be 16 to rent from any of them, and nobody can rent between 11 pm and 5 am. Many squares, parks and stations ban riding or parking, and bad parking can cost NOK 900.',
   published: '2026-10-13',
   updated: '2026-10-17',
   city: 'no:Oslo',
@@ -16,9 +16,9 @@ const guide: Guide = {
     {
       heading: 'Renting an e-scooter in Oslo: Bolt, Ryde and Voi',
       blocks: [
-        'Oslo grants e-scooter permits to three companies: **Bolt, Ryde and Voi**. Their current permits run for two years from 1 April 2025, so until spring 2027. Who rents scooters after that hasn’t been decided (October 2026); Dott says it will bid.',
+        'Oslo grants e-scooter permits to three companies: **Bolt, Ryde and Voi**. Their current permits run for two years from 1 April 2025, so until spring 2027; Dott says it will bid for the next ones.',
         'The city allows **16,000** small electric vehicles in all, rental e-bikes included, split equally: about 5,300 per company. At most 1,200 may stand inside Ring 1, the inner ring road around the centre. Ruter counted 20.4 million rental e-scooter trips in 2025, up from 11.2 million the year before.',
-        'At 05:27 on 30 October 2026 the [map of Oslo](map:no:Oslo) showed about 14,900 e-scooters inside the city limits at that moment, not the whole fleet: about 5,100 Voi, 5,000 Bolt and 4,900 Ryde. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'At 05:27 on 30 October 2026 the [map of Oslo](map:no:Oslo) showed about 14,900 e-scooters free to rent inside the city limits at that moment: about 5,100 Voi, 5,000 Bolt and 4,900 Ryde. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Norwegian law sets the minimum age at 12, but each company sets its own, and the city tells you not to rent one if you’re under 15, or for anyone under 15.',
         {
           table: {
@@ -41,7 +41,7 @@ const guide: Guide = {
         'You pay to unlock, then by the minute; the app shows the final price.',
         {
           table: {
-            caption: 'E-scooter prices in Oslo, published rates on 30 October 2026',
+            caption: 'E-scooter prices in Oslo as of November 2026',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
               ['Voi', 'NOK 10', 'NOK 2.50', 'NOK 35', 'NOK 60'],
@@ -50,7 +50,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ruter lists Bolt as charging by the kilometre, but Bolt itself publishes the minute rate above, so check the price in the Bolt app before you unlock. An average Oslo ride lasts about seven minutes and costs about NOK 27.50 with Voi or Bolt. Riding a lot? Voi sells minute packs and a Voi Pass, and Bolt has weekly and monthly passes, priced in the apps.',
+        'Ruter lists Bolt as charging by the kilometre, but Bolt itself publishes the minute rate above, so check the price in the Bolt app before you unlock. Riding a lot? Bolt has weekly and monthly passes, priced in the app.',
         '**The Ruter app**, Oslo’s public transport app, unlocks all three brands and Oslo City Bike. You pay ride by ride, at the same price as in each company’s app, but their passes don’t work there.',
       ],
     },
@@ -188,7 +188,10 @@ const guide: Guide = {
     { title: 'Ruter: operators, prices and age limits (Norwegian)', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/operatorer' },
     { title: 'Ruter: renting in the Ruter app (Norwegian)', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/kjore-i-appen' },
     { title: 'Ruter: parking an e-scooter (Norwegian)', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/parkering' },
-    { title: 'Voi: Oslo prices and age limit (Norwegian)', url: 'https://www.voi.com/nb/by/oslo' },
+    { title: 'Entur: Voi’s open data for Oslo (GBFS: prices and zones, 4 November 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voioslo/gbfs' },
+    { title: 'Entur: Bolt’s open data for Oslo (GBFS: prices, 4 November 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/boltoslo/gbfs' },
+    { title: 'Entur: Ryde’s open data for Oslo (GBFS: prices, 4 November 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeoslo/gbfs' },
+    { title: 'Entur: Voi’s open data for Bærum (GBFS: opening hours, 4 November 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voibaerum/system_information' },
     { title: 'Oslo City Bike', url: 'https://oslobysykkel.no/' },
     { title: 'Norwegian Public Roads Administration: traffic rules for electric scooters', url: 'https://www.vegvesen.no/en/traffic-information/traffic-safety/norwegian-traffic-rules/traffic-rules-for-electric-scooters/' },
     { title: 'Lovdata: on-the-spot fines in road traffic (Norwegian)', url: 'https://lovdata.no/dokument/SF/forskrift/1990-06-29-492' },

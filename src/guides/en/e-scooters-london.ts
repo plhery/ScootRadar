@@ -5,10 +5,10 @@ const guide: Guide = {
   slug: 'e-scooters-london',
   topic: 'london',
   name: 'E-scooter hire in London',
-  title: 'E-scooter London 2026: Lime, Voi, prices, boroughs, rules',
-  description: 'E-scooter hire in London with Lime and Voi: prices, the 11 boroughs, who can ride, parking bays, the Royal Parks, and why your own e-scooter is illegal.',
+  title: 'E-scooter London 2026: Lime, Voi, boroughs, parking, rules',
+  description: 'E-scooter hire in London with Lime and Voi: the 11 boroughs, who can ride, discounts, parking bays, the Royal Parks, and why your own e-scooter is illegal.',
   headline: 'E-scooter hire in London: Lime and Voi, the 11 boroughs, and where you can ride and park',
-  lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. You must be 18 or over with a full or provisional driving licence, the scooters are capped at 12.5 mph, and every ride ends in a marked parking bay. On 12 October 2026 Voi’s London page listed no unlock fee and 27p a minute; Lime shows its price only in its app. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
+  lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. You must be 18 or over with a full or provisional driving licence, the scooters are capped at 12.5 mph, and every ride ends in a marked parking bay. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'gb:London',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Two companies, **Lime** and **Voi**, rent out e-scooters in London. They run them in Transport for London’s (TfL) rental trial, which TfL manages with London Councils and the boroughs taking part, under the Department for Transport’s national trials. London’s began on 7 June 2021; Dott, a third operator, left in April 2024.',
         'A third phase began on 21 September 2026, again with Lime and Voi, for an initial two years, subject to the Department for Transport’s timescales; TfL’s tender gave it the option of extending by up to four years, the trade site Micromobility Industries reported in March and September 2026. TfL’s trial page still describes the second phase, and says the national trials that make hire e-scooters legal can run until 31 May 2028.',
-        'Since 24 October 2026 the [map of London](map:gb:London) has shown Voi’s e-scooters, about 1,600 free to rent at 14:55 that Saturday, and since 25 October Lime’s, about 1,500 as last counted in the early hours. It shows their positions and battery, not prices; zoomed in, it draws the bays of Lambeth Council and the City of London Corporation (Open Government Licence), not other boroughs’. Lime, Voi and Forest also rent e-bikes in London, which the map doesn’t show.',
+        'Since 24 October 2026 the [map of London](map:gb:London) has shown Voi’s e-scooters, about 1,600 free to rent at 14:55 that Saturday, and since 25 October Lime’s, about 1,500 as last counted in the early hours. Zoomed in, it draws the bays of Lambeth Council and the City of London Corporation (Open Government Licence). Lime and Forest also rent e-bikes in London.',
         'TfL counted more than 4,000 hire e-scooters and about 1,900 parking bays in September 2026, in a trial area of about 300 km². From late June to September 2026 the two could run up to 5,350 scooters, a cap TfL, London Councils and the boroughs set.',
       ],
     },
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: 'How much does an e-scooter cost in London?',
       blocks: [
-        'Lime and Voi set their own prices, and TfL doesn’t publish them. On 12 October 2026 Voi’s London page listed **no unlock fee and 27p a minute**, so 20 minutes cost £5.40. Lime shows its London price only in its app. Each app shows the current rate before you unlock. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        'Lime and Voi set their own prices; each app shows the current rate before you unlock. New to hire scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'There are cheaper ways in:',
         {
           list: [
@@ -93,7 +93,7 @@ const guide: Guide = {
       blocks: [
         'You can end a hire only in a **marked bay**, painted or signed on the street and geofenced in the app; the app won’t end your ride anywhere else, and AI checks that the scooter is in the bay.',
         'Find the bay nearest your destination before you set off, and leave the scooter standing up and out of the way.',
-        'If you don’t follow the parking rules, the City of London warns, you “may continue to be charged, fined or banned”; Lime and Voi publish no amounts for London. Wandsworth Council’s officers impound any e-scooter that causes a danger or an obstruction. Most riders get it right: parking compliance was 96% in July 2026, TfL reports.',
+        'If you don’t follow the parking rules, the City of London warns, you “may continue to be charged, fined or banned”. Wandsworth Council’s officers impound any e-scooter that causes a danger or an obstruction. Most riders get it right: parking compliance was 96% in July 2026, TfL reports.',
       ],
     },
     {
@@ -177,7 +177,6 @@ const guide: Guide = {
     { title: 'Transport for London: New data on the e-scooter trial (3 March 2026)', url: 'https://tfl.gov.uk/info-for/media/press-releases/2026/march/tfl-publishes-new-data-showing-continued-success-of-london-s-e-scooter-trial' },
     { title: 'Transport for London: Wandsworth joins the e-scooter trial (12 May 2025)', url: 'https://tfl.gov.uk/info-for/media/press-releases/2025/may/tfl-publishes-new-data-on-london-s-e-scooter-rental-trial-as-wandsworth-joins-to-cover-even-more-of-the-capital' },
     { title: 'Transport for London: E-scooter ban on the network (9 December 2021)', url: 'https://tfl.gov.uk/info-for/media/press-releases/2021/december/tfl-announces-safety-ban-of-e-scooters-on-transport-network' },
-    { title: 'Voi: E-scooters and e-bikes in London (12 October 2026)', url: 'https://www.voi.com/city/london' },
     { title: 'City of London: E-scooters in the City of London (1 June 2026)', url: 'https://www.cityoflondon.gov.uk/services/streets/travelling-in-the-city-of-london/e-scooters-in-the-city-of-london' },
     { title: 'Lambeth Council: Electric scooter trial rental scheme', url: 'https://www.lambeth.gov.uk/shared-mobility-lambeth/electric-scooter-trial-rental-scheme' },
     { title: 'Lambeth Council: Shared e-scooter and e-bike parking bays (map)', url: 'https://www.google.com/maps/d/viewer?mid=1FbWV3uJ-tR_bJSPB-JhQzy7gUKmwISw' },

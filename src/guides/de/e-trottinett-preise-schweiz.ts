@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Trottinett-Preise Schweiz 2026: Was eine Fahrt kostet',
   description: 'E-Trottinett-Preise in der Schweiz: Entsperrgebühr und Minutenpreis je Anbieter und Stadt, was 5, 10 und 20 Minuten kosten, Abos und teure Zusatzgebühren.',
   headline: 'E-Trottinett-Preise in der Schweiz: So viel kostet ein Sharing-Trottinett, Stadt für Stadt',
-  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort CHF 1.– bis CHF 1.50 fürs Entsperren, Bird veröffentlicht keine Tarife, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
+  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort CHF 1.– bis CHF 1.50 fürs Entsperren, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
   published: '2026-10-12',
   updated: '2026-10-24',
   sections: [
@@ -16,19 +16,18 @@ const guide: Guide = {
       heading: 'Was kostet es, ein E-Trottinett zu mieten?',
       blocks: [
         'Fast jedes Sharing-E-Trottinett in der Schweiz wird gleich abgerechnet: eine Gebühr fürs Entsperren, dann ein Preis für jede Minute, in der es entsperrt ist. Die Uhr läuft also auch, wenn du am Rotlicht wartest oder einen Abstellplatz suchst.',
-        'Die Tarife gelten nicht landesweit. Derselbe Anbieter verlangt in Basel einen anderen Minutenpreis als in Bern, und Lime wie Voi schreiben, dass sich ihre Preise auch je nach Tageszeit ändern können. Lime rundet zudem jede Fahrt auf die nächste volle Minute auf und verrechnet, bis die App das Ende der Fahrt bestätigt, nicht bis du absteigst.',
+        'Die Tarife gelten nicht landesweit. Derselbe Anbieter verlangt in Basel einen anderen Minutenpreis als in Bern, und Lime schreibt, dass sich seine Preise auch je nach Tageszeit ändern können. Lime rundet zudem jede Fahrt auf die nächste volle Minute auf und verrechnet, bis die App das Ende der Fahrt bestätigt, nicht bis du absteigst.',
       ],
     },
     {
       heading: 'E-Trottinett-Preise nach Anbieter und Stadt',
       blocks: [
-        'Bolt, Hopp, Voi und Zeus veröffentlichen ihre Tarife in den offenen Datenfeeds, aus denen auch die Karte liest. Am Morgen des 12. Oktober 2026 standen dort diese Preise. Der Basler Tarif von Lime stammt aus seinem eigenen Datenfeed (gelesen am Abend desselben Tages), die übrigen Tarife von Lime aus den offenen Daten vom 15. Oktober, die von Dott aus seinen eigenen Datenfeeds vom 23. Oktober, der Tarif von PubliBike aus seiner eigenen Preisliste. Am 15. Oktober zeigten die offenen Daten die übrigen Tarife unverändert:',
         {
           table: {
-            caption: 'Veröffentlichte Tarife vom 12. Oktober 2026 (Dott: 23. Oktober; Lime ausserhalb Basels: 15. Oktober): Entsperrgebühr und Preis pro Minute',
+            caption: 'Veröffentlichte Tarife vom 12. Oktober 2026 (Voi: Stand November 2026; Dott: 23. Oktober; Lime ausserhalb Basels: 15. Oktober): Entsperrgebühr und Preis pro Minute',
             head: ['Gebiet', 'Anbieter', 'Entsperren', 'Pro Minute'],
             rows: [
-              ['Region Zürich', 'Voi', 'CHF 1.–', '42 Rappen (einzelne 39 Rappen)'],
+              ['Region Zürich', 'Voi', 'CHF 1.–', '42 Rappen (Illnau-Effretikon: 39 Rappen)'],
               ['Region Zürich', 'Bolt', 'CHF 1.–', '42 Rappen (einzelne 48 Rappen)'],
               ['Region Zürich', 'Hopp', 'CHF 1.–', '40 Rappen (Kloten: 42 Rappen)'],
               ['Region Zürich', 'Dott', 'CHF 1.–', '41 Rappen'],
@@ -38,9 +37,9 @@ const guide: Guide = {
               ['Basel', 'Voi', 'CHF 1.–', '39 Rappen'],
               ['Basel', 'Bolt', 'CHF 1.–', '45 Rappen'],
               ['Basel', 'Hopp', 'CHF 1.–', '45 Rappen'],
-              ['Basel', 'Lime (eigener Datenfeed)', 'CHF 1.–', '46 Rappen'],
+              ['Basel', 'Lime', 'CHF 1.–', '46 Rappen'],
               ['Basel', 'Dott', 'CHF 1.–', '39 Rappen'],
-              ['Basel', 'Bird', 'nicht veröffentlicht', 'in der App'],
+              ['Basel', 'Bird', 'in der App', 'in der App'],
               ['Biel/Bienne', 'Voi', 'CHF 1.–', '39 Rappen'],
               ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil und Wil', 'Dott', 'CHF 1.20', '45 Rappen'],
               ['Romanshorn und Amriswil', 'Dott', 'CHF 1.50', '45 Rappen'],
@@ -48,12 +47,12 @@ const guide: Guide = {
               ['Schaffhausen', 'Voi', 'keine', '39 Rappen'],
               ['Singen (Deutschland), jenseits der Grenze bei Schaffhausen', 'Zeus', '1 Euro', '25 Cent'],
               ['Zürich und Biel/Bienne', 'PubliBike (Preisliste, Oktober 2026)', 'CHF 1.–', '20 Rappen'],
-              ['Region Zürich und weitere', 'Bird', 'nicht veröffentlicht', 'in der App'],
+              ['Region Zürich und weitere', 'Bird', 'in der App', 'in der App'],
             ],
           },
         },
         'Voi verlangt also in Basel und Biel 39 Rappen pro Minute, in Bern 42 Rappen, Bolt je nach Gebiet 42, 45 oder 48 Rappen, und fürs Entsperren verlangt Dott in Basel und Zürich CHF 1.–, in Romanshorn CHF 1.50. Selbst innerhalb eines Gebiets fahren einzelne Trottinette zu einem anderen Tarif, und bei Lime ändert er sich über den Tag: Am 15. Oktober um 6.30 Uhr kosteten alle Lime-Trottinette in Zürich 42 Rappen pro Minute, um 8.20 Uhr ein Drittel 49 und ein Viertel 40 Rappen. Massgebend ist darum der Preis in der App.',
-        'In Schaffhausen zeigte der Feed von Voi gar keine Entsperrgebühr; zehn Minuten kämen so auf CHF 3.90. Die Zeus-Trottinette, die die Karte bei Schaffhausen zeigt, stehen jenseits der Grenze in Singen (Deutschland) und werden in Euro abgerechnet.',
+        'In Schaffhausen verlangt Voi keine Entsperrgebühr (Stand November 2026); zehn Minuten kosten dort CHF 3.90. Die Zeus-Trottinette, die die Karte bei Schaffhausen zeigt, stehen jenseits der Grenze in Singen (Deutschland) und werden in Euro abgerechnet.',
         'Der Standardtarif von PubliBike (B-Quick National) beträgt für die E-Scooter in Zürich und Biel/Bienne CHF 1.– plus 20 Rappen pro Minute, Stand Oktober 2026. Im Tessin kannst du sie mit diesem Tarif nicht ausleihen: Du brauchst das Abo B-Fit Local Tessin (CHF 69.– pro Jahr), dann kosten je 15 Minuten CHF 3.–.',
       ],
     },
@@ -63,7 +62,7 @@ const guide: Guide = {
         'Minuten mal Minutenpreis, plus Entsperrgebühr: CHF 1.– + 10 × 42 Rappen = CHF 5.20 für zehn Minuten mit Voi in Bern. Die Tabelle rechnet in ganzen Minuten, ohne Zuschläge für Zonen oder andere Gebühren.',
         {
           table: {
-            caption: 'Was eine Fahrt zu den Tarifen vom 12. Oktober 2026 kostet (Dott: 23. Oktober; Lime ausserhalb Basels: 15. Oktober; PubliBike: Preisliste, Oktober 2026)',
+            caption: 'Was eine Fahrt zu den Tarifen vom 12. Oktober 2026 kostet (Voi: Stand November 2026; Dott: 23. Oktober; Lime ausserhalb Basels: 15. Oktober; PubliBike: Preisliste, Oktober 2026)',
             head: ['Tarif (wo)', '5 Minuten', '10 Minuten', '20 Minuten'],
             rows: [
               ['PubliBike, CHF 1.– + 20 Rp. (Zürich, Biel)', 'CHF 2.–', 'CHF 3.–', 'CHF 5.–'],
@@ -89,14 +88,12 @@ const guide: Guide = {
         'Wer oft fährt, spürt zuerst die Entsperrgebühr: Zwei Fahrten pro Tag an 20 Arbeitstagen machen CHF 40.– im Monat, nur fürs Entsperren.',
         {
           list: [
-            '**Lime:** Die Minutenpakete von LimePass bringen Gratis-Entsperrungen und einen tieferen Minutenpreis. Sie gelten höchstens 30 Tage und nur im Land, in dem du sie gekauft hast. Ob es sie in der Schweiz gibt, sagt die Hilfeseite von Lime nicht; falls ja, zeigt die App sie an.',
-            '**Voi:** Die Preisseite nennt Abos mit beliebig vielen Entsperrungen, mit oder ohne Minuten, und vorausbezahlte Minutenpakete mit inbegriffenen Entsperrungen. Was es davon in deiner Stadt gibt, zeigt die App.',
+            '**Lime:** Die Minutenpakete von LimePass bringen Gratis-Entsperrungen und einen tieferen Minutenpreis. Sie gelten höchstens 30 Tage und nur im Land, in dem du sie gekauft hast.',
             '**Dott:** Die Schweizer Nutzungsbedingungen sehen Abos vor, zahlbar nur mit Kreditkarte.',
             '**PubliBike:** Das Abo B-Fit Local (CHF 69.– pro Jahr) senkt den E-Scooter-Tarif in Zürich und Biel nicht, und die Tageskarte für CHF 29.– gilt nur für Velos und E-Bikes.',
-            '**Bolt, Bird und Hopp:** Ein Schweizer Abo haben wir auf keiner offiziellen Seite gefunden.',
           ],
         },
-        'Schweizer Preise für Abos und Pakete haben wir auf den Websites der Anbieter nicht gefunden; sie stehen in den Apps. Ein Abo mit Gratis-Entsperrungen lohnt sich, wenn es weniger kostet als einen Franken für jede Fahrt, die du bis zu seinem Ablauf machst. Ein Minutenpaket lohnt sich nur, wenn du die Minuten aufbrauchst, bevor sie verfallen.',
+        'Ein Abo mit Gratis-Entsperrungen lohnt sich, wenn es weniger kostet als einen Franken für jede Fahrt, die du bis zu seinem Ablauf machst. Ein Minutenpaket lohnt sich nur, wenn du die Minuten aufbrauchst, bevor sie verfallen.',
       ],
     },
     {
@@ -111,17 +108,16 @@ const guide: Guide = {
             caption: 'Gebühren in den Schweizer Nutzungsbedingungen und Preislisten der Anbieter, Stand Oktober 2026',
             head: ['Anbieter', 'Falsch abgestellt oder ausserhalb des Gebiets', 'Busse, die an den Anbieter geht'],
             rows: [
-              ['Voi', 'CHF 25.–, nach Verwarnungen', 'nicht angegeben'],
               ['Bolt', 'Abholgebühr bis CHF 100.–', 'weiterverrechnet, plus bis CHF 30.–'],
-              ['Lime', 'Strafgebühr, Betrag nicht angegeben; Abholung und Bearbeitung je bis CHF 125.–', 'weiterverrechnet, plus «angemessene» Gebühr'],
-              ['Dott', 'bis 300 Euro fürs Zurückholen, wenn du Park- oder Sperranweisungen missachtest; Gebühr fürs Verlassen des Gebiets ohne Betrag', 'weiterverrechnet, plus 50 Euro'],
+              ['Lime', 'Strafgebühr; Abholung und Bearbeitung je bis CHF 125.–', 'weiterverrechnet, plus «angemessene» Gebühr'],
+              ['Dott', 'bis 300 Euro fürs Zurückholen, wenn du Park- oder Sperranweisungen missachtest; Gebühr fürs Verlassen des Gebiets', 'weiterverrechnet, plus 50 Euro'],
               ['Bird', 'Kosten fürs Umstellen weiterverrechnet', 'weiterverrechnet'],
-              ['PubliBike', 'CHF 30.–, ab dem zweiten Mal CHF 50.–', 'nicht angegeben'],
+              ['PubliBike', 'CHF 30.–, ab dem zweiten Mal CHF 50.–', '–'],
             ],
           },
         },
         'Die Polizei kann dich auch direkt büssen. Wer ein Trottinett auf dem Trottoir abstellt und weniger als 1,50 m für Fussgänger frei lässt oder es dort parkiert, wo Parkieren verboten ist, zahlt CHF 20.–; Fahren auf dem Trottoir kostet CHF 40.–. Die übrigen Bussen stehen in den [Regeln für E-Trottinette in der Schweiz](guide:swiss-rules).',
-        'Rechne auch mit einer Reservation auf deiner Karte: Voi reserviert bei der Anmeldung CHF 5.–, Bolt und Bird können vorübergehend einen Betrag blockieren. Lime begrenzt eine Miete auf CHF 195.– pro 24 Stunden, und bei PubliBike dauert eine Miete höchstens 24 Stunden.',
+        'Rechne auch mit einer Reservation auf deiner Karte: Bolt und Bird können vorübergehend einen Betrag blockieren. Lime begrenzt eine Miete auf CHF 195.– pro 24 Stunden, und bei PubliBike dauert eine Miete höchstens 24 Stunden.',
       ],
     },
     {
@@ -149,7 +145,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Gibt es ein Monatsabo für E-Trottinette?',
-      answer: 'Die Schweizer Nutzungsbedingungen von Dott sehen Abos vor, und Voi und Lime beschreiben auf ihren Websites Pässe: bei Voi Abos mit beliebig vielen Entsperrungen oder vorausbezahlte Minuten, bei Lime Minutenpakete mit Gratis-Entsperrungen, die bis zu 30 Tage gelten. Schweizer Preise nennt keiner davon; was es bei dir gibt, zeigt die App. Das Jahresabo von PubliBike für CHF 69.– senkt den E-Scooter-Tarif in Zürich und Biel nicht.',
+      answer: 'Die Schweizer Nutzungsbedingungen von Dott sehen Abos vor, und Lime beschreibt auf seiner Website Minutenpakete mit Gratis-Entsperrungen, die bis zu 30 Tage gelten. Was es bei dir gibt, zeigt die App. Das Jahresabo von PubliBike für CHF 69.– senkt den E-Scooter-Tarif in Zürich und Biel nicht.',
     },
     {
       question: 'Warum war meine Fahrt teurer als geschätzt?',
@@ -157,11 +153,11 @@ const guide: Guide = {
     },
     {
       question: 'Ist eine Versicherung im Mietpreis inbegriffen?',
-      answer: 'Lime, Bolt, Voi und Dott schliessen eine Haftpflichtversicherung im Preis ein, sie zahlt aber erst nach deiner eigenen Privathaftpflicht. PubliBike schliesst keine Versicherung ein und überlässt Unfall- und Haftpflichtdeckung dir. Mitfahrende sind nie versichert, und alle Anbieter erlauben nur eine Person pro Trottinett.',
+      answer: 'Lime, Bolt und Dott schliessen eine Haftpflichtversicherung im Preis ein, sie zahlt aber erst nach deiner eigenen Privathaftpflicht. PubliBike schliesst keine Versicherung ein und überlässt Unfall- und Haftpflichtdeckung dir. Mitfahrende sind nie versichert, und alle Anbieter erlauben nur eine Person pro Trottinett.',
     },
     {
       question: 'Kann ich ein E-Trottinett mit TWINT bezahlen?',
-      answer: 'Von den grossen Anbietern nennt nur Dott TWINT, in seiner allgemeinen Hilfe, als Zahlungsart, die je nach Ort erscheinen kann; bei Lime, Voi und Bolt haben wir im Oktober 2026 keinen Hinweis darauf gefunden. Alle nehmen Kredit- und Debitkarten, Lime nennt zudem Apple Pay, Google Pay, PayPal und Klarna an ausgewählten Orten. Welche Zahlungsart geht, siehst du in der App, wenn du sie hinterlegst.',
+      answer: 'Dott nennt TWINT in seiner allgemeinen Hilfe als Zahlungsart, die je nach Ort erscheinen kann. Alle nehmen Kredit- und Debitkarten, Lime nennt zudem Apple Pay, Google Pay, PayPal und Klarna an ausgewählten Orten. Welche Zahlungsart geht, siehst du in der App, wenn du sie hinterlegst.',
     },
   ],
   sources: [
@@ -169,8 +165,7 @@ const guide: Guide = {
     { title: 'Lime Help Center: Fahrtkosten und Tarife (englisch)', url: 'https://help.li.me/hc/en-us/articles/115004914208' },
     { title: 'Lime Help Center: Was ist LimePass? (englisch)', url: 'https://help.li.me/hc/en-us/articles/21280766615963-What-is-LimePass' },
     { title: 'Lime: Nutzungsvereinbarung Schweiz', url: 'https://www.li.me/de-ch/user-agreement' },
-    { title: 'Voi: Preise und Pässe (englisch)', url: 'https://www.voi.com/pricing-and-passes' },
-    { title: 'Voi: Nutzungsbestimmungen Schweiz', url: 'https://www.voi.com/de/rechtliche-hinweise/nutzungsbestimmungen/schweiz' },
+    { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
     { title: 'Bolt: Allgemeine Nutzungsbedingungen E-Fahrzeuge Schweiz', url: 'https://bolt.eu/de-ch/legal/micromobility/terms-for-e-vehicles-pdf/' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Schweiz', url: 'https://ridedott.com/de/allgemeine/schweiz/' },
     { title: 'Stadt Zürich: Weisung zu Sharing-Fahrzeugen und ihren Zonen (GR Nr. 2025/210)', url: 'https://www.gemeinderat-zuerich.ch/dokumente/9c8a7ffaed6e4f3ca6234611a78f2946-332' },

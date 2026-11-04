@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Stavanger 2026: priser, regler og parkering',
   description: 'Elsparkesykkel i Stavanger og Sandnes: priser hos Voi og Ryde, aldersgrenser, nattestenging i helgene, soner, parkering i sentrum og gebyret på 900 kr.',
   headline: 'Elsparkesykkel i Stavanger og Sandnes: operatører, priser, soner og parkering',
-  lede: 'Vil du leie elsparkesykkel i Stavanger, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen. Hos Voi er det gratis å låse opp, hos Ryde koster det 10,90 kr, og begge tar 2,50 kr per minutt (13. oktober 2026). Du må ha fylt 16 år hos både Voi og Ryde, og natt til lørdag, søndag og helligdager er utleien stengt fra midnatt til kl. 05. I store deler av sentrum kan du bare avslutte turen på oppmerkede plasser, og feilparkering kan koste 900 kr.',
+  lede: 'Vil du leie elsparkesykkel i Stavanger, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen. Hos Voi er det gratis å låse opp, hos Ryde koster det 10,90 kr, og begge tar 2,50 kr per minutt (november 2026). Hos Ryde må du ha fylt 16 år, og natt til lørdag, søndag og helligdager er utleien stengt fra midnatt til kl. 05. I store deler av sentrum kan du bare avslutte turen på oppmerkede plasser, og feilparkering kan koste 900 kr.',
   published: '2026-10-13',
   updated: '2026-10-17',
   city: 'no:Stavanger',
@@ -29,16 +29,16 @@ const guide: Guide = {
         'Begge tar 2,50 kr per minutt, men hos Voi er det gratis å låse opp, også i Sandnes. Det er uvanlig: I Oslo og Trondheim tar Voi 10 kr for opplåsingen.',
         {
           table: {
-            caption: 'Priser publisert 13. oktober 2026, og aldersgrenser',
-            head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', 'Aldersgrense'],
+            caption: 'Priser i november 2026',
+            head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter'],
             rows: [
-              ['Voi', '0 kr', '2,50 kr', '25 kr', '16 år'],
-              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '16 år'],
+              ['Voi', '0 kr', '2,50 kr', '25 kr'],
+              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr'],
             ],
           },
         },
-        'Tjue minutter koster 50 kr hos Voi og 60,90 kr hos Ryde. Prisene kan endres, og den endelige prisen ser du i appen før du låser opp. Kjører du ofte, kan en minuttpakke fra Voi lønne seg.',
-        'Loven sier 12 år, men operatørene har egne grenser. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
+        'Tjue minutter koster 50 kr hos Voi og 60,90 kr hos Ryde. Prisene kan endres, og den endelige prisen ser du i appen før du låser opp.',
+        'Loven sier 12 år, men Ryde krever 16 år i vilkårene for Norge. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
       ],
     },
     {
@@ -84,7 +84,7 @@ const guide: Guide = {
       blocks: [
         'I store deler av sentrum kan du bare avslutte turen på **oppmerkede parkeringsplasser** for elsparkesykler, og appen viser hvor de er. Det gjelder blant annet rundt Torget, Domkirken, Kongsgård, Rådhuset, Byterminalen, Stavanger stasjon og Fiskepiren. Sonen ble utvidet i september 2026, sa Voi til Stavanger Aftenblad.',
         'Plassene har blitt flere: I juni 2025 var minst 15 nye merket opp i sentrum, og i oktober 2025 fjernet kommunen bilplasser i Pedersgata for å gi plass til elsparkesykler.',
-        'Uansett hvor du parkerer, må du ikke sperre fortau, gangfelt, sykkelveier, innganger eller ledelinjer for blinde og svaksynte. Voi ber deg parkere ved et parkeringsskilt, i et sykkelstativ, på et oppmerket område eller på langs inntil en vegg. GPS-en kan bomme med noen meter, så se etter at sparkesykkelen faktisk står inne på plassen.',
+        'Uansett hvor du parkerer, må du ikke sperre fortau, gangfelt, sykkelveier, innganger eller ledelinjer for blinde og svaksynte. GPS-en kan bomme med noen meter, så se etter at sparkesykkelen faktisk står inne på plassen.',
         { note: 'Feilparkering kan gi 900 kr i gebyr, i hele Stavanger kommune siden 1. oktober 2025 og i Sandnes siden 1. november 2025. Gebyret går til operatøren, som kan sende det videre til deg. At appen lar deg avslutte turen, betyr ikke at du har parkert lovlig.' },
         'Ifølge Stavanger Aftenblad ble det skrevet ut nesten 4000 slike gebyrer i Stavanger det første året, flest i sentrum, og Ryde begynte i oktober 2025 å sende halve gebyret, 450 kr, videre til kunden. Rydes vilkår oppgir ingen fast andel.',
       ],
@@ -94,7 +94,7 @@ const guide: Guide = {
       blocks: [
         'I Sandnes er det i praksis bare Voi: Ryde dekker kun området nærmest grensen mot Stavanger, ved Forus. Voi dekker Sandnes sentrum, Lura og Kvadrat og områdene mot Ganddal.',
         'På [kartet over Sandnes](map:no:Sandnes) sto det rundt 360 Voi-sparkesykler 13. oktober 2026, til samme pris som i Stavanger: gratis opplåsing og 2,50 kr per minutt. Med Voi kan du kjøre mellom Stavanger og Sandnes på én tur, for eksempel langs Sykkelstamveien.',
-        'Kommunestyret vedtok i oktober 2025 en **forbudssone for leide elsparkesykler i gågata i Langgata**. I Vois soner (oktober 2026) er det kjøreforbud mellom tverrgatene, og du kan krysse gata i lav fart. Om skilt også forbyr private elsparkesykler, er ikke publisert: Statens vegvesens skiltvedtak fra 7. november 2025 ligger ikke ute. Gå av og trill.',
+        'Kommunestyret vedtok i oktober 2025 en **forbudssone for leide elsparkesykler i gågata i Langgata**. I Vois soner (oktober 2026) er det kjøreforbud mellom tverrgatene, og du kan krysse gata i lav fart. Gå av og trill.',
         'I gatene rundt Ruten og Sandnes stasjon setter Voi ned farten, og i sentrumskjernen kan du bare parkere ved en Voi-stasjon. Sandnes Parkering skriver ut gebyrer for feilparkering i hele kommunen.',
       ],
     },
@@ -134,7 +134,7 @@ const guide: Guide = {
           list: [
             '**Sykkelstamveien:** Den siste delen av den 13 kilometer lange sykkelveien fra Stavanger via Forus til Sandnes åpnet 16. juni 2026. Ifølge Statens vegvesen er det første gang Norge bygger en egen vei for syklister. Du kan kjøre elsparkesykkel der, men Voi har parkeringsforbud langs den.',
             '**Jåttåvågen:** Ved stasjonen, like ved Lyse Arena, har begge operatørene parkeringsforbud.',
-            '**Egen elsparkesykkel på buss og tog:** Hos Kolumbus koster en elsparkesykkel det samme som en enkeltbillett for barn, og Kolumbus nevner ikke noe unntak for sammenleggbare. Du må holde den selv, og den må ikke stå i veien. Gratis er bare sammenslåtte sykler og små sparkesykler du lett kan ta under armen.',
+            '**Egen elsparkesykkel på buss og tog:** Hos Kolumbus koster en elsparkesykkel det samme som en enkeltbillett for barn. Du må holde den selv, og den må ikke stå i veien. Gratis er bare sammenslåtte sykler og små sparkesykler du lett kan ta under armen.',
             '**Båt og ferje:** Der reiser elsparkesykkelen gratis, men den kan ikke tas med inn i salongen uten lov fra mannskapet.',
             '**Leid elsparkesykkel:** Avslutt turen og parker lovlig før du går om bord, så slipper du å betale for minuttene underveis.',
             '**Stavanger lufthavn Sola:** Flyplassen ligger utenfor området til både Voi og Ryde, så du kan verken kjøre helt fram eller avslutte turen der. Ta flybuss eller buss, og finn nærmeste sparkesykkel på [kartet over Stavanger](map:no:Stavanger) når du er framme.',
@@ -153,14 +153,14 @@ const guide: Guide = {
             '**500 kr** hvis du setter sykkelen fra deg utenfor en stasjon, eller ved siden av en stasjon med ledige plasser.',
           ],
         },
-        'Ti minutter koster dermed 28 kr uten billett, mot 25 kr på en Voi og 35,90 kr på en Ryde. Har du billett, er en tur på inntil et kvarter gratis. Bysyklene vises ikke på ScootRadar, som bare viser elsparkesykler.',
+        'Ti minutter koster dermed 28 kr uten billett, mot 25 kr på en Voi og 35,90 kr på en Ryde. Har du billett, er en tur på inntil et kvarter gratis.',
       ],
     },
   ],
   faq: [
     {
       question: 'Er Voi eller Ryde billigst i Stavanger?',
-      answer: 'Voi. Hos Voi er det gratis å låse opp, mens Ryde tar 10,90 kr, og begge tar 2,50 kr per minutt (13. oktober 2026). En tur på ti minutter koster dermed 25 kr hos Voi og 35,90 kr hos Ryde. Prisene kan endres, så sjekk appen.',
+      answer: 'Voi. Hos Voi er det gratis å låse opp, mens Ryde tar 10,90 kr, og begge tar 2,50 kr per minutt (november 2026). En tur på ti minutter koster dermed 25 kr hos Voi og 35,90 kr hos Ryde. Prisene kan endres, så sjekk appen.',
     },
     {
       question: 'Kan jeg leie Bolt i Stavanger?',
@@ -172,7 +172,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må man være for å leie elsparkesykkel i Stavanger?',
-      answer: 'Både Voi og Ryde krever 16 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
+      answer: 'Ryde krever 16 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Sola flyplass?',
@@ -186,7 +186,8 @@ const guide: Guide = {
     { title: 'Stavanger kommune: Sakte fart for elsparkesykkel 17. mai (2026)', url: 'https://www.stavanger.kommune.no/nyheter/sakte-fart-for-elsparkesykkel-17.-mai' },
     { title: 'Stavanger Parkering: El-sparkesykkel', url: 'https://stavanger-parkering.no/el-sparkesykkel/' },
     { title: 'Sandnes kommune: El-sparkesykkel', url: 'https://www.sandnes.kommune.no/sti/vei-og-trafikk/parkering-i-sandnes/el-sparkesykkel/' },
-    { title: 'Voi: Elsparkesykler til leie i Stavanger', url: 'https://www.voi.com/nb/by/stavanger' },
+    { title: 'Entur: Vois åpne data for Stavanger og Sandnes (GBFS: priser og åpningstider, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voistavanger/gbfs' },
+    { title: 'Entur: Rydes åpne data for Stavanger (GBFS: priser, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydestavanger/gbfs' },
     { title: 'Kolumbus: Kan jeg ta med sykkelen om bord?', url: 'https://www.kolumbus.no/reise/sykkel-oversikt/kan-jeg-ta-med-sykkelen-om-bord/' },
     { title: 'Kolumbus: Bysykkel', url: 'https://www.kolumbus.no/sykkel/' },
     { title: 'Statens vegvesen: Sykkelstamveien mellom Stavanger og Sandnes (juni 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/06/dyre-men-lonnsomme-sykkelveier/' },

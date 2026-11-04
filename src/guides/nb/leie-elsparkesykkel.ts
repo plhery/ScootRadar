@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Leie elsparkesykkel: aldersgrense og pris hos Ryde og Voi',
   description: 'Ryde og Bolt leier ut fra 16 år, Voi fra 16 i Oslo. Slik leier du elsparkesykkel: appen, Vipps eller kort, hva det koster, parkering med bilde og nattestenging.',
   headline: 'Hvordan leie elsparkesykkel: fra appen til du avslutter turen',
-  lede: 'Å leie elsparkesykkel går slik: Du laster ned appen til operatøren, registrerer deg med mobilnummer og betalingskort, skanner QR-koden på styret og kjører, og til slutt parkerer du lovlig, avslutter turen og tar bilde av parkeringen. Ryde og Bolt leier ut fra 16 år, og Voi fra 16 i Oslo. Du betaler for å låse opp og per minutt: I Oslo publiserte Voi og Bolt 10 kr pluss 2,50 kr per minutt 30. oktober 2026, så ti minutter koster 35 kr. Mange byer stenger utleien om natten, Oslo hver natt fra kl. 23 til 05.',
+  lede: 'Å leie elsparkesykkel går slik: Du laster ned appen til operatøren, registrerer deg med mobilnummer og betalingskort, skanner QR-koden på styret og kjører, og til slutt parkerer du lovlig, avslutter turen og tar bilde av parkeringen. Ryde og Bolt leier ut fra 16 år, og Voi fra 16 i Oslo. Du betaler for å låse opp og per minutt: I Oslo tar Voi og Bolt 10 kr pluss 2,50 kr per minutt (november 2026), så ti minutter koster 35 kr. Mange byer stenger utleien om natten, Oslo hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
   updated: '2026-10-24',
   sections: [
@@ -18,13 +18,13 @@ const guide: Guide = {
         'Voi, Bolt, Ryde og Dott har hver sin app, og du trenger en konto hos operatøren du vil leie av. Stegene er nesten like:',
         {
           steps: [
-            '**Last ned appen og registrer deg** med mobilnummer eller e-post. Hos Voi kan du også bruke Apple eller Google.',
+            '**Last ned appen og registrer deg** med mobilnummer eller e-post.',
             '**Legg til en betalingsmåte:** et kort, eller det operatøren ellers tilbyr (se tabellen nedenfor).',
             '**Bekreft alder eller identitet hvis appen ber om det.**',
-            '**Sjekk prisen** ved å trykke på sparkesykkelen eller skanne den, og ta gjerne kurset i appen: Ryde School gir Ryde Credits, og Vois RideSafe Academy en gratis tur.',
+            '**Sjekk prisen** ved å trykke på sparkesykkelen eller skanne den, og ta gjerne kurset i appen: Ryde School gir Ryde Credits.',
             '**Skann QR-koden** på styret, eller skriv inn nummeret som står under den.',
-            '**Sjekk bremser, dekk, lys og batteri.** Virker ikke sparkesykkelen etter at du har låst den opp, melder du fra: Voi og Dott tar ikke betalt for det.',
-            '**Kjør alene**, etter trafikkreglene. Nye brukere starter rolig: Bolt begrenser deg til 15 km/t de fem første turene, Voi kan starte deg på rundt 15 km/t, og Ryde har en nybegynnermodus du slår på selv.',
+            '**Sjekk bremser, dekk, lys og batteri.** Virker ikke sparkesykkelen etter at du har låst den opp, melder du fra: Dott tar ikke betalt for det.',
+            '**Kjør alene**, etter trafikkreglene. Nye brukere starter rolig: Bolt begrenser deg til 15 km/t de fem første turene, og Ryde har en nybegynnermodus du slår på selv.',
             '**Parker lovlig, avslutt turen og ta bilde** når appen ber om det. Du betaler til appen bekrefter at turen er over.',
             '**Sjekk kvitteringen:** Det reserverte beløpet frigis.',
           ],
@@ -44,14 +44,13 @@ const guide: Guide = {
             rows: [
               ['Ryde', '16 år', 'Kortet kan verifiseres med 3-D Secure eller BankID på mobil; nye kontoer kan måtte forhåndsbetale', 'Kort, Vipps, Ryde Credits'],
               ['Bolt', '16 år', 'Kan be om bilde av førerkort eller annen legitimasjon', 'Visa eller Mastercard, Klarna'],
-              ['Voi', '16 år i Oslo', 'Ikke oppgitt', 'Kort, Apple Pay, Google Pay, PayPal, Klarna'],
               ['Dott (blant annet Trondheim)', '18 år', 'Kan be om førerkort, ID-kort eller pass for å sjekke alderen', 'Kort, PayPal, Apple Pay, Revolut Pay'],
               ['Ruter-appen (Oslo-området)', '15 eller 16 år, etter operatør', 'Ruter sjekker alderen før du kan leie', 'Betalingskort, bare enkeltturer'],
             ],
           },
         },
-        'Bolts 16 år står både i Ruters oversikt og i Bolts vilkår for Norge fra 1. desember 2026. Ruter oppgir 15 år for Ryde, men Rydes vilkår for Norge krever 16 (30. oktober 2026), og Dotts krever 18 år. Voi oppgir 16 år for Oslo; i andre byer ser du grensen i appen. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år, men forslaget er ikke vedtatt.',
-        '**Vipps** fant vi bare hos Ryde. Der trekkes turene samlet dagen etter, med et standard tak på 400 kr per dag.',
+        'Bolts 16 år står både i Ruters oversikt og i Bolts vilkår for Norge fra 1. desember 2026. Ruter oppgir 15 år for Ryde, men Rydes vilkår for Norge krever 16 (30. oktober 2026), og Dotts krever 18 år. Ruter oppgir 16 år for Voi i Oslo-området. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år, men forslaget er ikke vedtatt.',
+        '**Vipps** kan du bruke hos Ryde. Der trekkes turene samlet dagen etter, med et standard tak på 400 kr per dag.',
       ],
     },
     {
@@ -60,7 +59,7 @@ const guide: Guide = {
         'Du betaler for å låse opp og for hvert minutt, også når du står stille. Voi, Ryde og Dott runder opp til hele minutter, og prisen varierer fra by til by.',
         {
           table: {
-            caption: 'Priser publisert 30. oktober 2026, og hva en tur koster',
+            caption: 'Priser i november 2026, og hva en tur koster',
             head: ['Operatør og by', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter'],
             rows: [
               ['Voi og Bolt, Oslo', '10 kr', '2,50 kr', '35 kr', '60 kr'],
@@ -72,8 +71,8 @@ const guide: Guide = {
         },
         'Ruter oppgir kilometerpris for Bolt i Oslo, mens Bolt selv publiserer minuttpris, så sjekk prisen i Bolt-appen før du låser opp. Alt om operatørene, sonene og parkeringen i hovedstaden står i [guiden om elsparkesykkel i Oslo](guide:oslo).',
         '**Et regneeksempel.** Du kjører en Voi i [Oslo](map:no:Oslo) i 11 minutter og 20 sekunder. Det blir regnet som 12 minutter: 10 kr + 12 × 2,50 kr = 40 kr. Bruker du tre minutter til på å finne en lovlig parkeringsplass, blir det 47,50 kr.',
-        '**Pass** lønner seg hvis du kjører ofte. Voi selger minuttpakker med fri opplåsing og Voi Pass, som fornyes hver 30. dag, Bolt har uke- og månedspass, og hos Ryde kan et dagspass for eksempel gi 75 minutter kjøring i løpet av 24 timer. Prisene står i appene.',
-        '**Reservert beløp.** Når turen starter, reserverer appen et lite beløp på kortet ditt: 40, 50 eller 75 kr hos Voi og 25 kr hos Dott. Bolt oppgir ikke beløpet, og nye kontoer hos Ryde kan måtte betale et startbeløp som blir til Ryde Credits. Beløpet frigis når turen er over, men banken kan bruke noen dager på det.',
+        '**Pass** lønner seg hvis du kjører ofte. Bolt har uke- og månedspass, og hos Ryde kan et dagspass for eksempel gi 75 minutter kjøring i løpet av 24 timer. Prisene står i appene.',
+        '**Reservert beløp.** Når turen starter, reserverer appen et lite beløp på kortet ditt, hos Dott 25 kr. Nye kontoer hos Ryde kan måtte betale et startbeløp som blir til Ryde Credits. Beløpet frigis når turen er over, men banken kan bruke noen dager på det.',
       ],
     },
     {
@@ -83,7 +82,6 @@ const guide: Guide = {
         {
           list: [
             '**Dott:** Reserver gratis i 10 minutter, i over 400 byer i 21 land ifølge Dott (mai 2025). Pause i opptil 30 minutter til vanlig minuttpris.',
-            '**Voi:** En pause holder sparkesykkelen for deg i opptil to timer. Du betaler videre, noen steder til lavere pris, og etter to timer avsluttes turen av seg selv.',
             '**Bolt:** Du kan reservere på forhånd, så lenge og til den prisen appen viser. Pause kan du bare ta på blå parkeringsplasser, og du betaler per minutt.',
           ],
         },
@@ -96,7 +94,7 @@ const guide: Guide = {
         'Appen viser soner. I en sone med **kjøreforbud**, ofte rød, bremser sparkesykkelen til den stopper, så du må trille den ut. I en **saktesone**, ofte gul, går den saktere. I en sone med **parkeringsforbud** får du ikke avsluttet turen.',
         { note: 'Får du ikke avsluttet turen, betaler du fortsatt. Står du i en sone med parkeringsforbud eller utenfor området, går minuttene til du flytter sparkesykkelen til et lovlig sted.' },
         'At appen lar deg avslutte, betyr likevel ikke at du har parkert lovlig: I Oslo kan feilparkering gi 900 kr i gebyr, ifølge Ruter. Parker i et oppmerket felt, inntil en vegg eller i et sykkelstativ, men ikke i stativene til Oslo Bysykkel, ikke nærmere enn 5 meter fra et kryss eller gangfelt og ikke nærmere enn 2,5 meter fra ledelinjene for blinde og svaksynte.',
-        'Bildet blir sjekket. Hos Ryde må du dokumentere parkeringen med bilde; uten bilde betaler du et eventuelt gebyr fra kommunen. Hos Dott ser programvare etter veltede sparkesykler og sperrede fortau, og hos Voi går en «Parking Assistant» gjennom bildene.',
+        'Bildet blir sjekket. Hos Ryde må du dokumentere parkeringen med bilde; uten bilde betaler du et eventuelt gebyr fra kommunen. Hos Dott ser programvare etter veltede sparkesykler og sperrede fortau.',
         {
           table: {
             caption: 'Hva feilparkering kan koste, ifølge kommunen og operatørenes vilkår (oktober 2026)',
@@ -105,7 +103,6 @@ const guide: Guide = {
               ['Oslo kommune', '900 kr i parkeringsgebyr, skrevet ut til operatøren'],
               ['Ryde', 'Halvparten av gebyret, 450 kr, når det er din skyld (oppgitt i 2024); opptil 500 kr hvis du forlater området'],
               ['Bolt', 'Fra 1. desember 2026: kommunens gebyr pluss opptil 30 euro, og 6 euro for feilparkering eller uklart bilde'],
-              ['Voi', 'Gebyr først etter flere advarsler, og det refunderes ikke'],
             ],
           },
         },
@@ -133,7 +130,7 @@ const guide: Guide = {
         'Kontoen din virker i andre land, men pass og saldo blir som regel igjen hjemme:',
         {
           list: [
-            '**Pass gjelder i ett land.** Voi-pakkene er merket «gyldig i Norge», Dotts pass virker bare i landet du kjøpte det i, og Bolts og Rydes pass bare i byen.',
+            '**Pass gjelder i ett land.** Dotts pass virker bare i landet du kjøpte det i, og Bolts og Rydes pass bare i byen.',
             '**Saldo gjelder i én valuta.** I et land med euro eller en annen valuta må du åpne en ny saldo hos Dott og Bird, og Bolt Balance kan bare brukes i valutaen den ble kjøpt i.',
             '**Aldersgrensen er 18 år nesten overalt ellers.** Er du 15, 16 eller 17, kan du som regel ikke leie i utlandet. Unntak er blant annet Voi i Antwerpen, Hoppy i Kortrijk og Pony i Frankrike og Belgia, som leier ut fra 16.',
             '**Reglene endrer seg ved grensen.** I Storbritannia trenger du førerkort, og i Italia må du ha med egen hjelm og ta bilde av parkeringen. I Brussel skanner du legitimasjon før første tur, og myndighetene der har bestemt at utleien av elsparkesykler stanser etter 31. desember 2026. I Paris har det ikke vært delte elsparkesykler siden 1. september 2023.',
@@ -167,7 +164,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg betale for elsparkesykkelen med Vipps?',
-      answer: 'Hos Ryde, ja: Turene trekkes samlet dagen etter, med et standard tak på 400 kr per dag. Hos Bolt, Voi og Dott fant vi ikke Vipps. Der betaler du med kort, hos Voi også med blant annet Apple Pay, Google Pay, PayPal og Klarna.',
+      answer: 'Hos Ryde, ja: Turene trekkes samlet dagen etter, med et standard tak på 400 kr per dag.',
     },
     {
       question: 'Kan jeg bruke Voi Pass i Ruter-appen?',
@@ -175,7 +172,7 @@ const guide: Guide = {
     },
     {
       question: 'Hva skjer hvis mobilen går tom for strøm?',
-      answer: 'Uten appen får du ikke avsluttet turen, så minuttene kan fortsette å gå. Voi avslutter turen av seg selv når sparkesykkelen har stått stille i 10 minutter, og Dott etter 10 til 30 minutter uten bruk. Parker lovlig, og avslutt turen eller kontakt kundeservice så snart du har strøm.',
+      answer: 'Uten appen får du ikke avsluttet turen, så minuttene kan fortsette å gå. Dott avslutter turen av seg selv etter 10 til 30 minutter uten bruk. Parker lovlig, og avslutt turen eller kontakt kundeservice så snart du har strøm.',
     },
     {
       question: 'Kan man leie elsparkesykkel om vinteren?',
@@ -190,14 +187,13 @@ const guide: Guide = {
     { title: 'Ryde: Vipps og dagstaket (på engelsk)', url: 'https://www.ryde-technology.com/help/do-you-offer-vipps' },
     { title: 'Ryde: Kort med 3-D Secure eller BankID (på engelsk)', url: 'https://www.ryde-technology.com/help/add-payment-card' },
     { title: 'Ryde: Forsikring', url: 'https://www.ryde-technology.com/insurance' },
-    { title: 'Voi: Elsparkesykler i Oslo, priser og aldersgrense', url: 'https://www.voi.com/nb/by/oslo' },
-    { title: 'Voi Help: Hvorfor ser jeg et reservert beløp? (på engelsk)', url: 'https://www.voi.com/help/accounts-and-payments/why-do-i-see-a-reserved-or-pending-payment-from-voi' },
     { title: 'Bolt: Elsparkesykler', url: 'https://bolt.eu/no-no/scooters/' },
     { title: 'Bolt: Vilkår for elektriske kjøretøy i Norge (på engelsk)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Oslo kommune: Leie av elsparkesykler og elsykler', url: 'https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/' },
     { title: 'Ruter: Parkering av elsparkesykkel', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/parkering' },
     { title: 'Dott: Vilkår for Norge (23. september 2025)', url: 'https://ridedott.com/no/vilkar-betingelser/norge/' },
     { title: 'Entur: Operatørenes åpne prisdata (GBFS)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/manifest.json' },
+    { title: 'Entur: Vois åpne data for Oslo (GBFS: priser, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voioslo/gbfs' },
   ],
 };
 

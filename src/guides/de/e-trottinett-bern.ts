@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Trottinett Bern 2026: Voi, Preise, Sperrzonen, Parkieren',
   description: 'E-Trottinett Bern: Nur Voi hat eine Bewilligung. Was 10 Minuten kosten, wo die Altstadt tabu ist, wo du parkierst und wann das Leihvelo günstiger ist.',
   headline: 'E-Trottinett Bern: E-Scooter von Voi mieten, Preise, Sperrzonen und Parkplätze',
-  lede: 'Ein E-Trottinett in Bern mietest du bei Voi: Seit dem 1. Mai 2024 hat nur dieser Anbieter eine Bewilligung der Stadt, für fünf Jahre und höchstens 300 Trottis. Du musst mindestens 18 sein und zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (veröffentlichter Tarif vom 12. Oktober 2026). In der Altstadt von der Spitalgasse bis zur Gerechtigkeitsgasse darfst du nicht fahren. In der übrigen Innenstadt, etwa am Bahnhof und auf dem Bundesplatz, beendest du die Fahrt nur auf einem Voi-Parkplatz, und in Köniz und auf dem Gurten gilt Fahrverbot.',
+  lede: 'Ein E-Trottinett in Bern mietest du bei Voi: Seit dem 1. Mai 2024 hat nur dieser Anbieter eine Bewilligung der Stadt, für fünf Jahre und höchstens 300 Trottis. Du musst mindestens 18 sein und zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (Stand November 2026). In der Altstadt von der Spitalgasse bis zur Gerechtigkeitsgasse darfst du nicht fahren. In der übrigen Innenstadt, etwa am Bahnhof und auf dem Bundesplatz, beendest du die Fahrt nur auf einem Voi-Parkplatz, und in Köniz und auf dem Gurten gilt Fahrverbot.',
   published: '2026-10-12',
   updated: '2026-10-12',
   city: 'ch:bern',
@@ -32,10 +32,10 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Bern?',
       blocks: [
-        'Voi verlangt in Bern CHF 1.– fürs Entsperren und 42 Rappen pro Minute, so steht es auf der Website von Voi und im offenen Datenfeed vom 12. Oktober 2026. Preise können sich je nach Ort, Zeit und Fahrzeug ändern; den Endpreis zeigt die App. Zum Vergleich die Leihvelos von Velo Region Bern:',
+        'Voi verlangt in Bern CHF 1.– fürs Entsperren und 42 Rappen pro Minute (Stand November 2026); den Endpreis zeigt die App. Zum Vergleich die Leihvelos von Velo Region Bern:',
         {
           table: {
-            caption: 'E-Trottinett und Leihvelo in Bern im Vergleich (Voi: veröffentlichter Tarif vom 12. Oktober 2026; PubliBike: publibike.ch, Oktober 2026)',
+            caption: 'E-Trottinett und Leihvelo in Bern im Vergleich (Voi: Stand November 2026; PubliBike: publibike.ch, Oktober 2026)',
             head: ['Angebot', 'Grundpreis', 'Danach pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi, E-Trottinett', 'CHF 1.– fürs Entsperren', '42 Rappen', 'CHF 5.20', 'CHF 9.40'],
@@ -45,16 +45,16 @@ const guide: Guide = {
             ],
           },
         },
-        'Fünf Minuten kosten CHF 3.10, eine halbe Stunde CHF 13.60. Eine Fahrt dauerte 2021 laut Stadt im Schnitt rund zehn Minuten, typischerweise vom Bahnhof in den Breitenrain oder in die Länggasse. Minutenpakete und den Voi Pass (30 Tage, in der ganzen Schweiz gültig) gibt es auch, ihre Preise zeigt aber nur die App. In Basel und Biel kostet die Voi-Minute 39 Rappen: [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
+        'Fünf Minuten kosten CHF 3.10, eine halbe Stunde CHF 13.60. Eine Fahrt dauerte 2021 laut Stadt im Schnitt rund zehn Minuten, typischerweise vom Bahnhof in den Breitenrain oder in die Länggasse. In Basel und Biel kostet die Voi-Minute 39 Rappen: [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },
     {
       heading: 'Altstadt, Gurten, Köniz: Wo du in Bern nicht fahren darfst',
       blocks: [
-        'Die Zonen legen Voi und die Stadt fest. Die Tabelle beruht auf unserer Auswertung von Vois offenen Daten; Zonen ändern sich, an Anlässen auch kurzfristig. Massgebend sind die Farben in der Voi-App.',
+        'Die Zonen legen Voi und die Stadt fest. Sie ändern sich, an Anlässen auch kurzfristig; massgebend sind die Farben in der Voi-App.',
         {
           table: {
-            caption: 'Vois Zonen in Bern (unsere Auswertung der offenen Daten vom 12. Oktober 2026)',
+            caption: 'Vois Zonen in Bern, Stand November 2026',
             head: ['Zone', 'Was gilt', 'Wo'],
             rows: [
               ['Fahrverbotszone Altstadt', 'Nicht fahren, nicht durchfahren, nicht parkieren', 'Spitalgasse, Marktgasse, Zytglogge, Kramgasse, Gerechtigkeitsgasse, Münster und Münsterplattform'],
@@ -67,17 +67,17 @@ const guide: Guide = {
           },
         },
         'Die Altstadt ist seit 1983 UNESCO-Weltkulturerbe, und ihre Lauben gehören den Fussgängern: Wer dort fährt, fährt auf einem Fussweg oder Trottoir, und das kostet CHF 30.– bis 40.– Busse. Trotzdem klagten Mitglieder des Stadtrats im Mai 2026 über Leute, die mit Trottinett und Velo «die Lauben hinunterrasen».',
-        '2021 schrieb die Stadt, in den Sperrzonen werde das Trotti von 20 auf 5 km/h gedrosselt. Ob es heute bremst oder anhält, zeigen die Daten von Voi nicht; plane die Route darum um die Altstadt herum. Auch Berns Hausberg, der Gurten, liegt in Köniz und ist tabu: Hinauf fährt die Gurtenbahn.',
+        '2021 schrieb die Stadt, in den Sperrzonen werde das Trotti von 20 auf 5 km/h gedrosselt. Plane deine Route um die Altstadt herum. Auch Berns Hausberg, der Gurten, liegt in Köniz und ist tabu: Hinauf fährt die Gurtenbahn.',
         { note: 'In der Innenstadt und in den Parkverbotszonen beendest du die Fahrt nur auf einem Voi-Parkplatz, in einer Fahrverbotszone gar nicht, und bis dahin laufen die Minuten weiter. Such den nächsten Voi-Parkplatz in der App, bevor du am Ziel bist.' },
       ],
     },
     {
       heading: 'E-Trottinett parkieren in Bern: Bahnhof, Bundesplatz, Bärenplatz',
       blocks: [
-        'Die Voi-Parkplätze zeigt dir die App. In den Daten von Voi zählten wir rund 500 in und um Bern, rund 120 davon in der Innenstadt. Die nächsten bei bekannten Orten:',
+        'Die Voi-Parkplätze zeigt dir die App: rund 500 in und um Bern, rund 90 davon in der Innenstadt (Stand November 2026). Die nächsten bei bekannten Orten:',
         {
           table: {
-            caption: 'Voi-Parkplätze bei bekannten Orten (Namen wie in Vois Daten, Stand 12. Oktober 2026)',
+            caption: 'Voi-Parkplätze bei bekannten Orten, Stand November 2026',
             head: ['Ort', 'Voi-Parkplätze in der Nähe'],
             rows: [
               ['Bahnhof', '«Bahnhofplatz 2» (rund 90 m), «Bahnhofplatz», «Bollwerk», «Velostation PostParc», «Velostation Welle 7», «Velostation Schanzenbrücke»'],
@@ -92,7 +92,7 @@ const guide: Guide = {
           },
         },
         'Anderswo parkierst du wie ein Velo: auf dem Trottoir nur, wenn 1,50 m für Fussgänger frei bleiben (sonst CHF 20.– Busse), nie auf Blindenleitlinien, vor Eingängen oder auf dem Fussgängerstreifen. Die Stationen von Velo Region Bern lässt du frei.',
-        'Falsch parkieren kostet: Voi darf laut seinen Schweizer Bedingungen nach Verwarnungen CHF 25.– verlangen. Steht ein Trotti im Weg, melde es über [report.voi.com](https://report.voi.com/de) oder [trotti-melder.ch](https://trotti-melder.ch); gefährlich abgestellte räumt Voi laut Gemeinderat (2025) im Schnitt innert 30 Minuten weg.',
+        'Steht ein Trotti im Weg, melde es über [report.voi.com](https://report.voi.com/de) oder [trotti-melder.ch](https://trotti-melder.ch); gefährlich abgestellte räumt Voi laut Gemeinderat (2025) im Schnitt innert 30 Minuten weg.',
       ],
     },
     {
@@ -117,7 +117,6 @@ const guide: Guide = {
       blocks: [
         'Wo Voi nicht hinfährt, hilft das Leihvelo. Velo Region Bern, betrieben von PubliBike, startete am 16. Januar 2026 neu: über 300 Stationen in 17 Gemeinden, auch in Köniz, Ostermundigen, Ittigen, Zollikofen und Belp, und rund 70 Prozent E-Bikes. Die Stadt spricht vom dichtesten Leihvelo-Netz der Schweiz.',
         'Ausleihen kannst du mit der PubliBike-App oder dem SwissPass. Neben Einzelfahrten und dem Jahresabo B-Fit Local Bern für CHF 69.– gibt es eine Tageskarte für 24 Stunden zu CHF 29.–. Ab zehn Minuten ist das E-Bike auch ohne Abo günstiger als das Trotti.',
-        'Auf ScootRadar siehst du diese Velos nicht: Die Karte zeigt von PubliBike nur E-Trottinette, und die gibt es in Bern nicht. Freie Velos und Stationen findest du in der PubliBike-App.',
       ],
     },
     {
@@ -161,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Komme ich mit dem Trotti nach Ostermundigen, Köniz oder zum Flughafen?',
-      answer: 'Mit Voi nicht. Laut den Daten von Voi vom 12. Oktober 2026 gilt in Köniz, Wabern und auf dem Gurten Fahrverbot, und in Ostermundigen, Ittigen, Zollikofen, Bremgarten und am Flughafen kannst du keine Fahrt beenden; die aktuellen Zonen zeigt die Voi-App. Nimm Bus oder Zug, oder ein Velo von Velo Region Bern.',
+      answer: 'Mit Voi nicht. In Köniz, Wabern und auf dem Gurten gilt Fahrverbot, und in Ostermundigen, Ittigen, Zollikofen, Bremgarten und am Flughafen kannst du keine Fahrt beenden (Stand November 2026); die aktuellen Zonen zeigt die Voi-App. Nimm Bus oder Zug, oder ein Velo von Velo Region Bern.',
     },
     {
       question: 'Kann ich PubliBike in Bern mit dem SwissPass ausleihen?',
@@ -176,9 +175,8 @@ const guide: Guide = {
     { title: 'Gemeinderat der Stadt Bern: Bericht zum Postulat «E-Trottinetts dürfen kein Hindernis darstellen», 23. April 2025', url: 'https://ris.bern.ch/de/dokumente/67b2469b3610416eb307755ff94c94ce-332' },
     { title: 'Stadt Bern: Allgemeine Informationen zum Bewilligungsverfahren E-Trottinett-Verleihsystem, 2020 (PDF)', url: 'https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/gemeinderat-will-e-trottinett-verleih-geordnet-zulassen/dokuemente/allgemeine-bestimmungen-zu-e-trottinett.pdf/download' },
     { title: 'Stadt Bern: Infoblatt E-Trottinett-Verleihsysteme, Mai 2021 (PDF)', url: 'https://www.bern.ch/velohauptstadt/partizipation/resultate/velo-offensive-dienstleistungs-foerdermassnahmen/20210707_InfoblattETrottinettVerleihsysteme.pdf' },
-    { title: 'Voi: E-Scooter in Bern, Preise und Mindestalter', url: 'https://www.voi.com/de/stadt/bern' },
-    { title: 'Voi: Nutzungsbestimmungen Schweiz', url: 'https://www.voi.com/de/rechtliche-hinweise/nutzungsbestimmungen/schweiz' },
-    { title: 'sharedmobility.ch (Bundesamt für Energie): offener Datenfeed von Voi mit Tarifen, Zonen und Parkplätzen', url: 'https://sharedmobility.ch/v2/gbfs/voiscooters.com/gbfs' },
+    { title: 'MobiData BW: offene Daten von Voi Schweiz (GBFS, Datenlizenz Deutschland – Namensnennung – Version 2.0)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_ch/gbfs' },
+    { title: 'Stadt Winterthur: Sharing-Angebote, mit Vois Mindestalter von 18 Jahren', url: 'https://stadt.winterthur.ch/themen/mobilitaet/oev-taxi-sharing/sharing-angebote' },
     { title: 'Stadt Bern: Betriebsstart des dichtesten Leihvelo-Netzes der Schweiz', url: 'https://www.bern.ch/mediencenter/medienmitteilungen/aktuell_ptk/betriebsstart-des-dichtesten-leihvelo-netzes-der-schweiz' },
     { title: 'PubliBike: Preise & Abos', url: 'https://www.publibike.ch/de/abos' },
     { title: 'Bern Welcome: Bern-Ticket für Übernachtungsgäste (englisch)', url: 'https://bern.com/en/inform/bern-ticket/bern-ticket-for-overnight-guests' },

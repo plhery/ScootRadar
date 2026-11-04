@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Bærum 2026: priser, regler og parkering',
   description: 'Elsparkesykkel i Bærum: Voi og Ryde har tillatelse, Bolt ikke. Priser, åpningstider, parkering i Sandvika, Lysaker og Bekkestua og grensen mot Oslo.',
   headline: 'Elsparkesykkel i Bærum: operatører, priser, parkering og grensen mot Oslo',
-  lede: 'Vil du leie elsparkesykkel i Bærum, velger du mellom Voi og Ryde, som har kommunens tillatelse fram til 31. mars 2028. Bolt har ikke tillatelse i Bærum. Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og både Voi og Ryde krever at du har fylt 16 år. Kommunen har ikke innført nattestenging, men i sentrum av Sandvika, Bekkestua og Lysaker må du parkere på oppmerkede plasser eller i stativ. Krysser du Lysakerelva, gjelder Oslos regler.',
+  lede: 'Vil du leie elsparkesykkel i Bærum, velger du mellom Voi og Ryde, som har kommunens tillatelse fram til 31. mars 2028. Bolt har ikke tillatelse i Bærum. Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt (november 2026), og både Voi og Ryde krever at du har fylt 16 år. Kommunen har ikke innført nattestenging, men i sentrum av Sandvika, Bekkestua og Lysaker må du parkere på oppmerkede plasser eller i stativ. Krysser du Lysakerelva, gjelder Oslos regler.',
   published: '2026-10-17',
   updated: '2026-10-22',
   city: 'no:Bærum',
@@ -20,17 +20,17 @@ const guide: Guide = {
         '**Bolt har ikke tillatelse i Bærum.** Hos Ruter står Bolt bare oppført for Oslo, og Bolt-sparkesyklene du ser ved Lysaker, hører til Oslo.',
         'Ordningen bygger på kommunens utleieforskrift fra 4. februar 2026. Den gir plass til to operatører i opptil fire år, og operatørene betaler et gebyr som dekker kommunens kostnader: 689 500 kr hver for perioden fram til 31. mars 2027.',
         'Elsparkesykler til leie har vært i Bærum siden 2020, først i et prøveprosjekt med Tier, Ruter og Asker. I 2025 ble det kjørt over 1,2 millioner turer med fire operatører, men Surf og Dott trakk seg ut tidlig på høsten.',
-        'På [kartet over Bærum](map:no:Bærum) sto det rundt 460 Voi-sparkesykler innenfor kommunegrensen på ettermiddagen 17. oktober 2026. Det er en telling på kartet den dagen, ikke hele flåten. Siden 22. oktober 2026 viser kartet også Rydes sparkesykler i Bærum, rundt 1700 i Rydes åpne data den dagen. Sparkesyklene du ser øst for Lysakerelva, står i Oslo.',
+        'På [kartet over Bærum](map:no:Bærum) sto det rundt 460 Voi-sparkesykler innenfor kommunegrensen på ettermiddagen 17. oktober 2026. Siden 22. oktober 2026 viser kartet også Rydes sparkesykler i Bærum, rundt 1700 i Rydes åpne data den dagen. Sparkesyklene du ser øst for Lysakerelva, står i Oslo.',
         'Du låser opp i operatørens app eller i Ruter-appen. I Ruter-appen betaler du enkeltturer med kort, til operatørens pris, og du tar bilde av parkeringen etter turen. Operatørens pass gjelder ikke der. Hvordan du registrerer deg og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster det å leie elsparkesykkel i Bærum?',
       blocks: [
-        'Voi oppgir prisen for Bærum på sin egen nettside: 10 kr for å låse opp og 2,50 kr per minutt. I Rydes åpne data for Bærum kostet det 10,90 kr å låse opp og 2,50 kr per minutt 22. oktober 2026, det samme som i Oslo. Sjekk prisen i appen før du låser opp.',
+        'Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt, og hos Ryde 10,90 kr å låse opp og 2,50 kr per minutt, det samme som i Oslo (november 2026). Sjekk prisen i appen før du låser opp.',
         {
           table: {
-            caption: 'Priser 17. oktober 2026 (Ryde: 22. oktober) og aldersgrenser',
+            caption: 'Priser i november 2026 og aldersgrenser',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter', 'Aldersgrense'],
             rows: [
               ['Voi, Bærum', '10 kr', '2,50 kr', '35 kr', '60 kr', '16 år'],
@@ -38,16 +38,16 @@ const guide: Guide = {
             ],
           },
         },
-        'Kjører du ofte, kan Vois minuttpakker eller Voi Pass lønne seg. De gjelder i hele Norge, men ikke i Ruter-appen. Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter, og tar du sparkesykkelen ut av driftsområdet, kan det koste opptil 500 kr ekstra.',
-        'Loven sier 12 år, og Bærums forskrift har ingen egen aldersgrense. Både Voi og Ryde krever likevel **16 år**: Voi på nettsiden for Bærum, Ryde i vilkårene for Norge. Kommunen og Ruter oppgir fortsatt 15 år for Ryde, også i Ruter-appens vilkår, men Rydes egne vilkår gjelder i tillegg når du leier der (17. oktober 2026). Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt**.',
+        'Hos Ryde kan turen avsluttes automatisk etter 60–65 minutter, og tar du sparkesykkelen ut av driftsområdet, kan det koste opptil 500 kr ekstra.',
+        'Loven sier 12 år, og Bærums forskrift har ingen egen aldersgrense. Både Voi og Ryde krever likevel **16 år**: Voi ifølge Ruter, Ryde i vilkårene for Norge. Kommunen og Ruter oppgir fortsatt 15 år for Ryde, også i Ruter-appens vilkår, men Rydes egne vilkår gjelder i tillegg når du leier der (17. oktober 2026). Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt**.',
       ],
     },
     {
       heading: 'Åpningstider og nattestenging i Bærum',
       blocks: [
-        'Kommunen har ikke innført nattestenging. Forskriften sier at utleie kan skje «alle dager, hele døgnet», og Ruter oppgir at både Ryde og Voi er døgnåpne i Bærum. Operatørene kan likevel stenge selv. Vois nettside for Bærum og Vois åpne data viser søndag som åpen fra kl. 05, altså stengt fra midnatt til kl. 05 natt til søndag, og Ryde skriver i vilkårene at tjenesten tidvis kan være stengt om natten. Skal du hjem sent, sjekker du appen før du regner med en sparkesykkel.',
+        'Kommunen har ikke innført nattestenging. Forskriften sier at utleie kan skje «alle dager, hele døgnet», og Ruter oppgir at både Ryde og Voi er døgnåpne i Bærum. Operatørene kan likevel stenge selv. Voi har stengt fra midnatt til kl. 05 natt til søndag (november 2026), og Ryde skriver i vilkårene at tjenesten tidvis kan være stengt om natten. Skal du hjem sent, sjekker du appen før du regner med en sparkesykkel.',
         'Politiet, Statens vegvesen og Trygg Trafikk ba kommunen vurdere nattestenging. Kommunedirektøren mente at det ikke var forholdsmessig: Kommunen har fått få klager på nattkjøring, Bærum har ikke et uteliv som Oslos, og kollektivtilbudet er svakere enn i storbyene, så et tilbud om natten kan være til stor nytte. Kommunen kan likevel korte inn åpningstidene eller kreve at du består en reaksjonstest i appen før du låser opp til bestemte tider.',
-        'Om vinteren stenges tjenesten når snø og is gjør det risikabelt, og kommunen bestemmer når sparkesyklene skal hentes inn. Ifølge kommunens saksframlegg var sesongslutt 10. desember i 2025. Når vinterpausen 2026–27 begynner, er ikke kunngjort.',
+        'Om vinteren stenges tjenesten når snø og is gjør det risikabelt, og kommunen bestemmer når sparkesyklene skal hentes inn. Ifølge kommunens saksframlegg var sesongslutt 10. desember i 2025.',
       ],
     },
     {
@@ -63,14 +63,14 @@ const guide: Guide = {
             'Det er parkeringsforbud i skolegårder, naturområder og parker, på gravplasser og ved idrettsanlegg. Appen viser hvor.',
           ],
         },
-        'Voi ber deg parkere ved et parkeringsskilt, i et sykkelstativ, på et oppmerket område eller på langs inntil en husvegg. I Voi-appen var det også parkeringsforbud ved flere T-banestasjoner på Kolsåsbanen, som Haslum, Gjettum og Kolsås, og langs Sandvikselva (17. oktober 2026). Hos Ryde må du ta bilde av parkeringen i appen.',
+        'I Voi-appen var det også parkeringsforbud ved flere T-banestasjoner på Kolsåsbanen, som Haslum, Gjettum og Kolsås, og langs Sandvikselva (17. oktober 2026). Hos Ryde må du ta bilde av parkeringen i appen.',
         { note: 'Bærums trafikkbetjenter har bøtelagt feilparkerte elsparkesykler siden juni 2025. Feilparkering kan gi et gebyr på 900 kr, og en sparkesykkel som står i veien, kan bli tauet bort. Ryde sender regningen videre til deg hvis du ikke tok bilde av parkeringen.' },
       ],
     },
     {
       heading: 'Hvor kan du kjøre? Saktesoner og kjøreforbud',
       blocks: [
-        'Forskriften lar kommunen kreve kjøreforbud, parkeringsforbud og fartsgrenser i appene, for hele døgnet eller deler av det. Sonene nedenfor er hentet fra Vois egne data 17. oktober 2026 og gjelder i Voi-appen:',
+        'Forskriften lar kommunen kreve kjøreforbud, parkeringsforbud og fartsgrenser i appene, for hele døgnet eller deler av det. Disse sonene gjaldt i Voi-appen 17. oktober 2026:',
         {
           list: [
             '**Saktesoner** på 12–15 km/t i sentrum av Sandvika og på Bekkestua.',
@@ -134,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg leie elsparkesykkel om natten i Bærum?',
-      answer: 'Ja. Kommunen har ikke innført nattestenging, og Ruter oppgir at Voi og Ryde er døgnåpne. Vois egen side viser likevel stengt fra midnatt til kl. 05 natt til søndag, så sjekk appen. I Oslo er utleien stengt fra kl. 23 til 05 hver natt.',
+      answer: 'Ja. Kommunen har ikke innført nattestenging, og Ruter oppgir at Voi og Ryde er døgnåpne. Voi har likevel stengt fra midnatt til kl. 05 natt til søndag, så sjekk appen. I Oslo er utleien stengt fra kl. 23 til 05 hver natt.',
     },
     {
       question: 'Hvor kan jeg parkere elsparkesykkel i Sandvika?',
@@ -146,7 +146,7 @@ const guide: Guide = {
     },
     {
       question: 'Er elsparkesyklene borte om vinteren?',
-      answer: 'Tjenesten stenger når snø og is gjør det risikabelt, og kommunen setter datoene. Ifølge kommunens saksframlegg var sesongslutt 10. desember i 2025. Datoen for vinteren 2026–27 er ikke kunngjort.',
+      answer: 'Tjenesten stenger når snø og is gjør det risikabelt, og kommunen setter datoene. Ifølge kommunens saksframlegg var sesongslutt 10. desember i 2025.',
     },
     {
       question: 'Hvor gammel må jeg være for å leie elsparkesykkel i Bærum?',
@@ -167,7 +167,7 @@ const guide: Guide = {
     { title: 'Ruter: Dette kan du ha med deg om bord', url: 'https://ruter.no/kjop-billett/om-bord' },
     { title: 'Ruter: Stenger T-banen fire dager i november (10. september 2026)', url: 'https://www.mynewsdesk.com/no/ruter/pressreleases/stenger-t-banen-fire-dager-i-november-ikke-reis-hvis-du-ikke-maa-3466538' },
     { title: 'Vy: Sykkel på toget', url: 'https://www.vy.no/alt-om-reisen/tog/praktisk-informasjon/sykkel-pa-toget' },
-    { title: 'Voi: Elsparkesykler til leie i Bærum', url: 'https://www.voi.com/nb/by/baerum' },
+    { title: 'Entur: Vois åpne data for Bærum og Asker (GBFS: priser, åpningstider og soner, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voibaerum/gbfs' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
     { title: 'Ryde: Åpne data for Bærum (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydebaerum/gbfs' },
     { title: 'Ryde: Åpne data for Asker (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeasker/gbfs' },

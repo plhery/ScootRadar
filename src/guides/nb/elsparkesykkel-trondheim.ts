@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Trondheim 2026: priser, regler og sesong',
   description: 'Elsparkesykkel i Trondheim: priser hos Voi, Ryde og Dott, aldersgrenser, sesong og nattestenging, soner, parkering og hvordan du kommer til Værnes.',
   headline: 'Elsparkesykkel i Trondheim: operatører, priser, sesong og soner',
-  lede: 'Vil du leie elsparkesykkel i Trondheim, velger du mellom Dott, Voi og Ryde, som har tillatelse fra kommunen for 2025 og 2026. Det koster 10 kr å låse opp hos Voi og 10,90 kr hos Ryde og Dott, pluss 2,50 kr per minutt (13. oktober 2026), og du må ha fylt 16 år hos Ryde og Voi og 18 hos Dott. Sesongen varer fra 15. mars til senest 1. desember. Etter forskriften er utleien stengt kl. 23–05 hver natt, men i 2026 har Voi og Ryde bare stengt natt til lørdag og natt til søndag, så sjekk appen.',
+  lede: 'Vil du leie elsparkesykkel i Trondheim, velger du mellom Dott, Voi og Ryde, som har tillatelse fra kommunen for 2025 og 2026. Det koster 10 kr å låse opp hos Voi og 10,90 kr hos Ryde og Dott, pluss 2,50 kr per minutt (november 2026), og du må ha fylt 16 år hos Ryde og 18 hos Dott. Sesongen varer fra 15. mars til senest 1. desember. Etter forskriften er utleien stengt kl. 23–05 hver natt, men i 2026 har Voi og Ryde bare stengt natt til lørdag og natt til søndag, så sjekk appen.',
   published: '2026-10-13',
   updated: '2026-10-24',
   city: 'no:Trondheim',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Trondheim kommune har gitt tillatelse til tre operatører: **Dott, Voi og Ryde**. Tillatelsene gjelder sesongene 2025 og 2026. Dott het tidligere Tier, og kommunen skriver fortsatt «Tier-Dott». Ingen andre har tillatelse til å leie ut elsparkesykler i byen, heller ikke Bolt.',
         'Ryde var først ute i 2019 og vant mot kommunen i Høyesterett i desember 2021: Kommunen kunne ikke styre utleien som grunneier, men trengte hjemmel i lov. I februar 2022 fikk byen en egen utleieforskrift. Den tillater opptil tre operatører og **3200** kjøretøy til sammen, fordelt likt. I 2019 var taket 200, og i 2020 var det 600.',
-        'Kommunen har dessuten som prøveordning tillatt flere sparkesykler i ytre bydeler, i 2025 opptil 1500 ekstra på Tiller, Heimdal og Byåsen. Et vedtak for 2026 er ikke publisert, men ordningen kan forklare at ScootRadar viste rundt 3900 ledige elsparkesykler fra Voi, Ryde og Dott på [kartet over Trondheim](map:no:Trondheim) 13. oktober 2026.',
+        'Kommunen har dessuten som prøveordning tillatt flere sparkesykler i ytre bydeler, i 2025 opptil 1500 ekstra på Tiller, Heimdal og Byåsen. ScootRadar viste rundt 3900 ledige elsparkesykler fra Voi, Ryde og Dott på [kartet over Trondheim](map:no:Trondheim) 13. oktober 2026.',
         'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
@@ -28,17 +28,17 @@ const guide: Guide = {
         'Alle tre tar 2,50 kr per minutt, men hos Voi er opplåsingen 90 øre billigere. Den endelige prisen ser du i appen før du låser opp.',
         {
           table: {
-            caption: 'Priser publisert 13. oktober 2026, og aldersgrenser',
-            head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', 'Aldersgrense'],
+            caption: 'Priser i november 2026',
+            head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter'],
             rows: [
-              ['Voi', '10 kr', '2,50 kr', '35 kr', '16 år'],
-              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '16 år'],
-              ['Dott', '10,90 kr', '2,50 kr', '35,90 kr', '18 år'],
+              ['Voi', '10 kr', '2,50 kr', '35 kr'],
+              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr'],
+              ['Dott', '10,90 kr', '2,50 kr', '35,90 kr'],
             ],
           },
         },
-        'Tjue minutter koster 60 kr hos Voi og 60,90 kr hos Ryde og Dott. Kjører du ofte, kan en minuttpakke fra Voi lønne seg.',
-        'Loven sier 12 år, men operatørene har egne grenser. På kommunens nettside står det «15 eller 18 års aldersgrense», uten Vois 16 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
+        'Tjue minutter koster 60 kr hos Voi og 60,90 kr hos Ryde og Dott.',
+        'Loven sier 12 år, men operatørene har egne grenser. Ryde krever 16 år og Dott 18 år. På kommunens nettside står det «15 eller 18 års aldersgrense». Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
       ],
     },
     {
@@ -49,10 +49,10 @@ const guide: Guide = {
         {
           list: [
             '**Forskriften og kommunen:** Utleien skal være stengt mellom kl. 23 og 05, og kommunens nettside (oppdatert 19. mai 2026) sier det samme, uten unntak.',
-            '**Voi og Ryde i 2026:** Ifølge åpningstidene de publiserte 13. oktober 2026, har de åpent hele natten fra søndag kveld til fredag morgen og stenger kl. 23–05 bare natt til lørdag og natt til søndag. Dott oppgir i sine åpne data at den har åpent hele døgnet (24. oktober 2026), men forskriften gjelder alle operatører.',
+            '**Voi og Ryde i 2026:** Ifølge åpningstidene de publiserte 13. oktober 2026, har de åpent hele natten fra søndag kveld til fredag morgen og stenger kl. 23–05 bare natt til lørdag og natt til søndag. Dott oppgir at den har åpent hele døgnet (24. oktober 2026), men forskriften gjelder alle operatører.',
           ],
         },
-        'Forskriften lar kommunen prøve ut nattåpen utleie fra søndag kveld til fredag morgen. Det har kommunen gjort hvert år siden 2022, sist fra mai til oktober 2025, men et vedtak for 2026 er ikke publisert (oktober 2026). Sommeren 2023 ble det kjørt over 48 000 turer om natten, og bare to ulykker ble registrert i lovlig åpningstid, ifølge kommunen.',
+        'Forskriften lar kommunen prøve ut nattåpen utleie fra søndag kveld til fredag morgen. Det har kommunen gjort hvert år siden 2022, sist fra mai til oktober 2025. Sommeren 2023 ble det kjørt over 48 000 turer om natten, og bare to ulykker ble registrert i lovlig åpningstid, ifølge kommunen.',
         'Sjekk appen før du regner med å ta sparkesykkel hjem om natten, særlig natt til en helligdag. Hos Ryde er utelivsområdene ved Solsiden og Fjordgata stengt for kjøring om natten.',
         'Ved store arrangementer kan deler av byen stenges for elsparkesykler: Under fotball-VM sommeren 2026 gjaldt det tre områder.',
       ],
@@ -88,7 +88,7 @@ const guide: Guide = {
         'Operatørene har egne regler i tillegg:',
         {
           list: [
-            '**Voi:** I store deler av sentrum kan du bare avslutte turen ved en Voi-stasjon, og du må alltid ta bilde av parkeringen.',
+            '**Voi:** I store deler av sentrum kan du bare avslutte turen ved en Voi-stasjon.',
             '**Ryde:** Parkeringsforbud på Torvet, ved Kristiansten festning og i parker som Stiftsgårdsparken, Ilaparken og Ladeparken. Ved Trondheim S og på Gløshaugen bruker du Rydes oppmerkede plasser.',
             '**Dott:** Der kommunen har pekt ut parkeringsområder, skal du bare parkere der, ifølge Dotts vilkår. Bøter du selv er skyld i, betaler du.',
           ],
@@ -126,7 +126,7 @@ const guide: Guide = {
             '**Brubakken og Trampe:** Det er bratt fra Gamle Bybro opp Brubakken mot Kristiansten festning. Her ligger Trampe, som åpnet i 1993 som verdens første sykkelheis. Den er 130 meter lang, og høydeforskjellen tilsvarer et bygg på ti etasjer. Heisen er laget for sykler og er stengt inntil videre i 2026.',
             '**Bakklandet:** Underlaget er ujevnt, og i 2026 er det anleggsarbeid der.',
             '**Trikkeskinner:** Gråkallbanen starter i St. Olavs gate, som Guinness regner som verdens nordligste endestasjon for trikk. Kryss skinnene så nær rett vinkel som mulig.',
-            '**Høsten:** Våte blader og våte skinner er glatte, og ifølge Voi er den største faren tynn is som er vanskelig å se.',
+            '**Høsten:** Våte blader og våte skinner er glatte.',
             '**AtB:** I AtB-appen finner du bysykler og elsparkesykler under «Kart», men du låser opp og betaler i operatørens app.',
             '**Værnes:** Flyplassen ligger i Stjørdal, og sparkesyklene fra Trondheim kan ikke kjøres dit. Dott har et eget system i Stjørdal som dekker flyplassområdet, til 5,90 kr for å låse opp og 2,50 kr per minutt (13. oktober 2026), men det er ikke sikkert at det står en sparkesykkel ved terminalen: Se [kartet over Stjørdal](map:no:Stjørdal). Mellom byen og flyplassen tar du tog eller flybuss.',
           ],
@@ -160,7 +160,7 @@ const guide: Guide = {
             'Tillatelser for to sesonger, som kan forlenges to ganger med én sesong.',
           ],
         },
-        'Dagens tillatelser gjelder ut 2026-sesongen, og hvem som får leie ut fra 2027, er ikke kunngjort.',
+        'Dagens tillatelser gjelder ut 2026-sesongen.',
       ],
     },
   ],
@@ -171,11 +171,11 @@ const guide: Guide = {
     },
     {
       question: 'Er Ryde eller Voi billigst i Trondheim?',
-      answer: 'Voi, med 90 øre per tur: Voi tar 10 kr for å låse opp og Ryde 10,90 kr, og begge tar 2,50 kr per minutt (13. oktober 2026). Dott har samme pris som Ryde. Prisene kan endres, så sjekk appen.',
+      answer: 'Voi, med 90 øre per tur: Voi tar 10 kr for å låse opp og Ryde 10,90 kr, og begge tar 2,50 kr per minutt (november 2026). Dott har samme pris som Ryde. Prisene kan endres, så sjekk appen.',
     },
     {
       question: 'Kan jeg leie elsparkesykkel om natten i Trondheim?',
-      answer: 'Etter forskriften og kommunens nettside er utleien stengt kl. 23–05 hver natt. Men i 2026 har Voi og Ryde hatt åpent hele natten fra søndag kveld til fredag morgen og bare stengt natt til lørdag og natt til søndag. Et vedtak om prøveordning for 2026 er ikke publisert. Dott oppgir døgnåpent i sine åpne data (24. oktober 2026), så sjekk appen.',
+      answer: 'Etter forskriften og kommunens nettside er utleien stengt kl. 23–05 hver natt. Men i 2026 har Voi og Ryde hatt åpent hele natten fra søndag kveld til fredag morgen og bare stengt natt til lørdag og natt til søndag. Dott oppgir døgnåpent (24. oktober 2026), så sjekk appen.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Værnes?',
@@ -183,7 +183,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må man være for å leie elsparkesykkel i Trondheim?',
-      answer: 'Ryde og Voi krever 16 år, og Dott 18 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
+      answer: 'Ryde krever 16 år, og Dott 18 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
     },
   ],
   sources: [
@@ -193,7 +193,9 @@ const guide: Guide = {
     { title: 'Trondheim kommune: Høring om ny utleieforskrift (2026)', url: 'https://www.trondheim.kommune.no/aktuelt/om-kommunen/kunngjoringer/horinger/forslag-til-revidert-forskrift-om-utleie-av-sma-elektriske-kjoretoy-pa-offentlig-grunn-i-trondheim-kommune/' },
     { title: 'Trondheim kommune: Sykkelheisen Trampe', url: 'https://www.trondheim.kommune.no/org/byutvikling/kommunalteknikk/trampe/' },
     { title: 'Høyesterett: HR-2021-2510-A, Trondheim kommune mot Ryde', url: 'https://www.domstol.no/globalassets/upload/hret/avgjorelser/2021/desember-2021/hr-2021-2510-a.pdf' },
-    { title: 'Voi: Elsparkesykler til leie i Trondheim', url: 'https://www.voi.com/nb/by/trondheim' },
+    { title: 'Entur: Vois åpne data for Trondheim (GBFS: priser og åpningstider, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/voitrondheim/gbfs' },
+    { title: 'Entur: Rydes åpne data for Trondheim (GBFS: priser, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydetrondheim/gbfs' },
+    { title: 'Entur: Dotts åpne data for Trondheim (GBFS: priser, 4. november 2026)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/dotttrondheim/gbfs' },
     { title: 'Dott: Vilkår og betingelser for Norge', url: 'https://ridedott.com/no/vilkar-betingelser/norge/' },
     { title: 'Trondheim parkering: Elsparkesykkel', url: 'https://www.trondheim.kommune.no/parkering/innhold/miljo/elsparkesykkel/' },
     { title: 'AtB: Fri bruk av bysykkel med periodebillett', url: 'https://www.atb.no/forside/aktuelt/fri-bruk-av-bysykkel-med-periodebillett-i-atb-appen' },
